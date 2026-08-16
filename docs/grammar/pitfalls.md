@@ -51,6 +51,15 @@
 | `has_global_variable` 门控初始化导致首帧读到 none | 引擎加载时静态注册所有被引用的全局变量名：检查为 true 但值仍是 none，初始化被跳过 | 一次性初始化放到只执行一次的上游（如开局事件选项里），不要用存在性检查做幂等 |
 | 窗口移出屏幕后 state 停求值 | 离屏被裁剪 | 隐身用"无背景+点击穿透"，不要移出屏幕 |
 
+## 事件背景图 / 纹理
+
+| 现象 | 原因 | 解法 |
+|---|---|---|
+| `environment reference empty` / `ambience reference empty`（event_background_database.cpp） | `common/event_backgrounds` 的定义缺字段 | 两个都必须填：`environment = "environment_standard"` + `ambience = "event:/SFX/..."` |
+| 自定义事件场景图不显示/黑 | 纹理格式 | 必须 DDS；事件场景规格 **1592×848 DXT1**（原版 alley.dds 实测），Pillow 可写（`save(pixel_format="DXT1")`），路径放 `gfx/interface/illustrations/event_scenes/`，事件里 `override_background = { reference = <背景键> }` |
+| character_event 窗口右半边空着 | 窗口类型固定布局：左文本列 + 右立绘区，无立绘角色就空 | 把人物合成进背景图右半（tools/compose_avatar.py）；或改用 `type = letter_event` 窄窗（信纸风，无大图背景） |
+| 事件窗口尺寸想改 | window 类型由事件 type 决定，theme 只管图标/标题底/音效/默认背景 | 不想覆盖全局 GUI 就别动；用构图迁就窗口 |
+
 ## 调试技巧速查
 
 - 解析验证：启动到主菜单 → 读 `error.log`
