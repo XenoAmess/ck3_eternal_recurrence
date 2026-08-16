@@ -26,6 +26,14 @@ window = {
 		using = Animation_FadeOut_Quick
 	}
 
+	# After the player confirms the result event, switch to observer mode
+	# (the save is over: they must not keep playing as the heir).
+	state = {
+		name = "xar_exit_to_menu"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_quit_check'), Localize('xar_quit_sentinel') )]"
+		on_start = "[ExecuteConsoleCommand('observe')]"
+	}
+
 	state = {
 		name = "xar_import_0"
 		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_0') )]"

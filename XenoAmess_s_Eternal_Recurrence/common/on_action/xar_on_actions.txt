@@ -5,23 +5,17 @@ on_game_start_after_lobby = {
 	on_actions = { xar_on_game_start }
 }
 
-# Import the global high score as this run's spendable copy and open the shop.
+# Import the global high score as this run's spendable copy and offer the pact.
 xar_on_game_start = {
 	effect = {
-		debug_log = "XAR: on_action fired"
 		every_player = {
-			debug_log = "XAR: player found"
 			if = {
 				limit = {
 					has_game_rule = xar_on
 				}
-				debug_log = "XAR: rule is on"
-				add_character_flag = xa_enabled
+				debug_log = "XAR: rule is on, offering pact"
 				set_global_variable = xa_shop_pending
-				trigger_event = {
-					id = xar.0001
-					days = 1
-				}
+				trigger_event = xar.0002
 			}
 		}
 	}

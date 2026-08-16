@@ -1,0 +1,11 @@
+﻿# Hand-written customizable localizations for the GUI bridges.
+
+# Exit-to-menu bridge: returns the sentinel once the result event is confirmed.
+xar_quit_check = {
+	type = character
+	text = {
+		trigger = { has_global_variable = xa_quit_to_menu }
+		localization_key = xar_quit_sentinel
+	}
+	text = { localization_key = NONE }
+}

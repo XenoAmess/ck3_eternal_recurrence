@@ -167,6 +167,22 @@ def gen_effects() -> str:
     lines.append("}")
     lines.append("")
 
+    # Lifespan purchase: applies the next modifier in the series (same-modifier
+    # reapplication does not stack, so there are 50 distinct modifiers).
+    lines.append("# Lifespan purchase: +1 year expectancy per buy, 50 buys max.")
+    lines.append("xar_buy_lifespan_effect = {")
+    lines.append("\tchange_global_variable = {")
+    lines.append("\t\tname = xa_lifespan_bought")
+    lines.append("\t\tadd = 1")
+    lines.append("\t}")
+    for i in range(1, 51):
+        lines.append("\tif = {")
+        lines.append(f"\t\tlimit = {{ global_var:xa_lifespan_bought = {i} }}")
+        lines.append(f"\t\tadd_character_modifier = {{ modifier = xar_lifespan_{i:02d} }}")
+        lines.append("\t}")
+    lines.append("}")
+    lines.append("")
+
     # Parameterized floor(log2) effect (script values have no log function).
     # floor(log2(x)) == count of powers of two <= x; x < 2 yields 0.
     lines.append("# Parameterized floor(log2($SRC$)) into global var $VAR$.")
@@ -217,6 +233,14 @@ def gen_gui() -> str:
         "\tstate = {",
         "\t\tname = _hide",
         "\t\tusing = Animation_FadeOut_Quick",
+        "\t}",
+        "",
+        "\t# After the player confirms the result event, switch to observer mode",
+        "\t# (the save is over: they must not keep playing as the heir).",
+        "\tstate = {",
+        '\t\tname = "xar_exit_to_menu"',
+        '\t\ttrigger_when = "[EqualTo_string( GetPlayer.Custom(\'xar_quit_check\'), Localize(\'xar_quit_sentinel\') )]"',
+        '\t\ton_start = "[ExecuteConsoleCommand(\'observe\')]"',
         "\t}",
     ]
     for t in [0] + THRESHOLDS:

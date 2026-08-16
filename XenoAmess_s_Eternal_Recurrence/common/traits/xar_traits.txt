@@ -1,0 +1,8 @@
+﻿# XenoAmess's Eternal Recurrence traits
+# Loc keys: trait_xar_glassfire_gaze / trait_xar_glassfire_gaze_desc
+xar_glassfire_gaze = {
+	icon = mystic.dds
+
+	health = 0.05
+	stress_gain_mult = 0.1
+}

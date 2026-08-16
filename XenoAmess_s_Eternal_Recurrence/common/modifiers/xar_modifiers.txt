@@ -1,0 +1,59 @@
+﻿# XenoAmess's Eternal Recurrence modifiers
+
+# One free faith reformation: zeroes the piety cost in the faith creation window.
+xar_free_faith_reformation = {
+	faith_creation_piety_cost_mult = -1
+}
+
+# +1 year of life expectancy per stack. Same-modifier reapplication does not
+# stack in CK3, so each purchase applies the next modifier in the series.
+xar_lifespan_01 = { health = 1 }
+xar_lifespan_02 = { health = 1 }
+xar_lifespan_03 = { health = 1 }
+xar_lifespan_04 = { health = 1 }
+xar_lifespan_05 = { health = 1 }
+xar_lifespan_06 = { health = 1 }
+xar_lifespan_07 = { health = 1 }
+xar_lifespan_08 = { health = 1 }
+xar_lifespan_09 = { health = 1 }
+xar_lifespan_10 = { health = 1 }
+xar_lifespan_11 = { health = 1 }
+xar_lifespan_12 = { health = 1 }
+xar_lifespan_13 = { health = 1 }
+xar_lifespan_14 = { health = 1 }
+xar_lifespan_15 = { health = 1 }
+xar_lifespan_16 = { health = 1 }
+xar_lifespan_17 = { health = 1 }
+xar_lifespan_18 = { health = 1 }
+xar_lifespan_19 = { health = 1 }
+xar_lifespan_20 = { health = 1 }
+xar_lifespan_21 = { health = 1 }
+xar_lifespan_22 = { health = 1 }
+xar_lifespan_23 = { health = 1 }
+xar_lifespan_24 = { health = 1 }
+xar_lifespan_25 = { health = 1 }
+xar_lifespan_26 = { health = 1 }
+xar_lifespan_27 = { health = 1 }
+xar_lifespan_28 = { health = 1 }
+xar_lifespan_29 = { health = 1 }
+xar_lifespan_30 = { health = 1 }
+xar_lifespan_31 = { health = 1 }
+xar_lifespan_32 = { health = 1 }
+xar_lifespan_33 = { health = 1 }
+xar_lifespan_34 = { health = 1 }
+xar_lifespan_35 = { health = 1 }
+xar_lifespan_36 = { health = 1 }
+xar_lifespan_37 = { health = 1 }
+xar_lifespan_38 = { health = 1 }
+xar_lifespan_39 = { health = 1 }
+xar_lifespan_40 = { health = 1 }
+xar_lifespan_41 = { health = 1 }
+xar_lifespan_42 = { health = 1 }
+xar_lifespan_43 = { health = 1 }
+xar_lifespan_44 = { health = 1 }
+xar_lifespan_45 = { health = 1 }
+xar_lifespan_46 = { health = 1 }
+xar_lifespan_47 = { health = 1 }
+xar_lifespan_48 = { health = 1 }
+xar_lifespan_49 = { health = 1 }
+xar_lifespan_50 = { health = 1 }

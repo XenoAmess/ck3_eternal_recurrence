@@ -2807,6 +2807,214 @@ xar_write_record_effect = {
 	}
 }
 
+# Lifespan purchase: +1 year expectancy per buy, 50 buys max.
+xar_buy_lifespan_effect = {
+	change_global_variable = {
+		name = xa_lifespan_bought
+		add = 1
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 1 }
+		add_character_modifier = { modifier = xar_lifespan_01 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 2 }
+		add_character_modifier = { modifier = xar_lifespan_02 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 3 }
+		add_character_modifier = { modifier = xar_lifespan_03 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 4 }
+		add_character_modifier = { modifier = xar_lifespan_04 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 5 }
+		add_character_modifier = { modifier = xar_lifespan_05 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 6 }
+		add_character_modifier = { modifier = xar_lifespan_06 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 7 }
+		add_character_modifier = { modifier = xar_lifespan_07 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 8 }
+		add_character_modifier = { modifier = xar_lifespan_08 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 9 }
+		add_character_modifier = { modifier = xar_lifespan_09 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 10 }
+		add_character_modifier = { modifier = xar_lifespan_10 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 11 }
+		add_character_modifier = { modifier = xar_lifespan_11 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 12 }
+		add_character_modifier = { modifier = xar_lifespan_12 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 13 }
+		add_character_modifier = { modifier = xar_lifespan_13 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 14 }
+		add_character_modifier = { modifier = xar_lifespan_14 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 15 }
+		add_character_modifier = { modifier = xar_lifespan_15 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 16 }
+		add_character_modifier = { modifier = xar_lifespan_16 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 17 }
+		add_character_modifier = { modifier = xar_lifespan_17 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 18 }
+		add_character_modifier = { modifier = xar_lifespan_18 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 19 }
+		add_character_modifier = { modifier = xar_lifespan_19 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 20 }
+		add_character_modifier = { modifier = xar_lifespan_20 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 21 }
+		add_character_modifier = { modifier = xar_lifespan_21 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 22 }
+		add_character_modifier = { modifier = xar_lifespan_22 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 23 }
+		add_character_modifier = { modifier = xar_lifespan_23 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 24 }
+		add_character_modifier = { modifier = xar_lifespan_24 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 25 }
+		add_character_modifier = { modifier = xar_lifespan_25 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 26 }
+		add_character_modifier = { modifier = xar_lifespan_26 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 27 }
+		add_character_modifier = { modifier = xar_lifespan_27 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 28 }
+		add_character_modifier = { modifier = xar_lifespan_28 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 29 }
+		add_character_modifier = { modifier = xar_lifespan_29 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 30 }
+		add_character_modifier = { modifier = xar_lifespan_30 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 31 }
+		add_character_modifier = { modifier = xar_lifespan_31 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 32 }
+		add_character_modifier = { modifier = xar_lifespan_32 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 33 }
+		add_character_modifier = { modifier = xar_lifespan_33 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 34 }
+		add_character_modifier = { modifier = xar_lifespan_34 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 35 }
+		add_character_modifier = { modifier = xar_lifespan_35 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 36 }
+		add_character_modifier = { modifier = xar_lifespan_36 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 37 }
+		add_character_modifier = { modifier = xar_lifespan_37 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 38 }
+		add_character_modifier = { modifier = xar_lifespan_38 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 39 }
+		add_character_modifier = { modifier = xar_lifespan_39 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 40 }
+		add_character_modifier = { modifier = xar_lifespan_40 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 41 }
+		add_character_modifier = { modifier = xar_lifespan_41 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 42 }
+		add_character_modifier = { modifier = xar_lifespan_42 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 43 }
+		add_character_modifier = { modifier = xar_lifespan_43 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 44 }
+		add_character_modifier = { modifier = xar_lifespan_44 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 45 }
+		add_character_modifier = { modifier = xar_lifespan_45 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 46 }
+		add_character_modifier = { modifier = xar_lifespan_46 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 47 }
+		add_character_modifier = { modifier = xar_lifespan_47 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 48 }
+		add_character_modifier = { modifier = xar_lifespan_48 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 49 }
+		add_character_modifier = { modifier = xar_lifespan_49 }
+	}
+	if = {
+		limit = { global_var:xa_lifespan_bought = 50 }
+		add_character_modifier = { modifier = xar_lifespan_50 }
+	}
+}
+
 # Parameterized floor(log2($SRC$)) into global var $VAR$.
 # Call: xar_log2_floor_effect = { SRC = gold VAR = xa_l_gold }
 xar_log2_floor_effect = {

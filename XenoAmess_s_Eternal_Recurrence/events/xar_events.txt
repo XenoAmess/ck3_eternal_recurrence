@@ -1,6 +1,45 @@
 ﻿namespace = xar
 
-# Opening shop: spend the imported points copy on attributes (25 points each).
+# The pact: offered at game start. Declining disables the mod for this run.
+xar.0002 = {
+	type = character_event
+	theme = mental_health
+	title = xar.0002.title
+	desc = xar.0002.desc
+
+	option = {
+		name = xar.0002.accept
+		add_character_flag = xa_enabled
+		add_trait = xar_glassfire_gaze
+		trigger_event = {
+			id = xar.0001
+			days = 1
+		}
+	}
+
+	option = {
+		name = xar.0002.decline
+		trigger_event = xar.0003
+	}
+}
+
+# Polite farewell if the pact is declined.
+xar.0003 = {
+	type = character_event
+	theme = mental_health
+	title = xar.0003.title
+	desc = xar.0003.desc
+
+	option = {
+		name = xar.0003.ok
+	}
+}
+
+# The shop. Paginated (the event option grid does not scroll):
+#   page 1: attributes, page 2: resources, page 3: special goods.
+# Every purchase charges the item's current price, then inflates it by 1.2x
+# (per run; price variables live in the save). Unspent points convert to gold
+# when starting.
 xar.0001 = {
 	type = character_event
 	theme = stewardship
@@ -9,110 +48,230 @@ xar.0001 = {
 
 	immediate = {
 		debug_log = "XAR: shop event fired"
+		# init page and prices on first open
+		if = {
+			limit = { NOT = { has_global_variable = xa_shop_page } }
+			set_global_variable = { name = xa_shop_page value = 1 }
+		}
+		if = {
+			limit = { NOT = { has_global_variable = xa_price_dip } }
+			set_global_variable = { name = xa_price_dip value = 25 }
+			set_global_variable = { name = xa_price_mar value = 25 }
+			set_global_variable = { name = xa_price_ste value = 25 }
+			set_global_variable = { name = xa_price_int value = 25 }
+			set_global_variable = { name = xa_price_lea value = 25 }
+			set_global_variable = { name = xa_price_pro value = 25 }
+			set_global_variable = { name = xa_price_gold value = 25 }
+			set_global_variable = { name = xa_price_pres value = 15 }
+			set_global_variable = { name = xa_price_pie value = 15 }
+			set_global_variable = { name = xa_price_inf value = 15 }
+			set_global_variable = { name = xa_price_dyn value = 100 }
+			set_global_variable = { name = xa_price_life value = 100 }
+			set_global_variable = { name = xa_price_reform value = 1133 }
+			set_global_variable = { name = xa_lifespan_bought value = 0 }
+		}
 		if = {
 			limit = { NOT = { has_global_variable = xa_local_points } }
-			set_global_variable = {
-				name = xa_local_points
-				value = 0
-			}
+			set_global_variable = { name = xa_local_points value = 0 }
 		}
-		save_scope_value_as = {
-			name = xar_points
-			value = global_var:xa_local_points
-		}
+		# save display values
+		save_scope_value_as = { name = xar_points value = global_var:xa_local_points }
+		save_scope_value_as = { name = xar_pr_dip value = global_var:xa_price_dip }
+		save_scope_value_as = { name = xar_pr_mar value = global_var:xa_price_mar }
+		save_scope_value_as = { name = xar_pr_ste value = global_var:xa_price_ste }
+		save_scope_value_as = { name = xar_pr_int value = global_var:xa_price_int }
+		save_scope_value_as = { name = xar_pr_lea value = global_var:xa_price_lea }
+		save_scope_value_as = { name = xar_pr_pro value = global_var:xa_price_pro }
+		save_scope_value_as = { name = xar_pr_gold value = global_var:xa_price_gold }
+		save_scope_value_as = { name = xar_pr_pres value = global_var:xa_price_pres }
+		save_scope_value_as = { name = xar_pr_pie value = global_var:xa_price_pie }
+		save_scope_value_as = { name = xar_pr_inf value = global_var:xa_price_inf }
+		save_scope_value_as = { name = xar_pr_dyn value = global_var:xa_price_dyn }
+		save_scope_value_as = { name = xar_pr_life value = global_var:xa_price_life }
+		save_scope_value_as = { name = xar_pr_reform value = global_var:xa_price_reform }
 	}
 
+	# ---------- page 1: attributes ----------
 	option = {
 		name = xar.0001.diplomacy
-		trigger = { global_var:xa_local_points >= 25 }
-		change_global_variable = {
-			name = xa_local_points
-			add = -25
+		trigger = {
+			global_var:xa_shop_page = 1
+			global_var:xa_local_points >= global_var:xa_price_dip
 		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_dip multiply = -1 } }
 		add_diplomacy_skill = 1
-		if = {
-			limit = { global_var:xa_local_points >= 25 }
-			trigger_event = { id = xar.0001 }
-		}
+		change_global_variable = { name = xa_price_dip multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
 	}
-
 	option = {
 		name = xar.0001.martial
-		trigger = { global_var:xa_local_points >= 25 }
-		change_global_variable = {
-			name = xa_local_points
-			add = -25
+		trigger = {
+			global_var:xa_shop_page = 1
+			global_var:xa_local_points >= global_var:xa_price_mar
 		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_mar multiply = -1 } }
 		add_martial_skill = 1
-		if = {
-			limit = { global_var:xa_local_points >= 25 }
-			trigger_event = { id = xar.0001 }
-		}
+		change_global_variable = { name = xa_price_mar multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
 	}
-
 	option = {
 		name = xar.0001.stewardship
-		trigger = { global_var:xa_local_points >= 25 }
-		change_global_variable = {
-			name = xa_local_points
-			add = -25
+		trigger = {
+			global_var:xa_shop_page = 1
+			global_var:xa_local_points >= global_var:xa_price_ste
 		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_ste multiply = -1 } }
 		add_stewardship_skill = 1
-		if = {
-			limit = { global_var:xa_local_points >= 25 }
-			trigger_event = { id = xar.0001 }
-		}
+		change_global_variable = { name = xa_price_ste multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
 	}
-
 	option = {
 		name = xar.0001.intrigue
-		trigger = { global_var:xa_local_points >= 25 }
-		change_global_variable = {
-			name = xa_local_points
-			add = -25
+		trigger = {
+			global_var:xa_shop_page = 1
+			global_var:xa_local_points >= global_var:xa_price_int
 		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_int multiply = -1 } }
 		add_intrigue_skill = 1
-		if = {
-			limit = { global_var:xa_local_points >= 25 }
-			trigger_event = { id = xar.0001 }
-		}
+		change_global_variable = { name = xa_price_int multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
 	}
-
 	option = {
 		name = xar.0001.learning
-		trigger = { global_var:xa_local_points >= 25 }
-		change_global_variable = {
-			name = xa_local_points
-			add = -25
+		trigger = {
+			global_var:xa_shop_page = 1
+			global_var:xa_local_points >= global_var:xa_price_lea
 		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_lea multiply = -1 } }
 		add_learning_skill = 1
-		if = {
-			limit = { global_var:xa_local_points >= 25 }
-			trigger_event = { id = xar.0001 }
-		}
+		change_global_variable = { name = xa_price_lea multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
 	}
-
 	option = {
 		name = xar.0001.prowess
-		trigger = { global_var:xa_local_points >= 25 }
-		change_global_variable = {
-			name = xa_local_points
-			add = -25
+		trigger = {
+			global_var:xa_shop_page = 1
+			global_var:xa_local_points >= global_var:xa_price_pro
 		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_pro multiply = -1 } }
 		add_prowess_skill = 1
-		if = {
-			limit = { global_var:xa_local_points >= 25 }
-			trigger_event = { id = xar.0001 }
-		}
+		change_global_variable = { name = xa_price_pro multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
 	}
 
+	# ---------- page 2: resources ----------
+	option = {
+		name = xar.0001.gold
+		trigger = {
+			global_var:xa_shop_page = 2
+			global_var:xa_local_points >= global_var:xa_price_gold
+		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_gold multiply = -1 } }
+		add_gold = 100
+		change_global_variable = { name = xa_price_gold multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.prestige
+		trigger = {
+			global_var:xa_shop_page = 2
+			global_var:xa_local_points >= global_var:xa_price_pres
+		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_pres multiply = -1 } }
+		add_prestige = 100
+		change_global_variable = { name = xa_price_pres multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.piety
+		trigger = {
+			global_var:xa_shop_page = 2
+			global_var:xa_local_points >= global_var:xa_price_pie
+		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_pie multiply = -1 } }
+		add_piety = 100
+		change_global_variable = { name = xa_price_pie multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.influence
+		trigger = {
+			global_var:xa_shop_page = 2
+			global_var:xa_local_points >= global_var:xa_price_inf
+		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_inf multiply = -1 } }
+		change_influence = 100
+		change_global_variable = { name = xa_price_inf multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.dynasty_prestige
+		trigger = {
+			global_var:xa_shop_page = 2
+			global_var:xa_local_points >= global_var:xa_price_dyn
+		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_dyn multiply = -1 } }
+		dynasty = { add_dynasty_prestige = 100 }
+		change_global_variable = { name = xa_price_dyn multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
+	}
+
+	# ---------- page 3: special ----------
+	option = {
+		name = xar.0001.lifespan
+		trigger = {
+			global_var:xa_shop_page = 3
+			global_var:xa_local_points >= global_var:xa_price_life
+			NOT = { global_var:xa_lifespan_bought >= 50 }
+		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_life multiply = -1 } }
+		xar_buy_lifespan_effect = yes
+		change_global_variable = { name = xa_price_life multiply = 1.2 }
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.reform
+		trigger = {
+			global_var:xa_shop_page = 3
+			global_var:xa_local_points >= global_var:xa_price_reform
+			NOT = { has_global_variable = xa_bought_reformation }
+		}
+		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_reform multiply = -1 } }
+		add_character_modifier = {
+			modifier = xar_free_faith_reformation
+			years = 100
+		}
+		set_global_variable = xa_bought_reformation
+		custom_tooltip = xar.0001.reform_hint
+	}
+
+	# ---------- navigation ----------
+	option = {
+		name = xar.0001.prev_page
+		trigger = { global_var:xa_shop_page > 1 }
+		change_global_variable = { name = xa_shop_page add = -1 }
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.next_page
+		trigger = { global_var:xa_shop_page < 3 }
+		change_global_variable = { name = xa_shop_page add = 1 }
+		trigger_event = { id = xar.0001 }
+	}
+
+	# ---------- finish: unspent points convert to gold ----------
 	option = {
 		name = xar.0001.finish
+		if = {
+			limit = { global_var:xa_local_points > 0 }
+			add_gold = { value = global_var:xa_local_points }
+		}
+		set_global_variable = { name = xa_local_points value = 0 }
 	}
 }
 
-# Death: show the run score, the previous record, and the delta.
-# Score was computed and the record bit already written by xar_on_death.
+# Death: show the run score breakdown, record, and delta; on confirm, exit to
+# the main menu (via the xar_meta_window GUI bridge watching xa_quit_to_menu).
 xar.1001 = {
 	type = character_event
 	theme = skull
@@ -187,10 +346,12 @@ xar.1001 = {
 	option = {
 		name = xar.1001.new_record
 		trigger = { global_var:xa_run_score > global_var:xa_old_record }
+		set_global_variable = xa_quit_to_menu
 	}
 
 	option = {
 		name = xar.1001.no_record
 		trigger = { NOT = { global_var:xa_run_score > global_var:xa_old_record } }
+		set_global_variable = xa_quit_to_menu
 	}
 }
