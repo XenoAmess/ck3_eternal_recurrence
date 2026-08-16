@@ -9,7 +9,7 @@
 |---|---|---|
 | 外层 .mod | `Documents\Paradox Interactive\Crusader Kings III\mod\<name>.mod` | 含 `path=` 指向 mod 本体；上传后启动器自动写回 `remote_file_id` |
 | 内层 descriptor.mod | mod 本体根目录 | **禁止含 `remote_file_id`**（见下） |
-| 预览图 | mod 本体根目录，文件名固定 **`thumbnail.png`** | 启动器按约定自动找（同各 dev mod 目录）；descriptor 里同时写 `picture="thumbnail.png"` |
+| 预览图 | mod 本体根目录，文件名固定 **`thumbnail.png`** | 启动器按约定自动找（同各 dev mod 目录）；descriptor 里同时写 `picture="thumbnail.png"`；**< 1MB**，超限日志 warn "too large. Skipping."（上传照常成功，但预览图被静默跳过），约 900×500 PNG ≈ 700KB 是安全规格 |
 
 ## 血泪坑（全部实测复现）
 
