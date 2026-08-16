@@ -1,0 +1,58 @@
+﻿l_korean:
+ # Game rule
+ rule_xar_enabled:0 "유리불꽃 군주의 영원한 윤회"
+ setting_xar_on:0 "활성화"
+ setting_xar_on_desc:0 "유리불꽃 군주 모드 활성화: 게임 시작 시 전역 최고 기록을 불러와 강화 구매에 사용할 수 있습니다."
+ setting_xar_off:0 "비활성화"
+ setting_xar_off_desc:0 "유리불꽃 군주 모드가 비활성화되었습니다."
+
+ # Tutorial lesson step sentinel text. Must stay identical in every language.
+ xar_silent_step:0 "XAR_SYNC_SENTINEL"
+
+ # Sentinel returned by the record-level customizable localization.
+ xar_top_bit_sentinel:0 "XAR_TOP_SENTINEL"
+
+ # Sentinel for the exit-to-menu bridge.
+ xar_quit_sentinel:0 "XAR_QUIT_SENTINEL"
+
+ # Trait
+ trait_xar_glassfire_gaze:0 "유리불꽃의 시선"
+ trait_xar_glassfire_gaze_desc:0 "이 캐릭터는 유리빛 불꽃의 시선을 받고 있습니다, 받고 있습니다... 마지막 순간까지."
+
+ # The pact (game start)
+ xar.0002.title:0 "종말의 계약"
+ xar.0002.desc:0 "—다시 만났군, 나그네.\n\n나는 유리불꽃 군주, 저주의 틈새에 깃든 중개의 마귀다. 네가 걸어온 모든 길, 나는 그 끝에서 잔불을 주워 모았다.\n\n이 계약에 다시 한번 서명한다면, 전생의 모든 무게가 이번 생의 흥정 자본이 되리라.\n\n유리불꽃은 재촉하지 않는다. 그저... 계속 지켜볼 뿐."
+ xar.0002.accept:0 "받아들이겠다. 유리빛 불꽃이 증인이 되어라."
+ xar.0002.decline:0 "아니. 이번 생은 혼자 걷겠다."
+
+ # Polite farewell
+ xar.0003.title:0 "유리불꽃의 인사"
+ xar.0003.desc:0 "좋다. 유리불꽃은 누구에게도 강요하지 않는다.\n\n네 이야기가 오직 너만의 것이길——다시 만나자. 어쩌면... 영원히."
+ xar.0003.ok:0 "잘 가라."
+
+ # Opening shop event
+ xar.0001.title:0 "윤회의 전당포"
+ xar.0001.desc:0 "어서 오게, 나그네. 흩어진 이 빛들은 지난 생의 잔불이네.\n\n[TopScope.GetValue('xar_points')] 포인트를 가지고 있네. 무엇을 원하는가?"
+ xar.0001.diplomacy:0 "외교 +1 구매 ([TopScope.GetValue('xar_pr_dip')|0] 포인트)"
+ xar.0001.martial:0 "군사 +1 구매 ([TopScope.GetValue('xar_pr_mar')|0] 포인트)"
+ xar.0001.stewardship:0 "관리 +1 구매 ([TopScope.GetValue('xar_pr_ste')|0] 포인트)"
+ xar.0001.intrigue:0 "모략 +1 구매 ([TopScope.GetValue('xar_pr_int')|0] 포인트)"
+ xar.0001.learning:0 "학문 +1 구매 ([TopScope.GetValue('xar_pr_lea')|0] 포인트)"
+ xar.0001.prowess:0 "무력 +1 구매 ([TopScope.GetValue('xar_pr_pro')|0] 포인트)"
+ xar.0001.gold:0 "금화 100으로 교환 ([TopScope.GetValue('xar_pr_gold')|0] 포인트)"
+ xar.0001.prestige:0 "위신 100으로 교환 ([TopScope.GetValue('xar_pr_pres')|0] 포인트)"
+ xar.0001.piety:0 "경건 100으로 교환 ([TopScope.GetValue('xar_pr_pie')|0] 포인트)"
+ xar.0001.influence:0 "영향력 100으로 교환 ([TopScope.GetValue('xar_pr_inf')|0] 포인트)"
+ xar.0001.dynasty_prestige:0 "왕조 위신 100으로 교환 ([TopScope.GetValue('xar_pr_dyn')|0] 포인트)"
+ xar.0001.lifespan:0 "기대 수명 1년으로 교환 ([TopScope.GetValue('xar_pr_life')|0] 포인트)"
+ xar.0001.reform:0 "무료 종교 개혁 1회 ([TopScope.GetValue('xar_pr_reform')|0] 포인트, 플레이당 1회)"
+ xar.0001.reform_hint:0 "구매 후 신앙 창에서 개혁을 진행하면 경건 비용이 면제됩니다."
+ xar.0001.prev_page:0 "이전 페이지"
+ xar.0001.next_page:0 "다음 페이지"
+ xar.0001.finish:0 "이번 생을 시작 (남은 [TopScope.GetValue('xar_points')] 포인트는 동량의 금화가 됨)"
+
+ # Death score event
+ xar.1001.title:0 "윤회의 종말"
+ xar.1001.new_record:0 "잘했네. 이 장부는 영원에 기록되었네."
+ xar.1001.no_record:0 "낙담하지 말게. 유리불꽃은 자네의 귀환을 기다리고 있네."
+ xar.1001.desc:0 "잘했네, 나그네. 이번 생의 무게는 꼼꼼히 저울질했네.\n\n—— 속성 (각 1포인트) ——\n외교: [TopScope.GetValue('xar_a_dip')] × 1 = [TopScope.GetValue('xar_p_dip')]\n군사: [TopScope.GetValue('xar_a_mar')] × 1 = [TopScope.GetValue('xar_p_mar')]\n관리: [TopScope.GetValue('xar_a_ste')] × 1 = [TopScope.GetValue('xar_p_ste')]\n모략: [TopScope.GetValue('xar_a_int')] × 1 = [TopScope.GetValue('xar_p_int')]\n학문: [TopScope.GetValue('xar_a_lea')] × 1 = [TopScope.GetValue('xar_p_lea')]\n무력: [TopScope.GetValue('xar_a_pro')] × 1 = [TopScope.GetValue('xar_p_pro')]\n\n—— 혈통 (자네의 후손이어야 함) ——\n생존 왕조 구성원: [TopScope.GetValue('xar_a_dyn')] × 0.1 = [TopScope.GetValue('xar_p_dyn')]\n생존 가문 구성원 (추가): [TopScope.GetValue('xar_a_hou')] × 0.1 = [TopScope.GetValue('xar_p_hou')]\n\n—— 자원 (log₂ 내림) ——\n금화: [TopScope.GetValue('xar_a_gold')] → [TopScope.GetValue('xar_l_gold')] × 5 = [TopScope.GetValue('xar_p_gold')]\n위신: [TopScope.GetValue('xar_a_pres')] → [TopScope.GetValue('xar_l_pres')] × 3 = [TopScope.GetValue('xar_p_pres')]\n경건: [TopScope.GetValue('xar_a_pie')] → [TopScope.GetValue('xar_l_pie')] × 3 = [TopScope.GetValue('xar_p_pie')]\n영향력: [TopScope.GetValue('xar_a_inf')] → [TopScope.GetValue('xar_l_inf')] × 3 = [TopScope.GetValue('xar_p_inf')]\n\n—— 사망 시 보유 칭호 ——\n백작령급 ×1: [TopScope.GetValue('xar_n_t1')] = [TopScope.GetValue('xar_p_t1')]\n공국급 ×2.5: [TopScope.GetValue('xar_n_t2')] = [TopScope.GetValue('xar_p_t2')]\n왕국급 ×5: [TopScope.GetValue('xar_n_t3')] = [TopScope.GetValue('xar_p_t3')]\n제국급 ×10: [TopScope.GetValue('xar_n_t4')] = [TopScope.GetValue('xar_p_t4')]\n패권급 ×20: [TopScope.GetValue('xar_n_t5')] = [TopScope.GetValue('xar_p_t5')]\n\n—— 후손 (생존 후손의 최고 칭호) ——\n백작령급 ×0.25: [TopScope.GetValue('xar_d_t1')] = [TopScope.GetValue('xar_p_d1')]\n공국급 ×1: [TopScope.GetValue('xar_d_t2')] = [TopScope.GetValue('xar_p_d2')]\n왕국급 ×2.5: [TopScope.GetValue('xar_d_t3')] = [TopScope.GetValue('xar_p_d3')]\n제국급 ×5: [TopScope.GetValue('xar_d_t4')] = [TopScope.GetValue('xar_p_d4')]\n패권급 ×10: [TopScope.GetValue('xar_d_t5')] = [TopScope.GetValue('xar_p_d5')]\n\n—— 영지 (영지 보유 시) ——\n영지 규모 (봉신 백작령 포함): [TopScope.GetValue('xar_a_realm')] → [TopScope.GetValue('xar_l_realm')] × 10 = [TopScope.GetValue('xar_p_realm')]\n\n합계 = [TopScope.GetValue('xar_p_dip')]+[TopScope.GetValue('xar_p_mar')]+[TopScope.GetValue('xar_p_ste')]+[TopScope.GetValue('xar_p_int')]+[TopScope.GetValue('xar_p_lea')]+[TopScope.GetValue('xar_p_pro')]+[TopScope.GetValue('xar_p_dyn')]+[TopScope.GetValue('xar_p_hou')]+[TopScope.GetValue('xar_p_gold')]+[TopScope.GetValue('xar_p_pres')]+[TopScope.GetValue('xar_p_pie')]+[TopScope.GetValue('xar_p_inf')]+[TopScope.GetValue('xar_p_t1')]+[TopScope.GetValue('xar_p_t2')]+[TopScope.GetValue('xar_p_t3')]+[TopScope.GetValue('xar_p_t4')]+[TopScope.GetValue('xar_p_t5')]+[TopScope.GetValue('xar_p_d1')]+[TopScope.GetValue('xar_p_d2')]+[TopScope.GetValue('xar_p_d3')]+[TopScope.GetValue('xar_p_d4')]+[TopScope.GetValue('xar_p_d5')]+[TopScope.GetValue('xar_p_realm')] = [TopScope.GetValue('xar_score')]\n\n이전 기록: [TopScope.GetValue('xar_old')]\n차이: [TopScope.GetValue('xar_delta')|+0]"

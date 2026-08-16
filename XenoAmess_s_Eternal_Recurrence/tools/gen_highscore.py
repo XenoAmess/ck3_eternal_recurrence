@@ -292,5 +292,8 @@ if __name__ == "__main__":
     write(os.path.join("common", "scripted_guis", "xar_generated_guis.txt"), gen_guis())
     write(os.path.join("common", "scripted_effects", "xar_generated_effects.txt"), gen_effects())
     write(os.path.join("gui", "xar_meta.gui"), gen_gui(), bom=False)
-    write(os.path.join("localization", "english", "xar_generated_l_english.yml"), gen_loc("english"))
-    write(os.path.join("localization", "simp_chinese", "xar_generated_l_simp_chinese.yml"), gen_loc("simp_chinese"))
+    # Custom localization validates keys against the CURRENT language with no
+    # English fallback, so generated loc must exist for every vanilla language.
+    for lang in ("english", "french", "german", "japanese", "korean", "polish",
+                 "russian", "simp_chinese", "spanish"):
+        write(os.path.join("localization", lang, f"xar_generated_l_{lang}.yml"), gen_loc(lang))

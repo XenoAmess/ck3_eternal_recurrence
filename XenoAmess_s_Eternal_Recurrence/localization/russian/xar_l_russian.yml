@@ -1,0 +1,58 @@
+﻿l_russian:
+ # Game rule
+ rule_xar_enabled:0 "Вечное Перерождение Владыки Стеклянного Пламени"
+ setting_xar_on:0 "Включено"
+ setting_xar_on_desc:0 "Режим Владыки Стеклянного Пламени активен: глобальный рекорд импортируется в начале игры и может быть потрачен на усиления."
+ setting_xar_off:0 "Выключено"
+ setting_xar_off_desc:0 "Режим Владыки Стеклянного Пламени неактивен."
+
+ # Tutorial lesson step sentinel text. Must stay identical in every language.
+ xar_silent_step:0 "XAR_SYNC_SENTINEL"
+
+ # Sentinel returned by the record-level customizable localization.
+ xar_top_bit_sentinel:0 "XAR_TOP_SENTINEL"
+
+ # Sentinel for the exit-to-menu bridge.
+ xar_quit_sentinel:0 "XAR_QUIT_SENTINEL"
+
+ # Trait
+ trait_xar_glassfire_gaze:0 "Взор Стеклянного Пламени"
+ trait_xar_glassfire_gaze_desc:0 "За этим персонажем наблюдает то самое стеклянное пламя, наблюдает... до самого конца."
+
+ # The pact (game start)
+ xar.0002.title:0 "Договор Конца"
+ xar.0002.desc:0 "—Мы встретились вновь, странник.\n\nЯ — Владыка Стеклянного Пламени, демон-посредник, обитающий меж проклятий. На каждом пути, что ты прошёл, я собирал его угли в конце.\n\nПодпиши этот договор ещё раз — и каждая унция твоих прошлых жизней станет разменной монетой этой.\n\nСтеклянное пламя никогда не торопит. Оно просто... продолжает смотреть."
+ xar.0002.accept:0 "Я принимаю. Пусть стеклянное пламя будет свидетелем."
+ xar.0002.decline:0 "Нет. Эту жизнь я пройду сам."
+
+ # Polite farewell
+ xar.0003.title:0 "Приветствие Стеклянного Пламени"
+ xar.0003.desc:0 "Что ж. Стеклянное пламя никого не принуждает.\n\nПусть твоя история принадлежит только тебе — до встречи. А может... навсегда."
+ xar.0003.ok:0 "Прощай."
+
+ # Opening shop event
+ xar.0001.title:0 "Ломбард Перерождений"
+ xar.0001.desc:0 "Добро пожаловать, странник. Эти рассыпанные искры — угли твоей прошлой жизни.\n\nУ тебя [TopScope.GetValue('xar_points')] очков. Что приглянулось?"
+ xar.0001.diplomacy:0 "Купить +1 Дипломатии ([TopScope.GetValue('xar_pr_dip')|0] очков)"
+ xar.0001.martial:0 "Купить +1 Военного дела ([TopScope.GetValue('xar_pr_mar')|0] очков)"
+ xar.0001.stewardship:0 "Купить +1 Управления ([TopScope.GetValue('xar_pr_ste')|0] очков)"
+ xar.0001.intrigue:0 "Купить +1 Интриг ([TopScope.GetValue('xar_pr_int')|0] очков)"
+ xar.0001.learning:0 "Купить +1 Образованности ([TopScope.GetValue('xar_pr_lea')|0] очков)"
+ xar.0001.prowess:0 "Купить +1 Доблести ([TopScope.GetValue('xar_pr_pro')|0] очков)"
+ xar.0001.gold:0 "Обменять на 100 золота ([TopScope.GetValue('xar_pr_gold')|0] очков)"
+ xar.0001.prestige:0 "Обменять на 100 престижа ([TopScope.GetValue('xar_pr_pres')|0] очков)"
+ xar.0001.piety:0 "Обменять на 100 благочестия ([TopScope.GetValue('xar_pr_pie')|0] очков)"
+ xar.0001.influence:0 "Обменять на 100 влияния ([TopScope.GetValue('xar_pr_inf')|0] очков)"
+ xar.0001.dynasty_prestige:0 "Обменять на 100 престижа династии ([TopScope.GetValue('xar_pr_dyn')|0] очков)"
+ xar.0001.lifespan:0 "Обменять на 1 год ожидаемой продолжительности жизни ([TopScope.GetValue('xar_pr_life')|0] очков)"
+ xar.0001.reform:0 "Одна бесплатная реформация веры ([TopScope.GetValue('xar_pr_reform')|0] очков, один раз за партию)"
+ xar.0001.reform_hint:0 "После покупки проведите реформацию в окне веры; стоимость в благочестии будет снята."
+ xar.0001.prev_page:0 "Предыдущая страница"
+ xar.0001.next_page:0 "Следующая страница"
+ xar.0001.finish:0 "Начать эту жизнь (оставшиеся [TopScope.GetValue('xar_points')] очков превратятся в равное количество золота)"
+
+ # Death score event
+ xar.1001.title:0 "Перерождение Окончено"
+ xar.1001.new_record:0 "Отлично. Этот счёт вписан в вечность."
+ xar.1001.no_record:0 "Не унывай. Стеклянное пламя будет ждать твоего возвращения."
+ xar.1001.desc:0 "Отлично, странник. Вес этой жизни был тщательно измерен.\n\n—— Атрибуты (по 1 очку) ——\nДипломатия: [TopScope.GetValue('xar_a_dip')] × 1 = [TopScope.GetValue('xar_p_dip')]\nВоенное дело: [TopScope.GetValue('xar_a_mar')] × 1 = [TopScope.GetValue('xar_p_mar')]\nУправление: [TopScope.GetValue('xar_a_ste')] × 1 = [TopScope.GetValue('xar_p_ste')]\nИнтриги: [TopScope.GetValue('xar_a_int')] × 1 = [TopScope.GetValue('xar_p_int')]\nОбразованность: [TopScope.GetValue('xar_a_lea')] × 1 = [TopScope.GetValue('xar_p_lea')]\nДоблесть: [TopScope.GetValue('xar_a_pro')] × 1 = [TopScope.GetValue('xar_p_pro')]\n\n—— Кровь (должны быть вашими потомками) ——\nЖивые члены династии: [TopScope.GetValue('xar_a_dyn')] × 0.1 = [TopScope.GetValue('xar_p_dyn')]\nЖивые члены рода (дополнительно): [TopScope.GetValue('xar_a_hou')] × 0.1 = [TopScope.GetValue('xar_p_hou')]\n\n—— Ресурсы (log₂ округл. вниз) ——\nЗолото: [TopScope.GetValue('xar_a_gold')] → [TopScope.GetValue('xar_l_gold')] × 5 = [TopScope.GetValue('xar_p_gold')]\nПрестиж: [TopScope.GetValue('xar_a_pres')] → [TopScope.GetValue('xar_l_pres')] × 3 = [TopScope.GetValue('xar_p_pres')]\nБлагочестие: [TopScope.GetValue('xar_a_pie')] → [TopScope.GetValue('xar_l_pie')] × 3 = [TopScope.GetValue('xar_p_pie')]\nВлияние: [TopScope.GetValue('xar_a_inf')] → [TopScope.GetValue('xar_l_inf')] × 3 = [TopScope.GetValue('xar_p_inf')]\n\n—— Титулы на момент смерти ——\nГрафство ×1: [TopScope.GetValue('xar_n_t1')] = [TopScope.GetValue('xar_p_t1')]\nГерцогство ×2.5: [TopScope.GetValue('xar_n_t2')] = [TopScope.GetValue('xar_p_t2')]\nКоролевство ×5: [TopScope.GetValue('xar_n_t3')] = [TopScope.GetValue('xar_p_t3')]\nИмперия ×10: [TopScope.GetValue('xar_n_t4')] = [TopScope.GetValue('xar_p_t4')]\nГегемония ×20: [TopScope.GetValue('xar_n_t5')] = [TopScope.GetValue('xar_p_t5')]\n\n—— Потомки (высший титул живых потомков) ——\nГрафство ×0.25: [TopScope.GetValue('xar_d_t1')] = [TopScope.GetValue('xar_p_d1')]\nГерцогство ×1: [TopScope.GetValue('xar_d_t2')] = [TopScope.GetValue('xar_p_d2')]\nКоролевство ×2.5: [TopScope.GetValue('xar_d_t3')] = [TopScope.GetValue('xar_p_d3')]\nИмперия ×5: [TopScope.GetValue('xar_d_t4')] = [TopScope.GetValue('xar_p_d4')]\nГегемония ×10: [TopScope.GetValue('xar_d_t5')] = [TopScope.GetValue('xar_p_d5')]\n\n—— Владения (при наличии земель) ——\nРазмер владений (графства, включая вассалов): [TopScope.GetValue('xar_a_realm')] → [TopScope.GetValue('xar_l_realm')] × 10 = [TopScope.GetValue('xar_p_realm')]\n\nИтого = [TopScope.GetValue('xar_p_dip')]+[TopScope.GetValue('xar_p_mar')]+[TopScope.GetValue('xar_p_ste')]+[TopScope.GetValue('xar_p_int')]+[TopScope.GetValue('xar_p_lea')]+[TopScope.GetValue('xar_p_pro')]+[TopScope.GetValue('xar_p_dyn')]+[TopScope.GetValue('xar_p_hou')]+[TopScope.GetValue('xar_p_gold')]+[TopScope.GetValue('xar_p_pres')]+[TopScope.GetValue('xar_p_pie')]+[TopScope.GetValue('xar_p_inf')]+[TopScope.GetValue('xar_p_t1')]+[TopScope.GetValue('xar_p_t2')]+[TopScope.GetValue('xar_p_t3')]+[TopScope.GetValue('xar_p_t4')]+[TopScope.GetValue('xar_p_t5')]+[TopScope.GetValue('xar_p_d1')]+[TopScope.GetValue('xar_p_d2')]+[TopScope.GetValue('xar_p_d3')]+[TopScope.GetValue('xar_p_d4')]+[TopScope.GetValue('xar_p_d5')]+[TopScope.GetValue('xar_p_realm')] = [TopScope.GetValue('xar_score')]\n\nПредыдущий рекорд: [TopScope.GetValue('xar_old')]\nРазница: [TopScope.GetValue('xar_delta')|+0]"

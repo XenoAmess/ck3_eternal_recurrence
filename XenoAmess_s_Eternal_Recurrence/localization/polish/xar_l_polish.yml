@@ -1,0 +1,58 @@
+﻿l_polish:
+ # Game rule
+ rule_xar_enabled:0 "Wieczny Cykl Władcy Szklanego Ognia"
+ setting_xar_on:0 "Włączone"
+ setting_xar_on_desc:0 "Tryb Władcy Szklanego Ognia jest aktywny: globalny rekord zostaje zaimportowany na początku gry i można go wydać na ulepszenia."
+ setting_xar_off:0 "Wyłączone"
+ setting_xar_off_desc:0 "Tryb Władcy Szklanego Ognia jest nieaktywny."
+
+ # Tutorial lesson step sentinel text. Must stay identical in every language.
+ xar_silent_step:0 "XAR_SYNC_SENTINEL"
+
+ # Sentinel returned by the record-level customizable localization.
+ xar_top_bit_sentinel:0 "XAR_TOP_SENTINEL"
+
+ # Sentinel for the exit-to-menu bridge.
+ xar_quit_sentinel:0 "XAR_QUIT_SENTINEL"
+
+ # Trait
+ trait_xar_glassfire_gaze:0 "Spojrzenie Szklanego Ognia"
+ trait_xar_glassfire_gaze_desc:0 "Tej postaci przygląda się tamten szklany płomień, przygląda... aż po sam koniec."
+
+ # The pact (game start)
+ xar.0002.title:0 "Pakt Końca"
+ xar.0002.desc:0 "—Znów się spotykamy, wędrowcze.\n\nJestem Władcą Szklanego Ognia, demonem-pośrednikiem mieszkającym między klątwami. Na każdej drodze, którą przeszedłeś, zbierałem na końcu jej żar.\n\nPodpisz ten pakt po raz kolejny, a każda uncja twoich przeszłych żyć stanie się walutą tego życia.\n\nSzklany ogień nigdy się nie spieszy. On po prostu... wciąż patrzy."
+ xar.0002.accept:0 "Przyjmuję. Niech szklany ogień będzie świadkiem."
+ xar.0002.decline:0 "Nie. To życie przejdę sam."
+
+ # Polite farewell
+ xar.0003.title:0 "Pozdrowienia Szklanego Ognia"
+ xar.0003.desc:0 "W porządku. Szklany ogień nigdy nie nalega.\n\nNiech twoja historia należy tylko do ciebie — do zobaczenia. A może... już nigdy."
+ xar.0003.ok:0 "Żegnaj."
+
+ # Opening shop event
+ xar.0001.title:0 "Lombard Wiecznego Cyklu"
+ xar.0001.desc:0 "Witaj, wędrowcze. Te rozproszone błyski to żar twojego poprzedniego życia.\n\nMasz [TopScope.GetValue('xar_points')] punktów. Coś cię kusi?"
+ xar.0001.diplomacy:0 "Kup +1 Dyplomacji ([TopScope.GetValue('xar_pr_dip')|0] punktów)"
+ xar.0001.martial:0 "Kup +1 Kunsztu wojennego ([TopScope.GetValue('xar_pr_mar')|0] punktów)"
+ xar.0001.stewardship:0 "Kup +1 Zarządzania ([TopScope.GetValue('xar_pr_ste')|0] punktów)"
+ xar.0001.intrigue:0 "Kup +1 Intrygi ([TopScope.GetValue('xar_pr_int')|0] punktów)"
+ xar.0001.learning:0 "Kup +1 Wiedzy ([TopScope.GetValue('xar_pr_lea')|0] punktów)"
+ xar.0001.prowess:0 "Kup +1 Zalet bojowych ([TopScope.GetValue('xar_pr_pro')|0] punktów)"
+ xar.0001.gold:0 "Wymień na 100 złota ([TopScope.GetValue('xar_pr_gold')|0] punktów)"
+ xar.0001.prestige:0 "Wymień na 100 prestiżu ([TopScope.GetValue('xar_pr_pres')|0] punktów)"
+ xar.0001.piety:0 "Wymień na 100 pobożności ([TopScope.GetValue('xar_pr_pie')|0] punktów)"
+ xar.0001.influence:0 "Wymień na 100 wpływów ([TopScope.GetValue('xar_pr_inf')|0] punktów)"
+ xar.0001.dynasty_prestige:0 "Wymień na 100 prestiżu dynastii ([TopScope.GetValue('xar_pr_dyn')|0] punktów)"
+ xar.0001.lifespan:0 "Wymień na 1 rok przewidywanej długości życia ([TopScope.GetValue('xar_pr_life')|0] punktów)"
+ xar.0001.reform:0 "Jedna darmowa reformacja wiary ([TopScope.GetValue('xar_pr_reform')|0] punktów, raz na podejście)"
+ xar.0001.reform_hint:0 "Po zakupie przeprowadź reformację w oknie wiary; koszt pobożności zostanie zniesiony."
+ xar.0001.prev_page:0 "Poprzednia strona"
+ xar.0001.next_page:0 "Następna strona"
+ xar.0001.finish:0 "Rozpocznij to życie (pozostałe [TopScope.GetValue('xar_points')] punktów zamieni się w równą ilość złota)"
+
+ # Death score event
+ xar.1001.title:0 "Koniec Wiecznego Cyklu"
+ xar.1001.new_record:0 "Dobra robota. To konto zostało zapisane w wieczności."
+ xar.1001.no_record:0 "Nie rozpaczaj. Szklany ogień poczeka na twój powrót."
+ xar.1001.desc:0 "Dobra robota, wędrowcze. Ciężar tego życia został starannie zważony.\n\n—— Atrybuty (po 1 punkcie) ——\nDyplomacja: [TopScope.GetValue('xar_a_dip')] × 1 = [TopScope.GetValue('xar_p_dip')]\nKunszt wojenny: [TopScope.GetValue('xar_a_mar')] × 1 = [TopScope.GetValue('xar_p_mar')]\nZarządzanie: [TopScope.GetValue('xar_a_ste')] × 1 = [TopScope.GetValue('xar_p_ste')]\nIntryga: [TopScope.GetValue('xar_a_int')] × 1 = [TopScope.GetValue('xar_p_int')]\nWiedza: [TopScope.GetValue('xar_a_lea')] × 1 = [TopScope.GetValue('xar_p_lea')]\nZalety bojowe: [TopScope.GetValue('xar_a_pro')] × 1 = [TopScope.GetValue('xar_p_pro')]\n\n—— Krew (muszą być twoimi potomkami) ——\nŻyjący członkowie dynastii: [TopScope.GetValue('xar_a_dyn')] × 0.1 = [TopScope.GetValue('xar_p_dyn')]\nŻyjący członkowie rodu (dodatkowo): [TopScope.GetValue('xar_a_hou')] × 0.1 = [TopScope.GetValue('xar_p_hou')]\n\n—— Zasoby (log₂ w dół) ——\nZłoto: [TopScope.GetValue('xar_a_gold')] → [TopScope.GetValue('xar_l_gold')] × 5 = [TopScope.GetValue('xar_p_gold')]\nPrestiż: [TopScope.GetValue('xar_a_pres')] → [TopScope.GetValue('xar_l_pres')] × 3 = [TopScope.GetValue('xar_p_pres')]\nPobożność: [TopScope.GetValue('xar_a_pie')] → [TopScope.GetValue('xar_l_pie')] × 3 = [TopScope.GetValue('xar_p_pie')]\nWpływy: [TopScope.GetValue('xar_a_inf')] → [TopScope.GetValue('xar_l_inf')] × 3 = [TopScope.GetValue('xar_p_inf')]\n\n—— Tytuły w chwili śmierci ——\nHrabstwo ×1: [TopScope.GetValue('xar_n_t1')] = [TopScope.GetValue('xar_p_t1')]\nKsięstwo ×2.5: [TopScope.GetValue('xar_n_t2')] = [TopScope.GetValue('xar_p_t2')]\nKrólestwo ×5: [TopScope.GetValue('xar_n_t3')] = [TopScope.GetValue('xar_p_t3')]\nCesarstwo ×10: [TopScope.GetValue('xar_n_t4')] = [TopScope.GetValue('xar_p_t4')]\nHegemonia ×20: [TopScope.GetValue('xar_n_t5')] = [TopScope.GetValue('xar_p_t5')]\n\n—— Potomkowie (najwyższy tytuł żyjących potomków) ——\nHrabstwo ×0.25: [TopScope.GetValue('xar_d_t1')] = [TopScope.GetValue('xar_p_d1')]\nKsięstwo ×1: [TopScope.GetValue('xar_d_t2')] = [TopScope.GetValue('xar_p_d2')]\nKrólestwo ×2.5: [TopScope.GetValue('xar_d_t3')] = [TopScope.GetValue('xar_p_d3')]\nCesarstwo ×5: [TopScope.GetValue('xar_d_t4')] = [TopScope.GetValue('xar_p_d4')]\nHegemonia ×10: [TopScope.GetValue('xar_d_t5')] = [TopScope.GetValue('xar_p_d5')]\n\n—— Włości (jeśli posiadasz ziemie) ——\nRozmiar włości (hrabstwa wraz z wasalami): [TopScope.GetValue('xar_a_realm')] → [TopScope.GetValue('xar_l_realm')] × 10 = [TopScope.GetValue('xar_p_realm')]\n\nRazem = [TopScope.GetValue('xar_p_dip')]+[TopScope.GetValue('xar_p_mar')]+[TopScope.GetValue('xar_p_ste')]+[TopScope.GetValue('xar_p_int')]+[TopScope.GetValue('xar_p_lea')]+[TopScope.GetValue('xar_p_pro')]+[TopScope.GetValue('xar_p_dyn')]+[TopScope.GetValue('xar_p_hou')]+[TopScope.GetValue('xar_p_gold')]+[TopScope.GetValue('xar_p_pres')]+[TopScope.GetValue('xar_p_pie')]+[TopScope.GetValue('xar_p_inf')]+[TopScope.GetValue('xar_p_t1')]+[TopScope.GetValue('xar_p_t2')]+[TopScope.GetValue('xar_p_t3')]+[TopScope.GetValue('xar_p_t4')]+[TopScope.GetValue('xar_p_t5')]+[TopScope.GetValue('xar_p_d1')]+[TopScope.GetValue('xar_p_d2')]+[TopScope.GetValue('xar_p_d3')]+[TopScope.GetValue('xar_p_d4')]+[TopScope.GetValue('xar_p_d5')]+[TopScope.GetValue('xar_p_realm')] = [TopScope.GetValue('xar_score')]\n\nPoprzedni rekord: [TopScope.GetValue('xar_old')]\nRóżnica: [TopScope.GetValue('xar_delta')|+0]"

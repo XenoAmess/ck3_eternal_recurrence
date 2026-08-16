@@ -12,6 +12,26 @@ xar.0002 = {
 		name = xar.0002.accept
 		add_character_flag = xa_enabled
 		add_trait = xar_glassfire_gaze
+		# Init shop state HERE, once. Do NOT gate on has_global_variable: the
+		# loader statically registers every referenced global (check = true,
+		# value still none), so gated init never runs and reads fail. And
+		# xar.0001 re-fires on every page flip, so its immediate is no place
+		# for one-time init either.
+		set_global_variable = { name = xa_shop_page value = 1 }
+		set_global_variable = { name = xa_price_dip value = 25 }
+		set_global_variable = { name = xa_price_mar value = 25 }
+		set_global_variable = { name = xa_price_ste value = 25 }
+		set_global_variable = { name = xa_price_int value = 25 }
+		set_global_variable = { name = xa_price_lea value = 25 }
+		set_global_variable = { name = xa_price_pro value = 25 }
+		set_global_variable = { name = xa_price_gold value = 25 }
+		set_global_variable = { name = xa_price_pres value = 15 }
+		set_global_variable = { name = xa_price_pie value = 15 }
+		set_global_variable = { name = xa_price_inf value = 15 }
+		set_global_variable = { name = xa_price_dyn value = 100 }
+		set_global_variable = { name = xa_price_life value = 100 }
+		set_global_variable = { name = xa_price_reform value = 1133 }
+		set_global_variable = { name = xa_lifespan_bought value = 0 }
 		trigger_event = {
 			id = xar.0001
 			days = 1
@@ -49,32 +69,7 @@ xar.0001 = {
 
 	immediate = {
 		debug_log = "XAR: shop event fired"
-		# init page and prices on first open
-		if = {
-			limit = { NOT = { has_global_variable = xa_shop_page } }
-			set_global_variable = { name = xa_shop_page value = 1 }
-		}
-		if = {
-			limit = { NOT = { has_global_variable = xa_price_dip } }
-			set_global_variable = { name = xa_price_dip value = 25 }
-			set_global_variable = { name = xa_price_mar value = 25 }
-			set_global_variable = { name = xa_price_ste value = 25 }
-			set_global_variable = { name = xa_price_int value = 25 }
-			set_global_variable = { name = xa_price_lea value = 25 }
-			set_global_variable = { name = xa_price_pro value = 25 }
-			set_global_variable = { name = xa_price_gold value = 25 }
-			set_global_variable = { name = xa_price_pres value = 15 }
-			set_global_variable = { name = xa_price_pie value = 15 }
-			set_global_variable = { name = xa_price_inf value = 15 }
-			set_global_variable = { name = xa_price_dyn value = 100 }
-			set_global_variable = { name = xa_price_life value = 100 }
-			set_global_variable = { name = xa_price_reform value = 1133 }
-			set_global_variable = { name = xa_lifespan_bought value = 0 }
-		}
-		if = {
-			limit = { NOT = { has_global_variable = xa_local_points } }
-			set_global_variable = { name = xa_local_points value = 0 }
-		}
+		# (shop globals are initialized once in xar.0002's accept option)
 		# save display values
 		save_scope_value_as = { name = xar_points value = global_var:xa_local_points }
 		save_scope_value_as = { name = xar_pr_dip value = global_var:xa_price_dip }
