@@ -4,6 +4,8 @@
 
 一个 Crusader Kings III 的轮回 roguelike mod：每次人生结算分数，纪录**跨存档全局保存**，新开局可把纪录作为点数副本购买属性强化。
 
+订阅地址： https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360
+
 ## 玩法
 
 1. 游戏规则中启用「琉焰卿的永恒轮回」（默认启用）
