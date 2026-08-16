@@ -1,0 +1,53 @@
+# 踩坑合集（按错误信息索引）
+
+本项目实测踩过的坑。遇到报错先在这里检索关键词。
+
+## 加载/解析期
+
+| 错误信息 | 原因 | 解法 |
+|---|---|---|
+| `should be in utf8-bom encoding`（lexer.cpp，txt/gui） | 文件无 BOM | 加 UTF-8 BOM（警告级，建议都加） |
+| `Missing UTF8 BOM`（yml） | yml 无 BOM | **必须加**，否则整个文件不加载 |
+| `Cannot read [xxx] as a script value` / `Failed to find a valid event target link 'xxx'` | script value 定义放错目录 | 目录是 `common/script_values`，不是 `scripted_values` |
+| `Theme missing in event` | 事件没写 `theme` | 加 `theme = <common/event_themes 里的键>` |
+| `Unknown effect: after` | 事件 option 里写了 `after` | CK3 option 没有 after 字段；逻辑直接写在 option 里 |
+| `Missing loc key 'x' for custom localization` | 当前语言的 yml 里没有该键 | custom loc 的键不吃英文回退，**每种在用语言的 yml 都要有** |
+| `Unknown anchor 'topleft'` | 锚点写法 | 用 `top\|left` 这类合法组合 |
+| `Variable 'x' is used but is never set` | 有引用无写入（删残留代码没删干净） | 清理孤儿引用 |
+| `gui/xxx.gui: 文件 should be in utf8-bom`（scripted_widgets 等） | 同上 BOM | 加 BOM |
+
+## on_action / 事件流程
+
+| 现象 | 原因 | 解法 |
+|---|---|---|
+| 原版开局逻辑失效（`There is more than one 'effect' defined`） | on_action 同名字段**覆盖不合并** | 只加 `on_actions = { 自定义钩子 }` 条目 |
+| 开局钩子里玩家/规则拿不到 | `on_game_start` 时机太早 | 用 `on_game_start_after_lobby` |
+| effect 里设的值，同 on_action 触发的事件读到旧值 | effect 与事件**并发**执行 | 计算进事件 immediate，或事件延迟 1 天 |
+| 延迟事件没触发 | root 到点时失效（on_death 的角色已死） | 触发到存活 scope（如 `player_heir`） |
+
+## 变量
+
+| 现象 | 原因 | 解法 |
+|---|---|---|
+| `Event target link 'global_var' returned an unset scope`（save_temporary_scope_value_as） | 该字段把 `global_var:` 当 scope 链接解析 | 改用 `save_scope_value_as` |
+| 事件 desc 里显示 0 | 保存用了 `save_temporary_scope_value_as`（生命周期不够）或上一条 | `save_scope_value_as` + `[TopScope.GetValue('名')]` |
+| `Failed to fetch variable ... not being set` | 读了从未设置的变量 | 先 `if NOT has_global_variable` 兜底设默认 |
+| `Wrong scope for effect: character, expected dynasty` | 迭代器 scope 不对 | `every_dynasty_member` 需在 dynasty scope：角色下先 `dynasty = {}` |
+
+## 教程课程 / 全局存储
+
+| 现象 | 原因 | 解法 |
+|---|---|---|
+| `Reading an interface trigger 'is_tutorial_lesson_completed' in forbidden area` | interface trigger 用在游戏状态脚本 | 只能在 customizable_localization / GUI 里用，读取走三层桥（见 ../cross-save-persistence.md） |
+| 自定义窗口 state 永不触发，无报错 | 窗口没在 `gui/scripted_widgets/` 注册 | 注册：`gui/x.gui = window_name` |
+| `Tutorial.GetStepText` 等在自定义窗口为空 | Tutorial 上下文只在 tutorial_window 本体 | 别遥控；也不要从外面点——课程内用 `trigger_transition` 自动完成 |
+| state 里 `Tutorial.OnClickTransition` 点了没反应 | 按钮动作函数不响应非用户点击路径 | 放弃模拟点击，用课程自带 `trigger_transition` |
+| 哨兵文本显示成 `ERROR:[XXX]` | loc 内容含方括号被当命令解析 | 标记文本不要带 `[]` |
+| 窗口移出屏幕后 state 停求值 | 离屏被裁剪 | 隐身用"无背景+点击穿透"，不要移出屏幕 |
+
+## 调试技巧速查
+
+- 解析验证：启动到主菜单 → 读 `error.log`
+- 链路断点：每环节 `debug_log = "XAR: ..."` → 读 `debug.log`
+- 全局存储验证：直接看 `tutorial.txt`
+- 死亡链测试：控制台 `die`；事件测试：`event <id>`
