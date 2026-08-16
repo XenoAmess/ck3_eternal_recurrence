@@ -1,7 +1,9 @@
 """Compose glassfire_avatar.png into a 1592x848 CK3 event-scene DDS.
 
-Backdrop: blurred/darkened crop of the art filling the wide canvas.
-Foreground: the square avatar at full height on the left (narrator spot).
+Backdrop: lightly blurred cover-crop of the art filling the wide canvas.
+Foreground: the square avatar at full height on the right (portrait area).
+Left text column: smooth gradient darkening (dark at left edge -> clear at
+the avatar), so text stays readable without a dead black void.
 """
 from PIL import Image, ImageFilter, ImageEnhance
 import os
@@ -13,25 +15,26 @@ W, H = 1592, 848
 
 img = Image.open(SRC).convert("RGB")
 
-# blurred wide backdrop (cover-crop then blur + darken)
+# lightly blurred wide backdrop (cover-crop), keep most brightness
 scale = max(W / img.width, H / img.height)
 bg = img.resize((round(img.width * scale), round(img.height * scale)), Image.LANCZOS)
 left = (bg.width - W) // 2
 top = (bg.height - H) // 2
 bg = bg.crop((left, top, left + W, top + H))
-bg = bg.filter(ImageFilter.GaussianBlur(12))
-bg = ImageEnhance.Brightness(bg).enhance(0.45)
+bg = bg.filter(ImageFilter.GaussianBlur(5))
+bg = ImageEnhance.Brightness(bg).enhance(0.8)
 
-# sharp avatar on the RIGHT (character_event window: text column sits left,
-# the right half is the "portrait" area), full height
-fg = img.resize((H, H), Image.LANCZOS)
+# smooth horizontal gradient darkening over the text column (left -> avatar edge)
+grad = Image.linear_gradient("L").resize((W - H, 1)).rotate(90, expand=True).resize((W - H, H))
+# linear_gradient gives 0 at top -> 255 at bottom; after rotate: 0 left -> 255 right
+# remap to: 150 (dark) at left edge -> 0 (clear) where the avatar starts
+grad = grad.point(lambda v: max(0, 150 - round(v * 150 / 255)))
 canvas = bg.copy()
-canvas.paste(fg, (W - H, 0))
+canvas.paste(Image.new("RGB", (W - H, H), (0, 0, 0)), (0, 0), grad)
 
-# darken the left text column a bit more for readability
-dim = Image.new("RGB", (W - H, H), (0, 0, 0))
-mask = Image.new("L", (W - H, H), 90)
-canvas.paste(dim, (0, 0), mask)
+# sharp avatar on the RIGHT, full height
+fg = img.resize((H, H), Image.LANCZOS)
+canvas.paste(fg, (W - H, 0))
 
 os.makedirs(OUT_DIR, exist_ok=True)
 canvas.save(OUT, pixel_format="DXT1")
