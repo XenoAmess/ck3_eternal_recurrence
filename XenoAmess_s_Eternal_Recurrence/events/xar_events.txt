@@ -4,6 +4,7 @@
 xar.0002 = {
 	type = character_event
 	theme = mental_health
+	override_background = { reference = xar_glassfire }
 	title = xar.0002.title
 	desc = xar.0002.desc
 

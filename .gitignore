@@ -8,3 +8,6 @@ Crusader Kings III/
 # OS
 Thumbs.db
 Desktop.ini
+
+# Python venv
+tools/.venv/

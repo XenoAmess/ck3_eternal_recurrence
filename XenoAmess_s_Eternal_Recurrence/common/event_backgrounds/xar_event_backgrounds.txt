@@ -1,0 +1,7 @@
+﻿xar_glassfire = {
+	background = {
+		reference = "gfx/interface/illustrations/event_scenes/xar_glassfire_avatar.dds"
+		environment = "environment_standard"
+		ambience = "event:/SFX/Events/Backgrounds/temple_generic"
+	}
+}
