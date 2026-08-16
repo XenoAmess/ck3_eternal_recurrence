@@ -1,5 +1,7 @@
 # 琉焰卿的永恒轮回
 
+## ……我将永不停歇地，一次次回到那个你还在的冬日
+
 一个 Crusader Kings III 的轮回 roguelike mod：每次人生结算分数，纪录**跨存档全局保存**，新开局可把纪录作为点数副本购买属性强化。
 
 ## 玩法
@@ -31,6 +33,8 @@
 - 单机定位（多人下各人纪录独立）
 
 ## 开发
+
+源码地址 https://github.com/XenoAmess/ck3_eternal_recurrence.git
 
 ```powershell
 py XenoAmess_s_Eternal_Recurrence/tools/gen_highscore.py   # 重新生成位体系文件
