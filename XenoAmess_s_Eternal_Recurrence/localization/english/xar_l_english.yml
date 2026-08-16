@@ -1,0 +1,32 @@
+﻿l_english:
+ # Game rule
+ rule_xar_enabled:0 "XenoAmess's Eternal Recurrence"
+ setting_xar_on:0 "Enabled"
+ setting_xar_on_desc:0 "XenoAmess mode is active: the global high score is imported at game start and can be spent on attributes."
+ setting_xar_off:0 "Disabled"
+ setting_xar_off_desc:0 "XenoAmess mode is inactive."
+
+ # Tutorial lesson step text shared by all high-score bits.
+ # Must stay identical in every language: the GUI auto-clicker matches on it.
+ xar_silent_step:0 "XAR_SYNC_SENTINEL"
+
+ # Sentinel returned by the top-bit customizable localization.
+ # Must stay identical in every language: GUI import states match on it.
+ xar_top_bit_sentinel:0 "XAR_TOP_SENTINEL"
+
+ # Opening shop event
+ xar.0001.title:0 "Eternal Recurrence"
+ xar.0001.desc:0 "The echoes of your past lives linger.\n\nYou have [TopScope.GetValue('xar_points')] points to spend (the global high score copy). Each attribute point costs 25."
+ xar.0001.diplomacy:0 "Buy +1 Diplomacy (25 points)"
+ xar.0001.martial:0 "Buy +1 Martial (25 points)"
+ xar.0001.stewardship:0 "Buy +1 Stewardship (25 points)"
+ xar.0001.intrigue:0 "Buy +1 Intrigue (25 points)"
+ xar.0001.learning:0 "Buy +1 Learning (25 points)"
+ xar.0001.prowess:0 "Buy +1 Prowess (25 points)"
+ xar.0001.finish:0 "Begin this life"
+
+ # Death score event
+ xar.1001.title:0 "The Recurrence Ends"
+ xar.1001.desc:0 "Your life has been weighed.\n\nRun score: [TopScope.GetValue('xar_score')]\nPrevious record: [TopScope.GetValue('xar_old')]\nDifference: [TopScope.GetValue('xar_delta')|+0]"
+ xar.1001.new_record:0 "A new record! It will echo across all future lives."
+ xar.1001.no_record:0 "The record stands. Another life awaits."

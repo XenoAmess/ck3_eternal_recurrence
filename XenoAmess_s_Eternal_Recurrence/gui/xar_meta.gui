@@ -1,0 +1,4234 @@
+# GENERATED FILE - do not edit. Regenerate with tools/gen_highscore.py
+#
+# Import side of the global high-score storage: exactly one top-threshold
+# custom localization returns the sentinel; its state then runs the
+# matching scripted gui which writes the record into game state.
+# (The write side's autoclicker lives in the window_tutorial.gui override,
+#  since the Tutorial datacontext only exists on the tutorial window.)
+window = {
+	name = "xar_meta_window"
+	size = { 1 1 }
+	layer = tutorial
+	position = { 0 0 }
+
+	# No background and pass-through clicks: registered via scripted_widgets
+	# so it exists (states evaluate) but renders nothing visible.
+	visible = "[GetPlayer.IsValid]"
+	alwaystransparent = yes
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+	}
+
+	state = {
+		name = "xar_import_0"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_0') )]"
+		on_start = "[GetScriptedGui('xar_import_0_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1') )]"
+		on_start = "[GetScriptedGui('xar_import_1_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2') )]"
+		on_start = "[GetScriptedGui('xar_import_2_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3') )]"
+		on_start = "[GetScriptedGui('xar_import_3_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4') )]"
+		on_start = "[GetScriptedGui('xar_import_4_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5') )]"
+		on_start = "[GetScriptedGui('xar_import_5_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6') )]"
+		on_start = "[GetScriptedGui('xar_import_6_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_7"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_7') )]"
+		on_start = "[GetScriptedGui('xar_import_7_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_8"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_8') )]"
+		on_start = "[GetScriptedGui('xar_import_8_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_9"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_9') )]"
+		on_start = "[GetScriptedGui('xar_import_9_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_10"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_10') )]"
+		on_start = "[GetScriptedGui('xar_import_10_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_11"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_11') )]"
+		on_start = "[GetScriptedGui('xar_import_11_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_12"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_12') )]"
+		on_start = "[GetScriptedGui('xar_import_12_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_13"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_13') )]"
+		on_start = "[GetScriptedGui('xar_import_13_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_14"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_14') )]"
+		on_start = "[GetScriptedGui('xar_import_14_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_15"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_15') )]"
+		on_start = "[GetScriptedGui('xar_import_15_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_16"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_16') )]"
+		on_start = "[GetScriptedGui('xar_import_16_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_17"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_17') )]"
+		on_start = "[GetScriptedGui('xar_import_17_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_18"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_18') )]"
+		on_start = "[GetScriptedGui('xar_import_18_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_19"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_19') )]"
+		on_start = "[GetScriptedGui('xar_import_19_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_20"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_20') )]"
+		on_start = "[GetScriptedGui('xar_import_20_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_21"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_21') )]"
+		on_start = "[GetScriptedGui('xar_import_21_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_22"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_22') )]"
+		on_start = "[GetScriptedGui('xar_import_22_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_23"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_23') )]"
+		on_start = "[GetScriptedGui('xar_import_23_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_24"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_24') )]"
+		on_start = "[GetScriptedGui('xar_import_24_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_25"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_25') )]"
+		on_start = "[GetScriptedGui('xar_import_25_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_26"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_26') )]"
+		on_start = "[GetScriptedGui('xar_import_26_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_27"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_27') )]"
+		on_start = "[GetScriptedGui('xar_import_27_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_28"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_28') )]"
+		on_start = "[GetScriptedGui('xar_import_28_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_29"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_29') )]"
+		on_start = "[GetScriptedGui('xar_import_29_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_30"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_30') )]"
+		on_start = "[GetScriptedGui('xar_import_30_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_31"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_31') )]"
+		on_start = "[GetScriptedGui('xar_import_31_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_32"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_32') )]"
+		on_start = "[GetScriptedGui('xar_import_32_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_33"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_33') )]"
+		on_start = "[GetScriptedGui('xar_import_33_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_34"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_34') )]"
+		on_start = "[GetScriptedGui('xar_import_34_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_35"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_35') )]"
+		on_start = "[GetScriptedGui('xar_import_35_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_36"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_36') )]"
+		on_start = "[GetScriptedGui('xar_import_36_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_37"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_37') )]"
+		on_start = "[GetScriptedGui('xar_import_37_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_38"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_38') )]"
+		on_start = "[GetScriptedGui('xar_import_38_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_39"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_39') )]"
+		on_start = "[GetScriptedGui('xar_import_39_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_40"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_40') )]"
+		on_start = "[GetScriptedGui('xar_import_40_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_41"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_41') )]"
+		on_start = "[GetScriptedGui('xar_import_41_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_42"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_42') )]"
+		on_start = "[GetScriptedGui('xar_import_42_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_43"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_43') )]"
+		on_start = "[GetScriptedGui('xar_import_43_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_44"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_44') )]"
+		on_start = "[GetScriptedGui('xar_import_44_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_45"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_45') )]"
+		on_start = "[GetScriptedGui('xar_import_45_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_46"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_46') )]"
+		on_start = "[GetScriptedGui('xar_import_46_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_47"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_47') )]"
+		on_start = "[GetScriptedGui('xar_import_47_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_48"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_48') )]"
+		on_start = "[GetScriptedGui('xar_import_48_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_49"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_49') )]"
+		on_start = "[GetScriptedGui('xar_import_49_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_50"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_50') )]"
+		on_start = "[GetScriptedGui('xar_import_50_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_51"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_51') )]"
+		on_start = "[GetScriptedGui('xar_import_51_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_52"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_52') )]"
+		on_start = "[GetScriptedGui('xar_import_52_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_53"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_53') )]"
+		on_start = "[GetScriptedGui('xar_import_53_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_54"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_54') )]"
+		on_start = "[GetScriptedGui('xar_import_54_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_55"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_55') )]"
+		on_start = "[GetScriptedGui('xar_import_55_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_56"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_56') )]"
+		on_start = "[GetScriptedGui('xar_import_56_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_57"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_57') )]"
+		on_start = "[GetScriptedGui('xar_import_57_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_58"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_58') )]"
+		on_start = "[GetScriptedGui('xar_import_58_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_59"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_59') )]"
+		on_start = "[GetScriptedGui('xar_import_59_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_60"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_60') )]"
+		on_start = "[GetScriptedGui('xar_import_60_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_61"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_61') )]"
+		on_start = "[GetScriptedGui('xar_import_61_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_62"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_62') )]"
+		on_start = "[GetScriptedGui('xar_import_62_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_63"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_63') )]"
+		on_start = "[GetScriptedGui('xar_import_63_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_64"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_64') )]"
+		on_start = "[GetScriptedGui('xar_import_64_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_65"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_65') )]"
+		on_start = "[GetScriptedGui('xar_import_65_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_66"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_66') )]"
+		on_start = "[GetScriptedGui('xar_import_66_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_67"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_67') )]"
+		on_start = "[GetScriptedGui('xar_import_67_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_68"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_68') )]"
+		on_start = "[GetScriptedGui('xar_import_68_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_69"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_69') )]"
+		on_start = "[GetScriptedGui('xar_import_69_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_70"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_70') )]"
+		on_start = "[GetScriptedGui('xar_import_70_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_71"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_71') )]"
+		on_start = "[GetScriptedGui('xar_import_71_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_72"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_72') )]"
+		on_start = "[GetScriptedGui('xar_import_72_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_73"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_73') )]"
+		on_start = "[GetScriptedGui('xar_import_73_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_74"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_74') )]"
+		on_start = "[GetScriptedGui('xar_import_74_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_75"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_75') )]"
+		on_start = "[GetScriptedGui('xar_import_75_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_76"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_76') )]"
+		on_start = "[GetScriptedGui('xar_import_76_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_77"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_77') )]"
+		on_start = "[GetScriptedGui('xar_import_77_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_78"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_78') )]"
+		on_start = "[GetScriptedGui('xar_import_78_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_79"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_79') )]"
+		on_start = "[GetScriptedGui('xar_import_79_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_80"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_80') )]"
+		on_start = "[GetScriptedGui('xar_import_80_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_81"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_81') )]"
+		on_start = "[GetScriptedGui('xar_import_81_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_82"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_82') )]"
+		on_start = "[GetScriptedGui('xar_import_82_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_83"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_83') )]"
+		on_start = "[GetScriptedGui('xar_import_83_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_84"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_84') )]"
+		on_start = "[GetScriptedGui('xar_import_84_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_85"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_85') )]"
+		on_start = "[GetScriptedGui('xar_import_85_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_86"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_86') )]"
+		on_start = "[GetScriptedGui('xar_import_86_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_87"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_87') )]"
+		on_start = "[GetScriptedGui('xar_import_87_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_88"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_88') )]"
+		on_start = "[GetScriptedGui('xar_import_88_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_89"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_89') )]"
+		on_start = "[GetScriptedGui('xar_import_89_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_90"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_90') )]"
+		on_start = "[GetScriptedGui('xar_import_90_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_91"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_91') )]"
+		on_start = "[GetScriptedGui('xar_import_91_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_92"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_92') )]"
+		on_start = "[GetScriptedGui('xar_import_92_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_93"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_93') )]"
+		on_start = "[GetScriptedGui('xar_import_93_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_94"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_94') )]"
+		on_start = "[GetScriptedGui('xar_import_94_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_95"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_95') )]"
+		on_start = "[GetScriptedGui('xar_import_95_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_96"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_96') )]"
+		on_start = "[GetScriptedGui('xar_import_96_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_97"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_97') )]"
+		on_start = "[GetScriptedGui('xar_import_97_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_98"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_98') )]"
+		on_start = "[GetScriptedGui('xar_import_98_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_99"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_99') )]"
+		on_start = "[GetScriptedGui('xar_import_99_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_100') )]"
+		on_start = "[GetScriptedGui('xar_import_100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_105"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_105') )]"
+		on_start = "[GetScriptedGui('xar_import_105_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_110"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_110') )]"
+		on_start = "[GetScriptedGui('xar_import_110_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_115"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_115') )]"
+		on_start = "[GetScriptedGui('xar_import_115_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_120"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_120') )]"
+		on_start = "[GetScriptedGui('xar_import_120_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_125"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_125') )]"
+		on_start = "[GetScriptedGui('xar_import_125_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_130"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_130') )]"
+		on_start = "[GetScriptedGui('xar_import_130_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_135"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_135') )]"
+		on_start = "[GetScriptedGui('xar_import_135_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_140"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_140') )]"
+		on_start = "[GetScriptedGui('xar_import_140_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_145"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_145') )]"
+		on_start = "[GetScriptedGui('xar_import_145_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_150"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_150') )]"
+		on_start = "[GetScriptedGui('xar_import_150_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_155"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_155') )]"
+		on_start = "[GetScriptedGui('xar_import_155_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_160"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_160') )]"
+		on_start = "[GetScriptedGui('xar_import_160_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_165"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_165') )]"
+		on_start = "[GetScriptedGui('xar_import_165_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_170"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_170') )]"
+		on_start = "[GetScriptedGui('xar_import_170_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_175"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_175') )]"
+		on_start = "[GetScriptedGui('xar_import_175_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_180"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_180') )]"
+		on_start = "[GetScriptedGui('xar_import_180_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_185"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_185') )]"
+		on_start = "[GetScriptedGui('xar_import_185_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_190"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_190') )]"
+		on_start = "[GetScriptedGui('xar_import_190_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_195"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_195') )]"
+		on_start = "[GetScriptedGui('xar_import_195_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_200') )]"
+		on_start = "[GetScriptedGui('xar_import_200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_205"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_205') )]"
+		on_start = "[GetScriptedGui('xar_import_205_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_210"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_210') )]"
+		on_start = "[GetScriptedGui('xar_import_210_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_215"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_215') )]"
+		on_start = "[GetScriptedGui('xar_import_215_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_220"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_220') )]"
+		on_start = "[GetScriptedGui('xar_import_220_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_225"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_225') )]"
+		on_start = "[GetScriptedGui('xar_import_225_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_230"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_230') )]"
+		on_start = "[GetScriptedGui('xar_import_230_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_235"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_235') )]"
+		on_start = "[GetScriptedGui('xar_import_235_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_240"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_240') )]"
+		on_start = "[GetScriptedGui('xar_import_240_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_245"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_245') )]"
+		on_start = "[GetScriptedGui('xar_import_245_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_250"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_250') )]"
+		on_start = "[GetScriptedGui('xar_import_250_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_255"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_255') )]"
+		on_start = "[GetScriptedGui('xar_import_255_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_260"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_260') )]"
+		on_start = "[GetScriptedGui('xar_import_260_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_265"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_265') )]"
+		on_start = "[GetScriptedGui('xar_import_265_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_270"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_270') )]"
+		on_start = "[GetScriptedGui('xar_import_270_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_275"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_275') )]"
+		on_start = "[GetScriptedGui('xar_import_275_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_280"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_280') )]"
+		on_start = "[GetScriptedGui('xar_import_280_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_285"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_285') )]"
+		on_start = "[GetScriptedGui('xar_import_285_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_290"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_290') )]"
+		on_start = "[GetScriptedGui('xar_import_290_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_295"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_295') )]"
+		on_start = "[GetScriptedGui('xar_import_295_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_300') )]"
+		on_start = "[GetScriptedGui('xar_import_300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_305"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_305') )]"
+		on_start = "[GetScriptedGui('xar_import_305_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_310"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_310') )]"
+		on_start = "[GetScriptedGui('xar_import_310_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_315"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_315') )]"
+		on_start = "[GetScriptedGui('xar_import_315_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_320"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_320') )]"
+		on_start = "[GetScriptedGui('xar_import_320_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_325"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_325') )]"
+		on_start = "[GetScriptedGui('xar_import_325_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_330"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_330') )]"
+		on_start = "[GetScriptedGui('xar_import_330_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_335"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_335') )]"
+		on_start = "[GetScriptedGui('xar_import_335_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_340"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_340') )]"
+		on_start = "[GetScriptedGui('xar_import_340_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_345"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_345') )]"
+		on_start = "[GetScriptedGui('xar_import_345_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_350"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_350') )]"
+		on_start = "[GetScriptedGui('xar_import_350_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_355"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_355') )]"
+		on_start = "[GetScriptedGui('xar_import_355_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_360"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_360') )]"
+		on_start = "[GetScriptedGui('xar_import_360_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_365"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_365') )]"
+		on_start = "[GetScriptedGui('xar_import_365_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_370"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_370') )]"
+		on_start = "[GetScriptedGui('xar_import_370_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_375"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_375') )]"
+		on_start = "[GetScriptedGui('xar_import_375_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_380"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_380') )]"
+		on_start = "[GetScriptedGui('xar_import_380_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_385"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_385') )]"
+		on_start = "[GetScriptedGui('xar_import_385_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_390"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_390') )]"
+		on_start = "[GetScriptedGui('xar_import_390_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_395"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_395') )]"
+		on_start = "[GetScriptedGui('xar_import_395_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_400') )]"
+		on_start = "[GetScriptedGui('xar_import_400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_405"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_405') )]"
+		on_start = "[GetScriptedGui('xar_import_405_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_410"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_410') )]"
+		on_start = "[GetScriptedGui('xar_import_410_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_415"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_415') )]"
+		on_start = "[GetScriptedGui('xar_import_415_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_420"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_420') )]"
+		on_start = "[GetScriptedGui('xar_import_420_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_425"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_425') )]"
+		on_start = "[GetScriptedGui('xar_import_425_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_430"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_430') )]"
+		on_start = "[GetScriptedGui('xar_import_430_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_435"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_435') )]"
+		on_start = "[GetScriptedGui('xar_import_435_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_440"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_440') )]"
+		on_start = "[GetScriptedGui('xar_import_440_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_445"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_445') )]"
+		on_start = "[GetScriptedGui('xar_import_445_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_450"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_450') )]"
+		on_start = "[GetScriptedGui('xar_import_450_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_455"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_455') )]"
+		on_start = "[GetScriptedGui('xar_import_455_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_460"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_460') )]"
+		on_start = "[GetScriptedGui('xar_import_460_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_465"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_465') )]"
+		on_start = "[GetScriptedGui('xar_import_465_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_470"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_470') )]"
+		on_start = "[GetScriptedGui('xar_import_470_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_475"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_475') )]"
+		on_start = "[GetScriptedGui('xar_import_475_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_480"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_480') )]"
+		on_start = "[GetScriptedGui('xar_import_480_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_485"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_485') )]"
+		on_start = "[GetScriptedGui('xar_import_485_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_490"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_490') )]"
+		on_start = "[GetScriptedGui('xar_import_490_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_495"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_495') )]"
+		on_start = "[GetScriptedGui('xar_import_495_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_500') )]"
+		on_start = "[GetScriptedGui('xar_import_500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_505"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_505') )]"
+		on_start = "[GetScriptedGui('xar_import_505_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_510"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_510') )]"
+		on_start = "[GetScriptedGui('xar_import_510_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_515"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_515') )]"
+		on_start = "[GetScriptedGui('xar_import_515_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_520"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_520') )]"
+		on_start = "[GetScriptedGui('xar_import_520_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_525"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_525') )]"
+		on_start = "[GetScriptedGui('xar_import_525_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_530"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_530') )]"
+		on_start = "[GetScriptedGui('xar_import_530_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_535"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_535') )]"
+		on_start = "[GetScriptedGui('xar_import_535_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_540"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_540') )]"
+		on_start = "[GetScriptedGui('xar_import_540_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_545"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_545') )]"
+		on_start = "[GetScriptedGui('xar_import_545_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_550"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_550') )]"
+		on_start = "[GetScriptedGui('xar_import_550_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_555"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_555') )]"
+		on_start = "[GetScriptedGui('xar_import_555_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_560"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_560') )]"
+		on_start = "[GetScriptedGui('xar_import_560_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_565"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_565') )]"
+		on_start = "[GetScriptedGui('xar_import_565_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_570"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_570') )]"
+		on_start = "[GetScriptedGui('xar_import_570_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_575"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_575') )]"
+		on_start = "[GetScriptedGui('xar_import_575_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_580"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_580') )]"
+		on_start = "[GetScriptedGui('xar_import_580_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_585"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_585') )]"
+		on_start = "[GetScriptedGui('xar_import_585_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_590"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_590') )]"
+		on_start = "[GetScriptedGui('xar_import_590_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_595"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_595') )]"
+		on_start = "[GetScriptedGui('xar_import_595_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_600') )]"
+		on_start = "[GetScriptedGui('xar_import_600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_610"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_610') )]"
+		on_start = "[GetScriptedGui('xar_import_610_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_620"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_620') )]"
+		on_start = "[GetScriptedGui('xar_import_620_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_630"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_630') )]"
+		on_start = "[GetScriptedGui('xar_import_630_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_640"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_640') )]"
+		on_start = "[GetScriptedGui('xar_import_640_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_650"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_650') )]"
+		on_start = "[GetScriptedGui('xar_import_650_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_660"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_660') )]"
+		on_start = "[GetScriptedGui('xar_import_660_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_670"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_670') )]"
+		on_start = "[GetScriptedGui('xar_import_670_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_680"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_680') )]"
+		on_start = "[GetScriptedGui('xar_import_680_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_690"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_690') )]"
+		on_start = "[GetScriptedGui('xar_import_690_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_700') )]"
+		on_start = "[GetScriptedGui('xar_import_700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_710"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_710') )]"
+		on_start = "[GetScriptedGui('xar_import_710_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_720"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_720') )]"
+		on_start = "[GetScriptedGui('xar_import_720_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_730"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_730') )]"
+		on_start = "[GetScriptedGui('xar_import_730_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_740"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_740') )]"
+		on_start = "[GetScriptedGui('xar_import_740_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_750"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_750') )]"
+		on_start = "[GetScriptedGui('xar_import_750_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_760"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_760') )]"
+		on_start = "[GetScriptedGui('xar_import_760_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_770"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_770') )]"
+		on_start = "[GetScriptedGui('xar_import_770_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_780"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_780') )]"
+		on_start = "[GetScriptedGui('xar_import_780_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_790"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_790') )]"
+		on_start = "[GetScriptedGui('xar_import_790_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_800') )]"
+		on_start = "[GetScriptedGui('xar_import_800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_810"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_810') )]"
+		on_start = "[GetScriptedGui('xar_import_810_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_820"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_820') )]"
+		on_start = "[GetScriptedGui('xar_import_820_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_830"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_830') )]"
+		on_start = "[GetScriptedGui('xar_import_830_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_840"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_840') )]"
+		on_start = "[GetScriptedGui('xar_import_840_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_850"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_850') )]"
+		on_start = "[GetScriptedGui('xar_import_850_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_860"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_860') )]"
+		on_start = "[GetScriptedGui('xar_import_860_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_870"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_870') )]"
+		on_start = "[GetScriptedGui('xar_import_870_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_880"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_880') )]"
+		on_start = "[GetScriptedGui('xar_import_880_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_890"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_890') )]"
+		on_start = "[GetScriptedGui('xar_import_890_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_900') )]"
+		on_start = "[GetScriptedGui('xar_import_900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_910"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_910') )]"
+		on_start = "[GetScriptedGui('xar_import_910_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_920"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_920') )]"
+		on_start = "[GetScriptedGui('xar_import_920_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_930"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_930') )]"
+		on_start = "[GetScriptedGui('xar_import_930_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_940"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_940') )]"
+		on_start = "[GetScriptedGui('xar_import_940_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_950"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_950') )]"
+		on_start = "[GetScriptedGui('xar_import_950_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_960"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_960') )]"
+		on_start = "[GetScriptedGui('xar_import_960_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_970"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_970') )]"
+		on_start = "[GetScriptedGui('xar_import_970_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_980"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_980') )]"
+		on_start = "[GetScriptedGui('xar_import_980_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_990"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_990') )]"
+		on_start = "[GetScriptedGui('xar_import_990_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1000') )]"
+		on_start = "[GetScriptedGui('xar_import_1000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1010"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1010') )]"
+		on_start = "[GetScriptedGui('xar_import_1010_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1020"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1020') )]"
+		on_start = "[GetScriptedGui('xar_import_1020_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1030"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1030') )]"
+		on_start = "[GetScriptedGui('xar_import_1030_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1040"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1040') )]"
+		on_start = "[GetScriptedGui('xar_import_1040_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1050"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1050') )]"
+		on_start = "[GetScriptedGui('xar_import_1050_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1060"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1060') )]"
+		on_start = "[GetScriptedGui('xar_import_1060_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1070"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1070') )]"
+		on_start = "[GetScriptedGui('xar_import_1070_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1080"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1080') )]"
+		on_start = "[GetScriptedGui('xar_import_1080_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1090"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1090') )]"
+		on_start = "[GetScriptedGui('xar_import_1090_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1100') )]"
+		on_start = "[GetScriptedGui('xar_import_1100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1110"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1110') )]"
+		on_start = "[GetScriptedGui('xar_import_1110_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1120"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1120') )]"
+		on_start = "[GetScriptedGui('xar_import_1120_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1130"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1130') )]"
+		on_start = "[GetScriptedGui('xar_import_1130_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1140"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1140') )]"
+		on_start = "[GetScriptedGui('xar_import_1140_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1150"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1150') )]"
+		on_start = "[GetScriptedGui('xar_import_1150_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1160"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1160') )]"
+		on_start = "[GetScriptedGui('xar_import_1160_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1170"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1170') )]"
+		on_start = "[GetScriptedGui('xar_import_1170_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1180"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1180') )]"
+		on_start = "[GetScriptedGui('xar_import_1180_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1190"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1190') )]"
+		on_start = "[GetScriptedGui('xar_import_1190_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1200') )]"
+		on_start = "[GetScriptedGui('xar_import_1200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1210"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1210') )]"
+		on_start = "[GetScriptedGui('xar_import_1210_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1220"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1220') )]"
+		on_start = "[GetScriptedGui('xar_import_1220_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1230"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1230') )]"
+		on_start = "[GetScriptedGui('xar_import_1230_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1240"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1240') )]"
+		on_start = "[GetScriptedGui('xar_import_1240_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1250"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1250') )]"
+		on_start = "[GetScriptedGui('xar_import_1250_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1260"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1260') )]"
+		on_start = "[GetScriptedGui('xar_import_1260_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1270"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1270') )]"
+		on_start = "[GetScriptedGui('xar_import_1270_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1280"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1280') )]"
+		on_start = "[GetScriptedGui('xar_import_1280_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1290"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1290') )]"
+		on_start = "[GetScriptedGui('xar_import_1290_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1300') )]"
+		on_start = "[GetScriptedGui('xar_import_1300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1310"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1310') )]"
+		on_start = "[GetScriptedGui('xar_import_1310_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1320"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1320') )]"
+		on_start = "[GetScriptedGui('xar_import_1320_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1330"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1330') )]"
+		on_start = "[GetScriptedGui('xar_import_1330_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1340"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1340') )]"
+		on_start = "[GetScriptedGui('xar_import_1340_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1350"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1350') )]"
+		on_start = "[GetScriptedGui('xar_import_1350_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1360"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1360') )]"
+		on_start = "[GetScriptedGui('xar_import_1360_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1370"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1370') )]"
+		on_start = "[GetScriptedGui('xar_import_1370_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1380"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1380') )]"
+		on_start = "[GetScriptedGui('xar_import_1380_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1390"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1390') )]"
+		on_start = "[GetScriptedGui('xar_import_1390_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1400') )]"
+		on_start = "[GetScriptedGui('xar_import_1400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1410"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1410') )]"
+		on_start = "[GetScriptedGui('xar_import_1410_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1420"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1420') )]"
+		on_start = "[GetScriptedGui('xar_import_1420_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1430"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1430') )]"
+		on_start = "[GetScriptedGui('xar_import_1430_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1440"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1440') )]"
+		on_start = "[GetScriptedGui('xar_import_1440_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1450"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1450') )]"
+		on_start = "[GetScriptedGui('xar_import_1450_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1460"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1460') )]"
+		on_start = "[GetScriptedGui('xar_import_1460_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1470"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1470') )]"
+		on_start = "[GetScriptedGui('xar_import_1470_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1480"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1480') )]"
+		on_start = "[GetScriptedGui('xar_import_1480_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1490"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1490') )]"
+		on_start = "[GetScriptedGui('xar_import_1490_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1500') )]"
+		on_start = "[GetScriptedGui('xar_import_1500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1510"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1510') )]"
+		on_start = "[GetScriptedGui('xar_import_1510_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1520"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1520') )]"
+		on_start = "[GetScriptedGui('xar_import_1520_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1530"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1530') )]"
+		on_start = "[GetScriptedGui('xar_import_1530_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1540"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1540') )]"
+		on_start = "[GetScriptedGui('xar_import_1540_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1550"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1550') )]"
+		on_start = "[GetScriptedGui('xar_import_1550_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1560"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1560') )]"
+		on_start = "[GetScriptedGui('xar_import_1560_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1570"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1570') )]"
+		on_start = "[GetScriptedGui('xar_import_1570_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1580"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1580') )]"
+		on_start = "[GetScriptedGui('xar_import_1580_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1590"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1590') )]"
+		on_start = "[GetScriptedGui('xar_import_1590_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1600') )]"
+		on_start = "[GetScriptedGui('xar_import_1600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1650"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1650') )]"
+		on_start = "[GetScriptedGui('xar_import_1650_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1700') )]"
+		on_start = "[GetScriptedGui('xar_import_1700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1750"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1750') )]"
+		on_start = "[GetScriptedGui('xar_import_1750_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1800') )]"
+		on_start = "[GetScriptedGui('xar_import_1800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1850"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1850') )]"
+		on_start = "[GetScriptedGui('xar_import_1850_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1900') )]"
+		on_start = "[GetScriptedGui('xar_import_1900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_1950"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_1950') )]"
+		on_start = "[GetScriptedGui('xar_import_1950_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2000') )]"
+		on_start = "[GetScriptedGui('xar_import_2000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2050"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2050') )]"
+		on_start = "[GetScriptedGui('xar_import_2050_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2100') )]"
+		on_start = "[GetScriptedGui('xar_import_2100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2150"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2150') )]"
+		on_start = "[GetScriptedGui('xar_import_2150_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2200') )]"
+		on_start = "[GetScriptedGui('xar_import_2200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2250"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2250') )]"
+		on_start = "[GetScriptedGui('xar_import_2250_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2300') )]"
+		on_start = "[GetScriptedGui('xar_import_2300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2350"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2350') )]"
+		on_start = "[GetScriptedGui('xar_import_2350_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2400') )]"
+		on_start = "[GetScriptedGui('xar_import_2400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2450"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2450') )]"
+		on_start = "[GetScriptedGui('xar_import_2450_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2500') )]"
+		on_start = "[GetScriptedGui('xar_import_2500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2550"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2550') )]"
+		on_start = "[GetScriptedGui('xar_import_2550_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2600') )]"
+		on_start = "[GetScriptedGui('xar_import_2600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2650"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2650') )]"
+		on_start = "[GetScriptedGui('xar_import_2650_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2700') )]"
+		on_start = "[GetScriptedGui('xar_import_2700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2750"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2750') )]"
+		on_start = "[GetScriptedGui('xar_import_2750_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2800') )]"
+		on_start = "[GetScriptedGui('xar_import_2800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2850"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2850') )]"
+		on_start = "[GetScriptedGui('xar_import_2850_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2900') )]"
+		on_start = "[GetScriptedGui('xar_import_2900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_2950"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_2950') )]"
+		on_start = "[GetScriptedGui('xar_import_2950_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3000') )]"
+		on_start = "[GetScriptedGui('xar_import_3000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3050"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3050') )]"
+		on_start = "[GetScriptedGui('xar_import_3050_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3100') )]"
+		on_start = "[GetScriptedGui('xar_import_3100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3150"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3150') )]"
+		on_start = "[GetScriptedGui('xar_import_3150_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3200') )]"
+		on_start = "[GetScriptedGui('xar_import_3200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3250"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3250') )]"
+		on_start = "[GetScriptedGui('xar_import_3250_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3300') )]"
+		on_start = "[GetScriptedGui('xar_import_3300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3350"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3350') )]"
+		on_start = "[GetScriptedGui('xar_import_3350_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3400') )]"
+		on_start = "[GetScriptedGui('xar_import_3400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3450"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3450') )]"
+		on_start = "[GetScriptedGui('xar_import_3450_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3500') )]"
+		on_start = "[GetScriptedGui('xar_import_3500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3550"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3550') )]"
+		on_start = "[GetScriptedGui('xar_import_3550_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3600') )]"
+		on_start = "[GetScriptedGui('xar_import_3600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3650"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3650') )]"
+		on_start = "[GetScriptedGui('xar_import_3650_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3700') )]"
+		on_start = "[GetScriptedGui('xar_import_3700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3750"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3750') )]"
+		on_start = "[GetScriptedGui('xar_import_3750_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3800') )]"
+		on_start = "[GetScriptedGui('xar_import_3800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3850"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3850') )]"
+		on_start = "[GetScriptedGui('xar_import_3850_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3900') )]"
+		on_start = "[GetScriptedGui('xar_import_3900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_3950"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_3950') )]"
+		on_start = "[GetScriptedGui('xar_import_3950_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4000') )]"
+		on_start = "[GetScriptedGui('xar_import_4000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4050"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4050') )]"
+		on_start = "[GetScriptedGui('xar_import_4050_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4100') )]"
+		on_start = "[GetScriptedGui('xar_import_4100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4150"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4150') )]"
+		on_start = "[GetScriptedGui('xar_import_4150_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4200') )]"
+		on_start = "[GetScriptedGui('xar_import_4200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4250"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4250') )]"
+		on_start = "[GetScriptedGui('xar_import_4250_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4300') )]"
+		on_start = "[GetScriptedGui('xar_import_4300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4350"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4350') )]"
+		on_start = "[GetScriptedGui('xar_import_4350_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4400') )]"
+		on_start = "[GetScriptedGui('xar_import_4400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4450"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4450') )]"
+		on_start = "[GetScriptedGui('xar_import_4450_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4500') )]"
+		on_start = "[GetScriptedGui('xar_import_4500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4550"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4550') )]"
+		on_start = "[GetScriptedGui('xar_import_4550_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4600') )]"
+		on_start = "[GetScriptedGui('xar_import_4600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4650"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4650') )]"
+		on_start = "[GetScriptedGui('xar_import_4650_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4700') )]"
+		on_start = "[GetScriptedGui('xar_import_4700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4750"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4750') )]"
+		on_start = "[GetScriptedGui('xar_import_4750_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4800') )]"
+		on_start = "[GetScriptedGui('xar_import_4800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4850"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4850') )]"
+		on_start = "[GetScriptedGui('xar_import_4850_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4900') )]"
+		on_start = "[GetScriptedGui('xar_import_4900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_4950"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_4950') )]"
+		on_start = "[GetScriptedGui('xar_import_4950_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5000') )]"
+		on_start = "[GetScriptedGui('xar_import_5000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5050"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5050') )]"
+		on_start = "[GetScriptedGui('xar_import_5050_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5100') )]"
+		on_start = "[GetScriptedGui('xar_import_5100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5150"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5150') )]"
+		on_start = "[GetScriptedGui('xar_import_5150_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5200') )]"
+		on_start = "[GetScriptedGui('xar_import_5200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5250"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5250') )]"
+		on_start = "[GetScriptedGui('xar_import_5250_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5300') )]"
+		on_start = "[GetScriptedGui('xar_import_5300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5350"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5350') )]"
+		on_start = "[GetScriptedGui('xar_import_5350_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5400') )]"
+		on_start = "[GetScriptedGui('xar_import_5400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5450"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5450') )]"
+		on_start = "[GetScriptedGui('xar_import_5450_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5500') )]"
+		on_start = "[GetScriptedGui('xar_import_5500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5550"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5550') )]"
+		on_start = "[GetScriptedGui('xar_import_5550_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5600') )]"
+		on_start = "[GetScriptedGui('xar_import_5600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5650"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5650') )]"
+		on_start = "[GetScriptedGui('xar_import_5650_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5700') )]"
+		on_start = "[GetScriptedGui('xar_import_5700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5750"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5750') )]"
+		on_start = "[GetScriptedGui('xar_import_5750_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5800') )]"
+		on_start = "[GetScriptedGui('xar_import_5800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5850"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5850') )]"
+		on_start = "[GetScriptedGui('xar_import_5850_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5900') )]"
+		on_start = "[GetScriptedGui('xar_import_5900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_5950"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_5950') )]"
+		on_start = "[GetScriptedGui('xar_import_5950_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6000') )]"
+		on_start = "[GetScriptedGui('xar_import_6000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6050"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6050') )]"
+		on_start = "[GetScriptedGui('xar_import_6050_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6100') )]"
+		on_start = "[GetScriptedGui('xar_import_6100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6150"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6150') )]"
+		on_start = "[GetScriptedGui('xar_import_6150_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6200') )]"
+		on_start = "[GetScriptedGui('xar_import_6200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6250"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6250') )]"
+		on_start = "[GetScriptedGui('xar_import_6250_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6300') )]"
+		on_start = "[GetScriptedGui('xar_import_6300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6350"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6350') )]"
+		on_start = "[GetScriptedGui('xar_import_6350_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6400') )]"
+		on_start = "[GetScriptedGui('xar_import_6400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6450"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6450') )]"
+		on_start = "[GetScriptedGui('xar_import_6450_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6500') )]"
+		on_start = "[GetScriptedGui('xar_import_6500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6550"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6550') )]"
+		on_start = "[GetScriptedGui('xar_import_6550_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6600') )]"
+		on_start = "[GetScriptedGui('xar_import_6600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6700') )]"
+		on_start = "[GetScriptedGui('xar_import_6700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6800') )]"
+		on_start = "[GetScriptedGui('xar_import_6800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_6900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_6900') )]"
+		on_start = "[GetScriptedGui('xar_import_6900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_7000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_7000') )]"
+		on_start = "[GetScriptedGui('xar_import_7000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_7100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_7100') )]"
+		on_start = "[GetScriptedGui('xar_import_7100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_7200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_7200') )]"
+		on_start = "[GetScriptedGui('xar_import_7200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_7300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_7300') )]"
+		on_start = "[GetScriptedGui('xar_import_7300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_7400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_7400') )]"
+		on_start = "[GetScriptedGui('xar_import_7400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_7500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_7500') )]"
+		on_start = "[GetScriptedGui('xar_import_7500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_7600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_7600') )]"
+		on_start = "[GetScriptedGui('xar_import_7600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_7700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_7700') )]"
+		on_start = "[GetScriptedGui('xar_import_7700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_7800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_7800') )]"
+		on_start = "[GetScriptedGui('xar_import_7800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_7900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_7900') )]"
+		on_start = "[GetScriptedGui('xar_import_7900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_8000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_8000') )]"
+		on_start = "[GetScriptedGui('xar_import_8000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_8100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_8100') )]"
+		on_start = "[GetScriptedGui('xar_import_8100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_8200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_8200') )]"
+		on_start = "[GetScriptedGui('xar_import_8200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_8300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_8300') )]"
+		on_start = "[GetScriptedGui('xar_import_8300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_8400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_8400') )]"
+		on_start = "[GetScriptedGui('xar_import_8400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_8500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_8500') )]"
+		on_start = "[GetScriptedGui('xar_import_8500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_8600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_8600') )]"
+		on_start = "[GetScriptedGui('xar_import_8600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_8700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_8700') )]"
+		on_start = "[GetScriptedGui('xar_import_8700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_8800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_8800') )]"
+		on_start = "[GetScriptedGui('xar_import_8800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_8900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_8900') )]"
+		on_start = "[GetScriptedGui('xar_import_8900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_9000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_9000') )]"
+		on_start = "[GetScriptedGui('xar_import_9000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_9100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_9100') )]"
+		on_start = "[GetScriptedGui('xar_import_9100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_9200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_9200') )]"
+		on_start = "[GetScriptedGui('xar_import_9200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_9300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_9300') )]"
+		on_start = "[GetScriptedGui('xar_import_9300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_9400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_9400') )]"
+		on_start = "[GetScriptedGui('xar_import_9400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_9500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_9500') )]"
+		on_start = "[GetScriptedGui('xar_import_9500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_9600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_9600') )]"
+		on_start = "[GetScriptedGui('xar_import_9600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_9700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_9700') )]"
+		on_start = "[GetScriptedGui('xar_import_9700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_9800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_9800') )]"
+		on_start = "[GetScriptedGui('xar_import_9800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_9900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_9900') )]"
+		on_start = "[GetScriptedGui('xar_import_9900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_10000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_10000') )]"
+		on_start = "[GetScriptedGui('xar_import_10000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_10100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_10100') )]"
+		on_start = "[GetScriptedGui('xar_import_10100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_10200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_10200') )]"
+		on_start = "[GetScriptedGui('xar_import_10200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_10300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_10300') )]"
+		on_start = "[GetScriptedGui('xar_import_10300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_10400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_10400') )]"
+		on_start = "[GetScriptedGui('xar_import_10400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_10500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_10500') )]"
+		on_start = "[GetScriptedGui('xar_import_10500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_10600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_10600') )]"
+		on_start = "[GetScriptedGui('xar_import_10600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_10700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_10700') )]"
+		on_start = "[GetScriptedGui('xar_import_10700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_10800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_10800') )]"
+		on_start = "[GetScriptedGui('xar_import_10800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_10900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_10900') )]"
+		on_start = "[GetScriptedGui('xar_import_10900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_11000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_11000') )]"
+		on_start = "[GetScriptedGui('xar_import_11000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_11100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_11100') )]"
+		on_start = "[GetScriptedGui('xar_import_11100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_11200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_11200') )]"
+		on_start = "[GetScriptedGui('xar_import_11200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_11300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_11300') )]"
+		on_start = "[GetScriptedGui('xar_import_11300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_11400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_11400') )]"
+		on_start = "[GetScriptedGui('xar_import_11400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_11500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_11500') )]"
+		on_start = "[GetScriptedGui('xar_import_11500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_11600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_11600') )]"
+		on_start = "[GetScriptedGui('xar_import_11600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_11700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_11700') )]"
+		on_start = "[GetScriptedGui('xar_import_11700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_11800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_11800') )]"
+		on_start = "[GetScriptedGui('xar_import_11800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_11900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_11900') )]"
+		on_start = "[GetScriptedGui('xar_import_11900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_12000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_12000') )]"
+		on_start = "[GetScriptedGui('xar_import_12000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_12100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_12100') )]"
+		on_start = "[GetScriptedGui('xar_import_12100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_12200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_12200') )]"
+		on_start = "[GetScriptedGui('xar_import_12200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_12300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_12300') )]"
+		on_start = "[GetScriptedGui('xar_import_12300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_12400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_12400') )]"
+		on_start = "[GetScriptedGui('xar_import_12400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_12500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_12500') )]"
+		on_start = "[GetScriptedGui('xar_import_12500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_12600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_12600') )]"
+		on_start = "[GetScriptedGui('xar_import_12600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_12700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_12700') )]"
+		on_start = "[GetScriptedGui('xar_import_12700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_12800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_12800') )]"
+		on_start = "[GetScriptedGui('xar_import_12800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_12900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_12900') )]"
+		on_start = "[GetScriptedGui('xar_import_12900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_13000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_13000') )]"
+		on_start = "[GetScriptedGui('xar_import_13000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_13100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_13100') )]"
+		on_start = "[GetScriptedGui('xar_import_13100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_13200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_13200') )]"
+		on_start = "[GetScriptedGui('xar_import_13200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_13300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_13300') )]"
+		on_start = "[GetScriptedGui('xar_import_13300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_13400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_13400') )]"
+		on_start = "[GetScriptedGui('xar_import_13400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_13500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_13500') )]"
+		on_start = "[GetScriptedGui('xar_import_13500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_13600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_13600') )]"
+		on_start = "[GetScriptedGui('xar_import_13600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_13700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_13700') )]"
+		on_start = "[GetScriptedGui('xar_import_13700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_13800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_13800') )]"
+		on_start = "[GetScriptedGui('xar_import_13800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_13900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_13900') )]"
+		on_start = "[GetScriptedGui('xar_import_13900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_14000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_14000') )]"
+		on_start = "[GetScriptedGui('xar_import_14000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_14100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_14100') )]"
+		on_start = "[GetScriptedGui('xar_import_14100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_14200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_14200') )]"
+		on_start = "[GetScriptedGui('xar_import_14200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_14300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_14300') )]"
+		on_start = "[GetScriptedGui('xar_import_14300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_14400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_14400') )]"
+		on_start = "[GetScriptedGui('xar_import_14400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_14500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_14500') )]"
+		on_start = "[GetScriptedGui('xar_import_14500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_14600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_14600') )]"
+		on_start = "[GetScriptedGui('xar_import_14600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_14700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_14700') )]"
+		on_start = "[GetScriptedGui('xar_import_14700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_14800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_14800') )]"
+		on_start = "[GetScriptedGui('xar_import_14800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_14900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_14900') )]"
+		on_start = "[GetScriptedGui('xar_import_14900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_15000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_15000') )]"
+		on_start = "[GetScriptedGui('xar_import_15000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_15100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_15100') )]"
+		on_start = "[GetScriptedGui('xar_import_15100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_15200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_15200') )]"
+		on_start = "[GetScriptedGui('xar_import_15200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_15300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_15300') )]"
+		on_start = "[GetScriptedGui('xar_import_15300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_15400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_15400') )]"
+		on_start = "[GetScriptedGui('xar_import_15400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_15500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_15500') )]"
+		on_start = "[GetScriptedGui('xar_import_15500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_15600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_15600') )]"
+		on_start = "[GetScriptedGui('xar_import_15600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_15700"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_15700') )]"
+		on_start = "[GetScriptedGui('xar_import_15700_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_15800"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_15800') )]"
+		on_start = "[GetScriptedGui('xar_import_15800_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_15900"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_15900') )]"
+		on_start = "[GetScriptedGui('xar_import_15900_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_16000"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_16000') )]"
+		on_start = "[GetScriptedGui('xar_import_16000_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_16100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_16100') )]"
+		on_start = "[GetScriptedGui('xar_import_16100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_16200"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_16200') )]"
+		on_start = "[GetScriptedGui('xar_import_16200_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_16300"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_16300') )]"
+		on_start = "[GetScriptedGui('xar_import_16300_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_16400"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_16400') )]"
+		on_start = "[GetScriptedGui('xar_import_16400_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_16500"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_16500') )]"
+		on_start = "[GetScriptedGui('xar_import_16500_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_16600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_16600') )]"
+		on_start = "[GetScriptedGui('xar_import_16600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_17100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_17100') )]"
+		on_start = "[GetScriptedGui('xar_import_17100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_17600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_17600') )]"
+		on_start = "[GetScriptedGui('xar_import_17600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_18100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_18100') )]"
+		on_start = "[GetScriptedGui('xar_import_18100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_18600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_18600') )]"
+		on_start = "[GetScriptedGui('xar_import_18600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_19100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_19100') )]"
+		on_start = "[GetScriptedGui('xar_import_19100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_19600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_19600') )]"
+		on_start = "[GetScriptedGui('xar_import_19600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_20100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_20100') )]"
+		on_start = "[GetScriptedGui('xar_import_20100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_20600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_20600') )]"
+		on_start = "[GetScriptedGui('xar_import_20600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_21100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_21100') )]"
+		on_start = "[GetScriptedGui('xar_import_21100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_21600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_21600') )]"
+		on_start = "[GetScriptedGui('xar_import_21600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_22100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_22100') )]"
+		on_start = "[GetScriptedGui('xar_import_22100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_22600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_22600') )]"
+		on_start = "[GetScriptedGui('xar_import_22600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_23100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_23100') )]"
+		on_start = "[GetScriptedGui('xar_import_23100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_23600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_23600') )]"
+		on_start = "[GetScriptedGui('xar_import_23600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_24100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_24100') )]"
+		on_start = "[GetScriptedGui('xar_import_24100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_24600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_24600') )]"
+		on_start = "[GetScriptedGui('xar_import_24600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_25100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_25100') )]"
+		on_start = "[GetScriptedGui('xar_import_25100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_25600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_25600') )]"
+		on_start = "[GetScriptedGui('xar_import_25600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_26100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_26100') )]"
+		on_start = "[GetScriptedGui('xar_import_26100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_26600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_26600') )]"
+		on_start = "[GetScriptedGui('xar_import_26600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_27100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_27100') )]"
+		on_start = "[GetScriptedGui('xar_import_27100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_27600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_27600') )]"
+		on_start = "[GetScriptedGui('xar_import_27600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_28100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_28100') )]"
+		on_start = "[GetScriptedGui('xar_import_28100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_28600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_28600') )]"
+		on_start = "[GetScriptedGui('xar_import_28600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_29100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_29100') )]"
+		on_start = "[GetScriptedGui('xar_import_29100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_29600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_29600') )]"
+		on_start = "[GetScriptedGui('xar_import_29600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_30100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_30100') )]"
+		on_start = "[GetScriptedGui('xar_import_30100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_30600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_30600') )]"
+		on_start = "[GetScriptedGui('xar_import_30600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_31100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_31100') )]"
+		on_start = "[GetScriptedGui('xar_import_31100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_31600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_31600') )]"
+		on_start = "[GetScriptedGui('xar_import_31600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_32100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_32100') )]"
+		on_start = "[GetScriptedGui('xar_import_32100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_32600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_32600') )]"
+		on_start = "[GetScriptedGui('xar_import_32600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_33100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_33100') )]"
+		on_start = "[GetScriptedGui('xar_import_33100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_33600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_33600') )]"
+		on_start = "[GetScriptedGui('xar_import_33600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_34100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_34100') )]"
+		on_start = "[GetScriptedGui('xar_import_34100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_34600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_34600') )]"
+		on_start = "[GetScriptedGui('xar_import_34600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_35100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_35100') )]"
+		on_start = "[GetScriptedGui('xar_import_35100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_35600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_35600') )]"
+		on_start = "[GetScriptedGui('xar_import_35600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_36100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_36100') )]"
+		on_start = "[GetScriptedGui('xar_import_36100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_36600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_36600') )]"
+		on_start = "[GetScriptedGui('xar_import_36600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_37100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_37100') )]"
+		on_start = "[GetScriptedGui('xar_import_37100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_37600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_37600') )]"
+		on_start = "[GetScriptedGui('xar_import_37600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_38100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_38100') )]"
+		on_start = "[GetScriptedGui('xar_import_38100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_38600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_38600') )]"
+		on_start = "[GetScriptedGui('xar_import_38600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_39100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_39100') )]"
+		on_start = "[GetScriptedGui('xar_import_39100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_39600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_39600') )]"
+		on_start = "[GetScriptedGui('xar_import_39600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_40100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_40100') )]"
+		on_start = "[GetScriptedGui('xar_import_40100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_40600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_40600') )]"
+		on_start = "[GetScriptedGui('xar_import_40600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_41100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_41100') )]"
+		on_start = "[GetScriptedGui('xar_import_41100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_41600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_41600') )]"
+		on_start = "[GetScriptedGui('xar_import_41600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_42100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_42100') )]"
+		on_start = "[GetScriptedGui('xar_import_42100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_42600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_42600') )]"
+		on_start = "[GetScriptedGui('xar_import_42600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_43100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_43100') )]"
+		on_start = "[GetScriptedGui('xar_import_43100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_43600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_43600') )]"
+		on_start = "[GetScriptedGui('xar_import_43600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_44100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_44100') )]"
+		on_start = "[GetScriptedGui('xar_import_44100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_44600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_44600') )]"
+		on_start = "[GetScriptedGui('xar_import_44600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_45100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_45100') )]"
+		on_start = "[GetScriptedGui('xar_import_45100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_45600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_45600') )]"
+		on_start = "[GetScriptedGui('xar_import_45600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_46100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_46100') )]"
+		on_start = "[GetScriptedGui('xar_import_46100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_46600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_46600') )]"
+		on_start = "[GetScriptedGui('xar_import_46600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_47100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_47100') )]"
+		on_start = "[GetScriptedGui('xar_import_47100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_47600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_47600') )]"
+		on_start = "[GetScriptedGui('xar_import_47600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_48100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_48100') )]"
+		on_start = "[GetScriptedGui('xar_import_48100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_48600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_48600') )]"
+		on_start = "[GetScriptedGui('xar_import_48600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_49100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_49100') )]"
+		on_start = "[GetScriptedGui('xar_import_49100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_49600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_49600') )]"
+		on_start = "[GetScriptedGui('xar_import_49600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_50100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_50100') )]"
+		on_start = "[GetScriptedGui('xar_import_50100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_50600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_50600') )]"
+		on_start = "[GetScriptedGui('xar_import_50600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_51100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_51100') )]"
+		on_start = "[GetScriptedGui('xar_import_51100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_51600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_51600') )]"
+		on_start = "[GetScriptedGui('xar_import_51600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_52100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_52100') )]"
+		on_start = "[GetScriptedGui('xar_import_52100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_52600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_52600') )]"
+		on_start = "[GetScriptedGui('xar_import_52600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_53100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_53100') )]"
+		on_start = "[GetScriptedGui('xar_import_53100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_53600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_53600') )]"
+		on_start = "[GetScriptedGui('xar_import_53600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_54100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_54100') )]"
+		on_start = "[GetScriptedGui('xar_import_54100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_54600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_54600') )]"
+		on_start = "[GetScriptedGui('xar_import_54600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_55100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_55100') )]"
+		on_start = "[GetScriptedGui('xar_import_55100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_55600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_55600') )]"
+		on_start = "[GetScriptedGui('xar_import_55600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_56100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_56100') )]"
+		on_start = "[GetScriptedGui('xar_import_56100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_56600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_56600') )]"
+		on_start = "[GetScriptedGui('xar_import_56600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_57100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_57100') )]"
+		on_start = "[GetScriptedGui('xar_import_57100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_57600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_57600') )]"
+		on_start = "[GetScriptedGui('xar_import_57600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_58100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_58100') )]"
+		on_start = "[GetScriptedGui('xar_import_58100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_58600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_58600') )]"
+		on_start = "[GetScriptedGui('xar_import_58600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_59100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_59100') )]"
+		on_start = "[GetScriptedGui('xar_import_59100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_59600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_59600') )]"
+		on_start = "[GetScriptedGui('xar_import_59600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_60100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_60100') )]"
+		on_start = "[GetScriptedGui('xar_import_60100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_60600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_60600') )]"
+		on_start = "[GetScriptedGui('xar_import_60600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_61100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_61100') )]"
+		on_start = "[GetScriptedGui('xar_import_61100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_61600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_61600') )]"
+		on_start = "[GetScriptedGui('xar_import_61600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_62100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_62100') )]"
+		on_start = "[GetScriptedGui('xar_import_62100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_62600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_62600') )]"
+		on_start = "[GetScriptedGui('xar_import_62600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_63100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_63100') )]"
+		on_start = "[GetScriptedGui('xar_import_63100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_63600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_63600') )]"
+		on_start = "[GetScriptedGui('xar_import_63600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_64100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_64100') )]"
+		on_start = "[GetScriptedGui('xar_import_64100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_64600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_64600') )]"
+		on_start = "[GetScriptedGui('xar_import_64600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_65100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_65100') )]"
+		on_start = "[GetScriptedGui('xar_import_65100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_65600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_65600') )]"
+		on_start = "[GetScriptedGui('xar_import_65600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_66100"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_66100') )]"
+		on_start = "[GetScriptedGui('xar_import_66100_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_66600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_66600') )]"
+		on_start = "[GetScriptedGui('xar_import_66600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_67600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_67600') )]"
+		on_start = "[GetScriptedGui('xar_import_67600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_68600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_68600') )]"
+		on_start = "[GetScriptedGui('xar_import_68600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_69600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_69600') )]"
+		on_start = "[GetScriptedGui('xar_import_69600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_70600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_70600') )]"
+		on_start = "[GetScriptedGui('xar_import_70600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_71600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_71600') )]"
+		on_start = "[GetScriptedGui('xar_import_71600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_72600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_72600') )]"
+		on_start = "[GetScriptedGui('xar_import_72600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_73600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_73600') )]"
+		on_start = "[GetScriptedGui('xar_import_73600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_74600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_74600') )]"
+		on_start = "[GetScriptedGui('xar_import_74600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_75600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_75600') )]"
+		on_start = "[GetScriptedGui('xar_import_75600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_76600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_76600') )]"
+		on_start = "[GetScriptedGui('xar_import_76600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_77600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_77600') )]"
+		on_start = "[GetScriptedGui('xar_import_77600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_78600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_78600') )]"
+		on_start = "[GetScriptedGui('xar_import_78600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_79600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_79600') )]"
+		on_start = "[GetScriptedGui('xar_import_79600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_80600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_80600') )]"
+		on_start = "[GetScriptedGui('xar_import_80600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_81600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_81600') )]"
+		on_start = "[GetScriptedGui('xar_import_81600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_82600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_82600') )]"
+		on_start = "[GetScriptedGui('xar_import_82600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_83600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_83600') )]"
+		on_start = "[GetScriptedGui('xar_import_83600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_84600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_84600') )]"
+		on_start = "[GetScriptedGui('xar_import_84600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_85600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_85600') )]"
+		on_start = "[GetScriptedGui('xar_import_85600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_86600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_86600') )]"
+		on_start = "[GetScriptedGui('xar_import_86600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_87600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_87600') )]"
+		on_start = "[GetScriptedGui('xar_import_87600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_88600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_88600') )]"
+		on_start = "[GetScriptedGui('xar_import_88600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_89600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_89600') )]"
+		on_start = "[GetScriptedGui('xar_import_89600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_90600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_90600') )]"
+		on_start = "[GetScriptedGui('xar_import_90600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_91600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_91600') )]"
+		on_start = "[GetScriptedGui('xar_import_91600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_92600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_92600') )]"
+		on_start = "[GetScriptedGui('xar_import_92600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_93600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_93600') )]"
+		on_start = "[GetScriptedGui('xar_import_93600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_94600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_94600') )]"
+		on_start = "[GetScriptedGui('xar_import_94600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_95600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_95600') )]"
+		on_start = "[GetScriptedGui('xar_import_95600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_96600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_96600') )]"
+		on_start = "[GetScriptedGui('xar_import_96600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_97600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_97600') )]"
+		on_start = "[GetScriptedGui('xar_import_97600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_98600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_98600') )]"
+		on_start = "[GetScriptedGui('xar_import_98600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_99600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_99600') )]"
+		on_start = "[GetScriptedGui('xar_import_99600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_100600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_100600') )]"
+		on_start = "[GetScriptedGui('xar_import_100600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_101600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_101600') )]"
+		on_start = "[GetScriptedGui('xar_import_101600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_102600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_102600') )]"
+		on_start = "[GetScriptedGui('xar_import_102600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_103600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_103600') )]"
+		on_start = "[GetScriptedGui('xar_import_103600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_104600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_104600') )]"
+		on_start = "[GetScriptedGui('xar_import_104600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_105600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_105600') )]"
+		on_start = "[GetScriptedGui('xar_import_105600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_106600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_106600') )]"
+		on_start = "[GetScriptedGui('xar_import_106600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_107600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_107600') )]"
+		on_start = "[GetScriptedGui('xar_import_107600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_108600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_108600') )]"
+		on_start = "[GetScriptedGui('xar_import_108600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_109600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_109600') )]"
+		on_start = "[GetScriptedGui('xar_import_109600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_110600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_110600') )]"
+		on_start = "[GetScriptedGui('xar_import_110600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_111600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_111600') )]"
+		on_start = "[GetScriptedGui('xar_import_111600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_112600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_112600') )]"
+		on_start = "[GetScriptedGui('xar_import_112600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_113600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_113600') )]"
+		on_start = "[GetScriptedGui('xar_import_113600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_114600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_114600') )]"
+		on_start = "[GetScriptedGui('xar_import_114600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_115600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_115600') )]"
+		on_start = "[GetScriptedGui('xar_import_115600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_116600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_116600') )]"
+		on_start = "[GetScriptedGui('xar_import_116600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_117600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_117600') )]"
+		on_start = "[GetScriptedGui('xar_import_117600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_118600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_118600') )]"
+		on_start = "[GetScriptedGui('xar_import_118600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_119600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_119600') )]"
+		on_start = "[GetScriptedGui('xar_import_119600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_120600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_120600') )]"
+		on_start = "[GetScriptedGui('xar_import_120600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_121600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_121600') )]"
+		on_start = "[GetScriptedGui('xar_import_121600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_122600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_122600') )]"
+		on_start = "[GetScriptedGui('xar_import_122600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_123600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_123600') )]"
+		on_start = "[GetScriptedGui('xar_import_123600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_124600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_124600') )]"
+		on_start = "[GetScriptedGui('xar_import_124600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_125600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_125600') )]"
+		on_start = "[GetScriptedGui('xar_import_125600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_126600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_126600') )]"
+		on_start = "[GetScriptedGui('xar_import_126600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_127600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_127600') )]"
+		on_start = "[GetScriptedGui('xar_import_127600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_128600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_128600') )]"
+		on_start = "[GetScriptedGui('xar_import_128600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_129600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_129600') )]"
+		on_start = "[GetScriptedGui('xar_import_129600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_130600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_130600') )]"
+		on_start = "[GetScriptedGui('xar_import_130600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_131600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_131600') )]"
+		on_start = "[GetScriptedGui('xar_import_131600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_132600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_132600') )]"
+		on_start = "[GetScriptedGui('xar_import_132600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_133600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_133600') )]"
+		on_start = "[GetScriptedGui('xar_import_133600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_134600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_134600') )]"
+		on_start = "[GetScriptedGui('xar_import_134600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_135600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_135600') )]"
+		on_start = "[GetScriptedGui('xar_import_135600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_136600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_136600') )]"
+		on_start = "[GetScriptedGui('xar_import_136600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_137600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_137600') )]"
+		on_start = "[GetScriptedGui('xar_import_137600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_138600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_138600') )]"
+		on_start = "[GetScriptedGui('xar_import_138600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_139600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_139600') )]"
+		on_start = "[GetScriptedGui('xar_import_139600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_140600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_140600') )]"
+		on_start = "[GetScriptedGui('xar_import_140600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_141600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_141600') )]"
+		on_start = "[GetScriptedGui('xar_import_141600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_142600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_142600') )]"
+		on_start = "[GetScriptedGui('xar_import_142600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_143600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_143600') )]"
+		on_start = "[GetScriptedGui('xar_import_143600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_144600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_144600') )]"
+		on_start = "[GetScriptedGui('xar_import_144600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_145600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_145600') )]"
+		on_start = "[GetScriptedGui('xar_import_145600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_146600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_146600') )]"
+		on_start = "[GetScriptedGui('xar_import_146600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_147600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_147600') )]"
+		on_start = "[GetScriptedGui('xar_import_147600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_148600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_148600') )]"
+		on_start = "[GetScriptedGui('xar_import_148600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_149600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_149600') )]"
+		on_start = "[GetScriptedGui('xar_import_149600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_150600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_150600') )]"
+		on_start = "[GetScriptedGui('xar_import_150600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_151600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_151600') )]"
+		on_start = "[GetScriptedGui('xar_import_151600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_152600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_152600') )]"
+		on_start = "[GetScriptedGui('xar_import_152600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_153600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_153600') )]"
+		on_start = "[GetScriptedGui('xar_import_153600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_154600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_154600') )]"
+		on_start = "[GetScriptedGui('xar_import_154600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_155600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_155600') )]"
+		on_start = "[GetScriptedGui('xar_import_155600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_156600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_156600') )]"
+		on_start = "[GetScriptedGui('xar_import_156600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_157600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_157600') )]"
+		on_start = "[GetScriptedGui('xar_import_157600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_158600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_158600') )]"
+		on_start = "[GetScriptedGui('xar_import_158600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_159600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_159600') )]"
+		on_start = "[GetScriptedGui('xar_import_159600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_160600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_160600') )]"
+		on_start = "[GetScriptedGui('xar_import_160600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_161600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_161600') )]"
+		on_start = "[GetScriptedGui('xar_import_161600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_162600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_162600') )]"
+		on_start = "[GetScriptedGui('xar_import_162600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_163600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_163600') )]"
+		on_start = "[GetScriptedGui('xar_import_163600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_164600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_164600') )]"
+		on_start = "[GetScriptedGui('xar_import_164600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_165600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_165600') )]"
+		on_start = "[GetScriptedGui('xar_import_165600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	state = {
+		name = "xar_import_166600"
+		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_record_level'), Localize('xar_rec_166600') )]"
+		on_start = "[GetScriptedGui('xar_import_166600_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+}

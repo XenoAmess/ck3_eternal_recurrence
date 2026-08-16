@@ -1,0 +1,10 @@
+# CK3 game installation (reference only, not project content)
+Crusader Kings III/
+
+# IDE
+**/.idea/
+.vscode/
+
+# OS
+Thumbs.db
+Desktop.ini

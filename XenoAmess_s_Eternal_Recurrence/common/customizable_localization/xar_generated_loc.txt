@@ -1,0 +1,2809 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_highscore.py
+# Single descending first_valid localization: returns the level key of the
+# HIGHEST completed threshold (bits may be sparse, since writing completes
+# only the single highest threshold <= score). Exactly one text matches.
+
+xar_record_level = {
+	type = character
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_166600 }
+		localization_key = xar_rec_166600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_165600 }
+		localization_key = xar_rec_165600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_164600 }
+		localization_key = xar_rec_164600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_163600 }
+		localization_key = xar_rec_163600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_162600 }
+		localization_key = xar_rec_162600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_161600 }
+		localization_key = xar_rec_161600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_160600 }
+		localization_key = xar_rec_160600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_159600 }
+		localization_key = xar_rec_159600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_158600 }
+		localization_key = xar_rec_158600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_157600 }
+		localization_key = xar_rec_157600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_156600 }
+		localization_key = xar_rec_156600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_155600 }
+		localization_key = xar_rec_155600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_154600 }
+		localization_key = xar_rec_154600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_153600 }
+		localization_key = xar_rec_153600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_152600 }
+		localization_key = xar_rec_152600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_151600 }
+		localization_key = xar_rec_151600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_150600 }
+		localization_key = xar_rec_150600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_149600 }
+		localization_key = xar_rec_149600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_148600 }
+		localization_key = xar_rec_148600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_147600 }
+		localization_key = xar_rec_147600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_146600 }
+		localization_key = xar_rec_146600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_145600 }
+		localization_key = xar_rec_145600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_144600 }
+		localization_key = xar_rec_144600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_143600 }
+		localization_key = xar_rec_143600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_142600 }
+		localization_key = xar_rec_142600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_141600 }
+		localization_key = xar_rec_141600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_140600 }
+		localization_key = xar_rec_140600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_139600 }
+		localization_key = xar_rec_139600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_138600 }
+		localization_key = xar_rec_138600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_137600 }
+		localization_key = xar_rec_137600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_136600 }
+		localization_key = xar_rec_136600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_135600 }
+		localization_key = xar_rec_135600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_134600 }
+		localization_key = xar_rec_134600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_133600 }
+		localization_key = xar_rec_133600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_132600 }
+		localization_key = xar_rec_132600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_131600 }
+		localization_key = xar_rec_131600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_130600 }
+		localization_key = xar_rec_130600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_129600 }
+		localization_key = xar_rec_129600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_128600 }
+		localization_key = xar_rec_128600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_127600 }
+		localization_key = xar_rec_127600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_126600 }
+		localization_key = xar_rec_126600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_125600 }
+		localization_key = xar_rec_125600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_124600 }
+		localization_key = xar_rec_124600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_123600 }
+		localization_key = xar_rec_123600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_122600 }
+		localization_key = xar_rec_122600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_121600 }
+		localization_key = xar_rec_121600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_120600 }
+		localization_key = xar_rec_120600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_119600 }
+		localization_key = xar_rec_119600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_118600 }
+		localization_key = xar_rec_118600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_117600 }
+		localization_key = xar_rec_117600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_116600 }
+		localization_key = xar_rec_116600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_115600 }
+		localization_key = xar_rec_115600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_114600 }
+		localization_key = xar_rec_114600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_113600 }
+		localization_key = xar_rec_113600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_112600 }
+		localization_key = xar_rec_112600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_111600 }
+		localization_key = xar_rec_111600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_110600 }
+		localization_key = xar_rec_110600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_109600 }
+		localization_key = xar_rec_109600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_108600 }
+		localization_key = xar_rec_108600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_107600 }
+		localization_key = xar_rec_107600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_106600 }
+		localization_key = xar_rec_106600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_105600 }
+		localization_key = xar_rec_105600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_104600 }
+		localization_key = xar_rec_104600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_103600 }
+		localization_key = xar_rec_103600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_102600 }
+		localization_key = xar_rec_102600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_101600 }
+		localization_key = xar_rec_101600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_100600 }
+		localization_key = xar_rec_100600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_99600 }
+		localization_key = xar_rec_99600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_98600 }
+		localization_key = xar_rec_98600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_97600 }
+		localization_key = xar_rec_97600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_96600 }
+		localization_key = xar_rec_96600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_95600 }
+		localization_key = xar_rec_95600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_94600 }
+		localization_key = xar_rec_94600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_93600 }
+		localization_key = xar_rec_93600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_92600 }
+		localization_key = xar_rec_92600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_91600 }
+		localization_key = xar_rec_91600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_90600 }
+		localization_key = xar_rec_90600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_89600 }
+		localization_key = xar_rec_89600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_88600 }
+		localization_key = xar_rec_88600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_87600 }
+		localization_key = xar_rec_87600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_86600 }
+		localization_key = xar_rec_86600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_85600 }
+		localization_key = xar_rec_85600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_84600 }
+		localization_key = xar_rec_84600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_83600 }
+		localization_key = xar_rec_83600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_82600 }
+		localization_key = xar_rec_82600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_81600 }
+		localization_key = xar_rec_81600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_80600 }
+		localization_key = xar_rec_80600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_79600 }
+		localization_key = xar_rec_79600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_78600 }
+		localization_key = xar_rec_78600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_77600 }
+		localization_key = xar_rec_77600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_76600 }
+		localization_key = xar_rec_76600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_75600 }
+		localization_key = xar_rec_75600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_74600 }
+		localization_key = xar_rec_74600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_73600 }
+		localization_key = xar_rec_73600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_72600 }
+		localization_key = xar_rec_72600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_71600 }
+		localization_key = xar_rec_71600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_70600 }
+		localization_key = xar_rec_70600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_69600 }
+		localization_key = xar_rec_69600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_68600 }
+		localization_key = xar_rec_68600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_67600 }
+		localization_key = xar_rec_67600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_66600 }
+		localization_key = xar_rec_66600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_66100 }
+		localization_key = xar_rec_66100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_65600 }
+		localization_key = xar_rec_65600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_65100 }
+		localization_key = xar_rec_65100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_64600 }
+		localization_key = xar_rec_64600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_64100 }
+		localization_key = xar_rec_64100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_63600 }
+		localization_key = xar_rec_63600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_63100 }
+		localization_key = xar_rec_63100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_62600 }
+		localization_key = xar_rec_62600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_62100 }
+		localization_key = xar_rec_62100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_61600 }
+		localization_key = xar_rec_61600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_61100 }
+		localization_key = xar_rec_61100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_60600 }
+		localization_key = xar_rec_60600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_60100 }
+		localization_key = xar_rec_60100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_59600 }
+		localization_key = xar_rec_59600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_59100 }
+		localization_key = xar_rec_59100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_58600 }
+		localization_key = xar_rec_58600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_58100 }
+		localization_key = xar_rec_58100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_57600 }
+		localization_key = xar_rec_57600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_57100 }
+		localization_key = xar_rec_57100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_56600 }
+		localization_key = xar_rec_56600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_56100 }
+		localization_key = xar_rec_56100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_55600 }
+		localization_key = xar_rec_55600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_55100 }
+		localization_key = xar_rec_55100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_54600 }
+		localization_key = xar_rec_54600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_54100 }
+		localization_key = xar_rec_54100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_53600 }
+		localization_key = xar_rec_53600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_53100 }
+		localization_key = xar_rec_53100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_52600 }
+		localization_key = xar_rec_52600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_52100 }
+		localization_key = xar_rec_52100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_51600 }
+		localization_key = xar_rec_51600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_51100 }
+		localization_key = xar_rec_51100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_50600 }
+		localization_key = xar_rec_50600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_50100 }
+		localization_key = xar_rec_50100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_49600 }
+		localization_key = xar_rec_49600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_49100 }
+		localization_key = xar_rec_49100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_48600 }
+		localization_key = xar_rec_48600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_48100 }
+		localization_key = xar_rec_48100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_47600 }
+		localization_key = xar_rec_47600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_47100 }
+		localization_key = xar_rec_47100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_46600 }
+		localization_key = xar_rec_46600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_46100 }
+		localization_key = xar_rec_46100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_45600 }
+		localization_key = xar_rec_45600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_45100 }
+		localization_key = xar_rec_45100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_44600 }
+		localization_key = xar_rec_44600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_44100 }
+		localization_key = xar_rec_44100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_43600 }
+		localization_key = xar_rec_43600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_43100 }
+		localization_key = xar_rec_43100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_42600 }
+		localization_key = xar_rec_42600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_42100 }
+		localization_key = xar_rec_42100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_41600 }
+		localization_key = xar_rec_41600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_41100 }
+		localization_key = xar_rec_41100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_40600 }
+		localization_key = xar_rec_40600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_40100 }
+		localization_key = xar_rec_40100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_39600 }
+		localization_key = xar_rec_39600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_39100 }
+		localization_key = xar_rec_39100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_38600 }
+		localization_key = xar_rec_38600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_38100 }
+		localization_key = xar_rec_38100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_37600 }
+		localization_key = xar_rec_37600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_37100 }
+		localization_key = xar_rec_37100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_36600 }
+		localization_key = xar_rec_36600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_36100 }
+		localization_key = xar_rec_36100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_35600 }
+		localization_key = xar_rec_35600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_35100 }
+		localization_key = xar_rec_35100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_34600 }
+		localization_key = xar_rec_34600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_34100 }
+		localization_key = xar_rec_34100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_33600 }
+		localization_key = xar_rec_33600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_33100 }
+		localization_key = xar_rec_33100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_32600 }
+		localization_key = xar_rec_32600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_32100 }
+		localization_key = xar_rec_32100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_31600 }
+		localization_key = xar_rec_31600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_31100 }
+		localization_key = xar_rec_31100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_30600 }
+		localization_key = xar_rec_30600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_30100 }
+		localization_key = xar_rec_30100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_29600 }
+		localization_key = xar_rec_29600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_29100 }
+		localization_key = xar_rec_29100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_28600 }
+		localization_key = xar_rec_28600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_28100 }
+		localization_key = xar_rec_28100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_27600 }
+		localization_key = xar_rec_27600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_27100 }
+		localization_key = xar_rec_27100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_26600 }
+		localization_key = xar_rec_26600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_26100 }
+		localization_key = xar_rec_26100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_25600 }
+		localization_key = xar_rec_25600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_25100 }
+		localization_key = xar_rec_25100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_24600 }
+		localization_key = xar_rec_24600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_24100 }
+		localization_key = xar_rec_24100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_23600 }
+		localization_key = xar_rec_23600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_23100 }
+		localization_key = xar_rec_23100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_22600 }
+		localization_key = xar_rec_22600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_22100 }
+		localization_key = xar_rec_22100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_21600 }
+		localization_key = xar_rec_21600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_21100 }
+		localization_key = xar_rec_21100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_20600 }
+		localization_key = xar_rec_20600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_20100 }
+		localization_key = xar_rec_20100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_19600 }
+		localization_key = xar_rec_19600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_19100 }
+		localization_key = xar_rec_19100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_18600 }
+		localization_key = xar_rec_18600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_18100 }
+		localization_key = xar_rec_18100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_17600 }
+		localization_key = xar_rec_17600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_17100 }
+		localization_key = xar_rec_17100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_16600 }
+		localization_key = xar_rec_16600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_16500 }
+		localization_key = xar_rec_16500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_16400 }
+		localization_key = xar_rec_16400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_16300 }
+		localization_key = xar_rec_16300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_16200 }
+		localization_key = xar_rec_16200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_16100 }
+		localization_key = xar_rec_16100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_16000 }
+		localization_key = xar_rec_16000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_15900 }
+		localization_key = xar_rec_15900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_15800 }
+		localization_key = xar_rec_15800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_15700 }
+		localization_key = xar_rec_15700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_15600 }
+		localization_key = xar_rec_15600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_15500 }
+		localization_key = xar_rec_15500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_15400 }
+		localization_key = xar_rec_15400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_15300 }
+		localization_key = xar_rec_15300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_15200 }
+		localization_key = xar_rec_15200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_15100 }
+		localization_key = xar_rec_15100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_15000 }
+		localization_key = xar_rec_15000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_14900 }
+		localization_key = xar_rec_14900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_14800 }
+		localization_key = xar_rec_14800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_14700 }
+		localization_key = xar_rec_14700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_14600 }
+		localization_key = xar_rec_14600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_14500 }
+		localization_key = xar_rec_14500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_14400 }
+		localization_key = xar_rec_14400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_14300 }
+		localization_key = xar_rec_14300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_14200 }
+		localization_key = xar_rec_14200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_14100 }
+		localization_key = xar_rec_14100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_14000 }
+		localization_key = xar_rec_14000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_13900 }
+		localization_key = xar_rec_13900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_13800 }
+		localization_key = xar_rec_13800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_13700 }
+		localization_key = xar_rec_13700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_13600 }
+		localization_key = xar_rec_13600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_13500 }
+		localization_key = xar_rec_13500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_13400 }
+		localization_key = xar_rec_13400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_13300 }
+		localization_key = xar_rec_13300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_13200 }
+		localization_key = xar_rec_13200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_13100 }
+		localization_key = xar_rec_13100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_13000 }
+		localization_key = xar_rec_13000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_12900 }
+		localization_key = xar_rec_12900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_12800 }
+		localization_key = xar_rec_12800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_12700 }
+		localization_key = xar_rec_12700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_12600 }
+		localization_key = xar_rec_12600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_12500 }
+		localization_key = xar_rec_12500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_12400 }
+		localization_key = xar_rec_12400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_12300 }
+		localization_key = xar_rec_12300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_12200 }
+		localization_key = xar_rec_12200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_12100 }
+		localization_key = xar_rec_12100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_12000 }
+		localization_key = xar_rec_12000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_11900 }
+		localization_key = xar_rec_11900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_11800 }
+		localization_key = xar_rec_11800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_11700 }
+		localization_key = xar_rec_11700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_11600 }
+		localization_key = xar_rec_11600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_11500 }
+		localization_key = xar_rec_11500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_11400 }
+		localization_key = xar_rec_11400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_11300 }
+		localization_key = xar_rec_11300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_11200 }
+		localization_key = xar_rec_11200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_11100 }
+		localization_key = xar_rec_11100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_11000 }
+		localization_key = xar_rec_11000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_10900 }
+		localization_key = xar_rec_10900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_10800 }
+		localization_key = xar_rec_10800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_10700 }
+		localization_key = xar_rec_10700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_10600 }
+		localization_key = xar_rec_10600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_10500 }
+		localization_key = xar_rec_10500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_10400 }
+		localization_key = xar_rec_10400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_10300 }
+		localization_key = xar_rec_10300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_10200 }
+		localization_key = xar_rec_10200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_10100 }
+		localization_key = xar_rec_10100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_10000 }
+		localization_key = xar_rec_10000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_9900 }
+		localization_key = xar_rec_9900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_9800 }
+		localization_key = xar_rec_9800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_9700 }
+		localization_key = xar_rec_9700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_9600 }
+		localization_key = xar_rec_9600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_9500 }
+		localization_key = xar_rec_9500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_9400 }
+		localization_key = xar_rec_9400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_9300 }
+		localization_key = xar_rec_9300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_9200 }
+		localization_key = xar_rec_9200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_9100 }
+		localization_key = xar_rec_9100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_9000 }
+		localization_key = xar_rec_9000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_8900 }
+		localization_key = xar_rec_8900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_8800 }
+		localization_key = xar_rec_8800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_8700 }
+		localization_key = xar_rec_8700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_8600 }
+		localization_key = xar_rec_8600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_8500 }
+		localization_key = xar_rec_8500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_8400 }
+		localization_key = xar_rec_8400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_8300 }
+		localization_key = xar_rec_8300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_8200 }
+		localization_key = xar_rec_8200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_8100 }
+		localization_key = xar_rec_8100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_8000 }
+		localization_key = xar_rec_8000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_7900 }
+		localization_key = xar_rec_7900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_7800 }
+		localization_key = xar_rec_7800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_7700 }
+		localization_key = xar_rec_7700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_7600 }
+		localization_key = xar_rec_7600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_7500 }
+		localization_key = xar_rec_7500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_7400 }
+		localization_key = xar_rec_7400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_7300 }
+		localization_key = xar_rec_7300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_7200 }
+		localization_key = xar_rec_7200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_7100 }
+		localization_key = xar_rec_7100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_7000 }
+		localization_key = xar_rec_7000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6900 }
+		localization_key = xar_rec_6900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6800 }
+		localization_key = xar_rec_6800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6700 }
+		localization_key = xar_rec_6700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6600 }
+		localization_key = xar_rec_6600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6550 }
+		localization_key = xar_rec_6550
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6500 }
+		localization_key = xar_rec_6500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6450 }
+		localization_key = xar_rec_6450
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6400 }
+		localization_key = xar_rec_6400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6350 }
+		localization_key = xar_rec_6350
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6300 }
+		localization_key = xar_rec_6300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6250 }
+		localization_key = xar_rec_6250
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6200 }
+		localization_key = xar_rec_6200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6150 }
+		localization_key = xar_rec_6150
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6100 }
+		localization_key = xar_rec_6100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6050 }
+		localization_key = xar_rec_6050
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6000 }
+		localization_key = xar_rec_6000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5950 }
+		localization_key = xar_rec_5950
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5900 }
+		localization_key = xar_rec_5900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5850 }
+		localization_key = xar_rec_5850
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5800 }
+		localization_key = xar_rec_5800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5750 }
+		localization_key = xar_rec_5750
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5700 }
+		localization_key = xar_rec_5700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5650 }
+		localization_key = xar_rec_5650
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5600 }
+		localization_key = xar_rec_5600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5550 }
+		localization_key = xar_rec_5550
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5500 }
+		localization_key = xar_rec_5500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5450 }
+		localization_key = xar_rec_5450
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5400 }
+		localization_key = xar_rec_5400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5350 }
+		localization_key = xar_rec_5350
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5300 }
+		localization_key = xar_rec_5300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5250 }
+		localization_key = xar_rec_5250
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5200 }
+		localization_key = xar_rec_5200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5150 }
+		localization_key = xar_rec_5150
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5100 }
+		localization_key = xar_rec_5100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5050 }
+		localization_key = xar_rec_5050
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5000 }
+		localization_key = xar_rec_5000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4950 }
+		localization_key = xar_rec_4950
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4900 }
+		localization_key = xar_rec_4900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4850 }
+		localization_key = xar_rec_4850
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4800 }
+		localization_key = xar_rec_4800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4750 }
+		localization_key = xar_rec_4750
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4700 }
+		localization_key = xar_rec_4700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4650 }
+		localization_key = xar_rec_4650
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4600 }
+		localization_key = xar_rec_4600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4550 }
+		localization_key = xar_rec_4550
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4500 }
+		localization_key = xar_rec_4500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4450 }
+		localization_key = xar_rec_4450
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4400 }
+		localization_key = xar_rec_4400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4350 }
+		localization_key = xar_rec_4350
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4300 }
+		localization_key = xar_rec_4300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4250 }
+		localization_key = xar_rec_4250
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4200 }
+		localization_key = xar_rec_4200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4150 }
+		localization_key = xar_rec_4150
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4100 }
+		localization_key = xar_rec_4100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4050 }
+		localization_key = xar_rec_4050
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4000 }
+		localization_key = xar_rec_4000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3950 }
+		localization_key = xar_rec_3950
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3900 }
+		localization_key = xar_rec_3900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3850 }
+		localization_key = xar_rec_3850
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3800 }
+		localization_key = xar_rec_3800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3750 }
+		localization_key = xar_rec_3750
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3700 }
+		localization_key = xar_rec_3700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3650 }
+		localization_key = xar_rec_3650
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3600 }
+		localization_key = xar_rec_3600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3550 }
+		localization_key = xar_rec_3550
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3500 }
+		localization_key = xar_rec_3500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3450 }
+		localization_key = xar_rec_3450
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3400 }
+		localization_key = xar_rec_3400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3350 }
+		localization_key = xar_rec_3350
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3300 }
+		localization_key = xar_rec_3300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3250 }
+		localization_key = xar_rec_3250
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3200 }
+		localization_key = xar_rec_3200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3150 }
+		localization_key = xar_rec_3150
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3100 }
+		localization_key = xar_rec_3100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3050 }
+		localization_key = xar_rec_3050
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3000 }
+		localization_key = xar_rec_3000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2950 }
+		localization_key = xar_rec_2950
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2900 }
+		localization_key = xar_rec_2900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2850 }
+		localization_key = xar_rec_2850
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2800 }
+		localization_key = xar_rec_2800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2750 }
+		localization_key = xar_rec_2750
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2700 }
+		localization_key = xar_rec_2700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2650 }
+		localization_key = xar_rec_2650
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2600 }
+		localization_key = xar_rec_2600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2550 }
+		localization_key = xar_rec_2550
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2500 }
+		localization_key = xar_rec_2500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2450 }
+		localization_key = xar_rec_2450
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2400 }
+		localization_key = xar_rec_2400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2350 }
+		localization_key = xar_rec_2350
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2300 }
+		localization_key = xar_rec_2300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2250 }
+		localization_key = xar_rec_2250
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2200 }
+		localization_key = xar_rec_2200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2150 }
+		localization_key = xar_rec_2150
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2100 }
+		localization_key = xar_rec_2100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2050 }
+		localization_key = xar_rec_2050
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2000 }
+		localization_key = xar_rec_2000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1950 }
+		localization_key = xar_rec_1950
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1900 }
+		localization_key = xar_rec_1900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1850 }
+		localization_key = xar_rec_1850
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1800 }
+		localization_key = xar_rec_1800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1750 }
+		localization_key = xar_rec_1750
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1700 }
+		localization_key = xar_rec_1700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1650 }
+		localization_key = xar_rec_1650
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1600 }
+		localization_key = xar_rec_1600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1590 }
+		localization_key = xar_rec_1590
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1580 }
+		localization_key = xar_rec_1580
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1570 }
+		localization_key = xar_rec_1570
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1560 }
+		localization_key = xar_rec_1560
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1550 }
+		localization_key = xar_rec_1550
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1540 }
+		localization_key = xar_rec_1540
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1530 }
+		localization_key = xar_rec_1530
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1520 }
+		localization_key = xar_rec_1520
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1510 }
+		localization_key = xar_rec_1510
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1500 }
+		localization_key = xar_rec_1500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1490 }
+		localization_key = xar_rec_1490
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1480 }
+		localization_key = xar_rec_1480
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1470 }
+		localization_key = xar_rec_1470
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1460 }
+		localization_key = xar_rec_1460
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1450 }
+		localization_key = xar_rec_1450
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1440 }
+		localization_key = xar_rec_1440
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1430 }
+		localization_key = xar_rec_1430
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1420 }
+		localization_key = xar_rec_1420
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1410 }
+		localization_key = xar_rec_1410
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1400 }
+		localization_key = xar_rec_1400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1390 }
+		localization_key = xar_rec_1390
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1380 }
+		localization_key = xar_rec_1380
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1370 }
+		localization_key = xar_rec_1370
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1360 }
+		localization_key = xar_rec_1360
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1350 }
+		localization_key = xar_rec_1350
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1340 }
+		localization_key = xar_rec_1340
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1330 }
+		localization_key = xar_rec_1330
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1320 }
+		localization_key = xar_rec_1320
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1310 }
+		localization_key = xar_rec_1310
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1300 }
+		localization_key = xar_rec_1300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1290 }
+		localization_key = xar_rec_1290
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1280 }
+		localization_key = xar_rec_1280
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1270 }
+		localization_key = xar_rec_1270
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1260 }
+		localization_key = xar_rec_1260
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1250 }
+		localization_key = xar_rec_1250
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1240 }
+		localization_key = xar_rec_1240
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1230 }
+		localization_key = xar_rec_1230
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1220 }
+		localization_key = xar_rec_1220
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1210 }
+		localization_key = xar_rec_1210
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1200 }
+		localization_key = xar_rec_1200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1190 }
+		localization_key = xar_rec_1190
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1180 }
+		localization_key = xar_rec_1180
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1170 }
+		localization_key = xar_rec_1170
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1160 }
+		localization_key = xar_rec_1160
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1150 }
+		localization_key = xar_rec_1150
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1140 }
+		localization_key = xar_rec_1140
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1130 }
+		localization_key = xar_rec_1130
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1120 }
+		localization_key = xar_rec_1120
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1110 }
+		localization_key = xar_rec_1110
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1100 }
+		localization_key = xar_rec_1100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1090 }
+		localization_key = xar_rec_1090
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1080 }
+		localization_key = xar_rec_1080
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1070 }
+		localization_key = xar_rec_1070
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1060 }
+		localization_key = xar_rec_1060
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1050 }
+		localization_key = xar_rec_1050
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1040 }
+		localization_key = xar_rec_1040
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1030 }
+		localization_key = xar_rec_1030
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1020 }
+		localization_key = xar_rec_1020
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1010 }
+		localization_key = xar_rec_1010
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1000 }
+		localization_key = xar_rec_1000
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_990 }
+		localization_key = xar_rec_990
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_980 }
+		localization_key = xar_rec_980
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_970 }
+		localization_key = xar_rec_970
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_960 }
+		localization_key = xar_rec_960
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_950 }
+		localization_key = xar_rec_950
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_940 }
+		localization_key = xar_rec_940
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_930 }
+		localization_key = xar_rec_930
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_920 }
+		localization_key = xar_rec_920
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_910 }
+		localization_key = xar_rec_910
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_900 }
+		localization_key = xar_rec_900
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_890 }
+		localization_key = xar_rec_890
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_880 }
+		localization_key = xar_rec_880
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_870 }
+		localization_key = xar_rec_870
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_860 }
+		localization_key = xar_rec_860
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_850 }
+		localization_key = xar_rec_850
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_840 }
+		localization_key = xar_rec_840
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_830 }
+		localization_key = xar_rec_830
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_820 }
+		localization_key = xar_rec_820
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_810 }
+		localization_key = xar_rec_810
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_800 }
+		localization_key = xar_rec_800
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_790 }
+		localization_key = xar_rec_790
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_780 }
+		localization_key = xar_rec_780
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_770 }
+		localization_key = xar_rec_770
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_760 }
+		localization_key = xar_rec_760
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_750 }
+		localization_key = xar_rec_750
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_740 }
+		localization_key = xar_rec_740
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_730 }
+		localization_key = xar_rec_730
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_720 }
+		localization_key = xar_rec_720
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_710 }
+		localization_key = xar_rec_710
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_700 }
+		localization_key = xar_rec_700
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_690 }
+		localization_key = xar_rec_690
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_680 }
+		localization_key = xar_rec_680
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_670 }
+		localization_key = xar_rec_670
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_660 }
+		localization_key = xar_rec_660
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_650 }
+		localization_key = xar_rec_650
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_640 }
+		localization_key = xar_rec_640
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_630 }
+		localization_key = xar_rec_630
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_620 }
+		localization_key = xar_rec_620
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_610 }
+		localization_key = xar_rec_610
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_600 }
+		localization_key = xar_rec_600
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_595 }
+		localization_key = xar_rec_595
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_590 }
+		localization_key = xar_rec_590
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_585 }
+		localization_key = xar_rec_585
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_580 }
+		localization_key = xar_rec_580
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_575 }
+		localization_key = xar_rec_575
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_570 }
+		localization_key = xar_rec_570
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_565 }
+		localization_key = xar_rec_565
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_560 }
+		localization_key = xar_rec_560
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_555 }
+		localization_key = xar_rec_555
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_550 }
+		localization_key = xar_rec_550
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_545 }
+		localization_key = xar_rec_545
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_540 }
+		localization_key = xar_rec_540
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_535 }
+		localization_key = xar_rec_535
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_530 }
+		localization_key = xar_rec_530
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_525 }
+		localization_key = xar_rec_525
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_520 }
+		localization_key = xar_rec_520
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_515 }
+		localization_key = xar_rec_515
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_510 }
+		localization_key = xar_rec_510
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_505 }
+		localization_key = xar_rec_505
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_500 }
+		localization_key = xar_rec_500
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_495 }
+		localization_key = xar_rec_495
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_490 }
+		localization_key = xar_rec_490
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_485 }
+		localization_key = xar_rec_485
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_480 }
+		localization_key = xar_rec_480
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_475 }
+		localization_key = xar_rec_475
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_470 }
+		localization_key = xar_rec_470
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_465 }
+		localization_key = xar_rec_465
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_460 }
+		localization_key = xar_rec_460
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_455 }
+		localization_key = xar_rec_455
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_450 }
+		localization_key = xar_rec_450
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_445 }
+		localization_key = xar_rec_445
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_440 }
+		localization_key = xar_rec_440
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_435 }
+		localization_key = xar_rec_435
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_430 }
+		localization_key = xar_rec_430
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_425 }
+		localization_key = xar_rec_425
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_420 }
+		localization_key = xar_rec_420
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_415 }
+		localization_key = xar_rec_415
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_410 }
+		localization_key = xar_rec_410
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_405 }
+		localization_key = xar_rec_405
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_400 }
+		localization_key = xar_rec_400
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_395 }
+		localization_key = xar_rec_395
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_390 }
+		localization_key = xar_rec_390
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_385 }
+		localization_key = xar_rec_385
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_380 }
+		localization_key = xar_rec_380
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_375 }
+		localization_key = xar_rec_375
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_370 }
+		localization_key = xar_rec_370
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_365 }
+		localization_key = xar_rec_365
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_360 }
+		localization_key = xar_rec_360
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_355 }
+		localization_key = xar_rec_355
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_350 }
+		localization_key = xar_rec_350
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_345 }
+		localization_key = xar_rec_345
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_340 }
+		localization_key = xar_rec_340
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_335 }
+		localization_key = xar_rec_335
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_330 }
+		localization_key = xar_rec_330
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_325 }
+		localization_key = xar_rec_325
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_320 }
+		localization_key = xar_rec_320
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_315 }
+		localization_key = xar_rec_315
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_310 }
+		localization_key = xar_rec_310
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_305 }
+		localization_key = xar_rec_305
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_300 }
+		localization_key = xar_rec_300
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_295 }
+		localization_key = xar_rec_295
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_290 }
+		localization_key = xar_rec_290
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_285 }
+		localization_key = xar_rec_285
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_280 }
+		localization_key = xar_rec_280
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_275 }
+		localization_key = xar_rec_275
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_270 }
+		localization_key = xar_rec_270
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_265 }
+		localization_key = xar_rec_265
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_260 }
+		localization_key = xar_rec_260
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_255 }
+		localization_key = xar_rec_255
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_250 }
+		localization_key = xar_rec_250
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_245 }
+		localization_key = xar_rec_245
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_240 }
+		localization_key = xar_rec_240
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_235 }
+		localization_key = xar_rec_235
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_230 }
+		localization_key = xar_rec_230
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_225 }
+		localization_key = xar_rec_225
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_220 }
+		localization_key = xar_rec_220
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_215 }
+		localization_key = xar_rec_215
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_210 }
+		localization_key = xar_rec_210
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_205 }
+		localization_key = xar_rec_205
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_200 }
+		localization_key = xar_rec_200
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_195 }
+		localization_key = xar_rec_195
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_190 }
+		localization_key = xar_rec_190
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_185 }
+		localization_key = xar_rec_185
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_180 }
+		localization_key = xar_rec_180
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_175 }
+		localization_key = xar_rec_175
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_170 }
+		localization_key = xar_rec_170
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_165 }
+		localization_key = xar_rec_165
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_160 }
+		localization_key = xar_rec_160
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_155 }
+		localization_key = xar_rec_155
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_150 }
+		localization_key = xar_rec_150
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_145 }
+		localization_key = xar_rec_145
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_140 }
+		localization_key = xar_rec_140
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_135 }
+		localization_key = xar_rec_135
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_130 }
+		localization_key = xar_rec_130
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_125 }
+		localization_key = xar_rec_125
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_120 }
+		localization_key = xar_rec_120
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_115 }
+		localization_key = xar_rec_115
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_110 }
+		localization_key = xar_rec_110
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_105 }
+		localization_key = xar_rec_105
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_100 }
+		localization_key = xar_rec_100
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_99 }
+		localization_key = xar_rec_99
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_98 }
+		localization_key = xar_rec_98
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_97 }
+		localization_key = xar_rec_97
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_96 }
+		localization_key = xar_rec_96
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_95 }
+		localization_key = xar_rec_95
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_94 }
+		localization_key = xar_rec_94
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_93 }
+		localization_key = xar_rec_93
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_92 }
+		localization_key = xar_rec_92
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_91 }
+		localization_key = xar_rec_91
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_90 }
+		localization_key = xar_rec_90
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_89 }
+		localization_key = xar_rec_89
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_88 }
+		localization_key = xar_rec_88
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_87 }
+		localization_key = xar_rec_87
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_86 }
+		localization_key = xar_rec_86
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_85 }
+		localization_key = xar_rec_85
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_84 }
+		localization_key = xar_rec_84
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_83 }
+		localization_key = xar_rec_83
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_82 }
+		localization_key = xar_rec_82
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_81 }
+		localization_key = xar_rec_81
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_80 }
+		localization_key = xar_rec_80
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_79 }
+		localization_key = xar_rec_79
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_78 }
+		localization_key = xar_rec_78
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_77 }
+		localization_key = xar_rec_77
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_76 }
+		localization_key = xar_rec_76
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_75 }
+		localization_key = xar_rec_75
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_74 }
+		localization_key = xar_rec_74
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_73 }
+		localization_key = xar_rec_73
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_72 }
+		localization_key = xar_rec_72
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_71 }
+		localization_key = xar_rec_71
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_70 }
+		localization_key = xar_rec_70
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_69 }
+		localization_key = xar_rec_69
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_68 }
+		localization_key = xar_rec_68
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_67 }
+		localization_key = xar_rec_67
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_66 }
+		localization_key = xar_rec_66
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_65 }
+		localization_key = xar_rec_65
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_64 }
+		localization_key = xar_rec_64
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_63 }
+		localization_key = xar_rec_63
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_62 }
+		localization_key = xar_rec_62
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_61 }
+		localization_key = xar_rec_61
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_60 }
+		localization_key = xar_rec_60
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_59 }
+		localization_key = xar_rec_59
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_58 }
+		localization_key = xar_rec_58
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_57 }
+		localization_key = xar_rec_57
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_56 }
+		localization_key = xar_rec_56
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_55 }
+		localization_key = xar_rec_55
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_54 }
+		localization_key = xar_rec_54
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_53 }
+		localization_key = xar_rec_53
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_52 }
+		localization_key = xar_rec_52
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_51 }
+		localization_key = xar_rec_51
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_50 }
+		localization_key = xar_rec_50
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_49 }
+		localization_key = xar_rec_49
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_48 }
+		localization_key = xar_rec_48
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_47 }
+		localization_key = xar_rec_47
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_46 }
+		localization_key = xar_rec_46
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_45 }
+		localization_key = xar_rec_45
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_44 }
+		localization_key = xar_rec_44
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_43 }
+		localization_key = xar_rec_43
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_42 }
+		localization_key = xar_rec_42
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_41 }
+		localization_key = xar_rec_41
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_40 }
+		localization_key = xar_rec_40
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_39 }
+		localization_key = xar_rec_39
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_38 }
+		localization_key = xar_rec_38
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_37 }
+		localization_key = xar_rec_37
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_36 }
+		localization_key = xar_rec_36
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_35 }
+		localization_key = xar_rec_35
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_34 }
+		localization_key = xar_rec_34
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_33 }
+		localization_key = xar_rec_33
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_32 }
+		localization_key = xar_rec_32
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_31 }
+		localization_key = xar_rec_31
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_30 }
+		localization_key = xar_rec_30
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_29 }
+		localization_key = xar_rec_29
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_28 }
+		localization_key = xar_rec_28
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_27 }
+		localization_key = xar_rec_27
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_26 }
+		localization_key = xar_rec_26
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_25 }
+		localization_key = xar_rec_25
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_24 }
+		localization_key = xar_rec_24
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_23 }
+		localization_key = xar_rec_23
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_22 }
+		localization_key = xar_rec_22
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_21 }
+		localization_key = xar_rec_21
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_20 }
+		localization_key = xar_rec_20
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_19 }
+		localization_key = xar_rec_19
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_18 }
+		localization_key = xar_rec_18
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_17 }
+		localization_key = xar_rec_17
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_16 }
+		localization_key = xar_rec_16
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_15 }
+		localization_key = xar_rec_15
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_14 }
+		localization_key = xar_rec_14
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_13 }
+		localization_key = xar_rec_13
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_12 }
+		localization_key = xar_rec_12
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_11 }
+		localization_key = xar_rec_11
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_10 }
+		localization_key = xar_rec_10
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_9 }
+		localization_key = xar_rec_9
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_8 }
+		localization_key = xar_rec_8
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_7 }
+		localization_key = xar_rec_7
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_6 }
+		localization_key = xar_rec_6
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_5 }
+		localization_key = xar_rec_5
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_4 }
+		localization_key = xar_rec_4
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_3 }
+		localization_key = xar_rec_3
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_2 }
+		localization_key = xar_rec_2
+	}
+	text = {
+		trigger = { is_tutorial_lesson_completed = xar_hs_ge_1 }
+		localization_key = xar_rec_1
+	}
+	text = { localization_key = xar_rec_0 }
+}

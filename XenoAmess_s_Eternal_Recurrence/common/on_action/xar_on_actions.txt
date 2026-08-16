@@ -1,0 +1,62 @@
+﻿# Game start hook. We only add an on_actions entry so vanilla's events/effect stay intact.
+# NOTE: on_game_start_after_lobby is used (not on_game_start) because that is the hook
+# where players and game rules are known, per the vanilla comment in game_start.txt.
+on_game_start_after_lobby = {
+	on_actions = { xar_on_game_start }
+}
+
+# Import the global high score as this run's spendable copy and open the shop.
+xar_on_game_start = {
+	effect = {
+		debug_log = "XAR: on_action fired"
+		every_player = {
+			debug_log = "XAR: player found"
+			if = {
+				limit = {
+					has_game_rule = xar_on
+				}
+				debug_log = "XAR: rule is on"
+				add_character_flag = xa_enabled
+				set_global_variable = xa_shop_pending
+				trigger_event = {
+					id = xar.0001
+					days = 1
+				}
+			}
+		}
+	}
+}
+
+# Death hook. Same non-destructive pattern.
+on_death = {
+	on_actions = { xar_on_death }
+}
+
+# Compute the run score; if it beats the record, write the threshold bit FIRST
+# (its lesson notification fires immediately), then show the result event one
+# day later (the delay also sidesteps on_action effect/event concurrency).
+xar_on_death = {
+	effect = {
+		if = {
+			limit = {
+				has_character_flag = xa_enabled
+				is_ai = no
+			}
+			debug_log = "XAR: computing score on death"
+			xar_compute_score_effect = yes
+			if = {
+				limit = { global_var:xa_run_score > global_var:xa_old_record }
+				debug_log = "XAR: new record, writing bit"
+				xar_write_record_effect = yes
+			}
+			# The dying root will be invalid once the delay completes, so the
+			# result event is fired on the (living) heir instead.
+			player_heir ?= {
+				trigger_event = {
+					id = xar.1001
+					days = 1
+				}
+			}
+		}
+	}
+}

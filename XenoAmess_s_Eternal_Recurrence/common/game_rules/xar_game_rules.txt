@@ -1,0 +1,16 @@
+﻿xar_enabled = {
+
+	categories = {
+		game_modes
+	}
+
+	default = xar_on
+
+	xar_on = {
+
+	}
+
+	xar_off = {
+
+	}
+}

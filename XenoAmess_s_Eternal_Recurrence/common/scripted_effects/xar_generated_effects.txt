@@ -1,0 +1,2808 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_highscore.py
+# Completes only the single HIGHEST threshold bit <= run score (descending
+# else_if chain). Record semantics are identical to setting all lower bits,
+# since the record always lands exactly on a threshold. If that bit is
+# already completed the lesson does not refire, so <= 1 popup per death.
+
+xar_write_record_effect = {
+	if = {
+		limit = { global_var:xa_run_score >= 166600 }
+		set_global_variable = xar_hs_ge_166600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 165600 }
+		set_global_variable = xar_hs_ge_165600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 164600 }
+		set_global_variable = xar_hs_ge_164600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 163600 }
+		set_global_variable = xar_hs_ge_163600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 162600 }
+		set_global_variable = xar_hs_ge_162600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 161600 }
+		set_global_variable = xar_hs_ge_161600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 160600 }
+		set_global_variable = xar_hs_ge_160600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 159600 }
+		set_global_variable = xar_hs_ge_159600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 158600 }
+		set_global_variable = xar_hs_ge_158600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 157600 }
+		set_global_variable = xar_hs_ge_157600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 156600 }
+		set_global_variable = xar_hs_ge_156600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 155600 }
+		set_global_variable = xar_hs_ge_155600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 154600 }
+		set_global_variable = xar_hs_ge_154600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 153600 }
+		set_global_variable = xar_hs_ge_153600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 152600 }
+		set_global_variable = xar_hs_ge_152600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 151600 }
+		set_global_variable = xar_hs_ge_151600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 150600 }
+		set_global_variable = xar_hs_ge_150600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 149600 }
+		set_global_variable = xar_hs_ge_149600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 148600 }
+		set_global_variable = xar_hs_ge_148600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 147600 }
+		set_global_variable = xar_hs_ge_147600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 146600 }
+		set_global_variable = xar_hs_ge_146600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 145600 }
+		set_global_variable = xar_hs_ge_145600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 144600 }
+		set_global_variable = xar_hs_ge_144600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 143600 }
+		set_global_variable = xar_hs_ge_143600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 142600 }
+		set_global_variable = xar_hs_ge_142600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 141600 }
+		set_global_variable = xar_hs_ge_141600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 140600 }
+		set_global_variable = xar_hs_ge_140600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 139600 }
+		set_global_variable = xar_hs_ge_139600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 138600 }
+		set_global_variable = xar_hs_ge_138600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 137600 }
+		set_global_variable = xar_hs_ge_137600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 136600 }
+		set_global_variable = xar_hs_ge_136600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 135600 }
+		set_global_variable = xar_hs_ge_135600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 134600 }
+		set_global_variable = xar_hs_ge_134600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 133600 }
+		set_global_variable = xar_hs_ge_133600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 132600 }
+		set_global_variable = xar_hs_ge_132600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 131600 }
+		set_global_variable = xar_hs_ge_131600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 130600 }
+		set_global_variable = xar_hs_ge_130600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 129600 }
+		set_global_variable = xar_hs_ge_129600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 128600 }
+		set_global_variable = xar_hs_ge_128600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 127600 }
+		set_global_variable = xar_hs_ge_127600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 126600 }
+		set_global_variable = xar_hs_ge_126600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 125600 }
+		set_global_variable = xar_hs_ge_125600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 124600 }
+		set_global_variable = xar_hs_ge_124600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 123600 }
+		set_global_variable = xar_hs_ge_123600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 122600 }
+		set_global_variable = xar_hs_ge_122600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 121600 }
+		set_global_variable = xar_hs_ge_121600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 120600 }
+		set_global_variable = xar_hs_ge_120600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 119600 }
+		set_global_variable = xar_hs_ge_119600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 118600 }
+		set_global_variable = xar_hs_ge_118600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 117600 }
+		set_global_variable = xar_hs_ge_117600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 116600 }
+		set_global_variable = xar_hs_ge_116600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 115600 }
+		set_global_variable = xar_hs_ge_115600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 114600 }
+		set_global_variable = xar_hs_ge_114600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 113600 }
+		set_global_variable = xar_hs_ge_113600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 112600 }
+		set_global_variable = xar_hs_ge_112600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 111600 }
+		set_global_variable = xar_hs_ge_111600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 110600 }
+		set_global_variable = xar_hs_ge_110600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 109600 }
+		set_global_variable = xar_hs_ge_109600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 108600 }
+		set_global_variable = xar_hs_ge_108600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 107600 }
+		set_global_variable = xar_hs_ge_107600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 106600 }
+		set_global_variable = xar_hs_ge_106600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 105600 }
+		set_global_variable = xar_hs_ge_105600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 104600 }
+		set_global_variable = xar_hs_ge_104600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 103600 }
+		set_global_variable = xar_hs_ge_103600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 102600 }
+		set_global_variable = xar_hs_ge_102600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 101600 }
+		set_global_variable = xar_hs_ge_101600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 100600 }
+		set_global_variable = xar_hs_ge_100600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 99600 }
+		set_global_variable = xar_hs_ge_99600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 98600 }
+		set_global_variable = xar_hs_ge_98600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 97600 }
+		set_global_variable = xar_hs_ge_97600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 96600 }
+		set_global_variable = xar_hs_ge_96600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 95600 }
+		set_global_variable = xar_hs_ge_95600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 94600 }
+		set_global_variable = xar_hs_ge_94600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 93600 }
+		set_global_variable = xar_hs_ge_93600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 92600 }
+		set_global_variable = xar_hs_ge_92600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 91600 }
+		set_global_variable = xar_hs_ge_91600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 90600 }
+		set_global_variable = xar_hs_ge_90600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 89600 }
+		set_global_variable = xar_hs_ge_89600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 88600 }
+		set_global_variable = xar_hs_ge_88600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 87600 }
+		set_global_variable = xar_hs_ge_87600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 86600 }
+		set_global_variable = xar_hs_ge_86600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 85600 }
+		set_global_variable = xar_hs_ge_85600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 84600 }
+		set_global_variable = xar_hs_ge_84600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 83600 }
+		set_global_variable = xar_hs_ge_83600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 82600 }
+		set_global_variable = xar_hs_ge_82600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 81600 }
+		set_global_variable = xar_hs_ge_81600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 80600 }
+		set_global_variable = xar_hs_ge_80600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 79600 }
+		set_global_variable = xar_hs_ge_79600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 78600 }
+		set_global_variable = xar_hs_ge_78600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 77600 }
+		set_global_variable = xar_hs_ge_77600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 76600 }
+		set_global_variable = xar_hs_ge_76600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 75600 }
+		set_global_variable = xar_hs_ge_75600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 74600 }
+		set_global_variable = xar_hs_ge_74600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 73600 }
+		set_global_variable = xar_hs_ge_73600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 72600 }
+		set_global_variable = xar_hs_ge_72600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 71600 }
+		set_global_variable = xar_hs_ge_71600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 70600 }
+		set_global_variable = xar_hs_ge_70600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 69600 }
+		set_global_variable = xar_hs_ge_69600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 68600 }
+		set_global_variable = xar_hs_ge_68600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 67600 }
+		set_global_variable = xar_hs_ge_67600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 66600 }
+		set_global_variable = xar_hs_ge_66600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 66100 }
+		set_global_variable = xar_hs_ge_66100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 65600 }
+		set_global_variable = xar_hs_ge_65600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 65100 }
+		set_global_variable = xar_hs_ge_65100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 64600 }
+		set_global_variable = xar_hs_ge_64600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 64100 }
+		set_global_variable = xar_hs_ge_64100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 63600 }
+		set_global_variable = xar_hs_ge_63600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 63100 }
+		set_global_variable = xar_hs_ge_63100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 62600 }
+		set_global_variable = xar_hs_ge_62600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 62100 }
+		set_global_variable = xar_hs_ge_62100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 61600 }
+		set_global_variable = xar_hs_ge_61600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 61100 }
+		set_global_variable = xar_hs_ge_61100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 60600 }
+		set_global_variable = xar_hs_ge_60600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 60100 }
+		set_global_variable = xar_hs_ge_60100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 59600 }
+		set_global_variable = xar_hs_ge_59600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 59100 }
+		set_global_variable = xar_hs_ge_59100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 58600 }
+		set_global_variable = xar_hs_ge_58600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 58100 }
+		set_global_variable = xar_hs_ge_58100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 57600 }
+		set_global_variable = xar_hs_ge_57600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 57100 }
+		set_global_variable = xar_hs_ge_57100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 56600 }
+		set_global_variable = xar_hs_ge_56600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 56100 }
+		set_global_variable = xar_hs_ge_56100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 55600 }
+		set_global_variable = xar_hs_ge_55600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 55100 }
+		set_global_variable = xar_hs_ge_55100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 54600 }
+		set_global_variable = xar_hs_ge_54600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 54100 }
+		set_global_variable = xar_hs_ge_54100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 53600 }
+		set_global_variable = xar_hs_ge_53600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 53100 }
+		set_global_variable = xar_hs_ge_53100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 52600 }
+		set_global_variable = xar_hs_ge_52600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 52100 }
+		set_global_variable = xar_hs_ge_52100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 51600 }
+		set_global_variable = xar_hs_ge_51600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 51100 }
+		set_global_variable = xar_hs_ge_51100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 50600 }
+		set_global_variable = xar_hs_ge_50600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 50100 }
+		set_global_variable = xar_hs_ge_50100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 49600 }
+		set_global_variable = xar_hs_ge_49600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 49100 }
+		set_global_variable = xar_hs_ge_49100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 48600 }
+		set_global_variable = xar_hs_ge_48600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 48100 }
+		set_global_variable = xar_hs_ge_48100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 47600 }
+		set_global_variable = xar_hs_ge_47600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 47100 }
+		set_global_variable = xar_hs_ge_47100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 46600 }
+		set_global_variable = xar_hs_ge_46600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 46100 }
+		set_global_variable = xar_hs_ge_46100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 45600 }
+		set_global_variable = xar_hs_ge_45600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 45100 }
+		set_global_variable = xar_hs_ge_45100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 44600 }
+		set_global_variable = xar_hs_ge_44600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 44100 }
+		set_global_variable = xar_hs_ge_44100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 43600 }
+		set_global_variable = xar_hs_ge_43600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 43100 }
+		set_global_variable = xar_hs_ge_43100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 42600 }
+		set_global_variable = xar_hs_ge_42600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 42100 }
+		set_global_variable = xar_hs_ge_42100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 41600 }
+		set_global_variable = xar_hs_ge_41600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 41100 }
+		set_global_variable = xar_hs_ge_41100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 40600 }
+		set_global_variable = xar_hs_ge_40600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 40100 }
+		set_global_variable = xar_hs_ge_40100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 39600 }
+		set_global_variable = xar_hs_ge_39600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 39100 }
+		set_global_variable = xar_hs_ge_39100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 38600 }
+		set_global_variable = xar_hs_ge_38600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 38100 }
+		set_global_variable = xar_hs_ge_38100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 37600 }
+		set_global_variable = xar_hs_ge_37600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 37100 }
+		set_global_variable = xar_hs_ge_37100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 36600 }
+		set_global_variable = xar_hs_ge_36600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 36100 }
+		set_global_variable = xar_hs_ge_36100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 35600 }
+		set_global_variable = xar_hs_ge_35600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 35100 }
+		set_global_variable = xar_hs_ge_35100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 34600 }
+		set_global_variable = xar_hs_ge_34600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 34100 }
+		set_global_variable = xar_hs_ge_34100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 33600 }
+		set_global_variable = xar_hs_ge_33600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 33100 }
+		set_global_variable = xar_hs_ge_33100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 32600 }
+		set_global_variable = xar_hs_ge_32600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 32100 }
+		set_global_variable = xar_hs_ge_32100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 31600 }
+		set_global_variable = xar_hs_ge_31600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 31100 }
+		set_global_variable = xar_hs_ge_31100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 30600 }
+		set_global_variable = xar_hs_ge_30600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 30100 }
+		set_global_variable = xar_hs_ge_30100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 29600 }
+		set_global_variable = xar_hs_ge_29600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 29100 }
+		set_global_variable = xar_hs_ge_29100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 28600 }
+		set_global_variable = xar_hs_ge_28600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 28100 }
+		set_global_variable = xar_hs_ge_28100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 27600 }
+		set_global_variable = xar_hs_ge_27600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 27100 }
+		set_global_variable = xar_hs_ge_27100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 26600 }
+		set_global_variable = xar_hs_ge_26600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 26100 }
+		set_global_variable = xar_hs_ge_26100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 25600 }
+		set_global_variable = xar_hs_ge_25600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 25100 }
+		set_global_variable = xar_hs_ge_25100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 24600 }
+		set_global_variable = xar_hs_ge_24600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 24100 }
+		set_global_variable = xar_hs_ge_24100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 23600 }
+		set_global_variable = xar_hs_ge_23600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 23100 }
+		set_global_variable = xar_hs_ge_23100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 22600 }
+		set_global_variable = xar_hs_ge_22600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 22100 }
+		set_global_variable = xar_hs_ge_22100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 21600 }
+		set_global_variable = xar_hs_ge_21600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 21100 }
+		set_global_variable = xar_hs_ge_21100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 20600 }
+		set_global_variable = xar_hs_ge_20600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 20100 }
+		set_global_variable = xar_hs_ge_20100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 19600 }
+		set_global_variable = xar_hs_ge_19600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 19100 }
+		set_global_variable = xar_hs_ge_19100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 18600 }
+		set_global_variable = xar_hs_ge_18600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 18100 }
+		set_global_variable = xar_hs_ge_18100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 17600 }
+		set_global_variable = xar_hs_ge_17600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 17100 }
+		set_global_variable = xar_hs_ge_17100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 16600 }
+		set_global_variable = xar_hs_ge_16600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 16500 }
+		set_global_variable = xar_hs_ge_16500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 16400 }
+		set_global_variable = xar_hs_ge_16400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 16300 }
+		set_global_variable = xar_hs_ge_16300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 16200 }
+		set_global_variable = xar_hs_ge_16200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 16100 }
+		set_global_variable = xar_hs_ge_16100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 16000 }
+		set_global_variable = xar_hs_ge_16000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 15900 }
+		set_global_variable = xar_hs_ge_15900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 15800 }
+		set_global_variable = xar_hs_ge_15800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 15700 }
+		set_global_variable = xar_hs_ge_15700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 15600 }
+		set_global_variable = xar_hs_ge_15600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 15500 }
+		set_global_variable = xar_hs_ge_15500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 15400 }
+		set_global_variable = xar_hs_ge_15400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 15300 }
+		set_global_variable = xar_hs_ge_15300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 15200 }
+		set_global_variable = xar_hs_ge_15200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 15100 }
+		set_global_variable = xar_hs_ge_15100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 15000 }
+		set_global_variable = xar_hs_ge_15000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 14900 }
+		set_global_variable = xar_hs_ge_14900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 14800 }
+		set_global_variable = xar_hs_ge_14800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 14700 }
+		set_global_variable = xar_hs_ge_14700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 14600 }
+		set_global_variable = xar_hs_ge_14600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 14500 }
+		set_global_variable = xar_hs_ge_14500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 14400 }
+		set_global_variable = xar_hs_ge_14400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 14300 }
+		set_global_variable = xar_hs_ge_14300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 14200 }
+		set_global_variable = xar_hs_ge_14200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 14100 }
+		set_global_variable = xar_hs_ge_14100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 14000 }
+		set_global_variable = xar_hs_ge_14000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 13900 }
+		set_global_variable = xar_hs_ge_13900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 13800 }
+		set_global_variable = xar_hs_ge_13800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 13700 }
+		set_global_variable = xar_hs_ge_13700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 13600 }
+		set_global_variable = xar_hs_ge_13600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 13500 }
+		set_global_variable = xar_hs_ge_13500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 13400 }
+		set_global_variable = xar_hs_ge_13400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 13300 }
+		set_global_variable = xar_hs_ge_13300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 13200 }
+		set_global_variable = xar_hs_ge_13200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 13100 }
+		set_global_variable = xar_hs_ge_13100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 13000 }
+		set_global_variable = xar_hs_ge_13000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 12900 }
+		set_global_variable = xar_hs_ge_12900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 12800 }
+		set_global_variable = xar_hs_ge_12800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 12700 }
+		set_global_variable = xar_hs_ge_12700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 12600 }
+		set_global_variable = xar_hs_ge_12600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 12500 }
+		set_global_variable = xar_hs_ge_12500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 12400 }
+		set_global_variable = xar_hs_ge_12400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 12300 }
+		set_global_variable = xar_hs_ge_12300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 12200 }
+		set_global_variable = xar_hs_ge_12200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 12100 }
+		set_global_variable = xar_hs_ge_12100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 12000 }
+		set_global_variable = xar_hs_ge_12000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 11900 }
+		set_global_variable = xar_hs_ge_11900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 11800 }
+		set_global_variable = xar_hs_ge_11800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 11700 }
+		set_global_variable = xar_hs_ge_11700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 11600 }
+		set_global_variable = xar_hs_ge_11600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 11500 }
+		set_global_variable = xar_hs_ge_11500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 11400 }
+		set_global_variable = xar_hs_ge_11400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 11300 }
+		set_global_variable = xar_hs_ge_11300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 11200 }
+		set_global_variable = xar_hs_ge_11200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 11100 }
+		set_global_variable = xar_hs_ge_11100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 11000 }
+		set_global_variable = xar_hs_ge_11000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 10900 }
+		set_global_variable = xar_hs_ge_10900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 10800 }
+		set_global_variable = xar_hs_ge_10800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 10700 }
+		set_global_variable = xar_hs_ge_10700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 10600 }
+		set_global_variable = xar_hs_ge_10600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 10500 }
+		set_global_variable = xar_hs_ge_10500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 10400 }
+		set_global_variable = xar_hs_ge_10400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 10300 }
+		set_global_variable = xar_hs_ge_10300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 10200 }
+		set_global_variable = xar_hs_ge_10200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 10100 }
+		set_global_variable = xar_hs_ge_10100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 10000 }
+		set_global_variable = xar_hs_ge_10000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 9900 }
+		set_global_variable = xar_hs_ge_9900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 9800 }
+		set_global_variable = xar_hs_ge_9800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 9700 }
+		set_global_variable = xar_hs_ge_9700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 9600 }
+		set_global_variable = xar_hs_ge_9600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 9500 }
+		set_global_variable = xar_hs_ge_9500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 9400 }
+		set_global_variable = xar_hs_ge_9400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 9300 }
+		set_global_variable = xar_hs_ge_9300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 9200 }
+		set_global_variable = xar_hs_ge_9200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 9100 }
+		set_global_variable = xar_hs_ge_9100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 9000 }
+		set_global_variable = xar_hs_ge_9000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 8900 }
+		set_global_variable = xar_hs_ge_8900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 8800 }
+		set_global_variable = xar_hs_ge_8800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 8700 }
+		set_global_variable = xar_hs_ge_8700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 8600 }
+		set_global_variable = xar_hs_ge_8600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 8500 }
+		set_global_variable = xar_hs_ge_8500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 8400 }
+		set_global_variable = xar_hs_ge_8400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 8300 }
+		set_global_variable = xar_hs_ge_8300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 8200 }
+		set_global_variable = xar_hs_ge_8200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 8100 }
+		set_global_variable = xar_hs_ge_8100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 8000 }
+		set_global_variable = xar_hs_ge_8000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 7900 }
+		set_global_variable = xar_hs_ge_7900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 7800 }
+		set_global_variable = xar_hs_ge_7800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 7700 }
+		set_global_variable = xar_hs_ge_7700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 7600 }
+		set_global_variable = xar_hs_ge_7600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 7500 }
+		set_global_variable = xar_hs_ge_7500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 7400 }
+		set_global_variable = xar_hs_ge_7400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 7300 }
+		set_global_variable = xar_hs_ge_7300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 7200 }
+		set_global_variable = xar_hs_ge_7200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 7100 }
+		set_global_variable = xar_hs_ge_7100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 7000 }
+		set_global_variable = xar_hs_ge_7000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6900 }
+		set_global_variable = xar_hs_ge_6900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6800 }
+		set_global_variable = xar_hs_ge_6800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6700 }
+		set_global_variable = xar_hs_ge_6700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6600 }
+		set_global_variable = xar_hs_ge_6600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6550 }
+		set_global_variable = xar_hs_ge_6550
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6500 }
+		set_global_variable = xar_hs_ge_6500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6450 }
+		set_global_variable = xar_hs_ge_6450
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6400 }
+		set_global_variable = xar_hs_ge_6400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6350 }
+		set_global_variable = xar_hs_ge_6350
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6300 }
+		set_global_variable = xar_hs_ge_6300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6250 }
+		set_global_variable = xar_hs_ge_6250
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6200 }
+		set_global_variable = xar_hs_ge_6200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6150 }
+		set_global_variable = xar_hs_ge_6150
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6100 }
+		set_global_variable = xar_hs_ge_6100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6050 }
+		set_global_variable = xar_hs_ge_6050
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6000 }
+		set_global_variable = xar_hs_ge_6000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5950 }
+		set_global_variable = xar_hs_ge_5950
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5900 }
+		set_global_variable = xar_hs_ge_5900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5850 }
+		set_global_variable = xar_hs_ge_5850
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5800 }
+		set_global_variable = xar_hs_ge_5800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5750 }
+		set_global_variable = xar_hs_ge_5750
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5700 }
+		set_global_variable = xar_hs_ge_5700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5650 }
+		set_global_variable = xar_hs_ge_5650
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5600 }
+		set_global_variable = xar_hs_ge_5600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5550 }
+		set_global_variable = xar_hs_ge_5550
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5500 }
+		set_global_variable = xar_hs_ge_5500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5450 }
+		set_global_variable = xar_hs_ge_5450
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5400 }
+		set_global_variable = xar_hs_ge_5400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5350 }
+		set_global_variable = xar_hs_ge_5350
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5300 }
+		set_global_variable = xar_hs_ge_5300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5250 }
+		set_global_variable = xar_hs_ge_5250
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5200 }
+		set_global_variable = xar_hs_ge_5200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5150 }
+		set_global_variable = xar_hs_ge_5150
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5100 }
+		set_global_variable = xar_hs_ge_5100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5050 }
+		set_global_variable = xar_hs_ge_5050
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5000 }
+		set_global_variable = xar_hs_ge_5000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4950 }
+		set_global_variable = xar_hs_ge_4950
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4900 }
+		set_global_variable = xar_hs_ge_4900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4850 }
+		set_global_variable = xar_hs_ge_4850
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4800 }
+		set_global_variable = xar_hs_ge_4800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4750 }
+		set_global_variable = xar_hs_ge_4750
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4700 }
+		set_global_variable = xar_hs_ge_4700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4650 }
+		set_global_variable = xar_hs_ge_4650
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4600 }
+		set_global_variable = xar_hs_ge_4600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4550 }
+		set_global_variable = xar_hs_ge_4550
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4500 }
+		set_global_variable = xar_hs_ge_4500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4450 }
+		set_global_variable = xar_hs_ge_4450
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4400 }
+		set_global_variable = xar_hs_ge_4400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4350 }
+		set_global_variable = xar_hs_ge_4350
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4300 }
+		set_global_variable = xar_hs_ge_4300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4250 }
+		set_global_variable = xar_hs_ge_4250
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4200 }
+		set_global_variable = xar_hs_ge_4200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4150 }
+		set_global_variable = xar_hs_ge_4150
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4100 }
+		set_global_variable = xar_hs_ge_4100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4050 }
+		set_global_variable = xar_hs_ge_4050
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4000 }
+		set_global_variable = xar_hs_ge_4000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3950 }
+		set_global_variable = xar_hs_ge_3950
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3900 }
+		set_global_variable = xar_hs_ge_3900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3850 }
+		set_global_variable = xar_hs_ge_3850
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3800 }
+		set_global_variable = xar_hs_ge_3800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3750 }
+		set_global_variable = xar_hs_ge_3750
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3700 }
+		set_global_variable = xar_hs_ge_3700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3650 }
+		set_global_variable = xar_hs_ge_3650
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3600 }
+		set_global_variable = xar_hs_ge_3600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3550 }
+		set_global_variable = xar_hs_ge_3550
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3500 }
+		set_global_variable = xar_hs_ge_3500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3450 }
+		set_global_variable = xar_hs_ge_3450
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3400 }
+		set_global_variable = xar_hs_ge_3400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3350 }
+		set_global_variable = xar_hs_ge_3350
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3300 }
+		set_global_variable = xar_hs_ge_3300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3250 }
+		set_global_variable = xar_hs_ge_3250
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3200 }
+		set_global_variable = xar_hs_ge_3200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3150 }
+		set_global_variable = xar_hs_ge_3150
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3100 }
+		set_global_variable = xar_hs_ge_3100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3050 }
+		set_global_variable = xar_hs_ge_3050
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3000 }
+		set_global_variable = xar_hs_ge_3000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2950 }
+		set_global_variable = xar_hs_ge_2950
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2900 }
+		set_global_variable = xar_hs_ge_2900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2850 }
+		set_global_variable = xar_hs_ge_2850
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2800 }
+		set_global_variable = xar_hs_ge_2800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2750 }
+		set_global_variable = xar_hs_ge_2750
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2700 }
+		set_global_variable = xar_hs_ge_2700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2650 }
+		set_global_variable = xar_hs_ge_2650
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2600 }
+		set_global_variable = xar_hs_ge_2600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2550 }
+		set_global_variable = xar_hs_ge_2550
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2500 }
+		set_global_variable = xar_hs_ge_2500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2450 }
+		set_global_variable = xar_hs_ge_2450
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2400 }
+		set_global_variable = xar_hs_ge_2400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2350 }
+		set_global_variable = xar_hs_ge_2350
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2300 }
+		set_global_variable = xar_hs_ge_2300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2250 }
+		set_global_variable = xar_hs_ge_2250
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2200 }
+		set_global_variable = xar_hs_ge_2200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2150 }
+		set_global_variable = xar_hs_ge_2150
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2100 }
+		set_global_variable = xar_hs_ge_2100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2050 }
+		set_global_variable = xar_hs_ge_2050
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2000 }
+		set_global_variable = xar_hs_ge_2000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1950 }
+		set_global_variable = xar_hs_ge_1950
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1900 }
+		set_global_variable = xar_hs_ge_1900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1850 }
+		set_global_variable = xar_hs_ge_1850
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1800 }
+		set_global_variable = xar_hs_ge_1800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1750 }
+		set_global_variable = xar_hs_ge_1750
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1700 }
+		set_global_variable = xar_hs_ge_1700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1650 }
+		set_global_variable = xar_hs_ge_1650
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1600 }
+		set_global_variable = xar_hs_ge_1600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1590 }
+		set_global_variable = xar_hs_ge_1590
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1580 }
+		set_global_variable = xar_hs_ge_1580
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1570 }
+		set_global_variable = xar_hs_ge_1570
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1560 }
+		set_global_variable = xar_hs_ge_1560
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1550 }
+		set_global_variable = xar_hs_ge_1550
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1540 }
+		set_global_variable = xar_hs_ge_1540
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1530 }
+		set_global_variable = xar_hs_ge_1530
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1520 }
+		set_global_variable = xar_hs_ge_1520
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1510 }
+		set_global_variable = xar_hs_ge_1510
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1500 }
+		set_global_variable = xar_hs_ge_1500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1490 }
+		set_global_variable = xar_hs_ge_1490
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1480 }
+		set_global_variable = xar_hs_ge_1480
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1470 }
+		set_global_variable = xar_hs_ge_1470
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1460 }
+		set_global_variable = xar_hs_ge_1460
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1450 }
+		set_global_variable = xar_hs_ge_1450
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1440 }
+		set_global_variable = xar_hs_ge_1440
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1430 }
+		set_global_variable = xar_hs_ge_1430
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1420 }
+		set_global_variable = xar_hs_ge_1420
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1410 }
+		set_global_variable = xar_hs_ge_1410
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1400 }
+		set_global_variable = xar_hs_ge_1400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1390 }
+		set_global_variable = xar_hs_ge_1390
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1380 }
+		set_global_variable = xar_hs_ge_1380
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1370 }
+		set_global_variable = xar_hs_ge_1370
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1360 }
+		set_global_variable = xar_hs_ge_1360
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1350 }
+		set_global_variable = xar_hs_ge_1350
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1340 }
+		set_global_variable = xar_hs_ge_1340
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1330 }
+		set_global_variable = xar_hs_ge_1330
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1320 }
+		set_global_variable = xar_hs_ge_1320
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1310 }
+		set_global_variable = xar_hs_ge_1310
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1300 }
+		set_global_variable = xar_hs_ge_1300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1290 }
+		set_global_variable = xar_hs_ge_1290
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1280 }
+		set_global_variable = xar_hs_ge_1280
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1270 }
+		set_global_variable = xar_hs_ge_1270
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1260 }
+		set_global_variable = xar_hs_ge_1260
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1250 }
+		set_global_variable = xar_hs_ge_1250
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1240 }
+		set_global_variable = xar_hs_ge_1240
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1230 }
+		set_global_variable = xar_hs_ge_1230
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1220 }
+		set_global_variable = xar_hs_ge_1220
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1210 }
+		set_global_variable = xar_hs_ge_1210
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1200 }
+		set_global_variable = xar_hs_ge_1200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1190 }
+		set_global_variable = xar_hs_ge_1190
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1180 }
+		set_global_variable = xar_hs_ge_1180
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1170 }
+		set_global_variable = xar_hs_ge_1170
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1160 }
+		set_global_variable = xar_hs_ge_1160
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1150 }
+		set_global_variable = xar_hs_ge_1150
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1140 }
+		set_global_variable = xar_hs_ge_1140
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1130 }
+		set_global_variable = xar_hs_ge_1130
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1120 }
+		set_global_variable = xar_hs_ge_1120
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1110 }
+		set_global_variable = xar_hs_ge_1110
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1100 }
+		set_global_variable = xar_hs_ge_1100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1090 }
+		set_global_variable = xar_hs_ge_1090
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1080 }
+		set_global_variable = xar_hs_ge_1080
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1070 }
+		set_global_variable = xar_hs_ge_1070
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1060 }
+		set_global_variable = xar_hs_ge_1060
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1050 }
+		set_global_variable = xar_hs_ge_1050
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1040 }
+		set_global_variable = xar_hs_ge_1040
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1030 }
+		set_global_variable = xar_hs_ge_1030
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1020 }
+		set_global_variable = xar_hs_ge_1020
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1010 }
+		set_global_variable = xar_hs_ge_1010
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1000 }
+		set_global_variable = xar_hs_ge_1000
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 990 }
+		set_global_variable = xar_hs_ge_990
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 980 }
+		set_global_variable = xar_hs_ge_980
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 970 }
+		set_global_variable = xar_hs_ge_970
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 960 }
+		set_global_variable = xar_hs_ge_960
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 950 }
+		set_global_variable = xar_hs_ge_950
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 940 }
+		set_global_variable = xar_hs_ge_940
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 930 }
+		set_global_variable = xar_hs_ge_930
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 920 }
+		set_global_variable = xar_hs_ge_920
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 910 }
+		set_global_variable = xar_hs_ge_910
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 900 }
+		set_global_variable = xar_hs_ge_900
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 890 }
+		set_global_variable = xar_hs_ge_890
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 880 }
+		set_global_variable = xar_hs_ge_880
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 870 }
+		set_global_variable = xar_hs_ge_870
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 860 }
+		set_global_variable = xar_hs_ge_860
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 850 }
+		set_global_variable = xar_hs_ge_850
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 840 }
+		set_global_variable = xar_hs_ge_840
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 830 }
+		set_global_variable = xar_hs_ge_830
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 820 }
+		set_global_variable = xar_hs_ge_820
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 810 }
+		set_global_variable = xar_hs_ge_810
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 800 }
+		set_global_variable = xar_hs_ge_800
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 790 }
+		set_global_variable = xar_hs_ge_790
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 780 }
+		set_global_variable = xar_hs_ge_780
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 770 }
+		set_global_variable = xar_hs_ge_770
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 760 }
+		set_global_variable = xar_hs_ge_760
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 750 }
+		set_global_variable = xar_hs_ge_750
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 740 }
+		set_global_variable = xar_hs_ge_740
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 730 }
+		set_global_variable = xar_hs_ge_730
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 720 }
+		set_global_variable = xar_hs_ge_720
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 710 }
+		set_global_variable = xar_hs_ge_710
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 700 }
+		set_global_variable = xar_hs_ge_700
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 690 }
+		set_global_variable = xar_hs_ge_690
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 680 }
+		set_global_variable = xar_hs_ge_680
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 670 }
+		set_global_variable = xar_hs_ge_670
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 660 }
+		set_global_variable = xar_hs_ge_660
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 650 }
+		set_global_variable = xar_hs_ge_650
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 640 }
+		set_global_variable = xar_hs_ge_640
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 630 }
+		set_global_variable = xar_hs_ge_630
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 620 }
+		set_global_variable = xar_hs_ge_620
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 610 }
+		set_global_variable = xar_hs_ge_610
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 600 }
+		set_global_variable = xar_hs_ge_600
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 595 }
+		set_global_variable = xar_hs_ge_595
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 590 }
+		set_global_variable = xar_hs_ge_590
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 585 }
+		set_global_variable = xar_hs_ge_585
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 580 }
+		set_global_variable = xar_hs_ge_580
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 575 }
+		set_global_variable = xar_hs_ge_575
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 570 }
+		set_global_variable = xar_hs_ge_570
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 565 }
+		set_global_variable = xar_hs_ge_565
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 560 }
+		set_global_variable = xar_hs_ge_560
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 555 }
+		set_global_variable = xar_hs_ge_555
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 550 }
+		set_global_variable = xar_hs_ge_550
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 545 }
+		set_global_variable = xar_hs_ge_545
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 540 }
+		set_global_variable = xar_hs_ge_540
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 535 }
+		set_global_variable = xar_hs_ge_535
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 530 }
+		set_global_variable = xar_hs_ge_530
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 525 }
+		set_global_variable = xar_hs_ge_525
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 520 }
+		set_global_variable = xar_hs_ge_520
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 515 }
+		set_global_variable = xar_hs_ge_515
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 510 }
+		set_global_variable = xar_hs_ge_510
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 505 }
+		set_global_variable = xar_hs_ge_505
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 500 }
+		set_global_variable = xar_hs_ge_500
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 495 }
+		set_global_variable = xar_hs_ge_495
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 490 }
+		set_global_variable = xar_hs_ge_490
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 485 }
+		set_global_variable = xar_hs_ge_485
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 480 }
+		set_global_variable = xar_hs_ge_480
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 475 }
+		set_global_variable = xar_hs_ge_475
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 470 }
+		set_global_variable = xar_hs_ge_470
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 465 }
+		set_global_variable = xar_hs_ge_465
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 460 }
+		set_global_variable = xar_hs_ge_460
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 455 }
+		set_global_variable = xar_hs_ge_455
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 450 }
+		set_global_variable = xar_hs_ge_450
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 445 }
+		set_global_variable = xar_hs_ge_445
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 440 }
+		set_global_variable = xar_hs_ge_440
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 435 }
+		set_global_variable = xar_hs_ge_435
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 430 }
+		set_global_variable = xar_hs_ge_430
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 425 }
+		set_global_variable = xar_hs_ge_425
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 420 }
+		set_global_variable = xar_hs_ge_420
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 415 }
+		set_global_variable = xar_hs_ge_415
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 410 }
+		set_global_variable = xar_hs_ge_410
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 405 }
+		set_global_variable = xar_hs_ge_405
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 400 }
+		set_global_variable = xar_hs_ge_400
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 395 }
+		set_global_variable = xar_hs_ge_395
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 390 }
+		set_global_variable = xar_hs_ge_390
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 385 }
+		set_global_variable = xar_hs_ge_385
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 380 }
+		set_global_variable = xar_hs_ge_380
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 375 }
+		set_global_variable = xar_hs_ge_375
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 370 }
+		set_global_variable = xar_hs_ge_370
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 365 }
+		set_global_variable = xar_hs_ge_365
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 360 }
+		set_global_variable = xar_hs_ge_360
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 355 }
+		set_global_variable = xar_hs_ge_355
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 350 }
+		set_global_variable = xar_hs_ge_350
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 345 }
+		set_global_variable = xar_hs_ge_345
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 340 }
+		set_global_variable = xar_hs_ge_340
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 335 }
+		set_global_variable = xar_hs_ge_335
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 330 }
+		set_global_variable = xar_hs_ge_330
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 325 }
+		set_global_variable = xar_hs_ge_325
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 320 }
+		set_global_variable = xar_hs_ge_320
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 315 }
+		set_global_variable = xar_hs_ge_315
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 310 }
+		set_global_variable = xar_hs_ge_310
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 305 }
+		set_global_variable = xar_hs_ge_305
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 300 }
+		set_global_variable = xar_hs_ge_300
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 295 }
+		set_global_variable = xar_hs_ge_295
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 290 }
+		set_global_variable = xar_hs_ge_290
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 285 }
+		set_global_variable = xar_hs_ge_285
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 280 }
+		set_global_variable = xar_hs_ge_280
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 275 }
+		set_global_variable = xar_hs_ge_275
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 270 }
+		set_global_variable = xar_hs_ge_270
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 265 }
+		set_global_variable = xar_hs_ge_265
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 260 }
+		set_global_variable = xar_hs_ge_260
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 255 }
+		set_global_variable = xar_hs_ge_255
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 250 }
+		set_global_variable = xar_hs_ge_250
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 245 }
+		set_global_variable = xar_hs_ge_245
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 240 }
+		set_global_variable = xar_hs_ge_240
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 235 }
+		set_global_variable = xar_hs_ge_235
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 230 }
+		set_global_variable = xar_hs_ge_230
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 225 }
+		set_global_variable = xar_hs_ge_225
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 220 }
+		set_global_variable = xar_hs_ge_220
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 215 }
+		set_global_variable = xar_hs_ge_215
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 210 }
+		set_global_variable = xar_hs_ge_210
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 205 }
+		set_global_variable = xar_hs_ge_205
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 200 }
+		set_global_variable = xar_hs_ge_200
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 195 }
+		set_global_variable = xar_hs_ge_195
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 190 }
+		set_global_variable = xar_hs_ge_190
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 185 }
+		set_global_variable = xar_hs_ge_185
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 180 }
+		set_global_variable = xar_hs_ge_180
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 175 }
+		set_global_variable = xar_hs_ge_175
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 170 }
+		set_global_variable = xar_hs_ge_170
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 165 }
+		set_global_variable = xar_hs_ge_165
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 160 }
+		set_global_variable = xar_hs_ge_160
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 155 }
+		set_global_variable = xar_hs_ge_155
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 150 }
+		set_global_variable = xar_hs_ge_150
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 145 }
+		set_global_variable = xar_hs_ge_145
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 140 }
+		set_global_variable = xar_hs_ge_140
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 135 }
+		set_global_variable = xar_hs_ge_135
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 130 }
+		set_global_variable = xar_hs_ge_130
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 125 }
+		set_global_variable = xar_hs_ge_125
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 120 }
+		set_global_variable = xar_hs_ge_120
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 115 }
+		set_global_variable = xar_hs_ge_115
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 110 }
+		set_global_variable = xar_hs_ge_110
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 105 }
+		set_global_variable = xar_hs_ge_105
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 100 }
+		set_global_variable = xar_hs_ge_100
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 99 }
+		set_global_variable = xar_hs_ge_99
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 98 }
+		set_global_variable = xar_hs_ge_98
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 97 }
+		set_global_variable = xar_hs_ge_97
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 96 }
+		set_global_variable = xar_hs_ge_96
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 95 }
+		set_global_variable = xar_hs_ge_95
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 94 }
+		set_global_variable = xar_hs_ge_94
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 93 }
+		set_global_variable = xar_hs_ge_93
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 92 }
+		set_global_variable = xar_hs_ge_92
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 91 }
+		set_global_variable = xar_hs_ge_91
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 90 }
+		set_global_variable = xar_hs_ge_90
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 89 }
+		set_global_variable = xar_hs_ge_89
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 88 }
+		set_global_variable = xar_hs_ge_88
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 87 }
+		set_global_variable = xar_hs_ge_87
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 86 }
+		set_global_variable = xar_hs_ge_86
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 85 }
+		set_global_variable = xar_hs_ge_85
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 84 }
+		set_global_variable = xar_hs_ge_84
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 83 }
+		set_global_variable = xar_hs_ge_83
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 82 }
+		set_global_variable = xar_hs_ge_82
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 81 }
+		set_global_variable = xar_hs_ge_81
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 80 }
+		set_global_variable = xar_hs_ge_80
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 79 }
+		set_global_variable = xar_hs_ge_79
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 78 }
+		set_global_variable = xar_hs_ge_78
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 77 }
+		set_global_variable = xar_hs_ge_77
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 76 }
+		set_global_variable = xar_hs_ge_76
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 75 }
+		set_global_variable = xar_hs_ge_75
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 74 }
+		set_global_variable = xar_hs_ge_74
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 73 }
+		set_global_variable = xar_hs_ge_73
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 72 }
+		set_global_variable = xar_hs_ge_72
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 71 }
+		set_global_variable = xar_hs_ge_71
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 70 }
+		set_global_variable = xar_hs_ge_70
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 69 }
+		set_global_variable = xar_hs_ge_69
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 68 }
+		set_global_variable = xar_hs_ge_68
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 67 }
+		set_global_variable = xar_hs_ge_67
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 66 }
+		set_global_variable = xar_hs_ge_66
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 65 }
+		set_global_variable = xar_hs_ge_65
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 64 }
+		set_global_variable = xar_hs_ge_64
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 63 }
+		set_global_variable = xar_hs_ge_63
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 62 }
+		set_global_variable = xar_hs_ge_62
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 61 }
+		set_global_variable = xar_hs_ge_61
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 60 }
+		set_global_variable = xar_hs_ge_60
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 59 }
+		set_global_variable = xar_hs_ge_59
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 58 }
+		set_global_variable = xar_hs_ge_58
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 57 }
+		set_global_variable = xar_hs_ge_57
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 56 }
+		set_global_variable = xar_hs_ge_56
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 55 }
+		set_global_variable = xar_hs_ge_55
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 54 }
+		set_global_variable = xar_hs_ge_54
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 53 }
+		set_global_variable = xar_hs_ge_53
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 52 }
+		set_global_variable = xar_hs_ge_52
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 51 }
+		set_global_variable = xar_hs_ge_51
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 50 }
+		set_global_variable = xar_hs_ge_50
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 49 }
+		set_global_variable = xar_hs_ge_49
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 48 }
+		set_global_variable = xar_hs_ge_48
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 47 }
+		set_global_variable = xar_hs_ge_47
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 46 }
+		set_global_variable = xar_hs_ge_46
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 45 }
+		set_global_variable = xar_hs_ge_45
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 44 }
+		set_global_variable = xar_hs_ge_44
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 43 }
+		set_global_variable = xar_hs_ge_43
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 42 }
+		set_global_variable = xar_hs_ge_42
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 41 }
+		set_global_variable = xar_hs_ge_41
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 40 }
+		set_global_variable = xar_hs_ge_40
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 39 }
+		set_global_variable = xar_hs_ge_39
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 38 }
+		set_global_variable = xar_hs_ge_38
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 37 }
+		set_global_variable = xar_hs_ge_37
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 36 }
+		set_global_variable = xar_hs_ge_36
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 35 }
+		set_global_variable = xar_hs_ge_35
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 34 }
+		set_global_variable = xar_hs_ge_34
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 33 }
+		set_global_variable = xar_hs_ge_33
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 32 }
+		set_global_variable = xar_hs_ge_32
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 31 }
+		set_global_variable = xar_hs_ge_31
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 30 }
+		set_global_variable = xar_hs_ge_30
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 29 }
+		set_global_variable = xar_hs_ge_29
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 28 }
+		set_global_variable = xar_hs_ge_28
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 27 }
+		set_global_variable = xar_hs_ge_27
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 26 }
+		set_global_variable = xar_hs_ge_26
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 25 }
+		set_global_variable = xar_hs_ge_25
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 24 }
+		set_global_variable = xar_hs_ge_24
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 23 }
+		set_global_variable = xar_hs_ge_23
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 22 }
+		set_global_variable = xar_hs_ge_22
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 21 }
+		set_global_variable = xar_hs_ge_21
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 20 }
+		set_global_variable = xar_hs_ge_20
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 19 }
+		set_global_variable = xar_hs_ge_19
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 18 }
+		set_global_variable = xar_hs_ge_18
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 17 }
+		set_global_variable = xar_hs_ge_17
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 16 }
+		set_global_variable = xar_hs_ge_16
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 15 }
+		set_global_variable = xar_hs_ge_15
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 14 }
+		set_global_variable = xar_hs_ge_14
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 13 }
+		set_global_variable = xar_hs_ge_13
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 12 }
+		set_global_variable = xar_hs_ge_12
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 11 }
+		set_global_variable = xar_hs_ge_11
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 10 }
+		set_global_variable = xar_hs_ge_10
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 9 }
+		set_global_variable = xar_hs_ge_9
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 8 }
+		set_global_variable = xar_hs_ge_8
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 7 }
+		set_global_variable = xar_hs_ge_7
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 6 }
+		set_global_variable = xar_hs_ge_6
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 5 }
+		set_global_variable = xar_hs_ge_5
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 4 }
+		set_global_variable = xar_hs_ge_4
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 3 }
+		set_global_variable = xar_hs_ge_3
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 2 }
+		set_global_variable = xar_hs_ge_2
+	}
+	else_if = {
+		limit = { global_var:xa_run_score >= 1 }
+		set_global_variable = xar_hs_ge_1
+	}
+}

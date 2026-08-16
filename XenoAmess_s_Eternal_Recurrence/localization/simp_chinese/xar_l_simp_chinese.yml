@@ -1,0 +1,30 @@
+﻿l_simp_chinese:
+ # 游戏规则
+ rule_xar_enabled:0 "XenoAmess 的永恒轮回"
+ setting_xar_on:0 "启用"
+ setting_xar_on_desc:0 "启用 XenoAmess 模式：开局时导入全局最高分副本，可用于购买属性。"
+ setting_xar_off:0 "禁用"
+ setting_xar_off_desc:0 "关闭 XenoAmess 模式。"
+
+ # 教程课程 step 哨兵文本。所有语言必须保持一致：GUI 自动点击按它匹配。
+ xar_silent_step:0 "XAR_SYNC_SENTINEL"
+
+ # 顶位自定义本地化返回的哨兵。所有语言必须保持一致：GUI 导入 state 按它匹配。
+ xar_top_bit_sentinel:0 "XAR_TOP_SENTINEL"
+
+ # 开局商店事件
+ xar.0001.title:0 "永恒轮回"
+ xar.0001.desc:0 "往昔生命的回响仍萦绕不散。\n\n你拥有 [TopScope.GetValue('xar_points')] 点分数（全局最高分的副本）。每点属性花费 25 分。"
+ xar.0001.diplomacy:0 "购买 +1 外交（25 分）"
+ xar.0001.martial:0 "购买 +1 军事（25 分）"
+ xar.0001.stewardship:0 "购买 +1 管理（25 分）"
+ xar.0001.intrigue:0 "购买 +1 谋略（25 分）"
+ xar.0001.learning:0 "购买 +1 学识（25 分）"
+ xar.0001.prowess:0 "购买 +1 勇武（25 分）"
+ xar.0001.finish:0 "开始此生"
+
+ # 死亡结算事件
+ xar.1001.title:0 "轮回终结"
+ xar.1001.desc:0 "你的一生已被称量。\n\n当局分数：[TopScope.GetValue('xar_score')]\n此前纪录：[TopScope.GetValue('xar_old')]\n差值：[TopScope.GetValue('xar_delta')|+0]"
+ xar.1001.new_record:0 "新纪录！它将回响于未来所有生命。"
+ xar.1001.no_record:0 "纪录未被打破。来生再战。"

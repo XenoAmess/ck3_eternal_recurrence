@@ -1,0 +1,115 @@
+﻿# Scoring rule (test version):
+#   each attribute point * 5 (diplomacy, martial, stewardship, intrigue, learning, prowess)
+#   each living dynasty member * 2
+#   each living house member * an extra 2
+#   every 10 gold * 1
+#   every 15 prestige * 1
+#   every 15 piety * 1
+xar_compute_score_effect = {
+	set_global_variable = {
+		name = xa_run_score
+		value = 0
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = {
+			value = diplomacy
+			multiply = 5
+		}
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = {
+			value = martial
+			multiply = 5
+		}
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = {
+			value = stewardship
+			multiply = 5
+		}
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = {
+			value = intrigue
+			multiply = 5
+		}
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = {
+			value = learning
+			multiply = 5
+		}
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = {
+			value = prowess
+			multiply = 5
+		}
+	}
+	dynasty = {
+		every_dynasty_member = {
+			limit = { is_alive = yes }
+			change_global_variable = {
+				name = xa_run_score
+				add = 2
+			}
+		}
+	}
+	house = {
+		every_house_member = {
+			limit = { is_alive = yes }
+			change_global_variable = {
+				name = xa_run_score
+				add = 2
+			}
+		}
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = {
+			value = gold
+			divide = 10
+			floor = yes
+		}
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = {
+			value = prestige
+			divide = 15
+			floor = yes
+		}
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = {
+			value = piety
+			divide = 15
+			floor = yes
+		}
+	}
+	if = {
+		limit = { NOT = { has_global_variable = xa_global_record_imported } }
+		set_global_variable = {
+			name = xa_global_record_imported
+			value = 0
+		}
+	}
+	set_global_variable = {
+		name = xa_old_record
+		value = { value = global_var:xa_global_record_imported }
+	}
+	set_global_variable = {
+		name = xa_score_delta
+		value = {
+			value = global_var:xa_run_score
+			subtract = global_var:xa_old_record
+		}
+	}
+}
