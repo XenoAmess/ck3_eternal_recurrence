@@ -1,10 +1,10 @@
 ﻿l_english:
  # Game rule
- rule_xar_enabled:0 "XenoAmess's Eternal Recurrence"
+ rule_xar_enabled:0 "Glassfire Lord's Eternal Recurrence"
  setting_xar_on:0 "Enabled"
- setting_xar_on_desc:0 "XenoAmess mode is active: the global high score is imported at game start and can be spent on enhancements."
+ setting_xar_on_desc:0 "Glassfire Lord mode is active: the global high score is imported at game start and can be spent on enhancements."
  setting_xar_off:0 "Disabled"
- setting_xar_off_desc:0 "XenoAmess mode is inactive."
+ setting_xar_off_desc:0 "Glassfire Lord mode is inactive."
 
  # Tutorial lesson step sentinel text. Must stay identical in every language.
  xar_silent_step:0 "XAR_SYNC_SENTINEL"

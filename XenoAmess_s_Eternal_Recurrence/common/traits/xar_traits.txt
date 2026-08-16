@@ -1,4 +1,4 @@
-﻿# XenoAmess's Eternal Recurrence traits
+﻿# Glassfire Lord's Eternal Recurrence traits
 # Loc keys: trait_xar_glassfire_gaze / trait_xar_glassfire_gaze_desc
 xar_glassfire_gaze = {
 	icon = glassfire_trait.dds

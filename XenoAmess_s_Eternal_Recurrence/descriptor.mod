@@ -1,6 +1,6 @@
-version="0.0.1"
+﻿version="0.0.1"
 tags={
 	"Gameplay"
 }
-name="XenoAmess's Eternal Recurrence"
+name="琉焰卿的永恒轮回"
 supported_version="1.19.0.6"

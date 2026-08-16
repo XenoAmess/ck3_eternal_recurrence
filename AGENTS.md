@@ -1,4 +1,4 @@
-# XenoAmess's Eternal Recurrence（AGENTS 指南）
+# 琉焰卿的永恒轮回（AGENTS 指南）
 
 ## 项目结构
 

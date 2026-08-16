@@ -1,10 +1,10 @@
 ﻿l_simp_chinese:
  # 游戏规则
- rule_xar_enabled:0 "XenoAmess 的永恒轮回"
+ rule_xar_enabled:0 "琉焰卿的永恒轮回"
  setting_xar_on:0 "启用"
- setting_xar_on_desc:0 "启用 XenoAmess 模式：开局时导入全局最高分副本，可用于购买属性。"
+ setting_xar_on_desc:0 "启用琉焰卿模式：开局时导入全局最高分副本，可用于购买属性。"
  setting_xar_off:0 "禁用"
- setting_xar_off_desc:0 "关闭 XenoAmess 模式。"
+ setting_xar_off_desc:0 "关闭琉焰卿模式。"
 
  # 教程课程 step 哨兵文本。所有语言必须保持一致：GUI 自动点击按它匹配。
  xar_silent_step:0 "XAR_SYNC_SENTINEL"

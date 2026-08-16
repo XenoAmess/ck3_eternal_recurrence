@@ -1,4 +1,4 @@
-﻿# XenoAmess's Eternal Recurrence modifiers
+﻿# Glassfire Lord's Eternal Recurrence modifiers
 
 # One free faith reformation: zeroes the piety cost in the faith creation window.
 xar_free_faith_reformation = {

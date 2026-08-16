@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generator for XenoAmess's Eternal Recurrence global high-score storage.
+Generator for Glassfire Lord's Eternal Recurrence global high-score storage.
 
 Global cross-save storage uses tutorial lesson completion bits, persisted by the
 engine in <user dir>/tutorial.txt (completed_lessons list). Bits are write-once,
