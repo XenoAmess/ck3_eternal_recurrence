@@ -3,4 +3,5 @@ tags={
 	"Gameplay"
 }
 name="琉焰卿的永恒轮回"
+picture="workshop_preview.png"
 supported_version="1.19.0.6"

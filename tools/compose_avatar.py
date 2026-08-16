@@ -10,7 +10,7 @@ blurred backdrop + sharp right-side paste.)
 from PIL import Image
 import os
 
-SRC = r"Z:\ck3_mod_rewrite\glassfire_avatar_wide.png"
+SRC = r"Z:\ck3_mod_rewrite\images\glassfire_avatar_wide.png"
 OUT_DIR = r"Z:\ck3_mod_rewrite\XenoAmess_s_Eternal_Recurrence\gfx\interface\illustrations\event_scenes"
 OUT = os.path.join(OUT_DIR, "xar_glassfire_avatar.dds")
 W, H = 1592, 848
