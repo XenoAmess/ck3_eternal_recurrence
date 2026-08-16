@@ -12,6 +12,7 @@
   更新工坊 = 改仓库内容 → 启动器 Mods → 上传 Mod 选同一物品再传一次。预览图 `workshop_preview.jpg` 必须在
   **用户目录 mod/ 下也放一份**（启动器按 .mod 所在目录解析 `picture` 相对路径，不是按 mod 本体目录），
   且必须 **JPG < 1MB**（PNG 超 1MB 会导致整个上传失败，报"请确认 Mod 文件和 Steam 凭据"）
+- 工坊描述维护在 `workshop/description.bbcode`（BBCode，内嵌 4 张截图的 steamusercontent 直链）；改完描述到物品页「编辑标题与描述」整段替换
 
 ## 构建/生成
 
