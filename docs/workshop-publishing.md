@@ -9,20 +9,15 @@
 |---|---|---|
 | 外层 .mod | `Documents\Paradox Interactive\Crusader Kings III\mod\<name>.mod` | 含 `path=` 指向 mod 本体；上传后启动器自动写回 `remote_file_id` |
 | 内层 descriptor.mod | mod 本体根目录 | **禁止含 `remote_file_id`**（见下） |
-| 预览图 | **两个位置都要**：mod 本体根目录 + 外层 .mod 所在目录 | **JPG 且 < 1MB** |
+| 预览图 | mod 本体根目录，文件名固定 **`thumbnail.png`** | 启动器按约定自动找（同各 dev mod 目录）；descriptor 里同时写 `picture="thumbnail.png"` |
 
 ## 血泪坑（全部实测复现）
 
-### 1. `picture=` 按外层 .mod 所在目录解析
+### 1. 预览图约定：`thumbnail.png` 在 mod 根目录
 
-descriptor 里写 `picture="workshop_preview.jpg"`，启动器找的是
-`Documents\...\mod\workshop_preview.jpg`，**不是** mod 本体目录。
-图只放在 mod 目录里 → 上传"成功"但预览图为空（工坊页标题图黑/占位符）。
-
-### 2. 预览图 PNG > 1MB → 整个上传失败
-
-报错文案极其误导："将您的 Mod 上传至 Steam 时发生错误。请确认您的 Mod 文件和 Steam 凭据。"
-真实原因就是图太大。JPG quality 85 约 250KB 即可。无审核环节，不存在"等审核"。
+启动器（含工坊预览图）认的是 mod 根目录下名为 `thumbnail.png` 的文件——这是 PDX 系惯例，
+本机其他 dev mod（pod_greedy_head_of_faith、more_tenets_slots 等）全是这个布局。
+自定义文件名/只写在 descriptor 里 → 工坊页预览图保持默认占位图，且无任何报错提示。
 
 ### 3. `remote_file_id` 只能在外层 .mod，不能进内层 descriptor.mod
 
