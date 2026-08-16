@@ -121,18 +121,67 @@ xar.1001 = {
 
 	immediate = {
 		debug_log = "XAR: score event fired"
-		save_scope_value_as = {
-			name = xar_score
-			value = global_var:xa_run_score
-		}
-		save_scope_value_as = {
-			name = xar_old
-			value = global_var:xa_old_record
-		}
-		save_scope_value_as = {
-			name = xar_delta
-			value = global_var:xa_score_delta
-		}
+		# attributes
+		save_scope_value_as = { name = xar_a_dip value = global_var:xa_a_dip }
+		save_scope_value_as = { name = xar_a_mar value = global_var:xa_a_mar }
+		save_scope_value_as = { name = xar_a_ste value = global_var:xa_a_ste }
+		save_scope_value_as = { name = xar_a_int value = global_var:xa_a_int }
+		save_scope_value_as = { name = xar_a_lea value = global_var:xa_a_lea }
+		save_scope_value_as = { name = xar_a_pro value = global_var:xa_a_pro }
+		save_scope_value_as = { name = xar_p_dip value = global_var:xa_p_dip }
+		save_scope_value_as = { name = xar_p_mar value = global_var:xa_p_mar }
+		save_scope_value_as = { name = xar_p_ste value = global_var:xa_p_ste }
+		save_scope_value_as = { name = xar_p_int value = global_var:xa_p_int }
+		save_scope_value_as = { name = xar_p_lea value = global_var:xa_p_lea }
+		save_scope_value_as = { name = xar_p_pro value = global_var:xa_p_pro }
+		# blood
+		save_scope_value_as = { name = xar_a_dyn value = global_var:xa_a_dyn }
+		save_scope_value_as = { name = xar_a_hou value = global_var:xa_a_hou }
+		save_scope_value_as = { name = xar_p_dyn value = global_var:xa_p_dyn }
+		save_scope_value_as = { name = xar_p_hou value = global_var:xa_p_hou }
+		# resources (raw, floor log2, points)
+		save_scope_value_as = { name = xar_a_gold value = global_var:xa_a_gold }
+		save_scope_value_as = { name = xar_a_pres value = global_var:xa_a_pres }
+		save_scope_value_as = { name = xar_a_pie value = global_var:xa_a_pie }
+		save_scope_value_as = { name = xar_a_inf value = global_var:xa_a_inf }
+		save_scope_value_as = { name = xar_l_gold value = global_var:xa_l_gold }
+		save_scope_value_as = { name = xar_l_pres value = global_var:xa_l_pres }
+		save_scope_value_as = { name = xar_l_pie value = global_var:xa_l_pie }
+		save_scope_value_as = { name = xar_l_inf value = global_var:xa_l_inf }
+		save_scope_value_as = { name = xar_p_gold value = global_var:xa_p_gold }
+		save_scope_value_as = { name = xar_p_pres value = global_var:xa_p_pres }
+		save_scope_value_as = { name = xar_p_pie value = global_var:xa_p_pie }
+		save_scope_value_as = { name = xar_p_inf value = global_var:xa_p_inf }
+		# titles held
+		save_scope_value_as = { name = xar_n_t1 value = global_var:xa_n_t1 }
+		save_scope_value_as = { name = xar_n_t2 value = global_var:xa_n_t2 }
+		save_scope_value_as = { name = xar_n_t3 value = global_var:xa_n_t3 }
+		save_scope_value_as = { name = xar_n_t4 value = global_var:xa_n_t4 }
+		save_scope_value_as = { name = xar_n_t5 value = global_var:xa_n_t5 }
+		save_scope_value_as = { name = xar_p_t1 value = global_var:xa_p_t1 }
+		save_scope_value_as = { name = xar_p_t2 value = global_var:xa_p_t2 }
+		save_scope_value_as = { name = xar_p_t3 value = global_var:xa_p_t3 }
+		save_scope_value_as = { name = xar_p_t4 value = global_var:xa_p_t4 }
+		save_scope_value_as = { name = xar_p_t5 value = global_var:xa_p_t5 }
+		# descendants by tier
+		save_scope_value_as = { name = xar_d_t1 value = global_var:xa_d_t1 }
+		save_scope_value_as = { name = xar_d_t2 value = global_var:xa_d_t2 }
+		save_scope_value_as = { name = xar_d_t3 value = global_var:xa_d_t3 }
+		save_scope_value_as = { name = xar_d_t4 value = global_var:xa_d_t4 }
+		save_scope_value_as = { name = xar_d_t5 value = global_var:xa_d_t5 }
+		save_scope_value_as = { name = xar_p_d1 value = global_var:xa_p_d1 }
+		save_scope_value_as = { name = xar_p_d2 value = global_var:xa_p_d2 }
+		save_scope_value_as = { name = xar_p_d3 value = global_var:xa_p_d3 }
+		save_scope_value_as = { name = xar_p_d4 value = global_var:xa_p_d4 }
+		save_scope_value_as = { name = xar_p_d5 value = global_var:xa_p_d5 }
+		# realm
+		save_scope_value_as = { name = xar_a_realm value = global_var:xa_a_realm }
+		save_scope_value_as = { name = xar_l_realm value = global_var:xa_l_realm }
+		save_scope_value_as = { name = xar_p_realm value = global_var:xa_p_realm }
+		# totals
+		save_scope_value_as = { name = xar_score value = global_var:xa_run_score }
+		save_scope_value_as = { name = xar_old value = global_var:xa_old_record }
+		save_scope_value_as = { name = xar_delta value = global_var:xa_score_delta }
 	}
 
 	option = {

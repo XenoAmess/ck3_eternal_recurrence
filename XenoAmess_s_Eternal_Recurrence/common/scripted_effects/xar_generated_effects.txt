@@ -2806,3 +2806,222 @@ xar_write_record_effect = {
 		set_global_variable = xar_hs_ge_1
 	}
 }
+
+# Parameterized floor(log2($SRC$)) into global var $VAR$.
+# Call: xar_log2_floor_effect = { SRC = gold VAR = xa_l_gold }
+xar_log2_floor_effect = {
+	set_global_variable = {
+		name = $VAR$
+		value = 0
+	}
+	if = {
+		limit = { $SRC$ >= 2 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 4 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 8 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 16 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 32 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 64 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 128 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 256 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 512 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 1024 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 2048 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 4096 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 8192 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 16384 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 32768 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 65536 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 131072 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 262144 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 524288 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 1048576 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 2097152 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 4194304 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 8388608 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 16777216 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 33554432 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 67108864 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 134217728 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 268435456 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 536870912 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+	if = {
+		limit = { $SRC$ >= 1073741824 }
+		change_global_variable = {
+			name = $VAR$
+			add = 1
+		}
+	}
+}

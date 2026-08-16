@@ -67,3 +67,10 @@ xar_enabled = {
 | 遍历玩家 | `every_player = { ... }` |
 | 日志标记 | `debug_log = "XAR: xxx"` |
 | 存显示用值 | `save_scope_value_as = { name = x value = global_var:y }` |
+| 存 scope 引用 | `save_scope_as = x`（同链条内 `scope:x` 可用） |
+| 头衔迭代 | `every_held_title = { limit = { tier = tier_county } ... }`（tier_county/duchy/kingdom/empire/hegemony） |
+| 人物最高头衔 | `highest_held_title_tier >= tier_kingdom` |
+| 子女迭代 | `every_child = { limit = {...} ... }`（可嵌套做世代展开） |
+| 亲缘判定 | `is_child_of = scope:x` / `is_grandchild_of = scope:x`（仅 1~2 代，深代用 father/mother 链展开） |
+| 参数化 scripted effect | `xxx_effect = { SRC = gold VAR = xa_l_gold }`（体内 `$SRC$`/`$VAR$` 文本替换） |
+| log2 | 无内置函数；用 2 的幂阶梯：`floor(log2(x)) = 满足 2^n ≤ x 的 n≥1 个数`（见生成器 xar_log2_floor_effect） |

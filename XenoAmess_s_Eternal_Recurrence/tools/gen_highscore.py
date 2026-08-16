@@ -166,6 +166,26 @@ def gen_effects() -> str:
         lines.append("\t}")
     lines.append("}")
     lines.append("")
+
+    # Parameterized floor(log2) effect (script values have no log function).
+    # floor(log2(x)) == count of powers of two <= x; x < 2 yields 0.
+    lines.append("# Parameterized floor(log2($SRC$)) into global var $VAR$.")
+    lines.append("# Call: xar_log2_floor_effect = { SRC = gold VAR = xa_l_gold }")
+    lines.append("xar_log2_floor_effect = {")
+    lines.append("\tset_global_variable = {")
+    lines.append("\t\tname = $VAR$")
+    lines.append("\t\tvalue = 0")
+    lines.append("\t}")
+    for n in range(1, 31):
+        lines.append("\tif = {")
+        lines.append(f"\t\tlimit = {{ $SRC$ >= {2 ** n} }}")
+        lines.append("\t\tchange_global_variable = {")
+        lines.append("\t\t\tname = $VAR$")
+        lines.append("\t\t\tadd = 1")
+        lines.append("\t\t}")
+        lines.append("\t}")
+    lines.append("}")
+    lines.append("")
     return "\n".join(lines)
 
 

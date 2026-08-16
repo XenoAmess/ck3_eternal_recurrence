@@ -30,7 +30,7 @@ py XenoAmess_s_Eternal_Recurrence/tools/gen_highscore.py
 
 ## Git 约定
 
-- **每次任务执行完成后，默认 `git commit` + `git push`**（无需另行确认）
+- **每次任务执行完成后，默认 `git commit` + `git push`**（无需另行确认，也不要等人工验证，直接提交推送）
 - 提交信息用英文，简明描述改动
 
 ## 硬性约束（血泪教训，详见 docs/）

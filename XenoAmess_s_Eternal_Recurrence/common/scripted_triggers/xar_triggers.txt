@@ -1,0 +1,23 @@
+﻿# True if the scoped character is a descendant of scope:xar_dead (some direct
+# ancestor is the dead run character). Bounded to 5 generations via parent links
+# (the engine only offers is_child_of / is_grandchild_of).
+xar_is_descendant_of_dead_trigger = {
+	OR = {
+		is_child_of = scope:xar_dead
+		is_grandchild_of = scope:xar_dead
+		father = { is_grandchild_of = scope:xar_dead }
+		mother = { is_grandchild_of = scope:xar_dead }
+		father = { father = { is_grandchild_of = scope:xar_dead } }
+		father = { mother = { is_grandchild_of = scope:xar_dead } }
+		mother = { father = { is_grandchild_of = scope:xar_dead } }
+		mother = { mother = { is_grandchild_of = scope:xar_dead } }
+		father = { father = { father = { is_grandchild_of = scope:xar_dead } } }
+		father = { father = { mother = { is_grandchild_of = scope:xar_dead } } }
+		father = { mother = { father = { is_grandchild_of = scope:xar_dead } } }
+		father = { mother = { mother = { is_grandchild_of = scope:xar_dead } } }
+		mother = { father = { father = { is_grandchild_of = scope:xar_dead } } }
+		mother = { father = { mother = { is_grandchild_of = scope:xar_dead } } }
+		mother = { mother = { father = { is_grandchild_of = scope:xar_dead } } }
+		mother = { mother = { mother = { is_grandchild_of = scope:xar_dead } } }
+	}
+}

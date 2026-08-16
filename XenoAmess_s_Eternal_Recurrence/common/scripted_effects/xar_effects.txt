@@ -1,99 +1,437 @@
-﻿# Scoring rule (test version):
-#   each attribute point * 5 (diplomacy, martial, stewardship, intrigue, learning, prowess)
-#   each living dynasty member * 2
-#   each living house member * an extra 2
-#   every 10 gold * 1
-#   every 15 prestige * 1
-#   every 15 piety * 1
+﻿# Scoring rule:
+#   each attribute point * 1 (diplomacy, martial, stewardship, intrigue, learning, prowess)
+#   each living dynasty member who is your descendant * 0.1
+#   each living house member who is your descendant * an extra 0.1
+#   floor(log2(gold)) * 5
+#   floor(log2(prestige)) * 3
+#   floor(log2(piety)) * 3
+#   floor(log2(influence)) * 3
+#   titles held at death: county 1, duchy 2.5, kingdom 5, empire 10, hegemony 20
+#   each living descendant's highest title tier: county 0.25, duchy 1, kingdom 2.5, empire 5, hegemony 10
+#   if landed: floor(log2(realm_size)) * 10
+#
+# Root is the DYING character (on_death). Every component's raw value and its
+# points are captured into global variables so the result event (fired on the
+# heir a day later) can display the full breakdown.
 xar_compute_score_effect = {
+	save_scope_as = xar_dead
+
+	# --- attributes (points = value * 1) ---
+	set_global_variable = {
+		name = xa_a_dip
+		value = { value = diplomacy }
+	}
+	set_global_variable = {
+		name = xa_p_dip
+		value = { value = global_var:xa_a_dip }
+	}
+	set_global_variable = {
+		name = xa_a_mar
+		value = { value = martial }
+	}
+	set_global_variable = {
+		name = xa_p_mar
+		value = { value = global_var:xa_a_mar }
+	}
+	set_global_variable = {
+		name = xa_a_ste
+		value = { value = stewardship }
+	}
+	set_global_variable = {
+		name = xa_p_ste
+		value = { value = global_var:xa_a_ste }
+	}
+	set_global_variable = {
+		name = xa_a_int
+		value = { value = intrigue }
+	}
+	set_global_variable = {
+		name = xa_p_int
+		value = { value = global_var:xa_a_int }
+	}
+	set_global_variable = {
+		name = xa_a_lea
+		value = { value = learning }
+	}
+	set_global_variable = {
+		name = xa_p_lea
+		value = { value = global_var:xa_a_lea }
+	}
+	set_global_variable = {
+		name = xa_a_pro
+		value = { value = prowess }
+	}
+	set_global_variable = {
+		name = xa_p_pro
+		value = { value = global_var:xa_a_pro }
+	}
+
+	# --- living dynasty members who are descendants (points = count * 0.1) ---
+	set_global_variable = {
+		name = xa_a_dyn
+		value = 0
+	}
+	dynasty = {
+		every_dynasty_member = {
+			limit = {
+				is_alive = yes
+				xar_is_descendant_of_dead_trigger = yes
+			}
+			change_global_variable = {
+				name = xa_a_dyn
+				add = 1
+			}
+		}
+	}
+	set_global_variable = {
+		name = xa_p_dyn
+		value = { value = global_var:xa_a_dyn multiply = 0.1 }
+	}
+
+	# --- living house members who are descendants (extra points = count * 0.1) ---
+	set_global_variable = {
+		name = xa_a_hou
+		value = 0
+	}
+	house = {
+		every_house_member = {
+			limit = {
+				is_alive = yes
+				xar_is_descendant_of_dead_trigger = yes
+			}
+			change_global_variable = {
+				name = xa_a_hou
+				add = 1
+			}
+		}
+	}
+	set_global_variable = {
+		name = xa_p_hou
+		value = { value = global_var:xa_a_hou multiply = 0.1 }
+	}
+
+	# --- resources: floor(log2(x)) * mult ---
+	set_global_variable = {
+		name = xa_a_gold
+		value = { value = gold }
+	}
+	xar_log2_floor_effect = { SRC = gold VAR = xa_l_gold }
+	set_global_variable = {
+		name = xa_p_gold
+		value = { value = global_var:xa_l_gold multiply = 5 }
+	}
+	set_global_variable = {
+		name = xa_a_pres
+		value = { value = prestige }
+	}
+	xar_log2_floor_effect = { SRC = prestige VAR = xa_l_pres }
+	set_global_variable = {
+		name = xa_p_pres
+		value = { value = global_var:xa_l_pres multiply = 3 }
+	}
+	set_global_variable = {
+		name = xa_a_pie
+		value = { value = piety }
+	}
+	xar_log2_floor_effect = { SRC = piety VAR = xa_l_pie }
+	set_global_variable = {
+		name = xa_p_pie
+		value = { value = global_var:xa_l_pie multiply = 3 }
+	}
+	set_global_variable = {
+		name = xa_a_inf
+		value = { value = influence }
+	}
+	xar_log2_floor_effect = { SRC = influence VAR = xa_l_inf }
+	set_global_variable = {
+		name = xa_p_inf
+		value = { value = global_var:xa_l_inf multiply = 3 }
+	}
+
+	# --- titles held at death ---
+	set_global_variable = {
+		name = xa_n_t1
+		value = 0
+	}
+	every_held_title = {
+		limit = { tier = tier_county }
+		change_global_variable = {
+			name = xa_n_t1
+			add = 1
+		}
+	}
+	set_global_variable = {
+		name = xa_p_t1
+		value = { value = global_var:xa_n_t1 }
+	}
+	set_global_variable = {
+		name = xa_n_t2
+		value = 0
+	}
+	every_held_title = {
+		limit = { tier = tier_duchy }
+		change_global_variable = {
+			name = xa_n_t2
+			add = 1
+		}
+	}
+	set_global_variable = {
+		name = xa_p_t2
+		value = { value = global_var:xa_n_t2 multiply = 2.5 }
+	}
+	set_global_variable = {
+		name = xa_n_t3
+		value = 0
+	}
+	every_held_title = {
+		limit = { tier = tier_kingdom }
+		change_global_variable = {
+			name = xa_n_t3
+			add = 1
+		}
+	}
+	set_global_variable = {
+		name = xa_p_t3
+		value = { value = global_var:xa_n_t3 multiply = 5 }
+	}
+	set_global_variable = {
+		name = xa_n_t4
+		value = 0
+	}
+	every_held_title = {
+		limit = { tier = tier_empire }
+		change_global_variable = {
+			name = xa_n_t4
+			add = 1
+		}
+	}
+	set_global_variable = {
+		name = xa_p_t4
+		value = { value = global_var:xa_n_t4 multiply = 10 }
+	}
+	set_global_variable = {
+		name = xa_n_t5
+		value = 0
+	}
+	every_held_title = {
+		limit = { tier = tier_hegemony }
+		change_global_variable = {
+			name = xa_n_t5
+			add = 1
+		}
+	}
+	set_global_variable = {
+		name = xa_p_t5
+		value = { value = global_var:xa_n_t5 multiply = 20 }
+	}
+
+	# --- living descendants by highest held title tier (5 generations unrolled) ---
+	set_global_variable = {
+		name = xa_d_t1
+		value = 0
+	}
+	set_global_variable = {
+		name = xa_d_t2
+		value = 0
+	}
+	set_global_variable = {
+		name = xa_d_t3
+		value = 0
+	}
+	set_global_variable = {
+		name = xa_d_t4
+		value = 0
+	}
+	set_global_variable = {
+		name = xa_d_t5
+		value = 0
+	}
+	every_child = {
+		limit = { is_alive = yes }
+		xar_descendant_tier_count_effect = yes
+	}
+	every_child = {
+		every_child = {
+			limit = { is_alive = yes }
+			xar_descendant_tier_count_effect = yes
+		}
+	}
+	every_child = {
+		every_child = {
+			every_child = {
+				limit = { is_alive = yes }
+				xar_descendant_tier_count_effect = yes
+			}
+		}
+	}
+	every_child = {
+		every_child = {
+			every_child = {
+				every_child = {
+					limit = { is_alive = yes }
+					xar_descendant_tier_count_effect = yes
+				}
+			}
+		}
+	}
+	every_child = {
+		every_child = {
+			every_child = {
+				every_child = {
+					every_child = {
+						limit = { is_alive = yes }
+						xar_descendant_tier_count_effect = yes
+					}
+				}
+			}
+		}
+	}
+	set_global_variable = {
+		name = xa_p_d1
+		value = { value = global_var:xa_d_t1 multiply = 0.25 }
+	}
+	set_global_variable = {
+		name = xa_p_d2
+		value = { value = global_var:xa_d_t2 }
+	}
+	set_global_variable = {
+		name = xa_p_d3
+		value = { value = global_var:xa_d_t3 multiply = 2.5 }
+	}
+	set_global_variable = {
+		name = xa_p_d4
+		value = { value = global_var:xa_d_t4 multiply = 5 }
+	}
+	set_global_variable = {
+		name = xa_p_d5
+		value = { value = global_var:xa_d_t5 multiply = 10 }
+	}
+
+	# --- realm size (landed only): floor(log2(realm_size)) * 10 ---
+	set_global_variable = {
+		name = xa_a_realm
+		value = 0
+	}
+	set_global_variable = {
+		name = xa_l_realm
+		value = 0
+	}
+	set_global_variable = {
+		name = xa_p_realm
+		value = 0
+	}
+	if = {
+		limit = { is_landed = yes }
+		set_global_variable = {
+			name = xa_a_realm
+			value = { value = realm_size }
+		}
+		xar_log2_floor_effect = { SRC = realm_size VAR = xa_l_realm }
+		set_global_variable = {
+			name = xa_p_realm
+			value = { value = global_var:xa_l_realm multiply = 10 }
+		}
+	}
+
+	# --- total ---
 	set_global_variable = {
 		name = xa_run_score
 		value = 0
 	}
 	change_global_variable = {
 		name = xa_run_score
-		add = {
-			value = diplomacy
-			multiply = 5
-		}
+		add = { value = global_var:xa_p_dip }
 	}
 	change_global_variable = {
 		name = xa_run_score
-		add = {
-			value = martial
-			multiply = 5
-		}
+		add = { value = global_var:xa_p_mar }
 	}
 	change_global_variable = {
 		name = xa_run_score
-		add = {
-			value = stewardship
-			multiply = 5
-		}
+		add = { value = global_var:xa_p_ste }
 	}
 	change_global_variable = {
 		name = xa_run_score
-		add = {
-			value = intrigue
-			multiply = 5
-		}
+		add = { value = global_var:xa_p_int }
 	}
 	change_global_variable = {
 		name = xa_run_score
-		add = {
-			value = learning
-			multiply = 5
-		}
+		add = { value = global_var:xa_p_lea }
 	}
 	change_global_variable = {
 		name = xa_run_score
-		add = {
-			value = prowess
-			multiply = 5
-		}
-	}
-	dynasty = {
-		every_dynasty_member = {
-			limit = { is_alive = yes }
-			change_global_variable = {
-				name = xa_run_score
-				add = 2
-			}
-		}
-	}
-	house = {
-		every_house_member = {
-			limit = { is_alive = yes }
-			change_global_variable = {
-				name = xa_run_score
-				add = 2
-			}
-		}
+		add = { value = global_var:xa_p_pro }
 	}
 	change_global_variable = {
 		name = xa_run_score
-		add = {
-			value = gold
-			divide = 10
-			floor = yes
-		}
+		add = { value = global_var:xa_p_dyn }
 	}
 	change_global_variable = {
 		name = xa_run_score
-		add = {
-			value = prestige
-			divide = 15
-			floor = yes
-		}
+		add = { value = global_var:xa_p_hou }
 	}
 	change_global_variable = {
 		name = xa_run_score
-		add = {
-			value = piety
-			divide = 15
-			floor = yes
-		}
+		add = { value = global_var:xa_p_gold }
 	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_pres }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_pie }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_inf }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_t1 }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_t2 }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_t3 }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_t4 }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_t5 }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_d1 }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_d2 }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_d3 }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_d4 }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_d5 }
+	}
+	change_global_variable = {
+		name = xa_run_score
+		add = { value = global_var:xa_p_realm }
+	}
+
+	# --- record & delta ---
 	if = {
 		limit = { NOT = { has_global_variable = xa_global_record_imported } }
 		set_global_variable = {
@@ -110,6 +448,46 @@ xar_compute_score_effect = {
 		value = {
 			value = global_var:xa_run_score
 			subtract = global_var:xa_old_record
+		}
+	}
+}
+
+# Counts the scoped living descendant into the per-tier bucket of their highest
+# held title. Called from xar_compute_score_effect's unrolled child iterations.
+xar_descendant_tier_count_effect = {
+	if = {
+		limit = { highest_held_title_tier >= tier_hegemony }
+		change_global_variable = {
+			name = xa_d_t5
+			add = 1
+		}
+	}
+	else_if = {
+		limit = { highest_held_title_tier >= tier_empire }
+		change_global_variable = {
+			name = xa_d_t4
+			add = 1
+		}
+	}
+	else_if = {
+		limit = { highest_held_title_tier >= tier_kingdom }
+		change_global_variable = {
+			name = xa_d_t3
+			add = 1
+		}
+	}
+	else_if = {
+		limit = { highest_held_title_tier >= tier_duchy }
+		change_global_variable = {
+			name = xa_d_t2
+			add = 1
+		}
+	}
+	else_if = {
+		limit = { highest_held_title_tier >= tier_county }
+		change_global_variable = {
+			name = xa_d_t1
+			add = 1
 		}
 	}
 }
