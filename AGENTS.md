@@ -6,7 +6,9 @@
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
 - mod 通过用户目录的 `mod/XenoAmess_s_Eternal_Recurrence.mod`（path 指向本仓库）注册
-- Steam 创意工坊物品 id：**3784706360**（首次上传后启动器把 `remote_file_id` 写回用户目录 .mod，已同步进 descriptor.mod）。
+- Steam 创意工坊物品 id：**3784706360**（首次上传后启动器把 `remote_file_id` 写回用户目录 .mod）。
+  注意：`remote_file_id` **只能留在用户目录外层 .mod，不要同步进仓库内层 descriptor.mod**——
+  更新上传时启动器要回写内层 descriptor，带此字段会导致 "Mod descriptor validation failed" 上传失败。
   更新工坊 = 改仓库内容 → 启动器 Mods → 上传 Mod 选同一物品再传一次。预览图 `workshop_preview.jpg` 必须在
   **用户目录 mod/ 下也放一份**（启动器按 .mod 所在目录解析 `picture` 相对路径，不是按 mod 本体目录），
   且必须 **JPG < 1MB**（PNG 超 1MB 会导致整个上传失败，报"请确认 Mod 文件和 Steam 凭据"）
