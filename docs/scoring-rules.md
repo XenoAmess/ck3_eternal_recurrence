@@ -63,6 +63,7 @@
 ## 总分与纪录
 
 - **总分** = 以上全部条目之和（允许小数，如 0.1 系条目）。
+- **祝福/诅咒加算**：每领受一对祝福+诅咒，最终总分 +1%（加算；N 对 = 总分 ×(1 + N%)）。池子见 [blessing-curse-pools.md](blessing-curse-pools.md)。
 - **此前纪录** = 本局开局时导入的全局纪录副本。
 - **差值** = 总分 − 此前纪录；破纪录时写入全局存储（见 [cross-save-persistence.md](cross-save-persistence.md)）。
 

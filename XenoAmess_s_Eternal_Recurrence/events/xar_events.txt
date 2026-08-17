@@ -32,6 +32,8 @@ xar.0002 = {
 		set_global_variable = { name = xa_price_life value = 100 }
 		set_global_variable = { name = xa_price_reform value = 1133 }
 		set_global_variable = { name = xa_lifespan_bought value = 0 }
+		set_global_variable = { name = xa_bless_count value = 0 }
+		set_global_variable = { name = xa_bless_session value = 0 }
 		trigger_event = {
 			id = xar.0001
 			days = 1
@@ -263,6 +265,9 @@ xar.0001 = {
 			add_gold = { value = global_var:xa_local_points }
 		}
 		set_global_variable = { name = xa_local_points value = 0 }
+		# The run begins: the Glassfire Lord offers a blessing session.
+		set_global_variable = { name = xa_bless_session value = 0 }
+		trigger_event = { id = xar.0004 }
 	}
 }
 
@@ -276,6 +281,7 @@ xar.1001 = {
 
 	immediate = {
 		debug_log = "XAR: score event fired"
+		save_scope_value_as = { name = xar_bless_n value = global_var:xa_bless_count }
 		# attributes
 		save_scope_value_as = { name = xar_a_dip value = global_var:xa_a_dip }
 		save_scope_value_as = { name = xar_a_mar value = global_var:xa_a_mar }
@@ -349,5 +355,103 @@ xar.1001 = {
 		name = xar.1001.no_record
 		trigger = { NOT = { global_var:xa_run_score > global_var:xa_old_record } }
 		set_global_variable = xa_quit_to_menu
+	}
+}
+
+# ---------- blessing/curse sessions ----------
+# After the shop closes, the lord offers blessings; each blessing taken forces
+# a curse pick, each pair adds +1% to the final score. A session caps at 3
+# pairs; the lord returns every 3 years (xar.0006). Pools: docs/blessing-curse-pools.md
+
+xar.0004 = {
+	type = character_event
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.0004.title
+	desc = xar.0004.desc
+
+	immediate = {
+		debug_log = "XAR: blessing event fired"
+		xar_draw_blessings_effect = yes
+		save_scope_value_as = { name = xar_bs_n value = global_var:xa_bless_session }
+		save_scope_value_as = { name = xar_bc_n value = global_var:xa_bless_count }
+	}
+
+	option = {
+		name = xar_bless_slot_a
+		xar_apply_blessing_effect = { SLOT = a }
+		trigger_event = { id = xar.0005 }
+	}
+	option = {
+		name = xar_bless_slot_b
+		xar_apply_blessing_effect = { SLOT = b }
+		trigger_event = { id = xar.0005 }
+	}
+	option = {
+		name = xar_bless_slot_c
+		xar_apply_blessing_effect = { SLOT = c }
+		trigger_event = { id = xar.0005 }
+	}
+	option = {
+		name = xar.0004.decline
+		trigger_event = { id = xar.0006 days = 1095 }
+	}
+}
+
+# The mandatory curse after each blessing. No way out.
+xar.0005 = {
+	type = character_event
+	theme = skull
+	override_background = { reference = xar_glassfire }
+	title = xar.0005.title
+	desc = xar.0005.desc
+
+	immediate = {
+		debug_log = "XAR: curse event fired"
+		xar_draw_curses_effect = yes
+	}
+
+	option = {
+		name = xar_curse_slot_a
+		xar_apply_curse_effect = { SLOT = a }
+		if = {
+			limit = { global_var:xa_bless_session < 3 }
+			trigger_event = { id = xar.0004 }
+		}
+		else = {
+			trigger_event = { id = xar.0006 days = 1095 }
+		}
+	}
+	option = {
+		name = xar_curse_slot_b
+		xar_apply_curse_effect = { SLOT = b }
+		if = {
+			limit = { global_var:xa_bless_session < 3 }
+			trigger_event = { id = xar.0004 }
+		}
+		else = {
+			trigger_event = { id = xar.0006 days = 1095 }
+		}
+	}
+	option = {
+		name = xar_curse_slot_c
+		xar_apply_curse_effect = { SLOT = c }
+		if = {
+			limit = { global_var:xa_bless_session < 3 }
+			trigger_event = { id = xar.0004 }
+		}
+		else = {
+			trigger_event = { id = xar.0006 days = 1095 }
+		}
+	}
+}
+
+# Invisible session resetter: fires 3 years after a session ends.
+xar.0006 = {
+	hidden = yes
+	immediate = {
+		debug_log = "XAR: new blessing session (3y timer)"
+		set_global_variable = { name = xa_bless_session value = 0 }
+		trigger_event = { id = xar.0004 }
 	}
 }

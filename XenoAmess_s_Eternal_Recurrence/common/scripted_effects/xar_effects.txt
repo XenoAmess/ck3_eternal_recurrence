@@ -431,6 +431,18 @@ xar_compute_score_effect = {
 		add = { value = global_var:xa_p_realm }
 	}
 
+	# --- blessing/curse bonus: +1% per pair taken this run (additive) ---
+	if = {
+		limit = { global_var:xa_bless_count > 0 }
+		change_global_variable = {
+			name = xa_run_score
+			multiply = {
+				value = 1
+				add = { value = global_var:xa_bless_count multiply = 0.01 }
+			}
+		}
+	}
+
 	# --- record & delta ---
 	if = {
 		limit = { NOT = { has_global_variable = xa_global_record_imported } }
