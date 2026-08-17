@@ -99,7 +99,12 @@ xar_selftest_effect = {
 	xar_apply_curse_effect = { SLOT = a }
 	debug_log = "XAR: TEST PASS curse_apply_ran"
 
-	# ---------- T8: death chain, but only AFTER the import bridge delivered ----------
+	# ---------- T8: UI localization smoke test (one bless + one curse window) ----------
+	# Opens xar.0004/0005 for the runner to OCR the option text; the runner clicks
+	# through and then unpauses so the death chain below can proceed.
+	trigger_event = { id = xar.0009 }
+
+	# ---------- T9: death chain, but only AFTER the import bridge delivered ----------
 	# The import runs on the xar_meta GUI bridge whose tick is starved while a
 	# modal window (succession/settlement) is open, so killing root immediately
 	# races it. xar.0008 polls daily until xa_local_points exists (or 30 tries),

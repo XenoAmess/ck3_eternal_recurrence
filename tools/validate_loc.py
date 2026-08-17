@@ -23,18 +23,18 @@ def read_text(path):
     return path.read_text(encoding="utf-8-sig", errors="replace")
 
 
-def collect_yml_keys():
-    """Return {lang: set(keys)} for all mod yml files."""
-    keys = {lang: set() for lang in LANGS}
+def collect_yml_values():
+    """Return {lang: {key: value}} for all mod yml files."""
+    values = {lang: {} for lang in LANGS}
     for lang in LANGS:
         d = MOD / "localization" / lang
         if not d.exists():
             continue
         for p in d.glob("*.yml"):
             text = read_text(p)
-            for m in re.finditer(r"(?m)^\s*([\w.]+):\d+", text):
-                keys[lang].add(m.group(1))
-    return keys
+            for m in re.finditer(r'(?m)^\s*([\w.]+):\d+\s+"(.*)"\s*$', text):
+                values[lang][m.group(1)] = m.group(2)
+    return values
 
 
 def collect_event_option_keys():
@@ -59,50 +59,57 @@ def collect_custom_loc():
 
 
 def collect_modifier_keys():
-    """Modifier IDs defined in generated pool modifiers."""
+    """Modifier IDs defined anywhere in the mod."""
     keys = set()
-    text = read_text(MOD / "common" / "modifiers" / "xar_generated_pool_modifiers.txt")
-    for m in re.finditer(r"(?m)^(xar_\w+)\s*=\s*{", text):
-        keys.add(m.group(1))
+    for path in (MOD / "common" / "modifiers").glob("*.txt"):
+        text = read_text(path)
+        for m in re.finditer(r"(?m)^(xar_\w+)\s*=\s*{", text):
+            keys.add(m.group(1))
     return keys
 
 
 def main():
-    yml_keys = collect_yml_keys()
+    yml_values = collect_yml_values()
+    yml_keys = {lang: set(values) for lang, values in yml_values.items()}
     option_keys = collect_event_option_keys()
     custom_defined, custom_referenced = collect_custom_loc()
     modifiers = collect_modifier_keys()
 
     errors = []
 
-    # 1) Every event option name must be localizable in every language.
-    #    It can be a plain yml key, or a custom-loc key that has a static entry.
+    # 1) Every mod event option name must be an ordinary yml key in every
+    #    language. Dynamic option text is exposed through a static wrapper.
     for key in sorted(option_keys):
-        if key.startswith("xar."):
-            # plain event loc keys live in xar_l_<lang>.yml
+        if key.startswith(("xar.", "xar_")):
             for lang in LANGS:
                 if key not in yml_keys[lang]:
                     errors.append(f"event option '{key}' missing in {lang} yml")
-        elif key.startswith("xar_"):
-            # custom-loc keys need a static entry to be recognized by CEventOptionDesc
-            for lang in LANGS:
-                if key not in yml_keys[lang]:
-                    errors.append(f"custom-loc option '{key}' missing in {lang} yml")
         # vanilla/base-game keys are ignored
 
-    # 2) Custom localization keys themselves need a static yml entry per language.
+    # 2) A same-named static key masks SCOPE.Custom resolution at runtime.
     for key in sorted(custom_defined):
         for lang in LANGS:
-            if key not in yml_keys[lang]:
-                errors.append(f"custom localization '{key}' missing in {lang} yml")
+            if key in yml_keys[lang]:
+                errors.append(f"custom localization '{key}' is masked by {lang} yml")
 
-    # 3) Keys referenced *inside* custom localization must exist per language.
+    # 3) Pool option wrappers must invoke their corresponding resolver exactly.
+    for prefix in ("bless", "curse"):
+        for slot in ("a", "b", "c"):
+            key = f"xar_{prefix}_option_{slot}"
+            expected = f"[SCOPE.Custom('xar_{prefix}_slot_{slot}')]"
+            for lang in LANGS:
+                actual = yml_values[lang].get(key)
+                if actual != expected:
+                    errors.append(
+                        f"option wrapper '{key}' is invalid in {lang}: {actual!r}")
+
+    # 4) Keys referenced *inside* custom localization must exist per language.
     for key in sorted(custom_referenced):
         for lang in LANGS:
             if key not in yml_keys[lang]:
                 errors.append(f"custom-loc target '{key}' missing in {lang} yml")
 
-    # 4) Modifier IDs need a name key per language.
+    # 5) Modifier IDs need a name key per language.
     for key in sorted(modifiers):
         for lang in LANGS:
             if key not in yml_keys[lang]:

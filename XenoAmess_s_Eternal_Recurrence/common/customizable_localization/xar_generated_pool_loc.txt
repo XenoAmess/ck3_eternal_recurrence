@@ -403,7 +403,7 @@ xar_bless_slot_a = {
 		trigger = { global_var:xa_bless_a = 99 }
 		localization_key = xar_bless_99
 	}
-	text = { localization_key = xar_bless_0 }
+	text = { localization_key = xar_pool_invalid fallback = yes }
 }
 xar_bless_slot_b = {
 	type = character
@@ -807,7 +807,7 @@ xar_bless_slot_b = {
 		trigger = { global_var:xa_bless_b = 99 }
 		localization_key = xar_bless_99
 	}
-	text = { localization_key = xar_bless_0 }
+	text = { localization_key = xar_pool_invalid fallback = yes }
 }
 xar_bless_slot_c = {
 	type = character
@@ -1211,7 +1211,7 @@ xar_bless_slot_c = {
 		trigger = { global_var:xa_bless_c = 99 }
 		localization_key = xar_bless_99
 	}
-	text = { localization_key = xar_bless_0 }
+	text = { localization_key = xar_pool_invalid fallback = yes }
 }
 
 # GENERATED FILE - do not edit. Regenerate with tools/gen_pools.py
@@ -1619,7 +1619,7 @@ xar_curse_slot_a = {
 		trigger = { global_var:xa_curse_a = 99 }
 		localization_key = xar_curse_99
 	}
-	text = { localization_key = xar_curse_0 }
+	text = { localization_key = xar_pool_invalid fallback = yes }
 }
 xar_curse_slot_b = {
 	type = character
@@ -2023,7 +2023,7 @@ xar_curse_slot_b = {
 		trigger = { global_var:xa_curse_b = 99 }
 		localization_key = xar_curse_99
 	}
-	text = { localization_key = xar_curse_0 }
+	text = { localization_key = xar_pool_invalid fallback = yes }
 }
 xar_curse_slot_c = {
 	type = character
@@ -2427,5 +2427,5 @@ xar_curse_slot_c = {
 		trigger = { global_var:xa_curse_c = 99 }
 		localization_key = xar_curse_99
 	}
-	text = { localization_key = xar_curse_0 }
+	text = { localization_key = xar_pool_invalid fallback = yes }
 }

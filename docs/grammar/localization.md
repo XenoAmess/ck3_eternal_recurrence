@@ -16,7 +16,18 @@
 
 - 普通 loc：当前语言缺键 → 回退英文 ✅
 - **customizable_localization 引用的键：当前语言必须存在**（parse 校验不吃英文回退，`Missing loc key ... for custom localization`）——所以被 custom loc / GUI `Localize()` 引用的键要在每种语言里都定义
-- **customizable_localization 的键本身：用于事件选项名时，当前语言 yml 里也要有静态条目**（否则 `Unrecognized loc key` 且运行期显示 raw key；custom loc 仍会覆盖该静态条目）
+- **customizable_localization resolver 键不能直接作为事件选项名，也不能在 yml 中定义同名静态键**。事件选项只认普通 loc key；同名静态键会遮蔽 resolver，导致所有动态选项显示同一占位文本。正确做法是用普通 wrapper key 调 resolver（2026-08-18 简中实机 OCR 验证）：
+
+```txt
+# event
+name = xar_bless_option_a
+
+# yml
+xar_bless_option_a:0 "[SCOPE.Custom('xar_bless_slot_a')]"
+
+# common/customizable_localization；不要再定义同名 yml key
+xar_bless_slot_a = { ... }
+```
 
 ## 事件文本中显示动态值
 
@@ -52,6 +63,7 @@ xar_record_level = {
 
 - trigger 里可以用 **interface trigger**（如 `is_tutorial_lesson_completed`）——这是它在游戏状态脚本里禁用时的合法使用点
 - GUI 读取：`GetPlayer.Custom('xar_record_level')` 返回解析后的文本
+- 事件 loc wrapper 读取当前角色：`[SCOPE.Custom('resolver_key')]`
 - 多语言键校验见上文
 
 ## 坑

@@ -28,32 +28,33 @@ MOD = os.path.join(ROOT, "XenoAmess_s_Eternal_Recurrence")
 HEADER = "# GENERATED FILE - do not edit. Regenerate with tools/gen_pools.py\n"
 RARITY_ZH = {"c": "普通", "r": "稀有", "l": "传说"}
 
-# Fallback text for the six slot custom-loc keys. Custom loc overrides them at
-# runtime, but these static entries prevent CEventOptionDesc from treating the
-# keys as unrecognized at load (and give a readable placeholder during tooltip
-# pre-resolution before the draw effect has set the slot variables).
-SLOT_FALLBACK = {
-    "bless": {
-        "simp_chinese": "（垂青的馈赠）",
-        "english": "(A Gift of Favor)",
-        "french": "(Un don de faveur)",
-        "german": "(Ein Geschenk der Gunst)",
-        "japanese": "（寵愛の贈り物）",
-        "korean": "(은총의 선물)",
-        "polish": "(Dar łaski)",
-        "russian": "(Дар благосклонности)",
-        "spanish": "(Un don de favor)",
+# A visible diagnostic for an impossible slot ID. Resolver keys intentionally
+# have no same-named static yml entry: such entries mask SCOPE.Custom at runtime.
+POOL_INVALID = {
+    "simp_chinese": "#R 奖池索引无效#!",
+    "english": "#R INVALID POOL SELECTION#!",
+    "french": "#R SÉLECTION DE TABLE INVALIDE#!",
+    "german": "#R UNGÜLTIGE POOLAUSWAHL#!",
+    "japanese": "#R 無効な抽選結果#!",
+    "korean": "#R 잘못된 추첨 결과#!",
+    "polish": "#R NIEPRAWIDŁOWY WYBÓR PULI#!",
+    "russian": "#R НЕВЕРНЫЙ ВЫБОР ИЗ ПУЛА#!",
+    "spanish": "#R SELECCIÓN DE RESERVA NO VÁLIDA#!",
+}
+SHOP_MODIFIER_NAMES = {
+    "xar_free_faith_reformation": {
+        "simp_chinese": "无价的宗教改革", "english": "Free Faith Reformation",
+        "french": "Réforme religieuse gratuite", "german": "Kostenlose Glaubensreform",
+        "japanese": "無償の宗教改革", "korean": "무료 신앙 개혁",
+        "polish": "Darmowa reforma wiary", "russian": "Бесплатная реформа веры",
+        "spanish": "Reforma religiosa gratuita",
     },
-    "curse": {
-        "simp_chinese": "（咒痕的代价）",
-        "english": "(A Price of Curse)",
-        "french": "(Le prix de la malédiction)",
-        "german": "(Der Preis des Fluchs)",
-        "japanese": "（呪痕の代償）",
-        "korean": "(저주의 대가)",
-        "polish": "(Cena klątwy)",
-        "russian": "(Цена проклятия)",
-        "spanish": "(El precio de la maldición)",
+    "lifespan": {
+        "simp_chinese": "借来的寿命", "english": "Borrowed Lifespan",
+        "french": "Longévité empruntée", "german": "Geliehene Lebenszeit",
+        "japanese": "借りた寿命", "korean": "빌린 수명",
+        "polish": "Pożyczone życie", "russian": "Одолженная жизнь",
+        "spanish": "Vida prestada",
     },
 }
 
@@ -200,7 +201,7 @@ def gen_custom_loc(pool, prefix):
             out.append(f"\t\ttrigger = {{ global_var:xa_{prefix}_{slot} = {i} }}")
             out.append(f"\t\tlocalization_key = xar_{prefix}_{i}")
             out.append(f"\t}}")
-        out.append(f"\ttext = {{ localization_key = xar_{prefix}_0 }}")
+        out.append("\ttext = { localization_key = xar_pool_invalid fallback = yes }")
         out.append("}")
     return "\n".join(out) + "\n"
 
@@ -217,17 +218,17 @@ def gen_modifiers():
 
 
 def gen_yml(pool, prefix, lang):
-    lines = []
-    # static fallback keys for the option-slot custom localization
-    for slot in ("a", "b", "c"):
-        lines.append(f' xar_{prefix}_slot_{slot}:0 "{SLOT_FALLBACK[prefix][lang]}"')
+    # Event options use ordinary static keys which invoke the dynamic resolver.
+    # The resolver keys themselves must not also exist in yml: static loc wins.
+    lines = [f' xar_{prefix}_option_{slot}:0 "[SCOPE.Custom(\'xar_{prefix}_slot_{slot}\')]"'
+             for slot in ("a", "b", "c")]
     # actual per-entry names resolved by the custom localization
     lines += [f' xar_{prefix}_{i}:0 "{loc_line(e, lang)}"' for i, e in enumerate(pool)]
     return lines
 
 
 def gen_modifier_yml(lang):
-    """Modifier name keys for the 10-year pool modifiers."""
+    """Modifier name keys for pool and shop modifiers."""
     lines = []
     for e in B + C:
         if e[1] == "mod":
@@ -235,6 +236,10 @@ def gen_modifier_yml(lang):
             lines.append(f' {mid}:0 "{e[3][lang]}"')
     for mid, names in EXTRA_MODIFIER_NAMES.items():
         lines.append(f' {mid}:0 "{names[lang]}"')
+    lines.append(
+        f' xar_free_faith_reformation:0 "{SHOP_MODIFIER_NAMES["xar_free_faith_reformation"][lang]}"')
+    for index in range(1, 51):
+        lines.append(f' xar_lifespan_{index:02d}:0 "{SHOP_MODIFIER_NAMES["lifespan"][lang]}"')
     return lines
 
 
@@ -309,6 +314,8 @@ def main():
               gen_modifiers())
     for lang in LANGS:
         lines = ([f"l_{lang}:"]
+                 + [f' xar_pool_invalid:0 "{POOL_INVALID[lang]}"']
+                 + [""]
                  + gen_yml(B, "bless", lang)
                  + [""]
                  + gen_yml(C, "curse", lang)

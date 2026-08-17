@@ -21,7 +21,7 @@
 | 每个在世的宗族成员（且为你后代） | 0.1 分 |
 | 每个在世的家族成员（且为你后代） | 额外 0.1 分（与宗族叠加） |
 
-后代判定沿 father/mother 链上溯 5 代（`xar_is_descendant_of_dead_trigger`）。
+后代判定从死者的 `every_child` 向下展开 5 代（`xar_desc_node_l1`…`xar_desc_node_l5`），用临时 flag 去重并在结算后清理。
 
 ## 资源（log₂ 向下取整后乘系数）
 

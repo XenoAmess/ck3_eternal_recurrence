@@ -32,7 +32,7 @@
 
 ## 原理
 
-利用引擎全局持久化的 `tutorial.txt` 课程完成列表作为只增位存储，分层阈值编码纪录（粒度 1→1000 递增，上限 167,600，可扩展）。课程用 `trigger_transition` 自动完成，无需玩家点击；读取经由 customizable_localization → GUI state → scripted_gui 桥接导入存档。详见 `docs/cross-save-persistence.md`。
+利用引擎全局持久化的 `tutorial.txt` 课程完成列表作为只增位存储，分层阈值编码纪录（粒度 1→1000 递增，上限 166,600，可扩展）。课程用 `trigger_transition` 自动完成，无需玩家点击；读取经由 customizable_localization → GUI state → scripted_gui 桥接导入存档。详见 `docs/cross-save-persistence.md`。
 
 ## 要求
 

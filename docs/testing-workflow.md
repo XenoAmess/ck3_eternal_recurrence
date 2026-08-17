@@ -21,12 +21,13 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py"
 ```
 
-约 5-6 分钟，`RESULT: GREEN/RED` + 退出码。判定依据：
+冷启动通常约 2 分钟，`RESULT: GREEN/RED` + 退出码。判定依据：
 
-1. `tools/validate_loc.py` 静态校验通过（自定义 loc key / 目标键 / 修饰符名在 9 语言 yml 中齐全）
-2. debug.log 的 `XAR: TEST PASS/FAIL/DONE` 标记（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
+1. `tools/validate_loc.py` 静态校验通过（事件选项 wrapper、custom-loc 目标键、全部 88 个 modifier 名在 9 语言 yml 中齐全；resolver 同名静态键视为遮蔽错误）
+2. debug.log 的 14 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
    由游戏规则第三档 `xar_selftest` 触发，检查器 xar.0007 嵌套在结算事件 xar.1001 里跑）
-3. **error.log 中任何包含 `xar` 的日志都视为失败**，不再白名单过滤
+3. 真实打开祝福/诅咒事件，OCR 等到对应标题后验证 ID 0/50/99 三个选项均为不同动态文本、无 raw/fallback，再点击并等待脚本 acceptance marker
+4. **error.log 中任何包含 `xar` 的日志都视为失败**，不再白名单过滤
 
 截图证据在报告里的 artifacts 目录。
 
@@ -34,18 +35,22 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 
 **验过的**：
 - 奖池全部 200 条目的**运行期执行**：自测在死前跑 `xar_test_sweep_effect`（生成器产出，
-  每条 code 内联按序施加），任一条报错即被 error.log 扫描抓红（drain 修正漏定义就是这样抓到的）
+  每条 code 内联按序施加），带 `xar` 上下文的报错会被 error.log 扫描抓红（drain 修正漏定义就是这样抓到的）
 - 引擎解析 + PostValidate 静态校验全部生成文件
-- **静态 loc 全覆盖**：事件选项名、custom loc key、custom loc 目标键、修饰符名在 9 语言 yml
-  中的存在性（由 `validate_loc.py` 在启动游戏前检查）
-- 契约/商店/抽取/发放/导入/死亡结算/纪录写入/教程落盘的完整链路
-- 结算确认 → 观察者模式桥（截图证据）
+- **当前校验范围内的静态 loc 全覆盖**：事件选项名、奖池 custom-loc 目标键、全部 modifier 名在 9 语言 yml 中的存在性，以及六个奖池 wrapper 的精确表达式
+- 祝福/诅咒 ID 0/50/99 的简中实际像素渲染与事件选项点击
+- 自测链中的契约核心 effect、一个商店价格/扣款样例、抽取、发放、零值导入、死亡结算、纪录写入和教程落盘
+- 奖池 200 个 effect body 的运行期语法/引用 smoke test
 
 **没验的**：
-- 槽位 custom loc 的**实际像素渲染**（自测绕开事件 UI；静态校验 + error.log 零容忍已能拦截
-  raw key 类问题，但未来仍可追加 UI 截图/OCR 做最终兜底）
+- 正常 `xar_on` 路径的契约和商店 UI；当前契约/商店断言是 effect 模拟，不证明事件选项与 scripted GUI 无漂移
+- 非零纪录导入及 `xa_shop_pending → xa_local_points`；当前只验导入 0
+- 200 项 dispatcher 的 ID→effect 语义映射；sweep 内联执行 effect body，只是运行期 smoke test
+- 祝福/诅咒会的 `<3` 返回、拒绝、1095 日重开分支
+- 计分各系数与边界的精确总分；当前只断言正分和写入
+- AI 双闸门的负例、结算后观察者状态；当前仅静态依赖闸门并保留确认后截图
+- 事件标题/描述、GUI `Localize()`、规则和特质的全量 loc 引用扫描；当前 validator 尚未覆盖
 - 数值与数据表的一致性（生成器自检 id/权重/语种，但 50 写成 500 这类数据错误测不出来）
-- 观察者模式的游玩体验（只验证桥触发）
 
 ### 关键事实（2026-08-17 实证，血泪）
 
@@ -66,6 +71,7 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 - 大厅路径坐标（2560x1440）：新游戏 (600,560) → 1066 罗贝尔卡 (1600,1230)（有儿子必有继承人）
   → 开始 (2257,1245)。结算确认选项 (1130,1041)（点了进观察者模式，桥有效）。
 - 用户真实纪录靠 tutorial.txt 备份/恢复保护；测试基线 = 剥掉 `xar_hs_ge_*` 行（纪录 0）。
+- 独立 restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验；避免强杀 runner 后游戏继续覆盖用户现场。
 
 ## 断点标记法（链路定位）
 

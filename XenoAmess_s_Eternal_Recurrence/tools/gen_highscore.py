@@ -9,7 +9,7 @@ iff record >= t. Thresholds are cumulative tiers (step, count), chained:
 
   (1,100) (5,100) (10,100) (50,100) (100,100) (500,100) (1000,100)
 
-i.e. 1..100 by 1, 105..600 by 5, 610..1600 by 10, ... cap 167,600, 700 bits.
+  i.e. 1..100 by 1, 105..600 by 5, 610..1600 by 10, ... cap 166,600, 700 bits.
 To extend the cap later, append a tier; completed bits persist in tutorial.txt.
 
 is_tutorial_lesson_completed is an INTERFACE trigger (forbidden in game-state
@@ -19,9 +19,8 @@ script), so reading the record goes through a GUI bridge:
 The record is detected via the single "top threshold" (t completed, next not),
 so exactly one import state fires per record change.
 
-Writing: xar_write_record_effect sets every threshold bit <= run score; only
-newly crossed thresholds fire lesson popups (completed lessons never refire),
-which the autoclicker state in gui/window_tutorial.gui completes automatically.
+Writing: xar_write_record_effect sets only the highest threshold bit <= run
+score. The lesson's own trigger_transition completes it automatically.
 
 Outputs (regenerate with: py gen_highscore.py):
   common/tutorial_lessons/xar_highscore.txt
@@ -212,8 +211,7 @@ def gen_gui() -> str:
         "# Import side of the global high-score storage: exactly one top-threshold",
         "# custom localization returns the sentinel; its state then runs the",
         "# matching scripted gui which writes the record into game state.",
-        "# (The write side's autoclicker lives in the window_tutorial.gui override,",
-        "#  since the Tutorial datacontext only exists on the tutorial window.)",
+        "# The write-side lesson completes itself through trigger_transition.",
         "window = {",
         '\tname = "xar_meta_window"',
         "\tsize = { 1 1 }",
@@ -291,7 +289,7 @@ if __name__ == "__main__":
     write(os.path.join("common", "customizable_localization", "xar_generated_loc.txt"), gen_custom_loc())
     write(os.path.join("common", "scripted_guis", "xar_generated_guis.txt"), gen_guis())
     write(os.path.join("common", "scripted_effects", "xar_generated_effects.txt"), gen_effects())
-    write(os.path.join("gui", "xar_meta.gui"), gen_gui(), bom=False)
+    write(os.path.join("gui", "xar_meta.gui"), gen_gui())
     # Custom localization validates keys against the CURRENT language with no
     # English fallback, so generated loc must exist for every vanilla language.
     for lang in ("english", "french", "german", "japanese", "korean", "polish",

@@ -381,24 +381,46 @@ xar.0004 = {
 
 	immediate = {
 		debug_log = "XAR: blessing event fired"
-		xar_draw_blessings_effect = yes
+		if = {
+			limit = { has_global_variable = xa_ui_test_active }
+			set_global_variable = { name = xa_bless_a value = 0 }
+			set_global_variable = { name = xa_bless_b value = 50 }
+			set_global_variable = { name = xa_bless_c value = 99 }
+		}
+		else = { xar_draw_blessings_effect = yes }
 		save_scope_value_as = { name = xar_bs_n value = global_var:xa_bless_session }
 		save_scope_value_as = { name = xar_bc_n value = global_var:xa_bless_count }
+		if = {
+			limit = { has_global_variable = xa_ui_test_active }
+			debug_log = "XAR: UI bless window opened"
+		}
 	}
 
 	option = {
-		name = xar_bless_slot_a
+		name = xar_bless_option_a
 		xar_apply_blessing_effect = { SLOT = a }
+		if = {
+			limit = { has_global_variable = xa_ui_test_active }
+			debug_log = "XAR: UI bless accepted"
+		}
 		trigger_event = { id = xar.0005 }
 	}
 	option = {
-		name = xar_bless_slot_b
+		name = xar_bless_option_b
 		xar_apply_blessing_effect = { SLOT = b }
+		if = {
+			limit = { has_global_variable = xa_ui_test_active }
+			debug_log = "XAR: UI bless accepted"
+		}
 		trigger_event = { id = xar.0005 }
 	}
 	option = {
-		name = xar_bless_slot_c
+		name = xar_bless_option_c
 		xar_apply_blessing_effect = { SLOT = c }
+		if = {
+			limit = { has_global_variable = xa_ui_test_active }
+			debug_log = "XAR: UI bless accepted"
+		}
 		trigger_event = { id = xar.0005 }
 	}
 	option = {
@@ -417,23 +439,27 @@ xar.0005 = {
 
 	immediate = {
 		debug_log = "XAR: curse event fired"
-		xar_draw_curses_effect = yes
+		if = {
+			limit = { has_global_variable = xa_ui_test_active }
+			set_global_variable = { name = xa_curse_a value = 0 }
+			set_global_variable = { name = xa_curse_b value = 50 }
+			set_global_variable = { name = xa_curse_c value = 99 }
+		}
+		else = { xar_draw_curses_effect = yes }
+		if = {
+			limit = { has_global_variable = xa_ui_test_active }
+			debug_log = "XAR: UI curse window opened"
+		}
 	}
 
 	option = {
-		name = xar_curse_slot_a
+		name = xar_curse_option_a
 		xar_apply_curse_effect = { SLOT = a }
 		if = {
-			limit = { global_var:xa_bless_session < 3 }
-			trigger_event = { id = xar.0004 }
+			limit = { has_global_variable = xa_ui_test_active }
+			debug_log = "XAR: UI curse accepted"
+			remove_global_variable = xa_ui_test_active
 		}
-		else = {
-			trigger_event = { id = xar.0006 days = 1095 }
-		}
-	}
-	option = {
-		name = xar_curse_slot_b
-		xar_apply_curse_effect = { SLOT = b }
 		if = {
 			limit = { global_var:xa_bless_session < 3 }
 			trigger_event = { id = xar.0004 }
@@ -443,8 +469,29 @@ xar.0005 = {
 		}
 	}
 	option = {
-		name = xar_curse_slot_c
+		name = xar_curse_option_b
+		xar_apply_curse_effect = { SLOT = b }
+		if = {
+			limit = { has_global_variable = xa_ui_test_active }
+			debug_log = "XAR: UI curse accepted"
+			remove_global_variable = xa_ui_test_active
+		}
+		if = {
+			limit = { global_var:xa_bless_session < 3 }
+			trigger_event = { id = xar.0004 }
+		}
+		else = {
+			trigger_event = { id = xar.0006 days = 1095 }
+		}
+	}
+	option = {
+		name = xar_curse_option_c
 		xar_apply_curse_effect = { SLOT = c }
+		if = {
+			limit = { has_global_variable = xa_ui_test_active }
+			debug_log = "XAR: UI curse accepted"
+			remove_global_variable = xa_ui_test_active
+		}
 		if = {
 			limit = { global_var:xa_bless_session < 3 }
 			trigger_event = { id = xar.0004 }
@@ -461,6 +508,19 @@ xar.0006 = {
 	immediate = {
 		debug_log = "XAR: new blessing session (3y timer)"
 		set_global_variable = { name = xa_bless_session value = 0 }
+		trigger_event = { id = xar.0004 }
+	}
+}
+
+# UI localization smoke test: opens exactly one bless/curse pair so the runner
+# can screenshot the option text and OCR-check for raw keys.
+xar.0009 = {
+	hidden = yes
+	immediate = {
+		debug_log = "XAR: UI test armed"
+		set_global_variable = { name = xa_ui_test_active value = 1 }
+		set_global_variable = { name = xa_bless_session value = 3 }
+		set_global_variable = { name = xa_bless_count value = 0 }
 		trigger_event = { id = xar.0004 }
 	}
 }

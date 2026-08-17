@@ -1,10 +1,9 @@
-# GENERATED FILE - do not edit. Regenerate with tools/gen_highscore.py
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_highscore.py
 #
 # Import side of the global high-score storage: exactly one top-threshold
 # custom localization returns the sentinel; its state then runs the
 # matching scripted gui which writes the record into game state.
-# (The write side's autoclicker lives in the window_tutorial.gui override,
-#  since the Tutorial datacontext only exists on the tutorial window.)
+# The write-side lesson completes itself through trigger_transition.
 window = {
 	name = "xar_meta_window"
 	size = { 1 1 }
