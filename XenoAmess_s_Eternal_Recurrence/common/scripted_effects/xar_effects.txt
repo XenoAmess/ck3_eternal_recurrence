@@ -66,44 +66,30 @@ xar_compute_score_effect = {
 		value = { value = global_var:xa_a_pro }
 	}
 
-	# --- living dynasty members who are descendants (points = count * 0.1) ---
+	# --- living descendants: same dynasty x0.1, same house extra x0.1 ---
+	# Descend from the dead character via every_child (bounded 5 generations,
+	# unrolled; engine gives no recursive descendant iterator and parent-chain
+	# trigger links spam "Failed context switch" for unknown relatives).
 	set_global_variable = {
 		name = xa_a_dyn
 		value = 0
 	}
-	dynasty = {
-		every_dynasty_member = {
-			limit = {
-				is_alive = yes
-				xar_is_descendant_of_dead_trigger = yes
-			}
-			change_global_variable = {
-				name = xa_a_dyn
-				add = 1
-			}
-		}
-	}
-	set_global_variable = {
-		name = xa_p_dyn
-		value = { value = global_var:xa_a_dyn multiply = 0.1 }
-	}
-
-	# --- living house members who are descendants (extra points = count * 0.1) ---
 	set_global_variable = {
 		name = xa_a_hou
 		value = 0
 	}
-	house = {
-		every_house_member = {
-			limit = {
-				is_alive = yes
-				xar_is_descendant_of_dead_trigger = yes
-			}
-			change_global_variable = {
-				name = xa_a_hou
-				add = 1
-			}
-		}
+	save_temporary_scope_as = xar_score_dead
+	if = { limit = { exists = dynasty }
+		dynasty = { save_temporary_scope_as = xar_score_dyn }
+	}
+	if = { limit = { exists = house }
+		house = { save_temporary_scope_as = xar_score_house }
+	}
+	every_child = { xar_desc_node_l1 = yes }
+	xar_desc_clean_root = yes
+	set_global_variable = {
+		name = xa_p_dyn
+		value = { value = global_var:xa_a_dyn multiply = 0.1 }
 	}
 	set_global_variable = {
 		name = xa_p_hou
@@ -502,4 +488,80 @@ xar_descendant_tier_count_effect = {
 			add = 1
 		}
 	}
+}
+
+
+# ---------- descendant counting (used by xar_compute_score_effect) ----------
+# Root of the caller is the dead character; scope:xar_score_dead/_dyn/_house
+# are saved by the caller. every_child never errors on childless characters,
+# unlike parent-chain trigger links. Dedup via temp flag xar_desc_counted
+# (removed again by xar_desc_clean_root so later runs recount cleanly).
+
+xar_desc_count_self = {
+	if = {
+		limit = {
+			is_alive = yes
+			NOT = { has_character_flag = xar_desc_counted }
+		}
+		add_character_flag = xar_desc_counted
+		if = {
+			limit = {
+				exists = scope:xar_score_dyn
+				exists = dynasty
+				dynasty = { this = scope:xar_score_dyn }
+			}
+			change_global_variable = { name = xa_a_dyn add = 1 }
+		}
+		if = {
+			limit = {
+				exists = scope:xar_score_house
+				exists = house
+				house = { this = scope:xar_score_house }
+			}
+			change_global_variable = { name = xa_a_hou add = 1 }
+		}
+	}
+}
+
+xar_desc_node_l1 = {
+	xar_desc_count_self = yes
+	every_child = { xar_desc_node_l2 = yes }
+}
+xar_desc_node_l2 = {
+	xar_desc_count_self = yes
+	every_child = { xar_desc_node_l3 = yes }
+}
+xar_desc_node_l3 = {
+	xar_desc_count_self = yes
+	every_child = { xar_desc_node_l4 = yes }
+}
+xar_desc_node_l4 = {
+	xar_desc_count_self = yes
+	every_child = { xar_desc_node_l5 = yes }
+}
+xar_desc_node_l5 = {
+	xar_desc_count_self = yes
+}
+
+xar_desc_clean_root = {
+	every_child = { xar_desc_clean_l1 = yes }
+}
+xar_desc_clean_l1 = {
+	remove_character_flag = xar_desc_counted
+	every_child = { xar_desc_clean_l2 = yes }
+}
+xar_desc_clean_l2 = {
+	remove_character_flag = xar_desc_counted
+	every_child = { xar_desc_clean_l3 = yes }
+}
+xar_desc_clean_l3 = {
+	remove_character_flag = xar_desc_counted
+	every_child = { xar_desc_clean_l4 = yes }
+}
+xar_desc_clean_l4 = {
+	remove_character_flag = xar_desc_counted
+	every_child = { xar_desc_clean_l5 = yes }
+}
+xar_desc_clean_l5 = {
+	remove_character_flag = xar_desc_counted
 }

@@ -61,3 +61,8 @@ xar_lifespan_50 = { health = 1 }
 # Blessing/curse temporary health (10 years, applied with days = 3650)
 xar_bless_health = { health = 0.6 }
 xar_curse_health = { health = -0.8 }
+
+# Curse 0 "Leaking Purse": gold income drain (10 years).
+# (1.19 has no sanctioned lump-sum gold removal: add_gold rejects negatives at
+# runtime, remove_gold/pay_gold-without-target are not registered effects.)
+xar_curse_gold_drain = { monthly_income = -1 }

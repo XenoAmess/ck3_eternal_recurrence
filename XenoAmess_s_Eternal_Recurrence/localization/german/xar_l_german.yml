@@ -5,6 +5,8 @@
  setting_xar_on_desc:0 "Der Glasfeuerlord-Modus ist aktiv: Der globale Rekord wird zu Spielbeginn importiert und kann für Verbesserungen ausgegeben werden."
  setting_xar_off:0 "Deaktiviert"
  setting_xar_off_desc:0 "Der Glasfeuerlord-Modus ist inaktiv."
+ setting_xar_selftest:0 "Selbsttest"
+ setting_xar_selftest_desc:0 "Automatisierter Abnahme-Selbsttest. Nur für Entwicklung."
 
  # Tutorial lesson step sentinel text. Must stay identical in every language.
  xar_silent_step:0 "XAR_SYNC_SENTINEL"
@@ -73,7 +75,7 @@
  xar_bless_7:0 "Seiten aus dem Archiv (+750 Bildung-Lebensstil-EP)"
  xar_bless_8:0 "Ungebrochener Körper (Merkmal: Kräftig)"
  xar_bless_9:0 "Zwielicht des Hauses (+150 Renommee)"
- xar_curse_0:0 "Löchriger Geldbeutel (−200 Gold)"
+ xar_curse_0:0 "Löchriger Geldbeutel (-1 monatliches Einkommen, 10 Jahre)"
  xar_curse_1:0 "Höhnegelächter im Dunkel (−300 Prestige)"
  xar_curse_2:0 "Das Schweigen der Ikone (−300 Frömmigkeit)"
  xar_curse_3:0 "Marionette mit durchtrennten Fäden (−100 Einfluss)"

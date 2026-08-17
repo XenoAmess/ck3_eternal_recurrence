@@ -50,6 +50,14 @@
 | 免费宗教改革无 effect | 改革走信仰窗口 GUI | 发 `faith_creation_piety_cost_mult = -1` 修正让费用归零 |
 | `has_global_variable` 门控初始化导致首帧读到 none | 引擎加载时静态注册所有被引用的全局变量名：检查为 true 但值仍是 none，初始化被跳过 | 一次性初始化放到只执行一次的上游（如开局事件选项里），不要用存在性检查做幂等 |
 | 窗口移出屏幕后 state 停求值 | 离屏被裁剪 | 隐身用"无背景+点击穿透"，不要移出屏幕 |
+| `Unknown effect: add_renown`（1.19） | 没有 renown effect | 宗族威望：`dynasty ?= { add_dynasty_prestige = 150 }` |
+| `add_gold effect [ Negative value in: {}. {} ]`（运行期） | `add_gold` 运行期拒绝负值（字面值/值块都不行）；`remove_gold` 和（无目标的）`pay_gold` 均**未注册为 effect**（effect_localization 里的条目是死 loc） | 1.19 没有合规的一次性扣金币手段。改设计：用 `monthly_income = -1` 这类角色 modifier（祝福诅咒池诅咒 0 即如此） |
+| `mother trigger [ Failed context switch ]` / `father trigger ...`（运行期刷屏） | 触发器里 `father = {}`/`mother = {}` 链对**不存在/未知**的亲属报运行期错误，且 `OR` 不短路（每分支都求值）——`every_dynasty_member` 循环里一行链 × 全宗族 = 错误风暴 | 后代统计改为从死者 `every_child` 逐层向下遍历（effect 的上下文切换对空链安静），5 代展开 + 临时 flag 去重 + 事后清 flag。见 xar_effects.txt 的 `xar_desc_node_l1..l5` |
+| `player_heir` 在 `on_game_start_after_lobby` 里是空 | 继承人在开局钩子时点尚未指派 | 要在死后于继承人身上跑逻辑：从结算事件（root=继承人）里嵌套触发检查器 |
+| 结算事件窗打开后时间永远不走 | 事件窗（至少 character_event 结算窗）**硬暂停**游戏（底栏 tooltip「因轮回终结事件暂停」）；开局也默认暂停、死亡弹继承窗强制暂停 | 依赖日 tick 的逻辑必须在该窗打开前完成，或嵌套立即执行（`trigger_event = x.x` 无 days = 同链同步执行） |
+| 开局 GUI 桥偶尔迟迟不触发 | scripted GUI 桥（xar_meta）的求值 tick 会被模态窗（继承/结算）饿死 | 自测类链路：先轮询等桥交付（自重排的隐藏事件 days=1），再做不可逆动作（如自杀） |
+| `Unrecognized loc key xar_..._slot_x`（CEventOptionDesc，**加载期**） | 事件选项名引用的 custom loc 在加载期校验时还未注册（customizable_localization 注册晚于事件校验） | 良性噪音，运行期渲染正常解析；runner 白名单过滤。若要消除可改用别的呈现，但不影响功能 |
+| 事件 immediate 里 `has_game_rule` 表现存疑 | 未查明（该行无日志可判定真假） | 换用全局旗标：`has_global_variable`（任何上下文都可靠） |
 
 ## 事件背景图 / 纹理
 

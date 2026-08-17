@@ -5,6 +5,8 @@
  setting_xar_on_desc:0 "Tryb Władcy Szklanego Ognia jest aktywny: globalny rekord zostaje zaimportowany na początku gry i można go wydać na ulepszenia."
  setting_xar_off:0 "Wyłączone"
  setting_xar_off_desc:0 "Tryb Władcy Szklanego Ognia jest nieaktywny."
+ setting_xar_selftest:0 "Autotest"
+ setting_xar_selftest_desc:0 "Zautomatyzowany test odbiorczy. Tylko do celów deweloperskich."
 
  # Tutorial lesson step sentinel text. Must stay identical in every language.
  xar_silent_step:0 "XAR_SYNC_SENTINEL"
@@ -73,7 +75,7 @@
  xar_bless_7:0 "Karty z Archiwum (+750 pd stylu życia Wiedzy)"
  xar_bless_8:0 "Niezłomne Ciało (cecha: Krzepki)"
  xar_bless_9:0 "Zmierzch Rodu (+150 renomy)"
- xar_curse_0:0 "Dziurawy Worek (−200 złota)"
+ xar_curse_0:0 "Dziurawy Worek (-1 dochodu miesięcznie, 10 lat)"
  xar_curse_1:0 "Szyderstwa w Ciemności (−300 prestiżu)"
  xar_curse_2:0 "Milczenie Ikony (−300 pobożności)"
  xar_curse_3:0 "Marionetka z Przeciętymi Sznurkami (−100 wpływów)"

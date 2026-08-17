@@ -28,13 +28,13 @@
 | 6 | xar_bless_6 | 戎光的馈赠 | `add_martial_skill = 3` |
 | 7 | xar_bless_7 | 书库的残页 | `add_learning_lifestyle_xp = 750` |
 | 8 | xar_bless_8 | 不败之躯 | `add_trait = physique_good_1`（健壮） |
-| 9 | xar_bless_9 | 宗门的余晖 | `add_renown = 150` |
+| 9 | xar_bless_9 | 宗门的余晖 | `dynasty ?= { add_dynasty_prestige = 150 }` |
 
 ## 诅咒池（10 项，等权重）
 
 | id | loc key | 名称 | 效果 |
 |---|---|---|---|
-| 0 | xar_curse_0 | 漏底的荷包 | `add_gold = -200` |
+| 0 | xar_curse_0 | 漏底的荷包 | modifier `xar_curse_gold_drain`（monthly_income −1，10 年；1.19 无合规的一次性扣金币手段：add_gold 负值运行期被拒，remove_gold 已移除） |
 | 1 | xar_curse_1 | 暗处的嗤笑 | `add_prestige = -300` |
 | 2 | xar_curse_2 | 圣像的沉默 | `add_piety = -300` |
 | 3 | xar_curse_3 | 断线的傀儡 | `change_influence = -100` |
@@ -43,7 +43,7 @@
 | 6 | xar_curse_6 | 蒙尘的经卷 | `add_learning_skill = -4` |
 | 7 | xar_curse_7 | 锈死的门环 | `add_diplomacy_lifestyle_xp = -1000` |
 | 8 | xar_curse_8 | 缠身的病影 | `add_trait = sickly`（体弱多病） |
-| 9 | xar_curse_9 | 黯淡的族徽 | `add_renown = -200` |
+| 9 | xar_curse_9 | 黯淡的族徽 | `dynasty ?= { add_dynasty_prestige = -200 }` |
 
 ## 实现位置
 

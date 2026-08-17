@@ -28,6 +28,21 @@ py XenoAmess_s_Eternal_Recurrence/tools/gen_highscore.py
 
 ## 测试流程
 
+**全自动验收（默认）**：
+
+```powershell
+& "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py"
+```
+
+一键全流程（备份现场 → 同步代码 → 过大厅 → 自测规则档全链断言 → 恢复现场），GREEN/RED + 退出码，
+约 5-6 分钟。原理与坐标表见 `docs/testing-workflow.md`。
+
+**⚠️ 改完代码游戏里看不到，先怀疑这个**：启动器把 dev .mod（带 remote_file_id）和工坊订阅合并，
+游戏实际加载的是 **工坊缓存**（`Z:\SteamLibrary\steamapps\workshop\content\1158310\3784706360`，
+播放集里生效的是 `mod/ugc_3784706360.mod`）。runner 每次跑前 robocopy 同步仓库 → 工坊缓存；
+手动测试前也必须先同步（或直接 `robocopy XenoAmess_s_Eternal_Recurrence <工坊缓存> /MIR`）。
+
+手动兜底（runner 不可用时）：
 1. `Start-Process binaries/ck3.exe -ArgumentList "-debug_mode"` 启动
 2. 日志：`Documents\Paradox Interactive\Crusader Kings III\logs\error.log`（解析/运行时错误）、
    `debug.log`（`debug_log` 标记，本项目用 `XAR:` 前缀）
@@ -47,6 +62,15 @@ py XenoAmess_s_Eternal_Recurrence/tools/gen_highscore.py
 
 - **每次任务执行完成后，默认 `git commit` + `git push`**（无需另行确认，也不要等人工验证，直接提交推送）
 - 提交信息用英文，简明描述改动
+
+## 知识沉淀
+
+- 干活中学到的新知识**当场同步进 `docs/`**，不要等任务收尾：尤其是 Paradox 脚本语言
+  （trigger/effect 语义、作用域切换、求值时机）与 CK3 实现细节（加载顺序、暂停行为、
+  启动器/工坊合并行为）的实证结论
+- 落点按类型分：语法/引擎坑 → `docs/grammar/pitfalls.md`（按错误信息索引，现象/原因/解法三栏）；
+  测试流程/工具 → `docs/testing-workflow.md`；机制权威定义 → 对应专题文档（如 blessing-curse-pools.md）
+- 标准：可复现、注明是否实测；存疑结论标「未查明」并写清绕开方案
 
 ## 硬性约束（血泪教训，详见 docs/）
 

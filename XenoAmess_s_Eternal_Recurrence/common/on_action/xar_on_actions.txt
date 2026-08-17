@@ -11,6 +11,13 @@ xar_on_game_start = {
 		every_player = {
 			if = {
 				limit = {
+					has_game_rule = xar_selftest
+				}
+				debug_log = "XAR: TEST selftest begin"
+				xar_selftest_effect = yes
+			}
+			else_if = {
+				limit = {
 					has_game_rule = xar_on
 				}
 				debug_log = "XAR: rule is on, offering pact"

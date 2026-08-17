@@ -5,6 +5,8 @@
  setting_xar_on_desc:0 "启用琉焰卿模式：开局时导入全局最高分副本，可用于购买属性。"
  setting_xar_off:0 "禁用"
  setting_xar_off_desc:0 "关闭琉焰卿模式。"
+ setting_xar_selftest:0 "自测"
+ setting_xar_selftest_desc:0 "自动化验收自测：开局后脚本驱动完整流程并输出断言日志。普通玩家请勿选择。"
 
  # 教程课程 step 哨兵文本。所有语言必须保持一致：GUI 自动点击按它匹配。
  xar_silent_step:0 "XAR_SYNC_SENTINEL"
@@ -73,7 +75,7 @@
  xar_bless_7:0 "书库的残页（学识线经验 +750）"
  xar_bless_8:0 "不败之躯（获得特质：健壮）"
  xar_bless_9:0 "宗门的余晖（+150 宗族威望）"
- xar_curse_0:0 "漏底的荷包（−200 金币）"
+ xar_curse_0:0 "空荡的钱袋（月收入 -1，持续十年）"
  xar_curse_1:0 "暗处的嗤笑（−300 威望）"
  xar_curse_2:0 "圣像的沉默（−300 虔诚）"
  xar_curse_3:0 "断线的傀儡（−100 影响力）"

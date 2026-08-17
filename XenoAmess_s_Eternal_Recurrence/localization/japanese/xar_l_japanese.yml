@@ -5,6 +5,8 @@
  setting_xar_on_desc:0 "琉焰卿モードが有効：ゲーム開始時にグローバル最高記録がインポートされ、強化の購入に使用できます。"
  setting_xar_off:0 "無効"
  setting_xar_off_desc:0 "琉焰卿モードは無効です。"
+ setting_xar_selftest:0 "セルフテスト"
+ setting_xar_selftest_desc:0 "自動化受入テスト。開発用。"
 
  # Tutorial lesson step sentinel text. Must stay identical in every language.
  xar_silent_step:0 "XAR_SYNC_SENTINEL"
@@ -73,7 +75,7 @@
  xar_bless_7:0 "書庫の残ページ（学識ライフスタイル経験値 +750）"
  xar_bless_8:0 "無敗の躯（特性獲得：丈夫）"
  xar_bless_9:0 "一族の残照（+150 一族の威信）"
- xar_curse_0:0 "底抜けの財布（−200 金貨）"
+ xar_curse_0:0 "空の財布（月収 -1、10 年間）"
  xar_curse_1:0 "闇の嘲笑（−300 威信）"
  xar_curse_2:0 "聖像の沈黙（−300 敬虔）"
  xar_curse_3:0 "糸切れの傀儡（−100 影響力）"

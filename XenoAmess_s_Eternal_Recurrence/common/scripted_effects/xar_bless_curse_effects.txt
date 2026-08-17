@@ -94,13 +94,13 @@ xar_apply_blessing_effect = {
 	if = { limit = { global_var:xa_bless_$SLOT$ = 6 } add_martial_skill = 3 }
 	if = { limit = { global_var:xa_bless_$SLOT$ = 7 } add_learning_lifestyle_xp = 750 }
 	if = { limit = { global_var:xa_bless_$SLOT$ = 8 } add_trait = physique_good_1 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 9 } add_renown = 150 }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 9 } dynasty ?= { add_dynasty_prestige = 150 } }
 	change_global_variable = { name = xa_bless_session add = 1 }
 	change_global_variable = { name = xa_bless_count add = 1 }
 }
 
 xar_apply_curse_effect = {
-	if = { limit = { global_var:xa_curse_$SLOT$ = 0 } add_gold = -200 }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 0 } add_character_modifier = { modifier = xar_curse_gold_drain days = 3650 } }
 	if = { limit = { global_var:xa_curse_$SLOT$ = 1 } add_prestige = -300 }
 	if = { limit = { global_var:xa_curse_$SLOT$ = 2 } add_piety = -300 }
 	if = { limit = { global_var:xa_curse_$SLOT$ = 3 } change_influence = -100 }
@@ -109,5 +109,5 @@ xar_apply_curse_effect = {
 	if = { limit = { global_var:xa_curse_$SLOT$ = 6 } add_learning_skill = -4 }
 	if = { limit = { global_var:xa_curse_$SLOT$ = 7 } add_diplomacy_lifestyle_xp = -1000 }
 	if = { limit = { global_var:xa_curse_$SLOT$ = 8 } add_trait = sickly }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 9 } add_renown = -200 }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 9 } dynasty ?= { add_dynasty_prestige = -200 } }
 }

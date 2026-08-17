@@ -5,6 +5,8 @@
  setting_xar_on_desc:0 "Le mode du Seigneur du Feu de Verre est actif : le record global est importé au début de la partie et peut être dépensé en améliorations."
  setting_xar_off:0 "Désactivé"
  setting_xar_off_desc:0 "Le mode du Seigneur du Feu de Verre est inactif."
+ setting_xar_selftest:0 "Auto-test"
+ setting_xar_selftest_desc:0 "Auto-test d'acceptation automatisé, réservé au développement."
 
  # Tutorial lesson step sentinel text. Must stay identical in every language.
  xar_silent_step:0 "XAR_SYNC_SENTINEL"
@@ -73,7 +75,7 @@
  xar_bless_7:0 "Pages de l'Archive (+750 xp de style de vie Érudition)"
  xar_bless_8:0 "Corps Indomptable (trait : Costaud)"
  xar_bless_9:0 "Crépuscule de la Maison (+150 renommée)"
- xar_curse_0:0 "Bourse Trouée (−200 or)"
+ xar_curse_0:0 "Bourse Trouée (-1 revenu mensuel, 10 ans)"
  xar_curse_1:0 "Ricanements dans l'Ombre (−300 prestige)"
  xar_curse_2:0 "Le Silence de l'Icône (−300 piété)"
  xar_curse_3:0 "Marionnette aux Fils Coupés (−100 influence)"

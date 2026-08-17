@@ -5,6 +5,8 @@
  setting_xar_on_desc:0 "El modo del Señor del Fuego de Cristal está activo: el récord global se importa al comenzar la partida y puede gastarse en mejoras."
  setting_xar_off:0 "Desactivado"
  setting_xar_off_desc:0 "El modo del Señor del Fuego de Cristal está inactivo."
+ setting_xar_selftest:0 "Autoprueba"
+ setting_xar_selftest_desc:0 "Autoprueba de aceptación automatizada. Solo para desarrollo."
 
  # Tutorial lesson step sentinel text. Must stay identical in every language.
  xar_silent_step:0 "XAR_SYNC_SENTINEL"
@@ -73,7 +75,7 @@
  xar_bless_7:0 "Páginas del Archivo (+750 exp. de estilo de vida de Erudición)"
  xar_bless_8:0 "Cuerpo Inquebrantable (rasgo: Fornido)"
  xar_bless_9:0 "Ocaso de la Casa (+150 renombre)"
- xar_curse_0:0 "Bolsa Agujereada (−200 oro)"
+ xar_curse_0:0 "Bolsa Agujereada (-1 de ingreso mensual, 10 años)"
  xar_curse_1:0 "Siseos en la Oscuridad (−300 prestigio)"
  xar_curse_2:0 "El Silencio del Icono (−300 piedad)"
  xar_curse_3:0 "Marioneta de Hilos Cortados (−100 influencia)"

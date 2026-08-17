@@ -1,0 +1,110 @@
+﻿# Self-test harness (game rule xar_enabled = xar_selftest). Drives the whole
+# logic chain with scripted assertions at game start; each check logs
+# "XAR: TEST PASS/FAIL <name>" to debug.log. Runner: tools/run_acceptance.py.
+# NOT for players.
+
+xar_selftest_effect = {
+	# ---------- T2: pact accept simulation (same effects as xar.0002 accept) ----------
+	add_character_flag = xa_enabled
+	add_trait = xar_glassfire_gaze
+	set_global_variable = { name = xa_shop_page value = 1 }
+	set_global_variable = { name = xa_price_dip value = 25 }
+	set_global_variable = { name = xa_price_mar value = 25 }
+	set_global_variable = { name = xa_price_ste value = 25 }
+	set_global_variable = { name = xa_price_int value = 25 }
+	set_global_variable = { name = xa_price_lea value = 25 }
+	set_global_variable = { name = xa_price_pro value = 25 }
+	set_global_variable = { name = xa_price_gold value = 25 }
+	set_global_variable = { name = xa_price_pres value = 15 }
+	set_global_variable = { name = xa_price_pie value = 15 }
+	set_global_variable = { name = xa_price_inf value = 15 }
+	set_global_variable = { name = xa_price_dyn value = 100 }
+	set_global_variable = { name = xa_price_life value = 100 }
+	set_global_variable = { name = xa_price_reform value = 1133 }
+	set_global_variable = { name = xa_lifespan_bought value = 0 }
+	set_global_variable = { name = xa_bless_count value = 0 }
+	set_global_variable = { name = xa_bless_session value = 0 }
+
+	if = {
+		limit = { has_trait = xar_glassfire_gaze }
+		debug_log = "XAR: TEST PASS pact_trait"
+	}
+	else = { debug_log = "XAR: TEST FAIL pact_trait" }
+	if = {
+		limit = { has_character_flag = xa_enabled }
+		debug_log = "XAR: TEST PASS pact_flag"
+	}
+	else = { debug_log = "XAR: TEST FAIL pact_flag" }
+	if = {
+		limit = { global_var:xa_price_dip = 25 }
+		debug_log = "XAR: TEST PASS shop_init"
+	}
+	else = { debug_log = "XAR: TEST FAIL shop_init" }
+
+	# ---------- T3: shop buy simulation (charge + 1.2x inflation) ----------
+	set_global_variable = { name = xa_test_points value = 250 }
+	change_global_variable = { name = xa_test_points add = { value = global_var:xa_price_dip multiply = -1 } }
+	add_diplomacy_skill = 1
+	change_global_variable = { name = xa_price_dip multiply = 1.2 }
+	if = {
+		limit = {
+			global_var:xa_price_dip >= 29.9
+			global_var:xa_price_dip <= 30.1
+		}
+		debug_log = "XAR: TEST PASS shop_inflate"
+	}
+	else = { debug_log = "XAR: TEST FAIL shop_inflate" }
+	if = {
+		limit = {
+			global_var:xa_test_points >= 224.9
+			global_var:xa_test_points <= 225.1
+		}
+		debug_log = "XAR: TEST PASS shop_charge"
+	}
+	else = { debug_log = "XAR: TEST FAIL shop_charge" }
+
+	# ---------- T4: blessing draw, three distinct ----------
+	xar_draw_blessings_effect = yes
+	if = {
+		limit = {
+			NOT = { global_var:xa_bless_a = global_var:xa_bless_b }
+			NOT = { global_var:xa_bless_b = global_var:xa_bless_c }
+			NOT = { global_var:xa_bless_a = global_var:xa_bless_c }
+		}
+		debug_log = "XAR: TEST PASS draw_bless_distinct"
+	}
+	else = { debug_log = "XAR: TEST FAIL draw_bless_distinct" }
+
+	# ---------- T5: apply blessing slot a ----------
+	xar_apply_blessing_effect = { SLOT = a }
+	if = {
+		limit = { global_var:xa_bless_count = 1 }
+		debug_log = "XAR: TEST PASS bless_apply"
+	}
+	else = { debug_log = "XAR: TEST FAIL bless_apply" }
+
+	# ---------- T6: curse draw, three distinct ----------
+	xar_draw_curses_effect = yes
+	if = {
+		limit = {
+			NOT = { global_var:xa_curse_a = global_var:xa_curse_b }
+			NOT = { global_var:xa_curse_b = global_var:xa_curse_c }
+			NOT = { global_var:xa_curse_a = global_var:xa_curse_c }
+		}
+		debug_log = "XAR: TEST PASS draw_curse_distinct"
+	}
+	else = { debug_log = "XAR: TEST FAIL draw_curse_distinct" }
+
+	# ---------- T7: apply curse slot a (must run error-free) ----------
+	xar_apply_curse_effect = { SLOT = a }
+	debug_log = "XAR: TEST PASS curse_apply_ran"
+
+	# ---------- T8: death chain, but only AFTER the import bridge delivered ----------
+	# The import runs on the xar_meta GUI bridge whose tick is starved while a
+	# modal window (succession/settlement) is open, so killing root immediately
+	# races it. xar.0008 polls daily until xa_local_points exists (or 30 tries),
+	# then arms and kills. player_heir is empty at game start, so xar.1001
+	# (fired on the heir) runs the checker xar.0007 nested.
+	set_global_variable = { name = xa_selftest_waits value = 0 }
+	trigger_event = { id = xar.0008 days = 1 }
+}

@@ -13,4 +13,8 @@
 	xar_off = {
 
 	}
+
+	xar_selftest = {
+
+	}
 }

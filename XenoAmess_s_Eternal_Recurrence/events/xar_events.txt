@@ -281,6 +281,15 @@ xar.1001 = {
 
 	immediate = {
 		debug_log = "XAR: score event fired"
+		# selftest: run the checker NESTED (immediately). A delayed event would
+		# never fire: this event's window hard-pauses the game, so no further
+		# day tick happens until the player confirms. The record bit was already
+		# set synchronously at death, so immediate execution is safe.
+		if = {
+			limit = { has_global_variable = xa_selftest_armed }
+			debug_log = "XAR: running checker xar.0007 (nested)"
+			trigger_event = xar.0007
+		}
 		save_scope_value_as = { name = xar_bless_n value = global_var:xa_bless_count }
 		# attributes
 		save_scope_value_as = { name = xar_a_dip value = global_var:xa_a_dip }
@@ -453,5 +462,73 @@ xar.0006 = {
 		debug_log = "XAR: new blessing session (3y timer)"
 		set_global_variable = { name = xa_bless_session value = 0 }
 		trigger_event = { id = xar.0004 }
+	}
+}
+# Self-test import waiter (rule xar_selftest): polls daily until the GUI-bridge
+# import delivered xa_global_record_imported, then arms the checker and kills
+# root. (The bridge tick is starved while modal windows are open, so dying at
+# game start races it. 30-day cap keeps the run deterministic if the bridge
+# broke.) Note: xa_local_points is only set when the normal shop flow armed
+# xa_shop_pending — the selftest bypasses the shop event, so it waits on the
+# unconditional delivery var instead.
+xar.0008 = {
+	hidden = yes
+	immediate = {
+		if = {
+			limit = { has_global_variable = xa_global_record_imported }
+			debug_log = "XAR: import delivered, proceeding to death"
+			set_global_variable = { name = xa_selftest_armed value = 1 }
+			death = { death_reason = death_old_age }
+		}
+		else_if = {
+			limit = { global_var:xa_selftest_waits >= 30 }
+			debug_log = "XAR: TEST FAIL import_timeout"
+			set_global_variable = { name = xa_selftest_armed value = 1 }
+			death = { death_reason = death_old_age }
+		}
+		else = {
+			change_global_variable = { name = xa_selftest_waits add = 1 }
+			trigger_event = { id = xar.0008 days = 1 }
+		}
+	}
+}
+# Self-test checker (rule xar_selftest): runs NESTED inside xar.1001 (the
+# settlement window hard-pauses the game, so a delayed event would never fire).
+# Validates import bridge, scoring, blessing counters, record write.
+# Ends the run with XAR: TEST DONE.
+xar.0007 = {
+	hidden = yes
+	immediate = {
+		# import bridge delivered (baseline 0: runner stripped the record bits).
+		# xa_local_points is NOT checked here — it only gets set when the normal
+		# shop flow armed xa_shop_pending, which the selftest bypasses.
+		if = {
+			limit = { has_global_variable = xa_global_record_imported }
+			debug_log = "XAR: TEST PASS import_var"
+			if = {
+				limit = { global_var:xa_global_record_imported = 0 }
+				debug_log = "XAR: TEST PASS import_value"
+			}
+			else = { debug_log = "XAR: TEST FAIL import_value" }
+		}
+		else = { debug_log = "XAR: TEST FAIL import_var" }
+		if = {
+			limit = { global_var:xa_run_score > 0 }
+			debug_log = "XAR: TEST PASS score_positive"
+		}
+		else = { debug_log = "XAR: TEST FAIL score_positive" }
+		if = {
+			limit = { global_var:xa_bless_count = 1 }
+			debug_log = "XAR: TEST PASS bless_count"
+		}
+		else = { debug_log = "XAR: TEST FAIL bless_count" }
+		# record beaten + write path taken (the tutorial-bit persistence itself
+		# is asserted runner-side by reading tutorial.txt before restore)
+		if = {
+			limit = { global_var:xa_score_delta > 0 }
+			debug_log = "XAR: TEST PASS record_write"
+		}
+		else = { debug_log = "XAR: TEST FAIL record_write" }
+		debug_log = "XAR: TEST DONE"
 	}
 }
