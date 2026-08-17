@@ -56,7 +56,7 @@
 | `player_heir` 在 `on_game_start_after_lobby` 里是空 | 继承人在开局钩子时点尚未指派 | 要在死后于继承人身上跑逻辑：从结算事件（root=继承人）里嵌套触发检查器 |
 | 结算事件窗打开后时间永远不走 | 事件窗（至少 character_event 结算窗）**硬暂停**游戏（底栏 tooltip「因轮回终结事件暂停」）；开局也默认暂停、死亡弹继承窗强制暂停 | 依赖日 tick 的逻辑必须在该窗打开前完成，或嵌套立即执行（`trigger_event = x.x` 无 days = 同链同步执行） |
 | 开局 GUI 桥偶尔迟迟不触发 | scripted GUI 桥（xar_meta）的求值 tick 会被模态窗（继承/结算）饿死 | 自测类链路：先轮询等桥交付（自重排的隐藏事件 days=1），再做不可逆动作（如自杀） |
-| `Unrecognized loc key xar_..._slot_x`（CEventOptionDesc，**加载期**） | 事件选项名引用的 custom loc 在加载期校验时还未注册（customizable_localization 注册晚于事件校验） | 良性噪音，运行期渲染正常解析；runner 白名单过滤。若要消除可改用别的呈现，但不影响功能 |
+| `Unrecognized loc key xar_..._slot_x`（CEventOptionDesc，**加载期**） | 事件选项名引用的 custom loc key 在当前语言 yml 里没有静态条目；非英语环境不吃英文回退，导致运行期也显示 raw key | 给该 custom loc key 在所有语言的 yml 里补一个 fallback 文本（custom loc 会覆盖它），并同步给修饰符名也补 loc。现在由 `tools/validate_loc.py` 在 runner 启动前强校验，error.log 不再白名单 |
 | 事件 immediate 里 `has_game_rule` 表现存疑 | 未查明（该行无日志可判定真假） | 换用全局旗标：`has_global_variable`（任何上下文都可靠） |
 
 ## 事件背景图 / 纹理

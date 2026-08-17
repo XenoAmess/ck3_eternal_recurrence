@@ -27,6 +27,8 @@ import win32con
 import win32gui
 from PIL import ImageGrab
 
+import validate_loc
+
 pyautogui.FAILSAFE = False
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -123,6 +125,13 @@ def main():
     log("backed up tutorial.txt + presets.txt")
 
     exit_code = 1
+
+    # ---- 静态 loc 校验（失败直接 RED，不进游戏）----
+    if validate_loc.main() != 0:
+        print("RESULT: RED (loc validation failed)")
+        return
+    log("loc validation passed")
+
     try:
         # ---- 同步仓库 -> 工坊缓存（游戏实际加载 ugc 项，必须先同步）----
         sync_repo_to_ugc(ugc_content_dir())
@@ -142,6 +151,9 @@ def main():
         log(f"presets.txt: replaced {n} xar_on occurrence(s)")
 
         # ---- 启动游戏 ----
+        # 只评估本次运行产生的日志（error.log/debug.log 都是累积的）
+        error_offset = ERROR_LOG.stat().st_size if ERROR_LOG.exists() else 0
+        debug_offset = DEBUG_LOG.stat().st_size if DEBUG_LOG.exists() else 0
         kill_ck3()
         time.sleep(3)
         subprocess.Popen([str(CK3_EXE), "-debug_mode"], cwd=str(CK3_EXE.parent))
@@ -166,7 +178,7 @@ def main():
         log("clicked 开始, game loading")
 
         # ---- 等开局（selftest begin 标记出现 = 已进局且已自杀链启动）----
-        offset = 0
+        offset = debug_offset
         xar_lines = []
         begun = False
         deadline = time.time() + 180
@@ -255,16 +267,8 @@ def main():
                 pass
 
         # ---- error.log 扫 xar 错误 ----
-        err_text, _ = read_new_lines(ERROR_LOG, 0)
-        xar_errors = []
-        for l in err_text.splitlines():
-            if "xar" not in l.lower():
-                continue
-            # 已知良性噪音：事件选项名引用的 custom loc 在加载期校验时不认识
-            # （customizable_localization 注册晚于事件校验；运行期渲染正常解析）。
-            if re.search(r"Unrecognized loc key xar_(bless|curse)_slot_[abc]", l):
-                continue
-            xar_errors.append(l.strip())
+        err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+        xar_errors = [l.strip() for l in err_text.splitlines() if "xar" in l.lower()]
 
         # ---- 汇总 ----
         passes = [l for l in xar_lines if "XAR: TEST PASS" in l]

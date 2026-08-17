@@ -16,6 +16,7 @@
 
 - 普通 loc：当前语言缺键 → 回退英文 ✅
 - **customizable_localization 引用的键：当前语言必须存在**（parse 校验不吃英文回退，`Missing loc key ... for custom localization`）——所以被 custom loc / GUI `Localize()` 引用的键要在每种语言里都定义
+- **customizable_localization 的键本身：用于事件选项名时，当前语言 yml 里也要有静态条目**（否则 `Unrecognized loc key` 且运行期显示 raw key；custom loc 仍会覆盖该静态条目）
 
 ## 事件文本中显示动态值
 

@@ -36,8 +36,8 @@ py tools/gen_pools.py                                       # 祝福/诅咒奖�
 & "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py"
 ```
 
-一键全流程（备份现场 → 同步代码 → 过大厅 → 自测规则档全链断言 → 恢复现场），GREEN/RED + 退出码，
-约 5-6 分钟。原理与坐标表见 `docs/testing-workflow.md`。
+一键全流程（备份现场 → **静态 loc 校验** → 同步代码 → 过大厅 → 自测规则档全链断言 → 恢复现场），
+GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-workflow.md`。
 
 **⚠️ 改完代码游戏里看不到，先怀疑这个**：启动器把 dev .mod（带 remote_file_id）和工坊订阅合并，
 游戏实际加载的是 **工坊缓存**（`Z:\SteamLibrary\steamapps\workshop\content\1158310\3784706360`，
@@ -87,4 +87,5 @@ py tools/gen_pools.py                                       # 祝福/诅咒奖�
 - 自定义顶层窗口必须在 `gui/scripted_widgets/` 注册才会实例化
 - `Tutorial` 数据上下文只存在于 tutorial_window 本体
 - 教程课程自动完成用 `trigger_transition`（课程文件内），不要试图从外部点按钮
-- 游戏语言非英语时，customizable_localization 的 key 必须在**当前语言**的 yml 里存在（不吃英文回退）
+- 游戏语言非英语时，customizable_localization 的 key 必须在**当前语言**的 yml 里存在（不吃英文回退）；
+  用于事件选项名时该 key 本身也要有静态 yml 条目，否则运行期显示 raw key

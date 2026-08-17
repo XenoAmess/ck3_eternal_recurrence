@@ -20,13 +20,42 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from pools_data import B, C, LANGS, SUM_T, ATTR_WORD, EXTRA_MODIFIERS, WEIGHTS, S
+from pools_data import B, C, LANGS, SUM_T, ATTR_WORD, EXTRA_MODIFIERS, EXTRA_MODIFIER_NAMES, WEIGHTS, S
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MOD = os.path.join(ROOT, "XenoAmess_s_Eternal_Recurrence")
 
 HEADER = "# GENERATED FILE - do not edit. Regenerate with tools/gen_pools.py\n"
 RARITY_ZH = {"c": "普通", "r": "稀有", "l": "传说"}
+
+# Fallback text for the six slot custom-loc keys. Custom loc overrides them at
+# runtime, but these static entries prevent CEventOptionDesc from treating the
+# keys as unrecognized at load (and give a readable placeholder during tooltip
+# pre-resolution before the draw effect has set the slot variables).
+SLOT_FALLBACK = {
+    "bless": {
+        "simp_chinese": "（垂青的馈赠）",
+        "english": "(A Gift of Favor)",
+        "french": "(Un don de faveur)",
+        "german": "(Ein Geschenk der Gunst)",
+        "japanese": "（寵愛の贈り物）",
+        "korean": "(은총의 선물)",
+        "polish": "(Dar łaski)",
+        "russian": "(Дар благосклонности)",
+        "spanish": "(Un don de favor)",
+    },
+    "curse": {
+        "simp_chinese": "（咒痕的代价）",
+        "english": "(A Price of Curse)",
+        "french": "(Le prix de la malédiction)",
+        "german": "(Der Preis des Fluchs)",
+        "japanese": "（呪痕の代償）",
+        "korean": "(저주의 대가)",
+        "polish": "(Cena klątwy)",
+        "russian": "(Цена проклятия)",
+        "spanish": "(El precio de la maldición)",
+    },
+}
 
 FAMILY_ZH = {
     "gold": "遗金系（add_gold）", "prestige": "颂歌系（add_prestige）", "piety": "祷声系（add_piety）",
@@ -188,7 +217,25 @@ def gen_modifiers():
 
 
 def gen_yml(pool, prefix, lang):
-    return [f' xar_{prefix}_{i}:0 "{loc_line(e, lang)}"' for i, e in enumerate(pool)]
+    lines = []
+    # static fallback keys for the option-slot custom localization
+    for slot in ("a", "b", "c"):
+        lines.append(f' xar_{prefix}_slot_{slot}:0 "{SLOT_FALLBACK[prefix][lang]}"')
+    # actual per-entry names resolved by the custom localization
+    lines += [f' xar_{prefix}_{i}:0 "{loc_line(e, lang)}"' for i, e in enumerate(pool)]
+    return lines
+
+
+def gen_modifier_yml(lang):
+    """Modifier name keys for the 10-year pool modifiers."""
+    lines = []
+    for e in B + C:
+        if e[1] == "mod":
+            mid, _ = e[2]
+            lines.append(f' {mid}:0 "{e[3][lang]}"')
+    for mid, names in EXTRA_MODIFIER_NAMES.items():
+        lines.append(f' {mid}:0 "{names[lang]}"')
+    return lines
 
 
 def gen_doc():
@@ -227,7 +274,7 @@ def gen_doc():
         "- 抽取/发放：`common/scripted_effects/xar_generated_pools_effects.txt`（GENERATED）",
         "- 选项槽文本：`common/customizable_localization/xar_generated_pool_loc.txt`（GENERATED）",
         "- 修正：`common/modifiers/xar_generated_pool_modifiers.txt`（GENERATED）",
-        "- loc：`localization/<lang>/xar_generated_pools_l_<lang>.yml`（GENERATED，9 语言）",
+        "- loc：`localization/<lang>/xar_generated_pools_l_<lang>.yml`（GENERATED，9 语言；含槽位 fallback + 池条目名 + 修正名）",
         "- 事件：`events/xar_events.txt`（xar.0004 / xar.0005 / xar.0006，手写不变）",
         "- 结算加算：`xar_compute_score_effect` 末尾 ×(1 + 0.01 × xa_bless_count)",
     ]
@@ -261,7 +308,12 @@ def main():
     write_bom(os.path.join(MOD, "common", "modifiers", "xar_generated_pool_modifiers.txt"),
               gen_modifiers())
     for lang in LANGS:
-        lines = [f"l_{lang}:"] + gen_yml(B, "bless", lang) + [""] + gen_yml(C, "curse", lang)
+        lines = ([f"l_{lang}:"]
+                 + gen_yml(B, "bless", lang)
+                 + [""]
+                 + gen_yml(C, "curse", lang)
+                 + [""]
+                 + gen_modifier_yml(lang))
         write_bom(os.path.join(MOD, "localization", lang, f"xar_generated_pools_l_{lang}.yml"),
                   "\n".join(lines) + "\n")
     write_bom(os.path.join(ROOT, "docs", "blessing-curse-pools.md"), gen_doc())

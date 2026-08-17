@@ -542,4 +542,22 @@ EXTRA_MODIFIERS = {
     "xar_leg_stress": "stress_gain_mult = 0.3",   # 重压的账契（10 年）
 }
 
+EXTRA_MODIFIER_NAMES = {
+    "xar_leg_cold": N('蚀魂的寒斑', 'The Soul-Gnawing Frostblight', "La gelure qui ronge l'âme", 'Das seelenfressende Frostmal', '蝕魂の寒斑', '식혼의 한반', 'Mrozowisko gryzące duszę', 'Морозная язва, грызущая душу', 'La helada que roe el alma'),
+    "xar_leg_life": N('不灭的灯芯·真', 'The True Unquenchable Wick', 'La mèche inextinguible véritable', 'Der wahre unlöschbare Docht', '不滅の灯芯・真', '진정한 불멸의 심지', 'Prawdziwie niewygasły knot', 'Истинный негасимый фитиль', 'La mecha verdaderamente inextinguible'),
+    "xar_leg_stress": N('重压的账契', 'The Crushing Deed', "L'acte écrasant", 'Die erdrückende Urkunde', '重圧の帳契', '중압의 장계', 'Przytłaczająca umowa', 'Давящая купчая', 'La escritura aplastante'),
+    "xar_leg_tax": N('琉焰的抽成', "The Glassfire's Cut", 'La part du verre-feu', 'Der Anteil des Glasfeuers', '琉璃の取り分', '유리염의 몫', 'Udział szklanego ognia', 'Доля стеклянного пламени', 'La tajada del fuego vítreo'),
+    "xar_leg_vassal": N('众叛的耳语', 'Whispers of Betrayal', 'Murmures de trahison', 'Geflüster des Verrats', '衆叛の囁き', '중반의 속삭임', 'Szepty zdrady', 'Шёпоты предательства', 'Susurros de traición'),
+    "xar_leg_wealth": N('万邦的账簿', 'Ledger of Ten Thousand Realms', 'Registre de dix mille royaumes', 'Buch der zehntausend Reiche', '万邦の帳簿', '만방의 장부', 'Księga dziesięciu tysięcy królestw', 'Книга десяти тысяч королевств', 'Libro de diez mil reinos'),
+    "xar_pb_life_2": N('不灭的灯芯', 'The Unquenchable Wick', 'La mèche inextinguible', 'Der unlöschbare Docht', '不滅の灯芯', '꺼지지 않는 심지', 'Niewygasły knot', 'Негасимый фитиль', 'La mecha inextinguible'),
+    "xar_pc_drain_a": N('钱袋的细沙', 'Fine Sand in the Purse', 'Sable fin dans la bourse', 'Feiner Sand im Beutel', '金袋の細砂', '돈주머니의 가는 모래', 'Drobny piasek w mieszku', 'Мелкий песок в кошеле', 'Arena fina en la bolsa'),
+    "xar_pc_drain_b": N('渗漏的钱袋', 'The Seeping Purse', 'Bourse qui fuit', 'Der undichte Beutel', '漏れる金袋', '새는 돈주머니', 'Przeciekający mieszek', 'Протекающий кошель', 'La bolsa que gotea'),
+    "xar_pc_drain_c": N('漏底的荷包', 'The Bottomless Purse', 'Bourse sans fond', 'Der bodenlose Beutel', '底なしの金袋', '밑 빠진 돈주머니', 'Bezdenny mieszek', 'Бездонный кошель', 'La bolsa sin fondo'),
+    "xar_pc_drain_d": N('暗账的虫蛀', 'Moth-Eaten Ledger', 'Registre rongé par les mites', 'Mottenfraß im Buch', '帳簿の虫食い', '장부의 좀', 'Mole w księgach', 'Моль в книгах', 'Polillas en el libro'),
+    "xar_pc_drain_e": N('无声的分流', 'The Silent Diversion', 'Détournement silencieux', 'Stille Umleitung', '无声の分流', '무성의 분류', 'Ciche odprowadzenie', 'Тихий отвод', 'Desviación silenciosa'),
+    "xar_pc_drain_f": N('咒痕的利息', 'Interest of the Curse-Mark', 'Intérêts de la marque', 'Zinsen des Fluchmals', '呪痕の利息', '주흔의 이자', 'Odsetki znaku klątwy', 'Проценты по метке', 'Intereses de la marca'),
+    "xar_pc_drain_g": N('琉焰的月贡', 'Monthly Tithe to the Glassfire', 'Dîme mensuelle du verre-feu', 'Monatlicher Zehnt ans Glasfeuer', '琉璃への月貢', '유리염의 월공', 'Miesięczny dziesięcina szklanemu ogniowi', 'Месячная десятина стеклянному пламени', 'Diezmo mensual al fuego vítreo'),
+    "xar_pc_life": N('灯芯的焦痕', "The Wick's Charred Scar", 'La cicatrice de la mèche', 'Die verbrannte Narbe des Dochts', '灯芯の焦痕', '심지의 초흔', 'Zwęglona blizna knota', 'Обожжённый след фитиля', 'La cicatriz chamuscada de la mecha'),
+}
+
 WEIGHTS = {"c": 10, "r": 3, "l": 1}

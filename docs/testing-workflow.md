@@ -15,15 +15,19 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 
 ## 全自动验收 runner（tools/run_acceptance.py）
 
-一键跑完全流程：备份现场 → 同步代码 → 启动游戏过大厅 → 自测规则档驱动全链断言 → 日志判定 → 恢复现场。
+一键跑完全流程：备份现场 → **静态 loc 校验** → 同步代码 → 启动游戏过大厅 → 自测规则档驱动全链断言 → 日志判定 → 恢复现场。
 
 ```powershell
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py"
 ```
 
-约 5-6 分钟，`RESULT: GREEN/RED` + 退出码。判定依据 debug.log 的 `XAR: TEST PASS/FAIL/DONE`
-标记（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，由游戏规则第三档
-`xar_selftest` 触发，检查器 xar.0007 嵌套在结算事件 xar.1001 里跑）+ error.log 无 xar 错误。
+约 5-6 分钟，`RESULT: GREEN/RED` + 退出码。判定依据：
+
+1. `tools/validate_loc.py` 静态校验通过（自定义 loc key / 目标键 / 修饰符名在 9 语言 yml 中齐全）
+2. debug.log 的 `XAR: TEST PASS/FAIL/DONE` 标记（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
+   由游戏规则第三档 `xar_selftest` 触发，检查器 xar.0007 嵌套在结算事件 xar.1001 里跑）
+3. **error.log 中任何包含 `xar` 的日志都视为失败**，不再白名单过滤
+
 截图证据在报告里的 artifacts 目录。
 
 ### 覆盖边界（什么算验过、什么不算）
@@ -32,12 +36,14 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 - 奖池全部 200 条目的**运行期执行**：自测在死前跑 `xar_test_sweep_effect`（生成器产出，
   每条 code 内联按序施加），任一条报错即被 error.log 扫描抓红（drain 修正漏定义就是这样抓到的）
 - 引擎解析 + PostValidate 静态校验全部生成文件
+- **静态 loc 全覆盖**：事件选项名、custom loc key、custom loc 目标键、修饰符名在 9 语言 yml
+  中的存在性（由 `validate_loc.py` 在启动游戏前检查）
 - 契约/商店/抽取/发放/导入/死亡结算/纪录写入/教程落盘的完整链路
 - 结算确认 → 观察者模式桥（截图证据）
 
 **没验的**：
-- 槽位 custom loc 的实际渲染（自测绕开事件 UI；其加载期 "Unrecognized loc key" 噪音是
-  注册顺序产物，已白名单；loc 键存在性由生成器 9 语言全写保证）
+- 槽位 custom loc 的**实际像素渲染**（自测绕开事件 UI；静态校验 + error.log 零容忍已能拦截
+  raw key 类问题，但未来仍可追加 UI 截图/OCR 做最终兜底）
 - 数值与数据表的一致性（生成器自检 id/权重/语种，但 50 写成 500 这类数据错误测不出来）
 - 观察者模式的游玩体验（只验证桥触发）
 

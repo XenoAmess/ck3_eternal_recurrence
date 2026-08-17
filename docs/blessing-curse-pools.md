@@ -233,6 +233,6 @@
 - 抽取/发放：`common/scripted_effects/xar_generated_pools_effects.txt`（GENERATED）
 - 选项槽文本：`common/customizable_localization/xar_generated_pool_loc.txt`（GENERATED）
 - 修正：`common/modifiers/xar_generated_pool_modifiers.txt`（GENERATED）
-- loc：`localization/<lang>/xar_generated_pools_l_<lang>.yml`（GENERATED，9 语言）
+- loc：`localization/<lang>/xar_generated_pools_l_<lang>.yml`（GENERATED，9 语言；含槽位 fallback + 池条目名 + 修正名）
 - 事件：`events/xar_events.txt`（xar.0004 / xar.0005 / xar.0006，手写不变）
 - 结算加算：`xar_compute_score_effect` 末尾 ×(1 + 0.01 × xa_bless_count)
