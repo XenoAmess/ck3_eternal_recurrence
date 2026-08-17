@@ -847,3 +847,424 @@ xar_apply_curse_effect = {
 	if = { limit = { global_var:xa_curse_$SLOT$ = 99 } add_stress = 150
 		add_character_modifier = { modifier = xar_leg_stress days = 3650 } }
 }
+
+# Self-test sweep: every entry applied in sequence (runtime coverage).
+xar_test_sweep_effect = {
+	# --- bless pool ---
+	# 0
+	add_gold = 50
+	# 1
+	add_gold = 100
+	# 2
+	add_gold = 200
+	# 3
+	add_gold = 350
+	# 4
+	add_gold = 500
+	# 5
+	add_gold = 750
+	# 6
+	add_gold = 1000
+	# 7
+	add_prestige = 75
+	# 8
+	add_prestige = 150
+	# 9
+	add_prestige = 300
+	# 10
+	add_prestige = 450
+	# 11
+	add_prestige = 600
+	# 12
+	add_prestige = 900
+	# 13
+	add_prestige = 1200
+	# 14
+	add_prestige = 1800
+	# 15
+	add_piety = 75
+	# 16
+	add_piety = 150
+	# 17
+	add_piety = 300
+	# 18
+	add_piety = 450
+	# 19
+	add_piety = 600
+	# 20
+	add_piety = 900
+	# 21
+	add_piety = 1200
+	# 22
+	add_piety = 1800
+	# 23
+	change_influence = 25
+	# 24
+	change_influence = 35
+	# 25
+	change_influence = 50
+	# 26
+	change_influence = 75
+	# 27
+	change_influence = 100
+	# 28
+	change_influence = 125
+	# 29
+	change_influence = 150
+	# 30
+	add_diplomacy_skill = 1
+	# 31
+	add_diplomacy_skill = 2
+	# 32
+	add_diplomacy_skill = 3
+	# 33
+	add_martial_skill = 1
+	# 34
+	add_martial_skill = 2
+	# 35
+	add_martial_skill = 3
+	# 36
+	add_stewardship_skill = 1
+	# 37
+	add_stewardship_skill = 2
+	# 38
+	add_stewardship_skill = 3
+	# 39
+	add_intrigue_skill = 1
+	# 40
+	add_intrigue_skill = 2
+	# 41
+	add_intrigue_skill = 3
+	# 42
+	add_learning_skill = 1
+	# 43
+	add_learning_skill = 2
+	# 44
+	add_learning_skill = 3
+	# 45
+	add_prowess_skill = 1
+	# 46
+	add_prowess_skill = 2
+	# 47
+	add_prowess_skill = 3
+	# 48
+	add_diplomacy_lifestyle_xp = 250
+	# 49
+	add_diplomacy_lifestyle_xp = 500
+	# 50
+	add_diplomacy_lifestyle_xp = 750
+	# 51
+	add_martial_lifestyle_xp = 250
+	# 52
+	add_martial_lifestyle_xp = 500
+	# 53
+	add_martial_lifestyle_xp = 750
+	# 54
+	add_stewardship_lifestyle_xp = 250
+	# 55
+	add_stewardship_lifestyle_xp = 500
+	# 56
+	add_stewardship_lifestyle_xp = 750
+	# 57
+	add_intrigue_lifestyle_xp = 250
+	# 58
+	add_intrigue_lifestyle_xp = 500
+	# 59
+	add_intrigue_lifestyle_xp = 750
+	# 60
+	add_learning_lifestyle_xp = 250
+	# 61
+	add_learning_lifestyle_xp = 500
+	# 62
+	add_learning_lifestyle_xp = 750
+	# 63
+	add_trait = physique_good_1
+	# 64
+	add_trait = physique_good_2
+	# 65
+	add_trait = physique_good_3
+	# 66
+	add_trait = beauty_good_1
+	# 67
+	add_trait = beauty_good_2
+	# 68
+	add_trait = intellect_good_1
+	# 69
+	add_trait = intellect_good_2
+	# 70
+	add_trait = shrewd
+	# 71
+	add_trait = strong
+	# 72
+	add_trait = brave
+	# 73
+	add_trait = diligent
+	# 74
+	add_trait = patient
+	# 75
+	add_character_modifier = { modifier = xar_pb_income_s days = 3650 }
+	# 76
+	add_character_modifier = { modifier = xar_pb_income_m days = 3650 }
+	# 77
+	add_character_modifier = { modifier = xar_pb_income_l days = 3650 }
+	# 78
+	add_character_modifier = { modifier = xar_pb_health_s days = 3650 }
+	# 79
+	add_character_modifier = { modifier = xar_pb_health_m days = 3650 }
+	# 80
+	add_character_modifier = { modifier = xar_pb_health_l days = 3650 }
+	# 81
+	add_character_modifier = { modifier = xar_pb_fert_s days = 3650 }
+	# 82
+	add_character_modifier = { modifier = xar_pb_fert_m days = 3650 }
+	# 83
+	add_character_modifier = { modifier = xar_pb_vassal days = 3650 }
+	# 84
+	add_character_modifier = { modifier = xar_pb_stress days = 3650 }
+	# 85
+	add_character_modifier = { modifier = xar_pb_prestige days = 3650 }
+	# 86
+	dynasty ?= { add_dynasty_prestige = 50 }
+	# 87
+	dynasty ?= { add_dynasty_prestige = 150 }
+	# 88
+	dynasty ?= { add_dynasty_prestige = 300 }
+	# 89
+	dynasty ?= { add_dynasty_prestige = 500 }
+	# 90
+	add_stress = -50
+	# 91
+	add_stress = -75
+	# 92
+	add_stress = -100
+	# 93
+	add_stress = -150
+	# 94
+	add_character_modifier = { modifier = xar_pb_life_2 }
+	# 95
+	add_diplomacy_skill = 1
+		add_martial_skill = 1
+		add_stewardship_skill = 1
+		add_intrigue_skill = 1
+		add_learning_skill = 1
+		add_prowess_skill = 1
+	# 96
+	add_character_modifier = { modifier = xar_leg_life }
+	# 97
+	add_gold = 1000
+		add_character_modifier = { modifier = xar_leg_wealth days = 3650 }
+	# 98
+	add_prestige = 300
+		add_piety = 300
+		change_influence = 100
+	# 99
+	dynasty ?= { add_dynasty_prestige = 1000 }
+	# --- curse pool ---
+	# 0
+	add_character_modifier = { modifier = xar_pc_drain_a days = 3650 }
+	# 1
+	add_character_modifier = { modifier = xar_pc_drain_b days = 3650 }
+	# 2
+	add_character_modifier = { modifier = xar_pc_drain_c days = 3650 }
+	# 3
+	add_character_modifier = { modifier = xar_pc_drain_d days = 3650 }
+	# 4
+	add_character_modifier = { modifier = xar_pc_drain_e days = 3650 }
+	# 5
+	add_character_modifier = { modifier = xar_pc_drain_f days = 3650 }
+	# 6
+	add_character_modifier = { modifier = xar_pc_drain_g days = 3650 }
+	# 7
+	add_prestige = -100
+	# 8
+	add_prestige = -200
+	# 9
+	add_prestige = -400
+	# 10
+	add_prestige = -600
+	# 11
+	add_prestige = -800
+	# 12
+	add_prestige = -1200
+	# 13
+	add_prestige = -1600
+	# 14
+	add_prestige = -2400
+	# 15
+	add_piety = -100
+	# 16
+	add_piety = -200
+	# 17
+	add_piety = -400
+	# 18
+	add_piety = -600
+	# 19
+	add_piety = -800
+	# 20
+	add_piety = -1200
+	# 21
+	add_piety = -1600
+	# 22
+	add_piety = -2400
+	# 23
+	change_influence = -35
+	# 24
+	change_influence = -50
+	# 25
+	change_influence = -65
+	# 26
+	change_influence = -100
+	# 27
+	change_influence = -135
+	# 28
+	change_influence = -165
+	# 29
+	change_influence = -200
+	# 30
+	add_diplomacy_skill = -1
+	# 31
+	add_diplomacy_skill = -3
+	# 32
+	add_diplomacy_skill = -4
+	# 33
+	add_martial_skill = -1
+	# 34
+	add_martial_skill = -3
+	# 35
+	add_martial_skill = -4
+	# 36
+	add_stewardship_skill = -1
+	# 37
+	add_stewardship_skill = -3
+	# 38
+	add_stewardship_skill = -4
+	# 39
+	add_intrigue_skill = -1
+	# 40
+	add_intrigue_skill = -3
+	# 41
+	add_intrigue_skill = -4
+	# 42
+	add_learning_skill = -1
+	# 43
+	add_learning_skill = -3
+	# 44
+	add_learning_skill = -4
+	# 45
+	add_prowess_skill = -1
+	# 46
+	add_prowess_skill = -3
+	# 47
+	add_prowess_skill = -4
+	# 48
+	add_diplomacy_lifestyle_xp = -350
+	# 49
+	add_diplomacy_lifestyle_xp = -650
+	# 50
+	add_diplomacy_lifestyle_xp = -1000
+	# 51
+	add_martial_lifestyle_xp = -350
+	# 52
+	add_martial_lifestyle_xp = -650
+	# 53
+	add_martial_lifestyle_xp = -1000
+	# 54
+	add_stewardship_lifestyle_xp = -350
+	# 55
+	add_stewardship_lifestyle_xp = -650
+	# 56
+	add_stewardship_lifestyle_xp = -1000
+	# 57
+	add_intrigue_lifestyle_xp = -350
+	# 58
+	add_intrigue_lifestyle_xp = -650
+	# 59
+	add_intrigue_lifestyle_xp = -1000
+	# 60
+	add_learning_lifestyle_xp = -350
+	# 61
+	add_learning_lifestyle_xp = -650
+	# 62
+	add_learning_lifestyle_xp = -1000
+	# 63
+	add_trait = weak
+	# 64
+	add_trait = clubfooted
+	# 65
+	add_trait = physique_bad_1
+	# 66
+	add_trait = beauty_bad_1
+	# 67
+	add_trait = craven
+	# 68
+	add_trait = lazy
+	# 69
+	add_trait = sickly
+	# 70
+	add_trait = hunchbacked
+	# 71
+	add_trait = intellect_bad_1
+	# 72
+	add_trait = intellect_bad_2
+	# 73
+	add_trait = beauty_bad_2
+	# 74
+	add_trait = paranoid
+	# 75
+	add_character_modifier = { modifier = xar_pc_health_s days = 3650 }
+	# 76
+	add_character_modifier = { modifier = xar_pc_health_m days = 3650 }
+	# 77
+	add_character_modifier = { modifier = xar_pc_health_l days = 3650 }
+	# 78
+	add_character_modifier = { modifier = xar_pc_fert_s days = 3650 }
+	# 79
+	add_character_modifier = { modifier = xar_pc_fert_m days = 3650 }
+	# 80
+	add_character_modifier = { modifier = xar_pc_vassal_s days = 3650 }
+	# 81
+	add_character_modifier = { modifier = xar_pc_vassal_m days = 3650 }
+	# 82
+	add_character_modifier = { modifier = xar_pc_stress_s days = 3650 }
+	# 83
+	add_character_modifier = { modifier = xar_pc_stress_m days = 3650 }
+	# 84
+	add_character_modifier = { modifier = xar_pc_mprestige days = 3650 }
+	# 85
+	add_character_modifier = { modifier = xar_pc_mpiety days = 3650 }
+	# 86
+	dynasty ?= { add_dynasty_prestige = -65 }
+	# 87
+	dynasty ?= { add_dynasty_prestige = -200 }
+	# 88
+	dynasty ?= { add_dynasty_prestige = -400 }
+	# 89
+	dynasty ?= { add_dynasty_prestige = -650 }
+	# 90
+	add_stress = 65
+	# 91
+	add_stress = 100
+	# 92
+	add_stress = 135
+	# 93
+	add_stress = 200
+	# 94
+	add_character_modifier = { modifier = xar_pc_life }
+	# 95
+	add_character_modifier = { modifier = xar_leg_cold days = 3650 }
+	# 96
+	add_character_modifier = { modifier = xar_leg_tax days = 3650 }
+	# 97
+	add_character_modifier = { modifier = xar_leg_vassal days = 3650 }
+	# 98
+	add_diplomacy_skill = -1
+		add_martial_skill = -1
+		add_stewardship_skill = -1
+		add_intrigue_skill = -1
+		add_learning_skill = -1
+		add_prowess_skill = -1
+	# 99
+	add_stress = 150
+		add_character_modifier = { modifier = xar_leg_stress days = 3650 }
+	debug_log = "XAR: TEST sweep complete"
+}

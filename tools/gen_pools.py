@@ -144,6 +144,23 @@ def gen_effects(pool, var_prefix, draw_name, apply_name):
     return "\n".join(lines) + "\n"
 
 
+def gen_sweep():
+    """Self-test sweep: run EVERY pool entry's code inline (no slot vars, no
+    counters) so the acceptance runner's error.log scan gets true runtime
+    coverage of all 200 branches. Called by xar.0008 before the scripted death."""
+    out = ["", "# Self-test sweep: every entry applied in sequence (runtime coverage)."]
+    out.append("xar_test_sweep_effect = {")
+    for pool, prefix in ((B, "bless"), (C, "curse")):
+        out.append(f"\t# --- {prefix} pool ---")
+        for i, e in enumerate(pool):
+            code = entry_code(None, e).replace("\n", "\n\t")
+            out.append(f"\t# {i}")
+            out.append(f"\t{code}")
+    out.append('\tdebug_log = "XAR: TEST sweep complete"')
+    out.append("}")
+    return "\n".join(out) + "\n"
+
+
 def gen_custom_loc(pool, prefix):
     out = [HEADER, f"# Option slot resolvers for the {prefix} pool (100 branches each + fallback)."]
     for slot in ("a", "b", "c"):
@@ -237,7 +254,8 @@ def main():
 
     write_bom(os.path.join(MOD, "common", "scripted_effects", "xar_generated_pools_effects.txt"),
               gen_effects(B, "bless", "xar_draw_blessings_effect", "xar_apply_blessing_effect")
-              + "\n" + gen_effects(C, "curse", "xar_draw_curses_effect", "xar_apply_curse_effect"))
+              + "\n" + gen_effects(C, "curse", "xar_draw_curses_effect", "xar_apply_curse_effect")
+              + gen_sweep())
     write_bom(os.path.join(MOD, "common", "customizable_localization", "xar_generated_pool_loc.txt"),
               gen_custom_loc(B, "bless") + "\n" + gen_custom_loc(C, "curse"))
     write_bom(os.path.join(MOD, "common", "modifiers", "xar_generated_pool_modifiers.txt"),

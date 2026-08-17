@@ -477,6 +477,8 @@ xar.0008 = {
 		if = {
 			limit = { has_global_variable = xa_global_record_imported }
 			debug_log = "XAR: import delivered, proceeding to death"
+			# runtime coverage: apply every pool entry before dying
+			xar_test_sweep_effect = yes
 			set_global_variable = { name = xa_selftest_armed value = 1 }
 			death = { death_reason = death_old_age }
 		}
