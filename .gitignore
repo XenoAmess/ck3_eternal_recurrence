@@ -11,3 +11,6 @@ Desktop.ini
 
 # Python venv
 tools/.venv/
+
+# Python cache
+__pycache__/
