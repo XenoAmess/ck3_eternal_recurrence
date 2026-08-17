@@ -1,0 +1,40 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_pools.py
+
+# Pool modifiers (10-year unless noted; permanents carry no days).
+xar_pb_income_s = { monthly_income = 0.5 }
+xar_pb_income_m = { monthly_income = 1 }
+xar_pb_income_l = { monthly_income = 2 }
+xar_pb_health_s = { health = 0.3 }
+xar_pb_health_m = { health = 0.6 }
+xar_pb_health_l = { health = 1.0 }
+xar_pb_fert_s = { fertility = 0.15 }
+xar_pb_fert_m = { fertility = 0.30 }
+xar_pb_vassal = { vassal_opinion = 10 }
+xar_pb_stress = { stress_gain_mult = -0.15 }
+xar_pb_prestige = { monthly_prestige = 0.5 }
+xar_pc_health_s = { health = -0.4 }
+xar_pc_health_m = { health = -0.8 }
+xar_pc_health_l = { health = -1.2 }
+xar_pc_fert_s = { fertility = -0.2 }
+xar_pc_fert_m = { fertility = -0.35 }
+xar_pc_vassal_s = { vassal_opinion = -10 }
+xar_pc_vassal_m = { vassal_opinion = -15 }
+xar_pc_stress_s = { stress_gain_mult = 0.15 }
+xar_pc_stress_m = { stress_gain_mult = 0.25 }
+xar_pc_mprestige = { monthly_prestige = -0.5 }
+xar_pc_mpiety = { monthly_piety = -0.5 }
+xar_pc_drain_a = { monthly_income = -0.3 }
+xar_pc_drain_b = { monthly_income = -0.5 }
+xar_pc_drain_c = { monthly_income = -0.75 }
+xar_pc_drain_d = { monthly_income = -1.0 }
+xar_pc_drain_e = { monthly_income = -1.25 }
+xar_pc_drain_f = { monthly_income = -1.5 }
+xar_pc_drain_g = { monthly_income = -2.0 }
+xar_pb_life_2 = { health = 2 }
+xar_leg_life = { health = 10 }
+xar_leg_wealth = { monthly_income = 1 }
+xar_pc_life = { health = -0.8 }
+xar_leg_cold = { health = -2 }
+xar_leg_tax = { monthly_income_mult = -0.4 }
+xar_leg_vassal = { vassal_opinion = -20 }
+xar_leg_stress = { stress_gain_mult = 0.3 }

@@ -1,0 +1,2431 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_pools.py
+
+# Option slot resolvers for the bless pool (100 branches each + fallback).
+xar_bless_slot_a = {
+	type = character
+	text = {
+		trigger = { global_var:xa_bless_a = 0 }
+		localization_key = xar_bless_0
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 1 }
+		localization_key = xar_bless_1
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 2 }
+		localization_key = xar_bless_2
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 3 }
+		localization_key = xar_bless_3
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 4 }
+		localization_key = xar_bless_4
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 5 }
+		localization_key = xar_bless_5
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 6 }
+		localization_key = xar_bless_6
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 7 }
+		localization_key = xar_bless_7
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 8 }
+		localization_key = xar_bless_8
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 9 }
+		localization_key = xar_bless_9
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 10 }
+		localization_key = xar_bless_10
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 11 }
+		localization_key = xar_bless_11
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 12 }
+		localization_key = xar_bless_12
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 13 }
+		localization_key = xar_bless_13
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 14 }
+		localization_key = xar_bless_14
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 15 }
+		localization_key = xar_bless_15
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 16 }
+		localization_key = xar_bless_16
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 17 }
+		localization_key = xar_bless_17
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 18 }
+		localization_key = xar_bless_18
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 19 }
+		localization_key = xar_bless_19
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 20 }
+		localization_key = xar_bless_20
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 21 }
+		localization_key = xar_bless_21
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 22 }
+		localization_key = xar_bless_22
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 23 }
+		localization_key = xar_bless_23
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 24 }
+		localization_key = xar_bless_24
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 25 }
+		localization_key = xar_bless_25
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 26 }
+		localization_key = xar_bless_26
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 27 }
+		localization_key = xar_bless_27
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 28 }
+		localization_key = xar_bless_28
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 29 }
+		localization_key = xar_bless_29
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 30 }
+		localization_key = xar_bless_30
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 31 }
+		localization_key = xar_bless_31
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 32 }
+		localization_key = xar_bless_32
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 33 }
+		localization_key = xar_bless_33
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 34 }
+		localization_key = xar_bless_34
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 35 }
+		localization_key = xar_bless_35
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 36 }
+		localization_key = xar_bless_36
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 37 }
+		localization_key = xar_bless_37
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 38 }
+		localization_key = xar_bless_38
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 39 }
+		localization_key = xar_bless_39
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 40 }
+		localization_key = xar_bless_40
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 41 }
+		localization_key = xar_bless_41
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 42 }
+		localization_key = xar_bless_42
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 43 }
+		localization_key = xar_bless_43
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 44 }
+		localization_key = xar_bless_44
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 45 }
+		localization_key = xar_bless_45
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 46 }
+		localization_key = xar_bless_46
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 47 }
+		localization_key = xar_bless_47
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 48 }
+		localization_key = xar_bless_48
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 49 }
+		localization_key = xar_bless_49
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 50 }
+		localization_key = xar_bless_50
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 51 }
+		localization_key = xar_bless_51
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 52 }
+		localization_key = xar_bless_52
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 53 }
+		localization_key = xar_bless_53
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 54 }
+		localization_key = xar_bless_54
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 55 }
+		localization_key = xar_bless_55
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 56 }
+		localization_key = xar_bless_56
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 57 }
+		localization_key = xar_bless_57
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 58 }
+		localization_key = xar_bless_58
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 59 }
+		localization_key = xar_bless_59
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 60 }
+		localization_key = xar_bless_60
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 61 }
+		localization_key = xar_bless_61
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 62 }
+		localization_key = xar_bless_62
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 63 }
+		localization_key = xar_bless_63
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 64 }
+		localization_key = xar_bless_64
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 65 }
+		localization_key = xar_bless_65
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 66 }
+		localization_key = xar_bless_66
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 67 }
+		localization_key = xar_bless_67
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 68 }
+		localization_key = xar_bless_68
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 69 }
+		localization_key = xar_bless_69
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 70 }
+		localization_key = xar_bless_70
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 71 }
+		localization_key = xar_bless_71
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 72 }
+		localization_key = xar_bless_72
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 73 }
+		localization_key = xar_bless_73
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 74 }
+		localization_key = xar_bless_74
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 75 }
+		localization_key = xar_bless_75
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 76 }
+		localization_key = xar_bless_76
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 77 }
+		localization_key = xar_bless_77
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 78 }
+		localization_key = xar_bless_78
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 79 }
+		localization_key = xar_bless_79
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 80 }
+		localization_key = xar_bless_80
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 81 }
+		localization_key = xar_bless_81
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 82 }
+		localization_key = xar_bless_82
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 83 }
+		localization_key = xar_bless_83
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 84 }
+		localization_key = xar_bless_84
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 85 }
+		localization_key = xar_bless_85
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 86 }
+		localization_key = xar_bless_86
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 87 }
+		localization_key = xar_bless_87
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 88 }
+		localization_key = xar_bless_88
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 89 }
+		localization_key = xar_bless_89
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 90 }
+		localization_key = xar_bless_90
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 91 }
+		localization_key = xar_bless_91
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 92 }
+		localization_key = xar_bless_92
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 93 }
+		localization_key = xar_bless_93
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 94 }
+		localization_key = xar_bless_94
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 95 }
+		localization_key = xar_bless_95
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 96 }
+		localization_key = xar_bless_96
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 97 }
+		localization_key = xar_bless_97
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 98 }
+		localization_key = xar_bless_98
+	}
+	text = {
+		trigger = { global_var:xa_bless_a = 99 }
+		localization_key = xar_bless_99
+	}
+	text = { localization_key = xar_bless_0 }
+}
+xar_bless_slot_b = {
+	type = character
+	text = {
+		trigger = { global_var:xa_bless_b = 0 }
+		localization_key = xar_bless_0
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 1 }
+		localization_key = xar_bless_1
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 2 }
+		localization_key = xar_bless_2
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 3 }
+		localization_key = xar_bless_3
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 4 }
+		localization_key = xar_bless_4
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 5 }
+		localization_key = xar_bless_5
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 6 }
+		localization_key = xar_bless_6
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 7 }
+		localization_key = xar_bless_7
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 8 }
+		localization_key = xar_bless_8
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 9 }
+		localization_key = xar_bless_9
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 10 }
+		localization_key = xar_bless_10
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 11 }
+		localization_key = xar_bless_11
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 12 }
+		localization_key = xar_bless_12
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 13 }
+		localization_key = xar_bless_13
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 14 }
+		localization_key = xar_bless_14
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 15 }
+		localization_key = xar_bless_15
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 16 }
+		localization_key = xar_bless_16
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 17 }
+		localization_key = xar_bless_17
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 18 }
+		localization_key = xar_bless_18
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 19 }
+		localization_key = xar_bless_19
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 20 }
+		localization_key = xar_bless_20
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 21 }
+		localization_key = xar_bless_21
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 22 }
+		localization_key = xar_bless_22
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 23 }
+		localization_key = xar_bless_23
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 24 }
+		localization_key = xar_bless_24
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 25 }
+		localization_key = xar_bless_25
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 26 }
+		localization_key = xar_bless_26
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 27 }
+		localization_key = xar_bless_27
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 28 }
+		localization_key = xar_bless_28
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 29 }
+		localization_key = xar_bless_29
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 30 }
+		localization_key = xar_bless_30
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 31 }
+		localization_key = xar_bless_31
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 32 }
+		localization_key = xar_bless_32
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 33 }
+		localization_key = xar_bless_33
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 34 }
+		localization_key = xar_bless_34
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 35 }
+		localization_key = xar_bless_35
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 36 }
+		localization_key = xar_bless_36
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 37 }
+		localization_key = xar_bless_37
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 38 }
+		localization_key = xar_bless_38
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 39 }
+		localization_key = xar_bless_39
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 40 }
+		localization_key = xar_bless_40
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 41 }
+		localization_key = xar_bless_41
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 42 }
+		localization_key = xar_bless_42
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 43 }
+		localization_key = xar_bless_43
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 44 }
+		localization_key = xar_bless_44
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 45 }
+		localization_key = xar_bless_45
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 46 }
+		localization_key = xar_bless_46
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 47 }
+		localization_key = xar_bless_47
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 48 }
+		localization_key = xar_bless_48
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 49 }
+		localization_key = xar_bless_49
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 50 }
+		localization_key = xar_bless_50
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 51 }
+		localization_key = xar_bless_51
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 52 }
+		localization_key = xar_bless_52
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 53 }
+		localization_key = xar_bless_53
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 54 }
+		localization_key = xar_bless_54
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 55 }
+		localization_key = xar_bless_55
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 56 }
+		localization_key = xar_bless_56
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 57 }
+		localization_key = xar_bless_57
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 58 }
+		localization_key = xar_bless_58
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 59 }
+		localization_key = xar_bless_59
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 60 }
+		localization_key = xar_bless_60
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 61 }
+		localization_key = xar_bless_61
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 62 }
+		localization_key = xar_bless_62
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 63 }
+		localization_key = xar_bless_63
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 64 }
+		localization_key = xar_bless_64
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 65 }
+		localization_key = xar_bless_65
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 66 }
+		localization_key = xar_bless_66
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 67 }
+		localization_key = xar_bless_67
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 68 }
+		localization_key = xar_bless_68
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 69 }
+		localization_key = xar_bless_69
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 70 }
+		localization_key = xar_bless_70
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 71 }
+		localization_key = xar_bless_71
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 72 }
+		localization_key = xar_bless_72
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 73 }
+		localization_key = xar_bless_73
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 74 }
+		localization_key = xar_bless_74
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 75 }
+		localization_key = xar_bless_75
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 76 }
+		localization_key = xar_bless_76
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 77 }
+		localization_key = xar_bless_77
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 78 }
+		localization_key = xar_bless_78
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 79 }
+		localization_key = xar_bless_79
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 80 }
+		localization_key = xar_bless_80
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 81 }
+		localization_key = xar_bless_81
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 82 }
+		localization_key = xar_bless_82
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 83 }
+		localization_key = xar_bless_83
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 84 }
+		localization_key = xar_bless_84
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 85 }
+		localization_key = xar_bless_85
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 86 }
+		localization_key = xar_bless_86
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 87 }
+		localization_key = xar_bless_87
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 88 }
+		localization_key = xar_bless_88
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 89 }
+		localization_key = xar_bless_89
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 90 }
+		localization_key = xar_bless_90
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 91 }
+		localization_key = xar_bless_91
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 92 }
+		localization_key = xar_bless_92
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 93 }
+		localization_key = xar_bless_93
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 94 }
+		localization_key = xar_bless_94
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 95 }
+		localization_key = xar_bless_95
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 96 }
+		localization_key = xar_bless_96
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 97 }
+		localization_key = xar_bless_97
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 98 }
+		localization_key = xar_bless_98
+	}
+	text = {
+		trigger = { global_var:xa_bless_b = 99 }
+		localization_key = xar_bless_99
+	}
+	text = { localization_key = xar_bless_0 }
+}
+xar_bless_slot_c = {
+	type = character
+	text = {
+		trigger = { global_var:xa_bless_c = 0 }
+		localization_key = xar_bless_0
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 1 }
+		localization_key = xar_bless_1
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 2 }
+		localization_key = xar_bless_2
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 3 }
+		localization_key = xar_bless_3
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 4 }
+		localization_key = xar_bless_4
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 5 }
+		localization_key = xar_bless_5
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 6 }
+		localization_key = xar_bless_6
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 7 }
+		localization_key = xar_bless_7
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 8 }
+		localization_key = xar_bless_8
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 9 }
+		localization_key = xar_bless_9
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 10 }
+		localization_key = xar_bless_10
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 11 }
+		localization_key = xar_bless_11
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 12 }
+		localization_key = xar_bless_12
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 13 }
+		localization_key = xar_bless_13
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 14 }
+		localization_key = xar_bless_14
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 15 }
+		localization_key = xar_bless_15
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 16 }
+		localization_key = xar_bless_16
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 17 }
+		localization_key = xar_bless_17
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 18 }
+		localization_key = xar_bless_18
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 19 }
+		localization_key = xar_bless_19
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 20 }
+		localization_key = xar_bless_20
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 21 }
+		localization_key = xar_bless_21
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 22 }
+		localization_key = xar_bless_22
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 23 }
+		localization_key = xar_bless_23
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 24 }
+		localization_key = xar_bless_24
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 25 }
+		localization_key = xar_bless_25
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 26 }
+		localization_key = xar_bless_26
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 27 }
+		localization_key = xar_bless_27
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 28 }
+		localization_key = xar_bless_28
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 29 }
+		localization_key = xar_bless_29
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 30 }
+		localization_key = xar_bless_30
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 31 }
+		localization_key = xar_bless_31
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 32 }
+		localization_key = xar_bless_32
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 33 }
+		localization_key = xar_bless_33
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 34 }
+		localization_key = xar_bless_34
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 35 }
+		localization_key = xar_bless_35
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 36 }
+		localization_key = xar_bless_36
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 37 }
+		localization_key = xar_bless_37
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 38 }
+		localization_key = xar_bless_38
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 39 }
+		localization_key = xar_bless_39
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 40 }
+		localization_key = xar_bless_40
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 41 }
+		localization_key = xar_bless_41
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 42 }
+		localization_key = xar_bless_42
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 43 }
+		localization_key = xar_bless_43
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 44 }
+		localization_key = xar_bless_44
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 45 }
+		localization_key = xar_bless_45
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 46 }
+		localization_key = xar_bless_46
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 47 }
+		localization_key = xar_bless_47
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 48 }
+		localization_key = xar_bless_48
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 49 }
+		localization_key = xar_bless_49
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 50 }
+		localization_key = xar_bless_50
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 51 }
+		localization_key = xar_bless_51
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 52 }
+		localization_key = xar_bless_52
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 53 }
+		localization_key = xar_bless_53
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 54 }
+		localization_key = xar_bless_54
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 55 }
+		localization_key = xar_bless_55
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 56 }
+		localization_key = xar_bless_56
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 57 }
+		localization_key = xar_bless_57
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 58 }
+		localization_key = xar_bless_58
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 59 }
+		localization_key = xar_bless_59
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 60 }
+		localization_key = xar_bless_60
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 61 }
+		localization_key = xar_bless_61
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 62 }
+		localization_key = xar_bless_62
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 63 }
+		localization_key = xar_bless_63
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 64 }
+		localization_key = xar_bless_64
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 65 }
+		localization_key = xar_bless_65
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 66 }
+		localization_key = xar_bless_66
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 67 }
+		localization_key = xar_bless_67
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 68 }
+		localization_key = xar_bless_68
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 69 }
+		localization_key = xar_bless_69
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 70 }
+		localization_key = xar_bless_70
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 71 }
+		localization_key = xar_bless_71
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 72 }
+		localization_key = xar_bless_72
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 73 }
+		localization_key = xar_bless_73
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 74 }
+		localization_key = xar_bless_74
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 75 }
+		localization_key = xar_bless_75
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 76 }
+		localization_key = xar_bless_76
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 77 }
+		localization_key = xar_bless_77
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 78 }
+		localization_key = xar_bless_78
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 79 }
+		localization_key = xar_bless_79
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 80 }
+		localization_key = xar_bless_80
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 81 }
+		localization_key = xar_bless_81
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 82 }
+		localization_key = xar_bless_82
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 83 }
+		localization_key = xar_bless_83
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 84 }
+		localization_key = xar_bless_84
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 85 }
+		localization_key = xar_bless_85
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 86 }
+		localization_key = xar_bless_86
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 87 }
+		localization_key = xar_bless_87
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 88 }
+		localization_key = xar_bless_88
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 89 }
+		localization_key = xar_bless_89
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 90 }
+		localization_key = xar_bless_90
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 91 }
+		localization_key = xar_bless_91
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 92 }
+		localization_key = xar_bless_92
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 93 }
+		localization_key = xar_bless_93
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 94 }
+		localization_key = xar_bless_94
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 95 }
+		localization_key = xar_bless_95
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 96 }
+		localization_key = xar_bless_96
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 97 }
+		localization_key = xar_bless_97
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 98 }
+		localization_key = xar_bless_98
+	}
+	text = {
+		trigger = { global_var:xa_bless_c = 99 }
+		localization_key = xar_bless_99
+	}
+	text = { localization_key = xar_bless_0 }
+}
+
+# GENERATED FILE - do not edit. Regenerate with tools/gen_pools.py
+
+# Option slot resolvers for the curse pool (100 branches each + fallback).
+xar_curse_slot_a = {
+	type = character
+	text = {
+		trigger = { global_var:xa_curse_a = 0 }
+		localization_key = xar_curse_0
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 1 }
+		localization_key = xar_curse_1
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 2 }
+		localization_key = xar_curse_2
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 3 }
+		localization_key = xar_curse_3
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 4 }
+		localization_key = xar_curse_4
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 5 }
+		localization_key = xar_curse_5
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 6 }
+		localization_key = xar_curse_6
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 7 }
+		localization_key = xar_curse_7
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 8 }
+		localization_key = xar_curse_8
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 9 }
+		localization_key = xar_curse_9
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 10 }
+		localization_key = xar_curse_10
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 11 }
+		localization_key = xar_curse_11
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 12 }
+		localization_key = xar_curse_12
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 13 }
+		localization_key = xar_curse_13
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 14 }
+		localization_key = xar_curse_14
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 15 }
+		localization_key = xar_curse_15
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 16 }
+		localization_key = xar_curse_16
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 17 }
+		localization_key = xar_curse_17
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 18 }
+		localization_key = xar_curse_18
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 19 }
+		localization_key = xar_curse_19
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 20 }
+		localization_key = xar_curse_20
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 21 }
+		localization_key = xar_curse_21
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 22 }
+		localization_key = xar_curse_22
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 23 }
+		localization_key = xar_curse_23
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 24 }
+		localization_key = xar_curse_24
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 25 }
+		localization_key = xar_curse_25
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 26 }
+		localization_key = xar_curse_26
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 27 }
+		localization_key = xar_curse_27
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 28 }
+		localization_key = xar_curse_28
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 29 }
+		localization_key = xar_curse_29
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 30 }
+		localization_key = xar_curse_30
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 31 }
+		localization_key = xar_curse_31
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 32 }
+		localization_key = xar_curse_32
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 33 }
+		localization_key = xar_curse_33
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 34 }
+		localization_key = xar_curse_34
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 35 }
+		localization_key = xar_curse_35
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 36 }
+		localization_key = xar_curse_36
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 37 }
+		localization_key = xar_curse_37
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 38 }
+		localization_key = xar_curse_38
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 39 }
+		localization_key = xar_curse_39
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 40 }
+		localization_key = xar_curse_40
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 41 }
+		localization_key = xar_curse_41
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 42 }
+		localization_key = xar_curse_42
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 43 }
+		localization_key = xar_curse_43
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 44 }
+		localization_key = xar_curse_44
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 45 }
+		localization_key = xar_curse_45
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 46 }
+		localization_key = xar_curse_46
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 47 }
+		localization_key = xar_curse_47
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 48 }
+		localization_key = xar_curse_48
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 49 }
+		localization_key = xar_curse_49
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 50 }
+		localization_key = xar_curse_50
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 51 }
+		localization_key = xar_curse_51
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 52 }
+		localization_key = xar_curse_52
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 53 }
+		localization_key = xar_curse_53
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 54 }
+		localization_key = xar_curse_54
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 55 }
+		localization_key = xar_curse_55
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 56 }
+		localization_key = xar_curse_56
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 57 }
+		localization_key = xar_curse_57
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 58 }
+		localization_key = xar_curse_58
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 59 }
+		localization_key = xar_curse_59
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 60 }
+		localization_key = xar_curse_60
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 61 }
+		localization_key = xar_curse_61
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 62 }
+		localization_key = xar_curse_62
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 63 }
+		localization_key = xar_curse_63
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 64 }
+		localization_key = xar_curse_64
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 65 }
+		localization_key = xar_curse_65
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 66 }
+		localization_key = xar_curse_66
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 67 }
+		localization_key = xar_curse_67
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 68 }
+		localization_key = xar_curse_68
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 69 }
+		localization_key = xar_curse_69
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 70 }
+		localization_key = xar_curse_70
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 71 }
+		localization_key = xar_curse_71
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 72 }
+		localization_key = xar_curse_72
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 73 }
+		localization_key = xar_curse_73
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 74 }
+		localization_key = xar_curse_74
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 75 }
+		localization_key = xar_curse_75
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 76 }
+		localization_key = xar_curse_76
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 77 }
+		localization_key = xar_curse_77
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 78 }
+		localization_key = xar_curse_78
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 79 }
+		localization_key = xar_curse_79
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 80 }
+		localization_key = xar_curse_80
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 81 }
+		localization_key = xar_curse_81
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 82 }
+		localization_key = xar_curse_82
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 83 }
+		localization_key = xar_curse_83
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 84 }
+		localization_key = xar_curse_84
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 85 }
+		localization_key = xar_curse_85
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 86 }
+		localization_key = xar_curse_86
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 87 }
+		localization_key = xar_curse_87
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 88 }
+		localization_key = xar_curse_88
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 89 }
+		localization_key = xar_curse_89
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 90 }
+		localization_key = xar_curse_90
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 91 }
+		localization_key = xar_curse_91
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 92 }
+		localization_key = xar_curse_92
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 93 }
+		localization_key = xar_curse_93
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 94 }
+		localization_key = xar_curse_94
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 95 }
+		localization_key = xar_curse_95
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 96 }
+		localization_key = xar_curse_96
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 97 }
+		localization_key = xar_curse_97
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 98 }
+		localization_key = xar_curse_98
+	}
+	text = {
+		trigger = { global_var:xa_curse_a = 99 }
+		localization_key = xar_curse_99
+	}
+	text = { localization_key = xar_curse_0 }
+}
+xar_curse_slot_b = {
+	type = character
+	text = {
+		trigger = { global_var:xa_curse_b = 0 }
+		localization_key = xar_curse_0
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 1 }
+		localization_key = xar_curse_1
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 2 }
+		localization_key = xar_curse_2
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 3 }
+		localization_key = xar_curse_3
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 4 }
+		localization_key = xar_curse_4
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 5 }
+		localization_key = xar_curse_5
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 6 }
+		localization_key = xar_curse_6
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 7 }
+		localization_key = xar_curse_7
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 8 }
+		localization_key = xar_curse_8
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 9 }
+		localization_key = xar_curse_9
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 10 }
+		localization_key = xar_curse_10
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 11 }
+		localization_key = xar_curse_11
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 12 }
+		localization_key = xar_curse_12
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 13 }
+		localization_key = xar_curse_13
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 14 }
+		localization_key = xar_curse_14
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 15 }
+		localization_key = xar_curse_15
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 16 }
+		localization_key = xar_curse_16
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 17 }
+		localization_key = xar_curse_17
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 18 }
+		localization_key = xar_curse_18
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 19 }
+		localization_key = xar_curse_19
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 20 }
+		localization_key = xar_curse_20
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 21 }
+		localization_key = xar_curse_21
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 22 }
+		localization_key = xar_curse_22
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 23 }
+		localization_key = xar_curse_23
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 24 }
+		localization_key = xar_curse_24
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 25 }
+		localization_key = xar_curse_25
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 26 }
+		localization_key = xar_curse_26
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 27 }
+		localization_key = xar_curse_27
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 28 }
+		localization_key = xar_curse_28
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 29 }
+		localization_key = xar_curse_29
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 30 }
+		localization_key = xar_curse_30
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 31 }
+		localization_key = xar_curse_31
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 32 }
+		localization_key = xar_curse_32
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 33 }
+		localization_key = xar_curse_33
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 34 }
+		localization_key = xar_curse_34
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 35 }
+		localization_key = xar_curse_35
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 36 }
+		localization_key = xar_curse_36
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 37 }
+		localization_key = xar_curse_37
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 38 }
+		localization_key = xar_curse_38
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 39 }
+		localization_key = xar_curse_39
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 40 }
+		localization_key = xar_curse_40
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 41 }
+		localization_key = xar_curse_41
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 42 }
+		localization_key = xar_curse_42
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 43 }
+		localization_key = xar_curse_43
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 44 }
+		localization_key = xar_curse_44
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 45 }
+		localization_key = xar_curse_45
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 46 }
+		localization_key = xar_curse_46
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 47 }
+		localization_key = xar_curse_47
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 48 }
+		localization_key = xar_curse_48
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 49 }
+		localization_key = xar_curse_49
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 50 }
+		localization_key = xar_curse_50
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 51 }
+		localization_key = xar_curse_51
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 52 }
+		localization_key = xar_curse_52
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 53 }
+		localization_key = xar_curse_53
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 54 }
+		localization_key = xar_curse_54
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 55 }
+		localization_key = xar_curse_55
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 56 }
+		localization_key = xar_curse_56
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 57 }
+		localization_key = xar_curse_57
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 58 }
+		localization_key = xar_curse_58
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 59 }
+		localization_key = xar_curse_59
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 60 }
+		localization_key = xar_curse_60
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 61 }
+		localization_key = xar_curse_61
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 62 }
+		localization_key = xar_curse_62
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 63 }
+		localization_key = xar_curse_63
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 64 }
+		localization_key = xar_curse_64
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 65 }
+		localization_key = xar_curse_65
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 66 }
+		localization_key = xar_curse_66
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 67 }
+		localization_key = xar_curse_67
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 68 }
+		localization_key = xar_curse_68
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 69 }
+		localization_key = xar_curse_69
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 70 }
+		localization_key = xar_curse_70
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 71 }
+		localization_key = xar_curse_71
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 72 }
+		localization_key = xar_curse_72
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 73 }
+		localization_key = xar_curse_73
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 74 }
+		localization_key = xar_curse_74
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 75 }
+		localization_key = xar_curse_75
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 76 }
+		localization_key = xar_curse_76
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 77 }
+		localization_key = xar_curse_77
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 78 }
+		localization_key = xar_curse_78
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 79 }
+		localization_key = xar_curse_79
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 80 }
+		localization_key = xar_curse_80
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 81 }
+		localization_key = xar_curse_81
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 82 }
+		localization_key = xar_curse_82
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 83 }
+		localization_key = xar_curse_83
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 84 }
+		localization_key = xar_curse_84
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 85 }
+		localization_key = xar_curse_85
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 86 }
+		localization_key = xar_curse_86
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 87 }
+		localization_key = xar_curse_87
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 88 }
+		localization_key = xar_curse_88
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 89 }
+		localization_key = xar_curse_89
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 90 }
+		localization_key = xar_curse_90
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 91 }
+		localization_key = xar_curse_91
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 92 }
+		localization_key = xar_curse_92
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 93 }
+		localization_key = xar_curse_93
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 94 }
+		localization_key = xar_curse_94
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 95 }
+		localization_key = xar_curse_95
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 96 }
+		localization_key = xar_curse_96
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 97 }
+		localization_key = xar_curse_97
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 98 }
+		localization_key = xar_curse_98
+	}
+	text = {
+		trigger = { global_var:xa_curse_b = 99 }
+		localization_key = xar_curse_99
+	}
+	text = { localization_key = xar_curse_0 }
+}
+xar_curse_slot_c = {
+	type = character
+	text = {
+		trigger = { global_var:xa_curse_c = 0 }
+		localization_key = xar_curse_0
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 1 }
+		localization_key = xar_curse_1
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 2 }
+		localization_key = xar_curse_2
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 3 }
+		localization_key = xar_curse_3
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 4 }
+		localization_key = xar_curse_4
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 5 }
+		localization_key = xar_curse_5
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 6 }
+		localization_key = xar_curse_6
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 7 }
+		localization_key = xar_curse_7
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 8 }
+		localization_key = xar_curse_8
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 9 }
+		localization_key = xar_curse_9
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 10 }
+		localization_key = xar_curse_10
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 11 }
+		localization_key = xar_curse_11
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 12 }
+		localization_key = xar_curse_12
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 13 }
+		localization_key = xar_curse_13
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 14 }
+		localization_key = xar_curse_14
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 15 }
+		localization_key = xar_curse_15
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 16 }
+		localization_key = xar_curse_16
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 17 }
+		localization_key = xar_curse_17
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 18 }
+		localization_key = xar_curse_18
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 19 }
+		localization_key = xar_curse_19
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 20 }
+		localization_key = xar_curse_20
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 21 }
+		localization_key = xar_curse_21
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 22 }
+		localization_key = xar_curse_22
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 23 }
+		localization_key = xar_curse_23
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 24 }
+		localization_key = xar_curse_24
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 25 }
+		localization_key = xar_curse_25
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 26 }
+		localization_key = xar_curse_26
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 27 }
+		localization_key = xar_curse_27
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 28 }
+		localization_key = xar_curse_28
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 29 }
+		localization_key = xar_curse_29
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 30 }
+		localization_key = xar_curse_30
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 31 }
+		localization_key = xar_curse_31
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 32 }
+		localization_key = xar_curse_32
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 33 }
+		localization_key = xar_curse_33
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 34 }
+		localization_key = xar_curse_34
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 35 }
+		localization_key = xar_curse_35
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 36 }
+		localization_key = xar_curse_36
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 37 }
+		localization_key = xar_curse_37
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 38 }
+		localization_key = xar_curse_38
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 39 }
+		localization_key = xar_curse_39
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 40 }
+		localization_key = xar_curse_40
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 41 }
+		localization_key = xar_curse_41
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 42 }
+		localization_key = xar_curse_42
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 43 }
+		localization_key = xar_curse_43
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 44 }
+		localization_key = xar_curse_44
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 45 }
+		localization_key = xar_curse_45
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 46 }
+		localization_key = xar_curse_46
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 47 }
+		localization_key = xar_curse_47
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 48 }
+		localization_key = xar_curse_48
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 49 }
+		localization_key = xar_curse_49
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 50 }
+		localization_key = xar_curse_50
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 51 }
+		localization_key = xar_curse_51
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 52 }
+		localization_key = xar_curse_52
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 53 }
+		localization_key = xar_curse_53
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 54 }
+		localization_key = xar_curse_54
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 55 }
+		localization_key = xar_curse_55
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 56 }
+		localization_key = xar_curse_56
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 57 }
+		localization_key = xar_curse_57
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 58 }
+		localization_key = xar_curse_58
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 59 }
+		localization_key = xar_curse_59
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 60 }
+		localization_key = xar_curse_60
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 61 }
+		localization_key = xar_curse_61
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 62 }
+		localization_key = xar_curse_62
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 63 }
+		localization_key = xar_curse_63
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 64 }
+		localization_key = xar_curse_64
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 65 }
+		localization_key = xar_curse_65
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 66 }
+		localization_key = xar_curse_66
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 67 }
+		localization_key = xar_curse_67
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 68 }
+		localization_key = xar_curse_68
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 69 }
+		localization_key = xar_curse_69
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 70 }
+		localization_key = xar_curse_70
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 71 }
+		localization_key = xar_curse_71
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 72 }
+		localization_key = xar_curse_72
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 73 }
+		localization_key = xar_curse_73
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 74 }
+		localization_key = xar_curse_74
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 75 }
+		localization_key = xar_curse_75
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 76 }
+		localization_key = xar_curse_76
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 77 }
+		localization_key = xar_curse_77
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 78 }
+		localization_key = xar_curse_78
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 79 }
+		localization_key = xar_curse_79
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 80 }
+		localization_key = xar_curse_80
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 81 }
+		localization_key = xar_curse_81
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 82 }
+		localization_key = xar_curse_82
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 83 }
+		localization_key = xar_curse_83
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 84 }
+		localization_key = xar_curse_84
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 85 }
+		localization_key = xar_curse_85
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 86 }
+		localization_key = xar_curse_86
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 87 }
+		localization_key = xar_curse_87
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 88 }
+		localization_key = xar_curse_88
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 89 }
+		localization_key = xar_curse_89
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 90 }
+		localization_key = xar_curse_90
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 91 }
+		localization_key = xar_curse_91
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 92 }
+		localization_key = xar_curse_92
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 93 }
+		localization_key = xar_curse_93
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 94 }
+		localization_key = xar_curse_94
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 95 }
+		localization_key = xar_curse_95
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 96 }
+		localization_key = xar_curse_96
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 97 }
+		localization_key = xar_curse_97
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 98 }
+		localization_key = xar_curse_98
+	}
+	text = {
+		trigger = { global_var:xa_curse_c = 99 }
+		localization_key = xar_curse_99
+	}
+	text = { localization_key = xar_curse_0 }
+}
