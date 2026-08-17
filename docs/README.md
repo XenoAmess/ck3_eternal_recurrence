@@ -11,6 +11,10 @@
 - [testing-workflow.md](testing-workflow.md) — 实测流程：debug_mode 启动、日志断点标记法、tutorial.txt 验证、GUI 可视化调试面板
 - [workshop-publishing.md](workshop-publishing.md) — **创意工坊发布**（启动器上传器）：物料清单、picture 路径解析、预览图 1MB 限制、remote_file_id 内外层之别、更新流程
 
+## 玩家篇
+
+- [scoring-rules.md](scoring-rules.md) — **完整算分规则**（逐条分列，README 只放链接；实现本体在 `common/scripted_effects/xar_effects.txt`）
+
 ## 语法篇
 
 - [grammar/](grammar/README.md) — CK3 Paradox 脚本语法梳理与踩坑合集
