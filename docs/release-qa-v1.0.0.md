@@ -22,19 +22,19 @@ Latest local candidate evidence (2026-08-18):
 ## Manual Language Sign-off
 
 The structural validator covers all nine languages. Human terminology/persona review remains an external release task and must not be represented as automated approval.
-The 1.0 contract narrative is authored in Simplified Chinese and English; the other seven generated contract files intentionally use English pending human translation.
+Routine development authors and reviews only Simplified Chinese and English. The other seven generated languages may intentionally retain English structural placeholders until the user explicitly requests a release; only then are MiniMax-assisted translation and the full audit in `docs/localization-workflow.md` performed.
 
 | Language | Structural | Human reviewer | Persona/terms | In-game truncation | Status |
 |---|---|---|---|---|---|
 | Simplified Chinese | automated | pending | pending | pending | pending |
 | English | automated | pending | pending | pending | pending |
-| French | automated | pending | pending | pending | pending |
-| German | automated | pending | pending | pending | pending |
-| Japanese | automated | pending | pending | pending | pending |
-| Korean | automated | pending | pending | pending | pending |
-| Polish | automated | pending | pending | pending | pending |
-| Russian | automated | pending | pending | pending | pending |
-| Spanish | automated | pending | pending | pending | pending |
+| French | automated | deferred until release | deferred until release | deferred until release | deferred |
+| German | automated | deferred until release | deferred until release | deferred until release | deferred |
+| Japanese | automated | deferred until release | deferred until release | deferred until release | deferred |
+| Korean | automated | deferred until release | deferred until release | deferred until release | deferred |
+| Polish | automated | deferred until release | deferred until release | deferred until release | deferred |
+| Russian | automated | deferred until release | deferred until release | deferred until release | deferred |
+| Spanish | automated | deferred until release | deferred until release | deferred until release | deferred |
 
 ## Manual Presentation Sign-off
 

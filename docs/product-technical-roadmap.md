@@ -213,7 +213,7 @@
 - 增加兼容性、FAQ、局长预期、死亡后行为和挑战模板。
 - tag 构建 release staging，通过 L0-L3 后生成 GitHub Release。
 - Steam 上传同一 staging，并记录 item ID、commit 和 manifest hash。
-- 九语言进行结构校验和人工术语/人格 QA。
+- 日常只维护简中与英文；收到明确发布指令后，再按 `docs/localization-workflow.md` 补齐其余七语言并进行九语言结构、术语、人格和截断 QA。
 
 退出标准：
 
@@ -226,13 +226,13 @@
 - descriptor 已升至 1.0.0，新增 changelog、发布 QA 表、资产来源待签表，并统一 README/工坊源文案中的 CK3 Roguelite / New Game+、版本、FAQ、局长和挑战模板。
 - release manifest v2 记录版本、tag、commit、工坊 ID 与逐文件 SHA-256；`--release` 要求 clean worktree 与 `v<version>` tag，`--verify` 可核对下载后的工坊缓存。
 - acceptance JSON/JUnit 记录 run ID、UTC、版本、git SHA、mod tree hash、游戏/环境及结果；用户现场备份已移出公开 artifacts 并在恢复后删除。
-- Steam 实际上传、GitHub Release、干净中英截图、缩略图人工审美确认、资产许可确认和九语言人工人格 QA 需要外部账号或人工判断，状态见 `docs/release-qa-v1.0.0.md`，不得伪报为自动完成。
+- Steam 实际上传、GitHub Release、干净中英截图、缩略图人工审美确认和资产许可确认需要外部账号或人工判断。其余七语言翻译及九语言人工人格 QA 按用户要求推迟到明确发布指令之后；状态见 `docs/release-qa-v1.0.0.md`，不得伪报为自动完成。
 
 ## 4. 测试矩阵
 
 优先补齐以下场景：
 
-- 正常 `xar_on`、`xar_off` 和首局 0 纪录（runner 场景已实现，待主控实机执行）。
+- 正常 `xar_on`、`xar_off`、首局 0 纪录、已有纪录和高预算 release projection 均已由 runner 实机 GREEN。
 - 非零纪录导入、两进程重启导入和 request/state 防抢跑均已有自动验收。
 - 同阈值区间、跨阈值、最高阈值和超过上限。
 - 商店三页代表商品、整数涨价、余额不足和余分兑换。

@@ -1,5 +1,7 @@
 # 本地化（localization）语法
 
+日常中英双语开发、发布时调用 MiniMax-M3 的职责边界及完整审计流程见 `docs/localization-workflow.md`。
+
 ## yml 文件
 
 ```yml
