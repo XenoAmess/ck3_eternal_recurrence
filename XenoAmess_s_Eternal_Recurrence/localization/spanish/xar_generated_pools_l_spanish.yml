@@ -107,7 +107,6 @@
 
  xar_curse_option_a:0 "[SCOPE.Custom('xar_curse_slot_a')]"
  xar_curse_option_b:0 "[SCOPE.Custom('xar_curse_slot_b')]"
- xar_curse_option_c:0 "[SCOPE.Custom('xar_curse_slot_c')]"
  xar_curse_0:0 "Arena fina en la bolsa (-0.3 de ingreso mensual, 10 años)"
  xar_curse_1:0 "La bolsa que gotea (-0.5 de ingreso mensual, 10 años)"
  xar_curse_2:0 "La bolsa sin fondo (-0.75 de ingreso mensual, 10 años)"

@@ -3,3 +3,4 @@ numpy
 pyautogui
 pywin32
 rapidocr-onnxruntime
+opencv-python-headless

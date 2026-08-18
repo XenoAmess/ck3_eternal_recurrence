@@ -27,6 +27,7 @@ MOD = os.path.join(ROOT, "XenoAmess_s_Eternal_Recurrence")
 
 HEADER = "# GENERATED FILE - do not edit. Regenerate with tools/gen_pools.py\n"
 RARITY_ZH = {"c": "普通", "r": "稀有", "l": "传说"}
+RARITY_LEVEL = {"c": 0, "r": 1, "l": 2}
 
 # A visible diagnostic for an impossible slot ID. Resolver keys intentionally
 # have no same-named static yml entry: such entries mask SCOPE.Custom at runtime.
@@ -149,22 +150,39 @@ def write_bom(path, text):
 
 def gen_effects(pool, var_prefix, draw_name, apply_name):
     lines = [HEADER]
-    lines.append(f"# Draw: three distinct entries without replacement (weights c=10/r=3/l=1).\n")
+    slots = (("a", ()), ("b", ("a",))) if var_prefix == "curse" else (
+        ("a", ()), ("b", ("a",)), ("c", ("a", "b")))
+    lines.append(f"# Draw: {len(slots)} distinct entries without replacement (weights c=10/r=3/l=1).\n")
     lines.append(f"{draw_name} = {{")
-    for slot, prior in (("a", ()), ("b", ("a",)), ("c", ("a", "b"))):
+    for slot, prior in slots:
         lines.append("\trandom_list = {")
         for i, e in enumerate(pool):
-            cond = ""
+            conditions = []
             if prior:
-                conds = " ".join(f"NOT = {{ global_var:xa_{var_prefix}_{p} = {i} }}" for p in prior)
-                cond = f"trigger = {{ {conds} }} "
-            lines.append(f"\t\t{WEIGHTS[e[0]]} = {{ {cond}set_global_variable = {{ name = xa_{var_prefix}_{slot} value = {i} }} }}")
+                conditions += [f"NOT = {{ global_var:xa_{var_prefix}_{p} = {i} }}" for p in prior]
+            # A legendary blessing (level 2) requires at least a rare curse
+            # (level 1). Common/rare blessings leave the full curse pool valid.
+            if var_prefix == "curse" and e[0] == "c":
+                conditions.append("global_var:xa_selected_bless_rarity < 2")
+            cond = f"trigger = {{ {' '.join(conditions)} }} " if conditions else ""
+            rarity_effect = (
+                f" set_global_variable = {{ name = xa_{var_prefix}_{slot}_rarity value = {RARITY_LEVEL[e[0]]} }}"
+                if var_prefix == "curse" else "")
+            lines.append(
+                f"\t\t{WEIGHTS[e[0]]} = {{ {cond}"
+                f"set_global_variable = {{ name = xa_{var_prefix}_{slot} value = {i} }}"
+                f"{rarity_effect} }}")
         lines.append("\t}")
     lines.append("}\n")
-    lines.append(f"# Apply by slot ($SLOT$ = a/b/c).")
+    slot_help = "a/b" if var_prefix == "curse" else "a/b/c"
+    lines.append(f"# Apply by slot ($SLOT$ = {slot_help}).")
     lines.append(f"{apply_name} = {{")
     for i, e in enumerate(pool):
         code = entry_code(None, e)
+        if var_prefix == "bless":
+            code += f"\nset_global_variable = {{ name = xa_selected_bless_rarity value = {RARITY_LEVEL[e[0]]} }}"
+        else:
+            code += "\nadd_trait_xp = { trait = xar_glassfire_gaze value = 1 }"
         indented = code.replace("\n", "\n\t")
         lines.append(f"\tif = {{ limit = {{ global_var:xa_{var_prefix}_$SLOT$ = {i} }} {indented} }}")
     if var_prefix == "bless":
@@ -193,7 +211,8 @@ def gen_sweep():
 
 def gen_custom_loc(pool, prefix):
     out = [HEADER, f"# Option slot resolvers for the {prefix} pool (100 branches each + fallback)."]
-    for slot in ("a", "b", "c"):
+    slots = ("a", "b") if prefix == "curse" else ("a", "b", "c")
+    for slot in slots:
         out.append(f"xar_{prefix}_slot_{slot} = {{")
         out.append("\ttype = character")
         for i in range(len(pool)):
@@ -220,8 +239,9 @@ def gen_modifiers():
 def gen_yml(pool, prefix, lang):
     # Event options use ordinary static keys which invoke the dynamic resolver.
     # The resolver keys themselves must not also exist in yml: static loc wins.
+    slots = ("a", "b") if prefix == "curse" else ("a", "b", "c")
     lines = [f' xar_{prefix}_option_{slot}:0 "[SCOPE.Custom(\'xar_{prefix}_slot_{slot}\')]"'
-             for slot in ("a", "b", "c")]
+             for slot in slots]
     # actual per-entry names resolved by the custom localization
     lines += [f' xar_{prefix}_{i}:0 "{loc_line(e, lang)}"' for i, e in enumerate(pool)]
     return lines
@@ -251,9 +271,10 @@ def gen_doc():
            "## 规则框架",
            "",
            "- 商店「开始此生」后琉焰卿开启**垂青会**（`xar.0004`）：展示祝福池随机 3 项（无放回）+ 「什么都不要」",
-           "- 选中祝福 → 立即发放 → 必须再从诅咒池随机 3 项中选 1（`xar.0005`，无退路）→ 回到祝福事件",
+           "- 选中祝福 → 立即发放 → 必须再从诅咒池随机 2 项中选 1（`xar.0005`，无退路）→ 回到祝福事件",
+           "- 两项诅咒的稀有度均不得低于所选祝福稀有度减 1：传说祝福只会抽到稀有/传说诅咒；普通/稀有祝福允许全池",
            "- 每场垂青会**上限 3 祝福 + 3 诅咒**；选「不要」或领满即散场，**3 年后**（1095 天）琉焰卿再度现身（`xar.0006` 重置会话）",
-           "- 每完成一对祝福/诅咒，**最终结算总分 +1%**（加算，N 对 = +N%），结算明细单列一行",
+           "- 每完成一对祝福/诅咒，琉焰之视获得 **1 经验**；每拒绝一次祝福会，**最终结算总分 -1%**（加算，最低为 0）",
            "- 角色死亡 → 结算后进入观察者模式，计时自然作废",
            "",
            "## 数值与稀有度",
@@ -279,9 +300,9 @@ def gen_doc():
         "- 抽取/发放：`common/scripted_effects/xar_generated_pools_effects.txt`（GENERATED）",
         "- 选项槽文本：`common/customizable_localization/xar_generated_pool_loc.txt`（GENERATED）",
         "- 修正：`common/modifiers/xar_generated_pool_modifiers.txt`（GENERATED）",
-        "- loc：`localization/<lang>/xar_generated_pools_l_<lang>.yml`（GENERATED，9 语言；含槽位 fallback + 池条目名 + 修正名）",
+        "- loc：`localization/<lang>/xar_generated_pools_l_<lang>.yml`（GENERATED，9 语言；含动态 wrapper + 池条目名 + 修正名）",
         "- 事件：`events/xar_events.txt`（xar.0004 / xar.0005 / xar.0006，手写不变）",
-        "- 结算加算：`xar_compute_score_effect` 末尾 ×(1 + 0.01 × xa_bless_count)",
+        "- 拒绝扣分：`xar_compute_score_effect` 末尾 ×max(0, 1 - 0.01 × xa_bless_reject_count)",
     ]
     return "\n".join(out) + "\n"
 

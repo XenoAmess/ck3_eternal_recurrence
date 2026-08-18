@@ -1,0 +1,723 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_score_preview.py
+# Pure formulas only: trait hover evaluates these without changing game state.
+
+# Current scope is one descendant; root family scopes are saved by the caller.
+xar_current_descendant_score_value = {
+	value = 0
+	if = {
+		limit = { is_alive = yes }
+		if = {
+			limit = {
+				exists = scope:xar_score_preview_dyn
+				exists = dynasty
+				dynasty = { this = scope:xar_score_preview_dyn }
+			}
+			add = 0.1
+		}
+		if = {
+			limit = {
+				exists = scope:xar_score_preview_house
+				exists = house
+				house = { this = scope:xar_score_preview_house }
+			}
+			add = 0.1
+		}
+		if = {
+			limit = { highest_held_title_tier >= tier_hegemony }
+			add = 10
+		}
+		else_if = {
+			limit = { highest_held_title_tier >= tier_empire }
+			add = 5
+		}
+		else_if = {
+			limit = { highest_held_title_tier >= tier_kingdom }
+			add = 2.5
+		}
+		else_if = {
+			limit = { highest_held_title_tier >= tier_duchy }
+			add = 1
+		}
+		else_if = {
+			limit = { highest_held_title_tier >= tier_county }
+			add = 0.25
+		}
+	}
+}
+
+xar_current_score_value = {
+	value = 0
+	save_temporary_scope_as = xar_score_preview_root
+	if = { limit = { exists = dynasty } dynasty = { save_temporary_scope_as = xar_score_preview_dyn } }
+	if = { limit = { exists = house } house = { save_temporary_scope_as = xar_score_preview_house } }
+
+	# Attributes.
+	add = diplomacy
+	add = martial
+	add = stewardship
+	add = intrigue
+	add = learning
+	add = prowess
+
+	# Resources: floor(log2(value)) times the scoring coefficient.
+	# gold
+	if = {
+		limit = { gold >= 2 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 4 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 8 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 16 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 32 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 64 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 128 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 256 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 512 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 1024 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 2048 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 4096 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 8192 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 16384 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 32768 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 65536 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 131072 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 262144 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 524288 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 1048576 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 2097152 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 4194304 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 8388608 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 16777216 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 33554432 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 67108864 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 134217728 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 268435456 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 536870912 }
+		add = 5
+	}
+	if = {
+		limit = { gold >= 1073741824 }
+		add = 5
+	}
+	# prestige
+	if = {
+		limit = { prestige >= 2 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 4 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 8 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 16 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 32 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 64 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 128 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 256 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 512 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 1024 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 2048 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 4096 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 8192 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 16384 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 32768 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 65536 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 131072 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 262144 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 524288 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 1048576 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 2097152 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 4194304 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 8388608 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 16777216 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 33554432 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 67108864 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 134217728 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 268435456 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 536870912 }
+		add = 3
+	}
+	if = {
+		limit = { prestige >= 1073741824 }
+		add = 3
+	}
+	# piety
+	if = {
+		limit = { piety >= 2 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 4 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 8 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 16 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 32 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 64 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 128 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 256 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 512 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 1024 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 2048 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 4096 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 8192 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 16384 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 32768 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 65536 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 131072 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 262144 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 524288 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 1048576 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 2097152 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 4194304 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 8388608 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 16777216 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 33554432 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 67108864 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 134217728 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 268435456 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 536870912 }
+		add = 3
+	}
+	if = {
+		limit = { piety >= 1073741824 }
+		add = 3
+	}
+	# influence
+	if = {
+		limit = { influence >= 2 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 4 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 8 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 16 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 32 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 64 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 128 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 256 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 512 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 1024 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 2048 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 4096 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 8192 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 16384 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 32768 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 65536 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 131072 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 262144 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 524288 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 1048576 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 2097152 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 4194304 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 8388608 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 16777216 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 33554432 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 67108864 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 134217728 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 268435456 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 536870912 }
+		add = 3
+	}
+	if = {
+		limit = { influence >= 1073741824 }
+		add = 3
+	}
+
+	# Held titles.
+	every_held_title = { limit = { tier = tier_county } add = 1 }
+	every_held_title = { limit = { tier = tier_duchy } add = 2.5 }
+	every_held_title = { limit = { tier = tier_kingdom } add = 5 }
+	every_held_title = { limit = { tier = tier_empire } add = 10 }
+	every_held_title = { limit = { tier = tier_hegemony } add = 20 }
+
+	# Living descendants through five generations: blood and highest title.
+	save_temporary_scope_as = xar_score_preview_parent_1
+	every_child = {
+		add = xar_current_descendant_score_value
+		save_temporary_scope_as = xar_score_preview_parent_2
+		every_child = {
+			if = {
+				limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_2 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_2 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } } } } } } }
+				add = xar_current_descendant_score_value
+				save_temporary_scope_as = xar_score_preview_parent_3
+				every_child = {
+					if = {
+						limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_3 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_3 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } any_parent = { any_parent = { this = scope:xar_score_preview_root } } } } } } } }
+						add = xar_current_descendant_score_value
+						save_temporary_scope_as = xar_score_preview_parent_4
+						every_child = {
+							if = {
+								limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_4 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } any_parent = { any_parent = { this = scope:xar_score_preview_root } } } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_4 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } any_parent = { any_parent = { this = scope:xar_score_preview_root } } any_parent = { any_parent = { any_parent = { this = scope:xar_score_preview_root } } } } } } } } }
+								add = xar_current_descendant_score_value
+								save_temporary_scope_as = xar_score_preview_parent_5
+								every_child = {
+									if = {
+										limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_5 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } any_parent = { any_parent = { this = scope:xar_score_preview_root } } any_parent = { any_parent = { any_parent = { this = scope:xar_score_preview_root } } } } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_5 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } any_parent = { any_parent = { this = scope:xar_score_preview_root } } any_parent = { any_parent = { any_parent = { this = scope:xar_score_preview_root } } } any_parent = { any_parent = { any_parent = { any_parent = { this = scope:xar_score_preview_root } } } } } } } } } }
+										add = xar_current_descendant_score_value
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	# Landed realm size.
+	if = {
+		limit = { is_landed = yes }
+		if = {
+			limit = { realm_size >= 2 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 4 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 8 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 16 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 32 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 64 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 128 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 256 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 512 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 1024 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 2048 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 4096 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 8192 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 16384 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 32768 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 65536 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 131072 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 262144 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 524288 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 1048576 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 2097152 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 4194304 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 8388608 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 16777216 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 33554432 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 67108864 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 134217728 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 268435456 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 536870912 }
+			add = 10
+		}
+		if = {
+			limit = { realm_size >= 1073741824 }
+			add = 10
+		}
+	}
+
+	# Each declined blessing session removes one percent; never below zero.
+	if = {
+		limit = { global_var:xa_bless_reject_count > 0 }
+		multiply = {
+			value = 1
+			subtract = { value = global_var:xa_bless_reject_count multiply = 0.01 }
+			min = 0
+		}
+	}
+}

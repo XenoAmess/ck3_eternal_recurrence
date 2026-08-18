@@ -2807,3 +2807,13 @@ xar_record_level = {
 	}
 	text = { localization_key = xar_rec_0 }
 }
+
+# Test-only bridge signal: asks xar_meta to open the player character window.
+xar_trait_hover_check = {
+	type = character
+	text = {
+		trigger = { has_character_flag = xa_trait_hover_test_pending }
+		localization_key = xar_trait_hover_sentinel
+	}
+	text = { localization_key = xar_trait_hover_off fallback = yes }
+}

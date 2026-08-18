@@ -107,7 +107,6 @@
 
  xar_curse_option_a:0 "[SCOPE.Custom('xar_curse_slot_a')]"
  xar_curse_option_b:0 "[SCOPE.Custom('xar_curse_slot_b')]"
- xar_curse_option_c:0 "[SCOPE.Custom('xar_curse_slot_c')]"
  xar_curse_0:0 "钱袋的细沙（月收入 -0.3，持续 10 年）"
  xar_curse_1:0 "渗漏的钱袋（月收入 -0.5，持续 10 年）"
  xar_curse_2:0 "漏底的荷包（月收入 -0.75，持续 10 年）"

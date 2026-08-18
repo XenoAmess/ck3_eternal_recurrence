@@ -2108,3 +2108,5 @@
  xar_rec_164600:0 "XAR_LEVEL_164600"
  xar_rec_165600:0 "XAR_LEVEL_165600"
  xar_rec_166600:0 "XAR_LEVEL_166600"
+ xar_trait_hover_sentinel:0 "XAR_TRAIT_HOVER_OPEN"
+ xar_trait_hover_off:0 "XAR_TRAIT_HOVER_OFF"

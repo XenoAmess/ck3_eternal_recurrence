@@ -107,7 +107,6 @@
 
  xar_curse_option_a:0 "[SCOPE.Custom('xar_curse_slot_a')]"
  xar_curse_option_b:0 "[SCOPE.Custom('xar_curse_slot_b')]"
- xar_curse_option_c:0 "[SCOPE.Custom('xar_curse_slot_c')]"
  xar_curse_0:0 "Feiner Sand im Beutel (-0.3 monatliches Einkommen, 10 Jahre)"
  xar_curse_1:0 "Der undichte Beutel (-0.5 monatliches Einkommen, 10 Jahre)"
  xar_curse_2:0 "Der bodenlose Beutel (-0.75 monatliches Einkommen, 10 Jahre)"

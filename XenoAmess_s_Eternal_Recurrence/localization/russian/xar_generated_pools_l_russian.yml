@@ -107,7 +107,6 @@
 
  xar_curse_option_a:0 "[SCOPE.Custom('xar_curse_slot_a')]"
  xar_curse_option_b:0 "[SCOPE.Custom('xar_curse_slot_b')]"
- xar_curse_option_c:0 "[SCOPE.Custom('xar_curse_slot_c')]"
  xar_curse_0:0 "Мелкий песок в кошеле (-0.3 к месячному доходу, на 10 лет)"
  xar_curse_1:0 "Протекающий кошель (-0.5 к месячному доходу, на 10 лет)"
  xar_curse_2:0 "Бездонный кошель (-0.75 к месячному доходу, на 10 лет)"

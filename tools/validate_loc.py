@@ -94,7 +94,8 @@ def main():
 
     # 3) Pool option wrappers must invoke their corresponding resolver exactly.
     for prefix in ("bless", "curse"):
-        for slot in ("a", "b", "c"):
+        slots = ("a", "b") if prefix == "curse" else ("a", "b", "c")
+        for slot in slots:
             key = f"xar_{prefix}_option_{slot}"
             expected = f"[SCOPE.Custom('xar_{prefix}_slot_{slot}')]"
             for lang in LANGS:

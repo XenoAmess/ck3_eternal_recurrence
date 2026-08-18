@@ -14,6 +14,7 @@
 | `Missing loc key 'x' for custom localization` | 当前语言的 yml 里没有该键 | custom loc 的键不吃英文回退，**每种在用语言的 yml 都要有** |
 | `Unknown anchor 'topleft'` | 锚点写法 | 用 `top\|left` 这类合法组合 |
 | `Variable 'x' is used but is never set` | 有引用无写入（删残留代码没删干净） | 清理孤儿引用 |
+| `Variable 'x' is set but is never used` | 生成器写入了没有任何游戏状态读取者的变量；只在 localization 中用也不算读取 | 删除无用写入，或让机制在状态脚本中实际消费；不要白名单忽略 |
 | `gui/xxx.gui: 文件 should be in utf8-bom`（scripted_widgets 等） | 同上 BOM | 加 BOM |
 
 ## on_action / 事件流程
@@ -49,6 +50,7 @@
 | 事件选项太多溢出 | option_grid 不支持滚动 | 分页（页变量 + 翻页选项 + 重触发事件） |
 | 免费宗教改革无 effect | 改革走信仰窗口 GUI | 发 `faith_creation_piety_cost_mult = -1` 修正让费用归零 |
 | `has_global_variable` 门控初始化导致首帧读到 none | 引擎加载时静态注册所有被引用的全局变量名：检查为 true 但值仍是 none，初始化被跳过 | 一次性初始化放到只执行一次的上游（如开局事件选项里），不要用存在性检查做幂等 |
+| custom localization / GUI 每帧刷 `Failed to fetch variable ... not being set` | 可见性桥用数值比较读取尚未赋值的全局变量；custom loc 会高频重复求值，把一次错误放大成错误风暴 | 布尔信号改用 `has_character_flag` 等无未初始化值的 trigger；不要在首帧可求值的 GUI/custom loc 中数值读取未设全局变量（2026-08-18 实测） |
 | 窗口移出屏幕后 state 停求值 | 离屏被裁剪 | 隐身用"无背景+点击穿透"，不要移出屏幕 |
 | `Unknown effect: add_renown`（1.19） | 没有 renown effect | 宗族威望：`dynasty ?= { add_dynasty_prestige = 150 }` |
 | `add_gold effect [ Negative value in: {}. {} ]`（运行期） | `add_gold` 运行期拒绝负值（字面值/值块都不行）；`remove_gold` 和（无目标的）`pay_gold` 均**未注册为 effect**（effect_localization 里的条目是死 loc） | 1.19 没有合规的一次性扣金币手段。改设计：用 `monthly_income = -1` 这类角色 modifier（祝福诅咒池诅咒 0 即如此） |
@@ -58,6 +60,7 @@
 | 开局 GUI 桥偶尔迟迟不触发 | scripted GUI 桥（xar_meta）的求值 tick 会被模态窗（继承/结算）饿死 | 自测类链路：先轮询等桥交付（自重排的隐藏事件 days=1），再做不可逆动作（如自杀） |
 | `Unrecognized loc key xar_..._slot_x`（CEventOptionDesc，**加载期**）；补同名 yml 后三个选项全显示 fallback | 事件选项 `name` 不能直接消费 custom-loc resolver；同名静态 yml key 不会被 resolver 覆盖，反而会遮蔽动态值 | 事件改用普通 wrapper key，yml 内容写 `[SCOPE.Custom('xar_..._slot_x')]`；resolver key 本身禁止出现在 yml。`tools/validate_loc.py` 同时校验 wrapper 精确内容和同名遮蔽（2026-08-18 简中实机 OCR 验证） |
 | 事件切换后 OCR 读到上一事件并误点 | `debug_log` 在事件 `immediate` 执行时写出，早于新模态窗口完成像素替换；日志 marker 只能证明脚本已开始，不能证明 UI 已稳定 | marker 后继续 OCR 等待新事件标题出现，再读选项；截图前把鼠标移出选项区，避免 debug tooltip 被识别成选项行（2026-08-18 实测） |
+| trait track hover 报 `VFSOpen Error: gfx/interface/icons/trait_level_tracks/<trait>.dds not found` | 原生 trait track 按 trait key 自动加载独立 track 图标，不复用 trait 定义里的 `icon =` | 补 `gfx/interface/icons/trait_level_tracks/<trait_key>.dds`，并纳入发布资源静态校验（2026-08-18 实测） |
 | 事件 immediate 里 `has_game_rule` 表现存疑 | 未查明（该行无日志可判定真假） | 换用全局旗标：`has_global_variable`（任何上下文都可靠） |
 
 ## 事件背景图 / 纹理

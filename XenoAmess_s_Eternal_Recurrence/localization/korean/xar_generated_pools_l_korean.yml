@@ -107,7 +107,6 @@
 
  xar_curse_option_a:0 "[SCOPE.Custom('xar_curse_slot_a')]"
  xar_curse_option_b:0 "[SCOPE.Custom('xar_curse_slot_b')]"
- xar_curse_option_c:0 "[SCOPE.Custom('xar_curse_slot_c')]"
  xar_curse_0:0 "돈주머니의 가는 모래 (월 수입 -0.3, 10년)"
  xar_curse_1:0 "새는 돈주머니 (월 수입 -0.5, 10년)"
  xar_curse_2:0 "밑 빠진 돈주머니 (월 수입 -0.75, 10년)"

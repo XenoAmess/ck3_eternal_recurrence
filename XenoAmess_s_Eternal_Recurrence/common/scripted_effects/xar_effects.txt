@@ -78,6 +78,11 @@ xar_compute_score_effect = {
 		name = xa_a_hou
 		value = 0
 	}
+	set_global_variable = { name = xa_d_t1 value = 0 }
+	set_global_variable = { name = xa_d_t2 value = 0 }
+	set_global_variable = { name = xa_d_t3 value = 0 }
+	set_global_variable = { name = xa_d_t4 value = 0 }
+	set_global_variable = { name = xa_d_t5 value = 0 }
 	save_temporary_scope_as = xar_score_dead
 	if = { limit = { exists = dynasty }
 		dynasty = { save_temporary_scope_as = xar_score_dyn }
@@ -211,67 +216,9 @@ xar_compute_score_effect = {
 		value = { value = global_var:xa_n_t5 multiply = 20 }
 	}
 
-	# --- living descendants by highest held title tier (5 generations unrolled) ---
-	set_global_variable = {
-		name = xa_d_t1
-		value = 0
-	}
-	set_global_variable = {
-		name = xa_d_t2
-		value = 0
-	}
-	set_global_variable = {
-		name = xa_d_t3
-		value = 0
-	}
-	set_global_variable = {
-		name = xa_d_t4
-		value = 0
-	}
-	set_global_variable = {
-		name = xa_d_t5
-		value = 0
-	}
-	every_child = {
-		limit = { is_alive = yes }
-		xar_descendant_tier_count_effect = yes
-	}
-	every_child = {
-		every_child = {
-			limit = { is_alive = yes }
-			xar_descendant_tier_count_effect = yes
-		}
-	}
-	every_child = {
-		every_child = {
-			every_child = {
-				limit = { is_alive = yes }
-				xar_descendant_tier_count_effect = yes
-			}
-		}
-	}
-	every_child = {
-		every_child = {
-			every_child = {
-				every_child = {
-					limit = { is_alive = yes }
-					xar_descendant_tier_count_effect = yes
-				}
-			}
-		}
-	}
-	every_child = {
-		every_child = {
-			every_child = {
-				every_child = {
-					every_child = {
-						limit = { is_alive = yes }
-						xar_descendant_tier_count_effect = yes
-					}
-				}
-			}
-		}
-	}
+	# --- living descendants by highest held title tier ---
+	# Buckets were populated by the same deduplicated five-generation traversal
+	# used for blood points above.
 	set_global_variable = {
 		name = xa_p_d1
 		value = { value = global_var:xa_d_t1 multiply = 0.25 }
@@ -417,14 +364,19 @@ xar_compute_score_effect = {
 		add = { value = global_var:xa_p_realm }
 	}
 
-	# --- blessing/curse bonus: +1% per pair taken this run (additive) ---
+	# --- refusal penalty: -1% per declined blessing session (additive) ---
+	set_global_variable = {
+		name = xa_score_before_reject
+		value = { value = global_var:xa_run_score }
+	}
 	if = {
-		limit = { global_var:xa_bless_count > 0 }
+		limit = { global_var:xa_bless_reject_count > 0 }
 		change_global_variable = {
 			name = xa_run_score
 			multiply = {
 				value = 1
-				add = { value = global_var:xa_bless_count multiply = 0.01 }
+				subtract = { value = global_var:xa_bless_reject_count multiply = 0.01 }
+				min = 0
 			}
 		}
 	}
@@ -451,7 +403,7 @@ xar_compute_score_effect = {
 }
 
 # Counts the scoped living descendant into the per-tier bucket of their highest
-# held title. Called from xar_compute_score_effect's unrolled child iterations.
+# held title. Called once per living descendant by xar_desc_count_self.
 xar_descendant_tier_count_effect = {
 	if = {
 		limit = { highest_held_title_tier >= tier_hegemony }
@@ -504,6 +456,7 @@ xar_desc_count_self = {
 			NOT = { has_character_flag = xar_desc_counted }
 		}
 		add_character_flag = xar_desc_counted
+		xar_descendant_tier_count_effect = yes
 		if = {
 			limit = {
 				exists = scope:xar_score_dyn

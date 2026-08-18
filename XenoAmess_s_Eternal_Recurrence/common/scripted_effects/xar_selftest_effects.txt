@@ -24,6 +24,8 @@ xar_selftest_effect = {
 	set_global_variable = { name = xa_lifespan_bought value = 0 }
 	set_global_variable = { name = xa_bless_count value = 0 }
 	set_global_variable = { name = xa_bless_session value = 0 }
+	set_global_variable = { name = xa_bless_reject_count value = 0 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 }
 
 	if = {
 		limit = { has_trait = xar_glassfire_gaze }
@@ -75,41 +77,59 @@ xar_selftest_effect = {
 	}
 	else = { debug_log = "XAR: TEST FAIL draw_bless_distinct" }
 
-	# ---------- T5: apply blessing slot a ----------
+	# ---------- T5: apply a legendary blessing through the real dispatcher ----------
+	set_global_variable = { name = xa_bless_a value = 99 }
 	xar_apply_blessing_effect = { SLOT = a }
 	if = {
-		limit = { global_var:xa_bless_count = 1 }
+		limit = {
+			global_var:xa_bless_count = 1
+			global_var:xa_selected_bless_rarity = 2
+		}
 		debug_log = "XAR: TEST PASS bless_apply"
 	}
 	else = { debug_log = "XAR: TEST FAIL bless_apply" }
 
-	# ---------- T6: curse draw, three distinct ----------
+	# ---------- T6: curse draw, two distinct and both >= legendary-1 ----------
 	xar_draw_curses_effect = yes
 	if = {
 		limit = {
 			NOT = { global_var:xa_curse_a = global_var:xa_curse_b }
-			NOT = { global_var:xa_curse_b = global_var:xa_curse_c }
-			NOT = { global_var:xa_curse_a = global_var:xa_curse_c }
+			global_var:xa_curse_a_rarity >= 1
+			global_var:xa_curse_b_rarity >= 1
 		}
-		debug_log = "XAR: TEST PASS draw_curse_distinct"
+		debug_log = "XAR: TEST PASS draw_curse_constrained"
 	}
-	else = { debug_log = "XAR: TEST FAIL draw_curse_distinct" }
+	else = { debug_log = "XAR: TEST FAIL draw_curse_constrained" }
 
-	# ---------- T7: apply curse slot a (must run error-free) ----------
+	# ---------- T7: applying the mandatory curse completes the pair: +1 XP ----------
 	xar_apply_curse_effect = { SLOT = a }
-	debug_log = "XAR: TEST PASS curse_apply_ran"
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 1 }
+			has_trait_xp = { trait = xar_glassfire_gaze value < 2 }
+		}
+		debug_log = "XAR: TEST PASS curse_pair_xp"
+	}
+	else = { debug_log = "XAR: TEST FAIL curse_pair_xp" }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 9 }
+	if = {
+		limit = { has_trait_xp = { trait = xar_glassfire_gaze value >= 10 } }
+		debug_log = "XAR: TEST PASS trait_level_1"
+	}
+	else = { debug_log = "XAR: TEST FAIL trait_level_1" }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 90 }
+	if = {
+		limit = { has_trait_xp = { trait = xar_glassfire_gaze value >= 100 } }
+		debug_log = "XAR: TEST PASS trait_xp_cap"
+	}
+	else = { debug_log = "XAR: TEST FAIL trait_xp_cap" }
 
-	# ---------- T8: UI localization smoke test (one bless + one curse window) ----------
-	# Opens xar.0004/0005 for the runner to OCR the option text; the runner clicks
-	# through and then unpauses so the death chain below can proceed.
-	trigger_event = { id = xar.0009 }
-
-	# ---------- T9: death chain, but only AFTER the import bridge delivered ----------
-	# The import runs on the xar_meta GUI bridge whose tick is starved while a
-	# modal window (succession/settlement) is open, so killing root immediately
-	# races it. xar.0008 polls daily until xa_local_points exists (or 30 tries),
-	# then arms and kills. player_heir is empty at game start, so xar.1001
-	# (fired on the heir) runs the checker xar.0007 nested.
-	set_global_variable = { name = xa_selftest_waits value = 0 }
-	trigger_event = { id = xar.0008 days = 1 }
+	# ---------- T8: real pact -> shop -> blessing/curse UI chain ----------
+	# Production options emit assertions only while this flag is active. The
+	# runner clicks every transition; the final curse schedules the death waiter.
+	set_global_variable = { name = xa_test_dip_before value = diplomacy }
+	set_global_variable = { name = xa_test_gold_before value = gold }
+	set_global_variable = xa_full_ui_test_active
+	debug_log = "XAR: UI full flow armed"
+	trigger_event = xar.0002
 }

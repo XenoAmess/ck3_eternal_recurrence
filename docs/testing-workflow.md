@@ -15,7 +15,7 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 
 ## 全自动验收 runner（tools/run_acceptance.py）
 
-一键跑完全流程：备份现场 → **静态 loc 校验** → 同步代码 → 启动游戏过大厅 → 自测规则档驱动全链断言 → 日志判定 → 恢复现场。
+一键跑完全流程：备份现场 → **静态生成/编码/loc/机制/资源校验** → 同步代码 → 启动游戏过大厅 → 自测规则档驱动生产 UI 与全链断言 → 日志判定 → 恢复现场。
 
 ```powershell
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py"
@@ -23,11 +23,12 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 
 冷启动通常约 2 分钟，`RESULT: GREEN/RED` + 退出码。判定依据：
 
-1. `tools/validate_loc.py` 静态校验通过（事件选项 wrapper、custom-loc 目标键、全部 88 个 modifier 名在 9 语言 yml 中齐全；resolver 同名静态键视为遮蔽错误）
-2. debug.log 的 14 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
+1. `tools/validate_static.py` 通过：三套生成器逐文件 parity、全部运行文件 UTF-8 BOM、9 语言 loc 引用、AI 闸门、二选一/稀有度/XP 机制、descriptor 与发布资源；其中 `tools/validate_loc.py` 负责动态 wrapper、custom-loc 和 88 个 modifier 名。
+2. debug.log 的 23 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
    由游戏规则第三档 `xar_selftest` 触发，检查器 xar.0007 嵌套在结算事件 xar.1001 里跑）
-3. 真实打开祝福/诅咒事件，OCR 等到对应标题后验证 ID 0/50/99 三个选项均为不同动态文本、无 raw/fallback，再点击并等待脚本 acceptance marker
-4. **error.log 中任何包含 `xar` 的日志都视为失败**，不再白名单过滤
+3. OCR 真实接受契约、购买外交、结束商店，再打开祝福三选一与诅咒二选一，验证动态文本无 raw/fallback 并点击生产选项；购买断言分别核对积分、涨价与属性增长。
+4. 通过 acceptance-only GUI 直接调用 `DefaultOnCharacterClick(GetPlayer.GetID)` 打开玩家原生人物页，以 DDS 模板定位【琉焰之视】，hover 后 OCR 确认“当前分量”实时渲染。
+5. **error.log 中任何包含 `xar` 的日志都视为失败**，不再白名单过滤。
 
 截图证据在报告里的 artifacts 目录。
 
@@ -37,19 +38,20 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 - 奖池全部 200 条目的**运行期执行**：自测在死前跑 `xar_test_sweep_effect`（生成器产出，
   每条 code 内联按序施加），带 `xar` 上下文的报错会被 error.log 扫描抓红（drain 修正漏定义就是这样抓到的）
 - 引擎解析 + PostValidate 静态校验全部生成文件
-- **当前校验范围内的静态 loc 全覆盖**：事件选项名、奖池 custom-loc 目标键、全部 modifier 名在 9 语言 yml 中的存在性，以及六个奖池 wrapper 的精确表达式
-- 祝福/诅咒 ID 0/50/99 的简中实际像素渲染与事件选项点击
-- 自测链中的契约核心 effect、一个商店价格/扣款样例、抽取、发放、零值导入、死亡结算、纪录写入和教程落盘
+- **当前校验范围内的静态 loc 全覆盖**：event/custom-loc/GUI/trait/rule/modifier 引用、奖池目标键与五个 wrapper 精确表达式，均检查 9 语言。
+- 生产契约接受、商店外交购买与结束、祝福三选一、诅咒二选一的简中实际像素渲染和点击。
+- 商店样例的扣款 `200→175`、价格 `25→30`、外交增长，以及余分换金币。
+- 原生 trait track 的 100 XP/10 级、每对 +1 XP、满级状态及 hover 当前分数的实际像素渲染；hover 公式还与死亡结算值作脚本断言。
+- 传说祝福只抽到稀有/传说诅咒、拒绝每次 -1% 最终分、零值导入、死亡结算、纪录写入和教程落盘。
 - 奖池 200 个 effect body 的运行期语法/引用 smoke test
 
 **没验的**：
-- 正常 `xar_on` 路径的契约和商店 UI；当前契约/商店断言是 effect 模拟，不证明事件选项与 scripted GUI 无漂移
+- 正常 `xar_on` / `xar_off` 独立规则场景；生产事件 UI 在 `xar_selftest` 中真实点击，但没有另起正常规则档。
 - 非零纪录导入及 `xa_shop_pending → xa_local_points`；当前只验导入 0
 - 200 项 dispatcher 的 ID→effect 语义映射；sweep 内联执行 effect body，只是运行期 smoke test
-- 祝福/诅咒会的 `<3` 返回、拒绝、1095 日重开分支
-- 计分各系数与边界的精确总分；当前只断言正分和写入
+- 祝福/诅咒会的 `<3` 返回、拒绝选项真实点击、1095 日重开分支
+- 计分各系数与边界的系统矩阵、后代去重边界；当前断言正分、拒绝倍率、preview/结算一致与写入
 - AI 双闸门的负例、结算后观察者状态；当前仅静态依赖闸门并保留确认后截图
-- 事件标题/描述、GUI `Localize()`、规则和特质的全量 loc 引用扫描；当前 validator 尚未覆盖
 - 数值与数据表的一致性（生成器自检 id/权重/语种，但 50 写成 500 这类数据错误测不出来）
 
 ### 关键事实（2026-08-17 实证，血泪）
@@ -64,6 +66,7 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 - **pyautogui 合成键盘事件进不了 CK3**（esc/space/+ 实测全部无效），鼠标点击有效。
   解暂停只能点底栏日期旁的 ▶（坐标 (2315,1410)@2560x1440）。
 - 每次点击前必须 `win32gui.SetForegroundWindow` 抢回前台（桌面有安卓模拟器抢焦点）。
+- 安全软件通知也可能置顶遮住大厅“开始”按钮；runner 等待该按钮时会 OCR 识别并点击通知的“忽略”，只关闭当次提示，不改软件设置。
 - 截图读坐标要用 PIL 裁真实 PNG（2560x1440）实测——聊天里显示的图有缩放，目测坐标必歪。
 - 暂停链：开局默认暂停 → 死亡弹继承窗（强制暂停，须点「继续扮演」(1455,1130)）→
   结算事件窗硬暂停（「因轮回终结事件暂停」）。runner 用 debug.log 里 AI 日志行自带的
@@ -72,6 +75,8 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
   → 开始 (2257,1245)。结算确认选项 (1130,1041)（点了进观察者模式，桥有效）。
 - 用户真实纪录靠 tutorial.txt 备份/恢复保护；测试基线 = 剥掉 `xar_hs_ge_*` 行（纪录 0）。
 - 独立 restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验；避免强杀 runner 后游戏继续覆盖用户现场。
+- `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。
+- trait 含原生 `track` 时，UI 会自动读取 `gfx/interface/icons/trait_level_tracks/<trait_key>.dds`；缺文件会在真正 hover 时写 VFS error，主 trait 的 `icon =` 不会替代它（2026-08-18 实测）。
 
 ## 断点标记法（链路定位）
 

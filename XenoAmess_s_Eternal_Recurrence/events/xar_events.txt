@@ -3,10 +3,17 @@
 # The pact: offered at game start. Declining disables the mod for this run.
 xar.0002 = {
 	type = character_event
+	trigger = { is_ai = no }
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.0002.title
 	desc = xar.0002.desc
+	immediate = {
+		if = {
+			limit = { has_global_variable = xa_full_ui_test_active }
+			debug_log = "XAR: UI pact window opened"
+		}
+	}
 
 	option = {
 		name = xar.0002.accept
@@ -34,10 +41,15 @@ xar.0002 = {
 		set_global_variable = { name = xa_lifespan_bought value = 0 }
 		set_global_variable = { name = xa_bless_count value = 0 }
 		set_global_variable = { name = xa_bless_session value = 0 }
-		trigger_event = {
-			id = xar.0001
-			days = 1
+		set_global_variable = { name = xa_bless_reject_count value = 0 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		if = {
+			limit = { has_global_variable = xa_full_ui_test_active }
+			set_global_variable = { name = xa_local_points value = 200 }
+			debug_log = "XAR: UI pact accepted"
+			trigger_event = { id = xar.0001 }
 		}
+		else = { trigger_event = { id = xar.0001 days = 1 } }
 	}
 
 	option = {
@@ -49,6 +61,7 @@ xar.0002 = {
 # Polite farewell if the pact is declined.
 xar.0003 = {
 	type = character_event
+	trigger = { is_ai = no }
 	theme = mental_health
 	title = xar.0003.title
 	desc = xar.0003.desc
@@ -65,12 +78,17 @@ xar.0003 = {
 # when starting.
 xar.0001 = {
 	type = character_event
+	trigger = { is_ai = no }
 	theme = stewardship
 	title = xar.0001.title
 	desc = xar.0001.desc
 
 	immediate = {
 		debug_log = "XAR: shop event fired"
+		if = {
+			limit = { has_global_variable = xa_full_ui_test_active }
+			debug_log = "XAR: UI shop window opened"
+		}
 		# (shop globals are initialized once in xar.0002's accept option)
 		# save display values
 		save_scope_value_as = { name = xar_points value = global_var:xa_local_points }
@@ -99,6 +117,41 @@ xar.0001 = {
 		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_dip multiply = -1 } }
 		add_diplomacy_skill = 1
 		change_global_variable = { name = xa_price_dip multiply = 1.2 }
+		if = {
+			limit = { has_global_variable = xa_full_ui_test_active }
+			if = {
+				limit = {
+					global_var:xa_local_points >= 174.9
+					global_var:xa_local_points <= 175.1
+				}
+				debug_log = "XAR: TEST PASS ui_shop_points"
+			}
+			else = { debug_log = "XAR: TEST FAIL ui_shop_points" }
+			if = {
+				limit = {
+					global_var:xa_price_dip >= 29.9
+					global_var:xa_price_dip <= 30.1
+				}
+				debug_log = "XAR: TEST PASS ui_shop_price"
+			}
+			else = { debug_log = "XAR: TEST FAIL ui_shop_price" }
+			if = {
+				limit = { diplomacy > global_var:xa_test_dip_before }
+				debug_log = "XAR: TEST PASS ui_shop_diplomacy"
+			}
+			else = { debug_log = "XAR: TEST FAIL ui_shop_diplomacy" }
+			if = {
+				limit = {
+					global_var:xa_local_points >= 174.9
+					global_var:xa_local_points <= 175.1
+					global_var:xa_price_dip >= 29.9
+					global_var:xa_price_dip <= 30.1
+					diplomacy > global_var:xa_test_dip_before
+				}
+				debug_log = "XAR: TEST PASS ui_shop_purchase"
+			}
+			else = { debug_log = "XAR: TEST FAIL ui_shop_purchase" }
+		}
 		trigger_event = { id = xar.0001 }
 	}
 	option = {
@@ -241,6 +294,7 @@ xar.0001 = {
 		}
 		set_global_variable = xa_bought_reformation
 		custom_tooltip = xar.0001.reform_hint
+		trigger_event = { id = xar.0001 }
 	}
 
 	# ---------- navigation ----------
@@ -267,6 +321,19 @@ xar.0001 = {
 		set_global_variable = { name = xa_local_points value = 0 }
 		# The run begins: the Glassfire Lord offers a blessing session.
 		set_global_variable = { name = xa_bless_session value = 0 }
+		if = {
+			limit = { has_global_variable = xa_full_ui_test_active }
+			if = {
+				limit = {
+					global_var:xa_local_points = 0
+					gold >= { value = global_var:xa_test_gold_before add = 175 }
+				}
+				debug_log = "XAR: TEST PASS ui_shop_finish"
+			}
+			else = { debug_log = "XAR: TEST FAIL ui_shop_finish" }
+			set_global_variable = xa_ui_test_active
+			set_global_variable = { name = xa_bless_session value = 3 }
+		}
 		trigger_event = { id = xar.0004 }
 	}
 }
@@ -275,6 +342,7 @@ xar.0001 = {
 # the main menu (via the xar_meta_window GUI bridge watching xa_quit_to_menu).
 xar.1001 = {
 	type = character_event
+	trigger = { is_ai = no }
 	theme = skull
 	title = xar.1001.title
 	desc = xar.1001.desc
@@ -291,6 +359,8 @@ xar.1001 = {
 			trigger_event = xar.0007
 		}
 		save_scope_value_as = { name = xar_bless_n value = global_var:xa_bless_count }
+		save_scope_value_as = { name = xar_reject_n value = global_var:xa_bless_reject_count }
+		save_scope_value_as = { name = xar_subtotal value = global_var:xa_score_before_reject }
 		# attributes
 		save_scope_value_as = { name = xar_a_dip value = global_var:xa_a_dip }
 		save_scope_value_as = { name = xar_a_mar value = global_var:xa_a_mar }
@@ -369,11 +439,12 @@ xar.1001 = {
 
 # ---------- blessing/curse sessions ----------
 # After the shop closes, the lord offers blessings; each blessing taken forces
-# a curse pick, each pair adds +1% to the final score. A session caps at 3
-# pairs; the lord returns every 3 years (xar.0006). Pools: docs/blessing-curse-pools.md
+# one of two constrained curses. Each pair grants 1 Glassfire Gaze XP; declining
+# a session costs 1% final score. The lord returns every 3 years (xar.0006).
 
 xar.0004 = {
 	type = character_event
+	trigger = { is_ai = no }
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.0004.title
@@ -390,6 +461,7 @@ xar.0004 = {
 		else = { xar_draw_blessings_effect = yes }
 		save_scope_value_as = { name = xar_bs_n value = global_var:xa_bless_session }
 		save_scope_value_as = { name = xar_bc_n value = global_var:xa_bless_count }
+		save_scope_value_as = { name = xar_br_n value = global_var:xa_bless_reject_count }
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI bless window opened"
@@ -425,6 +497,7 @@ xar.0004 = {
 	}
 	option = {
 		name = xar.0004.decline
+		change_global_variable = { name = xa_bless_reject_count add = 1 }
 		trigger_event = { id = xar.0006 days = 1095 }
 	}
 }
@@ -432,6 +505,7 @@ xar.0004 = {
 # The mandatory curse after each blessing. No way out.
 xar.0005 = {
 	type = character_event
+	trigger = { is_ai = no }
 	theme = skull
 	override_background = { reference = xar_glassfire }
 	title = xar.0005.title
@@ -442,8 +516,7 @@ xar.0005 = {
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			set_global_variable = { name = xa_curse_a value = 0 }
-			set_global_variable = { name = xa_curse_b value = 50 }
-			set_global_variable = { name = xa_curse_c value = 99 }
+			set_global_variable = { name = xa_curse_b value = 1 }
 		}
 		else = { xar_draw_curses_effect = yes }
 		if = {
@@ -461,6 +534,14 @@ xar.0005 = {
 			remove_global_variable = xa_ui_test_active
 		}
 		if = {
+			limit = { has_global_variable = xa_full_ui_test_active }
+			remove_global_variable = xa_full_ui_test_active
+			add_character_flag = xa_trait_hover_test_pending
+			set_global_variable = { name = xa_bless_reject_count value = 1 }
+			set_global_variable = { name = xa_selftest_waits value = 0 }
+			trigger_event = { id = xar.0008 days = 1 }
+		}
+		else_if = {
 			limit = { global_var:xa_bless_session < 3 }
 			trigger_event = { id = xar.0004 }
 		}
@@ -477,22 +558,14 @@ xar.0005 = {
 			remove_global_variable = xa_ui_test_active
 		}
 		if = {
-			limit = { global_var:xa_bless_session < 3 }
-			trigger_event = { id = xar.0004 }
+			limit = { has_global_variable = xa_full_ui_test_active }
+			remove_global_variable = xa_full_ui_test_active
+			add_character_flag = xa_trait_hover_test_pending
+			set_global_variable = { name = xa_bless_reject_count value = 1 }
+			set_global_variable = { name = xa_selftest_waits value = 0 }
+			trigger_event = { id = xar.0008 days = 1 }
 		}
-		else = {
-			trigger_event = { id = xar.0006 days = 1095 }
-		}
-	}
-	option = {
-		name = xar_curse_option_c
-		xar_apply_curse_effect = { SLOT = c }
-		if = {
-			limit = { has_global_variable = xa_ui_test_active }
-			debug_log = "XAR: UI curse accepted"
-			remove_global_variable = xa_ui_test_active
-		}
-		if = {
+		else_if = {
 			limit = { global_var:xa_bless_session < 3 }
 			trigger_event = { id = xar.0004 }
 		}
@@ -505,6 +578,7 @@ xar.0005 = {
 # Invisible session resetter: fires 3 years after a session ends.
 xar.0006 = {
 	hidden = yes
+	trigger = { is_ai = no }
 	immediate = {
 		debug_log = "XAR: new blessing session (3y timer)"
 		set_global_variable = { name = xa_bless_session value = 0 }
@@ -516,6 +590,7 @@ xar.0006 = {
 # can screenshot the option text and OCR-check for raw keys.
 xar.0009 = {
 	hidden = yes
+	trigger = { is_ai = no }
 	immediate = {
 		debug_log = "XAR: UI test armed"
 		set_global_variable = { name = xa_ui_test_active value = 1 }
@@ -533,12 +608,17 @@ xar.0009 = {
 # unconditional delivery var instead.
 xar.0008 = {
 	hidden = yes
+	trigger = { is_ai = no }
 	immediate = {
 		if = {
 			limit = { has_global_variable = xa_global_record_imported }
 			debug_log = "XAR: import delivered, proceeding to death"
 			# runtime coverage: apply every pool entry before dying
 			xar_test_sweep_effect = yes
+			set_global_variable = {
+				name = xa_test_score_preview
+				value = xar_current_score_value
+			}
 			set_global_variable = { name = xa_selftest_armed value = 1 }
 			death = { death_reason = death_old_age }
 		}
@@ -560,6 +640,7 @@ xar.0008 = {
 # Ends the run with XAR: TEST DONE.
 xar.0007 = {
 	hidden = yes
+	trigger = { is_ai = no }
 	immediate = {
 		# import bridge delivered (baseline 0: runner stripped the record bits).
 		# xa_local_points is NOT checked here — it only gets set when the normal
@@ -579,6 +660,22 @@ xar.0007 = {
 			debug_log = "XAR: TEST PASS score_positive"
 		}
 		else = { debug_log = "XAR: TEST FAIL score_positive" }
+		if = {
+			limit = {
+				global_var:xa_run_score >= { value = global_var:xa_score_before_reject multiply = 0.989 }
+				global_var:xa_run_score <= { value = global_var:xa_score_before_reject multiply = 0.991 }
+			}
+			debug_log = "XAR: TEST PASS reject_penalty"
+		}
+		else = { debug_log = "XAR: TEST FAIL reject_penalty" }
+		if = {
+			limit = {
+				global_var:xa_run_score >= { value = global_var:xa_test_score_preview subtract = 0.01 }
+				global_var:xa_run_score <= { value = global_var:xa_test_score_preview add = 0.01 }
+			}
+			debug_log = "XAR: TEST PASS score_preview"
+		}
+		else = { debug_log = "XAR: TEST FAIL score_preview" }
 		if = {
 			limit = { global_var:xa_bless_count = 1 }
 			debug_log = "XAR: TEST PASS bless_count"

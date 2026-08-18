@@ -18,9 +18,10 @@
 ```powershell
 py XenoAmess_s_Eternal_Recurrence/tools/gen_highscore.py   # 位阈值体系
 py tools/gen_pools.py                                       # 祝福/诅咒奖池（100+100）
+py tools/gen_score_preview.py                               # 特质 hover 只读即时分数
 ```
 
-两套生成器，**不要手改 `GENERATED FILE` 标记的文件**。奖池条目改 `tools/pools_data.py`
+三套生成器，**不要手改 `GENERATED FILE` 标记的文件**。奖池条目改 `tools/pools_data.py`
 （数据表）再跑 gen_pools.py；权威表 `docs/blessing-curse-pools.md` 由它导出。
 位阈值体系生成器产出：`common/tutorial_lessons/xar_highscore.txt`、`common/customizable_localization/xar_generated_loc.txt`、
 `common/scripted_guis/xar_generated_guis.txt`、`common/scripted_effects/xar_generated_effects.txt`、

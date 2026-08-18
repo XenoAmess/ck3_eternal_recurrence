@@ -1,0 +1,18 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_highscore.py
+# Acceptance-only button. It is invisible in normal play because its
+# trigger variable is set only by the self-test curse option.
+window = {
+	name = "xar_trait_test_window"
+	size = { 64 64 }
+	layer = tutorial
+	parentanchor = center
+	position = { 0 0 }
+	visible = "[EqualTo_string( GetPlayer.Custom('xar_trait_hover_check'), Localize('xar_trait_hover_sentinel') )]"
+
+	button_standard = {
+		name = "xar_open_trait_test_character"
+		size = { 100% 100% }
+		text = "XAR"
+		onclick = "[DefaultOnCharacterClick(GetPlayer.GetID)]"
+	}
+}

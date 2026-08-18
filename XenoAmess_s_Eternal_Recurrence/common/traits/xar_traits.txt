@@ -1,8 +1,34 @@
 ﻿# Glassfire Lord's Eternal Recurrence traits
-# Loc keys: trait_xar_glassfire_gaze / trait_xar_glassfire_gaze_desc
+# Loc keys: trait_xar_glassfire_gaze / trait_xar_glassfire_gaze_desc /
+# trait_xar_glassfire_gaze_character_desc / trait_track_xar_glassfire_gaze
 xar_glassfire_gaze = {
 	icon = glassfire_trait.dds
 
 	health = 0.05
 	stress_gain_mult = 0.1
+
+	# Native trait tracks run from 0 to 100. Each completed pair grants 1 XP;
+	# every 10 XP adds another cumulative +10% stress gain, up to level 10.
+	track = {
+		10 = { stress_gain_mult = 0.1 }
+		20 = { stress_gain_mult = 0.1 }
+		30 = { stress_gain_mult = 0.1 }
+		40 = { stress_gain_mult = 0.1 }
+		50 = { stress_gain_mult = 0.1 }
+		60 = { stress_gain_mult = 0.1 }
+		70 = { stress_gain_mult = 0.1 }
+		80 = { stress_gain_mult = 0.1 }
+		90 = { stress_gain_mult = 0.1 }
+		100 = { stress_gain_mult = 0.1 }
+	}
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { NOT = { exists = this } }
+				desc = trait_xar_glassfire_gaze_desc
+			}
+			desc = trait_xar_glassfire_gaze_character_desc
+		}
+	}
 }

@@ -5,9 +5,10 @@
 ## 规则框架
 
 - 商店「开始此生」后琉焰卿开启**垂青会**（`xar.0004`）：展示祝福池随机 3 项（无放回）+ 「什么都不要」
-- 选中祝福 → 立即发放 → 必须再从诅咒池随机 3 项中选 1（`xar.0005`，无退路）→ 回到祝福事件
+- 选中祝福 → 立即发放 → 必须再从诅咒池随机 2 项中选 1（`xar.0005`，无退路）→ 回到祝福事件
+- 两项诅咒的稀有度均不得低于所选祝福稀有度减 1：传说祝福只会抽到稀有/传说诅咒；普通/稀有祝福允许全池
 - 每场垂青会**上限 3 祝福 + 3 诅咒**；选「不要」或领满即散场，**3 年后**（1095 天）琉焰卿再度现身（`xar.0006` 重置会话）
-- 每完成一对祝福/诅咒，**最终结算总分 +1%**（加算，N 对 = +N%），结算明细单列一行
+- 每完成一对祝福/诅咒，琉焰之视获得 **1 经验**；每拒绝一次祝福会，**最终结算总分 -1%**（加算，最低为 0）
 - 角色死亡 → 结算后进入观察者模式，计时自然作废
 
 ## 数值与稀有度
@@ -233,6 +234,6 @@
 - 抽取/发放：`common/scripted_effects/xar_generated_pools_effects.txt`（GENERATED）
 - 选项槽文本：`common/customizable_localization/xar_generated_pool_loc.txt`（GENERATED）
 - 修正：`common/modifiers/xar_generated_pool_modifiers.txt`（GENERATED）
-- loc：`localization/<lang>/xar_generated_pools_l_<lang>.yml`（GENERATED，9 语言；含槽位 fallback + 池条目名 + 修正名）
+- loc：`localization/<lang>/xar_generated_pools_l_<lang>.yml`（GENERATED，9 语言；含动态 wrapper + 池条目名 + 修正名）
 - 事件：`events/xar_events.txt`（xar.0004 / xar.0005 / xar.0006，手写不变）
-- 结算加算：`xar_compute_score_effect` 末尾 ×(1 + 0.01 × xa_bless_count)
+- 拒绝扣分：`xar_compute_score_effect` 末尾 ×max(0, 1 - 0.01 × xa_bless_reject_count)

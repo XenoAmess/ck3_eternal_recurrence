@@ -107,7 +107,6 @@
 
  xar_curse_option_a:0 "[SCOPE.Custom('xar_curse_slot_a')]"
  xar_curse_option_b:0 "[SCOPE.Custom('xar_curse_slot_b')]"
- xar_curse_option_c:0 "[SCOPE.Custom('xar_curse_slot_c')]"
  xar_curse_0:0 "Drobny piasek w mieszku (-0.3 dochodu miesięcznie, 10 lat)"
  xar_curse_1:0 "Przeciekający mieszek (-0.5 dochodu miesięcznie, 10 lat)"
  xar_curse_2:0 "Bezdenny mieszek (-0.75 dochodu miesięcznie, 10 lat)"

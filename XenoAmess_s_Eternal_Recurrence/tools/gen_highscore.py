@@ -111,6 +111,18 @@ def gen_custom_loc() -> str:
     lines.append(f"\ttext = {{ localization_key = {LEVEL_KEY_PREFIX}0 }}")
     lines.append("}")
     lines.append("")
+    lines.extend([
+        "# Test-only bridge signal: asks xar_meta to open the player character window.",
+        "xar_trait_hover_check = {",
+        "\ttype = character",
+        "\ttext = {",
+        "\t\ttrigger = { has_character_flag = xa_trait_hover_test_pending }",
+        "\t\tlocalization_key = xar_trait_hover_sentinel",
+        "\t}",
+        "\ttext = { localization_key = xar_trait_hover_off fallback = yes }",
+        "}",
+        "",
+    ])
     return "\n".join(lines)
 
 
@@ -270,8 +282,34 @@ def gen_loc(lang: str) -> str:
     lines.append(" # so these must exist in every language file, with identical contents.")
     for t in [0] + THRESHOLDS:
         lines.append(f' {LEVEL_KEY_PREFIX}{t}:0 "XAR_LEVEL_{t}"')
+    lines.append(' xar_trait_hover_sentinel:0 "XAR_TRAIT_HOVER_OPEN"')
+    lines.append(' xar_trait_hover_off:0 "XAR_TRAIT_HOVER_OFF"')
     lines.append("")
     return "\n".join(lines)
+
+
+def gen_trait_test_gui() -> str:
+    return "\n".join([
+        "# GENERATED FILE - do not edit. Regenerate with tools/gen_highscore.py",
+        "# Acceptance-only button. It is invisible in normal play because its",
+        "# trigger variable is set only by the self-test curse option.",
+        "window = {",
+        '\tname = "xar_trait_test_window"',
+        "\tsize = { 64 64 }",
+        "\tlayer = tutorial",
+        "\tparentanchor = center",
+        "\tposition = { 0 0 }",
+        '\tvisible = "[EqualTo_string( GetPlayer.Custom(\'xar_trait_hover_check\'), Localize(\'xar_trait_hover_sentinel\') )]"',
+        "",
+        "\tbutton_standard = {",
+        '\t\tname = "xar_open_trait_test_character"',
+        "\t\tsize = { 100% 100% }",
+        '\t\ttext = "XAR"',
+        '\t\tonclick = "[DefaultOnCharacterClick(GetPlayer.GetID)]"',
+        "\t}",
+        "}",
+        "",
+    ])
 
 
 def write(rel_path: str, content: str, bom: bool = True) -> None:
@@ -290,6 +328,7 @@ if __name__ == "__main__":
     write(os.path.join("common", "scripted_guis", "xar_generated_guis.txt"), gen_guis())
     write(os.path.join("common", "scripted_effects", "xar_generated_effects.txt"), gen_effects())
     write(os.path.join("gui", "xar_meta.gui"), gen_gui())
+    write(os.path.join("gui", "xar_trait_test.gui"), gen_trait_test_gui())
     # Custom localization validates keys against the CURRENT language with no
     # English fallback, so generated loc must exist for every vanilla language.
     for lang in ("english", "french", "german", "japanese", "korean", "polish",

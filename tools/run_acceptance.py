@@ -26,11 +26,12 @@ from pathlib import Path
 
 import pyautogui
 import numpy as np
+import cv2
 import win32con
 import win32gui
-from PIL import ImageGrab
+from PIL import Image, ImageGrab
 
-import validate_loc
+import validate_static
 
 # UI localization smoke test: OCR engine + crop box for the three event options.
 # RapidOCR is pure Python with bundled ONNX models; installed in tools/.venv.
@@ -55,9 +56,11 @@ ERROR_LOG = USER_DIR / "logs" / "error.log"
 RESTORE_WATCHDOG = ROOT / "tools" / "restore_watchdog.py"
 REQUIRED_PASSES = {
     "pact_trait", "pact_flag", "shop_init", "shop_inflate", "shop_charge",
-    "draw_bless_distinct", "bless_apply", "draw_curse_distinct",
-    "curse_apply_ran", "import_var", "import_value", "score_positive",
-    "bless_count", "record_write",
+    "draw_bless_distinct", "bless_apply", "draw_curse_constrained",
+    "curse_pair_xp", "trait_level_1", "trait_xp_cap", "import_var",
+    "import_value", "score_positive", "reject_penalty", "score_preview",
+    "ui_shop_points", "ui_shop_price", "ui_shop_diplomacy",
+    "ui_shop_purchase", "ui_shop_finish", "bless_count", "record_write",
 }
 
 CLICK_SETTLE_OK = (1130, 1041)      # 结算事件确认选项「很好。这笔账，已记入永恒。」
@@ -69,6 +72,9 @@ START_REGION = (0.82, 0.82, 0.95, 0.93)
 RULER_DETAIL_REGION = (0.76, 0.28, 0.98, 0.58)
 OPTION_LIST_REGION = (0.20, 0.58, 0.56, 0.83)
 EVENT_TITLE_REGION = (0.20, 0.17, 0.50, 0.29)
+EVENT_OPTIONS_FULL_REGION = (0.18, 0.43, 0.62, 0.95)
+CHARACTER_PANEL_REGION = (0.00, 0.05, 0.48, 0.72)
+FULL_SCREEN_REGION = (0.00, 0.00, 1.00, 1.00)
 
 BOOT_TIMEOUT_S = 120             # OCR 一发现主菜单即继续，不固定睡 100 秒
 LOBBY_TIMEOUT_S = 30
@@ -213,6 +219,27 @@ def find_ocr_text(img, target, region, contains=False):
     return None
 
 
+def find_scaled_template(img, template_path, region, scales):
+    """Locate a rendered icon from its source texture across likely UI scales."""
+    bbox = region_bbox(img, region)
+    haystack = cv2.cvtColor(np.asarray(img.crop(bbox).convert("RGB")), cv2.COLOR_RGB2GRAY)
+    template = cv2.cvtColor(
+        np.asarray(Image.open(template_path).convert("RGB")), cv2.COLOR_RGB2GRAY)
+    best = (0.0, None)
+    for scale in scales:
+        width = max(8, int(template.shape[1] * scale))
+        height = max(8, int(template.shape[0] * scale))
+        needle = cv2.resize(template, (width, height), interpolation=cv2.INTER_AREA)
+        if height > haystack.shape[0] or width > haystack.shape[1]:
+            continue
+        result = cv2.matchTemplate(haystack, needle, cv2.TM_CCOEFF_NORMED)
+        _, score, _, location = cv2.minMaxLoc(result)
+        if score > best[0]:
+            best = (score, (bbox[0] + location[0] + width // 2,
+                           bbox[1] + location[1] + height // 2))
+    return best
+
+
 def wait_for_ocr_text(target, region, timeout_s, artifacts, artifact_name,
                       contains=False, stable_hits=2):
     """OCR 轮询到目标文字并返回文字框中心；超时立即保存证据并失败。"""
@@ -224,6 +251,14 @@ def wait_for_ocr_text(target, region, timeout_s, artifacts, artifact_name,
         focus_ck3()
         last_img = ImageGrab.grab()
         center = find_ocr_text(last_img, target, region, contains=contains)
+        if target == "开始" and center is None:
+            dismiss = find_ocr_text(
+                last_img, "忽略", FULL_SCREEN_REGION, contains=True)
+            if dismiss:
+                pyautogui.click(*dismiss)
+                log(f"dismissed external popup covering lobby at {dismiss}")
+                time.sleep(POLL_INTERVAL_S)
+                continue
         if center:
             if (last_center is not None
                     and abs(center[0] - last_center[0]) <= 15
@@ -295,8 +330,27 @@ def wait_for_marker(debug_offset, marker, timeout_s, xar_lines):
     raise RunnerError(f"debug marker timeout: {marker}")
 
 
-def wait_for_localized_options(label, artifacts, timeout_s=20):
-    """等待前三个事件选项，拒绝 raw key、静态占位和重复文本。"""
+def click_until_marker(point, label, marker, debug_offset, xar_lines,
+                       attempts=3, attempt_timeout_s=4, failure_marker=None):
+    """Retry a UI press only when its synchronous production marker is absent."""
+    for attempt in range(1, attempts + 1):
+        deliberate_click(point, f"{label} (attempt {attempt})")
+        deadline = time.time() + attempt_timeout_s
+        while time.time() < deadline:
+            text, debug_offset = read_new_lines(DEBUG_LOG, debug_offset)
+            for line in text.splitlines():
+                if "XAR:" in line:
+                    xar_lines.append(line.strip())
+            if any(marker in line for line in xar_lines):
+                return debug_offset
+            if failure_marker and any(failure_marker in line for line in xar_lines):
+                raise RunnerError(f"{label} assertion failed: {failure_marker}")
+            time.sleep(POLL_INTERVAL_S)
+    raise RunnerError(f"{label} was not accepted; missing marker: {marker}")
+
+
+def wait_for_localized_options(label, artifacts, expected_count, timeout_s=20):
+    """等待指定数量的事件选项，拒绝 raw key、静态占位和重复文本。"""
     deadline = time.time() + timeout_s
     last_img = None
     last_text = ""
@@ -315,22 +369,23 @@ def wait_for_localized_options(label, artifacts, timeout_s=20):
         if any(token in last_text for token in rejected):
             last_img.save(artifacts / f"06_{label}_options_raw.png")
             raise RunnerError(f"{label} options contain unresolved text: {last_text}")
-        if len(texts) >= 3:
-            option_texts = [re.sub(r"\s+", "", text).lower() for text in texts[:3]]
-            if len(set(option_texts)) != 3:
+        if len(texts) >= expected_count:
+            option_texts = [re.sub(r"\s+", "", text).lower()
+                            for text in texts[:expected_count]]
+            if len(set(option_texts)) != expected_count:
                 last_img.save(artifacts / f"06_{label}_options_repeated.png")
                 raise RunnerError(
-                    f"{label} first three options are not distinct: {texts[:3]}")
+                    f"{label} options are not distinct: {texts[:expected_count]}")
             last_img.save(artifacts / f"06_{label}_options.png")
             last_img.crop(region_bbox(last_img, OPTION_LIST_REGION)).save(
                 artifacts / f"06_{label}_options_crop.png")
-            log(f"PASS: {label} options localized and distinct; OCR={texts[:3]}")
+            log(f"PASS: {label} options localized and distinct; OCR={texts[:expected_count]}")
             return results[0][2]
         time.sleep(POLL_INTERVAL_S)
     if last_img is not None:
         last_img.save(artifacts / f"timeout_{label}_options.png")
     raise RunnerError(
-        f"{label} option OCR saw fewer than 3 rows; last OCR={last_text}")
+        f"{label} option OCR saw fewer than {expected_count} rows; last OCR={last_text}")
 
 
 def main():
@@ -354,10 +409,10 @@ def main():
     exit_code = 1
 
     # ---- 静态 loc 校验（失败直接 RED，不进游戏）----
-    if validate_loc.main() != 0:
-        print("RESULT: RED (loc validation failed)")
+    if validate_static.main() != 0:
+        print("RESULT: RED (static validation failed)")
         sys.exit(1)
-    log("loc validation passed")
+    log("static validation passed")
 
     descriptor = (MOD_ROOT / "descriptor.mod").read_text(encoding="utf-8-sig")
     if "remote_file_id" in descriptor:
@@ -455,26 +510,93 @@ def main():
         offset = wait_for_marker(
             offset, "XAR: TEST selftest begin", 180, xar_lines)
 
+        # ---- 真实生产 UI：契约接受 -> 商店购买 -> 开始此生 ----
+        offset = wait_for_marker(
+            offset, "XAR: UI pact window opened", 30, xar_lines)
+        wait_for_ocr_text(
+            "终末之契", EVENT_TITLE_REGION, 15,
+            artifacts, "05_pact_window.png", stable_hits=1)
+        pact_accept = wait_for_ocr_text(
+            "我接受", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "05_pact_accept.png", contains=True, stable_hits=1)
+        offset = click_until_marker(
+            pact_accept, "production pact accept", "XAR: UI pact accepted",
+            offset, xar_lines)
+
+        offset = wait_for_marker(
+            offset, "XAR: UI shop window opened", 15, xar_lines)
+        wait_for_ocr_text(
+            "轮回当铺", EVENT_TITLE_REGION, 15,
+            artifacts, "05_shop_window.png", stable_hits=1)
+        diplomacy_buy = wait_for_ocr_text(
+            "外交", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "05_shop_diplomacy.png", contains=True, stable_hits=1)
+        offset = click_until_marker(
+            diplomacy_buy, "production diplomacy purchase",
+            "XAR: TEST PASS ui_shop_purchase", offset, xar_lines,
+            failure_marker="XAR: TEST FAIL ui_shop_purchase")
+
+        shop_finish = wait_for_ocr_text(
+            "开始此生", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "05_shop_finish.png", contains=True, stable_hits=1)
+        offset = click_until_marker(
+            shop_finish, "production shop finish",
+            "XAR: TEST PASS ui_shop_finish", offset, xar_lines)
+
         # ---- UI 本地化验收（祝福 + 诅咒各真实打开一次）----
         offset = wait_for_marker(
             offset, "XAR: UI bless window opened", 30, xar_lines)
         wait_for_ocr_text(
             "琉焰的垂青", EVENT_TITLE_REGION, 15,
             artifacts, "05_bless_window.png", stable_hits=1)
-        bless_option = wait_for_localized_options("bless", artifacts)
-        deliberate_click(bless_option, "localized bless option")
-        offset = wait_for_marker(
-            offset, "XAR: UI bless accepted", 10, xar_lines)
+        bless_option = wait_for_localized_options("bless", artifacts, 3)
+        offset = click_until_marker(
+            bless_option, "localized bless option", "XAR: UI bless accepted",
+            offset, xar_lines)
 
         offset = wait_for_marker(
             offset, "XAR: UI curse window opened", 30, xar_lines)
         wait_for_ocr_text(
             "等价的咒痕", EVENT_TITLE_REGION, 15,
             artifacts, "05_curse_window.png", stable_hits=1)
-        curse_option = wait_for_localized_options("curse", artifacts)
-        deliberate_click(curse_option, "localized curse option")
-        offset = wait_for_marker(
-            offset, "XAR: UI curse accepted", 10, xar_lines)
+        curse_option = wait_for_localized_options("curse", artifacts, 2)
+        offset = click_until_marker(
+            curse_option, "localized curse option", "XAR: UI curse accepted",
+            offset, xar_lines)
+
+        # Open the real character panel, locate the rendered trait icon from its
+        # DDS source, then prove the native hover contains the live score text.
+        focus_ck3()
+        player_open = False
+        for attempt in range(1, 4):
+            click_ratio(0.50, 0.50)
+            log(f"clicked acceptance-only player-character bridge (attempt {attempt})")
+            try:
+                wait_for_ocr_text(
+                    "罗贝尔", CHARACTER_PANEL_REGION, 5,
+                    artifacts, "07_character_panel.png", contains=True,
+                    stable_hits=1)
+                player_open = True
+                break
+            except RunnerError:
+                continue
+        if not player_open:
+            raise RunnerError("test bridge did not open the player character")
+        character_img = ImageGrab.grab()
+        match_score, trait_point = find_scaled_template(
+            character_img,
+            MOD_ROOT / "gfx/interface/icons/traits/glassfire_trait.dds",
+            CHARACTER_PANEL_REGION,
+            (0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.60, 0.70))
+        log(f"trait icon template score={match_score:.3f} at {trait_point}")
+        if trait_point is None or match_score < 0.35:
+            raise RunnerError(f"Glassfire trait icon not found (score={match_score:.3f})")
+        pyautogui.moveTo(*trait_point, duration=0.2)
+        time.sleep(0.8)
+        wait_for_ocr_text(
+            "当前分量", FULL_SCREEN_REGION, 15,
+            artifacts, "07_trait_hover.png", contains=True, stable_hits=1)
+        log("PASS: real Glassfire Gaze hover rendered live score")
         ui_ok = True
 
         # 开局默认暂停；关闭诅咒窗口后按底栏比例点击播放，让延迟自测链继续。

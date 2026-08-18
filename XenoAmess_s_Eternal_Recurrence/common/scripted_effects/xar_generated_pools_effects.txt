@@ -1,6 +1,6 @@
 ﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_pools.py
 
-# Draw: three distinct entries without replacement (weights c=10/r=3/l=1).
+# Draw: 3 distinct entries without replacement (weights c=10/r=3/l=1).
 
 xar_draw_blessings_effect = {
 	random_list = {
@@ -313,539 +313,637 @@ xar_draw_blessings_effect = {
 
 # Apply by slot ($SLOT$ = a/b/c).
 xar_apply_blessing_effect = {
-	if = { limit = { global_var:xa_bless_$SLOT$ = 0 } add_gold = 50 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 1 } add_gold = 100 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 2 } add_gold = 200 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 3 } add_gold = 350 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 4 } add_gold = 500 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 5 } add_gold = 750 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 6 } add_gold = 1000 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 7 } add_prestige = 75 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 8 } add_prestige = 150 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 9 } add_prestige = 300 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 10 } add_prestige = 450 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 11 } add_prestige = 600 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 12 } add_prestige = 900 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 13 } add_prestige = 1200 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 14 } add_prestige = 1800 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 15 } add_piety = 75 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 16 } add_piety = 150 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 17 } add_piety = 300 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 18 } add_piety = 450 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 19 } add_piety = 600 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 20 } add_piety = 900 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 21 } add_piety = 1200 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 22 } add_piety = 1800 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 23 } change_influence = 25 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 24 } change_influence = 35 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 25 } change_influence = 50 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 26 } change_influence = 75 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 27 } change_influence = 100 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 28 } change_influence = 125 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 29 } change_influence = 150 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 30 } add_diplomacy_skill = 1 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 31 } add_diplomacy_skill = 2 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 32 } add_diplomacy_skill = 3 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 33 } add_martial_skill = 1 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 34 } add_martial_skill = 2 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 35 } add_martial_skill = 3 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 36 } add_stewardship_skill = 1 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 37 } add_stewardship_skill = 2 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 38 } add_stewardship_skill = 3 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 39 } add_intrigue_skill = 1 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 40 } add_intrigue_skill = 2 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 41 } add_intrigue_skill = 3 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 42 } add_learning_skill = 1 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 43 } add_learning_skill = 2 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 44 } add_learning_skill = 3 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 45 } add_prowess_skill = 1 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 46 } add_prowess_skill = 2 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 47 } add_prowess_skill = 3 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 48 } add_diplomacy_lifestyle_xp = 250 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 49 } add_diplomacy_lifestyle_xp = 500 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 50 } add_diplomacy_lifestyle_xp = 750 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 51 } add_martial_lifestyle_xp = 250 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 52 } add_martial_lifestyle_xp = 500 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 53 } add_martial_lifestyle_xp = 750 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 54 } add_stewardship_lifestyle_xp = 250 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 55 } add_stewardship_lifestyle_xp = 500 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 56 } add_stewardship_lifestyle_xp = 750 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 57 } add_intrigue_lifestyle_xp = 250 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 58 } add_intrigue_lifestyle_xp = 500 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 59 } add_intrigue_lifestyle_xp = 750 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 60 } add_learning_lifestyle_xp = 250 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 61 } add_learning_lifestyle_xp = 500 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 62 } add_learning_lifestyle_xp = 750 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 63 } add_trait = physique_good_1 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 64 } add_trait = physique_good_2 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 65 } add_trait = physique_good_3 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 66 } add_trait = beauty_good_1 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 67 } add_trait = beauty_good_2 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 68 } add_trait = intellect_good_1 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 69 } add_trait = intellect_good_2 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 70 } add_trait = shrewd }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 71 } add_trait = strong }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 72 } add_trait = brave }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 73 } add_trait = diligent }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 74 } add_trait = patient }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 75 } add_character_modifier = { modifier = xar_pb_income_s days = 3650 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 76 } add_character_modifier = { modifier = xar_pb_income_m days = 3650 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 77 } add_character_modifier = { modifier = xar_pb_income_l days = 3650 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 78 } add_character_modifier = { modifier = xar_pb_health_s days = 3650 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 79 } add_character_modifier = { modifier = xar_pb_health_m days = 3650 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 80 } add_character_modifier = { modifier = xar_pb_health_l days = 3650 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 81 } add_character_modifier = { modifier = xar_pb_fert_s days = 3650 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 82 } add_character_modifier = { modifier = xar_pb_fert_m days = 3650 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 83 } add_character_modifier = { modifier = xar_pb_vassal days = 3650 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 84 } add_character_modifier = { modifier = xar_pb_stress days = 3650 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 85 } add_character_modifier = { modifier = xar_pb_prestige days = 3650 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 86 } dynasty ?= { add_dynasty_prestige = 50 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 87 } dynasty ?= { add_dynasty_prestige = 150 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 88 } dynasty ?= { add_dynasty_prestige = 300 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 89 } dynasty ?= { add_dynasty_prestige = 500 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 90 } add_stress = -50 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 91 } add_stress = -75 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 92 } add_stress = -100 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 93 } add_stress = -150 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 94 } add_character_modifier = { modifier = xar_pb_life_2 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 0 } add_gold = 50
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 1 } add_gold = 100
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 2 } add_gold = 200
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 3 } add_gold = 350
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 4 } add_gold = 500
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 5 } add_gold = 750
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 6 } add_gold = 1000
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 7 } add_prestige = 75
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 8 } add_prestige = 150
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 9 } add_prestige = 300
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 10 } add_prestige = 450
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 11 } add_prestige = 600
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 12 } add_prestige = 900
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 13 } add_prestige = 1200
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 14 } add_prestige = 1800
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 15 } add_piety = 75
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 16 } add_piety = 150
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 17 } add_piety = 300
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 18 } add_piety = 450
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 19 } add_piety = 600
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 20 } add_piety = 900
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 21 } add_piety = 1200
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 22 } add_piety = 1800
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 23 } change_influence = 25
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 24 } change_influence = 35
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 25 } change_influence = 50
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 26 } change_influence = 75
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 27 } change_influence = 100
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 28 } change_influence = 125
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 29 } change_influence = 150
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 30 } add_diplomacy_skill = 1
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 31 } add_diplomacy_skill = 2
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 32 } add_diplomacy_skill = 3
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 33 } add_martial_skill = 1
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 34 } add_martial_skill = 2
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 35 } add_martial_skill = 3
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 36 } add_stewardship_skill = 1
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 37 } add_stewardship_skill = 2
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 38 } add_stewardship_skill = 3
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 39 } add_intrigue_skill = 1
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 40 } add_intrigue_skill = 2
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 41 } add_intrigue_skill = 3
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 42 } add_learning_skill = 1
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 43 } add_learning_skill = 2
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 44 } add_learning_skill = 3
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 45 } add_prowess_skill = 1
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 46 } add_prowess_skill = 2
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 47 } add_prowess_skill = 3
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 48 } add_diplomacy_lifestyle_xp = 250
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 49 } add_diplomacy_lifestyle_xp = 500
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 50 } add_diplomacy_lifestyle_xp = 750
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 51 } add_martial_lifestyle_xp = 250
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 52 } add_martial_lifestyle_xp = 500
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 53 } add_martial_lifestyle_xp = 750
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 54 } add_stewardship_lifestyle_xp = 250
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 55 } add_stewardship_lifestyle_xp = 500
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 56 } add_stewardship_lifestyle_xp = 750
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 57 } add_intrigue_lifestyle_xp = 250
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 58 } add_intrigue_lifestyle_xp = 500
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 59 } add_intrigue_lifestyle_xp = 750
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 60 } add_learning_lifestyle_xp = 250
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 61 } add_learning_lifestyle_xp = 500
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 62 } add_learning_lifestyle_xp = 750
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 63 } add_trait = physique_good_1
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 64 } add_trait = physique_good_2
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 65 } add_trait = physique_good_3
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 66 } add_trait = beauty_good_1
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 67 } add_trait = beauty_good_2
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 68 } add_trait = intellect_good_1
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 69 } add_trait = intellect_good_2
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 70 } add_trait = shrewd
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 71 } add_trait = strong
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 72 } add_trait = brave
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 73 } add_trait = diligent
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 74 } add_trait = patient
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 75 } add_character_modifier = { modifier = xar_pb_income_s days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 76 } add_character_modifier = { modifier = xar_pb_income_m days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 77 } add_character_modifier = { modifier = xar_pb_income_l days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 78 } add_character_modifier = { modifier = xar_pb_health_s days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 79 } add_character_modifier = { modifier = xar_pb_health_m days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 80 } add_character_modifier = { modifier = xar_pb_health_l days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 81 } add_character_modifier = { modifier = xar_pb_fert_s days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 82 } add_character_modifier = { modifier = xar_pb_fert_m days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 83 } add_character_modifier = { modifier = xar_pb_vassal days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 84 } add_character_modifier = { modifier = xar_pb_stress days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 85 } add_character_modifier = { modifier = xar_pb_prestige days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 86 } dynasty ?= { add_dynasty_prestige = 50 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 87 } dynasty ?= { add_dynasty_prestige = 150 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 88 } dynasty ?= { add_dynasty_prestige = 300 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 89 } dynasty ?= { add_dynasty_prestige = 500 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 90 } add_stress = -50
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 91 } add_stress = -75
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 92 } add_stress = -100
+	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 93 } add_stress = -150
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 94 } add_character_modifier = { modifier = xar_pb_life_2 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
 	if = { limit = { global_var:xa_bless_$SLOT$ = 95 } add_diplomacy_skill = 1
 		add_martial_skill = 1
 		add_stewardship_skill = 1
 		add_intrigue_skill = 1
 		add_learning_skill = 1
-		add_prowess_skill = 1 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 96 } add_character_modifier = { modifier = xar_leg_life } }
+		add_prowess_skill = 1
+	set_global_variable = { name = xa_selected_bless_rarity value = 2 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 96 } add_character_modifier = { modifier = xar_leg_life }
+	set_global_variable = { name = xa_selected_bless_rarity value = 2 } }
 	if = { limit = { global_var:xa_bless_$SLOT$ = 97 } add_gold = 1000
-		add_character_modifier = { modifier = xar_leg_wealth days = 3650 } }
+		add_character_modifier = { modifier = xar_leg_wealth days = 3650 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 2 } }
 	if = { limit = { global_var:xa_bless_$SLOT$ = 98 } add_prestige = 300
 		add_piety = 300
-		change_influence = 100 }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 99 } dynasty ?= { add_dynasty_prestige = 1000 } }
+		change_influence = 100
+	set_global_variable = { name = xa_selected_bless_rarity value = 2 } }
+	if = { limit = { global_var:xa_bless_$SLOT$ = 99 } dynasty ?= { add_dynasty_prestige = 1000 }
+	set_global_variable = { name = xa_selected_bless_rarity value = 2 } }
 	change_global_variable = { name = xa_bless_session add = 1 }
 	change_global_variable = { name = xa_bless_count add = 1 }
 }
 
 # GENERATED FILE - do not edit. Regenerate with tools/gen_pools.py
 
-# Draw: three distinct entries without replacement (weights c=10/r=3/l=1).
+# Draw: 2 distinct entries without replacement (weights c=10/r=3/l=1).
 
 xar_draw_curses_effect = {
 	random_list = {
-		10 = { set_global_variable = { name = xa_curse_a value = 0 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 1 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 2 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 3 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 4 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 5 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 6 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 7 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 8 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 9 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 10 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 11 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 12 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 13 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 14 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 15 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 16 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 17 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 18 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 19 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 20 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 21 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 22 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 23 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 24 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 25 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 26 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 27 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 28 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 29 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 30 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 31 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 32 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 33 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 34 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 35 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 36 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 37 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 38 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 39 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 40 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 41 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 42 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 43 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 44 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 45 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 46 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 47 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 48 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 49 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 50 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 51 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 52 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 53 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 54 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 55 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 56 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 57 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 58 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 59 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 60 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 61 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 62 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 63 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 64 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 65 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 66 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 67 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 68 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 69 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 70 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 71 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 72 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 73 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 74 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 75 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 76 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 77 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 78 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 79 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 80 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 81 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 82 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 83 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 84 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 85 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 86 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 87 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 88 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 89 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 90 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 91 } }
-		10 = { set_global_variable = { name = xa_curse_a value = 92 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 93 } }
-		3 = { set_global_variable = { name = xa_curse_a value = 94 } }
-		1 = { set_global_variable = { name = xa_curse_a value = 95 } }
-		1 = { set_global_variable = { name = xa_curse_a value = 96 } }
-		1 = { set_global_variable = { name = xa_curse_a value = 97 } }
-		1 = { set_global_variable = { name = xa_curse_a value = 98 } }
-		1 = { set_global_variable = { name = xa_curse_a value = 99 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 0 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 1 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 2 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 3 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 4 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 5 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 6 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 7 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 8 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 9 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 10 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 11 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 12 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 13 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 14 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 15 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 16 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 17 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 18 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 19 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 20 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 21 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 22 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 23 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 24 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 25 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 26 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 27 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 28 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 29 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 30 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 31 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 32 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 33 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 34 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 35 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 36 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 37 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 38 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 39 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 40 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 41 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 42 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 43 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 44 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 45 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 46 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 47 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 48 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 49 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 50 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 51 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 52 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 53 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 54 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 55 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 56 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 57 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 58 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 59 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 60 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 61 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 62 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 63 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 64 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 65 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 66 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 67 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 68 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 69 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 70 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 71 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 72 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 73 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 74 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 75 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 76 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 77 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 78 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 79 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 80 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 81 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 82 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 83 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 84 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 85 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 86 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 87 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 88 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 89 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 90 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 91 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		10 = { trigger = { global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_a value = 92 } set_global_variable = { name = xa_curse_a_rarity value = 0 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 93 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		3 = { set_global_variable = { name = xa_curse_a value = 94 } set_global_variable = { name = xa_curse_a_rarity value = 1 } }
+		1 = { set_global_variable = { name = xa_curse_a value = 95 } set_global_variable = { name = xa_curse_a_rarity value = 2 } }
+		1 = { set_global_variable = { name = xa_curse_a value = 96 } set_global_variable = { name = xa_curse_a_rarity value = 2 } }
+		1 = { set_global_variable = { name = xa_curse_a value = 97 } set_global_variable = { name = xa_curse_a_rarity value = 2 } }
+		1 = { set_global_variable = { name = xa_curse_a value = 98 } set_global_variable = { name = xa_curse_a_rarity value = 2 } }
+		1 = { set_global_variable = { name = xa_curse_a value = 99 } set_global_variable = { name = xa_curse_a_rarity value = 2 } }
 	}
 	random_list = {
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 0 } } set_global_variable = { name = xa_curse_b value = 0 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 1 } } set_global_variable = { name = xa_curse_b value = 1 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 2 } } set_global_variable = { name = xa_curse_b value = 2 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 3 } } set_global_variable = { name = xa_curse_b value = 3 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 4 } } set_global_variable = { name = xa_curse_b value = 4 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 5 } } set_global_variable = { name = xa_curse_b value = 5 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 6 } } set_global_variable = { name = xa_curse_b value = 6 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 7 } } set_global_variable = { name = xa_curse_b value = 7 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 8 } } set_global_variable = { name = xa_curse_b value = 8 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 9 } } set_global_variable = { name = xa_curse_b value = 9 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 10 } } set_global_variable = { name = xa_curse_b value = 10 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 11 } } set_global_variable = { name = xa_curse_b value = 11 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 12 } } set_global_variable = { name = xa_curse_b value = 12 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 13 } } set_global_variable = { name = xa_curse_b value = 13 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 14 } } set_global_variable = { name = xa_curse_b value = 14 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 15 } } set_global_variable = { name = xa_curse_b value = 15 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 16 } } set_global_variable = { name = xa_curse_b value = 16 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 17 } } set_global_variable = { name = xa_curse_b value = 17 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 18 } } set_global_variable = { name = xa_curse_b value = 18 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 19 } } set_global_variable = { name = xa_curse_b value = 19 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 20 } } set_global_variable = { name = xa_curse_b value = 20 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 21 } } set_global_variable = { name = xa_curse_b value = 21 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 22 } } set_global_variable = { name = xa_curse_b value = 22 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 23 } } set_global_variable = { name = xa_curse_b value = 23 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 24 } } set_global_variable = { name = xa_curse_b value = 24 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 25 } } set_global_variable = { name = xa_curse_b value = 25 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 26 } } set_global_variable = { name = xa_curse_b value = 26 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 27 } } set_global_variable = { name = xa_curse_b value = 27 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 28 } } set_global_variable = { name = xa_curse_b value = 28 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 29 } } set_global_variable = { name = xa_curse_b value = 29 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 30 } } set_global_variable = { name = xa_curse_b value = 30 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 31 } } set_global_variable = { name = xa_curse_b value = 31 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 32 } } set_global_variable = { name = xa_curse_b value = 32 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 33 } } set_global_variable = { name = xa_curse_b value = 33 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 34 } } set_global_variable = { name = xa_curse_b value = 34 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 35 } } set_global_variable = { name = xa_curse_b value = 35 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 36 } } set_global_variable = { name = xa_curse_b value = 36 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 37 } } set_global_variable = { name = xa_curse_b value = 37 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 38 } } set_global_variable = { name = xa_curse_b value = 38 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 39 } } set_global_variable = { name = xa_curse_b value = 39 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 40 } } set_global_variable = { name = xa_curse_b value = 40 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 41 } } set_global_variable = { name = xa_curse_b value = 41 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 42 } } set_global_variable = { name = xa_curse_b value = 42 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 43 } } set_global_variable = { name = xa_curse_b value = 43 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 44 } } set_global_variable = { name = xa_curse_b value = 44 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 45 } } set_global_variable = { name = xa_curse_b value = 45 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 46 } } set_global_variable = { name = xa_curse_b value = 46 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 47 } } set_global_variable = { name = xa_curse_b value = 47 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 48 } } set_global_variable = { name = xa_curse_b value = 48 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 49 } } set_global_variable = { name = xa_curse_b value = 49 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 50 } } set_global_variable = { name = xa_curse_b value = 50 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 51 } } set_global_variable = { name = xa_curse_b value = 51 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 52 } } set_global_variable = { name = xa_curse_b value = 52 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 53 } } set_global_variable = { name = xa_curse_b value = 53 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 54 } } set_global_variable = { name = xa_curse_b value = 54 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 55 } } set_global_variable = { name = xa_curse_b value = 55 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 56 } } set_global_variable = { name = xa_curse_b value = 56 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 57 } } set_global_variable = { name = xa_curse_b value = 57 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 58 } } set_global_variable = { name = xa_curse_b value = 58 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 59 } } set_global_variable = { name = xa_curse_b value = 59 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 60 } } set_global_variable = { name = xa_curse_b value = 60 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 61 } } set_global_variable = { name = xa_curse_b value = 61 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 62 } } set_global_variable = { name = xa_curse_b value = 62 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 63 } } set_global_variable = { name = xa_curse_b value = 63 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 64 } } set_global_variable = { name = xa_curse_b value = 64 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 65 } } set_global_variable = { name = xa_curse_b value = 65 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 66 } } set_global_variable = { name = xa_curse_b value = 66 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 67 } } set_global_variable = { name = xa_curse_b value = 67 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 68 } } set_global_variable = { name = xa_curse_b value = 68 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 69 } } set_global_variable = { name = xa_curse_b value = 69 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 70 } } set_global_variable = { name = xa_curse_b value = 70 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 71 } } set_global_variable = { name = xa_curse_b value = 71 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 72 } } set_global_variable = { name = xa_curse_b value = 72 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 73 } } set_global_variable = { name = xa_curse_b value = 73 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 74 } } set_global_variable = { name = xa_curse_b value = 74 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 75 } } set_global_variable = { name = xa_curse_b value = 75 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 76 } } set_global_variable = { name = xa_curse_b value = 76 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 77 } } set_global_variable = { name = xa_curse_b value = 77 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 78 } } set_global_variable = { name = xa_curse_b value = 78 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 79 } } set_global_variable = { name = xa_curse_b value = 79 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 80 } } set_global_variable = { name = xa_curse_b value = 80 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 81 } } set_global_variable = { name = xa_curse_b value = 81 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 82 } } set_global_variable = { name = xa_curse_b value = 82 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 83 } } set_global_variable = { name = xa_curse_b value = 83 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 84 } } set_global_variable = { name = xa_curse_b value = 84 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 85 } } set_global_variable = { name = xa_curse_b value = 85 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 86 } } set_global_variable = { name = xa_curse_b value = 86 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 87 } } set_global_variable = { name = xa_curse_b value = 87 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 88 } } set_global_variable = { name = xa_curse_b value = 88 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 89 } } set_global_variable = { name = xa_curse_b value = 89 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 90 } } set_global_variable = { name = xa_curse_b value = 90 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 91 } } set_global_variable = { name = xa_curse_b value = 91 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 92 } } set_global_variable = { name = xa_curse_b value = 92 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 93 } } set_global_variable = { name = xa_curse_b value = 93 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 94 } } set_global_variable = { name = xa_curse_b value = 94 } }
-		1 = { trigger = { NOT = { global_var:xa_curse_a = 95 } } set_global_variable = { name = xa_curse_b value = 95 } }
-		1 = { trigger = { NOT = { global_var:xa_curse_a = 96 } } set_global_variable = { name = xa_curse_b value = 96 } }
-		1 = { trigger = { NOT = { global_var:xa_curse_a = 97 } } set_global_variable = { name = xa_curse_b value = 97 } }
-		1 = { trigger = { NOT = { global_var:xa_curse_a = 98 } } set_global_variable = { name = xa_curse_b value = 98 } }
-		1 = { trigger = { NOT = { global_var:xa_curse_a = 99 } } set_global_variable = { name = xa_curse_b value = 99 } }
-	}
-	random_list = {
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 0 } NOT = { global_var:xa_curse_b = 0 } } set_global_variable = { name = xa_curse_c value = 0 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 1 } NOT = { global_var:xa_curse_b = 1 } } set_global_variable = { name = xa_curse_c value = 1 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 2 } NOT = { global_var:xa_curse_b = 2 } } set_global_variable = { name = xa_curse_c value = 2 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 3 } NOT = { global_var:xa_curse_b = 3 } } set_global_variable = { name = xa_curse_c value = 3 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 4 } NOT = { global_var:xa_curse_b = 4 } } set_global_variable = { name = xa_curse_c value = 4 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 5 } NOT = { global_var:xa_curse_b = 5 } } set_global_variable = { name = xa_curse_c value = 5 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 6 } NOT = { global_var:xa_curse_b = 6 } } set_global_variable = { name = xa_curse_c value = 6 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 7 } NOT = { global_var:xa_curse_b = 7 } } set_global_variable = { name = xa_curse_c value = 7 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 8 } NOT = { global_var:xa_curse_b = 8 } } set_global_variable = { name = xa_curse_c value = 8 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 9 } NOT = { global_var:xa_curse_b = 9 } } set_global_variable = { name = xa_curse_c value = 9 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 10 } NOT = { global_var:xa_curse_b = 10 } } set_global_variable = { name = xa_curse_c value = 10 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 11 } NOT = { global_var:xa_curse_b = 11 } } set_global_variable = { name = xa_curse_c value = 11 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 12 } NOT = { global_var:xa_curse_b = 12 } } set_global_variable = { name = xa_curse_c value = 12 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 13 } NOT = { global_var:xa_curse_b = 13 } } set_global_variable = { name = xa_curse_c value = 13 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 14 } NOT = { global_var:xa_curse_b = 14 } } set_global_variable = { name = xa_curse_c value = 14 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 15 } NOT = { global_var:xa_curse_b = 15 } } set_global_variable = { name = xa_curse_c value = 15 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 16 } NOT = { global_var:xa_curse_b = 16 } } set_global_variable = { name = xa_curse_c value = 16 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 17 } NOT = { global_var:xa_curse_b = 17 } } set_global_variable = { name = xa_curse_c value = 17 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 18 } NOT = { global_var:xa_curse_b = 18 } } set_global_variable = { name = xa_curse_c value = 18 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 19 } NOT = { global_var:xa_curse_b = 19 } } set_global_variable = { name = xa_curse_c value = 19 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 20 } NOT = { global_var:xa_curse_b = 20 } } set_global_variable = { name = xa_curse_c value = 20 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 21 } NOT = { global_var:xa_curse_b = 21 } } set_global_variable = { name = xa_curse_c value = 21 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 22 } NOT = { global_var:xa_curse_b = 22 } } set_global_variable = { name = xa_curse_c value = 22 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 23 } NOT = { global_var:xa_curse_b = 23 } } set_global_variable = { name = xa_curse_c value = 23 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 24 } NOT = { global_var:xa_curse_b = 24 } } set_global_variable = { name = xa_curse_c value = 24 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 25 } NOT = { global_var:xa_curse_b = 25 } } set_global_variable = { name = xa_curse_c value = 25 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 26 } NOT = { global_var:xa_curse_b = 26 } } set_global_variable = { name = xa_curse_c value = 26 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 27 } NOT = { global_var:xa_curse_b = 27 } } set_global_variable = { name = xa_curse_c value = 27 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 28 } NOT = { global_var:xa_curse_b = 28 } } set_global_variable = { name = xa_curse_c value = 28 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 29 } NOT = { global_var:xa_curse_b = 29 } } set_global_variable = { name = xa_curse_c value = 29 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 30 } NOT = { global_var:xa_curse_b = 30 } } set_global_variable = { name = xa_curse_c value = 30 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 31 } NOT = { global_var:xa_curse_b = 31 } } set_global_variable = { name = xa_curse_c value = 31 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 32 } NOT = { global_var:xa_curse_b = 32 } } set_global_variable = { name = xa_curse_c value = 32 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 33 } NOT = { global_var:xa_curse_b = 33 } } set_global_variable = { name = xa_curse_c value = 33 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 34 } NOT = { global_var:xa_curse_b = 34 } } set_global_variable = { name = xa_curse_c value = 34 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 35 } NOT = { global_var:xa_curse_b = 35 } } set_global_variable = { name = xa_curse_c value = 35 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 36 } NOT = { global_var:xa_curse_b = 36 } } set_global_variable = { name = xa_curse_c value = 36 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 37 } NOT = { global_var:xa_curse_b = 37 } } set_global_variable = { name = xa_curse_c value = 37 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 38 } NOT = { global_var:xa_curse_b = 38 } } set_global_variable = { name = xa_curse_c value = 38 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 39 } NOT = { global_var:xa_curse_b = 39 } } set_global_variable = { name = xa_curse_c value = 39 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 40 } NOT = { global_var:xa_curse_b = 40 } } set_global_variable = { name = xa_curse_c value = 40 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 41 } NOT = { global_var:xa_curse_b = 41 } } set_global_variable = { name = xa_curse_c value = 41 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 42 } NOT = { global_var:xa_curse_b = 42 } } set_global_variable = { name = xa_curse_c value = 42 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 43 } NOT = { global_var:xa_curse_b = 43 } } set_global_variable = { name = xa_curse_c value = 43 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 44 } NOT = { global_var:xa_curse_b = 44 } } set_global_variable = { name = xa_curse_c value = 44 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 45 } NOT = { global_var:xa_curse_b = 45 } } set_global_variable = { name = xa_curse_c value = 45 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 46 } NOT = { global_var:xa_curse_b = 46 } } set_global_variable = { name = xa_curse_c value = 46 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 47 } NOT = { global_var:xa_curse_b = 47 } } set_global_variable = { name = xa_curse_c value = 47 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 48 } NOT = { global_var:xa_curse_b = 48 } } set_global_variable = { name = xa_curse_c value = 48 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 49 } NOT = { global_var:xa_curse_b = 49 } } set_global_variable = { name = xa_curse_c value = 49 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 50 } NOT = { global_var:xa_curse_b = 50 } } set_global_variable = { name = xa_curse_c value = 50 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 51 } NOT = { global_var:xa_curse_b = 51 } } set_global_variable = { name = xa_curse_c value = 51 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 52 } NOT = { global_var:xa_curse_b = 52 } } set_global_variable = { name = xa_curse_c value = 52 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 53 } NOT = { global_var:xa_curse_b = 53 } } set_global_variable = { name = xa_curse_c value = 53 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 54 } NOT = { global_var:xa_curse_b = 54 } } set_global_variable = { name = xa_curse_c value = 54 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 55 } NOT = { global_var:xa_curse_b = 55 } } set_global_variable = { name = xa_curse_c value = 55 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 56 } NOT = { global_var:xa_curse_b = 56 } } set_global_variable = { name = xa_curse_c value = 56 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 57 } NOT = { global_var:xa_curse_b = 57 } } set_global_variable = { name = xa_curse_c value = 57 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 58 } NOT = { global_var:xa_curse_b = 58 } } set_global_variable = { name = xa_curse_c value = 58 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 59 } NOT = { global_var:xa_curse_b = 59 } } set_global_variable = { name = xa_curse_c value = 59 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 60 } NOT = { global_var:xa_curse_b = 60 } } set_global_variable = { name = xa_curse_c value = 60 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 61 } NOT = { global_var:xa_curse_b = 61 } } set_global_variable = { name = xa_curse_c value = 61 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 62 } NOT = { global_var:xa_curse_b = 62 } } set_global_variable = { name = xa_curse_c value = 62 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 63 } NOT = { global_var:xa_curse_b = 63 } } set_global_variable = { name = xa_curse_c value = 63 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 64 } NOT = { global_var:xa_curse_b = 64 } } set_global_variable = { name = xa_curse_c value = 64 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 65 } NOT = { global_var:xa_curse_b = 65 } } set_global_variable = { name = xa_curse_c value = 65 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 66 } NOT = { global_var:xa_curse_b = 66 } } set_global_variable = { name = xa_curse_c value = 66 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 67 } NOT = { global_var:xa_curse_b = 67 } } set_global_variable = { name = xa_curse_c value = 67 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 68 } NOT = { global_var:xa_curse_b = 68 } } set_global_variable = { name = xa_curse_c value = 68 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 69 } NOT = { global_var:xa_curse_b = 69 } } set_global_variable = { name = xa_curse_c value = 69 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 70 } NOT = { global_var:xa_curse_b = 70 } } set_global_variable = { name = xa_curse_c value = 70 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 71 } NOT = { global_var:xa_curse_b = 71 } } set_global_variable = { name = xa_curse_c value = 71 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 72 } NOT = { global_var:xa_curse_b = 72 } } set_global_variable = { name = xa_curse_c value = 72 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 73 } NOT = { global_var:xa_curse_b = 73 } } set_global_variable = { name = xa_curse_c value = 73 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 74 } NOT = { global_var:xa_curse_b = 74 } } set_global_variable = { name = xa_curse_c value = 74 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 75 } NOT = { global_var:xa_curse_b = 75 } } set_global_variable = { name = xa_curse_c value = 75 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 76 } NOT = { global_var:xa_curse_b = 76 } } set_global_variable = { name = xa_curse_c value = 76 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 77 } NOT = { global_var:xa_curse_b = 77 } } set_global_variable = { name = xa_curse_c value = 77 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 78 } NOT = { global_var:xa_curse_b = 78 } } set_global_variable = { name = xa_curse_c value = 78 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 79 } NOT = { global_var:xa_curse_b = 79 } } set_global_variable = { name = xa_curse_c value = 79 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 80 } NOT = { global_var:xa_curse_b = 80 } } set_global_variable = { name = xa_curse_c value = 80 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 81 } NOT = { global_var:xa_curse_b = 81 } } set_global_variable = { name = xa_curse_c value = 81 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 82 } NOT = { global_var:xa_curse_b = 82 } } set_global_variable = { name = xa_curse_c value = 82 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 83 } NOT = { global_var:xa_curse_b = 83 } } set_global_variable = { name = xa_curse_c value = 83 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 84 } NOT = { global_var:xa_curse_b = 84 } } set_global_variable = { name = xa_curse_c value = 84 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 85 } NOT = { global_var:xa_curse_b = 85 } } set_global_variable = { name = xa_curse_c value = 85 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 86 } NOT = { global_var:xa_curse_b = 86 } } set_global_variable = { name = xa_curse_c value = 86 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 87 } NOT = { global_var:xa_curse_b = 87 } } set_global_variable = { name = xa_curse_c value = 87 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 88 } NOT = { global_var:xa_curse_b = 88 } } set_global_variable = { name = xa_curse_c value = 88 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 89 } NOT = { global_var:xa_curse_b = 89 } } set_global_variable = { name = xa_curse_c value = 89 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 90 } NOT = { global_var:xa_curse_b = 90 } } set_global_variable = { name = xa_curse_c value = 90 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 91 } NOT = { global_var:xa_curse_b = 91 } } set_global_variable = { name = xa_curse_c value = 91 } }
-		10 = { trigger = { NOT = { global_var:xa_curse_a = 92 } NOT = { global_var:xa_curse_b = 92 } } set_global_variable = { name = xa_curse_c value = 92 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 93 } NOT = { global_var:xa_curse_b = 93 } } set_global_variable = { name = xa_curse_c value = 93 } }
-		3 = { trigger = { NOT = { global_var:xa_curse_a = 94 } NOT = { global_var:xa_curse_b = 94 } } set_global_variable = { name = xa_curse_c value = 94 } }
-		1 = { trigger = { NOT = { global_var:xa_curse_a = 95 } NOT = { global_var:xa_curse_b = 95 } } set_global_variable = { name = xa_curse_c value = 95 } }
-		1 = { trigger = { NOT = { global_var:xa_curse_a = 96 } NOT = { global_var:xa_curse_b = 96 } } set_global_variable = { name = xa_curse_c value = 96 } }
-		1 = { trigger = { NOT = { global_var:xa_curse_a = 97 } NOT = { global_var:xa_curse_b = 97 } } set_global_variable = { name = xa_curse_c value = 97 } }
-		1 = { trigger = { NOT = { global_var:xa_curse_a = 98 } NOT = { global_var:xa_curse_b = 98 } } set_global_variable = { name = xa_curse_c value = 98 } }
-		1 = { trigger = { NOT = { global_var:xa_curse_a = 99 } NOT = { global_var:xa_curse_b = 99 } } set_global_variable = { name = xa_curse_c value = 99 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 0 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 0 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 1 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 1 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 2 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 2 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 3 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 3 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 4 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 4 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 5 } } set_global_variable = { name = xa_curse_b value = 5 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 6 } } set_global_variable = { name = xa_curse_b value = 6 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 7 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 7 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 8 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 8 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 9 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 9 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 10 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 10 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 11 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 11 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 12 } } set_global_variable = { name = xa_curse_b value = 12 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 13 } } set_global_variable = { name = xa_curse_b value = 13 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 14 } } set_global_variable = { name = xa_curse_b value = 14 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 15 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 15 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 16 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 16 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 17 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 17 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 18 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 18 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 19 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 19 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 20 } } set_global_variable = { name = xa_curse_b value = 20 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 21 } } set_global_variable = { name = xa_curse_b value = 21 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 22 } } set_global_variable = { name = xa_curse_b value = 22 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 23 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 23 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 24 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 24 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 25 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 25 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 26 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 26 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 27 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 27 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 28 } } set_global_variable = { name = xa_curse_b value = 28 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 29 } } set_global_variable = { name = xa_curse_b value = 29 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 30 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 30 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 31 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 31 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 32 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 32 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 33 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 33 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 34 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 34 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 35 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 35 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 36 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 36 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 37 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 37 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 38 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 38 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 39 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 39 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 40 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 40 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 41 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 41 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 42 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 42 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 43 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 43 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 44 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 44 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 45 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 45 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 46 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 46 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 47 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 47 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 48 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 48 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 49 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 49 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 50 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 50 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 51 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 51 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 52 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 52 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 53 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 53 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 54 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 54 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 55 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 55 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 56 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 56 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 57 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 57 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 58 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 58 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 59 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 59 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 60 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 60 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 61 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 61 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 62 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 62 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 63 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 63 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 64 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 64 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 65 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 65 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 66 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 66 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 67 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 67 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 68 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 68 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 69 } } set_global_variable = { name = xa_curse_b value = 69 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 70 } } set_global_variable = { name = xa_curse_b value = 70 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 71 } } set_global_variable = { name = xa_curse_b value = 71 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 72 } } set_global_variable = { name = xa_curse_b value = 72 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 73 } } set_global_variable = { name = xa_curse_b value = 73 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 74 } } set_global_variable = { name = xa_curse_b value = 74 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 75 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 75 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 76 } } set_global_variable = { name = xa_curse_b value = 76 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 77 } } set_global_variable = { name = xa_curse_b value = 77 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 78 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 78 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 79 } } set_global_variable = { name = xa_curse_b value = 79 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 80 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 80 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 81 } } set_global_variable = { name = xa_curse_b value = 81 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 82 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 82 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 83 } } set_global_variable = { name = xa_curse_b value = 83 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 84 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 84 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 85 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 85 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 86 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 86 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 87 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 87 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 88 } } set_global_variable = { name = xa_curse_b value = 88 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 89 } } set_global_variable = { name = xa_curse_b value = 89 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 90 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 90 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 91 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 91 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		10 = { trigger = { NOT = { global_var:xa_curse_a = 92 } global_var:xa_selected_bless_rarity < 2 } set_global_variable = { name = xa_curse_b value = 92 } set_global_variable = { name = xa_curse_b_rarity value = 0 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 93 } } set_global_variable = { name = xa_curse_b value = 93 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		3 = { trigger = { NOT = { global_var:xa_curse_a = 94 } } set_global_variable = { name = xa_curse_b value = 94 } set_global_variable = { name = xa_curse_b_rarity value = 1 } }
+		1 = { trigger = { NOT = { global_var:xa_curse_a = 95 } } set_global_variable = { name = xa_curse_b value = 95 } set_global_variable = { name = xa_curse_b_rarity value = 2 } }
+		1 = { trigger = { NOT = { global_var:xa_curse_a = 96 } } set_global_variable = { name = xa_curse_b value = 96 } set_global_variable = { name = xa_curse_b_rarity value = 2 } }
+		1 = { trigger = { NOT = { global_var:xa_curse_a = 97 } } set_global_variable = { name = xa_curse_b value = 97 } set_global_variable = { name = xa_curse_b_rarity value = 2 } }
+		1 = { trigger = { NOT = { global_var:xa_curse_a = 98 } } set_global_variable = { name = xa_curse_b value = 98 } set_global_variable = { name = xa_curse_b_rarity value = 2 } }
+		1 = { trigger = { NOT = { global_var:xa_curse_a = 99 } } set_global_variable = { name = xa_curse_b value = 99 } set_global_variable = { name = xa_curse_b_rarity value = 2 } }
 	}
 }
 
-# Apply by slot ($SLOT$ = a/b/c).
+# Apply by slot ($SLOT$ = a/b).
 xar_apply_curse_effect = {
-	if = { limit = { global_var:xa_curse_$SLOT$ = 0 } add_character_modifier = { modifier = xar_pc_drain_a days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 1 } add_character_modifier = { modifier = xar_pc_drain_b days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 2 } add_character_modifier = { modifier = xar_pc_drain_c days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 3 } add_character_modifier = { modifier = xar_pc_drain_d days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 4 } add_character_modifier = { modifier = xar_pc_drain_e days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 5 } add_character_modifier = { modifier = xar_pc_drain_f days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 6 } add_character_modifier = { modifier = xar_pc_drain_g days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 7 } add_prestige = -100 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 8 } add_prestige = -200 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 9 } add_prestige = -400 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 10 } add_prestige = -600 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 11 } add_prestige = -800 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 12 } add_prestige = -1200 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 13 } add_prestige = -1600 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 14 } add_prestige = -2400 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 15 } add_piety = -100 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 16 } add_piety = -200 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 17 } add_piety = -400 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 18 } add_piety = -600 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 19 } add_piety = -800 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 20 } add_piety = -1200 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 21 } add_piety = -1600 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 22 } add_piety = -2400 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 23 } change_influence = -35 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 24 } change_influence = -50 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 25 } change_influence = -65 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 26 } change_influence = -100 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 27 } change_influence = -135 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 28 } change_influence = -165 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 29 } change_influence = -200 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 30 } add_diplomacy_skill = -1 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 31 } add_diplomacy_skill = -3 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 32 } add_diplomacy_skill = -4 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 33 } add_martial_skill = -1 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 34 } add_martial_skill = -3 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 35 } add_martial_skill = -4 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 36 } add_stewardship_skill = -1 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 37 } add_stewardship_skill = -3 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 38 } add_stewardship_skill = -4 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 39 } add_intrigue_skill = -1 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 40 } add_intrigue_skill = -3 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 41 } add_intrigue_skill = -4 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 42 } add_learning_skill = -1 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 43 } add_learning_skill = -3 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 44 } add_learning_skill = -4 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 45 } add_prowess_skill = -1 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 46 } add_prowess_skill = -3 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 47 } add_prowess_skill = -4 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 48 } add_diplomacy_lifestyle_xp = -350 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 49 } add_diplomacy_lifestyle_xp = -650 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 50 } add_diplomacy_lifestyle_xp = -1000 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 51 } add_martial_lifestyle_xp = -350 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 52 } add_martial_lifestyle_xp = -650 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 53 } add_martial_lifestyle_xp = -1000 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 54 } add_stewardship_lifestyle_xp = -350 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 55 } add_stewardship_lifestyle_xp = -650 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 56 } add_stewardship_lifestyle_xp = -1000 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 57 } add_intrigue_lifestyle_xp = -350 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 58 } add_intrigue_lifestyle_xp = -650 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 59 } add_intrigue_lifestyle_xp = -1000 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 60 } add_learning_lifestyle_xp = -350 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 61 } add_learning_lifestyle_xp = -650 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 62 } add_learning_lifestyle_xp = -1000 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 63 } add_trait = weak }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 64 } add_trait = clubfooted }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 65 } add_trait = physique_bad_1 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 66 } add_trait = beauty_bad_1 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 67 } add_trait = craven }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 68 } add_trait = lazy }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 69 } add_trait = sickly }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 70 } add_trait = hunchbacked }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 71 } add_trait = intellect_bad_1 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 72 } add_trait = intellect_bad_2 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 73 } add_trait = beauty_bad_2 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 74 } add_trait = paranoid }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 75 } add_character_modifier = { modifier = xar_pc_health_s days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 76 } add_character_modifier = { modifier = xar_pc_health_m days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 77 } add_character_modifier = { modifier = xar_pc_health_l days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 78 } add_character_modifier = { modifier = xar_pc_fert_s days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 79 } add_character_modifier = { modifier = xar_pc_fert_m days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 80 } add_character_modifier = { modifier = xar_pc_vassal_s days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 81 } add_character_modifier = { modifier = xar_pc_vassal_m days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 82 } add_character_modifier = { modifier = xar_pc_stress_s days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 83 } add_character_modifier = { modifier = xar_pc_stress_m days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 84 } add_character_modifier = { modifier = xar_pc_mprestige days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 85 } add_character_modifier = { modifier = xar_pc_mpiety days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 86 } dynasty ?= { add_dynasty_prestige = -65 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 87 } dynasty ?= { add_dynasty_prestige = -200 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 88 } dynasty ?= { add_dynasty_prestige = -400 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 89 } dynasty ?= { add_dynasty_prestige = -650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 90 } add_stress = 65 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 91 } add_stress = 100 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 92 } add_stress = 135 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 93 } add_stress = 200 }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 94 } add_character_modifier = { modifier = xar_pc_life } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 95 } add_character_modifier = { modifier = xar_leg_cold days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 96 } add_character_modifier = { modifier = xar_leg_tax days = 3650 } }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 97 } add_character_modifier = { modifier = xar_leg_vassal days = 3650 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 0 } add_character_modifier = { modifier = xar_pc_drain_a days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 1 } add_character_modifier = { modifier = xar_pc_drain_b days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 2 } add_character_modifier = { modifier = xar_pc_drain_c days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 3 } add_character_modifier = { modifier = xar_pc_drain_d days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 4 } add_character_modifier = { modifier = xar_pc_drain_e days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 5 } add_character_modifier = { modifier = xar_pc_drain_f days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 6 } add_character_modifier = { modifier = xar_pc_drain_g days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 7 } add_prestige = -100
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 8 } add_prestige = -200
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 9 } add_prestige = -400
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 10 } add_prestige = -600
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 11 } add_prestige = -800
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 12 } add_prestige = -1200
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 13 } add_prestige = -1600
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 14 } add_prestige = -2400
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 15 } add_piety = -100
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 16 } add_piety = -200
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 17 } add_piety = -400
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 18 } add_piety = -600
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 19 } add_piety = -800
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 20 } add_piety = -1200
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 21 } add_piety = -1600
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 22 } add_piety = -2400
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 23 } change_influence = -35
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 24 } change_influence = -50
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 25 } change_influence = -65
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 26 } change_influence = -100
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 27 } change_influence = -135
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 28 } change_influence = -165
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 29 } change_influence = -200
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 30 } add_diplomacy_skill = -1
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 31 } add_diplomacy_skill = -3
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 32 } add_diplomacy_skill = -4
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 33 } add_martial_skill = -1
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 34 } add_martial_skill = -3
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 35 } add_martial_skill = -4
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 36 } add_stewardship_skill = -1
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 37 } add_stewardship_skill = -3
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 38 } add_stewardship_skill = -4
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 39 } add_intrigue_skill = -1
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 40 } add_intrigue_skill = -3
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 41 } add_intrigue_skill = -4
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 42 } add_learning_skill = -1
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 43 } add_learning_skill = -3
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 44 } add_learning_skill = -4
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 45 } add_prowess_skill = -1
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 46 } add_prowess_skill = -3
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 47 } add_prowess_skill = -4
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 48 } add_diplomacy_lifestyle_xp = -350
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 49 } add_diplomacy_lifestyle_xp = -650
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 50 } add_diplomacy_lifestyle_xp = -1000
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 51 } add_martial_lifestyle_xp = -350
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 52 } add_martial_lifestyle_xp = -650
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 53 } add_martial_lifestyle_xp = -1000
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 54 } add_stewardship_lifestyle_xp = -350
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 55 } add_stewardship_lifestyle_xp = -650
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 56 } add_stewardship_lifestyle_xp = -1000
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 57 } add_intrigue_lifestyle_xp = -350
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 58 } add_intrigue_lifestyle_xp = -650
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 59 } add_intrigue_lifestyle_xp = -1000
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 60 } add_learning_lifestyle_xp = -350
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 61 } add_learning_lifestyle_xp = -650
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 62 } add_learning_lifestyle_xp = -1000
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 63 } add_trait = weak
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 64 } add_trait = clubfooted
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 65 } add_trait = physique_bad_1
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 66 } add_trait = beauty_bad_1
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 67 } add_trait = craven
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 68 } add_trait = lazy
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 69 } add_trait = sickly
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 70 } add_trait = hunchbacked
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 71 } add_trait = intellect_bad_1
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 72 } add_trait = intellect_bad_2
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 73 } add_trait = beauty_bad_2
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 74 } add_trait = paranoid
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 75 } add_character_modifier = { modifier = xar_pc_health_s days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 76 } add_character_modifier = { modifier = xar_pc_health_m days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 77 } add_character_modifier = { modifier = xar_pc_health_l days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 78 } add_character_modifier = { modifier = xar_pc_fert_s days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 79 } add_character_modifier = { modifier = xar_pc_fert_m days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 80 } add_character_modifier = { modifier = xar_pc_vassal_s days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 81 } add_character_modifier = { modifier = xar_pc_vassal_m days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 82 } add_character_modifier = { modifier = xar_pc_stress_s days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 83 } add_character_modifier = { modifier = xar_pc_stress_m days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 84 } add_character_modifier = { modifier = xar_pc_mprestige days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 85 } add_character_modifier = { modifier = xar_pc_mpiety days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 86 } dynasty ?= { add_dynasty_prestige = -65 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 87 } dynasty ?= { add_dynasty_prestige = -200 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 88 } dynasty ?= { add_dynasty_prestige = -400 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 89 } dynasty ?= { add_dynasty_prestige = -650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 90 } add_stress = 65
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 91 } add_stress = 100
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 92 } add_stress = 135
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 93 } add_stress = 200
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 94 } add_character_modifier = { modifier = xar_pc_life }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 95 } add_character_modifier = { modifier = xar_leg_cold days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 96 } add_character_modifier = { modifier = xar_leg_tax days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
+	if = { limit = { global_var:xa_curse_$SLOT$ = 97 } add_character_modifier = { modifier = xar_leg_vassal days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
 	if = { limit = { global_var:xa_curse_$SLOT$ = 98 } add_diplomacy_skill = -1
 		add_martial_skill = -1
 		add_stewardship_skill = -1
 		add_intrigue_skill = -1
 		add_learning_skill = -1
-		add_prowess_skill = -1 }
+		add_prowess_skill = -1
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
 	if = { limit = { global_var:xa_curse_$SLOT$ = 99 } add_stress = 150
-		add_character_modifier = { modifier = xar_leg_stress days = 3650 } }
+		add_character_modifier = { modifier = xar_leg_stress days = 3650 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 } }
 }
 
 # Self-test sweep: every entry applied in sequence (runtime coverage).
