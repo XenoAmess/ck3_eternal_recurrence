@@ -37,9 +37,9 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 冷启动通常约 2 分钟，`RESULT: GREEN/RED` + 退出码。判定依据：
 
 1. `tools/validate_static.py` 通过：五套生成器逐文件 parity、全部运行文件 UTF-8 BOM、9 语言 loc 引用与首世/账簿格式 token parity、自动发现的全部 XAR event/decision AI 闸门、挑战继承/成长基线、契约 hook/PB/图鉴/里程碑、生产/selftest 共用入口、12 个购买 effect、无继承人 fallback、奖池过滤/权重/稳定 ID、descriptor 与发布资源；其中 `tools/validate_loc.py` 负责动态 wrapper、custom-loc 和 modifier 名。
-2. debug.log 的 46 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
+2. debug.log 的 51 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
    由游戏规则第三档 `xar_selftest` 触发，检查器 xar.0007 嵌套在结算事件 xar.1001 里跑）
-3. OCR 真实接受契约、购买外交、结束商店，再打开祝福三选一与诅咒二选一，验证动态文本无 raw/fallback 并点击生产选项；购买断言分别核对积分、涨价与属性增长。
+3. OCR 真实接受契约、购买外交、结束商店，再依次真实点击重抽、拒绝、祝福、封印、第二次祝福和最终咒痕；验证动态文本无 raw/fallback，并断言 token 消耗、拒绝基线、封印免除效果及封印后的正常咒痕。
 4. 通过 acceptance-only GUI 直接调用 `DefaultOnCharacterClick(GetPlayer.GetID)` 打开玩家原生人物页，以 DDS 模板定位【琉焰之视】，hover 后 OCR 确认“当前分量”实时渲染。
 5. 结算确认后必须从原生 HUD OCR 到「正在观察」，证明观察者切换真实完成。
 6. **error.log 中任何包含 `xar` 的日志都视为失败**，不再白名单过滤。
@@ -58,6 +58,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 契约事件与纯脚本 selftest 都调用 `xar_enable_player_pact_effect`、`xar_initialize_run_state_effect`；外交生产 option 与 `25→30`/扣款脚本样例都调用 `xar_buy_diplomacy_shop_item_effect`。静态校验禁止两处重新内联对应实现。
 - 12 个可重复购买商品和宗教改革/三种高价批量商品各自调用具名生产 effect；166600 点自测完整购买 1133+10000+50000+100000 后必须余 5467，借命补至 25 层。商店结束调用 `xar_finish_shop_effect` 完成余分兑换、清零及垂青会初始化。
 - 原生 trait track 的 100 XP/10 级、每对 +1 XP、满级状态及 hover 当前分数的实际像素渲染；hover 公式还与死亡结算值作脚本断言。
+- 生产里程碑 effect 在 10 XP 发放 1 次重抽、20 XP 发放 1 枚封印；selftest UI 真实消耗二者，并验证拒绝未发祝福、封印未施加首个咒痕、下一次正常接受施加了咒痕。
 - 传说祝福只抽到稀有/传说诅咒、拒绝每次 -1% 最终分、request/ready/consumed 零值导入、同阈值不破纪录、跨阈值破纪录、cap 量化、死亡结算、纪录写入和教程落盘。
 - 0/25/50/100% 继承的生产 effect；1200、5000、50000、166600 四档均实机脚本断言无额外预算封顶，1200 生产 UI 场景覆盖 1133 分宗教改革。AI 兄弟 scope 还会实际调用契约进度和导入消费 effect，确认 `is_ai = no` 在运行期阻断。
 - 奖池 200 个 effect body 的运行期语法/引用 smoke test
@@ -67,7 +68,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 正常 `xar_on` 首世、已有 100 位阶和 `xar_off` 三条独立 smoke 已实机 GREEN，均为 `xar error.log = 0`。
 - 完整的“两次 CK3 进程”场景（第一进程真实写入非零位，退出后第二进程再导入）；当前 runner 可在启动前安全预置 100 位并执行非零重启导入基础：`tools\.venv\Scripts\python.exe tools\run_acceptance.py --import-record 100`，会断言 importer 命中 100 且 ready 消费时点数等于导入值。
 - 200 项 dispatcher 的 ID→effect 语义映射；sweep 内联执行 effect body，只是运行期 smoke test
-- 拒绝选项真实点击、封印/重抽真实点击和 1095 日重开分支
+- 正常玩法的 1095 日重开分支；selftest UI 已真实点击拒绝、封印和重抽，但为缩短验收将重开压缩为立即触发。
 - 计分各系数与边界的系统矩阵、后代去重边界；当前断言正分、拒绝倍率、preview/结算一致与写入
 - AI 死亡入口仍没有真实杀死 AI 的负例；契约进度/导入消费的代表性 AI scope 负例和结算后原生观察者 HUD 已自动验证。
 - 契约选择决议、账簿、PB 图鉴及里程碑事件仍没有实际像素点击覆盖；其生产 effects、lesson 落盘和事件引用已有脚本/静态覆盖。

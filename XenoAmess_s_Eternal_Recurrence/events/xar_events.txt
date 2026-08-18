@@ -27,6 +27,9 @@ xar.0002 = {
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			set_global_variable = { name = xa_local_points value = 200 }
+			set_global_variable = { name = xa_reroll_tokens value = 1 }
+			set_global_variable = { name = xa_seal_tokens value = 1 }
+			set_global_variable = { name = xa_ui_test_stage value = 0 }
 			debug_log = "XAR: UI pact accepted"
 			trigger_event = { id = xar.0001 }
 		}
@@ -532,6 +535,14 @@ xar.0004 = {
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI bless window opened"
+			if = {
+				limit = { global_var:xa_ui_test_stage = 2 }
+				debug_log = "XAR: UI post-decline bless window"
+			}
+			if = {
+				limit = { global_var:xa_ui_test_stage = 3 }
+				debug_log = "XAR: UI post-seal bless window"
+			}
 		}
 	}
 
@@ -566,13 +577,36 @@ xar.0004 = {
 		name = xar.0004.reroll
 		trigger = { global_var:xa_reroll_tokens > 0 }
 		change_global_variable = { name = xa_reroll_tokens add = -1 }
+		if = {
+			limit = { has_global_variable = xa_full_ui_test_active }
+			set_global_variable = { name = xa_ui_test_stage value = 1 }
+			if = {
+				limit = { global_var:xa_reroll_tokens = 0 }
+				debug_log = "XAR: TEST PASS ui_reroll"
+			}
+			else = { debug_log = "XAR: TEST FAIL ui_reroll" }
+		}
 		trigger_event = xar.0004
 	}
 	option = {
 		name = xar.0004.decline
 		change_global_variable = { name = xa_bless_reject_count add = 1 }
 		xar_capture_score_baseline_effect = yes
-		trigger_event = { id = xar.0006 days = 1095 }
+		if = {
+			limit = { has_global_variable = xa_full_ui_test_active }
+			set_global_variable = { name = xa_ui_test_stage value = 2 }
+			if = {
+				limit = {
+					global_var:xa_bless_reject_count = 1
+					global_var:xa_baseline_pending = 0
+					global_var:xa_bless_count = 0
+				}
+				debug_log = "XAR: TEST PASS ui_bless_decline"
+			}
+			else = { debug_log = "XAR: TEST FAIL ui_bless_decline" }
+			trigger_event = xar.0004
+		}
+		else = { trigger_event = { id = xar.0006 days = 1095 } }
 	}
 }
 
@@ -610,9 +644,18 @@ xar.0005 = {
 		}
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
+			if = {
+				limit = {
+					global_var:xa_ui_test_stage = 3
+					has_character_modifier = xar_pc_drain_a
+					global_var:xa_bless_count = 2
+				}
+				debug_log = "XAR: TEST PASS ui_curse_after_seal"
+			}
+			else = { debug_log = "XAR: TEST FAIL ui_curse_after_seal" }
 			remove_global_variable = xa_full_ui_test_active
+			remove_global_variable = xa_ui_test_stage
 			add_character_flag = xa_trait_hover_test_pending
-			set_global_variable = { name = xa_bless_reject_count value = 1 }
 			set_global_variable = { name = xa_selftest_waits value = 0 }
 			trigger_event = { id = xar.0008 days = 1 }
 		}
@@ -632,8 +675,8 @@ xar.0005 = {
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			remove_global_variable = xa_full_ui_test_active
+			remove_global_variable = xa_ui_test_stage
 			add_character_flag = xa_trait_hover_test_pending
-			set_global_variable = { name = xa_bless_reject_count value = 1 }
 			set_global_variable = { name = xa_selftest_waits value = 0 }
 			trigger_event = { id = xar.0008 days = 1 }
 		}
@@ -647,7 +690,21 @@ xar.0005 = {
 		change_global_variable = { name = xa_seal_tokens add = -1 }
 		xar_complete_bargain_pair_effect = yes
 		xar_capture_score_baseline_effect = yes
-		trigger_event = { id = xar.0006 days = 1095 }
+		if = {
+			limit = { has_global_variable = xa_full_ui_test_active }
+			set_global_variable = { name = xa_ui_test_stage value = 3 }
+			if = {
+				limit = {
+					global_var:xa_seal_tokens = 0
+					global_var:xa_bless_count = 1
+					NOT = { has_character_modifier = xar_pc_drain_a }
+				}
+				debug_log = "XAR: TEST PASS ui_seal"
+			}
+			else = { debug_log = "XAR: TEST FAIL ui_seal" }
+			trigger_event = xar.0004
+		}
+		else = { trigger_event = { id = xar.0006 days = 1095 } }
 	}
 }
 
@@ -729,7 +786,7 @@ xar.0007 = {
 		}
 		else = { debug_log = "XAR: TEST FAIL score_preview" }
 		if = {
-			limit = { global_var:xa_bless_count = 1 }
+			limit = { global_var:xa_bless_count = 2 }
 			debug_log = "XAR: TEST PASS bless_count"
 		}
 		else = { debug_log = "XAR: TEST FAIL bless_count" }

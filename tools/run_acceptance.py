@@ -67,11 +67,12 @@ REQUIRED_PASSES = {
     "shop_ceiling_fraction", "ledger_score_nonnegative", "ledger_projection",
     "ledger_record_unchanged",
     "draw_bless_distinct", "bless_apply", "draw_curse_constrained",
-    "curse_pair_xp", "trait_level_1", "trait_xp_cap", "import_var",
+    "curse_pair_xp", "trait_level_1", "trait_level_2", "trait_xp_cap", "import_var",
     "import_value", "import_points", "record_same_threshold",
     "record_cross_threshold", "record_cap", "score_positive", "reject_penalty", "score_preview",
     "ui_shop_points", "ui_shop_price", "ui_shop_diplomacy",
-    "ui_shop_purchase", "ui_shop_finish", "bless_count", "record_write",
+    "ui_shop_purchase", "ui_shop_finish", "ui_reroll", "ui_bless_decline",
+    "ui_seal", "ui_curse_after_seal", "bless_count", "record_write",
     "contract_select", "contract_progress",
     "inherit_0", "inherit_25", "inherit_50", "inherit_100_uncapped",
     "inherit_5000", "inherit_50000", "inherit_166600", "shop_high_tier_bundle",
@@ -685,18 +686,56 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
     wait_for_ocr_text(
         "琉焰的垂青", EVENT_TITLE_REGION, 15,
         artifacts, "05_bless_window.png", stable_hits=1)
-    bless_option = wait_for_localized_options("bless", artifacts, 3)
+    reroll_option = wait_for_ocr_text(
+        "重抽", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "05_bless_reroll.png", contains=True, stable_hits=1)
     offset = click_until_marker(
-        bless_option, "localized bless option", "XAR: UI bless accepted",
+        reroll_option, "production blessing reroll",
+        "XAR: TEST PASS ui_reroll",
         offset, xar_lines)
+    wait_for_ocr_text(
+        "琉焰的垂青", EVENT_TITLE_REGION, 15,
+        artifacts, "05_bless_after_reroll.png", stable_hits=1)
+    wait_for_localized_options("bless_after_reroll", artifacts, 3)
+    decline_option = wait_for_ocr_text(
+        "什么都不领", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "05_bless_decline.png", contains=True, stable_hits=1)
+    offset = click_until_marker(
+        decline_option, "production blessing decline",
+        "XAR: TEST PASS ui_bless_decline", offset, xar_lines)
+    wait_for_ocr_text(
+        "琉焰的垂青", EVENT_TITLE_REGION, 15,
+        artifacts, "05_bless_after_decline.png", stable_hits=1)
+    bless_option = wait_for_localized_options("bless_after_decline", artifacts, 3)
+    offset = click_until_marker(
+        bless_option, "localized bless option before seal",
+        "XAR: UI bless accepted", offset, xar_lines)
     offset = wait_for_marker(offset, "XAR: UI curse window opened", 30, xar_lines)
     wait_for_ocr_text(
         "等价的咒痕", EVENT_TITLE_REGION, 15,
         artifacts, "05_curse_window.png", stable_hits=1)
-    curse_option = wait_for_localized_options("curse", artifacts, 2)
+    wait_for_localized_options("curse_before_seal", artifacts, 2)
+    seal_option = wait_for_ocr_text(
+        "封印", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "05_curse_seal.png", contains=True, stable_hits=1)
     offset = click_until_marker(
-        curse_option, "localized curse option", "XAR: UI curse accepted",
+        seal_option, "production curse seal", "XAR: TEST PASS ui_seal",
         offset, xar_lines)
+    wait_for_ocr_text(
+        "琉焰的垂青", EVENT_TITLE_REGION, 15,
+        artifacts, "05_bless_after_seal.png", stable_hits=1)
+    bless_option = wait_for_localized_options("bless_after_seal", artifacts, 3)
+    offset = click_until_marker(
+        bless_option, "localized bless option after seal",
+        "XAR: UI bless accepted", offset, xar_lines)
+    offset = wait_for_marker(offset, "XAR: UI curse window opened", 30, xar_lines)
+    wait_for_ocr_text(
+        "等价的咒痕", EVENT_TITLE_REGION, 15,
+        artifacts, "05_curse_after_seal.png", stable_hits=1)
+    curse_option = wait_for_localized_options("curse_after_seal", artifacts, 2)
+    offset = click_until_marker(
+        curse_option, "localized curse option after seal",
+        "XAR: TEST PASS ui_curse_after_seal", offset, xar_lines)
 
     focus_ck3()
     player_open = False

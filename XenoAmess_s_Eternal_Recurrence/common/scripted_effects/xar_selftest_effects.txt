@@ -331,7 +331,19 @@ xar_selftest_effect = {
 	}
 	else = { debug_log = "XAR: TEST FAIL trait_level_1" }
 	set_global_variable = { name = xa_reroll_tokens value = 0 }
-	add_trait_xp = { trait = xar_glassfire_gaze value = 90 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 9 }
+	xar_complete_bargain_pair_effect = yes
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 20 }
+			has_character_flag = xa_gaze_milestone_20
+			global_var:xa_seal_tokens = 1
+		}
+		debug_log = "XAR: TEST PASS trait_level_2"
+	}
+	else = { debug_log = "XAR: TEST FAIL trait_level_2" }
+	set_global_variable = { name = xa_seal_tokens value = 0 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 80 }
 	if = {
 		limit = { has_trait_xp = { trait = xar_glassfire_gaze value >= 100 } }
 		debug_log = "XAR: TEST PASS trait_xp_cap"
