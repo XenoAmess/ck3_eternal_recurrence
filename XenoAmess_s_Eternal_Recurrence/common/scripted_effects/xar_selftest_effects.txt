@@ -49,8 +49,26 @@ xar_selftest_effect = {
 	else = { debug_log = "XAR: TEST FAIL inherit_50" }
 	set_global_variable = { name = xa_inheritance_percent value = 100 }
 	xar_calculate_inherited_budget_effect = yes
-	if = { limit = { global_var:xa_local_points = 1200 } debug_log = "XAR: TEST PASS inherit_100_uncapped" }
+	if = {
+		limit = {
+			global_var:xa_local_points = 1200
+			global_var:xa_local_points >= 1133
+		}
+		debug_log = "XAR: TEST PASS inherit_100_uncapped"
+	}
 	else = { debug_log = "XAR: TEST FAIL inherit_100_uncapped" }
+	set_global_variable = { name = xa_global_record_imported value = 5000 }
+	xar_calculate_inherited_budget_effect = yes
+	if = { limit = { global_var:xa_local_points = 5000 } debug_log = "XAR: TEST PASS inherit_5000" }
+	else = { debug_log = "XAR: TEST FAIL inherit_5000" }
+	set_global_variable = { name = xa_global_record_imported value = 50000 }
+	xar_calculate_inherited_budget_effect = yes
+	if = { limit = { global_var:xa_local_points = 50000 } debug_log = "XAR: TEST PASS inherit_50000" }
+	else = { debug_log = "XAR: TEST FAIL inherit_50000" }
+	set_global_variable = { name = xa_global_record_imported value = 166600 }
+	xar_calculate_inherited_budget_effect = yes
+	if = { limit = { global_var:xa_local_points = 166600 } debug_log = "XAR: TEST PASS inherit_166600" }
+	else = { debug_log = "XAR: TEST FAIL inherit_166600" }
 	set_global_variable = { name = xa_global_record_imported value = { value = global_var:xa_test_import_original } }
 	remove_global_variable = xa_test_import_original
 	xar_calculate_inherited_budget_effect = yes
@@ -108,6 +126,33 @@ xar_selftest_effect = {
 		debug_log = "XAR: TEST PASS shop_init"
 	}
 	else = { debug_log = "XAR: TEST FAIL shop_init" }
+	set_global_variable = { name = xa_test_ai_found value = 0 }
+	set_global_variable = { name = xa_contract_id value = 5 }
+	set_global_variable = { name = xa_contract_progress value = 0 }
+	set_global_variable = { name = xa_import_ready value = 1 }
+	set_global_variable = { name = xa_import_consumed value = 0 }
+	random_sibling = {
+		limit = { is_ai = yes }
+		set_global_variable = { name = xa_test_ai_found value = 1 }
+		add_character_flag = xa_enabled
+		xar_add_contract_progress_effect = { ID = 5 }
+		xar_consume_import_effect = yes
+		remove_character_flag = xa_enabled
+	}
+	if = {
+		limit = {
+			global_var:xa_test_ai_found = 1
+			global_var:xa_contract_progress = 0
+			global_var:xa_import_ready = 1
+			global_var:xa_import_consumed = 0
+		}
+		debug_log = "XAR: TEST PASS ai_runtime_guard"
+	}
+	else = { debug_log = "XAR: TEST FAIL ai_runtime_guard" }
+	remove_global_variable = xa_test_ai_found
+	set_global_variable = { name = xa_contract_id value = 0 }
+	set_global_variable = { name = xa_import_ready value = 0 }
+	set_global_variable = { name = xa_import_consumed value = 1 }
 
 	# ---------- T3: shop buy simulation (charge + integer inflation) ----------
 	set_global_variable = { name = xa_local_points value = 250 }
@@ -136,6 +181,24 @@ xar_selftest_effect = {
 	}
 	else = { debug_log = "XAR: TEST FAIL shop_ceiling_fraction" }
 	remove_global_variable = xa_test_fractional_price
+	set_global_variable = { name = xa_local_points value = 166600 }
+	xar_buy_faith_reformation_shop_item_effect = yes
+	xar_buy_grand_tribute_shop_item_effect = yes
+	xar_buy_borrowed_generation_shop_item_effect = yes
+	xar_buy_sixfold_apotheosis_shop_item_effect = yes
+	if = {
+		limit = {
+			global_var:xa_local_points = 5467
+			global_var:xa_lifespan_bought = 25
+			has_global_variable = xa_bought_reformation
+			has_character_modifier = xar_free_faith_reformation
+			has_character_flag = xa_bought_grand_tribute
+			has_character_flag = xa_bought_borrowed_generation
+			has_character_flag = xa_bought_sixfold_apotheosis
+		}
+		debug_log = "XAR: TEST PASS shop_high_tier_bundle"
+	}
+	else = { debug_log = "XAR: TEST FAIL shop_high_tier_bundle" }
 
 	# Production ledger projection must remain a read-only, internally coherent snapshot.
 	set_global_variable = {

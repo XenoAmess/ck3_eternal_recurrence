@@ -264,6 +264,9 @@ def mechanic_checks(errors):
         "xa_price_pro": "25", "xa_price_gold": "25", "xa_price_pres": "15",
         "xa_price_pie": "15", "xa_price_inf": "15", "xa_price_dyn": "100",
         "xa_price_life": "100", "xa_price_reform": "1133",
+        "xa_price_grand_tribute": "10000",
+        "xa_price_borrowed_generation": "50000",
+        "xa_price_sixfold_apotheosis": "100000",
         "xa_lifespan_bought": "0", "xa_bless_count": "0",
         "xa_bless_session": "0", "xa_bless_reject_count": "0",
         "xa_selected_bless_rarity": "0", "xa_score_baseline": "0",
@@ -342,6 +345,45 @@ def mechanic_checks(errors):
         errors.append("shop event contains copied price inflation instead of production effect calls")
     if shop.count("name = xa_test_ui_dip_applied value = 1") != 1:
         errors.append("production diplomacy option lost its outer selftest marker")
+
+    fixed_purchases = {
+        "xar_buy_faith_reformation_shop_item_effect": (
+            "xa_price_reform", "set_global_variable = xa_bought_reformation",
+            ("modifier = xar_free_faith_reformation",)),
+        "xar_buy_grand_tribute_shop_item_effect": (
+            "xa_price_grand_tribute", "add_character_flag = xa_bought_grand_tribute",
+            ("add_prestige = 1500", "add_piety = 1500",
+             "change_influence = 1500", "add_dynasty_prestige = 1500")),
+        "xar_buy_borrowed_generation_shop_item_effect": (
+            "xa_price_borrowed_generation",
+            "add_character_flag = xa_bought_borrowed_generation",
+            ("xar_buy_lifespan_effect = yes",)),
+        "xar_buy_sixfold_apotheosis_shop_item_effect": (
+            "xa_price_sixfold_apotheosis",
+            "add_character_flag = xa_bought_sixfold_apotheosis",
+            ("add_diplomacy_skill = 30", "add_martial_skill = 30",
+             "add_stewardship_skill = 30", "add_intrigue_skill = 30",
+             "add_learning_skill = 30", "add_prowess_skill = 30")),
+    }
+    for effect, (price, ownership, rewards) in fixed_purchases.items():
+        call = f"{effect} = yes"
+        block = extract_block(production_effects, effect) or ""
+        charge = f"name = xa_local_points add = {{ value = global_var:{price} multiply = -1 }}"
+        if shop.count(call) != 1 or selftest.count(call) != 1:
+            errors.append(f"shop and selftest must each call fixed purchase '{effect}' once")
+        if charge not in block or ownership not in block or any(
+                reward not in block for reward in rewards):
+            errors.append(f"fixed purchase '{effect}' lost charge, ownership, or reward")
+        if "multiply = 1.2" in block or "selftest" in block or "_test_" in block:
+            errors.append(f"fixed purchase '{effect}' contains inflation or test-only behavior")
+    borrowed = extract_block(
+        production_effects, "xar_buy_borrowed_generation_shop_item_effect") or ""
+    if borrowed.count("xar_buy_lifespan_effect = yes") != 25:
+        errors.append("Borrowed Generation must fill exactly 25 lifespan stacks")
+    if "global_var:xa_lifespan_bought < 25" not in shop:
+        errors.append("Borrowed Generation shop option lacks its 25-stack guard")
+    if "XAR: TEST PASS shop_high_tier_bundle" not in selftest:
+        errors.append("selftest lacks the full high-tier shop bundle assertion")
 
     blessing_init = extract_block(
         production_effects, "xar_initialize_blessing_session_effect") or ""

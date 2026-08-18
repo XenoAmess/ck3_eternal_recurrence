@@ -91,6 +91,9 @@ xar.0001 = {
 		save_scope_value_as = { name = xar_pr_dyn value = global_var:xa_price_dyn }
 		save_scope_value_as = { name = xar_pr_life value = global_var:xa_price_life }
 		save_scope_value_as = { name = xar_pr_reform value = global_var:xa_price_reform }
+		save_scope_value_as = { name = xar_pr_grand_tribute value = global_var:xa_price_grand_tribute }
+		save_scope_value_as = { name = xar_pr_borrowed_generation value = global_var:xa_price_borrowed_generation }
+		save_scope_value_as = { name = xar_pr_sixfold_apotheosis value = global_var:xa_price_sixfold_apotheosis }
 	}
 
 	# ---------- page 1: attributes ----------
@@ -248,13 +251,39 @@ xar.0001 = {
 			global_var:xa_local_points >= global_var:xa_price_reform
 			NOT = { has_global_variable = xa_bought_reformation }
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_reform multiply = -1 } }
-		add_character_modifier = {
-			modifier = xar_free_faith_reformation
-			years = 100
-		}
-		set_global_variable = xa_bought_reformation
+		xar_buy_faith_reformation_shop_item_effect = yes
 		custom_tooltip = xar.0001.reform_hint
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.grand_tribute
+		trigger = {
+			global_var:xa_shop_page = 3
+			global_var:xa_local_points >= global_var:xa_price_grand_tribute
+			NOT = { has_character_flag = xa_bought_grand_tribute }
+		}
+		xar_buy_grand_tribute_shop_item_effect = yes
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.borrowed_generation
+		trigger = {
+			global_var:xa_shop_page = 3
+			global_var:xa_local_points >= global_var:xa_price_borrowed_generation
+			global_var:xa_lifespan_bought < 25
+			NOT = { has_character_flag = xa_bought_borrowed_generation }
+		}
+		xar_buy_borrowed_generation_shop_item_effect = yes
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.sixfold_apotheosis
+		trigger = {
+			global_var:xa_shop_page = 3
+			global_var:xa_local_points >= global_var:xa_price_sixfold_apotheosis
+			NOT = { has_character_flag = xa_bought_sixfold_apotheosis }
+		}
+		xar_buy_sixfold_apotheosis_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 

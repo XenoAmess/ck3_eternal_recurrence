@@ -90,6 +90,9 @@ xar_initialize_run_state_effect = {
 	set_global_variable = { name = xa_price_dyn value = 100 }
 	set_global_variable = { name = xa_price_life value = 100 }
 	set_global_variable = { name = xa_price_reform value = 1133 }
+	set_global_variable = { name = xa_price_grand_tribute value = 10000 }
+	set_global_variable = { name = xa_price_borrowed_generation value = 50000 }
+	set_global_variable = { name = xa_price_sixfold_apotheosis value = 100000 }
 	set_global_variable = { name = xa_lifespan_bought value = 0 }
 	set_global_variable = { name = xa_bless_count value = 0 }
 	set_global_variable = { name = xa_bless_session value = 0 }
@@ -220,6 +223,69 @@ xar_buy_lifespan_shop_item_effect = {
 		name = xa_price_life
 		value = { value = global_var:xa_price_life multiply = 1.2 ceiling = yes }
 	}
+}
+
+xar_buy_faith_reformation_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_reform multiply = -1 } }
+	add_character_modifier = {
+		modifier = xar_free_faith_reformation
+		years = 100
+	}
+	set_global_variable = xa_bought_reformation
+	debug_log = "XAR: faith reformation purchased"
+}
+
+xar_buy_grand_tribute_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_grand_tribute multiply = -1 } }
+	add_prestige = 1500
+	add_piety = 1500
+	change_influence = 1500
+	dynasty ?= { add_dynasty_prestige = 1500 }
+	add_character_flag = xa_bought_grand_tribute
+}
+
+xar_buy_borrowed_generation_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_borrowed_generation multiply = -1 } }
+	hidden_effect = {
+		# Fill the existing distinct-modifier series to 25 without duplicating it.
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+		if = { limit = { global_var:xa_lifespan_bought < 25 } xar_buy_lifespan_effect = yes }
+	}
+	add_character_flag = xa_bought_borrowed_generation
+}
+
+xar_buy_sixfold_apotheosis_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_sixfold_apotheosis multiply = -1 } }
+	add_diplomacy_skill = 30
+	add_martial_skill = 30
+	add_stewardship_skill = 30
+	add_intrigue_skill = 30
+	add_learning_skill = 30
+	add_prowess_skill = 30
+	add_character_flag = xa_bought_sixfold_apotheosis
 }
 
 xar_initialize_blessing_session_effect = {

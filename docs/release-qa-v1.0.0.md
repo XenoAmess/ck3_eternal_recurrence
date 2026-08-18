@@ -5,15 +5,16 @@
 - Static generated parity, BOM/localization structure, player-only guards, assets and release allowlist: required GREEN.
 - Python scoring reference vectors: required GREEN.
 - Deterministic double release build: required GREEN.
-- CK3 selftest, first-life, recorded-life and disabled-rule scenarios: required GREEN with zero `xar` error lines.
+- CK3 selftest, first-life, recorded-life, high-budget and disabled-rule scenarios: required GREEN with zero `xar` error lines.
 
 Latest local candidate evidence (2026-08-18):
 
 | Scenario | Run ID | Result |
 |---|---|---|
-| 41-assertion selftest + uncapped inheritance + contract PB persistence | `xar_accept__sbiha6t` | GREEN, 0 `xar` errors |
+| 46-assertion selftest + high-tier bundle + AI guard + observer HUD | `xar_accept_ra69e_sz` | GREEN, 0 `xar` errors |
 | First life / zero record | `xar_accept_tw20hu2u` | GREEN, 0 `xar` errors |
 | Recorded life / 100 tier, default Growth + 100% | `xar_accept_5j1hqj8z` | GREEN, 0 `xar` errors |
+| High budget / 1200 tier / 1133 reformation purchase | `xar_accept_iqz9ocec` | GREEN, 0 `xar` errors |
 | Rule disabled | `xar_accept_qlbea8ug` | GREEN, 0 `xar` errors |
 
 ## Manual Language Sign-off

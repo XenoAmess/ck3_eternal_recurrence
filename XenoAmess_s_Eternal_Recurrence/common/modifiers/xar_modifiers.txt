@@ -5,8 +5,8 @@ xar_free_faith_reformation = {
 	faith_creation_piety_cost_mult = -1
 }
 
-# +1 year of life expectancy per stack. Same-modifier reapplication does not
-# stack in CK3, so each purchase applies the next modifier in the series.
+# +1 Health per borrowed-lifespan stack. Health changes mortality odds rather
+# than guaranteeing a fixed number of years. Distinct names make stacks combine.
 xar_lifespan_01 = { health = 1 }
 xar_lifespan_02 = { health = 1 }
 xar_lifespan_03 = { health = 1 }

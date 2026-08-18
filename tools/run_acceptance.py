@@ -74,11 +74,10 @@ REQUIRED_PASSES = {
     "ui_shop_purchase", "ui_shop_finish", "bless_count", "record_write",
     "contract_select", "contract_progress",
     "inherit_0", "inherit_25", "inherit_50", "inherit_100_uncapped",
+    "inherit_5000", "inherit_50000", "inherit_166600", "shop_high_tier_bundle",
     "default_growth_track", "growth_contract_points", "growth_baseline_zero",
-    "growth_score_delta",
+    "growth_score_delta", "ai_runtime_guard",
 }
-
-CLICK_SETTLE_OK = (1130, 1041)      # 结算事件确认选项「很好。这笔账，已记入永恒。」
 
 # 区域均为相对屏幕比例；OCR 只扫目标区域，比全屏 OCR 快且不受分辨率影响。
 MAIN_MENU_REGION = (0.18, 0.28, 0.30, 0.50)
@@ -90,6 +89,7 @@ EVENT_TITLE_REGION = (0.20, 0.17, 0.50, 0.29)
 EVENT_TEXT_REGION = (0.18, 0.16, 0.62, 0.58)
 EVENT_OPTIONS_FULL_REGION = (0.18, 0.43, 0.62, 0.95)
 CHARACTER_PANEL_REGION = (0.00, 0.05, 0.48, 0.72)
+OBSERVER_REGION = (0.00, 0.75, 0.35, 1.00)
 FULL_SCREEN_REGION = (0.00, 0.00, 1.00, 1.00)
 
 BOOT_TIMEOUT_S = 120             # OCR 一发现主菜单即继续，不固定睡 100 秒
@@ -555,6 +555,49 @@ def run_production_smoke(scenario, import_record, debug_offset, artifacts):
         click_until_ocr_appears(
             begin, "first-life begin", "琉焰的垂青", EVENT_TITLE_REGION,
             artifacts, "07_bless_window.png")
+    elif scenario == "on-high-budget":
+        click_until_ocr_appears(
+            pact_accept, "production pact accept", "轮回当铺", EVENT_TITLE_REGION,
+            artifacts, "06_recorded_shop.png", attempts=1, timeout_s=20,
+            unpause=False)
+        offset = wait_for_marker(offset, "XAR: shop event fired", 10, xar_lines)
+        wait_for_ocr_text(
+            "1200", EVENT_TEXT_REGION, 15, artifacts,
+            "06_high_budget_1200.png", contains=True, stable_hits=1)
+        next_page = wait_for_ocr_text(
+            "下一页", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "06_high_budget_next_1.png", contains=True, stable_hits=1)
+        deliberate_click(next_page, "high-budget shop page 2")
+        wait_for_ocr_text(
+            "金币", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "06_high_budget_page_2.png", contains=True, stable_hits=1)
+        next_page = wait_for_ocr_text(
+            "下一页", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "06_high_budget_next_2.png", contains=True, stable_hits=1)
+        deliberate_click(next_page, "high-budget shop page 3")
+        reform = wait_for_ocr_text(
+            "免费的宗教改革", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "06_high_budget_reform.png", contains=True, stable_hits=1)
+        offset = click_until_marker(
+            reform, "faith reformation purchase", "XAR: faith reformation purchased",
+            offset, xar_lines)
+        wait_for_ocr_text(
+            "67", EVENT_TEXT_REGION, 15, artifacts,
+            "06_high_budget_67_remaining.png", contains=True, stable_hits=1)
+        focus_ck3()
+        post_purchase = ImageGrab.grab()
+        if find_ocr_text(
+                post_purchase, "免费的宗教改革",
+                EVENT_OPTIONS_FULL_REGION, contains=True):
+            post_purchase.save(artifacts / "06_high_budget_reform_still_visible.png")
+            raise RunnerError("one-time faith reformation remained purchasable")
+        post_purchase.save(artifacts / "06_high_budget_reform_consumed.png")
+        shop_finish = wait_for_ocr_text(
+            "开始此生", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "06_high_budget_finish.png", contains=True, stable_hits=1)
+        click_until_ocr_appears(
+            shop_finish, "production shop finish", "琉焰的垂青", EVENT_TITLE_REGION,
+            artifacts, "07_bless_window.png")
     else:
         click_until_ocr_appears(
             pact_accept, "production pact accept", "轮回当铺", EVENT_TITLE_REGION,
@@ -730,11 +773,15 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
 
     focus_ck3()
     ImageGrab.grab().save(artifacts / "04_end_state.png")
-    click_ratio(CLICK_SETTLE_OK[0] / 2560, CLICK_SETTLE_OK[1] / 1440)
-    time.sleep(2)
+    settlement = wait_for_ocr_text(
+        "很好", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "04_settlement_option.png", contains=True, stable_hits=1)
+    click_until_ocr_appears(
+        settlement, "settlement confirmation", "正在观察", OBSERVER_REGION,
+        artifacts, "05_observer_mode.png", attempts=2, timeout_s=15)
     focus_ck3()
     ImageGrab.grab().save(artifacts / "05_after_confirm.png")
-    log("clicked settlement confirm, saved 05_after_confirm.png")
+    log("settlement confirmed; observer mode proven by vanilla HUD")
 
     persist_ok = False
     contract_persist_ok = False
@@ -859,6 +906,7 @@ def main(scenario="selftest", import_record=0):
         "selftest": import_record,
         "on-first-life": 0,
         "on-recorded": 100,
+        "on-high-budget": 1200,
         "off": 0,
     }[scenario]
     rule_setting = "xar_selftest" if scenario == "selftest" else (
@@ -1016,7 +1064,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run CK3 automated acceptance")
     parser.add_argument(
         "--scenario",
-        choices=("selftest", "on-first-life", "on-recorded", "off"),
+        choices=("selftest", "on-first-life", "on-recorded", "on-high-budget", "off"),
         default="selftest",
         help="acceptance scenario (default: selftest)")
     parser.add_argument(

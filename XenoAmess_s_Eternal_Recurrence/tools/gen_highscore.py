@@ -264,7 +264,7 @@ def gen_effects() -> str:
 
     # Lifespan purchase: applies the next modifier in the series (same-modifier
     # reapplication does not stack, so there are 50 distinct modifiers).
-    lines.append("# Lifespan purchase: +1 year expectancy per buy, 50 buys max.")
+    lines.append("# Lifespan purchase: +1 Health per stack, 50 stacks max.")
     lines.append("xar_buy_lifespan_effect = {")
     lines.append("\tchange_global_variable = {")
     lines.append("\t\tname = xa_lifespan_bought")

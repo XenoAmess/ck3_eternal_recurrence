@@ -11925,7 +11925,7 @@ xar_prepare_ledger_effect = {
 	}
 }
 
-# Lifespan purchase: +1 year expectancy per buy, 50 buys max.
+# Lifespan purchase: +1 Health per stack, 50 stacks max.
 xar_buy_lifespan_effect = {
 	change_global_variable = {
 		name = xa_lifespan_bought

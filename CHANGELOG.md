@@ -10,6 +10,7 @@
 - Ten Glassfire Gaze milestones alternating favor rerolls and curse seals.
 - Stable pool wire IDs, visible rarity/build labels, applicability filters, and state/contract weighting.
 - Glassfire Ledger, first-life guidance, deterministic release staging, static CI, and production smoke scenarios.
+- High-tier shop sinks: Grand Tribute (10,000), Borrowed Generation (50,000), and Sixfold Apotheosis (100,000).
 
 ### Changed
 
@@ -18,6 +19,7 @@
 - Shop prices use consistent integer rounding; inherited budgets preserve the selected ratio without a separate spending cap.
 - Growth scoring and ledger gaps use CK3's `min = 0` lower-bound semantics instead of incorrectly clamping positive values with `max = 0`.
 - Scoring implementation, preview, reference model, and documentation share one schema.
+- Lifespan purchases now describe their actual +1 Health stacks instead of promising a fixed number of years.
 
 ### Requirements
 
