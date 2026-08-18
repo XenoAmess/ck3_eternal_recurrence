@@ -41,7 +41,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 冷启动通常约 2 分钟，`RESULT: GREEN/RED` + 退出码。判定依据：
 
 1. `tools/validate_static.py` 通过：五套生成器逐文件 parity、全部运行文件 UTF-8 BOM、9 语言 loc 引用与首世/账簿格式 token parity、自动发现的全部 XAR event/decision AI 闸门、挑战继承/成长基线、契约 hook/PB/图鉴/里程碑、生产/selftest 共用入口、12 个购买 effect、无继承人 fallback、奖池过滤/权重/稳定 ID、descriptor 与发布资源；其中 `tools/validate_loc.py` 负责动态 wrapper、custom-loc 和 modifier 名。
-2. debug.log 的 54 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
+2. debug.log 的 56 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
    由游戏规则第三档 `xar_selftest` 触发，检查器 xar.0007 嵌套在结算事件 xar.1001 里跑）
 3. OCR 真实接受契约、购买外交、结束商店，再依次真实点击重抽、拒绝、祝福、封印、第二次祝福和最终咒痕；验证动态文本无 raw/fallback，并断言 token 消耗、拒绝基线、封印免除效果及封印后的正常咒痕。
 4. 从原生右栏进入决议面板，真实执行【琉焰账簿】并关闭，断言快照生成和五个临时 global 清理；随后真实执行【选择本世契约】并选择【征服者】，断言生产 effect 写入契约。
@@ -63,7 +63,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 契约事件与纯脚本 selftest 都调用 `xar_enable_player_pact_effect`、`xar_initialize_run_state_effect`；外交生产 option 与 `25→30`/扣款脚本样例都调用 `xar_buy_diplomacy_shop_item_effect`。静态校验禁止两处重新内联对应实现。
 - 12 个可重复购买商品和宗教改革/三种高价批量商品各自调用具名生产 effect；166600 点自测完整购买 1133+10000+50000+100000 后必须余 5467，借命补至 25 层。商店结束调用 `xar_finish_shop_effect` 完成余分兑换、清零及垂青会初始化。
 - 原生 trait track 的 100 XP/10 级、每对 +1 XP、满级状态及 hover 当前分数的实际像素渲染；hover 公式还与死亡结算值作脚本断言。
-- 生产里程碑 effect 在 10 XP 发放 1 次重抽、20 XP 发放 1 枚封印；selftest UI 真实消耗二者，并验证拒绝未发祝福、封印未施加首个咒痕、下一次正常接受施加了咒痕。
+- 生产里程碑 effect 在 10/20 XP 发放早期单枚代币，30-100 XP 逐步升级为重抽/封印组合，并同步增加原生属性；selftest 精确断言 30 XP 奖励和 40-100 XP 累计奖励。UI 真实消耗重抽与封印，并验证拒绝未发祝福、封印未施加首个咒痕、下一次正常接受施加了咒痕。
 - 传说祝福只抽到稀有/传说诅咒、拒绝每次 -1% 最终分、request/ready/consumed 零值导入、同阈值不破纪录、跨阈值破纪录、cap 量化、死亡结算、纪录写入和教程落盘。
 - 0/25/50/100% 继承的生产 effect；1200、5000、50000、166600 四档均实机脚本断言无额外预算封顶，1200 生产 UI 场景覆盖 1133 分宗教改革。AI 兄弟 scope 还会实际调用契约进度和导入消费 effect，确认 `is_ai = no` 在运行期阻断。
 - 奖池 200 个 effect body 的运行期语法/引用 smoke test

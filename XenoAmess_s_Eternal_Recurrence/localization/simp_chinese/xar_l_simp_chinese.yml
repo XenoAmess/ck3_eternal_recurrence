@@ -45,7 +45,7 @@
  trait_xar_glassfire_gaze_desc:0 "该角色被那琉璃色的火焰凝视着，凝视着……直到终末。"
  trait_xar_glassfire_gaze_character_desc:0 "该角色被那琉璃色的火焰凝视着，凝视着……直到终末。\n\n当前分量：#V [SCOPE.ScriptValue('xar_current_score_value')|1]#!（仅预览，不更新结算）"
  trait_track_xar_glassfire_gaze:0 "琉焰余烬"
- trait_track_xar_glassfire_gaze_desc:0 "每完成一对祝福与诅咒获得 1 经验。每 10 经验提升一级，并额外增加 10% 压力获取。"
+ trait_track_xar_glassfire_gaze_desc:0 "每完成一对垂青与咒痕获得 1 经验。每 10 经验提升一级：额外增加 10% 压力获取，同时解锁原生属性成长、重抽与封印。"
 
  # 抉择事件（开局）
  xar.0002.title:0 "终末之契"

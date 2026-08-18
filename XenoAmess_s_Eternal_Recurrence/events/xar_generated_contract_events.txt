@@ -220,7 +220,7 @@ xar.2201 = {
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.gaze.milestone.title
-	desc = xar.gaze.milestone.reroll
+	desc = xar.gaze.milestone.10
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 10 } }
 	option = { name = xar.gaze.milestone.ok }
 }
@@ -231,7 +231,7 @@ xar.2202 = {
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.gaze.milestone.title
-	desc = xar.gaze.milestone.seal
+	desc = xar.gaze.milestone.20
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 20 } }
 	option = { name = xar.gaze.milestone.ok }
 }
@@ -242,7 +242,7 @@ xar.2203 = {
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.gaze.milestone.title
-	desc = xar.gaze.milestone.reroll
+	desc = xar.gaze.milestone.30
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 30 } }
 	option = { name = xar.gaze.milestone.ok }
 }
@@ -253,7 +253,7 @@ xar.2204 = {
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.gaze.milestone.title
-	desc = xar.gaze.milestone.seal
+	desc = xar.gaze.milestone.40
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 40 } }
 	option = { name = xar.gaze.milestone.ok }
 }
@@ -264,7 +264,7 @@ xar.2205 = {
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.gaze.milestone.title
-	desc = xar.gaze.milestone.reroll
+	desc = xar.gaze.milestone.50
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 50 } }
 	option = { name = xar.gaze.milestone.ok }
 }
@@ -275,7 +275,7 @@ xar.2206 = {
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.gaze.milestone.title
-	desc = xar.gaze.milestone.seal
+	desc = xar.gaze.milestone.60
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 60 } }
 	option = { name = xar.gaze.milestone.ok }
 }
@@ -286,7 +286,7 @@ xar.2207 = {
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.gaze.milestone.title
-	desc = xar.gaze.milestone.reroll
+	desc = xar.gaze.milestone.70
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 70 } }
 	option = { name = xar.gaze.milestone.ok }
 }
@@ -297,7 +297,7 @@ xar.2208 = {
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.gaze.milestone.title
-	desc = xar.gaze.milestone.seal
+	desc = xar.gaze.milestone.80
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 80 } }
 	option = { name = xar.gaze.milestone.ok }
 }
@@ -308,7 +308,7 @@ xar.2209 = {
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.gaze.milestone.title
-	desc = xar.gaze.milestone.reroll
+	desc = xar.gaze.milestone.90
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 90 } }
 	option = { name = xar.gaze.milestone.ok }
 }
@@ -319,7 +319,7 @@ xar.2210 = {
 	theme = mental_health
 	override_background = { reference = xar_glassfire }
 	title = xar.gaze.milestone.title
-	desc = xar.gaze.milestone.seal
+	desc = xar.gaze.milestone.100
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 100 } }
 	option = { name = xar.gaze.milestone.ok }
 }

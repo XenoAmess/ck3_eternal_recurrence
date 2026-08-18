@@ -7,7 +7,7 @@
 - One-ruler CK3 Roguelite / New Game+ loop with exact death settlement and cross-save Ember Tiers.
 - Absolute and lifetime-growth challenge tracks with uncapped 0%, 25%, 50%, or 100% inheritance; Growth + 100% is the recommended default.
 - Six lifetime contract archetypes, behavior scoring, persistent per-contract PBs, grades, and collection progress.
-- Ten Glassfire Gaze milestones alternating favor rerolls and curse seals.
+- Ten Glassfire Gaze milestones with native attribute growth and increasingly rich reroll/seal rewards.
 - Stable pool wire IDs, visible rarity/build labels, applicability filters, and state/contract weighting.
 - Glassfire Ledger, first-life guidance, deterministic release staging, static CI, and production smoke scenarios.
 - High-tier shop sinks: Grand Tribute (10,000), Borrowed Generation (50,000), and Sixfold Apotheosis (100,000).

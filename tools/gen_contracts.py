@@ -3,7 +3,7 @@
 
 from pathlib import Path
 
-from contracts_data import CONTRACTS, MILESTONES
+from contracts_data import CONTRACTS, GAZE_MILESTONES, MILESTONES
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -45,9 +45,9 @@ def generated_events():
                 f"\toption = {{ name = xar.contract.milestone.{milestone}.ok }}",
                 "}", "",
             ])
-    for level in range(10, 101, 10):
-        event_id = 2200 + level // 10
-        token = "reroll" if (level // 10) % 2 else "seal"
+    for index, milestone in enumerate(GAZE_MILESTONES, 1):
+        level = milestone["xp"]
+        event_id = 2200 + index
         lines.extend([
             f"xar.{event_id} = {{",
             "\ttype = character_event",
@@ -55,7 +55,7 @@ def generated_events():
             "\ttheme = mental_health",
             "\toverride_background = { reference = xar_glassfire }",
             "\ttitle = xar.gaze.milestone.title",
-            f"\tdesc = xar.gaze.milestone.{token}",
+            f"\tdesc = xar.gaze.milestone.{level}",
             f"\timmediate = {{ save_scope_value_as = {{ name = xar_gaze_level value = {level} }} }}",
             "\toption = { name = xar.gaze.milestone.ok }",
             "}", "",
@@ -125,21 +125,46 @@ def generated_effects():
             lines.append("\t\t\t}")
         lines.append("\t\t}")
     lines.extend(["\t}", "}", "", "xar_complete_bargain_pair_effect = {",
-                  "\tadd_trait_xp = { trait = xar_glassfire_gaze value = 1 }"])
-    for level in range(10, 101, 10):
-        event_id = 2200 + level // 10
-        token = "reroll" if (level // 10) % 2 else "seal"
-        lines.extend(["\tif = {", "\t\tlimit = {",
-                      f"\t\t\thas_trait_xp = {{ trait = xar_glassfire_gaze value >= {level} }}",
-                      f"\t\t\tNOT = {{ has_character_flag = xa_gaze_milestone_{level} }}", "\t\t}",
-                      f"\t\tadd_character_flag = xa_gaze_milestone_{level}",
-                      f"\t\tchange_global_variable = {{ name = xa_{token}_tokens add = 1 }}",
-                      "\t\t# XAR_ACCEPTANCE_ONLY_BEGIN",
-                      "\t\tif = {", "\t\t\tlimit = { NOT = { has_game_rule = xar_selftest } }",
-                      f"\t\t\ttrigger_event = xar.{event_id}", "\t\t}",
-                      "\t\t# XAR_ACCEPTANCE_ONLY_END",
-                      f"\t\t# XAR_RELEASE_ONLY trigger_event = xar.{event_id}", "\t}"])
-    lines.extend(["}", ""])
+                  "\tif = {", "\t\tlimit = {", "\t\t\tis_ai = no",
+                  "\t\t\thas_character_flag = xa_enabled",
+                  "\t\t\thas_trait = xar_glassfire_gaze", "\t\t}",
+                  "\t\tadd_trait_xp = { trait = xar_glassfire_gaze value = 1 }"])
+    for index, milestone in enumerate(GAZE_MILESTONES, 1):
+        level = milestone["xp"]
+        event_id = 2200 + index
+        lines.extend(["\t\tif = {", "\t\t\tlimit = {",
+                      f"\t\t\t\thas_trait_xp = {{ trait = xar_glassfire_gaze value >= {level} }}",
+                      f"\t\t\t\tNOT = {{ has_character_flag = xa_gaze_milestone_{level} }}", "\t\t\t}",
+                      f"\t\t\tadd_character_flag = xa_gaze_milestone_{level}"])
+        if milestone["rerolls"]:
+            lines.append(f"\t\t\tchange_global_variable = {{ name = xa_reroll_tokens add = {milestone['rerolls']} }}")
+        if milestone["seals"]:
+            lines.append(f"\t\t\tchange_global_variable = {{ name = xa_seal_tokens add = {milestone['seals']} }}")
+        lines.extend(["\t\t\t# XAR_ACCEPTANCE_ONLY_BEGIN",
+                      "\t\t\tif = {", "\t\t\t\tlimit = { NOT = { has_game_rule = xar_selftest } }",
+                      f"\t\t\t\ttrigger_event = xar.{event_id}", "\t\t\t}",
+                      "\t\t\t# XAR_ACCEPTANCE_ONLY_END",
+                      f"\t\t\t# XAR_RELEASE_ONLY trigger_event = xar.{event_id}", "\t\t}"])
+    lines.extend(["\t}", "}", ""])
+    return "\n".join(lines)
+
+
+def generated_trait():
+    lines = [HEADER, "# Glassfire Lord's Eternal Recurrence traits",
+             "xar_glassfire_gaze = {", "\ticon = glassfire_trait.dds", "",
+             "\thealth = 0.05", "\tstress_gain_mult = 0.1", "",
+             "\t# Every completed pair grants 1 XP. Each level keeps the stress",
+             "\t# price while unlocking cumulative native growth rewards.", "\ttrack = {"]
+    for milestone in GAZE_MILESTONES:
+        lines.append(f"\t\t{milestone['xp']} = {{")
+        lines.append("\t\t\tstress_gain_mult = 0.1")
+        for modifier, value in milestone["modifiers"]:
+            lines.append(f"\t\t\t{modifier} = {value}")
+        lines.append("\t\t}")
+    lines.extend(["\t}", "", "\tdesc = {", "\t\tfirst_valid = {",
+                  "\t\t\ttriggered_desc = {", "\t\t\t\ttrigger = { NOT = { exists = this } }",
+                  "\t\t\t\tdesc = trait_xar_glassfire_gaze_desc", "\t\t\t}",
+                  "\t\t\tdesc = trait_xar_glassfire_gaze_character_desc", "\t\t}", "\t}", "}", ""])
     return "\n".join(lines)
 
 
@@ -215,8 +240,6 @@ def loc_lines(lang):
         f' xar.contract.milestone.6.ok:0 "{"墨迹正在变暖。" if zh else "The ink is growing warm."}"',
         f' xar.contract.milestone.10.ok:0 "{"这份典当，已经圆满。" if zh else "This pawn is complete."}"',
         f' xar.gaze.milestone.title:0 "{"琉焰之视·新痕" if zh else "Glassfire Gaze: A New Mark"}"',
-        f' xar.gaze.milestone.reroll:0 "{"垂青与咒痕积成了新的眼力。琉焰卿赠你一次重抽；并非免费，只是账期更长。" if zh else "Favors and curse-marks sharpen your sight. The Glassfire Lord grants one reroll; not free, merely billed later."}"',
-        f' xar.gaze.milestone.seal:0 "{"火痕闭合成一枚封印。你可免去一次强制咒痕，而代价仍会以更温柔的方式留下。" if zh else "The marks close into a seal. You may waive one mandatory curse; its price will linger more gently."}"',
         f' xar.gaze.milestone.ok:0 "{"我收下这份迟来的好意。" if zh else "I accept this belated kindness."}"',
         f' xar.0004.reroll:0 "{"消耗一次重抽，换一页垂青" if zh else "Spend one reroll for new favors"}"',
         f' xar.0005.seal:0 "{"消耗一枚封印，免去此道咒痕" if zh else "Spend one seal to waive this curse-mark"}"',
@@ -225,6 +248,9 @@ def loc_lines(lang):
         ' xar_contract_pb_0:0 "PB 0"', ' xar_contract_pb_3:0 "PB 3"',
         ' xar_contract_pb_6:0 "PB 6"', ' xar_contract_pb_10:0 "PB 10"',
     ])
+    for milestone in GAZE_MILESTONES:
+        desc = milestone["desc_zh"] if zh else milestone["desc_en"]
+        lines.append(f' xar.gaze.milestone.{milestone["xp"]}:0 "{desc}"')
     for contract in CONTRACTS:
         name = contract["name_zh"] if zh else contract["name_en"]
         goal = contract["goal_zh"] if zh else contract["goal_en"]
@@ -258,7 +284,11 @@ def generated_doc():
              "| ID | 契约 | 行为目标 |", "|---:|---|---|"]
     for contract in CONTRACTS:
         lines.append(f"| {contract['id']} | {contract['name_zh']} | {contract['goal_zh']} |")
-    lines.extend(["", "【琉焰之视】每 10 XP 交替解锁重抽与封印，共 10 个里程碑事件。", ""])
+    lines.extend(["", "【琉焰之视】每 10 XP 增加一层压力代价，同时解锁原生属性成长与交易代币。", "",
+                  "| XP | 原生成长 | 重抽 | 封印 |", "|---:|---|---:|---:|"])
+    for milestone in GAZE_MILESTONES:
+        lines.append(f"| {milestone['xp']} | {milestone['growth_zh']} | {milestone['rerolls']} | {milestone['seals']} |")
+    lines.append("")
     return "\n".join(lines)
 
 
@@ -271,6 +301,7 @@ def main():
     write_bom(MOD / "events/xar_generated_contract_events.txt", generated_events())
     write_bom(MOD / "common/decisions/xar_generated_contract_decisions.txt", generated_decision())
     write_bom(MOD / "common/scripted_effects/xar_generated_contract_effects.txt", generated_effects())
+    write_bom(MOD / "common/traits/xar_traits.txt", generated_trait())
     write_bom(MOD / "common/tutorial_lessons/xar_generated_contract_lessons.txt", generated_lessons())
     write_bom(MOD / "common/customizable_localization/xar_generated_contract_loc.txt", generated_custom_loc())
     for lang in LANGS:

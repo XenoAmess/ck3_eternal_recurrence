@@ -95,6 +95,7 @@ def generated_checks(errors):
         MOD / "events/xar_generated_contract_events.txt": gen_contracts.generated_events(),
         MOD / "common/decisions/xar_generated_contract_decisions.txt": gen_contracts.generated_decision(),
         MOD / "common/scripted_effects/xar_generated_contract_effects.txt": gen_contracts.generated_effects(),
+        MOD / "common/traits/xar_traits.txt": gen_contracts.generated_trait(),
         MOD / "common/tutorial_lessons/xar_generated_contract_lessons.txt": gen_contracts.generated_lessons(),
         MOD / "common/customizable_localization/xar_generated_contract_loc.txt": gen_contracts.generated_custom_loc(),
         ROOT / "docs/contracts-and-progression.md": gen_contracts.generated_doc(),
@@ -516,6 +517,18 @@ def mechanic_checks(errors):
         errors.append("contract generator must emit six archetype selectors")
     if contract_effects.count("has_trait_xp = { trait = xar_glassfire_gaze value >=") != 10:
         errors.append("Glassfire Gaze must emit ten milestone unlock checks")
+    pair_effect = extract_block(contract_effects, "xar_complete_bargain_pair_effect") or ""
+    if not all(token in pair_effect for token in (
+            "is_ai = no", "has_character_flag = xa_enabled",
+            "has_trait = xar_glassfire_gaze")):
+        errors.append("Glassfire pair completion lost its player/trait guard")
+    for milestone in gen_contracts.GAZE_MILESTONES:
+        for token, amount in (("reroll", milestone["rerolls"]),
+                              ("seal", milestone["seals"])):
+            expected = f"name = xa_{token}_tokens add = {amount}"
+            if amount and expected not in pair_effect:
+                errors.append(
+                    f"Glassfire {milestone['xp']} XP reward lacks {amount} {token} token(s)")
     contract_lessons = read(MOD / "common/tutorial_lessons/xar_generated_contract_lessons.txt")
     if contract_lessons.count("chain = reactive_advice") != 24:
         errors.append("contract persistence must contain 18 PB plus 6 collection lessons")
@@ -561,10 +574,17 @@ def mechanic_checks(errors):
             errors.append(f"contract behavior hook missing: {hook}")
 
     trait = read(MOD / "common/traits/xar_traits.txt")
+    trait_track = extract_block(trait, "track") or ""
     thresholds = [int(value) for value in re.findall(
-        r"(?m)^\s*(\d+)\s*=\s*{\s*stress_gain_mult\s*=\s*0\.1\s*}", trait)]
+        r"(?m)^\s*(\d+)\s*=\s*{", trait_track)]
     if thresholds != list(range(10, 101, 10)):
         errors.append(f"Glassfire trait track must be 10..100 by 10, got {thresholds}")
+    for milestone in gen_contracts.GAZE_MILESTONES:
+        block = extract_block(trait_track, str(milestone["xp"])) or ""
+        for modifier, value in milestone["modifiers"]:
+            if f"{modifier} = {value}" not in block:
+                errors.append(
+                    f"Glassfire {milestone['xp']} XP lacks growth reward {modifier}={value}")
 
     pools = read(MOD / "common/scripted_effects/xar_generated_pools_effects.txt")
     curse_draw = extract_block(pools, "xar_draw_curses_effect") or ""

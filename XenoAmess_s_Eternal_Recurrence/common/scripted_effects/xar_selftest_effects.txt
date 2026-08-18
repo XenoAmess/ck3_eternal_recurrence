@@ -343,24 +343,40 @@ xar_selftest_effect = {
 	}
 	else = { debug_log = "XAR: TEST FAIL trait_level_2" }
 	set_global_variable = { name = xa_seal_tokens value = 0 }
-	add_trait_xp = { trait = xar_glassfire_gaze value = 80 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 9 }
+	xar_complete_bargain_pair_effect = yes
+	if = {
+		limit = {
+			has_character_flag = xa_gaze_milestone_30
+			global_var:xa_reroll_tokens = 2
+			global_var:xa_seal_tokens = 0
+		}
+		debug_log = "XAR: TEST PASS trait_mid_rewards"
+	}
+	else = { debug_log = "XAR: TEST FAIL trait_mid_rewards" }
+	set_global_variable = { name = xa_reroll_tokens value = 0 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 69 }
+	xar_complete_bargain_pair_effect = yes
+	if = {
+		limit = {
+			has_character_flag = xa_gaze_milestone_40
+			has_character_flag = xa_gaze_milestone_50
+			has_character_flag = xa_gaze_milestone_60
+			has_character_flag = xa_gaze_milestone_70
+			has_character_flag = xa_gaze_milestone_80
+			has_character_flag = xa_gaze_milestone_90
+			has_character_flag = xa_gaze_milestone_100
+			global_var:xa_reroll_tokens = 14
+			global_var:xa_seal_tokens = 15
+		}
+		debug_log = "XAR: TEST PASS trait_late_rewards"
+	}
+	else = { debug_log = "XAR: TEST FAIL trait_late_rewards" }
 	if = {
 		limit = { has_trait_xp = { trait = xar_glassfire_gaze value >= 100 } }
 		debug_log = "XAR: TEST PASS trait_xp_cap"
 	}
 	else = { debug_log = "XAR: TEST FAIL trait_xp_cap" }
-	# The synthetic 1->10->100 jump bypasses production pair completions. Mark
-	# milestones consumed so the real UI curse below does not stack ten dialogs.
-	add_character_flag = xa_gaze_milestone_10
-	add_character_flag = xa_gaze_milestone_20
-	add_character_flag = xa_gaze_milestone_30
-	add_character_flag = xa_gaze_milestone_40
-	add_character_flag = xa_gaze_milestone_50
-	add_character_flag = xa_gaze_milestone_60
-	add_character_flag = xa_gaze_milestone_70
-	add_character_flag = xa_gaze_milestone_80
-	add_character_flag = xa_gaze_milestone_90
-	add_character_flag = xa_gaze_milestone_100
 
 	# ---------- T8: real pact -> shop -> blessing/curse UI chain ----------
 	# Production options emit assertions only while this flag is active. The

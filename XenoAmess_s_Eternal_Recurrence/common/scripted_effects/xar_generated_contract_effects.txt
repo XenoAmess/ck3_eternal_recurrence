@@ -320,155 +320,168 @@ xar_add_contract_progress_effect = {
 }
 
 xar_complete_bargain_pair_effect = {
-	add_trait_xp = { trait = xar_glassfire_gaze value = 1 }
 	if = {
 		limit = {
-			has_trait_xp = { trait = xar_glassfire_gaze value >= 10 }
-			NOT = { has_character_flag = xa_gaze_milestone_10 }
+			is_ai = no
+			has_character_flag = xa_enabled
+			has_trait = xar_glassfire_gaze
 		}
-		add_character_flag = xa_gaze_milestone_10
-		change_global_variable = { name = xa_reroll_tokens add = 1 }
-		# XAR_ACCEPTANCE_ONLY_BEGIN
+		add_trait_xp = { trait = xar_glassfire_gaze value = 1 }
 		if = {
-			limit = { NOT = { has_game_rule = xar_selftest } }
-			trigger_event = xar.2201
+			limit = {
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 10 }
+				NOT = { has_character_flag = xa_gaze_milestone_10 }
+			}
+			add_character_flag = xa_gaze_milestone_10
+			change_global_variable = { name = xa_reroll_tokens add = 1 }
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = { NOT = { has_game_rule = xar_selftest } }
+				trigger_event = xar.2201
+			}
+			# XAR_ACCEPTANCE_ONLY_END
+			# XAR_RELEASE_ONLY trigger_event = xar.2201
 		}
-		# XAR_ACCEPTANCE_ONLY_END
-		# XAR_RELEASE_ONLY trigger_event = xar.2201
-	}
-	if = {
-		limit = {
-			has_trait_xp = { trait = xar_glassfire_gaze value >= 20 }
-			NOT = { has_character_flag = xa_gaze_milestone_20 }
-		}
-		add_character_flag = xa_gaze_milestone_20
-		change_global_variable = { name = xa_seal_tokens add = 1 }
-		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
-			limit = { NOT = { has_game_rule = xar_selftest } }
-			trigger_event = xar.2202
+			limit = {
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 20 }
+				NOT = { has_character_flag = xa_gaze_milestone_20 }
+			}
+			add_character_flag = xa_gaze_milestone_20
+			change_global_variable = { name = xa_seal_tokens add = 1 }
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = { NOT = { has_game_rule = xar_selftest } }
+				trigger_event = xar.2202
+			}
+			# XAR_ACCEPTANCE_ONLY_END
+			# XAR_RELEASE_ONLY trigger_event = xar.2202
 		}
-		# XAR_ACCEPTANCE_ONLY_END
-		# XAR_RELEASE_ONLY trigger_event = xar.2202
-	}
-	if = {
-		limit = {
-			has_trait_xp = { trait = xar_glassfire_gaze value >= 30 }
-			NOT = { has_character_flag = xa_gaze_milestone_30 }
-		}
-		add_character_flag = xa_gaze_milestone_30
-		change_global_variable = { name = xa_reroll_tokens add = 1 }
-		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
-			limit = { NOT = { has_game_rule = xar_selftest } }
-			trigger_event = xar.2203
+			limit = {
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 30 }
+				NOT = { has_character_flag = xa_gaze_milestone_30 }
+			}
+			add_character_flag = xa_gaze_milestone_30
+			change_global_variable = { name = xa_reroll_tokens add = 2 }
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = { NOT = { has_game_rule = xar_selftest } }
+				trigger_event = xar.2203
+			}
+			# XAR_ACCEPTANCE_ONLY_END
+			# XAR_RELEASE_ONLY trigger_event = xar.2203
 		}
-		# XAR_ACCEPTANCE_ONLY_END
-		# XAR_RELEASE_ONLY trigger_event = xar.2203
-	}
-	if = {
-		limit = {
-			has_trait_xp = { trait = xar_glassfire_gaze value >= 40 }
-			NOT = { has_character_flag = xa_gaze_milestone_40 }
-		}
-		add_character_flag = xa_gaze_milestone_40
-		change_global_variable = { name = xa_seal_tokens add = 1 }
-		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
-			limit = { NOT = { has_game_rule = xar_selftest } }
-			trigger_event = xar.2204
+			limit = {
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 40 }
+				NOT = { has_character_flag = xa_gaze_milestone_40 }
+			}
+			add_character_flag = xa_gaze_milestone_40
+			change_global_variable = { name = xa_seal_tokens add = 2 }
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = { NOT = { has_game_rule = xar_selftest } }
+				trigger_event = xar.2204
+			}
+			# XAR_ACCEPTANCE_ONLY_END
+			# XAR_RELEASE_ONLY trigger_event = xar.2204
 		}
-		# XAR_ACCEPTANCE_ONLY_END
-		# XAR_RELEASE_ONLY trigger_event = xar.2204
-	}
-	if = {
-		limit = {
-			has_trait_xp = { trait = xar_glassfire_gaze value >= 50 }
-			NOT = { has_character_flag = xa_gaze_milestone_50 }
-		}
-		add_character_flag = xa_gaze_milestone_50
-		change_global_variable = { name = xa_reroll_tokens add = 1 }
-		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
-			limit = { NOT = { has_game_rule = xar_selftest } }
-			trigger_event = xar.2205
+			limit = {
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 50 }
+				NOT = { has_character_flag = xa_gaze_milestone_50 }
+			}
+			add_character_flag = xa_gaze_milestone_50
+			change_global_variable = { name = xa_reroll_tokens add = 2 }
+			change_global_variable = { name = xa_seal_tokens add = 1 }
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = { NOT = { has_game_rule = xar_selftest } }
+				trigger_event = xar.2205
+			}
+			# XAR_ACCEPTANCE_ONLY_END
+			# XAR_RELEASE_ONLY trigger_event = xar.2205
 		}
-		# XAR_ACCEPTANCE_ONLY_END
-		# XAR_RELEASE_ONLY trigger_event = xar.2205
-	}
-	if = {
-		limit = {
-			has_trait_xp = { trait = xar_glassfire_gaze value >= 60 }
-			NOT = { has_character_flag = xa_gaze_milestone_60 }
-		}
-		add_character_flag = xa_gaze_milestone_60
-		change_global_variable = { name = xa_seal_tokens add = 1 }
-		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
-			limit = { NOT = { has_game_rule = xar_selftest } }
-			trigger_event = xar.2206
+			limit = {
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 60 }
+				NOT = { has_character_flag = xa_gaze_milestone_60 }
+			}
+			add_character_flag = xa_gaze_milestone_60
+			change_global_variable = { name = xa_reroll_tokens add = 1 }
+			change_global_variable = { name = xa_seal_tokens add = 2 }
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = { NOT = { has_game_rule = xar_selftest } }
+				trigger_event = xar.2206
+			}
+			# XAR_ACCEPTANCE_ONLY_END
+			# XAR_RELEASE_ONLY trigger_event = xar.2206
 		}
-		# XAR_ACCEPTANCE_ONLY_END
-		# XAR_RELEASE_ONLY trigger_event = xar.2206
-	}
-	if = {
-		limit = {
-			has_trait_xp = { trait = xar_glassfire_gaze value >= 70 }
-			NOT = { has_character_flag = xa_gaze_milestone_70 }
-		}
-		add_character_flag = xa_gaze_milestone_70
-		change_global_variable = { name = xa_reroll_tokens add = 1 }
-		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
-			limit = { NOT = { has_game_rule = xar_selftest } }
-			trigger_event = xar.2207
+			limit = {
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 70 }
+				NOT = { has_character_flag = xa_gaze_milestone_70 }
+			}
+			add_character_flag = xa_gaze_milestone_70
+			change_global_variable = { name = xa_reroll_tokens add = 3 }
+			change_global_variable = { name = xa_seal_tokens add = 1 }
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = { NOT = { has_game_rule = xar_selftest } }
+				trigger_event = xar.2207
+			}
+			# XAR_ACCEPTANCE_ONLY_END
+			# XAR_RELEASE_ONLY trigger_event = xar.2207
 		}
-		# XAR_ACCEPTANCE_ONLY_END
-		# XAR_RELEASE_ONLY trigger_event = xar.2207
-	}
-	if = {
-		limit = {
-			has_trait_xp = { trait = xar_glassfire_gaze value >= 80 }
-			NOT = { has_character_flag = xa_gaze_milestone_80 }
-		}
-		add_character_flag = xa_gaze_milestone_80
-		change_global_variable = { name = xa_seal_tokens add = 1 }
-		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
-			limit = { NOT = { has_game_rule = xar_selftest } }
-			trigger_event = xar.2208
+			limit = {
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 80 }
+				NOT = { has_character_flag = xa_gaze_milestone_80 }
+			}
+			add_character_flag = xa_gaze_milestone_80
+			change_global_variable = { name = xa_reroll_tokens add = 1 }
+			change_global_variable = { name = xa_seal_tokens add = 3 }
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = { NOT = { has_game_rule = xar_selftest } }
+				trigger_event = xar.2208
+			}
+			# XAR_ACCEPTANCE_ONLY_END
+			# XAR_RELEASE_ONLY trigger_event = xar.2208
 		}
-		# XAR_ACCEPTANCE_ONLY_END
-		# XAR_RELEASE_ONLY trigger_event = xar.2208
-	}
-	if = {
-		limit = {
-			has_trait_xp = { trait = xar_glassfire_gaze value >= 90 }
-			NOT = { has_character_flag = xa_gaze_milestone_90 }
-		}
-		add_character_flag = xa_gaze_milestone_90
-		change_global_variable = { name = xa_reroll_tokens add = 1 }
-		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
-			limit = { NOT = { has_game_rule = xar_selftest } }
-			trigger_event = xar.2209
+			limit = {
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 90 }
+				NOT = { has_character_flag = xa_gaze_milestone_90 }
+			}
+			add_character_flag = xa_gaze_milestone_90
+			change_global_variable = { name = xa_reroll_tokens add = 4 }
+			change_global_variable = { name = xa_seal_tokens add = 2 }
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = { NOT = { has_game_rule = xar_selftest } }
+				trigger_event = xar.2209
+			}
+			# XAR_ACCEPTANCE_ONLY_END
+			# XAR_RELEASE_ONLY trigger_event = xar.2209
 		}
-		# XAR_ACCEPTANCE_ONLY_END
-		# XAR_RELEASE_ONLY trigger_event = xar.2209
-	}
-	if = {
-		limit = {
-			has_trait_xp = { trait = xar_glassfire_gaze value >= 100 }
-			NOT = { has_character_flag = xa_gaze_milestone_100 }
-		}
-		add_character_flag = xa_gaze_milestone_100
-		change_global_variable = { name = xa_seal_tokens add = 1 }
-		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
-			limit = { NOT = { has_game_rule = xar_selftest } }
-			trigger_event = xar.2210
+			limit = {
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 100 }
+				NOT = { has_character_flag = xa_gaze_milestone_100 }
+			}
+			add_character_flag = xa_gaze_milestone_100
+			change_global_variable = { name = xa_reroll_tokens add = 3 }
+			change_global_variable = { name = xa_seal_tokens add = 4 }
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = { NOT = { has_game_rule = xar_selftest } }
+				trigger_event = xar.2210
+			}
+			# XAR_ACCEPTANCE_ONLY_END
+			# XAR_RELEASE_ONLY trigger_event = xar.2210
 		}
-		# XAR_ACCEPTANCE_ONLY_END
-		# XAR_RELEASE_ONLY trigger_event = xar.2210
 	}
 }

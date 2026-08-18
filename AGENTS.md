@@ -30,7 +30,7 @@ py tools/build_release.py                                   # 生成 dist stagin
 （数据表）再跑 gen_pools.py；权威表 `docs/blessing-curse-pools.md` 由它导出。
 计分生成器产出 `common/scripted_effects/xar_generated_scoring_effects.txt` 与
 `docs/scoring-rules.md`；hover 生成器读取同一 schema 产出 `common/script_values/xar_generated_score_preview.txt`。
-契约原型、PB、图鉴和 28 个里程碑事件改 `tools/contracts_data.py`，再跑 `gen_contracts.py`。
+契约原型、PB、图鉴、琉焰之视成长表和 28 个里程碑事件改 `tools/contracts_data.py`，再跑 `gen_contracts.py`；该生成器也产出 `common/traits/xar_traits.txt`。
 位阈值体系生成器产出：`common/tutorial_lessons/xar_highscore.txt`、`common/customizable_localization/xar_generated_loc.txt`、
 `common/scripted_guis/xar_generated_guis.txt`、`common/scripted_effects/xar_generated_effects.txt`、
 `gui/xar_meta.gui`、`localization/*/xar_generated_*.yml`。

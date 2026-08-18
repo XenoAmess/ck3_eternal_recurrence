@@ -45,7 +45,7 @@
  trait_xar_glassfire_gaze_desc:0 "This character is watched by that glass-colored flame, watched... until the very end."
  trait_xar_glassfire_gaze_character_desc:0 "This character is watched by that glass-colored flame, watched... until the very end.\n\nCurrent weight: #V [SCOPE.ScriptValue('xar_current_score_value')|1]#! (preview only; settlement is not updated)"
  trait_track_xar_glassfire_gaze:0 "Glassfire Embers"
- trait_track_xar_glassfire_gaze_desc:0 "Gain 1 experience for each completed blessing and curse pair. Every 10 experience grants a level and another 10% stress gain."
+ trait_track_xar_glassfire_gaze_desc:0 "Gain 1 experience for each completed favor and curse-mark pair. Every 10 experience grants a level: another 10% stress gain plus native attribute growth, rerolls, and seals."
 
  # The pact (game start)
  xar.0002.title:0 "Pact of the End"
