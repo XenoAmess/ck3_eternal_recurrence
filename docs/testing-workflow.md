@@ -15,7 +15,7 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 
 ## 全自动验收 runner（tools/run_acceptance.py）
 
-runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR 大厅导航。`selftest`、`persistence-restart`、`death-edges` 加载开发树；四个生产 smoke 会先生成 production-only release 投影，再将该投影 `/MIR` 到工坊缓存后启动 CK3。
+runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR 大厅导航。`selftest`、`persistence-restart`、`death-edges`、`bargain-reopen` 加载开发树；四个生产 smoke 会先生成 production-only release 投影，再将该投影 `/MIR` 到工坊缓存后启动 CK3。
 
 ```powershell
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py"
@@ -25,6 +25,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario off
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario persistence-restart
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario death-edges
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario bargain-reopen
 ```
 
 场景基线与边界：
@@ -36,9 +37,10 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - `off`：固定 `xar_off` + 纪录 0，进局后观察 30 秒；契约标题或本次新增的任意 `XAR:` 启用日志均判 RED。
 - `persistence-restart`：一次外层备份内启动两个 CK3 进程。A 从纪录 0 跑完整 selftest 并真实写入非零 lesson，进程树完全退出后固定 handoff SHA-256；B 不调用纪录预置函数，以新日志 offset 断言 importer 精确命中 A 的位阶及 request/ready/consumed 全链。该场景禁止非零 `--import-record`。
 - `death-edges`：固定 selftest + 导入位 1，真实杀死带 `xa_enabled` 的 AI Roger，断言生产计分被 `is_ai=no` 阻断；再逐日使当前继承人失去继承资格，直到 `player_heir` 不存在后真实杀死玩家，验证前向提交链、原生继承窗内的八值结算、无“继续扮演”、退出确认和返回主菜单。随机原生事件会由 recovery 点击底部选项后继续日 tick。
+- `bargain-reopen`：固定 selftest + 导入位 2，但不进入主 selftest。独立 bootstrap 调用生产契约/运行初始化，随后真实点击三轮 `xar.0004` 祝福与 `xar.0005` 咒痕；安全 wire id 只由 acceptance instrumentation 固定，祝福/诅咒仍走生产 dispatcher。每轮成交后保留生产 option 的 `xar.0006 days = 1095`，另设仅观察状态的 day-1094 probe；脚本保存成交时的 `current_date` 并在两条路径相减，断言累计对数 1/2/3、session 在祝福后为 1 且 `xar.0006` 重置为 0、XP `0→1→2→3`、拒绝数 0、1094 日不重开、1095 日精确重开及第三对后的完整新窗口。runner 用鼠标选择速度 5，并以底栏渲染日期 OCR 判断游戏是否仍在推进；debug marker 只负责机制断言，合成键盘不参与。
 - 每次运行都写 `report.json` 与 JUnit `report.xml`；JSON 包含 run ID、UTC、版本、Git SHA、release-tree SHA-256、CK3/平台/Python 环境、场景、结果、artifact 清单、各阶段秒数和错误原因。即使中途失败，也会先恢复现场再写 RED 报告。`tutorial.txt`/`presets.txt` 备份位于独立临时目录，恢复后删除，不进入 artifacts。
 
-冷启动通常约 2 分钟，`RESULT: GREEN/RED` + 退出码。判定依据：
+普通场景冷启动通常约 2 分钟；`bargain-reopen` 还要在速度 5 下实走 9 个游戏年，预计整场约 16-22 分钟，随机原生事件多时更长。所有场景都输出 `RESULT: GREEN/RED` + 退出码。判定依据：
 
 1. `tools/validate_static.py` 通过：六套生成器逐文件 parity、全部运行文件 UTF-8 BOM、9 语言 loc 引用与首世/账簿格式 token parity、自动发现的全部 XAR event/decision AI 闸门、挑战继承/成长基线、契约 hook/PB/图鉴/里程碑、生产/selftest 共用入口、21 个购买 effect、无继承人 fallback/原生继承窗投影、奖池过滤/权重/稳定 ID、descriptor 与发布资源；其中 `tools/validate_loc.py` 负责动态 wrapper、custom-loc 和 modifier 名。
 2. debug.log 的 57 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
@@ -51,26 +53,19 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 
 截图证据和 JSON 摘要在控制台报告里的 artifacts 目录。
 
-### Windows 自托管 L1-L3 CI
+### GitHub 官方 CI 与本机 L1-L3
 
-`.github/workflows/ck3-self-hosted-ci.yml` 在 `master` push、`v*` tag、手动触发和每周计划任务上串行运行；不接受 `pull_request`，避免在持久化游戏机上执行外部代码。全仓库使用固定 concurrency `xar-ck3-desktop` 且 `cancel-in-progress: false`，七个场景绝不并行争用桌面、日志、`tutorial.txt`、presets 或工坊缓存。
+`.github/workflows/static-ci.yml` 只使用 GitHub 官方 `windows-latest`。每次 push/PR 都安装最小静态依赖并执行 Python 编译、`validate_static.py`、计分 reference vectors 和 `build_release.py --check`；手动触发或 `v*` tag 时额外构建并上传 ZIP/manifest，tag 构建仍要求 clean worktree、HEAD 上存在 `v<version>` tag。
+
+官方 runner 没有 CK3、Steam 授权、工坊缓存、用户目录或可靠交互桌面，因此禁止调用 `run_acceptance.py`，也不能把云端 L0 表述成引擎或 UI 已验。官方 CI 能证明生成器 parity、BOM/loc、玩家/AI 闸门、release allowlist、acceptance 剥离和构建可复现；不能证明 Paradox 运行时语义、跨存档落盘、鼠标/OCR 或游戏日期推进。
+
+真实游戏层在本机串行执行并保存 artifacts：
 
 - L1：`off`，production release 投影冷启动、引擎解析及禁用规则负例。
-- L2：`selftest`、`persistence-restart`、`death-edges`，覆盖 57 项机制断言、200 effect runtime sweep、两进程持久化、AI/无继承人死亡边界。
+- L2：`selftest`、`persistence-restart`、`death-edges`、`bargain-reopen`，覆盖 57 项机制断言、200 effect runtime sweep、两进程持久化、AI/无继承人死亡边界，以及三轮生产交易的 1094/1095 日边界。
 - L3：`on-first-life`、`on-recorded`、`on-high-budget`，覆盖 production-only 首世、已有纪录和第四页高预算真实 OCR/点击。L2 的交易 UI、决议、trait hover 和无继承人窗口也计入整体 L3 证据，不重复启动。
 
-runner 必须注册 labels `[self-hosted, Windows, X64, ck3, interactive]`，以已登录且未锁屏的简中 CK3 桌面用户交互运行，不得安装为 Windows service。仓库 Actions variables：
-
-| Variable | 内容 |
-|---|---|
-| `XAR_CK3_EXE` | 工作区外的 `ck3.exe` 绝对路径 |
-| `XAR_CK3_USER_DIR` | 专用 Windows 用户的 CK3 user data 根目录 |
-| `XAR_CK3_UGC_DIR` | 专用工坊缓存目录，末级必须是 `3784706360` 且已有 `descriptor.mod` |
-| `XAR_CK3_VERSION` | 当前实测版本，现为 `1.19.0.6` |
-
-workflow 设置 `XAR_CK3_CI=1`；runner 在任何备份或 `/MIR` 前拒绝缺失显式路径、错误工坊 id、仓库重叠目标、缺失现场文件、过小桌面和已运行的 `ck3.exe`。每个场景用 `--artifacts-dir` 写入 `$RUNNER_TEMP\xar-ci\<run>-<attempt>\L*\<scenario>`；JSON 区分开发树/production projection 并记录实际 runtime hash。上传内容含截图、JSON/JUnit、release projection 和本次增量 `debug/error/gui_warnings`，不含独立 backup 目录或历史日志。所有场景即使 RED 也继续收集，最终统一 gate；tag 通过后只上传候选 ZIP/manifest，不自动发布 GitHub Release 或 Steam。
-
-2026-08-18 本机以显式 artifacts 目录实测 L1 `off` GREEN，0 `xar` errors，且增量三日志和 runtime hash 均进入报告。首个 GitHub 自托管全套 GREEN 仍需 runner 注册及 repository variables 生效后记录。
+本机报告必须记录 JSON/JUnit、截图、runtime hash 和本次增量 `debug/error/gui_warnings`；发布 QA 引用具体 run ID，不把未运行的远端 CK3 状态写成 GREEN。GitHub tag artifact 只提供经过 L0 验证的候选 ZIP/manifest，不自动创建 GitHub Release 或上传 Steam。
 
 ### 覆盖边界（什么算验过、什么不算）
 
@@ -93,11 +88,11 @@ workflow 设置 `XAR_CK3_CI=1`；runner 在任何备份或 `/MIR` 前拒绝缺�
 - 账簿生产 UI 用三个连续事件分别捕获即时分数、投影阈值、复制显示快照；2026-08-18 实机证明只用一个或两个事件会让同一 `immediate` 的读后写依赖产生 `none`，三阶段链为 0 `xar` errors。
 - `persistence-restart` 两进程实测：A 写入非零余烬 lesson 后完全退出，B 在 `process_b_preseeded=false` 且 `tutorial.txt` handoff SHA-256 不变的前提下导入同一位阶；JSON 记录两 PID 生命周期对应的耗时、位阶和 hash。
 - 真实 AI 死亡负例：目标明确带 `xa_enabled`，引擎 `on_death` observer 确认死亡，但 `XAR: computing score on death` 在 AI 区间内未出现且分数 sentinel 未变。无继承人链验证 `player_heir` 确实为空、计分/写位与快照按前向事件边界提交；OCR/像素覆盖八项数值、无「继续扮演」、原生退出确认及主菜单。最新 GREEN：`xar_accept_fmq_wxxc`，0 `xar` errors。
+- 独立 `bargain-reopen` 开发树场景覆盖生产一场一对语义：三轮真实 options/dispatchers、累计对数 1/2/3、session `1→0`、XP `0→1→2→3`、拒绝数 0。每轮 acceptance-only day-1094 probe 与生产 `xar.0006 days = 1095` 都用 `current_date - 成交日` 分别精确断言 1094/1095，三个生产 reset marker 必须有序且第三次确实打开下一场。2026-08-19 首次完整 GREEN：`xar_accept_ue4ye_un`，九游戏年、三次生产 reset、0 `xar` errors。
 
 **没验的**：
 - 正常 `xar_on` 首世、已有 100 位阶和 `xar_off` 三条独立 smoke 已实机 GREEN，均为 `xar error.log = 0`。
 - 200 项 dispatcher 的 ID→effect 语义映射；sweep 内联执行 effect body，只是运行期 smoke test
-- 正常玩法的 1095 日重开分支；selftest UI 已真实点击拒绝、封印和重抽，但为缩短验收将重开压缩为立即触发。
 - 计分各系数与边界的系统矩阵、后代去重边界；当前断言正分、拒绝倍率、preview/结算一致与写入
 - PB 图鉴及里程碑事件仍没有实际像素点击覆盖；其生产 effects、lesson 落盘和事件引用已有脚本/静态覆盖。
 - 数值与数据表的一致性（生成器自检 id/权重/语种，但 50 写成 500 这类数据错误测不出来）
@@ -113,9 +108,12 @@ workflow 设置 `XAR_CK3_CI=1`；runner 在任何备份或 `/MIR` 前拒绝缺�
   改规则文件的 `default` 不影响已有档案。runner 会先移除该块内全部 `xar_on/xar_off/xar_selftest`，再写入场景目标值并验证同时只剩一个（事后恢复）。
 - **pyautogui 合成键盘事件进不了 CK3**（esc/space/+ 实测全部无效），鼠标点击有效。
   解暂停只能点底栏日期旁的 ▶（坐标 (2315,1410)@2560x1440）。
-- 每次点击前必须 `win32gui.SetForegroundWindow` 抢回前台（桌面有安卓模拟器抢焦点）。
+- 速度 5 也必须走鼠标：原生 `timeline_widget` 最右侧 `speed_5` hitbox 中心约 `(2536,1418)@2560x1440`。2026-08-19 对照截图与原生 `hud.gui` 实测：该按钮只执行 `SetGameSpeed`，不会解除手动暂停；但关闭运行中弹出的原生事件会自动恢复时间，此时再点 ▶ 反而会暂停。`bargain-reopen` 现 deliberate-click 速度 5 后先观察底栏日期 2 秒，仅在尚未前进时 deliberate-click OCR 识别出的日期按钮，最终要求日期在 10 秒内前进才视为成功。
+- 每次 OCR/点击前必须抢回并反证 CK3 前台。2026-08-19 实测裸 `SetForegroundWindow` 会因 Windows 前台锁静默失败，runner 随后把 OpenCode 整窗识别成事件选项；现通过 `AttachThreadInput` + Alt 前台许可重试，并要求 `GetForegroundWindow()` 精确等于 CK3 句柄，否则立即 RED，不再截取或点击其他应用。
+- 主菜单【新游戏】也必须 deliberate-click 并以罗贝尔书签实际出现作反证；2026-08-19 实测 OCR 找到按钮后的一次瞬时点击可被 CK3 丢弃，runner 若直接进入 30 秒书签等待只会在原主菜单超时。
 - 安全软件通知也可能置顶遮住大厅“开始”按钮；runner 等待该按钮时会 OCR 识别并点击通知的“忽略”，只关闭当次提示，不改软件设置。
 - 截图读坐标要用 PIL 裁真实 PNG（2560x1440）实测——聊天里显示的图有缩放，目测坐标必歪。
+- 长测日期 12 秒不推进时禁止盲点固定坐标。runner 每次用单调递增序号保存 `stall_<场景>_<序号>.png`、候选框标注图和完整 OCR JSON：在画面下部先找左侧内容栏中的真实选项；没有左侧候选时才兼容右侧全宽布局，并在候选栏中优先同一 x 轴纵向堆叠的最下行。点击后必须观察到日期继续推进；连续三次仍卡住立即 RED，并由执行者读取这些截图/OCR 分析，不能继续空点到总超时。2026-08-18 实测定位：全宽事件【摆脱尘世】的选项约在 `(0.68,0.79)`，旧恢复点 `(0.38,0.72)` 落在正文空白处。2026-08-19 【诺曼人的西西里】实测三个真实选项纵向对齐在 `x≈930`，人物名位于 `x≈1377/1841`，按右侧优先会误开人物面板；【埃玛成年】仅有一个左侧选项 `x≈930`，人物名/关系则纵向对齐在 `x≈1505`，不能只按列密度判断。同期实测 `debug.log` 在无事件时可长期没有日期行，不能用它单独判断冻结；长测改读底栏 `公元 Y年M月D日` 的实际像素。
 - 暂停链：开局默认暂停 → 死亡弹继承窗（强制暂停，须点「继续扮演」(1455,1130)）→
   结算事件窗硬暂停（「因轮回终结事件暂停」）。runner 用 debug.log 里 AI 日志行自带的
   局内日期（`1066.9.16:` 格式）跟踪时间是否流动，12s 不涨就补点 ▶（像素法有动画噪声，弃用）。

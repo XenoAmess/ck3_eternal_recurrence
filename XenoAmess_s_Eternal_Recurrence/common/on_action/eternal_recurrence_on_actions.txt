@@ -1,4 +1,6 @@
-﻿# Game start hook. We only add an on_actions entry so vanilla's events/effect stay intact.
+﻿# Keep this adapter filename neutral: vanilla errors attribute merged on_action
+# callers to this file, while actual mod failures still expose xar_* symbols.
+# Game start hook. We only add an on_actions entry so vanilla's events/effect stay intact.
 # NOTE: on_game_start_after_lobby is used (not on_game_start) because that is the hook
 # where players and game rules are known, per the vanilla comment in game_start.txt.
 on_game_start_after_lobby = {

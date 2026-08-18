@@ -69,6 +69,7 @@
 | 同一事件 `immediate` 内先计算并写 global，再用 `save_scope_value_as` 复制该 global，报 `Value of wrong type ... none` | scripted effect 返回后也不构成写入可见边界；事件内后续表达式仍可能在写入提交前求值。2026-08-18 账簿链实测：score capture、阈值投影和显示快照各需要独立事件 | 把每个存在读后写依赖的阶段拆成连续 hidden event，最终可见事件只读取上一事件已经提交的 globals |
 | 无继承人同步结算显示 0，或外部 GUI 的 `SuccessionEventWindow.GoToMenu` 点击无效 | 死亡计分仍在 `on_death` 父 effect 内未提交；且 `SuccessionEventWindow` action 只在原生窗口有完整输入上下文。2026-08-18 CK3 1.19.0.6 实测 | 使用 `on_death -> hidden compute -> hidden dispatch -> hidden snapshot` 前向事件链；把结算 widget 生成注入原生 `window_succession_event.gui`，按钮在原生窗口内调用 `GoToMenu` |
 | 正数差值经过 `max = 0` 后总是变成 0 | CK3 数值块的 `max` 是上限、`min` 是下限；`max = 0` 会把所有正数压到 0 | 表达 `max(value, 0)` 要写 `min = 0`。2026-08-18 成长计分与账簿差值实机定位 |
+| 原版 effect 报错的调用栈只因 `common/on_action/xar_*.txt` 路径而命中 XAR 错误门禁 | 用 `on_actions = {}` 扩展原版 hook 后，引擎会把原版 effect 的调用者位置归到扩展定义文件；2026-08-19 九年长测实测 EP3 `war_task_contracts_completion_effect` 的原版错误因此带上适配器路径，但没有进入 `xar_contract_*` effect | on_action 适配器使用不含 `xar` 的中性文件名，hook/effect 标识仍保留 `xar_*`；这样真实自定义 effect 错误仍会由脚本位置中的符号命中门禁，原版错误不会仅因调用者文件名误报 |
 
 ## 事件背景图 / 纹理
 

@@ -65,6 +65,25 @@ def extract_block(text, key):
     return None
 
 
+def extract_named_option(text, name):
+    """Return the balanced option block containing one exact option name."""
+    for match in re.finditer(r"(?m)^\s*option\s*=\s*\{", text):
+        start = text.index("{", match.start())
+        depth = 0
+        for index in range(start, len(text)):
+            if text[index] == "{":
+                depth += 1
+            elif text[index] == "}":
+                depth -= 1
+                if depth == 0:
+                    block = text[match.start():index + 1]
+                    if re.search(
+                            rf"(?m)^\s*name\s*=\s*{re.escape(name)}\s*$", block):
+                        return block
+                    break
+    return None
+
+
 def top_level_keys(text, pattern):
     """Return top-level block keys matching pattern, ignoring nested blocks."""
     keys = []
@@ -247,6 +266,12 @@ def mechanic_checks(errors):
     pact = event_blocks.get("xar.0002", "")
     first_life = event_blocks.get("xar.0010", "")
     ledger_event = event_blocks.get("xar.0011", "")
+    production_event_text = build_release.render_release_bytes(
+        MOD / "events/xar_events.txt", "events/xar_events.txt"
+    ).decode("utf-8-sig")
+    production_bless_event = extract_block(production_event_text, "xar.0004") or ""
+    production_curse_event = extract_block(production_event_text, "xar.0005") or ""
+    production_reopen_event = extract_block(production_event_text, "xar.0006") or ""
 
     shared_pact_effects = {
         "xar_enable_player_pact_effect",
@@ -444,6 +469,37 @@ def mechanic_checks(errors):
     if "id = xar.0004" not in first_life:
         errors.append("first-life event does not enter the blessing flow")
 
+    # Production meetings contain one blessing/curse pair. Every terminal route
+    # independently schedules the same real three-year reset; no route loops in-session.
+    scheduling_routes = (
+        (production_bless_event, "xar.0004.decline"),
+        (production_curse_event, "xar_curse_option_a"),
+        (production_curse_event, "xar_curse_option_b"),
+        (production_curse_event, "xar.0005.seal"),
+    )
+    schedule = "trigger_event = { id = xar.0006 days = 1095 }"
+    for event, option_name in scheduling_routes:
+        option = extract_named_option(event, option_name) or ""
+        if option.count(schedule) != 1:
+            errors.append(
+                f"production route '{option_name}' must schedule xar.0006 at 1095 days once")
+        if "trigger_event = xar.0004" in option or "id = xar.0004" in option:
+            errors.append(f"production route '{option_name}' reopens inside the same meeting")
+    if production_event_text.count(schedule) != 4:
+        errors.append("production bargain flow must contain exactly four 1095-day scheduling routes")
+    for option_name in ("xar_bless_option_a", "xar_bless_option_b", "xar_bless_option_c"):
+        option = extract_named_option(production_bless_event, option_name) or ""
+        if (option.count("xar_apply_blessing_effect") != 1
+                or option.count("trigger_event = { id = xar.0005 }") != 1
+                or "xar.0006" in option):
+            errors.append(
+                f"production blessing route '{option_name}' must dispatch once into one curse")
+    if (production_reopen_event.count("name = xa_bless_session value = 0") != 1
+            or production_reopen_event.count("trigger_event = { id = xar.0004 }") != 1):
+        errors.append("production xar.0006 must reset session to 0 and reopen xar.0004 once")
+    if "name = xa_bless_session value = 3" in production_event_text:
+        errors.append("production bargain flow still contains the old three-pair session override")
+
     challenge_init = extract_block(production_effects, "xar_initialize_challenge_mode_effect") or ""
     game_rules = read(MOD / "common/game_rules/xar_game_rules.txt")
     inheritance_rule = extract_block(game_rules, "xar_inheritance") or ""
@@ -573,7 +629,7 @@ def mechanic_checks(errors):
     if contract_lessons.count("chain = reactive_advice") != 24:
         errors.append("contract persistence must contain 18 PB plus 6 collection lessons")
 
-    on_actions = read(MOD / "common/on_action/xar_on_actions.txt")
+    on_actions = read(MOD / "common/on_action/eternal_recurrence_on_actions.txt")
     score_snapshot_event = extract_block(events, "xar.1002") or ""
     score_compute_event = extract_block(events, "xar.1000") or ""
     score_dispatch_event = extract_block(events, "xar.1003") or ""
@@ -618,6 +674,31 @@ def mechanic_checks(errors):
     if ("XAR: TEST PASS no_heir_synchronous_return" not in score_snapshot_event
             or "XAR: TEST no-heir snapshot committed" not in score_snapshot_event):
         errors.append("no-heir synchronous-return instrumentation is incomplete")
+    bargain_probe_effect = read(
+        MOD / "common/scripted_effects/xar_acceptance_bargain_effects.txt")
+    bargain_probe_event = read(MOD / "events/xar_acceptance_bargain_events.txt")
+    consume_import = extract_block(production_effects, "xar_consume_import_effect") or ""
+    bargain_requirements = (
+        "global_var:xa_global_record_imported = 2",
+        "xar_acceptance_bargain_reopen_start_effect = yes",
+    )
+    if any(token not in consume_import for token in bargain_requirements):
+        errors.append("bargain-reopen threshold-2 bootstrap is not isolated from main selftest")
+    for pair in range(1, 4):
+        for phase in ("open", "before_curse", "after_curse", "no_early_1094",
+                      "reopen_1095"):
+            marker = f"XAR: TEST PASS bargain_pair_{pair}_{phase}"
+            if marker not in bargain_probe_effect:
+                errors.append(f"bargain-reopen probe lacks marker '{marker}'")
+    if ("id = xar.0903 days = 1094" not in bargain_probe_effect
+            or "value = current_date" not in bargain_probe_effect
+            or bargain_probe_effect.count("subtract = global_var:xa_bargain_pair_start_date") != 2
+            or bargain_probe_effect.count("global_var:xa_bargain_elapsed_days = 1094") != 3
+            or bargain_probe_effect.count("global_var:xa_bargain_elapsed_days = 1095") != 3
+            or "trigger = { is_ai = no }" not in bargain_probe_event
+            or "has_character_flag = xa_enabled" not in bargain_probe_event
+            or "XAR: TEST PASS bargain_pair_3_full_reopen" not in bargain_probe_effect):
+        errors.append("bargain-reopen day-1094/player guard/full-third-reopen probe is incomplete")
     for hook in ("on_war_won_attacker", "on_war_won_defender", "on_hook_used",
                  "on_county_faith_change", "on_birth_mother", "on_birth_father",
                  "on_building_completed", "on_birthday"):
@@ -640,6 +721,10 @@ def mechanic_checks(errors):
     pools = read(MOD / "common/scripted_effects/xar_generated_pools_effects.txt")
     curse_draw = extract_block(pools, "xar_draw_curses_effect") or ""
     bless_draw = extract_block(pools, "xar_draw_blessings_effect") or ""
+    bless_apply = extract_block(pools, "xar_apply_blessing_effect") or ""
+    if (bless_apply.count("name = xa_bless_session add = 1") != 1
+            or bless_apply.count("name = xa_bless_count add = 1") != 1):
+        errors.append("blessing dispatcher must advance cumulative count/session exactly once")
     for prefix, draw, slots in (("bless", bless_draw, ("a", "b", "c")),
                                 ("curse", curse_draw, ("a", "b"))):
         for slot in slots:
@@ -839,20 +924,42 @@ def package_checks(errors):
         errors.append("descriptor.mod picture is not thumbnail.png")
     if 'supported_version="1.19.0.6"' not in descriptor:
         errors.append("descriptor.mod tested CK3 version changed without release QA update")
-    self_hosted_ci = read(ROOT / ".github/workflows/ck3-self-hosted-ci.yml")
+    official_ci = read(ROOT / ".github/workflows/static-ci.yml")
     ci_requirements = (
-        "runs-on: [self-hosted, Windows, X64, ck3, interactive]",
-        "group: xar-ck3-desktop", "cancel-in-progress: false",
-        "XAR_CK3_CI: \"1\"", "python tools/run_acceptance.py --preflight",
-        "--scenario off", "--scenario selftest", "--scenario persistence-restart",
-        "--scenario death-edges", "--scenario on-first-life",
-        "--scenario on-recorded", "--scenario on-high-budget",
-        "--artifacts-dir", "actions/upload-artifact@v4", "Enforce L1-L3 gate",
+        "runs-on: windows-latest", "pull_request:", "workflow_dispatch:",
+        "tools/requirements-static.txt", "python -m compileall -q tools",
+        "python tools/validate_static.py", "scoring_data.assert_reference_vectors()",
+        "python tools/build_release.py --check", "python tools/build_release.py --release",
+        "actions/upload-artifact@v4", "dist/*.zip", "dist/*.manifest.json",
     )
-    if any(token not in self_hosted_ci for token in ci_requirements):
-        errors.append("self-hosted L1-L3 workflow lost a safety, scenario, or artifact gate")
-    if "pull_request:" in self_hosted_ci:
-        errors.append("self-hosted CK3 workflow must never execute pull-request code")
+    if any(token not in official_ci for token in ci_requirements):
+        errors.append("official-runner CI lost a static, release, or artifact gate")
+    if "self-hosted" in official_ci or "run_acceptance.py" in official_ci:
+        errors.append("official-runner CI must not claim CK3 desktop acceptance")
+    if (ROOT / ".github/workflows/ck3-self-hosted-ci.yml").exists():
+        errors.append("unavailable self-hosted CK3 workflow still exists")
+    acceptance_runner = read(ROOT / "tools/run_acceptance.py")
+    if "click_ratio(0.38, 0.72)" in acceptance_runner:
+        errors.append("acceptance runner still uses the stale blind event-recovery click")
+    if not all(token in acceptance_runner for token in (
+            "capture_stall_and_recover", "_annotated.png", "_ocr.json",
+            "remained stalled after 3 screenshot-guided recoveries",
+            "inspect stall_selftest_*.png/json", "HUD_DATE_REGION",
+            "read_hud_game_day", "HUD date already advancing at speed 5",
+            "HUD date advanced after timeline play", "GetForegroundWindow",
+            "AttachThreadInput", "CK3 could not obtain foreground")):
+        errors.append("acceptance runner lost screenshot-guided stall diagnostics")
+    speed_control = acceptance_runner.partition(
+        "def set_speed_five_and_unpause")[2].partition("\ndef ")[0]
+    if not all(token in speed_control for token in (
+            "read_hud_game_date", "timeline_play", "timeline play")):
+        errors.append("speed-5 control lacks OCR-targeted unpause verification")
+    lobby_navigation = acceptance_runner.partition(
+        "def navigate_lobby")[2].partition("\ndef ")[0]
+    if ("main-menu New Game" not in lobby_navigation
+            or "click_until_ocr_appears" not in lobby_navigation
+            or "pyautogui.click(*new_game)" in lobby_navigation):
+        errors.append("lobby navigation lacks an OCR-verified New Game transition")
     thumbnail = MOD / "thumbnail.png"
     if thumbnail.exists() and thumbnail.stat().st_size >= 1_000_000:
         errors.append("thumbnail.png must remain below Steam's 1 MB limit")

@@ -1,0 +1,338 @@
+﻿# Acceptance-only proof of the production one-pair-per-meeting bargain cycle.
+xar_acceptance_bargain_reopen_start_effect = {
+	if = {
+		limit = { is_ai = no global_var:xa_global_record_imported = 2 }
+		xar_enable_player_pact_effect = yes
+		xar_initialize_run_state_effect = yes
+		set_global_variable = xa_bargain_reopen_active
+		set_global_variable = { name = xa_bargain_reopen_count value = 0 }
+		debug_log = "XAR: TEST bargain reopen begin"
+		if = {
+			limit = {
+				has_character_flag = xa_enabled
+				has_trait = xar_glassfire_gaze
+				global_var:xa_bless_count = 0
+				global_var:xa_bless_session = 0
+				global_var:xa_bless_reject_count = 0
+				NOT = { has_trait_xp = { trait = xar_glassfire_gaze value >= 1 } }
+			}
+			debug_log = "XAR: TEST PASS bargain_initial_0"
+		}
+		else = { debug_log = "XAR: TEST FAIL bargain_initial_0" }
+		trigger_event = xar.0004
+	}
+}
+
+xar_acceptance_bargain_open_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_character_flag = xa_enabled
+			has_global_variable = xa_bargain_reopen_active
+		}
+		if = {
+			limit = { global_var:xa_bless_count = 0 }
+			if = {
+				limit = {
+					global_var:xa_bless_session = 0
+					global_var:xa_bless_reject_count = 0
+					global_var:xa_bargain_reopen_count = 0
+					NOT = { has_trait_xp = { trait = xar_glassfire_gaze value >= 1 } }
+				}
+				debug_log = "XAR: TEST PASS bargain_pair_1_open"
+			}
+			else = { debug_log = "XAR: TEST FAIL bargain_pair_1_open" }
+			set_global_variable = { name = xa_bless_a value = 0 }
+			set_global_variable = { name = xa_bless_b value = 1 }
+			set_global_variable = { name = xa_bless_c value = 2 }
+		}
+		else_if = {
+			limit = { global_var:xa_bless_count = 1 }
+			if = {
+				limit = {
+					global_var:xa_bless_session = 0
+					global_var:xa_bless_reject_count = 0
+					global_var:xa_bargain_reopen_count = 1
+					has_trait_xp = { trait = xar_glassfire_gaze value >= 1 }
+					has_trait_xp = { trait = xar_glassfire_gaze value < 2 }
+				}
+				debug_log = "XAR: TEST PASS bargain_pair_2_open"
+			}
+			else = { debug_log = "XAR: TEST FAIL bargain_pair_2_open" }
+			set_global_variable = { name = xa_bless_a value = 1 }
+			set_global_variable = { name = xa_bless_b value = 2 }
+			set_global_variable = { name = xa_bless_c value = 3 }
+		}
+		else_if = {
+			limit = { global_var:xa_bless_count = 2 }
+			if = {
+				limit = {
+					global_var:xa_bless_session = 0
+					global_var:xa_bless_reject_count = 0
+					global_var:xa_bargain_reopen_count = 2
+					has_trait_xp = { trait = xar_glassfire_gaze value >= 2 }
+					has_trait_xp = { trait = xar_glassfire_gaze value < 3 }
+				}
+				debug_log = "XAR: TEST PASS bargain_pair_3_open"
+			}
+			else = { debug_log = "XAR: TEST FAIL bargain_pair_3_open" }
+			set_global_variable = { name = xa_bless_a value = 2 }
+			set_global_variable = { name = xa_bless_b value = 3 }
+			set_global_variable = { name = xa_bless_c value = 4 }
+		}
+		else_if = {
+			limit = { global_var:xa_bless_count = 3 }
+			if = {
+				limit = {
+					global_var:xa_bless_session = 0
+					global_var:xa_bless_reject_count = 0
+					global_var:xa_bargain_reopen_count = 3
+					has_trait_xp = { trait = xar_glassfire_gaze value >= 3 }
+					has_trait_xp = { trait = xar_glassfire_gaze value < 4 }
+				}
+				debug_log = "XAR: TEST PASS bargain_pair_3_full_reopen"
+			}
+			else = { debug_log = "XAR: TEST FAIL bargain_pair_3_full_reopen" }
+			debug_log = "XAR: TEST DONE bargain-reopen"
+		}
+		else = {
+			debug_log = "XAR: TEST FAIL bargain_unexpected_open_count"
+			debug_log = "XAR: TEST DONE bargain-reopen"
+		}
+	}
+}
+
+xar_acceptance_bargain_before_curse_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_character_flag = xa_enabled
+			has_global_variable = xa_bargain_reopen_active
+		}
+		if = {
+			limit = {
+				global_var:xa_bless_count = 1
+				global_var:xa_bless_session = 1
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_bless_a = 0
+				NOT = { has_trait_xp = { trait = xar_glassfire_gaze value >= 1 } }
+			}
+			debug_log = "XAR: TEST PASS bargain_pair_1_before_curse"
+		}
+		else_if = {
+			limit = {
+				global_var:xa_bless_count = 2
+				global_var:xa_bless_session = 1
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_bless_a = 1
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 1 }
+				has_trait_xp = { trait = xar_glassfire_gaze value < 2 }
+			}
+			debug_log = "XAR: TEST PASS bargain_pair_2_before_curse"
+		}
+		else_if = {
+			limit = {
+				global_var:xa_bless_count = 3
+				global_var:xa_bless_session = 1
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_bless_a = 2
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 2 }
+				has_trait_xp = { trait = xar_glassfire_gaze value < 3 }
+			}
+			debug_log = "XAR: TEST PASS bargain_pair_3_before_curse"
+		}
+		else = { debug_log = "XAR: TEST FAIL bargain_before_curse_state" }
+	}
+}
+
+xar_acceptance_bargain_curse_open_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_character_flag = xa_enabled
+			has_global_variable = xa_bargain_reopen_active
+		}
+		if = {
+			limit = { global_var:xa_bless_count = 1 }
+			set_global_variable = { name = xa_curse_a value = 0 }
+			set_global_variable = { name = xa_curse_b value = 7 }
+		}
+		else_if = {
+			limit = { global_var:xa_bless_count = 2 }
+			set_global_variable = { name = xa_curse_a value = 1 }
+			set_global_variable = { name = xa_curse_b value = 8 }
+		}
+		else_if = {
+			limit = { global_var:xa_bless_count = 3 }
+			set_global_variable = { name = xa_curse_a value = 2 }
+			set_global_variable = { name = xa_curse_b value = 9 }
+		}
+		set_global_variable = { name = xa_curse_a_rarity value = 0 }
+		set_global_variable = { name = xa_curse_b_rarity value = 0 }
+	}
+}
+
+xar_acceptance_bargain_after_curse_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_character_flag = xa_enabled
+			has_global_variable = xa_bargain_reopen_active
+		}
+		if = {
+			limit = {
+				global_var:xa_bless_count = 1
+				global_var:xa_bless_session = 1
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_curse_a = 0
+				has_character_modifier = xar_pc_drain_a
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 1 }
+				has_trait_xp = { trait = xar_glassfire_gaze value < 2 }
+			}
+			debug_log = "XAR: TEST PASS bargain_pair_1_after_curse"
+		}
+		else_if = {
+			limit = {
+				global_var:xa_bless_count = 2
+				global_var:xa_bless_session = 1
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_curse_a = 1
+				has_character_modifier = xar_pc_drain_b
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 2 }
+				has_trait_xp = { trait = xar_glassfire_gaze value < 3 }
+			}
+			debug_log = "XAR: TEST PASS bargain_pair_2_after_curse"
+		}
+		else_if = {
+			limit = {
+				global_var:xa_bless_count = 3
+				global_var:xa_bless_session = 1
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_curse_a = 2
+				has_character_modifier = xar_pc_drain_c
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 3 }
+				has_trait_xp = { trait = xar_glassfire_gaze value < 4 }
+			}
+			debug_log = "XAR: TEST PASS bargain_pair_3_after_curse"
+		}
+		else = { debug_log = "XAR: TEST FAIL bargain_after_curse_state" }
+		set_global_variable = {
+			name = xa_bargain_pair_start_date
+			value = current_date
+		}
+		trigger_event = { id = xar.0903 days = 1094 }
+	}
+}
+
+xar_acceptance_bargain_no_early_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_character_flag = xa_enabled
+			has_global_variable = xa_bargain_reopen_active
+		}
+		set_global_variable = { name = xa_bargain_elapsed_days value = 0 }
+		change_global_variable = {
+			name = xa_bargain_elapsed_days
+			add = {
+				value = current_date
+				subtract = global_var:xa_bargain_pair_start_date
+			}
+		}
+		if = {
+			limit = {
+				global_var:xa_bless_count = 1
+				global_var:xa_bless_session = 1
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_bargain_reopen_count = 0
+				global_var:xa_bargain_elapsed_days = 1094
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 1 }
+				has_trait_xp = { trait = xar_glassfire_gaze value < 2 }
+			}
+			debug_log = "XAR: TEST PASS bargain_pair_1_no_early_1094"
+		}
+		else_if = {
+			limit = {
+				global_var:xa_bless_count = 2
+				global_var:xa_bless_session = 1
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_bargain_reopen_count = 1
+				global_var:xa_bargain_elapsed_days = 1094
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 2 }
+				has_trait_xp = { trait = xar_glassfire_gaze value < 3 }
+			}
+			debug_log = "XAR: TEST PASS bargain_pair_2_no_early_1094"
+		}
+		else_if = {
+			limit = {
+				global_var:xa_bless_count = 3
+				global_var:xa_bless_session = 1
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_bargain_reopen_count = 2
+				global_var:xa_bargain_elapsed_days = 1094
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 3 }
+				has_trait_xp = { trait = xar_glassfire_gaze value < 4 }
+			}
+			debug_log = "XAR: TEST PASS bargain_pair_3_no_early_1094"
+		}
+		else = { debug_log = "XAR: TEST FAIL bargain_no_early_state" }
+	}
+}
+
+xar_acceptance_bargain_reopen_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_character_flag = xa_enabled
+			has_global_variable = xa_bargain_reopen_active
+		}
+		set_global_variable = { name = xa_bargain_elapsed_days value = 0 }
+		change_global_variable = {
+			name = xa_bargain_elapsed_days
+			add = {
+				value = current_date
+				subtract = global_var:xa_bargain_pair_start_date
+			}
+		}
+		if = {
+			limit = {
+				global_var:xa_bless_count = 1
+				global_var:xa_bless_session = 0
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_bargain_reopen_count = 0
+				global_var:xa_bargain_elapsed_days = 1095
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 1 }
+				has_trait_xp = { trait = xar_glassfire_gaze value < 2 }
+			}
+			change_global_variable = { name = xa_bargain_reopen_count add = 1 }
+			debug_log = "XAR: TEST PASS bargain_pair_1_reopen_1095"
+		}
+		else_if = {
+			limit = {
+				global_var:xa_bless_count = 2
+				global_var:xa_bless_session = 0
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_bargain_reopen_count = 1
+				global_var:xa_bargain_elapsed_days = 1095
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 2 }
+				has_trait_xp = { trait = xar_glassfire_gaze value < 3 }
+			}
+			change_global_variable = { name = xa_bargain_reopen_count add = 1 }
+			debug_log = "XAR: TEST PASS bargain_pair_2_reopen_1095"
+		}
+		else_if = {
+			limit = {
+				global_var:xa_bless_count = 3
+				global_var:xa_bless_session = 0
+				global_var:xa_bless_reject_count = 0
+				global_var:xa_bargain_reopen_count = 2
+				global_var:xa_bargain_elapsed_days = 1095
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 3 }
+				has_trait_xp = { trait = xar_glassfire_gaze value < 4 }
+			}
+			change_global_variable = { name = xa_bargain_reopen_count add = 1 }
+			debug_log = "XAR: TEST PASS bargain_pair_3_reopen_1095"
+		}
+		else = { debug_log = "XAR: TEST FAIL bargain_reopen_state" }
+	}
+}

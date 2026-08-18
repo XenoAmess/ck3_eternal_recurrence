@@ -16,6 +16,7 @@
 
 import argparse
 from contextlib import contextmanager
+import ctypes
 from datetime import datetime, timezone
 import hashlib
 import html
@@ -34,9 +35,11 @@ from pathlib import Path
 import pyautogui
 import numpy as np
 import cv2
+import win32api
 import win32con
 import win32gui
-from PIL import Image, ImageGrab
+import win32process
+from PIL import Image, ImageDraw, ImageGrab
 
 import validate_static
 import build_release
@@ -106,12 +109,14 @@ EVENT_TEXT_REGION = (0.18, 0.16, 0.62, 0.58)
 EVENT_OPTIONS_FULL_REGION = (0.18, 0.43, 0.62, 0.95)
 CHARACTER_PANEL_REGION = (0.00, 0.05, 0.48, 0.72)
 OBSERVER_REGION = (0.00, 0.75, 0.35, 1.00)
+HUD_DATE_REGION = (0.78, 0.95, 0.92, 1.00)
 FULL_SCREEN_REGION = (0.00, 0.00, 1.00, 1.00)
 
 BOOT_TIMEOUT_S = 120             # OCR 一发现主菜单即继续，不固定睡 100 秒
 LOBBY_TIMEOUT_S = 30
 TEST_TIMEOUT_S = 300             # 开局后等待 TEST DONE 的超时
 OFF_OBSERVE_TIMEOUT_S = 30
+BARGAIN_REOPEN_TIMEOUT_S = 600   # real 1095-day wait; freeze detection remains independent
 POLL_INTERVAL_S = 1
 
 
@@ -129,14 +134,47 @@ def focus_ck3():
         if win32gui.IsWindowVisible(hwnd) and "Crusader Kings" in win32gui.GetWindowText(hwnd):
             found.append(hwnd)
     win32gui.EnumWindows(_cb, None)
-    if found:
-        win32gui.ShowWindow(found[0], win32con.SW_RESTORE)
-        try:
-            win32gui.SetForegroundWindow(found[0])
-        except Exception:
-            pass
+    if not found:
+        return False
+
+    target = found[0]
+    if win32gui.GetForegroundWindow() == target:
         return True
-    return False
+
+    user32 = ctypes.windll.user32
+    last_error = None
+    for _ in range(3):
+        foreground = win32gui.GetForegroundWindow()
+        current_thread = win32api.GetCurrentThreadId()
+        foreground_thread = win32process.GetWindowThreadProcessId(foreground)[0]
+        target_thread = win32process.GetWindowThreadProcessId(target)[0]
+        attached = []
+        try:
+            for thread in {foreground_thread, target_thread}:
+                if thread and thread != current_thread:
+                    if user32.AttachThreadInput(current_thread, thread, True):
+                        attached.append(thread)
+            win32gui.ShowWindow(target, win32con.SW_RESTORE)
+            win32gui.BringWindowToTop(target)
+            pyautogui.keyDown("alt")
+            try:
+                win32gui.SetForegroundWindow(target)
+            finally:
+                pyautogui.keyUp("alt")
+        except Exception as exc:
+            last_error = exc
+        finally:
+            for thread in reversed(attached):
+                user32.AttachThreadInput(current_thread, thread, False)
+        if win32gui.GetForegroundWindow() == target:
+            return True
+        time.sleep(0.2)
+
+    foreground = win32gui.GetForegroundWindow()
+    title = win32gui.GetWindowText(foreground) if foreground else ""
+    detail = f": {last_error}" if last_error else ""
+    raise RunnerError(
+        f"CK3 could not obtain foreground; active window is {title!r}{detail}")
 
 
 def ugc_content_dir():
@@ -391,6 +429,101 @@ def ocr_results(img, region):
     return found
 
 
+def ocr_box_results(img, region):
+    """OCR with full boxes for screenshot-guided stall diagnosis and recovery."""
+    if _ocr is None:
+        raise RunnerError("RapidOCR is required; install tools/requirements.txt")
+    crop_box = region_bbox(img, region)
+    result, _ = _ocr(np.asarray(img.crop(crop_box)))
+    found = []
+    for box, text, score in result or []:
+        score = float(score)
+        if not text or score < 0.45:
+            continue
+        xs = [int(point[0] + crop_box[0]) for point in box]
+        ys = [int(point[1] + crop_box[1]) for point in box]
+        found.append({
+            "text": text.strip(),
+            "score": round(score, 4),
+            "center": [int(sum(xs) / len(xs)), int(sum(ys) / len(ys))],
+            "bbox": [min(xs), min(ys), max(xs), max(ys)],
+        })
+    return found
+
+
+def select_stall_event_option(items, width, height):
+    """Pick a lower event option without assuming left- or right-column layout."""
+    excluded = ("当前日期", "开始于", "政治地图", "暂停", "最快", "公元")
+    lower = [
+        item for item in items
+        if 0.18 <= item["center"][0] / width <= 0.74
+        and 0.62 <= item["center"][1] / height <= 0.84
+        and not any(token in item["text"] for token in excluded)
+        and not re.fullmatch(r"[\d\s./:+-]+", item["text"])
+    ]
+    # Classic choices occupy the left content lane; some full-width layouts use
+    # the right. Portrait labels can share an x coordinate, so only fall back to
+    # the right lane when no plausible left-side choice was recognized.
+    left_lane = [item for item in lower if item["center"][0] / width <= 0.49]
+    ranked_pool = left_lane or lower
+    tolerance = int(width * 0.035)
+    aligned_counts = {
+        id(item): sum(
+            abs(item["center"][0] - other["center"][0]) <= tolerance
+            for other in ranked_pool)
+        for item in ranked_pool
+    }
+    ranked = sorted(
+        ranked_pool,
+        key=lambda item: (
+            aligned_counts[id(item)],
+            item["center"][1],
+            item["bbox"][2] - item["bbox"][0],
+            item["score"],
+        ),
+        reverse=True,
+    )
+    return lower, (ranked[0] if ranked else None)
+
+
+def capture_stall_and_recover(artifacts, label, attempt):
+    """Capture evidence, OCR the screen, and click a visible lower event option."""
+    focus_ck3()
+    image = ImageGrab.grab()
+    safe_label = re.sub(r"[^A-Za-z0-9_.-]+", "_", label)
+    stem = f"stall_{safe_label}_{attempt}"
+    image.save(artifacts / f"{stem}.png")
+    items = ocr_box_results(image, FULL_SCREEN_REGION)
+    width, height = image.size
+    lower, selected = select_stall_event_option(items, width, height)
+    for item in items:
+        item["event_option_candidate"] = item in lower
+        item["selected"] = item is selected
+    (artifacts / f"{stem}_ocr.json").write_text(
+        json.dumps(items, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    annotated = image.copy()
+    draw = ImageDraw.Draw(annotated)
+    for index, item in enumerate(items):
+        if not item["event_option_candidate"]:
+            continue
+        color = "#00ff66" if item["selected"] else "#ffcc00"
+        draw.rectangle(item["bbox"], outline=color, width=4)
+        draw.text((item["bbox"][0], max(0, item["bbox"][1] - 14)),
+                  str(index), fill=color)
+    annotated.save(artifacts / f"{stem}_annotated.png")
+
+    if selected is None:
+        log(f"stall diagnostic {stem}: no event-option OCR candidate")
+        return None
+    point = tuple(selected["center"])
+    deliberate_click(point, f"stall recovery '{selected['text']}'")
+    log(
+        f"stall diagnostic {stem}: selected OCR option "
+        f"{selected['text']!r} at {point}")
+    return selected
+
+
 def find_ocr_text(img, target, region, contains=False):
     for text, _, center, _ in ocr_results(img, region):
         matches = target in text if contains else text == target
@@ -494,6 +627,86 @@ def deliberate_click(point, label):
     log(f"clicked {label} at {point}")
 
 
+def ck3_date_ordinal_parts(year, month, day):
+    """Convert CK3's fixed 365-day calendar to an ordinal for freeze detection."""
+    month_lengths = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+    if not 1 <= month <= 12 or not 1 <= day <= month_lengths[month - 1]:
+        return None
+    return year * 365 + sum(month_lengths[:month - 1]) + day - 1
+
+
+def read_hud_game_date(image=None):
+    """Read the rendered timeline date and clickable date-button center."""
+    image = image or ImageGrab.grab()
+    dates = []
+    for text, _, center, _ in ocr_results(image, HUD_DATE_REGION):
+        match = re.search(
+            r"(\d{3,4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日", text)
+        if not match:
+            continue
+        game_day = ck3_date_ordinal_parts(*(int(part) for part in match.groups()))
+        if game_day is not None:
+            dates.append((game_day, center))
+    return max(dates, default=None)
+
+
+def read_hud_game_day(image=None):
+    """Read the rendered day; debug.log can be silent while time advances."""
+    result = read_hud_game_date(image)
+    return result[0] if result else None
+
+
+def set_speed_five_and_unpause(
+        artifacts, label, capture_tooltip=False, require_progress=True):
+    """Select speed 5 and prove that the rendered game date starts advancing."""
+    width, height = pyautogui.size()
+    speed_five = (int(width * (2536 / 2560)), int(height * (1418 / 1440)))
+    focus_ck3()
+    date_result = read_hud_game_date()
+    before = date_result[0] if date_result else None
+    timeline_play = date_result[1] if date_result else (
+        int(width * (2180 / 2560)), int(height * (1418 / 1440)))
+    pyautogui.moveTo(*speed_five, duration=0.2)
+    if capture_tooltip:
+        optional_ocr_text(
+            "最快", FULL_SCREEN_REGION, 4, artifacts,
+            f"bargain_{label}_speed_5_tooltip.png", contains=True)
+    deliberate_click(speed_five, f"speed 5 ({label})")
+
+    last_image = None
+    def wait_for_advance(timeout_s):
+        nonlocal before, last_image
+        deadline = time.time() + timeout_s
+        while time.time() < deadline:
+            last_image = ImageGrab.grab()
+            current = read_hud_game_day(last_image)
+            if before is None and current is not None:
+                before = current
+            elif current is not None and current > before:
+                return current
+            time.sleep(0.5)
+        return None
+
+    current = wait_for_advance(2)
+    if current is not None:
+        log(f"HUD date already advancing at speed 5 ({label})")
+        return current
+
+    deliberate_click(timeline_play, f"timeline play ({label})")
+    current = wait_for_advance(10)
+    if current is not None:
+        log(f"HUD date advanced after timeline play ({label})")
+        return current
+    if last_image is not None:
+        safe_label = re.sub(r"[^A-Za-z0-9_.-]+", "_", label)
+        last_image.save(artifacts / f"bargain_{safe_label}_speed_5_stalled.png")
+    message = f"speed 5 did not advance the HUD date ({label}); inspect speed evidence"
+    if require_progress:
+        raise RunnerError(message)
+    log(message)
+    return None
+
+
 def wait_for_marker(debug_offset, marker, timeout_s, xar_lines):
     """轮询 debug.log；保留同一批次中的后续 marker，避免事件竞态。"""
     if any(marker in line for line in xar_lines):
@@ -582,13 +795,9 @@ def navigate_lobby(artifacts):
     new_game = wait_for_ocr_text(
         "新游戏", MAIN_MENU_REGION, BOOT_TIMEOUT_S,
         artifacts, "01_main_menu.png")
-    focus_ck3()
-    pyautogui.click(*new_game)
-    log("OCR-clicked 新游戏")
-
-    robert = wait_for_ocr_text(
-        "公爵罗贝尔", RULER_REGION, LOBBY_TIMEOUT_S,
-        artifacts, "02_bookmark.png")
+    robert = click_until_ocr_appears(
+        new_game, "main-menu New Game", "公爵罗贝尔", RULER_REGION,
+        artifacts, "02_bookmark.png", timeout_s=15)
     screen_width, screen_height = pyautogui.size()
     ruler_candidates = [
         robert,
@@ -858,8 +1067,8 @@ def run_death_edges(debug_offset, error_offset, artifacts):
         if done:
             break
         if time.time() - last_recovery > 10:
-            focus_ck3()
-            click_ratio(0.38, 0.72)
+            capture_stall_and_recover(
+                artifacts, "death_edges", int((time.time() - (deadline - 120)) // 10))
             time.sleep(0.3)
             click_ratio(2315 / 2560, 1410 / 1440)
             last_recovery = time.time()
@@ -961,6 +1170,195 @@ def run_death_edges(debug_offset, error_offset, artifacts):
     print("exit to menu      : PASS")
     print("xar error.log   : 0")
     return xar_lines
+
+
+def wait_for_bargain_reopen(
+        pair, debug_offset, xar_lines, artifacts, initial_game_day):
+    """Cross one real 1095-day delay, dismissing unrelated native events by mouse."""
+    no_early = f"XAR: TEST PASS bargain_pair_{pair}_no_early_1094"
+    reopened = f"XAR: TEST PASS bargain_pair_{pair}_reopen_1095"
+    deadline = time.time() + BARGAIN_REOPEN_TIMEOUT_S
+    last_recovery = time.time()
+    last_day_change = time.time()
+    max_game_day = initial_game_day
+    last_hud_check = 0
+    stall_attempts = 0
+    recovery_sequence = 0
+    while time.time() < deadline:
+        text, debug_offset = read_new_lines(DEBUG_LOG, debug_offset)
+        for line in text.splitlines():
+            if "XAR:" in line:
+                xar_lines.append(line.strip())
+            for match in re.finditer(r"\b(\d{3,4})\.(\d{1,2})\.(\d{1,2})\b", line):
+                game_day = ck3_date_ordinal_parts(
+                    *(int(part) for part in match.groups()))
+                if game_day is not None and (
+                        max_game_day is None or game_day > max_game_day):
+                    max_game_day = game_day
+                    last_day_change = time.time()
+                    stall_attempts = 0
+        if time.time() - last_hud_check >= 4:
+            game_day = read_hud_game_day()
+            last_hud_check = time.time()
+            if game_day is not None and (
+                    max_game_day is None or game_day > max_game_day):
+                max_game_day = game_day
+                last_day_change = time.time()
+                stall_attempts = 0
+        fails = [line for line in xar_lines if "XAR: TEST FAIL" in line]
+        if fails:
+            raise RunnerError(f"bargain-reopen emitted FAIL marker: {fails[-1]}")
+        if (any(no_early in line for line in xar_lines)
+                and any(reopened in line for line in xar_lines)):
+            return debug_offset
+        if (time.time() - last_day_change > 12
+                and time.time() - last_recovery > 12):
+            if stall_attempts >= 3:
+                failure = "remained stalled after 3 screenshot-guided recoveries"
+                raise RunnerError(
+                    f"pair {pair} {failure}; inspect "
+                    f"stall_bargain_pair_{pair}_*.png/json")
+            stall_attempts += 1
+            recovery_sequence += 1
+            capture_stall_and_recover(
+                artifacts, f"bargain_pair_{pair}", recovery_sequence)
+            time.sleep(0.3)
+            recovered_day = set_speed_five_and_unpause(
+                artifacts, f"pair_{pair}_recovery_{recovery_sequence}",
+                require_progress=False)
+            if recovered_day is not None:
+                max_game_day = recovered_day
+                last_day_change = time.time()
+                stall_attempts = 0
+            last_recovery = time.time()
+        time.sleep(POLL_INTERVAL_S)
+    raise RunnerError(
+        f"pair {pair} did not produce day-1094 and day-1095 markers at speed 5")
+
+
+def run_bargain_reopen(debug_offset, error_offset, artifacts):
+    """Prove three cumulative production pairs and each exact 1095-day reopen."""
+    offset = debug_offset
+    xar_lines = []
+    offset = wait_for_marker(offset, "XAR: TEST bargain reopen begin", 180, xar_lines)
+    offset = wait_for_marker(offset, "XAR: TEST PASS bargain_initial_0", 15, xar_lines)
+
+    for pair in range(1, 4):
+        offset = wait_for_marker(
+            offset, f"XAR: TEST PASS bargain_pair_{pair}_open", 20, xar_lines)
+        wait_for_ocr_text(
+            "琉焰的垂青", EVENT_TITLE_REGION, 20, artifacts,
+            f"bargain_pair_{pair}_blessing.png", stable_hits=1)
+        blessing = wait_for_localized_options(
+            f"bargain_pair_{pair}_blessing", artifacts, 3)
+        offset = click_until_marker(
+            blessing, f"pair {pair} production blessing option",
+            f"XAR: TEST PASS bargain_pair_{pair}_before_curse",
+            offset, xar_lines, failure_marker="XAR: TEST FAIL")
+
+        offset = wait_for_marker(offset, "XAR: curse event fired", 20, xar_lines)
+        wait_for_ocr_text(
+            "等价的咒痕", EVENT_TITLE_REGION, 20, artifacts,
+            f"bargain_pair_{pair}_curse.png", stable_hits=1)
+        curse = wait_for_localized_options(
+            f"bargain_pair_{pair}_curse", artifacts, 2)
+        offset = click_until_marker(
+            curse, f"pair {pair} production curse option",
+            f"XAR: TEST PASS bargain_pair_{pair}_after_curse",
+            offset, xar_lines, failure_marker="XAR: TEST FAIL")
+
+        initial_game_day = set_speed_five_and_unpause(
+            artifacts, f"pair_{pair}", capture_tooltip=(pair == 1))
+        offset = wait_for_bargain_reopen(
+            pair, offset, xar_lines, artifacts, initial_game_day)
+
+    offset = wait_for_marker(
+        offset, "XAR: TEST PASS bargain_pair_3_full_reopen", 20, xar_lines)
+    offset = wait_for_marker(offset, "XAR: TEST DONE bargain-reopen", 5, xar_lines)
+    wait_for_ocr_text(
+        "琉焰的垂青", EVENT_TITLE_REGION, 20, artifacts,
+        "bargain_pair_3_full_reopen_window.png", stable_hits=1)
+
+    unique_markers = [
+        "XAR: TEST bargain reopen begin",
+        "XAR: TEST PASS bargain_initial_0",
+    ]
+    ordered_positions = []
+    for marker in unique_markers:
+        matches = [index for index, line in enumerate(xar_lines) if marker in line]
+        if len(matches) != 1:
+            raise RunnerError(f"bargain marker count for '{marker}' is {len(matches)}")
+        ordered_positions.append(matches[0])
+
+    production_reopens = [
+        index for index, line in enumerate(xar_lines)
+        if "XAR: new blessing session (3y timer)" in line
+    ]
+    if len(production_reopens) != 3:
+        raise RunnerError(
+            f"production xar.0006 marker count is {len(production_reopens)}, expected 3")
+
+    evidence_pairs = []
+    for pair in range(1, 4):
+        phase_markers = (
+            f"XAR: TEST PASS bargain_pair_{pair}_open",
+            f"XAR: TEST PASS bargain_pair_{pair}_before_curse",
+            f"XAR: TEST PASS bargain_pair_{pair}_after_curse",
+            f"XAR: TEST PASS bargain_pair_{pair}_no_early_1094",
+            f"XAR: TEST PASS bargain_pair_{pair}_reopen_1095",
+        )
+        phase_positions = []
+        for marker in phase_markers:
+            matches = [
+                (index, line) for index, line in enumerate(xar_lines) if marker in line
+            ]
+            if len(matches) != 1:
+                raise RunnerError(f"bargain marker count for '{marker}' is {len(matches)}")
+            phase_positions.append(matches[0][0])
+        ordered_positions.extend(phase_positions[:4])
+        ordered_positions.append(production_reopens[pair - 1])
+        ordered_positions.append(phase_positions[4])
+
+        evidence_pairs.append({
+            "pair": pair,
+            "no_early_delta_days": 1094,
+            "production_reopen_delta_days": 1095,
+        })
+
+    final_marker = "XAR: TEST PASS bargain_pair_3_full_reopen"
+    done_marker = "XAR: TEST DONE bargain-reopen"
+    for marker in (final_marker, done_marker):
+        matches = [index for index, line in enumerate(xar_lines) if marker in line]
+        if len(matches) != 1:
+            raise RunnerError(f"bargain marker count for '{marker}' is {len(matches)}")
+        ordered_positions.append(matches[0])
+    if ordered_positions != sorted(ordered_positions):
+        raise RunnerError("bargain production markers occurred out of order")
+    fails = [line for line in xar_lines if "XAR: TEST FAIL" in line]
+    if fails:
+        raise RunnerError(f"bargain-reopen emitted {len(fails)} FAIL marker(s)")
+
+    err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+    xar_errors = [
+        line.strip() for line in err_text.splitlines() if "xar" in line.lower()
+    ]
+    if xar_errors:
+        raise RunnerError(
+            f"bargain-reopen emitted {len(xar_errors)} xar error.log line(s)")
+
+    print("\n===== XAR BARGAIN REOPEN REPORT =====")
+    for item in evidence_pairs:
+        print(
+            f"pair {item['pair']}: no early reopen at day "
+            f"{item['no_early_delta_days']}; production reopen at day "
+            f"{item['production_reopen_delta_days']}")
+    print("cumulative pairs : 1 -> 2 -> 3")
+    print("session states   : 1 after blessing, 0 on each xar.0006")
+    print("trait XP         : 0 -> 1 -> 2 -> 3")
+    print("reject count     : 0")
+    print("production reopen: 3 ordered xar.0006 markers")
+    print("xar error.log    : 0")
+    return {"pairs": evidence_pairs, "production_reopen_markers": 3}
 
 
 def run_selftest(import_record, debug_offset, error_offset, artifacts):
@@ -1154,6 +1552,7 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
     max_date = None
     last_day_change = time.time()
     last_recovery = 0
+    stall_attempts = 0
     while time.time() < deadline:
         text, offset = read_new_lines(DEBUG_LOG, offset)
         for line in text.splitlines():
@@ -1167,6 +1566,7 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
                 if max_date is None or current_date > max_date:
                     max_date = current_date
                     last_day_change = time.time()
+                    stall_attempts = 0
         if done:
             break
         if time.time() - last_day_change > 8 and time.time() - last_recovery > 8:
@@ -1178,6 +1578,14 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
                 pyautogui.click(*continue_button)
                 log(f"OCR-clicked succession continue at {continue_button}")
                 time.sleep(0.5)
+            else:
+                if stall_attempts >= 3:
+                    raise RunnerError(
+                        "selftest remained stalled after 3 screenshot-guided "
+                        "recoveries; inspect stall_selftest_*.png/json")
+                stall_attempts += 1
+                capture_stall_and_recover(
+                    artifacts, "selftest", stall_attempts)
             click_ratio(2315 / 2560, 1410 / 1440)
             log(f"date frozen at {max_date}; recovery play click")
             last_recovery = time.time()
@@ -1313,7 +1721,9 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
         "error_reason": error_reason,
     }
     if evidence:
-        report["persistence_restart"] = evidence
+        report["scenario_evidence"] = evidence
+        if scenario == "persistence-restart":
+            report["persistence_restart"] = evidence
     (artifacts / "report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -1329,9 +1739,10 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
         "off": 0,
         "persistence-restart": 0,
         "death-edges": 1,
+        "bargain-reopen": 2,
     }[scenario]
     rule_setting = "xar_selftest" if scenario in (
-        "selftest", "persistence-restart", "death-edges") else (
+        "selftest", "persistence-restart", "death-edges", "bargain-reopen") else (
         "xar_off" if scenario == "off" else "xar_on")
     if artifacts_dir:
         artifacts = Path(artifacts_dir).expanduser().resolve()
@@ -1473,6 +1884,9 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
                 }
             elif scenario == "death-edges":
                 run_death_edges(debug_offset, error_offset, artifacts)
+            elif scenario == "bargain-reopen":
+                report_evidence = run_bargain_reopen(
+                    debug_offset, error_offset, artifacts)
             elif scenario == "selftest":
                 error_reason = run_selftest(
                     effective_record, debug_offset, error_offset, artifacts)
@@ -1513,7 +1927,9 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
                     error_reason = f"{len(xar_errors)} xar error.log line(s)"
             if error_reason is None:
                 result = "GREEN"
-                if scenario not in ("selftest", "persistence-restart", "death-edges"):
+                if scenario not in (
+                        "selftest", "persistence-restart", "death-edges",
+                        "bargain-reopen"):
                     print("RESULT: GREEN")
                 elif scenario == "persistence-restart":
                     print("\n===== XAR PERSISTENCE RESTART REPORT =====")
@@ -1523,7 +1939,11 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
                     print("RESULT: GREEN")
                 elif scenario == "death-edges":
                     print("RESULT: GREEN")
-            elif scenario not in ("selftest", "persistence-restart", "death-edges"):
+                elif scenario == "bargain-reopen":
+                    print("RESULT: GREEN")
+            elif scenario not in (
+                    "selftest", "persistence-restart", "death-edges",
+                    "bargain-reopen"):
                 print("RESULT: RED")
     except Exception as exc:
         error_reason = str(exc)
@@ -1584,7 +2004,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--scenario",
         choices=("selftest", "on-first-life", "on-recorded", "on-high-budget", "off",
-                 "persistence-restart", "death-edges"),
+                 "persistence-restart", "death-edges", "bargain-reopen"),
         default="selftest",
         help="acceptance scenario (default: selftest)")
     parser.add_argument(

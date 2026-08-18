@@ -747,6 +747,10 @@ xar.0004 = {
 		debug_log = "XAR: blessing event fired"
 		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
+			limit = { has_global_variable = xa_bargain_reopen_active }
+			xar_acceptance_bargain_open_effect = yes
+		}
+		else_if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			set_global_variable = { name = xa_bless_a value = 0 }
 			set_global_variable = { name = xa_bless_b value = 50 }
@@ -779,6 +783,10 @@ xar.0004 = {
 		xar_apply_blessing_effect = { SLOT = a }
 		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
+			limit = { has_global_variable = xa_bargain_reopen_active }
+			xar_acceptance_bargain_before_curse_effect = yes
+		}
+		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI bless accepted"
 		}
@@ -790,6 +798,10 @@ xar.0004 = {
 		xar_apply_blessing_effect = { SLOT = b }
 		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
+			limit = { has_global_variable = xa_bargain_reopen_active }
+			xar_acceptance_bargain_before_curse_effect = yes
+		}
+		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI bless accepted"
 		}
@@ -800,6 +812,10 @@ xar.0004 = {
 		name = xar_bless_option_c
 		xar_apply_blessing_effect = { SLOT = c }
 		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_bargain_reopen_active }
+			xar_acceptance_bargain_before_curse_effect = yes
+		}
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI bless accepted"
@@ -862,6 +878,10 @@ xar.0005 = {
 		debug_log = "XAR: curse event fired"
 		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
+			limit = { has_global_variable = xa_bargain_reopen_active }
+			xar_acceptance_bargain_curse_open_effect = yes
+		}
+		else_if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			set_global_variable = { name = xa_curse_a value = 0 }
 			set_global_variable = { name = xa_curse_b value = 1 }
@@ -882,6 +902,10 @@ xar.0005 = {
 		xar_apply_curse_effect = { SLOT = a }
 		xar_capture_score_baseline_effect = yes
 		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_bargain_reopen_active }
+			xar_acceptance_bargain_after_curse_effect = yes
+		}
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI curse accepted"
@@ -915,6 +939,10 @@ xar.0005 = {
 		xar_capture_score_baseline_effect = yes
 		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
+			limit = { has_global_variable = xa_bargain_reopen_active }
+			xar_acceptance_bargain_after_curse_effect = yes
+		}
+		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI curse accepted"
 			remove_global_variable = xa_ui_test_active
@@ -939,6 +967,10 @@ xar.0005 = {
 		xar_complete_bargain_pair_effect = yes
 		xar_capture_score_baseline_effect = yes
 		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_bargain_reopen_active }
+			xar_acceptance_bargain_after_curse_effect = yes
+		}
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			set_global_variable = { name = xa_ui_test_stage value = 3 }
@@ -966,6 +998,12 @@ xar.0006 = {
 	immediate = {
 		debug_log = "XAR: new blessing session (3y timer)"
 		set_global_variable = { name = xa_bless_session value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_bargain_reopen_active }
+			xar_acceptance_bargain_reopen_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
 		trigger_event = { id = xar.0004 }
 	}
 }

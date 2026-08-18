@@ -104,7 +104,7 @@
 - selftest 和生产事件调用同一 effects。
 - 静态校验自动发现事件、on_action、decision 和 interaction 入口。
 - 建立 L0 静态、L1 解析、L2 机制矩阵、L3 UI/OCR 四层测试。
-- GitHub Actions 自动运行 L0；Windows 自托管环境运行 L1-L3。
+- GitHub 官方 Windows Runner 自动运行 L0 和发布候选构建；L1-L3 在本机真实 CK3 桌面运行并保存报告。
 - 构建纯净 release staging、manifest、SHA-256 和 deterministic zip。
 - runner 输出 run ID、git SHA、mod hash、环境信息和 JSON/JUnit 报告。
 
@@ -120,7 +120,7 @@
 
 - 已将玩家契约启用与运行/商店状态初始化抽为生产 scripted effects；契约接受 option 与 selftest 调用同一组 effects，自测不再复制价格及垂青会 session 初始化。
 - 已将 14 个会整数涨价的商品抽为具名生产购买 effects；事件 options 只保留购买条件、测试 marker 与 UI 跳转，外交 `25 -> 30`/扣款样例直接调用生产 effect。七种一次性商品同样各用具名 effect，不引入商品 DSL。
-- 已将余分转金币、余额清零和垂青会 session 初始化抽为生产 effect；首世继续跳过商店兑换，完整 UI 自测继续在 effect 返回后把 session 覆盖为 3，原流程不变。
+- 已将余分转金币、余额清零和垂青会 session 初始化抽为生产 effect；首世继续跳过商店兑换。完整 UI 自测的 `session = 3` 仅是让旧的拒绝/封印点击链立即前进的 acceptance sentinel，不代表生产会话包含三对；生产始终一场一对并延迟 1095 日重开。
 - 静态校验会解析上述 effect bodies，证明生产事件与 selftest 共用入口，并禁止契约/selftest 重新出现初始化赋值或外交购买复制片段。
 
 实施状态（2026-08-18，静态 CI 与 release staging 子范围）：
@@ -129,7 +129,7 @@
 - 已建立 byte-preserving release allowlist，只从 mod 源目录复制正式 CK3 根文件与核心目录；mod 内 `tools/`、Python cache、未知根内容、仓库文档和源素材不会进入 staging，意外 cache/非 allowlist 文件会令静态校验失败。
 - 默认生成 `dist/XenoAmess_s_Eternal_Recurrence/`、旁置 manifest JSON（相对路径、大小、SHA-256、可用时的 git SHA）和 deterministic ZIP；`--check` 在临时目录双构建并比较 manifest 与 ZIP。
 - acceptance 与 static requirements 已拆分并按当前可用环境固定版本。runner 输出 JUnit、环境指纹、开发/production runtime hash 和本次增量日志，并支持调用方指定独立 artifact 目录。
-- 已新增串行 Windows 自托管 L1-L3 workflow：专用交互桌面 labels、禁止 PR、固定 concurrency、安全 preflight、七场景分层、失败后仍上传分层证据、最终统一 gate；tag 全绿后生成候选 ZIP/manifest。首个远端 GREEN 等待 runner 注册和 repository variables 配置，不把本机 L1 GREEN 冒充远端验收。
+- 无可用自托管 CK3 桌面；官方 `windows-latest` 负责 push/PR 的 L0，手动触发或 `v*` tag 还会生成并上传候选 ZIP/manifest。官方 runner 不运行 CK3，不把云端 L0 冒充 L1-L3；八个真实游戏场景由本机串行执行并以 JSON/JUnit、截图和增量日志作为发布证据。
 - production-only 投影已实现：整文件排除 acceptance 定义，混合运行文件用严格 marker 渲染生产分支，构建扫描禁止测试标识残留；生产 smoke 直接加载投影实测。
 - acceptance runner 已增加 `selftest/on-first-life/on-recorded/on-high-budget/off` 场景并完成实机 GREEN；四个生产场景均加载 release 投影，每场输出 JSON/JUnit、run ID、git/mod/environment 指纹与阶段耗时，且现场备份不进入 artifacts。
 
@@ -230,6 +230,12 @@
 - acceptance JSON/JUnit 记录 run ID、UTC、版本、git SHA、mod tree hash、游戏/环境及结果；用户现场备份已移出公开 artifacts 并在恢复后删除。
 - Steam 实际上传、GitHub Release、干净中英截图、缩略图人工审美确认和资产许可确认需要外部账号或人工判断。其余七语言翻译及九语言人工人格 QA 按用户要求推迟到明确发布指令之后；状态见 `docs/release-qa-v1.0.0.md`，不得伪报为自动完成。
 
+### Phase 6：自主高分玩家智能体（长期工程，排队中）
+
+目标：建立只使用 production mod、玩家可见信息和正常 UI 操作的 CK3 自主玩家，通过 OCR/视觉驱动、大模型局后复盘、版本化经验记忆和持续重复游玩，在合法规则下逐步提高真实死亡结算分数。
+
+启动门槛：今天当前所有可自主完成的发布、验收、简单 30–50 年平衡测试、国际化、素材候选和文档任务完成后才开始；当前不得用该大工程替代 1.0 的简单平衡验证。完整不作弊边界、架构、学习闭环、阶段退出标准和首批待办见 `docs/autonomous-player-agent.md`。
+
 ## 4. 测试矩阵
 
 优先补齐以下场景：
@@ -238,7 +244,7 @@
 - 非零纪录导入、两进程重启导入和 request/state 防抢跑均已有自动验收。
 - 同阈值区间、跨阈值、最高阈值和超过上限。
 - 商店四页代表商品、整数涨价、一次性所有权、余额不足和余分兑换。
-- 真实拒绝、重抽与封印已纳入 selftest UI；仍需补第一至第三对、满三对结束和正常三年重开。
+- 真实拒绝、重抽与封印已纳入 selftest UI；独立 `bargain-reopen` 已实机 GREEN（`xar_accept_ue4ye_un`）：累计第一至第三对、每轮 1094 日不提前重开、1095 日生产重开，以及第三对后完整打开下一场，0 `xar` errors。
 - 祝福/诅咒稳定 ID 到 effect 的代表性语义映射。
 - AI 实际死亡负例已自动验证。
 - 无继承人脚本链、原生继承窗可见结算、退出主菜单与正常继承人观察者切换均已验证。
@@ -285,3 +291,4 @@
 | P3 | 特质等级解锁 | 功能 | 成长只有压力惩罚 | 信息、重抽、事件和外观解锁 | 建立升级期待 | 8-15 人日 |
 | P3 | 本世契约原型 | 功能 | 绝对状态主导计分 | 行为与增量目标 | 建立长期差异化 | 25-45 人日 |
 | P3 | 工坊物料重制 | 体验 | 核心卖点表达不足 | 新缩略图、截图和版本说明 | 提升工坊转化 | 2-6 人日 |
+| P4 | 自主高分玩家智能体 | 研发 | 简单长测不能学习 CK3 策略或持续冲分 | 视觉/OCR 驱动、分层规划、经验记忆、大模型复盘、连续合法多局 | 自动发现平衡问题并形成可持续提升的高分玩法 | 持续工程 |

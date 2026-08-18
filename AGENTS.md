@@ -63,10 +63,9 @@ py tools/build_release.py --check
 一键全流程（备份现场 → **静态 loc 校验** → 同步代码 → 过大厅 → 自测规则档全链断言 → 恢复现场），
 GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-workflow.md`。
 
-**L1-L3 自托管 CI**：`.github/workflows/ck3-self-hosted-ci.yml` 只允许专用的
-`[self-hosted, Windows, X64, ck3, interactive]` 桌面 runner，禁止 PR 触发和并行运行。
-仓库 variables 必须设置 `XAR_CK3_EXE`、`XAR_CK3_USER_DIR`、`XAR_CK3_UGC_DIR`、
-`XAR_CK3_VERSION`；runner 必须以交互式登录用户运行，不能作为 Windows service，且不得同时人工启动 CK3。
+**CI 边界**：`.github/workflows/static-ci.yml` 使用 GitHub 官方 `windows-latest`，在 push/PR
+执行 L0，手动触发或 `v*` tag 时额外生成 ZIP/manifest。官方 runner 没有 CK3、Steam 授权和
+可靠交互桌面，禁止调用 `run_acceptance.py` 或声称完成 L1-L3；真实游戏验收必须在本机运行并保存报告。
 
 **⚠️ 改完代码游戏里看不到，先怀疑这个**：启动器把 dev .mod（带 remote_file_id）和工坊订阅合并，
 游戏实际加载的是 **工坊缓存**（`Z:\SteamLibrary\steamapps\workshop\content\1158310\3784706360`，

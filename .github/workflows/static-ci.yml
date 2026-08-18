@@ -1,8 +1,9 @@
-name: Static CI
+name: Official Runner CI
 
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -12,6 +13,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
@@ -19,9 +23,27 @@ jobs:
           cache-dependency-path: tools/requirements-static.txt
       - name: Install static dependencies
         run: python -m pip install -r tools/requirements-static.txt
+      - name: Compile Python tools
+        run: python -m compileall -q tools
       - name: Validate generated and static content
         run: python tools/validate_static.py
       - name: Run scoring reference vectors
         run: python -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors(); print('REFERENCE VECTORS OK')"
       - name: Verify reproducible release
         run: python tools/build_release.py --check
+      - name: Build manual release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_release.py
+      - name: Build tagged release candidate
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_release.py --release
+      - name: Upload release candidate
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-candidate-${{ github.ref_name }}-${{ github.run_id }}
+          path: |
+            dist/*.zip
+            dist/*.manifest.json
+          if-no-files-found: error
+          retention-days: 30
