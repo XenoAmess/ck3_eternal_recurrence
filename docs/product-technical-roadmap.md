@@ -114,7 +114,7 @@
 - 死亡计分机械核心、`log2` 阶梯和五代展开由 `gen_scoring.py` 生成到独立 effect 文件；手写文件仅保留后代身份/宗族/家族/最高头衔的引擎适配器。
 - hover 与 `docs/scoring-rules.md` 读取同一 schema；文档全文生成并纳入 parity。
 - 已增加纯 Python reference model，以及 `log2` 0/1/2/3/4、两套头衔系数和拒绝 0/1/100 次边界断言；静态校验同时限制 `xar_compute_score_effect` 只能有一个生成定义。
-- 本子范围不包含 CI、release staging、分层测试扩建或 Phase 3 平衡功能，这些仍为待办。
+- 计分单一权威源子任务本身不包含 CI、release staging、分层测试扩建或 Phase 3 平衡功能；后续子任务已分别推进。
 
 实施状态（2026-08-18，生产逻辑复用子范围）：
 
@@ -128,7 +128,8 @@
 - 已新增 hosted Windows GitHub Actions L0：安装固定的最小静态依赖，依次运行 `validate_static.py`、计分 reference vectors 和 `build_release.py --check`，不启动 CK3。
 - 已建立 byte-preserving release allowlist，只从 mod 源目录复制正式 CK3 根文件与核心目录；mod 内 `tools/`、Python cache、未知根内容、仓库文档和源素材不会进入 staging，意外 cache/非 allowlist 文件会令静态校验失败。
 - 默认生成 `dist/XenoAmess_s_Eternal_Recurrence/`、旁置 manifest JSON（相对路径、大小、SHA-256、可用时的 git SHA）和 deterministic ZIP；`--check` 在临时目录双构建并比较 manifest 与 ZIP。
-- acceptance 与 static requirements 已拆分并按当前可用环境固定版本。runner 已输出 JUnit 和环境指纹；L1-L3 自托管 CI 仍待后续实施。
+- acceptance 与 static requirements 已拆分并按当前可用环境固定版本。runner 输出 JUnit、环境指纹、开发/production runtime hash 和本次增量日志，并支持调用方指定独立 artifact 目录。
+- 已新增串行 Windows 自托管 L1-L3 workflow：专用交互桌面 labels、禁止 PR、固定 concurrency、安全 preflight、七场景分层、失败后仍上传分层证据、最终统一 gate；tag 全绿后生成候选 ZIP/manifest。首个远端 GREEN 等待 runner 注册和 repository variables 配置，不把本机 L1 GREEN 冒充远端验收。
 - production-only 投影已实现：整文件排除 acceptance 定义，混合运行文件用严格 marker 渲染生产分支，构建扫描禁止测试标识残留；生产 smoke 直接加载投影实测。
 - acceptance runner 已增加 `selftest/on-first-life/on-recorded/on-high-budget/off` 场景并完成实机 GREEN；四个生产场景均加载 release 投影，每场输出 JSON/JUnit、run ID、git/mod/environment 指纹与阶段耗时，且现场备份不进入 artifacts。
 

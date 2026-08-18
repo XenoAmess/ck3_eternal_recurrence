@@ -53,14 +53,26 @@ except Exception as e:
 pyautogui.FAILSAFE = False
 
 ROOT = Path(__file__).resolve().parent.parent
-CK3_EXE = ROOT / "Crusader Kings III" / "binaries" / "ck3.exe"
-USER_DIR = Path.home() / "Documents" / "Paradox Interactive" / "Crusader Kings III"
+
+
+def configured_path(name, default):
+    raw = os.environ.get(name)
+    return Path(os.path.expandvars(raw)).expanduser().resolve() if raw else default.resolve()
+
+
+CK3_EXE = configured_path(
+    "XAR_CK3_EXE", ROOT / "Crusader Kings III" / "binaries" / "ck3.exe")
+USER_DIR = configured_path(
+    "XAR_CK3_USER_DIR",
+    Path.home() / "Documents" / "Paradox Interactive" / "Crusader Kings III")
+UGC_DIR_OVERRIDE = os.environ.get("XAR_CK3_UGC_DIR")
 MOD_ROOT = ROOT / "XenoAmess_s_Eternal_Recurrence"
 UGC_MOD_FILE = USER_DIR / "mod" / "ugc_3784706360.mod"
 TUTORIAL_TXT = USER_DIR / "tutorial.txt"
 PRESETS_TXT = USER_DIR / "player" / "game_rules" / "presets.txt"
 DEBUG_LOG = USER_DIR / "logs" / "debug.log"
 ERROR_LOG = USER_DIR / "logs" / "error.log"
+GUI_WARNINGS_LOG = USER_DIR / "logs" / "gui_warnings.log"
 RESTORE_WATCHDOG = ROOT / "tools" / "restore_watchdog.py"
 REQUIRED_PASSES = {
     "pact_trait", "pact_flag", "shop_init", "shop_inflate", "shop_charge",
@@ -129,10 +141,68 @@ def focus_ck3():
 
 def ugc_content_dir():
     """工坊缓存目录（游戏实际加载的就是它——播放集启用的是 ugc 项而非 dev 路径）。"""
+    if UGC_DIR_OVERRIDE:
+        return configured_path("XAR_CK3_UGC_DIR", Path(UGC_DIR_OVERRIDE))
     m = re.search(r'path="([^"]+)"', UGC_MOD_FILE.read_text(encoding="utf-8"))
     if not m:
         raise RuntimeError("ugc .mod has no path=")
     return Path(m.group(1))
+
+
+def ck3_is_running():
+    result = subprocess.run(
+        ["tasklist", "/FI", "IMAGENAME eq ck3.exe", "/FO", "CSV", "/NH"],
+        capture_output=True, text=True, errors="replace")
+    return any(line.lower().startswith('"ck3.exe"') for line in result.stdout.splitlines())
+
+
+def preflight():
+    """Reject unsafe or incomplete desktop-runner configuration before /MIR or backup."""
+    errors = []
+    if os.name != "nt":
+        errors.append("acceptance requires Windows")
+    if not CK3_EXE.is_file():
+        errors.append(f"CK3 executable not found: {CK3_EXE}")
+    for path, label in ((TUTORIAL_TXT, "tutorial.txt"),
+                        (PRESETS_TXT, "game-rule presets")):
+        if not path.is_file():
+            errors.append(f"{label} not found: {path}")
+    target = None
+    try:
+        target = ugc_content_dir().resolve()
+    except (OSError, RuntimeError) as exc:
+        errors.append(f"UGC target unavailable: {exc}")
+    if target is not None:
+        if not target.is_dir():
+            errors.append(f"UGC target is not a directory: {target}")
+        elif not (target / "descriptor.mod").is_file():
+            errors.append(f"UGC target lacks descriptor.mod: {target}")
+        if target.name != build_release.WORKSHOP_ITEM_ID:
+            errors.append(
+                f"UGC /MIR target must end in workshop id "
+                f"{build_release.WORKSHOP_ITEM_ID}: {target}")
+        if (target == MOD_ROOT.resolve() or MOD_ROOT.resolve() in target.parents
+                or target in MOD_ROOT.resolve().parents):
+            errors.append(f"UGC /MIR target overlaps repository mod source: {target}")
+    width, height = pyautogui.size()
+    if width < 1920 or height < 1080:
+        errors.append(f"interactive desktop is too small: {width}x{height}")
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        if os.environ.get("XAR_CK3_CI") != "1":
+            errors.append("GitHub Actions requires XAR_CK3_CI=1 on a dedicated desktop")
+        if not all(os.environ.get(name) for name in (
+                "XAR_CK3_EXE", "XAR_CK3_USER_DIR", "XAR_CK3_UGC_DIR",
+                "XAR_CK3_VERSION")):
+            errors.append(
+                "GitHub Actions requires explicit CK3, user, UGC, and version values")
+        if ck3_is_running():
+            errors.append("ck3.exe is already running on the dedicated CI desktop")
+    if errors:
+        raise RunnerError("preflight failed:\n  " + "\n  ".join(errors))
+    log(
+        f"preflight passed: exe={CK3_EXE}, user={USER_DIR}, "
+        f"ugc={target}, desktop={width}x{height}")
+    return target
 
 
 def sync_repo_to_ugc(target, source=MOD_ROOT):
@@ -193,6 +263,17 @@ def read_new_lines(path, offset):
         return data.decode("utf-8", errors="ignore"), size
     except OSError:
         return "", offset
+
+
+def snapshot_log(path, offset, destination):
+    """Copy only lines produced by this run; never archive a user's historical logs."""
+    if offset is None or not path.exists():
+        return
+    with open(path, "rb") as source:
+        size = path.stat().st_size
+        source.seek(0 if size < offset else offset)
+        data = source.read()
+    destination.write_bytes(data)
 
 
 def set_last_applied_rule(raw, setting):
@@ -1179,10 +1260,10 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
     return "; ".join(reasons) or "selftest acceptance checks failed"
 
 
-def mod_tree_hash():
+def mod_tree_hash(root=MOD_ROOT):
     digest = hashlib.sha256()
-    for path in build_release.release_files(MOD_ROOT):
-        relative = path.relative_to(MOD_ROOT).as_posix().encode("utf-8")
+    for path in build_release.release_files(root):
+        relative = path.relative_to(root).as_posix().encode("utf-8")
         digest.update(len(relative).to_bytes(4, "big"))
         digest.update(relative)
         digest.update(path.read_bytes())
@@ -1190,7 +1271,8 @@ def mod_tree_hash():
 
 
 def write_json_report(artifacts, scenario, result, import_record, timings,
-                      error_reason, run_id, started_at, evidence=None):
+                      error_reason, run_id, started_at, source_mode,
+                      runtime_tree_sha256, evidence=None):
     junit = artifacts / "report.xml"
     failure = "" if result == "GREEN" else (
         f'<failure message="{html.escape(error_reason or "acceptance failed", quote=True)}" />')
@@ -1216,12 +1298,14 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
         "git_sha": build_release.git_sha(),
         "mod_tree_sha256": mod_tree_hash(),
         "workshop_item_id": build_release.WORKSHOP_ITEM_ID,
-        "source_mode": "repository-synced-workshop-cache",
+        "source_mode": source_mode,
+        "runtime_tree_sha256": runtime_tree_sha256,
         "debug_mode": True,
-        "game_version": "1.19.0.6",
+        "game_version": os.environ.get("XAR_CK3_VERSION") or "1.19.0.6",
         "environment": {
             "platform": platform.platform(),
             "python": sys.version.split()[0],
+            "desktop": f"{pyautogui.size().width}x{pyautogui.size().height}",
         },
         "artifacts": {"directory": str(artifacts), "files": files},
         "import_record": import_record,
@@ -1234,7 +1318,7 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def main(scenario="selftest", import_record=0):
+def main(scenario="selftest", import_record=0, artifacts_dir=None):
     run_started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     effective_record = {
@@ -1249,7 +1333,11 @@ def main(scenario="selftest", import_record=0):
     rule_setting = "xar_selftest" if scenario in (
         "selftest", "persistence-restart", "death-edges") else (
         "xar_off" if scenario == "off" else "xar_on")
-    artifacts = Path(tempfile.mkdtemp(prefix="xar_accept_"))
+    if artifacts_dir:
+        artifacts = Path(artifacts_dir).expanduser().resolve()
+        artifacts.mkdir(parents=True, exist_ok=False)
+    else:
+        artifacts = Path(tempfile.mkdtemp(prefix="xar_accept_"))
     run_id = artifacts.name
     log(f"scenario={scenario}, import_record={effective_record}, artifacts={artifacts}")
     timings = {}
@@ -1261,6 +1349,10 @@ def main(scenario="selftest", import_record=0):
     restore_succeeded = False
     ck3_process = None
     report_evidence = {}
+    source_mode = "repository-synced-workshop-cache"
+    runtime_source = MOD_ROOT
+    runtime_tree_sha256 = mod_tree_hash(runtime_source)
+    log_offsets = {DEBUG_LOG: None, ERROR_LOG: None, GUI_WARNINGS_LOG: None}
     session_artifacts = artifacts
     if scenario == "persistence-restart":
         session_artifacts = artifacts / "writer"
@@ -1270,6 +1362,7 @@ def main(scenario="selftest", import_record=0):
         with timed_phase(timings, "setup_backup"):
             if _ocr is None:
                 raise RunnerError("RapidOCR missing; install tools/requirements.txt")
+            preflight()
             shutil.copy2(TUTORIAL_TXT, backup / "tutorial.txt")
             shutil.copy2(PRESETS_TXT, backup / "presets.txt")
             backup_ready = True
@@ -1286,12 +1379,13 @@ def main(scenario="selftest", import_record=0):
             log("static validation passed")
 
         with timed_phase(timings, "sync_and_configure"):
-            runtime_source = MOD_ROOT
             if scenario in ("on-first-life", "on-recorded", "on-high-budget", "off"):
                 runtime_source = artifacts / "release_projection"
                 build_release.build_release(
                     MOD_ROOT, runtime_source, revision=build_release.git_sha())
+                source_mode = "production-release-projection"
                 log("built stripped release projection for production smoke")
+            runtime_tree_sha256 = mod_tree_hash(runtime_source)
             sync_repo_to_ugc(ugc_content_dir(), runtime_source)
             raw = TUTORIAL_TXT.read_bytes()
             seeded, removed = set_tutorial_record(raw, effective_record)
@@ -1309,6 +1403,12 @@ def main(scenario="selftest", import_record=0):
             time.sleep(3)
             error_offset = ERROR_LOG.stat().st_size if ERROR_LOG.exists() else 0
             debug_offset = DEBUG_LOG.stat().st_size if DEBUG_LOG.exists() else 0
+            log_offsets = {
+                DEBUG_LOG: debug_offset,
+                ERROR_LOG: error_offset,
+                GUI_WARNINGS_LOG: (
+                    GUI_WARNINGS_LOG.stat().st_size if GUI_WARNINGS_LOG.exists() else 0),
+            }
             ck3_process = subprocess.Popen(
                 [str(CK3_EXE), "-debug_mode"], cwd=str(CK3_EXE.parent))
             ck3_pid_file.write_text(str(ck3_process.pid), encoding="ascii")
@@ -1467,9 +1567,14 @@ def main(scenario="selftest", import_record=0):
             shutil.rmtree(backup, ignore_errors=True)
         elif backup_ready:
             log(f"recovery backup retained at {backup}")
+        for path, offset in log_offsets.items():
+            try:
+                snapshot_log(path, offset, artifacts / f"incremental_{path.name}")
+            except OSError as snapshot_exc:
+                log(f"unable to snapshot {path.name}: {snapshot_exc}")
         write_json_report(
             artifacts, scenario, result, effective_record, timings, error_reason,
-            run_id, started_at, report_evidence)
+            run_id, started_at, source_mode, runtime_tree_sha256, report_evidence)
         log(f"JSON report: {artifacts / 'report.json'}")
     return 0 if result == "GREEN" else 1
 
@@ -1485,7 +1590,16 @@ if __name__ == "__main__":
     parser.add_argument(
         "--import-record", type=int, choices=(0, 100), default=0,
         help="selftest tutorial record; production scenarios use fixed baselines")
+    parser.add_argument(
+        "--artifacts-dir",
+        help="create this exact artifact directory instead of a random temp path")
+    parser.add_argument(
+        "--preflight", action="store_true",
+        help="validate dedicated desktop paths and safety constraints, then exit")
     args = parser.parse_args()
+    if args.preflight:
+        preflight()
+        sys.exit(0)
     if args.scenario == "persistence-restart" and args.import_record != 0:
         parser.error("persistence-restart forbids --import-record pre-seeding")
-    sys.exit(main(args.scenario, args.import_record))
+    sys.exit(main(args.scenario, args.import_record, args.artifacts_dir))

@@ -839,6 +839,20 @@ def package_checks(errors):
         errors.append("descriptor.mod picture is not thumbnail.png")
     if 'supported_version="1.19.0.6"' not in descriptor:
         errors.append("descriptor.mod tested CK3 version changed without release QA update")
+    self_hosted_ci = read(ROOT / ".github/workflows/ck3-self-hosted-ci.yml")
+    ci_requirements = (
+        "runs-on: [self-hosted, Windows, X64, ck3, interactive]",
+        "group: xar-ck3-desktop", "cancel-in-progress: false",
+        "XAR_CK3_CI: \"1\"", "python tools/run_acceptance.py --preflight",
+        "--scenario off", "--scenario selftest", "--scenario persistence-restart",
+        "--scenario death-edges", "--scenario on-first-life",
+        "--scenario on-recorded", "--scenario on-high-budget",
+        "--artifacts-dir", "actions/upload-artifact@v4", "Enforce L1-L3 gate",
+    )
+    if any(token not in self_hosted_ci for token in ci_requirements):
+        errors.append("self-hosted L1-L3 workflow lost a safety, scenario, or artifact gate")
+    if "pull_request:" in self_hosted_ci:
+        errors.append("self-hosted CK3 workflow must never execute pull-request code")
     thumbnail = MOD / "thumbnail.png"
     if thumbnail.exists() and thumbnail.stat().st_size >= 1_000_000:
         errors.append("thumbnail.png must remain below Steam's 1 MB limit")

@@ -51,6 +51,27 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 
 截图证据和 JSON 摘要在控制台报告里的 artifacts 目录。
 
+### Windows 自托管 L1-L3 CI
+
+`.github/workflows/ck3-self-hosted-ci.yml` 在 `master` push、`v*` tag、手动触发和每周计划任务上串行运行；不接受 `pull_request`，避免在持久化游戏机上执行外部代码。全仓库使用固定 concurrency `xar-ck3-desktop` 且 `cancel-in-progress: false`，七个场景绝不并行争用桌面、日志、`tutorial.txt`、presets 或工坊缓存。
+
+- L1：`off`，production release 投影冷启动、引擎解析及禁用规则负例。
+- L2：`selftest`、`persistence-restart`、`death-edges`，覆盖 57 项机制断言、200 effect runtime sweep、两进程持久化、AI/无继承人死亡边界。
+- L3：`on-first-life`、`on-recorded`、`on-high-budget`，覆盖 production-only 首世、已有纪录和第四页高预算真实 OCR/点击。L2 的交易 UI、决议、trait hover 和无继承人窗口也计入整体 L3 证据，不重复启动。
+
+runner 必须注册 labels `[self-hosted, Windows, X64, ck3, interactive]`，以已登录且未锁屏的简中 CK3 桌面用户交互运行，不得安装为 Windows service。仓库 Actions variables：
+
+| Variable | 内容 |
+|---|---|
+| `XAR_CK3_EXE` | 工作区外的 `ck3.exe` 绝对路径 |
+| `XAR_CK3_USER_DIR` | 专用 Windows 用户的 CK3 user data 根目录 |
+| `XAR_CK3_UGC_DIR` | 专用工坊缓存目录，末级必须是 `3784706360` 且已有 `descriptor.mod` |
+| `XAR_CK3_VERSION` | 当前实测版本，现为 `1.19.0.6` |
+
+workflow 设置 `XAR_CK3_CI=1`；runner 在任何备份或 `/MIR` 前拒绝缺失显式路径、错误工坊 id、仓库重叠目标、缺失现场文件、过小桌面和已运行的 `ck3.exe`。每个场景用 `--artifacts-dir` 写入 `$RUNNER_TEMP\xar-ci\<run>-<attempt>\L*\<scenario>`；JSON 区分开发树/production projection 并记录实际 runtime hash。上传内容含截图、JSON/JUnit、release projection 和本次增量 `debug/error/gui_warnings`，不含独立 backup 目录或历史日志。所有场景即使 RED 也继续收集，最终统一 gate；tag 通过后只上传候选 ZIP/manifest，不自动发布 GitHub Release 或 Steam。
+
+2026-08-18 本机以显式 artifacts 目录实测 L1 `off` GREEN，0 `xar` errors，且增量三日志和 runtime hash 均进入报告。首个 GitHub 自托管全套 GREEN 仍需 runner 注册及 repository variables 生效后记录。
+
 ### 覆盖边界（什么算验过、什么不算）
 
 **验过的**：
@@ -102,6 +123,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   → 开始 (2257,1245)。结算确认选项 (1130,1041)（点了进观察者模式，桥有效）。
 - 用户真实纪录靠 tutorial.txt 备份/恢复保护；默认 selftest 与 `on-first-life/off` 会剥掉 `xar_hs_ge_*` 行（纪录 0），`on-recorded` 固定预置 100；`--import-record 100` 仅改变 selftest。
 - 独立 restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验；避免强杀 runner 后游戏继续覆盖用户现场。
+- `--artifacts-dir` 只创建调用方给定的新目录；CI 上传只包含从本次日志 offset 起的新内容，严禁用 `%TEMP%\xar_accept*` 通配上传，因为 `xar_accept_backup_*` 可能含玩家现场。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。
 - trait 含原生 `track` 时，UI 会自动读取 `gfx/interface/icons/trait_level_tracks/<trait_key>.dds`；缺文件会在真正 hover 时写 VFS error，主 trait 的 `icon =` 不会替代它（2026-08-18 实测）。
 - 原生决议右栏按钮是 `F8` 对应的羽笔图标；合成键盘无效时可按屏幕比例 `(0.987, 0.367)` hover，先 OCR 验证“决议”tooltip 再点击。低处条目必须在滚动框内下滚到中段后用 `deliberate_click`，否则底缘 hit-test 会关闭面板但不选中。决议触发的事件关闭后，决议面板会自动恢复，不要重复点右栏按钮（2026-08-18 实测）。
