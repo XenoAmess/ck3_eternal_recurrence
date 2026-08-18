@@ -23,6 +23,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario on-recorded
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario on-high-budget
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario off
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario persistence-restart
 ```
 
 场景基线与边界：
@@ -32,6 +33,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - `on-recorded`：固定 `xar_on` + 纪录 100，真实接受契约，验证生产商店（优先补充 100 点 OCR 证据；标题与 `shop event fired` 同时证明非首世分流），不购买商品，直接开始此生并进入祝福。
 - `on-high-budget`：固定 `xar_on` + 纪录 1200，在默认成长 + 100% 下 OCR 确认 1200 预算，翻到第三页真实购买 1133 分宗教改革，断言余额 67、一次性选项消失，再进入祝福。
 - `off`：固定 `xar_off` + 纪录 0，进局后观察 30 秒；契约标题或本次新增的任意 `XAR:` 启用日志均判 RED。
+- `persistence-restart`：一次外层备份内启动两个 CK3 进程。A 从纪录 0 跑完整 selftest 并真实写入非零 lesson，进程树完全退出后固定 handoff SHA-256；B 不调用纪录预置函数，以新日志 offset 断言 importer 精确命中 A 的位阶及 request/ready/consumed 全链。该场景禁止非零 `--import-record`。
 - 每次运行都写 `report.json` 与 JUnit `report.xml`；JSON 包含 run ID、UTC、版本、Git SHA、release-tree SHA-256、CK3/平台/Python 环境、场景、结果、artifact 清单、各阶段秒数和错误原因。即使中途失败，也会先恢复现场再写 RED 报告。`tutorial.txt`/`presets.txt` 备份位于独立临时目录，恢复后删除，不进入 artifacts。
 
 冷启动通常约 2 分钟，`RESULT: GREEN/RED` + 退出码。判定依据：
@@ -65,10 +67,10 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 奖池 200 个 effect body 的运行期语法/引用 smoke test
 - 静态验证首世 0 纪录分流和 selftest 200 点优先分支，并逐阈值校验账簿 candidate/next/gap 生成关系、cap 状态、七个展示字段及禁止写纪录/资源的边界；纯脚本自测直接调用生产 `xar_prepare_ledger_effect`，断言非负分数、投影关系和历史纪录不变后清理临时 global，不打开账簿 UI。
 - 原生决议面板实际点击【琉焰账簿】和【选择本世契约】：账簿 UI 验证只读快照及关闭清理，契约 UI 验证确认页、`xar.2000` 和【征服者】生产选项。
+- `persistence-restart` 两进程实测：A 写入非零余烬 lesson 后完全退出，B 在 `process_b_preseeded=false` 且 `tutorial.txt` handoff SHA-256 不变的前提下导入同一位阶；JSON 记录两 PID 生命周期对应的耗时、位阶和 hash。
 
 **没验的**：
 - 正常 `xar_on` 首世、已有 100 位阶和 `xar_off` 三条独立 smoke 已实机 GREEN，均为 `xar error.log = 0`。
-- 完整的“两次 CK3 进程”场景（第一进程真实写入非零位，退出后第二进程再导入）；当前 runner 可在启动前安全预置 100 位并执行非零重启导入基础：`tools\.venv\Scripts\python.exe tools\run_acceptance.py --import-record 100`，会断言 importer 命中 100 且 ready 消费时点数等于导入值。
 - 200 项 dispatcher 的 ID→effect 语义映射；sweep 内联执行 effect body，只是运行期 smoke test
 - 正常玩法的 1095 日重开分支；selftest UI 已真实点击拒绝、封印和重抽，但为缩短验收将重开压缩为立即触发。
 - 计分各系数与边界的系统矩阵、后代去重边界；当前断言正分、拒绝倍率、preview/结算一致与写入

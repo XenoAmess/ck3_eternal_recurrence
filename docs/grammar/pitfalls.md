@@ -56,6 +56,7 @@
 | 窗口移出屏幕后 state 停求值 | 离屏被裁剪 | 隐身用"无背景+点击穿透"，不要移出屏幕 |
 | `Unknown effect: add_renown`（1.19） | 没有 renown effect | 宗族威望：`dynasty ?= { add_dynasty_prestige = 150 }` |
 | `add_gold effect [ Negative value in: {}. {} ]`（运行期） | `add_gold` 运行期拒绝负值（字面值/值块都不行）；`remove_gold` 和（无目标的）`pay_gold` 均**未注册为 effect**（effect_localization 里的条目是死 loc） | 1.19 没有合规的一次性扣金币手段。改设计：用 `monthly_income = -1` 这类角色 modifier（祝福诅咒池诅咒 0 即如此） |
+| `Script system error! (while building tooltip/description)` + `Failed to fetch variable ... due to not being set`（决议详情 hover） | 决议 UI 会预演 `effect` 来生成 tooltip，且 **`hidden_effect` 内的 `trigger_event` 也会追进事件 `immediate`**。预演器不保证其中先 set global、后读取 global 的顺序，账簿阈值链因此一次产生数千条错误；2026-08-18 CK3 1.19 实测 | decision 的 `hidden_effect` 只设置 pending global；由注册的 1×1 GUI window 通过 scripted GUI 在真实点击后消费 pending 并 `trigger_event`。不要从 decision effect（包括 hidden_effect）直接打开含顺序依赖的事件 |
 | `mother trigger [ Failed context switch ]` / `father trigger ...`（运行期刷屏） | 触发器里 `father = {}`/`mother = {}` 链对**不存在/未知**的亲属报运行期错误，且 `OR` 不短路（每分支都求值）——`every_dynasty_member` 循环里一行链 × 全宗族 = 错误风暴 | 后代统计改为从死者 `every_child` 逐层向下遍历（effect 的上下文切换对空链安静），5 代展开 + 临时 flag 去重 + 事后清 flag。见 xar_effects.txt 的 `xar_desc_node_l1..l5` |
 | `player_heir` 在 `on_game_start_after_lobby` 里是空 | 继承人在开局钩子时点尚未指派 | 要在死后于继承人身上跑逻辑：从结算事件（root=继承人）里嵌套触发检查器 |
 | 结算事件窗打开后时间永远不走 | 事件窗（至少 character_event 结算窗）**硬暂停**游戏（底栏 tooltip「因轮回终结事件暂停」）；开局也默认暂停、死亡弹继承窗强制暂停 | 依赖日 tick 的逻辑必须在该窗打开前完成，或嵌套立即执行（`trigger_event = x.x` 无 days = 同链同步执行） |

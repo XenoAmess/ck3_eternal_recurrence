@@ -10,7 +10,8 @@ xar_contract_select_decision = {
 	is_valid_showing_failures_only = { is_ai = no has_character_flag = xa_enabled global_var:xa_contract_id = 0 }
 	ai_potential = { always = no }
 	effect = {
-		if = { limit = { has_global_variable = xa_full_ui_test_active } debug_log = "XAR: UI contract decision confirmed" }
-		trigger_event = xar.2000
+		hidden_effect = {
+			set_global_variable = xa_open_contract_pending
+		}
 	}
 }

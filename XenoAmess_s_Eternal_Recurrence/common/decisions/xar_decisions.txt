@@ -17,12 +17,14 @@
 	}
 
 	effect = {
-		if = {
-			limit = {
-				has_character_flag = xa_enabled
-				is_ai = no
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_flag = xa_enabled
+					is_ai = no
+				}
+				set_global_variable = xa_open_ledger_pending
 			}
-			trigger_event = xar.0011
 		}
 	}
 

@@ -77,8 +77,9 @@ def generated_decision():
         "\tis_valid_showing_failures_only = { is_ai = no has_character_flag = xa_enabled global_var:xa_contract_id = 0 }",
         "\tai_potential = { always = no }",
         "\teffect = {",
-        "\t\tif = { limit = { has_global_variable = xa_full_ui_test_active } debug_log = \"XAR: UI contract decision confirmed\" }",
-        "\t\ttrigger_event = xar.2000",
+        "\t\thidden_effect = {",
+        "\t\t\tset_global_variable = xa_open_contract_pending",
+        "\t\t}",
         "\t}",
         "}", "",
     ])

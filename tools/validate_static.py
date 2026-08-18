@@ -479,15 +479,33 @@ def mechanic_checks(errors):
         shown = extract_block(block, "is_shown") or ""
         valid = extract_block(block, "is_valid_showing_failures_only") or ""
         ai_potential = extract_block(block, "ai_potential") or ""
+        effect = extract_block(block, "effect") or ""
+        hidden_effect = extract_block(effect, "hidden_effect") or ""
         if not all("has_character_flag = xa_enabled" in guard and "is_ai = no" in guard
                    for guard in (shown, valid)):
             errors.append(f"decision '{decision_id}' lacks xa_enabled/is_ai player guards")
         if "always = no" not in ai_potential:
             errors.append(f"decision '{decision_id}' lacks disabled AI potential")
-    if "trigger_event = xar.0011" not in decisions:
-        errors.append("Glassfire Ledger decision does not open its event")
-    if "trigger_event = xar.2000" not in decisions:
-        errors.append("lifetime-contract decision does not open selection event")
+        if "trigger_event = xar." in effect and "trigger_event = xar." not in hidden_effect:
+            errors.append(
+                f"decision '{decision_id}' exposes event immediate effects to tooltip preview")
+    decision_bridges = read(
+        MOD / "common/scripted_guis/xar_decision_bridges.txt")
+    decision_bridge_gui = read(MOD / "gui/xar_decision_bridge.gui")
+    decision_registry = read(MOD / "gui/scripted_widgets/xar_scripted_widgets.txt")
+    if "set_global_variable = xa_open_ledger_pending" not in decisions:
+        errors.append("Glassfire Ledger decision does not request its GUI bridge")
+    if "set_global_variable = xa_open_contract_pending" not in decisions:
+        errors.append("lifetime-contract decision does not request its GUI bridge")
+    if "trigger_event = xar.0011" not in decision_bridges:
+        errors.append("Glassfire Ledger GUI bridge does not open its event")
+    if "trigger_event = xar.2000" not in decision_bridges:
+        errors.append("lifetime-contract GUI bridge does not open selection event")
+    if ("xar_open_ledger_gui" not in decision_bridge_gui
+            or "xar_open_contract_gui" not in decision_bridge_gui
+            or "gui/xar_decision_bridge.gui = xar_decision_bridge_window"
+            not in decision_registry):
+        errors.append("decision GUI bridge window is not fully registered")
 
     contract_events = [event_id for event_id in event_ids if event_id.startswith("xar.21")]
     gaze_events = [event_id for event_id in event_ids if event_id.startswith("xar.22")]

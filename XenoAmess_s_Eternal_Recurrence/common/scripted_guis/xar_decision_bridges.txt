@@ -1,0 +1,45 @@
+﻿# Decision effects are previewed for tooltips. Defer event opening to this GUI
+# bridge so event immediate effects only run after a real player click.
+xar_open_ledger_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = xa_enabled
+		has_global_variable = xa_open_ledger_pending
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_character_flag = xa_enabled
+				has_global_variable = xa_open_ledger_pending
+			}
+			remove_global_variable = xa_open_ledger_pending
+			trigger_event = xar.0011
+		}
+	}
+}
+
+xar_open_contract_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = xa_enabled
+		has_global_variable = xa_open_contract_pending
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_character_flag = xa_enabled
+				has_global_variable = xa_open_contract_pending
+			}
+			remove_global_variable = xa_open_contract_pending
+			if = {
+				limit = { has_global_variable = xa_full_ui_test_active }
+				debug_log = "XAR: UI contract decision confirmed"
+			}
+			trigger_event = xar.2000
+		}
+	}
+}

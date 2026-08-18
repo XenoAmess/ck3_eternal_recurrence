@@ -117,6 +117,10 @@ customizable_localization 的 text 块按序取第一个 trigger 成立的。GUI
 
 因此 GUI 与 on_action 的先后顺序不会造成零值抢跑，重复 Execute 也不会重复打开流程；契约和商店只能在导入 ready 且点数已复制后出现。
 
+### 两进程实证
+
+2026-08-18 在 CK3 1.19.0.6 使用 `tools/run_acceptance.py --scenario persistence-restart` 实测：进程 A 从空 XAR 位开始，死亡结算后把 `xar_hs_ge_405` 写入 `tutorial.txt`；确认文件稳定后强制结束 A 的完整进程树，位阶与 SHA-256 均未变化。进程 B 启动前不调用任何纪录预置逻辑，并断言 handoff SHA-256 原样保留；新进程日志随后出现 `import state fired k=405`、`import consumed` 及三项 import PASS。两进程 XAR error 均为 0，证明写入、完全重启和读取链成立。具体分数随角色随机状态变化，验收以“A 写出的非零量化位阶等于 B 导入位阶”为准。
+
 ### 首世分流与只读账簿
 
 - 正常 `xar_on` 导入完成且 `xa_global_record_imported=0` 时，契约接受选项跳转 `xar.0010` 首世说明，不打开 0 点商店；确认后直接进入 `xar.0004` 祝福流程。

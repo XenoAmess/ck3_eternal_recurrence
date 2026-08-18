@@ -153,6 +153,21 @@ def kill_process(pid):
                    capture_output=True)
 
 
+def stop_ck3_process(process, ck3_pid_file):
+    """Terminate one tracked CK3 process tree and prove the process exited."""
+    if process is None:
+        return
+    kill_process(process.pid)
+    try:
+        process.wait(timeout=15)
+    except subprocess.TimeoutExpired as exc:
+        raise RunnerError(f"CK3 PID {process.pid} did not exit") from exc
+    if process.poll() is None:
+        raise RunnerError(f"CK3 PID {process.pid} is still running")
+    ck3_pid_file.unlink(missing_ok=True)
+    log(f"CK3 PID {process.pid} fully exited")
+
+
 def start_restore_watchdog(backup, ck3_pid_file):
     """独立进程兜底：runner 被强杀时仍恢复用户现场。"""
     subprocess.Popen(
@@ -229,6 +244,34 @@ def set_tutorial_record(raw, threshold):
     body = match.group(1).rstrip()
     seeded = body + f"\n\txar_hs_ge_{threshold}\n".encode("ascii")
     return clean[:match.start(1)] + seeded + clean[match.end(1):], len(lines) - len(stripped)
+
+
+def tutorial_record_state():
+    """Return the highest persisted XAR record and the tutorial file hash."""
+    raw = TUTORIAL_TXT.read_bytes()
+    values = [
+        int(value) for value in re.findall(
+            rb"(?m)^\s*xar_hs_ge_(\d+)\s*$", raw)
+    ]
+    return (max(values, default=0), hashlib.sha256(raw).hexdigest())
+
+
+def wait_for_stable_persisted_record(timeout_s=20):
+    """Require the same nonzero lesson state on two consecutive reads."""
+    deadline = time.time() + timeout_s
+    previous = None
+    stable_hits = 0
+    while time.time() < deadline:
+        state = tutorial_record_state()
+        if state[0] > 0 and state == previous:
+            stable_hits += 1
+            if stable_hits >= 2:
+                return state
+        else:
+            stable_hits = 0
+        previous = state
+        time.sleep(0.5)
+    raise RunnerError("nonzero tutorial record did not stabilize")
 
 
 def region_bbox(img, region):
@@ -649,6 +692,41 @@ def run_off_smoke(debug_offset, artifacts):
     return xar_lines
 
 
+def run_restart_import_probe(expected_record, debug_offset, error_offset, artifacts):
+    """Prove a fresh process imported A's lesson without runner pre-seeding."""
+    xar_lines = []
+    offset = debug_offset
+    markers = (
+        f"XAR: import state fired k={expected_record}",
+        "XAR: import consumed, opening flow",
+        "XAR: TEST selftest begin",
+        "XAR: TEST PASS import_var",
+        "XAR: TEST PASS import_value",
+        "XAR: TEST PASS import_points",
+        "XAR: UI full flow armed",
+    )
+    for index, marker in enumerate(markers):
+        offset = wait_for_marker(
+            offset, marker, 180 if index == 0 else 15, xar_lines)
+    wait_for_ocr_text(
+        "终末之契", EVENT_TITLE_REGION, 15,
+        artifacts, "05_restart_import_pact.png", stable_hits=1)
+    err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+    xar_errors = [
+        line.strip() for line in err_text.splitlines()
+        if "xar" in line.lower()
+    ]
+    fails = [line for line in xar_lines if "XAR: TEST FAIL" in line]
+    if fails:
+        raise RunnerError(
+            f"restart importer emitted {len(fails)} TEST FAIL marker(s)")
+    if xar_errors:
+        raise RunnerError(
+            f"restart importer emitted {len(xar_errors)} xar error.log line(s)")
+    log(f"PASS: fresh process imported persisted tier {expected_record}")
+    return xar_lines
+
+
 def run_selftest(import_record, debug_offset, error_offset, artifacts):
     """Preserve the full existing selftest behavior and console report."""
     offset = debug_offset
@@ -957,7 +1035,7 @@ def mod_tree_hash():
 
 
 def write_json_report(artifacts, scenario, result, import_record, timings,
-                      error_reason, run_id, started_at):
+                      error_reason, run_id, started_at, evidence=None):
     junit = artifacts / "report.xml"
     failure = "" if result == "GREEN" else (
         f'<failure message="{html.escape(error_reason or "acceptance failed", quote=True)}" />')
@@ -995,6 +1073,8 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
         "phase_timings_seconds": timings,
         "error_reason": error_reason,
     }
+    if evidence:
+        report["persistence_restart"] = evidence
     (artifacts / "report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -1008,8 +1088,9 @@ def main(scenario="selftest", import_record=0):
         "on-recorded": 100,
         "on-high-budget": 1200,
         "off": 0,
+        "persistence-restart": 0,
     }[scenario]
-    rule_setting = "xar_selftest" if scenario == "selftest" else (
+    rule_setting = "xar_selftest" if scenario in ("selftest", "persistence-restart") else (
         "xar_off" if scenario == "off" else "xar_on")
     artifacts = Path(tempfile.mkdtemp(prefix="xar_accept_"))
     run_id = artifacts.name
@@ -1021,6 +1102,12 @@ def main(scenario="selftest", import_record=0):
     ck3_pid_file = artifacts / "ck3.pid"
     backup_ready = False
     restore_succeeded = False
+    ck3_process = None
+    report_evidence = {}
+    session_artifacts = artifacts
+    if scenario == "persistence-restart":
+        session_artifacts = artifacts / "writer"
+        session_artifacts.mkdir()
 
     try:
         with timed_phase(timings, "setup_backup"):
@@ -1065,12 +1152,63 @@ def main(scenario="selftest", import_record=0):
             log("launched ck3; OCR waiting for main menu")
 
         with timed_phase(timings, "lobby"):
-            navigate_lobby(artifacts)
+            navigate_lobby(session_artifacts)
             shutil.copy2(backup / "presets.txt", PRESETS_TXT)
             log("restored presets.txt after OCR-confirmed start transition")
 
         with timed_phase(timings, "scenario"):
-            if scenario == "selftest":
+            if scenario == "persistence-restart":
+                writer_started = time.perf_counter()
+                writer_reason = run_selftest(
+                    0, debug_offset, error_offset, session_artifacts)
+                if writer_reason:
+                    raise RunnerError(f"writer process failed: {writer_reason}")
+                writer_record, writer_hash = wait_for_stable_persisted_record()
+                timings["writer_process"] = round(
+                    time.perf_counter() - writer_started, 3)
+                stop_ck3_process(ck3_process, ck3_pid_file)
+                ck3_process = None
+                stopped_record, stopped_hash = wait_for_stable_persisted_record()
+                if stopped_record != writer_record:
+                    raise RunnerError(
+                        f"writer record changed across exit: "
+                        f"{writer_record} -> {stopped_record}")
+                log(
+                    f"process A handoff: tier={stopped_record}, "
+                    f"sha256={stopped_hash}")
+
+                reader_artifacts = artifacts / "reader"
+                reader_artifacts.mkdir()
+                PRESETS_TXT.write_bytes(set_last_applied_rule(
+                    (backup / "presets.txt").read_bytes(), "xar_selftest"))
+                if tutorial_record_state() != (stopped_record, stopped_hash):
+                    raise RunnerError(
+                        "tutorial.txt changed before process B without pre-seeding")
+                reader_error_offset = (
+                    ERROR_LOG.stat().st_size if ERROR_LOG.exists() else 0)
+                reader_debug_offset = (
+                    DEBUG_LOG.stat().st_size if DEBUG_LOG.exists() else 0)
+                reader_started = time.perf_counter()
+                ck3_process = subprocess.Popen(
+                    [str(CK3_EXE), "-debug_mode"], cwd=str(CK3_EXE.parent))
+                ck3_pid_file.write_text(str(ck3_process.pid), encoding="ascii")
+                log("launched fresh process B without tutorial pre-seeding")
+                navigate_lobby(reader_artifacts)
+                shutil.copy2(backup / "presets.txt", PRESETS_TXT)
+                run_restart_import_probe(
+                    stopped_record, reader_debug_offset, reader_error_offset,
+                    reader_artifacts)
+                timings["reader_process"] = round(
+                    time.perf_counter() - reader_started, 3)
+                report_evidence = {
+                    "process_count": 2,
+                    "writer_record": writer_record,
+                    "imported_record": stopped_record,
+                    "tutorial_handoff_sha256": stopped_hash,
+                    "writer_pre_exit_sha256": writer_hash,
+                    "process_b_preseeded": False,
+                }
+            elif scenario == "selftest":
                 error_reason = run_selftest(
                     effective_record, debug_offset, error_offset, artifacts)
             elif scenario == "off":
@@ -1110,9 +1248,15 @@ def main(scenario="selftest", import_record=0):
                     error_reason = f"{len(xar_errors)} xar error.log line(s)"
             if error_reason is None:
                 result = "GREEN"
-                if scenario != "selftest":
+                if scenario not in ("selftest", "persistence-restart"):
                     print("RESULT: GREEN")
-            elif scenario != "selftest":
+                elif scenario == "persistence-restart":
+                    print("\n===== XAR PERSISTENCE RESTART REPORT =====")
+                    print(f"writer record   : {report_evidence['writer_record']}")
+                    print(f"handoff SHA-256 : {report_evidence['tutorial_handoff_sha256']}")
+                    print("process B seeded: no")
+                    print("RESULT: GREEN")
+            elif scenario not in ("selftest", "persistence-restart"):
                 print("RESULT: RED")
     except Exception as exc:
         error_reason = str(exc)
@@ -1131,7 +1275,10 @@ def main(scenario="selftest", import_record=0):
             with timed_phase(timings, "restore"):
                 if ck3_pid_file.exists():
                     try:
-                        kill_process(int(ck3_pid_file.read_text(encoding="ascii")))
+                        if ck3_process is not None:
+                            stop_ck3_process(ck3_process, ck3_pid_file)
+                        else:
+                            kill_process(int(ck3_pid_file.read_text(encoding="ascii")))
                     except (OSError, ValueError):
                         pass
                     ck3_pid_file.unlink(missing_ok=True)
@@ -1155,7 +1302,7 @@ def main(scenario="selftest", import_record=0):
             log(f"recovery backup retained at {backup}")
         write_json_report(
             artifacts, scenario, result, effective_record, timings, error_reason,
-            run_id, started_at)
+            run_id, started_at, report_evidence)
         log(f"JSON report: {artifacts / 'report.json'}")
     return 0 if result == "GREEN" else 1
 
@@ -1164,11 +1311,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run CK3 automated acceptance")
     parser.add_argument(
         "--scenario",
-        choices=("selftest", "on-first-life", "on-recorded", "on-high-budget", "off"),
+        choices=("selftest", "on-first-life", "on-recorded", "on-high-budget", "off",
+                 "persistence-restart"),
         default="selftest",
         help="acceptance scenario (default: selftest)")
     parser.add_argument(
         "--import-record", type=int, choices=(0, 100), default=0,
         help="selftest tutorial record; production scenarios use fixed baselines")
     args = parser.parse_args()
+    if args.scenario == "persistence-restart" and args.import_record != 0:
+        parser.error("persistence-restart forbids --import-record pre-seeding")
     sys.exit(main(args.scenario, args.import_record))
