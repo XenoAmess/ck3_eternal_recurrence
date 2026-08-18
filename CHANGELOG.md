@@ -30,6 +30,6 @@
 ### Known Limitations
 
 - Existing Ember Tier bits are shared progression; the selected challenge track is explicitly labeled rather than stored as eight separate historical score namespaces.
-- The no-heir settlement fallback is statically covered but can still be obscured by the native Game Over presentation.
+- The no-heir fallback completes scoring and record persistence, but CK3's native Game Over is confirmed to obscure the settlement event; a visible no-heir result view remains unresolved.
 - Acceptance-only scripts remain packaged until the test overlay is fully separated, though normal play cannot trigger them.
 - 1.0 contract narrative is authored in Simplified Chinese and English; seven other language files currently use English pending human translation.

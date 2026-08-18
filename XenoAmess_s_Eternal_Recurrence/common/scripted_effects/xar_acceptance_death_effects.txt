@@ -1,0 +1,25 @@
+﻿# Acceptance-only setup for real AI and no-heir player deaths.
+xar_acceptance_death_edges_start_effect = {
+	debug_log = "XAR: TEST death edges begin"
+	xar_enable_player_pact_effect = yes
+	xar_initialize_run_state_effect = yes
+	set_global_variable = xa_death_edges_active
+	set_global_variable = { name = xa_test_ai_death_observed value = 0 }
+	set_global_variable = { name = xa_run_score value = -777 }
+	if = {
+		limit = {
+			exists = character:1132
+			character:1132 = { is_alive = yes is_ai = yes }
+		}
+		character:1132 = {
+			add_character_flag = xa_enabled
+			add_character_flag = xa_test_ai_death_target
+			debug_log = "XAR: TEST AI death armed"
+			death = { death_reason = death_old_age }
+		}
+	}
+	else = {
+		debug_log = "XAR: TEST FAIL ai_death_precondition"
+		debug_log = "XAR: TEST DONE death_edges"
+	}
+}

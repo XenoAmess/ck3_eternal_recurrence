@@ -46,7 +46,7 @@ on_action 的 effect 与它触发的事件**并发执行，不是先后**：
 
 - 有 `player_heir` 时仍把 `xar.1001` 延迟 1 日发给继承人，避开死亡 root 失效。
 - 无 `player_heir` 时没有可供延迟承载的存活角色，只能在 `on_death` 的将死 root 上同步 `trigger_event = xar.1001`；代码用 `XAR: no player heir; synchronous settlement fallback` 标记该分支。
-- 该 UI 路径**待无继承人实机验证，可能被 Game Over 覆盖**。目前只有结构静态校验，绝不视为已验证。
+- 2026-08-18 CK3 1.19.0.6 实测：无继承人真实死亡时，计分、写位、`xar.1001.immediate` 和 on_death 同步返回均完成；但原生 `confirmation` 层 Game Over 完全遮住 `events` 层结算窗。脚本闭环已验证，玩家可见结算仍未满足。
 
 ## 死亡钩子
 

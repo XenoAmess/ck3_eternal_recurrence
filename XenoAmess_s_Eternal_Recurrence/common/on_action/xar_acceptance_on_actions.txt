@@ -1,0 +1,16 @@
+﻿# Acceptance observer: the production on_death body remains unchanged for AI.
+xar_acceptance_observe_death = {
+	effect = {
+		if = {
+			limit = {
+				has_global_variable = xa_death_edges_active
+				has_character_flag = xa_test_ai_death_target
+				has_character_flag = xa_enabled
+				is_ai = yes
+			}
+			set_global_variable = { name = xa_test_ai_death_observed value = 1 }
+			debug_log = "XAR: TEST AI death observed by on_death"
+			every_player = { trigger_event = { id = xar.0901 days = 1 } }
+		}
+	}
+}

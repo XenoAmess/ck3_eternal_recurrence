@@ -440,6 +440,14 @@ xar.1001 = {
 
 	immediate = {
 		debug_log = "XAR: score event fired"
+		if = {
+			limit = {
+				has_global_variable = xa_death_edges_active
+				global_var:xa_test_no_heir_sync_stage = 1
+			}
+			set_global_variable = { name = xa_test_no_heir_sync_stage value = 2 }
+			debug_log = "XAR: TEST no-heir score immediate entered"
+		}
 		# selftest: run the checker NESTED (immediately). A delayed event would
 		# never fire: this event's window hard-pauses the game, so no further
 		# day tick happens until the player confirms. The record bit was already

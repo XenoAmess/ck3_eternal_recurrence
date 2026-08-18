@@ -1,0 +1,46 @@
+﻿# Acceptance-only events for actual AI death and no-heir Game Over coverage.
+namespace = xar
+
+xar.0901 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		if = {
+			limit = {
+				global_var:xa_test_ai_death_observed = 1
+				global_var:xa_run_score = -777
+			}
+			debug_log = "XAR: TEST PASS ai_actual_death"
+			debug_log = "XAR: TEST PASS ai_on_death_blocked"
+			set_global_variable = { name = xa_test_no_heir_waits value = 0 }
+			trigger_event = { id = xar.0902 days = 1 }
+		}
+		else = {
+			debug_log = "XAR: TEST FAIL ai_on_death_blocked"
+			debug_log = "XAR: TEST DONE death_edges"
+		}
+	}
+}
+
+xar.0902 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		if = {
+			limit = { exists = player_heir global_var:xa_test_no_heir_waits < 30 }
+			player_heir = { add_trait = disinherited }
+			change_global_variable = { name = xa_test_no_heir_waits add = 1 }
+			trigger_event = { id = xar.0902 days = 1 }
+		}
+		else_if = {
+			limit = { NOT = { exists = player_heir } }
+			debug_log = "XAR: TEST PASS no_heir_precondition"
+			add_character_flag = xa_test_no_heir_death_target
+			death = { death_reason = death_old_age }
+		}
+		else = {
+			debug_log = "XAR: TEST FAIL no_heir_precondition"
+			debug_log = "XAR: TEST DONE death_edges"
+		}
+	}
+}

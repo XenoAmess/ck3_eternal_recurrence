@@ -13,8 +13,14 @@ xar_consume_import_effect = {
 		debug_log = "XAR: import consumed, opening flow"
 		if = {
 			limit = { has_game_rule = xar_selftest }
-			debug_log = "XAR: TEST selftest begin"
-			xar_selftest_effect = yes
+			if = {
+				limit = { global_var:xa_global_record_imported = 1 }
+				xar_acceptance_death_edges_start_effect = yes
+			}
+			else = {
+				debug_log = "XAR: TEST selftest begin"
+				xar_selftest_effect = yes
+			}
 		}
 		else_if = {
 			limit = { has_game_rule = xar_on }

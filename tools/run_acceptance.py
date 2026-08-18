@@ -727,6 +727,97 @@ def run_restart_import_probe(expected_record, debug_offset, error_offset, artifa
     return xar_lines
 
 
+def run_death_edges(debug_offset, error_offset, artifacts):
+    """Exercise a real AI death, then the player's native no-heir Game Over."""
+    offset = debug_offset
+    xar_lines = []
+    offset = wait_for_marker(
+        offset, "XAR: TEST death edges begin", 180, xar_lines)
+    offset = wait_for_marker(offset, "XAR: TEST AI death armed", 15, xar_lines)
+    offset = wait_for_marker(
+        offset, "XAR: TEST AI death observed by on_death", 15, xar_lines)
+    focus_ck3()
+    click_ratio(2315 / 2560, 1410 / 1440)
+    log("unpaused death-edge day-tick chain")
+
+    done = False
+    deadline = time.time() + 120
+    last_recovery = time.time()
+    while time.time() < deadline:
+        text, offset = read_new_lines(DEBUG_LOG, offset)
+        for line in text.splitlines():
+            if "XAR:" in line:
+                xar_lines.append(line.strip())
+                if "XAR: TEST DONE death_edges" in line:
+                    done = True
+        if done:
+            break
+        if time.time() - last_recovery > 10:
+            focus_ck3()
+            click_ratio(2315 / 2560, 1410 / 1440)
+            last_recovery = time.time()
+        time.sleep(POLL_INTERVAL_S)
+    if not done:
+        raise RunnerError("death-edge DONE marker timeout")
+
+    required = (
+        "XAR: TEST AI death armed",
+        "XAR: TEST AI death observed by on_death",
+        "XAR: TEST PASS ai_actual_death",
+        "XAR: TEST PASS ai_on_death_blocked",
+        "XAR: TEST PASS no_heir_precondition",
+        "XAR: computing score on death",
+        "XAR: no player heir; synchronous settlement fallback",
+        "XAR: score event fired",
+        "XAR: TEST no-heir score immediate entered",
+        "XAR: TEST PASS no_heir_synchronous_return",
+        "XAR: TEST DONE death_edges",
+    )
+    positions = []
+    for marker in required:
+        matches = [index for index, line in enumerate(xar_lines) if marker in line]
+        if len(matches) != 1:
+            raise RunnerError(
+                f"death-edge marker count for '{marker}' is {len(matches)}, expected 1")
+        positions.append(matches[0])
+    if positions != sorted(positions):
+        raise RunnerError("death-edge markers occurred out of order")
+    fails = [line for line in xar_lines if "XAR: TEST FAIL" in line]
+    if fails:
+        raise RunnerError(f"death-edge scenario emitted {len(fails)} FAIL marker(s)")
+
+    game_over = wait_for_ocr_text(
+        "退出到菜单", FULL_SCREEN_REGION, 20,
+        artifacts, "06_no_heir_native_game_over.png", contains=True,
+        stable_hits=1)
+    focus_ck3()
+    game_over_img = ImageGrab.grab()
+    if find_ocr_text(game_over_img, "继续扮演", FULL_SCREEN_REGION, contains=True):
+        game_over_img.save(artifacts / "06_no_heir_unexpected_continue.png")
+        raise RunnerError("native no-heir Game Over still offered Continue Playing")
+    game_over_img.save(artifacts / "06_no_heir_game_over_verified.png")
+    log(f"PASS: native no-heir Game Over at {game_over}")
+
+    err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+    xar_errors = [
+        line.strip() for line in err_text.splitlines()
+        if "xar" in line.lower()
+    ]
+    if xar_errors:
+        raise RunnerError(
+            f"death-edge scenario emitted {len(xar_errors)} xar error.log line(s)")
+    print("\n===== XAR DEATH EDGE REPORT =====")
+    for line in xar_lines:
+        print("  " + line)
+    print("---------------------------------")
+    print("actual AI death : PASS")
+    print("AI score blocked: PASS")
+    print("no-heir sync    : PASS")
+    print("native Game Over: PASS")
+    print("xar error.log   : 0")
+    return xar_lines
+
+
 def run_selftest(import_record, debug_offset, error_offset, artifacts):
     """Preserve the full existing selftest behavior and console report."""
     offset = debug_offset
@@ -1089,8 +1180,10 @@ def main(scenario="selftest", import_record=0):
         "on-high-budget": 1200,
         "off": 0,
         "persistence-restart": 0,
+        "death-edges": 1,
     }[scenario]
-    rule_setting = "xar_selftest" if scenario in ("selftest", "persistence-restart") else (
+    rule_setting = "xar_selftest" if scenario in (
+        "selftest", "persistence-restart", "death-edges") else (
         "xar_off" if scenario == "off" else "xar_on")
     artifacts = Path(tempfile.mkdtemp(prefix="xar_accept_"))
     run_id = artifacts.name
@@ -1208,6 +1301,8 @@ def main(scenario="selftest", import_record=0):
                     "writer_pre_exit_sha256": writer_hash,
                     "process_b_preseeded": False,
                 }
+            elif scenario == "death-edges":
+                run_death_edges(debug_offset, error_offset, artifacts)
             elif scenario == "selftest":
                 error_reason = run_selftest(
                     effective_record, debug_offset, error_offset, artifacts)
@@ -1248,7 +1343,7 @@ def main(scenario="selftest", import_record=0):
                     error_reason = f"{len(xar_errors)} xar error.log line(s)"
             if error_reason is None:
                 result = "GREEN"
-                if scenario not in ("selftest", "persistence-restart"):
+                if scenario not in ("selftest", "persistence-restart", "death-edges"):
                     print("RESULT: GREEN")
                 elif scenario == "persistence-restart":
                     print("\n===== XAR PERSISTENCE RESTART REPORT =====")
@@ -1256,7 +1351,9 @@ def main(scenario="selftest", import_record=0):
                     print(f"handoff SHA-256 : {report_evidence['tutorial_handoff_sha256']}")
                     print("process B seeded: no")
                     print("RESULT: GREEN")
-            elif scenario not in ("selftest", "persistence-restart"):
+                elif scenario == "death-edges":
+                    print("RESULT: GREEN")
+            elif scenario not in ("selftest", "persistence-restart", "death-edges"):
                 print("RESULT: RED")
     except Exception as exc:
         error_reason = str(exc)
@@ -1312,7 +1409,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--scenario",
         choices=("selftest", "on-first-life", "on-recorded", "on-high-budget", "off",
-                 "persistence-restart"),
+                 "persistence-restart", "death-edges"),
         default="selftest",
         help="acceptance scenario (default: selftest)")
     parser.add_argument(

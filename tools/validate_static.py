@@ -534,6 +534,26 @@ def mechanic_checks(errors):
     if ("limit = { exists = player_heir }" not in death
             or "XAR: no player heir; synchronous settlement fallback" not in death):
         errors.append("death settlement lacks the guarded no-heir fallback/debug marker")
+    death_probe_effect = read(
+        MOD / "common/scripted_effects/xar_acceptance_death_effects.txt")
+    death_probe_events = read(MOD / "events/xar_acceptance_events.txt")
+    death_probe_on_action = read(
+        MOD / "common/on_action/xar_acceptance_on_actions.txt")
+    if not all(token in death_probe_effect for token in (
+            "character:1132", "is_ai = yes", "add_character_flag = xa_enabled",
+            "death = { death_reason = death_old_age }")):
+        errors.append("actual AI death probe lost its flagged Roger death precondition")
+    if not all(token in death_probe_on_action for token in (
+            "has_character_flag = xa_test_ai_death_target", "is_ai = yes",
+            "XAR: TEST AI death observed by on_death")):
+        errors.append("actual AI death observer lost its runtime guards")
+    if not all(token in death_probe_events for token in (
+            "NOT = { exists = player_heir }", "add_trait = disinherited",
+            "XAR: TEST PASS no_heir_precondition")):
+        errors.append("no-heir acceptance probe lost its engine precondition")
+    if ("XAR: TEST PASS no_heir_synchronous_return" not in death
+            or "XAR: TEST no-heir score immediate entered" not in events):
+        errors.append("no-heir synchronous-return instrumentation is incomplete")
     for hook in ("on_war_won_attacker", "on_war_won_defender", "on_hook_used",
                  "on_county_faith_change", "on_birth_mother", "on_birth_father",
                  "on_building_completed", "on_birthday"):

@@ -13,6 +13,7 @@ Latest local candidate evidence (2026-08-18):
 |---|---|---|
 | 54-assertion selftest + transaction UI + ledger/contract decisions + AI guard + observer HUD | `xar_accept_mbnpw868` | GREEN, 0 `xar` errors |
 | Two-process persistence / A writes 405 / B imports 405 without pre-seeding | `xar_accept_ie68yqxu` | GREEN, 0 `xar` errors |
+| Actual AI death guard + no-heir synchronous fallback + native Game Over | `xar_accept_8g2xb3f7` | Script GREEN, 0 `xar` errors; settlement UI obscured |
 | First life / zero record | `xar_accept_tw20hu2u` | GREEN, 0 `xar` errors |
 | Recorded life / 100 tier, default Growth + 100% | `xar_accept_5j1hqj8z` | GREEN, 0 `xar` errors |
 | High budget / 1200 tier / 1133 reformation purchase | `xar_accept_iqz9ocec` | GREEN, 0 `xar` errors |
@@ -40,5 +41,5 @@ The 1.0 contract narrative is authored in Simplified Chinese and English; the ot
 - Clean non-debug Simplified Chinese screenshot set: pending.
 - Matching clean English screenshot set: pending.
 - Thumbnail legibility at Workshop card size: pending.
-- No-heir native Game Over overlap: pending.
+- No-heir settlement presentation: BLOCKED. CK3 1.19 native Game Over fully obscures the XAR event despite successful synchronous scoring and record persistence; requires a higher-layer presentation or revised product behavior.
 - Steam item `3784706360` upload and downloaded-cache manifest verification: pending.
