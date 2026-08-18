@@ -33,6 +33,8 @@ GUI 数据函数并非全局可用，很多上下文由代码只注入到特定�
 - `Tutorial.*`（GetStepText/HasTransition/OnClickTransition/...）**只在 tutorial_window 本体有值**。其它任何窗口（含同 layer）里全空、不报错。调试面板实测：StepText/StepName 全空，按钮调用无效。
 - `GetPlayer`、`GetVariableSystem`、`GetScriptedGui`、`Localize`、`ExecuteConsoleCommand` 等在常规窗口可用。
 - 结论：要动教程窗口的东西，就 override `gui/window_tutorial.gui` 本体（mod 同路径文件整体覆盖），不要试图在外部窗口遥控。
+- 2026-08-18 CK3 1.19.0.6 实测：`SuccessionEventWindow.*` 的可见性 getter 在注册的外部窗口可求值，但其文字 getter、鼠标输入和 `GoToMenu` action 不具备完整上下文。无继承人结算因此由 `tools/gen_no_heir_gui.py` 把 `xar_no_heir_settlement_widget` 注入原生 `window_succession_event.gui`；只有原生窗口内的按钮能可靠打开退出确认。
+- 死亡后的自定义数值用 `GetPlayer.MakeScope.Var(...).GetValue` 可读；直接从 `SuccessionEventWindow.GetDeadCharacter.MakeScope` 读取会显示空白。写值必须在可见窗口初始化前经过隐藏事件提交边界。
 
 ## scripted_gui 执行链
 

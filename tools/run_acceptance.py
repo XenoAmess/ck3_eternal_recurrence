@@ -752,7 +752,7 @@ def run_restart_import_probe(expected_record, debug_offset, error_offset, artifa
 
 
 def run_death_edges(debug_offset, error_offset, artifacts):
-    """Exercise a real AI death, then the player's native no-heir Game Over."""
+    """Exercise a real AI death, then the visible no-heir settlement overlay."""
     offset = debug_offset
     xar_lines = []
     offset = wait_for_marker(
@@ -778,6 +778,8 @@ def run_death_edges(debug_offset, error_offset, artifacts):
             break
         if time.time() - last_recovery > 10:
             focus_ck3()
+            click_ratio(0.38, 0.72)
+            time.sleep(0.3)
             click_ratio(2315 / 2560, 1410 / 1440)
             last_recovery = time.time()
         time.sleep(POLL_INTERVAL_S)
@@ -792,8 +794,7 @@ def run_death_edges(debug_offset, error_offset, artifacts):
         "XAR: TEST PASS no_heir_precondition",
         "XAR: computing score on death",
         "XAR: no player heir; synchronous settlement fallback",
-        "XAR: score event fired",
-        "XAR: TEST no-heir score immediate entered",
+        "XAR: TEST no-heir snapshot committed",
         "XAR: TEST PASS no_heir_synchronous_return",
         "XAR: TEST DONE death_edges",
     )
@@ -810,17 +811,55 @@ def run_death_edges(debug_offset, error_offset, artifacts):
     if fails:
         raise RunnerError(f"death-edge scenario emitted {len(fails)} FAIL marker(s)")
 
-    game_over = wait_for_ocr_text(
-        "退出到菜单", FULL_SCREEN_REGION, 20,
-        artifacts, "06_no_heir_native_game_over.png", contains=True,
+    settlement_title = wait_for_ocr_text(
+        "轮回终结", FULL_SCREEN_REGION, 20,
+        artifacts, "06_no_heir_settlement_title.png", contains=True,
+        stable_hits=1)
+    wait_for_ocr_text(
+        "最终分量", FULL_SCREEN_REGION, 20,
+        artifacts, "06_no_heir_settlement_description.png", contains=True,
         stable_hits=1)
     focus_ck3()
-    game_over_img = ImageGrab.grab()
-    if find_ocr_text(game_over_img, "继续扮演", FULL_SCREEN_REGION, contains=True):
-        game_over_img.save(artifacts / "06_no_heir_unexpected_continue.png")
+    settlement_img = ImageGrab.grab()
+    value_region = (0.45, 0.24, 0.73, 0.62)
+    numeric_rows = [
+        text for text, _, _, _ in ocr_results(settlement_img, value_region)
+        if re.fullmatch(r"[+-]?\d+(?:\.\d+)?", text.replace(",", ""))
+    ]
+    grayscale = np.asarray(settlement_img.convert("L"))
+    height, width = grayscale.shape
+    value_row_centers = (0.284, 0.313, 0.342, 0.371,
+                         0.400, 0.429, 0.458, 0.487)
+    value_row_ink = []
+    for center_y in value_row_centers:
+        row = grayscale[
+            int(height * (center_y - 0.009)):int(height * (center_y + 0.009)),
+            int(width * 0.68):int(width * 0.73),
+        ]
+        value_row_ink.append(int((row > 150).sum()))
+    if len(numeric_rows) < 2 or any(ink < 30 for ink in value_row_ink):
+        settlement_img.save(artifacts / "06_no_heir_missing_values.png")
+        raise RunnerError(
+            "no-heir settlement did not render all eight numeric values: "
+            f"ocr={numeric_rows}, ink={value_row_ink}")
+    if find_ocr_text(settlement_img, "继续扮演", FULL_SCREEN_REGION, contains=True):
+        settlement_img.save(artifacts / "06_no_heir_unexpected_continue.png")
         raise RunnerError("native no-heir Game Over still offered Continue Playing")
-    game_over_img.save(artifacts / "06_no_heir_game_over_verified.png")
-    log(f"PASS: native no-heir Game Over at {game_over}")
+    settlement_img.save(artifacts / "06_no_heir_settlement_verified.png")
+    log(f"PASS: no-heir settlement visible at {settlement_title}")
+
+    menu_exit = wait_for_ocr_text(
+        "退出到菜单", FULL_SCREEN_REGION, 10,
+        artifacts, "07_native_no_heir_exit.png", contains=True, stable_hits=1)
+    deliberate_click(menu_exit, "no-heir exit to menu")
+    confirm_exit = wait_for_ocr_text(
+        "退出到主菜单", FULL_SCREEN_REGION, 10,
+        artifacts, "08_no_heir_exit_confirmation.png", contains=True,
+        stable_hits=1)
+    deliberate_click(confirm_exit, "confirmed no-heir exit to main menu")
+    wait_for_ocr_text(
+        "新游戏", MAIN_MENU_REGION, 30,
+        artifacts, "09_no_heir_exit_to_menu.png", contains=True, stable_hits=1)
 
     err_text, _ = read_new_lines(ERROR_LOG, error_offset)
     xar_errors = [
@@ -837,7 +876,8 @@ def run_death_edges(debug_offset, error_offset, artifacts):
     print("actual AI death : PASS")
     print("AI score blocked: PASS")
     print("no-heir sync    : PASS")
-    print("native Game Over: PASS")
+    print("visible settlement: PASS")
+    print("exit to menu      : PASS")
     print("xar error.log   : 0")
     return xar_lines
 

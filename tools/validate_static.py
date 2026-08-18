@@ -10,6 +10,7 @@ from PIL import Image
 
 import build_release
 import gen_contracts
+import gen_no_heir_gui
 import gen_pools
 import gen_scoring
 import gen_score_preview
@@ -195,6 +196,7 @@ def encoding_and_loc_checks(errors):
         "xar_ledger_decision", "xar_ledger_decision_desc",
         "xar_ledger_decision_tooltip", "xar_ledger_decision_confirm",
         "xar.0011.title", "xar.0011.desc", "xar.0011.desc_cap", "xar.0011.close",
+        "xar.no_heir_settlement.desc",
     }
     for key in sorted(phase_one_loc_keys):
         english_tokens = loc_format_tokens(all_values["english"].get(key, ""))
@@ -512,6 +514,8 @@ def mechanic_checks(errors):
         MOD / "common/scripted_guis/xar_decision_bridges.txt")
     decision_bridge_gui = read(MOD / "gui/xar_decision_bridge.gui")
     decision_registry = read(MOD / "gui/scripted_widgets/xar_scripted_widgets.txt")
+    no_heir_gui = read(MOD / "gui/xar_no_heir_settlement.gui")
+    succession_override = read(MOD / "gui/window_succession_event.gui")
     if "set_global_variable = xa_open_ledger_pending" not in decisions:
         errors.append("Glassfire Ledger decision does not request its GUI bridge")
     if "set_global_variable = xa_open_contract_pending" not in decisions:
@@ -525,6 +529,24 @@ def mechanic_checks(errors):
             or "gui/xar_decision_bridge.gui = xar_decision_bridge_window"
             not in decision_registry):
         errors.append("decision GUI bridge window is not fully registered")
+    no_heir_gui_requirements = (
+        "type xar_no_heir_settlement_widget = widget",
+        "SuccessionEventWindow.GetDeadCharacter.IsValid",
+        "Not( SuccessionEventWindow.GetDeadCharacter.IsAlive )",
+        "Not( SuccessionEventWindow.GetPlayerHeir.IsValid )",
+        "GetTrait( 'xar_glassfire_gaze' )",
+        "GetPlayer.MakeScope.Var('xar_no_heir_score').GetValue",
+        "Localize('xar.no_heir.footer')", "SuccessionEventWindow.GoToMenu",
+    )
+    if any(token not in no_heir_gui for token in no_heir_gui_requirements):
+        errors.append("no-heir settlement widget lost its XAR gate, content, or exit")
+    expected_override = (
+        "# GENERATED FILE - native 1.19 succession window plus XAR no-heir widget\n"
+        + gen_no_heir_gui.render())
+    if normalized(succession_override) != normalized(expected_override):
+        errors.append("native succession override is stale; run gen_no_heir_gui.py")
+    if succession_override.count("xar_no_heir_settlement_widget = {}") != 1:
+        errors.append("native succession override must inject exactly one no-heir widget")
 
     contract_events = [event_id for event_id in event_ids if event_id.startswith("xar.21")]
     gaze_events = [event_id for event_id in event_ids if event_id.startswith("xar.22")]
@@ -552,19 +574,30 @@ def mechanic_checks(errors):
         errors.append("contract persistence must contain 18 PB plus 6 collection lessons")
 
     on_actions = read(MOD / "common/on_action/xar_on_actions.txt")
+    score_snapshot_event = extract_block(events, "xar.1002") or ""
+    score_compute_event = extract_block(events, "xar.1000") or ""
+    score_dispatch_event = extract_block(events, "xar.1003") or ""
     start = extract_block(on_actions, "xar_on_game_start") or ""
     death = extract_block(on_actions, "xar_on_death") or ""
     if "every_player" not in start:
         errors.append("game-start entry is no longer player-only")
     if "has_character_flag = xa_enabled" not in death or "is_ai = no" not in death:
         errors.append("death entry lost the player flag/is_ai dual gate")
-    if death.count("trigger_event = xar.1001") != 1:
-        errors.append("death fallback must contain exactly one synchronous xar.1001 trigger")
-    if death.count("id = xar.1001") != 1 or death.count("days = 1") != 1:
+    if (death.count("trigger_event = xar.1000") != 1
+            or "xar_compute_score_effect = yes" not in score_compute_event
+            or "trigger_event = xar.1003" not in score_compute_event):
+        errors.append("death scoring must cross the synchronous xar.1000 commit boundary")
+    if (score_dispatch_event.count("id = xar.1001") != 1
+            or score_dispatch_event.count("days = 1") != 1):
         errors.append("heir settlement path must contain exactly one delayed one-day xar.1001 trigger")
-    if ("limit = { exists = player_heir }" not in death
-            or "XAR: no player heir; synchronous settlement fallback" not in death):
+    if ("limit = { exists = player_heir }" not in score_dispatch_event
+            or "XAR: no player heir; synchronous settlement fallback" not in score_dispatch_event
+            or "trigger_event = xar.1002" not in score_dispatch_event):
         errors.append("death settlement lacks the guarded no-heir fallback/debug marker")
+    for variable in ("score", "subtotal", "candidate", "old", "delta", "pairs",
+                     "refusals", "contract"):
+        if f"name = xar_no_heir_{variable}" not in score_snapshot_event:
+            errors.append(f"no-heir settlement lacks '{variable}' event-root snapshot")
     death_probe_effect = read(
         MOD / "common/scripted_effects/xar_acceptance_death_effects.txt")
     death_probe_events = read(MOD / "events/xar_acceptance_events.txt")
@@ -582,8 +615,8 @@ def mechanic_checks(errors):
             "NOT = { exists = player_heir }", "add_trait = disinherited",
             "XAR: TEST PASS no_heir_precondition")):
         errors.append("no-heir acceptance probe lost its engine precondition")
-    if ("XAR: TEST PASS no_heir_synchronous_return" not in death
-            or "XAR: TEST no-heir score immediate entered" not in events):
+    if ("XAR: TEST PASS no_heir_synchronous_return" not in score_snapshot_event
+            or "XAR: TEST no-heir snapshot committed" not in score_snapshot_event):
         errors.append("no-heir synchronous-return instrumentation is incomplete")
     for hook in ("on_war_won_attacker", "on_war_won_defender", "on_hook_used",
                  "on_county_faith_change", "on_birth_mother", "on_birth_father",
@@ -784,8 +817,8 @@ def mechanic_checks(errors):
     if consume.find("name = xa_local_points") > consume.find("trigger_event = xar.0002"):
         errors.append("pact can open before imported shop points are assigned")
 
-    if "global_var:xa_record_candidate > global_var:xa_old_record" not in death:
-        errors.append("death hook does not use strict candidate record comparison")
+    if "global_var:xa_record_candidate > global_var:xa_old_record" not in score_dispatch_event:
+        errors.append("death settlement dispatcher does not use strict candidate record comparison")
     if "global_var:xa_run_score > global_var:xa_old_record" in on_actions + events:
         errors.append("production record comparison still uses the real run score")
 

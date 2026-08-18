@@ -1,0 +1,115 @@
+﻿# Widget type injected into the native succession window by gen_no_heir_gui.py.
+types XARNoHeirTypes {
+	type xar_no_heir_settlement_widget = widget {
+		name = "xar_no_heir_settlement_widget"
+		size = { 1000 760 }
+		parentanchor = center
+		filter_mouse = all
+		visible = "[And( SuccessionEventWindow.GetDeadCharacter.IsValid, And( Not( SuccessionEventWindow.GetDeadCharacter.IsAlive ), And( Not( SuccessionEventWindow.GetPlayerHeir.IsValid ), SuccessionEventWindow.GetDeadCharacter.HasTrait( GetTrait( 'xar_glassfire_gaze' ) ) ) ) )]"
+
+		using = Window_Background
+		using = Window_Decoration_Spike
+		using = Animation_ShowHide_Standard
+
+		vbox = {
+			using = Window_Margins
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+				blockoverride "header_text" {
+					text = "xar.1001.title"
+				}
+				blockoverride "button_close" {
+					visible = no
+				}
+			}
+
+			vbox = {
+				name = "xar_no_heir_settlement_summary"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				margin = { 45 20 }
+				spacing = 9
+
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					autoresize = yes
+					text = "[Localize('xar.no_heir_settlement.desc')]"
+					fontsize = 17
+					default_format = "#high"
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = { text = "[Localize('xar.no_heir.score')]" default_format = "#high" }
+					expand = {}
+					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_score').GetValue|1]" default_format = "#V" }
+				}
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = { text = "[Localize('xar.no_heir.subtotal')]" default_format = "#high" }
+					expand = {}
+					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_subtotal').GetValue|1]" default_format = "#high" }
+				}
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = { text = "[Localize('xar.no_heir.pairs')]" default_format = "#high" }
+					expand = {}
+					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_pairs').GetValue|0]" default_format = "#high" }
+				}
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = { text = "[Localize('xar.no_heir.refusals')]" default_format = "#high" }
+					expand = {}
+					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_refusals').GetValue|0]" default_format = "#high" }
+				}
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = { text = "[Localize('xar.no_heir.contract')]" default_format = "#high" }
+					expand = {}
+					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_contract').GetValue|0]" default_format = "#high" }
+				}
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = { text = "[Localize('xar.no_heir.old')]" default_format = "#high" }
+					expand = {}
+					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_old').GetValue|0]" default_format = "#high" }
+				}
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = { text = "[Localize('xar.no_heir.candidate')]" default_format = "#high" }
+					expand = {}
+					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_candidate').GetValue|0]" default_format = "#V" }
+				}
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = { text = "[Localize('xar.no_heir.delta')]" default_format = "#high" }
+					expand = {}
+					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_delta').GetValue|+0]" default_format = "#high" }
+				}
+
+				expand = {}
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					autoresize = yes
+					text = "[Localize('xar.no_heir.footer')]"
+					fontsize = 16
+					default_format = "#high"
+				}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				expand = {}
+				button_primary_big = {
+					name = "xar_no_heir_exit_button"
+					text = "SUCCESSION_EVENT_WINDOW_MENU"
+					onclick = "[SuccessionEventWindow.GoToMenu]"
+					min_width = 330
+					default_format = "#high"
+				}
+				expand = {}
+			}
+		}
+	}
+}

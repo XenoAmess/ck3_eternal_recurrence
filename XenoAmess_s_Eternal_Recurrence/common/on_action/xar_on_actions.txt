@@ -74,9 +74,8 @@ xar_contract_birthday = {
 	}
 }
 
-# Compute the run score; if its quantized candidate beats the record, write the threshold bit FIRST
-# (its lesson notification fires immediately), then show the result on the heir
-# one day later, or synchronously on root when no heir exists.
+# Start the forward-only settlement event chain. Each stage reads only values
+# committed by its parent event; returning child writes are not visible here.
 xar_on_death = {
 	effect = {
 		if = {
@@ -85,55 +84,7 @@ xar_on_death = {
 				is_ai = no
 			}
 			debug_log = "XAR: computing score on death"
-			xar_compute_score_effect = yes
-			if = {
-				limit = { global_var:xa_record_candidate > global_var:xa_old_record }
-				debug_log = "XAR: new record, writing bit"
-				xar_write_record_effect = yes
-			}
-			# The dying root will be invalid once a delay completes. Prefer the
-			# living heir, but synchronously show the settlement on root when no
-			# heir exists; this is the only event scope still available at death.
-			if = {
-				limit = { exists = player_heir }
-				player_heir = {
-					trigger_event = {
-						id = xar.1001
-						days = 1
-					}
-				}
-			}
-			else = {
-				debug_log = "XAR: no player heir; synchronous settlement fallback"
-				# XAR_ACCEPTANCE_ONLY_BEGIN
-				if = {
-					limit = {
-						has_global_variable = xa_death_edges_active
-						has_character_flag = xa_test_no_heir_death_target
-					}
-					set_global_variable = { name = xa_test_no_heir_sync_stage value = 1 }
-				}
-				# XAR_ACCEPTANCE_ONLY_END
-				trigger_event = xar.1001
-				# XAR_ACCEPTANCE_ONLY_BEGIN
-				if = {
-					limit = {
-						has_global_variable = xa_death_edges_active
-						has_character_flag = xa_test_no_heir_death_target
-						global_var:xa_test_no_heir_sync_stage = 2
-					}
-					debug_log = "XAR: TEST PASS no_heir_synchronous_return"
-					debug_log = "XAR: TEST DONE death_edges"
-				}
-				else_if = {
-					limit = {
-						has_global_variable = xa_death_edges_active
-						has_character_flag = xa_test_no_heir_death_target
-					}
-					debug_log = "XAR: TEST FAIL no_heir_synchronous_return"
-				}
-				# XAR_ACCEPTANCE_ONLY_END
-			}
+			trigger_event = xar.1000
 		}
 	}
 }

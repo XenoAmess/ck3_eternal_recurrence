@@ -67,6 +67,7 @@
 | 事件 immediate 里 `has_game_rule` 表现存疑 | 未查明（该行无日志可判定真假） | 换用全局旗标：`has_global_variable`（任何上下文都可靠） |
 | 同一 `immediate` 内把 scripted value 或计算结果分别复制为“修改前/修改后”变量，两个快照仍相等 | 同一 effect 链内的变量复制未形成可依赖的时间序列快照，具体求值时机未查明 | 改为断言一次正式计算后的固定不变量，或跨事件边界后再比较；不要在同一 `immediate` 内做 before/after 快照。2026-08-18 成长赛道 selftest 实测 |
 | 同一事件 `immediate` 内先计算并写 global，再用 `save_scope_value_as` 复制该 global，报 `Value of wrong type ... none` | scripted effect 返回后也不构成写入可见边界；事件内后续表达式仍可能在写入提交前求值。2026-08-18 账簿链实测：score capture、阈值投影和显示快照各需要独立事件 | 把每个存在读后写依赖的阶段拆成连续 hidden event，最终可见事件只读取上一事件已经提交的 globals |
+| 无继承人同步结算显示 0，或外部 GUI 的 `SuccessionEventWindow.GoToMenu` 点击无效 | 死亡计分仍在 `on_death` 父 effect 内未提交；且 `SuccessionEventWindow` action 只在原生窗口有完整输入上下文。2026-08-18 CK3 1.19.0.6 实测 | 使用 `on_death -> hidden compute -> hidden dispatch -> hidden snapshot` 前向事件链；把结算 widget 生成注入原生 `window_succession_event.gui`，按钮在原生窗口内调用 `GoToMenu` |
 | 正数差值经过 `max = 0` 后总是变成 0 | CK3 数值块的 `max` 是上限、`min` 是下限；`max = 0` 会把所有正数压到 0 | 表达 `max(value, 0)` 要写 `min = 0`。2026-08-18 成长计分与账簿差值实机定位 |
 
 ## 事件背景图 / 纹理

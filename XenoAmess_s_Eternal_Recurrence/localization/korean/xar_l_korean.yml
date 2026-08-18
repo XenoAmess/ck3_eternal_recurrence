@@ -1,4 +1,14 @@
 ﻿l_korean:
+ xar.no_heir_settlement.desc:0 "Traveler, the native ending would close the ledger for you. But this weight belongs to me—and to you."
+ xar.no_heir.score:0 "Final weight"
+ xar.no_heir.subtotal:0 "Weight before refusals"
+ xar.no_heir.pairs:0 "Completed bargains"
+ xar.no_heir.refusals:0 "Favors refused"
+ xar.no_heir.contract:0 "Contract progress"
+ xar.no_heir.old:0 "Previous Ember Tier"
+ xar.no_heir.candidate:0 "Candidate Ember Tier"
+ xar.no_heir.delta:0 "Record difference"
+ xar.no_heir.footer:0 "Leaving no heir does not mean leaving no weight. The embers are written into eternity; when the next traveler arrives, I shall gently open this page again."
  # Game rule
  rule_xar_enabled:0 "유리불꽃 군주의 영원한 윤회"
  setting_xar_on:0 "활성화"

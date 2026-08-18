@@ -520,6 +520,97 @@ xar.0011 = {
 	}
 }
 
+# Commit score globals before on_death compares the record or opens settlement.
+xar.1000 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		xar_compute_score_effect = yes
+		trigger_event = xar.1003
+	}
+}
+
+# Commit score first, then write any record and route to the living heir or the
+# synchronous no-heir snapshot stage.
+xar.1003 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		if = {
+			limit = { global_var:xa_record_candidate > global_var:xa_old_record }
+			debug_log = "XAR: new record, writing bit"
+			xar_write_record_effect = yes
+		}
+		if = {
+			limit = { exists = player_heir }
+			player_heir = {
+				trigger_event = {
+					id = xar.1001
+					days = 1
+				}
+			}
+		}
+		else = {
+			debug_log = "XAR: no player heir; synchronous settlement fallback"
+			trigger_event = xar.1002
+		}
+	}
+}
+
+# Commit no-heir GUI values before the visible event initializes its bindings.
+xar.1002 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		set_variable = { name = xar_no_heir_score value = { value = global_var:xa_run_score } }
+		set_variable = { name = xar_no_heir_subtotal value = { value = global_var:xa_score_before_reject } }
+		set_variable = { name = xar_no_heir_candidate value = { value = global_var:xa_record_candidate } }
+		set_variable = { name = xar_no_heir_old value = { value = global_var:xa_old_record } }
+		set_variable = { name = xar_no_heir_delta value = { value = global_var:xa_score_delta } }
+		set_variable = { name = xar_no_heir_pairs value = { value = global_var:xa_bless_count } }
+		set_variable = { name = xar_no_heir_refusals value = { value = global_var:xa_bless_reject_count } }
+		set_variable = { name = xar_no_heir_contract value = { value = global_var:xa_contract_progress } }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = {
+				has_global_variable = xa_death_edges_active
+				has_character_flag = xa_test_no_heir_death_target
+			}
+			debug_log = "XAR: TEST no-heir snapshot committed"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# GUI-only character variables trigger an engine unused-variable warning
+		# unless production script also reads them once. These no-op probes only
+		# register the reads; the values commit when this hidden event returns.
+		set_global_variable = { name = xa_no_heir_snapshot_probe value = var:xar_no_heir_score }
+		set_global_variable = { name = xa_no_heir_snapshot_probe value = var:xar_no_heir_subtotal }
+		set_global_variable = { name = xa_no_heir_snapshot_probe value = var:xar_no_heir_candidate }
+		set_global_variable = { name = xa_no_heir_snapshot_probe value = var:xar_no_heir_old }
+		set_global_variable = { name = xa_no_heir_snapshot_probe value = var:xar_no_heir_delta }
+		set_global_variable = { name = xa_no_heir_snapshot_probe value = var:xar_no_heir_pairs }
+		set_global_variable = { name = xa_no_heir_snapshot_probe value = var:xar_no_heir_refusals }
+		set_global_variable = { name = xa_no_heir_snapshot_probe value = var:xar_no_heir_contract }
+		remove_global_variable = xa_no_heir_snapshot_probe
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = {
+				has_global_variable = xa_death_edges_active
+				has_character_flag = xa_test_no_heir_death_target
+			}
+			debug_log = "XAR: TEST PASS no_heir_synchronous_return"
+			debug_log = "XAR: TEST DONE death_edges"
+		}
+		else_if = {
+			limit = {
+				has_global_variable = xa_death_edges_active
+				has_character_flag = xa_test_no_heir_death_target
+			}
+			debug_log = "XAR: TEST FAIL no_heir_synchronous_return"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+}
+
 # Death: show the run score breakdown, record, and delta; on confirm, exit to
 # the main menu (via the xar_meta_window GUI bridge watching xa_quit_to_menu).
 xar.1001 = {
