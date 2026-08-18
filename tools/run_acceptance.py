@@ -78,6 +78,7 @@ REQUIRED_PASSES = {
     "contract_select", "contract_progress",
     "inherit_0", "inherit_25", "inherit_50", "inherit_100_uncapped",
     "inherit_5000", "inherit_50000", "inherit_166600", "shop_high_tier_bundle",
+    "shop_expanded_inventory",
     "default_growth_track", "growth_contract_points", "growth_baseline_zero",
     "growth_score_delta", "ai_runtime_guard",
 }
@@ -608,8 +609,8 @@ def run_production_smoke(scenario, import_record, debug_offset, artifacts):
             unpause=False)
         offset = wait_for_marker(offset, "XAR: shop event fired", 10, xar_lines)
         wait_for_ocr_text(
-            "1200", EVENT_TEXT_REGION, 15, artifacts,
-            "06_high_budget_1200.png", contains=True, stable_hits=1)
+            "2000", EVENT_TEXT_REGION, 15, artifacts,
+            "06_high_budget_2000.png", contains=True, stable_hits=1)
         next_page = wait_for_ocr_text(
             "下一页", EVENT_OPTIONS_FULL_REGION, 15,
             artifacts, "06_high_budget_next_1.png", contains=True, stable_hits=1)
@@ -621,6 +622,28 @@ def run_production_smoke(scenario, import_record, debug_offset, artifacts):
             "下一页", EVENT_OPTIONS_FULL_REGION, 15,
             artifacts, "06_high_budget_next_2.png", contains=True, stable_hits=1)
         deliberate_click(next_page, "high-budget shop page 3")
+        next_page = wait_for_ocr_text(
+            "下一页", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "06_high_budget_next_3.png", contains=True, stable_hits=1)
+        deliberate_click(next_page, "high-budget shop page 4")
+        dread = wait_for_ocr_text(
+            "一缕恶名", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "06_high_budget_dread.png", contains=True, stable_hits=1)
+        deliberate_click(dread, "dread service purchase")
+        wait_for_ocr_text(
+            "1750", EVENT_TEXT_REGION, 15, artifacts,
+            "06_high_budget_1750_remaining.png", contains=True, stable_hits=1)
+        legitimacy = wait_for_ocr_text(
+            "王冠记起", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "06_high_budget_legitimacy.png", contains=True, stable_hits=1)
+        deliberate_click(legitimacy, "legitimacy service purchase")
+        wait_for_ocr_text(
+            "1250", EVENT_TEXT_REGION, 15, artifacts,
+            "06_high_budget_1250_remaining.png", contains=True, stable_hits=1)
+        previous_page = wait_for_ocr_text(
+            "上一页", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "06_high_budget_prev_4.png", contains=True, stable_hits=1)
+        deliberate_click(previous_page, "high-budget shop return to page 3")
         reform = wait_for_ocr_text(
             "免费的宗教改革", EVENT_OPTIONS_FULL_REGION, 15,
             artifacts, "06_high_budget_reform.png", contains=True, stable_hits=1)
@@ -628,8 +651,8 @@ def run_production_smoke(scenario, import_record, debug_offset, artifacts):
             reform, "faith reformation purchase", "XAR: faith reformation purchased",
             offset, xar_lines)
         wait_for_ocr_text(
-            "67", EVENT_TEXT_REGION, 15, artifacts,
-            "06_high_budget_67_remaining.png", contains=True, stable_hits=1)
+            "117", EVENT_TEXT_REGION, 15, artifacts,
+            "06_high_budget_117_remaining.png", contains=True, stable_hits=1)
         focus_ck3()
         post_purchase = ImageGrab.grab()
         if find_ocr_text(
@@ -1178,7 +1201,7 @@ def main(scenario="selftest", import_record=0):
         "selftest": import_record,
         "on-first-life": 0,
         "on-recorded": 100,
-        "on-high-budget": 1200,
+        "on-high-budget": 2000,
         "off": 0,
         "persistence-restart": 0,
         "death-edges": 1,

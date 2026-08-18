@@ -199,6 +199,30 @@ xar_selftest_effect = {
 		debug_log = "XAR: TEST PASS shop_high_tier_bundle"
 	}
 	else = { debug_log = "XAR: TEST FAIL shop_high_tier_bundle" }
+	set_global_variable = { name = xa_reroll_tokens value = 0 }
+	set_global_variable = { name = xa_seal_tokens value = 0 }
+	add_tyranny = 10
+	xar_buy_reroll_shop_item_effect = yes
+	xar_buy_seal_shop_item_effect = yes
+	xar_buy_dread_shop_item_effect = yes
+	xar_buy_legitimacy_shop_item_effect = yes
+	xar_buy_tyranny_shop_item_effect = yes
+	if = {
+		limit = {
+			global_var:xa_local_points = 3217
+			global_var:xa_reroll_tokens = 1
+			global_var:xa_seal_tokens = 1
+			global_var:xa_price_reroll = 240
+			global_var:xa_price_seal = 360
+			has_character_flag = xa_bought_dread
+			has_character_flag = xa_bought_legitimacy
+			has_character_flag = xa_bought_tyranny
+		}
+		debug_log = "XAR: TEST PASS shop_expanded_inventory"
+	}
+	else = { debug_log = "XAR: TEST FAIL shop_expanded_inventory" }
+	set_global_variable = { name = xa_reroll_tokens value = 0 }
+	set_global_variable = { name = xa_seal_tokens value = 0 }
 
 	# Production ledger projection must remain a read-only, internally coherent snapshot.
 	set_global_variable = {

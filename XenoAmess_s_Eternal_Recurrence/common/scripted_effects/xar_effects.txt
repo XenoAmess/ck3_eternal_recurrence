@@ -101,6 +101,11 @@ xar_initialize_run_state_effect = {
 	set_global_variable = { name = xa_price_grand_tribute value = 10000 }
 	set_global_variable = { name = xa_price_borrowed_generation value = 50000 }
 	set_global_variable = { name = xa_price_sixfold_apotheosis value = 100000 }
+	set_global_variable = { name = xa_price_reroll value = 200 }
+	set_global_variable = { name = xa_price_seal value = 300 }
+	set_global_variable = { name = xa_price_dread value = 250 }
+	set_global_variable = { name = xa_price_legitimacy value = 500 }
+	set_global_variable = { name = xa_price_tyranny value = 1000 }
 	set_global_variable = { name = xa_lifespan_bought value = 0 }
 	set_global_variable = { name = xa_bless_count value = 0 }
 	set_global_variable = { name = xa_bless_session value = 0 }
@@ -233,6 +238,24 @@ xar_buy_lifespan_shop_item_effect = {
 	}
 }
 
+xar_buy_reroll_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_reroll multiply = -1 } }
+	change_global_variable = { name = xa_reroll_tokens add = 1 }
+	set_global_variable = {
+		name = xa_price_reroll
+		value = { value = global_var:xa_price_reroll multiply = 1.2 ceiling = yes }
+	}
+}
+
+xar_buy_seal_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_seal multiply = -1 } }
+	change_global_variable = { name = xa_seal_tokens add = 1 }
+	set_global_variable = {
+		name = xa_price_seal
+		value = { value = global_var:xa_price_seal multiply = 1.2 ceiling = yes }
+	}
+}
+
 xar_buy_faith_reformation_shop_item_effect = {
 	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_reform multiply = -1 } }
 	add_character_modifier = {
@@ -294,6 +317,24 @@ xar_buy_sixfold_apotheosis_shop_item_effect = {
 	add_learning_skill = 30
 	add_prowess_skill = 30
 	add_character_flag = xa_bought_sixfold_apotheosis
+}
+
+xar_buy_dread_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_dread multiply = -1 } }
+	add_dread = 20
+	add_character_flag = xa_bought_dread
+}
+
+xar_buy_legitimacy_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_legitimacy multiply = -1 } }
+	add_legitimacy = 100
+	add_character_flag = xa_bought_legitimacy
+}
+
+xar_buy_tyranny_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_tyranny multiply = -1 } }
+	add_tyranny = -10
+	add_character_flag = xa_bought_tyranny
 }
 
 xar_initialize_blessing_session_effect = {

@@ -11,12 +11,12 @@ Latest local candidate evidence (2026-08-18):
 
 | Scenario | Run ID | Result |
 |---|---|---|
-| 56-assertion selftest + scaled Gaze rewards + transaction UI + ledger/contract decisions + AI guard + observer HUD | `xar_accept_4qf5_j1b` | GREEN, 0 `xar` errors |
+| 57-assertion selftest + expanded shop + scaled Gaze rewards + transaction UI + ledger/contract decisions + AI guard + observer HUD | `xar_accept_voxr65oq` | GREEN, 0 `xar` errors |
 | Two-process persistence / A writes 405 / B imports 405 without pre-seeding | `xar_accept_ie68yqxu` | GREEN, 0 `xar` errors |
 | Actual AI death guard + no-heir synchronous fallback + native Game Over | `xar_accept_8g2xb3f7` | Script GREEN, 0 `xar` errors; settlement UI obscured |
 | Release projection / first life / zero record | `xar_accept__1403689` | GREEN, 0 `xar` errors |
 | Release projection / recorded life / 100 tier, default Growth + 100% | `xar_accept_2sv8bfoi` | GREEN, 0 `xar` errors |
-| Release projection / high budget / 1200 tier / 1133 reformation purchase | `xar_accept_5yccueyx` | GREEN, 0 `xar` errors |
+| Release projection / 2000 tier / page-4 Dread + Legitimacy / 1133 reformation | `xar_accept_pq2qn3e6` | GREEN, 0 `xar` errors |
 | Release projection / rule disabled | `xar_accept_n_sya3ke` | GREEN, 0 `xar` errors |
 
 ## Manual Language Sign-off

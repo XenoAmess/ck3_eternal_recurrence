@@ -11,6 +11,7 @@
 - Stable pool wire IDs, visible rarity/build labels, applicability filters, and state/contract weighting.
 - Glassfire Ledger, first-life guidance, deterministic release staging, static CI, and production smoke scenarios.
 - High-tier shop sinks: Grand Tribute (10,000), Borrowed Generation (50,000), and Sixfold Apotheosis (100,000).
+- A fourth shop page with purchasable rerolls, seals, Dread, Legitimacy, and Tyranny relief.
 
 ### Changed
 

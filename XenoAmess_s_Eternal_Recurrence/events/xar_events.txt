@@ -67,7 +67,8 @@ xar.0003 = {
 }
 
 # The shop. Paginated (the event option grid does not scroll):
-#   page 1: attributes, page 2: resources, page 3: special goods.
+#   page 1: attributes, page 2: resources, page 3: special goods,
+#   page 4: transaction tokens and crown services.
 # Every purchase charges the item's current price, then replaces it with
 # ceiling(current * 1.2) (per run; price variables live in the save). Unspent points convert to gold
 # when starting.
@@ -105,6 +106,11 @@ xar.0001 = {
 		save_scope_value_as = { name = xar_pr_grand_tribute value = global_var:xa_price_grand_tribute }
 		save_scope_value_as = { name = xar_pr_borrowed_generation value = global_var:xa_price_borrowed_generation }
 		save_scope_value_as = { name = xar_pr_sixfold_apotheosis value = global_var:xa_price_sixfold_apotheosis }
+		save_scope_value_as = { name = xar_pr_reroll value = global_var:xa_price_reroll }
+		save_scope_value_as = { name = xar_pr_seal value = global_var:xa_price_seal }
+		save_scope_value_as = { name = xar_pr_dread value = global_var:xa_price_dread }
+		save_scope_value_as = { name = xar_pr_legitimacy value = global_var:xa_price_legitimacy }
+		save_scope_value_as = { name = xar_pr_tyranny value = global_var:xa_price_tyranny }
 	}
 
 	# ---------- page 1: attributes ----------
@@ -300,6 +306,58 @@ xar.0001 = {
 		trigger_event = { id = xar.0001 }
 	}
 
+	# ---------- page 4: tokens and crown services ----------
+	option = {
+		name = xar.0001.reroll_token
+		trigger = {
+			global_var:xa_shop_page = 4
+			global_var:xa_local_points >= global_var:xa_price_reroll
+		}
+		xar_buy_reroll_shop_item_effect = yes
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.seal_token
+		trigger = {
+			global_var:xa_shop_page = 4
+			global_var:xa_local_points >= global_var:xa_price_seal
+		}
+		xar_buy_seal_shop_item_effect = yes
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.dread
+		trigger = {
+			global_var:xa_shop_page = 4
+			global_var:xa_local_points >= global_var:xa_price_dread
+			NOT = { has_character_flag = xa_bought_dread }
+		}
+		xar_buy_dread_shop_item_effect = yes
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.legitimacy
+		trigger = {
+			global_var:xa_shop_page = 4
+			global_var:xa_local_points >= global_var:xa_price_legitimacy
+			is_landed = yes
+			NOT = { has_character_flag = xa_bought_legitimacy }
+		}
+		xar_buy_legitimacy_shop_item_effect = yes
+		trigger_event = { id = xar.0001 }
+	}
+	option = {
+		name = xar.0001.tyranny
+		trigger = {
+			global_var:xa_shop_page = 4
+			global_var:xa_local_points >= global_var:xa_price_tyranny
+			tyranny > 0
+			NOT = { has_character_flag = xa_bought_tyranny }
+		}
+		xar_buy_tyranny_shop_item_effect = yes
+		trigger_event = { id = xar.0001 }
+	}
+
 	# ---------- navigation ----------
 	option = {
 		name = xar.0001.prev_page
@@ -309,7 +367,7 @@ xar.0001 = {
 	}
 	option = {
 		name = xar.0001.next_page
-		trigger = { global_var:xa_shop_page < 3 }
+		trigger = { global_var:xa_shop_page < 4 }
 		change_global_variable = { name = xa_shop_page add = 1 }
 		trigger_event = { id = xar.0001 }
 	}

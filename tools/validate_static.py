@@ -268,6 +268,9 @@ def mechanic_checks(errors):
         "xa_price_grand_tribute": "10000",
         "xa_price_borrowed_generation": "50000",
         "xa_price_sixfold_apotheosis": "100000",
+        "xa_price_reroll": "200", "xa_price_seal": "300",
+        "xa_price_dread": "250", "xa_price_legitimacy": "500",
+        "xa_price_tyranny": "1000",
         "xa_lifespan_bought": "0", "xa_bless_count": "0",
         "xa_bless_session": "0", "xa_bless_reject_count": "0",
         "xa_selected_bless_rarity": "0", "xa_score_baseline": "0",
@@ -312,6 +315,8 @@ def mechanic_checks(errors):
         "xar_buy_influence_shop_item_effect": ("xa_price_inf", "change_influence = 100"),
         "xar_buy_dynasty_prestige_shop_item_effect": ("xa_price_dyn", "add_dynasty_prestige = 100"),
         "xar_buy_lifespan_shop_item_effect": ("xa_price_life", "xar_buy_lifespan_effect = yes"),
+        "xar_buy_reroll_shop_item_effect": ("xa_price_reroll", "name = xa_reroll_tokens add = 1"),
+        "xar_buy_seal_shop_item_effect": ("xa_price_seal", "name = xa_seal_tokens add = 1"),
     }
     for effect, (price, reward) in shop_purchases.items():
         call = f"{effect} = yes"
@@ -364,7 +369,16 @@ def mechanic_checks(errors):
             "add_character_flag = xa_bought_sixfold_apotheosis",
             ("add_diplomacy_skill = 30", "add_martial_skill = 30",
              "add_stewardship_skill = 30", "add_intrigue_skill = 30",
-             "add_learning_skill = 30", "add_prowess_skill = 30")),
+              "add_learning_skill = 30", "add_prowess_skill = 30")),
+        "xar_buy_dread_shop_item_effect": (
+            "xa_price_dread", "add_character_flag = xa_bought_dread",
+            ("add_dread = 20",)),
+        "xar_buy_legitimacy_shop_item_effect": (
+            "xa_price_legitimacy", "add_character_flag = xa_bought_legitimacy",
+            ("add_legitimacy = 100",)),
+        "xar_buy_tyranny_shop_item_effect": (
+            "xa_price_tyranny", "add_character_flag = xa_bought_tyranny",
+            ("add_tyranny = -10",)),
     }
     for effect, (price, ownership, rewards) in fixed_purchases.items():
         call = f"{effect} = yes"
@@ -385,6 +399,10 @@ def mechanic_checks(errors):
         errors.append("Borrowed Generation shop option lacks its 25-stack guard")
     if "XAR: TEST PASS shop_high_tier_bundle" not in selftest:
         errors.append("selftest lacks the full high-tier shop bundle assertion")
+    if "XAR: TEST PASS shop_expanded_inventory" not in selftest:
+        errors.append("selftest lacks expanded shop inventory assertions")
+    if "global_var:xa_shop_page < 4" not in shop:
+        errors.append("shop navigation does not expose page 4")
 
     blessing_init = extract_block(
         production_effects, "xar_initialize_blessing_session_effect") or ""
