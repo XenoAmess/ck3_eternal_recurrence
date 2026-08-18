@@ -516,6 +516,10 @@ xar.0011 = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			debug_log = "XAR: TEST FAIL ui_ledger_close"
 		}
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_finish_effect = yes
+		}
 		# XAR_ACCEPTANCE_ONLY_END
 	}
 }

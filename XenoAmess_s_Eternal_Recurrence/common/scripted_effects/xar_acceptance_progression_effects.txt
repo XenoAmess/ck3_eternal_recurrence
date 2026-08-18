@@ -1,0 +1,150 @@
+﻿# Acceptance-only proof of contract PB, collection, and milestone UI.
+xar_acceptance_progression_start_effect = {
+	if = {
+		limit = { is_ai = no global_var:xa_global_record_imported = 3 }
+		xar_enable_player_pact_effect = yes
+		xar_initialize_run_state_effect = yes
+		set_global_variable = xa_progression_ui_active
+		xar_select_contract_steward_effect = yes
+		debug_log = "XAR: TEST progression UI begin"
+		if = {
+			limit = {
+				has_character_flag = xa_enabled
+				has_trait = xar_glassfire_gaze
+				global_var:xa_contract_id = 5
+				global_var:xa_contract_progress = 0
+				global_var:xa_reroll_tokens = 0
+				global_var:xa_seal_tokens = 0
+				NOT = { has_trait_xp = { trait = xar_glassfire_gaze value >= 1 } }
+			}
+			debug_log = "XAR: TEST PASS progression_initial"
+			xar_add_contract_progress_effect = { ID = 5 }
+			xar_add_contract_progress_effect = { ID = 5 }
+			xar_add_contract_progress_effect = { ID = 5 }
+		}
+		else = {
+			debug_log = "XAR: TEST FAIL progression_initial"
+			debug_log = "XAR: TEST DONE progression-ui"
+		}
+	}
+}
+
+xar_acceptance_progression_contract_3_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_global_variable = xa_progression_ui_active
+			global_var:xa_contract_id = 5
+			global_var:xa_contract_progress = 3
+			has_global_variable = xa_contract_pb_5_3
+			NOT = { has_global_variable = xa_contract_pb_5_6 }
+			NOT = { has_global_variable = xa_contract_complete_5 }
+		}
+		debug_log = "XAR: TEST PASS progression_contract_3"
+		xar_add_contract_progress_effect = { ID = 5 }
+		xar_add_contract_progress_effect = { ID = 5 }
+		xar_add_contract_progress_effect = { ID = 5 }
+	}
+	else = {
+		debug_log = "XAR: TEST FAIL progression_contract_3"
+		debug_log = "XAR: TEST DONE progression-ui"
+	}
+}
+
+xar_acceptance_progression_contract_6_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_global_variable = xa_progression_ui_active
+			global_var:xa_contract_id = 5
+			global_var:xa_contract_progress = 6
+			has_global_variable = xa_contract_pb_5_3
+			has_global_variable = xa_contract_pb_5_6
+			NOT = { has_global_variable = xa_contract_pb_5_10 }
+			NOT = { has_global_variable = xa_contract_complete_5 }
+		}
+		debug_log = "XAR: TEST PASS progression_contract_6"
+		xar_add_contract_progress_effect = { ID = 5 }
+		xar_add_contract_progress_effect = { ID = 5 }
+		xar_add_contract_progress_effect = { ID = 5 }
+		xar_add_contract_progress_effect = { ID = 5 }
+	}
+	else = {
+		debug_log = "XAR: TEST FAIL progression_contract_6"
+		debug_log = "XAR: TEST DONE progression-ui"
+	}
+}
+
+xar_acceptance_progression_contract_10_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_global_variable = xa_progression_ui_active
+			global_var:xa_contract_id = 5
+			global_var:xa_contract_progress = 10
+			has_global_variable = xa_contract_pb_5_3
+			has_global_variable = xa_contract_pb_5_6
+			has_global_variable = xa_contract_pb_5_10
+			has_global_variable = xa_contract_complete_5
+			NOT = { has_trait_xp = { trait = xar_glassfire_gaze value >= 1 } }
+		}
+		debug_log = "XAR: TEST PASS progression_contract_10"
+		add_trait_xp = { trait = xar_glassfire_gaze value = 9 }
+		xar_complete_bargain_pair_effect = yes
+	}
+	else = {
+		debug_log = "XAR: TEST FAIL progression_contract_10"
+		debug_log = "XAR: TEST DONE progression-ui"
+	}
+}
+
+xar_acceptance_progression_gaze_10_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_global_variable = xa_progression_ui_active
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 10 }
+			has_trait_xp = { trait = xar_glassfire_gaze value < 20 }
+			has_character_flag = xa_gaze_milestone_10
+			NOT = { has_character_flag = xa_gaze_milestone_20 }
+			global_var:xa_reroll_tokens = 1
+			global_var:xa_seal_tokens = 0
+		}
+		debug_log = "XAR: TEST PASS progression_gaze_10"
+		set_global_variable = { name = xa_contract_progress value = 0 }
+		set_global_variable = xa_full_ui_test_active
+		debug_log = "XAR: TEST progression ledger ready"
+	}
+	else = {
+		debug_log = "XAR: TEST FAIL progression_gaze_10"
+		debug_log = "XAR: TEST DONE progression-ui"
+	}
+}
+
+xar_acceptance_progression_finish_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_global_variable = xa_progression_ui_active
+			global_var:xa_contract_id = 5
+			global_var:xa_contract_progress = 0
+			has_global_variable = xa_contract_pb_5_3
+			has_global_variable = xa_contract_pb_5_6
+			has_global_variable = xa_contract_pb_5_10
+			has_global_variable = xa_contract_complete_5
+			has_character_flag = xa_gaze_milestone_10
+			global_var:xa_reroll_tokens = 1
+			global_var:xa_seal_tokens = 0
+			NOT = { has_global_variable = xa_ledger_score }
+			NOT = { has_global_variable = xa_ledger_candidate }
+			NOT = { has_global_variable = xa_ledger_next }
+			NOT = { has_global_variable = xa_ledger_gap }
+			NOT = { has_global_variable = xa_ledger_at_cap }
+		}
+		debug_log = "XAR: TEST PASS progression_ledger_state"
+	}
+	else = { debug_log = "XAR: TEST FAIL progression_ledger_state" }
+	remove_global_variable = xa_progression_ui_active
+	remove_global_variable = xa_full_ui_test_active
+	debug_log = "XAR: TEST DONE progression-ui"
+}

@@ -129,9 +129,9 @@
 - 已建立 byte-preserving release allowlist，只从 mod 源目录复制正式 CK3 根文件与核心目录；mod 内 `tools/`、Python cache、未知根内容、仓库文档和源素材不会进入 staging，意外 cache/非 allowlist 文件会令静态校验失败。
 - 默认生成 `dist/XenoAmess_s_Eternal_Recurrence/`、旁置 manifest JSON（相对路径、大小、SHA-256、可用时的 git SHA）和 deterministic ZIP；`--check` 在临时目录双构建并比较 manifest 与 ZIP。
 - acceptance 与 static requirements 已拆分并按当前可用环境固定版本。runner 输出 JUnit、环境指纹、开发/production runtime hash 和本次增量日志，并支持调用方指定独立 artifact 目录。
-- 无可用自托管 CK3 桌面；官方 `windows-latest` 负责 push/PR 的 L0，手动触发或 `v*` tag 还会生成并上传候选 ZIP/manifest。官方 runner 不运行 CK3，不把云端 L0 冒充 L1-L3；八个真实游戏场景由本机串行执行并以 JSON/JUnit、截图和增量日志作为发布证据。
+- 无可用自托管 CK3 桌面；官方 `windows-latest` 负责 push/PR 的 L0，手动触发或 `v*` tag 还会生成并上传候选 ZIP/manifest。官方 runner 不运行 CK3，不把云端 L0 冒充 L1-L3；九个真实游戏场景由本机串行执行并以 JSON/JUnit、截图和增量日志作为发布证据。
 - production-only 投影已实现：整文件排除 acceptance 定义，混合运行文件用严格 marker 渲染生产分支，构建扫描禁止测试标识残留；生产 smoke 直接加载投影实测。
-- acceptance runner 已增加 `selftest/on-first-life/on-recorded/on-high-budget/off` 场景并完成实机 GREEN；四个生产场景均加载 release 投影，每场输出 JSON/JUnit、run ID、git/mod/environment 指纹与阶段耗时，且现场备份不进入 artifacts。
+- acceptance runner 的九个场景均已完成实机 GREEN；其中四个 production smoke 加载 release 投影，其余覆盖完整 selftest、两进程持久化、AI/无继承人死亡边界、三轮交易时间边界和 PB/图鉴/里程碑像素。每场输出 JSON/JUnit、run ID、git/mod/environment 指纹与阶段耗时，且现场备份不进入 artifacts。
 
 退出标准：
 
@@ -245,6 +245,7 @@
 - 同阈值区间、跨阈值、最高阈值和超过上限。
 - 商店四页代表商品、整数涨价、一次性所有权、余额不足和余分兑换。
 - 真实拒绝、重抽与封印已纳入 selftest UI；独立 `bargain-reopen` 已实机 GREEN（`xar_accept_ue4ye_un`）：累计第一至第三对、每轮 1094 日不提前重开、1095 日生产重开，以及第三对后完整打开下一场，0 `xar` errors。
+- 贤王 3/6/10 与【琉焰之视】10 XP 生产里程碑、PB lesson、图鉴位和原生账簿历史显示已由 `progression-ui` 实机 GREEN（`xar_accept_gqppgi_f`）：PB 10、图鉴 mask 16、`R 1`、`S 0`，0 `xar` errors。
 - 祝福/诅咒稳定 ID 到 effect 的代表性语义映射。
 - AI 实际死亡负例已自动验证。
 - 无继承人脚本链、原生继承窗可见结算、退出主菜单与正常继承人观察者切换均已验证。

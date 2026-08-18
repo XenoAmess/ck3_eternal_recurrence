@@ -41,7 +41,15 @@ xar.2111 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.conqueror.milestone.3
-	option = { name = xar.contract.milestone.3.ok }
+	option = {
+		name = xar.contract.milestone.3.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_3_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2112 = {
@@ -51,7 +59,15 @@ xar.2112 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.conqueror.milestone.6
-	option = { name = xar.contract.milestone.6.ok }
+	option = {
+		name = xar.contract.milestone.6.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_6_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2113 = {
@@ -61,7 +77,15 @@ xar.2113 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.conqueror.milestone.10
-	option = { name = xar.contract.milestone.10.ok }
+	option = {
+		name = xar.contract.milestone.10.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_10_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2121 = {
@@ -71,7 +95,15 @@ xar.2121 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.weaver.milestone.3
-	option = { name = xar.contract.milestone.3.ok }
+	option = {
+		name = xar.contract.milestone.3.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_3_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2122 = {
@@ -81,7 +113,15 @@ xar.2122 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.weaver.milestone.6
-	option = { name = xar.contract.milestone.6.ok }
+	option = {
+		name = xar.contract.milestone.6.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_6_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2123 = {
@@ -91,7 +131,15 @@ xar.2123 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.weaver.milestone.10
-	option = { name = xar.contract.milestone.10.ok }
+	option = {
+		name = xar.contract.milestone.10.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_10_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2131 = {
@@ -101,7 +149,15 @@ xar.2131 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.saint.milestone.3
-	option = { name = xar.contract.milestone.3.ok }
+	option = {
+		name = xar.contract.milestone.3.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_3_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2132 = {
@@ -111,7 +167,15 @@ xar.2132 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.saint.milestone.6
-	option = { name = xar.contract.milestone.6.ok }
+	option = {
+		name = xar.contract.milestone.6.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_6_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2133 = {
@@ -121,7 +185,15 @@ xar.2133 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.saint.milestone.10
-	option = { name = xar.contract.milestone.10.ok }
+	option = {
+		name = xar.contract.milestone.10.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_10_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2141 = {
@@ -131,7 +203,15 @@ xar.2141 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.patriarch.milestone.3
-	option = { name = xar.contract.milestone.3.ok }
+	option = {
+		name = xar.contract.milestone.3.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_3_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2142 = {
@@ -141,7 +221,15 @@ xar.2142 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.patriarch.milestone.6
-	option = { name = xar.contract.milestone.6.ok }
+	option = {
+		name = xar.contract.milestone.6.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_6_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2143 = {
@@ -151,7 +239,15 @@ xar.2143 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.patriarch.milestone.10
-	option = { name = xar.contract.milestone.10.ok }
+	option = {
+		name = xar.contract.milestone.10.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_10_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2151 = {
@@ -161,7 +257,15 @@ xar.2151 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.steward.milestone.3
-	option = { name = xar.contract.milestone.3.ok }
+	option = {
+		name = xar.contract.milestone.3.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_3_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2152 = {
@@ -171,7 +275,15 @@ xar.2152 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.steward.milestone.6
-	option = { name = xar.contract.milestone.6.ok }
+	option = {
+		name = xar.contract.milestone.6.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_6_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2153 = {
@@ -181,7 +293,15 @@ xar.2153 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.steward.milestone.10
-	option = { name = xar.contract.milestone.10.ok }
+	option = {
+		name = xar.contract.milestone.10.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_10_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2161 = {
@@ -191,7 +311,15 @@ xar.2161 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.reveler.milestone.3
-	option = { name = xar.contract.milestone.3.ok }
+	option = {
+		name = xar.contract.milestone.3.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_3_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2162 = {
@@ -201,7 +329,15 @@ xar.2162 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.reveler.milestone.6
-	option = { name = xar.contract.milestone.6.ok }
+	option = {
+		name = xar.contract.milestone.6.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_6_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2163 = {
@@ -211,7 +347,15 @@ xar.2163 = {
 	override_background = { reference = xar_glassfire }
 	title = xar.contract.milestone.title
 	desc = xar.contract.reveler.milestone.10
-	option = { name = xar.contract.milestone.10.ok }
+	option = {
+		name = xar.contract.milestone.10.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_contract_10_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2201 = {
@@ -222,7 +366,15 @@ xar.2201 = {
 	title = xar.gaze.milestone.title
 	desc = xar.gaze.milestone.10
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 10 } }
-	option = { name = xar.gaze.milestone.ok }
+	option = {
+		name = xar.gaze.milestone.ok
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_progression_ui_active }
+			xar_acceptance_progression_gaze_10_effect = yes
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 xar.2202 = {
@@ -233,7 +385,9 @@ xar.2202 = {
 	title = xar.gaze.milestone.title
 	desc = xar.gaze.milestone.20
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 20 } }
-	option = { name = xar.gaze.milestone.ok }
+	option = {
+		name = xar.gaze.milestone.ok
+	}
 }
 
 xar.2203 = {
@@ -244,7 +398,9 @@ xar.2203 = {
 	title = xar.gaze.milestone.title
 	desc = xar.gaze.milestone.30
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 30 } }
-	option = { name = xar.gaze.milestone.ok }
+	option = {
+		name = xar.gaze.milestone.ok
+	}
 }
 
 xar.2204 = {
@@ -255,7 +411,9 @@ xar.2204 = {
 	title = xar.gaze.milestone.title
 	desc = xar.gaze.milestone.40
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 40 } }
-	option = { name = xar.gaze.milestone.ok }
+	option = {
+		name = xar.gaze.milestone.ok
+	}
 }
 
 xar.2205 = {
@@ -266,7 +424,9 @@ xar.2205 = {
 	title = xar.gaze.milestone.title
 	desc = xar.gaze.milestone.50
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 50 } }
-	option = { name = xar.gaze.milestone.ok }
+	option = {
+		name = xar.gaze.milestone.ok
+	}
 }
 
 xar.2206 = {
@@ -277,7 +437,9 @@ xar.2206 = {
 	title = xar.gaze.milestone.title
 	desc = xar.gaze.milestone.60
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 60 } }
-	option = { name = xar.gaze.milestone.ok }
+	option = {
+		name = xar.gaze.milestone.ok
+	}
 }
 
 xar.2207 = {
@@ -288,7 +450,9 @@ xar.2207 = {
 	title = xar.gaze.milestone.title
 	desc = xar.gaze.milestone.70
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 70 } }
-	option = { name = xar.gaze.milestone.ok }
+	option = {
+		name = xar.gaze.milestone.ok
+	}
 }
 
 xar.2208 = {
@@ -299,7 +463,9 @@ xar.2208 = {
 	title = xar.gaze.milestone.title
 	desc = xar.gaze.milestone.80
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 80 } }
-	option = { name = xar.gaze.milestone.ok }
+	option = {
+		name = xar.gaze.milestone.ok
+	}
 }
 
 xar.2209 = {
@@ -310,7 +476,9 @@ xar.2209 = {
 	title = xar.gaze.milestone.title
 	desc = xar.gaze.milestone.90
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 90 } }
-	option = { name = xar.gaze.milestone.ok }
+	option = {
+		name = xar.gaze.milestone.ok
+	}
 }
 
 xar.2210 = {
@@ -321,5 +489,7 @@ xar.2210 = {
 	title = xar.gaze.milestone.title
 	desc = xar.gaze.milestone.100
 	immediate = { save_scope_value_as = { name = xar_gaze_level value = 100 } }
-	option = { name = xar.gaze.milestone.ok }
+	option = {
+		name = xar.gaze.milestone.ok
+	}
 }

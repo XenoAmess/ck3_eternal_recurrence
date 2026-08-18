@@ -42,7 +42,15 @@ def generated_events():
                 "\toverride_background = { reference = xar_glassfire }",
                 "\ttitle = xar.contract.milestone.title",
                 f"\tdesc = xar.contract.{contract['key']}.milestone.{milestone}",
-                f"\toption = {{ name = xar.contract.milestone.{milestone}.ok }}",
+                "\toption = {",
+                f"\t\tname = xar.contract.milestone.{milestone}.ok",
+                "\t\t# XAR_ACCEPTANCE_ONLY_BEGIN",
+                "\t\tif = {",
+                "\t\t\tlimit = { has_global_variable = xa_progression_ui_active }",
+                f"\t\t\txar_acceptance_progression_contract_{milestone}_effect = yes",
+                "\t\t}",
+                "\t\t# XAR_ACCEPTANCE_ONLY_END",
+                "\t}",
                 "}", "",
             ])
     for index, milestone in enumerate(GAZE_MILESTONES, 1):
@@ -57,7 +65,20 @@ def generated_events():
             "\ttitle = xar.gaze.milestone.title",
             f"\tdesc = xar.gaze.milestone.{level}",
             f"\timmediate = {{ save_scope_value_as = {{ name = xar_gaze_level value = {level} }} }}",
-            "\toption = { name = xar.gaze.milestone.ok }",
+            "\toption = {",
+            "\t\tname = xar.gaze.milestone.ok",
+        ])
+        if level == 10:
+            lines.extend([
+                "\t\t# XAR_ACCEPTANCE_ONLY_BEGIN",
+                "\t\tif = {",
+                "\t\t\tlimit = { has_global_variable = xa_progression_ui_active }",
+                "\t\t\txar_acceptance_progression_gaze_10_effect = yes",
+                "\t\t}",
+                "\t\t# XAR_ACCEPTANCE_ONLY_END",
+            ])
+        lines.extend([
+            "\t}",
             "}", "",
         ])
     return "\n".join(lines)
@@ -114,9 +135,14 @@ def generated_effects():
             lines.extend(["\t\t\tif = {", f"\t\t\t\tlimit = {{ global_var:xa_contract_progress = {milestone} }}",
                           f"\t\t\t\tset_global_variable = xa_contract_pb_{contract['id']}_{milestone}",
                           "\t\t\t\t# XAR_ACCEPTANCE_ONLY_BEGIN",
-                          "\t\t\t\tif = {",
-                          "\t\t\t\t\tlimit = { NOT = { has_game_rule = xar_selftest } }",
-                          f"\t\t\t\t\ttrigger_event = xar.{event_id}",
+                           "\t\t\t\tif = {",
+                           "\t\t\t\t\tlimit = {",
+                           "\t\t\t\t\t\tOR = {",
+                           "\t\t\t\t\t\t\tNOT = { has_game_rule = xar_selftest }",
+                           "\t\t\t\t\t\t\thas_global_variable = xa_progression_ui_active",
+                           "\t\t\t\t\t\t}",
+                           "\t\t\t\t\t}",
+                           f"\t\t\t\t\ttrigger_event = xar.{event_id}",
                           "\t\t\t\t}",
                           "\t\t\t\t# XAR_ACCEPTANCE_ONLY_END",
                           f"\t\t\t\t# XAR_RELEASE_ONLY trigger_event = xar.{event_id}"])
@@ -141,7 +167,11 @@ def generated_effects():
         if milestone["seals"]:
             lines.append(f"\t\t\tchange_global_variable = {{ name = xa_seal_tokens add = {milestone['seals']} }}")
         lines.extend(["\t\t\t# XAR_ACCEPTANCE_ONLY_BEGIN",
-                      "\t\t\tif = {", "\t\t\t\tlimit = { NOT = { has_game_rule = xar_selftest } }",
+                      "\t\t\tif = {", "\t\t\t\tlimit = {",
+                      "\t\t\t\t\tOR = {",
+                      "\t\t\t\t\t\tNOT = { has_game_rule = xar_selftest }",
+                      "\t\t\t\t\t\thas_global_variable = xa_progression_ui_active",
+                      "\t\t\t\t\t}", "\t\t\t\t}",
                       f"\t\t\t\ttrigger_event = xar.{event_id}", "\t\t\t}",
                       "\t\t\t# XAR_ACCEPTANCE_ONLY_END",
                       f"\t\t\t# XAR_RELEASE_ONLY trigger_event = xar.{event_id}", "\t\t}"])

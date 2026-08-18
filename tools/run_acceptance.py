@@ -395,6 +395,29 @@ def wait_for_stable_persisted_record(timeout_s=20):
     raise RunnerError("nonzero tutorial record did not stabilize")
 
 
+def wait_for_contract_lessons(expected, timeout_s=30):
+    """Require one exact set of persistent contract lessons on two reads."""
+    expected = set(expected)
+    deadline = time.time() + timeout_s
+    previous = None
+    stable_hits = 0
+    while time.time() < deadline:
+        text = TUTORIAL_TXT.read_text(encoding="utf-8", errors="ignore")
+        found = set(re.findall(
+            r"(?m)^\s*(xar_contract_(?:pb|complete)_\w+)\s*$", text))
+        if found == expected and found == previous:
+            stable_hits += 1
+            if stable_hits >= 2:
+                return sorted(found)
+        else:
+            stable_hits = 0
+        previous = found
+        time.sleep(0.5)
+    raise RunnerError(
+        f"contract lessons did not stabilize: expected={sorted(expected)}, "
+        f"actual={sorted(previous or set())}")
+
+
 def region_bbox(img, region):
     """相对屏幕区域转为 PIL 像素 bbox。"""
     width, height = img.size
@@ -522,6 +545,37 @@ def capture_stall_and_recover(artifacts, label, attempt):
         f"stall diagnostic {stem}: selected OCR option "
         f"{selected['text']!r} at {point}")
     return selected
+
+
+def capture_ocr_bundle(artifacts, stem, region):
+    """Save a full frame, target crop, and OCR boxes as pixel evidence."""
+    focus_ck3()
+    image = ImageGrab.grab()
+    image.save(artifacts / f"{stem}.png")
+    image.crop(region_bbox(image, region)).save(artifacts / f"{stem}_crop.png")
+    items = ocr_box_results(image, region)
+    (artifacts / f"{stem}_ocr.json").write_text(
+        json.dumps(items, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return items
+
+
+def wait_for_ocr_tokens(tokens, forbidden, region, timeout_s, artifacts, stem):
+    """Require several rendered tokens in one frame and reject raw/error text."""
+    wanted = [re.sub(r"\s+", "", token).lower() for token in tokens]
+    rejected = [re.sub(r"\s+", "", token).lower() for token in forbidden]
+    deadline = time.time() + timeout_s
+    last_text = ""
+    while time.time() < deadline:
+        items = capture_ocr_bundle(artifacts, stem, region)
+        last_text = re.sub(
+            r"\s+", "", " ".join(item["text"] for item in items)).lower()
+        if any(token in last_text for token in rejected):
+            raise RunnerError(f"{stem} contains forbidden OCR text: {last_text}")
+        if all(token in last_text for token in wanted):
+            log(f"PASS: {stem} rendered tokens {tokens}")
+            return last_text
+        time.sleep(POLL_INTERVAL_S)
+    raise RunnerError(f"{stem} OCR tokens missing; last OCR={last_text}")
 
 
 def find_ocr_text(img, target, region, contains=False):
@@ -851,6 +905,36 @@ def click_until_ocr_appears(point, label, target, region, artifacts, artifact_na
         except RunnerError as exc:
             last_error = exc
     raise RunnerError(f"{label} did not open {target}: {last_error}")
+
+
+def open_native_ledger(debug_offset, xar_lines, artifacts, prefix):
+    """Open the production ledger through the native Decisions panel."""
+    focus_ck3()
+    screen_width, screen_height = pyautogui.size()
+    decisions_tab = (int(screen_width * 0.987), int(screen_height * 0.367))
+    pyautogui.moveTo(*decisions_tab, duration=0.2)
+    wait_for_ocr_text(
+        "决议", FULL_SCREEN_REGION, 10, artifacts,
+        f"{prefix}_decisions_tooltip.png", contains=True, stable_hits=1)
+    deliberate_click(decisions_tab, "native Decisions HUD tab")
+    pyautogui.moveTo(int(screen_width * 0.90), int(screen_height * 0.70))
+    pyautogui.scroll(-6)
+    time.sleep(0.5)
+    ledger_decision = wait_for_ocr_text(
+        "琉焰账簿", FULL_SCREEN_REGION, 15, artifacts,
+        f"{prefix}_ledger_decision.png", contains=True, stable_hits=1)
+    deliberate_click(
+        (int(screen_width * 0.90), ledger_decision[1]), "native ledger decision row")
+    ledger_confirm = wait_for_ocr_text(
+        "翻开账簿", FULL_SCREEN_REGION, 15, artifacts,
+        f"{prefix}_ledger_confirm.png", contains=True, stable_hits=1)
+    debug_offset = click_until_marker(
+        ledger_confirm, "native ledger decision",
+        "XAR: TEST PASS ui_ledger_open", debug_offset, xar_lines)
+    ledger_close = wait_for_ocr_text(
+        "合上吧", EVENT_OPTIONS_FULL_REGION, 15, artifacts,
+        f"{prefix}_ledger_event.png", contains=True, stable_hits=1)
+    return debug_offset, ledger_close, decisions_tab
 
 
 def optional_ocr_text(target, region, timeout_s, artifacts, artifact_name,
@@ -1361,6 +1445,106 @@ def run_bargain_reopen(debug_offset, error_offset, artifacts):
     return {"pairs": evidence_pairs, "production_reopen_markers": 3}
 
 
+def run_progression_ui(debug_offset, error_offset, artifacts):
+    """Prove contract milestones, PB/collection persistence, and Gaze pixels."""
+    offset = debug_offset
+    xar_lines = []
+    offset = wait_for_marker(
+        offset, "XAR: TEST progression UI begin", 180, xar_lines)
+    offset = wait_for_marker(
+        offset, "XAR: TEST PASS progression_initial", 10, xar_lines)
+
+    contract_stages = (
+        ("第一块新石", "第一笔", "progression_contract_3"),
+        ("六处梁柱", "墨迹正在变暖", "progression_contract_6"),
+        ("十座新建之物", "这份典当", "progression_contract_10"),
+    )
+    for body, option, marker in contract_stages:
+        wait_for_ocr_text(
+            body, EVENT_TEXT_REGION, 20, artifacts,
+            f"{marker}_body.png", contains=True, stable_hits=1)
+        option_point = wait_for_ocr_text(
+            option, EVENT_OPTIONS_FULL_REGION, 15, artifacts,
+            f"{marker}_option.png", contains=True, stable_hits=1)
+        capture_ocr_bundle(artifacts, marker, FULL_SCREEN_REGION)
+        offset = click_until_marker(
+            option_point, marker.replace("_", " "),
+            f"XAR: TEST PASS {marker}", offset, xar_lines,
+            failure_marker="XAR: TEST FAIL")
+
+    wait_for_ocr_text(
+        "第一重火纹睁开", EVENT_TEXT_REGION, 20, artifacts,
+        "progression_gaze_10_body.png", contains=True, stable_hits=1)
+    gaze_option = wait_for_ocr_text(
+        "我收下这份迟来的好意", EVENT_OPTIONS_FULL_REGION, 15, artifacts,
+        "progression_gaze_10_option.png", contains=True, stable_hits=1)
+    capture_ocr_bundle(artifacts, "progression_gaze_10", FULL_SCREEN_REGION)
+    offset = click_until_marker(
+        gaze_option, "Gaze milestone 10",
+        "XAR: TEST progression ledger ready", offset, xar_lines,
+        failure_marker="XAR: TEST FAIL")
+
+    expected_lessons = {
+        "xar_contract_pb_steward_3",
+        "xar_contract_pb_steward_6",
+        "xar_contract_pb_steward_10",
+        "xar_contract_complete_steward",
+    }
+    lessons = wait_for_contract_lessons(expected_lessons)
+    (artifacts / "progression_contract_lessons.json").write_text(
+        json.dumps(lessons, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    log(f"PASS: persistent contract lessons={lessons}")
+
+    offset, ledger_close, _ = open_native_ledger(
+        offset, xar_lines, artifacts, "progression")
+    ledger_ocr = wait_for_ocr_tokens(
+        ("本世契约", "贤王", "0/10", "PB 10", "已完成契约", "R 1", "S 0"),
+        ("PB 0", "已完成契约: 无", "XAR_SYNC_SENTINEL", "ERROR:", "xar_"),
+        FULL_SCREEN_REGION, 20, artifacts, "progression_ledger_pixels")
+    offset = click_until_marker(
+        ledger_close, "progression ledger close",
+        "XAR: TEST DONE progression-ui", offset, xar_lines,
+        failure_marker="XAR: TEST FAIL")
+
+    required = {
+        "progression_initial", "progression_contract_3",
+        "progression_contract_6", "progression_contract_10",
+        "progression_gaze_10", "ui_ledger_open", "ui_ledger_close",
+        "progression_ledger_state",
+    }
+    observed = {
+        line.split("XAR: TEST PASS ", 1)[1].strip()
+        for line in xar_lines if "XAR: TEST PASS " in line
+    }
+    missing = sorted(required - observed)
+    fails = [line for line in xar_lines if "XAR: TEST FAIL" in line]
+    if fails or missing:
+        raise RunnerError(
+            f"progression-ui assertions failed: fails={len(fails)}, missing={missing}")
+    err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+    xar_errors = [
+        line.strip() for line in err_text.splitlines() if "xar" in line.lower()
+    ]
+    if xar_errors:
+        raise RunnerError(f"progression-ui emitted {len(xar_errors)} xar error line(s)")
+
+    print("\n===== XAR PROGRESSION UI REPORT =====")
+    print("contract milestones: 3 -> 6 -> 10 production events")
+    print("persistent PB       : PB 10 (3/6/10 lessons)")
+    print("collection          : Wise Ruler / mask 16")
+    print("Gaze milestone      : level 10, R 1, S 0")
+    print("ledger pixels       : current 0/10 + historical PB/collection")
+    print("xar error.log       : 0")
+    return {
+        "contract": "steward",
+        "milestones": [3, 6, 10],
+        "persistent_lessons": lessons,
+        "collection_mask": 16,
+        "gaze_milestone": 10,
+        "ledger_ocr": ledger_ocr,
+    }
+
+
 def run_selftest(import_record, debug_offset, error_offset, artifacts):
     """Preserve the full existing selftest behavior and console report."""
     offset = debug_offset
@@ -1450,40 +1634,13 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
         curse_option, "localized curse option after seal",
         "XAR: TEST PASS ui_curse_after_seal", offset, xar_lines)
 
-    focus_ck3()
-    # The landed-ruler Decisions icon is right-anchored. Verify its tooltip
-    # before clicking so HUD layout drift cannot silently open a neighboring tab.
-    screen_width, screen_height = pyautogui.size()
-    decisions_tab = (int(screen_width * 0.987), int(screen_height * 0.367))
-    pyautogui.moveTo(*decisions_tab, duration=0.2)
-    wait_for_ocr_text(
-        "决议", FULL_SCREEN_REGION, 10,
-        artifacts, "06_decisions_tooltip.png", contains=True, stable_hits=1)
-    pyautogui.click(*decisions_tab)
-    log("clicked native Decisions HUD tab")
-    pyautogui.moveTo(int(screen_width * 0.90), int(screen_height * 0.70))
-    pyautogui.scroll(-6)
-    time.sleep(0.5)
-    ledger_decision = wait_for_ocr_text(
-        "琉焰账簿", FULL_SCREEN_REGION, 15,
-        artifacts, "06_ledger_decision.png", contains=True, stable_hits=1)
-    pyautogui.moveTo(int(screen_width * 0.90), ledger_decision[1], duration=0.2)
-    pyautogui.mouseDown()
-    time.sleep(0.12)
-    pyautogui.mouseUp()
-    ledger_confirm = wait_for_ocr_text(
-        "翻开账簿", FULL_SCREEN_REGION, 15,
-        artifacts, "06_ledger_confirm.png", contains=True, stable_hits=1)
-    offset = click_until_marker(
-        ledger_confirm, "native ledger decision",
-        "XAR: TEST PASS ui_ledger_open", offset, xar_lines)
-    ledger_close = wait_for_ocr_text(
-        "合上吧", EVENT_OPTIONS_FULL_REGION, 15,
-        artifacts, "06_ledger_event.png", contains=True, stable_hits=1)
+    offset, ledger_close, decisions_tab = open_native_ledger(
+        offset, xar_lines, artifacts, "06")
     offset = click_until_marker(
         ledger_close, "production ledger close",
         "XAR: TEST PASS ui_ledger_close", offset, xar_lines)
 
+    screen_width, screen_height = pyautogui.size()
     pyautogui.moveTo(int(screen_width * 0.90), int(screen_height * 0.70))
     contract_decision = wait_for_ocr_text(
         "选择本世契约", FULL_SCREEN_REGION, 15,
@@ -1740,9 +1897,11 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
         "persistence-restart": 0,
         "death-edges": 1,
         "bargain-reopen": 2,
+        "progression-ui": 3,
     }[scenario]
     rule_setting = "xar_selftest" if scenario in (
-        "selftest", "persistence-restart", "death-edges", "bargain-reopen") else (
+        "selftest", "persistence-restart", "death-edges", "bargain-reopen",
+        "progression-ui") else (
         "xar_off" if scenario == "off" else "xar_on")
     if artifacts_dir:
         artifacts = Path(artifacts_dir).expanduser().resolve()
@@ -1887,6 +2046,9 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
             elif scenario == "bargain-reopen":
                 report_evidence = run_bargain_reopen(
                     debug_offset, error_offset, artifacts)
+            elif scenario == "progression-ui":
+                report_evidence = run_progression_ui(
+                    debug_offset, error_offset, artifacts)
             elif scenario == "selftest":
                 error_reason = run_selftest(
                     effective_record, debug_offset, error_offset, artifacts)
@@ -2004,7 +2166,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--scenario",
         choices=("selftest", "on-first-life", "on-recorded", "on-high-budget", "off",
-                 "persistence-restart", "death-edges", "bargain-reopen"),
+                 "persistence-restart", "death-edges", "bargain-reopen",
+                 "progression-ui"),
         default="selftest",
         help="acceptance scenario (default: selftest)")
     parser.add_argument(

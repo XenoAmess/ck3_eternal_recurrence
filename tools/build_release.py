@@ -36,6 +36,7 @@ ACCEPTANCE_ONLY_FILES = {
     "common/on_action/xar_acceptance_on_actions.txt",
     "common/scripted_effects/xar_acceptance_bargain_effects.txt",
     "common/scripted_effects/xar_acceptance_death_effects.txt",
+    "common/scripted_effects/xar_acceptance_progression_effects.txt",
     "common/scripted_effects/xar_selftest_effects.txt",
     "events/xar_acceptance_bargain_events.txt",
     "events/xar_acceptance_events.txt",
@@ -43,7 +44,7 @@ ACCEPTANCE_ONLY_FILES = {
 }
 FORBIDDEN_RELEASE_IDENTIFIERS = (
     "xar_selftest", "setting_xar_selftest", "xar_test_sweep_effect",
-    "xar_acceptance_", "xa_bargain_reopen",
+    "xar_acceptance_", "xa_bargain_reopen", "xa_progression_ui",
     "xar_trait_test", "xar_trait_hover", "xa_full_ui_test",
     "xa_ui_test", "xa_test_", "xa_selftest_", "XAR: TEST",
     ACCEPTANCE_BEGIN, ACCEPTANCE_END, RELEASE_ONLY_PREFIX,

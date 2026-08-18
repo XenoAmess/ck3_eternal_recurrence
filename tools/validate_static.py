@@ -699,6 +699,53 @@ def mechanic_checks(errors):
             or "has_character_flag = xa_enabled" not in bargain_probe_event
             or "XAR: TEST PASS bargain_pair_3_full_reopen" not in bargain_probe_effect):
         errors.append("bargain-reopen day-1094/player guard/full-third-reopen probe is incomplete")
+    progression_probe = read(
+        MOD / "common/scripted_effects/xar_acceptance_progression_effects.txt")
+    progression_requirements = (
+        "global_var:xa_global_record_imported = 3",
+        "xar_acceptance_progression_start_effect = yes",
+    )
+    if any(token not in consume_import for token in progression_requirements):
+        errors.append("progression-ui threshold-3 bootstrap is not isolated from selftest")
+    for marker in (
+            "progression_initial", "progression_contract_3",
+            "progression_contract_6", "progression_contract_10",
+            "progression_gaze_10", "progression_ledger_state"):
+        if f"XAR: TEST PASS {marker}" not in progression_probe:
+            errors.append(f"progression-ui probe lacks marker '{marker}'")
+    if not all(token in progression_probe for token in (
+            "is_ai = no", "xar_add_contract_progress_effect = { ID = 5 }",
+            "xar_complete_bargain_pair_effect = yes",
+            "has_global_variable = xa_contract_pb_5_10",
+            "has_global_variable = xa_contract_complete_5",
+            "has_character_flag = xa_gaze_milestone_10",
+            "XAR: TEST DONE progression-ui")):
+        errors.append("progression-ui state or player guard probe is incomplete")
+    generated_contract_events = read(
+        MOD / "events/xar_generated_contract_events.txt")
+    if (generated_contract_events.count(
+            "has_global_variable = xa_progression_ui_active") != 19
+            or generated_contract_events.count(
+                "xar_acceptance_progression_contract_") != 18
+            or generated_contract_events.count(
+                "xar_acceptance_progression_gaze_10_effect = yes") != 1):
+        errors.append("generated milestone events lost progression-ui option hooks")
+    if contract_effects.count(
+            "has_global_variable = xa_progression_ui_active") != 28:
+        errors.append("generated production dispatchers lost progression-ui event routing")
+    release_contract_effects = build_release.render_release_bytes(
+        MOD / "common/scripted_effects/xar_generated_contract_effects.txt",
+        "common/scripted_effects/xar_generated_contract_effects.txt",
+    ).decode("utf-8-sig")
+    production_milestone_ids = [
+        2100 + contract["id"] * 10 + index + 1
+        for contract in gen_contracts.CONTRACTS
+        for index, _ in enumerate(gen_contracts.MILESTONES)
+    ] + list(range(2201, 2211))
+    for event_id in production_milestone_ids:
+        if release_contract_effects.count(f"trigger_event = xar.{event_id}") != 1:
+            errors.append(
+                f"release progression dispatcher must trigger xar.{event_id} exactly once")
     for hook in ("on_war_won_attacker", "on_war_won_defender", "on_hook_used",
                  "on_county_faith_change", "on_birth_mother", "on_birth_father",
                  "on_building_completed", "on_birthday"):
@@ -960,6 +1007,12 @@ def package_checks(errors):
             or "click_until_ocr_appears" not in lobby_navigation
             or "pyautogui.click(*new_game)" in lobby_navigation):
         errors.append("lobby navigation lacks an OCR-verified New Game transition")
+    if not all(token in acceptance_runner for token in (
+            '"progression-ui": 3', "def run_progression_ui",
+            "wait_for_contract_lessons", "open_native_ledger",
+            "progression_ledger_pixels", "xar_contract_complete_steward",
+            "XAR: TEST DONE progression-ui")):
+        errors.append("acceptance runner lacks progression milestone/PB pixel coverage")
     thumbnail = MOD / "thumbnail.png"
     if thumbnail.exists() and thumbnail.stat().st_size >= 1_000_000:
         errors.append("thumbnail.png must remain below Steam's 1 MB limit")
