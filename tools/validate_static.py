@@ -382,6 +382,13 @@ def mechanic_checks(errors):
         errors.append("first-life event does not enter the blessing flow")
 
     challenge_init = extract_block(production_effects, "xar_initialize_challenge_mode_effect") or ""
+    game_rules = read(MOD / "common/game_rules/xar_game_rules.txt")
+    inheritance_rule = extract_block(game_rules, "xar_inheritance") or ""
+    score_rule = extract_block(game_rules, "xar_score_basis") or ""
+    if "default = xar_inherit_100" not in inheritance_rule:
+        errors.append("recommended inheritance default must be 100%")
+    if "default = xar_score_growth" not in score_rule:
+        errors.append("recommended score default must be lifetime growth")
     for setting in ("xar_inherit_0", "xar_inherit_25", "xar_inherit_50", "xar_score_growth"):
         if f"has_game_rule = {setting}" not in challenge_init:
             errors.append(f"challenge initialization lacks {setting}")
@@ -392,13 +399,34 @@ def mechanic_checks(errors):
     for ratio in ("0.25", "0.5"):
         if f"multiply = {ratio} floor = yes" not in budget_effect:
             errors.append(f"inheritance budget lacks floor multiplier {ratio}")
-    if "xa_local_points > global_var:xa_budget_cap" not in budget_effect:
-        errors.append("inheritance budget lacks cap")
+    if "xa_budget_cap" in production_effects + events:
+        errors.append("inheritance budget still contains a spending cap")
+    if "global_var:xa_global_record_imported" not in budget_effect:
+        errors.append("100% inheritance no longer copies the full imported record")
     baseline = extract_block(production_effects, "xar_capture_score_baseline_effect") or ""
     if "value = xar_current_score_base_value" not in baseline:
         errors.append("growth baseline does not use the read-only absolute score")
-    if events.count("xar_capture_score_baseline_effect = yes") != 4:
+    opening_baseline_calls = sum(
+        event_blocks.get(event_id, "").count("xar_capture_score_baseline_effect = yes")
+        for event_id in ("xar.0004", "xar.0005")
+    )
+    if opening_baseline_calls != 4:
         errors.append("growth baseline must be captured from decline, curses, and seal")
+    death_waiter = event_blocks.get("xar.0008", "")
+    destructive_sweep_order = [
+        death_waiter.find("xar_test_sweep_effect = yes"),
+        death_waiter.find("name = xa_score_basis value = 0"),
+        death_waiter.find("value = xar_current_score_value"),
+    ]
+    if (any(index < 0 for index in destructive_sweep_order)
+            or destructive_sweep_order != sorted(destructive_sweep_order)):
+        errors.append("selftest must isolate its destructive pool sweep from growth-track assertions")
+    for marker in ("XAR: TEST PASS default_growth_track",
+                   "XAR: TEST PASS growth_contract_points",
+                   "XAR: TEST PASS growth_baseline_zero",
+                   "XAR: TEST PASS growth_score_delta"):
+        if marker not in selftest:
+            errors.append(f"selftest lacks recommended-track assertion '{marker}'")
 
     decisions = "\n".join(read(path) for path in (MOD / "common/decisions").glob("*.txt"))
     decision_ids = top_level_keys(decisions, r"xar_\w+")
@@ -498,6 +526,8 @@ def mechanic_checks(errors):
         errors.append("score preview contains a state-mutating variable effect")
     if "xar_current_score_value" not in preview:
         errors.append("score preview script value missing")
+    if "subtract = { value = global_var:xa_score_baseline }\n\t\tmin = 0" not in preview:
+        errors.append("score preview growth subtraction lacks a zero lower bound")
     hand_score_effects = read(MOD / "common/scripted_effects/xar_effects.txt")
     generated_score_effects = read(
         MOD / "common/scripted_effects/xar_generated_scoring_effects.txt")
@@ -575,6 +605,8 @@ def mechanic_checks(errors):
         errors.append("record writer candidate dispatcher does not cover every threshold")
     if "xar_quantize_record_candidate_effect = yes" not in score_effects:
         errors.append("production scoring does not quantize xa_record_candidate")
+    if "subtract = global_var:xa_score_baseline min = 0" not in generated_score_effects:
+        errors.append("production growth score lacks a zero lower bound")
     if "value = global_var:xa_record_candidate" not in score_effects:
         errors.append("record delta is not based on xa_record_candidate")
 
@@ -596,6 +628,8 @@ def mechanic_checks(errors):
         errors.append("ledger next-tier projection is not generated from adjacent thresholds")
     if "name = xa_ledger_at_cap value = 1" not in ledger or "name = xa_ledger_gap value = 0" not in ledger:
         errors.append("ledger projection lacks explicit cap state")
+    if "max = 0" in ledger:
+        errors.append("ledger gap uses max=0 as an upper bound instead of min=0 as a lower bound")
     forbidden_ledger_writes = ("xar_hs_ge_", "xa_global_record_imported", "xa_run_score",
                                "xa_record_candidate", "xa_old_record", "xa_local_points")
     if any(value in ledger for value in forbidden_ledger_writes):

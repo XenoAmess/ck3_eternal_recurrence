@@ -38,10 +38,6 @@ xar_calculate_inherited_budget_effect = {
 		limit = { global_var:xa_inheritance_percent = 100 }
 		set_global_variable = { name = xa_local_points value = { value = global_var:xa_global_record_imported } }
 	}
-	if = {
-		limit = { global_var:xa_local_points > global_var:xa_budget_cap }
-		set_global_variable = { name = xa_local_points value = { value = global_var:xa_budget_cap } }
-	}
 }
 
 # Freeze the selected challenge rules into one explicit run identity.
@@ -50,7 +46,6 @@ xar_initialize_challenge_mode_effect = {
 	set_global_variable = { name = xa_inheritance_percent value = 100 }
 	set_global_variable = { name = xa_track_code value = 3 }
 	set_global_variable = { name = xa_score_basis value = 0 }
-	set_global_variable = { name = xa_budget_cap value = 500 }
 	if = {
 		limit = { has_game_rule = xar_inherit_0 }
 		set_global_variable = { name = xa_inheritance_percent value = 0 }

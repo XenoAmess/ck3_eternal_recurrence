@@ -720,7 +720,7 @@ xar_current_score_value = {
 	if = {
 		limit = { global_var:xa_score_basis = 1 }
 		subtract = { value = global_var:xa_score_baseline }
-		max = 0
+		min = 0
 	}
 
 	# Each declined blessing session removes 1.00 percent; never below zero.

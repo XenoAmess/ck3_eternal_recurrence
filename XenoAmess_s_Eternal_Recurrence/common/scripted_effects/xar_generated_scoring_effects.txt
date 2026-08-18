@@ -284,7 +284,7 @@ xar_compute_score_effect = {
 		limit = { global_var:xa_score_basis = 1 }
 		set_global_variable = {
 			name = xa_score_before_reject
-			value = { value = global_var:xa_absolute_score_before_reject subtract = global_var:xa_score_baseline max = 0 }
+			value = { value = global_var:xa_absolute_score_before_reject subtract = global_var:xa_score_baseline min = 0 }
 		}
 	}
 	set_global_variable = {

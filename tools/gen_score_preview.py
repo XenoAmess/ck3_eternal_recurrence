@@ -153,7 +153,7 @@ def generate():
         "\tif = {",
         "\t\tlimit = { global_var:xa_score_basis = 1 }",
         "\t\tsubtract = { value = global_var:xa_score_baseline }",
-        "\t\tmax = 0",
+        "\t\tmin = 0",
         "\t}",
         "",
         ("\t# Each declined blessing session removes "

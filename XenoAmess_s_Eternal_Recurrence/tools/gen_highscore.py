@@ -234,7 +234,7 @@ def gen_effects() -> str:
         f"\tset_global_variable = {{ name = {LEDGER_NEXT_VAR} value = {THRESHOLDS[0]} }}",
         "\tset_global_variable = {",
         f"\t\tname = {LEDGER_GAP_VAR}",
-        f"\t\tvalue = {{ value = {THRESHOLDS[0]} subtract = global_var:{LEDGER_SCORE_VAR} max = 0 }}",
+        f"\t\tvalue = {{ value = {THRESHOLDS[0]} subtract = global_var:{LEDGER_SCORE_VAR} min = 0 }}",
         "\t}",
         f"\tset_global_variable = {{ name = {LEDGER_CAP_VAR} value = 0 }}",
     ])
@@ -255,7 +255,7 @@ def gen_effects() -> str:
             lines.extend([
                 "\t\tset_global_variable = {",
                 f"\t\t\tname = {LEDGER_GAP_VAR}",
-                f"\t\t\tvalue = {{ value = {next_threshold} subtract = global_var:{LEDGER_SCORE_VAR} max = 0 }}",
+                f"\t\t\tvalue = {{ value = {next_threshold} subtract = global_var:{LEDGER_SCORE_VAR} min = 0 }}",
                 "\t\t}",
             ])
         lines.append("\t}")

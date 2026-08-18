@@ -350,7 +350,6 @@ xar.0011 = {
 		save_scope_value_as = { name = xar_ledger_pairs value = global_var:xa_bless_count }
 		save_scope_value_as = { name = xar_ledger_refusals value = global_var:xa_bless_reject_count }
 		save_scope_value_as = { name = xar_challenge_ratio value = global_var:xa_inheritance_percent }
-		save_scope_value_as = { name = xar_challenge_cap value = global_var:xa_budget_cap }
 		save_scope_value_as = { name = xar_challenge_baseline value = global_var:xa_score_baseline }
 		save_scope_value_as = { name = xar_contract_progress value = global_var:xa_contract_progress }
 		save_scope_value_as = { name = xar_rerolls value = global_var:xa_reroll_tokens }
@@ -457,7 +456,6 @@ xar.1001 = {
 		save_scope_value_as = { name = xar_old value = global_var:xa_old_record }
 		save_scope_value_as = { name = xar_delta value = global_var:xa_score_delta }
 		save_scope_value_as = { name = xar_challenge_ratio value = global_var:xa_inheritance_percent }
-		save_scope_value_as = { name = xar_challenge_cap value = global_var:xa_budget_cap }
 		save_scope_value_as = { name = xar_challenge_baseline value = global_var:xa_score_baseline }
 		save_scope_value_as = { name = xar_contract_progress value = global_var:xa_contract_progress }
 		save_scope_value_as = { name = xar_rerolls value = global_var:xa_reroll_tokens }
@@ -650,6 +648,9 @@ xar.0008 = {
 			debug_log = "XAR: import delivered, proceeding to death"
 			# runtime coverage: apply every pool entry before dying
 			xar_test_sweep_effect = yes
+			# The 200-entry sweep is intentionally destructive. Growth semantics were
+			# asserted before it; use absolute scoring for death/write-path coverage.
+			set_global_variable = { name = xa_score_basis value = 0 }
 			set_global_variable = {
 				name = xa_test_score_preview
 				value = xar_current_score_value

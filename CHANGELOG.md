@@ -5,7 +5,7 @@
 ### Added
 
 - One-ruler CK3 Roguelite / New Game+ loop with exact death settlement and cross-save Ember Tiers.
-- Absolute and lifetime-growth challenge tracks with 0%, 25%, 50%, or 100% inheritance and a 500-point budget cap.
+- Absolute and lifetime-growth challenge tracks with uncapped 0%, 25%, 50%, or 100% inheritance; Growth + 100% is the recommended default.
 - Six lifetime contract archetypes, behavior scoring, persistent per-contract PBs, grades, and collection progress.
 - Ten Glassfire Gaze milestones alternating favor rerolls and curse seals.
 - Stable pool wire IDs, visible rarity/build labels, applicability filters, and state/contract weighting.
@@ -15,7 +15,8 @@
 
 - Favor sessions now contain one blessing/curse pair every three years instead of up to three pairs per session.
 - Record writes compare quantized candidate tiers rather than exact scores.
-- Shop prices use consistent integer rounding; inherited budgets are capped before shopping.
+- Shop prices use consistent integer rounding; inherited budgets preserve the selected ratio without a separate spending cap.
+- Growth scoring and ledger gaps use CK3's `min = 0` lower-bound semantics instead of incorrectly clamping positive values with `max = 0`.
 - Scoring implementation, preview, reference model, and documentation share one schema.
 
 ### Requirements

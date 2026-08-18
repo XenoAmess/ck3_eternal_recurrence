@@ -11,9 +11,9 @@ Latest local candidate evidence (2026-08-18):
 
 | Scenario | Run ID | Result |
 |---|---|---|
-| 37-assertion selftest + contract PB persistence | `xar_accept_ccfwx7de` | GREEN, 0 `xar` errors |
+| 41-assertion selftest + uncapped inheritance + contract PB persistence | `xar_accept__sbiha6t` | GREEN, 0 `xar` errors |
 | First life / zero record | `xar_accept_tw20hu2u` | GREEN, 0 `xar` errors |
-| Recorded life / 100 tier | `xar_accept_5lfn60xh` | GREEN, 0 `xar` errors |
+| Recorded life / 100 tier, default Growth + 100% | `xar_accept_5j1hqj8z` | GREEN, 0 `xar` errors |
 | Rule disabled | `xar_accept_qlbea8ug` | GREEN, 0 `xar` errors |
 
 ## Manual Language Sign-off

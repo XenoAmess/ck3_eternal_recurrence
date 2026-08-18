@@ -30,7 +30,7 @@ xar_inheritance = {
 
 xar_score_basis = {
 	categories = { game_modes }
-	default = xar_score_absolute
+	default = xar_score_growth
 	xar_score_absolute = { }
 	xar_score_growth = { }
 }

@@ -166,7 +166,7 @@ def generate_effects() -> str:
         lines,
         "xa_score_before_reject",
         ("{ value = global_var:xa_absolute_score_before_reject "
-         "subtract = global_var:xa_score_baseline max = 0 }"),
+         "subtract = global_var:xa_score_baseline min = 0 }"),
         "\t\t",
     )
     lines.append("\t}")
@@ -330,7 +330,7 @@ def generate_doc() -> str:
          "每局最多 10 点。契约见 [contracts-and-progression.md](contracts-and-progression.md)。"),
         "- **绝对小计** = 以上全部条目之和（允许小数，如 0.1 系条目）。",
         "- **成长小计** = max(0, 绝对小计 − 开局商店与首对交易结束时的基线)。",
-        "- **赛道小计**由游戏规则选择绝对或成长口径；0%/25%/50%/100%继承预算均封顶 500。",
+        "- **赛道小计**由游戏规则选择绝对或成长口径；0%/25%/50% 向下取整，100% 完整继承，预算不另设上限。",
         ("- **最终总分**：每次在祝福窗口选择「什么都不领」扣 "
          f"{number(schema.REFUSAL_MULTIPLIER_PER_COUNT * 100)}%（加算；拒绝 N 次 = 小计 × "
          f"max(0, 1 − N × {number(schema.REFUSAL_MULTIPLIER_PER_COUNT)})）。"

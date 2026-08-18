@@ -73,7 +73,9 @@ REQUIRED_PASSES = {
     "ui_shop_points", "ui_shop_price", "ui_shop_diplomacy",
     "ui_shop_purchase", "ui_shop_finish", "bless_count", "record_write",
     "contract_select", "contract_progress",
-    "inherit_0", "inherit_25", "inherit_50", "inherit_cap",
+    "inherit_0", "inherit_25", "inherit_50", "inherit_100_uncapped",
+    "default_growth_track", "growth_contract_points", "growth_baseline_zero",
+    "growth_score_delta",
 }
 
 CLICK_SETTLE_OK = (1130, 1041)      # 结算事件确认选项「很好。这笔账，已记入永恒。」
@@ -175,7 +177,7 @@ def read_new_lines(path, offset):
 
 
 def set_last_applied_rule(raw, setting):
-    """Set exactly one XAR setting in LastAppliedRules."""
+    """Set the requested mode with the recommended Growth + 100% track."""
     allowed = {"xar_on", "xar_off", "xar_selftest"}
     if setting not in allowed:
         raise RunnerError(f"unsupported XAR rule setting: {setting}")
@@ -185,8 +187,11 @@ def set_last_applied_rule(raw, setting):
     match = pattern.search(raw)
     if not match:
         raise RunnerError("LastAppliedRules block not found in presets.txt")
-    body = re.sub(rb'\bxar_(?:on|off|selftest)\b', b'', match.group(2))
-    body = body.rstrip() + b" " + setting.encode("ascii") + b" "
+    body = re.sub(
+        rb'\bxar_(?:on|off|selftest|inherit_(?:0|25|50|100)|score_(?:absolute|growth))\b',
+        b'', match.group(2))
+    body = (body.rstrip() + b" " + setting.encode("ascii")
+            + b" xar_inherit_100 xar_score_growth ")
     patched = raw[:match.start()] + match.group(1) + body + match.group(3) + raw[match.end():]
 
     verify = pattern.search(patched)
@@ -196,6 +201,13 @@ def set_last_applied_rule(raw, setting):
     if tokens != [setting.encode("ascii")]:
         raise RunnerError(
             f"failed to set LastAppliedRules exclusively to {setting}: {tokens}")
+    challenge_tokens = re.findall(
+        rb'\bxar_(?:inherit_(?:0|25|50|100)|score_(?:absolute|growth))\b',
+        verify.group(2))
+    expected_challenge = [b"xar_inherit_100", b"xar_score_growth"]
+    if challenge_tokens != expected_challenge:
+        raise RunnerError(
+            f"failed to set recommended challenge track: {challenge_tokens}")
     return patched
 
 

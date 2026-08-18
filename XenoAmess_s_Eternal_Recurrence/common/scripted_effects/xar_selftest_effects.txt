@@ -24,24 +24,33 @@ xar_selftest_effect = {
 		debug_log = "XAR: TEST PASS import_points"
 	}
 	else = { debug_log = "XAR: TEST FAIL import_points" }
+	if = {
+		limit = {
+			global_var:xa_inheritance_percent = 100
+			global_var:xa_score_basis = 1
+			global_var:xa_track_code = 7
+		}
+		debug_log = "XAR: TEST PASS default_growth_track"
+	}
+	else = { debug_log = "XAR: TEST FAIL default_growth_track" }
 	set_global_variable = { name = xa_test_import_original value = { value = global_var:xa_global_record_imported } }
-	set_global_variable = { name = xa_global_record_imported value = 1000 }
+	set_global_variable = { name = xa_global_record_imported value = 1200 }
 	set_global_variable = { name = xa_inheritance_percent value = 0 }
 	xar_calculate_inherited_budget_effect = yes
 	if = { limit = { global_var:xa_local_points = 0 } debug_log = "XAR: TEST PASS inherit_0" }
 	else = { debug_log = "XAR: TEST FAIL inherit_0" }
 	set_global_variable = { name = xa_inheritance_percent value = 25 }
 	xar_calculate_inherited_budget_effect = yes
-	if = { limit = { global_var:xa_local_points = 250 } debug_log = "XAR: TEST PASS inherit_25" }
+	if = { limit = { global_var:xa_local_points = 300 } debug_log = "XAR: TEST PASS inherit_25" }
 	else = { debug_log = "XAR: TEST FAIL inherit_25" }
 	set_global_variable = { name = xa_inheritance_percent value = 50 }
 	xar_calculate_inherited_budget_effect = yes
-	if = { limit = { global_var:xa_local_points = 500 } debug_log = "XAR: TEST PASS inherit_50" }
+	if = { limit = { global_var:xa_local_points = 600 } debug_log = "XAR: TEST PASS inherit_50" }
 	else = { debug_log = "XAR: TEST FAIL inherit_50" }
 	set_global_variable = { name = xa_inheritance_percent value = 100 }
 	xar_calculate_inherited_budget_effect = yes
-	if = { limit = { global_var:xa_local_points = 500 } debug_log = "XAR: TEST PASS inherit_cap" }
-	else = { debug_log = "XAR: TEST FAIL inherit_cap" }
+	if = { limit = { global_var:xa_local_points = 1200 } debug_log = "XAR: TEST PASS inherit_100_uncapped" }
+	else = { debug_log = "XAR: TEST FAIL inherit_100_uncapped" }
 	set_global_variable = { name = xa_global_record_imported value = { value = global_var:xa_test_import_original } }
 	remove_global_variable = xa_test_import_original
 	xar_calculate_inherited_budget_effect = yes
@@ -169,6 +178,25 @@ xar_selftest_effect = {
 	}
 	else = { debug_log = "XAR: TEST FAIL contract_select" }
 	xar_add_contract_progress_effect = { ID = 5 }
+	xar_compute_score_effect = yes
+	if = {
+		limit = { global_var:xa_p_contract = 10 }
+		debug_log = "XAR: TEST PASS growth_contract_points"
+	}
+	else = { debug_log = "XAR: TEST FAIL growth_contract_points" }
+	if = {
+		limit = { global_var:xa_score_baseline = 0 }
+		debug_log = "XAR: TEST PASS growth_baseline_zero"
+	}
+	else = { debug_log = "XAR: TEST FAIL growth_baseline_zero" }
+	if = {
+		limit = {
+			global_var:xa_score_before_reject >= { value = global_var:xa_absolute_score_before_reject subtract = 0.01 }
+			global_var:xa_score_before_reject <= { value = global_var:xa_absolute_score_before_reject add = 0.01 }
+		}
+		debug_log = "XAR: TEST PASS growth_score_delta"
+	}
+	else = { debug_log = "XAR: TEST FAIL growth_score_delta" }
 	xar_add_contract_progress_effect = { ID = 5 }
 	xar_add_contract_progress_effect = { ID = 5 }
 	if = {

@@ -35,7 +35,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 冷启动通常约 2 分钟，`RESULT: GREEN/RED` + 退出码。判定依据：
 
 1. `tools/validate_static.py` 通过：五套生成器逐文件 parity、全部运行文件 UTF-8 BOM、9 语言 loc 引用与首世/账簿格式 token parity、自动发现的全部 XAR event/decision AI 闸门、挑战继承/成长基线、契约 hook/PB/图鉴/里程碑、生产/selftest 共用入口、12 个购买 effect、无继承人 fallback、奖池过滤/权重/稳定 ID、descriptor 与发布资源；其中 `tools/validate_loc.py` 负责动态 wrapper、custom-loc 和 modifier 名。
-2. debug.log 的 37 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
+2. debug.log 的 41 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
    由游戏规则第三档 `xar_selftest` 触发，检查器 xar.0007 嵌套在结算事件 xar.1001 里跑）
 3. OCR 真实接受契约、购买外交、结束商店，再打开祝福三选一与诅咒二选一，验证动态文本无 raw/fallback 并点击生产选项；购买断言分别核对积分、涨价与属性增长。
 4. 通过 acceptance-only GUI 直接调用 `DefaultOnCharacterClick(GetPlayer.GetID)` 打开玩家原生人物页，以 DDS 模板定位【琉焰之视】，hover 后 OCR 确认“当前分量”实时渲染。
@@ -56,7 +56,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 12 个可重复购买商品各自调用具名生产 effect；商店结束调用 `xar_finish_shop_effect` 完成余分兑换、清零及垂青会初始化。首世只调用共享 session 初始化，不经过兑换；UI selftest 的 session=3 覆盖仍位于事件外层。
 - 原生 trait track 的 100 XP/10 级、每对 +1 XP、满级状态及 hover 当前分数的实际像素渲染；hover 公式还与死亡结算值作脚本断言。
 - 传说祝福只抽到稀有/传说诅咒、拒绝每次 -1% 最终分、request/ready/consumed 零值导入、同阈值不破纪录、跨阈值破纪录、cap 量化、死亡结算、纪录写入和教程落盘。
-- 0/25/50/100% 继承与 500 cap 的生产 effect；契约选择/进度，3 点 PB lesson 落盘，以及 10 XP 重抽里程碑的共享生产 effect。
+- 0/25/50/100% 继承的生产 effect，其中 100% 用 1200 位阶断言预算不封顶，可覆盖 1133 分宗教改革；契约选择/进度，3 点 PB lesson 落盘，以及 10 XP 重抽里程碑的共享生产 effect。
 - 奖池 200 个 effect body 的运行期语法/引用 smoke test
 - 静态验证首世 0 纪录分流和 selftest 200 点优先分支，并逐阈值校验账簿 candidate/next/gap 生成关系、cap 状态、七个展示字段及禁止写纪录/资源的边界；纯脚本自测直接调用生产 `xar_prepare_ledger_effect`，断言非负分数、投影关系和历史纪录不变后清理临时 global，不打开账簿 UI。
 
