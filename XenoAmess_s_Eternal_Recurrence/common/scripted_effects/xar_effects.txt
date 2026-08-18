@@ -26,6 +26,10 @@ xar_consume_import_effect = {
 				limit = { global_var:xa_global_record_imported = 3 }
 				xar_acceptance_progression_start_effect = yes
 			}
+			else_if = {
+				limit = { global_var:xa_global_record_imported = 4 }
+				xar_acceptance_scoring_matrix_start_effect = yes
+			}
 			else = {
 				debug_log = "XAR: TEST selftest begin"
 				xar_selftest_effect = yes

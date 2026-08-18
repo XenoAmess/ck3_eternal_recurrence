@@ -237,3 +237,4 @@
 - loc：`localization/<lang>/xar_generated_pools_l_<lang>.yml`（GENERATED，9 语言；含动态 wrapper + 池条目名 + 修正名）
 - 事件：`events/xar_events.txt`（xar.0004 / xar.0005 / xar.0006，手写不变）
 - 拒绝扣分：`xar_compute_score_effect` 末尾 ×max(0, 1 - 0.01 × xa_bless_reject_count)
+- 稳定 ID 语义契约：`tools/pool_semantic_contract.sha256`。普通生成不会改它；只有人工审阅本表与 dispatcher diff 后，才用 `py tools/validate_static.py --print-pool-contract` 输出的新值更新。

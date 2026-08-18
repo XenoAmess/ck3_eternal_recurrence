@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Machine-authoritative scoring schema and offline reference model."""
 
-from dataclasses import dataclass
+from collections import deque
+from dataclasses import dataclass, replace
 from decimal import Decimal
 from typing import Iterable, Mapping
 
@@ -102,6 +103,26 @@ def floor_log2_capped(value: int | float | str | Decimal) -> int:
     return result
 
 
+def walk_descendant_graph(
+        root: str,
+        children: Mapping[str, Iterable[str]],
+        people: Mapping[str, Descendant],
+) -> tuple[Descendant, ...]:
+    """Flatten a pedigree by shortest path while traversing through the dead."""
+    queue = deque((key, 1) for key in children.get(root, ()))
+    seen = set()
+    result = []
+    while queue:
+        key, depth = queue.popleft()
+        if key in seen or depth > DESCENDANT_DEPTH:
+            continue
+        seen.add(key)
+        result.append(replace(people[key], depth=depth))
+        queue.extend(
+            (child, depth + 1) for child in children.get(key, ()))
+    return tuple(result)
+
+
 def reference_score(
         *,
         attributes: Mapping[str, int | float | str | Decimal] | None = None,
@@ -162,7 +183,6 @@ def reference_score(
     )
 
 
-LOG2_BOUNDARY_VECTORS = ((0, 0), (1, 0), (2, 1), (3, 1), (4, 2))
 HELD_TITLE_BOUNDARY_VECTORS = (
     ("tier_county", Decimal("1")),
     ("tier_duchy", Decimal("2.5")),
@@ -180,15 +200,86 @@ DESCENDANT_TITLE_BOUNDARY_VECTORS = (
 REFUSAL_BOUNDARY_VECTORS = (
     (0, Decimal("100")),
     (1, Decimal("99")),
+    (99, Decimal("1")),
     (100, Decimal("0")),
+    (101, Decimal("0")),
 )
 
 
 def assert_reference_vectors() -> None:
-    for source, expected in LOG2_BOUNDARY_VECTORS:
-        actual = floor_log2_capped(source)
-        if actual != expected:
-            raise AssertionError(f"log2 boundary {source}: {actual} != {expected}")
+    # These expectations are deliberately independent of the generation loops.
+    # Any balance change must update this reviewed contract as a second action.
+    expected_attributes = {
+        "diplomacy": "1", "martial": "1", "stewardship": "1",
+        "intrigue": "1", "learning": "1", "prowess": "1",
+    }
+    expected_resources = {
+        "gold": "5", "prestige": "3", "piety": "3", "influence": "3",
+    }
+    expected_held = {
+        "tier_county": "1", "tier_duchy": "2.5", "tier_kingdom": "5",
+        "tier_empire": "10", "tier_hegemony": "20",
+    }
+    expected_descendant = {
+        "tier_county": "0.25", "tier_duchy": "1", "tier_kingdom": "2.5",
+        "tier_empire": "5", "tier_hegemony": "10",
+    }
+    actual_attributes = {rule.source: str(rule.coefficient) for rule in ATTRIBUTES}
+    actual_resources = {rule.source: str(rule.coefficient) for rule in RESOURCES}
+    actual_held = {rule.tier: str(rule.coefficient) for rule in HELD_TITLE_TIERS}
+    actual_descendant = {
+        rule.tier: str(rule.coefficient) for rule in DESCENDANT_TITLE_TIERS
+    }
+    if actual_attributes != expected_attributes:
+        raise AssertionError(f"attribute coefficient contract: {actual_attributes}")
+    if actual_resources != expected_resources:
+        raise AssertionError(f"resource coefficient contract: {actual_resources}")
+    if actual_held != expected_held:
+        raise AssertionError(f"held-title coefficient contract: {actual_held}")
+    if actual_descendant != expected_descendant:
+        raise AssertionError(f"descendant-title coefficient contract: {actual_descendant}")
+    scalar_contract = {
+        "dynasty": DYNASTY_DESCENDANT_COEFFICIENT,
+        "house": HOUSE_DESCENDANT_COEFFICIENT,
+        "realm": REALM_SIZE_COEFFICIENT,
+        "depth": DESCENDANT_DEPTH,
+        "log_cap": LOG2_MAX_EXPONENT,
+        "refusal": REFUSAL_MULTIPLIER_PER_COUNT,
+        "contract": CONTRACT_PROGRESS_COEFFICIENT,
+    }
+    expected_scalars = {
+        "dynasty": Decimal("0.1"), "house": Decimal("0.1"),
+        "realm": Decimal("10"), "depth": 5, "log_cap": 30,
+        "refusal": Decimal("0.01"), "contract": Decimal("10"),
+    }
+    if scalar_contract != expected_scalars:
+        raise AssertionError(f"scalar scoring contract: {scalar_contract}")
+
+    for source in (-100, -1, 0, 1):
+        if floor_log2_capped(source) != 0:
+            raise AssertionError(f"log2 lower boundary {source}")
+    for exponent in range(1, 31):
+        power = 2 ** exponent
+        for source, expected in (
+                (power - 1, exponent - 1),
+                (power, exponent),
+                (power + 1, exponent)):
+            actual = floor_log2_capped(source)
+            if actual != expected:
+                raise AssertionError(
+                    f"log2 boundary {source}: {actual} != {expected}")
+    for source in (2 ** 31, 10 ** 20):
+        if floor_log2_capped(source) != 30:
+            raise AssertionError(f"log2 cap boundary {source}")
+
+    for rule in ATTRIBUTES:
+        actual = reference_score(attributes={rule.source: 1}).final
+        if actual != rule.coefficient:
+            raise AssertionError(f"attribute {rule.source}: {actual}")
+    for rule in RESOURCES:
+        actual = reference_score(resources={rule.source: 2}).final
+        if actual != rule.coefficient:
+            raise AssertionError(f"resource {rule.source}: {actual}")
 
     for tier, expected in HELD_TITLE_BOUNDARY_VECTORS:
         actual = reference_score(held_titles={tier: 1}).final
@@ -199,6 +290,72 @@ def assert_reference_vectors() -> None:
         actual = reference_score(descendants=(descendant,)).final
         if actual != expected:
             raise AssertionError(f"descendant title {tier}: {actual} != {expected}")
+
+    blood = reference_score(descendants=(
+        Descendant("dynasty", 1, same_dynasty=True),
+        Descendant("house", 1, same_dynasty=True, same_house=True),
+    )).final
+    if blood != Decimal("0.3"):
+        raise AssertionError(f"descendant blood coefficients: {blood} != 0.3")
+    depth_and_dedup = reference_score(descendants=(
+        Descendant("depth-0", 0, same_dynasty=True),
+        Descendant("depth-1", 1, same_dynasty=True),
+        Descendant("depth-5", 5, same_dynasty=True),
+        Descendant("depth-6", 6, same_dynasty=True),
+        Descendant("duplicate", 2, same_dynasty=True, highest_title="tier_empire"),
+        Descendant("duplicate", 3, same_dynasty=True, highest_title="tier_empire"),
+        Descendant("dead", 2, same_dynasty=True, highest_title="tier_hegemony", alive=False),
+    )).final
+    if depth_and_dedup != Decimal("5.3"):
+        raise AssertionError(
+            f"descendant depth/dedup contract: {depth_and_dedup} != 5.3")
+
+    people = {
+        key: Descendant(key, 0, same_dynasty=True, alive=key != "dead-parent")
+        for key in ("left", "right", "shared", "dead-parent", "living-grandchild",
+                    "d3", "d4", "d5", "d6")
+    }
+    graph = {
+        "root": ("left", "right", "dead-parent"),
+        "left": ("shared",),
+        "right": ("shared",),
+        "dead-parent": ("living-grandchild",),
+        "living-grandchild": ("d3",),
+        "d3": ("d4",),
+        "d4": ("d5",),
+        "d5": ("d6",),
+    }
+    walked = walk_descendant_graph("root", graph, people)
+    depths = {person.key: person.depth for person in walked}
+    expected_depths = {
+        "left": 1, "right": 1, "dead-parent": 1, "shared": 2,
+        "living-grandchild": 2, "d3": 3, "d4": 4, "d5": 5,
+    }
+    if depths != expected_depths:
+        raise AssertionError(f"pedigree traversal: {depths} != {expected_depths}")
+    graph_score = reference_score(descendants=walked).final
+    if graph_score != Decimal("0.7"):
+        raise AssertionError(
+            f"dead-intermediate pedigree score: {graph_score} != 0.7")
+
+    mixed_titles = reference_score(held_titles={
+        "tier_county": 2, "tier_duchy": 1, "tier_kingdom": 1,
+        "tier_empire": 1, "tier_hegemony": 1,
+    }).final
+    if mixed_titles != Decimal("39.5"):
+        raise AssertionError(f"mixed held titles: {mixed_titles} != 39.5")
+    for landed, size, expected in (
+            (False, 1024, 0), (True, 0, 0), (True, 1, 0),
+            (True, 2, 10), (True, 1024, 100)):
+        actual = reference_score(landed=landed, realm_size=size).final
+        if actual != expected:
+            raise AssertionError(f"realm boundary {landed}/{size}: {actual} != {expected}")
+    for progress, expected in (
+            (-1, 0), (0, 0), (1, 10), (9, 90), (10, 100), (11, 100)):
+        actual = reference_score(contract_progress=progress).final
+        if actual != expected:
+            raise AssertionError(
+                f"contract boundary {progress}: {actual} != {expected}")
 
     for refusals, expected in REFUSAL_BOUNDARY_VECTORS:
         actual = reference_score(attributes={"diplomacy": 100}, refusals=refusals).final
@@ -225,3 +382,21 @@ def assert_reference_vectors() -> None:
     contract = reference_score(contract_progress=10).final
     if contract != Decimal("100"):
         raise AssertionError(f"contract progress: {contract} != 100")
+
+    golden = reference_score(
+        attributes={rule.source: index for index, rule in enumerate(ATTRIBUTES, 1)},
+        resources={"gold": 8, "prestige": 4, "piety": 2, "influence": 1},
+        held_titles={
+            "tier_county": 2, "tier_duchy": 1, "tier_kingdom": 1,
+            "tier_empire": 1, "tier_hegemony": 1,
+        },
+        descendants=(
+            Descendant("county-house", 1, True, True, "tier_county"),
+            Descendant("empire-dynasty", 2, True, False, "tier_empire"),
+        ),
+        realm_size=8,
+        landed=True,
+        contract_progress=9,
+    )
+    if golden != ScoreResult(Decimal("210.05"), Decimal("210.05"), Decimal("210.05")):
+        raise AssertionError(f"golden mixed score: {golden}")

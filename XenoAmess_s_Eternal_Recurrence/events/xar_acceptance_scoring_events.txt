@@ -1,0 +1,271 @@
+﻿# Acceptance-only forward event chain for descendant and pool semantics.
+namespace = xar
+
+# Compute the untouched historical-character baseline.
+xar.0910 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		xar_compute_score_effect = yes
+		trigger_event = xar.0911
+	}
+}
+
+# Snapshot committed baseline values and the independent preview projection.
+xar.0911 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		set_global_variable = { name = xa_test_scoring_expected_dyn value = { value = global_var:xa_a_dyn add = 7 } }
+		set_global_variable = { name = xa_test_scoring_expected_hou value = { value = global_var:xa_a_hou add = 7 } }
+		set_global_variable = { name = xa_test_scoring_base_dt1 value = global_var:xa_d_t1 }
+		set_global_variable = { name = xa_test_scoring_base_dt2 value = global_var:xa_d_t2 }
+		set_global_variable = { name = xa_test_scoring_base_dt3 value = global_var:xa_d_t3 }
+		set_global_variable = { name = xa_test_scoring_base_dt4 value = global_var:xa_d_t4 }
+		set_global_variable = { name = xa_test_scoring_base_dt5 value = global_var:xa_d_t5 }
+		set_global_variable = { name = xa_test_scoring_preview_low value = { value = xar_current_score_value add = 1.39 } }
+		set_global_variable = { name = xa_test_scoring_preview_high value = { value = xar_current_score_value add = 1.41 } }
+		trigger_event = xar.0912
+	}
+}
+
+# Seven living descendants within depth five: one shared by two pedigree paths,
+# four behind a dead intermediate, and one additional living depth-six control.
+xar.0912 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		create_character = {
+			name = "XAR Matrix Left"
+			gender = male
+			age = 30
+			father = root
+			dynasty = root.dynasty
+			culture = root.culture
+			faith = root.faith
+			location = root.location
+			random_traits = no
+			save_scope_as = xar_matrix_left
+		}
+		scope:xar_matrix_left = { set_house = root.house }
+		create_character = {
+			name = "XAR Matrix Right"
+			gender = female
+			age = 30
+			father = root
+			dynasty = root.dynasty
+			culture = root.culture
+			faith = root.faith
+			location = root.location
+			random_traits = no
+			save_scope_as = xar_matrix_right
+		}
+		scope:xar_matrix_right = { set_house = root.house }
+		create_character = {
+			name = "XAR Matrix Shared"
+			gender = male
+			age = 10
+			father = scope:xar_matrix_left
+			mother = scope:xar_matrix_right
+			dynasty = root.dynasty
+			culture = root.culture
+			faith = root.faith
+			location = root.location
+			random_traits = no
+			save_scope_as = xar_matrix_shared
+		}
+		scope:xar_matrix_shared = { set_house = root.house }
+		create_character = {
+			name = "XAR Matrix Dead Parent"
+			gender = male
+			age = 30
+			father = root
+			dynasty = root.dynasty
+			culture = root.culture
+			faith = root.faith
+			location = root.location
+			random_traits = no
+			save_scope_as = xar_matrix_dead_parent
+		}
+		scope:xar_matrix_dead_parent = { set_house = root.house }
+		create_character = {
+			name = "XAR Matrix Living Grandchild"
+			gender = male
+			age = 10
+			father = scope:xar_matrix_dead_parent
+			dynasty = root.dynasty
+			culture = root.culture
+			faith = root.faith
+			location = root.location
+			random_traits = no
+			save_scope_as = xar_matrix_living_grandchild
+		}
+		scope:xar_matrix_living_grandchild = { set_house = root.house }
+		create_character = {
+			name = "XAR Matrix Depth Three"
+			gender = male
+			age = 5
+			father = scope:xar_matrix_living_grandchild
+			dynasty = root.dynasty
+			culture = root.culture
+			faith = root.faith
+			location = root.location
+			random_traits = no
+			save_scope_as = xar_matrix_d3
+		}
+		scope:xar_matrix_d3 = { set_house = root.house }
+		create_character = {
+			name = "XAR Matrix Depth Four"
+			gender = male
+			age = 3
+			father = scope:xar_matrix_d3
+			dynasty = root.dynasty
+			culture = root.culture
+			faith = root.faith
+			location = root.location
+			random_traits = no
+			save_scope_as = xar_matrix_d4
+		}
+		scope:xar_matrix_d4 = { set_house = root.house }
+		create_character = {
+			name = "XAR Matrix Depth Five"
+			gender = male
+			age = 1
+			father = scope:xar_matrix_d4
+			dynasty = root.dynasty
+			culture = root.culture
+			faith = root.faith
+			location = root.location
+			random_traits = no
+			save_scope_as = xar_matrix_d5
+		}
+		scope:xar_matrix_d5 = { set_house = root.house }
+		create_character = {
+			name = "XAR Matrix Depth Six"
+			gender = male
+			age = 0
+			father = scope:xar_matrix_d5
+			dynasty = root.dynasty
+			culture = root.culture
+			faith = root.faith
+			location = root.location
+			random_traits = no
+			save_scope_as = xar_matrix_d6
+		}
+		scope:xar_matrix_d6 = { set_house = root.house }
+		scope:xar_matrix_dead_parent = { death = { death_reason = death_old_age } }
+		add_stress = -1000
+		trigger_event = xar.0913
+	}
+}
+
+# Capture preview after the pedigree is committed, then run production scoring.
+xar.0913 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		if = {
+			limit = {
+				scope:xar_matrix_left = { is_alive = yes father = root }
+				scope:xar_matrix_right = { is_alive = yes father = root }
+				scope:xar_matrix_shared = {
+					is_alive = yes
+					father = scope:xar_matrix_left
+					mother = scope:xar_matrix_right
+				}
+				scope:xar_matrix_dead_parent = { is_alive = no father = root }
+				scope:xar_matrix_living_grandchild = {
+					is_alive = yes
+					father = scope:xar_matrix_dead_parent
+				}
+				scope:xar_matrix_d5 = { is_alive = yes father = scope:xar_matrix_d4 }
+				scope:xar_matrix_d6 = { is_alive = yes father = scope:xar_matrix_d5 }
+			}
+			set_global_variable = { name = xa_test_scoring_preview_after value = xar_current_score_value }
+			set_global_variable = { name = xa_test_scoring_parity_low value = { value = xar_current_score_value subtract = 0.01 } }
+			set_global_variable = { name = xa_test_scoring_parity_high value = { value = xar_current_score_value add = 0.01 } }
+			xar_compute_score_effect = yes
+			trigger_event = xar.0914
+		}
+		else = {
+			debug_log = "XAR: TEST FAIL scoring_fixture_graph"
+			debug_log = "XAR: TEST DONE scoring-matrix"
+		}
+	}
+}
+
+# Exact count deltas prove shortest-path dedup, dead-node traversal, and depth cap.
+xar.0914 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		if = {
+			limit = {
+				global_var:xa_a_dyn = global_var:xa_test_scoring_expected_dyn
+				global_var:xa_a_hou = global_var:xa_test_scoring_expected_hou
+				global_var:xa_d_t1 = global_var:xa_test_scoring_base_dt1
+				global_var:xa_d_t2 = global_var:xa_test_scoring_base_dt2
+				global_var:xa_d_t3 = global_var:xa_test_scoring_base_dt3
+				global_var:xa_d_t4 = global_var:xa_test_scoring_base_dt4
+				global_var:xa_d_t5 = global_var:xa_test_scoring_base_dt5
+				global_var:xa_test_scoring_preview_after >= global_var:xa_test_scoring_preview_low
+				global_var:xa_test_scoring_preview_after <= global_var:xa_test_scoring_preview_high
+				global_var:xa_run_score >= global_var:xa_test_scoring_parity_low
+				global_var:xa_run_score <= global_var:xa_test_scoring_parity_high
+				scope:xar_matrix_left = { NOT = { has_character_flag = xar_desc_counted } }
+				scope:xar_matrix_right = { NOT = { has_character_flag = xar_desc_counted } }
+				scope:xar_matrix_shared = { NOT = { has_character_flag = xar_desc_counted } }
+				scope:xar_matrix_living_grandchild = { NOT = { has_character_flag = xar_desc_counted } }
+				scope:xar_matrix_d3 = { NOT = { has_character_flag = xar_desc_counted } }
+				scope:xar_matrix_d4 = { NOT = { has_character_flag = xar_desc_counted } }
+				scope:xar_matrix_d5 = { NOT = { has_character_flag = xar_desc_counted } }
+				scope:xar_matrix_d6 = { NOT = { has_character_flag = xar_desc_counted } }
+			}
+			debug_log = "XAR: TEST PASS scoring_descendant_matrix"
+			xar_test_dispatcher_sweep_effect = yes
+			trigger_event = xar.0915
+		}
+		else = {
+			debug_log = "XAR: TEST FAIL scoring_descendant_matrix"
+			debug_log = "XAR: TEST DONE scoring-matrix"
+		}
+	}
+}
+
+# The prior event crossed all 200 production branches; assert committed effects.
+xar.0915 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		if = {
+			limit = {
+				global_var:xa_bless_count = 100
+				global_var:xa_bless_session = 100
+				global_var:xa_selected_bless_rarity = 2
+				has_character_modifier = xar_pb_income_s
+				has_character_modifier = xar_pb_life_2
+				has_character_modifier = xar_pc_drain_a
+				has_character_modifier = xar_pc_life
+				has_character_modifier = xar_leg_stress
+				has_trait_xp = { trait = xar_glassfire_gaze value >= 100 }
+				has_character_flag = xa_gaze_milestone_100
+			}
+			debug_log = "XAR: TEST PASS scoring_dispatcher_state"
+		}
+		else = { debug_log = "XAR: TEST FAIL scoring_dispatcher_state" }
+		remove_global_variable = xa_scoring_matrix_active
+		remove_global_variable = xa_test_scoring_expected_dyn
+		remove_global_variable = xa_test_scoring_expected_hou
+		remove_global_variable = xa_test_scoring_base_dt1
+		remove_global_variable = xa_test_scoring_base_dt2
+		remove_global_variable = xa_test_scoring_base_dt3
+		remove_global_variable = xa_test_scoring_base_dt4
+		remove_global_variable = xa_test_scoring_base_dt5
+		remove_global_variable = xa_test_scoring_preview_low
+		remove_global_variable = xa_test_scoring_preview_high
+		remove_global_variable = xa_test_scoring_preview_after
+		remove_global_variable = xa_test_scoring_parity_low
+		remove_global_variable = xa_test_scoring_parity_high
+		debug_log = "XAR: TEST DONE scoring-matrix"
+	}
+}

@@ -26,7 +26,7 @@ def ancestor_within(max_depth):
     for depth in range(max_depth + 1):
         branch = "this = scope:xar_score_preview_root"
         for _ in range(depth):
-            branch = f"any_parent = {{ {branch} }}"
+            branch = f"any_parent = {{ even_if_dead = yes {branch} }}"
         branches.append(branch)
     return f"OR = {{ {' '.join(branches)} }}"
 
@@ -47,7 +47,8 @@ def canonical_descendant_path(depth, parent_scope):
 def descendant_list(remaining, depth=1, indent="\t"):
     parent_scope = f"xar_score_preview_parent_{depth}"
     lines = [f"{indent}save_temporary_scope_as = {parent_scope}",
-             f"{indent}every_child = {{"]
+             f"{indent}every_child = {{",
+             f"{indent}\teven_if_dead = yes"]
     body_indent = indent + "\t"
     if depth > 1:
         lines.extend([
@@ -145,7 +146,8 @@ def generate():
         "\t}",
         "",
         "\t# Incremental lifetime-contract behavior.",
-        f"\tadd = {{ value = global_var:xa_contract_progress multiply = {schema.CONTRACT_PROGRESS_COEFFICIENT} }}",
+        ("\tadd = { value = global_var:xa_contract_progress min = 0 max = 10 "
+         f"multiply = {schema.CONTRACT_PROGRESS_COEFFICIENT} }}"),
         "}",
         "",
         "xar_current_score_value = {",

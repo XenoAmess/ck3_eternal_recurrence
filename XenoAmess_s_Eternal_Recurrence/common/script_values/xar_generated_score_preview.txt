@@ -555,26 +555,31 @@ xar_current_score_base_value = {
 	# Living descendants through 5 generations: blood and highest title.
 	save_temporary_scope_as = xar_score_preview_parent_1
 	every_child = {
+		even_if_dead = yes
 		add = xar_current_descendant_score_value
 		save_temporary_scope_as = xar_score_preview_parent_2
 		every_child = {
+			even_if_dead = yes
 			if = {
-				limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_2 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_2 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } } } } } } }
+				limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_2 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_2 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } } } } } } }
 				add = xar_current_descendant_score_value
 				save_temporary_scope_as = xar_score_preview_parent_3
 				every_child = {
+					even_if_dead = yes
 					if = {
-						limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_3 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_3 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } any_parent = { any_parent = { this = scope:xar_score_preview_root } } } } } } } }
+						limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_3 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_3 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } } } } } } } }
 						add = xar_current_descendant_score_value
 						save_temporary_scope_as = xar_score_preview_parent_4
 						every_child = {
+							even_if_dead = yes
 							if = {
-								limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_4 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } any_parent = { any_parent = { this = scope:xar_score_preview_root } } } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_4 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } any_parent = { any_parent = { this = scope:xar_score_preview_root } } any_parent = { any_parent = { any_parent = { this = scope:xar_score_preview_root } } } } } } } } }
+								limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_4 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } } } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_4 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } } any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } } } } } } } } }
 								add = xar_current_descendant_score_value
 								save_temporary_scope_as = xar_score_preview_parent_5
 								every_child = {
+									even_if_dead = yes
 									if = {
-										limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_5 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } any_parent = { any_parent = { this = scope:xar_score_preview_root } } any_parent = { any_parent = { any_parent = { this = scope:xar_score_preview_root } } } } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_5 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { this = scope:xar_score_preview_root } any_parent = { any_parent = { this = scope:xar_score_preview_root } } any_parent = { any_parent = { any_parent = { this = scope:xar_score_preview_root } } } any_parent = { any_parent = { any_parent = { any_parent = { this = scope:xar_score_preview_root } } } } } } } } } }
+										limit = { OR = { AND = { father ?= { this = scope:xar_score_preview_parent_5 } NOT = { mother ?= { OR = { this = scope:xar_score_preview_root any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } } any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } } } } } } } AND = { mother ?= { this = scope:xar_score_preview_parent_5 } NOT = { father ?= { OR = { this = scope:xar_score_preview_root any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } } any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } } } any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes any_parent = { even_if_dead = yes this = scope:xar_score_preview_root } } } } } } } } } }
 										add = xar_current_descendant_score_value
 									}
 								}
@@ -712,7 +717,7 @@ xar_current_score_base_value = {
 	}
 
 	# Incremental lifetime-contract behavior.
-	add = { value = global_var:xa_contract_progress multiply = 10 }
+	add = { value = global_var:xa_contract_progress min = 0 max = 10 multiply = 10 }
 }
 
 xar_current_score_value = {

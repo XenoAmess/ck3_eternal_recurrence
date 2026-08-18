@@ -11,8 +11,8 @@
 # 大厅导航与事件选项使用 OCR 状态识别，不再依赖固定等待和绝对坐标。判定依据：
 #   debug.log 出现 "XAR: TEST DONE"，全部 "XAR: TEST PASS"、无 "XAR: TEST FAIL"，
 #   且 error.log 无 xar 相关错误。
-# 现场保护：tutorial.txt / player\game_rules\presets.txt 先备份到临时目录，
-#   结束时无论成败原样恢复（runner 本身也会被杀进程方式中断时尽量在 finally 恢复）。
+# 现场保护：tutorial.txt / player\game_rules\presets.txt / autosave*.ck3
+#   先隔离到临时目录，结束时无论成败原样恢复；独立 watchdog 兜底强杀。
 
 import argparse
 from contextlib import contextmanager
@@ -73,6 +73,7 @@ MOD_ROOT = ROOT / "XenoAmess_s_Eternal_Recurrence"
 UGC_MOD_FILE = USER_DIR / "mod" / "ugc_3784706360.mod"
 TUTORIAL_TXT = USER_DIR / "tutorial.txt"
 PRESETS_TXT = USER_DIR / "player" / "game_rules" / "presets.txt"
+SAVE_GAMES_DIR = USER_DIR / "save games"
 DEBUG_LOG = USER_DIR / "logs" / "debug.log"
 ERROR_LOG = USER_DIR / "logs" / "error.log"
 GUI_WARNINGS_LOG = USER_DIR / "logs" / "gui_warnings.log"
@@ -205,6 +206,8 @@ def preflight():
                         (PRESETS_TXT, "game-rule presets")):
         if not path.is_file():
             errors.append(f"{label} not found: {path}")
+    if not SAVE_GAMES_DIR.is_dir():
+        errors.append(f"save-games directory not found: {SAVE_GAMES_DIR}")
     target = None
     try:
         target = ugc_content_dir().resolve()
@@ -286,6 +289,47 @@ def start_restore_watchdog(backup, ck3_pid_file):
          str(backup / "tutorial.txt"), str(TUTORIAL_TXT),
          str(backup / "presets.txt"), str(PRESETS_TXT)],
         creationflags=subprocess.CREATE_NO_WINDOW)
+
+
+def isolate_autosaves(backup):
+    """Snapshot then remove autosaves so one scenario cannot poison the next."""
+    autosave_backup = backup / "autosaves"
+    autosave_backup.mkdir()
+    paths = sorted(
+        path for path in SAVE_GAMES_DIR.glob("autosave*.ck3") if path.is_file())
+    for path in paths:
+        destination = autosave_backup / path.name
+        shutil.copy2(path, destination)
+        if hashlib.sha256(path.read_bytes()).digest() != hashlib.sha256(
+                destination.read_bytes()).digest():
+            raise OSError(f"autosave backup verification failed: {path}")
+    # Watchdog only acts after every original has a verified backup.
+    (backup / "autosaves.ready").write_text("ready\n", encoding="ascii")
+    for path in paths:
+        path.unlink()
+    return len(paths)
+
+
+def restore_autosaves(backup):
+    """Discard acceptance autosaves and atomically restore the user's originals."""
+    autosave_backup = backup / "autosaves"
+    if not (backup / "autosaves.ready").is_file():
+        return
+    if not autosave_backup.is_dir():
+        raise OSError(f"autosave backup missing after ready marker: {autosave_backup}")
+    for path in SAVE_GAMES_DIR.glob("autosave*.ck3"):
+        if path.is_file():
+            path.unlink()
+    for source in sorted(autosave_backup.iterdir()):
+        if not source.is_file():
+            continue
+        destination = SAVE_GAMES_DIR / source.name
+        temporary = destination.with_name(destination.name + ".xar_restore_tmp")
+        shutil.copy2(source, temporary)
+        os.replace(temporary, destination)
+        if hashlib.sha256(source.read_bytes()).digest() != hashlib.sha256(
+                destination.read_bytes()).digest():
+            raise OSError(f"autosave restore verification failed: {destination}")
 
 
 def read_new_lines(path, offset):
@@ -1545,6 +1589,60 @@ def run_progression_ui(debug_offset, error_offset, artifacts):
     }
 
 
+def run_scoring_matrix(debug_offset, error_offset, artifacts):
+    """Prove controlled descendant scoring and all 200 production dispatchers."""
+    xar_lines = []
+    wait_for_marker(
+        debug_offset, "XAR: TEST DONE scoring-matrix", 240, xar_lines)
+    required = {
+        "scoring_descendant_matrix", "pool_dispatch_all_200",
+        "scoring_dispatcher_state",
+    }
+    observed = {
+        line.split("XAR: TEST PASS ", 1)[1].strip()
+        for line in xar_lines if "XAR: TEST PASS " in line
+    }
+    expected_pool_markers = {
+        f"pool_dispatch_{prefix}_{wire_id:03d}"
+        for prefix in ("bless", "curse") for wire_id in range(100)
+    }
+    missing = sorted((required | expected_pool_markers) - observed)
+    fails = [line for line in xar_lines if "XAR: TEST FAIL" in line]
+    if "XAR: TEST scoring matrix begin" not in "\n".join(xar_lines):
+        missing.insert(0, "scoring_matrix_begin")
+    if fails or missing:
+        raise RunnerError(
+            f"scoring-matrix assertions failed: fails={len(fails)}, "
+            f"missing={missing[:20]}{'...' if len(missing) > 20 else ''}")
+    err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+    xar_errors = [
+        line.strip() for line in err_text.splitlines() if "xar" in line.lower()
+    ]
+    if xar_errors:
+        raise RunnerError(f"scoring-matrix emitted {len(xar_errors)} xar error line(s)")
+
+    (artifacts / "scoring_matrix_markers.json").write_text(
+        json.dumps(sorted(observed), ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8")
+    print("\n===== XAR SCORING MATRIX REPORT =====")
+    print("descendant graph     : 7 living / depth 1-5 / shared-path dedup")
+    print("dead intermediate    : traversed; living depth-2..5 counted")
+    print("depth-six control    : excluded")
+    print("preview parity       : within 0.01 of production score")
+    print("pool dispatchers     : 200/200 production wire branches")
+    print("dispatcher state     : counters, modifiers, rarity, Gaze XP committed")
+    print("xar error.log        : 0")
+    return {
+        "living_descendants": 7,
+        "max_scored_depth": 5,
+        "dead_intermediate": True,
+        "deduplicated_shared_descendant": True,
+        "preview_tolerance": 0.01,
+        "pool_dispatchers": 200,
+        "pool_markers": len(expected_pool_markers & observed),
+    }
+
+
 def run_selftest(import_record, debug_offset, error_offset, artifacts):
     """Preserve the full existing selftest behavior and console report."""
     offset = debug_offset
@@ -1898,10 +1996,11 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
         "death-edges": 1,
         "bargain-reopen": 2,
         "progression-ui": 3,
+        "scoring-matrix": 4,
     }[scenario]
     rule_setting = "xar_selftest" if scenario in (
         "selftest", "persistence-restart", "death-edges", "bargain-reopen",
-        "progression-ui") else (
+        "progression-ui", "scoring-matrix") else (
         "xar_off" if scenario == "off" else "xar_on")
     if artifacts_dir:
         artifacts = Path(artifacts_dir).expanduser().resolve()
@@ -1936,9 +2035,12 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
             shutil.copy2(TUTORIAL_TXT, backup / "tutorial.txt")
             shutil.copy2(PRESETS_TXT, backup / "presets.txt")
             backup_ready = True
-            log("backed up tutorial.txt + presets.txt")
             start_restore_watchdog(backup, ck3_pid_file)
             log("restore watchdog armed")
+            autosave_count = isolate_autosaves(backup)
+            log(
+                "backed up tutorial.txt + presets.txt; "
+                f"isolated {autosave_count} autosave(s)")
 
         with timed_phase(timings, "static_validation"):
             if validate_static.main() != 0:
@@ -2049,6 +2151,9 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
             elif scenario == "progression-ui":
                 report_evidence = run_progression_ui(
                     debug_offset, error_offset, artifacts)
+            elif scenario == "scoring-matrix":
+                report_evidence = run_scoring_matrix(
+                    debug_offset, error_offset, artifacts)
             elif scenario == "selftest":
                 error_reason = run_selftest(
                     effective_record, debug_offset, error_offset, artifacts)
@@ -2135,8 +2240,9 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
                     time.sleep(2)
                     shutil.copy2(backup / "tutorial.txt", TUTORIAL_TXT)
                     shutil.copy2(backup / "presets.txt", PRESETS_TXT)
+                    restore_autosaves(backup)
                     restore_succeeded = True
-                    log("restored tutorial.txt + presets.txt, ck3 killed")
+                    log("restored tutorial.txt + presets.txt + autosaves, ck3 killed")
         except Exception as restore_exc:
             result = "RED"
             restore_reason = f"restore failed: {restore_exc}"
@@ -2167,7 +2273,7 @@ if __name__ == "__main__":
         "--scenario",
         choices=("selftest", "on-first-life", "on-recorded", "on-high-budget", "off",
                  "persistence-restart", "death-edges", "bargain-reopen",
-                 "progression-ui"),
+                 "progression-ui", "scoring-matrix"),
         default="selftest",
         help="acceptance scenario (default: selftest)")
     parser.add_argument(

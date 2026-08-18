@@ -77,7 +77,10 @@ xar_compute_score_effect = {
 	if = { limit = { exists = house }
 		house = { save_temporary_scope_as = xar_score_house }
 	}
-	every_child = { xar_desc_node_l1 = yes }
+	every_child = {
+		even_if_dead = yes
+		xar_desc_node_l1 = yes
+	}
 	xar_desc_clean_root = yes
 	set_global_variable = {
 		name = xa_p_dyn
@@ -240,7 +243,7 @@ xar_compute_score_effect = {
 	# Selected lifetime contract: incremental behavior progress.
 	set_global_variable = {
 		name = xa_a_contract
-		value = { value = global_var:xa_contract_progress }
+		value = { value = global_var:xa_contract_progress min = 0 max = 10 }
 	}
 	set_global_variable = {
 		name = xa_p_contract
@@ -459,22 +462,34 @@ xar_log2_floor_effect = {
 # Mechanical depth expansion around the hand-written descendant adapter.
 xar_desc_node_l1 = {
 	xar_desc_count_self = yes
-	every_child = { xar_desc_node_l2 = yes }
+	every_child = {
+		even_if_dead = yes
+		xar_desc_node_l2 = yes
+	}
 }
 
 xar_desc_node_l2 = {
 	xar_desc_count_self = yes
-	every_child = { xar_desc_node_l3 = yes }
+	every_child = {
+		even_if_dead = yes
+		xar_desc_node_l3 = yes
+	}
 }
 
 xar_desc_node_l3 = {
 	xar_desc_count_self = yes
-	every_child = { xar_desc_node_l4 = yes }
+	every_child = {
+		even_if_dead = yes
+		xar_desc_node_l4 = yes
+	}
 }
 
 xar_desc_node_l4 = {
 	xar_desc_count_self = yes
-	every_child = { xar_desc_node_l5 = yes }
+	every_child = {
+		even_if_dead = yes
+		xar_desc_node_l5 = yes
+	}
 }
 
 xar_desc_node_l5 = {
@@ -482,29 +497,59 @@ xar_desc_node_l5 = {
 }
 
 xar_desc_clean_root = {
-	every_child = { xar_desc_clean_l1 = yes }
+	every_child = {
+		even_if_dead = yes
+		xar_desc_clean_l1 = yes
+	}
 }
 
 xar_desc_clean_l1 = {
-	remove_character_flag = xar_desc_counted
-	every_child = { xar_desc_clean_l2 = yes }
+	if = {
+		limit = { is_alive = yes }
+		remove_character_flag = xar_desc_counted
+	}
+	every_child = {
+		even_if_dead = yes
+		xar_desc_clean_l2 = yes
+	}
 }
 
 xar_desc_clean_l2 = {
-	remove_character_flag = xar_desc_counted
-	every_child = { xar_desc_clean_l3 = yes }
+	if = {
+		limit = { is_alive = yes }
+		remove_character_flag = xar_desc_counted
+	}
+	every_child = {
+		even_if_dead = yes
+		xar_desc_clean_l3 = yes
+	}
 }
 
 xar_desc_clean_l3 = {
-	remove_character_flag = xar_desc_counted
-	every_child = { xar_desc_clean_l4 = yes }
+	if = {
+		limit = { is_alive = yes }
+		remove_character_flag = xar_desc_counted
+	}
+	every_child = {
+		even_if_dead = yes
+		xar_desc_clean_l4 = yes
+	}
 }
 
 xar_desc_clean_l4 = {
-	remove_character_flag = xar_desc_counted
-	every_child = { xar_desc_clean_l5 = yes }
+	if = {
+		limit = { is_alive = yes }
+		remove_character_flag = xar_desc_counted
+	}
+	every_child = {
+		even_if_dead = yes
+		xar_desc_clean_l5 = yes
+	}
 }
 
 xar_desc_clean_l5 = {
-	remove_character_flag = xar_desc_counted
+	if = {
+		limit = { is_alive = yes }
+		remove_character_flag = xar_desc_counted
+	}
 }

@@ -2,6 +2,8 @@
 """Repository-wide static release checks run before CK3 acceptance."""
 
 import importlib.util
+import hashlib
+import json
 import re
 import sys
 from pathlib import Path
@@ -21,6 +23,7 @@ import validate_loc
 ROOT = Path(__file__).resolve().parent.parent
 MOD = ROOT / "XenoAmess_s_Eternal_Recurrence"
 LANGS = validate_loc.LANGS
+POOL_SEMANTIC_CONTRACT = ROOT / "tools/pool_semantic_contract.sha256"
 
 
 def read(path):
@@ -29,6 +32,99 @@ def read(path):
 
 def normalized(text):
     return text.replace("\r\n", "\n")
+
+
+def compact_script(text):
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def pool_semantic_digest(prefix, wire_id, entry):
+    code = gen_pools.entry_code(None, entry)
+    modifier_definitions = {}
+    if entry[1] == "mod":
+        modifier_definitions[entry[2][0]] = compact_script(entry[2][1])
+    for modifier in re.findall(
+            r"add_character_modifier\s*=\s*\{\s*modifier\s*=\s*(\w+)", code):
+        if modifier in gen_pools.EXTRA_MODIFIERS:
+            modifier_definitions[modifier] = compact_script(
+                gen_pools.EXTRA_MODIFIERS[modifier])
+    payload = {
+        "stable_id": f"{prefix}.{wire_id:03d}",
+        "wire_id": wire_id,
+        "rarity": entry[0],
+        "family": entry[1],
+        "effect": compact_script(code),
+        "conditions": gen_pools.entry_conditions(entry),
+        "base_weight": gen_pools.WEIGHTS[entry[0]],
+        "weight_modifiers": gen_pools.entry_weight_modifiers(entry, prefix),
+        "modifier_definitions": modifier_definitions,
+        "name_simp_chinese": entry[3]["simp_chinese"],
+        "name_english": entry[3]["english"],
+        "summary_simp_chinese": gen_pools.entry_summary(None, entry, "simp_chinese"),
+        "summary_english": gen_pools.entry_summary(None, entry, "english"),
+    }
+    serialized = json.dumps(
+        payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+
+
+def render_pool_semantic_contract():
+    lines = [
+        "# Frozen reviewed semantics for 100 blessing + 100 curse stable IDs.",
+        ("# Update only after reviewing docs/blessing-curse-pools.md and "
+         "generated dispatcher diffs."),
+    ]
+    for prefix, pool in (("bless", gen_pools.B), ("curse", gen_pools.C)):
+        for wire_id, entry in enumerate(pool):
+            lines.append(
+                f"{prefix}.{wire_id:03d} "
+                f"{pool_semantic_digest(prefix, wire_id, entry)}")
+    return "\n".join(lines) + "\n"
+
+
+def expected_pool_draw_branch(prefix, slot, prior, wire_id, entry):
+    conditions = [
+        f"NOT = {{ global_var:xa_{prefix}_{prior_slot} = {wire_id} }}"
+        for prior_slot in prior
+    ]
+    conditions.extend(gen_pools.entry_conditions(entry))
+    if prefix == "curse" and entry[0] == "c":
+        conditions.append("global_var:xa_selected_bless_rarity < 2")
+    trigger = f"trigger = {{ {' '.join(conditions)} }} " if conditions else ""
+    modifiers = "".join(
+        f"modifier = {{ factor = {factor} {condition} }} "
+        for condition, factor in gen_pools.entry_weight_modifiers(entry, prefix)
+    )
+    rarity = ""
+    if prefix == "curse":
+        rarity = (
+            f" set_global_variable = {{ name = xa_{prefix}_{slot}_rarity "
+            f"value = {gen_pools.RARITY_LEVEL[entry[0]]} }}")
+    return (
+        f"{gen_pools.WEIGHTS[entry[0]]} = {{ {trigger}{modifiers}"
+        f"set_global_variable = {{ name = xa_{prefix}_{slot} value = {wire_id} }}"
+        f"{rarity} }}")
+
+
+def expected_pool_apply_branch(prefix, wire_id, entry):
+    code = gen_pools.entry_code(None, entry)
+    if prefix == "bless":
+        code += (
+            "\nset_global_variable = { name = xa_selected_bless_rarity "
+            f"value = {gen_pools.RARITY_LEVEL[entry[0]]} }}")
+    else:
+        code += "\nxar_complete_bargain_pair_effect = yes"
+    code += (
+        "\n# XAR_ACCEPTANCE_ONLY_BEGIN\n"
+        "if = {\n"
+        "limit = { has_global_variable = xa_scoring_matrix_active }\n"
+        f'debug_log = "XAR: TEST PASS pool_dispatch_{prefix}_{wire_id:03d}"\n'
+        "}\n"
+        "# XAR_ACCEPTANCE_ONLY_END"
+    )
+    return (
+        f"if = {{ limit = {{ global_var:xa_{prefix}_$SLOT$ = {wire_id} }} "
+        f"{code} }}")
 
 
 def loc_format_tokens(value):
@@ -746,6 +842,36 @@ def mechanic_checks(errors):
         if release_contract_effects.count(f"trigger_event = xar.{event_id}") != 1:
             errors.append(
                 f"release progression dispatcher must trigger xar.{event_id} exactly once")
+    scoring_probe_effect = read(
+        MOD / "common/scripted_effects/xar_acceptance_scoring_effects.txt")
+    scoring_probe_events = read(MOD / "events/xar_acceptance_scoring_events.txt")
+    scoring_requirements = (
+        "global_var:xa_global_record_imported = 4",
+        "xar_acceptance_scoring_matrix_start_effect = yes",
+    )
+    if any(token not in consume_import for token in scoring_requirements):
+        errors.append("scoring-matrix threshold-4 bootstrap is not isolated from selftest")
+    if not all(token in scoring_probe_effect for token in (
+            "is_ai = no", "exists = dynasty", "exists = house",
+            "set_global_variable = xa_scoring_matrix_active",
+            "trigger_event = xar.0910")):
+        errors.append("scoring-matrix setup lost its player/family guard or event entry")
+    scoring_event_requirements = (
+        "xar_compute_score_effect = yes", "value = global_var:xa_a_dyn add = 7",
+        "value = global_var:xa_a_hou add = 7", "father = root",
+        "father = scope:xar_matrix_left", "mother = scope:xar_matrix_right",
+        "death = { death_reason = death_old_age }",
+        "global_var:xa_test_scoring_preview_after >= global_var:xa_test_scoring_preview_low",
+        "global_var:xa_run_score >= global_var:xa_test_scoring_parity_low",
+        "xar_test_dispatcher_sweep_effect = yes",
+        "XAR: TEST PASS scoring_descendant_matrix",
+        "XAR: TEST PASS scoring_dispatcher_state",
+        "XAR: TEST DONE scoring-matrix",
+    )
+    if any(token not in scoring_probe_events for token in scoring_event_requirements):
+        errors.append("scoring-matrix descendant/preview/dispatcher chain is incomplete")
+    if scoring_probe_events.count("create_character = {") != 9:
+        errors.append("scoring-matrix pedigree must contain eight controls plus one dead parent")
     for hook in ("on_war_won_attacker", "on_war_won_defender", "on_hook_used",
                  "on_county_faith_change", "on_birth_mother", "on_birth_father",
                  "on_building_completed", "on_birthday"):
@@ -769,6 +895,56 @@ def mechanic_checks(errors):
     curse_draw = extract_block(pools, "xar_draw_curses_effect") or ""
     bless_draw = extract_block(pools, "xar_draw_blessings_effect") or ""
     bless_apply = extract_block(pools, "xar_apply_blessing_effect") or ""
+    curse_apply = extract_block(pools, "xar_apply_curse_effect") or ""
+    try:
+        gen_pools.validate(gen_pools.B, "bless")
+        gen_pools.validate(gen_pools.C, "curse")
+    except AssertionError as exc:
+        errors.append(f"pool data contract invalid: {exc}")
+    frozen_pool_digests = {}
+    if not POOL_SEMANTIC_CONTRACT.exists():
+        errors.append("frozen 200-ID pool semantic contract is missing")
+    else:
+        for line in read(POOL_SEMANTIC_CONTRACT).splitlines():
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split()
+            if len(parts) != 2 or not re.fullmatch(r"(?:bless|curse)\.\d{3}", parts[0]):
+                errors.append(f"invalid pool semantic contract row: {line}")
+                continue
+            frozen_pool_digests[parts[0]] = parts[1]
+    expected_stable_ids = [
+        f"{prefix}.{wire_id:03d}"
+        for prefix in ("bless", "curse") for wire_id in range(100)
+    ]
+    if sorted(frozen_pool_digests) != expected_stable_ids:
+        errors.append("pool semantic contract must contain bless.000..curse.099 exactly once")
+    for prefix, pool, draw, apply, slots in (
+            ("bless", gen_pools.B, bless_draw, bless_apply,
+             (("a", ()), ("b", ("a",)), ("c", ("a", "b")))),
+            ("curse", gen_pools.C, curse_draw, curse_apply,
+             (("a", ()), ("b", ("a",)))),):
+        apply_guards = [int(value) for value in re.findall(
+            rf"global_var:xa_{prefix}_\$SLOT\$ = (\d+)", apply)]
+        if apply_guards != list(range(100)):
+            errors.append(f"{prefix} apply dispatcher guards are not exact wire IDs 0..99")
+        compact_apply = compact_script(apply)
+        compact_draw = compact_script(draw)
+        for wire_id, entry in enumerate(pool):
+            stable_id = f"{prefix}.{wire_id:03d}"
+            digest = pool_semantic_digest(prefix, wire_id, entry)
+            if frozen_pool_digests.get(stable_id) != digest:
+                errors.append(f"frozen pool semantics changed for {stable_id}")
+            expected_apply = compact_script(
+                expected_pool_apply_branch(prefix, wire_id, entry))
+            if compact_apply.count(expected_apply) != 1:
+                errors.append(f"{stable_id} is not mapped to its exact apply effect")
+            for slot, prior in slots:
+                expected_draw = compact_script(expected_pool_draw_branch(
+                    prefix, slot, prior, wire_id, entry))
+                if compact_draw.count(expected_draw) != 1:
+                    errors.append(
+                        f"{stable_id} draw semantics drifted in {prefix} slot {slot}")
     if (bless_apply.count("name = xa_bless_session add = 1") != 1
             or bless_apply.count("name = xa_bless_count add = 1") != 1):
         errors.append("blessing dispatcher must advance cumulative count/session exactly once")
@@ -791,6 +967,15 @@ def mechanic_checks(errors):
         errors.append("common curse rarity guards are incomplete")
     if pools.count("xar_complete_bargain_pair_effect = yes") != 100:
         errors.append("each curse dispatcher branch must call the shared pair-completion effect")
+    if pools.count("XAR: TEST PASS pool_dispatch_bless_") != 100:
+        errors.append("blessing dispatcher lacks 100 acceptance branch markers")
+    if pools.count("XAR: TEST PASS pool_dispatch_curse_") != 100:
+        errors.append("curse dispatcher lacks 100 acceptance branch markers")
+    dispatcher_sweep = extract_block(pools, "xar_test_dispatcher_sweep_effect") or ""
+    if (dispatcher_sweep.count("xar_apply_blessing_effect = { SLOT = a }") != 100
+            or dispatcher_sweep.count("xar_apply_curse_effect = { SLOT = a }") != 100
+            or "XAR: TEST PASS pool_dispatch_all_200" not in dispatcher_sweep):
+        errors.append("acceptance dispatcher sweep does not cross all 200 production branches")
     if "NOT = { OR = { has_trait = physique_good_1 has_trait = physique_good_2 has_trait = physique_good_3 } }" not in bless_draw:
         errors.append("ranked blessing traits do not exclude equal or stronger tiers")
     for modifier in ("xar_pb_life_2", "xar_leg_life"):
@@ -846,6 +1031,56 @@ def mechanic_checks(errors):
     ]
     if descendant_nodes != expected_nodes:
         errors.append("generated descendant traversal depth is stale against scoring_data")
+    production_child_lists = generated_score_effects.count("every_child = {")
+    production_dead_inclusive = len(re.findall(
+        r"every_child\s*=\s*\{\s*even_if_dead\s*=\s*yes",
+        generated_score_effects))
+    expected_child_lists = scoring_data.DESCENDANT_DEPTH * 2
+    if (production_child_lists != expected_child_lists
+            or production_dead_inclusive != expected_child_lists):
+        errors.append(
+            "production descendant traversal/cleanup must cross every dead intermediate")
+    if (generated_score_effects.count("limit = { is_alive = yes }") < 5
+            or generated_score_effects.count(
+                "remove_character_flag = xar_desc_counted") != 5):
+        errors.append("descendant cleanup must skip flag effects on dead scopes")
+    preview_child_lists = preview.count("every_child = {")
+    preview_dead_inclusive = len(re.findall(
+        r"every_child\s*=\s*\{\s*even_if_dead\s*=\s*yes", preview))
+    if (preview_child_lists != scoring_data.DESCENDANT_DEPTH
+            or preview_dead_inclusive != scoring_data.DESCENDANT_DEPTH):
+        errors.append("score preview descendant traversal must cross dead intermediates")
+    preview_parent_lists = preview.count("any_parent = {")
+    preview_dead_parents = len(re.findall(
+        r"any_parent\s*=\s*\{\s*even_if_dead\s*=\s*yes", preview))
+    if not preview_parent_lists or preview_parent_lists != preview_dead_parents:
+        errors.append("score preview pedigree dedup excludes a dead parent path")
+    count_adapter = extract_block(hand_score_effects, "xar_desc_count_self") or ""
+    adapter_requirements = (
+        "is_alive = yes", "NOT = { has_character_flag = xar_desc_counted }",
+        "add_character_flag = xar_desc_counted",
+        "xar_descendant_tier_count_effect = yes",
+        "change_global_variable = { name = xa_a_dyn add = 1 }",
+        "change_global_variable = { name = xa_a_hou add = 1 }",
+    )
+    if (any(token not in count_adapter for token in adapter_requirements)
+            or count_adapter.count("xar_descendant_tier_count_effect = yes") != 1):
+        errors.append("hand-written descendant dedup/blood adapter is incomplete")
+    expected_log_thresholds = [2 ** exponent for exponent in range(1, 31)]
+    production_log_thresholds = [int(value) for value in re.findall(
+        r"\$SRC\$ >= (\d+)", generated_score_effects)]
+    if production_log_thresholds != expected_log_thresholds:
+        errors.append("production log2 ladder is not the reviewed 2^1..2^30 boundary set")
+    for source in ("gold", "prestige", "piety", "influence", "realm_size"):
+        preview_thresholds = [int(value) for value in re.findall(
+            rf"limit = \{{ {source} >= (\d+) \}}", preview)]
+        if preview_thresholds != expected_log_thresholds:
+            errors.append(f"score preview {source} log2 ladder has boundary drift")
+    if ("value = global_var:xa_contract_progress min = 0 max = 10"
+            not in generated_score_effects
+            or "value = global_var:xa_contract_progress min = 0 max = 10"
+            not in preview):
+        errors.append("contract score is not clamped to its reviewed 0..10 boundary")
     selftest = read(MOD / "common/scripted_effects/xar_selftest_effects.txt")
     ledger_test_markers = {
         "XAR: TEST PASS ledger_score_nonnegative",
@@ -1013,6 +1248,21 @@ def package_checks(errors):
             "progression_ledger_pixels", "xar_contract_complete_steward",
             "XAR: TEST DONE progression-ui")):
         errors.append("acceptance runner lacks progression milestone/PB pixel coverage")
+    if not all(token in acceptance_runner for token in (
+            '"scoring-matrix": 4', "def run_scoring_matrix",
+            "pool_dispatchers", "expected_pool_markers",
+            "XAR: TEST DONE scoring-matrix")):
+        errors.append("acceptance runner lacks scoring/dedup/200-dispatcher coverage")
+    restore_watchdog = read(ROOT / "tools/restore_watchdog.py")
+    autosave_protection = (
+        "SAVE_GAMES_DIR", 'glob("autosave*.ck3")', "autosaves.ready",
+        "autosave backup verification failed", "restore_autosaves(backup)",
+    )
+    if (any(token not in acceptance_runner for token in autosave_protection)
+            or any(token not in restore_watchdog for token in (
+                'glob("autosave*.ck3")', "autosaves.ready",
+                "autosave restore verification failed"))):
+        errors.append("acceptance runner/watchdog lacks atomic autosave isolation")
     thumbnail = MOD / "thumbnail.png"
     if thumbnail.exists() and thumbnail.stat().st_size >= 1_000_000:
         errors.append("thumbnail.png must remain below Steam's 1 MB limit")
@@ -1053,4 +1303,7 @@ def main():
 
 
 if __name__ == "__main__":
+    if sys.argv[1:] == ["--print-pool-contract"]:
+        print(render_pool_semantic_contract(), end="")
+        sys.exit(0)
     sys.exit(main())

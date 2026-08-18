@@ -70,6 +70,7 @@
 | 无继承人同步结算显示 0，或外部 GUI 的 `SuccessionEventWindow.GoToMenu` 点击无效 | 死亡计分仍在 `on_death` 父 effect 内未提交；且 `SuccessionEventWindow` action 只在原生窗口有完整输入上下文。2026-08-18 CK3 1.19.0.6 实测 | 使用 `on_death -> hidden compute -> hidden dispatch -> hidden snapshot` 前向事件链；把结算 widget 生成注入原生 `window_succession_event.gui`，按钮在原生窗口内调用 `GoToMenu` |
 | 正数差值经过 `max = 0` 后总是变成 0 | CK3 数值块的 `max` 是上限、`min` 是下限；`max = 0` 会把所有正数压到 0 | 表达 `max(value, 0)` 要写 `min = 0`。2026-08-18 成长计分与账簿差值实机定位 |
 | 原版 effect 报错的调用栈只因 `common/on_action/xar_*.txt` 路径而命中 XAR 错误门禁 | 用 `on_actions = {}` 扩展原版 hook 后，引擎会把原版 effect 的调用者位置归到扩展定义文件；2026-08-19 九年长测实测 EP3 `war_task_contracts_completion_effect` 的原版错误因此带上适配器路径，但没有进入 `xar_contract_*` effect | on_action 适配器使用不含 `xar` 的中性文件名，hook/effect 标识仍保留 `xar_*`；这样真实自定义 effect 错误仍会由脚本位置中的符号命中门禁，原版错误不会仅因调用者文件名误报 |
+| 死亡中间节点后的在世后代不计分，或清理时报 `remove_character_flag effect [ scope is dead during effect execution ]` | `every_child`/`any_parent` 关系列表默认排除已故角色；加 `even_if_dead` 后，清理 effect 又会实际进入 dead scope，而角色 flag effect 不接受死者 | 后代展开、清理和 preview 的所有关系列表都加 `even_if_dead = yes`；计分与清 flag 分别包 `is_alive = yes`，关系遍历仍可穿过死者。2026-08-19 受控谱系 `xar_accept_h0lgmvyf` 实测 1–5 代、死亡中间节点、双路径去重和清理，0 `xar` errors。 |
 
 ## 事件背景图 / 纹理
 

@@ -337,214 +337,1114 @@ xar_draw_blessings_effect = {
 
 # Apply by slot ($SLOT$ = a/b/c).
 xar_apply_blessing_effect = {
-	if = { limit = { global_var:xa_bless_$SLOT$ = 0 } add_gold = 50
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 1 } add_gold = 100
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 2 } add_gold = 200
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 3 } add_gold = 350
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 4 } add_gold = 500
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 5 } add_gold = 750
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 6 } add_gold = 1000
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 7 } add_prestige = 75
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 8 } add_prestige = 150
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 9 } add_prestige = 300
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 10 } add_prestige = 450
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 11 } add_prestige = 600
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 12 } add_prestige = 900
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 13 } add_prestige = 1200
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 14 } add_prestige = 1800
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 15 } add_piety = 75
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 16 } add_piety = 150
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 17 } add_piety = 300
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 18 } add_piety = 450
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 19 } add_piety = 600
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 20 } add_piety = 900
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 21 } add_piety = 1200
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 22 } add_piety = 1800
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 23 } change_influence = 25
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 24 } change_influence = 35
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 25 } change_influence = 50
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 26 } change_influence = 75
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 27 } change_influence = 100
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 28 } change_influence = 125
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 29 } change_influence = 150
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 30 } add_diplomacy_skill = 1
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 31 } add_diplomacy_skill = 2
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 32 } add_diplomacy_skill = 3
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 33 } add_martial_skill = 1
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 34 } add_martial_skill = 2
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 35 } add_martial_skill = 3
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 36 } add_stewardship_skill = 1
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 37 } add_stewardship_skill = 2
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 38 } add_stewardship_skill = 3
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 39 } add_intrigue_skill = 1
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 40 } add_intrigue_skill = 2
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 41 } add_intrigue_skill = 3
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 42 } add_learning_skill = 1
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 43 } add_learning_skill = 2
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 44 } add_learning_skill = 3
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 45 } add_prowess_skill = 1
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 46 } add_prowess_skill = 2
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 47 } add_prowess_skill = 3
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 48 } add_diplomacy_lifestyle_xp = 250
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 49 } add_diplomacy_lifestyle_xp = 500
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 50 } add_diplomacy_lifestyle_xp = 750
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 51 } add_martial_lifestyle_xp = 250
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 52 } add_martial_lifestyle_xp = 500
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 53 } add_martial_lifestyle_xp = 750
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 54 } add_stewardship_lifestyle_xp = 250
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 55 } add_stewardship_lifestyle_xp = 500
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 56 } add_stewardship_lifestyle_xp = 750
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 57 } add_intrigue_lifestyle_xp = 250
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 58 } add_intrigue_lifestyle_xp = 500
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 59 } add_intrigue_lifestyle_xp = 750
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 60 } add_learning_lifestyle_xp = 250
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 61 } add_learning_lifestyle_xp = 500
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 62 } add_learning_lifestyle_xp = 750
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 63 } add_trait = physique_good_1
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 64 } add_trait = physique_good_2
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 65 } add_trait = physique_good_3
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 66 } add_trait = beauty_good_1
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 67 } add_trait = beauty_good_2
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 68 } add_trait = intellect_good_1
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 69 } add_trait = intellect_good_2
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 70 } add_trait = shrewd
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 71 } add_trait = strong
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 72 } add_trait = brave
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 73 } add_trait = diligent
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 74 } add_trait = patient
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 75 } add_character_modifier = { modifier = xar_pb_income_s days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 76 } add_character_modifier = { modifier = xar_pb_income_m days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 77 } add_character_modifier = { modifier = xar_pb_income_l days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 78 } add_character_modifier = { modifier = xar_pb_health_s days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 79 } add_character_modifier = { modifier = xar_pb_health_m days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 80 } add_character_modifier = { modifier = xar_pb_health_l days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 81 } add_character_modifier = { modifier = xar_pb_fert_s days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 82 } add_character_modifier = { modifier = xar_pb_fert_m days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 83 } add_character_modifier = { modifier = xar_pb_vassal days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 84 } add_character_modifier = { modifier = xar_pb_stress days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 85 } add_character_modifier = { modifier = xar_pb_prestige days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 86 } dynasty ?= { add_dynasty_prestige = 50 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 87 } dynasty ?= { add_dynasty_prestige = 150 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 88 } dynasty ?= { add_dynasty_prestige = 300 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 89 } dynasty ?= { add_dynasty_prestige = 500 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 90 } add_stress = -50
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 91 } add_stress = -75
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 92 } add_stress = -100
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 93 } add_stress = -150
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 94 } add_character_modifier = { modifier = xar_pb_life_2 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 1 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 95 } add_diplomacy_skill = 1
-		add_martial_skill = 1
-		add_stewardship_skill = 1
-		add_intrigue_skill = 1
-		add_learning_skill = 1
-		add_prowess_skill = 1
-	set_global_variable = { name = xa_selected_bless_rarity value = 2 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 96 } add_character_modifier = { modifier = xar_leg_life }
-	set_global_variable = { name = xa_selected_bless_rarity value = 2 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 97 } add_gold = 1000
-		add_character_modifier = { modifier = xar_leg_wealth days = 3650 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 2 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 98 } add_prestige = 300
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 0 }
+		add_gold = 50
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_000"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 1 }
+		add_gold = 100
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_001"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 2 }
+		add_gold = 200
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_002"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 3 }
+		add_gold = 350
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_003"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 4 }
+		add_gold = 500
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_004"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 5 }
+		add_gold = 750
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_005"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 6 }
+		add_gold = 1000
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_006"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 7 }
+		add_prestige = 75
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_007"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 8 }
+		add_prestige = 150
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_008"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 9 }
+		add_prestige = 300
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_009"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 10 }
+		add_prestige = 450
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_010"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 11 }
+		add_prestige = 600
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_011"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 12 }
+		add_prestige = 900
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_012"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 13 }
+		add_prestige = 1200
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_013"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 14 }
+		add_prestige = 1800
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_014"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 15 }
+		add_piety = 75
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_015"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 16 }
+		add_piety = 150
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_016"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 17 }
 		add_piety = 300
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_017"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 18 }
+		add_piety = 450
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_018"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 19 }
+		add_piety = 600
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_019"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 20 }
+		add_piety = 900
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_020"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 21 }
+		add_piety = 1200
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_021"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 22 }
+		add_piety = 1800
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_022"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 23 }
+		change_influence = 25
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_023"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 24 }
+		change_influence = 35
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_024"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 25 }
+		change_influence = 50
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_025"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 26 }
+		change_influence = 75
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_026"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 27 }
 		change_influence = 100
-	set_global_variable = { name = xa_selected_bless_rarity value = 2 } }
-	if = { limit = { global_var:xa_bless_$SLOT$ = 99 } dynasty ?= { add_dynasty_prestige = 1000 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 2 } }
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_027"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 28 }
+		change_influence = 125
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_028"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 29 }
+		change_influence = 150
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_029"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 30 }
+		add_diplomacy_skill = 1
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_030"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 31 }
+		add_diplomacy_skill = 2
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_031"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 32 }
+		add_diplomacy_skill = 3
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_032"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 33 }
+		add_martial_skill = 1
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_033"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 34 }
+		add_martial_skill = 2
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_034"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 35 }
+		add_martial_skill = 3
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_035"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 36 }
+		add_stewardship_skill = 1
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_036"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 37 }
+		add_stewardship_skill = 2
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_037"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 38 }
+		add_stewardship_skill = 3
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_038"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 39 }
+		add_intrigue_skill = 1
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_039"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 40 }
+		add_intrigue_skill = 2
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_040"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 41 }
+		add_intrigue_skill = 3
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_041"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 42 }
+		add_learning_skill = 1
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_042"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 43 }
+		add_learning_skill = 2
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_043"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 44 }
+		add_learning_skill = 3
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_044"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 45 }
+		add_prowess_skill = 1
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_045"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 46 }
+		add_prowess_skill = 2
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_046"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 47 }
+		add_prowess_skill = 3
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_047"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 48 }
+		add_diplomacy_lifestyle_xp = 250
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_048"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 49 }
+		add_diplomacy_lifestyle_xp = 500
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_049"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 50 }
+		add_diplomacy_lifestyle_xp = 750
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_050"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 51 }
+		add_martial_lifestyle_xp = 250
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_051"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 52 }
+		add_martial_lifestyle_xp = 500
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_052"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 53 }
+		add_martial_lifestyle_xp = 750
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_053"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 54 }
+		add_stewardship_lifestyle_xp = 250
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_054"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 55 }
+		add_stewardship_lifestyle_xp = 500
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_055"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 56 }
+		add_stewardship_lifestyle_xp = 750
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_056"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 57 }
+		add_intrigue_lifestyle_xp = 250
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_057"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 58 }
+		add_intrigue_lifestyle_xp = 500
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_058"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 59 }
+		add_intrigue_lifestyle_xp = 750
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_059"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 60 }
+		add_learning_lifestyle_xp = 250
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_060"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 61 }
+		add_learning_lifestyle_xp = 500
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_061"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 62 }
+		add_learning_lifestyle_xp = 750
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_062"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 63 }
+		add_trait = physique_good_1
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_063"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 64 }
+		add_trait = physique_good_2
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_064"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 65 }
+		add_trait = physique_good_3
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_065"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 66 }
+		add_trait = beauty_good_1
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_066"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 67 }
+		add_trait = beauty_good_2
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_067"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 68 }
+		add_trait = intellect_good_1
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_068"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 69 }
+		add_trait = intellect_good_2
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_069"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 70 }
+		add_trait = shrewd
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_070"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 71 }
+		add_trait = strong
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_071"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 72 }
+		add_trait = brave
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_072"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 73 }
+		add_trait = diligent
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_073"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 74 }
+		add_trait = patient
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_074"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 75 }
+		add_character_modifier = { modifier = xar_pb_income_s days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_075"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 76 }
+		add_character_modifier = { modifier = xar_pb_income_m days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_076"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 77 }
+		add_character_modifier = { modifier = xar_pb_income_l days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_077"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 78 }
+		add_character_modifier = { modifier = xar_pb_health_s days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_078"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 79 }
+		add_character_modifier = { modifier = xar_pb_health_m days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_079"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 80 }
+		add_character_modifier = { modifier = xar_pb_health_l days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_080"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 81 }
+		add_character_modifier = { modifier = xar_pb_fert_s days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_081"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 82 }
+		add_character_modifier = { modifier = xar_pb_fert_m days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_082"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 83 }
+		add_character_modifier = { modifier = xar_pb_vassal days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_083"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 84 }
+		add_character_modifier = { modifier = xar_pb_stress days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_084"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 85 }
+		add_character_modifier = { modifier = xar_pb_prestige days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_085"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 86 }
+		dynasty ?= { add_dynasty_prestige = 50 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_086"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 87 }
+		dynasty ?= { add_dynasty_prestige = 150 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_087"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 88 }
+		dynasty ?= { add_dynasty_prestige = 300 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_088"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 89 }
+		dynasty ?= { add_dynasty_prestige = 500 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_089"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 90 }
+		add_stress = -50
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_090"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 91 }
+		add_stress = -75
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_091"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 92 }
+		add_stress = -100
+		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_092"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 93 }
+		add_stress = -150
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_093"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 94 }
+		add_character_modifier = { modifier = xar_pb_life_2 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_094"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 95 }
+		add_diplomacy_skill = 1
+			add_martial_skill = 1
+			add_stewardship_skill = 1
+			add_intrigue_skill = 1
+			add_learning_skill = 1
+			add_prowess_skill = 1
+		set_global_variable = { name = xa_selected_bless_rarity value = 2 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_095"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 96 }
+		add_character_modifier = { modifier = xar_leg_life }
+		set_global_variable = { name = xa_selected_bless_rarity value = 2 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_096"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 97 }
+		add_gold = 1000
+			add_character_modifier = { modifier = xar_leg_wealth days = 3650 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 2 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_097"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 98 }
+		add_prestige = 300
+			add_piety = 300
+			change_influence = 100
+		set_global_variable = { name = xa_selected_bless_rarity value = 2 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_098"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_bless_$SLOT$ = 99 }
+		dynasty ?= { add_dynasty_prestige = 1000 }
+		set_global_variable = { name = xa_selected_bless_rarity value = 2 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_bless_099"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 	change_global_variable = { name = xa_bless_session add = 1 }
 	change_global_variable = { name = xa_bless_count add = 1 }
 }
@@ -779,212 +1679,1112 @@ xar_draw_curses_effect = {
 
 # Apply by slot ($SLOT$ = a/b).
 xar_apply_curse_effect = {
-	if = { limit = { global_var:xa_curse_$SLOT$ = 0 } add_character_modifier = { modifier = xar_pc_drain_a days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 1 } add_character_modifier = { modifier = xar_pc_drain_b days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 2 } add_character_modifier = { modifier = xar_pc_drain_c days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 3 } add_character_modifier = { modifier = xar_pc_drain_d days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 4 } add_character_modifier = { modifier = xar_pc_drain_e days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 5 } add_character_modifier = { modifier = xar_pc_drain_f days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 6 } add_character_modifier = { modifier = xar_pc_drain_g days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 7 } add_prestige = -100
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 8 } add_prestige = -200
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 9 } add_prestige = -400
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 10 } add_prestige = -600
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 11 } add_prestige = -800
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 12 } add_prestige = -1200
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 13 } add_prestige = -1600
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 14 } add_prestige = -2400
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 15 } add_piety = -100
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 16 } add_piety = -200
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 17 } add_piety = -400
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 18 } add_piety = -600
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 19 } add_piety = -800
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 20 } add_piety = -1200
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 21 } add_piety = -1600
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 22 } add_piety = -2400
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 23 } change_influence = -35
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 24 } change_influence = -50
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 25 } change_influence = -65
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 26 } change_influence = -100
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 27 } change_influence = -135
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 28 } change_influence = -165
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 29 } change_influence = -200
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 30 } add_diplomacy_skill = -1
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 31 } add_diplomacy_skill = -3
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 32 } add_diplomacy_skill = -4
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 33 } add_martial_skill = -1
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 34 } add_martial_skill = -3
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 35 } add_martial_skill = -4
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 36 } add_stewardship_skill = -1
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 37 } add_stewardship_skill = -3
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 38 } add_stewardship_skill = -4
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 39 } add_intrigue_skill = -1
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 40 } add_intrigue_skill = -3
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 41 } add_intrigue_skill = -4
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 42 } add_learning_skill = -1
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 43 } add_learning_skill = -3
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 44 } add_learning_skill = -4
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 45 } add_prowess_skill = -1
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 46 } add_prowess_skill = -3
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 47 } add_prowess_skill = -4
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 48 } add_diplomacy_lifestyle_xp = -350
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 49 } add_diplomacy_lifestyle_xp = -650
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 50 } add_diplomacy_lifestyle_xp = -1000
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 51 } add_martial_lifestyle_xp = -350
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 52 } add_martial_lifestyle_xp = -650
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 53 } add_martial_lifestyle_xp = -1000
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 54 } add_stewardship_lifestyle_xp = -350
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 55 } add_stewardship_lifestyle_xp = -650
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 56 } add_stewardship_lifestyle_xp = -1000
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 57 } add_intrigue_lifestyle_xp = -350
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 58 } add_intrigue_lifestyle_xp = -650
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 59 } add_intrigue_lifestyle_xp = -1000
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 60 } add_learning_lifestyle_xp = -350
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 61 } add_learning_lifestyle_xp = -650
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 62 } add_learning_lifestyle_xp = -1000
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 63 } add_trait = weak
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 64 } add_trait = clubfooted
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 65 } add_trait = physique_bad_1
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 66 } add_trait = beauty_bad_1
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 67 } add_trait = craven
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 68 } add_trait = lazy
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 69 } add_trait = sickly
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 70 } add_trait = hunchbacked
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 71 } add_trait = intellect_bad_1
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 72 } add_trait = intellect_bad_2
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 73 } add_trait = beauty_bad_2
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 74 } add_trait = paranoid
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 75 } add_character_modifier = { modifier = xar_pc_health_s days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 76 } add_character_modifier = { modifier = xar_pc_health_m days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 77 } add_character_modifier = { modifier = xar_pc_health_l days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 78 } add_character_modifier = { modifier = xar_pc_fert_s days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 79 } add_character_modifier = { modifier = xar_pc_fert_m days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 80 } add_character_modifier = { modifier = xar_pc_vassal_s days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 81 } add_character_modifier = { modifier = xar_pc_vassal_m days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 82 } add_character_modifier = { modifier = xar_pc_stress_s days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 83 } add_character_modifier = { modifier = xar_pc_stress_m days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 84 } add_character_modifier = { modifier = xar_pc_mprestige days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 85 } add_character_modifier = { modifier = xar_pc_mpiety days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 86 } dynasty ?= { add_dynasty_prestige = -65 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 87 } dynasty ?= { add_dynasty_prestige = -200 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 88 } dynasty ?= { add_dynasty_prestige = -400 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 89 } dynasty ?= { add_dynasty_prestige = -650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 90 } add_stress = 65
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 91 } add_stress = 100
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 92 } add_stress = 135
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 93 } add_stress = 200
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 94 } add_character_modifier = { modifier = xar_pc_life }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 95 } add_character_modifier = { modifier = xar_leg_cold days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 96 } add_character_modifier = { modifier = xar_leg_tax days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 97 } add_character_modifier = { modifier = xar_leg_vassal days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 98 } add_diplomacy_skill = -1
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 0 }
+		add_character_modifier = { modifier = xar_pc_drain_a days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_000"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 1 }
+		add_character_modifier = { modifier = xar_pc_drain_b days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_001"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 2 }
+		add_character_modifier = { modifier = xar_pc_drain_c days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_002"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 3 }
+		add_character_modifier = { modifier = xar_pc_drain_d days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_003"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 4 }
+		add_character_modifier = { modifier = xar_pc_drain_e days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_004"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 5 }
+		add_character_modifier = { modifier = xar_pc_drain_f days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_005"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 6 }
+		add_character_modifier = { modifier = xar_pc_drain_g days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_006"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 7 }
+		add_prestige = -100
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_007"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 8 }
+		add_prestige = -200
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_008"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 9 }
+		add_prestige = -400
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_009"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 10 }
+		add_prestige = -600
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_010"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 11 }
+		add_prestige = -800
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_011"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 12 }
+		add_prestige = -1200
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_012"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 13 }
+		add_prestige = -1600
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_013"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 14 }
+		add_prestige = -2400
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_014"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 15 }
+		add_piety = -100
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_015"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 16 }
+		add_piety = -200
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_016"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 17 }
+		add_piety = -400
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_017"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 18 }
+		add_piety = -600
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_018"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 19 }
+		add_piety = -800
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_019"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 20 }
+		add_piety = -1200
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_020"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 21 }
+		add_piety = -1600
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_021"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 22 }
+		add_piety = -2400
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_022"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 23 }
+		change_influence = -35
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_023"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 24 }
+		change_influence = -50
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_024"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 25 }
+		change_influence = -65
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_025"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 26 }
+		change_influence = -100
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_026"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 27 }
+		change_influence = -135
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_027"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 28 }
+		change_influence = -165
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_028"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 29 }
+		change_influence = -200
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_029"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 30 }
+		add_diplomacy_skill = -1
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_030"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 31 }
+		add_diplomacy_skill = -3
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_031"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 32 }
+		add_diplomacy_skill = -4
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_032"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 33 }
 		add_martial_skill = -1
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_033"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 34 }
+		add_martial_skill = -3
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_034"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 35 }
+		add_martial_skill = -4
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_035"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 36 }
 		add_stewardship_skill = -1
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_036"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 37 }
+		add_stewardship_skill = -3
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_037"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 38 }
+		add_stewardship_skill = -4
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_038"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 39 }
 		add_intrigue_skill = -1
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_039"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 40 }
+		add_intrigue_skill = -3
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_040"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 41 }
+		add_intrigue_skill = -4
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_041"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 42 }
 		add_learning_skill = -1
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_042"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 43 }
+		add_learning_skill = -3
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_043"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 44 }
+		add_learning_skill = -4
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_044"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 45 }
 		add_prowess_skill = -1
-	xar_complete_bargain_pair_effect = yes }
-	if = { limit = { global_var:xa_curse_$SLOT$ = 99 } add_stress = 150
-		add_character_modifier = { modifier = xar_leg_stress days = 3650 }
-	xar_complete_bargain_pair_effect = yes }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_045"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 46 }
+		add_prowess_skill = -3
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_046"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 47 }
+		add_prowess_skill = -4
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_047"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 48 }
+		add_diplomacy_lifestyle_xp = -350
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_048"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 49 }
+		add_diplomacy_lifestyle_xp = -650
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_049"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 50 }
+		add_diplomacy_lifestyle_xp = -1000
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_050"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 51 }
+		add_martial_lifestyle_xp = -350
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_051"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 52 }
+		add_martial_lifestyle_xp = -650
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_052"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 53 }
+		add_martial_lifestyle_xp = -1000
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_053"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 54 }
+		add_stewardship_lifestyle_xp = -350
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_054"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 55 }
+		add_stewardship_lifestyle_xp = -650
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_055"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 56 }
+		add_stewardship_lifestyle_xp = -1000
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_056"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 57 }
+		add_intrigue_lifestyle_xp = -350
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_057"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 58 }
+		add_intrigue_lifestyle_xp = -650
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_058"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 59 }
+		add_intrigue_lifestyle_xp = -1000
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_059"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 60 }
+		add_learning_lifestyle_xp = -350
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_060"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 61 }
+		add_learning_lifestyle_xp = -650
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_061"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 62 }
+		add_learning_lifestyle_xp = -1000
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_062"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 63 }
+		add_trait = weak
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_063"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 64 }
+		add_trait = clubfooted
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_064"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 65 }
+		add_trait = physique_bad_1
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_065"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 66 }
+		add_trait = beauty_bad_1
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_066"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 67 }
+		add_trait = craven
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_067"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 68 }
+		add_trait = lazy
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_068"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 69 }
+		add_trait = sickly
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_069"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 70 }
+		add_trait = hunchbacked
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_070"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 71 }
+		add_trait = intellect_bad_1
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_071"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 72 }
+		add_trait = intellect_bad_2
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_072"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 73 }
+		add_trait = beauty_bad_2
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_073"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 74 }
+		add_trait = paranoid
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_074"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 75 }
+		add_character_modifier = { modifier = xar_pc_health_s days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_075"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 76 }
+		add_character_modifier = { modifier = xar_pc_health_m days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_076"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 77 }
+		add_character_modifier = { modifier = xar_pc_health_l days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_077"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 78 }
+		add_character_modifier = { modifier = xar_pc_fert_s days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_078"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 79 }
+		add_character_modifier = { modifier = xar_pc_fert_m days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_079"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 80 }
+		add_character_modifier = { modifier = xar_pc_vassal_s days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_080"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 81 }
+		add_character_modifier = { modifier = xar_pc_vassal_m days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_081"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 82 }
+		add_character_modifier = { modifier = xar_pc_stress_s days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_082"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 83 }
+		add_character_modifier = { modifier = xar_pc_stress_m days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_083"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 84 }
+		add_character_modifier = { modifier = xar_pc_mprestige days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_084"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 85 }
+		add_character_modifier = { modifier = xar_pc_mpiety days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_085"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 86 }
+		dynasty ?= { add_dynasty_prestige = -65 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_086"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 87 }
+		dynasty ?= { add_dynasty_prestige = -200 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_087"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 88 }
+		dynasty ?= { add_dynasty_prestige = -400 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_088"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 89 }
+		dynasty ?= { add_dynasty_prestige = -650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_089"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 90 }
+		add_stress = 65
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_090"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 91 }
+		add_stress = 100
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_091"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 92 }
+		add_stress = 135
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_092"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 93 }
+		add_stress = 200
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_093"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 94 }
+		add_character_modifier = { modifier = xar_pc_life }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_094"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 95 }
+		add_character_modifier = { modifier = xar_leg_cold days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_095"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 96 }
+		add_character_modifier = { modifier = xar_leg_tax days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_096"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 97 }
+		add_character_modifier = { modifier = xar_leg_vassal days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_097"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 98 }
+		add_diplomacy_skill = -1
+			add_martial_skill = -1
+			add_stewardship_skill = -1
+			add_intrigue_skill = -1
+			add_learning_skill = -1
+			add_prowess_skill = -1
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_098"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
+	if = {
+		limit = { global_var:xa_curse_$SLOT$ = 99 }
+		add_stress = 150
+			add_character_modifier = { modifier = xar_leg_stress days = 3650 }
+		xar_complete_bargain_pair_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_scoring_matrix_active }
+			debug_log = "XAR: TEST PASS pool_dispatch_curse_099"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 # XAR_ACCEPTANCE_ONLY_BEGIN
@@ -1407,5 +3207,412 @@ xar_test_sweep_effect = {
 	add_stress = 150
 		add_character_modifier = { modifier = xar_leg_stress days = 3650 }
 	debug_log = "XAR: TEST sweep complete"
+}
+
+# Production dispatcher reachability for every stable wire ID.
+xar_test_dispatcher_sweep_effect = {
+	# --- bless dispatcher ---
+	set_global_variable = { name = xa_bless_a value = 0 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 1 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 2 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 3 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 4 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 5 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 6 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 7 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 8 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 9 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 10 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 11 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 12 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 13 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 14 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 15 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 16 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 17 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 18 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 19 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 20 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 21 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 22 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 23 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 24 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 25 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 26 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 27 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 28 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 29 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 30 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 31 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 32 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 33 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 34 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 35 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 36 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 37 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 38 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 39 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 40 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 41 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 42 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 43 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 44 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 45 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 46 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 47 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 48 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 49 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 50 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 51 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 52 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 53 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 54 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 55 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 56 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 57 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 58 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 59 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 60 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 61 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 62 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 63 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 64 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 65 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 66 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 67 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 68 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 69 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 70 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 71 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 72 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 73 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 74 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 75 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 76 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 77 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 78 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 79 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 80 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 81 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 82 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 83 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 84 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 85 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 86 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 87 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 88 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 89 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 90 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 91 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 92 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 93 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 94 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 95 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 96 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 97 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 98 }
+	xar_apply_blessing_effect = { SLOT = a }
+	set_global_variable = { name = xa_bless_a value = 99 }
+	xar_apply_blessing_effect = { SLOT = a }
+	# --- curse dispatcher ---
+	set_global_variable = { name = xa_curse_a value = 0 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 1 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 2 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 3 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 4 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 5 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 6 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 7 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 8 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 9 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 10 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 11 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 12 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 13 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 14 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 15 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 16 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 17 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 18 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 19 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 20 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 21 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 22 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 23 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 24 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 25 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 26 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 27 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 28 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 29 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 30 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 31 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 32 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 33 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 34 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 35 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 36 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 37 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 38 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 39 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 40 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 41 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 42 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 43 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 44 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 45 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 46 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 47 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 48 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 49 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 50 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 51 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 52 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 53 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 54 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 55 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 56 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 57 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 58 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 59 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 60 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 61 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 62 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 63 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 64 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 65 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 66 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 67 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 68 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 69 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 70 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 71 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 72 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 73 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 74 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 75 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 76 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 77 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 78 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 79 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 80 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 81 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 82 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 83 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 84 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 85 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 86 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 87 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 88 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 89 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 90 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 91 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 92 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 93 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 94 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 95 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 96 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 97 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 98 }
+	xar_apply_curse_effect = { SLOT = a }
+	set_global_variable = { name = xa_curse_a value = 99 }
+	xar_apply_curse_effect = { SLOT = a }
+	debug_log = "XAR: TEST PASS pool_dispatch_all_200"
 }
 # XAR_ACCEPTANCE_ONLY_END

@@ -1,0 +1,23 @@
+﻿# Acceptance-only setup for controlled scoring and dispatcher semantics.
+xar_acceptance_scoring_matrix_start_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			global_var:xa_global_record_imported = 4
+			exists = dynasty
+			exists = house
+		}
+		xar_enable_player_pact_effect = yes
+		xar_initialize_run_state_effect = yes
+		set_global_variable = xa_scoring_matrix_active
+		set_global_variable = { name = xa_score_basis value = 0 }
+		set_global_variable = { name = xa_bless_reject_count value = 0 }
+		set_global_variable = { name = xa_contract_progress value = 0 }
+		debug_log = "XAR: TEST scoring matrix begin"
+		trigger_event = xar.0910
+	}
+	else = {
+		debug_log = "XAR: TEST FAIL scoring_matrix_start"
+		debug_log = "XAR: TEST DONE scoring-matrix"
+	}
+}

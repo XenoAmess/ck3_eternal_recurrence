@@ -5,7 +5,7 @@
 #
 # 产出：
 #   common/scripted_effects/xar_generated_pools_effects.txt   — 抽取×2 + 发放×2
-#   common/customizable_localization/xar_generated_pool_loc.txt — 6 槽位解析器
+#   common/customizable_localization/xar_generated_pool_loc.txt — 5 槽位解析器
 #   common/modifiers/xar_generated_pool_modifiers.txt          — 池修正定义
 #   localization/<lang>/xar_generated_pools_l_<lang>.yml       — 200 键 × 9 语言
 #   docs/blessing-curse-pools.md                               — 权威表重写
@@ -307,8 +307,18 @@ def gen_effects(pool, var_prefix, draw_name, apply_name):
             code += f"\nset_global_variable = {{ name = xa_selected_bless_rarity value = {RARITY_LEVEL[e[0]]} }}"
         else:
             code += "\nxar_complete_bargain_pair_effect = yes"
-        indented = code.replace("\n", "\n\t")
-        lines.append(f"\tif = {{ limit = {{ global_var:xa_{var_prefix}_$SLOT$ = {i} }} {indented} }}")
+        lines.extend([
+            "\tif = {",
+            f"\t\tlimit = {{ global_var:xa_{var_prefix}_$SLOT$ = {i} }}",
+            *[f"\t\t{line}" for line in code.splitlines()],
+            "\t\t# XAR_ACCEPTANCE_ONLY_BEGIN",
+            "\t\tif = {",
+            "\t\t\tlimit = { has_global_variable = xa_scoring_matrix_active }",
+            f'\t\t\tdebug_log = "XAR: TEST PASS pool_dispatch_{var_prefix}_{i:03d}"',
+            "\t\t}",
+            "\t\t# XAR_ACCEPTANCE_ONLY_END",
+            "\t}",
+        ])
     if var_prefix == "bless":
         lines.append("\tchange_global_variable = { name = xa_bless_session add = 1 }")
         lines.append("\tchange_global_variable = { name = xa_bless_count add = 1 }")
@@ -330,6 +340,18 @@ def gen_sweep():
             out.append(f"\t# {i}")
             out.append(f"\t{code}")
     out.append('\tdebug_log = "XAR: TEST sweep complete"')
+    out.append("}")
+    out.extend(["", "# Production dispatcher reachability for every stable wire ID.",
+                "xar_test_dispatcher_sweep_effect = {"])
+    for pool, prefix, apply_name in (
+            (B, "bless", "xar_apply_blessing_effect"),
+            (C, "curse", "xar_apply_curse_effect")):
+        out.append(f"\t# --- {prefix} dispatcher ---")
+        for i, _ in enumerate(pool):
+            out.append(
+                f"\tset_global_variable = {{ name = xa_{prefix}_a value = {i} }}")
+            out.append(f"\t{apply_name} = {{ SLOT = a }}")
+    out.append('\tdebug_log = "XAR: TEST PASS pool_dispatch_all_200"')
     out.append("}")
     out.append("# XAR_ACCEPTANCE_ONLY_END")
     return "\n".join(out) + "\n"
@@ -430,6 +452,9 @@ def gen_doc():
         "- loc：`localization/<lang>/xar_generated_pools_l_<lang>.yml`（GENERATED，9 语言；含动态 wrapper + 池条目名 + 修正名）",
         "- 事件：`events/xar_events.txt`（xar.0004 / xar.0005 / xar.0006，手写不变）",
         "- 拒绝扣分：`xar_compute_score_effect` 末尾 ×max(0, 1 - 0.01 × xa_bless_reject_count)",
+        ("- 稳定 ID 语义契约：`tools/pool_semantic_contract.sha256`。普通生成不会改它；"
+         "只有人工审阅本表与 dispatcher diff 后，才用 "
+         "`py tools/validate_static.py --print-pool-contract` 输出的新值更新。"),
     ]
     return "\n".join(out) + "\n"
 

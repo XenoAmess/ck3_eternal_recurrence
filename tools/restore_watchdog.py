@@ -1,7 +1,7 @@
 """Restore acceptance-test user files when the runner process exits.
 
 This is intentionally a separate process: a forced runner termination cannot
-skip restoration of presets.txt/tutorial.txt.
+skip restoration of presets.txt/tutorial.txt or isolated autosaves.
 """
 
 import hashlib
@@ -46,6 +46,33 @@ def main():
                 raise OSError(f"restore verification failed: {destination}")
         except OSError:
             pass
+
+    # The runner creates backup/autosaves before moving originals away. If that
+    # directory still exists when the parent dies, discard test autosaves and
+    # restore only those autosave*.ck3 files; manual saves are never touched.
+    try:
+        backup_root = Path(sys.argv[3]).parent
+        user_dir = Path(sys.argv[4]).parent
+        autosave_backup = backup_root / "autosaves"
+        save_games = user_dir / "save games"
+        if ((backup_root / "autosaves.ready").is_file()
+                and autosave_backup.is_dir()):
+            for path in save_games.glob("autosave*.ck3"):
+                if path.is_file():
+                    path.unlink()
+            for source in autosave_backup.iterdir():
+                if not source.is_file():
+                    continue
+                destination = save_games / source.name
+                temporary = destination.with_name(
+                    destination.name + ".xar_restore_tmp")
+                shutil.copy2(source, temporary)
+                os.replace(temporary, destination)
+                if (hashlib.sha256(source.read_bytes()).digest()
+                        != hashlib.sha256(destination.read_bytes()).digest()):
+                    raise OSError(f"autosave restore verification failed: {destination}")
+    except OSError:
+        pass
 
 
 if __name__ == "__main__":

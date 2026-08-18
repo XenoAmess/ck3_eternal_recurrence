@@ -31,6 +31,9 @@ py tools/build_release.py                                   # 生成 dist stagin
 （数据表）再跑 gen_pools.py；权威表 `docs/blessing-curse-pools.md` 由它导出。
 计分生成器产出 `common/scripted_effects/xar_generated_scoring_effects.txt` 与
 `docs/scoring-rules.md`；hover 生成器读取同一 schema 产出 `common/script_values/xar_generated_score_preview.txt`。
+奖池稳定 ID 的独立冻结契约在 `tools/pool_semantic_contract.sha256`；普通 `gen_pools.py` 不更新它。
+改池后必须先审阅权威表与 dispatcher diff，再用 `py tools/validate_static.py --print-pool-contract`
+取得候选并显式更新契约，禁止为了消除校验错误盲目刷新。
 契约原型、PB、图鉴、琉焰之视成长表和 28 个里程碑事件改 `tools/contracts_data.py`，再跑 `gen_contracts.py`；该生成器也产出 `common/traits/xar_traits.txt`。
 无继承人结算 widget 改 `gui/xar_no_heir_settlement.gui`；原生继承窗投影必须运行 `tools/gen_no_heir_gui.py`，不要手改 `gui/window_succession_event.gui`。
 位阈值体系生成器产出：`common/tutorial_lessons/xar_highscore.txt`、`common/customizable_localization/xar_generated_loc.txt`、

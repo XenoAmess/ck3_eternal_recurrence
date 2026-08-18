@@ -72,7 +72,10 @@ def generate_effects() -> str:
         "\tif = { limit = { exists = house }",
         "\t\thouse = { save_temporary_scope_as = xar_score_house }",
         "\t}",
-        "\tevery_child = { xar_desc_node_l1 = yes }",
+        "\tevery_child = {",
+        "\t\teven_if_dead = yes",
+        "\t\txar_desc_node_l1 = yes",
+        "\t}",
         "\txar_desc_clean_root = yes",
     ])
     set_global(
@@ -143,7 +146,9 @@ def generate_effects() -> str:
     score_variables.append("xa_p_realm")
 
     lines.extend(["", "\t# Selected lifetime contract: incremental behavior progress."])
-    set_global(lines, "xa_a_contract", "{ value = global_var:xa_contract_progress }")
+    set_global(
+        lines, "xa_a_contract",
+        "{ value = global_var:xa_contract_progress min = 0 max = 10 }")
     set_global(
         lines,
         "xa_p_contract",
@@ -233,21 +238,37 @@ def generate_effects() -> str:
             "\txar_desc_count_self = yes",
         ])
         if depth < schema.DESCENDANT_DEPTH:
-            lines.append(f"\tevery_child = {{ xar_desc_node_l{depth + 1} = yes }}")
+            lines.extend([
+                "\tevery_child = {",
+                "\t\teven_if_dead = yes",
+                f"\t\txar_desc_node_l{depth + 1} = yes",
+                "\t}",
+            ])
         lines.extend(["}", ""])
     lines.extend([
         "xar_desc_clean_root = {",
-        "\tevery_child = { xar_desc_clean_l1 = yes }",
+        "\tevery_child = {",
+        "\t\teven_if_dead = yes",
+        "\t\txar_desc_clean_l1 = yes",
+        "\t}",
         "}",
         "",
     ])
     for depth in range(1, schema.DESCENDANT_DEPTH + 1):
         lines.extend([
             f"xar_desc_clean_l{depth} = {{",
-            "\tremove_character_flag = xar_desc_counted",
+            "\tif = {",
+            "\t\tlimit = { is_alive = yes }",
+            "\t\tremove_character_flag = xar_desc_counted",
+            "\t}",
         ])
         if depth < schema.DESCENDANT_DEPTH:
-            lines.append(f"\tevery_child = {{ xar_desc_clean_l{depth + 1} = yes }}")
+            lines.extend([
+                "\tevery_child = {",
+                "\t\teven_if_dead = yes",
+                f"\t\txar_desc_clean_l{depth + 1} = yes",
+                "\t}",
+            ])
         lines.extend(["}", ""])
     return "\n".join(lines)
 
@@ -282,8 +303,9 @@ def generate_doc() -> str:
         ("| 每个在世的家族成员（且为你后代） | 额外 "
          f"{number(schema.HOUSE_DESCENDANT_COEFFICIENT)} 分（与宗族叠加） |"),
         "",
-        (f"后代判定从死者的 `every_child` 向下展开 {schema.DESCENDANT_DEPTH} 代，"
-         "死亡结算用临时 flag 去重并在结算后清理。特质 hover 的只读 script value "
+        (f"后代判定从死者的 `every_child` 向下展开 {schema.DESCENDANT_DEPTH} 代；遍历包含"
+          "已故中间节点，但只有在世后代得分。死亡结算用临时 flag 去重并在结算后清理。"
+          "特质 hover 的只读 script value "
          "不能写 flag，因此按最短血缘路径去重，同深度路径优先父系；近亲谱系下仍与结算保持同一人只计一次。"),
         "",
         "## 资源（log₂ 向下取整后乘系数）",
