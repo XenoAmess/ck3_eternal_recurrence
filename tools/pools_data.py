@@ -319,7 +319,7 @@ DRAIN = [
     ("r", "xar_pc_drain_g", "-2.0", N("琉焰的月贡", "Monthly Tithe to the Glassfire", "Dîme mensuelle du verre-feu", "Monatlicher Zehnt ans Glasfeuer", "琉璃への月貢", "유리염의 월공", "Miesięczny dziesięcina szklanemu ogniowi", "Месячная десятина стеклянному пламени", "Diezmo mensual al fuego vítreo")),
 ]
 for rarity, mid, v, names in DRAIN:
-    C.append((rarity, "custom", f"add_character_modifier = {{ modifier = {mid} days = 3650 }}", names,
+    C.append((rarity, "golddrain", f"add_character_modifier = {{ modifier = {mid} days = 3650 }}", names,
         {lang: SUM_T["golddrain"][lang](v) for lang in LANGS}))
 
 # ---- 嗤笑系 add_prestige 负值（8）----

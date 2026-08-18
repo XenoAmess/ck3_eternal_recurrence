@@ -2,7 +2,7 @@
 
 ## 项目结构
 
-- `XenoAmess_s_Eternal_Recurrence/` — CK3 mod 本体（唯一发布内容）
+- `XenoAmess_s_Eternal_Recurrence/` — CK3 mod 源目录；正式发布只使用 `build_release.py` 生成的 staging
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
 - mod 通过用户目录的 `mod/XenoAmess_s_Eternal_Recurrence.mod`（path 指向本仓库）注册
@@ -18,18 +18,39 @@
 ```powershell
 py XenoAmess_s_Eternal_Recurrence/tools/gen_highscore.py   # 位阈值体系
 py tools/gen_pools.py                                       # 祝福/诅咒奖池（100+100）
+py tools/gen_contracts.py                                   # 本世契约、PB、图鉴与里程碑事件
+py tools/gen_scoring.py                                     # 死亡计分 effect 与规则文档
 py tools/gen_score_preview.py                               # 特质 hover 只读即时分数
+py tools/build_release.py --check                           # 临时双构建，验证 manifest/ZIP 可复现
+py tools/build_release.py                                   # 生成 dist staging、manifest 与 deterministic ZIP
 ```
 
-三套生成器，**不要手改 `GENERATED FILE` 标记的文件**。奖池条目改 `tools/pools_data.py`
+五套生成器，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
+再运行 `gen_scoring.py` 与 `gen_score_preview.py`；奖池条目改 `tools/pools_data.py`
 （数据表）再跑 gen_pools.py；权威表 `docs/blessing-curse-pools.md` 由它导出。
+计分生成器产出 `common/scripted_effects/xar_generated_scoring_effects.txt` 与
+`docs/scoring-rules.md`；hover 生成器读取同一 schema 产出 `common/script_values/xar_generated_score_preview.txt`。
+契约原型、PB、图鉴和 28 个里程碑事件改 `tools/contracts_data.py`，再跑 `gen_contracts.py`。
 位阈值体系生成器产出：`common/tutorial_lessons/xar_highscore.txt`、`common/customizable_localization/xar_generated_loc.txt`、
 `common/scripted_guis/xar_generated_guis.txt`、`common/scripted_effects/xar_generated_effects.txt`、
 `gui/xar_meta.gui`、`localization/*/xar_generated_*.yml`。
 
 要扩上限：改生成器里的 `TIERS` 列表再跑一遍即可，旧纪录不丢（位是只增的）。
 
+发布构建使用明确 allowlist，只逐字节复制 `descriptor.mod`、`thumbnail.png` 和
+`common/`、`events/`、`gfx/`、`gui/`、`localization/` 中允许的 CK3 文件类型；禁止直接把 mod 源目录上传。
+当前 selftest 仍与运行期 `.txt/.gui` 耦合，因此对应文件暂时会进入 staging；测试 overlay 拆分尚未完成。
+
 ## 测试流程
+
+**静态 L0（跨平台/CI）**：
+
+```powershell
+py -m pip install -r tools/requirements-static.txt
+py tools/validate_static.py
+py -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors()"
+py tools/build_release.py --check
+```
 
 **全自动验收（默认）**：
 

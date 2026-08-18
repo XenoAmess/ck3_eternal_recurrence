@@ -1,7 +1,8 @@
+<!-- GENERATED FILE - do not edit. Regenerate with tools/gen_scoring.py -->
 # 算分规则（完整版）
 
-死亡时（`on_death`）结算当局分数。所有 `log₂` 均**向下取整**（`xar_log2_floor_effect`，幂阶梯实现）。
-实现本体：`common/scripted_effects/xar_effects.txt`（`xar_compute_score_effect`）。
+死亡时（`on_death`）结算当局分数。所有 `log₂` 均**向下取整**（生成的幂阶梯实现）。
+实现本体：`common/scripted_effects/xar_generated_scoring_effects.txt`（`xar_compute_score_effect`）。
 
 ## 属性
 
@@ -21,7 +22,7 @@
 | 每个在世的宗族成员（且为你后代） | 0.1 分 |
 | 每个在世的家族成员（且为你后代） | 额外 0.1 分（与宗族叠加） |
 
-后代判定从死者的 `every_child` 向下展开 5 代（`xar_desc_node_l1`…`xar_desc_node_l5`），用临时 flag 去重并在结算后清理。特质 hover 的只读 script value 不能写 flag，因此按最短血缘路径去重，同深度路径优先父系；近亲谱系下仍与结算保持同一人只计一次。
+后代判定从死者的 `every_child` 向下展开 5 代，死亡结算用临时 flag 去重并在结算后清理。特质 hover 的只读 script value 不能写 flag，因此按最短血缘路径去重，同深度路径优先父系；近亲谱系下仍与结算保持同一人只计一次。
 
 ## 资源（log₂ 向下取整后乘系数）
 
@@ -62,9 +63,13 @@
 
 ## 总分与纪录
 
-- **扣分前小计** = 以上全部条目之和（允许小数，如 0.1 系条目）。
-- **最终总分**：每次在祝福窗口选择「什么都不领」扣 1%（加算；拒绝 N 次 = 小计 × max(0, 1 − N%)）。接受祝福/诅咒组合不再直接改变分数。池子见 [blessing-curse-pools.md](blessing-curse-pools.md)。
-- **此前纪录** = 本局开局时导入的全局纪录副本。
-- **差值** = 总分 − 此前纪录；破纪录时写入全局存储（见 [cross-save-persistence.md](cross-save-persistence.md)）。
+- **本世契约**：每点行为进度 = 10 分，每局最多 10 点。契约见 [contracts-and-progression.md](contracts-and-progression.md)。
+- **绝对小计** = 以上全部条目之和（允许小数，如 0.1 系条目）。
+- **成长小计** = max(0, 绝对小计 − 开局商店与首对交易结束时的基线)。
+- **赛道小计**由游戏规则选择绝对或成长口径；0%/25%/50%/100%继承预算均封顶 500。
+- **最终总分**：每次在祝福窗口选择「什么都不领」扣 1%（加算；拒绝 N 次 = 小计 × max(0, 1 − N × 0.01)）。接受祝福/诅咒组合不再直接改变分数。池子见 [blessing-curse-pools.md](blessing-curse-pools.md)。
+- **候选余烬位阶** = 不高于最终总分的最大现有持久层阈值；达到或超过上限时为 166,600。
+- **历史余烬位阶** = 本局开局时从 tutorial lesson 位导入的量化纪录。
+- **位阶差值** = 候选余烬位阶 − 历史余烬位阶；仅严格大于 0 时写入并宣布新纪录。同一阈值区间内真实总分提高不算破纪录。
 
 游戏内死亡结算事件会展示当局每一项的实际数值与完整展开公式，无需手算。

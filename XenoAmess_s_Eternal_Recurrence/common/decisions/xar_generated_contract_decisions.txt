@@ -1,0 +1,13 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_contracts.py
+xar_contract_select_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	}
+	sort_order = 11
+	ai_check_interval = 0
+	desc = xar_contract_select_decision_desc
+	is_shown = { is_ai = no has_character_flag = xa_enabled global_var:xa_contract_id = 0 }
+	is_valid_showing_failures_only = { is_ai = no has_character_flag = xa_enabled global_var:xa_contract_id = 0 }
+	ai_potential = { always = no }
+	effect = { trigger_event = xar.2000 }
+}

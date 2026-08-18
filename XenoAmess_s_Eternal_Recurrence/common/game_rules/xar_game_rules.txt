@@ -18,3 +18,19 @@
 
 	}
 }
+
+xar_inheritance = {
+	categories = { game_modes }
+	default = xar_inherit_100
+	xar_inherit_0 = { }
+	xar_inherit_25 = { }
+	xar_inherit_50 = { }
+	xar_inherit_100 = { }
+}
+
+xar_score_basis = {
+	categories = { game_modes }
+	default = xar_score_absolute
+	xar_score_absolute = { }
+	xar_score_growth = { }
+}

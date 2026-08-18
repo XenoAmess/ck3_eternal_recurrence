@@ -15,22 +15,33 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 
 ## 全自动验收 runner（tools/run_acceptance.py）
 
-一键跑完全流程：备份现场 → **静态生成/编码/loc/机制/资源校验** → 同步代码 → 启动游戏过大厅 → 自测规则档驱动生产 UI 与全链断言 → 日志判定 → 恢复现场。
+runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR 大厅导航。默认行为仍是完整 selftest；生产 smoke 可单独选择正常首世、已有纪录或关闭规则。
 
 ```powershell
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py"
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario on-first-life
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario on-recorded
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario off
 ```
+
+场景基线与边界：
+
+- `selftest`：默认场景，保持原有完整死亡/计分/UI 全链；只有此场景读取 `--import-record 0|100`。
+- `on-first-life`：固定 `xar_on` + 纪录 0，真实接受契约，OCR 验证 `xar.0010` 的「未燃之世」及「前世余烬」「余烬位阶」，再进入祝福窗口即结束，不触发死亡。
+- `on-recorded`：固定 `xar_on` + 纪录 100，真实接受契约，验证生产商店（优先补充 100 点 OCR 证据；标题与 `shop event fired` 同时证明非首世分流），不购买商品，直接开始此生并进入祝福。
+- `off`：固定 `xar_off` + 纪录 0，进局后观察 30 秒；契约标题或本次新增的任意 `XAR:` 启用日志均判 RED。
+- 每次运行都写 `report.json` 与 JUnit `report.xml`；JSON 包含 run ID、UTC、版本、Git SHA、release-tree SHA-256、CK3/平台/Python 环境、场景、结果、artifact 清单、各阶段秒数和错误原因。即使中途失败，也会先恢复现场再写 RED 报告。`tutorial.txt`/`presets.txt` 备份位于独立临时目录，恢复后删除，不进入 artifacts。
 
 冷启动通常约 2 分钟，`RESULT: GREEN/RED` + 退出码。判定依据：
 
-1. `tools/validate_static.py` 通过：三套生成器逐文件 parity、全部运行文件 UTF-8 BOM、9 语言 loc 引用、AI 闸门、二选一/稀有度/XP 机制、descriptor 与发布资源；其中 `tools/validate_loc.py` 负责动态 wrapper、custom-loc 和 88 个 modifier 名。
-2. debug.log 的 23 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
+1. `tools/validate_static.py` 通过：五套生成器逐文件 parity、全部运行文件 UTF-8 BOM、9 语言 loc 引用与首世/账簿格式 token parity、自动发现的全部 XAR event/decision AI 闸门、挑战继承/成长基线、契约 hook/PB/图鉴/里程碑、生产/selftest 共用入口、12 个购买 effect、无继承人 fallback、奖池过滤/权重/稳定 ID、descriptor 与发布资源；其中 `tools/validate_loc.py` 负责动态 wrapper、custom-loc 和 modifier 名。
+2. debug.log 的 37 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
    由游戏规则第三档 `xar_selftest` 触发，检查器 xar.0007 嵌套在结算事件 xar.1001 里跑）
 3. OCR 真实接受契约、购买外交、结束商店，再打开祝福三选一与诅咒二选一，验证动态文本无 raw/fallback 并点击生产选项；购买断言分别核对积分、涨价与属性增长。
 4. 通过 acceptance-only GUI 直接调用 `DefaultOnCharacterClick(GetPlayer.GetID)` 打开玩家原生人物页，以 DDS 模板定位【琉焰之视】，hover 后 OCR 确认“当前分量”实时渲染。
 5. **error.log 中任何包含 `xar` 的日志都视为失败**，不再白名单过滤。
 
-截图证据在报告里的 artifacts 目录。
+截图证据和 JSON 摘要在控制台报告里的 artifacts 目录。
 
 ### 覆盖边界（什么算验过、什么不算）
 
@@ -40,18 +51,24 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 - 引擎解析 + PostValidate 静态校验全部生成文件
 - **当前校验范围内的静态 loc 全覆盖**：event/custom-loc/GUI/trait/rule/modifier 引用、奖池目标键与五个 wrapper 精确表达式，均检查 9 语言。
 - 生产契约接受、商店外交购买与结束、祝福三选一、诅咒二选一的简中实际像素渲染和点击。
-- 商店样例的扣款 `200→175`、价格 `25→30`、外交增长，以及余分换金币。
+- 商店样例的扣款 `200→175`、整数价格 `25→30`、纯脚本小数涨价 `11→14`、外交增长，以及余分换金币。
+- 契约事件与纯脚本 selftest 都调用 `xar_enable_player_pact_effect`、`xar_initialize_run_state_effect`；外交生产 option 与 `25→30`/扣款脚本样例都调用 `xar_buy_diplomacy_shop_item_effect`。静态校验禁止两处重新内联对应实现。
+- 12 个可重复购买商品各自调用具名生产 effect；商店结束调用 `xar_finish_shop_effect` 完成余分兑换、清零及垂青会初始化。首世只调用共享 session 初始化，不经过兑换；UI selftest 的 session=3 覆盖仍位于事件外层。
 - 原生 trait track 的 100 XP/10 级、每对 +1 XP、满级状态及 hover 当前分数的实际像素渲染；hover 公式还与死亡结算值作脚本断言。
-- 传说祝福只抽到稀有/传说诅咒、拒绝每次 -1% 最终分、零值导入、死亡结算、纪录写入和教程落盘。
+- 传说祝福只抽到稀有/传说诅咒、拒绝每次 -1% 最终分、request/ready/consumed 零值导入、同阈值不破纪录、跨阈值破纪录、cap 量化、死亡结算、纪录写入和教程落盘。
+- 0/25/50/100% 继承与 500 cap 的生产 effect；契约选择/进度，3 点 PB lesson 落盘，以及 10 XP 重抽里程碑的共享生产 effect。
 - 奖池 200 个 effect body 的运行期语法/引用 smoke test
+- 静态验证首世 0 纪录分流和 selftest 200 点优先分支，并逐阈值校验账簿 candidate/next/gap 生成关系、cap 状态、七个展示字段及禁止写纪录/资源的边界；纯脚本自测直接调用生产 `xar_prepare_ledger_effect`，断言非负分数、投影关系和历史纪录不变后清理临时 global，不打开账簿 UI。
 
 **没验的**：
-- 正常 `xar_on` / `xar_off` 独立规则场景；生产事件 UI 在 `xar_selftest` 中真实点击，但没有另起正常规则档。
-- 非零纪录导入及 `xa_shop_pending → xa_local_points`；当前只验导入 0
+- 正常 `xar_on` 首世、已有 100 位阶和 `xar_off` 三条独立 smoke 已实机 GREEN，均为 `xar error.log = 0`。
+- 完整的“两次 CK3 进程”场景（第一进程真实写入非零位，退出后第二进程再导入）；当前 runner 可在启动前安全预置 100 位并执行非零重启导入基础：`tools\.venv\Scripts\python.exe tools\run_acceptance.py --import-record 100`，会断言 importer 命中 100 且 ready 消费时点数等于导入值。
 - 200 项 dispatcher 的 ID→effect 语义映射；sweep 内联执行 effect body，只是运行期 smoke test
-- 祝福/诅咒会的 `<3` 返回、拒绝选项真实点击、1095 日重开分支
+- 拒绝选项真实点击、封印/重抽真实点击和 1095 日重开分支
 - 计分各系数与边界的系统矩阵、后代去重边界；当前断言正分、拒绝倍率、preview/结算一致与写入
 - AI 双闸门的负例、结算后观察者状态；当前仅静态依赖闸门并保留确认后截图
+- 契约选择决议、账簿、PB 图鉴及里程碑事件仍没有实际像素点击覆盖；其生产 effects、lesson 落盘和事件引用已有脚本/静态覆盖。
+- 无 `player_heir` 时同步打开 `xar.1001` 的 UI 路径**待无继承人实机验证，可能被 Game Over 覆盖**；当前仅验证 fallback 唯一性、同步结构与 debug marker，绝不记为已验证。
 - 数值与数据表的一致性（生成器自检 id/权重/语种，但 50 写成 500 这类数据错误测不出来）
 
 ### 关键事实（2026-08-17 实证，血泪）
@@ -62,7 +79,7 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
   **改完代码在游戏里看不到，先怀疑这个**。runner 每次跑前 robocopy /MIR 仓库 → 工坊缓存
   （用户已批准，不恢复；工坊更新时 Steam 会重下复原）。
 - **大厅规则选择持久化在 `player\game_rules\presets.txt` 的 `LastAppliedRules` 块**，新开局重放它；
-  改规则文件的 `default` 不影响已有档案。runner 把它里面的 `xar_on` 换成 `xar_selftest`（事后恢复）。
+  改规则文件的 `default` 不影响已有档案。runner 会先移除该块内全部 `xar_on/xar_off/xar_selftest`，再写入场景目标值并验证同时只剩一个（事后恢复）。
 - **pyautogui 合成键盘事件进不了 CK3**（esc/space/+ 实测全部无效），鼠标点击有效。
   解暂停只能点底栏日期旁的 ▶（坐标 (2315,1410)@2560x1440）。
 - 每次点击前必须 `win32gui.SetForegroundWindow` 抢回前台（桌面有安卓模拟器抢焦点）。
@@ -73,7 +90,7 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
   局内日期（`1066.9.16:` 格式）跟踪时间是否流动，12s 不涨就补点 ▶（像素法有动画噪声，弃用）。
 - 大厅路径坐标（2560x1440）：新游戏 (600,560) → 1066 罗贝尔卡 (1600,1230)（有儿子必有继承人）
   → 开始 (2257,1245)。结算确认选项 (1130,1041)（点了进观察者模式，桥有效）。
-- 用户真实纪录靠 tutorial.txt 备份/恢复保护；测试基线 = 剥掉 `xar_hs_ge_*` 行（纪录 0）。
+- 用户真实纪录靠 tutorial.txt 备份/恢复保护；默认 selftest 与 `on-first-life/off` 会剥掉 `xar_hs_ge_*` 行（纪录 0），`on-recorded` 固定预置 100；`--import-record 100` 仅改变 selftest。
 - 独立 restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验；避免强杀 runner 后游戏继续覆盖用户现场。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。
 - trait 含原生 `track` 时，UI 会自动读取 `gfx/interface/icons/trait_level_tracks/<trait_key>.dds`；缺文件会在真正 hover 时写 VFS error，主 trait 的 `icon =` 不会替代它（2026-08-18 实测）。

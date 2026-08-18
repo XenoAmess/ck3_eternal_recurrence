@@ -1,0 +1,266 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_contracts.py
+# Permanent per-contract PB and first-completion collection bits.
+
+xar_contract_pb_conqueror_3 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_1_3 }
+	xar_contract_pb_conqueror_3_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_conqueror_6 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_1_6 }
+	xar_contract_pb_conqueror_6_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_conqueror_10 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_1_10 }
+	xar_contract_pb_conqueror_10_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_complete_conqueror = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_complete_1 }
+	xar_contract_complete_conqueror_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_weaver_3 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_2_3 }
+	xar_contract_pb_weaver_3_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_weaver_6 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_2_6 }
+	xar_contract_pb_weaver_6_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_weaver_10 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_2_10 }
+	xar_contract_pb_weaver_10_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_complete_weaver = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_complete_2 }
+	xar_contract_complete_weaver_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_saint_3 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_3_3 }
+	xar_contract_pb_saint_3_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_saint_6 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_3_6 }
+	xar_contract_pb_saint_6_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_saint_10 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_3_10 }
+	xar_contract_pb_saint_10_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_complete_saint = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_complete_3 }
+	xar_contract_complete_saint_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_patriarch_3 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_4_3 }
+	xar_contract_pb_patriarch_3_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_patriarch_6 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_4_6 }
+	xar_contract_pb_patriarch_6_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_patriarch_10 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_4_10 }
+	xar_contract_pb_patriarch_10_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_complete_patriarch = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_complete_4 }
+	xar_contract_complete_patriarch_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_steward_3 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_5_3 }
+	xar_contract_pb_steward_3_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_steward_6 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_5_6 }
+	xar_contract_pb_steward_6_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_steward_10 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_5_10 }
+	xar_contract_pb_steward_10_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_complete_steward = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_complete_5 }
+	xar_contract_complete_steward_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_reveler_3 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_6_3 }
+	xar_contract_pb_reveler_3_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_reveler_6 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_6_6 }
+	xar_contract_pb_reveler_6_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_pb_reveler_10 = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_pb_6_10 }
+	xar_contract_pb_reveler_10_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}
+
+xar_contract_complete_reveler = {
+	chain = reactive_advice
+	delay = 0
+	shown_in_encyclopedia = no
+	trigger = { has_global_variable = xa_contract_complete_6 }
+	xar_contract_complete_reveler_step = {
+		text = "xar_silent_step"
+		trigger_transition = { target = lesson_finish trigger = { always = yes } }
+	}
+}

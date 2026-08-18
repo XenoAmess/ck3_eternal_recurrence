@@ -4,28 +4,85 @@
 # NOT for players.
 
 xar_selftest_effect = {
-	# ---------- T2: pact accept simulation (same effects as xar.0002 accept) ----------
-	add_character_flag = xa_enabled
-	add_trait = xar_glassfire_gaze
-	set_global_variable = { name = xa_shop_page value = 1 }
-	set_global_variable = { name = xa_price_dip value = 25 }
-	set_global_variable = { name = xa_price_mar value = 25 }
-	set_global_variable = { name = xa_price_ste value = 25 }
-	set_global_variable = { name = xa_price_int value = 25 }
-	set_global_variable = { name = xa_price_lea value = 25 }
-	set_global_variable = { name = xa_price_pro value = 25 }
-	set_global_variable = { name = xa_price_gold value = 25 }
-	set_global_variable = { name = xa_price_pres value = 15 }
-	set_global_variable = { name = xa_price_pie value = 15 }
-	set_global_variable = { name = xa_price_inf value = 15 }
-	set_global_variable = { name = xa_price_dyn value = 100 }
-	set_global_variable = { name = xa_price_life value = 100 }
-	set_global_variable = { name = xa_price_reform value = 1133 }
-	set_global_variable = { name = xa_lifespan_bought value = 0 }
-	set_global_variable = { name = xa_bless_count value = 0 }
-	set_global_variable = { name = xa_bless_session value = 0 }
-	set_global_variable = { name = xa_bless_reject_count value = 0 }
-	set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+	# ---------- T1: request -> ready -> consumed import protocol ----------
+	if = {
+		limit = {
+			global_var:xa_import_requested = 0
+			global_var:xa_import_ready = 0
+			global_var:xa_import_consumed = 1
+		}
+		debug_log = "XAR: TEST PASS import_var"
+	}
+	else = { debug_log = "XAR: TEST FAIL import_var" }
+	if = {
+		limit = { global_var:xa_global_record_imported >= 0 }
+		debug_log = "XAR: TEST PASS import_value"
+	}
+	else = { debug_log = "XAR: TEST FAIL import_value" }
+	if = {
+		limit = { global_var:xa_local_points = global_var:xa_global_record_imported }
+		debug_log = "XAR: TEST PASS import_points"
+	}
+	else = { debug_log = "XAR: TEST FAIL import_points" }
+	set_global_variable = { name = xa_test_import_original value = { value = global_var:xa_global_record_imported } }
+	set_global_variable = { name = xa_global_record_imported value = 1000 }
+	set_global_variable = { name = xa_inheritance_percent value = 0 }
+	xar_calculate_inherited_budget_effect = yes
+	if = { limit = { global_var:xa_local_points = 0 } debug_log = "XAR: TEST PASS inherit_0" }
+	else = { debug_log = "XAR: TEST FAIL inherit_0" }
+	set_global_variable = { name = xa_inheritance_percent value = 25 }
+	xar_calculate_inherited_budget_effect = yes
+	if = { limit = { global_var:xa_local_points = 250 } debug_log = "XAR: TEST PASS inherit_25" }
+	else = { debug_log = "XAR: TEST FAIL inherit_25" }
+	set_global_variable = { name = xa_inheritance_percent value = 50 }
+	xar_calculate_inherited_budget_effect = yes
+	if = { limit = { global_var:xa_local_points = 500 } debug_log = "XAR: TEST PASS inherit_50" }
+	else = { debug_log = "XAR: TEST FAIL inherit_50" }
+	set_global_variable = { name = xa_inheritance_percent value = 100 }
+	xar_calculate_inherited_budget_effect = yes
+	if = { limit = { global_var:xa_local_points = 500 } debug_log = "XAR: TEST PASS inherit_cap" }
+	else = { debug_log = "XAR: TEST FAIL inherit_cap" }
+	set_global_variable = { name = xa_global_record_imported value = { value = global_var:xa_test_import_original } }
+	remove_global_variable = xa_test_import_original
+	xar_calculate_inherited_budget_effect = yes
+
+	# Production quantizer boundaries: same tier, next tier, and storage cap.
+	set_global_variable = { name = xa_old_record value = 100 }
+	set_global_variable = { name = xa_run_score value = 104 }
+	xar_quantize_record_candidate_effect = yes
+	if = {
+		limit = {
+			global_var:xa_record_candidate = 100
+			NOT = { global_var:xa_record_candidate > global_var:xa_old_record }
+		}
+		debug_log = "XAR: TEST PASS record_same_threshold"
+	}
+	else = { debug_log = "XAR: TEST FAIL record_same_threshold" }
+	set_global_variable = { name = xa_run_score value = 105 }
+	xar_quantize_record_candidate_effect = yes
+	if = {
+		limit = {
+			global_var:xa_record_candidate = 105
+			global_var:xa_record_candidate > global_var:xa_old_record
+		}
+		debug_log = "XAR: TEST PASS record_cross_threshold"
+	}
+	else = { debug_log = "XAR: TEST FAIL record_cross_threshold" }
+	set_global_variable = { name = xa_run_score value = 999999 }
+	xar_quantize_record_candidate_effect = yes
+	if = {
+		limit = { global_var:xa_record_candidate = 166600 }
+		debug_log = "XAR: TEST PASS record_cap"
+	}
+	else = { debug_log = "XAR: TEST FAIL record_cap" }
+	set_global_variable = {
+		name = xa_old_record
+		value = { value = global_var:xa_global_record_imported }
+	}
+
+	# ---------- T2: pact accept through production effects ----------
+	xar_enable_player_pact_effect = yes
+	xar_initialize_run_state_effect = yes
 
 	if = {
 		limit = { has_trait = xar_glassfire_gaze }
@@ -43,27 +100,87 @@ xar_selftest_effect = {
 	}
 	else = { debug_log = "XAR: TEST FAIL shop_init" }
 
-	# ---------- T3: shop buy simulation (charge + 1.2x inflation) ----------
-	set_global_variable = { name = xa_test_points value = 250 }
-	change_global_variable = { name = xa_test_points add = { value = global_var:xa_price_dip multiply = -1 } }
-	add_diplomacy_skill = 1
-	change_global_variable = { name = xa_price_dip multiply = 1.2 }
+	# ---------- T3: shop buy simulation (charge + integer inflation) ----------
+	set_global_variable = { name = xa_local_points value = 250 }
+	xar_buy_diplomacy_shop_item_effect = yes
 	if = {
-		limit = {
-			global_var:xa_price_dip >= 29.9
-			global_var:xa_price_dip <= 30.1
-		}
+		limit = { global_var:xa_price_dip = 30 }
 		debug_log = "XAR: TEST PASS shop_inflate"
 	}
 	else = { debug_log = "XAR: TEST FAIL shop_inflate" }
 	if = {
 		limit = {
-			global_var:xa_test_points >= 224.9
-			global_var:xa_test_points <= 225.1
+			global_var:xa_local_points >= 224.9
+			global_var:xa_local_points <= 225.1
 		}
 		debug_log = "XAR: TEST PASS shop_charge"
 	}
 	else = { debug_log = "XAR: TEST FAIL shop_charge" }
+	set_global_variable = { name = xa_test_fractional_price value = 11 }
+	set_global_variable = {
+		name = xa_test_fractional_price
+		value = { value = global_var:xa_test_fractional_price multiply = 1.2 ceiling = yes }
+	}
+	if = {
+		limit = { global_var:xa_test_fractional_price = 14 }
+		debug_log = "XAR: TEST PASS shop_ceiling_fraction"
+	}
+	else = { debug_log = "XAR: TEST FAIL shop_ceiling_fraction" }
+	remove_global_variable = xa_test_fractional_price
+
+	# Production ledger projection must remain a read-only, internally coherent snapshot.
+	set_global_variable = {
+		name = xa_test_ledger_history
+		value = { value = global_var:xa_global_record_imported }
+	}
+	xar_prepare_ledger_effect = yes
+	if = {
+		limit = { global_var:xa_ledger_score >= 0 }
+		debug_log = "XAR: TEST PASS ledger_score_nonnegative"
+	}
+	else = { debug_log = "XAR: TEST FAIL ledger_score_nonnegative" }
+	if = {
+		limit = {
+			global_var:xa_ledger_candidate >= 0
+			global_var:xa_ledger_candidate <= global_var:xa_ledger_score
+			global_var:xa_ledger_next >= global_var:xa_ledger_candidate
+			global_var:xa_ledger_gap >= 0
+		}
+		debug_log = "XAR: TEST PASS ledger_projection"
+	}
+	else = { debug_log = "XAR: TEST FAIL ledger_projection" }
+	if = {
+		limit = { global_var:xa_global_record_imported = global_var:xa_test_ledger_history }
+		debug_log = "XAR: TEST PASS ledger_record_unchanged"
+	}
+	else = { debug_log = "XAR: TEST FAIL ledger_record_unchanged" }
+	remove_global_variable = xa_ledger_score
+	remove_global_variable = xa_ledger_candidate
+	remove_global_variable = xa_ledger_next
+	remove_global_variable = xa_ledger_gap
+	remove_global_variable = xa_ledger_at_cap
+	remove_global_variable = xa_test_ledger_history
+
+	# ---------- T3b: contract selection and shared behavior progress ----------
+	xar_select_contract_steward_effect = yes
+	if = {
+		limit = { global_var:xa_contract_id = 5 global_var:xa_contract_progress = 0 }
+		debug_log = "XAR: TEST PASS contract_select"
+	}
+	else = { debug_log = "XAR: TEST FAIL contract_select" }
+	xar_add_contract_progress_effect = { ID = 5 }
+	xar_add_contract_progress_effect = { ID = 5 }
+	xar_add_contract_progress_effect = { ID = 5 }
+	if = {
+		limit = {
+			global_var:xa_contract_progress = 3
+			has_global_variable = xa_contract_pb_5_3
+		}
+		debug_log = "XAR: TEST PASS contract_progress"
+	}
+	else = { debug_log = "XAR: TEST FAIL contract_progress" }
+	set_global_variable = { name = xa_contract_id value = 0 }
+	set_global_variable = { name = xa_contract_progress value = 0 }
 
 	# ---------- T4: blessing draw, three distinct ----------
 	xar_draw_blessings_effect = yes
@@ -111,23 +228,41 @@ xar_selftest_effect = {
 		debug_log = "XAR: TEST PASS curse_pair_xp"
 	}
 	else = { debug_log = "XAR: TEST FAIL curse_pair_xp" }
-	add_trait_xp = { trait = xar_glassfire_gaze value = 9 }
+	add_trait_xp = { trait = xar_glassfire_gaze value = 8 }
+	xar_complete_bargain_pair_effect = yes
 	if = {
-		limit = { has_trait_xp = { trait = xar_glassfire_gaze value >= 10 } }
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 10 }
+			has_character_flag = xa_gaze_milestone_10
+			global_var:xa_reroll_tokens = 1
+		}
 		debug_log = "XAR: TEST PASS trait_level_1"
 	}
 	else = { debug_log = "XAR: TEST FAIL trait_level_1" }
+	set_global_variable = { name = xa_reroll_tokens value = 0 }
 	add_trait_xp = { trait = xar_glassfire_gaze value = 90 }
 	if = {
 		limit = { has_trait_xp = { trait = xar_glassfire_gaze value >= 100 } }
 		debug_log = "XAR: TEST PASS trait_xp_cap"
 	}
 	else = { debug_log = "XAR: TEST FAIL trait_xp_cap" }
+	# The synthetic 1->10->100 jump bypasses production pair completions. Mark
+	# milestones consumed so the real UI curse below does not stack ten dialogs.
+	add_character_flag = xa_gaze_milestone_10
+	add_character_flag = xa_gaze_milestone_20
+	add_character_flag = xa_gaze_milestone_30
+	add_character_flag = xa_gaze_milestone_40
+	add_character_flag = xa_gaze_milestone_50
+	add_character_flag = xa_gaze_milestone_60
+	add_character_flag = xa_gaze_milestone_70
+	add_character_flag = xa_gaze_milestone_80
+	add_character_flag = xa_gaze_milestone_90
+	add_character_flag = xa_gaze_milestone_100
 
 	# ---------- T8: real pact -> shop -> blessing/curse UI chain ----------
 	# Production options emit assertions only while this flag is active. The
 	# runner clicks every transition; the final curse schedules the death waiter.
-	set_global_variable = { name = xa_test_dip_before value = diplomacy }
+	set_global_variable = { name = xa_test_ui_dip_applied value = 0 }
 	set_global_variable = { name = xa_test_gold_before value = gold }
 	set_global_variable = xa_full_ui_test_active
 	debug_log = "XAR: UI full flow armed"

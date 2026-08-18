@@ -81,7 +81,9 @@ customizable_localization（interface trigger 合法）
 
 七层首尾相接（粒度, 槽数）：`(1,100) (5,100) (10,100) (50,100) (100,100) (500,100) (1000,100)`，共 700 位，上限 166,600。
 
-**写入只完成一个位**：降序 `else_if` 链，完成「≤ 分数的最大阈值」对应的那一位。纪录必落在阈值上，语义与全量置位完全等价，但每次破纪录最多 1 个弹窗。位已完成的场合课程不重触发 = 0 弹窗。
+真实本局分数保存在 `xa_run_score`，它不直接参与纪录比较。生成的 `xar_quantize_record_candidate_effect` 用降序 `else_if` 链把它量化为 `xa_record_candidate`：取「≤ 真实分数的最大现有阈值」，达到或超过 166,600 时固定为 166,600。
+
+**写入只完成一个位**：只有 `xa_record_candidate > xa_global_record_imported` 时才算破纪录，生成的 writer 再按 candidate 等值分支完成对应 lesson。真实分数在同一阈值区间内增长不会反复报新纪录。首次达到上限会写入并正常反馈；历史位阶已经是上限后，任何更高真实分数都不会再写入或报新纪录。
 
 **读取用降序 first_valid**（位可能稀疏，不能用"顶位相邻检测"）：
 
@@ -94,18 +96,37 @@ xar_record_level = {
 }
 ```
 
-customizable_localization 的 text 块按序取第一个 trigger 成立的。GUI 侧每个等级一个 state，比对 `GetPlayer.Custom('xar_record_level')` 与 `Localize('xar_rec_<t>')`（各级 key 内容必须互不相同），命中即执行对应 scripted_gui 写入纪录值。
+customizable_localization 的 text 块按序取第一个 trigger 成立的。GUI 侧每个等级一个 state，比对 `GetPlayer.Custom('xar_record_level')` 与 `Localize('xar_rec_<t>')`（各级 key 内容必须互不相同），命中即执行对应 scripted_gui 写入纪录值。所有旧 `xar_hs_ge_<t>` lesson ID 原样保留，因此历史纪录继续兼容。
 
 **扩展上限**：生成器 `TIERS` 列表追加层即可，旧位永久保留。
 
-## 我们的使用模式（纪录 → 开局副本）
+## 我们的使用模式（余烬位阶 → 开局副本）
 
-- `xa_global_record_imported`：GUI 桥实时维护的全局纪录（存档内镜像）
-- `xa_local_points`：开局时由钩子置 `xa_shop_pending`，导入执行时拷贝纪录为**本局可花费副本**；消费只扣副本，不动全局
-- 死亡：on_death → 算分 → 破纪录则先置位（通知先弹）→ 结算事件延迟 1 天显示
+- `xa_run_score`：本局死亡结算的真实分数，可含小数。
+- `xa_record_candidate`：真实分数向下映射得到的量化候选余烬位阶，最高为 166,600。
+- `xa_global_record_imported`：从历史 lesson 位汇总出的量化历史位阶（存档内镜像）。
+- `xa_local_points`：导入 ready 后从历史位阶复制的**本局可花费副本**；消费只扣副本，不动历史位阶。
+- 死亡：on_death → 算真实分数 → 生成 candidate → candidate 严格高于历史位阶才置位（通知先弹）→ 结算事件延迟 1 天显示。
+
+### 显式导入协议
+
+1. `xar_on_game_start` 对玩家初始化 `xa_import_requested=1`、`xa_import_ready=0`、`xa_import_consumed=0`，不直接打开契约或商店。
+2. GUI state 同时要求「最高 lesson 位匹配」和 request 信号；无论窗口先实例化还是 on_action 先执行，只有 request 从 0 变 1 后才会运行 importer。
+3. importer 在 request guard 内幂等写入 `xa_global_record_imported`，随后执行 `requested=0 -> ready=1`。
+4. `xar_consume_import_effect` 仅接受 `ready=1 && consumed=0`，先准确复制 `xa_local_points`，再执行 `ready=0 -> consumed=1` 并启动契约或 selftest。
+
+因此 GUI 与 on_action 的先后顺序不会造成零值抢跑，重复 Execute 也不会重复打开流程；契约和商店只能在导入 ready 且点数已复制后出现。
+
+### 首世分流与只读账簿
+
+- 正常 `xar_on` 导入完成且 `xa_global_record_imported=0` 时，契约接受选项跳转 `xar.0010` 首世说明，不打开 0 点商店；确认后直接进入 `xar.0004` 祝福流程。
+- acceptance 的生产 UI 路径以 `xa_full_ui_test_active` 优先分流，仍向 `xa_local_points` 注入 200 并打开真实 `xar.0001` 商店，因此不会被首世逻辑短路。
+- 原生 `xar_ledger_decision` 仅对 `xa_enabled && is_ai=no` 显示和生效。账簿事件调用生成的 `xar_prepare_ledger_effect`，把只读即时分数投影为当前候选位阶、下一位阶和差值。
+- 该投影与死亡量化共用 `gen_highscore.py` 的 `THRESHOLDS`；扩展 `TIERS` 后会同步生成新的下一位阶邻接关系。达到最高阈值时 next 固定为 cap、gap 为 0，并显示明确上限文案。
+- `xa_ledger_*` 只承载当前事件的临时展示快照，关闭事件即清除；它不设置 `xar_hs_ge_*`、不改 `xa_global_record_imported` / `xa_record_candidate` / `xa_run_score`，也不改变任何玩家资源。
 
 ## 已知限制
 
-- 需开启教程设置（reactive advice），否则写入侧不触发（读取不受影响）
+- 需开启教程设置（reactive advice）才能完成新 lesson 并把新位阶写入 `tutorial.txt`。禁用教程时，已完成 lesson 的接口读取和导入仍可工作，但本次及后续新纪录无法落盘。
 - `tutorial.reset` 控制台命令会清空全部位（含原版课程）；手动删 tutorial.txt 同理
-- 位容量有限；纪录精度 = 所在层的粒度（本项目购买粒度 25/点，低分区 1 分粒度，购买力无损）
+- 位容量有限；跨存档对象是余烬位阶/量化纪录，不是精确最高分。精度等于所在层的粒度，当前上限 166,600。

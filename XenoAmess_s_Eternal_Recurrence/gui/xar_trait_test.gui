@@ -7,12 +7,12 @@ window = {
 	layer = tutorial
 	parentanchor = center
 	position = { 0 0 }
-	visible = "[EqualTo_string( GetPlayer.Custom('xar_trait_hover_check'), Localize('xar_trait_hover_sentinel') )]"
+	visible = "[GetPlayer.IsValid]"
 
 	button_standard = {
 		name = "xar_open_trait_test_character"
 		size = { 100% 100% }
-		text = "XAR"
+		visible = "[EqualTo_string( GetPlayer.Custom('xar_trait_hover_check'), Localize('xar_trait_hover_sentinel') )]"
 		onclick = "[DefaultOnCharacterClick(GetPlayer.GetID)]"
 	}
 }

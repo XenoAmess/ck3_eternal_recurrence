@@ -1,0 +1,336 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_contracts.py
+# Contract selection, behavioral progress, and Gaze unlocks.
+
+xar_select_contract_conqueror_effect = {
+	set_global_variable = { name = xa_contract_id value = 1 }
+	set_global_variable = { name = xa_contract_progress value = 0 }
+}
+
+xar_select_contract_weaver_effect = {
+	set_global_variable = { name = xa_contract_id value = 2 }
+	set_global_variable = { name = xa_contract_progress value = 0 }
+}
+
+xar_select_contract_saint_effect = {
+	set_global_variable = { name = xa_contract_id value = 3 }
+	set_global_variable = { name = xa_contract_progress value = 0 }
+}
+
+xar_select_contract_patriarch_effect = {
+	set_global_variable = { name = xa_contract_id value = 4 }
+	set_global_variable = { name = xa_contract_progress value = 0 }
+}
+
+xar_select_contract_steward_effect = {
+	set_global_variable = { name = xa_contract_id value = 5 }
+	set_global_variable = { name = xa_contract_progress value = 0 }
+}
+
+xar_select_contract_reveler_effect = {
+	set_global_variable = { name = xa_contract_id value = 6 }
+	set_global_variable = { name = xa_contract_progress value = 0 }
+}
+
+xar_add_contract_progress_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_character_flag = xa_enabled
+			global_var:xa_contract_id = $ID$
+			global_var:xa_contract_progress < 10
+		}
+		change_global_variable = { name = xa_contract_progress add = 1 }
+		if = {
+			limit = { global_var:xa_contract_id = 1 }
+			if = {
+				limit = { global_var:xa_contract_progress = 3 }
+				set_global_variable = xa_contract_pb_1_3
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2111
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 6 }
+				set_global_variable = xa_contract_pb_1_6
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2112
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 10 }
+				set_global_variable = xa_contract_pb_1_10
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2113
+				}
+				set_global_variable = xa_contract_complete_1
+			}
+		}
+		if = {
+			limit = { global_var:xa_contract_id = 2 }
+			if = {
+				limit = { global_var:xa_contract_progress = 3 }
+				set_global_variable = xa_contract_pb_2_3
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2121
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 6 }
+				set_global_variable = xa_contract_pb_2_6
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2122
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 10 }
+				set_global_variable = xa_contract_pb_2_10
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2123
+				}
+				set_global_variable = xa_contract_complete_2
+			}
+		}
+		if = {
+			limit = { global_var:xa_contract_id = 3 }
+			if = {
+				limit = { global_var:xa_contract_progress = 3 }
+				set_global_variable = xa_contract_pb_3_3
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2131
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 6 }
+				set_global_variable = xa_contract_pb_3_6
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2132
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 10 }
+				set_global_variable = xa_contract_pb_3_10
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2133
+				}
+				set_global_variable = xa_contract_complete_3
+			}
+		}
+		if = {
+			limit = { global_var:xa_contract_id = 4 }
+			if = {
+				limit = { global_var:xa_contract_progress = 3 }
+				set_global_variable = xa_contract_pb_4_3
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2141
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 6 }
+				set_global_variable = xa_contract_pb_4_6
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2142
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 10 }
+				set_global_variable = xa_contract_pb_4_10
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2143
+				}
+				set_global_variable = xa_contract_complete_4
+			}
+		}
+		if = {
+			limit = { global_var:xa_contract_id = 5 }
+			if = {
+				limit = { global_var:xa_contract_progress = 3 }
+				set_global_variable = xa_contract_pb_5_3
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2151
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 6 }
+				set_global_variable = xa_contract_pb_5_6
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2152
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 10 }
+				set_global_variable = xa_contract_pb_5_10
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2153
+				}
+				set_global_variable = xa_contract_complete_5
+			}
+		}
+		if = {
+			limit = { global_var:xa_contract_id = 6 }
+			if = {
+				limit = { global_var:xa_contract_progress = 3 }
+				set_global_variable = xa_contract_pb_6_3
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2161
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 6 }
+				set_global_variable = xa_contract_pb_6_6
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2162
+				}
+			}
+			if = {
+				limit = { global_var:xa_contract_progress = 10 }
+				set_global_variable = xa_contract_pb_6_10
+				if = {
+					limit = { NOT = { has_game_rule = xar_selftest } }
+					trigger_event = xar.2163
+				}
+				set_global_variable = xa_contract_complete_6
+			}
+		}
+	}
+}
+
+xar_complete_bargain_pair_effect = {
+	add_trait_xp = { trait = xar_glassfire_gaze value = 1 }
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 10 }
+			NOT = { has_character_flag = xa_gaze_milestone_10 }
+		}
+		add_character_flag = xa_gaze_milestone_10
+		change_global_variable = { name = xa_reroll_tokens add = 1 }
+		if = {
+			limit = { NOT = { has_game_rule = xar_selftest } }
+			trigger_event = xar.2201
+		}
+	}
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 20 }
+			NOT = { has_character_flag = xa_gaze_milestone_20 }
+		}
+		add_character_flag = xa_gaze_milestone_20
+		change_global_variable = { name = xa_seal_tokens add = 1 }
+		if = {
+			limit = { NOT = { has_game_rule = xar_selftest } }
+			trigger_event = xar.2202
+		}
+	}
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 30 }
+			NOT = { has_character_flag = xa_gaze_milestone_30 }
+		}
+		add_character_flag = xa_gaze_milestone_30
+		change_global_variable = { name = xa_reroll_tokens add = 1 }
+		if = {
+			limit = { NOT = { has_game_rule = xar_selftest } }
+			trigger_event = xar.2203
+		}
+	}
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 40 }
+			NOT = { has_character_flag = xa_gaze_milestone_40 }
+		}
+		add_character_flag = xa_gaze_milestone_40
+		change_global_variable = { name = xa_seal_tokens add = 1 }
+		if = {
+			limit = { NOT = { has_game_rule = xar_selftest } }
+			trigger_event = xar.2204
+		}
+	}
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 50 }
+			NOT = { has_character_flag = xa_gaze_milestone_50 }
+		}
+		add_character_flag = xa_gaze_milestone_50
+		change_global_variable = { name = xa_reroll_tokens add = 1 }
+		if = {
+			limit = { NOT = { has_game_rule = xar_selftest } }
+			trigger_event = xar.2205
+		}
+	}
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 60 }
+			NOT = { has_character_flag = xa_gaze_milestone_60 }
+		}
+		add_character_flag = xa_gaze_milestone_60
+		change_global_variable = { name = xa_seal_tokens add = 1 }
+		if = {
+			limit = { NOT = { has_game_rule = xar_selftest } }
+			trigger_event = xar.2206
+		}
+	}
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 70 }
+			NOT = { has_character_flag = xa_gaze_milestone_70 }
+		}
+		add_character_flag = xa_gaze_milestone_70
+		change_global_variable = { name = xa_reroll_tokens add = 1 }
+		if = {
+			limit = { NOT = { has_game_rule = xar_selftest } }
+			trigger_event = xar.2207
+		}
+	}
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 80 }
+			NOT = { has_character_flag = xa_gaze_milestone_80 }
+		}
+		add_character_flag = xa_gaze_milestone_80
+		change_global_variable = { name = xa_seal_tokens add = 1 }
+		if = {
+			limit = { NOT = { has_game_rule = xar_selftest } }
+			trigger_event = xar.2208
+		}
+	}
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 90 }
+			NOT = { has_character_flag = xa_gaze_milestone_90 }
+		}
+		add_character_flag = xa_gaze_milestone_90
+		change_global_variable = { name = xa_reroll_tokens add = 1 }
+		if = {
+			limit = { NOT = { has_game_rule = xar_selftest } }
+			trigger_event = xar.2209
+		}
+	}
+	if = {
+		limit = {
+			has_trait_xp = { trait = xar_glassfire_gaze value >= 100 }
+			NOT = { has_character_flag = xa_gaze_milestone_100 }
+		}
+		add_character_flag = xa_gaze_milestone_100
+		change_global_variable = { name = xa_seal_tokens add = 1 }
+		if = {
+			limit = { NOT = { has_game_rule = xar_selftest } }
+			trigger_event = xar.2210
+		}
+	}
+}

@@ -1,4 +1,4 @@
-# 全自动验收 runner：备份现场 -> 剥纪录位 + 规则切自检 -> 启动游戏过大厅 -> 日志判定 -> 恢复现场
+# 全自动验收 runner：备份现场 -> 场景规则/纪录 -> OCR 过大厅 -> 场景判定 -> 恢复现场
 #
 # 前置事实（2026-08-17 实证）：游戏加载的是 Steam 工坊缓存（ugc_3784706360，
 # 播放集启用的是工坊项而非 dev 路径，因 dev .mod 带了 remote_file_id 被启动器合并）。
@@ -14,6 +14,13 @@
 # 现场保护：tutorial.txt / player\game_rules\presets.txt 先备份到临时目录，
 #   结束时无论成败原样恢复（runner 本身也会被杀进程方式中断时尽量在 finally 恢复）。
 
+import argparse
+from contextlib import contextmanager
+from datetime import datetime, timezone
+import hashlib
+import html
+import json
+import platform
 import re
 import shutil
 import subprocess
@@ -32,6 +39,7 @@ import win32gui
 from PIL import Image, ImageGrab
 
 import validate_static
+import build_release
 
 # UI localization smoke test: OCR engine + crop box for the three event options.
 # RapidOCR is pure Python with bundled ONNX models; installed in tools/.venv.
@@ -56,11 +64,16 @@ ERROR_LOG = USER_DIR / "logs" / "error.log"
 RESTORE_WATCHDOG = ROOT / "tools" / "restore_watchdog.py"
 REQUIRED_PASSES = {
     "pact_trait", "pact_flag", "shop_init", "shop_inflate", "shop_charge",
+    "shop_ceiling_fraction", "ledger_score_nonnegative", "ledger_projection",
+    "ledger_record_unchanged",
     "draw_bless_distinct", "bless_apply", "draw_curse_constrained",
     "curse_pair_xp", "trait_level_1", "trait_xp_cap", "import_var",
-    "import_value", "score_positive", "reject_penalty", "score_preview",
+    "import_value", "import_points", "record_same_threshold",
+    "record_cross_threshold", "record_cap", "score_positive", "reject_penalty", "score_preview",
     "ui_shop_points", "ui_shop_price", "ui_shop_diplomacy",
     "ui_shop_purchase", "ui_shop_finish", "bless_count", "record_write",
+    "contract_select", "contract_progress",
+    "inherit_0", "inherit_25", "inherit_50", "inherit_cap",
 }
 
 CLICK_SETTLE_OK = (1130, 1041)      # 结算事件确认选项「很好。这笔账，已记入永恒。」
@@ -72,6 +85,7 @@ START_REGION = (0.82, 0.82, 0.95, 0.93)
 RULER_DETAIL_REGION = (0.76, 0.28, 0.98, 0.58)
 OPTION_LIST_REGION = (0.20, 0.58, 0.56, 0.83)
 EVENT_TITLE_REGION = (0.20, 0.17, 0.50, 0.29)
+EVENT_TEXT_REGION = (0.18, 0.16, 0.62, 0.58)
 EVENT_OPTIONS_FULL_REGION = (0.18, 0.43, 0.62, 0.95)
 CHARACTER_PANEL_REGION = (0.00, 0.05, 0.48, 0.72)
 FULL_SCREEN_REGION = (0.00, 0.00, 1.00, 1.00)
@@ -79,6 +93,7 @@ FULL_SCREEN_REGION = (0.00, 0.00, 1.00, 1.00)
 BOOT_TIMEOUT_S = 120             # OCR 一发现主菜单即继续，不固定睡 100 秒
 LOBBY_TIMEOUT_S = 30
 TEST_TIMEOUT_S = 300             # 开局后等待 TEST DONE 的超时
+OFF_OBSERVE_TIMEOUT_S = 30
 POLL_INTERVAL_S = 1
 
 
@@ -159,8 +174,11 @@ def read_new_lines(path, offset):
         return "", offset
 
 
-def set_last_applied_rule(raw):
-    """只把 LastAppliedRules 的本 mod 规则切到 selftest。"""
+def set_last_applied_rule(raw, setting):
+    """Set exactly one XAR setting in LastAppliedRules."""
+    allowed = {"xar_on", "xar_off", "xar_selftest"}
+    if setting not in allowed:
+        raise RunnerError(f"unsupported XAR rule setting: {setting}")
     pattern = re.compile(
         rb'(name="LastAppliedRules"\s+setting=\{)(.*?)(\}\s+ironman=)',
         re.DOTALL)
@@ -168,13 +186,35 @@ def set_last_applied_rule(raw):
     if not match:
         raise RunnerError("LastAppliedRules block not found in presets.txt")
     body = re.sub(rb'\bxar_(?:on|off|selftest)\b', b'', match.group(2))
-    body = body.rstrip() + b' xar_selftest '
+    body = body.rstrip() + b" " + setting.encode("ascii") + b" "
     patched = raw[:match.start()] + match.group(1) + body + match.group(3) + raw[match.end():]
 
     verify = pattern.search(patched)
-    if not verify or verify.group(2).count(b'xar_selftest') != 1:
-        raise RunnerError("failed to set LastAppliedRules to xar_selftest")
+    if not verify:
+        raise RunnerError("LastAppliedRules block disappeared after patching")
+    tokens = re.findall(rb'\bxar_(?:on|off|selftest)\b', verify.group(2))
+    if tokens != [setting.encode("ascii")]:
+        raise RunnerError(
+            f"failed to set LastAppliedRules exclusively to {setting}: {tokens}")
     return patched
+
+
+def set_tutorial_record(raw, threshold):
+    """Replace XAR lesson bits with one compatible quantized record bit."""
+    lines = raw.split(b"\n")
+    stripped = [
+        line for line in lines
+        if not re.match(rb"^\s*(?:xar_hs_ge_\d+|xar_contract_(?:pb|complete)_\w+)\s*$", line)
+    ]
+    clean = b"\n".join(stripped)
+    if threshold == 0:
+        return clean, len(lines) - len(stripped)
+    match = re.search(rb"completed_lessons\s*=\s*\{(.*?)\}", clean, re.DOTALL)
+    if not match:
+        raise RunnerError("completed_lessons block not found in tutorial.txt")
+    body = match.group(1).rstrip()
+    seeded = body + f"\n\txar_hs_ge_{threshold}\n".encode("ascii")
+    return clean[:match.start(1)] + seeded + clean[match.end(1):], len(lines) - len(stripped)
 
 
 def region_bbox(img, region):
@@ -388,323 +428,536 @@ def wait_for_localized_options(label, artifacts, expected_count, timeout_s=20):
         f"{label} option OCR saw fewer than {expected_count} rows; last OCR={last_text}")
 
 
-def main():
-    artifacts = Path(tempfile.mkdtemp(prefix="xar_accept_"))
-    log(f"artifacts dir: {artifacts}")
-
-    if _ocr is None:
-        print("RESULT: RED (RapidOCR missing; install tools/requirements.txt)")
-        sys.exit(1)
-
-    # ---- 备份现场 ----
-    backup = artifacts / "backup"
-    backup.mkdir()
-    shutil.copy2(TUTORIAL_TXT, backup / "tutorial.txt")
-    shutil.copy2(PRESETS_TXT, backup / "presets.txt")
-    log("backed up tutorial.txt + presets.txt")
-    ck3_pid_file = artifacts / "ck3.pid"
-    start_restore_watchdog(backup, ck3_pid_file)
-    log("restore watchdog armed")
-
-    exit_code = 1
-
-    # ---- 静态 loc 校验（失败直接 RED，不进游戏）----
-    if validate_static.main() != 0:
-        print("RESULT: RED (static validation failed)")
-        sys.exit(1)
-    log("static validation passed")
-
-    descriptor = (MOD_ROOT / "descriptor.mod").read_text(encoding="utf-8-sig")
-    if "remote_file_id" in descriptor:
-        print("RESULT: RED (repository descriptor.mod contains remote_file_id)")
-        sys.exit(1)
-
+@contextmanager
+def timed_phase(timings, name):
+    started = time.perf_counter()
     try:
-        # ---- 同步仓库 -> 工坊缓存（游戏实际加载 ugc 项，必须先同步）----
-        sync_repo_to_ugc(ugc_content_dir())
+        yield
+    finally:
+        timings[name] = round(time.perf_counter() - started, 3)
 
-        # ---- 剥纪录位（基线 0，供 T1 断言 import_value=0）----
-        raw = TUTORIAL_TXT.read_bytes()
-        lines = raw.split(b"\n")
-        stripped = [l for l in lines if not re.match(rb"^\s*xar_", l)]
-        removed = len(lines) - len(stripped)
-        TUTORIAL_TXT.write_bytes(b"\n".join(stripped))
-        log(f"tutorial.txt: removed {removed} xar bit line(s)")
 
-        # CK3 在前端初始化期间读取 LastAppliedRules，必须在启动前写入。
-        patched = set_last_applied_rule((backup / "presets.txt").read_bytes())
-        PRESETS_TXT.write_bytes(patched)
-        if PRESETS_TXT.read_bytes().count(b"xar_selftest") != 1:
-            raise RunnerError("presets.txt selftest rule verification failed")
-        log("LastAppliedRules set to xar_selftest before launch and verified")
+def navigate_lobby(artifacts):
+    """OCR-drive main menu -> Robert bookmark -> confirmed game start."""
+    new_game = wait_for_ocr_text(
+        "新游戏", MAIN_MENU_REGION, BOOT_TIMEOUT_S,
+        artifacts, "01_main_menu.png")
+    focus_ck3()
+    pyautogui.click(*new_game)
+    log("OCR-clicked 新游戏")
 
-        # ---- 启动游戏 ----
-        # 只评估本次运行产生的日志（error.log/debug.log 都是累积的）
-        error_offset = ERROR_LOG.stat().st_size if ERROR_LOG.exists() else 0
-        debug_offset = DEBUG_LOG.stat().st_size if DEBUG_LOG.exists() else 0
-        kill_ck3()
-        time.sleep(3)
-        ck3_process = subprocess.Popen(
-            [str(CK3_EXE), "-debug_mode"], cwd=str(CK3_EXE.parent))
-        ck3_pid_file.write_text(str(ck3_process.pid), encoding="ascii")
-        log("launched ck3; OCR waiting for main menu")
-
-        # ---- OCR 驱动大厅，不再按固定秒数/坐标盲点 ----
-        new_game = wait_for_ocr_text(
-            "新游戏", MAIN_MENU_REGION, BOOT_TIMEOUT_S,
-            artifacts, "01_main_menu.png")
-
+    robert = wait_for_ocr_text(
+        "公爵罗贝尔", RULER_REGION, LOBBY_TIMEOUT_S,
+        artifacts, "02_bookmark.png")
+    screen_width, screen_height = pyautogui.size()
+    ruler_candidates = [
+        robert,
+        (robert[0] - int(screen_width * 0.041),
+         robert[1] - int(screen_height * 0.057)),
+        (robert[0], robert[1] - int(screen_height * 0.09)),
+    ]
+    selected = False
+    for index, candidate in enumerate(ruler_candidates, 1):
         focus_ck3()
-        pyautogui.click(*new_game)
-        log("OCR-clicked 新游戏")
+        pyautogui.moveTo(*candidate, duration=0.2)
+        time.sleep(0.3)
+        pyautogui.mouseDown()
+        time.sleep(0.12)
+        pyautogui.mouseUp()
+        log(f"clicked Robert candidate {index} at {candidate}")
+        pyautogui.moveTo(int(screen_width * 0.50), int(screen_height * 0.95))
+        time.sleep(0.5)
+        try:
+            wait_for_ocr_text(
+                "公爵罗贝尔", RULER_DETAIL_REGION, 5,
+                artifacts, "03_ruler_selected.png", contains=True,
+                stable_hits=1)
+            selected = True
+            break
+        except RunnerError:
+            continue
+    if not selected:
+        raise RunnerError("unable to select Robert after 3 OCR-verified candidates")
 
-        robert = wait_for_ocr_text(
-            "公爵罗贝尔", RULER_REGION, LOBBY_TIMEOUT_S,
-            artifacts, "02_bookmark.png")
+    start = wait_for_ocr_text(
+        "开始", START_REGION, LOBBY_TIMEOUT_S,
+        artifacts, "03_start_enabled.png")
+    click_until_text_disappears(start, "开始", START_REGION, artifacts)
 
-        # 地图文字标签不是角色选择热区；依次尝试卡片内候选点，每次都由右栏反证。
-        screen_width, screen_height = pyautogui.size()
-        ruler_candidates = [
-            robert,  # 蓝色姓名牌正文是推荐角色的主点击热区
-            (robert[0] - int(screen_width * 0.041),
-             robert[1] - int(screen_height * 0.057)),  # 实测可选中的卡片左上区域
-            (robert[0], robert[1] - int(screen_height * 0.09)),
-        ]
-        selected = False
-        for index, candidate in enumerate(ruler_candidates, 1):
-            focus_ck3()
-            pyautogui.moveTo(*candidate, duration=0.2)
-            time.sleep(0.3)  # 等原版 bookmark_character hover 位移动画结束
-            pyautogui.mouseDown()
-            time.sleep(0.12)
-            pyautogui.mouseUp()
-            log(f"clicked Robert candidate {index} at {candidate}")
-            # 移开鼠标，排除仅由 hover 产生的右栏预览。
-            pyautogui.moveTo(int(screen_width * 0.50), int(screen_height * 0.95))
+
+def click_until_ocr_appears(point, label, target, region, artifacts, artifact_name,
+                            attempts=3, timeout_s=6, unpause=False):
+    """Retry a production option until its expected next event is visible."""
+    last_error = None
+    for attempt in range(1, attempts + 1):
+        deliberate_click(point, f"{label} (attempt {attempt})")
+        if unpause:
             time.sleep(0.5)
-            try:
-                wait_for_ocr_text(
-                    "公爵罗贝尔", RULER_DETAIL_REGION, 5,
-                    artifacts, "03_ruler_selected.png", contains=True,
-                    stable_hits=1)
-                selected = True
-                break
-            except RunnerError:
-                continue
-        if not selected:
-            raise RunnerError("unable to select Robert after 3 OCR-verified candidates")
+            focus_ck3()
+            click_ratio(2315 / 2560, 1410 / 1440)
+            log(f"unpaused while waiting for delayed {target} event")
+        try:
+            return wait_for_ocr_text(
+                target, region, timeout_s, artifacts, artifact_name, stable_hits=1)
+        except RunnerError as exc:
+            last_error = exc
+    raise RunnerError(f"{label} did not open {target}: {last_error}")
 
-        start = wait_for_ocr_text(
-            "开始", START_REGION, LOBBY_TIMEOUT_S,
-            artifacts, "03_start_enabled.png")
-        click_until_text_disappears(
-            start, "开始", START_REGION, artifacts)
 
-        # 确认离开书签页后，规则已进入新局参数，立即恢复用户预设。
-        shutil.copy2(backup / "presets.txt", PRESETS_TXT)
-        log("restored presets.txt after OCR-confirmed start transition")
+def optional_ocr_text(target, region, timeout_s, artifacts, artifact_name,
+                      contains=False):
+    """Capture positive OCR evidence when available without weakening page proof."""
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        focus_ck3()
+        img = ImageGrab.grab()
+        if find_ocr_text(img, target, region, contains=contains):
+            img.save(artifacts / artifact_name)
+            return True
+        time.sleep(POLL_INTERVAL_S)
+    return False
 
-        # ---- 等开局（selftest begin 标记出现 = 已进局且已自杀链启动）----
-        offset = debug_offset
-        xar_lines = []
-        offset = wait_for_marker(
-            offset, "XAR: TEST selftest begin", 180, xar_lines)
 
-        # ---- 真实生产 UI：契约接受 -> 商店购买 -> 开始此生 ----
-        offset = wait_for_marker(
-            offset, "XAR: UI pact window opened", 30, xar_lines)
-        wait_for_ocr_text(
-            "终末之契", EVENT_TITLE_REGION, 15,
-            artifacts, "05_pact_window.png", stable_hits=1)
-        pact_accept = wait_for_ocr_text(
-            "我接受", EVENT_OPTIONS_FULL_REGION, 15,
-            artifacts, "05_pact_accept.png", contains=True, stable_hits=1)
-        offset = click_until_marker(
-            pact_accept, "production pact accept", "XAR: UI pact accepted",
-            offset, xar_lines)
+def run_production_smoke(scenario, import_record, debug_offset, artifacts):
+    """Run one normal-rule smoke without selftest-only state or purchases."""
+    offset = debug_offset
+    xar_lines = []
+    offset = wait_for_marker(offset, "XAR: rule is on, offering pact", 180, xar_lines)
+    offset = wait_for_marker(
+        offset, f"XAR: import state fired k={import_record}", 5, xar_lines)
+    wait_for_ocr_text(
+        "终末之契", EVENT_TITLE_REGION, 15,
+        artifacts, "05_pact_window.png", stable_hits=1)
+    pact_accept = wait_for_ocr_text(
+        "我接受", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "05_pact_accept.png", contains=True, stable_hits=1)
 
-        offset = wait_for_marker(
-            offset, "XAR: UI shop window opened", 15, xar_lines)
-        wait_for_ocr_text(
-            "轮回当铺", EVENT_TITLE_REGION, 15,
-            artifacts, "05_shop_window.png", stable_hits=1)
-        diplomacy_buy = wait_for_ocr_text(
-            "外交", EVENT_OPTIONS_FULL_REGION, 15,
-            artifacts, "05_shop_diplomacy.png", contains=True, stable_hits=1)
-        offset = click_until_marker(
-            diplomacy_buy, "production diplomacy purchase",
-            "XAR: TEST PASS ui_shop_purchase", offset, xar_lines,
-            failure_marker="XAR: TEST FAIL ui_shop_purchase")
-
+    if scenario == "on-first-life":
+        click_until_ocr_appears(
+            pact_accept, "production pact accept", "未燃之世", EVENT_TITLE_REGION,
+            artifacts, "06_first_life_title.png", attempts=1, timeout_s=20,
+            unpause=False)
+        begin = wait_for_ocr_text(
+            "开始此生", EVENT_OPTIONS_FULL_REGION, 15,
+            artifacts, "06_first_life_begin.png", contains=True, stable_hits=1)
+        click_until_ocr_appears(
+            begin, "first-life begin", "琉焰的垂青", EVENT_TITLE_REGION,
+            artifacts, "07_bless_window.png")
+    else:
+        click_until_ocr_appears(
+            pact_accept, "production pact accept", "轮回当铺", EVENT_TITLE_REGION,
+            artifacts, "06_recorded_shop.png", attempts=1, timeout_s=20,
+            unpause=False)
+        offset = wait_for_marker(offset, "XAR: shop event fired", 10, xar_lines)
+        points_seen = optional_ocr_text(
+            "100", EVENT_TEXT_REGION, 8, artifacts,
+            "06_recorded_100_points.png", contains=True)
+        log("recorded shop points OCR: " + ("100 seen" if points_seen else
+            "not resolved; production shop title + marker prove non-first-life branch"))
         shop_finish = wait_for_ocr_text(
             "开始此生", EVENT_OPTIONS_FULL_REGION, 15,
-            artifacts, "05_shop_finish.png", contains=True, stable_hits=1)
-        offset = click_until_marker(
-            shop_finish, "production shop finish",
-            "XAR: TEST PASS ui_shop_finish", offset, xar_lines)
+            artifacts, "06_recorded_finish.png", contains=True, stable_hits=1)
+        click_until_ocr_appears(
+            shop_finish, "production shop finish", "琉焰的垂青", EVENT_TITLE_REGION,
+            artifacts, "07_bless_window.png")
 
-        # ---- UI 本地化验收（祝福 + 诅咒各真实打开一次）----
-        offset = wait_for_marker(
-            offset, "XAR: UI bless window opened", 30, xar_lines)
-        wait_for_ocr_text(
-            "琉焰的垂青", EVENT_TITLE_REGION, 15,
-            artifacts, "05_bless_window.png", stable_hits=1)
-        bless_option = wait_for_localized_options("bless", artifacts, 3)
-        offset = click_until_marker(
-            bless_option, "localized bless option", "XAR: UI bless accepted",
-            offset, xar_lines)
+    offset = wait_for_marker(offset, "XAR: blessing event fired", 10, xar_lines)
+    if any("XAR: TEST selftest begin" in line for line in xar_lines):
+        raise RunnerError("production smoke unexpectedly entered selftest")
+    return xar_lines
 
-        offset = wait_for_marker(
-            offset, "XAR: UI curse window opened", 30, xar_lines)
-        wait_for_ocr_text(
-            "等价的咒痕", EVENT_TITLE_REGION, 15,
-            artifacts, "05_curse_window.png", stable_hits=1)
-        curse_option = wait_for_localized_options("curse", artifacts, 2)
-        offset = click_until_marker(
-            curse_option, "localized curse option", "XAR: UI curse accepted",
-            offset, xar_lines)
 
-        # Open the real character panel, locate the rendered trait icon from its
-        # DDS source, then prove the native hover contains the live score text.
+def run_off_smoke(debug_offset, artifacts):
+    """Prove the off rule stays silent using both OCR and incremental logs."""
+    offset = debug_offset
+    xar_lines = []
+    deadline = time.time() + OFF_OBSERVE_TIMEOUT_S
+    last_img = None
+    while time.time() < deadline:
         focus_ck3()
-        player_open = False
-        for attempt in range(1, 4):
-            click_ratio(0.50, 0.50)
-            log(f"clicked acceptance-only player-character bridge (attempt {attempt})")
-            try:
-                wait_for_ocr_text(
-                    "罗贝尔", CHARACTER_PANEL_REGION, 5,
-                    artifacts, "07_character_panel.png", contains=True,
-                    stable_hits=1)
-                player_open = True
-                break
-            except RunnerError:
-                continue
-        if not player_open:
-            raise RunnerError("test bridge did not open the player character")
-        character_img = ImageGrab.grab()
-        match_score, trait_point = find_scaled_template(
-            character_img,
-            MOD_ROOT / "gfx/interface/icons/traits/glassfire_trait.dds",
-            CHARACTER_PANEL_REGION,
-            (0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.60, 0.70))
-        log(f"trait icon template score={match_score:.3f} at {trait_point}")
-        if trait_point is None or match_score < 0.35:
-            raise RunnerError(f"Glassfire trait icon not found (score={match_score:.3f})")
-        pyautogui.moveTo(*trait_point, duration=0.2)
-        time.sleep(0.8)
-        wait_for_ocr_text(
-            "当前分量", FULL_SCREEN_REGION, 15,
-            artifacts, "07_trait_hover.png", contains=True, stable_hits=1)
-        log("PASS: real Glassfire Gaze hover rendered live score")
-        ui_ok = True
+        last_img = ImageGrab.grab()
+        if find_ocr_text(last_img, "终末之契", EVENT_TITLE_REGION):
+            last_img.save(artifacts / "05_off_unexpected_pact.png")
+            raise RunnerError("xar_off displayed the pact event")
+        text, offset = read_new_lines(DEBUG_LOG, offset)
+        new_xar = [line.strip() for line in text.splitlines() if "XAR:" in line]
+        xar_lines.extend(new_xar)
+        if new_xar:
+            last_img.save(artifacts / "05_off_unexpected_marker.png")
+            raise RunnerError(f"xar_off emitted XAR enable marker(s): {new_xar}")
+        time.sleep(POLL_INTERVAL_S)
+    if last_img is not None:
+        last_img.save(artifacts / "05_off_observation_passed.png")
+    log(f"PASS: xar_off showed no pact or XAR marker for {OFF_OBSERVE_TIMEOUT_S}s")
+    return xar_lines
 
-        # 开局默认暂停；关闭诅咒窗口后按底栏比例点击播放，让延迟自测链继续。
-        focus_ck3()
-        click_ratio(2315 / 2560, 1410 / 1440)
-        log("unpaused after UI localization test")
 
-        # ---- 轮询判定（含时间冻结自愈）----
-        # 冻结检测：跟踪 debug.log 里 AI 日志行自带的局内日期（如 "1066.9.16:"）。
-        # 日期 8s 不涨时 OCR 寻找继承窗口；识别到才点击，杜绝盲点 UI。
-        done = False
-        deadline = time.time() + TEST_TIMEOUT_S
-        date_re = re.compile(r"\b(\d{3,4})\.(\d{1,2})\.(\d{1,2})\b")
-        max_date = None
-        last_day_change = time.time()
-        last_recovery = 0
-        while time.time() < deadline:
-            text, offset = read_new_lines(DEBUG_LOG, offset)
-            for line in text.splitlines():
-                if "XAR:" in line:
-                    xar_lines.append(line.strip())
-                    if "XAR: TEST DONE" in line:
-                        done = True
-                m = date_re.search(line)
-                if m:
-                    d = (int(m.group(1)), int(m.group(2)), int(m.group(3)))
-                    if max_date is None or d > max_date:
-                        max_date = d
-                        last_day_change = time.time()
-            if done:
-                break
-            if time.time() - last_day_change > 8 and time.time() - last_recovery > 8:
-                focus_ck3()
-                img = ImageGrab.grab()
-                continue_button = find_ocr_text(
-                    img, "继续扮演", (0.45, 0.55, 0.80, 0.90), contains=True)
-                if continue_button:
-                    pyautogui.click(*continue_button)
-                    log(f"OCR-clicked succession continue at {continue_button}")
-                    time.sleep(0.5)
-                click_ratio(2315 / 2560, 1410 / 1440)
-                log(f"date frozen at {max_date}; recovery play click")
-                last_recovery = time.time()
-            time.sleep(POLL_INTERVAL_S)
+def run_selftest(import_record, debug_offset, error_offset, artifacts):
+    """Preserve the full existing selftest behavior and console report."""
+    offset = debug_offset
+    xar_lines = []
+    offset = wait_for_marker(offset, "XAR: TEST selftest begin", 180, xar_lines)
+    offset = wait_for_marker(offset, "XAR: UI pact window opened", 30, xar_lines)
+    wait_for_ocr_text(
+        "终末之契", EVENT_TITLE_REGION, 15,
+        artifacts, "05_pact_window.png", stable_hits=1)
+    pact_accept = wait_for_ocr_text(
+        "我接受", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "05_pact_accept.png", contains=True, stable_hits=1)
+    offset = click_until_marker(
+        pact_accept, "production pact accept", "XAR: UI pact accepted",
+        offset, xar_lines)
 
-        if not done:
-            raise RunnerError("TEST DONE marker timeout")
+    offset = wait_for_marker(offset, "XAR: UI shop window opened", 15, xar_lines)
+    wait_for_ocr_text(
+        "轮回当铺", EVENT_TITLE_REGION, 15,
+        artifacts, "05_shop_window.png", stable_hits=1)
+    diplomacy_buy = wait_for_ocr_text(
+        "外交", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "05_shop_diplomacy.png", contains=True, stable_hits=1)
+    offset = click_until_marker(
+        diplomacy_buy, "production diplomacy purchase",
+        "XAR: TEST PASS ui_shop_purchase", offset, xar_lines,
+        failure_marker="XAR: TEST FAIL ui_shop_purchase")
+    shop_finish = wait_for_ocr_text(
+        "开始此生", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "05_shop_finish.png", contains=True, stable_hits=1)
+    offset = click_until_marker(
+        shop_finish, "production shop finish",
+        "XAR: TEST PASS ui_shop_finish", offset, xar_lines)
 
-        focus_ck3()
-        ImageGrab.grab().save(artifacts / "04_end_state.png")
+    offset = wait_for_marker(offset, "XAR: UI bless window opened", 30, xar_lines)
+    wait_for_ocr_text(
+        "琉焰的垂青", EVENT_TITLE_REGION, 15,
+        artifacts, "05_bless_window.png", stable_hits=1)
+    bless_option = wait_for_localized_options("bless", artifacts, 3)
+    offset = click_until_marker(
+        bless_option, "localized bless option", "XAR: UI bless accepted",
+        offset, xar_lines)
+    offset = wait_for_marker(offset, "XAR: UI curse window opened", 30, xar_lines)
+    wait_for_ocr_text(
+        "等价的咒痕", EVENT_TITLE_REGION, 15,
+        artifacts, "05_curse_window.png", stable_hits=1)
+    curse_option = wait_for_localized_options("curse", artifacts, 2)
+    offset = click_until_marker(
+        curse_option, "localized curse option", "XAR: UI curse accepted",
+        offset, xar_lines)
 
-        # ---- 顺路点结算确认（触发观察者桥，留截图证据）----
+    focus_ck3()
+    player_open = False
+    for attempt in range(1, 4):
+        click_ratio(0.50, 0.50)
+        log(f"clicked acceptance-only player-character bridge (attempt {attempt})")
+        try:
+            wait_for_ocr_text(
+                "罗贝尔", CHARACTER_PANEL_REGION, 5,
+                artifacts, "07_character_panel.png", contains=True,
+                stable_hits=1)
+            player_open = True
+            break
+        except RunnerError:
+            continue
+    if not player_open:
+        raise RunnerError("test bridge did not open the player character")
+    character_img = ImageGrab.grab()
+    match_score, trait_point = find_scaled_template(
+        character_img,
+        MOD_ROOT / "gfx/interface/icons/traits/glassfire_trait.dds",
+        CHARACTER_PANEL_REGION,
+        (0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.60, 0.70))
+    log(f"trait icon template score={match_score:.3f} at {trait_point}")
+    if trait_point is None or match_score < 0.35:
+        raise RunnerError(f"Glassfire trait icon not found (score={match_score:.3f})")
+    pyautogui.moveTo(*trait_point, duration=0.2)
+    time.sleep(0.8)
+    wait_for_ocr_text(
+        "当前分量", FULL_SCREEN_REGION, 15,
+        artifacts, "07_trait_hover.png", contains=True, stable_hits=1)
+    log("PASS: real Glassfire Gaze hover rendered live score")
+    ui_ok = True
+
+    focus_ck3()
+    click_ratio(2315 / 2560, 1410 / 1440)
+    log("unpaused after UI localization test")
+    done = False
+    deadline = time.time() + TEST_TIMEOUT_S
+    date_re = re.compile(r"\b(\d{3,4})\.(\d{1,2})\.(\d{1,2})\b")
+    max_date = None
+    last_day_change = time.time()
+    last_recovery = 0
+    while time.time() < deadline:
+        text, offset = read_new_lines(DEBUG_LOG, offset)
+        for line in text.splitlines():
+            if "XAR:" in line:
+                xar_lines.append(line.strip())
+                if "XAR: TEST DONE" in line:
+                    done = True
+            match = date_re.search(line)
+            if match:
+                current_date = tuple(int(part) for part in match.groups())
+                if max_date is None or current_date > max_date:
+                    max_date = current_date
+                    last_day_change = time.time()
         if done:
+            break
+        if time.time() - last_day_change > 8 and time.time() - last_recovery > 8:
             focus_ck3()
-            click_ratio(CLICK_SETTLE_OK[0] / 2560, CLICK_SETTLE_OK[1] / 1440)
-            time.sleep(2)
-            focus_ck3()
-            ImageGrab.grab().save(artifacts / "05_after_confirm.png")
-            log("clicked settlement confirm, saved 05_after_confirm.png")
+            img = ImageGrab.grab()
+            continue_button = find_ocr_text(
+                img, "继续扮演", (0.45, 0.55, 0.80, 0.90), contains=True)
+            if continue_button:
+                pyautogui.click(*continue_button)
+                log(f"OCR-clicked succession continue at {continue_button}")
+                time.sleep(0.5)
+            click_ratio(2315 / 2560, 1410 / 1440)
+            log(f"date frozen at {max_date}; recovery play click")
+            last_recovery = time.time()
+        time.sleep(POLL_INTERVAL_S)
+    if not done:
+        raise RunnerError("TEST DONE marker timeout")
 
-        # ---- 教程落盘断言（纪录位的真实持久化，runner 侧在恢复前查）----
-        persist_ok = False
-        if done:
-            try:
-                live = TUTORIAL_TXT.read_text(encoding="utf-8", errors="ignore")
-                m = re.findall(r"(?m)^\s*(xar_hs_ge_\d+)\s*$", live)
-                persist_ok = bool(m)
-                log(f"tutorial.txt bits after run: {m if m else 'NONE'}")
-            except OSError:
-                pass
+    focus_ck3()
+    ImageGrab.grab().save(artifacts / "04_end_state.png")
+    click_ratio(CLICK_SETTLE_OK[0] / 2560, CLICK_SETTLE_OK[1] / 1440)
+    time.sleep(2)
+    focus_ck3()
+    ImageGrab.grab().save(artifacts / "05_after_confirm.png")
+    log("clicked settlement confirm, saved 05_after_confirm.png")
 
-        # ---- error.log 扫 xar 错误 ----
-        err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-        xar_errors = [l.strip() for l in err_text.splitlines() if "xar" in l.lower()]
+    persist_ok = False
+    contract_persist_ok = False
+    try:
+        live = TUTORIAL_TXT.read_text(encoding="utf-8", errors="ignore")
+        record_bits = re.findall(r"(?m)^\s*(xar_hs_ge_(\d+))\s*$", live)
+        persist_ok = any(int(value) > import_record for _, value in record_bits)
+        contract_persist_ok = bool(re.search(
+            r"(?m)^\s*xar_contract_pb_steward_3\s*$", live))
+        log(f"tutorial.txt bits after run: {record_bits if record_bits else 'NONE'}")
+    except OSError:
+        pass
+    err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+    xar_errors = [line.strip() for line in err_text.splitlines() if "xar" in line.lower()]
+    passes = [line for line in xar_lines if "XAR: TEST PASS" in line]
+    fails = [line for line in xar_lines if "XAR: TEST FAIL" in line]
+    observed_passes = {
+        line.split("XAR: TEST PASS ", 1)[1].strip()
+        for line in passes if "XAR: TEST PASS " in line
+    }
+    missing_passes = sorted(REQUIRED_PASSES - observed_passes)
+    import_ok = any(
+        f"XAR: import state fired k={import_record}" in line for line in xar_lines)
+    sweep_ok = any("XAR: TEST sweep complete" in line for line in xar_lines)
+    print("\n===== XAR ACCEPTANCE REPORT =====")
+    for line in xar_lines:
+        print("  " + line)
+    print("---------------------------------")
+    print(f"TEST DONE seen : {done}")
+    print(f"UI loc check   : {'PASS' if ui_ok else 'FAIL'}")
+    print(f"PASS count     : {len(passes)}")
+    print(f"required PASS  : {'PASS' if not missing_passes else 'MISSING ' + ', '.join(missing_passes)}")
+    print(f"import level   : {'PASS' if import_ok else 'FAIL'} (expected {import_record})")
+    print(f"pool sweep     : {'PASS' if sweep_ok else 'FAIL'}")
+    print(f"FAIL count     : {len(fails)}")
+    print(f"tutorial persist: {'PASS' if persist_ok else 'FAIL (or not done)'}")
+    print(f"contract PB persist: {'PASS' if contract_persist_ok else 'FAIL'}")
+    print(f"xar error.log  : {len(xar_errors)}")
+    for line in xar_errors:
+        print("  ERR " + line)
+    print(f"artifacts      : {artifacts}")
+    ok = (done and ui_ok and not fails and not missing_passes and import_ok and
+          sweep_ok and not xar_errors and persist_ok and contract_persist_ok)
+    print("RESULT: " + ("GREEN" if ok else "RED"))
+    if ok:
+        return None
+    reasons = []
+    if fails:
+        reasons.append(f"{len(fails)} TEST FAIL marker(s)")
+    if missing_passes:
+        reasons.append("missing PASS: " + ", ".join(missing_passes))
+    if not import_ok:
+        reasons.append(f"import marker {import_record} missing")
+    if not sweep_ok:
+        reasons.append("pool sweep marker missing")
+    if xar_errors:
+        reasons.append(f"{len(xar_errors)} xar error.log line(s)")
+    if not persist_ok:
+        reasons.append("tutorial record bit not persisted")
+    if not contract_persist_ok:
+        reasons.append("contract PB lesson not persisted")
+    return "; ".join(reasons) or "selftest acceptance checks failed"
 
-        # ---- 汇总 ----
-        passes = [l for l in xar_lines if "XAR: TEST PASS" in l]
-        fails = [l for l in xar_lines if "XAR: TEST FAIL" in l]
-        observed_passes = {
-            l.split("XAR: TEST PASS ", 1)[1].strip()
-            for l in passes if "XAR: TEST PASS " in l
-        }
-        missing_passes = sorted(REQUIRED_PASSES - observed_passes)
-        sweep_ok = any("XAR: TEST sweep complete" in l for l in xar_lines)
-        print("\n===== XAR ACCEPTANCE REPORT =====")
-        for l in xar_lines:
-            print("  " + l)
-        print("---------------------------------")
-        print(f"TEST DONE seen : {done}")
-        print(f"UI loc check   : {'PASS' if ui_ok else 'FAIL'}")
-        print(f"PASS count     : {len(passes)}")
-        print(f"required PASS  : {'PASS' if not missing_passes else 'MISSING ' + ', '.join(missing_passes)}")
-        print(f"pool sweep     : {'PASS' if sweep_ok else 'FAIL'}")
-        print(f"FAIL count     : {len(fails)}")
-        print(f"tutorial persist: {'PASS' if persist_ok else 'FAIL (or not done)'}")
-        print(f"xar error.log  : {len(xar_errors)}")
-        for l in xar_errors:
-            print("  ERR " + l)
-        print(f"artifacts      : {artifacts}")
-        if (done and ui_ok and not fails and not missing_passes and sweep_ok
-                and not xar_errors and persist_ok):
-            print("RESULT: GREEN")
-            exit_code = 0
-        else:
-            print("RESULT: RED")
-    except Exception as e:
-        log(f"FATAL: {e}")
-        if not isinstance(e, RunnerError):
+
+def mod_tree_hash():
+    digest = hashlib.sha256()
+    for path in build_release.release_files(MOD_ROOT):
+        relative = path.relative_to(MOD_ROOT).as_posix().encode("utf-8")
+        digest.update(len(relative).to_bytes(4, "big"))
+        digest.update(relative)
+        digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+def write_json_report(artifacts, scenario, result, import_record, timings,
+                      error_reason, run_id, started_at):
+    junit = artifacts / "report.xml"
+    failure = "" if result == "GREEN" else (
+        f'<failure message="{html.escape(error_reason or "acceptance failed", quote=True)}" />')
+    junit.write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        f'<testsuite name="xar.acceptance" tests="1" failures="{0 if result == "GREEN" else 1}" time="{timings.get("total", 0)}">\n'
+        f'  <testcase classname="xar.acceptance" name="{scenario}" time="{timings.get("scenario", 0)}">{failure}</testcase>\n'
+        '</testsuite>\n',
+        encoding="utf-8",
+    )
+    files = sorted(
+        str(path.relative_to(artifacts)).replace("\\", "/")
+        for path in artifacts.rglob("*")
+        if path.is_file() and path.name != "report.json"
+    )
+    report = {
+        "schema_version": 1,
+        "run_id": run_id,
+        "started_at_utc": started_at,
+        "scenario": scenario,
+        "result": result,
+        "mod_version": build_release.descriptor_version(MOD_ROOT),
+        "git_sha": build_release.git_sha(),
+        "mod_tree_sha256": mod_tree_hash(),
+        "workshop_item_id": build_release.WORKSHOP_ITEM_ID,
+        "source_mode": "repository-synced-workshop-cache",
+        "debug_mode": True,
+        "game_version": "1.19.0.6",
+        "environment": {
+            "platform": platform.platform(),
+            "python": sys.version.split()[0],
+        },
+        "artifacts": {"directory": str(artifacts), "files": files},
+        "import_record": import_record,
+        "phase_timings_seconds": timings,
+        "error_reason": error_reason,
+    }
+    (artifacts / "report.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def main(scenario="selftest", import_record=0):
+    run_started = time.perf_counter()
+    started_at = datetime.now(timezone.utc).isoformat()
+    effective_record = {
+        "selftest": import_record,
+        "on-first-life": 0,
+        "on-recorded": 100,
+        "off": 0,
+    }[scenario]
+    rule_setting = "xar_selftest" if scenario == "selftest" else (
+        "xar_off" if scenario == "off" else "xar_on")
+    artifacts = Path(tempfile.mkdtemp(prefix="xar_accept_"))
+    run_id = artifacts.name
+    log(f"scenario={scenario}, import_record={effective_record}, artifacts={artifacts}")
+    timings = {}
+    result = "RED"
+    error_reason = None
+    backup = Path(tempfile.mkdtemp(prefix="xar_accept_backup_"))
+    ck3_pid_file = artifacts / "ck3.pid"
+    backup_ready = False
+    restore_succeeded = False
+
+    try:
+        with timed_phase(timings, "setup_backup"):
+            if _ocr is None:
+                raise RunnerError("RapidOCR missing; install tools/requirements.txt")
+            shutil.copy2(TUTORIAL_TXT, backup / "tutorial.txt")
+            shutil.copy2(PRESETS_TXT, backup / "presets.txt")
+            backup_ready = True
+            log("backed up tutorial.txt + presets.txt")
+            start_restore_watchdog(backup, ck3_pid_file)
+            log("restore watchdog armed")
+
+        with timed_phase(timings, "static_validation"):
+            if validate_static.main() != 0:
+                raise RunnerError("static validation failed")
+            descriptor = (MOD_ROOT / "descriptor.mod").read_text(encoding="utf-8-sig")
+            if "remote_file_id" in descriptor:
+                raise RunnerError("repository descriptor.mod contains remote_file_id")
+            log("static validation passed")
+
+        with timed_phase(timings, "sync_and_configure"):
+            sync_repo_to_ugc(ugc_content_dir())
+            raw = TUTORIAL_TXT.read_bytes()
+            seeded, removed = set_tutorial_record(raw, effective_record)
+            TUTORIAL_TXT.write_bytes(seeded)
+            log(
+                f"tutorial.txt: removed {removed} XAR record bit(s), "
+                f"seeded {effective_record}")
+            patched = set_last_applied_rule(
+                (backup / "presets.txt").read_bytes(), rule_setting)
+            PRESETS_TXT.write_bytes(patched)
+            log(f"LastAppliedRules set exclusively to {rule_setting} before launch")
+
+        with timed_phase(timings, "launch"):
+            kill_ck3()
+            time.sleep(3)
+            error_offset = ERROR_LOG.stat().st_size if ERROR_LOG.exists() else 0
+            debug_offset = DEBUG_LOG.stat().st_size if DEBUG_LOG.exists() else 0
+            ck3_process = subprocess.Popen(
+                [str(CK3_EXE), "-debug_mode"], cwd=str(CK3_EXE.parent))
+            ck3_pid_file.write_text(str(ck3_process.pid), encoding="ascii")
+            log("launched ck3; OCR waiting for main menu")
+
+        with timed_phase(timings, "lobby"):
+            navigate_lobby(artifacts)
+            shutil.copy2(backup / "presets.txt", PRESETS_TXT)
+            log("restored presets.txt after OCR-confirmed start transition")
+
+        with timed_phase(timings, "scenario"):
+            if scenario == "selftest":
+                error_reason = run_selftest(
+                    effective_record, debug_offset, error_offset, artifacts)
+            elif scenario == "off":
+                run_off_smoke(debug_offset, artifacts)
+            else:
+                xar_lines = run_production_smoke(
+                    scenario, effective_record, debug_offset, artifacts)
+                err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+                xar_errors = [
+                    line.strip() for line in err_text.splitlines()
+                    if "xar" in line.lower()
+                ]
+                print("\n===== XAR PRODUCTION SMOKE REPORT =====")
+                print(f"scenario        : {scenario}")
+                print(f"import level    : {effective_record}")
+                print(f"XAR markers     : {len(xar_lines)}")
+                print(f"xar error.log   : {len(xar_errors)}")
+                for line in xar_errors:
+                    print("  ERR " + line)
+                print(f"artifacts       : {artifacts}")
+                if xar_errors:
+                    error_reason = f"{len(xar_errors)} xar error.log line(s)"
+            if scenario == "off":
+                err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+                xar_errors = [
+                    line.strip() for line in err_text.splitlines()
+                    if "xar" in line.lower()
+                ]
+                print("\n===== XAR PRODUCTION SMOKE REPORT =====")
+                print(f"scenario        : {scenario}")
+                print(f"observe seconds : {OFF_OBSERVE_TIMEOUT_S}")
+                print(f"xar error.log   : {len(xar_errors)}")
+                for line in xar_errors:
+                    print("  ERR " + line)
+                print(f"artifacts       : {artifacts}")
+                if xar_errors:
+                    error_reason = f"{len(xar_errors)} xar error.log line(s)"
+            if error_reason is None:
+                result = "GREEN"
+                if scenario != "selftest":
+                    print("RESULT: GREEN")
+            elif scenario != "selftest":
+                print("RESULT: RED")
+    except Exception as exc:
+        error_reason = str(exc)
+        log(f"FATAL: {exc}")
+        if not isinstance(exc, RunnerError):
             traceback.print_exc()
         try:
             focus_ck3()
@@ -714,20 +967,48 @@ def main():
         print(f"artifacts: {artifacts}")
         print("RESULT: RED")
     finally:
-        # ---- 恢复现场 ----
-        if ck3_pid_file.exists():
-            try:
-                kill_process(int(ck3_pid_file.read_text(encoding="ascii")))
-            except (OSError, ValueError):
-                pass
-            ck3_pid_file.unlink(missing_ok=True)
-        time.sleep(2)
-        shutil.copy2(backup / "tutorial.txt", TUTORIAL_TXT)
-        shutil.copy2(backup / "presets.txt", PRESETS_TXT)
-        log("restored tutorial.txt + presets.txt, ck3 killed")
-
-    sys.exit(exit_code)
+        try:
+            with timed_phase(timings, "restore"):
+                if ck3_pid_file.exists():
+                    try:
+                        kill_process(int(ck3_pid_file.read_text(encoding="ascii")))
+                    except (OSError, ValueError):
+                        pass
+                    ck3_pid_file.unlink(missing_ok=True)
+                if backup_ready:
+                    time.sleep(2)
+                    shutil.copy2(backup / "tutorial.txt", TUTORIAL_TXT)
+                    shutil.copy2(backup / "presets.txt", PRESETS_TXT)
+                    restore_succeeded = True
+                    log("restored tutorial.txt + presets.txt, ck3 killed")
+        except Exception as restore_exc:
+            result = "RED"
+            restore_reason = f"restore failed: {restore_exc}"
+            error_reason = (
+                f"{error_reason}; {restore_reason}" if error_reason else restore_reason)
+            log(restore_reason)
+            print("RESULT: RED")
+        timings["total"] = round(time.perf_counter() - run_started, 3)
+        if backup_ready and restore_succeeded:
+            shutil.rmtree(backup, ignore_errors=True)
+        elif backup_ready:
+            log(f"recovery backup retained at {backup}")
+        write_json_report(
+            artifacts, scenario, result, effective_record, timings, error_reason,
+            run_id, started_at)
+        log(f"JSON report: {artifacts / 'report.json'}")
+    return 0 if result == "GREEN" else 1
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Run CK3 automated acceptance")
+    parser.add_argument(
+        "--scenario",
+        choices=("selftest", "on-first-life", "on-recorded", "off"),
+        default="selftest",
+        help="acceptance scenario (default: selftest)")
+    parser.add_argument(
+        "--import-record", type=int, choices=(0, 100), default=0,
+        help="selftest tutorial record; production scenarios use fixed baselines")
+    args = parser.parse_args()
+    sys.exit(main(args.scenario, args.import_record))

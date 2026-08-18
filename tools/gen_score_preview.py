@@ -3,6 +3,8 @@
 
 from pathlib import Path
 
+import scoring_data as schema
+
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = (ROOT / "XenoAmess_s_Eternal_Recurrence" / "common" /
@@ -10,7 +12,7 @@ OUTPUT = (ROOT / "XenoAmess_s_Eternal_Recurrence" / "common" /
 
 
 def add_log2_steps(lines, source, multiplier, indent="\t"):
-    for exponent in range(1, 31):
+    for exponent in range(1, schema.LOG2_MAX_EXPONENT + 1):
         lines.extend([
             f"{indent}if = {{",
             f"{indent}\tlimit = {{ {source} >= {2 ** exponent} }}",
@@ -31,8 +33,7 @@ def ancestor_within(max_depth):
 
 def canonical_descendant_path(depth, parent_scope):
     # Use the shortest route from the root; prefer the father when both routes
-    # have equal length. This deduplicates consanguineous pedigrees without
-    # mutating character flags from a tooltip script value.
+    # have equal length. This deduplicates pedigrees without tooltip mutations.
     return (
         "OR = { "
         f"AND = {{ father ?= {{ this = scope:{parent_scope} }} "
@@ -79,7 +80,7 @@ def generate():
         "\t\t\t\texists = dynasty",
         "\t\t\t\tdynasty = { this = scope:xar_score_preview_dyn }",
         "\t\t\t}",
-        "\t\t\tadd = 0.1",
+        f"\t\t\tadd = {schema.DYNASTY_DESCENDANT_COEFFICIENT}",
         "\t\t}",
         "\t\tif = {",
         "\t\t\tlimit = {",
@@ -87,80 +88,82 @@ def generate():
         "\t\t\t\texists = house",
         "\t\t\t\thouse = { this = scope:xar_score_preview_house }",
         "\t\t\t}",
-        "\t\t\tadd = 0.1",
+        f"\t\t\tadd = {schema.HOUSE_DESCENDANT_COEFFICIENT}",
         "\t\t}",
-        "\t\tif = {",
-        "\t\t\tlimit = { highest_held_title_tier >= tier_hegemony }",
-        "\t\t\tadd = 10",
-        "\t\t}",
-        "\t\telse_if = {",
-        "\t\t\tlimit = { highest_held_title_tier >= tier_empire }",
-        "\t\t\tadd = 5",
-        "\t\t}",
-        "\t\telse_if = {",
-        "\t\t\tlimit = { highest_held_title_tier >= tier_kingdom }",
-        "\t\t\tadd = 2.5",
-        "\t\t}",
-        "\t\telse_if = {",
-        "\t\t\tlimit = { highest_held_title_tier >= tier_duchy }",
-        "\t\t\tadd = 1",
-        "\t\t}",
-        "\t\telse_if = {",
-        "\t\t\tlimit = { highest_held_title_tier >= tier_county }",
-        "\t\t\tadd = 0.25",
-        "\t\t}",
+    ]
+    for index, rule in enumerate(reversed(schema.DESCENDANT_TITLE_TIERS)):
+        keyword = "if" if index == 0 else "else_if"
+        lines.extend([
+            f"\t\t{keyword} = {{",
+            f"\t\t\tlimit = {{ highest_held_title_tier >= {rule.tier} }}",
+            f"\t\t\tadd = {rule.coefficient}",
+            "\t\t}",
+        ])
+    lines.extend([
         "\t}",
         "}",
         "",
-        "xar_current_score_value = {",
+        "xar_current_score_base_value = {",
         "\tvalue = 0",
         "\tsave_temporary_scope_as = xar_score_preview_root",
         "\tif = { limit = { exists = dynasty } dynasty = { save_temporary_scope_as = xar_score_preview_dyn } }",
         "\tif = { limit = { exists = house } house = { save_temporary_scope_as = xar_score_preview_house } }",
         "",
         "\t# Attributes.",
-        "\tadd = diplomacy",
-        "\tadd = martial",
-        "\tadd = stewardship",
-        "\tadd = intrigue",
-        "\tadd = learning",
-        "\tadd = prowess",
-        "",
-        "\t# Resources: floor(log2(value)) times the scoring coefficient.",
-    ]
-    for source, multiplier in (("gold", 5), ("prestige", 3), ("piety", 3),
-                               ("influence", 3)):
-        lines.append(f"\t# {source}")
-        add_log2_steps(lines, source, multiplier)
+    ])
+    for rule in schema.ATTRIBUTES:
+        if rule.coefficient == 1:
+            lines.append(f"\tadd = {rule.source}")
+        else:
+            lines.append(
+                f"\tadd = {{ value = {rule.source} multiply = {rule.coefficient} }}")
+
+    lines.extend(["", "\t# Resources: floor(log2(value)) times the scoring coefficient."])
+    for rule in schema.RESOURCES:
+        lines.append(f"\t# {rule.source}")
+        add_log2_steps(lines, rule.source, rule.coefficient)
+
+    lines.extend(["", "\t# Held titles."])
+    for rule in schema.HELD_TITLE_TIERS:
+        lines.append(
+            f"\tevery_held_title = {{ limit = {{ tier = {rule.tier} }} add = {rule.coefficient} }}")
 
     lines.extend([
         "",
-        "\t# Held titles.",
-        "\tevery_held_title = { limit = { tier = tier_county } add = 1 }",
-        "\tevery_held_title = { limit = { tier = tier_duchy } add = 2.5 }",
-        "\tevery_held_title = { limit = { tier = tier_kingdom } add = 5 }",
-        "\tevery_held_title = { limit = { tier = tier_empire } add = 10 }",
-        "\tevery_held_title = { limit = { tier = tier_hegemony } add = 20 }",
-        "",
-        "\t# Living descendants through five generations: blood and highest title.",
+        (f"\t# Living descendants through {schema.DESCENDANT_DEPTH} generations: "
+         "blood and highest title."),
     ])
-    lines.extend(descendant_list(5))
+    lines.extend(descendant_list(schema.DESCENDANT_DEPTH))
     lines.extend([
         "",
         "\t# Landed realm size.",
         "\tif = {",
         "\t\tlimit = { is_landed = yes }",
     ])
-    add_log2_steps(lines, "realm_size", 10, "\t\t")
+    add_log2_steps(lines, "realm_size", schema.REALM_SIZE_COEFFICIENT, "\t\t")
     lines.extend([
         "\t}",
         "",
-        "\t# Each declined blessing session removes one percent; never below zero.",
+        "\t# Incremental lifetime-contract behavior.",
+        f"\tadd = {{ value = global_var:xa_contract_progress multiply = {schema.CONTRACT_PROGRESS_COEFFICIENT} }}",
+        "}",
+        "",
+        "xar_current_score_value = {",
+        "\tvalue = xar_current_score_base_value",
+        "\tif = {",
+        "\t\tlimit = { global_var:xa_score_basis = 1 }",
+        "\t\tsubtract = { value = global_var:xa_score_baseline }",
+        "\t\tmax = 0",
+        "\t}",
+        "",
+        ("\t# Each declined blessing session removes "
+         f"{schema.REFUSAL_MULTIPLIER_PER_COUNT * 100} percent; never below zero."),
         "\tif = {",
         "\t\tlimit = { global_var:xa_bless_reject_count > 0 }",
         "\t\tmultiply = {",
         "\t\t\tvalue = 1",
-        "\t\t\tsubtract = { value = global_var:xa_bless_reject_count multiply = 0.01 }",
+        ("\t\t\tsubtract = { value = global_var:xa_bless_reject_count "
+         f"multiply = {schema.REFUSAL_MULTIPLIER_PER_COUNT} }}"),
         "\t\t\tmin = 0",
         "\t\t}",
         "\t}",

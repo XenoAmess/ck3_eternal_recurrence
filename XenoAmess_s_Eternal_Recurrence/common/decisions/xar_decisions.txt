@@ -1,0 +1,30 @@
+﻿xar_ledger_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	}
+	sort_order = 10
+	ai_check_interval = 0
+	desc = xar_ledger_decision_desc
+
+	is_shown = {
+		has_character_flag = xa_enabled
+		is_ai = no
+	}
+
+	is_valid_showing_failures_only = {
+		has_character_flag = xa_enabled
+		is_ai = no
+	}
+
+	effect = {
+		if = {
+			limit = {
+				has_character_flag = xa_enabled
+				is_ai = no
+			}
+			trigger_event = xar.0011
+		}
+	}
+
+	ai_potential = { always = no }
+}

@@ -12,3 +12,18 @@ xar_quit_check = {
 
 # Blessing/curse option slot resolvers moved to the generator:
 # common/customizable_localization/xar_generated_pool_loc.txt (GENERATED).
+
+# Human-readable challenge track. Persistent bits remain the global Ember Tier;
+# this run label prevents ambiguous comparison between challenge settings.
+xar_track_name = {
+	type = character
+	text = { trigger = { global_var:xa_track_code = 0 } localization_key = xar_track_abs_0 }
+	text = { trigger = { global_var:xa_track_code = 1 } localization_key = xar_track_abs_25 }
+	text = { trigger = { global_var:xa_track_code = 2 } localization_key = xar_track_abs_50 }
+	text = { trigger = { global_var:xa_track_code = 3 } localization_key = xar_track_abs_100 }
+	text = { trigger = { global_var:xa_track_code = 4 } localization_key = xar_track_growth_0 }
+	text = { trigger = { global_var:xa_track_code = 5 } localization_key = xar_track_growth_25 }
+	text = { trigger = { global_var:xa_track_code = 6 } localization_key = xar_track_growth_50 }
+	text = { trigger = { global_var:xa_track_code = 7 } localization_key = xar_track_growth_100 }
+	text = { localization_key = xar_track_abs_100 fallback = yes }
+}

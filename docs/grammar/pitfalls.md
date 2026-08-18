@@ -44,6 +44,8 @@
 | `Tutorial.GetStepText` 等在自定义窗口为空 | Tutorial 上下文只在 tutorial_window 本体 | 别遥控；也不要从外面点——课程内用 `trigger_transition` 自动完成 |
 | state 里 `Tutorial.OnClickTransition` 点了没反应 | 按钮动作函数不响应非用户点击路径 | 放弃模拟点击，用课程自带 `trigger_transition` |
 | 哨兵文本显示成 `ERROR:[XXX]` | loc 内容含方括号被当命令解析 | 标记文本不要带 `[]` |
+| 进入观察者后 `Object of type 'character' is not valid for '<custom loc>'` 每帧刷屏 | 顶层 GUI 在 `GetPlayer` 失效后仍调用 `GetPlayer.Custom(...)`；`And(GetPlayer.IsValid, ...)` **不短路** | 父窗口仅用 `visible = "[GetPlayer.IsValid]"`，把 custom-localization 求值放到子控件；父窗口隐藏后子树不再求值。2026-08-18 实机复现 |
+| 首次打开随机池时大量 `Failed to fetch variable ... due to not being set`，但 effect 第一行明明初始化了变量 | 事件 tooltip/description 会预求值后续 `if`/`random_list.trigger`，早于同一 effect 的实际执行 | 在触发抽池事件之前的上一个事件/effect 中创建全部槽位变量；抽池内部初始化只负责重置。2026-08-18 首世生产链实测 |
 | `Unknown effect: add_influence` | 影响力没有 add_influence | 用 `change_influence = 100`（add_gold/prestige/piety 才有 add_ 形） |
 | `Failed parsing data statement 'PauseMenu.ExitGame'` | GUI 数据上下文按窗口注入（同 Tutorial 一类）；且该函数要参数 | 原签名 `PauseMenu.ExitGame( '(bool)yes' )`；即便写对，从自定义窗口 state 调用也无效。回主菜单/观察者模式走 `ExecuteConsoleCommand('observe')` 之类 |
 | 同名 character modifier 重复购买不生效 | add_character_modifier 同名不叠加 | 用一系列不同名修正逐个发放（见 modifiers/xar_modifiers.txt 的 50 层寿命） |

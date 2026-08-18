@@ -5,24 +5,23 @@ on_game_start_after_lobby = {
 	on_actions = { xar_on_game_start }
 }
 
-# Import the global high score as this run's spendable copy and offer the pact.
+# Request the global record import. The GUI bridge moves request -> ready, then
+# the consumer copies points and starts the pact/selftest from ready state.
 xar_on_game_start = {
 	effect = {
 		every_player = {
 			if = {
 				limit = {
-					has_game_rule = xar_selftest
+					OR = {
+						has_game_rule = xar_selftest
+						has_game_rule = xar_on
+					}
 				}
-				debug_log = "XAR: TEST selftest begin"
-				xar_selftest_effect = yes
-			}
-			else_if = {
-				limit = {
-					has_game_rule = xar_on
-				}
-				debug_log = "XAR: rule is on, offering pact"
-				set_global_variable = xa_shop_pending
-				trigger_event = xar.0002
+				xar_initialize_challenge_mode_effect = yes
+				set_global_variable = { name = xa_import_requested value = 1 }
+				set_global_variable = { name = xa_import_ready value = 0 }
+				set_global_variable = { name = xa_import_consumed value = 0 }
+				debug_log = "XAR: import requested"
 			}
 		}
 	}
@@ -33,9 +32,44 @@ on_death = {
 	on_actions = { xar_on_death }
 }
 
-# Compute the run score; if it beats the record, write the threshold bit FIRST
-# (its lesson notification fires immediately), then show the result event one
-# day later (the delay also sidesteps on_action effect/event concurrency).
+# Contract behavior hooks. Every adapter scopes to the acting character, then
+# the shared effect enforces xa_enabled + is_ai=no before changing progress.
+on_war_won_attacker = { on_actions = { xar_contract_war_attacker } }
+on_war_won_defender = { on_actions = { xar_contract_war_defender } }
+on_hook_used = { on_actions = { xar_contract_hook_used } }
+on_county_faith_change = { on_actions = { xar_contract_faith_change } }
+on_birth_mother = { on_actions = { xar_contract_birth_mother } }
+on_birth_father = { on_actions = { xar_contract_birth_father } }
+on_building_completed = { on_actions = { xar_contract_building_completed } }
+on_birthday = { on_actions = { xar_contract_birthday } }
+
+xar_contract_war_attacker = { effect = { scope:attacker = { xar_add_contract_progress_effect = { ID = 1 } } } }
+xar_contract_war_defender = { effect = { scope:defender = { xar_add_contract_progress_effect = { ID = 1 } } } }
+xar_contract_hook_used = { effect = { root = { xar_add_contract_progress_effect = { ID = 2 } } } }
+xar_contract_faith_change = { effect = { root.holder = { xar_add_contract_progress_effect = { ID = 3 } } } }
+xar_contract_birth_mother = { effect = { scope:mother = { xar_add_contract_progress_effect = { ID = 4 } } } }
+xar_contract_birth_father = { effect = { scope:father = { xar_add_contract_progress_effect = { ID = 4 } } } }
+xar_contract_building_completed = {
+	effect = {
+		if = {
+			limit = { exists = scope:character }
+			scope:character = { xar_add_contract_progress_effect = { ID = 5 } }
+		}
+		else = { root.county.holder = { xar_add_contract_progress_effect = { ID = 5 } } }
+	}
+}
+xar_contract_birthday = {
+	effect = {
+		if = {
+			limit = { root = { stress < 100 } }
+			root = { xar_add_contract_progress_effect = { ID = 6 } }
+		}
+	}
+}
+
+# Compute the run score; if its quantized candidate beats the record, write the threshold bit FIRST
+# (its lesson notification fires immediately), then show the result on the heir
+# one day later, or synchronously on root when no heir exists.
 xar_on_death = {
 	effect = {
 		if = {
@@ -46,17 +80,25 @@ xar_on_death = {
 			debug_log = "XAR: computing score on death"
 			xar_compute_score_effect = yes
 			if = {
-				limit = { global_var:xa_run_score > global_var:xa_old_record }
+				limit = { global_var:xa_record_candidate > global_var:xa_old_record }
 				debug_log = "XAR: new record, writing bit"
 				xar_write_record_effect = yes
 			}
-			# The dying root will be invalid once the delay completes, so the
-			# result event is fired on the (living) heir instead.
-			player_heir ?= {
-				trigger_event = {
-					id = xar.1001
-					days = 1
+			# The dying root will be invalid once a delay completes. Prefer the
+			# living heir, but synchronously show the settlement on root when no
+			# heir exists; this is the only event scope still available at death.
+			if = {
+				limit = { exists = player_heir }
+				player_heir = {
+					trigger_event = {
+						id = xar.1001
+						days = 1
+					}
 				}
+			}
+			else = {
+				debug_log = "XAR: no player heir; synchronous settlement fallback"
+				trigger_event = xar.1001
 			}
 		}
 	}

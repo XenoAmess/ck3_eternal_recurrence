@@ -1,0 +1,325 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_contracts.py
+namespace = xar
+
+xar.2000 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.2000.title
+	desc = xar.2000.desc
+	option = {
+		name = xar.2000.conqueror
+		xar_select_contract_conqueror_effect = yes
+	}
+	option = {
+		name = xar.2000.weaver
+		xar_select_contract_weaver_effect = yes
+	}
+	option = {
+		name = xar.2000.saint
+		xar_select_contract_saint_effect = yes
+	}
+	option = {
+		name = xar.2000.patriarch
+		xar_select_contract_patriarch_effect = yes
+	}
+	option = {
+		name = xar.2000.steward
+		xar_select_contract_steward_effect = yes
+	}
+	option = {
+		name = xar.2000.reveler
+		xar_select_contract_reveler_effect = yes
+	}
+}
+
+xar.2111 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.conqueror.milestone.3
+	option = { name = xar.contract.milestone.3.ok }
+}
+
+xar.2112 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.conqueror.milestone.6
+	option = { name = xar.contract.milestone.6.ok }
+}
+
+xar.2113 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.conqueror.milestone.10
+	option = { name = xar.contract.milestone.10.ok }
+}
+
+xar.2121 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.weaver.milestone.3
+	option = { name = xar.contract.milestone.3.ok }
+}
+
+xar.2122 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.weaver.milestone.6
+	option = { name = xar.contract.milestone.6.ok }
+}
+
+xar.2123 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.weaver.milestone.10
+	option = { name = xar.contract.milestone.10.ok }
+}
+
+xar.2131 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.saint.milestone.3
+	option = { name = xar.contract.milestone.3.ok }
+}
+
+xar.2132 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.saint.milestone.6
+	option = { name = xar.contract.milestone.6.ok }
+}
+
+xar.2133 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.saint.milestone.10
+	option = { name = xar.contract.milestone.10.ok }
+}
+
+xar.2141 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.patriarch.milestone.3
+	option = { name = xar.contract.milestone.3.ok }
+}
+
+xar.2142 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.patriarch.milestone.6
+	option = { name = xar.contract.milestone.6.ok }
+}
+
+xar.2143 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.patriarch.milestone.10
+	option = { name = xar.contract.milestone.10.ok }
+}
+
+xar.2151 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.steward.milestone.3
+	option = { name = xar.contract.milestone.3.ok }
+}
+
+xar.2152 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.steward.milestone.6
+	option = { name = xar.contract.milestone.6.ok }
+}
+
+xar.2153 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.steward.milestone.10
+	option = { name = xar.contract.milestone.10.ok }
+}
+
+xar.2161 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.reveler.milestone.3
+	option = { name = xar.contract.milestone.3.ok }
+}
+
+xar.2162 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.reveler.milestone.6
+	option = { name = xar.contract.milestone.6.ok }
+}
+
+xar.2163 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.contract.milestone.title
+	desc = xar.contract.reveler.milestone.10
+	option = { name = xar.contract.milestone.10.ok }
+}
+
+xar.2201 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.gaze.milestone.title
+	desc = xar.gaze.milestone.reroll
+	immediate = { save_scope_value_as = { name = xar_gaze_level value = 10 } }
+	option = { name = xar.gaze.milestone.ok }
+}
+
+xar.2202 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.gaze.milestone.title
+	desc = xar.gaze.milestone.seal
+	immediate = { save_scope_value_as = { name = xar_gaze_level value = 20 } }
+	option = { name = xar.gaze.milestone.ok }
+}
+
+xar.2203 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.gaze.milestone.title
+	desc = xar.gaze.milestone.reroll
+	immediate = { save_scope_value_as = { name = xar_gaze_level value = 30 } }
+	option = { name = xar.gaze.milestone.ok }
+}
+
+xar.2204 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.gaze.milestone.title
+	desc = xar.gaze.milestone.seal
+	immediate = { save_scope_value_as = { name = xar_gaze_level value = 40 } }
+	option = { name = xar.gaze.milestone.ok }
+}
+
+xar.2205 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.gaze.milestone.title
+	desc = xar.gaze.milestone.reroll
+	immediate = { save_scope_value_as = { name = xar_gaze_level value = 50 } }
+	option = { name = xar.gaze.milestone.ok }
+}
+
+xar.2206 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.gaze.milestone.title
+	desc = xar.gaze.milestone.seal
+	immediate = { save_scope_value_as = { name = xar_gaze_level value = 60 } }
+	option = { name = xar.gaze.milestone.ok }
+}
+
+xar.2207 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.gaze.milestone.title
+	desc = xar.gaze.milestone.reroll
+	immediate = { save_scope_value_as = { name = xar_gaze_level value = 70 } }
+	option = { name = xar.gaze.milestone.ok }
+}
+
+xar.2208 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.gaze.milestone.title
+	desc = xar.gaze.milestone.seal
+	immediate = { save_scope_value_as = { name = xar_gaze_level value = 80 } }
+	option = { name = xar.gaze.milestone.ok }
+}
+
+xar.2209 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.gaze.milestone.title
+	desc = xar.gaze.milestone.reroll
+	immediate = { save_scope_value_as = { name = xar_gaze_level value = 90 } }
+	option = { name = xar.gaze.milestone.ok }
+}
+
+xar.2210 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.gaze.milestone.title
+	desc = xar.gaze.milestone.seal
+	immediate = { save_scope_value_as = { name = xar_gaze_level value = 100 } }
+	option = { name = xar.gaze.milestone.ok }
+}

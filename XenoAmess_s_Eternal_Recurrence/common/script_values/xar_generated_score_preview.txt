@@ -45,7 +45,7 @@ xar_current_descendant_score_value = {
 	}
 }
 
-xar_current_score_value = {
+xar_current_score_base_value = {
 	value = 0
 	save_temporary_scope_as = xar_score_preview_root
 	if = { limit = { exists = dynasty } dynasty = { save_temporary_scope_as = xar_score_preview_dyn } }
@@ -552,7 +552,7 @@ xar_current_score_value = {
 	every_held_title = { limit = { tier = tier_empire } add = 10 }
 	every_held_title = { limit = { tier = tier_hegemony } add = 20 }
 
-	# Living descendants through five generations: blood and highest title.
+	# Living descendants through 5 generations: blood and highest title.
 	save_temporary_scope_as = xar_score_preview_parent_1
 	every_child = {
 		add = xar_current_descendant_score_value
@@ -711,7 +711,19 @@ xar_current_score_value = {
 		}
 	}
 
-	# Each declined blessing session removes one percent; never below zero.
+	# Incremental lifetime-contract behavior.
+	add = { value = global_var:xa_contract_progress multiply = 10 }
+}
+
+xar_current_score_value = {
+	value = xar_current_score_base_value
+	if = {
+		limit = { global_var:xa_score_basis = 1 }
+		subtract = { value = global_var:xa_score_baseline }
+		max = 0
+	}
+
+	# Each declined blessing session removes 1.00 percent; never below zero.
 	if = {
 		limit = { global_var:xa_bless_reject_count > 0 }
 		multiply = {

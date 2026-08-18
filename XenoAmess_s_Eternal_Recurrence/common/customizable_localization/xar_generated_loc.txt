@@ -2808,6 +2808,20 @@ xar_record_level = {
 	text = { localization_key = xar_rec_0 }
 }
 
+# Import request signal. The record-level states stay dormant until the
+# game-start on_action explicitly requests an import.
+xar_import_request_check = {
+	type = character
+	text = {
+		trigger = {
+			has_global_variable = xa_import_requested
+			global_var:xa_import_requested = 1
+		}
+		localization_key = xar_import_request_on
+	}
+	text = { localization_key = xar_import_request_off fallback = yes }
+}
+
 # Test-only bridge signal: asks xar_meta to open the player character window.
 xar_trait_hover_check = {
 	type = character

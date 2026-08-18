@@ -35,12 +35,27 @@ Publishing mod to Steam failed: Saving descriptor.mod in mod sources failed:
 
 ## 标准流程
 
-1. 改仓库内容（mod 本体）
-2. 启动器 → Mods → 上传 Mod → 选同一物品（外层 .mod 的 `remote_file_id` 让它识别为更新）
-3. 工坊网页：描述用 BBCode（`[h1]`/`[list]`，**不渲染 markdown**——别直接贴 README）；
-   可见性默认"隐藏"，确认后改公开
+1. 运行 L0：`py tools/validate_static.py`、计分 reference vectors 和
+   `py tools/build_release.py --check`。这些步骤不会启动 CK3。
+2. 开发候选运行 `py tools/build_release.py`；正式版本先保证 clean worktree 且 HEAD 有与 descriptor 一致的 `v<semver>` tag，再运行 `py tools/build_release.py --release`。1.0.0 输出 staging、`-v1.0.0.manifest.json` 和 deterministic `-v1.0.0.zip`，命令同时打印 manifest/ZIP SHA-256。
+3. 发布前把用户目录外层 `.mod` 的 `path=` 临时指向上述 staging，保留其
+   `remote_file_id="3784706360"`；不要把该字段写入 staging 内层 `descriptor.mod`。
+4. 启动器 → Mods → 上传 Mod → 选同一物品。Steam 上传源必须是 staging，不能是仓库 mod 源目录。
+5. GitHub 候选发布附加同一次构建的 `.zip` 和 `.manifest.json`；记录 commit、manifest SHA-256
+   与工坊物品 ID，使 GitHub 与 Steam 使用同一 staging 内容。
+6. 上传后把用户目录外层 `.mod` 的 `path=` 恢复为开发目录，避免后续游戏误加载旧 staging。
+7. 工坊网页：描述用 BBCode（`[h1]`/`[list]`，**不渲染 markdown**——别直接贴 README）；
+   可见性默认"隐藏"，确认后改公开。
+8. Steam 刷新缓存后运行 `py tools/build_release.py --verify <workshop-cache> --manifest <versioned-manifest>`，要求逐文件大小/SHA-256 完全一致，再发布 GitHub draft 与工坊可见性。
 
 ## 上传内容范围
 
-打包的是 `path=` 指向的整个 mod 目录。仓库根的 `screenshots/`、`images/`、`tools/` 不会被带上
-（在 mod 目录外）。mod 内的源文件（如无损 PNG 原图）会被一起打包，注意体积与洁癖。
+启动器会上传 `path=` 指向的整个目录，所以正式路径必须指向 release staging。
+`tools/build_release.py` 只允许根目录的 `descriptor.mod`、`thumbnail.png`，以及
+`common/`、`events/`、`gfx/`、`gui/`、`localization/` 内明确允许的 CK3 文件类型；不会复制
+mod 内 `tools/`、仓库文档、`__pycache__`/`.pyc` 或源素材。manifest 不放进 staging，避免改变
+Steam 实际内容；它作为旁置追溯物料与 ZIP 一起发布。
+
+当前 selftest 规则/effect 和 acceptance-only GUI 仍与运行期 `.txt/.gui` 耦合，allowlist 暂时保留它们。
+测试 overlay 拆分及正式包隐藏 selftest 尚未完成，发布前应把这一点视为已知限制，而不是假定 staging
+已经完成生产/测试逻辑隔离。

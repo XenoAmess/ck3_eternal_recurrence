@@ -28,6 +28,26 @@ MOD = os.path.join(ROOT, "XenoAmess_s_Eternal_Recurrence")
 HEADER = "# GENERATED FILE - do not edit. Regenerate with tools/gen_pools.py\n"
 RARITY_ZH = {"c": "普通", "r": "稀有", "l": "传说"}
 RARITY_LEVEL = {"c": 0, "r": 1, "l": 2}
+RARITY_LABEL = {
+    "c": {"simp_chinese": "普通", "english": "Common", "french": "Commun", "german": "Gewöhnlich", "japanese": "一般", "korean": "일반", "polish": "Zwykłe", "russian": "Обычное", "spanish": "Común"},
+    "r": {"simp_chinese": "稀有", "english": "Rare", "french": "Rare", "german": "Selten", "japanese": "希少", "korean": "희귀", "polish": "Rzadkie", "russian": "Редкое", "spanish": "Raro"},
+    "l": {"simp_chinese": "传说", "english": "Legendary", "french": "Légendaire", "german": "Legendär", "japanese": "伝説", "korean": "전설", "polish": "Legendarne", "russian": "Легендарное", "spanish": "Legendario"},
+}
+FAMILY_LABEL = {
+    "gold": {"simp_chinese": "财富", "english": "Wealth"},
+    "prestige": {"simp_chinese": "威望", "english": "Prestige"},
+    "piety": {"simp_chinese": "信仰", "english": "Faith"},
+    "influence": {"simp_chinese": "权谋", "english": "Influence"},
+    "skill": {"simp_chinese": "属性", "english": "Skill"},
+    "xp": {"simp_chinese": "生活方式", "english": "Lifestyle"},
+    "trait": {"simp_chinese": "特质", "english": "Trait"},
+    "mod": {"simp_chinese": "修正", "english": "Modifier"},
+    "dynasty": {"simp_chinese": "宗族", "english": "Dynasty"},
+    "stress_b": {"simp_chinese": "压力", "english": "Stress"},
+    "stress_c": {"simp_chinese": "压力", "english": "Stress"},
+    "golddrain": {"simp_chinese": "财富", "english": "Wealth"},
+    "custom": {"simp_chinese": "秘契", "english": "Pact"},
+}
 
 # A visible diagnostic for an impossible slot ID. Resolver keys intentionally
 # have no same-named static yml entry: such entries mask SCOPE.Custom at runtime.
@@ -84,6 +104,8 @@ def entry_code(pool, entry):
         return f"{effect} = {v}"
     if family == "dynasty":
         return f"dynasty ?= {{ add_dynasty_prestige = {mag} }}"
+    if family == "golddrain":
+        return mag
     if family in ("stress_b", "stress_c"):
         return f"add_stress = {mag}"
     if family in ("trait", "custom"):
@@ -112,6 +134,8 @@ def entry_summary(pool, entry, lang):
                   "korean": "경험치", "polish": "PD", "russian": "опыта", "spanish": "EXP"}[lang]
         attr_word = ATTR_WORD[effect_to_attr[effect]][lang]
         return f"{S(v)} {attr_word}{suffix}" if lang == "simp_chinese" else f"{S(v)} {attr_word} {suffix}"
+    if family == "golddrain":
+        return entry[4][lang]
     if family == "stress_c":
         return SUM_T["stress_b"][lang](S(mag))
     if family in SUM_T:
@@ -123,9 +147,84 @@ def entry_summary(pool, entry, lang):
 def loc_line(entry, lang):
     names = entry[3]
     s = entry_summary(None, entry, lang)
+    rarity = RARITY_LABEL[entry[0]][lang]
+    family = FAMILY_LABEL[entry[1]].get(lang, FAMILY_LABEL[entry[1]]["english"])
+    # Square brackets are localization commands, not decorative punctuation.
+    prefix = f"#high {rarity} - {family}:#! "
     if lang in ("simp_chinese", "japanese"):
-        return f"{names[lang]}（{s}）"
-    return f"{names[lang]} ({s})"
+        return f"{prefix}{names[lang]}（{s}）"
+    return f"{prefix}{names[lang]} ({s})"
+
+
+def entry_conditions(entry):
+    """Hard-filter only entries that would be a complete no-op right now."""
+    family = entry[1]
+    if family == "trait":
+        trait = re.search(r"add_trait\s*=\s*(\w+)", entry_code(None, entry)).group(1)
+        ranked = {
+            "physique_good_1": ("physique_good_1", "physique_good_2", "physique_good_3"),
+            "physique_good_2": ("physique_good_2", "physique_good_3"),
+            "physique_good_3": ("physique_good_3",),
+            "beauty_good_1": ("beauty_good_1", "beauty_good_2", "beauty_good_3"),
+            "beauty_good_2": ("beauty_good_2", "beauty_good_3"),
+            "intellect_good_1": ("intellect_good_1", "intellect_good_2", "intellect_good_3"),
+            "intellect_good_2": ("intellect_good_2", "intellect_good_3"),
+            "physique_bad_1": ("physique_bad_1", "physique_bad_2", "physique_bad_3"),
+            "beauty_bad_1": ("beauty_bad_1", "beauty_bad_2", "beauty_bad_3"),
+            "beauty_bad_2": ("beauty_bad_2", "beauty_bad_3"),
+            "intellect_bad_1": ("intellect_bad_1", "intellect_bad_2", "intellect_bad_3"),
+            "intellect_bad_2": ("intellect_bad_2", "intellect_bad_3"),
+        }
+        blocked = ranked.get(trait, (trait,))
+        if len(blocked) == 1:
+            return [f"NOT = {{ has_trait = {trait} }}"]
+        checks = " ".join(f"has_trait = {item}" for item in blocked)
+        return [f"NOT = {{ OR = {{ {checks} }} }}"]
+    if family == "mod":
+        modifier = entry[2][0]
+        return [f"NOT = {{ has_character_modifier = {modifier} }}"]
+    if family == "dynasty":
+        return ["exists = dynasty"]
+    if family == "stress_b":
+        return ["stress > 0"]
+    code = entry_code(None, entry)
+    modifiers = re.findall(r"add_character_modifier\s*=\s*\{\s*modifier\s*=\s*(\w+)", code)
+    conditions = [f"NOT = {{ has_character_modifier = {modifier} }}" for modifier in modifiers]
+    if "dynasty ?=" in code:
+        conditions.append("exists = dynasty")
+    return conditions
+
+
+def entry_weight_modifiers(entry, pool_kind):
+    """Small visible-state nudges; rarity remains the dominant weight."""
+    family = entry[1]
+    rules = {
+        "gold": ("gold < 100", 2),
+        "golddrain": ("gold > 500", 1.5),
+        "piety": ("piety < 100", 2),
+        "prestige": ("prestige < 100", 2),
+        "stress_b": ("stress >= 50", 2),
+        "stress_c": ("stress >= 200", 0.25),
+    }
+    modifiers = [rules[family]] if family in rules else []
+    code = entry_code(None, entry)
+    contract_id = None
+    if "martial" in code or "prowess" in code:
+        contract_id = 1
+    elif "intrigue" in code or "diplomacy" in code:
+        contract_id = 2
+    elif family in ("piety",):
+        contract_id = 3
+    elif family == "dynasty" or "fertility" in code:
+        contract_id = 4
+    elif family in ("gold", "golddrain") or "stewardship" in code:
+        contract_id = 5
+    elif family in ("stress_b", "stress_c"):
+        contract_id = 6
+    if contract_id:
+        modifiers.append((f"global_var:xa_contract_id = {contract_id}",
+                          2 if pool_kind == "bless" else 1.5))
+    return modifiers
 
 
 def validate(pool, label):
@@ -154,12 +253,18 @@ def gen_effects(pool, var_prefix, draw_name, apply_name):
         ("a", ()), ("b", ("a",)), ("c", ("a", "b")))
     lines.append(f"# Draw: {len(slots)} distinct entries without replacement (weights c=10/r=3/l=1).\n")
     lines.append(f"{draw_name} = {{")
+    # First-ever production draws have no historical slot globals. Initialize
+    # them to an impossible ID before distinctness triggers read prior slots.
+    for slot, _ in slots:
+        lines.append(
+            f"\tset_global_variable = {{ name = xa_{var_prefix}_{slot} value = -1 }}")
     for slot, prior in slots:
         lines.append("\trandom_list = {")
         for i, e in enumerate(pool):
             conditions = []
             if prior:
                 conditions += [f"NOT = {{ global_var:xa_{var_prefix}_{p} = {i} }}" for p in prior]
+            conditions += entry_conditions(e)
             # A legendary blessing (level 2) requires at least a rare curse
             # (level 1). Common/rare blessings leave the full curse pool valid.
             if var_prefix == "curse" and e[0] == "c":
@@ -168,10 +273,29 @@ def gen_effects(pool, var_prefix, draw_name, apply_name):
             rarity_effect = (
                 f" set_global_variable = {{ name = xa_{var_prefix}_{slot}_rarity value = {RARITY_LEVEL[e[0]]} }}"
                 if var_prefix == "curse" else "")
+            modifiers = "".join(
+                f"modifier = {{ factor = {factor} {trigger} }} "
+                for trigger, factor in entry_weight_modifiers(e, var_prefix))
             lines.append(
-                f"\t\t{WEIGHTS[e[0]]} = {{ {cond}"
+                f"\t\t{WEIGHTS[e[0]]} = {{ {cond}{modifiers}"
                 f"set_global_variable = {{ name = xa_{var_prefix}_{slot} value = {i} }}"
                 f"{rarity_effect} }}")
+        lines.append("\t}")
+        # Defensive fallback: applicability must never expose the -1 diagnostic.
+        candidates = [i for i, e in enumerate(pool)
+                      if not entry_conditions(e) and (var_prefix != "curse" or e[0] != "c")]
+        lines.append(f"\tif = {{ limit = {{ global_var:xa_{var_prefix}_{slot} = -1 }}")
+        for index, candidate in enumerate(candidates[:len(prior) + 1]):
+            keyword = "if" if index == 0 else "else_if"
+            distinct = " ".join(
+                f"NOT = {{ global_var:xa_{var_prefix}_{p} = {candidate} }}" for p in prior)
+            limit = distinct or "always = yes"
+            rarity = RARITY_LEVEL[pool[candidate][0]]
+            lines.append(f"\t\t{keyword} = {{ limit = {{ {limit} }} set_global_variable = {{ name = xa_{var_prefix}_{slot} value = {candidate} }}")
+            if var_prefix == "curse":
+                lines.append(f"\t\t\tset_global_variable = {{ name = xa_{var_prefix}_{slot}_rarity value = {rarity} }}")
+            lines.append("\t\t}")
+        lines.append(f'\t\tdebug_log = "XAR: pool fallback {var_prefix} {slot}"')
         lines.append("\t}")
     lines.append("}\n")
     slot_help = "a/b" if var_prefix == "curse" else "a/b/c"
@@ -182,7 +306,7 @@ def gen_effects(pool, var_prefix, draw_name, apply_name):
         if var_prefix == "bless":
             code += f"\nset_global_variable = {{ name = xa_selected_bless_rarity value = {RARITY_LEVEL[e[0]]} }}"
         else:
-            code += "\nadd_trait_xp = { trait = xar_glassfire_gaze value = 1 }"
+            code += "\nxar_complete_bargain_pair_effect = yes"
         indented = code.replace("\n", "\n\t")
         lines.append(f"\tif = {{ limit = {{ global_var:xa_{var_prefix}_$SLOT$ = {i} }} {indented} }}")
     if var_prefix == "bless":
@@ -271,9 +395,9 @@ def gen_doc():
            "## 规则框架",
            "",
            "- 商店「开始此生」后琉焰卿开启**垂青会**（`xar.0004`）：展示祝福池随机 3 项（无放回）+ 「什么都不要」",
-           "- 选中祝福 → 立即发放 → 必须再从诅咒池随机 2 项中选 1（`xar.0005`，无退路）→ 回到祝福事件",
+           "- 选中祝福 → 立即发放 → 必须再从诅咒池随机 2 项中选 1（`xar.0005`）；拥有封印时可消耗封印免除本次咒痕",
            "- 两项诅咒的稀有度均不得低于所选祝福稀有度减 1：传说祝福只会抽到稀有/传说诅咒；普通/稀有祝福允许全池",
-           "- 每场垂青会**上限 3 祝福 + 3 诅咒**；选「不要」或领满即散场，**3 年后**（1095 天）琉焰卿再度现身（`xar.0006` 重置会话）",
+           "- 每场垂青会恰好**一对祝福/诅咒**；成交或拒绝后散场，**3 年后**（1095 天）琉焰卿再度现身（`xar.0006` 重置会话）",
            "- 每完成一对祝福/诅咒，琉焰之视获得 **1 经验**；每拒绝一次祝福会，**最终结算总分 -1%**（加算，最低为 0）",
            "- 角色死亡 → 结算后进入观察者模式，计时自然作废",
            "",
@@ -287,11 +411,12 @@ def gen_doc():
     for pool, prefix, title in ((B, "bless", "祝福池"), (C, "curse", "诅咒池")):
         out.append(f"## {title}（100 项）")
         out.append("")
-        out.append("| id | 稀有度 | 名称 | 效果 |")
-        out.append("|---|---|---|---|")
+        out.append("| 稳定 ID | wire id | 稀有度 | 标签 | 名称 | 效果 |")
+        out.append("|---|---:|---|---|---|---|")
         for i, e in enumerate(pool):
             code = entry_code(None, e).replace("\n", " + ")
-            out.append(f"| {i} | {RARITY_ZH[e[0]]} | {e[3]['simp_chinese']} | `{code}` |")
+            stable_id = f"{prefix}.{i:03d}"
+            out.append(f"| `{stable_id}` | {i} | {RARITY_ZH[e[0]]} | {FAMILY_LABEL[e[1]]['simp_chinese']} | {e[3]['simp_chinese']} | `{code}` |")
         out.append("")
     out += [
         "## 实现位置",

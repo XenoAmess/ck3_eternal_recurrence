@@ -17,39 +17,25 @@ xar.0002 = {
 
 	option = {
 		name = xar.0002.accept
-		add_character_flag = xa_enabled
-		add_trait = xar_glassfire_gaze
+		xar_enable_player_pact_effect = yes
 		# Init shop state HERE, once. Do NOT gate on has_global_variable: the
 		# loader statically registers every referenced global (check = true,
 		# value still none), so gated init never runs and reads fail. And
 		# xar.0001 re-fires on every page flip, so its immediate is no place
 		# for one-time init either.
-		set_global_variable = { name = xa_shop_page value = 1 }
-		set_global_variable = { name = xa_price_dip value = 25 }
-		set_global_variable = { name = xa_price_mar value = 25 }
-		set_global_variable = { name = xa_price_ste value = 25 }
-		set_global_variable = { name = xa_price_int value = 25 }
-		set_global_variable = { name = xa_price_lea value = 25 }
-		set_global_variable = { name = xa_price_pro value = 25 }
-		set_global_variable = { name = xa_price_gold value = 25 }
-		set_global_variable = { name = xa_price_pres value = 15 }
-		set_global_variable = { name = xa_price_pie value = 15 }
-		set_global_variable = { name = xa_price_inf value = 15 }
-		set_global_variable = { name = xa_price_dyn value = 100 }
-		set_global_variable = { name = xa_price_life value = 100 }
-		set_global_variable = { name = xa_price_reform value = 1133 }
-		set_global_variable = { name = xa_lifespan_bought value = 0 }
-		set_global_variable = { name = xa_bless_count value = 0 }
-		set_global_variable = { name = xa_bless_session value = 0 }
-		set_global_variable = { name = xa_bless_reject_count value = 0 }
-		set_global_variable = { name = xa_selected_bless_rarity value = 0 }
+		xar_initialize_run_state_effect = yes
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			set_global_variable = { name = xa_local_points value = 200 }
 			debug_log = "XAR: UI pact accepted"
 			trigger_event = { id = xar.0001 }
 		}
-		else = { trigger_event = { id = xar.0001 days = 1 } }
+		else_if = {
+			limit = { global_var:xa_local_points = 0 }
+			debug_log = "XAR: first life flow opened"
+			trigger_event = xar.0010
+		}
+		else = { trigger_event = xar.0001 }
 	}
 
 	option = {
@@ -73,8 +59,8 @@ xar.0003 = {
 
 # The shop. Paginated (the event option grid does not scroll):
 #   page 1: attributes, page 2: resources, page 3: special goods.
-# Every purchase charges the item's current price, then inflates it by 1.2x
-# (per run; price variables live in the save). Unspent points convert to gold
+# Every purchase charges the item's current price, then replaces it with
+# ceiling(current * 1.2) (per run; price variables live in the save). Unspent points convert to gold
 # when starting.
 xar.0001 = {
 	type = character_event
@@ -114,11 +100,10 @@ xar.0001 = {
 			global_var:xa_shop_page = 1
 			global_var:xa_local_points >= global_var:xa_price_dip
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_dip multiply = -1 } }
-		add_diplomacy_skill = 1
-		change_global_variable = { name = xa_price_dip multiply = 1.2 }
+		xar_buy_diplomacy_shop_item_effect = yes
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
+			set_global_variable = { name = xa_test_ui_dip_applied value = 1 }
 			if = {
 				limit = {
 					global_var:xa_local_points >= 174.9
@@ -129,14 +114,13 @@ xar.0001 = {
 			else = { debug_log = "XAR: TEST FAIL ui_shop_points" }
 			if = {
 				limit = {
-					global_var:xa_price_dip >= 29.9
-					global_var:xa_price_dip <= 30.1
+					global_var:xa_price_dip = 30
 				}
 				debug_log = "XAR: TEST PASS ui_shop_price"
 			}
 			else = { debug_log = "XAR: TEST FAIL ui_shop_price" }
 			if = {
-				limit = { diplomacy > global_var:xa_test_dip_before }
+				limit = { global_var:xa_test_ui_dip_applied = 1 }
 				debug_log = "XAR: TEST PASS ui_shop_diplomacy"
 			}
 			else = { debug_log = "XAR: TEST FAIL ui_shop_diplomacy" }
@@ -144,9 +128,8 @@ xar.0001 = {
 				limit = {
 					global_var:xa_local_points >= 174.9
 					global_var:xa_local_points <= 175.1
-					global_var:xa_price_dip >= 29.9
-					global_var:xa_price_dip <= 30.1
-					diplomacy > global_var:xa_test_dip_before
+					global_var:xa_price_dip = 30
+					global_var:xa_test_ui_dip_applied = 1
 				}
 				debug_log = "XAR: TEST PASS ui_shop_purchase"
 			}
@@ -160,9 +143,7 @@ xar.0001 = {
 			global_var:xa_shop_page = 1
 			global_var:xa_local_points >= global_var:xa_price_mar
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_mar multiply = -1 } }
-		add_martial_skill = 1
-		change_global_variable = { name = xa_price_mar multiply = 1.2 }
+		xar_buy_martial_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 	option = {
@@ -171,9 +152,7 @@ xar.0001 = {
 			global_var:xa_shop_page = 1
 			global_var:xa_local_points >= global_var:xa_price_ste
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_ste multiply = -1 } }
-		add_stewardship_skill = 1
-		change_global_variable = { name = xa_price_ste multiply = 1.2 }
+		xar_buy_stewardship_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 	option = {
@@ -182,9 +161,7 @@ xar.0001 = {
 			global_var:xa_shop_page = 1
 			global_var:xa_local_points >= global_var:xa_price_int
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_int multiply = -1 } }
-		add_intrigue_skill = 1
-		change_global_variable = { name = xa_price_int multiply = 1.2 }
+		xar_buy_intrigue_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 	option = {
@@ -193,9 +170,7 @@ xar.0001 = {
 			global_var:xa_shop_page = 1
 			global_var:xa_local_points >= global_var:xa_price_lea
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_lea multiply = -1 } }
-		add_learning_skill = 1
-		change_global_variable = { name = xa_price_lea multiply = 1.2 }
+		xar_buy_learning_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 	option = {
@@ -204,9 +179,7 @@ xar.0001 = {
 			global_var:xa_shop_page = 1
 			global_var:xa_local_points >= global_var:xa_price_pro
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_pro multiply = -1 } }
-		add_prowess_skill = 1
-		change_global_variable = { name = xa_price_pro multiply = 1.2 }
+		xar_buy_prowess_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 
@@ -217,9 +190,7 @@ xar.0001 = {
 			global_var:xa_shop_page = 2
 			global_var:xa_local_points >= global_var:xa_price_gold
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_gold multiply = -1 } }
-		add_gold = 100
-		change_global_variable = { name = xa_price_gold multiply = 1.2 }
+		xar_buy_gold_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 	option = {
@@ -228,9 +199,7 @@ xar.0001 = {
 			global_var:xa_shop_page = 2
 			global_var:xa_local_points >= global_var:xa_price_pres
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_pres multiply = -1 } }
-		add_prestige = 100
-		change_global_variable = { name = xa_price_pres multiply = 1.2 }
+		xar_buy_prestige_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 	option = {
@@ -239,9 +208,7 @@ xar.0001 = {
 			global_var:xa_shop_page = 2
 			global_var:xa_local_points >= global_var:xa_price_pie
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_pie multiply = -1 } }
-		add_piety = 100
-		change_global_variable = { name = xa_price_pie multiply = 1.2 }
+		xar_buy_piety_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 	option = {
@@ -250,9 +217,7 @@ xar.0001 = {
 			global_var:xa_shop_page = 2
 			global_var:xa_local_points >= global_var:xa_price_inf
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_inf multiply = -1 } }
-		change_influence = 100
-		change_global_variable = { name = xa_price_inf multiply = 1.2 }
+		xar_buy_influence_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 	option = {
@@ -261,9 +226,7 @@ xar.0001 = {
 			global_var:xa_shop_page = 2
 			global_var:xa_local_points >= global_var:xa_price_dyn
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_dyn multiply = -1 } }
-		dynasty = { add_dynasty_prestige = 100 }
-		change_global_variable = { name = xa_price_dyn multiply = 1.2 }
+		xar_buy_dynasty_prestige_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 
@@ -275,9 +238,7 @@ xar.0001 = {
 			global_var:xa_local_points >= global_var:xa_price_life
 			NOT = { global_var:xa_lifespan_bought >= 50 }
 		}
-		change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_life multiply = -1 } }
-		xar_buy_lifespan_effect = yes
-		change_global_variable = { name = xa_price_life multiply = 1.2 }
+		xar_buy_lifespan_shop_item_effect = yes
 		trigger_event = { id = xar.0001 }
 	}
 	option = {
@@ -314,13 +275,7 @@ xar.0001 = {
 	# ---------- finish: unspent points convert to gold ----------
 	option = {
 		name = xar.0001.finish
-		if = {
-			limit = { global_var:xa_local_points > 0 }
-			add_gold = { value = global_var:xa_local_points }
-		}
-		set_global_variable = { name = xa_local_points value = 0 }
-		# The run begins: the Glassfire Lord offers a blessing session.
-		set_global_variable = { name = xa_bless_session value = 0 }
+		xar_finish_shop_effect = yes
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			if = {
@@ -338,6 +293,80 @@ xar.0001 = {
 	}
 }
 
+# First life: a zero historical tier has nothing meaningful to spend. Explain
+# the bargain and begin the blessing flow directly instead of opening an empty
+# shop. The production UI selftest bypasses this via xa_full_ui_test_active.
+xar.0010 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = mental_health
+	override_background = { reference = xar_glassfire }
+	title = xar.0010.title
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { global_var:xa_global_record_imported = 0 }
+				desc = xar.0010.desc
+			}
+			desc = xar.0010.desc_clean
+		}
+	}
+
+	option = {
+		name = xar.0010.begin
+		xar_initialize_blessing_session_effect = yes
+		trigger_event = { id = xar.0004 }
+	}
+}
+
+# Reusable read-only ledger. All values are snapshots used only by this event;
+# record bits, the imported historical tier, resources, and score state remain
+# untouched. Candidate/next/gap projection is generated from THRESHOLDS.
+xar.0011 = {
+	type = character_event
+	trigger = { is_ai = no }
+	theme = stewardship
+	override_background = { reference = xar_glassfire }
+	title = xar.0011.title
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { global_var:xa_ledger_at_cap = 1 }
+				desc = xar.0011.desc_cap
+			}
+			desc = xar.0011.desc
+		}
+		desc = xar.challenge.summary
+		desc = xar.contract.ledger
+	}
+
+	immediate = {
+		xar_prepare_ledger_effect = yes
+		save_scope_value_as = { name = xar_ledger_score value = global_var:xa_ledger_score }
+		save_scope_value_as = { name = xar_ledger_history value = global_var:xa_global_record_imported }
+		save_scope_value_as = { name = xar_ledger_candidate value = global_var:xa_ledger_candidate }
+		save_scope_value_as = { name = xar_ledger_next value = global_var:xa_ledger_next }
+		save_scope_value_as = { name = xar_ledger_gap value = global_var:xa_ledger_gap }
+		save_scope_value_as = { name = xar_ledger_pairs value = global_var:xa_bless_count }
+		save_scope_value_as = { name = xar_ledger_refusals value = global_var:xa_bless_reject_count }
+		save_scope_value_as = { name = xar_challenge_ratio value = global_var:xa_inheritance_percent }
+		save_scope_value_as = { name = xar_challenge_cap value = global_var:xa_budget_cap }
+		save_scope_value_as = { name = xar_challenge_baseline value = global_var:xa_score_baseline }
+		save_scope_value_as = { name = xar_contract_progress value = global_var:xa_contract_progress }
+		save_scope_value_as = { name = xar_rerolls value = global_var:xa_reroll_tokens }
+		save_scope_value_as = { name = xar_seals value = global_var:xa_seal_tokens }
+	}
+
+	option = {
+		name = xar.0011.close
+		remove_global_variable = xa_ledger_score
+		remove_global_variable = xa_ledger_candidate
+		remove_global_variable = xa_ledger_next
+		remove_global_variable = xa_ledger_gap
+		remove_global_variable = xa_ledger_at_cap
+	}
+}
+
 # Death: show the run score breakdown, record, and delta; on confirm, exit to
 # the main menu (via the xar_meta_window GUI bridge watching xa_quit_to_menu).
 xar.1001 = {
@@ -345,7 +374,11 @@ xar.1001 = {
 	trigger = { is_ai = no }
 	theme = skull
 	title = xar.1001.title
-	desc = xar.1001.desc
+	desc = {
+		desc = xar.1001.desc
+		desc = xar.challenge.summary
+		desc = xar.contract.ledger
+	}
 
 	immediate = {
 		debug_log = "XAR: score event fired"
@@ -420,19 +453,26 @@ xar.1001 = {
 		save_scope_value_as = { name = xar_p_realm value = global_var:xa_p_realm }
 		# totals
 		save_scope_value_as = { name = xar_score value = global_var:xa_run_score }
+		save_scope_value_as = { name = xar_candidate value = global_var:xa_record_candidate }
 		save_scope_value_as = { name = xar_old value = global_var:xa_old_record }
 		save_scope_value_as = { name = xar_delta value = global_var:xa_score_delta }
+		save_scope_value_as = { name = xar_challenge_ratio value = global_var:xa_inheritance_percent }
+		save_scope_value_as = { name = xar_challenge_cap value = global_var:xa_budget_cap }
+		save_scope_value_as = { name = xar_challenge_baseline value = global_var:xa_score_baseline }
+		save_scope_value_as = { name = xar_contract_progress value = global_var:xa_contract_progress }
+		save_scope_value_as = { name = xar_rerolls value = global_var:xa_reroll_tokens }
+		save_scope_value_as = { name = xar_seals value = global_var:xa_seal_tokens }
 	}
 
 	option = {
 		name = xar.1001.new_record
-		trigger = { global_var:xa_run_score > global_var:xa_old_record }
+		trigger = { global_var:xa_record_candidate > global_var:xa_old_record }
 		set_global_variable = xa_quit_to_menu
 	}
 
 	option = {
 		name = xar.1001.no_record
-		trigger = { NOT = { global_var:xa_run_score > global_var:xa_old_record } }
+		trigger = { NOT = { global_var:xa_record_candidate > global_var:xa_old_record } }
 		set_global_variable = xa_quit_to_menu
 	}
 }
@@ -496,8 +536,15 @@ xar.0004 = {
 		trigger_event = { id = xar.0005 }
 	}
 	option = {
+		name = xar.0004.reroll
+		trigger = { global_var:xa_reroll_tokens > 0 }
+		change_global_variable = { name = xa_reroll_tokens add = -1 }
+		trigger_event = xar.0004
+	}
+	option = {
 		name = xar.0004.decline
 		change_global_variable = { name = xa_bless_reject_count add = 1 }
+		xar_capture_score_baseline_effect = yes
 		trigger_event = { id = xar.0006 days = 1095 }
 	}
 }
@@ -528,6 +575,7 @@ xar.0005 = {
 	option = {
 		name = xar_curse_option_a
 		xar_apply_curse_effect = { SLOT = a }
+		xar_capture_score_baseline_effect = yes
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI curse accepted"
@@ -540,10 +588,6 @@ xar.0005 = {
 			set_global_variable = { name = xa_bless_reject_count value = 1 }
 			set_global_variable = { name = xa_selftest_waits value = 0 }
 			trigger_event = { id = xar.0008 days = 1 }
-		}
-		else_if = {
-			limit = { global_var:xa_bless_session < 3 }
-			trigger_event = { id = xar.0004 }
 		}
 		else = {
 			trigger_event = { id = xar.0006 days = 1095 }
@@ -552,6 +596,7 @@ xar.0005 = {
 	option = {
 		name = xar_curse_option_b
 		xar_apply_curse_effect = { SLOT = b }
+		xar_capture_score_baseline_effect = yes
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI curse accepted"
@@ -565,13 +610,17 @@ xar.0005 = {
 			set_global_variable = { name = xa_selftest_waits value = 0 }
 			trigger_event = { id = xar.0008 days = 1 }
 		}
-		else_if = {
-			limit = { global_var:xa_bless_session < 3 }
-			trigger_event = { id = xar.0004 }
-		}
 		else = {
 			trigger_event = { id = xar.0006 days = 1095 }
 		}
+	}
+	option = {
+		name = xar.0005.seal
+		trigger = { global_var:xa_seal_tokens > 0 }
+		change_global_variable = { name = xa_seal_tokens add = -1 }
+		xar_complete_bargain_pair_effect = yes
+		xar_capture_score_baseline_effect = yes
+		trigger_event = { id = xar.0006 days = 1095 }
 	}
 }
 
@@ -586,32 +635,18 @@ xar.0006 = {
 	}
 }
 
-# UI localization smoke test: opens exactly one bless/curse pair so the runner
-# can screenshot the option text and OCR-check for raw keys.
-xar.0009 = {
-	hidden = yes
-	trigger = { is_ai = no }
-	immediate = {
-		debug_log = "XAR: UI test armed"
-		set_global_variable = { name = xa_ui_test_active value = 1 }
-		set_global_variable = { name = xa_bless_session value = 3 }
-		set_global_variable = { name = xa_bless_count value = 0 }
-		trigger_event = { id = xar.0004 }
-	}
-}
 # Self-test import waiter (rule xar_selftest): polls daily until the GUI-bridge
-# import delivered xa_global_record_imported, then arms the checker and kills
+# import protocol is consumed, then arms the checker and kills
 # root. (The bridge tick is starved while modal windows are open, so dying at
 # game start races it. 30-day cap keeps the run deterministic if the bridge
-# broke.) Note: xa_local_points is only set when the normal shop flow armed
-# xa_shop_pending — the selftest bypasses the shop event, so it waits on the
-# unconditional delivery var instead.
+# broke.) The selftest waits on consumed rather than merely seeing the imported
+# value, proving that the ready consumer also copied spendable points.
 xar.0008 = {
 	hidden = yes
 	trigger = { is_ai = no }
 	immediate = {
 		if = {
-			limit = { has_global_variable = xa_global_record_imported }
+			limit = { global_var:xa_import_consumed = 1 }
 			debug_log = "XAR: import delivered, proceeding to death"
 			# runtime coverage: apply every pool entry before dying
 			xar_test_sweep_effect = yes
@@ -642,19 +677,6 @@ xar.0007 = {
 	hidden = yes
 	trigger = { is_ai = no }
 	immediate = {
-		# import bridge delivered (baseline 0: runner stripped the record bits).
-		# xa_local_points is NOT checked here — it only gets set when the normal
-		# shop flow armed xa_shop_pending, which the selftest bypasses.
-		if = {
-			limit = { has_global_variable = xa_global_record_imported }
-			debug_log = "XAR: TEST PASS import_var"
-			if = {
-				limit = { global_var:xa_global_record_imported = 0 }
-				debug_log = "XAR: TEST PASS import_value"
-			}
-			else = { debug_log = "XAR: TEST FAIL import_value" }
-		}
-		else = { debug_log = "XAR: TEST FAIL import_var" }
 		if = {
 			limit = { global_var:xa_run_score > 0 }
 			debug_log = "XAR: TEST PASS score_positive"
@@ -684,7 +706,7 @@ xar.0007 = {
 		# record beaten + write path taken (the tutorial-bit persistence itself
 		# is asserted runner-side by reading tutorial.txt before restore)
 		if = {
-			limit = { global_var:xa_score_delta > 0 }
+			limit = { global_var:xa_record_candidate > global_var:xa_old_record }
 			debug_log = "XAR: TEST PASS record_write"
 		}
 		else = { debug_log = "XAR: TEST FAIL record_write" }

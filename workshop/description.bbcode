@@ -1,15 +1,13 @@
-[h1]琉焰卿的永恒轮回 / Glassfire Lord's Eternal Recurrence[/h1]
+[h1]琉焰卿的永恒轮回 — CK3 Roguelite / New Game+[/h1]
 [h3][i]……我将永不停歇地，一次次回到那个你还在的冬日[/i][/h3]
 [h3][i]...I shall never cease to return, again and again, to that winter day where you still dwell.[/i][/h3]
 
-[b]⚠ 必须开启教程！游戏设置 → 教程（reactive advice）选「完整」或「警告」，切勿「禁用」。
-REQUIRED: enable the tutorial! Settings → Tutorial (reactive advice) → "Full" or "Warnings" — never "Disabled".[/b]
-[i]原因：本 mod 的跨存档存储复用引擎的教程课程持久化（tutorial.txt）；禁用教程则纪录无法写入/读取，核心功能整体失效。
-Why: the cross-save storage reuses the engine's tutorial-lesson persistence (tutorial.txt); with tutorials disabled, records can neither be written nor read.[/i]
+[b]一位统治者，一条命，一次结算。死亡称量真实分数；余烬位阶跨存档保存；下一世花费其副本换取强化。[/b]
+[b]One ruler, one life, one settlement. Death yields an exact score; the Ember Tier persists across saves; the next life spends its copy on upgrades.[/b]
 
-轮回 roguelike：每一世的功业都会结算为分数，纪录跨存档全局保存；新开局时，琉焰卿会把纪录的副本交给你——在「轮回当铺」里消费它，开始更强的一生。
+Version 1.0.0 candidate · CK3 1.19.0.6 · Workshop 3784706360
 
-A reincarnation roguelike: every life is scored at death, and your record persists globally across saves. At each new start, the Glassfire Lord hands you a copy of that record to spend in the Pawnshop of Recurrence.
+[b]⚠ 必须开启教程 / TUTORIAL REQUIRED：设置 → 教程选择「完整」或「警告」，切勿禁用。Existing records remain readable when disabled, but new Ember Tiers, contract PBs, and collection entries cannot be written.[/b]
 
 [h1]玩法 / Gameplay[/h1]
 
@@ -19,21 +17,44 @@ Accept the pact (gain the Glassfire Gaze trait) or decline for a vanilla run.
 Glassfire Gaze has 0–100 progression: each completed blessing/curse pair grants 1 XP; every 10 XP raises its stress cost, and its tooltip previews your current score.
 [img]https://images.steamusercontent.com/ugc/15858933431013250817/35F8ED403593CFC12C6D3F9EA599BA6B98F47472/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false[/img]
 
-「轮回当铺」：分数 = 全局最高纪录的副本。购买六维属性、金钱/威望/虔诚/影响力/宗族威望、预期寿命、免费宗教改革（每局限一次）；每件商品越买越贵（×1.2），剩余分数开局时转为金币。
-Spend a copy of your record on attributes, resources, lifespan, a once-per-run free faith reformation; prices inflate ×1.2 per purchase, leftovers convert to gold.
+游戏规则提供绝对/本世成长赛道与 0/25/50/100% 继承，预算封顶 500。「轮回当铺」可购买属性、资源、寿命或免费宗教改革；价格每次 ×1.2。
+Choose Absolute or Lifetime Growth scoring and 0/25/50/100% inheritance, capped at 500. Spend it on attributes, resources, lifespan, or faith reformation; prices inflate ×1.2.
 [img]https://images.steamusercontent.com/ugc/12568680649862568476/860585B2C756BBAA51AADE7EB1DC4B2A20CC19E5/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false[/img]
 
 「垂青会」：祝福三选一，随后从两项符合最低稀有度的诅咒中强制选择一项。接受一对获得 1 点特质经验；拒绝整场则最终分数 -1%。
 Favor sessions offer one of three blessings, followed by one of two rarity-constrained mandatory curses. A completed pair grants 1 trait XP; declining the session costs 1% final score.
 
-死亡结算完整明细，破纪录写入全局（教程通知）；确认后进入观察者模式，不可继续扮演后代。
-Full score breakdown on death; new records are written globally; the run then ends in observer mode.
+六类本世契约把战争、牵制、传教、家族、建设与低压力长寿变成增量目标。3/6/10 进度提供叙事反馈、分数与跨存档 PB；【琉焰之视】每 10 XP 交替解锁重抽和封印。
+Six lifetime contracts turn war, hooks, conversion, family, construction, and low-stress longevity into incremental goals. Progress 3/6/10 grants narrative feedback, score, and persistent PBs; every 10 Gaze XP alternates rerolls and seals.
+
+死亡结算展示真实分数；只有跨过新余烬阈值才写入量化纪录（教程通知）。确认后进入观察者模式，不可继续扮演后代。
+Full exact-score breakdown on death; a quantized record is written only when a new ember threshold is crossed. The run then ends in observer mode.
 [img]https://images.steamusercontent.com/ugc/13660478083691512905/9BED1CE13F8414ABCDC72C3742CA6349E309A9A2/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false[/img]
 [img]https://images.steamusercontent.com/ugc/12306923708257855021/CFD03A6CF4DC5104DF8E1455C5C83D243382BC20/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false[/img]
 
 [h1]本地化 / Localization[/h1]
 简中 / English / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español
+[i]核心 UI 提供九语言；1.0 契约叙事当前为简中/英文，其他七种语言暂用英文，等待人工翻译。Core UI supports all nine languages; 1.0 contract narrative currently uses Chinese/English, with English placeholders in the other seven pending human translation.[/i]
 
 [i]单机定位。/ Single-player oriented.[/i]
+
+[h1]版本与兼容性 / Version & Compatibility[/h1]
+测试版本 CK3 1.19.0.6；推荐新开局与单机。mod 不覆盖原版文件，但未逐项验证的 on_action、GUI 或同键资源组合不作兼容保证。
+Tested on CK3 1.19.0.6; new single-player games are recommended. No vanilla file is replaced, but untested on_action, GUI, or same-key mod combinations are not guaranteed.
+
+[h1]一局有多长 / Run Length[/h1]
+一局等于签约统治者的一生。30–50 年通常包含约 10–17 次垂青会，每次最多两个模态窗口。
+One run is the contracted ruler's lifetime. A 30–50 year life usually sees about 10–17 favor sessions, at no more than two modal windows each.
+
+[h1]FAQ[/h1]
+[b]死亡后能继续继承人吗？[/b] 不能；确认结算后进入观察者模式。
+[b]Can I continue as the heir?[/b] No; confirming settlement enters observer mode.
+[b]关闭教程？ / Tutorials disabled?[/b] 旧纪录可读，新纪录与契约 PB 不会落盘。Existing data is readable, but new records and contract PBs will not persist.
+
+[h1]挑战模板 / Challenge Template[/h1]
+Game/Mod version · Start/custom-ruler points · Other mods · Track/inheritance · Starting Ember Tier · Years lived · Exact score · Persisted tier · Screenshot
+
+[h1]更新记录 / Changelog[/h1]
+1.0.0: challenge tracks, capped inheritance, lifetime contracts, PB/collection, Gaze unlocks, smarter labeled pools, one-pair favor sessions, deterministic release tooling.
 
 源码 / Source: https://github.com/XenoAmess/ck3_eternal_recurrence

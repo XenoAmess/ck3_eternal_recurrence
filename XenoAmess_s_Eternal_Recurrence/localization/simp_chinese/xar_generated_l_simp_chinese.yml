@@ -2108,5 +2108,7 @@
  xar_rec_164600:0 "XAR_LEVEL_164600"
  xar_rec_165600:0 "XAR_LEVEL_165600"
  xar_rec_166600:0 "XAR_LEVEL_166600"
+ xar_import_request_on:0 "XAR_IMPORT_REQUESTED"
+ xar_import_request_off:0 "XAR_IMPORT_IDLE"
  xar_trait_hover_sentinel:0 "XAR_TRAIT_HOVER_OPEN"
  xar_trait_hover_off:0 "XAR_TRAIT_HOVER_OFF"

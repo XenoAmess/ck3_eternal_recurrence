@@ -1,0 +1,510 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_scoring.py
+# Production death scoring mechanics generated from tools/scoring_data.py.
+# Descendant identity, dynasty, house, and title detection remain in the
+# hand-written xar_desc_count_self/xar_descendant_tier_count_effect adapters.
+
+xar_compute_score_effect = {
+	save_scope_as = xar_dead
+
+	# Attributes.
+	set_global_variable = {
+		name = xa_a_dip
+		value = { value = diplomacy }
+	}
+	set_global_variable = {
+		name = xa_p_dip
+		value = { value = global_var:xa_a_dip }
+	}
+	set_global_variable = {
+		name = xa_a_mar
+		value = { value = martial }
+	}
+	set_global_variable = {
+		name = xa_p_mar
+		value = { value = global_var:xa_a_mar }
+	}
+	set_global_variable = {
+		name = xa_a_ste
+		value = { value = stewardship }
+	}
+	set_global_variable = {
+		name = xa_p_ste
+		value = { value = global_var:xa_a_ste }
+	}
+	set_global_variable = {
+		name = xa_a_int
+		value = { value = intrigue }
+	}
+	set_global_variable = {
+		name = xa_p_int
+		value = { value = global_var:xa_a_int }
+	}
+	set_global_variable = {
+		name = xa_a_lea
+		value = { value = learning }
+	}
+	set_global_variable = {
+		name = xa_p_lea
+		value = { value = global_var:xa_a_lea }
+	}
+	set_global_variable = {
+		name = xa_a_pro
+		value = { value = prowess }
+	}
+	set_global_variable = {
+		name = xa_p_pro
+		value = { value = global_var:xa_a_pro }
+	}
+
+	# Living descendants: same dynasty and same house (extra).
+	set_global_variable = {
+		name = xa_a_dyn
+		value = 0
+	}
+	set_global_variable = {
+		name = xa_a_hou
+		value = 0
+	}
+	set_global_variable = { name = xa_d_t1 value = 0 }
+	set_global_variable = { name = xa_d_t2 value = 0 }
+	set_global_variable = { name = xa_d_t3 value = 0 }
+	set_global_variable = { name = xa_d_t4 value = 0 }
+	set_global_variable = { name = xa_d_t5 value = 0 }
+	save_temporary_scope_as = xar_score_dead
+	if = { limit = { exists = dynasty }
+		dynasty = { save_temporary_scope_as = xar_score_dyn }
+	}
+	if = { limit = { exists = house }
+		house = { save_temporary_scope_as = xar_score_house }
+	}
+	every_child = { xar_desc_node_l1 = yes }
+	xar_desc_clean_root = yes
+	set_global_variable = {
+		name = xa_p_dyn
+		value = { value = global_var:xa_a_dyn multiply = 0.1 }
+	}
+	set_global_variable = {
+		name = xa_p_hou
+		value = { value = global_var:xa_a_hou multiply = 0.1 }
+	}
+
+	# Resources: floor(log2(value)) times coefficient.
+	set_global_variable = {
+		name = xa_a_gold
+		value = { value = gold }
+	}
+	xar_log2_floor_effect = { SRC = gold VAR = xa_l_gold }
+	set_global_variable = {
+		name = xa_p_gold
+		value = { value = global_var:xa_l_gold multiply = 5 }
+	}
+	set_global_variable = {
+		name = xa_a_pres
+		value = { value = prestige }
+	}
+	xar_log2_floor_effect = { SRC = prestige VAR = xa_l_pres }
+	set_global_variable = {
+		name = xa_p_pres
+		value = { value = global_var:xa_l_pres multiply = 3 }
+	}
+	set_global_variable = {
+		name = xa_a_pie
+		value = { value = piety }
+	}
+	xar_log2_floor_effect = { SRC = piety VAR = xa_l_pie }
+	set_global_variable = {
+		name = xa_p_pie
+		value = { value = global_var:xa_l_pie multiply = 3 }
+	}
+	set_global_variable = {
+		name = xa_a_inf
+		value = { value = influence }
+	}
+	xar_log2_floor_effect = { SRC = influence VAR = xa_l_inf }
+	set_global_variable = {
+		name = xa_p_inf
+		value = { value = global_var:xa_l_inf multiply = 3 }
+	}
+
+	# Titles held at death.
+	set_global_variable = {
+		name = xa_n_t1
+		value = 0
+	}
+	every_held_title = {
+		limit = { tier = tier_county }
+		change_global_variable = { name = xa_n_t1 add = 1 }
+	}
+	set_global_variable = {
+		name = xa_p_t1
+		value = { value = global_var:xa_n_t1 }
+	}
+	set_global_variable = {
+		name = xa_n_t2
+		value = 0
+	}
+	every_held_title = {
+		limit = { tier = tier_duchy }
+		change_global_variable = { name = xa_n_t2 add = 1 }
+	}
+	set_global_variable = {
+		name = xa_p_t2
+		value = { value = global_var:xa_n_t2 multiply = 2.5 }
+	}
+	set_global_variable = {
+		name = xa_n_t3
+		value = 0
+	}
+	every_held_title = {
+		limit = { tier = tier_kingdom }
+		change_global_variable = { name = xa_n_t3 add = 1 }
+	}
+	set_global_variable = {
+		name = xa_p_t3
+		value = { value = global_var:xa_n_t3 multiply = 5 }
+	}
+	set_global_variable = {
+		name = xa_n_t4
+		value = 0
+	}
+	every_held_title = {
+		limit = { tier = tier_empire }
+		change_global_variable = { name = xa_n_t4 add = 1 }
+	}
+	set_global_variable = {
+		name = xa_p_t4
+		value = { value = global_var:xa_n_t4 multiply = 10 }
+	}
+	set_global_variable = {
+		name = xa_n_t5
+		value = 0
+	}
+	every_held_title = {
+		limit = { tier = tier_hegemony }
+		change_global_variable = { name = xa_n_t5 add = 1 }
+	}
+	set_global_variable = {
+		name = xa_p_t5
+		value = { value = global_var:xa_n_t5 multiply = 20 }
+	}
+
+	# Living descendants by highest held title tier; buckets come from
+	# the same deduplicated traversal used for blood points.
+	set_global_variable = {
+		name = xa_p_d1
+		value = { value = global_var:xa_d_t1 multiply = 0.25 }
+	}
+	set_global_variable = {
+		name = xa_p_d2
+		value = { value = global_var:xa_d_t2 }
+	}
+	set_global_variable = {
+		name = xa_p_d3
+		value = { value = global_var:xa_d_t3 multiply = 2.5 }
+	}
+	set_global_variable = {
+		name = xa_p_d4
+		value = { value = global_var:xa_d_t4 multiply = 5 }
+	}
+	set_global_variable = {
+		name = xa_p_d5
+		value = { value = global_var:xa_d_t5 multiply = 10 }
+	}
+
+	# Realm size (landed only).
+	set_global_variable = {
+		name = xa_a_realm
+		value = 0
+	}
+	set_global_variable = {
+		name = xa_l_realm
+		value = 0
+	}
+	set_global_variable = {
+		name = xa_p_realm
+		value = 0
+	}
+	if = {
+		limit = { is_landed = yes }
+		set_global_variable = {
+			name = xa_a_realm
+			value = { value = realm_size }
+		}
+		xar_log2_floor_effect = { SRC = realm_size VAR = xa_l_realm }
+		set_global_variable = {
+			name = xa_p_realm
+			value = { value = global_var:xa_l_realm multiply = 10 }
+		}
+	}
+
+	# Selected lifetime contract: incremental behavior progress.
+	set_global_variable = {
+		name = xa_a_contract
+		value = { value = global_var:xa_contract_progress }
+	}
+	set_global_variable = {
+		name = xa_p_contract
+		value = { value = global_var:xa_a_contract multiply = 10 }
+	}
+
+	# Absolute subtotal, selected track subtotal, and refusal penalty.
+	set_global_variable = {
+		name = xa_absolute_score_before_reject
+		value = 0
+	}
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_dip } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_mar } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_ste } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_int } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_lea } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_pro } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_dyn } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_hou } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_gold } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_pres } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_pie } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_inf } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_t1 } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_t2 } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_t3 } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_t4 } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_t5 } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_d1 } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_d2 } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_d3 } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_d4 } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_d5 } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_realm } }
+	change_global_variable = { name = xa_absolute_score_before_reject add = { value = global_var:xa_p_contract } }
+	set_global_variable = {
+		name = xa_score_before_reject
+		value = { value = global_var:xa_absolute_score_before_reject }
+	}
+	if = {
+		limit = { global_var:xa_score_basis = 1 }
+		set_global_variable = {
+			name = xa_score_before_reject
+			value = { value = global_var:xa_absolute_score_before_reject subtract = global_var:xa_score_baseline max = 0 }
+		}
+	}
+	set_global_variable = {
+		name = xa_absolute_score
+		value = { value = global_var:xa_absolute_score_before_reject }
+	}
+	set_global_variable = {
+		name = xa_run_score
+		value = { value = global_var:xa_score_before_reject }
+	}
+	if = {
+		limit = { global_var:xa_bless_reject_count > 0 }
+		change_global_variable = {
+			name = xa_absolute_score
+			multiply = {
+				value = 1
+				subtract = { value = global_var:xa_bless_reject_count multiply = 0.01 }
+				min = 0
+			}
+		}
+		change_global_variable = {
+			name = xa_run_score
+			multiply = {
+				value = 1
+				subtract = { value = global_var:xa_bless_reject_count multiply = 0.01 }
+				min = 0
+			}
+		}
+	}
+	xar_quantize_record_candidate_effect = yes
+
+	# Quantized record and delta.
+	if = {
+		limit = { NOT = { has_global_variable = xa_global_record_imported } }
+		set_global_variable = { name = xa_global_record_imported value = 0 }
+	}
+	set_global_variable = {
+		name = xa_old_record
+		value = { value = global_var:xa_global_record_imported }
+	}
+	set_global_variable = {
+		name = xa_score_delta
+		value = { value = global_var:xa_record_candidate subtract = global_var:xa_old_record }
+	}
+}
+
+# Parameterized floor(log2($SRC$)) into global var $VAR$.
+xar_log2_floor_effect = {
+	set_global_variable = { name = $VAR$ value = 0 }
+	if = {
+		limit = { $SRC$ >= 2 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 4 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 8 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 16 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 32 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 64 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 128 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 256 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 512 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 1024 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 2048 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 4096 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 8192 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 16384 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 32768 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 65536 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 131072 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 262144 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 524288 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 1048576 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 2097152 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 4194304 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 8388608 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 16777216 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 33554432 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 67108864 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 134217728 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 268435456 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 536870912 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+	if = {
+		limit = { $SRC$ >= 1073741824 }
+		change_global_variable = { name = $VAR$ add = 1 }
+	}
+}
+
+# Mechanical depth expansion around the hand-written descendant adapter.
+xar_desc_node_l1 = {
+	xar_desc_count_self = yes
+	every_child = { xar_desc_node_l2 = yes }
+}
+
+xar_desc_node_l2 = {
+	xar_desc_count_self = yes
+	every_child = { xar_desc_node_l3 = yes }
+}
+
+xar_desc_node_l3 = {
+	xar_desc_count_self = yes
+	every_child = { xar_desc_node_l4 = yes }
+}
+
+xar_desc_node_l4 = {
+	xar_desc_count_self = yes
+	every_child = { xar_desc_node_l5 = yes }
+}
+
+xar_desc_node_l5 = {
+	xar_desc_count_self = yes
+}
+
+xar_desc_clean_root = {
+	every_child = { xar_desc_clean_l1 = yes }
+}
+
+xar_desc_clean_l1 = {
+	remove_character_flag = xar_desc_counted
+	every_child = { xar_desc_clean_l2 = yes }
+}
+
+xar_desc_clean_l2 = {
+	remove_character_flag = xar_desc_counted
+	every_child = { xar_desc_clean_l3 = yes }
+}
+
+xar_desc_clean_l3 = {
+	remove_character_flag = xar_desc_counted
+	every_child = { xar_desc_clean_l4 = yes }
+}
+
+xar_desc_clean_l4 = {
+	remove_character_flag = xar_desc_counted
+	every_child = { xar_desc_clean_l5 = yes }
+}
+
+xar_desc_clean_l5 = {
+	remove_character_flag = xar_desc_counted
+}

@@ -16,11 +16,13 @@ is_tutorial_lesson_completed is an INTERFACE trigger (forbidden in game-state
 script), so reading the record goes through a GUI bridge:
   customizable_localization (interface triggers OK) -> GUI state trigger_when
   -> GetScriptedGui().Execute -> scripted_gui effect -> set_global_variable.
-The record is detected via the single "top threshold" (t completed, next not),
-so exactly one import state fires per record change.
+The record is detected via the highest completed threshold. Import states are
+gated by an explicit game-state request, so GUI creation and on_action order do
+not matter.
 
-Writing: xar_write_record_effect sets only the highest threshold bit <= run
-score. The lesson's own trigger_transition completes it automatically.
+Writing: xar_quantize_record_candidate_effect first maps the real run score to
+the highest existing threshold <= score (capped at the last threshold). The
+writer compares and dispatches only that quantized candidate.
 
 Outputs (regenerate with: py gen_highscore.py):
   common/tutorial_lessons/xar_highscore.txt
@@ -29,6 +31,10 @@ Outputs (regenerate with: py gen_highscore.py):
   common/scripted_effects/xar_generated_effects.txt
   gui/xar_meta.gui
   localization/english/xar_generated_l_english.yml
+
+The generated effects also expose a read-only ledger projection. It maps the
+current score preview to candidate/next tiers from this same THRESHOLDS table;
+the xa_ledger_* globals are temporary event display values, never record bits.
 """
 
 import os
@@ -44,8 +50,19 @@ TOP_SENTINEL_KEY = "xar_top_bit_sentinel"  # unused, kept for reference
 LEVEL_KEY_PREFIX = "xar_rec_"
 RECORD_VAR = "xa_global_record_imported"
 LOCAL_POINTS_VAR = "xa_local_points"
-SHOP_PENDING_VAR = "xa_shop_pending"
 SCORE_VAR = "xa_run_score"
+CANDIDATE_VAR = "xa_record_candidate"
+OLD_RECORD_VAR = "xa_old_record"
+IMPORT_REQUESTED_VAR = "xa_import_requested"
+IMPORT_READY_VAR = "xa_import_ready"
+IMPORT_CONSUMED_VAR = "xa_import_consumed"
+IMPORT_REQUEST_KEY = "xar_import_request_on"
+IMPORT_IDLE_KEY = "xar_import_request_off"
+LEDGER_SCORE_VAR = "xa_ledger_score"
+LEDGER_CANDIDATE_VAR = "xa_ledger_candidate"
+LEDGER_NEXT_VAR = "xa_ledger_next"
+LEDGER_GAP_VAR = "xa_ledger_gap"
+LEDGER_CAP_VAR = "xa_ledger_at_cap"
 
 
 def build_thresholds():
@@ -112,6 +129,20 @@ def gen_custom_loc() -> str:
     lines.append("}")
     lines.append("")
     lines.extend([
+        "# Import request signal. The record-level states stay dormant until the",
+        "# game-start on_action explicitly requests an import.",
+        "xar_import_request_check = {",
+        "\ttype = character",
+        "\ttext = {",
+        "\t\ttrigger = {",
+        f"\t\t\thas_global_variable = {IMPORT_REQUESTED_VAR}",
+        f"\t\t\tglobal_var:{IMPORT_REQUESTED_VAR} = 1",
+        "\t\t}",
+        f"\t\tlocalization_key = {IMPORT_REQUEST_KEY}",
+        "\t}",
+        f"\ttext = {{ localization_key = {IMPORT_IDLE_KEY} fallback = yes }}",
+        "}",
+        "",
         "# Test-only bridge signal: asks xar_meta to open the player character window.",
         "xar_trait_hover_check = {",
         "\ttype = character",
@@ -129,29 +160,27 @@ def gen_custom_loc() -> str:
 def gen_guis() -> str:
     lines = [
         "# GENERATED FILE - do not edit. Regenerate with tools/gen_highscore.py",
-        "# Executed via GetScriptedGui().Execute from the GUI import states.",
-        "# Sets the imported record value; at game start (shop pending) also copies",
-        "# it into this run's spendable points (the shop event itself is fired",
-        "# separately by the game-start on_action with a 1-day delay).",
+        "# Executed via GetScriptedGui().Execute from request-gated GUI states.",
+        "# The request guard makes duplicate execution a no-op. Once the highest",
+        "# completed lesson is imported, the shared consumer copies accurate points",
+        "# and starts the selected game-rule flow synchronously from ready state.",
         "",
     ]
     for t in [0] + THRESHOLDS:
         lines.append(f"xar_import_{t}_gui = {{")
         lines.append("\tscope = character")
-        lines.append("\tis_shown = { always = yes }")
+        lines.append(f"\tis_shown = {{ global_var:{IMPORT_REQUESTED_VAR} = 1 }}")
         lines.append("\teffect = {")
-        lines.append(f'\t\tdebug_log = "XAR: import state fired k={t}"')
-        lines.append("\t\tset_global_variable = {")
-        lines.append(f"\t\t\tname = {RECORD_VAR}")
-        lines.append(f"\t\t\tvalue = {t}")
-        lines.append("\t\t}")
         lines.append("\t\tif = {")
-        lines.append(f"\t\t\tlimit = {{ has_global_variable = {SHOP_PENDING_VAR} }}")
-        lines.append(f"\t\t\tremove_global_variable = {SHOP_PENDING_VAR}")
+        lines.append(f"\t\t\tlimit = {{ global_var:{IMPORT_REQUESTED_VAR} = 1 }}")
+        lines.append(f'\t\t\tdebug_log = "XAR: import state fired k={t}"')
         lines.append("\t\t\tset_global_variable = {")
-        lines.append(f"\t\t\t\tname = {LOCAL_POINTS_VAR}")
+        lines.append(f"\t\t\t\tname = {RECORD_VAR}")
         lines.append(f"\t\t\t\tvalue = {t}")
         lines.append("\t\t\t}")
+        lines.append(f"\t\t\tset_global_variable = {{ name = {IMPORT_REQUESTED_VAR} value = 0 }}")
+        lines.append(f"\t\t\tset_global_variable = {{ name = {IMPORT_READY_VAR} value = 1 }}")
+        lines.append("\t\t\txar_consume_import_effect = yes")
         lines.append("\t\t}")
         lines.append("\t}")
         lines.append("}")
@@ -162,18 +191,73 @@ def gen_guis() -> str:
 def gen_effects() -> str:
     lines = [
         "# GENERATED FILE - do not edit. Regenerate with tools/gen_highscore.py",
-        "# Completes only the single HIGHEST threshold bit <= run score (descending",
-        "# else_if chain). Record semantics are identical to setting all lower bits,",
-        "# since the record always lands exactly on a threshold. If that bit is",
-        "# already completed the lesson does not refire, so <= 1 popup per death.",
+        "# Quantizes the real run score to the greatest existing threshold <= score.",
+        "# A score at or above the storage cap maps to the cap.",
         "",
-        "xar_write_record_effect = {",
+        "xar_quantize_record_candidate_effect = {",
+        f"\tset_global_variable = {{ name = {CANDIDATE_VAR} value = 0 }}",
     ]
     for i, t in enumerate(reversed(THRESHOLDS)):
         keyword = "if" if i == 0 else "else_if"
         lines.append(f"\t{keyword} = {{")
         lines.append(f"\t\tlimit = {{ global_var:{SCORE_VAR} >= {t} }}")
-        lines.append(f"\t\tset_global_variable = {BIT_PREFIX}{t}")
+        lines.append(f"\t\tset_global_variable = {{ name = {CANDIDATE_VAR} value = {t} }}")
+        lines.append("\t}")
+    lines.extend([
+        "}",
+        "",
+        "# Writes only a strictly higher quantized candidate. Dispatch is based on",
+        "# candidate equality, never on the real run score.",
+        "xar_write_record_effect = {",
+        "\tif = {",
+        f"\t\tlimit = {{ global_var:{CANDIDATE_VAR} > global_var:{OLD_RECORD_VAR} }}",
+    ])
+    for i, t in enumerate(reversed(THRESHOLDS)):
+        keyword = "if" if i == 0 else "else_if"
+        lines.append(f"\t\t{keyword} = {{")
+        lines.append(f"\t\t\tlimit = {{ global_var:{CANDIDATE_VAR} = {t} }}")
+        lines.append(f"\t\t\tset_global_variable = {BIT_PREFIX}{t}")
+        lines.append("\t\t}")
+    lines.append("\t}")
+    lines.append("}")
+    lines.append("")
+
+    # Ledger projection: evaluate the expensive current-score script value once,
+    # then map it through the same threshold table as record quantization. These
+    # globals exist only to render the event and are cleared when it closes.
+    lines.extend([
+        "# Read-only ledger projection generated from THRESHOLDS.",
+        "# xa_ledger_* are temporary display values; this never writes record bits.",
+        "xar_prepare_ledger_effect = {",
+        f"\tset_global_variable = {{ name = {LEDGER_SCORE_VAR} value = xar_current_score_value }}",
+        f"\tset_global_variable = {{ name = {LEDGER_CANDIDATE_VAR} value = 0 }}",
+        f"\tset_global_variable = {{ name = {LEDGER_NEXT_VAR} value = {THRESHOLDS[0]} }}",
+        "\tset_global_variable = {",
+        f"\t\tname = {LEDGER_GAP_VAR}",
+        f"\t\tvalue = {{ value = {THRESHOLDS[0]} subtract = global_var:{LEDGER_SCORE_VAR} max = 0 }}",
+        "\t}",
+        f"\tset_global_variable = {{ name = {LEDGER_CAP_VAR} value = 0 }}",
+    ])
+    for index in range(len(THRESHOLDS) - 1, -1, -1):
+        threshold = THRESHOLDS[index]
+        next_threshold = THRESHOLDS[min(index + 1, len(THRESHOLDS) - 1)]
+        keyword = "if" if index == len(THRESHOLDS) - 1 else "else_if"
+        lines.append(f"\t{keyword} = {{")
+        lines.append(f"\t\tlimit = {{ global_var:{LEDGER_SCORE_VAR} >= {threshold} }}")
+        lines.append(
+            f"\t\tset_global_variable = {{ name = {LEDGER_CANDIDATE_VAR} value = {threshold} }}")
+        lines.append(
+            f"\t\tset_global_variable = {{ name = {LEDGER_NEXT_VAR} value = {next_threshold} }}")
+        if index == len(THRESHOLDS) - 1:
+            lines.append(f"\t\tset_global_variable = {{ name = {LEDGER_GAP_VAR} value = 0 }}")
+            lines.append(f"\t\tset_global_variable = {{ name = {LEDGER_CAP_VAR} value = 1 }}")
+        else:
+            lines.extend([
+                "\t\tset_global_variable = {",
+                f"\t\t\tname = {LEDGER_GAP_VAR}",
+                f"\t\t\tvalue = {{ value = {next_threshold} subtract = global_var:{LEDGER_SCORE_VAR} max = 0 }}",
+                "\t\t}",
+            ])
         lines.append("\t}")
     lines.append("}")
     lines.append("")
@@ -194,25 +278,6 @@ def gen_effects() -> str:
     lines.append("}")
     lines.append("")
 
-    # Parameterized floor(log2) effect (script values have no log function).
-    # floor(log2(x)) == count of powers of two <= x; x < 2 yields 0.
-    lines.append("# Parameterized floor(log2($SRC$)) into global var $VAR$.")
-    lines.append("# Call: xar_log2_floor_effect = { SRC = gold VAR = xa_l_gold }")
-    lines.append("xar_log2_floor_effect = {")
-    lines.append("\tset_global_variable = {")
-    lines.append("\t\tname = $VAR$")
-    lines.append("\t\tvalue = 0")
-    lines.append("\t}")
-    for n in range(1, 31):
-        lines.append("\tif = {")
-        lines.append(f"\t\tlimit = {{ $SRC$ >= {2 ** n} }}")
-        lines.append("\t\tchange_global_variable = {")
-        lines.append("\t\t\tname = $VAR$")
-        lines.append("\t\t\tadd = 1")
-        lines.append("\t\t}")
-        lines.append("\t}")
-    lines.append("}")
-    lines.append("")
     return "\n".join(lines)
 
 
@@ -220,9 +285,9 @@ def gen_gui() -> str:
     lines = [
         "# GENERATED FILE - do not edit. Regenerate with tools/gen_highscore.py",
         "#",
-        "# Import side of the global high-score storage: exactly one top-threshold",
-        "# custom localization returns the sentinel; its state then runs the",
-        "# matching scripted gui which writes the record into game state.",
+        "# Import side of the global high-score storage: exactly one highest-threshold",
+        "# custom localization returns the sentinel. A separate request signal gates",
+        "# every state, so states cannot consume the record before game start asks.",
         "# The write-side lesson completes itself through trigger_transition.",
         "window = {",
         '\tname = "xar_meta_window"',
@@ -257,7 +322,10 @@ def gen_gui() -> str:
         lines.append("")
         lines.append("\tstate = {")
         lines.append(f'\t\tname = "xar_import_{t}"')
-        lines.append(f'\t\ttrigger_when = "[EqualTo_string( GetPlayer.Custom(\'xar_record_level\'), Localize(\'{LEVEL_KEY_PREFIX}{t}\') )]"')
+        lines.append(
+            f'\t\ttrigger_when = "[And( EqualTo_string( GetPlayer.Custom(\'xar_record_level\'), '
+            f'Localize(\'{LEVEL_KEY_PREFIX}{t}\') ), EqualTo_string( GetPlayer.Custom(\'xar_import_request_check\'), '
+            f'Localize(\'{IMPORT_REQUEST_KEY}\') ) )]"')
         lines.append(f'\t\ton_start = "[GetScriptedGui(\'xar_import_{t}_gui\').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"')
         lines.append("\t}")
     lines.append("}")
@@ -282,6 +350,8 @@ def gen_loc(lang: str) -> str:
     lines.append(" # so these must exist in every language file, with identical contents.")
     for t in [0] + THRESHOLDS:
         lines.append(f' {LEVEL_KEY_PREFIX}{t}:0 "XAR_LEVEL_{t}"')
+    lines.append(f' {IMPORT_REQUEST_KEY}:0 "XAR_IMPORT_REQUESTED"')
+    lines.append(f' {IMPORT_IDLE_KEY}:0 "XAR_IMPORT_IDLE"')
     lines.append(' xar_trait_hover_sentinel:0 "XAR_TRAIT_HOVER_OPEN"')
     lines.append(' xar_trait_hover_off:0 "XAR_TRAIT_HOVER_OFF"')
     lines.append("")
@@ -299,12 +369,12 @@ def gen_trait_test_gui() -> str:
         "\tlayer = tutorial",
         "\tparentanchor = center",
         "\tposition = { 0 0 }",
-        '\tvisible = "[EqualTo_string( GetPlayer.Custom(\'xar_trait_hover_check\'), Localize(\'xar_trait_hover_sentinel\') )]"',
+        '\tvisible = "[GetPlayer.IsValid]"',
         "",
         "\tbutton_standard = {",
         '\t\tname = "xar_open_trait_test_character"',
         "\t\tsize = { 100% 100% }",
-        '\t\ttext = "XAR"',
+        '\t\tvisible = "[EqualTo_string( GetPlayer.Custom(\'xar_trait_hover_check\'), Localize(\'xar_trait_hover_sentinel\') )]"',
         '\t\tonclick = "[DefaultOnCharacterClick(GetPlayer.GetID)]"',
         "\t}",
         "}",

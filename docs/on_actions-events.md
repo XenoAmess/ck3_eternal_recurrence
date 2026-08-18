@@ -42,6 +42,12 @@ on_action 的 effect 与它触发的事件**并发执行，不是先后**：
 
 另注意官方说明：带 delay 的事件"在 on_action 执行时和延迟到期时都要有效才触发"。
 
+### 无继承人结算兜底
+
+- 有 `player_heir` 时仍把 `xar.1001` 延迟 1 日发给继承人，避开死亡 root 失效。
+- 无 `player_heir` 时没有可供延迟承载的存活角色，只能在 `on_death` 的将死 root 上同步 `trigger_event = xar.1001`；代码用 `XAR: no player heir; synchronous settlement fallback` 标记该分支。
+- 该 UI 路径**待无继承人实机验证，可能被 Game Over 覆盖**。目前只有结构静态校验，绝不视为已验证。
+
 ## 死亡钩子
 
 `on_death`：root = 将死角色（"about to die but not dead yet"），属性/金钱/宗族均可读；`scope:killer` 可能有。它对所有角色死亡触发（含 AI），自己的 limit 要写得廉价快速（先查 flag）。
