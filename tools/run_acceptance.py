@@ -73,6 +73,7 @@ REQUIRED_PASSES = {
     "ui_shop_points", "ui_shop_price", "ui_shop_diplomacy",
     "ui_shop_purchase", "ui_shop_finish", "ui_reroll", "ui_bless_decline",
     "ui_seal", "ui_curse_after_seal", "bless_count", "record_write",
+    "ui_ledger_open", "ui_ledger_close", "ui_contract_select",
     "contract_select", "contract_progress",
     "inherit_0", "inherit_25", "inherit_50", "inherit_100_uncapped",
     "inherit_5000", "inherit_50000", "inherit_166600", "shop_high_tier_bundle",
@@ -738,6 +739,66 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
         "XAR: TEST PASS ui_curse_after_seal", offset, xar_lines)
 
     focus_ck3()
+    # The landed-ruler Decisions icon is right-anchored. Verify its tooltip
+    # before clicking so HUD layout drift cannot silently open a neighboring tab.
+    screen_width, screen_height = pyautogui.size()
+    decisions_tab = (int(screen_width * 0.987), int(screen_height * 0.367))
+    pyautogui.moveTo(*decisions_tab, duration=0.2)
+    wait_for_ocr_text(
+        "决议", FULL_SCREEN_REGION, 10,
+        artifacts, "06_decisions_tooltip.png", contains=True, stable_hits=1)
+    pyautogui.click(*decisions_tab)
+    log("clicked native Decisions HUD tab")
+    pyautogui.moveTo(int(screen_width * 0.90), int(screen_height * 0.70))
+    pyautogui.scroll(-6)
+    time.sleep(0.5)
+    ledger_decision = wait_for_ocr_text(
+        "琉焰账簿", FULL_SCREEN_REGION, 15,
+        artifacts, "06_ledger_decision.png", contains=True, stable_hits=1)
+    pyautogui.moveTo(int(screen_width * 0.90), ledger_decision[1], duration=0.2)
+    pyautogui.mouseDown()
+    time.sleep(0.12)
+    pyautogui.mouseUp()
+    ledger_confirm = wait_for_ocr_text(
+        "翻开账簿", FULL_SCREEN_REGION, 15,
+        artifacts, "06_ledger_confirm.png", contains=True, stable_hits=1)
+    offset = click_until_marker(
+        ledger_confirm, "native ledger decision",
+        "XAR: TEST PASS ui_ledger_open", offset, xar_lines)
+    ledger_close = wait_for_ocr_text(
+        "合上吧", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "06_ledger_event.png", contains=True, stable_hits=1)
+    offset = click_until_marker(
+        ledger_close, "production ledger close",
+        "XAR: TEST PASS ui_ledger_close", offset, xar_lines)
+
+    pyautogui.moveTo(int(screen_width * 0.90), int(screen_height * 0.70))
+    contract_decision = wait_for_ocr_text(
+        "选择本世契约", FULL_SCREEN_REGION, 15,
+        artifacts, "06_contract_decision.png", contains=True, stable_hits=1)
+    pyautogui.moveTo(int(screen_width * 0.90), contract_decision[1], duration=0.2)
+    pyautogui.mouseDown()
+    time.sleep(0.12)
+    pyautogui.mouseUp()
+    pyautogui.moveTo(int(screen_width * 0.50), int(screen_height * 0.08), duration=0.2)
+    contract_confirm = wait_for_ocr_text(
+        "请他", FULL_SCREEN_REGION, 15,
+        artifacts, "06_contract_confirm.png", contains=True, stable_hits=1)
+    offset = click_until_marker(
+        contract_confirm, "native contract decision confirm",
+        "XAR: UI contract decision confirmed", offset, xar_lines)
+    wait_for_ocr_text(
+        "此生的典当", EVENT_TITLE_REGION, 15,
+        artifacts, "06_contract_event.png", stable_hits=1)
+    contract_option = wait_for_ocr_text(
+        "征服者", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "06_contract_option.png", contains=True, stable_hits=1)
+    offset = click_until_marker(
+        contract_option, "production contract selection",
+        "XAR: TEST PASS ui_contract_select", offset, xar_lines)
+
+    focus_ck3()
+    pyautogui.click(*decisions_tab)
     player_open = False
     for attempt in range(1, 4):
         click_ratio(0.50, 0.50)

@@ -386,6 +386,18 @@ xar.0011 = {
 		save_scope_value_as = { name = xar_contract_progress value = global_var:xa_contract_progress }
 		save_scope_value_as = { name = xar_rerolls value = global_var:xa_reroll_tokens }
 		save_scope_value_as = { name = xar_seals value = global_var:xa_seal_tokens }
+		if = {
+			limit = {
+				has_global_variable = xa_full_ui_test_active
+				has_global_variable = xa_ledger_score
+				global_var:xa_ledger_score >= 0
+			}
+			debug_log = "XAR: TEST PASS ui_ledger_open"
+		}
+		else_if = {
+			limit = { has_global_variable = xa_full_ui_test_active }
+			debug_log = "XAR: TEST FAIL ui_ledger_open"
+		}
 	}
 
 	option = {
@@ -395,6 +407,21 @@ xar.0011 = {
 		remove_global_variable = xa_ledger_next
 		remove_global_variable = xa_ledger_gap
 		remove_global_variable = xa_ledger_at_cap
+		if = {
+			limit = {
+				has_global_variable = xa_full_ui_test_active
+				NOT = { has_global_variable = xa_ledger_score }
+				NOT = { has_global_variable = xa_ledger_candidate }
+				NOT = { has_global_variable = xa_ledger_next }
+				NOT = { has_global_variable = xa_ledger_gap }
+				NOT = { has_global_variable = xa_ledger_at_cap }
+			}
+			debug_log = "XAR: TEST PASS ui_ledger_close"
+		}
+		else_if = {
+			limit = { has_global_variable = xa_full_ui_test_active }
+			debug_log = "XAR: TEST FAIL ui_ledger_close"
+		}
 	}
 }
 
@@ -653,8 +680,7 @@ xar.0005 = {
 				debug_log = "XAR: TEST PASS ui_curse_after_seal"
 			}
 			else = { debug_log = "XAR: TEST FAIL ui_curse_after_seal" }
-			remove_global_variable = xa_full_ui_test_active
-			remove_global_variable = xa_ui_test_stage
+			set_global_variable = { name = xa_contract_id value = 0 }
 			add_character_flag = xa_trait_hover_test_pending
 			set_global_variable = { name = xa_selftest_waits value = 0 }
 			trigger_event = { id = xar.0008 days = 1 }
@@ -674,8 +700,7 @@ xar.0005 = {
 		}
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
-			remove_global_variable = xa_full_ui_test_active
-			remove_global_variable = xa_ui_test_stage
+			set_global_variable = { name = xa_contract_id value = 0 }
 			add_character_flag = xa_trait_hover_test_pending
 			set_global_variable = { name = xa_selftest_waits value = 0 }
 			trigger_event = { id = xar.0008 days = 1 }

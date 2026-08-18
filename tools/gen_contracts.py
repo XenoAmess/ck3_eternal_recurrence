@@ -76,7 +76,10 @@ def generated_decision():
         "\tis_shown = { is_ai = no has_character_flag = xa_enabled global_var:xa_contract_id = 0 }",
         "\tis_valid_showing_failures_only = { is_ai = no has_character_flag = xa_enabled global_var:xa_contract_id = 0 }",
         "\tai_potential = { always = no }",
-        "\teffect = { trigger_event = xar.2000 }",
+        "\teffect = {",
+        "\t\tif = { limit = { has_global_variable = xa_full_ui_test_active } debug_log = \"XAR: UI contract decision confirmed\" }",
+        "\t\ttrigger_event = xar.2000",
+        "\t}",
         "}", "",
     ])
 
@@ -88,6 +91,13 @@ def generated_effects():
             f"xar_select_contract_{contract['key']}_effect = {{",
             f"\tset_global_variable = {{ name = xa_contract_id value = {contract['id']} }}",
             "\tset_global_variable = { name = xa_contract_progress value = 0 }",
+            "\tif = {",
+            "\t\tlimit = { has_global_variable = xa_full_ui_test_active }",
+            f"\t\tif = {{ limit = {{ global_var:xa_contract_id = {contract['id']} }} debug_log = \"XAR: TEST PASS ui_contract_select\" }}",
+            "\t\telse = { debug_log = \"XAR: TEST FAIL ui_contract_select\" }",
+            "\t\tremove_global_variable = xa_full_ui_test_active",
+            "\t\tremove_global_variable = xa_ui_test_stage",
+            "\t}",
             "}", "",
         ])
     lines.extend(["xar_add_contract_progress_effect = {", "\tif = {", "\t\tlimit = {",

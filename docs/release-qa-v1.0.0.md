@@ -11,7 +11,7 @@ Latest local candidate evidence (2026-08-18):
 
 | Scenario | Run ID | Result |
 |---|---|---|
-| 51-assertion selftest + high-tier bundle + reroll/decline/seal UI + AI guard + observer HUD | `xar_accept_it0h9v41` | GREEN, 0 `xar` errors |
+| 54-assertion selftest + transaction UI + ledger/contract decisions + AI guard + observer HUD | `xar_accept_mbnpw868` | GREEN, 0 `xar` errors |
 | First life / zero record | `xar_accept_tw20hu2u` | GREEN, 0 `xar` errors |
 | Recorded life / 100 tier, default Growth + 100% | `xar_accept_5j1hqj8z` | GREEN, 0 `xar` errors |
 | High budget / 1200 tier / 1133 reformation purchase | `xar_accept_iqz9ocec` | GREEN, 0 `xar` errors |

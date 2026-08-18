@@ -4,31 +4,73 @@
 xar_select_contract_conqueror_effect = {
 	set_global_variable = { name = xa_contract_id value = 1 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	if = {
+		limit = { has_global_variable = xa_full_ui_test_active }
+		if = { limit = { global_var:xa_contract_id = 1 } debug_log = "XAR: TEST PASS ui_contract_select" }
+		else = { debug_log = "XAR: TEST FAIL ui_contract_select" }
+		remove_global_variable = xa_full_ui_test_active
+		remove_global_variable = xa_ui_test_stage
+	}
 }
 
 xar_select_contract_weaver_effect = {
 	set_global_variable = { name = xa_contract_id value = 2 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	if = {
+		limit = { has_global_variable = xa_full_ui_test_active }
+		if = { limit = { global_var:xa_contract_id = 2 } debug_log = "XAR: TEST PASS ui_contract_select" }
+		else = { debug_log = "XAR: TEST FAIL ui_contract_select" }
+		remove_global_variable = xa_full_ui_test_active
+		remove_global_variable = xa_ui_test_stage
+	}
 }
 
 xar_select_contract_saint_effect = {
 	set_global_variable = { name = xa_contract_id value = 3 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	if = {
+		limit = { has_global_variable = xa_full_ui_test_active }
+		if = { limit = { global_var:xa_contract_id = 3 } debug_log = "XAR: TEST PASS ui_contract_select" }
+		else = { debug_log = "XAR: TEST FAIL ui_contract_select" }
+		remove_global_variable = xa_full_ui_test_active
+		remove_global_variable = xa_ui_test_stage
+	}
 }
 
 xar_select_contract_patriarch_effect = {
 	set_global_variable = { name = xa_contract_id value = 4 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	if = {
+		limit = { has_global_variable = xa_full_ui_test_active }
+		if = { limit = { global_var:xa_contract_id = 4 } debug_log = "XAR: TEST PASS ui_contract_select" }
+		else = { debug_log = "XAR: TEST FAIL ui_contract_select" }
+		remove_global_variable = xa_full_ui_test_active
+		remove_global_variable = xa_ui_test_stage
+	}
 }
 
 xar_select_contract_steward_effect = {
 	set_global_variable = { name = xa_contract_id value = 5 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	if = {
+		limit = { has_global_variable = xa_full_ui_test_active }
+		if = { limit = { global_var:xa_contract_id = 5 } debug_log = "XAR: TEST PASS ui_contract_select" }
+		else = { debug_log = "XAR: TEST FAIL ui_contract_select" }
+		remove_global_variable = xa_full_ui_test_active
+		remove_global_variable = xa_ui_test_stage
+	}
 }
 
 xar_select_contract_reveler_effect = {
 	set_global_variable = { name = xa_contract_id value = 6 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	if = {
+		limit = { has_global_variable = xa_full_ui_test_active }
+		if = { limit = { global_var:xa_contract_id = 6 } debug_log = "XAR: TEST PASS ui_contract_select" }
+		else = { debug_log = "XAR: TEST FAIL ui_contract_select" }
+		remove_global_variable = xa_full_ui_test_active
+		remove_global_variable = xa_ui_test_stage
+	}
 }
 
 xar_add_contract_progress_effect = {
