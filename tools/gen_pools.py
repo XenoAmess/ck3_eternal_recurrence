@@ -320,7 +320,8 @@ def gen_sweep():
     """Self-test sweep: run EVERY pool entry's code inline (no slot vars, no
     counters) so the acceptance runner's error.log scan gets true runtime
     coverage of all 200 branches. Called by xar.0008 before the scripted death."""
-    out = ["", "# Self-test sweep: every entry applied in sequence (runtime coverage)."]
+    out = ["", "# XAR_ACCEPTANCE_ONLY_BEGIN",
+           "# Self-test sweep: every entry applied in sequence (runtime coverage)."]
     out.append("xar_test_sweep_effect = {")
     for pool, prefix in ((B, "bless"), (C, "curse")):
         out.append(f"\t# --- {prefix} pool ---")
@@ -330,6 +331,7 @@ def gen_sweep():
             out.append(f"\t{code}")
     out.append('\tdebug_log = "XAR: TEST sweep complete"')
     out.append("}")
+    out.append("# XAR_ACCEPTANCE_ONLY_END")
     return "\n".join(out) + "\n"
 
 

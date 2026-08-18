@@ -987,6 +987,7 @@ xar_apply_curse_effect = {
 	xar_complete_bargain_pair_effect = yes }
 }
 
+# XAR_ACCEPTANCE_ONLY_BEGIN
 # Self-test sweep: every entry applied in sequence (runtime coverage).
 xar_test_sweep_effect = {
 	# --- bless pool ---
@@ -1407,3 +1408,4 @@ xar_test_sweep_effect = {
 		add_character_modifier = { modifier = xar_leg_stress days = 3650 }
 	debug_log = "XAR: TEST sweep complete"
 }
+# XAR_ACCEPTANCE_ONLY_END

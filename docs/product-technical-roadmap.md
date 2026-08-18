@@ -89,7 +89,7 @@
 - 已完成两个核心信息层功能：0 历史位阶的首世专用说明/直达祝福流程，以及玩家专属、可重复打开的「琉焰账簿」。
 - 账簿当前覆盖只读分数、历史/候选/下一位阶、差值、完成对数和拒绝次数；下一位阶与 cap 语义由 highscore generator 的 `THRESHOLDS` 统一生成。
 - 已补齐商店 12 项价格的统一向上取整、九语言 tutorial 写入前置提示，以及无继承人的同步结算 fallback；实机已证明 fallback 完成计分/写位，但原生 Game Over 确认遮住结算窗，玩家可见承载仍待解决。
-- selftest 发布隔离仍保持待办；上述 Phase 1 实施轮次未扩展 Phase 2 的 schema、生产 effect 抽取或 CI/release staging。
+- selftest 已通过 release 投影隔离；开发树保留完整自动验收，正式 staging 排除整文件测试定义并剥离混合分支。
 
 ### Phase 2：工程基础与单一权威源
 
@@ -128,9 +128,9 @@
 - 已新增 hosted Windows GitHub Actions L0：安装固定的最小静态依赖，依次运行 `validate_static.py`、计分 reference vectors 和 `build_release.py --check`，不启动 CK3。
 - 已建立 byte-preserving release allowlist，只从 mod 源目录复制正式 CK3 根文件与核心目录；mod 内 `tools/`、Python cache、未知根内容、仓库文档和源素材不会进入 staging，意外 cache/非 allowlist 文件会令静态校验失败。
 - 默认生成 `dist/XenoAmess_s_Eternal_Recurrence/`、旁置 manifest JSON（相对路径、大小、SHA-256、可用时的 git SHA）和 deterministic ZIP；`--check` 在临时目录双构建并比较 manifest 与 ZIP。
-- acceptance 与 static requirements 已拆分并按当前可用环境固定版本。L1-L3 自托管 CI、runner JUnit/环境指纹仍待后续实施。
-- selftest 规则/effect 和 acceptance-only GUI 尚未拆成测试 overlay；因当前运行引用耦合，相关 `.txt/.gui` 暂时仍进入 staging，Phase 1 的正式发布隔离退出项尚未完成。
-- acceptance runner 已增加 `selftest/on-first-life/on-recorded/off` 场景并完成实机 GREEN；每场输出 JSON/JUnit、run ID、git/mod/environment 指纹与阶段耗时，且现场备份不进入 artifacts。
+- acceptance 与 static requirements 已拆分并按当前可用环境固定版本。runner 已输出 JUnit 和环境指纹；L1-L3 自托管 CI 仍待后续实施。
+- production-only 投影已实现：整文件排除 acceptance 定义，混合运行文件用严格 marker 渲染生产分支，构建扫描禁止测试标识残留；生产 smoke 直接加载投影实测。
+- acceptance runner 已增加 `selftest/on-first-life/on-recorded/on-high-budget/off` 场景并完成实机 GREEN；四个生产场景均加载 release 投影，每场输出 JSON/JUnit、run ID、git/mod/environment 指纹与阶段耗时，且现场备份不进入 artifacts。
 
 退出标准：
 

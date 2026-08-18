@@ -92,6 +92,7 @@ def generated_effects():
             f"xar_select_contract_{contract['key']}_effect = {{",
             f"\tset_global_variable = {{ name = xa_contract_id value = {contract['id']} }}",
             "\tset_global_variable = { name = xa_contract_progress value = 0 }",
+            "\t# XAR_ACCEPTANCE_ONLY_BEGIN",
             "\tif = {",
             "\t\tlimit = { has_global_variable = xa_full_ui_test_active }",
             f"\t\tif = {{ limit = {{ global_var:xa_contract_id = {contract['id']} }} debug_log = \"XAR: TEST PASS ui_contract_select\" }}",
@@ -99,6 +100,7 @@ def generated_effects():
             "\t\tremove_global_variable = xa_full_ui_test_active",
             "\t\tremove_global_variable = xa_ui_test_stage",
             "\t}",
+            "\t# XAR_ACCEPTANCE_ONLY_END",
             "}", "",
         ])
     lines.extend(["xar_add_contract_progress_effect = {", "\tif = {", "\t\tlimit = {",
@@ -111,10 +113,13 @@ def generated_effects():
             event_id = 2100 + contract["id"] * 10 + index + 1
             lines.extend(["\t\t\tif = {", f"\t\t\t\tlimit = {{ global_var:xa_contract_progress = {milestone} }}",
                           f"\t\t\t\tset_global_variable = xa_contract_pb_{contract['id']}_{milestone}",
+                          "\t\t\t\t# XAR_ACCEPTANCE_ONLY_BEGIN",
                           "\t\t\t\tif = {",
                           "\t\t\t\t\tlimit = { NOT = { has_game_rule = xar_selftest } }",
                           f"\t\t\t\t\ttrigger_event = xar.{event_id}",
-                          "\t\t\t\t}"])
+                          "\t\t\t\t}",
+                          "\t\t\t\t# XAR_ACCEPTANCE_ONLY_END",
+                          f"\t\t\t\t# XAR_RELEASE_ONLY trigger_event = xar.{event_id}"])
             if milestone == 10:
                 lines.append(f"\t\t\t\tset_global_variable = xa_contract_complete_{contract['id']}")
             lines.append("\t\t\t}")
@@ -129,8 +134,11 @@ def generated_effects():
                       f"\t\t\tNOT = {{ has_character_flag = xa_gaze_milestone_{level} }}", "\t\t}",
                       f"\t\tadd_character_flag = xa_gaze_milestone_{level}",
                       f"\t\tchange_global_variable = {{ name = xa_{token}_tokens add = 1 }}",
+                      "\t\t# XAR_ACCEPTANCE_ONLY_BEGIN",
                       "\t\tif = {", "\t\t\tlimit = { NOT = { has_game_rule = xar_selftest } }",
-                      f"\t\t\ttrigger_event = xar.{event_id}", "\t\t}", "\t}"])
+                      f"\t\t\ttrigger_event = xar.{event_id}", "\t\t}",
+                      "\t\t# XAR_ACCEPTANCE_ONLY_END",
+                      f"\t\t# XAR_RELEASE_ONLY trigger_event = xar.{event_id}", "\t}"])
     lines.extend(["}", ""])
     return "\n".join(lines)
 

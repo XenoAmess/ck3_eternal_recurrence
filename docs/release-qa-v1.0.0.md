@@ -11,13 +11,13 @@ Latest local candidate evidence (2026-08-18):
 
 | Scenario | Run ID | Result |
 |---|---|---|
-| 54-assertion selftest + transaction UI + ledger/contract decisions + AI guard + observer HUD | `xar_accept_mbnpw868` | GREEN, 0 `xar` errors |
+| 54-assertion selftest + transaction UI + three-stage ledger/contract decisions + AI guard + observer HUD | `xar_accept_wsctbr9i` | GREEN, 0 `xar` errors |
 | Two-process persistence / A writes 405 / B imports 405 without pre-seeding | `xar_accept_ie68yqxu` | GREEN, 0 `xar` errors |
 | Actual AI death guard + no-heir synchronous fallback + native Game Over | `xar_accept_8g2xb3f7` | Script GREEN, 0 `xar` errors; settlement UI obscured |
-| First life / zero record | `xar_accept_tw20hu2u` | GREEN, 0 `xar` errors |
-| Recorded life / 100 tier, default Growth + 100% | `xar_accept_5j1hqj8z` | GREEN, 0 `xar` errors |
-| High budget / 1200 tier / 1133 reformation purchase | `xar_accept_iqz9ocec` | GREEN, 0 `xar` errors |
-| Rule disabled | `xar_accept_qlbea8ug` | GREEN, 0 `xar` errors |
+| Release projection / first life / zero record | `xar_accept__1403689` | GREEN, 0 `xar` errors |
+| Release projection / recorded life / 100 tier, default Growth + 100% | `xar_accept_2sv8bfoi` | GREEN, 0 `xar` errors |
+| Release projection / high budget / 1200 tier / 1133 reformation purchase | `xar_accept_5yccueyx` | GREEN, 0 `xar` errors |
+| Release projection / rule disabled | `xar_accept_n_sya3ke` | GREEN, 0 `xar` errors |
 
 ## Manual Language Sign-off
 

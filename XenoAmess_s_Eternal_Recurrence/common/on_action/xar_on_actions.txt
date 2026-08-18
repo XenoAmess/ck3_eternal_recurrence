@@ -13,7 +13,9 @@ xar_on_game_start = {
 			if = {
 				limit = {
 					OR = {
+						# XAR_ACCEPTANCE_ONLY_BEGIN
 						has_game_rule = xar_selftest
+						# XAR_ACCEPTANCE_ONLY_END
 						has_game_rule = xar_on
 					}
 				}
@@ -29,7 +31,12 @@ xar_on_game_start = {
 
 # Death hook. Same non-destructive pattern.
 on_death = {
-	on_actions = { xar_on_death xar_acceptance_observe_death }
+	on_actions = {
+		xar_on_death
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		xar_acceptance_observe_death
+		# XAR_ACCEPTANCE_ONLY_END
+	}
 }
 
 # Contract behavior hooks. Every adapter scopes to the acting character, then
@@ -98,6 +105,7 @@ xar_on_death = {
 			}
 			else = {
 				debug_log = "XAR: no player heir; synchronous settlement fallback"
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = {
 						has_global_variable = xa_death_edges_active
@@ -105,7 +113,9 @@ xar_on_death = {
 					}
 					set_global_variable = { name = xa_test_no_heir_sync_stage value = 1 }
 				}
+				# XAR_ACCEPTANCE_ONLY_END
 				trigger_event = xar.1001
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = {
 						has_global_variable = xa_death_edges_active
@@ -122,6 +132,7 @@ xar_on_death = {
 					}
 					debug_log = "XAR: TEST FAIL no_heir_synchronous_return"
 				}
+				# XAR_ACCEPTANCE_ONLY_END
 			}
 		}
 	}

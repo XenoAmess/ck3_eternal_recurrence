@@ -15,7 +15,7 @@ xar_open_ledger_gui = {
 				has_global_variable = xa_open_ledger_pending
 			}
 			remove_global_variable = xa_open_ledger_pending
-			trigger_event = xar.0011
+			trigger_event = xar.0012
 		}
 	}
 }
@@ -35,10 +35,12 @@ xar_open_contract_gui = {
 				has_global_variable = xa_open_contract_pending
 			}
 			remove_global_variable = xa_open_contract_pending
+			# XAR_ACCEPTANCE_ONLY_BEGIN
 			if = {
 				limit = { has_global_variable = xa_full_ui_test_active }
 				debug_log = "XAR: UI contract decision confirmed"
 			}
+			# XAR_ACCEPTANCE_ONLY_END
 			trigger_event = xar.2000
 		}
 	}

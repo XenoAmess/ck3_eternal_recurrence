@@ -11,6 +11,7 @@ xar_consume_import_effect = {
 		set_global_variable = { name = xa_import_ready value = 0 }
 		set_global_variable = { name = xa_import_consumed value = 1 }
 		debug_log = "XAR: import consumed, opening flow"
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_game_rule = xar_selftest }
 			if = {
@@ -22,7 +23,8 @@ xar_consume_import_effect = {
 				xar_selftest_effect = yes
 			}
 		}
-		else_if = {
+		# XAR_ACCEPTANCE_ONLY_END
+		if = {
 			limit = { has_game_rule = xar_on }
 			debug_log = "XAR: rule is on, offering pact"
 			trigger_event = xar.0002

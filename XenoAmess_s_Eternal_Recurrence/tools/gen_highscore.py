@@ -143,6 +143,7 @@ def gen_custom_loc() -> str:
         f"\ttext = {{ localization_key = {IMPORT_IDLE_KEY} fallback = yes }}",
         "}",
         "",
+        "# XAR_ACCEPTANCE_ONLY_BEGIN",
         "# Test-only bridge signal: asks xar_meta to open the player character window.",
         "xar_trait_hover_check = {",
         "\ttype = character",
@@ -152,6 +153,7 @@ def gen_custom_loc() -> str:
         "\t}",
         "\ttext = { localization_key = xar_trait_hover_off fallback = yes }",
         "}",
+        "# XAR_ACCEPTANCE_ONLY_END",
         "",
     ])
     return "\n".join(lines)
@@ -228,8 +230,11 @@ def gen_effects() -> str:
     lines.extend([
         "# Read-only ledger projection generated from THRESHOLDS.",
         "# xa_ledger_* are temporary display values; this never writes record bits.",
-        "xar_prepare_ledger_effect = {",
+        "xar_prepare_ledger_score_effect = {",
         f"\tset_global_variable = {{ name = {LEDGER_SCORE_VAR} value = xar_current_score_value }}",
+        "}",
+        "",
+        "xar_project_ledger_effect = {",
         f"\tset_global_variable = {{ name = {LEDGER_CANDIDATE_VAR} value = 0 }}",
         f"\tset_global_variable = {{ name = {LEDGER_NEXT_VAR} value = {THRESHOLDS[0]} }}",
         "\tset_global_variable = {",
@@ -261,6 +266,14 @@ def gen_effects() -> str:
         lines.append("\t}")
     lines.append("}")
     lines.append("")
+    lines.extend([
+        "# Combined helper remains for script assertions; production UI crosses an event boundary.",
+        "xar_prepare_ledger_effect = {",
+        "\txar_prepare_ledger_score_effect = yes",
+        "\txar_project_ledger_effect = yes",
+        "}",
+        "",
+    ])
 
     # Lifespan purchase: applies the next modifier in the series (same-modifier
     # reapplication does not stack, so there are 50 distinct modifiers).

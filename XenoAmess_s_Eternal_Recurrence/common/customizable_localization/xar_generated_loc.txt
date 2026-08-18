@@ -2822,6 +2822,7 @@ xar_import_request_check = {
 	text = { localization_key = xar_import_request_off fallback = yes }
 }
 
+# XAR_ACCEPTANCE_ONLY_BEGIN
 # Test-only bridge signal: asks xar_meta to open the player character window.
 xar_trait_hover_check = {
 	type = character
@@ -2831,3 +2832,4 @@ xar_trait_hover_check = {
 	}
 	text = { localization_key = xar_trait_hover_off fallback = yes }
 }
+# XAR_ACCEPTANCE_ONLY_END

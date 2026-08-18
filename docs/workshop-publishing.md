@@ -56,6 +56,7 @@ Publishing mod to Steam failed: Saving descriptor.mod in mod sources failed:
 mod 内 `tools/`、仓库文档、`__pycache__`/`.pyc` 或源素材。manifest 不放进 staging，避免改变
 Steam 实际内容；它作为旁置追溯物料与 ZIP 一起发布。
 
-当前 selftest 规则/effect 和 acceptance-only GUI 仍与运行期 `.txt/.gui` 耦合，allowlist 暂时保留它们。
-测试 overlay 拆分及正式包隐藏 selftest 尚未完成，发布前应把这一点视为已知限制，而不是假定 staging
-已经完成生产/测试逻辑隔离。
+构建器从同一开发树生成 production-only 投影：明确排除 selftest effect、死亡探针事件/on_action/effect 与
+trait bridge GUI，并剥离混合文件中的 `XAR_ACCEPTANCE_ONLY` 区域；`XAR_RELEASE_ONLY` 注释行在 staging
+中展开为生产逻辑。构建会扫描所有运行文本，任何 selftest/test flag/marker 或 marker 注释残留都直接 RED。
+生产 smoke 场景也会先生成此投影，再 `/MIR` 到工坊缓存实机运行，因此不是只做文本检查。

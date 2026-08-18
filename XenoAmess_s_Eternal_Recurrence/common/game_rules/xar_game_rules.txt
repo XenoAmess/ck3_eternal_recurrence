@@ -14,9 +14,9 @@
 
 	}
 
-	xar_selftest = {
-
-	}
+	# XAR_ACCEPTANCE_ONLY_BEGIN
+	xar_selftest = { }
+	# XAR_ACCEPTANCE_ONLY_END
 }
 
 xar_inheritance = {

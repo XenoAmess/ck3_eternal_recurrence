@@ -4,6 +4,7 @@
 xar_select_contract_conqueror_effect = {
 	set_global_variable = { name = xa_contract_id value = 1 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	# XAR_ACCEPTANCE_ONLY_BEGIN
 	if = {
 		limit = { has_global_variable = xa_full_ui_test_active }
 		if = { limit = { global_var:xa_contract_id = 1 } debug_log = "XAR: TEST PASS ui_contract_select" }
@@ -11,11 +12,13 @@ xar_select_contract_conqueror_effect = {
 		remove_global_variable = xa_full_ui_test_active
 		remove_global_variable = xa_ui_test_stage
 	}
+	# XAR_ACCEPTANCE_ONLY_END
 }
 
 xar_select_contract_weaver_effect = {
 	set_global_variable = { name = xa_contract_id value = 2 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	# XAR_ACCEPTANCE_ONLY_BEGIN
 	if = {
 		limit = { has_global_variable = xa_full_ui_test_active }
 		if = { limit = { global_var:xa_contract_id = 2 } debug_log = "XAR: TEST PASS ui_contract_select" }
@@ -23,11 +26,13 @@ xar_select_contract_weaver_effect = {
 		remove_global_variable = xa_full_ui_test_active
 		remove_global_variable = xa_ui_test_stage
 	}
+	# XAR_ACCEPTANCE_ONLY_END
 }
 
 xar_select_contract_saint_effect = {
 	set_global_variable = { name = xa_contract_id value = 3 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	# XAR_ACCEPTANCE_ONLY_BEGIN
 	if = {
 		limit = { has_global_variable = xa_full_ui_test_active }
 		if = { limit = { global_var:xa_contract_id = 3 } debug_log = "XAR: TEST PASS ui_contract_select" }
@@ -35,11 +40,13 @@ xar_select_contract_saint_effect = {
 		remove_global_variable = xa_full_ui_test_active
 		remove_global_variable = xa_ui_test_stage
 	}
+	# XAR_ACCEPTANCE_ONLY_END
 }
 
 xar_select_contract_patriarch_effect = {
 	set_global_variable = { name = xa_contract_id value = 4 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	# XAR_ACCEPTANCE_ONLY_BEGIN
 	if = {
 		limit = { has_global_variable = xa_full_ui_test_active }
 		if = { limit = { global_var:xa_contract_id = 4 } debug_log = "XAR: TEST PASS ui_contract_select" }
@@ -47,11 +54,13 @@ xar_select_contract_patriarch_effect = {
 		remove_global_variable = xa_full_ui_test_active
 		remove_global_variable = xa_ui_test_stage
 	}
+	# XAR_ACCEPTANCE_ONLY_END
 }
 
 xar_select_contract_steward_effect = {
 	set_global_variable = { name = xa_contract_id value = 5 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	# XAR_ACCEPTANCE_ONLY_BEGIN
 	if = {
 		limit = { has_global_variable = xa_full_ui_test_active }
 		if = { limit = { global_var:xa_contract_id = 5 } debug_log = "XAR: TEST PASS ui_contract_select" }
@@ -59,11 +68,13 @@ xar_select_contract_steward_effect = {
 		remove_global_variable = xa_full_ui_test_active
 		remove_global_variable = xa_ui_test_stage
 	}
+	# XAR_ACCEPTANCE_ONLY_END
 }
 
 xar_select_contract_reveler_effect = {
 	set_global_variable = { name = xa_contract_id value = 6 }
 	set_global_variable = { name = xa_contract_progress value = 0 }
+	# XAR_ACCEPTANCE_ONLY_BEGIN
 	if = {
 		limit = { has_global_variable = xa_full_ui_test_active }
 		if = { limit = { global_var:xa_contract_id = 6 } debug_log = "XAR: TEST PASS ui_contract_select" }
@@ -71,6 +82,7 @@ xar_select_contract_reveler_effect = {
 		remove_global_variable = xa_full_ui_test_active
 		remove_global_variable = xa_ui_test_stage
 	}
+	# XAR_ACCEPTANCE_ONLY_END
 }
 
 xar_add_contract_progress_effect = {
@@ -87,26 +99,35 @@ xar_add_contract_progress_effect = {
 			if = {
 				limit = { global_var:xa_contract_progress = 3 }
 				set_global_variable = xa_contract_pb_1_3
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2111
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2111
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 6 }
 				set_global_variable = xa_contract_pb_1_6
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2112
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2112
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 10 }
 				set_global_variable = xa_contract_pb_1_10
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2113
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2113
 				set_global_variable = xa_contract_complete_1
 			}
 		}
@@ -115,26 +136,35 @@ xar_add_contract_progress_effect = {
 			if = {
 				limit = { global_var:xa_contract_progress = 3 }
 				set_global_variable = xa_contract_pb_2_3
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2121
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2121
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 6 }
 				set_global_variable = xa_contract_pb_2_6
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2122
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2122
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 10 }
 				set_global_variable = xa_contract_pb_2_10
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2123
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2123
 				set_global_variable = xa_contract_complete_2
 			}
 		}
@@ -143,26 +173,35 @@ xar_add_contract_progress_effect = {
 			if = {
 				limit = { global_var:xa_contract_progress = 3 }
 				set_global_variable = xa_contract_pb_3_3
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2131
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2131
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 6 }
 				set_global_variable = xa_contract_pb_3_6
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2132
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2132
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 10 }
 				set_global_variable = xa_contract_pb_3_10
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2133
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2133
 				set_global_variable = xa_contract_complete_3
 			}
 		}
@@ -171,26 +210,35 @@ xar_add_contract_progress_effect = {
 			if = {
 				limit = { global_var:xa_contract_progress = 3 }
 				set_global_variable = xa_contract_pb_4_3
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2141
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2141
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 6 }
 				set_global_variable = xa_contract_pb_4_6
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2142
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2142
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 10 }
 				set_global_variable = xa_contract_pb_4_10
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2143
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2143
 				set_global_variable = xa_contract_complete_4
 			}
 		}
@@ -199,26 +247,35 @@ xar_add_contract_progress_effect = {
 			if = {
 				limit = { global_var:xa_contract_progress = 3 }
 				set_global_variable = xa_contract_pb_5_3
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2151
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2151
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 6 }
 				set_global_variable = xa_contract_pb_5_6
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2152
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2152
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 10 }
 				set_global_variable = xa_contract_pb_5_10
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2153
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2153
 				set_global_variable = xa_contract_complete_5
 			}
 		}
@@ -227,26 +284,35 @@ xar_add_contract_progress_effect = {
 			if = {
 				limit = { global_var:xa_contract_progress = 3 }
 				set_global_variable = xa_contract_pb_6_3
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2161
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2161
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 6 }
 				set_global_variable = xa_contract_pb_6_6
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2162
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2162
 			}
 			if = {
 				limit = { global_var:xa_contract_progress = 10 }
 				set_global_variable = xa_contract_pb_6_10
+				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { NOT = { has_game_rule = xar_selftest } }
 					trigger_event = xar.2163
 				}
+				# XAR_ACCEPTANCE_ONLY_END
+				# XAR_RELEASE_ONLY trigger_event = xar.2163
 				set_global_variable = xa_contract_complete_6
 			}
 		}
@@ -262,10 +328,13 @@ xar_complete_bargain_pair_effect = {
 		}
 		add_character_flag = xa_gaze_milestone_10
 		change_global_variable = { name = xa_reroll_tokens add = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { NOT = { has_game_rule = xar_selftest } }
 			trigger_event = xar.2201
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = xar.2201
 	}
 	if = {
 		limit = {
@@ -274,10 +343,13 @@ xar_complete_bargain_pair_effect = {
 		}
 		add_character_flag = xa_gaze_milestone_20
 		change_global_variable = { name = xa_seal_tokens add = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { NOT = { has_game_rule = xar_selftest } }
 			trigger_event = xar.2202
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = xar.2202
 	}
 	if = {
 		limit = {
@@ -286,10 +358,13 @@ xar_complete_bargain_pair_effect = {
 		}
 		add_character_flag = xa_gaze_milestone_30
 		change_global_variable = { name = xa_reroll_tokens add = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { NOT = { has_game_rule = xar_selftest } }
 			trigger_event = xar.2203
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = xar.2203
 	}
 	if = {
 		limit = {
@@ -298,10 +373,13 @@ xar_complete_bargain_pair_effect = {
 		}
 		add_character_flag = xa_gaze_milestone_40
 		change_global_variable = { name = xa_seal_tokens add = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { NOT = { has_game_rule = xar_selftest } }
 			trigger_event = xar.2204
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = xar.2204
 	}
 	if = {
 		limit = {
@@ -310,10 +388,13 @@ xar_complete_bargain_pair_effect = {
 		}
 		add_character_flag = xa_gaze_milestone_50
 		change_global_variable = { name = xa_reroll_tokens add = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { NOT = { has_game_rule = xar_selftest } }
 			trigger_event = xar.2205
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = xar.2205
 	}
 	if = {
 		limit = {
@@ -322,10 +403,13 @@ xar_complete_bargain_pair_effect = {
 		}
 		add_character_flag = xa_gaze_milestone_60
 		change_global_variable = { name = xa_seal_tokens add = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { NOT = { has_game_rule = xar_selftest } }
 			trigger_event = xar.2206
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = xar.2206
 	}
 	if = {
 		limit = {
@@ -334,10 +418,13 @@ xar_complete_bargain_pair_effect = {
 		}
 		add_character_flag = xa_gaze_milestone_70
 		change_global_variable = { name = xa_reroll_tokens add = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { NOT = { has_game_rule = xar_selftest } }
 			trigger_event = xar.2207
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = xar.2207
 	}
 	if = {
 		limit = {
@@ -346,10 +433,13 @@ xar_complete_bargain_pair_effect = {
 		}
 		add_character_flag = xa_gaze_milestone_80
 		change_global_variable = { name = xa_seal_tokens add = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { NOT = { has_game_rule = xar_selftest } }
 			trigger_event = xar.2208
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = xar.2208
 	}
 	if = {
 		limit = {
@@ -358,10 +448,13 @@ xar_complete_bargain_pair_effect = {
 		}
 		add_character_flag = xa_gaze_milestone_90
 		change_global_variable = { name = xa_reroll_tokens add = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { NOT = { has_game_rule = xar_selftest } }
 			trigger_event = xar.2209
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = xar.2209
 	}
 	if = {
 		limit = {
@@ -370,9 +463,12 @@ xar_complete_bargain_pair_effect = {
 		}
 		add_character_flag = xa_gaze_milestone_100
 		change_global_variable = { name = xa_seal_tokens add = 1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { NOT = { has_game_rule = xar_selftest } }
 			trigger_event = xar.2210
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = xar.2210
 	}
 }

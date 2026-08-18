@@ -37,9 +37,9 @@ py tools/build_release.py                                   # 生成 dist stagin
 
 要扩上限：改生成器里的 `TIERS` 列表再跑一遍即可，旧纪录不丢（位是只增的）。
 
-发布构建使用明确 allowlist，只逐字节复制 `descriptor.mod`、`thumbnail.png` 和
-`common/`、`events/`、`gfx/`、`gui/`、`localization/` 中允许的 CK3 文件类型；禁止直接把 mod 源目录上传。
-当前 selftest 仍与运行期 `.txt/.gui` 耦合，因此对应文件暂时会进入 staging；测试 overlay 拆分尚未完成。
+发布构建使用明确 allowlist，并从开发树渲染 production-only 投影：整文件排除 selftest/死亡探针/trait bridge，
+再剥离 `# XAR_ACCEPTANCE_ONLY_BEGIN/END` 区域并展开 `# XAR_RELEASE_ONLY` 生产替代行；最终 staging 禁止出现测试标识。
+未标记文件仍逐字节复制。禁止直接把 mod 源目录上传；正式上传只能使用 `build_release.py` 生成的 staging。
 
 ## 测试流程
 

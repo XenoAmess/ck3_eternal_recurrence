@@ -133,14 +133,14 @@ def ugc_content_dir():
     return Path(m.group(1))
 
 
-def sync_repo_to_ugc(target):
-    """robocopy /MIR 仓库 mod -> 工坊缓存（用户已批准；工坊更新时 Steam 会重下复原）。"""
+def sync_repo_to_ugc(target, source=MOD_ROOT):
+    """Mirror the selected development/release runtime tree into the live UGC cache."""
     r = subprocess.run(
-        ["robocopy", str(MOD_ROOT), str(target), "/MIR", "/NFL", "/NDL", "/NJH", "/NJS", "/NP"],
+        ["robocopy", str(source), str(target), "/MIR", "/NFL", "/NDL", "/NJH", "/NJS", "/NP"],
         capture_output=True)
     if r.returncode >= 8:
         raise RuntimeError(f"robocopy failed rc={r.returncode}")
-    log(f"synced repo -> {target} (robocopy rc={r.returncode})")
+    log(f"synced {source} -> {target} (robocopy rc={r.returncode})")
 
 
 def kill_ck3():
@@ -1222,7 +1222,13 @@ def main(scenario="selftest", import_record=0):
             log("static validation passed")
 
         with timed_phase(timings, "sync_and_configure"):
-            sync_repo_to_ugc(ugc_content_dir())
+            runtime_source = MOD_ROOT
+            if scenario in ("on-first-life", "on-recorded", "on-high-budget", "off"):
+                runtime_source = artifacts / "release_projection"
+                build_release.build_release(
+                    MOD_ROOT, runtime_source, revision=build_release.git_sha())
+                log("built stripped release projection for production smoke")
+            sync_repo_to_ugc(ugc_content_dir(), runtime_source)
             raw = TUTORIAL_TXT.read_bytes()
             seeded, removed = set_tutorial_record(raw, effective_record)
             TUTORIAL_TXT.write_bytes(seeded)

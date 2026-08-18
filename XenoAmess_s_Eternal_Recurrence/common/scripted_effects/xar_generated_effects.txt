@@ -5616,8 +5616,11 @@ xar_write_record_effect = {
 
 # Read-only ledger projection generated from THRESHOLDS.
 # xa_ledger_* are temporary display values; this never writes record bits.
-xar_prepare_ledger_effect = {
+xar_prepare_ledger_score_effect = {
 	set_global_variable = { name = xa_ledger_score value = xar_current_score_value }
+}
+
+xar_project_ledger_effect = {
 	set_global_variable = { name = xa_ledger_candidate value = 0 }
 	set_global_variable = { name = xa_ledger_next value = 1 }
 	set_global_variable = {
@@ -11923,6 +11926,12 @@ xar_prepare_ledger_effect = {
 			value = { value = 2 subtract = global_var:xa_ledger_score min = 0 }
 		}
 	}
+}
+
+# Combined helper remains for script assertions; production UI crosses an event boundary.
+xar_prepare_ledger_effect = {
+	xar_prepare_ledger_score_effect = yes
+	xar_project_ledger_effect = yes
 }
 
 # Lifespan purchase: +1 Health per stack, 50 stacks max.

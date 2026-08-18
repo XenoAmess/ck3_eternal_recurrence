@@ -9,10 +9,12 @@ xar.0002 = {
 	title = xar.0002.title
 	desc = xar.0002.desc
 	immediate = {
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			debug_log = "XAR: UI pact window opened"
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 	}
 
 	option = {
@@ -24,6 +26,7 @@ xar.0002 = {
 		# xar.0001 re-fires on every page flip, so its immediate is no place
 		# for one-time init either.
 		xar_initialize_run_state_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			set_global_variable = { name = xa_local_points value = 200 }
@@ -39,6 +42,9 @@ xar.0002 = {
 			trigger_event = xar.0010
 		}
 		else = { trigger_event = xar.0001 }
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY if = { limit = { global_var:xa_local_points = 0 } debug_log = "XAR: first life flow opened" trigger_event = xar.0010 }
+		# XAR_RELEASE_ONLY else = { trigger_event = xar.0001 }
 	}
 
 	option = {
@@ -74,10 +80,12 @@ xar.0001 = {
 
 	immediate = {
 		debug_log = "XAR: shop event fired"
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			debug_log = "XAR: UI shop window opened"
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 		# (shop globals are initialized once in xar.0002's accept option)
 		# save display values
 		save_scope_value_as = { name = xar_points value = global_var:xa_local_points }
@@ -107,6 +115,7 @@ xar.0001 = {
 			global_var:xa_local_points >= global_var:xa_price_dip
 		}
 		xar_buy_diplomacy_shop_item_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			set_global_variable = { name = xa_test_ui_dip_applied value = 1 }
@@ -141,6 +150,7 @@ xar.0001 = {
 			}
 			else = { debug_log = "XAR: TEST FAIL ui_shop_purchase" }
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 		trigger_event = { id = xar.0001 }
 	}
 	option = {
@@ -308,6 +318,7 @@ xar.0001 = {
 	option = {
 		name = xar.0001.finish
 		xar_finish_shop_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			if = {
@@ -321,13 +332,14 @@ xar.0001 = {
 			set_global_variable = xa_ui_test_active
 			set_global_variable = { name = xa_bless_session value = 3 }
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 		trigger_event = { id = xar.0004 }
 	}
 }
 
 # First life: a zero historical tier has nothing meaningful to spend. Explain
 # the bargain and begin the blessing flow directly instead of opening an empty
-# shop. The production UI selftest bypasses this via xa_full_ui_test_active.
+# shop. Development acceptance can explicitly bypass this production branch.
 xar.0010 = {
 	type = character_event
 	trigger = { is_ai = no }
@@ -348,6 +360,28 @@ xar.0010 = {
 		name = xar.0010.begin
 		xar_initialize_blessing_session_effect = yes
 		trigger_event = { id = xar.0004 }
+	}
+}
+
+# Invisible first half of ledger preparation. The event boundary commits the
+# script-value result before the generated threshold projection reads it.
+xar.0012 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		xar_prepare_ledger_score_effect = yes
+		trigger_event = xar.0013
+	}
+}
+
+# The threshold projection also writes globals, so rendering needs a second
+# event boundary before those values are copied into event-local scopes.
+xar.0013 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		xar_project_ledger_effect = yes
+		trigger_event = xar.0011
 	}
 }
 
@@ -373,7 +407,6 @@ xar.0011 = {
 	}
 
 	immediate = {
-		xar_prepare_ledger_effect = yes
 		save_scope_value_as = { name = xar_ledger_score value = global_var:xa_ledger_score }
 		save_scope_value_as = { name = xar_ledger_history value = global_var:xa_global_record_imported }
 		save_scope_value_as = { name = xar_ledger_candidate value = global_var:xa_ledger_candidate }
@@ -386,6 +419,7 @@ xar.0011 = {
 		save_scope_value_as = { name = xar_contract_progress value = global_var:xa_contract_progress }
 		save_scope_value_as = { name = xar_rerolls value = global_var:xa_reroll_tokens }
 		save_scope_value_as = { name = xar_seals value = global_var:xa_seal_tokens }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = {
 				has_global_variable = xa_full_ui_test_active
@@ -398,6 +432,7 @@ xar.0011 = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			debug_log = "XAR: TEST FAIL ui_ledger_open"
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 	}
 
 	option = {
@@ -407,6 +442,7 @@ xar.0011 = {
 		remove_global_variable = xa_ledger_next
 		remove_global_variable = xa_ledger_gap
 		remove_global_variable = xa_ledger_at_cap
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = {
 				has_global_variable = xa_full_ui_test_active
@@ -422,6 +458,7 @@ xar.0011 = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			debug_log = "XAR: TEST FAIL ui_ledger_close"
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 	}
 }
 
@@ -440,6 +477,7 @@ xar.1001 = {
 
 	immediate = {
 		debug_log = "XAR: score event fired"
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = {
 				has_global_variable = xa_death_edges_active
@@ -457,6 +495,7 @@ xar.1001 = {
 			debug_log = "XAR: running checker xar.0007 (nested)"
 			trigger_event = xar.0007
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 		save_scope_value_as = { name = xar_bless_n value = global_var:xa_bless_count }
 		save_scope_value_as = { name = xar_reject_n value = global_var:xa_bless_reject_count }
 		save_scope_value_as = { name = xar_subtotal value = global_var:xa_score_before_reject }
@@ -557,6 +596,7 @@ xar.0004 = {
 
 	immediate = {
 		debug_log = "XAR: blessing event fired"
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			set_global_variable = { name = xa_bless_a value = 0 }
@@ -564,9 +604,12 @@ xar.0004 = {
 			set_global_variable = { name = xa_bless_c value = 99 }
 		}
 		else = { xar_draw_blessings_effect = yes }
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY xar_draw_blessings_effect = yes
 		save_scope_value_as = { name = xar_bs_n value = global_var:xa_bless_session }
 		save_scope_value_as = { name = xar_bc_n value = global_var:xa_bless_count }
 		save_scope_value_as = { name = xar_br_n value = global_var:xa_bless_reject_count }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI bless window opened"
@@ -579,39 +622,47 @@ xar.0004 = {
 				debug_log = "XAR: UI post-seal bless window"
 			}
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 	}
 
 	option = {
 		name = xar_bless_option_a
 		xar_apply_blessing_effect = { SLOT = a }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI bless accepted"
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 		trigger_event = { id = xar.0005 }
 	}
 	option = {
 		name = xar_bless_option_b
 		xar_apply_blessing_effect = { SLOT = b }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI bless accepted"
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 		trigger_event = { id = xar.0005 }
 	}
 	option = {
 		name = xar_bless_option_c
 		xar_apply_blessing_effect = { SLOT = c }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI bless accepted"
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 		trigger_event = { id = xar.0005 }
 	}
 	option = {
 		name = xar.0004.reroll
 		trigger = { global_var:xa_reroll_tokens > 0 }
 		change_global_variable = { name = xa_reroll_tokens add = -1 }
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			set_global_variable = { name = xa_ui_test_stage value = 1 }
@@ -621,12 +672,14 @@ xar.0004 = {
 			}
 			else = { debug_log = "XAR: TEST FAIL ui_reroll" }
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 		trigger_event = xar.0004
 	}
 	option = {
 		name = xar.0004.decline
 		change_global_variable = { name = xa_bless_reject_count add = 1 }
 		xar_capture_score_baseline_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			set_global_variable = { name = xa_ui_test_stage value = 2 }
@@ -642,6 +695,8 @@ xar.0004 = {
 			trigger_event = xar.0004
 		}
 		else = { trigger_event = { id = xar.0006 days = 1095 } }
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = { id = xar.0006 days = 1095 }
 	}
 }
 
@@ -656,22 +711,28 @@ xar.0005 = {
 
 	immediate = {
 		debug_log = "XAR: curse event fired"
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			set_global_variable = { name = xa_curse_a value = 0 }
 			set_global_variable = { name = xa_curse_b value = 1 }
 		}
 		else = { xar_draw_curses_effect = yes }
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY xar_draw_curses_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI curse window opened"
 		}
+		# XAR_ACCEPTANCE_ONLY_END
 	}
 
 	option = {
 		name = xar_curse_option_a
 		xar_apply_curse_effect = { SLOT = a }
 		xar_capture_score_baseline_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI curse accepted"
@@ -696,11 +757,14 @@ xar.0005 = {
 		else = {
 			trigger_event = { id = xar.0006 days = 1095 }
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = { id = xar.0006 days = 1095 }
 	}
 	option = {
 		name = xar_curse_option_b
 		xar_apply_curse_effect = { SLOT = b }
 		xar_capture_score_baseline_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_ui_test_active }
 			debug_log = "XAR: UI curse accepted"
@@ -716,6 +780,8 @@ xar.0005 = {
 		else = {
 			trigger_event = { id = xar.0006 days = 1095 }
 		}
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = { id = xar.0006 days = 1095 }
 	}
 	option = {
 		name = xar.0005.seal
@@ -723,6 +789,7 @@ xar.0005 = {
 		change_global_variable = { name = xa_seal_tokens add = -1 }
 		xar_complete_bargain_pair_effect = yes
 		xar_capture_score_baseline_effect = yes
+		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = { has_global_variable = xa_full_ui_test_active }
 			set_global_variable = { name = xa_ui_test_stage value = 3 }
@@ -738,6 +805,8 @@ xar.0005 = {
 			trigger_event = xar.0004
 		}
 		else = { trigger_event = { id = xar.0006 days = 1095 } }
+		# XAR_ACCEPTANCE_ONLY_END
+		# XAR_RELEASE_ONLY trigger_event = { id = xar.0006 days = 1095 }
 	}
 }
 
@@ -752,6 +821,7 @@ xar.0006 = {
 	}
 }
 
+# XAR_ACCEPTANCE_ONLY_BEGIN
 # Self-test import waiter (rule xar_selftest): polls daily until the GUI-bridge
 # import protocol is consumed, then arms the checker and kills
 # root. (The bridge tick is starved while modal windows are open, so dying at
@@ -833,3 +903,4 @@ xar.0007 = {
 		debug_log = "XAR: TEST DONE"
 	}
 }
+# XAR_ACCEPTANCE_ONLY_END

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a byte-preserving, reproducible CK3 release staging directory."""
+"""Build a reproducible production-only CK3 release staging directory."""
 
 import argparse
 import hashlib
@@ -29,6 +29,26 @@ EXCLUDED_DEVELOPMENT_DIRECTORIES = {"tools"}
 FORBIDDEN_CACHE_SUFFIXES = {".pyc", ".pyo"}
 ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 WORKSHOP_ITEM_ID = "3784706360"
+ACCEPTANCE_BEGIN = "# XAR_ACCEPTANCE_ONLY_BEGIN"
+ACCEPTANCE_END = "# XAR_ACCEPTANCE_ONLY_END"
+RELEASE_ONLY_PREFIX = "# XAR_RELEASE_ONLY "
+ACCEPTANCE_ONLY_FILES = {
+    "common/on_action/xar_acceptance_on_actions.txt",
+    "common/scripted_effects/xar_acceptance_death_effects.txt",
+    "common/scripted_effects/xar_selftest_effects.txt",
+    "events/xar_acceptance_events.txt",
+    "gui/xar_trait_test.gui",
+}
+FORBIDDEN_RELEASE_IDENTIFIERS = (
+    "xar_selftest", "setting_xar_selftest", "xar_test_sweep_effect",
+    "xar_trait_test", "xar_trait_hover", "xa_full_ui_test",
+    "xa_ui_test", "xa_test_", "xa_selftest_", "XAR: TEST",
+    ACCEPTANCE_BEGIN, ACCEPTANCE_END, RELEASE_ONLY_PREFIX,
+)
+ACCEPTANCE_ONLY_LINE_TOKENS = (
+    "setting_xar_selftest", "xar_trait_hover_sentinel",
+    "xar_trait_hover_off", "gui/xar_trait_test.gui",
+)
 
 
 def sha256_bytes(data):
@@ -101,6 +121,77 @@ def release_files(source):
                 if path.is_file() and path.suffix.lower() in suffixes
             )
     return sorted(files, key=lambda path: path.relative_to(source).as_posix())
+
+
+def render_release_bytes(path, relative):
+    """Strip marked development regions while preserving all other bytes."""
+    data = path.read_bytes()
+    if path.suffix.lower() not in {".txt", ".gui", ".yml"}:
+        return data
+    had_bom = data.startswith(b"\xef\xbb\xbf")
+    text = data.decode("utf-8-sig")
+    output = []
+    inside = False
+    begin_count = 0
+    end_count = 0
+    for line in text.splitlines(keepends=True):
+        marker = line.strip()
+        if marker == ACCEPTANCE_BEGIN:
+            if inside:
+                raise ValueError(f"nested acceptance marker: {relative}")
+            inside = True
+            begin_count += 1
+            continue
+        if marker == ACCEPTANCE_END:
+            if not inside:
+                raise ValueError(f"unmatched acceptance end marker: {relative}")
+            inside = False
+            end_count += 1
+            continue
+        if marker.startswith(RELEASE_ONLY_PREFIX):
+            if inside:
+                raise ValueError(f"release-only line inside acceptance block: {relative}")
+            indent = line[:len(line) - len(line.lstrip())]
+            ending = "\r\n" if line.endswith("\r\n") else ("\n" if line.endswith("\n") else "")
+            output.append(indent + marker[len(RELEASE_ONLY_PREFIX):] + ending)
+            continue
+        if any(token in line for token in ACCEPTANCE_ONLY_LINE_TOKENS):
+            continue
+        if not inside:
+            output.append(line)
+    if inside or begin_count != end_count:
+        raise ValueError(f"unclosed acceptance marker: {relative}")
+    rendered = "".join(output).encode("utf-8")
+    return (b"\xef\xbb\xbf" + rendered) if had_bom else rendered
+
+
+def release_entries(source):
+    """Return final release relative paths and rendered bytes."""
+    source = Path(source)
+    entries = []
+    for path in release_files(source):
+        relative = path.relative_to(source).as_posix()
+        if relative in ACCEPTANCE_ONLY_FILES:
+            continue
+        entries.append((relative, render_release_bytes(path, relative)))
+    return entries
+
+
+def release_projection_errors(entries):
+    errors = []
+    paths = {relative for relative, _ in entries}
+    leaked_files = sorted(paths & ACCEPTANCE_ONLY_FILES)
+    for relative in leaked_files:
+        errors.append(f"acceptance-only file leaked into release: {relative}")
+    for relative, data in entries:
+        if Path(relative).suffix.lower() not in {".txt", ".gui", ".yml", ".mod"}:
+            continue
+        text = data.decode("utf-8-sig", errors="ignore")
+        for identifier in FORBIDDEN_RELEASE_IDENTIFIERS:
+            if identifier in text:
+                errors.append(
+                    f"acceptance identifier {identifier!r} leaked into {relative}")
+    return errors
 
 
 def git_sha(repository=ROOT):
@@ -209,10 +300,14 @@ def build_release(source, staging, revision=None, tag=None, version=None,
     staging.mkdir(parents=True)
     for directory in RELEASE_DIRECTORY_SUFFIXES:
         (staging / directory).mkdir()
-    for path in release_files(source):
-        target = staging / path.relative_to(source)
+    entries = release_entries(source)
+    projection_errors = release_projection_errors(entries)
+    if projection_errors:
+        raise ValueError("invalid release projection:\n" + "\n".join(projection_errors))
+    for relative, data in entries:
+        target = staging / relative
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(path, target)
+        target.write_bytes(data)
 
     staging_errors = release_source_errors(staging)
     if staging_errors:

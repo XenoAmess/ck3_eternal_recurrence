@@ -497,8 +497,8 @@ def mechanic_checks(errors):
         errors.append("Glassfire Ledger decision does not request its GUI bridge")
     if "set_global_variable = xa_open_contract_pending" not in decisions:
         errors.append("lifetime-contract decision does not request its GUI bridge")
-    if "trigger_event = xar.0011" not in decision_bridges:
-        errors.append("Glassfire Ledger GUI bridge does not open its event")
+    if "trigger_event = xar.0012" not in decision_bridges:
+        errors.append("Glassfire Ledger GUI bridge does not open its preparation event")
     if "trigger_event = xar.2000" not in decision_bridges:
         errors.append("lifetime-contract GUI bridge does not open selection event")
     if ("xar_open_ledger_gui" not in decision_bridge_gui
@@ -663,7 +663,7 @@ def mechanic_checks(errors):
     generated_effects = highscore.gen_effects()
     quantizer = extract_block(generated_effects, "xar_quantize_record_candidate_effect") or ""
     writer = extract_block(generated_effects, "xar_write_record_effect") or ""
-    ledger = extract_block(generated_effects, "xar_prepare_ledger_effect") or ""
+    ledger = extract_block(generated_effects, "xar_project_ledger_effect") or ""
     thresholds = highscore.THRESHOLDS
     quantized_limits = [int(value) for value in re.findall(
         r"global_var:xa_run_score >= (\d+)", quantizer)]
@@ -754,6 +754,11 @@ def mechanic_checks(errors):
 
 def package_checks(errors):
     errors.extend(build_release.release_source_errors(MOD))
+    try:
+        release_entries = build_release.release_entries(MOD)
+        errors.extend(build_release.release_projection_errors(release_entries))
+    except ValueError as exc:
+        errors.append(f"release projection invalid: {exc}")
     descriptor = read(MOD / "descriptor.mod")
     if "remote_file_id" in descriptor:
         errors.append("repository descriptor.mod contains remote_file_id")
