@@ -44,3 +44,64 @@ xar.0902 = {
 		}
 	}
 }
+
+# Recompute through the production scorer, then cross an event boundary before
+# reading its committed globals through localization-free generated wire bits.
+xar.0920 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		xar_compute_score_effect = yes
+		trigger_event = xar.0921
+	}
+}
+
+xar.0921 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		debug_log = "XAR: BALANCE SAMPLE BEGIN"
+		xar_acceptance_balance_emit_wire_effect = yes
+		debug_log = "XAR: BALANCE SAMPLE END"
+		if = {
+			limit = { global_var:xa_balance_sample_kind = 2 }
+			debug_log = "XAR: BALANCE MIN 30"
+		}
+		else_if = {
+			limit = { global_var:xa_balance_sample_kind = 3 }
+			debug_log = "XAR: BALANCE DONE horizon_40"
+		}
+		else_if = {
+			limit = {
+				global_var:xa_balance_sample_kind = 4
+				has_global_variable = xa_balance_min_reached
+			}
+			debug_log = "XAR: BALANCE DONE natural_death"
+		}
+		else_if = {
+			limit = { global_var:xa_balance_sample_kind = 4 }
+			debug_log = "XAR: BALANCE DONE early_death"
+		}
+	}
+}
+
+# Thirty years is the minimum useful observation; a survivor continues to the
+# forty-year right-censoring horizon.
+xar.0927 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		set_global_variable = xa_balance_min_reached
+		set_global_variable = { name = xa_balance_sample_kind value = 2 }
+		trigger_event = xar.0920
+	}
+}
+
+xar.0928 = {
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		set_global_variable = { name = xa_balance_sample_kind value = 3 }
+		trigger_event = xar.0920
+	}
+}

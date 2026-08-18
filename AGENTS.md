@@ -22,11 +22,12 @@ py tools/gen_contracts.py                                   # 本世契约、PB�
 py tools/gen_scoring.py                                     # 死亡计分 effect 与规则文档
 py tools/gen_score_preview.py                               # 特质 hover 只读即时分数
 py tools/gen_no_heir_gui.py                                 # 原生继承窗投影 + 无继承人结算注入
+py tools/gen_balance_wire.py                                # 开发用长期平衡遥测位帧
 py tools/build_release.py --check                           # 临时双构建，验证 manifest/ZIP 可复现
 py tools/build_release.py                                   # 生成 dist staging、manifest 与 deterministic ZIP
 ```
 
-六套生成器，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
+七套生成器，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
 再运行 `gen_scoring.py` 与 `gen_score_preview.py`；奖池条目改 `tools/pools_data.py`
 （数据表）再跑 gen_pools.py；权威表 `docs/blessing-curse-pools.md` 由它导出。
 计分生成器产出 `common/scripted_effects/xar_generated_scoring_effects.txt` 与
@@ -36,6 +37,7 @@ py tools/build_release.py                                   # 生成 dist stagin
 取得候选并显式更新契约，禁止为了消除校验错误盲目刷新。
 契约原型、PB、图鉴、琉焰之视成长表和 28 个里程碑事件改 `tools/contracts_data.py`，再跑 `gen_contracts.py`；该生成器也产出 `common/traits/xar_traits.txt`。
 无继承人结算 widget 改 `gui/xar_no_heir_settlement.gui`；原生继承窗投影必须运行 `tools/gen_no_heir_gui.py`，不要手改 `gui/window_succession_event.gui`。
+长期平衡 wire 字段改 `tools/balance_wire_data.py`，再运行 `tools/gen_balance_wire.py`；两份生成结果仅供 development acceptance，release staging 必须整文件排除。
 位阈值体系生成器产出：`common/tutorial_lessons/xar_highscore.txt`、`common/customizable_localization/xar_generated_loc.txt`、
 `common/scripted_guis/xar_generated_guis.txt`、`common/scripted_effects/xar_generated_effects.txt`、
 `gui/xar_meta.gui`、`localization/*/xar_generated_*.yml`。

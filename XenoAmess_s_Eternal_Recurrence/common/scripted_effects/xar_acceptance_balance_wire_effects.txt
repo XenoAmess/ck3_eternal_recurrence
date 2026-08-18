@@ -1,0 +1,2003 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_balance_wire.py
+xar_acceptance_balance_emit_wire_effect = {
+	if = {
+		limit = { xar_balance_wire_kind_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kind|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_kind_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kind|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_kind_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kind|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_kind_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_kind"
+	}
+	if = {
+		limit = { xar_balance_wire_fixture_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=fixture|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_fixture_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=fixture|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_fixture_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=fixture|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_fixture_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_fixture"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b10 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=10"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b11 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=11"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b12 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=12"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b13 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=13"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b14 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=14"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_b15 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=elapsed|bit=15"
+	}
+	if = {
+		limit = { xar_balance_wire_elapsed_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_elapsed"
+	}
+	if = {
+		limit = { xar_balance_wire_pair_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pair|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_pair_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pair|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_pair_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pair|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_pair_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pair|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_pair_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pair|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_pair_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pair|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_pair_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pair|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_pair_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pair|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_pair_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_pair"
+	}
+	if = {
+		limit = { xar_balance_wire_reject_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reject|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_reject_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reject|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_reject_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reject|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_reject_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reject|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_reject_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reject|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_reject_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reject|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_reject_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reject|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_reject_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reject|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_reject_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_reject"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b10 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=10"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b11 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=11"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b12 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=12"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b13 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=13"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b14 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=14"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b15 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=15"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b16 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=16"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b17 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=17"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b18 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=18"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b19 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=19"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b20 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=20"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b21 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=21"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b22 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=22"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b23 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=23"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b24 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=24"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b25 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=25"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b26 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=26"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b27 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=27"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b28 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=28"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b29 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=29"
+	}
+	if = {
+		limit = { xar_balance_wire_score_b30 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=score|bit=30"
+	}
+	if = {
+		limit = { xar_balance_wire_score_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_score"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b10 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=10"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b11 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=11"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b12 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=12"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b13 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=13"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b14 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=14"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b15 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=15"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b16 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=16"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b17 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=17"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b18 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=18"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b19 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=19"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b20 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=20"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b21 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=21"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b22 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=22"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b23 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=23"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b24 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=24"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b25 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=25"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b26 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=26"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b27 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=27"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b28 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=28"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b29 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=29"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_b30 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=absolute|bit=30"
+	}
+	if = {
+		limit = { xar_balance_wire_absolute_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_absolute"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b10 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=10"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b11 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=11"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b12 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=12"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b13 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=13"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b14 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=14"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b15 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=15"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b16 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=16"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b17 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=17"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b18 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=18"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b19 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=19"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b20 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=20"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b21 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=21"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b22 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=22"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b23 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=23"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b24 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=24"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b25 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=25"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b26 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=26"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b27 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=27"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b28 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=28"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b29 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=29"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_b30 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=baseline|bit=30"
+	}
+	if = {
+		limit = { xar_balance_wire_baseline_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_baseline"
+	}
+	if = {
+		limit = { xar_balance_wire_bless_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=bless|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_bless_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=bless|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_bless_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=bless|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_bless_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=bless|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_bless_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=bless|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_bless_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=bless|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_bless_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=bless|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_bless_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_bless"
+	}
+	if = {
+		limit = { xar_balance_wire_br_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=br|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_br_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=br|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_br_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_br"
+	}
+	if = {
+		limit = { xar_balance_wire_curse_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=curse|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_curse_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=curse|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_curse_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=curse|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_curse_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=curse|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_curse_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=curse|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_curse_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=curse|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_curse_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=curse|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_curse_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_curse"
+	}
+	if = {
+		limit = { xar_balance_wire_cr_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=cr|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_cr_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=cr|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_cr_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_cr"
+	}
+	if = {
+		limit = { xar_balance_wire_reroll_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reroll|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_reroll_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reroll|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_reroll_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reroll|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_reroll_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reroll|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_reroll_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reroll|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_reroll_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reroll|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_reroll_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reroll|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_reroll_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=reroll|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_reroll_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_reroll"
+	}
+	if = {
+		limit = { xar_balance_wire_seal_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=seal|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_seal_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=seal|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_seal_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=seal|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_seal_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=seal|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_seal_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=seal|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_seal_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=seal|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_seal_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=seal|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_seal_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=seal|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_seal_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_seal"
+	}
+	if = {
+		limit = { xar_balance_wire_life_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=life|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_life_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=life|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_life_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=life|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_life_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=life|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_life_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=life|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_life_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=life|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_life_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_life"
+	}
+	if = {
+		limit = { xar_balance_wire_dip_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dip|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_dip_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dip|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_dip_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dip|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_dip_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dip|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_dip_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dip|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_dip_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dip|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_dip_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dip|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_dip_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dip|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_dip_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dip|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_dip_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dip|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_dip_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_dip"
+	}
+	if = {
+		limit = { xar_balance_wire_mar_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=mar|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_mar_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=mar|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_mar_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=mar|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_mar_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=mar|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_mar_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=mar|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_mar_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=mar|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_mar_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=mar|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_mar_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=mar|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_mar_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=mar|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_mar_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=mar|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_mar_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_mar"
+	}
+	if = {
+		limit = { xar_balance_wire_ste_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=ste|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_ste_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=ste|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_ste_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=ste|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_ste_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=ste|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_ste_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=ste|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_ste_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=ste|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_ste_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=ste|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_ste_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=ste|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_ste_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=ste|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_ste_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=ste|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_ste_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_ste"
+	}
+	if = {
+		limit = { xar_balance_wire_int_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=int|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_int_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=int|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_int_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=int|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_int_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=int|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_int_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=int|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_int_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=int|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_int_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=int|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_int_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=int|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_int_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=int|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_int_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=int|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_int_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_int"
+	}
+	if = {
+		limit = { xar_balance_wire_lea_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=lea|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_lea_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=lea|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_lea_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=lea|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_lea_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=lea|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_lea_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=lea|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_lea_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=lea|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_lea_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=lea|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_lea_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=lea|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_lea_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=lea|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_lea_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=lea|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_lea_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_lea"
+	}
+	if = {
+		limit = { xar_balance_wire_pro_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pro|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_pro_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pro|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_pro_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pro|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_pro_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pro|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_pro_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pro|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_pro_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pro|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_pro_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pro|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_pro_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pro|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_pro_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pro|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_pro_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=pro|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_pro_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_pro"
+	}
+	if = {
+		limit = { global_var:xa_a_gold < 0 }
+		debug_log = "XAR: BALANCE DATA|field=gold|sign=-"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b10 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=10"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b11 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=11"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b12 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=12"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b13 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=13"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b14 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=14"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b15 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=15"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b16 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=16"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b17 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=17"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b18 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=18"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b19 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=19"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b20 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=20"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b21 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=21"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b22 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=22"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b23 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=23"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b24 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=24"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b25 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=25"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b26 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=26"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b27 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=27"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b28 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=28"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b29 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=29"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_b30 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=gold|bit=30"
+	}
+	if = {
+		limit = { xar_balance_wire_gold_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_gold"
+	}
+	if = {
+		limit = { global_var:xa_a_pres < 0 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|sign=-"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b10 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=10"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b11 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=11"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b12 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=12"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b13 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=13"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b14 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=14"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b15 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=15"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b16 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=16"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b17 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=17"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b18 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=18"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b19 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=19"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b20 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=20"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b21 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=21"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b22 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=22"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b23 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=23"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b24 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=24"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b25 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=25"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b26 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=26"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b27 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=27"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b28 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=28"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b29 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=29"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_b30 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=prestige|bit=30"
+	}
+	if = {
+		limit = { xar_balance_wire_prestige_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_prestige"
+	}
+	if = {
+		limit = { global_var:xa_a_pie < 0 }
+		debug_log = "XAR: BALANCE DATA|field=piety|sign=-"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b10 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=10"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b11 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=11"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b12 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=12"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b13 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=13"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b14 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=14"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b15 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=15"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b16 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=16"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b17 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=17"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b18 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=18"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b19 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=19"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b20 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=20"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b21 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=21"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b22 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=22"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b23 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=23"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b24 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=24"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b25 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=25"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b26 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=26"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b27 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=27"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b28 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=28"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b29 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=29"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_b30 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=piety|bit=30"
+	}
+	if = {
+		limit = { xar_balance_wire_piety_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_piety"
+	}
+	if = {
+		limit = { global_var:xa_a_inf < 0 }
+		debug_log = "XAR: BALANCE DATA|field=influence|sign=-"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b10 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=10"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b11 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=11"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b12 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=12"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b13 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=13"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b14 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=14"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b15 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=15"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b16 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=16"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b17 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=17"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b18 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=18"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b19 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=19"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b20 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=20"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b21 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=21"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b22 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=22"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b23 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=23"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b24 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=24"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b25 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=25"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b26 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=26"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b27 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=27"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b28 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=28"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b29 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=29"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_b30 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=influence|bit=30"
+	}
+	if = {
+		limit = { xar_balance_wire_influence_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_influence"
+	}
+	if = {
+		limit = { xar_balance_wire_counties_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=counties|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_counties_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=counties|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_counties_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=counties|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_counties_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=counties|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_counties_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=counties|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_counties_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=counties|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_counties_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=counties|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_counties_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=counties|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_counties_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=counties|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_counties_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=counties|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_counties_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_counties"
+	}
+	if = {
+		limit = { xar_balance_wire_duchies_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=duchies|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_duchies_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=duchies|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_duchies_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=duchies|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_duchies_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=duchies|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_duchies_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=duchies|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_duchies_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=duchies|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_duchies_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=duchies|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_duchies_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=duchies|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_duchies_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=duchies|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_duchies_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=duchies|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_duchies_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_duchies"
+	}
+	if = {
+		limit = { xar_balance_wire_kingdoms_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kingdoms|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_kingdoms_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kingdoms|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_kingdoms_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kingdoms|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_kingdoms_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kingdoms|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_kingdoms_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kingdoms|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_kingdoms_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kingdoms|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_kingdoms_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kingdoms|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_kingdoms_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kingdoms|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_kingdoms_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kingdoms|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_kingdoms_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=kingdoms|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_kingdoms_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_kingdoms"
+	}
+	if = {
+		limit = { xar_balance_wire_empires_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=empires|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_empires_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=empires|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_empires_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=empires|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_empires_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=empires|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_empires_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=empires|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_empires_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=empires|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_empires_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=empires|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_empires_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=empires|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_empires_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=empires|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_empires_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=empires|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_empires_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_empires"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b10 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=10"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b11 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=11"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b12 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=12"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b13 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=13"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b14 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=14"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b15 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=15"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b16 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=16"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b17 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=17"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b18 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=18"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_b19 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=realm|bit=19"
+	}
+	if = {
+		limit = { xar_balance_wire_realm_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_realm"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b10 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=10"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b11 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=11"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b12 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=12"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b13 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=13"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b14 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=14"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b15 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=15"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b16 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=16"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b17 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=17"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b18 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=18"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_b19 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=dynasty|bit=19"
+	}
+	if = {
+		limit = { xar_balance_wire_dynasty_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_dynasty"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b4 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=4"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b5 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=5"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b6 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=6"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b7 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=7"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b8 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=8"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b9 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=9"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b10 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=10"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b11 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=11"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b12 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=12"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b13 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=13"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b14 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=14"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b15 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=15"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b16 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=16"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b17 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=17"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b18 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=18"
+	}
+	if = {
+		limit = { xar_balance_wire_house_b19 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=house|bit=19"
+	}
+	if = {
+		limit = { xar_balance_wire_house_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_house"
+	}
+	if = {
+		limit = { xar_balance_wire_contract_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=contract|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_contract_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=contract|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_contract_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=contract|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_contract_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_contract"
+	}
+	if = {
+		limit = { xar_balance_wire_progress_b0 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=progress|bit=0"
+	}
+	if = {
+		limit = { xar_balance_wire_progress_b1 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=progress|bit=1"
+	}
+	if = {
+		limit = { xar_balance_wire_progress_b2 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=progress|bit=2"
+	}
+	if = {
+		limit = { xar_balance_wire_progress_b3 = 1 }
+		debug_log = "XAR: BALANCE DATA|field=progress|bit=3"
+	}
+	if = {
+		limit = { xar_balance_wire_progress_overflow >= 0 }
+		debug_log = "XAR: BALANCE WIRE FAIL overflow_progress"
+	}
+}

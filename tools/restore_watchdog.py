@@ -1,7 +1,7 @@
 """Restore acceptance-test user files when the runner process exits.
 
 This is intentionally a separate process: a forced runner termination cannot
-skip restoration of presets.txt/tutorial.txt or isolated autosaves.
+skip restoration of presets.txt/tutorial.txt/dlc_load.json or isolated autosaves.
 """
 
 import hashlib

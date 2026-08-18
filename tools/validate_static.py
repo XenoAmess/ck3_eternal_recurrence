@@ -11,6 +11,7 @@ from pathlib import Path
 from PIL import Image
 
 import build_release
+import gen_balance_wire
 import gen_contracts
 import gen_no_heir_gui
 import gen_pools
@@ -207,6 +208,10 @@ def generated_checks(errors):
         MOD / "common/scripted_effects/xar_generated_scoring_effects.txt":
             gen_scoring.generate_effects(),
         MOD / "common/script_values/xar_generated_score_preview.txt": gen_score_preview.generate(),
+        MOD / "common/script_values/xar_acceptance_balance_wire_values.txt":
+            gen_balance_wire.generated_values(),
+        MOD / "common/scripted_effects/xar_acceptance_balance_wire_effects.txt":
+            gen_balance_wire.generated_effect(),
         ROOT / "docs/scoring-rules.md": gen_scoring.generate_doc(),
         MOD / "events/xar_generated_contract_events.txt": gen_contracts.generated_events(),
         MOD / "common/decisions/xar_generated_contract_decisions.txt": gen_contracts.generated_decision(),
@@ -872,6 +877,45 @@ def mechanic_checks(errors):
         errors.append("scoring-matrix descendant/preview/dispatcher chain is incomplete")
     if scoring_probe_events.count("create_character = {") != 9:
         errors.append("scoring-matrix pedigree must contain eight controls plus one dead parent")
+    balance_effects = read(
+        MOD / "common/scripted_effects/xar_acceptance_balance_effects.txt")
+    balance_fixture_requirements = (
+        "has_game_rule = xar_balance_count", "character:212892",
+        "has_game_rule = xar_balance_king", "character:214",
+        "has_game_rule = xar_balance_emperor", "character:1316",
+        "has_game_rule = xar_balance_synthetic", "create_character = {",
+        "set_player_character = scope:xar_balance_synthetic_ruler",
+        "has_title = title:c_olomouc", "has_title = title:c_prerov",
+        "XAR: BALANCE FIXTURE count PASS",
+        "XAR: BALANCE FIXTURE king PASS",
+        "XAR: BALANCE FIXTURE emperor PASS",
+        "XAR: BALANCE FIXTURE synthetic PASS",
+    )
+    if any(token not in death_probe_on_action for token in balance_fixture_requirements):
+        errors.append("balance fixture switch/synthetic assertions are incomplete")
+    if not all(token in balance_effects for token in (
+            "add_character_flag = xa_balance_fixture_player",
+            "id = xar.0927 days = 10950", "id = xar.0928 days = 14600")):
+        errors.append("balance fixture lacks its 30/40-year sampling schedule")
+    balance_event_requirements = (
+        "xar.0920", "xar_compute_score_effect = yes", "xar.0921",
+        "XAR: BALANCE SAMPLE BEGIN",
+        "xar_acceptance_balance_emit_wire_effect = yes",
+        "XAR: BALANCE SAMPLE END", "XAR: BALANCE MIN 30",
+        "XAR: BALANCE DONE horizon_40", "XAR: BALANCE DONE natural_death",
+        "XAR: BALANCE DONE early_death",
+    )
+    if any(token not in death_probe_events for token in balance_event_requirements):
+        errors.append("balance score/sample/endpoint event chain is incomplete")
+    fixture_rule = extract_block(game_rules, "xar_balance_fixture") or ""
+    if any(setting not in fixture_rule for setting in (
+            "xar_balance_none", "xar_balance_count", "xar_balance_king",
+            "xar_balance_emperor", "xar_balance_synthetic")):
+        errors.append("development balance fixture rule lost a setting")
+    if (events.count("name = xa_balance_sample_kind value = 1") != 3
+            or "name = xa_balance_sample_kind value = 5" not in events
+            or "name = xa_balance_sample_kind value = 4" not in score_dispatch_event):
+        errors.append("balance sampling is not attached to all pair/death production exits")
     for hook in ("on_war_won_attacker", "on_war_won_defender", "on_hook_used",
                  "on_county_faith_change", "on_birth_mother", "on_birth_father",
                  "on_building_completed", "on_birthday"):
@@ -1253,10 +1297,23 @@ def package_checks(errors):
             "pool_dispatchers", "expected_pool_markers",
             "XAR: TEST DONE scoring-matrix")):
         errors.append("acceptance runner lacks scoring/dedup/200-dispatcher coverage")
+    if not all(token in acceptance_runner for token in (
+            '"balance-long": 0', "BALANCE_FIXTURES", "declared_vanilla_rule_defaults",
+            "set_balance_applied_rules", "def run_balance_long",
+            "decode_balance_wire_sample", "cadence_1095_days",
+            "XAR: BALANCE DONE horizon_40", "--balance-smoke-pairs")):
+        errors.append("acceptance runner lacks the declared-default passive balance matrix")
+    balance_matrix_runner = read(ROOT / "tools/run_balance_matrix.py")
+    if not all(token in balance_matrix_runner for token in (
+            'FIXTURES = ("count", "king", "emperor", "synthetic")',
+            '"--scenario", "balance-long"', "balance-matrix.json",
+            "instrumented engineering samples")):
+        errors.append("serial balance matrix aggregator is incomplete")
     restore_watchdog = read(ROOT / "tools/restore_watchdog.py")
     autosave_protection = (
         "SAVE_GAMES_DIR", 'glob("autosave*.ck3")', "autosaves.ready",
         "autosave backup verification failed", "restore_autosaves(backup)",
+        "DLC_LOAD_JSON", "set_enabled_mod_profile", "ugc_3784706360.mod",
     )
     if (any(token not in acceptance_runner for token in autosave_protection)
             or any(token not in restore_watchdog for token in (

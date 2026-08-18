@@ -34,11 +34,14 @@ ACCEPTANCE_END = "# XAR_ACCEPTANCE_ONLY_END"
 RELEASE_ONLY_PREFIX = "# XAR_RELEASE_ONLY "
 ACCEPTANCE_ONLY_FILES = {
     "common/on_action/xar_acceptance_on_actions.txt",
+    "common/scripted_effects/xar_acceptance_balance_effects.txt",
+    "common/scripted_effects/xar_acceptance_balance_wire_effects.txt",
     "common/scripted_effects/xar_acceptance_bargain_effects.txt",
     "common/scripted_effects/xar_acceptance_death_effects.txt",
     "common/scripted_effects/xar_acceptance_progression_effects.txt",
     "common/scripted_effects/xar_acceptance_scoring_effects.txt",
     "common/scripted_effects/xar_selftest_effects.txt",
+    "common/script_values/xar_acceptance_balance_wire_values.txt",
     "events/xar_acceptance_bargain_events.txt",
     "events/xar_acceptance_events.txt",
     "events/xar_acceptance_scoring_events.txt",
@@ -49,7 +52,8 @@ FORBIDDEN_RELEASE_IDENTIFIERS = (
     "xar_acceptance_", "xa_bargain_reopen", "xa_progression_ui",
     "xa_scoring_matrix", "xar_test_dispatcher_sweep_effect",
     "xar_trait_test", "xar_trait_hover", "xa_full_ui_test",
-    "xa_ui_test", "xa_test_", "xa_selftest_", "XAR: TEST",
+	"xa_ui_test", "xa_test_", "xa_selftest_", "XAR: TEST",
+	"xar_balance_", "xa_balance_", "XAR: BALANCE",
     ACCEPTANCE_BEGIN, ACCEPTANCE_END, RELEASE_ONLY_PREFIX,
 )
 ACCEPTANCE_ONLY_LINE_TOKENS = (

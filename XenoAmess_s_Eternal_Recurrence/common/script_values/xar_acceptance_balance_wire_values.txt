@@ -1,0 +1,4350 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_balance_wire.py
+# One independent modulo projection per field/bit.
+
+xar_balance_wire_kind_b0 = {
+	value = global_var:xa_balance_sample_kind
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kind_b1 = {
+	value = global_var:xa_balance_sample_kind
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kind_b2 = {
+	value = global_var:xa_balance_sample_kind
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kind_overflow = {
+	value = global_var:xa_balance_sample_kind
+	abs = yes
+	subtract = 8
+}
+
+xar_balance_wire_fixture_b0 = {
+	value = global_var:xa_balance_fixture_code
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_fixture_b1 = {
+	value = global_var:xa_balance_fixture_code
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_fixture_b2 = {
+	value = global_var:xa_balance_fixture_code
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_fixture_overflow = {
+	value = global_var:xa_balance_fixture_code
+	abs = yes
+	subtract = 8
+}
+
+xar_balance_wire_elapsed_b0 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b1 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b2 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b3 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b4 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b5 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b6 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b7 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b8 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b9 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b10 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 1024
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b11 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 2048
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b12 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 4096
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b13 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 8192
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b14 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 16384
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_b15 = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	divide = 32768
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_elapsed_overflow = {
+	value = { value = current_date subtract = global_var:xa_balance_start_date }
+	abs = yes
+	subtract = 65536
+}
+
+xar_balance_wire_pair_b0 = {
+	value = global_var:xa_bless_count
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pair_b1 = {
+	value = global_var:xa_bless_count
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pair_b2 = {
+	value = global_var:xa_bless_count
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pair_b3 = {
+	value = global_var:xa_bless_count
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pair_b4 = {
+	value = global_var:xa_bless_count
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pair_b5 = {
+	value = global_var:xa_bless_count
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pair_b6 = {
+	value = global_var:xa_bless_count
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pair_b7 = {
+	value = global_var:xa_bless_count
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pair_overflow = {
+	value = global_var:xa_bless_count
+	abs = yes
+	subtract = 256
+}
+
+xar_balance_wire_reject_b0 = {
+	value = global_var:xa_bless_reject_count
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reject_b1 = {
+	value = global_var:xa_bless_reject_count
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reject_b2 = {
+	value = global_var:xa_bless_reject_count
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reject_b3 = {
+	value = global_var:xa_bless_reject_count
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reject_b4 = {
+	value = global_var:xa_bless_reject_count
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reject_b5 = {
+	value = global_var:xa_bless_reject_count
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reject_b6 = {
+	value = global_var:xa_bless_reject_count
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reject_b7 = {
+	value = global_var:xa_bless_reject_count
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reject_overflow = {
+	value = global_var:xa_bless_reject_count
+	abs = yes
+	subtract = 256
+}
+
+xar_balance_wire_score_b0 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b1 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b2 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b3 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b4 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b5 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b6 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b7 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b8 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b9 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b10 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1024
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b11 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2048
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b12 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4096
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b13 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8192
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b14 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16384
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b15 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32768
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b16 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 65536
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b17 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 131072
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b18 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 262144
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b19 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 524288
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b20 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1048576
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b21 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2097152
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b22 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4194304
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b23 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8388608
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b24 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16777216
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b25 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 33554432
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b26 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 67108864
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b27 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 134217728
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b28 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 268435456
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b29 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 536870912
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_b30 = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1073741824
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_score_overflow = {
+	value = global_var:xa_run_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	subtract = 2147483648
+}
+
+xar_balance_wire_absolute_b0 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b1 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b2 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b3 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b4 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b5 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b6 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b7 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b8 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b9 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b10 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1024
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b11 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2048
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b12 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4096
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b13 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8192
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b14 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16384
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b15 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32768
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b16 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 65536
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b17 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 131072
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b18 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 262144
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b19 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 524288
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b20 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1048576
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b21 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2097152
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b22 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4194304
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b23 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8388608
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b24 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16777216
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b25 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 33554432
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b26 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 67108864
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b27 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 134217728
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b28 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 268435456
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b29 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 536870912
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_b30 = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1073741824
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_absolute_overflow = {
+	value = global_var:xa_absolute_score
+	multiply = 100
+	floor = yes
+	abs = yes
+	subtract = 2147483648
+}
+
+xar_balance_wire_baseline_b0 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b1 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b2 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b3 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b4 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b5 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b6 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b7 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b8 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b9 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b10 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1024
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b11 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2048
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b12 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4096
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b13 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8192
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b14 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16384
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b15 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32768
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b16 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 65536
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b17 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 131072
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b18 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 262144
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b19 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 524288
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b20 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1048576
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b21 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2097152
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b22 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4194304
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b23 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8388608
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b24 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16777216
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b25 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 33554432
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b26 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 67108864
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b27 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 134217728
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b28 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 268435456
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b29 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 536870912
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_b30 = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1073741824
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_baseline_overflow = {
+	value = global_var:xa_score_baseline
+	multiply = 100
+	floor = yes
+	abs = yes
+	subtract = 2147483648
+}
+
+xar_balance_wire_bless_b0 = {
+	value = global_var:xa_bless_a
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_bless_b1 = {
+	value = global_var:xa_bless_a
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_bless_b2 = {
+	value = global_var:xa_bless_a
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_bless_b3 = {
+	value = global_var:xa_bless_a
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_bless_b4 = {
+	value = global_var:xa_bless_a
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_bless_b5 = {
+	value = global_var:xa_bless_a
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_bless_b6 = {
+	value = global_var:xa_bless_a
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_bless_overflow = {
+	value = global_var:xa_bless_a
+	abs = yes
+	subtract = 128
+}
+
+xar_balance_wire_br_b0 = {
+	value = global_var:xa_selected_bless_rarity
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_br_b1 = {
+	value = global_var:xa_selected_bless_rarity
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_br_overflow = {
+	value = global_var:xa_selected_bless_rarity
+	abs = yes
+	subtract = 4
+}
+
+xar_balance_wire_curse_b0 = {
+	value = global_var:xa_curse_a
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_curse_b1 = {
+	value = global_var:xa_curse_a
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_curse_b2 = {
+	value = global_var:xa_curse_a
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_curse_b3 = {
+	value = global_var:xa_curse_a
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_curse_b4 = {
+	value = global_var:xa_curse_a
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_curse_b5 = {
+	value = global_var:xa_curse_a
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_curse_b6 = {
+	value = global_var:xa_curse_a
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_curse_overflow = {
+	value = global_var:xa_curse_a
+	abs = yes
+	subtract = 128
+}
+
+xar_balance_wire_cr_b0 = {
+	value = global_var:xa_curse_a_rarity
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_cr_b1 = {
+	value = global_var:xa_curse_a_rarity
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_cr_overflow = {
+	value = global_var:xa_curse_a_rarity
+	abs = yes
+	subtract = 4
+}
+
+xar_balance_wire_reroll_b0 = {
+	value = global_var:xa_reroll_tokens
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reroll_b1 = {
+	value = global_var:xa_reroll_tokens
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reroll_b2 = {
+	value = global_var:xa_reroll_tokens
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reroll_b3 = {
+	value = global_var:xa_reroll_tokens
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reroll_b4 = {
+	value = global_var:xa_reroll_tokens
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reroll_b5 = {
+	value = global_var:xa_reroll_tokens
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reroll_b6 = {
+	value = global_var:xa_reroll_tokens
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reroll_b7 = {
+	value = global_var:xa_reroll_tokens
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_reroll_overflow = {
+	value = global_var:xa_reroll_tokens
+	abs = yes
+	subtract = 256
+}
+
+xar_balance_wire_seal_b0 = {
+	value = global_var:xa_seal_tokens
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_seal_b1 = {
+	value = global_var:xa_seal_tokens
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_seal_b2 = {
+	value = global_var:xa_seal_tokens
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_seal_b3 = {
+	value = global_var:xa_seal_tokens
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_seal_b4 = {
+	value = global_var:xa_seal_tokens
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_seal_b5 = {
+	value = global_var:xa_seal_tokens
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_seal_b6 = {
+	value = global_var:xa_seal_tokens
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_seal_b7 = {
+	value = global_var:xa_seal_tokens
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_seal_overflow = {
+	value = global_var:xa_seal_tokens
+	abs = yes
+	subtract = 256
+}
+
+xar_balance_wire_life_b0 = {
+	value = global_var:xa_lifespan_bought
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_life_b1 = {
+	value = global_var:xa_lifespan_bought
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_life_b2 = {
+	value = global_var:xa_lifespan_bought
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_life_b3 = {
+	value = global_var:xa_lifespan_bought
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_life_b4 = {
+	value = global_var:xa_lifespan_bought
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_life_b5 = {
+	value = global_var:xa_lifespan_bought
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_life_overflow = {
+	value = global_var:xa_lifespan_bought
+	abs = yes
+	subtract = 64
+}
+
+xar_balance_wire_dip_b0 = {
+	value = global_var:xa_a_dip
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dip_b1 = {
+	value = global_var:xa_a_dip
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dip_b2 = {
+	value = global_var:xa_a_dip
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dip_b3 = {
+	value = global_var:xa_a_dip
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dip_b4 = {
+	value = global_var:xa_a_dip
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dip_b5 = {
+	value = global_var:xa_a_dip
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dip_b6 = {
+	value = global_var:xa_a_dip
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dip_b7 = {
+	value = global_var:xa_a_dip
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dip_b8 = {
+	value = global_var:xa_a_dip
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dip_b9 = {
+	value = global_var:xa_a_dip
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dip_overflow = {
+	value = global_var:xa_a_dip
+	abs = yes
+	subtract = 1024
+}
+
+xar_balance_wire_mar_b0 = {
+	value = global_var:xa_a_mar
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_mar_b1 = {
+	value = global_var:xa_a_mar
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_mar_b2 = {
+	value = global_var:xa_a_mar
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_mar_b3 = {
+	value = global_var:xa_a_mar
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_mar_b4 = {
+	value = global_var:xa_a_mar
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_mar_b5 = {
+	value = global_var:xa_a_mar
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_mar_b6 = {
+	value = global_var:xa_a_mar
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_mar_b7 = {
+	value = global_var:xa_a_mar
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_mar_b8 = {
+	value = global_var:xa_a_mar
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_mar_b9 = {
+	value = global_var:xa_a_mar
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_mar_overflow = {
+	value = global_var:xa_a_mar
+	abs = yes
+	subtract = 1024
+}
+
+xar_balance_wire_ste_b0 = {
+	value = global_var:xa_a_ste
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_ste_b1 = {
+	value = global_var:xa_a_ste
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_ste_b2 = {
+	value = global_var:xa_a_ste
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_ste_b3 = {
+	value = global_var:xa_a_ste
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_ste_b4 = {
+	value = global_var:xa_a_ste
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_ste_b5 = {
+	value = global_var:xa_a_ste
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_ste_b6 = {
+	value = global_var:xa_a_ste
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_ste_b7 = {
+	value = global_var:xa_a_ste
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_ste_b8 = {
+	value = global_var:xa_a_ste
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_ste_b9 = {
+	value = global_var:xa_a_ste
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_ste_overflow = {
+	value = global_var:xa_a_ste
+	abs = yes
+	subtract = 1024
+}
+
+xar_balance_wire_int_b0 = {
+	value = global_var:xa_a_int
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_int_b1 = {
+	value = global_var:xa_a_int
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_int_b2 = {
+	value = global_var:xa_a_int
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_int_b3 = {
+	value = global_var:xa_a_int
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_int_b4 = {
+	value = global_var:xa_a_int
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_int_b5 = {
+	value = global_var:xa_a_int
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_int_b6 = {
+	value = global_var:xa_a_int
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_int_b7 = {
+	value = global_var:xa_a_int
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_int_b8 = {
+	value = global_var:xa_a_int
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_int_b9 = {
+	value = global_var:xa_a_int
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_int_overflow = {
+	value = global_var:xa_a_int
+	abs = yes
+	subtract = 1024
+}
+
+xar_balance_wire_lea_b0 = {
+	value = global_var:xa_a_lea
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_lea_b1 = {
+	value = global_var:xa_a_lea
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_lea_b2 = {
+	value = global_var:xa_a_lea
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_lea_b3 = {
+	value = global_var:xa_a_lea
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_lea_b4 = {
+	value = global_var:xa_a_lea
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_lea_b5 = {
+	value = global_var:xa_a_lea
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_lea_b6 = {
+	value = global_var:xa_a_lea
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_lea_b7 = {
+	value = global_var:xa_a_lea
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_lea_b8 = {
+	value = global_var:xa_a_lea
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_lea_b9 = {
+	value = global_var:xa_a_lea
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_lea_overflow = {
+	value = global_var:xa_a_lea
+	abs = yes
+	subtract = 1024
+}
+
+xar_balance_wire_pro_b0 = {
+	value = global_var:xa_a_pro
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pro_b1 = {
+	value = global_var:xa_a_pro
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pro_b2 = {
+	value = global_var:xa_a_pro
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pro_b3 = {
+	value = global_var:xa_a_pro
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pro_b4 = {
+	value = global_var:xa_a_pro
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pro_b5 = {
+	value = global_var:xa_a_pro
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pro_b6 = {
+	value = global_var:xa_a_pro
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pro_b7 = {
+	value = global_var:xa_a_pro
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pro_b8 = {
+	value = global_var:xa_a_pro
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pro_b9 = {
+	value = global_var:xa_a_pro
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_pro_overflow = {
+	value = global_var:xa_a_pro
+	abs = yes
+	subtract = 1024
+}
+
+xar_balance_wire_gold_b0 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b1 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b2 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b3 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b4 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b5 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b6 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b7 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b8 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b9 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b10 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1024
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b11 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2048
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b12 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4096
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b13 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8192
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b14 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16384
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b15 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32768
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b16 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 65536
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b17 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 131072
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b18 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 262144
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b19 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 524288
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b20 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1048576
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b21 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2097152
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b22 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4194304
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b23 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8388608
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b24 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16777216
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b25 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 33554432
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b26 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 67108864
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b27 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 134217728
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b28 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 268435456
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b29 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 536870912
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_b30 = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1073741824
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_gold_overflow = {
+	value = global_var:xa_a_gold
+	multiply = 100
+	floor = yes
+	abs = yes
+	subtract = 2147483648
+}
+
+xar_balance_wire_prestige_b0 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b1 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b2 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b3 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b4 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b5 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b6 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b7 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b8 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b9 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b10 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1024
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b11 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2048
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b12 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4096
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b13 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8192
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b14 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16384
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b15 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32768
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b16 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 65536
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b17 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 131072
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b18 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 262144
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b19 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 524288
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b20 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1048576
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b21 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2097152
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b22 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4194304
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b23 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8388608
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b24 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16777216
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b25 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 33554432
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b26 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 67108864
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b27 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 134217728
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b28 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 268435456
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b29 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 536870912
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_b30 = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1073741824
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_prestige_overflow = {
+	value = global_var:xa_a_pres
+	multiply = 100
+	floor = yes
+	abs = yes
+	subtract = 2147483648
+}
+
+xar_balance_wire_piety_b0 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b1 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b2 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b3 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b4 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b5 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b6 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b7 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b8 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b9 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b10 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1024
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b11 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2048
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b12 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4096
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b13 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8192
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b14 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16384
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b15 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32768
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b16 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 65536
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b17 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 131072
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b18 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 262144
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b19 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 524288
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b20 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1048576
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b21 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2097152
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b22 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4194304
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b23 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8388608
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b24 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16777216
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b25 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 33554432
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b26 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 67108864
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b27 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 134217728
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b28 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 268435456
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b29 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 536870912
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_b30 = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1073741824
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_piety_overflow = {
+	value = global_var:xa_a_pie
+	multiply = 100
+	floor = yes
+	abs = yes
+	subtract = 2147483648
+}
+
+xar_balance_wire_influence_b0 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b1 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b2 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b3 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b4 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b5 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b6 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b7 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b8 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b9 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b10 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1024
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b11 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2048
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b12 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4096
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b13 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8192
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b14 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16384
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b15 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 32768
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b16 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 65536
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b17 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 131072
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b18 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 262144
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b19 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 524288
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b20 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1048576
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b21 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 2097152
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b22 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 4194304
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b23 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 8388608
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b24 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 16777216
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b25 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 33554432
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b26 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 67108864
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b27 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 134217728
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b28 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 268435456
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b29 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 536870912
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_b30 = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	divide = 1073741824
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_influence_overflow = {
+	value = global_var:xa_a_inf
+	multiply = 100
+	floor = yes
+	abs = yes
+	subtract = 2147483648
+}
+
+xar_balance_wire_counties_b0 = {
+	value = global_var:xa_n_t1
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_counties_b1 = {
+	value = global_var:xa_n_t1
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_counties_b2 = {
+	value = global_var:xa_n_t1
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_counties_b3 = {
+	value = global_var:xa_n_t1
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_counties_b4 = {
+	value = global_var:xa_n_t1
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_counties_b5 = {
+	value = global_var:xa_n_t1
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_counties_b6 = {
+	value = global_var:xa_n_t1
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_counties_b7 = {
+	value = global_var:xa_n_t1
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_counties_b8 = {
+	value = global_var:xa_n_t1
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_counties_b9 = {
+	value = global_var:xa_n_t1
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_counties_overflow = {
+	value = global_var:xa_n_t1
+	abs = yes
+	subtract = 1024
+}
+
+xar_balance_wire_duchies_b0 = {
+	value = global_var:xa_n_t2
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_duchies_b1 = {
+	value = global_var:xa_n_t2
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_duchies_b2 = {
+	value = global_var:xa_n_t2
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_duchies_b3 = {
+	value = global_var:xa_n_t2
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_duchies_b4 = {
+	value = global_var:xa_n_t2
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_duchies_b5 = {
+	value = global_var:xa_n_t2
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_duchies_b6 = {
+	value = global_var:xa_n_t2
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_duchies_b7 = {
+	value = global_var:xa_n_t2
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_duchies_b8 = {
+	value = global_var:xa_n_t2
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_duchies_b9 = {
+	value = global_var:xa_n_t2
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_duchies_overflow = {
+	value = global_var:xa_n_t2
+	abs = yes
+	subtract = 1024
+}
+
+xar_balance_wire_kingdoms_b0 = {
+	value = global_var:xa_n_t3
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kingdoms_b1 = {
+	value = global_var:xa_n_t3
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kingdoms_b2 = {
+	value = global_var:xa_n_t3
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kingdoms_b3 = {
+	value = global_var:xa_n_t3
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kingdoms_b4 = {
+	value = global_var:xa_n_t3
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kingdoms_b5 = {
+	value = global_var:xa_n_t3
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kingdoms_b6 = {
+	value = global_var:xa_n_t3
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kingdoms_b7 = {
+	value = global_var:xa_n_t3
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kingdoms_b8 = {
+	value = global_var:xa_n_t3
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kingdoms_b9 = {
+	value = global_var:xa_n_t3
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_kingdoms_overflow = {
+	value = global_var:xa_n_t3
+	abs = yes
+	subtract = 1024
+}
+
+xar_balance_wire_empires_b0 = {
+	value = global_var:xa_n_t4
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_empires_b1 = {
+	value = global_var:xa_n_t4
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_empires_b2 = {
+	value = global_var:xa_n_t4
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_empires_b3 = {
+	value = global_var:xa_n_t4
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_empires_b4 = {
+	value = global_var:xa_n_t4
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_empires_b5 = {
+	value = global_var:xa_n_t4
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_empires_b6 = {
+	value = global_var:xa_n_t4
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_empires_b7 = {
+	value = global_var:xa_n_t4
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_empires_b8 = {
+	value = global_var:xa_n_t4
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_empires_b9 = {
+	value = global_var:xa_n_t4
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_empires_overflow = {
+	value = global_var:xa_n_t4
+	abs = yes
+	subtract = 1024
+}
+
+xar_balance_wire_realm_b0 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b1 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b2 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b3 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b4 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b5 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b6 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b7 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b8 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b9 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b10 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 1024
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b11 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 2048
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b12 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 4096
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b13 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 8192
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b14 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 16384
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b15 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 32768
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b16 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 65536
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b17 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 131072
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b18 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 262144
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_b19 = {
+	value = global_var:xa_a_realm
+	abs = yes
+	divide = 524288
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_realm_overflow = {
+	value = global_var:xa_a_realm
+	abs = yes
+	subtract = 1048576
+}
+
+xar_balance_wire_dynasty_b0 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b1 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b2 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b3 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b4 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b5 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b6 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b7 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b8 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b9 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b10 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 1024
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b11 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 2048
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b12 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 4096
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b13 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 8192
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b14 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 16384
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b15 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 32768
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b16 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 65536
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b17 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 131072
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b18 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 262144
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_b19 = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	divide = 524288
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_dynasty_overflow = {
+	value = global_var:xa_a_dyn
+	abs = yes
+	subtract = 1048576
+}
+
+xar_balance_wire_house_b0 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b1 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b2 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b3 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b4 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 16
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b5 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 32
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b6 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 64
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b7 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 128
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b8 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 256
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b9 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 512
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b10 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 1024
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b11 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 2048
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b12 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 4096
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b13 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 8192
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b14 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 16384
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b15 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 32768
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b16 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 65536
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b17 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 131072
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b18 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 262144
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_b19 = {
+	value = global_var:xa_a_hou
+	abs = yes
+	divide = 524288
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_house_overflow = {
+	value = global_var:xa_a_hou
+	abs = yes
+	subtract = 1048576
+}
+
+xar_balance_wire_contract_b0 = {
+	value = global_var:xa_contract_id
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_contract_b1 = {
+	value = global_var:xa_contract_id
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_contract_b2 = {
+	value = global_var:xa_contract_id
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_contract_overflow = {
+	value = global_var:xa_contract_id
+	abs = yes
+	subtract = 8
+}
+
+xar_balance_wire_progress_b0 = {
+	value = global_var:xa_contract_progress
+	abs = yes
+	divide = 1
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_progress_b1 = {
+	value = global_var:xa_contract_progress
+	abs = yes
+	divide = 2
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_progress_b2 = {
+	value = global_var:xa_contract_progress
+	abs = yes
+	divide = 4
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_progress_b3 = {
+	value = global_var:xa_contract_progress
+	abs = yes
+	divide = 8
+	floor = yes
+	modulo = 2
+}
+
+xar_balance_wire_progress_overflow = {
+	value = global_var:xa_contract_progress
+	abs = yes
+	subtract = 16
+}

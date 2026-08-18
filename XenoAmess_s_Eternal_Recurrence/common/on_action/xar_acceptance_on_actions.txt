@@ -14,3 +14,166 @@ xar_acceptance_observe_death = {
 		}
 	}
 }
+
+# Select one controlled 1066 fixture before the production every_player startup
+# entry runs. Historical starts retain vanilla state; the fourth fixture is an
+# explicitly synthetic replacement and is not a Ruler Designer claim.
+xar_acceptance_balance_fixture_on_game_start = {
+	effect = {
+		if = {
+			limit = { has_game_rule = xar_balance_count }
+			set_global_variable = xa_balance_active
+			set_global_variable = { name = xa_balance_fixture_code value = 1 }
+			set_global_variable = { name = xa_balance_start_date value = current_date }
+			random_player = {
+				limit = { is_ai = no }
+				set_player_character = character:212892
+			}
+			character:212892 = {
+				if = {
+					limit = {
+						is_ai = no
+						highest_held_title_tier = tier_county
+						has_title = title:c_olomouc
+					}
+					debug_log = "XAR: BALANCE FIXTURE count PASS"
+					xar_acceptance_balance_arm_effect = yes
+				}
+				else = { debug_log = "XAR: BALANCE FIXTURE count FAIL" }
+			}
+		}
+		else_if = {
+			limit = { has_game_rule = xar_balance_king }
+			set_global_variable = xa_balance_active
+			set_global_variable = { name = xa_balance_fixture_code value = 2 }
+			set_global_variable = { name = xa_balance_start_date value = current_date }
+			random_player = {
+				limit = { is_ai = no }
+				set_player_character = character:214
+			}
+			character:214 = {
+				if = {
+					limit = {
+						is_ai = no
+						highest_held_title_tier = tier_kingdom
+						has_title = title:k_france
+					}
+					debug_log = "XAR: BALANCE FIXTURE king PASS"
+					xar_acceptance_balance_arm_effect = yes
+				}
+				else = { debug_log = "XAR: BALANCE FIXTURE king FAIL" }
+			}
+		}
+		else_if = {
+			limit = { has_game_rule = xar_balance_emperor }
+			set_global_variable = xa_balance_active
+			set_global_variable = { name = xa_balance_fixture_code value = 3 }
+			set_global_variable = { name = xa_balance_start_date value = current_date }
+			random_player = {
+				limit = { is_ai = no }
+				set_player_character = character:1316
+			}
+			character:1316 = {
+				if = {
+					limit = {
+						is_ai = no
+						highest_held_title_tier = tier_empire
+						has_title = title:e_hre
+					}
+					debug_log = "XAR: BALANCE FIXTURE emperor PASS"
+					xar_acceptance_balance_arm_effect = yes
+				}
+				else = { debug_log = "XAR: BALANCE FIXTURE emperor FAIL" }
+			}
+		}
+		else_if = {
+			limit = { has_game_rule = xar_balance_synthetic }
+			set_global_variable = xa_balance_active
+			set_global_variable = { name = xa_balance_fixture_code value = 4 }
+			set_global_variable = { name = xa_balance_start_date value = current_date }
+			character:212892 = {
+				create_character = {
+					name = "XAR Synthetic Balance Ruler"
+					gender = male
+					age = 21
+					health = 5
+					random_traits = no
+					dynasty = generate
+					culture = culture:czech
+					faith = faith:catholic
+					location = this.location
+					diplomacy = 5
+					martial = 5
+					stewardship = 5
+					intrigue = 5
+					learning = 5
+					prowess = 5
+					save_scope_as = xar_balance_synthetic_ruler
+				}
+			}
+			scope:xar_balance_synthetic_ruler = {
+				copy_inheritable_appearance_from = character:212892
+				add_character_flag = xa_balance_synthetic_ruler
+			}
+			create_title_and_vassal_change = {
+				type = granted
+				save_scope_as = xar_balance_title_change
+			}
+			character:212892 = {
+				every_held_title = {
+					limit = { tier >= tier_county }
+					change_title_holder = {
+						holder = scope:xar_balance_synthetic_ruler
+						change = scope:xar_balance_title_change
+					}
+				}
+			}
+			resolve_title_and_vassal_change = scope:xar_balance_title_change
+			scope:xar_balance_synthetic_ruler = {
+				change_government = feudal_government
+				set_primary_title_to = title:c_olomouc
+				set_realm_capital = title:c_olomouc
+			}
+			random_player = {
+				limit = { is_ai = no }
+				set_player_character = scope:xar_balance_synthetic_ruler
+			}
+			scope:xar_balance_synthetic_ruler = {
+				if = { limit = { is_ai = no } debug_log = "XAR: BALANCE SYNTH player PASS" }
+				else = { debug_log = "XAR: BALANCE SYNTH player FAIL" }
+				if = { limit = { has_character_flag = xa_balance_synthetic_ruler } debug_log = "XAR: BALANCE SYNTH flag PASS" }
+				else = { debug_log = "XAR: BALANCE SYNTH flag FAIL" }
+				if = { limit = { highest_held_title_tier = tier_county } debug_log = "XAR: BALANCE SYNTH tier PASS" }
+				else = { debug_log = "XAR: BALANCE SYNTH tier FAIL" }
+				if = { limit = { has_title = title:c_olomouc } debug_log = "XAR: BALANCE SYNTH olomouc PASS" }
+				else = { debug_log = "XAR: BALANCE SYNTH olomouc FAIL" }
+				if = { limit = { has_title = title:c_prerov } debug_log = "XAR: BALANCE SYNTH prerov PASS" }
+				else = { debug_log = "XAR: BALANCE SYNTH prerov FAIL" }
+				if = { limit = { diplomacy = 5 } debug_log = "XAR: BALANCE SYNTH dip exact" }
+				else = { debug_log = "XAR: BALANCE SYNTH dip adjusted" }
+				if = { limit = { martial = 5 } debug_log = "XAR: BALANCE SYNTH mar exact" }
+				else = { debug_log = "XAR: BALANCE SYNTH mar adjusted" }
+				if = { limit = { stewardship = 5 } debug_log = "XAR: BALANCE SYNTH ste exact" }
+				else = { debug_log = "XAR: BALANCE SYNTH ste adjusted" }
+				if = { limit = { intrigue = 5 } debug_log = "XAR: BALANCE SYNTH int exact" }
+				else = { debug_log = "XAR: BALANCE SYNTH int adjusted" }
+				if = { limit = { learning = 5 } debug_log = "XAR: BALANCE SYNTH lea exact" }
+				else = { debug_log = "XAR: BALANCE SYNTH lea adjusted" }
+				if = { limit = { prowess = 5 } debug_log = "XAR: BALANCE SYNTH pro exact" }
+				else = { debug_log = "XAR: BALANCE SYNTH pro adjusted" }
+				if = {
+					limit = {
+						is_ai = no
+						has_character_flag = xa_balance_synthetic_ruler
+						highest_held_title_tier = tier_county
+						has_title = title:c_olomouc
+						has_title = title:c_prerov
+					}
+					debug_log = "XAR: BALANCE FIXTURE synthetic PASS"
+					xar_acceptance_balance_arm_effect = yes
+				}
+				else = { debug_log = "XAR: BALANCE FIXTURE synthetic FAIL" }
+			}
+		}
+	}
+}

@@ -15,6 +15,8 @@
 | `Unknown anchor 'topleft'` | 锚点写法 | 用 `top\|left` 这类合法组合 |
 | `Variable 'x' is used but is never set` | 有引用无写入（删残留代码没删干净） | 清理孤儿引用 |
 | `Variable 'x' is set but is never used` | 生成器写入了没有任何游戏状态读取者的变量；只在 localization 中用也不算读取 | 删除无用写入，或让机制在状态脚本中实际消费；不要白名单忽略 |
+| `Variable 'x' is set but is never used`，但变量已用于 `debug_log` 本地化 | localization 读取明确不计作状态脚本消费；开发采样 wire 因此会为每个 character variable 报错 | 在输出后用一个临时 global 逐个读取 `var:x`，最后删除临时 global。2026-08-19 长期平衡摇测实测 |
+| `Unknown trigger: title_tier`（`every_held_title` 内） | 进入 title scope 后，层级 trigger 名是 `tier`，不是 `title_tier` | 写 `limit = { tier >= tier_county }`；角色 scope 才使用 `highest_held_title_tier`。2026-08-19 加载期实测 |
 | `gui/xxx.gui: 文件 should be in utf8-bom`（scripted_widgets 等） | 同上 BOM | 加 BOM |
 
 ## on_action / 事件流程
@@ -32,6 +34,7 @@
 |---|---|---|
 | `Event target link 'global_var' returned an unset scope`（save_temporary_scope_value_as） | 该字段把 `global_var:` 当 scope 链接解析 | 改用 `save_scope_value_as` |
 | 事件 desc 里显示 0 | 保存用了 `save_temporary_scope_value_as`（生命周期不够）或上一条 | `save_scope_value_as` + `[TopScope.GetValue('名')]` |
+| `Data error in loc string`，hidden event 的 `debug_log = <loc_key>` 中 `ROOT.Var` / `ROOT.Char.MakeScope.Var` 全部渲染为空 | 原版可行样例是在可见 character event 的 option 中求值；hidden event `immediate` 的 debug-log 本地化没有等价数据上下文，多跨一层事件也无效 | 不用动态 localization 传遥测。用 script value 对生产 global 做 `abs/floor/divide/modulo 2`，再以静态 bit marker 在 BEGIN/END 间编码，外部 runner 还原。2026-08-19 长期平衡摇测实测 |
 | `Failed to fetch variable ... not being set` | 读了从未设置的变量 | 先 `if NOT has_global_variable` 兜底设默认 |
 | `Wrong scope for effect: character, expected dynasty` | 迭代器 scope 不对 | `every_dynasty_member` 需在 dynasty scope：角色下先 `dynasty = {}` |
 

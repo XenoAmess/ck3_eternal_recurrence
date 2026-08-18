@@ -4,7 +4,12 @@
 # NOTE: on_game_start_after_lobby is used (not on_game_start) because that is the hook
 # where players and game rules are known, per the vanilla comment in game_start.txt.
 on_game_start_after_lobby = {
-	on_actions = { xar_on_game_start }
+	on_actions = {
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		xar_acceptance_balance_fixture_on_game_start
+		# XAR_ACCEPTANCE_ONLY_END
+		xar_on_game_start
+	}
 }
 
 # Request the global record import. The GUI bridge moves request -> ready, then

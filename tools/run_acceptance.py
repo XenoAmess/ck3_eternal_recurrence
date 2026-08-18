@@ -11,7 +11,7 @@
 # 大厅导航与事件选项使用 OCR 状态识别，不再依赖固定等待和绝对坐标。判定依据：
 #   debug.log 出现 "XAR: TEST DONE"，全部 "XAR: TEST PASS"、无 "XAR: TEST FAIL"，
 #   且 error.log 无 xar 相关错误。
-# 现场保护：tutorial.txt / player\game_rules\presets.txt / autosave*.ck3
+# 现场保护：tutorial.txt / player\game_rules\presets.txt / dlc_load.json / autosave*.ck3
 #   先隔离到临时目录，结束时无论成败原样恢复；独立 watchdog 兜底强杀。
 
 import argparse
@@ -43,6 +43,7 @@ from PIL import Image, ImageDraw, ImageGrab
 
 import validate_static
 import build_release
+from balance_wire_data import FIELD_SCALES
 
 # UI localization smoke test: OCR engine + crop box for the three event options.
 # RapidOCR is pure Python with bundled ONNX models; installed in tools/.venv.
@@ -70,9 +71,13 @@ USER_DIR = configured_path(
     Path.home() / "Documents" / "Paradox Interactive" / "Crusader Kings III")
 UGC_DIR_OVERRIDE = os.environ.get("XAR_CK3_UGC_DIR")
 MOD_ROOT = ROOT / "XenoAmess_s_Eternal_Recurrence"
+VANILLA_GAME_RULES = (
+    ROOT / "Crusader Kings III" / "game" / "common" / "game_rules"
+    / "00_game_rules.txt")
 UGC_MOD_FILE = USER_DIR / "mod" / "ugc_3784706360.mod"
 TUTORIAL_TXT = USER_DIR / "tutorial.txt"
 PRESETS_TXT = USER_DIR / "player" / "game_rules" / "presets.txt"
+DLC_LOAD_JSON = USER_DIR / "dlc_load.json"
 SAVE_GAMES_DIR = USER_DIR / "save games"
 DEBUG_LOG = USER_DIR / "logs" / "debug.log"
 ERROR_LOG = USER_DIR / "logs" / "error.log"
@@ -118,7 +123,45 @@ LOBBY_TIMEOUT_S = 30
 TEST_TIMEOUT_S = 300             # 开局后等待 TEST DONE 的超时
 OFF_OBSERVE_TIMEOUT_S = 30
 BARGAIN_REOPEN_TIMEOUT_S = 600   # real 1095-day wait; freeze detection remains independent
+BALANCE_LONG_TIMEOUT_S = 3 * 60 * 60
 POLL_INTERVAL_S = 1
+
+BALANCE_FIXTURES = {
+    "count": {
+        "code": 1,
+        "rule": "xar_balance_count",
+        "marker": "XAR: BALANCE FIXTURE count PASS",
+        "history_id": 212892,
+        "label": "Vanilla historical Ota 212892; two-county count start",
+        "synthetic": False,
+    },
+    "king": {
+        "code": 2,
+        "rule": "xar_balance_king",
+        "marker": "XAR: BALANCE FIXTURE king PASS",
+        "history_id": 214,
+        "label": "Vanilla historical Philippe I 214; king start",
+        "synthetic": False,
+    },
+    "emperor": {
+        "code": 3,
+        "rule": "xar_balance_emperor",
+        "marker": "XAR: BALANCE FIXTURE emperor PASS",
+        "history_id": 1316,
+        "label": "Vanilla historical Heinrich IV 1316; emperor start",
+        "synthetic": False,
+    },
+    "synthetic": {
+        "code": 4,
+        "rule": "xar_balance_synthetic",
+        "marker": "XAR: BALANCE FIXTURE synthetic PASS",
+        "history_id": None,
+        "label": (
+            "Controlled scripted Ota-title replacement v1; "
+            "not native Ruler Designer"),
+        "synthetic": True,
+    },
+}
 
 
 class RunnerError(RuntimeError):
@@ -203,7 +246,8 @@ def preflight():
     if not CK3_EXE.is_file():
         errors.append(f"CK3 executable not found: {CK3_EXE}")
     for path, label in ((TUTORIAL_TXT, "tutorial.txt"),
-                        (PRESETS_TXT, "game-rule presets")):
+                        (PRESETS_TXT, "game-rule presets"),
+                        (DLC_LOAD_JSON, "enabled-mod profile")):
         if not path.is_file():
             errors.append(f"{label} not found: {path}")
     if not SAVE_GAMES_DIR.is_dir():
@@ -287,7 +331,8 @@ def start_restore_watchdog(backup, ck3_pid_file):
         [sys.executable, str(RESTORE_WATCHDOG), str(os.getpid()),
          str(ck3_pid_file),
          str(backup / "tutorial.txt"), str(TUTORIAL_TXT),
-         str(backup / "presets.txt"), str(PRESETS_TXT)],
+         str(backup / "presets.txt"), str(PRESETS_TXT),
+         str(backup / "dlc_load.json"), str(DLC_LOAD_JSON)],
         creationflags=subprocess.CREATE_NO_WINDOW)
 
 
@@ -353,9 +398,32 @@ def snapshot_log(path, offset, destination):
         return
     with open(path, "rb") as source:
         size = path.stat().st_size
-        source.seek(0 if size < offset else offset)
+        start = 0 if size < offset else offset
+        if path == DEBUG_LOG:
+            content = source.read()
+            marker = b"Log system initialized."
+            marker_at = content.rfind(marker)
+            if marker_at >= 0 and marker_at < offset:
+                start = content.rfind(b"\n", 0, marker_at) + 1
+            source.seek(start)
+        else:
+            source.seek(start)
         data = source.read()
     destination.write_bytes(data)
+
+
+def current_debug_session_text():
+    """Return only the latest CK3 process session, independent of log rotation."""
+    try:
+        text = DEBUG_LOG.read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        return ""
+    marker = "Log system initialized."
+    marker_at = text.rfind(marker)
+    if marker_at < 0:
+        return text
+    line_start = text.rfind("\n", 0, marker_at) + 1
+    return text[line_start:]
 
 
 def set_last_applied_rule(raw, setting):
@@ -390,6 +458,104 @@ def set_last_applied_rule(raw, setting):
     if challenge_tokens != expected_challenge:
         raise RunnerError(
             f"failed to set recommended challenge track: {challenge_tokens}")
+    return patched
+
+
+def declared_vanilla_rule_defaults(path=VANILLA_GAME_RULES):
+    """Read top-level declared defaults from the checked CK3 game version."""
+    if not path.is_file():
+        raise RunnerError(f"vanilla game-rule declarations not found: {path}")
+    text = path.read_text(encoding="utf-8-sig")
+    defaults = []
+    current_rule = None
+    current_default = None
+    depth = 0
+    for raw_line in text.splitlines():
+        line = raw_line.split("#", 1)[0]
+        if depth == 0:
+            match = re.match(r"^([A-Za-z0-9_]+)\s*=\s*\{", line)
+            if match:
+                current_rule = match.group(1)
+                current_default = None
+        if current_rule is not None and depth == 1 and current_default is None:
+            match = re.match(r"^\s*default\s*=\s*([A-Za-z0-9_]+)\s*$", line)
+            if match:
+                current_default = match.group(1)
+        depth += line.count("{") - line.count("}")
+        if current_rule is not None and depth == 0:
+            if current_default is None:
+                raise RunnerError(
+                    f"vanilla game rule {current_rule} has no declared default")
+            defaults.append((current_rule, current_default))
+            current_rule = None
+    if current_rule is not None or depth != 0:
+        raise RunnerError("unbalanced vanilla game-rule declaration braces")
+    if len(defaults) < 70:
+        raise RunnerError(
+            f"vanilla game-rule profile unexpectedly short: {len(defaults)}")
+    settings = [setting for _, setting in defaults]
+    if len(settings) != len(set(settings)):
+        raise RunnerError("vanilla game-rule defaults contain duplicate setting tokens")
+    return defaults
+
+
+def balance_rule_contract(fixture):
+    """Return the exact declared-default profile used for one balance cell."""
+    fixture_data = BALANCE_FIXTURES[fixture]
+    profile = [
+        {"rule": rule, "setting": setting}
+        for rule, setting in declared_vanilla_rule_defaults()
+    ]
+    profile.extend([
+        {"rule": "xar_enabled", "setting": "xar_on"},
+        {"rule": "xar_inheritance", "setting": "xar_inherit_100"},
+        {"rule": "xar_score_basis", "setting": "xar_score_growth"},
+        {"rule": "xar_balance_fixture", "setting": fixture_data["rule"]},
+    ])
+    serialized = json.dumps(
+        profile, ensure_ascii=True, separators=(",", ":")).encode("ascii")
+    return {
+        "source": str(VANILLA_GAME_RULES),
+        "profile": profile,
+        "profile_sha256": hashlib.sha256(serialized).hexdigest(),
+        "declared_vanilla_rule_count": len(profile) - 4,
+    }
+
+
+def set_balance_applied_rules(raw, fixture, contract):
+    """Replace LastAppliedRules with only declared defaults and this fixture."""
+    if fixture not in BALANCE_FIXTURES:
+        raise RunnerError(f"unsupported balance fixture: {fixture}")
+    pattern = re.compile(
+        rb'(name="LastAppliedRules"\s+setting=\{)(.*?)(\}\s+ironman=)',
+        re.DOTALL)
+    match = pattern.search(raw)
+    if not match:
+        raise RunnerError("LastAppliedRules block not found in presets.txt")
+    settings = [entry["setting"] for entry in contract["profile"]]
+    body = (" " + " ".join(settings) + " ").encode("ascii")
+    patched = (
+        raw[:match.start()] + match.group(1) + body + match.group(3)
+        + raw[match.end():])
+    verify = pattern.search(patched)
+    actual = verify.group(2).decode("ascii").split() if verify else []
+    if actual != settings:
+        raise RunnerError("failed to install exact balance game-rule profile")
+    return patched
+
+
+def set_enabled_mod_profile(raw):
+    """Isolate acceptance to this mod while preserving DLC entitlements."""
+    try:
+        profile = json.loads(raw.decode("utf-8-sig"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RunnerError(f"unable to parse dlc_load.json: {exc}") from exc
+    profile["enabled_mods"] = ["mod/ugc_3784706360.mod"]
+    patched = json.dumps(
+        profile, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    verify = json.loads(patched.decode("utf-8"))
+    if verify.get("enabled_mods") != ["mod/ugc_3784706360.mod"]:
+        raise RunnerError("failed to isolate the enabled-mod profile")
     return patched
 
 
@@ -663,12 +829,19 @@ def wait_for_ocr_text(target, region, timeout_s, artifacts, artifact_name,
         last_img = ImageGrab.grab()
         center = find_ocr_text(last_img, target, region, contains=contains)
         if target == "开始" and center is None:
-            dismiss = find_ocr_text(
-                last_img, "忽略", FULL_SCREEN_REGION, contains=True)
+            dismiss = None
+            popup_region = (0.80, 0.58, 1.00, 0.96)
+            for popup_text in ("忽略", "关闭"):
+                dismiss = find_ocr_text(
+                    last_img, popup_text, popup_region, contains=True)
+                if dismiss:
+                    pyautogui.click(*dismiss)
+                    log(
+                        f"dismissed external popup covering lobby at {dismiss} "
+                        f"({popup_text})")
+                    time.sleep(POLL_INTERVAL_S)
+                    break
             if dismiss:
-                pyautogui.click(*dismiss)
-                log(f"dismissed external popup covering lobby at {dismiss}")
-                time.sleep(POLL_INTERVAL_S)
                 continue
         if center:
             if (last_center is not None
@@ -815,6 +988,22 @@ def wait_for_marker(debug_offset, marker, timeout_s, xar_lines):
         for line in text.splitlines():
             if "XAR:" in line:
                 xar_lines.append(line.strip())
+        if any(marker in line for line in xar_lines):
+            return debug_offset
+        time.sleep(POLL_INTERVAL_S)
+    raise RunnerError(f"debug marker timeout: {marker}")
+
+
+def wait_for_marker_or_failure(debug_offset, marker, failure, timeout_s, xar_lines):
+    """Wait for one marker, failing immediately if its paired sentinel appears."""
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        text, debug_offset = read_new_lines(DEBUG_LOG, debug_offset)
+        for line in text.splitlines():
+            if "XAR:" in line:
+                xar_lines.append(line.strip())
+        if any(failure in line for line in xar_lines):
+            raise RunnerError(f"debug failure marker: {failure}")
         if any(marker in line for line in xar_lines):
             return debug_offset
         time.sleep(POLL_INTERVAL_S)
@@ -1489,6 +1678,357 @@ def run_bargain_reopen(debug_offset, error_offset, artifacts):
     return {"pairs": evidence_pairs, "production_reopen_markers": 3}
 
 
+def ck3_date_from_ordinal(ordinal):
+    """Inverse of ck3_date_ordinal_parts for the fixed 365-day calendar."""
+    month_lengths = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+    year, day_of_year = divmod(ordinal, 365)
+    month = 1
+    for length in month_lengths:
+        if day_of_year < length:
+            return year, month, day_of_year + 1
+        day_of_year -= length
+        month += 1
+    raise RunnerError(f"invalid CK3 ordinal: {ordinal}")
+
+
+def decode_balance_wire_sample(raw_values, negative_fields):
+    """Decode one localization-free bit frame into report-friendly values."""
+    sample = {"v": 1}
+    for field, scale in FIELD_SCALES.items():
+        value = raw_values[field]
+        if field in negative_fields:
+            value *= -1
+        sample[field] = value if scale == 1 else value / scale
+    start_day = ck3_date_ordinal_parts(1066, 9, 15)
+    sample["elapsed_days"] = sample["elapsed"]
+    sample["game_day"] = start_day + sample["elapsed"]
+    year, month, day = ck3_date_from_ordinal(sample["game_day"])
+    sample["game_date"] = f"{year}.{month}.{day}"
+    return sample
+
+
+def run_balance_long(fixture, debug_offset, error_offset, artifacts,
+                     smoke_pairs=0):
+    """Run one passive, instrumented life to death or the forty-year horizon."""
+    fixture_data = BALANCE_FIXTURES[fixture]
+    offset = debug_offset
+    xar_lines = []
+    offset = wait_for_marker_or_failure(
+        offset, fixture_data["marker"],
+        fixture_data["marker"].replace(" PASS", " FAIL"), 180, xar_lines)
+    if any("XAR: BALANCE FIXTURE" in line and "FAIL" in line for line in xar_lines):
+        raise RunnerError("balance fixture script assertion failed")
+    offset = wait_for_marker(
+        offset, "XAR: rule is on, offering pact", 180, xar_lines)
+    offset = wait_for_marker(
+        offset, "XAR: import state fired k=0", 10, xar_lines)
+
+    wait_for_ocr_text(
+        "终末之契", EVENT_TITLE_REGION, 20,
+        artifacts, "05_balance_pact_window.png", stable_hits=1)
+    pact_accept = wait_for_ocr_text(
+        "我接受", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "05_balance_pact_accept.png", contains=True, stable_hits=1)
+    click_until_ocr_appears(
+        pact_accept, "balance pact accept", "未燃之世", EVENT_TITLE_REGION,
+        artifacts, "06_balance_first_life.png", attempts=1, timeout_s=20)
+    begin = wait_for_ocr_text(
+        "开始此生", EVENT_OPTIONS_FULL_REGION, 15,
+        artifacts, "06_balance_begin.png", contains=True, stable_hits=1)
+    click_until_ocr_appears(
+        begin, "balance first-life begin", "琉焰的垂青", EVENT_TITLE_REGION,
+        artifacts, "07_balance_first_blessing.png")
+    offset = wait_for_marker(
+        offset, "XAR: blessing event fired", 10, xar_lines)
+
+    samples = []
+    wire_values = None
+    wire_bits = None
+    wire_negative = None
+    handled_blessings = 0
+    handled_curses = 0
+    resumed_pairs = 0
+    max_game_day = read_hud_game_day()
+    last_day_change = time.time()
+    last_hud_check = 0
+    last_recovery = time.time()
+    recovery_sequence = 0
+    stall_attempts = 0
+    deadline = time.time() + BALANCE_LONG_TIMEOUT_S
+    end_reason = None
+
+    def ingest(text):
+        nonlocal end_reason, wire_values, wire_bits, wire_negative
+        for line in text.splitlines():
+            stripped = line.strip()
+            if "XAR:" in stripped:
+                xar_lines.append(stripped)
+            if "XAR: BALANCE WIRE FAIL" in stripped:
+                raise RunnerError(stripped.split("XAR: ", 1)[-1])
+            if "XAR: BALANCE SAMPLE BEGIN" in stripped:
+                if wire_values is not None:
+                    raise RunnerError("nested balance wire sample")
+                wire_values = {field: 0 for field in FIELD_SCALES}
+                wire_bits = {field: set() for field in FIELD_SCALES}
+                wire_negative = set()
+            data = re.search(
+                r"XAR: BALANCE DATA\|field=([a-z]+)\|(bit=(\d+)|sign=-)",
+                stripped)
+            if data:
+                if wire_values is None:
+                    raise RunnerError("balance wire data appeared outside a sample")
+                field = data.group(1)
+                if field not in wire_values:
+                    raise RunnerError(f"unknown balance wire field: {field}")
+                if data.group(3) is None:
+                    wire_negative.add(field)
+                else:
+                    bit = int(data.group(3))
+                    if bit in wire_bits[field]:
+                        raise RunnerError(
+                            f"duplicate balance wire bit: {field} b{bit}")
+                    wire_bits[field].add(bit)
+                    wire_values[field] += 1 << bit
+            if "XAR: BALANCE SAMPLE END" in stripped:
+                if wire_values is None:
+                    raise RunnerError("balance wire ended without a begin marker")
+                samples.append(decode_balance_wire_sample(
+                    wire_values, wire_negative))
+                wire_values = None
+                wire_bits = None
+                wire_negative = None
+            if "XAR: BALANCE DONE horizon_40" in stripped:
+                end_reason = "horizon_40"
+            elif "XAR: BALANCE DONE natural_death" in stripped:
+                end_reason = "natural_death"
+            elif "XAR: BALANCE DONE early_death" in stripped:
+                end_reason = "early_death"
+
+    while time.time() < deadline:
+        text, offset = read_new_lines(DEBUG_LOG, offset)
+        ingest(text)
+        if any("XAR: BALANCE FIXTURE" in line and "FAIL" in line for line in xar_lines):
+            raise RunnerError("balance fixture emitted FAIL")
+        if end_reason:
+            break
+        observed_pair_samples = [
+            sample for sample in samples if sample["kind"] == 1]
+        if smoke_pairs and len(observed_pair_samples) >= smoke_pairs:
+            end_reason = f"smoke_pair_{smoke_pairs}"
+            break
+
+        blessing_count = sum(
+            "XAR: blessing event fired" in line for line in xar_lines)
+        curse_count = sum("XAR: curse event fired" in line for line in xar_lines)
+        if handled_blessings < blessing_count:
+            pair = handled_blessings + 1
+            wait_for_ocr_text(
+                "琉焰的垂青", EVENT_TITLE_REGION, 20, artifacts,
+                f"balance_pair_{pair:02d}_blessing_title.png", stable_hits=1)
+            blessing = wait_for_localized_options(
+                f"balance_pair_{pair:02d}_blessing", artifacts, 3)
+            click_until_ocr_appears(
+                blessing, f"balance pair {pair} blessing A", "等价的咒痕",
+                EVENT_TITLE_REGION, artifacts,
+                f"balance_pair_{pair:02d}_curse_title.png", timeout_s=20)
+            handled_blessings += 1
+            continue
+        if handled_curses < curse_count:
+            pair = handled_curses + 1
+            wait_for_ocr_text(
+                "等价的咒痕", EVENT_TITLE_REGION, 20, artifacts,
+                f"balance_pair_{pair:02d}_curse_visible.png", stable_hits=1)
+            curse = wait_for_localized_options(
+                f"balance_pair_{pair:02d}_curse", artifacts, 2)
+            deliberate_click(curse, f"balance pair {pair} curse A")
+            handled_curses += 1
+            time.sleep(0.5)
+            advanced = set_speed_five_and_unpause(
+                artifacts, f"balance_pair_{pair}_sample_commit",
+                require_progress=False)
+            if advanced is not None:
+                max_game_day = advanced
+                last_day_change = time.time()
+                stall_attempts = 0
+            continue
+
+        pair_samples = [sample for sample in samples if sample["kind"] == 1]
+        if resumed_pairs < len(pair_samples):
+            pair = pair_samples[resumed_pairs]["pair"]
+            gaze_option = find_ocr_text(
+                ImageGrab.grab(), "我收下", EVENT_OPTIONS_FULL_REGION,
+                contains=True)
+            if gaze_option is not None:
+                deliberate_click(gaze_option, f"balance pair {pair} Gaze milestone")
+                time.sleep(0.5)
+            advanced = set_speed_five_and_unpause(
+                artifacts, f"balance_pair_{pair}",
+                capture_tooltip=(pair == 1), require_progress=False)
+            if advanced is None:
+                recovery_sequence += 1
+                capture_stall_and_recover(
+                    artifacts, "balance_resume", recovery_sequence)
+                advanced = set_speed_five_and_unpause(
+                    artifacts, f"balance_pair_{pair}_post_modal")
+            max_game_day = advanced
+            last_day_change = time.time()
+            stall_attempts = 0
+            resumed_pairs += 1
+            continue
+
+        if time.time() - last_hud_check >= 4:
+            game_day = read_hud_game_day()
+            last_hud_check = time.time()
+            if game_day is not None and (
+                    max_game_day is None or game_day > max_game_day):
+                max_game_day = game_day
+                last_day_change = time.time()
+                stall_attempts = 0
+        if (time.time() - last_day_change > 12
+                and time.time() - last_recovery > 12):
+            if stall_attempts >= 3:
+                raise RunnerError(
+                    "balance life remained stalled after 3 screenshot-guided "
+                    "recoveries; inspect stall_balance_long_*.png/json")
+            stall_attempts += 1
+            recovery_sequence += 1
+            capture_stall_and_recover(
+                artifacts, "balance_long", recovery_sequence)
+            recovered_day = set_speed_five_and_unpause(
+                artifacts, f"balance_recovery_{recovery_sequence}",
+                require_progress=False)
+            if recovered_day is not None:
+                max_game_day = recovered_day
+                last_day_change = time.time()
+                stall_attempts = 0
+            last_recovery = time.time()
+        time.sleep(POLL_INTERVAL_S)
+
+    if not end_reason:
+        raise RunnerError("balance life did not reach death or forty-year horizon")
+
+    # Drain the child event's wire line if DONE and sample landed in one log batch.
+    text, offset = read_new_lines(DEBUG_LOG, offset)
+    ingest(text)
+    if not samples:
+        raise RunnerError("balance life emitted no structured samples")
+    if any(sample["fixture"] != fixture_data["code"] for sample in samples):
+        raise RunnerError("balance sample fixture code drifted")
+
+    pair_samples = [sample for sample in samples if sample["kind"] == 1]
+    pair_numbers = [sample["pair"] for sample in pair_samples]
+    if pair_numbers != list(range(1, len(pair_numbers) + 1)):
+        raise RunnerError(f"balance pair sequence is not contiguous: {pair_numbers}")
+    if any(sample["reject"] != 0 for sample in samples):
+        raise RunnerError("passive balance policy unexpectedly refused a blessing")
+    if any(sample["life"] != 0 or sample["contract"] != 0 for sample in samples):
+        raise RunnerError("passive balance fixture changed lifespan or contract state")
+
+    pair_days = [sample["game_day"] for sample in pair_samples]
+    if any(day is None for day in pair_days):
+        raise RunnerError("balance pair samples lack engine dates")
+    pair_intervals = [
+        right - left for left, right in zip(pair_days, pair_days[1:])
+    ]
+    reopen_samples = [sample for sample in samples if sample["kind"] == 5]
+    expected_reopens = [
+        1095 * index for index in range(1, len(pair_samples))
+    ]
+    observed_reopens = [
+        sample["elapsed_days"] for sample in reopen_samples[:len(expected_reopens)]
+    ]
+    if observed_reopens != expected_reopens:
+        raise RunnerError(
+            f"balance production reopen cadence drifted: {observed_reopens} "
+            f"!= {expected_reopens}")
+    if len(pair_samples) >= 10:
+        tenth = pair_samples[9]
+        if tenth["reroll"] != 1 or tenth["seal"] != 0:
+            raise RunnerError(
+                "balance pair 10 did not expose exactly one reroll and zero seals")
+
+    final_sample = samples[-1]
+    if end_reason == "horizon_40":
+        horizon_samples = [sample for sample in samples if sample["kind"] == 3]
+        if len(pair_samples) != 14 or len(horizon_samples) != 1:
+            raise RunnerError(
+                f"forty-year horizon expected 14 pairs and one checkpoint, got "
+                f"{len(pair_samples)} and {len(horizon_samples)}")
+        final_sample = horizon_samples[0]
+    elif end_reason in ("natural_death", "early_death"):
+        death_samples = [sample for sample in samples if sample["kind"] == 4]
+        if len(death_samples) != 1:
+            raise RunnerError(
+                f"death endpoint expected one final sample, got {len(death_samples)}")
+        final_sample = death_samples[0]
+
+    err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+    xar_errors = [
+        line.strip() for line in err_text.splitlines()
+        if "xar" in line.lower() or "xa_balance" in line.lower()
+    ]
+    if xar_errors:
+        raise RunnerError(
+            f"balance-long emitted {len(xar_errors)} xar error.log line(s)")
+
+    runtime_debug = current_debug_session_text()
+    enabled_mods = [
+        {"name": name.strip(), "path": path.strip()}
+        for name, path in re.findall(
+            r"(?m)^([^|\r\n]+)\|(mod/[^|\r\n]+)\|Enabled\s*$",
+            runtime_debug)
+    ]
+    if [item["path"] for item in enabled_mods] != [
+            "mod/ugc_3784706360.mod"]:
+        raise RunnerError(f"balance runtime mod isolation failed: {enabled_mods}")
+
+    evidence = {
+        "fixture": fixture,
+        "fixture_code": fixture_data["code"],
+        "history_id": fixture_data["history_id"],
+        "fixture_label": fixture_data["label"],
+        "synthetic_fixture": fixture_data["synthetic"],
+        "native_ruler_designer": False,
+        "start_date": "1066.9.15",
+        "minimum_horizon_years": 30,
+        "right_censor_horizon_years": 40,
+        "smoke_pairs_requested": smoke_pairs,
+        "end_reason": end_reason,
+        "choice_policy": (
+            "first enabled blessing, first enabled curse; no refusal, reroll, "
+            "seal, shop purchase, contract, or strategic action"),
+        "interpretation": (
+            "instrumented passive engineering sample; not strategic play and "
+            "not a statistical balance proof"),
+        "samples": samples,
+        "pair_intervals_days": pair_intervals,
+        "production_reopen_days": [
+            sample["elapsed_days"] for sample in reopen_samples],
+        "completed_pairs": len(pair_samples),
+        "reached_minimum_horizon": any(sample["kind"] == 2 for sample in samples),
+        "final_score": final_sample["score"],
+        "final_absolute_score": final_sample["absolute"],
+        "final_realm_size": final_sample["realm"],
+        "xar_error_count": 0,
+        "enabled_mods": enabled_mods,
+        "mechanism_checks": {
+            "fixture_assertion": "GREEN",
+            "pair_sequence": "GREEN",
+            "cadence_1095_days": "GREEN",
+            "passive_policy": "GREEN",
+            "structured_sampling": "GREEN",
+        },
+    }
+    print("\n===== XAR PASSIVE BALANCE REPORT =====")
+    print(f"fixture         : {fixture} ({fixture_data['label']})")
+    print(f"end reason      : {end_reason}")
+    print(f"completed pairs : {len(pair_samples)}")
+    print(f"final growth    : {final_sample['score']:.2f}")
+    print(f"final absolute  : {final_sample['absolute']:.2f}")
+    print(f"xar error.log   : 0")
+    return evidence
+
+
 def run_progression_ui(debug_offset, error_offset, artifacts):
     """Prove contract milestones, PB/collection persistence, and Gaze pixels."""
     offset = debug_offset
@@ -1983,7 +2523,8 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def main(scenario="selftest", import_record=0, artifacts_dir=None):
+def main(scenario="selftest", import_record=0, artifacts_dir=None,
+         balance_fixture=None, balance_smoke_pairs=0):
     run_started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     effective_record = {
@@ -1997,6 +2538,7 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
         "bargain-reopen": 2,
         "progression-ui": 3,
         "scoring-matrix": 4,
+        "balance-long": 0,
     }[scenario]
     rule_setting = "xar_selftest" if scenario in (
         "selftest", "persistence-restart", "death-edges", "bargain-reopen",
@@ -2008,7 +2550,10 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
     else:
         artifacts = Path(tempfile.mkdtemp(prefix="xar_accept_"))
     run_id = artifacts.name
-    log(f"scenario={scenario}, import_record={effective_record}, artifacts={artifacts}")
+    fixture_suffix = f", balance_fixture={balance_fixture}" if balance_fixture else ""
+    log(
+        f"scenario={scenario}, import_record={effective_record}{fixture_suffix}, "
+        f"artifacts={artifacts}")
     timings = {}
     result = "RED"
     error_reason = None
@@ -2034,12 +2579,13 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
             preflight()
             shutil.copy2(TUTORIAL_TXT, backup / "tutorial.txt")
             shutil.copy2(PRESETS_TXT, backup / "presets.txt")
+            shutil.copy2(DLC_LOAD_JSON, backup / "dlc_load.json")
             backup_ready = True
             start_restore_watchdog(backup, ck3_pid_file)
             log("restore watchdog armed")
             autosave_count = isolate_autosaves(backup)
             log(
-                "backed up tutorial.txt + presets.txt; "
+                "backed up tutorial.txt + presets.txt + dlc_load.json; "
                 f"isolated {autosave_count} autosave(s)")
 
         with timed_phase(timings, "static_validation"):
@@ -2059,16 +2605,35 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
                 log("built stripped release projection for production smoke")
             runtime_tree_sha256 = mod_tree_hash(runtime_source)
             sync_repo_to_ugc(ugc_content_dir(), runtime_source)
+            DLC_LOAD_JSON.write_bytes(set_enabled_mod_profile(
+                (backup / "dlc_load.json").read_bytes()))
+            log("enabled-mod profile isolated to ugc_3784706360")
             raw = TUTORIAL_TXT.read_bytes()
             seeded, removed = set_tutorial_record(raw, effective_record)
             TUTORIAL_TXT.write_bytes(seeded)
             log(
                 f"tutorial.txt: removed {removed} XAR record bit(s), "
                 f"seeded {effective_record}")
-            patched = set_last_applied_rule(
-                (backup / "presets.txt").read_bytes(), rule_setting)
+            if scenario == "balance-long":
+                if balance_fixture not in BALANCE_FIXTURES:
+                    raise RunnerError("balance-long requires a supported fixture")
+                rule_contract = balance_rule_contract(balance_fixture)
+                patched = set_balance_applied_rules(
+                    (backup / "presets.txt").read_bytes(), balance_fixture,
+                    rule_contract)
+                report_evidence["rule_contract"] = rule_contract
+                source_mode = "development-instrumented-balance"
+            else:
+                patched = set_last_applied_rule(
+                    (backup / "presets.txt").read_bytes(), rule_setting)
             PRESETS_TXT.write_bytes(patched)
-            log(f"LastAppliedRules set exclusively to {rule_setting} before launch")
+            if scenario == "balance-long":
+                log(
+                    "LastAppliedRules rebuilt from declared vanilla defaults; "
+                    f"fixture={balance_fixture}, "
+                    f"sha256={report_evidence['rule_contract']['profile_sha256']}")
+            else:
+                log(f"LastAppliedRules set exclusively to {rule_setting} before launch")
 
         with timed_phase(timings, "launch"):
             kill_ck3()
@@ -2154,6 +2719,11 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
             elif scenario == "scoring-matrix":
                 report_evidence = run_scoring_matrix(
                     debug_offset, error_offset, artifacts)
+            elif scenario == "balance-long":
+                balance_evidence = run_balance_long(
+                    balance_fixture, debug_offset, error_offset, artifacts,
+                    balance_smoke_pairs)
+                report_evidence.update(balance_evidence)
             elif scenario == "selftest":
                 error_reason = run_selftest(
                     effective_record, debug_offset, error_offset, artifacts)
@@ -2240,9 +2810,12 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None):
                     time.sleep(2)
                     shutil.copy2(backup / "tutorial.txt", TUTORIAL_TXT)
                     shutil.copy2(backup / "presets.txt", PRESETS_TXT)
+                    shutil.copy2(backup / "dlc_load.json", DLC_LOAD_JSON)
                     restore_autosaves(backup)
                     restore_succeeded = True
-                    log("restored tutorial.txt + presets.txt + autosaves, ck3 killed")
+                    log(
+                        "restored tutorial.txt + presets.txt + dlc_load.json + "
+                        "autosaves, ck3 killed")
         except Exception as restore_exc:
             result = "RED"
             restore_reason = f"restore failed: {restore_exc}"
@@ -2273,7 +2846,7 @@ if __name__ == "__main__":
         "--scenario",
         choices=("selftest", "on-first-life", "on-recorded", "on-high-budget", "off",
                  "persistence-restart", "death-edges", "bargain-reopen",
-                 "progression-ui", "scoring-matrix"),
+                 "progression-ui", "scoring-matrix", "balance-long"),
         default="selftest",
         help="acceptance scenario (default: selftest)")
     parser.add_argument(
@@ -2283,6 +2856,12 @@ if __name__ == "__main__":
         "--artifacts-dir",
         help="create this exact artifact directory instead of a random temp path")
     parser.add_argument(
+        "--balance-fixture", choices=tuple(BALANCE_FIXTURES),
+        help="required fixture for the balance-long scenario")
+    parser.add_argument(
+        "--balance-smoke-pairs", type=int, choices=(1, 2), default=0,
+        help="development shakeout: stop after this many completed pairs")
+    parser.add_argument(
         "--preflight", action="store_true",
         help="validate dedicated desktop paths and safety constraints, then exit")
     args = parser.parse_args()
@@ -2291,4 +2870,12 @@ if __name__ == "__main__":
         sys.exit(0)
     if args.scenario == "persistence-restart" and args.import_record != 0:
         parser.error("persistence-restart forbids --import-record pre-seeding")
-    sys.exit(main(args.scenario, args.import_record, args.artifacts_dir))
+    if args.scenario == "balance-long" and args.balance_fixture is None:
+        parser.error("balance-long requires --balance-fixture")
+    if args.scenario != "balance-long" and args.balance_fixture is not None:
+        parser.error("--balance-fixture is only valid with balance-long")
+    if args.scenario != "balance-long" and args.balance_smoke_pairs:
+        parser.error("--balance-smoke-pairs is only valid with balance-long")
+    sys.exit(main(
+        args.scenario, args.import_record, args.artifacts_dir,
+        args.balance_fixture, args.balance_smoke_pairs))

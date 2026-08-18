@@ -545,6 +545,16 @@ xar.1003 = {
 			debug_log = "XAR: new record, writing bit"
 			xar_write_record_effect = yes
 		}
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = {
+				has_global_variable = xa_balance_active
+				has_character_flag = xa_balance_fixture_player
+			}
+			set_global_variable = { name = xa_balance_sample_kind value = 4 }
+			trigger_event = xar.0921
+		}
+		# XAR_ACCEPTANCE_ONLY_END
 		if = {
 			limit = { exists = player_heir }
 			player_heir = {
@@ -907,6 +917,11 @@ xar.0005 = {
 		xar_capture_score_baseline_effect = yes
 		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
+			limit = { has_global_variable = xa_balance_active }
+			set_global_variable = { name = xa_balance_sample_kind value = 1 }
+			trigger_event = xar.0920
+		}
+		if = {
 			limit = { has_global_variable = xa_bargain_reopen_active }
 			xar_acceptance_bargain_after_curse_effect = yes
 		}
@@ -943,6 +958,11 @@ xar.0005 = {
 		xar_capture_score_baseline_effect = yes
 		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
+			limit = { has_global_variable = xa_balance_active }
+			set_global_variable = { name = xa_balance_sample_kind value = 1 }
+			trigger_event = xar.0920
+		}
+		if = {
 			limit = { has_global_variable = xa_bargain_reopen_active }
 			xar_acceptance_bargain_after_curse_effect = yes
 		}
@@ -971,6 +991,11 @@ xar.0005 = {
 		xar_complete_bargain_pair_effect = yes
 		xar_capture_score_baseline_effect = yes
 		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_balance_active }
+			set_global_variable = { name = xa_balance_sample_kind value = 1 }
+			trigger_event = xar.0920
+		}
 		if = {
 			limit = { has_global_variable = xa_bargain_reopen_active }
 			xar_acceptance_bargain_after_curse_effect = yes
@@ -1003,6 +1028,11 @@ xar.0006 = {
 		debug_log = "XAR: new blessing session (3y timer)"
 		set_global_variable = { name = xa_bless_session value = 0 }
 		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_balance_active }
+			set_global_variable = { name = xa_balance_sample_kind value = 5 }
+			trigger_event = xar.0921
+		}
 		if = {
 			limit = { has_global_variable = xa_bargain_reopen_active }
 			xar_acceptance_bargain_reopen_effect = yes

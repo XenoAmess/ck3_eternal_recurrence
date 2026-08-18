@@ -34,3 +34,16 @@ xar_score_basis = {
 	xar_score_absolute = { }
 	xar_score_growth = { }
 }
+
+# XAR_ACCEPTANCE_ONLY_BEGIN
+# Development-only transport for the instrumented long-run balance fixtures.
+xar_balance_fixture = {
+	categories = { game_modes }
+	default = xar_balance_none
+	xar_balance_none = { }
+	xar_balance_count = { }
+	xar_balance_king = { }
+	xar_balance_emperor = { }
+	xar_balance_synthetic = { }
+}
+# XAR_ACCEPTANCE_ONLY_END
