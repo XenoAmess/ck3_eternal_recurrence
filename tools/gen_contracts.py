@@ -3,7 +3,12 @@
 
 from pathlib import Path
 
-from contracts_data import CONTRACTS, GAZE_MILESTONES, MILESTONES
+from contracts_data import (
+    CONTRACT_LOCALIZATION,
+    CONTRACTS,
+    GAZE_MILESTONES,
+    MILESTONES,
+)
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -254,52 +259,74 @@ def generated_custom_loc():
 
 
 def loc_lines(lang):
-    zh = lang == "simp_chinese"
+    def tr(key, zh, en):
+        if lang == "simp_chinese":
+            return zh
+        if lang == "english":
+            return en
+        return CONTRACT_LOCALIZATION[lang][key]
+
     lines = [f"l_{lang}:", " # GENERATED FILE - do not edit. Regenerate with tools/gen_contracts.py"]
     lines.extend([
-        f' xar_contract_none:0 "{"尚未立契" if zh else "No contract"}"',
-        f' xar_contract_select_decision:0 "{"选择本世契约" if zh else "Choose a Lifetime Contract"}"',
-        f' xar_contract_select_decision_desc:0 "{"让琉焰卿为此生写下一项增量目标。" if zh else "Let the Glassfire Lord write an incremental goal for this life."}"',
-        f' xar_contract_select_decision_tooltip:0 "{"选择战争、权谋、信仰、家族、治理或享乐契约" if zh else "Choose a war, intrigue, faith, family, stewardship, or revelry contract"}"',
-        f' xar_contract_select_decision_confirm:0 "{"请他落笔" if zh else "Let him write"}"',
-        f' xar.2000.title:0 "{"此生的典当" if zh else "This Life in Pawn"}"',
-        f' xar.2000.desc:0 "{"旅人，终末的总账固然诱人，但我也喜欢看一簇火如何选择自己的风向。挑一项吧；每次进展都会添入本世分量。" if zh else "Traveler, the final ledger is tempting, but I also enjoy watching a flame choose its wind. Pick one; each step will add to this life’s weight."}"',
-        f' xar.0010.desc_clean:0 "{"旅人，你的前世余烬仍在，只是这条赛道没有留下可典当的预算。很好——空着双手抵达终末，称出的分量才更有意思。第一道垂青，我照旧记在账上。" if zh else "Traveler, your former embers remain, but this track leaves no spendable inheritance. Good—arriving at the end empty-handed makes the weighing more interesting. I shall still place the first favor on account."}"',
-        f' xar.contract.milestone.title:0 "{"契页发亮" if zh else "The Contract Gleams"}"',
-        f' xar.contract.milestone.3.ok:0 "{"第一笔，记下了。" if zh else "The first entry is made."}"',
-        f' xar.contract.milestone.6.ok:0 "{"墨迹正在变暖。" if zh else "The ink is growing warm."}"',
-        f' xar.contract.milestone.10.ok:0 "{"这份典当，已经圆满。" if zh else "This pawn is complete."}"',
-        f' xar.gaze.milestone.title:0 "{"琉焰之视·新痕" if zh else "Glassfire Gaze: A New Mark"}"',
-        f' xar.gaze.milestone.ok:0 "{"我收下这份迟来的好意。" if zh else "I accept this belated kindness."}"',
-        f' xar.0004.reroll:0 "{"消耗一次重抽，换一页垂青" if zh else "Spend one reroll for new favors"}"',
-        f' xar.0005.seal:0 "{"消耗一枚封印，免去此道咒痕" if zh else "Spend one seal to waive this curse-mark"}"',
+        f' xar_contract_none:0 "{tr("contract_ui.none", "尚未立契", "No contract")}"',
+        f' xar_contract_select_decision:0 "{tr("contract_ui.select_decision", "选择本世契约", "Choose a Lifetime Contract")}"',
+        f' xar_contract_select_decision_desc:0 "{tr("contract_ui.select_decision_desc", "让琉焰卿为此生写下一项增量目标。", "Let the Glassfire Lord write an incremental goal for this life.")}"',
+        f' xar_contract_select_decision_tooltip:0 "{tr("contract_ui.select_decision_tooltip", "选择战争、权谋、信仰、家族、治理或享乐契约", "Choose a war, intrigue, faith, family, stewardship, or revelry contract")}"',
+        f' xar_contract_select_decision_confirm:0 "{tr("contract_ui.select_decision_confirm", "请他落笔", "Let him write")}"',
+        f' xar.2000.title:0 "{tr("contract_ui.event_title", "此生的典当", "This Life in Pawn")}"',
+        f' xar.2000.desc:0 "{tr("contract_ui.event_desc", "旅人，终末的总账固然诱人，但我也喜欢看一簇火如何选择自己的风向。挑一项吧；每次进展都会添入本世分量。", "Traveler, the final ledger is tempting, but I also enjoy watching a flame choose its wind. Pick one; each step will add to this life’s weight.")}"',
+        f' xar.0010.desc_clean:0 "{tr("contract_ui.clean_desc", "旅人，你的前世余烬仍在，只是这条赛道没有留下可典当的预算。很好——空着双手抵达终末，称出的分量才更有意思。第一道垂青，我照旧记在账上。", "Traveler, your former embers remain, but this track leaves no spendable inheritance. Good—arriving at the end empty-handed makes the weighing more interesting. I shall still place the first favor on account.")}"',
+        f' xar.contract.milestone.title:0 "{tr("contract_ui.milestone_title", "契页发亮", "The Contract Gleams")}"',
+        f' xar.contract.milestone.3.ok:0 "{tr("contract_ui.milestone_3_ok", "第一笔，记下了。", "The first entry is made.")}"',
+        f' xar.contract.milestone.6.ok:0 "{tr("contract_ui.milestone_6_ok", "墨迹正在变暖。", "The ink is growing warm.")}"',
+        f' xar.contract.milestone.10.ok:0 "{tr("contract_ui.milestone_10_ok", "这份典当，已经圆满。", "This pawn is complete.")}"',
+        f' xar.gaze.milestone.title:0 "{tr("contract_ui.gaze_title", "琉焰之视·新痕", "Glassfire Gaze: A New Mark")}"',
+        f' xar.gaze.milestone.ok:0 "{tr("contract_ui.gaze_ok", "我收下这份迟来的好意。", "I accept this belated kindness.")}"',
+        f' xar.0004.reroll:0 "{tr("contract_ui.reroll", "消耗一次重抽，换一页垂青", "Spend one reroll for new favors")}"',
+        f' xar.0005.seal:0 "{tr("contract_ui.seal", "消耗一枚封印，免去此道咒痕", "Spend one seal to waive this curse-mark")}"',
         ' xar_contract_grade_s:0 "S"', ' xar_contract_grade_a:0 "A"',
         ' xar_contract_grade_c:0 "C"', ' xar_contract_grade_d:0 "D"',
         ' xar_contract_pb_0:0 "PB 0"', ' xar_contract_pb_3:0 "PB 3"',
         ' xar_contract_pb_6:0 "PB 6"', ' xar_contract_pb_10:0 "PB 10"',
     ])
     for milestone in GAZE_MILESTONES:
-        desc = milestone["desc_zh"] if zh else milestone["desc_en"]
+        desc = tr(
+            f"gaze.{milestone['xp']}",
+            milestone["desc_zh"],
+            milestone["desc_en"],
+        )
         lines.append(f' xar.gaze.milestone.{milestone["xp"]}:0 "{desc}"')
     for contract in CONTRACTS:
-        name = contract["name_zh"] if zh else contract["name_en"]
-        goal = contract["goal_zh"] if zh else contract["goal_en"]
+        prefix = f"contract.{contract['key']}"
+        name = tr(f"{prefix}.name", contract["name_zh"], contract["name_en"])
+        goal = tr(f"{prefix}.goal", contract["goal_zh"], contract["goal_en"])
+        separator = "：" if lang in ("simp_chinese", "japanese") else ": "
         lines.append(f' xar_contract_{contract["key"]}:0 "{name}"')
-        lines.append(f' xar.2000.{contract["key"]}:0 "{name}：{goal}"')
-        narratives = contract["milestones_zh"] if zh else contract["milestones_en"]
-        for milestone, narrative in zip(MILESTONES, narratives):
+        lines.append(f' xar.2000.{contract["key"]}:0 "{name}{separator}{goal}"')
+        for milestone, narrative_zh, narrative_en in zip(
+                MILESTONES, contract["milestones_zh"], contract["milestones_en"]):
+            narrative = tr(
+                f"{prefix}.milestone.{milestone}", narrative_zh, narrative_en)
             lines.append(f' xar.contract.{contract["key"]}.milestone.{milestone}:0 "{narrative}"')
             lines.append(f' xar_contract_pb_{contract["key"]}_{milestone}:0 "XAR_SYNC_SENTINEL"')
             lines.append(f' xar_contract_pb_{contract["key"]}_{milestone}_step:0 "XAR_SYNC_SENTINEL"')
         lines.append(f' xar_contract_complete_{contract["key"]}:0 "XAR_SYNC_SENTINEL"')
         lines.append(f' xar_contract_complete_{contract["key"]}_step:0 "XAR_SYNC_SENTINEL"')
-    collection = "已完成契约" if zh else "Completed contracts"
-    none = "无" if zh else "none"
+    collection = tr(
+        "contract_ui.collection_prefix", "已完成契约", "Completed contracts")
+    none = tr("contract_ui.collection_none", "无", "none")
     for mask in range(64):
-        names = [item["name_zh"] if zh else item["name_en"]
-                 for index, item in enumerate(CONTRACTS) if mask & (1 << index)]
+        names = [
+            tr(
+                f"contract.{item['key']}.name",
+                item["name_zh"],
+                item["name_en"],
+            )
+            for index, item in enumerate(CONTRACTS) if mask & (1 << index)
+        ]
         lines.append(f' xar_contract_collection_{mask}:0 "{collection}: {" / ".join(names) if names else none}"')
-    ledger = ("\\n本世契约" if zh else "\\nLifetime contract")
+    ledger = "\\n" + tr(
+        "contract_ui.ledger_label", "本世契约", "Lifetime contract")
     lines.append(
         f' xar.contract.ledger:0 "{ledger}: #V [ROOT.Char.Custom(\'xar_contract_name\')]#! · '
         "[TopScope.GetValue('xar_contract_progress')|0]/10 · [ROOT.Char.Custom('xar_contract_grade')] · [ROOT.Char.Custom('xar_contract_pb')] · "
