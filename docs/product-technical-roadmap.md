@@ -129,9 +129,9 @@
 - 已建立 byte-preserving release allowlist，只从 mod 源目录复制正式 CK3 根文件与核心目录；mod 内 `tools/`、Python cache、未知根内容、仓库文档和源素材不会进入 staging，意外 cache/非 allowlist 文件会令静态校验失败。
 - 默认生成 `dist/XenoAmess_s_Eternal_Recurrence/`、旁置 manifest JSON（相对路径、大小、SHA-256、可用时的 git SHA）和 deterministic ZIP；`--check` 在临时目录双构建并比较 manifest 与 ZIP。
 - acceptance 与 static requirements 已拆分并按当前可用环境固定版本。runner 输出 JUnit、环境指纹、开发/production runtime hash 和本次增量日志，并支持调用方指定独立 artifact 目录。
-- 无可用自托管 CK3 桌面；官方 `windows-latest` 负责 push/PR 的 L0，手动触发或 `v*` tag 还会生成并上传候选 ZIP/manifest。官方 runner 不运行 CK3，不把云端 L0 冒充 L1-L3；十个真实游戏场景由本机串行执行并以 JSON/JUnit、截图和增量日志作为发布证据。
+- 无可用自托管 CK3 桌面；官方 `windows-latest` 负责 push/PR 的 L0，手动触发或 `v*` tag 还会生成并上传候选 ZIP/manifest。官方 runner 不运行 CK3，不把云端 L0 冒充 L1-L3；当前十二个真实游戏场景只能由本机串行执行，并以 JSON/JUnit、截图和增量日志作为发布证据。
 - production-only 投影已实现：整文件排除 acceptance 定义，混合运行文件用严格 marker 渲染生产分支，构建扫描禁止测试标识残留；生产 smoke 直接加载投影实测。
-- acceptance runner 的十个场景均已完成实机 GREEN；其中四个 production smoke 加载 release 投影，其余覆盖完整 selftest、两进程持久化、AI/无继承人死亡边界、三轮交易时间边界、PB/图鉴/里程碑像素和受控计分矩阵。每场输出 JSON/JUnit、run ID、git/mod/environment 指纹与阶段耗时，且现场备份不进入 artifacts。
+- 十个旧场景各有历史实机 GREEN；其中四个 production smoke 加载 release 投影，其余覆盖完整 selftest、两进程持久化、AI/无继承人死亡边界、三轮交易时间边界、PB/图鉴/里程碑像素和受控计分矩阵。此后新增的 `death-with-heir` 与完整 `balance-long` 尚无首次完整 GREEN，且旧 run ID 不覆盖付费廷臣提交 `a19808d`。每场仍输出 JSON/JUnit、run ID、git/mod/environment 指纹与阶段耗时，且现场备份不进入 artifacts。
 
 退出标准：
 
@@ -154,7 +154,7 @@
 - 选项显示普通、稀有、传说及构筑标签。
 - 按角色状态动态调整相关条目权重。
 - 将每场最多六个模态窗口压缩为一至两个交互，或改为每场一对。
-- 建立伯爵、国王、皇帝、自建角色的平衡矩阵。
+- 建立伯爵、国王、皇帝、脚本标准化合成角色的平衡矩阵；合成格不冒充原生统治者设计器兼容性。
 
 退出标准：
 
@@ -163,7 +163,7 @@
 - 30-50 年人生的模态打断明显减少。
 - 高纪录不会在少数轮回后完全消除挑战。
 
-实施状态（2026-08-18）：
+实施状态（截至 2026-08-19）：
 
 - 已增加绝对/本世成长两种计分口径，以及 0%/25%/50%/100% 继承；25%/50% 预算向下取整，所有比例均不另设预算上限，推荐默认是本世成长 + 100%。八种组合在账簿与结算中显示 `v2` 赛道标识。
 - 旧 `xar_hs_ge_*` 保持为兼容的全局余烬进度，不复制 5600 个额外 lesson；因此不同赛道以明确标识区分，但仍共享进度位阶，此差异列入 1.0 known limitation。
@@ -172,7 +172,7 @@
 - 轮回当铺扩为四页；新增可重复购买的重抽/封印，以及每局一次的恐怖值、正统性和暴政修正服务。2000 分 production-only smoke 已真实购买第四页两项服务并返回第三页完成宗教改革。
 - 奖池保留 0-99 wire id，并导出 `bless.000`/`curse.000` 稳定 ID、稀有度与类别；已持有同级/更高 trait、同名 modifier、无宗族、零压力减压会被过滤，状态与契约匹配项动态加权。
 - 垂青会已压缩为每三年一对，最多两个模态窗口；重抽和封印由特质里程碑提供。
-- 继承公式已有生产 effect 与 0/25/50/100 实机脚本断言；100% 以 2000 位阶 production-only UI 验证不封顶、第四页服务和 1133 分宗教改革价格。完整伯爵/国王/皇帝/自建角色 30-50 年人工矩阵仍属于发布后的平衡采样，而非阻断结构正确性的验收。
+- 继承公式已有生产 effect 与 0/25/50/100 实机脚本断言；100% 以 2000 位阶 production-only UI 验证不封顶、第四页服务和 1133 分宗教改革价格。`count|king|emperor|synthetic` 被动矩阵的夹具、wire 和聚合器已实现，但只有 synthetic 两对短烟测历史证据。完整四格执行是 1.0 最终发布决策前的工程证据；矩阵机械 GREEN 后，具体数值是否需要调整属于产品判断，不与 L0 结构正确性混为一谈。
 
 ### Phase 4：CK3 原生契约内容
 
@@ -223,12 +223,12 @@
 - 工坊访客能在十秒内理解核心循环。
 - README、工坊描述和游戏内术语保持一致。
 
-实施状态（2026-08-18，本地自动化范围）：
+实施状态（截至 2026-08-19，本地自动化范围）：
 
 - descriptor 已升至 1.0.0，新增 changelog、发布 QA 表、资产来源待签表，并统一 README/工坊源文案中的 CK3 Roguelite / New Game+、版本、FAQ、局长和挑战模板。
 - release manifest v2 记录版本、tag、commit、工坊 ID 与逐文件 SHA-256；`--release` 要求 clean worktree 与 `v<version>` tag，`--verify` 可核对下载后的工坊缓存。
 - acceptance JSON/JUnit 记录 run ID、UTC、版本、git SHA、mod tree hash、游戏/环境及结果；用户现场备份已移出公开 artifacts 并在恢复后删除。
-- Steam 实际上传、GitHub Release、干净中英截图、缩略图人工审美确认和资产许可确认需要外部账号或人工判断。其余七语言翻译及九语言人工人格 QA 按用户要求推迟到明确发布指令之后；状态见 `docs/release-qa-v1.0.0.md`，不得伪报为自动完成。
+- Steam 实际上传、GitHub Release、干净中英截图、缩略图人工审美确认和资产许可确认需要外部账号或人工判断。七种目标语言现已有 MiniMax-M3 辅助的源文本，付费廷臣也补齐九语言 key；当前候选 L0、九语言人工人格/术语与游戏内截断 QA 仍未完成，状态见 `docs/release-qa-v1.0.0.md`，不得把译文存在伪报为发布签核。
 
 ### Phase 6：自主高分玩家智能体（长期工程，排队中）
 
@@ -248,7 +248,7 @@
 - 贤王 3/6/10 与【琉焰之视】10 XP 生产里程碑、PB lesson、图鉴位和原生账簿历史显示已由 `progression-ui` 实机 GREEN（`xar_accept_gqppgi_f`）：PB 10、图鉴 mask 16、`R 1`、`S 0`，0 `xar` errors。
 - 祝福/诅咒 200 个稳定 ID 已由独立冻结契约逐项固定 effect/filter/weight，并由 `scoring-matrix` 实机穿过 200/200 生产 dispatcher（`xar_accept_h0lgmvyf`）。
 - AI 实际死亡负例已自动验证。
-- 无继承人脚本链、原生继承窗可见结算、退出主菜单与正常继承人观察者切换均已验证。
+- 无继承人脚本链、原生继承窗可见结算和退出主菜单已有实机 GREEN；正常继承人的 `death-with-heir` 自动场景已实现但尚无首次 GREEN，不能继续沿用旧的“已验证”表述。
 - log2 从 `2^1` 到 `2^30` 的幂前/中/后及 cap、全部系数、混合头衔、契约 0–10、拒绝饱和与成长下限均由独立 Python 黄金向量固定。
 - 后代 1–5 代、第六代排除、近亲重复路径和死亡中间节点已由受控 CK3 谱系实测；最高头衔唯一桶与混合持有头衔另有 Python/静态矩阵。
 - 发布模式、非 debug 模式和 staging 内容实测。

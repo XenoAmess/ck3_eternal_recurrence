@@ -27,34 +27,38 @@ Favor sessions offer one of three blessings, followed by one of two rarity-const
 六类本世契约把战争、牵制、传教、家族、建设与低压力长寿变成增量目标。3/6/10 进度提供叙事反馈、分数与跨存档 PB；【琉焰之视】每 10 XP 交替解锁重抽和封印。
 Six lifetime contracts turn war, hooks, conversion, family, construction, and low-stress longevity into incremental goals. Progress 3/6/10 grants narrative feedback, score, and persistent PBs; every 10 Gaze XP alternates rerolls and seals.
 
-死亡结算展示真实分数；只有跨过新余烬阈值才写入量化纪录（教程通知）。确认后进入观察者模式，不可继续扮演后代。
-Full exact-score breakdown on death; a quantized record is written only when a new ember threshold is crossed. The run then ends in observer mode.
+[h3]候选更新 / Candidate Update[/h3]
+[i]以下功能已写入本地候选源码，但尚未完成 L0、游戏内验收或工坊上传：可从决议打开付费自定义廷臣契页，选择性别、年龄、三级教育、最多两项将领特质、先天特质与三组心性；只有确认人物创建成功后才扣除一次金币。[/i]
+[i]The following feature exists in local candidate source but has not completed L0, in-game acceptance, or Workshop upload: a paid custom-courtier commission with sex, age, tier-3 education, up to two commander traits, congenital traits, and three temperament pairs. Gold is charged once only after successful creation.[/i]
+
+死亡结算展示真实分数；只有跨过新余烬阈值才写入量化纪录（教程通知）。有继承人时确认后进入观察者模式；无可玩继承人时由原生继承窗显示结算并退出主菜单。两者都不可继续扮演后代。
+Full exact-score breakdown on death; a quantized record is written only when a new ember threshold is crossed. With an heir, confirmation enters observer mode; without a playable heir, the native succession window shows the settlement and exits to the main menu. Neither path continues as a descendant.
 [img]https://images.steamusercontent.com/ugc/13660478083691512905/9BED1CE13F8414ABCDC72C3742CA6349E309A9A2/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false[/img]
 [img]https://images.steamusercontent.com/ugc/12306923708257855021/CFD03A6CF4DC5104DF8E1455C5C83D243382BC20/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false[/img]
 
 [h1]本地化 / Localization[/h1]
 简中 / English / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español
-[i]核心 UI 提供九语言；1.0 契约叙事当前为简中/英文，其他七种语言暂用英文，等待人工翻译。Core UI supports all nine languages; 1.0 contract narrative currently uses Chinese/English, with English placeholders in the other seven pending human translation.[/i]
+[i]九种语言均已有源文本；法、德、日、韩、波、俄、西译文由 MiniMax-M3 辅助生成并经过结构/占位符审阅，但九语言母语级术语、人格和游戏内截断签核仍待完成。All nine languages now have source text. French, German, Japanese, Korean, Polish, Russian, and Spanish were translated with MiniMax-M3 assistance and structurally reviewed, but native-level terminology/persona and in-game truncation sign-off remain pending.[/i]
 
 [i]单机定位。/ Single-player oriented.[/i]
 
 [h1]版本与兼容性 / Version & Compatibility[/h1]
-测试版本 CK3 1.19.0.6；推荐新开局与单机。mod 不覆盖原版文件，但未逐项验证的 on_action、GUI 或同键资源组合不作兼容保证。
-Tested on CK3 1.19.0.6; new single-player games are recommended. No vanilla file is replaced, but untested on_action, GUI, or same-key mod combinations are not guaranteed.
+既有实测基线为 CK3 1.19.0.6；上述候选廷臣尚未验收。推荐新开局与单机。无继承人结算使用生成的原生继承窗投影，其他同样覆盖 window_succession_event.gui 的 mod 会冲突；未逐项验证的 on_action、GUI 或同键资源组合也不作兼容保证。
+The existing tested baseline is CK3 1.19.0.6; the candidate courtier above is not yet validated. New single-player games are recommended. The no-heir settlement uses a generated projection of the native succession window and conflicts with other mods replacing window_succession_event.gui; other untested on_action, GUI, or same-key combinations are not guaranteed.
 
 [h1]一局有多长 / Run Length[/h1]
 一局等于签约统治者的一生。30–50 年通常包含约 10–17 次垂青会，每次最多两个模态窗口。
 One run is the contracted ruler's lifetime. A 30–50 year life usually sees about 10–17 favor sessions, at no more than two modal windows each.
 
 [h1]FAQ[/h1]
-[b]死亡后能继续继承人吗？[/b] 不能；确认结算后进入观察者模式。
-[b]Can I continue as the heir?[/b] No; confirming settlement enters observer mode.
+[b]死亡后能继续继承人吗？[/b] 不能；有继承人时确认结算后进入观察者模式，无继承人时退出主菜单。
+[b]Can I continue as the heir?[/b] No; settlement enters observer mode when an heir exists, or exits to the main menu when none exists.
 [b]关闭教程？ / Tutorials disabled?[/b] 旧纪录可读，新纪录与契约 PB 不会落盘。Existing data is readable, but new records and contract PBs will not persist.
 
 [h1]挑战模板 / Challenge Template[/h1]
 Game/Mod version · Start/custom-ruler points · Other mods · Track/inheritance · Starting Ember Tier · Years lived · Exact score · Persisted tier · Screenshot
 
 [h1]更新记录 / Changelog[/h1]
-1.0.0: challenge tracks, uncapped inheritance, lifetime contracts, PB/collection, Gaze unlocks, smarter labeled pools, one-pair favor sessions, deterministic release tooling.
+1.0.0 candidate: challenge tracks, uncapped inheritance, lifetime contracts, PB/collection, Gaze unlocks, smarter labeled pools, one-pair favor sessions, native no-heir settlement, paid-courtier candidate, and deterministic release tooling.
 
 源码 / Source: https://github.com/XenoAmess/ck3_eternal_recurrence

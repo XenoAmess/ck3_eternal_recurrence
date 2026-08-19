@@ -44,6 +44,8 @@
 
 上述样本用于证明调用链和顺序性收益，不足以声称统计意义上的 p95。证据分别保存在临时 artifact 目录 `xar_death_edges_fast_20260819`、`xar_balance_synthetic_fast2_20260819` 与 `xar_selftest_fast_v4_20260819`。
 
+这些回归早于付费廷臣生产提交 `a19808d`，不能作为当前完整候选的发布证据；其中 balance 样本也仅走两对交易，不包含当前 fail-fast 语义下的自然死亡或完整 30–40 年矩阵。
+
 ## 排查范围与证据边界
 
 本次结论基于 2026-08-19 对 `tools/run_acceptance.py` 的静态调用链审计，覆盖：
