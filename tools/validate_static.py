@@ -282,6 +282,12 @@ def encoding_and_loc_checks(errors):
             required.update({decision_id, f"{decision_id}_desc",
                              f"{decision_id}_tooltip", f"{decision_id}_confirm"})
 
+    courtier_extra_loc_keys = {
+        "xar.cc.invalid_configuration", "xar.cc.insufficient_gold",
+        "xar.cc.toast.title", "xar.cc.toast.desc",
+    }
+    required.update(courtier_extra_loc_keys)
+
     custom_defined = set()
     for path in (MOD / "common/customizable_localization").glob("*.txt"):
         text = read(path)
@@ -318,7 +324,11 @@ def encoding_and_loc_checks(errors):
         "xar.0011.title", "xar.0011.desc", "xar.0011.desc_cap", "xar.0011.close",
         "xar.no_heir_settlement.desc",
     }
-    for key in sorted(phase_one_loc_keys):
+    courtier_loc_keys = {
+        key for key in required
+        if key.startswith("xar.cc.") or key.startswith("xar_courtier_creator")
+    }
+    for key in sorted(phase_one_loc_keys | courtier_loc_keys):
         english_tokens = loc_format_tokens(all_values["english"].get(key, ""))
         for lang in LANGS:
             actual_tokens = loc_format_tokens(all_values[lang].get(key, ""))
@@ -702,6 +712,213 @@ def mechanic_checks(errors):
             or "gui/xar_decision_bridge.gui = xar_decision_bridge_window"
             not in decision_registry):
         errors.append("decision GUI bridge window is not fully registered")
+
+    courtier_decision = extract_block(decisions, "xar_courtier_creator_decision") or ""
+    courtier_bridge = extract_block(decision_bridges, "xar_cc_open_bridge_gui") or ""
+    courtier_triggers = read(
+        MOD / "common/scripted_triggers/xar_courtier_creator_triggers.txt")
+    courtier_values = read(
+        MOD / "common/script_values/xar_courtier_creator_values.txt")
+    courtier_effects = read(
+        MOD / "common/scripted_effects/xar_courtier_creator_effects.txt")
+    courtier_guis = read(
+        MOD / "common/scripted_guis/xar_courtier_creator_guis.txt")
+    courtier_gui = read(MOD / "gui/xar_courtier_creator.gui")
+    courtier_access = extract_block(
+        courtier_triggers, "xar_cc_ui_access_trigger") or ""
+    courtier_configuration = extract_block(
+        courtier_triggers, "xar_cc_valid_configuration_trigger") or ""
+    courtier_initialize = extract_block(
+        courtier_effects, "xar_cc_initialize_effect") or ""
+    courtier_purchase = extract_block(
+        courtier_effects, "xar_cc_complete_purchase_effect") or ""
+    courtier_create = extract_block(courtier_purchase, "create_character") or ""
+    courtier_cost = extract_block(
+        courtier_values, "xar_courtier_creator_cost") or ""
+
+    if "xar_courtier_creator_decision" not in decision_ids:
+        errors.append("paid custom courtier decision missing")
+    if not all(token in courtier_decision for token in (
+            "is_alive = yes", "add_character_flag = xar_cc_open_pending",
+            "NOT = { has_character_flag = xar_cc_open }",
+            "NOT = { has_character_flag = xar_cc_open_pending }")):
+        errors.append("paid custom courtier decision lost its deferred player bridge")
+    bridge_order = [
+        courtier_bridge.find("remove_character_flag = xar_cc_open_pending"),
+        courtier_bridge.find("xar_cc_initialize_effect = yes"),
+        courtier_bridge.find("add_character_flag = xar_cc_open"),
+    ]
+    if (any(index < 0 for index in bridge_order)
+            or bridge_order != sorted(bridge_order)
+            or "is_alive = yes" not in courtier_bridge):
+        errors.append("paid custom courtier bridge no longer initializes before opening")
+    if ("xar_cc_open_bridge_gui" not in decision_bridge_gui
+            or "gui/xar_courtier_creator.gui = xar_courtier_creator_window"
+            not in decision_registry):
+        errors.append("paid custom courtier windows are not fully registered")
+
+    courtier_state_sources = "\n".join((
+        courtier_decision, courtier_bridge, courtier_triggers,
+        courtier_values, courtier_effects, courtier_guis, courtier_gui,
+    ))
+    if any(token in courtier_state_sources for token in (
+            "set_global_variable", "has_global_variable",
+            "remove_global_variable", "global_var:")):
+        errors.append("paid custom courtier state must remain character-scoped")
+    if not all(token in courtier_access for token in (
+            "is_ai = no", "is_alive = yes", "has_character_flag = xa_enabled",
+            "has_character_flag = xar_cc_open")):
+        errors.append("paid custom courtier GUI lost its living-player access gate")
+    if not all(token in courtier_configuration for token in (
+            "has_character_flag = xar_cc_initialized", "exists = culture",
+            "exists = faith", "exists = location",
+            "xar_cc_commander_count <= 2", "xar_cc_personality_count <= 3")):
+        errors.append("paid custom courtier configuration lost a required bound")
+
+    compact_configuration = compact_script(courtier_configuration)
+    binary_variables = (
+        "xar_cc_female", "xar_cc_cmd_organizer", "xar_cc_cmd_military_engineer",
+        "xar_cc_cmd_aggressive_attacker", "xar_cc_cmd_unyielding_defender",
+        "xar_cc_phys_beauty", "xar_cc_phys_physique", "xar_cc_phys_intellect",
+        "xar_cc_pers_brave", "xar_cc_pers_craven", "xar_cc_pers_calm",
+        "xar_cc_pers_wrathful", "xar_cc_pers_diligent", "xar_cc_pers_lazy",
+    )
+    for variable in binary_variables:
+        expected = f"OR = {{ var:{variable} = 0 var:{variable} = 1 }}"
+        if expected not in compact_configuration:
+            errors.append(
+                f"paid custom courtier configuration does not bound '{variable}'")
+    for expected in (
+            "OR = { var:xar_cc_age = 18 var:xar_cc_age = 30 var:xar_cc_age = 45 }",
+            ("OR = { var:xar_cc_education = 1 var:xar_cc_education = 2 "
+             "var:xar_cc_education = 3 var:xar_cc_education = 4 "
+             "var:xar_cc_education = 5 }")):
+        if expected not in compact_configuration:
+            errors.append("paid custom courtier age or education choices are unbounded")
+    for left, right in (("brave", "craven"), ("calm", "wrathful"),
+                        ("diligent", "lazy")):
+        expected = (
+            f"NOT = {{ var:xar_cc_pers_{left} = 1 "
+            f"var:xar_cc_pers_{right} = 1 }}")
+        if expected not in compact_configuration:
+            errors.append(
+                f"paid custom courtier allows opposing {left}/{right} traits")
+
+    if not all(token in courtier_initialize for token in (
+            "has_character_flag = xar_cc_initialized",
+            "name = xar_cc_female value = 0", "name = xar_cc_age value = 30",
+            "name = xar_cc_education value = 2",
+            "add_character_flag = xar_cc_initialized")):
+        errors.append("paid custom courtier defaults are no longer stable")
+    for variable in binary_variables:
+        if f"name = {variable} value = 0" not in courtier_initialize:
+            errors.append(
+                f"paid custom courtier does not initialize '{variable}'")
+    compact_cost = compact_script(courtier_cost)
+    if "value = 90" not in compact_cost:
+        errors.append("paid custom courtier base price must include tier-3 education")
+    expected_costs = {
+        "xar_cc_age = 18": 60, "xar_cc_age = 30": 30,
+        "xar_cc_cmd_organizer = 1": 25,
+        "xar_cc_cmd_military_engineer = 1": 25,
+        "xar_cc_cmd_aggressive_attacker = 1": 25,
+        "xar_cc_cmd_unyielding_defender = 1": 25,
+        "xar_cc_phys_beauty = 1": 40,
+        "xar_cc_phys_physique = 1": 60,
+        "xar_cc_phys_intellect = 1": 80,
+        "xar_cc_pers_brave = 1": 40,
+        "xar_cc_pers_craven = 1": -10,
+        "xar_cc_pers_calm = 1": 25,
+        "xar_cc_pers_wrathful = 1": 30,
+        "xar_cc_pers_diligent = 1": 40,
+        "xar_cc_pers_lazy = 1": -10,
+    }
+    for condition, amount in expected_costs.items():
+        expected = f"limit = {{ var:{condition} }} add = {amount}"
+        if expected not in compact_cost:
+            errors.append(
+                f"paid custom courtier price lost '{condition}' -> {amount}")
+
+    preconfirm_sources = "\n".join((
+        courtier_decision, courtier_bridge, courtier_guis, courtier_gui,
+    ))
+    if "create_character" in preconfirm_sources or "remove_short_term_gold" in preconfirm_sources:
+        errors.append("paid custom courtier has a side effect before final confirmation")
+    purchase_order = [
+        courtier_purchase.find("remove_character_flag = xar_cc_open"),
+        courtier_purchase.find("create_character = {"),
+        courtier_purchase.find("exists = scope:xar_cc_created_courtier"),
+        courtier_purchase.find("remove_short_term_gold = xar_courtier_creator_cost"),
+    ]
+    if (any(index < 0 for index in purchase_order)
+            or purchase_order != sorted(purchase_order)
+            or courtier_purchase.count("create_character = {") != 1
+            or courtier_purchase.count(
+                "remove_short_term_gold = xar_courtier_creator_cost") != 1):
+        errors.append("paid custom courtier purchase is not atomic and single-shot")
+    if not all(token in courtier_purchase for token in (
+            "xar_cc_ui_access_trigger = yes",
+            "xar_cc_valid_configuration_trigger = yes",
+            "gold >= xar_courtier_creator_cost")):
+        errors.append("paid custom courtier purchase does not revalidate on confirm")
+    if not all(token in courtier_create for token in (
+            "location = root.location", "employer = root", "culture = root.culture",
+            "faith = root.faith", "dynasty = none", "age = root.var:xar_cc_age",
+            "random_traits = no", "diplomacy = 6", "martial = 6",
+            "stewardship = 6", "intrigue = 6", "learning = 6", "prowess = 6",
+            "save_scope_as = xar_cc_created_courtier")):
+        errors.append("paid custom courtier creation lost its deterministic base identity")
+    expected_traits = (
+        "education_diplomacy_3", "education_martial_3",
+        "education_stewardship_3", "education_intrigue_3",
+        "education_learning_3", "organizer", "military_engineer",
+        "aggressive_attacker", "unyielding_defender", "beauty_good_1",
+        "physique_good_1", "intellect_good_1", "brave", "craven", "calm",
+        "wrathful", "diligent", "lazy",
+    )
+    for trait in expected_traits:
+        if f"add_trait = {trait}" not in courtier_purchase:
+            errors.append(f"paid custom courtier cannot apply trait '{trait}'")
+    if not all(token in courtier_purchase for token in (
+            "flag = blocked_from_leaving", "years = 25",
+            "add_character_flag = xar_cc_created_courtier",
+            "add_courtier = scope:xar_cc_created_courtier",
+            "force_character_skill_recalculation = yes",
+            "send_interface_toast = {")):
+        errors.append("paid custom courtier delivery lost its court attachment or receipt")
+
+    courtier_gui_ids = top_level_keys(courtier_guis, r"xar_cc_\w+_gui")
+    for gui_id in courtier_gui_ids:
+        block = extract_block(courtier_guis, gui_id) or ""
+        shown = extract_block(block, "is_shown") or ""
+        valid = extract_block(block, "is_valid") or ""
+        if "xar_cc_ui_access_trigger = yes" not in shown:
+            errors.append(f"paid custom courtier interface '{gui_id}' lacks access gate")
+        if gui_id != "xar_cc_window_gate_gui" and (
+                "xar_cc_ui_access_trigger = yes" not in valid):
+            errors.append(f"paid custom courtier action '{gui_id}' lacks validity gate")
+        if gui_id != "xar_cc_window_gate_gui" and (
+                f"GetScriptedGui('{gui_id}')" not in courtier_gui):
+            errors.append(f"paid custom courtier action '{gui_id}' is not wired to the window")
+    courtier_cancel = extract_block(courtier_guis, "xar_cc_cancel_gui") or ""
+    courtier_confirm = extract_block(courtier_guis, "xar_cc_confirm_gui") or ""
+    if ("remove_character_flag = xar_cc_open" not in courtier_cancel
+            or "xar_cc_complete_purchase_effect" in courtier_cancel):
+        errors.append("paid custom courtier cancellation is no longer side-effect free")
+    if not all(token in courtier_confirm for token in (
+            "xar_cc_valid_configuration_trigger = yes",
+            "gold >= xar_courtier_creator_cost",
+            "xar_cc_complete_purchase_effect = yes")):
+        errors.append("paid custom courtier confirmation is not fully guarded")
+    if not all(token in courtier_gui for token in (
+            "xar_cc_window_gate_gui", "xar_cc_tab', 'basic",
+            "xar_cc_tab', 'commander", "xar_cc_tab', 'physical",
+            "xar_cc_tab', 'personality", "xar_courtier_creator_cost",
+            "xar_cc_cancel_gui", "xar_cc_confirm_gui", "filter_mouse = all")):
+        errors.append("paid custom courtier window lost a tab, price, or modal control")
+    if "TryStartRulerDesigning" in courtier_state_sources:
+        errors.append("paid custom courtier must not call the lobby-only Ruler Designer")
+
     no_heir_gui_requirements = (
         "type xar_no_heir_settlement_widget = widget",
         "SuccessionEventWindow.GetDeadCharacter.IsValid",

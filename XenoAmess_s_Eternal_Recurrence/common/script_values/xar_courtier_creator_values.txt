@@ -1,0 +1,41 @@
+﻿# Authoritative courtier creator counts and gold price.
+xar_cc_commander_count = {
+	value = 0
+	if = { limit = { var:xar_cc_cmd_organizer = 1 } add = 1 }
+	if = { limit = { var:xar_cc_cmd_military_engineer = 1 } add = 1 }
+	if = { limit = { var:xar_cc_cmd_aggressive_attacker = 1 } add = 1 }
+	if = { limit = { var:xar_cc_cmd_unyielding_defender = 1 } add = 1 }
+}
+
+xar_cc_personality_count = {
+	value = 0
+	if = { limit = { var:xar_cc_pers_brave = 1 } add = 1 }
+	if = { limit = { var:xar_cc_pers_craven = 1 } add = 1 }
+	if = { limit = { var:xar_cc_pers_calm = 1 } add = 1 }
+	if = { limit = { var:xar_cc_pers_wrathful = 1 } add = 1 }
+	if = { limit = { var:xar_cc_pers_diligent = 1 } add = 1 }
+	if = { limit = { var:xar_cc_pers_lazy = 1 } add = 1 }
+}
+
+xar_courtier_creator_cost = {
+	# Base 50 plus one mandatory tier-3 education at its native cost of 40.
+	value = 90
+	if = { limit = { var:xar_cc_age = 18 } add = 60 }
+	if = { limit = { var:xar_cc_age = 30 } add = 30 }
+
+	if = { limit = { var:xar_cc_cmd_organizer = 1 } add = 25 }
+	if = { limit = { var:xar_cc_cmd_military_engineer = 1 } add = 25 }
+	if = { limit = { var:xar_cc_cmd_aggressive_attacker = 1 } add = 25 }
+	if = { limit = { var:xar_cc_cmd_unyielding_defender = 1 } add = 25 }
+
+	if = { limit = { var:xar_cc_phys_beauty = 1 } add = 40 }
+	if = { limit = { var:xar_cc_phys_physique = 1 } add = 60 }
+	if = { limit = { var:xar_cc_phys_intellect = 1 } add = 80 }
+
+	if = { limit = { var:xar_cc_pers_brave = 1 } add = 40 }
+	if = { limit = { var:xar_cc_pers_craven = 1 } add = -10 }
+	if = { limit = { var:xar_cc_pers_calm = 1 } add = 25 }
+	if = { limit = { var:xar_cc_pers_wrathful = 1 } add = 30 }
+	if = { limit = { var:xar_cc_pers_diligent = 1 } add = 40 }
+	if = { limit = { var:xar_cc_pers_lazy = 1 } add = -10 }
+}

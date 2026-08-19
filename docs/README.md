@@ -1,6 +1,6 @@
 # CK3 Mod 知识库索引
 
-本目录沉淀琉焰卿的永恒轮回开发过程中验证过的机制与教训。所有结论均经过 1.19.0.6 实测（日志/游戏内验证），非推测。
+本目录沉淀琉焰卿的永恒轮回开发过程中验证过的机制与教训。除文内明确标注“源码证据”“待实测”或“未查明”的项目外，结论均经过 1.19.0.6 日志或游戏内验证。
 
 ## 机制篇
 
@@ -10,6 +10,7 @@
 - [variables-scriptvalues.md](variables-scriptvalues.md) — 变量体系：global_var 的读写上下文差异、save_scope_value_as 显示链路、script value 数学
 - [testing-workflow.md](testing-workflow.md) — 实测流程：debug_mode 启动、日志断点标记法、tutorial.txt 验证、GUI 可视化调试面板
 - [acceptance-runner-latency.md](acceptance-runner-latency.md) — 场景测试 runner 暂停弹窗延迟：按场景量化瓶颈、证据边界、两级恢复与验收建议
+- [courtier-creator.md](courtier-creator.md) — 付费自定义廷臣：运行期自定义 GUI、玩家隔离状态、原子扣金与原版创建链依据（源码完成，待实测）
 - [autonomous-player-agent.md](autonomous-player-agent.md) — 排队中的长期工程：不作弊的 CK3 高分自主玩家、视觉驱动、经验记忆、大模型复盘与持续多局优化
 - [workshop-publishing.md](workshop-publishing.md) — **创意工坊发布**（启动器上传器）：物料清单、picture 路径解析、预览图 1MB 限制、remote_file_id 内外层之别、更新流程
 

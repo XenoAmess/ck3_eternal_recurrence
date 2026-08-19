@@ -30,3 +30,45 @@
 
 	ai_potential = { always = no }
 }
+
+xar_courtier_creator_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	}
+	sort_order = 12
+	ai_check_interval = 0
+	desc = xar_courtier_creator_decision_desc
+
+	is_shown = {
+		has_character_flag = xa_enabled
+		is_ai = no
+		is_alive = yes
+		NOT = { has_character_flag = xar_cc_open }
+		NOT = { has_character_flag = xar_cc_open_pending }
+	}
+
+	is_valid_showing_failures_only = {
+		has_character_flag = xa_enabled
+		is_ai = no
+		is_alive = yes
+		NOT = { has_character_flag = xar_cc_open }
+		NOT = { has_character_flag = xar_cc_open_pending }
+	}
+
+	effect = {
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_flag = xa_enabled
+					is_ai = no
+					is_alive = yes
+					NOT = { has_character_flag = xar_cc_open }
+					NOT = { has_character_flag = xar_cc_open_pending }
+				}
+				add_character_flag = xar_cc_open_pending
+			}
+		}
+	}
+
+	ai_potential = { always = no }
+}

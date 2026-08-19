@@ -1,0 +1,58 @@
+﻿# Paid courtier creator gates. All state is character-scoped so multiplayer
+# players cannot overwrite each other's pending design.
+xar_cc_ui_access_trigger = {
+	is_ai = no
+	is_alive = yes
+	has_character_flag = xa_enabled
+	has_character_flag = xar_cc_open
+}
+
+xar_cc_valid_configuration_trigger = {
+	has_character_flag = xar_cc_initialized
+	exists = culture
+	exists = faith
+	exists = location
+	OR = {
+		var:xar_cc_female = 0
+		var:xar_cc_female = 1
+	}
+	OR = {
+		var:xar_cc_age = 18
+		var:xar_cc_age = 30
+		var:xar_cc_age = 45
+	}
+	OR = {
+		var:xar_cc_education = 1
+		var:xar_cc_education = 2
+		var:xar_cc_education = 3
+		var:xar_cc_education = 4
+		var:xar_cc_education = 5
+	}
+	xar_cc_commander_count <= 2
+	xar_cc_personality_count <= 3
+	NOT = {
+		var:xar_cc_pers_brave = 1
+		var:xar_cc_pers_craven = 1
+	}
+	NOT = {
+		var:xar_cc_pers_calm = 1
+		var:xar_cc_pers_wrathful = 1
+	}
+	NOT = {
+		var:xar_cc_pers_diligent = 1
+		var:xar_cc_pers_lazy = 1
+	}
+	OR = { var:xar_cc_cmd_organizer = 0 var:xar_cc_cmd_organizer = 1 }
+	OR = { var:xar_cc_cmd_military_engineer = 0 var:xar_cc_cmd_military_engineer = 1 }
+	OR = { var:xar_cc_cmd_aggressive_attacker = 0 var:xar_cc_cmd_aggressive_attacker = 1 }
+	OR = { var:xar_cc_cmd_unyielding_defender = 0 var:xar_cc_cmd_unyielding_defender = 1 }
+	OR = { var:xar_cc_phys_beauty = 0 var:xar_cc_phys_beauty = 1 }
+	OR = { var:xar_cc_phys_physique = 0 var:xar_cc_phys_physique = 1 }
+	OR = { var:xar_cc_phys_intellect = 0 var:xar_cc_phys_intellect = 1 }
+	OR = { var:xar_cc_pers_brave = 0 var:xar_cc_pers_brave = 1 }
+	OR = { var:xar_cc_pers_craven = 0 var:xar_cc_pers_craven = 1 }
+	OR = { var:xar_cc_pers_calm = 0 var:xar_cc_pers_calm = 1 }
+	OR = { var:xar_cc_pers_wrathful = 0 var:xar_cc_pers_wrathful = 1 }
+	OR = { var:xar_cc_pers_diligent = 0 var:xar_cc_pers_diligent = 1 }
+	OR = { var:xar_cc_pers_lazy = 0 var:xar_cc_pers_lazy = 1 }
+}

@@ -21,4 +21,10 @@ window = {
 		trigger_when = "[GetScriptedGui('xar_open_contract_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 		on_start = "[GetScriptedGui('xar_open_contract_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 	}
+
+	state = {
+		name = "xar_open_courtier_creator"
+		trigger_when = "[GetScriptedGui('xar_cc_open_bridge_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		on_start = "[GetScriptedGui('xar_cc_open_bridge_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
 }

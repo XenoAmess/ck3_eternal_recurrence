@@ -1,0 +1,433 @@
+﻿# Paid custom courtier creator. The transparent root prevents invalid-player
+# evaluations; only the gated child modal captures input.
+window = {
+	name = "xar_courtier_creator_window"
+	size = { 100% 100% }
+	layer = confirmation
+	visible = "[GetPlayer.IsValid]"
+	alwaystransparent = yes
+
+	widget = {
+		name = "xar_courtier_creator_modal"
+		size = { 100% 100% }
+		visible = "[GetScriptedGui('xar_cc_window_gate_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		alwaystransparent = no
+		filter_mouse = all
+		using = Background_Full_Dim
+		using = Animation_ShowHide_Quick
+
+		state = {
+			name = _show
+			on_start = "[GetVariableSystem.Set('xar_cc_tab', 'basic')]"
+		}
+		state = {
+			name = _hide
+			on_finish = "[GetVariableSystem.Clear('xar_cc_tab')]"
+		}
+
+		button_normal = {
+			size = { 100% 100% }
+			onclick = "[GetScriptedGui('xar_cc_cancel_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		}
+
+		widget = {
+			name = "xar_courtier_creator_panel"
+			size = { 1120 760 }
+			parentanchor = center
+			alwaystransparent = no
+			filter_mouse = all
+			using = Window_Background
+			using = Window_Decoration_Spike
+
+			vbox = {
+				using = Window_Margins
+				spacing = 10
+
+				header_pattern = {
+					layoutpolicy_horizontal = expanding
+					blockoverride "header_text" {
+						text = "[Localize('xar.cc.title')]"
+					}
+					blockoverride "button_close" {
+						onclick = "[GetScriptedGui('xar_cc_cancel_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					}
+				}
+
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					autoresize = yes
+					text = "[Localize('xar.cc.intro')]"
+					fontsize = 17
+					default_format = "#high"
+					margin = { 20 0 }
+				}
+
+				hbox = {
+					name = "xar_cc_tabs"
+					layoutpolicy_horizontal = expanding
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						text = "[Localize('xar.cc.tab.basic')]"
+						onclick = "[GetVariableSystem.Set('xar_cc_tab', 'basic')]"
+						down = "[GetVariableSystem.HasValue('xar_cc_tab', 'basic')]"
+					}
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						text = "[Localize('xar.cc.tab.commander')]"
+						onclick = "[GetVariableSystem.Set('xar_cc_tab', 'commander')]"
+						down = "[GetVariableSystem.HasValue('xar_cc_tab', 'commander')]"
+					}
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						text = "[Localize('xar.cc.tab.physical')]"
+						onclick = "[GetVariableSystem.Set('xar_cc_tab', 'physical')]"
+						down = "[GetVariableSystem.HasValue('xar_cc_tab', 'physical')]"
+					}
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						text = "[Localize('xar.cc.tab.personality')]"
+						onclick = "[GetVariableSystem.Set('xar_cc_tab', 'personality')]"
+						down = "[GetVariableSystem.HasValue('xar_cc_tab', 'personality')]"
+					}
+				}
+
+				vbox = {
+					name = "xar_cc_basic_tab"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue('xar_cc_tab', 'basic')]"
+					using = Animation_Tab_Switch
+					margin = { 25 15 }
+					spacing = 14
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						text_single = { min_width = 190 text = "[Localize('xar.cc.sex')]" default_format = "#high" }
+						button_standard = {
+							min_width = 240
+							text = "SEX_MALE"
+							datacontext = "[GetScriptedGui('xar_cc_choose_male_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_female').GetValue, '(CFixedPoint)0' )]"
+						}
+						button_standard = {
+							min_width = 240
+							text = "SEX_FEMALE"
+							datacontext = "[GetScriptedGui('xar_cc_choose_female_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_female').GetValue, '(CFixedPoint)1' )]"
+						}
+						expand = {}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						text_single = { min_width = 190 text = "[Localize('xar.cc.age')]" default_format = "#high" }
+						button_standard = {
+							min_width = 190
+							text = "[Localize('xar.cc.option.age_18')]"
+							datacontext = "[GetScriptedGui('xar_cc_choose_age_18_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_age').GetValue, '(CFixedPoint)18' )]"
+						}
+						button_standard = {
+							min_width = 190
+							text = "[Localize('xar.cc.option.age_30')]"
+							datacontext = "[GetScriptedGui('xar_cc_choose_age_30_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_age').GetValue, '(CFixedPoint)30' )]"
+						}
+						button_standard = {
+							min_width = 190
+							text = "[Localize('xar.cc.option.age_45')]"
+							datacontext = "[GetScriptedGui('xar_cc_choose_age_45_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_age').GetValue, '(CFixedPoint)45' )]"
+						}
+						expand = {}
+					}
+
+					text_single = { text = "[Localize('xar.cc.education')]" default_format = "#high" }
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 5
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.education_diplomacy')]"
+							tooltip = "trait_education_diplomacy_3_desc"
+							datacontext = "[GetScriptedGui('xar_cc_choose_education_diplomacy_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_education').GetValue, '(CFixedPoint)1' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.education_martial')]"
+							tooltip = "trait_education_martial_3_desc"
+							datacontext = "[GetScriptedGui('xar_cc_choose_education_martial_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_education').GetValue, '(CFixedPoint)2' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.education_stewardship')]"
+							tooltip = "trait_education_stewardship_3_desc"
+							datacontext = "[GetScriptedGui('xar_cc_choose_education_stewardship_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_education').GetValue, '(CFixedPoint)3' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.education_intrigue')]"
+							tooltip = "trait_education_intrigue_3_desc"
+							datacontext = "[GetScriptedGui('xar_cc_choose_education_intrigue_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_education').GetValue, '(CFixedPoint)4' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.education_learning')]"
+							tooltip = "trait_education_learning_3_desc"
+							datacontext = "[GetScriptedGui('xar_cc_choose_education_learning_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_education').GetValue, '(CFixedPoint)5' )]"
+						}
+					}
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						text = "[Localize('xar.cc.base_stats')]"
+						default_format = "#low"
+					}
+					expand = {}
+				}
+
+				vbox = {
+					name = "xar_cc_commander_tab"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue('xar_cc_tab', 'commander')]"
+					using = Animation_Tab_Switch
+					margin = { 25 25 }
+					spacing = 18
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						text = "[Localize('xar.cc.commander.help')]"
+						default_format = "#high"
+					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.cmd_organizer')]"
+							tooltip = "trait_organizer_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_cmd_organizer_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_cmd_organizer').GetValue, '(CFixedPoint)1' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.cmd_military_engineer')]"
+							tooltip = "trait_military_engineer_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_cmd_military_engineer_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_cmd_military_engineer').GetValue, '(CFixedPoint)1' )]"
+						}
+					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.cmd_aggressive_attacker')]"
+							tooltip = "trait_aggressive_attacker_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_cmd_aggressive_attacker_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_cmd_aggressive_attacker').GetValue, '(CFixedPoint)1' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.cmd_unyielding_defender')]"
+							tooltip = "trait_unyielding_defender_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_cmd_unyielding_defender_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_cmd_unyielding_defender').GetValue, '(CFixedPoint)1' )]"
+						}
+					}
+					expand = {}
+				}
+
+				vbox = {
+					name = "xar_cc_physical_tab"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue('xar_cc_tab', 'physical')]"
+					using = Animation_Tab_Switch
+					margin = { 25 25 }
+					spacing = 20
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						text = "[Localize('xar.cc.physical.help')]"
+						default_format = "#high"
+					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.phys_beauty')]"
+							tooltip = "trait_beauty_good_1_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_phys_beauty_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_phys_beauty').GetValue, '(CFixedPoint)1' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.phys_physique')]"
+							tooltip = "trait_physique_good_1_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_phys_physique_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_phys_physique').GetValue, '(CFixedPoint)1' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.phys_intellect')]"
+							tooltip = "trait_intellect_good_1_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_phys_intellect_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_phys_intellect').GetValue, '(CFixedPoint)1' )]"
+						}
+					}
+					expand = {}
+				}
+
+				vbox = {
+					name = "xar_cc_personality_tab"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue('xar_cc_tab', 'personality')]"
+					using = Animation_Tab_Switch
+					margin = { 25 25 }
+					spacing = 16
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						text = "[Localize('xar.cc.personality.help')]"
+						default_format = "#high"
+					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.pers_brave')]"
+							tooltip = "trait_brave_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_pers_brave_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_pers_brave').GetValue, '(CFixedPoint)1' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.pers_craven')]"
+							tooltip = "trait_craven_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_pers_craven_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_pers_craven').GetValue, '(CFixedPoint)1' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.pers_calm')]"
+							tooltip = "trait_calm_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_pers_calm_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_pers_calm').GetValue, '(CFixedPoint)1' )]"
+						}
+					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.pers_wrathful')]"
+							tooltip = "trait_wrathful_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_pers_wrathful_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_pers_wrathful').GetValue, '(CFixedPoint)1' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.pers_diligent')]"
+							tooltip = "trait_diligent_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_pers_diligent_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_pers_diligent').GetValue, '(CFixedPoint)1' )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('xar.cc.option.pers_lazy')]"
+							tooltip = "trait_lazy_desc"
+							datacontext = "[GetScriptedGui('xar_cc_toggle_pers_lazy_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('xar_cc_pers_lazy').GetValue, '(CFixedPoint)1' )]"
+						}
+					}
+					expand = {}
+				}
+
+				hbox = {
+					name = "xar_cc_purchase_row"
+					layoutpolicy_horizontal = expanding
+					spacing = 10
+					text_single = { text = "[Localize('xar.cc.price')]" default_format = "#high" }
+					text_single = {
+						raw_text = "[GetPlayer.MakeScope.ScriptValue('xar_courtier_creator_cost')|0]"
+						default_format = "#V"
+					}
+					text_single = { raw_text = "/" default_format = "#low" }
+					text_single = { raw_text = "[GetPlayer.GetGold|0]" default_format = "#high" }
+					expand = {}
+					button_standard = {
+						min_width = 210
+						text = "[Localize('xar.cc.cancel')]"
+						datacontext = "[GetScriptedGui('xar_cc_cancel_gui')]"
+						enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					}
+					button_primary_big = {
+						min_width = 260
+						text = "[Localize('xar.cc.confirm')]"
+						datacontext = "[GetScriptedGui('xar_cc_confirm_gui')]"
+						enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						tooltip = "[ScriptedGui.BuildTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					}
+				}
+			}
+		}
+	}
+}

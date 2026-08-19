@@ -1,0 +1,303 @@
+﻿# Player-rooted interfaces for the paid courtier creator.
+xar_cc_window_gate_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+}
+
+xar_cc_cancel_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { xar_cc_ui_access_trigger = yes }
+			remove_character_flag = xar_cc_open
+		}
+	}
+}
+
+xar_cc_confirm_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = {
+		xar_cc_ui_access_trigger = yes
+		custom_description = {
+			text = xar.cc.invalid_configuration
+			xar_cc_valid_configuration_trigger = yes
+		}
+		custom_description = {
+			text = xar.cc.insufficient_gold
+			gold >= xar_courtier_creator_cost
+		}
+	}
+	effect = { xar_cc_complete_purchase_effect = yes }
+}
+
+xar_cc_choose_male_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = { set_variable = { name = xar_cc_female value = 0 } }
+}
+
+xar_cc_choose_female_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = { set_variable = { name = xar_cc_female value = 1 } }
+}
+
+xar_cc_choose_age_18_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = { set_variable = { name = xar_cc_age value = 18 } }
+}
+
+xar_cc_choose_age_30_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = { set_variable = { name = xar_cc_age value = 30 } }
+}
+
+xar_cc_choose_age_45_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = { set_variable = { name = xar_cc_age value = 45 } }
+}
+
+xar_cc_choose_education_diplomacy_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = { set_variable = { name = xar_cc_education value = 1 } }
+}
+
+xar_cc_choose_education_martial_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = { set_variable = { name = xar_cc_education value = 2 } }
+}
+
+xar_cc_choose_education_stewardship_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = { set_variable = { name = xar_cc_education value = 3 } }
+}
+
+xar_cc_choose_education_intrigue_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = { set_variable = { name = xar_cc_education value = 4 } }
+}
+
+xar_cc_choose_education_learning_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = { set_variable = { name = xar_cc_education value = 5 } }
+}
+
+xar_cc_toggle_cmd_organizer_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = {
+		xar_cc_ui_access_trigger = yes
+		OR = { var:xar_cc_cmd_organizer = 1 xar_cc_commander_count < 2 }
+	}
+	effect = {
+		if = {
+			limit = { var:xar_cc_cmd_organizer = 1 }
+			set_variable = { name = xar_cc_cmd_organizer value = 0 }
+		}
+		else = { set_variable = { name = xar_cc_cmd_organizer value = 1 } }
+	}
+}
+
+xar_cc_toggle_cmd_military_engineer_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = {
+		xar_cc_ui_access_trigger = yes
+		OR = { var:xar_cc_cmd_military_engineer = 1 xar_cc_commander_count < 2 }
+	}
+	effect = {
+		if = {
+			limit = { var:xar_cc_cmd_military_engineer = 1 }
+			set_variable = { name = xar_cc_cmd_military_engineer value = 0 }
+		}
+		else = { set_variable = { name = xar_cc_cmd_military_engineer value = 1 } }
+	}
+}
+
+xar_cc_toggle_cmd_aggressive_attacker_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = {
+		xar_cc_ui_access_trigger = yes
+		OR = { var:xar_cc_cmd_aggressive_attacker = 1 xar_cc_commander_count < 2 }
+	}
+	effect = {
+		if = {
+			limit = { var:xar_cc_cmd_aggressive_attacker = 1 }
+			set_variable = { name = xar_cc_cmd_aggressive_attacker value = 0 }
+		}
+		else = { set_variable = { name = xar_cc_cmd_aggressive_attacker value = 1 } }
+	}
+}
+
+xar_cc_toggle_cmd_unyielding_defender_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = {
+		xar_cc_ui_access_trigger = yes
+		OR = { var:xar_cc_cmd_unyielding_defender = 1 xar_cc_commander_count < 2 }
+	}
+	effect = {
+		if = {
+			limit = { var:xar_cc_cmd_unyielding_defender = 1 }
+			set_variable = { name = xar_cc_cmd_unyielding_defender value = 0 }
+		}
+		else = { set_variable = { name = xar_cc_cmd_unyielding_defender value = 1 } }
+	}
+}
+
+xar_cc_toggle_phys_beauty_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { var:xar_cc_phys_beauty = 1 }
+			set_variable = { name = xar_cc_phys_beauty value = 0 }
+		}
+		else = { set_variable = { name = xar_cc_phys_beauty value = 1 } }
+	}
+}
+
+xar_cc_toggle_phys_physique_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { var:xar_cc_phys_physique = 1 }
+			set_variable = { name = xar_cc_phys_physique value = 0 }
+		}
+		else = { set_variable = { name = xar_cc_phys_physique value = 1 } }
+	}
+}
+
+xar_cc_toggle_phys_intellect_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { var:xar_cc_phys_intellect = 1 }
+			set_variable = { name = xar_cc_phys_intellect value = 0 }
+		}
+		else = { set_variable = { name = xar_cc_phys_intellect value = 1 } }
+	}
+}
+
+xar_cc_toggle_pers_brave_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { var:xar_cc_pers_brave = 1 }
+			set_variable = { name = xar_cc_pers_brave value = 0 }
+		}
+		else = {
+			set_variable = { name = xar_cc_pers_brave value = 1 }
+			set_variable = { name = xar_cc_pers_craven value = 0 }
+		}
+	}
+}
+
+xar_cc_toggle_pers_craven_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { var:xar_cc_pers_craven = 1 }
+			set_variable = { name = xar_cc_pers_craven value = 0 }
+		}
+		else = {
+			set_variable = { name = xar_cc_pers_craven value = 1 }
+			set_variable = { name = xar_cc_pers_brave value = 0 }
+		}
+	}
+}
+
+xar_cc_toggle_pers_calm_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { var:xar_cc_pers_calm = 1 }
+			set_variable = { name = xar_cc_pers_calm value = 0 }
+		}
+		else = {
+			set_variable = { name = xar_cc_pers_calm value = 1 }
+			set_variable = { name = xar_cc_pers_wrathful value = 0 }
+		}
+	}
+}
+
+xar_cc_toggle_pers_wrathful_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { var:xar_cc_pers_wrathful = 1 }
+			set_variable = { name = xar_cc_pers_wrathful value = 0 }
+		}
+		else = {
+			set_variable = { name = xar_cc_pers_wrathful value = 1 }
+			set_variable = { name = xar_cc_pers_calm value = 0 }
+		}
+	}
+}
+
+xar_cc_toggle_pers_diligent_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { var:xar_cc_pers_diligent = 1 }
+			set_variable = { name = xar_cc_pers_diligent value = 0 }
+		}
+		else = {
+			set_variable = { name = xar_cc_pers_diligent value = 1 }
+			set_variable = { name = xar_cc_pers_lazy value = 0 }
+		}
+	}
+}
+
+xar_cc_toggle_pers_lazy_gui = {
+	scope = character
+	is_shown = { xar_cc_ui_access_trigger = yes }
+	is_valid = { xar_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { var:xar_cc_pers_lazy = 1 }
+			set_variable = { name = xar_cc_pers_lazy value = 0 }
+		}
+		else = {
+			set_variable = { name = xar_cc_pers_lazy value = 1 }
+			set_variable = { name = xar_cc_pers_diligent value = 0 }
+		}
+	}
+}
