@@ -1915,6 +1915,21 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
                 stall_attempts = 0
         if (time.time() - last_day_change > 12
                 and time.time() - last_recovery > 12):
+            focus_ck3()
+            stall_image = ImageGrab.grab()
+            continue_button = find_ocr_text(
+                stall_image, "继续扮演", (0.45, 0.55, 0.80, 0.90),
+                contains=True)
+            if continue_button is not None:
+                recovery_sequence += 1
+                stall_image.save(
+                    artifacts / f"balance_succession_{recovery_sequence}.png")
+                deliberate_click(
+                    continue_button, "balance natural-death succession continue")
+                stall_attempts = 0
+                last_recovery = time.time()
+                time.sleep(0.5)
+                continue
             if stall_attempts >= 3:
                 raise RunnerError(
                     "balance life remained stalled after 3 screenshot-guided "

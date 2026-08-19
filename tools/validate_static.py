@@ -1306,6 +1306,12 @@ def package_checks(errors):
             "decode_balance_wire_sample", "cadence_1095_days",
             "XAR: BALANCE DONE horizon_40", "--balance-smoke-pairs")):
         errors.append("acceptance runner lacks the declared-default passive balance matrix")
+    balance_long_control = acceptance_runner.partition(
+        "def run_balance_long")[2].partition("\ndef ")[0]
+    if not all(token in balance_long_control for token in (
+            '"继续扮演"', "balance_succession_",
+            "balance natural-death succession continue")):
+        errors.append("balance-long lacks native succession-window recovery")
     balance_matrix_runner = read(ROOT / "tools/run_balance_matrix.py")
     if not all(token in balance_matrix_runner for token in (
             'FIXTURES = ("count", "king", "emperor", "synthetic")',
