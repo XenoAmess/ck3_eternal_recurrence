@@ -687,26 +687,47 @@ def ocr_box_results(img, region):
 def select_stall_event_option(items, width, height):
     """Pick a lower event option without assuming left- or right-column layout."""
     excluded = ("当前日期", "开始于", "政治地图", "暂停", "最快", "公元")
-    lower = []
+    potential = []
     for item in items:
         x_ratio = item["center"][0] / width
         y_ratio = item["center"][1] / height
         box_height_ratio = (item["bbox"][3] - item["bbox"][1]) / height
-        # The open character panel can expose a clipped, tall map label below
-        # classic choices. Keep the deeper band only for right-side full-width
-        # events, whose options have been observed near y=0.79.
-        y_limit = 0.75 if x_ratio <= 0.49 else 0.84
         if (0.34 <= x_ratio <= 0.74
-                and 0.62 <= y_ratio <= y_limit
+                and 0.62 <= y_ratio <= 0.84
                 and box_height_ratio <= 0.035
                 and not any(token in item["text"] for token in excluded)
                 and not re.fullmatch(r"[\d\s./:+-]+", item["text"])):
-            lower.append(item)
-    # Classic choices occupy the left content lane; some full-width layouts use
-    # the right. Portrait labels can share an x coordinate, so only fall back to
-    # the right lane when no plausible left-side choice was recognized.
-    left_lane = [item for item in lower if item["center"][0] / width <= 0.49]
-    ranked_pool = left_lane or lower
+            potential.append(item)
+
+    # Interaction letters put their real actions below effect descriptions.
+    # Prefer the deterministic left action whenever either exact label is seen.
+    action_priority = {"拒绝": 0, "同意": 1}
+    explicit_actions = [
+        item for item in potential if item["text"] in action_priority]
+    # The open character panel can expose a clipped map label below classic
+    # choices. Only right-side full-width events keep the deeper candidate band.
+    lower = [
+        item for item in potential
+        if item["center"][1] / height
+        <= (0.75 if item["center"][0] / width < 0.49 else 0.84)
+    ]
+    lower.extend(item for item in explicit_actions if item not in lower)
+    if explicit_actions:
+        selected = min(
+            explicit_actions,
+            key=lambda item: (action_priority[item["text"]],
+                              -item["center"][1]))
+        return lower, selected
+
+    # Classic options remain near x=0.36. If that lane is absent, prefer the
+    # aligned right-side stack over center-left body text in full-width events.
+    classic_lane = [
+        item for item in lower if item["center"][0] / width <= 0.41]
+    right_lane = [
+        item for item in lower if item["center"][0] / width >= 0.49]
+    middle_lane = [
+        item for item in lower if 0.41 < item["center"][0] / width < 0.49]
+    ranked_pool = classic_lane or right_lane or middle_lane
     tolerance = int(width * 0.035)
     aligned_counts = {
         id(item): sum(
