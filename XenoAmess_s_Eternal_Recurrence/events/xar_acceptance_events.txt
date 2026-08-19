@@ -58,7 +58,19 @@ xar.0920 = {
 
 xar.0921 = {
 	hidden = yes
-	trigger = { is_ai = no }
+	trigger = {
+		OR = {
+			is_ai = no
+			AND = {
+				has_global_variable = xa_balance_active
+				exists = global_var:xa_balance_fixture_character
+				global_var:xa_balance_fixture_character = root
+				has_global_variable = xa_player_pact_active
+				exists = global_var:xa_player_pact_character
+				global_var:xa_player_pact_character = root
+			}
+		}
+	}
 	immediate = {
 		debug_log = "XAR: BALANCE SAMPLE BEGIN"
 		xar_acceptance_balance_emit_wire_effect = yes
@@ -91,6 +103,25 @@ xar.0927 = {
 	hidden = yes
 	trigger = { is_ai = no }
 	immediate = {
+		if = {
+			limit = { has_character_flag = xa_enabled }
+			debug_log = "XAR: BALANCE MIN enabled"
+		}
+		else = { debug_log = "XAR: BALANCE MIN missing enabled" }
+		if = {
+			limit = { has_character_flag = xa_balance_fixture_player }
+			debug_log = "XAR: BALANCE MIN fixture flag"
+		}
+		else = { debug_log = "XAR: BALANCE MIN missing fixture flag" }
+		if = {
+			limit = {
+				has_global_variable = xa_player_pact_active
+				exists = global_var:xa_player_pact_character
+				global_var:xa_player_pact_character = root
+			}
+			debug_log = "XAR: BALANCE MIN player scope"
+		}
+		else = { debug_log = "XAR: BALANCE MIN missing player scope" }
 		set_global_variable = xa_balance_min_reached
 		set_global_variable = { name = xa_balance_sample_kind value = 2 }
 		trigger_event = xar.0920

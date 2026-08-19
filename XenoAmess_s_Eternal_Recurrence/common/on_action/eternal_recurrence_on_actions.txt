@@ -17,6 +17,16 @@ on_game_start_after_lobby = {
 xar_on_game_start = {
 	effect = {
 		every_player = {
+			# Existing pact saves predate the stable player-scope witness.
+			if = {
+				limit = { has_character_flag = xa_enabled }
+				set_global_variable = xa_player_pact_active
+				save_scope_as = xar_existing_pact_player
+				set_global_variable = {
+					name = xa_player_pact_character
+					value = scope:xar_existing_pact_player
+				}
+			}
 			if = {
 				limit = {
 					OR = {
@@ -87,9 +97,28 @@ xar_on_death = {
 	effect = {
 		if = {
 			limit = {
-				has_character_flag = xa_enabled
-				is_ai = no
+				OR = {
+					AND = {
+						has_character_flag = xa_enabled
+						is_ai = no
+					}
+					AND = {
+						has_global_variable = xa_player_pact_active
+						exists = global_var:xa_player_pact_character
+						global_var:xa_player_pact_character = root
+					}
+				}
 			}
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = {
+					has_global_variable = xa_balance_active
+					exists = global_var:xa_balance_fixture_character
+					global_var:xa_balance_fixture_character = root
+				}
+				debug_log = "XAR: BALANCE production death gate entered"
+			}
+			# XAR_ACCEPTANCE_ONLY_END
 			debug_log = "XAR: computing score on death"
 			trigger_event = xar.1000
 		}

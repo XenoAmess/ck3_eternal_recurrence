@@ -1,6 +1,11 @@
 ﻿# Development-only long-run balance instrumentation.
 xar_acceptance_balance_arm_effect = {
 	add_character_flag = xa_balance_fixture_player
+	save_scope_as = xar_balance_fixture
+	set_global_variable = {
+		name = xa_balance_fixture_character
+		value = scope:xar_balance_fixture
+	}
 	trigger_event = { id = xar.0927 days = 10950 }
 	trigger_event = { id = xar.0928 days = 14600 }
 }

@@ -23,3 +23,36 @@ xar_acceptance_death_edges_start_effect = {
 		debug_log = "XAR: TEST DONE death_edges"
 	}
 }
+
+# Deterministic vanilla heart-attack death with a living heir. The hidden
+# stress manager adds the final Faltering Heart XP and performs its own death.
+xar_acceptance_death_with_heir_start_effect = {
+	debug_log = "XAR: TEST death-with-heir begin"
+	set_global_variable = xa_death_with_heir_active
+	set_global_variable = { name = xa_run_score value = -888 }
+	xar_enable_player_pact_effect = yes
+	xar_initialize_run_state_effect = yes
+	if = {
+		limit = {
+			is_ai = no
+			exists = player_heir
+			player_heir = { is_alive = yes is_ai = yes }
+		}
+		if = {
+			limit = { NOT = { has_trait = faltering_heart } }
+			add_trait = faltering_heart
+		}
+		add_trait_xp = {
+			trait = faltering_heart
+			track = faltering_heart
+			value = 75
+		}
+		debug_log = "XAR: TEST PASS death_with_heir_precondition"
+		debug_log = "XAR: TEST death-with-heir armed"
+		trigger_event = { id = stress_threshold.0001 days = 1 }
+	}
+	else = {
+		debug_log = "XAR: TEST FAIL death_with_heir_precondition"
+		debug_log = "XAR: TEST DONE death-with-heir"
+	}
+}

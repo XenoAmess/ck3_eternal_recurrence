@@ -354,7 +354,23 @@ def mechanic_checks(errors):
         errors.append("no XAR events discovered")
     for event_id in event_ids:
         block = event_blocks[event_id]
-        if not block or "trigger = { is_ai = no }" not in block:
+        stable_death_gate = event_id in {"xar.1000", "xar.1003"} and all(
+            token in block for token in (
+                "has_character_flag = xa_enabled", "is_ai = no",
+                "has_global_variable = xa_player_pact_active",
+                "exists = global_var:xa_player_pact_character",
+                "global_var:xa_player_pact_character = root"))
+        stable_balance_death_gate = event_id == "xar.0921" and all(
+            token in block for token in (
+                "is_ai = no", "has_global_variable = xa_balance_active",
+                "exists = global_var:xa_balance_fixture_character",
+                "global_var:xa_balance_fixture_character = root",
+                "has_global_variable = xa_player_pact_active",
+                "global_var:xa_player_pact_character = root"))
+        if not block or (
+                "trigger = { is_ai = no }" not in block
+                and not stable_death_gate
+                and not stable_balance_death_gate):
             errors.append(f"event '{event_id}' lacks its AI guard")
     if "name = xar_curse_option_c" in events:
         errors.append("curse event still exposes a third option")
@@ -738,8 +754,25 @@ def mechanic_checks(errors):
     death = extract_block(on_actions, "xar_on_death") or ""
     if "every_player" not in start:
         errors.append("game-start entry is no longer player-only")
-    if "has_character_flag = xa_enabled" not in death or "is_ai = no" not in death:
-        errors.append("death entry lost the player flag/is_ai dual gate")
+    if not all(token in death for token in (
+            "has_character_flag = xa_enabled", "is_ai = no",
+            "has_global_variable = xa_player_pact_active",
+            "exists = global_var:xa_player_pact_character",
+            "global_var:xa_player_pact_character = root")):
+        errors.append("death entry lost the current-player/stable-scope dual gate")
+    pact_enable = extract_block(production_effects, "xar_enable_player_pact_effect") or ""
+    if not all(token in pact_enable for token in (
+            "limit = { is_ai = no }",
+            "set_global_variable = xa_player_pact_active",
+            "name = xa_player_pact_character",
+            "value = scope:xar_player_pact_signer")):
+        errors.append("player pact scope is no longer assigned under an is_ai=no guard")
+    if not all(token in start for token in (
+            "has_character_flag = xa_enabled",
+            "set_global_variable = xa_player_pact_active",
+            "name = xa_player_pact_character",
+            "value = scope:xar_existing_pact_player")):
+        errors.append("existing player pact saves no longer backfill player scope")
     if (death.count("trigger_event = xar.1000") != 1
             or "xar_compute_score_effect = yes" not in score_compute_event
             or "trigger_event = xar.1003" not in score_compute_event):
@@ -775,6 +808,30 @@ def mechanic_checks(errors):
     if ("XAR: TEST PASS no_heir_synchronous_return" not in score_snapshot_event
             or "XAR: TEST no-heir snapshot committed" not in score_snapshot_event):
         errors.append("no-heir synchronous-return instrumentation is incomplete")
+    death_with_heir_requirements = (
+        "xar_acceptance_death_with_heir_start_effect", "exists = player_heir",
+        "player_heir = { is_alive = yes is_ai = yes }",
+        "add_trait = faltering_heart", "track = faltering_heart", "value = 75",
+        "trigger_event = { id = stress_threshold.0001 days = 1 }",
+        "XAR: TEST PASS death_with_heir_precondition",
+    )
+    if any(token not in death_probe_effect
+           for token in death_with_heir_requirements):
+        errors.append("with-heir death setup lacks its player/heir precondition")
+    if not all(token in events for token in (
+            "XAR: TEST death-with-heir compute entered",
+            "XAR: TEST death-with-heir dispatch entered",
+            "XAR: TEST PASS death_with_heir_heir_human",
+            "XAR: TEST PASS death_with_heir_score_event",
+            "XAR: TEST DONE death-with-heir")):
+        errors.append("with-heir production death stages lack acceptance markers")
+    if not all(token in death_probe_on_action for token in (
+            "XAR: BALANCE fixture on_death observed",
+            "XAR: BALANCE fixture on_death root AI",
+            "XAR: BALANCE fixture on_death enabled",
+            "XAR: BALANCE fixture on_death fixture flag",
+            "XAR: BALANCE fixture on_death player scope")):
+        errors.append("balance natural-death observer is incomplete")
     bargain_probe_effect = read(
         MOD / "common/scripted_effects/xar_acceptance_bargain_effects.txt")
     bargain_probe_event = read(MOD / "events/xar_acceptance_bargain_events.txt")
@@ -856,6 +913,11 @@ def mechanic_checks(errors):
     )
     if any(token not in consume_import for token in scoring_requirements):
         errors.append("scoring-matrix threshold-4 bootstrap is not isolated from selftest")
+    if not all(token in consume_import for token in (
+            "global_var:xa_global_record_imported = 5",
+            "xar_acceptance_death_with_heir_start_effect = yes")):
+        errors.append(
+            "death-with-heir threshold-5 bootstrap is not isolated from selftest")
     if not all(token in scoring_probe_effect for token in (
             "is_ai = no", "exists = dynasty", "exists = house",
             "set_global_variable = xa_scoring_matrix_active",

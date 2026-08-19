@@ -30,6 +30,10 @@ xar_consume_import_effect = {
 				limit = { global_var:xa_global_record_imported = 4 }
 				xar_acceptance_scoring_matrix_start_effect = yes
 			}
+			else_if = {
+				limit = { global_var:xa_global_record_imported = 5 }
+				xar_acceptance_death_with_heir_start_effect = yes
+			}
 			else = {
 				debug_log = "XAR: TEST selftest begin"
 				xar_selftest_effect = yes
@@ -92,6 +96,15 @@ xar_initialize_challenge_mode_effect = {
 # event so these effects remain reusable by normal and acceptance flows.
 xar_enable_player_pact_effect = {
 	add_character_flag = xa_enabled
+	if = {
+		limit = { is_ai = no }
+		set_global_variable = xa_player_pact_active
+		save_scope_as = xar_player_pact_signer
+		set_global_variable = {
+			name = xa_player_pact_character
+			value = scope:xar_player_pact_signer
+		}
+	}
 	add_trait = xar_glassfire_gaze
 }
 

@@ -527,8 +527,30 @@ xar.0011 = {
 # Commit score globals before on_death compares the record or opens settlement.
 xar.1000 = {
 	hidden = yes
-	trigger = { is_ai = no }
+	trigger = {
+		OR = {
+			AND = {
+				has_character_flag = xa_enabled
+				is_ai = no
+			}
+			AND = {
+				has_global_variable = xa_player_pact_active
+				exists = global_var:xa_player_pact_character
+				global_var:xa_player_pact_character = root
+			}
+		}
+	}
 	immediate = {
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = {
+				has_global_variable = xa_death_with_heir_active
+				exists = global_var:xa_player_pact_character
+				global_var:xa_player_pact_character = root
+			}
+			debug_log = "XAR: TEST death-with-heir compute entered"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
 		xar_compute_score_effect = yes
 		trigger_event = xar.1003
 	}
@@ -538,8 +560,30 @@ xar.1000 = {
 # synchronous no-heir snapshot stage.
 xar.1003 = {
 	hidden = yes
-	trigger = { is_ai = no }
+	trigger = {
+		OR = {
+			AND = {
+				has_character_flag = xa_enabled
+				is_ai = no
+			}
+			AND = {
+				has_global_variable = xa_player_pact_active
+				exists = global_var:xa_player_pact_character
+				global_var:xa_player_pact_character = root
+			}
+		}
+	}
 	immediate = {
+		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = {
+				has_global_variable = xa_death_with_heir_active
+				exists = global_var:xa_player_pact_character
+				global_var:xa_player_pact_character = root
+			}
+			debug_log = "XAR: TEST death-with-heir dispatch entered"
+		}
+		# XAR_ACCEPTANCE_ONLY_END
 		if = {
 			limit = { global_var:xa_record_candidate > global_var:xa_old_record }
 			debug_log = "XAR: new record, writing bit"
@@ -641,6 +685,16 @@ xar.1001 = {
 	immediate = {
 		debug_log = "XAR: score event fired"
 		# XAR_ACCEPTANCE_ONLY_BEGIN
+		if = {
+			limit = { has_global_variable = xa_death_with_heir_active }
+			if = {
+				limit = { is_ai = no }
+				debug_log = "XAR: TEST PASS death_with_heir_heir_human"
+			}
+			else = { debug_log = "XAR: TEST FAIL death_with_heir_heir_human" }
+			debug_log = "XAR: TEST PASS death_with_heir_score_event"
+			debug_log = "XAR: TEST DONE death-with-heir"
+		}
 		if = {
 			limit = {
 				has_global_variable = xa_death_edges_active

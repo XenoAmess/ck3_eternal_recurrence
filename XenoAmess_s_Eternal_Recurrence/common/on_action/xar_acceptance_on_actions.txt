@@ -1,4 +1,4 @@
-﻿# Acceptance observer: the production on_death body remains unchanged for AI.
+﻿# Acceptance observer: diagnose death scope without altering production state.
 xar_acceptance_observe_death = {
 	effect = {
 		if = {
@@ -11,6 +11,56 @@ xar_acceptance_observe_death = {
 			set_global_variable = { name = xa_test_ai_death_observed value = 1 }
 			debug_log = "XAR: TEST AI death observed by on_death"
 			every_player = { trigger_event = { id = xar.0901 days = 1 } }
+		}
+		if = {
+			limit = {
+				has_global_variable = xa_death_with_heir_active
+				exists = global_var:xa_player_pact_character
+				global_var:xa_player_pact_character = root
+			}
+			debug_log = "XAR: TEST death-with-heir on_death observed"
+			if = {
+				limit = { is_ai = no }
+				debug_log = "XAR: TEST death-with-heir root is human"
+			}
+			else = { debug_log = "XAR: TEST death-with-heir root is AI" }
+			if = {
+				limit = { has_character_flag = xa_enabled }
+				debug_log = "XAR: TEST PASS death_with_heir_enabled"
+			}
+			else = { debug_log = "XAR: TEST FAIL death_with_heir_enabled" }
+		}
+		if = {
+			limit = {
+				has_global_variable = xa_balance_active
+				exists = global_var:xa_balance_fixture_character
+				global_var:xa_balance_fixture_character = root
+			}
+			debug_log = "XAR: BALANCE fixture on_death observed"
+			if = {
+				limit = { is_ai = no }
+				debug_log = "XAR: BALANCE fixture on_death root human"
+			}
+			else = { debug_log = "XAR: BALANCE fixture on_death root AI" }
+			if = {
+				limit = { has_character_flag = xa_enabled }
+				debug_log = "XAR: BALANCE fixture on_death enabled"
+			}
+			else = { debug_log = "XAR: BALANCE fixture on_death missing enabled" }
+			if = {
+				limit = { has_character_flag = xa_balance_fixture_player }
+				debug_log = "XAR: BALANCE fixture on_death fixture flag"
+			}
+			else = { debug_log = "XAR: BALANCE fixture on_death missing fixture flag" }
+			if = {
+				limit = {
+					has_global_variable = xa_player_pact_active
+					exists = global_var:xa_player_pact_character
+					global_var:xa_player_pact_character = root
+				}
+				debug_log = "XAR: BALANCE fixture on_death player scope"
+			}
+			else = { debug_log = "XAR: BALANCE fixture on_death missing player scope" }
 		}
 	}
 }
