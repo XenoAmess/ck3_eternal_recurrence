@@ -1270,6 +1270,8 @@ def package_checks(errors):
     if not all(token in acceptance_runner for token in (
             "capture_stall_and_recover", "_annotated.png", "_ocr.json",
             "remained stalled after 3 screenshot-guided recoveries",
+            "0.34 <= x_ratio <= 0.74", "box_height_ratio <= 0.035",
+            "0.75 if x_ratio <= 0.49 else 0.84",
             "inspect stall_selftest_*.png/json", "HUD_DATE_REGION",
             "read_hud_game_day", "HUD date already advancing at speed 5",
             "HUD date advanced after timeline play", "GetForegroundWindow",

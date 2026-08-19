@@ -687,13 +687,21 @@ def ocr_box_results(img, region):
 def select_stall_event_option(items, width, height):
     """Pick a lower event option without assuming left- or right-column layout."""
     excluded = ("当前日期", "开始于", "政治地图", "暂停", "最快", "公元")
-    lower = [
-        item for item in items
-        if 0.18 <= item["center"][0] / width <= 0.74
-        and 0.62 <= item["center"][1] / height <= 0.84
-        and not any(token in item["text"] for token in excluded)
-        and not re.fullmatch(r"[\d\s./:+-]+", item["text"])
-    ]
+    lower = []
+    for item in items:
+        x_ratio = item["center"][0] / width
+        y_ratio = item["center"][1] / height
+        box_height_ratio = (item["bbox"][3] - item["bbox"][1]) / height
+        # The open character panel can expose a clipped, tall map label below
+        # classic choices. Keep the deeper band only for right-side full-width
+        # events, whose options have been observed near y=0.79.
+        y_limit = 0.75 if x_ratio <= 0.49 else 0.84
+        if (0.34 <= x_ratio <= 0.74
+                and 0.62 <= y_ratio <= y_limit
+                and box_height_ratio <= 0.035
+                and not any(token in item["text"] for token in excluded)
+                and not re.fullmatch(r"[\d\s./:+-]+", item["text"])):
+            lower.append(item)
     # Classic choices occupy the left content lane; some full-width layouts use
     # the right. Portrait labels can share an x coordinate, so only fall back to
     # the right lane when no plausible left-side choice was recognized.
