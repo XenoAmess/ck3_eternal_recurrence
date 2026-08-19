@@ -1335,6 +1335,16 @@ def package_checks(errors):
             "0.34 <= x_ratio <= 0.74", "box_height_ratio <= 0.035",
             'action_priority = {"拒绝": 0, "同意": 1}',
             "classic_lane or right_lane or middle_lane",
+            '"精神崩溃" in item["text"]', "full_height_mental_break",
+            'label = "full-height option"', "verify_stall_recovery",
+            '"宾客名单", "活动日志"', "tour_guest_overlay_close",
+            'label = "tour guest overlay"',
+            "quick_stall_and_recover", "QUICK_STALL_S = 3",
+            "FULL_STALL_S = 12", "QUICK_MODAL_REGION",
+            'item["text"].startswith("继续扮演")',
+            '0.55 <= item["center"][1] / height <= 0.90',
+            '1 for row in RECOVERY_TRACE',
+            'selected.get("layout_fallback") == "succession_continue"',
             "inspect stall_selftest_*.png/json", "HUD_DATE_REGION",
             "read_hud_game_day", "HUD date already advancing at speed 5",
             "HUD date advanced after timeline play", "GetForegroundWindow",
@@ -1343,8 +1353,15 @@ def package_checks(errors):
     speed_control = acceptance_runner.partition(
         "def set_speed_five_and_unpause")[2].partition("\ndef ")[0]
     if not all(token in speed_control for token in (
-            "read_hud_game_date", "timeline_play", "timeline play")):
+            "read_hud_game_date", "timeline_play", "timeline play",
+            "8 if require_progress else 3", "RESUME_TRACE.append")):
         errors.append("speed-5 control lacks OCR-targeted unpause verification")
+    if not all(token in acceptance_runner for token in (
+            '"runner_performance": runner_performance_report()',
+            '"recovery_trace": RECOVERY_TRACE',
+            '"resume_trace": RESUME_TRACE',
+            "HUD_POLL_INTERVAL_S = 1.5")):
+        errors.append("acceptance runner lacks additive recovery timing telemetry")
     lobby_navigation = acceptance_runner.partition(
         "def navigate_lobby")[2].partition("\ndef ")[0]
     if ("main-menu New Game" not in lobby_navigation
@@ -1372,8 +1389,9 @@ def package_checks(errors):
         "def run_balance_long")[2].partition("\ndef ")[0]
     if not all(token in balance_long_control for token in (
             '"继续扮演"', "balance_succession_",
-            "balance natural-death succession continue")):
-        errors.append("balance-long lacks native succession-window recovery")
+            "balance fixture reached succession without a terminal wire",
+            "BALANCE fixture on_death")):
+        errors.append("balance-long lacks native succession fail-fast diagnostics")
     balance_matrix_runner = read(ROOT / "tools/run_balance_matrix.py")
     if not all(token in balance_matrix_runner for token in (
             'FIXTURES = ("count", "king", "emperor", "synthetic")',

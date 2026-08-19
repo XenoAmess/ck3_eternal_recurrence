@@ -113,6 +113,7 @@ OPTION_LIST_REGION = (0.20, 0.58, 0.56, 0.83)
 EVENT_TITLE_REGION = (0.20, 0.17, 0.50, 0.29)
 EVENT_TEXT_REGION = (0.18, 0.16, 0.62, 0.58)
 EVENT_OPTIONS_FULL_REGION = (0.18, 0.43, 0.62, 0.95)
+QUICK_MODAL_REGION = (0.18, 0.10, 0.76, 0.95)
 CHARACTER_PANEL_REGION = (0.00, 0.05, 0.48, 0.72)
 OBSERVER_REGION = (0.00, 0.75, 0.35, 1.00)
 HUD_DATE_REGION = (0.78, 0.95, 0.92, 1.00)
@@ -124,7 +125,14 @@ TEST_TIMEOUT_S = 300             # 开局后等待 TEST DONE 的超时
 OFF_OBSERVE_TIMEOUT_S = 30
 BARGAIN_REOPEN_TIMEOUT_S = 600   # real 1095-day wait; freeze detection remains independent
 BALANCE_LONG_TIMEOUT_S = 3 * 60 * 60
-POLL_INTERVAL_S = 1
+POLL_INTERVAL_S = 0.5
+HUD_POLL_INTERVAL_S = 1.5
+QUICK_STALL_S = 3
+FULL_STALL_S = 12
+
+RECOVERY_TRACE = []
+RESUME_TRACE = []
+QUICK_EVIDENCE_KINDS = set()
 
 BALANCE_FIXTURES = {
     "count": {
@@ -170,6 +178,39 @@ class RunnerError(RuntimeError):
 
 def log(msg):
     print(f"[runner {time.strftime('%H:%M:%S')}] {msg}", flush=True)
+
+
+def summarize_timing_trace(rows, key):
+    values = [row[key] for row in rows if key in row]
+    return {
+        "count": len(values),
+        "total_seconds": round(sum(values), 3),
+        "max_seconds": round(max(values), 3) if values else 0,
+    }
+
+
+def runner_performance_report():
+    return {
+        "recoveries": {
+            "attempts": len(RECOVERY_TRACE),
+            "quick_successes": sum(
+                1 for row in RECOVERY_TRACE
+                if row.get("mode") == "quick"
+                and row.get("selected_text") is not None),
+            "full_attempts": sum(
+                row.get("mode") == "full" for row in RECOVERY_TRACE),
+            "total": summarize_timing_trace(RECOVERY_TRACE, "total_seconds"),
+            "ocr": summarize_timing_trace(RECOVERY_TRACE, "ocr_seconds"),
+            "artifact_write": summarize_timing_trace(
+                RECOVERY_TRACE, "artifact_write_seconds"),
+        },
+        "resume_checks": {
+            "attempts": len(RESUME_TRACE),
+            "total": summarize_timing_trace(RESUME_TRACE, "total_seconds"),
+        },
+        "recovery_trace": RECOVERY_TRACE,
+        "resume_trace": RESUME_TRACE,
+    }
 
 
 def focus_ck3():
@@ -686,7 +727,10 @@ def ocr_box_results(img, region):
 
 def select_stall_event_option(items, width, height):
     """Pick a lower event option without assuming left- or right-column layout."""
-    excluded = ("当前日期", "开始于", "政治地图", "暂停", "最快", "公元")
+    excluded = (
+        "当前日期", "开始于", "政治地图", "暂停", "最快", "公元",
+        "宾客名单", "活动日志", "你的意图", "君权巡游成功",
+    )
     potential = []
     for item in items:
         x_ratio = item["center"][0] / width
@@ -748,22 +792,120 @@ def select_stall_event_option(items, width, height):
     return lower, (ranked[0] if ranked else None)
 
 
-def capture_stall_and_recover(artifacts, label, attempt):
-    """Capture evidence, OCR the screen, and click a visible lower event option."""
-    focus_ck3()
-    image = ImageGrab.grab()
-    safe_label = re.sub(r"[^A-Za-z0-9_.-]+", "_", label)
-    stem = f"stall_{safe_label}_{attempt}"
-    image.save(artifacts / f"{stem}.png")
-    items = ocr_box_results(image, FULL_SCREEN_REGION)
-    width, height = image.size
+def select_stall_recovery(items, width, height, allow_succession=False):
+    """Apply exact modal actions and known layouts around generic option ranking."""
+    succession_screen = any(
+        "你已过世" in item["text"] or "继续扮演" in item["text"]
+        for item in items)
+    succession_candidates = [
+        item for item in items
+        if item["text"].startswith("继续扮演")
+        and 0.45 <= item["center"][0] / width <= 0.80
+        and 0.55 <= item["center"][1] / height <= 0.90
+    ]
+    if succession_screen:
+        if not allow_succession:
+            return [], None
+        if not succession_candidates:
+            return [], None
+        succession = max(
+            succession_candidates, key=lambda item: item["center"][1])
+        succession["layout_fallback"] = "succession_continue"
+        return [succession], succession
+
     lower, selected = select_stall_event_option(items, width, height)
+    exact_actions = []
+    for item in items:
+        text = item["text"]
+        if text == "拒绝":
+            exact_actions.append((0, item))
+        elif text == "同意":
+            exact_actions.append((1, item))
+        elif "我收下" in text:
+            exact_actions.append((2, item))
+        elif "召集部队" in text:
+            exact_actions.append((3, item))
+    if exact_actions:
+        _, selected = min(exact_actions, key=lambda entry: entry[0])
+        selected["layout_fallback"] = "exact_modal_action"
+        if selected not in lower:
+            lower.append(selected)
+
+    tour_guest_title = next((
+        item for item in items if item["text"] == "大巡游宾客"), None)
+    tour_guest_close = next((
+        item for item in items
+        if item["text"] == "关闭" and item["center"][1] / height > 0.80), None)
+    if tour_guest_title is not None and tour_guest_close is not None:
+        selected = tour_guest_close
+        selected["layout_fallback"] = "tour_guest_overlay_close"
+        if selected not in lower:
+            lower.append(selected)
+    full_height_mental_break = next((
+        item for item in items
+        if "精神崩溃" in item["text"] and "心脏疼痛" in item["text"]), None)
+    if full_height_mental_break is not None:
+        center = [
+            full_height_mental_break["center"][0] + int(width * 0.017),
+            int(height * 0.91),
+        ]
+        selected = {
+            "text": "精神崩溃：心脏疼痛 bottom option",
+            "score": 1.0,
+            "center": center,
+            "bbox": [center[0] - 160, center[1] - 24,
+                     center[0] + 160, center[1] + 24],
+            "layout_fallback": "full_height_mental_break",
+        }
+        items.append(selected)
+        lower.append(selected)
+    return lower, selected
+
+
+def quick_recovery_kind(items, selected, width, height):
+    """Return a safe quick-path class, or None for the conservative fallback."""
+    layout = selected.get("layout_fallback")
+    if layout:
+        return layout
+    title_items = []
+    for item in items:
+        center_x, center_y = item["center"]
+        box_width = item["bbox"][2] - item["bbox"][0]
+        if (0.18 <= center_x / width <= 0.76
+                and 0.10 <= center_y / height <= 0.36
+                and box_width / width >= 0.06):
+            title_items.append(item)
+    if not title_items:
+        return None
+    x_ratio = selected["center"][0] / width
+    y_ratio = selected["center"][1] / height
+    if 0.34 <= x_ratio <= 0.41 and 0.68 <= y_ratio <= 0.75:
+        return "classic_event_option"
+    if 0.41 < x_ratio < 0.56 and 0.63 <= y_ratio <= 0.75:
+        return "center_event_option"
+    if 0.49 <= x_ratio <= 0.74 and 0.67 <= y_ratio <= 0.84:
+        tolerance = int(width * 0.035)
+        aligned = sum(
+            abs(selected["center"][0] - item["center"][0]) <= tolerance
+            for item in items)
+        widest_title = max(
+            item["bbox"][2] - item["bbox"][0] for item in title_items)
+        if aligned >= 2 or widest_title / width >= 0.10:
+            return "right_event_option"
+    return None
+
+
+def mark_recovery_items(items, lower, selected):
     for item in items:
         item["event_option_candidate"] = item in lower
         item["selected"] = item is selected
+
+
+def write_recovery_bundle(image, items, artifacts, stem):
+    started = time.perf_counter()
+    image.save(artifacts / f"{stem}.png")
     (artifacts / f"{stem}_ocr.json").write_text(
         json.dumps(items, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
     annotated = image.copy()
     draw = ImageDraw.Draw(annotated)
     for index, item in enumerate(items):
@@ -774,15 +916,117 @@ def capture_stall_and_recover(artifacts, label, attempt):
         draw.text((item["bbox"][0], max(0, item["bbox"][1] - 14)),
                   str(index), fill=color)
     annotated.save(artifacts / f"{stem}_annotated.png")
+    return time.perf_counter() - started
+
+
+def verify_stall_recovery(selected, artifacts, stem):
+    layout = selected.get("layout_fallback")
+    if layout not in {"full_height_mental_break", "tour_guest_overlay_close"}:
+        return True
+    deadline = time.time() + 5
+    while time.time() < deadline:
+        after = ImageGrab.grab()
+        results = ocr_results(after, FULL_SCREEN_REGION)
+        if layout == "full_height_mental_break":
+            still_visible = any(
+                "精神崩溃" in text and "心脏疼痛" in text
+                for text, _, _, _ in results)
+            label = "full-height option"
+        else:
+            still_visible = any(text == "大巡游宾客" for text, _, _, _ in results)
+            label = "tour guest overlay"
+        if not still_visible:
+            after.save(artifacts / f"{stem}_confirmed.png")
+            log(f"stall diagnostic {stem}: {label} disappeared")
+            return True
+        time.sleep(POLL_INTERVAL_S)
+    log(f"stall diagnostic {stem}: {label} remained visible")
+    return False
+
+
+def capture_stall_and_recover(artifacts, label, attempt):
+    """Capture complete evidence before conservatively recovering an unknown stall."""
+    started = time.perf_counter()
+    focus_ck3()
+    image = ImageGrab.grab()
+    safe_label = re.sub(r"[^A-Za-z0-9_.-]+", "_", label)
+    stem = f"stall_{safe_label}_{attempt}"
+    ocr_started = time.perf_counter()
+    items = ocr_box_results(image, FULL_SCREEN_REGION)
+    ocr_seconds = time.perf_counter() - ocr_started
+    width, height = image.size
+    lower, selected = select_stall_recovery(items, width, height)
+    mark_recovery_items(items, lower, selected)
+    artifact_seconds = write_recovery_bundle(image, items, artifacts, stem)
 
     if selected is None:
         log(f"stall diagnostic {stem}: no event-option OCR candidate")
+        RECOVERY_TRACE.append({
+            "mode": "full", "label": label, "attempt": attempt,
+            "selected_text": None, "ocr_seconds": round(ocr_seconds, 3),
+            "artifact_write_seconds": round(artifact_seconds, 3),
+            "total_seconds": round(time.perf_counter() - started, 3),
+        })
         return None
     point = tuple(selected["center"])
     deliberate_click(point, f"stall recovery '{selected['text']}'")
+    verified = verify_stall_recovery(selected, artifacts, stem)
+    RECOVERY_TRACE.append({
+        "mode": "full", "label": label, "attempt": attempt,
+        "selected_text": selected["text"] if verified else None,
+        "ocr_seconds": round(ocr_seconds, 3),
+        "artifact_write_seconds": round(artifact_seconds, 3),
+        "total_seconds": round(time.perf_counter() - started, 3),
+    })
+    if not verified:
+        return None
     log(
         f"stall diagnostic {stem}: selected OCR option "
         f"{selected['text']!r} at {point}")
+    return selected
+
+
+def quick_stall_and_recover(artifacts, label, attempt, allow_succession=False):
+    """Recover only exact or strongly located modal actions after a short stall."""
+    started = time.perf_counter()
+    focus_ck3()
+    image = ImageGrab.grab()
+    ocr_started = time.perf_counter()
+    items = ocr_box_results(image, QUICK_MODAL_REGION)
+    ocr_seconds = time.perf_counter() - ocr_started
+    width, height = image.size
+    lower, selected = select_stall_recovery(
+        items, width, height, allow_succession=allow_succession)
+    kind = quick_recovery_kind(items, selected, width, height) if selected else None
+    if kind is None:
+        RECOVERY_TRACE.append({
+            "mode": "quick", "label": label, "attempt": attempt,
+            "selected_text": None, "ocr_seconds": round(ocr_seconds, 3),
+            "artifact_write_seconds": 0,
+            "total_seconds": round(time.perf_counter() - started, 3),
+        })
+        return None
+
+    mark_recovery_items(items, lower, selected)
+    point = tuple(selected["center"])
+    deliberate_click(point, f"quick stall recovery '{selected['text']}'")
+    safe_label = re.sub(r"[^A-Za-z0-9_.-]+", "_", label)
+    stem = f"quick_{safe_label}_{attempt}"
+    verified = verify_stall_recovery(selected, artifacts, stem)
+    artifact_seconds = 0
+    if kind not in QUICK_EVIDENCE_KINDS:
+        artifact_seconds = write_recovery_bundle(image, items, artifacts, stem)
+        QUICK_EVIDENCE_KINDS.add(kind)
+    RECOVERY_TRACE.append({
+        "mode": "quick", "class": kind, "label": label, "attempt": attempt,
+        "selected_text": selected["text"] if verified else None,
+        "ocr_seconds": round(ocr_seconds, 3),
+        "artifact_write_seconds": round(artifact_seconds, 3),
+        "total_seconds": round(time.perf_counter() - started, 3),
+    })
+    if not verified:
+        return None
+    log(f"quick recovery {stem}: {selected['text']!r} at {point}")
     return selected
 
 
@@ -959,6 +1203,7 @@ def read_hud_game_day(image=None):
 def set_speed_five_and_unpause(
         artifacts, label, capture_tooltip=False, require_progress=True):
     """Select speed 5 and prove that the rendered game date starts advancing."""
+    started = time.perf_counter()
     width, height = pyautogui.size()
     speed_five = (int(width * (2536 / 2560)), int(height * (1418 / 1440)))
     focus_ck3()
@@ -990,17 +1235,29 @@ def set_speed_five_and_unpause(
     current = wait_for_advance(2)
     if current is not None:
         log(f"HUD date already advancing at speed 5 ({label})")
+        RESUME_TRACE.append({
+            "label": label, "clicked_play": False, "advanced": True,
+            "total_seconds": round(time.perf_counter() - started, 3),
+        })
         return current
 
     deliberate_click(timeline_play, f"timeline play ({label})")
-    current = wait_for_advance(10)
+    current = wait_for_advance(8 if require_progress else 3)
     if current is not None:
         log(f"HUD date advanced after timeline play ({label})")
+        RESUME_TRACE.append({
+            "label": label, "clicked_play": True, "advanced": True,
+            "total_seconds": round(time.perf_counter() - started, 3),
+        })
         return current
     if last_image is not None:
         safe_label = re.sub(r"[^A-Za-z0-9_.-]+", "_", label)
         last_image.save(artifacts / f"bargain_{safe_label}_speed_5_stalled.png")
     message = f"speed 5 did not advance the HUD date ({label}); inspect speed evidence"
+    RESUME_TRACE.append({
+        "label": label, "clicked_play": True, "advanced": False,
+        "total_seconds": round(time.perf_counter() - started, 3),
+    })
     if require_progress:
         raise RunnerError(message)
     log(message)
@@ -1403,6 +1660,12 @@ def run_death_edges(debug_offset, error_offset, artifacts):
     done = False
     deadline = time.time() + 120
     last_recovery = time.time()
+    last_quick_recovery = 0
+    last_day_change = time.time()
+    last_hud_check = 0
+    max_game_day = read_hud_game_day()
+    full_sequence = 0
+    quick_attempts = 0
     while time.time() < deadline:
         text, offset = read_new_lines(DEBUG_LOG, offset)
         for line in text.splitlines():
@@ -1412,11 +1675,39 @@ def run_death_edges(debug_offset, error_offset, artifacts):
                     done = True
         if done:
             break
-        if time.time() - last_recovery > 10:
+        if time.time() - last_hud_check >= HUD_POLL_INTERVAL_S:
+            game_day = read_hud_game_day()
+            last_hud_check = time.time()
+            if game_day is not None and (
+                    max_game_day is None or game_day > max_game_day):
+                max_game_day = game_day
+                last_day_change = time.time()
+        now = time.time()
+        if (now - last_day_change > QUICK_STALL_S
+                and now - last_quick_recovery > QUICK_STALL_S):
+            quick_attempts += 1
+            selected = quick_stall_and_recover(
+                artifacts, "death_edges", quick_attempts)
+            last_quick_recovery = time.time()
+            if selected is not None:
+                recovered_day = set_speed_five_and_unpause(
+                    artifacts, f"death_edges_quick_{quick_attempts}",
+                    require_progress=False)
+                last_recovery = time.time()
+                if recovered_day is not None:
+                    max_game_day = recovered_day
+                    last_day_change = time.time()
+                continue
+        if now - last_recovery > 10 and now - last_day_change > 10:
+            full_sequence += 1
             capture_stall_and_recover(
-                artifacts, "death_edges", int((time.time() - (deadline - 120)) // 10))
-            time.sleep(0.3)
-            click_ratio(2315 / 2560, 1410 / 1440)
+                artifacts, "death_edges", full_sequence)
+            recovered_day = set_speed_five_and_unpause(
+                artifacts, f"death_edges_full_{full_sequence}",
+                require_progress=False)
+            if recovered_day is not None:
+                max_game_day = recovered_day
+                last_day_change = time.time()
             last_recovery = time.time()
         time.sleep(POLL_INTERVAL_S)
     if not done:
@@ -1518,6 +1809,98 @@ def run_death_edges(debug_offset, error_offset, artifacts):
     return xar_lines
 
 
+def run_death_with_heir(debug_offset, error_offset, artifacts):
+    """Probe production death scoring across ordinary player succession."""
+    offset = debug_offset
+    xar_lines = []
+    for marker, timeout in (
+            ("XAR: TEST death-with-heir begin", 180),
+            ("XAR: TEST death-with-heir armed", 15)):
+        offset = wait_for_marker(offset, marker, timeout, xar_lines)
+    set_speed_five_and_unpause(
+        artifacts, "death_with_heir_vanilla_heart_attack", require_progress=False)
+    offset = wait_for_marker(
+        offset, "XAR: TEST death-with-heir on_death observed", 30, xar_lines)
+
+    wait_for_ocr_text(
+        "你已过世", FULL_SCREEN_REGION, 30, artifacts,
+        "06_death_with_heir_succession.png", contains=True, stable_hits=1)
+    continue_button = wait_for_ocr_text(
+        "继续扮演", (0.45, 0.55, 0.80, 0.90), 15, artifacts,
+        "07_death_with_heir_continue.png", contains=True, stable_hits=1)
+    deliberate_click(continue_button, "death-with-heir succession continue")
+    set_speed_five_and_unpause(
+        artifacts, "death_with_heir_post_succession", require_progress=False)
+
+    done = False
+    deadline = time.time() + 30
+    while time.time() < deadline:
+        text, offset = read_new_lines(DEBUG_LOG, offset)
+        for line in text.splitlines():
+            if "XAR:" in line:
+                stripped = line.strip()
+                xar_lines.append(stripped)
+                if "XAR: TEST DONE death-with-heir" in stripped:
+                    done = True
+        if done:
+            break
+        time.sleep(POLL_INTERVAL_S)
+    if not done:
+        focus_ck3()
+        ImageGrab.grab().save(artifacts / "08_death_with_heir_missing_score.png")
+        diagnostics = [
+            line.split("XAR: ", 1)[1] for line in xar_lines
+            if "death-with-heir" in line or "death_with_heir" in line]
+        raise RunnerError(
+            "with-heir death never reached the production score event; "
+            f"diagnostics={diagnostics}")
+
+    wait_for_ocr_text(
+        "轮回终结", EVENT_TITLE_REGION, 15, artifacts,
+        "08_death_with_heir_settlement.png", stable_hits=1)
+
+    required = (
+        "XAR: TEST PASS death_with_heir_precondition",
+        "XAR: TEST death-with-heir on_death observed",
+        "XAR: TEST PASS death_with_heir_enabled",
+        "XAR: TEST PASS death_with_heir_heir_human",
+        "XAR: computing score on death",
+        "XAR: TEST death-with-heir compute entered",
+        "XAR: TEST death-with-heir dispatch entered",
+        "XAR: score event fired",
+        "XAR: TEST PASS death_with_heir_score_event",
+        "XAR: TEST DONE death-with-heir",
+    )
+    for marker in required:
+        matches = [line for line in xar_lines if marker in line]
+        if len(matches) != 1:
+            raise RunnerError(
+                f"death-with-heir marker count for {marker!r} is {len(matches)}")
+    fails = [line for line in xar_lines if "XAR: TEST FAIL" in line]
+    if fails:
+        raise RunnerError(f"death-with-heir emitted {len(fails)} FAIL marker(s)")
+    err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+    xar_errors = [
+        line.strip() for line in err_text.splitlines() if "xar" in line.lower()]
+    if xar_errors:
+        raise RunnerError(
+            f"death-with-heir emitted {len(xar_errors)} xar error.log line(s)")
+
+    print("\n===== XAR DEATH WITH HEIR REPORT =====")
+    print("player precondition : PASS")
+    print("heir control transfer: PASS")
+    print("production score    : PASS")
+    print("visible settlement  : PASS")
+    print("xar error.log       : 0")
+    return {
+        "with_heir_precondition": True,
+        "heir_control_transfer": True,
+        "production_score": True,
+        "visible_settlement": True,
+        "xar_error_count": 0,
+    }
+
+
 def wait_for_bargain_reopen(
         pair, debug_offset, xar_lines, artifacts, initial_game_day):
     """Cross one real 1095-day delay, dismissing unrelated native events by mouse."""
@@ -1525,11 +1908,13 @@ def wait_for_bargain_reopen(
     reopened = f"XAR: TEST PASS bargain_pair_{pair}_reopen_1095"
     deadline = time.time() + BARGAIN_REOPEN_TIMEOUT_S
     last_recovery = time.time()
+    last_quick_recovery = 0
     last_day_change = time.time()
     max_game_day = initial_game_day
     last_hud_check = 0
     stall_attempts = 0
     recovery_sequence = 0
+    quick_sequence = 0
     while time.time() < deadline:
         text, debug_offset = read_new_lines(DEBUG_LOG, debug_offset)
         for line in text.splitlines():
@@ -1543,7 +1928,7 @@ def wait_for_bargain_reopen(
                     max_game_day = game_day
                     last_day_change = time.time()
                     stall_attempts = 0
-        if time.time() - last_hud_check >= 4:
+        if time.time() - last_hud_check >= HUD_POLL_INTERVAL_S:
             game_day = read_hud_game_day()
             last_hud_check = time.time()
             if game_day is not None and (
@@ -1557,8 +1942,25 @@ def wait_for_bargain_reopen(
         if (any(no_early in line for line in xar_lines)
                 and any(reopened in line for line in xar_lines)):
             return debug_offset
-        if (time.time() - last_day_change > 12
-                and time.time() - last_recovery > 12):
+        now = time.time()
+        if (now - last_day_change > QUICK_STALL_S
+                and now - last_quick_recovery > QUICK_STALL_S):
+            quick_sequence += 1
+            selected = quick_stall_and_recover(
+                artifacts, f"bargain_pair_{pair}", quick_sequence)
+            last_quick_recovery = time.time()
+            if selected is not None:
+                recovered_day = set_speed_five_and_unpause(
+                    artifacts, f"pair_{pair}_quick_{quick_sequence}",
+                    require_progress=False)
+                last_recovery = time.time()
+                if recovered_day is not None:
+                    max_game_day = recovered_day
+                    last_day_change = time.time()
+                    stall_attempts = 0
+                continue
+        if (now - last_day_change > FULL_STALL_S
+                and now - last_recovery > FULL_STALL_S):
             if stall_attempts >= 3:
                 failure = "remained stalled after 3 screenshot-guided recoveries"
                 raise RunnerError(
@@ -1781,7 +2183,9 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
     last_day_change = time.time()
     last_hud_check = 0
     last_recovery = time.time()
+    last_quick_recovery = 0
     recovery_sequence = 0
+    quick_sequence = 0
     stall_attempts = 0
     deadline = time.time() + BALANCE_LONG_TIMEOUT_S
     end_reason = None
@@ -1871,14 +2275,9 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
                 f"balance_pair_{pair:02d}_curse", artifacts, 2)
             deliberate_click(curse, f"balance pair {pair} curse A")
             handled_curses += 1
-            time.sleep(0.5)
-            advanced = set_speed_five_and_unpause(
-                artifacts, f"balance_pair_{pair}_sample_commit",
-                require_progress=False)
-            if advanced is not None:
-                max_game_day = advanced
-                last_day_change = time.time()
-                stall_attempts = 0
+            # The synchronous wire sample lands before the next loop. Let that
+            # branch dismiss any Gaze milestone, then perform one resume check.
+            time.sleep(0.15)
             continue
 
         pair_samples = [sample for sample in samples if sample["kind"] == 1]
@@ -1894,18 +2293,26 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
                 artifacts, f"balance_pair_{pair}",
                 capture_tooltip=(pair == 1), require_progress=False)
             if advanced is None:
-                recovery_sequence += 1
-                capture_stall_and_recover(
-                    artifacts, "balance_resume", recovery_sequence)
+                quick_sequence += 1
+                selected = quick_stall_and_recover(
+                    artifacts, "balance_resume", quick_sequence)
+                if selected is None:
+                    recovery_sequence += 1
+                    capture_stall_and_recover(
+                        artifacts, "balance_resume", recovery_sequence)
                 advanced = set_speed_five_and_unpause(
-                    artifacts, f"balance_pair_{pair}_post_modal")
+                    artifacts, f"balance_pair_{pair}_post_modal",
+                    require_progress=False)
+            if advanced is None:
+                last_recovery = time.time()
+                continue
             max_game_day = advanced
             last_day_change = time.time()
             stall_attempts = 0
             resumed_pairs += 1
             continue
 
-        if time.time() - last_hud_check >= 4:
+        if time.time() - last_hud_check >= HUD_POLL_INTERVAL_S:
             game_day = read_hud_game_day()
             last_hud_check = time.time()
             if game_day is not None and (
@@ -1913,8 +2320,25 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
                 max_game_day = game_day
                 last_day_change = time.time()
                 stall_attempts = 0
-        if (time.time() - last_day_change > 12
-                and time.time() - last_recovery > 12):
+        now = time.time()
+        if (now - last_day_change > QUICK_STALL_S
+                and now - last_quick_recovery > QUICK_STALL_S):
+            quick_sequence += 1
+            selected = quick_stall_and_recover(
+                artifacts, "balance_long", quick_sequence)
+            last_quick_recovery = time.time()
+            if selected is not None:
+                recovered_day = set_speed_five_and_unpause(
+                    artifacts, f"balance_quick_{quick_sequence}",
+                    require_progress=False)
+                last_recovery = time.time()
+                if recovered_day is not None:
+                    max_game_day = recovered_day
+                    last_day_change = time.time()
+                    stall_attempts = 0
+                continue
+        if (now - last_day_change > FULL_STALL_S
+                and now - last_recovery > FULL_STALL_S):
             focus_ck3()
             stall_image = ImageGrab.grab()
             continue_button = find_ocr_text(
@@ -1924,12 +2348,14 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
                 recovery_sequence += 1
                 stall_image.save(
                     artifacts / f"balance_succession_{recovery_sequence}.png")
-                deliberate_click(
-                    continue_button, "balance natural-death succession continue")
-                stall_attempts = 0
-                last_recovery = time.time()
-                time.sleep(0.5)
-                continue
+                diagnostics = [
+                    line.split("XAR: ", 1)[1] for line in xar_lines
+                    if "BALANCE fixture on_death" in line
+                    or "computing score on death" in line
+                ]
+                raise RunnerError(
+                    "balance fixture reached succession without a terminal wire; "
+                    f"diagnostics={diagnostics}")
             if stall_attempts >= 3:
                 raise RunnerError(
                     "balance life remained stalled after 3 screenshot-guided "
@@ -2389,8 +2815,12 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
     deadline = time.time() + TEST_TIMEOUT_S
     date_re = re.compile(r"\b(\d{3,4})\.(\d{1,2})\.(\d{1,2})\b")
     max_date = None
+    max_game_day = read_hud_game_day()
     last_day_change = time.time()
     last_recovery = 0
+    last_quick_recovery = 0
+    last_hud_check = 0
+    quick_attempts = 0
     stall_attempts = 0
     while time.time() < deadline:
         text, offset = read_new_lines(DEBUG_LOG, offset)
@@ -2408,15 +2838,44 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
                     stall_attempts = 0
         if done:
             break
-        if time.time() - last_day_change > 8 and time.time() - last_recovery > 8:
+        if time.time() - last_hud_check >= HUD_POLL_INTERVAL_S:
+            game_day = read_hud_game_day()
+            last_hud_check = time.time()
+            if game_day is not None and (
+                    max_game_day is None or game_day > max_game_day):
+                max_game_day = game_day
+                last_day_change = time.time()
+                stall_attempts = 0
+        now = time.time()
+        if (now - last_day_change > QUICK_STALL_S
+                and now - last_quick_recovery > QUICK_STALL_S):
+            quick_attempts += 1
+            selected = quick_stall_and_recover(
+                artifacts, "selftest", quick_attempts,
+                allow_succession=True)
+            last_quick_recovery = time.time()
+            if selected is not None:
+                last_recovery = time.time()
+                if selected.get("layout_fallback") == "succession_continue":
+                    continue
+                recovered_day = set_speed_five_and_unpause(
+                    artifacts, f"selftest_quick_{quick_attempts}",
+                    require_progress=False)
+                if recovered_day is not None:
+                    max_game_day = recovered_day
+                    last_day_change = time.time()
+                    stall_attempts = 0
+                continue
+        if now - last_day_change > 8 and now - last_recovery > 8:
             focus_ck3()
             img = ImageGrab.grab()
             continue_button = find_ocr_text(
                 img, "继续扮演", (0.45, 0.55, 0.80, 0.90), contains=True)
             if continue_button:
-                pyautogui.click(*continue_button)
+                deliberate_click(continue_button, "selftest succession continue")
                 log(f"OCR-clicked succession continue at {continue_button}")
-                time.sleep(0.5)
+                last_recovery = time.time()
+                continue
             else:
                 if stall_attempts >= 3:
                     raise RunnerError(
@@ -2425,8 +2884,14 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
                 stall_attempts += 1
                 capture_stall_and_recover(
                     artifacts, "selftest", stall_attempts)
-            click_ratio(2315 / 2560, 1410 / 1440)
-            log(f"date frozen at {max_date}; recovery play click")
+            recovered_day = set_speed_five_and_unpause(
+                artifacts, f"selftest_full_{stall_attempts}",
+                require_progress=False)
+            if recovered_day is not None:
+                max_game_day = recovered_day
+                last_day_change = time.time()
+                stall_attempts = 0
+            log(f"date frozen at {max_date}; verified recovery state")
             last_recovery = time.time()
         time.sleep(POLL_INTERVAL_S)
     if not done:
@@ -2557,6 +3022,7 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
         "artifacts": {"directory": str(artifacts), "files": files},
         "import_record": import_record,
         "phase_timings_seconds": timings,
+        "runner_performance": runner_performance_report(),
         "error_reason": error_reason,
     }
     if evidence:
@@ -2569,6 +3035,9 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
 
 def main(scenario="selftest", import_record=0, artifacts_dir=None,
          balance_fixture=None, balance_smoke_pairs=0):
+    RECOVERY_TRACE.clear()
+    RESUME_TRACE.clear()
+    QUICK_EVIDENCE_KINDS.clear()
     run_started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     effective_record = {
@@ -2579,13 +3048,14 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
         "off": 0,
         "persistence-restart": 0,
         "death-edges": 1,
+        "death-with-heir": 5,
         "bargain-reopen": 2,
         "progression-ui": 3,
         "scoring-matrix": 4,
         "balance-long": 0,
     }[scenario]
     rule_setting = "xar_selftest" if scenario in (
-        "selftest", "persistence-restart", "death-edges", "bargain-reopen",
+        "selftest", "persistence-restart", "death-edges", "death-with-heir", "bargain-reopen",
         "progression-ui", "scoring-matrix") else (
         "xar_off" if scenario == "off" else "xar_on")
     if artifacts_dir:
@@ -2754,6 +3224,9 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
                 }
             elif scenario == "death-edges":
                 run_death_edges(debug_offset, error_offset, artifacts)
+            elif scenario == "death-with-heir":
+                report_evidence = run_death_with_heir(
+                    debug_offset, error_offset, artifacts)
             elif scenario == "bargain-reopen":
                 report_evidence = run_bargain_reopen(
                     debug_offset, error_offset, artifacts)
@@ -2809,7 +3282,7 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
             if error_reason is None:
                 result = "GREEN"
                 if scenario not in (
-                        "selftest", "persistence-restart", "death-edges",
+                        "selftest", "persistence-restart", "death-edges", "death-with-heir",
                         "bargain-reopen"):
                     print("RESULT: GREEN")
                 elif scenario == "persistence-restart":
@@ -2820,10 +3293,12 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
                     print("RESULT: GREEN")
                 elif scenario == "death-edges":
                     print("RESULT: GREEN")
+                elif scenario == "death-with-heir":
+                    print("RESULT: GREEN")
                 elif scenario == "bargain-reopen":
                     print("RESULT: GREEN")
             elif scenario not in (
-                    "selftest", "persistence-restart", "death-edges",
+                    "selftest", "persistence-restart", "death-edges", "death-with-heir",
                     "bargain-reopen"):
                 print("RESULT: RED")
     except Exception as exc:
@@ -2889,7 +3364,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--scenario",
         choices=("selftest", "on-first-life", "on-recorded", "on-high-budget", "off",
-                 "persistence-restart", "death-edges", "bargain-reopen",
+                 "persistence-restart", "death-edges", "death-with-heir", "bargain-reopen",
                  "progression-ui", "scoring-matrix", "balance-long"),
         default="selftest",
         help="acceptance scenario (default: selftest)")
