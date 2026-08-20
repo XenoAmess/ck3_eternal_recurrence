@@ -1,4 +1,6 @@
 ﻿l_german:
+ decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! Ewige Wiederkehr"
+
  xar.no_heir_settlement.desc:0 "Reisender, das Ende des Grundspiels würde das Buch für dich schließen. Doch diese Last gehört mir – und dir."
  xar.no_heir.score:0 "Letzte Last"
  xar.no_heir.subtotal:0 "Last vor Ablehnungen"

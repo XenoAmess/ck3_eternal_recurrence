@@ -1,4 +1,6 @@
 ﻿l_spanish:
+ decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! Recurrencia Eterna"
+
  xar.no_heir_settlement.desc:0 "Viajero, el final del juego base cerraría el libro de cuentas por ti. Pero este peso me pertenece a mí, y a ti."
  xar.no_heir.score:0 "Peso final"
  xar.no_heir.subtotal:0 "Peso antes de las negativas"

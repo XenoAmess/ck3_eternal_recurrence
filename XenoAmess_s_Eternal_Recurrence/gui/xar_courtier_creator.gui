@@ -66,8 +66,12 @@ types XARCourtierCreatorTypes {
 						margin = { 7 5 }
 						spacing = 8
 
-						# Keep the native widget untouched so its complete trait tooltip survives.
-						icon_trait = {}
+						# Preserve the native tooltip and glow, but evaluate them for the commissioned faith.
+						icon_trait = {
+							blockoverride "faith_context" {
+								datacontext = "[GetPlayer.MakeScope.Var('xar_cc_selected_faith').Faith]"
+							}
+						}
 
 						text_single = {
 							layoutpolicy_horizontal = expanding

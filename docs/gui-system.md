@@ -51,6 +51,24 @@ GUI 侧：`datacontext = "[GetScriptedGui('xxx_gui')]"` 然后 `onclick = "[Scri
 
 这是把"界面侧条件"（含 interface trigger 的结果）**写回游戏状态**的正规通道。
 
+## 决议原生分组与标题图标
+
+CK3 1.19.0.6 的原生决议面板通过 `DecisionsView.GetDecisionGroupItems` 自动消费
+`common/decision_group_types/*.txt`。新增命名空间分组并在决议中写
+`decision_group_type = xar_eternal_recurrence` 即可得到独立折叠区，不需要覆盖
+`gui/window_decisions.gui`。分组 `sort_order` 越高越靠前，`gui_tags = { big_button }`
+会把组内行高从 45 提到 55；工具型分组不要设置 `important_decision_group = yes`，否则会默认产生重要决议提醒。
+
+分组没有原生 `icon =` 字段。兼容做法是在普通 additive GUI 文件中注册 `texticon`，再把
+`@xar_decision_group_icon!` 放进九语言的 `decision_group_type_xar_eternal_recurrence` 文本。
+图标会出现在原生折叠箭头之后；若要放在箭头前或只给列表行加独立图标，才需要高冲突的原生窗口覆盖。
+本项目复用 `glassfire_trait.dds` 作为 25×25 分组前缀。该机制由 1.19.0.6 原版 schema/GUI
+及 Princes of Darkness 1.19.0.6 的 `POD_decision_group_types.txt`、`POD_texticons.gui` 交叉确认；
+PoD 的完整 `window_decisions.gui` 覆盖与 shader 注入并非分组所需，不应照搬。
+
+决议的 `picture.reference` 同时服务列表右侧淡化图和 550×220 详情图。原版惯例是
+1100×440 DXT1；列表会水平镜像图片，因此素材不得包含自然语言文字或有方向意义的标记。
+
 ## 杂项
 
 - `layer`：教程窗口在 `tutorial` 层；自定义窗口常用 `middle`。

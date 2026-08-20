@@ -3,6 +3,7 @@
 
 import importlib.util
 import hashlib
+import io
 import json
 import re
 import sys
@@ -11,6 +12,7 @@ from pathlib import Path
 from PIL import Image
 
 import build_release
+import compose_decision_art
 import gen_balance_wire
 import gen_contracts
 import gen_courtier_creator
@@ -252,6 +254,22 @@ def generated_checks(errors):
         elif normalized(read(path)) != normalized(wanted):
             errors.append(f"generated output stale: {path.relative_to(ROOT)}")
 
+    for source_name, output_name in compose_decision_art.ASSETS.items():
+        source = compose_decision_art.SOURCE_DIR / source_name
+        output = compose_decision_art.OUTPUT_DIR / output_name
+        if not source.is_file():
+            errors.append(f"decision source art missing: {source.relative_to(ROOT)}")
+            continue
+        if not output.is_file():
+            errors.append(f"generated decision art missing: {output.relative_to(ROOT)}")
+            continue
+        expected_dds = io.BytesIO()
+        compose_decision_art.render(source).save(
+            expected_dds, format="DDS", pixel_format="DXT1")
+        if output.read_bytes() != expected_dds.getvalue():
+            errors.append(
+                f"generated decision art stale: {output.relative_to(ROOT)}")
+
 
 def encoding_and_loc_checks(errors):
     for path in MOD.rglob("*"):
@@ -311,7 +329,7 @@ def encoding_and_loc_checks(errors):
     required.update({
         "rule_xar_enabled", "setting_xar_on", "setting_xar_on_desc",
         "setting_xar_off", "setting_xar_off_desc", "setting_xar_selftest",
-        "setting_xar_selftest_desc",
+        "setting_xar_selftest_desc", "decision_group_type_xar_eternal_recurrence",
     })
     required.update(validate_loc.collect_modifier_keys())
 
@@ -344,6 +362,11 @@ def encoding_and_loc_checks(errors):
         enabled_desc = all_values[lang].get("setting_xar_on_desc", "")
         if "tutorial" not in enabled_desc.lower():
                 errors.append(f"enabled rule description lacks tutorial write prerequisite in {lang}")
+        group_title = all_values[lang].get(
+            "decision_group_type_xar_eternal_recurrence", "")
+        if not group_title.startswith("@xar_decision_group_icon! "):
+            errors.append(
+                f"Eternal Recurrence decision group lacks its prefix icon in {lang}")
 
 
 def reference_model_checks(errors):
@@ -695,8 +718,29 @@ def mechanic_checks(errors):
 
     decisions = "\n".join(read(path) for path in (MOD / "common/decisions").glob("*.txt"))
     decision_ids = top_level_keys(decisions, r"xar_\w+")
-    if "xar_ledger_decision" not in decision_ids:
-        errors.append("Glassfire Ledger decision missing")
+    expected_decisions = {
+        "xar_ledger_decision": "decision_xar_ledger.dds",
+        "xar_contract_select_decision": "decision_xar_contract.dds",
+        "xar_courtier_creator_decision": "decision_xar_courtier.dds",
+    }
+    if set(decision_ids) != set(expected_decisions):
+        errors.append(
+            f"XAR decision inventory changed: {sorted(decision_ids)} != "
+            f"{sorted(expected_decisions)}")
+    decision_groups = read(
+        MOD / "common/decision_group_types/xar_decision_group_types.txt")
+    xar_group = extract_block(decision_groups, "xar_eternal_recurrence") or ""
+    if not all(token in xar_group for token in (
+            "sort_order = 150", "gui_tags = { big_button }")):
+        errors.append("Eternal Recurrence decision group lost its order or big-button tag")
+    if "important_decision_group" in xar_group:
+        errors.append("utility XAR decisions must not become important-by-default alerts")
+    decision_texticons = read(MOD / "gui/xar_texticons.gui")
+    if not all(token in decision_texticons for token in (
+            "icon = xar_decision_group_icon",
+            'texture = "gfx/interface/icons/traits/glassfire_trait.dds"',
+            "size = { 25 25 }", "offset = { 0 6 }", "fontsize = 16")):
+        errors.append("Eternal Recurrence decision-group text icon is incomplete")
     for decision_id in decision_ids:
         block = extract_block(decisions, decision_id) or ""
         shown = extract_block(block, "is_shown") or ""
@@ -709,6 +753,13 @@ def mechanic_checks(errors):
             errors.append(f"decision '{decision_id}' lacks xa_enabled/is_ai player guards")
         if "always = no" not in ai_potential:
             errors.append(f"decision '{decision_id}' lacks disabled AI potential")
+        if block.count("decision_group_type = xar_eternal_recurrence") != 1:
+            errors.append(f"decision '{decision_id}' is outside the XAR decision group")
+        picture = expected_decisions.get(decision_id)
+        if picture and (
+                f'reference = "gfx/interface/illustrations/decisions/{picture}"'
+                not in block):
+            errors.append(f"decision '{decision_id}' lost its branded illustration")
         if "trigger_event = xar." in effect and "trigger_event = xar." not in hidden_effect:
             errors.append(
                 f"decision '{decision_id}' exposes event immediate effects to tooltip preview")
@@ -1009,7 +1060,8 @@ def mechanic_checks(errors):
             "xar_cc_cancel_gui", "xar_cc_confirm_gui", "filter_mouse = all")):
         errors.append("paid custom courtier window lost a tab, price, or modal control")
     if not all(token in courtier_gui for token in (
-            "Scope.Trait", "Trait.MakeScope", "icon_trait = {}",
+            "Scope.Trait", "Trait.MakeScope", 'blockoverride "faith_context"',
+            "GetPlayer.MakeScope.Var('xar_cc_selected_faith').Faith",
             "xar_cc_catalog_education", "xar_cc_catalog_commander",
             "xar_cc_catalog_physical", "xar_cc_catalog_personality",
             "xar_cc_catalog_other", "Scope.Culture.GetHeritage",
@@ -1804,6 +1856,11 @@ def package_checks(errors):
             "cc_custom_purchase", "阴谋家", "勤专家",
             "貌不扬", "15_cc_personality_grid", "16_cc_other_grid",
             "first card (lustful)", "first card (diplomat)",
+            "琉焰卿的永恒轮回", "17_cc_selected_faith_trait_tooltip",
+            "17_cc_selected_faith_sin_tooltip", '"阿卢克古道", "罪恶"',
+            "capture_native_decision_detail", '"琉焰账簿", "翻开账簿"',
+            '"选择本世契约", "请他落笔"',
+            '"阿卢克古道", "美德"', '"selected_faith_trait_context": True',
             "XAR: TEST DONE courtier-creator")):
         errors.append("acceptance runner lacks real-UI courtier creator coverage")
     if not all(token in acceptance_runner for token in (
@@ -1846,6 +1903,9 @@ def package_checks(errors):
         MOD / "gfx/interface/icons/traits/glassfire_trait.dds": (120, 120),
         MOD / "gfx/interface/icons/trait_level_tracks/xar_glassfire_gaze.dds": (120, 120),
         MOD / "gfx/interface/illustrations/event_scenes/xar_glassfire_avatar.dds": (1592, 848),
+        MOD / "gfx/interface/illustrations/decisions/decision_xar_ledger.dds": (1100, 440),
+        MOD / "gfx/interface/illustrations/decisions/decision_xar_contract.dds": (1100, 440),
+        MOD / "gfx/interface/illustrations/decisions/decision_xar_courtier.dds": (1100, 440),
     }
     for path, size in expected_images.items():
         if not path.exists():

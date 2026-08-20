@@ -25,11 +25,12 @@ py tools/gen_no_heir_gui.py                                 # 原生继承窗投
 py tools/gen_balance_wire.py                                # 开发用长期平衡遥测位帧
 py tools/extract_courtier_traits.py                         # 从当前原版 00_traits.txt 刷新元数据快照
 py tools/gen_courtier_creator.py                            # 原版廷臣特质目录、元数据与冲突
+py tools/compose_decision_art.py                            # 三张决议源图 → 1100×440 DXT1 DDS
 py tools/build_release.py --check                           # 临时双构建，验证 manifest/ZIP 可复现
 py tools/build_release.py                                   # 生成 dist staging、manifest 与 deterministic ZIP
 ```
 
-八套生成器，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
+八套脚本生成器及一套决议素材投影工具，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
 再运行 `gen_scoring.py` 与 `gen_score_preview.py`；奖池条目改 `tools/pools_data.py`
 （数据表）再跑 gen_pools.py；权威表 `docs/blessing-curse-pools.md` 由它导出。
 计分生成器产出 `common/scripted_effects/xar_generated_scoring_effects.txt` 与
@@ -44,6 +45,8 @@ py tools/build_release.py                                   # 生成 dist stagin
 `extract_courtier_traits.py` / `gen_courtier_creator.py` 内的版本、输出名和预期计数，再运行
 `py tools/extract_courtier_traits.py` 从当前原版 `00_traits.txt` 刷新快照；审阅 snapshot diff 后才运行
 `py tools/gen_courtier_creator.py`，并审阅生成的五类目录、224 项元数据与 95 组冲突。只运行生成器不会重新读取游戏文件。
+三张决议源图位于 `images/decision_*.png`；修改后运行 `py tools/compose_decision_art.py`，不要手改
+`gfx/interface/illustrations/decisions/decision_xar_*.dds`。静态校验会逐字节重建并检查 DXT1 输出。
 位阈值体系生成器产出：`common/tutorial_lessons/xar_highscore.txt`、`common/customizable_localization/xar_generated_loc.txt`、
 `common/scripted_guis/xar_generated_guis.txt`、`common/scripted_effects/xar_generated_effects.txt`、
 `gui/xar_meta.gui`、`localization/*/xar_generated_*.yml`。

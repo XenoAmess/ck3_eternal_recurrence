@@ -1,8 +1,9 @@
 ﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_contracts.py
 xar_contract_select_decision = {
 	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+		reference = "gfx/interface/illustrations/decisions/decision_xar_contract.dds"
 	}
+	decision_group_type = xar_eternal_recurrence
 	sort_order = 11
 	ai_check_interval = 0
 	desc = xar_contract_select_decision_desc

@@ -1,0 +1,10 @@
+﻿texticon = {
+	icon = xar_decision_group_icon
+
+	iconsize = {
+		texture = "gfx/interface/icons/traits/glassfire_trait.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}

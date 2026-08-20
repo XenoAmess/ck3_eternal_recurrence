@@ -1589,8 +1589,11 @@ def open_native_ledger(debug_offset, xar_lines, artifacts, prefix):
         f"{prefix}_decisions_tooltip.png", contains=True, stable_hits=1)
     deliberate_click(decisions_tab, "native Decisions HUD tab")
     pyautogui.moveTo(int(screen_width * 0.90), int(screen_height * 0.70))
-    pyautogui.scroll(-6)
+    pyautogui.scroll(20)
     time.sleep(0.5)
+    wait_for_ocr_text(
+        "琉焰卿的永恒轮回", FULL_SCREEN_REGION, 15, artifacts,
+        f"{prefix}_xar_decision_group.png", contains=True, stable_hits=1)
     ledger_decision = wait_for_ocr_text(
         "琉焰账簿", FULL_SCREEN_REGION, 15, artifacts,
         f"{prefix}_ledger_decision.png", contains=True, stable_hits=1)
@@ -1606,6 +1609,21 @@ def open_native_ledger(debug_offset, xar_lines, artifacts, prefix):
         "合上吧", EVENT_OPTIONS_FULL_REGION, 15, artifacts,
         f"{prefix}_ledger_event.png", contains=True, stable_hits=1)
     return debug_offset, ledger_close, decisions_tab
+
+
+def capture_native_decision_detail(title, confirm_label, artifacts, stem):
+    """Capture a native decision detail page without executing its effect."""
+    screen_width, _ = pyautogui.size()
+    decision = wait_for_ocr_text(
+        title, FULL_SCREEN_REGION, 15, artifacts,
+        f"{stem}_row.png", contains=True, stable_hits=1)
+    deliberate_click(
+        (int(screen_width * 0.90), decision[1]), f"native {title} decision row")
+    wait_for_ocr_text(
+        confirm_label, FULL_SCREEN_REGION, 15, artifacts,
+        f"{stem}_detail.png", contains=True, stable_hits=1)
+    pyautogui.press("esc")
+    time.sleep(0.6)
 
 
 def open_native_courtier_creator(artifacts, prefix):
@@ -1638,8 +1656,16 @@ def open_native_courtier_creator(artifacts, prefix):
         else:
             log("native Decisions panel already open after creator close")
         pyautogui.moveTo(int(screen_width * 0.90), int(screen_height * 0.70))
-        pyautogui.scroll(-6)
+        pyautogui.scroll(20)
         time.sleep(0.5)
+        wait_for_ocr_text(
+            "琉焰卿的永恒轮回", FULL_SCREEN_REGION, 15, artifacts,
+            f"{prefix}_xar_decision_group.png", contains=True, stable_hits=1)
+        if prefix == "05_cc_initial":
+            capture_native_decision_detail(
+                "琉焰账簿", "翻开账簿", artifacts, f"{prefix}_ledger")
+            capture_native_decision_detail(
+                "选择本世契约", "请他落笔", artifacts, f"{prefix}_contract")
         decision = wait_for_ocr_text(
             "典造琉焰廷臣", FULL_SCREEN_REGION, 15, artifacts,
             f"{prefix}_decision.png", contains=True, stable_hits=1)
@@ -2180,6 +2206,36 @@ def run_courtier_creator(debug_offset, error_offset, artifacts):
     log(
         "selected v2 creator origin catalog rows: "
         f"culture={selected_culture!r}, faith={selected_faith!r}")
+    if "阿卢克古道" not in selected_faith:
+        raise RunnerError(
+            f"selected faith must be Aluk for virtue-context proof: {selected_faith!r}")
+    click_courtier_option(
+        "心性", artifacts, "17_cc_selected_faith_personality_tab")
+    diligent = wait_for_ocr_text(
+        "勤勉", COURTIER_MODAL_REGION, 12, artifacts,
+        "17_cc_selected_faith_diligent.png", contains=True, stable_hits=1)
+    # Trait labels begin about 64 px to the right of their 64 px native icon at 2560p.
+    pyautogui.moveTo(diligent[0] - int(screen_width * 0.025), diligent[1])
+    time.sleep(1.8)
+    wait_for_ocr_tokens(
+        ("阿卢克古道", "美德"),
+        ("天主教", "xar.cc", "localize", "error"),
+        COURTIER_MODAL_REGION, 12, artifacts,
+        "17_cc_selected_faith_trait_tooltip")
+    lazy = wait_for_ocr_text(
+        "懒惰", COURTIER_MODAL_REGION, 12, artifacts,
+        "17_cc_selected_faith_lazy.png", contains=True, stable_hits=1)
+    pyautogui.moveTo(lazy[0] - int(screen_width * 0.025), lazy[1])
+    time.sleep(1.8)
+    wait_for_ocr_tokens(
+        ("阿卢克古道", "罪恶"),
+        ("天主教", "xar.cc", "localize", "error"),
+        COURTIER_MODAL_REGION, 12, artifacts,
+        "17_cc_selected_faith_sin_tooltip")
+    deliberate_click(
+        (int(screen_width * 0.805), int(screen_height * 0.215)),
+        "courtier return to origin tab after selected-faith trait proof")
+    time.sleep(0.5)
     # The native faith tooltip covers the price summary while the cursor remains
     # on the selected row, so clear it before asserting the configured total.
     pyautogui.moveTo(
@@ -2253,6 +2309,7 @@ def run_courtier_creator(debug_offset, error_offset, artifacts):
     print("default purchase    : PASS")
     print("custom purchase     : PASS")
     print("origin / same house : PASS")
+    print("selected-faith traits: PASS")
     print("AI purchase blocked : PASS")
     print("xar error.log       : 0")
     return {
@@ -2267,6 +2324,7 @@ def run_courtier_creator(debug_offset, error_offset, artifacts):
         "custom_prowess": 16,
         "selected_culture_ocr": selected_culture,
         "selected_faith_ocr": selected_faith,
+        "selected_faith_trait_context": True,
         "created_courtiers": 2,
         "ai_purchase_blocked": True,
         "xar_error_count": 0,

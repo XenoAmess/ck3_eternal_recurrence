@@ -1,4 +1,6 @@
 ﻿l_polish:
+ decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! Wieczny Cykl"
+
  xar.no_heir_settlement.desc:0 "Wędrowcze, zakończenie z gry podstawowej zamknęłoby za ciebie księgę. Lecz ten ciężar należy do mnie — i do ciebie."
  xar.no_heir.score:0 "Ciężar ostateczny"
  xar.no_heir.subtotal:0 "Ciężar przed odmowami"

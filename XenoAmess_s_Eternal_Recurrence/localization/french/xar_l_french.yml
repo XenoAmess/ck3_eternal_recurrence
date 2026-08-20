@@ -1,4 +1,6 @@
 ﻿l_french:
+ decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! Éternelle Réincarnation"
+
  xar.no_heir_settlement.desc:0 "Voyageur, la fin du jeu de base refermerait le registre pour toi. Mais ce poids m'appartient — et t'appartient aussi."
  xar.no_heir.score:0 "Poids final"
  xar.no_heir.subtotal:0 "Poids avant les refus"

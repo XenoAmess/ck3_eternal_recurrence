@@ -1,7 +1,8 @@
 ﻿xar_ledger_decision = {
 	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+		reference = "gfx/interface/illustrations/decisions/decision_xar_ledger.dds"
 	}
+	decision_group_type = xar_eternal_recurrence
 	sort_order = 10
 	ai_check_interval = 0
 	desc = xar_ledger_decision_desc
@@ -33,8 +34,9 @@
 
 xar_courtier_creator_decision = {
 	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+		reference = "gfx/interface/illustrations/decisions/decision_xar_courtier.dds"
 	}
+	decision_group_type = xar_eternal_recurrence
 	sort_order = 12
 	ai_check_interval = 0
 	desc = xar_courtier_creator_decision_desc

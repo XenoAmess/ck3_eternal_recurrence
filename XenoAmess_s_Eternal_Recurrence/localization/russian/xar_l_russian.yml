@@ -1,4 +1,6 @@
 ﻿l_russian:
+ decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! Вечное Перерождение"
+
  xar.no_heir_settlement.desc:0 "Странник, обычная кончина закрыла бы за тебя эту книгу. Но этот вес принадлежит мне — и тебе."
  xar.no_heir.score:0 "Итоговый вес"
  xar.no_heir.subtotal:0 "Вес до отказов"

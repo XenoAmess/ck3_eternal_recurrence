@@ -1,4 +1,6 @@
 ﻿l_korean:
+ decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! 영원한 윤회"
+
  xar.no_heir_settlement.desc:0 "나그네, 기본 게임의 결말은 그대의 장부를 닫았을 것입니다. 하지만 이 무게는 제 것이자 그대의 것입니다."
  xar.no_heir.score:0 "최종 무게"
  xar.no_heir.subtotal:0 "거절 이전의 무게"

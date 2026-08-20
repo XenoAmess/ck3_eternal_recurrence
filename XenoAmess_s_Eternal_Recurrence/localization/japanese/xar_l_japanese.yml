@@ -1,4 +1,6 @@
 ﻿l_japanese:
+ decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! 永遠の輪廻"
+
  xar.no_heir_settlement.desc:0 "旅人よ、本来の終わりならば汝の帳簿を閉じてくれるであろう。だがこの重荷は我に属す——汝にも。"
  xar.no_heir.score:0 "最終の重み"
  xar.no_heir.subtotal:0 "辞退前の重み"

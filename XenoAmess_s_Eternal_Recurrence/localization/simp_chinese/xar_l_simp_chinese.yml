@@ -1,4 +1,6 @@
 ﻿l_simp_chinese:
+ decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! 琉焰卿的永恒轮回"
+
  # 游戏规则
  rule_xar_enabled:0 "琉焰卿的永恒轮回"
  setting_xar_on:0 "启用"
