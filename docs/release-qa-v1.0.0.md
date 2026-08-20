@@ -13,7 +13,8 @@
   `xar_decision_group_trait_both_20260821` 实机取证均 GREEN。
 - [x] 修复 clean checkout 的官方 L0：从已跟踪投影恢复原版正文，校验 CK3 1.19.0.6
   canonical text SHA-256 后重新渲染；本机存在原版源时再追加强校验，不提交第二份原版 fixture。
-  `tools/test_gen_no_heir_gui.py` 的四项契约测试、模拟无游戏源的完整静态校验均已 GREEN；仍需推送后取得新的官方 run。
+  `tools/test_gen_no_heir_gui.py` 的四项契约测试、模拟无游戏源的完整静态校验均已 GREEN；官方 run
+  [`32401747136`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32401747136) 同样 GREEN。
 - [x] 修正付费廷臣 trait 图标的信仰上下文：德行、罪恶光效与 tooltip 使用
   `xar_cc_selected_faith`；`xar_decision_group_trait_both_20260821` 证明阿卢克古道【勤勉】为美德、【懒惰】为罪恶，且均不含天主教。
 - [ ] 增加铁人模式死亡收尾：普通非铁人单机继续进入观察者；铁人模式必须强制保持暂停，
@@ -25,7 +26,7 @@
 
 - [x] 通过 Python 编译、no-heir 投影契约单元测试、`validate_static.py`、计分 reference vectors、
   `build_release.py --check` 与 `git diff --check`。
-- [ ] 推送修复后确认 GitHub 官方 `windows-latest` 的 validate、计分向量、确定性构建全部 GREEN。
+- [x] 推送修复后确认 GitHub 官方 `windows-latest` 的 projection tests、validate、计分向量、确定性构建全部 GREEN。
 - [x] 重跑 `courtier-creator`：选择阿卢克古道后返回性格页，确认【勤勉】按所选信仰显示为美德，
   且 tooltip 不再引用玩家的天主教信仰。
 - [ ] 增加并通过非 debug、非铁人普通继承验收，证明正式环境中的 `observe` 路径真实进入观察者模式。
@@ -122,7 +123,7 @@ Current candidate gates:
 | Gate | Status | Required evidence |
 |---|---|---|
 | Local current-tree L0 and deterministic release projection | GREEN | `validate_static.py`, reference vectors and 83-file `build_release.py --check` all pass locally; this is not a hosted or CK3 runtime claim |
-| Official GitHub `windows-latest` L0 | PENDING NEW RUN | old run `32364643040` failed on the ignored CK3 source; reversible tracked-projection validation is locally GREEN and awaits a pushed official run |
+| Official GitHub `windows-latest` L0 | GREEN | run [`32401747136`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32401747136); clean checkout passed compile, four projection tests, static validation, scoring vectors and deterministic 83-file build |
 | Full baseline plus post-review targeted CK3 regression | GREEN | the full release-candidate suite passed; changed death paths and paid courtier were then rerun on the reviewed tree with zero `xar` errors |
 | Ordinary death with a playable heir | GREEN | `xar_death_with_heir_postreview_20260820`; one compute, dispatch and visible settlement |
 | Paid custom courtier | GREEN | `xar_courtier_creator_postreview22_20260820`; both selected origins differ from the player, successful delivery precedes configuration and charge, and remaining landless/process-restart cases are declared coverage gaps |
