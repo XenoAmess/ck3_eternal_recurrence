@@ -1,0 +1,2014 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_courtier_creator.py
+# Vanilla trait catalogs and deterministic conflict removal.
+
+xar_cc_rebuild_trait_catalogs_effect = {
+	root = {
+		clear_variable_list = xar_cc_catalog_education
+		clear_variable_list = xar_cc_catalog_commander
+		clear_variable_list = xar_cc_catalog_physical
+		clear_variable_list = xar_cc_catalog_personality
+		clear_variable_list = xar_cc_catalog_other
+	}
+
+	trait:education_intrigue_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_intrigue_2 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_intrigue_3 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_intrigue_4 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_intrigue_5 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_diplomacy_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_diplomacy_2 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_diplomacy_3 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_diplomacy_4 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_diplomacy_5 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_stewardship_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_stewardship_2 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_stewardship_3 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_stewardship_4 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_stewardship_5 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_martial_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_martial_2 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_martial_3 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_martial_4 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_martial_5 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_learning_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_learning_2 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_learning_3 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_learning_4 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:education_learning_5 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_education
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:diplomat = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:family_first = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:august = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_reveler = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_blademaster = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_hunter = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:strategist = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:overseer = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:gallant = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:architect = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:administrator = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:avaricious = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:schemer = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:seducer = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:torturer = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:whole_of_body = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:scholar = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:theologian = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_mystic = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_physician = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_herbalist = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_gardener = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lustful = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:chaste = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:gluttonous = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:temperate = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:greedy = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:generous = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lazy = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:diligent = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:wrathful = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:calm = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:patient = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:impatient = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:arrogant = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:humble = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:deceitful = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:honest = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:craven = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:brave = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:shy = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:gregarious = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:ambitious = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:content = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:arbitrary = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:just = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:cynical = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:zealous = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:paranoid = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:trusting = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:compassionate = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:callous = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:sadistic = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:stubborn = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:fickle = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:eccentric = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:vengeful = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:forgiving = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_personality
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:rowdy = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:charming = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:curious = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:pensive = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:bossy = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:drunkard = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:hashishiyah = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:rakish = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:reclusive = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:irritable = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:flagellant = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:profligate = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:improvident = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:contrite = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:comfort_eater = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:inappetetic = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:journaller = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:confider = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:athletic = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:depressed_genetic = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lunatic_genetic = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:possessed_genetic = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:ill = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:pneumonic = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:great_pox = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lovers_pox = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:leper = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:one_eyed = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:one_legged = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:disfigured = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:infirm = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:withering_mind = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:clouded_eyes = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:faltering_heart = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:fragile_bones = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:gout_ridden = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:consumption = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:cancer = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:typhus = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:smallpox = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:measles = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:dysentery = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:ergotism = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:scarred = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:eunuch_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:beardless_eunuch = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:blind = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:beauty_bad_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:beauty_bad_2 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:beauty_bad_3 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:beauty_good_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:beauty_good_2 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:beauty_good_3 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:intellect_bad_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:intellect_bad_2 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:intellect_bad_3 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:intellect_good_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:intellect_good_2 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:intellect_good_3 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:physique_bad_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:physique_bad_2 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:physique_bad_3 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:physique_good_1 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:physique_good_2 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:physique_good_3 = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:pure_blooded = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:fecund = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:strong = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:shrewd = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:clubfooted = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:hunchbacked = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lisping = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:stuttering = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:dwarf = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:giant = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:inbred = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:weak = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:dull = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:impotent = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:spindly = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:scaly = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:albino = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:wheezing = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:bleeder = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:infertile = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_physical
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:pilgrim = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:hajjaj = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:sayyid = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:faith_warrior = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:berserker = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:shieldmaiden = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:varangian = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_poet = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:bastard = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:legitimized_bastard = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:wild_oat = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:deviant = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:cannibal = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:incestuous = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:adulterer = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:fornicator = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:murderer = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:born_in_the_purple = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:viking = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:adventurer = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:adventurer_follower = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:heresiarch = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:peasant_leader = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:populist_leader = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:witch = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:loyal = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:disloyal = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:gallowsbait = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:logistician = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:military_engineer = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:aggressive_attacker = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:unyielding_defender = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:forder = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:flexible_leader = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:desert_warrior = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:jungle_stalker = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:reaver = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:reckless = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:holy_warrior = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:open_terrain_expert = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:rough_terrain_expert = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:forest_fighter = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:cautious_leader = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:organizer = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:winter_soldier = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_commander
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:crusader_king = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:tourney_participant = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_traveler = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:governor = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:knight_errant = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:immortal = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_wayfarer = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_voyager = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_surveyor = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:confucian_education = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:burdened = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+}
+
+xar_cc_remove_selected_trait_conflicts_effect = {
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:lustful }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:chaste }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:chaste }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:lustful }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:gluttonous }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:temperate }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:temperate }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:gluttonous }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:greedy }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:generous }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:generous }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:greedy }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:lazy }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:diligent }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:diligent }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:lazy }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:wrathful }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:calm }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:calm }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:wrathful }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:patient }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:impatient }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:impatient }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:patient }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:arrogant }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:humble }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:humble }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:arrogant }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:deceitful }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:honest }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:honest }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:deceitful }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:craven }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:brave }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:brave }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:craven }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:shy }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:gregarious }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:gregarious }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:shy }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:ambitious }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:content }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:content }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:ambitious }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:arbitrary }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:just }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:just }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:arbitrary }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:cynical }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:zealous }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:zealous }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:cynical }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:paranoid }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:trusting }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:trusting }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:paranoid }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:compassionate }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:callous }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:sadistic }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:callous }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:compassionate }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:sadistic }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:sadistic }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:compassionate }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:callous }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:stubborn }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:fickle }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:eccentric }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:fickle }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:stubborn }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:eccentric }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:eccentric }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:stubborn }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:fickle }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:vengeful }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:forgiving }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:forgiving }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:vengeful }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:profligate }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:improvident }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:improvident }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:profligate }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:comfort_eater }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:inappetetic }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:inappetetic }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:comfort_eater }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:ill }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:pneumonic }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:pneumonic }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:ill }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:eunuch_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beardless_eunuch }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:beardless_eunuch }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:eunuch_1 }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:beauty_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_3 }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:beauty_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_3 }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:beauty_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_3 }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:beauty_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_3 }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:beauty_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_3 }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:beauty_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:beauty_good_2 }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:intellect_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:shrewd }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:intellect_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:shrewd }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:intellect_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:shrewd }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:intellect_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:dull }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:intellect_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:dull }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:intellect_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:dull }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:physique_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:strong }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:physique_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:strong }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:physique_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:strong }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:physique_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:weak }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:spindly }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:physique_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:weak }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:spindly }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:physique_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:weak }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:spindly }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:fecund }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:infertile }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:strong }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:weak }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:shrewd }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_bad_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:dull }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:dwarf }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:giant }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:giant }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:dwarf }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:weak }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:strong }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:dull }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:intellect_good_3 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:shrewd }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:spindly }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_1 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_2 }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:physique_good_3 }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:infertile }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:fecund }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:bastard }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:legitimized_bastard }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:wild_oat }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:legitimized_bastard }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:bastard }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:wild_oat }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:wild_oat }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:bastard }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:legitimized_bastard }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:adventurer }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:adventurer_follower }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:adventurer_follower }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:adventurer }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:loyal }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:disloyal }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:disloyal }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:loyal }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:reckless }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:cautious_leader }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:cautious_leader }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:reckless }
+	}
+}

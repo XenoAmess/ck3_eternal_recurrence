@@ -1,0 +1,902 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_courtier_creator.py
+# Native ruler designer point total for selected traits.
+
+xar_cc_selected_trait_cost = {
+	value = 0
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_intrigue_1 } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_intrigue_2 } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_intrigue_3 } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_intrigue_4 } }
+		add = 80
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_intrigue_5 } }
+		add = 150
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_diplomacy_1 } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_diplomacy_2 } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_diplomacy_3 } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_diplomacy_4 } }
+		add = 80
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_diplomacy_5 } }
+		add = 150
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_stewardship_1 } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_stewardship_2 } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_stewardship_3 } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_stewardship_4 } }
+		add = 80
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_stewardship_5 } }
+		add = 150
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_martial_1 } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_martial_2 } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_martial_3 } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_martial_4 } }
+		add = 80
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_martial_5 } }
+		add = 150
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_learning_1 } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_learning_2 } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_learning_3 } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_learning_4 } }
+		add = 80
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:education_learning_5 } }
+		add = 150
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:diplomat } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:family_first } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:august } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_reveler } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_blademaster } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_hunter } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:strategist } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:overseer } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:gallant } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:architect } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:administrator } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:avaricious } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:schemer } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:seducer } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:torturer } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:whole_of_body } }
+		add = 75
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:scholar } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:theologian } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_mystic } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_physician } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_herbalist } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_gardener } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lustful } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:chaste } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:gluttonous } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:temperate } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:greedy } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:generous } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lazy } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:diligent } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:wrathful } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:calm } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:patient } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:impatient } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:arrogant } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:humble } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:deceitful } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:honest } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:craven } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:brave } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:shy } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:gregarious } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:ambitious } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:content } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:arbitrary } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:just } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:cynical } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:zealous } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:paranoid } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:trusting } }
+		add = 10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:compassionate } }
+		add = 10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:callous } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:sadistic } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:stubborn } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:fickle } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:eccentric } }
+		add = 15
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:vengeful } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:forgiving } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:rowdy } }
+		add = 5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:charming } }
+		add = 5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:curious } }
+		add = 5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:pensive } }
+		add = 5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:bossy } }
+		add = 5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:drunkard } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:hashishiyah } }
+		add = 5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:rakish } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:reclusive } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:irritable } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:flagellant } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:profligate } }
+		add = 10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:improvident } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:contrite } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:comfort_eater } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:inappetetic } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:journaller } }
+		add = 15
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:confider } }
+		add = 15
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:athletic } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:depressed_genetic } }
+		add = -20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lunatic_genetic } }
+		add = -15
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:possessed_genetic } }
+		add = -20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:ill } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:pneumonic } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:great_pox } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lovers_pox } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:leper } }
+		add = -30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:one_eyed } }
+		add = 10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:one_legged } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:disfigured } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:infirm } }
+		add = -20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:withering_mind } }
+		add = -20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:clouded_eyes } }
+		add = -20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:faltering_heart } }
+		add = -20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:fragile_bones } }
+		add = -20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:gout_ridden } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:consumption } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:cancer } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:typhus } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:smallpox } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:measles } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:dysentery } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:ergotism } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:scarred } }
+		add = 10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:eunuch_1 } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:beardless_eunuch } }
+		add = -15
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:blind } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_1 } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_2 } }
+		add = -20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_3 } }
+		add = -30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_1 } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_2 } }
+		add = 80
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_3 } }
+		add = 120
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 } }
+		add = -15
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 } }
+		add = -30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 } }
+		add = -45
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 } }
+		add = 80
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 } }
+		add = 160
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 } }
+		add = 240
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 } }
+		add = -15
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 } }
+		add = -30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 } }
+		add = -45
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 } }
+		add = 60
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 } }
+		add = 120
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 } }
+		add = 180
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:pure_blooded } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:fecund } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:strong } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:shrewd } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:clubfooted } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:hunchbacked } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lisping } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:stuttering } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:dwarf } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:giant } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:inbred } }
+		add = -30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:weak } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:dull } }
+		add = -20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:impotent } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:spindly } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:scaly } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:albino } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:wheezing } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:bleeder } }
+		add = -20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:infertile } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:pilgrim } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:hajjaj } }
+		add = 30
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:sayyid } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:faith_warrior } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:berserker } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:shieldmaiden } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:varangian } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_poet } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:bastard } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:legitimized_bastard } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:wild_oat } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:deviant } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:cannibal } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:incestuous } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:adulterer } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:fornicator } }
+		add = -5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:murderer } }
+		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:born_in_the_purple } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:viking } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:adventurer } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:adventurer_follower } }
+		add = 10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:heresiarch } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:peasant_leader } }
+		add = 100
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:populist_leader } }
+		add = 150
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:witch } }
+		add = 10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:loyal } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:disloyal } }
+		add = -20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:gallowsbait } }
+		add = 0
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:logistician } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:military_engineer } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:aggressive_attacker } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:unyielding_defender } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:forder } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:flexible_leader } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:desert_warrior } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:jungle_stalker } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:reaver } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:reckless } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:holy_warrior } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:open_terrain_expert } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:rough_terrain_expert } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:forest_fighter } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:cautious_leader } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:organizer } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:winter_soldier } }
+		add = 25
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:crusader_king } }
+		add = 120
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:tourney_participant } }
+		add = 5
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_traveler } }
+		add = 20
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:governor } }
+		add = 40
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:knight_errant } }
+		add = 75
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:immortal } }
+		add = 10000
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_wayfarer } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_voyager } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_surveyor } }
+		add = 50
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:confucian_education } }
+		add = 15
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:burdened } }
+		add = -10
+	}
+}

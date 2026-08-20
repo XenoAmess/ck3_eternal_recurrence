@@ -1,0 +1,1313 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_courtier_creator.py
+# Candidate metadata and selected-trait compatibility.
+
+xar_cc_candidate_trait_metadata_valid_trigger = {
+	OR = {
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_intrigue_1
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_intrigue_2
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_intrigue_3
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_intrigue_4
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_intrigue_5
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_diplomacy_1
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_diplomacy_2
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_diplomacy_3
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_diplomacy_4
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_diplomacy_5
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_stewardship_1
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_stewardship_2
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_stewardship_3
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_stewardship_4
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_stewardship_5
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_martial_1
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_martial_2
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_martial_3
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_martial_4
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_martial_5
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_learning_1
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_learning_2
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_learning_3
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_learning_4
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:education_learning_5
+			var:xar_cc_age >= 16
+		}
+		scope:xar_cc_candidate_trait = trait:diplomat
+		scope:xar_cc_candidate_trait = trait:family_first
+		scope:xar_cc_candidate_trait = trait:august
+		scope:xar_cc_candidate_trait = trait:lifestyle_reveler
+		scope:xar_cc_candidate_trait = trait:lifestyle_blademaster
+		scope:xar_cc_candidate_trait = trait:lifestyle_hunter
+		scope:xar_cc_candidate_trait = trait:strategist
+		scope:xar_cc_candidate_trait = trait:overseer
+		scope:xar_cc_candidate_trait = trait:gallant
+		scope:xar_cc_candidate_trait = trait:architect
+		scope:xar_cc_candidate_trait = trait:administrator
+		scope:xar_cc_candidate_trait = trait:avaricious
+		scope:xar_cc_candidate_trait = trait:schemer
+		scope:xar_cc_candidate_trait = trait:seducer
+		scope:xar_cc_candidate_trait = trait:torturer
+		scope:xar_cc_candidate_trait = trait:whole_of_body
+		scope:xar_cc_candidate_trait = trait:scholar
+		scope:xar_cc_candidate_trait = trait:theologian
+		scope:xar_cc_candidate_trait = trait:lifestyle_mystic
+		scope:xar_cc_candidate_trait = trait:lifestyle_physician
+		scope:xar_cc_candidate_trait = trait:lifestyle_herbalist
+		scope:xar_cc_candidate_trait = trait:lifestyle_gardener
+		scope:xar_cc_candidate_trait = trait:lustful
+		scope:xar_cc_candidate_trait = trait:chaste
+		scope:xar_cc_candidate_trait = trait:gluttonous
+		scope:xar_cc_candidate_trait = trait:temperate
+		scope:xar_cc_candidate_trait = trait:greedy
+		scope:xar_cc_candidate_trait = trait:generous
+		scope:xar_cc_candidate_trait = trait:lazy
+		scope:xar_cc_candidate_trait = trait:diligent
+		scope:xar_cc_candidate_trait = trait:wrathful
+		scope:xar_cc_candidate_trait = trait:calm
+		scope:xar_cc_candidate_trait = trait:patient
+		scope:xar_cc_candidate_trait = trait:impatient
+		scope:xar_cc_candidate_trait = trait:arrogant
+		scope:xar_cc_candidate_trait = trait:humble
+		scope:xar_cc_candidate_trait = trait:deceitful
+		scope:xar_cc_candidate_trait = trait:honest
+		scope:xar_cc_candidate_trait = trait:craven
+		scope:xar_cc_candidate_trait = trait:brave
+		scope:xar_cc_candidate_trait = trait:shy
+		scope:xar_cc_candidate_trait = trait:gregarious
+		scope:xar_cc_candidate_trait = trait:ambitious
+		scope:xar_cc_candidate_trait = trait:content
+		scope:xar_cc_candidate_trait = trait:arbitrary
+		scope:xar_cc_candidate_trait = trait:just
+		scope:xar_cc_candidate_trait = trait:cynical
+		scope:xar_cc_candidate_trait = trait:zealous
+		scope:xar_cc_candidate_trait = trait:paranoid
+		scope:xar_cc_candidate_trait = trait:trusting
+		scope:xar_cc_candidate_trait = trait:compassionate
+		scope:xar_cc_candidate_trait = trait:callous
+		scope:xar_cc_candidate_trait = trait:sadistic
+		scope:xar_cc_candidate_trait = trait:stubborn
+		scope:xar_cc_candidate_trait = trait:fickle
+		scope:xar_cc_candidate_trait = trait:eccentric
+		scope:xar_cc_candidate_trait = trait:vengeful
+		scope:xar_cc_candidate_trait = trait:forgiving
+		AND = {
+			scope:xar_cc_candidate_trait = trait:rowdy
+			var:xar_cc_age >= 3
+			var:xar_cc_age <= 15
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:charming
+			var:xar_cc_age >= 3
+			var:xar_cc_age <= 15
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:curious
+			var:xar_cc_age >= 3
+			var:xar_cc_age <= 15
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:pensive
+			var:xar_cc_age >= 3
+			var:xar_cc_age <= 15
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:bossy
+			var:xar_cc_age >= 3
+			var:xar_cc_age <= 15
+		}
+		scope:xar_cc_candidate_trait = trait:drunkard
+		scope:xar_cc_candidate_trait = trait:hashishiyah
+		scope:xar_cc_candidate_trait = trait:rakish
+		scope:xar_cc_candidate_trait = trait:reclusive
+		scope:xar_cc_candidate_trait = trait:irritable
+		scope:xar_cc_candidate_trait = trait:flagellant
+		scope:xar_cc_candidate_trait = trait:profligate
+		scope:xar_cc_candidate_trait = trait:improvident
+		scope:xar_cc_candidate_trait = trait:contrite
+		scope:xar_cc_candidate_trait = trait:comfort_eater
+		scope:xar_cc_candidate_trait = trait:inappetetic
+		scope:xar_cc_candidate_trait = trait:journaller
+		scope:xar_cc_candidate_trait = trait:confider
+		scope:xar_cc_candidate_trait = trait:athletic
+		scope:xar_cc_candidate_trait = trait:depressed_genetic
+		scope:xar_cc_candidate_trait = trait:lunatic_genetic
+		scope:xar_cc_candidate_trait = trait:possessed_genetic
+		scope:xar_cc_candidate_trait = trait:ill
+		scope:xar_cc_candidate_trait = trait:pneumonic
+		scope:xar_cc_candidate_trait = trait:great_pox
+		scope:xar_cc_candidate_trait = trait:lovers_pox
+		scope:xar_cc_candidate_trait = trait:leper
+		scope:xar_cc_candidate_trait = trait:one_eyed
+		scope:xar_cc_candidate_trait = trait:one_legged
+		scope:xar_cc_candidate_trait = trait:disfigured
+		scope:xar_cc_candidate_trait = trait:infirm
+		scope:xar_cc_candidate_trait = trait:withering_mind
+		scope:xar_cc_candidate_trait = trait:clouded_eyes
+		scope:xar_cc_candidate_trait = trait:faltering_heart
+		scope:xar_cc_candidate_trait = trait:fragile_bones
+		scope:xar_cc_candidate_trait = trait:gout_ridden
+		scope:xar_cc_candidate_trait = trait:consumption
+		scope:xar_cc_candidate_trait = trait:cancer
+		scope:xar_cc_candidate_trait = trait:typhus
+		scope:xar_cc_candidate_trait = trait:smallpox
+		scope:xar_cc_candidate_trait = trait:measles
+		scope:xar_cc_candidate_trait = trait:dysentery
+		scope:xar_cc_candidate_trait = trait:ergotism
+		scope:xar_cc_candidate_trait = trait:scarred
+		AND = {
+			scope:xar_cc_candidate_trait = trait:eunuch_1
+			var:xar_cc_female = 0
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:beardless_eunuch
+			var:xar_cc_female = 0
+		}
+		scope:xar_cc_candidate_trait = trait:blind
+		scope:xar_cc_candidate_trait = trait:beauty_bad_1
+		scope:xar_cc_candidate_trait = trait:beauty_bad_2
+		scope:xar_cc_candidate_trait = trait:beauty_bad_3
+		scope:xar_cc_candidate_trait = trait:beauty_good_1
+		scope:xar_cc_candidate_trait = trait:beauty_good_2
+		scope:xar_cc_candidate_trait = trait:beauty_good_3
+		scope:xar_cc_candidate_trait = trait:intellect_bad_1
+		scope:xar_cc_candidate_trait = trait:intellect_bad_2
+		scope:xar_cc_candidate_trait = trait:intellect_bad_3
+		scope:xar_cc_candidate_trait = trait:intellect_good_1
+		scope:xar_cc_candidate_trait = trait:intellect_good_2
+		scope:xar_cc_candidate_trait = trait:intellect_good_3
+		scope:xar_cc_candidate_trait = trait:physique_bad_1
+		scope:xar_cc_candidate_trait = trait:physique_bad_2
+		scope:xar_cc_candidate_trait = trait:physique_bad_3
+		scope:xar_cc_candidate_trait = trait:physique_good_1
+		scope:xar_cc_candidate_trait = trait:physique_good_2
+		scope:xar_cc_candidate_trait = trait:physique_good_3
+		scope:xar_cc_candidate_trait = trait:pure_blooded
+		scope:xar_cc_candidate_trait = trait:fecund
+		scope:xar_cc_candidate_trait = trait:strong
+		scope:xar_cc_candidate_trait = trait:shrewd
+		scope:xar_cc_candidate_trait = trait:clubfooted
+		scope:xar_cc_candidate_trait = trait:hunchbacked
+		scope:xar_cc_candidate_trait = trait:lisping
+		scope:xar_cc_candidate_trait = trait:stuttering
+		scope:xar_cc_candidate_trait = trait:dwarf
+		scope:xar_cc_candidate_trait = trait:giant
+		scope:xar_cc_candidate_trait = trait:inbred
+		scope:xar_cc_candidate_trait = trait:weak
+		scope:xar_cc_candidate_trait = trait:dull
+		scope:xar_cc_candidate_trait = trait:impotent
+		scope:xar_cc_candidate_trait = trait:spindly
+		scope:xar_cc_candidate_trait = trait:scaly
+		scope:xar_cc_candidate_trait = trait:albino
+		scope:xar_cc_candidate_trait = trait:wheezing
+		scope:xar_cc_candidate_trait = trait:bleeder
+		scope:xar_cc_candidate_trait = trait:infertile
+		scope:xar_cc_candidate_trait = trait:pilgrim
+		scope:xar_cc_candidate_trait = trait:hajjaj
+		scope:xar_cc_candidate_trait = trait:sayyid
+		scope:xar_cc_candidate_trait = trait:faith_warrior
+		scope:xar_cc_candidate_trait = trait:berserker
+		scope:xar_cc_candidate_trait = trait:shieldmaiden
+		scope:xar_cc_candidate_trait = trait:varangian
+		scope:xar_cc_candidate_trait = trait:lifestyle_poet
+		scope:xar_cc_candidate_trait = trait:bastard
+		scope:xar_cc_candidate_trait = trait:legitimized_bastard
+		scope:xar_cc_candidate_trait = trait:wild_oat
+		scope:xar_cc_candidate_trait = trait:deviant
+		scope:xar_cc_candidate_trait = trait:cannibal
+		scope:xar_cc_candidate_trait = trait:incestuous
+		scope:xar_cc_candidate_trait = trait:adulterer
+		scope:xar_cc_candidate_trait = trait:fornicator
+		scope:xar_cc_candidate_trait = trait:murderer
+		scope:xar_cc_candidate_trait = trait:born_in_the_purple
+		scope:xar_cc_candidate_trait = trait:viking
+		scope:xar_cc_candidate_trait = trait:adventurer
+		scope:xar_cc_candidate_trait = trait:adventurer_follower
+		scope:xar_cc_candidate_trait = trait:heresiarch
+		scope:xar_cc_candidate_trait = trait:peasant_leader
+		scope:xar_cc_candidate_trait = trait:populist_leader
+		scope:xar_cc_candidate_trait = trait:witch
+		scope:xar_cc_candidate_trait = trait:loyal
+		scope:xar_cc_candidate_trait = trait:disloyal
+		scope:xar_cc_candidate_trait = trait:gallowsbait
+		scope:xar_cc_candidate_trait = trait:logistician
+		scope:xar_cc_candidate_trait = trait:military_engineer
+		scope:xar_cc_candidate_trait = trait:aggressive_attacker
+		scope:xar_cc_candidate_trait = trait:unyielding_defender
+		scope:xar_cc_candidate_trait = trait:forder
+		scope:xar_cc_candidate_trait = trait:flexible_leader
+		scope:xar_cc_candidate_trait = trait:desert_warrior
+		scope:xar_cc_candidate_trait = trait:jungle_stalker
+		scope:xar_cc_candidate_trait = trait:reaver
+		scope:xar_cc_candidate_trait = trait:reckless
+		scope:xar_cc_candidate_trait = trait:holy_warrior
+		scope:xar_cc_candidate_trait = trait:open_terrain_expert
+		scope:xar_cc_candidate_trait = trait:rough_terrain_expert
+		scope:xar_cc_candidate_trait = trait:forest_fighter
+		scope:xar_cc_candidate_trait = trait:cautious_leader
+		scope:xar_cc_candidate_trait = trait:organizer
+		scope:xar_cc_candidate_trait = trait:winter_soldier
+		scope:xar_cc_candidate_trait = trait:crusader_king
+		scope:xar_cc_candidate_trait = trait:tourney_participant
+		scope:xar_cc_candidate_trait = trait:lifestyle_traveler
+		scope:xar_cc_candidate_trait = trait:governor
+		scope:xar_cc_candidate_trait = trait:knight_errant
+		scope:xar_cc_candidate_trait = trait:immortal
+		scope:xar_cc_candidate_trait = trait:lifestyle_wayfarer
+		scope:xar_cc_candidate_trait = trait:lifestyle_voyager
+		scope:xar_cc_candidate_trait = trait:lifestyle_surveyor
+		AND = {
+			scope:xar_cc_candidate_trait = trait:confucian_education
+			var:xar_cc_age >= 16
+		}
+		scope:xar_cc_candidate_trait = trait:burdened
+	}
+}
+
+xar_cc_candidate_replaces_selected_trait_trigger = {
+	OR = {
+		AND = {
+			scope:xar_cc_candidate_trait = trait:lustful
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:chaste }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:chaste
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:lustful }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:gluttonous
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:temperate }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:temperate
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:gluttonous }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:greedy
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:generous }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:generous
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:greedy }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:lazy
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:diligent }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:diligent
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:lazy }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:wrathful
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:calm }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:calm
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:wrathful }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:patient
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:impatient }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:impatient
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:patient }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:arrogant
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:humble }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:humble
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:arrogant }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:deceitful
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:honest }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:honest
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:deceitful }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:craven
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:brave }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:brave
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:craven }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:shy
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:gregarious }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:gregarious
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:shy }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:ambitious
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:content }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:content
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:ambitious }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:arbitrary
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:just }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:just
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:arbitrary }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:cynical
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:zealous }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:zealous
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:cynical }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:paranoid
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:trusting }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:trusting
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:paranoid }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:compassionate
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:callous }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:sadistic }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:callous
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:compassionate }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:sadistic }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:sadistic
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:compassionate }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:callous }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:stubborn
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:fickle }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:eccentric }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:fickle
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:stubborn }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:eccentric }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:eccentric
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:stubborn }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:fickle }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:vengeful
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:forgiving }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:forgiving
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:vengeful }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:profligate
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:improvident }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:improvident
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:profligate }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:comfort_eater
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:inappetetic }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:inappetetic
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:comfort_eater }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:ill
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:pneumonic }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:pneumonic
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:ill }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:eunuch_1
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beardless_eunuch }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:beardless_eunuch
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:eunuch_1 }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:beauty_bad_1
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_3 }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:beauty_bad_2
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_3 }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:beauty_bad_3
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_3 }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:beauty_good_1
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_3 }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:beauty_good_2
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_3 }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:beauty_good_3
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_2 }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:intellect_bad_1
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:shrewd }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:intellect_bad_2
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:shrewd }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:intellect_bad_3
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:shrewd }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:intellect_good_1
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:dull }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:intellect_good_2
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:dull }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:intellect_good_3
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:dull }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:physique_bad_1
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:strong }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:physique_bad_2
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:strong }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:physique_bad_3
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:strong }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:physique_good_1
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:weak }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:spindly }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:physique_good_2
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:weak }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:spindly }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:physique_good_3
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:weak }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:spindly }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:fecund
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:infertile }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:strong
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:weak }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:shrewd
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:dull }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:dwarf
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:giant }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:giant
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:dwarf }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:weak
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:strong }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:dull
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:shrewd }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:spindly
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:infertile
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:fecund }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:bastard
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:legitimized_bastard }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:wild_oat }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:legitimized_bastard
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:bastard }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:wild_oat }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:wild_oat
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:bastard }
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:legitimized_bastard }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:adventurer
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:adventurer_follower }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:adventurer_follower
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:adventurer }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:loyal
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:disloyal }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:disloyal
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:loyal }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:reckless
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:cautious_leader }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:cautious_leader
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:reckless }
+			}
+		}
+	}
+}
+
+xar_cc_selected_traits_compatible_trigger = {
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:lustful }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:chaste }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:gluttonous }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:temperate }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:greedy }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:generous }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:lazy }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:diligent }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:wrathful }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:calm }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:patient }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:impatient }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:arrogant }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:humble }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:deceitful }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:honest }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:craven }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:brave }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:shy }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:gregarious }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:ambitious }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:content }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:arbitrary }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:just }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:cynical }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:zealous }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:paranoid }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:trusting }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:compassionate }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:callous }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:compassionate }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:sadistic }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:callous }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:sadistic }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:stubborn }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:fickle }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:stubborn }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:eccentric }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:fickle }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:eccentric }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:vengeful }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:forgiving }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:profligate }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:improvident }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:comfort_eater }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:inappetetic }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:ill }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:pneumonic }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:eunuch_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beardless_eunuch }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_1 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_1 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_1 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_bad_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:beauty_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:shrewd }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:shrewd }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_bad_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:shrewd }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:dull }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:dull }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:intellect_good_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:dull }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:strong }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:strong }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_bad_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:strong }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:weak }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_1 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:spindly }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:weak }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_2 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:spindly }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:weak }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:physique_good_3 }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:spindly }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:fecund }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:infertile }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:strong }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:weak }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:shrewd }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:dull }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:dwarf }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:giant }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:bastard }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:legitimized_bastard }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:bastard }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:wild_oat }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:legitimized_bastard }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:wild_oat }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:adventurer }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:adventurer_follower }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:loyal }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:disloyal }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:reckless }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:cautious_leader }
+	}
+}
