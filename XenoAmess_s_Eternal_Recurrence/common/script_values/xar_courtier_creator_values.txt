@@ -1,41 +1,384 @@
-﻿# Authoritative courtier creator counts and gold price.
-xar_cc_commander_count = {
+﻿# Native ruler-designer absolute skill costs, adapted to character variables.
+xar_cc_diplomacy_skill_cost = {
 	value = 0
-	if = { limit = { var:xar_cc_cmd_organizer = 1 } add = 1 }
-	if = { limit = { var:xar_cc_cmd_military_engineer = 1 } add = 1 }
-	if = { limit = { var:xar_cc_cmd_aggressive_attacker = 1 } add = 1 }
-	if = { limit = { var:xar_cc_cmd_unyielding_defender = 1 } add = 1 }
+	if = {
+		limit = {
+			var:xar_cc_diplomacy > 0
+			var:xar_cc_diplomacy < 5
+		}
+		add = 2
+		multiply = var:xar_cc_diplomacy
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_diplomacy > 4
+			var:xar_cc_diplomacy < 9
+		}
+		add = 4
+		multiply = {
+			value = var:xar_cc_diplomacy
+			subtract = 4
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_diplomacy > 8
+			var:xar_cc_diplomacy < 13
+		}
+		add = 7
+		multiply = {
+			value = var:xar_cc_diplomacy
+			subtract = 8
+		}
+		add = 24
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_diplomacy > 12
+			var:xar_cc_diplomacy < 17
+		}
+		add = 11
+		multiply = {
+			value = var:xar_cc_diplomacy
+			subtract = 12
+		}
+		add = 52
+	}
+	else_if = {
+		limit = { var:xar_cc_diplomacy > 16 }
+		add = 17
+		multiply = {
+			value = var:xar_cc_diplomacy
+			subtract = 16
+		}
+		add = 96
+	}
 }
 
-xar_cc_personality_count = {
+xar_cc_martial_skill_cost = {
 	value = 0
-	if = { limit = { var:xar_cc_pers_brave = 1 } add = 1 }
-	if = { limit = { var:xar_cc_pers_craven = 1 } add = 1 }
-	if = { limit = { var:xar_cc_pers_calm = 1 } add = 1 }
-	if = { limit = { var:xar_cc_pers_wrathful = 1 } add = 1 }
-	if = { limit = { var:xar_cc_pers_diligent = 1 } add = 1 }
-	if = { limit = { var:xar_cc_pers_lazy = 1 } add = 1 }
+	if = {
+		limit = {
+			var:xar_cc_martial > 0
+			var:xar_cc_martial < 5
+		}
+		add = 2
+		multiply = var:xar_cc_martial
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_martial > 4
+			var:xar_cc_martial < 9
+		}
+		add = 4
+		multiply = {
+			value = var:xar_cc_martial
+			subtract = 4
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_martial > 8
+			var:xar_cc_martial < 13
+		}
+		add = 7
+		multiply = {
+			value = var:xar_cc_martial
+			subtract = 8
+		}
+		add = 24
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_martial > 12
+			var:xar_cc_martial < 17
+		}
+		add = 11
+		multiply = {
+			value = var:xar_cc_martial
+			subtract = 12
+		}
+		add = 52
+	}
+	else_if = {
+		limit = { var:xar_cc_martial > 16 }
+		add = 17
+		multiply = {
+			value = var:xar_cc_martial
+			subtract = 16
+		}
+		add = 96
+	}
+}
+
+xar_cc_stewardship_skill_cost = {
+	value = 0
+	if = {
+		limit = {
+			var:xar_cc_stewardship > 0
+			var:xar_cc_stewardship < 5
+		}
+		add = 2
+		multiply = var:xar_cc_stewardship
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_stewardship > 4
+			var:xar_cc_stewardship < 9
+		}
+		add = 4
+		multiply = {
+			value = var:xar_cc_stewardship
+			subtract = 4
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_stewardship > 8
+			var:xar_cc_stewardship < 13
+		}
+		add = 7
+		multiply = {
+			value = var:xar_cc_stewardship
+			subtract = 8
+		}
+		add = 24
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_stewardship > 12
+			var:xar_cc_stewardship < 17
+		}
+		add = 11
+		multiply = {
+			value = var:xar_cc_stewardship
+			subtract = 12
+		}
+		add = 52
+	}
+	else_if = {
+		limit = { var:xar_cc_stewardship > 16 }
+		add = 17
+		multiply = {
+			value = var:xar_cc_stewardship
+			subtract = 16
+		}
+		add = 96
+	}
+}
+
+xar_cc_intrigue_skill_cost = {
+	value = 0
+	if = {
+		limit = {
+			var:xar_cc_intrigue > 0
+			var:xar_cc_intrigue < 5
+		}
+		add = 2
+		multiply = var:xar_cc_intrigue
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_intrigue > 4
+			var:xar_cc_intrigue < 9
+		}
+		add = 4
+		multiply = {
+			value = var:xar_cc_intrigue
+			subtract = 4
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_intrigue > 8
+			var:xar_cc_intrigue < 13
+		}
+		add = 7
+		multiply = {
+			value = var:xar_cc_intrigue
+			subtract = 8
+		}
+		add = 24
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_intrigue > 12
+			var:xar_cc_intrigue < 17
+		}
+		add = 11
+		multiply = {
+			value = var:xar_cc_intrigue
+			subtract = 12
+		}
+		add = 52
+	}
+	else_if = {
+		limit = { var:xar_cc_intrigue > 16 }
+		add = 17
+		multiply = {
+			value = var:xar_cc_intrigue
+			subtract = 16
+		}
+		add = 96
+	}
+}
+
+xar_cc_learning_skill_cost = {
+	value = 0
+	if = {
+		limit = {
+			var:xar_cc_learning > 0
+			var:xar_cc_learning < 5
+		}
+		add = 2
+		multiply = var:xar_cc_learning
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_learning > 4
+			var:xar_cc_learning < 9
+		}
+		add = 4
+		multiply = {
+			value = var:xar_cc_learning
+			subtract = 4
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_learning > 8
+			var:xar_cc_learning < 13
+		}
+		add = 7
+		multiply = {
+			value = var:xar_cc_learning
+			subtract = 8
+		}
+		add = 24
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_learning > 12
+			var:xar_cc_learning < 17
+		}
+		add = 11
+		multiply = {
+			value = var:xar_cc_learning
+			subtract = 12
+		}
+		add = 52
+	}
+	else_if = {
+		limit = { var:xar_cc_learning > 16 }
+		add = 17
+		multiply = {
+			value = var:xar_cc_learning
+			subtract = 16
+		}
+		add = 96
+	}
+}
+
+xar_cc_prowess_skill_cost = {
+	value = 0
+	if = {
+		limit = {
+			var:xar_cc_prowess > 0
+			var:xar_cc_prowess < 5
+		}
+		add = 1
+		multiply = var:xar_cc_prowess
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_prowess > 4
+			var:xar_cc_prowess < 9
+		}
+		add = 2
+		multiply = {
+			value = var:xar_cc_prowess
+			subtract = 4
+		}
+		add = 4
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_prowess > 8
+			var:xar_cc_prowess < 13
+		}
+		add = 4
+		multiply = {
+			value = var:xar_cc_prowess
+			subtract = 8
+		}
+		add = 12
+	}
+	else_if = {
+		limit = {
+			var:xar_cc_prowess > 12
+			var:xar_cc_prowess < 17
+		}
+		add = 7
+		multiply = {
+			value = var:xar_cc_prowess
+			subtract = 12
+		}
+		add = 28
+	}
+	else_if = {
+		limit = { var:xar_cc_prowess > 16 }
+		add = 11
+		multiply = {
+			value = var:xar_cc_prowess
+			subtract = 16
+		}
+		add = 56
+	}
+}
+
+xar_cc_arbitrary_age_cost = {
+	value = 0
+	if = {
+		limit = { var:xar_cc_age <= 18 }
+		add = 60
+	}
+	else_if = {
+		limit = { var:xar_cc_age <= 30 }
+		add = 60
+		subtract = {
+			value = var:xar_cc_age
+			subtract = 18
+			multiply = 2.5
+		}
+	}
+	else_if = {
+		limit = { var:xar_cc_age < 45 }
+		add = 30
+		subtract = {
+			value = var:xar_cc_age
+			subtract = 30
+			multiply = 2
+		}
+	}
 }
 
 xar_courtier_creator_cost = {
-	# Base 50 plus one mandatory tier-3 education at its native cost of 40.
-	value = 90
-	if = { limit = { var:xar_cc_age = 18 } add = 60 }
-	if = { limit = { var:xar_cc_age = 30 } add = 30 }
-
-	if = { limit = { var:xar_cc_cmd_organizer = 1 } add = 25 }
-	if = { limit = { var:xar_cc_cmd_military_engineer = 1 } add = 25 }
-	if = { limit = { var:xar_cc_cmd_aggressive_attacker = 1 } add = 25 }
-	if = { limit = { var:xar_cc_cmd_unyielding_defender = 1 } add = 25 }
-
-	if = { limit = { var:xar_cc_phys_beauty = 1 } add = 40 }
-	if = { limit = { var:xar_cc_phys_physique = 1 } add = 60 }
-	if = { limit = { var:xar_cc_phys_intellect = 1 } add = 80 }
-
-	if = { limit = { var:xar_cc_pers_brave = 1 } add = 40 }
-	if = { limit = { var:xar_cc_pers_craven = 1 } add = -10 }
-	if = { limit = { var:xar_cc_pers_calm = 1 } add = 25 }
-	if = { limit = { var:xar_cc_pers_wrathful = 1 } add = 30 }
-	if = { limit = { var:xar_cc_pers_diligent = 1 } add = 40 }
-	if = { limit = { var:xar_cc_pers_lazy = 1 } add = -10 }
+	value = 50
+	add = xar_cc_arbitrary_age_cost
+	add = xar_cc_selected_trait_cost
+	add = xar_cc_diplomacy_skill_cost
+	add = xar_cc_martial_skill_cost
+	add = xar_cc_stewardship_skill_cost
+	add = xar_cc_intrigue_skill_cost
+	add = xar_cc_learning_skill_cost
+	add = xar_cc_prowess_skill_cost
+	# Six in every base skill costs 88 under the native absolute curves.
+	subtract = 88
+	round = yes
+	min = 0
 }

@@ -1,27 +1,200 @@
 ﻿# Paid custom courtier creation. No character or title exists before confirm.
 xar_cc_initialize_effect = {
 	if = {
-		limit = { NOT = { has_character_flag = xar_cc_initialized } }
+		limit = { NOT = { has_character_flag = xar_cc_v2_initialized } }
 		set_variable = { name = xar_cc_female value = 0 }
 		set_variable = { name = xar_cc_age value = 30 }
-		set_variable = { name = xar_cc_education value = 2 }
+		set_variable = { name = xar_cc_diplomacy value = 6 }
+		set_variable = { name = xar_cc_martial value = 6 }
+		set_variable = { name = xar_cc_stewardship value = 6 }
+		set_variable = { name = xar_cc_intrigue value = 6 }
+		set_variable = { name = xar_cc_learning value = 6 }
+		set_variable = { name = xar_cc_prowess value = 6 }
+		set_variable = { name = xar_cc_same_house value = 0 }
+		set_variable = { name = xar_cc_selected_culture value = root.culture }
+		set_variable = { name = xar_cc_selected_faith value = root.faith }
 
-		set_variable = { name = xar_cc_cmd_organizer value = 0 }
-		set_variable = { name = xar_cc_cmd_military_engineer value = 0 }
-		set_variable = { name = xar_cc_cmd_aggressive_attacker value = 0 }
-		set_variable = { name = xar_cc_cmd_unyielding_defender value = 0 }
+		clear_variable_list = xar_cc_selected_education
+		clear_variable_list = xar_cc_selected_commander
+		clear_variable_list = xar_cc_selected_physical
+		clear_variable_list = xar_cc_selected_personality
+		clear_variable_list = xar_cc_selected_other
+		trait:education_martial_3 = { save_scope_as = xar_cc_default_education }
+		add_to_variable_list = {
+			name = xar_cc_selected_education
+			target = scope:xar_cc_default_education
+		}
+		set_variable = { name = xar_cc_commander_count value = 0 }
+		set_variable = { name = xar_cc_personality_count value = 0 }
+		add_character_flag = xar_cc_v2_initialized
+	}
+}
 
-		set_variable = { name = xar_cc_phys_beauty value = 0 }
-		set_variable = { name = xar_cc_phys_physique value = 0 }
-		set_variable = { name = xar_cc_phys_intellect value = 0 }
+xar_cc_rebuild_culture_faith_catalogs_effect = {
+	root = {
+		clear_variable_list = xar_cc_catalog_cultures
+		clear_variable_list = xar_cc_catalog_faiths
+	}
+	every_culture_global = {
+		save_scope_as = xar_cc_catalog_culture
+		root = {
+			add_to_variable_list = {
+				name = xar_cc_catalog_cultures
+				target = scope:xar_cc_catalog_culture
+			}
+		}
+	}
+	every_religion_global = {
+		every_faith = {
+			save_scope_as = xar_cc_catalog_faith
+			root = {
+				add_to_variable_list = {
+					name = xar_cc_catalog_faiths
+					target = scope:xar_cc_catalog_faith
+				}
+			}
+		}
+	}
+	root = {
+		if = {
+			limit = { NOT = { exists = var:xar_cc_selected_culture } }
+			set_variable = { name = xar_cc_selected_culture value = root.culture }
+		}
+		else_if = {
+			limit = {
+				NOT = {
+					is_target_in_variable_list = {
+						name = xar_cc_catalog_cultures
+						target = var:xar_cc_selected_culture
+					}
+				}
+			}
+			set_variable = { name = xar_cc_selected_culture value = root.culture }
+		}
+		if = {
+			limit = { NOT = { exists = var:xar_cc_selected_faith } }
+			set_variable = { name = xar_cc_selected_faith value = root.faith }
+		}
+		else_if = {
+			limit = {
+				NOT = {
+					is_target_in_variable_list = {
+						name = xar_cc_catalog_faiths
+						target = var:xar_cc_selected_faith
+					}
+				}
+			}
+			set_variable = { name = xar_cc_selected_faith value = root.faith }
+		}
+	}
+}
 
-		set_variable = { name = xar_cc_pers_brave value = 0 }
-		set_variable = { name = xar_cc_pers_craven value = 0 }
-		set_variable = { name = xar_cc_pers_calm value = 0 }
-		set_variable = { name = xar_cc_pers_wrathful value = 0 }
-		set_variable = { name = xar_cc_pers_diligent value = 0 }
-		set_variable = { name = xar_cc_pers_lazy value = 0 }
-		add_character_flag = xar_cc_initialized
+xar_cc_remove_selected_trait_effect = {
+	if = {
+		limit = {
+			is_target_in_variable_list = {
+				name = xar_cc_selected_education
+				target = $TRAIT$
+			}
+		}
+		remove_list_variable = { name = xar_cc_selected_education target = $TRAIT$ }
+	}
+	if = {
+		limit = {
+			is_target_in_variable_list = {
+				name = xar_cc_selected_commander
+				target = $TRAIT$
+			}
+		}
+		remove_list_variable = { name = xar_cc_selected_commander target = $TRAIT$ }
+		change_variable = { name = xar_cc_commander_count add = -1 }
+	}
+	if = {
+		limit = {
+			is_target_in_variable_list = {
+				name = xar_cc_selected_physical
+				target = $TRAIT$
+			}
+		}
+		remove_list_variable = { name = xar_cc_selected_physical target = $TRAIT$ }
+	}
+	if = {
+		limit = {
+			is_target_in_variable_list = {
+				name = xar_cc_selected_personality
+				target = $TRAIT$
+			}
+		}
+		remove_list_variable = { name = xar_cc_selected_personality target = $TRAIT$ }
+		change_variable = { name = xar_cc_personality_count add = -1 }
+	}
+	if = {
+		limit = {
+			is_target_in_variable_list = {
+				name = xar_cc_selected_other
+				target = $TRAIT$
+			}
+		}
+		remove_list_variable = { name = xar_cc_selected_other target = $TRAIT$ }
+	}
+}
+
+xar_cc_collect_invalid_selected_traits_effect = {
+	every_in_list = {
+		variable = $LIST$
+		save_scope_as = xar_cc_candidate_trait
+		root = {
+			if = {
+				limit = {
+					NOT = { xar_cc_candidate_trait_metadata_valid_trigger = yes }
+				}
+				add_to_variable_list = {
+					name = xar_cc_invalid_selected_traits
+					target = scope:xar_cc_candidate_trait
+				}
+			}
+		}
+	}
+}
+
+xar_cc_prune_invalid_selected_traits_effect = {
+	clear_variable_list = xar_cc_invalid_selected_traits
+	xar_cc_collect_invalid_selected_traits_effect = { LIST = xar_cc_selected_education }
+	xar_cc_collect_invalid_selected_traits_effect = { LIST = xar_cc_selected_commander }
+	xar_cc_collect_invalid_selected_traits_effect = { LIST = xar_cc_selected_physical }
+	xar_cc_collect_invalid_selected_traits_effect = { LIST = xar_cc_selected_personality }
+	xar_cc_collect_invalid_selected_traits_effect = { LIST = xar_cc_selected_other }
+	every_in_list = {
+		variable = xar_cc_invalid_selected_traits
+		save_scope_as = xar_cc_candidate_trait
+		root = {
+			xar_cc_remove_selected_trait_effect = {
+				TRAIT = scope:xar_cc_candidate_trait
+			}
+		}
+	}
+	clear_variable_list = xar_cc_invalid_selected_traits
+}
+
+xar_cc_adjust_numeric_variable_effect = {
+	set_variable = {
+		name = $VARIABLE$
+		value = {
+			value = var:$VARIABLE$
+			add = $DELTA$
+			min = $MIN$
+			max = $MAX$
+		}
+	}
+}
+
+xar_cc_apply_selected_trait_list_effect = {
+	every_in_list = {
+		variable = $LIST$
+		save_scope_as = xar_cc_selected_trait
+		scope:xar_cc_created_courtier = {
+			add_trait = scope:xar_cc_selected_trait
+		}
 	}
 }
 
@@ -31,17 +204,29 @@ xar_cc_complete_purchase_effect = {
 			xar_cc_ui_access_trigger = yes
 			xar_cc_valid_configuration_trigger = yes
 			gold >= xar_courtier_creator_cost
-			exists = culture
-			exists = faith
-			exists = location
+			exists = var:xar_cc_selected_culture
+			exists = var:xar_cc_selected_faith
+			is_target_in_variable_list = {
+				name = xar_cc_catalog_cultures
+				target = var:xar_cc_selected_culture
+			}
+			is_target_in_variable_list = {
+				name = xar_cc_catalog_faiths
+				target = var:xar_cc_selected_faith
+			}
 		}
 		# Closing first makes queued or double-clicked executions harmless.
 		remove_character_flag = xar_cc_open
+		save_scope_value_as = { name = xar_cc_purchase_diplomacy value = var:xar_cc_diplomacy }
+		save_scope_value_as = { name = xar_cc_purchase_martial value = var:xar_cc_martial }
+		save_scope_value_as = { name = xar_cc_purchase_stewardship value = var:xar_cc_stewardship }
+		save_scope_value_as = { name = xar_cc_purchase_intrigue value = var:xar_cc_intrigue }
+		save_scope_value_as = { name = xar_cc_purchase_learning value = var:xar_cc_learning }
+		save_scope_value_as = { name = xar_cc_purchase_prowess value = var:xar_cc_prowess }
 		create_character = {
-			location = root.location
 			employer = root
-			culture = root.culture
-			faith = root.faith
+			culture = root.var:xar_cc_selected_culture
+			faith = root.var:xar_cc_selected_faith
 			dynasty = none
 			age = root.var:xar_cc_age
 			gender_female_chance = {
@@ -52,62 +237,44 @@ xar_cc_complete_purchase_effect = {
 				else = { add = 0 }
 			}
 			random_traits = no
-			diplomacy = 6
-			martial = 6
-			stewardship = 6
-			intrigue = 6
-			learning = 6
-			prowess = 6
+			diplomacy = 0
+			martial = 0
+			stewardship = 0
+			intrigue = 0
+			learning = 0
+			prowess = 0
 			save_scope_as = xar_cc_created_courtier
 		}
 		if = {
 			limit = { exists = scope:xar_cc_created_courtier }
-			remove_short_term_gold = xar_courtier_creator_cost
+			scope:xar_cc_created_courtier = {
+				add_diplomacy_skill = scope:xar_cc_purchase_diplomacy
+				add_martial_skill = scope:xar_cc_purchase_martial
+				add_stewardship_skill = scope:xar_cc_purchase_stewardship
+				add_intrigue_skill = scope:xar_cc_purchase_intrigue
+				add_learning_skill = scope:xar_cc_purchase_learning
+				add_prowess_skill = scope:xar_cc_purchase_prowess
+			}
+			xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_education }
+			xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_commander }
+			xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_physical }
+			xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_personality }
+			xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_other }
 			scope:xar_cc_created_courtier = {
 				if = {
-					limit = { root.var:xar_cc_education = 1 }
-					add_trait = education_diplomacy_3
+					limit = {
+						root.var:xar_cc_same_house = 1
+						exists = root.house
+					}
+					set_house = root.house
 				}
-				else_if = {
-					limit = { root.var:xar_cc_education = 2 }
-					add_trait = education_martial_3
-				}
-				else_if = {
-					limit = { root.var:xar_cc_education = 3 }
-					add_trait = education_stewardship_3
-				}
-				else_if = {
-					limit = { root.var:xar_cc_education = 4 }
-					add_trait = education_intrigue_3
-				}
-				else_if = {
-					limit = { root.var:xar_cc_education = 5 }
-					add_trait = education_learning_3
-				}
-
-				if = { limit = { root.var:xar_cc_cmd_organizer = 1 } add_trait = organizer }
-				if = { limit = { root.var:xar_cc_cmd_military_engineer = 1 } add_trait = military_engineer }
-				if = { limit = { root.var:xar_cc_cmd_aggressive_attacker = 1 } add_trait = aggressive_attacker }
-				if = { limit = { root.var:xar_cc_cmd_unyielding_defender = 1 } add_trait = unyielding_defender }
-
-				if = { limit = { root.var:xar_cc_phys_beauty = 1 } add_trait = beauty_good_1 }
-				if = { limit = { root.var:xar_cc_phys_physique = 1 } add_trait = physique_good_1 }
-				if = { limit = { root.var:xar_cc_phys_intellect = 1 } add_trait = intellect_good_1 }
-
-				if = { limit = { root.var:xar_cc_pers_brave = 1 } add_trait = brave }
-				if = { limit = { root.var:xar_cc_pers_craven = 1 } add_trait = craven }
-				if = { limit = { root.var:xar_cc_pers_calm = 1 } add_trait = calm }
-				if = { limit = { root.var:xar_cc_pers_wrathful = 1 } add_trait = wrathful }
-				if = { limit = { root.var:xar_cc_pers_diligent = 1 } add_trait = diligent }
-				if = { limit = { root.var:xar_cc_pers_lazy = 1 } add_trait = lazy }
-
 				add_character_flag = {
 					flag = blocked_from_leaving
 					years = 25
 				}
-				add_character_flag = xar_cc_created_courtier
 				force_character_skill_recalculation = yes
 			}
+			remove_short_term_gold = xar_courtier_creator_cost
 			if = {
 				limit = {
 					scope:xar_cc_created_courtier = {
@@ -116,6 +283,16 @@ xar_cc_complete_purchase_effect = {
 				}
 				add_courtier = scope:xar_cc_created_courtier
 			}
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = { has_global_variable = xa_test_cc_active }
+				set_global_variable = {
+					name = xa_test_cc_created_courtier
+					value = scope:xar_cc_created_courtier
+				}
+				xar_acceptance_courtier_purchase_observer_effect = yes
+			}
+			# XAR_ACCEPTANCE_ONLY_END
 			send_interface_toast = {
 				title = xar.cc.toast.title
 				left_icon = scope:xar_cc_created_courtier

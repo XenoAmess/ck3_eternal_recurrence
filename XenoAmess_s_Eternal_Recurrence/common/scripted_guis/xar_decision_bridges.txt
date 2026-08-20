@@ -26,6 +26,7 @@ xar_open_contract_gui = {
 	scope = character
 	is_shown = {
 		is_ai = no
+		is_alive = yes
 		has_character_flag = xa_enabled
 		has_global_variable = xa_open_contract_pending
 	}
@@ -33,6 +34,7 @@ xar_open_contract_gui = {
 		if = {
 			limit = {
 				is_ai = no
+				is_alive = yes
 				has_character_flag = xa_enabled
 				has_global_variable = xa_open_contract_pending
 			}
@@ -52,6 +54,7 @@ xar_cc_open_bridge_gui = {
 	scope = character
 	is_shown = {
 		is_ai = no
+		is_alive = yes
 		has_character_flag = xa_enabled
 		has_character_flag = xar_cc_open_pending
 		NOT = { has_character_flag = xar_cc_open }
@@ -60,12 +63,15 @@ xar_cc_open_bridge_gui = {
 		if = {
 			limit = {
 				is_ai = no
+				is_alive = yes
 				has_character_flag = xa_enabled
 				has_character_flag = xar_cc_open_pending
 				NOT = { has_character_flag = xar_cc_open }
 			}
 			remove_character_flag = xar_cc_open_pending
 			xar_cc_initialize_effect = yes
+			xar_cc_rebuild_trait_catalogs_effect = yes
+			xar_cc_rebuild_culture_faith_catalogs_effect = yes
 			add_character_flag = xar_cc_open
 		}
 	}

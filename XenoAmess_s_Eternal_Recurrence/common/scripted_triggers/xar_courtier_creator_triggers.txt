@@ -7,52 +7,116 @@ xar_cc_ui_access_trigger = {
 	has_character_flag = xar_cc_open
 }
 
+xar_cc_trait_is_selected_trigger = {
+	OR = {
+		is_target_in_variable_list = { name = xar_cc_selected_education target = $TRAIT$ }
+		is_target_in_variable_list = { name = xar_cc_selected_commander target = $TRAIT$ }
+		is_target_in_variable_list = { name = xar_cc_selected_physical target = $TRAIT$ }
+		is_target_in_variable_list = { name = xar_cc_selected_personality target = $TRAIT$ }
+		is_target_in_variable_list = { name = xar_cc_selected_other target = $TRAIT$ }
+	}
+}
+
+xar_cc_selected_list_valid_trigger = {
+	every_in_list = {
+		variable = $SELECTED_LIST$
+		save_temporary_scope_as = xar_cc_candidate_trait
+		root = {
+			is_target_in_variable_list = {
+				name = $CATALOG_LIST$
+				target = scope:xar_cc_candidate_trait
+			}
+			xar_cc_candidate_trait_metadata_valid_trigger = yes
+		}
+	}
+}
+
 xar_cc_valid_configuration_trigger = {
-	has_character_flag = xar_cc_initialized
-	exists = culture
-	exists = faith
-	exists = location
+	is_ai = no
+	is_alive = yes
+	has_character_flag = xa_enabled
+	has_character_flag = xar_cc_v2_initialized
 	OR = {
 		var:xar_cc_female = 0
 		var:xar_cc_female = 1
 	}
-	OR = {
-		var:xar_cc_age = 18
-		var:xar_cc_age = 30
-		var:xar_cc_age = 45
+	var:xar_cc_age >= 0
+	var:xar_cc_age <= 120
+	var:xar_cc_diplomacy >= 0
+	var:xar_cc_diplomacy <= 100
+	var:xar_cc_martial >= 0
+	var:xar_cc_martial <= 100
+	var:xar_cc_stewardship >= 0
+	var:xar_cc_stewardship <= 100
+	var:xar_cc_intrigue >= 0
+	var:xar_cc_intrigue <= 100
+	var:xar_cc_learning >= 0
+	var:xar_cc_learning <= 100
+	var:xar_cc_prowess >= 0
+	var:xar_cc_prowess <= 100
+	exists = var:xar_cc_selected_culture
+	exists = var:xar_cc_selected_faith
+	is_target_in_variable_list = {
+		name = xar_cc_catalog_cultures
+		target = var:xar_cc_selected_culture
+	}
+	is_target_in_variable_list = {
+		name = xar_cc_catalog_faiths
+		target = var:xar_cc_selected_faith
 	}
 	OR = {
-		var:xar_cc_education = 1
-		var:xar_cc_education = 2
-		var:xar_cc_education = 3
-		var:xar_cc_education = 4
-		var:xar_cc_education = 5
+		var:xar_cc_same_house = 0
+		AND = {
+			var:xar_cc_same_house = 1
+			exists = root.house
+		}
 	}
-	xar_cc_commander_count <= 2
-	xar_cc_personality_count <= 3
-	NOT = {
-		var:xar_cc_pers_brave = 1
-		var:xar_cc_pers_craven = 1
+	OR = {
+		AND = {
+			var:xar_cc_age >= 16
+			variable_list_size = { name = xar_cc_selected_education value = 1 }
+		}
+		AND = {
+			var:xar_cc_age < 16
+			OR = {
+				NOT = { has_variable_list = xar_cc_selected_education }
+				variable_list_size = { name = xar_cc_selected_education value = 0 }
+			}
+		}
 	}
-	NOT = {
-		var:xar_cc_pers_calm = 1
-		var:xar_cc_pers_wrathful = 1
+	var:xar_cc_commander_count >= 0
+	var:xar_cc_commander_count <= 2
+	variable_list_size = { name = xar_cc_selected_commander value <= 2 }
+	variable_list_size = {
+		name = xar_cc_selected_commander
+		value = var:xar_cc_commander_count
 	}
-	NOT = {
-		var:xar_cc_pers_diligent = 1
-		var:xar_cc_pers_lazy = 1
+	var:xar_cc_personality_count >= 0
+	var:xar_cc_personality_count <= 3
+	variable_list_size = { name = xar_cc_selected_personality value <= 3 }
+	variable_list_size = {
+		name = xar_cc_selected_personality
+		value = var:xar_cc_personality_count
 	}
-	OR = { var:xar_cc_cmd_organizer = 0 var:xar_cc_cmd_organizer = 1 }
-	OR = { var:xar_cc_cmd_military_engineer = 0 var:xar_cc_cmd_military_engineer = 1 }
-	OR = { var:xar_cc_cmd_aggressive_attacker = 0 var:xar_cc_cmd_aggressive_attacker = 1 }
-	OR = { var:xar_cc_cmd_unyielding_defender = 0 var:xar_cc_cmd_unyielding_defender = 1 }
-	OR = { var:xar_cc_phys_beauty = 0 var:xar_cc_phys_beauty = 1 }
-	OR = { var:xar_cc_phys_physique = 0 var:xar_cc_phys_physique = 1 }
-	OR = { var:xar_cc_phys_intellect = 0 var:xar_cc_phys_intellect = 1 }
-	OR = { var:xar_cc_pers_brave = 0 var:xar_cc_pers_brave = 1 }
-	OR = { var:xar_cc_pers_craven = 0 var:xar_cc_pers_craven = 1 }
-	OR = { var:xar_cc_pers_calm = 0 var:xar_cc_pers_calm = 1 }
-	OR = { var:xar_cc_pers_wrathful = 0 var:xar_cc_pers_wrathful = 1 }
-	OR = { var:xar_cc_pers_diligent = 0 var:xar_cc_pers_diligent = 1 }
-	OR = { var:xar_cc_pers_lazy = 0 var:xar_cc_pers_lazy = 1 }
+	xar_cc_selected_list_valid_trigger = {
+		SELECTED_LIST = xar_cc_selected_education
+		CATALOG_LIST = xar_cc_catalog_education
+	}
+	xar_cc_selected_list_valid_trigger = {
+		SELECTED_LIST = xar_cc_selected_commander
+		CATALOG_LIST = xar_cc_catalog_commander
+	}
+	xar_cc_selected_list_valid_trigger = {
+		SELECTED_LIST = xar_cc_selected_physical
+		CATALOG_LIST = xar_cc_catalog_physical
+	}
+	xar_cc_selected_list_valid_trigger = {
+		SELECTED_LIST = xar_cc_selected_personality
+		CATALOG_LIST = xar_cc_catalog_personality
+	}
+	xar_cc_selected_list_valid_trigger = {
+		SELECTED_LIST = xar_cc_selected_other
+		CATALOG_LIST = xar_cc_catalog_other
+	}
+	xar_cc_selected_traits_compatible_trigger = yes
 }
