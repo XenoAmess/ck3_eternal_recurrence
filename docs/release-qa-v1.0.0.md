@@ -1,5 +1,67 @@
 # Release QA v1.0.0
 
+## Remaining Work / 剩余工作
+
+截至 2026-08-20，以下清单是创建 `v1.0.0` tag 前的权威待办。Steam item
+`3784706360` 经公开 API 确认为公开、有效且未封禁；Steam 本身当前不是阻塞项，尚未完成的是
+最终候选上传及下载缓存校验。
+
+### Code and CI / 代码与 CI
+
+- [ ] 修复 clean checkout 的官方 L0：`tools/validate_static.py` 当前无条件读取被
+  `.gitignore` 排除的 CK3 原版 `window_succession_event.gui`，导致 GitHub Actions run
+  [`32364643040`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32364643040)
+  在 `Validate generated and static content` 失败。改为从已跟踪投影恢复原版正文、校验
+  CK3 1.19.0.6 固定摘要并重新渲染；本机存在原版源时再追加源文件强校验，不提交第二份原版 fixture。
+- [ ] 修正付费廷臣 trait 图标的信仰上下文：德行、罪恶光效与 tooltip 必须使用
+  `xar_cc_selected_faith`，不能继续使用玩家当前信仰。
+- [ ] 增加铁人模式死亡收尾：普通非铁人单机继续进入观察者；铁人模式必须强制保持暂停，
+  通过注册的阻塞窗口打开原生暂停菜单，并走原生保存及退出主菜单确认流程。
+- [ ] 为铁人退出窗口新增简中、英文文案，并按发布国际化流程补齐法、德、日、韩、波、俄、西；
+  九语言必须通过 key、保护 token、BOM、术语和结构审计。
+
+### Automated Verification / 自动验证
+
+- [ ] 通过 Python 编译、no-heir 投影契约单元测试、`validate_static.py`、计分 reference vectors、
+  `build_release.py --check` 与 `git diff --check`。
+- [ ] 推送修复后确认 GitHub 官方 `windows-latest` 的 validate、计分向量、确定性构建全部 GREEN。
+- [ ] 重跑 `courtier-creator`：选择阿卢克古道后返回性格页，确认【勤勉】按所选信仰显示为美德，
+  且 tooltip 不再引用玩家的天主教信仰。
+- [ ] 增加并通过非 debug、非铁人普通继承验收，证明正式环境中的 `observe` 路径真实进入观察者模式。
+- [ ] 使用隔离 `userdir`、关闭云存档运行非 debug 铁人验收：验证结算、强制暂停、恢复游戏后重新阻断、
+  原生退出确认、铁人存档稳定落盘及返回主菜单；不得触碰真实用户存档。
+- [ ] 在最终 mod tree 上串行重跑完整 release-gating CK3 套件与 production projection，保存
+  JSON/JUnit、截图、增量日志和 runtime tree hash。
+
+### Manual Sign-off / 人工签核
+
+- [ ] 完成九语言母语级人格、术语及游戏内截断检查；自动结构校验不得代替人工签核。
+- [ ] 生成并审阅非 debug 简中干净截图集。
+- [ ] 生成并审阅匹配的非 debug 英文干净截图集。
+- [ ] 检查廷臣七页、价格栏、九语言最长字符串及支持的 UI 缩放下是否裁切。
+- [ ] 确认缩略图在 Workshop 卡片尺寸下可读，并确认标题、首屏核心循环与兼容性说明清晰。
+
+### External Delivery / 外部发布
+
+- [ ] 重新执行 `gh auth login -h github.com`；当前 GitHub CLI token 无效。
+- [ ] 人工签核完成后，把 `CHANGELOG.md` 的 `Unreleased` 改为实际发布日期。
+- [ ] 在 clean final HEAD 创建并推送 `v1.0.0` tag；此前不得提前打 tag。
+- [ ] 运行 `py tools/build_release.py --release`，记录 commit、manifest/ZIP SHA-256 和 78 文件清单。
+- [ ] 上传前仅在用户目录外层 `.mod` 恢复 `remote_file_id="3784706360"`，临时把 `path=` 指向
+  tagged staging；内层 `descriptor.mod` 继续禁止该字段。
+- [ ] 经 PDX Launcher 把同一 staging 更新到既有 Steam item，随后强制重新下载缓存并使用
+  versioned manifest 逐文件校验；acceptance runner 同步过的本地缓存不能作为远端发布证据。
+- [ ] 创建 GitHub Release，附加同一次 tagged 构建的 ZIP 与 manifest，再恢复外层 `.mod` 的开发路径。
+
+### Explicit Non-gating Backlog / 明确不阻塞 1.0.0
+
+- [ ] delayed `player_heir` carrier 在 `xar.1003` 前死亡时的持久事务 fallback。
+- [ ] 无地玩家付费廷臣交付。
+- [ ] 付费廷臣配置跨进程保留。
+- [ ] 强制交付失败后的无扣金、无存活泄漏角色实机 fixture。
+- [ ] 多人同步与多人死亡收尾支持；当前产品仍按单机定位。
+- [ ] 30–40 年四夹具完整平衡矩阵；它只属于 soak、稳定性与遥测，不是数值平衡证明。
+
 ## Automated Evidence
 
 - Static generated parity, BOM/localization structure, player-only guards, assets and release allowlist: required GREEN.
@@ -34,7 +96,7 @@ Rows for the full suite retain their original tree fingerprints. Subsequent prod
 
 | Scenario | Run ID | Result |
 |---|---|---|
-| L0 static + scoring vectors + deterministic release projection | current working tree | GREEN, 78 release files |
+| L0 static + scoring vectors + deterministic release projection | local current working tree | GREEN locally, 78 release files; hosted status is tracked separately below |
 | Full selftest / 57 assertions / production UI / pool sweep | `xar_selftest_release_candidate_20260820` | GREEN, 57/57, 200-entry sweep, persistence, observer transition, 0 `xar` errors |
 | Four production-only smokes | `xar_on_first_life_release_candidate_20260820`; `xar_on_recorded_release_candidate_20260820`; `xar_on_high_budget_release_candidate_20260820`; `xar_off_release_candidate_20260820` | GREEN, stripped staging first/recorded/high-budget/off paths, 0 `xar` errors |
 | Two-process persistence restart | `xar_persistence_release_candidate_20260820` | GREEN, process B imported process A tier 445 without pre-seeding, 0 `xar` errors |
@@ -49,10 +111,14 @@ Current candidate gates:
 
 | Gate | Status | Required evidence |
 |---|---|---|
-| Current-tree L0 and deterministic release projection | GREEN | `validate_static.py`, reference vectors and 78-file `build_release.py --check` all pass; this is not a CK3 runtime claim |
+| Local current-tree L0 and deterministic release projection | GREEN | `validate_static.py`, reference vectors and 78-file `build_release.py --check` all pass locally; this is not a hosted or CK3 runtime claim |
+| Official GitHub `windows-latest` L0 | BLOCKED | run `32364643040` fails because no-heir parity reads the ignored local CK3 source; clean-checkout projection validation and a new GREEN run are required |
 | Full baseline plus post-review targeted CK3 regression | GREEN | the full release-candidate suite passed; changed death paths and paid courtier were then rerun on the reviewed tree with zero `xar` errors |
 | Ordinary death with a playable heir | GREEN | `xar_death_with_heir_postreview_20260820`; one compute, dispatch and visible settlement |
 | Paid custom courtier | GREEN | `xar_courtier_creator_postreview22_20260820`; both selected origins differ from the player, successful delivery precedes configuration and charge, and remaining landless/process-restart cases are declared coverage gaps |
+| Selected-faith trait presentation | OPEN | trait virtue/sin glow and tooltip must follow `xar_cc_selected_faith`, followed by a targeted real-UI rerun |
+| Ironman terminal flow | OPEN | non-debug isolated-profile proof of forced pause, native save/exit confirmation and main-menu return is required |
+| Final exact-candidate CK3 regression | PENDING | rerun the complete release-gating suite after the code and localization changes above |
 
 ## Manual Language Sign-off
 
