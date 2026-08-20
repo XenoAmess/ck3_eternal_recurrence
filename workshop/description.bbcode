@@ -5,7 +5,7 @@
 [b]一位统治者，一条命，一次结算。死亡称量真实分数；余烬位阶跨存档保存；下一世花费其副本换取强化。[/b]
 [b]One ruler, one life, one settlement. Death yields an exact score; the Ember Tier persists across saves; the next life spends its copy on upgrades.[/b]
 
-Version 1.0.0 candidate · CK3 1.19.0.6 · Workshop 3784706360
+Version 1.0.0 · CK3 1.19.0.6 · Workshop 3784706360
 
 [b]⚠ 必须开启教程 / TUTORIAL REQUIRED：设置 → 教程选择「完整」或「警告」，切勿禁用。Existing records remain readable when disabled, but new Ember Tiers, contract PBs, and collection entries cannot be written.[/b]
 
@@ -27,7 +27,7 @@ Favor sessions offer one of three blessings, followed by one of two rarity-const
 六类本世契约把战争、牵制、传教、家族、建设与低压力长寿变成增量目标。3/6/10 进度提供叙事反馈、分数与跨存档 PB；【琉焰之视】每 10 XP 交替解锁重抽和封印。
 Six lifetime contracts turn war, hooks, conversion, family, construction, and low-stress longevity into incremental goals. Progress 3/6/10 grants narrative feedback, score, and persistent PBs; every 10 Gaze XP alternates rerolls and seals.
 
-[h3]候选更新 / Candidate Update[/h3]
+[h3]1.0.0 更新 / 1.0.0 Update[/h3]
 [i]付费自定义廷臣 v2 已通过 L0 与 CK3 1.19.0.6 真实 UI 验收：七页契页提供精确年龄、六项基础能力、25 项教育、17 项将才、38 项身体、36 项性格、108 项其他特质，以及所有已载入文化与信仰；也可选择归入玩家家族。配置按玩家保存，AI 无入口，且只有人物创建成功后才扣除一次金币。[/i]
 [i]The paid custom-courtier v2 has passed L0 and real-UI acceptance on CK3 1.19.0.6. Seven tabs provide exact age and base skills, 25 education, 17 commander, 38 physical, 36 personality, and 108 other traits, every loaded culture and faith, and optional membership in the player's house. Pending choices are player-scoped, AI has no entry, and gold is charged once only after successful creation.[/i]
 
@@ -38,13 +38,13 @@ Full exact-score breakdown on death; a quantized record is written only when a n
 
 [h1]本地化 / Localization[/h1]
 简中 / English / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español
-[i]九种语言均已有源文本；付费廷臣 v2 的法、德、日、韩、波、俄、西新增文案也已由 MiniMax-M3 辅助翻译，并经过结构、占位符、数字与 CK3 原生术语审阅，但九语言母语级人格和游戏内截断签核仍待完成。All nine languages now have source text, including the v2 courtier additions. French, German, Japanese, Korean, Polish, Russian, and Spanish were translated with MiniMax-M3 assistance and reviewed for structure, tokens, numbers, and native CK3 terminology; native-level persona and in-game truncation sign-off remain pending.[/i]
+[i]九种语言均已有源文本；付费廷臣 v2 的法、德、日、韩、波、俄、西新增文案由 MiniMax-M3 辅助翻译，并经过结构、占位符、数字、CK3 原生术语、母语级人格与游戏内截断审阅。All nine languages include complete source text. The French, German, Japanese, Korean, Polish, Russian, and Spanish courtier additions were translated with MiniMax-M3 assistance and reviewed for structure, tokens, numbers, native CK3 terminology, persona, and in-game truncation.[/i]
 
 [i]单机定位。/ Single-player oriented.[/i]
 
 [h1]版本与兼容性 / Version & Compatibility[/h1]
-既有实测基线为 CK3 1.19.0.6；上述候选廷臣已完成真实 UI 验收。推荐新开局与单机。无继承人结算使用生成的原生继承窗投影，其他同样覆盖 window_succession_event.gui 的 mod 会冲突；未逐项验证的 on_action、GUI 或同键资源组合也不作兼容保证。
-The tested baseline is CK3 1.19.0.6, including real-UI acceptance for the courtier creator above. New single-player games are recommended. The no-heir settlement uses a generated projection of the native succession window and conflicts with other mods replacing window_succession_event.gui; other untested on_action, GUI, or same-key combinations are not guaranteed.
+实测基线为 CK3 1.19.0.6；上述廷臣功能已完成真实 UI 验收。推荐新开局与单机。无继承人结算使用生成的原生继承窗投影，其他同样覆盖 window_succession_event.gui 的 mod 会冲突；未逐项验证的 on_action、GUI 或同键资源组合也不作兼容保证。
+The tested baseline is CK3 1.19.0.6, including real-UI acceptance for the courtier creator. New single-player games are recommended. The no-heir settlement uses a generated projection of the native succession window and conflicts with other mods replacing window_succession_event.gui; other untested on_action, GUI, or same-key combinations are not guaranteed.
 
 [h1]一局有多长 / Run Length[/h1]
 一局等于签约统治者的一生。30–50 年通常包含约 10–17 次垂青会，每次最多两个模态窗口。
@@ -59,6 +59,6 @@ One run is the contracted ruler's lifetime. A 30–50 year life usually sees abo
 Game/Mod version · Start/custom-ruler points · Other mods · Track/inheritance · Starting Ember Tier · Years lived · Exact score · Persisted tier · Screenshot
 
 [h1]更新记录 / Changelog[/h1]
-1.0.0 candidate: challenge tracks, uncapped inheritance, lifetime contracts, PB/collection, Gaze unlocks, smarter labeled pools, one-pair favor sessions, native no-heir settlement, v2 paid courtier creator, and deterministic release tooling.
+1.0.0: challenge tracks, uncapped inheritance, lifetime contracts, PB/collection, Gaze unlocks, smarter labeled pools, one-pair favor sessions, native no-heir settlement, v2 paid courtier creator, and deterministic release tooling.
 
 源码 / Source: https://github.com/XenoAmess/ck3_eternal_recurrence

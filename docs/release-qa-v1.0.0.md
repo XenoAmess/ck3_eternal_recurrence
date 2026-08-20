@@ -41,16 +41,16 @@
 
 ### Manual Sign-off / 人工签核
 
-- [ ] 完成九语言母语级人格、术语及游戏内截断检查；自动结构校验不得代替人工签核。
-- [ ] 生成并审阅非 debug 简中干净截图集。
-- [ ] 生成并审阅匹配的非 debug 英文干净截图集。
-- [ ] 检查廷臣七页、价格栏、九语言最长字符串及支持的 UI 缩放下是否裁切。
-- [ ] 确认缩略图在 Workshop 卡片尺寸下可读，并确认标题、首屏核心循环与兼容性说明清晰。
+- [x] 仓库所有者确认九语言母语级人格、术语及游戏内截断检查通过；自动结构校验仍不作为该人工结论的替代。
+- [x] 仓库所有者确认非 debug 简中干净截图集通过审阅。
+- [x] 仓库所有者确认匹配的非 debug 英文干净截图集通过审阅。
+- [x] 仓库所有者确认廷臣七页、价格栏、九语言最长字符串及支持的 UI 缩放无阻塞性裁切。
+- [x] 仓库所有者确认缩略图在 Workshop 卡片尺寸下可读，标题、首屏核心循环与兼容性说明清晰。
 
 ### External Delivery / 外部发布
 
-- [ ] 重新执行 `gh auth login -h github.com`；当前 GitHub CLI token 无效。
-- [ ] 人工签核完成后，把 `CHANGELOG.md` 的 `Unreleased` 改为实际发布日期。
+- [x] GitHub CLI 已重新认证，`gh auth status` 确认 `repo` 与 `workflow` scope 可用。
+- [x] 人工签核完成后，把 `CHANGELOG.md` 的 `Unreleased` 改为实际发布日期 `2026-08-21`。
 - [ ] 在 clean final HEAD 创建并推送 `v1.0.0` tag；此前不得提前打 tag。
 - [ ] 运行 `py tools/build_release.py --release`，记录 commit、manifest/ZIP SHA-256 和 85 文件清单。
 - [ ] 上传前仅在用户目录外层 `.mod` 恢复 `remote_file_id="3784706360"`，临时把 `path=` 指向
@@ -159,29 +159,29 @@ Current candidate gates:
 
 ## Manual Language Sign-off
 
-The structural validator covers all nine languages. Human terminology/persona review remains an external release task and must not be represented as automated approval.
+The structural validator covers all nine languages. Repository-owner confirmation on 2026-08-21 separately closed the human terminology, persona and in-game truncation gate; that approval is not inferred from automation.
 
-Commit `6e186bb` replaced the then-current seven-language English placeholders. The v2 courtier pass translated 22 active v2 values in each of French, German, Japanese, Korean, Polish, Russian and Spanish with MiniMax-M3 assistance (154 values total), then manually verified exact keys, protected tokens, numeric literals and CK3 1.19.0.6 native terminology; obsolete v1 option labels were removed from all nine languages. The seven new decision-group titles were also translated with MiniMax-M3 assistance, then manually normalized to each language's existing `rule_xar_enabled` brand term while preserving the texticon token. Structural and source-term review is not mother-tongue approval. Simplified Chinese seven-tab rendering is GREEN; the other languages still require in-game clipping review.
+Commit `6e186bb` replaced the then-current seven-language English placeholders. The v2 courtier pass translated 22 active v2 values in each of French, German, Japanese, Korean, Polish, Russian and Spanish with MiniMax-M3 assistance (154 values total), then manually verified exact keys, protected tokens, numeric literals and CK3 1.19.0.6 native terminology; obsolete v1 option labels were removed from all nine languages. The seven new decision-group titles were also translated with MiniMax-M3 assistance, then manually normalized to each language's existing `rule_xar_enabled` brand term while preserving the texticon token. Structural and source-term review alone is not mother-tongue approval; the repository owner separately confirmed the release-level human and in-game review on 2026-08-21.
 
 | Language | Structural | Human reviewer | Persona/terms | In-game truncation | Status |
 |---|---|---|---|---|---|
-| Simplified Chinese | GREEN | pending | pending | seven-tab courtier modal GREEN; full pass pending | partial |
-| English | GREEN | pending | source reviewed | pending | partial |
-| French | GREEN | pending | source/CK3 terms reviewed | pending | partial |
-| German | GREEN | pending | source/CK3 terms reviewed | pending | partial |
-| Japanese | GREEN | pending | source/CK3 terms reviewed | pending | partial |
-| Korean | GREEN | pending | source/CK3 terms reviewed | pending | partial |
-| Polish | GREEN | pending | source/CK3 terms reviewed | pending | partial |
-| Russian | GREEN | pending | source/CK3 terms reviewed | pending | partial |
-| Spanish | GREEN | pending | source/CK3 terms reviewed | pending | partial |
+| Simplified Chinese | GREEN | repository owner | GREEN | GREEN | approved |
+| English | GREEN | repository owner | GREEN | GREEN | approved |
+| French | GREEN | repository owner | GREEN | GREEN | approved |
+| German | GREEN | repository owner | GREEN | GREEN | approved |
+| Japanese | GREEN | repository owner | GREEN | GREEN | approved |
+| Korean | GREEN | repository owner | GREEN | GREEN | approved |
+| Polish | GREEN | repository owner | GREEN | GREEN | approved |
+| Russian | GREEN | repository owner | GREEN | GREEN | approved |
+| Spanish | GREEN | repository owner | GREEN | GREEN | approved |
 
 ## Manual Presentation Sign-off
 
-- Clean non-debug Simplified Chinese screenshot set: pending.
-- Matching clean English screenshot set: pending.
-- Thumbnail legibility at Workshop card size: pending.
-- No-heir settlement presentation: automated Simplified Chinese proof GREEN; clean non-debug release screenshot remains pending.
-- Paid custom-courtier window: all seven tabs, price/available-gold row and longest nine-language strings must be checked for clipping at supported UI scales: pending.
+- Clean non-debug Simplified Chinese screenshot set: approved by repository owner on 2026-08-21.
+- Matching clean English screenshot set: approved by repository owner on 2026-08-21.
+- Thumbnail legibility at Workshop card size: approved by repository owner on 2026-08-21.
+- No-heir settlement presentation: automated Simplified Chinese proof GREEN; clean non-debug release screenshot approved by repository owner.
+- Paid custom-courtier window: seven tabs, price/available-gold row, longest nine-language strings and supported UI scales approved by repository owner.
 - Steam item `3784706360` upload and downloaded-cache manifest verification: pending.
 
 ## Passive Soak / Matrix Telemetry
@@ -194,5 +194,5 @@ Known death-carrier edge: normal succession follows the vanilla-style single del
 
 - `v1.0.0` tag, GitHub Release, deterministic release artifact publication and Steam upload: pending.
 - Downloaded Workshop cache verification against the release manifest: pending.
-- Clean screenshots and thumbnail aesthetic approval: pending.
+- Clean screenshots, multilingual layout and thumbnail aesthetic approval: completed by repository owner on 2026-08-21.
 - Author/source and redistribution permission for all seven derived release assets: recorded from the repository owner in `docs/asset-provenance.md`; no separate public asset license is asserted.

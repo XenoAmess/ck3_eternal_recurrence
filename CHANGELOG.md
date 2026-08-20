@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.0] - Unreleased
+## [1.0.0] - 2026-08-21
 
 ### Added
 
@@ -23,7 +23,7 @@
 - Growth scoring and ledger gaps use CK3's `min = 0` lower-bound semantics instead of incorrectly clamping positive values with `max = 0`.
 - Scoring implementation, preview, reference model, and documentation share one schema.
 - Lifespan purchases now describe their actual +1 Health stacks instead of promising a fixed number of years.
-- French, German, Japanese, Korean, Polish, Russian, and Spanish have translated source text; human terminology/persona review and in-game truncation checks remain pending.
+- French, German, Japanese, Korean, Polish, Russian, and Spanish have translated source text; all nine languages completed release-level terminology, persona, and in-game truncation sign-off.
 - Release staging excludes acceptance-only files and strips marked development instrumentation from mixed production files.
 
 ### Requirements
@@ -37,4 +37,4 @@
 - Existing Ember Tier bits are shared progression; the selected challenge track is explicitly labeled rather than stored as eight separate historical score namespaces.
 - The no-heir result requires a generated projection of CK3's native succession window; another mod overriding the same GUI file can conflict, and a CK3 update requires regenerating and reviewing the projection.
 - The paid-courtier and with-heir death scenarios are GREEN on CK3 1.19.0.6. The passive `count|king|emperor|synthetic` matrix remains optional stability/telemetry backlog and is not evidence of numerical balance.
-- All nine languages have source text, but none has completed the release-level human terminology/persona and in-game truncation sign-off.
+- All nine languages completed release-level human terminology/persona and in-game truncation sign-off for 1.0.0.
