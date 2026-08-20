@@ -1,5 +1,9 @@
 ﻿l_spanish:
  decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! Recurrencia Eterna"
+ xar.ironman_terminal.title:0 "Las brasas están selladas"
+ xar.ironman_terminal.desc:0 "Viajero, el peso de esta vida ya está escrito en el libro de cuentas. [Localize('IRONMAN_ENABLED')] no permite observar, así que detendré el tiempo por ti. Abre el menú del juego y deja que el guardado nativo ponga el último sello; después, vuelve al menú principal."
+ xar.ironman_terminal.footer:0 "Si intentas continuar, el tiempo simplemente se detendrá de nuevo."
+ xar.ironman_terminal.open_menu:0 "Abrir el menú del juego"
 
  xar.no_heir_settlement.desc:0 "Viajero, el final del juego base cerraría el libro de cuentas por ti. Pero este peso me pertenece a mí, y a ti."
  xar.no_heir.score:0 "Peso final"

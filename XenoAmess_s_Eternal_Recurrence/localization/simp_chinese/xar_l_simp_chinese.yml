@@ -1,5 +1,9 @@
 ﻿l_simp_chinese:
  decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! 琉焰卿的永恒轮回"
+ xar.ironman_terminal.title:0 "余烬已封存"
+ xar.ironman_terminal.desc:0 "旅人，这一世的分量已经写入账页。[Localize('IRONMAN_ENABLED')]不容旁观，我会替你按住时间。请打开游戏菜单，让原生存档完成最后一道封缄，再返回主菜单。"
+ xar.ironman_terminal.footer:0 "若你试图继续，时间仍会再次停下。"
+ xar.ironman_terminal.open_menu:0 "打开游戏菜单"
 
  # 游戏规则
  rule_xar_enabled:0 "琉焰卿的永恒轮回"

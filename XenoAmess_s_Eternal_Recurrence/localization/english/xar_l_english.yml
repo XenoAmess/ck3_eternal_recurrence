@@ -1,5 +1,9 @@
 ﻿l_english:
  decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! Eternal Recurrence"
+ xar.ironman_terminal.title:0 "The Embers Are Sealed"
+ xar.ironman_terminal.desc:0 "Traveler, this life's weight is already written into the ledger. [Localize('IRONMAN_ENABLED')] permits no observing, so I will hold time still for you. Open the game menu and let the native save set the final seal, then return to the main menu."
+ xar.ironman_terminal.footer:0 "Should you try to continue, time will simply stop again."
+ xar.ironman_terminal.open_menu:0 "Open Game Menu"
 
  # Game rule
  rule_xar_enabled:0 "Glassfire Lord's Eternal Recurrence"

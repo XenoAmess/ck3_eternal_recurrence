@@ -1,5 +1,9 @@
 ﻿l_german:
  decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! Ewige Wiederkehr"
+ xar.ironman_terminal.title:0 "Die Glut ist versiegelt"
+ xar.ironman_terminal.desc:0 "Reisender, die Last dieses Lebens steht bereits im Buch. [Localize('IRONMAN_ENABLED')] erlaubt kein Beobachten, darum halte ich die Zeit für dich an. Öffne das Spielmenü und lass die native Speicherung das letzte Siegel setzen; kehre dann zum Hauptmenü zurück."
+ xar.ironman_terminal.footer:0 "Solltest du versuchen weiterzuspielen, wird die Zeit einfach erneut stillstehen."
+ xar.ironman_terminal.open_menu:0 "Spielmenü öffnen"
 
  xar.no_heir_settlement.desc:0 "Reisender, das Ende des Grundspiels würde das Buch für dich schließen. Doch diese Last gehört mir – und dir."
  xar.no_heir.score:0 "Letzte Last"

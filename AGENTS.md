@@ -26,6 +26,7 @@ py tools/gen_balance_wire.py                                # 开发用长期平
 py tools/extract_courtier_traits.py                         # 从当前原版 00_traits.txt 刷新元数据快照
 py tools/gen_courtier_creator.py                            # 原版廷臣特质目录、元数据与冲突
 py tools/compose_decision_art.py                            # 三张决议源图 → 1100×440 DXT1 DDS
+py tools/compose_trait_stars.py                             # 10 级特质星标 → 120×120 RGBA DDS
 py tools/build_release.py --check                           # 临时双构建，验证 manifest/ZIP 可复现
 py tools/build_release.py                                   # 生成 dist staging、manifest 与 deterministic ZIP
 ```
@@ -47,6 +48,8 @@ py tools/build_release.py                                   # 生成 dist stagin
 `py tools/gen_courtier_creator.py`，并审阅生成的五类目录、224 项元数据与 95 组冲突。只运行生成器不会重新读取游戏文件。
 三张决议源图位于 `images/decision_*.png`；修改后运行 `py tools/compose_decision_art.py`，不要手改
 `gfx/interface/illustrations/decisions/decision_xar_*.dds`。静态校验会逐字节重建并检查 DXT1 输出。
+十级特质星标由 `tools/compose_trait_stars.py` 程序化生成；不要手改
+`gfx/interface/icons/traits/_stars_10.dds`。原版只提供 0–5 级星标，静态校验会逐字节重建该 RGBA DDS。
 位阈值体系生成器产出：`common/tutorial_lessons/xar_highscore.txt`、`common/customizable_localization/xar_generated_loc.txt`、
 `common/scripted_guis/xar_generated_guis.txt`、`common/scripted_effects/xar_generated_effects.txt`、
 `gui/xar_meta.gui`、`localization/*/xar_generated_*.yml`。

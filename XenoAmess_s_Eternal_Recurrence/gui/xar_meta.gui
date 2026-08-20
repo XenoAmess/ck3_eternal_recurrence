@@ -23,14 +23,23 @@ window = {
 	state = {
 		name = _hide
 		using = Animation_FadeOut_Quick
+		on_finish = "[GetVariableSystem.Clear('xar_ironman_terminal')]"
 	}
 
-	# After the player confirms the result event, switch to observer mode
-	# (the save is over: they must not keep playing as the heir).
+	# After a non-Ironman player confirms the result event, switch to
+	# observer mode. Ironman uses the registered native-menu terminal.
 	state = {
 		name = "xar_exit_to_menu"
-		trigger_when = "[EqualTo_string( GetPlayer.Custom('xar_quit_check'), Localize('xar_quit_sentinel') )]"
+		trigger_when = "[And( EqualTo_string( GetPlayer.Custom('xar_quit_check'), Localize('xar_quit_sentinel') ), Not( IsIronmanEnabled ) )]"
 		on_start = "[ExecuteConsoleCommand('observe')]"
+	}
+
+	# The GetPlayer-gated parent resolves the persistent terminal signal
+	# before exposing a player-independent interface flag to the modal.
+	state = {
+		name = "xar_prepare_ironman_terminal"
+		trigger_when = "[And( EqualTo_string( GetPlayer.Custom('xar_quit_check'), Localize('xar_quit_sentinel') ), IsIronmanEnabled )]"
+		on_start = "[GetVariableSystem.Set('xar_ironman_terminal', 'open')]"
 	}
 
 	state = {

@@ -17,10 +17,12 @@
   [`32401747136`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32401747136) 同样 GREEN。
 - [x] 修正付费廷臣 trait 图标的信仰上下文：德行、罪恶光效与 tooltip 使用
   `xar_cc_selected_faith`；`xar_decision_group_trait_both_20260821` 证明阿卢克古道【勤勉】为美德、【懒惰】为罪恶，且均不含天主教。
-- [ ] 增加铁人模式死亡收尾：普通非铁人单机继续进入观察者；铁人模式必须强制保持暂停，
+- [x] 增加铁人模式死亡收尾：普通非铁人单机继续进入观察者；铁人模式强制保持暂停，
   通过注册的阻塞窗口打开原生暂停菜单，并走原生保存及退出主菜单确认流程。
-- [ ] 为铁人退出窗口新增简中、英文文案，并按发布国际化流程补齐法、德、日、韩、波、俄、西；
-  九语言必须通过 key、保护 token、BOM、术语和结构审计。
+- [x] 为铁人退出窗口新增简中、英文文案，并按发布国际化流程补齐法、德、日、韩、波、俄、西；
+  九语言已通过 key、保护 token、BOM、源术语和结构审计。母语人格与游戏内截断仍属于下方人工签核。
+- [x] 补齐十级【琉焰之视】要求的 `_stars_10.dds`，由 `compose_trait_stars.py` 程序化生成并做逐字节 parity；
+  新运行期门禁会捕获不含 `xar` 的 trait-level star texture 错误。
 
 ### Automated Verification / 自动验证
 
@@ -29,8 +31,8 @@
 - [x] 推送修复后确认 GitHub 官方 `windows-latest` 的 projection tests、validate、计分向量、确定性构建全部 GREEN。
 - [x] 重跑 `courtier-creator`：选择阿卢克古道后返回性格页，确认【勤勉】按所选信仰显示为美德，
   且 tooltip 不再引用玩家的天主教信仰。
-- [ ] 增加并通过非 debug、非铁人普通继承验收，证明正式环境中的 `observe` 路径真实进入观察者模式。
-- [ ] 使用隔离 `userdir`、关闭云存档运行非 debug 铁人验收：验证结算、强制暂停、恢复游戏后重新阻断、
+- [x] 增加并通过非 debug、非铁人普通继承验收，证明开发验收夹具中的生产 `observe` 分支真实进入观察者模式。
+- [x] 使用隔离 `userdir`、关闭云存档运行非 debug 铁人验收：验证结算、强制暂停、恢复游戏后重新阻断、
   原生退出确认、铁人存档稳定落盘及返回主菜单；不得触碰真实用户存档。
 - [ ] 在最终 mod tree 上串行重跑完整 release-gating CK3 套件与 production projection，保存
   JSON/JUnit、截图、增量日志和 runtime tree hash。
@@ -48,7 +50,7 @@
 - [ ] 重新执行 `gh auth login -h github.com`；当前 GitHub CLI token 无效。
 - [ ] 人工签核完成后，把 `CHANGELOG.md` 的 `Unreleased` 改为实际发布日期。
 - [ ] 在 clean final HEAD 创建并推送 `v1.0.0` tag；此前不得提前打 tag。
-- [ ] 运行 `py tools/build_release.py --release`，记录 commit、manifest/ZIP SHA-256 和 83 文件清单。
+- [ ] 运行 `py tools/build_release.py --release`，记录 commit、manifest/ZIP SHA-256 和 85 文件清单。
 - [ ] 上传前仅在用户目录外层 `.mod` 恢复 `remote_file_id="3784706360"`，临时把 `path=` 指向
   tagged staging；内层 `descriptor.mod` 继续禁止该字段。
 - [ ] 经 PDX Launcher 把同一 staging 更新到既有 Steam item，随后强制重新下载缓存并使用
@@ -102,11 +104,11 @@ The runs below predate production-code candidate `a19808d`. They remain evidence
 
 Release-candidate baseline plus post-review targeted evidence (2026-08-20 through 2026-08-21):
 
-Rows for the full suite retain their original tree fingerprints. Subsequent production changes were confined to the death gates and paid-courtier transaction/GUI paths; those paths were rerun below after review. The then-current 78-file production projection had deterministic L0 evidence, but was not itself put through another complete CK3 suite after every post-review edit. The current branded-decision candidate contains 83 release files and has the targeted runtime evidence below; the final exact-candidate full suite remains pending.
+Rows for the full suite retain their original tree fingerprints. Subsequent production changes were confined to the death gates and paid-courtier transaction/GUI paths; those paths were rerun below after review. The then-current 78-file production projection had deterministic L0 evidence, but was not itself put through another complete CK3 suite after every post-review edit. The current Ironman-terminal and ten-star candidate contains 85 release files and has the targeted runtime evidence below; the final exact-candidate full suite remains pending.
 
 | Scenario | Run ID | Result |
 |---|---|---|
-| L0 static + scoring vectors + deterministic release projection | local current working tree | GREEN locally, 83 release files; hosted status is tracked separately below |
+| L0 static + scoring vectors + deterministic release projection | local current working tree | GREEN locally, 85 release files; hosted status is tracked separately below |
 | Full selftest / 57 assertions / production UI / pool sweep | `xar_selftest_release_candidate_20260820` | GREEN, 57/57, 200-entry sweep, persistence, observer transition, 0 `xar` errors |
 | Four production-only smokes | `xar_on_first_life_release_candidate_20260820`; `xar_on_recorded_release_candidate_20260820`; `xar_on_high_budget_release_candidate_20260820`; `xar_off_release_candidate_20260820` | GREEN, stripped staging first/recorded/high-budget/off paths, 0 `xar` errors |
 | Two-process persistence restart | `xar_persistence_release_candidate_20260820` | GREEN, process B imported process A tier 445 without pre-seeding, 0 `xar` errors |
@@ -117,19 +119,21 @@ Rows for the full suite retain their original tree fingerprints. Subsequent prod
 | Controlled scoring and 200 dispatchers | `xar_scoring_matrix_release_candidate_20260820` | GREEN, seven descendants, depth/dedup/dead-intermediate parity, 200/200 branches, 0 `xar` errors |
 | Paid custom courtier real UI | `xar_courtier_creator_postreview22_20260820` | GREEN after delivery rollback review, cancel/119-gold/default 120/custom 348/seven tabs/numeric controls/non-default culture and faith/same house/reopen/two delivered courtiers/AI guard, 0 `xar` errors |
 | Branded decision group, three illustrations and selected-faith trait context | `xar_decision_group_trait_both_20260821` | GREEN, group icon/title and three list/detail illustrations visible, Aluk Diligent/Lazy identify a virtue/sin and exclude Catholicism, both purchases and AI guard pass, runtime tree `7f9a52e2161a807378448368ebcf0f16a9f625ec2518d5a43f8bbb08127221b5`, 0 `xar` errors |
+| Non-debug ordinary terminal / native observer HUD | `xar_terminal_observer_nondebug3_20260821` | GREEN in the development fixture, production `observe` branch visible, ten-level trait track rendered, protected Documents files and local Steam userdata unchanged for the bounded postflight, disposable userdir actually removed, runtime tree `235d92fb36fd1052b0261c05f059e525d76a06231a7b92a8a27cc8e6764d242a`, 0 project errors |
+| Non-debug Ironman terminal / native save, exit and reload | `xar_terminal_ironman_nondebug9_20260821` | GREEN in the development fixture, 57/57, ten-level trait track rendered without the prior 248 star-texture errors, three mandatory readable frozen-date checks, resume reblocked, native Ironman save confirmation, main-menu return and same-process save reload reblocked; nine protected Documents files and two local Steam userdata files for app 1158310 retained identical aggregate hashes through a five-second postflight, disposable userdir actually removed, runtime tree `235d92fb36fd1052b0261c05f059e525d76a06231a7b92a8a27cc8e6764d242a`, harness `f56a0e364198e6fe1be465d447d1f5170965de275e6a28e4d443ca68934e7b9f`, 0 project errors |
 
 Current candidate gates:
 
 | Gate | Status | Required evidence |
 |---|---|---|
-| Local current-tree L0 and deterministic release projection | GREEN | `validate_static.py`, reference vectors and 83-file `build_release.py --check` all pass locally; this is not a hosted or CK3 runtime claim |
+| Local current-tree L0 and deterministic release projection | GREEN | compileall, four projection tests, `validate_static.py`, reference vectors and 85-file `build_release.py --check` all pass locally; this is not a hosted or CK3 runtime claim |
 | Official GitHub `windows-latest` L0 | GREEN | run [`32401747136`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32401747136); clean checkout passed compile, four projection tests, static validation, scoring vectors and deterministic 83-file build |
 | Full baseline plus post-review targeted CK3 regression | GREEN | the full release-candidate suite passed; changed death paths and paid courtier were then rerun on the reviewed tree with zero `xar` errors |
 | Ordinary death with a playable heir | GREEN | `xar_death_with_heir_postreview_20260820`; one compute, dispatch and visible settlement |
 | Paid custom courtier | GREEN | `xar_courtier_creator_postreview22_20260820`; both selected origins differ from the player, successful delivery precedes configuration and charge, and remaining landless/process-restart cases are declared coverage gaps |
 | Branded XAR decision group and illustrations | GREEN | `xar_decision_group_trait_both_20260821`; OCR proved the native group and three detail pages, while the captured screenshots were manually inspected for the title icon and three distinct illustrations; empty GUI warnings and 0 `xar` errors |
 | Selected-faith trait presentation | GREEN | `xar_decision_group_trait_both_20260821`; selected Aluk Diligent/Lazy native tooltips identify the chosen faith's virtue/sin and exclude Catholicism; captured icon borders are manually inspected rather than pixel-classified |
-| Ironman terminal flow | OPEN | non-debug isolated-profile proof of forced pause, native save/exit confirmation and main-menu return is required |
+| Ordinary and Ironman terminal flows | GREEN | `xar_terminal_observer_nondebug3_20260821` and `xar_terminal_ironman_nondebug9_20260821`; non-debug development fixtures proved ten-level trait rendering with zero project errors, native observer, forced pause, resume reblock, native save/exit, main-menu return, same-process reload reblock and bounded local-storage isolation |
 | Final exact-candidate CK3 regression | PENDING | rerun the complete release-gating suite after the code and localization changes above |
 
 ## Manual Language Sign-off

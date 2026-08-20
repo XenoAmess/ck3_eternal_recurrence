@@ -69,6 +69,7 @@ CK3_EXE = configured_path(
 USER_DIR = configured_path(
     "XAR_CK3_USER_DIR",
     Path.home() / "Documents" / "Paradox Interactive" / "Crusader Kings III")
+ORIGINAL_USER_DIR = USER_DIR
 UGC_DIR_OVERRIDE = os.environ.get("XAR_CK3_UGC_DIR")
 MOD_ROOT = ROOT / "XenoAmess_s_Eternal_Recurrence"
 VANILLA_GAME_RULES = (
@@ -119,6 +120,7 @@ OBSERVER_REGION = (0.00, 0.75, 0.35, 1.00)
 HUD_DATE_REGION = (0.78, 0.95, 0.92, 1.00)
 FULL_SCREEN_REGION = (0.00, 0.00, 1.00, 1.00)
 COURTIER_MODAL_REGION = (0.20, 0.12, 0.80, 0.89)
+IRONMAN_TERMINAL_REGION = (0.30, 0.18, 0.70, 0.72)
 
 BOOT_TIMEOUT_S = 120             # OCR 一发现主菜单即继续，不固定睡 100 秒
 LOBBY_TIMEOUT_S = 30
@@ -134,6 +136,9 @@ FULL_STALL_S = 12
 RECOVERY_TRACE = []
 RESUME_TRACE = []
 QUICK_EVIDENCE_KINDS = set()
+TERMINAL_SCENARIOS = {"terminal-observer", "terminal-ironman"}
+ACTIVE_CK3_PID = None
+ISOLATED_USERDIR = False
 
 BALANCE_FIXTURES = {
     "count": {
@@ -181,6 +186,32 @@ def log(msg):
     print(f"[runner {time.strftime('%H:%M:%S')}] {msg}", flush=True)
 
 
+def configure_isolated_userdir(user_dir, ugc_dir):
+    """Rebind all runtime paths to a disposable userdir before acceptance starts."""
+    global USER_DIR, UGC_DIR_OVERRIDE, UGC_MOD_FILE, TUTORIAL_TXT, PRESETS_TXT
+    global DLC_LOAD_JSON, SAVE_GAMES_DIR, DEBUG_LOG, ERROR_LOG, GUI_WARNINGS_LOG
+    global ISOLATED_USERDIR
+    user_dir = Path(user_dir).resolve()
+    ugc_dir = Path(ugc_dir).resolve()
+    original = ORIGINAL_USER_DIR.resolve()
+    if user_dir == original or user_dir in original.parents or original in user_dir.parents:
+        raise RunnerError(f"isolated userdir overlaps the real profile: {user_dir}")
+    if (user_dir == ROOT.resolve() or user_dir in ROOT.resolve().parents
+            or ROOT.resolve() in user_dir.parents):
+        raise RunnerError(f"isolated userdir must be outside the repository: {user_dir}")
+    USER_DIR = user_dir
+    UGC_DIR_OVERRIDE = str(ugc_dir)
+    UGC_MOD_FILE = USER_DIR / "mod" / "ugc_3784706360.mod"
+    TUTORIAL_TXT = USER_DIR / "tutorial.txt"
+    PRESETS_TXT = USER_DIR / "player" / "game_rules" / "presets.txt"
+    DLC_LOAD_JSON = USER_DIR / "dlc_load.json"
+    SAVE_GAMES_DIR = USER_DIR / "save games"
+    DEBUG_LOG = USER_DIR / "logs" / "debug.log"
+    ERROR_LOG = USER_DIR / "logs" / "error.log"
+    GUI_WARNINGS_LOG = USER_DIR / "logs" / "gui_warnings.log"
+    ISOLATED_USERDIR = True
+
+
 def summarize_timing_trace(rows, key):
     values = [row[key] for row in rows if key in row]
     return {
@@ -217,7 +248,12 @@ def runner_performance_report():
 def focus_ck3():
     found = []
     def _cb(hwnd, _):
-        if win32gui.IsWindowVisible(hwnd) and "Crusader Kings" in win32gui.GetWindowText(hwnd):
+        if not win32gui.IsWindowVisible(hwnd):
+            return
+        if "Crusader Kings" not in win32gui.GetWindowText(hwnd):
+            return
+        _, pid = win32process.GetWindowThreadProcessId(hwnd)
+        if ACTIVE_CK3_PID is None or pid == ACTIVE_CK3_PID:
             found.append(hwnd)
     win32gui.EnumWindows(_cb, None)
     if not found:
@@ -285,6 +321,8 @@ def preflight():
     errors = []
     if os.name != "nt":
         errors.append("acceptance requires Windows")
+    if ISOLATED_USERDIR and ck3_is_running():
+        errors.append("isolated acceptance refuses to start while any ck3.exe is running")
     if not CK3_EXE.is_file():
         errors.append(f"CK3 executable not found: {CK3_EXE}")
     for path, label in ((TUTORIAL_TXT, "tutorial.txt"),
@@ -354,6 +392,7 @@ def kill_process(pid):
 
 def stop_ck3_process(process, ck3_pid_file):
     """Terminate one tracked CK3 process tree and prove the process exited."""
+    global ACTIVE_CK3_PID
     if process is None:
         return
     kill_process(process.pid)
@@ -364,7 +403,27 @@ def stop_ck3_process(process, ck3_pid_file):
     if process.poll() is None:
         raise RunnerError(f"CK3 PID {process.pid} is still running")
     ck3_pid_file.unlink(missing_ok=True)
+    if ACTIVE_CK3_PID == process.pid:
+        ACTIVE_CK3_PID = None
     log(f"CK3 PID {process.pid} fully exited")
+
+
+def launch_ck3_process(debug_mode):
+    """Launch the tracked CK3 process in normal or isolated non-debug mode."""
+    global ACTIVE_CK3_PID
+    arguments = [str(CK3_EXE)]
+    if debug_mode:
+        arguments.append("-debug_mode")
+    else:
+        if not ISOLATED_USERDIR:
+            raise RunnerError("non-debug acceptance requires an isolated userdir")
+        arguments.extend(["-gdpr-compliant", f"-userdir={USER_DIR}"])
+    if ISOLATED_USERDIR and ck3_is_running():
+        raise RunnerError(
+            "ck3.exe started after isolated preflight; refusing to kill it")
+    process = subprocess.Popen(arguments, cwd=str(CK3_EXE.parent))
+    ACTIVE_CK3_PID = process.pid
+    return process
 
 
 def start_restore_watchdog(backup, ck3_pid_file):
@@ -451,6 +510,15 @@ def read_new_lines(path, offset):
         return data.decode("utf-8", errors="ignore"), size
     except OSError:
         return "", offset
+
+
+def project_error_lines(text, extra_markers=()):
+    """Return errors attributable to this mod even when the line lacks an XAR id."""
+    markers = ("xar", "failed to read trait level star texture", *extra_markers)
+    return [
+        line.strip() for line in text.splitlines()
+        if any(marker in line.lower() for marker in markers)
+    ]
 
 
 def snapshot_log(path, offset, destination):
@@ -1515,7 +1583,7 @@ def timed_phase(timings, name):
         timings[name] = round(time.perf_counter() - started, 3)
 
 
-def navigate_lobby(artifacts):
+def navigate_lobby(artifacts, ironman=False):
     """OCR-drive main menu -> Robert bookmark -> confirmed game start."""
     new_game = wait_for_ocr_text(
         "新游戏", MAIN_MENU_REGION, BOOT_TIMEOUT_S,
@@ -1557,10 +1625,21 @@ def navigate_lobby(artifacts):
         "开始", START_REGION, LOBBY_TIMEOUT_S,
         artifacts, "03_start_enabled.png")
     click_until_text_disappears(start, "开始", START_REGION, artifacts)
+    if ironman:
+        wait_for_ocr_text(
+            "保存到云", FULL_SCREEN_REGION, 15, artifacts,
+            "04_ironman_local_save_dialog.png", contains=True, stable_hits=1)
+        ironman_confirm = wait_for_ocr_text(
+            "开启铁人模式", FULL_SCREEN_REGION, 15, artifacts,
+            "04_ironman_start_confirm.png", contains=True, stable_hits=1)
+        click_until_text_disappears(
+            ironman_confirm, "开启铁人模式", FULL_SCREEN_REGION, artifacts,
+            attempts=2)
 
 
 def click_until_ocr_appears(point, label, target, region, artifacts, artifact_name,
-                            attempts=3, timeout_s=6, unpause=False):
+                            attempts=3, timeout_s=6, unpause=False,
+                            contains=False):
     """Retry a production option until its expected next event is visible."""
     last_error = None
     for attempt in range(1, attempts + 1):
@@ -1572,7 +1651,8 @@ def click_until_ocr_appears(point, label, target, region, artifacts, artifact_na
             log(f"unpaused while waiting for delayed {target} event")
         try:
             return wait_for_ocr_text(
-                target, region, timeout_s, artifacts, artifact_name, stable_hits=1)
+                target, region, timeout_s, artifacts, artifact_name,
+                contains=contains, stable_hits=1)
         except RunnerError as exc:
             last_error = exc
     raise RunnerError(f"{label} did not open {target}: {last_error}")
@@ -1899,17 +1979,14 @@ def run_restart_import_probe(expected_record, debug_offset, error_offset, artifa
         "终末之契", EVENT_TITLE_REGION, 15,
         artifacts, "05_restart_import_pact.png", stable_hits=1)
     err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-    xar_errors = [
-        line.strip() for line in err_text.splitlines()
-        if "xar" in line.lower()
-    ]
+    xar_errors = project_error_lines(err_text)
     fails = [line for line in xar_lines if "XAR: TEST FAIL" in line]
     if fails:
         raise RunnerError(
             f"restart importer emitted {len(fails)} TEST FAIL marker(s)")
     if xar_errors:
         raise RunnerError(
-            f"restart importer emitted {len(xar_errors)} xar error.log line(s)")
+            f"restart importer emitted {len(xar_errors)} project error.log line(s)")
     log(f"PASS: fresh process imported persisted tier {expected_record}")
     return xar_lines
 
@@ -2059,13 +2136,10 @@ def run_death_edges(debug_offset, error_offset, artifacts):
         artifacts, "09_no_heir_exit_to_menu.png", contains=True, stable_hits=1)
 
     err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-    xar_errors = [
-        line.strip() for line in err_text.splitlines()
-        if "xar" in line.lower()
-    ]
+    xar_errors = project_error_lines(err_text)
     if xar_errors:
         raise RunnerError(
-            f"death-edge scenario emitted {len(xar_errors)} xar error.log line(s)")
+            f"death-edge scenario emitted {len(xar_errors)} project error.log line(s)")
     print("\n===== XAR DEATH EDGE REPORT =====")
     for line in xar_lines:
         print("  " + line)
@@ -2075,7 +2149,7 @@ def run_death_edges(debug_offset, error_offset, artifacts):
     print("no-heir sync    : PASS")
     print("visible settlement: PASS")
     print("exit to menu      : PASS")
-    print("xar error.log   : 0")
+    print("project error.log: 0")
     return xar_lines
 
 
@@ -2295,11 +2369,10 @@ def run_courtier_creator(debug_offset, error_offset, artifacts):
         raise RunnerError(
             f"courtier-creator emitted {len(fails)} FAIL marker(s): {fails[-1]}")
     err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-    xar_errors = [
-        line.strip() for line in err_text.splitlines() if "xar" in line.lower()]
+    xar_errors = project_error_lines(err_text)
     if xar_errors:
         raise RunnerError(
-            f"courtier-creator emitted {len(xar_errors)} xar error.log line(s)")
+            f"courtier-creator emitted {len(xar_errors)} project error.log line(s)")
 
     print("\n===== XAR COURTIER CREATOR REPORT =====")
     print("production decision : PASS")
@@ -2311,7 +2384,7 @@ def run_courtier_creator(debug_offset, error_offset, artifacts):
     print("origin / same house : PASS")
     print("selected-faith traits: PASS")
     print("AI purchase blocked : PASS")
-    print("xar error.log       : 0")
+    print("project error.log   : 0")
     return {
         "production_decision": True,
         "cancel_zero_side_effect": True,
@@ -2403,18 +2476,17 @@ def run_death_with_heir(debug_offset, error_offset, artifacts):
     if fails:
         raise RunnerError(f"death-with-heir emitted {len(fails)} FAIL marker(s)")
     err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-    xar_errors = [
-        line.strip() for line in err_text.splitlines() if "xar" in line.lower()]
+    xar_errors = project_error_lines(err_text)
     if xar_errors:
         raise RunnerError(
-            f"death-with-heir emitted {len(xar_errors)} xar error.log line(s)")
+            f"death-with-heir emitted {len(xar_errors)} project error.log line(s)")
 
     print("\n===== XAR DEATH WITH HEIR REPORT =====")
     print("player precondition : PASS")
     print("heir control transfer: PASS")
     print("production score    : PASS")
     print("visible settlement  : PASS")
-    print("xar error.log       : 0")
+    print("project error.log   : 0")
     return {
         "with_heir_precondition": True,
         "heir_control_transfer": True,
@@ -2621,12 +2693,10 @@ def run_bargain_reopen(debug_offset, error_offset, artifacts):
         raise RunnerError(f"bargain-reopen emitted {len(fails)} FAIL marker(s)")
 
     err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-    xar_errors = [
-        line.strip() for line in err_text.splitlines() if "xar" in line.lower()
-    ]
+    xar_errors = project_error_lines(err_text)
     if xar_errors:
         raise RunnerError(
-            f"bargain-reopen emitted {len(xar_errors)} xar error.log line(s)")
+            f"bargain-reopen emitted {len(xar_errors)} project error.log line(s)")
 
     print("\n===== XAR BARGAIN REOPEN REPORT =====")
     for item in evidence_pairs:
@@ -2639,7 +2709,7 @@ def run_bargain_reopen(debug_offset, error_offset, artifacts):
     print("trait XP         : 0 -> 1 -> 2 -> 3")
     print("reject count     : 0")
     print("production reopen: 3 ordered xar.0006 markers")
-    print("xar error.log    : 0")
+    print("project error.log: 0")
     return {"pairs": evidence_pairs, "production_reopen_markers": 3}
 
 
@@ -3023,13 +3093,10 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
         final_sample = death_samples[0]
 
     err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-    xar_errors = [
-        line.strip() for line in err_text.splitlines()
-        if "xar" in line.lower() or "xa_balance" in line.lower()
-    ]
+    xar_errors = project_error_lines(err_text, ("xa_balance",))
     if xar_errors:
         raise RunnerError(
-            f"balance-long emitted {len(xar_errors)} xar error.log line(s)")
+            f"balance-long emitted {len(xar_errors)} project error.log line(s)")
 
     runtime_debug = current_debug_session_text()
     enabled_mods = [
@@ -3091,7 +3158,7 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
     print(f"completed pairs : {len(pair_samples)}")
     print(f"final growth    : {final_sample['score']:.2f}")
     print(f"final absolute  : {final_sample['absolute']:.2f}")
-    print(f"xar error.log   : 0")
+    print("project error.log: 0")
     return evidence
 
 
@@ -3172,11 +3239,10 @@ def run_progression_ui(debug_offset, error_offset, artifacts):
         raise RunnerError(
             f"progression-ui assertions failed: fails={len(fails)}, missing={missing}")
     err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-    xar_errors = [
-        line.strip() for line in err_text.splitlines() if "xar" in line.lower()
-    ]
+    xar_errors = project_error_lines(err_text)
     if xar_errors:
-        raise RunnerError(f"progression-ui emitted {len(xar_errors)} xar error line(s)")
+        raise RunnerError(
+            f"progression-ui emitted {len(xar_errors)} project error line(s)")
 
     print("\n===== XAR PROGRESSION UI REPORT =====")
     print("contract milestones: 3 -> 6 -> 10 production events")
@@ -3184,7 +3250,7 @@ def run_progression_ui(debug_offset, error_offset, artifacts):
     print("collection          : Wise Ruler / mask 16")
     print("Gaze milestone      : level 10, R 1, S 0")
     print("ledger pixels       : current 0/10 + historical PB/collection")
-    print("xar error.log       : 0")
+    print("project error.log   : 0")
     return {
         "contract": "steward",
         "milestones": [3, 6, 10],
@@ -3221,11 +3287,10 @@ def run_scoring_matrix(debug_offset, error_offset, artifacts):
             f"scoring-matrix assertions failed: fails={len(fails)}, "
             f"missing={missing[:20]}{'...' if len(missing) > 20 else ''}")
     err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-    xar_errors = [
-        line.strip() for line in err_text.splitlines() if "xar" in line.lower()
-    ]
+    xar_errors = project_error_lines(err_text)
     if xar_errors:
-        raise RunnerError(f"scoring-matrix emitted {len(xar_errors)} xar error line(s)")
+        raise RunnerError(
+            f"scoring-matrix emitted {len(xar_errors)} project error line(s)")
 
     (artifacts / "scoring_matrix_markers.json").write_text(
         json.dumps(sorted(observed), ensure_ascii=False, indent=2) + "\n",
@@ -3237,7 +3302,7 @@ def run_scoring_matrix(debug_offset, error_offset, artifacts):
     print("preview parity       : within 0.01 of production score")
     print("pool dispatchers     : 200/200 production wire branches")
     print("dispatcher state     : counters, modifiers, rarity, Gaze XP committed")
-    print("xar error.log        : 0")
+    print("project error.log    : 0")
     return {
         "living_descendants": 7,
         "max_scored_depth": 5,
@@ -3249,7 +3314,131 @@ def run_scoring_matrix(debug_offset, error_offset, artifacts):
     }
 
 
-def run_selftest(import_record, debug_offset, error_offset, artifacts):
+def wait_for_stable_local_saves(timeout_s=30):
+    """Return stable local Ironman save metadata from the isolated userdir."""
+    deadline = time.time() + timeout_s
+    previous = None
+    stable_hits = 0
+    while time.time() < deadline:
+        saves = sorted(path for path in SAVE_GAMES_DIR.rglob("*.ck3") if path.is_file())
+        current = tuple(
+            (str(path.relative_to(SAVE_GAMES_DIR)), path.stat().st_size,
+             hashlib.sha256(path.read_bytes()).hexdigest())
+            for path in saves
+        )
+        if current and all(size > 0 for _, size, _ in current):
+            if current == previous:
+                stable_hits += 1
+                if stable_hits >= 2:
+                    return [
+                        {"path": path, "size": size, "sha256": digest}
+                        for path, size, digest in current
+                    ]
+            else:
+                stable_hits = 0
+        previous = current
+        time.sleep(1)
+    raise RunnerError("isolated Ironman save did not become stable")
+
+
+def verify_terminal_date_frozen(artifacts, stem, seconds=3):
+    """Prove the rendered date does not advance while the terminal is visible."""
+    before_image = ImageGrab.grab()
+    before_image.save(artifacts / f"{stem}_before.png")
+    before = read_hud_game_day(before_image)
+    if before is None:
+        raise RunnerError(f"Ironman terminal initial date unreadable ({stem})")
+    time.sleep(seconds)
+    after_image = ImageGrab.grab()
+    after_image.save(artifacts / f"{stem}.png")
+    after = read_hud_game_day(after_image)
+    if after is None:
+        raise RunnerError(f"Ironman terminal final date unreadable ({stem})")
+    if before != after:
+        raise RunnerError(f"Ironman terminal failed to hold time: {before} -> {after}")
+    return {"before": before, "after": after, "seconds": seconds}
+
+
+def finish_ironman_terminal(settlement, artifacts):
+    """Exercise pause watchdog, native Ironman save/exit, and reload reblocking."""
+    terminal_title = click_until_ocr_appears(
+        settlement, "Ironman settlement confirmation", "已封存",
+        IRONMAN_TERMINAL_REGION, artifacts, "05_ironman_terminal.png",
+        attempts=2, timeout_s=15, contains=True)
+    menu_button = wait_for_ocr_text(
+        "打开游戏菜单", IRONMAN_TERMINAL_REGION, 10, artifacts,
+        "05_ironman_terminal_button.png", stable_hits=1)
+    initial_freeze = verify_terminal_date_frozen(
+        artifacts, "05_ironman_terminal_frozen")
+
+    deliberate_click(menu_button, "Ironman terminal native game menu")
+    wait_for_ocr_text(
+        "铁人模式已启用", FULL_SCREEN_REGION, 15, artifacts,
+        "06_ironman_native_menu.png", contains=True, stable_hits=1)
+    resume = wait_for_ocr_text(
+        "继续", (0.00, 0.00, 0.38, 0.45), 10, artifacts,
+        "06_ironman_native_resume.png", contains=False, stable_hits=1)
+    deliberate_click(resume, "native pause-menu resume watchdog probe")
+    wait_for_ocr_text(
+        "已封存", IRONMAN_TERMINAL_REGION, 15, artifacts,
+        "07_ironman_terminal_reblocked.png", contains=True, stable_hits=1)
+    reblocked_freeze = verify_terminal_date_frozen(
+        artifacts, "07_ironman_terminal_reblocked_frozen")
+
+    menu_button = wait_for_ocr_text(
+        "打开游戏菜单", IRONMAN_TERMINAL_REGION, 10, artifacts,
+        "08_ironman_terminal_button.png", stable_hits=1)
+    deliberate_click(menu_button, "Ironman terminal native game menu for exit")
+    wait_for_ocr_text(
+        "铁人模式已启用", FULL_SCREEN_REGION, 15, artifacts,
+        "08_ironman_native_menu.png", contains=True, stable_hits=1)
+    exit_button = wait_for_ocr_text(
+        "退出游戏", (0.00, 0.00, 0.38, 0.65), 10, artifacts,
+        "08_ironman_native_exit.png", contains=True, stable_hits=1)
+    deliberate_click(exit_button, "native pause-menu exit")
+    wait_for_ocr_text(
+        "这局游戏将会保存为", FULL_SCREEN_REGION, 15, artifacts,
+        "09_ironman_save_confirmation.png", contains=True, stable_hits=1)
+    return_to_menu = wait_for_ocr_text(
+        "退出到主菜单", FULL_SCREEN_REGION, 10, artifacts,
+        "09_ironman_return_to_menu.png", contains=True, stable_hits=1)
+    click_until_ocr_appears(
+        return_to_menu, "native Ironman save and return", "新游戏",
+        MAIN_MENU_REGION, artifacts, "10_ironman_main_menu.png",
+        attempts=1, timeout_s=90)
+    saves_before_reload = wait_for_stable_local_saves()
+
+    continue_game = wait_for_ocr_text(
+        "继续游戏", MAIN_MENU_REGION, 20, artifacts,
+        "10_ironman_continue.png", contains=True, stable_hits=1)
+    click_until_ocr_appears(
+        continue_game, "reload native Ironman save", "已封存",
+        IRONMAN_TERMINAL_REGION, artifacts, "11_ironman_reloaded_terminal.png",
+        attempts=1, timeout_s=120, contains=True)
+    wait_for_ocr_text(
+        "打开游戏菜单", IRONMAN_TERMINAL_REGION, 10, artifacts,
+        "11_ironman_reloaded_button.png", stable_hits=1)
+    reload_freeze = verify_terminal_date_frozen(
+        artifacts, "11_ironman_reloaded_frozen")
+    saves_after_reload = wait_for_stable_local_saves()
+    if saves_after_reload != saves_before_reload:
+        raise RunnerError("isolated Ironman save changed across paused reload")
+    return {
+        "native_ironman_menu": True,
+        "resume_reblocked": True,
+        "native_save_confirmation": True,
+        "returned_to_main_menu": True,
+        "reloaded_terminal": True,
+        "initial_freeze": initial_freeze,
+        "reblocked_freeze": reblocked_freeze,
+        "reload_freeze": reload_freeze,
+        "local_saves_before_reload": saves_before_reload,
+        "local_saves_after_reload": saves_after_reload,
+    }
+
+
+def run_selftest(import_record, debug_offset, error_offset, artifacts,
+                 terminal_mode="observer", terminal_evidence=None):
     """Preserve the full existing selftest behavior and console report."""
     offset = debug_offset
     xar_lines = []
@@ -3502,12 +3691,18 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
     settlement = wait_for_ocr_text(
         "很好", EVENT_OPTIONS_FULL_REGION, 15,
         artifacts, "04_settlement_option.png", contains=True, stable_hits=1)
-    click_until_ocr_appears(
-        settlement, "settlement confirmation", "正在观察", OBSERVER_REGION,
-        artifacts, "05_observer_mode.png", attempts=2, timeout_s=15)
-    focus_ck3()
-    ImageGrab.grab().save(artifacts / "05_after_confirm.png")
-    log("settlement confirmed; observer mode proven by vanilla HUD")
+    if terminal_mode == "ironman":
+        evidence = finish_ironman_terminal(settlement, artifacts)
+        if terminal_evidence is not None:
+            terminal_evidence.update(evidence)
+        log("Ironman terminal proved native save/exit and reload reblocking")
+    else:
+        click_until_ocr_appears(
+            settlement, "settlement confirmation", "正在观察", OBSERVER_REGION,
+            artifacts, "05_observer_mode.png", attempts=2, timeout_s=15)
+        focus_ck3()
+        ImageGrab.grab().save(artifacts / "05_after_confirm.png")
+        log("settlement confirmed; observer mode proven by vanilla HUD")
 
     persist_ok = False
     contract_persist_ok = False
@@ -3521,7 +3716,7 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
     except OSError:
         pass
     err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-    xar_errors = [line.strip() for line in err_text.splitlines() if "xar" in line.lower()]
+    xar_errors = project_error_lines(err_text)
     passes = [line for line in xar_lines if "XAR: TEST PASS" in line]
     fails = [line for line in xar_lines if "XAR: TEST FAIL" in line]
     observed_passes = {
@@ -3545,7 +3740,8 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
     print(f"FAIL count     : {len(fails)}")
     print(f"tutorial persist: {'PASS' if persist_ok else 'FAIL (or not done)'}")
     print(f"contract PB persist: {'PASS' if contract_persist_ok else 'FAIL'}")
-    print(f"xar error.log  : {len(xar_errors)}")
+    print(f"project errors : {len(xar_errors)}")
+    print(f"terminal mode  : {terminal_mode}")
     for line in xar_errors:
         print("  ERR " + line)
     print(f"artifacts      : {artifacts}")
@@ -3564,7 +3760,7 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
     if not sweep_ok:
         reasons.append("pool sweep marker missing")
     if xar_errors:
-        reasons.append(f"{len(xar_errors)} xar error.log line(s)")
+        reasons.append(f"{len(xar_errors)} project error.log line(s)")
     if not persist_ok:
         reasons.append("tutorial record bit not persisted")
     if not contract_persist_ok:
@@ -3612,7 +3808,8 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
         "workshop_item_id": build_release.WORKSHOP_ITEM_ID,
         "source_mode": source_mode,
         "runtime_tree_sha256": runtime_tree_sha256,
-        "debug_mode": True,
+        "debug_mode": scenario not in TERMINAL_SCENARIOS,
+        "isolated_userdir": scenario in TERMINAL_SCENARIOS,
         "game_version": os.environ.get("XAR_CK3_VERSION") or "1.19.0.6",
         "environment": {
             "platform": platform.platform(),
@@ -3654,10 +3851,13 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
         "scoring-matrix": 4,
         "courtier-creator": 6,
         "balance-long": 0,
+        "terminal-observer": 0,
+        "terminal-ironman": 0,
     }[scenario]
     rule_setting = "xar_selftest" if scenario in (
         "selftest", "persistence-restart", "death-edges", "death-with-heir", "bargain-reopen",
-        "progression-ui", "scoring-matrix", "courtier-creator") else (
+        "progression-ui", "scoring-matrix", "courtier-creator",
+        "terminal-observer", "terminal-ironman") else (
         "xar_off" if scenario == "off" else "xar_on")
     if artifacts_dir:
         artifacts = Path(artifacts_dir).expanduser().resolve()
@@ -3679,6 +3879,8 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
     ck3_process = None
     report_evidence = {}
     source_mode = "repository-synced-workshop-cache"
+    if scenario in TERMINAL_SCENARIOS:
+        source_mode = "isolated-userdir-nondebug-development-fixture"
     runtime_source = MOD_ROOT
     runtime_tree_sha256 = mod_tree_hash(runtime_source)
     log_offsets = {DEBUG_LOG: None, ERROR_LOG: None, GUI_WARNINGS_LOG: None}
@@ -3691,6 +3893,9 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
         with timed_phase(timings, "setup_backup"):
             if _ocr is None:
                 raise RunnerError("RapidOCR missing; install tools/requirements.txt")
+            if scenario in TERMINAL_SCENARIOS and not ISOLATED_USERDIR:
+                raise RunnerError(
+                    "terminal acceptance must be launched through the isolated wrapper")
             preflight()
             shutil.copy2(TUTORIAL_TXT, backup / "tutorial.txt")
             shutil.copy2(PRESETS_TXT, backup / "presets.txt")
@@ -3751,8 +3956,9 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
                 log(f"LastAppliedRules set exclusively to {rule_setting} before launch")
 
         with timed_phase(timings, "launch"):
-            kill_ck3()
-            time.sleep(3)
+            if not ISOLATED_USERDIR:
+                kill_ck3()
+                time.sleep(3)
             error_offset = ERROR_LOG.stat().st_size if ERROR_LOG.exists() else 0
             debug_offset = DEBUG_LOG.stat().st_size if DEBUG_LOG.exists() else 0
             log_offsets = {
@@ -3761,13 +3967,16 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
                 GUI_WARNINGS_LOG: (
                     GUI_WARNINGS_LOG.stat().st_size if GUI_WARNINGS_LOG.exists() else 0),
             }
-            ck3_process = subprocess.Popen(
-                [str(CK3_EXE), "-debug_mode"], cwd=str(CK3_EXE.parent))
+            debug_mode = scenario not in TERMINAL_SCENARIOS
+            ck3_process = launch_ck3_process(debug_mode)
             ck3_pid_file.write_text(str(ck3_process.pid), encoding="ascii")
-            log("launched ck3; OCR waiting for main menu")
+            log(
+                f"launched ck3 ({'debug' if debug_mode else 'non-debug isolated'}); "
+                "OCR waiting for main menu")
 
         with timed_phase(timings, "lobby"):
-            navigate_lobby(session_artifacts)
+            navigate_lobby(
+                session_artifacts, ironman=scenario == "terminal-ironman")
             shutil.copy2(backup / "presets.txt", PRESETS_TXT)
             log("restored presets.txt after OCR-confirmed start transition")
 
@@ -3804,8 +4013,7 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
                 reader_debug_offset = (
                     DEBUG_LOG.stat().st_size if DEBUG_LOG.exists() else 0)
                 reader_started = time.perf_counter()
-                ck3_process = subprocess.Popen(
-                    [str(CK3_EXE), "-debug_mode"], cwd=str(CK3_EXE.parent))
+                ck3_process = launch_ck3_process(True)
                 ck3_pid_file.write_text(str(ck3_process.pid), encoding="ascii")
                 log("launched fresh process B without tutorial pre-seeding")
                 navigate_lobby(reader_artifacts)
@@ -3845,6 +4053,19 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
                     balance_fixture, debug_offset, error_offset, artifacts,
                     balance_smoke_pairs)
                 report_evidence.update(balance_evidence)
+            elif scenario in TERMINAL_SCENARIOS:
+                report_evidence = {
+                    "isolated_userdir": True,
+                    "debug_mode": False,
+                    "launch_argument": "-userdir=<isolated>",
+                    "cloud_save_setting": False,
+                    "terminal_mode": (
+                        "ironman" if scenario == "terminal-ironman" else "observer"),
+                }
+                error_reason = run_selftest(
+                    effective_record, debug_offset, error_offset, artifacts,
+                    terminal_mode=report_evidence["terminal_mode"],
+                    terminal_evidence=report_evidence)
             elif scenario == "selftest":
                 error_reason = run_selftest(
                     effective_record, debug_offset, error_offset, artifacts)
@@ -3854,35 +4075,29 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
                 xar_lines = run_production_smoke(
                     scenario, effective_record, debug_offset, artifacts)
                 err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-                xar_errors = [
-                    line.strip() for line in err_text.splitlines()
-                    if "xar" in line.lower()
-                ]
+                xar_errors = project_error_lines(err_text)
                 print("\n===== XAR PRODUCTION SMOKE REPORT =====")
                 print(f"scenario        : {scenario}")
                 print(f"import level    : {effective_record}")
                 print(f"XAR markers     : {len(xar_lines)}")
-                print(f"xar error.log   : {len(xar_errors)}")
+                print(f"project errors  : {len(xar_errors)}")
                 for line in xar_errors:
                     print("  ERR " + line)
                 print(f"artifacts       : {artifacts}")
                 if xar_errors:
-                    error_reason = f"{len(xar_errors)} xar error.log line(s)"
+                    error_reason = f"{len(xar_errors)} project error.log line(s)"
             if scenario == "off":
                 err_text, _ = read_new_lines(ERROR_LOG, error_offset)
-                xar_errors = [
-                    line.strip() for line in err_text.splitlines()
-                    if "xar" in line.lower()
-                ]
+                xar_errors = project_error_lines(err_text)
                 print("\n===== XAR PRODUCTION SMOKE REPORT =====")
                 print(f"scenario        : {scenario}")
                 print(f"observe seconds : {OFF_OBSERVE_TIMEOUT_S}")
-                print(f"xar error.log   : {len(xar_errors)}")
+                print(f"project errors  : {len(xar_errors)}")
                 for line in xar_errors:
                     print("  ERR " + line)
                 print(f"artifacts       : {artifacts}")
                 if xar_errors:
-                    error_reason = f"{len(xar_errors)} xar error.log line(s)"
+                    error_reason = f"{len(xar_errors)} project error.log line(s)"
             if error_reason is None:
                 result = "GREEN"
                 if scenario not in (
@@ -3969,7 +4184,8 @@ if __name__ == "__main__":
         "--scenario",
         choices=("selftest", "on-first-life", "on-recorded", "on-high-budget", "off",
                  "persistence-restart", "death-edges", "death-with-heir", "bargain-reopen",
-                 "progression-ui", "scoring-matrix", "courtier-creator", "balance-long"),
+                 "progression-ui", "scoring-matrix", "courtier-creator", "balance-long",
+                 "terminal-observer", "terminal-ironman"),
         default="selftest",
         help="acceptance scenario (default: selftest)")
     parser.add_argument(

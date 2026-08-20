@@ -21,6 +21,7 @@
 | `You should not set a size on a container! Containers resize to contain all of their children.` | dynamic list/grid 的 `item.container` 是自动包裹容器；每个实例给它写 `size` 都会重复报一条 GUI error | 删除外层 `container.size`，把尺寸留给内部按钮或 widget。2026-08-20 CK3 1.19.0.6 动态 trait 目录实测 |
 | 动态文化列表生成了正确数量的按钮行，但文化名称全部为空且无 GUI 报错 | heritage 标题仍可见，容易让 OCR/人工误以为文化目录已完成；本例并非 loc 缺失，直接改成 `[CultureTemplate.GetName]` 或原版 wrapper 仍为空，实际是子项内容没有按原版嵌套结构取得可用布局 | 代表文化 scope 先取 `Scope.Culture.GetHeritage`，再以 `CulturePillar.GetCulturesWithPillar` 建子列表；子 item 用 `Culture.GetTemplate`。按钮内容必须保留独立缩进 `hbox`，其中以 `[Culture.GetNameNoTooltip]` 渲染名称并在末尾放 `expand = {}`；选择 scope 用 `Culture.MakeScope`。2026-08-20 CK3 1.19.0.6 `xar_courtier_creator_postreview22_20260820` 实测 |
 | 动态 Faith 行可见且 tooltip 正常，但点击后 scripted GUI 完全没有执行 | 把原版 `Button_Select_Faith` 模板直接搬到非 ruler-designer 窗口会携带不适用的交互状态；此外，GUI saved scope 的目录成员判断不适合作为行按钮的前置门禁，内容子层还可能吞掉自动化点击 | 外层使用普通 `button_standard_hover`，在父层以 `Scope.Faith` 切换上下文，内容 `hbox` 设 `alwaystransparent = yes`；选择 effect 只校验玩家访问和 `scope:faith` 存在，最终配置/购买仍负责目录成员校验。自动化先用 OCR 定位行，再点击实测有效的行内空白并等待 effect marker，不把“发出点击”当成功。2026-08-20 CK3 1.19.0.6 `xar_courtier_creator_postreview22_20260820` 实测 |
+| `gfx/interface/icons/traits/_stars_N.dds: failed to read trait level star texture` | trait 的 `track` 有 N 个 entry 时，引擎按 `TRAIT_OVERLAY_LEVEL_STARS` 自动请求 `_stars_N.dds`；CK3 1.19.0.6 原版只提供 0–5，十级 trait hover 会每帧刷缺图错误 | mod 必须补同路径的 `_stars_10.dds`。本项目由 `tools/compose_trait_stars.py` 程序化生成并做逐字节静态 parity；验收把 `failed to read trait level star texture` 视为项目错误，即使该日志行不含 `xar`。2026-08-21 【琉焰之视】hover 实测。 |
 | `gui/xxx.gui: 文件 should be in utf8-bom`（scripted_widgets 等） | 同上 BOM | 加 BOM |
 
 ## on_action / 事件流程
@@ -51,10 +52,10 @@
 | `Tutorial.GetStepText` 等在自定义窗口为空 | Tutorial 上下文只在 tutorial_window 本体 | 别遥控；也不要从外面点——课程内用 `trigger_transition` 自动完成 |
 | state 里 `Tutorial.OnClickTransition` 点了没反应 | 按钮动作函数不响应非用户点击路径 | 放弃模拟点击，用课程自带 `trigger_transition` |
 | 哨兵文本显示成 `ERROR:[XXX]` | loc 内容含方括号被当命令解析 | 标记文本不要带 `[]` |
-| 进入观察者后 `Object of type 'character' is not valid for '<custom loc>'` 每帧刷屏 | 顶层 GUI 在 `GetPlayer` 失效后仍调用 `GetPlayer.Custom(...)`；`And(GetPlayer.IsValid, ...)` **不短路** | 父窗口仅用 `visible = "[GetPlayer.IsValid]"`，把 custom-localization 求值放到子控件；父窗口隐藏后子树不再求值。2026-08-18 实机复现 |
+| 进入观察者后 `Object of type 'character' is not valid for '<custom loc>'` 每帧刷屏 | 顶层 GUI 在 `GetPlayer` 失效后仍调用 `GetPlayer.Custom(...)`；`And(GetPlayer.IsValid, ...)` **不短路** | 父窗口仅用 `visible = "[GetPlayer.IsValid]"`，把 custom-localization 求值放到其受保护子树；需要驱动另一顶层 modal 时，由父窗口 state 写 `GetVariableSystem` 旗标，modal 只读该旗标。2026-08-18 实机复现；2026-08-21 铁人终局首次回归以 45 条同类错误再次验证 |
 | 首次打开随机池时大量 `Failed to fetch variable ... due to not being set`，但 effect 第一行明明初始化了变量 | 事件 tooltip/description 会预求值后续 `if`/`random_list.trigger`，早于同一 effect 的实际执行 | 在触发抽池事件之前的上一个事件/effect 中创建全部槽位变量；抽池内部初始化只负责重置。2026-08-18 首世生产链实测 |
 | `Unknown effect: add_influence` | 影响力没有 add_influence | 用 `change_influence = 100`（add_gold/prestige/piety 才有 add_ 形） |
-| `Failed parsing data statement 'PauseMenu.ExitGame'` | GUI 数据上下文按窗口注入（同 Tutorial 一类）；且该函数要参数 | 原签名 `PauseMenu.ExitGame( '(bool)yes' )`；即便写对，从自定义窗口 state 调用也无效。回主菜单/观察者模式走 `ExecuteConsoleCommand('observe')` 之类 |
+| `Failed parsing data statement 'PauseMenu.ExitGame'` | GUI 数据上下文按窗口注入（同 Tutorial 一类）；且该函数要参数 | 原签名 `PauseMenu.ExitGame( '(bool)yes' )`；即便写对，从自定义窗口 state 调用也无效。非铁人终局可走 `ExecuteConsoleCommand('observe')`；铁人模式禁止控制台命令，必须分支到注册 modal，以 `OnPause` 保持暂停、`OnPauseMenu` 打开原生菜单，再让玩家走原生自动保存/退出。`OnPause` 是 toggle，只能在 `Not( IsGamePaused )` 时调用。2026-08-21 CK3 1.19.0.6 非 debug 实测。 |
 | 同名 character modifier 重复购买不生效 | add_character_modifier 同名不叠加 | 用一系列不同名修正逐个发放（见 modifiers/xar_modifiers.txt 的 50 层寿命） |
 | 事件选项太多溢出 | option_grid 不支持滚动 | 分页（页变量 + 翻页选项 + 重触发事件） |
 | 免费宗教改革无 effect | 改革走信仰窗口 GUI | 发 `faith_creation_piety_cost_mult = -1` 修正让费用归零 |

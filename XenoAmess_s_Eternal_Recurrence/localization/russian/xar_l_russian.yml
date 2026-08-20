@@ -1,5 +1,9 @@
 ﻿l_russian:
  decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! Вечное Перерождение"
+ xar.ironman_terminal.title:0 "Угольки запечатаны"
+ xar.ironman_terminal.desc:0 "Странник, тяжесть этой жизни уже вписана в летопись. [Localize('IRONMAN_ENABLED')] не позволяет наблюдать, и потому я задержу для тебя время. Открой игровое меню и позволь встроенному сохранению поставить последнюю печать, а затем вернись в главное меню."
+ xar.ironman_terminal.footer:0 "Если ты попытаешься продолжить, время просто остановится вновь."
+ xar.ironman_terminal.open_menu:0 "Открыть игровое меню"
 
  xar.no_heir_settlement.desc:0 "Странник, обычная кончина закрыла бы за тебя эту книгу. Но этот вес принадлежит мне — и тебе."
  xar.no_heir.score:0 "Итоговый вес"

@@ -1,5 +1,9 @@
 ﻿l_korean:
  decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! 영원한 윤회"
+ xar.ironman_terminal.title:0 "잔불은 봉인되었습니다"
+ xar.ironman_terminal.desc:0 "나그네여, 이 삶의 무게는 이미 장부에 적혀 있습니다. [Localize('IRONMAN_ENABLED')]는 관찰을 허락하지 않으니, 제가 시간을 멈추어 드리겠습니다. 게임 메뉴를 열고 기본 저장 기능으로 마지막 봉인을 찍으신 뒤 메인 메뉴로 돌아오십시오."
+ xar.ironman_terminal.footer:0 "계속하려 하시면, 시간은 다시 멈출 뿐입니다."
+ xar.ironman_terminal.open_menu:0 "게임 메뉴 열기"
 
  xar.no_heir_settlement.desc:0 "나그네, 기본 게임의 결말은 그대의 장부를 닫았을 것입니다. 하지만 이 무게는 제 것이자 그대의 것입니다."
  xar.no_heir.score:0 "최종 무게"

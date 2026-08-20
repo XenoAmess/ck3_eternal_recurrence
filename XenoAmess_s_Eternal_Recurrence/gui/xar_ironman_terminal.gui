@@ -1,0 +1,77 @@
+﻿window = {
+	name = "xar_ironman_terminal_window"
+	size = { 100% 100% }
+	layer = confirmation
+	visible = "[And( GetPlayer.IsValid, And( GetVariableSystem.Exists('xar_ironman_terminal'), And( IsIronmanEnabled, And( Not( GameIsMultiplayer ), And( Not( GameHasMultiplePlayers ), Not( IsPauseMenuShown ) ) ) ) ) )]"
+	modal = yes
+	modality = all
+	alwaystransparent = no
+	filter_mouse = all
+	using = Background_Full_Dim
+	using = Animation_ShowHide_Standard
+
+	# OnPause is a toggle, so the terminal may invoke it only while unpaused.
+	state = {
+		name = "xar_ironman_terminal_pause"
+		trigger_when = "[And( GetPlayer.IsValid, And( GetVariableSystem.Exists('xar_ironman_terminal'), And( IsIronmanEnabled, And( Not( GameIsMultiplayer ), And( Not( GameHasMultiplePlayers ), And( Not( IsPauseMenuShown ), Not( IsGamePaused ) ) ) ) ) ) )]"
+		on_start = "[OnPause]"
+	}
+
+	widget = {
+		name = "xar_ironman_terminal_panel"
+		size = { 900 520 }
+		parentanchor = center
+		alwaystransparent = no
+		filter_mouse = all
+		using = Window_Background
+		using = Window_Decoration_Spike
+
+		vbox = {
+			using = Window_Margins
+			spacing = 18
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+				blockoverride "header_text" {
+					text = "xar.ironman_terminal.title"
+				}
+				blockoverride "button_close" {
+					visible = no
+				}
+			}
+
+			text_multi = {
+				layoutpolicy_horizontal = expanding
+				autoresize = yes
+				text = "[Localize('xar.ironman_terminal.desc')]"
+				fontsize = 18
+				default_format = "#high"
+				margin = { 30 0 }
+			}
+
+			expand = {}
+
+			text_multi = {
+				layoutpolicy_horizontal = expanding
+				autoresize = yes
+				text = "[Localize('xar.ironman_terminal.footer')]"
+				fontsize = 16
+				default_format = "#low"
+				margin = { 30 0 }
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				expand = {}
+				button_primary_big = {
+					name = "xar_ironman_terminal_menu_button"
+					text = "xar.ironman_terminal.open_menu"
+					onclick = "[OnPauseMenu]"
+					min_width = 360
+					default_format = "#high"
+				}
+				expand = {}
+			}
+		}
+	}
+}

@@ -32,6 +32,8 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario courtier-creator
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario balance-long --balance-fixture count
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_balance_matrix.py"
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_terminal_acceptance.py" --mode observer
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_terminal_acceptance.py" --mode ironman
 ```
 
 场景基线与边界：
@@ -49,7 +51,8 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - `scoring-matrix`：固定 selftest + 导入位 4，先保存历史角色的生产计分与只读 preview 基线，再创建受控谱系：同一后代经兄妹两条路径可达、另一支穿过已故第一代延伸到第五代，并额外创建第六代排除项。跨事件边界后要求新增宗族/家族计数恰为 7、头衔桶不变、临时去重 flag 全清、preview 增量为 1.4 且与生产总分误差不超过 0.01。随后 200 个 wire ID 逐一调用生产 apply dispatcher；每个实际命中的分支自行写 marker，下一事件再断言 100 次祝福计数、代表修正、最终稀有度和 100 XP 已提交。
 - `courtier-creator`：固定 selftest + 导入位 6，从带琉焰图标的【琉焰卿的永恒轮回】原生决议分组真实打开七页契页，并依次打开账簿、契约、廷臣三张原生详情图取证。随后验证取消零副作用、119 金确认禁用、默认 120 金成交、年龄/六维步进、五类生成 trait 目录、动态文化/信仰、同家族、348 金配置关窗重开保留、第二次实际角色交付与 AI 拒绝。runner 对文化只点击缩进子项，对信仰等待选择 effect marker；选择阿卢克古道后必须返回【心性】，分别从【勤勉】与【懒惰】原生 tooltip 读到该信仰的美德与罪恶，且两者均不得出现天主教。创建角色必须同时不同于玩家文化与信仰。2026-08-21 权威定向报告：`xar_decision_group_trait_both_20260821`，三图、美德/罪恶上下文、两次购买与 AI 闸门 GREEN，0 `xar` errors。
 - `balance-long`：必须指定 `--balance-fixture count|king|emperor|synthetic`。runner 把原版 81 个规则全部重建为当前 1.19.0.6 声明的默认值，追加 `xar_on`、成长 + 100% 和仅开发夹具；大厅仍走已验证的罗贝尔路径，生产初始化前再切换到史实奥塔/腓力一世/亨利四世或脚本标准化奥塔替身。固定选择第一项祝福与咒痕，不做 CK3 战略操作；逐对采样生产分数，30 年后允许自然死亡，否则在 40 年右删失。生产链在 dying root 有效时先保存 `scope:xar_dead` 并向 `player_heir` 排入 `delayed = yes` event，再内联计算；carrier 随后交付 record、settlement 和 kind 4 terminal wire。继承窗只走专用 OCR 路径；不把新统治者继续当作同一寿命采样。GREEN 只证明夹具、逐笔 1095 日节奏、被动策略、结构化采样和零 `xar` 错误，完整边界见 `docs/balance-test-protocol.md`。
-- 每次运行都写 `report.json` 与 JUnit `report.xml`；JSON 包含 run ID、UTC、版本、Git SHA、release-tree SHA-256、CK3/平台/Python 环境、场景、结果、artifact 清单、各阶段秒数和错误原因。即使中途失败，也会先恢复现场再写 RED 报告。`tutorial.txt`、`presets.txt`、`dlc_load.json` 与 `save games/autosave*.ck3` 备份位于独立临时目录；运行期只启用本工坊项，结束后原样恢复并删除备份，手动命名存档不移动。
+- `run_terminal_acceptance.py --mode observer|ironman`：以非 debug CK3、禁用云存档和仓库外一次性 `-userdir` 运行开发验收夹具。observer 要求结算后出现原生【正在观察】；Ironman 要求 modal 强制暂停、原生暂停菜单可打开、点击继续后重新阻断、原生保存确认、返回主菜单、同一进程内重载同一存档后再次阻断。包装器在运行前后逐文件比较真实 Documents 的教程/规则/启用项/设置及全部 `*.ck3` 存档，以及本地 Steam `userdata/*/1158310` 后备目录；两组都必须在退出后的五秒观察窗保持基线聚合哈希。远端 Steam 服务不在此证明范围内。仅当场景与后置检查均 GREEN 时才删除隔离 userdir，再把实际删除结果写入报告。
+- 每次运行都写 `report.json` 与 JUnit `report.xml`；JSON 包含 run ID、UTC、版本、Git SHA、实际 runtime tree SHA-256、source mode、CK3/平台/Python 环境、场景、结果、artifact 清单、各阶段秒数和错误原因。terminal 包装器另记三份 harness 文件的聚合 SHA-256。即使中途失败，也会先恢复现场再写 RED 报告；后置存储或清理检查失败时，包装器会同步把已有 JSON/JUnit 降级为 RED。`tutorial.txt`、`presets.txt`、`dlc_load.json` 与 `save games/autosave*.ck3` 备份位于独立临时目录；运行期只启用本工坊项，结束后原样恢复并删除备份，手动命名存档不移动。
 
 普通场景冷启动通常约 2 分钟；`bargain-reopen` 还要在速度 5 下实走 9 个游戏年，预计整场约 16-22 分钟，随机原生事件多时更长。所有场景都输出 `RESULT: GREEN/RED` + 退出码。判定依据：
 
@@ -60,7 +63,8 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 4. 从原生右栏进入决议面板，真实执行【琉焰账簿】并关闭，断言快照生成和五个临时 global 清理；随后真实执行【选择本世契约】并选择【征服者】，断言生产 effect 写入契约。
 5. 通过 acceptance-only GUI 直接调用 `DefaultOnCharacterClick(GetPlayer.GetID)` 打开玩家原生人物页，以 DDS 模板定位【琉焰之视】，hover 后 OCR 确认“当前分量”实时渲染。
 6. 结算确认后必须从原生 HUD OCR 到「正在观察」，证明观察者切换真实完成。
-7. **error.log 中任何包含 `xar` 的日志都视为失败**，不再白名单过滤。
+7. **error.log 中任何包含 `xar` 的日志，以及任何 `failed to read trait level star texture` 都视为项目失败**，不再白名单过滤。后者必须单列，因为 `_stars_N.dds` 是按 track entry 数生成的通用路径，错误行本身不含 mod 前缀。
+8. 铁人终局必须三次读取同一底栏日期证明时间冻结，并完成原生菜单 resume 重阻断、自动保存退出、主菜单重载和重载后重阻断；真实 Documents 受保护文件与本地 Steam userdata 后备目录快照任一变化均判 RED。
 
 截图证据和 JSON 摘要在控制台报告里的 artifacts 目录。
 
@@ -102,6 +106,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 独立 `bargain-reopen` 开发树场景覆盖生产一场一对语义：三轮真实 options/dispatchers、累计对数 1/2/3、session `1→0`、XP `0→1→2→3`、拒绝数 0。每轮 acceptance-only day-1094 probe 与生产 `xar.0006 days = 1095` 都用 `current_date - 成交日` 分别精确断言 1094/1095，三个生产 reset marker 必须有序且第三次确实打开下一场。2026-08-19 首次完整 GREEN：`xar_accept_ue4ye_un`，九游戏年、三次生产 reset、0 `xar` errors。
 - 独立 `progression-ui` 开发树场景覆盖生产贤王 3/6/10 和【琉焰之视】10 XP 事件的正文、选项与真实点击；四个 tutorial lesson 必须精确落盘，原生账簿必须同帧显示当前 `0/10`、`PB 10`、贤王已完成、`R 1`、`S 0`。2026-08-19 首次完整 GREEN：`xar_accept_gqppgi_f`，图鉴 mask 16，0 `xar` errors。
 - 独立 `scoring-matrix` 开发树场景实测 1–5 代计入、第六代排除、同一后代双路径只计一次、穿过已故中间节点后继续计分、清理不对 dead scope 执行 flag effect，并比较 preview/生产误差。全部 200 个稳定 wire ID 还会逐一穿过生产 dispatcher，结合冻结语义契约证明 ID→effect/filter/weight 映射。2026-08-19 GREEN：`xar_accept_h0lgmvyf`，200/200 marker，0 `xar` errors。
+- 非 debug 终局双路径实测：`xar_terminal_observer_nondebug3_20260821` 从开发夹具中的生产 `observe` 分支进入原生观察者 HUD；`xar_terminal_ironman_nondebug9_20260821` 完成强制暂停、resume 重阻断、原生自动保存退出、主菜单同进程重载与重载后阻断。两轮都实际 hover 十级【琉焰之视】，其完整 1–10 轨道可见且不再产生旧 run 中的 248 条 `_stars_10.dds` 错误。铁人轮的三个日期检查均强制读出并固定在同一日，隔离存档重载前后路径/大小/SHA-256 相同；真实 Documents 的 9 个受保护文件与本地 Steam app 1158310 userdata 的 2 个文件在五秒观察窗内聚合哈希不变，隔离 userdir 删除后实际不存在。两轮 runtime tree 均为 `235d92fb36fd1052b0261c05f059e525d76a06231a7b92a8a27cc8e6764d242a`，harness 为 `f56a0e364198e6fe1be465d447d1f5170965de275e6a28e4d443ca68934e7b9f`，且均为 0 project errors。该证据不等于 release projection 运行或远端 Steam Cloud 审计。
 
 **没验的**：
 - 数值是否符合最初产品意图仍需人工平衡审阅；冻结契约能阻止未审阅的 `50→500` 或 ID 重排，但不能证明首次冻结前的设计值天然正确。
@@ -126,6 +131,10 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 主菜单【新游戏】也必须 deliberate-click 并以罗贝尔书签实际出现作反证；2026-08-19 实测 OCR 找到按钮后的一次瞬时点击可被 CK3 丢弃，runner 若直接进入 30 秒书签等待只会在原主菜单超时。
 - 安全软件通知也可能置顶遮住大厅“开始”按钮；runner 等待该按钮时会 OCR 识别并点击通知的“忽略”，只关闭当次提示，不改软件设置。2026-08-19 实测 Chrome 通知也会覆盖同一区域，且按钮是“关闭”；runner 只在大厅“开始”缺失时扫描右下角通知区并关闭这两类外部遮挡，不在普通游戏画面盲点“关闭”。
 - 截图读坐标要用 PIL 裁真实 PNG（2560x1440）实测——聊天里显示的图有缩放，目测坐标必歪。
+- OCR 定位按钮必须避免正文中的同词。2026-08-21 铁人 modal 的正文含“打开游戏菜单”，全屏 `contains=True` 会点到正文而不是底部按钮；按钮改在 modal 区域做精确匹配。RapidOCR 还会把 CK3 字体的“余烬”稳定识别为“余焰”，流程断言因此使用唯一后缀“已封存”，不修改正确的产品文案。
+- `pdx_enum_setting.cpp` 在真实 profile 和隔离 profile 均可能先记录 `Could not find enum 'l_simp_chinese' ... default 'l_english'`，但随后实际画面仍是简中；该启动期 debug 行不能单独证明最终渲染语言，验收以画面 OCR 和本地化结构为准。2026-08-21 非 debug 铁人实测。
+- 隔离 runner 只终止自己记录的 CK3 PID。若 preflight 后、真正 launch 前又出现任意 `ck3.exe`，必须 RED 并拒绝启动测试，不得调用按镜像名全局强杀；否则会误杀用户刚开启的真实会话。后置安全检查同样属于权威结果，失败时 JSON、JUnit 与退出码必须一起 RED。2026-08-21 runner 审阅加固。
+- full selftest 的最终咒痕 option 不能只在 1 游戏日后排入强制死亡：character event 关闭会自动恢复时间，runner 尚在打开账簿/契约/trait hover 时，死亡窗便可能抢先覆盖决议面板。acceptance-only 首次 `xar.0008` 现留 30 日 UI 宽限，若 importer 尚未交付才继续逐日轮询；release 投影完整剥离该夹具。2026-08-21 两次非 debug 铁人 RED 截图复现。
 - 长测日期 12 秒不推进时禁止盲点固定坐标。runner 每次用单调递增序号保存 `stall_<场景>_<序号>.png`、候选框标注图和完整 OCR JSON：在画面下部找真实选项，并在候选栏中优先同一 x 轴纵向堆叠的最下行。点击后必须观察到日期继续推进；连续三次仍卡住立即 RED，并由执行者读取这些截图/OCR 分析，不能继续空点到总超时。2026-08-18 实测定位：全宽事件【摆脱尘世】的选项约在 `(0.68,0.79)`，旧恢复点 `(0.38,0.72)` 落在正文空白处。2026-08-19 【诺曼人的西西里】实测三个真实选项纵向对齐在 `x≈930`，人物名位于 `x≈1377/1841`，按右侧优先会误开人物面板；【埃玛成年】仅有一个左侧选项 `x≈930`，人物名/关系则纵向对齐在 `x≈1505`，不能只按列密度判断。【对未来的思考】实测人物页会在真实选项下方露出被纵向裁切的地图标签，OCR 将其识别为高框并误当成同列最末选项；经典选项现限制为 `x=0.34..0.41`、`y≤0.75` 且 OCR 框高不超过画面 `3.5%`。互动信函【要求改信】【剥夺头衔】会把真实 `拒绝/同意` 按钮放到 `y≈0.79`，其效果正文却占满旧候选区，因此两个精确动作标签优先于正文。全宽【波希米亚的宫廷】正文会侵入 `x≈0.42`，真实选项位于 `x≈0.68`；没有经典栏时，runner 先选右侧纵列，再退回中栏。同期实测 `debug.log` 在无事件时可长期没有日期行，不能用它单独判断冻结；长测改读底栏 `公元 Y年M月D日` 的实际像素。
 - 2026-08-20 【精神崩溃：心脏疼痛】的花体选项没有被 OCR 读出。旧特判把 y 写死为画面高度 `0.91`，实际点到 `(928,1310)` 的地图并循环 122 次；真实按钮框为 `[621,1020,1247,1064]`、中心 `(934,1042)`。现从标题下方 Canny/Hough 横边配对出全部符合 CK3 option 比例的矩形，按框尺寸、横向对齐和置信度选择；检测不到可信框就不点击，同一 resume modal 三次无进展立即 RED。离线缩放到 0.75/1.0/1.25 倍均命中同一归一位置。
 - 暂停链因场景而异。`selftest`/`death-with-heir` 的普通继承路径是：开局默认暂停 → 原生继承窗强制暂停 → OCR 精确点击「继续扮演」约 `(1453,1129)` → 等待生产结算事件；不得把继承窗右栏约 `(1721,1048)` 的「处于战争」状态交给通用纵列算法。

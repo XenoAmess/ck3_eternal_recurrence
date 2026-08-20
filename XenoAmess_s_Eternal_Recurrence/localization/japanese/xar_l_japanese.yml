@@ -1,5 +1,9 @@
 ﻿l_japanese:
  decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! 永遠の輪廻"
+ xar.ironman_terminal.title:0 "残り火は封じられた"
+ xar.ironman_terminal.desc:0 "旅人よ、この生の重みはすでに帳簿へ記された。[Localize('IRONMAN_ENABLED')]は傍観を許さぬゆえ、我が時を留めよう。ゲームメニューを開き、標準のセーブに最後の封を結ばせてから、メインメニューへ戻るがよい。"
+ xar.ironman_terminal.footer:0 "先へ進もうとしても、時は再び止まるだけだ。"
+ xar.ironman_terminal.open_menu:0 "ゲームメニューを開く"
 
  xar.no_heir_settlement.desc:0 "旅人よ、本来の終わりならば汝の帳簿を閉じてくれるであろう。だがこの重荷は我に属す——汝にも。"
  xar.no_heir.score:0 "最終の重み"

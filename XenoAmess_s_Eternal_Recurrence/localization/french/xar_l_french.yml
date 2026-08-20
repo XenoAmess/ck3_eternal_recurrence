@@ -1,5 +1,9 @@
 ﻿l_french:
  decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! Éternelle Réincarnation"
+ xar.ironman_terminal.title:0 "Les braises sont scellées"
+ xar.ironman_terminal.desc:0 "Voyageur, le poids de cette vie est déjà inscrit dans le registre. [Localize('IRONMAN_ENABLED')] ne permet aucune observation ; je retiendrai donc le temps pour toi. Ouvre le menu du jeu et laisse la sauvegarde native apposer le dernier sceau, puis reviens au menu principal."
+ xar.ironman_terminal.footer:0 "Si tu tentes de continuer, le temps s'arrêtera simplement de nouveau."
+ xar.ironman_terminal.open_menu:0 "Ouvrir le menu du jeu"
 
  xar.no_heir_settlement.desc:0 "Voyageur, la fin du jeu de base refermerait le registre pour toi. Mais ce poids m'appartient — et t'appartient aussi."
  xar.no_heir.score:0 "Poids final"

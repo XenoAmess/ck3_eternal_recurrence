@@ -1,5 +1,9 @@
 ﻿l_polish:
  decision_group_type_xar_eternal_recurrence:0 "@xar_decision_group_icon! Wieczny Cykl"
+ xar.ironman_terminal.title:0 "Żary zostały zapieczętowane"
+ xar.ironman_terminal.desc:0 "Wędrowcze, ciężar tego życia jest już wpisany w księgę. [Localize('IRONMAN_ENABLED')] nie pozwala na obserwację, więc zatrzymam dla ciebie czas. Otwórz menu gry i pozwól zapisowi gry nałożyć ostatnią pieczęć, po czym wróć do menu głównego."
+ xar.ironman_terminal.footer:0 "Jeśli spróbujesz kontynuować, czas po prostu znów się zatrzyma."
+ xar.ironman_terminal.open_menu:0 "Otwórz menu gry"
 
  xar.no_heir_settlement.desc:0 "Wędrowcze, zakończenie z gry podstawowej zamknęłoby za ciebie księgę. Lecz ten ciężar należy do mnie — i do ciebie."
  xar.no_heir.score:0 "Ciężar ostateczny"

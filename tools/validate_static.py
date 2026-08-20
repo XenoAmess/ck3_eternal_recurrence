@@ -13,6 +13,7 @@ from PIL import Image
 
 import build_release
 import compose_decision_art
+import compose_trait_stars
 import gen_balance_wire
 import gen_contracts
 import gen_courtier_creator
@@ -270,6 +271,17 @@ def generated_checks(errors):
             errors.append(
                 f"generated decision art stale: {output.relative_to(ROOT)}")
 
+    stars_output = compose_trait_stars.OUTPUT
+    if not stars_output.is_file():
+        errors.append(
+            f"generated trait stars missing: {stars_output.relative_to(ROOT)}")
+    else:
+        expected_dds = io.BytesIO()
+        compose_trait_stars.render().save(expected_dds, format="DDS")
+        if stars_output.read_bytes() != expected_dds.getvalue():
+            errors.append(
+                f"generated trait stars stale: {stars_output.relative_to(ROOT)}")
+
 
 def encoding_and_loc_checks(errors):
     for path in MOD.rglob("*"):
@@ -330,6 +342,8 @@ def encoding_and_loc_checks(errors):
         "rule_xar_enabled", "setting_xar_on", "setting_xar_on_desc",
         "setting_xar_off", "setting_xar_off_desc", "setting_xar_selftest",
         "setting_xar_selftest_desc", "decision_group_type_xar_eternal_recurrence",
+        "xar.ironman_terminal.title", "xar.ironman_terminal.desc",
+        "xar.ironman_terminal.footer", "xar.ironman_terminal.open_menu",
     })
     required.update(validate_loc.collect_modifier_keys())
 
@@ -345,11 +359,15 @@ def encoding_and_loc_checks(errors):
         "xar.0011.title", "xar.0011.desc", "xar.0011.desc_cap", "xar.0011.close",
         "xar.no_heir_settlement.desc",
     }
+    terminal_loc_keys = {
+        "xar.ironman_terminal.title", "xar.ironman_terminal.desc",
+        "xar.ironman_terminal.footer", "xar.ironman_terminal.open_menu",
+    }
     courtier_loc_keys = {
         key for key in required
         if key.startswith("xar.cc.") or key.startswith("xar_courtier_creator")
     }
-    for key in sorted(phase_one_loc_keys | courtier_loc_keys):
+    for key in sorted(phase_one_loc_keys | courtier_loc_keys | terminal_loc_keys):
         english_tokens = loc_format_tokens(all_values["english"].get(key, ""))
         for lang in LANGS:
             actual_tokens = loc_format_tokens(all_values[lang].get(key, ""))
@@ -385,6 +403,8 @@ def mechanic_checks(errors):
             if event_id in event_blocks:
                 errors.append(f"duplicate event '{event_id}' discovered in {path.relative_to(ROOT)}")
             event_blocks[event_id] = extract_block(text, event_id) or ""
+    if events.count("trigger_event = { id = xar.0008 days = 30 }") != 2:
+        errors.append("full selftest lacks its two 30-day pre-death UI grace windows")
     event_ids = list(event_blocks)
     if not event_ids:
         errors.append("no XAR events discovered")
@@ -767,6 +787,8 @@ def mechanic_checks(errors):
         MOD / "common/scripted_guis/xar_decision_bridges.txt")
     decision_bridge_gui = read(MOD / "gui/xar_decision_bridge.gui")
     decision_registry = read(MOD / "gui/scripted_widgets/xar_scripted_widgets.txt")
+    meta_gui = read(MOD / "gui/xar_meta.gui")
+    ironman_terminal_gui = read(MOD / "gui/xar_ironman_terminal.gui")
     no_heir_gui = read(MOD / "gui/xar_no_heir_settlement.gui")
     succession_override = read(MOD / "gui/window_succession_event.gui")
     if "set_global_variable = xa_open_ledger_pending" not in decisions:
@@ -782,6 +804,30 @@ def mechanic_checks(errors):
             or "gui/xar_decision_bridge.gui = xar_decision_bridge_window"
             not in decision_registry):
         errors.append("decision GUI bridge window is not fully registered")
+    if not all(token in meta_gui for token in (
+            "ExecuteConsoleCommand('observe')", "Not( IsIronmanEnabled )",
+            'GetVariableSystem.Set(\'xar_ironman_terminal\', \'open\')',
+            "GetVariableSystem.Clear('xar_ironman_terminal')")):
+        errors.append("ordinary terminal observer bridge is not gated away from Ironman")
+    if ("gui/xar_ironman_terminal.gui = xar_ironman_terminal_window"
+            not in decision_registry):
+        errors.append("Ironman terminal window is not registered")
+    ironman_requirements = (
+        "modal = yes", "modality = all", "filter_mouse = all",
+        "IsIronmanEnabled", "Not( GameIsMultiplayer )",
+        "Not( GameHasMultiplePlayers )", "Not( IsPauseMenuShown )",
+        "Not( IsGamePaused )", 'on_start = "[OnPause]"',
+        'onclick = "[OnPauseMenu]"',
+        "GetVariableSystem.Exists('xar_ironman_terminal')",
+        "xar.ironman_terminal.title", "xar.ironman_terminal.desc",
+        "xar.ironman_terminal.footer", "xar.ironman_terminal.open_menu",
+    )
+    if any(token not in ironman_terminal_gui for token in ironman_requirements):
+        errors.append("Ironman terminal lost its pause, modal, player, or native-menu gate")
+    if "PauseMenu." in ironman_terminal_gui or "SetGameSpeed" in ironman_terminal_gui:
+        errors.append("Ironman terminal bypasses the native menu or mistakes speed for pause")
+    if "GetPlayer.Custom(" in ironman_terminal_gui:
+        errors.append("Ironman modal evaluates character custom loc outside its player gate")
 
     courtier_decision = extract_block(decisions, "xar_courtier_creator_decision") or ""
     courtier_bridge = extract_block(decision_bridges, "xar_cc_open_bridge_gui") or ""
@@ -1908,12 +1954,40 @@ def package_checks(errors):
                 'glob("autosave*.ck3")', "autosaves.ready",
                 "autosave restore verification failed"))):
         errors.append("acceptance runner/watchdog lacks atomic autosave isolation")
+    terminal_runner = read(ROOT / "tools/run_terminal_acceptance.py")
+    if not all(token in terminal_runner for token in (
+            "configure_isolated_userdir", '"cloud_save"={ version=0 enabled=no }',
+            'f"*/{STEAM_APP_ID}"', 'winreg.QueryValueEx(key, "SteamPath")',
+            "if not app_dirs:", "POSTFLIGHT_STABILITY_SECONDS = 5",
+            '"steam_cloud_untouched": steam_untouched',
+            '"steam_cloud_scope":', "remote service not queried",
+            '"real_profile_before_sha256": before_digest',
+            '"real_profile_after_sha256":',
+            "terminal_harness_sha256 = harness_digest()",
+            '"terminal_harness_sha256": terminal_harness_sha256',
+            "def mark_junit_failed", 'report["result"] = "RED"',
+            "shutil.rmtree(userdir)", "userdir_removed = not userdir.exists()",
+            '"userdir_removed_after_run": userdir_removed')):
+        errors.append("terminal acceptance lacks disposable-userdir/Steam Cloud proof")
+    if terminal_runner.find("acceptance.configure_isolated_userdir(userdir, target)") > (
+            terminal_runner.find("userdir.mkdir()")):
+        errors.append("terminal acceptance validates its isolated path after writing files")
+    if not all(token in acceptance_runner for token in (
+            "Ironman terminal initial date unreadable",
+            "Ironman terminal final date unreadable",
+            "if saves_after_reload != saves_before_reload:",
+            "isolated Ironman save changed across paused reload",
+            "ck3.exe started after isolated preflight; refusing to kill it",
+            '"failed to read trait level star texture"',
+            "def project_error_lines")):
+        errors.append("terminal acceptance can false-pass freeze/save or kill an untracked CK3")
     thumbnail = MOD / "thumbnail.png"
     if thumbnail.exists() and thumbnail.stat().st_size >= 1_000_000:
         errors.append("thumbnail.png must remain below Steam's 1 MB limit")
     expected_images = {
         MOD / "thumbnail.png": (640, 640),
         MOD / "gfx/interface/icons/traits/glassfire_trait.dds": (120, 120),
+        MOD / "gfx/interface/icons/traits/_stars_10.dds": (120, 120),
         MOD / "gfx/interface/icons/trait_level_tracks/xar_glassfire_gaze.dds": (120, 120),
         MOD / "gfx/interface/illustrations/event_scenes/xar_glassfire_avatar.dds": (1592, 848),
         MOD / "gfx/interface/illustrations/decisions/decision_xar_ledger.dds": (1100, 440),

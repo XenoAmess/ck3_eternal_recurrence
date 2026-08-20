@@ -2,3 +2,4 @@
 gui/xar_decision_bridge.gui = xar_decision_bridge_window
 gui/xar_trait_test.gui = xar_trait_test_window
 gui/xar_courtier_creator.gui = xar_courtier_creator_window
+gui/xar_ironman_terminal.gui = xar_ironman_terminal_window
