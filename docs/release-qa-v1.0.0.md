@@ -15,7 +15,8 @@
   canonical text SHA-256 后重新渲染；本机存在原版源时再追加强校验，不提交第二份原版 fixture。
   `tools/test_gen_no_heir_gui.py` 的四项契约测试、模拟无游戏源的完整静态校验均已 GREEN；当前
   85 文件代码提交 `ac524dc` 的官方 run
-  [`32425375023`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32425375023) 同样 GREEN。
+  [`32425375023`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32425375023) 同样 GREEN；其后的证据文档 HEAD
+  `45cf7ea` 也由官方 run [`32425512587`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32425512587) 验证为 GREEN。
 - [x] 修正付费廷臣 trait 图标的信仰上下文：德行、罪恶光效与 tooltip 使用
   `xar_cc_selected_faith`；`xar_decision_group_trait_both_20260821` 证明阿卢克古道【勤勉】为美德、【懒惰】为罪恶，且均不含天主教。
 - [x] 增加铁人模式死亡收尾：普通非铁人单机继续进入观察者；铁人模式强制保持暂停，
@@ -35,8 +36,8 @@
 - [x] 增加并通过非 debug、非铁人普通继承验收，证明开发验收夹具中的生产 `observe` 分支真实进入观察者模式。
 - [x] 使用隔离 `userdir`、关闭云存档运行非 debug 铁人验收：验证结算、强制暂停、恢复游戏后重新阻断、
   原生退出确认、铁人存档稳定落盘及返回主菜单；不得触碰真实用户存档。
-- [ ] 在最终 mod tree 上串行重跑完整 release-gating CK3 套件与 production projection，保存
-  JSON/JUnit、截图、增量日志和 runtime tree hash。
+- [x] 在最终 mod tree 上串行重跑完整 release-gating CK3 套件与 production projection；12 个 debug 场景和
+  两个非 debug 终局场景全部 GREEN，并保存 JSON/JUnit、截图、增量日志和 runtime tree hash。
 
 ### Manual Sign-off / 人工签核
 
@@ -81,7 +82,7 @@
 - Python scoring reference vectors: required GREEN.
 - Deterministic double release build: required GREEN.
 - GitHub official `windows-latest` runs the L0 checks above and builds uploadable ZIP/manifest artifacts for manual runs or `v*` tags; it does not contain CK3.
-- Local CK3 selftest, production smokes, persistence, death edges, with-heir death, bargain timing, progression UI, scoring matrix and paid-courtier scenarios: required GREEN with zero `xar` error lines.
+- Local CK3 selftest, production smokes, persistence, death edges, with-heir death, bargain timing, progression UI, scoring matrix and paid-courtier scenarios: required GREEN with zero project error lines.
 - Landless courtier delivery, process-restart retention and multilingual layout are explicitly uncovered compatibility/presentation cases; they do not downgrade the landed-player functional scenario from GREEN.
 
 Historical local evidence (2026-08-19):
@@ -105,7 +106,7 @@ The runs below predate production-code candidate `a19808d`. They remain evidence
 
 Release-candidate baseline plus post-review targeted evidence (2026-08-20 through 2026-08-21):
 
-Rows for the full suite retain their original tree fingerprints. Subsequent production changes were confined to the death gates and paid-courtier transaction/GUI paths; those paths were rerun below after review. The then-current 78-file production projection had deterministic L0 evidence, but was not itself put through another complete CK3 suite after every post-review edit. The current Ironman-terminal and ten-star candidate contains 85 release files and has the targeted runtime evidence below; the final exact-candidate full suite remains pending.
+Rows for the older full suite retain their original tree fingerprints. Subsequent production changes were confined to the death gates and paid-courtier transaction/GUI paths; those paths were rerun below after review. The then-current 78-file production projection had deterministic L0 evidence, but was not itself put through another complete CK3 suite after every post-review edit. The Ironman-terminal and ten-star candidate contains 85 release files; its targeted evidence appears below, followed by the final exact-candidate suite.
 
 | Scenario | Run ID | Result |
 |---|---|---|
@@ -123,19 +124,38 @@ Rows for the full suite retain their original tree fingerprints. Subsequent prod
 | Non-debug ordinary terminal / native observer HUD | `xar_terminal_observer_nondebug3_20260821` | GREEN in the development fixture, production `observe` branch visible, ten-level trait track rendered, protected Documents files and local Steam userdata unchanged for the bounded postflight, disposable userdir actually removed, runtime tree `235d92fb36fd1052b0261c05f059e525d76a06231a7b92a8a27cc8e6764d242a`, 0 project errors |
 | Non-debug Ironman terminal / native save, exit and reload | `xar_terminal_ironman_nondebug9_20260821` | GREEN in the development fixture, 57/57, ten-level trait track rendered without the prior 248 star-texture errors, three mandatory readable frozen-date checks, resume reblocked, native Ironman save confirmation, main-menu return and same-process save reload reblocked; nine protected Documents files and two local Steam userdata files for app 1158310 retained identical aggregate hashes through a five-second postflight, disposable userdir actually removed, runtime tree `235d92fb36fd1052b0261c05f059e525d76a06231a7b92a8a27cc8e6764d242a`, harness `f56a0e364198e6fe1be465d447d1f5170965de275e6a28e4d443ca68934e7b9f`, 0 project errors |
 
+Final exact-candidate evidence (2026-08-21):
+
+Every report below records Git commit `45cf7eacb276610ed3ed62bb933e0cc1936c51c8`, CK3 `1.19.0.6`, JSON/JUnit,
+screenshots and incremental logs. Development scenarios loaded runtime tree
+`235d92fb36fd1052b0261c05f059e525d76a06231a7b92a8a27cc8e6764d242a`; the four production smokes built and loaded
+the stripped 85-file projection `29dde4460b7f86b1779e902712e856776dd99de703802a92a64c1fa39c28d221` from that same source tree.
+
+| Scenario | Run ID | Result |
+|---|---|---|
+| Four production-only smokes | `xar_final85_on_first_life_20260821`; `xar_final85_on_recorded_20260821`; `xar_final85_on_high_budget_20260821`; `xar_final85_off_20260821` | GREEN, first-life/100-record/2000-budget/rule-disabled paths, 0 project errors |
+| Full selftest / 57 assertions / production UI / pool sweep | `xar_final85_selftest_20260821` | GREEN, 57/57, 200-entry sweep, native decision UI, trait hover and observer transition, 0 project errors |
+| Two-process persistence restart | `xar_final85_persistence_20260821` | GREEN, process B imported process A record 455 without pre-seeding; handoff and pre-exit SHA-256 both `81d8f07d2ee90ba553ebcb3b63954a89b5a31f4b884cb314b2acadea67915ae7`, 0 project errors |
+| Actual AI death and no playable heir | `xar_final85_death_edges_20260821` | GREEN, actual AI death blocked, synchronous eight-value settlement visible, native exit returned to main menu, 0 project errors |
+| Ordinary death with playable heir | `xar_final85_death_with_heir_20260821` | GREEN, player precondition, heir control transfer, one production score and visible settlement, 0 project errors |
+| Three production bargain reopens | `xar_final85_bargain_20260821` | GREEN, every pair blocked on day 1094 and reopened on day 1095; cumulative pairs and XP reached 1/2/3, 0 project errors |
+| Contract/Gaze progression UI | `xar_final85_progression_20260821` | GREEN, 3/6/10 PB lessons, collection mask 16, Gaze 10 and ledger `R 1` / `S 0`, 0 project errors |
+| Controlled scoring and production dispatchers | `xar_final85_scoring_matrix_20260821` | GREEN, seven living descendants through depth 5 with dedup/dead-intermediate coverage, preview parity and 200/200 dispatchers, 0 project errors |
+| Paid custom courtier real UI | `xar_final85_courtier_creator_20260821` | GREEN, cancel/119-gold gate/default 120/custom 348/seven tabs/numeric controls/Aluk faith context/two purchases/AI guard, 0 project errors |
+
 Current candidate gates:
 
 | Gate | Status | Required evidence |
 |---|---|---|
 | Local current-tree L0 and deterministic release projection | GREEN | compileall, four projection tests, `validate_static.py`, reference vectors and 85-file `build_release.py --check` all pass locally; this is not a hosted or CK3 runtime claim |
-| Official GitHub `windows-latest` L0 | GREEN | code commit `ac524dc`, run [`32425375023`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32425375023); clean checkout passed compile, four projection tests, static validation, scoring vectors and deterministic 85-file build |
+| Official GitHub `windows-latest` L0 | GREEN | code commit `ac524dc`, run [`32425375023`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32425375023), and evidence HEAD `45cf7ea`, run [`32425512587`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32425512587); clean checkout passed compile, four projection tests, static validation, scoring vectors and deterministic 85-file build |
 | Full baseline plus post-review targeted CK3 regression | GREEN | the full release-candidate suite passed; changed death paths and paid courtier were then rerun on the reviewed tree with zero `xar` errors |
 | Ordinary death with a playable heir | GREEN | `xar_death_with_heir_postreview_20260820`; one compute, dispatch and visible settlement |
 | Paid custom courtier | GREEN | `xar_courtier_creator_postreview22_20260820`; both selected origins differ from the player, successful delivery precedes configuration and charge, and remaining landless/process-restart cases are declared coverage gaps |
 | Branded XAR decision group and illustrations | GREEN | `xar_decision_group_trait_both_20260821`; OCR proved the native group and three detail pages, while the captured screenshots were manually inspected for the title icon and three distinct illustrations; empty GUI warnings and 0 `xar` errors |
 | Selected-faith trait presentation | GREEN | `xar_decision_group_trait_both_20260821`; selected Aluk Diligent/Lazy native tooltips identify the chosen faith's virtue/sin and exclude Catholicism; captured icon borders are manually inspected rather than pixel-classified |
 | Ordinary and Ironman terminal flows | GREEN | `xar_terminal_observer_nondebug3_20260821` and `xar_terminal_ironman_nondebug9_20260821`; non-debug development fixtures proved ten-level trait rendering with zero project errors, native observer, forced pause, resume reblock, native save/exit, main-menu return, same-process reload reblock and bounded local-storage isolation |
-| Final exact-candidate CK3 regression | PENDING | rerun the complete release-gating suite after the code and localization changes above |
+| Final exact-candidate CK3 regression | GREEN | commit `45cf7ea`; 12 debug reports plus the source-hash-matched observer/Ironman non-debug reports cover the complete release-gating suite, with runtime hashes recorded above and 0 project errors |
 
 ## Manual Language Sign-off
 

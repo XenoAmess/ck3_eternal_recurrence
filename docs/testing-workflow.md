@@ -107,10 +107,11 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 独立 `progression-ui` 开发树场景覆盖生产贤王 3/6/10 和【琉焰之视】10 XP 事件的正文、选项与真实点击；四个 tutorial lesson 必须精确落盘，原生账簿必须同帧显示当前 `0/10`、`PB 10`、贤王已完成、`R 1`、`S 0`。2026-08-19 首次完整 GREEN：`xar_accept_gqppgi_f`，图鉴 mask 16，0 `xar` errors。
 - 独立 `scoring-matrix` 开发树场景实测 1–5 代计入、第六代排除、同一后代双路径只计一次、穿过已故中间节点后继续计分、清理不对 dead scope 执行 flag effect，并比较 preview/生产误差。全部 200 个稳定 wire ID 还会逐一穿过生产 dispatcher，结合冻结语义契约证明 ID→effect/filter/weight 映射。2026-08-19 GREEN：`xar_accept_h0lgmvyf`，200/200 marker，0 `xar` errors。
 - 非 debug 终局双路径实测：`xar_terminal_observer_nondebug3_20260821` 从开发夹具中的生产 `observe` 分支进入原生观察者 HUD；`xar_terminal_ironman_nondebug9_20260821` 完成强制暂停、resume 重阻断、原生自动保存退出、主菜单同进程重载与重载后阻断。两轮都实际 hover 十级【琉焰之视】，其完整 1–10 轨道可见且不再产生旧 run 中的 248 条 `_stars_10.dds` 错误。铁人轮的三个日期检查均强制读出并固定在同一日，隔离存档重载前后路径/大小/SHA-256 相同；真实 Documents 的 9 个受保护文件与本地 Steam app 1158310 userdata 的 2 个文件在五秒观察窗内聚合哈希不变，隔离 userdir 删除后实际不存在。两轮 runtime tree 均为 `235d92fb36fd1052b0261c05f059e525d76a06231a7b92a8a27cc8e6764d242a`，harness 为 `f56a0e364198e6fe1be465d447d1f5170965de275e6a28e4d443ca68934e7b9f`，且均为 0 project errors。该证据不等于 release projection 运行或远端 Steam Cloud 审计。
+- 2026-08-21 最终 exact-candidate 套件绑定提交 `45cf7ea`：`xar_final85_selftest_20260821`、`xar_final85_persistence_20260821`、两条 `xar_final85_death_*`、`xar_final85_bargain_20260821`、`xar_final85_progression_20260821`、`xar_final85_scoring_matrix_20260821`、`xar_final85_courtier_creator_20260821` 与四条 `xar_final85_on_*/off_20260821` 全部 GREEN，0 project errors。开发树 runtime 为 `235d92fb36fd1052b0261c05f059e525d76a06231a7b92a8a27cc8e6764d242a`；四条 production smoke 实际加载从它构建并剥离验收夹具的 85 文件 projection `29dde4460b7f86b1779e902712e856776dd99de703802a92a64c1fa39c28d221`。每条报告均保存 JSON/JUnit、截图与增量日志；该结论只关闭自动化候选回归，不替代九语言人工审校、干净截图、Workshop 强制重下载或发布签核。
 
 **没验的**：
 - 数值是否符合最初产品意图仍需人工平衡审阅；冻结契约能阻止未审阅的 `50→500` 或 ID 重排，但不能证明首次冻结前的设计值天然正确。
-- 付费廷臣尚未独立验证无地玩家交付、跨进程配置保留和九语言窗口截断；`xar_courtier_creator_postreview22_20260820` 已覆盖登陆玩家的完整功能链及真实非默认文化/信仰。
+- 付费廷臣尚未独立验证无地玩家交付、跨进程配置保留和九语言窗口截断；`xar_final85_courtier_creator_20260821` 已在最终树覆盖登陆玩家的完整功能链及真实非默认文化/信仰。
 - 长期平衡只有 `synthetic --balance-smoke-pairs 2` 的短烟测证据；kind 4 自然死亡、40 年/14 对/pair 10 和四夹具串行矩阵均未完成，但这些只属于非门禁 soak/stability/telemetry，不证明数值平衡。
 - 九语言已有源文本，不等于母语级术语/人格审核或游戏内窗口截断验收。
 
