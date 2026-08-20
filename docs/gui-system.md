@@ -34,6 +34,7 @@ GUI 数据函数并非全局可用，很多上下文由代码只注入到特定�
 - `GetPlayer`、`GetVariableSystem`、`GetScriptedGui`、`Localize`、`ExecuteConsoleCommand` 等在常规窗口可用。
 - 结论：要动教程窗口的东西，就 override `gui/window_tutorial.gui` 本体（mod 同路径文件整体覆盖），不要试图在外部窗口遥控。
 - 2026-08-18 CK3 1.19.0.6 实测：`SuccessionEventWindow.*` 的可见性 getter 在注册的外部窗口可求值，但其文字 getter、鼠标输入和 `GoToMenu` action 不具备完整上下文。无继承人结算因此由 `tools/gen_no_heir_gui.py` 把 `xar_no_heir_settlement_widget` 注入原生 `window_succession_event.gui`；只有原生窗口内的按钮能可靠打开退出确认。
+- 原生窗口被 `.gitignore` 排除，clean checkout 不能把本机游戏文件当校验 fixture。跟踪投影可先移除唯一注入并恢复原版正文，再用 CK3 1.19.0.6 canonical text SHA-256 `322971347711308a51bcb16e3c34a7bd9eae5e7938243699ec8fe3691d8c7406` 固定其语义；该摘要基于移除 UTF-8 BOM、把换行规范化为 LF 后的 UTF-8 正文。随后重新注入并逐字比对投影；本机存在原版源时再追加两份正文完全相等的强校验。该可逆契约由 `tools/test_gen_no_heir_gui.py` 覆盖，不需要提交第二份 Paradox 原版 fixture。
 - 死亡后的自定义数值用 `GetPlayer.MakeScope.Var(...).GetValue` 可读；直接从 `SuccessionEventWindow.GetDeadCharacter.MakeScope` 读取会显示空白。写值必须在可见窗口初始化前经过隐藏事件提交边界。
 
 ## scripted_gui 执行链

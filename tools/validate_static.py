@@ -1141,11 +1141,23 @@ def mechanic_checks(errors):
     )
     if any(token not in no_heir_gui for token in no_heir_gui_requirements):
         errors.append("no-heir settlement widget lost its XAR gate, content, or exit")
-    expected_override = (
-        "# GENERATED FILE - native 1.19 succession window plus XAR no-heir widget\n"
-        + gen_no_heir_gui.render())
-    if normalized(succession_override) != normalized(expected_override):
-        errors.append("native succession override is stale; run gen_no_heir_gui.py")
+    try:
+        recovered_succession_source = gen_no_heir_gui.recover_source(
+            succession_override)
+    except RuntimeError as exc:
+        errors.append(f"native succession override is stale: {exc}")
+        recovered_succession_source = None
+    if gen_no_heir_gui.SOURCE.is_file() and recovered_succession_source is not None:
+        native_succession_source = gen_no_heir_gui.SOURCE.read_text(
+            encoding="utf-8-sig")
+        try:
+            gen_no_heir_gui.validate_native_source(native_succession_source)
+        except RuntimeError as exc:
+            errors.append(f"local native succession source is incompatible: {exc}")
+        else:
+            if native_succession_source != recovered_succession_source:
+                errors.append(
+                    "tracked succession projection does not match the local native source")
     if succession_override.count("xar_no_heir_settlement_widget = {}") != 1:
         errors.append("native succession override must inject exactly one no-heir widget")
 
@@ -1779,6 +1791,7 @@ def package_checks(errors):
     ci_requirements = (
         "runs-on: windows-latest", "pull_request:", "workflow_dispatch:",
         "tools/requirements-static.txt", "python -m compileall -q tools",
+        "python tools/test_gen_no_heir_gui.py",
         "python tools/validate_static.py", "scoring_data.assert_reference_vectors()",
         "python tools/build_release.py --check", "python tools/build_release.py --release",
         "actions/upload-artifact@v4", "dist/*.zip", "dist/*.manifest.json",

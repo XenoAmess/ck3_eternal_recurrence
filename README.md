@@ -75,6 +75,7 @@ py tools/gen_scoring.py
 py tools/gen_score_preview.py
 py tools/gen_courtier_creator.py
 py tools/compose_decision_art.py
+py tools/test_gen_no_heir_gui.py
 py tools/validate_static.py
 py -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors()"
 py tools/build_release.py --check

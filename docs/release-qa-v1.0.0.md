@@ -11,11 +11,9 @@
 - [x] 实机确认三个 XAR 决议均归入带琉焰图标的【琉焰卿的永恒轮回】独立分组，三张
   1100×440 DXT1 专属插画在列表与详情页均正确渲染；静态 parity 与
   `xar_decision_group_trait_both_20260821` 实机取证均 GREEN。
-- [ ] 修复 clean checkout 的官方 L0：`tools/validate_static.py` 当前无条件读取被
-  `.gitignore` 排除的 CK3 原版 `window_succession_event.gui`，导致 GitHub Actions run
-  [`32364643040`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32364643040)
-  在 `Validate generated and static content` 失败。改为从已跟踪投影恢复原版正文、校验
-  CK3 1.19.0.6 固定摘要并重新渲染；本机存在原版源时再追加源文件强校验，不提交第二份原版 fixture。
+- [x] 修复 clean checkout 的官方 L0：从已跟踪投影恢复原版正文，校验 CK3 1.19.0.6
+  canonical text SHA-256 后重新渲染；本机存在原版源时再追加强校验，不提交第二份原版 fixture。
+  `tools/test_gen_no_heir_gui.py` 的四项契约测试、模拟无游戏源的完整静态校验均已 GREEN；仍需推送后取得新的官方 run。
 - [x] 修正付费廷臣 trait 图标的信仰上下文：德行、罪恶光效与 tooltip 使用
   `xar_cc_selected_faith`；`xar_decision_group_trait_both_20260821` 证明阿卢克古道【勤勉】为美德、【懒惰】为罪恶，且均不含天主教。
 - [ ] 增加铁人模式死亡收尾：普通非铁人单机继续进入观察者；铁人模式必须强制保持暂停，
@@ -64,6 +62,14 @@
 - [ ] 强制交付失败后的无扣金、无存活泄漏角色实机 fixture。
 - [ ] 多人同步与多人死亡收尾支持；当前产品仍按单机定位。
 - [ ] 30–40 年四夹具完整平衡矩阵；它只属于 soak、稳定性与遥测，不是数值平衡证明。
+
+### Post-freeze Parallel Standalone Release / 冻结后并行独立版
+
+- [ ] 原 mod 内容冻结后，在仓库根目录创建同级 `Eternal_Recurrence_Vivhite_Courtier/`，展示名为
+  【琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版】 / **Eternal Recurrence: Glassfire Courtier Creator - Vivhite Edition**。
+- [ ] 独立版不得依赖原 mod，只保留【典造琉焰廷臣】功能；轮回、商店、计分、契约、账簿、教程记录等机制全部不带入。
+- [ ] 独立版使用隔离的脚本/GUI ID、descriptor、构建与验收，允许两 mod 同时启用而不互相覆盖；版本单独为 `1.0.0`。
+- [ ] 独立版首次上传必须创建新的 Steam Workshop item；不得复用原 mod 的 `3784706360`，新 ID 只保存在该 mod 的用户目录外层 `.mod`。
 
 ## Automated Evidence
 
@@ -116,7 +122,7 @@ Current candidate gates:
 | Gate | Status | Required evidence |
 |---|---|---|
 | Local current-tree L0 and deterministic release projection | GREEN | `validate_static.py`, reference vectors and 83-file `build_release.py --check` all pass locally; this is not a hosted or CK3 runtime claim |
-| Official GitHub `windows-latest` L0 | BLOCKED | run `32364643040` fails because no-heir parity reads the ignored local CK3 source; clean-checkout projection validation and a new GREEN run are required |
+| Official GitHub `windows-latest` L0 | PENDING NEW RUN | old run `32364643040` failed on the ignored CK3 source; reversible tracked-projection validation is locally GREEN and awaits a pushed official run |
 | Full baseline plus post-review targeted CK3 regression | GREEN | the full release-candidate suite passed; changed death paths and paid courtier were then rerun on the reviewed tree with zero `xar` errors |
 | Ordinary death with a playable heir | GREEN | `xar_death_with_heir_postreview_20260820`; one compute, dispatch and visible settlement |
 | Paid custom courtier | GREEN | `xar_courtier_creator_postreview22_20260820`; both selected origins differ from the player, successful delivery precedes configuration and charge, and remaining landless/process-restart cases are declared coverage gaps |
