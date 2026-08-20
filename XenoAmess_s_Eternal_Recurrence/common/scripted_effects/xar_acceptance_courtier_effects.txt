@@ -1,0 +1,308 @@
+﻿# Acceptance-only real-UI proof for the paid courtier creator.
+xar_acceptance_courtier_zero_gold_effect = {
+	set_variable = { name = xa_test_cc_gold_reset value = gold }
+	if = {
+		limit = { var:xa_test_cc_gold_reset > 0 }
+		remove_short_term_gold = var:xa_test_cc_gold_reset
+	}
+	else_if = {
+		limit = { var:xa_test_cc_gold_reset < 0 }
+		add_gold = { value = var:xa_test_cc_gold_reset multiply = -1 }
+	}
+	remove_variable = xa_test_cc_gold_reset
+}
+
+xar_acceptance_courtier_ai_probe_effect = {
+	add_character_flag = xa_enabled
+	xar_cc_initialize_effect = yes
+	xar_cc_rebuild_trait_catalogs_effect = yes
+	xar_cc_rebuild_culture_faith_catalogs_effect = yes
+	add_character_flag = xar_cc_open
+	xar_acceptance_courtier_zero_gold_effect = yes
+	add_gold = 1000
+	if = {
+		limit = {
+			is_ai = yes
+			is_alive = yes
+			has_character_flag = xa_enabled
+			has_character_flag = xar_cc_open
+			has_character_flag = xar_cc_v2_initialized
+			gold >= xar_courtier_creator_cost
+			xar_courtier_creator_cost >= 120
+			xar_courtier_creator_cost < 121
+			is_target_in_global_variable_list = {
+				name = xar_cc_catalog_cultures
+				target = var:xar_cc_selected_culture
+			}
+			is_target_in_variable_list = {
+				name = xar_cc_catalog_faiths
+				target = var:xar_cc_selected_faith
+			}
+			is_target_in_variable_list = {
+				name = xar_cc_catalog_education
+				target = trait:education_martial_3
+			}
+			is_target_in_variable_list = {
+				name = xar_cc_selected_education
+				target = trait:education_martial_3
+			}
+		}
+		debug_log = "XAR: TEST PASS cc_ai_fixture_ready"
+	}
+	else = { debug_log = "XAR: TEST FAIL cc_ai_fixture_ready" }
+	xar_cc_complete_purchase_effect = yes
+	if = {
+		limit = {
+			is_ai = yes
+			has_character_flag = xar_cc_open
+			global_var:xa_test_cc_purchase_count = 0
+		}
+		debug_log = "XAR: TEST PASS cc_ai_guard"
+	}
+	else = { debug_log = "XAR: TEST FAIL cc_ai_guard" }
+	remove_short_term_gold = 1000
+	remove_character_flag = xar_cc_open
+	remove_character_flag = xa_enabled
+}
+
+xar_acceptance_courtier_start_effect = {
+	if = {
+		limit = { is_ai = no global_var:xa_global_record_imported = 6 }
+		xar_enable_player_pact_effect = yes
+		xar_initialize_run_state_effect = yes
+		set_global_variable = { name = xa_test_cc_cancel_count value = 0 }
+		set_global_variable = { name = xa_test_cc_purchase_count value = 0 }
+		set_global_variable = xa_test_cc_active
+		remove_global_variable = xa_test_cc_created_courtier
+		xar_acceptance_courtier_zero_gold_effect = yes
+		add_gold = 1000
+		debug_log = "XAR: TEST courtier-creator begin"
+
+		# A funded AI still cannot cross the production purchase gate.
+		if = {
+			limit = { exists = character:1132 }
+			character:1132 = {
+				trigger_event = xar.0904
+			}
+		}
+		else = { debug_log = "XAR: TEST FAIL cc_ai_guard" }
+		debug_log = "XAR: TEST courtier-creator armed"
+	}
+}
+
+xar_acceptance_courtier_cancel_observer_effect = {
+	change_global_variable = { name = xa_test_cc_cancel_count add = 1 }
+	if = {
+		limit = { global_var:xa_test_cc_cancel_count = 1 }
+		if = {
+			limit = {
+				is_ai = no
+				has_character_flag = xar_cc_open
+				global_var:xa_test_cc_purchase_count = 0
+				NOT = { has_global_variable = xa_test_cc_created_courtier }
+				gold >= 1000
+				gold < 1001
+				xar_courtier_creator_cost >= 120
+				xar_courtier_creator_cost < 121
+			}
+			debug_log = "XAR: TEST PASS cc_cancel_zero_side_effect"
+		}
+		else = { debug_log = "XAR: TEST FAIL cc_cancel_zero_side_effect" }
+		xar_acceptance_courtier_zero_gold_effect = yes
+		add_gold = 119
+	}
+	else_if = {
+		limit = { global_var:xa_test_cc_cancel_count = 2 }
+		if = {
+			limit = {
+				is_ai = no
+				has_character_flag = xar_cc_open
+				global_var:xa_test_cc_purchase_count = 0
+				NOT = { has_global_variable = xa_test_cc_created_courtier }
+				gold >= 119
+				gold < 120
+				xar_courtier_creator_cost >= 120
+				xar_courtier_creator_cost < 121
+			}
+			debug_log = "XAR: TEST PASS cc_insufficient_gold_blocked"
+		}
+		else = { debug_log = "XAR: TEST FAIL cc_insufficient_gold_blocked" }
+		xar_acceptance_courtier_zero_gold_effect = yes
+		add_gold = 1000
+	}
+	else_if = {
+		limit = { global_var:xa_test_cc_cancel_count = 3 }
+		if = {
+			limit = {
+				is_ai = no
+				has_character_flag = xar_cc_open
+				global_var:xa_test_cc_purchase_count = 1
+				gold >= 880
+				gold < 881
+				xar_courtier_creator_cost >= 348
+				xar_courtier_creator_cost < 349
+				xar_cc_valid_configuration_trigger = yes
+				var:xar_cc_female = 1
+				var:xar_cc_age = 20
+				var:xar_cc_diplomacy = 16
+				var:xar_cc_martial = 6
+				var:xar_cc_stewardship = 6
+				var:xar_cc_intrigue = 6
+				var:xar_cc_learning = 6
+				var:xar_cc_prowess = 16
+				var:xar_cc_same_house = 1
+				variable_list_size = { name = xar_cc_selected_education value = 1 }
+				variable_list_size = { name = xar_cc_selected_commander value = 2 }
+				variable_list_size = { name = xar_cc_selected_physical value = 1 }
+				variable_list_size = { name = xar_cc_selected_personality value = 1 }
+				variable_list_size = { name = xar_cc_selected_other value = 1 }
+				is_target_in_variable_list = {
+					name = xar_cc_selected_education
+					target = trait:education_intrigue_1
+				}
+				is_target_in_variable_list = {
+					name = xar_cc_selected_commander
+					target = trait:logistician
+				}
+				is_target_in_variable_list = {
+					name = xar_cc_selected_commander
+					target = trait:military_engineer
+				}
+				is_target_in_variable_list = {
+					name = xar_cc_selected_physical
+					target = trait:beauty_bad_1
+				}
+				is_target_in_variable_list = {
+					name = xar_cc_selected_personality
+					target = trait:lustful
+				}
+				is_target_in_variable_list = {
+					name = xar_cc_selected_other
+					target = trait:diplomat
+				}
+			}
+			debug_log = "XAR: TEST PASS cc_configuration_retained_on_close"
+		}
+		else = { debug_log = "XAR: TEST FAIL cc_configuration_retained_on_close" }
+	}
+	else = { debug_log = "XAR: TEST FAIL cc_unexpected_cancel" }
+}
+
+xar_acceptance_courtier_purchase_observer_effect = {
+	change_global_variable = { name = xa_test_cc_purchase_count add = 1 }
+	if = {
+		limit = { global_var:xa_test_cc_purchase_count = 1 }
+		if = {
+			limit = {
+				is_ai = no
+				NOT = { has_character_flag = xar_cc_open }
+				gold >= 880
+				gold < 881
+				var:xar_cc_female = 0
+				var:xar_cc_age = 30
+				var:xar_cc_diplomacy = 6
+				var:xar_cc_martial = 6
+				var:xar_cc_stewardship = 6
+				var:xar_cc_intrigue = 6
+				var:xar_cc_learning = 6
+				var:xar_cc_prowess = 6
+				var:xar_cc_same_house = 0
+				variable_list_size = { name = xar_cc_selected_education value = 1 }
+				is_target_in_variable_list = {
+					name = xar_cc_selected_education
+					target = trait:education_martial_3
+				}
+				global_var:xa_test_cc_created_courtier = {
+					is_ai = yes
+					is_alive = yes
+					is_female = no
+					age >= 30
+					age < 31
+					is_courtier_of = root
+					culture = root.culture
+					faith = root.faith
+					NOT = { exists = dynasty }
+					has_trait = education_martial_3
+					diplomacy >= 6
+					martial >= 6
+					stewardship >= 6
+					intrigue >= 6
+					learning >= 6
+					prowess >= 6
+					has_character_flag = blocked_from_leaving
+					NOR = {
+						has_trait = organizer
+						has_trait = military_engineer
+						has_trait = aggressive_attacker
+						has_trait = unyielding_defender
+						has_trait = beauty_good_1
+						has_trait = physique_good_1
+						has_trait = intellect_good_1
+						has_trait = brave
+						has_trait = craven
+						has_trait = calm
+						has_trait = wrathful
+						has_trait = diligent
+						has_trait = lazy
+					}
+				}
+			}
+			debug_log = "XAR: TEST PASS cc_default_purchase"
+		}
+		else = { debug_log = "XAR: TEST FAIL cc_default_purchase" }
+	}
+	else_if = {
+		limit = { global_var:xa_test_cc_purchase_count = 2 }
+		if = {
+			limit = {
+				is_ai = no
+				NOT = { has_character_flag = xar_cc_open }
+				gold >= 532
+				gold < 533
+				var:xar_cc_female = 1
+				var:xar_cc_age = 20
+				var:xar_cc_diplomacy = 16
+				var:xar_cc_prowess = 16
+				var:xar_cc_same_house = 1
+				global_var:xa_test_cc_created_courtier = {
+					is_ai = yes
+					is_alive = yes
+					is_female = yes
+					age >= 20
+					age < 21
+					is_courtier_of = root
+					culture = root.var:xar_cc_selected_culture
+					faith = root.var:xar_cc_selected_faith
+					NOT = { culture = root.culture }
+					NOT = { faith = root.faith }
+					house = root.house
+					has_trait = education_intrigue_1
+					has_trait = logistician
+					has_trait = military_engineer
+					has_trait = beauty_bad_1
+					has_trait = lustful
+					has_trait = diplomat
+					diplomacy >= 16
+					martial >= 6
+					stewardship >= 6
+					intrigue >= 6
+					learning >= 6
+					prowess >= 16
+					has_character_flag = blocked_from_leaving
+					NOR = {
+						has_trait = education_martial_3
+						has_trait = beauty_good_1
+						has_trait = chaste
+					}
+				}
+			}
+			debug_log = "XAR: TEST PASS cc_custom_purchase"
+		}
+		else = { debug_log = "XAR: TEST FAIL cc_custom_purchase" }
+		debug_log = "XAR: TEST DONE courtier-creator"
+	}
+	else = {
+		debug_log = "XAR: TEST FAIL cc_unexpected_purchase"
+		debug_log = "XAR: TEST DONE courtier-creator"
+	}
+}

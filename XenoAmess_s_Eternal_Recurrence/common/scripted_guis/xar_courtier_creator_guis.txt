@@ -64,9 +64,12 @@ xar_cc_toggle_trait_gui = {
 						OR = {
 							AND = {
 								var:xar_cc_commander_count < 2
-								variable_list_size = {
-									name = xar_cc_selected_commander
-									value < 2
+								OR = {
+									NOT = { has_variable_list = xar_cc_selected_commander }
+									variable_list_size = {
+										name = xar_cc_selected_commander
+										value < 2
+									}
 								}
 							}
 							xar_cc_candidate_replaces_selected_trait_trigger = yes
@@ -84,9 +87,12 @@ xar_cc_toggle_trait_gui = {
 						OR = {
 							AND = {
 								var:xar_cc_personality_count < 3
-								variable_list_size = {
-									name = xar_cc_selected_personality
-									value < 3
+								OR = {
+									NOT = { has_variable_list = xar_cc_selected_personality }
+									variable_list_size = {
+										name = xar_cc_selected_personality
+										value < 3
+									}
 								}
 							}
 							xar_cc_candidate_replaces_selected_trait_trigger = yes
@@ -140,9 +146,12 @@ xar_cc_toggle_trait_gui = {
 							target = scope:xar_cc_candidate_trait
 						}
 						var:xar_cc_commander_count < 2
-						variable_list_size = {
-							name = xar_cc_selected_commander
-							value < 2
+						OR = {
+							NOT = { has_variable_list = xar_cc_selected_commander }
+							variable_list_size = {
+								name = xar_cc_selected_commander
+								value < 2
+							}
 						}
 					}
 					add_to_variable_list = {
@@ -170,9 +179,12 @@ xar_cc_toggle_trait_gui = {
 							target = scope:xar_cc_candidate_trait
 						}
 						var:xar_cc_personality_count < 3
-						variable_list_size = {
-							name = xar_cc_selected_personality
-							value < 3
+						OR = {
+							NOT = { has_variable_list = xar_cc_selected_personality }
+							variable_list_size = {
+								name = xar_cc_selected_personality
+								value < 3
+							}
 						}
 					}
 					add_to_variable_list = {
@@ -466,7 +478,7 @@ xar_cc_select_culture_gui = {
 	is_valid = {
 		xar_cc_ui_access_trigger = yes
 		exists = scope:culture
-		is_target_in_variable_list = {
+		is_target_in_global_variable_list = {
 			name = xar_cc_catalog_cultures
 			target = scope:culture
 		}
@@ -476,7 +488,7 @@ xar_cc_select_culture_gui = {
 			limit = {
 				xar_cc_ui_access_trigger = yes
 				exists = scope:culture
-				is_target_in_variable_list = {
+				is_target_in_global_variable_list = {
 					name = xar_cc_catalog_cultures
 					target = scope:culture
 				}
@@ -492,7 +504,7 @@ xar_cc_culture_selected_gui = {
 	is_shown = {
 		xar_cc_ui_access_trigger = yes
 		exists = scope:culture
-		is_target_in_variable_list = {
+		is_target_in_global_variable_list = {
 			name = xar_cc_catalog_cultures
 			target = scope:culture
 		}
@@ -501,7 +513,7 @@ xar_cc_culture_selected_gui = {
 	is_valid = {
 		xar_cc_ui_access_trigger = yes
 		exists = scope:culture
-		is_target_in_variable_list = {
+		is_target_in_global_variable_list = {
 			name = xar_cc_catalog_cultures
 			target = scope:culture
 		}
@@ -516,22 +528,24 @@ xar_cc_select_faith_gui = {
 	is_valid = {
 		xar_cc_ui_access_trigger = yes
 		exists = scope:faith
-		is_target_in_variable_list = {
-			name = xar_cc_catalog_faiths
-			target = scope:faith
-		}
 	}
 	effect = {
 		if = {
 			limit = {
 				xar_cc_ui_access_trigger = yes
 				exists = scope:faith
-				is_target_in_variable_list = {
-					name = xar_cc_catalog_faiths
-					target = scope:faith
-				}
 			}
 			set_variable = { name = xar_cc_selected_faith value = scope:faith }
+			# XAR_ACCEPTANCE_ONLY_BEGIN
+			if = {
+				limit = {
+					has_global_variable = xa_test_cc_active
+					NOT = { faith = var:xar_cc_selected_faith }
+				}
+				debug_log = "XAR: TEST PASS cc_faith_click_nondefault"
+			}
+			else = { debug_log = "XAR: TEST FAIL cc_faith_click_nondefault" }
+			# XAR_ACCEPTANCE_ONLY_END
 		}
 	}
 }

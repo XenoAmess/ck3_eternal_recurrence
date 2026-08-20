@@ -15,7 +15,7 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 
 ## 全自动验收 runner（tools/run_acceptance.py）
 
-runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR 大厅导航。`selftest`、`persistence-restart`、`death-edges`、`death-with-heir`、`bargain-reopen`、`progression-ui`、`scoring-matrix`、`balance-long` 加载开发树；四个生产 smoke 会先生成 production-only release 投影，再将该投影 `/MIR` 到工坊缓存后启动 CK3。
+runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR 大厅导航。`selftest`、`persistence-restart`、`death-edges`、`death-with-heir`、`bargain-reopen`、`progression-ui`、`scoring-matrix`、`courtier-creator`、`balance-long` 加载开发树；四个生产 smoke 会先生成 production-only release 投影，再将该投影 `/MIR` 到工坊缓存后启动 CK3。
 
 ```powershell
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py"
@@ -29,6 +29,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario bargain-reopen
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario progression-ui
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario scoring-matrix
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario courtier-creator
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario balance-long --balance-fixture count
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_balance_matrix.py"
 ```
@@ -42,16 +43,17 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - `off`：固定 `xar_off` + 纪录 0，进局后观察 30 秒；契约标题或本次新增的任意 `XAR:` 启用日志均判 RED。
 - `persistence-restart`：一次外层备份内启动两个 CK3 进程。A 从纪录 0 跑完整 selftest 并真实写入非零 lesson，进程树完全退出后固定 handoff SHA-256；B 不调用纪录预置函数，以新日志 offset 断言 importer 精确命中 A 的位阶及 request/ready/consumed 全链。该场景禁止非零 `--import-record`。
 - `death-edges`：固定 selftest + 导入位 1，真实杀死带 `xa_enabled` 的 AI Roger，断言生产计分被 `is_ai=no` 阻断；再逐日使当前继承人失去继承资格，直到 `player_heir` 不存在后真实杀死玩家，验证前向提交链、原生继承窗内的八值结算、无“继续扮演”、退出确认和返回主菜单。随机原生事件会由 recovery 点击底部选项后继续日 tick。
-- `death-with-heir`：固定 selftest + 导入位 5，在确认玩家存活、启用且确有 AI 继承人后，以 acceptance-only 心脏事件触发普通玩家死亡。runner 必须精确点击原生「继续扮演」，确认控制权已转移给人类继承人，再等待生产计分/分流/可见结算各恰好一次。场景和静态断言已接线，但截至 2026-08-19 尚无 GREEN run ID。
-- `bargain-reopen`：固定 selftest + 导入位 2，但不进入主 selftest。独立 bootstrap 调用生产契约/运行初始化，随后真实点击三轮 `xar.0004` 祝福与 `xar.0005` 咒痕；安全 wire id 只由 acceptance instrumentation 固定，祝福/诅咒仍走生产 dispatcher。每轮成交后保留生产 option 的 `xar.0006 days = 1095`，另设仅观察状态的 day-1094 probe；脚本保存成交时的 `current_date` 并在两条路径相减，断言累计对数 1/2/3、session 在祝福后为 1 且 `xar.0006` 重置为 0、XP `0→1→2→3`、拒绝数 0、1094 日不重开、1095 日精确重开及第三对后的完整新窗口。runner 用鼠标选择速度 5，并以底栏渲染日期 OCR 判断游戏是否仍在推进；debug marker 只负责机制断言，合成键盘不参与。
+- `death-with-heir`：固定 selftest + 导入位 5，在确认玩家存活、启用且确有 AI 继承人后，以 acceptance-only 心脏事件触发普通玩家死亡。runner 必须精确点击原生「继续扮演」，确认控制权已转移给人类继承人，再等待生产计分/分流/可见结算各恰好一次。2026-08-20 共同 AI 闸门 post-review 复验 GREEN：`xar_death_with_heir_postreview_20260820`。
+- `bargain-reopen`：固定 selftest + 导入位 2，但不进入主 selftest。独立 bootstrap 调用生产契约/运行初始化，并用 release 会整文件剥离的 acceptance-only `immortal` 固定九年观察体存活；随后真实点击三轮 `xar.0004` 祝福与 `xar.0005` 咒痕。安全 wire id 只由 acceptance instrumentation 固定，祝福/诅咒仍走生产 dispatcher。每轮成交后保留生产 option 的 `xar.0006 days = 1095`，另设仅观察状态的 day-1094 probe；脚本保存成交时的 `current_date` 并在两条路径相减，断言累计对数 1/2/3、session 在祝福后为 1 且 `xar.0006` 重置为 0、XP `0→1→2→3`、拒绝数 0、1094 日不重开、1095 日精确重开及第三对后的完整新窗口。runner 用鼠标选择速度 5，并以底栏渲染日期 OCR 判断游戏是否仍在推进；debug marker 只负责机制断言，合成键盘不参与。
 - `progression-ui`：固定 selftest + 导入位 3，通过玩家限定 acceptance 编排依次调用生产贤王契约进度 effect，真实点击 3/6/10 三个生产里程碑事件；随后调用两次生产成交 effect 达到【琉焰之视】10 XP 并点击其生产里程碑事件。runner 要求 `tutorial.txt` 精确稳定为该契约的 PB 3/6/10 与完成四个 lesson，再从原生决议打开账簿，同帧 OCR 确认当前 `0/10`、历史 `PB 10`、贤王图鉴、`R 1` 与 `S 0`。该场景不伪造 PB、图鉴或里程碑状态，acceptance 只负责安全地产生生产入口所需的玩家行为。
 - `scoring-matrix`：固定 selftest + 导入位 4，先保存历史角色的生产计分与只读 preview 基线，再创建受控谱系：同一后代经兄妹两条路径可达、另一支穿过已故第一代延伸到第五代，并额外创建第六代排除项。跨事件边界后要求新增宗族/家族计数恰为 7、头衔桶不变、临时去重 flag 全清、preview 增量为 1.4 且与生产总分误差不超过 0.01。随后 200 个 wire ID 逐一调用生产 apply dispatcher；每个实际命中的分支自行写 marker，下一事件再断言 100 次祝福计数、代表修正、最终稀有度和 100 XP 已提交。
-- `balance-long`：必须指定 `--balance-fixture count|king|emperor|synthetic`。runner 把原版 81 个规则全部重建为当前 1.19.0.6 声明的默认值，追加 `xar_on`、成长 + 100% 和仅开发夹具；大厅仍走已验证的罗贝尔路径，生产初始化前再切换到史实奥塔/腓力一世/亨利四世或脚本标准化奥塔替身。固定选择第一项祝福与咒痕，不做 CK3 战略操作；逐对采样生产分数，30 年后允许自然死亡，否则在 40 年右删失。自然死亡必须先收到 kind 4 terminal wire；如果继承窗先出现，runner 立即 RED 并保存诊断，不点击「继续扮演」掩盖提交顺序错误。GREEN 只证明夹具、1095 日节奏、被动策略、结构化采样和零 `xar` 错误，完整边界见 `docs/balance-test-protocol.md`。
+- `courtier-creator`：固定 selftest + 导入位 6，从原生决议真实打开七页契页。依次验证取消零副作用、119 金确认禁用、默认 120 金成交、年龄/六维步进、五类生成 trait 目录、动态文化/信仰、同家族、348 金配置关窗重开保留、第二次实际角色交付与 AI 拒绝。runner 对文化只点击缩进子项，对信仰等待选择 effect marker；创建角色必须同时不同于玩家文化与信仰。2026-08-20 交付失败回滚审阅后的权威复验：`xar_courtier_creator_postreview22_20260820`，0 `xar` errors。
+- `balance-long`：必须指定 `--balance-fixture count|king|emperor|synthetic`。runner 把原版 81 个规则全部重建为当前 1.19.0.6 声明的默认值，追加 `xar_on`、成长 + 100% 和仅开发夹具；大厅仍走已验证的罗贝尔路径，生产初始化前再切换到史实奥塔/腓力一世/亨利四世或脚本标准化奥塔替身。固定选择第一项祝福与咒痕，不做 CK3 战略操作；逐对采样生产分数，30 年后允许自然死亡，否则在 40 年右删失。生产链在 dying root 有效时先保存 `scope:xar_dead` 并向 `player_heir` 排入 `delayed = yes` event，再内联计算；carrier 随后交付 record、settlement 和 kind 4 terminal wire。继承窗只走专用 OCR 路径；不把新统治者继续当作同一寿命采样。GREEN 只证明夹具、逐笔 1095 日节奏、被动策略、结构化采样和零 `xar` 错误，完整边界见 `docs/balance-test-protocol.md`。
 - 每次运行都写 `report.json` 与 JUnit `report.xml`；JSON 包含 run ID、UTC、版本、Git SHA、release-tree SHA-256、CK3/平台/Python 环境、场景、结果、artifact 清单、各阶段秒数和错误原因。即使中途失败，也会先恢复现场再写 RED 报告。`tutorial.txt`、`presets.txt`、`dlc_load.json` 与 `save games/autosave*.ck3` 备份位于独立临时目录；运行期只启用本工坊项，结束后原样恢复并删除备份，手动命名存档不移动。
 
 普通场景冷启动通常约 2 分钟；`bargain-reopen` 还要在速度 5 下实走 9 个游戏年，预计整场约 16-22 分钟，随机原生事件多时更长。所有场景都输出 `RESULT: GREEN/RED` + 退出码。判定依据：
 
-1. `tools/validate_static.py` 通过：七套生成器逐文件 parity、全部运行文件 UTF-8 BOM、9 语言 loc 引用与首世/账簿/廷臣窗口格式 token parity、自动发现的全部 XAR event/decision AI 闸门、挑战继承/成长基线、契约 hook/PB/图鉴/里程碑、生产/selftest 共用入口、21 个当铺购买 effect、付费廷臣的玩家隔离/确认前零副作用/单次扣金、无继承人 fallback/原生继承窗投影、奖池过滤/权重/稳定 ID、descriptor 与发布资源；其中 `tools/validate_loc.py` 负责动态 wrapper、custom-loc 和 modifier 名。
+1. `tools/validate_static.py` 通过：八套生成器逐文件 parity、全部运行文件 UTF-8 BOM、9 语言 loc 引用与首世/账簿/廷臣窗口格式 token parity、自动发现的全部 XAR event/decision AI 闸门、挑战继承/成长基线、契约 hook/PB/图鉴/里程碑、生产/selftest 共用入口、21 个当铺购买 effect、付费廷臣五类目录计数/数值边界/原生元数据与冲突/玩家隔离/确认前零副作用/单次扣金、无继承人 fallback/原生继承窗投影、奖池过滤/权重/稳定 ID、descriptor 与发布资源；其中 `tools/validate_loc.py` 负责动态 wrapper、custom-loc 和 modifier 名。
 2. debug.log 的 57 个具名 `XAR: TEST PASS`、`XAR: TEST sweep complete`、零 `FAIL` 及 `DONE` 标记全部出现（自测 effect：`common/scripted_effects/xar_selftest_effects.txt`，
    由游戏规则第三档 `xar_selftest` 触发，检查器 xar.0007 嵌套在结算事件 xar.1001 里跑）
 3. OCR 真实接受契约、购买外交、结束商店，再依次真实点击重抽、拒绝、祝福、封印、第二次祝福和最终咒痕；验证动态文本无 raw/fallback，并断言 token 消耗、拒绝基线、封印免除效果及封印后的正常咒痕。
@@ -71,7 +73,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 真实游戏层在本机串行执行并保存 artifacts：
 
 - L1：`off`，production release 投影冷启动、引擎解析及禁用规则负例。
-- L2：`selftest`、`persistence-restart`、`death-edges`、`death-with-heir`、`bargain-reopen`、`progression-ui`、`scoring-matrix`，覆盖 57 项机制断言、200 effect body 与 200 dispatcher runtime sweep、两进程持久化、AI/无继承人/普通继承死亡边界、三轮生产交易的 1094/1095 日边界、PB/图鉴/里程碑生产链，以及受控后代去重/深度/死亡中间节点计分。
+- L2：`selftest`、`persistence-restart`、`death-edges`、`death-with-heir`、`bargain-reopen`、`progression-ui`、`scoring-matrix`、`courtier-creator`，覆盖 57 项机制断言、200 effect body 与 200 dispatcher runtime sweep、两进程持久化、AI/无继承人/普通继承死亡边界、三轮生产交易的 1094/1095 日边界、PB/图鉴/里程碑生产链、受控后代去重/深度/死亡中间节点计分，以及付费廷臣两次真实交易与动态目录。
 - L3：`on-first-life`、`on-recorded`、`on-high-budget`，覆盖 production-only 首世、已有纪录和第四页高预算真实 OCR/点击。L2 的交易 UI、决议、trait hover 和无继承人窗口也计入整体 L3 证据，不重复启动。
 
 本机报告必须记录 JSON/JUnit、截图、runtime hash 和本次增量 `debug/error/gui_warnings`；发布 QA 引用具体 run ID，不把未运行的远端 CK3 状态写成 GREEN。GitHub tag artifact 只提供经过 L0 验证的候选 ZIP/manifest，不自动创建 GitHub Release 或上传 Steam。
@@ -103,9 +105,8 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 
 **没验的**：
 - 数值是否符合最初产品意图仍需人工平衡审阅；冻结契约能阻止未审阅的 `50→500` 或 ID 重排，但不能证明首次冻结前的设计值天然正确。
-- 当前候选提交 `a19808d` 的 L0、release projection 与 CK3 回归尚未执行；历史 GREEN 不覆盖付费自定义廷臣。
-- `death-with-heir` 已有独立场景和静态断言，但尚无首次 GREEN。
-- 长期平衡只有 `synthetic --balance-smoke-pairs 2` 的短烟测证据；当前 fail-fast 语义下的 kind 4 自然死亡、40 年/14 对/pair 10 和四夹具串行矩阵均未完成。
+- 付费廷臣尚未独立验证无地玩家交付、跨进程配置保留和九语言窗口截断；`xar_courtier_creator_postreview22_20260820` 已覆盖登陆玩家的完整功能链及真实非默认文化/信仰。
+- 长期平衡只有 `synthetic --balance-smoke-pairs 2` 的短烟测证据；kind 4 自然死亡、40 年/14 对/pair 10 和四夹具串行矩阵均未完成，但这些只属于非门禁 soak/stability/telemetry，不证明数值平衡。
 - 九语言已有源文本，不等于母语级术语/人格审核或游戏内窗口截断验收。
 
 ### 关键事实（2026-08-17 实证，血泪）
@@ -121,21 +122,23 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   解暂停只能点底栏日期旁的 ▶（坐标 (2315,1410)@2560x1440）。
 - 速度 5 也必须走鼠标：原生 `timeline_widget` 最右侧 `speed_5` hitbox 中心约 `(2536,1418)@2560x1440`。2026-08-19 对照截图与原生 `hud.gui` 实测：该按钮只执行 `SetGameSpeed`，不会解除手动暂停；但关闭运行中弹出的原生事件会自动恢复时间，此时再点 ▶ 反而会暂停。`bargain-reopen` 现 deliberate-click 速度 5 后先观察底栏日期 2 秒，仅在尚未前进时 deliberate-click OCR 识别出的日期按钮，最终要求日期在 10 秒内前进才视为成功。
 - 每次 OCR/点击前必须抢回并反证 CK3 前台。2026-08-19 实测裸 `SetForegroundWindow` 会因 Windows 前台锁静默失败，runner 随后把 OpenCode 整窗识别成事件选项；现通过 `AttachThreadInput` + Alt 前台许可重试，并要求 `GetForegroundWindow()` 精确等于 CK3 句柄，否则立即 RED，不再截取或点击其他应用。
+- `parentanchor = center` 的小型验收 widget 不要点击精确屏幕中心：锚点可能落在 64×64 控件边界并穿透到地图。`xar_trait_test_window` 改为点击中心内偏移 20 px；最终咒痕后还要先按渲染出的“暂停”状态锁住一日死亡计时，完成特质 hover 后才恢复时间。2026-08-20 CK3 1.19.0.6 实测。
 - 主菜单【新游戏】也必须 deliberate-click 并以罗贝尔书签实际出现作反证；2026-08-19 实测 OCR 找到按钮后的一次瞬时点击可被 CK3 丢弃，runner 若直接进入 30 秒书签等待只会在原主菜单超时。
 - 安全软件通知也可能置顶遮住大厅“开始”按钮；runner 等待该按钮时会 OCR 识别并点击通知的“忽略”，只关闭当次提示，不改软件设置。2026-08-19 实测 Chrome 通知也会覆盖同一区域，且按钮是“关闭”；runner 只在大厅“开始”缺失时扫描右下角通知区并关闭这两类外部遮挡，不在普通游戏画面盲点“关闭”。
 - 截图读坐标要用 PIL 裁真实 PNG（2560x1440）实测——聊天里显示的图有缩放，目测坐标必歪。
 - 长测日期 12 秒不推进时禁止盲点固定坐标。runner 每次用单调递增序号保存 `stall_<场景>_<序号>.png`、候选框标注图和完整 OCR JSON：在画面下部找真实选项，并在候选栏中优先同一 x 轴纵向堆叠的最下行。点击后必须观察到日期继续推进；连续三次仍卡住立即 RED，并由执行者读取这些截图/OCR 分析，不能继续空点到总超时。2026-08-18 实测定位：全宽事件【摆脱尘世】的选项约在 `(0.68,0.79)`，旧恢复点 `(0.38,0.72)` 落在正文空白处。2026-08-19 【诺曼人的西西里】实测三个真实选项纵向对齐在 `x≈930`，人物名位于 `x≈1377/1841`，按右侧优先会误开人物面板；【埃玛成年】仅有一个左侧选项 `x≈930`，人物名/关系则纵向对齐在 `x≈1505`，不能只按列密度判断。【对未来的思考】实测人物页会在真实选项下方露出被纵向裁切的地图标签，OCR 将其识别为高框并误当成同列最末选项；经典选项现限制为 `x=0.34..0.41`、`y≤0.75` 且 OCR 框高不超过画面 `3.5%`。互动信函【要求改信】【剥夺头衔】会把真实 `拒绝/同意` 按钮放到 `y≈0.79`，其效果正文却占满旧候选区，因此两个精确动作标签优先于正文。全宽【波希米亚的宫廷】正文会侵入 `x≈0.42`，真实选项位于 `x≈0.68`；没有经典栏时，runner 先选右侧纵列，再退回中栏。同期实测 `debug.log` 在无事件时可长期没有日期行，不能用它单独判断冻结；长测改读底栏 `公元 Y年M月D日` 的实际像素。
+- 2026-08-20 【精神崩溃：心脏疼痛】的花体选项没有被 OCR 读出。旧特判把 y 写死为画面高度 `0.91`，实际点到 `(928,1310)` 的地图并循环 122 次；真实按钮框为 `[621,1020,1247,1064]`、中心 `(934,1042)`。现从标题下方 Canny/Hough 横边配对出全部符合 CK3 option 比例的矩形，按框尺寸、横向对齐和置信度选择；检测不到可信框就不点击，同一 resume modal 三次无进展立即 RED。离线缩放到 0.75/1.0/1.25 倍均命中同一归一位置。
 - 暂停链因场景而异。`selftest`/`death-with-heir` 的普通继承路径是：开局默认暂停 → 原生继承窗强制暂停 → OCR 精确点击「继续扮演」约 `(1453,1129)` → 等待生产结算事件；不得把继承窗右栏约 `(1721,1048)` 的「处于战争」状态交给通用纵列算法。
-- `balance-long` 的自然死亡路径刻意相反：稳定玩家 scope 应在继承窗需要交互前提交 kind 4 terminal wire。runner 一旦先看见「继续扮演」即 RED，只保存截图与 `on_death` 诊断，不点击按钮继续等待；这样才能暴露死亡提交顺序回归，而不是用控制权转移掩盖它。
+- `balance-long` 的自然死亡同样使用精确「继续扮演」路径，但生产 terminal 不再依赖死者 event 排队：`on_death` 先保存 dead/carrier scope 并排入存活继承人的 `delayed = yes` dispatch，再内联计算；延迟边界后只用预先建立的 pact/fixture character globals 认证，不重查会在死亡时清除的角色 flag。runner 最多等待 30 秒 kind 4 terminal wire，且不采集继承人的后续普通样本。
 - 大厅路径坐标（2560x1440）：新游戏 (600,560) → 1066 罗贝尔卡 (1600,1230)（有儿子必有继承人）
   → 开始 (2257,1245)。结算确认选项 (1130,1041)（点了进观察者模式，桥有效）。
 - 用户真实纪录靠 tutorial.txt 备份/恢复保护；默认 selftest 与 `on-first-life/off` 会剥掉 `xar_hs_ge_*` 行（纪录 0），`on-recorded` 固定预置 100；`--import-record 100` 仅改变 selftest。
-- 独立 restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验；避免强杀 runner 后游戏继续覆盖用户现场。2026-08-19 实测发现 dev selftest autosave 会让下一次 release 投影扫描已剥离的 `xar_selftest` 规则键并误报；现启动前先完整复制并校验全部 `autosave*.ck3`，写 ready 标记后才移走，结束时删除测试 autosave 并恢复原件。
+- restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验。2026-08-20 实测发现宿主超时会终止 runner 的整个子进程树，普通 `Popen(CREATE_NO_WINDOW)` watchdog 也被一起杀死，遗留隔离后的 `dlc_load.json` 与测试 autosave；已从该次精确 backup 全量恢复并核对六项 hash。watchdog 现由 WMI `Win32_Process.Create` 启动在 runner 进程树之外。2026-08-19 另实测 dev selftest autosave 会让下一次 release 投影扫描已剥离的 `xar_selftest` 规则键并误报；现启动前先完整复制并校验全部 `autosave*.ck3`，写 ready 标记后才移走，结束时删除测试 autosave 并恢复原件。
 - 2026-08-19 长期平衡摇测发现当前播放集还启用了四个自动控制/改宗 mod，会污染领地、信仰与资源结果。runner 现同时备份 `dlc_load.json`，启动前把 `enabled_mods` 精确收敛为 `mod/ugc_3784706360.mod`，杀死测试 CK3 后再恢复；watchdog 同样覆盖此文件。
 - `--artifacts-dir` 只创建调用方给定的新目录；CI 上传只包含从本次日志 offset 起的新内容，严禁用 `%TEMP%\xar_accept*` 通配上传，因为 `xar_accept_backup_*` 可能含玩家现场。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。
 - trait 含原生 `track` 时，UI 会自动读取 `gfx/interface/icons/trait_level_tracks/<trait_key>.dds`；缺文件会在真正 hover 时写 VFS error，主 trait 的 `icon =` 不会替代它（2026-08-18 实测）。
-- 原生决议右栏按钮是 `F8` 对应的羽笔图标；合成键盘无效时可按屏幕比例 `(0.987, 0.367)` hover，先 OCR 验证“决议”tooltip 再点击。低处条目必须在滚动框内下滚到中段后用 `deliberate_click`，否则底缘 hit-test 会关闭面板但不选中。决议触发的事件关闭后，决议面板会自动恢复，不要重复点右栏按钮（2026-08-18 实测）。
+- 原生决议右栏按钮是 `F8` 对应的羽笔图标；合成键盘无效时可按屏幕比例 `(0.987, 0.367)` hover，先 OCR 验证“决议”tooltip 再点击。低处条目必须在滚动框内下滚到中段后用 `deliberate_click`，否则底缘 hit-test 会关闭面板但不选中。决议触发的事件或 scripted GUI 关闭后，决议面板会随动画恢复；先等待并复查面板标题，再决定是否点 HUD，否则会把刚恢复的面板反向关掉（2026-08-18/20 实测）。
 
 ## 断点标记法（链路定位）
 

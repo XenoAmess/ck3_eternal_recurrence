@@ -91,17 +91,16 @@ xar_contract_birthday = {
 	}
 }
 
-# Start the forward-only settlement event chain. Each stage reads only values
-# committed by its parent event; returning child writes are not visible here.
+# Queue a normal succession's delayed carrier while the dying root and its saved
+# scope are still valid, then score before the carrier runs. No-heir deaths keep
+# the synchronous event chain because there is no valid living recipient.
 xar_on_death = {
 	effect = {
 		if = {
 			limit = {
+				is_ai = no
 				OR = {
-					AND = {
-						has_character_flag = xa_enabled
-						is_ai = no
-					}
+					has_character_flag = xa_enabled
 					AND = {
 						has_global_variable = xa_player_pact_active
 						exists = global_var:xa_player_pact_character
@@ -120,7 +119,33 @@ xar_on_death = {
 			}
 			# XAR_ACCEPTANCE_ONLY_END
 			debug_log = "XAR: computing score on death"
-			trigger_event = xar.1000
+			if = {
+				limit = { exists = player_heir }
+				save_scope_as = xar_dead
+				player_heir = {
+					save_scope_as = xar_death_carrier
+					trigger_event = { id = xar.1003 delayed = yes }
+				}
+				# XAR_ACCEPTANCE_ONLY_BEGIN
+				if = {
+					limit = { has_global_variable = xa_death_with_heir_active }
+					debug_log = "XAR: TEST death-with-heir carrier queued"
+					debug_log = "XAR: TEST death-with-heir compute entered"
+				}
+				if = {
+					limit = { has_global_variable = xa_balance_active }
+					debug_log = "XAR: BALANCE production carrier queued"
+				}
+				# XAR_ACCEPTANCE_ONLY_END
+				xar_compute_score_effect = yes
+				# XAR_ACCEPTANCE_ONLY_BEGIN
+				if = {
+					limit = { has_global_variable = xa_balance_active }
+					debug_log = "XAR: BALANCE production score computed inline"
+				}
+				# XAR_ACCEPTANCE_ONLY_END
+			}
+			else = { trigger_event = xar.1000 }
 		}
 	}
 }

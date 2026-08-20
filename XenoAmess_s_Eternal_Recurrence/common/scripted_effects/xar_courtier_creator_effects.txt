@@ -32,15 +32,27 @@ xar_cc_initialize_effect = {
 
 xar_cc_rebuild_culture_faith_catalogs_effect = {
 	root = {
-		clear_variable_list = xar_cc_catalog_cultures
 		clear_variable_list = xar_cc_catalog_faiths
 	}
+	clear_global_variable_list = xar_cc_catalog_cultures
+	clear_global_variable_list = xar_cc_catalog_culture_heritages
 	every_culture_global = {
-		save_scope_as = xar_cc_catalog_culture
-		root = {
-			add_to_variable_list = {
-				name = xar_cc_catalog_cultures
-				target = scope:xar_cc_catalog_culture
+		add_to_global_variable_list = {
+			name = xar_cc_catalog_cultures
+			target = this
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_in_global_list = {
+						variable = xar_cc_catalog_culture_heritages
+						has_same_culture_heritage = prev
+					}
+				}
+			}
+			add_to_global_variable_list = {
+				name = xar_cc_catalog_culture_heritages
+				target = this
 			}
 		}
 	}
@@ -63,7 +75,7 @@ xar_cc_rebuild_culture_faith_catalogs_effect = {
 		else_if = {
 			limit = {
 				NOT = {
-					is_target_in_variable_list = {
+					is_target_in_global_variable_list = {
 						name = xar_cc_catalog_cultures
 						target = var:xar_cc_selected_culture
 					}
@@ -206,7 +218,7 @@ xar_cc_complete_purchase_effect = {
 			gold >= xar_courtier_creator_cost
 			exists = var:xar_cc_selected_culture
 			exists = var:xar_cc_selected_faith
-			is_target_in_variable_list = {
+			is_target_in_global_variable_list = {
 				name = xar_cc_catalog_cultures
 				target = var:xar_cc_selected_culture
 			}
@@ -247,34 +259,6 @@ xar_cc_complete_purchase_effect = {
 		}
 		if = {
 			limit = { exists = scope:xar_cc_created_courtier }
-			scope:xar_cc_created_courtier = {
-				add_diplomacy_skill = scope:xar_cc_purchase_diplomacy
-				add_martial_skill = scope:xar_cc_purchase_martial
-				add_stewardship_skill = scope:xar_cc_purchase_stewardship
-				add_intrigue_skill = scope:xar_cc_purchase_intrigue
-				add_learning_skill = scope:xar_cc_purchase_learning
-				add_prowess_skill = scope:xar_cc_purchase_prowess
-			}
-			xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_education }
-			xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_commander }
-			xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_physical }
-			xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_personality }
-			xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_other }
-			scope:xar_cc_created_courtier = {
-				if = {
-					limit = {
-						root.var:xar_cc_same_house = 1
-						exists = root.house
-					}
-					set_house = root.house
-				}
-				add_character_flag = {
-					flag = blocked_from_leaving
-					years = 25
-				}
-				force_character_skill_recalculation = yes
-			}
-			remove_short_term_gold = xar_courtier_creator_cost
 			if = {
 				limit = {
 					scope:xar_cc_created_courtier = {
@@ -283,20 +267,58 @@ xar_cc_complete_purchase_effect = {
 				}
 				add_courtier = scope:xar_cc_created_courtier
 			}
-			# XAR_ACCEPTANCE_ONLY_BEGIN
 			if = {
-				limit = { has_global_variable = xa_test_cc_active }
-				set_global_variable = {
-					name = xa_test_cc_created_courtier
-					value = scope:xar_cc_created_courtier
+				limit = {
+					scope:xar_cc_created_courtier = { is_courtier_of = root }
 				}
-				xar_acceptance_courtier_purchase_observer_effect = yes
+				scope:xar_cc_created_courtier = {
+					add_diplomacy_skill = scope:xar_cc_purchase_diplomacy
+					add_martial_skill = scope:xar_cc_purchase_martial
+					add_stewardship_skill = scope:xar_cc_purchase_stewardship
+					add_intrigue_skill = scope:xar_cc_purchase_intrigue
+					add_learning_skill = scope:xar_cc_purchase_learning
+					add_prowess_skill = scope:xar_cc_purchase_prowess
+				}
+				xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_education }
+				xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_commander }
+				xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_physical }
+				xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_personality }
+				xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_other }
+				scope:xar_cc_created_courtier = {
+					if = {
+						limit = {
+							root.var:xar_cc_same_house = 1
+							exists = root.house
+						}
+						set_house = root.house
+					}
+					add_character_flag = {
+						flag = blocked_from_leaving
+						years = 25
+					}
+					force_character_skill_recalculation = yes
+				}
+				remove_short_term_gold = xar_courtier_creator_cost
+				# XAR_ACCEPTANCE_ONLY_BEGIN
+				if = {
+					limit = { has_global_variable = xa_test_cc_active }
+					set_global_variable = {
+						name = xa_test_cc_created_courtier
+						value = scope:xar_cc_created_courtier
+					}
+					xar_acceptance_courtier_purchase_observer_effect = yes
+				}
+				# XAR_ACCEPTANCE_ONLY_END
+				send_interface_toast = {
+					title = xar.cc.toast.title
+					left_icon = scope:xar_cc_created_courtier
+					custom_tooltip = xar.cc.toast.desc
+				}
 			}
-			# XAR_ACCEPTANCE_ONLY_END
-			send_interface_toast = {
-				title = xar.cc.toast.title
-				left_icon = scope:xar_cc_created_courtier
-				custom_tooltip = xar.cc.toast.desc
+			else = {
+				scope:xar_cc_created_courtier = {
+					death = { death_reason = death_vanished }
+				}
 			}
 		}
 	}

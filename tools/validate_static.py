@@ -13,6 +13,7 @@ from PIL import Image
 import build_release
 import gen_balance_wire
 import gen_contracts
+import gen_courtier_creator
 import gen_no_heir_gui
 import gen_pools
 import gen_scoring
@@ -221,6 +222,8 @@ def generated_checks(errors):
         MOD / "common/customizable_localization/xar_generated_contract_loc.txt": gen_contracts.generated_custom_loc(),
         ROOT / "docs/contracts-and-progression.md": gen_contracts.generated_doc(),
     }
+    courtier_outputs, _, _, _ = gen_courtier_creator.render_all()
+    expected.update(courtier_outputs)
     for lang in gen_pools.LANGS:
         lines = ([f"l_{lang}:", f' xar_pool_invalid:0 "{gen_pools.POOL_INVALID[lang]}"', ""]
                  + gen_pools.gen_yml(gen_pools.B, "bless", lang) + [""]
@@ -364,23 +367,39 @@ def mechanic_checks(errors):
         errors.append("no XAR events discovered")
     for event_id in event_ids:
         block = event_blocks[event_id]
-        stable_death_gate = event_id in {"xar.1000", "xar.1003"} and all(
-            token in block for token in (
+        stable_death_gate = (
+            event_id == "xar.1000" and all(token in block for token in (
                 "has_character_flag = xa_enabled", "is_ai = no",
                 "has_global_variable = xa_player_pact_active",
                 "exists = global_var:xa_player_pact_character",
                 "global_var:xa_player_pact_character = root"))
+            or event_id == "xar.1003" and all(token in block for token in (
+                "has_global_variable = xa_player_pact_active",
+                "exists = global_var:xa_player_pact_character",
+                "exists = scope:xar_dead",
+                "global_var:xa_player_pact_character = scope:xar_dead",
+                "exists = scope:xar_death_carrier",
+                "this = scope:xar_death_carrier"))
+        )
         stable_balance_death_gate = event_id == "xar.0921" and all(
             token in block for token in (
                 "is_ai = no", "has_global_variable = xa_balance_active",
+                "global_var:xa_balance_sample_kind = 4",
                 "exists = global_var:xa_balance_fixture_character",
-                "global_var:xa_balance_fixture_character = root",
+                "global_var:xa_balance_fixture_character = scope:xar_dead",
                 "has_global_variable = xa_player_pact_active",
-                "global_var:xa_player_pact_character = root"))
+                "global_var:xa_player_pact_character = scope:xar_dead",
+                "exists = scope:xar_death_carrier",
+                "this = scope:xar_death_carrier"))
+        stable_acceptance_ai_probe = event_id == "xar.0904" and all(
+            token in block for token in (
+                "is_ai = yes", "has_global_variable = xa_test_cc_active",
+                "xar_acceptance_courtier_ai_probe_effect = yes"))
         if not block or (
                 "trigger = { is_ai = no }" not in block
                 and not stable_death_gate
-                and not stable_balance_death_gate):
+                and not stable_balance_death_gate
+                and not stable_acceptance_ai_probe):
             errors.append(f"event '{event_id}' lacks its AI guard")
     if "name = xar_curse_option_c" in events:
         errors.append("curse event still exposes a third option")
@@ -723,13 +742,29 @@ def mechanic_checks(errors):
         MOD / "common/scripted_effects/xar_courtier_creator_effects.txt")
     courtier_guis = read(
         MOD / "common/scripted_guis/xar_courtier_creator_guis.txt")
+    courtier_catalog_effects = read(
+        MOD / "common/scripted_effects/xar_generated_courtier_catalog_effects.txt")
+    courtier_catalog_triggers = read(
+        MOD / "common/scripted_triggers/xar_generated_courtier_catalog_triggers.txt")
+    courtier_catalog_values = read(
+        MOD / "common/script_values/xar_generated_courtier_catalog_values.txt")
     courtier_gui = read(MOD / "gui/xar_courtier_creator.gui")
+    courtier_release_effects = build_release.render_release_bytes(
+        MOD / "common/scripted_effects/xar_courtier_creator_effects.txt",
+        "common/scripted_effects/xar_courtier_creator_effects.txt",
+    ).decode("utf-8-sig")
+    courtier_release_guis = build_release.render_release_bytes(
+        MOD / "common/scripted_guis/xar_courtier_creator_guis.txt",
+        "common/scripted_guis/xar_courtier_creator_guis.txt",
+    ).decode("utf-8-sig")
     courtier_access = extract_block(
         courtier_triggers, "xar_cc_ui_access_trigger") or ""
     courtier_configuration = extract_block(
         courtier_triggers, "xar_cc_valid_configuration_trigger") or ""
     courtier_initialize = extract_block(
         courtier_effects, "xar_cc_initialize_effect") or ""
+    courtier_rebuild_origins = extract_block(
+        courtier_effects, "xar_cc_rebuild_culture_faith_catalogs_effect") or ""
     courtier_purchase = extract_block(
         courtier_effects, "xar_cc_complete_purchase_effect") or ""
     courtier_create = extract_block(courtier_purchase, "create_character") or ""
@@ -746,6 +781,8 @@ def mechanic_checks(errors):
     bridge_order = [
         courtier_bridge.find("remove_character_flag = xar_cc_open_pending"),
         courtier_bridge.find("xar_cc_initialize_effect = yes"),
+        courtier_bridge.find("xar_cc_rebuild_trait_catalogs_effect = yes"),
+        courtier_bridge.find("xar_cc_rebuild_culture_faith_catalogs_effect = yes"),
         courtier_bridge.find("add_character_flag = xar_cc_open"),
     ]
     if (any(index < 0 for index in bridge_order)
@@ -759,85 +796,117 @@ def mechanic_checks(errors):
 
     courtier_state_sources = "\n".join((
         courtier_decision, courtier_bridge, courtier_triggers,
-        courtier_values, courtier_effects, courtier_guis, courtier_gui,
+        courtier_values, courtier_release_effects, courtier_release_guis,
+        courtier_gui,
     ))
     if any(token in courtier_state_sources for token in (
             "set_global_variable", "has_global_variable",
             "remove_global_variable", "global_var:")):
         errors.append("paid custom courtier state must remain character-scoped")
+    global_catalog_sources = "\n".join((
+        courtier_effects, courtier_triggers, courtier_guis, courtier_gui,
+    ))
+    global_catalog_names = set(re.findall(
+        r"(?:clear_global_variable_list\s*=\s*"
+        r"|(?:add_to_global_variable_list|any_in_global_list)\s*=\s*\{[^}]*?variable\s*=\s*"
+        r"|is_target_in_global_variable_list\s*=\s*\{[^}]*?name\s*=\s*"
+        r"|GetGlobalList\('\s*)(xar_cc_\w+)",
+        global_catalog_sources,
+        re.DOTALL,
+    ))
+    if global_catalog_names != {
+            "xar_cc_catalog_cultures", "xar_cc_catalog_culture_heritages"}:
+        errors.append(
+            "paid custom courtier global lists must remain read-only culture catalogs")
+    if not all(token in courtier_rebuild_origins for token in (
+            "clear_global_variable_list = xar_cc_catalog_cultures",
+            "clear_global_variable_list = xar_cc_catalog_culture_heritages",
+            "every_culture_global = {", "has_same_culture_heritage = prev",
+            "every_religion_global = {", "every_faith = {",
+            "name = xar_cc_catalog_faiths")):
+        errors.append("paid custom courtier origin catalogs lost their loaded-game rebuild")
     if not all(token in courtier_access for token in (
             "is_ai = no", "is_alive = yes", "has_character_flag = xa_enabled",
             "has_character_flag = xar_cc_open")):
         errors.append("paid custom courtier GUI lost its living-player access gate")
-    if not all(token in courtier_configuration for token in (
-            "has_character_flag = xar_cc_initialized", "exists = culture",
-            "exists = faith", "exists = location",
-            "xar_cc_commander_count <= 2", "xar_cc_personality_count <= 3")):
-        errors.append("paid custom courtier configuration lost a required bound")
-
     compact_configuration = compact_script(courtier_configuration)
-    binary_variables = (
-        "xar_cc_female", "xar_cc_cmd_organizer", "xar_cc_cmd_military_engineer",
-        "xar_cc_cmd_aggressive_attacker", "xar_cc_cmd_unyielding_defender",
-        "xar_cc_phys_beauty", "xar_cc_phys_physique", "xar_cc_phys_intellect",
-        "xar_cc_pers_brave", "xar_cc_pers_craven", "xar_cc_pers_calm",
-        "xar_cc_pers_wrathful", "xar_cc_pers_diligent", "xar_cc_pers_lazy",
+    required_configuration_tokens = (
+        "has_character_flag = xar_cc_v2_initialized",
+        "OR = { var:xar_cc_female = 0 var:xar_cc_female = 1 }",
+        "var:xar_cc_age >= 0", "var:xar_cc_age <= 120",
+        "exists = var:xar_cc_selected_culture",
+        "exists = var:xar_cc_selected_faith",
+        "name = xar_cc_catalog_cultures",
+        "name = xar_cc_catalog_faiths",
+        "var:xar_cc_same_house = 0", "var:xar_cc_same_house = 1",
+        "var:xar_cc_age >= 16", "var:xar_cc_age < 16",
+        "name = xar_cc_selected_education value = 1",
+        "name = xar_cc_selected_commander value <= 2",
+        "name = xar_cc_selected_personality value <= 3",
+        "xar_cc_selected_traits_compatible_trigger = yes",
     )
-    for variable in binary_variables:
-        expected = f"OR = {{ var:{variable} = 0 var:{variable} = 1 }}"
-        if expected not in compact_configuration:
-            errors.append(
-                f"paid custom courtier configuration does not bound '{variable}'")
-    for expected in (
-            "OR = { var:xar_cc_age = 18 var:xar_cc_age = 30 var:xar_cc_age = 45 }",
-            ("OR = { var:xar_cc_education = 1 var:xar_cc_education = 2 "
-             "var:xar_cc_education = 3 var:xar_cc_education = 4 "
-             "var:xar_cc_education = 5 }")):
-        if expected not in compact_configuration:
-            errors.append("paid custom courtier age or education choices are unbounded")
-    for left, right in (("brave", "craven"), ("calm", "wrathful"),
-                        ("diligent", "lazy")):
-        expected = (
-            f"NOT = {{ var:xar_cc_pers_{left} = 1 "
-            f"var:xar_cc_pers_{right} = 1 }}")
-        if expected not in compact_configuration:
-            errors.append(
-                f"paid custom courtier allows opposing {left}/{right} traits")
+    if any(token not in compact_configuration
+           for token in required_configuration_tokens):
+        errors.append("paid custom courtier configuration lost a v2 range or catalog gate")
+    for skill in (
+            "diplomacy", "martial", "stewardship", "intrigue", "learning",
+            "prowess"):
+        if not all(token in courtier_configuration for token in (
+                f"var:xar_cc_{skill} >= 0", f"var:xar_cc_{skill} <= 100")):
+            errors.append(f"paid custom courtier skill '{skill}' is not bounded 0..100")
+    for name in ("education", "commander", "physical", "personality", "other"):
+        if not all(token in courtier_configuration for token in (
+                f"SELECTED_LIST = xar_cc_selected_{name}",
+                f"CATALOG_LIST = xar_cc_catalog_{name}")):
+            errors.append(f"paid custom courtier '{name}' list is not catalog-validated")
+    selected_list_validation = extract_block(
+        courtier_triggers, "xar_cc_selected_list_valid_trigger") or ""
+    if ("every_in_list" in selected_list_validation
+            or "any_in_list" not in selected_list_validation
+            or "count = all" not in selected_list_validation):
+        errors.append(
+            "paid custom courtier list validation must use the trigger-form "
+            "any_in_list count=all")
 
-    if not all(token in courtier_initialize for token in (
-            "has_character_flag = xar_cc_initialized",
-            "name = xar_cc_female value = 0", "name = xar_cc_age value = 30",
-            "name = xar_cc_education value = 2",
-            "add_character_flag = xar_cc_initialized")):
-        errors.append("paid custom courtier defaults are no longer stable")
-    for variable in binary_variables:
-        if f"name = {variable} value = 0" not in courtier_initialize:
-            errors.append(
-                f"paid custom courtier does not initialize '{variable}'")
+    required_defaults = (
+        "has_character_flag = xar_cc_v2_initialized",
+        "name = xar_cc_female value = 0", "name = xar_cc_age value = 30",
+        "name = xar_cc_same_house value = 0",
+        "name = xar_cc_selected_culture value = root.culture",
+        "name = xar_cc_selected_faith value = root.faith",
+        "trait:education_martial_3",
+        "name = xar_cc_selected_education",
+        "name = xar_cc_commander_count value = 0",
+        "name = xar_cc_personality_count value = 0",
+        "add_character_flag = xar_cc_v2_initialized",
+    )
+    if any(token not in courtier_initialize for token in required_defaults):
+        errors.append("paid custom courtier v2 defaults are no longer stable")
+    for skill in (
+            "diplomacy", "martial", "stewardship", "intrigue", "learning",
+            "prowess"):
+        if f"name = xar_cc_{skill} value = 6" not in courtier_initialize:
+            errors.append(f"paid custom courtier does not default '{skill}' to six")
+
     compact_cost = compact_script(courtier_cost)
-    if "value = 90" not in compact_cost:
-        errors.append("paid custom courtier base price must include tier-3 education")
-    expected_costs = {
-        "xar_cc_age = 18": 60, "xar_cc_age = 30": 30,
-        "xar_cc_cmd_organizer = 1": 25,
-        "xar_cc_cmd_military_engineer = 1": 25,
-        "xar_cc_cmd_aggressive_attacker = 1": 25,
-        "xar_cc_cmd_unyielding_defender = 1": 25,
-        "xar_cc_phys_beauty = 1": 40,
-        "xar_cc_phys_physique = 1": 60,
-        "xar_cc_phys_intellect = 1": 80,
-        "xar_cc_pers_brave = 1": 40,
-        "xar_cc_pers_craven = 1": -10,
-        "xar_cc_pers_calm = 1": 25,
-        "xar_cc_pers_wrathful = 1": 30,
-        "xar_cc_pers_diligent = 1": 40,
-        "xar_cc_pers_lazy = 1": -10,
-    }
-    for condition, amount in expected_costs.items():
-        expected = f"limit = {{ var:{condition} }} add = {amount}"
-        if expected not in compact_cost:
-            errors.append(
-                f"paid custom courtier price lost '{condition}' -> {amount}")
+    required_cost_tokens = (
+        "value = 50", "add = xar_cc_arbitrary_age_cost",
+        "add = xar_cc_selected_trait_cost",
+        "add = xar_cc_diplomacy_skill_cost", "add = xar_cc_martial_skill_cost",
+        "add = xar_cc_stewardship_skill_cost", "add = xar_cc_intrigue_skill_cost",
+        "add = xar_cc_learning_skill_cost", "add = xar_cc_prowess_skill_cost",
+        "subtract = 88", "round = yes", "min = 0",
+    )
+    if any(token not in compact_cost for token in required_cost_tokens):
+        errors.append("paid custom courtier price lost its native incremental contract")
+    age_cost = extract_block(courtier_values, "xar_cc_arbitrary_age_cost") or ""
+    if not all(token in age_cost for token in (
+            "var:xar_cc_age <= 18", "add = 60", "var:xar_cc_age <= 30",
+            "multiply = 2.5", "var:xar_cc_age < 45", "multiply = 2")):
+        errors.append("paid custom courtier arbitrary-age anchors drifted")
+    if courtier_catalog_values.count(
+            "xar_cc_trait_is_selected_trigger = { TRAIT = trait:") != 224:
+        errors.append("paid custom courtier trait-cost projection is not 224 entries")
 
     preconfirm_sources = "\n".join((
         courtier_decision, courtier_bridge, courtier_guis, courtier_gui,
@@ -848,40 +917,60 @@ def mechanic_checks(errors):
         courtier_purchase.find("remove_character_flag = xar_cc_open"),
         courtier_purchase.find("create_character = {"),
         courtier_purchase.find("exists = scope:xar_cc_created_courtier"),
+        courtier_purchase.find("add_courtier = scope:xar_cc_created_courtier"),
+        courtier_purchase.rfind("is_courtier_of = root"),
+        courtier_purchase.find("add_diplomacy_skill = scope:xar_cc_purchase_diplomacy"),
+        courtier_purchase.find(
+            "xar_cc_apply_selected_trait_list_effect = { LIST = xar_cc_selected_education }"),
+        courtier_purchase.find("set_house = root.house"),
+        courtier_purchase.find("flag = blocked_from_leaving"),
         courtier_purchase.find("remove_short_term_gold = xar_courtier_creator_cost"),
     ]
     if (any(index < 0 for index in purchase_order)
             or purchase_order != sorted(purchase_order)
             or courtier_purchase.count("create_character = {") != 1
             or courtier_purchase.count(
-                "remove_short_term_gold = xar_courtier_creator_cost") != 1):
-        errors.append("paid custom courtier purchase is not atomic and single-shot")
+                "remove_short_term_gold = xar_courtier_creator_cost") != 1
+            or courtier_purchase.count(
+                "death = { death_reason = death_vanished }") != 1
+            or courtier_purchase.find(
+                "death = { death_reason = death_vanished }") < purchase_order[-1]):
+        errors.append(
+            "paid custom courtier purchase must deliver before configuration and "
+            "its atomic single charge, then roll back failed delivery")
     if not all(token in courtier_purchase for token in (
             "xar_cc_ui_access_trigger = yes",
             "xar_cc_valid_configuration_trigger = yes",
             "gold >= xar_courtier_creator_cost")):
         errors.append("paid custom courtier purchase does not revalidate on confirm")
     if not all(token in courtier_create for token in (
-            "location = root.location", "employer = root", "culture = root.culture",
-            "faith = root.faith", "dynasty = none", "age = root.var:xar_cc_age",
-            "random_traits = no", "diplomacy = 6", "martial = 6",
-            "stewardship = 6", "intrigue = 6", "learning = 6", "prowess = 6",
+            "employer = root", "culture = root.var:xar_cc_selected_culture",
+            "faith = root.var:xar_cc_selected_faith", "dynasty = none",
+            "age = root.var:xar_cc_age", "random_traits = no",
+            "diplomacy = 0", "martial = 0", "stewardship = 0",
+            "intrigue = 0", "learning = 0", "prowess = 0",
             "save_scope_as = xar_cc_created_courtier")):
         errors.append("paid custom courtier creation lost its deterministic base identity")
-    expected_traits = (
-        "education_diplomacy_3", "education_martial_3",
-        "education_stewardship_3", "education_intrigue_3",
-        "education_learning_3", "organizer", "military_engineer",
-        "aggressive_attacker", "unyielding_defender", "beauty_good_1",
-        "physique_good_1", "intellect_good_1", "brave", "craven", "calm",
-        "wrathful", "diligent", "lazy",
-    )
-    for trait in expected_traits:
-        if f"add_trait = {trait}" not in courtier_purchase:
-            errors.append(f"paid custom courtier cannot apply trait '{trait}'")
+    if not all(token in courtier_purchase for token in (
+            "add_diplomacy_skill = scope:xar_cc_purchase_diplomacy",
+            "add_martial_skill = scope:xar_cc_purchase_martial",
+            "add_stewardship_skill = scope:xar_cc_purchase_stewardship",
+            "add_intrigue_skill = scope:xar_cc_purchase_intrigue",
+            "add_learning_skill = scope:xar_cc_purchase_learning",
+            "add_prowess_skill = scope:xar_cc_purchase_prowess",
+            "LIST = xar_cc_selected_education",
+            "LIST = xar_cc_selected_commander",
+            "LIST = xar_cc_selected_physical",
+            "LIST = xar_cc_selected_personality",
+            "LIST = xar_cc_selected_other",
+            "set_house = root.house")):
+        errors.append("paid custom courtier lost dynamic skills, traits, or house assignment")
+    selected_trait_apply = extract_block(
+        courtier_effects, "xar_cc_apply_selected_trait_list_effect") or ""
+    if "add_trait = scope:xar_cc_selected_trait" not in selected_trait_apply:
+        errors.append("paid custom courtier no longer applies selected trait scopes")
     if not all(token in courtier_purchase for token in (
             "flag = blocked_from_leaving", "years = 25",
-            "add_character_flag = xar_cc_created_courtier",
             "add_courtier = scope:xar_cc_created_courtier",
             "force_character_skill_recalculation = yes",
             "send_interface_toast = {")):
@@ -906,18 +995,88 @@ def mechanic_checks(errors):
             or "xar_cc_complete_purchase_effect" in courtier_cancel):
         errors.append("paid custom courtier cancellation is no longer side-effect free")
     if not all(token in courtier_confirm for token in (
+            "custom_tooltip = {",
             "xar_cc_valid_configuration_trigger = yes",
             "gold >= xar_courtier_creator_cost",
             "xar_cc_complete_purchase_effect = yes")):
         errors.append("paid custom courtier confirmation is not fully guarded")
     if not all(token in courtier_gui for token in (
             "xar_cc_window_gate_gui", "xar_cc_tab', 'basic",
+            "xar_cc_tab', 'education",
             "xar_cc_tab', 'commander", "xar_cc_tab', 'physical",
-            "xar_cc_tab', 'personality", "xar_courtier_creator_cost",
+            "xar_cc_tab', 'personality", "xar_cc_tab', 'other",
+            "xar_cc_tab', 'origin", "xar_courtier_creator_cost",
             "xar_cc_cancel_gui", "xar_cc_confirm_gui", "filter_mouse = all")):
         errors.append("paid custom courtier window lost a tab, price, or modal control")
+    if not all(token in courtier_gui for token in (
+            "Scope.Trait", "Trait.MakeScope", "icon_trait = {}",
+            "xar_cc_catalog_education", "xar_cc_catalog_commander",
+            "xar_cc_catalog_physical", "xar_cc_catalog_personality",
+            "xar_cc_catalog_other", "Scope.Culture.GetHeritage",
+            "CulturePillar.GetCulturesWithPillar", "Culture.GetTemplate",
+            "Culture.GetNameNoTooltip", "Culture.MakeScope",
+            "xar_cc_catalog_culture_heritages",
+            "Scope.Faith", "Faith.MakeScope", "Faith.GetIcon",
+            "xar_cc_catalog_faiths", "progressbar_standard")):
+        errors.append("paid custom courtier dynamic catalogs or native hover UI are incomplete")
+    for numeric in (
+            "age", "diplomacy", "martial", "stewardship", "intrigue",
+            "learning", "prowess"):
+        for action in ("minus_10", "minus_1", "plus_1", "plus_10"):
+            if f"xar_cc_{numeric}_{action}_gui" not in courtier_gui:
+                errors.append(
+                    f"paid custom courtier numeric UI lacks {numeric} {action}")
     if "TryStartRulerDesigning" in courtier_state_sources:
         errors.append("paid custom courtier must not call the lobby-only Ruler Designer")
+
+    courtier_probe = read(
+        MOD / "common/scripted_effects/xar_acceptance_courtier_effects.txt")
+    courtier_consume_import = extract_block(
+        production_effects, "xar_consume_import_effect") or ""
+    if not all(token in courtier_consume_import for token in (
+            "global_var:xa_global_record_imported = 6",
+            "xar_acceptance_courtier_start_effect = yes")):
+        errors.append(
+            "courtier-creator threshold-6 bootstrap is not isolated from selftest")
+    courtier_probe_requirements = (
+        "character:1132", "trigger_event = xar.0904",
+        "is_ai = yes", "add_gold = 1000",
+        "xar_cc_rebuild_trait_catalogs_effect = yes",
+        "xar_cc_rebuild_culture_faith_catalogs_effect = yes",
+        "XAR: TEST PASS cc_ai_fixture_ready",
+        "XAR: TEST PASS cc_ai_guard",
+        "XAR: TEST PASS cc_cancel_zero_side_effect",
+        "XAR: TEST PASS cc_insufficient_gold_blocked",
+        "XAR: TEST PASS cc_configuration_retained_on_close",
+        "XAR: TEST PASS cc_default_purchase",
+        "XAR: TEST PASS cc_custom_purchase",
+        "XAR: TEST DONE courtier-creator",
+        "gold >= 880", "gold >= 532",
+        "has_trait = education_martial_3",
+        "has_trait = education_intrigue_1", "has_trait = logistician",
+        "has_trait = military_engineer", "has_trait = beauty_bad_1",
+        "has_trait = lustful", "has_trait = diplomat",
+        "house = root.house", "culture = root.var:xar_cc_selected_culture",
+        "faith = root.var:xar_cc_selected_faith",
+        "NOT = { culture = root.culture }", "NOT = { faith = root.faith }",
+        "is_courtier_of = root", "NOT = { exists = dynasty }",
+    )
+    if any(token not in courtier_probe for token in courtier_probe_requirements):
+        errors.append("courtier-creator real-purchase acceptance probe is incomplete")
+    courtier_ai_event = event_blocks.get("xar.0904", "")
+    if not all(token in courtier_ai_event for token in (
+            "is_ai = yes", "has_global_variable = xa_test_cc_active",
+            "xar_acceptance_courtier_ai_probe_effect = yes")):
+        errors.append("courtier-creator AI fixture is not re-rooted by its stripped event")
+    if not all(token in courtier_effects for token in (
+            "has_global_variable = xa_test_cc_active",
+            "name = xa_test_cc_created_courtier",
+            "xar_acceptance_courtier_purchase_observer_effect = yes")):
+        errors.append("courtier-creator purchase observer is not wired")
+    if not all(token in courtier_cancel for token in (
+            "has_global_variable = xa_test_cc_active",
+            "xar_acceptance_courtier_cancel_observer_effect = yes")):
+        errors.append("courtier-creator cancel observer is not wired")
 
     no_heir_gui_requirements = (
         "type xar_no_heir_settlement_widget = widget",
@@ -967,8 +1126,14 @@ def mechanic_checks(errors):
     score_snapshot_event = extract_block(events, "xar.1002") or ""
     score_compute_event = extract_block(events, "xar.1000") or ""
     score_dispatch_event = extract_block(events, "xar.1003") or ""
+    generated_score_effect = extract_block(
+        read(MOD / "common/scripted_effects/xar_generated_scoring_effects.txt"),
+        "xar_compute_score_effect",
+    ) or ""
     start = extract_block(on_actions, "xar_on_game_start") or ""
     death = extract_block(on_actions, "xar_on_death") or ""
+    compact_death = compact_script(death)
+    compact_score_compute_event = compact_script(score_compute_event)
     if "every_player" not in start:
         errors.append("game-start entry is no longer player-only")
     if not all(token in death for token in (
@@ -977,6 +1142,10 @@ def mechanic_checks(errors):
             "exists = global_var:xa_player_pact_character",
             "global_var:xa_player_pact_character = root")):
         errors.append("death entry lost the current-player/stable-scope dual gate")
+    if "limit = { is_ai = no OR = {" not in compact_death:
+        errors.append("death entry must apply is_ai=no to both pact-authentication branches")
+    if "trigger = { is_ai = no OR = {" not in compact_score_compute_event:
+        errors.append("no-heir score event must apply is_ai=no to both pact gates")
     pact_enable = extract_block(production_effects, "xar_enable_player_pact_effect") or ""
     if not all(token in pact_enable for token in (
             "limit = { is_ai = no }",
@@ -990,13 +1159,35 @@ def mechanic_checks(errors):
             "name = xa_player_pact_character",
             "value = scope:xar_existing_pact_player")):
         errors.append("existing player pact saves no longer backfill player scope")
+    dead_scope_index = death.find("save_scope_as = xar_dead")
+    saved_carrier_index = death.find("save_scope_as = xar_death_carrier")
+    carrier_index = death.find("trigger_event = { id = xar.1003 delayed = yes }")
+    inline_score_index = death.find("xar_compute_score_effect = yes")
+    no_heir_score_index = score_compute_event.find("xar_compute_score_effect = yes")
+    no_heir_dispatch_index = score_compute_event.find("trigger_event = xar.1003")
     if (death.count("trigger_event = xar.1000") != 1
-            or "xar_compute_score_effect = yes" not in score_compute_event
-            or "trigger_event = xar.1003" not in score_compute_event):
-        errors.append("death scoring must cross the synchronous xar.1000 commit boundary")
-    if (score_dispatch_event.count("id = xar.1001") != 1
-            or score_dispatch_event.count("days = 1") != 1):
-        errors.append("heir settlement path must contain exactly one delayed one-day xar.1001 trigger")
+            or death.count("xar_compute_score_effect = yes") != 1
+            or "limit = { exists = player_heir }" not in death
+            or not 0 <= dead_scope_index < saved_carrier_index < carrier_index < inline_score_index
+            or not 0 <= no_heir_score_index < no_heir_dispatch_index
+            or "save_scope_as = xar_dead" not in generated_score_effect):
+        errors.append(
+            "death scoring must save its dead scope and queue the living-heir "
+            "carrier before computing, while preserving the no-heir commit boundary")
+    if (score_dispatch_event.count("id = xar.1001") != 2
+            or score_dispatch_event.count("days = 1") != 2):
+        errors.append("heir settlement paths must each contain one delayed xar.1001 trigger")
+    if not all(token in score_dispatch_event for token in (
+            "exists = scope:xar_dead",
+            "global_var:xa_player_pact_character = scope:xar_dead",
+            "exists = scope:xar_death_carrier",
+            "this = scope:xar_death_carrier",
+            "global_var:xa_balance_fixture_character = scope:xar_dead",
+            "NOT = { this = scope:xar_dead }")):
+        errors.append("death dispatch lost its authenticated dead/heir scope routing")
+    if "scope:xar_dead = {" in score_dispatch_event:
+        errors.append(
+            "delayed death dispatch must not recheck death-cleared character state")
     if ("limit = { exists = player_heir }" not in score_dispatch_event
             or "XAR: no player heir; synchronous settlement fallback" not in score_dispatch_event
             or "trigger_event = xar.1002" not in score_dispatch_event):
@@ -1035,7 +1226,8 @@ def mechanic_checks(errors):
     if any(token not in death_probe_effect
            for token in death_with_heir_requirements):
         errors.append("with-heir death setup lacks its player/heir precondition")
-    if not all(token in events for token in (
+    if not all(token in events + on_actions for token in (
+            "XAR: TEST death-with-heir carrier queued",
             "XAR: TEST death-with-heir compute entered",
             "XAR: TEST death-with-heir dispatch entered",
             "XAR: TEST PASS death_with_heir_heir_human",
@@ -1066,6 +1258,7 @@ def mechanic_checks(errors):
             if marker not in bargain_probe_effect:
                 errors.append(f"bargain-reopen probe lacks marker '{marker}'")
     if ("id = xar.0903 days = 1094" not in bargain_probe_effect
+            or "add_trait = immortal" not in bargain_probe_effect
             or "value = current_date" not in bargain_probe_effect
             or bargain_probe_effect.count("subtract = global_var:xa_bargain_pair_start_date") != 2
             or bargain_probe_effect.count("global_var:xa_bargain_elapsed_days = 1094") != 3
@@ -1073,7 +1266,8 @@ def mechanic_checks(errors):
             or "trigger = { is_ai = no }" not in bargain_probe_event
             or "has_character_flag = xa_enabled" not in bargain_probe_event
             or "XAR: TEST PASS bargain_pair_3_full_reopen" not in bargain_probe_effect):
-        errors.append("bargain-reopen day-1094/player guard/full-third-reopen probe is incomplete")
+        errors.append(
+            "bargain-reopen survival/day-1094/player guard/full-third-reopen probe is incomplete")
     progression_probe = read(
         MOD / "common/scripted_effects/xar_acceptance_progression_effects.txt")
     progression_requirements = (
@@ -1546,14 +1740,19 @@ def package_checks(errors):
     acceptance_runner = read(ROOT / "tools/run_acceptance.py")
     if "click_ratio(0.38, 0.72)" in acceptance_runner:
         errors.append("acceptance runner still uses the stale blind event-recovery click")
+    if "int(height * 0.91)" in acceptance_runner:
+        errors.append("acceptance runner still hard-codes the mental-break option y coordinate")
     if not all(token in acceptance_runner for token in (
             "capture_stall_and_recover", "_annotated.png", "_ocr.json",
             "remained stalled after 3 screenshot-guided recoveries",
             "0.34 <= x_ratio <= 0.74", "box_height_ratio <= 0.035",
             'action_priority = {"拒绝": 0, "同意": 1}',
             "classic_lane or right_lane or middle_lane",
+            "detect_event_option_rectangles", "cv2.HoughLinesP",
+            '"detected_frame": True',
             '"精神崩溃" in item["text"]', "full_height_mental_break",
             'label = "full-height option"', "verify_stall_recovery",
+            "stall_recovery_key", "unchanged resume recoveries",
             '"宾客名单", "活动日志"', "tour_guest_overlay_close",
             'label = "tour guest overlay"',
             "quick_stall_and_recover", "QUICK_STALL_S = 3",
@@ -1597,6 +1796,17 @@ def package_checks(errors):
             "XAR: TEST DONE scoring-matrix")):
         errors.append("acceptance runner lacks scoring/dedup/200-dispatcher coverage")
     if not all(token in acceptance_runner for token in (
+            '"courtier-creator": 6', "def run_courtier_creator",
+            "open_native_courtier_creator",
+            "click_first_courtier_catalog_entry",
+            "cc_insufficient_gold_blocked",
+            "cc_configuration_retained_on_close", "cc_default_purchase",
+            "cc_custom_purchase", "阴谋家", "勤专家",
+            "貌不扬", "15_cc_personality_grid", "16_cc_other_grid",
+            "first card (lustful)", "first card (diplomat)",
+            "XAR: TEST DONE courtier-creator")):
+        errors.append("acceptance runner lacks real-UI courtier creator coverage")
+    if not all(token in acceptance_runner for token in (
             '"balance-long": 0', "BALANCE_FIXTURES", "declared_vanilla_rule_defaults",
             "set_balance_applied_rules", "def run_balance_long",
             "decode_balance_wire_sample", "cadence_1095_days",
@@ -1606,9 +1816,10 @@ def package_checks(errors):
         "def run_balance_long")[2].partition("\ndef ")[0]
     if not all(token in balance_long_control for token in (
             '"继续扮演"', "balance_succession_",
-            "balance fixture reached succession without a terminal wire",
-            "BALANCE fixture on_death")):
-        errors.append("balance-long lacks native succession fail-fast diagnostics")
+            "balance succession continue for terminal wire",
+            "after succession continuation", "BALANCE fixture on_death",
+            "reopen_delays", "post_succession_continue")):
+        errors.append("balance-long lacks bounded succession delivery or per-deal cadence checks")
     balance_matrix_runner = read(ROOT / "tools/run_balance_matrix.py")
     if not all(token in balance_matrix_runner for token in (
             'FIXTURES = ("count", "king", "emperor", "synthetic")',
@@ -1620,6 +1831,7 @@ def package_checks(errors):
         "SAVE_GAMES_DIR", 'glob("autosave*.ck3")', "autosaves.ready",
         "autosave backup verification failed", "restore_autosaves(backup)",
         "DLC_LOAD_JSON", "set_enabled_mod_profile", "ugc_3784706360.mod",
+        "Invoke-CimMethod", "Win32_Process", "outside process tree",
     )
     if (any(token not in acceptance_runner for token in autosave_protection)
             or any(token not in restore_watchdog for token in (

@@ -34,6 +34,10 @@ xar_consume_import_effect = {
 				limit = { global_var:xa_global_record_imported = 5 }
 				xar_acceptance_death_with_heir_start_effect = yes
 			}
+			else_if = {
+				limit = { global_var:xa_global_record_imported = 6 }
+				xar_acceptance_courtier_start_effect = yes
+			}
 			else = {
 				debug_log = "XAR: TEST selftest begin"
 				xar_selftest_effect = yes

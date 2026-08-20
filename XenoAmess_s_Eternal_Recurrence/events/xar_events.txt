@@ -524,15 +524,13 @@ xar.0011 = {
 	}
 }
 
-# Commit score globals before on_death compares the record or opens settlement.
+# No-heir path: commit score globals before record dispatch and GUI snapshots.
 xar.1000 = {
 	hidden = yes
 	trigger = {
+		is_ai = no
 		OR = {
-			AND = {
-				has_character_flag = xa_enabled
-				is_ai = no
-			}
+			has_character_flag = xa_enabled
 			AND = {
 				has_global_variable = xa_player_pact_active
 				exists = global_var:xa_player_pact_character
@@ -541,45 +539,44 @@ xar.1000 = {
 		}
 	}
 	immediate = {
-		# XAR_ACCEPTANCE_ONLY_BEGIN
-		if = {
-			limit = {
-				has_global_variable = xa_death_with_heir_active
-				exists = global_var:xa_player_pact_character
-				global_var:xa_player_pact_character = root
-			}
-			debug_log = "XAR: TEST death-with-heir compute entered"
-		}
-		# XAR_ACCEPTANCE_ONLY_END
 		xar_compute_score_effect = yes
 		trigger_event = xar.1003
 	}
 }
 
-# Commit score first, then write any record and route to the living heir or the
-# synchronous no-heir snapshot stage.
+# Write the committed score, then route either from the living heir carrier
+# queued before scoring or from the synchronous dead-root no-heir chain.
 xar.1003 = {
 	hidden = yes
 	trigger = {
+		has_global_variable = xa_player_pact_active
+		exists = global_var:xa_player_pact_character
+		exists = scope:xar_dead
+		global_var:xa_player_pact_character = scope:xar_dead
 		OR = {
+			this = scope:xar_dead
 			AND = {
-				has_character_flag = xa_enabled
-				is_ai = no
-			}
-			AND = {
-				has_global_variable = xa_player_pact_active
-				exists = global_var:xa_player_pact_character
-				global_var:xa_player_pact_character = root
+				exists = scope:xar_death_carrier
+				this = scope:xar_death_carrier
+				is_alive = yes
 			}
 		}
 	}
+	# XAR_ACCEPTANCE_ONLY_BEGIN
+	on_trigger_fail = {
+		if = {
+			limit = { has_global_variable = xa_death_with_heir_active }
+			debug_log = "XAR: TEST death-with-heir dispatch trigger rejected"
+		}
+	}
+	# XAR_ACCEPTANCE_ONLY_END
 	immediate = {
 		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = {
 				has_global_variable = xa_death_with_heir_active
-				exists = global_var:xa_player_pact_character
-				global_var:xa_player_pact_character = root
+				exists = scope:xar_dead
+				global_var:xa_player_pact_character = scope:xar_dead
 			}
 			debug_log = "XAR: TEST death-with-heir dispatch entered"
 		}
@@ -593,13 +590,22 @@ xar.1003 = {
 		if = {
 			limit = {
 				has_global_variable = xa_balance_active
-				has_character_flag = xa_balance_fixture_player
+				exists = global_var:xa_balance_fixture_character
+				exists = scope:xar_dead
+				global_var:xa_balance_fixture_character = scope:xar_dead
 			}
 			set_global_variable = { name = xa_balance_sample_kind value = 4 }
 			trigger_event = xar.0921
 		}
 		# XAR_ACCEPTANCE_ONLY_END
 		if = {
+			limit = { NOT = { this = scope:xar_dead } }
+			trigger_event = {
+				id = xar.1001
+				days = 1
+			}
+		}
+		else_if = {
 			limit = { exists = player_heir }
 			player_heir = {
 				trigger_event = {

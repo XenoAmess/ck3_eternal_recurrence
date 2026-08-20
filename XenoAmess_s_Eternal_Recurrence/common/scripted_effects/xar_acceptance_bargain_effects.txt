@@ -6,6 +6,7 @@ xar_acceptance_bargain_reopen_start_effect = {
 		xar_initialize_run_state_effect = yes
 		set_global_variable = xa_bargain_reopen_active
 		set_global_variable = { name = xa_bargain_reopen_count value = 0 }
+		add_trait = immortal
 		debug_log = "XAR: TEST bargain reopen begin"
 		if = {
 			limit = {

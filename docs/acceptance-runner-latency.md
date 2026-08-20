@@ -2,7 +2,7 @@
 
 ## 结论摘要
 
-场景测试在暂停弹窗出现后需要数秒才响应，首要原因不是 CK3 本身，也不是单纯的 OCR 推理速度，而是 runner 当前采用了保守的串行恢复策略：
+优化前，场景测试在暂停弹窗出现后需要数秒才响应，首要原因不是 CK3 本身，也不是单纯的 OCR 推理速度，而是 runner 当时采用了保守的串行恢复策略：
 
 1. 先等待局内日期连续停止 `8`、`10` 或 `12` 秒，证明游戏确实卡住。
 2. 再截图并运行 OCR，判断当前弹窗。
@@ -11,7 +11,7 @@
 
 因此，大部分肉眼可见的等待是代码中明确设置的防误点窗口。全屏 OCR、PNG 编码和文件写入会继续放大延迟，但当前报告没有记录这些操作的独立耗时，不能把全部延迟归因于 OCR。
 
-当前各场景的典型弹窗发现延迟如下：
+优化前各场景的典型弹窗发现延迟如下：
 
 | 场景/路径 | 当前发现机制 | 弹窗出现到开始恢复的估算延迟 |
 | --- | --- | --- |
@@ -44,7 +44,7 @@
 
 上述样本用于证明调用链和顺序性收益，不足以声称统计意义上的 p95。证据分别保存在临时 artifact 目录 `xar_death_edges_fast_20260819`、`xar_balance_synthetic_fast2_20260819` 与 `xar_selftest_fast_v4_20260819`。
 
-这些回归早于付费廷臣生产提交 `a19808d`，不能作为当前完整候选的发布证据；其中 balance 样本也仅走两对交易，不包含当前 fail-fast 语义下的自然死亡或完整 30–40 年矩阵。
+这些历史回归早于付费廷臣 v2，不能单独作为当前完整候选的发布证据；廷臣功能的权威 post-review 证据为 `xar_courtier_creator_postreview22_20260820`。其中 balance 样本只走两对交易，不包含自然死亡或完整 30–40 年矩阵。
 
 ## 排查范围与证据边界
 
@@ -56,13 +56,13 @@
 - 弹窗关闭后的速度 5 和播放状态确认。
 - Windows 前台窗口恢复及 PyAutoGUI 点击稳定等待。
 
-当前 `report.json` 只记录静态校验、启动、场景等大阶段的 `phase_timings_seconds`，没有记录单次截图、OCR、PNG 编码、聚焦、点击或停滞 debounce 的耗时。因此：
+优化前的 `report.json` 只记录静态校验、启动、场景等大阶段的 `phase_timings_seconds`，没有记录单次截图、OCR、PNG 编码、聚焦、点击或停滞 debounce 的耗时；上文实施结果已新增 `runner_performance`。因此，下述数据限制只适用于历史基线：
 
 - 固定等待造成的下界可以直接从代码确认。
 - OCR 和 I/O 是明确存在的热路径成本，但当前无法给出实测占比。
 - 优化前应先增加细粒度计时，避免只凭观感调整安全阈值。
 
-## 当前处理链
+## 优化前处理链（历史基线）
 
 ### 通用轮询
 
@@ -111,7 +111,7 @@
 
 单次 deliberate click 至少包含约 0.7 秒显式等待。当前代码没有覆盖 PyAutoGUI 默认的全局动作后暂停，因此每个公开 PyAutoGUI 动作通常还会附加约 0.1 秒。
 
-## 分场景瓶颈
+## 优化前分场景瓶颈
 
 ### `bargain-reopen`
 
@@ -166,9 +166,9 @@
 
 `selftest` 的继承分支会精确查找「继续扮演」，而不是直接把继承窗口交给通用选项排序。这种专用路径可以避免把继承窗中的状态文字误判为选项。
 
-后续优化必须保留该特殊处理。`balance-long` 的自然死亡也必须先等待 terminal wire，不能让通用恢复器擅自点击继承窗口。
+后续优化必须保留该特殊处理。`balance-long` 也不把继承窗交给通用恢复器：专用路径保存证据、精确点击「继续扮演」，再限时等待由存活 heir carrier 交付的 terminal wire；继续后不会采集新统治者的普通样本。
 
-## 瓶颈排序
+## 优化前瓶颈排序
 
 | 优先级 | 瓶颈 | 影响 |
 | --- | --- | --- |
@@ -286,10 +286,11 @@ py tools/validate_static.py
 & "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario selftest
 & "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario death-edges
 & "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario bargain-reopen
+& "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario courtier-creator
 & "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario balance-long --balance-fixture synthetic --balance-smoke-pairs 2
 ```
 
-当前 `--balance-smoke-pairs` 只允许 `1|2`。完整 40 年长测仍应在最终合并前至少执行一次。
+当前 `--balance-smoke-pairs` 只允许 `1|2`。完整 40 年长测可作为非门禁 soak/stability/telemetry 执行；它不替代策略化平衡测试。
 
 ## 预期收益
 

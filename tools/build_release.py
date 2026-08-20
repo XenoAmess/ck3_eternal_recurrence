@@ -37,6 +37,7 @@ ACCEPTANCE_ONLY_FILES = {
     "common/scripted_effects/xar_acceptance_balance_effects.txt",
     "common/scripted_effects/xar_acceptance_balance_wire_effects.txt",
     "common/scripted_effects/xar_acceptance_bargain_effects.txt",
+    "common/scripted_effects/xar_acceptance_courtier_effects.txt",
     "common/scripted_effects/xar_acceptance_death_effects.txt",
     "common/scripted_effects/xar_acceptance_progression_effects.txt",
     "common/scripted_effects/xar_acceptance_scoring_effects.txt",

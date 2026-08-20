@@ -6,7 +6,7 @@
 
 订阅地址： https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360
 
-> **仓库候选状态（2026-08-19）：** 本地提交 `a19808d` 新增付费自定义廷臣，可选择性别、年龄、三级教育、将领、先天与心性特质，并在确认创建成功后一次扣金。该提交及其九语言窗口尚未执行当前 L0/CK3 验收，也尚未上传工坊；详见 [docs/courtier-creator.md](docs/courtier-creator.md) 与 [docs/release-qa-v1.0.0.md](docs/release-qa-v1.0.0.md)。
+> **仓库候选状态（2026-08-20）：** 付费自定义廷臣 v2 提供七页生成目录、0–120 岁与六项 0–100 基础能力、动态文化/信仰及可选同家族。完整 release-candidate 回归基线为 GREEN；审阅后改动又分别通过死亡链与最终本地化源树的简中廷臣真实 UI 定向复验，当前树 L0 亦为 GREEN。其余语言的游戏内截断检查仍待人工完成。工坊上传状态另见 [docs/release-qa-v1.0.0.md](docs/release-qa-v1.0.0.md)。
 
 > **⚠ 必须开启教程！** 游戏设置 → 教程（reactive advice）选「完整」或「警告」均可——**切勿「禁用」**。
 >
@@ -73,6 +73,7 @@ py tools/gen_pools.py
 py tools/gen_contracts.py
 py tools/gen_scoring.py
 py tools/gen_score_preview.py
+py tools/gen_courtier_creator.py
 py tools/validate_static.py
 py -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors()"
 py tools/build_release.py --check

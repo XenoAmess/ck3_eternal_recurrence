@@ -18,15 +18,19 @@ xar_cc_trait_is_selected_trigger = {
 }
 
 xar_cc_selected_list_valid_trigger = {
-	every_in_list = {
-		variable = $SELECTED_LIST$
-		save_temporary_scope_as = xar_cc_candidate_trait
-		root = {
-			is_target_in_variable_list = {
-				name = $CATALOG_LIST$
-				target = scope:xar_cc_candidate_trait
+	OR = {
+		NOT = { has_variable_list = $SELECTED_LIST$ }
+		any_in_list = {
+			variable = $SELECTED_LIST$
+			count = all
+			save_temporary_scope_as = xar_cc_candidate_trait
+			root = {
+				is_target_in_variable_list = {
+					name = $CATALOG_LIST$
+					target = scope:xar_cc_candidate_trait
+				}
+				xar_cc_candidate_trait_metadata_valid_trigger = yes
 			}
-			xar_cc_candidate_trait_metadata_valid_trigger = yes
 		}
 	}
 }
@@ -56,7 +60,7 @@ xar_cc_valid_configuration_trigger = {
 	var:xar_cc_prowess <= 100
 	exists = var:xar_cc_selected_culture
 	exists = var:xar_cc_selected_faith
-	is_target_in_variable_list = {
+	is_target_in_global_variable_list = {
 		name = xar_cc_catalog_cultures
 		target = var:xar_cc_selected_culture
 	}
@@ -86,17 +90,35 @@ xar_cc_valid_configuration_trigger = {
 	}
 	var:xar_cc_commander_count >= 0
 	var:xar_cc_commander_count <= 2
-	variable_list_size = { name = xar_cc_selected_commander value <= 2 }
-	variable_list_size = {
-		name = xar_cc_selected_commander
-		value = var:xar_cc_commander_count
+	OR = {
+		AND = {
+			NOT = { has_variable_list = xar_cc_selected_commander }
+			var:xar_cc_commander_count = 0
+		}
+		AND = {
+			has_variable_list = xar_cc_selected_commander
+			variable_list_size = { name = xar_cc_selected_commander value <= 2 }
+			variable_list_size = {
+				name = xar_cc_selected_commander
+				value = var:xar_cc_commander_count
+			}
+		}
 	}
 	var:xar_cc_personality_count >= 0
 	var:xar_cc_personality_count <= 3
-	variable_list_size = { name = xar_cc_selected_personality value <= 3 }
-	variable_list_size = {
-		name = xar_cc_selected_personality
-		value = var:xar_cc_personality_count
+	OR = {
+		AND = {
+			NOT = { has_variable_list = xar_cc_selected_personality }
+			var:xar_cc_personality_count = 0
+		}
+		AND = {
+			has_variable_list = xar_cc_selected_personality
+			variable_list_size = { name = xar_cc_selected_personality value <= 3 }
+			variable_list_size = {
+				name = xar_cc_selected_personality
+				value = var:xar_cc_personality_count
+			}
+		}
 	}
 	xar_cc_selected_list_valid_trigger = {
 		SELECTED_LIST = xar_cc_selected_education

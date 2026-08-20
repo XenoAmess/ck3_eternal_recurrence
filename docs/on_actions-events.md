@@ -34,6 +34,14 @@ on_action 的 effect 与它触发的事件**并发执行，不是先后**：
 1. 计算挪进事件的 `immediate`（事件显示前执行）
 2. `trigger_event = { id = xxx days = 1 }` 延迟触发，隔天后值必然已写好
 
+### 无延迟子事件与继承窗
+
+`trigger_event = xar.x` 不跨游戏日，但也不是阻止原生继承窗先出现的原子屏障。2026-08-20 CK3 1.19.0.6 长测出现两种顺序：count 的继承窗先于 acceptance `on_death` observer；king 已进入生产 death effect 和 observer，却在后续 hidden child event 交付 terminal wire 前被继承窗硬暂停。
+
+2026-08-20 emperor 复测进一步证明：点击「继续扮演」也不会复活已经投递给死亡 root、但尚未进入 `immediate` 的 event。随后 with-heir 实测还证明，自定义 `on_death` effect 进入内联 scorer 后不保证返回父链，故 carrier 不能排在 scorer 后。安全生产结构应仿照原版 `death_management.0100`：在 dying root 仍有效时先保存 `scope:xar_dead`/carrier 并把 dispatch 以 `delayed = yes` 排给存活 `player_heir`，再内联计算。acceptance control event 进一步实测 delayed 时 score 已提交、两个 saved scope 均有效，但死者已失去 `xa_enabled`，因此 dispatch 只能用先前在 `is_ai = no` 下建立的 `xa_player_pact_character` 全局见证认证死者，不能重查死者 flag/AI 状态。无继承人才保留死亡 root 上的同步事件链。
+
+该结构与原版一样只有一个延迟 carrier：若最初的 `player_heir` 在 `xar.1003` dispatch 前也死亡，引擎会丢弃其事件。当前未找到既能跨该边界、又不让 AI 承载 XAR 内容的无根事件队列；因此只保证初始无继承人同步链与 carrier 存活的普通继承链。完整恢复需另建由 `GetPlayer` 消费的持久事务状态，不能用重查死者 flag 的简易补丁冒充。
+
 ## 延迟事件的 root 失效
 
 `trigger_event = { days = 1 }` 到点时会重新校验 root 有效性——on_death 里 root 是"将死角色"，一天后已死亡 → 事件被丢弃，静默不发生。

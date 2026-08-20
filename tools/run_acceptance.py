@@ -118,6 +118,7 @@ CHARACTER_PANEL_REGION = (0.00, 0.05, 0.48, 0.72)
 OBSERVER_REGION = (0.00, 0.75, 0.35, 1.00)
 HUD_DATE_REGION = (0.78, 0.95, 0.92, 1.00)
 FULL_SCREEN_REGION = (0.00, 0.00, 1.00, 1.00)
+COURTIER_MODAL_REGION = (0.20, 0.12, 0.80, 0.89)
 
 BOOT_TIMEOUT_S = 120             # OCR 一发现主菜单即继续，不固定睡 100 秒
 LOBBY_TIMEOUT_S = 30
@@ -367,14 +368,33 @@ def stop_ck3_process(process, ck3_pid_file):
 
 
 def start_restore_watchdog(backup, ck3_pid_file):
-    """独立进程兜底：runner 被强杀时仍恢复用户现场。"""
-    subprocess.Popen(
-        [sys.executable, str(RESTORE_WATCHDOG), str(os.getpid()),
-         str(ck3_pid_file),
-         str(backup / "tutorial.txt"), str(TUTORIAL_TXT),
-         str(backup / "presets.txt"), str(PRESETS_TXT),
-         str(backup / "dlc_load.json"), str(DLC_LOAD_JSON)],
-        creationflags=subprocess.CREATE_NO_WINDOW)
+    """Launch outside the runner process tree so host tree-kills cannot skip restore."""
+    watchdog_python = Path(sys.executable).with_name("pythonw.exe")
+    if not watchdog_python.is_file():
+        watchdog_python = Path(sys.executable)
+    command = subprocess.list2cmdline([
+        str(watchdog_python), str(RESTORE_WATCHDOG), str(os.getpid()),
+        str(ck3_pid_file),
+        str(backup / "tutorial.txt"), str(TUTORIAL_TXT),
+        str(backup / "presets.txt"), str(PRESETS_TXT),
+        str(backup / "dlc_load.json"), str(DLC_LOAD_JSON),
+    ])
+    command_literal = "'" + command.replace("'", "''") + "'"
+    launch = subprocess.run(
+        [
+            "powershell.exe", "-NoProfile", "-NonInteractive", "-Command",
+            "$result = Invoke-CimMethod -ClassName Win32_Process "
+            f"-MethodName Create -Arguments @{{CommandLine={command_literal}}}; "
+            "if ($result.ReturnValue -ne 0) { exit $result.ReturnValue }; "
+            "$result.ProcessId",
+        ],
+        capture_output=True, text=True,
+        creationflags=subprocess.CREATE_NO_WINDOW,
+    )
+    if launch.returncode != 0 or not launch.stdout.strip().isdigit():
+        detail = launch.stderr.strip() or launch.stdout.strip() or "no process id"
+        raise RunnerError(f"restore watchdog launch failed: {detail}")
+    return int(launch.stdout.strip())
 
 
 def isolate_autosaves(backup):
@@ -725,6 +745,107 @@ def ocr_box_results(img, region):
     return found
 
 
+def detect_event_option_rectangles(image, title_item):
+    """Find rendered CK3 event-option frames below one recognized event title."""
+    width, height = image.size
+    title_x = title_item["center"][0]
+    title_bottom = title_item["bbox"][3]
+    search_box = (
+        max(0, title_x - int(width * 0.15)),
+        max(title_bottom + int(height * 0.08), int(height * 0.40)),
+        min(width, title_x + int(width * 0.19)),
+        min(int(height * 0.86), title_bottom + int(height * 0.58)),
+    )
+    if search_box[2] <= search_box[0] or search_box[3] <= search_box[1]:
+        return []
+
+    crop = np.asarray(image.crop(search_box).convert("RGB"))
+    gray = cv2.cvtColor(crop, cv2.COLOR_RGB2GRAY)
+    edges = cv2.Canny(gray, 30, 100)
+    lines = cv2.HoughLinesP(
+        edges, 1, np.pi / 180,
+        threshold=max(40, int(width * 0.035)),
+        minLineLength=max(120, int(width * 0.12)),
+        maxLineGap=max(12, int(width * 0.012)),
+    )
+    if lines is None:
+        return []
+
+    horizontal = []
+    max_slope = max(2, int(height * 0.004))
+    for x1, y1, x2, y2 in lines.reshape(-1, 4):
+        if abs(int(y2) - int(y1)) > max_slope:
+            continue
+        left = min(int(x1), int(x2)) + search_box[0]
+        right = max(int(x1), int(x2)) + search_box[0]
+        if right - left < int(width * 0.12):
+            continue
+        y = (int(y1) + int(y2)) // 2 + search_box[1]
+        horizontal.append((left, y, right))
+
+    row_tolerance = max(2, int(height * 0.003))
+    rows = []
+    for left, y, right in sorted(horizontal, key=lambda line: line[1]):
+        row = next((item for item in rows if abs(item["y"] - y) <= row_tolerance), None)
+        if row is None:
+            rows.append({"left": left, "right": right, "ys": [y], "y": y})
+        else:
+            row["left"] = min(row["left"], left)
+            row["right"] = max(row["right"], right)
+            row["ys"].append(y)
+            row["y"] = int(sum(row["ys"]) / len(row["ys"]))
+
+    min_box_width = int(width * 0.16)
+    max_box_width = int(width * 0.34)
+    min_box_height = int(height * 0.018)
+    max_box_height = int(height * 0.065)
+    candidates = []
+    for index, upper in enumerate(rows):
+        for lower in rows[index + 1:]:
+            box_height = lower["y"] - upper["y"]
+            if box_height < min_box_height:
+                continue
+            if box_height > max_box_height:
+                break
+            left = max(upper["left"], lower["left"])
+            right = min(upper["right"], lower["right"])
+            box_width = right - left
+            if not min_box_width <= box_width <= max_box_width:
+                continue
+            center_x = (left + right) // 2
+            center_y = (upper["y"] + lower["y"]) // 2
+            if abs(center_x - title_x) > width * 0.10:
+                continue
+            aspect = box_width / box_height
+            if not 8.0 <= aspect <= 22.0:
+                continue
+            deviation = (
+                abs(box_width / width - 0.245) / 0.085
+                + abs(box_height / height - 0.032) / 0.025
+                + abs(center_x - title_x) / (width * 0.10)
+                + abs(aspect - 13.9) / 10.0
+            )
+            candidates.append({
+                "text": "detected event option frame",
+                "score": round(max(0.45, 1.0 - deviation / 4), 4),
+                "center": [center_x, center_y],
+                "bbox": [left, upper["y"], right, lower["y"]],
+                "detected_frame": True,
+            })
+
+    distinct = []
+    for candidate in sorted(
+            candidates, key=lambda item: (item["score"], item["center"][1]),
+            reverse=True):
+        if any(
+                abs(candidate["center"][0] - other["center"][0]) <= width * 0.02
+                and abs(candidate["center"][1] - other["center"][1]) <= height * 0.01
+                for other in distinct):
+            continue
+        distinct.append(candidate)
+    return distinct
+
+
 def select_stall_event_option(items, width, height):
     """Pick a lower event option without assuming left- or right-column layout."""
     excluded = (
@@ -792,8 +913,9 @@ def select_stall_event_option(items, width, height):
     return lower, (ranked[0] if ranked else None)
 
 
-def select_stall_recovery(items, width, height, allow_succession=False):
+def select_stall_recovery(items, image, allow_succession=False):
     """Apply exact modal actions and known layouts around generic option ranking."""
+    width, height = image.size
     succession_screen = any(
         "你已过世" in item["text"] or "继续扮演" in item["text"]
         for item in items)
@@ -845,20 +967,14 @@ def select_stall_recovery(items, width, height, allow_succession=False):
         item for item in items
         if "精神崩溃" in item["text"] and "心脏疼痛" in item["text"]), None)
     if full_height_mental_break is not None:
-        center = [
-            full_height_mental_break["center"][0] + int(width * 0.017),
-            int(height * 0.91),
-        ]
-        selected = {
-            "text": "精神崩溃：心脏疼痛 bottom option",
-            "score": 1.0,
-            "center": center,
-            "bbox": [center[0] - 160, center[1] - 24,
-                     center[0] + 160, center[1] + 24],
-            "layout_fallback": "full_height_mental_break",
-        }
-        items.append(selected)
-        lower.append(selected)
+        frames = detect_event_option_rectangles(image, full_height_mental_break)
+        for index, frame in enumerate(frames, 1):
+            frame["text"] = f"detected event option frame {index}"
+            items.append(frame)
+            lower.append(frame)
+        selected = frames[0] if frames else None
+        if selected is not None:
+            selected["layout_fallback"] = "full_height_mental_break"
     return lower, selected
 
 
@@ -895,6 +1011,19 @@ def quick_recovery_kind(items, selected, width, height):
     return None
 
 
+def stall_recovery_key(selected):
+    """Normalize one selected modal target for bounded no-progress retries."""
+    if selected is None:
+        return ("unresolved",)
+    width, height = pyautogui.size()
+    text = re.sub(r"\W+", "", selected.get("text", "")).lower()
+    center_x, center_y = selected["center"]
+    return (
+        selected.get("layout_fallback", "ocr"), text,
+        round(center_x / width, 2), round(center_y / height, 2),
+    )
+
+
 def mark_recovery_items(items, lower, selected):
     for item in items:
         item["event_option_candidate"] = item in lower
@@ -924,7 +1053,9 @@ def verify_stall_recovery(selected, artifacts, stem):
     if layout not in {"full_height_mental_break", "tour_guest_overlay_close"}:
         return True
     deadline = time.time() + 5
+    after = None
     while time.time() < deadline:
+        focus_ck3()
         after = ImageGrab.grab()
         results = ocr_results(after, FULL_SCREEN_REGION)
         if layout == "full_height_mental_break":
@@ -940,6 +1071,8 @@ def verify_stall_recovery(selected, artifacts, stem):
             log(f"stall diagnostic {stem}: {label} disappeared")
             return True
         time.sleep(POLL_INTERVAL_S)
+    if after is not None:
+        after.save(artifacts / f"{stem}_unresolved.png")
     log(f"stall diagnostic {stem}: {label} remained visible")
     return False
 
@@ -954,8 +1087,7 @@ def capture_stall_and_recover(artifacts, label, attempt):
     ocr_started = time.perf_counter()
     items = ocr_box_results(image, FULL_SCREEN_REGION)
     ocr_seconds = time.perf_counter() - ocr_started
-    width, height = image.size
-    lower, selected = select_stall_recovery(items, width, height)
+    lower, selected = select_stall_recovery(items, image)
     mark_recovery_items(items, lower, selected)
     artifact_seconds = write_recovery_bundle(image, items, artifacts, stem)
 
@@ -994,9 +1126,9 @@ def quick_stall_and_recover(artifacts, label, attempt, allow_succession=False):
     ocr_started = time.perf_counter()
     items = ocr_box_results(image, QUICK_MODAL_REGION)
     ocr_seconds = time.perf_counter() - ocr_started
-    width, height = image.size
     lower, selected = select_stall_recovery(
-        items, width, height, allow_succession=allow_succession)
+        items, image, allow_succession=allow_succession)
+    width, height = image.size
     kind = quick_recovery_kind(items, selected, width, height) if selected else None
     if kind is None:
         RECOVERY_TRACE.append({
@@ -1169,6 +1301,26 @@ def deliberate_click(point, label):
     time.sleep(0.15)
     pyautogui.mouseUp()
     log(f"clicked {label} at {point}")
+
+
+def ensure_game_paused(artifacts, stem):
+    """Pause through the rendered timeline state without blindly toggling it."""
+    pause_region = (0.38, 0.04, 0.57, 0.16)
+    focus_ck3()
+    time.sleep(0.6)
+    image = ImageGrab.grab()
+    if find_ocr_text(image, "暂停", pause_region, contains=True):
+        image.save(artifacts / f"{stem}_already_paused.png")
+        log(f"game already paused ({stem})")
+        return
+    screen_width, screen_height = pyautogui.size()
+    deliberate_click(
+        (int(screen_width * (2315 / 2560)),
+         int(screen_height * (1410 / 1440))),
+        f"timeline pause ({stem})")
+    wait_for_ocr_text(
+        "暂停", pause_region, 6, artifacts, f"{stem}_paused.png",
+        contains=True, stable_hits=1)
 
 
 def ck3_date_ordinal_parts(year, month, day):
@@ -1454,6 +1606,98 @@ def open_native_ledger(debug_offset, xar_lines, artifacts, prefix):
         "合上吧", EVENT_OPTIONS_FULL_REGION, 15, artifacts,
         f"{prefix}_ledger_event.png", contains=True, stable_hits=1)
     return debug_offset, ledger_close, decisions_tab
+
+
+def open_native_courtier_creator(artifacts, prefix):
+    """Open or reopen the production courtier creator through Decisions."""
+    focus_ck3()
+    # The underlying Decisions panel fades back in after the creator closes.
+    # Inspect only after that transition so its header is not mistaken for a HUD tooltip.
+    time.sleep(0.8)
+    screen_width, screen_height = pyautogui.size()
+    image = ImageGrab.grab()
+    confirm = find_ocr_text(
+        image, "翻开典造契页", FULL_SCREEN_REGION, contains=True)
+    if confirm is None:
+        decisions_tab = (int(screen_width * 0.987), int(screen_height * 0.367))
+        decisions_header_region = (0.55, 0.00, 0.90, 0.13)
+        decisions_open = find_ocr_text(
+            image, "决议", decisions_header_region, contains=True)
+        if decisions_open is None:
+            pyautogui.moveTo(*decisions_tab, duration=0.2)
+            wait_for_ocr_text(
+                "决议", FULL_SCREEN_REGION, 10, artifacts,
+                f"{prefix}_decisions_tooltip.png", contains=True, stable_hits=1)
+            image = ImageGrab.grab()
+            decisions_open = find_ocr_text(
+                image, "决议", decisions_header_region, contains=True)
+            if decisions_open is None:
+                deliberate_click(decisions_tab, "native Decisions HUD tab")
+            else:
+                log("native Decisions panel became visible during hover check")
+        else:
+            log("native Decisions panel already open after creator close")
+        pyautogui.moveTo(int(screen_width * 0.90), int(screen_height * 0.70))
+        pyautogui.scroll(-6)
+        time.sleep(0.5)
+        decision = wait_for_ocr_text(
+            "典造琉焰廷臣", FULL_SCREEN_REGION, 15, artifacts,
+            f"{prefix}_decision.png", contains=True, stable_hits=1)
+        deliberate_click(
+            (int(screen_width * 0.90), decision[1]),
+            "native courtier creator decision row")
+        confirm = wait_for_ocr_text(
+            "翻开典造契页", FULL_SCREEN_REGION, 15, artifacts,
+            f"{prefix}_confirm.png", contains=True, stable_hits=1)
+    click_until_ocr_appears(
+        confirm, "native courtier creator decision", "待价而塑的灵魂",
+        COURTIER_MODAL_REGION, artifacts, f"{prefix}_modal.png",
+        attempts=1, timeout_s=10)
+
+
+def click_courtier_option(target, artifacts, stem, contains=True):
+    """Click one rendered creator option after moving clear of stale tooltips."""
+    screen_width, screen_height = pyautogui.size()
+    pyautogui.moveTo(int(screen_width * 0.50), int(screen_height * 0.255))
+    time.sleep(0.25)
+    point = wait_for_ocr_text(
+        target, COURTIER_MODAL_REGION, 12, artifacts, f"{stem}.png",
+        contains=contains, stable_hits=1)
+    deliberate_click(point, f"courtier option {target}")
+    time.sleep(0.25)
+    return point
+
+
+def click_first_courtier_catalog_entry(
+        region, artifacts, stem, min_indent_px=0, click_x_ratio=None,
+        click_y_offset=0):
+    """Click the first OCR-visible culture or faith row in an origin catalog."""
+    deadline = time.time() + 12
+    last_image = None
+    screen_width, _ = pyautogui.size()
+    minimum_x = int(screen_width * region[0]) + min_indent_px
+    while time.time() < deadline:
+        focus_ck3()
+        last_image = ImageGrab.grab()
+        candidates = [
+            (text.strip(), center)
+            for text, score, center, _ in ocr_results(last_image, region)
+            if score >= 0.55 and text.strip() and center[0] >= minimum_x
+        ]
+        if candidates:
+            text, point = min(candidates, key=lambda item: (item[1][1], item[1][0]))
+            last_image.save(artifacts / f"{stem}.png")
+            click_point = point
+            if click_x_ratio is not None:
+                click_point = (
+                    int(screen_width * click_x_ratio), point[1] + click_y_offset)
+            deliberate_click(click_point, f"courtier catalog entry {text}")
+            time.sleep(0.35)
+            return text
+        time.sleep(POLL_INTERVAL_S)
+    if last_image is not None:
+        last_image.save(artifacts / f"timeout_{stem}.png")
+    raise RunnerError(f"no OCR-visible courtier catalog entry in {region}")
 
 
 def optional_ocr_text(target, region, timeout_s, artifacts, artifact_name,
@@ -1809,6 +2053,226 @@ def run_death_edges(debug_offset, error_offset, artifacts):
     return xar_lines
 
 
+def run_courtier_creator(debug_offset, error_offset, artifacts):
+    """Drive all v2 creator controls and validate two production purchases."""
+    offset = debug_offset
+    xar_lines = []
+    for marker, timeout in (
+            ("XAR: TEST courtier-creator begin", 180),
+            ("XAR: TEST PASS cc_ai_fixture_ready", 20),
+            ("XAR: TEST PASS cc_ai_guard", 10),
+            ("XAR: TEST courtier-creator armed", 10)):
+        offset = wait_for_marker_or_failure(
+            offset, marker, "XAR: TEST FAIL cc_ai", timeout, xar_lines)
+
+    open_native_courtier_creator(artifacts, "05_cc_initial")
+    wait_for_ocr_tokens(
+        ("待价而塑的灵魂", "男性", "女性", "120", "1000"),
+        ("xar.cc", "localize", "error"), COURTIER_MODAL_REGION, 15,
+        artifacts, "06_cc_initial_render")
+    cancel = wait_for_ocr_text(
+        "让此页继续空白", COURTIER_MODAL_REGION, 10, artifacts,
+        "06_cc_initial_cancel.png", contains=True, stable_hits=1)
+    offset = click_until_marker(
+        cancel, "courtier initial cancel",
+        "XAR: TEST PASS cc_cancel_zero_side_effect", offset, xar_lines,
+        failure_marker="XAR: TEST FAIL cc_cancel_zero_side_effect")
+
+    open_native_courtier_creator(artifacts, "07_cc_insufficient")
+    wait_for_ocr_tokens(
+        ("待价而塑的灵魂", "120", "119"),
+        ("xar.cc", "localize", "error"), COURTIER_MODAL_REGION, 15,
+        artifacts, "08_cc_insufficient_render")
+    cancel = wait_for_ocr_text(
+        "让此页继续空白", COURTIER_MODAL_REGION, 10, artifacts,
+        "08_cc_insufficient_cancel.png", contains=True, stable_hits=1)
+    screen_width, _ = pyautogui.size()
+    disabled_confirm = (cancel[0] + int(screen_width * 0.125), cancel[1])
+    deliberate_click(disabled_confirm, "disabled insufficient-gold confirm")
+    wait_for_ocr_text(
+        "待价而塑的灵魂", COURTIER_MODAL_REGION, 4, artifacts,
+        "08_cc_insufficient_still_open.png", contains=True, stable_hits=1)
+    offset = click_until_marker(
+        cancel, "courtier insufficient-gold cancel",
+        "XAR: TEST PASS cc_insufficient_gold_blocked", offset, xar_lines,
+        failure_marker="XAR: TEST FAIL cc_insufficient_gold_blocked")
+
+    open_native_courtier_creator(artifacts, "09_cc_default")
+    wait_for_ocr_tokens(
+        ("待价而塑的灵魂", "120", "1000"),
+        ("xar.cc", "localize", "error"), COURTIER_MODAL_REGION, 15,
+        artifacts, "10_cc_default_render")
+    cancel = wait_for_ocr_text(
+        "让此页继续空白", COURTIER_MODAL_REGION, 10, artifacts,
+        "10_cc_default_buttons.png", contains=True, stable_hits=1)
+    confirm = (cancel[0] + int(screen_width * 0.125), cancel[1])
+    offset = click_until_marker(
+        confirm, "courtier default purchase",
+        "XAR: TEST PASS cc_default_purchase", offset, xar_lines,
+        failure_marker="XAR: TEST FAIL cc_default_purchase")
+    optional_ocr_text(
+        "典造已成", FULL_SCREEN_REGION, 3, artifacts,
+        "10_cc_default_toast.png", contains=True)
+
+    open_native_courtier_creator(artifacts, "11_cc_custom")
+    click_courtier_option("女性", artifacts, "11_cc_female")
+    screen_width, screen_height = pyautogui.size()
+    for x_ratio, y_ratio, label in (
+            (0.533, 0.309, "age minus ten"),
+            (0.805, 0.348, "diplomacy plus ten"),
+            (0.805, 0.547, "prowess plus ten")):
+        deliberate_click(
+            (int(screen_width * x_ratio), int(screen_height * y_ratio)),
+            f"courtier numeric {label}")
+        time.sleep(0.25)
+    wait_for_ocr_tokens(
+        ("待价而塑的灵魂", "20", "16", "273"),
+        ("xar.cc", "localize", "error"),
+        COURTIER_MODAL_REGION, 12, artifacts, "11_cc_numeric_profile")
+
+    click_courtier_option("教育", artifacts, "12_cc_education_tab")
+    education = wait_for_ocr_text(
+        "阴谋家", COURTIER_MODAL_REGION, 12, artifacts,
+        "12_cc_education_grid.png", contains=True, stable_hits=1)
+    pyautogui.moveTo(education[0] - int(screen_width * 0.038), education[1])
+    time.sleep(1.8)
+    ImageGrab.grab().save(artifacts / "12_cc_education_native_tooltip.png")
+    deliberate_click(education, "courtier education intrigue 1")
+
+    click_courtier_option("将才", artifacts, "13_cc_commander_tab")
+    click_courtier_option("勤专家", artifacts, "13_cc_logistician")
+    click_courtier_option("军事工程师", artifacts, "13_cc_military_engineer")
+
+    click_courtier_option("血肉", artifacts, "14_cc_physical_tab")
+    click_courtier_option("貌不扬", artifacts, "14_cc_beauty_bad_1")
+
+    click_courtier_option("心性", artifacts, "15_cc_personality_tab")
+    capture_ocr_bundle(
+        artifacts, "15_cc_personality_grid", COURTIER_MODAL_REGION)
+    deliberate_click(
+        (int(screen_width * 0.215), int(screen_height * 0.321)),
+        "courtier personality first card (lustful)")
+    time.sleep(0.35)
+
+    click_courtier_option("异质", artifacts, "16_cc_other_tab")
+    capture_ocr_bundle(artifacts, "16_cc_other_grid", COURTIER_MODAL_REGION)
+    deliberate_click(
+        (int(screen_width * 0.215), int(screen_height * 0.321)),
+        "courtier other first card (diplomat)")
+    time.sleep(0.35)
+
+    deliberate_click(
+        (int(screen_width * 0.805), int(screen_height * 0.215)),
+        "courtier origin tab")
+    time.sleep(0.5)
+    capture_ocr_bundle(artifacts, "17_cc_origin_render", COURTIER_MODAL_REGION)
+    click_courtier_option(
+        "归入我的宗族与家族", artifacts, "17_cc_same_house", contains=False)
+    selected_culture = click_first_courtier_catalog_entry(
+        (0.17, 0.42, 0.49, 0.72), artifacts, "17_cc_culture",
+        min_indent_px=50)
+    selected_faith = click_first_courtier_catalog_entry(
+        (0.51, 0.42, 0.84, 0.72), artifacts, "17_cc_faith",
+        click_x_ratio=0.52, click_y_offset=-20)
+    offset = wait_for_marker_or_failure(
+        offset, "XAR: TEST PASS cc_faith_click_nondefault",
+        "XAR: TEST FAIL cc_faith_click_nondefault", 2, xar_lines)
+    log(
+        "selected v2 creator origin catalog rows: "
+        f"culture={selected_culture!r}, faith={selected_faith!r}")
+    # The native faith tooltip covers the price summary while the cursor remains
+    # on the selected row, so clear it before asserting the configured total.
+    pyautogui.moveTo(
+        int(screen_width * 0.50), int(screen_height * 0.255), duration=0.2)
+    time.sleep(0.5)
+    wait_for_ocr_tokens(
+        ("待价而塑的灵魂", "348"),
+        ("xar.cc", "localize", "error"), COURTIER_MODAL_REGION, 15,
+        artifacts, "17_cc_custom_render")
+    cancel = wait_for_ocr_text(
+        "让此页继续空白", COURTIER_MODAL_REGION, 10, artifacts,
+        "17_cc_custom_cancel.png", contains=True, stable_hits=1)
+    offset = click_until_marker(
+        cancel, "courtier configured cancel",
+        "XAR: TEST PASS cc_configuration_retained_on_close", offset, xar_lines,
+        failure_marker="XAR: TEST FAIL cc_configuration_retained_on_close")
+
+    open_native_courtier_creator(artifacts, "18_cc_reopen")
+    wait_for_ocr_tokens(
+        ("待价而塑的灵魂", "20", "16", "348"),
+        ("xar.cc", "localize", "error"), COURTIER_MODAL_REGION, 15,
+        artifacts, "19_cc_reopen_retained")
+    cancel = wait_for_ocr_text(
+        "让此页继续空白", COURTIER_MODAL_REGION, 10, artifacts,
+        "19_cc_custom_buttons.png", contains=True, stable_hits=1)
+    confirm = (cancel[0] + int(screen_width * 0.125), cancel[1])
+    offset = click_until_marker(
+        confirm, "courtier custom purchase",
+        "XAR: TEST PASS cc_custom_purchase", offset, xar_lines,
+        failure_marker="XAR: TEST FAIL cc_custom_purchase")
+    offset = wait_for_marker(
+        offset, "XAR: TEST DONE courtier-creator", 10, xar_lines)
+    optional_ocr_text(
+        "典造已成", FULL_SCREEN_REGION, 3, artifacts,
+        "20_cc_custom_toast.png", contains=True)
+
+    required = (
+        "XAR: TEST courtier-creator begin",
+        "XAR: TEST PASS cc_ai_fixture_ready",
+        "XAR: TEST PASS cc_ai_guard",
+        "XAR: TEST courtier-creator armed",
+        "XAR: TEST PASS cc_cancel_zero_side_effect",
+        "XAR: TEST PASS cc_insufficient_gold_blocked",
+        "XAR: TEST PASS cc_default_purchase",
+        "XAR: TEST PASS cc_faith_click_nondefault",
+        "XAR: TEST PASS cc_configuration_retained_on_close",
+        "XAR: TEST PASS cc_custom_purchase",
+        "XAR: TEST DONE courtier-creator",
+    )
+    for marker in required:
+        matches = [line for line in xar_lines if marker in line]
+        if len(matches) != 1:
+            raise RunnerError(
+                f"courtier-creator marker count for {marker!r} is {len(matches)}")
+    fails = [line for line in xar_lines if "XAR: TEST FAIL" in line]
+    if fails:
+        raise RunnerError(
+            f"courtier-creator emitted {len(fails)} FAIL marker(s): {fails[-1]}")
+    err_text, _ = read_new_lines(ERROR_LOG, error_offset)
+    xar_errors = [
+        line.strip() for line in err_text.splitlines() if "xar" in line.lower()]
+    if xar_errors:
+        raise RunnerError(
+            f"courtier-creator emitted {len(xar_errors)} xar error.log line(s)")
+
+    print("\n===== XAR COURTIER CREATOR REPORT =====")
+    print("production decision : PASS")
+    print("cancel / poor gate  : PASS")
+    print("seven-tab catalogs  : PASS")
+    print("numeric controls    : PASS")
+    print("default purchase    : PASS")
+    print("custom purchase     : PASS")
+    print("origin / same house : PASS")
+    print("AI purchase blocked : PASS")
+    print("xar error.log       : 0")
+    return {
+        "production_decision": True,
+        "cancel_zero_side_effect": True,
+        "insufficient_gold_blocked": True,
+        "custom_profile_controls": True,
+        "default_purchase_cost": 120,
+        "custom_purchase_cost": 348,
+        "custom_age": 20,
+        "custom_diplomacy": 16,
+        "custom_prowess": 16,
+        "selected_culture_ocr": selected_culture,
+        "selected_faith_ocr": selected_faith,
+        "created_courtiers": 2,
+        "ai_purchase_blocked": True,
+        "xar_error_count": 0,
+    }
+
+
 def run_death_with_heir(debug_offset, error_offset, artifacts):
     """Probe production death scoring across ordinary player succession."""
     offset = debug_offset
@@ -1865,6 +2329,7 @@ def run_death_with_heir(debug_offset, error_offset, artifacts):
         "XAR: TEST PASS death_with_heir_enabled",
         "XAR: TEST PASS death_with_heir_heir_human",
         "XAR: computing score on death",
+        "XAR: TEST death-with-heir carrier queued",
         "XAR: TEST death-with-heir compute entered",
         "XAR: TEST death-with-heir dispatch entered",
         "XAR: score event fired",
@@ -1961,6 +2426,17 @@ def wait_for_bargain_reopen(
                 continue
         if (now - last_day_change > FULL_STALL_S
                 and now - last_recovery > FULL_STALL_S):
+            focus_ck3()
+            stall_image = ImageGrab.grab()
+            continue_button = find_ocr_text(
+                stall_image, "继续扮演", (0.45, 0.55, 0.80, 0.90),
+                contains=True)
+            if continue_button is not None:
+                stall_image.save(
+                    artifacts / f"bargain_pair_{pair}_premature_succession.png")
+                raise RunnerError(
+                    f"bargain fixture player died during pair {pair}; "
+                    "acceptance immortality guard failed")
             if stall_attempts >= 3:
                 failure = "remained stalled after 3 screenshot-guided recoveries"
                 raise RunnerError(
@@ -2187,6 +2663,10 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
     recovery_sequence = 0
     quick_sequence = 0
     stall_attempts = 0
+    resume_stall_key = None
+    resume_stall_attempts = 0
+    succession_seen = False
+    succession_continued = False
     deadline = time.time() + BALANCE_LONG_TIMEOUT_S
     end_reason = None
 
@@ -2283,6 +2763,7 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
         pair_samples = [sample for sample in samples if sample["kind"] == 1]
         if resumed_pairs < len(pair_samples):
             pair = pair_samples[resumed_pairs]["pair"]
+            selected = None
             gaze_option = find_ocr_text(
                 ImageGrab.grab(), "我收下", EVENT_OPTIONS_FULL_REGION,
                 contains=True)
@@ -2298,17 +2779,32 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
                     artifacts, "balance_resume", quick_sequence)
                 if selected is None:
                     recovery_sequence += 1
-                    capture_stall_and_recover(
+                    selected = capture_stall_and_recover(
                         artifacts, "balance_resume", recovery_sequence)
                 advanced = set_speed_five_and_unpause(
                     artifacts, f"balance_pair_{pair}_post_modal",
                     require_progress=False)
             if advanced is None:
+                current_key = stall_recovery_key(selected)
+                if current_key == resume_stall_key:
+                    resume_stall_attempts += 1
+                else:
+                    resume_stall_key = current_key
+                    resume_stall_attempts = 1
+                if resume_stall_attempts >= 3:
+                    focus_ck3()
+                    ImageGrab.grab().save(
+                        artifacts / f"balance_resume_pair_{pair}_stalled.png")
+                    raise RunnerError(
+                        f"balance pair {pair} remained stalled after 3 "
+                        f"unchanged resume recoveries; modal={current_key}")
                 last_recovery = time.time()
                 continue
             max_game_day = advanced
             last_day_change = time.time()
             stall_attempts = 0
+            resume_stall_key = None
+            resume_stall_attempts = 0
             resumed_pairs += 1
             continue
 
@@ -2320,6 +2816,8 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
                 max_game_day = game_day
                 last_day_change = time.time()
                 stall_attempts = 0
+                resume_stall_key = None
+                resume_stall_attempts = 0
         now = time.time()
         if (now - last_day_change > QUICK_STALL_S
                 and now - last_quick_recovery > QUICK_STALL_S):
@@ -2336,6 +2834,8 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
                     max_game_day = recovered_day
                     last_day_change = time.time()
                     stall_attempts = 0
+                    resume_stall_key = None
+                    resume_stall_attempts = 0
                 continue
         if (now - last_day_change > FULL_STALL_S
                 and now - last_recovery > FULL_STALL_S):
@@ -2345,16 +2845,40 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
                 stall_image, "继续扮演", (0.45, 0.55, 0.80, 0.90),
                 contains=True)
             if continue_button is not None:
+                succession_seen = True
                 recovery_sequence += 1
                 stall_image.save(
                     artifacts / f"balance_succession_{recovery_sequence}.png")
+                text, offset = read_new_lines(DEBUG_LOG, offset)
+                ingest(text)
+                if end_reason:
+                    break
+                succession_continued = True
+                deliberate_click(
+                    continue_button, "balance succession continue for terminal wire")
+                set_speed_five_and_unpause(
+                    artifacts, "balance_post_succession", require_progress=False)
+                terminal_deadline = time.time() + 30
+                while time.time() < terminal_deadline and not end_reason:
+                    text, offset = read_new_lines(DEBUG_LOG, offset)
+                    ingest(text)
+                    if not end_reason:
+                        time.sleep(POLL_INTERVAL_S)
+                if end_reason:
+                    break
+                focus_ck3()
+                ImageGrab.grab().save(
+                    artifacts / "balance_succession_missing_terminal.png")
                 diagnostics = [
                     line.split("XAR: ", 1)[1] for line in xar_lines
                     if "BALANCE fixture on_death" in line
                     or "computing score on death" in line
+                    or "BALANCE production carrier queued" in line
+                    or "BALANCE production score computed inline" in line
                 ]
                 raise RunnerError(
-                    "balance fixture reached succession without a terminal wire; "
+                    "balance fixture emitted no terminal wire within 30 seconds "
+                    "after succession continuation; "
                     f"diagnostics={diagnostics}")
             if stall_attempts >= 3:
                 raise RunnerError(
@@ -2371,6 +2895,8 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
                 max_game_day = recovered_day
                 last_day_change = time.time()
                 stall_attempts = 0
+                resume_stall_key = None
+                resume_stall_attempts = 0
             last_recovery = time.time()
         time.sleep(POLL_INTERVAL_S)
 
@@ -2401,16 +2927,22 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
         right - left for left, right in zip(pair_days, pair_days[1:])
     ]
     reopen_samples = [sample for sample in samples if sample["kind"] == 5]
-    expected_reopens = [
-        1095 * index for index in range(1, len(pair_samples))
-    ]
-    observed_reopens = [
-        sample["elapsed_days"] for sample in reopen_samples[:len(expected_reopens)]
-    ]
-    if observed_reopens != expected_reopens:
+    expected_reopen_pairs = pair_samples[:-1]
+    observed_reopens = reopen_samples[:len(expected_reopen_pairs)]
+    expected_pair_numbers = [sample["pair"] for sample in expected_reopen_pairs]
+    observed_pair_numbers = [sample["pair"] for sample in observed_reopens]
+    if observed_pair_numbers != expected_pair_numbers:
         raise RunnerError(
-            f"balance production reopen cadence drifted: {observed_reopens} "
-            f"!= {expected_reopens}")
+            f"balance production reopen pair sequence drifted: "
+            f"{observed_pair_numbers} != {expected_pair_numbers}")
+    reopen_delays = [
+        reopen["elapsed_days"] - pair["elapsed_days"]
+        for pair, reopen in zip(expected_reopen_pairs, observed_reopens)
+    ]
+    if reopen_delays != [1095] * len(expected_reopen_pairs):
+        raise RunnerError(
+            f"balance production reopen cadence drifted: {reopen_delays} "
+            f"!= {[1095] * len(expected_reopen_pairs)}")
     if len(pair_samples) >= 10:
         tenth = pair_samples[9]
         if tenth["reroll"] != 1 or tenth["seal"] != 0:
@@ -2474,8 +3006,14 @@ def run_balance_long(fixture, debug_offset, error_offset, artifacts,
         "pair_intervals_days": pair_intervals,
         "production_reopen_days": [
             sample["elapsed_days"] for sample in reopen_samples],
+        "production_reopen_delays_days": reopen_delays,
         "completed_pairs": len(pair_samples),
         "reached_minimum_horizon": any(sample["kind"] == 2 for sample in samples),
+        "death_terminal_delivery": (
+            "post_succession_continue" if succession_continued else
+            "after_succession_visible" if succession_seen else
+            "before_succession_visible"
+        ) if end_reason in ("natural_death", "early_death") else None,
         "final_score": final_sample["score"],
         "final_absolute_score": final_sample["absolute"],
         "final_realm_size": final_sample["realm"],
@@ -2741,6 +3279,7 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
     offset = click_until_marker(
         curse_option, "localized curse option after seal",
         "XAR: TEST PASS ui_curse_after_seal", offset, xar_lines)
+    ensure_game_paused(artifacts, "05_post_curse")
 
     offset, ledger_close, decisions_tab = open_native_ledger(
         offset, xar_lines, artifacts, "06")
@@ -2776,10 +3315,13 @@ def run_selftest(import_record, debug_offset, error_offset, artifacts):
 
     focus_ck3()
     pyautogui.click(*decisions_tab)
+    ensure_game_paused(artifacts, "07_before_trait_hover")
     player_open = False
-    for attempt in range(1, 4):
-        click_ratio(0.50, 0.50)
-        log(f"clicked acceptance-only player-character bridge (attempt {attempt})")
+    for attempt, (x_offset, y_offset) in enumerate(
+            ((20, 20), (-20, -20), (20, -20)), 1):
+        deliberate_click(
+            (screen_width // 2 + x_offset, screen_height // 2 + y_offset),
+            f"acceptance player-character bridge (attempt {attempt})")
         try:
             wait_for_ocr_text(
                 "罗贝尔", CHARACTER_PANEL_REGION, 5,
@@ -3052,11 +3594,12 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
         "bargain-reopen": 2,
         "progression-ui": 3,
         "scoring-matrix": 4,
+        "courtier-creator": 6,
         "balance-long": 0,
     }[scenario]
     rule_setting = "xar_selftest" if scenario in (
         "selftest", "persistence-restart", "death-edges", "death-with-heir", "bargain-reopen",
-        "progression-ui", "scoring-matrix") else (
+        "progression-ui", "scoring-matrix", "courtier-creator") else (
         "xar_off" if scenario == "off" else "xar_on")
     if artifacts_dir:
         artifacts = Path(artifacts_dir).expanduser().resolve()
@@ -3095,8 +3638,8 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
             shutil.copy2(PRESETS_TXT, backup / "presets.txt")
             shutil.copy2(DLC_LOAD_JSON, backup / "dlc_load.json")
             backup_ready = True
-            start_restore_watchdog(backup, ck3_pid_file)
-            log("restore watchdog armed")
+            watchdog_pid = start_restore_watchdog(backup, ck3_pid_file)
+            log(f"restore watchdog armed outside process tree, PID {watchdog_pid}")
             autosave_count = isolate_autosaves(backup)
             log(
                 "backed up tutorial.txt + presets.txt + dlc_load.json; "
@@ -3236,6 +3779,9 @@ def main(scenario="selftest", import_record=0, artifacts_dir=None,
             elif scenario == "scoring-matrix":
                 report_evidence = run_scoring_matrix(
                     debug_offset, error_offset, artifacts)
+            elif scenario == "courtier-creator":
+                report_evidence = run_courtier_creator(
+                    debug_offset, error_offset, artifacts)
             elif scenario == "balance-long":
                 balance_evidence = run_balance_long(
                     balance_fixture, debug_offset, error_offset, artifacts,
@@ -3365,7 +3911,7 @@ if __name__ == "__main__":
         "--scenario",
         choices=("selftest", "on-first-life", "on-recorded", "on-high-budget", "off",
                  "persistence-restart", "death-edges", "death-with-heir", "bargain-reopen",
-                 "progression-ui", "scoring-matrix", "balance-long"),
+                 "progression-ui", "scoring-matrix", "courtier-creator", "balance-long"),
         default="selftest",
         help="acceptance scenario (default: selftest)")
     parser.add_argument(
