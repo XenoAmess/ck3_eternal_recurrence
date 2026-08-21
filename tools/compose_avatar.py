@@ -1,39 +1,73 @@
-"""Compose glassfire_avatar_wide.png into a 1592x848 CK3 event-scene DDS.
+"""Compose the wide event-scene source images into CK3-native DDS files.
 
-Source is already composed wide (character right, dark ambience left):
-cover-crop to 1592x848, apply a mild gradient darkening on the left text
-column, save as DXT1.
-
-(For the old square glassfire_avatar.png, see git history: it needed a
-blurred backdrop + sharp right-side paste.)
+Event windows reserve the left side for text. The source images therefore
+use a wide composition with the focal subject on the right; this generator
+cover-crops each source to CK3's 1592x848 event-scene canvas and applies the
+same mild left-column darkening used by the original Glassfire scene. The
+ASSETS mapping is the authoritative source/output inventory and is also
+consumed by the static parity checks.
 """
+from pathlib import Path
+
 from PIL import Image
-import os
 
-SRC = r"Z:\ck3_mod_rewrite\images\glassfire_avatar_wide.png"
-OUT_DIR = r"Z:\ck3_mod_rewrite\XenoAmess_s_Eternal_Recurrence\gfx\interface\illustrations\event_scenes"
-OUT = os.path.join(OUT_DIR, "xar_glassfire_avatar.dds")
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE_DIR = ROOT / "images"
+OUTPUT_DIR = (
+    ROOT / "XenoAmess_s_Eternal_Recurrence" / "gfx" / "interface"
+    / "illustrations" / "event_scenes"
+)
 W, H = 1592, 848
+ASSETS = {
+    "glassfire_avatar_wide.png": "xar_glassfire_avatar.dds",
+    "recurrence_end_wide.png": "xar_recurrence_end.dds",
+}
 
-img = Image.open(SRC).convert("RGB")
+# Compatibility aliases for callers that used the original single-asset
+# script constants.
+SRC = str(SOURCE_DIR / "glassfire_avatar_wide.png")
+OUT_DIR = str(OUTPUT_DIR)
+OUT = str(OUTPUT_DIR / "xar_glassfire_avatar.dds")
 
-# cover-crop to exactly 1592x848
-scale = max(W / img.width, H / img.height)
-img = img.resize((round(img.width * scale), round(img.height * scale)), Image.LANCZOS)
-left = (img.width - W) // 2
-top = (img.height - H) // 2
-canvas = img.crop((left, top, left + W, top + H))
 
-# mild gradient darkening over the left text column (text readability)
-text_w = round(W * 0.55)
-grad = Image.linear_gradient("L").resize((text_w, 1)).rotate(90, expand=True).resize((text_w, H))
-grad = grad.point(lambda v: max(0, 70 - round(v * 70 / 255)))
-canvas.paste(Image.new("RGB", (text_w, H), (0, 0, 0)), (0, 0), grad)
+def render(source):
+    """Return a rendered RGB event scene at exactly 1592x848 pixels."""
+    with Image.open(source) as original:
+        image = original.convert("RGB")
 
-os.makedirs(OUT_DIR, exist_ok=True)
-canvas.save(OUT, pixel_format="DXT1")
-print("wrote", OUT, os.path.getsize(OUT), "bytes")
+    # Cover-crop to exactly the CK3 event-scene dimensions.
+    scale = max(W / image.width, H / image.height)
+    image = image.resize(
+        (round(image.width * scale), round(image.height * scale)),
+        Image.Resampling.LANCZOS,
+    )
+    left = (image.width - W) // 2
+    top = (image.height - H) // 2
+    canvas = image.crop((left, top, left + W, top + H))
 
-with open(OUT, "rb") as f:
-    head = f.read(128)
-print("magic:", head[:4], "fourCC:", head[84:88], "h:", int.from_bytes(head[12:16], "little"), "w:", int.from_bytes(head[16:20], "little"))
+    # Mild gradient darkening over the left text column (text readability).
+    text_w = round(W * 0.55)
+    gradient = Image.linear_gradient("L").resize((text_w, 1))
+    gradient = gradient.rotate(90, expand=True).resize((text_w, H))
+    gradient = gradient.point(lambda value: max(0, 70 - round(value * 70 / 255)))
+    canvas.paste(Image.new("RGB", (text_w, H), (0, 0, 0)), (0, 0), gradient)
+    return canvas
+
+
+def main():
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    for source_name, output_name in ASSETS.items():
+        source = SOURCE_DIR / source_name
+        output = OUTPUT_DIR / output_name
+        if not source.is_file():
+            raise FileNotFoundError(f"event source art missing: {source}")
+        render(source).save(output, pixel_format="DXT1")
+        with output.open("rb") as stream:
+            header = stream.read(128)
+        if header[:4] != b"DDS " or header[84:88] != b"DXT1":
+            raise RuntimeError(f"unexpected DDS format: {output}")
+        print(f"wrote {output.relative_to(ROOT)} ({output.stat().st_size} bytes)")
+
+
+if __name__ == "__main__":
+    main()

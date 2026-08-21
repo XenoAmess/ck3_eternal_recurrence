@@ -5,3 +5,11 @@
 		ambience = "event:/SFX/Events/Backgrounds/temple_generic"
 	}
 }
+
+xar_recurrence_end = {
+	background = {
+		reference = "gfx/interface/illustrations/event_scenes/xar_recurrence_end.dds"
+		environment = "environment_standard"
+		ambience = "event:/SFX/Events/Backgrounds/temple_generic"
+	}
+}

@@ -681,6 +681,7 @@ xar.1001 = {
 	type = character_event
 	trigger = { is_ai = no }
 	theme = skull
+	override_background = { reference = xar_recurrence_end }
 	title = xar.1001.title
 	desc = {
 		desc = xar.1001.desc

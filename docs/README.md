@@ -14,6 +14,7 @@
 - [autonomous-player-agent.md](autonomous-player-agent.md) — 排队中的长期工程：不作弊的 CK3 高分自主玩家、视觉驱动、经验记忆、大模型复盘与持续多局优化
 - [workshop-publishing.md](workshop-publishing.md) — **创意工坊发布**（启动器上传器）：物料清单、picture 路径解析、预览图 1MB 限制、remote_file_id 内外层之别、更新流程
 - [vivhite-courtier.md](vivhite-courtier.md) — **白绮特供独立版**：隔离边界、ervc 命名空间、生成/构建/验收与独立 Workshop 契约
+- [image-assets.md](image-assets.md) — 图片源文件命名、CK3 DDS 投影、事件背景/决议引用与静态校验链
 
 ## 玩家篇
 

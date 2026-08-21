@@ -12,6 +12,7 @@ from pathlib import Path
 from PIL import Image
 
 import build_release
+import compose_avatar
 import compose_decision_art
 import compose_trait_stars
 import gen_balance_wire
@@ -271,6 +272,22 @@ def generated_checks(errors):
             errors.append(
                 f"generated decision art stale: {output.relative_to(ROOT)}")
 
+    for source_name, output_name in compose_avatar.ASSETS.items():
+        source = compose_avatar.SOURCE_DIR / source_name
+        output = compose_avatar.OUTPUT_DIR / output_name
+        if not source.is_file():
+            errors.append(f"event source art missing: {source.relative_to(ROOT)}")
+            continue
+        if not output.is_file():
+            errors.append(f"generated event art missing: {output.relative_to(ROOT)}")
+            continue
+        expected_dds = io.BytesIO()
+        compose_avatar.render(source).save(
+            expected_dds, format="DDS", pixel_format="DXT1")
+        if output.read_bytes() != expected_dds.getvalue():
+            errors.append(
+                f"generated event art stale: {output.relative_to(ROOT)}")
+
     stars_output = compose_trait_stars.OUTPUT
     if not stars_output.is_file():
         errors.append(
@@ -448,6 +465,15 @@ def mechanic_checks(errors):
         errors.append("curse event still exposes a third option")
     if events.count("name = xar_curse_option_") != 2:
         errors.append("curse event must expose exactly two generated options")
+
+    event_backgrounds = read(MOD / "common/event_backgrounds/xar_event_backgrounds.txt")
+    score_event = event_blocks.get("xar.1001", "")
+    if not all(token in event_backgrounds for token in (
+            "xar_recurrence_end = {",
+            'reference = "gfx/interface/illustrations/event_scenes/xar_recurrence_end.dds"')):
+        errors.append("recurrence-end event background is not registered")
+    if "override_background = { reference = xar_recurrence_end }" not in score_event:
+        errors.append("xar.1001 is not wired to its recurrence-end illustration")
 
     production_effects = read(MOD / "common/scripted_effects/xar_effects.txt")
     selftest = read(MOD / "common/scripted_effects/xar_selftest_effects.txt")
@@ -1994,6 +2020,7 @@ def package_checks(errors):
         MOD / "gfx/interface/icons/traits/_stars_10.dds": (120, 120),
         MOD / "gfx/interface/icons/trait_level_tracks/xar_glassfire_gaze.dds": (120, 120),
         MOD / "gfx/interface/illustrations/event_scenes/xar_glassfire_avatar.dds": (1592, 848),
+        MOD / "gfx/interface/illustrations/event_scenes/xar_recurrence_end.dds": (1592, 848),
         MOD / "gfx/interface/illustrations/decisions/decision_xar_ledger.dds": (1100, 440),
         MOD / "gfx/interface/illustrations/decisions/decision_xar_contract.dds": (1100, 440),
         MOD / "gfx/interface/illustrations/decisions/decision_xar_courtier.dds": (1100, 440),
