@@ -47,6 +47,7 @@ DESCRIPTOR_FIELDS = {
     "supported_version": "1.19.0.6",
 }
 GROUP_KEY = "decision_group_type_ervc_courtier_creator"
+DECISION_TITLE_KEY = "ervc_courtier_creator_decision"
 ENGLISH_GROUP_BRANDING = (
     "@ervc_decision_group_icon! Eternal Recurrence: "
     "Glassfire Courtier Creator - Vivhite Edition"
@@ -506,6 +507,29 @@ def localization_checks(errors: list[str], report: dict[str, object]) -> None:
         elif not value.startswith("@ervc_decision_group_icon! "):
             errors.append(f"{language} decision-group branding lost its icon prefix")
 
+    inherited_keys = EXPECTED_LOC_KEYS - {GROUP_KEY, DECISION_TITLE_KEY}
+    for language in LANGUAGES:
+        original_path = (
+            ORIGINAL_MOD / "localization" / language / f"xar_l_{language}.yml"
+        )
+        original = parse_localization(original_path, language, errors)
+        standalone = all_values.get(language, {})
+        for key in sorted(inherited_keys):
+            original_key = key.replace("ervc", "xar", 1)
+            expected = original.get(original_key)
+            if expected is None:
+                errors.append(
+                    f"frozen original localization lacks inherited key {original_key!r} "
+                    f"in {language}"
+                )
+                continue
+            expected = expected.replace("xar_cc_", "ervc_cc_")
+            if standalone.get(key) != expected:
+                errors.append(
+                    f"standalone localization drifted from frozen original for "
+                    f"{key!r} in {language}"
+                )
+
     for key in sorted(EXPECTED_LOC_KEYS):
         english_value = english.get(key, "")
         expected_tokens = localization_tokens(english_value)
@@ -566,6 +590,7 @@ def localization_checks(errors: list[str], report: dict[str, object]) -> None:
 
     report["languages"] = len(all_values)
     report["loc_keys"] = len(EXPECTED_LOC_KEYS)
+    report["inherited_loc_keys"] = len(inherited_keys)
     report["placeholders"] = placeholders
 
 

@@ -11,7 +11,7 @@
   更新上传时启动器要回写内层 descriptor，带此字段会导致 "Mod descriptor validation failed" 上传失败。
   更新工坊 = 改仓库内容 → 启动器 Mods → 上传 Mod 选同一物品再传一次。预览图用 mod 根目录的 `thumbnail.png`
   （启动器约定俗成按 mod 根目录找此文件名，同其他 dev mod）；descriptor 里 `picture="thumbnail.png"`
-- 工坊描述维护在 `workshop/description.bbcode`（BBCode，内嵌 4 张截图的 steamusercontent 直链）；改完描述到物品页「编辑标题与描述」整段替换
+- 原版工坊描述维护在 `workshop/description.bbcode`（BBCode，内嵌 4 张截图的 steamusercontent 直链）；白绮独立版维护在 `workshop/vivhite_description.bbcode`。改完描述到对应物品页「编辑标题与描述」整段替换
 
 ## 构建/生成
 

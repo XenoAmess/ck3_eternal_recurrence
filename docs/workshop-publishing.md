@@ -77,3 +77,20 @@ Steam 实际内容；它作为旁置追溯物料与 ZIP 一起发布。
 trait bridge GUI，并剥离混合文件中的 `XAR_ACCEPTANCE_ONLY` 区域；`XAR_RELEASE_ONLY` 注释行在 staging
 中展开为生产逻辑。构建会扫描所有运行文本，任何 selftest/test flag/marker 或 marker 注释残留都直接 RED。
 生产 smoke 场景也会先生成此投影，再 `/MIR` 到工坊缓存实机运行，因此不是只做文本检查。
+
+## Vivhite 独立版首次上传
+
+白绮独立版使用 `tools/build_vivhite_release.py` 和全新的外层 `.mod`。首次上传时外层 descriptor 只含指向
+formal staging 的 `path=`，不得预填原 mod 的 `3784706360`；启动器创建新物品后，只允许把新 ID 写回这份
+独立外层 descriptor。仓库内层 `descriptor.mod`、formal manifest 和 GitHub ZIP 继续保持无
+`remote_file_id`。
+
+上传成功后，从 clean tag 另建不发布的临时 sidecar：
+
+```powershell
+py tools/build_vivhite_release.py --release --workshop-item-id <new-id> --output <temporary-output>
+```
+
+把新 item 的整个缓存目录移出 `steamapps/workshop/content/1158310/`，再执行
+`workshop_download_item 1158310 <new-id>`。只对这次从空路径生成的目录运行
+`build_vivhite_release.py --verify ... --workshop-cache`；验证通过后才公开 Workshop item 和 GitHub Release。

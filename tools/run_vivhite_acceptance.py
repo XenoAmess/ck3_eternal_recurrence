@@ -922,7 +922,11 @@ def configure_ervc_custom(
     acceptance.deliberate_click(
         (int(width * 0.215), int(height * 0.321)), "ERVC other diplomat"
     )
-    time.sleep(0.35)
+    acceptance.pyautogui.moveTo(int(width * 0.50), int(height * 0.255))
+    time.sleep(0.5)
+    acceptance.capture_ocr_bundle(
+        artifacts, f"{stem}_other_grid", acceptance.COURTIER_MODAL_REGION
+    )
 
     acceptance.deliberate_click(
         (int(width * 0.805), int(height * 0.215)), "ERVC origin tab"

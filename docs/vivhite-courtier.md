@@ -45,10 +45,15 @@ py tools/gen_vivhite_courtier.py --check
 
 ## Localization Status
 
-Simplified Chinese and English contain authored Vivhite branding and creator prose. The existing translated creator UI
-values are retained for French, German, Japanese, Korean, Polish, Russian and Spanish, but their new edition/group
-branding is currently an English placeholder. Nine files and all 45 keys are structurally complete; this is not yet a
-claim of release-grade translation for the seven placeholder values.
+The standalone files own their `ervc` keys so the product loads without the original mod, but they do not fork the
+already released translations. Of each language's 45 values, 43 must match the frozen original byte-for-byte after the
+mechanical `xar` to `ervc` key/state namespace substitution. Only the decision title and decision-group title are
+standalone branding deltas. The seven new edition/group values were translated with MiniMax-M3 assistance, then
+manually normalized to each language's existing Eternal Recurrence, Glassfire and courtier terminology while preserving
+`@ervc_decision_group_icon!` and `Vivhite`. The static validator enforces the 43-value inheritance contract, all 45-key
+inventories, protected tokens, numeric literals, BOM and the absence of English group-title placeholders. Release review
+therefore covers only the two branding deltas; it does not repeat the original mod's completed creator-window language
+sign-off.
 
 ## Build And Static Gates
 
@@ -104,13 +109,14 @@ official runner has no CK3 or interactive desktop and must run only the static f
 
 ### Current Engine Evidence
 
-The hardened schema-v2 non-debug matrix `ervc_acceptance_hardened_final_20260821` completed all three cells GREEN on
-CK3 `1.19.0.6` in 880.077 seconds. JUnit records 3 tests and 0 failures; every cell has an empty blocking
-`project_diagnostics` list, an unchanged runtime tree and `userdir_removed_after_run: true`. Both dual cells explicitly
-record four cold-boot occurrences of the two frozen original-release warnings above. The shared disposable-userdir
-parent and all three detached watchdog processes were absent after the matrix.
+The release working-tree schema-v2 non-debug matrix `ervc_release_final_20260821` completed all three cells GREEN on
+CK3 `1.19.0.6` in 876.590 seconds after the seven branding translations and inheritance validator were applied. JUnit
+records 3 tests and 0 failures; every cell has an empty blocking `project_diagnostics` list, an unchanged runtime tree
+and `userdir_removed_after_run: true`. Both dual cells explicitly record four cold-boot occurrences of the two frozen
+original-release warnings above. The shared disposable-userdir parent and all three detached watchdog processes were
+absent after the matrix.
 
-- Vivhite production projection: `93fb559a61ace1a3c2bd8a9680a0ed5039db765753da8c787d28b0dd67c09fef`.
+- Vivhite production projection: `6242ca7eec1b33f6da939c3a161b7338011122780c4740c6e831e2de0e20577c`.
 - Original production projection in both dual cells: `97b9f386ab17364eec0859be1f7c6407816a27a396b2edcf6427d697789ba2ab`.
 - Standalone fixture projection: `dd049976adfec06a4dccb8244f33709582d37474d0249a49ecac57d6ec268359`.
 - Dual fixture projection in both load orders: `8d5a9da92445a97bf80b2037b95fd717b88c9b5eaa4c61cd74695d510d82ba75`.
@@ -120,5 +126,6 @@ parent and all three detached watchdog processes were absent after the matrix.
 The bounded protection set contained nine real-profile files, two local Steam cloud files, 82 registered Workshop
 targets and 162,960 target metadata entries. CK3's debug mount records exactly matched each requested product order and
 the fixture was last. The final snapshot started only after a complete baseline-equivalence scan, waited five seconds,
-then completed another full scan. This proves local runtime isolation for the named source/runtime hashes; it does not
-replace the later clean-tag rerun, seven-language sign-off or fresh Workshop-cache verification.
+then completed another full scan. This proves local runtime isolation for the named source/runtime hashes; the report's
+Git SHA is the then-current HEAD `c2fce99`, while the runtime hash above binds the dirty localization candidate bytes.
+A clean committed-candidate rerun and fresh Workshop-cache verification remain release gates.

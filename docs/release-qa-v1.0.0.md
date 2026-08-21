@@ -84,6 +84,9 @@ Steam item `3784706360` 与 GitHub Release 使用同一 clean-tag 构建；以�
 - [x] hardened schema-v2 三格矩阵 JUnit 为 3/3 GREEN、0 blocking project diagnostics。Vivhite production projection 为 `93fb559a61ace1a3c2bd8a9680a0ed5039db765753da8c787d28b0dd67c09fef`；实际 debug mount 顺序逐格匹配请求顺序且 fixture 最后，两种加载顺序均渲染两个独立决议组及直属决议行，保留 ERVC 348/XAR 120 配置，各交付一名廷臣并各扣款一次。双 mod 格仅窄白名单并记录原 mod 冻结代码的两类 loc-only `xa_curse_*_rarity` unused-variable 警告。
 - [x] 三个 disposable userdir 与 detached watchdog 均实际退出/删除；CK3 可执行文件前后 SHA-256 保持 `2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86`。真实 profile、Steam cloud 后备目录及 82 个已注册 Workshop target 的 162,960 项元数据在完整扫描后等待五秒并复扫，聚合 SHA-256 保持 `ed9a9cce6db99148f08aac997d38caae00f64c79827fdb1dcf642c3af9c38336`。
 - [x] 独立版 pinned L0 通过 17 项 release tests、静态/生成 parity、原 mod 共同门禁及双重确定性构建；commit `130b7e6` 的未打 tag 27 文件候选正确记录 `git_tag: null` / `workshop_item_id: null`，manifest SHA-256 为 `3c9617465b13cbcbd6c5fbc95b0924dcfb6971df1dd8d1e54fbf12325d276ed6`，ZIP SHA-256 为 `9ad24ad26521e721c417462296134f2f794d3187cd72cfa316a5fa250828ce5e`。
+- [x] 独立版本地化改用继承契约：每语言 45 个值中，除独立决议名和分组名两项品牌差异外，其余 43 项必须在 `xar` → `ervc` 命名空间替换后与已发布原 mod 逐值相同；七种外语分组标题已补齐，静态校验无英文占位。
+- [x] 发布工作树矩阵 `ervc_release_final_20260821` 在新本地化候选上 3/3 GREEN、0 blocking diagnostics，Vivhite runtime tree 为 `6242ca7eec1b33f6da939c3a161b7338011122780c4740c6e831e2de0e20577c`，三格 userdir 均删除且受保护存储完成五秒复扫不变。
+- [ ] 从 clean committed candidate 重跑截图版 standalone，保存决议列表及【根骨、教育、将才、血肉、心性、异质、来处】八张 Workshop 截图，并确认完整三格 runtime hash 不变。
 - [ ] 独立版首次上传必须创建新的 Steam Workshop item；不得复用原 mod 的 `3784706360`，新 ID 只保存在该 mod 的用户目录外层 `.mod`。
 
 ## Automated Evidence
