@@ -13,7 +13,7 @@
   "Mod descriptor validation failed"。上传后必须重建 staging，恢复无 ID 的正式树。
   更新工坊 = 改仓库内容 → 启动器 Mods → 上传 Mod 选同一物品再传一次。预览图用 mod 根目录的 `thumbnail.png`
   （启动器约定俗成按 mod 根目录找此文件名，同其他 dev mod）；descriptor 里 `picture="thumbnail.png"`
-- 原版工坊描述维护在 `workshop/description.bbcode`（BBCode，内嵌 4 张截图的 steamusercontent 直链）；白绮独立版维护在 `workshop/vivhite_description.bbcode`，主视觉与八张实机图顺序在 `workshop/vivhite_screenshots.md`。改完描述到对应物品页「编辑标题与描述」整段替换
+- 原版工坊描述维护在 `workshop/description.bbcode`；README 全量图、工坊精简图和六张 Steam media strip 的来源、裁切和 commit-pinned GitHub raw URL 规则见 `workshop/main_screenshots.md`。白绮独立版维护在 `workshop/vivhite_description.bbcode`，主视觉与八张实机图顺序在 `workshop/vivhite_screenshots.md`。改完描述到对应物品页「编辑标题与描述」整段替换
 
 ## 构建/生成
 

@@ -85,6 +85,34 @@ manifest/ZIP hash，Steam 与 GitHub 随后统一使用这份 clean-checkout 产
 0.431–0.702 MiB，全部上传成功。验收 artifact 继续保留无损 PNG；Workshop 上传副本单独生成，不得进入 mod
 staging。公开页 HTML 应按 `highlight_strip_item` 复核实际图片数。
 
+### 6. Workshop BBCode 可直链 GitHub raw，但只用固定 commit URL
+
+2026-08-21 对 Steam 公开页、GitHub 响应头与 Chromium 实测：Workshop 描述会把外链生成为
+`<img src="..." crossorigin="anonymous">`，不会先代理到 Steam CDN。只有直接
+`https://raw.githubusercontent.com/<owner>/<repo>/<40-char-commit>/<path>` 在当前行为下可靠加载：响应必须无
+重定向、MIME 为 `image/jpeg` 或 `image/png`，并提供 `Access-Control-Allow-Origin: *`。本项目提交
+`e7592964603546f860b5d59ba00626819d8e0523` 的 gallery JPEG 实测返回 `200 image/jpeg`、无重定向、CORS `*`
+和 `Cross-Origin-Resource-Policy: cross-origin`。
+
+两件当前公开 Workshop 物品提供了 Steam 端实证：Terraria Overhaul
+`https://steamcommunity.com/sharedfiles/filedetails/?id=2811803870` 使用可变 branch raw URL；tPronouns
+`https://steamcommunity.com/sharedfiles/filedetails/?id=3740445376` 使用完整 commit-pinned raw URL。后者是本项目
+采用的形式。`github.com/.../blob/...` 返回 HTML；blob `?raw=1`、`github.com/.../raw/...` 与 GitHub Release
+asset 都经过重定向，Release asset 最终还是 `application/octet-stream` attachment。它们在 Steam 同款
+`crossorigin="anonymous"` Chromium 请求中均加载失败，禁止写进 BBCode。
+
+GitHub raw 只用于描述正文，不会把图片加入 Workshop media strip；精选预览仍优先上传 Steam CDN。固定 commit
+避免 `master` 改写图片，但仓库删除、私有化、历史重写或 GitHub 限流仍会使链接失效。Steamworks 常量
+`k_cchPublishedDocumentDescriptionMax` 把描述限制为 **8000 UTF-8 bytes**，所以提交前必须按 UTF-8 字节数检查
+整份 `workshop/description.bbcode`，不能按字符数或图片数量猜测。完整图片集留在 README，Steam 描述只放精简集。
+
+本项目主物品 `3784706360` 随后完成活体验证：API 描述规范化 CRLF 后与仓库 BBCode 完全相同；公开 HTML 有八个
+固定 commit gallery URL、八个 `crossorigin="anonymous"` 图片节点，桌面 Steam 客户端逐段滚动时八张都实际显示。
+同次把四张历史 media strip 图替换为 `01_pact`、`02_reincarnation_shop`、`03_blessing_choice`、
+`06_lifetime_contracts`、`08_courtier_essentials`、`10_death_settlement` 六张精选图，公开 HTML 精确包含六个
+`highlight_strip_item`。此次只改描述与 media strip，没有重新上传 mod 内容包。纯描述保存后 API 的
+`time_updated` 仍保持内容包时间，因此不能用该字段判断网页编辑是否生效，应比较远端正文并检查公开 HTML。
+
 ## 上传内容范围
 
 启动器会上传 `path=` 指向的整个目录，所以正式路径必须指向 release staging。

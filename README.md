@@ -19,22 +19,41 @@ GitHub Release： https://github.com/XenoAmess/ck3_eternal_recurrence/releases/t
 1. 游戏规则中启用「琉焰卿的永恒轮回」（默认启用）
 2. 开局弹出「终末之契」：接受则获得可成长特质【琉焰之视】（0–100 经验、每 10 经验一级，每级额外 +10% 压力获取）；特质悬浮提示会即时预览当前分数；拒绝则本局与无 mod 无异。历史余烬位阶为 0 时会进入首世说明并直接开始祝福流程，不再打开无商品可买的空商店
 
-![终末之契](screenshots/01.jpg)
+![终末之契](screenshots/gallery/01_pact.jpg)
+
+![琉焰之视等级与即时分数](screenshots/gallery/07_glassfire_gaze.jpg)
 
 3. 游戏规则可选择绝对/本世成长赛道，以及 0%/25%/50%/100% 余烬继承；推荐默认是本世成长 + 100% 继承，继承预算不另设上限。非零预算会打开四页「轮回当铺」，可购买六维属性、资源、借命层数、重抽、封印、恐怖值、正统性、暴政修正和 1133 分的免费宗教改革；高位阶另有 10000 分【万国贡火】、50000 分【借来一代】和 100000 分【六维登神】。普通商品每次购买后涨价 ×1.2；剩余分数开始此生时等量转为金币
 
-![轮回当铺](screenshots/02.jpg)
+![轮回当铺](screenshots/gallery/02_reincarnation_shop.jpg)
 
 4. 契约接受后可随时从原生决议菜单打开「琉焰账簿」，只读查看当前分数、历史/候选/下一余烬位阶、距下一位阶差值、完成交易对数和拒绝次数；达到持久层上限时会明确标示
+
+![琉焰账簿](screenshots/gallery/05_glassfire_ledger.jpg)
+
 5. 琉焰卿的「垂青会」：开局及此后每 3 年，从带稀有度/构筑标签的 3 项祝福中领 1 项，再从 2 项诅咒中强制选择 1 项。每场恰好一对；每次拒绝最终结算 -1%。【琉焰之视】每 10 XP 解锁累积原生属性成长和逐步增加的重抽/封印奖励
+
+![三选一祝福与重抽](screenshots/gallery/03_blessing_choice.jpg)
+
+![二选一诅咒与封印](screenshots/gallery/04_curse_choice.jpg)
+
 6. 可从决议菜单选择征服者、织网者、圣徒、家主、贤王或享乐者契约。对应 CK3 行为提供增量进度和分数，3/6/10 进度会触发反馈并永久保存该契约 PB；详见 [docs/contracts-and-progression.md](docs/contracts-and-progression.md)
-7. 死亡时展示真实分数；只有它跨过新的余烬阈值时，才写入量化纪录（教程通知）。有继承人时确认完整结算后进入观察者模式；无可玩继承人时由原生继承窗显示八项结算并退出主菜单，均不可继续扮演后代
 
-![轮回终结·上](screenshots/03.jpg)
+![六类本世契约](screenshots/gallery/06_lifetime_contracts.jpg)
 
-![轮回终结·下](screenshots/04.jpg)
+7. 可从决议菜单付费典造一名真正属于当前宫廷的廷臣。七页契页提供 0–120 岁、六项 0–100 基础能力、五类原生特质目录、所有已载入文化与信仰，以及出身卑微或归入玩家家族；只有创建并交付成功后才扣一次游戏内金币，AI 没有入口
+
+![廷臣年龄与六项基础能力](screenshots/gallery/08_courtier_essentials.jpg)
+
+![廷臣文化、信仰与家族](screenshots/gallery/09_courtier_origin.jpg)
+
+8. 死亡时展示真实分数；只有它跨过新的余烬阈值时，才写入量化纪录（教程通知）。有继承人时确认完整结算后进入观察者模式；无可玩继承人时由原生继承窗显示八项结算并退出主菜单，均不可继续扮演后代
+
+![轮回终结与逐项计分](screenshots/gallery/10_death_settlement.jpg)
 
 **算分规则**：详见 [docs/scoring-rules.md](docs/scoring-rules.md)（逐条分列；游戏内死亡结算事件会展示当局逐项实况数值与完整公式）。
+
+截图来源、裁切范围与发布用途见 [workshop/main_screenshots.md](workshop/main_screenshots.md)。
 
 ## 原理
 
