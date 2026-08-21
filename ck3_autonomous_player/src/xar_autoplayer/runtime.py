@@ -626,7 +626,9 @@ def launch(spec: EnvironmentSpec) -> SessionHandle:
     parent_identity = _process_identity(os.getpid())
     if (
         parent_identity is None
-        or not _same_executable(parent_identity["executable"], sys.executable)
+        or str(parent_identity["name"]).casefold()
+        not in {"python.exe", "pythonw.exe"}
+        or not Path(str(parent_identity["executable"])).is_file()
     ):
         raise AgentError(
             f"supervisor process identity could not be authenticated: {parent_identity!r}"
