@@ -13,7 +13,7 @@
   "Mod descriptor validation failed"。上传后必须重建 staging，恢复无 ID 的正式树。
   更新工坊 = 改仓库内容 → 启动器 Mods → 上传 Mod 选同一物品再传一次。预览图用 mod 根目录的 `thumbnail.png`
   （启动器约定俗成按 mod 根目录找此文件名，同其他 dev mod）；descriptor 里 `picture="thumbnail.png"`
-- 原版工坊描述维护在 `workshop/description.bbcode`（BBCode，内嵌 4 张截图的 steamusercontent 直链）；白绮独立版维护在 `workshop/vivhite_description.bbcode`，八图顺序在 `workshop/vivhite_screenshots.md`。改完描述到对应物品页「编辑标题与描述」整段替换
+- 原版工坊描述维护在 `workshop/description.bbcode`（BBCode，内嵌 4 张截图的 steamusercontent 直链）；白绮独立版维护在 `workshop/vivhite_description.bbcode`，主视觉与八张实机图顺序在 `workshop/vivhite_screenshots.md`。改完描述到对应物品页「编辑标题与描述」整段替换
 
 ## 构建/生成
 
@@ -29,6 +29,7 @@ py tools/extract_courtier_traits.py                         # 从当前原版 00
 py tools/gen_courtier_creator.py                            # 原版廷臣特质目录、元数据与冲突
 py tools/gen_vivhite_courtier.py                            # 白绮独立版廷臣目录（独立快照/ervc 命名空间）
 py tools/compose_decision_art.py                            # 三张决议源图 → 1100×440 DXT1 DDS
+py tools/compose_vivhite_key_art.py                         # 白绮主视觉 → 独立版 640×640 thumbnail
 py tools/compose_trait_stars.py                             # 10 级特质星标 → 120×120 RGBA DDS
 py tools/build_release.py --check                           # 临时双构建，验证 manifest/ZIP 可复现
 py tools/build_release.py                                   # 生成 dist staging、manifest 与 deterministic ZIP
@@ -36,7 +37,7 @@ py tools/build_vivhite_release.py --check                   # 白绮独立版临
 py tools/build_vivhite_release.py                           # 生成独立 staging、manifest 与 ZIP
 ```
 
-八套脚本生成器及一套决议素材投影工具，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
+八套脚本生成器及两套素材投影工具，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
 再运行 `gen_scoring.py` 与 `gen_score_preview.py`；奖池条目改 `tools/pools_data.py`
 （数据表）再跑 gen_pools.py；权威表 `docs/blessing-curse-pools.md` 由它导出。
 计分生成器产出 `common/scripted_effects/xar_generated_scoring_effects.txt` 与
@@ -53,6 +54,8 @@ py tools/build_vivhite_release.py                           # 生成独立 stagi
 `py tools/gen_courtier_creator.py`，并审阅生成的五类目录、224 项元数据与 95 组冲突。只运行生成器不会重新读取游戏文件。
 三张决议源图位于 `images/decision_*.png`；修改后运行 `py tools/compose_decision_art.py`，不要手改
 `gfx/interface/illustrations/decisions/decision_xar_*.dds`。静态校验会逐字节重建并检查 DXT1 输出。
+白绮独立版主视觉源图为 `images/vivhite_courtier_key_art.png`；修改后运行
+`py tools/compose_vivhite_key_art.py`，不要手改其 `thumbnail.png`。静态校验会逐像素重建并检查 PNG。
 十级特质星标由 `tools/compose_trait_stars.py` 程序化生成；不要手改
 `gfx/interface/icons/traits/_stars_10.dds`。原版只提供 0–5 级星标，静态校验会逐字节重建该 RGBA DDS。
 位阈值体系生成器产出：`common/tutorial_lessons/xar_highscore.txt`、`common/customizable_localization/xar_generated_loc.txt`、

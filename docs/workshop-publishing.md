@@ -119,5 +119,6 @@ py tools/build_vivhite_release.py --release --workshop-item-id <new-id> --output
 
 2026-08-21 实际从空路径下载 `3787304042` 后，带 ID sidecar 对全部 27 文件验证 GREEN；sidecar manifest
 SHA-256 为 `252bdd294a1e62a5a4d201fffc91e5581b4632f97058cf0d8ab16b74cb37ff74`。匿名 Steam API 返回
-`visibility: 0`，公开页面精确包含八个 screenshot item。对应 GitHub Release：
+`visibility: 0`。1.0.0 公开页面精确包含八个实机 screenshot item；1.0.1 另加一张描述首图用决议主视觉，
+因此当前 media strip 共九图。对应 GitHub Release：
 `https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/vivhite-v1.0.0`。

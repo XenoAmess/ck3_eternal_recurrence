@@ -14,6 +14,7 @@ sys.dont_write_bytecode = True
 from PIL import Image  # noqa: E402
 
 import build_vivhite_release as build_release  # noqa: E402
+import compose_vivhite_key_art  # noqa: E402
 import gen_vivhite_courtier as generator  # noqa: E402
 
 
@@ -41,7 +42,7 @@ OTHER_LANGUAGES = tuple(
     language for language in LANGUAGES if language not in {"english", "simp_chinese"}
 )
 DESCRIPTOR_FIELDS = {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "name": "琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版",
     "picture": "thumbnail.png",
     "supported_version": "1.19.0.6",
@@ -1645,6 +1646,15 @@ def asset_checks(errors: list[str], report: dict[str, object]) -> None:
     icon = MOD / "gfx/interface/icons/traits/ervc_glassfire_icon.dds"
     decision = MOD / "gfx/interface/illustrations/decisions/decision_ervc_courtier.dds"
 
+    expected_thumbnail = None
+    if not compose_vivhite_key_art.SOURCE.is_file():
+        errors.append("Vivhite key-art source is missing")
+    else:
+        try:
+            expected_thumbnail = compose_vivhite_key_art.render()
+        except OSError as error:
+            errors.append(f"Vivhite key-art source is unreadable: {error}")
+
     if thumbnail.is_file():
         data = thumbnail.read_bytes()
         if not data.startswith(b"\x89PNG\r\n\x1a\n"):
@@ -1656,6 +1666,12 @@ def asset_checks(errors: list[str], report: dict[str, object]) -> None:
                     errors.append(
                         f"thumbnail.png must be 640x640 PNG, got {image.format} {image.size}"
                     )
+                if (
+                    expected_thumbnail is not None
+                    and image.convert("RGB").tobytes()
+                    != expected_thumbnail.tobytes()
+                ):
+                    errors.append("thumbnail.png pixels are stale against Vivhite key art")
         except OSError as error:
             errors.append(f"thumbnail.png is unreadable: {error}")
 

@@ -5,9 +5,9 @@
 - Source root: `Eternal_Recurrence_Vivhite_Courtier/`
 - Chinese title: 【琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版】
 - English title: **Eternal Recurrence: Glassfire Courtier Creator - Vivhite Edition**
-- Version: `1.0.0`; tested baseline: CK3 `1.19.0.6`
+- Version: `1.0.1`; tested baseline: CK3 `1.19.0.6`
 - Repository tag namespace: `vivhite-v<version>`; it must never reuse the original mod's `v1.0.0` tag.
-- Workshop identity: a new item must be created. The original item `3784706360` is forbidden in the standalone runtime and is not a default in its tooling.
+- Workshop identity: item `3787304042`. The original item `3784706360` is forbidden in the standalone runtime and is not a default in its tooling.
 
 The product contains only the paid custom-courtier creator. It has no recurrence, pact, game rule, shop, scoring,
 contract, ledger, trait, event, on_action, tutorial lesson, or cross-save persistence dependency. Configuration is
@@ -38,9 +38,15 @@ snapshot records CK3 `1.19.0.6`, source `00_traits.txt` SHA-256
 `079f0ab5c4224c505ab9f25bca80d8df296e5899bfab26049ce5fe794dc0b042`, 301 source traits, 224 catalog traits and
 95 conflict pairs. It emits three generated ERVC catalog files and supports `--check` parity.
 
+`tools/compose_vivhite_key_art.py` renders the owner-supplied
+`images/vivhite_courtier_key_art.png` to the standalone mod's 640×640 launcher/Workshop `thumbnail.png`. The static
+validator reconstructs the RGB pixels exactly and still enforces PNG format, 640×640 dimensions and the launcher's 1 MB
+limit. Encoded PNG bytes are not compared because zlib output is not stable across Pillow builds.
+
 ```powershell
 py tools/gen_vivhite_courtier.py
 py tools/gen_vivhite_courtier.py --check
+py tools/compose_vivhite_key_art.py
 ```
 
 ## Localization Status
@@ -72,11 +78,18 @@ sidecar. Downloaded-cache verification uses the same strict PDX descriptor norma
 requires this temporary manifest's non-null ID.
 
 Current pinned-environment L0 is GREEN: 4 succession projection tests, 6 original release tests, 17 Vivhite release
-tests, both static validators, scoring reference vectors and both deterministic double builds. The untagged Vivhite
-candidate intentionally records both `git_tag: null` and `workshop_item_id: null`; its 27-file manifest SHA-256 is
-`3c9617465b13cbcbd6c5fbc95b0924dcfb6971df1dd8d1e54fbf12325d276ed6` at commit `130b7e6`, and ZIP SHA-256 is
-`9ad24ad26521e721c417462296134f2f794d3187cd72cfa316a5fa250828ce5e`. A formal build replaces only the null Git tag
-after proving the canonical source, clean worktree and `vivhite-v1.0.0` tag; the original Workshop item remains rejected.
+tests, both static validators, scoring reference vectors and both deterministic double builds. Untagged candidates
+intentionally record both `git_tag: null` and `workshop_item_id: null`. A formal build replaces only the null Git tag
+after proving the canonical source, clean worktree and matching `vivhite-v<version>` tag; the original Workshop item
+remains rejected.
+
+## 1.0.1 Update Scope
+
+Version 1.0.1 replaces only the standalone launcher/Workshop thumbnail with dedicated Vivhite courtier key art. It also
+adds the existing decision illustration as the first Workshop-description image and embeds the eight accepted real-engine
+creator screenshots in their documented order. Script, GUI, localization and gameplay bytes are unchanged. The release
+still requires a clean committed three-cell acceptance run, `vivhite-v1.0.1`, a deterministic 27-file artifact, upload to
+the existing item `3787304042`, and fresh downloaded-cache verification.
 
 ## Runtime Acceptance
 
@@ -107,7 +120,7 @@ after CK3 exits. A GREEN formal cell also removes its disposable userdir; `repor
 runtime hashes, load order, fixture ordering, marker evidence, diagnostics and protected-storage hashes. GitHub's
 official runner has no CK3 or interactive desktop and must run only the static fixture/runner contracts.
 
-### Current Engine Evidence
+### 1.0.0 Release Evidence
 
 The clean committed-candidate schema-v2 non-debug matrix `ervc_release_clean_6575997_20260821` completed all three
 cells GREEN on CK3 `1.19.0.6` in 910.962 seconds. Its report binds full Git SHA
@@ -134,5 +147,5 @@ Tag `vivhite-v1.0.0` points to that exact commit. Its 27-file formal manifest SH
 artifact and [public GitHub Release](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/vivhite-v1.0.0)
 digests match. Official master run `32457377134` and tag run `32458755796` are GREEN. New Workshop item `3787304042`
 was forced into an initially absent cache path and passed strict `--workshop-cache` verification for all 27 files. The
-anonymous Steam API reports public visibility, and the public page exposes exactly eight accepted screenshots. These
+anonymous Steam API reports public visibility, and the initial 1.0.0 public page exposed exactly eight accepted screenshots. These
 results close the clean-candidate, fresh-cache and external-delivery gates for 1.0.0.

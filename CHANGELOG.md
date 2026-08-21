@@ -1,5 +1,12 @@
 # Changelog
 
+## [Vivhite 1.0.1] - 2026-08-21
+
+### Changed
+
+- Replaced the standalone Vivhite edition's shared launcher/Workshop thumbnail with dedicated courtier-commission key art.
+- Embedded the decision illustration and eight real-engine creator screenshots in the standalone Workshop description.
+
 ## [1.0.0] - 2026-08-21
 
 ### Added

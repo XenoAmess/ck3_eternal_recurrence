@@ -78,6 +78,7 @@ py tools/gen_score_preview.py
 py tools/gen_courtier_creator.py
 py tools/gen_vivhite_courtier.py
 py tools/compose_decision_art.py
+py tools/compose_vivhite_key_art.py
 py tools/test_gen_no_heir_gui.py
 py tools/test_build_release.py
 py tools/test_build_vivhite_release.py
