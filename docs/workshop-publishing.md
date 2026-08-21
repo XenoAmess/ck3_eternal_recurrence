@@ -85,6 +85,11 @@ manifest/ZIP hash，Steam 与 GitHub 随后统一使用这份 clean-checkout 产
 0.431–0.702 MiB，全部上传成功。验收 artifact 继续保留无损 PNG；Workshop 上传副本单独生成，不得进入 mod
 staging。公开页 HTML 应按 `highlight_strip_item` 复核实际图片数。
 
+同一页没有原位替换预览图的操作。2026-08-21 对主物品 `3784706360` 实测：删除带光标瑕疵的旧图、上传同名修正版
+并点击「保存并继续」后，新图会追加到现有 media strip 末尾，而不是回到原位置；公开页随后仍精确包含六个
+`highlight_strip_item`。因此替换后必须同时复核数量、实际顺序和放大图像素，不能只看到文件名相同就判成功。
+该网页操作不上传或修改 mod 内容包。
+
 ### 6. Workshop BBCode 可直链 GitHub raw，但只用固定 commit URL
 
 2026-08-21 对 Steam 公开页、GitHub 响应头与 Chromium 实测：Workshop 描述会把外链生成为

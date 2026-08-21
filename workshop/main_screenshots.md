@@ -46,3 +46,5 @@ the desktop Steam client showed all eight rendered without broken placeholders.
 
 The four historical Steam-hosted screenshots were replaced with orders 1, 2, 3, 6, 8 and 10 above. After saving, the
 public page contained exactly six `highlight_strip_item` elements and the desktop client showed the same six previews.
+After the cursor cleanup, removing and re-uploading order 6 appended it to the end; the current live strip order is
+1, 2, 3, 8, 10, 6. Steam's public page and the enlarged order-6 preview were checked again, with no cursor square present.

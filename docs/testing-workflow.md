@@ -155,7 +155,8 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   `clausewitz/gfx/cursors/software_cursor_normal.dds`（100x100）留在 `(1280,720)`；它在地图上是深色方框，
   还会透过半透明事件窗，看起来像坏掉的事件控件。该方框不是 mod GUI。发布衍生图应优先换用无光标帧或收紧裁切；
   若只能用同帧事件图，只能从同一次 run、同一固定事件背景的无光标帧恢复该区域，并在截图来源文档记录坐标，禁止
-  用生成式补图伪造游戏内容。
+  用生成式补图伪造游戏内容。软件光标滞留在画面中心的具体引擎触发条件**未查明**；规避必须依靠发布前逐帧检查，
+  不能假定移动 Windows 硬件光标就会让它从 `ImageGrab` artifact 中消失。
 - OCR 定位按钮必须避免正文中的同词。2026-08-21 铁人 modal 的正文含“打开游戏菜单”，全屏 `contains=True` 会点到正文而不是底部按钮；按钮改在 modal 区域做精确匹配。RapidOCR 还会把 CK3 字体的“余烬”稳定识别为“余焰”，流程断言因此使用唯一后缀“已封存”，不修改正确的产品文案。
 - `pdx_enum_setting.cpp` 在真实 profile 和隔离 profile 均可能先记录 `Could not find enum 'l_simp_chinese' ... default 'l_english'`，但随后实际画面仍是简中；该启动期 debug 行不能单独证明最终渲染语言，验收以画面 OCR 和本地化结构为准。2026-08-21 非 debug 铁人实测。
 - 隔离 runner 只终止自己记录的 CK3 PID。若 preflight 后、真正 launch 前又出现任意 `ck3.exe`，必须 RED 并拒绝启动测试，不得调用按镜像名全局强杀；否则会误杀用户刚开启的真实会话。后置安全检查同样属于权威结果，失败时 JSON、JUnit 与退出码必须一起 RED。2026-08-21 runner 审阅加固。
