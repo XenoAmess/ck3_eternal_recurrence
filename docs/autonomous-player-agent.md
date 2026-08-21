@@ -136,7 +136,11 @@
 
 ### Phase B 接线顺序（2026-08-22 候选）
 
-1. 先用三进程 crash probe 验证 supervisor 在 CK3 resume 后消失时，kill-on-close Job 与 detached watchdog 能回收 CK3
+1. 先用三个逻辑角色的 crash probe 验证 supervisor 在 CK3 resume 后消失时，kill-on-close Job 与 detached watchdog 能回收 CK3；
+   Windows venv 可额外产生一个经认证的 interpreter redirector，但它不替代真实 supervisor 身份。outer 必须完成
+   supervisor-ready → 精确句柄 pin → acknowledgement，subject 收到 acknowledgement 前禁止启动 CK3；三阶段同时记录
+   UTC 与跨进程可比的 monotonic 时间。实时路径强制 `ready < acknowledgement < armed`；无密钥回放只能验证归档中的
+   三个记录值和字段关系自洽，不能证明历史顺序真实发生。
    及合成父子进程。外层验证器不持有 Job handle，只固定 supervisor、CK3、合成父、合成子、watchdog 的精确进程句柄；
    命名 Job 对象销毁、五个句柄退出、watchdog 返回 0、四类控制文件消失、双源 CK3 清点连续 5 秒为空，必须全部成立。
 2. crash probe 的策略输入仍为空。`debug.log` 前缀只被归档并复算单 mod/mount 证明，不传给 UI 或策略层；该运行明确

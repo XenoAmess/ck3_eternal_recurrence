@@ -48,10 +48,13 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 
 当前工作候选还增加了两项尚待本机实机门禁的能力：
 
-- `crash-smoke` 使用外层验证器、可牺牲 supervisor、detached watchdog 三进程协议，在 CK3 已 resume、可见主菜单且
+- `crash-smoke` 使用外层验证器、可牺牲 supervisor、detached watchdog 三个逻辑角色；Windows venv 可在 outer 与
+  supervisor 之间增加一个经完整命令行和进程身份认证的 interpreter redirector。outer 必须先固定真实 supervisor
+  的进程句柄并回写 acknowledgement，subject 收到它之前不得启动 CK3；ready、ack 与 armed 同时记录 UTC 和
+  跨进程可比的 monotonic 时间，实时路径强制严格顺序，离线回放只验证归档记录值与内部关系一致。在 CK3 已 resume、可见主菜单且
   单 mod load attestation 成立后，通过固定进程句柄终止 supervisor。CK3 与两个合成 Job 子孙必须全部退出、命名 Job
   必须销毁、watchdog 必须正常退出、全局 CK3 清点必须连续 5 秒为空，之后才允许 protected postflight。两帧主菜单、
-  handoff、armed、三份控制文件、watchdog final、production manifest 和日志前缀均复制进可搬移的一致性回放证据包。报告固定声明
+  handoff、supervisor ready/ack、armed、三份控制文件、watchdog final、production manifest 和日志前缀均复制进可搬移的一致性回放证据包。报告固定声明
   `integrity=unkeyed_sha256`、`historical_execution_authenticity_proven=false`：它能复算 schema、字段关系、PNG→OCR 与哈希链，
   不能在没有密钥或外部信任根时证明一份历史归档必然来自真实执行；实机资格仍以本轮外层 verifier 的当场 OS 观察为准。
 - Phase B 的纯视觉底座已经建立 PID/创建时间/可执行路径绑定的 CK3 窗口捕获、OCR 屏幕分类、短期 HMAC 控件 token、

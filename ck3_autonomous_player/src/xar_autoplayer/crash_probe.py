@@ -52,6 +52,7 @@ from .locking import (
 )
 from .runtime import (
     MAIN_MENU_REGION,
+    PROCESS_WATCHDOG,
     _ocr_items,
     _assign_process_to_job,
     _authenticated_watchdog_state,
@@ -522,6 +523,153 @@ def _wait_file(path: Path, timeout: float) -> None:
     raise AgentError(f"timeout waiting for {path.name}")
 
 
+def _parse_utc_evidence(value: object, label: str) -> datetime:
+    if not isinstance(value, str) or not value:
+        raise AgentError(f"{label} timestamp differs")
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError as error:
+        raise AgentError(f"{label} timestamp differs") from error
+    if (
+        parsed.tzinfo is None
+        or parsed.utcoffset() != timezone.utc.utcoffset(None)
+    ):
+        raise AgentError(f"{label} timestamp is not UTC")
+    return parsed
+
+
+def _finite_monotonic(value: object, label: str) -> float:
+    if (
+        not isinstance(value, (int, float))
+        or isinstance(value, bool)
+        or not math.isfinite(float(value))
+        or float(value) < 0
+    ):
+        raise AgentError(f"{label} monotonic timestamp differs")
+    return float(value)
+
+
+def _validate_supervisor_ack_payload(
+    payload: object,
+    *,
+    probe_nonce: str,
+    supervisor: dict[str, object],
+    supervisor_bootstrap: object,
+    outer: dict[str, object],
+    supervisor_ready_sha256: str,
+    supervisor_ready_at: str,
+    supervisor_ready_monotonic: float,
+) -> dict[str, object]:
+    if (
+        not isinstance(payload, dict)
+        or set(payload)
+        != {
+            "format_version",
+            "probe_nonce",
+            "supervisor",
+            "supervisor_bootstrap",
+            "outer",
+            "supervisor_ready_sha256",
+            "acknowledged_at",
+            "acknowledged_monotonic",
+        }
+        or payload.get("format_version") != 1
+        or payload.get("probe_nonce") != probe_nonce
+        or payload.get("supervisor") != supervisor
+        or payload.get("supervisor_bootstrap") != supervisor_bootstrap
+        or payload.get("outer") != outer
+        or payload.get("supervisor_ready_sha256") != supervisor_ready_sha256
+    ):
+        raise AgentError("crash supervisor acknowledgement differs")
+    _parse_utc_evidence(supervisor_ready_at, "crash supervisor-ready")
+    _parse_utc_evidence(
+        payload.get("acknowledged_at"), "crash supervisor acknowledgement"
+    )
+    ready_monotonic = _finite_monotonic(
+        supervisor_ready_monotonic, "crash supervisor-ready"
+    )
+    acknowledged_monotonic = _finite_monotonic(
+        payload.get("acknowledged_monotonic"),
+        "crash supervisor acknowledgement",
+    )
+    if acknowledged_monotonic <= ready_monotonic:
+        raise AgentError("crash supervisor acknowledgement precedes readiness")
+    return payload
+
+
+def _wait_for_supervisor_ack(
+    path: Path,
+    *,
+    timeout: float,
+    probe_nonce: str,
+    supervisor: dict[str, object],
+    supervisor_bootstrap: object,
+    outer: dict[str, object],
+    supervisor_ready_sha256: str,
+    supervisor_ready_at: str,
+    supervisor_ready_monotonic: float,
+) -> dict[str, object]:
+    _wait_file(path, timeout)
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    return _validate_supervisor_ack_payload(
+        payload,
+        probe_nonce=probe_nonce,
+        supervisor=supervisor,
+        supervisor_bootstrap=supervisor_bootstrap,
+        outer=outer,
+        supervisor_ready_sha256=supervisor_ready_sha256,
+        supervisor_ready_at=supervisor_ready_at,
+        supervisor_ready_monotonic=supervisor_ready_monotonic,
+    )
+
+
+def _pin_and_acknowledge_supervisor(
+    ready: dict[str, object],
+    *,
+    ack_path: Path,
+    supervisor_ready_sha256: str,
+    pin_owner: list[object],
+) -> dict[str, object]:
+    if pin_owner:
+        raise AgentError("crash supervisor pin owner is already populated")
+    pinned = None
+    try:
+        pinned = _pin_process(ready["supervisor"], allow_terminate=True)
+        pin_owner.append(pinned)
+    except BaseException:
+        if pinned is not None and pin_owner and pin_owner[0] is pinned:
+            # append completed before an asynchronous exception was delivered;
+            # ownership already belongs to the outer verifier.
+            raise
+        import win32api
+
+        if pinned is None:
+            raise
+        try:
+            win32api.TerminateProcess(pinned, 1)
+            _wait_pinned_exit(pinned, "unowned crash supervisor pin", 20)
+        finally:
+            win32api.CloseHandle(pinned)
+        raise
+    acknowledgement = {
+        "format_version": 1,
+        "probe_nonce": ready["probe_nonce"],
+        "supervisor": ready["supervisor"],
+        "supervisor_bootstrap": ready["supervisor_bootstrap"],
+        "outer": ready["outer"],
+        "supervisor_ready_sha256": supervisor_ready_sha256,
+        "acknowledged_at": utc_now(),
+        "acknowledged_monotonic": time.monotonic(),
+    }
+    try:
+        write_json_atomic(ack_path, acknowledgement)
+    except BaseException:
+        # Ownership was transferred before acknowledgement publication.  The
+        # outer verifier's finally block terminates and closes this exact pin.
+        raise
+    return acknowledgement
+
+
 def _pin_process(
     identity: dict[str, object], *, allow_terminate: bool = False
 ) -> object:
@@ -551,7 +699,7 @@ def _pin_process(
         if not _same_executable(pinned_image, identity["executable"]):
             raise AgentError(f"pinned process image differs: {pinned_image}")
         return handle
-    except Exception:
+    except BaseException:
         win32api.CloseHandle(handle)
         raise
 
@@ -605,6 +753,170 @@ def _command_arguments(command_line: str) -> list[str]:
         kernel32.LocalFree(argv)
 
 
+def _crash_subject_command_tail(
+    *,
+    state_dir: Path,
+    game_dir: Path,
+    probe_nonce: str,
+    handoff_path: Path,
+    handoff_sha256: str,
+    armed_path: Path,
+    watchdog_final: Path,
+    artifacts: Path,
+    timeout_seconds: float,
+    outer: dict[str, object],
+) -> list[str]:
+    return [
+        str((REPO_ROOT / "ck3_autonomous_player" / "agent.py").resolve()),
+        "--state-dir",
+        str(state_dir.resolve()),
+        "--game-dir",
+        str(game_dir.resolve()),
+        "_crash-subject",
+        "--probe-nonce",
+        probe_nonce,
+        "--handoff",
+        str(handoff_path.resolve()),
+        "--handoff-sha256",
+        handoff_sha256,
+        "--armed",
+        str(armed_path.resolve()),
+        "--watchdog-final",
+        str(watchdog_final.resolve()),
+        "--artifacts",
+        str(artifacts.resolve()),
+        "--timeout",
+        str(float(timeout_seconds)),
+        "--outer-pid",
+        str(int(outer["pid"])),
+        "--outer-executable",
+        str(Path(str(outer["executable"])).resolve()),
+        "--outer-creation-date",
+        str(outer["creation_date"]),
+    ]
+
+
+def _validate_exact_process_command(
+    identity: dict[str, object],
+    expected_tail: list[str],
+    label: str,
+    *,
+    expected_launcher: object | None = None,
+) -> None:
+    arguments = _command_arguments(str(identity["command_line"]))
+    launcher = identity["executable"] if expected_launcher is None else expected_launcher
+    if (
+        len(arguments) != len(expected_tail) + 1
+        or not _same_executable(arguments[0], launcher)
+        or arguments[1:] != expected_tail
+    ):
+        raise AgentError(f"{label} command differs")
+
+
+def _validate_supervisor_parent_chain(
+    *,
+    outer: dict[str, object],
+    bootstrap: object,
+    supervisor: dict[str, object],
+    probe_nonce: str,
+    handoff_path: Path,
+    handoff_sha256: str,
+    armed_path: Path,
+    watchdog_final: Path,
+    artifacts: Path,
+    state_dir: Path,
+    game_dir: Path,
+    timeout_seconds: float,
+) -> None:
+    """Accept a direct child or one authenticated Windows venv redirector."""
+    _validate_process_identity_payload(supervisor, "crash supervisor")
+    expected_tail = _crash_subject_command_tail(
+        state_dir=state_dir,
+        game_dir=game_dir,
+        probe_nonce=probe_nonce,
+        handoff_path=handoff_path,
+        handoff_sha256=handoff_sha256,
+        armed_path=armed_path,
+        watchdog_final=watchdog_final,
+        artifacts=artifacts,
+        timeout_seconds=timeout_seconds,
+        outer=outer,
+    )
+    if bootstrap is None:
+        if int(supervisor["parent_pid"]) != int(outer["pid"]):
+            raise AgentError("crash supervisor is not a direct child of its outer")
+        _validate_exact_process_command(
+            supervisor, expected_tail, "crash supervisor"
+        )
+        return
+    _validate_process_identity_payload(bootstrap, "crash supervisor bootstrap")
+    if (
+        int(supervisor["parent_pid"]) != int(bootstrap["pid"])
+        or int(bootstrap["parent_pid"]) != int(outer["pid"])
+    ):
+        raise AgentError("crash supervisor bootstrap parent chain differs")
+    _validate_exact_process_command(
+        supervisor,
+        expected_tail,
+        "crash supervisor",
+        expected_launcher=bootstrap["executable"],
+    )
+    _validate_exact_process_command(
+        bootstrap, expected_tail, "crash supervisor bootstrap"
+    )
+
+
+def _validate_watchdog_process_command(
+    identity: dict[str, object],
+    *,
+    supervisor: dict[str, object],
+    nonce: str,
+    ready_path: Path,
+    record_path: Path,
+    unsafe_marker: Path,
+    game_exe: Path,
+    final_evidence: Path,
+) -> None:
+    _validate_process_identity_payload(identity, "crash watchdog")
+    expected_tail = [
+        str(PROCESS_WATCHDOG.resolve()),
+        str(int(supervisor["pid"])),
+        str(Path(str(supervisor["executable"])).resolve()),
+        str(supervisor["creation_date"]),
+        nonce,
+        str(ready_path.resolve()),
+        str(record_path.resolve()),
+        str(unsafe_marker.resolve()),
+        str(game_exe.resolve()),
+        str(final_evidence.resolve()),
+    ]
+    watchdog_arguments = _command_arguments(str(identity["command_line"]))
+    supervisor_arguments = _command_arguments(str(supervisor["command_line"]))
+    if not watchdog_arguments or not supervisor_arguments:
+        raise AgentError("crash watchdog command differs")
+    watchdog_launcher = Path(watchdog_arguments[0])
+    supervisor_launcher = Path(supervisor_arguments[0])
+    launcher_matches = _same_executable(watchdog_launcher, supervisor_launcher) or (
+        watchdog_launcher.parent.resolve() == supervisor_launcher.parent.resolve()
+        and watchdog_launcher.name.casefold() == "pythonw.exe"
+        and supervisor_launcher.name.casefold() == "python.exe"
+    )
+    watchdog_image = Path(str(identity["executable"]))
+    supervisor_image = Path(str(supervisor["executable"]))
+    image_matches = _same_executable(watchdog_image, supervisor_image) or (
+        watchdog_image.parent.resolve() == supervisor_image.parent.resolve()
+        and watchdog_image.name.casefold() == "pythonw.exe"
+        and supervisor_image.name.casefold() == "python.exe"
+    )
+    if (
+        not launcher_matches
+        or not image_matches
+        or len(watchdog_arguments) != len(expected_tail) + 1
+        or watchdog_arguments[1:] != expected_tail
+    ):
+        raise AgentError("crash watchdog command differs")
+
+
 def _validate_subject_invocation(
     spec: EnvironmentSpec,
     *,
@@ -615,6 +927,7 @@ def _validate_subject_invocation(
     watchdog_final: Path,
     artifacts: Path,
     outer_identity: dict[str, object],
+    timeout_seconds: float = 180.0,
 ) -> dict[str, object]:
     """Authenticate the hidden subject entry before it can write or launch."""
     _canonical_job_name(probe_nonce)
@@ -655,6 +968,19 @@ def _validate_subject_invocation(
     handoff = json.loads(handoff_path.read_text(encoding="utf-8"))
     if not isinstance(handoff, dict):
         raise AgentError("crash subject handoff root is not an object")
+    supervisor_ready = artifacts / f"supervisor-ready-{probe_nonce}.json"
+    supervisor_ack = artifacts / f"supervisor-ack-{probe_nonce}.json"
+    if (
+        Path(str(handoff.get("supervisor_ready", ""))).resolve()
+        != supervisor_ready.resolve()
+        or Path(str(handoff.get("supervisor_ack", ""))).resolve()
+        != supervisor_ack.resolve()
+        or supervisor_ready.exists()
+        or supervisor_ready.with_name(supervisor_ready.name + ".tmp").exists()
+        or supervisor_ack.exists()
+        or supervisor_ack.with_name(supervisor_ack.name + ".tmp").exists()
+    ):
+        raise AgentError("crash subject supervisor handshake target differs")
     expected_outer = handoff.get("outer")
     if not isinstance(expected_outer, dict):
         raise AgentError("crash subject handoff lacks outer identity")
@@ -662,7 +988,6 @@ def _validate_subject_invocation(
     actual_outer = _process_identity(int(outer_identity["pid"]))
     if (
         current is None
-        or int(current["parent_pid"]) != int(outer_identity["pid"])
         or actual_outer is None
         or actual_outer["creation_date"] != outer_identity["creation_date"]
         or not _same_executable(
@@ -674,7 +999,28 @@ def _validate_subject_invocation(
             expected_outer.get("executable", ""), actual_outer["executable"]
         )
     ):
-        raise AgentError("crash subject is not a direct child of its authenticated outer")
+        raise AgentError("crash subject outer identity differs")
+    _validate_process_identity_payload(current, "crash supervisor")
+    _validate_process_identity_payload(actual_outer, "crash outer")
+    bootstrap = None
+    if int(current["parent_pid"]) != int(actual_outer["pid"]):
+        bootstrap = _process_identity(int(current["parent_pid"]))
+        if bootstrap is None:
+            raise AgentError("crash supervisor bootstrap identity is missing")
+    _validate_supervisor_parent_chain(
+        outer=actual_outer,
+        bootstrap=bootstrap,
+        supervisor=current,
+        probe_nonce=probe_nonce,
+        handoff_path=handoff_path,
+        handoff_sha256=handoff_sha256,
+        armed_path=armed_path,
+        watchdog_final=watchdog_final,
+        artifacts=artifacts,
+        state_dir=spec.state_dir,
+        game_dir=spec.game_dir,
+        timeout_seconds=timeout_seconds,
+    )
     outer_arguments = _command_arguments(
         str(actual_outer.get("command_line", ""))
     )
@@ -701,7 +1047,11 @@ def _validate_subject_invocation(
         "probe_nonce": probe_nonce,
         "run_id": artifacts.parent.name,
         "state_dir": str(state_dir),
+        "game_dir": str(spec.game_dir.resolve()),
+        "timeout_seconds": float(timeout_seconds),
         "artifacts": str(artifacts),
+        "supervisor_ready": str(supervisor_ready.resolve()),
+        "supervisor_ack": str(supervisor_ack.resolve()),
         "armed": str(armed_path.resolve()),
         "watchdog_final": str(watchdog_final.resolve()),
         "outer": expected_outer,
@@ -714,7 +1064,9 @@ def _validate_subject_invocation(
     _require_mutex_owned_elsewhere(
         _launch_lock_name(spec.game_exe), "global launch mutex"
     )
-    return handoff
+    validated = dict(handoff)
+    validated["_supervisor_bootstrap"] = bootstrap
+    return validated
 
 
 def _start_outer_guard(outer_identity: dict[str, object]) -> None:
@@ -1002,6 +1354,8 @@ def _validate_crash_success_payload(
         "production_manifest",
         "owner",
         "handoff",
+        "supervisor_ready",
+        "supervisor_ack",
         "armed",
         "runtime_debug_prefix",
         "load_attestation",
@@ -1033,6 +1387,10 @@ def _validate_crash_success_payload(
         "production_manifest": "production.manifest.json",
         "owner": f"artifacts/owner-{probe_nonce}.json",
         "handoff": f"artifacts/handoff-{probe_nonce}.json",
+        "supervisor_ready": (
+            f"artifacts/supervisor-ready-{probe_nonce}.json"
+        ),
+        "supervisor_ack": f"artifacts/supervisor-ack-{probe_nonce}.json",
         "armed": f"artifacts/armed-{probe_nonce}.json",
         "runtime_debug_prefix": f"artifacts/runtime-debug-prefix-{probe_nonce}.log",
         "load_attestation": f"artifacts/load-attestation-{probe_nonce}.json",
@@ -1059,6 +1417,12 @@ def _validate_crash_success_payload(
     if crash.get("armed_sha256") != artifacts["armed"]["sha256"]:
         raise AgentError("crash report armed binding differs")
     handoff = json.loads(verified["handoff"].read_text(encoding="utf-8"))
+    supervisor_ready = json.loads(
+        verified["supervisor_ready"].read_text(encoding="utf-8")
+    )
+    supervisor_ack = json.loads(
+        verified["supervisor_ack"].read_text(encoding="utf-8")
+    )
     armed = json.loads(verified["armed"].read_text(encoding="utf-8"))
     owner_payload = json.loads(verified["owner"].read_text(encoding="utf-8"))
     if not isinstance(handoff, dict) or not isinstance(armed, dict):
@@ -1071,6 +1435,7 @@ def _validate_crash_success_payload(
         "job_active_processes",
         "process_resumed",
         "supervisor",
+        "supervisor_bootstrap",
         "ck3",
         "sentinel_parent",
         "sentinel_child",
@@ -1081,6 +1446,7 @@ def _validate_crash_success_payload(
         "artifacts",
         "environment_sha256",
         "armed_at",
+        "armed_monotonic",
     }
     if set(armed) != expected_armed_fields or armed.get("format_version") != 1:
         raise AgentError("crash armed schema differs")
@@ -1094,12 +1460,34 @@ def _validate_crash_success_payload(
         _validate_process_identity_payload(
             armed.get(identity_label), f"armed {identity_label}"
         )
+    supervisor_bootstrap = armed.get("supervisor_bootstrap")
+    if supervisor_bootstrap is not None:
+        _validate_process_identity_payload(
+            supervisor_bootstrap, "armed supervisor bootstrap"
+        )
+    if (
+        crash.get("subject_bootstrap_identity") != supervisor_bootstrap
+        or (
+            supervisor_bootstrap is None
+            and crash.get("subject_bootstrap_exit_code") is not None
+        )
+        or (
+            supervisor_bootstrap is not None
+            and int(crash.get("subject_bootstrap_exit_code", -1))
+            != CRASH_EXIT_CODE
+        )
+    ):
+        raise AgentError("crash supervisor bootstrap report binding differs")
     expected_handoff_fields = {
         "format_version",
         "probe_nonce",
         "run_id",
         "state_dir",
+        "game_dir",
+        "timeout_seconds",
         "artifacts",
+        "supervisor_ready",
+        "supervisor_ack",
         "armed",
         "watchdog_final",
         "outer",
@@ -1121,6 +1509,8 @@ def _validate_crash_success_payload(
             )
         },
     }
+    if supervisor_bootstrap is not None:
+        identities["supervisor_bootstrap"] = supervisor_bootstrap
     if (
         len({int(identity["pid"]) for identity in identities.values()})
         != len(identities)
@@ -1140,6 +1530,11 @@ def _validate_crash_success_payload(
         or handoff.get("format_version") != 1
         or handoff.get("probe_nonce") != probe_nonce
         or handoff.get("run_id") != report.get("run_id")
+        or not Path(str(handoff.get("game_dir", ""))).is_absolute()
+        or not isinstance(handoff.get("timeout_seconds"), (int, float))
+        or isinstance(handoff.get("timeout_seconds"), bool)
+        or not math.isfinite(float(handoff.get("timeout_seconds", 0)))
+        or float(handoff.get("timeout_seconds", 0)) <= 0
         or handoff.get("environment_sha256") != report.get("environment_sha256")
         or handoff.get("owner_sha256") != artifacts["owner"]["sha256"]
         or not isinstance(owner_payload, dict)
@@ -1151,8 +1546,6 @@ def _validate_crash_success_payload(
         or Path(str(owner_payload.get("state_dir", ""))).resolve()
         != Path(str(handoff.get("state_dir", ""))).resolve()
         or not isinstance(outer, dict)
-        or int(outer.get("pid", -1))
-        != int(armed.get("supervisor", {}).get("parent_pid", -2))
         or not outer.get("creation_date")
         or not outer.get("executable")
         or not _recorded_reference_matches(
@@ -1170,6 +1563,16 @@ def _validate_crash_success_payload(
         or int(armed.get("job_active_processes", 0))
         != int(crash.get("job_active_processes_before", -1))
         or not _recorded_reference_matches(
+            handoff.get("supervisor_ready"),
+            recorded_run,
+            canonical_relative["supervisor_ready"],
+        )
+        or not _recorded_reference_matches(
+            handoff.get("supervisor_ack"),
+            recorded_run,
+            canonical_relative["supervisor_ack"],
+        )
+        or not _recorded_reference_matches(
             handoff.get("armed"), recorded_run, canonical_relative["armed"]
         )
         or not _recorded_reference_matches(
@@ -1179,6 +1582,86 @@ def _validate_crash_success_payload(
         )
     ):
         raise AgentError("crash handoff or armed payload differs")
+    if (
+        not isinstance(supervisor_ready, dict)
+        or set(supervisor_ready)
+        != {
+            "format_version",
+            "probe_nonce",
+            "supervisor",
+            "supervisor_bootstrap",
+            "outer",
+            "ready_at",
+            "ready_monotonic",
+        }
+        or supervisor_ready.get("format_version") != 1
+        or supervisor_ready.get("probe_nonce") != probe_nonce
+        or supervisor_ready.get("supervisor") != armed.get("supervisor")
+        or supervisor_ready.get("supervisor_bootstrap")
+        != armed.get("supervisor_bootstrap")
+        or supervisor_ready.get("outer") != outer
+        or crash.get("supervisor_ready_sha256")
+        != artifacts["supervisor_ready"]["sha256"]
+    ):
+        raise AgentError("crash supervisor-ready artifact binding differs")
+    if (
+        not isinstance(supervisor_ack, dict)
+        or set(supervisor_ack)
+        != {
+            "format_version",
+            "probe_nonce",
+            "supervisor",
+            "supervisor_bootstrap",
+            "outer",
+            "supervisor_ready_sha256",
+            "acknowledged_at",
+            "acknowledged_monotonic",
+        }
+        or supervisor_ack.get("format_version") != 1
+        or supervisor_ack.get("probe_nonce") != probe_nonce
+        or supervisor_ack.get("supervisor") != armed.get("supervisor")
+        or supervisor_ack.get("supervisor_bootstrap")
+        != armed.get("supervisor_bootstrap")
+        or supervisor_ack.get("outer") != outer
+        or supervisor_ack.get("supervisor_ready_sha256")
+        != artifacts["supervisor_ready"]["sha256"]
+        or crash.get("supervisor_ack_sha256")
+        != artifacts["supervisor_ack"]["sha256"]
+    ):
+        raise AgentError("crash supervisor-ack artifact binding differs")
+    _parse_utc_evidence(supervisor_ready.get("ready_at"), "crash supervisor-ready")
+    _parse_utc_evidence(
+        supervisor_ack.get("acknowledged_at"), "crash supervisor acknowledgement"
+    )
+    _parse_utc_evidence(armed.get("armed_at"), "crash armed")
+    ready_monotonic = _finite_monotonic(
+        supervisor_ready.get("ready_monotonic"), "crash supervisor-ready"
+    )
+    acknowledged_monotonic = _finite_monotonic(
+        supervisor_ack.get("acknowledged_monotonic"),
+        "crash supervisor acknowledgement",
+    )
+    armed_monotonic = _finite_monotonic(
+        armed.get("armed_monotonic"), "crash armed"
+    )
+    if not ready_monotonic < acknowledged_monotonic < armed_monotonic:
+        raise AgentError("crash handshake monotonic order differs")
+    _validate_supervisor_parent_chain(
+        outer=outer,
+        bootstrap=supervisor_bootstrap,
+        supervisor=armed["supervisor"],
+        probe_nonce=probe_nonce,
+        handoff_path=Path(str(handoff["armed"])).with_name(
+            f"handoff-{probe_nonce}.json"
+        ),
+        handoff_sha256=str(crash.get("handoff_sha256", "")),
+        armed_path=Path(str(handoff["armed"])),
+        watchdog_final=Path(str(handoff["watchdog_final"])),
+        artifacts=Path(str(handoff["artifacts"])),
+        state_dir=Path(str(handoff["state_dir"])),
+        game_dir=Path(str(handoff["game_dir"])),
+        timeout_seconds=float(handoff["timeout_seconds"]),
+    )
     expected_recorded_run = (
         Path(str(handoff["state_dir"])) / "runs" / str(handoff["run_id"])
     ).resolve()
@@ -1247,6 +1730,16 @@ def _validate_crash_success_payload(
         )
     ):
         raise AgentError("crash armed control-file contract differs")
+    _validate_watchdog_process_command(
+        armed["watchdog"],
+        supervisor=armed["supervisor"],
+        nonce=watchdog_nonce,
+        ready_path=expected_control_paths["ready"],
+        record_path=expected_control_paths["record"],
+        unsafe_marker=expected_control_paths["unsafe_marker"],
+        game_exe=Path(str(armed["ck3"]["executable"])),
+        final_evidence=Path(str(handoff["watchdog_final"])),
+    )
 
     evidence_path = verified["watchdog_final"]
     if (
@@ -1589,6 +2082,9 @@ def _validate_crash_success_payload(
     archived_game_exe = Path(str(environment_payload["game"]["executable"]))
     if not _same_executable(
         armed.get("ck3", {}).get("executable", ""), archived_game_exe
+    ) or not _same_executable(
+        Path(str(handoff["game_dir"])) / "binaries" / "ck3.exe",
+        archived_game_exe,
     ):
         raise AgentError("armed CK3 executable differs from the environment")
     if not _same_executable(
@@ -1855,8 +2351,35 @@ def run_crash_subject(
         watchdog_final=watchdog_final,
         artifacts=artifacts,
         outer_identity=outer_identity,
+        timeout_seconds=timeout_seconds,
     )
     _start_outer_guard(outer_identity)
+    supervisor_identity = _process_identity(os.getpid())
+    if supervisor_identity is None:
+        raise AgentError("crash supervisor identity disappeared before handshake")
+    supervisor_ready = {
+        "format_version": 1,
+        "probe_nonce": probe_nonce,
+        "supervisor": supervisor_identity,
+        "supervisor_bootstrap": handoff.get("_supervisor_bootstrap"),
+        "outer": handoff["outer"],
+        "ready_at": utc_now(),
+        "ready_monotonic": time.monotonic(),
+    }
+    supervisor_ready_path = Path(str(handoff["supervisor_ready"]))
+    write_json_atomic(supervisor_ready_path, supervisor_ready)
+    supervisor_ack_path = Path(str(handoff["supervisor_ack"]))
+    _wait_for_supervisor_ack(
+        supervisor_ack_path,
+        timeout=30,
+        probe_nonce=probe_nonce,
+        supervisor=supervisor_identity,
+        supervisor_bootstrap=handoff.get("_supervisor_bootstrap"),
+        outer=handoff["outer"],
+        supervisor_ready_sha256=sha256_file(supervisor_ready_path),
+        supervisor_ready_at=str(supervisor_ready["ready_at"]),
+        supervisor_ready_monotonic=float(supervisor_ready["ready_monotonic"]),
+    )
     handle = None
     sentinel_parent = None
     try:
@@ -1903,7 +2426,7 @@ def run_crash_subject(
             )
 
         parent_identity = _process_identity(os.getpid())
-        if parent_identity is None:
+        if parent_identity is None or parent_identity != supervisor_identity:
             raise AgentError("crash subject identity disappeared")
         (
             sentinel_parent,
@@ -1938,6 +2461,16 @@ def run_crash_subject(
             or watchdog_state != "running"
         ):
             raise AgentError("crash cleanup watchdog is not authenticated and running")
+        _validate_watchdog_process_command(
+            watchdog_identity,
+            supervisor=parent_identity,
+            nonce=handle.nonce,
+            ready_path=handle.ready_file,
+            record_path=handle.record_file,
+            unsafe_marker=handle.unsafe_marker,
+            game_exe=spec.game_exe,
+            final_evidence=watchdog_final,
+        )
         record_sha = sha256_file(handle.record_file)
         marker_sha = sha256_file(handle.unsafe_marker)
         armed = {
@@ -1948,6 +2481,7 @@ def run_crash_subject(
             "job_active_processes": active,
             "process_resumed": handle.process.resumed,
             "supervisor": parent_identity,
+            "supervisor_bootstrap": handoff.get("_supervisor_bootstrap"),
             "ck3": {
                 **(_process_identity(handle.process.pid) or {}),
                 "executable": str(handle.process.image_path()),
@@ -1971,6 +2505,7 @@ def run_crash_subject(
             "artifacts": load_artifacts,
             "environment_sha256": manifest["environment_sha256"],
             "armed_at": utc_now(),
+            "armed_monotonic": time.monotonic(),
         }
         write_json_atomic(armed_path, armed)
 
@@ -2030,6 +2565,8 @@ def _crash_smoke_locked(
     run_dir.mkdir(parents=True, exist_ok=False)
     artifacts.mkdir()
     handoff_path = artifacts / f"handoff-{probe_nonce}.json"
+    supervisor_ready_path = artifacts / f"supervisor-ready-{probe_nonce}.json"
+    supervisor_ack_path = artifacts / f"supervisor-ack-{probe_nonce}.json"
     armed_path = artifacts / f"armed-{probe_nonce}.json"
     watchdog_final = artifacts / f"watchdog-final-{probe_nonce}.json"
 
@@ -2073,10 +2610,11 @@ def _crash_smoke_locked(
     }
     write_json_atomic(run_dir / "report.json", report)
 
-    agent_entry = REPO_ROOT / "ck3_autonomous_player" / "agent.py"
     stdout_path = artifacts / "subject-stdout.log"
     stderr_path = artifacts / "subject-stderr.log"
     subject: subprocess.Popen[object] | None = None
+    supervisor_pin: object | None = None
+    supervisor_pin_owner: list[object] = []
     pins: list[object] = []
     primary_error: Exception | None = None
     cleanup_proven = False
@@ -2099,7 +2637,11 @@ def _crash_smoke_locked(
                 "probe_nonce": probe_nonce,
                 "run_id": run_id,
                 "state_dir": str(spec.state_dir.resolve()),
+                "game_dir": str(spec.game_dir.resolve()),
+                "timeout_seconds": float(timeout_seconds),
                 "artifacts": str(artifacts.resolve()),
+                "supervisor_ready": str(supervisor_ready_path.resolve()),
+                "supervisor_ack": str(supervisor_ack_path.resolve()),
                 "armed": str(armed_path.resolve()),
                 "watchdog_final": str(watchdog_final.resolve()),
                 "outer": outer_identity,
@@ -2111,40 +2653,122 @@ def _crash_smoke_locked(
             report["artifacts"]["handoff"] = _artifact_entry(handoff_path, run_dir)
             command = [
                 sys.executable,
-                str(agent_entry),
-                "--state-dir",
-                str(spec.state_dir),
-                "--game-dir",
-                str(spec.game_dir),
-                "_crash-subject",
-                "--probe-nonce",
-                probe_nonce,
-                "--handoff",
-                str(handoff_path),
-                "--handoff-sha256",
-                handoff_hash,
-                "--armed",
-                str(armed_path),
-                "--watchdog-final",
-                str(watchdog_final),
-                "--artifacts",
-                str(artifacts),
-                "--timeout",
-                str(timeout_seconds),
-                "--outer-pid",
-                str(outer_identity["pid"]),
-                "--outer-executable",
-                str(outer_identity["executable"]),
-                "--outer-creation-date",
-                str(outer_identity["creation_date"]),
+                *_crash_subject_command_tail(
+                    state_dir=spec.state_dir,
+                    game_dir=spec.game_dir,
+                    probe_nonce=probe_nonce,
+                    handoff_path=handoff_path,
+                    handoff_sha256=handoff_hash,
+                    armed_path=armed_path,
+                    watchdog_final=watchdog_final,
+                    artifacts=artifacts,
+                    timeout_seconds=timeout_seconds,
+                    outer=outer_identity,
+                ),
             ]
             subject = subprocess.Popen(command, stdout=stdout, stderr=stderr)
+            supervisor_ready = _wait_json(
+                supervisor_ready_path, subject, 20
+            )
+            if (
+                set(supervisor_ready)
+                != {
+                    "format_version",
+                    "probe_nonce",
+                    "supervisor",
+                    "supervisor_bootstrap",
+                    "outer",
+                    "ready_at",
+                    "ready_monotonic",
+                }
+                or supervisor_ready.get("format_version") != 1
+                or supervisor_ready.get("probe_nonce") != probe_nonce
+                or supervisor_ready.get("outer") != outer_identity
+            ):
+                raise AgentError("crash supervisor-ready payload differs")
+            _parse_utc_evidence(
+                supervisor_ready.get("ready_at"), "crash supervisor-ready"
+            )
+            _finite_monotonic(
+                supervisor_ready.get("ready_monotonic"),
+                "crash supervisor-ready",
+            )
+            ready_supervisor = supervisor_ready.get("supervisor")
+            ready_bootstrap = supervisor_ready.get("supervisor_bootstrap")
+            if not isinstance(ready_supervisor, dict):
+                raise AgentError("crash supervisor-ready identity differs")
+            _validate_supervisor_parent_chain(
+                outer=outer_identity,
+                bootstrap=ready_bootstrap,
+                supervisor=ready_supervisor,
+                probe_nonce=probe_nonce,
+                handoff_path=handoff_path,
+                handoff_sha256=handoff_hash,
+                armed_path=armed_path,
+                watchdog_final=watchdog_final,
+                artifacts=artifacts,
+                state_dir=spec.state_dir,
+                game_dir=spec.game_dir,
+                timeout_seconds=timeout_seconds,
+            )
+            if ready_bootstrap is None:
+                if int(ready_supervisor["pid"]) != subject.pid:
+                    raise AgentError("direct supervisor-ready PID differs")
+            elif _process_identity(subject.pid) != ready_bootstrap:
+                raise AgentError("supervisor-ready bootstrap identity differs")
+            supervisor_ack = _pin_and_acknowledge_supervisor(
+                supervisor_ready,
+                ack_path=supervisor_ack_path,
+                supervisor_ready_sha256=sha256_file(supervisor_ready_path),
+                pin_owner=supervisor_pin_owner,
+            )
+            supervisor_pin = supervisor_pin_owner[0]
+            report["artifacts"]["supervisor_ready"] = _artifact_entry(
+                supervisor_ready_path, run_dir
+            )
+            report["artifacts"]["supervisor_ack"] = _artifact_entry(
+                supervisor_ack_path, run_dir
+            )
             armed = _wait_json(armed_path, subject, timeout_seconds + 45)
+            _parse_utc_evidence(armed.get("armed_at"), "crash armed")
+            ready_monotonic = _finite_monotonic(
+                supervisor_ready.get("ready_monotonic"),
+                "crash supervisor-ready",
+            )
+            acknowledged_monotonic = _finite_monotonic(
+                supervisor_ack.get("acknowledged_monotonic"),
+                "crash supervisor acknowledgement",
+            )
+            armed_monotonic = _finite_monotonic(
+                armed.get("armed_monotonic"), "crash armed"
+            )
+            if not ready_monotonic < acknowledged_monotonic < armed_monotonic:
+                raise AgentError("crash handshake monotonic order differs")
             expected_job_name = _canonical_job_name(probe_nonce)
-            if int(armed["supervisor"]["pid"]) != subject.pid:
-                raise AgentError("armed supervisor PID differs from spawned subject")
-            if int(armed["supervisor"].get("parent_pid", -1)) != os.getpid():
-                raise AgentError("armed supervisor is not a direct child of outer")
+            supervisor_identity = armed.get("supervisor")
+            supervisor_bootstrap = armed.get("supervisor_bootstrap")
+            if not isinstance(supervisor_identity, dict):
+                raise AgentError("armed supervisor identity differs")
+            if (
+                supervisor_identity != ready_supervisor
+                or supervisor_bootstrap != ready_bootstrap
+            ):
+                raise AgentError("armed supervisor differs from early handshake")
+            _validate_supervisor_parent_chain(
+                outer=outer_identity,
+                bootstrap=supervisor_bootstrap,
+                supervisor=supervisor_identity,
+                probe_nonce=probe_nonce,
+                handoff_path=handoff_path,
+                handoff_sha256=handoff_hash,
+                armed_path=armed_path,
+                watchdog_final=watchdog_final,
+                artifacts=artifacts,
+                state_dir=spec.state_dir,
+                game_dir=spec.game_dir,
+                timeout_seconds=timeout_seconds,
+            )
+            supervisor_pid = int(supervisor_identity["pid"])
             if armed.get("probe_nonce") != probe_nonce:
                 raise AgentError("armed crash probe nonce differs")
             if armed.get("job_name") != expected_job_name:
@@ -2169,7 +2793,7 @@ def _crash_smoke_locked(
             sentinel_parent = armed.get("sentinel_parent", {})
             sentinel_child = armed.get("sentinel_child", {})
             if (
-                int(sentinel_parent.get("parent_pid", -1)) != subject.pid
+                int(sentinel_parent.get("parent_pid", -1)) != supervisor_pid
                 or int(sentinel_child.get("parent_pid", -1))
                 != int(sentinel_parent.get("pid", -2))
                 or not _same_executable(
@@ -2203,6 +2827,16 @@ def _crash_smoke_locked(
             for label, expected_path in expected_control.items():
                 if Path(str(control[label])).resolve() != expected_path:
                     raise AgentError(f"armed {label} control path differs")
+            _validate_watchdog_process_command(
+                armed["watchdog"],
+                supervisor=supervisor_identity,
+                nonce=watchdog_nonce,
+                ready_path=expected_control["ready"],
+                record_path=expected_control["record"],
+                unsafe_marker=expected_control["unsafe_marker"],
+                game_exe=spec.game_exe,
+                final_evidence=watchdog_final,
+            )
             for label, hash_label in (
                 ("record", "record_sha256"),
                 ("ready", "ready_sha256"),
@@ -2244,14 +2878,15 @@ def _crash_smoke_locked(
                 control_before[label] = entry
                 report["artifacts"][f"control_before_{label}"] = entry
 
-            supervisor_pin = _pin_process(armed["supervisor"], allow_terminate=True)
+            if supervisor_pin is None:
+                raise AgentError("crash supervisor was not pinned after handshake")
             ck3_pin = _pin_process(armed["ck3"])
             sentinel_parent_pin = _pin_process(armed["sentinel_parent"])
             sentinel_child_pin = _pin_process(armed["sentinel_child"])
             watchdog_state_before = _authenticated_watchdog_state(
                 int(armed["watchdog"]["pid"]),
                 str(armed["watchdog"]["creation_date"]),
-                subject.pid,
+                supervisor_pid,
                 watchdog_nonce,
             )
             if watchdog_state_before != "running":
@@ -2261,7 +2896,6 @@ def _crash_smoke_locked(
             watchdog_pin = _pin_process(armed["watchdog"])
             pins.extend(
                 [
-                    supervisor_pin,
                     ck3_pin,
                     sentinel_parent_pin,
                     sentinel_child_pin,
@@ -2272,7 +2906,12 @@ def _crash_smoke_locked(
                 events,
                 {
                     "kind": "crash_subject_armed",
-                    "subject_pid": subject.pid,
+                    "subject_pid": supervisor_pid,
+                    "subject_bootstrap_pid": (
+                        int(supervisor_bootstrap["pid"])
+                        if supervisor_bootstrap is not None
+                        else None
+                    ),
                     "ck3_pid": armed["ck3"]["pid"],
                     "job_active_processes": armed["job_active_processes"],
                     "job_name": expected_job_name,
@@ -2324,7 +2963,8 @@ def _crash_smoke_locked(
                 watchdog_evidence.get("ok") is not True
                 or watchdog_evidence.get("nonce") != armed["watchdog_nonce"]
                 or watchdog_evidence.get("stage") != "complete"
-                or int(watchdog_evidence.get("parent_pid", -1)) != subject.pid
+                or int(watchdog_evidence.get("parent_pid", -1))
+                != supervisor_pid
                 or not _same_executable(
                     watchdog_evidence.get("parent_executable", ""),
                     armed["supervisor"].get("executable", ""),
@@ -2351,7 +2991,7 @@ def _crash_smoke_locked(
             watchdog_state = _authenticated_watchdog_state(
                 int(armed["watchdog"]["pid"]),
                 str(armed["watchdog"]["creation_date"]),
-                subject.pid,
+                supervisor_pid,
                 str(armed["watchdog_nonce"]),
             )
             if watchdog_state != "absent":
@@ -2371,8 +3011,18 @@ def _crash_smoke_locked(
             )
             report["crash_attestation"] = {
                 "probe_nonce": probe_nonce,
-                "subject_pid": subject.pid,
-                "subject_exit_code": subject.returncode,
+                "subject_pid": supervisor_pid,
+                "subject_exit_code": pinned_exit_codes["supervisor"],
+                "subject_bootstrap_identity": supervisor_bootstrap,
+                "subject_bootstrap_exit_code": (
+                    subject.returncode
+                    if supervisor_bootstrap is not None
+                    else None
+                ),
+                "supervisor_ready_sha256": sha256_file(
+                    supervisor_ready_path
+                ),
+                "supervisor_ack_sha256": sha256_file(supervisor_ack_path),
                 "handoff_sha256": handoff_hash,
                 "armed_sha256": sha256_file(armed_path),
                 "job_name": expected_job_name,
@@ -2412,18 +3062,70 @@ def _crash_smoke_locked(
         primary_error = error
     finally:
         import win32api
+        import win32event
 
+        if supervisor_pin is None and supervisor_pin_owner:
+            supervisor_pin = supervisor_pin_owner[0]
+        if supervisor_pin is not None and not cleanup_proven:
+            try:
+                if (
+                    win32event.WaitForSingleObject(supervisor_pin, 0)
+                    != win32event.WAIT_OBJECT_0
+                ):
+                    win32api.TerminateProcess(supervisor_pin, 1)
+                    emergency_exit = _wait_pinned_exit(
+                        supervisor_pin, "failed crash supervisor", 20
+                    )
+                    report["emergency_supervisor_exit_code"] = emergency_exit
+            except Exception as cleanup_error:
+                report["supervisor_cleanup_error"] = str(cleanup_error)
+        if subject is not None and subject.poll() is None:
+            try:
+                subject.wait(timeout=35 if supervisor_pin is None else 15)
+            except subprocess.TimeoutExpired:
+                try:
+                    subject.terminate()
+                    subject.wait(timeout=10)
+                except Exception as cleanup_error:
+                    report["subject_cleanup_error"] = str(cleanup_error)
+        if not cleanup_proven and supervisor_pin is not None:
+            try:
+                report["failure_path_ck3_inventory"] = _wait_global_ck3_quiet()
+                if isinstance(armed, dict) and isinstance(
+                    armed.get("watchdog"), dict
+                ):
+                    deadline = time.monotonic() + 40
+                    while time.monotonic() < deadline:
+                        state = _authenticated_watchdog_state(
+                            int(armed["watchdog"]["pid"]),
+                            str(armed["watchdog"]["creation_date"]),
+                            int(armed["supervisor"]["pid"]),
+                            str(armed["watchdog_nonce"]),
+                        )
+                        if state == "absent":
+                            report["failure_path_watchdog_state"] = state
+                            break
+                        if state == "unknown":
+                            raise AgentError(
+                                "emergency watchdog identity became unknown"
+                            )
+                        time.sleep(0.1)
+                    else:
+                        raise AgentError(
+                            "emergency watchdog did not become absent"
+                        )
+            except Exception as cleanup_error:
+                report["emergency_cleanup_error"] = str(cleanup_error)
         for pinned in reversed(pins):
             try:
                 win32api.CloseHandle(pinned)
             except Exception:
                 pass
-        if subject is not None and subject.poll() is None:
+        if supervisor_pin is not None:
             try:
-                subject.terminate()
-                subject.wait(timeout=10)
-            except Exception as cleanup_error:
-                report["subject_cleanup_error"] = str(cleanup_error)
+                win32api.CloseHandle(supervisor_pin)
+            except Exception:
+                pass
         if primary_error is not None and subject is not None:
             report["subject_failure"] = _read_subject_failure(run_dir)
 

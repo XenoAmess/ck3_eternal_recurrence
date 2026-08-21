@@ -27,8 +27,11 @@ from xar_autoplayer.crash_probe import (  # noqa: E402
     REPLAY_TRUST_MODEL,
     _REPLAY_OCR_CACHE,
     _canonical_job_name,
+    _command_arguments,
+    _crash_subject_command_tail,
     _named_job_absent,
     _pin_process,
+    _pin_and_acknowledge_supervisor,
     _report_body_sha256,
     _replay_main_menu_ocr,
     _run_named_job_owner_fixture,
@@ -36,6 +39,9 @@ from xar_autoplayer.crash_probe import (  # noqa: E402
     _validate_crash_success_payload,
     _validate_environment_archive_semantics,
     _validate_subject_invocation,
+    _validate_watchdog_process_command,
+    _wait_for_supervisor_ack,
+    run_crash_subject,
     validate_crash_report,
     _wait_named_job_absent,
     _wait_pinned_exit,
@@ -52,6 +58,7 @@ from xar_autoplayer.environment import (  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.runtime import (  # noqa: E402
     MAIN_MENU_REGION,
+    PROCESS_WATCHDOG,
     _close_job,
     _create_kill_on_close_job,
     _ocr_items,
@@ -442,6 +449,12 @@ class CrashReportContractTests(unittest.TestCase):
 
         armed_path = artifacts_dir / f"armed-{probe_nonce}.json"
         handoff_path = artifacts_dir / f"handoff-{probe_nonce}.json"
+        supervisor_ready_path = (
+            artifacts_dir / f"supervisor-ready-{probe_nonce}.json"
+        )
+        supervisor_ack_path = (
+            artifacts_dir / f"supervisor-ack-{probe_nonce}.json"
+        )
         owner_path = artifacts_dir / f"owner-{probe_nonce}.json"
         job_name = _canonical_job_name(probe_nonce)
         font_path = Path(os.environ.get("WINDIR", r"C:\Windows")) / "Fonts" / "msyh.ttc"
@@ -529,6 +542,7 @@ class CrashReportContractTests(unittest.TestCase):
             "job_active_processes": 3,
             "process_resumed": True,
             "supervisor": supervisor,
+            "supervisor_bootstrap": None,
             "ck3": ck3,
             "sentinel_parent": {
                 "pid": 200,
@@ -568,6 +582,7 @@ class CrashReportContractTests(unittest.TestCase):
             },
             "environment_sha256": environment_sha256,
             "armed_at": "2026-08-22T01:02:03+00:00",
+            "armed_monotonic": 100.0,
         }
         armed_path.write_text(
             json.dumps(armed, ensure_ascii=False) + "\n", encoding="utf-8"
@@ -584,7 +599,11 @@ class CrashReportContractTests(unittest.TestCase):
             "probe_nonce": probe_nonce,
             "run_id": run.name,
             "state_dir": str(state.resolve()),
+            "game_dir": str(game_exe.parents[1].resolve()),
+            "timeout_seconds": 180.0,
             "artifacts": str(artifacts_dir.resolve()),
+            "supervisor_ready": str(supervisor_ready_path.resolve()),
+            "supervisor_ack": str(supervisor_ack_path.resolve()),
             "armed": str(armed_path.resolve()),
             "watchdog_final": str(evidence.resolve()),
             "outer": {
@@ -599,12 +618,72 @@ class CrashReportContractTests(unittest.TestCase):
             "owner_sha256": sha256_file(owner_path),
         }
         handoff_path.write_text(json.dumps(handoff) + "\n", encoding="utf-8")
+        subject_tail = _crash_subject_command_tail(
+            state_dir=state,
+            game_dir=game_exe.parents[1],
+            probe_nonce=probe_nonce,
+            handoff_path=handoff_path,
+            handoff_sha256=sha256_file(handoff_path),
+            armed_path=armed_path,
+            watchdog_final=evidence,
+            artifacts=artifacts_dir,
+            timeout_seconds=180.0,
+            outer=handoff["outer"],
+        )
+        supervisor["command_line"] = subprocess.list2cmdline(
+            [str(supervisor["executable"]), *subject_tail]
+        )
+        watchdog["command_line"] = subprocess.list2cmdline(
+            [
+                str(watchdog["executable"]),
+                str(PROCESS_WATCHDOG.resolve()),
+                str(supervisor["pid"]),
+                str(Path(str(supervisor["executable"])).resolve()),
+                str(supervisor["creation_date"]),
+                watchdog_nonce,
+                str((state / "control" / f"watchdog-{watchdog_nonce}.ready.json").resolve()),
+                str((state / "control" / "ck3.json").resolve()),
+                str((state / "control" / "unsafe-cleanup.json").resolve()),
+                str(game_exe.resolve()),
+                str(evidence.resolve()),
+            ]
+        )
+        armed_path.write_text(
+            json.dumps(armed, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
+        supervisor_ready = {
+            "format_version": 1,
+            "probe_nonce": probe_nonce,
+            "supervisor": supervisor,
+            "supervisor_bootstrap": None,
+            "outer": handoff["outer"],
+            "ready_at": "2026-08-22T01:01:00+00:00",
+            "ready_monotonic": 90.0,
+        }
+        supervisor_ready_path.write_text(
+            json.dumps(supervisor_ready) + "\n", encoding="utf-8"
+        )
+        supervisor_ack = {
+            "format_version": 1,
+            "probe_nonce": probe_nonce,
+            "supervisor": supervisor,
+            "supervisor_bootstrap": None,
+            "outer": handoff["outer"],
+            "supervisor_ready_sha256": sha256_file(supervisor_ready_path),
+            "acknowledged_at": "2026-08-22T01:01:01+00:00",
+            "acknowledged_monotonic": 91.0,
+        }
+        supervisor_ack_path.write_text(
+            json.dumps(supervisor_ack) + "\n", encoding="utf-8"
+        )
         artifact_manifest = {
             "protected_before": entry(before),
             "environment": entry(environment),
             "production_manifest": entry(production_manifest),
             "owner": entry(owner_path),
             "handoff": entry(handoff_path),
+            "supervisor_ready": entry(supervisor_ready_path),
+            "supervisor_ack": entry(supervisor_ack_path),
             "armed": entry(armed_path),
             "runtime_debug_prefix": entry(debug_prefix),
             "load_attestation": entry(load_path),
@@ -631,6 +710,12 @@ class CrashReportContractTests(unittest.TestCase):
                 "probe_nonce": probe_nonce,
                 "subject_pid": 123,
                 "subject_exit_code": CRASH_EXIT_CODE,
+                "subject_bootstrap_identity": None,
+                "subject_bootstrap_exit_code": None,
+                "supervisor_ready_sha256": sha256_file(
+                    supervisor_ready_path
+                ),
+                "supervisor_ack_sha256": sha256_file(supervisor_ack_path),
                 "cleanup_proven": True,
                 "job_name": job_name,
                 "job_active_processes_before": 3,
@@ -776,6 +861,88 @@ class CrashReportContractTests(unittest.TestCase):
             with self.assertRaisesRegex(AgentError, "control-file proof"):
                 _validate_crash_success_payload(report, run)
 
+    def test_success_contract_rejects_watchdog_command_tampering(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-crash-watchdog-command-") as temporary:
+            run = self._run(temporary)
+            report = self._report(run)
+            armed_path = run / report["artifacts"]["armed"]["path"]
+            armed = json.loads(armed_path.read_text(encoding="utf-8"))
+            arguments = _command_arguments(armed["watchdog"]["command_line"])
+            arguments[5] = "c" * 32
+            armed["watchdog"]["command_line"] = subprocess.list2cmdline(arguments)
+            armed_path.write_text(
+                json.dumps(armed, ensure_ascii=False) + "\n", encoding="utf-8"
+            )
+            digest = sha256_file(armed_path)
+            report["artifacts"]["armed"]["sha256"] = digest
+            report["crash_attestation"]["armed_sha256"] = digest
+            report["crash_attestation"]["watchdog_identity_before"] = armed[
+                "watchdog"
+            ]
+            with self.assertRaisesRegex(AgentError, "watchdog command differs"):
+                _validate_crash_success_payload(report, run)
+
+    def test_success_contract_rejects_bootstrap_fields_on_direct_subject(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-crash-direct-bootstrap-") as temporary:
+            run = self._run(temporary)
+            report = self._report(run)
+            report["crash_attestation"]["subject_bootstrap_exit_code"] = (
+                CRASH_EXIT_CODE
+            )
+            with self.assertRaisesRegex(AgentError, "bootstrap report binding"):
+                _validate_crash_success_payload(report, run)
+
+    def test_success_contract_rejects_semantic_handshake_tampering(self) -> None:
+        cases = (
+            ("supervisor_ready", "ready_at", "supervisor_ready_sha256"),
+            ("supervisor_ack", "acknowledged_at", "supervisor_ack_sha256"),
+        )
+        for artifact_label, field, crash_hash_field in cases:
+            with self.subTest(label=artifact_label), tempfile.TemporaryDirectory(
+                prefix="xar-crash-handshake-tamper-"
+            ) as temporary:
+                run = self._run(temporary)
+                report = self._report(run)
+                path = run / report["artifacts"][artifact_label]["path"]
+                payload = json.loads(path.read_text(encoding="utf-8"))
+                payload[field] = ""
+                path.write_text(json.dumps(payload) + "\n", encoding="utf-8")
+                digest = sha256_file(path)
+                report["artifacts"][artifact_label]["sha256"] = digest
+                report["crash_attestation"][crash_hash_field] = digest
+                with self.assertRaisesRegex(
+                    AgentError, "artifact binding|timestamp differs"
+                ):
+                    _validate_crash_success_payload(report, run)
+
+    def test_success_contract_rejects_non_utc_handshake_timestamp(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-crash-handshake-utc-") as temporary:
+            run = self._run(temporary)
+            report = self._report(run)
+            armed_path = run / report["artifacts"]["armed"]["path"]
+            armed = json.loads(armed_path.read_text(encoding="utf-8"))
+            armed["armed_at"] = "2026-08-22T09:02:03+08:00"
+            armed_path.write_text(json.dumps(armed) + "\n", encoding="utf-8")
+            digest = sha256_file(armed_path)
+            report["artifacts"]["armed"]["sha256"] = digest
+            report["crash_attestation"]["armed_sha256"] = digest
+            with self.assertRaisesRegex(AgentError, "timestamp is not UTC"):
+                _validate_crash_success_payload(report, run)
+
+    def test_success_contract_rejects_reordered_handshake_monotonic(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-crash-handshake-order-") as temporary:
+            run = self._run(temporary)
+            report = self._report(run)
+            armed_path = run / report["artifacts"]["armed"]["path"]
+            armed = json.loads(armed_path.read_text(encoding="utf-8"))
+            armed["armed_monotonic"] = 90.5
+            armed_path.write_text(json.dumps(armed) + "\n", encoding="utf-8")
+            digest = sha256_file(armed_path)
+            report["artifacts"]["armed"]["sha256"] = digest
+            report["crash_attestation"]["armed_sha256"] = digest
+            with self.assertRaisesRegex(AgentError, "monotonic order differs"):
+                _validate_crash_success_payload(report, run)
+
     def test_success_contract_requires_post_resume_ck3_binding(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-crash-resume-") as temporary:
             run = self._run(temporary)
@@ -789,6 +956,95 @@ class CrashReportContractTests(unittest.TestCase):
             report["crash_attestation"]["armed_sha256"] = digest
             with self.assertRaisesRegex(AgentError, "handoff or armed payload"):
                 _validate_crash_success_payload(report, run)
+
+    def test_success_contract_accepts_exact_venv_redirector_chain(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-crash-redirector-") as temporary:
+            run = self._run(temporary)
+            report = self._report(run)
+            armed_path = run / report["artifacts"]["armed"]["path"]
+            handoff_path = run / report["artifacts"]["handoff"]["path"]
+            armed = json.loads(armed_path.read_text(encoding="utf-8"))
+            handoff = json.loads(handoff_path.read_text(encoding="utf-8"))
+            bootstrap_executable = str(Path(sys.executable).resolve())
+            bootstrap_tail = _crash_subject_command_tail(
+                state_dir=Path(handoff["state_dir"]),
+                game_dir=Path(handoff["game_dir"]),
+                probe_nonce=str(armed["probe_nonce"]),
+                handoff_path=handoff_path,
+                handoff_sha256=str(
+                    report["crash_attestation"]["handoff_sha256"]
+                ),
+                armed_path=armed_path,
+                watchdog_final=Path(
+                    report["crash_attestation"]["watchdog_final"]
+                ),
+                artifacts=run / "artifacts",
+                timeout_seconds=float(handoff["timeout_seconds"]),
+                outer=handoff["outer"],
+            )
+            bootstrap = {
+                "pid": 122,
+                "parent_pid": int(handoff["outer"]["pid"]),
+                "name": Path(bootstrap_executable).name,
+                "executable": bootstrap_executable,
+                "creation_date": "bootstrap-created",
+                "command_line": subprocess.list2cmdline(
+                    [bootstrap_executable, *bootstrap_tail]
+                ),
+            }
+            armed["supervisor"]["parent_pid"] = bootstrap["pid"]
+            armed["supervisor_bootstrap"] = bootstrap
+            supervisor_ready_path = (
+                run / report["artifacts"]["supervisor_ready"]["path"]
+            )
+            supervisor_ack_path = (
+                run / report["artifacts"]["supervisor_ack"]["path"]
+            )
+            supervisor_ready = json.loads(
+                supervisor_ready_path.read_text(encoding="utf-8")
+            )
+            supervisor_ready["supervisor"] = armed["supervisor"]
+            supervisor_ready["supervisor_bootstrap"] = bootstrap
+            supervisor_ready_path.write_text(
+                json.dumps(supervisor_ready) + "\n", encoding="utf-8"
+            )
+            supervisor_ack = json.loads(
+                supervisor_ack_path.read_text(encoding="utf-8")
+            )
+            supervisor_ack["supervisor"] = armed["supervisor"]
+            supervisor_ack["supervisor_bootstrap"] = bootstrap
+            supervisor_ack["supervisor_ready_sha256"] = sha256_file(
+                supervisor_ready_path
+            )
+            supervisor_ack_path.write_text(
+                json.dumps(supervisor_ack) + "\n", encoding="utf-8"
+            )
+            armed_path.write_text(
+                json.dumps(armed, ensure_ascii=False) + "\n", encoding="utf-8"
+            )
+            armed_sha256 = sha256_file(armed_path)
+            report["artifacts"]["armed"]["sha256"] = armed_sha256
+            report["crash_attestation"]["armed_sha256"] = armed_sha256
+            report["artifacts"]["supervisor_ready"]["sha256"] = sha256_file(
+                supervisor_ready_path
+            )
+            report["artifacts"]["supervisor_ack"]["sha256"] = sha256_file(
+                supervisor_ack_path
+            )
+            report["crash_attestation"]["supervisor_ready_sha256"] = (
+                report["artifacts"]["supervisor_ready"]["sha256"]
+            )
+            report["crash_attestation"]["supervisor_ack_sha256"] = (
+                report["artifacts"]["supervisor_ack"]["sha256"]
+            )
+            report["crash_attestation"]["subject_bootstrap_identity"] = bootstrap
+            report["crash_attestation"]["subject_bootstrap_exit_code"] = (
+                CRASH_EXIT_CODE
+            )
+            report["crash_attestation"]["pinned_process_identities"][
+                "supervisor"
+            ] = armed["supervisor"]
+            _validate_crash_success_payload(report, run)
 
     def test_report_body_digest_changes_with_semantic_evidence(self) -> None:
         report = {"kind": "crash_recovery_smoke", "evidence": {"ok": True}}
@@ -944,6 +1200,223 @@ class CrashReportContractTests(unittest.TestCase):
                 validate_crash_report(run)
 
 
+class CrashSupervisorHandshakeTests(unittest.TestCase):
+    def test_outer_pins_exact_supervisor_before_writing_ack(self) -> None:
+        ready = {
+            "probe_nonce": "a" * 32,
+            "supervisor": {"pid": 20},
+            "supervisor_bootstrap": None,
+            "outer": {"pid": 10},
+        }
+        order: list[str] = []
+        pinned = object()
+        pin_owner: list[object] = []
+        with tempfile.TemporaryDirectory(prefix="xar-handshake-order-") as temporary:
+            ack_path = Path(temporary) / "ack.json"
+            with mock.patch(
+                "xar_autoplayer.crash_probe._pin_process",
+                side_effect=lambda *_args, **_kwargs: order.append("pin") or pinned,
+            ), mock.patch(
+                "xar_autoplayer.crash_probe.write_json_atomic",
+                side_effect=lambda *_args, **_kwargs: order.append("ack"),
+            ):
+                acknowledgement = _pin_and_acknowledge_supervisor(
+                    ready,
+                    ack_path=ack_path,
+                    supervisor_ready_sha256="b" * 64,
+                    pin_owner=pin_owner,
+                )
+        self.assertEqual(pin_owner, [pinned])
+        self.assertEqual(order, ["pin", "ack"])
+        self.assertEqual(acknowledgement["supervisor"], ready["supervisor"])
+
+    def test_ack_publication_interruption_keeps_pin_owned_by_outer(self) -> None:
+        ready = {
+            "probe_nonce": "a" * 32,
+            "supervisor": {"pid": 20},
+            "supervisor_bootstrap": None,
+            "outer": {"pid": 10},
+        }
+        pinned = object()
+        pin_owner: list[object] = []
+        with tempfile.TemporaryDirectory(prefix="xar-handshake-interrupt-") as temporary:
+            with mock.patch(
+                "xar_autoplayer.crash_probe._pin_process", return_value=pinned
+            ), mock.patch(
+                "xar_autoplayer.crash_probe.write_json_atomic",
+                side_effect=KeyboardInterrupt,
+            ), self.assertRaises(KeyboardInterrupt):
+                _pin_and_acknowledge_supervisor(
+                    ready,
+                    ack_path=Path(temporary) / "ack.json",
+                    supervisor_ready_sha256="b" * 64,
+                    pin_owner=pin_owner,
+                )
+        self.assertEqual(pin_owner, [pinned])
+
+    def test_append_completion_interruption_keeps_pin_owned_by_outer(self) -> None:
+        class InterruptAfterAppend(list[object]):
+            def append(self, value: object) -> None:
+                super().append(value)
+                raise KeyboardInterrupt
+
+        ready = {
+            "probe_nonce": "a" * 32,
+            "supervisor": {"pid": 20},
+            "supervisor_bootstrap": None,
+            "outer": {"pid": 10},
+        }
+        pinned = object()
+        pin_owner = InterruptAfterAppend()
+        with tempfile.TemporaryDirectory(prefix="xar-handshake-append-interrupt-") as temporary:
+            with mock.patch(
+                "xar_autoplayer.crash_probe._pin_process", return_value=pinned
+            ), mock.patch(
+                "xar_autoplayer.crash_probe.write_json_atomic"
+            ) as write_ack, self.assertRaises(KeyboardInterrupt):
+                _pin_and_acknowledge_supervisor(
+                    ready,
+                    ack_path=Path(temporary) / "ack.json",
+                    supervisor_ready_sha256="b" * 64,
+                    pin_owner=pin_owner,
+                )
+        self.assertEqual(pin_owner, [pinned])
+        write_ack.assert_not_called()
+
+    @unittest.skipUnless(os.name == "nt", "Windows pinned-handle cleanup contract")
+    def test_pin_process_closes_handle_on_base_exception(self) -> None:
+        import win32api
+
+        with mock.patch(
+            "xar_autoplayer.crash_probe._process_identity",
+            side_effect=KeyboardInterrupt,
+        ), mock.patch(
+            "win32api.CloseHandle", wraps=win32api.CloseHandle
+        ) as close_handle, self.assertRaises(KeyboardInterrupt):
+            _pin_process({"pid": os.getpid()})
+        close_handle.assert_called_once()
+
+    def test_subject_never_launches_when_ack_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-handshake-reject-") as temporary:
+            root = Path(temporary)
+            spec = EnvironmentSpec(root / "state", root / "game")
+            artifacts = spec.state_dir / "runs" / "run" / "artifacts"
+            artifacts.mkdir(parents=True)
+            ready_path = artifacts / "supervisor-ready.json"
+            handoff = {
+                "supervisor_ready": str(ready_path),
+                "supervisor_ack": str(artifacts / "supervisor-ack.json"),
+                "outer": {"pid": 10},
+                "environment_sha256": "e" * 64,
+                "_supervisor_bootstrap": None,
+            }
+            supervisor = {
+                "pid": 20,
+                "parent_pid": 10,
+                "name": "python.exe",
+                "executable": str(Path(sys.executable).resolve()),
+                "creation_date": "created",
+                "command_line": f'"{sys.executable}" _crash-subject',
+            }
+            with mock.patch(
+                "xar_autoplayer.crash_probe._validate_subject_invocation",
+                return_value=handoff,
+            ), mock.patch(
+                "xar_autoplayer.crash_probe._start_outer_guard"
+            ), mock.patch(
+                "xar_autoplayer.crash_probe._process_identity",
+                return_value=supervisor,
+            ), mock.patch(
+                "xar_autoplayer.crash_probe._wait_for_supervisor_ack",
+                side_effect=AgentError("bad ack"),
+            ), mock.patch(
+                "xar_autoplayer.crash_probe.launch"
+            ) as launch_mock, self.assertRaisesRegex(AgentError, "bad ack"):
+                run_crash_subject(
+                    spec,
+                    probe_nonce="a" * 32,
+                    handoff_path=artifacts / "handoff.json",
+                    handoff_sha256="b" * 64,
+                    armed_path=artifacts / "armed.json",
+                    watchdog_final=artifacts / "watchdog-final.json",
+                    artifacts=artifacts,
+                    timeout_seconds=180.0,
+                    outer_identity={
+                        "pid": 10,
+                        "executable": str(Path(sys.executable).resolve()),
+                        "creation_date": "outer-created",
+                    },
+                )
+            launch_mock.assert_not_called()
+
+    def test_watchdog_accepts_launcher_image_split_and_rejects_wrong_image(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-watchdog-split-") as temporary:
+            root = Path(temporary).resolve()
+            venv_python = Path(r"C:\AgentVenv\Scripts\python.exe")
+            venv_pythonw = venv_python.with_name("pythonw.exe")
+            base_python = Path(r"C:\Python313\python.exe")
+            base_pythonw = base_python.with_name("pythonw.exe")
+            supervisor = {
+                "pid": 20,
+                "parent_pid": 10,
+                "name": "python.exe",
+                "executable": str(base_python),
+                "creation_date": "supervisor-created",
+                "command_line": subprocess.list2cmdline(
+                    [str(venv_python), "agent.py", "_crash-subject"]
+                ),
+            }
+            ready = root / "ready.json"
+            record = root / "record.json"
+            marker = root / "unsafe.json"
+            game_exe = root / "game" / "binaries" / "ck3.exe"
+            final = root / "final.json"
+            watchdog_tail = [
+                str(PROCESS_WATCHDOG.resolve()),
+                "20",
+                str(base_python.resolve()),
+                "supervisor-created",
+                "a" * 32,
+                str(ready.resolve()),
+                str(record.resolve()),
+                str(marker.resolve()),
+                str(game_exe.resolve()),
+                str(final.resolve()),
+            ]
+            watchdog = {
+                "pid": 30,
+                "parent_pid": 999,
+                "name": "pythonw.exe",
+                "executable": str(base_pythonw),
+                "creation_date": "watchdog-created",
+                "command_line": subprocess.list2cmdline(
+                    [str(venv_pythonw), *watchdog_tail]
+                ),
+            }
+            _validate_watchdog_process_command(
+                watchdog,
+                supervisor=supervisor,
+                nonce="a" * 32,
+                ready_path=ready,
+                record_path=record,
+                unsafe_marker=marker,
+                game_exe=game_exe,
+                final_evidence=final,
+            )
+            watchdog["executable"] = r"C:\WrongPython\pythonw.exe"
+            with self.assertRaisesRegex(AgentError, "watchdog command differs"):
+                _validate_watchdog_process_command(
+                    watchdog,
+                    supervisor=supervisor,
+                    nonce="a" * 32,
+                    ready_path=ready,
+                    record_path=record,
+                    unsafe_marker=marker,
+                    game_exe=game_exe,
+                    final_evidence=final,
+                )
+
+
 class CrashSubjectInvocationTests(unittest.TestCase):
     def _fixture(self, root: Path) -> tuple[EnvironmentSpec, dict[str, object]]:
         spec = EnvironmentSpec(root / "state", root / "game")
@@ -954,6 +1427,8 @@ class CrashSubjectInvocationTests(unittest.TestCase):
         armed = artifacts / f"armed-{nonce}.json"
         final = artifacts / f"watchdog-final-{nonce}.json"
         handoff = artifacts / f"handoff-{nonce}.json"
+        supervisor_ready = artifacts / f"supervisor-ready-{nonce}.json"
+        supervisor_ack = artifacts / f"supervisor-ack-{nonce}.json"
         owner = spec.state_dir / "control" / "owner.json"
         owner.parent.mkdir(parents=True)
         owner.write_text(
@@ -968,16 +1443,22 @@ class CrashSubjectInvocationTests(unittest.TestCase):
         )
         outer = {
             "pid": 10,
+            "parent_pid": 1,
+            "name": Path(sys.executable).name,
             "executable": str(Path(sys.executable).resolve()),
             "creation_date": "outer-created",
-            "command_line": f"{ROOT / 'agent.py'} crash-smoke",
+            "command_line": f'"{sys.executable}" "{ROOT / 'agent.py'}" crash-smoke',
         }
         payload = {
             "format_version": 1,
             "probe_nonce": nonce,
             "run_id": run.name,
             "state_dir": str(spec.state_dir.resolve()),
+            "game_dir": str(spec.game_dir.resolve()),
+            "timeout_seconds": 180.0,
             "artifacts": str(artifacts.resolve()),
+            "supervisor_ready": str(supervisor_ready.resolve()),
+            "supervisor_ack": str(supervisor_ack.resolve()),
             "armed": str(armed.resolve()),
             "watchdog_final": str(final.resolve()),
             "outer": outer,
@@ -990,9 +1471,41 @@ class CrashSubjectInvocationTests(unittest.TestCase):
             "artifacts": artifacts,
             "armed": armed,
             "final": final,
+            "supervisor_ready": supervisor_ready,
+            "supervisor_ack": supervisor_ack,
             "handoff": handoff,
             "handoff_sha256": sha256_file(handoff),
             "outer": outer,
+        }
+
+    def _subject_identity(
+        self,
+        spec: EnvironmentSpec,
+        fixture: dict[str, object],
+        *,
+        pid: int = 20,
+        parent_pid: int = 10,
+    ) -> dict[str, object]:
+        executable = str(Path(sys.executable).resolve())
+        tail = _crash_subject_command_tail(
+            state_dir=spec.state_dir,
+            game_dir=spec.game_dir,
+            probe_nonce=str(fixture["nonce"]),
+            handoff_path=fixture["handoff"],
+            handoff_sha256=str(fixture["handoff_sha256"]),
+            armed_path=fixture["armed"],
+            watchdog_final=fixture["final"],
+            artifacts=fixture["artifacts"],
+            timeout_seconds=180.0,
+            outer=fixture["outer"],
+        )
+        return {
+            "pid": pid,
+            "parent_pid": parent_pid,
+            "name": Path(executable).name,
+            "executable": executable,
+            "creation_date": "supervisor-created",
+            "command_line": subprocess.list2cmdline([executable, *tail]),
         }
 
     def test_rejects_artifact_path_outside_exact_run_before_launch(self) -> None:
@@ -1014,15 +1527,17 @@ class CrashSubjectInvocationTests(unittest.TestCase):
     def test_rejects_non_parent_outer_identity(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-subject-parent-") as temporary:
             spec, fixture = self._fixture(Path(temporary))
-            current = {"pid": 20, "parent_pid": 999}
+            current = self._subject_identity(
+                spec, fixture, parent_pid=999
+            )
             actual_outer = {
                 **fixture["outer"],
                 "command_line": str(fixture["outer"]["command_line"]),
             }
             with mock.patch(
                 "xar_autoplayer.crash_probe._process_identity",
-                side_effect=[current, actual_outer],
-            ), self.assertRaisesRegex(AgentError, "not a direct child"):
+                side_effect=[current, actual_outer, None],
+            ), self.assertRaisesRegex(AgentError, "bootstrap identity is missing"):
                 _validate_subject_invocation(
                     spec,
                     probe_nonce=fixture["nonce"],
@@ -1050,6 +1565,25 @@ class CrashSubjectInvocationTests(unittest.TestCase):
                     outer_identity=fixture["outer"],
                 )
 
+    def test_rejects_stale_supervisor_handshake_files(self) -> None:
+        for label in ("supervisor_ready", "supervisor_ack"):
+            with self.subTest(label=label), tempfile.TemporaryDirectory(
+                prefix="xar-subject-stale-handshake-"
+            ) as temporary:
+                spec, fixture = self._fixture(Path(temporary))
+                fixture[label].write_text("{}\n", encoding="utf-8")
+                with self.assertRaisesRegex(AgentError, "handshake target differs"):
+                    _validate_subject_invocation(
+                        spec,
+                        probe_nonce=fixture["nonce"],
+                        handoff_path=fixture["handoff"],
+                        handoff_sha256=fixture["handoff_sha256"],
+                        armed_path=fixture["armed"],
+                        watchdog_final=fixture["final"],
+                        artifacts=fixture["artifacts"],
+                        outer_identity=fixture["outer"],
+                    )
+
     def test_accepts_public_relative_script_and_console_entry_commands(self) -> None:
         commands = (
             r'python.exe ck3_autonomous_player\agent.py crash-smoke',
@@ -1060,7 +1594,7 @@ class CrashSubjectInvocationTests(unittest.TestCase):
                 prefix="xar-subject-public-command-"
             ) as temporary:
                 spec, fixture = self._fixture(Path(temporary))
-                current = {"pid": 20, "parent_pid": 10}
+                current = self._subject_identity(spec, fixture)
                 actual_outer = {
                     **fixture["outer"],
                     "command_line": command,
@@ -1082,7 +1616,201 @@ class CrashSubjectInvocationTests(unittest.TestCase):
                         outer_identity=fixture["outer"],
                     )
                 self.assertEqual(result["probe_nonce"], fixture["nonce"])
+                self.assertIsNone(result["_supervisor_bootstrap"])
                 self.assertEqual(mutex.call_count, 2)
+
+    def test_accepts_one_exact_authenticated_venv_redirector(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-subject-redirector-") as temporary:
+            spec, fixture = self._fixture(Path(temporary))
+            current = self._subject_identity(
+                spec, fixture, parent_pid=30
+            )
+            current["executable"] = str(
+                (Path(sys.base_prefix) / "python.exe").resolve()
+            )
+            current["name"] = Path(str(current["executable"])).name
+            bootstrap_executable = str(Path(sys.executable).resolve())
+            bootstrap_tail = _crash_subject_command_tail(
+                state_dir=spec.state_dir,
+                game_dir=spec.game_dir,
+                probe_nonce=str(fixture["nonce"]),
+                handoff_path=fixture["handoff"],
+                handoff_sha256=str(fixture["handoff_sha256"]),
+                armed_path=fixture["armed"],
+                watchdog_final=fixture["final"],
+                artifacts=fixture["artifacts"],
+                timeout_seconds=180.0,
+                outer=fixture["outer"],
+            )
+            bootstrap = {
+                "pid": 30,
+                "parent_pid": 10,
+                "name": Path(bootstrap_executable).name,
+                "executable": bootstrap_executable,
+                "creation_date": "bootstrap-created",
+                "command_line": subprocess.list2cmdline(
+                    [bootstrap_executable, *bootstrap_tail]
+                ),
+            }
+            actual_outer = {
+                **fixture["outer"],
+                "command_line": (
+                    r"python.exe ck3_autonomous_player\agent.py crash-smoke"
+                ),
+            }
+            with mock.patch(
+                "xar_autoplayer.crash_probe._process_identity",
+                side_effect=[current, actual_outer, bootstrap],
+            ), mock.patch(
+                "xar_autoplayer.crash_probe._require_mutex_owned_elsewhere"
+            ) as mutex:
+                result = _validate_subject_invocation(
+                    spec,
+                    probe_nonce=fixture["nonce"],
+                    handoff_path=fixture["handoff"],
+                    handoff_sha256=fixture["handoff_sha256"],
+                    armed_path=fixture["armed"],
+                    watchdog_final=fixture["final"],
+                    artifacts=fixture["artifacts"],
+                    outer_identity=fixture["outer"],
+                )
+            self.assertEqual(result["_supervisor_bootstrap"], bootstrap)
+            self.assertEqual(mutex.call_count, 2)
+
+    def test_rejects_redirector_with_wrong_launcher_argv0(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-subject-wrong-launcher-") as temporary:
+            spec, fixture = self._fixture(Path(temporary))
+            current = self._subject_identity(spec, fixture, parent_pid=30)
+            current["executable"] = str(
+                (Path(sys.base_prefix) / "python.exe").resolve()
+            )
+            current["name"] = Path(str(current["executable"])).name
+            bootstrap_executable = str(Path(sys.executable).resolve())
+            bootstrap_tail = _crash_subject_command_tail(
+                state_dir=spec.state_dir,
+                game_dir=spec.game_dir,
+                probe_nonce=str(fixture["nonce"]),
+                handoff_path=fixture["handoff"],
+                handoff_sha256=str(fixture["handoff_sha256"]),
+                armed_path=fixture["armed"],
+                watchdog_final=fixture["final"],
+                artifacts=fixture["artifacts"],
+                timeout_seconds=180.0,
+                outer=fixture["outer"],
+            )
+            bootstrap = {
+                "pid": 30,
+                "parent_pid": 10,
+                "name": Path(bootstrap_executable).name,
+                "executable": bootstrap_executable,
+                "creation_date": "bootstrap-created",
+                "command_line": subprocess.list2cmdline(
+                    [r"C:\wrong-launcher\python.exe", *bootstrap_tail]
+                ),
+            }
+            with mock.patch(
+                "xar_autoplayer.crash_probe._process_identity",
+                side_effect=[current, fixture["outer"], bootstrap],
+            ), self.assertRaisesRegex(AgentError, "bootstrap command differs"):
+                _validate_subject_invocation(
+                    spec,
+                    probe_nonce=fixture["nonce"],
+                    handoff_path=fixture["handoff"],
+                    handoff_sha256=fixture["handoff_sha256"],
+                    armed_path=fixture["armed"],
+                    watchdog_final=fixture["final"],
+                    artifacts=fixture["artifacts"],
+                    outer_identity=fixture["outer"],
+                )
+
+    def test_rejects_redirector_with_different_nonce(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-subject-bad-redirector-") as temporary:
+            spec, fixture = self._fixture(Path(temporary))
+            current = self._subject_identity(
+                spec, fixture, parent_pid=30
+            )
+            bootstrap_executable = str(Path(sys.executable).resolve())
+            bootstrap_tail = _crash_subject_command_tail(
+                state_dir=spec.state_dir,
+                game_dir=spec.game_dir,
+                probe_nonce=str(fixture["nonce"]),
+                handoff_path=fixture["handoff"],
+                handoff_sha256=str(fixture["handoff_sha256"]),
+                armed_path=fixture["armed"],
+                watchdog_final=fixture["final"],
+                artifacts=fixture["artifacts"],
+                timeout_seconds=180.0,
+                outer=fixture["outer"],
+            )
+            bootstrap_tail[bootstrap_tail.index(str(fixture["nonce"]))] = "b" * 32
+            bootstrap = {
+                "pid": 30,
+                "parent_pid": 10,
+                "name": Path(bootstrap_executable).name,
+                "executable": bootstrap_executable,
+                "creation_date": "bootstrap-created",
+                "command_line": subprocess.list2cmdline(
+                    [bootstrap_executable, *bootstrap_tail]
+                ),
+            }
+            with mock.patch(
+                "xar_autoplayer.crash_probe._process_identity",
+                side_effect=[current, fixture["outer"], bootstrap],
+            ), self.assertRaisesRegex(AgentError, "bootstrap command differs"):
+                _validate_subject_invocation(
+                    spec,
+                    probe_nonce=fixture["nonce"],
+                    handoff_path=fixture["handoff"],
+                    handoff_sha256=fixture["handoff_sha256"],
+                    armed_path=fixture["armed"],
+                    watchdog_final=fixture["final"],
+                    artifacts=fixture["artifacts"],
+                    outer_identity=fixture["outer"],
+                )
+
+    def test_rejects_each_mutated_hidden_subject_argument(self) -> None:
+        mutations = {
+            "agent-entry": (1, "wrong-agent.py"),
+            "state-dir": (3, r"C:\wrong-state"),
+            "game-dir": (5, r"C:\wrong-game"),
+            "entry": (6, "crash-smoke"),
+            "nonce": (8, "c" * 32),
+            "handoff": (10, r"C:\wrong-handoff.json"),
+            "handoff-hash": (12, "d" * 64),
+            "armed": (14, r"C:\wrong-armed.json"),
+            "watchdog-final": (16, r"C:\wrong-final.json"),
+            "artifacts": (18, r"C:\wrong-artifacts"),
+            "timeout": (20, "181.0"),
+            "outer-pid": (22, "11"),
+            "outer-executable": (24, r"C:\wrong-python.exe"),
+            "outer-creation": (26, "wrong-created"),
+        }
+        for label, (argument_index, replacement) in mutations.items():
+            with self.subTest(label=label), tempfile.TemporaryDirectory(
+                prefix="xar-subject-command-"
+            ) as temporary:
+                spec, fixture = self._fixture(Path(temporary))
+                current = self._subject_identity(spec, fixture)
+                arguments = _command_arguments(current["command_line"])
+                self.assertEqual(len(arguments), 27)
+                arguments[argument_index] = replacement
+                current["command_line"] = subprocess.list2cmdline(arguments)
+                with mock.patch(
+                    "xar_autoplayer.crash_probe._process_identity",
+                    side_effect=[current, fixture["outer"]],
+                ), self.assertRaisesRegex(
+                    AgentError, "supervisor command differs"
+                ):
+                    _validate_subject_invocation(
+                        spec,
+                        probe_nonce=fixture["nonce"],
+                        handoff_path=fixture["handoff"],
+                        handoff_sha256=fixture["handoff_sha256"],
+                        armed_path=fixture["armed"],
+                        watchdog_final=fixture["final"],
+                        artifacts=fixture["artifacts"],
+                        outer_identity=fixture["outer"],
+                    )
 
 
 @unittest.skipUnless(os.name == "nt", "Windows named Job crash contract")
