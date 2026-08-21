@@ -126,6 +126,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 
 - 2026-08-21 发布本地化候选矩阵 `ervc_release_final_20260821`：3/3 GREEN、876.590 秒、0 blocking project diagnostics，Vivhite projection 更新为 `6242ca7eec1b33f6da939c3a161b7338011122780c4740c6e831e2de0e20577c`；原 mod、两类 fixture、CK3 EXE 与受保护存储哈希均保持上述值。七页功能、两种双 mod 加载顺序和全部购买/隔离 marker 再次通过，三个 userdir 与 watchdog 均已消失。
 - 2026-08-21 clean committed-candidate 矩阵 `ervc_release_clean_6575997_20260821` 绑定完整提交 `6575997b14a90b0afda75fdde304170206478c21`：3/3 GREEN、910.962 秒、0 blocking diagnostics，runtime/fixture/EXE/受保护存储哈希与上一轮完全一致。standalone 同时留存决议入口和七个子页的八张 2560×1440 原始截图；tag `vivhite-v1.0.0` 指向同一提交。
+- 2026-08-21 白绮 `1.0.1` clean committed-candidate 矩阵 `ervc_v101_clean_092e61b_retry_20260821` 绑定完整提交 `092e61bf2fa9d90167eea91369ac8bb4bfa1b543`：3/3 GREEN、887.637 秒、0 blocking diagnostics。Vivhite production projection 为 `f00898467746145316ff850c898d6402709e19c612044f9945d3af280d0e576c`，原 mod 与两类 fixture 哈希保持不变；9 个真实 profile 文件、2 个 Steam cloud 文件、82 个已注册 Workshop target 的 162,960 项元数据在五秒复扫前后保持 `541376448f2073679434cc2aac109c619a4efca89e911bb12e0c6dcd800a4e22`，三个 userdir 均删除。前一目录 `ervc_v101_clean_092e61b_20260821` 因 JetBrains stale-index 通知遮住大厅【开始】而在任何 fixture marker 前 OCR RED；原报告保留 RED，关闭通知后使用全新目录完整重跑，不把基础设施失败重标为 GREEN。
 
 **没验的**：
 - 数值是否符合最初产品意图仍需人工平衡审阅；冻结契约能阻止未审阅的 `50→500` 或 ID 重排，但不能证明首次冻结前的设计值天然正确。
@@ -148,7 +149,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 每次 OCR/点击前必须抢回并反证 CK3 前台。2026-08-19 实测裸 `SetForegroundWindow` 会因 Windows 前台锁静默失败，runner 随后把 OpenCode 整窗识别成事件选项；现通过 `AttachThreadInput` + Alt 前台许可重试，并要求 `GetForegroundWindow()` 精确等于 CK3 句柄，否则立即 RED，不再截取或点击其他应用。
 - `parentanchor = center` 的小型验收 widget 不要点击精确屏幕中心：锚点可能落在 64×64 控件边界并穿透到地图。`xar_trait_test_window` 改为点击中心内偏移 20 px；最终咒痕后还要先按渲染出的“暂停”状态锁住一日死亡计时，完成特质 hover 后才恢复时间。2026-08-20 CK3 1.19.0.6 实测。
 - 主菜单【新游戏】也必须 deliberate-click 并以罗贝尔书签实际出现作反证；2026-08-19 实测 OCR 找到按钮后的一次瞬时点击可被 CK3 丢弃，runner 若直接进入 30 秒书签等待只会在原主菜单超时。
-- 安全软件通知也可能置顶遮住大厅“开始”按钮；runner 等待该按钮时会 OCR 识别并点击通知的“忽略”，只关闭当次提示，不改软件设置。2026-08-19 实测 Chrome 通知也会覆盖同一区域，且按钮是“关闭”；runner 只在大厅“开始”缺失时扫描右下角通知区并关闭这两类外部遮挡，不在普通游戏画面盲点“关闭”。
+- 安全软件、Chrome 与 JetBrains 通知都可能置顶遮住大厅“开始”按钮；runner 等待该按钮时只对已知安全软件“忽略”和 Chrome“关闭”执行窄 OCR 恢复，不改软件设置，也不在普通游戏画面盲点点击。2026-08-21 实测 JetBrains stale-index 通知不在该白名单内，会正确留下 OCR RED；人工关闭未知外部通知后必须使用全新目录重跑，禁止修改原报告结论。
 - 截图读坐标要用 PIL 裁真实 PNG（2560x1440）实测——聊天里显示的图有缩放，目测坐标必歪。
 - OCR 定位按钮必须避免正文中的同词。2026-08-21 铁人 modal 的正文含“打开游戏菜单”，全屏 `contains=True` 会点到正文而不是底部按钮；按钮改在 modal 区域做精确匹配。RapidOCR 还会把 CK3 字体的“余烬”稳定识别为“余焰”，流程断言因此使用唯一后缀“已封存”，不修改正确的产品文案。
 - `pdx_enum_setting.cpp` 在真实 profile 和隔离 profile 均可能先记录 `Could not find enum 'l_simp_chinese' ... default 'l_english'`，但随后实际画面仍是简中；该启动期 debug 行不能单独证明最终渲染语言，验收以画面 OCR 和本地化结构为准。2026-08-21 非 debug 铁人实测。

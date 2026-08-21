@@ -21,4 +21,5 @@ art, not runtime evidence.
 
 The eight 1.0.0 runtime upload copies ranged from 0.431 to 0.702 MiB. Vivhite 1.0.1 adds the 0.488 MiB decision-art
 projection at `https://images.steamusercontent.com/ugc/14888803841202575747/58797A390F0F2D90783F0BA82BF24B232911F99B/`.
-Public item `3787304042` therefore exposes nine `highlight_strip_item` entries: eight runtime captures plus the hero art.
+A post-upload anonymous HTML fetch on 2026-08-21 counted exactly nine `highlight_strip_item` entries on public item
+`3787304042`: eight runtime captures plus the hero art.

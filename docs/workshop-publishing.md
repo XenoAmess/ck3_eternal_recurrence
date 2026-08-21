@@ -117,8 +117,22 @@ py tools/build_vivhite_release.py --release --workshop-item-id <new-id> --output
 `workshop_download_item 1158310 <new-id>`。只对这次从空路径生成的目录运行
 `build_vivhite_release.py --verify ... --workshop-cache`；验证通过后才公开 Workshop item 和 GitHub Release。
 
-2026-08-21 实际从空路径下载 `3787304042` 后，带 ID sidecar 对全部 27 文件验证 GREEN；sidecar manifest
-SHA-256 为 `252bdd294a1e62a5a4d201fffc91e5581b4632f97058cf0d8ab16b74cb37ff74`。匿名 Steam API 返回
-`visibility: 0`。1.0.0 公开页面精确包含八个实机 screenshot item；1.0.1 另加一张描述首图用决议主视觉，
-因此当前 media strip 共九图。对应 GitHub Release：
+2026-08-21 首发时从空路径下载 `3787304042` 后，带 ID sidecar 对全部 27 文件验证 GREEN；1.0.0 sidecar
+manifest SHA-256 为 `252bdd294a1e62a5a4d201fffc91e5581b4632f97058cf0d8ab16b74cb37ff74`。匿名 Steam API 返回
+`visibility: 0`，1.0.0 公开页面精确包含八个实机 screenshot item。对应历史 GitHub Release：
 `https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/vivhite-v1.0.0`。
+
+同日 1.0.1 更新实测：Steam 启动链中的 PDX launcher 在 `2026-08-21T10:50:40.275Z` 记录
+`Publishing mod succeeded`。匿名 API 的 `time_updated=1787309440`、内容 manifest
+`5798322135786279034`、`visibility: 0` 与描述内 `Version 1.0.1` 同时生效；新预览图由 CDN 原样返回
+640×640、821,769 字节，SHA-256 为
+`3482a3ceb8d8fec5af2a23f3b10324ddd2297a8406067dec39851c87161dc164`，与 tag 产物逐字节一致。公开 HTML
+精确包含九个 media strip item：八张实机截图加一张决议主视觉；BBCode 第一项也是该主视觉。
+
+验证时先把旧 `3787304042` 目录完整移出缓存根，再执行 `workshop_download_item 1158310 3787304042`。
+Steam 从空路径安装上述新 manifest 后，sidecar manifest SHA-256
+`3af6032095e4c6b5a94dd0a82144a1bd307b1df32dfcb50e39b6aedf0bea4541` 对全部 27 文件 strict
+`--workshop-cache` GREEN。随后重建 formal staging，恢复无 ID descriptor；formal manifest/ZIP SHA-256 分别为
+`4b2cb5c58c19f90a9b7f9ce98afc7d99bdbf581d277adf0cc1c2259fdcfa2704` 与
+`b5d7f276c128878ae3f6a7f28110840515f7ce585fc6bf2e3cb998d73b460c08`。官方 tag artifact 与公开 Release
+下载件哈希一致：`https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/vivhite-v1.0.1`。

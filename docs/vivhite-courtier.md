@@ -83,13 +83,13 @@ intentionally record both `git_tag: null` and `workshop_item_id: null`. A formal
 after proving the canonical source, clean worktree and matching `vivhite-v<version>` tag; the original Workshop item
 remains rejected.
 
-## 1.0.1 Update Scope
+## 1.0.1 Release
 
 Version 1.0.1 replaces only the standalone launcher/Workshop thumbnail with dedicated Vivhite courtier key art. It also
 adds the existing decision illustration as the first Workshop-description image and embeds the eight accepted real-engine
-creator screenshots in their documented order. Script, GUI, localization and gameplay bytes are unchanged. The release
-still requires a clean committed three-cell acceptance run, `vivhite-v1.0.1`, a deterministic 27-file artifact, upload to
-the existing item `3787304042`, and fresh downloaded-cache verification.
+creator screenshots in their documented order. Script, GUI, localization and gameplay bytes are unchanged. Tag
+`vivhite-v1.0.1`, the deterministic 27-file artifact, existing Workshop item `3787304042` and the public GitHub Release
+all bind commit `092e61bf2fa9d90167eea91369ac8bb4bfa1b543`.
 
 ## Runtime Acceptance
 
@@ -119,6 +119,40 @@ descriptor and recursive metadata for each registered Workshop target. The basel
 after CK3 exits. A GREEN formal cell also removes its disposable userdir; `report.json` and JUnit `report.xml` record the
 runtime hashes, load order, fixture ordering, marker evidence, diagnostics and protected-storage hashes. GitHub's
 official runner has no CK3 or interactive desktop and must run only the static fixture/runner contracts.
+
+### 1.0.1 Release Evidence
+
+The clean committed-candidate schema-v2 non-debug matrix `ervc_v101_clean_092e61b_retry_20260821` completed all three
+cells GREEN on CK3 `1.19.0.6` in 887.637 seconds. Its report binds full Git SHA
+`092e61bf2fa9d90167eea91369ac8bb4bfa1b543`; every cell has an empty blocking `project_diagnostics` list, unchanged
+runtime trees, the requested mount order with the fixture last, and `userdir_removed_after_run: true`. The two dual cells
+retain only the four expected cold-boot occurrences of the frozen original release's two loc-only rarity warnings.
+
+- Vivhite production projection: `f00898467746145316ff850c898d6402709e19c612044f9945d3af280d0e576c`.
+- Original production projection in both dual cells: `97b9f386ab17364eec0859be1f7c6407816a27a396b2edcf6427d697789ba2ab`.
+- Standalone fixture projection: `dd049976adfec06a4dccb8244f33709582d37474d0249a49ecac57d6ec268359`.
+- Dual fixture projection in both load orders: `8d5a9da92445a97bf80b2037b95fd717b88c9b5eaa4c61cd74695d510d82ba75`.
+- CK3 executable before/after every cell: `2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86`.
+- Protected-storage aggregate before/after the complete scan and five-second quiet period:
+  `541376448f2073679434cc2aac109c619a4efca89e911bb12e0c6dcd800a4e22`.
+
+The immediately preceding run `ervc_v101_clean_092e61b_20260821` remains RED: an external JetBrains stale-index toast
+covered the lobby Start button, producing an OCR timeout before any fixture marker or project diagnostic. Its report was
+not reclassified; the notification was dismissed and the complete matrix was rerun in a fresh directory.
+
+The 27-file formal manifest SHA-256 is
+`4b2cb5c58c19f90a9b7f9ce98afc7d99bdbf581d277adf0cc1c2259fdcfa2704`; the deterministic ZIP SHA-256 is
+`b5d7f276c128878ae3f6a7f28110840515f7ce585fc6bf2e3cb998d73b460c08`. Local output, official tag workflow artifact
+and the downloaded [public GitHub Release](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/vivhite-v1.0.1)
+match byte-for-byte. Official master run `32471550853` and tag run `32473646886` are GREEN.
+
+The Steam-started PDX launcher logged update success at `2026-08-21T10:50:40.275Z`. Anonymous Steam API metadata binds
+that update to content manifest `5798322135786279034`, public visibility and version `1.0.1` in the live description. The
+served 640x640 preview is byte-identical to the tracked thumbnail SHA-256
+`3482a3ceb8d8fec5af2a23f3b10324ddd2297a8406067dec39851c87161dc164`; public HTML exposes exactly nine media entries.
+After moving the old cache completely away, Steam recreated item `3787304042` from that manifest and strict
+`--workshop-cache` verification passed all 27 files against sidecar manifest SHA-256
+`3af6032095e4c6b5a94dd0a82144a1bd307b1df32dfcb50e39b6aedf0bea4541`.
 
 ### 1.0.0 Release Evidence
 
