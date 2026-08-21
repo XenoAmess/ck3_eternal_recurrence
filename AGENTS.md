@@ -25,10 +25,13 @@ py tools/gen_no_heir_gui.py                                 # 原生继承窗投
 py tools/gen_balance_wire.py                                # 开发用长期平衡遥测位帧
 py tools/extract_courtier_traits.py                         # 从当前原版 00_traits.txt 刷新元数据快照
 py tools/gen_courtier_creator.py                            # 原版廷臣特质目录、元数据与冲突
+py tools/gen_vivhite_courtier.py                            # 白绮独立版廷臣目录（独立快照/ervc 命名空间）
 py tools/compose_decision_art.py                            # 三张决议源图 → 1100×440 DXT1 DDS
 py tools/compose_trait_stars.py                             # 10 级特质星标 → 120×120 RGBA DDS
 py tools/build_release.py --check                           # 临时双构建，验证 manifest/ZIP 可复现
 py tools/build_release.py                                   # 生成 dist staging、manifest 与 deterministic ZIP
+py tools/build_vivhite_release.py --check                   # 白绮独立版临时双构建
+py tools/build_vivhite_release.py                           # 生成独立 staging、manifest 与 ZIP
 ```
 
 八套脚本生成器及一套决议素材投影工具，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
@@ -68,23 +71,29 @@ py tools/build_release.py                                   # 生成 dist stagin
 py -m pip install -r tools/requirements-static.txt
 py tools/test_gen_no_heir_gui.py
 py tools/test_build_release.py
+py tools/test_build_vivhite_release.py
 py tools/validate_static.py
+py tools/validate_vivhite_static.py
 py -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors()"
 py tools/build_release.py --check
+py tools/build_vivhite_release.py --check
 ```
 
 **全自动验收（默认）**：
 
 ```powershell
 & "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py"
+& "tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py"
 ```
 
 一键全流程（备份现场 → **静态 loc 校验** → 同步代码 → 过大厅 → 自测规则档全链断言 → 恢复现场），
 GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-workflow.md`。
+白绮 runner 默认串行验收独立加载及双 mod 两种加载顺序；使用 production projections、外部夹具和一次性
+`-userdir`，不得读写真实工坊缓存。正式矩阵不加 `--keep-userdirs`。
 
 **CI 边界**：`.github/workflows/static-ci.yml` 使用 GitHub 官方 `windows-latest`，在 push/PR
 执行 L0，手动触发或 `v*` tag 时额外生成 ZIP/manifest。官方 runner 没有 CK3、Steam 授权和
-可靠交互桌面，禁止调用 `run_acceptance.py` 或声称完成 L1-L3；真实游戏验收必须在本机运行并保存报告。
+可靠交互桌面，禁止调用 `run_acceptance.py` / `run_vivhite_acceptance.py` 或声称完成 L1-L3；真实游戏验收必须在本机运行并保存报告。
 
 **⚠️ 改完代码游戏里看不到，先怀疑这个**：启动器把 dev .mod（带 remote_file_id）和工坊订阅合并，
 游戏实际加载的是 **工坊缓存**（`Z:\SteamLibrary\steamapps\workshop\content\1158310\3784706360`，

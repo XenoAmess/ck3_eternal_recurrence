@@ -1,0 +1,39 @@
+﻿ervc_courtier_creator_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_ervc_courtier.dds"
+	}
+	decision_group_type = ervc_courtier_creator
+	sort_order = 10
+	ai_check_interval = 0
+	desc = ervc_courtier_creator_decision_desc
+
+	is_shown = {
+		is_ai = no
+		is_alive = yes
+		NOT = { has_character_flag = ervc_cc_open }
+		NOT = { has_character_flag = ervc_cc_open_pending }
+	}
+
+	is_valid_showing_failures_only = {
+		is_ai = no
+		is_alive = yes
+		NOT = { has_character_flag = ervc_cc_open }
+		NOT = { has_character_flag = ervc_cc_open_pending }
+	}
+
+	effect = {
+		hidden_effect = {
+			if = {
+				limit = {
+					is_ai = no
+					is_alive = yes
+					NOT = { has_character_flag = ervc_cc_open }
+					NOT = { has_character_flag = ervc_cc_open_pending }
+				}
+				add_character_flag = ervc_cc_open_pending
+			}
+		}
+	}
+
+	ai_potential = { always = no }
+}

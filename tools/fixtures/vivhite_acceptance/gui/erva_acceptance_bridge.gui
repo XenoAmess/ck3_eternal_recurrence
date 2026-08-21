@@ -1,0 +1,34 @@
+﻿# Invisible bridge executes fixture checks only after observed state transitions.
+window = {
+	name = "erva_acceptance_bridge_window"
+	size = { 1 1 }
+	layer = tutorial
+	position = { 0 0 }
+	visible = "[GetPlayer.IsValid]"
+	alwaystransparent = yes
+
+	state = { name = _show using = Animation_FadeIn_Quick }
+	state = { name = _hide using = Animation_FadeOut_Quick }
+
+	state = { name = "erva_initialize" trigger_when = "[GetScriptedGui('erva_acceptance_initialize_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_acceptance_initialize_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_standalone_cancel_open" trigger_when = "[GetScriptedGui('erva_standalone_cancel_open_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_standalone_cancel_open_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_standalone_cancel_close" trigger_when = "[GetScriptedGui('erva_standalone_cancel_close_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_standalone_cancel_close_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_standalone_poor_open" trigger_when = "[GetScriptedGui('erva_standalone_poor_open_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_standalone_poor_open_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_standalone_poor_close" trigger_when = "[GetScriptedGui('erva_standalone_poor_close_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_standalone_poor_close_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_standalone_default_open" trigger_when = "[GetScriptedGui('erva_standalone_default_open_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_standalone_default_open_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_standalone_default_close" trigger_when = "[GetScriptedGui('erva_standalone_default_close_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_standalone_default_close_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_standalone_custom_stage_open" trigger_when = "[GetScriptedGui('erva_standalone_custom_stage_open_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_standalone_custom_stage_open_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_standalone_custom_stage_close" trigger_when = "[GetScriptedGui('erva_standalone_custom_stage_close_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_standalone_custom_stage_close_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_standalone_custom_purchase_open" trigger_when = "[GetScriptedGui('erva_standalone_custom_purchase_open_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_standalone_custom_purchase_open_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_standalone_custom_purchase_close" trigger_when = "[GetScriptedGui('erva_standalone_custom_purchase_close_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_standalone_custom_purchase_close_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	# ERVA_DUAL_ONLY_BEGIN
+	state = { name = "erva_dual_ervc_stage_open" trigger_when = "[GetScriptedGui('erva_dual_ervc_stage_open_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_dual_ervc_stage_open_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_dual_ervc_stage_close" trigger_when = "[GetScriptedGui('erva_dual_ervc_stage_close_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_dual_ervc_stage_close_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_dual_xar_stage_open" trigger_when = "[GetScriptedGui('erva_dual_xar_stage_open_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_dual_xar_stage_open_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_dual_xar_stage_close" trigger_when = "[GetScriptedGui('erva_dual_xar_stage_close_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_dual_xar_stage_close_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_dual_ervc_purchase_open" trigger_when = "[GetScriptedGui('erva_dual_ervc_purchase_open_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_dual_ervc_purchase_open_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_dual_ervc_purchase_close" trigger_when = "[GetScriptedGui('erva_dual_ervc_purchase_close_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_dual_ervc_purchase_close_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_dual_xar_purchase_open" trigger_when = "[GetScriptedGui('erva_dual_xar_purchase_open_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_dual_xar_purchase_open_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "erva_dual_xar_purchase_close" trigger_when = "[GetScriptedGui('erva_dual_xar_purchase_close_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('erva_dual_xar_purchase_close_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	# ERVA_DUAL_ONLY_END
+}

@@ -1,0 +1,2 @@
+﻿gui/ervc_decision_bridge.gui = ervc_decision_bridge_window
+gui/ervc_courtier_creator.gui = ervc_courtier_creator_window

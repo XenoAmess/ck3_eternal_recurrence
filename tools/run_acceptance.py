@@ -84,6 +84,7 @@ DEBUG_LOG = USER_DIR / "logs" / "debug.log"
 ERROR_LOG = USER_DIR / "logs" / "error.log"
 GUI_WARNINGS_LOG = USER_DIR / "logs" / "gui_warnings.log"
 RESTORE_WATCHDOG = ROOT / "tools" / "restore_watchdog.py"
+PROCESS_WATCHDOG = ROOT / "tools" / "process_watchdog.py"
 REQUIRED_PASSES = {
     "pact_trait", "pact_flag", "shop_init", "shop_inflate", "shop_charge",
     "shop_ceiling_fraction", "ledger_score_nonnegative", "ledger_projection",
@@ -186,13 +187,12 @@ def log(msg):
     print(f"[runner {time.strftime('%H:%M:%S')}] {msg}", flush=True)
 
 
-def configure_isolated_userdir(user_dir, ugc_dir):
-    """Rebind all runtime paths to a disposable userdir before acceptance starts."""
-    global USER_DIR, UGC_DIR_OVERRIDE, UGC_MOD_FILE, TUTORIAL_TXT, PRESETS_TXT
+def configure_runtime_userdir(user_dir):
+    """Rebind runtime paths to a disposable userdir without assuming one UGC mod."""
+    global USER_DIR, UGC_MOD_FILE, TUTORIAL_TXT, PRESETS_TXT
     global DLC_LOAD_JSON, SAVE_GAMES_DIR, DEBUG_LOG, ERROR_LOG, GUI_WARNINGS_LOG
     global ISOLATED_USERDIR
     user_dir = Path(user_dir).resolve()
-    ugc_dir = Path(ugc_dir).resolve()
     original = ORIGINAL_USER_DIR.resolve()
     if user_dir == original or user_dir in original.parents or original in user_dir.parents:
         raise RunnerError(f"isolated userdir overlaps the real profile: {user_dir}")
@@ -200,7 +200,6 @@ def configure_isolated_userdir(user_dir, ugc_dir):
             or ROOT.resolve() in user_dir.parents):
         raise RunnerError(f"isolated userdir must be outside the repository: {user_dir}")
     USER_DIR = user_dir
-    UGC_DIR_OVERRIDE = str(ugc_dir)
     UGC_MOD_FILE = USER_DIR / "mod" / "ugc_3784706360.mod"
     TUTORIAL_TXT = USER_DIR / "tutorial.txt"
     PRESETS_TXT = USER_DIR / "player" / "game_rules" / "presets.txt"
@@ -210,6 +209,13 @@ def configure_isolated_userdir(user_dir, ugc_dir):
     ERROR_LOG = USER_DIR / "logs" / "error.log"
     GUI_WARNINGS_LOG = USER_DIR / "logs" / "gui_warnings.log"
     ISOLATED_USERDIR = True
+
+
+def configure_isolated_userdir(user_dir, ugc_dir):
+    """Rebind runtime paths and the legacy single-UGC target."""
+    global UGC_DIR_OVERRIDE
+    configure_runtime_userdir(user_dir)
+    UGC_DIR_OVERRIDE = str(Path(ugc_dir).resolve())
 
 
 def summarize_timing_trace(rows, key):
@@ -386,26 +392,69 @@ def kill_ck3():
 
 
 def kill_process(pid):
-    subprocess.run(["taskkill", "/F", "/T", "/PID", str(pid)],
-                   capture_output=True)
+    return subprocess.run(
+        ["taskkill", "/F", "/T", "/PID", str(pid)], capture_output=True
+    )
 
 
-def stop_ck3_process(process, ck3_pid_file):
+def stop_ck3_process(process, ck3_pid_file, require_running=False):
     """Terminate one tracked CK3 process tree and prove the process exited."""
     global ACTIVE_CK3_PID
     if process is None:
         return
-    kill_process(process.pid)
+    was_running = process.poll() is None
+    if require_running and not was_running:
+        raise RunnerError(f"CK3 PID {process.pid} exited before controlled shutdown")
+    killed = kill_process(process.pid) if was_running else None
     try:
         process.wait(timeout=15)
     except subprocess.TimeoutExpired as exc:
         raise RunnerError(f"CK3 PID {process.pid} did not exit") from exc
     if process.poll() is None:
         raise RunnerError(f"CK3 PID {process.pid} is still running")
+    if killed is not None and killed.returncode != 0:
+        raise RunnerError(
+            f"taskkill failed for CK3 PID {process.pid} with rc={killed.returncode}"
+        )
     ck3_pid_file.unlink(missing_ok=True)
     if ACTIVE_CK3_PID == process.pid:
         ACTIVE_CK3_PID = None
     log(f"CK3 PID {process.pid} fully exited")
+
+
+def start_process_watchdog(ck3_pid_file):
+    """Launch a detached guard that kills one tracked CK3 tree if this runner dies."""
+    watchdog_python = Path(sys.executable).with_name("pythonw.exe")
+    if not watchdog_python.is_file():
+        watchdog_python = Path(sys.executable)
+    command = subprocess.list2cmdline(
+        [
+            str(watchdog_python),
+            str(PROCESS_WATCHDOG),
+            str(os.getpid()),
+            str(ck3_pid_file),
+        ]
+    )
+    command_literal = "'" + command.replace("'", "''") + "'"
+    launch = subprocess.run(
+        [
+            "powershell.exe",
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "$result = Invoke-CimMethod -ClassName Win32_Process "
+            f"-MethodName Create -Arguments @{{CommandLine={command_literal}}}; "
+            "if ($result.ReturnValue -ne 0) { exit $result.ReturnValue }; "
+            "$result.ProcessId",
+        ],
+        capture_output=True,
+        text=True,
+        creationflags=subprocess.CREATE_NO_WINDOW,
+    )
+    if launch.returncode != 0 or not launch.stdout.strip().isdigit():
+        detail = launch.stderr.strip() or launch.stdout.strip() or "no process id"
+        raise RunnerError(f"process watchdog launch failed: {detail}")
+    return int(launch.stdout.strip())
 
 
 def launch_ck3_process(debug_mode):

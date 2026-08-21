@@ -1,0 +1,4 @@
+﻿erva_acceptance = {
+	sort_order = 151
+	gui_tags = { big_button }
+}

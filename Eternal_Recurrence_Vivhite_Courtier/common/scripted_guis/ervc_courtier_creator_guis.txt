@@ -1,0 +1,614 @@
+﻿# Player-rooted interfaces for the paid courtier creator.
+ervc_cc_window_gate_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+}
+
+ervc_cc_cancel_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { ervc_cc_ui_access_trigger = yes }
+			remove_character_flag = ervc_cc_open
+		}
+	}
+}
+
+ervc_cc_confirm_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = {
+		ervc_cc_ui_access_trigger = yes
+		custom_tooltip = {
+			text = ervc.cc.invalid_configuration
+			ervc_cc_valid_configuration_trigger = yes
+		}
+		custom_tooltip = {
+			text = ervc.cc.insufficient_gold
+			gold >= ervc_courtier_creator_cost
+		}
+	}
+	effect = { ervc_cc_complete_purchase_effect = yes }
+}
+
+ervc_cc_toggle_trait_gui = {
+	scope = character
+	saved_scopes = { ervc_trait }
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = {
+		ervc_cc_ui_access_trigger = yes
+		exists = scope:ervc_trait
+		OR = {
+			ervc_cc_trait_is_selected_trigger = { ervc_trait = scope:ervc_trait }
+			AND = {
+				scope:ervc_trait = { save_temporary_scope_as = ervc_cc_candidate_trait }
+				ervc_cc_candidate_trait_metadata_valid_trigger = yes
+				OR = {
+					is_target_in_variable_list = {
+						name = ervc_cc_catalog_education
+						target = scope:ervc_cc_candidate_trait
+					}
+					AND = {
+						is_target_in_variable_list = {
+							name = ervc_cc_catalog_commander
+							target = scope:ervc_cc_candidate_trait
+						}
+						OR = {
+							AND = {
+								var:ervc_cc_commander_count < 2
+								OR = {
+									NOT = { has_variable_list = ervc_cc_selected_commander }
+									variable_list_size = {
+										name = ervc_cc_selected_commander
+										value < 2
+									}
+								}
+							}
+							ervc_cc_candidate_replaces_selected_trait_trigger = yes
+						}
+					}
+					is_target_in_variable_list = {
+						name = ervc_cc_catalog_physical
+						target = scope:ervc_cc_candidate_trait
+					}
+					AND = {
+						is_target_in_variable_list = {
+							name = ervc_cc_catalog_personality
+							target = scope:ervc_cc_candidate_trait
+						}
+						OR = {
+							AND = {
+								var:ervc_cc_personality_count < 3
+								OR = {
+									NOT = { has_variable_list = ervc_cc_selected_personality }
+									variable_list_size = {
+										name = ervc_cc_selected_personality
+										value < 3
+									}
+								}
+							}
+							ervc_cc_candidate_replaces_selected_trait_trigger = yes
+						}
+					}
+					is_target_in_variable_list = {
+						name = ervc_cc_catalog_other
+						target = scope:ervc_cc_candidate_trait
+					}
+				}
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				ervc_cc_ui_access_trigger = yes
+				exists = scope:ervc_trait
+			}
+			scope:ervc_trait = { save_scope_as = ervc_cc_candidate_trait }
+			if = {
+				limit = {
+					ervc_cc_trait_is_selected_trigger = {
+						ervc_trait = scope:ervc_cc_candidate_trait
+					}
+				}
+				ervc_cc_remove_selected_trait_effect = {
+					ervc_trait = scope:ervc_cc_candidate_trait
+				}
+			}
+			else_if = {
+				limit = { ervc_cc_candidate_trait_metadata_valid_trigger = yes }
+				ervc_cc_remove_selected_trait_conflicts_effect = yes
+				if = {
+					limit = {
+						is_target_in_variable_list = {
+							name = ervc_cc_catalog_education
+							target = scope:ervc_cc_candidate_trait
+						}
+					}
+					clear_variable_list = ervc_cc_selected_education
+					add_to_variable_list = {
+						name = ervc_cc_selected_education
+						target = scope:ervc_cc_candidate_trait
+					}
+				}
+				else_if = {
+					limit = {
+						is_target_in_variable_list = {
+							name = ervc_cc_catalog_commander
+							target = scope:ervc_cc_candidate_trait
+						}
+						var:ervc_cc_commander_count < 2
+						OR = {
+							NOT = { has_variable_list = ervc_cc_selected_commander }
+							variable_list_size = {
+								name = ervc_cc_selected_commander
+								value < 2
+							}
+						}
+					}
+					add_to_variable_list = {
+						name = ervc_cc_selected_commander
+						target = scope:ervc_cc_candidate_trait
+					}
+					change_variable = { name = ervc_cc_commander_count add = 1 }
+				}
+				else_if = {
+					limit = {
+						is_target_in_variable_list = {
+							name = ervc_cc_catalog_physical
+							target = scope:ervc_cc_candidate_trait
+						}
+					}
+					add_to_variable_list = {
+						name = ervc_cc_selected_physical
+						target = scope:ervc_cc_candidate_trait
+					}
+				}
+				else_if = {
+					limit = {
+						is_target_in_variable_list = {
+							name = ervc_cc_catalog_personality
+							target = scope:ervc_cc_candidate_trait
+						}
+						var:ervc_cc_personality_count < 3
+						OR = {
+							NOT = { has_variable_list = ervc_cc_selected_personality }
+							variable_list_size = {
+								name = ervc_cc_selected_personality
+								value < 3
+							}
+						}
+					}
+					add_to_variable_list = {
+						name = ervc_cc_selected_personality
+						target = scope:ervc_cc_candidate_trait
+					}
+					change_variable = { name = ervc_cc_personality_count add = 1 }
+				}
+				else_if = {
+					limit = {
+						is_target_in_variable_list = {
+							name = ervc_cc_catalog_other
+							target = scope:ervc_cc_candidate_trait
+						}
+					}
+					add_to_variable_list = {
+						name = ervc_cc_selected_other
+						target = scope:ervc_cc_candidate_trait
+					}
+				}
+			}
+		}
+	}
+}
+
+ervc_cc_trait_selected_gui = {
+	scope = character
+	saved_scopes = { ervc_trait }
+	is_shown = {
+		ervc_cc_ui_access_trigger = yes
+		exists = scope:ervc_trait
+		ervc_cc_trait_is_selected_trigger = { ervc_trait = scope:ervc_trait }
+	}
+	is_valid = {
+		ervc_cc_ui_access_trigger = yes
+		exists = scope:ervc_trait
+		ervc_cc_trait_is_selected_trigger = { ervc_trait = scope:ervc_trait }
+	}
+}
+
+ervc_cc_choose_male_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { ervc_cc_ui_access_trigger = yes }
+			set_variable = { name = ervc_cc_female value = 0 }
+			ervc_cc_prune_invalid_selected_traits_effect = yes
+		}
+	}
+}
+
+ervc_cc_choose_female_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { ervc_cc_ui_access_trigger = yes }
+			set_variable = { name = ervc_cc_female value = 1 }
+			ervc_cc_prune_invalid_selected_traits_effect = yes
+		}
+	}
+}
+
+ervc_cc_age_minus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { ervc_cc_ui_access_trigger = yes }
+			ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_age ervc_delta = -10 ervc_min = 0 ervc_max = 120 }
+			ervc_cc_prune_invalid_selected_traits_effect = yes
+		}
+	}
+}
+
+ervc_cc_age_minus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { ervc_cc_ui_access_trigger = yes }
+			ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_age ervc_delta = -1 ervc_min = 0 ervc_max = 120 }
+			ervc_cc_prune_invalid_selected_traits_effect = yes
+		}
+	}
+}
+
+ervc_cc_age_plus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { ervc_cc_ui_access_trigger = yes }
+			ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_age ervc_delta = 1 ervc_min = 0 ervc_max = 120 }
+			ervc_cc_prune_invalid_selected_traits_effect = yes
+		}
+	}
+}
+
+ervc_cc_age_plus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { ervc_cc_ui_access_trigger = yes }
+			ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_age ervc_delta = 10 ervc_min = 0 ervc_max = 120 }
+			ervc_cc_prune_invalid_selected_traits_effect = yes
+		}
+	}
+}
+
+ervc_cc_diplomacy_minus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_diplomacy ervc_delta = -10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_diplomacy_minus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_diplomacy ervc_delta = -1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_diplomacy_plus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_diplomacy ervc_delta = 1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_diplomacy_plus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_diplomacy ervc_delta = 10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_martial_minus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_martial ervc_delta = -10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_martial_minus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_martial ervc_delta = -1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_martial_plus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_martial ervc_delta = 1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_martial_plus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_martial ervc_delta = 10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_stewardship_minus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_stewardship ervc_delta = -10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_stewardship_minus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_stewardship ervc_delta = -1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_stewardship_plus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_stewardship ervc_delta = 1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_stewardship_plus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_stewardship ervc_delta = 10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_intrigue_minus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_intrigue ervc_delta = -10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_intrigue_minus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_intrigue ervc_delta = -1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_intrigue_plus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_intrigue ervc_delta = 1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_intrigue_plus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_intrigue ervc_delta = 10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_learning_minus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_learning ervc_delta = -10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_learning_minus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_learning ervc_delta = -1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_learning_plus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_learning ervc_delta = 1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_learning_plus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_learning ervc_delta = 10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_prowess_minus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_prowess ervc_delta = -10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_prowess_minus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_prowess ervc_delta = -1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_prowess_plus_1_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_prowess ervc_delta = 1 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_prowess_plus_10_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = { if = { limit = { ervc_cc_ui_access_trigger = yes } ervc_cc_adjust_numeric_variable_effect = { ervc_variable = ervc_cc_prowess ervc_delta = 10 ervc_min = 0 ervc_max = 100 } } }
+}
+
+ervc_cc_select_culture_gui = {
+	scope = character
+	saved_scopes = { ervc_culture }
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = {
+		ervc_cc_ui_access_trigger = yes
+		exists = scope:ervc_culture
+		is_target_in_global_variable_list = {
+			name = ervc_cc_catalog_cultures
+			target = scope:ervc_culture
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				ervc_cc_ui_access_trigger = yes
+				exists = scope:ervc_culture
+				is_target_in_global_variable_list = {
+					name = ervc_cc_catalog_cultures
+					target = scope:ervc_culture
+				}
+			}
+			set_variable = { name = ervc_cc_selected_culture value = scope:ervc_culture }
+		}
+	}
+}
+
+ervc_cc_culture_selected_gui = {
+	scope = character
+	saved_scopes = { ervc_culture }
+	is_shown = {
+		ervc_cc_ui_access_trigger = yes
+		exists = scope:ervc_culture
+		is_target_in_global_variable_list = {
+			name = ervc_cc_catalog_cultures
+			target = scope:ervc_culture
+		}
+		var:ervc_cc_selected_culture = scope:ervc_culture
+	}
+	is_valid = {
+		ervc_cc_ui_access_trigger = yes
+		exists = scope:ervc_culture
+		is_target_in_global_variable_list = {
+			name = ervc_cc_catalog_cultures
+			target = scope:ervc_culture
+		}
+		var:ervc_cc_selected_culture = scope:ervc_culture
+	}
+}
+
+ervc_cc_select_faith_gui = {
+	scope = character
+	saved_scopes = { ervc_faith }
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = {
+		ervc_cc_ui_access_trigger = yes
+		exists = scope:ervc_faith
+	}
+	effect = {
+		if = {
+			limit = {
+				ervc_cc_ui_access_trigger = yes
+				exists = scope:ervc_faith
+			}
+			set_variable = { name = ervc_cc_selected_faith value = scope:ervc_faith }
+		}
+	}
+}
+
+ervc_cc_faith_selected_gui = {
+	scope = character
+	saved_scopes = { ervc_faith }
+	is_shown = {
+		ervc_cc_ui_access_trigger = yes
+		exists = scope:ervc_faith
+		is_target_in_variable_list = {
+			name = ervc_cc_catalog_faiths
+			target = scope:ervc_faith
+		}
+		var:ervc_cc_selected_faith = scope:ervc_faith
+	}
+	is_valid = {
+		ervc_cc_ui_access_trigger = yes
+		exists = scope:ervc_faith
+		is_target_in_variable_list = {
+			name = ervc_cc_catalog_faiths
+			target = scope:ervc_faith
+		}
+		var:ervc_cc_selected_faith = scope:ervc_faith
+	}
+}
+
+ervc_cc_choose_lowborn_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = { ervc_cc_ui_access_trigger = yes }
+	effect = {
+		if = {
+			limit = { ervc_cc_ui_access_trigger = yes }
+			set_variable = { name = ervc_cc_same_house value = 0 }
+		}
+	}
+}
+
+ervc_cc_choose_same_house_gui = {
+	scope = character
+	is_shown = { ervc_cc_ui_access_trigger = yes }
+	is_valid = {
+		ervc_cc_ui_access_trigger = yes
+		exists = root.house
+	}
+	effect = {
+		if = {
+			limit = {
+				ervc_cc_ui_access_trigger = yes
+				exists = root.house
+			}
+			set_variable = { name = ervc_cc_same_house value = 1 }
+		}
+	}
+}
+
+ervc_cc_lowborn_selected_gui = {
+	scope = character
+	is_shown = {
+		ervc_cc_ui_access_trigger = yes
+		var:ervc_cc_same_house = 0
+	}
+	is_valid = {
+		ervc_cc_ui_access_trigger = yes
+		var:ervc_cc_same_house = 0
+	}
+}
+
+ervc_cc_same_house_selected_gui = {
+	scope = character
+	is_shown = {
+		ervc_cc_ui_access_trigger = yes
+		var:ervc_cc_same_house = 1
+		exists = root.house
+	}
+	is_valid = {
+		ervc_cc_ui_access_trigger = yes
+		var:ervc_cc_same_house = 1
+		exists = root.house
+	}
+}

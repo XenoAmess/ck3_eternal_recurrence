@@ -76,13 +76,20 @@ py tools/gen_contracts.py
 py tools/gen_scoring.py
 py tools/gen_score_preview.py
 py tools/gen_courtier_creator.py
+py tools/gen_vivhite_courtier.py
 py tools/compose_decision_art.py
 py tools/test_gen_no_heir_gui.py
 py tools/test_build_release.py
+py tools/test_build_vivhite_release.py
 py tools/validate_static.py
+py tools/validate_vivhite_static.py
 py -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors()"
 py tools/build_release.py --check
+py tools/build_vivhite_release.py --check
 py tools/build_release.py   # dist staging + manifest JSON + deterministic ZIP
+py tools/build_vivhite_release.py   # independent Vivhite staging
+& "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py"
+& "tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py"
 ```
 
 Windows CK3 acceptance 的固定依赖位于 `tools/requirements.txt`；CI/L0 只安装

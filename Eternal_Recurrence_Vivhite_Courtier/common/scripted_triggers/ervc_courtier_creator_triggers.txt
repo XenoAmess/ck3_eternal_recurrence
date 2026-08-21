@@ -1,0 +1,142 @@
+﻿# Paid courtier creator gates. All state is character-scoped so multiplayer
+# players cannot overwrite each other's pending design.
+ervc_cc_ui_access_trigger = {
+	is_ai = no
+	is_alive = yes
+	has_character_flag = ervc_cc_open
+}
+
+ervc_cc_trait_is_selected_trigger = {
+	OR = {
+		is_target_in_variable_list = { name = ervc_cc_selected_education target = $ervc_trait$ }
+		is_target_in_variable_list = { name = ervc_cc_selected_commander target = $ervc_trait$ }
+		is_target_in_variable_list = { name = ervc_cc_selected_physical target = $ervc_trait$ }
+		is_target_in_variable_list = { name = ervc_cc_selected_personality target = $ervc_trait$ }
+		is_target_in_variable_list = { name = ervc_cc_selected_other target = $ervc_trait$ }
+	}
+}
+
+ervc_cc_selected_list_valid_trigger = {
+	OR = {
+		NOT = { has_variable_list = $ervc_selected_list$ }
+		any_in_list = {
+			variable = $ervc_selected_list$
+			count = all
+			save_temporary_scope_as = ervc_cc_candidate_trait
+			root = {
+				is_target_in_variable_list = {
+					name = $ervc_catalog_list$
+					target = scope:ervc_cc_candidate_trait
+				}
+				ervc_cc_candidate_trait_metadata_valid_trigger = yes
+			}
+		}
+	}
+}
+
+ervc_cc_valid_configuration_trigger = {
+	is_ai = no
+	is_alive = yes
+	has_character_flag = ervc_cc_v2_initialized
+	OR = {
+		var:ervc_cc_female = 0
+		var:ervc_cc_female = 1
+	}
+	var:ervc_cc_age >= 0
+	var:ervc_cc_age <= 120
+	var:ervc_cc_diplomacy >= 0
+	var:ervc_cc_diplomacy <= 100
+	var:ervc_cc_martial >= 0
+	var:ervc_cc_martial <= 100
+	var:ervc_cc_stewardship >= 0
+	var:ervc_cc_stewardship <= 100
+	var:ervc_cc_intrigue >= 0
+	var:ervc_cc_intrigue <= 100
+	var:ervc_cc_learning >= 0
+	var:ervc_cc_learning <= 100
+	var:ervc_cc_prowess >= 0
+	var:ervc_cc_prowess <= 100
+	exists = var:ervc_cc_selected_culture
+	exists = var:ervc_cc_selected_faith
+	is_target_in_global_variable_list = {
+		name = ervc_cc_catalog_cultures
+		target = var:ervc_cc_selected_culture
+	}
+	is_target_in_variable_list = {
+		name = ervc_cc_catalog_faiths
+		target = var:ervc_cc_selected_faith
+	}
+	OR = {
+		var:ervc_cc_same_house = 0
+		AND = {
+			var:ervc_cc_same_house = 1
+			exists = root.house
+		}
+	}
+	OR = {
+		AND = {
+			var:ervc_cc_age >= 16
+			variable_list_size = { name = ervc_cc_selected_education value = 1 }
+		}
+		AND = {
+			var:ervc_cc_age < 16
+			OR = {
+				NOT = { has_variable_list = ervc_cc_selected_education }
+				variable_list_size = { name = ervc_cc_selected_education value = 0 }
+			}
+		}
+	}
+	var:ervc_cc_commander_count >= 0
+	var:ervc_cc_commander_count <= 2
+	OR = {
+		AND = {
+			NOT = { has_variable_list = ervc_cc_selected_commander }
+			var:ervc_cc_commander_count = 0
+		}
+		AND = {
+			has_variable_list = ervc_cc_selected_commander
+			variable_list_size = { name = ervc_cc_selected_commander value <= 2 }
+			variable_list_size = {
+				name = ervc_cc_selected_commander
+				value = var:ervc_cc_commander_count
+			}
+		}
+	}
+	var:ervc_cc_personality_count >= 0
+	var:ervc_cc_personality_count <= 3
+	OR = {
+		AND = {
+			NOT = { has_variable_list = ervc_cc_selected_personality }
+			var:ervc_cc_personality_count = 0
+		}
+		AND = {
+			has_variable_list = ervc_cc_selected_personality
+			variable_list_size = { name = ervc_cc_selected_personality value <= 3 }
+			variable_list_size = {
+				name = ervc_cc_selected_personality
+				value = var:ervc_cc_personality_count
+			}
+		}
+	}
+	ervc_cc_selected_list_valid_trigger = {
+		ervc_selected_list = ervc_cc_selected_education
+		ervc_catalog_list = ervc_cc_catalog_education
+	}
+	ervc_cc_selected_list_valid_trigger = {
+		ervc_selected_list = ervc_cc_selected_commander
+		ervc_catalog_list = ervc_cc_catalog_commander
+	}
+	ervc_cc_selected_list_valid_trigger = {
+		ervc_selected_list = ervc_cc_selected_physical
+		ervc_catalog_list = ervc_cc_catalog_physical
+	}
+	ervc_cc_selected_list_valid_trigger = {
+		ervc_selected_list = ervc_cc_selected_personality
+		ervc_catalog_list = ervc_cc_catalog_personality
+	}
+	ervc_cc_selected_list_valid_trigger = {
+		ervc_selected_list = ervc_cc_selected_other
+		ervc_catalog_list = ervc_cc_catalog_other
+	}
+	ervc_cc_selected_traits_compatible_trigger = yes
+}

@@ -1,0 +1,192 @@
+﻿erva_acceptance_initialize_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		is_alive = yes
+		has_character_flag = erva_acceptance_start_pending
+		NOT = { has_character_flag = erva_acceptance_initialized }
+	}
+	effect = { erva_acceptance_initialize_effect = yes }
+}
+
+erva_standalone_cancel_open_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_standalone_cancel
+		has_character_flag = ervc_cc_open
+		NOT = { has_character_flag = erva_acceptance_modal_seen }
+	}
+	effect = { erva_standalone_cancel_open_guarded_effect = yes }
+}
+
+erva_standalone_cancel_close_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_standalone_cancel
+		has_character_flag = erva_acceptance_modal_seen
+		NOT = { has_character_flag = ervc_cc_open }
+	}
+	effect = { erva_standalone_cancel_close_guarded_effect = yes }
+}
+
+erva_standalone_poor_open_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_standalone_poor
+		has_character_flag = ervc_cc_open
+		NOT = { has_character_flag = erva_acceptance_modal_seen }
+	}
+	effect = { erva_standalone_poor_open_guarded_effect = yes }
+}
+
+erva_standalone_poor_close_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_standalone_poor
+		has_character_flag = erva_acceptance_modal_seen
+		NOT = { has_character_flag = ervc_cc_open }
+	}
+	effect = { erva_standalone_poor_close_guarded_effect = yes }
+}
+
+erva_standalone_default_open_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_standalone_default
+		has_character_flag = ervc_cc_open
+		NOT = { has_character_flag = erva_acceptance_modal_seen }
+	}
+	effect = { erva_standalone_default_open_guarded_effect = yes }
+}
+
+erva_standalone_default_close_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_standalone_default
+		has_character_flag = erva_acceptance_modal_seen
+		NOT = { has_character_flag = ervc_cc_open }
+	}
+	effect = { erva_standalone_default_close_guarded_effect = yes }
+}
+
+erva_standalone_custom_stage_open_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_standalone_custom_stage
+		has_character_flag = ervc_cc_open
+		NOT = { has_character_flag = erva_acceptance_modal_seen }
+	}
+	effect = { erva_standalone_custom_stage_open_guarded_effect = yes }
+}
+
+erva_standalone_custom_stage_close_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_standalone_custom_stage
+		has_character_flag = erva_acceptance_modal_seen
+		NOT = { has_character_flag = ervc_cc_open }
+	}
+	effect = { erva_standalone_custom_stage_close_guarded_effect = yes }
+}
+
+erva_standalone_custom_purchase_open_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_standalone_custom_purchase
+		has_character_flag = ervc_cc_open
+		NOT = { has_character_flag = erva_acceptance_modal_seen }
+	}
+	effect = { erva_standalone_custom_purchase_open_guarded_effect = yes }
+}
+
+erva_standalone_custom_purchase_close_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_standalone_custom_purchase
+		has_character_flag = erva_acceptance_modal_seen
+		NOT = { has_character_flag = ervc_cc_open }
+	}
+	effect = { erva_standalone_custom_purchase_close_guarded_effect = yes }
+}
+
+# ERVA_DUAL_ONLY_BEGIN
+erva_dual_ervc_stage_open_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_dual_ervc_stage
+		has_character_flag = ervc_cc_open
+		NOT = { has_character_flag = erva_acceptance_modal_seen }
+	}
+	effect = { erva_dual_ervc_stage_open_guarded_effect = yes }
+}
+
+erva_dual_ervc_stage_close_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_dual_ervc_stage
+		has_character_flag = erva_acceptance_modal_seen
+		NOT = { has_character_flag = ervc_cc_open }
+	}
+	effect = { erva_dual_ervc_stage_close_guarded_effect = yes }
+}
+
+erva_dual_xar_stage_open_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_dual_xar_stage
+		has_character_flag = xar_cc_open
+		NOT = { has_character_flag = erva_acceptance_modal_seen }
+	}
+	effect = { erva_dual_xar_stage_open_guarded_effect = yes }
+}
+
+erva_dual_xar_stage_close_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_dual_xar_stage
+		has_character_flag = erva_acceptance_modal_seen
+		NOT = { has_character_flag = xar_cc_open }
+	}
+	effect = { erva_dual_xar_stage_close_guarded_effect = yes }
+}
+
+erva_dual_ervc_purchase_open_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_dual_ervc_purchase
+		has_character_flag = ervc_cc_open
+		NOT = { has_character_flag = erva_acceptance_modal_seen }
+	}
+	effect = { erva_dual_ervc_purchase_open_guarded_effect = yes }
+}
+
+erva_dual_ervc_purchase_close_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_dual_ervc_purchase
+		has_character_flag = erva_acceptance_modal_seen
+		NOT = { has_character_flag = ervc_cc_open }
+	}
+	effect = { erva_dual_ervc_purchase_close_guarded_effect = yes }
+}
+
+erva_dual_xar_purchase_open_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_dual_xar_purchase
+		has_character_flag = xar_cc_open
+		NOT = { has_character_flag = erva_acceptance_modal_seen }
+	}
+	effect = { erva_dual_xar_purchase_open_guarded_effect = yes }
+}
+
+erva_dual_xar_purchase_close_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = erva_phase_dual_xar_purchase
+		has_character_flag = erva_acceptance_modal_seen
+		NOT = { has_character_flag = xar_cc_open }
+	}
+	effect = { erva_dual_xar_purchase_close_guarded_effect = yes }
+}
+# ERVA_DUAL_ONLY_END

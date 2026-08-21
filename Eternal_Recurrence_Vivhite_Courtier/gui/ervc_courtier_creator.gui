@@ -1,0 +1,736 @@
+﻿# Paid custom courtier creator. The transparent root prevents invalid-player
+# evaluations; only the gated child modal captures input.
+types ervc_courtier_creator_types {
+	type ervc_cc_action_button = button_standard {
+		min_width = 72
+		enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	type ervc_cc_numeric_row = hbox {
+		layoutpolicy_horizontal = expanding
+		size = { 0 48 }
+		spacing = 8
+
+		block "ervc_numeric_icon" {
+			spacer = { size = { 38 38 } }
+		}
+
+		text_single = {
+			min_width = 150
+			max_width = 150
+			align = nobaseline
+			default_format = "#high"
+			block "ervc_numeric_label" { raw_text = "-" }
+		}
+
+		progressbar_standard = {
+			layoutpolicy_horizontal = expanding
+			min_width = 420
+			max_width = 610
+			size = { 0 26 }
+			min = 0
+			block "ervc_numeric_max" { max = 100 }
+			block "ervc_numeric_value" { value = 0 }
+
+			text_single = {
+				parentanchor = center
+				align = center|nobaseline
+				default_format = "#V"
+				using = Font_Size_Medium
+				block "ervc_numeric_text" { raw_text = "0" }
+			}
+		}
+
+		block "ervc_numeric_actions" {}
+	}
+
+	type ervc_cc_trait_catalog_grid = dynamicgridbox {
+		layoutpolicy_horizontal = expanding
+		datamodel_wrap = 4
+		flipdirection = yes
+		ignoreinvisible = yes
+
+		item = {
+			container = {
+				datacontext = "[Scope.Trait]"
+
+				button_standard_hover = {
+					size = { 334 64 }
+					parentanchor = center
+					enabled = "[GetScriptedGui('ervc_cc_toggle_trait_gui').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'ervc_trait', Trait.MakeScope ).End )]"
+					onclick = "[GetScriptedGui('ervc_cc_toggle_trait_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'ervc_trait', Trait.MakeScope ).End )]"
+					down = "[GetScriptedGui('ervc_cc_trait_selected_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'ervc_trait', Trait.MakeScope ).End )]"
+
+					hbox = {
+						margin = { 7 5 }
+						spacing = 8
+
+						# Preserve the native tooltip and glow, but evaluate them for the commissioned faith.
+						icon_trait = {
+							blockoverride "faith_context" {
+								datacontext = "[GetPlayer.MakeScope.Var('ervc_cc_selected_faith').Faith]"
+							}
+						}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							max_width = 205
+							text = "[Trait.GetNameNoTooltip( Character.Self )]"
+							default_format = "#clickable"
+							autoresize = no
+							scissor = yes
+							align = nobaseline
+						}
+
+						expand = {}
+
+						text_single = {
+							min_width = 48
+							text = "[Trait.GetRulerDesignerCost|=]"
+							default_format = "#V"
+							align = right|nobaseline
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type ervc_cc_culture_catalog_list = vbox {
+		layoutpolicy_horizontal = expanding
+		spacing = 8
+
+		item = {
+			vbox = {
+				datacontext = "[Scope.Culture.GetHeritage]"
+				layoutpolicy_horizontal = expanding
+				spacing = 2
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					minimumsize = { 0 28 }
+					margin_left = 10
+					text = "[CulturePillar.GetNameNoTooltip]"
+					default_format = "#T"
+					align = nobaseline
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					datamodel = "[CulturePillar.GetCulturesWithPillar]"
+					spacing = 2
+
+					item = {
+						hbox = {
+							datacontext = "[Culture.GetTemplate]"
+							layoutpolicy_horizontal = expanding
+
+							button_standard_hover = {
+								layoutpolicy_horizontal = expanding
+								size = { 0 38 }
+								enabled = "[GetScriptedGui('ervc_cc_select_culture_gui').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'ervc_culture', Culture.MakeScope ).End )]"
+								onclick = "[GetScriptedGui('ervc_cc_select_culture_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'ervc_culture', Culture.MakeScope ).End )]"
+								down = "[GetScriptedGui('ervc_cc_culture_selected_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'ervc_culture', Culture.MakeScope ).End )]"
+
+								hbox = {
+									margin_left = 50
+
+									text_single = {
+										layoutpolicy_horizontal = expanding
+										margin = { 5 0 }
+										text = "[Culture.GetNameNoTooltip]"
+										default_format = "#clickable"
+										align = nobaseline
+										autoresize = no
+										scissor = yes
+									}
+
+									expand = {}
+								}
+							}
+						}
+					}
+			}
+		}
+	}
+}
+
+	type ervc_cc_faith_catalog_list = vbox {
+		layoutpolicy_horizontal = expanding
+		spacing = 3
+
+		item = {
+			hbox = {
+				datacontext = "[Scope.Faith]"
+				layoutpolicy_horizontal = expanding
+
+				button_standard_hover = {
+					name = "ervc_faith_item"
+					layoutpolicy_horizontal = expanding
+					size = { 0 52 }
+					onclick = "[GetScriptedGui('ervc_cc_select_faith_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'ervc_faith', Faith.MakeScope ).End )]"
+					down = "[GetScriptedGui('ervc_cc_faith_selected_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'ervc_faith', Faith.MakeScope ).End )]"
+
+					hbox = {
+						margin = { 8 3 }
+						spacing = 10
+						alwaystransparent = yes
+
+						icon = {
+							size = { 42 42 }
+							texture = "[Faith.GetIcon]"
+						}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							text = "[Faith.GetName]"
+							default_format = "#clickable"
+							align = nobaseline
+							autoresize = no
+							scissor = yes
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+window = {
+	name = "ervc_courtier_creator_window"
+	size = { 100% 100% }
+	layer = confirmation
+	visible = "[GetPlayer.IsValid]"
+	alwaystransparent = yes
+
+	widget = {
+		name = "ervc_courtier_creator_modal"
+		size = { 100% 100% }
+		visible = "[GetScriptedGui('ervc_cc_window_gate_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		alwaystransparent = no
+		filter_mouse = all
+		using = Background_Full_Dim
+		using = Animation_ShowHide_Quick
+
+		state = {
+			name = _show
+			on_start = "[GetVariableSystem.Set('ervc_cc_tab', 'basic')]"
+		}
+		state = {
+			name = _hide
+			on_finish = "[GetVariableSystem.Clear('ervc_cc_tab')]"
+		}
+
+		button_normal = {
+			size = { 100% 100% }
+			onclick = "[GetScriptedGui('ervc_cc_cancel_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		}
+
+		widget = {
+			name = "ervc_courtier_creator_panel"
+			datacontext = "[GetPlayer]"
+			size = { 1500 900 }
+			parentanchor = center
+			alwaystransparent = no
+			filter_mouse = all
+			using = Window_Background
+			using = Window_Decoration_Spike
+
+			vbox = {
+				using = Window_Margins
+				spacing = 8
+
+				header_pattern = {
+					layoutpolicy_horizontal = expanding
+					blockoverride "header_text" {
+						text = "[Localize('ervc.cc.title')]"
+					}
+					blockoverride "button_close" {
+						onclick = "[GetScriptedGui('ervc_cc_cancel_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					}
+				}
+
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					autoresize = yes
+					text = "[Localize('ervc.cc.intro')]"
+					fontsize = 16
+					default_format = "#high"
+					margin = { 20 0 }
+				}
+
+				hbox = {
+					name = "ervc_cc_tabs"
+					layoutpolicy_horizontal = expanding
+
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						text = "[Localize('ervc.cc.tab.basic')]"
+						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'basic')]"
+						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'basic')]"
+					}
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						text = "[Localize('ervc.cc.tab.education')]"
+						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'education')]"
+						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'education')]"
+					}
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						text = "[Localize('ervc.cc.tab.commander')]"
+						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'commander')]"
+						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'commander')]"
+					}
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						text = "[Localize('ervc.cc.tab.physical')]"
+						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'physical')]"
+						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'physical')]"
+					}
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						text = "[Localize('ervc.cc.tab.personality')]"
+						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'personality')]"
+						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'personality')]"
+					}
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						text = "[Localize('ervc.cc.tab.other')]"
+						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'other')]"
+						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'other')]"
+					}
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						text = "[Localize('ervc.cc.tab.origin')]"
+						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'origin')]"
+						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'origin')]"
+					}
+				}
+
+				vbox = {
+					name = "ervc_cc_basic_tab"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue('ervc_cc_tab', 'basic')]"
+					using = Animation_Tab_Switch
+					margin = { 25 12 }
+					spacing = 6
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						size = { 0 46 }
+						spacing = 8
+
+						spacer = { size = { 38 38 } }
+						text_single = {
+							min_width = 150
+							max_width = 150
+							text = "[Localize('ervc.cc.sex')]"
+							default_format = "#high"
+							align = nobaseline
+						}
+						button_standard = {
+							min_width = 250
+							text = "SEX_MALE"
+							datacontext = "[GetScriptedGui('ervc_cc_choose_male_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('ervc_cc_female').GetValue, '(CFixedPoint)0' )]"
+						}
+						button_standard = {
+							min_width = 250
+							text = "SEX_FEMALE"
+							datacontext = "[GetScriptedGui('ervc_cc_choose_female_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('ervc_cc_female').GetValue, '(CFixedPoint)1' )]"
+						}
+						expand = {}
+					}
+
+					ervc_cc_numeric_row = {
+						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.age')]" }
+						blockoverride "ervc_numeric_max" { max = 120 }
+						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_age').GetValue]" }
+						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_age').GetValue|0]" }
+						blockoverride "ervc_numeric_actions" {
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_age_minus_10_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_age_minus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_age_plus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_age_plus_10_gui')]" }
+						}
+					}
+
+					ervc_cc_numeric_row = {
+						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_skills.dds" framesize = { 60 60 } frame = 1 size = { 38 38 } } }
+						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.diplomacy')]" }
+						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_diplomacy').GetValue]" }
+						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_diplomacy').GetValue|0]" }
+						blockoverride "ervc_numeric_actions" {
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_minus_10_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_minus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_plus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_plus_10_gui')]" }
+						}
+					}
+
+					ervc_cc_numeric_row = {
+						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_skills.dds" framesize = { 60 60 } frame = 2 size = { 38 38 } } }
+						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.martial')]" }
+						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_martial').GetValue]" }
+						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_martial').GetValue|0]" }
+						blockoverride "ervc_numeric_actions" {
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_martial_minus_10_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_martial_minus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_martial_plus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_martial_plus_10_gui')]" }
+						}
+					}
+
+					ervc_cc_numeric_row = {
+						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_skills.dds" framesize = { 60 60 } frame = 3 size = { 38 38 } } }
+						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.stewardship')]" }
+						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_stewardship').GetValue]" }
+						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_stewardship').GetValue|0]" }
+						blockoverride "ervc_numeric_actions" {
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_minus_10_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_minus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_plus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_plus_10_gui')]" }
+						}
+					}
+
+					ervc_cc_numeric_row = {
+						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_skills.dds" framesize = { 60 60 } frame = 4 size = { 38 38 } } }
+						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.intrigue')]" }
+						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_intrigue').GetValue]" }
+						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_intrigue').GetValue|0]" }
+						blockoverride "ervc_numeric_actions" {
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_minus_10_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_minus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_plus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_plus_10_gui')]" }
+						}
+					}
+
+					ervc_cc_numeric_row = {
+						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_skills.dds" framesize = { 60 60 } frame = 5 size = { 38 38 } } }
+						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.learning')]" }
+						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_learning').GetValue]" }
+						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_learning').GetValue|0]" }
+						blockoverride "ervc_numeric_actions" {
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_learning_minus_10_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_learning_minus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_learning_plus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_learning_plus_10_gui')]" }
+						}
+					}
+
+					ervc_cc_numeric_row = {
+						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_prowess.dds" size = { 38 38 } } }
+						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.prowess')]" }
+						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_prowess').GetValue]" }
+						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_prowess').GetValue|0]" }
+						blockoverride "ervc_numeric_actions" {
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_minus_10_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_minus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_plus_1_gui')]" }
+							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_plus_10_gui')]" }
+						}
+					}
+
+					expand = {}
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						text = "[Localize('ervc.cc.base_stats')]"
+						default_format = "#low"
+					}
+				}
+
+				vbox = {
+					name = "ervc_cc_education_tab"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue('ervc_cc_tab', 'education')]"
+					using = Animation_Tab_Switch
+					margin = { 25 12 }
+					spacing = 8
+
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						text = "[Localize('ervc.cc.education.help')]"
+						default_format = "#high"
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						blockoverride "scrollbox_content" {
+							ervc_cc_trait_catalog_grid = {
+								datamodel = "[GetPlayer.MakeScope.GetList('ervc_cc_catalog_education')]"
+							}
+						}
+					}
+				}
+
+				vbox = {
+					name = "ervc_cc_commander_tab"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue('ervc_cc_tab', 'commander')]"
+					using = Animation_Tab_Switch
+					margin = { 25 12 }
+					spacing = 8
+
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						text = "[Localize('ervc.cc.commander.help')]"
+						default_format = "#high"
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						blockoverride "scrollbox_content" {
+							ervc_cc_trait_catalog_grid = {
+								datamodel = "[GetPlayer.MakeScope.GetList('ervc_cc_catalog_commander')]"
+							}
+						}
+					}
+				}
+
+				vbox = {
+					name = "ervc_cc_physical_tab"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue('ervc_cc_tab', 'physical')]"
+					using = Animation_Tab_Switch
+					margin = { 25 12 }
+					spacing = 8
+
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						text = "[Localize('ervc.cc.physical.help')]"
+						default_format = "#high"
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						blockoverride "scrollbox_content" {
+							ervc_cc_trait_catalog_grid = {
+								datamodel = "[GetPlayer.MakeScope.GetList('ervc_cc_catalog_physical')]"
+							}
+						}
+					}
+				}
+
+				vbox = {
+					name = "ervc_cc_personality_tab"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue('ervc_cc_tab', 'personality')]"
+					using = Animation_Tab_Switch
+					margin = { 25 12 }
+					spacing = 8
+
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						text = "[Localize('ervc.cc.personality.help')]"
+						default_format = "#high"
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						blockoverride "scrollbox_content" {
+							ervc_cc_trait_catalog_grid = {
+								datamodel = "[GetPlayer.MakeScope.GetList('ervc_cc_catalog_personality')]"
+							}
+						}
+					}
+				}
+
+				vbox = {
+					name = "ervc_cc_other_tab"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue('ervc_cc_tab', 'other')]"
+					using = Animation_Tab_Switch
+					margin = { 25 12 }
+					spacing = 8
+
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						text = "[Localize('ervc.cc.other.help')]"
+						default_format = "#high"
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						blockoverride "scrollbox_content" {
+							ervc_cc_trait_catalog_grid = {
+								datamodel = "[GetPlayer.MakeScope.GetList('ervc_cc_catalog_other')]"
+							}
+						}
+					}
+				}
+
+				vbox = {
+					name = "ervc_cc_origin_tab"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue('ervc_cc_tab', 'origin')]"
+					using = Animation_Tab_Switch
+					margin = { 25 12 }
+					spacing = 8
+
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						text = "[Localize('ervc.cc.origin.help')]"
+						default_format = "#high"
+					}
+
+					text_single = {
+						text = "[Localize('ervc.cc.dynasty_house')]"
+						default_format = "#T"
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 10
+
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('ervc.cc.lowborn')]"
+							datacontext = "[GetScriptedGui('ervc_cc_choose_lowborn_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[GetScriptedGui('ervc_cc_lowborn_selected_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						}
+						button_standard = {
+							layoutpolicy_horizontal = expanding
+							text = "[Localize('ervc.cc.same_house')]"
+							datacontext = "[GetScriptedGui('ervc_cc_choose_same_house_gui')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							down = "[GetScriptedGui('ervc_cc_same_house_selected_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						spacing = 16
+
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							spacing = 5
+
+							text_single = {
+								layoutpolicy_horizontal = expanding
+								text = "[Localize('ervc.cc.culture')]"
+								default_format = "#T"
+								align = center|nobaseline
+							}
+
+							scrollbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+							blockoverride "scrollbox_content" {
+								ervc_cc_culture_catalog_list = {
+									datamodel = "[GetGlobalList('ervc_cc_catalog_culture_heritages')]"
+								}
+								}
+							}
+						}
+
+						divider_light = {
+							layoutpolicy_vertical = expanding
+							size = { 2 0 }
+						}
+
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							spacing = 5
+
+							text_single = {
+								layoutpolicy_horizontal = expanding
+								text = "[Localize('ervc.cc.faith')]"
+								default_format = "#T"
+								align = center|nobaseline
+							}
+
+							scrollbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								blockoverride "scrollbox_content" {
+									ervc_cc_faith_catalog_list = {
+										datamodel = "[GetPlayer.MakeScope.GetList('ervc_cc_catalog_faiths')]"
+									}
+								}
+							}
+						}
+					}
+				}
+
+				divider_light = {
+					layoutpolicy_horizontal = expanding
+					size = { 0 2 }
+				}
+
+				hbox = {
+					name = "ervc_cc_purchase_row"
+					layoutpolicy_horizontal = expanding
+					spacing = 10
+					margin = { 20 2 }
+
+					text_single = { text = "[Localize('ervc.cc.price')]" default_format = "#high" align = nobaseline }
+					text_single = {
+						raw_text = "[GetPlayer.MakeScope.ScriptValue('ervc_courtier_creator_cost')|0]"
+						default_format = "#V"
+						using = Font_Size_Medium
+						align = nobaseline
+					}
+					text_single = { raw_text = "/" default_format = "#low" align = nobaseline }
+					icon = { texture = "gfx/interface/icons/icon_gold.dds" size = { 28 28 } }
+					text_single = {
+						raw_text = "[GetPlayer.GetGold|0]"
+						default_format = "#high"
+						using = Font_Size_Medium
+						align = nobaseline
+					}
+
+					expand = {}
+
+					button_standard = {
+						min_width = 210
+						text = "[Localize('ervc.cc.cancel')]"
+						datacontext = "[GetScriptedGui('ervc_cc_cancel_gui')]"
+						enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					}
+					button_primary_big = {
+						min_width = 260
+						text = "[Localize('ervc.cc.confirm')]"
+						datacontext = "[GetScriptedGui('ervc_cc_confirm_gui')]"
+						enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						tooltip = "[ScriptedGui.BuildTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					}
+				}
+			}
+		}
+	}
+}

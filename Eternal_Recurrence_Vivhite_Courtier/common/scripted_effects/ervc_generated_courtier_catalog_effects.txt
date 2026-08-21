@@ -1,0 +1,2014 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_vivhite_courtier.py
+# Vanilla trait catalogs and deterministic conflict removal.
+
+ervc_cc_rebuild_trait_catalogs_effect = {
+	root = {
+		clear_variable_list = ervc_cc_catalog_education
+		clear_variable_list = ervc_cc_catalog_commander
+		clear_variable_list = ervc_cc_catalog_physical
+		clear_variable_list = ervc_cc_catalog_personality
+		clear_variable_list = ervc_cc_catalog_other
+	}
+
+	trait:education_intrigue_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_intrigue_2 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_intrigue_3 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_intrigue_4 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_intrigue_5 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_diplomacy_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_diplomacy_2 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_diplomacy_3 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_diplomacy_4 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_diplomacy_5 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_stewardship_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_stewardship_2 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_stewardship_3 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_stewardship_4 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_stewardship_5 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_martial_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_martial_2 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_martial_3 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_martial_4 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_martial_5 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_learning_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_learning_2 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_learning_3 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_learning_4 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:education_learning_5 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_education
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:diplomat = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:family_first = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:august = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_reveler = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_blademaster = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_hunter = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:strategist = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:overseer = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:gallant = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:architect = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:administrator = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:avaricious = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:schemer = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:seducer = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:torturer = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:whole_of_body = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:scholar = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:theologian = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_mystic = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_physician = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_herbalist = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_gardener = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lustful = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:chaste = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:gluttonous = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:temperate = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:greedy = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:generous = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lazy = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:diligent = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:wrathful = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:calm = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:patient = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:impatient = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:arrogant = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:humble = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:deceitful = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:honest = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:craven = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:brave = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:shy = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:gregarious = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:ambitious = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:content = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:arbitrary = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:just = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:cynical = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:zealous = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:paranoid = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:trusting = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:compassionate = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:callous = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:sadistic = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:stubborn = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:fickle = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:eccentric = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:vengeful = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:forgiving = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_personality
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:rowdy = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:charming = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:curious = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:pensive = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:bossy = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:drunkard = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:hashishiyah = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:rakish = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:reclusive = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:irritable = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:flagellant = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:profligate = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:improvident = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:contrite = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:comfort_eater = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:inappetetic = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:journaller = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:confider = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:athletic = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:depressed_genetic = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lunatic_genetic = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:possessed_genetic = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:ill = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:pneumonic = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:great_pox = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lovers_pox = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:leper = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:one_eyed = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:one_legged = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:disfigured = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:infirm = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:withering_mind = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:clouded_eyes = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:faltering_heart = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:fragile_bones = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:gout_ridden = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:consumption = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:cancer = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:typhus = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:smallpox = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:measles = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:dysentery = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:ergotism = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:scarred = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:eunuch_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:beardless_eunuch = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:blind = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:beauty_bad_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:beauty_bad_2 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:beauty_bad_3 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:beauty_good_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:beauty_good_2 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:beauty_good_3 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:intellect_bad_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:intellect_bad_2 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:intellect_bad_3 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:intellect_good_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:intellect_good_2 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:intellect_good_3 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:physique_bad_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:physique_bad_2 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:physique_bad_3 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:physique_good_1 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:physique_good_2 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:physique_good_3 = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:pure_blooded = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:fecund = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:strong = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:shrewd = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:clubfooted = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:hunchbacked = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lisping = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:stuttering = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:dwarf = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:giant = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:inbred = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:weak = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:dull = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:impotent = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:spindly = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:scaly = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:albino = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:wheezing = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:bleeder = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:infertile = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_physical
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:pilgrim = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:hajjaj = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:sayyid = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:faith_warrior = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:berserker = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:shieldmaiden = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:varangian = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_poet = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:bastard = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:legitimized_bastard = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:wild_oat = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:deviant = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:cannibal = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:incestuous = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:adulterer = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:fornicator = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:murderer = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:born_in_the_purple = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:viking = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:adventurer = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:adventurer_follower = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:heresiarch = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:peasant_leader = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:populist_leader = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:witch = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:loyal = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:disloyal = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:gallowsbait = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:logistician = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:military_engineer = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:aggressive_attacker = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:unyielding_defender = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:forder = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:flexible_leader = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:desert_warrior = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:jungle_stalker = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:reaver = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:reckless = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:holy_warrior = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:open_terrain_expert = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:rough_terrain_expert = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:forest_fighter = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:cautious_leader = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:organizer = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:winter_soldier = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_commander
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:crusader_king = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:tourney_participant = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_traveler = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:governor = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:knight_errant = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:immortal = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_wayfarer = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_voyager = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_surveyor = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:confucian_education = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:burdened = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+}
+
+ervc_cc_remove_selected_trait_conflicts_effect = {
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:lustful }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:chaste }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:chaste }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:lustful }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:gluttonous }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:temperate }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:temperate }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:gluttonous }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:greedy }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:generous }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:generous }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:greedy }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:lazy }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:diligent }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:diligent }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:lazy }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:wrathful }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:calm }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:calm }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:wrathful }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:patient }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:impatient }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:impatient }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:patient }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:arrogant }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:humble }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:humble }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:arrogant }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:deceitful }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:honest }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:honest }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:deceitful }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:craven }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:brave }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:brave }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:craven }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:shy }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:gregarious }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:gregarious }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:shy }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:ambitious }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:content }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:content }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:ambitious }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:arbitrary }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:just }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:just }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:arbitrary }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:cynical }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:zealous }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:zealous }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:cynical }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:paranoid }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:trusting }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:trusting }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:paranoid }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:compassionate }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:callous }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:sadistic }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:callous }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:compassionate }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:sadistic }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:sadistic }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:compassionate }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:callous }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:stubborn }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:fickle }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:eccentric }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:fickle }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:stubborn }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:eccentric }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:eccentric }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:stubborn }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:fickle }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:vengeful }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:forgiving }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:forgiving }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:vengeful }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:profligate }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:improvident }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:improvident }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:profligate }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:comfort_eater }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:inappetetic }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:inappetetic }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:comfort_eater }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:ill }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:pneumonic }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:pneumonic }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:ill }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:eunuch_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beardless_eunuch }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:beardless_eunuch }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:eunuch_1 }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:beauty_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_3 }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:beauty_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_3 }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:beauty_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_3 }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:beauty_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_3 }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:beauty_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_3 }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:beauty_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:beauty_good_2 }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:intellect_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:shrewd }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:intellect_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:shrewd }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:intellect_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:shrewd }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:intellect_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:dull }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:intellect_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:dull }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:intellect_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:dull }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:physique_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:strong }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:physique_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:strong }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:physique_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:strong }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:physique_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:weak }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:spindly }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:physique_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:weak }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:spindly }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:physique_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:weak }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:spindly }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:fecund }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:infertile }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:strong }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:weak }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:shrewd }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_bad_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:dull }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:dwarf }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:giant }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:giant }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:dwarf }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:weak }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:strong }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:dull }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:intellect_good_3 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:shrewd }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:spindly }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_1 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_2 }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:physique_good_3 }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:infertile }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:fecund }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:bastard }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:legitimized_bastard }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:wild_oat }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:legitimized_bastard }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:bastard }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:wild_oat }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:wild_oat }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:bastard }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:legitimized_bastard }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:adventurer }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:adventurer_follower }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:adventurer_follower }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:adventurer }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:loyal }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:disloyal }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:disloyal }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:loyal }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:reckless }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:cautious_leader }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:cautious_leader }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:reckless }
+	}
+}

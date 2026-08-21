@@ -34,9 +34,13 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_balance_matrix.py"
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_terminal_acceptance.py" --mode observer
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_terminal_acceptance.py" --mode ironman
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py"
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py" --scenario vivhite-alone
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py" --scenario original-then-vivhite
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py" --scenario vivhite-then-original
 ```
 
-场景基线与边界：
+原 mod 场景基线与边界：
 
 - `selftest`：默认场景，保持原有完整死亡/计分/UI 全链；只有此场景读取 `--import-record 0|100`。
 - `on-first-life`：固定 `xar_on` + 纪录 0，真实接受契约，OCR 验证 `xar.0010` 的「未燃之世」及「前世余烬」「余烬位阶」，再进入祝福窗口即结束，不触发死亡。
@@ -54,6 +58,15 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - `run_terminal_acceptance.py --mode observer|ironman`：以非 debug CK3、禁用云存档和仓库外一次性 `-userdir` 运行开发验收夹具。observer 要求结算后出现原生【正在观察】；Ironman 要求 modal 强制暂停、原生暂停菜单可打开、点击继续后重新阻断、原生保存确认、返回主菜单、同一进程内重载同一存档后再次阻断。包装器在运行前后逐文件比较真实 Documents 的教程/规则/启用项/设置及全部 `*.ck3` 存档，以及本地 Steam `userdata/*/1158310` 后备目录；两组都必须在退出后的五秒观察窗保持基线聚合哈希。远端 Steam 服务不在此证明范围内。仅当场景与后置检查均 GREEN 时才删除隔离 userdir，再把实际删除结果写入报告。
 - 每次运行都写 `report.json` 与 JUnit `report.xml`；JSON 包含 run ID、UTC、版本、Git SHA、实际 runtime tree SHA-256、source mode、CK3/平台/Python 环境、场景、结果、artifact 清单、各阶段秒数和错误原因。terminal 包装器另记三份 harness 文件的聚合 SHA-256。即使中途失败，也会先恢复现场再写 RED 报告；后置存储或清理检查失败时，包装器会同步把已有 JSON/JUnit 降级为 RED。`tutorial.txt`、`presets.txt`、`dlc_load.json` 与 `save games/autosave*.ck3` 备份位于独立临时目录；运行期只启用本工坊项，结束后原样恢复并删除备份，手动命名存档不移动。
 
+白绮独立版矩阵边界：
+
+- `run_vivhite_acceptance.py` 默认串行运行 `vivhite-alone`、`original-then-vivhite`、`vivhite-then-original`。每格都用全新的仓库外 disposable `-userdir`，从源码构建 Vivhite 精确 27 文件 production projection；双 mod 格还构建原 mod production projection，12 文件外部 `erva` 夹具始终最后加载。
+- standalone 夹具投影会剥离 `# ERVA_DUAL_ONLY_BEGIN/END` 区域，禁止残留任何 `xar_`/`xa_` 运行时引用。双 mod 两格分别证明 ERVC 348 金配置和 XAR 120 金配置互不污染、两个原生决议组/窗口同时存在、各交付一名廷臣且各扣款一次。
+- runner 不读写真实工坊缓存，不调用原 runner 的同步或全局杀进程路径。所有 Steam library 的 `workshop/content/1158310` 根、真实 profile、仓库和 Steam userdata 都是 artifact/userdir 禁区；全部 `ugc_*.mod` 必须含绝对路径并落在已发现的 CK3 Workshop 根。前后比较真实 profile、Steam cloud 后备目录、descriptor 精确哈希及每个已注册 target 的递归 path/size/mtime 元数据。最终安静窗从一次完整相等扫描结束后才开始计时，等待五秒后再做完整复扫。
+- 正式矩阵不加 `--keep-userdirs`：只有场景、阻塞性项目日志、保护存储和删除检查全部 GREEN 才删除该格 userdir。`error.log`、`gui_warnings.log`、`database_conflicts.log` 同时扫描 `xa_`/`xar`/`ervc`/`erva`；仅原 mod 冻结代码的两个 loc-only rarity 警告走逐字窄白名单并写入报告。矩阵以 JUnit 先落盘、JSON 最后原子发布；任一 postflight 失败都整体降级 RED。
+- 每格由 debug mount 记录反证实际 product 顺序、无额外启用 mod 且 fixture 最后；启动前后还要求 launcher `rawVersion/exePath` 与 CK3 可执行文件 SHA-256 不变。独立 detached watchdog 在 runner 被强杀时只按记录 PID 终止该 CK3 进程树，绝不按镜像名全杀。
+- CK3 冷启动可在大厅按钮消失后继续加载数分钟；必须等底栏日期 HUD 实际出现才开始点决议。原生决议分组标题可能附带条目计数；具体决议行必须精确 OCR，并以相邻 bounding-box 顺序证明各行直属对应组，不能把组标题中的同名文本当成行。marker tailer 只消费换行完整记录，CK3 退出后再 flush 尾行并逐 marker 要求恰好一次。
+
 普通场景冷启动通常约 2 分钟；`bargain-reopen` 还要在速度 5 下实走 9 个游戏年，预计整场约 16-22 分钟，随机原生事件多时更长。所有场景都输出 `RESULT: GREEN/RED` + 退出码。判定依据：
 
 1. `tools/validate_static.py` 通过：八套脚本生成器与三张决议 DDS 逐文件 parity、全部运行文件 UTF-8 BOM、9 语言 loc 引用与首世/账簿/廷臣窗口格式 token parity、原生决议分组/前缀图标/三张独立插画、自动发现的全部 XAR event/decision AI 闸门、挑战继承/成长基线、契约 hook/PB/图鉴/里程碑、生产/selftest 共用入口、21 个当铺购买 effect、付费廷臣五类目录计数/数值边界/原生元数据与冲突/玩家隔离/确认前零副作用/单次扣金、无继承人 fallback/原生继承窗投影、奖池过滤/权重/稳定 ID、descriptor 与发布资源；其中 `tools/validate_loc.py` 负责动态 wrapper、custom-loc 和 modifier 名。
@@ -70,15 +83,16 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 
 ### GitHub 官方 CI 与本机 L1-L3
 
-`.github/workflows/static-ci.yml` 只使用 GitHub 官方 `windows-latest`。每次 push/PR 都安装最小静态依赖并执行 Python 编译、no-heir 投影测试、release manifest 测试、`validate_static.py`、计分 reference vectors 和 `build_release.py --check`；手动触发或 `v*` tag 时额外构建并上传 ZIP/manifest，tag 构建仍要求 clean worktree、HEAD 上存在 `v<version>` tag。
+`.github/workflows/static-ci.yml` 只使用 GitHub 官方 `windows-latest`。每次 push/PR 都安装最小静态依赖并执行 Python 编译、no-heir 投影测试、两套 release manifest 测试、`validate_static.py`、`validate_vivhite_static.py`、计分 reference vectors 和两套 `build_*_release.py --check`；手动触发或对应 `v*`/`vivhite-v*` tag 时额外构建并上传匹配的 ZIP/manifest，tag 构建仍要求 clean worktree、HEAD 上存在正确命名的版本 tag。
 
-官方 runner 没有 CK3、Steam 授权、工坊缓存、用户目录或可靠交互桌面，因此禁止调用 `run_acceptance.py`，也不能把云端 L0 表述成引擎或 UI 已验。官方 CI 能证明生成器 parity、BOM/loc、玩家/AI 闸门、release allowlist、acceptance 剥离和构建可复现；不能证明 Paradox 运行时语义、跨存档落盘、鼠标/OCR 或游戏日期推进。
+官方 runner 没有 CK3、Steam 授权、工坊缓存、用户目录或可靠交互桌面，因此禁止调用 `run_acceptance.py` 或 `run_vivhite_acceptance.py`，也不能把云端 L0 表述成引擎或 UI 已验。官方 CI 能证明生成器 parity、BOM/loc、玩家/AI 闸门、release allowlist、acceptance 剥离和构建可复现；不能证明 Paradox 运行时语义、跨存档落盘、鼠标/OCR 或游戏日期推进。
 
 真实游戏层在本机串行执行并保存 artifacts：
 
 - L1：`off`，production release 投影冷启动、引擎解析及禁用规则负例。
 - L2：`selftest`、`persistence-restart`、`death-edges`、`death-with-heir`、`bargain-reopen`、`progression-ui`、`scoring-matrix`、`courtier-creator`，覆盖 57 项机制断言、200 effect body 与 200 dispatcher runtime sweep、两进程持久化、AI/无继承人/普通继承死亡边界、三轮生产交易的 1094/1095 日边界、PB/图鉴/里程碑生产链、受控后代去重/深度/死亡中间节点计分，以及付费廷臣两次真实交易与动态目录。
 - L3：`on-first-life`、`on-recorded`、`on-high-budget`，覆盖 production-only 首世、已有纪录和第四页高预算真实 OCR/点击。L2 的交易 UI、决议、trait hover 和无继承人窗口也计入整体 L3 证据，不重复启动。
+- 白绮独立版并行门禁：专用三格矩阵覆盖 standalone 完整购买链、双 mod 两种实际 mount 顺序、状态隔离、各自单次交付/扣款、AI 闸门、零阻塞性项目诊断及真实用户存储零改动；该矩阵不使用原 mod 的 Workshop item 或真实缓存，已知原 mod loc-only 警告必须透明记录。
 
 本机报告必须记录 JSON/JUnit、截图、runtime hash 和本次增量 `debug/error/gui_warnings`；发布 QA 引用具体 run ID，不把未运行的远端 CK3 状态写成 GREEN。GitHub tag artifact 只提供经过 L0 验证的候选 ZIP/manifest，不自动创建 GitHub Release 或上传 Steam。
 
@@ -108,6 +122,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 独立 `scoring-matrix` 开发树场景实测 1–5 代计入、第六代排除、同一后代双路径只计一次、穿过已故中间节点后继续计分、清理不对 dead scope 执行 flag effect，并比较 preview/生产误差。全部 200 个稳定 wire ID 还会逐一穿过生产 dispatcher，结合冻结语义契约证明 ID→effect/filter/weight 映射。2026-08-19 GREEN：`xar_accept_h0lgmvyf`，200/200 marker，0 `xar` errors。
 - 非 debug 终局双路径实测：`xar_terminal_observer_nondebug3_20260821` 从开发夹具中的生产 `observe` 分支进入原生观察者 HUD；`xar_terminal_ironman_nondebug9_20260821` 完成强制暂停、resume 重阻断、原生自动保存退出、主菜单同进程重载与重载后阻断。两轮都实际 hover 十级【琉焰之视】，其完整 1–10 轨道可见且不再产生旧 run 中的 248 条 `_stars_10.dds` 错误。铁人轮的三个日期检查均强制读出并固定在同一日，隔离存档重载前后路径/大小/SHA-256 相同；真实 Documents 的 9 个受保护文件与本地 Steam app 1158310 userdata 的 2 个文件在五秒观察窗内聚合哈希不变，隔离 userdir 删除后实际不存在。两轮 runtime tree 均为 `235d92fb36fd1052b0261c05f059e525d76a06231a7b92a8a27cc8e6764d242a`，harness 为 `f56a0e364198e6fe1be465d447d1f5170965de275e6a28e4d443ca68934e7b9f`，且均为 0 project errors。该证据不等于 release projection 运行或远端 Steam Cloud 审计。
 - 2026-08-21 最终 exact-candidate 套件绑定提交 `45cf7ea`：`xar_final85_selftest_20260821`、`xar_final85_persistence_20260821`、两条 `xar_final85_death_*`、`xar_final85_bargain_20260821`、`xar_final85_progression_20260821`、`xar_final85_scoring_matrix_20260821`、`xar_final85_courtier_creator_20260821` 与四条 `xar_final85_on_*/off_20260821` 全部 GREEN，0 project errors。开发树 runtime 为 `235d92fb36fd1052b0261c05f059e525d76a06231a7b92a8a27cc8e6764d242a`；四条 production smoke 实际加载从它构建并剥离验收夹具的 85 文件 projection `29dde4460b7f86b1779e902712e856776dd99de703802a92a64c1fa39c28d221`。每条报告均保存 JSON/JUnit、截图与增量日志；该结论只关闭自动化候选回归，不替代九语言人工审校、干净截图、Workshop 强制重下载或发布签核。
+- 2026-08-21 白绮独立版 hardened schema-v2 三格矩阵 `ervc_acceptance_hardened_final_20260821`：非 debug CK3 `1.19.0.6` 串行完成 standalone 与双 mod 两种加载顺序，3/3 GREEN、0 blocking project diagnostics。Vivhite production projection 为 `93fb559a61ace1a3c2bd8a9680a0ed5039db765753da8c787d28b0dd67c09fef`，原 mod projection 为 `97b9f386ab17364eec0859be1f7c6407816a27a396b2edcf6427d697789ba2ab`；debug mount 顺序逐格精确匹配请求顺序且 fixture 均最后加载，两种顺序都证明两个决议组及其直属决议行、ERVC 348/XAR 120 独立状态、最终 532 金与两次独立交付。双 mod 格各自透明记录原 mod 冻结代码的 `xa_curse_a_rarity` / `xa_curse_b_rarity` 两类 loc-only unused-variable 已知警告，没有以漏扫 `xa_` 隐藏；除此之外 `error.log`、`gui_warnings.log`、`database_conflicts.log` 无项目诊断。CK3 可执行文件逐格前后 SHA-256 均为 `2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86`。真实 profile、Steam cloud 后备目录、82 个已注册 Workshop target 的 162,960 项递归元数据在完整扫描后再等待五秒并复扫，聚合哈希保持 `ed9a9cce6db99148f08aac997d38caae00f64c79827fdb1dcf642c3af9c38336`；三个 disposable userdir 与 detached watchdog 均实际退出/删除。该证据不替代 clean-tag 重跑、七语言人工签核或新 Workshop cache 验证。
 
 **没验的**：
 - 数值是否符合最初产品意图仍需人工平衡审阅；冻结契约能阻止未审阅的 `50→500` 或 ID 重排，但不能证明首次冻结前的设计值天然正确。
@@ -146,6 +161,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验。2026-08-20 实测发现宿主超时会终止 runner 的整个子进程树，普通 `Popen(CREATE_NO_WINDOW)` watchdog 也被一起杀死，遗留隔离后的 `dlc_load.json` 与测试 autosave；已从该次精确 backup 全量恢复并核对六项 hash。watchdog 现由 WMI `Win32_Process.Create` 启动在 runner 进程树之外。2026-08-19 另实测 dev selftest autosave 会让下一次 release 投影扫描已剥离的 `xar_selftest` 规则键并误报；现启动前先完整复制并校验全部 `autosave*.ck3`，写 ready 标记后才移走，结束时删除测试 autosave 并恢复原件。
 - 2026-08-19 长期平衡摇测发现当前播放集还启用了四个自动控制/改宗 mod，会污染领地、信仰与资源结果。runner 现同时备份 `dlc_load.json`，启动前把 `enabled_mods` 精确收敛为 `mod/ugc_3784706360.mod`，杀死测试 CK3 后再恢复；watchdog 同样覆盖此文件。
 - `--artifacts-dir` 只创建调用方给定的新目录；CI 上传只包含从本次日志 offset 起的新内容，严禁用 `%TEMP%\xar_accept*` 通配上传，因为 `xar_accept_backup_*` 可能含玩家现场。
+- Windows Python Launcher 的 `py <script.py>` 会解释脚本首行的 `/usr/bin/env python3`，可能选中 `PATH` 里的另一套 Python，而不是刚由 `py -m pip` 安装依赖的默认解释器。2026-08-21 实测该分裂让非固定 Pillow 重建的三张 DXT1 DDS 与仓库字节不同，产生假 stale；项目 `.venv` 的 `Pillow==12.3.0` 与官方 CI 均 GREEN。遇到素材 parity 全红时先打印实际解释器和 Pillow 版本，本机 L0 优先直接调用 `tools\.venv\Scripts\python.exe`，禁止为消除环境假红而重写已发布素材。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。
 - trait 含原生 `track` 时，UI 会自动读取 `gfx/interface/icons/trait_level_tracks/<trait_key>.dds`；缺文件会在真正 hover 时写 VFS error，主 trait 的 `icon =` 不会替代它（2026-08-18 实测）。
 - 原生决议右栏按钮是 `F8` 对应的羽笔图标；合成键盘无效时可按屏幕比例 `(0.987, 0.367)` hover，先 OCR 验证“决议”tooltip 再点击。低处条目必须在滚动框内下滚到中段后用 `deliberate_click`，否则底缘 hit-test 会关闭面板但不选中。决议触发的事件或 scripted GUI 关闭后，决议面板会随动画恢复；先等待并复查面板标题，再决定是否点 HUD，否则会把刚恢复的面板反向关掉（2026-08-18/20 实测）。

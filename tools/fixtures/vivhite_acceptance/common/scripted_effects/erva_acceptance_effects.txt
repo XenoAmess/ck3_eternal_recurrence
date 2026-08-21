@@ -1,0 +1,517 @@
+﻿# Runtime acceptance observes production state from a separate fixture mod.
+erva_acceptance_zero_gold_effect = {
+	set_variable = { name = erva_acceptance_gold_reset value = gold }
+	if = {
+		limit = { var:erva_acceptance_gold_reset > 0 }
+		remove_short_term_gold = var:erva_acceptance_gold_reset
+	}
+	else_if = {
+		limit = { var:erva_acceptance_gold_reset < 0 }
+		add_gold = { value = var:erva_acceptance_gold_reset multiply = -1 }
+	}
+	remove_variable = erva_acceptance_gold_reset
+}
+
+erva_acceptance_count_untracked_courtiers_effect = {
+	set_variable = { name = erva_acceptance_untracked_count value = 0 }
+	every_courtier = {
+		limit = { NOT = { has_character_flag = erva_acceptance_baseline_courtier } }
+		root = {
+			change_variable = { name = erva_acceptance_untracked_count add = 1 }
+		}
+	}
+}
+
+erva_acceptance_initialize_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			is_alive = yes
+			has_character_flag = erva_acceptance_start_pending
+			NOT = { has_character_flag = erva_acceptance_initialized }
+		}
+		remove_character_flag = erva_acceptance_start_pending
+		add_character_flag = erva_acceptance_initialized
+		every_courtier = { add_character_flag = erva_acceptance_baseline_courtier }
+		erva_acceptance_zero_gold_effect = yes
+		add_gold = 1000
+		if = {
+			limit = { has_game_rule = erva_acceptance_standalone }
+			add_character_flag = erva_phase_standalone_cancel
+			debug_log = "ERVA: TEST BEGIN standalone"
+		}
+		# ERVA_DUAL_ONLY_BEGIN
+		else_if = {
+			limit = { has_game_rule = erva_acceptance_dual }
+			set_global_variable = { name = xa_contract_id value = 0 }
+			add_character_flag = xa_enabled
+			add_character_flag = erva_phase_dual_ervc_stage
+			debug_log = "ERVA: TEST BEGIN dual"
+		}
+		# ERVA_DUAL_ONLY_END
+		else = { debug_log = "ERVA: TEST FAIL unsupported_mode" }
+		if = {
+			limit = { exists = character:1132 }
+			character:1132 = { trigger_event = erva.0001 }
+		}
+		else = { debug_log = "ERVA: TEST FAIL ai_fixture_missing" }
+	}
+}
+
+erva_standalone_cancel_open_effect = {
+	add_character_flag = erva_acceptance_modal_seen
+}
+
+erva_standalone_cancel_close_effect = {
+	erva_acceptance_count_untracked_courtiers_effect = yes
+	if = {
+		limit = {
+			gold >= 1000
+			gold < 1001
+			var:erva_acceptance_untracked_count = 0
+			erva_ervc_default_configuration_trigger = yes
+		}
+		debug_log = "ERVA: TEST PASS cancel_zero_side_effect"
+	}
+	else = { debug_log = "ERVA: TEST FAIL cancel_zero_side_effect" }
+	remove_character_flag = erva_phase_standalone_cancel
+	remove_character_flag = erva_acceptance_modal_seen
+	erva_acceptance_zero_gold_effect = yes
+	add_gold = 119
+	add_character_flag = erva_phase_standalone_poor
+}
+
+erva_standalone_poor_open_effect = {
+	add_character_flag = erva_acceptance_modal_seen
+}
+
+erva_standalone_poor_close_effect = {
+	erva_acceptance_count_untracked_courtiers_effect = yes
+	if = {
+		limit = {
+			gold >= 119
+			gold < 120
+			var:erva_acceptance_untracked_count = 0
+			erva_ervc_default_configuration_trigger = yes
+		}
+		debug_log = "ERVA: TEST PASS insufficient_119_blocked"
+	}
+	else = { debug_log = "ERVA: TEST FAIL insufficient_119_blocked" }
+	remove_character_flag = erva_phase_standalone_poor
+	remove_character_flag = erva_acceptance_modal_seen
+	erva_acceptance_zero_gold_effect = yes
+	add_gold = 1000
+	add_character_flag = erva_phase_standalone_default
+}
+
+erva_standalone_default_open_effect = {
+	add_character_flag = erva_acceptance_modal_seen
+}
+
+erva_standalone_default_close_effect = {
+	erva_acceptance_count_untracked_courtiers_effect = yes
+	if = {
+		limit = {
+			gold >= 880
+			gold < 881
+			var:erva_acceptance_untracked_count = 1
+			erva_ervc_default_configuration_trigger = yes
+			any_courtier = {
+				NOT = { has_character_flag = erva_acceptance_baseline_courtier }
+				erva_ervc_default_courtier_trigger = yes
+			}
+		}
+		debug_log = "ERVA: TEST PASS default_120_one_delivery_one_charge"
+	}
+	else = { debug_log = "ERVA: TEST FAIL default_120_one_delivery_one_charge" }
+	every_courtier = {
+		limit = { NOT = { has_character_flag = erva_acceptance_baseline_courtier } }
+		add_character_flag = erva_acceptance_default_delivery
+		add_character_flag = erva_acceptance_baseline_courtier
+	}
+	remove_character_flag = erva_phase_standalone_default
+	remove_character_flag = erva_acceptance_modal_seen
+	add_character_flag = erva_phase_standalone_custom_stage
+}
+
+erva_standalone_custom_stage_open_effect = {
+	add_character_flag = erva_acceptance_modal_seen
+}
+
+erva_standalone_custom_stage_close_effect = {
+	erva_acceptance_count_untracked_courtiers_effect = yes
+	if = {
+		limit = {
+			gold >= 880
+			gold < 881
+			var:erva_acceptance_untracked_count = 0
+			erva_ervc_custom_configuration_trigger = yes
+		}
+		debug_log = "ERVA: TEST PASS selected_faith_aluk"
+		debug_log = "ERVA: TEST PASS custom_348_ready"
+		debug_log = "ERVA: TEST PASS custom_configuration_retained"
+	}
+	else = { debug_log = "ERVA: TEST FAIL custom_configuration_retained" }
+	remove_character_flag = erva_phase_standalone_custom_stage
+	remove_character_flag = erva_acceptance_modal_seen
+	add_character_flag = erva_phase_standalone_custom_purchase
+}
+
+erva_standalone_custom_purchase_open_effect = {
+	if = {
+		limit = { erva_ervc_custom_configuration_trigger = yes }
+		debug_log = "ERVA: TEST PASS custom_configuration_reopened"
+	}
+	else = { debug_log = "ERVA: TEST FAIL custom_configuration_reopened" }
+	add_character_flag = erva_acceptance_modal_seen
+}
+
+erva_standalone_custom_purchase_close_effect = {
+	erva_acceptance_count_untracked_courtiers_effect = yes
+	if = {
+		limit = {
+			gold >= 532
+			gold < 533
+			var:erva_acceptance_untracked_count = 1
+			erva_ervc_custom_configuration_trigger = yes
+			any_courtier = {
+				NOT = { has_character_flag = erva_acceptance_baseline_courtier }
+				erva_ervc_custom_courtier_trigger = yes
+			}
+			any_courtier = { has_character_flag = erva_acceptance_default_delivery }
+		}
+		debug_log = "ERVA: TEST PASS custom_348_one_delivery_one_charge"
+	}
+	else = { debug_log = "ERVA: TEST FAIL custom_348_one_delivery_one_charge" }
+	remove_character_flag = erva_phase_standalone_custom_purchase
+	remove_character_flag = erva_acceptance_modal_seen
+	debug_log = "ERVA: TEST DONE standalone"
+}
+
+# Scripted GUI states can queue the same execution more than once in one frame.
+# Revalidate every observed transition at effect time, as the production bridges do.
+erva_standalone_cancel_open_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_standalone_cancel
+			has_character_flag = ervc_cc_open
+			NOT = { has_character_flag = erva_acceptance_modal_seen }
+		}
+		erva_standalone_cancel_open_effect = yes
+	}
+}
+
+erva_standalone_cancel_close_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_standalone_cancel
+			has_character_flag = erva_acceptance_modal_seen
+			NOT = { has_character_flag = ervc_cc_open }
+		}
+		erva_standalone_cancel_close_effect = yes
+	}
+}
+
+erva_standalone_poor_open_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_standalone_poor
+			has_character_flag = ervc_cc_open
+			NOT = { has_character_flag = erva_acceptance_modal_seen }
+		}
+		erva_standalone_poor_open_effect = yes
+	}
+}
+
+erva_standalone_poor_close_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_standalone_poor
+			has_character_flag = erva_acceptance_modal_seen
+			NOT = { has_character_flag = ervc_cc_open }
+		}
+		erva_standalone_poor_close_effect = yes
+	}
+}
+
+erva_standalone_default_open_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_standalone_default
+			has_character_flag = ervc_cc_open
+			NOT = { has_character_flag = erva_acceptance_modal_seen }
+		}
+		erva_standalone_default_open_effect = yes
+	}
+}
+
+erva_standalone_default_close_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_standalone_default
+			has_character_flag = erva_acceptance_modal_seen
+			NOT = { has_character_flag = ervc_cc_open }
+		}
+		erva_standalone_default_close_effect = yes
+	}
+}
+
+erva_standalone_custom_stage_open_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_standalone_custom_stage
+			has_character_flag = ervc_cc_open
+			NOT = { has_character_flag = erva_acceptance_modal_seen }
+		}
+		erva_standalone_custom_stage_open_effect = yes
+	}
+}
+
+erva_standalone_custom_stage_close_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_standalone_custom_stage
+			has_character_flag = erva_acceptance_modal_seen
+			NOT = { has_character_flag = ervc_cc_open }
+		}
+		erva_standalone_custom_stage_close_effect = yes
+	}
+}
+
+erva_standalone_custom_purchase_open_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_standalone_custom_purchase
+			has_character_flag = ervc_cc_open
+			NOT = { has_character_flag = erva_acceptance_modal_seen }
+		}
+		erva_standalone_custom_purchase_open_effect = yes
+	}
+}
+
+erva_standalone_custom_purchase_close_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_standalone_custom_purchase
+			has_character_flag = erva_acceptance_modal_seen
+			NOT = { has_character_flag = ervc_cc_open }
+		}
+		erva_standalone_custom_purchase_close_effect = yes
+	}
+}
+
+# ERVA_DUAL_ONLY_BEGIN
+erva_dual_ervc_stage_open_effect = {
+	add_character_flag = erva_acceptance_modal_seen
+}
+
+erva_dual_ervc_stage_close_effect = {
+	erva_acceptance_count_untracked_courtiers_effect = yes
+	if = {
+		limit = {
+			gold >= 1000
+			gold < 1001
+			var:erva_acceptance_untracked_count = 0
+			erva_ervc_custom_configuration_trigger = yes
+		}
+		debug_log = "ERVA: TEST PASS ervc_custom_348_staged"
+		debug_log = "ERVA: TEST PASS ervc_configuration_retained"
+	}
+	else = { debug_log = "ERVA: TEST FAIL ervc_configuration_retained" }
+	remove_character_flag = erva_phase_dual_ervc_stage
+	remove_character_flag = erva_acceptance_modal_seen
+	add_character_flag = erva_phase_dual_xar_stage
+}
+
+erva_dual_xar_stage_open_effect = {
+	if = {
+		limit = {
+			erva_ervc_custom_configuration_trigger = yes
+			erva_xar_default_configuration_trigger = yes
+		}
+		debug_log = "ERVA: TEST PASS xar_default_isolated_from_ervc"
+	}
+	else = { debug_log = "ERVA: TEST FAIL xar_default_isolated_from_ervc" }
+	add_character_flag = erva_acceptance_modal_seen
+}
+
+erva_dual_xar_stage_close_effect = {
+	erva_acceptance_count_untracked_courtiers_effect = yes
+	if = {
+		limit = {
+			gold >= 1000
+			gold < 1001
+			var:erva_acceptance_untracked_count = 0
+			erva_ervc_custom_configuration_trigger = yes
+			erva_xar_female_configuration_trigger = yes
+		}
+		debug_log = "ERVA: TEST PASS xar_configuration_retained"
+	}
+	else = { debug_log = "ERVA: TEST FAIL xar_configuration_retained" }
+	remove_character_flag = erva_phase_dual_xar_stage
+	remove_character_flag = erva_acceptance_modal_seen
+	add_character_flag = erva_phase_dual_ervc_purchase
+}
+
+erva_dual_ervc_purchase_open_effect = {
+	if = {
+		limit = {
+			erva_ervc_custom_configuration_trigger = yes
+			erva_xar_female_configuration_trigger = yes
+		}
+		debug_log = "ERVA: TEST PASS ervc_state_retained_after_xar"
+	}
+	else = { debug_log = "ERVA: TEST FAIL ervc_state_retained_after_xar" }
+	add_character_flag = erva_acceptance_modal_seen
+}
+
+erva_dual_ervc_purchase_close_effect = {
+	erva_acceptance_count_untracked_courtiers_effect = yes
+	if = {
+		limit = {
+			gold >= 652
+			gold < 653
+			var:erva_acceptance_untracked_count = 1
+			erva_ervc_custom_configuration_trigger = yes
+			erva_xar_female_configuration_trigger = yes
+			any_courtier = {
+				NOT = { has_character_flag = erva_acceptance_baseline_courtier }
+				erva_ervc_custom_courtier_trigger = yes
+			}
+		}
+		debug_log = "ERVA: TEST PASS ervc_348_one_delivery_one_charge"
+	}
+	else = { debug_log = "ERVA: TEST FAIL ervc_348_one_delivery_one_charge" }
+	every_courtier = {
+		limit = { NOT = { has_character_flag = erva_acceptance_baseline_courtier } }
+		add_character_flag = erva_acceptance_ervc_delivery
+		add_character_flag = erva_acceptance_baseline_courtier
+	}
+	remove_character_flag = erva_phase_dual_ervc_purchase
+	remove_character_flag = erva_acceptance_modal_seen
+	add_character_flag = erva_phase_dual_xar_purchase
+}
+
+erva_dual_xar_purchase_open_effect = {
+	if = {
+		limit = {
+			erva_ervc_custom_configuration_trigger = yes
+			erva_xar_female_configuration_trigger = yes
+		}
+		debug_log = "ERVA: TEST PASS xar_state_retained_after_ervc"
+	}
+	else = { debug_log = "ERVA: TEST FAIL xar_state_retained_after_ervc" }
+	add_character_flag = erva_acceptance_modal_seen
+}
+
+erva_dual_xar_purchase_close_effect = {
+	erva_acceptance_count_untracked_courtiers_effect = yes
+	if = {
+		limit = {
+			gold >= 532
+			gold < 533
+			var:erva_acceptance_untracked_count = 1
+			erva_ervc_custom_configuration_trigger = yes
+			erva_xar_female_configuration_trigger = yes
+			any_courtier = { has_character_flag = erva_acceptance_ervc_delivery }
+			any_courtier = {
+				NOT = { has_character_flag = erva_acceptance_baseline_courtier }
+				erva_xar_female_courtier_trigger = yes
+			}
+		}
+		debug_log = "ERVA: TEST PASS xar_120_one_delivery_one_charge"
+	}
+	else = { debug_log = "ERVA: TEST FAIL xar_120_one_delivery_one_charge" }
+	remove_character_flag = erva_phase_dual_xar_purchase
+	remove_character_flag = erva_acceptance_modal_seen
+	debug_log = "ERVA: TEST DONE dual"
+}
+
+erva_dual_ervc_stage_open_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_dual_ervc_stage
+			has_character_flag = ervc_cc_open
+			NOT = { has_character_flag = erva_acceptance_modal_seen }
+		}
+		erva_dual_ervc_stage_open_effect = yes
+	}
+}
+
+erva_dual_ervc_stage_close_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_dual_ervc_stage
+			has_character_flag = erva_acceptance_modal_seen
+			NOT = { has_character_flag = ervc_cc_open }
+		}
+		erva_dual_ervc_stage_close_effect = yes
+	}
+}
+
+erva_dual_xar_stage_open_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_dual_xar_stage
+			has_character_flag = xar_cc_open
+			NOT = { has_character_flag = erva_acceptance_modal_seen }
+		}
+		erva_dual_xar_stage_open_effect = yes
+	}
+}
+
+erva_dual_xar_stage_close_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_dual_xar_stage
+			has_character_flag = erva_acceptance_modal_seen
+			NOT = { has_character_flag = xar_cc_open }
+		}
+		erva_dual_xar_stage_close_effect = yes
+	}
+}
+
+erva_dual_ervc_purchase_open_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_dual_ervc_purchase
+			has_character_flag = ervc_cc_open
+			NOT = { has_character_flag = erva_acceptance_modal_seen }
+		}
+		erva_dual_ervc_purchase_open_effect = yes
+	}
+}
+
+erva_dual_ervc_purchase_close_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_dual_ervc_purchase
+			has_character_flag = erva_acceptance_modal_seen
+			NOT = { has_character_flag = ervc_cc_open }
+		}
+		erva_dual_ervc_purchase_close_effect = yes
+	}
+}
+
+erva_dual_xar_purchase_open_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_dual_xar_purchase
+			has_character_flag = xar_cc_open
+			NOT = { has_character_flag = erva_acceptance_modal_seen }
+		}
+		erva_dual_xar_purchase_open_effect = yes
+	}
+}
+
+erva_dual_xar_purchase_close_guarded_effect = {
+	if = {
+		limit = {
+			has_character_flag = erva_phase_dual_xar_purchase
+			has_character_flag = erva_acceptance_modal_seen
+			NOT = { has_character_flag = xar_cc_open }
+		}
+		erva_dual_xar_purchase_close_effect = yes
+	}
+}
+# ERVA_DUAL_ONLY_END

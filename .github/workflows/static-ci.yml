@@ -29,18 +29,30 @@ jobs:
         run: python tools/test_gen_no_heir_gui.py
       - name: Test release manifest verification
         run: python tools/test_build_release.py
+      - name: Test Vivhite release tooling
+        run: python tools/test_build_vivhite_release.py
       - name: Validate generated and static content
         run: python tools/validate_static.py
+      - name: Validate Vivhite standalone content
+        run: python tools/validate_vivhite_static.py
       - name: Run scoring reference vectors
         run: python -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors(); print('REFERENCE VECTORS OK')"
       - name: Verify reproducible release
         run: python tools/build_release.py --check
+      - name: Verify reproducible Vivhite release
+        run: python tools/build_vivhite_release.py --check
       - name: Build manual release candidate
         if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
         run: python tools/build_release.py
+      - name: Build manual Vivhite release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_vivhite_release.py
       - name: Build tagged release candidate
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/v') && !startsWith(github.ref, 'refs/tags/vivhite-v')
         run: python tools/build_release.py --release
+      - name: Build tagged Vivhite release candidate
+        if: startsWith(github.ref, 'refs/tags/vivhite-v')
+        run: python tools/build_vivhite_release.py --release
       - name: Upload release candidate
         if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-artifact@v4

@@ -1,0 +1,384 @@
+﻿# Native ruler-designer absolute skill costs, adapted to character variables.
+ervc_cc_diplomacy_skill_cost = {
+	value = 0
+	if = {
+		limit = {
+			var:ervc_cc_diplomacy > 0
+			var:ervc_cc_diplomacy < 5
+		}
+		add = 2
+		multiply = var:ervc_cc_diplomacy
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_diplomacy > 4
+			var:ervc_cc_diplomacy < 9
+		}
+		add = 4
+		multiply = {
+			value = var:ervc_cc_diplomacy
+			subtract = 4
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_diplomacy > 8
+			var:ervc_cc_diplomacy < 13
+		}
+		add = 7
+		multiply = {
+			value = var:ervc_cc_diplomacy
+			subtract = 8
+		}
+		add = 24
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_diplomacy > 12
+			var:ervc_cc_diplomacy < 17
+		}
+		add = 11
+		multiply = {
+			value = var:ervc_cc_diplomacy
+			subtract = 12
+		}
+		add = 52
+	}
+	else_if = {
+		limit = { var:ervc_cc_diplomacy > 16 }
+		add = 17
+		multiply = {
+			value = var:ervc_cc_diplomacy
+			subtract = 16
+		}
+		add = 96
+	}
+}
+
+ervc_cc_martial_skill_cost = {
+	value = 0
+	if = {
+		limit = {
+			var:ervc_cc_martial > 0
+			var:ervc_cc_martial < 5
+		}
+		add = 2
+		multiply = var:ervc_cc_martial
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_martial > 4
+			var:ervc_cc_martial < 9
+		}
+		add = 4
+		multiply = {
+			value = var:ervc_cc_martial
+			subtract = 4
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_martial > 8
+			var:ervc_cc_martial < 13
+		}
+		add = 7
+		multiply = {
+			value = var:ervc_cc_martial
+			subtract = 8
+		}
+		add = 24
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_martial > 12
+			var:ervc_cc_martial < 17
+		}
+		add = 11
+		multiply = {
+			value = var:ervc_cc_martial
+			subtract = 12
+		}
+		add = 52
+	}
+	else_if = {
+		limit = { var:ervc_cc_martial > 16 }
+		add = 17
+		multiply = {
+			value = var:ervc_cc_martial
+			subtract = 16
+		}
+		add = 96
+	}
+}
+
+ervc_cc_stewardship_skill_cost = {
+	value = 0
+	if = {
+		limit = {
+			var:ervc_cc_stewardship > 0
+			var:ervc_cc_stewardship < 5
+		}
+		add = 2
+		multiply = var:ervc_cc_stewardship
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_stewardship > 4
+			var:ervc_cc_stewardship < 9
+		}
+		add = 4
+		multiply = {
+			value = var:ervc_cc_stewardship
+			subtract = 4
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_stewardship > 8
+			var:ervc_cc_stewardship < 13
+		}
+		add = 7
+		multiply = {
+			value = var:ervc_cc_stewardship
+			subtract = 8
+		}
+		add = 24
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_stewardship > 12
+			var:ervc_cc_stewardship < 17
+		}
+		add = 11
+		multiply = {
+			value = var:ervc_cc_stewardship
+			subtract = 12
+		}
+		add = 52
+	}
+	else_if = {
+		limit = { var:ervc_cc_stewardship > 16 }
+		add = 17
+		multiply = {
+			value = var:ervc_cc_stewardship
+			subtract = 16
+		}
+		add = 96
+	}
+}
+
+ervc_cc_intrigue_skill_cost = {
+	value = 0
+	if = {
+		limit = {
+			var:ervc_cc_intrigue > 0
+			var:ervc_cc_intrigue < 5
+		}
+		add = 2
+		multiply = var:ervc_cc_intrigue
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_intrigue > 4
+			var:ervc_cc_intrigue < 9
+		}
+		add = 4
+		multiply = {
+			value = var:ervc_cc_intrigue
+			subtract = 4
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_intrigue > 8
+			var:ervc_cc_intrigue < 13
+		}
+		add = 7
+		multiply = {
+			value = var:ervc_cc_intrigue
+			subtract = 8
+		}
+		add = 24
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_intrigue > 12
+			var:ervc_cc_intrigue < 17
+		}
+		add = 11
+		multiply = {
+			value = var:ervc_cc_intrigue
+			subtract = 12
+		}
+		add = 52
+	}
+	else_if = {
+		limit = { var:ervc_cc_intrigue > 16 }
+		add = 17
+		multiply = {
+			value = var:ervc_cc_intrigue
+			subtract = 16
+		}
+		add = 96
+	}
+}
+
+ervc_cc_learning_skill_cost = {
+	value = 0
+	if = {
+		limit = {
+			var:ervc_cc_learning > 0
+			var:ervc_cc_learning < 5
+		}
+		add = 2
+		multiply = var:ervc_cc_learning
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_learning > 4
+			var:ervc_cc_learning < 9
+		}
+		add = 4
+		multiply = {
+			value = var:ervc_cc_learning
+			subtract = 4
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_learning > 8
+			var:ervc_cc_learning < 13
+		}
+		add = 7
+		multiply = {
+			value = var:ervc_cc_learning
+			subtract = 8
+		}
+		add = 24
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_learning > 12
+			var:ervc_cc_learning < 17
+		}
+		add = 11
+		multiply = {
+			value = var:ervc_cc_learning
+			subtract = 12
+		}
+		add = 52
+	}
+	else_if = {
+		limit = { var:ervc_cc_learning > 16 }
+		add = 17
+		multiply = {
+			value = var:ervc_cc_learning
+			subtract = 16
+		}
+		add = 96
+	}
+}
+
+ervc_cc_prowess_skill_cost = {
+	value = 0
+	if = {
+		limit = {
+			var:ervc_cc_prowess > 0
+			var:ervc_cc_prowess < 5
+		}
+		add = 1
+		multiply = var:ervc_cc_prowess
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_prowess > 4
+			var:ervc_cc_prowess < 9
+		}
+		add = 2
+		multiply = {
+			value = var:ervc_cc_prowess
+			subtract = 4
+		}
+		add = 4
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_prowess > 8
+			var:ervc_cc_prowess < 13
+		}
+		add = 4
+		multiply = {
+			value = var:ervc_cc_prowess
+			subtract = 8
+		}
+		add = 12
+	}
+	else_if = {
+		limit = {
+			var:ervc_cc_prowess > 12
+			var:ervc_cc_prowess < 17
+		}
+		add = 7
+		multiply = {
+			value = var:ervc_cc_prowess
+			subtract = 12
+		}
+		add = 28
+	}
+	else_if = {
+		limit = { var:ervc_cc_prowess > 16 }
+		add = 11
+		multiply = {
+			value = var:ervc_cc_prowess
+			subtract = 16
+		}
+		add = 56
+	}
+}
+
+ervc_cc_arbitrary_age_cost = {
+	value = 0
+	if = {
+		limit = { var:ervc_cc_age <= 18 }
+		add = 60
+	}
+	else_if = {
+		limit = { var:ervc_cc_age <= 30 }
+		add = 60
+		subtract = {
+			value = var:ervc_cc_age
+			subtract = 18
+			multiply = 2.5
+		}
+	}
+	else_if = {
+		limit = { var:ervc_cc_age < 45 }
+		add = 30
+		subtract = {
+			value = var:ervc_cc_age
+			subtract = 30
+			multiply = 2
+		}
+	}
+}
+
+ervc_courtier_creator_cost = {
+	value = 50
+	add = ervc_cc_arbitrary_age_cost
+	add = ervc_cc_selected_trait_cost
+	add = ervc_cc_diplomacy_skill_cost
+	add = ervc_cc_martial_skill_cost
+	add = ervc_cc_stewardship_skill_cost
+	add = ervc_cc_intrigue_skill_cost
+	add = ervc_cc_learning_skill_cost
+	add = ervc_cc_prowess_skill_cost
+	# Six in every base skill costs 88 under the native absolute curves.
+	subtract = 88
+	round = yes
+	min = 0
+}

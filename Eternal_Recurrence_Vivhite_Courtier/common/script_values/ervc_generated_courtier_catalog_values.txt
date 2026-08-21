@@ -1,0 +1,902 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_vivhite_courtier.py
+# Native ruler designer point total for selected traits.
+
+ervc_cc_selected_trait_cost = {
+	value = 0
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_intrigue_1 } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_intrigue_2 } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_intrigue_3 } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_intrigue_4 } }
+		add = 80
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_intrigue_5 } }
+		add = 150
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_diplomacy_1 } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_diplomacy_2 } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_diplomacy_3 } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_diplomacy_4 } }
+		add = 80
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_diplomacy_5 } }
+		add = 150
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_stewardship_1 } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_stewardship_2 } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_stewardship_3 } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_stewardship_4 } }
+		add = 80
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_stewardship_5 } }
+		add = 150
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_martial_1 } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_martial_2 } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_martial_3 } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_martial_4 } }
+		add = 80
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_martial_5 } }
+		add = 150
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_learning_1 } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_learning_2 } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_learning_3 } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_learning_4 } }
+		add = 80
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:education_learning_5 } }
+		add = 150
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:diplomat } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:family_first } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:august } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_reveler } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_blademaster } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_hunter } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:strategist } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:overseer } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:gallant } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:architect } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:administrator } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:avaricious } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:schemer } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:seducer } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:torturer } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:whole_of_body } }
+		add = 75
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:scholar } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:theologian } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_mystic } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_physician } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_herbalist } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_gardener } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lustful } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:chaste } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:gluttonous } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:temperate } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:greedy } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:generous } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lazy } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:diligent } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:wrathful } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:calm } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:patient } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:impatient } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:arrogant } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:humble } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:deceitful } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:honest } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:craven } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:brave } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:shy } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:gregarious } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:ambitious } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:content } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:arbitrary } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:just } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:cynical } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:zealous } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:paranoid } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:trusting } }
+		add = 10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:compassionate } }
+		add = 10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:callous } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:sadistic } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:stubborn } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:fickle } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:eccentric } }
+		add = 15
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:vengeful } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:forgiving } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:rowdy } }
+		add = 5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:charming } }
+		add = 5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:curious } }
+		add = 5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:pensive } }
+		add = 5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:bossy } }
+		add = 5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:drunkard } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:hashishiyah } }
+		add = 5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:rakish } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:reclusive } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:irritable } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:flagellant } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:profligate } }
+		add = 10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:improvident } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:contrite } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:comfort_eater } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:inappetetic } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:journaller } }
+		add = 15
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:confider } }
+		add = 15
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:athletic } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:depressed_genetic } }
+		add = -20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lunatic_genetic } }
+		add = -15
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:possessed_genetic } }
+		add = -20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:ill } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:pneumonic } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:great_pox } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lovers_pox } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:leper } }
+		add = -30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:one_eyed } }
+		add = 10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:one_legged } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:disfigured } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:infirm } }
+		add = -20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:withering_mind } }
+		add = -20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:clouded_eyes } }
+		add = -20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:faltering_heart } }
+		add = -20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:fragile_bones } }
+		add = -20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:gout_ridden } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:consumption } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:cancer } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:typhus } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:smallpox } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:measles } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:dysentery } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:ergotism } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:scarred } }
+		add = 10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:eunuch_1 } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:beardless_eunuch } }
+		add = -15
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:blind } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:beauty_bad_1 } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:beauty_bad_2 } }
+		add = -20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:beauty_bad_3 } }
+		add = -30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:beauty_good_1 } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:beauty_good_2 } }
+		add = 80
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:beauty_good_3 } }
+		add = 120
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:intellect_bad_1 } }
+		add = -15
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:intellect_bad_2 } }
+		add = -30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:intellect_bad_3 } }
+		add = -45
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:intellect_good_1 } }
+		add = 80
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:intellect_good_2 } }
+		add = 160
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:intellect_good_3 } }
+		add = 240
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:physique_bad_1 } }
+		add = -15
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:physique_bad_2 } }
+		add = -30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:physique_bad_3 } }
+		add = -45
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:physique_good_1 } }
+		add = 60
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:physique_good_2 } }
+		add = 120
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:physique_good_3 } }
+		add = 180
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:pure_blooded } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:fecund } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:strong } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:shrewd } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:clubfooted } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:hunchbacked } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lisping } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:stuttering } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:dwarf } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:giant } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:inbred } }
+		add = -30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:weak } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:dull } }
+		add = -20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:impotent } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:spindly } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:scaly } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:albino } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:wheezing } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:bleeder } }
+		add = -20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:infertile } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:pilgrim } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:hajjaj } }
+		add = 30
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:sayyid } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:faith_warrior } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:berserker } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:shieldmaiden } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:varangian } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_poet } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:bastard } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:legitimized_bastard } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:wild_oat } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:deviant } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:cannibal } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:incestuous } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:adulterer } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:fornicator } }
+		add = -5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:murderer } }
+		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:born_in_the_purple } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:viking } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:adventurer } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:adventurer_follower } }
+		add = 10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:heresiarch } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:peasant_leader } }
+		add = 100
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:populist_leader } }
+		add = 150
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:witch } }
+		add = 10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:loyal } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:disloyal } }
+		add = -20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:gallowsbait } }
+		add = 0
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:logistician } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:military_engineer } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:aggressive_attacker } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:unyielding_defender } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:forder } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:flexible_leader } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:desert_warrior } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:jungle_stalker } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:reaver } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:reckless } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:holy_warrior } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:open_terrain_expert } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:rough_terrain_expert } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:forest_fighter } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:cautious_leader } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:organizer } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:winter_soldier } }
+		add = 25
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:crusader_king } }
+		add = 120
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:tourney_participant } }
+		add = 5
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_traveler } }
+		add = 20
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:governor } }
+		add = 40
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:knight_errant } }
+		add = 75
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:immortal } }
+		add = 10000
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_wayfarer } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_voyager } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_surveyor } }
+		add = 50
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:confucian_education } }
+		add = 15
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:burdened } }
+		add = -10
+	}
+}

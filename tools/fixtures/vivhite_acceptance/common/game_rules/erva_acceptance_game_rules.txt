@@ -1,0 +1,6 @@
+﻿erva_acceptance_mode = {
+	categories = { game_modes }
+	default = erva_acceptance_standalone
+	erva_acceptance_standalone = { }
+	erva_acceptance_dual = { }
+}

@@ -1,0 +1,10 @@
+﻿texticon = {
+	icon = ervc_decision_group_icon
+
+	iconsize = {
+		texture = "gfx/interface/icons/traits/ervc_glassfire_icon.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}

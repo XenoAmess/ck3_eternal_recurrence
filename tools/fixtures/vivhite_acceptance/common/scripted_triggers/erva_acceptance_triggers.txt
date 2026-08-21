@@ -1,0 +1,174 @@
+﻿# External assertions over both production creators. These definitions belong to
+# the acceptance fixture; neither release product contains test instrumentation.
+erva_ervc_default_configuration_trigger = {
+	var:ervc_cc_female = 0
+	var:ervc_cc_age = 30
+	var:ervc_cc_diplomacy = 6
+	var:ervc_cc_martial = 6
+	var:ervc_cc_stewardship = 6
+	var:ervc_cc_intrigue = 6
+	var:ervc_cc_learning = 6
+	var:ervc_cc_prowess = 6
+	var:ervc_cc_same_house = 0
+	variable_list_size = { name = ervc_cc_selected_education value = 1 }
+	is_target_in_variable_list = {
+		name = ervc_cc_selected_education
+		target = trait:education_martial_3
+	}
+	ervc_courtier_creator_cost >= 120
+	ervc_courtier_creator_cost < 121
+}
+
+erva_ervc_custom_configuration_trigger = {
+	ervc_cc_valid_configuration_trigger = yes
+	var:ervc_cc_female = 1
+	var:ervc_cc_age = 20
+	var:ervc_cc_diplomacy = 16
+	var:ervc_cc_martial = 6
+	var:ervc_cc_stewardship = 6
+	var:ervc_cc_intrigue = 6
+	var:ervc_cc_learning = 6
+	var:ervc_cc_prowess = 16
+	var:ervc_cc_same_house = 1
+	var:ervc_cc_selected_faith = faith:aluk
+	NOT = { faith = var:ervc_cc_selected_faith }
+	variable_list_size = { name = ervc_cc_selected_education value = 1 }
+	variable_list_size = { name = ervc_cc_selected_commander value = 2 }
+	variable_list_size = { name = ervc_cc_selected_physical value = 1 }
+	variable_list_size = { name = ervc_cc_selected_personality value = 1 }
+	variable_list_size = { name = ervc_cc_selected_other value = 1 }
+	is_target_in_variable_list = {
+		name = ervc_cc_selected_education
+		target = trait:education_intrigue_1
+	}
+	is_target_in_variable_list = {
+		name = ervc_cc_selected_commander
+		target = trait:logistician
+	}
+	is_target_in_variable_list = {
+		name = ervc_cc_selected_commander
+		target = trait:military_engineer
+	}
+	is_target_in_variable_list = {
+		name = ervc_cc_selected_physical
+		target = trait:beauty_bad_1
+	}
+	is_target_in_variable_list = {
+		name = ervc_cc_selected_personality
+		target = trait:lustful
+	}
+	is_target_in_variable_list = {
+		name = ervc_cc_selected_other
+		target = trait:diplomat
+	}
+	ervc_courtier_creator_cost >= 348
+	ervc_courtier_creator_cost < 349
+}
+
+# ERVA_DUAL_ONLY_BEGIN
+erva_xar_default_configuration_trigger = {
+	var:xar_cc_female = 0
+	var:xar_cc_age = 30
+	var:xar_cc_diplomacy = 6
+	var:xar_cc_martial = 6
+	var:xar_cc_stewardship = 6
+	var:xar_cc_intrigue = 6
+	var:xar_cc_learning = 6
+	var:xar_cc_prowess = 6
+	var:xar_cc_same_house = 0
+	variable_list_size = { name = xar_cc_selected_education value = 1 }
+	is_target_in_variable_list = {
+		name = xar_cc_selected_education
+		target = trait:education_martial_3
+	}
+	xar_courtier_creator_cost >= 120
+	xar_courtier_creator_cost < 121
+}
+
+erva_xar_female_configuration_trigger = {
+	xar_cc_valid_configuration_trigger = yes
+	var:xar_cc_female = 1
+	var:xar_cc_age = 30
+	var:xar_cc_diplomacy = 6
+	var:xar_cc_martial = 6
+	var:xar_cc_stewardship = 6
+	var:xar_cc_intrigue = 6
+	var:xar_cc_learning = 6
+	var:xar_cc_prowess = 6
+	var:xar_cc_same_house = 0
+	variable_list_size = { name = xar_cc_selected_education value = 1 }
+	is_target_in_variable_list = {
+		name = xar_cc_selected_education
+		target = trait:education_martial_3
+	}
+	xar_courtier_creator_cost >= 120
+	xar_courtier_creator_cost < 121
+}
+# ERVA_DUAL_ONLY_END
+
+erva_ervc_default_courtier_trigger = {
+	is_ai = yes
+	is_alive = yes
+	is_female = no
+	age >= 30
+	age < 31
+	is_courtier_of = root
+	culture = root.culture
+	faith = root.faith
+	NOT = { exists = dynasty }
+	has_trait = education_martial_3
+	diplomacy >= 6
+	martial >= 6
+	stewardship >= 6
+	intrigue >= 6
+	learning >= 6
+	prowess >= 6
+	has_character_flag = blocked_from_leaving
+}
+
+erva_ervc_custom_courtier_trigger = {
+	is_ai = yes
+	is_alive = yes
+	is_female = yes
+	age >= 20
+	age < 21
+	is_courtier_of = root
+	culture = root.var:ervc_cc_selected_culture
+	faith = root.var:ervc_cc_selected_faith
+	house = root.house
+	has_trait = education_intrigue_1
+	has_trait = logistician
+	has_trait = military_engineer
+	has_trait = beauty_bad_1
+	has_trait = lustful
+	has_trait = diplomat
+	diplomacy >= 16
+	martial >= 6
+	stewardship >= 6
+	intrigue >= 6
+	learning >= 6
+	prowess >= 16
+	has_character_flag = blocked_from_leaving
+}
+
+# ERVA_DUAL_ONLY_BEGIN
+erva_xar_female_courtier_trigger = {
+	is_ai = yes
+	is_alive = yes
+	is_female = yes
+	age >= 30
+	age < 31
+	is_courtier_of = root
+	culture = root.var:xar_cc_selected_culture
+	faith = root.var:xar_cc_selected_faith
+	NOT = { exists = dynasty }
+	has_trait = education_martial_3
+	diplomacy >= 6
+	martial >= 6
+	stewardship >= 6
+	intrigue >= 6
+	learning >= 6
+	prowess >= 6
+	has_character_flag = blocked_from_leaving
+}
+# ERVA_DUAL_ONLY_END

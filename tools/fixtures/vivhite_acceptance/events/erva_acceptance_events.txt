@@ -1,0 +1,55 @@
+﻿namespace = erva
+
+erva.0001 = {
+	hidden = yes
+
+	immediate = {
+		set_variable = { name = erva_acceptance_ai_original_gold value = gold }
+		every_courtier = { add_character_flag = erva_acceptance_ai_baseline_courtier }
+		erva_acceptance_zero_gold_effect = yes
+		add_gold = 1000
+		ervc_cc_initialize_effect = yes
+		ervc_cc_rebuild_trait_catalogs_effect = yes
+		ervc_cc_rebuild_culture_faith_catalogs_effect = yes
+		add_character_flag = ervc_cc_open
+		if = {
+			limit = {
+				is_ai = yes
+				is_alive = yes
+				has_character_flag = ervc_cc_open
+				has_character_flag = ervc_cc_v2_initialized
+				gold >= 1000
+				gold < 1001
+				erva_ervc_default_configuration_trigger = yes
+			}
+			debug_log = "ERVA: TEST PASS ai_fixture_ready"
+		}
+		else = { debug_log = "ERVA: TEST FAIL ai_fixture_ready" }
+		ervc_cc_complete_purchase_effect = yes
+		set_variable = { name = erva_acceptance_ai_untracked_count value = 0 }
+		every_courtier = {
+			limit = {
+				NOT = { has_character_flag = erva_acceptance_ai_baseline_courtier }
+			}
+			root = {
+				change_variable = { name = erva_acceptance_ai_untracked_count add = 1 }
+			}
+		}
+		if = {
+			limit = {
+				is_ai = yes
+				has_character_flag = ervc_cc_open
+				gold >= 1000
+				gold < 1001
+				var:erva_acceptance_ai_untracked_count = 0
+			}
+			debug_log = "ERVA: TEST PASS ai_guard"
+		}
+		else = { debug_log = "ERVA: TEST FAIL ai_guard" }
+		remove_character_flag = ervc_cc_open
+		erva_acceptance_zero_gold_effect = yes
+		add_gold = var:erva_acceptance_ai_original_gold
+		remove_variable = erva_acceptance_ai_original_gold
+		remove_variable = erva_acceptance_ai_untracked_count
+	}
+}

@@ -1,0 +1,39 @@
+﻿erva_acceptance_start_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_ervc_courtier.dds"
+	}
+	decision_group_type = erva_acceptance
+	sort_order = 1
+	ai_check_interval = 0
+	desc = erva_acceptance_start_decision_desc
+
+	is_shown = {
+		is_ai = no
+		is_alive = yes
+		NOT = { has_character_flag = erva_acceptance_initialized }
+		NOT = { has_character_flag = erva_acceptance_start_pending }
+	}
+
+	is_valid_showing_failures_only = {
+		is_ai = no
+		is_alive = yes
+		NOT = { has_character_flag = erva_acceptance_initialized }
+		NOT = { has_character_flag = erva_acceptance_start_pending }
+	}
+
+	effect = {
+		hidden_effect = {
+			if = {
+				limit = {
+					is_ai = no
+					is_alive = yes
+					NOT = { has_character_flag = erva_acceptance_initialized }
+					NOT = { has_character_flag = erva_acceptance_start_pending }
+				}
+				add_character_flag = erva_acceptance_start_pending
+			}
+		}
+	}
+
+	ai_potential = { always = no }
+}

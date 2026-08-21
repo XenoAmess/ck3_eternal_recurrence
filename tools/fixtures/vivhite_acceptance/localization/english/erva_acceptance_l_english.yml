@@ -1,0 +1,11 @@
+﻿l_english:
+ rule_erva_acceptance_mode:0 "ERVA acceptance mode"
+ setting_erva_acceptance_standalone:0 "Vivhite standalone"
+ setting_erva_acceptance_standalone_desc:0 "External acceptance fixture for the standalone Vivhite product."
+ setting_erva_acceptance_dual:0 "Dual-product coexistence"
+ setting_erva_acceptance_dual_desc:0 "External acceptance fixture for both product load orders."
+ decision_group_type_erva_acceptance:0 "ERVA acceptance harness"
+ erva_acceptance_start_decision:0 "Start Vivhite acceptance"
+ erva_acceptance_start_decision_desc:0 "Initialize the external acceptance observer."
+ erva_acceptance_start_decision_tooltip:0 "Initialize the external acceptance observer"
+ erva_acceptance_start_decision_confirm:0 "Initialize acceptance"

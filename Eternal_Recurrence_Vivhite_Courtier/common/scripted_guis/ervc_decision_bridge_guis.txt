@@ -1,0 +1,26 @@
+﻿# Decision effects are previewed for tooltips. Defer modal opening to this GUI
+# bridge so initialization only runs after a real player click.
+ervc_cc_open_bridge_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		is_alive = yes
+		has_character_flag = ervc_cc_open_pending
+		NOT = { has_character_flag = ervc_cc_open }
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				is_alive = yes
+				has_character_flag = ervc_cc_open_pending
+				NOT = { has_character_flag = ervc_cc_open }
+			}
+			remove_character_flag = ervc_cc_open_pending
+			ervc_cc_initialize_effect = yes
+			ervc_cc_rebuild_trait_catalogs_effect = yes
+			ervc_cc_rebuild_culture_faith_catalogs_effect = yes
+			add_character_flag = ervc_cc_open
+		}
+	}
+}

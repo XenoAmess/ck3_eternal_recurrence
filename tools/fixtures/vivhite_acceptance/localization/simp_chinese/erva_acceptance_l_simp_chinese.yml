@@ -1,0 +1,11 @@
+﻿l_simp_chinese:
+ rule_erva_acceptance_mode:0 "ERVA 验收模式"
+ setting_erva_acceptance_standalone:0 "白绮独立版"
+ setting_erva_acceptance_standalone_desc:0 "仅用于白绮独立产品的外部验收夹具。"
+ setting_erva_acceptance_dual:0 "双产品共存"
+ setting_erva_acceptance_dual_desc:0 "用于验证两种产品加载顺序的外部验收夹具。"
+ decision_group_type_erva_acceptance:0 "ERVA 验收夹具"
+ erva_acceptance_start_decision:0 "开始白绮独立版验收"
+ erva_acceptance_start_decision_desc:0 "初始化独立于两个生产产品的验收观察器。"
+ erva_acceptance_start_decision_tooltip:0 "初始化外部验收观察器"
+ erva_acceptance_start_decision_confirm:0 "初始化验收"

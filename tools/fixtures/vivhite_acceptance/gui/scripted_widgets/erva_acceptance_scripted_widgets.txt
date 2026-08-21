@@ -1,0 +1,1 @@
+﻿gui/erva_acceptance_bridge.gui = erva_acceptance_bridge_window

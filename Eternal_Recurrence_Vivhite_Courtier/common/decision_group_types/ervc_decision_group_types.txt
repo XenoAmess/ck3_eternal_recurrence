@@ -1,0 +1,4 @@
+﻿ervc_courtier_creator = {
+	sort_order = 150
+	gui_tags = { big_button }
+}

@@ -1,0 +1,315 @@
+﻿# Paid custom courtier creation. No character or title exists before confirm.
+ervc_cc_initialize_effect = {
+	if = {
+		limit = { NOT = { has_character_flag = ervc_cc_v2_initialized } }
+		set_variable = { name = ervc_cc_female value = 0 }
+		set_variable = { name = ervc_cc_age value = 30 }
+		set_variable = { name = ervc_cc_diplomacy value = 6 }
+		set_variable = { name = ervc_cc_martial value = 6 }
+		set_variable = { name = ervc_cc_stewardship value = 6 }
+		set_variable = { name = ervc_cc_intrigue value = 6 }
+		set_variable = { name = ervc_cc_learning value = 6 }
+		set_variable = { name = ervc_cc_prowess value = 6 }
+		set_variable = { name = ervc_cc_same_house value = 0 }
+		set_variable = { name = ervc_cc_selected_culture value = root.culture }
+		set_variable = { name = ervc_cc_selected_faith value = root.faith }
+
+		clear_variable_list = ervc_cc_selected_education
+		clear_variable_list = ervc_cc_selected_commander
+		clear_variable_list = ervc_cc_selected_physical
+		clear_variable_list = ervc_cc_selected_personality
+		clear_variable_list = ervc_cc_selected_other
+		trait:education_martial_3 = { save_scope_as = ervc_cc_default_education }
+		add_to_variable_list = {
+			name = ervc_cc_selected_education
+			target = scope:ervc_cc_default_education
+		}
+		set_variable = { name = ervc_cc_commander_count value = 0 }
+		set_variable = { name = ervc_cc_personality_count value = 0 }
+		add_character_flag = ervc_cc_v2_initialized
+	}
+}
+
+ervc_cc_rebuild_culture_faith_catalogs_effect = {
+	root = {
+		clear_variable_list = ervc_cc_catalog_faiths
+	}
+	clear_global_variable_list = ervc_cc_catalog_cultures
+	clear_global_variable_list = ervc_cc_catalog_culture_heritages
+	every_culture_global = {
+		add_to_global_variable_list = {
+			name = ervc_cc_catalog_cultures
+			target = this
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_in_global_list = {
+						variable = ervc_cc_catalog_culture_heritages
+						has_same_culture_heritage = prev
+					}
+				}
+			}
+			add_to_global_variable_list = {
+				name = ervc_cc_catalog_culture_heritages
+				target = this
+			}
+		}
+	}
+	every_religion_global = {
+		every_faith = {
+			save_scope_as = ervc_cc_catalog_faith
+			root = {
+				add_to_variable_list = {
+					name = ervc_cc_catalog_faiths
+					target = scope:ervc_cc_catalog_faith
+				}
+			}
+		}
+	}
+	root = {
+		if = {
+			limit = { NOT = { exists = var:ervc_cc_selected_culture } }
+			set_variable = { name = ervc_cc_selected_culture value = root.culture }
+		}
+		else_if = {
+			limit = {
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = ervc_cc_catalog_cultures
+						target = var:ervc_cc_selected_culture
+					}
+				}
+			}
+			set_variable = { name = ervc_cc_selected_culture value = root.culture }
+		}
+		if = {
+			limit = { NOT = { exists = var:ervc_cc_selected_faith } }
+			set_variable = { name = ervc_cc_selected_faith value = root.faith }
+		}
+		else_if = {
+			limit = {
+				NOT = {
+					is_target_in_variable_list = {
+						name = ervc_cc_catalog_faiths
+						target = var:ervc_cc_selected_faith
+					}
+				}
+			}
+			set_variable = { name = ervc_cc_selected_faith value = root.faith }
+		}
+	}
+}
+
+ervc_cc_remove_selected_trait_effect = {
+	if = {
+		limit = {
+			is_target_in_variable_list = {
+				name = ervc_cc_selected_education
+				target = $ervc_trait$
+			}
+		}
+		remove_list_variable = { name = ervc_cc_selected_education target = $ervc_trait$ }
+	}
+	if = {
+		limit = {
+			is_target_in_variable_list = {
+				name = ervc_cc_selected_commander
+				target = $ervc_trait$
+			}
+		}
+		remove_list_variable = { name = ervc_cc_selected_commander target = $ervc_trait$ }
+		change_variable = { name = ervc_cc_commander_count add = -1 }
+	}
+	if = {
+		limit = {
+			is_target_in_variable_list = {
+				name = ervc_cc_selected_physical
+				target = $ervc_trait$
+			}
+		}
+		remove_list_variable = { name = ervc_cc_selected_physical target = $ervc_trait$ }
+	}
+	if = {
+		limit = {
+			is_target_in_variable_list = {
+				name = ervc_cc_selected_personality
+				target = $ervc_trait$
+			}
+		}
+		remove_list_variable = { name = ervc_cc_selected_personality target = $ervc_trait$ }
+		change_variable = { name = ervc_cc_personality_count add = -1 }
+	}
+	if = {
+		limit = {
+			is_target_in_variable_list = {
+				name = ervc_cc_selected_other
+				target = $ervc_trait$
+			}
+		}
+		remove_list_variable = { name = ervc_cc_selected_other target = $ervc_trait$ }
+	}
+}
+
+ervc_cc_collect_invalid_selected_traits_effect = {
+	every_in_list = {
+		variable = $ervc_list$
+		save_scope_as = ervc_cc_candidate_trait
+		root = {
+			if = {
+				limit = {
+					NOT = { ervc_cc_candidate_trait_metadata_valid_trigger = yes }
+				}
+				add_to_variable_list = {
+					name = ervc_cc_invalid_selected_traits
+					target = scope:ervc_cc_candidate_trait
+				}
+			}
+		}
+	}
+}
+
+ervc_cc_prune_invalid_selected_traits_effect = {
+	clear_variable_list = ervc_cc_invalid_selected_traits
+	ervc_cc_collect_invalid_selected_traits_effect = { ervc_list = ervc_cc_selected_education }
+	ervc_cc_collect_invalid_selected_traits_effect = { ervc_list = ervc_cc_selected_commander }
+	ervc_cc_collect_invalid_selected_traits_effect = { ervc_list = ervc_cc_selected_physical }
+	ervc_cc_collect_invalid_selected_traits_effect = { ervc_list = ervc_cc_selected_personality }
+	ervc_cc_collect_invalid_selected_traits_effect = { ervc_list = ervc_cc_selected_other }
+	every_in_list = {
+		variable = ervc_cc_invalid_selected_traits
+		save_scope_as = ervc_cc_candidate_trait
+		root = {
+			ervc_cc_remove_selected_trait_effect = {
+				ervc_trait = scope:ervc_cc_candidate_trait
+			}
+		}
+	}
+	clear_variable_list = ervc_cc_invalid_selected_traits
+}
+
+ervc_cc_adjust_numeric_variable_effect = {
+	set_variable = {
+		name = $ervc_variable$
+		value = {
+			value = var:$ervc_variable$
+			add = $ervc_delta$
+			min = $ervc_min$
+			max = $ervc_max$
+		}
+	}
+}
+
+ervc_cc_apply_selected_trait_list_effect = {
+	every_in_list = {
+		variable = $ervc_list$
+		save_scope_as = ervc_cc_selected_trait
+		scope:ervc_cc_created_courtier = {
+			add_trait = scope:ervc_cc_selected_trait
+		}
+	}
+}
+
+ervc_cc_complete_purchase_effect = {
+	if = {
+		limit = {
+			ervc_cc_ui_access_trigger = yes
+			ervc_cc_valid_configuration_trigger = yes
+			gold >= ervc_courtier_creator_cost
+			exists = var:ervc_cc_selected_culture
+			exists = var:ervc_cc_selected_faith
+			is_target_in_global_variable_list = {
+				name = ervc_cc_catalog_cultures
+				target = var:ervc_cc_selected_culture
+			}
+			is_target_in_variable_list = {
+				name = ervc_cc_catalog_faiths
+				target = var:ervc_cc_selected_faith
+			}
+		}
+		# Closing first makes queued or double-clicked executions harmless.
+		remove_character_flag = ervc_cc_open
+		save_scope_value_as = { name = ervc_cc_purchase_diplomacy value = var:ervc_cc_diplomacy }
+		save_scope_value_as = { name = ervc_cc_purchase_martial value = var:ervc_cc_martial }
+		save_scope_value_as = { name = ervc_cc_purchase_stewardship value = var:ervc_cc_stewardship }
+		save_scope_value_as = { name = ervc_cc_purchase_intrigue value = var:ervc_cc_intrigue }
+		save_scope_value_as = { name = ervc_cc_purchase_learning value = var:ervc_cc_learning }
+		save_scope_value_as = { name = ervc_cc_purchase_prowess value = var:ervc_cc_prowess }
+		create_character = {
+			employer = root
+			culture = root.var:ervc_cc_selected_culture
+			faith = root.var:ervc_cc_selected_faith
+			dynasty = none
+			age = root.var:ervc_cc_age
+			gender_female_chance = {
+				if = {
+					limit = { root.var:ervc_cc_female = 1 }
+					add = 100
+				}
+				else = { add = 0 }
+			}
+			random_traits = no
+			diplomacy = 0
+			martial = 0
+			stewardship = 0
+			intrigue = 0
+			learning = 0
+			prowess = 0
+			save_scope_as = ervc_cc_created_courtier
+		}
+		if = {
+			limit = { exists = scope:ervc_cc_created_courtier }
+			if = {
+				limit = {
+					scope:ervc_cc_created_courtier = {
+						NOT = { is_courtier_of = root }
+					}
+				}
+				add_courtier = scope:ervc_cc_created_courtier
+			}
+			if = {
+				limit = {
+					scope:ervc_cc_created_courtier = { is_courtier_of = root }
+				}
+				scope:ervc_cc_created_courtier = {
+					add_diplomacy_skill = scope:ervc_cc_purchase_diplomacy
+					add_martial_skill = scope:ervc_cc_purchase_martial
+					add_stewardship_skill = scope:ervc_cc_purchase_stewardship
+					add_intrigue_skill = scope:ervc_cc_purchase_intrigue
+					add_learning_skill = scope:ervc_cc_purchase_learning
+					add_prowess_skill = scope:ervc_cc_purchase_prowess
+				}
+				ervc_cc_apply_selected_trait_list_effect = { ervc_list = ervc_cc_selected_education }
+				ervc_cc_apply_selected_trait_list_effect = { ervc_list = ervc_cc_selected_commander }
+				ervc_cc_apply_selected_trait_list_effect = { ervc_list = ervc_cc_selected_physical }
+				ervc_cc_apply_selected_trait_list_effect = { ervc_list = ervc_cc_selected_personality }
+				ervc_cc_apply_selected_trait_list_effect = { ervc_list = ervc_cc_selected_other }
+				scope:ervc_cc_created_courtier = {
+					if = {
+						limit = {
+							root.var:ervc_cc_same_house = 1
+							exists = root.house
+						}
+						set_house = root.house
+					}
+					add_character_flag = {
+						flag = blocked_from_leaving
+						years = 25
+					}
+					force_character_skill_recalculation = yes
+				}
+				remove_short_term_gold = ervc_courtier_creator_cost
+				send_interface_toast = {
+					title = ervc.cc.toast.title
+					left_icon = scope:ervc_cc_created_courtier
+					custom_tooltip = ervc.cc.toast.desc
+				}
+			}
+			else = {
+				scope:ervc_cc_created_courtier = {
+					death = { death_reason = death_vanished }
+				}
+			}
+		}
+	}
+}
