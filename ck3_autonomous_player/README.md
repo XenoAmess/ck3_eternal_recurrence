@@ -6,9 +6,12 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 
 ## 当前完成度
 
-**Phase A 实现候选已完成，退出标准尚未满足；正在对 committed candidate 做最终三连复验。** 加固前的
-`20260821T162104Z-cf348a71`、`20260821T162305Z-9a403bc6`、`20260821T162451Z-5e882b17`
-只保留为历史探索记录；它们早于新鲜日志、跨进程锁、认证 watchdog、Job Object 与完整漂移复核，不能作为当前退出证据。
+**Phase A 已完成。** 提交 `11ab443050132341bb27f6f924d792772f397396` 的冻结候选在同一环境指纹下连续三次
+通过 production、非 debug、单 mod、可见主菜单 isolation smoke：
+`20260821T180045Z-a3c49b20`、`20260821T180248Z-7ad2dd83`、`20260821T180531Z-9c6bb34b`。
+三份事件链均已重新计算 hash chain 并通过一致性校验，另行逐项检查的报告硬条件无失败。完整证据边界见
+[Phase A 实机证据](../docs/autonomous-player-phase-a-evidence.md)。加固前的三次运行只保留为历史探索记录，不能作为
+当前退出证据。
 
 已实现：
 
@@ -26,9 +29,9 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   并禁止 postflight。
 - OCR 连续两帧确认可见【新游戏】；每次启动前删除隔离 profile 的旧日志，再以新日志的唯一 session marker、精确单项
   enabled inventory、已安装 DLC mount 白名单、唯一隔离 mod mount 和零未知 mount 做 supervisor 取证，退出后再解析一次。
-- 真实 profile 顶层文件、player/rulers/正常存档、Steam 云存档条目，以及 Workshop `ugc_*.mod` descriptor 内容哈希与已注册
-  目标树的路径/大小/mtime 元数据清单的退出后反证；结论是“回到语义 baseline 并连续稳定 5 秒”，不声称运行期间从未发生
-  瞬时写入。Steam 自行刷新 `remotecache.vdf` 的允许字段单列报告。
+- 真实 profile 顶层文件、player/rulers/正常存档与 Steam 云存档条目在退出后回到语义 baseline，并连续稳定 5 秒；Workshop
+  `ugc_*.mod` descriptor 内容哈希与已注册目标树的路径/大小/mtime 元数据只做退出后一次 baseline 比较。两者都不声称运行期间
+  从未发生瞬时写入；Steam 自行刷新 `remotecache.vdf` 的允许字段单列报告。
 - 游戏 exe、launcher、原版规则、DLC descriptor、outer descriptor、production manifest/tree、实际构建脚本、解释器与依赖均纳入
   selected-contract 指纹；smoke 还要求选中的 agent runtime 与 production release source 文件全部已被 Git 跟踪且无修改。
   没有真实指向当前提交的 tag 时
@@ -103,14 +106,15 @@ episodes: append-only evidence / settlement / validity / metrics
 memory: cross-run retrieval / constrained reflection / strategy experiments
 ```
 
-Phase A 候选已落在 `src/xar_autoplayer/{environment,integrity,locking,rules,runtime,process_watchdog}.py`。后续模块只有在上一层的回放测试通过后才接入
+Phase A 已落在 `src/xar_autoplayer/{environment,integrity,locking,rules,runtime,process_watchdog}.py`。后续模块只有在上一层的回放测试通过后才接入
 正式局，避免把固定坐标脚本误称为会玩 CK3 的智能体。
 
 ## 路线图
 
-1. **Phase A（当前）**：对 committed candidate 连续三次 production、非 debug、单 mod 主菜单 isolation smoke；每次都要保留
-   非零引擎 diagnostics 的原始证据，且受保护存储在退出后回到同一语义 baseline。
-2. **下一步 Phase B**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证，未知窗口 fail closed。
+1. **Phase A（已完成）**：committed candidate 已连续三次通过 production、非 debug、单 mod 主菜单 isolation smoke；每次都保留
+   非零引擎 diagnostics 的原始证据，且受保护存储在退出后回到同一语义 baseline。原生 Windows Job/句柄测试和两次启动期
+   fail-closed RED 覆盖当前失败契约；resume 后强制终止 supervisor 的完整崩溃注入仍是 Phase B 接 policy 前的门禁。
+2. **Phase B（下一步）**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证，未知窗口 fail closed。
 3. Phase C：先完成“罗贝尔 1066 → 契约 → 当铺 → 首轮垂青 → 十年低风险经营 → 自然死亡结算”的首个合法竖切，
    再扩到多种角色类型的有效整局基线后退出本阶段。
 4. Phase D：婚育、议会、生活方式、建设、宣战理由、军队和领地的分层规划器。

@@ -230,11 +230,11 @@
 - acceptance JSON/JUnit 记录 run ID、UTC、版本、git SHA、mod tree hash、游戏/环境及结果；用户现场备份已移出公开 artifacts 并在恢复后删除。
 - Steam item `3784706360` 与 GitHub Release `v1.0.0` 已于 2026-08-21 发布同一 clean-tag artifact，空路径重下载缓存通过 85 文件 manifest 校验。干净中英截图、缩略图审美、母语级人格和九语言游戏内截断已由仓库所有者人工签核。资产来源与再分发许可已由作者记录；完整状态见 `docs/release-qa-v1.0.0.md`。
 
-### Phase 6：自主高分玩家智能体（长期工程，排队中）
+### Phase 6：自主高分玩家智能体（长期工程，已启动）
 
 目标：建立只使用 production mod、玩家可见信息和正常 UI 操作的 CK3 自主玩家，通过 OCR/视觉驱动、大模型局后复盘、版本化经验记忆和持续重复游玩，在合法规则下逐步提高真实死亡结算分数。
 
-启动门槛：今天当前所有可自主完成的发布、验收、国际化、素材候选和文档任务完成后才开始；被动 30–40 年矩阵可提供稳定性遥测，但不作为发布或启动硬门槛。完整不作弊边界、架构、学习闭环、阶段退出标准和首批待办见 `docs/autonomous-player-agent.md`。
+状态：2026-08-21 已启动，2026-08-22 已完成 Phase A 隔离环境三连实机 smoke；Phase B 视觉 UI 底座是下一阶段，尚未形成有效得分局。被动 30–40 年矩阵只提供固定夹具稳定性遥测，不作为自主玩家策略证据。完整不作弊边界、架构、学习闭环、阶段退出标准和 Phase A 证据见 `docs/autonomous-player-agent.md` 与 `docs/autonomous-player-phase-a-evidence.md`。
 
 ## 4. 测试矩阵
 

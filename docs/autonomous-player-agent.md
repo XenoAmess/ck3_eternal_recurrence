@@ -2,16 +2,23 @@
 
 ## 状态与启动门槛
 
-- 状态：**2026-08-21 正式启动；2026-08-22 Phase A 实现候选完成，退出标准仍待 committed-candidate 三连复验，尚未形成有效得分局**。
+- 状态：**2026-08-21 正式启动；2026-08-22 Phase A 已通过 committed-candidate 三连复验，Phase B 尚未开始，尚未形成有效得分局**。
 - 实现目录：[`ck3_autonomous_player/`](../ck3_autonomous_player/README.md)。Python 包名 `xar_autoplayer`，运行状态固定放在仓库外。
-- 当前候选的加固前探索运行曾证明 production、非 debug、单 mod 能够在隔离 profile 到达可见主菜单并退出；旧证据不满足
-  当前安全契约，必须等提交后三连通过才形成现版本证明。该 smoke 不是“会玩”，也不计入策略数据。
+- 提交 `11ab443050132341bb27f6f924d792772f397396` 的冻结候选已在同一环境指纹下连续三次证明 production、非 debug、
+  单 mod 能够在隔离 profile 到达可见主菜单，并由 supervisor 终止后证明进程树归零；三次 `ck3_exit_code=1`，不证明
+  游戏内 graceful exit。该 smoke 不是“会玩”，也不计入策略数据；证据清单见
+  [Phase A 实机证据](autonomous-player-phase-a-evidence.md)。
 - 原有 30–40 年被动 soak/stability/telemetry 仍是固定验收场景，不扩张成自主玩家，也不冒充数值平衡或智能体证据。
 - 这是独立于 `tools/run_acceptance.py` 的长期工程。acceptance runner 证明机制是否正确；自主玩家负责在正常规则下长期游玩并尽量取得更高分，二者不得混用目标或测试入口。
 
+当前 Phase A 退出证据：`20260821T180045Z-a3c49b20`、`20260821T180248Z-7ad2dd83`、
+`20260821T180531Z-9c6bb34b`。三次共享环境指纹
+`4a02303bea47dd23dd70d3577618031e075dfd4e4d5d94df713cb37e5d78e0ab`。三份事件链均重新计算 hash chain 并通过一致性校验，
+报告语义硬条件另行逐字段断言通过；hash chain 不是有密钥的数字签名。
+
 加固前的三次探索性 GREEN：`20260821T162104Z-cf348a71`、`20260821T162305Z-9a403bc6`、
 `20260821T162451Z-5e882b17`。它们早于新鲜日志 epoch、跨进程锁、认证 watchdog、Job Object 和扩展环境复核，只作为
-问题发现记录，**不再是当前 Phase A 退出证据**。当前候选必须提交后重新 prepare，并在同一新环境指纹下连续三次通过。
+问题发现记录，**不是当前 Phase A 退出证据**。
 
 ### Phase A 已固化的启动契约
 
@@ -30,18 +37,18 @@
 - 启动前删除隔离 profile 的旧日志；到主菜单后连续两帧 OCR 确认可见【新游戏】，再要求新日志只有一个 session marker、
   enabled inventory 精确单项、唯一隔离 mod mount、所有其他 mount 都在已安装 DLC descriptor 推导的白名单，未知 mount 为零；
   退出后再解析一次。该压缩证据只属于 supervisor，Phase B 前还须用独立 policy 进程和字段白名单形成能力隔离。
-- 退出后反证真实 CK3 profile 顶层文件、player/rulers/正常存档、Steam userdata 云存档条目、Workshop `ugc_*.mod` descriptor
-  内容哈希，以及已注册 Workshop 目标树的路径/大小/mtime 元数据清单回到 baseline 并连续稳定 5 秒；这不等价于完整内容哈希，
-  也不等价于证明运行期间从未发生瞬时写入。持久 `tutorial.txt` 首次创建后不读、不清空、不回滚。
+- 退出后反证真实 CK3 profile 顶层文件、player/rulers/正常存档与 Steam userdata 云存档条目回到 baseline，并连续稳定 5 秒；
+  Workshop `ugc_*.mod` descriptor 内容哈希及已注册目标树的路径/大小/mtime 元数据只做退出后一次 baseline 比较。这不等价于
+  Workshop 目标树完整内容哈希，也不等价于证明运行期间从未发生瞬时写入。持久 `tutorial.txt` 首次创建后不读、不清空、不回滚。
 - selected-contract 指纹覆盖游戏 exe/launcher/原版规则、DLC descriptor、production source/tree/manifest、outer descriptor、
   关键 agent/build/watchdog 代码、解释器和包版本；正式 smoke 要求所有选中 runtime 与 production release source 文件均已被
   Git 跟踪且 clean。开发构建没有
   当前提交的真实 tag 时记录 `git_tag=null`，不得伪装 release。报告先写 `finalized=false, ok=false`；最终 hash-chain 事件落盘后
   还要逐项重算 digest、previous link 和 tail/report 绑定，全部通过才原子写成 finalized GREEN，避免中断留下假阳性报告。
-- 2026-08-22 实测：Steam 客户端运行时，即使 `cloud_save=no` 且使用隔离 `-userdir`，每次 non-debug CK3 退出仍会改写 `userdata/<account>/1158310/remotecache.vdf` 的顶层 `ChangeNumber` 和文件时间。智能体把这两个 Steam 自有元数据单独记入 before/after 证据并允许变化；比较前只规范化该整数，云存档条目的路径、大小、时间、SHA、同步状态及其余字节仍须完全一致。除此以外的 userdata 差异一律判失败。该结论为本机 1.19.0.6 + 当前 Steam 客户端实测，不回写或恢复真实文件。
+- 2026-08-22 实测：Steam 客户端运行时，即使 `cloud_save=no` 且使用隔离 `-userdir`，部分直启退出会改写 `userdata/<account>/1158310/remotecache.vdf` 的顶层 `ChangeNumber`，稳定运行也会刷新文件时间；正式三连中 `ChangeNumber` 均为 `12→12`，只有 mtime 变化。智能体把这两个 Steam 自有元数据单独记入 before/after 证据并允许变化；比较前只规范化该整数，云存档条目的路径、大小、时间、SHA、同步状态及其余字节仍须完全一致。除此以外的 userdata 差异一律判失败。该结论为本机 1.19.0.6 + 当前 Steam 客户端实测，不回写或恢复真实文件。
 - 同机还实测：`cloud_save=no` 不阻止主菜单枚举既有 Steam Cloud 存档 meta。旧 PoD 云存档中的 17 个规则 key 与两张贴图引用
-  和 fresh `error.log` 逐项匹配；但 fresh enabled inventory 只有本 mod，mount 也只有官方 DLC 与隔离 production tree，故这不是
-  第二个 mod 被加载。Phase A smoke 明确允许归档这类非零诊断，并写 `clean_engine_boot_required=false`、
+  和 fresh `error.log` 逐项匹配；但 fresh enabled inventory 只有本 mod，其他 mount 均命中由已安装 `.dlc` descriptor 推导的
+  白名单或唯一隔离 production tree，故这不是第二个 mod 被加载。Phase A smoke 明确允许归档这类非零诊断，并写 `clean_engine_boot_required=false`、
   `engine_diagnostics.zero_diagnostics=false`；GREEN 的窄定义仅是
   `isolated_single_mod_visible_main_menu_only`，不能称为干净引擎启动。
 
@@ -115,7 +122,7 @@
 
 | 阶段 | 内容 | 退出标准 |
 |---|---|---|
-| A. 隔离环境 | 专用 CK3 用户目录、production mod、固定分辨率/语言、认证看门狗、环境与存储反证 | committed candidate 连续三次只加载本 mod 到可见主菜单；失败路径不遗留无人守护的 CK3 |
+| A. 隔离环境（已完成） | 专用 CK3 用户目录、production mod、固定分辨率/语言、认证看门狗、环境与存储反证 | committed candidate 已连续三次只加载本 mod 到可见主菜单；原生 Job/句柄测试与启动期 fail-closed RED 覆盖当前失败契约 |
 | B. UI 驱动底座 | 窗口分类、OCR、可靠点击、地图/HUD/事件通用恢复 | 无策略参与时可稳定运行数小时并保存完整证据 |
 | C. 合法基线玩家 | 固定规则策略完成开局、经营、事件、死亡和结算 | 至少完成多种角色类型的有效整局基线 |
 | D. 分层规划 | 增加战争、婚姻、领地、经济、生活方式、契约和交易决策 | 决策均有可审计状态输入和理由，分数不低于固定基线 |
@@ -130,6 +137,8 @@
 - 部分完成：OCR 目前只验证主菜单【新游戏】；连续运行停止条件已有版本/mod 漂移和进程安全门禁，但尚缺磁盘、费用与重复失败预算。
 - 未开始：游戏窗口分类回放集；与 acceptance 状态隔离的 OCR/模板/焦点/点击驱动层；独立 policy 进程及字段白名单；安全动作白名单；
   开始游戏、处理事件、推进时间、死亡结算的最小合法策略；多角色固定基准；模型调用预算；带证据计数和版本回滚的策略记忆。
+- Phase B 接入 policy 前的额外门禁：在 resume 后强制终止 supervisor，实机证明 crash watchdog 能回收完整 CK3 Job tree、保留可回放
+  故障证据且不触碰真实 profile/Steam/Workshop；当前三连成功 smoke 不提供这项崩溃注入证明。
 
 ## 风险
 
