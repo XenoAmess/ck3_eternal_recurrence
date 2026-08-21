@@ -91,7 +91,7 @@ staging。公开页 HTML 应按 `highlight_strip_item` 复核实际图片数。
 `<img src="..." crossorigin="anonymous">`，不会先代理到 Steam CDN。只有直接
 `https://raw.githubusercontent.com/<owner>/<repo>/<40-char-commit>/<path>` 在当前行为下可靠加载：响应必须无
 重定向、MIME 为 `image/jpeg` 或 `image/png`，并提供 `Access-Control-Allow-Origin: *`。本项目提交
-`e7592964603546f860b5d59ba00626819d8e0523` 的 gallery JPEG 实测返回 `200 image/jpeg`、无重定向、CORS `*`
+`bdc87ac77a3207945343ccdf277d6c4259bce65c` 的 gallery JPEG 实测返回 `200 image/jpeg`、无重定向、CORS `*`
 和 `Cross-Origin-Resource-Policy: cross-origin`。
 
 两件当前公开 Workshop 物品提供了 Steam 端实证：Terraria Overhaul

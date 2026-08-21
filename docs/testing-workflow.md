@@ -151,6 +151,11 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 主菜单【新游戏】也必须 deliberate-click 并以罗贝尔书签实际出现作反证；2026-08-19 实测 OCR 找到按钮后的一次瞬时点击可被 CK3 丢弃，runner 若直接进入 30 秒书签等待只会在原主菜单超时。
 - 安全软件、Chrome 与 JetBrains 通知都可能置顶遮住大厅“开始”按钮；runner 等待该按钮时只对已知安全软件“忽略”和 Chrome“关闭”执行窄 OCR 恢复，不改软件设置，也不在普通游戏画面盲点点击。2026-08-21 实测 JetBrains stale-index 通知不在该白名单内，会正确留下 OCR RED；人工关闭未知外部通知后必须使用全新目录重跑，禁止修改原报告结论。
 - 截图读坐标要用 PIL 裁真实 PNG（2560x1440）实测——聊天里显示的图有缩放，目测坐标必歪。
+- 发布截图还要检查画面中心：2026-08-21 的 non-debug terminal artifact 实测把 CK3 原生
+  `clausewitz/gfx/cursors/software_cursor_normal.dds`（100x100）留在 `(1280,720)`；它在地图上是深色方框，
+  还会透过半透明事件窗，看起来像坏掉的事件控件。该方框不是 mod GUI。发布衍生图应优先换用无光标帧或收紧裁切；
+  若只能用同帧事件图，只能从同一次 run、同一固定事件背景的无光标帧恢复该区域，并在截图来源文档记录坐标，禁止
+  用生成式补图伪造游戏内容。
 - OCR 定位按钮必须避免正文中的同词。2026-08-21 铁人 modal 的正文含“打开游戏菜单”，全屏 `contains=True` 会点到正文而不是底部按钮；按钮改在 modal 区域做精确匹配。RapidOCR 还会把 CK3 字体的“余烬”稳定识别为“余焰”，流程断言因此使用唯一后缀“已封存”，不修改正确的产品文案。
 - `pdx_enum_setting.cpp` 在真实 profile 和隔离 profile 均可能先记录 `Could not find enum 'l_simp_chinese' ... default 'l_english'`，但随后实际画面仍是简中；该启动期 debug 行不能单独证明最终渲染语言，验收以画面 OCR 和本地化结构为准。2026-08-21 非 debug 铁人实测。
 - 隔离 runner 只终止自己记录的 CK3 PID。若 preflight 后、真正 launch 前又出现任意 `ck3.exe`，必须 RED 并拒绝启动测试，不得调用按镜像名全局强杀；否则会误杀用户刚开启的真实会话。后置安全检查同样属于权威结果，失败时 JSON、JUnit 与退出码必须一起 RED。2026-08-21 runner 审阅加固。
