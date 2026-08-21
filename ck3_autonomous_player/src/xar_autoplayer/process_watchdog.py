@@ -15,6 +15,10 @@ import win32event
 import win32process
 
 
+EXACT_PROCESS_DRAIN_MS = 20_000
+FALLBACK_CLEANUP_SECONDS = 45
+
+
 def _write_json_atomic(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(path.name + ".tmp")
@@ -123,7 +127,7 @@ def _terminate_authenticated(
         process = _query_process(service, pid)
         if process is None:
             if (
-                win32event.WaitForSingleObject(handle, 1_000)
+                win32event.WaitForSingleObject(handle, EXACT_PROCESS_DRAIN_MS)
                 == win32event.WAIT_OBJECT_0
             ):
                 return None
@@ -134,17 +138,20 @@ def _terminate_authenticated(
         if _normalized(pinned_image) != _normalized(executable):
             return f"image:{pid}:pinned executable differs"
         win32api.TerminateProcess(handle, 1)
-        result = win32event.WaitForSingleObject(handle, 10_000)
+        result = win32event.WaitForSingleObject(handle, EXACT_PROCESS_DRAIN_MS)
         if result != win32event.WAIT_OBJECT_0:
             return f"terminate:{pid}:wait-status-{result}"
         return None
     except Exception as error:
         # A kill-on-close Job can win the race after identity validation.  The
         # pinned kernel handle, unlike the numeric PID, proves whether that
-        # exact process object has already exited.
+        # exact process object has exited.  CK3 can remain in the terminating
+        # state for several seconds after TerminateProcess starts returning
+        # ERROR_ACCESS_DENIED, so use the same 20-second bound as the outer
+        # verifier instead of treating a one-second drain as a cleanup error.
         try:
             if (
-                win32event.WaitForSingleObject(handle, 1_000)
+                win32event.WaitForSingleObject(handle, EXACT_PROCESS_DRAIN_MS)
                 == win32event.WAIT_OBJECT_0
             ):
                 return None
@@ -284,7 +291,7 @@ def main() -> int:
     # suspended and cannot spawn descendants before Job assignment.
     quiet_since: float | None = None
     poll_count = 0
-    deadline = time.monotonic() + 20
+    deadline = time.monotonic() + FALLBACK_CLEANUP_SECONDS
     while not failures and time.monotonic() < deadline:
         poll_count += 1
         try:

@@ -2181,6 +2181,264 @@ def _validate_red_cleanup_claim(
     _validate_crash_success_payload(report, run_dir, require_postflight=False)
 
 
+def _watchdog_failure_payload(
+    *,
+    probe_nonce: str,
+    watchdog_nonce: str,
+    watchdog_exit_code: int,
+    stage: str,
+    supervisor_pid: int,
+    watchdog_pid: int,
+    handoff_sha256: str,
+    armed_sha256: str,
+    watchdog_final_source: Path,
+    watchdog_final_sha256: str,
+    watchdog_error_source: Path,
+    watchdog_error_sha256: str,
+) -> dict[str, object]:
+    return {
+        "format_version": 1,
+        "kind": "watchdog_nonzero_exit",
+        "probe_nonce": probe_nonce,
+        "watchdog_nonce": watchdog_nonce,
+        "watchdog_exit_code": watchdog_exit_code,
+        "stage": stage,
+        "supervisor_pid": supervisor_pid,
+        "watchdog_pid": watchdog_pid,
+        "handoff_sha256": handoff_sha256,
+        "armed_sha256": armed_sha256,
+        "watchdog_final_source": str(watchdog_final_source.resolve()),
+        "watchdog_final_sha256": watchdog_final_sha256,
+        "watchdog_error_source": str(watchdog_error_source.resolve()),
+        "watchdog_error_sha256": watchdog_error_sha256,
+    }
+
+
+def _validate_watchdog_failure_payload(
+    report: dict[str, object],
+    run_dir: Path,
+    verified: dict[str, Path],
+) -> None:
+    """Validate the exact post-arm watchdog-nonzero diagnostic contract."""
+    failure = report.get("watchdog_failure")
+    expected_fields = {
+        "format_version",
+        "kind",
+        "probe_nonce",
+        "watchdog_nonce",
+        "watchdog_exit_code",
+        "stage",
+        "supervisor_pid",
+        "watchdog_pid",
+        "handoff_sha256",
+        "armed_sha256",
+        "watchdog_final_source",
+        "watchdog_final_sha256",
+        "watchdog_error_source",
+        "watchdog_error_sha256",
+    }
+    if (
+        not isinstance(failure, dict)
+        or set(failure) != expected_fields
+        or failure.get("format_version") != 1
+        or failure.get("kind") != "watchdog_nonzero_exit"
+        or not re.fullmatch(r"[0-9a-f]{32}", str(failure.get("probe_nonce", "")))
+        or not re.fullmatch(
+            r"[0-9a-f]{32}", str(failure.get("watchdog_nonce", ""))
+        )
+        or type(failure.get("watchdog_exit_code")) is not int
+        or failure.get("watchdog_exit_code") != 1
+        or failure.get("stage") not in {"cleanup", "control_cleanup"}
+        or type(failure.get("supervisor_pid")) is not int
+        or int(failure.get("supervisor_pid", 0)) <= 0
+        or type(failure.get("watchdog_pid")) is not int
+        or int(failure.get("watchdog_pid", 0)) <= 0
+        or not re.fullmatch(
+            r"[0-9a-f]{64}", str(failure.get("handoff_sha256", ""))
+        )
+        or not re.fullmatch(
+            r"[0-9a-f]{64}", str(failure.get("armed_sha256", ""))
+        )
+        or not re.fullmatch(
+            r"[0-9a-f]{64}", str(failure.get("watchdog_final_sha256", ""))
+        )
+        or not re.fullmatch(
+            r"[0-9a-f]{64}", str(failure.get("watchdog_error_sha256", ""))
+        )
+    ):
+        raise AgentError("watchdog failure diagnostic schema differs")
+
+    probe_nonce = str(failure["probe_nonce"])
+    watchdog_nonce = str(failure["watchdog_nonce"])
+    artifacts = report.get("artifacts")
+    required_labels = {
+        "handoff",
+        "armed",
+        "control_before_record",
+        "control_before_ready",
+        "control_before_unsafe_marker",
+        "watchdog_final",
+        "watchdog_error",
+    }
+    if (
+        not isinstance(artifacts, dict)
+        or not required_labels <= set(artifacts)
+        or not required_labels <= set(verified)
+    ):
+        raise AgentError("watchdog failure diagnostic artifacts are incomplete")
+    canonical_relative = {
+        "handoff": f"artifacts/handoff-{probe_nonce}.json",
+        "armed": f"artifacts/armed-{probe_nonce}.json",
+        "control_before_record": (
+            f"artifacts/control-before-record-{probe_nonce}.json"
+        ),
+        "control_before_ready": (
+            f"artifacts/control-before-ready-{probe_nonce}.json"
+        ),
+        "control_before_unsafe_marker": (
+            f"artifacts/control-before-unsafe_marker-{probe_nonce}.json"
+        ),
+        "watchdog_final": f"artifacts/watchdog-final-{probe_nonce}.json",
+        "watchdog_error": f"artifacts/watchdog-error-{probe_nonce}.txt",
+    }
+    if any(
+        artifacts[label].get("path") != relative
+        for label, relative in canonical_relative.items()
+    ):
+        raise AgentError("watchdog failure diagnostic artifact path differs")
+    if (
+        artifacts["handoff"].get("sha256") != failure["handoff_sha256"]
+        or artifacts["armed"].get("sha256") != failure["armed_sha256"]
+        or artifacts["watchdog_final"].get("sha256")
+        != failure["watchdog_final_sha256"]
+        or artifacts["watchdog_error"].get("sha256")
+        != failure["watchdog_error_sha256"]
+    ):
+        raise AgentError("watchdog failure diagnostic artifact hash binding differs")
+
+    try:
+        handoff = json.loads(verified["handoff"].read_text(encoding="utf-8"))
+        armed = json.loads(verified["armed"].read_text(encoding="utf-8"))
+        final = json.loads(verified["watchdog_final"].read_text(encoding="ascii"))
+        archived_error = verified["watchdog_error"].read_text(encoding="utf-8")
+    except (OSError, UnicodeError, ValueError, json.JSONDecodeError) as error:
+        raise AgentError(
+            f"watchdog failure diagnostic artifact cannot be parsed: {error}"
+        ) from error
+    if not isinstance(handoff, dict) or not isinstance(armed, dict):
+        raise AgentError("watchdog failure handoff or armed payload differs")
+
+    recorded_run = _recorded_run_dir(report)
+    recorded_state = recorded_run.parent.parent
+    expected_control = {
+        "record": recorded_state / "control" / "ck3.json",
+        "ready": (
+            recorded_state
+            / "control"
+            / f"watchdog-{watchdog_nonce}.ready.json"
+        ),
+        "unsafe_marker": recorded_state / "control" / "unsafe-cleanup.json",
+        "watchdog_error": recorded_state / "control" / "ck3.watchdog_error",
+    }
+    control = armed.get("control")
+    supervisor = armed.get("supervisor")
+    watchdog = armed.get("watchdog")
+    _validate_process_identity_payload(supervisor, "watchdog failure supervisor")
+    _validate_process_identity_payload(watchdog, "watchdog failure watchdog")
+    if (
+        recorded_run.parent.name != "runs"
+        or handoff.get("probe_nonce") != probe_nonce
+        or handoff.get("run_id") != report.get("run_id")
+        or Path(str(handoff.get("state_dir", ""))).resolve()
+        != recorded_state.resolve()
+        or not _recorded_reference_matches(
+            handoff.get("artifacts"), recorded_run, "artifacts"
+        )
+        or not _recorded_reference_matches(
+            handoff.get("armed"), recorded_run, canonical_relative["armed"]
+        )
+        or not _recorded_reference_matches(
+            handoff.get("watchdog_final"),
+            recorded_run,
+            canonical_relative["watchdog_final"],
+        )
+        or armed.get("probe_nonce") != probe_nonce
+        or armed.get("watchdog_nonce") != watchdog_nonce
+        or armed.get("process_resumed") is not True
+        or int(supervisor.get("pid", -1)) != failure["supervisor_pid"]
+        or int(watchdog.get("pid", -1)) != failure["watchdog_pid"]
+        or int(supervisor.get("pid", -1)) == int(watchdog.get("pid", -1))
+        or not isinstance(control, dict)
+        or set(control)
+        != {
+            *CONTROL_FILE_LABELS,
+            "record_sha256",
+            "ready_sha256",
+            "unsafe_marker_sha256",
+        }
+        or any(
+            Path(str(control.get(label, ""))).resolve() != path.resolve()
+            for label, path in expected_control.items()
+        )
+        or failure.get("watchdog_final_source") != handoff.get("watchdog_final")
+        or failure.get("watchdog_error_source") != control.get("watchdog_error")
+        or artifacts["control_before_record"].get("sha256")
+        != control.get("record_sha256")
+        or artifacts["control_before_ready"].get("sha256")
+        != control.get("ready_sha256")
+        or artifacts["control_before_unsafe_marker"].get("sha256")
+        != control.get("unsafe_marker_sha256")
+    ):
+        raise AgentError("watchdog failure handoff, armed, or control binding differs")
+
+    stage = str(failure["stage"])
+    expected_final_fields = {
+        "format_version",
+        "nonce",
+        "parent_pid",
+        "ok",
+        "stage",
+        "errors",
+    }
+    if stage == "cleanup":
+        expected_final_fields.add("authenticated_candidates")
+    if not isinstance(final, dict) or set(final) != expected_final_fields:
+        raise AgentError("watchdog failure final-evidence schema differs")
+    errors = final.get("errors")
+    if (
+        final.get("format_version") != 1
+        or final.get("nonce") != watchdog_nonce
+        or int(final.get("parent_pid", -1)) != failure["supervisor_pid"]
+        or final.get("ok") is not False
+        or final.get("stage") != stage
+        or not isinstance(errors, list)
+        or not errors
+        or any(not isinstance(error, str) or not error for error in errors)
+    ):
+        raise AgentError("watchdog failure final-evidence binding differs")
+    if stage == "cleanup":
+        candidates = final.get("authenticated_candidates")
+        ck3 = armed.get("ck3")
+        if (
+            not isinstance(ck3, dict)
+            or type(ck3.get("pid")) is not int
+            or ck3["pid"] <= 0
+            or not isinstance(candidates, list)
+            or any(type(pid) is not int or pid <= 0 for pid in candidates)
+            or len(candidates) != len(set(candidates))
+            or any(pid != ck3["pid"] for pid in candidates)
+        ):
+            raise AgentError("watchdog failure authenticated candidates differ")
+    elif errors != ["marker:ownership-lost"]:
+        raise AgentError("watchdog control-cleanup failure details differ")
+    if archived_error != ";".join(errors) + "\n":
+        raise AgentError("watchdog failure error text differs from final evidence")
+    if report.get("error") != (
+        f"crash cleanup watchdog exited {failure['watchdog_exit_code']}, expected 0"
+    ):
+        raise AgentError("watchdog failure report error binding differs")
+
+
 def validate_crash_report(run_dir: Path) -> dict[str, object]:
     run_dir = run_dir.resolve()
     report = json.loads((run_dir / "report.json").read_text(encoding="utf-8"))
@@ -2265,6 +2523,24 @@ def validate_crash_report(run_dir: Path) -> dict[str, object]:
             or len(set(verified_red.values())) != len(verified_red)
         ):
             raise AgentError("RED crash artifact paths are noncanonical or aliased")
+        watchdog_failure_declared = (
+            "watchdog_failure" in report
+            or "watchdog_error" in artifacts
+            or re.fullmatch(
+                r"crash cleanup watchdog exited [0-9]+, expected 0",
+                str(report.get("error", "")),
+            )
+            is not None
+        )
+        if watchdog_failure_declared:
+            if kinds != [
+                "smoke_started",
+                "crash_subject_armed",
+                "supervisor_crash_injected",
+                "smoke_finished",
+            ]:
+                raise AgentError("watchdog failure RED event sequence differs")
+            _validate_watchdog_failure_payload(report, run_dir, verified_red)
         crash = report.get("crash_attestation", {})
         cleanup = isinstance(crash, dict) and crash.get("cleanup_proven") is True
         if cleanup:
@@ -2943,19 +3219,52 @@ def _crash_smoke_locked(
             _wait_named_job_absent(expected_job_name)
 
             watchdog_exit_code = _wait_pinned_exit(
-                watchdog_pin, "crash cleanup watchdog", 40
+                watchdog_pin, "crash cleanup watchdog", 90
             )
-            if watchdog_exit_code != 0:
-                raise AgentError(
-                    f"crash cleanup watchdog exited {watchdog_exit_code}, expected 0"
-                )
-
             watchdog_evidence = _wait_json(
                 watchdog_final,
                 subject,
                 30,
                 require_process_running=False,
             )
+            watchdog_final_entry = _artifact_entry(watchdog_final, run_dir)
+            report["artifacts"]["watchdog_final"] = watchdog_final_entry
+            if watchdog_exit_code != 0:
+                watchdog_error_path = Path(
+                    str(armed["control"]["watchdog_error"])
+                )
+                if not watchdog_error_path.is_file():
+                    raise AgentError(
+                        "crash cleanup watchdog exited nonzero without its "
+                        "error control evidence"
+                    )
+                watchdog_error_archive = (
+                    artifacts / f"watchdog-error-{probe_nonce}.txt"
+                )
+                write_bytes_atomic(
+                    watchdog_error_archive, watchdog_error_path.read_bytes()
+                )
+                watchdog_error_entry = _artifact_entry(
+                    watchdog_error_archive, run_dir
+                )
+                report["artifacts"]["watchdog_error"] = watchdog_error_entry
+                report["watchdog_failure"] = _watchdog_failure_payload(
+                    probe_nonce=probe_nonce,
+                    watchdog_nonce=str(armed["watchdog_nonce"]),
+                    watchdog_exit_code=watchdog_exit_code,
+                    stage=str(watchdog_evidence.get("stage", "")),
+                    supervisor_pid=supervisor_pid,
+                    watchdog_pid=int(armed["watchdog"]["pid"]),
+                    handoff_sha256=report["artifacts"]["handoff"]["sha256"],
+                    armed_sha256=report["artifacts"]["armed"]["sha256"],
+                    watchdog_final_source=watchdog_final,
+                    watchdog_final_sha256=watchdog_final_entry["sha256"],
+                    watchdog_error_source=watchdog_error_path,
+                    watchdog_error_sha256=watchdog_error_entry["sha256"],
+                )
+                raise AgentError(
+                    f"crash cleanup watchdog exited {watchdog_exit_code}, expected 0"
+                )
             measured_quiet = float(
                 watchdog_evidence.get("measured_stable_empty_seconds", 0)
             )
@@ -3006,9 +3315,6 @@ def _crash_smoke_locked(
             ):
                 raise AgentError(f"crash control files remain: {controls!r}")
             final_inventory = _wait_global_ck3_quiet()
-            report["artifacts"]["watchdog_final"] = _artifact_entry(
-                watchdog_final, run_dir
-            )
             report["crash_attestation"] = {
                 "probe_nonce": probe_nonce,
                 "subject_pid": supervisor_pid,

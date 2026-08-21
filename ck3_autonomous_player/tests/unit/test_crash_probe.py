@@ -41,6 +41,7 @@ from xar_autoplayer.crash_probe import (  # noqa: E402
     _validate_subject_invocation,
     _validate_watchdog_process_command,
     _wait_for_supervisor_ack,
+    _watchdog_failure_payload,
     run_crash_subject,
     validate_crash_report,
     _wait_named_job_absent,
@@ -780,6 +781,7 @@ class CrashReportContractTests(unittest.TestCase):
         *,
         ok: bool,
         include_cleanup_events: bool = True,
+        include_injection_events: bool = False,
     ) -> None:
         report.update(
             {
@@ -795,7 +797,10 @@ class CrashReportContractTests(unittest.TestCase):
         cleanup_claimed = report.get("crash_attestation", {}).get(
             "cleanup_proven"
         ) is True
-        if (ok or cleanup_claimed) and include_cleanup_events:
+        if include_injection_events:
+            append_event(events, {"kind": "crash_subject_armed"})
+            append_event(events, {"kind": "supervisor_crash_injected"})
+        elif (ok or cleanup_claimed) and include_cleanup_events:
             append_event(events, {"kind": "crash_subject_armed"})
             append_event(events, {"kind": "supervisor_crash_injected"})
             append_event(events, {"kind": "watchdog_cleanup_attested"})
@@ -818,6 +823,167 @@ class CrashReportContractTests(unittest.TestCase):
         (run / "report.json").write_text(
             json.dumps(report, ensure_ascii=False) + "\n", encoding="utf-8"
         )
+
+    def _watchdog_failure_red(
+        self, run: Path, *, stage: str = "cleanup"
+    ) -> dict[str, object]:
+        report = self._report(run)
+        crash = report["crash_attestation"]
+        probe_nonce = crash["probe_nonce"]
+        armed_path = run / report["artifacts"]["armed"]["path"]
+        armed = json.loads(armed_path.read_text(encoding="utf-8"))
+        handoff_path = run / report["artifacts"]["handoff"]["path"]
+        handoff = json.loads(handoff_path.read_text(encoding="utf-8"))
+        final_path = run / report["artifacts"]["watchdog_final"]["path"]
+        errors = (
+            ["terminate:789:(5, 'TerminateProcess', 'Access is denied')"]
+            if stage == "cleanup"
+            else ["marker:ownership-lost"]
+        )
+        final: dict[str, object] = {
+            "format_version": 1,
+            "nonce": armed["watchdog_nonce"],
+            "parent_pid": armed["supervisor"]["pid"],
+            "ok": False,
+            "stage": stage,
+            "errors": errors,
+        }
+        if stage == "cleanup":
+            final["authenticated_candidates"] = [armed["ck3"]["pid"]]
+        final_path.write_text(json.dumps(final) + "\n", encoding="ascii")
+        report["artifacts"]["watchdog_final"]["sha256"] = sha256_file(final_path)
+
+        error_path = run / "artifacts" / f"watchdog-error-{probe_nonce}.txt"
+        error_path.write_text(";".join(errors) + "\n", encoding="utf-8")
+        report["artifacts"]["watchdog_error"] = {
+            "path": error_path.relative_to(run).as_posix(),
+            "sha256": sha256_file(error_path),
+        }
+        report["watchdog_failure"] = _watchdog_failure_payload(
+            probe_nonce=probe_nonce,
+            watchdog_nonce=armed["watchdog_nonce"],
+            watchdog_exit_code=1,
+            stage=stage,
+            supervisor_pid=armed["supervisor"]["pid"],
+            watchdog_pid=armed["watchdog"]["pid"],
+            handoff_sha256=report["artifacts"]["handoff"]["sha256"],
+            armed_sha256=report["artifacts"]["armed"]["sha256"],
+            watchdog_final_source=Path(handoff["watchdog_final"]),
+            watchdog_final_sha256=report["artifacts"]["watchdog_final"][
+                "sha256"
+            ],
+            watchdog_error_source=Path(armed["control"]["watchdog_error"]),
+            watchdog_error_sha256=report["artifacts"]["watchdog_error"][
+                "sha256"
+            ],
+        )
+        del report["crash_attestation"]
+        report.pop("visual_attestation")
+        report.pop("load_attestation")
+        report.pop("protected_storage")
+        report.pop("production_tree_unchanged")
+        report["artifacts"].pop("protected_after")
+        report["unsafe_cleanup"] = True
+        report["error"] = "crash cleanup watchdog exited 1, expected 0"
+        return report
+
+    def test_public_red_replays_exact_watchdog_failure_contract(self) -> None:
+        for stage in ("cleanup", "control_cleanup"):
+            with self.subTest(stage=stage), tempfile.TemporaryDirectory(
+                prefix=f"xar-watchdog-red-{stage}-"
+            ) as temporary:
+                run = self._run(temporary)
+                report = self._watchdog_failure_red(run, stage=stage)
+                self._finalize(
+                    run, report, ok=False, include_injection_events=True
+                )
+                replayed = validate_crash_report(run)
+                self.assertFalse(replayed["ok"])
+                self.assertEqual(replayed["watchdog_failure"]["stage"], stage)
+
+    def test_public_red_rejects_deleted_watchdog_failure_evidence(self) -> None:
+        for deleted in ("attestation", "watchdog_final", "watchdog_error"):
+            with self.subTest(deleted=deleted), tempfile.TemporaryDirectory(
+                prefix=f"xar-watchdog-red-delete-{deleted}-"
+            ) as temporary:
+                run = self._run(temporary)
+                report = self._watchdog_failure_red(run)
+                if deleted == "attestation":
+                    del report["watchdog_failure"]
+                else:
+                    entry = report["artifacts"].pop(deleted)
+                    (run / entry["path"]).unlink()
+                self._finalize(
+                    run, report, ok=False, include_injection_events=True
+                )
+                with self.assertRaisesRegex(
+                    AgentError, "diagnostic schema|diagnostic artifacts"
+                ):
+                    validate_crash_report(run)
+
+    def test_public_red_rejects_resigned_watchdog_failure_tampering(self) -> None:
+        for tampered in ("final_nonce", "error_text"):
+            with self.subTest(tampered=tampered), tempfile.TemporaryDirectory(
+                prefix=f"xar-watchdog-red-tamper-{tampered}-"
+            ) as temporary:
+                run = self._run(temporary)
+                report = self._watchdog_failure_red(run)
+                label = (
+                    "watchdog_final"
+                    if tampered == "final_nonce"
+                    else "watchdog_error"
+                )
+                path = run / report["artifacts"][label]["path"]
+                if tampered == "final_nonce":
+                    payload = json.loads(path.read_text(encoding="ascii"))
+                    payload["nonce"] = "c" * 32
+                    path.write_text(json.dumps(payload) + "\n", encoding="ascii")
+                else:
+                    path.write_text("resigned but contradictory\n", encoding="utf-8")
+                digest = sha256_file(path)
+                report["artifacts"][label]["sha256"] = digest
+                report["watchdog_failure"][f"{label}_sha256"] = digest
+                self._finalize(
+                    run, report, ok=False, include_injection_events=True
+                )
+                with self.assertRaisesRegex(
+                    AgentError, "final-evidence binding|error text"
+                ):
+                    validate_crash_report(run)
+
+    def test_public_red_rejects_noncanonical_watchdog_failure_path(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-watchdog-red-path-"
+        ) as temporary:
+            run = self._run(temporary)
+            report = self._watchdog_failure_red(run)
+            original = run / report["artifacts"]["watchdog_final"]["path"]
+            renamed = run / "artifacts" / "renamed-watchdog-final.json"
+            shutil.copy2(original, renamed)
+            report["artifacts"]["watchdog_final"]["path"] = (
+                renamed.relative_to(run).as_posix()
+            )
+            self._finalize(run, report, ok=False, include_injection_events=True)
+            with self.assertRaisesRegex(AgentError, "artifact path"):
+                validate_crash_report(run)
+
+    def test_public_red_watchdog_failure_replays_after_origin_removal(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-watchdog-red-relocate-"
+        ) as temporary:
+            root = Path(temporary)
+            origin_root = root / "origin"
+            run = self._run(str(origin_root))
+            report = self._watchdog_failure_red(run)
+            self._finalize(run, report, ok=False, include_injection_events=True)
+            relocated = root / "relocated" / run.name
+            shutil.copytree(run, relocated)
+            shutil.rmtree(origin_root)
+            replayed = validate_crash_report(relocated)
+            self.assertFalse(replayed["ok"])
+            self.assertEqual(
+                replayed["watchdog_failure"]["kind"], "watchdog_nonzero_exit"
+            )
 
     def test_success_contract_binds_watchdog_artifact(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-crash-report-") as temporary:

@@ -50,12 +50,14 @@ Phase A 的失败契约另有三类证据，不能错误归入上述三次成功
 
 - `20260821T175600Z-506fd491` 在 watchdog 父进程身份不匹配时于 CK3 创建前 RED；
 - `20260821T175750Z-dcbdeff4` 在 suspended CK3 的 WMI 路径不可读时 fail closed，CK3 在 resume 前由固定句柄终止；
-- 当前测试套件共 33 项，32 通过、1 项默认跳过。其中原生 Windows 测试覆盖 suspended→Job→resume、`TerminateJobObject`
+- 该冻结候选当时的测试套件共 33 项，32 通过、1 项默认跳过。其中原生 Windows 测试覆盖 suspended→Job→resume、`TerminateJobObject`
   回收实际生成的进程树、真实 process handle 的 shutdown 合取、PID/nonce/WMI 歧义拒绝；默认跳过的 watchdog 父对象桌面集成
   用例已另行显式运行并 GREEN。
 
-尚未做的是“CK3 resume 后强制杀死 supervisor”的完整崩溃注入。实现与静态安全审计为这条路径建立了认证 watchdog、nonce、
-kill-on-close Job 和 fail-closed unsafe marker，但在 Phase B 将 gameplay policy 接入前，仍必须补一次真实崩溃注入并归档证据。
+冻结 Phase A 证据产生时，尚未做“CK3 resume 后强制杀死 supervisor”的完整崩溃注入。此后 2026-08-22 已执行两次真实
+`crash-smoke`，但均为 RED：第一次在 CK3 创建前识别出 venv interpreter redirector；第二次已进入可见主菜单并完成
+post-resume 注入，却在 watchdog 与 Job teardown 竞态中安全地保留 unsafe marker，未获得 `cleanup_proven`。因此这两次只作为
+故障发现证据，不能补写为 Phase A GREEN；Phase B 接入 gameplay policy 前仍须由新提交、新 profile 的 crash-smoke 取得完整 GREEN。
 
 ## 非零诊断边界
 

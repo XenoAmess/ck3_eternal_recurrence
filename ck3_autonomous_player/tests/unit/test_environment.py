@@ -32,6 +32,7 @@ from xar_autoplayer.process_watchdog import (  # noqa: E402
     _fallback_children,
     _matches,
     _parent_matches,
+    _terminate_authenticated,
     _unlink_if_owned,
 )
 from xar_autoplayer.rules import MOD_RULES, rule_contract  # noqa: E402
@@ -773,6 +774,190 @@ class TrackedShutdownTests(unittest.TestCase):
             self.assertTrue(path.is_file())
             self.assertTrue(_unlink_if_owned(path, "new-generation"))
             self.assertFalse(path.exists())
+
+    @unittest.skipUnless(os.name == "nt", "Windows pinned-process wait contract")
+    def test_watchdog_accepts_job_winning_terminate_race(self) -> None:
+        import pywintypes
+        import win32event
+
+        row = SimpleNamespace(
+            ProcessId=123,
+            ParentProcessId=456,
+            Name="ck3.exe",
+            ExecutablePath="C:/game/ck3.exe",
+            CreationDate="created",
+        )
+        service = mock.Mock()
+        service.ExecQuery.return_value = [row]
+        handle = object()
+        with mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.OpenProcess",
+            return_value=handle,
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32event.WaitForSingleObject",
+            side_effect=[win32event.WAIT_TIMEOUT, win32event.WAIT_OBJECT_0],
+        ) as wait, mock.patch(
+            "xar_autoplayer.process_watchdog.win32process.GetModuleFileNameEx",
+            return_value="C:/game/ck3.exe",
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.TerminateProcess",
+            side_effect=pywintypes.error(
+                5, "TerminateProcess", "Access is denied"
+            ),
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.CloseHandle"
+        ) as close:
+            self.assertIsNone(
+                _terminate_authenticated(
+                    service, 123, 456, "C:/game/ck3.exe", "created"
+                )
+            )
+        wait.assert_has_calls([mock.call(handle, 0), mock.call(handle, 20_000)])
+        close.assert_called_once_with(handle)
+
+    @unittest.skipUnless(os.name == "nt", "Windows pinned-process wait contract")
+    def test_watchdog_normal_termination_uses_full_exact_handle_drain(self) -> None:
+        import win32event
+
+        row = SimpleNamespace(
+            ProcessId=123,
+            ParentProcessId=456,
+            Name="ck3.exe",
+            ExecutablePath="C:/game/ck3.exe",
+            CreationDate="created",
+        )
+        service = mock.Mock()
+        service.ExecQuery.return_value = [row]
+        handle = object()
+        with mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.OpenProcess",
+            return_value=handle,
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32event.WaitForSingleObject",
+            side_effect=[win32event.WAIT_TIMEOUT, win32event.WAIT_OBJECT_0],
+        ) as wait, mock.patch(
+            "xar_autoplayer.process_watchdog.win32process.GetModuleFileNameEx",
+            return_value="C:/game/ck3.exe",
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.TerminateProcess"
+        ) as terminate, mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.CloseHandle"
+        ) as close:
+            self.assertIsNone(
+                _terminate_authenticated(
+                    service, 123, 456, "C:/game/ck3.exe", "created"
+                )
+            )
+        terminate.assert_called_once_with(handle, 1)
+        wait.assert_has_calls([mock.call(handle, 0), mock.call(handle, 20_000)])
+        close.assert_called_once_with(handle)
+
+    @unittest.skipUnless(os.name == "nt", "Windows pinned-process wait contract")
+    def test_watchdog_wmi_disappearance_waits_for_exact_handle(self) -> None:
+        import win32event
+
+        service = mock.Mock()
+        service.ExecQuery.return_value = []
+        handle = object()
+        with mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.OpenProcess",
+            return_value=handle,
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32event.WaitForSingleObject",
+            side_effect=[win32event.WAIT_TIMEOUT, win32event.WAIT_OBJECT_0],
+        ) as wait, mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.TerminateProcess"
+        ) as terminate, mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.CloseHandle"
+        ) as close:
+            self.assertIsNone(
+                _terminate_authenticated(
+                    service, 123, 456, "C:/game/ck3.exe", "created"
+                )
+            )
+        terminate.assert_not_called()
+        wait.assert_has_calls([mock.call(handle, 0), mock.call(handle, 20_000)])
+        close.assert_called_once_with(handle)
+
+    @unittest.skipUnless(os.name == "nt", "Windows pinned-process wait contract")
+    def test_watchdog_fails_closed_when_terminate_race_never_signals(self) -> None:
+        import pywintypes
+        import win32event
+
+        row = SimpleNamespace(
+            ProcessId=123,
+            ParentProcessId=456,
+            Name="ck3.exe",
+            ExecutablePath="C:/game/ck3.exe",
+            CreationDate="created",
+        )
+        service = mock.Mock()
+        service.ExecQuery.return_value = [row]
+        handle = object()
+        with mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.OpenProcess",
+            return_value=handle,
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32event.WaitForSingleObject",
+            side_effect=[win32event.WAIT_TIMEOUT, win32event.WAIT_TIMEOUT],
+        ) as wait, mock.patch(
+            "xar_autoplayer.process_watchdog.win32process.GetModuleFileNameEx",
+            return_value="C:/game/ck3.exe",
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.TerminateProcess",
+            side_effect=pywintypes.error(
+                5, "TerminateProcess", "Access is denied"
+            ),
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.CloseHandle"
+        ) as close:
+            failure = _terminate_authenticated(
+                service, 123, 456, "C:/game/ck3.exe", "created"
+            )
+        self.assertIn("terminate:123", str(failure))
+        wait.assert_has_calls([mock.call(handle, 0), mock.call(handle, 20_000)])
+        close.assert_called_once_with(handle)
+
+    @unittest.skipUnless(os.name == "nt", "Windows pinned-process wait contract")
+    def test_watchdog_fails_closed_when_terminate_race_wait_errors(self) -> None:
+        import pywintypes
+        import win32event
+
+        row = SimpleNamespace(
+            ProcessId=123,
+            ParentProcessId=456,
+            Name="ck3.exe",
+            ExecutablePath="C:/game/ck3.exe",
+            CreationDate="created",
+        )
+        service = mock.Mock()
+        service.ExecQuery.return_value = [row]
+        handle = object()
+        with mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.OpenProcess",
+            return_value=handle,
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32event.WaitForSingleObject",
+            side_effect=[
+                win32event.WAIT_TIMEOUT,
+                OSError("wait failed while process state is unknown"),
+            ],
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32process.GetModuleFileNameEx",
+            return_value="C:/game/ck3.exe",
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.TerminateProcess",
+            side_effect=pywintypes.error(
+                5, "TerminateProcess", "Access is denied"
+            ),
+        ), mock.patch(
+            "xar_autoplayer.process_watchdog.win32api.CloseHandle"
+        ) as close:
+            failure = _terminate_authenticated(
+                service, 123, 456, "C:/game/ck3.exe", "created"
+            )
+        self.assertIn("wait failed", str(failure))
+        close.assert_called_once_with(handle)
 
 
 class SteamSemanticSnapshotTests(unittest.TestCase):

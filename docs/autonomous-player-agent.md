@@ -141,10 +141,16 @@
    supervisor-ready → 精确句柄 pin → acknowledgement，subject 收到 acknowledgement 前禁止启动 CK3；三阶段同时记录
    UTC 与跨进程可比的 monotonic 时间。实时路径强制 `ready < acknowledgement < armed`；无密钥回放只能验证归档中的
    三个记录值和字段关系自洽，不能证明历史顺序真实发生。
-   及合成父子进程。外层验证器不持有 Job handle，只固定 supervisor、CK3、合成父、合成子、watchdog 的精确进程句柄；
+   subject 把 CK3 及合成父子进程加入同一个 nonce 命名的 kill-on-close Job。外层验证器不持有 Job handle，只固定
+   supervisor、CK3、合成父、合成子、watchdog 的精确进程句柄；
    命名 Job 对象销毁、五个句柄退出、watchdog 返回 0、四类控制文件消失、双源 CK3 清点连续 5 秒为空，必须全部成立。
 2. crash probe 的策略输入仍为空。`debug.log` 前缀只被归档并复算单 mod/mount 证明，不传给 UI 或策略层；该运行明确
    `valid_score_episode=false`。清理合取未完成时禁止 protected postflight，并保留 unsafe marker。
+   对这种 finalized RED，只能显式运行 `recover-stale-control --run-id <run-id>`：它在双锁内重新验证源归档、所有记录进程
+   当前均不存在、命名 Job 不存在和双源 CK3 清点为空，随后按哈希归档 control 文件并把 unsafe marker 的 CAS 作为最后一步。
+   恢复报告只证明 `current_absence_proven=true`，固定保留 `historical_cleanup_proven=false`；源 RED 字节不变，也不会获得
+   `cleanup_proven` 或有效局资格。write-ahead report 的 `ok=true` 只是一项条件式声明；必须由 `validate_recovery_report()`
+   同时观察 active marker 已不存在、归档 marker 哈希匹配才成立。
 3. 视觉驱动先只接 `main_menu -> bookmark_lobby`。观察必须绑定 CK3 PID、WMI 创建时间、可执行路径、HWND、client rect 与
    2560×1440 简中 UI 契约；当前确定性合成分类单测中的转场叠影、教程样式 modal、遮挡或多屏同时命中会返回 unknown。真实
    CK3 上仍须逐类冻结负例，不能把合成用例结论扩大成所有 modal 已被识别。
@@ -177,8 +183,12 @@ RED 不能用一个布尔字段绕过进程、watchdog、控制文件、producti
 - 已开始但未实机接线：游戏窗口分类的确定性合成单测；与 acceptance 状态隔离的 OCR/焦点/点击驱动层；短期控件 token 与安全动作白名单。
 - 未开始：模板资产冻结；独立 policy 进程及字段白名单；
   开始游戏、处理事件、推进时间、死亡结算的最小合法策略；多角色固定基准；模型调用预算；带证据计数和版本回滚的策略记忆。
-- Phase B 接入 policy 前的额外门禁：resume 后 supervisor crash probe 已实现离线一致性契约，仍须本机实机证明完整 CK3 Job tree 回收、
+- Phase B 接入 policy 前的额外门禁：resume 后 supervisor crash probe 已实现离线一致性契约，仍须本机 GREEN 证明完整 CK3 Job tree 回收、
   生成可做内部一致性重放的故障证据，以及真实 profile/Steam/Workshop 的退出后语义状态不变；当前三连成功 smoke 不提供这项崩溃注入证明。
+- 2026-08-22 的第二次真实 crash probe `20260821T211059Z-crash-833b9587` 已进入可见主菜单并完成单 mod attestation，
+  但 watchdog 与 kill-on-close Job 并发回收 CK3 时，`TerminateProcess` 返回 `ERROR_ACCESS_DENIED`；旧实现只等精确 pinned
+  handle 1 秒，因而安全地 finalize 为 RED、保留四类 control 且不做 protected postflight。该事故促成统一 20 秒精确句柄
+  排空、独立 fallback/quiet 预算、结构化 watchdog-failure 归档及上述显式恢复协议；它仍不是 crash 门禁 GREEN。
 
 ## 风险
 

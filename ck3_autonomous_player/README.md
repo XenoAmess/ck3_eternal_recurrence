@@ -46,7 +46,7 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 尚未实现的关键能力：游戏规则页的视觉复核、正常 UI 新开局、事件/当铺/交易决策、HUD 状态抽取、战争与内政、
 保存续玩、自然死亡结算、episode 学习与多局优化。主菜单 smoke 只是基础设施证据，**不是有效得分局**。
 
-当前工作候选还增加了两项尚待本机实机门禁的能力：
+当前工作候选还增加了两项尚待本机 GREEN 门禁的能力；crash 路径已有两次真实 RED 探针，但尚未通过完整回收门禁：
 
 - `crash-smoke` 使用外层验证器、可牺牲 supervisor、detached watchdog 三个逻辑角色；Windows venv 可在 outer 与
   supervisor 之间增加一个经完整命令行和进程身份认证的 interpreter redirector。outer 必须先固定真实 supervisor
@@ -57,13 +57,21 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   handoff、supervisor ready/ack、armed、三份控制文件、watchdog final、production manifest 和日志前缀均复制进可搬移的一致性回放证据包。报告固定声明
   `integrity=unkeyed_sha256`、`historical_execution_authenticity_proven=false`：它能复算 schema、字段关系、PNG→OCR 与哈希链，
   不能在没有密钥或外部信任根时证明一份历史归档必然来自真实执行；实机资格仍以本轮外层 verifier 的当场 OS 观察为准。
+- `recover-stale-control --run-id <finalized-RED-run-id>` 只处理一次明确指定、已完成且仍保留 unsafe marker 的 crash RED。
+  它重新认证源证据、当前全部进程均不存在、命名 Job 已销毁和双源 CK3 清点为空，再把 control 文件逐项按原哈希归档；
+  unsafe marker 的 compare-and-swap 归档是最后一次 recovery 证据/控制提交，之后不再写 recovery report 或 artifact
+  （锁实现仍可清理自己的 owner 文件）。恢复会生成独立 report，固定声明
+  `historical_cleanup_proven=false`、`current_absence_proven=true`，绝不修改旧 report、把旧 RED 升成 GREEN，或在启动前自动清标记。
+  write-ahead report 在 marker 提交前已含条件式 `ok=true`；该字段不能单独视为成功，必须由
+  `validate_recovery_report()` 同时验证 active marker 已消失且归档 marker 的 SHA-256 匹配。
 - Phase B 的纯视觉底座已经建立 PID/创建时间/可执行路径绑定的 CK3 窗口捕获、OCR 屏幕分类、短期 HMAC 控件 token、
   点击前后状态反证和 fail-closed 导航骨架。当前动作白名单只有主菜单【新游戏】，并显式禁止大厅【开始】；未接 CLI、
   未在真实桌面发出输入，也不能据此声称已经能开局。
 
 上述改动改变了受指纹保护的 runtime，因此旧提交的 Phase A 三连只证明历史冻结候选，不自动为当前未提交工作树背书。
 当前候选必须先提交并重新 `prepare-profile`，再分别通过普通 `smoke` 与 `crash-smoke`（后者同时重新取证可见主菜单与
-单 mod load）才可记录新的本机资格；在这两份报告产生前，本节中的 crash 能力均只是离线测试通过的实现。
+单 mod load）才可记录新的本机资格。现有真实 crash 报告均为 RED，只用于发现问题，不资格化当前修订。
+截至 2026-08-22，本候选离线单元回归为 119 项：118 通过、1 项显式真实桌面集成跳过；这不能替代上述本机门禁。
 
 ## 运行
 
@@ -75,6 +83,7 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" verify-profile
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" smoke
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" crash-smoke
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" recover-stale-control --run-id <finalized-RED-run-id>
 ```
 
 默认运行状态在 `%LOCALAPPDATA%\XarAutoplayer`，可用 `XAR_AUTOPLAYER_STATE_DIR` 或
@@ -93,6 +102,9 @@ XarAutoplayer/
     xar-autoplayer-environment.json
   runs/<run-id>/
     events.jsonl
+    report.json
+    artifacts/
+  recoveries/<recovery-id>/
     report.json
     artifacts/
   control/

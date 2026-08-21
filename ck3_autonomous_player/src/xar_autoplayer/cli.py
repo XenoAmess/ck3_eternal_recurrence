@@ -48,6 +48,11 @@ def parser() -> argparse.ArgumentParser:
         help="kill a post-resume supervisor and attest Job/watchdog recovery",
     )
     crash_parser.add_argument("--timeout", type=float, default=180)
+    recovery_parser = commands.add_parser(
+        "recover-stale-control",
+        help="prove current absence and archive stale crash control evidence",
+    )
+    recovery_parser.add_argument("--run-id", required=True)
     crash_subject = commands.add_parser("_crash-subject", help=argparse.SUPPRESS)
     crash_subject.add_argument("--probe-nonce", required=True)
     crash_subject.add_argument("--handoff", type=Path, required=True)
@@ -111,6 +116,10 @@ def main(argv: list[str] | None = None) -> int:
             ensure_state_path_safe(spec.state_dir)
             with exclusive_state_lock(spec.state_dir, "verify-profile"):
                 result = verify_profile(spec)
+        elif args.command == "recover-stale-control":
+            from .recovery import recover_stale_control
+
+            result = recover_stale_control(spec, args.run_id)
         elif args.command == "smoke":
             result = smoke(spec, timeout_seconds=args.timeout)
         else:
