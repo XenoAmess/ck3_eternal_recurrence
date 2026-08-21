@@ -267,9 +267,14 @@ def installed_dlc_fingerprint(game_dir: Path) -> dict[str, object]:
         }
         for path in descriptors
     ]
+    mount_roots = sorted(
+        {str(descriptor.parent.resolve()) for descriptor in descriptors}
+    )
     return {
         "installed_descriptor_count": len(entries),
         "installed_descriptors_sha256": snapshot_digest(entries),
+        "allowed_mount_roots": mount_roots,
+        "allowed_mount_roots_sha256": snapshot_digest(mount_roots),
         "note": (
             "This fingerprints installed DLC descriptors, not account entitlements. "
             "disabled_dlcs=[] leaves owned DLC enabled; runtime mounts are attested separately."

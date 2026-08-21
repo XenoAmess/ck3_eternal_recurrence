@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/observation-v2.schema.json",
+  "title": "Policy-safe visible CK3 observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version", "observation_id", "frame_id", "captured_at", "screen",
+    "image", "ocr", "visible_anchors", "visible_controls", "visible_facts",
+    "confidence", "unknown_reasons", "policy_boundary"
+  ],
+  "properties": {
+    "format_version": {"const": 2},
+    "observation_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "frame_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "screen": {"type": "string", "minLength": 1, "maxLength": 80},
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "sha256", "width", "height"],
+      "properties": {
+        "ref": {"type": "string", "pattern": "^frame:[0-9a-f]{32}$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "width": {"const": 2560},
+        "height": {"const": 1440}
+      }
+    },
+    "ocr": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {"$ref": "#/$defs/span"}
+    },
+    "visible_anchors": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {"$ref": "#/$defs/anchor"}
+    },
+    "visible_controls": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {"$ref": "#/$defs/control"}
+    },
+    "visible_facts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["screen", "anchors"],
+      "properties": {
+        "screen": {"type": "string", "minLength": 1, "maxLength": 80},
+        "anchors": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1, "maxLength": 120}
+        }
+      }
+    },
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "unknown_reasons": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {"type": "string", "maxLength": 1000}
+    },
+    "policy_boundary": {"const": "player-visible pixels and OCR only"}
+  },
+  "$defs": {
+    "point": {
+      "type": "array", "prefixItems": [{"type": "integer"}, {"type": "integer"}],
+      "minItems": 2, "maxItems": 2
+    },
+    "bbox": {
+      "type": "array",
+      "prefixItems": [
+        {"type": "integer"}, {"type": "integer"},
+        {"type": "integer"}, {"type": "integer"}
+      ],
+      "minItems": 4, "maxItems": 4
+    },
+    "span": {
+      "type": "object", "additionalProperties": false,
+      "required": ["text", "normalized", "score", "center", "bbox"],
+      "properties": {
+        "text": {"type": "string", "maxLength": 500},
+        "normalized": {"type": "string", "maxLength": 500},
+        "score": {"type": "number", "minimum": 0, "maximum": 1},
+        "center": {"$ref": "#/$defs/point"},
+        "bbox": {"$ref": "#/$defs/bbox"}
+      }
+    },
+    "anchor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["anchor_id", "text", "score", "bbox", "center"],
+      "properties": {
+        "anchor_id": {"type": "string", "minLength": 1, "maxLength": 120},
+        "text": {"type": "string", "maxLength": 500},
+        "score": {"type": "number", "minimum": 0, "maximum": 1},
+        "bbox": {"$ref": "#/$defs/bbox"},
+        "center": {"$ref": "#/$defs/point"}
+      }
+    },
+    "control": {
+      "type": "object", "additionalProperties": false,
+      "required": ["control_id", "label", "control_token", "bbox", "center"],
+      "properties": {
+        "control_id": {"type": "string", "minLength": 1, "maxLength": 120},
+        "label": {"type": "string", "minLength": 1, "maxLength": 120},
+        "control_token": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "bbox": {"$ref": "#/$defs/bbox"},
+        "center": {"$ref": "#/$defs/point"}
+      }
+    }
+  }
+}

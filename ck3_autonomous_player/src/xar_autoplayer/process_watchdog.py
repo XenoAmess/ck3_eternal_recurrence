@@ -118,9 +118,16 @@ def _terminate_authenticated(
             return f"open:{pid}:{error};verify:{verify_error}"
         return f"open:{pid}:{error}"
     try:
+        if win32event.WaitForSingleObject(handle, 0) == win32event.WAIT_OBJECT_0:
+            return None
         process = _query_process(service, pid)
         if process is None:
-            return None
+            if (
+                win32event.WaitForSingleObject(handle, 1_000)
+                == win32event.WAIT_OBJECT_0
+            ):
+                return None
+            return f"identity:{pid}:WMI row disappeared while handle remained active"
         if not _matches(process, pid, parent_pid, executable, creation_date):
             return None
         pinned_image = win32process.GetModuleFileNameEx(handle, 0)
@@ -132,6 +139,17 @@ def _terminate_authenticated(
             return f"terminate:{pid}:wait-status-{result}"
         return None
     except Exception as error:
+        # A kill-on-close Job can win the race after identity validation.  The
+        # pinned kernel handle, unlike the numeric PID, proves whether that
+        # exact process object has already exited.
+        try:
+            if (
+                win32event.WaitForSingleObject(handle, 1_000)
+                == win32event.WAIT_OBJECT_0
+            ):
+                return None
+        except Exception as wait_error:
+            return f"terminate:{pid}:{error};wait:{wait_error}"
         return f"terminate:{pid}:{error}"
     finally:
         win32api.CloseHandle(handle)
@@ -151,7 +169,7 @@ def _unlink_if_owned(path: Path, nonce: str) -> bool:
 
 
 def main() -> int:
-    if len(sys.argv) != 9:
+    if len(sys.argv) not in {9, 10}:
         return 2
     parent_pid = int(sys.argv[1])
     parent_executable = sys.argv[2]
@@ -161,7 +179,24 @@ def main() -> int:
     record_path = Path(sys.argv[6])
     unsafe_marker = Path(sys.argv[7])
     expected_executable = sys.argv[8]
+    final_evidence = Path(sys.argv[9]) if len(sys.argv) == 10 else None
     error_path = record_path.with_suffix(".watchdog_error")
+
+    def write_final(ok: bool, stage: str, **details: object) -> None:
+        if final_evidence is None:
+            return
+        _write_json_atomic(
+            final_evidence,
+            {
+                "format_version": 1,
+                "nonce": nonce,
+                "parent_pid": parent_pid,
+                "ok": ok,
+                "stage": stage,
+                **details,
+            },
+        )
+
     try:
         parent_handle = win32api.OpenProcess(
             win32con.SYNCHRONIZE | win32con.PROCESS_QUERY_LIMITED_INFORMATION,
@@ -170,10 +205,14 @@ def main() -> int:
         )
         service = win32com.client.GetObject("winmgmts:")
         parent = _query_process(service, parent_pid)
+        watchdog_process = _query_process(service, os.getpid())
         if parent is None or not _parent_matches(
             parent, parent_pid, parent_executable, parent_creation_date
         ):
             raise RuntimeError(f"parent identity differs: {parent!r}")
+        if watchdog_process is None:
+            raise RuntimeError("watchdog identity disappeared during bootstrap")
+        watchdog_creation_date = str(watchdog_process.CreationDate)
         _write_json_atomic(
             ready_path,
             {
@@ -191,6 +230,10 @@ def main() -> int:
             raise RuntimeError(f"parent wait returned status {wait_result}")
     except Exception as error:
         error_path.write_text(f"bootstrap:{error}\n", encoding="utf-8")
+        try:
+            write_final(False, "bootstrap", errors=[str(error)])
+        except OSError:
+            pass
         return 1
 
     failures: list[str] = []
@@ -240,8 +283,10 @@ def main() -> int:
     # row cannot be mistaken for successful cleanup. The CK3 process is created
     # suspended and cannot spawn descendants before Job assignment.
     quiet_since: float | None = None
+    poll_count = 0
     deadline = time.monotonic() + 20
     while not failures and time.monotonic() < deadline:
+        poll_count += 1
         try:
             children = _fallback_children(
                 service, parent_pid, expected_executable
@@ -273,6 +318,15 @@ def main() -> int:
 
     if failures:
         error_path.write_text(";".join(failures) + "\n", encoding="utf-8")
+        try:
+            write_final(
+                False,
+                "cleanup",
+                authenticated_candidates=[pid for pid, _ in candidates],
+                errors=failures,
+            )
+        except OSError:
+            pass
         return 1
     # Fixed control names are removed before the marker. A later generation is
     # blocked until that final, nonce-checked unlink, so this watcher cannot
@@ -282,6 +336,33 @@ def main() -> int:
     error_path.unlink(missing_ok=True)
     if not _unlink_if_owned(unsafe_marker, nonce):
         error_path.write_text("marker:ownership-lost\n", encoding="utf-8")
+        try:
+            write_final(False, "control_cleanup", errors=["marker:ownership-lost"])
+        except OSError:
+            pass
+        return 1
+    try:
+        measured_quiet = (
+            max(0.0, time.monotonic() - quiet_since)
+            if quiet_since is not None
+            else 0.0
+        )
+        write_final(
+            True,
+            "complete",
+            parent_executable=parent_executable,
+            parent_creation_date=parent_creation_date,
+            watchdog_pid=os.getpid(),
+            watchdog_creation_date=watchdog_creation_date,
+            expected_ck3_executable=expected_executable,
+            parent_termination_observed=True,
+            authenticated_candidates=[pid for pid, _ in candidates],
+            measured_stable_empty_seconds=round(measured_quiet, 3),
+            empty_poll_count=poll_count,
+            control_files_removed=True,
+        )
+    except OSError as error:
+        error_path.write_text(f"final-evidence:{error}\n", encoding="utf-8")
         return 1
     return 0
 

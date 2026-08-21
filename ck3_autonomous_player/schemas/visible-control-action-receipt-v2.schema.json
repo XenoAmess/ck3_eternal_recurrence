@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/visible-control-action-receipt-v2.schema.json",
+  "title": "Visible-control action receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version", "action_id", "planned_at", "kind", "control_id",
+    "control_token_sha256", "before_observation_id", "expected_post_screen",
+    "status", "input_may_have_occurred", "risk", "policy_boundary"
+  ],
+  "properties": {
+    "format_version": {"const": 2},
+    "action_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "planned_at": {"type": "string", "format": "date-time"},
+    "input_attempted_at": {"type": "string", "format": "date-time"},
+    "finished_at": {"type": "string", "format": "date-time"},
+    "kind": {"const": "click_visible_control"},
+    "control_id": {"type": "string", "minLength": 1, "maxLength": 120},
+    "control_token_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "before_observation_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "fresh_observation_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "hover_observation_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "result_observation_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "expected_post_screen": {"type": "string", "minLength": 1, "maxLength": 80},
+    "status": {
+      "enum": ["planned", "input_attempting", "confirmed", "rejected_before_input", "failed_after_possible_input"]
+    },
+    "input_may_have_occurred": {"type": "boolean"},
+    "risk": {"enum": ["reversible", "irreversible"]},
+    "error": {"type": "string", "maxLength": 4000},
+    "policy_boundary": {"const": "no caller-supplied coordinates or postconditions"}
+  }
+}

@@ -46,6 +46,22 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 尚未实现的关键能力：游戏规则页的视觉复核、正常 UI 新开局、事件/当铺/交易决策、HUD 状态抽取、战争与内政、
 保存续玩、自然死亡结算、episode 学习与多局优化。主菜单 smoke 只是基础设施证据，**不是有效得分局**。
 
+当前工作候选还增加了两项尚待本机实机门禁的能力：
+
+- `crash-smoke` 使用外层验证器、可牺牲 supervisor、detached watchdog 三进程协议，在 CK3 已 resume、可见主菜单且
+  单 mod load attestation 成立后，通过固定进程句柄终止 supervisor。CK3 与两个合成 Job 子孙必须全部退出、命名 Job
+  必须销毁、watchdog 必须正常退出、全局 CK3 清点必须连续 5 秒为空，之后才允许 protected postflight。两帧主菜单、
+  handoff、armed、三份控制文件、watchdog final、production manifest 和日志前缀均复制进可搬移的一致性回放证据包。报告固定声明
+  `integrity=unkeyed_sha256`、`historical_execution_authenticity_proven=false`：它能复算 schema、字段关系、PNG→OCR 与哈希链，
+  不能在没有密钥或外部信任根时证明一份历史归档必然来自真实执行；实机资格仍以本轮外层 verifier 的当场 OS 观察为准。
+- Phase B 的纯视觉底座已经建立 PID/创建时间/可执行路径绑定的 CK3 窗口捕获、OCR 屏幕分类、短期 HMAC 控件 token、
+  点击前后状态反证和 fail-closed 导航骨架。当前动作白名单只有主菜单【新游戏】，并显式禁止大厅【开始】；未接 CLI、
+  未在真实桌面发出输入，也不能据此声称已经能开局。
+
+上述改动改变了受指纹保护的 runtime，因此旧提交的 Phase A 三连只证明历史冻结候选，不自动为当前未提交工作树背书。
+当前候选必须先提交并重新 `prepare-profile`，再分别通过普通 `smoke` 与 `crash-smoke`（后者同时重新取证可见主菜单与
+单 mod load）才可记录新的本机资格；在这两份报告产生前，本节中的 crash 能力均只是离线测试通过的实现。
+
 ## 运行
 
 使用项目现有桌面依赖环境：
@@ -55,6 +71,7 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" prepare-profile
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" verify-profile
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" smoke
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" crash-smoke
 ```
 
 默认运行状态在 `%LOCALAPPDATA%\XarAutoplayer`，可用 `XAR_AUTOPLAYER_STATE_DIR` 或
@@ -84,8 +101,9 @@ XarAutoplayer/
 - `debug.log` 只由 supervisor 压缩成 enabled-mod 与 mount 证明，原文永不进入观察或策略层。Phase B 接入 policy 前必须实现
   单独进程与字段白名单序列化边界，不能只依赖 Python 模块约定。
 - 禁止 debug mode、控制台、内存/存档解析、隐藏变量、acceptance marker/wire、教程位读取和回档重掷。
-- Phase B 的强制契约是未知屏幕默认在游戏内暂停、留证并终止，不采用验收 runner 的盲点恢复策略。Phase A 目前只会等待
-  【新游戏】两帧稳定 OCR；超时保留截图/OCR，并在清理证明完成后终止，没有通用窗口分类或游戏内暂停能力。
+- Phase B 接入正式局后的目标契约是：未知屏幕只允许在已视觉认证暂停控件时暂停，否则留证并由 supervisor 终止；不采用
+  验收 runner 的盲点恢复策略。当前 Phase A/候选只会等待【新游戏】两帧稳定 OCR，超时留证并在清理证明完成后终止，
+  尚没有已接线的通用未知窗口暂停能力。
 - 工程 smoke、识别调试和环境失败永不计入得分榜或训练策略结论。
 
 ## 分层架构
@@ -106,15 +124,17 @@ episodes: append-only evidence / settlement / validity / metrics
 memory: cross-run retrieval / constrained reflection / strategy experiments
 ```
 
-Phase A 已落在 `src/xar_autoplayer/{environment,integrity,locking,rules,runtime,process_watchdog}.py`。后续模块只有在上一层的回放测试通过后才接入
-正式局，避免把固定坐标脚本误称为会玩 CK3 的智能体。
+历史 Phase A 基线已落在 `src/xar_autoplayer/{environment,integrity,locking,rules,runtime,process_watchdog}.py`；当前候选仍须重新通过
+普通 smoke 与 crash-smoke。后续模块只有在上一层的结构/一致性测试和对应本机门禁都通过后才接入正式局，避免把固定坐标脚本误称为
+会玩 CK3 的智能体。
 
 ## 路线图
 
 1. **Phase A（已完成）**：committed candidate 已连续三次通过 production、非 debug、单 mod 主菜单 isolation smoke；每次都保留
    非零引擎 diagnostics 的原始证据，且受保护存储在退出后回到同一语义 baseline。原生 Windows Job/句柄测试和两次启动期
-   fail-closed RED 覆盖当前失败契约；resume 后强制终止 supervisor 的完整崩溃注入仍是 Phase B 接 policy 前的门禁。
-2. **Phase B（下一步）**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证，未知窗口 fail closed。
+   fail-closed RED 覆盖当前失败契约；resume 后强制终止 supervisor 的完整崩溃注入实现已进入候选，仍须通过本机实机门禁。
+2. **Phase B（进行中）**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证，未知窗口 fail closed。当前只完成
+   主菜单、稳定书签大厅分类与【新游戏】动作契约的确定性合成单测，尚未执行真实点击。
 3. Phase C：先完成“罗贝尔 1066 → 契约 → 当铺 → 首轮垂青 → 十年低风险经营 → 自然死亡结算”的首个合法竖切，
    再扩到多种角色类型的有效整局基线后退出本阶段。
 4. Phase D：婚育、议会、生活方式、建设、宣战理由、军队和领地的分层规划器。
@@ -127,6 +147,10 @@ Phase A 的 GREEN 只表示 `acceptance_claim=isolated_single_mod_visible_main_m
 反证证明 PoD 没有被加载。本 smoke 以 `clean_engine_boot_required=false` 和 `engine_diagnostics.zero_diagnostics=false`
 记录这条边界，不把它升级为“零错误启动”。Growth+100 规则是否在
 大厅实际采用、教程通知能否在正式局持续落盘，以及正常 UI 开局仍是 Phase B/C 的视觉硬门禁。
+
+首次真实点击前仍有四个成组门禁：真实 Win32 helper-window 验证 DPI、client/screen 坐标、Z-order 与单批次 `SendInput`；
+用真实 CK3 hover 帧校准最终像素 patch 的容差；把 UI 截图、receipt、`ui-events.jsonl` 接入正式 run/report hash chain；
+由冻结环境按固定路径与 SHA-256 加载 UI contract，禁止策略或 CLI 注入同名控件定义。
 
 玩法基线见 [knowledge/ck3/gameplay-v1.md](knowledge/ck3/gameplay-v1.md)，本 mod 的高分映射见
 [knowledge/mod/growth100-scoring-v1.md](knowledge/mod/growth100-scoring-v1.md)。

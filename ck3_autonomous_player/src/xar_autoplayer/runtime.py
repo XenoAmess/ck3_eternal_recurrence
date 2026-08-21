@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import sys
 import time
+import unicodedata
 import uuid
 from pathlib import Path
 
@@ -369,24 +370,26 @@ def _start_process_watchdog(
     record_file: Path,
     unsafe_marker: Path,
     game_exe: Path,
+    final_evidence: Path | None = None,
 ) -> tuple[int, str]:
     watchdog_python = Path(sys.executable).with_name("pythonw.exe")
     if not watchdog_python.is_file():
         watchdog_python = Path(sys.executable)
-    command = subprocess.list2cmdline(
-        [
-            str(watchdog_python),
-            str(PROCESS_WATCHDOG),
-            str(parent_pid),
-            str(parent_executable),
-            parent_creation_date,
-            nonce,
-            str(ready_file),
-            str(record_file),
-            str(unsafe_marker),
-            str(game_exe),
-        ]
-    )
+    arguments = [
+        str(watchdog_python),
+        str(PROCESS_WATCHDOG),
+        str(parent_pid),
+        str(parent_executable),
+        parent_creation_date,
+        nonce,
+        str(ready_file),
+        str(record_file),
+        str(unsafe_marker),
+        str(game_exe),
+    ]
+    if final_evidence is not None:
+        arguments.append(str(final_evidence))
+    command = subprocess.list2cmdline(arguments)
     literal = "'" + command.replace("'", "''") + "'"
     result = subprocess.run(
         [
@@ -499,11 +502,17 @@ def _start_process_watchdog(
         ) from bootstrap_error
 
 
-def _create_kill_on_close_job() -> object:
+def _create_kill_on_close_job(name: str | None = None) -> object:
     import win32api
     import win32job
+    import winerror
 
-    job = win32job.CreateJobObject(None, "")
+    win32api.SetLastError(0)
+    job = win32job.CreateJobObject(None, name or "")
+    create_error = win32api.GetLastError()
+    if name and create_error == winerror.ERROR_ALREADY_EXISTS:
+        win32api.CloseHandle(job)
+        raise AgentError(f"named Job already exists: {name}")
     try:
         limits = win32job.QueryInformationJobObject(
             job, win32job.JobObjectExtendedLimitInformation
@@ -603,8 +612,17 @@ def _clear_isolated_runtime_logs(spec: EnvironmentSpec) -> tuple[int, list[str]]
     return epoch, cleared
 
 
-def launch(spec: EnvironmentSpec) -> SessionHandle:
+def launch(
+    spec: EnvironmentSpec,
+    *,
+    watchdog_final_evidence: Path | None = None,
+    job_name: str | None = None,
+) -> SessionHandle:
     verify_profile(spec)
+    if job_name is not None and not re.fullmatch(
+        r"XarAutoplayer-Crash-[0-9a-f]{32}", job_name
+    ):
+        raise AgentError(f"invalid crash Job name: {job_name!r}")
     if ck3_processes():
         raise AgentError("refusing to launch while any ck3.exe is already running")
     command = [
@@ -621,6 +639,25 @@ def launch(spec: EnvironmentSpec) -> SessionHandle:
         raise AgentError(
             f"an unresolved unsafe cleanup marker blocks launch: {unsafe_marker}"
         )
+    if watchdog_final_evidence is not None:
+        watchdog_final_evidence = watchdog_final_evidence.resolve()
+        runs_root = (spec.state_dir / "runs").resolve()
+        parents = watchdog_final_evidence.parents
+        if (
+            len(parents) < 3
+            or parents[0].name != "artifacts"
+            or parents[2] != runs_root
+            or not parents[1].is_dir()
+        ):
+            raise AgentError(
+                "watchdog final evidence must be a new file under "
+                "state/runs/<run-id>/artifacts"
+            )
+        temporary = watchdog_final_evidence.with_name(
+            watchdog_final_evidence.name + ".tmp"
+        )
+        if watchdog_final_evidence.exists() or temporary.exists():
+            raise AgentError("watchdog final evidence target already exists")
     for path in (
         pid_file,
         pid_file.with_suffix(".watchdog_error"),
@@ -659,6 +696,7 @@ def launch(spec: EnvironmentSpec) -> SessionHandle:
             pid_file,
             unsafe_marker,
             spec.game_exe,
+            watchdog_final_evidence,
         )
     except Exception as error:
         raise UnsafeCleanupError(
@@ -717,7 +755,7 @@ def launch(spec: EnvironmentSpec) -> SessionHandle:
     process: _SuspendedWindowsProcess | None = None
     job_handle: object | None = None
     try:
-        job_handle = _create_kill_on_close_job()
+        job_handle = _create_kill_on_close_job(job_name)
         process = _create_suspended_process(command, spec.game_exe.parent)
         write_json_atomic(
             unsafe_marker,
@@ -1145,13 +1183,40 @@ def _ocr_items(image: object, region: tuple[float, float, float, float]) -> list
     return found
 
 
+def normalize_ocr_text(value: object) -> str:
+    """Return the canonical text used by live and replay OCR contracts."""
+    normalized = unicodedata.normalize("NFKC", str(value))
+    return re.sub(r"\s+", "", normalized)
+
+
+def unique_exact_ocr_match(
+    items: object, target: str
+) -> dict[str, object] | None:
+    """Return one exact canonical OCR match, rejecting zero or duplicates."""
+    if not isinstance(items, list):
+        return None
+    normalized_target = normalize_ocr_text(target)
+    matches = [
+        item
+        for item in items
+        if isinstance(item, dict)
+        and "text" in item
+        and normalize_ocr_text(item["text"]) == normalized_target
+    ]
+    return matches[0] if len(matches) == 1 else None
+
+
 def wait_for_main_menu(
     handle: SessionHandle, artifacts: Path, timeout_seconds: float = 180
 ) -> dict[str, object]:
     from PIL import ImageGrab
 
     deadline = time.monotonic() + timeout_seconds
-    stable_hits = 0
+    target = "新游戏"
+    stable_evidence: list[
+        tuple[object, list[dict[str, object]], list[int], str, float, int]
+    ] = []
+    capture_sequence = 0
     last_image = None
     last_items: list[dict[str, object]] = []
     while time.monotonic() < deadline:
@@ -1172,28 +1237,90 @@ def wait_for_main_menu(
             )
         _focus_window(hwnd)
         last_image = ImageGrab.grab(bbox=rect, all_screens=True)
+        capture_sequence += 1
+        captured_at = utc_now()
+        captured_monotonic = time.monotonic()
         last_items = _ocr_items(last_image, MAIN_MENU_REGION)
-        normalized = [re.sub(r"\s+", "", str(item["text"])) for item in last_items]
-        if any("新游戏" in text for text in normalized):
-            stable_hits += 1
-            if stable_hits >= 2:
+        if unique_exact_ocr_match(last_items, target) is not None:
+            stable_evidence.append(
+                (
+                    last_image,
+                    last_items,
+                    list(rect),
+                    captured_at,
+                    captured_monotonic,
+                    capture_sequence,
+                )
+            )
+            if len(stable_evidence) == 2:
                 artifacts.mkdir(parents=True, exist_ok=True)
+                (
+                    first_image,
+                    first_items,
+                    first_rect,
+                    first_captured_at,
+                    first_captured_monotonic,
+                    first_sequence,
+                ) = stable_evidence[0]
+                (
+                    second_image,
+                    second_items,
+                    second_rect,
+                    second_captured_at,
+                    second_captured_monotonic,
+                    second_sequence,
+                ) = stable_evidence[1]
+                first_screenshot = artifacts / "main-menu-frame-1.png"
+                first_ocr = artifacts / "main-menu-frame-1-ocr.json"
                 screenshot = artifacts / "main-menu.png"
                 crop = artifacts / "main-menu-crop.png"
                 ocr_path = artifacts / "main-menu-ocr.json"
-                last_image.save(screenshot)
-                last_image.crop(_region_bbox(last_image.size, MAIN_MENU_REGION)).save(crop)
-                write_json_atomic(ocr_path, last_items)
+                first_image.save(first_screenshot)
+                write_json_atomic(first_ocr, first_items)
+                second_image.save(screenshot)
+                second_image.crop(
+                    _region_bbox(second_image.size, MAIN_MENU_REGION)
+                ).save(crop)
+                write_json_atomic(ocr_path, second_items)
+                frame_evidence = [
+                    {
+                        "frame": 1,
+                        "capture_sequence": first_sequence,
+                        "captured_at": first_captured_at,
+                        "captured_monotonic": first_captured_monotonic,
+                        "window_rect": first_rect,
+                        "screenshot": str(first_screenshot),
+                        "screenshot_sha256": _file_sha256(first_screenshot),
+                        "ocr": str(first_ocr),
+                        "ocr_sha256": _file_sha256(first_ocr),
+                        "exact_match_count": 1,
+                    },
+                    {
+                        "frame": 2,
+                        "capture_sequence": second_sequence,
+                        "captured_at": second_captured_at,
+                        "captured_monotonic": second_captured_monotonic,
+                        "window_rect": second_rect,
+                        "screenshot": str(screenshot),
+                        "screenshot_sha256": _file_sha256(screenshot),
+                        "ocr": str(ocr_path),
+                        "ocr_sha256": _file_sha256(ocr_path),
+                        "exact_match_count": 1,
+                    },
+                ]
                 return {
-                    "target": "新游戏",
-                    "stable_frames": stable_hits,
-                    "window_rect": list(rect),
+                    "target": target,
+                    "target_normalized": normalize_ocr_text(target),
+                    "stable_frames": len(frame_evidence),
+                    "stable_frame_evidence": frame_evidence,
+                    "window_rect": second_rect,
                     "screenshot": str(screenshot),
                     "screenshot_sha256": _file_sha256(screenshot),
                     "ocr": str(ocr_path),
+                    "ocr_sha256": _file_sha256(ocr_path),
                 }
         else:
-            stable_hits = 0
+            stable_evidence.clear()
         time.sleep(0.75)
     artifacts.mkdir(parents=True, exist_ok=True)
     if last_image is not None:
@@ -1211,6 +1338,8 @@ def parse_runtime_attestation(
     profile_dir: Path,
     production_dir: Path,
     game_dir: Path | None = None,
+    *,
+    allowed_dlc_mounts: object | None = None,
 ) -> dict[str, object]:
     markers = list(re.finditer(r"Log system initialized", text))
     if len(markers) != 1:
@@ -1232,14 +1361,19 @@ def parse_runtime_attestation(
             f"actual={enabled!r}, expected={expected!r}"
         )
     content_root = (profile_dir / "mod-content").resolve()
-    allowed_dlc_mounts = (
-        {
-            descriptor.parent.resolve()
-            for descriptor in (game_dir / "game" / "dlc").glob("*/*.dlc")
-        }
-        if game_dir
-        else set()
-    )
+    if allowed_dlc_mounts is not None:
+        if not isinstance(allowed_dlc_mounts, (list, tuple, set, frozenset)):
+            raise AgentError("runtime DLC mount allowlist is malformed")
+        allowed_dlc_mount_paths = {Path(str(path)).resolve() for path in allowed_dlc_mounts}
+    else:
+        allowed_dlc_mount_paths = (
+            {
+                descriptor.parent.resolve()
+                for descriptor in (game_dir / "game" / "dlc").glob("*/*.dlc")
+            }
+            if game_dir
+            else set()
+        )
     isolated_mounts: list[Path] = []
     dlc_mounts: list[Path] = []
     unknown_mounts: list[Path] = []
@@ -1250,7 +1384,7 @@ def parse_runtime_attestation(
         path = Path(match.group(1).strip()).resolve()
         if is_relative_to(path, content_root):
             isolated_mounts.append(path)
-        elif path in allowed_dlc_mounts:
+        elif path in allowed_dlc_mount_paths:
             dlc_mounts.append(path)
         else:
             unknown_mounts.append(path)

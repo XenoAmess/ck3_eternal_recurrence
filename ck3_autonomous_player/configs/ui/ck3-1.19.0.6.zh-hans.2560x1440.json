@@ -1,0 +1,36 @@
+{
+  "format_version": 1,
+  "game_version": "1.19.0.6",
+  "language": "l_simp_chinese",
+  "resolution": [2560, 1440],
+  "screens": [
+    {
+      "screen_id": "main_menu",
+      "anchors": [
+        {"anchor_id": "main.continue", "text": "继续游戏", "region": [0.18, 0.30, 0.30, 0.36]},
+        {"anchor_id": "main.new_game", "text": "新游戏", "region": [0.18, 0.36, 0.30, 0.42]},
+        {"anchor_id": "main.load", "text": "载入游戏", "region": [0.18, 0.42, 0.30, 0.48]}
+      ]
+    },
+    {
+      "screen_id": "bookmark_lobby",
+      "anchors": [
+        {"anchor_id": "lobby.title", "text": "选择初始日期和角色", "region": [0.08, 0.00, 0.32, 0.07]},
+        {"anchor_id": "lobby.central_bookmark", "text": "公爵弗拉季斯拉夫", "region": [0.45, 0.20, 0.67, 0.47]},
+        {"anchor_id": "lobby.robert", "text": "公爵罗贝尔", "region": [0.45, 0.68, 0.72, 0.91]}
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "control_id": "main_menu.new_game",
+      "screen": "main_menu",
+      "label": "新游戏",
+      "text": "新游戏",
+      "region": [0.18, 0.36, 0.30, 0.42],
+      "post_screen": "bookmark_lobby",
+      "risk": "reversible"
+    }
+  ],
+  "forbidden_capabilities": ["bookmark_lobby.start_game"]
+}

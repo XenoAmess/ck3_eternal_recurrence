@@ -50,8 +50,10 @@ from xar_autoplayer.runtime import (  # noqa: E402
     _terminate_job,
     parse_runtime_attestation,
     stop_tracked,
+    unique_exact_ocr_match,
     validate_event_chain,
     validate_final_report_payload,
+    wait_for_main_menu,
     wait_for_runtime_attestation,
 )
 from xar_autoplayer.integrity import steam_userdata_snapshot  # noqa: E402
@@ -273,6 +275,87 @@ class RuntimeAttestationTests(unittest.TestCase):
             handle = SimpleNamespace(log_epoch_ns=time.time_ns(), cleared_logs=[])
             with self.assertRaisesRegex(AgentError, "stale"):
                 wait_for_runtime_attestation(spec, handle, timeout_seconds=0.01)
+
+
+class VisibleMainMenuAttestationTests(unittest.TestCase):
+    def test_unique_exact_match_nfkc_whitespace_and_ambiguity(self) -> None:
+        normalized = {"text": "Ａ\u3000Ｂ\tＣ", "score": 0.9}
+        self.assertIs(
+            unique_exact_ocr_match([normalized], "ABC"),
+            normalized,
+        )
+        self.assertIsNone(
+            unique_exact_ocr_match([{"text": "新游戏教程"}], "新游戏")
+        )
+        self.assertIsNone(
+            unique_exact_ocr_match(
+                [{"text": "新游戏"}, {"text": " 新 游 戏 "}], "新游戏"
+            )
+        )
+        self.assertIsNone(unique_exact_ocr_match([], "新游戏"))
+
+    def test_wait_requires_two_consecutive_unique_frames_and_archives_both(
+        self,
+    ) -> None:
+        class FakeImage:
+            size = (2560, 1440)
+
+            def __init__(self, payload: bytes) -> None:
+                self.payload = payload
+
+            def save(self, path: Path) -> None:
+                Path(path).write_bytes(self.payload)
+
+            def crop(self, _bbox: object) -> "FakeImage":
+                return FakeImage(self.payload + b"-crop")
+
+        images = [FakeImage(f"frame-{index}".encode("ascii")) for index in range(1, 5)]
+        ocr_frames = [
+            [{"text": " 新\u3000游 戏 ", "score": 0.9}],
+            [
+                {"text": "新游戏", "score": 0.9},
+                {"text": " 新 游 戏 ", "score": 0.8},
+            ],
+            [{"text": "新游戏", "score": 0.91}],
+            [{"text": " 新 游 戏 ", "score": 0.92}],
+        ]
+        process = SimpleNamespace(pid=321, returncode=None, poll=lambda: None)
+        handle = SimpleNamespace(process=process)
+        rect = (10, 20, 2570, 1460)
+
+        with tempfile.TemporaryDirectory(prefix="xar-main-menu-") as temporary:
+            artifacts = Path(temporary).resolve()
+            with mock.patch(
+                "PIL.ImageGrab.grab", side_effect=images
+            ) as grab, mock.patch(
+                "xar_autoplayer.runtime._window_for_pid",
+                return_value=(99, rect),
+            ), mock.patch(
+                "xar_autoplayer.runtime._focus_window"
+            ), mock.patch(
+                "xar_autoplayer.runtime._ocr_items", side_effect=ocr_frames
+            ), mock.patch(
+                "xar_autoplayer.runtime.time.sleep"
+            ):
+                result = wait_for_main_menu(handle, artifacts, timeout_seconds=1)
+
+            self.assertEqual(grab.call_count, 4)
+            self.assertEqual(result["stable_frames"], 2)
+            evidence = result["stable_frame_evidence"]
+            self.assertEqual([entry["frame"] for entry in evidence], [1, 2])
+            self.assertEqual(result["screenshot"], evidence[1]["screenshot"])
+            self.assertEqual(result["ocr"], evidence[1]["ocr"])
+            self.assertEqual(Path(evidence[0]["screenshot"]).read_bytes(), b"frame-3")
+            self.assertEqual(Path(evidence[1]["screenshot"]).read_bytes(), b"frame-4")
+            for entry in evidence:
+                screenshot = Path(entry["screenshot"])
+                ocr_path = Path(entry["ocr"])
+                self.assertTrue(screenshot.is_file())
+                self.assertTrue(ocr_path.is_file())
+                self.assertEqual(sha256_file(screenshot), entry["screenshot_sha256"])
+                self.assertEqual(sha256_file(ocr_path), entry["ocr_sha256"])
+                items = json.loads(ocr_path.read_text(encoding="utf-8"))
+                self.assertIsNotNone(unique_exact_ocr_match(items, "新游戏"))
 
 
 class StateLockTests(unittest.TestCase):

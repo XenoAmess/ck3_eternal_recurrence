@@ -2,7 +2,7 @@
 
 ## 状态与启动门槛
 
-- 状态：**2026-08-21 正式启动；2026-08-22 Phase A 已通过 committed-candidate 三连复验，Phase B 尚未开始，尚未形成有效得分局**。
+- 状态：**2026-08-21 正式启动；2026-08-22 历史 Phase A 冻结候选已通过三连复验，当前候选尚待普通 smoke + crash-smoke 重新资格化；Phase B 安全底座正在实现，尚未形成有效得分局**。
 - 实现目录：[`ck3_autonomous_player/`](../ck3_autonomous_player/README.md)。Python 包名 `xar_autoplayer`，运行状态固定放在仓库外。
 - 提交 `11ab443050132341bb27f6f924d792772f397396` 的冻结候选已在同一环境指纹下连续三次证明 production、非 debug、
   单 mod 能够在隔离 profile 到达可见主菜单，并由 supervisor 终止后证明进程树归零；三次 `ck3_exit_code=1`，不证明
@@ -15,6 +15,10 @@
 `20260821T180531Z-9c6bb34b`。三次共享环境指纹
 `4a02303bea47dd23dd70d3577618031e075dfd4e4d5d94df713cb37e5d78e0ab`。三份事件链均重新计算 hash chain 并通过一致性校验，
 报告语义硬条件另行逐字段断言通过；hash chain 不是有密钥的数字签名。
+
+这组三连绑定旧冻结提交，只证明该提交的 Phase A。当前工作候选改变了 runtime 指纹；它必须先提交、重新准备 profile，并让
+普通 `smoke` 与 `crash-smoke` 分别重新证明受控退出路径，以及可见主菜单、单 mod load 与 post-resume 回收，才能获得自己的
+本机资格。两份报告产生前，不能把旧三连写成当前候选已经实机通过。
 
 加固前的三次探索性 GREEN：`20260821T162104Z-cf348a71`、`20260821T162305Z-9a403bc6`、
 `20260821T162451Z-5e882b17`。它们早于新鲜日志 epoch、跨进程锁、认证 watchdog、Job Object 和扩展环境复核，只作为
@@ -130,15 +134,47 @@
 | F. 持续重复游玩 | 自动结算、归档、下一局、异常隔离、成本/磁盘/运行时上限 | 在无人值守窗口内连续完成多局且不破坏环境 |
 | G. 高分优化 | 角色分层基准、受控实验、风险调整和排行榜 | 在固定基准上形成可重复的持续提升趋势 |
 
+### Phase B 接线顺序（2026-08-22 候选）
+
+1. 先用三进程 crash probe 验证 supervisor 在 CK3 resume 后消失时，kill-on-close Job 与 detached watchdog 能回收 CK3
+   及合成父子进程。外层验证器不持有 Job handle，只固定 supervisor、CK3、合成父、合成子、watchdog 的精确进程句柄；
+   命名 Job 对象销毁、五个句柄退出、watchdog 返回 0、四类控制文件消失、双源 CK3 清点连续 5 秒为空，必须全部成立。
+2. crash probe 的策略输入仍为空。`debug.log` 前缀只被归档并复算单 mod/mount 证明，不传给 UI 或策略层；该运行明确
+   `valid_score_episode=false`。清理合取未完成时禁止 protected postflight，并保留 unsafe marker。
+3. 视觉驱动先只接 `main_menu -> bookmark_lobby`。观察必须绑定 CK3 PID、WMI 创建时间、可执行路径、HWND、client rect 与
+   2560×1440 简中 UI 契约；当前确定性合成分类单测中的转场叠影、教程样式 modal、遮挡或多屏同时命中会返回 unknown。真实
+   CK3 上仍须逐类冻结负例，不能把合成用例结论扩大成所有 modal 已被识别。
+4. 动作只接受由当前 observation 签发、5 秒内有效、一次性消费的控件 token。点击前重新捕获并重定位，持久化
+   `input_attempting` 后再执行最终的无 OCR、无落盘像素与前台命中复核；点击后必须连续两帧看见声明的下一屏。
+5. 第一轮实机探索只探测并冻结大厅【游戏规则】、类别【游戏模式】、三个 production 规则卡与 Apply 的实际 bbox/文案。
+   在规则页尚未完成同卡标题—选项关联验证前，禁止点击大厅【开始】。
+
+首次真实点击前另有四项必须同时关闭的门禁：真实 Win32 helper-window 验证 DPI、client/screen 坐标、Z-order 和单批次
+`SendInput`；用真实 CK3 hover 帧校准最终像素 patch；把 UI receipt、截图和 `ui-events.jsonl` 绑定到正式 report/event chain；
+从冻结环境按固定路径与 SHA-256 加载 UI contract，拒绝策略或 CLI 提供替代定义。
+
+动作收据的独立格式契约是 `schemas/visible-control-action-receipt-v2.schema.json`；它描述可见控件执行器的审计收据，
+不是通用 `action-v1` 策略动作的迁移版本。
+
+crash 证据包使用 run-relative artifact manifest；报告中为法证保留的运行时绝对路径只与“原执行目录”绑定，因此整个
+`runs/<run-id>` 复制到其他父目录后仍可从副本重放。GREEN 与任何声称 `cleanup_proven=true` 的 RED 共用同一清理语义验证器；
+RED 不能用一个布尔字段绕过进程、watchdog、控制文件、production manifest 或空窗证明。
+
+该重放的信任模型固定为 `unkeyed_sha256`，声明仅为 `archive_schema_and_internal_consistency_only`，并显式记录
+`historical_execution_authenticity_proven=false`。验证器会从归档 PNG 重跑同一 OCR、复算字段关系与无密钥 hash chain，但无密钥归档
+不能阻止拥有整包写权限的人从零伪造；“本机真实发生过”只能来自外层 verifier 当场固定的 OS 进程句柄与用户观察，不能由复制后的文件
+独立认证。
+
 ## 近期实施清单
 
 - 已完成候选：专用用户目录、存档隔离、非 debug production staging 单 mod 挂载；六类版本化 schema 草案；版本/mod/agent
   指纹、跨进程锁、认证 watchdog、Job 与单次 smoke 超时。
 - 部分完成：OCR 目前只验证主菜单【新游戏】；连续运行停止条件已有版本/mod 漂移和进程安全门禁，但尚缺磁盘、费用与重复失败预算。
-- 未开始：游戏窗口分类回放集；与 acceptance 状态隔离的 OCR/模板/焦点/点击驱动层；独立 policy 进程及字段白名单；安全动作白名单；
+- 已开始但未实机接线：游戏窗口分类的确定性合成单测；与 acceptance 状态隔离的 OCR/焦点/点击驱动层；短期控件 token 与安全动作白名单。
+- 未开始：模板资产冻结；独立 policy 进程及字段白名单；
   开始游戏、处理事件、推进时间、死亡结算的最小合法策略；多角色固定基准；模型调用预算；带证据计数和版本回滚的策略记忆。
-- Phase B 接入 policy 前的额外门禁：在 resume 后强制终止 supervisor，实机证明 crash watchdog 能回收完整 CK3 Job tree、保留可回放
-  故障证据且不触碰真实 profile/Steam/Workshop；当前三连成功 smoke 不提供这项崩溃注入证明。
+- Phase B 接入 policy 前的额外门禁：resume 后 supervisor crash probe 已实现离线一致性契约，仍须本机实机证明完整 CK3 Job tree 回收、
+  生成可做内部一致性重放的故障证据，以及真实 profile/Steam/Workshop 的退出后语义状态不变；当前三连成功 smoke 不提供这项崩溃注入证明。
 
 ## 风险
 
