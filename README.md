@@ -6,7 +6,9 @@
 
 订阅地址： https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360
 
-> **1.0.0 发布状态（2026-08-21）：** 付费自定义廷臣 v2 提供七页生成目录、0–120 岁与六项 0–100 基础能力、动态文化/信仰及可选同家族。最终 85 文件候选的完整 release-gating CK3 套件、非 debug 普通/铁人终局、L0 与确定性构建均为 GREEN；九语言、干净截图、UI 裁切和缩略图已完成人工签核。外部交付状态见 [docs/release-qa-v1.0.0.md](docs/release-qa-v1.0.0.md)。
+GitHub Release： https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/v1.0.0
+
+> **1.0.0 已发布（2026-08-21）：** 付费自定义廷臣 v2 提供七页生成目录、0–120 岁与六项 0–100 基础能力、动态文化/信仰及可选同家族。最终 85 文件候选的完整 release-gating CK3 套件、非 debug 普通/铁人终局、L0 与确定性构建均为 GREEN；九语言、干净截图、UI 裁切和缩略图已完成人工签核。Steam 强制重下载缓存与正式 manifest 已完成逐文件验证，完整证据见 [docs/release-qa-v1.0.0.md](docs/release-qa-v1.0.0.md)。
 
 > **⚠ 必须开启教程！** 游戏设置 → 教程（reactive advice）选「完整」或「警告」均可——**切勿「禁用」**。
 >
@@ -76,6 +78,7 @@ py tools/gen_score_preview.py
 py tools/gen_courtier_creator.py
 py tools/compose_decision_art.py
 py tools/test_gen_no_heir_gui.py
+py tools/test_build_release.py
 py tools/validate_static.py
 py -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors()"
 py tools/build_release.py --check

@@ -223,12 +223,12 @@
 - 工坊访客能在十秒内理解核心循环。
 - README、工坊描述和游戏内术语保持一致。
 
-实施状态（截至 2026-08-19，本地自动化范围）：
+实施状态（截至 2026-08-21）：
 
 - descriptor 已升至 1.0.0，新增 changelog、发布 QA 表、资产来源待签表，并统一 README/工坊源文案中的 CK3 Roguelite / New Game+、版本、FAQ、局长和挑战模板。
 - release manifest v2 记录版本、tag、commit、工坊 ID 与逐文件 SHA-256；`--release` 要求 clean worktree 与 `v<version>` tag，`--verify` 可核对下载后的工坊缓存。
 - acceptance JSON/JUnit 记录 run ID、UTC、版本、git SHA、mod tree hash、游戏/环境及结果；用户现场备份已移出公开 artifacts 并在恢复后删除。
-- Steam 实际上传与 GitHub Release 仍需要外部账号；干净中英截图、缩略图审美、母语级人格和九语言游戏内截断已由仓库所有者于 2026-08-21 人工签核。资产来源与再分发许可已由作者记录。付费廷臣 v2 已完成简中真实 UI 验收，七种目标语言的 154 个 v2 值也已完成 MiniMax-M3 辅助翻译与结构/token/数字/CK3 术语审计；完整状态见 `docs/release-qa-v1.0.0.md`。
+- Steam item `3784706360` 与 GitHub Release `v1.0.0` 已于 2026-08-21 发布同一 clean-tag artifact，空路径重下载缓存通过 85 文件 manifest 校验。干净中英截图、缩略图审美、母语级人格和九语言游戏内截断已由仓库所有者人工签核。资产来源与再分发许可已由作者记录；完整状态见 `docs/release-qa-v1.0.0.md`。
 
 ### Phase 6：自主高分玩家智能体（长期工程，排队中）
 

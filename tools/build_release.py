@@ -370,7 +370,26 @@ def check_reproducible(source=DEFAULT_SOURCE):
     return len(first[3]["files"])
 
 
-def verify_manifest(target, manifest_path):
+def workshop_descriptor_matches(path, entry, workshop_item_id):
+    """Accept only the launcher's descriptor rewrite and exact item ID."""
+    marker = f'remote_file_id="{workshop_item_id}"'.encode("ascii")
+    lines = path.read_bytes().splitlines()
+    matches = [index for index, line in enumerate(lines)
+               if line == marker]
+    if len(matches) != 1 or matches[0] != len(lines) - 1:
+        return False
+    canonical_lines = [
+        line for index, line in enumerate(lines) if index != matches[0]]
+    candidates = set()
+    for separator in (b"\n", b"\r\n"):
+        body = separator.join(canonical_lines)
+        candidates.update((body, body + separator))
+    return any(len(candidate) == entry["size"]
+               and sha256_bytes(candidate) == entry["sha256"]
+               for candidate in candidates)
+
+
+def verify_manifest(target, manifest_path, workshop_cache=False):
     target = Path(target).resolve()
     manifest = json.loads(Path(manifest_path).read_text(encoding="utf-8"))
     version = descriptor_version(target)
@@ -400,7 +419,10 @@ def verify_manifest(target, manifest_path):
         if path is None:
             errors.append(f"missing: {relative}")
         elif path.stat().st_size != entry["size"] or sha256_file(path) != entry["sha256"]:
-            errors.append(f"mismatch: {relative}")
+            if not (workshop_cache and relative == "descriptor.mod"
+                    and workshop_descriptor_matches(
+                        path, entry, manifest["workshop_item_id"])):
+                errors.append(f"mismatch: {relative}")
     errors.extend(f"extra: {relative}" for relative in sorted(actual_paths))
     if errors:
         raise ValueError("manifest verification failed:\n" + "\n".join(errors))
@@ -422,13 +444,21 @@ def main():
     )
     parser.add_argument("--verify", type=Path, help="verify a directory against --manifest")
     parser.add_argument("--manifest", type=Path, help="manifest used by --verify")
+    parser.add_argument(
+        "--workshop-cache", action="store_true",
+        help="permit only Steam launcher's descriptor newline rewrite and exact remote_file_id",
+    )
     args = parser.parse_args()
     try:
+        if args.workshop_cache and not args.verify:
+            raise ValueError("--workshop-cache requires --verify")
         if args.verify:
             if not args.manifest:
                 raise ValueError("--verify requires --manifest")
-            count = verify_manifest(args.verify, args.manifest)
-            print(f"MANIFEST VERIFY OK: {count} files")
+            count = verify_manifest(
+                args.verify, args.manifest, workshop_cache=args.workshop_cache)
+            suffix = " (Steam launcher descriptor metadata normalized)" if args.workshop_cache else ""
+            print(f"MANIFEST VERIFY OK: {count} files{suffix}")
             return 0
         if args.check:
             count = check_reproducible(args.source)

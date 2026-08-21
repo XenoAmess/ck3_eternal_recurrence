@@ -46,7 +46,24 @@ Publishing mod to Steam failed: Saving descriptor.mod in mod sources failed:
 6. 上传后把用户目录外层 `.mod` 的 `path=` 恢复为开发目录，避免后续游戏误加载旧 staging。
 7. 工坊网页：描述用 BBCode（`[h1]`/`[list]`，**不渲染 markdown**——别直接贴 README）；
    可见性默认"隐藏"，确认后改公开。
-8. Steam 刷新缓存后运行 `py tools/build_release.py --verify <workshop-cache> --manifest <versioned-manifest>`，要求逐文件大小/SHA-256 完全一致，再发布 GitHub draft 与工坊可见性。
+8. Steam 刷新缓存后运行 `py tools/build_release.py --verify <workshop-cache> --manifest <versioned-manifest> --workshop-cache`。该模式只规范化启动器对内层 descriptor 的 LF/CRLF 与末尾换行重写，以及其强制注入的唯一
+   `remote_file_id="<manifest workshop_item_id>"` 行；规范化后的 descriptor 及其余 84 个文件仍要求大小/SHA-256 完全一致，任何字段、顺序、ID、其他 mismatch 或 extra 继续判 RED。通过后再发布 GitHub draft 与工坊可见性。
+
+### 4. 更新上传会把 `remote_file_id` 注入远端 descriptor
+
+2026-08-21 的 1.0.0 正式上传实测：即使 staging 内层 descriptor 在提交前没有 `remote_file_id`，
+启动器仍会在点击上传时先把正确 item ID 回写进去，同时把 descriptor 统一改写为 LF 且末行不留换行，随后将其发布到 Steam。该行为不是允许仓库或
+GitHub ZIP 携带此字段：预先存在该字段仍会触发 descriptor validation failure。正式 manifest 继续描述无字段的
+canonical staging；`--workshop-cache` 只接受远端下载缓存中与 manifest `workshop_item_id` 完全相同的单行注入。
+
+强制重下载时不能只覆盖旧工坊目录：Steam 不会删除 runner `/MIR` 曾留下的多余文件。先把整个 item 缓存目录
+移出 `steamapps/workshop/content/1158310/`，再通过 Steam 控制台执行
+`workshop_download_item 1158310 3784706360`；只有从空路径生成的新目录可以作为远端 manifest 证据。
+
+同次发布还发现，tag 当时尚未设置 `.gitattributes`，长期工作树中的 LF 文件与 Windows clean checkout 的 CRLF
+物化会产生不同 ZIP/hash。1.0.0 tag workflow artifact 已由独立 clean-tag worktree 在本机复现为完全相同的
+manifest/ZIP hash，Steam 与 GitHub 随后统一使用这份 clean-checkout 产物；不得混用长期工作树的本地 ZIP。
+发布后根 `.gitattributes` 已把后续文本 checkout 固定为 LF，并把 DDS/PNG/JPEG/ZIP 标为 binary，避免未来版本再次出现该分歧。
 
 ## 上传内容范围
 

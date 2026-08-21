@@ -67,6 +67,7 @@ py tools/build_release.py                                   # 生成 dist stagin
 ```powershell
 py -m pip install -r tools/requirements-static.txt
 py tools/test_gen_no_heir_gui.py
+py tools/test_build_release.py
 py tools/validate_static.py
 py -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors()"
 py tools/build_release.py --check

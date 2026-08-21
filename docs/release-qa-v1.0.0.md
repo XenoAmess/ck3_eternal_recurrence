@@ -1,10 +1,10 @@
 # Release QA v1.0.0
 
-## Remaining Work / 剩余工作
+## Release Record / 发布记录
 
-截至 2026-08-21，以下清单是创建 `v1.0.0` tag 前的权威待办。Steam item
-`3784706360` 经公开 API 确认为公开、有效且未封禁；Steam 本身当前不是阻塞项，尚未完成的是
-最终候选上传及下载缓存校验。
+`v1.0.0` 已于 2026-08-21 从 commit `d558fba07cbe80020d03bcaac1994e3327c27624` 正式发布。
+Steam item `3784706360` 与 GitHub Release 使用同一 clean-tag 构建；以下保留发布前门禁与外部交付的
+权威证据。明确列出的非门禁 backlog 与冻结后独立版工作仍未完成。
 
 ### Code and CI / 代码与 CI
 
@@ -28,7 +28,7 @@
 
 ### Automated Verification / 自动验证
 
-- [x] 通过 Python 编译、no-heir 投影契约单元测试、`validate_static.py`、计分 reference vectors、
+- [x] 通过 Python 编译、no-heir 投影与 release manifest 单元测试、`validate_static.py`、计分 reference vectors、
   `build_release.py --check` 与 `git diff --check`。
 - [x] 推送修复后确认 GitHub 官方 `windows-latest` 的 projection tests、validate、计分向量、确定性构建全部 GREEN。
 - [x] 重跑 `courtier-creator`：选择阿卢克古道后返回性格页，确认【勤勉】按所选信仰显示为美德，
@@ -51,13 +51,20 @@
 
 - [x] GitHub CLI 已重新认证，`gh auth status` 确认 `repo` 与 `workflow` scope 可用。
 - [x] 人工签核完成后，把 `CHANGELOG.md` 的 `Unreleased` 改为实际发布日期 `2026-08-21`。
-- [ ] 在 clean final HEAD 创建并推送 `v1.0.0` tag；此前不得提前打 tag。
-- [ ] 运行 `py tools/build_release.py --release`，记录 commit、manifest/ZIP SHA-256 和 85 文件清单。
-- [ ] 上传前仅在用户目录外层 `.mod` 恢复 `remote_file_id="3784706360"`，临时把 `path=` 指向
-  tagged staging；内层 `descriptor.mod` 继续禁止该字段。
-- [ ] 经 PDX Launcher 把同一 staging 更新到既有 Steam item，随后强制重新下载缓存并使用
-  versioned manifest 逐文件校验；acceptance runner 同步过的本地缓存不能作为远端发布证据。
-- [ ] 创建 GitHub Release，附加同一次 tagged 构建的 ZIP 与 manifest，再恢复外层 `.mod` 的开发路径。
+- [x] 在 clean final HEAD `d558fba` 创建并推送 annotated tag `v1.0.0`；master run
+  [`32430340954`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32430340954) 与 tag run
+  [`32430427684`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32430427684) 均 GREEN。
+- [x] 从独立 clean-tag worktree 运行 `build_release.py --release`，复现 tag workflow artifact：85 文件，
+  manifest SHA-256 `6d5ab831aa21978de1531c0381acab7d6aff6c282c1c989a10aaa9f03d4b1408`，
+  ZIP SHA-256 `6b243c797f6d7757e8974f51e6d90256f2d443613ea2bbc7bf933917f86e64aa`。
+- [x] 上传前仅在用户目录外层 `.mod` 设置 `remote_file_id="3784706360"` 并临时指向 tagged staging；
+  上传后已恢复开发路径并保留外层 item ID。canonical staging、仓库与 GitHub ZIP 的内层 descriptor 均无该字段。
+- [x] PDX Launcher 日志记录 `Publishing mod started` / `Publishing mod succeeded`；Steam API 返回新
+  `hcontent_file=7526310401290648781`、文件大小 5,650,532、最终 BBCode 与公开可见性。将旧缓存整目录移出后，
+  Steam 控制台从空路径强制重下载；`--workshop-cache` 仅规范化启动器的 descriptor 换行重写与精确 item ID，
+  其余 84 文件和完整文件集合逐字节匹配 versioned manifest。
+- [x] GitHub Release [`v1.0.0`](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/v1.0.0)
+  已公开，附加同一 tag workflow 的 ZIP 与 manifest，GitHub asset digest 与上述 SHA-256 一致。
 
 ### Explicit Non-gating Backlog / 明确不阻塞 1.0.0
 
@@ -147,7 +154,7 @@ Current candidate gates:
 
 | Gate | Status | Required evidence |
 |---|---|---|
-| Local current-tree L0 and deterministic release projection | GREEN | compileall, four projection tests, `validate_static.py`, reference vectors and 85-file `build_release.py --check` all pass locally; this is not a hosted or CK3 runtime claim |
+| Local current-tree L0 and deterministic release projection | GREEN | compileall, four projection tests, six release-manifest tests, `validate_static.py`, reference vectors and 85-file `build_release.py --check` all pass locally; this is not a hosted or CK3 runtime claim |
 | Official GitHub `windows-latest` L0 | GREEN | code commit `ac524dc`, run [`32425375023`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32425375023), and evidence HEAD `45cf7ea`, run [`32425512587`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32425512587); clean checkout passed compile, four projection tests, static validation, scoring vectors and deterministic 85-file build |
 | Full baseline plus post-review targeted CK3 regression | GREEN | the full release-candidate suite passed; changed death paths and paid courtier were then rerun on the reviewed tree with zero `xar` errors |
 | Ordinary death with a playable heir | GREEN | `xar_death_with_heir_postreview_20260820`; one compute, dispatch and visible settlement |
@@ -182,7 +189,7 @@ Commit `6e186bb` replaced the then-current seven-language English placeholders. 
 - Thumbnail legibility at Workshop card size: approved by repository owner on 2026-08-21.
 - No-heir settlement presentation: automated Simplified Chinese proof GREEN; clean non-debug release screenshot approved by repository owner.
 - Paid custom-courtier window: seven tabs, price/available-gold row, longest nine-language strings and supported UI scales approved by repository owner.
-- Steam item `3784706360` upload and downloaded-cache manifest verification: pending.
+- Steam item `3784706360` upload and clean downloaded-cache manifest verification: completed on 2026-08-21.
 
 ## Passive Soak / Matrix Telemetry
 
@@ -192,7 +199,7 @@ Known death-carrier edge: normal succession follows the vanilla-style single del
 
 ## External Delivery
 
-- `v1.0.0` tag, GitHub Release, deterministic release artifact publication and Steam upload: pending.
-- Downloaded Workshop cache verification against the release manifest: pending.
+- `v1.0.0` tag, GitHub Release, deterministic release artifact publication and Steam upload: completed on 2026-08-21.
+- Downloaded Workshop cache verification against the release manifest: GREEN for all 85 files after strict launcher descriptor normalization.
 - Clean screenshots, multilingual layout and thumbnail aesthetic approval: completed by repository owner on 2026-08-21.
 - Author/source and redistribution permission for all seven derived release assets: recorded from the repository owner in `docs/asset-provenance.md`; no separate public asset license is asserted.

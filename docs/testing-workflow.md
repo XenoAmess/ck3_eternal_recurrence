@@ -70,7 +70,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 
 ### GitHub 官方 CI 与本机 L1-L3
 
-`.github/workflows/static-ci.yml` 只使用 GitHub 官方 `windows-latest`。每次 push/PR 都安装最小静态依赖并执行 Python 编译、`validate_static.py`、计分 reference vectors 和 `build_release.py --check`；手动触发或 `v*` tag 时额外构建并上传 ZIP/manifest，tag 构建仍要求 clean worktree、HEAD 上存在 `v<version>` tag。
+`.github/workflows/static-ci.yml` 只使用 GitHub 官方 `windows-latest`。每次 push/PR 都安装最小静态依赖并执行 Python 编译、no-heir 投影测试、release manifest 测试、`validate_static.py`、计分 reference vectors 和 `build_release.py --check`；手动触发或 `v*` tag 时额外构建并上传 ZIP/manifest，tag 构建仍要求 clean worktree、HEAD 上存在 `v<version>` tag。
 
 官方 runner 没有 CK3、Steam 授权、工坊缓存、用户目录或可靠交互桌面，因此禁止调用 `run_acceptance.py`，也不能把云端 L0 表述成引擎或 UI 已验。官方 CI 能证明生成器 parity、BOM/loc、玩家/AI 闸门、release allowlist、acceptance 剥离和构建可复现；不能证明 Paradox 运行时语义、跨存档落盘、鼠标/OCR 或游戏日期推进。
 

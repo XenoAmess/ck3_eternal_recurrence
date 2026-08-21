@@ -1837,7 +1837,7 @@ def package_checks(errors):
     ci_requirements = (
         "runs-on: windows-latest", "pull_request:", "workflow_dispatch:",
         "tools/requirements-static.txt", "python -m compileall -q tools",
-        "python tools/test_gen_no_heir_gui.py",
+        "python tools/test_gen_no_heir_gui.py", "python tools/test_build_release.py",
         "python tools/validate_static.py", "scoring_data.assert_reference_vectors()",
         "python tools/build_release.py --check", "python tools/build_release.py --release",
         "actions/upload-artifact@v4", "dist/*.zip", "dist/*.manifest.json",
