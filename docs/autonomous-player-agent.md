@@ -2,7 +2,7 @@
 
 ## 状态与启动门槛
 
-- 状态：**2026-08-21 正式启动；2026-08-22 历史 Phase A 冻结候选已通过三连复验，当前候选尚待普通 smoke + crash-smoke 重新资格化；Phase B 安全底座正在实现，尚未形成有效得分局**。
+- 状态：**2026-08-21 正式启动；2026-08-22 历史 Phase A 冻结候选已通过三连复验，加固 runtime 已通过普通 smoke + post-resume crash-smoke；Phase B 可见 UI 驱动仍未实机输入，尚未形成有效得分局**。
 - 实现目录：[`ck3_autonomous_player/`](../ck3_autonomous_player/README.md)。Python 包名 `xar_autoplayer`，运行状态固定放在仓库外。
 - 提交 `11ab443050132341bb27f6f924d792772f397396` 的冻结候选已在同一环境指纹下连续三次证明 production、非 debug、
   单 mod 能够在隔离 profile 到达可见主菜单，并由 supervisor 终止后证明进程树归零；三次 `ck3_exit_code=1`，不证明
@@ -16,9 +16,11 @@
 `4a02303bea47dd23dd70d3577618031e075dfd4e4d5d94df713cb37e5d78e0ab`。三份事件链均重新计算 hash chain 并通过一致性校验，
 报告语义硬条件另行逐字段断言通过；hash chain 不是有密钥的数字签名。
 
-这组三连绑定旧冻结提交，只证明该提交的 Phase A。当前工作候选改变了 runtime 指纹；它必须先提交、重新准备 profile，并让
-普通 `smoke` 与 `crash-smoke` 分别重新证明受控退出路径，以及可见主菜单、单 mod load 与 post-resume 回收，才能获得自己的
-本机资格。两份报告产生前，不能把旧三连写成当前候选已经实机通过。
+这组三连绑定旧冻结提交，只证明该提交的 Phase A。后来加固 runtime 实现提交
+`98d55caf3ed4a398b0a3bd7bc8e6ee16591d8f26` 已重新准备 profile，并在同一环境 SHA-256
+`5e7fb63ef98a7fd802caa864b64c593053c68bfb5f1798321cde6b02d6cd0d5f` 下取得普通 `smoke`
+`20260821T215910Z-780cd6cb` 与 post-resume `crash-smoke` `20260821T220127Z-crash-adc0ac63` 两份 GREEN。
+这只给该 runtime 的可见主菜单、单 mod load、受控退出与崩溃回收资格；两份均为 `valid_score_episode=false`，不能写成已会游玩。
 
 加固前的三次探索性 GREEN：`20260821T162104Z-cf348a71`、`20260821T162305Z-9a403bc6`、
 `20260821T162451Z-5e882b17`。它们早于新鲜日志 epoch、跨进程锁、认证 watchdog、Job Object 和扩展环境复核，只作为
@@ -172,8 +174,9 @@ RED 不能用一个布尔字段绕过进程、watchdog、控制文件、producti
 
 该重放的信任模型固定为 `unkeyed_sha256`，声明仅为 `archive_schema_and_internal_consistency_only`，并显式记录
 `historical_execution_authenticity_proven=false`。验证器会从归档 PNG 重跑同一 OCR、复算字段关系与无密钥 hash chain，但无密钥归档
-不能阻止拥有整包写权限的人从零伪造；“本机真实发生过”只能来自外层 verifier 当场固定的 OS 进程句柄与用户观察，不能由复制后的文件
-独立认证。
+不能阻止拥有整包写权限的人从零伪造；它也不逐项把每个 event payload 的全部语义与 report/artifact 重新交叉绑定。
+目录搬移回放仍要求同一 validator、仓库代码与 OCR runtime，并非跨机自包含。“本机真实发生过”只能来自外层 verifier
+当场固定的 OS 进程句柄与用户观察，不能由复制后的文件独立认证。
 
 ## 近期实施清单
 
@@ -183,12 +186,19 @@ RED 不能用一个布尔字段绕过进程、watchdog、控制文件、producti
 - 已开始但未实机接线：游戏窗口分类的确定性合成单测；与 acceptance 状态隔离的 OCR/焦点/点击驱动层；短期控件 token 与安全动作白名单。
 - 未开始：模板资产冻结；独立 policy 进程及字段白名单；
   开始游戏、处理事件、推进时间、死亡结算的最小合法策略；多角色固定基准；模型调用预算；带证据计数和版本回滚的策略记忆。
-- Phase B 接入 policy 前的额外门禁：resume 后 supervisor crash probe 已实现离线一致性契约，仍须本机 GREEN 证明完整 CK3 Job tree 回收、
-  生成可做内部一致性重放的故障证据，以及真实 profile/Steam/Workshop 的退出后语义状态不变；当前三连成功 smoke 不提供这项崩溃注入证明。
+- Phase B 接入 policy 前的 crash 门禁已由 `20260821T220127Z-crash-adc0ac63` 本机 GREEN：完整 CK3 Job tree 回收、
+  可做内部一致性重放的归档、真实 profile/Steam 的退出后语义 baseline 均通过；Workshop 只证明 descriptor 内容哈希与
+  已注册 target 的 path/size/mtime 元数据在退出后一次 baseline 比较中相同。该门禁没有发送游戏输入，不能替代
+  下方四项真实可见 UI 输入门禁。
 - 2026-08-22 的第二次真实 crash probe `20260821T211059Z-crash-833b9587` 已进入可见主菜单并完成单 mod attestation，
   但 watchdog 与 kill-on-close Job 并发回收 CK3 时，`TerminateProcess` 返回 `ERROR_ACCESS_DENIED`；旧实现只等精确 pinned
   handle 1 秒，因而安全地 finalize 为 RED、保留四类 control 且不做 protected postflight。该事故促成统一 20 秒精确句柄
   排空、独立 fallback/quiet 预算、结构化 watchdog-failure 归档及上述显式恢复协议；它仍不是 crash 门禁 GREEN。
+- 修订提交 `98d55caf3ed4a398b0a3bd7bc8e6ee16591d8f26` 的下一次 crash probe
+  `20260821T220127Z-crash-adc0ac63` 已 GREEN：supervisor 以精确句柄退出码 77 注入，CK3 与两个 sentinel 随命名
+  kill-on-close Job 回收，watchdog 返回 0，四类 control 消失，双源 CK3 清点连续 5 秒为空，之后才执行 protected postflight。
+  同轮普通 smoke 为 `20260821T215910Z-780cd6cb`；两者共享上述环境指纹。普通 validator 只复算事件链/finalization，
+  其 load、cleanup、protected 与 production 语义字段另行逐项断言；crash validator 才重放完整归档内部一致性。
 
 ## 风险
 

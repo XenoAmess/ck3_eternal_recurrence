@@ -58,6 +58,9 @@ Phase A 的失败契约另有三类证据，不能错误归入上述三次成功
 `crash-smoke`，但均为 RED：第一次在 CK3 创建前识别出 venv interpreter redirector；第二次已进入可见主菜单并完成
 post-resume 注入，却在 watchdog 与 Job teardown 竞态中安全地保留 unsafe marker，未获得 `cleanup_proven`。因此这两次只作为
 故障发现证据，不能补写为 Phase A GREEN；Phase B 接入 gameplay policy 前仍须由新提交、新 profile 的 crash-smoke 取得完整 GREEN。
+该后续门禁已由 runtime 实现提交 `98d55caf3ed4a398b0a3bd7bc8e6ee16591d8f26`、环境
+`5e7fb63ef98a7fd802caa864b64c593053c68bfb5f1798321cde6b02d6cd0d5f` 的
+`20260821T220127Z-crash-adc0ac63` 完成；它不回写、替换或扩大本页冻结三连的 Phase A claim。
 
 ## 非零诊断边界
 

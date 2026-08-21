@@ -46,7 +46,7 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 尚未实现的关键能力：游戏规则页的视觉复核、正常 UI 新开局、事件/当铺/交易决策、HUD 状态抽取、战争与内政、
 保存续玩、自然死亡结算、episode 学习与多局优化。主菜单 smoke 只是基础设施证据，**不是有效得分局**。
 
-当前工作候选还增加了两项尚待本机 GREEN 门禁的能力；crash 路径已有两次真实 RED 探针，但尚未通过完整回收门禁：
+当前加固候选还增加了两项基础能力，其中 crash 路径已通过本机 GREEN 门禁，纯视觉输入路径仍未接入真实 CK3：
 
 - `crash-smoke` 使用外层验证器、可牺牲 supervisor、detached watchdog 三个逻辑角色；Windows venv 可在 outer 与
   supervisor 之间增加一个经完整命令行和进程身份认证的 interpreter redirector。outer 必须先固定真实 supervisor
@@ -54,8 +54,10 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   跨进程可比的 monotonic 时间，实时路径强制严格顺序，离线回放只验证归档记录值与内部关系一致。在 CK3 已 resume、可见主菜单且
   单 mod load attestation 成立后，通过固定进程句柄终止 supervisor。CK3 与两个合成 Job 子孙必须全部退出、命名 Job
   必须销毁、watchdog 必须正常退出、全局 CK3 清点必须连续 5 秒为空，之后才允许 protected postflight。两帧主菜单、
-  handoff、supervisor ready/ack、armed、三份控制文件、watchdog final、production manifest 和日志前缀均复制进可搬移的一致性回放证据包。报告固定声明
-  `integrity=unkeyed_sha256`、`historical_execution_authenticity_proven=false`：它能复算 schema、字段关系、PNG→OCR 与哈希链，
+  handoff、supervisor ready/ack、armed、三份控制文件、watchdog final、production manifest 和日志前缀均复制进证据包；
+  在同一 validator、仓库代码与 OCR runtime 下，整个 run 目录可更换父目录后回放，但它不是跨机自包含归档。报告固定声明
+  `integrity=unkeyed_sha256`、`historical_execution_authenticity_proven=false`：它能复算已实现的 schema/manifest 关系、PNG→OCR 与哈希链，
+  但不逐项把每个 event payload 的全部语义重新绑定到 report；
   不能在没有密钥或外部信任根时证明一份历史归档必然来自真实执行；实机资格仍以本轮外层 verifier 的当场 OS 观察为准。
 - `recover-stale-control --run-id <finalized-RED-run-id>` 只处理一次明确指定、已完成且仍保留 unsafe marker 的 crash RED。
   它重新认证源证据、当前全部进程均不存在、命名 Job 已销毁和双源 CK3 清点为空，再把 control 文件逐项按原哈希归档；
@@ -64,13 +66,19 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   `historical_cleanup_proven=false`、`current_absence_proven=true`，绝不修改旧 report、把旧 RED 升成 GREEN，或在启动前自动清标记。
   write-ahead report 在 marker 提交前已含条件式 `ok=true`；该字段不能单独视为成功，必须由
   `validate_recovery_report()` 同时验证 active marker 已消失且归档 marker 的 SHA-256 匹配。
+  旧 RED `20260821T211059Z-crash-833b9587` 已由恢复 `20260821T215805Z-recovery-46a3518c` 按此协议归档；
+  旧 report SHA-256 未变，恢复只解除启动阻塞，不资格化那次 RED。
 - Phase B 的纯视觉底座已经建立 PID/创建时间/可执行路径绑定的 CK3 窗口捕获、OCR 屏幕分类、短期 HMAC 控件 token、
   点击前后状态反证和 fail-closed 导航骨架。当前动作白名单只有主菜单【新游戏】，并显式禁止大厅【开始】；未接 CLI、
   未在真实桌面发出输入，也不能据此声称已经能开局。
 
-上述改动改变了受指纹保护的 runtime，因此旧提交的 Phase A 三连只证明历史冻结候选，不自动为当前未提交工作树背书。
-当前候选必须先提交并重新 `prepare-profile`，再分别通过普通 `smoke` 与 `crash-smoke`（后者同时重新取证可见主菜单与
-单 mod load）才可记录新的本机资格。现有真实 crash 报告均为 RED，只用于发现问题，不资格化当前修订。
+上述改动改变了受指纹保护的 runtime，因此旧提交的 Phase A 三连只证明历史冻结候选，不自动为后来实现背书。
+runtime 实现提交 `98d55caf3ed4a398b0a3bd7bc8e6ee16591d8f26` 已重新准备 profile，并在同一环境 SHA-256
+`5e7fb63ef98a7fd802caa864b64c593053c68bfb5f1798321cde6b02d6cd0d5f` 下通过普通 `smoke`
+`20260821T215910Z-780cd6cb` 与 post-resume `crash-smoke` `20260821T220127Z-crash-adc0ac63`。
+普通 `validate_smoke_report()` 已重算无密钥事件链、final tail 与 finalized/ok，load、cleanup、protected 和 production 硬字段
+另行逐项核对；`validate_crash_report()` 则完成 crash 归档的 schema 与内部一致性回放。两份报告仍只证明单 mod 可见主菜单、
+受控退出与崩溃回收，`valid_score_episode=false`，不证明 Growth+100 已在大厅实际采用，也没有发送任何游戏输入。
 截至 2026-08-22，本候选离线单元回归为 119 项：118 通过、1 项显式真实桌面集成跳过；这不能替代上述本机门禁。
 
 ## 运行
@@ -139,7 +147,7 @@ episodes: append-only evidence / settlement / validity / metrics
 memory: cross-run retrieval / constrained reflection / strategy experiments
 ```
 
-历史 Phase A 基线已落在 `src/xar_autoplayer/{environment,integrity,locking,rules,runtime,process_watchdog}.py`；当前候选仍须重新通过
+历史 Phase A 基线已落在 `src/xar_autoplayer/{environment,integrity,locking,rules,runtime,process_watchdog}.py`；加固 runtime 已重新通过
 普通 smoke 与 crash-smoke。后续模块只有在上一层的结构/一致性测试和对应本机门禁都通过后才接入正式局，避免把固定坐标脚本误称为
 会玩 CK3 的智能体。
 
@@ -147,7 +155,7 @@ memory: cross-run retrieval / constrained reflection / strategy experiments
 
 1. **Phase A（已完成）**：committed candidate 已连续三次通过 production、非 debug、单 mod 主菜单 isolation smoke；每次都保留
    非零引擎 diagnostics 的原始证据，且受保护存储在退出后回到同一语义 baseline。原生 Windows Job/句柄测试和两次启动期
-   fail-closed RED 覆盖当前失败契约；resume 后强制终止 supervisor 的完整崩溃注入实现已进入候选，仍须通过本机实机门禁。
+   fail-closed RED 覆盖失败契约；加固 runtime 的 resume 后 supervisor 崩溃注入也已通过本机门禁。
 2. **Phase B（进行中）**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证，未知窗口 fail closed。当前只完成
    主菜单、稳定书签大厅分类与【新游戏】动作契约的确定性合成单测，尚未执行真实点击。
 3. Phase C：先完成“罗贝尔 1066 → 契约 → 当铺 → 首轮垂青 → 十年低风险经营 → 自然死亡结算”的首个合法竖切，
