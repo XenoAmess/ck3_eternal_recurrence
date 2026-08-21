@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/episode-v1.schema.json",
+  "title": "One ruler-life score episode",
+  "type": "object",
+  "required": [
+    "format_version",
+    "episode_id",
+    "environment_sha256",
+    "strategy_id",
+    "started_at",
+    "validity",
+    "event_log"
+  ],
+  "properties": {
+    "format_version": { "const": 1 },
+    "episode_id": { "type": "string" },
+    "environment_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "strategy_id": { "type": "string" },
+    "started_at": { "type": "string", "format": "date-time" },
+    "finished_at": { "type": ["string", "null"], "format": "date-time" },
+    "event_log": {
+      "type": "object",
+      "required": ["path", "append_only"],
+      "properties": {
+        "path": { "type": "string" },
+        "append_only": { "const": true }
+      }
+    },
+    "validity": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["running", "valid", "invalid", "infrastructure_failure"] },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "outcome": {
+      "type": ["object", "null"],
+      "properties": {
+        "visible_final_score": { "type": "number", "minimum": 0 },
+        "survival_years": { "type": "number", "minimum": 0 },
+        "score_per_year": { "type": "number", "minimum": 0 },
+        "settlement_observation_id": { "type": "string" }
+      }
+    }
+  }
+}

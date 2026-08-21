@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/action-v1.schema.json",
+  "title": "Auditable CK3 action",
+  "type": "object",
+  "required": [
+    "format_version",
+    "action_id",
+    "observation_id",
+    "issued_at",
+    "kind",
+    "risk",
+    "rationale",
+    "expected_postcondition"
+  ],
+  "properties": {
+    "format_version": { "const": 1 },
+    "action_id": { "type": "string" },
+    "observation_id": { "type": "string" },
+    "issued_at": { "type": "string", "format": "date-time" },
+    "kind": {
+      "enum": [
+        "pause",
+        "set_speed",
+        "move_pointer",
+        "click_visible_control",
+        "scroll_visible_panel",
+        "type_visible_field",
+        "wait",
+        "save",
+        "exit"
+      ]
+    },
+    "target": { "type": "object" },
+    "risk": { "enum": ["read_only", "reversible", "committing"] },
+    "rationale": { "type": "string", "minLength": 1 },
+    "expected_postcondition": { "type": "object" },
+    "result_observation_id": { "type": ["string", "null"] },
+    "status": { "enum": ["planned", "confirmed", "failed", "aborted"] }
+  }
+}
+

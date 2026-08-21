@@ -1,0 +1,33 @@
+config_version = 1
+expected_game_version = "1.19.0.6"
+language = "l_simp_chinese"
+resolution = [2560, 1440]
+display_mode = "fullscreen"
+cloud_save = false
+ironman = false
+
+[paths]
+# Runtime data must stay outside the repository. The CLI uses
+# XAR_AUTOPLAYER_STATE_DIR or %LOCALAPPDATA%/XarAutoplayer by default.
+state_env = "XAR_AUTOPLAYER_STATE_DIR"
+game_env = "XAR_CK3_GAME_DIR"
+
+[mod]
+name = "琉焰卿的永恒轮回"
+outer_descriptor = "mod/xar_autoplayer.mod"
+production_projection = true
+enabled_mod_count = 1
+
+[rules]
+xar_enabled = "xar_on"
+xar_inheritance = "xar_inherit_100"
+xar_score_basis = "xar_score_growth"
+
+[safety]
+visible_ui_only = true
+debug_mode = false
+console = false
+save_rollback = false
+unknown_screen_action = "pause_and_abort_with_evidence"
+pyautogui_failsafe = true
+

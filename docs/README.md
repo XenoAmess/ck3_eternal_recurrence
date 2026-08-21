@@ -11,7 +11,7 @@
 - [testing-workflow.md](testing-workflow.md) — 实测流程：debug_mode 启动、日志断点标记法、tutorial.txt 验证、GUI 可视化调试面板
 - [acceptance-runner-latency.md](acceptance-runner-latency.md) — 场景测试 runner 暂停弹窗延迟：按场景量化瓶颈、证据边界、两级恢复与验收建议
 - [courtier-creator.md](courtier-creator.md) — 付费自定义廷臣 v2：七页生成目录、数值步进、动态来处、玩家隔离状态与原子扣金（CK3 1.19.0.6 实机 GREEN）
-- [autonomous-player-agent.md](autonomous-player-agent.md) — 排队中的长期工程：不作弊的 CK3 高分自主玩家、视觉驱动、经验记忆、大模型复盘与持续多局优化
+- [autonomous-player-agent.md](autonomous-player-agent.md) — 已启动的长期工程：不作弊的 CK3 高分自主玩家、production 单 mod 隔离、视觉驱动、经验记忆与持续多局优化；实现位于 `ck3_autonomous_player/`
 - [workshop-publishing.md](workshop-publishing.md) — **创意工坊发布**（启动器上传器）：物料清单、picture 路径解析、预览图 1MB 限制、remote_file_id 内外层之别、更新流程
 - [vivhite-courtier.md](vivhite-courtier.md) — **白绮特供独立版**：隔离边界、ervc 命名空间、生成/构建/验收与独立 Workshop 契约
 - [image-assets.md](image-assets.md) — 图片源文件命名、CK3 DDS 投影、事件背景/决议引用与静态校验链

@@ -1,0 +1,78 @@
+{
+  "format_version": 1,
+  "strategy_id": "growth100.v1",
+  "rules": {
+    "xar_enabled": "xar_on",
+    "xar_inheritance": "xar_inherit_100",
+    "xar_score_basis": "xar_score_growth"
+  },
+  "benchmark": {
+    "id": "robert_1066_growth100",
+    "comparison_class": ["1.19.0.6", "fixed_dlc_fingerprint", "feudal", "duke"],
+    "status": "planned",
+    "note": "Planned fixed baseline, not yet reproducible and not an asserted optimal start; record exact start date, character ID, complete game rules, checksum, DLC fingerprint, and randomness controls before promotion."
+  },
+  "objectives": [
+    {"priority": 1, "metric": "visible_final_score", "direction": "maximize"},
+    {"priority": 2, "metric": "score_per_survival_year", "direction": "maximize"}
+  ],
+  "eligibility_gate": {
+    "valid_episode": true,
+    "rule": "Filter out every invalid run before strategy scoring or comparison; validity is not a lower-priority optimization objective."
+  },
+  "infrastructure_metrics": ["valid_episode_rate"],
+  "policies": {
+    "opening_budget": {
+      "hypothesis": "Prefer health, longevity, fertility, income, and expansion multipliers because the complete post-shop, post-first-session absolute snapshot becomes the growth baseline.",
+      "baseline_capture": "Includes starting scored state, all shop effects, unspent budget converted to gold, and either the accepted first blessing plus chosen curse or seal, or a first-session refusal with no blessing or curse.",
+      "baseline_depression_hypothesis": "A survivable first-session penalty that is later recovered may lower the baseline, but this must be tested against its survival and development cost.",
+      "status": "unvalidated"
+    },
+    "contract": {
+      "first_baseline": "builder_or_low_stress_birthdays",
+      "target_progress": 10,
+      "target_score": 100,
+      "status": "unvalidated"
+    },
+    "resource_thresholds": {
+      "gold": "next_power_of_two",
+      "prestige": "next_power_of_two",
+      "piety": "next_power_of_two",
+      "influence": "track_even_when_hud_hidden",
+      "influence_status": "Runtime validation is required for hidden influence under governments without government_has_influence; scoring and mod effects are not government-gated.",
+      "max_exponent": 30,
+      "rule": "Invest resources between dynamic 2^n thresholds; preserve a crossed threshold when death risk rises."
+    },
+    "realm_thresholds": {
+      "target_rule": "dynamic_power_of_two",
+      "min_exponent": 1,
+      "max_exponent": 30,
+      "rule": "Track the next 2^n realm-size threshold dynamically; practical reach is bounded by the map rather than a hard-coded 512 target."
+    },
+    "titles": {
+      "rule": "Value only titles still personally held at death, and optimize the net death snapshot against the complete growth baseline; transiently acquired titles do not score."
+    },
+    "dynasty": {
+      "rule": "Prefer same-house living descendants; arrange marriages and land adult branches only when succession and realm stability remain acceptable.",
+      "marriage_heuristic": "Sons patrilineal and daughters matrilineal is only a common heuristic; verify each descendant's dynasty and house because doctrines, acceptance, and cadet branches can change the result.",
+      "status": "unvalidated"
+    },
+    "bargains": {
+      "interval_years": 3,
+      "interval_days": 1095,
+      "sequence": ["Choose, reroll, or decline among three visible blessings before curses are drawn", "After accepting a blessing, choose one of two visible curses or spend a seal; decline is no longer available"],
+      "blessing_decision_rule": "Compare visible blessing leverage plus bargain-pair XP and milestone value against conditional expected curse risk, survival effects, the three-year opportunity cost, and a decline penalty of 0.01 times expected pre-rejection track subtotal.",
+      "curse_decision_rule": "After blessing acceptance, choose the lower-loss visible curse or use a seal according to current and future token value.",
+      "final_score_formula": "max(0, death_absolute_subtotal - complete_opening_baseline) * max(0, 1 - 0.01 * refusal_count)",
+      "progression_opportunity_cost": "Accepting a blessing and then choosing a curse or spending a seal completes the session and grants one Glassfire Gaze XP; declining forfeits that XP and progress toward 10-point attribute and token milestones.",
+      "absolute_never_reject_rule": false,
+      "status": "unvalidated"
+    },
+    "survival": {
+      "rule": "Avoid commanding armies, control stress, obtain visible medical support, and reduce risky travel when expected life value dominates.",
+      "status": "unvalidated"
+    }
+  },
+  "evidence_status": "hypothesis",
+  "supersedes": null
+}

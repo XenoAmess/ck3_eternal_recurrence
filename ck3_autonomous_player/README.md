@@ -1,0 +1,128 @@
+# CK3 Autonomous Player
+
+`ck3_autonomous_player/` 是【琉焰卿的永恒轮回】专用的 CK3 视觉智能体工程。Python 包名为
+`xar_autoplayer`。它与 `tools/run_acceptance.py` 完全隔离：验收 runner 证明 mod 机制；这里的智能体只在
+production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
+
+## 当前完成度
+
+**Phase A 实现候选已完成，退出标准尚未满足；正在对 committed candidate 做最终三连复验。** 加固前的
+`20260821T162104Z-cf348a71`、`20260821T162305Z-9a403bc6`、`20260821T162451Z-5e882b17`
+只保留为历史探索记录；它们早于新鲜日志、跨进程锁、认证 watchdog、Job Object 与完整漂移复核，不能作为当前退出证据。
+
+已实现：
+
+- 仓库外持久 state/profile，且与仓库、真实 CK3 profile、Steam userdata、CK3 Workshop 根目录双向隔离。
+- 通过 `tools/build_release.py` 构建 production-only 投影，不加载开发树或 acceptance/selftest 内容。
+- `dlc_load.json` 精确只有 `mod/xar_autoplayer.mod`；outer descriptor 仅指向隔离 profile 内的投影。
+- 原版 81 个声明默认规则，加 `xar_on`、`xar_inherit_100`、`xar_score_growth`，总计 84 个 setting。
+- 简中、2560×1440、云存档关闭；`tutorial.txt` 只在首次创建，之后不读取、不清空、不回滚。
+- 同一 state 的锁覆盖 prepare/verify/smoke；同一 CK3 安装的全局启动锁覆盖完整 smoke 启停周期。每次启动前和退出后
+  都用 `tasklist` 与 WMI 双源清点 CK3，任一查询失败、格式异常或结果不一致都按 unknown 拒绝继续，绝不把查询失败解释成零进程。
+- unsafe marker 在启动 watchdog 前建立；watchdog 先持有并复核 supervisor 的 PID、可执行路径和创建时间，之后才写 ready。
+  CK3 以 `CREATE_SUSPENDED` 创建，先进入 kill-on-close Job、完成 WMI 身份验证并原子写入 launch record，resume 前还要让
+  双源全局清点精确只看见这个新 PID，因此第一条 CK3 指令开始就在 Job 内。record 绑定 nonce、父 PID、可执行路径和创建时间；
+  watchdog 只终止持有句柄后再次认证的进程对象，崩溃 fallback 要达到五秒稳定空窗。清理证明不完整时保留 unsafe marker，
+  并禁止 postflight。
+- OCR 连续两帧确认可见【新游戏】；每次启动前删除隔离 profile 的旧日志，再以新日志的唯一 session marker、精确单项
+  enabled inventory、已安装 DLC mount 白名单、唯一隔离 mod mount 和零未知 mount 做 supervisor 取证，退出后再解析一次。
+- 真实 profile 顶层文件、player/rulers/正常存档、Steam 云存档条目，以及 Workshop `ugc_*.mod` descriptor 内容哈希与已注册
+  目标树的路径/大小/mtime 元数据清单的退出后反证；结论是“回到语义 baseline 并连续稳定 5 秒”，不声称运行期间从未发生
+  瞬时写入。Steam 自行刷新 `remotecache.vdf` 的允许字段单列报告。
+- 游戏 exe、launcher、原版规则、DLC descriptor、outer descriptor、production manifest/tree、实际构建脚本、解释器与依赖均纳入
+  selected-contract 指纹；smoke 还要求选中的 agent runtime 与 production release source 文件全部已被 Git 跟踪且无修改。
+  没有真实指向当前提交的 tag 时
+  `git_tag=null`，不会伪造 release provenance。
+- shutdown attestation 显式记录 CK3/watchdog PID 与创建时间、Job 最终成员数、双源全局清点、watchdog 退出状态和控制文件消失；
+  `cleanup_proven` 是这些条件的显式合取，只有它严格为 true 才允许受保护存储复核。`report.json` 先落
+  `finalized=false, ok=false`；最终事件链逐项重算、链接和 tail 绑定验证成功后才原子转为 GREEN。
+- 六类版本化 JSON schema 草案、首个 `growth100.v1` 策略假设和追加写入、带 SHA-256 链的 smoke 事件流。文件系统尚无防截断
+  保证；schema 的运行期验证
+  与不可变 episode store 属于 Phase E，当前不能把“JSON 可解析”称为已完成约束。
+
+尚未实现的关键能力：游戏规则页的视觉复核、正常 UI 新开局、事件/当铺/交易决策、HUD 状态抽取、战争与内政、
+保存续玩、自然死亡结算、episode 学习与多局优化。主菜单 smoke 只是基础设施证据，**不是有效得分局**。
+
+## 运行
+
+使用项目现有桌面依赖环境：
+
+```powershell
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" doctor
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" prepare-profile
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" verify-profile
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" smoke
+```
+
+默认运行状态在 `%LOCALAPPDATA%\XarAutoplayer`，可用 `XAR_AUTOPLAYER_STATE_DIR` 或
+`--state-dir` 改写，但安全检查拒绝仓库、真实玩家目录、Steam userdata 与 Workshop 的父目录或子目录。
+
+`smoke` 会在仓库外创建：
+
+```text
+XarAutoplayer/
+  profile/
+    mod/xar_autoplayer.mod
+    mod-content/xar-production/
+    player/game_rules/presets.txt
+    dlc_load.json
+    tutorial.txt
+    xar-autoplayer-environment.json
+  runs/<run-id>/
+    events.jsonl
+    report.json
+    artifacts/
+  control/
+```
+
+## 安全与合法性边界
+
+- 策略只能消费截图、OCR、模板结果和玩家可见 tooltip/账簿/事件/结算。
+- `debug.log` 只由 supervisor 压缩成 enabled-mod 与 mount 证明，原文永不进入观察或策略层。Phase B 接入 policy 前必须实现
+  单独进程与字段白名单序列化边界，不能只依赖 Python 模块约定。
+- 禁止 debug mode、控制台、内存/存档解析、隐藏变量、acceptance marker/wire、教程位读取和回档重掷。
+- Phase B 的强制契约是未知屏幕默认在游戏内暂停、留证并终止，不采用验收 runner 的盲点恢复策略。Phase A 目前只会等待
+  【新游戏】两帧稳定 OCR；超时保留截图/OCR，并在清理证明完成后终止，没有通用窗口分类或游戏内暂停能力。
+- 工程 smoke、识别调试和环境失败永不计入得分榜或训练策略结论。
+
+## 分层架构
+
+```text
+supervisor: profile / production projection / PID / attestation / integrity
+       ↓
+perception: window capture / OCR / templates / screen classifier
+       ↓
+state: visible facts + uncertainty + temporal reducer
+       ↓
+control: safe action catalogue + precondition + postcondition evidence
+       ↓
+policy: survival / contract / dynasty / economy / war / XAR bargains
+       ↓
+episodes: append-only evidence / settlement / validity / metrics
+       ↓
+memory: cross-run retrieval / constrained reflection / strategy experiments
+```
+
+Phase A 候选已落在 `src/xar_autoplayer/{environment,integrity,locking,rules,runtime,process_watchdog}.py`。后续模块只有在上一层的回放测试通过后才接入
+正式局，避免把固定坐标脚本误称为会玩 CK3 的智能体。
+
+## 路线图
+
+1. **Phase A（当前）**：对 committed candidate 连续三次 production、非 debug、单 mod 主菜单 isolation smoke；每次都要保留
+   非零引擎 diagnostics 的原始证据，且受保护存储在退出后回到同一语义 baseline。
+2. **下一步 Phase B**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证，未知窗口 fail closed。
+3. Phase C：先完成“罗贝尔 1066 → 契约 → 当铺 → 首轮垂青 → 十年低风险经营 → 自然死亡结算”的首个合法竖切，
+   再扩到多种角色类型的有效整局基线后退出本阶段。
+4. Phase D：婚育、议会、生活方式、建设、宣战理由、军队和领地的分层规划器。
+5. Phase E：不可变 episode、截图回放集、策略版本、局后复盘与少量受控实验。
+6. Phase F：同一时间线保存续玩、崩溃隔离、资源预算与连续多局。
+7. Phase G：按版本、DLC 指纹、政府、开局等级与余烬位阶分榜，持续优化真实最终分数。
+
+Phase A 的 GREEN 只表示 `acceptance_claim=isolated_single_mod_visible_main_menu_only`。本机前端会枚举既有 Steam Cloud
+存档 meta，因此即使 `cloud_save=no`，旧 PoD 存档中的规则和贴图引用仍会形成非零 `error.log`；enabled inventory 与 mount
+反证证明 PoD 没有被加载。本 smoke 以 `clean_engine_boot_required=false` 和 `engine_diagnostics.zero_diagnostics=false`
+记录这条边界，不把它升级为“零错误启动”。Growth+100 规则是否在
+大厅实际采用、教程通知能否在正式局持续落盘，以及正常 UI 开局仍是 Phase B/C 的视觉硬门禁。
+
+玩法基线见 [knowledge/ck3/gameplay-v1.md](knowledge/ck3/gameplay-v1.md)，本 mod 的高分映射见
+[knowledge/mod/growth100-scoring-v1.md](knowledge/mod/growth100-scoring-v1.md)。

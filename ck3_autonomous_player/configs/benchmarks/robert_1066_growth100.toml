@@ -1,0 +1,14 @@
+benchmark_version = 1
+benchmark_id = "robert_1066_growth100"
+bookmark = "1066.9.15"
+visible_ruler_label = "公爵罗贝尔"
+government_class = "feudal"
+rank_class = "duke"
+rules = "growth_100"
+language = "l_simp_chinese"
+resolution = [2560, 1440]
+
+# Phase B/C baseline. This is chosen because its lobby path is already visually
+# verified; it is not a claim that Robert is the eventual optimal start.
+purpose = "stable UI and first legal ruler-life baseline"
+

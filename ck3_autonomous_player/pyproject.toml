@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xar-autoplayer"
+version = "0.1.0"
+description = "Auditable visual autonomous player for CK3 and Eternal Recurrence"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy==2.5.2",
+  "Pillow==12.3.0",
+  "PyAutoGUI==0.9.54",
+  "pywin32==312; platform_system == 'Windows'",
+  "rapidocr-onnxruntime==1.2.3",
+]
+
+[project.scripts]
+xar-autoplayer = "xar_autoplayer.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+

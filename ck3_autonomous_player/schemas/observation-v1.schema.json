@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/observation-v1.schema.json",
+  "title": "Visible CK3 observation",
+  "type": "object",
+  "required": [
+    "format_version",
+    "observation_id",
+    "captured_at",
+    "screen",
+    "image",
+    "visible_facts",
+    "confidence"
+  ],
+  "properties": {
+    "format_version": { "const": 1 },
+    "observation_id": { "type": "string" },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "screen": {
+      "enum": [
+        "main_menu",
+        "lobby",
+        "map_hud",
+        "character",
+        "realm",
+        "council",
+        "military",
+        "event",
+        "xar_shop",
+        "xar_bargain",
+        "xar_ledger",
+        "death_settlement",
+        "unknown"
+      ]
+    },
+    "image": {
+      "type": "object",
+      "required": ["path", "sha256", "width", "height"],
+      "properties": {
+        "path": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "ocr": { "type": "array", "items": { "type": "object" } },
+    "visible_facts": {
+      "type": "object",
+      "description": "Only facts displayed to a normal player in this or an earlier retained frame."
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "unknown_reasons": { "type": "array", "items": { "type": "string" } }
+  }
+}
+

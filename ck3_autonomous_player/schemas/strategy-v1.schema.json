@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/strategy-v1.schema.json",
+  "title": "Versioned growth + 100% strategy",
+  "type": "object",
+  "required": [
+    "format_version",
+    "strategy_id",
+    "rules",
+    "benchmark",
+    "objectives",
+    "policies",
+    "evidence_status"
+  ],
+  "properties": {
+    "format_version": { "const": 1 },
+    "strategy_id": { "type": "string", "pattern": "^[a-z0-9_.-]+$" },
+    "rules": {
+      "const": {
+        "xar_enabled": "xar_on",
+        "xar_inheritance": "xar_inherit_100",
+        "xar_score_basis": "xar_score_growth"
+      }
+    },
+    "benchmark": { "type": "object" },
+    "objectives": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+    "policies": { "type": "object" },
+    "evidence_status": { "enum": ["hypothesis", "baseline", "validated", "retired"] },
+    "supersedes": { "type": ["string", "null"] }
+  }
+}
+
