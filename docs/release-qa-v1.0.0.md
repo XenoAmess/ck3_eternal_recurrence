@@ -83,7 +83,7 @@ Steam item `3784706360` 与 GitHub Release 使用同一 clean-tag 构建；以�
 - [x] 独立版使用隔离的 `ervc` 脚本/GUI ID、descriptor、生成器、构建与静态验收；`ervc_acceptance_hardened_final_20260821` 已在非 debug CK3 `1.19.0.6` 串行证明独立加载和双 mod 两种加载顺序，版本单独为 `1.0.0`。
 - [x] hardened schema-v2 三格矩阵 JUnit 为 3/3 GREEN、0 blocking project diagnostics。Vivhite production projection 为 `93fb559a61ace1a3c2bd8a9680a0ed5039db765753da8c787d28b0dd67c09fef`；实际 debug mount 顺序逐格匹配请求顺序且 fixture 最后，两种加载顺序均渲染两个独立决议组及直属决议行，保留 ERVC 348/XAR 120 配置，各交付一名廷臣并各扣款一次。双 mod 格仅窄白名单并记录原 mod 冻结代码的两类 loc-only `xa_curse_*_rarity` unused-variable 警告。
 - [x] 三个 disposable userdir 与 detached watchdog 均实际退出/删除；CK3 可执行文件前后 SHA-256 保持 `2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86`。真实 profile、Steam cloud 后备目录及 82 个已注册 Workshop target 的 162,960 项元数据在完整扫描后等待五秒并复扫，聚合 SHA-256 保持 `ed9a9cce6db99148f08aac997d38caae00f64c79827fdb1dcf642c3af9c38336`。
-- [x] 独立版 pinned L0 通过 17 项 release tests、静态/生成 parity、原 mod 共同门禁及双重确定性构建；未打 tag 的 27 文件候选正确记录 `git_tag: null` / `workshop_item_id: null`，manifest SHA-256 为 `2f7aecd2621dc10cf81df6fcf14b82b74f2e645bf3f37c72c3ccca502123a87a`，ZIP SHA-256 为 `9ad24ad26521e721c417462296134f2f794d3187cd72cfa316a5fa250828ce5e`。
+- [x] 独立版 pinned L0 通过 17 项 release tests、静态/生成 parity、原 mod 共同门禁及双重确定性构建；commit `130b7e6` 的未打 tag 27 文件候选正确记录 `git_tag: null` / `workshop_item_id: null`，manifest SHA-256 为 `3c9617465b13cbcbd6c5fbc95b0924dcfb6971df1dd8d1e54fbf12325d276ed6`，ZIP SHA-256 为 `9ad24ad26521e721c417462296134f2f794d3187cd72cfa316a5fa250828ce5e`。
 - [ ] 独立版首次上传必须创建新的 Steam Workshop item；不得复用原 mod 的 `3784706360`，新 ID 只保存在该 mod 的用户目录外层 `.mod`。
 
 ## Automated Evidence

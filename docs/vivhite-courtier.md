@@ -69,7 +69,7 @@ requires this temporary manifest's non-null ID.
 Current pinned-environment L0 is GREEN: 4 succession projection tests, 6 original release tests, 17 Vivhite release
 tests, both static validators, scoring reference vectors and both deterministic double builds. The untagged Vivhite
 candidate intentionally records both `git_tag: null` and `workshop_item_id: null`; its 27-file manifest SHA-256 is
-`2f7aecd2621dc10cf81df6fcf14b82b74f2e645bf3f37c72c3ccca502123a87a` and ZIP SHA-256 is
+`3c9617465b13cbcbd6c5fbc95b0924dcfb6971df1dd8d1e54fbf12325d276ed6` at commit `130b7e6`, and ZIP SHA-256 is
 `9ad24ad26521e721c417462296134f2f794d3187cd72cfa316a5fa250828ce5e`. A formal build replaces only the null Git tag
 after proving the canonical source, clean worktree and `vivhite-v1.0.0` tag; the original Workshop item remains rejected.
 
