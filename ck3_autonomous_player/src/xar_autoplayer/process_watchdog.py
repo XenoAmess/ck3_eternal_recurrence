@@ -12,6 +12,7 @@ import win32api
 import win32com.client
 import win32con
 import win32event
+import win32process
 
 
 def _write_json_atomic(path: Path, payload: object) -> None:
@@ -47,7 +48,10 @@ def _matches(
         int(process.ProcessId) == expected_pid
         and int(process.ParentProcessId) == parent_pid
         and str(process.Name).casefold() == "ck3.exe"
-        and _normalized(process.ExecutablePath) == _normalized(executable)
+        and (
+            not str(process.ExecutablePath or "")
+            or _normalized(process.ExecutablePath) == _normalized(executable)
+        )
         and str(process.CreationDate) == creation_date
     )
 
@@ -77,7 +81,7 @@ def _fallback_children(
     ambiguous: list[tuple[int, str]] = []
     for row in rows:
         actual = str(row.ExecutablePath or "")
-        if _normalized(actual) != _normalized(executable):
+        if actual and _normalized(actual) != _normalized(executable):
             ambiguous.append((int(row.ProcessId), actual))
         else:
             children.append((int(row.ProcessId), str(row.CreationDate)))
@@ -100,7 +104,9 @@ def _terminate_authenticated(
         handle = win32api.OpenProcess(
             win32con.PROCESS_TERMINATE
             | win32con.SYNCHRONIZE
-            | win32con.PROCESS_QUERY_LIMITED_INFORMATION,
+            | win32con.PROCESS_QUERY_INFORMATION
+            | win32con.PROCESS_QUERY_LIMITED_INFORMATION
+            | win32con.PROCESS_VM_READ,
             False,
             pid,
         )
@@ -117,6 +123,9 @@ def _terminate_authenticated(
             return None
         if not _matches(process, pid, parent_pid, executable, creation_date):
             return None
+        pinned_image = win32process.GetModuleFileNameEx(handle, 0)
+        if _normalized(pinned_image) != _normalized(executable):
+            return f"image:{pid}:pinned executable differs"
         win32api.TerminateProcess(handle, 1)
         result = win32event.WaitForSingleObject(handle, 10_000)
         if result != win32event.WAIT_OBJECT_0:

@@ -125,6 +125,11 @@ class _SuspendedWindowsProcess:
         if self.poll() is None:
             win32api.TerminateProcess(self._process_handle, 1)
 
+    def image_path(self) -> Path:
+        import win32process
+
+        return Path(win32process.GetModuleFileNameEx(self._process_handle, 0)).resolve()
+
     def close(self) -> None:
         import win32api
 
@@ -723,12 +728,17 @@ def launch(spec: EnvironmentSpec) -> SessionHandle:
             },
         )
         _assign_process_to_job(job_handle, process)
+        pinned_image = process.image_path()
         identity = _wait_process_identity(process.pid)
         if (
             identity is None
             or identity["name"].casefold() != "ck3.exe"
             or int(identity["parent_pid"]) != os.getpid()
-            or not _same_executable(identity["executable"], spec.game_exe)
+            or not _same_executable(pinned_image, spec.game_exe)
+            or (
+                identity["executable"]
+                and not _same_executable(identity["executable"], spec.game_exe)
+            )
         ):
             raise AgentError(f"launched CK3 process identity differs: {identity!r}")
         record = {
@@ -746,7 +756,7 @@ def launch(spec: EnvironmentSpec) -> SessionHandle:
             len(visible) != 1
             or int(visible[0]["pid"]) != process.pid
             or int(visible[0]["parent_pid"]) != os.getpid()
-            or not _same_executable(visible[0]["executable"], spec.game_exe)
+            or str(visible[0]["name"]).casefold() != "ck3.exe"
         ):
             raise AgentError(
                 "pre-resume global CK3 inventory is not the exact suspended process: "

@@ -459,6 +459,7 @@ class TrackedShutdownTests(unittest.TestCase):
         try:
             self.assertIsNone(process.poll())
             self.assertFalse(process.resumed)
+            self.assertEqual(process.image_path(), executable.resolve())
             _assign_process_to_job(job, process)
             self.assertEqual(_job_active_processes(job), 1)
             process.resume()
@@ -653,12 +654,27 @@ class TrackedShutdownTests(unittest.TestCase):
             with self.assertRaisesRegex(AgentError, "WMI inventory failed"):
                 ck3_process_inventory()
 
-    def test_watchdog_rejects_same_parent_ck3_with_unknown_path(self) -> None:
+    def test_watchdog_accepts_empty_wmi_path_for_handle_authentication(self) -> None:
         row = SimpleNamespace(
             ProcessId=123,
             ParentProcessId=456,
             Name="ck3.exe",
             ExecutablePath=None,
+            CreationDate="created",
+        )
+        service = mock.Mock()
+        service.ExecQuery.return_value = [row]
+        self.assertEqual(
+            _fallback_children(service, 456, "C:/game/ck3.exe"),
+            [(123, "created")],
+        )
+
+    def test_watchdog_rejects_same_parent_ck3_with_different_path(self) -> None:
+        row = SimpleNamespace(
+            ProcessId=123,
+            ParentProcessId=456,
+            Name="ck3.exe",
+            ExecutablePath="C:/other/ck3.exe",
             CreationDate="created",
         )
         service = mock.Mock()
