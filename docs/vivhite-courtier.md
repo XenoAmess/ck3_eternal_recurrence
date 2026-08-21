@@ -109,12 +109,12 @@ official runner has no CK3 or interactive desktop and must run only the static f
 
 ### Current Engine Evidence
 
-The release working-tree schema-v2 non-debug matrix `ervc_release_final_20260821` completed all three cells GREEN on
-CK3 `1.19.0.6` in 876.590 seconds after the seven branding translations and inheritance validator were applied. JUnit
-records 3 tests and 0 failures; every cell has an empty blocking `project_diagnostics` list, an unchanged runtime tree
-and `userdir_removed_after_run: true`. Both dual cells explicitly record four cold-boot occurrences of the two frozen
-original-release warnings above. The shared disposable-userdir parent and all three detached watchdog processes were
-absent after the matrix.
+The clean committed-candidate schema-v2 non-debug matrix `ervc_release_clean_6575997_20260821` completed all three
+cells GREEN on CK3 `1.19.0.6` in 910.962 seconds. Its report binds full Git SHA
+`6575997b14a90b0afda75fdde304170206478c21`, JUnit records 3 tests and 0 failures, and every cell has an empty blocking
+`project_diagnostics` list, an unchanged runtime tree and `userdir_removed_after_run: true`. Both dual cells explicitly
+record four cold-boot occurrences of the two frozen original-release warnings above. The shared disposable-userdir
+parent and all three detached watchdog processes were absent after the matrix.
 
 - Vivhite production projection: `6242ca7eec1b33f6da939c3a161b7338011122780c4740c6e831e2de0e20577c`.
 - Original production projection in both dual cells: `97b9f386ab17364eec0859be1f7c6407816a27a396b2edcf6427d697789ba2ab`.
@@ -126,6 +126,13 @@ absent after the matrix.
 The bounded protection set contained nine real-profile files, two local Steam cloud files, 82 registered Workshop
 targets and 162,960 target metadata entries. CK3's debug mount records exactly matched each requested product order and
 the fixture was last. The final snapshot started only after a complete baseline-equivalence scan, waited five seconds,
-then completed another full scan. This proves local runtime isolation for the named source/runtime hashes; the report's
-Git SHA is the then-current HEAD `c2fce99`, while the runtime hash above binds the dirty localization candidate bytes.
-A clean committed-candidate rerun and fresh Workshop-cache verification remain release gates.
+then completed another full scan.
+
+Tag `vivhite-v1.0.0` points to that exact commit. Its 27-file formal manifest SHA-256 is
+`643164d9b0537802fa13f5b88029ab8a34aa12496f8ac1579f3436beb8fa9d66`; its deterministic ZIP SHA-256 is
+`68154ad507b654eb31cf08e51dfc45ae8bb9a576c54e94b137953b8fb9175c2e`. Local output, official Windows tag workflow
+artifact and [public GitHub Release](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/vivhite-v1.0.0)
+digests match. Official master run `32457377134` and tag run `32458755796` are GREEN. New Workshop item `3787304042`
+was forced into an initially absent cache path and passed strict `--workshop-cache` verification for all 27 files. The
+anonymous Steam API reports public visibility, and the public page exposes exactly eight accepted screenshots. These
+results close the clean-candidate, fresh-cache and external-delivery gates for 1.0.0.

@@ -86,8 +86,9 @@ Steam item `3784706360` 与 GitHub Release 使用同一 clean-tag 构建；以�
 - [x] 独立版 pinned L0 通过 17 项 release tests、静态/生成 parity、原 mod 共同门禁及双重确定性构建；commit `130b7e6` 的未打 tag 27 文件候选正确记录 `git_tag: null` / `workshop_item_id: null`，manifest SHA-256 为 `3c9617465b13cbcbd6c5fbc95b0924dcfb6971df1dd8d1e54fbf12325d276ed6`，ZIP SHA-256 为 `9ad24ad26521e721c417462296134f2f794d3187cd72cfa316a5fa250828ce5e`。
 - [x] 独立版本地化改用继承契约：每语言 45 个值中，除独立决议名和分组名两项品牌差异外，其余 43 项必须在 `xar` → `ervc` 命名空间替换后与已发布原 mod 逐值相同；七种外语分组标题已补齐，静态校验无英文占位。
 - [x] 发布工作树矩阵 `ervc_release_final_20260821` 在新本地化候选上 3/3 GREEN、0 blocking diagnostics，Vivhite runtime tree 为 `6242ca7eec1b33f6da939c3a161b7338011122780c4740c6e831e2de0e20577c`，三格 userdir 均删除且受保护存储完成五秒复扫不变。
-- [ ] 从 clean committed candidate 重跑截图版 standalone，保存决议列表及【根骨、教育、将才、血肉、心性、异质、来处】八张 Workshop 截图，并确认完整三格 runtime hash 不变。
-- [ ] 独立版首次上传必须创建新的 Steam Workshop item；不得复用原 mod 的 `3784706360`，新 ID 只保存在该 mod 的用户目录外层 `.mod`。
+- [x] clean committed candidate `6575997` 的 `ervc_release_clean_6575997_20260821` 在 910.962 秒内完成三格 3/3 GREEN，0 blocking diagnostics，Vivhite runtime hash 保持 `6242ca7eec1b33f6da939c3a161b7338011122780c4740c6e831e2de0e20577c`；决议列表及【根骨、教育、将才、血肉、心性、异质、来处】八张 2560×1440 截图均完成逐帧审阅。
+- [x] 独立版创建新 Steam Workshop item `3787304042`，没有复用原 mod 的 `3784706360`；匿名 Steam API 返回 `visibility: 0`，公开 HTML 精确包含 8 个 screenshot item。空缓存强制下载后，带新 ID 的 sidecar 对全部 27 文件 `--workshop-cache` 验证 GREEN。
+- [x] `vivhite-v1.0.0` formal manifest（`workshop_item_id: null`）SHA-256 为 `643164d9b0537802fa13f5b88029ab8a34aa12496f8ac1579f3436beb8fa9d66`，ZIP SHA-256 为 `68154ad507b654eb31cf08e51dfc45ae8bb9a576c54e94b137953b8fb9175c2e`；官方 master [L0 run 32457377134](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32457377134) 与 [tag run 32458755796](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/32458755796) GREEN，本地构建、tag workflow artifact 与 GitHub Release digest 三方一致。
 
 ## Automated Evidence
 
@@ -196,6 +197,7 @@ Commit `6e186bb` replaced the then-current seven-language English placeholders. 
 - No-heir settlement presentation: automated Simplified Chinese proof GREEN; clean non-debug release screenshot approved by repository owner.
 - Paid custom-courtier window: seven tabs, price/available-gold row, longest nine-language strings and supported UI scales approved by repository owner.
 - Steam item `3784706360` upload and clean downloaded-cache manifest verification: completed on 2026-08-21.
+- Vivhite Steam item `3787304042`: eight clean screenshots, bilingual description, public visibility and fresh 27-file cache verification completed on 2026-08-21.
 
 ## Passive Soak / Matrix Telemetry
 
@@ -208,4 +210,5 @@ Known death-carrier edge: normal succession follows the vanilla-style single del
 - `v1.0.0` tag, GitHub Release, deterministic release artifact publication and Steam upload: completed on 2026-08-21.
 - Downloaded Workshop cache verification against the release manifest: GREEN for all 85 files after strict launcher descriptor normalization.
 - Clean screenshots, multilingual layout and thumbnail aesthetic approval: completed by repository owner on 2026-08-21.
+- `vivhite-v1.0.0` GitHub Release and Steam item `3787304042`: public with matching 27-file payload, formal manifest/ZIP hashes and eight Workshop screenshots on 2026-08-21.
 - Author/source and redistribution permission for all seven derived release assets: recorded from the repository owner in `docs/asset-provenance.md`; no separate public asset license is asserted.
