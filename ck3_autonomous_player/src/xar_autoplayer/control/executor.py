@@ -887,7 +887,9 @@ class VisibleUiDriver:
                 > spec.hover_tolerance_px
             ):
                 raise AgentError("visible target moved during hover verification")
-            self.window.require_cursor_target(hover_target.center)
+            self.window.require_cursor_target(
+                hover_target.center, tolerance=spec.hover_tolerance_px
+            )
 
             # Retain the authenticated hover pixels in memory. No caller can
             # choose this rectangle and no file needs to be read in the final
@@ -947,7 +949,9 @@ class VisibleUiDriver:
             result["target"]["final_patch_sha256"] = final_patch_sha256
             if not hmac.compare_digest(final_patch_sha256, expected_patch_sha256):
                 raise AgentError("visible target pixels changed immediately before input")
-            self.window.require_cursor_target(hover_target.center)
+            self.window.require_cursor_target(
+                hover_target.center, tolerance=spec.hover_tolerance_px
+            )
             hover_consumed = self._require_internal_lease(
                 hover_lease,
                 purpose="hover_verified_left_click_batch",
