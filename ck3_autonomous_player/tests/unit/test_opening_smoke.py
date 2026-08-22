@@ -92,7 +92,16 @@ class OpeningContractTests(unittest.TestCase):
         )
         self.assertEqual(
             contract.classify(
-                (*lobby_spans, span("开始", (2260, 1267), (2227, 1248, 2294, 1286))),
+                (
+                    lobby_spans[0],
+                    lobby_spans[1],
+                    span(
+                        "公爵罗贝尔，51岁",
+                        (2260, 590),
+                        (2139, 575, 2381, 605),
+                    ),
+                    span("开始", (2260, 1267), (2227, 1248, 2294, 1286)),
+                ),
                 lobby_image,
             )[0],
             "bookmark_lobby_selected",

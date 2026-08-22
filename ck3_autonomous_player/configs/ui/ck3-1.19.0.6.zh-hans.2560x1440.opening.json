@@ -61,7 +61,7 @@
       "anchors": [
         {"anchor_id": "lobby.title", "text": "选择初始日期和角色", "region": [0.08, 0.00, 0.32, 0.07]},
         {"anchor_id": "lobby.central_bookmark", "text": "公爵弗拉季斯拉夫", "region": [0.45, 0.20, 0.67, 0.47]},
-        {"anchor_id": "lobby.robert", "text": "公爵罗贝尔", "region": [0.45, 0.68, 0.72, 0.91]},
+        {"anchor_id": "lobby.robert_selected", "text": "公爵罗贝尔，51岁", "region": [0.80, 0.35, 0.98, 0.48]},
         {"anchor_id": "lobby.start", "text": "开始", "region": [0.83, 0.84, 0.93, 0.92]}
       ],
       "negative_anchors": [
