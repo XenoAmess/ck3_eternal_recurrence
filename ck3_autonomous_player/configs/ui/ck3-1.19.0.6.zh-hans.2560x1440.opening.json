@@ -372,7 +372,7 @@
       "region": [0.00, 0.00, 0.24, 0.10],
       "post_screen": "map_hud",
       "risk": "reversible",
-      "click_point_px": [1972, 63],
+      "click_point_px": [2465, 79],
       "allow_dynamic_pixels": true
     },
     {

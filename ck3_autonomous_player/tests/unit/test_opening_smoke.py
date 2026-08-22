@@ -235,7 +235,7 @@ class OpeningContractTests(unittest.TestCase):
         )
         self.assertEqual(
             contract.control("lifestyle_martial_authority.close").click_point_px,
-            (1972, 63),
+            (2465, 79),
         )
         self.assertEqual(
             contract.control("map_hud.set_speed_five").click_point_px,
