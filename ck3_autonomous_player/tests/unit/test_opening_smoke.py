@@ -28,6 +28,8 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     OPENING_CONTRACT,
     _choose_first_blessing,
     _choose_first_curse,
+    _choose_economic_building_offer,
+    _building_offer_summaries,
     _choose_generic_event_option,
     _confirm_post_shortcut_event,
     _drive_opening,
@@ -41,6 +43,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _score_first_blessing,
     _score_first_curse,
     _score_generic_event_option,
+    _spans_with_text,
 )
 from xar_autoplayer.vision import load_ui_contract  # noqa: E402
 from xar_autoplayer.vision.model import OcrSpan  # noqa: E402
@@ -480,6 +483,35 @@ class OpeningContractTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(AgentError, "not consecutive"):
             _panel_summary("realm", "我的领地", panel_frame(4), panel_frame(6))
+
+    def test_visible_building_offer_prefers_economic_text(self) -> None:
+        frame = SimpleNamespace(
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span("军营", (250, 320), (210, 307, 290, 333)),
+                span("征召兵：+100", (340, 350), (270, 337, 410, 363)),
+                span("建造", (620, 360), (590, 347, 650, 373)),
+                span("农田与牧场", (250, 540), (180, 527, 320, 553)),
+                span("税收：+0.5", (340, 570), (280, 557, 400, 583)),
+                span("发展度增长：+5%", (350, 600), (270, 587, 430, 613)),
+                span("建造", (620, 590), (590, 577, 650, 603)),
+            ),
+        )
+        offers = _building_offer_summaries(frame)
+        self.assertEqual(len(offers), 2)
+        selected = _choose_economic_building_offer(frame)
+        self.assertEqual(selected["offer_index"], 2)
+        self.assertGreater(selected["strategy_score"], offers[0]["strategy_score"])
+        self.assertEqual(
+            len(
+                _spans_with_text(
+                    frame,
+                    "农田与牧场",
+                    region=(0.0, 0.30, 0.30, 0.50),
+                )
+            ),
+            1,
+        )
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (

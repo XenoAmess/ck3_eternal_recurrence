@@ -81,12 +81,17 @@ CK3_SHORTCUT_SCAN_CODES = {
     "3": 0x04,
     "4": 0x05,
     "5": 0x06,
+    "6": 0x07,
+    "7": 0x08,
+    "8": 0x09,
+    "9": 0x0A,
     "0": 0x0B,
     "minus": 0x0C,
     "equals": 0x0D,
     "backspace": 0x0E,
     "enter": 0x1C,
     "left_shift": 0x2A,
+    "left_alt": 0x38,
     "f1": 0x3B,
     "f2": 0x3C,
     "f3": 0x3D,
@@ -115,6 +120,21 @@ MAP_PANEL_SHORTCUTS = (
     ("council", "内阁", "f4", CK3_SHORTCUT_SCAN_CODES["f4"]),
     ("decisions", "决议", "f8", CK3_SHORTCUT_SCAN_CODES["f8"]),
 )
+
+_ECONOMIC_BUILDING_KEYWORDS = {
+    "税": 120,
+    "收入": 120,
+    "发展度": 80,
+    "农田": 70,
+    "牧场": 60,
+    "港": 60,
+    "市场": 60,
+    "庄园": 55,
+    "果园": 50,
+    "猎场": 25,
+    "征召兵": -20,
+    "驻军": -20,
+}
 
 
 def _remaining(deadline: float, stage: str) -> float:
@@ -672,6 +692,90 @@ def _panel_summary(
     }
 
 
+def _spans_with_text(
+    frame: object,
+    text: str,
+    *,
+    region: tuple[float, float, float, float] | None = None,
+    contains: bool = False,
+) -> list[object]:
+    """Return OCR spans matching visible text inside an optional client region."""
+    from .vision.ocr import normalize_visible_text
+
+    target = normalize_visible_text(text)
+    client_rect = tuple(getattr(frame, "client_rect", ()))
+    if len(client_rect) != 4:
+        return []
+    width = client_rect[2] - client_rect[0]
+    height = client_rect[3] - client_rect[1]
+    matches: list[object] = []
+    for item in getattr(frame, "spans", ()):
+        normalized = normalize_visible_text(str(getattr(item, "text", "")))
+        if not (target in normalized if contains else normalized == target):
+            continue
+        center = tuple(getattr(item, "center", ()))
+        if len(center) != 2:
+            continue
+        if region is not None:
+            left, top, right, bottom = region
+            if not (
+                left * width <= center[0] <= right * width
+                and top * height <= center[1] <= bottom * height
+            ):
+                continue
+        matches.append(item)
+    return matches
+
+
+def _building_offer_summaries(frame: object) -> list[dict[str, object]]:
+    """Rank visible construction rows by player-visible economic language."""
+    buttons = _spans_with_text(frame, "建造")
+    offers: list[dict[str, object]] = []
+    all_spans = tuple(getattr(frame, "spans", ()))
+    for index, button in enumerate(buttons, 1):
+        button_center = tuple(getattr(button, "center", (0, 0)))
+        nearby: list[str] = []
+        for item in all_spans:
+            center = tuple(getattr(item, "center", (0, 0)))
+            if (
+                abs(center[1] - button_center[1]) <= 105
+                and center[0] <= button_center[0] + 30
+            ):
+                value = str(getattr(item, "text", "")).strip()
+                if value and value not in nearby:
+                    nearby.append(value)
+        combined = " ".join(nearby)
+        score = sum(
+            weight
+            for keyword, weight in _ECONOMIC_BUILDING_KEYWORDS.items()
+            if keyword in combined
+        )
+        offers.append(
+            {
+                "offer_index": index,
+                "button_text": str(getattr(button, "text", "")),
+                "button_center": list(button_center),
+                "visible_text": nearby,
+                "strategy_score": score,
+                "strategy": "visible-economic-building-v1",
+            }
+        )
+    return offers
+
+
+def _choose_economic_building_offer(frame: object) -> dict[str, object]:
+    offers = _building_offer_summaries(frame)
+    if not offers:
+        raise AgentError("building selection exposes no visible construct action")
+    return max(
+        offers,
+        key=lambda offer: (
+            int(offer["strategy_score"]),
+            -int(offer["offer_index"]),
+        ),
+    )
+
+
 def _drive_opening(
     spec: EnvironmentSpec,
     handle: SessionHandle,
@@ -683,9 +787,14 @@ def _drive_opening(
     deadline: float,
     ordinary_event_count: int = 1,
     inspect_map_panels: bool = False,
+    construct_economic_building: bool = False,
 ) -> dict[str, object]:
     from .control import VisibleUiDriver
-    from .control.executor import _prepare_key_chord_batch, _prepare_key_press_batch
+    from .control.executor import (
+        _prepare_key_chord_batch,
+        _prepare_key_press_batch,
+        _prepare_left_click_batch,
+    )
     from .vision import load_ui_contract
 
     display = manifest.get("display")
@@ -925,7 +1034,9 @@ def _drive_opening(
         title: str,
         key: str,
         scan_code: int,
-    ) -> tuple[dict[str, object], dict[str, object]]:
+        *,
+        leave_open: bool = False,
+    ) -> tuple[dict[str, object], object]:
         driver = new_driver()
         window.require_foreground()
         append_event(
@@ -988,6 +1099,9 @@ def _drive_opening(
             },
         )
 
+        if leave_open:
+            return summary, frame
+
         window.require_foreground()
         append_event(
             events,
@@ -1039,6 +1153,345 @@ def _drive_opening(
             },
         )
         return summary, after.to_policy_json()
+
+    def wait_for_custom_state(
+        driver: VisibleUiDriver,
+        predicate: object,
+        stage: str,
+        timeout_seconds: float = INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+    ) -> tuple[object, object]:
+        custom_deadline = min(
+            deadline,
+            time.monotonic() + timeout_seconds,
+        )
+        prior = None
+        while time.monotonic() < custom_deadline:
+            frame = driver.capture_once()
+            if bool(predicate(frame)):
+                if (
+                    prior is not None
+                    and frame.capture_sequence == prior.capture_sequence + 1
+                    and bool(predicate(prior))
+                ):
+                    return prior, frame
+                prior = frame
+            else:
+                prior = None
+        raise AgentError(f"{stage} did not become visibly stable")
+
+    def click_visible_text_once(
+        driver: VisibleUiDriver,
+        source: object,
+        *,
+        text: str,
+        region: tuple[float, float, float, float],
+        control_id: str,
+        expected_post_screen: str,
+        post_predicate: object,
+    ) -> tuple[object, object]:
+        issued = _spans_with_text(source, text, region=region)
+        if len(issued) != 1:
+            raise AgentError(
+                f"{control_id} lacks one visible {text!r} target: {len(issued)}"
+            )
+        fresh = driver.capture_once()
+        fresh_matches = [
+            item
+            for item in _spans_with_text(fresh, text, region=region)
+            if abs(item.center[0] - issued[0].center[0]) <= 20
+            and abs(item.center[1] - issued[0].center[1]) <= 20
+        ]
+        if len(fresh_matches) != 1:
+            raise AgentError(f"{control_id} visible target changed before click")
+        target = fresh_matches[0]
+        point = tuple(target.center)
+        window.require_foreground()
+        window.require_unobscured(point)
+        append_event(
+            events,
+            {
+                "kind": "opening_pointer_input_planned",
+                "control_id": control_id,
+                "visible_text": target.text,
+                "bbox": list(target.bbox),
+                "center": list(point),
+                "expected_post_screen": expected_post_screen,
+            },
+        )
+        import pyautogui
+
+        pyautogui.FAILSAFE = True
+        screen_point = (
+            window.client_rect[0] + point[0],
+            window.client_rect[1] + point[1],
+        )
+        pyautogui.moveTo(*screen_point, duration=0.12)
+        time.sleep(0.2)
+        window.require_cursor_target(point)
+        accepted, last_error = _prepare_left_click_batch(0.05)()
+        if accepted != 2:
+            raise AgentError(
+                f"{control_id} mouse click was partial: "
+                f"accepted={accepted}, last_error={last_error}"
+            )
+        first, second = wait_for_custom_state(
+            driver,
+            post_predicate,
+            expected_post_screen,
+        )
+        action = {
+            "control_id": control_id,
+            "status": "confirmed",
+            "input_kind": "visible_ocr_click",
+            "visible_text": target.text,
+            "source_observation_id": fresh.observation_id,
+            "click_point": list(point),
+            "send_input": {
+                "requested": 2,
+                "accepted": accepted,
+                "last_error": last_error,
+            },
+            "result_observation_id": second.observation_id,
+            "expected_post_screen": expected_post_screen,
+        }
+        actions.append(action)
+        append_event(
+            events,
+            {
+                "kind": "opening_step_completed",
+                "control_id": control_id,
+                "result_screen": expected_post_screen,
+                "result_observation_id": second.observation_id,
+            },
+        )
+        return first, second
+
+    def construct_first_economic_building() -> tuple[dict[str, object], dict[str, object]]:
+        _realm_summary, realm_frame = inspect_map_panel(
+            "realm",
+            "我的领地",
+            "f2",
+            CK3_SHORTCUT_SCAN_CODES["f2"],
+            leave_open=True,
+        )
+        driver = new_driver()
+
+        def holding_view(frame: object) -> bool:
+            return (
+                not _spans_with_text(
+                    frame,
+                    "我的领地",
+                    region=(0.60, 0.0, 0.86, 0.16),
+                )
+                and bool(_spans_with_text(frame, "阿普利亚伯爵领"))
+                and bool(_spans_with_text(frame, "发展度", contains=True))
+            )
+
+        _holding_first, holding_second = click_visible_text_once(
+            driver,
+            realm_frame,
+            text="可以修建建筑",
+            region=(0.68, 0.33, 0.78, 0.42),
+            control_id="realm_panel.open_first_buildable_holding",
+            expected_post_screen="holding_view",
+            post_predicate=holding_view,
+        )
+
+        selected_slot: int | None = None
+        building_frame = None
+        slot_attempts: list[dict[str, object]] = []
+        for slot_number in range(1, 7):
+            key = str(slot_number)
+            scan_code = CK3_SHORTCUT_SCAN_CODES[key]
+            window.require_foreground()
+            append_event(
+                events,
+                {
+                    "kind": "opening_key_input_planned",
+                    "control_id": f"holding_view.building_slot_{slot_number}",
+                    "key": f"alt+{key}",
+                    "scan_code": scan_code,
+                    "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                    "expected_post_screen": "building_selection",
+                },
+            )
+            accepted, last_error = _prepare_key_chord_batch(
+                CK3_SHORTCUT_SCAN_CODES["left_alt"], scan_code
+            )()
+            if accepted != 4:
+                raise AgentError(
+                    f"alt+{key} building shortcut SendInput was partial: "
+                    f"accepted={accepted}, last_error={last_error}"
+                )
+            attempt: dict[str, object] = {
+                "slot_number": slot_number,
+                "key": f"alt+{key}",
+                "send_input": {
+                    "requested": 4,
+                    "accepted": accepted,
+                    "last_error": last_error,
+                },
+                "visible_construct_offers": 0,
+            }
+            try:
+                _first, candidate = wait_for_custom_state(
+                    driver,
+                    lambda frame: bool(_building_offer_summaries(frame)),
+                    f"building slot {slot_number}",
+                    timeout_seconds=4.0,
+                )
+            except AgentError as error:
+                if "did not become visibly stable" not in str(error):
+                    raise
+                slot_attempts.append(attempt)
+                actions.append(
+                    {
+                        "control_id": f"holding_view.building_slot_{slot_number}",
+                        "status": "confirmed",
+                        "input_kind": "keyboard_shortcut",
+                        "key": f"alt+{key}",
+                        "scan_code": scan_code,
+                        "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                        "send_input": attempt["send_input"],
+                        "result_observation_id": None,
+                        "expected_post_screen": "building_selection",
+                        "visible_construct_offers": 0,
+                    }
+                )
+                continue
+            attempt["visible_construct_offers"] = len(
+                _building_offer_summaries(candidate)
+            )
+            attempt["result_observation_id"] = candidate.observation_id
+            slot_attempts.append(attempt)
+            actions.append(
+                {
+                    "control_id": f"holding_view.building_slot_{slot_number}",
+                    "status": "confirmed",
+                    "input_kind": "keyboard_shortcut",
+                    "key": f"alt+{key}",
+                    "scan_code": scan_code,
+                    "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                    "send_input": attempt["send_input"],
+                    "result_observation_id": candidate.observation_id,
+                    "expected_post_screen": "building_selection",
+                    "visible_construct_offers": attempt[
+                        "visible_construct_offers"
+                    ],
+                }
+            )
+            append_event(
+                events,
+                {
+                    "kind": "opening_step_completed",
+                    "control_id": f"holding_view.building_slot_{slot_number}",
+                    "result_screen": "building_selection",
+                    "result_observation_id": candidate.observation_id,
+                },
+            )
+            selected_slot = slot_number
+            building_frame = candidate
+            break
+        if selected_slot is None or building_frame is None:
+            raise AgentError("no building slot exposed a visible construction offer")
+
+        offer = _choose_economic_building_offer(building_frame)
+        button_center = tuple(offer["button_center"])
+
+        def construction_started(frame: object) -> bool:
+            return bool(_spans_with_text(frame, "正在修建", contains=True))
+
+        button_candidates = [
+            item
+            for item in _spans_with_text(building_frame, "建造")
+            if abs(item.center[0] - button_center[0]) <= 20
+            and abs(item.center[1] - button_center[1]) <= 20
+        ]
+        if len(button_candidates) != 1:
+            raise AgentError("selected economic building button is not unique")
+        # Narrow the region around the selected visible button so the final
+        # click is derived from OCR rather than from a frozen coordinate.
+        width = window.client_rect[2] - window.client_rect[0]
+        height = window.client_rect[3] - window.client_rect[1]
+        click_region = (
+            max(0.0, (button_center[0] - 40) / width),
+            max(0.0, (button_center[1] - 30) / height),
+            min(1.0, (button_center[0] + 40) / width),
+            min(1.0, (button_center[1] + 30) / height),
+        )
+        _started_first, started_second = click_visible_text_once(
+            driver,
+            building_frame,
+            text="建造",
+            region=click_region,
+            control_id="building_selection.construct_economic_offer",
+            expected_post_screen="building_construction_started",
+            post_predicate=construction_started,
+        )
+
+        final_observation = None
+        for close_index in range(1, 4):
+            window.require_foreground()
+            append_event(
+                events,
+                {
+                    "kind": "opening_key_input_planned",
+                    "control_id": f"building_view.close_{close_index}",
+                    "key": "escape",
+                    "scan_code": CK3_SHORTCUT_SCAN_CODES["escape"],
+                    "expected_post_screen": "map_hud",
+                },
+            )
+            accepted, last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["escape"]
+            )()
+            if accepted != 2:
+                raise AgentError(
+                    f"escape after construction was partial: "
+                    f"accepted={accepted}, last_error={last_error}"
+                )
+            try:
+                stable_map = driver.observe_stable(
+                    "map_hud",
+                    min(4.0, _remaining(deadline, "map after construction")),
+                    stable_frames=2,
+                )
+            except AgentError:
+                continue
+            final_observation = stable_map.to_policy_json()
+            actions.append(
+                {
+                    "control_id": f"building_view.close_{close_index}",
+                    "status": "confirmed",
+                    "input_kind": "keyboard_shortcut",
+                    "key": "escape",
+                    "scan_code": CK3_SHORTCUT_SCAN_CODES["escape"],
+                    "send_input": {
+                        "requested": 2,
+                        "accepted": accepted,
+                        "last_error": last_error,
+                    },
+                    "result_observation_id": stable_map.observation_id,
+                    "expected_post_screen": "map_hud",
+                }
+            )
+            break
+        if final_observation is None:
+            raise AgentError("construction view did not close back to the map")
+
+        return (
+            {
+                "holding": "阿普利亚伯爵领",
+                "holding_source_observation_id": holding_second.observation_id,
+                "building_slot": selected_slot,
+                "slot_attempts": slot_attempts,
+                "selected_offer": offer,
+                "construction_observation_id": started_second.observation_id,
+                "strategy": "first-affordable-visible-economic-building-v1",
+                "policy_boundary": "player-visible OCR only",
+            },
+            final_observation,
+        )
 
     click(
         "main_menu",
@@ -1399,6 +1852,9 @@ def _drive_opening(
                 scan_code,
             )
             map_panels[panel_id] = summary
+    economic_building = None
+    if construct_economic_building:
+        economic_building, final_observation = construct_first_economic_building()
     paused_date = _extract_map_date(final_observation)
     if int(paused_date["ordinal"]) < int(running_date["ordinal"]):
         raise AgentError("paused map date moved backwards")
@@ -1423,6 +1879,7 @@ def _drive_opening(
         "first_ordinary_event": ordinary_events[0],
         "ordinary_events": ordinary_events,
         "map_panels": map_panels,
+        "economic_building": economic_building,
         "time_progression": {
             "strategy": "speed-five-visible-date-v1",
             "starting_date": starting_date,
@@ -1542,6 +1999,7 @@ def _opening_smoke_locked(
             contract_sha256,
             deadline,
             ordinary_event_count,
+            True,
             True,
         )
     except BaseException as error:
