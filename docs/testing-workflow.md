@@ -262,6 +262,14 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   `5` 设最高速度，Space 恢复和暂停。每个单键批次 `2/2`、组合键批次 `4/4`，总耗时约 216 秒；
   日期从 1066-09-15 推进至 10-02（17 日），最终 `map_hud`、tracked cleanup 成立。下一功能切片是持续推进并
   识别、选择首个真实普通事件，而不是继续扩展开局固定动作。
+- 首个普通事件竖切提交 `bdd9956`、环境
+  `e0187715652fe969bfa36b306d3a432752cbc89133ef8c64b83ae07ae2c3b031` 的实机
+  `20260822T162844Z-opening-33bdd96f` 为 GREEN。OCR 双帧识别【诺曼人的西西里】和三个可见选项，执行器用
+  `Shift+1` 选择【所有这些，甚至还有更多，都会是我的！】；第一张后置帧仍含事件淡出残影，第二张已是运行地图，
+  因而后置判断以稳定末帧为准。全程 18 个动作中 12 个键盘、6 个鼠标，日期从 1066-09-15 推进至 11-06
+  （52 日）后 Space 暂停，最终 `map_hud`、`ok=true`、tracked cleanup 成立。前一候选
+  `20260822T162157Z-opening-e64b42bd` 的 Shift+1 实际已经生效，只是旧判断把淡出首帧误作事件仍在；该 RED
+  保持原结论，修订后使用新提交和新环境运行，未重标或重用原候选。
 - 用户真实纪录靠 tutorial.txt 备份/恢复保护；默认 selftest 与 `on-first-life/off` 会剥掉 `xar_hs_ge_*` 行（纪录 0），`on-recorded` 固定预置 100；`--import-record 100` 仅改变 selftest。
 - restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验。2026-08-20 实测发现宿主超时会终止 runner 的整个子进程树，普通 `Popen(CREATE_NO_WINDOW)` watchdog 也被一起杀死，遗留隔离后的 `dlc_load.json` 与测试 autosave；已从该次精确 backup 全量恢复并核对六项 hash。watchdog 现由 WMI `Win32_Process.Create` 启动在 runner 进程树之外。2026-08-19 另实测 dev selftest autosave 会让下一次 release 投影扫描已剥离的 `xar_selftest` 规则键并误报；现启动前先完整复制并校验全部 `autosave*.ck3`，写 ready 标记后才移走，结束时删除测试 autosave 并恢复原件。
 - 2026-08-19 长期平衡摇测发现当前播放集还启用了四个自动控制/改宗 mod，会污染领地、信仰与资源结果。runner 现同时备份 `dlc_load.json`，启动前把 `enabled_mods` 精确收敛为 `mod/ugc_3784706360.mod`，杀死测试 CK3 后再恢复；watchdog 同样覆盖此文件。

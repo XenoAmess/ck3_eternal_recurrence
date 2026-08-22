@@ -98,7 +98,12 @@ opening smoke 已能合法新开局、完成首轮交易，并从地图 HUD 打�
 `Shift+数字`，角色页用 F1，确认用 Enter，关闭用 Esc，速度用 `5`，暂停/继续用 Space；鼠标只保留
 主菜单、书签和没有可靠直达键的生活方式控件。提交 `d99331a` 的实机 `20260822T155740Z-opening-b33c1328`
 已确认该链 GREEN：11 个键盘动作和 6 个鼠标动作全部到达正确后置画面，总耗时约 216 秒，日期推进 17 日，
-最终 `map_hud` 且清理完整。下一价值切片是处理时间推进后出现的首个真实游戏事件。
+最终 `map_hud` 且清理完整。提交 `bdd9956`、环境
+`e0187715652fe969bfa36b306d3a432752cbc89133ef8c64b83ae07ae2c3b031` 的实机
+`20260822T162844Z-opening-33bdd96f` 又识别到首个普通事件【诺曼人的西西里】及三个可见选项，使用
+`Shift+1` 选择【所有这些，甚至还有更多，都会是我的！】并确认事件消失；全程共 18 个动作，其中 12 个键盘、
+6 个鼠标，日期从 1066-09-15 推进至 11-06 后暂停，最终 `map_hud`、`ok=true` 且清理完整。下一价值切片是
+持续处理多个事件，并依据可见收益而不是固定第一项选择。
 
 提交 `226d80e` 曾在同一环境 `219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba`
 下通过 ordinary `20260822T005515Z-03f296c7` 与 post-resume crash
@@ -194,7 +199,7 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" smoke
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" crash-smoke
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" menu-smoke --timeout 180
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-smoke --timeout 300
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-smoke --timeout 480
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" recover-stale-control --run-id <finalized-RED-run-id>
 ```
 
