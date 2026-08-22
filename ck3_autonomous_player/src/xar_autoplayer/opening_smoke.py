@@ -1273,14 +1273,144 @@ def _drive_opening(
         return first, second
 
     def construct_first_economic_building() -> tuple[dict[str, object], dict[str, object]]:
+        realm_title = "我的领地"
         _realm_summary, realm_frame = inspect_map_panel(
             "realm",
-            "我的领地",
+            realm_title,
             "f2",
             CK3_SHORTCUT_SCAN_CODES["f2"],
             leave_open=True,
         )
         driver = new_driver()
+
+        # An ordinary event can be queued while the slower panel inspection
+        # pass is running.  Resolve such a visible interruption with CK3's
+        # native Shift+number binding before looking for the holding row.
+        for _interruption in range(MAX_CHAINED_ORDINARY_EVENTS):
+            detected_event = _generic_event_in_frame(realm_frame)
+            if detected_event is None:
+                break
+            selected_event_option, option_score, score_reasons = (
+                _choose_generic_event_option(detected_event)
+            )
+            option_number = int(selected_event_option["option_number"])
+            key, scan_code = EVENT_OPTION_SHORTCUTS[option_number]
+            interruption_index = len(ordinary_events) + 1
+            control_id = f"ordinary_event.option_{option_number}"
+            window.require_foreground()
+            append_event(
+                events,
+                {
+                    "kind": "opening_key_input_planned",
+                    "control_id": control_id,
+                    "event_index": interruption_index,
+                    "key": key,
+                    "scan_code": scan_code,
+                    "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
+                    "expected_post_screen": "realm_or_ordinary_event",
+                },
+            )
+            accepted, last_error = _prepare_key_chord_batch(
+                CK3_SHORTCUT_SCAN_CODES["left_shift"], scan_code
+            )()
+            if accepted != 4:
+                raise AgentError(
+                    f"{key} interrupting-event shortcut SendInput was partial: "
+                    f"accepted={accepted}, last_error={last_error}"
+                )
+
+            transition_deadline = min(deadline, time.monotonic() + 12.0)
+            prior_frame = None
+            prior_state = None
+            while time.monotonic() < transition_deadline:
+                candidate = driver.capture_once()
+                candidate_event = _generic_event_in_frame(candidate)
+                if candidate_event is not None:
+                    candidate_state = (
+                        "ordinary_event",
+                        str(candidate_event["title"]),
+                        tuple(
+                            str(item["visible_text"])
+                            for item in candidate_event["options"]
+                        ),
+                    )
+                elif _spans_with_text(candidate, realm_title, contains=True):
+                    candidate_state = ("realm_panel",)
+                else:
+                    prior_frame = None
+                    prior_state = None
+                    continue
+                if (
+                    prior_frame is not None
+                    and candidate.capture_sequence
+                    == prior_frame.capture_sequence + 1
+                    and candidate_state == prior_state
+                ):
+                    realm_frame = candidate
+                    break
+                prior_frame = candidate
+                prior_state = candidate_state
+            else:
+                raise AgentError(
+                    "interrupting ordinary event did not resolve to a stable state"
+                )
+            result_event = _generic_event_in_frame(realm_frame)
+            result_screen = (
+                "ordinary_event" if result_event is not None else "realm_panel"
+            )
+            actions.append(
+                {
+                    "control_id": control_id,
+                    "status": "confirmed",
+                    "input_kind": "keyboard_shortcut",
+                    "key": key,
+                    "scan_code": scan_code,
+                    "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
+                    "send_input": {
+                        "requested": 4,
+                        "accepted": accepted,
+                        "last_error": last_error,
+                    },
+                    "event_index": interruption_index,
+                    "event_title": detected_event["title"],
+                    "visible_option": selected_event_option["visible_text"],
+                    "visible_option_count": len(detected_event["options"]),
+                    "strategy_score": option_score,
+                    "strategy_reasons": score_reasons,
+                    "source_observation_id": detected_event["observation_id"],
+                    "result_observation_id": realm_frame.observation_id,
+                    "expected_post_screen": result_screen,
+                }
+            )
+            append_event(
+                events,
+                {
+                    "kind": "opening_step_completed",
+                    "control_id": control_id,
+                    "event_index": interruption_index,
+                    "result_screen": result_screen,
+                    "result_observation_id": realm_frame.observation_id,
+                },
+            )
+            ordinary_events.append(
+                {
+                    "event_index": interruption_index,
+                    "title": detected_event["title"],
+                    "visible_options": detected_event["options"],
+                    "selected_option_number": option_number,
+                    "selected_visible_text": selected_event_option["visible_text"],
+                    "strategy_score": option_score,
+                    "strategy_reasons": score_reasons,
+                    "strategy": "visible-option-utility-v1",
+                    "source_observation_id": detected_event["observation_id"],
+                    "interrupted_action": "construct_first_economic_building",
+                }
+            )
+        else:
+            if _generic_event_in_frame(realm_frame) is not None:
+                raise AgentError(
+                    "ordinary CK3 interruption chain exceeded its bounded depth"
+                )
 
         def holding_view(frame: object) -> bool:
             return (
