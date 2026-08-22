@@ -342,6 +342,19 @@ class OpeningContractTests(unittest.TestCase):
         self.assertEqual(first["options"][0]["option_number"], 1)
         self.assertIn("小婴儿", first["options"][0]["visible_text"])
 
+        faded = observation(9)
+        gone = SimpleNamespace(
+            observation_id="map-after-event",
+            capture_sequence=10,
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span("政治地图", (2449, 1180), (2409, 1168, 2490, 1192)),
+                span("公元1067年1月16日", (2181, 1420), (2077, 1407, 2285, 1433)),
+            ),
+        )
+        self.assertIsNotNone(_generic_event_in_frame(faded))
+        self.assertIsNone(_generic_event_in_frame(gone))
+
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (
             ("blessing_event.option_1", "普通-特质：长明的定力 (耐心)", 879),

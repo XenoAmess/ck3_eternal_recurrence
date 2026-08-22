@@ -950,7 +950,7 @@ def _drive_opening(
             if running_error is not None:
                 raise running_error
             raise
-    if any(_generic_event_in_frame(frame) is not None for frame in post_state.frames):
+    if _generic_event_in_frame(post_state.latest) is not None:
         raise AgentError("ordinary CK3 event remained visible after its shortcut")
 
     ordinary_action = {
