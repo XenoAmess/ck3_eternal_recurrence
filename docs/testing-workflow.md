@@ -270,6 +270,16 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   （52 日）后 Space 暂停，最终 `map_hud`、`ok=true`、tracked cleanup 成立。前一候选
   `20260822T162157Z-opening-e64b42bd` 的 Shift+1 实际已经生效，只是旧判断把淡出首帧误作事件仍在；该 RED
   保持原结论，修订后使用新提交和新环境运行，未重标或重用原候选。
+- 连续事件提交 `c9d2c31` 首次候选 `20260822T164851Z-opening-ccfefe4e` 已成功处理前两个普通事件；第 3 个
+  【挑战】的 `Shift+1` 又立即串出【优势】，旧后置判断把新的事件页误作原事件未关闭，故该 run 保留 RED。提交
+  `f6bba36` 将稳定的新标题/选项页作为链式事件继续处理；新环境
+  `eb7479741e26a9688720951129b8c376cf19b1471cab2ffd7ea2490939ec6ec0` 的
+  `20260822T170117Z-opening-eaeef47a` 随后 GREEN：目标 3 个普通事件，实际处理【诺曼人的西西里】、
+  【患病：肉体凡胎】、【患病：宫廷医生】、【患病：治疗时间】和【患病：些许起色】共 5 页；全部使用
+  `Shift+1`，22 个总动作中 16 个键盘、6 个鼠标，日期从 1066-09-15 推进 451 日至 1067-12-10 后暂停，
+  tracked cleanup 成立。普通地图等待改为只对 `x=.23..48,y=.22..80` 事件栏做不落盘 CUDA OCR 预检，命中后
+  才保存两张全屏确认帧；同一实机事件图裁剪约 0.172 秒、全屏约 0.456 秒，五事件归档 663.9 MB，与此前单事件
+  666.4 MB 基本相同，避免按等待时长线性膨胀。
 - 用户真实纪录靠 tutorial.txt 备份/恢复保护；默认 selftest 与 `on-first-life/off` 会剥掉 `xar_hs_ge_*` 行（纪录 0），`on-recorded` 固定预置 100；`--import-record 100` 仅改变 selftest。
 - restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验。2026-08-20 实测发现宿主超时会终止 runner 的整个子进程树，普通 `Popen(CREATE_NO_WINDOW)` watchdog 也被一起杀死，遗留隔离后的 `dlc_load.json` 与测试 autosave；已从该次精确 backup 全量恢复并核对六项 hash。watchdog 现由 WMI `Win32_Process.Create` 启动在 runner 进程树之外。2026-08-19 另实测 dev selftest autosave 会让下一次 release 投影扫描已剥离的 `xar_selftest` 规则键并误报；现启动前先完整复制并校验全部 `autosave*.ck3`，写 ready 标记后才移走，结束时删除测试 autosave 并恢复原件。
 - 2026-08-19 长期平衡摇测发现当前播放集还启用了四个自动控制/改宗 mod，会污染领地、信仰与资源结果。runner 现同时备份 `dlc_load.json`，启动前把 `enabled_mods` 精确收敛为 `mod/ugc_3784706360.mod`，杀死测试 CK3 后再恢复；watchdog 同样覆盖此文件。
