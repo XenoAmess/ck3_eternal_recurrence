@@ -56,7 +56,7 @@ monotonic 时间严格递增，并绑定同一 PID、创建时间、进程句柄
 `02_bookmark.png` 转场/遮挡候选中只放过 4 张，人工与 OCR 复核均为真实稳定大厅。源截图集合没有入库，当前仓库不能独立
 重建“377 张均稳定”的筛选过程；配置只冻结计数、摘要、阈值和来源规则，因此这仍不是本轮真实 `menu-smoke` 证据。
 
-## 首次真实运行证据（2026-08-22）
+## 真实运行证据（2026-08-22）
 
 提交 `226d80e` 先在环境 SHA-256
 `219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba` 下取得普通 smoke
@@ -99,13 +99,13 @@ protected 与 production postflight 均通过。当前归档只证明“绑定 H
 HWND、PID、TID 或检测 checkpoint，故不能从停机后的当前桌面反推历史抢焦者。原 run 永不重试；先增加 RED-only、只读、主链绑定的
 foreground-loss snapshot，再依据新证据选择方法。
 
-当前候选已实现这条 snapshot 链，尚未进行下一次真实菜单尝试。loss 判定冻结同一次 raw/root foreground 样本、
+提交 `c8531be` 实现了这条 snapshot 链，并由上述 `20260822T050447Z-menu-0eae4606` 真实 RED 固定证据。loss 判定冻结同一次
+raw/root foreground 样本、
 `capture.pre_grab|capture.post_grab|foreground_guard|capture_patch.pre_grab|capture_patch.post_grab`、capture sequence、
 UTC/monotonic、input tick、target HWND/PID/TID，以及 actual raw/root HWND、root HWND 对应的 PID/TID、class、rect、topmost；
 外部进程 image/creation 只有持柄和 HWND 复核都成功才是 proven，否则为 unknown。判定前保留既有的只读 WMI/唯一窗口
 认证；判定样本后的 enrichment 明确不读窗口标题、不再做 WMI/全桌面枚举，也不激活、关闭、输入、sleep 或重试。canonical snapshot artifact 先 fsync，再发布唯一 `foreground_lost` 主 WAL；
-report/event/manifest/public validator 三向绑定，写入失败或孤儿证据会让 preseal 保持 provisional。旧 run 继续无回填兼容；代码指纹已变，
-所以下次 one-shot 前仍要在新提交/新 environment 下重新取得 ordinary v2 与 crash 两项资格。
+report/event/manifest/public validator 三向绑定，写入失败或孤儿证据会让 preseal 保持 provisional。旧 run 继续无回填兼容。
 
 ## 一次性前台与输入协议
 
@@ -120,7 +120,7 @@ PID/TID/HWND 后再调用一次 `SetForegroundWindow`，并在 `finally` 中强�
 真实 RED `20260822T050447Z-menu-0eae4606` 在 `capture.pre_grab` 保存到一个与目标同为全屏矩形、不同 PID、
 class 精确为 `Ghost` 的前台快照；该 owner 的 `OpenProcess` 被拒，因此归档只能把进程身份记为 `unknown`，不能把它追认成
 `dwm.exe`。本次还表明，activation finished 到 Ghost loss 约有 3.39 秒，短暂的 500 ms 就绪采样不足以吸收启动期
-ghosting。下一候选因此在任何 `SetForegroundWindow` / `AttachThreadInput` 前增加纯读响应稳定门：总等待不超过 30 秒且
+ghosting。提交 `39860a0` 因此在任何 `SetForegroundWindow` / `AttachThreadInput` 前增加纯读响应稳定门：总等待不超过 30 秒且
 不得超过场景剩余 deadline；门内不做 WMI、全桌面枚举、激活、关闭或输入，只用保留的精确进程句柄、目标 HWND/PID/TID/
 client rect、`GetLastInputInfo`、`SendMessageTimeoutW(WM_NULL, SMTO_BLOCK|SMTO_ABORTIFHUNG|SMTO_ERRORONEXIT)` 和
 `IsHungAppWindow` 采样。`WM_NULL` 成功是主要响应证明，`IsHungAppWindow=true` 只作 veto；250 ms cadence 下必须取得一段
@@ -133,22 +133,54 @@ client rect、`GetLastInputInfo`、`SendMessageTimeoutW(WM_NULL, SMTO_BLOCK|SMTO
 新 producer 写入 `foreground_protocol_version=2`，因此新 GREEN/RED 一旦有 finished 都必须带该证据；缺少版本字段的兼容口
 只钉住四份既有 finalized 零输入 RED 的 run ID 与 final-event digest，不能通过删除字段把任意新 RED 降级成 legacy。
 
-每个 run 只有一个不可恢复的输入预算。成功签发 token 后，一旦动作被接受，无论之后是在鼠标移动前拒绝、
+该提交在环境 `d343278a3e2d046c7aadc2ad90d75640aadca483b3192801234f4e8a096befa2` 下取得 ordinary v2
+`20260822T060233Z-be4794fb` 与 crash `20260822T060508Z-crash-123c80f3` 两项 GREEN，随后只运行一次
+`20260822T060758Z-menu-fc73b5c5`。这次响应稳定门、稳定主菜单、fresh frame 与 `ui_input_armed` 均通过，鼠标移动到
+`(600,558)`，hover OCR 与 patch 也匹配；但最终输入提交前 caller token 已约 5.85 秒，越过当时单一 5 秒 TTL，故以
+`visible control token expired at input submission` 安全 RED。receipt 为
+`pointer_input_may_have_occurred=true`、`button_click_may_have_occurred=false`、`send_input.accepted=null`；没有调用
+`SendInput`，没有 LEFTDOWN/LEFTUP 或点击。Job 1→0、进程树、watchdog、四类 control 和双源 CK3 inventory 均排空，
+protected baseline 与 production tree 后置复核通过。原 run/候选不可重试，它也不是书签页 GREEN。
+
+### 分阶段输入授权
+
+上述 RED 的根因不是画面或身份漂移，而是 caller 的 5 秒 token 错误覆盖了 fresh capture、WAL、鼠标移动与较慢的 hover OCR。
+不能用扩大全局 TTL 来模糊 freshness 边界。新协议保持 caller token 的 5 秒有效期，但只在动作 admission 时消费；随后签发两份
+短期内部 lease：
+
+- `fresh_move`（执行器 purpose 为 `fresh_target_pointer_move`）从 fresh observation 的保守采集时刻起有效 5 秒，绑定
+  action/control、contract、进程/窗口 binding、fresh frame、target、caller token hash 与绝对 action deadline；父授权是 caller。
+- `hover_click`（执行器 purpose 为 `hover_verified_left_click_batch`）从 hover observation 的保守采集时刻起有效 5 秒，绑定
+  同一 action/control、contract、binding、hover frame、target 与绝对 deadline；父授权是 fresh lease。
+
+两份 lease 都是 HMAC 签发、一次性消费；receipt 只保存可公开复算的 claims/token SHA-256、签发/到期/消费时刻与父链。
+fresh lease 在已持久化 WAL 后、移动鼠标前重新验证并消费；hover lease 在全部最终 guard 通过后、`SendInput` 前紧邻验证并消费，
+两者之间不得偷渡第二次授权。动作 admission 同时固定绝对 deadline；任何截图在返回时已经越界都拒绝，后置观察只使用该 deadline
+剩余时间，不能从输入完成点重新获得完整 timeout。
+
+新 menu report 写入 `visible_action_protocol_version=2`。公开 validator 必须复算两份 claims hash、source observation/token、
+target、父授权、时间关系、绝对 deadline 和 WAL 交叉绑定；新报告缺失版本化 authorization 即 RED。旧
+`20260822T060758Z-menu-fc73b5c5` 仅按 run ID 与 final-event digest
+`aef3dc4d0dc6bbcaf117dfaabc1d27b263309ec2f58cab5b9a14aa4ffb46396d` 固定只读兼容，不能靠删版本字段让新报告走 legacy。
+这套协议尚未用于新的真实 CK3 `menu-smoke`，不得宣称实机 GREEN 或已经重试。
+
+每个 run 只有一个不可恢复的输入预算。caller token 完成 admission 后，一旦动作被接受，无论之后是在鼠标移动前拒绝、
 SendInput 部分失败，还是后置状态超时，都不得再签发或执行第二个动作。
 
 输入顺序为：
 
 1. 复核冻结环境、单 mod attestation、pinned CK3 进程、唯一窗口、固定 client rect、已完成且可回放的前台事务和无遮挡。
-2. 保存两帧 `main_menu` 及 OCR/观察证据，生成只对该 session、frame、bbox 和 control 语义有效的短期 token。
+2. 保存两帧 `main_menu` 及 OCR/观察证据，生成只对该 session、frame、bbox 和 control 语义有效的 5 秒 caller token；它只
+   负责 admission，不授权后续整段流水线。
 3. 重新采集 fresh frame、重放分类并重新定位目标；此阶段仍未移动鼠标。若屏幕、控件唯一性或无遮挡条件变化，立即以
-   零输入 RED 结束。
+   零输入 RED 结束；成功则从该 fresh frame 签发绑定 target、caller 父授权和绝对 deadline 的 5 秒 fresh lease。
 4. 在任何合成焦点键、鼠标移动或点击前，向主 run `events.jsonl` 追加并 `fsync` 一次 `ui_input_armed`；这才是
-   输入 write-ahead log，JSON receipt 只是派生视图。随后才移动到目标、等待 hover，再采集并复核。禁止用 Alt 等额外合成键抢焦点；
-   若 CK3 已失去前台则直接 RED。
-5. 在内存中保存 hover target patch。最终临界区只允许：快速重截同一 patch、逐字节哈希比较、foreground /
-   client / cursor / `WindowFromPoint` 复核、monotonic TTL 复核、一次 Win32 `SendInput` 批次提交
-   `LEFTDOWN+LEFTUP`。其间不得 OCR、sleep 或写盘。
-6. 输入后不发送任何恢复键，只等待两帧 `bookmark_lobby`。未知或超时记录
+   输入 write-ahead log，JSON receipt 只是派生视图。随后紧邻移动前消费 fresh lease，才移动到目标、等待 hover，再采集并复核。
+   禁止用 Alt 等额外合成键抢焦点；若 CK3 已失去前台则直接 RED。
+5. 从 hover frame 签发以 fresh lease 为父授权的 5 秒 hover lease，并在内存中保存 hover target patch。最终临界区只允许：
+   快速重截同一 patch、逐字节哈希比较、foreground / client / cursor / `WindowFromPoint` 复核、absolute deadline 与 hover lease
+   复核、紧邻消费 lease、一次 Win32 `SendInput` 批次提交 `LEFTDOWN+LEFTUP`。其间不得 OCR、sleep 或写盘。
+6. 输入后不发送任何恢复键，只用动作绝对 deadline 的剩余时间等待两帧 `bookmark_lobby`。未知或超时记录
    `failed_after_possible_input`，随后进入受控清理。
 
 进程路径信任根是启动时保留的精确进程句柄及其 `image_path()`。WMI 必须继续精确匹配 PID、创建时间、名称与
@@ -178,17 +210,22 @@ state lock + game launch lock
   -> foreground finished attestation
   -> two-frame main_menu
   -> ui_action_planned
+  -> caller-token admission + absolute action deadline
+  -> fresh frame + fresh_move lease
   -> durable ui_input_armed
-  -> exactly one SendInput batch
-  -> two-frame bookmark_lobby
+  -> consume fresh_move lease + pointer move
+  -> hover frame + hover_click lease
+  -> consume hover_click lease + exactly one SendInput batch
+  -> two-frame bookmark_lobby within remaining deadline
   -> tracked stop + Job/watchdog/control/global-empty conjunction
   -> protected / production postflight only when cleanup_proven=true
   -> report-body-bound final event and atomic final report
 ```
 
 GREEN 报告至少绑定：固定 UI 合约的来源、environment 记录哈希与归档哈希；前后各两帧 PNG、OCR、观察 JSON
-及递增采集序号；PID / creation / exe / HWND / rect；唯一 confirmed action receipt；目标 bbox、client/screen
-中心、hover/final patch、SendInput 接受数；主 `events.jsonl` 的 WAL 与 tail；load、shutdown、全局清点、protected 与 production
+及递增采集序号；PID / creation / exe / HWND / rect；唯一 confirmed action receipt；版本化 caller/fresh/hover authorization、
+父链与绝对 deadline；目标 bbox、client/screen 中心、hover/final patch、SendInput 接受数；主 `events.jsonl` 的 WAL 与 tail；
+load、shutdown、全局清点、protected 与 production
 证据。专用公开 validator 必须逐项复算；历史 format v1 `validate_smoke_report()` 只有无密钥事件链/定稿检查，不能替代它。
 format v2 ordinary validator 虽已能自包含重放可见主菜单、加载、诊断、进程清理、protected 与 production 证明，但仍不验证本场景的
 foreground、UI WAL、像素 patch、单次 SendInput 和书签页后置条件，因此也不能替代 menu validator。
@@ -196,13 +233,13 @@ foreground、UI WAL、像素 patch、单次 SendInput 和书签页后置条件�
 所有哈希链均是无密钥的一致性链，只证明当前归档在同一 validator、仓库与 OCR runtime 下满足 schema 与内部关系，
 不证明历史执行真实性，也不是跨机数字签名。
 
-## 首次真实点击前门禁
+## 下一次真实点击提交前门禁
 
 1. 合约漂移、模态/遮罩、两帧丢失/换序、重复动作、部分 SendInput、超时、异步中断、cleanup 未证明与 artifact
    篡改的离线负例全部 GREEN（即正确 fail closed）。
 2. 无害 Win32 helper-window 实测 96 DPI 下 client→screen 换算、foreground / Z-order / overlay 抢占反证、
    WMI 空 `ExecutablePath` 的句柄信任，以及唯一一次两记录 SendInput 只抵达认证目标。
-3. 提交代码，重新 `prepare-profile`；由于 runtime 指纹变化，旧 ordinary/crash GREEN 不资格化新候选。
+3. 提交分阶段授权代码，重新 `prepare-profile`；由于 runtime 指纹变化，旧 ordinary/crash GREEN 不资格化新候选。
 4. 同一新 environment 下重新通过 ordinary smoke 与 post-resume crash-smoke。
-5. 才允许执行一次真实 `menu-smoke`。首次如果出现教程或未知模态，应保存 RED 证据并停止，不得盲点【取消】、
+5. 才允许执行一次新的真实 `menu-smoke`。如果出现教程、未知模态或授权过期，应保存 RED 证据并停止，不得盲点【取消】、
    【继续】或【开始】。

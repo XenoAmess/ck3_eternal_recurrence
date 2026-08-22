@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 import hashlib
 import hmac
 import json
+import math
 from pathlib import Path
 import secrets
 import time
@@ -87,6 +88,17 @@ class _IssuedControl:
     stable_observation: StableObservation | None = None
 
 
+@dataclass(frozen=True)
+class _InternalControlLease:
+    purpose: str
+    parent_authority_sha256: str
+    claims_sha256: str
+    token_sha256: str
+    issued_monotonic: float
+    expires_monotonic: float
+    signature: str
+
+
 class VisibleUiDriver:
     TOKEN_TTL_SECONDS = 5.0
     TARGET_PATCH_PADDING = 12
@@ -135,6 +147,7 @@ class VisibleUiDriver:
         self._sequence = 0
         self._capture_sequence = 0
         self._input_budget_consumed = False
+        self._consumed_internal_leases: set[str] = set()
 
     def _emit_durable_event(self, event: dict[str, object]) -> str:
         # The callback receives an immutable-by-ownership snapshot: retaining
@@ -190,6 +203,200 @@ class VisibleUiDriver:
             separators=(",", ":"),
         ).encode("utf-8")
         return hmac.new(self._secret, payload, hashlib.sha256).hexdigest()
+
+    def _internal_lease_claims(
+        self,
+        *,
+        purpose: str,
+        action_id: str,
+        caller_token_sha256: str,
+        parent_authority_sha256: str,
+        binding: dict[str, object],
+        action_deadline: float,
+        observation: Observation,
+        spec: ControlSpec,
+        span: OcrSpan,
+        target: dict[str, object],
+        issued_monotonic: float,
+        expires_monotonic: float,
+    ) -> dict[str, object]:
+        matching_controls = [
+            control
+            for control in observation.controls
+            if control.control_id == spec.control_id
+            and control.bbox == span.bbox
+            and control.center == span.center
+        ]
+        if len(matching_controls) != 1:
+            stage = "fresh" if purpose.startswith("fresh_") else "hover"
+            raise AgentError(
+                f"{stage} visible control lease lacks one exact observation control"
+            )
+        source_token = matching_controls[0].token
+        expected_source_token = self._token(
+            observation.observation_id, observation.frame_id, spec, span
+        )
+        if (
+            not isinstance(source_token, str)
+            or len(source_token) != 64
+            or any(character not in "0123456789abcdef" for character in source_token)
+            or not hmac.compare_digest(source_token, expected_source_token)
+        ):
+            raise AgentError("visible control lease source token is invalid")
+        return {
+            "protocol_version": 2,
+            "purpose": purpose,
+            "action_id": action_id,
+            "control_id": spec.control_id,
+            "caller_token_sha256": caller_token_sha256,
+            "contract_sha256": self._contract_sha256,
+            "binding": copy.deepcopy(binding),
+            "action_deadline_monotonic": action_deadline,
+            "parent_authority_sha256": parent_authority_sha256,
+            "observation": self._observation_evidence(observation),
+            "source_control_token_sha256": hashlib.sha256(
+                source_token.encode("ascii")
+            ).hexdigest(),
+            "target": copy.deepcopy(target),
+            "issued_monotonic": issued_monotonic,
+            "expires_monotonic": expires_monotonic,
+        }
+
+    @staticmethod
+    def _canonical_claims(claims: dict[str, object]) -> bytes:
+        return json.dumps(
+            claims, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+
+    def _issue_internal_lease(
+        self,
+        *,
+        purpose: str,
+        action_id: str,
+        caller_token_sha256: str,
+        parent_authority_sha256: str,
+        binding: dict[str, object],
+        action_deadline: float,
+        observation: Observation,
+        spec: ControlSpec,
+        span: OcrSpan,
+        target: dict[str, object],
+    ) -> _InternalControlLease:
+        if purpose not in {
+            "fresh_target_pointer_move",
+            "hover_verified_left_click_batch",
+        }:
+            raise AgentError("visible control lease stage is invalid")
+        stage = "fresh" if purpose.startswith("fresh_") else "hover"
+        if observation.screen != spec.screen:
+            raise AgentError(f"{stage} visible control lease screen differs")
+        issued_monotonic = float(observation.captured_monotonic)
+        expires_monotonic = issued_monotonic + self.TOKEN_TTL_SECONDS
+        if (
+            not math.isfinite(issued_monotonic)
+            or issued_monotonic < 0
+            or not math.isfinite(expires_monotonic)
+        ):
+            raise AgentError(f"{stage} visible control lease clock is invalid")
+        claims = self._internal_lease_claims(
+            purpose=purpose,
+            action_id=action_id,
+            caller_token_sha256=caller_token_sha256,
+            parent_authority_sha256=parent_authority_sha256,
+            binding=binding,
+            action_deadline=action_deadline,
+            observation=observation,
+            spec=spec,
+            span=span,
+            target=target,
+            issued_monotonic=issued_monotonic,
+            expires_monotonic=expires_monotonic,
+        )
+        payload = self._canonical_claims(claims)
+        claims_sha256 = hashlib.sha256(payload).hexdigest()
+        signature = hmac.new(self._secret, payload, hashlib.sha256).hexdigest()
+        return _InternalControlLease(
+            purpose=purpose,
+            parent_authority_sha256=parent_authority_sha256,
+            claims_sha256=claims_sha256,
+            token_sha256=hashlib.sha256(signature.encode("ascii")).hexdigest(),
+            issued_monotonic=issued_monotonic,
+            expires_monotonic=expires_monotonic,
+            signature=signature,
+        )
+
+    @staticmethod
+    def _lease_evidence(
+        lease: _InternalControlLease, consumed_monotonic: float | None
+    ) -> dict[str, object]:
+        return {
+            "purpose": lease.purpose,
+            "parent_authority_sha256": lease.parent_authority_sha256,
+            "claims_sha256": lease.claims_sha256,
+            "token_sha256": lease.token_sha256,
+            "issued_monotonic": lease.issued_monotonic,
+            "expires_monotonic": lease.expires_monotonic,
+            "consumed_monotonic": consumed_monotonic,
+        }
+
+    def _require_internal_lease(
+        self,
+        lease: _InternalControlLease,
+        *,
+        purpose: str,
+        action_id: str,
+        caller_token_sha256: str,
+        parent_authority_sha256: str,
+        binding: dict[str, object],
+        observation: Observation,
+        spec: ControlSpec,
+        span: OcrSpan,
+        target: dict[str, object],
+        action_deadline: float,
+        checkpoint: str,
+        consume: bool,
+    ) -> float:
+        stage = "fresh" if purpose.startswith("fresh_") else "hover"
+        claims = self._internal_lease_claims(
+            purpose=purpose,
+            action_id=action_id,
+            caller_token_sha256=caller_token_sha256,
+            parent_authority_sha256=parent_authority_sha256,
+            binding=binding,
+            action_deadline=action_deadline,
+            observation=observation,
+            spec=spec,
+            span=span,
+            target=target,
+            issued_monotonic=lease.issued_monotonic,
+            expires_monotonic=lease.expires_monotonic,
+        )
+        payload = self._canonical_claims(claims)
+        expected_claims_sha256 = hashlib.sha256(payload).hexdigest()
+        expected_signature = hmac.new(
+            self._secret, payload, hashlib.sha256
+        ).hexdigest()
+        expected_token_sha256 = hashlib.sha256(
+            expected_signature.encode("ascii")
+        ).hexdigest()
+        if (
+            lease.purpose != purpose
+            or lease.parent_authority_sha256 != parent_authority_sha256
+            or lease.claims_sha256 != expected_claims_sha256
+            or lease.token_sha256 != expected_token_sha256
+            or not hmac.compare_digest(lease.signature, expected_signature)
+        ):
+            raise AgentError(f"{stage} visible control lease binding differs")
+        checked = time.monotonic()
+        if checked < lease.issued_monotonic or checked > lease.expires_monotonic:
+            raise AgentError(f"{stage} visible control lease expired {checkpoint}")
+        if checked > action_deadline:
+            raise AgentError(f"visible action deadline expired {checkpoint}")
+        if consume:
+            if lease.token_sha256 in self._consumed_internal_leases:
+                raise AgentError(f"{stage} visible control lease was already consumed")
+            self._consumed_internal_leases.add(lease.token_sha256)
+        return checked
 
     def _capture_observation_with_image(
         self, expected_screen: str | None = None
@@ -318,15 +525,30 @@ class VisibleUiDriver:
         timeout_seconds: float,
         *,
         stable_frames: int = 2,
+        absolute_deadline_monotonic: float | None = None,
     ) -> StableObservation:
         if stable_frames != 2:
             raise AgentError("Phase-B visible states require exactly two stable frames")
         deadline = time.monotonic() + timeout_seconds
+        if absolute_deadline_monotonic is not None:
+            if (
+                isinstance(absolute_deadline_monotonic, bool)
+                or not isinstance(absolute_deadline_monotonic, (int, float))
+                or not math.isfinite(float(absolute_deadline_monotonic))
+            ):
+                raise AgentError("visible observation deadline must be finite")
+            # The relative timeout is only a convenience for callers.  An
+            # already-established action deadline must never be re-based if
+            # this thread is descheduled between computing the remaining time
+            # and entering the observation loop.
+            deadline = min(deadline, float(absolute_deadline_monotonic))
         prior: Observation | None = None
         hits = 0
         last: Observation | None = None
         while time.monotonic() < deadline:
             last = self._capture_observation(expected_screen)
+            if time.monotonic() >= deadline:
+                break
             if last.screen != expected_screen:
                 hits = 0
                 prior = None
@@ -400,11 +622,27 @@ class VisibleUiDriver:
         # A malformed, expired, or rejected invocation still consumes the
         # driver's only capability.  A fresh token must never become a retry.
         self._input_budget_consumed = True
+        if (
+            isinstance(timeout_seconds, bool)
+            or not isinstance(timeout_seconds, (int, float))
+            or not math.isfinite(float(timeout_seconds))
+            or float(timeout_seconds) <= 0
+        ):
+            raise AgentError("visible action timeout must be finite and positive")
         issued = self._issued.pop(control_token, None)
         if issued is None:
             raise AgentError("unknown, stale, or already consumed control token")
-        if time.monotonic() - issued.issued_monotonic > self.TOKEN_TTL_SECONDS:
+        admission_checked = time.monotonic()
+        admission_age = admission_checked - issued.issued_monotonic
+        if (
+            not math.isfinite(admission_checked)
+            or not math.isfinite(issued.issued_monotonic)
+            or not math.isfinite(admission_age)
+            or admission_age < 0
+            or admission_age > self.TOKEN_TTL_SECONDS
+        ):
             raise AgentError("visible control token expired")
+        action_deadline = admission_checked + float(timeout_seconds)
         if issued.stable_observation is None:
             raise AgentError("visible control was not issued by a stable two-frame state")
         before, spec, old_span = (
@@ -418,6 +656,15 @@ class VisibleUiDriver:
         action_path = self.artifacts / f"{self._artifact_stem('action')}.json"
         action_ref = f"artifacts/{action_path.name}"
         token_hash = hashlib.sha256(control_token.encode("ascii")).hexdigest()
+        authorization: dict[str, object] = {
+            "protocol_version": 2,
+            "action_admitted_monotonic": admission_checked,
+            "action_timeout_seconds": float(timeout_seconds),
+            "action_deadline_monotonic": action_deadline,
+            "caller_token_issued_monotonic": issued.issued_monotonic,
+            "fresh_move_lease": None,
+            "hover_click_lease": None,
+        }
         result: dict[str, object] = {
             "format_version": 2,
             "action_id": action_id,
@@ -448,6 +695,7 @@ class VisibleUiDriver:
             "button_click_may_have_occurred": False,
             "send_input": {"requested": 2, "accepted": None, "last_error": None},
             "durable_events": {},
+            "authorization": authorization,
         }
         input_armed = False
         click_submission_started = False
@@ -511,6 +759,39 @@ class VisibleUiDriver:
                 "center": list(target.center),
                 "screen_point": list(screen_point),
             }
+            fresh_target = result["target"]["fresh"]
+            if not isinstance(fresh_target, dict):
+                raise AgentError("fresh visible target evidence is malformed")
+            fresh_lease = self._issue_internal_lease(
+                purpose="fresh_target_pointer_move",
+                action_id=action_id,
+                caller_token_sha256=token_hash,
+                parent_authority_sha256=token_hash,
+                binding=binding,
+                action_deadline=action_deadline,
+                observation=fresh,
+                spec=spec,
+                span=target,
+                target=fresh_target,
+            )
+            authorization["fresh_move_lease"] = self._lease_evidence(
+                fresh_lease, None
+            )
+            self._require_internal_lease(
+                fresh_lease,
+                purpose="fresh_target_pointer_move",
+                action_id=action_id,
+                caller_token_sha256=token_hash,
+                parent_authority_sha256=token_hash,
+                binding=binding,
+                observation=fresh,
+                spec=spec,
+                span=target,
+                target=fresh_target,
+                action_deadline=action_deadline,
+                checkpoint="before input arming",
+                consume=False,
+            )
 
             # This is the authoritative write-ahead boundary.  It is emitted
             # through the caller's fsync-backed main run chain before even the
@@ -537,6 +818,7 @@ class VisibleUiDriver:
                         "receipt_artifact": action_ref,
                         "binding": binding,
                         "target": result["target"],
+                        "fresh_move_lease_sha256": fresh_lease.token_sha256,
                         "pointer_input_may_have_occurred": True,
                         "button_click_may_have_occurred": True,
                     }
@@ -546,8 +828,24 @@ class VisibleUiDriver:
                 raise
             result["durable_events"]["armed"] = armed_digest
             write_json_atomic(action_path, result)
-            if time.monotonic() - issued.issued_monotonic > self.TOKEN_TTL_SECONDS:
-                raise AgentError("visible control token expired immediately before input")
+            fresh_consumed = self._require_internal_lease(
+                fresh_lease,
+                purpose="fresh_target_pointer_move",
+                action_id=action_id,
+                caller_token_sha256=token_hash,
+                parent_authority_sha256=token_hash,
+                binding=binding,
+                observation=fresh,
+                spec=spec,
+                span=target,
+                target=fresh_target,
+                action_deadline=action_deadline,
+                checkpoint="before pointer input",
+                consume=True,
+            )
+            authorization["fresh_move_lease"] = self._lease_evidence(
+                fresh_lease, fresh_consumed
+            )
 
             pyautogui.moveTo(*screen_point, duration=0.2)
             time.sleep(0.35)
@@ -593,6 +891,39 @@ class VisibleUiDriver:
                 "patch_bbox": list(patch_bbox),
                 "patch_sha256": expected_patch_sha256,
             }
+            hover_target_evidence = result["target"]["hover"]
+            if not isinstance(hover_target_evidence, dict):
+                raise AgentError("hover visible target evidence is malformed")
+            hover_lease = self._issue_internal_lease(
+                purpose="hover_verified_left_click_batch",
+                action_id=action_id,
+                caller_token_sha256=token_hash,
+                parent_authority_sha256=fresh_lease.token_sha256,
+                binding=binding,
+                action_deadline=action_deadline,
+                observation=hover,
+                spec=spec,
+                span=hover_target,
+                target=hover_target_evidence,
+            )
+            authorization["hover_click_lease"] = self._lease_evidence(
+                hover_lease, None
+            )
+            self._require_internal_lease(
+                hover_lease,
+                purpose="hover_verified_left_click_batch",
+                action_id=action_id,
+                caller_token_sha256=token_hash,
+                parent_authority_sha256=fresh_lease.token_sha256,
+                binding=binding,
+                observation=hover,
+                spec=spec,
+                span=hover_target,
+                target=hover_target_evidence,
+                action_deadline=action_deadline,
+                checkpoint="before final guards",
+                consume=False,
+            )
 
             # Everything durable is committed before entering this critical
             # section. The final capture has no OCR or artifact write. Its
@@ -605,8 +936,24 @@ class VisibleUiDriver:
             if not hmac.compare_digest(final_patch_sha256, expected_patch_sha256):
                 raise AgentError("visible target pixels changed immediately before input")
             self.window.require_cursor_target(hover_target.center)
-            if time.monotonic() - issued.issued_monotonic > self.TOKEN_TTL_SECONDS:
-                raise AgentError("visible control token expired at input submission")
+            hover_consumed = self._require_internal_lease(
+                hover_lease,
+                purpose="hover_verified_left_click_batch",
+                action_id=action_id,
+                caller_token_sha256=token_hash,
+                parent_authority_sha256=fresh_lease.token_sha256,
+                binding=binding,
+                observation=hover,
+                spec=spec,
+                span=hover_target,
+                target=hover_target_evidence,
+                action_deadline=action_deadline,
+                checkpoint="at input submission",
+                consume=True,
+            )
+            authorization["hover_click_lease"] = self._lease_evidence(
+                hover_lease, hover_consumed
+            )
             click_submission_started = True
             accepted, last_error = submit_left_click()
             # Pixel evidence is persisted only after the input batch returns.
@@ -637,10 +984,14 @@ class VisibleUiDriver:
                     f"last_error={last_error}"
                 )
 
+            postcondition_remaining = action_deadline - time.monotonic()
+            if postcondition_remaining <= 0:
+                raise AgentError("visible action deadline expired before postcondition")
             after = self.observe_stable(
                 spec.post_screen,
-                timeout_seconds,
+                postcondition_remaining,
                 stable_frames=2,
+                absolute_deadline_monotonic=action_deadline,
             )
             result["result_observation_id"] = after.observation_id
             result["after_stable_observation"] = after.to_audit_evidence()
@@ -658,6 +1009,7 @@ class VisibleUiDriver:
                         "receipt_artifact": action_ref,
                         "result_frame_ids": [frame.frame_id for frame in after.frames],
                         "send_input": result["send_input"],
+                        "hover_click_lease_sha256": hover_lease.token_sha256,
                     }
                 )
             except Exception:
@@ -688,16 +1040,25 @@ class VisibleUiDriver:
             write_json_atomic(action_path, result)
             if planned_event_written and not durable_event_callback_failed:
                 try:
-                    finished_digest = self._emit_durable_event(
-                        {
-                            "kind": "ui_action_finished",
-                            "action_id": action_id,
-                            "status": result["status"],
-                            "receipt_artifact": action_ref,
-                            "input_may_have_occurred": input_armed,
-                            "button_click_may_have_occurred": click_submission_started,
-                        }
-                    )
+                    finished_event: dict[str, object] = {
+                        "kind": "ui_action_finished",
+                        "action_id": action_id,
+                        "status": result["status"],
+                        "receipt_artifact": action_ref,
+                        "input_may_have_occurred": input_armed,
+                        "button_click_may_have_occurred": click_submission_started,
+                    }
+                    fresh_evidence = authorization.get("fresh_move_lease")
+                    hover_evidence = authorization.get("hover_click_lease")
+                    if isinstance(fresh_evidence, dict):
+                        finished_event["fresh_move_lease_sha256"] = fresh_evidence.get(
+                            "token_sha256"
+                        )
+                    if isinstance(hover_evidence, dict):
+                        finished_event["hover_click_lease_sha256"] = hover_evidence.get(
+                            "token_sha256"
+                        )
+                    finished_digest = self._emit_durable_event(finished_event)
                     result["durable_events"]["finished"] = finished_digest
                     write_json_atomic(action_path, result)
                 except Exception as event_error:

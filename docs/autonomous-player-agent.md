@@ -129,7 +129,7 @@
 | 阶段 | 内容 | 退出标准 |
 |---|---|---|
 | A. 隔离环境（已完成） | 专用 CK3 用户目录、production mod、固定分辨率/语言、认证看门狗、环境与存储反证 | committed candidate 已连续三次只加载本 mod 到可见主菜单；原生 Job/句柄测试与启动期 fail-closed RED 覆盖当前失败契约 |
-| B. UI 驱动底座（进行中） | 窗口分类、OCR/像素反证、可靠点击、地图/HUD/事件通用恢复 | 首个单动作菜单竖切已完成离线 sealed lifecycle 与公开回放；尚未向真实 CK3 输入 |
+| B. UI 驱动底座（进行中） | 窗口分类、OCR/像素反证、可靠点击、地图/HUD/事件通用恢复 | 首个单动作菜单竖切已完成离线 sealed lifecycle 与公开回放；真实 CK3 已移动过鼠标，但尚无按钮提交或书签页 GREEN |
 | C. 合法基线玩家 | 固定规则策略完成开局、经营、事件、死亡和结算 | 至少完成多种角色类型的有效整局基线 |
 | D. 分层规划 | 增加战争、婚姻、领地、经济、生活方式、契约和交易决策 | 决策均有可审计状态输入和理由，分数不低于固定基线 |
 | E. 经验记忆与复盘 | episode schema、检索记忆、大模型局后复盘和策略版本化 | 新局能引用相关旧经验，错误经验可回滚和追踪来源 |
@@ -156,17 +156,19 @@
 3. 视觉驱动先只接 `main_menu -> bookmark_lobby`。观察必须绑定 CK3 PID、WMI 创建时间、可执行路径、HWND、client rect 与
    2560×1440 简中 UI 契约；当前合成负例、历史截图回放与无害 Win32 helper 中的转场叠影、已知教程/确认 modal、遮挡或
    多屏同时命中会返回 unknown。真实 CK3 上仍须继续冻结新负例，不能把这组结论扩大成所有 modal 已被识别。
-4. 动作只接受由当前 observation 签发、5 秒内有效、一次性消费的控件 token。点击前先重新捕获 fresh frame 并重定位；在任何
-   鼠标移动或游戏输入前把保守的 `ui_input_armed` 写入并 fsync 主 `events.jsonl`，再执行 hover 与最终无 OCR、无落盘像素/
-   前台命中复核。点击后必须连续两帧看见声明的下一屏。
+4. 当前 observation 的 5 秒 HMAC 控件 token 只负责动作 admission，不能覆盖整个输入流水线。点击前重新捕获 fresh frame 并
+   重定位，由该帧签发 5 秒 `fresh_move` lease；它绑定 target、caller 父授权和本动作绝对 deadline。在任何鼠标移动或游戏输入前
+   把保守的 `ui_input_armed` 写入并 fsync 主 `events.jsonl`，紧邻移动前一次性消费 fresh lease。hover frame 再签发 5 秒
+   `hover_click` lease，绑定同一 target、fresh lease 父授权和同一绝对 deadline；最终无 OCR、无落盘临界区紧邻 `SendInput` 前
+   一次性消费它。任何 capture 完成时已越过 deadline 都拒绝；点击后的连续两帧后置观察只获得 deadline 剩余时间。
 5. 第一轮实机探索只探测并冻结大厅【游戏规则】、类别【游戏模式】、三个 production 规则卡与 Apply 的实际 bbox/文案。
    在规则页尚未完成同卡标题—选项关联验证前，禁止点击大厅【开始】。
 
 真实 Win32 helper-window 的 DPI、client/screen 坐标、Z-order、WMI 空路径与单批次 `SendInput` 已实测；固定 UI contract、
-截图、双帧 observation、receipt、hover/final patch 和主 `events.jsonl` 也已进入 menu report 与专用公开 validator。首次真实
-点击前剩余门禁是：提交当前 runtime、重新 `prepare-profile`，随后在同一新 environment 下依次取得 ordinary smoke 与
-post-resume crash-smoke GREEN；最后才允许一次真实 `menu-smoke`。未知模态、真实 CK3 hover patch 漂移或后置状态超时都只
-保留 RED，不得重试。
+截图、双帧 observation、receipt、hover/final patch 和主 `events.jsonl` 也已进入 menu report 与专用公开 validator。下一候选
+按钮提交前剩余门禁是：提交分阶段授权 runtime、重新 `prepare-profile`，随后在同一新 environment 下依次取得 ordinary smoke 与
+post-resume crash-smoke GREEN；最后才允许一次新的真实 `menu-smoke`。未知模态、真实 CK3 hover patch 漂移、授权过期或
+后置状态超时都只保留 RED，不得重试同一候选。
 
 第一次真实菜单竖切已按这套资格门禁运行：提交 `226d80e`、环境
 `219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba`、ordinary
@@ -211,16 +213,31 @@ live 菜单资格与新 menu archive 一律要求 v2；只有外层同样是 RED
 `dwm.exe`，也不能把 Ghost 当 CK3 代理。该 run 没有 visible 主菜单、`ui_*`、navigation、action/receipt 或 SendInput；cleanup、
 双源空清点、protected 与 production postflight 均通过，所以它是安全 RED 而非导航成功。
 
-下一候选在任何前台 mutation 前新增响应稳定门：exact CK3 HWND 的 `WM_NULL` 必须以 250 ms cadence 获得至少 21 个、
+提交 `39860a0` 在任何前台 mutation 前新增响应稳定门：exact CK3 HWND 的 `WM_NULL` 必须以 250 ms cadence 获得至少 21 个、
 相邻 250–500 ms、连续跨度至少 5 秒的 responsive 样本；`IsHungAppWindow` 仅作 veto，任一 hung/nonresponsive、调度空洞、
 identity/geometry/input-tick 变化或 30 秒/场景 deadline 到期都在零输入下 RED。完整 WMI/唯一窗口认证只在门前执行；门内与门后
 使用 pinned handle 和 exact HWND/PID/TID/rect，本地 freshness 从最后样本一直限制到 direct、attach、第二次 Set 与完成点各不超过
 500 ms。finished attestation 与 public replay 绑定这些样本，新 `foreground_protocol_version=2` 禁止新 RED 删除 gate 后降级；
-四份旧零输入 RED 只按 run ID + final-event digest 固定兼容。该候选尚未真实运行；提交会使 `925b...` 资格失效，必须新 prepare、
-同环境 ordinary v2/crash GREEN 后才允许一次新的 menu-smoke。
+四份旧零输入 RED 只按 run ID + final-event digest 固定兼容。该提交在新环境
+`d343278a3e2d046c7aadc2ad90d75640aadca483b3192801234f4e8a096befa2` 下取得 ordinary v2
+`20260822T060233Z-be4794fb` 与 crash `20260822T060508Z-crash-123c80f3` GREEN，随后才运行唯一一次
+`20260822T060758Z-menu-fc73b5c5`。
 
-动作收据的独立格式契约是 `schemas/visible-control-action-receipt-v2.schema.json`；它描述可见控件执行器的审计收据，
-不是通用 `action-v1` 策略动作的迁移版本。
+该 run 通过响应稳定门并认证稳定主菜单；fresh frame 与 `ui_input_armed` 已落盘，鼠标已移到 `(600,558)`，hover frame/patch
+也匹配。最终 `SendInput` 前，caller token 年龄约 5.85 秒，越过原协议的单一 5 秒 TTL，因而安全 RED。不可变 receipt 为
+`pointer_input_may_have_occurred=true`、`button_click_may_have_occurred=false`、`send_input.accepted=null`：没有调用
+`SendInput`，没有 LEFTDOWN/LEFTUP 或点击。Job 1→0、进程树、watchdog、control 与双源 inventory 均排空，protected/production
+postflight 成立。根因是单个 TTL 同时覆盖 fresh capture、WAL、鼠标移动和较慢 hover OCR，不是可用延时或盲目重试修复的状态漂移。
+
+修订后的 action authorization 采用 caller admission → `fresh_move` → `hover_click` 父链；两个内部 lease 各自从所绑定观察帧
+起算 5 秒，并绑定 action/control、contract、进程窗口 binding、target、父授权和绝对 action deadline。receipt 与 WAL 保存授权摘要、
+签发/到期/消费时刻；公开 validator 按 `visible_action_protocol_version=2` 复算 claims hash、父链、WAL 交叉绑定和 deadline。
+旧 `20260822T060758Z-menu-fc73b5c5` 只按 run ID + final-event digest
+`aef3dc4d0dc6bbcaf117dfaabc1d27b263309ec2f58cab5b9a14aa4ffb46396d` 只读兼容，不可删除新报告版本字段来继承其兼容口。
+该新协议尚未执行新的 CK3 `menu-smoke`，没有实机 GREEN，也没有重试旧 run/候选。
+
+动作收据的独立格式契约是 `schemas/visible-control-action-receipt-v2.schema.json`；它描述可见控件执行器的审计收据及版本化
+分阶段授权，不是通用 `action-v1` 策略动作的迁移版本。
 
 crash 证据包使用 run-relative artifact manifest；报告中为法证保留的运行时绝对路径只与“原执行目录”绑定，因此整个
 `runs/<run-id>` 复制到其他父目录后仍可从副本重放。GREEN 与任何声称 `cleanup_proven=true` 的 RED 共用同一清理语义验证器；
@@ -236,8 +253,9 @@ RED 不能用一个布尔字段绕过进程、watchdog、控制文件、producti
 
 - 已完成候选：专用用户目录、存档隔离、非 debug production staging 单 mod 挂载；原六类基础 schema 加两份可见 UI schema；版本/mod/agent
   指纹、跨进程锁、认证 watchdog、Job 与单次 smoke 超时。
-- 部分完成：`menu-smoke` 已离线接通主菜单/书签双帧 OCR+像素分类、固定 UI contract、一次性控件 token、单批次点击、主链 WAL、
-  sealed 启停与 GREEN/RED 归档回放；无害 Win32 helper 已实测，但真实 CK3 输入仍为零。持续运行仍缺磁盘、费用与重复失败预算。
+- 部分完成：`menu-smoke` 已离线接通主菜单/书签双帧 OCR+像素分类、固定 UI contract、分阶段一次性授权、单批次点击、主链 WAL、
+  sealed 启停与 GREEN/RED 归档回放；无害 Win32 helper 已实测，真实 CK3 只发生过目标内鼠标移动，按钮提交仍为零。持续运行仍缺
+  磁盘、费用与重复失败预算。
 - 尚未实机接线：规则页、角色选择、HUD/事件通用状态机，以及独立 policy 进程与字段白名单。
 - 未开始：规则页/事件/HUD 的模板资产冻结；
   开始游戏、处理事件、推进时间、死亡结算的最小合法策略；多角色固定基准；模型调用预算；带证据计数和版本回滚的策略记忆。

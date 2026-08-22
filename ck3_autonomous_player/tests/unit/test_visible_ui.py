@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+from dataclasses import replace
 from pathlib import Path
 import sys
 import tempfile
@@ -1174,6 +1175,37 @@ class UiDriverSafetyTests(unittest.TestCase):
         window.client_rect = (0, 0, 2560, 1440)
         window.audit_binding.return_value = self._binding()
 
+    def _action_observation(
+        self,
+        driver: VisibleUiDriver,
+        spec: ControlSpec,
+        target: OcrSpan,
+        *,
+        sequence: int = 1,
+        suffix: str = "1",
+        monotonic: float | None = None,
+    ) -> Observation:
+        observation_id = suffix * 32
+        frame_id = ("f" + suffix * 31)[:32]
+        token = driver._token(observation_id, frame_id, spec, target)
+        return observation(
+            "main_menu",
+            (),
+            spans=(target,),
+            controls=(
+                VisibleControl(
+                    "main_menu.new_game",
+                    "New Game",
+                    token,
+                    target.bbox,
+                    target.center,
+                ),
+            ),
+            sequence=sequence,
+            monotonic=time.monotonic() if monotonic is None else monotonic,
+            suffix=suffix,
+        )
+
     def _driver(self, root: Path) -> tuple[VisibleUiDriver, ControlSpec, OcrSpan, str]:
         artifacts = root / "state" / "runs" / "run-1" / "artifacts"
         artifacts.mkdir(parents=True)
@@ -1182,6 +1214,7 @@ class UiDriverSafetyTests(unittest.TestCase):
         driver._sequence = 0
         driver._capture_sequence = 0
         driver._input_budget_consumed = False
+        driver._consumed_internal_leases = set()
         driver._issued = {}
         driver._session_nonce = "session"
         driver._secret = b"secret"
@@ -1330,6 +1363,147 @@ class UiDriverSafetyTests(unittest.TestCase):
         self.assertIsInstance(result, StableObservation)
         self.assertEqual(result.frames, (moved, stable))
 
+    def test_capture_finishing_after_observation_deadline_is_not_accepted(self) -> None:
+        driver = object.__new__(VisibleUiDriver)
+        first = observation("main_menu", (), sequence=1, suffix="a")
+        second = observation("main_menu", (), sequence=2, suffix="b")
+        with mock.patch.object(
+            driver, "_capture_observation", side_effect=[first, second]
+        ), mock.patch(
+            "xar_autoplayer.control.executor.time.sleep"
+        ), mock.patch(
+            "xar_autoplayer.control.executor.time.monotonic",
+            side_effect=[0.0, 0.1, 0.2, 0.3, 1.0],
+        ):
+            with self.assertRaisesRegex(AgentError, "visible UI timeout"):
+                driver.observe_stable("main_menu", 1.0, stable_frames=2)
+
+    def test_absolute_observation_deadline_is_not_rebased_after_scheduler_gap(
+        self,
+    ) -> None:
+        driver = object.__new__(VisibleUiDriver)
+        capture = mock.Mock()
+        driver._capture_observation = capture
+        with mock.patch(
+            "xar_autoplayer.control.executor.time.monotonic",
+            side_effect=[100.0, 100.0],
+        ):
+            with self.assertRaisesRegex(AgentError, "visible UI timeout"):
+                driver.observe_stable(
+                    "bookmark_lobby",
+                    1.0,
+                    stable_frames=2,
+                    absolute_deadline_monotonic=1.0,
+                )
+        capture.assert_not_called()
+
+    def test_internal_lease_binds_claims_and_is_single_use(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-ui-lease-binding-") as temporary:
+            driver, spec, target, _token = self._driver(Path(temporary))
+            basis = time.monotonic()
+            observed = self._action_observation(
+                driver, spec, target, monotonic=basis
+            )
+            target_evidence = {
+                "text": target.text,
+                "normalized": target.normalized,
+                "bbox": list(target.bbox),
+                "center": list(target.center),
+                "screen_point": list(target.center),
+            }
+            binding = self._binding()
+            action_id = "a" * 32
+            caller_hash = "b" * 64
+            deadline = basis + 10.0
+            lease = driver._issue_internal_lease(
+                purpose="fresh_target_pointer_move",
+                action_id=action_id,
+                caller_token_sha256=caller_hash,
+                parent_authority_sha256=caller_hash,
+                binding=binding,
+                action_deadline=deadline,
+                observation=observed,
+                spec=spec,
+                span=target,
+                target=target_evidence,
+            )
+
+            def require(
+                candidate: object = lease,
+                *,
+                target_claim: dict[str, object] = target_evidence,
+                action_deadline: float = deadline,
+                consume: bool = False,
+            ) -> float:
+                return driver._require_internal_lease(
+                    candidate,
+                    purpose="fresh_target_pointer_move",
+                    action_id=action_id,
+                    caller_token_sha256=caller_hash,
+                    parent_authority_sha256=caller_hash,
+                    binding=binding,
+                    observation=observed,
+                    spec=spec,
+                    span=target,
+                    target=target_claim,
+                    action_deadline=action_deadline,
+                    checkpoint="in test",
+                    consume=consume,
+                )
+
+            with mock.patch(
+                "xar_autoplayer.control.executor.time.monotonic",
+                side_effect=[basis + 1.0, basis + 1.1],
+            ):
+                require(consume=True)
+                with self.assertRaisesRegex(AgentError, "already consumed"):
+                    require(consume=True)
+            for label, candidate, target_claim, action_deadline in (
+                (
+                    "claims",
+                    replace(lease, claims_sha256="0" * 64),
+                    target_evidence,
+                    deadline,
+                ),
+                (
+                    "parent",
+                    replace(lease, parent_authority_sha256="0" * 64),
+                    target_evidence,
+                    deadline,
+                ),
+                (
+                    "target",
+                    lease,
+                    {**target_evidence, "center": [1, 2]},
+                    deadline,
+                ),
+                ("deadline", lease, target_evidence, deadline + 1.0),
+            ):
+                with self.subTest(label=label), mock.patch(
+                    "xar_autoplayer.control.executor.time.monotonic",
+                    return_value=basis + 1.0,
+                ):
+                    with self.assertRaisesRegex(AgentError, "binding differs"):
+                        require(
+                            candidate,
+                            target_claim=target_claim,
+                            action_deadline=action_deadline,
+                        )
+            bad_control = replace(observed.controls[0], token="0" * 64)
+            with self.assertRaisesRegex(AgentError, "source token is invalid"):
+                driver._issue_internal_lease(
+                    purpose="fresh_target_pointer_move",
+                    action_id=action_id,
+                    caller_token_sha256=caller_hash,
+                    parent_authority_sha256=caller_hash,
+                    binding=binding,
+                    action_deadline=deadline,
+                    observation=replace(observed, controls=(bad_control,)),
+                    spec=spec,
+                    span=target,
+                    target=target_evidence,
+                )
+
     def test_expired_token_causes_zero_input(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-expired-") as temporary:
             driver, spec, target, token = self._driver(Path(temporary))
@@ -1342,12 +1516,13 @@ class UiDriverSafetyTests(unittest.TestCase):
             with self.assertRaisesRegex(AgentError, "expired"):
                 driver.click_visible_control(token, timeout_seconds=1)
 
-    def test_token_expiring_during_durable_receipt_causes_zero_input(self) -> None:
+    def test_fresh_lease_expiring_after_durable_wal_causes_zero_input(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-late-expiry-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))
             issued_at = driver._issued[token].issued_monotonic
-            fresh = observation("main_menu", (), spans=(target,))
-            hover = observation("main_menu", (), spans=(target,))
+            fresh = self._action_observation(driver, _spec, target)
+            hover = self._action_observation(driver, _spec, target)
+            fresh_basis = fresh.captured_monotonic
             hover_image = Image.new("RGB", (2560, 1440), "black")
             window = mock.Mock()
             self._prepare_window(window)
@@ -1367,9 +1542,15 @@ class UiDriverSafetyTests(unittest.TestCase):
                 "xar_autoplayer.control.executor.time.sleep"
             ), mock.patch(
                 "xar_autoplayer.control.executor.time.monotonic",
-                side_effect=[issued_at + 1.0, issued_at + 6.0],
+                side_effect=[
+                    issued_at + 1.0,
+                    fresh_basis + 1.0,
+                    fresh_basis + 6.0,
+                ],
             ):
-                with self.assertRaisesRegex(AgentError, "immediately before input"):
+                with self.assertRaisesRegex(
+                    AgentError, "fresh visible control lease expired before pointer input"
+                ):
                     driver.click_visible_control(token, timeout_seconds=1)
             send_click.assert_not_called()
             window.capture_patch.assert_not_called()
@@ -1380,12 +1561,14 @@ class UiDriverSafetyTests(unittest.TestCase):
             self.assertTrue(receipt["input_may_have_occurred"])
             self.assertFalse(receipt["button_click_may_have_occurred"])
 
-    def test_token_expiring_during_final_guards_causes_zero_input(self) -> None:
+    def test_hover_lease_expiring_during_final_guards_causes_zero_input(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-final-expiry-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))
             issued_at = driver._issued[token].issued_monotonic
-            fresh = observation("main_menu", (), spans=(target,))
-            hover = observation("main_menu", (), spans=(target,))
+            fresh = self._action_observation(driver, _spec, target)
+            hover = self._action_observation(driver, _spec, target)
+            fresh_basis = fresh.captured_monotonic
+            hover_basis = hover.captured_monotonic
             hover_image = Image.new("RGB", (2560, 1440), "black")
             window = mock.Mock()
             self._prepare_window(window)
@@ -1406,10 +1589,18 @@ class UiDriverSafetyTests(unittest.TestCase):
                 "xar_autoplayer.control.executor.time.sleep"
             ), mock.patch(
                 "xar_autoplayer.control.executor.time.monotonic",
-                side_effect=[issued_at + 1.0, issued_at + 2.0, issued_at + 6.0],
+                side_effect=[
+                    issued_at + 1.0,
+                    fresh_basis + 0.25,
+                    fresh_basis + 0.5,
+                    hover_basis + 0.25,
+                    hover_basis + 6.0,
+                ],
             ):
-                with self.assertRaisesRegex(AgentError, "at input submission"):
-                    driver.click_visible_control(token, timeout_seconds=1)
+                with self.assertRaisesRegex(
+                    AgentError, "hover visible control lease expired at input submission"
+                ):
+                    driver.click_visible_control(token, timeout_seconds=10)
             send_click.assert_not_called()
             self.assertEqual(window.require_cursor_target.call_count, 2)
             receipt = json.loads(
@@ -1422,8 +1613,8 @@ class UiDriverSafetyTests(unittest.TestCase):
     def test_focus_or_overlay_change_after_hover_causes_zero_mouse_down(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-hover-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))
-            fresh = observation("main_menu", (), spans=(target,))
-            hover = observation("main_menu", (), spans=(target,))
+            fresh = self._action_observation(driver, _spec, target)
+            hover = self._action_observation(driver, _spec, target)
             hover_image = Image.new("RGB", (2560, 1440), "black")
             window = mock.Mock()
             self._prepare_window(window)
@@ -1461,8 +1652,8 @@ class UiDriverSafetyTests(unittest.TestCase):
     def test_postcondition_failure_keeps_durable_possible_input_receipt(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-receipt-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))
-            fresh = observation("main_menu", (), spans=(target,))
-            hover = observation("main_menu", (), spans=(target,))
+            fresh = self._action_observation(driver, _spec, target)
+            hover = self._action_observation(driver, _spec, target)
             hover_image = Image.new("RGB", (2560, 1440), "black")
             window = mock.Mock()
             self._prepare_window(window)
@@ -1510,8 +1701,8 @@ class UiDriverSafetyTests(unittest.TestCase):
     def test_target_patch_replacement_after_attempt_receipt_causes_zero_input(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-patch-change-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))
-            fresh = observation("main_menu", (), spans=(target,))
-            hover = observation("main_menu", (), spans=(target,))
+            fresh = self._action_observation(driver, _spec, target)
+            hover = self._action_observation(driver, _spec, target)
             hover_image = Image.new("RGB", (2560, 1440), "black")
             window = mock.Mock()
             self._prepare_window(window)
@@ -1569,8 +1760,8 @@ class UiDriverSafetyTests(unittest.TestCase):
     def test_final_cursor_guard_failure_after_patch_causes_zero_input(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-final-guard-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))
-            fresh = observation("main_menu", (), spans=(target,))
-            hover = observation("main_menu", (), spans=(target,))
+            fresh = self._action_observation(driver, _spec, target)
+            hover = self._action_observation(driver, _spec, target)
             hover_image = Image.new("RGB", (2560, 1440), "black")
             window = mock.Mock()
             self._prepare_window(window)
@@ -1608,11 +1799,11 @@ class UiDriverSafetyTests(unittest.TestCase):
     ) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-success-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))
-            fresh = observation(
-                "main_menu", (), spans=(target,), sequence=3, suffix="c"
+            fresh = self._action_observation(
+                driver, _spec, target, sequence=3, suffix="c"
             )
-            hover = observation(
-                "main_menu", (), spans=(target,), sequence=4, suffix="d"
+            hover = self._action_observation(
+                driver, _spec, target, sequence=4, suffix="d"
             )
             after = stable_pair("bookmark_lobby", start=5)
             hover_image = Image.new("RGB", (2560, 1440), "black")
@@ -1661,6 +1852,35 @@ class UiDriverSafetyTests(unittest.TestCase):
             )
             self.assertEqual(action["before_stable_observation"]["stable_frames"], 2)
             self.assertEqual(action["after_stable_observation"]["stable_frames"], 2)
+            authorization = action["authorization"]
+            self.assertEqual(authorization["protocol_version"], 2)
+            self.assertEqual(
+                authorization["action_deadline_monotonic"],
+                authorization["action_admitted_monotonic"]
+                + authorization["action_timeout_seconds"],
+            )
+            fresh_lease = authorization["fresh_move_lease"]
+            hover_lease = authorization["hover_click_lease"]
+            self.assertIsNotNone(fresh_lease["consumed_monotonic"])
+            self.assertIsNotNone(hover_lease["consumed_monotonic"])
+            self.assertEqual(
+                fresh_lease["expires_monotonic"]
+                - fresh_lease["issued_monotonic"],
+                5.0,
+            )
+            self.assertEqual(
+                hover_lease["expires_monotonic"]
+                - hover_lease["issued_monotonic"],
+                5.0,
+            )
+            self.assertEqual(
+                fresh_lease["parent_authority_sha256"],
+                action["control_token_sha256"],
+            )
+            self.assertEqual(
+                hover_lease["parent_authority_sha256"],
+                fresh_lease["token_sha256"],
+            )
             self.assertEqual(
                 action["target"]["hover"]["patch_sha256"],
                 action["target"]["final_patch_sha256"],
@@ -1678,15 +1898,173 @@ class UiDriverSafetyTests(unittest.TestCase):
             self.assertEqual(
                 set(driver._test_events[1]["target"]), {"issued", "fresh"}
             )
+            self.assertEqual(
+                driver._test_events[1]["fresh_move_lease_sha256"],
+                fresh_lease["token_sha256"],
+            )
+            self.assertEqual(
+                driver._test_events[2]["hover_click_lease_sha256"],
+                hover_lease["token_sha256"],
+            )
             send_click.assert_called_once_with()
             with self.assertRaisesRegex(AgentError, "budget"):
                 driver.click_visible_control(token, timeout_seconds=1)
 
+    def test_staged_leases_allow_one_click_after_caller_token_would_expire(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-ui-staged-lease-") as temporary:
+            driver, _spec, target, token = self._driver(Path(temporary))
+            issued_at = driver._issued[token].issued_monotonic
+            fresh = self._action_observation(
+                driver,
+                _spec,
+                target,
+                sequence=3,
+                suffix="c",
+                monotonic=issued_at + 4.5,
+            )
+            hover = self._action_observation(
+                driver,
+                _spec,
+                target,
+                sequence=4,
+                suffix="d",
+                monotonic=issued_at + 6.5,
+            )
+            after = stable_pair("bookmark_lobby", start=5)
+            hover_image = Image.new("RGB", (2560, 1440), "black")
+            window = mock.Mock()
+            self._prepare_window(window)
+            window.capture_patch.side_effect = lambda bbox: hover_image.crop(bbox)
+            driver.window = window
+            fake_gui = types.SimpleNamespace(FAILSAFE=True, moveTo=mock.Mock())
+            send_click = mock.Mock(return_value=(2, 0))
+            with mock.patch.object(
+                driver, "_capture_observation", return_value=fresh
+            ), mock.patch.object(
+                driver,
+                "_capture_observation_with_image",
+                return_value=(hover, hover_image),
+            ), mock.patch.object(
+                driver, "observe_stable", return_value=after
+            ) as observe, mock.patch.dict(
+                sys.modules, {"pyautogui": fake_gui}
+            ), mock.patch(
+                "xar_autoplayer.control.executor._prepare_left_click_batch",
+                return_value=send_click,
+            ), mock.patch(
+                "xar_autoplayer.control.executor.time.sleep"
+            ), mock.patch(
+                "xar_autoplayer.control.executor.time.monotonic",
+                side_effect=[
+                    issued_at + 4.0,
+                    issued_at + 4.7,
+                    issued_at + 4.9,
+                    issued_at + 7.0,
+                    issued_at + 7.2,
+                    issued_at + 7.3,
+                ],
+            ):
+                response = driver.click_visible_control(token, timeout_seconds=10)
+            self.assertEqual(response["action"]["status"], "confirmed")
+            send_click.assert_called_once_with()
+            fake_gui.moveTo.assert_called_once()
+            self.assertAlmostEqual(observe.call_args.args[1], 6.7, places=5)
+            self.assertAlmostEqual(
+                observe.call_args.kwargs["absolute_deadline_monotonic"],
+                issued_at + 14.0,
+                places=5,
+            )
+
+    def test_action_deadline_expiring_after_wal_prevents_cursor_move(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-ui-action-deadline-") as temporary:
+            driver, _spec, target, token = self._driver(Path(temporary))
+            issued_at = driver._issued[token].issued_monotonic
+            fresh = self._action_observation(
+                driver, _spec, target, monotonic=issued_at + 1.5
+            )
+            window = mock.Mock()
+            self._prepare_window(window)
+            driver.window = window
+            fake_gui = types.SimpleNamespace(FAILSAFE=True, moveTo=mock.Mock())
+            send_click = mock.Mock()
+            with mock.patch.object(
+                driver, "_capture_observation", return_value=fresh
+            ), mock.patch.dict(
+                sys.modules, {"pyautogui": fake_gui}
+            ), mock.patch(
+                "xar_autoplayer.control.executor._prepare_left_click_batch",
+                return_value=send_click,
+            ), mock.patch(
+                "xar_autoplayer.control.executor.time.monotonic",
+                side_effect=[issued_at + 1.0, issued_at + 1.75, issued_at + 2.1],
+            ):
+                with self.assertRaisesRegex(
+                    AgentError, "action deadline expired before pointer input"
+                ):
+                    driver.click_visible_control(token, timeout_seconds=1)
+            fake_gui.moveTo.assert_not_called()
+            send_click.assert_not_called()
+            receipt = json.loads(
+                next(driver.artifacts.glob("*action*.json")).read_text(encoding="utf-8")
+            )
+            self.assertEqual(receipt["status"], "failed_after_possible_input")
+            self.assertFalse(receipt["button_click_may_have_occurred"])
+
+    def test_action_deadline_expiring_at_submission_prevents_sendinput(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-ui-submit-deadline-") as temporary:
+            driver, spec, target, token = self._driver(Path(temporary))
+            issued_at = driver._issued[token].issued_monotonic
+            fresh = self._action_observation(
+                driver, spec, target, monotonic=issued_at + 1.0
+            )
+            hover = self._action_observation(
+                driver, spec, target, monotonic=issued_at + 5.7
+            )
+            hover_image = Image.new("RGB", (2560, 1440), "black")
+            window = mock.Mock()
+            self._prepare_window(window)
+            window.capture_patch.side_effect = lambda bbox: hover_image.crop(bbox)
+            driver.window = window
+            fake_gui = types.SimpleNamespace(FAILSAFE=True, moveTo=mock.Mock())
+            send_click = mock.Mock()
+            with mock.patch.object(
+                driver, "_capture_observation", return_value=fresh
+            ), mock.patch.object(
+                driver,
+                "_capture_observation_with_image",
+                return_value=(hover, hover_image),
+            ), mock.patch.dict(
+                sys.modules, {"pyautogui": fake_gui}
+            ), mock.patch(
+                "xar_autoplayer.control.executor._prepare_left_click_batch",
+                return_value=send_click,
+            ), mock.patch(
+                "xar_autoplayer.control.executor.time.sleep"
+            ), mock.patch(
+                "xar_autoplayer.control.executor.time.monotonic",
+                side_effect=[
+                    issued_at + 1.0,
+                    issued_at + 1.2,
+                    issued_at + 1.3,
+                    issued_at + 5.8,
+                    issued_at + 6.1,
+                ],
+            ):
+                with self.assertRaisesRegex(
+                    AgentError, "action deadline expired at input submission"
+                ):
+                    driver.click_visible_control(token, timeout_seconds=5)
+            fake_gui.moveTo.assert_called_once()
+            send_click.assert_not_called()
+            self.assertEqual(window.require_cursor_target.call_count, 2)
+
     def test_armed_wal_failure_prevents_cursor_move_and_sendinput(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-wal-fail-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))
-            fresh = observation(
-                "main_menu", (), spans=(target,), sequence=3, suffix="c"
+            fresh = self._action_observation(
+                driver, _spec, target, sequence=3, suffix="c"
             )
             hover_image = Image.new("RGB", (2560, 1440), "black")
             window = mock.Mock()
@@ -1734,8 +2112,8 @@ class UiDriverSafetyTests(unittest.TestCase):
     ) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-wal-commit-error-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))
-            fresh = observation(
-                "main_menu", (), spans=(target,), sequence=3, suffix="c"
+            fresh = self._action_observation(
+                driver, _spec, target, sequence=3, suffix="c"
             )
             window = mock.Mock()
             self._prepare_window(window)
@@ -1806,11 +2184,11 @@ class UiDriverSafetyTests(unittest.TestCase):
     ) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-finished-commit-error-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))
-            fresh = observation(
-                "main_menu", (), spans=(target,), sequence=3, suffix="c"
+            fresh = self._action_observation(
+                driver, _spec, target, sequence=3, suffix="c"
             )
-            hover = observation(
-                "main_menu", (), spans=(target,), sequence=4, suffix="d"
+            hover = self._action_observation(
+                driver, _spec, target, sequence=4, suffix="d"
             )
             after = stable_pair("bookmark_lobby", start=5)
             hover_image = Image.new("RGB", (2560, 1440), "black")
@@ -1861,8 +2239,8 @@ class UiDriverSafetyTests(unittest.TestCase):
     def test_sendinput_exception_is_conservatively_possible_input(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-sendinput-error-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))
-            fresh = observation("main_menu", (), spans=(target,))
-            hover = observation("main_menu", (), spans=(target,))
+            fresh = self._action_observation(driver, _spec, target)
+            hover = self._action_observation(driver, _spec, target)
             hover_image = Image.new("RGB", (2560, 1440), "black")
             window = mock.Mock()
             self._prepare_window(window)

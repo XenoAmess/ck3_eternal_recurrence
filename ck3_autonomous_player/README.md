@@ -70,10 +70,11 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   `validate_recovery_report()` 同时验证 active marker 已消失且归档 marker 的 SHA-256 匹配。
   旧 RED `20260821T211059Z-crash-833b9587` 已由恢复 `20260821T215805Z-recovery-46a3518c` 按此协议归档；
   旧 report SHA-256 未变，恢复只解除启动阻塞，不资格化那次 RED。
-- Phase B 的纯视觉底座已经建立 PID/创建时间/可执行路径绑定的 CK3 窗口捕获、OCR/像素屏幕分类、短期 HMAC 控件 token、
+- Phase B 的纯视觉底座已经建立 PID/创建时间/可执行路径绑定的 CK3 窗口捕获、OCR/像素屏幕分类、短期 HMAC 分阶段授权、
   点击前后状态反证和 fail-closed 导航。`menu-smoke` 已接入专用 CLI、sealed supervisor 生命周期和公开 GREEN/RED 回放；当前
   动作白名单精确只有主菜单【新游戏】，并显式禁止大厅【开始】。权威输入 WAL 位于本次 run 的主 `events.jsonl`，不是独立
-  UI 日志。无害 Win32 helper 与离线截图回放已经通过，但尚未向真实 CK3 发出输入，不能据此声称已经能开局。
+  UI 日志。无害 Win32 helper 与离线截图回放已经通过；真实 CK3 已发生过一次目标内鼠标移动，但还没有提交按钮输入，不能据此
+  声称已经完成菜单导航或能开局。
 
 提交 `226d80e` 曾在同一环境 `219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba`
 下通过 ordinary `20260822T005515Z-03f296c7` 与 post-resume crash
@@ -112,15 +113,32 @@ protected/production postflight 完整。运行后的只读活体查询把 HWND 
 navigation、action/receipt、鼠标移动或 `SendInput`；Job、watchdog、control、双源 inventory、protected 与 production
 postflight 全部通过。这是结构完整的安全 RED，不是菜单导航成功，也不允许原 run 或原候选重试。
 
-当前未提交候选在任何 `SetForegroundWindow`、`AttachThreadInput` 或输入前增加 exact-target 响应稳定门：总等待不超过
+提交 `39860a0` 在任何 `SetForegroundWindow`、`AttachThreadInput` 或输入前增加 exact-target 响应稳定门：总等待不超过
 30 秒且受场景 deadline 限制；以 250 ms cadence 对目标 HWND 发送
 `SendMessageTimeoutW(WM_NULL, SMTO_BLOCK|SMTO_ABORTIFHUNG|SMTO_ERRORONEXIT)`，`IsHungAppWindow=true` 只作 veto。
 只有至少 21 个响应样本在 250–500 ms 间隔内连续覆盖至少 5 秒才可继续；hung、无响应、调度空洞、进程/窗口/输入 tick
 变化都会清零或直接 RED。门前做完整 WMI/唯一窗口认证，门内与门后只用 pinned handle 和 exact HWND/PID/TID/rect 本地复核；
 last sample→gate finish、gate finish→每次窗口 mutation/完成也都限制为 500 ms。证据嵌入 finished attestation，并以
 `foreground_protocol_version=2` 要求所有新 GREEN/RED 的 completed foreground 都不可删除该 gate；无版本兼容只钉住四份既有
-零输入 RED 的 run ID 与 final-event digest。该响应门尚未启动真实 CK3；提交后上述 `925b...` 资格即失效，必须在新
-environment 下重新取得 ordinary v2/crash GREEN，再执行且只执行一次 menu-smoke。
+零输入 RED 的 run ID 与 final-event digest。该提交在环境
+`d343278a3e2d046c7aadc2ad90d75640aadca483b3192801234f4e8a096befa2` 下取得 ordinary v2
+`20260822T060233Z-be4794fb` 与 crash `20260822T060508Z-crash-123c80f3` 两项 GREEN，随后只执行一次
+`20260822T060758Z-menu-fc73b5c5`。
+
+该真实 run 在稳定主菜单、fresh frame 和 `ui_input_armed` 后把鼠标移到 `(600,558)`，随后 hover OCR/截图完成；最终提交前，原
+caller 控件 token 已约 5.85 秒，超过单一 5 秒 TTL，故以 `visible control token expired at input submission` 安全 RED。
+receipt 明确记录 `pointer_input_may_have_occurred=true`、`button_click_may_have_occurred=false`、`send_input.accepted=null`：
+`SendInput` 没有被调用，没有 LEFTDOWN/LEFTUP，也没有点击。Job 由 1 排空至 0，进程树、watchdog 和四类 control 均消失，
+双源 CK3 inventory 为空，protected baseline 与 production tree 后置复核通过。原 run/候选不得重试，且这不是书签页 GREEN。
+
+根因不是屏幕或身份漂移，而是一个 caller 的 5 秒授权错误地横跨 fresh capture、WAL、鼠标移动和较慢的 hover OCR。修订保持
+caller token 的 5 秒 TTL，但它只负责动作 admission；fresh frame 再签发 5 秒 `fresh_move` lease，绑定该帧、target、caller
+父授权与本动作绝对 deadline，hover frame 再签发 5 秒 `hover_click` lease，绑定该帧、同一 target、fresh lease 父授权与同一
+deadline。两份 lease 都一次性消费，分别紧邻鼠标移动与 `SendInput`；任何 capture 在绝对 deadline 后才返回也必须拒绝，
+postcondition 只能使用动作 deadline 的剩余时间，不能重新获得完整 timeout。新报告写入
+`visible_action_protocol_version=2`，公开回放复算分阶段授权、父链、WAL 和时序；上述旧 run 仅以 run ID 和 final-event digest
+`aef3dc4d0dc6bbcaf117dfaabc1d27b263309ec2f58cab5b9a14aa4ffb46396d` 固定只读兼容，不能通过删除版本字段授权新输入。
+该协议尚未用于新的 CK3 `menu-smoke`，因此没有新的实机 GREEN 或重试结论。
 
 下一次输入资格只接受 self-contained format v2 ordinary GREEN；live 扫描与新 menu archive 都拒绝 v1。v1 仅为已经冻结、外层同样为
 RED 且没有任何 `ui_*` 输入 WAL、bookmark、navigation、action/receipt 的历史菜单 run 保留只读兼容；纯观察 PNG/JSON 可以保留，
@@ -217,8 +235,8 @@ memory: cross-run retrieval / constrained reflection / strategy experiments
    非零引擎 diagnostics 的原始证据，且受保护存储在退出后回到同一语义 baseline。原生 Windows Job/句柄测试和两次启动期
    fail-closed RED 覆盖失败契约；加固 runtime 的 resume 后 supervisor 崩溃注入也已通过本机门禁。
 2. **Phase B（进行中）**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证，未知窗口 fail closed。主菜单到
-   稳定书签大厅的单动作 `menu-smoke` 已完成离线生命周期、公开证据回放、历史截图回放与无害 Win32 helper 门禁；尚未对真实
-   CK3 执行第一次点击。
+   稳定书签大厅的单动作 `menu-smoke` 已完成离线生命周期、公开证据回放、历史截图回放与无害 Win32 helper 门禁；真实 CK3
+   已执行一次目标内鼠标移动，但授权在按钮提交前安全过期，尚无真实点击或书签大厅 GREEN。
 3. Phase C：先完成“罗贝尔 1066 → 契约 → 当铺 → 首轮垂青 → 十年低风险经营 → 自然死亡结算”的首个合法竖切，
    再扩到多种角色类型的有效整局基线后退出本阶段。
 4. Phase D：婚育、议会、生活方式、建设、宣战理由、军队和领地的分层规划器。
@@ -233,9 +251,9 @@ Phase A 的 GREEN 只表示 `acceptance_claim=isolated_single_mod_visible_main_m
 大厅实际采用、教程通知能否在正式局持续落盘，以及正常 UI 开局仍是 Phase B/C 的视觉硬门禁。
 
 真实 Win32 helper-window 的 DPI、client/screen 坐标、Z-order、WMI 空路径与单批次 `SendInput` 门禁已经通过；UI 截图、双帧
-观察、receipt、像素 patch、固定 contract 和主 `events.jsonl` 也已进入正式 menu report 与公开 validator。首次真实点击前仍须：
-提交当前代码并重新 `prepare-profile`；在同一新 environment 下依次取得 ordinary `smoke` 与 post-resume `crash-smoke` GREEN；
-再以真实 CK3 hover/final patch 校准结果执行且只执行一次 `menu-smoke`。任何未知模态或像素漂移都应保留 RED 并停止，不得重试。
+观察、receipt、像素 patch、固定 contract 和主 `events.jsonl` 也已进入正式 menu report 与公开 validator。下一候选输入前仍须：
+提交分阶段授权代码并重新 `prepare-profile`；在同一新 environment 下依次取得 ordinary `smoke` 与 post-resume `crash-smoke`
+GREEN；再执行且只执行一次新的 `menu-smoke`。任何未知模态、像素漂移或授权过期都应保留 RED 并停止，不得重试同一候选。
 
 玩法基线见 [knowledge/ck3/gameplay-v1.md](knowledge/ck3/gameplay-v1.md)，本 mod 的高分映射见
 [knowledge/mod/growth100-scoring-v1.md](knowledge/mod/growth100-scoring-v1.md)。

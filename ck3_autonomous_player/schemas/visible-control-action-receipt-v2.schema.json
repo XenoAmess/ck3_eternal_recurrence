@@ -80,7 +80,8 @@
         "armed": {"$ref": "#/$defs/sha256"},
         "finished": {"$ref": "#/$defs/sha256"}
       }
-    }
+    },
+    "authorization": {"$ref": "#/$defs/actionAuthorization"}
   },
   "$defs": {
     "id32": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
@@ -138,6 +139,56 @@
         "path": {"$ref": "#/$defs/artifactRef"},
         "sha256": {"$ref": "#/$defs/sha256"},
         "pixel_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "internalLease": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "purpose", "parent_authority_sha256", "claims_sha256",
+        "token_sha256", "issued_monotonic", "expires_monotonic",
+        "consumed_monotonic"
+      ],
+      "properties": {
+        "purpose": {
+          "enum": [
+            "fresh_target_pointer_move",
+            "hover_verified_left_click_batch"
+          ]
+        },
+        "parent_authority_sha256": {"$ref": "#/$defs/sha256"},
+        "claims_sha256": {"$ref": "#/$defs/sha256"},
+        "token_sha256": {"$ref": "#/$defs/sha256"},
+        "issued_monotonic": {"type": "number", "minimum": 0},
+        "expires_monotonic": {"type": "number", "minimum": 0},
+        "consumed_monotonic": {"type": ["number", "null"], "minimum": 0}
+      }
+    },
+    "actionAuthorization": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "protocol_version", "action_admitted_monotonic",
+        "action_timeout_seconds", "action_deadline_monotonic",
+        "caller_token_issued_monotonic", "fresh_move_lease",
+        "hover_click_lease"
+      ],
+      "properties": {
+        "protocol_version": {"const": 2},
+        "action_admitted_monotonic": {"type": "number", "minimum": 0},
+        "action_timeout_seconds": {"type": "number", "exclusiveMinimum": 0},
+        "action_deadline_monotonic": {"type": "number", "minimum": 0},
+        "caller_token_issued_monotonic": {"type": "number", "minimum": 0},
+        "fresh_move_lease": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/internalLease"}
+          ]
+        },
+        "hover_click_lease": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/internalLease"}
+          ]
+        }
       }
     },
     "processBinding": {

@@ -103,6 +103,10 @@ LEGACY_NORMAL_QUALIFICATION_VALIDATOR = (
 )
 FOREGROUND_OPERATION = "exact_hwnd_foreground_without_synthetic_input"
 FOREGROUND_PROTOCOL_VERSION = 2
+VISIBLE_ACTION_PROTOCOL_VERSION = 2
+VISIBLE_ACTION_LEASE_EVENT_FIELDS = frozenset(
+    {"fresh_move_lease_sha256", "hover_click_lease_sha256"}
+)
 # Immutable compatibility identities for the four pre-v2, finalized, zero-input
 # field runs.  Absence of the generation marker is never accepted generically.
 LEGACY_FOREGROUND_PROTOCOL_FINAL_EVENTS = {
@@ -118,6 +122,23 @@ LEGACY_FOREGROUND_PROTOCOL_FINAL_EVENTS = {
     "20260822T050447Z-menu-0eae4606": (
         "83908f88c8a77dbbeea717fbd411b013e691cdb86235b2eb56bef3dd52d4cdd8"
     ),
+}
+# The staged fresh/hover lease producer post-dates these five immutable field
+# runs.  Four stopped before any action receipt; the fifth is the real
+# input-armed RED that exposed the old caller-token lifetime mismatch.  A
+# missing generation marker is never accepted by shape alone.
+LEGACY_VISIBLE_ACTION_PROTOCOL_FINAL_EVENTS = {
+    **LEGACY_FOREGROUND_PROTOCOL_FINAL_EVENTS,
+    "20260822T060758Z-menu-fc73b5c5": (
+        "aef3dc4d0dc6bbcaf117dfaabc1d27b263309ec2f58cab5b9a14aa4ffb46396d"
+    ),
+}
+# All five exact-pinned pre-lease field runs archived this immutable receipt
+# schema identity.  It remains valid only together with the exact legacy run
+# and final-event identity above; current reports must bind the live schema.
+LEGACY_VISIBLE_ACTION_RECEIPT_SCHEMA_BINDING = {
+    "sha256": "b2aa616a9ef03f375f65c9c003a65daf1f86dc5fc5ab709ad8c77e615f56ef12",
+    "size": 10754,
 }
 GREEN_EVENT_ORDER = (
     "smoke_started",
@@ -167,6 +188,22 @@ def _report_body_sha256(report: dict[str, object]) -> str:
         if key not in REPORT_BINDING_EXCLUSIONS
     }
     return snapshot_digest(body)
+
+
+def _is_exact_legacy_visible_action_report(report: dict[str, object]) -> bool:
+    """Recognize only an immutable pre-lease RED report identity."""
+    expected_final = LEGACY_VISIBLE_ACTION_PROTOCOL_FINAL_EVENTS.get(
+        str(report.get("run_id", ""))
+    )
+    event_chain = report.get("event_chain")
+    return (
+        "visible_action_protocol_version" not in report
+        and report.get("ok") is False
+        and expected_final is not None
+        and report.get("final_event_sha256") == expected_final
+        and isinstance(event_chain, dict)
+        and event_chain.get("tail_sha256") == expected_final
+    )
 
 
 def _append_final_event_transactionally(
@@ -1189,6 +1226,289 @@ def _memory_image_sha256(image: object) -> str:
     return digest.hexdigest()
 
 
+def _visible_action_lease_claims(
+    action: dict[str, object],
+    lease: dict[str, object],
+    *,
+    purpose: str,
+    observation: dict[str, object],
+    source_control_token_sha256: str,
+    target: dict[str, object],
+) -> dict[str, object]:
+    """Build the public, deterministic subset signed by one local HMAC lease."""
+    authorization = action.get("authorization")
+    if not isinstance(authorization, dict):
+        raise AgentError("menu smoke visible action authorization is missing")
+    return {
+        "protocol_version": VISIBLE_ACTION_PROTOCOL_VERSION,
+        "purpose": purpose,
+        "action_id": action.get("action_id"),
+        "control_id": action.get("control_id"),
+        "caller_token_sha256": action.get("control_token_sha256"),
+        "contract_sha256": action.get("contract_sha256"),
+        "binding": action.get("binding"),
+        "action_deadline_monotonic": authorization.get(
+            "action_deadline_monotonic"
+        ),
+        "parent_authority_sha256": lease.get("parent_authority_sha256"),
+        "observation": observation,
+        "source_control_token_sha256": source_control_token_sha256,
+        "target": target,
+        "issued_monotonic": lease.get("issued_monotonic"),
+        "expires_monotonic": lease.get("expires_monotonic"),
+    }
+
+
+def _validate_visible_action_authorization(
+    action: dict[str, object],
+    *,
+    require_confirmed: bool,
+    replayed_observations: dict[str, dict[str, object]],
+) -> dict[str, object]:
+    """Replay the staged caller -> fresh-move -> hover-click authority chain."""
+    authorization = action.get("authorization")
+    if not isinstance(authorization, dict):
+        raise AgentError("menu smoke visible action authorization is missing")
+    expected_authorization_keys = {
+        "protocol_version",
+        "action_admitted_monotonic",
+        "action_timeout_seconds",
+        "action_deadline_monotonic",
+        "caller_token_issued_monotonic",
+        "fresh_move_lease",
+        "hover_click_lease",
+    }
+    if (
+        set(authorization) != expected_authorization_keys
+        or authorization.get("protocol_version")
+        != VISIBLE_ACTION_PROTOCOL_VERSION
+    ):
+        raise AgentError("menu smoke visible action authorization contract differs")
+
+    def finite_number(value: object) -> bool:
+        return (
+            not isinstance(value, bool)
+            and isinstance(value, (int, float))
+            and math.isfinite(float(value))
+        )
+
+    admitted = authorization.get("action_admitted_monotonic")
+    timeout = authorization.get("action_timeout_seconds")
+    deadline = authorization.get("action_deadline_monotonic")
+    caller_issued = authorization.get("caller_token_issued_monotonic")
+    if (
+        not all(finite_number(value) for value in (admitted, timeout, deadline, caller_issued))
+        or float(timeout) <= 0
+        or float(caller_issued) > float(admitted)
+        or float(admitted) - float(caller_issued) > 5.0
+        or not math.isclose(
+            float(deadline),
+            float(admitted) + float(timeout),
+            rel_tol=0.0,
+            abs_tol=1e-9,
+        )
+    ):
+        raise AgentError("menu smoke visible action admission/deadline differs")
+    before = action.get("before_stable_observation")
+    before_frames = before.get("frames") if isinstance(before, dict) else None
+    if (
+        not isinstance(before_frames, list)
+        or len(before_frames) != 2
+        or not finite_number(before_frames[-1].get("captured_monotonic"))
+        or float(before_frames[-1]["captured_monotonic"]) > float(caller_issued)
+    ):
+        raise AgentError("menu smoke caller admission/stable observation binding differs")
+
+    target_envelope = action.get("target")
+    if not isinstance(target_envelope, dict):
+        raise AgentError("menu smoke visible action target is missing")
+
+    def validate_lease(
+        key: str,
+        *,
+        purpose: str,
+        observation_label: str,
+        target_label: str,
+        expected_parent: object,
+    ) -> dict[str, object] | None:
+        lease = authorization.get(key)
+        if lease is None:
+            return None
+        if not isinstance(lease, dict):
+            raise AgentError(f"menu smoke {key} contract differs")
+        observation = action.get(f"{observation_label}_observation")
+        replayed_observation = replayed_observations.get(observation_label)
+        stage_target = target_envelope.get(target_label)
+        if (
+            not isinstance(observation, dict)
+            or not isinstance(replayed_observation, dict)
+            or not isinstance(stage_target, dict)
+        ):
+            raise AgentError(f"menu smoke {key} lacks its observation/target")
+        controls = replayed_observation.get("visible_controls")
+        matching_controls = [
+            control
+            for control in controls
+            if isinstance(controls, list)
+            and isinstance(control, dict)
+            and control.get("control_id") == action.get("control_id")
+            and control.get("bbox") == stage_target.get("bbox")
+            and control.get("center") == stage_target.get("center")
+            and re.fullmatch(
+                r"[0-9a-f]{64}", str(control.get("control_token", ""))
+            )
+            is not None
+        ] if isinstance(controls, list) else []
+        if len(matching_controls) != 1:
+            raise AgentError(f"menu smoke {key} source control binding differs")
+        source_control_token_sha256 = hashlib.sha256(
+            str(matching_controls[0]["control_token"]).encode("ascii")
+        ).hexdigest()
+        issued = lease.get("issued_monotonic")
+        expires = lease.get("expires_monotonic")
+        consumed = lease.get("consumed_monotonic")
+        captured = observation.get("captured_monotonic")
+        expected_keys = {
+            "purpose",
+            "parent_authority_sha256",
+            "claims_sha256",
+            "token_sha256",
+            "issued_monotonic",
+            "expires_monotonic",
+            "consumed_monotonic",
+        }
+        if (
+            set(lease) != expected_keys
+            or lease.get("purpose") != purpose
+            or lease.get("parent_authority_sha256") != expected_parent
+            or not all(finite_number(value) for value in (issued, expires, captured))
+            or consumed is not None and not finite_number(consumed)
+            # Effective authority begins at the authenticated frame's capture,
+            # not after arbitrary OCR or artifact latency.
+            or not math.isclose(
+                float(issued), float(captured), rel_tol=0.0, abs_tol=1e-9
+            )
+            or not math.isclose(
+                float(expires), float(issued) + 5.0, rel_tol=0.0, abs_tol=1e-9
+            )
+            or float(issued) < float(admitted)
+            or float(issued) > float(deadline)
+            or (
+                consumed is not None
+                and not float(issued) <= float(consumed) <= min(
+                    float(expires), float(deadline)
+                )
+            )
+        ):
+            raise AgentError(f"menu smoke {key} timing/binding differs")
+        claims = _visible_action_lease_claims(
+            action,
+            lease,
+            purpose=purpose,
+            observation=observation,
+            source_control_token_sha256=source_control_token_sha256,
+            target=stage_target,
+        )
+        if lease.get("claims_sha256") != snapshot_digest(claims):
+            raise AgentError(f"menu smoke {key} claims digest differs")
+        return lease
+
+    fresh_lease = validate_lease(
+        "fresh_move_lease",
+        purpose="fresh_target_pointer_move",
+        observation_label="fresh",
+        target_label="fresh",
+        expected_parent=action.get("control_token_sha256"),
+    )
+    fresh_consumed = (
+        fresh_lease.get("consumed_monotonic")
+        if isinstance(fresh_lease, dict)
+        else None
+    )
+    hover_parent = (
+        fresh_lease.get("token_sha256") if isinstance(fresh_lease, dict) else None
+    )
+    hover_lease = validate_lease(
+        "hover_click_lease",
+        purpose="hover_verified_left_click_batch",
+        observation_label="hover",
+        target_label="hover",
+        expected_parent=hover_parent,
+    )
+    hover_consumed = (
+        hover_lease.get("consumed_monotonic")
+        if isinstance(hover_lease, dict)
+        else None
+    )
+    if (
+        isinstance(fresh_lease, dict)
+        and isinstance(hover_lease, dict)
+        and fresh_lease.get("token_sha256") == hover_lease.get("token_sha256")
+    ):
+        raise AgentError("menu smoke staged action leases reuse one authority")
+    hover_observation = action.get("hover_observation")
+    if hover_observation is not None:
+        if (
+            fresh_consumed is None
+            or not isinstance(hover_observation, dict)
+            or not finite_number(hover_observation.get("captured_monotonic"))
+            or float(fresh_consumed)
+            > float(hover_observation["captured_monotonic"])
+        ):
+            raise AgentError("menu smoke hover observation lacks consumed move authority")
+    if hover_lease is not None and fresh_consumed is None:
+        raise AgentError("menu smoke hover lease lacks consumed move authority")
+
+    button_possible = action.get("button_click_may_have_occurred") is True
+    accepted = (
+        action.get("send_input", {}).get("accepted")
+        if isinstance(action.get("send_input"), dict)
+        else None
+    )
+    if action.get("status") == "confirmed" and any(
+        key in action for key in ("error", "durable_event_error")
+    ):
+        raise AgentError("menu smoke confirmed receipt carries a failure marker")
+    if hover_consumed is not None and not button_possible:
+        raise AgentError("menu smoke consumed click lease denies button submission")
+    target = action.get("target")
+    hover_target = target.get("hover") if isinstance(target, dict) else None
+    if hover_consumed is not None and (
+        not isinstance(hover_target, dict)
+        or target.get("final_patch_sha256") != hover_target.get("patch_sha256")
+    ):
+        raise AgentError("menu smoke consumed click lease lacks final pixel guard")
+    if accepted is not None and hover_consumed is None:
+        raise AgentError("menu smoke submitted input lacks consumed click authority")
+    if (
+        action.get("status") == "failed_after_possible_input"
+        and button_possible
+        and hover_consumed is None
+    ):
+        raise AgentError("menu smoke terminal button claim lacks consumed click authority")
+
+    if require_confirmed:
+        after = action.get("after_stable_observation")
+        after_frames = after.get("frames") if isinstance(after, dict) else None
+        if (
+            fresh_consumed is None
+            or hover_consumed is None
+            or not isinstance(after_frames, list)
+            or len(after_frames) != 2
+            or any(
+                not finite_number(frame.get("captured_monotonic"))
+                for frame in after_frames
+                if isinstance(frame, dict)
+            )
+            or any(not isinstance(frame, dict) for frame in after_frames)
+            or float(after_frames[0]["captured_monotonic"])
+            < float(hover_consumed)
+            or float(after_frames[-1]["captured_monotonic"]) > float(deadline)
+        ):
+            raise AgentError("menu smoke confirmed action authority timeline differs")
+    return authorization
+
+
 def _validate_navigation_success(
     navigation: object,
     *,
@@ -1451,6 +1771,14 @@ def _validate_navigation_success(
         != hover_observation.get("observation_id")
     ):
         raise AgentError("menu smoke action observation ID binding differs")
+    _validate_visible_action_authorization(
+        action,
+        require_confirmed=True,
+        replayed_observations={
+            "fresh": fresh_observation,
+            "hover": hover_observation,
+        },
+    )
 
     def target_span(
         observation: dict[str, object], value: dict[str, object], label: str
@@ -1708,6 +2036,25 @@ def _validate_archived_environment(
         (OBSERVATION_SCHEMA_AGENT_RUNTIME_PATH, OBSERVATION_SCHEMA),
         (ACTION_RECEIPT_SCHEMA_AGENT_RUNTIME_PATH, ACTION_RECEIPT_SCHEMA),
     )
+
+    def schema_binding_matches(label: str, path: Path) -> bool:
+        record = runtime_files.get(label)
+        if not isinstance(record, dict):
+            return False
+        if (
+            record.get("sha256") == sha256_file(path)
+            and record.get("size") == path.stat().st_size
+        ):
+            return True
+        return (
+            label == ACTION_RECEIPT_SCHEMA_AGENT_RUNTIME_PATH
+            and _is_exact_legacy_visible_action_report(report)
+            and record == {
+                "path": ACTION_RECEIPT_SCHEMA_AGENT_RUNTIME_PATH,
+                **LEGACY_VISIBLE_ACTION_RECEIPT_SCHEMA_BINDING,
+            }
+        )
+
     contract = report.get("ui_contract")
     runtime_without_hash = dict(runtime) if isinstance(runtime, dict) else {}
     runtime_hash = runtime_without_hash.pop("sha256", None)
@@ -1845,9 +2192,7 @@ def _validate_archived_environment(
         or matches[0].get("sha256") != contract.get("sha256")
         or matches[0].get("size") != contract.get("size")
         or any(
-            not isinstance(runtime_files.get(label), dict)
-            or runtime_files[label].get("sha256") != sha256_file(path)
-            or runtime_files[label].get("size") != path.stat().st_size
+            not schema_binding_matches(label, path)
             for label, path in schema_bindings
         )
         or mod.get("production_manifest_sha256")
@@ -3704,6 +4049,12 @@ def _validate_event_semantics(
             raise AgentError("menu smoke RED event prerequisites differ")
     _validate_foreground_events(report, rows)
     action_rows = [row for row in rows if str(row.get("kind", "")).startswith("ui_")]
+    if any(
+        row.get("kind") not in {"ui_input_armed", "ui_action_finished"}
+        and bool(set(row) & VISIBLE_ACTION_LEASE_EVENT_FIELDS)
+        for row in rows
+    ):
+        raise AgentError("menu smoke lease evidence is routed to an invalid event")
     if report.get("ok") is True:
         if [row.get("kind") for row in action_rows] != [
             "ui_action_planned",
@@ -3721,6 +4072,19 @@ def _validate_event_semantics(
         after_frames = after_audit.get("frames", []) if isinstance(after_audit, dict) else []
         durable = action.get("durable_events", {}) if isinstance(action, dict) else {}
         target = action.get("target", {}) if isinstance(action, dict) else {}
+        authorization = (
+            action.get("authorization", {}) if isinstance(action, dict) else {}
+        )
+        fresh_lease = (
+            authorization.get("fresh_move_lease")
+            if isinstance(authorization, dict)
+            else None
+        )
+        hover_lease = (
+            authorization.get("hover_click_lease")
+            if isinstance(authorization, dict)
+            else None
+        )
         armed_target = (
             {key: target[key] for key in ("issued", "fresh")}
             if isinstance(target, dict) and {"issued", "fresh"} <= set(target)
@@ -3755,11 +4119,25 @@ def _validate_event_semantics(
             or action_rows[1].get("target") != armed_target
             or action_rows[1].get("pointer_input_may_have_occurred") is not True
             or action_rows[1].get("button_click_may_have_occurred") is not True
+            or not isinstance(fresh_lease, dict)
+            or (
+                set(action_rows[1]) & VISIBLE_ACTION_LEASE_EVENT_FIELDS
+                != {"fresh_move_lease_sha256"}
+            )
+            or action_rows[1].get("fresh_move_lease_sha256")
+            != fresh_lease.get("token_sha256")
             or action_rows[2].get("receipt_artifact")
             != action.get("receipt_artifact")
             or action_rows[2].get("result_frame_ids")
             != [frame.get("frame_id") for frame in after_frames]
             or action_rows[2].get("send_input") != action.get("send_input")
+            or not isinstance(hover_lease, dict)
+            or (
+                set(action_rows[2]) & VISIBLE_ACTION_LEASE_EVENT_FIELDS
+                != {"hover_click_lease_sha256"}
+            )
+            or action_rows[2].get("hover_click_lease_sha256")
+            != hover_lease.get("token_sha256")
         ):
             raise AgentError("menu smoke UI event/action receipt binding differs")
         main_row = rows[GREEN_EVENT_ORDER.index("visible_main_menu_attested")]
@@ -3984,6 +4362,11 @@ def _validate_red_ui_evidence(
         raise AgentError("menu smoke RED receipt lacks its stable main-menu proof")
     action = receipts[0]
     _validate_json_schema(action, ACTION_RECEIPT_SCHEMA, "RED action receipt")
+    current_action_protocol = (
+        report.get("visible_action_protocol_version")
+        == VISIBLE_ACTION_PROTOCOL_VERSION
+    )
+    authorization: dict[str, object] | None = None
     receipt_ref = action.get("receipt_artifact")
     if (
         action.get("format_version") != 2
@@ -4191,6 +4574,222 @@ def _validate_red_ui_evidence(
     hover_target = target.get("hover")
     fresh_observed = observed_by_label.get("fresh")
     hover_observed = observed_by_label.get("hover")
+    if current_action_protocol:
+        authorization = _validate_visible_action_authorization(
+            action,
+            require_confirmed=action.get("status") == "confirmed",
+            replayed_observations=observed_by_label,
+        )
+        fresh_lease = authorization.get("fresh_move_lease")
+        hover_lease = authorization.get("hover_click_lease")
+        before_sequence = before_frames[-1].get("capture_sequence")
+        fresh_evidence = action.get("fresh_observation")
+        hover_evidence = action.get("hover_observation")
+        fresh_sequence = (
+            fresh_evidence.get("capture_sequence")
+            if isinstance(fresh_evidence, dict)
+            else None
+        )
+        hover_sequence = (
+            hover_evidence.get("capture_sequence")
+            if isinstance(hover_evidence, dict)
+            else None
+        )
+        if fresh_evidence is not None and (
+            type(before_sequence) is not int
+            or type(fresh_sequence) is not int
+            or fresh_sequence != before_sequence + 1
+        ):
+            raise AgentError("menu smoke fresh capture sequence is not consecutive")
+        if hover_evidence is not None and (
+            type(fresh_sequence) is not int
+            or type(hover_sequence) is not int
+            or hover_sequence != fresh_sequence + 1
+        ):
+            raise AgentError("menu smoke hover capture sequence is not consecutive")
+        planned_wal = next(
+            (row for row in action_rows if row.get("kind") == "ui_action_planned"),
+            None,
+        )
+        armed_wal = next(
+            (row for row in action_rows if row.get("kind") == "ui_input_armed"),
+            None,
+        )
+        finished_wal = next(
+            (row for row in action_rows if row.get("kind") == "ui_action_finished"),
+            None,
+        )
+        fresh_stage_exists = (
+            action.get("fresh_observation_id") is not None
+            or action.get("fresh_observation") is not None
+            or fresh_target is not None
+            or fresh_lease is not None
+        )
+        armed_stage_exists = (
+            (
+                isinstance(fresh_lease, dict)
+                and fresh_lease.get("consumed_monotonic") is not None
+            )
+            or action.get("hover_observation_id") is not None
+            or action.get("hover_observation") is not None
+            or hover_target is not None
+            or hover_lease is not None
+            or any(
+                key in target
+                for key in (
+                    "final_patch_sha256",
+                    "hover_patch_artifact",
+                    "final_patch_artifact",
+                )
+            )
+        )
+        pixel_guard_stage_exists = any(
+            key in target
+            for key in (
+                "final_patch_sha256",
+                "hover_patch_artifact",
+                "final_patch_artifact",
+            )
+        )
+        if pixel_guard_stage_exists and (
+            action.get("hover_observation_id") is None
+            or action.get("hover_observation") is None
+            or hover_target is None
+            or not isinstance(hover_lease, dict)
+        ):
+            raise AgentError(
+                "menu smoke final pixel stage lacks its hover authority"
+            )
+        persisted_patch_artifact = any(
+            key in target
+            for key in ("hover_patch_artifact", "final_patch_artifact")
+        )
+        if persisted_patch_artifact and (
+            not isinstance(hover_lease, dict)
+            or hover_lease.get("consumed_monotonic") is None
+            or action.get("button_click_may_have_occurred") is not True
+        ):
+            raise AgentError(
+                "menu smoke persisted patch denies its submitted click"
+            )
+        # Producer order is one-way: fresh evidence can only be created after
+        # the planned callback returned, and lease consumption/hover evidence
+        # can only happen after the armed callback returned.  The reverse is
+        # deliberately not required because a callback may commit its WAL row
+        # and then raise before the producer advances its receipt.
+        if fresh_stage_exists and (
+            planned_wal is None
+            or durable.get("planned") != planned_wal.get("event_sha256")
+        ):
+            raise AgentError(
+                "menu smoke fresh action stage lacks committed planned receipt"
+            )
+        if armed_stage_exists and (
+            armed_wal is None
+            or durable.get("armed") != armed_wal.get("event_sha256")
+        ):
+            raise AgentError(
+                "menu smoke consumed/hover action stage lacks committed armed receipt"
+            )
+        persisted_status = action.get("status")
+        if finished_wal is not None and (
+            planned_wal is None
+            or durable.get("planned") != planned_wal.get("event_sha256")
+        ):
+            raise AgentError(
+                "menu smoke terminal action lacks committed planned receipt"
+            )
+        if finished_wal is not None and persisted_status in {
+            "failed_after_possible_input",
+            "confirmed",
+        } and (
+            armed_wal is None
+            or durable.get("armed") != armed_wal.get("event_sha256")
+        ):
+            raise AgentError(
+                "menu smoke terminal input action lacks committed armed receipt"
+            )
+        if persisted_status == "planned" and (
+            fresh_stage_exists
+            or set(target) != {"issued"}
+            or any(
+                key in action
+                for key in (
+                    "input_attempted_at",
+                    "finished_at",
+                    "error",
+                    "durable_event_error",
+                )
+            )
+        ):
+            raise AgentError("menu smoke planned receipt advanced into a later stage")
+        if armed_stage_exists and persisted_status not in {
+            "failed_after_possible_input",
+            "confirmed",
+        }:
+            raise AgentError("menu smoke armed-stage receipt status is unreachable")
+        if persisted_status in {
+            "rejected_before_input",
+            "failed_after_possible_input",
+        } and (
+            not isinstance(action.get("finished_at"), str)
+            or not action["finished_at"]
+            or not isinstance(action.get("error"), str)
+            or not action["error"]
+        ):
+            raise AgentError("menu smoke terminal failure receipt is incomplete")
+        if persisted_status == "failed_after_possible_input" and (
+            not isinstance(action.get("input_attempted_at"), str)
+            or not action["input_attempted_at"]
+        ):
+            raise AgentError("menu smoke failed receipt lacks its input attempt")
+        if persisted_status == "failed_after_possible_input" and not isinstance(
+            fresh_lease, dict
+        ):
+            raise AgentError("menu smoke failed receipt lacks its fresh move authority")
+        if persisted_status == "confirmed" and any(
+            key in action for key in ("error", "durable_event_error")
+        ):
+            raise AgentError("menu smoke confirmed receipt carries a failure marker")
+        if persisted_status == "input_attempting":
+            input_attempting_send = action.get("send_input")
+            fresh_lease = authorization.get("fresh_move_lease")
+            forbidden_later_fields = {
+                "hover_observation_id",
+                "hover_observation",
+                "result_observation_id",
+                "after_stable_observation",
+                "binding_after",
+                "finished_at",
+                "error",
+                "durable_event_error",
+            }
+            if (
+                not isinstance(fresh_lease, dict)
+                or fresh_lease.get("consumed_monotonic") is not None
+                or authorization.get("hover_click_lease") is not None
+                or not fresh_stage_exists
+                or set(target) != {"issued", "fresh"}
+                or not isinstance(action.get("input_attempted_at"), str)
+                or bool(set(action) & forbidden_later_fields)
+                or "ui_action_finished" in actual_kinds
+                or action.get("input_may_have_occurred") is not True
+                or action.get("pointer_input_may_have_occurred") is not True
+                or action.get("button_click_may_have_occurred") is not True
+                or input_attempting_send
+                != {"requested": 2, "accepted": None, "last_error": None}
+            ):
+                raise AgentError("menu smoke input-attempting receipt stage differs")
+        if (
+            "ui_action_finished" in actual_kinds
+            and persisted_status
+            not in {
+                "rejected_before_input",
+                "failed_after_possible_input",
+                "confirmed",
+            }
+        ):
+            raise AgentError("menu smoke terminal WAL receipt status is unreachable")
     if fresh_observed is not None and fresh_observed.get("screen") != "main_menu":
         changed_screen = fresh_observed.get("screen")
         if (
@@ -4333,6 +4932,15 @@ def _validate_red_ui_evidence(
     } or send_input.get("requested") != 2:
         raise AgentError("menu smoke RED SendInput receipt differs")
     accepted = send_input.get("accepted")
+    last_error = send_input.get("last_error")
+    if current_action_protocol and (
+        (accepted is None) != (last_error is None)
+        or accepted == 2
+        and last_error != 0
+        or accepted in {0, 1}
+        and type(last_error) is not int
+    ):
+        raise AgentError("menu smoke RED SendInput result pair is unreachable")
     if accepted is not None and (
         type(accepted) is not int
         or not 0 <= accepted <= 2
@@ -4361,6 +4969,21 @@ def _validate_red_ui_evidence(
             or action.get("status")
             not in {"input_attempting", "failed_after_possible_input", "confirmed"}
             or fresh_target is None
+            or (
+                current_action_protocol
+                and (
+                    not isinstance(authorization, dict)
+                    or not isinstance(
+                        authorization.get("fresh_move_lease"), dict
+                    )
+                    or (
+                        set(armed) & VISIBLE_ACTION_LEASE_EVENT_FIELDS
+                        != {"fresh_move_lease_sha256"}
+                    )
+                    or armed.get("fresh_move_lease_sha256")
+                    != authorization["fresh_move_lease"].get("token_sha256")
+                )
+            )
         ):
             raise AgentError("menu smoke RED armed evidence differs")
     elif action_rows and action.get("status") in {
@@ -4406,15 +5029,53 @@ def _validate_red_ui_evidence(
                 or finished.get("result_frame_ids")
                 != [frame.get("frame_id") for frame in after_frames]
                 or finished.get("send_input") != send_input
+                or (
+                    current_action_protocol
+                    and (
+                        not isinstance(authorization, dict)
+                        or not isinstance(
+                            authorization.get("hover_click_lease"), dict
+                        )
+                        or (
+                            set(finished) & VISIBLE_ACTION_LEASE_EVENT_FIELDS
+                            != {"hover_click_lease_sha256"}
+                        )
+                        or finished.get("hover_click_lease_sha256")
+                        != authorization["hover_click_lease"].get("token_sha256")
+                    )
+                )
             ):
                 raise AgentError("menu smoke RED confirmed finish binding differs")
-        elif (
-            finished.get("input_may_have_occurred")
-            != action.get("input_may_have_occurred")
-            or finished.get("button_click_may_have_occurred")
-            != action.get("button_click_may_have_occurred")
-        ):
-            raise AgentError("menu smoke RED failed finish flags differ")
+        else:
+            expected_lease_hashes: dict[str, object] = {}
+            if current_action_protocol:
+                if not isinstance(authorization, dict):
+                    raise AgentError("menu smoke RED failed finish flags differ")
+                for lease_key, event_key in (
+                    ("fresh_move_lease", "fresh_move_lease_sha256"),
+                    ("hover_click_lease", "hover_click_lease_sha256"),
+                ):
+                    lease = authorization.get(lease_key)
+                    if isinstance(lease, dict):
+                        expected_lease_hashes[event_key] = lease.get(
+                            "token_sha256"
+                        )
+                actual_lease_hashes = {
+                    key: finished[key]
+                    for key in VISIBLE_ACTION_LEASE_EVENT_FIELDS
+                    if key in finished
+                }
+                if actual_lease_hashes != expected_lease_hashes:
+                    raise AgentError(
+                        "menu smoke RED failed finish lease binding differs"
+                    )
+            if (
+                finished.get("input_may_have_occurred")
+                != action.get("input_may_have_occurred")
+                or finished.get("button_click_may_have_occurred")
+                != action.get("button_click_may_have_occurred")
+            ):
+                raise AgentError("menu smoke RED failed finish flags differ")
     navigation = report.get("navigation_attestation")
     if action.get("status") == "confirmed":
         after_audit = action.get("after_stable_observation")
@@ -4478,6 +5139,27 @@ def _validate_red_ui_evidence(
                 == FOREGROUND_PROTOCOL_VERSION
             ),
         )
+        lobby_rows = [row for row in rows if row.get("kind") == "bookmark_lobby_attested"]
+        if current_action_protocol and navigation is not None and len(lobby_rows) != 1:
+            raise AgentError("menu smoke RED navigation lacks its lobby WAL")
+        if current_action_protocol and lobby_rows:
+            confirmed_finished = next(
+                (
+                    row
+                    for row in action_rows
+                    if row.get("kind") == "ui_action_finished"
+                    and row.get("status") == "confirmed"
+                ),
+                None,
+            )
+            if (
+                confirmed_finished is None
+                or durable.get("finished")
+                != confirmed_finished.get("event_sha256")
+            ):
+                raise AgentError(
+                    "menu smoke RED lobby WAL lacks committed confirmed finish"
+                )
         if navigation is not None:
             if navigation != synthetic_navigation:
                 raise AgentError("menu smoke RED navigation aggregate differs")
@@ -4492,7 +5174,6 @@ def _validate_red_ui_evidence(
                     == FOREGROUND_PROTOCOL_VERSION
                 ),
             )
-        lobby_rows = [row for row in rows if row.get("kind") == "bookmark_lobby_attested"]
         if lobby_rows and (
             len(lobby_rows) != 1
             or lobby_rows[0].get("contract_sha256")
@@ -4713,6 +5394,12 @@ def _validate_menu_report_base_contract(
             or report["event_chain"].get("tail_sha256") != expected_legacy_final
         ):
             raise AgentError("menu smoke foreground protocol generation differs")
+    action_protocol_version = report.get("visible_action_protocol_version")
+    if (
+        action_protocol_version != VISIBLE_ACTION_PROTOCOL_VERSION
+        and not _is_exact_legacy_visible_action_report(report)
+    ):
+        raise AgentError("menu smoke visible action protocol generation differs")
     if (
         report.get("format_version") != 1
         or report.get("kind") != MENU_KIND
@@ -5427,6 +6114,7 @@ def _menu_smoke_locked(
     report: dict[str, object] = {
         "format_version": 1,
         "foreground_protocol_version": FOREGROUND_PROTOCOL_VERSION,
+        "visible_action_protocol_version": VISIBLE_ACTION_PROTOCOL_VERSION,
         "run_id": run_id,
         "kind": MENU_KIND,
         "acceptance_claim": MENU_ACCEPTANCE_CLAIM,

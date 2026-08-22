@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 import gzip
 import hashlib
 import json
@@ -64,6 +65,8 @@ from xar_autoplayer.menu_smoke import (  # noqa: E402
     _artifact_manifest,
     _menu_smoke_locked,
     _memory_image_sha256,
+    _is_exact_legacy_visible_action_report,
+    _visible_action_lease_claims,
     _replay_visible_frame,
     _report_body_sha256,
     _run_menu_scenario,
@@ -374,6 +377,31 @@ def navigation_payload() -> dict[str, object]:
         "send_input": {"requested": 2, "accepted": 2, "last_error": 0},
         "durable_events": {},
     }
+    action["authorization"] = {
+        "protocol_version": 2,
+        "action_admitted_monotonic": 2.0,
+        "action_timeout_seconds": 10.0,
+        "action_deadline_monotonic": 12.0,
+        "caller_token_issued_monotonic": 1.5,
+        "fresh_move_lease": {
+            "purpose": "fresh_target_pointer_move",
+            "parent_authority_sha256": action["control_token_sha256"],
+            "claims_sha256": "1" * 64,
+            "token_sha256": "2" * 64,
+            "issued_monotonic": 3.0,
+            "expires_monotonic": 8.0,
+            "consumed_monotonic": 3.25,
+        },
+        "hover_click_lease": {
+            "purpose": "hover_verified_left_click_batch",
+            "parent_authority_sha256": "2" * 64,
+            "claims_sha256": "3" * 64,
+            "token_sha256": "4" * 64,
+            "issued_monotonic": 4.0,
+            "expires_monotonic": 9.0,
+            "consumed_monotonic": 4.25,
+        },
+    }
     return {
         "claim": "visible_main_menu_to_bookmark_lobby_only",
         "foreground_activation": foreground_attestation(),
@@ -502,6 +530,9 @@ def build_green_report(run_dir: Path) -> dict[str, object]:
             },
             "pointer_input_may_have_occurred": True,
             "button_click_may_have_occurred": True,
+            "fresh_move_lease_sha256": action["authorization"][
+                "fresh_move_lease"
+            ]["token_sha256"],
         },
     )
     action["durable_events"]["finished"] = append_event(
@@ -516,6 +547,9 @@ def build_green_report(run_dir: Path) -> dict[str, object]:
                 for frame in action["after_stable_observation"]["frames"]
             ],
             "send_input": action["send_input"],
+            "hover_click_lease_sha256": action["authorization"][
+                "hover_click_lease"
+            ]["token_sha256"],
         },
     )
     append_event(
@@ -543,6 +577,7 @@ def build_green_report(run_dir: Path) -> dict[str, object]:
     report: dict[str, object] = {
         "format_version": 1,
         "foreground_protocol_version": 2,
+        "visible_action_protocol_version": 2,
         "run_id": run_dir.name,
         "kind": MENU_KIND,
         "acceptance_claim": MENU_ACCEPTANCE_CLAIM,
@@ -1214,6 +1249,61 @@ def build_strict_green_report(
         "binding_after": binding,
         "finished_at": "2026-08-22T00:00:06+00:00",
     }
+    fresh_lease = {
+        "purpose": "fresh_target_pointer_move",
+        "parent_authority_sha256": action["control_token_sha256"],
+        "claims_sha256": "0" * 64,
+        "token_sha256": "b" * 64,
+        "issued_monotonic": 3.0,
+        "expires_monotonic": 8.0,
+        "consumed_monotonic": 3.25,
+    }
+    hover_lease = {
+        "purpose": "hover_verified_left_click_batch",
+        "parent_authority_sha256": fresh_lease["token_sha256"],
+        "claims_sha256": "0" * 64,
+        "token_sha256": "c" * 64,
+        "issued_monotonic": 4.0,
+        "expires_monotonic": 9.0,
+        "consumed_monotonic": 4.25,
+    }
+    action["authorization"] = {
+        "protocol_version": 2,
+        "action_admitted_monotonic": 2.25,
+        "action_timeout_seconds": 9.75,
+        "action_deadline_monotonic": 12.0,
+        "caller_token_issued_monotonic": 2.125,
+        "fresh_move_lease": fresh_lease,
+        "hover_click_lease": hover_lease,
+    }
+    for lease, purpose, evidence, source_policy, stage_target in (
+        (
+            fresh_lease,
+            "fresh_target_pointer_move",
+            fresh_evidence,
+            policies[3],
+            target["fresh"],
+        ),
+        (
+            hover_lease,
+            "hover_verified_left_click_batch",
+            hover_evidence,
+            policies[4],
+            target["hover"],
+        ),
+    ):
+        source_token = source_policy["visible_controls"][0]["control_token"]
+        claims = _visible_action_lease_claims(
+            action,
+            lease,
+            purpose=purpose,
+            observation=evidence,
+            source_control_token_sha256=hashlib.sha256(
+                source_token.encode("ascii")
+            ).hexdigest(),
+            target=stage_target,
+        )
+        lease["claims_sha256"] = snapshot_digest(claims)
     navigation = {
         "claim": MENU_ACCEPTANCE_CLAIM,
         "window_binding": binding,
@@ -1372,6 +1462,7 @@ def build_strict_green_report(
             "target": {key: target[key] for key in ("issued", "fresh")},
             "pointer_input_may_have_occurred": True,
             "button_click_may_have_occurred": True,
+            "fresh_move_lease_sha256": fresh_lease["token_sha256"],
         },
     )
     action["durable_events"]["finished"] = append_event(
@@ -1383,6 +1474,7 @@ def build_strict_green_report(
             "receipt_artifact": action["receipt_artifact"],
             "result_frame_ids": [item["frame_id"] for item in after_audit["frames"]],
             "send_input": action["send_input"],
+            "hover_click_lease_sha256": hover_lease["token_sha256"],
         },
     )
     append_event(
@@ -1411,6 +1503,7 @@ def build_strict_green_report(
     report: dict[str, object] = {
         "format_version": 1,
         "foreground_protocol_version": 2,
+        "visible_action_protocol_version": 2,
         "run_id": run_dir.name,
         "kind": MENU_KIND,
         "acceptance_claim": MENU_ACCEPTANCE_CLAIM,
@@ -1590,6 +1683,47 @@ def _archived_observation(run_dir: Path, index: int) -> Observation:
     )
 
 
+def _refresh_action_lease_claims(
+    run_dir: Path, action: dict[str, object]
+) -> None:
+    authorization = action["authorization"]
+    targets = action["target"]
+    for key, label, purpose in (
+        ("fresh_move_lease", "fresh", "fresh_target_pointer_move"),
+        ("hover_click_lease", "hover", "hover_verified_left_click_batch"),
+    ):
+        lease = authorization.get(key)
+        if not isinstance(lease, dict):
+            continue
+        evidence = action[f"{label}_observation"]
+        archived = json.loads(
+            (run_dir / evidence["observation"]).read_text(encoding="utf-8")
+        )
+        policy = archived["policy_observation"]
+        controls = [
+            control
+            for control in policy["visible_controls"]
+            if control["control_id"] == action["control_id"]
+            and control["bbox"] == targets[label]["bbox"]
+            and control["center"] == targets[label]["center"]
+        ]
+        if len(controls) != 1:
+            raise AssertionError("fixture lease source control differs")
+        source_sha = hashlib.sha256(
+            controls[0]["control_token"].encode("ascii")
+        ).hexdigest()
+        lease["claims_sha256"] = snapshot_digest(
+            _visible_action_lease_claims(
+                action,
+                lease,
+                purpose=purpose,
+                observation=evidence,
+                source_control_token_sha256=source_sha,
+                target=targets[label],
+            )
+        )
+
+
 def _strict_driver(
     run_dir: Path, report: dict[str, object], callback
 ) -> tuple[VisibleUiDriver, str, object]:
@@ -1613,12 +1747,13 @@ def _strict_driver(
     driver._sequence = 6
     driver._capture_sequence = 6
     driver._input_budget_consumed = False
+    driver._consumed_internal_leases = set()
     driver._issued = {
         control.token: _IssuedControl(
             before,
             spec,
             target,
-            time.monotonic(),
+            2.125,
             stable,
         )
     }
@@ -1629,6 +1764,28 @@ def _strict_driver(
     window.client_rect = tuple(binding["window"]["client_rect"])
     window.audit_binding.return_value = binding
     driver.window = window
+    # The strict archive starts with deterministic opaque-looking control
+    # tokens.  Driver integration tests need the fresh and hover capabilities
+    # to be genuine per-session HMACs because staged lease issuance verifies
+    # them before it signs a child authority.
+    for index in (3, 4):
+        observed = _archived_observation(run_dir, index)
+        observed_control = observed.controls[0]
+        observed_span = next(
+            span for span in observed.spans if span.bbox == observed_control.bbox
+        )
+        source_token = driver._token(
+            observed.observation_id,
+            observed.frame_id,
+            spec,
+            observed_span,
+        )
+        archive_path = run_dir / observed.audit_path
+        archive = json.loads(archive_path.read_text(encoding="utf-8"))
+        archive["policy_observation"]["visible_controls"][0][
+            "control_token"
+        ] = source_token
+        write_json_atomic(archive_path, archive)
     return driver, control.token, window
 
 
@@ -1638,6 +1795,7 @@ def _finalize_red_fixture(
     rows: list[dict[str, object]],
     *,
     action: dict[str, object] | None = None,
+    omit_durable_labels: frozenset[str] = frozenset(),
 ) -> None:
     events = run_dir / "events.jsonl"
     events.unlink()
@@ -1651,7 +1809,9 @@ def _finalize_red_fixture(
     for row in rows:
         digest = append_event(events, row)
         if action is not None and row.get("kind") in event_labels:
-            action["durable_events"][event_labels[str(row["kind"])]] = digest
+            label = event_labels[str(row["kind"])]
+            if label not in omit_durable_labels:
+                action["durable_events"][label] = digest
     if action is not None:
         write_json_atomic(run_dir / str(action["receipt_artifact"]), action)
     report["artifacts"] = _artifact_manifest(run_dir)
@@ -1805,6 +1965,12 @@ def build_red_report(
                 "receipt_artifact": action["receipt_artifact"],
                 "input_may_have_occurred": True,
                 "button_click_may_have_occurred": True,
+                "fresh_move_lease_sha256": action["authorization"][
+                    "fresh_move_lease"
+                ]["token_sha256"],
+                "hover_click_lease_sha256": action["authorization"][
+                    "hover_click_lease"
+                ]["token_sha256"],
             }
         )
     elif mode == "armed-wal-failed-before-commit":
@@ -1819,6 +1985,8 @@ def build_red_report(
             "last_error": None,
         }
         action["error"] = "OSError: ui_input_armed WAL callback failed"
+        action["authorization"]["fresh_move_lease"]["consumed_monotonic"] = None
+        action["authorization"]["hover_click_lease"] = None
         for key in (
             "hover_observation_id",
             "hover_observation",
@@ -2846,6 +3014,673 @@ class MenuReportValidatorTests(unittest.TestCase):
             shutil.copytree(run_dir, relocated)
             self.assertTrue(self._validate_strict(relocated, replay)["ok"])
 
+    def test_current_visible_action_protocol_marker_cannot_be_stripped(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-action-protocol-downgrade-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-12345678"
+            )
+            report, replay = build_strict_green_report(run_dir)
+            rows = _event_payloads(run_dir)
+            action = report["navigation_attestation"]["transition"]["action"]
+            del report["visible_action_protocol_version"]
+            _refinalize_green_fixture(run_dir, report, rows, action)
+            with self.assertRaisesRegex(
+                AgentError, "visible action protocol generation differs"
+            ):
+                self._validate_strict(run_dir, replay)
+
+    def test_legacy_visible_action_generation_is_an_exact_immutable_pin(
+        self,
+    ) -> None:
+        final_event = (
+            "aef3dc4d0dc6bbcaf117dfaabc1d27b263309ec2f58cab5b9a14aa4ffb46396d"
+        )
+        report = {
+            "run_id": "20260822T060758Z-menu-fc73b5c5",
+            "ok": False,
+            "final_event_sha256": final_event,
+            "event_chain": {"tail_sha256": final_event},
+        }
+        self.assertTrue(_is_exact_legacy_visible_action_report(report))
+        mutations = {
+            "marker-present": lambda value: value.update(
+                visible_action_protocol_version=1
+            ),
+            "green": lambda value: value.update(ok=True),
+            "different-run": lambda value: value.update(
+                run_id="20260822T060758Z-menu-deadbeef"
+            ),
+            "different-final": lambda value: value.update(
+                final_event_sha256="0" * 64
+            ),
+            "different-tail": lambda value: value["event_chain"].update(
+                tail_sha256="0" * 64
+            ),
+        }
+        for label, mutate in mutations.items():
+            with self.subTest(label=label):
+                candidate = json.loads(json.dumps(report))
+                mutate(candidate)
+                self.assertFalse(
+                    _is_exact_legacy_visible_action_report(candidate)
+                )
+
+    def test_public_validator_rejects_resigned_action_authority_tampering(
+        self,
+    ) -> None:
+        cases = {
+            "missing-authorization": "UI event/action receipt binding differs",
+            "stale-caller": "admission/deadline differs",
+            "lease-duration": "timing/binding differs",
+            "consumed-after-expiry": "timing/binding differs",
+            "consumed-after-deadline": "timing/binding differs",
+            "wrong-hover-parent": "timing/binding differs",
+            "wrong-claims-digest": "claims digest differs",
+            "accepted-without-hover-consumption": "lacks consumed click authority",
+        }
+        for mutation, expected_error in cases.items():
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-action-authority-{mutation}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                report, replay = build_strict_green_report(run_dir)
+                rows = _event_payloads(run_dir)
+                action = report["navigation_attestation"]["transition"]["action"]
+                authorization = action["authorization"]
+                refresh_claims = False
+                if mutation == "missing-authorization":
+                    del action["authorization"]
+                elif mutation == "stale-caller":
+                    authorization["caller_token_issued_monotonic"] = 2.0
+                    authorization["action_admitted_monotonic"] = 7.1
+                    authorization["action_timeout_seconds"] = 4.9
+                elif mutation == "lease-duration":
+                    authorization["fresh_move_lease"][
+                        "expires_monotonic"
+                    ] += 0.001
+                elif mutation == "consumed-after-expiry":
+                    authorization["hover_click_lease"][
+                        "consumed_monotonic"
+                    ] = 9.001
+                elif mutation == "consumed-after-deadline":
+                    authorization["action_timeout_seconds"] = 1.95
+                    authorization["action_deadline_monotonic"] = 4.2
+                    refresh_claims = True
+                elif mutation == "wrong-hover-parent":
+                    authorization["hover_click_lease"][
+                        "parent_authority_sha256"
+                    ] = "d" * 64
+                    refresh_claims = True
+                elif mutation == "wrong-claims-digest":
+                    authorization["fresh_move_lease"]["claims_sha256"] = (
+                        "e" * 64
+                    )
+                elif mutation == "accepted-without-hover-consumption":
+                    authorization["hover_click_lease"][
+                        "consumed_monotonic"
+                    ] = None
+                else:  # pragma: no cover - the fixed matrix is exhaustive.
+                    raise AssertionError(mutation)
+                if refresh_claims:
+                    _refresh_action_lease_claims(run_dir, action)
+                _refinalize_green_fixture(run_dir, report, rows, action)
+                with self.assertRaisesRegex(AgentError, expected_error):
+                    self._validate_strict(run_dir, replay)
+
+    def test_public_validator_rejects_resigned_lease_wal_cross_binding(
+        self,
+    ) -> None:
+        cases = (
+            "started-extra-hover",
+            "planned-extra-fresh",
+            "armed-wrong-fresh",
+            "armed-extra-hover",
+            "finished-wrong-hover",
+            "finished-extra-fresh",
+        )
+        for mutation in cases:
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-lease-wal-{mutation}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                report, replay = build_strict_green_report(run_dir)
+                rows = _event_payloads(run_dir)
+                action = report["navigation_attestation"]["transition"]["action"]
+                planned = next(
+                    row for row in rows if row["kind"] == "ui_action_planned"
+                )
+                armed = next(
+                    row for row in rows if row["kind"] == "ui_input_armed"
+                )
+                finished = next(
+                    row for row in rows if row["kind"] == "ui_action_finished"
+                )
+                if mutation == "started-extra-hover":
+                    rows[0]["hover_click_lease_sha256"] = action[
+                        "authorization"
+                    ]["hover_click_lease"]["token_sha256"]
+                elif mutation == "planned-extra-fresh":
+                    planned["fresh_move_lease_sha256"] = action["authorization"][
+                        "fresh_move_lease"
+                    ]["token_sha256"]
+                elif mutation == "armed-wrong-fresh":
+                    armed["fresh_move_lease_sha256"] = "d" * 64
+                elif mutation == "armed-extra-hover":
+                    armed["hover_click_lease_sha256"] = action["authorization"][
+                        "hover_click_lease"
+                    ]["token_sha256"]
+                elif mutation == "finished-wrong-hover":
+                    finished["hover_click_lease_sha256"] = "e" * 64
+                elif mutation == "finished-extra-fresh":
+                    finished["fresh_move_lease_sha256"] = action[
+                        "authorization"
+                    ]["fresh_move_lease"]["token_sha256"]
+                else:  # pragma: no cover - the fixed matrix is exhaustive.
+                    raise AssertionError(mutation)
+                _refinalize_green_fixture(run_dir, report, rows, action)
+                expected = (
+                    "lease evidence is routed to an invalid event"
+                    if mutation in {"started-extra-hover", "planned-extra-fresh"}
+                    else "UI event/action receipt binding differs"
+                )
+                with self.assertRaisesRegex(AgentError, expected):
+                    self._validate_strict(run_dir, replay)
+
+    def test_red_action_stages_require_their_preceding_wal(self) -> None:
+        cases = (
+            "fresh-without-planned",
+            "fresh-without-planned-digest",
+            "consumed-without-armed",
+            "consumed-without-armed-digest",
+        )
+        for mutation in cases:
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-red-stage-wal-{mutation}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                fixture_mode = (
+                    "failed-after-input"
+                    if mutation == "consumed-without-armed-digest"
+                    else "armed-wal-failed-before-commit"
+                )
+                report, replay = build_red_report(run_dir, fixture_mode)
+                rows = _event_payloads(run_dir)
+                action_path = run_dir / "artifacts" / "00007-action.json"
+                action = json.loads(action_path.read_text(encoding="utf-8"))
+                if mutation == "fresh-without-planned":
+                    rows = [
+                        row for row in rows if row["kind"] != "ui_action_planned"
+                    ]
+                    action["durable_events"] = {}
+                    action["status"] = "rejected_before_input"
+                    action["input_may_have_occurred"] = False
+                    action["pointer_input_may_have_occurred"] = False
+                    action["button_click_may_have_occurred"] = False
+                    expected = "fresh action stage lacks committed planned receipt"
+                elif mutation == "fresh-without-planned-digest":
+                    action["durable_events"].pop("planned")
+                    expected = "fresh action stage lacks committed planned receipt"
+                elif mutation == "consumed-without-armed":
+                    fresh_lease = action["authorization"]["fresh_move_lease"]
+                    fresh_lease["consumed_monotonic"] = (
+                        fresh_lease["issued_monotonic"] + 0.1
+                    )
+                    expected = (
+                        "consumed/hover action stage lacks committed armed receipt"
+                    )
+                else:
+                    action["durable_events"].pop("armed")
+                    action["durable_events"].pop("finished")
+                    expected = (
+                        "consumed/hover action stage lacks committed armed receipt"
+                    )
+                omit_labels = (
+                    frozenset({"planned"})
+                    if mutation == "fresh-without-planned-digest"
+                    else frozenset({"armed", "finished"})
+                    if mutation == "consumed-without-armed-digest"
+                    else frozenset()
+                )
+                _finalize_red_fixture(
+                    run_dir,
+                    report,
+                    rows,
+                    action=action,
+                    omit_durable_labels=omit_labels,
+                )
+                with self.assertRaisesRegex(AgentError, expected):
+                    self._validate_strict(run_dir, replay)
+
+    def test_red_action_receipt_status_cannot_claim_an_unreachable_stage(self) -> None:
+        cases = (
+            "planned-with-fresh",
+            "planned-with-finished",
+            "input-attempting-after-submit",
+        )
+        for mutation in cases:
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-red-status-stage-{mutation}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                fixture_mode = (
+                    "armed-wal-failed-before-commit"
+                    if mutation in {"planned-with-fresh", "planned-with-finished"}
+                    else "failed-after-input"
+                )
+                report, replay = build_red_report(run_dir, fixture_mode)
+                rows = _event_payloads(run_dir)
+                action_path = run_dir / "artifacts" / "00007-action.json"
+                action = json.loads(action_path.read_text(encoding="utf-8"))
+                if mutation in {"planned-with-fresh", "planned-with-finished"}:
+                    action["status"] = "planned"
+                    action["input_may_have_occurred"] = False
+                    action["pointer_input_may_have_occurred"] = False
+                    action["button_click_may_have_occurred"] = False
+                    for key in (
+                        "input_attempted_at",
+                        "finished_at",
+                        "error",
+                    ):
+                        action.pop(key, None)
+                    if mutation == "planned-with-finished":
+                        for key in ("fresh_observation_id", "fresh_observation"):
+                            action.pop(key, None)
+                        action["target"].pop("fresh", None)
+                        action["authorization"]["fresh_move_lease"] = None
+                        planned_index = next(
+                            index
+                            for index, row in enumerate(rows)
+                            if row["kind"] == "ui_action_planned"
+                        )
+                        rows.insert(
+                            planned_index + 1,
+                            {
+                                "kind": "ui_action_finished",
+                                "action_id": action["action_id"],
+                                "status": "planned",
+                                "receipt_artifact": action["receipt_artifact"],
+                                "input_may_have_occurred": False,
+                                "button_click_may_have_occurred": False,
+                            },
+                        )
+                        expected = "terminal WAL receipt status is unreachable"
+                    else:
+                        expected = "planned receipt advanced into a later stage"
+                else:
+                    rows = [
+                        row
+                        for row in rows
+                        if row["kind"] != "ui_action_finished"
+                    ]
+                    action["status"] = "input_attempting"
+                    action.pop("finished_at", None)
+                    action.pop("error", None)
+                    expected = "armed-stage receipt status is unreachable"
+                _finalize_red_fixture(run_dir, report, rows, action=action)
+                with self.assertRaisesRegex(AgentError, expected):
+                    self._validate_strict(run_dir, replay)
+
+    def test_red_terminal_wal_requires_the_committed_receipt_prefix(self) -> None:
+        cases = (
+            "failed-finish-without-armed",
+            "rejected-finish-without-planned-digest",
+        )
+        for mutation in cases:
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-red-terminal-prefix-{mutation}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                report, replay = build_red_report(
+                    run_dir, "armed-wal-failed-before-commit"
+                )
+                rows = _event_payloads(run_dir)
+                action_path = run_dir / "artifacts" / "00007-action.json"
+                action = json.loads(action_path.read_text(encoding="utf-8"))
+                planned_index = next(
+                    index
+                    for index, row in enumerate(rows)
+                    if row["kind"] == "ui_action_planned"
+                )
+                if mutation == "failed-finish-without-armed":
+                    finished = {
+                        "kind": "ui_action_finished",
+                        "action_id": action["action_id"],
+                        "status": "failed_after_possible_input",
+                        "receipt_artifact": action["receipt_artifact"],
+                        "input_may_have_occurred": True,
+                        "button_click_may_have_occurred": False,
+                        "fresh_move_lease_sha256": action["authorization"][
+                            "fresh_move_lease"
+                        ]["token_sha256"],
+                    }
+                    omit_labels = frozenset()
+                    expected = "terminal input action lacks committed armed receipt"
+                else:
+                    action["status"] = "rejected_before_input"
+                    action["input_may_have_occurred"] = False
+                    action["pointer_input_may_have_occurred"] = False
+                    action["button_click_may_have_occurred"] = False
+                    action.pop("input_attempted_at", None)
+                    for key in ("fresh_observation_id", "fresh_observation"):
+                        action.pop(key, None)
+                    action["target"].pop("fresh", None)
+                    action["authorization"]["fresh_move_lease"] = None
+                    finished = {
+                        "kind": "ui_action_finished",
+                        "action_id": action["action_id"],
+                        "status": "rejected_before_input",
+                        "receipt_artifact": action["receipt_artifact"],
+                        "input_may_have_occurred": False,
+                        "button_click_may_have_occurred": False,
+                    }
+                    omit_labels = frozenset({"planned", "finished"})
+                    expected = "terminal action lacks committed planned receipt"
+                rows.insert(planned_index + 1, finished)
+                _finalize_red_fixture(
+                    run_dir,
+                    report,
+                    rows,
+                    action=action,
+                    omit_durable_labels=omit_labels,
+                )
+                with self.assertRaisesRegex(AgentError, expected):
+                    self._validate_strict(run_dir, replay)
+
+    def test_red_consumed_hover_lease_requires_the_final_pixel_guard(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-red-hover-final-guard-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-12345678"
+            )
+            report, replay = build_red_report(run_dir, "failed-after-input")
+            rows = _event_payloads(run_dir)
+            action_path = run_dir / "artifacts" / "00007-action.json"
+            action = json.loads(action_path.read_text(encoding="utf-8"))
+            action["target"].pop("final_patch_sha256")
+            _finalize_red_fixture(run_dir, report, rows, action=action)
+            with self.assertRaisesRegex(
+                AgentError, "consumed click lease lacks final pixel guard"
+            ):
+                self._validate_strict(run_dir, replay)
+
+    def test_red_pixel_evidence_requires_its_reachable_hover_and_click_stage(
+        self,
+    ) -> None:
+        cases = ("orphan-final-hash", "patch-artifacts-deny-click")
+        for mutation in cases:
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-red-pixel-stage-{mutation}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                mode = (
+                    "armed-wal-failed-before-commit"
+                    if mutation == "orphan-final-hash"
+                    else "failed-after-input"
+                )
+                report, replay = build_red_report(run_dir, mode)
+                rows = _event_payloads(run_dir)
+                action_path = run_dir / "artifacts" / "00007-action.json"
+                action = json.loads(action_path.read_text(encoding="utf-8"))
+                if mutation == "orphan-final-hash":
+                    action["target"]["final_patch_sha256"] = "f" * 64
+                    expected = "final pixel stage lacks its hover authority"
+                else:
+                    action["authorization"]["hover_click_lease"][
+                        "consumed_monotonic"
+                    ] = None
+                    action["button_click_may_have_occurred"] = False
+                    action["send_input"] = {
+                        "requested": 2,
+                        "accepted": None,
+                        "last_error": None,
+                    }
+                    finished = next(
+                        row for row in rows if row["kind"] == "ui_action_finished"
+                    )
+                    finished["button_click_may_have_occurred"] = False
+                    expected = "persisted patch denies its submitted click"
+                _finalize_red_fixture(run_dir, report, rows, action=action)
+                with self.assertRaisesRegex(AgentError, expected):
+                    self._validate_strict(run_dir, replay)
+
+    def test_red_action_captures_must_follow_the_stable_frames_consecutively(
+        self,
+    ) -> None:
+        cases = ("fresh-reuses-before-sequence", "hover-skips-sequence")
+        for mutation in cases:
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-red-capture-sequence-{mutation}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                mode = (
+                    "armed-wal-failed-before-commit"
+                    if mutation == "fresh-reuses-before-sequence"
+                    else "failed-after-input"
+                )
+                report, replay = build_red_report(run_dir, mode)
+                rows = _event_payloads(run_dir)
+                action_path = run_dir / "artifacts" / "00007-action.json"
+                action = json.loads(action_path.read_text(encoding="utf-8"))
+                label = "fresh" if mutation.startswith("fresh") else "hover"
+                evidence = action[f"{label}_observation"]
+                if label == "fresh":
+                    replacement = action["before_stable_observation"]["frames"][-1][
+                        "capture_sequence"
+                    ]
+                    expected = "fresh capture sequence is not consecutive"
+                else:
+                    replacement = action["fresh_observation"]["capture_sequence"] + 2
+                    expected = "hover capture sequence is not consecutive"
+                evidence["capture_sequence"] = replacement
+                archive_path = run_dir / evidence["observation"]
+                archive = json.loads(archive_path.read_text(encoding="utf-8"))
+                archive["private_audit"]["capture_sequence"] = replacement
+                write_json_atomic(archive_path, archive)
+                _refresh_action_lease_claims(run_dir, action)
+                _finalize_red_fixture(run_dir, report, rows, action=action)
+                with self.assertRaisesRegex(AgentError, expected):
+                    self._validate_strict(run_dir, replay)
+
+    def test_red_lobby_wal_and_navigation_require_the_confirmed_prefix(
+        self,
+    ) -> None:
+        cases = ("navigation-without-lobby", "lobby-without-finished")
+        for mutation in cases:
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-red-lobby-prefix-{mutation}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                report, replay = build_red_report(run_dir, "unsafe-cleanup")
+                rows = _event_payloads(run_dir)
+                action_path = run_dir / "artifacts" / "00007-action.json"
+                action = json.loads(action_path.read_text(encoding="utf-8"))
+                if mutation == "navigation-without-lobby":
+                    rows = [
+                        row
+                        for row in rows
+                        if row["kind"] != "bookmark_lobby_attested"
+                    ]
+                    expected = "navigation lacks its lobby WAL"
+                else:
+                    report.pop("navigation_attestation")
+                    rows = [
+                        row
+                        for row in rows
+                        if row["kind"] != "ui_action_finished"
+                    ]
+                    expected = "lobby WAL lacks committed confirmed finish"
+                _finalize_red_fixture(run_dir, report, rows, action=action)
+                with self.assertRaisesRegex(AgentError, expected):
+                    self._validate_strict(run_dir, replay)
+
+    def test_red_terminal_failure_receipt_keeps_error_and_completion_time(
+        self,
+    ) -> None:
+        for missing in ("error", "finished_at", "input_attempted_at"):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-red-terminal-{missing}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                report, replay = build_red_report(run_dir, "failed-after-input")
+                rows = _event_payloads(run_dir)
+                action_path = run_dir / "artifacts" / "00007-action.json"
+                action = json.loads(action_path.read_text(encoding="utf-8"))
+                action.pop(missing)
+                _finalize_red_fixture(run_dir, report, rows, action=action)
+                expected = (
+                    "failed receipt lacks its input attempt"
+                    if missing == "input_attempted_at"
+                    else "terminal failure receipt is incomplete"
+                )
+                with self.assertRaisesRegex(AgentError, expected):
+                    self._validate_strict(run_dir, replay)
+
+    def test_red_failed_receipt_keeps_its_fresh_move_authority(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-red-failed-fresh-authority-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-12345678"
+            )
+            report, replay = build_red_report(
+                run_dir, "armed-wal-failed-before-commit"
+            )
+            rows = _event_payloads(run_dir)
+            action_path = run_dir / "artifacts" / "00007-action.json"
+            action = json.loads(action_path.read_text(encoding="utf-8"))
+            action["authorization"]["fresh_move_lease"] = None
+            _finalize_red_fixture(run_dir, report, rows, action=action)
+            with self.assertRaisesRegex(
+                AgentError, "failed receipt lacks its fresh move authority"
+            ):
+                self._validate_strict(run_dir, replay)
+
+    def test_confirmed_receipt_cannot_carry_failure_markers(self) -> None:
+        for field in ("error", "durable_event_error"):
+            with self.subTest(field=field), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-green-confirmed-{field}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                report, replay = build_strict_green_report(run_dir)
+                rows = _event_payloads(run_dir)
+                action = report["navigation_attestation"]["transition"]["action"]
+                action[field] = "forged failure marker"
+                _refinalize_green_fixture(run_dir, report, rows, action)
+                with self.assertRaisesRegex(
+                    AgentError, "confirmed receipt carries a failure marker"
+                ):
+                    self._validate_strict(run_dir, replay)
+
+    def test_confirmed_action_cannot_reuse_one_staged_lease_token(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-green-lease-reuse-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-12345678"
+            )
+            report, replay = build_strict_green_report(run_dir)
+            rows = _event_payloads(run_dir)
+            action = report["navigation_attestation"]["transition"]["action"]
+            reused = action["authorization"]["fresh_move_lease"]["token_sha256"]
+            action["authorization"]["hover_click_lease"]["token_sha256"] = reused
+            next(
+                row for row in rows if row["kind"] == "ui_action_finished"
+            )["hover_click_lease_sha256"] = reused
+            _refinalize_green_fixture(run_dir, report, rows, action)
+            with self.assertRaisesRegex(
+                AgentError, "staged action leases reuse one authority"
+            ):
+                self._validate_strict(run_dir, replay)
+
+    def test_red_send_input_result_pair_must_be_runtime_reachable(self) -> None:
+        cases = ((2, 123), (None, 5), (1, None))
+        for accepted, last_error in cases:
+            with self.subTest(
+                accepted=accepted, last_error=last_error
+            ), tempfile.TemporaryDirectory(
+                prefix="xar-menu-red-send-result-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                report, replay = build_red_report(run_dir, "failed-after-input")
+                rows = _event_payloads(run_dir)
+                action_path = run_dir / "artifacts" / "00007-action.json"
+                action = json.loads(action_path.read_text(encoding="utf-8"))
+                action["send_input"]["accepted"] = accepted
+                action["send_input"]["last_error"] = last_error
+                _finalize_red_fixture(run_dir, report, rows, action=action)
+                with self.assertRaisesRegex(
+                    AgentError, "SendInput result pair is unreachable"
+                ):
+                    self._validate_strict(run_dir, replay)
+
+    def test_red_failed_finish_requires_every_existing_lease_hash(self) -> None:
+        for missing in (
+            "fresh_move_lease_sha256",
+            "hover_click_lease_sha256",
+        ):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-red-finished-{missing}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                report, replay = build_red_report(run_dir, "failed-after-input")
+                rows = _event_payloads(run_dir)
+                action_path = run_dir / "artifacts" / "00007-action.json"
+                action = json.loads(action_path.read_text(encoding="utf-8"))
+                finished = next(
+                    row for row in rows if row["kind"] == "ui_action_finished"
+                )
+                del finished[missing]
+                _finalize_red_fixture(
+                    run_dir, report, rows, action=action
+                )
+                with self.assertRaisesRegex(
+                    AgentError, "failed finish lease binding differs"
+                ):
+                    self._validate_strict(run_dir, replay)
+
     def test_public_replay_rejects_artifact_created_by_semantic_leaf(self) -> None:
         with tempfile.TemporaryDirectory(
             prefix="xar-menu-public-artifact-race-"
@@ -3245,6 +4080,7 @@ class MenuReportValidatorTests(unittest.TestCase):
             ] = ""
             armed = next(row for row in rows if row["kind"] == "ui_input_armed")
             armed["binding"] = action["binding"]
+            _refresh_action_lease_claims(run_dir, action)
             _refinalize_green_fixture(run_dir, report, rows, action)
             self.assertTrue(self._validate_strict(run_dir, replay)["ok"])
 
@@ -3644,9 +4480,12 @@ class MenuReportValidatorTests(unittest.TestCase):
                     return_value=submit,
                 ), mock.patch(
                     "xar_autoplayer.control.executor.time.sleep"
+                ), mock.patch(
+                    "xar_autoplayer.control.executor.time.monotonic",
+                    side_effect=[2.25, 3.1, 3.25, 4.1, 4.25, 4.5],
                 ):
                     with self.assertRaisesRegex(AgentError, "committed"):
-                        driver.click_visible_control(token, timeout_seconds=1)
+                        driver.click_visible_control(token, timeout_seconds=10)
                 if failure_kind == "ui_input_armed":
                     fake_gui.moveTo.assert_not_called()
                     submit.assert_not_called()
@@ -3721,8 +4560,28 @@ class MenuReportValidatorTests(unittest.TestCase):
                 capture_observation = fresh
                 capture_with_image = (hover, hover_image)
                 if failure_kind == "fresh-screen":
+                    unexpected = replace(
+                        unexpected,
+                        capture_sequence=fresh.capture_sequence,
+                    )
+                    archive_path = run_dir / unexpected.audit_path
+                    archive = json.loads(archive_path.read_text(encoding="utf-8"))
+                    archive["private_audit"]["capture_sequence"] = (
+                        unexpected.capture_sequence
+                    )
+                    write_json_atomic(archive_path, archive)
                     capture_observation = unexpected
                 elif failure_kind == "hover-screen":
+                    unexpected = replace(
+                        unexpected,
+                        capture_sequence=hover.capture_sequence,
+                    )
+                    archive_path = run_dir / unexpected.audit_path
+                    archive = json.loads(archive_path.read_text(encoding="utf-8"))
+                    archive["private_audit"]["capture_sequence"] = (
+                        unexpected.capture_sequence
+                    )
+                    write_json_atomic(archive_path, archive)
                     capture_with_image = (unexpected, unexpected_image)
                 else:
                     def changed_patch(bbox):
@@ -3749,9 +4608,12 @@ class MenuReportValidatorTests(unittest.TestCase):
                     return_value=submit,
                 ), mock.patch(
                     "xar_autoplayer.control.executor.time.sleep"
+                ), mock.patch(
+                    "xar_autoplayer.control.executor.time.monotonic",
+                    side_effect=[2.25, 3.1, 3.25, 4.1, 4.25, 4.5],
                 ):
                     with self.assertRaises(AgentError) as raised:
-                        driver.click_visible_control(token, timeout_seconds=1)
+                        driver.click_visible_control(token, timeout_seconds=10)
                 submit.assert_not_called()
 
                 for kind in ("tracked_process_stopped", "postflight_attested"):
