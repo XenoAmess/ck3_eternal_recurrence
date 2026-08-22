@@ -76,7 +76,7 @@ GENERIC_EVENT_PREVIEW_REGION = (0.23, 0.22, 0.48, 0.80)
 # addresses existing GUIBuildingItem tracks; the empty ``+`` slots are not in
 # that shortcut model.  The rightmost empty slot is therefore the one
 # unavoidable layout-derived mouse target in the construction flow.
-HOLDING_EMPTY_BUILDING_SLOT_CENTER = (608, 1118)
+HOLDING_EMPTY_BUILDING_SLOT_CENTER = (763, 1398)
 
 # Frozen from Crusader Kings III/game/gui/shortcuts.shortcuts. Scan codes are
 # used so the binding does not depend on the active Windows keyboard layout.
