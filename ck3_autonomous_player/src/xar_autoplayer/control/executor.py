@@ -880,9 +880,12 @@ class VisibleUiDriver:
                     f"hover visible target is not unique: {len(hover_matches)}"
                 )
             hover_target = hover_matches[0]
-            if abs(hover_target.center[0] - target.center[0]) > 3 or abs(
-                hover_target.center[1] - target.center[1]
-            ) > 3:
+            if (
+                abs(hover_target.center[0] - target.center[0])
+                > spec.hover_tolerance_px
+                or abs(hover_target.center[1] - target.center[1])
+                > spec.hover_tolerance_px
+            ):
                 raise AgentError("visible target moved during hover verification")
             self.window.require_cursor_target(hover_target.center)
 

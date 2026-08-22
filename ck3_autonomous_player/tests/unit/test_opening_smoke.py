@@ -40,6 +40,14 @@ class OpeningContractTests(unittest.TestCase):
             frozenset(item.control_id for item in contract.controls),
             OPENING_ALLOWED_CONTROLS,
         )
+        self.assertEqual(
+            contract.control("bookmark_lobby.select_robert").hover_tolerance_px,
+            10,
+        )
+        self.assertEqual(
+            contract.control("bookmark_lobby.start_game").hover_tolerance_px,
+            3,
+        )
         lobby_image = Image.new("RGB", contract.resolution, (0, 0, 0))
         lobby = next(
             item for item in contract.screens if item.screen_id == "bookmark_lobby"

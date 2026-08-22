@@ -60,6 +60,7 @@ class ControlSpec:
     post_screen: str
     risk: str
     contains: bool = False
+    hover_tolerance_px: int = 3
 
 
 @dataclass(frozen=True)
@@ -460,9 +461,12 @@ def load_ui_contract(
                 "post_screen",
                 "risk",
             },
-            {"contains"},
+            {"contains", "hover_tolerance_px"},
             f"control[{control_index}]",
         )
+        hover_tolerance = item.get("hover_tolerance_px", 3)
+        if type(hover_tolerance) is not int or not 0 <= hover_tolerance <= 15:
+            raise AgentError("UI contract hover tolerance is invalid")
         controls_list.append(
             ControlSpec(
                 control_id=_text(item["control_id"], "control_id"),
@@ -477,6 +481,7 @@ def load_ui_contract(
                     if "contains" in item
                     else False
                 ),
+                hover_tolerance_px=hover_tolerance,
             )
         )
     controls = tuple(controls_list)
@@ -487,6 +492,7 @@ def load_ui_contract(
         item.screen not in screen_ids
         or item.post_screen not in screen_ids
         or item.risk not in {"reversible", "irreversible"}
+        or not 0 <= item.hover_tolerance_px <= 15
         for item in controls
     ):
         raise AgentError("UI contract control references or risk differ")
