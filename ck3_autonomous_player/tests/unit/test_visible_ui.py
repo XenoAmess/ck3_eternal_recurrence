@@ -26,6 +26,7 @@ from xar_autoplayer.control.executor import (  # noqa: E402
     _MOUSEEVENTF_LEFTUP,
     VisibleUiDriver,
     _IssuedControl,
+    _prepare_key_chord_batch,
     _prepare_key_press_batch,
     _prepare_left_click_batch,
 )
@@ -1381,6 +1382,29 @@ class UiDriverSafetyTests(unittest.TestCase):
         self.assertEqual(
             records[1].ki.dwFlags,
             _KEYEVENTF_SCANCODE | _KEYEVENTF_KEYUP,
+        )
+
+    def test_win32_shift_number_is_one_ordered_scan_code_batch(self) -> None:
+        send_input = mock.Mock(return_value=4)
+        user32 = types.SimpleNamespace(SendInput=send_input)
+        with mock.patch(
+            "xar_autoplayer.control.executor.ctypes.WinDLL", return_value=user32
+        ):
+            submit = _prepare_key_chord_batch(0x2A, 0x03)
+            send_input.assert_not_called()
+            self.assertEqual(submit(), (4, 0))
+        send_input.assert_called_once()
+        count, records, record_size = send_input.call_args.args
+        self.assertEqual(count, 4)
+        self.assertGreater(record_size, 0)
+        self.assertEqual(
+            [(records[index].ki.wScan, records[index].ki.dwFlags) for index in range(4)],
+            [
+                (0x2A, _KEYEVENTF_SCANCODE),
+                (0x03, _KEYEVENTF_SCANCODE),
+                (0x03, _KEYEVENTF_SCANCODE | _KEYEVENTF_KEYUP),
+                (0x2A, _KEYEVENTF_SCANCODE | _KEYEVENTF_KEYUP),
+            ],
         )
 
     def test_anchor_motion_prevents_false_two_frame_stability(self) -> None:

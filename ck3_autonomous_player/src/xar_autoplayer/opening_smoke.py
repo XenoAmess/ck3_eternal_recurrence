@@ -67,6 +67,40 @@ OPENING_ALLOWED_CONTROLS = frozenset(
 INSTANT_UI_TRANSITION_TIMEOUT_SECONDS = 20.0
 INITIAL_MAIN_MENU_TIMEOUT_SECONDS = 120.0
 
+# Frozen from Crusader Kings III/game/gui/shortcuts.shortcuts. Scan codes are
+# used so the binding does not depend on the active Windows keyboard layout.
+CK3_SHORTCUT_SCAN_CODES = {
+    "escape": 0x01,
+    "1": 0x02,
+    "2": 0x03,
+    "3": 0x04,
+    "4": 0x05,
+    "5": 0x06,
+    "0": 0x0B,
+    "minus": 0x0C,
+    "equals": 0x0D,
+    "backspace": 0x0E,
+    "enter": 0x1C,
+    "left_shift": 0x2A,
+    "f1": 0x3B,
+    "space": 0x39,
+}
+EVENT_OPTION_SHORTCUTS = {
+    1: ("shift+1", CK3_SHORTCUT_SCAN_CODES["1"]),
+    2: ("shift+2", CK3_SHORTCUT_SCAN_CODES["2"]),
+    3: ("shift+3", CK3_SHORTCUT_SCAN_CODES["3"]),
+    4: ("shift+4", CK3_SHORTCUT_SCAN_CODES["4"]),
+    5: ("shift+5", CK3_SHORTCUT_SCAN_CODES["5"]),
+    6: ("shift+6", 0x07),
+    7: ("shift+7", 0x08),
+    8: ("shift+8", 0x09),
+    9: ("shift+9", 0x0A),
+    10: ("shift+0", CK3_SHORTCUT_SCAN_CODES["0"]),
+    11: ("shift+-", CK3_SHORTCUT_SCAN_CODES["minus"]),
+    12: ("shift+=", CK3_SHORTCUT_SCAN_CODES["equals"]),
+    13: ("shift+backspace", CK3_SHORTCUT_SCAN_CODES["backspace"]),
+}
+
 
 def _remaining(deadline: float, stage: str) -> float:
     remaining = deadline - time.monotonic()
@@ -347,7 +381,7 @@ def _drive_opening(
     deadline: float,
 ) -> dict[str, object]:
     from .control import VisibleUiDriver
-    from .control.executor import _prepare_key_press_batch
+    from .control.executor import _prepare_key_chord_batch, _prepare_key_press_batch
     from .vision import load_ui_contract
 
     display = manifest.get("display")
@@ -447,61 +481,139 @@ def _drive_opening(
         )
         return observation
 
-    def toggle_player_character(
-        screen: str, next_screen: str, next_stage: str
-    ) -> None:
-        driver = new_driver()
-        driver.observe_stable(
-            screen,
-            _remaining(deadline, f"stable {screen} before F1"),
-            stable_frames=2,
-        )
+    def press_shortcut(
+        screen: str,
+        control_id: str,
+        key: str,
+        scan_code: int,
+        next_screen: str,
+        next_stage: str,
+        *,
+        modifier_scan_code: int | None = None,
+        driver: VisibleUiDriver | None = None,
+        stable: object | None = None,
+        require_visible_control: bool = True,
+        post_timeout_seconds: float | None = None,
+        summary_fields: dict[str, object] | None = None,
+    ) -> dict[str, object]:
+        driver = driver or new_driver()
+        if stable is None:
+            stable = driver.observe_stable(
+                screen,
+                _remaining(deadline, f"stable {screen} before {key}"),
+                stable_frames=2,
+            )
+        if getattr(stable, "screen", None) != screen:
+            raise AgentError(f"{key} source screen is not {screen}")
+        if require_visible_control:
+            matches = [
+                control
+                for control in getattr(stable, "controls", ())
+                if control.control_id == control_id
+            ]
+            if len(matches) != 1:
+                visible = sorted(
+                    control.control_id
+                    for control in getattr(stable, "controls", ())
+                )
+                raise AgentError(
+                    f"{screen} lacks one {control_id} shortcut target; "
+                    f"visible={visible!r}"
+                )
         window.require_foreground()
+        requested = 2 if modifier_scan_code is None else 4
+        planned: dict[str, object] = {
+            "kind": "opening_key_input_planned",
+            "control_id": control_id,
+            "key": key,
+            "scan_code": scan_code,
+            "expected_post_screen": next_screen,
+        }
+        if modifier_scan_code is not None:
+            planned["modifier_scan_code"] = modifier_scan_code
         append_event(
             events,
-            {
-                "kind": "opening_key_input_planned",
-                "control_id": "player_character.close",
-                "key": "f1",
-                "scan_code": 0x3B,
-                "expected_post_screen": next_screen,
-            },
+            planned,
         )
-        accepted, last_error = _prepare_key_press_batch(0x3B)()
-        if accepted != 2:
+        submit = (
+            _prepare_key_press_batch(scan_code)
+            if modifier_scan_code is None
+            else _prepare_key_chord_batch(modifier_scan_code, scan_code)
+        )
+        accepted, last_error = submit()
+        if accepted != requested:
             raise AgentError(
-                "F1 character-window toggle SendInput was partial: "
+                f"{key} shortcut SendInput was partial: "
                 f"accepted={accepted}, last_error={last_error}"
             )
-        stable = driver.observe_stable(
+        transition_timeout = _remaining(deadline, next_stage)
+        if post_timeout_seconds is not None:
+            transition_timeout = min(transition_timeout, post_timeout_seconds)
+        after = driver.observe_stable(
             next_screen,
-            _remaining(deadline, next_stage),
+            transition_timeout,
             stable_frames=2,
         )
-        actions.append(
-            {
-                "control_id": "player_character.close",
-                "status": "confirmed",
-                "input_kind": "keyboard",
-                "key": "f1",
-                "scan_code": 0x3B,
-                "send_input": {
-                    "requested": 2,
-                    "accepted": accepted,
-                    "last_error": last_error,
-                },
-                "result_observation_id": stable.observation_id,
-                "expected_post_screen": next_screen,
-            }
-        )
+        action: dict[str, object] = {
+            "control_id": control_id,
+            "status": "confirmed",
+            "input_kind": "keyboard_shortcut",
+            "key": key,
+            "scan_code": scan_code,
+            "send_input": {
+                "requested": requested,
+                "accepted": accepted,
+                "last_error": last_error,
+            },
+            "result_observation_id": after.observation_id,
+            "expected_post_screen": next_screen,
+        }
+        if modifier_scan_code is not None:
+            action["modifier_scan_code"] = modifier_scan_code
+        if summary_fields:
+            action.update(summary_fields)
+        actions.append(action)
         append_event(
             events,
             {
                 "kind": "opening_step_completed",
-                "control_id": "player_character.close",
-                "result_screen": stable.screen,
-                "result_observation_id": stable.observation_id,
+                "control_id": control_id,
+                "result_screen": after.screen,
+                "result_observation_id": after.observation_id,
             },
+        )
+        return after.to_policy_json()
+
+    def press_event_option(
+        screen: str,
+        control_id: str,
+        next_screen: str,
+        next_stage: str,
+        *,
+        option_number: int | None = None,
+        driver: VisibleUiDriver | None = None,
+        stable: object | None = None,
+        summary_fields: dict[str, object] | None = None,
+    ) -> dict[str, object]:
+        if option_number is None:
+            match = re.fullmatch(r"[a-z_]+\.option_(\d+)", control_id)
+            option_number = int(match.group(1)) if match else 0
+        shortcut = EVENT_OPTION_SHORTCUTS.get(option_number)
+        if shortcut is None:
+            raise AgentError(f"{control_id} has no frozen CK3 event shortcut")
+        key, scan_code = shortcut
+        return press_shortcut(
+            screen,
+            control_id,
+            key,
+            scan_code,
+            next_screen,
+            next_stage,
+            modifier_scan_code=CK3_SHORTCUT_SCAN_CODES["left_shift"],
+            driver=driver,
+            stable=stable,
+            post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            summary_fields=summary_fields,
         )
 
     click(
@@ -520,15 +632,19 @@ def _drive_opening(
         "bookmark_lobby.start_game",
         "first pact event",
     )
-    click(
+    press_event_option(
         "pact_event",
         "pact_event.accept_contract",
+        "first_life_event",
         "first-life explanation",
+        option_number=1,
     )
-    click(
+    press_event_option(
         "first_life_event",
         "first_life_event.begin",
+        "blessing_event",
         "first blessing choice",
+        option_number=1,
     )
     blessing_driver = new_driver()
     blessing_stable = blessing_driver.observe_stable(
@@ -537,32 +653,16 @@ def _drive_opening(
         stable_frames=2,
     )
     selected, visible_text, strategy_score = _choose_first_blessing(blessing_stable)
-    blessing_transition = blessing_driver.click_visible_control(
-        selected.token,
-        timeout_seconds=min(
-            _remaining(deadline, "first curse choice"),
-            INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
-        ),
-    )
-    blessing_action = blessing_transition.get("action")
-    final_observation = blessing_transition.get("observation")
-    if not isinstance(blessing_action, dict) or not isinstance(
-        final_observation, dict
-    ):
-        raise AgentError("first blessing transition result is malformed")
-    if blessing_action.get("status") != "confirmed":
-        raise AgentError("first blessing choice was not confirmed")
-    action_summary = _action_summary(blessing_action)
-    action_summary["visible_choice"] = visible_text
-    action_summary["strategy_score"] = strategy_score
-    actions.append(action_summary)
-    append_event(
-        events,
-        {
-            "kind": "opening_step_completed",
-            "control_id": selected.control_id,
-            "result_screen": final_observation.get("screen"),
-            "result_observation_id": final_observation.get("observation_id"),
+    final_observation = press_event_option(
+        "blessing_event",
+        selected.control_id,
+        "curse_event",
+        "first curse choice",
+        driver=blessing_driver,
+        stable=blessing_stable,
+        summary_fields={
+            "visible_choice": visible_text,
+            "strategy_score": strategy_score,
         },
     )
     if final_observation.get("screen") != "curse_event":
@@ -574,45 +674,39 @@ def _drive_opening(
         stable_frames=2,
     )
     curse_selected, curse_text, curse_loss = _choose_first_curse(curse_stable)
-    curse_transition = curse_driver.click_visible_control(
-        curse_selected.token,
-        timeout_seconds=min(
-            _remaining(deadline, "playable map"),
-            INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
-        ),
-    )
-    curse_action = curse_transition.get("action")
-    final_observation = curse_transition.get("observation")
-    if not isinstance(curse_action, dict) or not isinstance(final_observation, dict):
-        raise AgentError("first curse transition result is malformed")
-    if curse_action.get("status") != "confirmed":
-        raise AgentError("first curse choice was not confirmed")
-    curse_summary = _action_summary(curse_action)
-    curse_summary["visible_choice"] = curse_text
-    curse_summary["strategy_loss"] = curse_loss
-    actions.append(curse_summary)
-    append_event(
-        events,
-        {
-            "kind": "opening_step_completed",
-            "control_id": curse_selected.control_id,
-            "result_screen": final_observation.get("screen"),
-            "result_observation_id": final_observation.get("observation_id"),
+    final_observation = press_event_option(
+        "curse_event",
+        curse_selected.control_id,
+        "map_hud",
+        "playable map",
+        driver=curse_driver,
+        stable=curse_stable,
+        summary_fields={
+            "visible_choice": curse_text,
+            "strategy_loss": curse_loss,
         },
     )
     if final_observation.get("screen") != "map_hud":
         raise AgentError("opening did not reach the playable map after its first pair")
-    final_observation = click(
+    final_observation = press_shortcut(
         "map_hud",
         "map_hud.open_player_character",
+        "f1",
+        CK3_SHORTCUT_SCAN_CODES["f1"],
+        "player_character",
         "player character state",
         post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
     player_state = _extract_player_character_state(final_observation)
-    toggle_player_character(
+    press_shortcut(
         "player_character",
+        "player_character.close",
+        "f1",
+        CK3_SHORTCUT_SCAN_CODES["f1"],
         "map_hud",
         "playable map after player inspection",
+        require_visible_control=False,
+        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
     click(
         "map_hud",
@@ -632,38 +726,53 @@ def _drive_opening(
         "authority focus confirmation",
         post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
-    final_observation = click(
+    final_observation = press_shortcut(
         "lifestyle_authority_confirmation",
         "lifestyle_authority_confirmation.confirm",
+        "enter",
+        CK3_SHORTCUT_SCAN_CODES["enter"],
+        "lifestyle_martial_authority",
         "selected authority focus",
         post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
     lifestyle_state = _extract_lifestyle_state(final_observation)
-    final_observation = click(
+    final_observation = press_shortcut(
         "lifestyle_martial_authority",
         "lifestyle_martial_authority.close",
+        "escape",
+        CK3_SHORTCUT_SCAN_CODES["escape"],
+        "map_hud",
         "paused map after lifestyle selection",
         post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
     starting_date = _extract_map_date(final_observation)
-    final_observation = click(
+    final_observation = press_shortcut(
         "map_hud",
         "map_hud.set_speed_five",
+        "5",
+        CK3_SHORTCUT_SCAN_CODES["5"],
+        "map_hud",
         "speed five selected",
         post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
-    final_observation = click(
+    final_observation = press_shortcut(
         "map_hud",
         "map_hud.resume",
+        "space",
+        CK3_SHORTCUT_SCAN_CODES["space"],
+        "map_running",
         "running timeline",
         post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
     running_date = _extract_map_date(final_observation)
     if int(running_date["ordinal"]) <= int(starting_date["ordinal"]):
         raise AgentError("CK3 timeline did not advance after resume")
-    final_observation = click(
+    final_observation = press_shortcut(
         "map_running",
         "map_running.pause",
+        "space",
+        CK3_SHORTCUT_SCAN_CODES["space"],
+        "map_hud",
         "paused advanced timeline",
         post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )

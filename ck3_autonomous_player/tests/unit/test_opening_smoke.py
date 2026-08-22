@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -489,6 +490,40 @@ class OpeningScenarioTests(unittest.TestCase):
                 ("map_hud.resume", "token-resume", "map_running"),
                 ("map_running.pause", "token-pause", "map_hud"),
             )
+            source_screens = {
+                "main_menu.new_game": "main_menu",
+                "bookmark_lobby.select_robert": "bookmark_lobby",
+                "bookmark_lobby.start_game": "bookmark_lobby_selected",
+                "pact_event.accept_contract": "pact_event",
+                "first_life_event.begin": "first_life_event",
+                "blessing_event.option_1": "blessing_event",
+                "curse_event.option_2": "curse_event",
+                "map_hud.open_player_character": "map_hud",
+                "map_hud.open_lifestyle": "map_hud",
+                "lifestyle_selection.open_martial": "lifestyle_selection",
+                "lifestyle_martial.select_authority_focus": (
+                    "lifestyle_martial_unfocused"
+                ),
+                "lifestyle_authority_confirmation.confirm": (
+                    "lifestyle_authority_confirmation"
+                ),
+                "lifestyle_martial_authority.close": (
+                    "lifestyle_martial_authority"
+                ),
+                "map_hud.set_speed_five": "map_hud",
+                "map_hud.resume": "map_hud",
+                "map_running.pause": "map_running",
+            }
+            keyboard_controls = {
+                "pact_event.accept_contract",
+                "first_life_event.begin",
+                "map_hud.open_player_character",
+                "lifestyle_authority_confirmation.confirm",
+                "lifestyle_martial_authority.close",
+                "map_hud.set_speed_five",
+                "map_hud.resume",
+                "map_running.pause",
+            }
             drivers = []
             for index, (control_id, token, post_screen) in enumerate(controls):
                 driver = mock.Mock()
@@ -505,6 +540,8 @@ class OpeningScenarioTests(unittest.TestCase):
                     center=(940, 875),
                 )
                 driver.observe_stable.return_value = SimpleNamespace(
+                    screen=source_screens[control_id],
+                    observation_id=f"before-{index}",
                     controls=(visible_control,),
                     latest=SimpleNamespace(
                         spans=(span(visible_text, (940, 875), bbox),)
@@ -561,16 +598,39 @@ class OpeningScenarioTests(unittest.TestCase):
                             "bbox": [2079, 1407, 2285, 1433],
                         }
                     ]
+                if control_id in keyboard_controls:
+                    source = driver.observe_stable.return_value
+                    post_policy = driver.click_visible_control.return_value[
+                        "observation"
+                    ]
+                    after = SimpleNamespace(
+                        screen=post_screen,
+                        observation_id=f"obs-{index}",
+                        controls=(),
+                        latest=SimpleNamespace(spans=()),
+                        to_policy_json=(
+                            lambda payload=post_policy: dict(payload)
+                        ),
+                    )
+                    driver.observe_stable.side_effect = (source, after)
                 drivers.append(driver)
             escape_driver = mock.Mock()
             escape_driver.observe_stable.side_effect = (
                 SimpleNamespace(
                     screen="player_character",
                     observation_id="obs-player-before-escape",
+                    controls=(),
+                    latest=SimpleNamespace(spans=()),
                 ),
                 SimpleNamespace(
                     screen="map_hud",
                     observation_id="obs-map-after-escape",
+                    controls=(),
+                    latest=SimpleNamespace(spans=()),
+                    to_policy_json=lambda: {
+                        "screen": "map_hud",
+                        "observation_id": "obs-map-after-escape",
+                    },
                 ),
             )
             drivers.insert(8, escape_driver)
@@ -607,13 +667,27 @@ class OpeningScenarioTests(unittest.TestCase):
                     )
                 )
                 blessing_spans.append(span(text, (935, y), bbox))
-            blessing_driver.observe_stable.return_value = SimpleNamespace(
+            blessing_source = SimpleNamespace(
+                screen="blessing_event",
+                observation_id="before-blessing",
                 controls=tuple(blessing_choices),
                 latest=SimpleNamespace(spans=tuple(blessing_spans)),
             )
-            blessing_driver.click_visible_control.return_value["action"][
-                "control_id"
-            ] = "blessing_event.option_1"
+            blessing_after_policy = blessing_driver.click_visible_control.return_value[
+                "observation"
+            ]
+            blessing_driver.observe_stable.side_effect = (
+                blessing_source,
+                SimpleNamespace(
+                    screen="curse_event",
+                    observation_id=blessing_after_policy["observation_id"],
+                    controls=(),
+                    latest=SimpleNamespace(spans=()),
+                    to_policy_json=(
+                        lambda payload=blessing_after_policy: dict(payload)
+                    ),
+                ),
+            )
             curse_choices = []
             curse_spans = []
             for index, (control_id, text, y) in enumerate(
@@ -640,14 +714,27 @@ class OpeningScenarioTests(unittest.TestCase):
                     )
                 )
                 curse_spans.append(span(text, (935, y), bbox))
-            curse_driver.observe_stable.return_value = SimpleNamespace(
+            curse_source = SimpleNamespace(
+                screen="curse_event",
+                observation_id="before-curse",
                 controls=tuple(curse_choices),
                 latest=SimpleNamespace(spans=tuple(curse_spans)),
             )
-            curse_driver.click_visible_control.return_value["action"][
-                "control_id"
-            ] = "curse_event.option_2"
+            curse_after_policy = curse_driver.click_visible_control.return_value[
+                "observation"
+            ]
+            curse_driver.observe_stable.side_effect = (
+                curse_source,
+                SimpleNamespace(
+                    screen="map_hud",
+                    observation_id=curse_after_policy["observation_id"],
+                    controls=(),
+                    latest=SimpleNamespace(spans=()),
+                    to_policy_json=(lambda payload=curse_after_policy: dict(payload)),
+                ),
+            )
             submit_key = mock.Mock(return_value=(2, 0))
+            submit_chord = mock.Mock(return_value=(4, 0))
             with mock.patch(
                 "xar_autoplayer.vision.BoundGameWindow.bind_session",
                 return_value=window,
@@ -656,7 +743,10 @@ class OpeningScenarioTests(unittest.TestCase):
             ) as driver_type, mock.patch(
                 "xar_autoplayer.control.executor._prepare_key_press_batch",
                 return_value=submit_key,
-            ) as prepare_key:
+            ) as prepare_key, mock.patch(
+                "xar_autoplayer.control.executor._prepare_key_chord_batch",
+                return_value=submit_chord,
+            ) as prepare_chord:
                 result = _drive_opening(
                     SimpleNamespace(
                         game_exe=Path("ck3.exe"),
@@ -682,30 +772,53 @@ class OpeningScenarioTests(unittest.TestCase):
             self.assertLessEqual(
                 initial_observation_timeout, INITIAL_MAIN_MENU_TIMEOUT_SECONDS
             )
-            for driver, (_, token, _) in zip(drivers[:5], controls[:5]):
-                driver.click_visible_control.assert_called_once()
+            for index in (0, 1, 2):
+                drivers[index].click_visible_control.assert_called_once()
                 self.assertEqual(
-                    driver.click_visible_control.call_args.args[0], token
+                    drivers[index].click_visible_control.call_args.args[0],
+                    controls[index][1],
                 )
-            blessing_driver.click_visible_control.assert_called_once_with(
-                "choice-0",
-                timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
-            )
-            curse_driver.click_visible_control.assert_called_once_with(
-                "curse-choice-1",
-                timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
-            )
-            drivers[7].click_visible_control.assert_called_once_with(
-                "token-player",
-                timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
-            )
-            for driver in drivers[9:]:
-                self.assertEqual(
-                    driver.click_visible_control.call_args.kwargs["timeout_seconds"],
-                    INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            for driver_index, control_index in ((9, 8), (10, 9), (11, 10)):
+                drivers[driver_index].click_visible_control.assert_called_once_with(
+                    controls[control_index][1],
+                    timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
                 )
-            prepare_key.assert_called_once_with(0x3B)
-            submit_key.assert_called_once_with()
+            for index in (3, 4, 5, 6, 7, 8, 12, 13, 14, 15, 16):
+                drivers[index].click_visible_control.assert_not_called()
+            self.assertEqual(
+                [call.args[0] for call in prepare_key.call_args_list],
+                [0x3B, 0x3B, 0x1C, 0x01, 0x06, 0x39, 0x39],
+            )
+            self.assertEqual(
+                [call.args for call in prepare_chord.call_args_list],
+                [(0x2A, 0x02), (0x2A, 0x02), (0x2A, 0x02), (0x2A, 0x03)],
+            )
+            self.assertEqual(submit_key.call_count, 7)
+            self.assertEqual(submit_chord.call_count, 4)
+            event_rows = [
+                json.loads(line)
+                for line in events.read_text(encoding="utf-8").splitlines()
+            ]
+            self.assertEqual(
+                [
+                    row["key"]
+                    for row in event_rows
+                    if row["kind"] == "opening_key_input_planned"
+                ],
+                [
+                    "shift+1",
+                    "shift+1",
+                    "shift+1",
+                    "shift+2",
+                    "f1",
+                    "f1",
+                    "enter",
+                    "escape",
+                    "5",
+                    "space",
+                    "space",
+                ],
+            )
             self.assertIn("长明的定力", result["first_blessing_choice"]["visible_text"])
             self.assertIn("军事经验", result["first_curse_choice"]["visible_text"])
             self.assertTrue(result["player_character_state"]["spouse_visible"])

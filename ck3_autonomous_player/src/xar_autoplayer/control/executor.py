@@ -140,6 +140,43 @@ def _prepare_key_press_batch(scan_code: int) -> Callable[[], tuple[int, int]]:
     return submit
 
 
+def _prepare_key_chord_batch(
+    modifier_scan_code: int, scan_code: int
+) -> Callable[[], tuple[int, int]]:
+    """Prepare one modifier+key scan-code chord in a single SendInput batch."""
+    if (
+        type(modifier_scan_code) is not int
+        or not 1 <= modifier_scan_code <= 0xFF
+        or type(scan_code) is not int
+        or not 1 <= scan_code <= 0xFF
+        or modifier_scan_code == scan_code
+    ):
+        raise AgentError("visible key chord scan codes are invalid")
+    records = (_INPUT * 4)()
+    for record in records:
+        record.type = _INPUT_KEYBOARD
+    records[0].ki.wScan = modifier_scan_code
+    records[0].ki.dwFlags = _KEYEVENTF_SCANCODE
+    records[1].ki.wScan = scan_code
+    records[1].ki.dwFlags = _KEYEVENTF_SCANCODE
+    records[2].ki.wScan = scan_code
+    records[2].ki.dwFlags = _KEYEVENTF_SCANCODE | _KEYEVENTF_KEYUP
+    records[3].ki.wScan = modifier_scan_code
+    records[3].ki.dwFlags = _KEYEVENTF_SCANCODE | _KEYEVENTF_KEYUP
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    send_input = user32.SendInput
+    send_input.argtypes = (wintypes.UINT, ctypes.POINTER(_INPUT), ctypes.c_int)
+    send_input.restype = wintypes.UINT
+
+    def submit() -> tuple[int, int]:
+        sent = int(send_input(4, records, ctypes.sizeof(_INPUT)))
+        error = ctypes.get_last_error() if sent != 4 else 0
+        return sent, int(error)
+
+    return submit
+
+
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 

@@ -129,7 +129,7 @@
 | 阶段 | 内容 | 退出标准 |
 |---|---|---|
 | A. 隔离环境（已完成） | 专用 CK3 用户目录、production mod、固定分辨率/语言、认证看门狗、环境与存储反证 | committed candidate 已连续三次只加载本 mod 到可见主菜单；原生 Job/句柄测试与启动期 fail-closed RED 覆盖当前失败契约 |
-| B. UI 驱动底座（进行中） | 窗口分类、OCR/像素反证、可靠点击、地图/HUD/事件通用恢复 | `20260822T144449Z-opening-b30af184` 已真实完成 13 个动作，读取玩家角色状态并选择/确认军事【权威重心】；下一步推进时间并处理首个真实游戏事件 |
+| B. UI 驱动底座（进行中） | 窗口分类、OCR/像素反证、快捷键优先控制、地图/HUD/事件通用恢复 | `20260822T153549Z-opening-69644bad` 已完成 17 个动作并在速度 5 下推进 25 日后暂停；下一步处理首个真实游戏事件 |
 | C. 合法基线玩家 | 固定规则策略完成开局、经营、事件、死亡和结算 | 至少完成多种角色类型的有效整局基线 |
 | D. 分层规划 | 增加战争、婚姻、领地、经济、生活方式、契约和交易决策 | 决策均有可审计状态输入和理由，分数不低于固定基线 |
 | E. 经验记忆与复盘 | episode schema、检索记忆、大模型局后复盘和策略版本化 | 新局能引用相关旧经验，错误经验可回滚和追踪来源 |
@@ -161,9 +161,10 @@
    把保守的 `ui_input_armed` 写入并 fsync 主 `events.jsonl`，紧邻移动前一次性消费 fresh lease。hover frame 再签发 5 秒
    `hover_click` lease，绑定同一 target、fresh lease 父授权和同一绝对 deadline；最终无 OCR、无落盘临界区紧邻 `SendInput` 前
    一次性消费它。任何 capture 完成时已越过 deadline 都拒绝；点击后的连续两帧后置观察只获得 deadline 剩余时间。
-5. `opening-smoke` 使用已冻结的隔离 profile 规则，已实测选择 1066 罗贝尔、点击【开始】、接受【终末之契】、完成首轮
-   祝福/咒痕并进入地图。`20260822T144449Z-opening-b30af184` 还打开/读取玩家角色页，随后进入军事生活方式，
-   经过独立确认层真实选中【权威重心】，13 个动作全部 `SendInput 2/2`。下一步不再扩展开局证明，直接接时间推进与首个真实事件处理。
+5. `opening-smoke` 已实测选择 1066 罗贝尔、完成首轮祝福/咒痕、读取玩家页、选择军事【权威重心】，并在
+   `20260822T153549Z-opening-69644bad` 以速度 5 推进 25 日后暂停。动作执行优先遵循原版
+   `game/gui/shortcuts.shortcuts`：F1、Esc、Enter、`5`、Space 与 `Shift+事件选项序号`；OCR 负责确认画面和
+   选项语义，鼠标仅保留没有可靠直达键的控件。下一步直接处理首个真实游戏事件。
 
 真实 Win32 helper-window 的 DPI、client/screen 坐标、Z-order、WMI 空路径与单批次 `SendInput` 已实测；固定 UI contract、
 截图、双帧 observation、receipt、hover/final patch 和主 `events.jsonl` 也已进入 menu report 与专用公开 validator。下一候选

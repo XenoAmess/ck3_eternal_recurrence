@@ -250,6 +250,12 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - `20260822T152918Z-opening-22741b9b` 实机确认关闭点和速度 5 均生效，时间已从 1066-09-15 推进到至少 09-24。
   鼠标停在底栏日期上时 tooltip 会额外显示【当前日期】与【开始】两条完整日期；全屏日期正则因此得到三项而 RED。
   日期抽取现只接受底栏 `x=1792..2381, y=1368..1439` 的渲染日期，明确排除上方 tooltip 文本。
+- 修订日期区域后的 `20260822T153549Z-opening-69644bad` 是首个完整地图经营 GREEN：17 个动作完成首轮
+  祝福/咒痕、读取玩家页、选择并确认军事【权威重心】，再以速度 5 从 1066-09-15 推进至 10-10 并暂停；
+  `elapsed_days=25`、最终画面 `map_hud`、tracked cleanup 成立。下一版输入优先复用原版
+  `Crusader Kings III/game/gui/shortcuts.shortcuts`：角色页 F1、关闭窗口 Esc、速度 5 键、暂停/继续 Space，
+  事件选项按原版 `event_option_N = shift+N`；可见 OCR 仍负责判断当前画面和选择哪个选项，只有执行方式从鼠标
+  改为快捷键。主菜单、书签角色/开始和没有直达键的生活方式图标/焦点仍使用动态视觉点击。
 - 用户真实纪录靠 tutorial.txt 备份/恢复保护；默认 selftest 与 `on-first-life/off` 会剥掉 `xar_hs_ge_*` 行（纪录 0），`on-recorded` 固定预置 100；`--import-record 100` 仅改变 selftest。
 - restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验。2026-08-20 实测发现宿主超时会终止 runner 的整个子进程树，普通 `Popen(CREATE_NO_WINDOW)` watchdog 也被一起杀死，遗留隔离后的 `dlc_load.json` 与测试 autosave；已从该次精确 backup 全量恢复并核对六项 hash。watchdog 现由 WMI `Win32_Process.Create` 启动在 runner 进程树之外。2026-08-19 另实测 dev selftest autosave 会让下一次 release 投影扫描已剥离的 `xar_selftest` 规则键并误报；现启动前先完整复制并校验全部 `autosave*.ck3`，写 ready 标记后才移走，结束时删除测试 autosave 并恢复原件。
 - 2026-08-19 长期平衡摇测发现当前播放集还启用了四个自动控制/改宗 mod，会污染领地、信仰与资源结果。runner 现同时备份 `dlc_load.json`，启动前把 `enabled_mods` 精确收敛为 `mod/ugc_3784706360.mod`，杀死测试 CK3 后再恢复；watchdog 同样覆盖此文件。
