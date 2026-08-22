@@ -22,8 +22,10 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     OPENING_ALLOWED_CONTROLS,
     OPENING_CONTRACT,
     _choose_first_blessing,
+    _choose_first_curse,
     _drive_opening,
     _score_first_blessing,
+    _score_first_curse,
 )
 from xar_autoplayer.vision import load_ui_contract  # noqa: E402
 from xar_autoplayer.vision.model import OcrSpan  # noqa: E402
@@ -35,7 +37,7 @@ def span(text: str, center: tuple[int, int], bbox: tuple[int, int, int, int]):
 
 
 class OpeningContractTests(unittest.TestCase):
-    def test_contract_exposes_opening_through_first_blessing_choice(self) -> None:
+    def test_contract_exposes_opening_through_first_bargain_pair(self) -> None:
         digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
         contract = load_ui_contract(OPENING_CONTRACT, expected_sha256=digest)
         self.assertEqual(
@@ -143,6 +145,16 @@ class OpeningContractTests(unittest.TestCase):
             span("挑好了？那么——该付账了。", (760, 471), (622, 459, 900, 483)),
         )
         self.assertEqual(contract.classify(curse_spans, image)[0], "curse_event")
+        map_spans = (
+            span("暂停", (1280, 180), (1224, 149, 1337, 212)),
+            span("政治地图", (2448, 1179), (2409, 1169, 2488, 1190)),
+            span(
+                "公元1066年9月15日",
+                (2180, 1419),
+                (2078, 1405, 2283, 1433),
+            ),
+        )
+        self.assertEqual(contract.classify(map_spans, image)[0], "map_hud")
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (
@@ -177,6 +189,42 @@ class OpeningContractTests(unittest.TestCase):
         self.assertIn("长明的定力", visible_text)
         self.assertEqual(score, _score_first_blessing(visible_text))
 
+    def test_first_curse_strategy_avoids_long_health_penalty(self) -> None:
+        choices = (
+            (
+                "curse_event.option_1",
+                "普通-修正：蚀骨的寒痕（健康-0.4，持续10年)",
+                988,
+            ),
+            (
+                "curse_event.option_2",
+                "普通-生活方式：烽火的湿薪（-1000军事经验）",
+                1042,
+            ),
+        )
+        controls = []
+        spans = []
+        for index, (control_id, text, y) in enumerate(choices):
+            bbox = (730, y - 12, 1140, y + 12)
+            controls.append(
+                SimpleNamespace(
+                    control_id=control_id,
+                    token=f"curse-{index}",
+                    bbox=bbox,
+                    center=(935, y),
+                )
+            )
+            spans.append(span(text, (935, y), bbox))
+        selected, visible_text, loss = _choose_first_curse(
+            SimpleNamespace(
+                controls=tuple(controls),
+                latest=SimpleNamespace(spans=tuple(spans)),
+            )
+        )
+        self.assertEqual(selected.control_id, "curse_event.option_2")
+        self.assertIn("军事经验", visible_text)
+        self.assertEqual(loss, _score_first_curse(visible_text))
+
     def test_explicit_opening_allowlist_does_not_change_default_driver_policy(
         self,
     ) -> None:
@@ -210,7 +258,7 @@ class OpeningContractTests(unittest.TestCase):
 
 
 class OpeningScenarioTests(unittest.TestCase):
-    def test_scenario_chooses_first_blessing_and_reaches_curse(self) -> None:
+    def test_scenario_completes_first_pair_and_reaches_map(self) -> None:
         digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary) / "state" / "runs" / "run"
@@ -249,6 +297,11 @@ class OpeningScenarioTests(unittest.TestCase):
                     "blessing_event.option_1",
                     "token-blessing",
                     "curse_event",
+                ),
+                (
+                    "curse_event.option_2",
+                    "token-curse",
+                    "map_hud",
                 ),
             )
             drivers = []
@@ -291,7 +344,8 @@ class OpeningScenarioTests(unittest.TestCase):
                     },
                 }
                 drivers.append(driver)
-            blessing_driver = drivers[-1]
+            curse_driver = drivers[-1]
+            blessing_driver = drivers[-2]
             blessing_choices = []
             blessing_spans = []
             for index, (control_id, text, y) in enumerate(
@@ -330,6 +384,39 @@ class OpeningScenarioTests(unittest.TestCase):
             blessing_driver.click_visible_control.return_value["action"][
                 "control_id"
             ] = "blessing_event.option_1"
+            curse_choices = []
+            curse_spans = []
+            for index, (control_id, text, y) in enumerate(
+                (
+                    (
+                        "curse_event.option_1",
+                        "普通-修正：蚀骨的寒痕（健康-0.4，持续10年)",
+                        988,
+                    ),
+                    (
+                        "curse_event.option_2",
+                        "普通-生活方式：烽火的湿薪（-1000军事经验）",
+                        1042,
+                    ),
+                )
+            ):
+                bbox = (730, y - 12, 1140, y + 12)
+                curse_choices.append(
+                    SimpleNamespace(
+                        control_id=control_id,
+                        token=f"curse-choice-{index}",
+                        bbox=bbox,
+                        center=(935, y),
+                    )
+                )
+                curse_spans.append(span(text, (935, y), bbox))
+            curse_driver.observe_stable.return_value = SimpleNamespace(
+                controls=tuple(curse_choices),
+                latest=SimpleNamespace(spans=tuple(curse_spans)),
+            )
+            curse_driver.click_visible_control.return_value["action"][
+                "control_id"
+            ] = "curse_event.option_2"
             with mock.patch(
                 "xar_autoplayer.vision.BoundGameWindow.bind_session",
                 return_value=window,
@@ -349,13 +436,13 @@ class OpeningScenarioTests(unittest.TestCase):
                     digest,
                     time.monotonic() + 30,
                 )
-            self.assertEqual(result["final_screen"], "curse_event")
+            self.assertEqual(result["final_screen"], "map_hud")
             self.assertEqual(
                 [item["control_id"] for item in result["actions"]],
                 [item[0] for item in controls],
             )
-            self.assertEqual(driver_type.call_count, 6)
-            for driver, (_, token, _) in zip(drivers[:-1], controls[:-1]):
+            self.assertEqual(driver_type.call_count, 7)
+            for driver, (_, token, _) in zip(drivers[:-2], controls[:-2]):
                 driver.click_visible_control.assert_called_once()
                 self.assertEqual(
                     driver.click_visible_control.call_args.args[0], token
@@ -364,7 +451,12 @@ class OpeningScenarioTests(unittest.TestCase):
                 "choice-0",
                 timeout_seconds=mock.ANY,
             )
+            curse_driver.click_visible_control.assert_called_once_with(
+                "curse-choice-1",
+                timeout_seconds=mock.ANY,
+            )
             self.assertIn("长明的定力", result["first_blessing_choice"]["visible_text"])
+            self.assertIn("军事经验", result["first_curse_choice"]["visible_text"])
 
     def test_cli_exposes_opening_smoke(self) -> None:
         args = cli.parser().parse_args(["opening-smoke"])

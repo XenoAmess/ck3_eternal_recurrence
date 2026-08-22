@@ -1,4 +1,4 @@
-"""Drive Robert 1066 through the opening pact and first blessing decision."""
+"""Drive Robert 1066 through the opening pact and first bargain pair."""
 
 from __future__ import annotations
 
@@ -50,6 +50,8 @@ OPENING_ALLOWED_CONTROLS = frozenset(
         "blessing_event.option_1",
         "blessing_event.option_2",
         "blessing_event.option_3",
+        "curse_event.option_1",
+        "curse_event.option_2",
     }
 )
 
@@ -103,6 +105,20 @@ _BLESSING_CATEGORY_SCORE = {
     "威望": 340,
     "压力": 320,
 }
+_CURSE_RARITY_LOSS = {"普通": 1000, "稀有": 2000, "传说": 3000}
+_CURSE_CATEGORY_LOSS = {
+    "秘契": 900,
+    "修正": 800,
+    "特质": 750,
+    "属性": 700,
+    "生活方式": 350,
+    "财富": 320,
+    "权谋": 300,
+    "信仰": 280,
+    "威望": 260,
+    "压力": 240,
+    "宗族": 220,
+}
 
 
 def _score_first_blessing(text: str) -> int:
@@ -148,6 +164,51 @@ def _choose_first_blessing(stable: object) -> tuple[object, str, int]:
         ranked, key=lambda item: (item[0], item[1])
     )
     return selected, visible_text, score
+
+
+def _score_first_curse(text: str) -> int:
+    """Estimate visible curse loss; lower is preferred."""
+    rarity = next(
+        (loss for name, loss in _CURSE_RARITY_LOSS.items() if name in text),
+        0,
+    )
+    category = next(
+        (loss for name, loss in _CURSE_CATEGORY_LOSS.items() if name in text),
+        0,
+    )
+    magnitudes = [abs(int(value)) for value in re.findall(r"[+-]?\d+", text)]
+    magnitude = min(max(magnitudes, default=0), 99)
+    return rarity + category + magnitude
+
+
+def _choose_first_curse(stable: object) -> tuple[object, str, int]:
+    controls = tuple(getattr(stable, "controls", ()))
+    latest = getattr(stable, "latest", None)
+    spans = tuple(getattr(latest, "spans", ()))
+    if len(controls) != 2:
+        raise AgentError("first curse screen does not expose exactly two choices")
+    ranked: list[tuple[int, str, object, str]] = []
+    for control in controls:
+        matches = [
+            span
+            for span in spans
+            if span.bbox == control.bbox and span.center == control.center
+        ]
+        if len(matches) != 1:
+            raise AgentError("first curse control lacks one exact visible OCR span")
+        visible_text = matches[0].text
+        ranked.append(
+            (
+                _score_first_curse(visible_text),
+                str(control.control_id),
+                control,
+                visible_text,
+            )
+        )
+    loss, _control_id, selected, visible_text = min(
+        ranked, key=lambda item: (item[0], item[1])
+    )
+    return selected, visible_text, loss
 
 
 def _drive_opening(
@@ -300,6 +361,38 @@ def _drive_opening(
     )
     if final_observation.get("screen") != "curse_event":
         raise AgentError("opening did not reach the first curse choice")
+    curse_driver = new_driver()
+    curse_stable = curse_driver.observe_stable(
+        "curse_event",
+        _remaining(deadline, "stable first curse choice"),
+        stable_frames=2,
+    )
+    curse_selected, curse_text, curse_loss = _choose_first_curse(curse_stable)
+    curse_transition = curse_driver.click_visible_control(
+        curse_selected.token,
+        timeout_seconds=_remaining(deadline, "playable map"),
+    )
+    curse_action = curse_transition.get("action")
+    final_observation = curse_transition.get("observation")
+    if not isinstance(curse_action, dict) or not isinstance(final_observation, dict):
+        raise AgentError("first curse transition result is malformed")
+    if curse_action.get("status") != "confirmed":
+        raise AgentError("first curse choice was not confirmed")
+    curse_summary = _action_summary(curse_action)
+    curse_summary["visible_choice"] = curse_text
+    curse_summary["strategy_loss"] = curse_loss
+    actions.append(curse_summary)
+    append_event(
+        events,
+        {
+            "kind": "opening_step_completed",
+            "control_id": curse_selected.control_id,
+            "result_screen": final_observation.get("screen"),
+            "result_observation_id": final_observation.get("observation_id"),
+        },
+    )
+    if final_observation.get("screen") != "map_hud":
+        raise AgentError("opening did not reach the playable map after its first pair")
     return {
         "character": "Robert the Fox, Duke of Apulia",
         "bookmark": "1066",
@@ -309,6 +402,12 @@ def _drive_opening(
             "visible_text": visible_text,
             "strategy_score": strategy_score,
             "strategy": "growth100.first-blessing-visible-v1",
+        },
+        "first_curse_choice": {
+            "control_id": curse_selected.control_id,
+            "visible_text": curse_text,
+            "strategy_loss": curse_loss,
+            "strategy": "growth100.first-curse-visible-v1",
         },
         "final_screen": final_observation.get("screen"),
         "final_observation_id": final_observation.get("observation_id"),
@@ -320,7 +419,7 @@ def _drive_opening(
 def opening_smoke(
     spec: EnvironmentSpec, timeout_seconds: float = 300
 ) -> dict[str, object]:
-    """Select Robert, accept the pact, choose a blessing, and reach its curse."""
+    """Complete Robert's pact and first blessing/curse pair to the map."""
     ensure_state_path_safe(spec.state_dir)
     if (
         isinstance(timeout_seconds, bool)

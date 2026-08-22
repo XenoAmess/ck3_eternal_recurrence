@@ -110,6 +110,21 @@
       ],
       "negative_anchors": [],
       "pixel_probes": []
+    },
+    {
+      "screen_id": "map_hud",
+      "anchors": [
+        {"anchor_id": "map.pause", "text": "暂停", "region": [0.45, 0.08, 0.55, 0.18]},
+        {"anchor_id": "map.mode", "text": "政治地图", "region": [0.92, 0.78, 0.99, 0.86]},
+        {"anchor_id": "map.start_date", "text": "1066年9月15日", "region": [0.70, 0.95, 0.93, 1.00], "contains": true}
+      ],
+      "negative_anchors": [
+        {"anchor_id": "map.pact_modal", "text": "终末之契", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "map.first_life_modal", "text": "未燃之世", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "map.blessing_modal", "text": "琉焰的垂青", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "map.curse_modal", "text": "等价的咒痕", "region": [0.0, 0.0, 1.0, 1.0]}
+      ],
+      "pixel_probes": []
     }
   ],
   "controls": [
@@ -197,7 +212,29 @@
       "risk": "irreversible",
       "contains": true,
       "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "curse_event.option_1",
+      "screen": "curse_event",
+      "label": "first visible curse",
+      "text": "(",
+      "region": [0.22, 0.66, 0.48, 0.71],
+      "post_screen": "map_hud",
+      "risk": "irreversible",
+      "contains": true,
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "curse_event.option_2",
+      "screen": "curse_event",
+      "label": "second visible curse",
+      "text": "(",
+      "region": [0.22, 0.71, 0.48, 0.75],
+      "post_screen": "map_hud",
+      "risk": "irreversible",
+      "contains": true,
+      "allow_dynamic_pixels": true
     }
   ],
-  "forbidden_capabilities": ["curse_event.choose_curse"]
+  "forbidden_capabilities": ["map_hud.advance_time"]
 }
