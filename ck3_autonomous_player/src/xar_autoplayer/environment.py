@@ -347,6 +347,7 @@ def installed_dlc_fingerprint(game_dir: Path) -> dict[str, object]:
 def render_settings() -> str:
     return '''"game"={
 \t"promt_for_tutorial"={ version=0 enabled=no }
+\t"prompt_for_china_tutorial"={ version=0 enabled=no }
 \t"cloud_save"={ version=0 enabled=no }
 }
 "Graphics"={
@@ -491,6 +492,7 @@ def verify_projection_manifest(
 def settings_contract(text: str) -> dict[str, object]:
     expected: dict[str, object] = {
         "promt_for_tutorial": False,
+        "prompt_for_china_tutorial": False,
         "cloud_save": False,
         "display_mode": "fullscreen",
         "display_index": "0",

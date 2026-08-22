@@ -135,6 +135,11 @@ class PreparedProfileTests(unittest.TestCase):
             self.assertEqual(
                 first["load_profile"]["enabled_mods"], [OUTER_DESCRIPTOR_REF]
             )
+            self.assertFalse(
+                first["load_profile"]["pdx_settings_contract"][
+                    "prompt_for_china_tutorial"
+                ]
+            )
             tutorial = spec.profile_dir / "tutorial.txt"
             sentinel = tutorial.read_bytes() + b"# persistent-fixture\n"
             tutorial.write_bytes(sentinel)
