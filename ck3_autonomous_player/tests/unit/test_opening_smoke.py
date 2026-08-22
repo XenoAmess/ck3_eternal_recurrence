@@ -28,6 +28,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _choose_first_blessing,
     _choose_first_curse,
     _choose_generic_event_option,
+    _confirm_post_shortcut_event,
     _drive_opening,
     _extract_map_date,
     _extract_lifestyle_state,
@@ -380,6 +381,44 @@ class OpeningContractTests(unittest.TestCase):
         self.assertEqual(detected["capture_sequence"], 17)
         window.capture.assert_called_once_with()
         ocr.assert_called_once_with(image, GENERIC_EVENT_PREVIEW_REGION)
+
+    def test_post_shortcut_event_distinguishes_fade_from_chained_event(self) -> None:
+        def event_frame(sequence: int, title: str, option: str):
+            return SimpleNamespace(
+                observation_id=f"event-{sequence}",
+                capture_sequence=sequence,
+                client_rect=(0, 0, 2560, 1440),
+                spans=(
+                    span(title, (764, 402), (700, 380, 828, 424)),
+                    span(option, (932, 1043), (780, 1032, 1084, 1055)),
+                ),
+            )
+
+        source = _generic_event_in_frame(event_frame(1, "挑战", "接受挑战！"))
+        driver = mock.Mock()
+        driver.capture_once.side_effect = (
+            event_frame(2, "优势", "点到为止！打得漂亮。"),
+            event_frame(3, "优势", "点到为止！打得漂亮。"),
+        )
+        chained, last = _confirm_post_shortcut_event(
+            driver, source, time.monotonic() + 1
+        )
+        self.assertEqual(chained["title"], "优势")
+        self.assertEqual(last.observation_id, "event-3")
+
+        gone = SimpleNamespace(
+            observation_id="map-2",
+            capture_sequence=2,
+            client_rect=(0, 0, 2560, 1440),
+            spans=(),
+        )
+        clear_driver = mock.Mock()
+        clear_driver.capture_once.return_value = gone
+        cleared, last = _confirm_post_shortcut_event(
+            clear_driver, source, time.monotonic() + 1
+        )
+        self.assertIsNone(cleared)
+        self.assertIs(last, gone)
 
     def test_generic_event_strategy_uses_visible_effects_and_first_tie_break(self) -> None:
         selected, score, reasons = _choose_generic_event_option(

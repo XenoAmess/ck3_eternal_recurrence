@@ -69,6 +69,7 @@ INSTANT_UI_TRANSITION_TIMEOUT_SECONDS = 20.0
 INITIAL_MAIN_MENU_TIMEOUT_SECONDS = 120.0
 ORDINARY_EVENT_WAIT_TIMEOUT_SECONDS = 180.0
 DEFAULT_ORDINARY_EVENT_COUNT = 3
+MAX_CHAINED_ORDINARY_EVENTS = 8
 GENERIC_EVENT_PREVIEW_REGION = (0.23, 0.22, 0.48, 0.80)
 
 # Frozen from Crusader Kings III/game/gui/shortcuts.shortcuts. Scan codes are
@@ -571,6 +572,29 @@ def _choose_generic_event_option(
     return selected, score, reasons
 
 
+def _confirm_post_shortcut_event(
+    driver: object,
+    first: dict[str, object],
+    deadline: float,
+) -> tuple[dict[str, object] | None, object]:
+    """Distinguish a stable chained event from a fading prior event."""
+    prior = first
+    last_frame = None
+    while time.monotonic() < deadline:
+        last_frame = driver.capture_once()
+        candidate = _generic_event_in_frame(last_frame)
+        if candidate is None:
+            return None, last_frame
+        if (
+            int(candidate["capture_sequence"])
+            == int(prior["capture_sequence"]) + 1
+            and _same_generic_event(prior, candidate)
+        ):
+            return candidate, last_frame
+        prior = candidate
+    raise AgentError("ordinary CK3 event transition did not stabilize")
+
+
 def _drive_opening(
     spec: EnvironmentSpec,
     handle: SessionHandle,
@@ -974,36 +998,43 @@ def _drive_opening(
     final_observation: dict[str, object] | None = None
     post_driver = None
     post_state = None
-    for event_index in range(1, ordinary_event_count + 1):
-        event_deadline = min(
-            deadline,
-            time.monotonic() + ORDINARY_EVENT_WAIT_TIMEOUT_SECONDS,
-        )
-        event_driver = new_driver()
-        detected_event: dict[str, object] | None = None
-        preview_sequence = 0
-        while time.monotonic() < event_deadline:
-            preview_sequence += 1
-            if _generic_event_preview(window, preview_sequence) is None:
-                continue
-            first_frame = event_driver.capture_once()
-            second_frame = event_driver.capture_once()
-            prior_event = _generic_event_in_frame(first_frame)
-            candidate = _generic_event_in_frame(second_frame)
-            if (
-                prior_event is not None
-                and candidate is not None
-                and int(candidate["capture_sequence"])
-                == int(prior_event["capture_sequence"]) + 1
-                and _same_generic_event(prior_event, candidate)
-            ):
-                detected_event = candidate
-                break
+    pending_event: dict[str, object] | None = None
+    event_index = 0
+    while event_index < ordinary_event_count or pending_event is not None:
+        event_index += 1
+        if event_index > ordinary_event_count + MAX_CHAINED_ORDINARY_EVENTS:
+            raise AgentError("ordinary CK3 event chain exceeded its bounded depth")
+        detected_event = pending_event
+        pending_event = None
         if detected_event is None:
-            raise AgentError(
-                f"ordinary CK3 event {event_index}/{ordinary_event_count} "
-                "did not appear before the deadline"
+            event_deadline = min(
+                deadline,
+                time.monotonic() + ORDINARY_EVENT_WAIT_TIMEOUT_SECONDS,
             )
+            event_driver = new_driver()
+            preview_sequence = 0
+            while time.monotonic() < event_deadline:
+                preview_sequence += 1
+                if _generic_event_preview(window, preview_sequence) is None:
+                    continue
+                first_frame = event_driver.capture_once()
+                second_frame = event_driver.capture_once()
+                prior_event = _generic_event_in_frame(first_frame)
+                candidate = _generic_event_in_frame(second_frame)
+                if (
+                    prior_event is not None
+                    and candidate is not None
+                    and int(candidate["capture_sequence"])
+                    == int(prior_event["capture_sequence"]) + 1
+                    and _same_generic_event(prior_event, candidate)
+                ):
+                    detected_event = candidate
+                    break
+            if detected_event is None:
+                raise AgentError(
+                    f"ordinary CK3 event {event_index}/{ordinary_event_count} "
+                    "did not appear before the deadline"
+                )
 
         event_options = detected_event["options"]
         selected_event_option, option_score, score_reasons = (
@@ -1062,8 +1093,24 @@ def _drive_opening(
                 if running_error is not None:
                     raise running_error
                 raise
-        if _generic_event_in_frame(post_state.latest) is not None:
-            raise AgentError("ordinary CK3 event remained visible after its shortcut")
+        result_observation_id = post_state.observation_id
+        result_screen = post_state.screen
+        post_candidate = _generic_event_in_frame(post_state.latest)
+        if post_candidate is not None:
+            pending_event, transition_frame = _confirm_post_shortcut_event(
+                post_driver,
+                post_candidate,
+                min(deadline, time.monotonic() + 8.0),
+            )
+            result_observation_id = getattr(
+                transition_frame, "observation_id", result_observation_id
+            )
+            if pending_event is not None:
+                if pending_event.get("title") == detected_event.get("title"):
+                    raise AgentError(
+                        "ordinary CK3 event remained visible after its shortcut"
+                    )
+                result_screen = "ordinary_event"
 
         ordinary_action = {
             "control_id": control_id,
@@ -1084,8 +1131,8 @@ def _drive_opening(
             "strategy_score": option_score,
             "strategy_reasons": score_reasons,
             "source_observation_id": detected_event["observation_id"],
-            "result_observation_id": post_state.observation_id,
-            "expected_post_screen": post_state.screen,
+            "result_observation_id": result_observation_id,
+            "expected_post_screen": result_screen,
         }
         actions.append(ordinary_action)
         append_event(
@@ -1094,8 +1141,8 @@ def _drive_opening(
                 "kind": "opening_step_completed",
                 "control_id": control_id,
                 "event_index": event_index,
-                "result_screen": post_state.screen,
-                "result_observation_id": post_state.observation_id,
+                "result_screen": result_screen,
+                "result_observation_id": result_observation_id,
             },
         )
         ordinary_events.append(
@@ -1111,7 +1158,11 @@ def _drive_opening(
                 "source_observation_id": detected_event["observation_id"],
             }
         )
-        if event_index < ordinary_event_count and post_state.screen == "map_hud":
+        if (
+            pending_event is None
+            and event_index < ordinary_event_count
+            and post_state.screen == "map_hud"
+        ):
             press_shortcut(
                 "map_hud",
                 "map_hud.resume",
