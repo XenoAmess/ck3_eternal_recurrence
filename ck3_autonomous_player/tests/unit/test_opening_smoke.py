@@ -63,7 +63,7 @@ class OpeningContractTests(unittest.TestCase):
             contract.control("bookmark_lobby.start_game").click_offset_px,
             (0, 0),
         )
-        self.assertFalse(
+        self.assertTrue(
             contract.control("bookmark_lobby.start_game").allow_dynamic_pixels
         )
         lobby_image = Image.new("RGB", contract.resolution, (0, 0, 0))

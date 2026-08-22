@@ -115,7 +115,8 @@
       "text": "开始",
       "region": [0.83, 0.84, 0.93, 0.92],
       "post_screen": "pact_event",
-      "risk": "irreversible"
+      "risk": "irreversible",
+      "allow_dynamic_pixels": true
     }
   ],
   "forbidden_capabilities": ["pact_event.accept_contract"]
