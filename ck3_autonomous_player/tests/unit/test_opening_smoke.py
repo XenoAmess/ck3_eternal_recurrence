@@ -33,7 +33,7 @@ def span(text: str, center: tuple[int, int], bbox: tuple[int, int, int, int]):
 
 
 class OpeningContractTests(unittest.TestCase):
-    def test_contract_exposes_the_three_step_opening_and_pact_screen(self) -> None:
+    def test_contract_exposes_the_five_step_opening_to_first_blessing(self) -> None:
         digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
         contract = load_ui_contract(OPENING_CONTRACT, expected_sha256=digest)
         self.assertEqual(
@@ -112,6 +112,24 @@ class OpeningContractTests(unittest.TestCase):
             span("又见面了，旅人。", (733, 471), (659, 460, 807, 483)),
         )
         self.assertEqual(contract.classify(pact_spans, image)[0], "pact_event")
+        first_life_spans = (
+            span("未燃之世", (793, 401), (716, 379, 870, 423)),
+            span("那么，开始此生。", (930, 1042), (850, 1031, 1010, 1054)),
+        )
+        self.assertEqual(
+            contract.classify(first_life_spans, image)[0], "first_life_event"
+        )
+        blessing_spans = (
+            span("琉焰的垂青", (810, 401), (718, 381, 902, 421)),
+            span(
+                "只是规矩你懂：每一份垂青，都要用一道咒痕来换。",
+                (897, 557),
+                (622, 543, 1173, 571),
+            ),
+        )
+        self.assertEqual(
+            contract.classify(blessing_spans, image)[0], "blessing_event"
+        )
 
     def test_explicit_opening_allowlist_does_not_change_default_driver_policy(
         self,
@@ -146,7 +164,7 @@ class OpeningContractTests(unittest.TestCase):
 
 
 class OpeningScenarioTests(unittest.TestCase):
-    def test_scenario_clicks_new_game_robert_and_start_in_order(self) -> None:
+    def test_scenario_reaches_first_blessing_in_order(self) -> None:
         digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary) / "state" / "runs" / "run"
@@ -171,6 +189,16 @@ class OpeningScenarioTests(unittest.TestCase):
                     "bookmark_lobby_selected",
                 ),
                 ("bookmark_lobby.start_game", "token-start", "pact_event"),
+                (
+                    "pact_event.accept_contract",
+                    "token-accept",
+                    "first_life_event",
+                ),
+                (
+                    "first_life_event.begin",
+                    "token-begin",
+                    "blessing_event",
+                ),
             )
             drivers = []
             for index, (control_id, token, post_screen) in enumerate(controls):
@@ -216,12 +244,12 @@ class OpeningScenarioTests(unittest.TestCase):
                     digest,
                     time.monotonic() + 30,
                 )
-            self.assertEqual(result["final_screen"], "pact_event")
+            self.assertEqual(result["final_screen"], "blessing_event")
             self.assertEqual(
                 [item["control_id"] for item in result["actions"]],
                 [item[0] for item in controls],
             )
-            self.assertEqual(driver_type.call_count, 3)
+            self.assertEqual(driver_type.call_count, 5)
             for driver, (_, token, _) in zip(drivers, controls):
                 driver.click_visible_control.assert_called_once()
                 self.assertEqual(

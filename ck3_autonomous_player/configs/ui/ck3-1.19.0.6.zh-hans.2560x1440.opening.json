@@ -83,6 +83,24 @@
       ],
       "negative_anchors": [],
       "pixel_probes": []
+    },
+    {
+      "screen_id": "first_life_event",
+      "anchors": [
+        {"anchor_id": "first_life.title", "text": "未燃之世", "region": [0.24, 0.24, 0.40, 0.32]},
+        {"anchor_id": "first_life.begin", "text": "那么，开始此生。", "region": [0.28, 0.62, 0.46, 0.78]}
+      ],
+      "negative_anchors": [],
+      "pixel_probes": []
+    },
+    {
+      "screen_id": "blessing_event",
+      "anchors": [
+        {"anchor_id": "blessing.title", "text": "琉焰的垂青", "region": [0.24, 0.24, 0.40, 0.32]},
+        {"anchor_id": "blessing.exchange", "text": "每一份垂青", "region": [0.24, 0.34, 0.48, 0.44], "contains": true}
+      ],
+      "negative_anchors": [],
+      "pixel_probes": []
     }
   ],
   "controls": [
@@ -117,7 +135,25 @@
       "post_screen": "pact_event",
       "risk": "irreversible",
       "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "pact_event.accept_contract",
+      "screen": "pact_event",
+      "label": "我接受。让琉璃色的火见证。",
+      "text": "我接受。让琉璃色的火见证。",
+      "region": [0.30, 0.66, 0.43, 0.72],
+      "post_screen": "first_life_event",
+      "risk": "irreversible"
+    },
+    {
+      "control_id": "first_life_event.begin",
+      "screen": "first_life_event",
+      "label": "那么，开始此生。",
+      "text": "那么，开始此生。",
+      "region": [0.28, 0.62, 0.46, 0.78],
+      "post_screen": "blessing_event",
+      "risk": "irreversible"
     }
   ],
-  "forbidden_capabilities": ["pact_event.accept_contract"]
+  "forbidden_capabilities": ["blessing_event.choose_blessing"]
 }

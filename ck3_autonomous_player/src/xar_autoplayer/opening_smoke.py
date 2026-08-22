@@ -1,4 +1,4 @@
-"""Drive the first useful CK3 opening: Robert 1066 into the pact event."""
+"""Drive Robert 1066 through the opening pact to the first blessing choice."""
 
 from __future__ import annotations
 
@@ -44,6 +44,8 @@ OPENING_ALLOWED_CONTROLS = frozenset(
         "main_menu.new_game",
         "bookmark_lobby.select_robert",
         "bookmark_lobby.start_game",
+        "pact_event.accept_contract",
+        "first_life_event.begin",
     }
 )
 
@@ -184,13 +186,23 @@ def _drive_opening(
         "bookmark_lobby.select_robert",
         "Robert selection",
     )
-    final_observation = click(
+    click(
         "bookmark_lobby_selected",
         "bookmark_lobby.start_game",
         "first pact event",
     )
-    if final_observation.get("screen") != "pact_event":
-        raise AgentError("opening did not reach the first pact event")
+    click(
+        "pact_event",
+        "pact_event.accept_contract",
+        "first-life explanation",
+    )
+    final_observation = click(
+        "first_life_event",
+        "first_life_event.begin",
+        "first blessing choice",
+    )
+    if final_observation.get("screen") != "blessing_event":
+        raise AgentError("opening did not reach the first blessing choice")
     return {
         "character": "Robert the Fox, Duke of Apulia",
         "bookmark": "1066",
@@ -205,7 +217,7 @@ def _drive_opening(
 def opening_smoke(
     spec: EnvironmentSpec, timeout_seconds: float = 300
 ) -> dict[str, object]:
-    """Select Robert in 1066, start the game, and visibly reach the pact event."""
+    """Select Robert, accept the pact, and visibly reach the first blessing."""
     ensure_state_path_safe(spec.state_dir)
     if (
         isinstance(timeout_seconds, bool)
