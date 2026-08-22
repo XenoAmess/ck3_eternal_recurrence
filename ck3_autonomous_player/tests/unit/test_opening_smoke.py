@@ -668,11 +668,11 @@ class OpeningScenarioTests(unittest.TestCase):
                 )
             blessing_driver.click_visible_control.assert_called_once_with(
                 "choice-0",
-                timeout_seconds=mock.ANY,
+                timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
             )
             curse_driver.click_visible_control.assert_called_once_with(
                 "curse-choice-1",
-                timeout_seconds=mock.ANY,
+                timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
             )
             drivers[7].click_visible_control.assert_called_once_with(
                 "token-player",

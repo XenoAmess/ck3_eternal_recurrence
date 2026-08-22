@@ -528,7 +528,10 @@ def _drive_opening(
     selected, visible_text, strategy_score = _choose_first_blessing(blessing_stable)
     blessing_transition = blessing_driver.click_visible_control(
         selected.token,
-        timeout_seconds=_remaining(deadline, "first curse choice"),
+        timeout_seconds=min(
+            _remaining(deadline, "first curse choice"),
+            INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+        ),
     )
     blessing_action = blessing_transition.get("action")
     final_observation = blessing_transition.get("observation")
@@ -562,7 +565,10 @@ def _drive_opening(
     curse_selected, curse_text, curse_loss = _choose_first_curse(curse_stable)
     curse_transition = curse_driver.click_visible_control(
         curse_selected.token,
-        timeout_seconds=_remaining(deadline, "playable map"),
+        timeout_seconds=min(
+            _remaining(deadline, "playable map"),
+            INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+        ),
     )
     curse_action = curse_transition.get("action")
     final_observation = curse_transition.get("observation")
