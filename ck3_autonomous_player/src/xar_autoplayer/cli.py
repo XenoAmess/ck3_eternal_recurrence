@@ -50,9 +50,10 @@ def parser() -> argparse.ArgumentParser:
     menu_parser.add_argument("--timeout", type=float, default=180)
     opening_parser = commands.add_parser(
         "opening-smoke",
-        help="complete Robert's opening and answer the first ordinary event",
+        help="complete Robert's opening and answer several ordinary events",
     )
-    opening_parser.add_argument("--timeout", type=float, default=480)
+    opening_parser.add_argument("--timeout", type=float, default=900)
+    opening_parser.add_argument("--ordinary-events", type=int, default=3)
     crash_parser = commands.add_parser(
         "crash-smoke",
         help="kill a post-resume supervisor and attest Job/watchdog recovery",
@@ -139,7 +140,11 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "opening-smoke":
             from .opening_smoke import opening_smoke
 
-            result = opening_smoke(spec, timeout_seconds=args.timeout)
+            result = opening_smoke(
+                spec,
+                timeout_seconds=args.timeout,
+                ordinary_event_count=args.ordinary_events,
+            )
         elif args.command == "crash-smoke":
             from .crash_probe import crash_smoke
 

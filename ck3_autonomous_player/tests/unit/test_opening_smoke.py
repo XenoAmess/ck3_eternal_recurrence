@@ -20,20 +20,24 @@ from xar_autoplayer import cli  # noqa: E402
 from xar_autoplayer.control import VisibleUiDriver  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.opening_smoke import (  # noqa: E402
+    GENERIC_EVENT_PREVIEW_REGION,
     INITIAL_MAIN_MENU_TIMEOUT_SECONDS,
     INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     OPENING_ALLOWED_CONTROLS,
     OPENING_CONTRACT,
     _choose_first_blessing,
     _choose_first_curse,
+    _choose_generic_event_option,
     _drive_opening,
     _extract_map_date,
     _extract_lifestyle_state,
     _extract_player_character_state,
     _generic_event_in_frame,
+    _generic_event_preview,
     _same_generic_event,
     _score_first_blessing,
     _score_first_curse,
+    _score_generic_event_option,
 )
 from xar_autoplayer.vision import load_ui_contract  # noqa: E402
 from xar_autoplayer.vision.model import OcrSpan  # noqa: E402
@@ -354,6 +358,58 @@ class OpeningContractTests(unittest.TestCase):
         )
         self.assertIsNotNone(_generic_event_in_frame(faded))
         self.assertIsNone(_generic_event_in_frame(gone))
+
+    def test_generic_event_preview_uses_only_the_event_lane(self) -> None:
+        image = Image.new("RGB", (2560, 1440), "black")
+        window = mock.Mock()
+        window.capture.return_value = image
+        preview_spans = (
+            span("怀孕！", (764, 402), (717, 380, 812, 424)),
+            span(
+                "我等不及要将小婴儿抱在怀里了！",
+                (932, 1043),
+                (794, 1032, 1070, 1055),
+            ),
+        )
+        with mock.patch(
+            "xar_autoplayer.vision.ocr.ocr_spans",
+            return_value=preview_spans,
+        ) as ocr:
+            detected = _generic_event_preview(window, 17)
+        self.assertEqual(detected["title"], "怀孕！")
+        self.assertEqual(detected["capture_sequence"], 17)
+        window.capture.assert_called_once_with()
+        ocr.assert_called_once_with(image, GENERIC_EVENT_PREVIEW_REGION)
+
+    def test_generic_event_strategy_uses_visible_effects_and_first_tie_break(self) -> None:
+        selected, score, reasons = _choose_generic_event_option(
+            {
+                "options": [
+                    {"option_number": 1, "visible_text": "我会支付 50 金币。"},
+                    {
+                        "option_number": 2,
+                        "visible_text": "我的威望将会增加 +25。",
+                    },
+                    {"option_number": 3, "visible_text": "以后再说吧。"},
+                ]
+            }
+        )
+        self.assertEqual(selected["option_number"], 2)
+        self.assertGreater(score, 0)
+        self.assertIn("增加:+65", reasons)
+        self.assertLess(_score_generic_event_option("我将失去 -20 金币")[0], 0)
+
+        tied, tied_score, tied_reasons = _choose_generic_event_option(
+            {
+                "options": [
+                    {"option_number": 1, "visible_text": "就这么办。"},
+                    {"option_number": 2, "visible_text": "当然可以。"},
+                ]
+            }
+        )
+        self.assertEqual(tied["option_number"], 1)
+        self.assertEqual(tied_score, 0)
+        self.assertEqual(tied_reasons, [])
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (
@@ -780,7 +836,7 @@ class OpeningScenarioTests(unittest.TestCase):
                     to_policy_json=(lambda payload=curse_after_policy: dict(payload)),
                 ),
             )
-            event_driver = mock.Mock()
+            first_event_driver = mock.Mock()
 
             def event_frame(sequence: int, y_offset: int = 0):
                 return SimpleNamespace(
@@ -801,11 +857,53 @@ class OpeningScenarioTests(unittest.TestCase):
                     ),
                 )
 
-            event_driver.capture_once.side_effect = (
+            first_event_driver.capture_once.side_effect = (
                 event_frame(1),
                 event_frame(2, 2),
             )
-            drivers.insert(16, event_driver)
+            first_post_driver = mock.Mock()
+            first_post_driver.observe_stable.return_value = SimpleNamespace(
+                screen="map_running",
+                observation_id="map-after-first-ordinary-event",
+                controls=(),
+                latest=SimpleNamespace(
+                    client_rect=(0, 0, 2560, 1440),
+                    spans=(),
+                ),
+            )
+            second_event_driver = mock.Mock()
+
+            def second_event_frame(sequence: int, y_offset: int = 0):
+                return SimpleNamespace(
+                    observation_id=f"second-ordinary-event-{sequence}",
+                    capture_sequence=sequence,
+                    client_rect=(0, 0, 2560, 1440),
+                    spans=(
+                        span(
+                            "领地的新机会",
+                            (764, 402 + y_offset),
+                            (690, 380, 838, 424),
+                        ),
+                        span(
+                            "我会失去 -20 金币。",
+                            (930, 988 + y_offset),
+                            (820, 977, 1040, 1000),
+                        ),
+                        span(
+                            "我的威望将会增加 +25。",
+                            (930, 1043 + y_offset),
+                            (790, 1032, 1070, 1055),
+                        ),
+                    ),
+                )
+
+            second_event_driver.capture_once.side_effect = (
+                second_event_frame(1),
+                second_event_frame(2, 2),
+            )
+            drivers.insert(16, first_event_driver)
+            drivers.insert(17, first_post_driver)
+            drivers.insert(18, second_event_driver)
             submit_key = mock.Mock(return_value=(2, 0))
             submit_chord = mock.Mock(return_value=(4, 0))
             with mock.patch(
@@ -819,7 +917,10 @@ class OpeningScenarioTests(unittest.TestCase):
             ) as prepare_key, mock.patch(
                 "xar_autoplayer.control.executor._prepare_key_chord_batch",
                 return_value=submit_chord,
-            ) as prepare_chord:
+            ) as prepare_chord, mock.patch(
+                "xar_autoplayer.opening_smoke._generic_event_preview",
+                side_effect=({"candidate": 1}, {"candidate": 2}),
+            ) as preview:
                 result = _drive_opening(
                     SimpleNamespace(
                         game_exe=Path("ck3.exe"),
@@ -832,15 +933,21 @@ class OpeningScenarioTests(unittest.TestCase):
                     contract,
                     digest,
                     time.monotonic() + 300,
+                    ordinary_event_count=2,
                 )
             self.assertEqual(
                 [item["control_id"] for item in result["actions"]],
                 [item[0] for item in controls[:8]]
                 + ["player_character.close"]
                 + [item[0] for item in controls[8:-1]]
-                + ["ordinary_event.option_1", controls[-1][0]],
+                + [
+                    "ordinary_event.option_1",
+                    "ordinary_event.option_2",
+                    controls[-1][0],
+                ],
             )
-            self.assertEqual(driver_type.call_count, 18)
+            self.assertEqual(driver_type.call_count, 20)
+            self.assertEqual(preview.call_count, 2)
             initial_observation_timeout = drivers[0].observe_stable.call_args.args[1]
             self.assertGreater(initial_observation_timeout, 119.0)
             self.assertLessEqual(
@@ -857,7 +964,22 @@ class OpeningScenarioTests(unittest.TestCase):
                     controls[control_index][1],
                     timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
                 )
-            for index in (3, 4, 5, 6, 7, 8, 12, 13, 14, 15, 16, 17):
+            for index in (
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+            ):
                 drivers[index].click_visible_control.assert_not_called()
             self.assertEqual(
                 [call.args[0] for call in prepare_key.call_args_list],
@@ -871,10 +993,11 @@ class OpeningScenarioTests(unittest.TestCase):
                     (0x2A, 0x02),
                     (0x2A, 0x03),
                     (0x2A, 0x02),
+                    (0x2A, 0x03),
                 ],
             )
             self.assertEqual(submit_key.call_count, 7)
-            self.assertEqual(submit_chord.call_count, 5)
+            self.assertEqual(submit_chord.call_count, 6)
             event_rows = [
                 json.loads(line)
                 for line in events.read_text(encoding="utf-8").splitlines()
@@ -897,6 +1020,7 @@ class OpeningScenarioTests(unittest.TestCase):
                     "5",
                     "space",
                     "shift+1",
+                    "shift+2",
                     "space",
                 ],
             )
@@ -909,13 +1033,24 @@ class OpeningScenarioTests(unittest.TestCase):
                 result["first_ordinary_event"]["selected_option_number"], 1
             )
             self.assertEqual(result["first_ordinary_event"]["title"], "怀孕！")
+            self.assertEqual(len(result["ordinary_events"]), 2)
+            self.assertEqual(
+                result["ordinary_events"][1]["selected_option_number"], 2
+            )
+            self.assertGreater(result["ordinary_events"][1]["strategy_score"], 0)
             self.assertEqual(result["time_progression"]["elapsed_days"], 1)
             self.assertEqual(result["final_screen"], "map_hud")
 
     def test_cli_exposes_opening_smoke(self) -> None:
         args = cli.parser().parse_args(["opening-smoke"])
         self.assertEqual(args.command, "opening-smoke")
-        self.assertEqual(args.timeout, 480)
+        self.assertEqual(args.timeout, 900)
+        self.assertEqual(args.ordinary_events, 3)
+        custom = cli.parser().parse_args(
+            ["opening-smoke", "--ordinary-events", "5", "--timeout", "1200"]
+        )
+        self.assertEqual(custom.ordinary_events, 5)
+        self.assertEqual(custom.timeout, 1200)
 
 
 if __name__ == "__main__":

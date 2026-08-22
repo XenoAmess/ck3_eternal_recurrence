@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import shutil
 import time
+from types import SimpleNamespace
 import uuid
 
 from .environment import (
@@ -66,7 +67,9 @@ OPENING_ALLOWED_CONTROLS = frozenset(
 
 INSTANT_UI_TRANSITION_TIMEOUT_SECONDS = 20.0
 INITIAL_MAIN_MENU_TIMEOUT_SECONDS = 120.0
-FIRST_ORDINARY_EVENT_TIMEOUT_SECONDS = 150.0
+ORDINARY_EVENT_WAIT_TIMEOUT_SECONDS = 180.0
+DEFAULT_ORDINARY_EVENT_COUNT = 3
+GENERIC_EVENT_PREVIEW_REGION = (0.23, 0.22, 0.48, 0.80)
 
 # Frozen from Crusader Kings III/game/gui/shortcuts.shortcuts. Scan codes are
 # used so the binding does not depend on the active Windows keyboard layout.
@@ -468,6 +471,106 @@ def _same_generic_event(
     return True
 
 
+def _generic_event_preview(window: object, sequence: int) -> dict[str, object] | None:
+    """Check the event lane without persisting ordinary map polling frames."""
+    from .vision.ocr import ocr_spans
+
+    image = window.capture()
+    width, height = image.size
+    return _generic_event_in_frame(
+        SimpleNamespace(
+            observation_id=None,
+            capture_sequence=sequence,
+            client_rect=(0, 0, width, height),
+            spans=ocr_spans(image, GENERIC_EVENT_PREVIEW_REGION),
+        )
+    )
+
+
+_GENERIC_EVENT_OPTION_WEIGHTS = (
+    ("获得", 80),
+    ("增加", 65),
+    ("提升", 65),
+    ("改善", 50),
+    ("发展", 45),
+    ("学习", 35),
+    ("训练", 35),
+    ("健康", 55),
+    ("金币", 35),
+    ("财富", 35),
+    ("威望", 30),
+    ("虔诚", 30),
+    ("好感", 25),
+    ("会是我的", 25),
+    ("减轻压力", 55),
+    ("降低压力", 55),
+    ("失去", -90),
+    ("死亡", -150),
+    ("受伤", -100),
+    ("患病", -100),
+    ("花费", -55),
+    ("支付", -55),
+    ("降低", -45),
+    ("减少", -35),
+    ("压力", -25),
+    ("放弃", -25),
+    ("远离", -15),
+)
+
+
+def _score_generic_event_option(text: str) -> tuple[int, list[str]]:
+    """Score only the text rendered on one ordinary CK3 event option."""
+    normalized = re.sub(r"\s+", "", text)
+    score = 0
+    reasons: list[str] = []
+    for term, weight in _GENERIC_EVENT_OPTION_WEIGHTS:
+        if term not in normalized:
+            continue
+        # Do not penalize the negative word inside the two explicit
+        # pressure-reduction phrases above.
+        if term in {"降低", "减少", "压力"} and (
+            "减轻压力" in normalized or "降低压力" in normalized
+        ):
+            continue
+        score += weight
+        reasons.append(f"{term}:{weight:+d}")
+    for sign, raw_value in re.findall(r"([+-])\s*(\d+)", text):
+        value = min(int(raw_value), 100)
+        delta = value if sign == "+" else -value
+        score += delta
+        reasons.append(f"visible-number:{delta:+d}")
+    return score, reasons
+
+
+def _choose_generic_event_option(
+    event: dict[str, object],
+) -> tuple[dict[str, object], int, list[str]]:
+    """Choose the highest visible-utility option, keeping first as tie-break."""
+    options = event.get("options")
+    if not isinstance(options, list) or not options:
+        raise AgentError("ordinary CK3 event has no visible option")
+    ranked: list[tuple[int, int, dict[str, object], list[str]]] = []
+    for option in options:
+        if not isinstance(option, dict):
+            raise AgentError("ordinary CK3 event option is malformed")
+        number = option.get("option_number")
+        text = option.get("visible_text")
+        if (
+            isinstance(number, bool)
+            or not isinstance(number, int)
+            or number not in EVENT_OPTION_SHORTCUTS
+            or not isinstance(text, str)
+            or not text.strip()
+        ):
+            raise AgentError("ordinary CK3 event option is malformed")
+        score, reasons = _score_generic_event_option(text)
+        ranked.append((score, -number, option, reasons))
+    score, _tie_break, selected, reasons = max(
+        ranked, key=lambda item: (item[0], item[1])
+    )
+    return selected, score, reasons
+
+
 def _drive_opening(
     spec: EnvironmentSpec,
     handle: SessionHandle,
@@ -477,6 +580,7 @@ def _drive_opening(
     contract_path: Path,
     contract_sha256: str,
     deadline: float,
+    ordinary_event_count: int = 1,
 ) -> dict[str, object]:
     from .control import VisibleUiDriver
     from .control.executor import _prepare_key_chord_batch, _prepare_key_press_batch
@@ -866,122 +970,162 @@ def _drive_opening(
     if int(running_date["ordinal"]) <= int(starting_date["ordinal"]):
         raise AgentError("CK3 timeline did not advance after resume")
 
-    event_deadline = min(
-        deadline, time.monotonic() + FIRST_ORDINARY_EVENT_TIMEOUT_SECONDS
-    )
-    event_driver = new_driver()
-    prior_event: dict[str, object] | None = None
-    detected_event: dict[str, object] | None = None
-    while time.monotonic() < event_deadline:
-        frame = event_driver.capture_once()
-        candidate = _generic_event_in_frame(frame)
-        if candidate is None:
-            prior_event = None
-            continue
-        if (
-            prior_event is not None
-            and int(candidate["capture_sequence"])
-            == int(prior_event["capture_sequence"]) + 1
-            and _same_generic_event(prior_event, candidate)
-        ):
-            detected_event = candidate
-            break
-        prior_event = candidate
-    if detected_event is None:
-        raise AgentError("no stable ordinary CK3 event appeared before the deadline")
-
-    event_options = detected_event["options"]
-    if not isinstance(event_options, list) or not event_options:
-        raise AgentError("ordinary CK3 event has no visible option")
-    selected_event_option = event_options[0]
-    if not isinstance(selected_event_option, dict):
-        raise AgentError("ordinary CK3 event option is malformed")
-    option_number = int(selected_event_option["option_number"])
-    shortcut = EVENT_OPTION_SHORTCUTS.get(option_number)
-    if shortcut is None:
-        raise AgentError("ordinary CK3 event option lacks a native shortcut")
-    key, scan_code = shortcut
-    window.require_foreground()
-    append_event(
-        events,
-        {
-            "kind": "opening_key_input_planned",
-            "control_id": f"ordinary_event.option_{option_number}",
-            "key": key,
-            "scan_code": scan_code,
-            "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
-            "expected_post_screen": "map",
-        },
-    )
-    accepted, last_error = _prepare_key_chord_batch(
-        CK3_SHORTCUT_SCAN_CODES["left_shift"], scan_code
-    )()
-    if accepted != 4:
-        raise AgentError(
-            f"{key} ordinary-event shortcut SendInput was partial: "
-            f"accepted={accepted}, last_error={last_error}"
-        )
-
-    post_driver = new_driver()
+    ordinary_events: list[dict[str, object]] = []
+    final_observation: dict[str, object] | None = None
+    post_driver = None
     post_state = None
-    running_error: AgentError | None = None
-    try:
-        post_state = post_driver.observe_stable(
-            "map_running",
-            min(
-                8.0,
-                _remaining(deadline, "ordinary event running postcondition"),
-            ),
-            stable_frames=2,
+    for event_index in range(1, ordinary_event_count + 1):
+        event_deadline = min(
+            deadline,
+            time.monotonic() + ORDINARY_EVENT_WAIT_TIMEOUT_SECONDS,
         )
-    except AgentError as error:
-        running_error = error
-    if post_state is None:
+        event_driver = new_driver()
+        detected_event: dict[str, object] | None = None
+        preview_sequence = 0
+        while time.monotonic() < event_deadline:
+            preview_sequence += 1
+            if _generic_event_preview(window, preview_sequence) is None:
+                continue
+            first_frame = event_driver.capture_once()
+            second_frame = event_driver.capture_once()
+            prior_event = _generic_event_in_frame(first_frame)
+            candidate = _generic_event_in_frame(second_frame)
+            if (
+                prior_event is not None
+                and candidate is not None
+                and int(candidate["capture_sequence"])
+                == int(prior_event["capture_sequence"]) + 1
+                and _same_generic_event(prior_event, candidate)
+            ):
+                detected_event = candidate
+                break
+        if detected_event is None:
+            raise AgentError(
+                f"ordinary CK3 event {event_index}/{ordinary_event_count} "
+                "did not appear before the deadline"
+            )
+
+        event_options = detected_event["options"]
+        selected_event_option, option_score, score_reasons = (
+            _choose_generic_event_option(detected_event)
+        )
+        option_number = int(selected_event_option["option_number"])
+        key, scan_code = EVENT_OPTION_SHORTCUTS[option_number]
+        control_id = f"ordinary_event.option_{option_number}"
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": control_id,
+                "event_index": event_index,
+                "key": key,
+                "scan_code": scan_code,
+                "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
+                "expected_post_screen": "map",
+            },
+        )
+        accepted, last_error = _prepare_key_chord_batch(
+            CK3_SHORTCUT_SCAN_CODES["left_shift"], scan_code
+        )()
+        if accepted != 4:
+            raise AgentError(
+                f"{key} ordinary-event shortcut SendInput was partial: "
+                f"accepted={accepted}, last_error={last_error}"
+            )
+
+        post_driver = new_driver()
+        post_state = None
+        running_error: AgentError | None = None
         try:
             post_state = post_driver.observe_stable(
-                "map_hud",
+                "map_running",
                 min(
                     8.0,
-                    _remaining(deadline, "ordinary event paused postcondition"),
+                    _remaining(deadline, "ordinary event running postcondition"),
                 ),
                 stable_frames=2,
             )
-        except AgentError:
-            if running_error is not None:
-                raise running_error
-            raise
-    if _generic_event_in_frame(post_state.latest) is not None:
-        raise AgentError("ordinary CK3 event remained visible after its shortcut")
+        except AgentError as error:
+            running_error = error
+        if post_state is None:
+            try:
+                post_state = post_driver.observe_stable(
+                    "map_hud",
+                    min(
+                        8.0,
+                        _remaining(deadline, "ordinary event paused postcondition"),
+                    ),
+                    stable_frames=2,
+                )
+            except AgentError:
+                if running_error is not None:
+                    raise running_error
+                raise
+        if _generic_event_in_frame(post_state.latest) is not None:
+            raise AgentError("ordinary CK3 event remained visible after its shortcut")
 
-    ordinary_action = {
-        "control_id": f"ordinary_event.option_{option_number}",
-        "status": "confirmed",
-        "input_kind": "keyboard_shortcut",
-        "key": key,
-        "scan_code": scan_code,
-        "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
-        "send_input": {
-            "requested": 4,
-            "accepted": accepted,
-            "last_error": last_error,
-        },
-        "event_title": detected_event["title"],
-        "visible_option": selected_event_option["visible_text"],
-        "visible_option_count": len(event_options),
-        "source_observation_id": detected_event["observation_id"],
-        "result_observation_id": post_state.observation_id,
-        "expected_post_screen": post_state.screen,
-    }
-    actions.append(ordinary_action)
-    append_event(
-        events,
-        {
-            "kind": "opening_step_completed",
-            "control_id": ordinary_action["control_id"],
-            "result_screen": post_state.screen,
+        ordinary_action = {
+            "control_id": control_id,
+            "status": "confirmed",
+            "input_kind": "keyboard_shortcut",
+            "key": key,
+            "scan_code": scan_code,
+            "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
+            "send_input": {
+                "requested": 4,
+                "accepted": accepted,
+                "last_error": last_error,
+            },
+            "event_index": event_index,
+            "event_title": detected_event["title"],
+            "visible_option": selected_event_option["visible_text"],
+            "visible_option_count": len(event_options),
+            "strategy_score": option_score,
+            "strategy_reasons": score_reasons,
+            "source_observation_id": detected_event["observation_id"],
             "result_observation_id": post_state.observation_id,
-        },
-    )
+            "expected_post_screen": post_state.screen,
+        }
+        actions.append(ordinary_action)
+        append_event(
+            events,
+            {
+                "kind": "opening_step_completed",
+                "control_id": control_id,
+                "event_index": event_index,
+                "result_screen": post_state.screen,
+                "result_observation_id": post_state.observation_id,
+            },
+        )
+        ordinary_events.append(
+            {
+                "event_index": event_index,
+                "title": detected_event["title"],
+                "visible_options": event_options,
+                "selected_option_number": option_number,
+                "selected_visible_text": selected_event_option["visible_text"],
+                "strategy_score": option_score,
+                "strategy_reasons": score_reasons,
+                "strategy": "visible-option-utility-v1",
+                "source_observation_id": detected_event["observation_id"],
+            }
+        )
+        if event_index < ordinary_event_count and post_state.screen == "map_hud":
+            press_shortcut(
+                "map_hud",
+                "map_hud.resume",
+                "space",
+                CK3_SHORTCUT_SCAN_CODES["space"],
+                "map_running",
+                f"running timeline after ordinary event {event_index}",
+                driver=post_driver,
+                stable=post_state,
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+
+    if post_driver is None or post_state is None:
+        raise AgentError("ordinary CK3 event loop produced no final state")
     if post_state.screen == "map_running":
         final_observation = press_shortcut(
             "map_running",
@@ -989,7 +1133,7 @@ def _drive_opening(
             "space",
             CK3_SHORTCUT_SCAN_CODES["space"],
             "map_hud",
-            "paused after first ordinary event",
+            "paused after ordinary event loop",
             driver=post_driver,
             stable=post_state,
             post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
@@ -1017,14 +1161,8 @@ def _drive_opening(
         },
         "player_character_state": player_state,
         "lifestyle_state": lifestyle_state,
-        "first_ordinary_event": {
-            "title": detected_event["title"],
-            "visible_options": event_options,
-            "selected_option_number": option_number,
-            "selected_visible_text": selected_event_option["visible_text"],
-            "strategy": "first-visible-option-v1",
-            "source_observation_id": detected_event["observation_id"],
-        },
+        "first_ordinary_event": ordinary_events[0],
+        "ordinary_events": ordinary_events,
         "time_progression": {
             "strategy": "speed-five-visible-date-v1",
             "starting_date": starting_date,
@@ -1042,9 +1180,11 @@ def _drive_opening(
 
 
 def opening_smoke(
-    spec: EnvironmentSpec, timeout_seconds: float = 480
+    spec: EnvironmentSpec,
+    timeout_seconds: float = 900,
+    ordinary_event_count: int = DEFAULT_ORDINARY_EVENT_COUNT,
 ) -> dict[str, object]:
-    """Complete Robert's opening and answer the first ordinary CK3 event."""
+    """Complete Robert's opening and answer several ordinary CK3 events."""
     ensure_state_path_safe(spec.state_dir)
     if (
         isinstance(timeout_seconds, bool)
@@ -1053,19 +1193,31 @@ def opening_smoke(
         or timeout_seconds <= 0
     ):
         raise AgentError("opening timeout must be finite and positive")
+    if (
+        isinstance(ordinary_event_count, bool)
+        or not isinstance(ordinary_event_count, int)
+        or not 1 <= ordinary_event_count <= 10
+    ):
+        raise AgentError("ordinary event count must be an integer from 1 to 10")
     with exclusive_launch_lock(spec.game_exe):
         with exclusive_state_lock(spec.state_dir, "opening-smoke"):
             manifest = verify_profile(spec)
             doctor(spec, require_prepared=True)
             if ck3_process_inventory()["processes"]:
                 raise AgentError("refusing opening smoke while CK3 is already running")
-            return _opening_smoke_locked(spec, manifest, float(timeout_seconds))
+            return _opening_smoke_locked(
+                spec,
+                manifest,
+                float(timeout_seconds),
+                ordinary_event_count,
+            )
 
 
 def _opening_smoke_locked(
     spec: EnvironmentSpec,
     manifest: dict[str, object],
     timeout_seconds: float,
+    ordinary_event_count: int,
 ) -> dict[str, object]:
     run_id = (
         datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -1089,6 +1241,7 @@ def _opening_smoke_locked(
             "path": contract_archive.name,
             "sha256": contract_sha256,
         },
+        "ordinary_event_target": ordinary_event_count,
         "finalized": False,
         "ok": False,
     }
@@ -1128,6 +1281,7 @@ def _opening_smoke_locked(
             contract_archive,
             contract_sha256,
             deadline,
+            ordinary_event_count,
         )
     except BaseException as error:
         primary_error = error
