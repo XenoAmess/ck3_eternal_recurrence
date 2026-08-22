@@ -131,6 +131,7 @@
       "screen_id": "player_character",
       "anchors": [
         {"anchor_id": "character.spouse", "text": "配偶", "region": [0.14, 0.22, 0.20, 0.29]},
+        {"anchor_id": "character.player_heir", "text": "玩家继承人", "region": [0.23, 0.23, 0.31, 0.30]},
         {"anchor_id": "character.robert", "text": "阿普利亚公爵，罗贝尔", "region": [0.0, 0.27, 0.13, 0.33]},
         {"anchor_id": "character.self", "text": "这是你自己", "region": [0.0, 0.28, 0.08, 0.35]}
       ],

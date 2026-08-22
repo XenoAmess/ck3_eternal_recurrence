@@ -376,13 +376,15 @@ def _drive_opening(
         )
         return observation
 
-    def press_escape(screen: str, next_screen: str, next_stage: str) -> None:
+    def toggle_player_character(
+        screen: str, next_screen: str, next_stage: str
+    ) -> None:
         import pyautogui
 
         driver = new_driver()
         driver.observe_stable(
             screen,
-            _remaining(deadline, f"stable {screen} before Escape"),
+            _remaining(deadline, f"stable {screen} before F1"),
             stable_frames=2,
         )
         window.require_foreground()
@@ -391,11 +393,11 @@ def _drive_opening(
             {
                 "kind": "opening_key_input_planned",
                 "control_id": "player_character.close",
-                "key": "escape",
+                "key": "f1",
                 "expected_post_screen": next_screen,
             },
         )
-        pyautogui.press("esc")
+        pyautogui.press("f1")
         stable = driver.observe_stable(
             next_screen,
             _remaining(deadline, next_stage),
@@ -406,7 +408,7 @@ def _drive_opening(
                 "control_id": "player_character.close",
                 "status": "confirmed",
                 "input_kind": "keyboard",
-                "key": "escape",
+                "key": "f1",
                 "result_observation_id": stable.observation_id,
                 "expected_post_screen": next_screen,
             }
@@ -514,7 +516,7 @@ def _drive_opening(
         "player character state",
     )
     player_state = _extract_player_character_state(final_observation)
-    press_escape(
+    toggle_player_character(
         "player_character",
         "map_hud",
         "playable map after player inspection",

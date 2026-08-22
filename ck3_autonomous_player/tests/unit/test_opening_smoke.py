@@ -174,17 +174,6 @@ class OpeningContractTests(unittest.TestCase):
             contract.classify(character_spans, image)[0], "player_character"
         )
         self.assertEqual(
-            contract.classify(
-                tuple(
-                    item
-                    for item in character_spans
-                    if item.normalized != "玩家继承人"
-                ),
-                image,
-            )[0],
-            "player_character",
-        )
-        self.assertEqual(
             contract.control("map_hud.open_player_character").click_point_px,
             (150, 1100),
         )
@@ -613,7 +602,7 @@ class OpeningScenarioTests(unittest.TestCase):
                 "token-player",
                 timeout_seconds=mock.ANY,
             )
-            press.assert_called_once_with("esc")
+            press.assert_called_once_with("f1")
             self.assertIn("长明的定力", result["first_blessing_choice"]["visible_text"])
             self.assertIn("军事经验", result["first_curse_choice"]["visible_text"])
             self.assertTrue(result["player_character_state"]["spouse_visible"])
