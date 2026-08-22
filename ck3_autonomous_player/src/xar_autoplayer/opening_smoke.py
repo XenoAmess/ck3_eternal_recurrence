@@ -52,6 +52,7 @@ OPENING_ALLOWED_CONTROLS = frozenset(
         "blessing_event.option_3",
         "curse_event.option_1",
         "curse_event.option_2",
+        "map_hud.open_player_character",
     }
 )
 
@@ -209,6 +210,48 @@ def _choose_first_curse(stable: object) -> tuple[object, str, int]:
         ranked, key=lambda item: (item[0], item[1])
     )
     return selected, visible_text, loss
+
+
+def _extract_player_character_state(observation: dict[str, object]) -> dict[str, object]:
+    """Extract the first useful map-state facts from the visible player panel."""
+    if observation.get("screen") != "player_character":
+        raise AgentError("player character state requires the player character screen")
+    ocr = observation.get("ocr")
+    if not isinstance(ocr, list):
+        raise AgentError("player character observation OCR is missing")
+    texts = [
+        item.get("text")
+        for item in ocr
+        if isinstance(item, dict) and isinstance(item.get("text"), str)
+    ]
+    names = [
+        text
+        for text in texts
+        if "阿普利亚公爵" in text and "罗贝尔" in text
+    ]
+    if len(names) != 1 or texts.count("这是你自己") != 1:
+        raise AgentError("player character identity is not uniquely visible")
+
+    def visible_count(prefix: str) -> int | None:
+        matches: list[int] = []
+        for text in texts:
+            normalized = re.sub(r"\s+", "", text)
+            match = re.fullmatch(re.escape(prefix) + r"[（(]?([0-9]+)[）)]?", normalized)
+            if match:
+                matches.append(int(match.group(1)))
+        return matches[0] if len(matches) == 1 else None
+
+    return {
+        "character": names[0],
+        "is_player": True,
+        "spouse_visible": texts.count("配偶") == 1,
+        "player_heir_visible": texts.count("玩家继承人") == 1,
+        "kin_count": visible_count("亲族"),
+        "courtier_count": visible_count("廷臣"),
+        "vassal_count": visible_count("臣属"),
+        "source_observation_id": observation.get("observation_id"),
+        "policy_boundary": "player-visible OCR only",
+    }
 
 
 def _drive_opening(
@@ -393,6 +436,12 @@ def _drive_opening(
     )
     if final_observation.get("screen") != "map_hud":
         raise AgentError("opening did not reach the playable map after its first pair")
+    final_observation = click(
+        "map_hud",
+        "map_hud.open_player_character",
+        "player character state",
+    )
+    player_state = _extract_player_character_state(final_observation)
     return {
         "character": "Robert the Fox, Duke of Apulia",
         "bookmark": "1066",
@@ -409,6 +458,7 @@ def _drive_opening(
             "strategy_loss": curse_loss,
             "strategy": "growth100.first-curse-visible-v1",
         },
+        "player_character_state": player_state,
         "final_screen": final_observation.get("screen"),
         "final_observation_id": final_observation.get("observation_id"),
         "window_binding": window.audit_binding(),
@@ -419,7 +469,7 @@ def _drive_opening(
 def opening_smoke(
     spec: EnvironmentSpec, timeout_seconds: float = 300
 ) -> dict[str, object]:
-    """Complete Robert's pact and first blessing/curse pair to the map."""
+    """Complete Robert's first bargain pair and inspect his player state."""
     ensure_state_path_safe(spec.state_dir)
     if (
         isinstance(timeout_seconds, bool)

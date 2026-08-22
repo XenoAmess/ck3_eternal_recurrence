@@ -122,7 +122,23 @@
         {"anchor_id": "map.pact_modal", "text": "终末之契", "region": [0.0, 0.0, 1.0, 1.0]},
         {"anchor_id": "map.first_life_modal", "text": "未燃之世", "region": [0.0, 0.0, 1.0, 1.0]},
         {"anchor_id": "map.blessing_modal", "text": "琉焰的垂青", "region": [0.0, 0.0, 1.0, 1.0]},
-        {"anchor_id": "map.curse_modal", "text": "等价的咒痕", "region": [0.0, 0.0, 1.0, 1.0]}
+        {"anchor_id": "map.curse_modal", "text": "等价的咒痕", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "map.player_character_open", "text": "这是你自己", "region": [0.0, 0.28, 0.08, 0.35]}
+      ],
+      "pixel_probes": []
+    },
+    {
+      "screen_id": "player_character",
+      "anchors": [
+        {"anchor_id": "character.spouse", "text": "配偶", "region": [0.14, 0.22, 0.20, 0.29]},
+        {"anchor_id": "character.player_heir", "text": "玩家继承人", "region": [0.23, 0.23, 0.31, 0.30]},
+        {"anchor_id": "character.robert", "text": "阿普利亚公爵，罗贝尔", "region": [0.0, 0.27, 0.13, 0.33]},
+        {"anchor_id": "character.self", "text": "这是你自己", "region": [0.0, 0.28, 0.08, 0.35]}
+      ],
+      "negative_anchors": [
+        {"anchor_id": "character.pact_modal", "text": "终末之契", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "character.blessing_modal", "text": "琉焰的垂青", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "character.curse_modal", "text": "等价的咒痕", "region": [0.0, 0.0, 1.0, 1.0]}
       ],
       "pixel_probes": []
     }
@@ -233,6 +249,17 @@
       "post_screen": "map_hud",
       "risk": "irreversible",
       "contains": true,
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "map_hud.open_player_character",
+      "screen": "map_hud",
+      "label": "player portrait",
+      "text": "暂停",
+      "region": [0.45, 0.08, 0.55, 0.18],
+      "post_screen": "player_character",
+      "risk": "reversible",
+      "click_point_px": [150, 1100],
       "allow_dynamic_pixels": true
     }
   ],

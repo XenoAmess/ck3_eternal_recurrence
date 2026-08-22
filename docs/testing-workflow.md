@@ -194,6 +194,10 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 关闭 Chrome 后，提交 `3a292c8`、环境 `13496c86f545eee215a5adac679c027c05ad03d5f789b99fdee6b3c02e720221` 的
   `20260822T095721Z-opening-019ba6a7` 首次 GREEN：新游戏、罗贝尔、开始三次收据均 `SendInput 2/2`，最终两帧 OCR
   【终末之契】与【又见面了，旅人。】，随后 Job active 归零、tree gone、双源 CK3 inventory 为空。该 run 没有点击契约选项。
+- 随后的提交 `c8a27d5`、环境 `f54ca88ac450ae8d2c4d7401e115695069ac10781e2a37e8af14cc5d3521304d` 中，
+  `20260822T102802Z-opening-4cc459ce` 完成七次 `SendInput 2/2`：接受契约、开始此生，并按可见文本选择
+  【兵棋的余局（+500军事经验）】与较低损失的【千面的哑剧（-1000谋略经验）】。最终连续两帧识别 `map_hud`，
+  Job active 归零、tree gone、双源 CK3 inventory 为空；这是首个完成祝福/咒痕对并进入地图的可计分开局基线。
 - 用户真实纪录靠 tutorial.txt 备份/恢复保护；默认 selftest 与 `on-first-life/off` 会剥掉 `xar_hs_ge_*` 行（纪录 0），`on-recorded` 固定预置 100；`--import-record 100` 仅改变 selftest。
 - restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验。2026-08-20 实测发现宿主超时会终止 runner 的整个子进程树，普通 `Popen(CREATE_NO_WINDOW)` watchdog 也被一起杀死，遗留隔离后的 `dlc_load.json` 与测试 autosave；已从该次精确 backup 全量恢复并核对六项 hash。watchdog 现由 WMI `Win32_Process.Create` 启动在 runner 进程树之外。2026-08-19 另实测 dev selftest autosave 会让下一次 release 投影扫描已剥离的 `xar_selftest` 规则键并误报；现启动前先完整复制并校验全部 `autosave*.ck3`，写 ready 标记后才移走，结束时删除测试 autosave 并恢复原件。
 - 2026-08-19 长期平衡摇测发现当前播放集还启用了四个自动控制/改宗 mod，会污染领地、信仰与资源结果。runner 现同时备份 `dlc_load.json`，启动前把 `enabled_mods` 精确收敛为 `mod/ugc_3784706360.mod`，杀死测试 CK3 后再恢复；watchdog 同样覆盖此文件。

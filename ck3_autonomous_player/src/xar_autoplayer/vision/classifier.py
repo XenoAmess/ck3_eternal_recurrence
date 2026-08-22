@@ -64,6 +64,7 @@ class ControlSpec:
     click_offset_px: tuple[int, int] = (0, 0)
     click_hold_seconds: float = 0.0
     allow_dynamic_pixels: bool = False
+    click_point_px: tuple[int, int] | None = None
 
 
 @dataclass(frozen=True)
@@ -468,6 +469,7 @@ def load_ui_contract(
                 "contains",
                 "hover_tolerance_px",
                 "click_offset_px",
+                "click_point_px",
                 "click_hold_seconds",
                 "allow_dynamic_pixels",
             },
@@ -486,6 +488,16 @@ def load_ui_contract(
             )
         ):
             raise AgentError("UI contract click offset is invalid")
+        click_point_raw = item.get("click_point_px")
+        if click_point_raw is not None and (
+            not isinstance(click_point_raw, list)
+            or len(click_point_raw) != 2
+            or any(type(value) is not int for value in click_point_raw)
+            or not 0 <= click_point_raw[0] < resolution[0]
+            or not 0 <= click_point_raw[1] < resolution[1]
+            or click_offset_raw != [0, 0]
+        ):
+            raise AgentError("UI contract absolute click point is invalid")
         click_hold = item.get("click_hold_seconds", 0.0)
         if (
             isinstance(click_hold, bool)
@@ -516,6 +528,11 @@ def load_ui_contract(
                     _flag(item["allow_dynamic_pixels"], "control dynamic pixels")
                     if "allow_dynamic_pixels" in item
                     else False
+                ),
+                click_point_px=(
+                    (int(click_point_raw[0]), int(click_point_raw[1]))
+                    if click_point_raw is not None
+                    else None
                 ),
             )
         )

@@ -24,6 +24,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _choose_first_blessing,
     _choose_first_curse,
     _drive_opening,
+    _extract_player_character_state,
     _score_first_blessing,
     _score_first_curse,
 )
@@ -155,6 +156,49 @@ class OpeningContractTests(unittest.TestCase):
             ),
         )
         self.assertEqual(contract.classify(map_spans, image)[0], "map_hud")
+        character_spans = (
+            map_spans[0],
+            map_spans[1],
+            map_spans[2],
+            span("配偶", (431, 361), (409, 348, 453, 374)),
+            span("玩家继承人", (688, 379), (640, 367, 736, 391)),
+            span(
+                "阿普利亚公爵，罗贝尔",
+                (138, 432),
+                (7, 419, 270, 445),
+            ),
+            span("这是你自己", (70, 465), (9, 454, 132, 477)),
+        )
+        self.assertEqual(
+            contract.classify(character_spans, image)[0], "player_character"
+        )
+        self.assertEqual(
+            contract.control("map_hud.open_player_character").click_point_px,
+            (150, 1100),
+        )
+
+    def test_player_character_state_extracts_visible_family_baseline(self) -> None:
+        state = _extract_player_character_state(
+            {
+                "screen": "player_character",
+                "observation_id": "observation-player",
+                "ocr": [
+                    {"text": "阿普利亚公爵，罗贝尔"},
+                    {"text": "这是你自己"},
+                    {"text": "配偶"},
+                    {"text": "玩家继承人"},
+                    {"text": "亲族26"},
+                    {"text": "廷臣 20"},
+                    {"text": "臣属 7"},
+                ],
+            }
+        )
+        self.assertEqual(state["character"], "阿普利亚公爵，罗贝尔")
+        self.assertTrue(state["spouse_visible"])
+        self.assertTrue(state["player_heir_visible"])
+        self.assertEqual(state["kin_count"], 26)
+        self.assertEqual(state["courtier_count"], 20)
+        self.assertEqual(state["vassal_count"], 7)
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (
@@ -303,6 +347,11 @@ class OpeningScenarioTests(unittest.TestCase):
                     "token-curse",
                     "map_hud",
                 ),
+                (
+                    "map_hud.open_player_character",
+                    "token-player",
+                    "player_character",
+                ),
             )
             drivers = []
             for index, (control_id, token, post_screen) in enumerate(controls):
@@ -343,9 +392,19 @@ class OpeningScenarioTests(unittest.TestCase):
                         "observation_id": f"obs-{index}",
                     },
                 }
+                if control_id == "map_hud.open_player_character":
+                    driver.click_visible_control.return_value["observation"]["ocr"] = [
+                        {"text": "阿普利亚公爵，罗贝尔"},
+                        {"text": "这是你自己"},
+                        {"text": "配偶"},
+                        {"text": "玩家继承人"},
+                        {"text": "亲族26"},
+                        {"text": "廷臣 20"},
+                        {"text": "臣属 7"},
+                    ]
                 drivers.append(driver)
-            curse_driver = drivers[-1]
-            blessing_driver = drivers[-2]
+            curse_driver = drivers[-2]
+            blessing_driver = drivers[-3]
             blessing_choices = []
             blessing_spans = []
             for index, (control_id, text, y) in enumerate(
@@ -436,13 +495,13 @@ class OpeningScenarioTests(unittest.TestCase):
                     digest,
                     time.monotonic() + 30,
                 )
-            self.assertEqual(result["final_screen"], "map_hud")
+            self.assertEqual(result["final_screen"], "player_character")
             self.assertEqual(
                 [item["control_id"] for item in result["actions"]],
                 [item[0] for item in controls],
             )
-            self.assertEqual(driver_type.call_count, 7)
-            for driver, (_, token, _) in zip(drivers[:-2], controls[:-2]):
+            self.assertEqual(driver_type.call_count, 8)
+            for driver, (_, token, _) in zip(drivers[:5], controls[:5]):
                 driver.click_visible_control.assert_called_once()
                 self.assertEqual(
                     driver.click_visible_control.call_args.args[0], token
@@ -455,8 +514,14 @@ class OpeningScenarioTests(unittest.TestCase):
                 "curse-choice-1",
                 timeout_seconds=mock.ANY,
             )
+            drivers[-1].click_visible_control.assert_called_once_with(
+                "token-player",
+                timeout_seconds=mock.ANY,
+            )
             self.assertIn("长明的定力", result["first_blessing_choice"]["visible_text"])
             self.assertIn("军事经验", result["first_curse_choice"]["visible_text"])
+            self.assertTrue(result["player_character_state"]["spouse_visible"])
+            self.assertTrue(result["player_character_state"]["player_heir_visible"])
 
     def test_cli_exposes_opening_smoke(self) -> None:
         args = cli.parser().parse_args(["opening-smoke"])

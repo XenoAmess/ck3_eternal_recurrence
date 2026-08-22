@@ -779,7 +779,7 @@ class VisibleUiDriver:
             ) > 15:
                 raise AgentError("visible target moved beyond the fresh-frame tolerance")
             self.window.require_unobscured(target.center)
-            click_point = (
+            click_point = spec.click_point_px or (
                 target.center[0] + spec.click_offset_px[0],
                 target.center[1] + spec.click_offset_px[1],
             )
