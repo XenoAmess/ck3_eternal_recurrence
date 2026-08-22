@@ -74,9 +74,10 @@ GENERIC_EVENT_PREVIEW_REGION = (0.23, 0.22, 0.48, 0.80)
 
 # CK3 1.19.0.6 at the frozen 2560x1440/100% UI contract.  Alt+1..N only
 # addresses existing GUIBuildingItem tracks; the empty ``+`` slots are not in
-# that shortcut model.  The rightmost empty slot is therefore the one
-# unavoidable layout-derived mouse target in the construction flow.
-HOLDING_EMPTY_BUILDING_SLOT_CENTER = (763, 1398)
+# that shortcut model.  The leftmost standard empty slot is therefore the one
+# unavoidable layout-derived mouse target in the construction flow.  The
+# rightmost ``+`` at this resolution is the duchy-building slot.
+HOLDING_EMPTY_BUILDING_SLOT_CENTER = (461, 1398)
 
 # Frozen from Crusader Kings III/game/gui/shortcuts.shortcuts. Scan codes are
 # used so the binding does not depend on the active Windows keyboard layout.
@@ -735,7 +736,7 @@ def _spans_with_text(
 
 def _building_offer_summaries(frame: object) -> list[dict[str, object]]:
     """Rank visible construction rows by player-visible economic language."""
-    buttons = _spans_with_text(frame, "建造")
+    buttons = _spans_with_text(frame, "修建")
     offers: list[dict[str, object]] = []
     all_spans = tuple(getattr(frame, "spans", ()))
     for index, button in enumerate(buttons, 1):
@@ -1443,7 +1444,7 @@ def _drive_opening(
             events,
             {
                 "kind": "opening_pointer_input_planned",
-                "control_id": "holding_view.rightmost_empty_building_slot",
+                "control_id": "holding_view.leftmost_standard_empty_building_slot",
                 "center": list(slot_point),
                 "expected_post_screen": "building_selection",
             },
@@ -1470,7 +1471,7 @@ def _drive_opening(
             "building selection",
         )
         visible_offer_count = len(_building_offer_summaries(building_frame))
-        selected_slot = "rightmost_empty"
+        selected_slot = "leftmost_standard_empty"
         slot_attempts: list[dict[str, object]] = [
             {
                 "slot": selected_slot,
@@ -1486,7 +1487,7 @@ def _drive_opening(
         ]
         actions.append(
             {
-                "control_id": "holding_view.rightmost_empty_building_slot",
+                "control_id": "holding_view.leftmost_standard_empty_building_slot",
                 "status": "confirmed",
                 "input_kind": "visible_layout_click",
                 "click_point": list(slot_point),
@@ -1501,7 +1502,7 @@ def _drive_opening(
             events,
             {
                 "kind": "opening_step_completed",
-                "control_id": "holding_view.rightmost_empty_building_slot",
+                "control_id": "holding_view.leftmost_standard_empty_building_slot",
                 "result_screen": "building_selection",
                 "result_observation_id": building_frame.observation_id,
             },
@@ -1515,7 +1516,7 @@ def _drive_opening(
 
         button_candidates = [
             item
-            for item in _spans_with_text(building_frame, "建造")
+            for item in _spans_with_text(building_frame, "修建")
             if abs(item.center[0] - button_center[0]) <= 20
             and abs(item.center[1] - button_center[1]) <= 20
         ]
@@ -1534,7 +1535,7 @@ def _drive_opening(
         _started_first, started_second = click_visible_text_once(
             driver,
             building_frame,
-            text="建造",
+            text="修建",
             region=click_region,
             control_id="building_selection.construct_economic_offer",
             expected_post_screen="building_construction_started",
