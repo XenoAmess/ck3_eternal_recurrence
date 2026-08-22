@@ -635,9 +635,6 @@ _CANONICAL_SCREENS = (
             PixelProbeSpec(
                 "main.new_game", (560, 540, 580, 560), (65, 55, 45), (95, 85, 75)
             ),
-            PixelProbeSpec(
-                "main.center_void", (1000, 600, 1020, 620), (0, 0, 0), (2, 2, 2)
-            ),
         ),
     ),
     ScreenSpec(

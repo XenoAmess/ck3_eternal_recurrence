@@ -61,6 +61,7 @@ OPENING_ALLOWED_CONTROLS = frozenset(
 )
 
 INSTANT_UI_TRANSITION_TIMEOUT_SECONDS = 20.0
+INITIAL_MAIN_MENU_TIMEOUT_SECONDS = 120.0
 
 
 def _remaining(deadline: float, stage: str) -> float:
@@ -348,12 +349,18 @@ def _drive_opening(
         control_id: str,
         next_stage: str,
         *,
+        observe_timeout_seconds: float | None = None,
         post_timeout_seconds: float | None = None,
     ) -> dict[str, object]:
         driver = new_driver()
+        observation_timeout = _remaining(deadline, f"stable {screen}")
+        if observe_timeout_seconds is not None:
+            observation_timeout = min(
+                observation_timeout, observe_timeout_seconds
+            )
         stable = driver.observe_stable(
             screen,
-            _remaining(deadline, f"stable {screen}"),
+            observation_timeout,
             stable_frames=2,
         )
         matches = [
@@ -446,7 +453,12 @@ def _drive_opening(
             },
         )
 
-    click("main_menu", "main_menu.new_game", "bookmark lobby")
+    click(
+        "main_menu",
+        "main_menu.new_game",
+        "bookmark lobby",
+        observe_timeout_seconds=INITIAL_MAIN_MENU_TIMEOUT_SECONDS,
+    )
     click(
         "bookmark_lobby",
         "bookmark_lobby.select_robert",

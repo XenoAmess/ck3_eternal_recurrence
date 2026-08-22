@@ -19,6 +19,7 @@ from xar_autoplayer import cli  # noqa: E402
 from xar_autoplayer.control import VisibleUiDriver  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.opening_smoke import (  # noqa: E402
+    INITIAL_MAIN_MENU_TIMEOUT_SECONDS,
     INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     OPENING_ALLOWED_CONTROLS,
     OPENING_CONTRACT,
@@ -598,7 +599,7 @@ class OpeningScenarioTests(unittest.TestCase):
                     events,
                     contract,
                     digest,
-                    time.monotonic() + 30,
+                    time.monotonic() + 300,
                 )
             self.assertEqual(result["final_screen"], "lifestyle_martial_authority")
             self.assertEqual(
@@ -608,6 +609,11 @@ class OpeningScenarioTests(unittest.TestCase):
                 + [item[0] for item in controls[8:]],
             )
             self.assertEqual(driver_type.call_count, 13)
+            initial_observation_timeout = drivers[0].observe_stable.call_args.args[1]
+            self.assertGreater(initial_observation_timeout, 119.0)
+            self.assertLessEqual(
+                initial_observation_timeout, INITIAL_MAIN_MENU_TIMEOUT_SECONDS
+            )
             for driver, (_, token, _) in zip(drivers[:5], controls[:5]):
                 driver.click_visible_control.assert_called_once()
                 self.assertEqual(

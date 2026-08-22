@@ -33,8 +33,7 @@
         {"probe_id": "main.arch_edge", "rect": [700, 300, 720, 320], "mean_rgb_min": [60, 68, 74], "mean_rgb_max": [78, 84, 90]},
         {"probe_id": "main.logo_arch", "rect": [480, 180, 500, 200], "mean_rgb_min": [40, 41, 46], "mean_rgb_max": [58, 59, 64]},
         {"probe_id": "main.lower_stone", "rect": [680, 800, 700, 820], "mean_rgb_min": [27, 28, 30], "mean_rgb_max": [39, 40, 43]},
-        {"probe_id": "main.new_game", "rect": [560, 540, 580, 560], "mean_rgb_min": [65, 55, 45], "mean_rgb_max": [95, 85, 75]},
-        {"probe_id": "main.center_void", "rect": [1000, 600, 1020, 620], "mean_rgb_min": [0, 0, 0], "mean_rgb_max": [2, 2, 2]}
+        {"probe_id": "main.new_game", "rect": [560, 540, 580, 560], "mean_rgb_min": [65, 55, 45], "mean_rgb_max": [95, 85, 75]}
       ]
     },
     {

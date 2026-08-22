@@ -177,6 +177,17 @@ class UiClassifierTests(unittest.TestCase):
         self.assertEqual(len(anchors), 3)
         self.assertAlmostEqual(confidence, 0.77, places=2)
 
+    def test_main_menu_accepts_rotating_nonblack_center_background(self) -> None:
+        contract = load_ui_contract(UI_CONTRACT)
+        spans = (
+            span("继续游戏", (599, 477), (548, 463, 652, 491), 0.80),
+            span("新游戏", (600, 557), (560, 543, 640, 571), 0.75),
+            span("载入游戏", (600, 637), (548, 624, 652, 650), 0.76),
+        )
+        image = main_menu_image(contract)
+        image.paste((62, 47, 44), (1000, 600, 1020, 620))
+        self.assertEqual(contract.classify(spans, image)[0], "main_menu")
+
     def test_main_menu_pixel_probe_and_modal_blockers_fail_closed(self) -> None:
         contract = load_ui_contract(UI_CONTRACT)
         spans = (
