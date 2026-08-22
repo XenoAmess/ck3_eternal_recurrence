@@ -236,8 +236,7 @@ memory: cross-run retrieval / constrained reflection / strategy experiments
    非零引擎 diagnostics 的原始证据，且受保护存储在退出后回到同一语义 baseline。原生 Windows Job/句柄测试和两次启动期
    fail-closed RED 覆盖失败契约；加固 runtime 的 resume 后 supervisor 崩溃注入也已通过本机门禁。
 2. **Phase B（进行中）**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证，未知窗口 fail closed。主菜单到
-   稳定书签大厅的单动作 `menu-smoke` 已完成离线生命周期、公开证据回放、历史截图回放与无害 Win32 helper 门禁；真实 CK3
-   已执行一次目标内鼠标移动，但授权在按钮提交前安全过期，尚无真实点击或书签大厅 GREEN。
+   稳定书签大厅的单动作 `menu-smoke` 已在真实 CK3 中 GREEN；下一竖切是选择 1066 罗贝尔、点击【开始】并视觉确认地图 HUD。
 3. Phase C：先完成“罗贝尔 1066 → 契约 → 当铺 → 首轮垂青 → 十年低风险经营 → 自然死亡结算”的首个合法竖切，
    再扩到多种角色类型的有效整局基线后退出本阶段。
 4. Phase D：婚育、议会、生活方式、建设、宣战理由、军队和领地的分层规划器。
@@ -252,9 +251,9 @@ Phase A 的 GREEN 只表示 `acceptance_claim=isolated_single_mod_visible_main_m
 大厅实际采用、教程通知能否在正式局持续落盘，以及正常 UI 开局仍是 Phase B/C 的视觉硬门禁。
 
 真实 Win32 helper-window 的 DPI、client/screen 坐标、Z-order、WMI 空路径与单批次 `SendInput` 门禁已经通过；UI 截图、双帧
-观察、receipt、像素 patch、固定 contract 和主 `events.jsonl` 也已进入正式 menu report 与公开 validator。下一候选输入前仍须：
-提交分阶段授权代码并重新 `prepare-profile`；在同一新 environment 下依次取得 ordinary `smoke` 与 post-resume `crash-smoke`
-GREEN；再执行且只执行一次新的 `menu-smoke`。任何未知模态、像素漂移或授权过期都应保留 RED 并停止，不得重试同一候选。
+观察、receipt、像素 patch、固定 contract 和主 `events.jsonl` 也已进入正式 menu report 与公开 validator。环境
+`531e529f7b301330e902ecf7b44821a462a83ffd9dd4359b23a8482a73590057` 的真实 `menu-smoke`
+`20260822T081240Z-menu-f3d8a8a5` 已 finalized GREEN：点击【新游戏】为 `SendInput` 2/2，随后两帧稳定识别书签大厅并完成清理。
 
 玩法基线见 [knowledge/ck3/gameplay-v1.md](knowledge/ck3/gameplay-v1.md)，本 mod 的高分映射见
 [knowledge/mod/growth100-scoring-v1.md](knowledge/mod/growth100-scoring-v1.md)。
