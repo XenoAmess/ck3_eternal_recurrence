@@ -19,6 +19,7 @@ from xar_autoplayer import cli  # noqa: E402
 from xar_autoplayer.control import VisibleUiDriver  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.opening_smoke import (  # noqa: E402
+    INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     OPENING_ALLOWED_CONTROLS,
     OPENING_CONTRACT,
     _choose_first_blessing,
@@ -196,6 +197,15 @@ class OpeningContractTests(unittest.TestCase):
             contract.classify(lifestyle_unfocused_spans, image)[0],
             "lifestyle_martial_unfocused",
         )
+        lifestyle_confirmation_spans = lifestyle_unfocused_spans + (
+            span("选择权威重心", (1280, 453), (1191, 435, 1369, 471)),
+            span("取消", (1143, 985), (1121, 972, 1166, 998)),
+            span("选择", (1420, 985), (1397, 972, 1442, 998)),
+        )
+        self.assertEqual(
+            contract.classify(lifestyle_confirmation_spans, image)[0],
+            "lifestyle_authority_confirmation",
+        )
         lifestyle_authority_spans = (
             lifestyle_unfocused_spans[0],
             lifestyle_unfocused_spans[1],
@@ -208,6 +218,10 @@ class OpeningContractTests(unittest.TestCase):
         self.assertEqual(
             contract.control("map_hud.open_lifestyle").click_point_px,
             (348, 1398),
+        )
+        self.assertEqual(
+            contract.control("lifestyle_martial.select_authority_focus").post_screen,
+            "lifestyle_authority_confirmation",
         )
 
     def test_player_character_state_extracts_visible_family_baseline(self) -> None:
@@ -414,6 +428,11 @@ class OpeningScenarioTests(unittest.TestCase):
                 (
                     "lifestyle_martial.select_authority_focus",
                     "token-authority",
+                    "lifestyle_authority_confirmation",
+                ),
+                (
+                    "lifestyle_authority_confirmation.confirm",
+                    "token-confirm-authority",
                     "lifestyle_martial_authority",
                 ),
             )
@@ -466,7 +485,7 @@ class OpeningScenarioTests(unittest.TestCase):
                         {"text": "廷臣 20"},
                         {"text": "臣属 7"},
                     ]
-                if control_id == "lifestyle_martial.select_authority_focus":
+                if control_id == "lifestyle_authority_confirmation.confirm":
                     driver.click_visible_control.return_value["observation"]["ocr"] = [
                         {"text": "军事生活方式"},
                         {"text": "生活方式重心"},
@@ -588,7 +607,7 @@ class OpeningScenarioTests(unittest.TestCase):
                 + ["player_character.close"]
                 + [item[0] for item in controls[8:]],
             )
-            self.assertEqual(driver_type.call_count, 12)
+            self.assertEqual(driver_type.call_count, 13)
             for driver, (_, token, _) in zip(drivers[:5], controls[:5]):
                 driver.click_visible_control.assert_called_once()
                 self.assertEqual(
@@ -604,8 +623,13 @@ class OpeningScenarioTests(unittest.TestCase):
             )
             drivers[7].click_visible_control.assert_called_once_with(
                 "token-player",
-                timeout_seconds=mock.ANY,
+                timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
             )
+            for driver in drivers[9:]:
+                self.assertEqual(
+                    driver.click_visible_control.call_args.kwargs["timeout_seconds"],
+                    INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                )
             prepare_key.assert_called_once_with(0x3B)
             submit_key.assert_called_once_with()
             self.assertIn("长明的定力", result["first_blessing_choice"]["visible_text"])

@@ -161,6 +161,20 @@
         {"anchor_id": "lifestyle.focus_header", "text": "生活方式重心", "region": [0.00, 0.17, 0.36, 0.28]},
         {"anchor_id": "lifestyle.no_focus", "text": "当前：无重心", "region": [0.00, 0.17, 0.36, 0.28]}
       ],
+      "negative_anchors": [
+        {"anchor_id": "lifestyle.confirm_authority", "text": "选择权威重心", "region": [0.40, 0.25, 0.60, 0.40]}
+      ],
+      "pixel_probes": []
+    },
+    {
+      "screen_id": "lifestyle_authority_confirmation",
+      "anchors": [
+        {"anchor_id": "lifestyle.martial_title", "text": "军事生活方式", "region": [0.00, 0.00, 0.24, 0.10]},
+        {"anchor_id": "lifestyle.focus_header", "text": "生活方式重心", "region": [0.00, 0.17, 0.36, 0.28]},
+        {"anchor_id": "lifestyle.no_focus", "text": "当前：无重心", "region": [0.00, 0.17, 0.36, 0.28]},
+        {"anchor_id": "lifestyle.confirm_authority", "text": "选择权威重心", "region": [0.40, 0.25, 0.60, 0.40]},
+        {"anchor_id": "lifestyle.confirm", "text": "选择", "region": [0.52, 0.64, 0.60, 0.72]}
+      ],
       "negative_anchors": [],
       "pixel_probes": []
     },
@@ -323,6 +337,16 @@
       "label": "权威重心",
       "text": "权威重心",
       "region": [0.00, 0.30, 0.36, 0.92],
+      "post_screen": "lifestyle_authority_confirmation",
+      "risk": "irreversible",
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "lifestyle_authority_confirmation.confirm",
+      "screen": "lifestyle_authority_confirmation",
+      "label": "选择",
+      "text": "选择",
+      "region": [0.52, 0.64, 0.60, 0.72],
       "post_screen": "lifestyle_martial_authority",
       "risk": "irreversible",
       "allow_dynamic_pixels": true

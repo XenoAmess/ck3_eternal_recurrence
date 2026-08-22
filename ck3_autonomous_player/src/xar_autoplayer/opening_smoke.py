@@ -56,8 +56,11 @@ OPENING_ALLOWED_CONTROLS = frozenset(
         "map_hud.open_lifestyle",
         "lifestyle_selection.open_martial",
         "lifestyle_martial.select_authority_focus",
+        "lifestyle_authority_confirmation.confirm",
     }
 )
+
+INSTANT_UI_TRANSITION_TIMEOUT_SECONDS = 20.0
 
 
 def _remaining(deadline: float, stage: str) -> float:
@@ -340,7 +343,13 @@ def _drive_opening(
 
     actions: list[dict[str, object]] = []
 
-    def click(screen: str, control_id: str, next_stage: str) -> dict[str, object]:
+    def click(
+        screen: str,
+        control_id: str,
+        next_stage: str,
+        *,
+        post_timeout_seconds: float | None = None,
+    ) -> dict[str, object]:
         driver = new_driver()
         stable = driver.observe_stable(
             screen,
@@ -355,9 +364,12 @@ def _drive_opening(
             raise AgentError(
                 f"{screen} lacks one {control_id} control; visible={visible!r}"
             )
+        transition_timeout = _remaining(deadline, next_stage)
+        if post_timeout_seconds is not None:
+            transition_timeout = min(transition_timeout, post_timeout_seconds)
         transition = driver.click_visible_control(
             matches[0].token,
-            timeout_seconds=_remaining(deadline, next_stage),
+            timeout_seconds=transition_timeout,
         )
         action = transition.get("action")
         observation = transition.get("observation")
@@ -525,6 +537,7 @@ def _drive_opening(
         "map_hud",
         "map_hud.open_player_character",
         "player character state",
+        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
     player_state = _extract_player_character_state(final_observation)
     toggle_player_character(
@@ -536,16 +549,25 @@ def _drive_opening(
         "map_hud",
         "map_hud.open_lifestyle",
         "lifestyle selection",
+        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
     click(
         "lifestyle_selection",
         "lifestyle_selection.open_martial",
         "martial lifestyle",
+        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
-    final_observation = click(
+    click(
         "lifestyle_martial_unfocused",
         "lifestyle_martial.select_authority_focus",
+        "authority focus confirmation",
+        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+    )
+    final_observation = click(
+        "lifestyle_authority_confirmation",
+        "lifestyle_authority_confirmation.confirm",
         "selected authority focus",
+        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
     lifestyle_state = _extract_lifestyle_state(final_observation)
     return {
