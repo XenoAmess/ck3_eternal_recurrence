@@ -115,7 +115,7 @@
       "anchors": [
         {"anchor_id": "map.pause", "text": "暂停", "region": [0.45, 0.08, 0.55, 0.18]},
         {"anchor_id": "map.mode", "text": "政治地图", "region": [0.92, 0.78, 0.99, 0.86]},
-        {"anchor_id": "map.start_date", "text": "1066年9月15日", "region": [0.70, 0.95, 0.93, 1.00], "contains": true}
+        {"anchor_id": "map.year", "text": "公元1066年", "region": [0.70, 0.95, 0.93, 1.00], "contains": true}
       ],
       "negative_anchors": [
         {"anchor_id": "map.pact_modal", "text": "终末之契", "region": [0.0, 0.0, 1.0, 1.0]},
@@ -123,6 +123,21 @@
         {"anchor_id": "map.blessing_modal", "text": "琉焰的垂青", "region": [0.0, 0.0, 1.0, 1.0]},
         {"anchor_id": "map.curse_modal", "text": "等价的咒痕", "region": [0.0, 0.0, 1.0, 1.0]},
         {"anchor_id": "map.player_character_open", "text": "这是你自己", "region": [0.0, 0.28, 0.08, 0.35]}
+      ],
+      "pixel_probes": []
+    },
+    {
+      "screen_id": "map_running",
+      "anchors": [
+        {"anchor_id": "map.mode", "text": "政治地图", "region": [0.92, 0.78, 0.99, 0.86]},
+        {"anchor_id": "map.year", "text": "公元1066年", "region": [0.70, 0.95, 0.93, 1.00], "contains": true}
+      ],
+      "negative_anchors": [
+        {"anchor_id": "map.paused", "text": "暂停", "region": [0.45, 0.08, 0.55, 0.18]},
+        {"anchor_id": "map.pact_modal", "text": "终末之契", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "map.first_life_modal", "text": "未燃之世", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "map.blessing_modal", "text": "琉焰的垂青", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "map.curse_modal", "text": "等价的咒痕", "region": [0.0, 0.0, 1.0, 1.0]}
       ],
       "pixel_probes": []
     },
@@ -349,7 +364,49 @@
       "post_screen": "lifestyle_martial_authority",
       "risk": "irreversible",
       "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "lifestyle_martial_authority.close",
+      "screen": "lifestyle_martial_authority",
+      "label": "close lifestyle",
+      "text": "军事生活方式",
+      "region": [0.00, 0.00, 0.24, 0.10],
+      "post_screen": "map_hud",
+      "risk": "reversible",
+      "click_point_px": [1972, 63],
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "map_hud.set_speed_five",
+      "screen": "map_hud",
+      "label": "speed five",
+      "text": "暂停",
+      "region": [0.45, 0.08, 0.55, 0.18],
+      "post_screen": "map_hud",
+      "risk": "reversible",
+      "click_point_px": [2536, 1418],
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "map_hud.resume",
+      "screen": "map_hud",
+      "label": "resume timeline",
+      "text": "公元1066年",
+      "region": [0.70, 0.95, 0.93, 1.00],
+      "post_screen": "map_running",
+      "risk": "reversible",
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "map_running.pause",
+      "screen": "map_running",
+      "label": "pause timeline",
+      "text": "公元1066年",
+      "region": [0.70, 0.95, 0.93, 1.00],
+      "post_screen": "map_hud",
+      "risk": "reversible",
+      "allow_dynamic_pixels": true
     }
   ],
-  "forbidden_capabilities": ["map_hud.advance_time"]
+  "forbidden_capabilities": []
 }

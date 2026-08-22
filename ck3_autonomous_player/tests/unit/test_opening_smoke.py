@@ -26,6 +26,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _choose_first_blessing,
     _choose_first_curse,
     _drive_opening,
+    _extract_map_date,
     _extract_lifestyle_state,
     _extract_player_character_state,
     _score_first_blessing,
@@ -159,6 +160,15 @@ class OpeningContractTests(unittest.TestCase):
             ),
         )
         self.assertEqual(contract.classify(map_spans, image)[0], "map_hud")
+        running_spans = (
+            map_spans[1],
+            span(
+                "公元1066年9月16日",
+                (2180, 1419),
+                (2078, 1405, 2283, 1433),
+            ),
+        )
+        self.assertEqual(contract.classify(running_spans, image)[0], "map_running")
         character_spans = (
             map_spans[0],
             map_spans[1],
@@ -221,6 +231,14 @@ class OpeningContractTests(unittest.TestCase):
             (348, 1398),
         )
         self.assertEqual(
+            contract.control("lifestyle_martial_authority.close").click_point_px,
+            (1972, 63),
+        )
+        self.assertEqual(
+            contract.control("map_hud.set_speed_five").click_point_px,
+            (2536, 1418),
+        )
+        self.assertEqual(
             contract.control("lifestyle_martial.select_authority_focus").post_screen,
             "lifestyle_authority_confirmation",
         )
@@ -263,6 +281,17 @@ class OpeningContractTests(unittest.TestCase):
         self.assertEqual(state["lifestyle"], "军事")
         self.assertEqual(state["focus"], "权威")
         self.assertEqual(state["source_observation_id"], "observation-focus")
+
+    def test_map_date_extracts_visible_progress(self) -> None:
+        state = _extract_map_date(
+            {
+                "screen": "map_running",
+                "observation_id": "observation-date",
+                "ocr": [{"text": "公元 1066 年 9 月 18 日"}],
+            }
+        )
+        self.assertEqual((state["year"], state["month"], state["day"]), (1066, 9, 18))
+        self.assertEqual(state["source_observation_id"], "observation-date")
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (
@@ -436,6 +465,14 @@ class OpeningScenarioTests(unittest.TestCase):
                     "token-confirm-authority",
                     "lifestyle_martial_authority",
                 ),
+                (
+                    "lifestyle_martial_authority.close",
+                    "token-close-lifestyle",
+                    "map_hud",
+                ),
+                ("map_hud.set_speed_five", "token-speed-five", "map_hud"),
+                ("map_hud.resume", "token-resume", "map_running"),
+                ("map_running.pause", "token-pause", "map_hud"),
             )
             drivers = []
             for index, (control_id, token, post_screen) in enumerate(controls):
@@ -491,6 +528,17 @@ class OpeningScenarioTests(unittest.TestCase):
                         {"text": "军事生活方式"},
                         {"text": "生活方式重心"},
                         {"text": "当前：权威重心"},
+                    ]
+                if control_id in {
+                    "lifestyle_martial_authority.close",
+                    "map_hud.set_speed_five",
+                }:
+                    driver.click_visible_control.return_value["observation"]["ocr"] = [
+                        {"text": "公元1066年9月15日"}
+                    ]
+                if control_id in {"map_hud.resume", "map_running.pause"}:
+                    driver.click_visible_control.return_value["observation"]["ocr"] = [
+                        {"text": "公元1066年9月16日"}
                     ]
                 drivers.append(driver)
             escape_driver = mock.Mock()
@@ -601,14 +649,13 @@ class OpeningScenarioTests(unittest.TestCase):
                     digest,
                     time.monotonic() + 300,
                 )
-            self.assertEqual(result["final_screen"], "lifestyle_martial_authority")
             self.assertEqual(
                 [item["control_id"] for item in result["actions"]],
                 [item[0] for item in controls[:8]]
                 + ["player_character.close"]
                 + [item[0] for item in controls[8:]],
             )
-            self.assertEqual(driver_type.call_count, 13)
+            self.assertEqual(driver_type.call_count, 17)
             initial_observation_timeout = drivers[0].observe_stable.call_args.args[1]
             self.assertGreater(initial_observation_timeout, 119.0)
             self.assertLessEqual(
@@ -643,6 +690,8 @@ class OpeningScenarioTests(unittest.TestCase):
             self.assertTrue(result["player_character_state"]["spouse_visible"])
             self.assertTrue(result["player_character_state"]["player_heir_visible"])
             self.assertEqual(result["lifestyle_state"]["focus"], "权威")
+            self.assertEqual(result["time_progression"]["elapsed_days"], 1)
+            self.assertEqual(result["final_screen"], "map_hud")
 
     def test_cli_exposes_opening_smoke(self) -> None:
         args = cli.parser().parse_args(["opening-smoke"])

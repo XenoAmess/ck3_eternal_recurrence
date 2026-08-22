@@ -57,6 +57,10 @@ OPENING_ALLOWED_CONTROLS = frozenset(
         "lifestyle_selection.open_martial",
         "lifestyle_martial.select_authority_focus",
         "lifestyle_authority_confirmation.confirm",
+        "lifestyle_martial_authority.close",
+        "map_hud.set_speed_five",
+        "map_hud.resume",
+        "map_running.pause",
     }
 )
 
@@ -281,6 +285,42 @@ def _extract_lifestyle_state(observation: dict[str, object]) -> dict[str, object
         "visible_current_focus": "当前：权威重心",
         "source_observation_id": observation.get("observation_id"),
         "strategy": "growth100.stabilize-domain-control-v1",
+        "policy_boundary": "player-visible OCR only",
+    }
+
+
+def _extract_map_date(observation: dict[str, object]) -> dict[str, object]:
+    """Read the rendered CK3 calendar from a visible map observation."""
+    if observation.get("screen") not in {"map_hud", "map_running"}:
+        raise AgentError("map date requires a paused or running map screen")
+    ocr = observation.get("ocr")
+    if not isinstance(ocr, list):
+        raise AgentError("map observation OCR is missing")
+    matches: list[tuple[str, int, int, int]] = []
+    for item in ocr:
+        if not isinstance(item, dict) or not isinstance(item.get("text"), str):
+            continue
+        text = re.sub(r"\s+", "", item["text"])
+        match = re.search(
+            r"(?:公元)?(\d{3,4})年(\d{1,2})月(\d{1,2})日",
+            text,
+        )
+        if match:
+            matches.append((text, *(int(value) for value in match.groups())))
+    if len(matches) != 1:
+        raise AgentError("map date is not uniquely visible")
+    visible_text, year, month, day = matches[0]
+    try:
+        ordinal = datetime(year, month, day, tzinfo=timezone.utc).toordinal()
+    except ValueError as error:
+        raise AgentError("map date is invalid") from error
+    return {
+        "year": year,
+        "month": month,
+        "day": day,
+        "ordinal": ordinal,
+        "visible_text": visible_text,
+        "source_observation_id": observation.get("observation_id"),
         "policy_boundary": "player-visible OCR only",
     }
 
@@ -582,6 +622,37 @@ def _drive_opening(
         post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     )
     lifestyle_state = _extract_lifestyle_state(final_observation)
+    final_observation = click(
+        "lifestyle_martial_authority",
+        "lifestyle_martial_authority.close",
+        "paused map after lifestyle selection",
+        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+    )
+    starting_date = _extract_map_date(final_observation)
+    final_observation = click(
+        "map_hud",
+        "map_hud.set_speed_five",
+        "speed five selected",
+        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+    )
+    final_observation = click(
+        "map_hud",
+        "map_hud.resume",
+        "running timeline",
+        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+    )
+    running_date = _extract_map_date(final_observation)
+    if int(running_date["ordinal"]) <= int(starting_date["ordinal"]):
+        raise AgentError("CK3 timeline did not advance after resume")
+    final_observation = click(
+        "map_running",
+        "map_running.pause",
+        "paused advanced timeline",
+        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+    )
+    paused_date = _extract_map_date(final_observation)
+    if int(paused_date["ordinal"]) < int(running_date["ordinal"]):
+        raise AgentError("paused map date moved backwards")
     return {
         "character": "Robert the Fox, Duke of Apulia",
         "bookmark": "1066",
@@ -600,6 +671,15 @@ def _drive_opening(
         },
         "player_character_state": player_state,
         "lifestyle_state": lifestyle_state,
+        "time_progression": {
+            "strategy": "speed-five-visible-date-v1",
+            "starting_date": starting_date,
+            "running_date": running_date,
+            "paused_date": paused_date,
+            "elapsed_days": int(paused_date["ordinal"])
+            - int(starting_date["ordinal"]),
+            "policy_boundary": "player-visible OCR and rendered timeline controls only",
+        },
         "final_screen": final_observation.get("screen"),
         "final_observation_id": final_observation.get("observation_id"),
         "window_binding": window.audit_binding(),
