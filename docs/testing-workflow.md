@@ -286,6 +286,14 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   打开、双帧 OCR 读取并关闭【我的领地】【军事】【内阁】【决议】。26 个动作中 20 个为键盘、6 个为开局阶段
   无可靠直达键的鼠标动作；最终 `map_hud`、tracked cleanup 成立。决议面板上的红叉同时证明【扩大公国领地】等
   当前不可执行，策略层不得仅因 OCR 看见决议标题就点击。
+- 首个经济建设提交 `c16e22f`、环境
+  `86d5e8847bd0591dfa4f9811544f7eb979b4da1d79c63254fca50b79e8f2f3a4` 的实机
+  `20260822T190656Z-opening-bfa943a7` 为 GREEN。F2 进入【我的领地】后，原版 `Alt+1..N` 只遍历已存在的
+  `GUIBuildingItem`，不会选中空 `+` 槽；2560×1440/100% UI 下左侧普通空槽中心为 `(461,1398)`，右侧
+  `(763,1398)` 是公国建筑槽。执行器只在这里使用布局点击，随后 OCR 看到三个【修建】候选，并按可见经济文本
+  选择第 3 项【等级1：简易牧场】（成本 150、赋税 `+0.50/月`）。CK3 启动工程后的地产行实际显示
+  【22个月内完工简易牧场】而不是【正在修建】；后置条件因此匹配稳定片段【个月内完工】。该 run 共 31 个动作，
+  22 个键盘、9 个无可靠快捷键的鼠标动作，最终返回暂停的 `map_hud`，报告 `ok=true` 且清理完整。
 - 用户真实纪录靠 tutorial.txt 备份/恢复保护；默认 selftest 与 `on-first-life/off` 会剥掉 `xar_hs_ge_*` 行（纪录 0），`on-recorded` 固定预置 100；`--import-record 100` 仅改变 selftest。
 - restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验。2026-08-20 实测发现宿主超时会终止 runner 的整个子进程树，普通 `Popen(CREATE_NO_WINDOW)` watchdog 也被一起杀死，遗留隔离后的 `dlc_load.json` 与测试 autosave；已从该次精确 backup 全量恢复并核对六项 hash。watchdog 现由 WMI `Win32_Process.Create` 启动在 runner 进程树之外。2026-08-19 另实测 dev selftest autosave 会让下一次 release 投影扫描已剥离的 `xar_selftest` 规则键并误报；现启动前先完整复制并校验全部 `autosave*.ck3`，写 ready 标记后才移走，结束时删除测试 autosave 并恢复原件。
 - 2026-08-19 长期平衡摇测发现当前播放集还启用了四个自动控制/改宗 mod，会污染领地、信仰与资源结果。runner 现同时备份 `dlc_load.json`，启动前把 `enabled_mods` 精确收敛为 `mod/ugc_3784706360.mod`，杀死测试 CK3 后再恢复；watchdog 同样覆盖此文件。
