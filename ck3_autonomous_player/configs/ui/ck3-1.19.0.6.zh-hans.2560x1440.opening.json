@@ -145,7 +145,7 @@
     {
       "screen_id": "lifestyle_selection",
       "anchors": [
-        {"anchor_id": "lifestyle.select_title", "text": "选择生活方式", "region": [0.00, 0.00, 0.24, 0.10]},
+        {"anchor_id": "lifestyle.select_title", "text": "选择生活方式", "region": [0.40, 0.00, 0.60, 0.10]},
         {"anchor_id": "lifestyle.martial", "text": "军事", "region": [0.20, 0.18, 0.42, 0.88]},
         {"anchor_id": "lifestyle.stewardship", "text": "管理", "region": [0.34, 0.18, 0.57, 0.88]}
       ],

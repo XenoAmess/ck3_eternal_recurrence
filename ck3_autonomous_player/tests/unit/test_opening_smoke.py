@@ -178,9 +178,9 @@ class OpeningContractTests(unittest.TestCase):
             (150, 1100),
         )
         lifestyle_selection_spans = (
-            span("选择生活方式", (220, 45), (80, 20, 360, 70)),
-            span("军事", (780, 610), (740, 590, 820, 630)),
-            span("管理", (1120, 610), (1080, 590, 1160, 630)),
+            span("选择生活方式", (1281, 47), (1192, 30, 1370, 64)),
+            span("军事", (877, 387), (842, 367, 913, 407)),
+            span("管理", (1243, 387), (1208, 367, 1279, 408)),
         )
         self.assertEqual(
             contract.classify(lifestyle_selection_spans, image)[0],
