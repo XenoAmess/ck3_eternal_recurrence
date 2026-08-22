@@ -3,9 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import ctypes
+import os
 from pathlib import Path
-import time
 
 from .model import Rect
 from ..errors import AgentError
@@ -59,6 +58,7 @@ class BoundGameWindow:
     client_rect: Rect
     executable: str
     creation_date: str
+    parent_pid: int
 
     @classmethod
     def bind_session(
@@ -70,13 +70,20 @@ class BoundGameWindow:
         pid = int(getattr(process, "pid", -1))
         creation_date = str(getattr(session, "ck3_creation_date", ""))
         identity = _process_identity(pid)
+        handle_image = process.image_path() if process is not None else None
+        wmi_executable = str(identity.get("executable", "")) if identity else ""
         if (
             process is None
             or process.poll() is not None
             or identity is None
+            or str(identity.get("name", "")).casefold() != "ck3.exe"
             or identity.get("creation_date") != creation_date
-            or not _same_executable(identity.get("executable", ""), expected_executable)
-            or not _same_executable(process.image_path(), expected_executable)
+            or int(identity.get("parent_pid", 0)) != os.getpid()
+            or not _same_executable(handle_image, expected_executable)
+            or (
+                wmi_executable
+                and not _same_executable(wmi_executable, expected_executable)
+            )
         ):
             raise AgentError("cannot bind UI to an unauthenticated CK3 process object")
         candidates = _eligible_windows(pid)
@@ -93,76 +100,60 @@ class BoundGameWindow:
             client_rect=rect,
             executable=str(expected_executable.resolve()),
             creation_date=creation_date,
+            parent_pid=int(identity["parent_pid"]),
         )
 
-    def verify_process(self) -> None:
+    def verify_process(self) -> dict[str, object]:
         from ..runtime import _process_identity, _same_executable
 
         if self.process.poll() is not None:
             raise AgentError("bound CK3 process object has exited")
         identity = _process_identity(self.pid)
+        wmi_executable = str(identity.get("executable", "")) if identity else ""
         if (
             identity is None
+            or str(identity.get("name", "")).casefold() != "ck3.exe"
+            or int(identity.get("parent_pid", -1)) != self.parent_pid
             or identity.get("creation_date") != self.creation_date
-            or not _same_executable(identity.get("executable", ""), self.executable)
+            or (wmi_executable and not _same_executable(wmi_executable, self.executable))
             or not _same_executable(self.process.image_path(), self.executable)
         ):
             raise AgentError("bound CK3 process identity changed")
+        return identity
 
-    def verify(self) -> None:
-        self.verify_process()
+    def verify(self) -> dict[str, object]:
+        identity = self.verify_process()
         candidates = _eligible_windows(self.pid)
         if candidates != [(self.hwnd, self.client_rect)]:
             raise AgentError(
                 "bound CK3 HWND/client geometry changed or became ambiguous: "
                 f"expected={(self.hwnd, self.client_rect)!r}, actual={candidates!r}"
             )
+        return identity
 
     def acquire_foreground(self) -> None:
-        import pyautogui
-        import win32api
-        import win32con
-        import win32gui
-        import win32process
+        """Compatibility shim: foreground is a precondition, never synthesized."""
+        self.require_foreground()
 
-        pyautogui.FAILSAFE = True
-        self.verify()
-        if _root_window(win32gui.GetForegroundWindow()) == self.hwnd:
-            return
-        user32 = ctypes.windll.user32
-        last_error: Exception | None = None
-        for _ in range(3):
-            foreground = win32gui.GetForegroundWindow()
-            current_thread = win32api.GetCurrentThreadId()
-            foreground_thread = (
-                win32process.GetWindowThreadProcessId(foreground)[0]
-                if foreground
-                else 0
-            )
-            target_thread = win32process.GetWindowThreadProcessId(self.hwnd)[0]
-            attached: list[int] = []
-            try:
-                for thread in {foreground_thread, target_thread}:
-                    if thread and thread != current_thread:
-                        if user32.AttachThreadInput(current_thread, thread, True):
-                            attached.append(thread)
-                win32gui.ShowWindow(self.hwnd, win32con.SW_RESTORE)
-                win32gui.BringWindowToTop(self.hwnd)
-                pyautogui.keyDown("alt")
-                try:
-                    win32gui.SetForegroundWindow(self.hwnd)
-                finally:
-                    pyautogui.keyUp("alt")
-            except Exception as error:
-                last_error = error
-            finally:
-                for thread in reversed(attached):
-                    user32.AttachThreadInput(current_thread, thread, False)
-            if _root_window(win32gui.GetForegroundWindow()) == self.hwnd:
-                self.verify()
-                return
-            time.sleep(0.2)
-        raise AgentError(f"CK3 client could not obtain foreground: {last_error}")
+    def audit_binding(self) -> dict[str, object]:
+        """Return the exact process/window identity bound to every UI receipt."""
+        identity = self.verify()
+        return {
+            "process": {
+                "pid": self.pid,
+                "parent_pid": self.parent_pid,
+                "name": "ck3.exe",
+                "creation_date": self.creation_date,
+                "executable": self.executable,
+                "wmi_executable": str(identity.get("executable", "")),
+                "handle_executable": self.executable,
+            },
+            "window": {
+                "hwnd": self.hwnd,
+                "client_rect": list(self.client_rect),
+                "client_size": list(EXPECTED_CLIENT_SIZE),
+            },
+        }
 
     def require_foreground(self) -> None:
         import win32gui
@@ -196,6 +187,12 @@ class BoundGameWindow:
                 return
             rect = tuple(int(value) for value in win32gui.GetWindowRect(root))
             if rect[2] <= rect[0] or rect[3] <= rect[1]:
+                return
+            # Windows keeps visible 1x1 helper HWNDs at the desktop origin.
+            # They cannot materially cover a multi-pixel control/probe, and
+            # the final WindowFromPoint guard still authenticates the click
+            # pixel itself.
+            if rect[2] - rect[0] <= 1 and rect[3] - rect[1] <= 1:
                 return
             if intersects(self.client_rect, rect):
                 blockers.append((int(root), rect))

@@ -8,9 +8,21 @@ version = "0.1.0"
 description = "Auditable visual autonomous player for CK3 and Eternal Recurrence"
 requires-python = ">=3.11"
 dependencies = [
+  "attrs==26.1.0",
+  "jsonschema-specifications==2025.9.1",
   "numpy==2.5.2",
+  "onnxruntime==1.28.0",
+  "opencv-python==5.0.0.93",
   "Pillow==12.3.0",
   "PyAutoGUI==0.9.54",
+  "pyclipper==1.4.0",
+  "PyYAML==6.0.3",
+  "Shapely==2.1.2",
+  "jsonschema==4.25.1",
+  "rfc3339-validator==0.1.4",
+  "referencing==0.37.0",
+  "rpds-py==2026.6.3",
+  "six==1.17.0",
   "pywin32==312; platform_system == 'Windows'",
   "rapidocr-onnxruntime==1.2.3",
 ]
@@ -23,4 +35,3 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-

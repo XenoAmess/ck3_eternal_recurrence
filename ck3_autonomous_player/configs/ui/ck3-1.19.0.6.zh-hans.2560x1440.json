@@ -3,6 +3,18 @@
   "game_version": "1.19.0.6",
   "language": "l_simp_chinese",
   "resolution": [2560, 1440],
+  "pixel_probe_provenance": {
+    "source_run_count": 15,
+    "source_run_ids_sha256": "6cd31810411218c5ac6787a121844d5113698520f1547ca3a8ef4b4ed27b18c3",
+    "source_artifact": "runs/*/artifacts/main-menu.png",
+    "measurement": "20x20 RGB arithmetic mean with frozen safety margins",
+    "lobby_source_run_count": 190,
+    "lobby_source_frame_count": 377,
+    "lobby_source_run_ids_sha256": "48936aa1d19a50e7b8c3d26a8d86ea25f7ad023c42f205711766f0114acfaf0b",
+    "lobby_source_artifacts_sha256": "56f09a76539e0e5f2642eeaab11c519d6d5e1c6866364cbf76b8feb345a1d66e",
+    "lobby_source_artifact": "**/03_start_enabled.png + **/03_ruler_selected.png",
+    "lobby_measurement": "20x20 RGB arithmetic mean across 377 stable lobby frames with +/-9 channel margins"
+  },
   "screens": [
     {
       "screen_id": "main_menu",
@@ -10,6 +22,19 @@
         {"anchor_id": "main.continue", "text": "继续游戏", "region": [0.18, 0.30, 0.30, 0.36]},
         {"anchor_id": "main.new_game", "text": "新游戏", "region": [0.18, 0.36, 0.30, 0.42]},
         {"anchor_id": "main.load", "text": "载入游戏", "region": [0.18, 0.42, 0.30, 0.48]}
+      ],
+      "negative_anchors": [
+        {"anchor_id": "modal.tutorial", "text": "开始教程", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "modal.confirm", "text": "确认", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "modal.cancel", "text": "取消", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "modal.exit_question", "text": "确定要退出游戏吗", "region": [0.0, 0.0, 1.0, 1.0], "contains": true}
+      ],
+      "pixel_probes": [
+        {"probe_id": "main.arch_edge", "rect": [700, 300, 720, 320], "mean_rgb_min": [60, 68, 74], "mean_rgb_max": [78, 84, 90]},
+        {"probe_id": "main.logo_arch", "rect": [480, 180, 500, 200], "mean_rgb_min": [40, 41, 46], "mean_rgb_max": [58, 59, 64]},
+        {"probe_id": "main.lower_stone", "rect": [680, 800, 700, 820], "mean_rgb_min": [27, 28, 30], "mean_rgb_max": [39, 40, 43]},
+        {"probe_id": "main.new_game", "rect": [560, 540, 580, 560], "mean_rgb_min": [65, 55, 45], "mean_rgb_max": [95, 85, 75]},
+        {"probe_id": "main.center_void", "rect": [1000, 600, 1020, 620], "mean_rgb_min": [0, 0, 0], "mean_rgb_max": [2, 2, 2]}
       ]
     },
     {
@@ -18,6 +43,16 @@
         {"anchor_id": "lobby.title", "text": "选择初始日期和角色", "region": [0.08, 0.00, 0.32, 0.07]},
         {"anchor_id": "lobby.central_bookmark", "text": "公爵弗拉季斯拉夫", "region": [0.45, 0.20, 0.67, 0.47]},
         {"anchor_id": "lobby.robert", "text": "公爵罗贝尔", "region": [0.45, 0.68, 0.72, 0.91]}
+      ],
+      "negative_anchors": [
+        {"anchor_id": "modal.welcome", "text": "欢迎来到", "region": [0.0, 0.0, 1.0, 1.0], "contains": true},
+        {"anchor_id": "modal.confirm", "text": "确认", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "modal.cancel", "text": "取消", "region": [0.0, 0.0, 1.0, 1.0]}
+      ],
+      "pixel_probes": [
+        {"probe_id": "lobby.central_parchment", "rect": [1050, 350, 1070, 370], "mean_rgb_min": [178.1, 170.6, 154.2], "mean_rgb_max": [196.1, 188.6, 172.2]},
+        {"probe_id": "lobby.southern_parchment", "rect": [950, 1000, 970, 1020], "mean_rgb_min": [174.0, 166.8, 151.7], "mean_rgb_max": [192.0, 184.8, 169.7]},
+        {"probe_id": "lobby.eastern_parchment", "rect": [1200, 850, 1220, 870], "mean_rgb_min": [180.3, 172.9, 155.8], "mean_rgb_max": [198.3, 190.9, 173.8]}
       ]
     }
   ],

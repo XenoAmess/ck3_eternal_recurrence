@@ -129,7 +129,7 @@
 | 阶段 | 内容 | 退出标准 |
 |---|---|---|
 | A. 隔离环境（已完成） | 专用 CK3 用户目录、production mod、固定分辨率/语言、认证看门狗、环境与存储反证 | committed candidate 已连续三次只加载本 mod 到可见主菜单；原生 Job/句柄测试与启动期 fail-closed RED 覆盖当前失败契约 |
-| B. UI 驱动底座 | 窗口分类、OCR、可靠点击、地图/HUD/事件通用恢复 | 无策略参与时可稳定运行数小时并保存完整证据 |
+| B. UI 驱动底座（进行中） | 窗口分类、OCR/像素反证、可靠点击、地图/HUD/事件通用恢复 | 首个单动作菜单竖切已完成离线 sealed lifecycle 与公开回放；尚未向真实 CK3 输入 |
 | C. 合法基线玩家 | 固定规则策略完成开局、经营、事件、死亡和结算 | 至少完成多种角色类型的有效整局基线 |
 | D. 分层规划 | 增加战争、婚姻、领地、经济、生活方式、契约和交易决策 | 决策均有可审计状态输入和理由，分数不低于固定基线 |
 | E. 经验记忆与复盘 | episode schema、检索记忆、大模型局后复盘和策略版本化 | 新局能引用相关旧经验，错误经验可回滚和追踪来源 |
@@ -154,16 +154,19 @@
    `cleanup_proven` 或有效局资格。write-ahead report 的 `ok=true` 只是一项条件式声明；必须由 `validate_recovery_report()`
    同时观察 active marker 已不存在、归档 marker 哈希匹配才成立。
 3. 视觉驱动先只接 `main_menu -> bookmark_lobby`。观察必须绑定 CK3 PID、WMI 创建时间、可执行路径、HWND、client rect 与
-   2560×1440 简中 UI 契约；当前确定性合成分类单测中的转场叠影、教程样式 modal、遮挡或多屏同时命中会返回 unknown。真实
-   CK3 上仍须逐类冻结负例，不能把合成用例结论扩大成所有 modal 已被识别。
-4. 动作只接受由当前 observation 签发、5 秒内有效、一次性消费的控件 token。点击前重新捕获并重定位，持久化
-   `input_attempting` 后再执行最终的无 OCR、无落盘像素与前台命中复核；点击后必须连续两帧看见声明的下一屏。
+   2560×1440 简中 UI 契约；当前合成负例、历史截图回放与无害 Win32 helper 中的转场叠影、已知教程/确认 modal、遮挡或
+   多屏同时命中会返回 unknown。真实 CK3 上仍须继续冻结新负例，不能把这组结论扩大成所有 modal 已被识别。
+4. 动作只接受由当前 observation 签发、5 秒内有效、一次性消费的控件 token。点击前先重新捕获 fresh frame 并重定位；在任何
+   鼠标移动或游戏输入前把保守的 `ui_input_armed` 写入并 fsync 主 `events.jsonl`，再执行 hover 与最终无 OCR、无落盘像素/
+   前台命中复核。点击后必须连续两帧看见声明的下一屏。
 5. 第一轮实机探索只探测并冻结大厅【游戏规则】、类别【游戏模式】、三个 production 规则卡与 Apply 的实际 bbox/文案。
    在规则页尚未完成同卡标题—选项关联验证前，禁止点击大厅【开始】。
 
-首次真实点击前另有四项必须同时关闭的门禁：真实 Win32 helper-window 验证 DPI、client/screen 坐标、Z-order 和单批次
-`SendInput`；用真实 CK3 hover 帧校准最终像素 patch；把 UI receipt、截图和 `ui-events.jsonl` 绑定到正式 report/event chain；
-从冻结环境按固定路径与 SHA-256 加载 UI contract，拒绝策略或 CLI 提供替代定义。
+真实 Win32 helper-window 的 DPI、client/screen 坐标、Z-order、WMI 空路径与单批次 `SendInput` 已实测；固定 UI contract、
+截图、双帧 observation、receipt、hover/final patch 和主 `events.jsonl` 也已进入 menu report 与专用公开 validator。首次真实
+点击前剩余门禁是：提交当前 runtime、重新 `prepare-profile`，随后在同一新 environment 下依次取得 ordinary smoke 与
+post-resume crash-smoke GREEN；最后才允许一次真实 `menu-smoke`。未知模态、真实 CK3 hover patch 漂移或后置状态超时都只
+保留 RED，不得重试。
 
 动作收据的独立格式契约是 `schemas/visible-control-action-receipt-v2.schema.json`；它描述可见控件执行器的审计收据，
 不是通用 `action-v1` 策略动作的迁移版本。
@@ -180,16 +183,17 @@ RED 不能用一个布尔字段绕过进程、watchdog、控制文件、producti
 
 ## 近期实施清单
 
-- 已完成候选：专用用户目录、存档隔离、非 debug production staging 单 mod 挂载；六类版本化 schema 草案；版本/mod/agent
+- 已完成候选：专用用户目录、存档隔离、非 debug production staging 单 mod 挂载；原六类基础 schema 加两份可见 UI schema；版本/mod/agent
   指纹、跨进程锁、认证 watchdog、Job 与单次 smoke 超时。
-- 部分完成：OCR 目前只验证主菜单【新游戏】；连续运行停止条件已有版本/mod 漂移和进程安全门禁，但尚缺磁盘、费用与重复失败预算。
-- 已开始但未实机接线：游戏窗口分类的确定性合成单测；与 acceptance 状态隔离的 OCR/焦点/点击驱动层；短期控件 token 与安全动作白名单。
-- 未开始：模板资产冻结；独立 policy 进程及字段白名单；
+- 部分完成：`menu-smoke` 已离线接通主菜单/书签双帧 OCR+像素分类、固定 UI contract、一次性控件 token、单批次点击、主链 WAL、
+  sealed 启停与 GREEN/RED 归档回放；无害 Win32 helper 已实测，但真实 CK3 输入仍为零。持续运行仍缺磁盘、费用与重复失败预算。
+- 尚未实机接线：规则页、角色选择、HUD/事件通用状态机，以及独立 policy 进程与字段白名单。
+- 未开始：规则页/事件/HUD 的模板资产冻结；
   开始游戏、处理事件、推进时间、死亡结算的最小合法策略；多角色固定基准；模型调用预算；带证据计数和版本回滚的策略记忆。
 - Phase B 接入 policy 前的 crash 门禁已由 `20260821T220127Z-crash-adc0ac63` 本机 GREEN：完整 CK3 Job tree 回收、
   可做内部一致性重放的归档、真实 profile/Steam 的退出后语义 baseline 均通过；Workshop 只证明 descriptor 内容哈希与
   已注册 target 的 path/size/mtime 元数据在退出后一次 baseline 比较中相同。该门禁没有发送游戏输入，不能替代
-  下方四项真实可见 UI 输入门禁。
+  当前提交后的同环境重新资格化与首次真实可见 UI 输入门禁。
 - 2026-08-22 的第二次真实 crash probe `20260821T211059Z-crash-833b9587` 已进入可见主菜单并完成单 mod attestation，
   但 watchdog 与 kill-on-close Job 并发回收 CK3 时，`TerminateProcess` 返回 `ERROR_ACCESS_DENIED`；旧实现只等精确 pinned
   handle 1 秒，因而安全地 finalize 为 RED、保留四类 control 且不做 protected postflight。该事故促成统一 20 秒精确句柄

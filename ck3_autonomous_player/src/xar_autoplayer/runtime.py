@@ -1453,6 +1453,42 @@ def wait_for_runtime_attestation(
     raise last_error or AgentError("runtime load attestation timed out")
 
 
+def analyze_engine_log_bytes(
+    name: str,
+    raw: bytes,
+    *,
+    expected_mod_name: str,
+    production_path: Path,
+) -> dict[str, object]:
+    """Pure analysis shared by the live collector and offline replay."""
+    text = raw.decode("utf-8", errors="replace")
+    diagnostic_records = len(re.findall(r"(?m)^.*\[[EWI]\]\[", text))
+    nonempty_lines = sum(1 for line in text.splitlines() if line.strip())
+    needles = (
+        "xar_",
+        expected_mod_name.casefold(),
+        str(production_path).casefold(),
+    )
+    hits: list[dict[str, object]] = []
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        folded = line.casefold()
+        if any(needle and needle in folded for needle in needles):
+            hits.append(
+                {
+                    "log": name,
+                    "line": line_number,
+                    "sha256": hashlib.sha256(
+                        line.encode("utf-8", errors="replace")
+                    ).hexdigest(),
+                }
+            )
+    return {
+        "diagnostic_records": diagnostic_records,
+        "nonempty_lines": nonempty_lines,
+        "current_mod_diagnostic_hits": hits,
+    }
+
+
 def collect_engine_log_evidence(
     spec: EnvironmentSpec, handle: SessionHandle, artifacts: Path
 ) -> dict[str, object]:
@@ -1465,11 +1501,6 @@ def collect_engine_log_evidence(
         "current_mod_diagnostic_hits": [],
         "logs": {},
     }
-    current_mod_needles = (
-        "xar_",
-        EXPECTED_MOD_NAME.casefold(),
-        str(spec.production_dir).casefold(),
-    )
     for name in ("error.log", "gui_warnings.log"):
         source = spec.profile_dir / "logs" / name
         if not source.is_file():
@@ -1481,34 +1512,28 @@ def collect_engine_log_evidence(
         raw = source.read_bytes()
         destination = artifacts / f"supervisor-{name}"
         shutil.copy2(source, destination)
-        text = raw.decode("utf-8", errors="replace")
-        diagnostics = len(re.findall(r"(?m)^.*\[[EWI]\]\[", text))
-        nonempty = sum(1 for line in text.splitlines() if line.strip())
+        analysis = analyze_engine_log_bytes(
+            name,
+            raw,
+            expected_mod_name=EXPECTED_MOD_NAME,
+            production_path=spec.production_dir,
+        )
         record = {
             "present": True,
             "path": str(destination),
             "sha256": _file_sha256(destination),
             "size": len(raw),
             "mtime_ns": stat.st_mtime_ns,
-            "diagnostic_records": diagnostics,
-            "nonempty_lines": nonempty,
+            "diagnostic_records": analysis["diagnostic_records"],
+            "nonempty_lines": analysis["nonempty_lines"],
         }
         result["logs"][name] = record
-        if diagnostics or nonempty:
+        if analysis["diagnostic_records"] or analysis["nonempty_lines"]:
             result["zero_diagnostics"] = False
-        for line_number, line in enumerate(text.splitlines(), start=1):
-            folded = line.casefold()
-            if any(needle and needle in folded for needle in current_mod_needles):
-                result["current_mod_diagnostics"] = True
-                result["current_mod_diagnostic_hits"].append(
-                    {
-                        "log": name,
-                        "line": line_number,
-                        "sha256": hashlib.sha256(
-                            line.encode("utf-8", errors="replace")
-                        ).hexdigest(),
-                    }
-                )
+        hits = analysis["current_mod_diagnostic_hits"]
+        if hits:
+            result["current_mod_diagnostics"] = True
+            result["current_mod_diagnostic_hits"].extend(hits)
     return result
 
 

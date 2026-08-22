@@ -39,14 +39,16 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 - shutdown attestation 显式记录 CK3/watchdog PID 与创建时间、Job 最终成员数、双源全局清点、watchdog 退出状态和控制文件消失；
   `cleanup_proven` 是这些条件的显式合取，只有它严格为 true 才允许受保护存储复核。`report.json` 先落
   `finalized=false, ok=false`；最终事件链逐项重算、链接和 tail 绑定验证成功后才原子转为 GREEN。
-- 六类版本化 JSON schema 草案、首个 `growth100.v1` 策略假设和追加写入、带 SHA-256 链的 smoke 事件流。文件系统尚无防截断
-  保证；schema 的运行期验证
-  与不可变 episode store 属于 Phase E，当前不能把“JSON 可解析”称为已完成约束。
+- 原六类基础 JSON schema 加两份 Phase B 可见 UI schema、首个 `growth100.v1` 策略假设和追加写入、带 SHA-256 链的 smoke
+  事件流。Phase B 菜单竖切已用
+  Draft 2020-12 在 GREEN/RED 回放中强制验证 observation 与 action receipt；其余策略 schema 的全面运行期验证和不可变
+  episode store 仍属于 Phase E，不能把“JSON 可解析”称为已完成约束。
 
 尚未实现的关键能力：游戏规则页的视觉复核、正常 UI 新开局、事件/当铺/交易决策、HUD 状态抽取、战争与内政、
 保存续玩、自然死亡结算、episode 学习与多局优化。主菜单 smoke 只是基础设施证据，**不是有效得分局**。
 
-当前加固候选还增加了两项基础能力，其中 crash 路径已通过本机 GREEN 门禁，纯视觉输入路径仍未接入真实 CK3：
+当前加固候选还增加了两项基础能力：crash 路径已有历史本机 GREEN；纯视觉路径已完成离线 sealed lifecycle，仍未向真实 CK3
+发送输入：
 
 - `crash-smoke` 使用外层验证器、可牺牲 supervisor、detached watchdog 三个逻辑角色；Windows venv 可在 outer 与
   supervisor 之间增加一个经完整命令行和进程身份认证的 interpreter redirector。outer 必须先固定真实 supervisor
@@ -68,9 +70,10 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   `validate_recovery_report()` 同时验证 active marker 已消失且归档 marker 的 SHA-256 匹配。
   旧 RED `20260821T211059Z-crash-833b9587` 已由恢复 `20260821T215805Z-recovery-46a3518c` 按此协议归档；
   旧 report SHA-256 未变，恢复只解除启动阻塞，不资格化那次 RED。
-- Phase B 的纯视觉底座已经建立 PID/创建时间/可执行路径绑定的 CK3 窗口捕获、OCR 屏幕分类、短期 HMAC 控件 token、
-  点击前后状态反证和 fail-closed 导航骨架。当前动作白名单只有主菜单【新游戏】，并显式禁止大厅【开始】；未接 CLI、
-  未在真实桌面发出输入，也不能据此声称已经能开局。
+- Phase B 的纯视觉底座已经建立 PID/创建时间/可执行路径绑定的 CK3 窗口捕获、OCR/像素屏幕分类、短期 HMAC 控件 token、
+  点击前后状态反证和 fail-closed 导航。`menu-smoke` 已接入专用 CLI、sealed supervisor 生命周期和公开 GREEN/RED 回放；当前
+  动作白名单精确只有主菜单【新游戏】，并显式禁止大厅【开始】。权威输入 WAL 位于本次 run 的主 `events.jsonl`，不是独立
+  UI 日志。无害 Win32 helper 与离线截图回放已经通过，但尚未向真实 CK3 发出输入，不能据此声称已经能开局。
 
 上述改动改变了受指纹保护的 runtime，因此旧提交的 Phase A 三连只证明历史冻结候选，不自动为后来实现背书。
 runtime 实现提交 `98d55caf3ed4a398b0a3bd7bc8e6ee16591d8f26` 已重新准备 profile，并在同一环境 SHA-256
@@ -78,8 +81,9 @@ runtime 实现提交 `98d55caf3ed4a398b0a3bd7bc8e6ee16591d8f26` 已重新准备 
 `20260821T215910Z-780cd6cb` 与 post-resume `crash-smoke` `20260821T220127Z-crash-adc0ac63`。
 普通 `validate_smoke_report()` 已重算无密钥事件链、final tail 与 finalized/ok，load、cleanup、protected 和 production 硬字段
 另行逐项核对；`validate_crash_report()` 则完成 crash 归档的 schema 与内部一致性回放。两份报告仍只证明单 mod 可见主菜单、
-受控退出与崩溃回收，`valid_score_episode=false`，不证明 Growth+100 已在大厅实际采用，也没有发送任何游戏输入。
-截至 2026-08-22，本候选离线单元回归为 119 项：118 通过、1 项显式真实桌面集成跳过；这不能替代上述本机门禁。
+受控退出与崩溃回收，`valid_score_episode=false`，不证明 Growth+100 已在大厅实际采用，也没有发送任何游戏输入。当前 Phase B
+改动已改变 runtime 指纹，因此这对旧 run 只能作为历史证据，不能资格化尚未提交的新候选。最新测试数以本次提交前的完整
+`unittest discover` 报告为准；离线/无害 helper 通过不能替代同环境本机门禁。
 
 ## 运行
 
@@ -91,6 +95,7 @@ runtime 实现提交 `98d55caf3ed4a398b0a3bd7bc8e6ee16591d8f26` 已重新准备 
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" verify-profile
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" smoke
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" crash-smoke
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" menu-smoke --timeout 180
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" recover-stale-control --run-id <finalized-RED-run-id>
 ```
 
@@ -156,8 +161,9 @@ memory: cross-run retrieval / constrained reflection / strategy experiments
 1. **Phase A（已完成）**：committed candidate 已连续三次通过 production、非 debug、单 mod 主菜单 isolation smoke；每次都保留
    非零引擎 diagnostics 的原始证据，且受保护存储在退出后回到同一语义 baseline。原生 Windows Job/句柄测试和两次启动期
    fail-closed RED 覆盖失败契约；加固 runtime 的 resume 后 supervisor 崩溃注入也已通过本机门禁。
-2. **Phase B（进行中）**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证，未知窗口 fail closed。当前只完成
-   主菜单、稳定书签大厅分类与【新游戏】动作契约的确定性合成单测，尚未执行真实点击。
+2. **Phase B（进行中）**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证，未知窗口 fail closed。主菜单到
+   稳定书签大厅的单动作 `menu-smoke` 已完成离线生命周期、公开证据回放、历史截图回放与无害 Win32 helper 门禁；尚未对真实
+   CK3 执行第一次点击。
 3. Phase C：先完成“罗贝尔 1066 → 契约 → 当铺 → 首轮垂青 → 十年低风险经营 → 自然死亡结算”的首个合法竖切，
    再扩到多种角色类型的有效整局基线后退出本阶段。
 4. Phase D：婚育、议会、生活方式、建设、宣战理由、军队和领地的分层规划器。
@@ -171,9 +177,10 @@ Phase A 的 GREEN 只表示 `acceptance_claim=isolated_single_mod_visible_main_m
 记录这条边界，不把它升级为“零错误启动”。Growth+100 规则是否在
 大厅实际采用、教程通知能否在正式局持续落盘，以及正常 UI 开局仍是 Phase B/C 的视觉硬门禁。
 
-首次真实点击前仍有四个成组门禁：真实 Win32 helper-window 验证 DPI、client/screen 坐标、Z-order 与单批次 `SendInput`；
-用真实 CK3 hover 帧校准最终像素 patch 的容差；把 UI 截图、receipt、`ui-events.jsonl` 接入正式 run/report hash chain；
-由冻结环境按固定路径与 SHA-256 加载 UI contract，禁止策略或 CLI 注入同名控件定义。
+真实 Win32 helper-window 的 DPI、client/screen 坐标、Z-order、WMI 空路径与单批次 `SendInput` 门禁已经通过；UI 截图、双帧
+观察、receipt、像素 patch、固定 contract 和主 `events.jsonl` 也已进入正式 menu report 与公开 validator。首次真实点击前仍须：
+提交当前代码并重新 `prepare-profile`；在同一新 environment 下依次取得 ordinary `smoke` 与 post-resume `crash-smoke` GREEN；
+再以真实 CK3 hover/final patch 校准结果执行且只执行一次 `menu-smoke`。任何未知模态或像素漂移都应保留 RED 并停止，不得重试。
 
 玩法基线见 [knowledge/ck3/gameplay-v1.md](knowledge/ck3/gameplay-v1.md)，本 mod 的高分映射见
 [knowledge/mod/growth100-scoring-v1.md](knowledge/mod/growth100-scoring-v1.md)。

@@ -37,11 +37,23 @@ OUTER_DESCRIPTOR_REF = f"mod/{OUTER_DESCRIPTOR_NAME}"
 EXPECTED_MOD_NAME = "琉焰卿的永恒轮回"
 PROFILE_MANIFEST_NAME = "xar-autoplayer-environment.json"
 RUNTIME_DISTRIBUTIONS = (
+    "attrs",
+    "jsonschema",
+    "jsonschema-specifications",
     "numpy",
+    "onnxruntime",
+    "opencv-python",
     "Pillow",
     "PyAutoGUI",
+    "pyclipper",
+    "PyYAML",
     "pywin32",
     "rapidocr-onnxruntime",
+    "rfc3339-validator",
+    "referencing",
+    "rpds-py",
+    "Shapely",
+    "six",
 )
 
 

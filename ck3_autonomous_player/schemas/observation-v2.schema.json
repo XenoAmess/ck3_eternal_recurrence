@@ -59,6 +59,22 @@
       "maxItems": 20,
       "items": {"type": "string", "maxLength": 1000}
     },
+    "stability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stable_frames", "expected_screen", "frames", "monotonic_delta"],
+      "properties": {
+        "stable_frames": {"const": 2},
+        "expected_screen": {"type": "string", "minLength": 1, "maxLength": 80},
+        "frames": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {"$ref": "#/$defs/stableFrame"}
+        },
+        "monotonic_delta": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
     "policy_boundary": {"const": "player-visible pixels and OCR only"}
   },
   "$defs": {
@@ -105,6 +121,22 @@
         "control_token": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "bbox": {"$ref": "#/$defs/bbox"},
         "center": {"$ref": "#/$defs/point"}
+      }
+    },
+    "stableFrame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_id", "frame_id", "captured_at", "capture_sequence",
+        "captured_monotonic", "screenshot_sha256"
+      ],
+      "properties": {
+        "observation_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+        "frame_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+        "captured_at": {"type": "string", "format": "date-time"},
+        "capture_sequence": {"type": "integer", "minimum": 1},
+        "captured_monotonic": {"type": "number", "minimum": 0},
+        "screenshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
       }
     }
   }

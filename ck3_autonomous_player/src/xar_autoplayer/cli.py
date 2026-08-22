@@ -43,6 +43,11 @@ def parser() -> argparse.ArgumentParser:
         "smoke", help="non-debug boot to visible main menu and prove the runtime load"
     )
     smoke_parser.add_argument("--timeout", type=float, default=180)
+    menu_parser = commands.add_parser(
+        "menu-smoke",
+        help="click the unique visible New Game control and attest the bookmark lobby",
+    )
+    menu_parser.add_argument("--timeout", type=float, default=180)
     crash_parser = commands.add_parser(
         "crash-smoke",
         help="kill a post-resume supervisor and attest Job/watchdog recovery",
@@ -122,10 +127,16 @@ def main(argv: list[str] | None = None) -> int:
             result = recover_stale_control(spec, args.run_id)
         elif args.command == "smoke":
             result = smoke(spec, timeout_seconds=args.timeout)
-        else:
+        elif args.command == "menu-smoke":
+            from .menu_smoke import menu_smoke
+
+            result = menu_smoke(spec, timeout_seconds=args.timeout)
+        elif args.command == "crash-smoke":
             from .crash_probe import crash_smoke
 
             result = crash_smoke(spec, timeout_seconds=args.timeout)
+        else:
+            raise AgentError(f"unsupported command dispatch: {args.command}")
     except (AgentError, OSError, ValueError, json.JSONDecodeError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1

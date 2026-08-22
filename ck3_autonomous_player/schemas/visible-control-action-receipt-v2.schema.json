@@ -7,7 +7,10 @@
   "required": [
     "format_version", "action_id", "planned_at", "kind", "control_id",
     "control_token_sha256", "before_observation_id", "expected_post_screen",
-    "status", "input_may_have_occurred", "risk", "policy_boundary"
+    "status", "input_may_have_occurred", "risk", "policy_boundary",
+    "contract_sha256", "receipt_artifact", "input_budget", "binding",
+    "before_stable_observation", "target", "pointer_input_may_have_occurred",
+    "button_click_may_have_occurred", "send_input", "durable_events"
   ],
   "properties": {
     "format_version": {"const": 2},
@@ -17,18 +20,238 @@
     "finished_at": {"type": "string", "format": "date-time"},
     "kind": {"const": "click_visible_control"},
     "control_id": {"type": "string", "minLength": 1, "maxLength": 120},
-    "control_token_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-    "before_observation_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
-    "fresh_observation_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
-    "hover_observation_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
-    "result_observation_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "control_token_sha256": {"$ref": "#/$defs/sha256"},
+    "before_observation_id": {"$ref": "#/$defs/id32"},
+    "fresh_observation_id": {"$ref": "#/$defs/id32"},
+    "hover_observation_id": {"$ref": "#/$defs/id32"},
+    "result_observation_id": {"$ref": "#/$defs/id32"},
     "expected_post_screen": {"type": "string", "minLength": 1, "maxLength": 80},
     "status": {
-      "enum": ["planned", "input_attempting", "confirmed", "rejected_before_input", "failed_after_possible_input"]
+      "enum": [
+        "planned", "input_attempting", "confirmed", "rejected_before_input",
+        "failed_after_possible_input"
+      ]
     },
     "input_may_have_occurred": {"type": "boolean"},
+    "pointer_input_may_have_occurred": {"type": "boolean"},
+    "button_click_may_have_occurred": {"type": "boolean"},
     "risk": {"enum": ["reversible", "irreversible"]},
     "error": {"type": "string", "maxLength": 4000},
-    "policy_boundary": {"const": "no caller-supplied coordinates or postconditions"}
-  }
+    "durable_event_error": {"type": "string", "maxLength": 4000},
+    "policy_boundary": {"const": "no caller-supplied coordinates or postconditions"},
+    "contract_sha256": {"$ref": "#/$defs/sha256"},
+    "receipt_artifact": {"$ref": "#/$defs/artifactRef"},
+    "input_budget": {
+      "type": "object", "additionalProperties": false,
+      "required": ["limit", "consumed"],
+      "properties": {"limit": {"const": 1}, "consumed": {"const": 1}}
+    },
+    "binding": {"$ref": "#/$defs/windowBinding"},
+    "binding_after": {"$ref": "#/$defs/windowBinding"},
+    "before_stable_observation": {"$ref": "#/$defs/stableAudit"},
+    "after_stable_observation": {"$ref": "#/$defs/stableAudit"},
+    "fresh_observation": {"$ref": "#/$defs/observationEvidence"},
+    "hover_observation": {"$ref": "#/$defs/observationEvidence"},
+    "target": {
+      "type": "object", "additionalProperties": false,
+      "required": ["issued"],
+      "properties": {
+        "issued": {"$ref": "#/$defs/targetSpan"},
+        "fresh": {"$ref": "#/$defs/freshTarget"},
+        "hover": {"$ref": "#/$defs/hoverTarget"},
+        "final_patch_sha256": {"$ref": "#/$defs/sha256"},
+        "hover_patch_artifact": {"$ref": "#/$defs/patchArtifact"},
+        "final_patch_artifact": {"$ref": "#/$defs/patchArtifact"}
+      }
+    },
+    "send_input": {
+      "type": "object", "additionalProperties": false,
+      "required": ["requested", "accepted", "last_error"],
+      "properties": {
+        "requested": {"const": 2},
+        "accepted": {"type": ["integer", "null"], "minimum": 0, "maximum": 2},
+        "last_error": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "durable_events": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "planned": {"$ref": "#/$defs/sha256"},
+        "armed": {"$ref": "#/$defs/sha256"},
+        "finished": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  },
+  "$defs": {
+    "id32": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifactRef": {"type": "string", "pattern": "^artifacts/[^/\\\\]+$"},
+    "point": {
+      "type": "array", "prefixItems": [{"type": "integer"}, {"type": "integer"}],
+      "minItems": 2, "maxItems": 2
+    },
+    "bbox": {
+      "type": "array",
+      "prefixItems": [
+        {"type": "integer"}, {"type": "integer"},
+        {"type": "integer"}, {"type": "integer"}
+      ],
+      "minItems": 4, "maxItems": 4
+    },
+    "targetSpan": {
+      "type": "object", "additionalProperties": false,
+      "required": ["text", "normalized", "bbox", "center"],
+      "properties": {
+        "text": {"type": "string", "maxLength": 500},
+        "normalized": {"type": "string", "maxLength": 500},
+        "bbox": {"$ref": "#/$defs/bbox"},
+        "center": {"$ref": "#/$defs/point"}
+      }
+    },
+    "freshTarget": {
+      "type": "object", "additionalProperties": false,
+      "required": ["text", "normalized", "bbox", "center", "screen_point"],
+      "properties": {
+        "text": {"type": "string", "maxLength": 500},
+        "normalized": {"type": "string", "maxLength": 500},
+        "bbox": {"$ref": "#/$defs/bbox"},
+        "center": {"$ref": "#/$defs/point"},
+        "screen_point": {"$ref": "#/$defs/point"}
+      }
+    },
+    "hoverTarget": {
+      "type": "object", "additionalProperties": false,
+      "required": ["text", "normalized", "bbox", "center", "patch_bbox", "patch_sha256"],
+      "properties": {
+        "text": {"type": "string", "maxLength": 500},
+        "normalized": {"type": "string", "maxLength": 500},
+        "bbox": {"$ref": "#/$defs/bbox"},
+        "center": {"$ref": "#/$defs/point"},
+        "patch_bbox": {"$ref": "#/$defs/bbox"},
+        "patch_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "patchArtifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "pixel_sha256"],
+      "properties": {
+        "path": {"$ref": "#/$defs/artifactRef"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "pixel_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "processBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "pid", "parent_pid", "name", "creation_date", "executable",
+        "wmi_executable", "handle_executable"
+      ],
+      "properties": {
+        "pid": {"type": "integer", "minimum": 1},
+        "parent_pid": {"type": "integer", "minimum": 1},
+        "name": {"const": "ck3.exe"},
+        "creation_date": {"type": "string", "minLength": 1},
+        "executable": {"type": "string", "minLength": 1},
+        "wmi_executable": {"type": "string"},
+        "handle_executable": {"type": "string", "minLength": 1}
+      }
+    },
+    "windowBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["process", "window"],
+      "properties": {
+        "process": {"$ref": "#/$defs/processBinding"},
+        "window": {
+          "type": "object", "additionalProperties": false,
+          "required": ["hwnd", "client_rect", "client_size"],
+          "properties": {
+            "hwnd": {"type": "integer", "minimum": 1},
+            "client_rect": {"$ref": "#/$defs/bbox"},
+            "client_size": {
+              "type": "array", "prefixItems": [{"const": 2560}, {"const": 1440}],
+              "minItems": 2, "maxItems": 2
+            }
+          }
+        }
+      }
+    },
+    "stableFrame": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "observation_id", "frame_id", "captured_at", "capture_sequence",
+        "captured_monotonic", "screenshot_sha256", "screenshot",
+        "observation", "pid", "hwnd", "client_rect"
+      ],
+      "properties": {
+        "observation_id": {"$ref": "#/$defs/id32"},
+        "frame_id": {"$ref": "#/$defs/id32"},
+        "captured_at": {"type": "string", "format": "date-time"},
+        "capture_sequence": {"type": "integer", "minimum": 1},
+        "captured_monotonic": {"type": "number", "minimum": 0},
+        "screenshot_sha256": {"$ref": "#/$defs/sha256"},
+        "screenshot": {"$ref": "#/$defs/artifactRef"},
+        "observation": {"$ref": "#/$defs/artifactRef"},
+        "pid": {"type": "integer", "minimum": 1},
+        "hwnd": {"type": "integer", "minimum": 1},
+        "client_rect": {"$ref": "#/$defs/bbox"}
+      }
+    },
+    "stableAudit": {
+      "type": "object", "additionalProperties": false,
+      "required": ["stable_frames", "expected_screen", "frames", "monotonic_delta"],
+      "properties": {
+        "stable_frames": {"const": 2},
+        "expected_screen": {"type": "string", "minLength": 1, "maxLength": 80},
+        "frames": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"$ref": "#/$defs/stableFrame"}},
+        "monotonic_delta": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "observationEvidence": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "observation_id", "frame_id", "captured_at", "capture_sequence",
+        "captured_monotonic", "screenshot", "screenshot_sha256",
+        "observation", "screen", "pid", "hwnd", "client_rect"
+      ],
+      "properties": {
+        "observation_id": {"$ref": "#/$defs/id32"},
+        "frame_id": {"$ref": "#/$defs/id32"},
+        "captured_at": {"type": "string", "format": "date-time"},
+        "capture_sequence": {"type": "integer", "minimum": 1},
+        "captured_monotonic": {"type": "number", "minimum": 0},
+        "screenshot": {"$ref": "#/$defs/artifactRef"},
+        "screenshot_sha256": {"$ref": "#/$defs/sha256"},
+        "observation": {"$ref": "#/$defs/artifactRef"},
+        "screen": {"type": "string", "minLength": 1, "maxLength": 80},
+        "pid": {"type": "integer", "minimum": 1},
+        "hwnd": {"type": "integer", "minimum": 1},
+        "client_rect": {"$ref": "#/$defs/bbox"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "confirmed"}}},
+      "then": {
+        "required": [
+          "input_attempted_at", "finished_at", "fresh_observation_id",
+          "fresh_observation", "hover_observation_id", "hover_observation",
+          "result_observation_id", "after_stable_observation", "binding_after"
+        ],
+        "properties": {
+          "input_may_have_occurred": {"const": true},
+          "pointer_input_may_have_occurred": {"const": true},
+          "button_click_may_have_occurred": {"const": true},
+          "durable_events": {"required": ["planned", "armed"]},
+          "send_input": {"properties": {"accepted": {"const": 2}, "last_error": {"const": 0}}},
+          "target": {
+            "required": [
+              "issued", "fresh", "hover", "final_patch_sha256",
+              "hover_patch_artifact", "final_patch_artifact"
+            ]
+          }
+        }
+      }
+    }
+  ]
 }
