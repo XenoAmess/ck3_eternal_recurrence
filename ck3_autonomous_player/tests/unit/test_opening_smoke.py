@@ -45,8 +45,16 @@ class OpeningContractTests(unittest.TestCase):
             10,
         )
         self.assertEqual(
+            contract.control("bookmark_lobby.select_robert").click_offset_px,
+            (0, -130),
+        )
+        self.assertEqual(
             contract.control("bookmark_lobby.start_game").hover_tolerance_px,
             3,
+        )
+        self.assertEqual(
+            contract.control("bookmark_lobby.start_game").click_offset_px,
+            (0, 0),
         )
         lobby_image = Image.new("RGB", contract.resolution, (0, 0, 0))
         lobby = next(

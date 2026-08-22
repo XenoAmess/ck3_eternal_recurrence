@@ -103,7 +103,8 @@
       "region": [0.45, 0.68, 0.72, 0.91],
       "post_screen": "bookmark_lobby_selected",
       "risk": "reversible",
-      "hover_tolerance_px": 10
+      "hover_tolerance_px": 10,
+      "click_offset_px": [0, -130]
     },
     {
       "control_id": "bookmark_lobby.start_game",

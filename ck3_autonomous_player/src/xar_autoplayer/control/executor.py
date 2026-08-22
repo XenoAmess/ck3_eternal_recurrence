@@ -752,14 +752,24 @@ class VisibleUiDriver:
             ) > 15:
                 raise AgentError("visible target moved beyond the fresh-frame tolerance")
             self.window.require_unobscured(target.center)
+            click_point = (
+                target.center[0] + spec.click_offset_px[0],
+                target.center[1] + spec.click_offset_px[1],
+            )
+            if not (
+                0 <= click_point[0] < self.contract.resolution[0]
+                and 0 <= click_point[1] < self.contract.resolution[1]
+            ):
+                raise AgentError("visible control click point is outside the client")
+            self.window.require_unobscured(click_point)
 
             import pyautogui
 
             pyautogui.FAILSAFE = True
             submit_left_click = _prepare_left_click_batch()
             screen_point = (
-                self.window.client_rect[0] + target.center[0],
-                self.window.client_rect[1] + target.center[1],
+                self.window.client_rect[0] + click_point[0],
+                self.window.client_rect[1] + click_point[1],
             )
             result["target"]["fresh"] = {
                 "text": target.text,
@@ -887,9 +897,7 @@ class VisibleUiDriver:
                 > spec.hover_tolerance_px
             ):
                 raise AgentError("visible target moved during hover verification")
-            self.window.require_cursor_target(
-                hover_target.center, tolerance=spec.hover_tolerance_px
-            )
+            self.window.require_cursor_target(click_point)
 
             # Retain the authenticated hover pixels in memory. No caller can
             # choose this rectangle and no file needs to be read in the final
@@ -949,9 +957,7 @@ class VisibleUiDriver:
             result["target"]["final_patch_sha256"] = final_patch_sha256
             if not hmac.compare_digest(final_patch_sha256, expected_patch_sha256):
                 raise AgentError("visible target pixels changed immediately before input")
-            self.window.require_cursor_target(
-                hover_target.center, tolerance=spec.hover_tolerance_px
-            )
+            self.window.require_cursor_target(click_point)
             hover_consumed = self._require_internal_lease(
                 hover_lease,
                 purpose="hover_verified_left_click_batch",

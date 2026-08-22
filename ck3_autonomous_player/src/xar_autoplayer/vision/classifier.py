@@ -61,6 +61,7 @@ class ControlSpec:
     risk: str
     contains: bool = False
     hover_tolerance_px: int = 3
+    click_offset_px: tuple[int, int] = (0, 0)
 
 
 @dataclass(frozen=True)
@@ -461,12 +462,22 @@ def load_ui_contract(
                 "post_screen",
                 "risk",
             },
-            {"contains", "hover_tolerance_px"},
+            {"contains", "hover_tolerance_px", "click_offset_px"},
             f"control[{control_index}]",
         )
         hover_tolerance = item.get("hover_tolerance_px", 3)
         if type(hover_tolerance) is not int or not 0 <= hover_tolerance <= 15:
             raise AgentError("UI contract hover tolerance is invalid")
+        click_offset_raw = item.get("click_offset_px", [0, 0])
+        if (
+            not isinstance(click_offset_raw, list)
+            or len(click_offset_raw) != 2
+            or any(
+                type(value) is not int or abs(value) > 400
+                for value in click_offset_raw
+            )
+        ):
+            raise AgentError("UI contract click offset is invalid")
         controls_list.append(
             ControlSpec(
                 control_id=_text(item["control_id"], "control_id"),
@@ -482,6 +493,9 @@ def load_ui_contract(
                     else False
                 ),
                 hover_tolerance_px=hover_tolerance,
+                click_offset_px=(
+                    int(click_offset_raw[0]), int(click_offset_raw[1])
+                ),
             )
         )
     controls = tuple(controls_list)
