@@ -26,6 +26,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     MAP_PANEL_SHORTCUTS,
     OPENING_ALLOWED_CONTROLS,
     OPENING_CONTRACT,
+    _building_construction_in_progress,
     _choose_first_blessing,
     _choose_first_curse,
     _choose_economic_building_offer,
@@ -512,6 +513,19 @@ class OpeningContractTests(unittest.TestCase):
             ),
             1,
         )
+
+    def test_building_progress_matches_ck3_visible_completion_text(self) -> None:
+        frame = SimpleNamespace(
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span(
+                    "22个月内完工简易牧场",
+                    (1550, 410),
+                    (1430, 397, 1670, 423),
+                ),
+            )
+        )
+        self.assertTrue(_building_construction_in_progress(frame))
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (

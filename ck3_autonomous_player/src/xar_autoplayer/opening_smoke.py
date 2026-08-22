@@ -783,6 +783,14 @@ def _choose_economic_building_offer(frame: object) -> dict[str, object]:
     )
 
 
+def _building_construction_in_progress(frame: object) -> bool:
+    """Recognize CK3's visible holding-row construction progress label."""
+    return bool(
+        _spans_with_text(frame, "个月内完工", contains=True)
+        or _spans_with_text(frame, "正在修建", contains=True)
+    )
+
+
 def _drive_opening(
     spec: EnvironmentSpec,
     handle: SessionHandle,
@@ -1512,7 +1520,7 @@ def _drive_opening(
         button_center = tuple(offer["button_center"])
 
         def construction_started(frame: object) -> bool:
-            return bool(_spans_with_text(frame, "正在修建", contains=True))
+            return _building_construction_in_progress(frame)
 
         button_candidates = [
             item
