@@ -158,8 +158,8 @@
       "screen_id": "lifestyle_martial_unfocused",
       "anchors": [
         {"anchor_id": "lifestyle.martial_title", "text": "军事生活方式", "region": [0.00, 0.00, 0.24, 0.10]},
-        {"anchor_id": "lifestyle.focus_header", "text": "生活方式重心", "region": [0.00, 0.30, 0.36, 0.92]},
-        {"anchor_id": "lifestyle.no_focus", "text": "当前：无重心", "region": [0.00, 0.30, 0.36, 0.92]}
+        {"anchor_id": "lifestyle.focus_header", "text": "生活方式重心", "region": [0.00, 0.17, 0.36, 0.28]},
+        {"anchor_id": "lifestyle.no_focus", "text": "当前：无重心", "region": [0.00, 0.17, 0.36, 0.28]}
       ],
       "negative_anchors": [],
       "pixel_probes": []
@@ -168,8 +168,8 @@
       "screen_id": "lifestyle_martial_authority",
       "anchors": [
         {"anchor_id": "lifestyle.martial_title", "text": "军事生活方式", "region": [0.00, 0.00, 0.24, 0.10]},
-        {"anchor_id": "lifestyle.focus_header", "text": "生活方式重心", "region": [0.00, 0.30, 0.36, 0.92]},
-        {"anchor_id": "lifestyle.authority_current", "text": "当前：权威重心", "region": [0.00, 0.30, 0.36, 0.92]}
+        {"anchor_id": "lifestyle.focus_header", "text": "生活方式重心", "region": [0.00, 0.17, 0.36, 0.28]},
+        {"anchor_id": "lifestyle.authority_current", "text": "当前：权威重心", "region": [0.00, 0.17, 0.36, 0.28]}
       ],
       "negative_anchors": [
         {"anchor_id": "lifestyle.no_focus", "text": "当前：无重心", "region": [0.00, 0.00, 1.00, 1.00]}

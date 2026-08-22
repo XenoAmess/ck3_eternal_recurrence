@@ -187,10 +187,10 @@ class OpeningContractTests(unittest.TestCase):
             "lifestyle_selection",
         )
         lifestyle_unfocused_spans = (
-            span("军事生活方式", (190, 45), (80, 20, 300, 70)),
-            span("生活方式重心", (350, 520), (270, 500, 430, 540)),
-            span("当前：无重心", (350, 565), (270, 545, 430, 585)),
-            span("权威重心", (350, 850), (300, 830, 400, 870)),
+            span("军事生活方式", (192, 78), (60, 57, 325, 100)),
+            span("生活方式重心", (559, 296), (501, 284, 617, 308)),
+            span("当前：无重心", (558, 340), (500, 328, 617, 352)),
+            span("权威重心", (478, 720), (430, 706, 526, 734)),
         )
         self.assertEqual(
             contract.classify(lifestyle_unfocused_spans, image)[0],
@@ -199,7 +199,7 @@ class OpeningContractTests(unittest.TestCase):
         lifestyle_authority_spans = (
             lifestyle_unfocused_spans[0],
             lifestyle_unfocused_spans[1],
-            span("当前：权威重心", (350, 565), (260, 545, 440, 585)),
+            span("当前：权威重心", (575, 340), (500, 328, 650, 352)),
         )
         self.assertEqual(
             contract.classify(lifestyle_authority_spans, image)[0],
