@@ -558,12 +558,16 @@ class OpeningScenarioTests(unittest.TestCase):
             curse_driver.click_visible_control.return_value["action"][
                 "control_id"
             ] = "curse_event.option_2"
+            submit_key = mock.Mock(return_value=(2, 0))
             with mock.patch(
                 "xar_autoplayer.vision.BoundGameWindow.bind_session",
                 return_value=window,
             ), mock.patch(
                 "xar_autoplayer.control.VisibleUiDriver", side_effect=drivers
-            ) as driver_type, mock.patch("pyautogui.press") as press:
+            ) as driver_type, mock.patch(
+                "xar_autoplayer.control.executor._prepare_key_press_batch",
+                return_value=submit_key,
+            ) as prepare_key:
                 result = _drive_opening(
                     SimpleNamespace(
                         game_exe=Path("ck3.exe"),
@@ -602,7 +606,8 @@ class OpeningScenarioTests(unittest.TestCase):
                 "token-player",
                 timeout_seconds=mock.ANY,
             )
-            press.assert_called_once_with("f1")
+            prepare_key.assert_called_once_with(0x3B)
+            submit_key.assert_called_once_with()
             self.assertIn("长明的定力", result["first_blessing_choice"]["visible_text"])
             self.assertIn("军事经验", result["first_curse_choice"]["visible_text"])
             self.assertTrue(result["player_character_state"]["spouse_visible"])

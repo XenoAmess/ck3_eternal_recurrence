@@ -292,6 +292,7 @@ def _drive_opening(
     deadline: float,
 ) -> dict[str, object]:
     from .control import VisibleUiDriver
+    from .control.executor import _prepare_key_press_batch
     from .vision import load_ui_contract
 
     display = manifest.get("display")
@@ -379,8 +380,6 @@ def _drive_opening(
     def toggle_player_character(
         screen: str, next_screen: str, next_stage: str
     ) -> None:
-        import pyautogui
-
         driver = new_driver()
         driver.observe_stable(
             screen,
@@ -394,10 +393,16 @@ def _drive_opening(
                 "kind": "opening_key_input_planned",
                 "control_id": "player_character.close",
                 "key": "f1",
+                "scan_code": 0x3B,
                 "expected_post_screen": next_screen,
             },
         )
-        pyautogui.press("f1")
+        accepted, last_error = _prepare_key_press_batch(0x3B)()
+        if accepted != 2:
+            raise AgentError(
+                "F1 character-window toggle SendInput was partial: "
+                f"accepted={accepted}, last_error={last_error}"
+            )
         stable = driver.observe_stable(
             next_screen,
             _remaining(deadline, next_stage),
@@ -409,6 +414,12 @@ def _drive_opening(
                 "status": "confirmed",
                 "input_kind": "keyboard",
                 "key": "f1",
+                "scan_code": 0x3B,
+                "send_input": {
+                    "requested": 2,
+                    "accepted": accepted,
+                    "last_error": last_error,
+                },
                 "result_observation_id": stable.observation_id,
                 "expected_post_screen": next_screen,
             }

@@ -30,8 +30,11 @@ from ..vision.window import BoundGameWindow, ForegroundLossError
 
 
 _INPUT_MOUSE = 0
+_INPUT_KEYBOARD = 1
 _MOUSEEVENTF_LEFTDOWN = 0x0002
 _MOUSEEVENTF_LEFTUP = 0x0004
+_KEYEVENTF_KEYUP = 0x0002
+_KEYEVENTF_SCANCODE = 0x0008
 
 
 class _MOUSEINPUT(ctypes.Structure):
@@ -45,8 +48,18 @@ class _MOUSEINPUT(ctypes.Structure):
     )
 
 
+class _KEYBDINPUT(ctypes.Structure):
+    _fields_ = (
+        ("wVk", wintypes.WORD),
+        ("wScan", wintypes.WORD),
+        ("dwFlags", wintypes.DWORD),
+        ("time", wintypes.DWORD),
+        ("dwExtraInfo", ctypes.c_size_t),
+    )
+
+
 class _INPUT_VALUE(ctypes.Union):
-    _fields_ = (("mi", _MOUSEINPUT),)
+    _fields_ = (("mi", _MOUSEINPUT), ("ki", _KEYBDINPUT))
 
 
 class _INPUT(ctypes.Structure):
@@ -95,6 +108,31 @@ def _prepare_left_click_batch(
             )
             error = ctypes.get_last_error() if sent_up != 1 else 0
             return sent_down + sent_up, int(error)
+        sent = int(send_input(2, records, ctypes.sizeof(_INPUT)))
+        error = ctypes.get_last_error() if sent != 2 else 0
+        return sent, int(error)
+
+    return submit
+
+
+def _prepare_key_press_batch(scan_code: int) -> Callable[[], tuple[int, int]]:
+    """Prepare one scan-code key-down/key-up SendInput batch."""
+    if type(scan_code) is not int or not 1 <= scan_code <= 0xFF:
+        raise AgentError("visible key scan code is invalid")
+    records = (_INPUT * 2)()
+    records[0].type = _INPUT_KEYBOARD
+    records[0].ki.wScan = scan_code
+    records[0].ki.dwFlags = _KEYEVENTF_SCANCODE
+    records[1].type = _INPUT_KEYBOARD
+    records[1].ki.wScan = scan_code
+    records[1].ki.dwFlags = _KEYEVENTF_SCANCODE | _KEYEVENTF_KEYUP
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    send_input = user32.SendInput
+    send_input.argtypes = (wintypes.UINT, ctypes.POINTER(_INPUT), ctypes.c_int)
+    send_input.restype = wintypes.UINT
+
+    def submit() -> tuple[int, int]:
         sent = int(send_input(2, records, ctypes.sizeof(_INPUT)))
         error = ctypes.get_last_error() if sent != 2 else 0
         return sent, int(error)
