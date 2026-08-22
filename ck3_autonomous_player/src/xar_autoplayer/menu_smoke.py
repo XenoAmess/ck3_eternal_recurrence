@@ -97,6 +97,10 @@ REPLAY_TRUST_MODEL = {
     "claim": "archive_schema_and_internal_consistency_only",
     "historical_execution_authenticity_proven": False,
 }
+NORMAL_V2_QUALIFICATION_VALIDATOR = "validate_smoke_report:v2 self-contained"
+LEGACY_NORMAL_QUALIFICATION_VALIDATOR = (
+    "validate_smoke_report + menu semantic conjunction"
+)
 FOREGROUND_OPERATION = "exact_hwnd_foreground_without_synthetic_input"
 GREEN_EVENT_ORDER = (
     "smoke_started",
@@ -144,7 +148,12 @@ def _report_body_sha256(report: dict[str, object]) -> str:
 
 
 def _append_final_event_transactionally(
-    events: Path, *, ok: bool, report_body_sha256: str
+    events: Path,
+    *,
+    ok: bool,
+    report_body_sha256: str,
+    expected_prefix: dict[str, object] | None = None,
+    expected_final_row: dict[str, object] | None = None,
 ) -> str:
     """Append the unique final WAL row and recover an after-fsync exception.
 
@@ -155,13 +164,48 @@ def _append_final_event_transactionally(
     failure.
     """
     before = validate_event_chain(events)
-    payload = {
+    if expected_prefix is not None and (
+        before.get("event_count") != expected_prefix.get("event_count")
+        or before.get("tail_sha256") != expected_prefix.get("tail_sha256")
+        or before.get("tail") != expected_prefix.get("tail")
+    ):
+        raise AgentError("menu smoke event prefix changed after candidate replay")
+    payload: dict[str, object] = {
         "kind": "smoke_finished",
         "ok": ok,
         "report_body_sha256": report_body_sha256,
     }
+    if expected_final_row is not None:
+        if (
+            set(expected_final_row)
+            != {
+                "at",
+                "previous_event_sha256",
+                "kind",
+                "ok",
+                "report_body_sha256",
+                "event_sha256",
+            }
+            or expected_final_row.get("previous_event_sha256")
+            != before.get("tail_sha256")
+            or expected_final_row.get("kind") != "smoke_finished"
+            or expected_final_row.get("ok") is not ok
+            or expected_final_row.get("report_body_sha256")
+            != report_body_sha256
+        ):
+            raise AgentError("menu smoke planned final WAL row differs")
+        # append_event deliberately lets explicit event keys override its
+        # defaults.  Commit the exact timestamp that passed hypothetical
+        # replay instead of sampling a second, unvalidated final row.
+        payload["at"] = expected_final_row["at"]
     try:
-        return append_event(events, payload)
+        digest = append_event(events, payload)
+        if (
+            expected_final_row is not None
+            and digest != expected_final_row.get("event_sha256")
+        ):
+            raise AgentError("menu smoke committed final WAL digest differs")
+        return digest
     except Exception as append_error:
         try:
             after = validate_event_chain(events)
@@ -185,6 +229,9 @@ def _append_final_event_transactionally(
             and tail.get("ok") is ok
             and tail.get("report_body_sha256") == report_body_sha256
             and tail.get("event_sha256") == after.get("tail_sha256")
+            and (
+                expected_final_row is None or tail == expected_final_row
+            )
         ):
             try:
                 # Reading the just-written row can succeed from the page
@@ -212,35 +259,97 @@ def _fsync_existing_file(path: Path) -> None:
         os.fsync(output.fileno())
 
 
+def _final_report_temporary_is_proven_absent(path: Path) -> bool:
+    """Return true only when an exact filesystem lookup reports no entry."""
+    try:
+        path.lstat()
+    except FileNotFoundError:
+        return True
+    except OSError:
+        return False
+    return False
+
+
+def _discard_final_report_temporary(path: Path) -> None:
+    """Remove an unpublished report inode or fail before another attempt."""
+    unlink_error: OSError | None = None
+    try:
+        path.unlink(missing_ok=True)
+    except OSError as error:
+        unlink_error = error
+    if _final_report_temporary_is_proven_absent(path):
+        return
+    error = AgentError(
+        f"unpublished final menu report temporary remains: {path.name}"
+    )
+    if unlink_error is not None:
+        raise error from unlink_error
+    raise error
+
+
+def _publish_menu_provisional_report(
+    path: Path, report: dict[str, object]
+) -> None:
+    """Persist a plainly non-final report when no replayable seal is safe."""
+    report["finalized"] = False
+    report["ok"] = False
+    for field in (
+        "report_body_sha256",
+        "final_event_sha256",
+        "event_chain",
+    ):
+        report.pop(field, None)
+    _write_final_report_transactionally(path, report)
+
+
 def _write_final_report_transactionally(
     path: Path, report: dict[str, object]
 ) -> None:
-    """Publish one exact final report despite a before/after-commit I/O error."""
+    """Fsync an exact sibling temporary before atomically publishing it."""
+    raw = (json.dumps(report, ensure_ascii=False, indent=2) + "\n").encode(
+        "utf-8"
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
     first_error: Exception | None = None
     for _attempt in range(2):
+        temporary = path.with_name(
+            f".{path.name}.final-{uuid.uuid4().hex}.tmp"
+        )
         try:
-            write_json_atomic(path, report)
+            # A failure here must leave the previously published provisional
+            # report untouched.  Only a fully flushed and fsynced inode may be
+            # offered to os.replace.
+            with temporary.open("xb") as output:
+                output.write(raw)
+                output.flush()
+                os.fsync(output.fileno())
         except Exception as error:
             if first_error is None:
                 first_error = error
-        try:
-            persisted = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, json.JSONDecodeError):
-            persisted = None
-        if persisted != report:
+            # A leftover from one attempt is not harmless: a later successful
+            # publication would leave an unmanifested final-report candidate
+            # beside a GREEN report.  Prove removal before any retry.
+            _discard_final_report_temporary(temporary)
             continue
         try:
-            # write_json_atomic provides replacement atomicity, while this
-            # explicit barrier provides the durability needed by the final
-            # event/report pair.  A readable page-cache copy is insufficient.
-            _fsync_existing_file(path)
-            durable = json.loads(path.read_text(encoding="utf-8"))
-        except Exception as error:
-            if first_error is None:
-                first_error = error
-            continue
-        if durable == report:
+            os.replace(temporary, path)
             return
+        except Exception as error:
+            if first_error is None:
+                first_error = error
+            # Some Windows/filesystem wrappers can report an exception after
+            # ReplaceFile has committed.  Accept only that exact state: the
+            # fsynced source name is gone and the destination bytes are exact.
+            try:
+                committed = (
+                    _final_report_temporary_is_proven_absent(temporary)
+                    and path.read_bytes() == raw
+                )
+            except OSError:
+                committed = False
+            if committed:
+                return
+            _discard_final_report_temporary(temporary)
     if first_error is not None:
         raise first_error
     raise AgentError("final menu smoke report differs after atomic publication")
@@ -1792,10 +1901,78 @@ def _load_archived_ui_contract(
     return contract
 
 
+def _qualification_utc(value: object, label: str) -> datetime:
+    try:
+        parsed = datetime.fromisoformat(str(value))
+    except ValueError as error:
+        raise AgentError(f"menu smoke {label} timestamp differs") from error
+    if parsed.tzinfo is None or parsed.utcoffset() != timezone.utc.utcoffset(None):
+        raise AgentError(f"menu smoke {label} timestamp is not UTC")
+    return parsed
+
+
+def _legacy_normal_replay_is_non_authorizing_red(
+    report: dict[str, object], verified: dict[str, Path]
+) -> bool:
+    """Narrow v1 compatibility to historical menu runs with zero UI input."""
+    if (
+        report.get("format_version") != 1
+        or report.get("ok") is not False
+        or "navigation_attestation" in report
+        or "environment.json" not in verified
+    ):
+        return False
+    run_dir = verified["environment.json"].parent
+    try:
+        rows = [
+            json.loads(line)
+            for line in (run_dir / "events.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+        ]
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return False
+    # Seeing and persisting frames is non-authorizing.  Compatibility stops at
+    # the first durable input protocol row or successful lobby transition.
+    forbidden_events = {"bookmark_lobby_attested"}
+    if any(
+        row.get("kind") in forbidden_events
+        or str(row.get("kind", "")).startswith("ui_")
+        for row in rows
+    ):
+        return False
+    own_authorizing_artifacts = []
+    for relative in verified:
+        name = Path(relative).name.casefold()
+        if relative.startswith("artifacts/") and (
+            "action" in name
+            or "receipt" in name
+            or "navigation" in name
+        ):
+            own_authorizing_artifacts.append(relative)
+    return not own_authorizing_artifacts
+
+
 def _validate_archived_menu_qualification(
     report: dict[str, object], verified: dict[str, Path]
 ) -> None:
     qualification = report.get("qualification")
+    try:
+        normal_finished = _qualification_utc(
+            qualification.get("normal_finished_at")
+            if isinstance(qualification, dict)
+            else None,
+            "normal qualification finish",
+        )
+        crash_started = _qualification_utc(
+            qualification.get("crash_started_at")
+            if isinstance(qualification, dict)
+            else None,
+            "crash qualification start",
+        )
+    except AgentError:
+        raise
     if (
         not isinstance(qualification, dict)
         or set(qualification)
@@ -1810,20 +1987,19 @@ def _validate_archived_menu_qualification(
         != report.get("environment_sha256")
         or not isinstance(qualification.get("normal_finished_at"), str)
         or not isinstance(qualification.get("crash_started_at"), str)
-        or qualification["normal_finished_at"] >= qualification["crash_started_at"]
+        or normal_finished >= crash_started
     ):
         raise AgentError("menu smoke qualification envelope differs")
     expected = str(report.get("environment_sha256"))
     reports: dict[str, dict[str, object]] = {}
     from .crash_probe import validate_crash_report
 
-    for label, kind, validator_name in (
-        (
-            "normal",
-            "infrastructure_smoke",
-            "validate_smoke_report + menu semantic conjunction",
-        ),
-        ("crash", "crash_recovery_smoke", "validate_crash_report"),
+    legacy_normal_allowed = _legacy_normal_replay_is_non_authorizing_red(
+        report, verified
+    )
+    for label, kind in (
+        ("normal", "infrastructure_smoke"),
+        ("crash", "crash_recovery_smoke"),
     ):
         entry = qualification.get(label)
         if not isinstance(entry, dict) or set(entry) != {
@@ -1837,6 +2013,21 @@ def _validate_archived_menu_qualification(
             raise AgentError(f"menu smoke {label} qualification entry differs")
         run_id = entry.get("run_id")
         archive_path = entry.get("archive_path")
+        validator_name = entry.get("validator")
+        legacy_normal = (
+            label == "normal"
+            and validator_name == LEGACY_NORMAL_QUALIFICATION_VALIDATOR
+            and legacy_normal_allowed
+        )
+        expected_validator = (
+            NORMAL_V2_QUALIFICATION_VALIDATOR
+            if label == "normal" and not legacy_normal
+            else (
+                LEGACY_NORMAL_QUALIFICATION_VALIDATOR
+                if label == "normal"
+                else "validate_crash_report"
+            )
+        )
         expected_path = f"qualification/{label}/runs/{run_id}"
         report_ref = f"{expected_path}/report.json"
         events_ref = f"{expected_path}/events.jsonl"
@@ -1844,7 +2035,7 @@ def _validate_archived_menu_qualification(
             not isinstance(run_id, str)
             or not run_id
             or archive_path != expected_path
-            or entry.get("validator") != validator_name
+            or validator_name != expected_validator
             or entry.get("prelaunch_validation_passed") is not True
             or report_ref not in verified
             or events_ref not in verified
@@ -1855,11 +2046,18 @@ def _validate_archived_menu_qualification(
         nested_run = verified[report_ref].parent
         try:
             nested = json.loads(verified[report_ref].read_text(encoding="utf-8"))
-            replayed = (
-                _validate_normal_qualification(nested_run, expected)
-                if label == "normal"
-                else validate_crash_report(nested_run)
-            )
+            if label == "normal":
+                replayed = (
+                    _validate_normal_qualification(
+                        nested_run,
+                        expected,
+                        allow_legacy_v1_red_replay=True,
+                    )
+                    if legacy_normal
+                    else _validate_normal_qualification(nested_run, expected)
+                )
+            else:
+                replayed = validate_crash_report(nested_run)
         except (AgentError, OSError, UnicodeError, json.JSONDecodeError) as error:
             raise AgentError(
                 f"menu smoke {label} qualification replay failed: {error}"
@@ -1874,6 +2072,10 @@ def _validate_archived_menu_qualification(
             not isinstance(nested, dict)
             or nested.get("run_id") != run_id
             or nested.get("kind") != kind
+            or (
+                label == "normal"
+                and nested.get("format_version") != (1 if legacy_normal else 2)
+            )
             or nested.get("environment_sha256") != expected
             or nested.get("finalized") is not True
             or nested.get("ok") is not True
@@ -2342,7 +2544,11 @@ def _validate_engine_diagnostics_archive(
 
 
 def _validate_success_payload(
-    report: dict[str, object], run_dir: Path, verified: dict[str, Path]
+    report: dict[str, object],
+    run_dir: Path,
+    verified: dict[str, Path],
+    *,
+    event_rows: list[dict[str, object]] | None = None,
 ) -> None:
     forbidden_failure_fields = {
         "error",
@@ -2359,10 +2565,13 @@ def _validate_success_payload(
         )
     environment = _validate_archived_environment(report, verified)
     _validate_archived_menu_qualification(report, verified)
-    event_rows = [
-        json.loads(line)
-        for line in (run_dir / "events.jsonl").read_text(encoding="utf-8").splitlines()
-    ]
+    if event_rows is None:
+        event_rows = [
+            json.loads(line)
+            for line in (run_dir / "events.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+        ]
     postflight_rows = [
         row for row in event_rows if row.get("kind") == "postflight_attested"
     ]
@@ -2546,12 +2755,20 @@ def _validate_success_payload(
 
 
 def _validate_event_semantics(
-    report: dict[str, object], chain: dict[str, object], run_dir: Path
+    report: dict[str, object],
+    chain: dict[str, object],
+    run_dir: Path,
+    *,
+    event_rows: list[dict[str, object]] | None = None,
 ) -> None:
-    rows = [
-        json.loads(line)
-        for line in (run_dir / "events.jsonl").read_text(encoding="utf-8").splitlines()
-    ]
+    rows = event_rows
+    if rows is None:
+        rows = [
+            json.loads(line)
+            for line in (run_dir / "events.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+        ]
     for row in rows:
         at = row.get("at")
         if not isinstance(at, str) or re.fullmatch(
@@ -3485,12 +3702,20 @@ def _validate_red_postflight(
 
 
 def _validate_red_payload(
-    report: dict[str, object], run_dir: Path, verified: dict[str, Path]
+    report: dict[str, object],
+    run_dir: Path,
+    verified: dict[str, Path],
+    *,
+    event_rows: list[dict[str, object]] | None = None,
 ) -> None:
-    rows = [
-        json.loads(line)
-        for line in (run_dir / "events.jsonl").read_text(encoding="utf-8").splitlines()
-    ]
+    rows = event_rows
+    if rows is None:
+        rows = [
+            json.loads(line)
+            for line in (run_dir / "events.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+        ]
     kinds = [str(row.get("kind", "")) for row in rows]
     environment = _validate_archived_environment(report, verified)
     _validate_archived_menu_qualification(report, verified)
@@ -3608,11 +3833,9 @@ def _validate_red_payload(
             raise AgentError("menu smoke RED unproven cleanup boundary differs")
 
 
-def validate_menu_smoke_report(run_dir: Path) -> dict[str, object]:
-    run_dir = run_dir.resolve()
-    report = json.loads((run_dir / "report.json").read_text(encoding="utf-8"))
-    if not isinstance(report, dict):
-        raise AgentError("menu smoke report root is not an object")
+def _validate_menu_report_base_contract(
+    report: dict[str, object], run_dir: Path
+) -> None:
     if (
         report.get("format_version") != 1
         or report.get("kind") != MENU_KIND
@@ -3630,17 +3853,94 @@ def validate_menu_smoke_report(run_dir: Path) -> dict[str, object]:
         )
     ):
         raise AgentError("menu smoke report base contract differs")
-    chain = validate_event_chain(run_dir / "events.jsonl")
+
+
+def _validated_menu_event_rows(
+    path: Path,
+) -> tuple[list[dict[str, object]], dict[str, object]]:
+    """Read and validate one immutable-in-memory view of the WAL prefix."""
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except (OSError, UnicodeError) as error:
+        raise AgentError(f"menu smoke event chain cannot be read: {error}") from error
+    previous: str | None = None
+    rows: list[dict[str, object]] = []
+    for line_number, line in enumerate(lines, start=1):
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError as error:
+            raise AgentError(
+                f"menu smoke event chain line {line_number} is invalid JSON"
+            ) from error
+        if not isinstance(row, dict):
+            raise AgentError(
+                f"menu smoke event chain line {line_number} is not an object"
+            )
+        recorded = row.get("event_sha256")
+        unsigned = dict(row)
+        unsigned.pop("event_sha256", None)
+        if recorded != snapshot_digest(unsigned):
+            raise AgentError(
+                f"menu smoke event chain line {line_number} digest differs"
+            )
+        if row.get("previous_event_sha256") != previous:
+            raise AgentError(
+                f"menu smoke event chain line {line_number} previous link differs"
+            )
+        previous = str(recorded)
+        rows.append(row)
+    if not rows:
+        raise AgentError("menu smoke event chain is empty")
+    return rows, {
+        "event_count": len(rows),
+        "tail_sha256": previous,
+        "tail": rows[-1],
+    }
+
+
+def _validate_unsafe_cleanup_boundary(
+    report: dict[str, object],
+    verified: dict[str, Path],
+    rows: list[dict[str, object]],
+) -> None:
+    if report.get("unsafe_cleanup") is True and (
+        "protected_storage" in report
+        or "protected-after.json.gz" in verified
+        or report.get("production_tree_unchanged") is True
+        or "engine_diagnostics" in report
+        or "postflight_attested" in {row.get("kind") for row in rows}
+    ):
+        raise AgentError("unsafe menu smoke performed protected postflight")
+
+
+def _validate_finalized_menu_candidate(
+    report: dict[str, object],
+    run_dir: Path,
+    verified: dict[str, Path],
+    rows: list[dict[str, object]],
+    chain: dict[str, object],
+) -> None:
+    """Shared pure semantic replay for preseal, postappend, and public use."""
+    _validate_menu_report_base_contract(report, run_dir)
     validate_final_report_payload(report, chain)
     if report.get("event_chain") != {
         "event_count": chain["event_count"],
         "tail_sha256": chain["tail_sha256"],
     }:
         raise AgentError("menu smoke event-chain summary differs")
-    _validate_event_semantics(report, chain, run_dir)
-    verified = _verified_artifact_manifest(report, run_dir)
+    _validate_event_semantics(
+        report,
+        chain,
+        run_dir,
+        event_rows=rows,
+    )
     if report.get("ok") is True:
-        _validate_success_payload(report, run_dir, verified)
+        _validate_success_payload(
+            report,
+            run_dir,
+            verified,
+            event_rows=rows,
+        )
     elif (
         "error" not in report
         or not isinstance(report.get("error"), str)
@@ -3648,21 +3948,92 @@ def validate_menu_smoke_report(run_dir: Path) -> dict[str, object]:
     ):
         raise AgentError("menu smoke RED report lacks its error")
     else:
-        _validate_red_payload(report, run_dir, verified)
-    if report.get("unsafe_cleanup") is True and (
-        "protected_storage" in report
-        or "protected-after.json.gz" in verified
-        or report.get("production_tree_unchanged") is True
-        or "engine_diagnostics" in report
-        or "postflight_attested"
-        in {
-            json.loads(line).get("kind")
-            for line in (run_dir / "events.jsonl")
-            .read_text(encoding="utf-8")
-            .splitlines()
-        }
-    ):
-        raise AgentError("unsafe menu smoke performed protected postflight")
+        _validate_red_payload(
+            report,
+            run_dir,
+            verified,
+            event_rows=rows,
+        )
+    _validate_unsafe_cleanup_boundary(report, verified, rows)
+
+
+def _validate_preseal_candidate(
+    report: dict[str, object],
+    run_dir: Path,
+    verified: dict[str, Path],
+    prefix_rows: list[dict[str, object]],
+    prefix_chain: dict[str, object],
+    *,
+    ok: bool,
+) -> tuple[str, dict[str, object]]:
+    """Replay the exact hypothetical final report without writing its WAL row."""
+    body_hash = _report_body_sha256(report)
+    final_row: dict[str, object] = {
+        "at": utc_now(),
+        "previous_event_sha256": prefix_chain.get("tail_sha256"),
+        "kind": "smoke_finished",
+        "ok": ok,
+        "report_body_sha256": body_hash,
+    }
+    final_row["event_sha256"] = snapshot_digest(final_row)
+    candidate_rows = [
+        json.loads(json.dumps(row, ensure_ascii=False)) for row in prefix_rows
+    ] + [final_row]
+    candidate_chain = {
+        "event_count": len(candidate_rows),
+        "tail_sha256": final_row["event_sha256"],
+        "tail": final_row,
+    }
+    candidate = json.loads(json.dumps(report, ensure_ascii=False))
+    candidate["report_body_sha256"] = body_hash
+    candidate["final_event_sha256"] = final_row["event_sha256"]
+    candidate["event_chain"] = {
+        "event_count": candidate_chain["event_count"],
+        "tail_sha256": candidate_chain["tail_sha256"],
+    }
+    candidate["finalized"] = True
+    candidate["ok"] = ok
+
+    _validate_finalized_menu_candidate(
+        candidate,
+        run_dir,
+        verified,
+        candidate_rows,
+        candidate_chain,
+    )
+    return body_hash, final_row
+
+
+def validate_menu_smoke_report(run_dir: Path) -> dict[str, object]:
+    run_dir = run_dir.resolve()
+    report_path = run_dir / "report.json"
+    report_bytes = report_path.read_bytes()
+    report = json.loads(report_bytes.decode("utf-8"))
+    if not isinstance(report, dict):
+        raise AgentError("menu smoke report root is not an object")
+    chain = validate_event_chain(run_dir / "events.jsonl")
+    verified = _verified_artifact_manifest(report, run_dir)
+    event_rows, local_chain = _validated_menu_event_rows(
+        run_dir / "events.jsonl"
+    )
+    if local_chain != chain:
+        raise AgentError("menu smoke event chain changed during public replay")
+    _validate_finalized_menu_candidate(
+        report, run_dir, verified, event_rows, chain
+    )
+    # Public replay only claims stability across its own two samples.  The
+    # archive is unkeyed, so every later consumer must repeat this replay; no
+    # return value grants ongoing authorization after external byte changes.
+    if report_path.read_bytes() != report_bytes:
+        raise AgentError("menu smoke report changed during public replay")
+    final_verified = _verified_artifact_manifest(report, run_dir)
+    if final_verified != verified:
+        raise AgentError("menu smoke artifact set changed during public replay")
+    final_rows, final_chain = _validated_menu_event_rows(
+        run_dir / "events.jsonl"
+    )
+    if final_rows != event_rows or final_chain != chain:
+        raise AgentError("menu smoke event chain changed during public replay")
     return report
 
 
@@ -3812,10 +4183,10 @@ def _run_menu_scenario(
     }
 
 
-def _validate_normal_qualification(
+def _validate_legacy_normal_qualification(
     run_dir: Path, expected_environment_sha256: str
 ) -> dict[str, object]:
-    """Apply the semantic checks the legacy normal replay validator omits."""
+    """Replay the historical v1 conjunction for non-authorizing RED archives."""
     from .runtime import validate_smoke_report
 
     report = validate_smoke_report(run_dir)
@@ -3931,6 +4302,46 @@ def _validate_normal_qualification(
     return report
 
 
+def _validate_normal_qualification(
+    run_dir: Path,
+    expected_environment_sha256: str,
+    *,
+    allow_legacy_v1_red_replay: bool = False,
+) -> dict[str, object]:
+    """Require a self-contained v2 GREEN unless replaying a historical RED.
+
+    The legacy branch is deliberately opt-in and is never used by the live
+    qualification scanner or by the producer that archives a new menu run.
+    """
+    from .runtime import validate_smoke_report
+
+    report = validate_smoke_report(run_dir)
+    version = report.get("format_version")
+    if version == 1:
+        if not allow_legacy_v1_red_replay:
+            raise AgentError(
+                "normal qualification requires the self-contained v2 contract"
+            )
+        return _validate_legacy_normal_qualification(
+            run_dir, expected_environment_sha256
+        )
+    if version != 2:
+        raise AgentError("normal qualification format version differs")
+    if (
+        report.get("run_id") != run_dir.resolve().name
+        or report.get("run_dir") != "."
+        or report.get("kind") != "infrastructure_smoke"
+        or report.get("acceptance_claim")
+        != "isolated_single_mod_visible_main_menu_only"
+        or report.get("environment_sha256") != expected_environment_sha256
+        or report.get("finalized") is not True
+        or report.get("ok") is not True
+        or report.get("valid_score_episode") is not False
+    ):
+        raise AgentError("normal v2 qualification semantic conjunction differs")
+    return report
+
+
 def _require_menu_qualification(
     spec: EnvironmentSpec, manifest: dict[str, object]
 ) -> dict[str, object]:
@@ -3975,15 +4386,20 @@ def _require_menu_qualification(
         raise AgentError(
             "menu smoke requires a same-environment ordinary smoke GREEN before input"
         )
-    normal_finished = str(normal[1].get("finished_at", ""))
-    crash = next(
-        (
-            item
-            for item in crashes
-            if str(item[1].get("started_at", "")) > normal_finished
-        ),
-        None,
+    normal_finished = _qualification_utc(
+        normal[1].get("finished_at"), "live normal qualification finish"
     )
+    crash = None
+    for item in crashes:
+        try:
+            crash_started = _qualification_utc(
+                item[1].get("started_at"), "live crash qualification start"
+            )
+        except AgentError:
+            continue
+        if crash_started > normal_finished:
+            crash = item
+            break
     if crash is None:
         raise AgentError(
             "menu smoke requires a later same-environment post-resume crash-smoke GREEN before input"
@@ -4036,7 +4452,7 @@ def _archive_menu_qualification(
             "archive_path": normal_relative.as_posix(),
             "report_sha256": sha256_file(normal_copy / "report.json"),
             "events_sha256": sha256_file(normal_copy / "events.jsonl"),
-            "validator": "validate_smoke_report + menu semantic conjunction",
+            "validator": NORMAL_V2_QUALIFICATION_VALIDATOR,
             "prelaunch_validation_passed": True,
         },
         "crash": {
@@ -4366,27 +4782,115 @@ def _menu_smoke_locked(
         if secondary_errors:
             report["secondary_errors"] = secondary_errors
         report["finished_at"] = utc_now()
-        report["artifacts"] = _artifact_manifest(run_dir)
-
-        if primary_error is None:
-            try:
-                verified = {
-                    str(item["path"]): run_dir / str(item["path"])
-                    for item in report["artifacts"]
-                }
-                _validate_success_payload(report, run_dir, verified)
-            except BaseException as error:
-                record_error(error, "pre-final validation")
-                if secondary_errors:
-                    report["secondary_errors"] = secondary_errors
+        try:
+            initial_manifest = _artifact_manifest(run_dir)
+            report["artifacts"] = initial_manifest
+        except BaseException as error:
+            record_error(error, "initial artifact manifest")
+            if secondary_errors:
+                report["secondary_errors"] = secondary_errors
+            _publish_menu_provisional_report(run_dir / "report.json", report)
+            raise
 
         candidate_ok = primary_error is None
-        body_hash = _report_body_sha256(report)
+        candidate_validation_error: BaseException | None = None
+        candidate_body_hash: str | None = None
+        planned_final_row: dict[str, object] | None = None
+        prefix_rows: list[dict[str, object]] | None = None
+        prefix_chain: dict[str, object] | None = None
+        try:
+            initial_verified = _verified_artifact_manifest(report, run_dir)
+            prefix_rows, prefix_chain = _validated_menu_event_rows(events)
+            candidate_body_hash, planned_final_row = (
+                _validate_preseal_candidate(
+                    report,
+                    run_dir,
+                    initial_verified,
+                    prefix_rows,
+                    prefix_chain,
+                    ok=candidate_ok,
+                )
+            )
+        except BaseException as error:
+            candidate_validation_error = error
+            record_error(error, "pre-final candidate replay")
+            if secondary_errors:
+                report["secondary_errors"] = secondary_errors
+
+        try:
+            # Candidate replay may itself observe mutable artifact bytes.  A
+            # fresh, fully verified inventory is the only generation that may
+            # be bound into the final RED/GREEN report.
+            final_manifest = _artifact_manifest(run_dir)
+            report["artifacts"] = final_manifest
+            final_verified = _verified_artifact_manifest(report, run_dir)
+        except BaseException as error:
+            record_error(error, "final artifact manifest")
+            if secondary_errors:
+                report["secondary_errors"] = secondary_errors
+            _publish_menu_provisional_report(run_dir / "report.json", report)
+            raise
+        if final_manifest != initial_manifest:
+            stability_error = AgentError(
+                "menu smoke artifact bytes changed during candidate replay"
+            )
+            record_error(stability_error, "pre-final artifact stability")
+            if secondary_errors:
+                report["secondary_errors"] = secondary_errors
+            _publish_menu_provisional_report(run_dir / "report.json", report)
+            raise stability_error
+        if candidate_validation_error is not None:
+            # Neither a GREEN nor an operational RED may be sealed if its
+            # exact hypothetical public replay failed.
+            _publish_menu_provisional_report(run_dir / "report.json", report)
+            raise candidate_validation_error
+
+        try:
+            final_prefix_rows, final_prefix_chain = _validated_menu_event_rows(
+                events
+            )
+        except BaseException as error:
+            record_error(error, "final event-prefix validation")
+            if secondary_errors:
+                report["secondary_errors"] = secondary_errors
+            _publish_menu_provisional_report(run_dir / "report.json", report)
+            raise
+        if (
+            prefix_rows is None
+            or prefix_chain is None
+            or final_prefix_rows != prefix_rows
+            or final_prefix_chain != prefix_chain
+        ):
+            prefix_error = AgentError(
+                "menu smoke event prefix changed during candidate replay"
+            )
+            record_error(prefix_error, "pre-final event stability")
+            if secondary_errors:
+                report["secondary_errors"] = secondary_errors
+            _publish_menu_provisional_report(run_dir / "report.json", report)
+            raise prefix_error
+        if (
+            candidate_body_hash is None
+            or planned_final_row is None
+            or _report_body_sha256(report) != candidate_body_hash
+        ):
+            body_error = AgentError(
+                "menu smoke report body changed after candidate replay"
+            )
+            record_error(body_error, "pre-final report stability")
+            if secondary_errors:
+                report["secondary_errors"] = secondary_errors
+            _publish_menu_provisional_report(run_dir / "report.json", report)
+            raise body_error
+
+        body_hash = candidate_body_hash
         report["report_body_sha256"] = body_hash
         final_event = _append_final_event_transactionally(
             events,
             ok=candidate_ok,
             report_body_sha256=body_hash,
+            expected_prefix=final_prefix_chain,
+            expected_final_row=planned_final_row,
         )
         report["final_event_sha256"] = final_event
         report["finalized"] = True
@@ -4396,9 +4900,60 @@ def _menu_smoke_locked(
             "event_count": chain["event_count"],
             "tail_sha256": chain["tail_sha256"],
         }
-        validate_final_report_payload(report, chain)
+        try:
+            actual_rows, actual_chain = _validated_menu_event_rows(events)
+            if (
+                actual_chain != chain
+                or actual_chain.get("tail") != planned_final_row
+            ):
+                raise AgentError(
+                    "menu smoke actual final WAL row differs from preseal replay"
+                )
+            # Re-hash the complete artifact inventory and replay the exact
+            # committed row/report generation before publishing report.json.
+            postappend_verified = _verified_artifact_manifest(report, run_dir)
+            if postappend_verified != final_verified:
+                raise AgentError(
+                    "menu smoke artifact inventory changed after final WAL append"
+                )
+            _validate_finalized_menu_candidate(
+                report,
+                run_dir,
+                postappend_verified,
+                actual_rows,
+                actual_chain,
+            )
+        except BaseException as error:
+            record_error(error, "post-append candidate replay")
+            if secondary_errors:
+                report["secondary_errors"] = secondary_errors
+            _publish_menu_provisional_report(run_dir / "report.json", report)
+            raise
         _write_final_report_transactionally(run_dir / "report.json", report)
-        validated = validate_menu_smoke_report(run_dir)
+        try:
+            validated = validate_menu_smoke_report(run_dir)
+        except BaseException as error:
+            # Publication and public replay are necessarily two operations.
+            # If bytes drift in that interval, make the already published
+            # report plainly non-authorizing before preserving the replay
+            # failure.  This is best effort; every later consumer must still
+            # perform its own public replay under the unkeyed trust model.
+            record_error(error, "published final report replay")
+            if secondary_errors:
+                report["secondary_errors"] = secondary_errors
+            try:
+                _publish_menu_provisional_report(
+                    run_dir / "report.json", report
+                )
+            except BaseException as downgrade_error:
+                try:
+                    error.add_note(
+                        "provisional downgrade also failed: "
+                        f"{type(downgrade_error).__name__}: {downgrade_error}"
+                    )
+                except (AttributeError, TypeError):
+                    pass
+            raise
     except BaseException:
         # Finalization/validation is best effort for fatal asynchronous exits.
         # Never replace the original KeyboardInterrupt/SystemExit-equivalent.

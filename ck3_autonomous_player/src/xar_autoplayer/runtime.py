@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import gzip
+import math
 import os
 import re
 import shutil
@@ -18,8 +19,10 @@ import uuid
 from pathlib import Path
 
 from .environment import (
+    EXPECTED_GAME_VERSION,
     EXPECTED_MOD_NAME,
     OUTER_DESCRIPTOR_REF,
+    _contract_digest,
     EnvironmentSpec,
     ck3_process_inventory,
     ck3_processes,
@@ -28,6 +31,7 @@ from .environment import (
     is_relative_to,
     mod_source_fingerprint,
     same_process_creation_time,
+    sha256_file,
     snapshot_digest,
     tree_snapshot,
     verify_profile,
@@ -37,11 +41,34 @@ from .environment import (
 from .errors import AgentError, UnsafeCleanupError
 from .integrity import protected_snapshot, verify_protected_unchanged
 from .locking import exclusive_launch_lock, exclusive_state_lock
+from .rules import MOD_RULES
 
 
 MAIN_MENU_REGION = (0.18, 0.28, 0.30, 0.50)
 EXPECTED_RESOLUTION = (2560, 1440)
 PROCESS_WATCHDOG = Path(__file__).with_name("process_watchdog.py")
+NORMAL_REPORT_BINDING_EXCLUSIONS = frozenset(
+    {
+        "finalized",
+        "ok",
+        "final_event_sha256",
+        "event_chain",
+        "report_body_sha256",
+    }
+)
+NORMAL_GREEN_EVENT_ORDER = (
+    "smoke_started",
+    "ck3_launched",
+    "visible_main_menu_attested",
+    "single_mod_runtime_attested",
+    "tracked_process_stopped",
+    "smoke_finished",
+)
+NORMAL_REPLAY_TRUST_MODEL = {
+    "integrity": "unkeyed_sha256",
+    "claim": "archive_schema_and_internal_consistency_only",
+    "historical_execution_authenticity_proven": False,
+}
 
 
 @dataclass
@@ -215,13 +242,1431 @@ def validate_final_report_payload(
         raise AgentError("final report result differs from its final event")
 
 
+def _normal_report_body_sha256(report: dict[str, object]) -> str:
+    """Hash every normal-report field that precedes the final WAL commit."""
+    return snapshot_digest(
+        {
+            key: value
+            for key, value in report.items()
+            if key not in NORMAL_REPORT_BINDING_EXCLUSIONS
+        }
+    )
+
+
+def _fsync_existing_file(path: Path) -> None:
+    with path.open("r+b") as output:
+        output.flush()
+        os.fsync(output.fileno())
+
+
+def _append_normal_final_event_transactionally(
+    events: Path, *, ok: bool, report_body_sha256: str
+) -> str:
+    """Commit one final event, recovering only an exact after-fsync success."""
+    before = validate_event_chain(events)
+    payload = {
+        "kind": "smoke_finished",
+        "ok": ok,
+        "report_body_sha256": report_body_sha256,
+    }
+    try:
+        return append_event(events, payload)
+    except Exception as append_error:
+        try:
+            after = validate_event_chain(events)
+        except BaseException:
+            raise
+        tail = after.get("tail")
+        if (
+            after.get("event_count") == int(before["event_count"]) + 1
+            and isinstance(tail, dict)
+            and set(tail)
+            == {
+                "at",
+                "previous_event_sha256",
+                "kind",
+                "ok",
+                "report_body_sha256",
+                "event_sha256",
+            }
+            and tail.get("previous_event_sha256") == before.get("tail_sha256")
+            and tail.get("kind") == "smoke_finished"
+            and tail.get("ok") is ok
+            and tail.get("report_body_sha256") == report_body_sha256
+            and tail.get("event_sha256") == after.get("tail_sha256")
+        ):
+            try:
+                _fsync_existing_file(events)
+                durable = validate_event_chain(events)
+            except Exception as barrier_error:
+                raise append_error from barrier_error
+            if (
+                durable.get("event_count") == after.get("event_count")
+                and durable.get("tail_sha256") == after.get("tail_sha256")
+                and durable.get("tail") == tail
+            ):
+                return str(tail["event_sha256"])
+        raise
+
+
+def _write_normal_final_report_transactionally(
+    path: Path, report: dict[str, object]
+) -> None:
+    """Pre-barrier exact bytes, then atomically publish the final report.
+
+    A post-replace fsync can report failure after a GREEN is already visible.
+    Instead, durability of the complete candidate is established on a private
+    same-directory file.  Only then may replacement make those bytes public.
+    """
+    raw = (json.dumps(report, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    temporary = path.with_name(path.name + ".final.tmp")
+    if temporary.exists():
+        raise AgentError("normal smoke final report temporary already exists")
+    try:
+        with temporary.open("xb") as output:
+            output.write(raw)
+            output.flush()
+            os.fsync(output.fileno())
+    except Exception as barrier_error:
+        temporary.unlink(missing_ok=True)
+        raise AgentError(
+            f"normal smoke final report pre-publication barrier failed: {barrier_error}"
+        ) from barrier_error
+    try:
+        os.replace(temporary, path)
+    except Exception as replace_error:
+        # An injected wrapper can raise after the operating system committed
+        # the replacement.  The source bytes were already fsynced, so exact
+        # destination equality is sufficient to reconcile that one case.
+        try:
+            persisted = path.read_bytes()
+        except OSError:
+            persisted = b""
+        if persisted == raw and not temporary.exists():
+            return
+        raise AgentError(
+            f"normal smoke final report replacement failed: {replace_error}"
+        ) from replace_error
+    if path.read_bytes() != raw:
+        raise AgentError("normal smoke final report bytes differ after replacement")
+
+
+def _normal_run_reference(path: Path, run_dir: Path) -> str:
+    resolved = path.resolve()
+    root = run_dir.resolve()
+    if not is_relative_to(resolved, root):
+        raise AgentError(f"normal smoke artifact escaped its run: {resolved}")
+    return resolved.relative_to(root).as_posix()
+
+
+def _normal_artifact_manifest(run_dir: Path) -> list[dict[str, object]]:
+    """Return the complete immutable file inventory except its two seals."""
+    root = run_dir.resolve()
+    entries: list[dict[str, object]] = []
+    for path in sorted(root.rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(root).as_posix()
+        if relative in {"events.jsonl", "report.json"}:
+            continue
+        if path.is_symlink() or not is_relative_to(path.resolve(), root):
+            raise AgentError(f"normal smoke artifact escaped its run: {relative}")
+        entries.append(
+            {
+                "path": relative,
+                "size": path.stat().st_size,
+                "sha256": sha256_file(path),
+            }
+        )
+    if len({str(item["path"]) for item in entries}) != len(entries):
+        raise AgentError("normal smoke artifact manifest contains duplicate paths")
+    return entries
+
+
+def _verified_normal_artifact_manifest(
+    report: dict[str, object], run_dir: Path
+) -> dict[str, Path]:
+    raw_manifest = report.get("artifacts")
+    if not isinstance(raw_manifest, list) or not raw_manifest:
+        raise AgentError("normal smoke artifact manifest is missing")
+    root = run_dir.resolve()
+    verified: dict[str, Path] = {}
+    previous = ""
+    for index, entry in enumerate(raw_manifest):
+        if not isinstance(entry, dict) or set(entry) != {"path", "size", "sha256"}:
+            raise AgentError(f"normal smoke artifact entry {index} differs")
+        relative = entry.get("path")
+        size = entry.get("size")
+        digest = entry.get("sha256")
+        if (
+            not isinstance(relative, str)
+            or not relative
+            or "\\" in relative
+            or relative.startswith("/")
+            or Path(relative).is_absolute()
+            or ".." in Path(relative).parts
+            or relative <= previous
+            or type(size) is not int
+            or size < 0
+            or not re.fullmatch(r"[0-9a-f]{64}", str(digest))
+        ):
+            raise AgentError(f"normal smoke artifact entry {index} differs")
+        candidate = root / Path(relative)
+        path = candidate.resolve()
+        if (
+            not is_relative_to(path, root)
+            or candidate.is_symlink()
+            or not path.is_file()
+            or path.stat().st_size != size
+            or sha256_file(path) != digest
+        ):
+            raise AgentError(f"normal smoke artifact {relative} differs")
+        verified[relative] = path
+        previous = relative
+    actual = {
+        path.relative_to(root).as_posix()
+        for path in root.rglob("*")
+        if path.is_file()
+        and path.relative_to(root).as_posix() not in {"events.jsonl", "report.json"}
+    }
+    if actual != set(verified):
+        raise AgentError("normal smoke artifact manifest is not the complete run inventory")
+    return verified
+
+
+def _normal_artifact_path(
+    verified: dict[str, Path], reference: object, label: str
+) -> Path:
+    if not isinstance(reference, str) or reference not in verified:
+        raise AgentError(f"normal smoke {label} reference differs")
+    return verified[reference]
+
+
+def _archive_normal_debug_prefix(
+    spec: EnvironmentSpec,
+    debug_evidence: object,
+    artifacts: Path,
+    archive_name: str,
+) -> dict[str, object]:
+    """Freeze the exact debug.log prefix used by one live attestation."""
+    if not isinstance(debug_evidence, dict):
+        raise AgentError("runtime load attestation lacks debug prefix metadata")
+    source = Path(str(debug_evidence.get("path", ""))).resolve()
+    expected_source = (spec.profile_dir / "logs" / "debug.log").resolve()
+    prefix_size = debug_evidence.get("captured_prefix_size")
+    expected_hash = str(debug_evidence.get("captured_prefix_sha256", ""))
+    if (
+        source != expected_source
+        or type(prefix_size) is not int
+        or prefix_size <= 0
+        or not re.fullmatch(r"[0-9a-f]{64}", expected_hash)
+    ):
+        raise AgentError("runtime load attestation debug prefix metadata differs")
+    raw = source.read_bytes()
+    if len(raw) < prefix_size:
+        raise AgentError("runtime debug prefix is shorter than its attestation")
+    prefix = raw[:prefix_size]
+    if hashlib.sha256(prefix).hexdigest() != expected_hash:
+        raise AgentError("runtime debug prefix changed before archival")
+    destination = artifacts / archive_name
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_name(destination.name + ".tmp")
+    temporary.write_bytes(prefix)
+    os.replace(temporary, destination)
+    archived = json.loads(json.dumps(debug_evidence, ensure_ascii=False))
+    archived.pop("path", None)
+    archived["archive_path"] = f"artifacts/{archive_name}"
+    archived["archive_sha256"] = sha256_file(destination)
+    return archived
+
+
+def _normalize_visual_references(
+    evidence: dict[str, object], run_dir: Path
+) -> dict[str, object]:
+    archived = json.loads(json.dumps(evidence, ensure_ascii=False))
+    frames = archived.get("stable_frame_evidence")
+    if not isinstance(frames, list):
+        raise AgentError("visible main-menu evidence lacks stable frames")
+    for frame in frames:
+        if not isinstance(frame, dict):
+            raise AgentError("visible main-menu frame evidence differs")
+        for field in ("screenshot", "ocr"):
+            frame[field] = _normal_run_reference(Path(str(frame.get(field, ""))), run_dir)
+    for field in ("screenshot", "ocr"):
+        archived[field] = _normal_run_reference(
+            Path(str(archived.get(field, ""))), run_dir
+        )
+    return archived
+
+
+def _normalize_diagnostic_references(
+    evidence: dict[str, object], run_dir: Path
+) -> dict[str, object]:
+    archived = json.loads(json.dumps(evidence, ensure_ascii=False))
+    logs = archived.get("logs")
+    if not isinstance(logs, dict):
+        raise AgentError("engine diagnostics log inventory differs")
+    for record in logs.values():
+        if isinstance(record, dict) and record.get("present") is True:
+            record["path"] = _normal_run_reference(
+                Path(str(record.get("path", ""))), run_dir
+            )
+    return archived
+
+
 def validate_smoke_report(run_dir: Path) -> dict[str, object]:
     report = json.loads((run_dir / "report.json").read_text(encoding="utf-8"))
     if not isinstance(report, dict):
         raise AgentError("smoke report root is not an object")
     chain = validate_event_chain(run_dir / "events.jsonl")
     validate_final_report_payload(report, chain)
+    # Version 1 is the historical shallow contract used by immutable normal and
+    # menu reports.  Never reinterpret those archives under the stronger v2
+    # schema; new ordinary smoke reports are self-contained and replayed below.
+    if report.get("format_version") == 1:
+        return report
+    if report.get("format_version") != 2:
+        raise AgentError("unsupported smoke report format version")
+    _validate_normal_v2_report(report, run_dir, chain)
     return report
+
+
+def _validate_normal_release_manifest(
+    manifest: object, environment: dict[str, object]
+) -> None:
+    if not isinstance(manifest, dict) or set(manifest) != {
+        "files",
+        "format_version",
+        "git_sha",
+        "git_tag",
+        "mod_version",
+        "workshop_item_id",
+    }:
+        raise AgentError("normal smoke archived production manifest schema differs")
+    mod = environment.get("mod")
+    identity = mod.get("release_identity") if isinstance(mod, dict) else None
+    if (
+        not isinstance(mod, dict)
+        or not isinstance(identity, dict)
+        or manifest.get("format_version") != identity.get("format_version")
+        or manifest.get("git_sha") != mod.get("git_revision")
+        or manifest.get("git_tag") != identity.get("git_tag")
+        or manifest.get("mod_version") != identity.get("mod_version")
+        or manifest.get("workshop_item_id") != identity.get("workshop_item_id")
+    ):
+        raise AgentError("normal smoke archived production manifest identity differs")
+    files = manifest.get("files")
+    if not isinstance(files, list) or len(files) < 4:
+        raise AgentError("normal smoke archived production file inventory differs")
+    paths: list[str] = []
+    projected: dict[str, dict[str, object]] = {}
+    for entry in files:
+        if not isinstance(entry, dict) or set(entry) != {"path", "sha256", "size"}:
+            raise AgentError("normal smoke archived production file entry differs")
+        relative = entry.get("path")
+        size = entry.get("size")
+        digest = entry.get("sha256")
+        if (
+            not isinstance(relative, str)
+            or not relative
+            or "\\" in relative
+            or Path(relative).is_absolute()
+            or ".." in Path(relative).parts
+            or type(size) is not int
+            or size < 0
+            or not re.fullmatch(r"[0-9a-f]{64}", str(digest))
+        ):
+            raise AgentError("normal smoke archived production file entry differs")
+        paths.append(relative)
+        projected[relative] = {"size": size, "sha256": digest}
+    if paths != sorted(paths) or len(paths) != len(set(paths)):
+        raise AgentError("normal smoke archived production paths differ")
+    if not {
+        "descriptor.mod",
+        "common/game_rules/xar_game_rules.txt",
+        "common/on_action/eternal_recurrence_on_actions.txt",
+        "events/xar_events.txt",
+    } <= set(paths):
+        raise AgentError("normal smoke archived production manifest lacks runtime files")
+    if (
+        len(files) != mod.get("production_file_count")
+        or snapshot_digest(projected) != mod.get("production_tree_sha256")
+    ):
+        raise AgentError("normal smoke archived production tree differs")
+
+
+def _validate_normal_environment(
+    report: dict[str, object], verified: dict[str, Path]
+) -> dict[str, object]:
+    environment_path = _normal_artifact_path(
+        verified, "environment.json", "environment archive"
+    )
+    production_path = _normal_artifact_path(
+        verified, "production.manifest.json", "production manifest archive"
+    )
+    try:
+        environment = json.loads(environment_path.read_text(encoding="utf-8"))
+        production = json.loads(production_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AgentError(f"normal smoke environment archive cannot be parsed: {error}") from error
+    if (
+        not isinstance(environment, dict)
+        or environment.get("environment_sha256") != _contract_digest(environment)
+        or environment.get("environment_sha256") != report.get("environment_sha256")
+    ):
+        raise AgentError("normal smoke archived environment digest differs")
+    state_dir = Path(str(environment.get("state_dir", "")))
+    profile_dir = Path(str(environment.get("profile_dir", "")))
+    game = environment.get("game")
+    mod = environment.get("mod")
+    load_profile = environment.get("load_profile")
+    display = environment.get("display")
+    legality = environment.get("legality")
+    runtime = environment.get("agent_runtime")
+    runtime_git = runtime.get("git") if isinstance(runtime, dict) else None
+    provenance = mod.get("source_provenance") if isinstance(mod, dict) else None
+    dlc = environment.get("dlc")
+    allowed_mounts = dlc.get("allowed_mount_roots") if isinstance(dlc, dict) else None
+    rules = environment.get("rules")
+    profile = rules.get("profile") if isinstance(rules, dict) else None
+    expected_mod_profile = [
+        {"rule": rule, "setting": setting} for rule, setting in MOD_RULES
+    ]
+    if (
+        not state_dir.is_absolute()
+        or not profile_dir.is_absolute()
+        or profile_dir.resolve() != (state_dir / "profile").resolve()
+        or not isinstance(game, dict)
+        or game.get("raw_version") != EXPECTED_GAME_VERSION
+        or game.get("debug_mode") is not False
+        or not isinstance(mod, dict)
+        or mod.get("name") != EXPECTED_MOD_NAME
+        or Path(str(mod.get("production_path", ""))).resolve()
+        != (profile_dir / "mod-content" / "xar-production").resolve()
+        or mod.get("production_manifest_sha256") != sha256_file(production_path)
+        or not isinstance(load_profile, dict)
+        or load_profile.get("enabled_mods") != [OUTER_DESCRIPTOR_REF]
+        or load_profile.get("disabled_dlcs") != []
+        or not isinstance(display, dict)
+        or display.get("language") != "l_simp_chinese"
+        or display.get("resolution") != [2560, 1440]
+        or display.get("mode") != "fullscreen"
+        or not isinstance(legality, dict)
+        or legality.get("production_only") is not True
+        or legality.get("single_mod") is not True
+        or legality.get("visible_ui_only_for_decisions") is not True
+        or legality.get("save_rollback") is not False
+        or legality.get("runtime_logs")
+        != "environment attestation only; never policy input"
+        or not isinstance(rules, dict)
+        or rules.get("declared_vanilla_rule_count") != 81
+        or rules.get("ironman") is not False
+        or not isinstance(profile, list)
+        or len(profile) != 84
+        or profile[81:] != expected_mod_profile
+        or any(
+            not isinstance(entry, dict)
+            or set(entry) != {"rule", "setting"}
+            or not isinstance(entry.get("rule"), str)
+            or not entry["rule"]
+            or not isinstance(entry.get("setting"), str)
+            or not entry["setting"]
+            for entry in profile
+        )
+        or len({entry["rule"] for entry in profile}) != 84
+        or len({entry["setting"] for entry in profile}) != 84
+        or any(entry["rule"].startswith("xar_") for entry in profile[:81])
+        or rules.get("profile_sha256")
+        != hashlib.sha256(
+            json.dumps(
+                profile, ensure_ascii=True, separators=(",", ":")
+            ).encode("ascii")
+        ).hexdigest()
+        or not isinstance(runtime, dict)
+        or not isinstance(runtime_git, dict)
+        or runtime_git.get("all_files_tracked") is not True
+        or runtime_git.get("dirty") is not False
+        or runtime_git.get("untracked_runtime_files") != []
+        or runtime_git.get("status") != []
+        or not re.fullmatch(
+            r"[0-9a-f]{40}", str(runtime_git.get("selected_runtime_revision", ""))
+        )
+        or not isinstance(provenance, dict)
+        or provenance.get("git_dirty") is not False
+        or provenance.get("all_release_files_tracked") is not True
+        or provenance.get("untracked_release_files") != []
+        or provenance.get("git_status") != []
+        or provenance.get("git_revision") != mod.get("git_revision")
+        or not isinstance(allowed_mounts, list)
+        or allowed_mounts != sorted(set(allowed_mounts))
+        or any(not isinstance(item, str) or not Path(item).is_absolute() for item in allowed_mounts)
+        or snapshot_digest(allowed_mounts) != dlc.get("allowed_mount_roots_sha256")
+        or len(allowed_mounts) != dlc.get("installed_descriptor_count")
+        or not re.fullmatch(
+            r"[0-9a-f]{64}", str(dlc.get("installed_descriptors_sha256", ""))
+        )
+    ):
+        raise AgentError("normal smoke archived environment semantics differ")
+    runtime_copy = dict(runtime)
+    runtime_hash = runtime_copy.pop("sha256", None)
+    files = runtime.get("files")
+    if (
+        runtime_hash != snapshot_digest(runtime_copy)
+        or not isinstance(files, list)
+        or runtime.get("file_count") != len(files)
+        or any(
+            not isinstance(item, dict)
+            or set(item) != {"path", "size", "sha256"}
+            or not isinstance(item.get("path"), str)
+            or type(item.get("size")) is not int
+            or item["size"] < 0
+            or not re.fullmatch(r"[0-9a-f]{64}", str(item.get("sha256", "")))
+            for item in files
+        )
+        or [item["path"] for item in files] != sorted({item["path"] for item in files})
+    ):
+        raise AgentError("normal smoke archived runtime fingerprint differs")
+    _validate_normal_release_manifest(production, environment)
+    return environment
+
+
+def _validate_normal_debug_prefix(
+    debug: object,
+    verified: dict[str, Path],
+    label: str,
+    expected_reference: str,
+) -> tuple[bytes, Path]:
+    if not isinstance(debug, dict) or "path" in debug:
+        raise AgentError(f"normal smoke {label} debug metadata differs")
+    expected_keys = {
+        "captured_prefix_size",
+        "captured_prefix_sha256",
+        "file_size_after_read",
+        "mtime_ns",
+        "prelaunch_epoch_ns",
+        "cleared_before_launch",
+        "archive_path",
+        "archive_sha256",
+    }
+    if set(debug) != expected_keys:
+        raise AgentError(f"normal smoke {label} debug metadata differs")
+    if debug.get("archive_path") != expected_reference:
+        raise AgentError(f"normal smoke {label} debug archive reference differs")
+    path = _normal_artifact_path(
+        verified, debug.get("archive_path"), f"{label} debug archive"
+    )
+    raw = path.read_bytes()
+    size = debug.get("captured_prefix_size")
+    digest = hashlib.sha256(raw).hexdigest()
+    if (
+        type(size) is not int
+        or size <= 0
+        or len(raw) != size
+        or debug.get("captured_prefix_sha256") != digest
+        or debug.get("archive_sha256") != digest
+        or type(debug.get("file_size_after_read")) is not int
+        or debug["file_size_after_read"] < size
+        or type(debug.get("mtime_ns")) is not int
+        or type(debug.get("prelaunch_epoch_ns")) is not int
+        or debug["mtime_ns"] < debug["prelaunch_epoch_ns"]
+        or not isinstance(debug.get("cleared_before_launch"), list)
+    ):
+        raise AgentError(f"normal smoke {label} debug prefix differs")
+    return raw, path
+
+
+def _validate_normal_load(
+    report: dict[str, object],
+    environment: dict[str, object],
+    verified: dict[str, Path],
+) -> None:
+    load = report.get("load_attestation")
+    process = report.get("process")
+    expected_load_keys = {
+        "enabled_mods",
+        "isolated_mod_mounts",
+        "runtime_dlc_mounts",
+        "unclassified_mounts",
+        "evidence_lines",
+        "session_marker_count",
+        "source",
+        "policy_boundary",
+        "debug_log",
+        "post_exit_revalidated",
+        "post_exit_debug_log",
+    }
+    if (
+        not isinstance(load, dict)
+        or set(load) != expected_load_keys
+        or not isinstance(process, dict)
+    ):
+        raise AgentError("normal smoke load attestation differs")
+    archive = _normal_artifact_path(
+        verified,
+        "artifacts/supervisor-load-attestation.json",
+        "load attestation archive",
+    )
+    try:
+        archived = json.loads(archive.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AgentError(f"normal smoke load archive cannot be parsed: {error}") from error
+    if archived != load:
+        raise AgentError("normal smoke report and archived load attestation differ")
+    initial_raw, _ = _validate_normal_debug_prefix(
+        load.get("debug_log"),
+        verified,
+        "initial",
+        "artifacts/runtime-debug-prefix.log",
+    )
+    final_raw, _ = _validate_normal_debug_prefix(
+        load.get("post_exit_debug_log"),
+        verified,
+        "final",
+        "artifacts/runtime-debug-post-exit.log",
+    )
+    if not final_raw.startswith(initial_raw):
+        raise AgentError("normal smoke final debug prefix does not extend the initial prefix")
+    mod = environment["mod"]
+    dlc = environment["dlc"]
+    profile_dir = Path(str(environment["profile_dir"]))
+    production_dir = Path(str(mod["production_path"]))
+    allowed_mounts = dlc["allowed_mount_roots"]
+    replayed_initial = parse_runtime_attestation(
+        initial_raw.decode("utf-8", errors="ignore"),
+        profile_dir,
+        production_dir,
+        allowed_dlc_mounts=allowed_mounts,
+    )
+    replayed_final = parse_runtime_attestation(
+        final_raw.decode("utf-8", errors="ignore"),
+        profile_dir,
+        production_dir,
+        allowed_dlc_mounts=allowed_mounts,
+    )
+    semantic_keys = (
+        "enabled_mods",
+        "isolated_mod_mounts",
+        "runtime_dlc_mounts",
+        "unclassified_mounts",
+        "evidence_lines",
+        "session_marker_count",
+        "source",
+        "policy_boundary",
+    )
+    if (
+        load.get("post_exit_revalidated") is not True
+        or any(load.get(key) != replayed_initial.get(key) for key in semantic_keys)
+        or any(load.get(key) != replayed_final.get(key) for key in semantic_keys)
+        or load.get("enabled_mods")
+        != [{"name": EXPECTED_MOD_NAME, "descriptor": OUTER_DESCRIPTOR_REF}]
+        or load.get("isolated_mod_mounts") != [str(production_dir.resolve())]
+        or load.get("unclassified_mounts") != []
+        or load.get("session_marker_count") != 1
+        or load.get("debug_log", {}).get("prelaunch_epoch_ns")
+        != process.get("fresh_log_epoch_ns")
+        or load.get("post_exit_debug_log", {}).get("prelaunch_epoch_ns")
+        != process.get("fresh_log_epoch_ns")
+        or load.get("debug_log", {}).get("cleared_before_launch")
+        != process.get("prelaunch_logs_removed")
+        or load.get("post_exit_debug_log", {}).get("cleared_before_launch")
+        != process.get("prelaunch_logs_removed")
+        or len(set(process.get("prelaunch_logs_removed", [])))
+        != len(process.get("prelaunch_logs_removed", []))
+        or not set(process.get("prelaunch_logs_removed", []))
+        <= {"debug.log", "error.log", "gui_warnings.log"}
+    ):
+        raise AgentError("normal smoke replayed load attestation differs")
+
+
+def _validate_normal_visual(
+    report: dict[str, object], verified: dict[str, Path]
+) -> None:
+    visual = report.get("visual_attestation")
+    if not isinstance(visual, dict) or set(visual) != {
+        "target",
+        "target_normalized",
+        "stable_frames",
+        "stable_frame_evidence",
+        "window_rect",
+        "screenshot",
+        "screenshot_sha256",
+        "ocr",
+        "ocr_sha256",
+    }:
+        raise AgentError("normal smoke visible main-menu attestation differs")
+    frames = visual.get("stable_frame_evidence")
+    target = visual.get("target")
+    if (
+        not isinstance(target, str)
+        or target != "\u65b0\u6e38\u620f"
+        or visual.get("target_normalized") != normalize_ocr_text(target)
+        or visual.get("stable_frames") != 2
+        or not isinstance(frames, list)
+        or len(frames) != 2
+    ):
+        raise AgentError("normal smoke stable main-menu frame contract differs")
+    previous_sequence = 0
+    previous_monotonic: float | None = None
+    canonical_references = (
+        (
+            "artifacts/main-menu-frame-1.png",
+            "artifacts/main-menu-frame-1-ocr.json",
+        ),
+        ("artifacts/main-menu.png", "artifacts/main-menu-ocr.json"),
+    )
+    for index, frame in enumerate(frames, start=1):
+        if not isinstance(frame, dict):
+            raise AgentError("normal smoke visible frame schema differs")
+        screenshot = _normal_artifact_path(
+            verified, frame.get("screenshot"), f"visible frame {index} PNG"
+        )
+        ocr_path = _normal_artifact_path(
+            verified, frame.get("ocr"), f"visible frame {index} OCR"
+        )
+        try:
+            recorded_ocr = json.loads(ocr_path.read_text(encoding="utf-8"))
+            from PIL import Image
+
+            with Image.open(screenshot) as image:
+                image.load()
+                if (
+                    image.format != "PNG"
+                    or image.size != EXPECTED_RESOLUTION
+                    or image.mode not in {"RGB", "RGBA"}
+                ):
+                    raise AgentError("normal smoke visible frame PNG geometry differs")
+                replayed_ocr = _ocr_items(image, MAIN_MENU_REGION)
+        except AgentError:
+            raise
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise AgentError(f"normal smoke visible frame cannot be replayed: {error}") from error
+        sequence = frame.get("capture_sequence")
+        monotonic = frame.get("captured_monotonic")
+        rect = frame.get("window_rect")
+        if (
+            set(frame)
+            != {
+                "frame",
+                "capture_sequence",
+                "captured_at",
+                "captured_monotonic",
+                "window_rect",
+                "screenshot",
+                "screenshot_sha256",
+                "ocr",
+                "ocr_sha256",
+                "exact_match_count",
+            }
+            or frame.get("frame") != index
+            or frame.get("screenshot") != canonical_references[index - 1][0]
+            or frame.get("ocr") != canonical_references[index - 1][1]
+            or type(sequence) is not int
+            or sequence != (previous_sequence + 1 if index > 1 else sequence)
+            or sequence <= 0
+            or type(monotonic) not in {int, float}
+            or not math.isfinite(float(monotonic))
+            or (previous_monotonic is not None and float(monotonic) <= previous_monotonic)
+            or rect != [0, 0, 2560, 1440]
+            or frame.get("screenshot_sha256") != sha256_file(screenshot)
+            or frame.get("ocr_sha256") != sha256_file(ocr_path)
+            or frame.get("exact_match_count") != 1
+            or not isinstance(recorded_ocr, list)
+            or replayed_ocr != recorded_ocr
+            or unique_exact_ocr_match(recorded_ocr, target) is None
+        ):
+            raise AgentError("normal smoke replayed visible frame differs")
+        try:
+            captured = datetime.fromisoformat(str(frame.get("captured_at", "")))
+        except ValueError as error:
+            raise AgentError("normal smoke visible frame timestamp differs") from error
+        if captured.tzinfo != timezone.utc:
+            raise AgentError("normal smoke visible frame timestamp differs")
+        previous_sequence = sequence
+        previous_monotonic = float(monotonic)
+    final = frames[1]
+    if (
+        visual.get("window_rect") != final.get("window_rect")
+        or visual.get("screenshot") != final.get("screenshot")
+        or visual.get("screenshot_sha256") != final.get("screenshot_sha256")
+        or visual.get("ocr") != final.get("ocr")
+        or visual.get("ocr_sha256") != final.get("ocr_sha256")
+    ):
+        raise AgentError("normal smoke top-level visible evidence differs")
+    crop = _normal_artifact_path(
+        verified, "artifacts/main-menu-crop.png", "visible main-menu crop"
+    )
+    try:
+        from PIL import Image
+
+        second_path = _normal_artifact_path(
+            verified, final.get("screenshot"), "final visible frame PNG"
+        )
+        with Image.open(second_path) as image, Image.open(crop) as archived_crop:
+            image.load()
+            archived_crop.load()
+            expected_crop = image.crop(_region_bbox(image.size, MAIN_MENU_REGION))
+            if (
+                archived_crop.format != "PNG"
+                or archived_crop.size != expected_crop.size
+                or archived_crop.mode != expected_crop.mode
+                or archived_crop.tobytes() != expected_crop.tobytes()
+            ):
+                raise AgentError("normal smoke main-menu crop differs from its frame")
+    except AgentError:
+        raise
+    except OSError as error:
+        raise AgentError(f"normal smoke main-menu crop cannot be replayed: {error}") from error
+
+
+def _validate_normal_diagnostics(
+    report: dict[str, object],
+    environment: dict[str, object],
+    verified: dict[str, Path],
+) -> None:
+    diagnostics = report.get("engine_diagnostics")
+    if not isinstance(diagnostics, dict) or set(diagnostics) != {
+        "policy_boundary",
+        "zero_diagnostics",
+        "current_mod_diagnostics",
+        "current_mod_diagnostic_hits",
+        "logs",
+    }:
+        raise AgentError("normal smoke engine diagnostics schema differs")
+    logs = diagnostics.get("logs")
+    if not isinstance(logs, dict) or set(logs) != {"error.log", "gui_warnings.log"}:
+        raise AgentError("normal smoke diagnostic log inventory differs")
+    all_hits: list[dict[str, object]] = []
+    zero = True
+    for name in ("error.log", "gui_warnings.log"):
+        record = logs[name]
+        if not isinstance(record, dict):
+            raise AgentError("normal smoke diagnostic log record differs")
+        if record.get("present") is False:
+            if record != {"present": False, "diagnostic_records": 0}:
+                raise AgentError("normal smoke absent diagnostic record differs")
+            continue
+        if set(record) != {
+            "present",
+            "path",
+            "sha256",
+            "size",
+            "mtime_ns",
+            "diagnostic_records",
+            "nonempty_lines",
+        } or record.get("present") is not True:
+            raise AgentError("normal smoke present diagnostic record differs")
+        expected_reference = f"artifacts/supervisor-{name}"
+        if record.get("path") != expected_reference:
+            raise AgentError("normal smoke diagnostic archive reference differs")
+        path = _normal_artifact_path(
+            verified, record.get("path"), f"{name} diagnostic archive"
+        )
+        raw = path.read_bytes()
+        replayed = analyze_engine_log_bytes(
+            name,
+            raw,
+            expected_mod_name=EXPECTED_MOD_NAME,
+            production_path=Path(str(environment["mod"]["production_path"])),
+        )
+        if (
+            record.get("sha256") != hashlib.sha256(raw).hexdigest()
+            or record.get("size") != len(raw)
+            or record.get("diagnostic_records") != replayed["diagnostic_records"]
+            or record.get("nonempty_lines") != replayed["nonempty_lines"]
+            or type(record.get("mtime_ns")) is not int
+            or record["mtime_ns"] < report["process"]["fresh_log_epoch_ns"]
+        ):
+            raise AgentError("normal smoke replayed diagnostic record differs")
+        if replayed["diagnostic_records"] or replayed["nonempty_lines"]:
+            zero = False
+        all_hits.extend(replayed["current_mod_diagnostic_hits"])
+    expected_current = bool(all_hits)
+    if (
+        diagnostics.get("policy_boundary")
+        != "supervisor evidence only; unavailable to gameplay policy"
+        or diagnostics.get("zero_diagnostics") is not zero
+        or diagnostics.get("current_mod_diagnostics") is not expected_current
+        or diagnostics.get("current_mod_diagnostic_hits") != all_hits
+        or expected_current
+    ):
+        raise AgentError("normal smoke replayed engine diagnostics differ")
+
+
+def _validate_empty_ck3_inventory(inventory: object, label: str) -> None:
+    if (
+        not isinstance(inventory, dict)
+        or set(inventory)
+        != {"tasklist_returncode", "tasklist_pids", "wmi_pids", "processes"}
+        or inventory.get("tasklist_returncode") != 0
+        or inventory.get("tasklist_pids") != []
+        or inventory.get("wmi_pids") != []
+        or inventory.get("processes") != []
+    ):
+        raise AgentError(f"normal smoke {label} CK3 inventory differs")
+
+
+def _validate_normal_process_and_shutdown(
+    report: dict[str, object], environment: dict[str, object]
+) -> None:
+    process = report.get("process")
+    shutdown = report.get("shutdown_attestation")
+    post_inventory = report.get("post_shutdown_ck3_inventory")
+    if not isinstance(process, dict) or set(process) != {
+        "pid",
+        "watchdog_pid",
+        "arguments",
+        "debug_mode",
+        "fresh_log_epoch_ns",
+        "prelaunch_logs_removed",
+        "pre_resume_ck3_inventory",
+        "identity",
+        "handle_trust",
+    }:
+        raise AgentError("normal smoke process contract differs")
+    pid = process.get("pid")
+    identity = process.get("identity")
+    trust = process.get("handle_trust")
+    inventory = process.get("pre_resume_ck3_inventory")
+    if (
+        type(pid) is not int
+        or pid <= 0
+        or type(process.get("watchdog_pid")) is not int
+        or process["watchdog_pid"] <= 0
+        or process["watchdog_pid"] == pid
+        or not isinstance(process.get("arguments"), list)
+        or not process["arguments"]
+        or process.get("debug_mode") is not False
+        or type(process.get("fresh_log_epoch_ns")) is not int
+        or process["fresh_log_epoch_ns"] <= 0
+        or not isinstance(process.get("prelaunch_logs_removed"), list)
+        or not isinstance(identity, dict)
+        or set(identity)
+        != {"pid", "parent_pid", "name", "executable", "creation_date"}
+        or identity.get("pid") != pid
+        or type(identity.get("parent_pid")) is not int
+        or identity["parent_pid"] <= 0
+        or str(identity.get("name", "")).casefold() != "ck3.exe"
+        or not isinstance(identity.get("executable"), str)
+        or not Path(identity["executable"]).is_absolute()
+        or not isinstance(identity.get("creation_date"), str)
+        or not identity["creation_date"]
+        or not isinstance(trust, dict)
+        or trust
+        != {
+            "pinned_process_handle": True,
+            "owned_kill_on_close_job": True,
+            "created_suspended_before_job_assignment": True,
+            "pre_resume_identity_cross_validated": True,
+        }
+    ):
+        raise AgentError("normal smoke pinned process identity differs")
+    expected_executable = str(Path(identity["executable"]).resolve())
+    environment_executable = str(Path(str(environment["game"]["executable"])).resolve())
+    expected_arguments = [
+        environment_executable,
+        "-gdpr-compliant",
+        f"-userdir={environment['profile_dir']}",
+    ]
+    if (
+        not _same_executable(expected_executable, environment_executable)
+        or process["arguments"] != expected_arguments
+        or any(str(item).casefold() == "-debug_mode" for item in process["arguments"])
+    ):
+        raise AgentError("normal smoke process command executable differs")
+    if (
+        not isinstance(inventory, dict)
+        or set(inventory)
+        != {"tasklist_returncode", "tasklist_pids", "wmi_pids", "processes"}
+        or inventory.get("tasklist_returncode") != 0
+        or inventory.get("tasklist_pids") != [pid]
+        or inventory.get("wmi_pids") != [pid]
+        or not isinstance(inventory.get("processes"), list)
+        or len(inventory["processes"]) != 1
+    ):
+        raise AgentError("normal smoke pre-resume CK3 singleton differs")
+    row = inventory["processes"][0]
+    if (
+        not isinstance(row, dict)
+        or set(row) != {"pid", "parent_pid", "name", "executable", "creation_date"}
+        or row.get("pid") != pid
+        or row.get("parent_pid") != identity.get("parent_pid")
+        or str(row.get("name", "")).casefold() != "ck3.exe"
+        or (
+            row.get("executable")
+            and not _same_executable(row.get("executable"), expected_executable)
+        )
+        or not same_process_creation_time(
+            row.get("creation_date"), identity.get("creation_date")
+        )
+    ):
+        raise AgentError("normal smoke pre-resume process identity differs")
+    if not isinstance(shutdown, dict) or set(shutdown) != {
+        "nonce",
+        "ck3_pid",
+        "ck3_creation_date",
+        "ck3_exit_code",
+        "job_active_processes_before_termination",
+        "job_active_processes_final",
+        "tree_gone",
+        "cleanup_proven",
+        "final_ck3_inventory",
+        "watchdog_pid",
+        "watchdog_creation_date",
+        "watchdog_state_before",
+        "watchdog_state_after",
+        "control_files_absent",
+        "contract_errors",
+        "ok",
+    }:
+        raise AgentError("normal smoke shutdown attestation differs")
+    if (
+        shutdown.get("ck3_pid") != pid
+        or shutdown.get("ck3_creation_date") != identity.get("creation_date")
+        or shutdown.get("watchdog_pid") != process.get("watchdog_pid")
+        or not isinstance(shutdown.get("watchdog_creation_date"), str)
+        or not shutdown["watchdog_creation_date"]
+        or not same_process_creation_time(
+            shutdown["watchdog_creation_date"], shutdown["watchdog_creation_date"]
+        )
+        or type(shutdown.get("ck3_exit_code")) is not int
+        or shutdown["ck3_exit_code"] != 1
+        or type(shutdown.get("job_active_processes_before_termination")) is not int
+        or shutdown["job_active_processes_before_termination"] < 1
+        or type(shutdown.get("job_active_processes_final")) is not int
+        or shutdown.get("tree_gone") is not True
+        or shutdown.get("cleanup_proven") is not True
+        or shutdown.get("job_active_processes_final") != 0
+        or shutdown.get("watchdog_state_before") != "running"
+        or shutdown.get("watchdog_state_after") != "absent"
+        or shutdown.get("contract_errors") != []
+        or shutdown.get("ok") is not True
+    ):
+        raise AgentError("normal smoke shutdown process binding differs")
+    _validate_empty_ck3_inventory(
+        shutdown.get("final_ck3_inventory"), "shutdown-final"
+    )
+    controls = shutdown.get("control_files_absent")
+    nonce = shutdown.get("nonce")
+    control_root = Path(str(environment["state_dir"])) / "control"
+    expected_controls = {
+        str(control_root / "ck3.json"),
+        str(control_root / "ck3.watchdog_error"),
+        str(control_root / f"watchdog-{nonce}.ready.json"),
+        str(control_root / "unsafe-cleanup.json"),
+    }
+    if (
+        not re.fullmatch(r"[0-9a-f]{32}", str(nonce))
+        or
+        not isinstance(controls, dict)
+        or set(controls) != expected_controls
+        or any(value is not True for value in controls.values())
+    ):
+        raise AgentError("normal smoke shutdown control cleanup differs")
+    _validate_empty_ck3_inventory(post_inventory, "post-shutdown")
+
+
+def _load_normal_protected_snapshot(path: Path, label: str) -> dict[str, object]:
+    try:
+        with gzip.open(path, "rt", encoding="utf-8") as source:
+            payload = json.load(source)
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AgentError(f"normal smoke {label} protected snapshot cannot parse: {error}") from error
+    if (
+        not isinstance(payload, dict)
+        or set(payload) != {"digest", "stores", "allowed_volatile"}
+        or not isinstance(payload.get("stores"), dict)
+        or set(payload["stores"])
+        != {"real_profile", "steam_userdata", "workshop"}
+        or any(not isinstance(value, dict) for value in payload["stores"].values())
+        or payload.get("digest") != snapshot_digest(payload["stores"])
+        or not isinstance(payload.get("allowed_volatile"), dict)
+        or set(payload["allowed_volatile"]) != {"steam_remotecache", "policy"}
+        or not isinstance(payload["allowed_volatile"].get("steam_remotecache"), dict)
+        or payload["allowed_volatile"].get("policy")
+        != "Only top-level ChangeNumber/mtime may change; semantic bytes remain protected."
+    ):
+        raise AgentError(f"normal smoke {label} protected snapshot differs")
+    return payload
+
+
+def _validate_normal_protected(
+    report: dict[str, object], verified: dict[str, Path]
+) -> tuple[dict[str, object], dict[str, object]]:
+    protected = report.get("protected_storage")
+    if not isinstance(protected, dict) or set(protected) != {
+        "post_exit_matches_baseline",
+        "continuous_quiet_seconds",
+        "runtime_write_absence_proven",
+        "sha256",
+        "before_snapshot",
+        "before_snapshot_sha256",
+        "after_snapshot",
+        "after_snapshot_sha256",
+        "allowed_volatile_before",
+        "allowed_volatile_after",
+    }:
+        raise AgentError("normal smoke protected-storage attestation differs")
+    before_path = _normal_artifact_path(
+        verified, protected.get("before_snapshot"), "protected-before"
+    )
+    after_path = _normal_artifact_path(
+        verified, protected.get("after_snapshot"), "protected-after"
+    )
+    if (
+        protected.get("before_snapshot") != "protected-before.json.gz"
+        or protected.get("after_snapshot") != "protected-after.json.gz"
+    ):
+        raise AgentError("normal smoke protected snapshot references differ")
+    before = _load_normal_protected_snapshot(before_path, "before")
+    after = _load_normal_protected_snapshot(after_path, "after")
+    if (
+        protected.get("post_exit_matches_baseline") is not True
+        or protected.get("continuous_quiet_seconds") != 5
+        or protected.get("runtime_write_absence_proven") is not False
+        or protected.get("before_snapshot_sha256") != sha256_file(before_path)
+        or protected.get("after_snapshot_sha256") != sha256_file(after_path)
+        or before.get("stores") != after.get("stores")
+        or before.get("digest") != after.get("digest")
+        or protected.get("sha256") != before.get("digest")
+        or protected.get("allowed_volatile_before") != before.get("allowed_volatile")
+        or protected.get("allowed_volatile_after") != after.get("allowed_volatile")
+    ):
+        raise AgentError("normal smoke protected-storage replay differs")
+    return before, after
+
+
+def _validate_normal_v2_green_payload(
+    report: dict[str, object], run_dir: Path, verified: dict[str, Path]
+) -> tuple[dict[str, object], dict[str, object]]:
+    """Replay every GREEN claim that does not depend on the final WAL row."""
+    environment = _validate_normal_environment(report, verified)
+    _validate_normal_process_and_shutdown(report, environment)
+    _validate_normal_visual(report, verified)
+    _validate_normal_load(report, environment, verified)
+    _validate_normal_diagnostics(report, environment, verified)
+    before, _after = _validate_normal_protected(report, verified)
+    if report.get("production_tree_unchanged") is not True:
+        raise AgentError("normal smoke production postflight differs")
+    return environment, before
+
+
+def _normal_utc_timestamp(value: object, label: str) -> datetime:
+    try:
+        parsed = datetime.fromisoformat(str(value))
+    except ValueError as error:
+        raise AgentError(f"normal smoke {label} timestamp differs") from error
+    if parsed.tzinfo is None or parsed.utcoffset() != timezone.utc.utcoffset(None):
+        raise AgentError(f"normal smoke {label} timestamp is not UTC")
+    return parsed
+
+
+def _validate_normal_event_prefix(
+    report: dict[str, object], run_dir: Path, events: Path
+) -> None:
+    try:
+        rows = [
+            json.loads(line)
+            for line in events.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AgentError(f"normal smoke event prefix cannot parse: {error}") from error
+    expected_kinds = list(NORMAL_GREEN_EVENT_ORDER[:-1])
+    expected_keys = (
+        {
+            "at",
+            "previous_event_sha256",
+            "kind",
+            "environment_sha256",
+            "protected_storage_sha256",
+            "protected_snapshot_sha256",
+            "event_sha256",
+        },
+        {"at", "previous_event_sha256", "kind", "pid", "event_sha256"},
+        {"at", "previous_event_sha256", "kind", "event_sha256"},
+        {"at", "previous_event_sha256", "kind", "event_sha256"},
+        {"at", "previous_event_sha256", "kind", "pid", "event_sha256"},
+    )
+    protected = report["protected_storage"]
+    process = report["process"]
+    if (
+        [row.get("kind") for row in rows] != expected_kinds
+        or any(set(row) != keys for row, keys in zip(rows, expected_keys))
+        or rows[0].get("environment_sha256") != report.get("environment_sha256")
+        or rows[0].get("protected_storage_sha256") != protected.get("sha256")
+        or rows[0].get("protected_snapshot_sha256")
+        != protected.get("before_snapshot_sha256")
+        or rows[1].get("pid") != process.get("pid")
+        or rows[4].get("pid") != process.get("pid")
+    ):
+        raise AgentError("normal smoke candidate lifecycle prefix differs")
+    timestamps = [
+        _normal_utc_timestamp(row.get("at"), f"event {index}")
+        for index, row in enumerate(rows, start=1)
+    ]
+    if any(right < left for left, right in zip(timestamps, timestamps[1:])):
+        raise AgentError("normal smoke candidate event timestamps regress")
+    chain = validate_event_chain(events)
+    if chain.get("event_count") != 5 or chain.get("tail", {}).get("kind") != "tracked_process_stopped":
+        raise AgentError("normal smoke candidate event-chain prefix differs")
+
+
+def _validate_normal_v2_green_candidate(
+    report: dict[str, object], run_dir: Path, events: Path
+) -> None:
+    candidate_keys = {
+        "format_version",
+        "run_id",
+        "kind",
+        "acceptance_claim",
+        "clean_engine_boot_required",
+        "started_at",
+        "finished_at",
+        "valid_score_episode",
+        "environment_sha256",
+        "run_dir",
+        "replay_trust_model",
+        "process",
+        "visual_attestation",
+        "load_attestation",
+        "shutdown_attestation",
+        "post_shutdown_ck3_inventory",
+        "engine_diagnostics",
+        "protected_storage",
+        "production_tree_unchanged",
+        "artifacts",
+        "finalized",
+        "ok",
+    }
+    started = _normal_utc_timestamp(report.get("started_at"), "report start")
+    finished = _normal_utc_timestamp(report.get("finished_at"), "report finish")
+    if (
+        set(report) != candidate_keys
+        or report.get("format_version") != 2
+        or report.get("run_id") != run_dir.resolve().name
+        or report.get("run_dir") != "."
+        or report.get("kind") != "infrastructure_smoke"
+        or report.get("acceptance_claim")
+        != "isolated_single_mod_visible_main_menu_only"
+        or report.get("clean_engine_boot_required") is not False
+        or report.get("valid_score_episode") is not False
+        or report.get("replay_trust_model") != NORMAL_REPLAY_TRUST_MODEL
+        or report.get("finalized") is not False
+        or report.get("ok") is not False
+        or finished < started
+    ):
+        raise AgentError("normal smoke candidate GREEN report schema differs")
+    verified = _verified_normal_artifact_manifest(report, run_dir)
+    _validate_normal_v2_green_payload(report, run_dir, verified)
+    _validate_normal_event_prefix(report, run_dir, events)
+
+
+def _publish_normal_provisional_failure(
+    report: dict[str, object], path: Path, error: Exception
+) -> None:
+    """Persist a plainly non-final report when no replayable seal is possible."""
+    report["finalized"] = False
+    report["ok"] = False
+    report["error"] = str(error)
+    for field in (
+        "report_body_sha256",
+        "final_event_sha256",
+        "event_chain",
+    ):
+        report.pop(field, None)
+    write_json_atomic(path, report)
+
+
+def _finalize_normal_smoke_report(
+    report: dict[str, object],
+    run_dir: Path,
+    events: Path,
+    primary_error: Exception | None,
+) -> Exception | None:
+    """Seal one replayable v2 report or leave a non-final provisional report.
+
+    Artifact enumeration is performed before candidate replay and again after
+    it.  The second inventory closes a fault window in which bytes can change
+    while the candidate verifier is reading them.  If either inventory cannot
+    be established, no final WAL row is authorized.
+    """
+    report_path = run_dir / "report.json"
+    try:
+        initial_manifest = _normal_artifact_manifest(run_dir)
+        report["artifacts"] = initial_manifest
+    except Exception as manifest_error:
+        failure = AgentError(
+            f"normal smoke artifact manifest could not be established: {manifest_error}"
+        )
+        _publish_normal_provisional_failure(report, report_path, failure)
+        raise failure from manifest_error
+    if primary_error is None:
+        try:
+            _validate_normal_v2_green_candidate(report, run_dir, events)
+        except Exception as replay_error:
+            primary_error = AgentError(
+                f"candidate GREEN self-contained replay failed: {replay_error}"
+            )
+    try:
+        # Always refresh after candidate replay, not only on failure.  A
+        # validator or filesystem fault must not leave a stale manifest in a
+        # finalized RED or GREEN report.
+        final_manifest = _normal_artifact_manifest(run_dir)
+        report["artifacts"] = final_manifest
+        _verified_normal_artifact_manifest(report, run_dir)
+    except Exception as manifest_error:
+        failure = AgentError(
+            f"normal smoke final artifact manifest could not be established: {manifest_error}"
+        )
+        _publish_normal_provisional_failure(report, report_path, failure)
+        raise failure from manifest_error
+    if final_manifest != initial_manifest and primary_error is None:
+        primary_error = AgentError(
+            "normal smoke artifact bytes changed during candidate replay"
+        )
+    candidate_ok = primary_error is None
+    if primary_error is not None:
+        report["error"] = str(primary_error)
+    report_body_sha256 = _normal_report_body_sha256(report)
+    report["report_body_sha256"] = report_body_sha256
+    final_event_sha256 = _append_normal_final_event_transactionally(
+        events,
+        ok=candidate_ok,
+        report_body_sha256=report_body_sha256,
+    )
+    report["final_event_sha256"] = final_event_sha256
+    report["finalized"] = True
+    report["ok"] = candidate_ok
+    event_chain = validate_event_chain(events)
+    report["event_chain"] = {
+        "event_count": event_chain["event_count"],
+        "tail_sha256": event_chain["tail_sha256"],
+    }
+    validate_final_report_payload(report, event_chain)
+    _write_normal_final_report_transactionally(report_path, report)
+    return primary_error
+
+
+def _validate_normal_v2_report(
+    report: dict[str, object], run_dir: Path, chain: dict[str, object]
+) -> None:
+    tail = chain.get("tail")
+    expected_body = _normal_report_body_sha256(report)
+    expected_green_keys = {
+        "format_version",
+        "run_id",
+        "kind",
+        "acceptance_claim",
+        "clean_engine_boot_required",
+        "started_at",
+        "finished_at",
+        "valid_score_episode",
+        "environment_sha256",
+        "run_dir",
+        "replay_trust_model",
+        "process",
+        "visual_attestation",
+        "load_attestation",
+        "shutdown_attestation",
+        "post_shutdown_ck3_inventory",
+        "engine_diagnostics",
+        "protected_storage",
+        "production_tree_unchanged",
+        "artifacts",
+        "report_body_sha256",
+        "final_event_sha256",
+        "event_chain",
+        "finalized",
+        "ok",
+    }
+    if (
+        report.get("kind") != "infrastructure_smoke"
+        or report.get("acceptance_claim")
+        != "isolated_single_mod_visible_main_menu_only"
+        or report.get("valid_score_episode") is not False
+        or report.get("run_id") != run_dir.resolve().name
+        or report.get("run_dir") != "."
+        or report.get("replay_trust_model") != NORMAL_REPLAY_TRUST_MODEL
+        or not isinstance(tail, dict)
+        or report.get("report_body_sha256") != expected_body
+        or tail.get("report_body_sha256") != expected_body
+    ):
+        raise AgentError("normal smoke final report-body binding differs")
+    verified = _verified_normal_artifact_manifest(report, run_dir)
+    # Failed v2 runs remain structurally replayable without inventing evidence
+    # for phases that were never reached.  A qualification GREEN must satisfy
+    # every semantic replay below.
+    if report.get("ok") is not True:
+        return
+    started = _normal_utc_timestamp(report.get("started_at"), "report start")
+    finished = _normal_utc_timestamp(report.get("finished_at"), "report finish")
+    if (
+        set(report) != expected_green_keys
+        or report.get("clean_engine_boot_required") is not False
+        or finished < started
+    ):
+        raise AgentError("normal smoke GREEN report schema differs")
+    _environment, before = _validate_normal_v2_green_payload(
+        report, run_dir, verified
+    )
+    events_path = run_dir / "events.jsonl"
+    try:
+        rows = [
+            json.loads(line)
+            for line in events_path.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AgentError(f"normal smoke event archive cannot parse: {error}") from error
+    process = report["process"]
+    protected = report["protected_storage"]
+    expected_event_keys = (
+        {
+            "at",
+            "previous_event_sha256",
+            "kind",
+            "environment_sha256",
+            "protected_storage_sha256",
+            "protected_snapshot_sha256",
+            "event_sha256",
+        },
+        {"at", "previous_event_sha256", "kind", "pid", "event_sha256"},
+        {"at", "previous_event_sha256", "kind", "event_sha256"},
+        {"at", "previous_event_sha256", "kind", "event_sha256"},
+        {"at", "previous_event_sha256", "kind", "pid", "event_sha256"},
+        {
+            "at",
+            "previous_event_sha256",
+            "kind",
+            "ok",
+            "report_body_sha256",
+            "event_sha256",
+        },
+    )
+    if (
+        [row.get("kind") for row in rows] != list(NORMAL_GREEN_EVENT_ORDER)
+        or any(set(row) != keys for row, keys in zip(rows, expected_event_keys))
+        or report.get("event_chain")
+        != {
+            "event_count": chain.get("event_count"),
+            "tail_sha256": chain.get("tail_sha256"),
+        }
+        or rows[0].get("environment_sha256") != report.get("environment_sha256")
+        or rows[0].get("protected_storage_sha256") != before.get("digest")
+        or rows[0].get("protected_snapshot_sha256")
+        != protected.get("before_snapshot_sha256")
+        or rows[1].get("pid") != process.get("pid")
+        or rows[4].get("pid") != process.get("pid")
+        or rows[5].get("ok") is not True
+        or rows[5].get("report_body_sha256") != expected_body
+    ):
+        raise AgentError("normal smoke lifecycle event binding differs")
+    event_times = [
+        _normal_utc_timestamp(row.get("at"), f"event {index}")
+        for index, row in enumerate(rows, start=1)
+    ]
+    if any(right < left for left, right in zip(event_times, event_times[1:])):
+        raise AgentError("normal smoke lifecycle event timestamps regress")
 
 
 def write_gzip_json_atomic(path: Path, payload: object) -> None:
@@ -1607,7 +3052,7 @@ def _smoke_locked(
     )
     handle: SessionHandle | None = None
     report: dict[str, object] = {
-        "format_version": 1,
+        "format_version": 2,
         "run_id": run_id,
         "kind": "infrastructure_smoke",
         "acceptance_claim": "isolated_single_mod_visible_main_menu_only",
@@ -1615,7 +3060,8 @@ def _smoke_locked(
         "started_at": utc_now(),
         "valid_score_episode": False,
         "environment_sha256": manifest["environment_sha256"],
-        "run_dir": str(run_dir),
+        "run_dir": ".",
+        "replay_trust_model": dict(NORMAL_REPLAY_TRUST_MODEL),
         "finalized": False,
         "ok": False,
     }
@@ -1625,6 +3071,41 @@ def _smoke_locked(
     try:
         log("launching tracked non-debug CK3 process")
         handle = launch(spec)
+        live_identity = _process_identity(handle.process.pid)
+        handle_trust = {
+            "pinned_process_handle": (
+                isinstance(handle.process, _SuspendedWindowsProcess)
+                and handle.process._process_handle is not None
+            ),
+            "owned_kill_on_close_job": handle.job_handle is not None,
+            "created_suspended_before_job_assignment": (
+                isinstance(handle.process, _SuspendedWindowsProcess)
+                and handle.process.resumed is True
+            ),
+            "pre_resume_identity_cross_validated": (
+                handle.pre_resume_inventory is not None
+            ),
+        }
+        if (
+            not isinstance(live_identity, dict)
+            or int(live_identity.get("pid", 0)) != handle.process.pid
+            or int(live_identity.get("parent_pid", 0)) != os.getpid()
+            or str(live_identity.get("name", "")).casefold() != "ck3.exe"
+            or (
+                live_identity.get("executable")
+                and not _same_executable(
+                    live_identity.get("executable"), spec.game_exe
+                )
+            )
+            or not same_process_creation_time(
+                live_identity.get("creation_date"), handle.ck3_creation_date
+            )
+            or not all(handle_trust.values())
+        ):
+            raise AgentError(
+                "launched CK3 pinned identity/handle trust differs: "
+                f"identity={live_identity!r}, trust={handle_trust!r}"
+            )
         report["process"] = {
             "pid": handle.process.pid,
             "watchdog_pid": handle.watchdog_pid,
@@ -1633,15 +3114,29 @@ def _smoke_locked(
             "fresh_log_epoch_ns": handle.log_epoch_ns,
             "prelaunch_logs_removed": handle.cleared_logs,
             "pre_resume_ck3_inventory": handle.pre_resume_inventory,
+            "identity": {
+                "pid": handle.process.pid,
+                "parent_pid": os.getpid(),
+                "name": "ck3.exe",
+                "executable": str(spec.game_exe.resolve()),
+                "creation_date": handle.ck3_creation_date,
+            },
+            "handle_trust": handle_trust,
         }
         append_event(events, {"kind": "ck3_launched", "pid": handle.process.pid})
         log("waiting for two stable visible main-menu OCR frames")
-        report["visual_attestation"] = wait_for_main_menu(
-            handle, artifacts, timeout_seconds
+        report["visual_attestation"] = _normalize_visual_references(
+            wait_for_main_menu(handle, artifacts, timeout_seconds), run_dir
         )
         append_event(events, {"kind": "visible_main_menu_attested"})
         log("checking exact one-mod runtime inventory and isolated mount")
         report["load_attestation"] = wait_for_runtime_attestation(spec, handle)
+        report["load_attestation"]["debug_log"] = _archive_normal_debug_prefix(
+            spec,
+            report["load_attestation"].get("debug_log"),
+            artifacts,
+            "runtime-debug-prefix.log",
+        )
         write_json_atomic(
             artifacts / "supervisor-load-attestation.json",
             report["load_attestation"],
@@ -1708,16 +3203,21 @@ def _smoke_locked(
                             f"post-exit runtime attestation changed for {key}"
                         )
                 report["load_attestation"]["post_exit_revalidated"] = True
-                report["load_attestation"]["post_exit_debug_log"] = final_load[
-                    "debug_log"
-                ]
+                report["load_attestation"]["post_exit_debug_log"] = (
+                    _archive_normal_debug_prefix(
+                        spec,
+                        final_load["debug_log"],
+                        artifacts,
+                        "runtime-debug-post-exit.log",
+                    )
+                )
                 write_json_atomic(
                     artifacts / "supervisor-load-attestation.json",
                     report["load_attestation"],
                 )
             if handle is not None:
-                report["engine_diagnostics"] = collect_engine_log_evidence(
-                    spec, handle, artifacts
+                report["engine_diagnostics"] = _normalize_diagnostic_references(
+                    collect_engine_log_evidence(spec, handle, artifacts), run_dir
                 )
             log("verifying protected stores return to the semantic baseline")
             after = verify_protected_unchanged(baseline)
@@ -1728,9 +3228,9 @@ def _smoke_locked(
                 "continuous_quiet_seconds": 5,
                 "runtime_write_absence_proven": False,
                 "sha256": after["digest"],
-                "before_snapshot": str(before_path),
+                "before_snapshot": _normal_run_reference(before_path, run_dir),
                 "before_snapshot_sha256": _file_sha256(before_path),
-                "after_snapshot": str(after_path),
+                "after_snapshot": _normal_run_reference(after_path, run_dir),
                 "after_snapshot_sha256": _file_sha256(after_path),
                 "allowed_volatile_before": baseline.get("allowed_volatile"),
                 "allowed_volatile_after": after.get("allowed_volatile"),
@@ -1753,26 +3253,17 @@ def _smoke_locked(
                 report["postflight_error"] = str(postflight_error)
 
     report["finished_at"] = utc_now()
-    candidate_ok = primary_error is None
-    if primary_error is not None:
-        report["error"] = str(primary_error)
-    final_event_sha256 = append_event(
-        events, {"kind": "smoke_finished", "ok": candidate_ok}
+    primary_error = _finalize_normal_smoke_report(
+        report, run_dir, events, primary_error
     )
-    report["final_event_sha256"] = final_event_sha256
-    report["finalized"] = True
-    report["ok"] = candidate_ok
-    event_chain = validate_event_chain(events)
-    report["event_chain"] = {
-        "event_count": event_chain["event_count"],
-        "tail_sha256": event_chain["tail_sha256"],
-    }
-    validate_final_report_payload(report, event_chain)
-    write_json_atomic(run_dir / "report.json", report)
     if primary_error is not None:
         raise AgentError(
             f"smoke failed; evidence retained at {run_dir}: {primary_error}"
         ) from primary_error
+    # Re-open only the sealed run archive and execute the same public replay
+    # used by later qualification.  No prepared-profile or production source
+    # path is read by this call.
+    validate_smoke_report(run_dir)
     clean = report.get("engine_diagnostics", {}).get("zero_diagnostics")
     log(
         "single-mod isolation smoke GREEN; "

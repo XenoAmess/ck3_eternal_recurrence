@@ -86,13 +86,29 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 立即 RED，绝不重试。`GetLastInputInfo` 相等只是一项采样观察，不是“无人输入”的证明。修订后的公开 validator 已能原样接受
 这份历史 RED，但不会把它升级为 GREEN；当前 runtime 已改变，所以上述资格不能用于下一次真实尝试。
 
+加固提交 `af3df58` 在新环境 `31e68f6d8e439643a7ff8fcb6029d72f93a85ead2d74bb58d24042c382753f72`
+下重新取得 ordinary `20260822T020912Z-7dc8269d` 与 crash
+`20260822T021144Z-crash-b010d18c` 两项 GREEN；随后唯一一次菜单 run
+`20260822T021436Z-menu-c9b3d667` 因客户区右下角存在 `(2130,1095)-(2560,1392)` 的外部置顶窗口而安全 RED。
+公开回放确认主链没有 `visible_main_menu_attested`、任何 `ui_*` WAL、action receipt、鼠标移动或 `SendInput`；cleanup 与
+protected/production postflight 完整。运行后的只读活体查询把 HWND 定位为 Kaspersky `avpui.exe` 的 WPF `AlertWindow`，但该
+身份没有被原 run 归档，只能作为事故诊断，不能升级为历史证明。自主玩家不会自动关闭或点击安全软件通知，同一 run/候选也不重试。
+
+下一次输入资格只接受 self-contained format v2 ordinary GREEN；live 扫描与新 menu archive 都拒绝 v1。v1 仅为已经冻结、外层同样为
+RED 且没有任何 `ui_*` 输入 WAL、bookmark、navigation、action/receipt 的历史菜单 run 保留只读兼容；纯观察 PNG/JSON 可以保留，
+绝不能据此授权新输入。v2 最终报告先在同目录临时文件完成 flush/fsync，成功后才原子替换 provisional，避免 barrier 失败后留下
+可被下一次命令误认的 GREEN。所有 SHA-256 仍是无密钥内部一致性证明，不是历史真实性签名。
+
 上述改动改变了受指纹保护的 runtime，因此旧提交的 Phase A 三连只证明历史冻结候选，不自动为后来实现背书。
 runtime 实现提交 `98d55caf3ed4a398b0a3bd7bc8e6ee16591d8f26` 已重新准备 profile，并在同一环境 SHA-256
 `5e7fb63ef98a7fd802caa864b64c593053c68bfb5f1798321cde6b02d6cd0d5f` 下通过普通 `smoke`
 `20260821T215910Z-780cd6cb` 与 post-resume `crash-smoke` `20260821T220127Z-crash-adc0ac63`。
-普通 `validate_smoke_report()` 已重算无密钥事件链、final tail 与 finalized/ok，load、cleanup、protected 和 production 硬字段
-另行逐项核对；`validate_crash_report()` 则完成 crash 归档的 schema 与内部一致性回放。两份报告仍只证明单 mod 可见主菜单、
-受控退出与崩溃回收，`valid_score_episode=false`，不证明 Growth+100 已在大厅实际采用，也没有发送任何游戏输入。当前 Phase B
+这些历史 ordinary report 是 format v1；对应的 `validate_smoke_report()` 只重算无密钥事件链、final tail 与 finalized/ok，load、cleanup、
+protected 和 production 硬字段当时另行逐项核对。新生成的 format v2 ordinary report 则把两帧 PNG/OCR、初次与退出后 debug 前缀、
+diagnostics、进程/Job/控制文件、protected snapshot、production manifest 和完整 artifact inventory 都改为 run-relative 归档，并由同一
+公开 validator 深度回放。`validate_crash_report()` 继续回放 crash 归档的 schema 与内部一致性。两类资格仍只证明单 mod 可见主菜单、
+受控退出与崩溃回收，`valid_score_episode=false`，不证明 Growth+100 已在大厅实际采用。ordinary/crash 的历史主菜单观察器可能用合成
+Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不能把它们写成全程零输入证据。当前 Phase B
 改动已改变 runtime 指纹，因此这对旧 run 只能作为历史证据，不能资格化尚未提交的新候选。最新测试数以本次提交前的完整
 `unittest discover` 报告为准；离线/无害 helper 通过不能替代同环境本机门禁。
 

@@ -73,6 +73,21 @@ tree 复核均完成。这证明前台门禁确实阻止了误点，但不证明
 严格解析两种时间后比较同一 UTC 时刻，并对 DLC mount 保留原顺序、要求绝对路径、白名单成员和不重复。修订后旧 RED
 可以原样公开回放；它没有被改写成 GREEN。由于这些修订改变 runtime 指纹，旧 ordinary/crash 资格也不能用于下一次尝试。
 
+加固提交 `af3df58` 重新准备的环境为
+`31e68f6d8e439643a7ff8fcb6029d72f93a85ead2d74bb58d24042c382753f72`。同环境 ordinary
+`20260822T020912Z-7dc8269d` 与 post-resume crash `20260822T021144Z-crash-b010d18c` 均 GREEN；随后且仅随后执行的
+`20260822T021436Z-menu-c9b3d667` 在主菜单观察前检测到 HWND `45219986` 以矩形
+`(2130,1095)-(2560,1392)` 覆盖 CK3 客户区，按协议 RED 并停止。公开 validator 原样接受该 RED：事件链没有
+`visible_main_menu_attested` 或任何 `ui_*`，外层本 run 自身的 `artifacts/` 没有 observation/action/patch/receipt；foreground 为
+`already_foreground`、`attached_fallback=false`、`synthetic_input=false`，所以本次连 `SetForegroundWindow`/attach 都未执行，更没有
+鼠标或 `SendInput`。tracked Job、watchdog、control、双源 inventory、protected storage 与 production tree 均完成退出后证明。
+
+运行结束后的只读活体查询发现该窗口仍存在，title=`AlertWindow`、class=`HwndWrapper[...]`、`WS_EX_TOPMOST=true`，进程为
+Kaspersky `avpui.exe`，句柄查询到路径 `C:\Program Files (x86)\Kaspersky Lab\Kaspersky Internet Security 21.3\avpui.exe`。
+这些产品身份没有被不可变 run 归档；原报告只绑定 HWND 与矩形，因此它们只能作为高置信事故诊断，不能冒充历史验签字段。
+自主玩家不得自动关闭/点击该窗口，也不得照搬 acceptance runner 的通知白名单恢复；需要外部人工处理后，由新的 committed
+candidate、prepare 和同环境两项资格重新开始。
+
 ## 一次性前台与输入协议
 
 唯一窗口出现后，前台获取本身也是一次性事务。场景先向主 `events.jsonl` 持久写入
@@ -138,7 +153,9 @@ state lock + game launch lock
 GREEN 报告至少绑定：固定 UI 合约的来源、environment 记录哈希与归档哈希；前后各两帧 PNG、OCR、观察 JSON
 及递增采集序号；PID / creation / exe / HWND / rect；唯一 confirmed action receipt；目标 bbox、client/screen
 中心、hover/final patch、SendInput 接受数；主 `events.jsonl` 的 WAL 与 tail；load、shutdown、全局清点、protected 与 production
-证据。专用公开 validator 必须逐项复算；普通 `validate_smoke_report()` 的无密钥事件链/定稿检查不能替代它。
+证据。专用公开 validator 必须逐项复算；历史 format v1 `validate_smoke_report()` 只有无密钥事件链/定稿检查，不能替代它。
+format v2 ordinary validator 虽已能自包含重放可见主菜单、加载、诊断、进程清理、protected 与 production 证明，但仍不验证本场景的
+foreground、UI WAL、像素 patch、单次 SendInput 和书签页后置条件，因此也不能替代 menu validator。
 
 所有哈希链均是无密钥的一致性链，只证明当前归档在同一 validator、仓库与 OCR runtime 下满足 schema 与内部关系，
 不证明历史执行真实性，也不是跨机数字签名。

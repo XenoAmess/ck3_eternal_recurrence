@@ -3,6 +3,7 @@ from __future__ import annotations
 import gzip
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 from types import SimpleNamespace
@@ -38,8 +39,10 @@ from xar_autoplayer.control.executor import (  # noqa: E402
 )
 from xar_autoplayer.menu_smoke import (  # noqa: E402
     GREEN_EVENT_ORDER,
+    LEGACY_NORMAL_QUALIFICATION_VALIDATOR,
     MENU_ACCEPTANCE_CLAIM,
     MENU_KIND,
+    NORMAL_V2_QUALIFICATION_VALIDATOR,
     REPLAY_TRUST_MODEL,
     ACTION_RECEIPT_SCHEMA,
     ACTION_RECEIPT_SCHEMA_AGENT_RUNTIME_PATH,
@@ -49,14 +52,22 @@ from xar_autoplayer.menu_smoke import (  # noqa: E402
     UI_CONTRACT_ARCHIVE,
     UI_CONTRACT_REPOSITORY_RELATIVE,
     _archive_ui_contract,
+    _archive_menu_qualification,
+    _require_menu_qualification,
+    _validate_archived_menu_qualification,
+    _validate_normal_qualification,
     _validate_archived_environment,
     _validate_json_schema,
+    _validate_preseal_candidate,
+    _validated_menu_event_rows,
     _artifact_manifest,
     _menu_smoke_locked,
     _memory_image_sha256,
     _replay_visible_frame,
     _report_body_sha256,
     _run_menu_scenario,
+    _verified_artifact_manifest,
+    _write_final_report_transactionally,
     validate_menu_smoke_report,
 )
 from xar_autoplayer.runtime import (  # noqa: E402
@@ -454,6 +465,7 @@ def _qualification_fixture(
     finalize(
         normal_dir,
         {
+            "format_version": 2,
             "run_id": normal_id,
             "kind": "infrastructure_smoke",
             "acceptance_claim": "isolated_single_mod_visible_main_menu_only",
@@ -496,7 +508,7 @@ def _qualification_fixture(
             "archive_path": normal_relative.as_posix(),
             "report_sha256": sha256_file(normal_dir / "report.json"),
             "events_sha256": sha256_file(normal_dir / "events.jsonl"),
-            "validator": "validate_smoke_report + menu semantic conjunction",
+            "validator": NORMAL_V2_QUALIFICATION_VALIDATOR,
             "prelaunch_validation_passed": True,
         },
         "crash": {
@@ -1482,6 +1494,42 @@ def _finalize_red_fixture(
     write_json_atomic(run_dir / "report.json", report)
 
 
+def _prepare_prefinal_fixture(
+    run_dir: Path,
+    report: dict[str, object],
+    rows: list[dict[str, object]],
+    *,
+    action: dict[str, object] | None = None,
+) -> None:
+    """Restore a finalized fixture to its exact pre-smoke_finished state."""
+    events = run_dir / "events.jsonl"
+    events.unlink()
+    if action is not None:
+        action["durable_events"] = {}
+    event_labels = {
+        "ui_action_planned": "planned",
+        "ui_input_armed": "armed",
+        "ui_action_finished": "finished",
+    }
+    for row in rows:
+        digest = append_event(events, row)
+        if action is not None and row.get("kind") in event_labels:
+            action["durable_events"][event_labels[str(row["kind"])]] = digest
+    if action is not None:
+        write_json_atomic(run_dir / str(action["receipt_artifact"]), action)
+        report["navigation_attestation"]["transition"]["action"] = action
+    report["artifacts"] = _artifact_manifest(run_dir)
+    for field in (
+        "report_body_sha256",
+        "final_event_sha256",
+        "event_chain",
+    ):
+        report.pop(field, None)
+    report["finalized"] = False
+    report["ok"] = False
+    write_json_atomic(run_dir / "report.json", report)
+
+
 def _refinalize_green_fixture(
     run_dir: Path,
     report: dict[str, object],
@@ -1786,7 +1834,312 @@ class ForegroundScenarioTests(unittest.TestCase):
                 self.assertEqual([row["kind"] for row in rows], expected_kinds)
 
 
+class MenuQualificationGenerationTests(unittest.TestCase):
+    @staticmethod
+    def _write_candidate(
+        runs: Path,
+        run_id: str,
+        *,
+        kind: str,
+        environment_sha256: str,
+        format_version: int | None = None,
+        finished_at: str | None = None,
+        started_at: str | None = None,
+    ) -> Path:
+        run = runs / run_id
+        run.mkdir(parents=True)
+        payload: dict[str, object] = {
+            "run_id": run_id,
+            "kind": kind,
+            "environment_sha256": environment_sha256,
+            "finalized": True,
+            "ok": True,
+            "valid_score_episode": False,
+        }
+        if format_version is not None:
+            payload["format_version"] = format_version
+        if kind == "infrastructure_smoke":
+            payload.update(
+                {
+                    "run_dir": "." if format_version == 2 else str(run),
+                    "acceptance_claim": "isolated_single_mod_visible_main_menu_only",
+                    "finished_at": finished_at,
+                }
+            )
+        else:
+            payload["started_at"] = started_at
+            payload["crash_attestation"] = {"cleanup_proven": True}
+            payload["production_tree_unchanged"] = True
+        write_json_atomic(run / "report.json", payload)
+        return run
+
+    def test_live_scanner_skips_newer_v1_and_selects_older_v2(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-menu-live-v2-") as temporary:
+            state = Path(temporary).resolve()
+            runs = state / "runs"
+            environment_sha256 = "a" * 64
+            legacy = self._write_candidate(
+                runs,
+                "20260822T030000Z-normal-v1",
+                kind="infrastructure_smoke",
+                environment_sha256=environment_sha256,
+                format_version=1,
+                finished_at="2026-08-22T03:00:01+00:00",
+            )
+            normal = self._write_candidate(
+                runs,
+                "20260822T020000Z-normal-v2",
+                kind="infrastructure_smoke",
+                environment_sha256=environment_sha256,
+                format_version=2,
+                # Z is intentionally lexically later than '+00:00'; the gate
+                # must compare parsed UTC instants rather than strings.
+                finished_at="2026-08-22T02:00:01Z",
+            )
+            crash = self._write_candidate(
+                runs,
+                "20260822T040000Z-crash-v2",
+                kind="crash_recovery_smoke",
+                environment_sha256=environment_sha256,
+                started_at="2026-08-22T02:01:01+00:00",
+            )
+
+            def replay_normal(path: Path) -> dict[str, object]:
+                return json.loads((path / "report.json").read_text(encoding="utf-8"))
+
+            def replay_crash(path: Path) -> dict[str, object]:
+                return json.loads((path / "report.json").read_text(encoding="utf-8"))
+
+            with mock.patch(
+                "xar_autoplayer.runtime.validate_smoke_report",
+                side_effect=replay_normal,
+            ), mock.patch(
+                "xar_autoplayer.crash_probe.validate_crash_report",
+                side_effect=replay_crash,
+            ):
+                selected = _require_menu_qualification(
+                    SimpleNamespace(state_dir=state),
+                    {"environment_sha256": environment_sha256},
+                )
+            self.assertEqual(selected["normal_source"], normal)
+            self.assertNotEqual(selected["normal_source"], legacy)
+            self.assertEqual(selected["crash_source"], crash)
+
+    def test_live_scanner_never_authorizes_only_v1_normal(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-menu-live-v1-only-") as temporary:
+            state = Path(temporary).resolve()
+            runs = state / "runs"
+            environment_sha256 = "b" * 64
+            self._write_candidate(
+                runs,
+                "20260822T020000Z-normal-v1",
+                kind="infrastructure_smoke",
+                environment_sha256=environment_sha256,
+                format_version=1,
+                finished_at="2026-08-22T02:00:01+00:00",
+            )
+            with mock.patch(
+                "xar_autoplayer.runtime.validate_smoke_report",
+                side_effect=lambda path: json.loads(
+                    (path / "report.json").read_text(encoding="utf-8")
+                ),
+            ):
+                with self.assertRaisesRegex(AgentError, "ordinary smoke GREEN"):
+                    _require_menu_qualification(
+                        SimpleNamespace(state_dir=state),
+                        {"environment_sha256": environment_sha256},
+                    )
+
+    def test_archive_uses_v2_validator_and_survives_source_removal(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-menu-archive-v2-") as temporary:
+            root = Path(temporary).resolve()
+            source_root = root / "sources"
+            menu_run = root / "menu-run"
+            menu_run.mkdir()
+            environment_sha256 = "c" * 64
+            normal = self._write_candidate(
+                source_root,
+                "normal-v2",
+                kind="infrastructure_smoke",
+                environment_sha256=environment_sha256,
+                format_version=2,
+                finished_at="2026-08-22T02:00:00+00:00",
+            )
+            crash = self._write_candidate(
+                source_root,
+                "crash-v2",
+                kind="crash_recovery_smoke",
+                environment_sha256=environment_sha256,
+                started_at="2026-08-22T02:01:00+00:00",
+            )
+            for path in (normal, crash):
+                append_event(path / "events.jsonl", {"kind": "smoke_finished", "ok": True})
+            normal_report = json.loads((normal / "report.json").read_text(encoding="utf-8"))
+            crash_report = json.loads((crash / "report.json").read_text(encoding="utf-8"))
+
+            def replay_normal(path: Path) -> dict[str, object]:
+                return json.loads((path / "report.json").read_text(encoding="utf-8"))
+
+            def replay_crash(path: Path) -> dict[str, object]:
+                return json.loads((path / "report.json").read_text(encoding="utf-8"))
+
+            with mock.patch(
+                "xar_autoplayer.runtime.validate_smoke_report",
+                side_effect=replay_normal,
+            ), mock.patch(
+                "xar_autoplayer.crash_probe.validate_crash_report",
+                side_effect=replay_crash,
+            ):
+                archived = _archive_menu_qualification(
+                    {
+                        "environment_sha256": environment_sha256,
+                        "normal_source": normal,
+                        "normal_report": normal_report,
+                        "crash_source": crash,
+                        "crash_report": crash_report,
+                    },
+                    menu_run,
+                )
+            self.assertEqual(
+                archived["normal"]["validator"],
+                NORMAL_V2_QUALIFICATION_VALIDATOR,
+            )
+            shutil.rmtree(source_root)
+            nested = menu_run / archived["normal"]["archive_path"]
+            self.assertTrue((nested / "report.json").is_file())
+            self.assertEqual(
+                json.loads((nested / "report.json").read_text(encoding="utf-8")),
+                normal_report,
+            )
+
+
 class MenuReportValidatorTests(unittest.TestCase):
+    @staticmethod
+    def _legacy_zero_input_red(
+        run_dir: Path, *, retain_observations: bool = False
+    ) -> tuple[dict[str, object], dict[int, tuple[object, ...]]]:
+        report, replay = build_red_report(run_dir, "clean-pre-input")
+        if not retain_observations:
+            for path in (run_dir / "artifacts").iterdir():
+                if path.suffix.casefold() == ".png" or path.name.endswith(
+                    ".observation.json"
+                ):
+                    path.unlink()
+        normal_entry = report["qualification"]["normal"]
+        nested_report_path = (
+            run_dir / normal_entry["archive_path"] / "report.json"
+        )
+        nested = json.loads(nested_report_path.read_text(encoding="utf-8"))
+        nested["format_version"] = 1
+        write_json_atomic(nested_report_path, nested)
+        normal_entry["validator"] = LEGACY_NORMAL_QUALIFICATION_VALIDATOR
+        normal_entry["report_sha256"] = sha256_file(nested_report_path)
+        rows = _event_payloads(run_dir)
+        _finalize_red_fixture(run_dir, report, rows)
+        return report, replay
+
+    @staticmethod
+    def _legacy_replay_patches():
+        def replay_legacy(path: Path, expected: str) -> dict[str, object]:
+            payload = json.loads((path / "report.json").read_text(encoding="utf-8"))
+            if payload.get("environment_sha256") != expected:
+                raise AgentError("fixture legacy qualification environment differs")
+            return payload
+
+        def replay_crash(path: Path) -> dict[str, object]:
+            return json.loads((path / "report.json").read_text(encoding="utf-8"))
+
+        return (
+            mock.patch(
+                "xar_autoplayer.menu_smoke._validate_legacy_normal_qualification",
+                side_effect=replay_legacy,
+            ),
+            mock.patch(
+                "xar_autoplayer.crash_probe.validate_crash_report",
+                side_effect=replay_crash,
+            ),
+        )
+
+    def test_legacy_v1_qualification_replays_only_for_zero_input_red(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-menu-legacy-red-") as temporary:
+            run_dir = Path(temporary).resolve() / "20260822T000000Z-menu-legacyred"
+            self._legacy_zero_input_red(run_dir)
+            legacy_patch, crash_patch = self._legacy_replay_patches()
+            with legacy_patch, crash_patch:
+                replayed = validate_menu_smoke_report(run_dir)
+            self.assertFalse(replayed["ok"])
+
+    def test_legacy_v1_zero_input_red_may_retain_pure_observations(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-legacy-observation-red-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-legacy-observation"
+            )
+            _report, replay_spans = self._legacy_zero_input_red(
+                run_dir, retain_observations=True
+            )
+            legacy_patch, crash_patch = self._legacy_replay_patches()
+            with mock.patch(
+                "xar_autoplayer.vision.ocr.ocr_spans",
+                side_effect=lambda image, *_args, **_kwargs: replay_spans[
+                    int(image.getpixel((0, 0))[0])
+                ],
+            ), legacy_patch, crash_patch:
+                replayed = validate_menu_smoke_report(run_dir)
+            self.assertFalse(replayed["ok"])
+
+    def test_legacy_v1_qualification_is_rejected_if_authorizing_or_input_bearing(self) -> None:
+        cases = (
+            "green",
+            "ui-event",
+            "bookmark-event",
+            "receipt",
+            "action",
+            "navigation-artifact",
+            "navigation-report",
+        )
+        for mode in cases:
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-legacy-{mode}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / f"20260822T000000Z-menu-legacy-{mode}"
+                )
+                report, _replay = self._legacy_zero_input_red(run_dir)
+                verified = _verified_artifact_manifest(report, run_dir)
+                if mode == "green":
+                    report["ok"] = True
+                elif mode == "ui-event":
+                    append_event(
+                        run_dir / "events.jsonl",
+                        {"kind": "ui_input_armed"},
+                    )
+                elif mode == "bookmark-event":
+                    append_event(
+                        run_dir / "events.jsonl",
+                        {"kind": "bookmark_lobby_attested"},
+                    )
+                elif mode == "navigation-report":
+                    report["navigation_attestation"] = {}
+                else:
+                    names = {
+                        "receipt": "forged-receipt.json",
+                        "action": "00001-action.json",
+                        "navigation-artifact": "navigation.json",
+                    }
+                    name = names[mode]
+                    artifact = run_dir / "artifacts" / name
+                    artifact.write_text("{}\n", encoding="utf-8")
+                    verified[f"artifacts/{name}"] = artifact
+                legacy_patch, crash_patch = self._legacy_replay_patches()
+                with legacy_patch, crash_patch, self.assertRaisesRegex(
+                    AgentError, "normal qualification archive differs"
+                ):
+                    _validate_archived_menu_qualification(report, verified)
+
     @staticmethod
     def _validate_strict(
         run_dir: Path, replay_spans: dict[int, tuple[object, ...]]
@@ -1840,6 +2193,166 @@ class MenuReportValidatorTests(unittest.TestCase):
             relocated = root / "relocated" / run_dir.name
             shutil.copytree(run_dir, relocated)
             self.assertTrue(self._validate_strict(relocated, replay)["ok"])
+
+    def test_public_replay_rejects_artifact_created_by_semantic_leaf(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-public-artifact-race-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-public-race"
+            )
+            _report, replay_spans = build_strict_green_report(run_dir)
+
+            def replay_nested_normal(
+                path: Path, expected: str
+            ) -> dict[str, object]:
+                payload = json.loads(
+                    (path / "report.json").read_text(encoding="utf-8")
+                )
+                if payload.get("environment_sha256") != expected:
+                    raise AgentError(
+                        "fixture normal qualification environment differs"
+                    )
+                (run_dir / "artifacts" / "late-unreferenced.bin").write_bytes(
+                    b"created during semantic replay"
+                )
+                return payload
+
+            def replay_nested_crash(path: Path) -> dict[str, object]:
+                return json.loads(
+                    (path / "report.json").read_text(encoding="utf-8")
+                )
+
+            with mock.patch(
+                "xar_autoplayer.vision.ocr.ocr_spans",
+                side_effect=lambda image, *_args, **_kwargs: replay_spans[
+                    int(image.getpixel((0, 0))[0])
+                ],
+            ), mock.patch(
+                "xar_autoplayer.menu_smoke._validate_normal_qualification",
+                side_effect=replay_nested_normal,
+            ), mock.patch(
+                "xar_autoplayer.crash_probe.validate_crash_report",
+                side_effect=replay_nested_crash,
+            ), self.assertRaisesRegex(AgentError, "complete run set"):
+                validate_menu_smoke_report(run_dir)
+
+    def test_preseal_rejects_rechained_green_with_invalid_event_timestamp(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-preseal-green-event-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-preseal-green"
+            )
+            report, _replay = build_strict_green_report(run_dir)
+            rows = _event_payloads(run_dir)
+            rows[1]["at"] = "invalid-date"
+            action_path = run_dir / "artifacts" / "00007-action.json"
+            action = json.loads(action_path.read_text(encoding="utf-8"))
+            _prepare_prefinal_fixture(
+                run_dir,
+                report,
+                rows,
+                action=action,
+            )
+            verified = _verified_artifact_manifest(report, run_dir)
+            prefix_rows, prefix_chain = _validated_menu_event_rows(
+                run_dir / "events.jsonl"
+            )
+            before_events = (run_dir / "events.jsonl").read_bytes()
+            with self.assertRaisesRegex(AgentError, "event timestamp differs"):
+                _validate_preseal_candidate(
+                    report,
+                    run_dir,
+                    verified,
+                    prefix_rows,
+                    prefix_chain,
+                    ok=True,
+                )
+            self.assertEqual(
+                (run_dir / "events.jsonl").read_bytes(), before_events
+            )
+            self.assertNotIn(
+                "smoke_finished", [row["kind"] for row in prefix_rows]
+            )
+            persisted = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(persisted["finalized"])
+            self.assertFalse(persisted["ok"])
+
+    def test_preseal_rejects_stably_manifested_red_ui_contract_mismatch(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-preseal-red-contract-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-preseal-red"
+            )
+            report, _replay = build_red_report(run_dir, "clean-pre-input")
+            rows = _event_payloads(run_dir)
+            _prepare_prefinal_fixture(run_dir, report, rows)
+            contract_path = run_dir / UI_CONTRACT_ARCHIVE
+            contract_path.write_bytes(contract_path.read_bytes() + b"\n")
+            report["artifacts"] = _artifact_manifest(run_dir)
+            write_json_atomic(run_dir / "report.json", report)
+            verified = _verified_artifact_manifest(report, run_dir)
+            prefix_rows, prefix_chain = _validated_menu_event_rows(
+                run_dir / "events.jsonl"
+            )
+            before_events = (run_dir / "events.jsonl").read_bytes()
+
+            def replay_nested_normal(
+                path: Path, expected: str
+            ) -> dict[str, object]:
+                payload = json.loads(
+                    (path / "report.json").read_text(encoding="utf-8")
+                )
+                if payload.get("environment_sha256") != expected:
+                    raise AgentError(
+                        "fixture normal qualification environment differs"
+                    )
+                return payload
+
+            def replay_nested_crash(path: Path) -> dict[str, object]:
+                return json.loads(
+                    (path / "report.json").read_text(encoding="utf-8")
+                )
+
+            with mock.patch(
+                "xar_autoplayer.menu_smoke._validate_normal_qualification",
+                side_effect=replay_nested_normal,
+            ), mock.patch(
+                "xar_autoplayer.crash_probe.validate_crash_report",
+                side_effect=replay_nested_crash,
+            ), self.assertRaisesRegex(
+                AgentError, "UI contract report binding differs"
+            ):
+                _validate_preseal_candidate(
+                    report,
+                    run_dir,
+                    verified,
+                    prefix_rows,
+                    prefix_chain,
+                    ok=False,
+                )
+            self.assertEqual(
+                (run_dir / "events.jsonl").read_bytes(), before_events
+            )
+            self.assertNotIn(
+                "smoke_finished", [row["kind"] for row in prefix_rows]
+            )
+            persisted = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(persisted["finalized"])
+            self.assertFalse(persisted["ok"])
 
     def test_pre_resume_inventory_envelope_and_row_are_exact(self) -> None:
         mutations = {
@@ -2873,7 +3386,10 @@ class MenuLifecycleTests(unittest.TestCase):
             mock.patch("xar_autoplayer.menu_smoke._run_menu_scenario", side_effect=scenario),
             mock.patch("xar_autoplayer.menu_smoke.stop_tracked", return_value=shutdown),
             mock.patch("xar_autoplayer.menu_smoke.collect_engine_log_evidence", return_value={"current_mod_diagnostics": False}),
+            mock.patch("xar_autoplayer.menu_smoke._validate_menu_report_base_contract"),
+            mock.patch("xar_autoplayer.menu_smoke._validate_event_semantics"),
             mock.patch("xar_autoplayer.menu_smoke._validate_success_payload"),
+            mock.patch("xar_autoplayer.menu_smoke._validate_red_payload"),
             mock.patch("xar_autoplayer.menu_smoke.validate_menu_smoke_report", side_effect=validate_final),
             mock.patch(
                 "xar_autoplayer.menu_smoke.write_json_atomic",
@@ -2984,27 +3500,554 @@ class MenuLifecycleTests(unittest.TestCase):
             self.assertFalse(provisional["finalized"])
             self.assertFalse(provisional["ok"])
 
-    def test_final_report_write_before_or_after_commit_is_reconciled(self) -> None:
-        for failure in ("before-commit", "after-commit"):
-            with self.subTest(failure=failure), tempfile.TemporaryDirectory(
-                prefix=f"xar-menu-final-report-{failure}-"
-            ) as temporary:
-                spec, _handle = self._run(
-                    Path(temporary).resolve(),
-                    final_report_write_failure=failure,
-                )
-                report = _menu_smoke_locked(spec, 30)
-                run_dir = next((spec.state_dir / "runs").glob("*-menu-*"))
-                persisted = json.loads(
+    def test_actual_final_row_cannot_bypass_prevalidated_timestamp(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-final-event-split-clock-"
+        ) as temporary:
+            spec, _handle = self._run(Path(temporary).resolve())
+
+            def replace_only_actual_final_timestamp(
+                path: Path, payload: dict[str, object]
+            ) -> str:
+                if payload.get("kind") != "smoke_finished":
+                    return append_event(path, payload)
+                altered = dict(payload)
+                altered.pop("at", None)
+                with mock.patch(
+                    "xar_autoplayer.runtime.utc_now",
+                    return_value="invalid-date",
+                ):
+                    return append_event(path, altered)
+
+            with mock.patch(
+                "xar_autoplayer.menu_smoke.append_event",
+                side_effect=replace_only_actual_final_timestamp,
+            ), self.assertRaisesRegex(
+                AgentError, "committed final WAL digest differs"
+            ):
+                _menu_smoke_locked(spec, 30)
+            run_dir = next((spec.state_dir / "runs").glob("*-menu-*"))
+            provisional = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(provisional["finalized"])
+            self.assertFalse(provisional["ok"])
+            self.assertNotIn("final_event_sha256", provisional)
+            rows = [
+                json.loads(line)
+                for line in (run_dir / "events.jsonl")
+                .read_text(encoding="utf-8")
+                .splitlines()
+            ]
+            self.assertEqual(rows[-1]["kind"], "smoke_finished")
+            self.assertEqual(rows[-1]["at"], "invalid-date")
+
+    def test_actual_final_row_reuses_exact_prevalidated_timestamp(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-final-event-planned-clock-"
+        ) as temporary:
+            spec, _handle = self._run(Path(temporary).resolve())
+            planned_at = "2026-08-22T03:30:00+00:00"
+
+            def split_clock_append(
+                path: Path, payload: dict[str, object]
+            ) -> str:
+                if payload.get("kind") == "smoke_finished":
+                    with mock.patch(
+                        "xar_autoplayer.runtime.utc_now",
+                        return_value="invalid-date",
+                    ):
+                        return append_event(path, payload)
+                return append_event(path, payload)
+
+            with mock.patch(
+                "xar_autoplayer.menu_smoke.utc_now",
+                return_value=planned_at,
+            ), mock.patch(
+                "xar_autoplayer.menu_smoke.append_event",
+                side_effect=split_clock_append,
+            ):
+                result = _menu_smoke_locked(spec, 30)
+            self.assertTrue(result["ok"])
+            run_dir = next((spec.state_dir / "runs").glob("*-menu-*"))
+            chain = validate_event_chain(run_dir / "events.jsonl")
+            tail = chain["tail"]
+            self.assertEqual(tail["kind"], "smoke_finished")
+            self.assertEqual(tail["at"], planned_at)
+            self.assertEqual(
+                result["final_event_sha256"], tail["event_sha256"]
+            )
+
+    def test_final_report_prefsync_failure_keeps_provisional_report(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-final-report-prefsync-"
+        ) as temporary:
+            path = Path(temporary) / "report.json"
+            provisional = {"finalized": False, "ok": False}
+            final = {"finalized": True, "ok": True}
+            write_json_atomic(path, provisional)
+            before = path.read_bytes()
+            with mock.patch(
+                "xar_autoplayer.menu_smoke.os.fsync",
+                side_effect=OSError("synthetic temporary fsync failure"),
+            ), self.assertRaisesRegex(OSError, "temporary fsync failure"):
+                _write_final_report_transactionally(path, final)
+            self.assertEqual(path.read_bytes(), before)
+            self.assertEqual(
+                json.loads(path.read_text(encoding="utf-8")), provisional
+            )
+            self.assertEqual(list(path.parent.glob(".report.json.final-*.tmp")), [])
+
+    def test_final_report_prefsync_and_unlink_failure_aborts_without_retry(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-final-report-prefsync-leftover-"
+        ) as temporary:
+            path = Path(temporary) / "report.json"
+            provisional = {"finalized": False, "ok": False}
+            final = {"finalized": True, "ok": True}
+            write_json_atomic(path, provisional)
+            before = path.read_bytes()
+            path_type = type(path)
+            real_unlink = path_type.unlink
+            unlink_calls = 0
+
+            def refuse_final_temporary_unlink(
+                candidate: Path, *args: object, **kwargs: object
+            ) -> None:
+                nonlocal unlink_calls
+                if candidate.name.startswith(".report.json.final-"):
+                    unlink_calls += 1
+                    raise PermissionError("synthetic temporary unlink failure")
+                real_unlink(candidate, *args, **kwargs)
+
+            with mock.patch(
+                "xar_autoplayer.menu_smoke.os.fsync",
+                side_effect=OSError("synthetic temporary fsync failure"),
+            ) as fsync_mock, mock.patch.object(
+                path_type,
+                "unlink",
+                new=refuse_final_temporary_unlink,
+            ), mock.patch(
+                "xar_autoplayer.menu_smoke.os.replace", wraps=os.replace
+            ) as replace_mock, self.assertRaisesRegex(
+                AgentError, "temporary remains"
+            ):
+                _write_final_report_transactionally(path, final)
+            self.assertEqual(fsync_mock.call_count, 1)
+            self.assertEqual(unlink_calls, 1)
+            self.assertEqual(replace_mock.call_count, 0)
+            self.assertEqual(path.read_bytes(), before)
+            self.assertEqual(
+                len(list(path.parent.glob(".report.json.final-*.tmp"))), 1
+            )
+
+    def test_final_report_uncommitted_replace_and_unlink_failure_aborts_without_retry(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-final-report-replace-leftover-"
+        ) as temporary:
+            path = Path(temporary) / "report.json"
+            provisional = {"finalized": False, "ok": False}
+            final = {"finalized": True, "ok": True}
+            write_json_atomic(path, provisional)
+            before = path.read_bytes()
+            path_type = type(path)
+            real_unlink = path_type.unlink
+            unlink_calls = 0
+
+            def refuse_final_temporary_unlink(
+                candidate: Path, *args: object, **kwargs: object
+            ) -> None:
+                nonlocal unlink_calls
+                if candidate.name.startswith(".report.json.final-"):
+                    unlink_calls += 1
+                    raise PermissionError("synthetic temporary unlink failure")
+                real_unlink(candidate, *args, **kwargs)
+
+            with mock.patch(
+                "xar_autoplayer.menu_smoke.os.replace",
+                side_effect=OSError("synthetic pre-commit replace failure"),
+            ) as replace_mock, mock.patch.object(
+                path_type,
+                "unlink",
+                new=refuse_final_temporary_unlink,
+            ), self.assertRaisesRegex(
+                AgentError, "temporary remains"
+            ):
+                _write_final_report_transactionally(path, final)
+            self.assertEqual(replace_mock.call_count, 1)
+            self.assertEqual(unlink_calls, 1)
+            self.assertEqual(path.read_bytes(), before)
+            self.assertEqual(
+                len(list(path.parent.glob(".report.json.final-*.tmp"))), 1
+            )
+
+    def test_final_report_committed_replace_exception_is_reconciled(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-final-report-replace-"
+        ) as temporary:
+            path = Path(temporary) / "report.json"
+            write_json_atomic(path, {"finalized": False, "ok": False})
+            final = {"finalized": True, "ok": True, "seal": "a" * 64}
+            real_replace = os.replace
+            calls = 0
+
+            def committed_then_raise(source: object, destination: object) -> None:
+                nonlocal calls
+                calls += 1
+                real_replace(source, destination)
+                raise OSError("synthetic committed replace exception")
+
+            with mock.patch(
+                "xar_autoplayer.menu_smoke.os.replace",
+                side_effect=committed_then_raise,
+            ):
+                _write_final_report_transactionally(path, final)
+            self.assertEqual(calls, 1)
+            self.assertEqual(json.loads(path.read_text(encoding="utf-8")), final)
+
+    def test_public_replay_failure_after_publish_downgrades_to_provisional(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-post-publish-drift-"
+        ) as temporary:
+            spec, _handle = self._run(Path(temporary).resolve())
+            real_writer = _write_final_report_transactionally
+
+            def publish_then_mutate(
+                path: Path, payload: dict[str, object]
+            ) -> None:
+                real_writer(path, payload)
+                contract = path.parent / UI_CONTRACT_ARCHIVE
+                contract.write_bytes(contract.read_bytes() + b"\n")
+
+            def replay_manifest(run_dir: Path) -> dict[str, object]:
+                payload = json.loads(
                     (run_dir / "report.json").read_text(encoding="utf-8")
                 )
-                self.assertEqual(report, persisted)
-                self.assertTrue(persisted["finalized"])
-                self.assertTrue(persisted["ok"])
-                self.assertEqual(
-                    persisted["final_event_sha256"],
-                    validate_event_chain(run_dir / "events.jsonl")["tail_sha256"],
+                _verified_artifact_manifest(payload, run_dir)
+                return payload
+
+            with mock.patch(
+                "xar_autoplayer.menu_smoke._write_final_report_transactionally",
+                side_effect=publish_then_mutate,
+            ), mock.patch(
+                "xar_autoplayer.menu_smoke.validate_menu_smoke_report",
+                side_effect=replay_manifest,
+            ), self.assertRaisesRegex(AgentError, "artifact differs"):
+                _menu_smoke_locked(spec, 30)
+            run_dir = next((spec.state_dir / "runs").glob("*-menu-*"))
+            persisted = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(persisted["finalized"])
+            self.assertFalse(persisted["ok"])
+            self.assertNotIn("report_body_sha256", persisted)
+            self.assertNotIn("final_event_sha256", persisted)
+            self.assertNotIn("event_chain", persisted)
+            self.assertIn("published final report replay", persisted["error"])
+            rows = [
+                json.loads(line)
+                for line in (run_dir / "events.jsonl")
+                .read_text(encoding="utf-8")
+                .splitlines()
+            ]
+            self.assertEqual(rows[-1]["kind"], "smoke_finished")
+
+    def test_public_failure_downgrade_precommit_failure_preserves_final_bytes(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-downgrade-precommit-"
+        ) as temporary:
+            spec, _handle = self._run(Path(temporary).resolve())
+            real_replace = os.replace
+            replace_calls = 0
+            downgrade_armed = False
+
+            def fail_only_downgrade_replace(
+                source: object, destination: object
+            ) -> None:
+                nonlocal replace_calls
+                if (
+                    not downgrade_armed
+                    or not Path(str(source)).name.startswith(
+                        ".report.json.final-"
+                    )
+                ):
+                    real_replace(source, destination)
+                    return
+                replace_calls += 1
+                raise OSError("synthetic downgrade precommit failure")
+
+            def mutate_then_reject(run_dir: Path) -> dict[str, object]:
+                nonlocal downgrade_armed
+                contract = run_dir / UI_CONTRACT_ARCHIVE
+                contract.write_bytes(contract.read_bytes() + b"\n")
+                downgrade_armed = True
+                raise AgentError("synthetic public replay rejection")
+
+            with mock.patch(
+                "xar_autoplayer.menu_smoke.os.replace",
+                side_effect=fail_only_downgrade_replace,
+            ), mock.patch(
+                "xar_autoplayer.menu_smoke.validate_menu_smoke_report",
+                side_effect=mutate_then_reject,
+            ), self.assertRaisesRegex(AgentError, "public replay rejection"):
+                _menu_smoke_locked(spec, 30)
+            self.assertEqual(replace_calls, 2)
+            run_dir = next((spec.state_dir / "runs").glob("*-menu-*"))
+            persisted = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            self.assertTrue(persisted["finalized"])
+            self.assertTrue(persisted["ok"])
+            self.assertIn("final_event_sha256", persisted)
+
+    def test_public_failure_downgrade_committed_replace_exception_is_exact_provisional(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-downgrade-committed-"
+        ) as temporary:
+            spec, _handle = self._run(Path(temporary).resolve())
+            real_replace = os.replace
+            replace_calls = 0
+            downgrade_armed = False
+
+            def commit_downgrade_then_raise(
+                source: object, destination: object
+            ) -> None:
+                nonlocal replace_calls
+                if (
+                    not downgrade_armed
+                    or not Path(str(source)).name.startswith(
+                        ".report.json.final-"
+                    )
+                ):
+                    real_replace(source, destination)
+                    return
+                replace_calls += 1
+                real_replace(source, destination)
+                raise OSError(
+                    "synthetic committed downgrade replace exception"
                 )
+
+            def mutate_then_reject(run_dir: Path) -> dict[str, object]:
+                nonlocal downgrade_armed
+                contract = run_dir / UI_CONTRACT_ARCHIVE
+                contract.write_bytes(contract.read_bytes() + b"\n")
+                downgrade_armed = True
+                raise AgentError("synthetic public replay rejection")
+
+            with mock.patch(
+                "xar_autoplayer.menu_smoke.os.replace",
+                side_effect=commit_downgrade_then_raise,
+            ), mock.patch(
+                "xar_autoplayer.menu_smoke.validate_menu_smoke_report",
+                side_effect=mutate_then_reject,
+            ), self.assertRaisesRegex(AgentError, "public replay rejection"):
+                _menu_smoke_locked(spec, 30)
+            self.assertEqual(replace_calls, 1)
+            run_dir = next((spec.state_dir / "runs").glob("*-menu-*"))
+            persisted = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(persisted["finalized"])
+            self.assertFalse(persisted["ok"])
+            self.assertNotIn("report_body_sha256", persisted)
+            self.assertNotIn("final_event_sha256", persisted)
+            self.assertNotIn("event_chain", persisted)
+            self.assertIn("published final report replay", persisted["error"])
+
+    def test_initial_manifest_failure_keeps_provisional_and_has_no_final_wal(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-manifest-failure-"
+        ) as temporary:
+            spec, _handle = self._run(Path(temporary).resolve())
+            with mock.patch(
+                "xar_autoplayer.menu_smoke._artifact_manifest",
+                side_effect=OSError("synthetic manifest enumeration failure"),
+            ), self.assertRaisesRegex(OSError, "manifest enumeration failure"):
+                _menu_smoke_locked(spec, 30)
+            run_dir = next((spec.state_dir / "runs").glob("*-menu-*"))
+            persisted = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(persisted["finalized"])
+            self.assertFalse(persisted["ok"])
+            self.assertNotIn("final_event_sha256", persisted)
+            kinds = [
+                json.loads(line)["kind"]
+                for line in (run_dir / "events.jsonl")
+                .read_text(encoding="utf-8")
+                .splitlines()
+            ]
+            self.assertNotIn("smoke_finished", kinds)
+
+    def test_green_candidate_semantic_failure_keeps_provisional_without_final_wal(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-candidate-semantic-failure-"
+        ) as temporary:
+            spec, _handle = self._run(Path(temporary).resolve())
+            with mock.patch(
+                "xar_autoplayer.menu_smoke._validate_success_payload",
+                side_effect=AgentError("synthetic candidate semantic failure"),
+            ), self.assertRaisesRegex(AgentError, "candidate semantic failure"):
+                _menu_smoke_locked(spec, 30)
+            run_dir = next((spec.state_dir / "runs").glob("*-menu-*"))
+            persisted = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(persisted["finalized"])
+            self.assertFalse(persisted["ok"])
+            self.assertNotIn("final_event_sha256", persisted)
+            _verified_artifact_manifest(persisted, run_dir)
+            self.assertNotIn(
+                "smoke_finished",
+                [
+                    json.loads(line)["kind"]
+                    for line in (run_dir / "events.jsonl")
+                    .read_text(encoding="utf-8")
+                    .splitlines()
+                ],
+            )
+
+    def test_red_candidate_semantic_failure_keeps_provisional_without_final_wal(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-red-candidate-semantic-failure-"
+        ) as temporary:
+            spec, _handle = self._run(
+                Path(temporary).resolve(),
+                scenario_error=AgentError("synthetic operational RED"),
+            )
+            with mock.patch(
+                "xar_autoplayer.menu_smoke._validate_red_payload",
+                side_effect=AgentError("synthetic RED public replay mismatch"),
+            ), self.assertRaisesRegex(AgentError, "RED public replay mismatch"):
+                _menu_smoke_locked(spec, 30)
+            run_dir = next((spec.state_dir / "runs").glob("*-menu-*"))
+            persisted = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(persisted["finalized"])
+            self.assertFalse(persisted["ok"])
+            self.assertNotIn("final_event_sha256", persisted)
+            _verified_artifact_manifest(persisted, run_dir)
+            self.assertNotIn(
+                "smoke_finished",
+                [
+                    json.loads(line)["kind"]
+                    for line in (run_dir / "events.jsonl")
+                    .read_text(encoding="utf-8")
+                    .splitlines()
+                ],
+            )
+
+    def test_used_artifact_drift_keeps_provisional_and_has_no_final_wal(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-used-artifact-drift-"
+        ) as temporary:
+            spec, _handle = self._run(Path(temporary).resolve())
+
+            def mutate_used_artifact(
+                _report: dict[str, object],
+                _run_dir: Path,
+                verified: dict[str, Path],
+                **_kwargs: object,
+            ) -> None:
+                verified[UI_CONTRACT_ARCHIVE].write_bytes(
+                    b"synthetic changed contract"
+                )
+                raise AgentError("synthetic used artifact semantic drift")
+
+            with mock.patch(
+                "xar_autoplayer.menu_smoke._validate_success_payload",
+                side_effect=mutate_used_artifact,
+            ), self.assertRaisesRegex(AgentError, "artifact bytes changed"):
+                _menu_smoke_locked(spec, 30)
+            run_dir = next((spec.state_dir / "runs").glob("*-menu-*"))
+            persisted = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(persisted["finalized"])
+            self.assertFalse(persisted["ok"])
+            self.assertNotIn("final_event_sha256", persisted)
+            verified = _verified_artifact_manifest(persisted, run_dir)
+            self.assertEqual(
+                verified[UI_CONTRACT_ARCHIVE].read_bytes(),
+                b"synthetic changed contract",
+            )
+            self.assertNotIn(
+                "smoke_finished",
+                [
+                    json.loads(line)["kind"]
+                    for line in (run_dir / "events.jsonl")
+                    .read_text(encoding="utf-8")
+                    .splitlines()
+                ],
+            )
+            with self.assertRaises(AgentError):
+                validate_menu_smoke_report(run_dir)
+
+    def test_unused_artifact_drift_keeps_provisional_and_has_no_final_wal(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-unused-artifact-drift-"
+        ) as temporary:
+            spec, _handle = self._run(Path(temporary).resolve())
+
+            def add_unused_artifact(
+                _report: dict[str, object],
+                run_dir: Path,
+                _verified: dict[str, Path],
+                **_kwargs: object,
+            ) -> None:
+                (run_dir / "artifacts" / "unreferenced.bin").write_bytes(
+                    b"synthetic new artifact"
+                )
+
+            with mock.patch(
+                "xar_autoplayer.menu_smoke._validate_success_payload",
+                side_effect=add_unused_artifact,
+            ), self.assertRaisesRegex(AgentError, "artifact bytes changed"):
+                _menu_smoke_locked(spec, 30)
+            run_dir = next((spec.state_dir / "runs").glob("*-menu-*"))
+            persisted = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(persisted["finalized"])
+            self.assertFalse(persisted["ok"])
+            self.assertNotIn("final_event_sha256", persisted)
+            verified = _verified_artifact_manifest(persisted, run_dir)
+            self.assertEqual(
+                verified["artifacts/unreferenced.bin"].read_bytes(),
+                b"synthetic new artifact",
+            )
+            self.assertNotIn(
+                "smoke_finished",
+                [
+                    json.loads(line)["kind"]
+                    for line in (run_dir / "events.jsonl")
+                    .read_text(encoding="utf-8")
+                    .splitlines()
+                ],
+            )
+            with self.assertRaises(AgentError):
+                validate_menu_smoke_report(run_dir)
 
     def test_baseexception_finalizes_red_cleans_and_is_rethrown(self) -> None:
         class FatalProbe(BaseException):

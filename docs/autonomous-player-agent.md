@@ -179,6 +179,22 @@ attestation；attach/detach、身份、前台或采样状态任一未知都不�
 创建时间按严格解析后的同一 UTC 时刻比较；DLC mount 保留引擎日志顺序但仍要求白名单和不重复。旧 RED 已能原样公开回放，
 但修订改变 runtime 指纹，下一次尝试前必须重新提交、prepare，并取得新的同环境 ordinary/crash 双 GREEN。
 
+提交 `af3df58` 随后在新环境
+`31e68f6d8e439643a7ff8fcb6029d72f93a85ead2d74bb58d24042c382753f72` 下取得 ordinary
+`20260822T020912Z-7dc8269d` 与 crash `20260822T021144Z-crash-b010d18c` 两项 GREEN。唯一一次后续菜单 run
+`20260822T021436Z-menu-c9b3d667` 在稳定主菜单观察前发现客户区被外部置顶窗口遮挡而安全 RED；主链只有 single-mod 与
+foreground planned/armed/finished，之后直接 tracked stop/postflight/final，没有任何 `ui_*`、receipt、鼠标移动或 `SendInput`。
+事后只读 Win32/WMI 活体查询将该 HWND 定位为 Kaspersky `avpui.exe` 的 WPF `AlertWindow`，但原 run 只绑定了 HWND 与矩形，
+因此产品身份只是诊断线索而不是可回放历史证明。合法自主玩家不应沿用 acceptance runner 的已知弹窗自动关闭逻辑；外部窗口必须
+由用户自行处理，原 RED 和原候选均不得重试。
+
+普通 smoke 归档随后升级为 format v2：所有视觉、双 debug 前缀、diagnostics、process/shutdown、protected 与 production 证据均为
+run-relative artifact，最终 event 绑定 report-body hash，最终 report 先在同目录临时文件完成 flush/fsync 后才原子替换 provisional。
+公开 `validate_smoke_report()` 对 v2 从 PNG 重跑固定 OCR、从日志字节重解析 load/诊断并复核完整 manifest；v1 仍只按历史浅契约读取。
+live 菜单资格与新 menu archive 一律要求 v2；只有外层同样是 RED 且没有任何 `ui_*` 输入 WAL、bookmark、navigation、action/receipt 的
+冻结历史 run 才能只读兼容 v1；纯观察 PNG/JSON 可以保留，但绝不据此授权输入。该深回放仍是无密钥 archive schema/内部一致性证明，
+不是历史真实性签名。
+
 动作收据的独立格式契约是 `schemas/visible-control-action-receipt-v2.schema.json`；它描述可见控件执行器的审计收据，
 不是通用 `action-v1` 策略动作的迁移版本。
 
