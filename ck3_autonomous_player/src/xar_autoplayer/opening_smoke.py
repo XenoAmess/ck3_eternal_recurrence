@@ -53,7 +53,6 @@ OPENING_ALLOWED_CONTROLS = frozenset(
         "curse_event.option_1",
         "curse_event.option_2",
         "map_hud.open_player_character",
-        "player_character.close",
         "map_hud.open_lifestyle",
         "lifestyle_selection.open_martial",
         "lifestyle_martial.select_authority_focus",
@@ -377,6 +376,51 @@ def _drive_opening(
         )
         return observation
 
+    def press_escape(screen: str, next_screen: str, next_stage: str) -> None:
+        import pyautogui
+
+        driver = new_driver()
+        driver.observe_stable(
+            screen,
+            _remaining(deadline, f"stable {screen} before Escape"),
+            stable_frames=2,
+        )
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": "player_character.close",
+                "key": "escape",
+                "expected_post_screen": next_screen,
+            },
+        )
+        pyautogui.press("esc")
+        stable = driver.observe_stable(
+            next_screen,
+            _remaining(deadline, next_stage),
+            stable_frames=2,
+        )
+        actions.append(
+            {
+                "control_id": "player_character.close",
+                "status": "confirmed",
+                "input_kind": "keyboard",
+                "key": "escape",
+                "result_observation_id": stable.observation_id,
+                "expected_post_screen": next_screen,
+            }
+        )
+        append_event(
+            events,
+            {
+                "kind": "opening_step_completed",
+                "control_id": "player_character.close",
+                "result_screen": stable.screen,
+                "result_observation_id": stable.observation_id,
+            },
+        )
+
     click("main_menu", "main_menu.new_game", "bookmark lobby")
     click(
         "bookmark_lobby",
@@ -470,9 +514,9 @@ def _drive_opening(
         "player character state",
     )
     player_state = _extract_player_character_state(final_observation)
-    click(
+    press_escape(
         "player_character",
-        "player_character.close",
+        "map_hud",
         "playable map after player inspection",
     )
     click(

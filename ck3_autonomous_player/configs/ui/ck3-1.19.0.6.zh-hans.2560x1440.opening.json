@@ -296,18 +296,6 @@
       "allow_dynamic_pixels": true
     },
     {
-      "control_id": "player_character.close",
-      "screen": "player_character",
-      "label": "close player character",
-      "text": "这是你自己",
-      "region": [0.00, 0.28, 0.08, 0.35],
-      "post_screen": "map_hud",
-      "risk": "reversible",
-      "click_point_px": [592, 20],
-      "pointer_move_seconds": 0.0,
-      "allow_dynamic_pixels": true
-    },
-    {
       "control_id": "map_hud.open_lifestyle",
       "screen": "map_hud",
       "label": "player lifestyle",

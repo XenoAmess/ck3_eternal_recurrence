@@ -217,14 +217,6 @@ class OpeningContractTests(unittest.TestCase):
             "lifestyle_martial_authority",
         )
         self.assertEqual(
-            contract.control("player_character.close").click_point_px,
-            (592, 20),
-        )
-        self.assertEqual(
-            contract.control("player_character.close").pointer_move_seconds,
-            0.0,
-        )
-        self.assertEqual(
             contract.control("map_hud.open_lifestyle").click_point_px,
             (278, 1118),
         )
@@ -420,7 +412,6 @@ class OpeningScenarioTests(unittest.TestCase):
                     "token-player",
                     "player_character",
                 ),
-                ("player_character.close", "token-close-player", "map_hud"),
                 (
                     "map_hud.open_lifestyle",
                     "token-open-lifestyle",
@@ -493,6 +484,18 @@ class OpeningScenarioTests(unittest.TestCase):
                         {"text": "当前：权威重心"},
                     ]
                 drivers.append(driver)
+            escape_driver = mock.Mock()
+            escape_driver.observe_stable.side_effect = (
+                SimpleNamespace(
+                    screen="player_character",
+                    observation_id="obs-player-before-escape",
+                ),
+                SimpleNamespace(
+                    screen="map_hud",
+                    observation_id="obs-map-after-escape",
+                ),
+            )
+            drivers.insert(8, escape_driver)
             blessing_driver = drivers[5]
             curse_driver = drivers[6]
             blessing_choices = []
@@ -571,7 +574,7 @@ class OpeningScenarioTests(unittest.TestCase):
                 return_value=window,
             ), mock.patch(
                 "xar_autoplayer.control.VisibleUiDriver", side_effect=drivers
-            ) as driver_type:
+            ) as driver_type, mock.patch("pyautogui.press") as press:
                 result = _drive_opening(
                     SimpleNamespace(
                         game_exe=Path("ck3.exe"),
@@ -588,7 +591,9 @@ class OpeningScenarioTests(unittest.TestCase):
             self.assertEqual(result["final_screen"], "lifestyle_martial_authority")
             self.assertEqual(
                 [item["control_id"] for item in result["actions"]],
-                [item[0] for item in controls],
+                [item[0] for item in controls[:8]]
+                + ["player_character.close"]
+                + [item[0] for item in controls[8:]],
             )
             self.assertEqual(driver_type.call_count, 12)
             for driver, (_, token, _) in zip(drivers[:5], controls[:5]):
@@ -608,6 +613,7 @@ class OpeningScenarioTests(unittest.TestCase):
                 "token-player",
                 timeout_seconds=mock.ANY,
             )
+            press.assert_called_once_with("esc")
             self.assertIn("长明的定力", result["first_blessing_choice"]["visible_text"])
             self.assertIn("军事经验", result["first_curse_choice"]["visible_text"])
             self.assertTrue(result["player_character_state"]["spouse_visible"])
