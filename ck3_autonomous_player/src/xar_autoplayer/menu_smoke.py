@@ -102,6 +102,23 @@ LEGACY_NORMAL_QUALIFICATION_VALIDATOR = (
     "validate_smoke_report + menu semantic conjunction"
 )
 FOREGROUND_OPERATION = "exact_hwnd_foreground_without_synthetic_input"
+FOREGROUND_PROTOCOL_VERSION = 2
+# Immutable compatibility identities for the four pre-v2, finalized, zero-input
+# field runs.  Absence of the generation marker is never accepted generically.
+LEGACY_FOREGROUND_PROTOCOL_FINAL_EVENTS = {
+    "20260822T010001Z-menu-193c8062": (
+        "e8ce9969c916eb5332ceac920a08edf31c1927d4959599b853ba3818dc00c142"
+    ),
+    "20260822T021436Z-menu-c9b3d667": (
+        "4cfad9d5e27f4db994676560664ef0eb5611c3421d0a6880b6a874407055a44d"
+    ),
+    "20260822T034104Z-menu-49f9b8bd": (
+        "489bc93111bac28b93232e28eab4b0ae8ec82bb39e1649cbde1616bddf178e26"
+    ),
+    "20260822T050447Z-menu-0eae4606": (
+        "83908f88c8a77dbbeea717fbd411b013e691cdb86235b2eb56bef3dd52d4cdd8"
+    ),
+}
 GREEN_EVENT_ORDER = (
     "smoke_started",
     "ck3_launched",
@@ -1180,6 +1197,7 @@ def _validate_navigation_success(
     process: object,
     environment: dict[str, object],
     require_complete_durable_events: bool = True,
+    require_responsive_gate: bool = True,
 ) -> None:
     if not isinstance(navigation, dict):
         raise AgentError("menu smoke navigation attestation is missing")
@@ -1218,6 +1236,7 @@ def _validate_navigation_success(
         expected_hwnd=(
             binding_window.get("hwnd") if isinstance(binding_window, dict) else None
         ),
+        require_responsive_gate=require_responsive_gate,
     )
     bound_executable = Path(str(binding_process.get("executable", ""))) if isinstance(binding_process, dict) else Path()
     handle_executable = Path(str(binding_process.get("handle_executable", ""))) if isinstance(binding_process, dict) else Path()
@@ -2335,11 +2354,300 @@ def _window_binding_core(binding: dict[str, object]) -> dict[str, object]:
     }
 
 
+def _validate_pre_mutation_responsive_stability(
+    gate: object,
+    *,
+    process: dict[str, object],
+    expected_hwnd: int,
+    target_thread: int,
+    activation_input_tick: int,
+    activation_mode: str,
+) -> None:
+    """Replay the exact read-only gate that precedes foreground mutation."""
+    expected_keys = {
+        "format_version",
+        "kind",
+        "status",
+        "started_at",
+        "finished_at",
+        "started_monotonic_ns",
+        "finished_monotonic_ns",
+        "timeout_seconds",
+        "poll_interval_seconds",
+        "wm_null_message",
+        "wm_null_timeout_milliseconds",
+        "wm_null_flags",
+        "required_consecutive_samples",
+        "required_span_ns",
+        "maximum_sample_gap_ns",
+        "last_sample_to_finish_gap_ns",
+        "sample_count",
+        "confirmation_streak_start_index",
+        "confirmation_streak_end_index",
+        "confirmation_streak_sample_count",
+        "initial_last_input_tick",
+        "final_last_input_tick",
+        "observed_last_input_tick_unchanged",
+        "target",
+        "samples",
+        "read_only_contract",
+        "full_verify_before",
+        "full_verify_after",
+        "local_identity_revalidated_after",
+        "maximum_post_confirmation_gap_ns",
+        "first_window_mutation_monotonic_ns",
+        "last_window_mutation_monotonic_ns",
+        "confirmation_to_last_mutation_gap_ns",
+        "confirmation_consumed_monotonic_ns",
+        "confirmation_consumption_gap_ns",
+        "activation_completed_monotonic_ns",
+        "confirmation_completion_gap_ns",
+    }
+    target_keys = {
+        "pid",
+        "hwnd",
+        "thread_id",
+        "client_rect",
+        "executable",
+        "creation_date",
+    }
+    sample_keys = {
+        "index",
+        "observed_at",
+        "monotonic_ns",
+        "target_pid",
+        "target_hwnd",
+        "target_thread_id",
+        "root_hwnd",
+        "client_rect",
+        "process_active",
+        "handle_pid",
+        "handle_executable",
+        "bound_creation_date",
+        "window_exists",
+        "window_visible",
+        "window_iconic",
+        "last_input_tick_before",
+        "last_input_tick_after",
+        "wm_null_timeout_milliseconds",
+        "wm_null_responded",
+        "wm_null_last_error",
+        "is_hung_app_window",
+        "responsive",
+    }
+    if not isinstance(gate, dict) or set(gate) != expected_keys:
+        raise AgentError("menu smoke responsive gate schema differs")
+    target = gate.get("target")
+    samples = gate.get("samples")
+    timeout_seconds = gate.get("timeout_seconds")
+    if (
+        gate.get("format_version") != 1
+        or gate.get("kind") != "pre_mutation_responsive_stability"
+        or gate.get("status") != "confirmed"
+        or type(timeout_seconds) is not float
+        or not math.isfinite(timeout_seconds)
+        or not 0 < timeout_seconds <= 30.0
+        or gate.get("poll_interval_seconds") != 0.25
+        or gate.get("wm_null_message") != 0
+        or gate.get("wm_null_timeout_milliseconds") != 100
+        or gate.get("wm_null_flags") != 35
+        or gate.get("required_consecutive_samples") != 21
+        or gate.get("required_span_ns") != 5_000_000_000
+        or gate.get("maximum_sample_gap_ns") != 500_000_000
+        or type(gate.get("last_sample_to_finish_gap_ns")) is not int
+        or type(gate.get("sample_count")) is not int
+        or gate["sample_count"] < 3
+        or gate["sample_count"] > math.ceil(timeout_seconds / 0.25) + 1
+        or not isinstance(samples, list)
+        or len(samples) != gate["sample_count"]
+        or type(gate.get("confirmation_streak_start_index")) is not int
+        or gate["confirmation_streak_start_index"] < 1
+        or gate.get("confirmation_streak_end_index") != gate["sample_count"]
+        or type(gate.get("confirmation_streak_sample_count")) is not int
+        or gate["confirmation_streak_sample_count"]
+        != gate["confirmation_streak_end_index"]
+        - gate["confirmation_streak_start_index"]
+        + 1
+        or gate["confirmation_streak_sample_count"] < 21
+        or gate.get("initial_last_input_tick") != activation_input_tick
+        or gate.get("final_last_input_tick") != activation_input_tick
+        or gate.get("observed_last_input_tick_unchanged") is not True
+        or gate.get("full_verify_before") is not True
+        or gate.get("full_verify_after") is not False
+        or gate.get("local_identity_revalidated_after") is not True
+        or gate.get("maximum_post_confirmation_gap_ns") != 500_000_000
+        or not isinstance(target, dict)
+        or set(target) != target_keys
+        or target.get("pid") != process.get("pid")
+        or target.get("hwnd") != expected_hwnd
+        or target.get("thread_id") != target_thread
+        or target.get("client_rect") != [0, 0, 2560, 1440]
+        or target.get("creation_date") != process.get("creation_date")
+        or Path(str(target.get("executable", ""))).resolve()
+        != Path(str(process.get("executable", ""))).resolve()
+        or gate.get("read_only_contract")
+        != {
+            "set_foreground_window_calls": 0,
+            "attach_thread_input_calls": 0,
+            "synthetic_input_calls": 0,
+            "window_close_calls": 0,
+            "desktop_enumeration_calls": 0,
+            "wmi_queries": 0,
+        }
+    ):
+        raise AgentError("menu smoke responsive gate contract differs")
+    timestamp_pattern = (
+        r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?\+00:00"
+    )
+    parsed_times: dict[str, datetime] = {}
+    for label in ("started_at", "finished_at"):
+        value = gate.get(label)
+        if not isinstance(value, str) or re.fullmatch(timestamp_pattern, value) is None:
+            raise AgentError("menu smoke responsive gate timestamp differs")
+        try:
+            parsed_times[label] = datetime.fromisoformat(value)
+        except ValueError as error:
+            raise AgentError("menu smoke responsive gate timestamp differs") from error
+    started_ns = gate.get("started_monotonic_ns")
+    finished_ns = gate.get("finished_monotonic_ns")
+    mutation_ns = gate.get("first_window_mutation_monotonic_ns")
+    last_mutation_ns = gate.get("last_window_mutation_monotonic_ns")
+    last_mutation_gap_ns = gate.get("confirmation_to_last_mutation_gap_ns")
+    consumed_ns = gate.get("confirmation_consumed_monotonic_ns")
+    consumption_gap_ns = gate.get("confirmation_consumption_gap_ns")
+    completed_ns = gate.get("activation_completed_monotonic_ns")
+    completion_gap_ns = gate.get("confirmation_completion_gap_ns")
+    if (
+        parsed_times["finished_at"] < parsed_times["started_at"]
+        or type(started_ns) is not int
+        or started_ns <= 0
+        or type(finished_ns) is not int
+        or finished_ns < started_ns
+        or finished_ns > started_ns + int(timeout_seconds * 1_000_000_000)
+        or gate["last_sample_to_finish_gap_ns"]
+        != finished_ns - samples[-1]["monotonic_ns"]
+        or not 0 <= gate["last_sample_to_finish_gap_ns"] <= 500_000_000
+        or type(consumed_ns) is not int
+        or type(consumption_gap_ns) is not int
+        or consumed_ns - finished_ns != consumption_gap_ns
+        or not 0 <= consumption_gap_ns <= 500_000_000
+        or type(completed_ns) is not int
+        or type(completion_gap_ns) is not int
+        or completed_ns - finished_ns != completion_gap_ns
+        or not 0 <= completion_gap_ns <= 500_000_000
+        or consumed_ns > completed_ns
+        or (
+            activation_mode == "already_foreground"
+            and (
+                mutation_ns is not None
+                or last_mutation_ns is not None
+                or last_mutation_gap_ns is not None
+                or consumed_ns != completed_ns
+            )
+        )
+        or (
+            activation_mode in {"direct", "attached_fallback"}
+            and (
+                type(mutation_ns) is not int
+                or mutation_ns != consumed_ns
+                or type(last_mutation_ns) is not int
+                or type(last_mutation_gap_ns) is not int
+                or last_mutation_ns - finished_ns != last_mutation_gap_ns
+                or not 0 <= last_mutation_gap_ns <= 500_000_000
+                or last_mutation_ns < mutation_ns
+                or last_mutation_ns > completed_ns
+            )
+        )
+    ):
+        raise AgentError("menu smoke responsive gate chronology differs")
+    prior_ns = started_ns - 1
+    for index, sample in enumerate(samples, start=1):
+        if not isinstance(sample, dict) or set(sample) != sample_keys:
+            raise AgentError("menu smoke responsive gate sample schema differs")
+        observed_at = sample.get("observed_at")
+        try:
+            parsed_observed_at = datetime.fromisoformat(str(observed_at))
+        except ValueError as error:
+            raise AgentError("menu smoke responsive gate sample time differs") from error
+        sample_ns = sample.get("monotonic_ns")
+        responded = sample.get("wm_null_responded")
+        hung = sample.get("is_hung_app_window")
+        if (
+            not isinstance(observed_at, str)
+            or re.fullmatch(timestamp_pattern, observed_at) is None
+            or not parsed_times["started_at"]
+            <= parsed_observed_at
+            <= parsed_times["finished_at"]
+            or sample.get("index") != index
+            or type(sample_ns) is not int
+            or sample_ns <= prior_ns
+            or (
+                index > 1
+                and sample_ns - prior_ns < 250_000_000
+            )
+            or sample_ns > finished_ns
+            or sample.get("target_pid") != process.get("pid")
+            or sample.get("target_hwnd") != expected_hwnd
+            or sample.get("target_thread_id") != target_thread
+            or sample.get("root_hwnd") != expected_hwnd
+            or sample.get("client_rect") != [0, 0, 2560, 1440]
+            or sample.get("process_active") is not True
+            or sample.get("handle_pid") != process.get("pid")
+            or Path(str(sample.get("handle_executable", ""))).resolve()
+            != Path(str(process.get("executable", ""))).resolve()
+            or sample.get("bound_creation_date") != process.get("creation_date")
+            or sample.get("window_exists") is not True
+            or sample.get("window_visible") is not True
+            or sample.get("window_iconic") is not False
+            or sample.get("last_input_tick_before") != activation_input_tick
+            or sample.get("last_input_tick_after") != activation_input_tick
+            or type(sample.get("wm_null_timeout_milliseconds")) is not int
+            or not 1 <= sample["wm_null_timeout_milliseconds"] <= 100
+            or type(responded) is not bool
+            or type(hung) is not bool
+            or type(sample.get("wm_null_last_error")) is not int
+            or sample["wm_null_last_error"] < 0
+            or (responded and sample["wm_null_last_error"] != 0)
+            or sample.get("responsive") is not (responded and not hung)
+        ):
+            raise AgentError("menu smoke responsive gate sample differs")
+        prior_ns = sample_ns
+    confirmed = samples[gate["confirmation_streak_start_index"] - 1 :]
+    if (
+        any(item.get("responsive") is not True for item in confirmed)
+        or any(
+            confirmed[index]["monotonic_ns"]
+            - confirmed[index - 1]["monotonic_ns"]
+            > 500_000_000
+            for index in range(1, len(confirmed))
+        )
+        or confirmed[-1]["monotonic_ns"] - confirmed[0]["monotonic_ns"]
+        < 5_000_000_000
+        or (
+            gate["confirmation_streak_start_index"] > 1
+            and samples[gate["confirmation_streak_start_index"] - 2].get(
+                "responsive"
+            )
+            is True
+            and confirmed[0]["monotonic_ns"]
+            - samples[gate["confirmation_streak_start_index"] - 2][
+                "monotonic_ns"
+            ]
+            <= 500_000_000
+        )
+        or confirmed[0]["monotonic_ns"] < started_ns
+        or confirmed[-1]["monotonic_ns"]
+        > started_ns + int(timeout_seconds * 1_000_000_000)
+    ):
+        raise AgentError("menu smoke responsive gate confirmation differs")
+
+
 def _validate_foreground_activation(
     attestation: object,
     *,
     process: object,
     expected_hwnd: object,
+    require_responsive_gate: bool,
 ) -> None:
     """Validate the exact no-synthetic-input foreground transaction."""
     expected_keys = {
@@ -2362,6 +2670,8 @@ def _validate_foreground_activation(
         "last_input_tick_after",
         "observed_last_input_tick_unchanged",
     }
+    if isinstance(attestation, dict) and "pre_mutation_responsive_stability" in attestation:
+        expected_keys.add("pre_mutation_responsive_stability")
     if (
         not isinstance(attestation, dict)
         or set(attestation) != expected_keys
@@ -2436,6 +2746,19 @@ def _validate_foreground_activation(
         valid_mode = False
     if not valid_mode:
         raise AgentError("menu smoke foreground activation mode differs")
+    responsive_gate = attestation.get("pre_mutation_responsive_stability")
+    if responsive_gate is None:
+        if require_responsive_gate:
+            raise AgentError("menu smoke responsive gate attestation is missing")
+    else:
+        _validate_pre_mutation_responsive_stability(
+            responsive_gate,
+            process=process,
+            expected_hwnd=expected_hwnd,
+            target_thread=attestation["target_thread_id"],
+            activation_input_tick=attestation["last_input_tick_before"],
+            activation_mode=str(attestation["mode"]),
+        )
 
 
 def _validate_foreground_events(
@@ -2505,6 +2828,10 @@ def _validate_foreground_events(
             finished.get("attestation"),
             process=process,
             expected_hwnd=planned.get("hwnd"),
+            require_responsive_gate=(
+                report.get("foreground_protocol_version")
+                == FOREGROUND_PROTOCOL_VERSION
+            ),
         )
     navigation = report.get("navigation_attestation")
     if navigation is not None:
@@ -4146,6 +4473,10 @@ def _validate_red_ui_evidence(
             process=process,
             environment=environment,
             require_complete_durable_events=False,
+            require_responsive_gate=(
+                report.get("foreground_protocol_version")
+                == FOREGROUND_PROTOCOL_VERSION
+            ),
         )
         if navigation is not None:
             if navigation != synthetic_navigation:
@@ -4156,6 +4487,10 @@ def _validate_red_ui_evidence(
                 contract=contract,
                 process=process,
                 environment=environment,
+                require_responsive_gate=(
+                    report.get("foreground_protocol_version")
+                    == FOREGROUND_PROTOCOL_VERSION
+                ),
             )
         lobby_rows = [row for row in rows if row.get("kind") == "bookmark_lobby_attested"]
         if lobby_rows and (
@@ -4364,6 +4699,20 @@ def _validate_red_payload(
 def _validate_menu_report_base_contract(
     report: dict[str, object], run_dir: Path
 ) -> None:
+    protocol_version = report.get("foreground_protocol_version")
+    if protocol_version != FOREGROUND_PROTOCOL_VERSION:
+        expected_legacy_final = LEGACY_FOREGROUND_PROTOCOL_FINAL_EVENTS.get(
+            str(report.get("run_id", ""))
+        )
+        if (
+            "foreground_protocol_version" in report
+            or report.get("ok") is not False
+            or expected_legacy_final is None
+            or report.get("final_event_sha256") != expected_legacy_final
+            or not isinstance(report.get("event_chain"), dict)
+            or report["event_chain"].get("tail_sha256") != expected_legacy_final
+        ):
+            raise AgentError("menu smoke foreground protocol generation differs")
     if (
         report.get("format_version") != 1
         or report.get("kind") != MENU_KIND
@@ -4624,7 +4973,10 @@ def _run_menu_scenario(
             "synthetic_input_may_have_occurred": False,
         },
     )
-    foreground_activation = window.request_foreground_without_input()
+    foreground_activation = window.request_foreground_without_input(
+        responsive_gate_timeout_seconds=30.0,
+        responsive_gate_deadline=deadline,
+    )
     append_event(
         events,
         {
@@ -5074,6 +5426,7 @@ def _menu_smoke_locked(
     )
     report: dict[str, object] = {
         "format_version": 1,
+        "foreground_protocol_version": FOREGROUND_PROTOCOL_VERSION,
         "run_id": run_id,
         "kind": MENU_KIND,
         "acceptance_claim": MENU_ACCEPTANCE_CLAIM,

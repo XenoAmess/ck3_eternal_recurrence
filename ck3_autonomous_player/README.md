@@ -103,15 +103,24 @@ protected/production postflight 完整。运行后的只读活体查询把 HWND 
 错误字符串，未保存失败瞬间的实际 foreground HWND/PID/TID，因此不能事后断言是外部进程、同 CK3 进程的另一 HWND 还是空前台；
 在补齐结构化 loss snapshot 前不得盲目重试。
 
-当前候选已补齐这条诊断链，但尚未据此再次启动 CK3：用于作出拒绝判定的同一次 foreground 样本会冻结
-`capture.pre_grab|capture.post_grab|foreground_guard|capture_patch.pre_grab|capture_patch.post_grab` checkpoint、
-capture sequence、UTC/monotonic、input tick、target HWND/PID/TID，以及 actual raw/root HWND、root HWND 对应的 PID/TID、class、
-rect、topmost。外部进程 image/creation 只有在持柄与窗口复核都成功时才标为 proven，
-否则显式记为 unknown；判定前仍沿用既有的只读 WMI/唯一窗口认证，但判定样本后的 enrichment 不读取窗口标题、
-不再做 WMI/全桌面枚举，也不激活、关闭、输入、sleep 或重试。快照 artifact 先单独 fsync，
-再写入主 `events.jsonl` 的唯一 `foreground_lost` WAL，并由 RED report/manifest/public validator 三向绑定。旧
-`49f9b8bd` 仍按无 typed snapshot 的历史 RED 原样回放；本次 runtime 变更同时使 `75f8...` 的两项 GREEN 只保留为历史证据，
-下一次唯一尝试仍须先提交、prepare-profile，并在新 environment 下重新取得 ordinary v2 与 crash GREEN。
+提交 `c8531be` 已把这条诊断链接入 sealed lifecycle。它在环境
+`925b8deafa0053fffb2522b86770bb377fbbb5e28a28e53a559ce1ecc40584cc` 下取得 ordinary v2
+`20260822T045930Z-6ce9874f` 与 crash `20260822T050200Z-crash-95b63c14` 两项公开回放 GREEN，随后只执行一次
+`20260822T050447Z-menu-0eae4606`。该 run 在 `capture.pre_grab`、sequence 2 保存了一个与目标同为全屏矩形、
+不同 PID、class 精确为 `Ghost` 的 actual foreground；其 owner `OpenProcess` 被拒，所以进程 image/creation 只能归档为
+`unknown`，绝不能事后追认成 `dwm.exe` 或把 Ghost 当 CK3 代理。主链没有 `visible_main_menu_attested`、任何 `ui_*`、
+navigation、action/receipt、鼠标移动或 `SendInput`；Job、watchdog、control、双源 inventory、protected 与 production
+postflight 全部通过。这是结构完整的安全 RED，不是菜单导航成功，也不允许原 run 或原候选重试。
+
+当前未提交候选在任何 `SetForegroundWindow`、`AttachThreadInput` 或输入前增加 exact-target 响应稳定门：总等待不超过
+30 秒且受场景 deadline 限制；以 250 ms cadence 对目标 HWND 发送
+`SendMessageTimeoutW(WM_NULL, SMTO_BLOCK|SMTO_ABORTIFHUNG|SMTO_ERRORONEXIT)`，`IsHungAppWindow=true` 只作 veto。
+只有至少 21 个响应样本在 250–500 ms 间隔内连续覆盖至少 5 秒才可继续；hung、无响应、调度空洞、进程/窗口/输入 tick
+变化都会清零或直接 RED。门前做完整 WMI/唯一窗口认证，门内与门后只用 pinned handle 和 exact HWND/PID/TID/rect 本地复核；
+last sample→gate finish、gate finish→每次窗口 mutation/完成也都限制为 500 ms。证据嵌入 finished attestation，并以
+`foreground_protocol_version=2` 要求所有新 GREEN/RED 的 completed foreground 都不可删除该 gate；无版本兼容只钉住四份既有
+零输入 RED 的 run ID 与 final-event digest。该响应门尚未启动真实 CK3；提交后上述 `925b...` 资格即失效，必须在新
+environment 下重新取得 ordinary v2/crash GREEN，再执行且只执行一次 menu-smoke。
 
 下一次输入资格只接受 self-contained format v2 ordinary GREEN；live 扫描与新 menu archive 都拒绝 v1。v1 仅为已经冻结、外层同样为
 RED 且没有任何 `ui_*` 输入 WAL、bookmark、navigation、action/receipt 的历史菜单 run 保留只读兼容；纯观察 PNG/JSON 可以保留，

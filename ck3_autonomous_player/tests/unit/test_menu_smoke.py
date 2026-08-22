@@ -144,7 +144,110 @@ def stable_observation(screen: str, *, controls: bool, sequence: int) -> dict[st
     }
 
 
-def foreground_attestation(pid: int = 42, hwnd: int = 84) -> dict[str, object]:
+def responsive_gate_attestation(
+    pid: int = 42,
+    hwnd: int = 84,
+    *,
+    executable: str = "C:/game/binaries/ck3.exe",
+    creation_date: str = "created",
+) -> dict[str, object]:
+    samples = []
+    for index in range(1, 22):
+        elapsed_microseconds = (index - 1) * 250_000
+        seconds, microseconds = divmod(elapsed_microseconds, 1_000_000)
+        observed_at = f"2026-08-22T00:00:{seconds:02d}"
+        if microseconds:
+            observed_at += f".{microseconds:06d}"
+        observed_at += "+00:00"
+        monotonic_ns = 1_000_000_000 + elapsed_microseconds * 1_000
+        samples.append(
+            {
+                "index": index,
+                "observed_at": observed_at,
+                "monotonic_ns": monotonic_ns,
+                "target_pid": pid,
+                "target_hwnd": hwnd,
+                "target_thread_id": 100,
+                "root_hwnd": hwnd,
+                "client_rect": [0, 0, 2560, 1440],
+                "process_active": True,
+                "handle_pid": pid,
+                "handle_executable": executable,
+                "bound_creation_date": creation_date,
+                "window_exists": True,
+                "window_visible": True,
+                "window_iconic": False,
+                "last_input_tick_before": 300,
+                "last_input_tick_after": 300,
+                "wm_null_timeout_milliseconds": 100,
+                "wm_null_responded": True,
+                "wm_null_last_error": 0,
+                "is_hung_app_window": False,
+                "responsive": True,
+            }
+        )
+    return {
+        "format_version": 1,
+        "kind": "pre_mutation_responsive_stability",
+        "status": "confirmed",
+        "started_at": "2026-08-22T00:00:00+00:00",
+        "finished_at": "2026-08-22T00:00:05.000001+00:00",
+        "started_monotonic_ns": 1_000_000_000,
+        "finished_monotonic_ns": 6_000_000_001,
+        "timeout_seconds": 30.0,
+        "poll_interval_seconds": 0.25,
+        "wm_null_message": 0,
+        "wm_null_timeout_milliseconds": 100,
+        "wm_null_flags": 35,
+        "required_consecutive_samples": 21,
+        "required_span_ns": 5_000_000_000,
+        "maximum_sample_gap_ns": 500_000_000,
+        "last_sample_to_finish_gap_ns": 1,
+        "sample_count": 21,
+        "confirmation_streak_start_index": 1,
+        "confirmation_streak_end_index": 21,
+        "confirmation_streak_sample_count": 21,
+        "initial_last_input_tick": 300,
+        "final_last_input_tick": 300,
+        "observed_last_input_tick_unchanged": True,
+        "target": {
+            "pid": pid,
+            "hwnd": hwnd,
+            "thread_id": 100,
+            "client_rect": [0, 0, 2560, 1440],
+            "executable": executable,
+            "creation_date": creation_date,
+        },
+        "samples": samples,
+        "read_only_contract": {
+            "set_foreground_window_calls": 0,
+            "attach_thread_input_calls": 0,
+            "synthetic_input_calls": 0,
+            "window_close_calls": 0,
+            "desktop_enumeration_calls": 0,
+            "wmi_queries": 0,
+        },
+        "full_verify_before": True,
+        "full_verify_after": False,
+        "local_identity_revalidated_after": True,
+        "maximum_post_confirmation_gap_ns": 500_000_000,
+        "first_window_mutation_monotonic_ns": None,
+        "last_window_mutation_monotonic_ns": None,
+        "confirmation_to_last_mutation_gap_ns": None,
+        "confirmation_consumed_monotonic_ns": 6_000_000_010,
+        "confirmation_consumption_gap_ns": 9,
+        "activation_completed_monotonic_ns": 6_000_000_010,
+        "confirmation_completion_gap_ns": 9,
+    }
+
+
+def foreground_attestation(
+    pid: int = 42,
+    hwnd: int = 84,
+    *,
+    executable: str = "C:/game/binaries/ck3.exe",
+    creation_date: str = "created",
+) -> dict[str, object]:
     return {
         "format_version": 1,
         "target_pid": pid,
@@ -164,6 +267,12 @@ def foreground_attestation(pid: int = 42, hwnd: int = 84) -> dict[str, object]:
         "foreground_pid_after": pid,
         "last_input_tick_after": 300,
         "observed_last_input_tick_unchanged": True,
+        "pre_mutation_responsive_stability": responsive_gate_attestation(
+            pid,
+            hwnd,
+            executable=executable,
+            creation_date=creation_date,
+        ),
     }
 
 
@@ -433,6 +542,7 @@ def build_green_report(run_dir: Path) -> dict[str, object]:
     contract_path = run_dir / UI_CONTRACT_ARCHIVE
     report: dict[str, object] = {
         "format_version": 1,
+        "foreground_protocol_version": 2,
         "run_id": run_dir.name,
         "kind": MENU_KIND,
         "acceptance_claim": MENU_ACCEPTANCE_CLAIM,
@@ -456,7 +566,11 @@ def build_green_report(run_dir: Path) -> dict[str, object]:
             "normal": {"run_id": "normal-fixture"},
             "crash": {"run_id": "crash-fixture"},
         },
-        "process": {"pid": 42},
+        "process": {
+            "pid": 42,
+            "creation_date": "created",
+            "executable": "C:/game/binaries/ck3.exe",
+        },
         "navigation_attestation": navigation,
         "load_attestation": load_attestation(),
         "shutdown_attestation": {"cleanup_proven": True, "ok": True},
@@ -1103,7 +1217,12 @@ def build_strict_green_report(
     navigation = {
         "claim": MENU_ACCEPTANCE_CLAIM,
         "window_binding": binding,
-        "foreground_activation": foreground_attestation(pid, hwnd),
+        "foreground_activation": foreground_attestation(
+            pid,
+            hwnd,
+            executable=str(game_exe),
+            creation_date=creation_date,
+        ),
         "start_observation": start,
         "start_observation_audit": start_audit,
         "transition": {"action": action, "observation": after},
@@ -1291,6 +1410,7 @@ def build_strict_green_report(
 
     report: dict[str, object] = {
         "format_version": 1,
+        "foreground_protocol_version": 2,
         "run_id": run_dir.name,
         "kind": MENU_KIND,
         "acceptance_claim": MENU_ACCEPTANCE_CLAIM,
@@ -1915,7 +2035,13 @@ class ForegroundScenarioTests(unittest.TestCase):
                         1,
                     )
             bind.assert_called_once_with(handle, spec.game_exe)
-            window.request_foreground_without_input.assert_called_once_with()
+            window.request_foreground_without_input.assert_called_once()
+            gate_arguments = (
+                window.request_foreground_without_input.call_args.kwargs
+            )
+            self.assertEqual(gate_arguments["responsive_gate_timeout_seconds"], 30.0)
+            self.assertIsInstance(gate_arguments["responsive_gate_deadline"], float)
+            self.assertGreater(gate_arguments["responsive_gate_deadline"], 0)
             driver.assert_not_called()
             rows = [
                 json.loads(line)
@@ -2935,6 +3061,95 @@ class MenuReportValidatorTests(unittest.TestCase):
             with self.assertRaisesRegex(AgentError, "foreground activation"):
                 self._validate_strict(run_dir, replay)
 
+    def test_responsive_gate_rejects_resigned_schema_and_binding_tamper(self) -> None:
+        def remove_gate(attestation: dict[str, object]) -> None:
+            del attestation["pre_mutation_responsive_stability"]
+
+        def add_extra_key(attestation: dict[str, object]) -> None:
+            attestation["pre_mutation_responsive_stability"]["authorization"] = True
+
+        def shorten_samples(attestation: dict[str, object]) -> None:
+            gate = attestation["pre_mutation_responsive_stability"]
+            gate["samples"] = gate["samples"][:3]
+            gate["sample_count"] = 3
+            gate["confirmation_streak_start_index"] = 1
+            gate["confirmation_streak_end_index"] = 3
+            gate["confirmation_streak_sample_count"] = 3
+
+        def shrink_span(attestation: dict[str, object]) -> None:
+            gate = attestation["pre_mutation_responsive_stability"]
+            gate["samples"][-1]["monotonic_ns"] = 5_999_999_999
+
+        def insert_scheduler_gap(attestation: dict[str, object]) -> None:
+            gate = attestation["pre_mutation_responsive_stability"]
+            shift = 250_000_001
+            for sample in gate["samples"][10:]:
+                sample["monotonic_ns"] += shift
+            gate["finished_monotonic_ns"] += shift
+            gate["finished_at"] = "2026-08-22T00:00:05.250002+00:00"
+
+        def change_tick(attestation: dict[str, object]) -> None:
+            gate = attestation["pre_mutation_responsive_stability"]
+            gate["initial_last_input_tick"] = 301
+            gate["final_last_input_tick"] = 301
+            for sample in gate["samples"]:
+                sample["last_input_tick_before"] = 301
+                sample["last_input_tick_after"] = 301
+
+        def forge_probe(attestation: dict[str, object]) -> None:
+            gate = attestation["pre_mutation_responsive_stability"]
+            gate["samples"][-1]["wm_null_responded"] = False
+            gate["samples"][-1]["responsive"] = False
+
+        def forge_hung(attestation: dict[str, object]) -> None:
+            gate = attestation["pre_mutation_responsive_stability"]
+            gate["samples"][-1]["is_hung_app_window"] = True
+            gate["samples"][-1]["responsive"] = False
+
+        def change_target_thread(attestation: dict[str, object]) -> None:
+            gate = attestation["pre_mutation_responsive_stability"]
+            gate["target"]["thread_id"] = 101
+            for sample in gate["samples"]:
+                sample["target_thread_id"] = 101
+
+        mutations = {
+            "missing": remove_gate,
+            "extra-key": add_extra_key,
+            "three-samples": shorten_samples,
+            "short-span": shrink_span,
+            "scheduler-gap": insert_scheduler_gap,
+            "different-tick": change_tick,
+            "wm-null-failed": forge_probe,
+            "hung-veto": forge_hung,
+            "different-thread": change_target_thread,
+        }
+        for label, mutate in mutations.items():
+            with self.subTest(label=label), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-responsive-gate-{label}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                report, replay = build_strict_green_report(run_dir)
+                rows = _event_payloads(run_dir)
+                attestation = report["navigation_attestation"][
+                    "foreground_activation"
+                ]
+                mutate(attestation)
+                finished = next(
+                    row
+                    for row in rows
+                    if row["kind"] == "foreground_activation_finished"
+                )
+                finished["attestation"] = json.loads(
+                    json.dumps(attestation)
+                )
+                action = report["navigation_attestation"]["transition"]["action"]
+                _refinalize_green_fixture(run_dir, report, rows, action)
+                with self.assertRaisesRegex(AgentError, "responsive gate"):
+                    self._validate_strict(run_dir, replay)
+
     def test_foreground_direct_attestation_accepts_null_initial_foreground(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-menu-null-foreground-") as temporary:
             run_dir = (
@@ -2952,6 +3167,12 @@ class MenuReportValidatorTests(unittest.TestCase):
                     "mode": "direct",
                 }
             )
+            gate = attestation["pre_mutation_responsive_stability"]
+            gate["first_window_mutation_monotonic_ns"] = 6_000_000_005
+            gate["last_window_mutation_monotonic_ns"] = 6_000_000_005
+            gate["confirmation_to_last_mutation_gap_ns"] = 4
+            gate["confirmation_consumed_monotonic_ns"] = 6_000_000_005
+            gate["confirmation_consumption_gap_ns"] = 4
             finished = next(
                 row
                 for row in rows
@@ -3306,6 +3527,30 @@ class MenuReportValidatorTests(unittest.TestCase):
                 _report, replay = build_red_report(run_dir, mode)
                 validated = self._validate_strict(run_dir, replay)
                 self.assertFalse(validated["ok"])
+
+    def test_current_red_foreground_completion_cannot_drop_responsive_gate(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-legacy-responsive-gate-red-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-12345678"
+            )
+            report, replay = build_red_report(
+                run_dir, "foreground-completed-no-observation"
+            )
+            rows = _event_payloads(run_dir)
+            finished = next(
+                row
+                for row in rows
+                if row["kind"] == "foreground_activation_finished"
+            )
+            del finished["attestation"]["pre_mutation_responsive_stability"]
+            _finalize_red_fixture(run_dir, report, rows)
+            with self.assertRaisesRegex(AgentError, "responsive gate"):
+                self._validate_strict(run_dir, replay)
 
     def test_shutdown_result_and_cleanup_claim_match_runtime_reachable_states(self) -> None:
         mutations = {

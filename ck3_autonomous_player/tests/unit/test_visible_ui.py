@@ -45,6 +45,7 @@ from xar_autoplayer.vision.ocr import normalize_visible_text, ocr_spans  # noqa:
 from xar_autoplayer.vision.window import (  # noqa: E402
     BoundGameWindow,
     ForegroundLossError,
+    _probe_window_responsiveness,
 )
 
 
@@ -534,6 +535,7 @@ class WindowBindingTests(unittest.TestCase):
     @staticmethod
     def _foreground_binding() -> BoundGameWindow:
         process = mock.Mock()
+        process.pid = 10
         process.poll.return_value = None
         process.image_path.return_value = "C:/game/binaries/ck3.exe"
         return BoundGameWindow(
@@ -546,7 +548,9 @@ class WindowBindingTests(unittest.TestCase):
             parent_pid=9,
         )
 
-    def _foreground_context(self, *, attach_results=(True, True)):
+    def _foreground_context(
+        self, *, attach_results=(True, True), patch_responsive_gate: bool = True
+    ):
         import contextlib
 
         state = {"foreground": 30}
@@ -570,6 +574,7 @@ class WindowBindingTests(unittest.TestCase):
         stack.enter_context(mock.patch("win32gui.SetForegroundWindow", set_foreground))
         stack.enter_context(mock.patch("win32gui.IsWindow", return_value=True))
         stack.enter_context(mock.patch("win32gui.IsWindowVisible", return_value=True))
+        stack.enter_context(mock.patch("win32gui.IsIconic", return_value=False))
         stack.enter_context(mock.patch("win32process.GetWindowThreadProcessId", side_effect=identity))
         stack.enter_context(mock.patch("xar_autoplayer.vision.window._root_window", side_effect=lambda hwnd: hwnd))
         stack.enter_context(
@@ -578,7 +583,393 @@ class WindowBindingTests(unittest.TestCase):
                 return_value=(0, 0, 2560, 1440),
             )
         )
+        if patch_responsive_gate:
+            stack.enter_context(
+                mock.patch.object(
+                    BoundGameWindow,
+                    "_pre_mutation_responsive_stability",
+                    side_effect=lambda **_kwargs: {
+                        "fixture": "responsive-gate",
+                        "finished_monotonic_ns": time.monotonic_ns(),
+                    },
+                )
+            )
         return stack, state, set_foreground, attach
+
+    @staticmethod
+    def _responsive_gate_clock():
+        clock = types.SimpleNamespace(now_ns=1_000_000_000)
+
+        def monotonic_ns() -> int:
+            return int(clock.now_ns)
+
+        def sleep(seconds: float) -> None:
+            clock.now_ns += int(seconds * 1_000_000_000)
+
+        return clock, monotonic_ns, sleep
+
+    def test_pre_mutation_responsive_gate_confirms_before_any_window_mutation(
+        self,
+    ) -> None:
+        binding = self._foreground_binding()
+        stack, state, set_foreground, attach = self._foreground_context(
+            patch_responsive_gate=False
+        )
+        state["foreground"] = 20
+        _clock, monotonic_ns, sleep = self._responsive_gate_clock()
+        probe = mock.Mock(return_value=(True, 0, False))
+        with (
+            stack,
+            mock.patch.object(BoundGameWindow, "verify", return_value={}),
+            mock.patch(
+                "xar_autoplayer.vision.window._probe_window_responsiveness",
+                probe,
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.monotonic_ns",
+                side_effect=monotonic_ns,
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.sleep", side_effect=sleep
+            ),
+        ):
+            result = binding.request_foreground_without_input(
+                responsive_gate_timeout_seconds=6.0
+            )
+        gate = result["pre_mutation_responsive_stability"]
+        self.assertEqual(result["mode"], "already_foreground")
+        self.assertEqual(gate["sample_count"], 21)
+        self.assertEqual(gate["confirmation_streak_start_index"], 1)
+        self.assertEqual(gate["confirmation_streak_end_index"], 21)
+        self.assertEqual(gate["confirmation_streak_sample_count"], 21)
+        self.assertGreaterEqual(
+            gate["samples"][-1]["monotonic_ns"]
+            - gate["samples"][0]["monotonic_ns"],
+            5_000_000_000,
+        )
+        self.assertTrue(gate["full_verify_before"])
+        self.assertFalse(gate["full_verify_after"])
+        self.assertTrue(gate["local_identity_revalidated_after"])
+        set_foreground.assert_not_called()
+        attach.assert_not_called()
+
+    def test_wm_null_probe_uses_exact_ctypes_contract_and_hung_only_vetoes(
+        self,
+    ) -> None:
+        order: list[str] = []
+        send = mock.Mock(
+            side_effect=lambda *_args: order.append("send") or 1
+        )
+        hung = mock.Mock(
+            side_effect=lambda _hwnd: order.append("hung") or 0
+        )
+        user32 = types.SimpleNamespace(
+            SendMessageTimeoutW=send,
+            IsHungAppWindow=hung,
+        )
+        with (
+            mock.patch("ctypes.WinDLL", return_value=user32) as load,
+            mock.patch(
+                "ctypes.set_last_error",
+                side_effect=lambda value: order.append(f"set:{value}"),
+            ),
+            mock.patch(
+                "ctypes.get_last_error",
+                side_effect=lambda: order.append("get") or 0,
+            ),
+        ):
+            responded, last_error, is_hung = _probe_window_responsiveness(
+                20, timeout_milliseconds=77
+            )
+        self.assertTrue(responded)
+        self.assertEqual(last_error, 0)
+        self.assertFalse(is_hung)
+        load.assert_called_once_with("user32", use_last_error=True)
+        self.assertEqual(order, ["set:0", "send", "get", "hung"])
+        self.assertEqual(send.call_args.args[:6], (20, 0, 0, 0, 35, 77))
+        self.assertEqual(len(send.argtypes), 7)
+        self.assertIs(send.restype, __import__("ctypes").c_ssize_t)
+        self.assertEqual(len(hung.argtypes), 1)
+
+    def test_pre_mutation_responsive_gate_hung_samples_veto_then_recover(
+        self,
+    ) -> None:
+        binding = self._foreground_binding()
+        stack, state, set_foreground, attach = self._foreground_context(
+            patch_responsive_gate=False
+        )
+        _clock, monotonic_ns, sleep = self._responsive_gate_clock()
+        # Thirteen 250 ms samples establish a three-second responsive streak.
+        # One hung veto must reset it; only a wholly fresh five-second streak
+        # may authorize the later foreground mutation.
+        probe = mock.Mock(
+            side_effect=(
+                [(True, 0, False)] * 13
+                + [(False, 1460, True)]
+                + [(True, 0, False)] * 21
+            )
+        )
+
+        def activate(hwnd: int) -> None:
+            self.assertEqual(probe.call_count, 35)
+            state["foreground"] = int(hwnd)
+
+        set_foreground.side_effect = activate
+        with (
+            stack,
+            mock.patch.object(BoundGameWindow, "verify", return_value={}),
+            mock.patch(
+                "xar_autoplayer.vision.window._probe_window_responsiveness",
+                probe,
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.monotonic_ns",
+                side_effect=monotonic_ns,
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.sleep", side_effect=sleep
+            ),
+        ):
+            result = binding.request_foreground_without_input(
+                responsive_gate_timeout_seconds=10.0
+            )
+        gate = result["pre_mutation_responsive_stability"]
+        self.assertEqual(result["mode"], "direct")
+        self.assertEqual(gate["sample_count"], 35)
+        self.assertTrue(all(item["responsive"] for item in gate["samples"][:13]))
+        self.assertTrue(gate["samples"][13]["is_hung_app_window"])
+        self.assertFalse(gate["samples"][13]["responsive"])
+        self.assertEqual(gate["confirmation_streak_start_index"], 15)
+        self.assertEqual(gate["confirmation_streak_end_index"], 35)
+        self.assertTrue(all(item["responsive"] for item in gate["samples"][14:]))
+        set_foreground.assert_called_once_with(20)
+        attach.assert_not_called()
+
+    def test_pre_mutation_responsive_gate_scheduler_gap_resets_streak(self) -> None:
+        binding = self._foreground_binding()
+        stack, state, set_foreground, attach = self._foreground_context(
+            patch_responsive_gate=False
+        )
+        clock, monotonic_ns, sleep = self._responsive_gate_clock()
+        calls = {"count": 0}
+
+        def probe(_hwnd: int, *, timeout_milliseconds: int):
+            self.assertGreater(timeout_milliseconds, 0)
+            calls["count"] += 1
+            if calls["count"] == 21:
+                clock.now_ns += 5_000_000_000
+            return True, 0, False
+
+        def activate(hwnd: int) -> None:
+            # Twenty dense samples followed by a five-second scheduler gap
+            # cannot authorize.  The gap sample starts a fresh 21-sample streak.
+            self.assertEqual(calls["count"], 41)
+            state["foreground"] = int(hwnd)
+
+        set_foreground.side_effect = activate
+        with (
+            stack,
+            mock.patch.object(BoundGameWindow, "verify", return_value={}),
+            mock.patch(
+                "xar_autoplayer.vision.window._probe_window_responsiveness",
+                side_effect=probe,
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.monotonic_ns",
+                side_effect=monotonic_ns,
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.sleep", side_effect=sleep
+            ),
+        ):
+            result = binding.request_foreground_without_input(
+                responsive_gate_timeout_seconds=20.0
+            )
+        gate = result["pre_mutation_responsive_stability"]
+        self.assertEqual(gate["sample_count"], 41)
+        self.assertEqual(gate["confirmation_streak_start_index"], 21)
+        self.assertEqual(gate["confirmation_streak_end_index"], 41)
+        self.assertEqual(gate["confirmation_streak_sample_count"], 21)
+        set_foreground.assert_called_once_with(20)
+        attach.assert_not_called()
+
+    def test_pause_between_last_sample_and_gate_finish_resets_streak(self) -> None:
+        binding = self._foreground_binding()
+        stack, state, set_foreground, attach = self._foreground_context(
+            patch_responsive_gate=False
+        )
+        clock = types.SimpleNamespace(
+            now_ns=1_000_000_000,
+            pause_phase=None,
+        )
+        calls = {"count": 0}
+
+        def monotonic_ns() -> int:
+            if clock.pause_phase == "before-observed":
+                clock.pause_phase = "before-finished"
+            elif clock.pause_phase == "before-finished":
+                clock.now_ns += 750_000_000
+                clock.pause_phase = None
+            return int(clock.now_ns)
+
+        def sleep(seconds: float) -> None:
+            clock.now_ns += int(seconds * 1_000_000_000)
+
+        def probe(_hwnd: int, *, timeout_milliseconds: int):
+            self.assertGreater(timeout_milliseconds, 0)
+            calls["count"] += 1
+            if calls["count"] == 21:
+                clock.pause_phase = "before-observed"
+            return True, 0, False
+
+        def activate(hwnd: int) -> None:
+            self.assertEqual(calls["count"], 42)
+            state["foreground"] = int(hwnd)
+
+        set_foreground.side_effect = activate
+        with (
+            stack,
+            mock.patch.object(BoundGameWindow, "verify", return_value={}),
+            mock.patch(
+                "xar_autoplayer.vision.window._probe_window_responsiveness",
+                side_effect=probe,
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.monotonic_ns",
+                side_effect=monotonic_ns,
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.sleep", side_effect=sleep
+            ),
+        ):
+            result = binding.request_foreground_without_input(
+                responsive_gate_timeout_seconds=20.0
+            )
+        gate = result["pre_mutation_responsive_stability"]
+        self.assertEqual(gate["sample_count"], 42)
+        self.assertEqual(gate["confirmation_streak_start_index"], 22)
+        self.assertLessEqual(gate["last_sample_to_finish_gap_ns"], 500_000_000)
+        set_foreground.assert_called_once_with(20)
+        attach.assert_not_called()
+
+    def test_pre_mutation_responsive_gate_timeout_never_mutates_window(self) -> None:
+        binding = self._foreground_binding()
+        stack, _state, set_foreground, attach = self._foreground_context(
+            patch_responsive_gate=False
+        )
+        _clock, monotonic_ns, sleep = self._responsive_gate_clock()
+        with (
+            stack,
+            mock.patch.object(BoundGameWindow, "verify", return_value={}),
+            mock.patch(
+                "xar_autoplayer.vision.window._probe_window_responsiveness",
+                return_value=(False, 1460, True),
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.monotonic_ns",
+                side_effect=monotonic_ns,
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.sleep", side_effect=sleep
+            ),
+        ):
+            with self.assertRaisesRegex(AgentError, "responsive gate"):
+                binding.request_foreground_without_input(
+                    responsive_gate_timeout_seconds=0.6
+                )
+        set_foreground.assert_not_called()
+        attach.assert_not_called()
+
+    def test_responsive_gate_uses_absolute_scenario_deadline_before_mutation(
+        self,
+    ) -> None:
+        binding = self._foreground_binding()
+        stack, _state, set_foreground, attach = self._foreground_context()
+        with (
+            stack,
+            mock.patch.object(BoundGameWindow, "verify", return_value={}),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.monotonic",
+                return_value=11.0,
+            ),
+        ):
+            with self.assertRaisesRegex(AgentError, "deadline elapsed"):
+                binding.request_foreground_without_input(
+                    responsive_gate_deadline=10.0
+                )
+        set_foreground.assert_not_called()
+        attach.assert_not_called()
+
+    def test_post_gate_scheduler_delay_makes_proof_stale_before_mutation(
+        self,
+    ) -> None:
+        binding = self._foreground_binding()
+        stack, _state, set_foreground, attach = self._foreground_context()
+        with (
+            stack,
+            mock.patch.object(BoundGameWindow, "verify", return_value={}),
+            mock.patch.object(
+                BoundGameWindow,
+                "_pre_mutation_responsive_stability",
+                return_value={"finished_monotonic_ns": 1_000_000_000},
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.monotonic_ns",
+                return_value=1_500_000_001,
+            ),
+        ):
+            with self.assertRaisesRegex(AgentError, "became stale"):
+                binding.request_foreground_without_input()
+        set_foreground.assert_not_called()
+        attach.assert_not_called()
+
+    def test_pre_mutation_responsive_gate_tick_or_identity_change_fails_closed(
+        self,
+    ) -> None:
+        for label in ("tick", "identity"):
+            with self.subTest(label=label):
+                binding = self._foreground_binding()
+                stack, _state, set_foreground, attach = self._foreground_context(
+                    patch_responsive_gate=False
+                )
+                _clock, monotonic_ns, sleep = self._responsive_gate_clock()
+                extra = (
+                    mock.patch(
+                        "win32api.GetLastInputInfo",
+                        side_effect=[500, 500, 501],
+                    )
+                    if label == "tick"
+                    else mock.patch.object(
+                        binding.process,
+                        "image_path",
+                        return_value="C:/other/ck3.exe",
+                    )
+                )
+                with (
+                    stack,
+                    extra,
+                    mock.patch.object(BoundGameWindow, "verify", return_value={}),
+                    mock.patch(
+                        "xar_autoplayer.vision.window._probe_window_responsiveness",
+                        return_value=(True, 0, False),
+                    ),
+                    mock.patch(
+                        "xar_autoplayer.vision.window.time.monotonic_ns",
+                        side_effect=monotonic_ns,
+                    ),
+                    mock.patch(
+                        "xar_autoplayer.vision.window.time.sleep",
+                        side_effect=sleep,
+                    ),
+                ):
+                    with self.assertRaisesRegex(
+                        AgentError, "input|identity|executable"
+                    ):
+                        binding.request_foreground_without_input(
+                            responsive_gate_timeout_seconds=2.0
+                        )
+                set_foreground.assert_not_called()
+                attach.assert_not_called()
 
     def test_foreground_direct_success_is_single_no_input_transaction(self) -> None:
         binding = self._foreground_binding()
@@ -640,6 +1031,32 @@ class WindowBindingTests(unittest.TestCase):
         )
         self.assertEqual(set_foreground.call_count, 2)
 
+    def test_attached_fallback_rechecks_gate_freshness_before_second_set(self) -> None:
+        binding = self._foreground_binding()
+        stack, _state, set_foreground, attach = self._foreground_context()
+        with (
+            stack,
+            mock.patch.object(BoundGameWindow, "verify", return_value={}),
+            mock.patch.object(
+                BoundGameWindow,
+                "_pre_mutation_responsive_stability",
+                return_value={"finished_monotonic_ns": 1_000_000_000},
+            ),
+            mock.patch(
+                "xar_autoplayer.vision.window.time.monotonic_ns",
+                side_effect=[1_100_000_000, 1_200_000_000, 1_500_000_001],
+            ),
+        ):
+            with self.assertRaisesRegex(AgentError, "became stale"):
+                binding.request_foreground_without_input()
+        # The first direct attempt was fresh.  The stale attached fallback must
+        # detach exactly once without issuing its second SetForegroundWindow.
+        set_foreground.assert_called_once_with(20)
+        self.assertEqual(
+            attach.call_args_list,
+            [mock.call(200, 300, True), mock.call(200, 300, False)],
+        )
+
     def test_foreground_attached_critical_section_never_runs_full_verify(self) -> None:
         binding = self._foreground_binding()
         stack, state, set_foreground, attach = self._foreground_context()
@@ -667,7 +1084,7 @@ class WindowBindingTests(unittest.TestCase):
             result = binding.request_foreground_without_input()
         self.assertEqual(result["mode"], "attached_fallback")
         self.assertFalse(attached["value"])
-        self.assertGreaterEqual(full_verify.call_count, 3)
+        self.assertEqual(full_verify.call_count, 1)
         self.assertEqual(
             attach.call_args_list,
             [mock.call(200, 300, True), mock.call(200, 300, False)],

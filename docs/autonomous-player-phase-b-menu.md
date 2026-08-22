@@ -117,6 +117,22 @@ PID/TID/HWND 后再调用一次 `SetForegroundWindow`，并在 `finally` 中强�
 `SendInput`。attach、detach、身份、前台后置条件或采样 tick 任一未知都直接结束本局，绝不循环抢焦或再次 attach。
 `GetLastInputInfo` 的 tick 相等只记录“两个采样值未变”，不证明期间没有人类输入。
 
+真实 RED `20260822T050447Z-menu-0eae4606` 在 `capture.pre_grab` 保存到一个与目标同为全屏矩形、不同 PID、
+class 精确为 `Ghost` 的前台快照；该 owner 的 `OpenProcess` 被拒，因此归档只能把进程身份记为 `unknown`，不能把它追认成
+`dwm.exe`。本次还表明，activation finished 到 Ghost loss 约有 3.39 秒，短暂的 500 ms 就绪采样不足以吸收启动期
+ghosting。下一候选因此在任何 `SetForegroundWindow` / `AttachThreadInput` 前增加纯读响应稳定门：总等待不超过 30 秒且
+不得超过场景剩余 deadline；门内不做 WMI、全桌面枚举、激活、关闭或输入，只用保留的精确进程句柄、目标 HWND/PID/TID/
+client rect、`GetLastInputInfo`、`SendMessageTimeoutW(WM_NULL, SMTO_BLOCK|SMTO_ABORTIFHUNG|SMTO_ERRORONEXIT)` 和
+`IsHungAppWindow` 采样。`WM_NULL` 成功是主要响应证明，`IsHungAppWindow=true` 只作 veto；250 ms cadence 下必须取得一段
+连续至少 5 秒的 responsive streak，任何 hung/nonresponsive 样本都会把 streak 清零。进程退出、身份/几何未知或变化、
+输入 tick 变化、deadline 到期都在零窗口 mutation 下 RED。门前做一次既有完整 WMI/唯一窗口验证；门内每帧及门后只做
+保留句柄与 exact HWND 的本地复核，避免无界 WMI/EnumWindows 把 5 秒证明拖成陈旧授权。confirmed streak 的相邻样本必须在
+250–500 ms 内且至少 21 帧；last sample→gate finish、gate finish→每次窗口 mutation/activation completion 也都不得超过
+500 ms，调度空洞会清零 streak 或在 mutation 前 fail closed。成功证据内嵌现有
+`foreground_activation_finished.attestation` 并由 public validator exact replay，不增加事件种类。GREEN 必须带该证据；
+新 producer 写入 `foreground_protocol_version=2`，因此新 GREEN/RED 一旦有 finished 都必须带该证据；缺少版本字段的兼容口
+只钉住四份既有 finalized 零输入 RED 的 run ID 与 final-event digest，不能通过删除字段把任意新 RED 降级成 legacy。
+
 每个 run 只有一个不可恢复的输入预算。成功签发 token 后，一旦动作被接受，无论之后是在鼠标移动前拒绝、
 SendInput 部分失败，还是后置状态超时，都不得再签发或执行第二个动作。
 
@@ -157,6 +173,7 @@ state lock + game launch lock
   -> tracked launch + singleton-mod runtime attestation
   -> ui_bound
   -> durable foreground planned / armed
+  -> pre-mutation WM_NULL responsive stability (continuous >=5s, deadline-bounded)
   -> one direct activation + at most one exact attach/detach fallback
   -> foreground finished attestation
   -> two-frame main_menu

@@ -203,14 +203,21 @@ live 菜单资格与新 menu archive 一律要求 v2；只有外层同样是 RED
 `ui_*`、navigation、action/receipt 或 SendInput，退出清理与 postflight 完整。旧异常只含字符串，无法把丢焦绑定到实际 HWND/PID/TID；
 这项未知必须由下一提交的只读瞬时 snapshot 闭合，而不是以延时或再次抢前台猜测性重试。
 
-当前实现已经把该 snapshot 接入 sealed lifecycle，但尚未用它执行新的真实 CK3 run。`require_foreground()` 以作出拒绝判定的
-同一次 raw foreground 样本为根，冻结 guard checkpoint、capture sequence、UTC/monotonic、input tick、target HWND/PID/TID，
-以及 actual raw/root HWND、root HWND 对应的 PID/TID、class、rect、topmost。actual process 的 image/creation 只在 `OpenProcess` 持柄和 HWND 身份复核都成功时
-标为 proven，查询或复核失败一律保留 unknown；判定前仍运行既有的只读 WMI/唯一窗口认证，判定样本后的 enrichment
-不读取标题、不再调用 WMI/桌面枚举，也不激活/关闭/输入/等待/重试。canonical
-artifact 经独立 fsync 后才发布唯一 `foreground_lost` 主 WAL，report、event、artifact manifest 与 public RED replay 逐字段绑定。
-若 artifact/WAL 发布代际不确定，preseal 保持 provisional，不能伪装成可回放 finalized RED。历史 `49f9b8bd` 继续按旧无快照档
-兼容，绝不回填停机后的桌面状态。
+提交 `c8531be` 已把该 snapshot 接入 sealed lifecycle，并在新环境
+`925b8deafa0053fffb2522b86770bb377fbbb5e28a28e53a559ce1ecc40584cc` 下先后取得 ordinary v2
+`20260822T045930Z-6ce9874f` 与 crash `20260822T050200Z-crash-95b63c14` GREEN。唯一菜单 run
+`20260822T050447Z-menu-0eae4606` 在 `capture.pre_grab`、sequence 2 冻结 actual foreground：raw/root HWND 为全屏
+`Ghost` class、PID 与绑定 CK3 不同；owner `OpenProcess` 被拒，因此 process identity 明确为 unknown，不能补写成事后查询到的
+`dwm.exe`，也不能把 Ghost 当 CK3 代理。该 run 没有 visible 主菜单、`ui_*`、navigation、action/receipt 或 SendInput；cleanup、
+双源空清点、protected 与 production postflight 均通过，所以它是安全 RED 而非导航成功。
+
+下一候选在任何前台 mutation 前新增响应稳定门：exact CK3 HWND 的 `WM_NULL` 必须以 250 ms cadence 获得至少 21 个、
+相邻 250–500 ms、连续跨度至少 5 秒的 responsive 样本；`IsHungAppWindow` 仅作 veto，任一 hung/nonresponsive、调度空洞、
+identity/geometry/input-tick 变化或 30 秒/场景 deadline 到期都在零输入下 RED。完整 WMI/唯一窗口认证只在门前执行；门内与门后
+使用 pinned handle 和 exact HWND/PID/TID/rect，本地 freshness 从最后样本一直限制到 direct、attach、第二次 Set 与完成点各不超过
+500 ms。finished attestation 与 public replay 绑定这些样本，新 `foreground_protocol_version=2` 禁止新 RED 删除 gate 后降级；
+四份旧零输入 RED 只按 run ID + final-event digest 固定兼容。该候选尚未真实运行；提交会使 `925b...` 资格失效，必须新 prepare、
+同环境 ordinary v2/crash GREEN 后才允许一次新的 menu-smoke。
 
 动作收据的独立格式契约是 `schemas/visible-control-action-receipt-v2.schema.json`；它描述可见控件执行器的审计收据，
 不是通用 `action-v1` 策略动作的迁移版本。

@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import json
+import math
 import os
 from pathlib import Path
 import time
@@ -16,6 +17,17 @@ from ..errors import AgentError
 
 EXPECTED_CLIENT_SIZE = (2560, 1440)
 WS_EX_TOPMOST = 0x00000008
+RESPONSIVE_GATE_MAX_SECONDS = 30.0
+RESPONSIVE_GATE_POLL_SECONDS = 0.25
+RESPONSIVE_GATE_WM_NULL_TIMEOUT_MS = 100
+RESPONSIVE_GATE_REQUIRED_SAMPLES = 21
+RESPONSIVE_GATE_REQUIRED_SPAN_NS = 5_000_000_000
+RESPONSIVE_GATE_MAX_SAMPLE_GAP_NS = 500_000_000
+RESPONSIVE_GATE_MAX_CONSUMPTION_GAP_NS = 500_000_000
+WM_NULL = 0x0000
+SMTO_BLOCK = 0x0001
+SMTO_ABORTIFHUNG = 0x0002
+SMTO_ERRORONEXIT = 0x0020
 
 
 class ForegroundLossError(AgentError):
@@ -392,6 +404,50 @@ def _root_window(hwnd: int) -> int:
     return int(win32gui.GetAncestor(hwnd, 2))  # GA_ROOT
 
 
+def _probe_window_responsiveness(
+    hwnd: int, *, timeout_milliseconds: int
+) -> tuple[bool, int, bool]:
+    """Probe one HWND with WM_NULL; IsHung is advisory veto evidence only."""
+    import ctypes
+    from ctypes import wintypes
+
+    if timeout_milliseconds <= 0:
+        raise AgentError("responsive gate probe timeout differs")
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    send_message_timeout = user32.SendMessageTimeoutW
+    send_message_timeout.argtypes = (
+        wintypes.HWND,
+        wintypes.UINT,
+        wintypes.WPARAM,
+        wintypes.LPARAM,
+        wintypes.UINT,
+        wintypes.UINT,
+        ctypes.POINTER(ctypes.c_size_t),
+    )
+    send_message_timeout.restype = ctypes.c_ssize_t
+    is_hung_app_window = user32.IsHungAppWindow
+    is_hung_app_window.argtypes = (wintypes.HWND,)
+    is_hung_app_window.restype = wintypes.BOOL
+    result = ctypes.c_size_t()
+    ctypes.set_last_error(0)
+    responded = bool(
+        send_message_timeout(
+            hwnd,
+            WM_NULL,
+            0,
+            0,
+            SMTO_BLOCK | SMTO_ABORTIFHUNG | SMTO_ERRORONEXIT,
+            timeout_milliseconds,
+            ctypes.byref(result),
+        )
+    )
+    last_error = int(ctypes.get_last_error())
+    # A FALSE IsHung result never authorizes progress.  A TRUE result vetoes
+    # this otherwise responsive sample; WM_NULL is always the primary proof.
+    hung = bool(is_hung_app_window(hwnd))
+    return responded, last_error, hung
+
+
 def _eligible_windows(pid: int) -> list[tuple[int, Rect]]:
     import win32gui
     import win32process
@@ -498,7 +554,251 @@ class BoundGameWindow:
         """Compatibility shim: foreground is a precondition, never synthesized."""
         self.require_foreground()
 
-    def request_foreground_without_input(self) -> dict[str, object]:
+    def _pre_mutation_responsive_stability(
+        self,
+        *,
+        target_thread: int,
+        initial_input_tick: int,
+        timeout_seconds: float,
+    ) -> dict[str, object]:
+        """Wait for exact-target responsiveness without desktop mutation.
+
+        Full process/WMI and desktop-enumeration verification belongs immediately
+        before this method.  Its polling loop and the post-gate freshness checks
+        use only the retained process handle, exact target HWND calls, WM_NULL,
+        IsHungAppWindow and GetLastInputInfo.  A nonresponsive, hung or sparse
+        sample resets the streak; an identity or input-tick change fails closed.
+        """
+        import win32api
+        import win32gui
+        import win32process
+
+        from ..runtime import _same_executable
+
+        if (
+            type(target_thread) is not int
+            or target_thread <= 0
+            or type(initial_input_tick) is not int
+            or initial_input_tick < 0
+            or type(timeout_seconds) not in {int, float}
+            or not math.isfinite(float(timeout_seconds))
+            or timeout_seconds <= 0
+            or timeout_seconds > RESPONSIVE_GATE_MAX_SECONDS
+        ):
+            raise AgentError("responsive gate input contract differs")
+        timeout_seconds = float(timeout_seconds)
+        started_at = datetime.now(timezone.utc).isoformat()
+        started_ns = time.monotonic_ns()
+        deadline_ns = started_ns + int(timeout_seconds * 1_000_000_000)
+        next_sample_ns = started_ns
+        samples: list[dict[str, object]] = []
+        responsive_streak: list[dict[str, object]] = []
+
+        while True:
+            now_ns = time.monotonic_ns()
+            remaining_ns = deadline_ns - now_ns
+            if remaining_ns <= 0:
+                raise AgentError(
+                    "bound CK3 target did not pass the pre-mutation responsive gate"
+                )
+            if now_ns < next_sample_ns:
+                time.sleep(
+                    min(
+                        (next_sample_ns - now_ns) / 1_000_000_000,
+                        remaining_ns / 1_000_000_000,
+                    )
+                )
+                continue
+            try:
+                if self.process.poll() is not None:
+                    raise AgentError("bound CK3 process exited during responsive gate")
+                handle_pid = int(getattr(self.process, "pid", -1))
+                handle_executable = str(self.process.image_path())
+                window_exists = bool(win32gui.IsWindow(self.hwnd))
+                window_visible = bool(win32gui.IsWindowVisible(self.hwnd))
+                window_iconic = bool(win32gui.IsIconic(self.hwnd))
+                root_hwnd = _root_window(self.hwnd) if window_exists else 0
+                thread_id, pid = win32process.GetWindowThreadProcessId(self.hwnd)
+                client_rect = _client_rect(self.hwnd) if window_exists else None
+            except AgentError:
+                raise
+            except Exception as error:
+                raise AgentError(
+                    f"bound CK3 identity became unknown during responsive gate: {error}"
+                ) from error
+            if (
+                handle_pid != self.pid
+                or not _same_executable(handle_executable, self.executable)
+                or not window_exists
+                or not window_visible
+                or window_iconic
+                or root_hwnd != self.hwnd
+                or int(thread_id) != target_thread
+                or int(pid) != self.pid
+                or client_rect != self.client_rect
+            ):
+                raise AgentError("bound CK3 identity changed during responsive gate")
+            try:
+                tick_before = int(win32api.GetLastInputInfo())
+            except Exception as error:
+                raise AgentError(
+                    f"input tick became unknown during responsive gate: {error}"
+                ) from error
+            if tick_before != initial_input_tick:
+                raise AgentError("user input changed during responsive gate")
+            probe_timeout_ms = max(
+                1,
+                min(
+                    RESPONSIVE_GATE_WM_NULL_TIMEOUT_MS,
+                    int(remaining_ns // 1_000_000),
+                ),
+            )
+            try:
+                responded, probe_last_error, hung = _probe_window_responsiveness(
+                    self.hwnd, timeout_milliseconds=probe_timeout_ms
+                )
+                tick_after = int(win32api.GetLastInputInfo())
+            except Exception as error:
+                raise AgentError(
+                    f"responsive gate probe became unknown: {error}"
+                ) from error
+            if tick_after != initial_input_tick:
+                raise AgentError("user input changed during responsive gate")
+            observed_ns = time.monotonic_ns()
+            if observed_ns > deadline_ns:
+                raise AgentError(
+                    "bound CK3 target did not pass the pre-mutation responsive gate"
+                )
+            responsive = responded and not hung
+            sample = {
+                "index": len(samples) + 1,
+                "observed_at": datetime.now(timezone.utc).isoformat(),
+                "monotonic_ns": observed_ns,
+                "target_pid": self.pid,
+                "target_hwnd": self.hwnd,
+                "target_thread_id": target_thread,
+                "root_hwnd": root_hwnd,
+                "client_rect": list(client_rect),
+                "process_active": True,
+                "handle_pid": handle_pid,
+                "handle_executable": handle_executable,
+                "bound_creation_date": self.creation_date,
+                "window_exists": window_exists,
+                "window_visible": window_visible,
+                "window_iconic": window_iconic,
+                "last_input_tick_before": tick_before,
+                "last_input_tick_after": tick_after,
+                "wm_null_timeout_milliseconds": probe_timeout_ms,
+                "wm_null_responded": responded,
+                "wm_null_last_error": probe_last_error,
+                "is_hung_app_window": hung,
+                "responsive": responsive,
+            }
+            samples.append(sample)
+            next_sample_ns = observed_ns + int(
+                RESPONSIVE_GATE_POLL_SECONDS * 1_000_000_000
+            )
+            if responsive:
+                if (
+                    responsive_streak
+                    and observed_ns
+                    - int(responsive_streak[-1]["monotonic_ns"])
+                    > RESPONSIVE_GATE_MAX_SAMPLE_GAP_NS
+                ):
+                    responsive_streak.clear()
+                responsive_streak.append(sample)
+            else:
+                responsive_streak.clear()
+            if (
+                len(responsive_streak) >= RESPONSIVE_GATE_REQUIRED_SAMPLES
+                and int(responsive_streak[-1]["monotonic_ns"])
+                - int(responsive_streak[0]["monotonic_ns"])
+                >= RESPONSIVE_GATE_REQUIRED_SPAN_NS
+            ):
+                finished_ns = time.monotonic_ns()
+                if finished_ns > deadline_ns:
+                    raise AgentError(
+                        "bound CK3 target did not pass the pre-mutation responsive gate"
+                    )
+                last_sample_to_finish_gap_ns = finished_ns - int(
+                    responsive_streak[-1]["monotonic_ns"]
+                )
+                if (
+                    last_sample_to_finish_gap_ns
+                    > RESPONSIVE_GATE_MAX_SAMPLE_GAP_NS
+                ):
+                    responsive_streak.clear()
+                    continue
+                return {
+                    "format_version": 1,
+                    "kind": "pre_mutation_responsive_stability",
+                    "status": "confirmed",
+                    "started_at": started_at,
+                    "finished_at": datetime.now(timezone.utc).isoformat(),
+                    "started_monotonic_ns": started_ns,
+                    "finished_monotonic_ns": finished_ns,
+                    "timeout_seconds": timeout_seconds,
+                    "poll_interval_seconds": RESPONSIVE_GATE_POLL_SECONDS,
+                    "wm_null_message": WM_NULL,
+                    "wm_null_timeout_milliseconds": (
+                        RESPONSIVE_GATE_WM_NULL_TIMEOUT_MS
+                    ),
+                    "wm_null_flags": (
+                        SMTO_BLOCK | SMTO_ABORTIFHUNG | SMTO_ERRORONEXIT
+                    ),
+                    "required_consecutive_samples": (
+                        RESPONSIVE_GATE_REQUIRED_SAMPLES
+                    ),
+                    "required_span_ns": RESPONSIVE_GATE_REQUIRED_SPAN_NS,
+                    "maximum_sample_gap_ns": RESPONSIVE_GATE_MAX_SAMPLE_GAP_NS,
+                    "last_sample_to_finish_gap_ns": (
+                        last_sample_to_finish_gap_ns
+                    ),
+                    "sample_count": len(samples),
+                    "confirmation_streak_start_index": int(
+                        responsive_streak[0]["index"]
+                    ),
+                    "confirmation_streak_end_index": int(
+                        responsive_streak[-1]["index"]
+                    ),
+                    "confirmation_streak_sample_count": len(responsive_streak),
+                    "initial_last_input_tick": initial_input_tick,
+                    "final_last_input_tick": tick_after,
+                    "observed_last_input_tick_unchanged": True,
+                    "target": {
+                        "pid": self.pid,
+                        "hwnd": self.hwnd,
+                        "thread_id": target_thread,
+                        "client_rect": list(self.client_rect),
+                        "executable": self.executable,
+                        "creation_date": self.creation_date,
+                    },
+                    "samples": samples,
+                    "read_only_contract": {
+                        "set_foreground_window_calls": 0,
+                        "attach_thread_input_calls": 0,
+                        "synthetic_input_calls": 0,
+                        "window_close_calls": 0,
+                        "desktop_enumeration_calls": 0,
+                        "wmi_queries": 0,
+                    },
+                }
+            remaining_ns = deadline_ns - time.monotonic_ns()
+            if remaining_ns <= 0:
+                continue
+            time.sleep(
+                min(
+                    RESPONSIVE_GATE_POLL_SECONDS,
+                    remaining_ns / 1_000_000_000,
+                )
+            )
+
+    def request_foreground_without_input(
+        self,
+        *,
+        responsive_gate_timeout_seconds: float = RESPONSIVE_GATE_MAX_SECONDS,
+        responsive_gate_deadline: float | None = None,
+    ) -> dict[str, object]:
         """Activate the exact bound HWND using window APIs, never key/mouse input.
 
         Windows foreground-lock policy can return focus to the calling shell
@@ -514,6 +814,21 @@ class BoundGameWindow:
         import win32gui
         import win32process
 
+        from ..runtime import _same_executable
+
+        if (
+            type(responsive_gate_timeout_seconds) not in {int, float}
+            or not math.isfinite(float(responsive_gate_timeout_seconds))
+            or not 0 < responsive_gate_timeout_seconds <= RESPONSIVE_GATE_MAX_SECONDS
+            or (
+                responsive_gate_deadline is not None
+                and (
+                    type(responsive_gate_deadline) not in {int, float}
+                    or not math.isfinite(float(responsive_gate_deadline))
+                )
+            )
+        ):
+            raise AgentError("responsive gate deadline contract differs")
         user32 = ctypes.WinDLL("user32", use_last_error=True)
         user32.AttachThreadInput.argtypes = (
             ctypes.c_ulong,
@@ -530,9 +845,85 @@ class BoundGameWindow:
                 raise AgentError("bound CK3 target thread identity differs")
             return int(target_thread)
 
+        def local_target_identity() -> int:
+            try:
+                if self.process.poll() is not None:
+                    raise AgentError("bound CK3 process exited after responsive gate")
+                if (
+                    int(getattr(self.process, "pid", -1)) != self.pid
+                    or not _same_executable(
+                        self.process.image_path(), self.executable
+                    )
+                    or not win32gui.IsWindow(self.hwnd)
+                    or not win32gui.IsWindowVisible(self.hwnd)
+                    or win32gui.IsIconic(self.hwnd)
+                    or _root_window(self.hwnd) != self.hwnd
+                    or _client_rect(self.hwnd) != self.client_rect
+                ):
+                    raise AgentError("bound CK3 local identity changed")
+                thread, pid = win32process.GetWindowThreadProcessId(self.hwnd)
+            except AgentError:
+                raise
+            except Exception as error:
+                raise AgentError(
+                    f"bound CK3 local identity became unknown: {error}"
+                ) from error
+            if int(thread) <= 0 or int(pid) != self.pid:
+                raise AgentError("bound CK3 local thread identity changed")
+            return int(thread)
+
+        def require_deadline(stage: str) -> None:
+            if (
+                responsive_gate_deadline is not None
+                and time.monotonic() >= responsive_gate_deadline
+            ):
+                raise AgentError(f"responsive gate deadline elapsed before {stage}")
+
         target_thread = target_identity()
         current_thread = int(win32api.GetCurrentThreadId())
         input_tick = int(win32api.GetLastInputInfo())
+        gate_timeout_seconds = float(responsive_gate_timeout_seconds)
+        if responsive_gate_deadline is not None:
+            remaining = responsive_gate_deadline - time.monotonic()
+            if remaining <= 0:
+                raise AgentError("responsive gate deadline elapsed before sampling")
+            gate_timeout_seconds = min(gate_timeout_seconds, remaining)
+        responsive_gate = self._pre_mutation_responsive_stability(
+            target_thread=target_thread,
+            initial_input_tick=input_tick,
+            timeout_seconds=gate_timeout_seconds,
+        )
+        gate_finished_ns = responsive_gate.get("finished_monotonic_ns")
+        if type(gate_finished_ns) is not int or gate_finished_ns <= 0:
+            raise AgentError("responsive gate completion evidence differs")
+        first_mutation_ns: int | None = None
+        last_mutation_ns: int | None = None
+
+        def require_gate_fresh(stage: str, *, record_mutation: bool = False) -> int:
+            nonlocal first_mutation_ns, last_mutation_ns
+            now_ns = time.monotonic_ns()
+            gap_ns = now_ns - gate_finished_ns
+            if not 0 <= gap_ns <= RESPONSIVE_GATE_MAX_CONSUMPTION_GAP_NS:
+                raise AgentError(
+                    f"responsive gate evidence became stale before {stage}"
+                )
+            if record_mutation and first_mutation_ns is None:
+                first_mutation_ns = now_ns
+            if record_mutation:
+                last_mutation_ns = now_ns
+            return now_ns
+
+        if local_target_identity() != target_thread:
+            raise AgentError("bound CK3 target changed after responsive gate")
+        if int(win32api.GetLastInputInfo()) != input_tick:
+            raise AgentError("user input changed after responsive gate")
+        require_deadline("foreground sampling")
+        responsive_gate = {
+            **responsive_gate,
+            "full_verify_before": True,
+            "full_verify_after": False,
+            "local_identity_revalidated_after": True,
+        }
 
         def foreground_sample() -> tuple[int, int, int]:
             raw = int(win32gui.GetForegroundWindow())
@@ -548,7 +939,7 @@ class BoundGameWindow:
             attached_fallback: bool,
             detach_succeeded: bool | None,
         ) -> dict[str, object]:
-            if target_identity() != target_thread:
+            if local_target_identity() != target_thread:
                 raise AgentError("bound CK3 target thread changed after activation")
             foreground_after, foreground_thread_after, foreground_pid_after = (
                 foreground_sample()
@@ -561,8 +952,28 @@ class BoundGameWindow:
                 or final_tick != input_tick
             ):
                 raise AgentError("foreground activation postcondition differs")
+            completed_ns = require_gate_fresh("activation completion")
+            consumed_ns = first_mutation_ns or completed_ns
+            gate_evidence = {
+                **responsive_gate,
+                "maximum_post_confirmation_gap_ns": (
+                    RESPONSIVE_GATE_MAX_CONSUMPTION_GAP_NS
+                ),
+                "first_window_mutation_monotonic_ns": first_mutation_ns,
+                "last_window_mutation_monotonic_ns": last_mutation_ns,
+                "confirmation_to_last_mutation_gap_ns": (
+                    None
+                    if last_mutation_ns is None
+                    else last_mutation_ns - gate_finished_ns
+                ),
+                "confirmation_consumed_monotonic_ns": consumed_ns,
+                "confirmation_consumption_gap_ns": consumed_ns - gate_finished_ns,
+                "activation_completed_monotonic_ns": completed_ns,
+                "confirmation_completion_gap_ns": completed_ns - gate_finished_ns,
+            }
             return {
                 **base,
+                "pre_mutation_responsive_stability": gate_evidence,
                 "mode": mode,
                 "attached_fallback": attached_fallback,
                 "detach_succeeded": detach_succeeded,
@@ -608,10 +1019,12 @@ class BoundGameWindow:
         # One direct attempt is permitted.  Reauthenticate the exact target
         # immediately before the mutation and accept only the observed root
         # foreground postcondition.
-        if target_identity() != target_thread:
+        if local_target_identity() != target_thread:
             raise AgentError("bound CK3 target thread changed before activation")
         if int(win32api.GetLastInputInfo()) != input_tick:
             raise AgentError("user input changed before foreground activation")
+        require_deadline("direct foreground activation")
+        require_gate_fresh("direct foreground activation", record_mutation=True)
         try:
             win32gui.SetForegroundWindow(self.hwnd)
         except Exception as error:
@@ -662,7 +1075,7 @@ class BoundGameWindow:
         # checks before joining input queues.  Between a successful attach and
         # its exact detach, only bounded local Win32 identity/geometry calls are
         # permitted so a slow COM provider cannot leave the queues joined.
-        if target_identity() != target_thread:
+        if local_target_identity() != target_thread:
             raise AgentError("bound CK3 target changed before attached fallback")
         if (
             foreground_sample()
@@ -670,6 +1083,8 @@ class BoundGameWindow:
             or int(win32api.GetLastInputInfo()) != input_tick
         ):
             raise AgentError("foreground changed after fallback authentication")
+        require_deadline("attached foreground activation")
+        require_gate_fresh("attached foreground activation", record_mutation=True)
         attach_result: bool | None = None
         attach_error = 0
         detach_result: bool | None = None
@@ -702,6 +1117,9 @@ class BoundGameWindow:
                 or int(win32api.GetLastInputInfo()) != input_tick
             ):
                 raise AgentError("foreground fallback identity changed")
+            require_gate_fresh(
+                "attached SetForegroundWindow", record_mutation=True
+            )
             win32gui.SetForegroundWindow(self.hwnd)
         except BaseException as error:
             activation_error = error
