@@ -138,7 +138,8 @@ deadline。两份 lease 都一次性消费，分别紧邻鼠标移动与 `SendIn
 postcondition 只能使用动作 deadline 的剩余时间，不能重新获得完整 timeout。新报告写入
 `visible_action_protocol_version=2`，公开回放复算分阶段授权、父链、WAL 和时序；上述旧 run 仅以 run ID 和 final-event digest
 `aef3dc4d0dc6bbcaf117dfaabc1d27b263309ec2f58cab5b9a14aa4ffb46396d` 固定只读兼容，不能通过删除版本字段授权新输入。
-该协议尚未用于新的 CK3 `menu-smoke`，因此没有新的实机 GREEN 或重试结论。
+该协议已在 2026-08-22 的真实菜单候选中让 `SendInput` 完成 2/2 提交；其后发现的问题分别来自隔离 profile
+遗漏中国教程提示开关，以及公开 validator 错把已归档的 post-click 转场帧当成 capture sequence 断裂，而不是 lease 再次过期。
 
 下一次输入资格只接受 self-contained format v2 ordinary GREEN；live 扫描与新 menu archive 都拒绝 v1。v1 仅为已经冻结、外层同样为
 RED 且没有任何 `ui_*` 输入 WAL、bookmark、navigation、action/receipt 的历史菜单 run 保留只读兼容；纯观察 PNG/JSON 可以保留，

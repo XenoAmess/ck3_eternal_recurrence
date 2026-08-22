@@ -3014,6 +3014,36 @@ class MenuReportValidatorTests(unittest.TestCase):
             shutil.copytree(run_dir, relocated)
             self.assertTrue(self._validate_strict(relocated, replay)["ok"])
 
+    def test_public_validator_accepts_archived_post_click_transition_capture(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-post-click-transition-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-12345678"
+            )
+            report, replay = build_strict_green_report(run_dir)
+            rows = _event_payloads(run_dir)
+            navigation = report["navigation_attestation"]
+            action = navigation["transition"]["action"]
+            after_policy_frames = navigation["transition"]["observation"][
+                "stability"
+            ]["frames"]
+            after_audit_frames = action["after_stable_observation"]["frames"]
+            for sequence, policy_frame, audit_frame in zip(
+                (6, 7), after_policy_frames, after_audit_frames
+            ):
+                policy_frame["capture_sequence"] = sequence
+                audit_frame["capture_sequence"] = sequence
+                archive_path = run_dir / audit_frame["observation"]
+                archive = json.loads(archive_path.read_text(encoding="utf-8"))
+                archive["private_audit"]["capture_sequence"] = sequence
+                write_json_atomic(archive_path, archive)
+            _refinalize_green_fixture(run_dir, report, rows, action)
+            self.assertTrue(self._validate_strict(run_dir, replay)["ok"])
+
     def test_current_visible_action_protocol_marker_cannot_be_stripped(self) -> None:
         with tempfile.TemporaryDirectory(
             prefix="xar-menu-action-protocol-downgrade-"

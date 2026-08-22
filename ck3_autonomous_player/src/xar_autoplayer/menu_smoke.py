@@ -1904,8 +1904,17 @@ def _validate_navigation_success(
         float(action["hover_observation"]["captured_monotonic"]),
         *[float(frame["captured_monotonic"]) for frame in after_action_audit["frames"]],
     ]
+    # The post-click observer archives transitional/unknown captures before the
+    # two stable lobby frames.  Those discarded frames legitimately create a
+    # gap between the hover capture and the first successful lobby frame.
+    consecutive_ranges = (sequence_evidence[:4], sequence_evidence[4:])
     if (
-        any(right != left + 1 for left, right in zip(sequence_evidence, sequence_evidence[1:]))
+        any(
+            right != left + 1
+            for capture_range in consecutive_ranges
+            for left, right in zip(capture_range, capture_range[1:])
+        )
+        or sequence_evidence[4] <= sequence_evidence[3]
         or any(right <= left for left, right in zip(monotonic_evidence, monotonic_evidence[1:]))
     ):
         raise AgentError("menu smoke full capture sequence differs")
