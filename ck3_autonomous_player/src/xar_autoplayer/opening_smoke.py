@@ -1278,13 +1278,9 @@ def _drive_opening(
 
         def holding_view(frame: object) -> bool:
             return (
-                not _spans_with_text(
-                    frame,
-                    "我的领地",
-                    region=(0.60, 0.0, 0.86, 0.16),
-                )
-                and bool(_spans_with_text(frame, "阿普利亚伯爵领"))
-                and bool(_spans_with_text(frame, "发展度", contains=True))
+                bool(_spans_with_text(frame, "地产类型", contains=True))
+                and bool(_spans_with_text(frame, "你的城堡地产", contains=True))
+                and bool(_spans_with_text(frame, "持有者", contains=True))
             )
 
         _holding_first, holding_second = click_visible_text_once(
