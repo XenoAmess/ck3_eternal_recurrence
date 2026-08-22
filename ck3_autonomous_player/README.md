@@ -92,6 +92,13 @@ opening smoke 已能合法新开局、完成首轮交易，并从地图 HUD 打�
 `player_character`。可见 OCR 识别罗贝尔本人、配偶、玩家继承人与 7 名臣属；最终截图人工复核为正确的玩家角色页，
 退出后的 Job/tree/global inventory 清理仍为 GREEN。这是第一条真实地图内状态读取能力。
 
+提交 `2f87ae3`、GPU 环境 `c34400dcd9b20d04b2ededa042850430c8b2cc407eb556dfdb8b239b64eff31e`
+在 ordinary `20260822T144016Z-5c323968` 与 crash `20260822T144218Z-crash-c86ef48e` 同环境 GREEN 后，
+`20260822T144449Z-opening-b30af184` 完成 13 个真实动作：七步开局、玩家角色页读取/F1 关闭、
+打开生活方式、进入军事页、点击【权威重心】、在原生确认层点击【选择】，最终双帧 OCR 确认
+【当前：权威重心】。所有按钮批次均为 `SendInput accepted=2/2`，最终 `ok=true`、进程树归零。
+下一价值切片是从该地图基线推进时间并处理第一个真实游戏事件。
+
 提交 `226d80e` 曾在同一环境 `219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba`
 下通过 ordinary `20260822T005515Z-03f296c7` 与 post-resume crash
 `20260822T005727Z-crash-38023ffc`，随后执行第一次真实菜单竖切
