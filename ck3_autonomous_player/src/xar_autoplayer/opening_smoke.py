@@ -1,4 +1,4 @@
-"""Drive Robert 1066 through the opening pact and first bargain pair."""
+"""Drive Robert 1066 through the opening pact and first map decisions."""
 
 from __future__ import annotations
 
@@ -53,6 +53,10 @@ OPENING_ALLOWED_CONTROLS = frozenset(
         "curse_event.option_1",
         "curse_event.option_2",
         "map_hud.open_player_character",
+        "player_character.close",
+        "map_hud.open_lifestyle",
+        "lifestyle_selection.open_martial",
+        "lifestyle_martial.select_authority_focus",
     }
 )
 
@@ -254,6 +258,30 @@ def _extract_player_character_state(observation: dict[str, object]) -> dict[str,
     }
 
 
+def _extract_lifestyle_state(observation: dict[str, object]) -> dict[str, object]:
+    """Record the visible lifestyle decision that the opening selected."""
+    if observation.get("screen") != "lifestyle_martial_authority":
+        raise AgentError("lifestyle state requires the selected authority screen")
+    ocr = observation.get("ocr")
+    if not isinstance(ocr, list):
+        raise AgentError("lifestyle observation OCR is missing")
+    texts = [
+        re.sub(r"\s+", "", item.get("text", ""))
+        for item in ocr
+        if isinstance(item, dict) and isinstance(item.get("text"), str)
+    ]
+    if texts.count("军事生活方式") != 1 or texts.count("当前：权威重心") != 1:
+        raise AgentError("selected military authority focus is not uniquely visible")
+    return {
+        "lifestyle": "军事",
+        "focus": "权威",
+        "visible_current_focus": "当前：权威重心",
+        "source_observation_id": observation.get("observation_id"),
+        "strategy": "growth100.stabilize-domain-control-v1",
+        "policy_boundary": "player-visible OCR only",
+    }
+
+
 def _drive_opening(
     spec: EnvironmentSpec,
     handle: SessionHandle,
@@ -442,6 +470,27 @@ def _drive_opening(
         "player character state",
     )
     player_state = _extract_player_character_state(final_observation)
+    click(
+        "player_character",
+        "player_character.close",
+        "playable map after player inspection",
+    )
+    click(
+        "map_hud",
+        "map_hud.open_lifestyle",
+        "lifestyle selection",
+    )
+    click(
+        "lifestyle_selection",
+        "lifestyle_selection.open_martial",
+        "martial lifestyle",
+    )
+    final_observation = click(
+        "lifestyle_martial_unfocused",
+        "lifestyle_martial.select_authority_focus",
+        "selected authority focus",
+    )
+    lifestyle_state = _extract_lifestyle_state(final_observation)
     return {
         "character": "Robert the Fox, Duke of Apulia",
         "bookmark": "1066",
@@ -459,6 +508,7 @@ def _drive_opening(
             "strategy": "growth100.first-curse-visible-v1",
         },
         "player_character_state": player_state,
+        "lifestyle_state": lifestyle_state,
         "final_screen": final_observation.get("screen"),
         "final_observation_id": final_observation.get("observation_id"),
         "window_binding": window.audit_binding(),
@@ -469,7 +519,7 @@ def _drive_opening(
 def opening_smoke(
     spec: EnvironmentSpec, timeout_seconds: float = 300
 ) -> dict[str, object]:
-    """Complete Robert's first bargain pair and inspect his player state."""
+    """Complete Robert's first bargain pair and choose his opening focus."""
     ensure_state_path_safe(spec.state_dir)
     if (
         isinstance(timeout_seconds, bool)

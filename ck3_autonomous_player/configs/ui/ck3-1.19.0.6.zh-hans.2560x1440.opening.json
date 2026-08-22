@@ -141,6 +141,40 @@
         {"anchor_id": "character.curse_modal", "text": "等价的咒痕", "region": [0.0, 0.0, 1.0, 1.0]}
       ],
       "pixel_probes": []
+    },
+    {
+      "screen_id": "lifestyle_selection",
+      "anchors": [
+        {"anchor_id": "lifestyle.select_title", "text": "选择生活方式", "region": [0.00, 0.00, 0.24, 0.10]},
+        {"anchor_id": "lifestyle.martial", "text": "军事", "region": [0.20, 0.18, 0.42, 0.88]},
+        {"anchor_id": "lifestyle.stewardship", "text": "管理", "region": [0.34, 0.18, 0.57, 0.88]}
+      ],
+      "negative_anchors": [
+        {"anchor_id": "lifestyle.current_focus", "text": "当前：", "region": [0.00, 0.00, 1.00, 1.00], "contains": true}
+      ],
+      "pixel_probes": []
+    },
+    {
+      "screen_id": "lifestyle_martial_unfocused",
+      "anchors": [
+        {"anchor_id": "lifestyle.martial_title", "text": "军事生活方式", "region": [0.00, 0.00, 0.24, 0.10]},
+        {"anchor_id": "lifestyle.focus_header", "text": "生活方式重心", "region": [0.00, 0.30, 0.36, 0.92]},
+        {"anchor_id": "lifestyle.no_focus", "text": "当前：无重心", "region": [0.00, 0.30, 0.36, 0.92]}
+      ],
+      "negative_anchors": [],
+      "pixel_probes": []
+    },
+    {
+      "screen_id": "lifestyle_martial_authority",
+      "anchors": [
+        {"anchor_id": "lifestyle.martial_title", "text": "军事生活方式", "region": [0.00, 0.00, 0.24, 0.10]},
+        {"anchor_id": "lifestyle.focus_header", "text": "生活方式重心", "region": [0.00, 0.30, 0.36, 0.92]},
+        {"anchor_id": "lifestyle.authority_current", "text": "当前：权威重心", "region": [0.00, 0.30, 0.36, 0.92]}
+      ],
+      "negative_anchors": [
+        {"anchor_id": "lifestyle.no_focus", "text": "当前：无重心", "region": [0.00, 0.00, 1.00, 1.00]}
+      ],
+      "pixel_probes": []
     }
   ],
   "controls": [
@@ -260,6 +294,48 @@
       "post_screen": "player_character",
       "risk": "reversible",
       "click_point_px": [150, 1100],
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "player_character.close",
+      "screen": "player_character",
+      "label": "close player character",
+      "text": "这是你自己",
+      "region": [0.00, 0.28, 0.08, 0.35],
+      "post_screen": "map_hud",
+      "risk": "reversible",
+      "click_point_px": [592, 20],
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "map_hud.open_lifestyle",
+      "screen": "map_hud",
+      "label": "player lifestyle",
+      "text": "暂停",
+      "region": [0.45, 0.08, 0.55, 0.18],
+      "post_screen": "lifestyle_selection",
+      "risk": "reversible",
+      "click_point_px": [278, 1118],
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "lifestyle_selection.open_martial",
+      "screen": "lifestyle_selection",
+      "label": "军事",
+      "text": "军事",
+      "region": [0.20, 0.18, 0.42, 0.88],
+      "post_screen": "lifestyle_martial_unfocused",
+      "risk": "reversible",
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "lifestyle_martial.select_authority_focus",
+      "screen": "lifestyle_martial_unfocused",
+      "label": "权威重心",
+      "text": "权威重心",
+      "region": [0.00, 0.30, 0.36, 0.92],
+      "post_screen": "lifestyle_martial_authority",
+      "risk": "irreversible",
       "allow_dynamic_pixels": true
     }
   ],

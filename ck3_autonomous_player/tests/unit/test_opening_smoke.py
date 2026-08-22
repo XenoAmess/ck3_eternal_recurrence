@@ -24,6 +24,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _choose_first_blessing,
     _choose_first_curse,
     _drive_opening,
+    _extract_lifestyle_state,
     _extract_player_character_state,
     _score_first_blessing,
     _score_first_curse,
@@ -176,6 +177,42 @@ class OpeningContractTests(unittest.TestCase):
             contract.control("map_hud.open_player_character").click_point_px,
             (150, 1100),
         )
+        lifestyle_selection_spans = (
+            span("选择生活方式", (220, 45), (80, 20, 360, 70)),
+            span("军事", (780, 610), (740, 590, 820, 630)),
+            span("管理", (1120, 610), (1080, 590, 1160, 630)),
+        )
+        self.assertEqual(
+            contract.classify(lifestyle_selection_spans, image)[0],
+            "lifestyle_selection",
+        )
+        lifestyle_unfocused_spans = (
+            span("军事生活方式", (190, 45), (80, 20, 300, 70)),
+            span("生活方式重心", (350, 520), (270, 500, 430, 540)),
+            span("当前：无重心", (350, 565), (270, 545, 430, 585)),
+            span("权威重心", (350, 850), (300, 830, 400, 870)),
+        )
+        self.assertEqual(
+            contract.classify(lifestyle_unfocused_spans, image)[0],
+            "lifestyle_martial_unfocused",
+        )
+        lifestyle_authority_spans = (
+            lifestyle_unfocused_spans[0],
+            lifestyle_unfocused_spans[1],
+            span("当前：权威重心", (350, 565), (260, 545, 440, 585)),
+        )
+        self.assertEqual(
+            contract.classify(lifestyle_authority_spans, image)[0],
+            "lifestyle_martial_authority",
+        )
+        self.assertEqual(
+            contract.control("player_character.close").click_point_px,
+            (592, 20),
+        )
+        self.assertEqual(
+            contract.control("map_hud.open_lifestyle").click_point_px,
+            (278, 1118),
+        )
 
     def test_player_character_state_extracts_visible_family_baseline(self) -> None:
         state = _extract_player_character_state(
@@ -199,6 +236,22 @@ class OpeningContractTests(unittest.TestCase):
         self.assertEqual(state["kin_count"], 26)
         self.assertEqual(state["courtier_count"], 20)
         self.assertEqual(state["vassal_count"], 7)
+
+    def test_lifestyle_state_records_selected_authority_focus(self) -> None:
+        state = _extract_lifestyle_state(
+            {
+                "screen": "lifestyle_martial_authority",
+                "observation_id": "observation-focus",
+                "ocr": [
+                    {"text": "军事生活方式"},
+                    {"text": "生活方式重心"},
+                    {"text": "当前：权威重心"},
+                ],
+            }
+        )
+        self.assertEqual(state["lifestyle"], "军事")
+        self.assertEqual(state["focus"], "权威")
+        self.assertEqual(state["source_observation_id"], "observation-focus")
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (
@@ -352,6 +405,22 @@ class OpeningScenarioTests(unittest.TestCase):
                     "token-player",
                     "player_character",
                 ),
+                ("player_character.close", "token-close-player", "map_hud"),
+                (
+                    "map_hud.open_lifestyle",
+                    "token-open-lifestyle",
+                    "lifestyle_selection",
+                ),
+                (
+                    "lifestyle_selection.open_martial",
+                    "token-open-martial",
+                    "lifestyle_martial_unfocused",
+                ),
+                (
+                    "lifestyle_martial.select_authority_focus",
+                    "token-authority",
+                    "lifestyle_martial_authority",
+                ),
             )
             drivers = []
             for index, (control_id, token, post_screen) in enumerate(controls):
@@ -402,9 +471,15 @@ class OpeningScenarioTests(unittest.TestCase):
                         {"text": "廷臣 20"},
                         {"text": "臣属 7"},
                     ]
+                if control_id == "lifestyle_martial.select_authority_focus":
+                    driver.click_visible_control.return_value["observation"]["ocr"] = [
+                        {"text": "军事生活方式"},
+                        {"text": "生活方式重心"},
+                        {"text": "当前：权威重心"},
+                    ]
                 drivers.append(driver)
-            curse_driver = drivers[-2]
-            blessing_driver = drivers[-3]
+            blessing_driver = drivers[5]
+            curse_driver = drivers[6]
             blessing_choices = []
             blessing_spans = []
             for index, (control_id, text, y) in enumerate(
@@ -495,12 +570,12 @@ class OpeningScenarioTests(unittest.TestCase):
                     digest,
                     time.monotonic() + 30,
                 )
-            self.assertEqual(result["final_screen"], "player_character")
+            self.assertEqual(result["final_screen"], "lifestyle_martial_authority")
             self.assertEqual(
                 [item["control_id"] for item in result["actions"]],
                 [item[0] for item in controls],
             )
-            self.assertEqual(driver_type.call_count, 8)
+            self.assertEqual(driver_type.call_count, 12)
             for driver, (_, token, _) in zip(drivers[:5], controls[:5]):
                 driver.click_visible_control.assert_called_once()
                 self.assertEqual(
@@ -514,7 +589,7 @@ class OpeningScenarioTests(unittest.TestCase):
                 "curse-choice-1",
                 timeout_seconds=mock.ANY,
             )
-            drivers[-1].click_visible_control.assert_called_once_with(
+            drivers[7].click_visible_control.assert_called_once_with(
                 "token-player",
                 timeout_seconds=mock.ANY,
             )
@@ -522,6 +597,7 @@ class OpeningScenarioTests(unittest.TestCase):
             self.assertIn("军事经验", result["first_curse_choice"]["visible_text"])
             self.assertTrue(result["player_character_state"]["spouse_visible"])
             self.assertTrue(result["player_character_state"]["player_heir_visible"])
+            self.assertEqual(result["lifestyle_state"]["focus"], "权威")
 
     def test_cli_exposes_opening_smoke(self) -> None:
         args = cli.parser().parse_args(["opening-smoke"])
