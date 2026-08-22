@@ -1770,6 +1770,52 @@ class UiDriverSafetyTests(unittest.TestCase):
             self.assertTrue(receipt["input_may_have_occurred"])
             self.assertFalse(receipt["button_click_may_have_occurred"])
 
+    def test_animated_control_can_submit_after_hover_pixels_change(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-ui-animated-target-") as temporary:
+            driver, spec, target, token = self._driver(Path(temporary))
+            animated_spec = replace(spec, allow_dynamic_pixels=True)
+            driver.contract = replace(driver.contract, controls=(animated_spec,))
+            driver._issued[token] = replace(
+                driver._issued[token], spec=animated_spec
+            )
+            fresh = self._action_observation(driver, animated_spec, target)
+            hover = self._action_observation(driver, animated_spec, target)
+            after = stable_pair("bookmark_lobby", start=5)
+            hover_image = Image.new("RGB", (2560, 1440), "black")
+            window = mock.Mock()
+            self._prepare_window(window)
+            window.capture_patch.side_effect = lambda bbox: Image.new(
+                "RGB", (bbox[2] - bbox[0], bbox[3] - bbox[1]), "white"
+            )
+            driver.window = window
+            fake_gui = types.SimpleNamespace(FAILSAFE=True, moveTo=mock.Mock())
+            send_click = mock.Mock(return_value=(2, 0))
+            with mock.patch.object(
+                driver, "_capture_observation", return_value=fresh
+            ), mock.patch.object(
+                driver,
+                "_capture_observation_with_image",
+                return_value=(hover, hover_image),
+            ), mock.patch.object(
+                driver, "observe_stable", return_value=after
+            ), mock.patch.dict(
+                sys.modules, {"pyautogui": fake_gui}
+            ), mock.patch(
+                "xar_autoplayer.control.executor._prepare_left_click_batch",
+                return_value=send_click,
+            ), mock.patch(
+                "xar_autoplayer.control.executor.time.sleep"
+            ):
+                response = driver.click_visible_control(token, timeout_seconds=1)
+
+            action = response["action"]
+            self.assertEqual(action["status"], "confirmed")
+            self.assertNotEqual(
+                action["target"]["hover"]["patch_sha256"],
+                action["target"]["final_patch_sha256"],
+            )
+            send_click.assert_called_once_with()
+
     def test_final_cursor_guard_failure_after_patch_causes_zero_input(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-ui-final-guard-") as temporary:
             driver, _spec, target, token = self._driver(Path(temporary))

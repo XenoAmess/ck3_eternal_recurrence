@@ -105,7 +105,8 @@
       "risk": "reversible",
       "hover_tolerance_px": 10,
       "click_offset_px": [0, -130],
-      "click_hold_seconds": 0.12
+      "click_hold_seconds": 0.12,
+      "allow_dynamic_pixels": true
     },
     {
       "control_id": "bookmark_lobby.start_game",

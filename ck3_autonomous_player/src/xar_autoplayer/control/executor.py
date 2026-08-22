@@ -982,7 +982,12 @@ class VisibleUiDriver:
             final_patch = self.window.capture_patch(patch_bbox)
             final_patch_sha256 = self._memory_image_sha256(final_patch)
             result["target"]["final_patch_sha256"] = final_patch_sha256
-            if not hmac.compare_digest(final_patch_sha256, expected_patch_sha256):
+            if (
+                not spec.allow_dynamic_pixels
+                and not hmac.compare_digest(
+                    final_patch_sha256, expected_patch_sha256
+                )
+            ):
                 raise AgentError("visible target pixels changed immediately before input")
             self.window.require_cursor_target(click_point)
             hover_consumed = self._require_internal_lease(

@@ -63,6 +63,7 @@ class ControlSpec:
     hover_tolerance_px: int = 3
     click_offset_px: tuple[int, int] = (0, 0)
     click_hold_seconds: float = 0.0
+    allow_dynamic_pixels: bool = False
 
 
 @dataclass(frozen=True)
@@ -468,6 +469,7 @@ def load_ui_contract(
                 "hover_tolerance_px",
                 "click_offset_px",
                 "click_hold_seconds",
+                "allow_dynamic_pixels",
             },
             f"control[{control_index}]",
         )
@@ -510,6 +512,11 @@ def load_ui_contract(
                     int(click_offset_raw[0]), int(click_offset_raw[1])
                 ),
                 click_hold_seconds=float(click_hold),
+                allow_dynamic_pixels=(
+                    _flag(item["allow_dynamic_pixels"], "control dynamic pixels")
+                    if "allow_dynamic_pixels" in item
+                    else False
+                ),
             )
         )
     controls = tuple(controls_list)

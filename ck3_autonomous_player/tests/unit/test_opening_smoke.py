@@ -52,6 +52,9 @@ class OpeningContractTests(unittest.TestCase):
             contract.control("bookmark_lobby.select_robert").click_hold_seconds,
             0.12,
         )
+        self.assertTrue(
+            contract.control("bookmark_lobby.select_robert").allow_dynamic_pixels
+        )
         self.assertEqual(
             contract.control("bookmark_lobby.start_game").hover_tolerance_px,
             3,
@@ -59,6 +62,9 @@ class OpeningContractTests(unittest.TestCase):
         self.assertEqual(
             contract.control("bookmark_lobby.start_game").click_offset_px,
             (0, 0),
+        )
+        self.assertFalse(
+            contract.control("bookmark_lobby.start_game").allow_dynamic_pixels
         )
         lobby_image = Image.new("RGB", contract.resolution, (0, 0, 0))
         lobby = next(

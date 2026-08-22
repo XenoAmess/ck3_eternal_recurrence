@@ -170,7 +170,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 旧 acceptance runner 每次 OCR/点击前会用 `AttachThreadInput` + Alt 抢回并反证 CK3 前台；2026-08-19 曾实测裸 `SetForegroundWindow` 被 Windows 前台锁静默拒绝后，runner 把 OpenCode 整窗识别成事件选项。该做法只属于旧验收工具，不能移植到合法自主玩家。Phase B sealed menu smoke 改为主证据链 write-ahead 后的一次 direct exact-HWND 激活，以及至多一次 caller→同一个稳定前台线程的严格 attach/detach fallback；不使用 Alt、PyAutoGUI、鼠标或 `SendInput`，任何身份、detach 或前台后置条件未知都立即 RED 且不重试。
 - `parentanchor = center` 的小型验收 widget 不要点击精确屏幕中心：锚点可能落在 64×64 控件边界并穿透到地图。`xar_trait_test_window` 改为点击中心内偏移 20 px；最终咒痕后还要先按渲染出的“暂停”状态锁住一日死亡计时，完成特质 hover 后才恢复时间。2026-08-20 CK3 1.19.0.6 实测。
 - 主菜单【新游戏】也必须 deliberate-click 并以罗贝尔书签实际出现作反证；2026-08-19 实测 OCR 找到按钮后的一次瞬时点击可被 CK3 丢弃，runner 若直接进入 30 秒书签等待只会在原主菜单超时。
-- 安全软件、Chrome 与 JetBrains 通知都可能置顶遮住大厅“开始”按钮；runner 等待该按钮时只对已知安全软件“忽略”和 Chrome“关闭”执行窄 OCR 恢复，不改软件设置，也不在普通游戏画面盲点点击。2026-08-21 实测 JetBrains stale-index 通知不在该白名单内，会正确留下 OCR RED；人工关闭未知外部通知后必须使用全新目录重跑，禁止修改原报告结论。
+- 安全软件、Chrome 与 JetBrains 通知都可能置顶遮住大厅“开始”按钮。2026-08-22 两次 opening 实测同一 YouTube/Chrome 通知持续覆盖该按钮；Windows Toast 总开关和应用级 banner 开关不足以阻止它再次出现，最终必须把 Chrome Default profile 的默认通知和 8 个显式允许站点全部改为阻止。用户已持续授权自动游玩期间立即关闭任何右下角 Toast；只能点击通知自身的【关闭】，不得点击通知正文。原 RED 保持原结论，清理后使用全新 run。
 - 截图读坐标要用 PIL 裁真实 PNG（2560x1440）实测——聊天里显示的图有缩放，目测坐标必歪。
 - 发布截图还要检查画面中心：2026-08-21 的 non-debug terminal artifact 实测把 CK3 原生
   `clausewitz/gfx/cursors/software_cursor_normal.dds`（100x100）留在 `(1280,720)`；它在地图上是深色方框，
@@ -188,6 +188,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - `balance-long` 的自然死亡同样使用精确「继续扮演」路径，但生产 terminal 不再依赖死者 event 排队：`on_death` 先保存 dead/carrier scope 并排入存活继承人的 `delayed = yes` dispatch，再内联计算；延迟边界后只用预先建立的 pact/fixture character globals 认证，不重查会在死亡时清除的角色 flag。runner 最多等待 30 秒 kind 4 terminal wire，且不采集继承人的后续普通样本。
 - 大厅路径坐标（2560x1440）：新游戏 (600,560) → 1066 罗贝尔卡 (1600,1230)（有儿子必有继承人）
   → 开始 (2257,1245)。结算确认选项 (1130,1041)（点了进观察者模式，桥有效）。
+- 2026-08-22 opening 实测罗贝尔标签 hover 后会从中心 y≈1211 上移到 y≈1203，且标签/卡片像素持续动画；点击标签本身不会选中。自主玩家因此从唯一 OCR 标签派生 `(0,-130)` 的头像点击点并按住 120 ms，只对该控件允许最终 hover patch 动画，仍保留唯一标签、窗口前台、点击点归属与后置 `bookmark_lobby_selected` 反证。
 - 用户真实纪录靠 tutorial.txt 备份/恢复保护；默认 selftest 与 `on-first-life/off` 会剥掉 `xar_hs_ge_*` 行（纪录 0），`on-recorded` 固定预置 100；`--import-record 100` 仅改变 selftest。
 - restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验。2026-08-20 实测发现宿主超时会终止 runner 的整个子进程树，普通 `Popen(CREATE_NO_WINDOW)` watchdog 也被一起杀死，遗留隔离后的 `dlc_load.json` 与测试 autosave；已从该次精确 backup 全量恢复并核对六项 hash。watchdog 现由 WMI `Win32_Process.Create` 启动在 runner 进程树之外。2026-08-19 另实测 dev selftest autosave 会让下一次 release 投影扫描已剥离的 `xar_selftest` 规则键并误报；现启动前先完整复制并校验全部 `autosave*.ck3`，写 ready 标记后才移走，结束时删除测试 autosave 并恢复原件。
 - 2026-08-19 长期平衡摇测发现当前播放集还启用了四个自动控制/改宗 mod，会污染领地、信仰与资源结果。runner 现同时备份 `dlc_load.json`，启动前把 `enabled_mods` 精确收敛为 `mod/ugc_3784706360.mod`，杀死测试 CK3 后再恢复；watchdog 同样覆盖此文件。
