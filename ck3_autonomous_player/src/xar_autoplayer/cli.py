@@ -50,7 +50,7 @@ def parser() -> argparse.ArgumentParser:
     menu_parser.add_argument("--timeout", type=float, default=180)
     opening_parser = commands.add_parser(
         "opening-smoke",
-        help="select Robert in 1066, accept the pact, and reach the first blessing",
+        help="select Robert, accept the pact, choose a blessing, and reach its curse",
     )
     opening_parser.add_argument("--timeout", type=float, default=300)
     crash_parser = commands.add_parser(

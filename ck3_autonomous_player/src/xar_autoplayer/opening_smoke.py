@@ -1,10 +1,11 @@
-"""Drive Robert 1066 through the opening pact to the first blessing choice."""
+"""Drive Robert 1066 through the opening pact and first blessing decision."""
 
 from __future__ import annotations
 
 from datetime import datetime, timezone
 import math
 from pathlib import Path
+import re
 import shutil
 import time
 import uuid
@@ -46,6 +47,9 @@ OPENING_ALLOWED_CONTROLS = frozenset(
         "bookmark_lobby.start_game",
         "pact_event.accept_contract",
         "first_life_event.begin",
+        "blessing_event.option_1",
+        "blessing_event.option_2",
+        "blessing_event.option_3",
     }
 )
 
@@ -83,6 +87,67 @@ def _action_summary(action: dict[str, object]) -> dict[str, object]:
         "result_observation_id": action.get("result_observation_id"),
         "expected_post_screen": action.get("expected_post_screen"),
     }
+
+
+_BLESSING_RARITY_SCORE = {"普通": 1000, "稀有": 2000, "传说": 3000}
+_BLESSING_CATEGORY_SCORE = {
+    "秘契": 900,
+    "特质": 800,
+    "修正": 700,
+    "属性": 650,
+    "生活方式": 500,
+    "宗族": 450,
+    "财富": 400,
+    "权谋": 380,
+    "信仰": 360,
+    "威望": 340,
+    "压力": 320,
+}
+
+
+def _score_first_blessing(text: str) -> int:
+    """Rank a visible first-life blessing without reading hidden game state."""
+    rarity = next(
+        (score for name, score in _BLESSING_RARITY_SCORE.items() if name in text),
+        0,
+    )
+    category = next(
+        (score for name, score in _BLESSING_CATEGORY_SCORE.items() if name in text),
+        0,
+    )
+    magnitudes = [abs(int(value)) for value in re.findall(r"[+-]?\d+", text)]
+    magnitude = min(max(magnitudes, default=0), 99)
+    return rarity + category + magnitude
+
+
+def _choose_first_blessing(stable: object) -> tuple[object, str, int]:
+    controls = tuple(getattr(stable, "controls", ()))
+    latest = getattr(stable, "latest", None)
+    spans = tuple(getattr(latest, "spans", ()))
+    if len(controls) != 3:
+        raise AgentError("first blessing screen does not expose exactly three choices")
+    ranked: list[tuple[int, str, object, str]] = []
+    for control in controls:
+        matches = [
+            span
+            for span in spans
+            if span.bbox == control.bbox and span.center == control.center
+        ]
+        if len(matches) != 1:
+            raise AgentError("first blessing control lacks one exact visible OCR span")
+        visible_text = matches[0].text
+        ranked.append(
+            (
+                _score_first_blessing(visible_text),
+                str(control.control_id),
+                control,
+                visible_text,
+            )
+        )
+    score, _control_id, selected, visible_text = max(
+        ranked, key=lambda item: (item[0], item[1])
+    )
+    return selected, visible_text, score
 
 
 def _drive_opening(
@@ -196,17 +261,55 @@ def _drive_opening(
         "pact_event.accept_contract",
         "first-life explanation",
     )
-    final_observation = click(
+    click(
         "first_life_event",
         "first_life_event.begin",
         "first blessing choice",
     )
-    if final_observation.get("screen") != "blessing_event":
-        raise AgentError("opening did not reach the first blessing choice")
+    blessing_driver = new_driver()
+    blessing_stable = blessing_driver.observe_stable(
+        "blessing_event",
+        _remaining(deadline, "stable first blessing choice"),
+        stable_frames=2,
+    )
+    selected, visible_text, strategy_score = _choose_first_blessing(blessing_stable)
+    blessing_transition = blessing_driver.click_visible_control(
+        selected.token,
+        timeout_seconds=_remaining(deadline, "first curse choice"),
+    )
+    blessing_action = blessing_transition.get("action")
+    final_observation = blessing_transition.get("observation")
+    if not isinstance(blessing_action, dict) or not isinstance(
+        final_observation, dict
+    ):
+        raise AgentError("first blessing transition result is malformed")
+    if blessing_action.get("status") != "confirmed":
+        raise AgentError("first blessing choice was not confirmed")
+    action_summary = _action_summary(blessing_action)
+    action_summary["visible_choice"] = visible_text
+    action_summary["strategy_score"] = strategy_score
+    actions.append(action_summary)
+    append_event(
+        events,
+        {
+            "kind": "opening_step_completed",
+            "control_id": selected.control_id,
+            "result_screen": final_observation.get("screen"),
+            "result_observation_id": final_observation.get("observation_id"),
+        },
+    )
+    if final_observation.get("screen") != "curse_event":
+        raise AgentError("opening did not reach the first curse choice")
     return {
         "character": "Robert the Fox, Duke of Apulia",
         "bookmark": "1066",
         "actions": actions,
+        "first_blessing_choice": {
+            "control_id": selected.control_id,
+            "visible_text": visible_text,
+            "strategy_score": strategy_score,
+            "strategy": "growth100.first-blessing-visible-v1",
+        },
         "final_screen": final_observation.get("screen"),
         "final_observation_id": final_observation.get("observation_id"),
         "window_binding": window.audit_binding(),
@@ -217,7 +320,7 @@ def _drive_opening(
 def opening_smoke(
     spec: EnvironmentSpec, timeout_seconds: float = 300
 ) -> dict[str, object]:
-    """Select Robert, accept the pact, and visibly reach the first blessing."""
+    """Select Robert, accept the pact, choose a blessing, and reach its curse."""
     ensure_state_path_safe(spec.state_dir)
     if (
         isinstance(timeout_seconds, bool)

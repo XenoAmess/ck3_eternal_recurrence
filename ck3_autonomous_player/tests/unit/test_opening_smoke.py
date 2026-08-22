@@ -21,7 +21,9 @@ from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.opening_smoke import (  # noqa: E402
     OPENING_ALLOWED_CONTROLS,
     OPENING_CONTRACT,
+    _choose_first_blessing,
     _drive_opening,
+    _score_first_blessing,
 )
 from xar_autoplayer.vision import load_ui_contract  # noqa: E402
 from xar_autoplayer.vision.model import OcrSpan  # noqa: E402
@@ -33,7 +35,7 @@ def span(text: str, center: tuple[int, int], bbox: tuple[int, int, int, int]):
 
 
 class OpeningContractTests(unittest.TestCase):
-    def test_contract_exposes_the_five_step_opening_to_first_blessing(self) -> None:
+    def test_contract_exposes_opening_through_first_blessing_choice(self) -> None:
         digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
         contract = load_ui_contract(OPENING_CONTRACT, expected_sha256=digest)
         self.assertEqual(
@@ -136,6 +138,44 @@ class OpeningContractTests(unittest.TestCase):
         self.assertEqual(
             contract.classify(blessing_spans, image)[0], "blessing_event"
         )
+        curse_spans = (
+            span("等价的咒痕", (810, 401), (718, 381, 902, 421)),
+            span("挑好了？那么——该付账了。", (760, 471), (622, 459, 900, 483)),
+        )
+        self.assertEqual(contract.classify(curse_spans, image)[0], "curse_event")
+
+    def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
+        choices = (
+            ("blessing_event.option_1", "普通-特质：长明的定力 (耐心)", 879),
+            ("blessing_event.option_2", "普通-属性：权衡（+1管理）", 934),
+            (
+                "blessing_event.option_3",
+                "普通-生活方式：智海的拾贝（+750学识经验）",
+                989,
+            ),
+        )
+        controls = []
+        spans = []
+        for index, (control_id, text, y) in enumerate(choices):
+            bbox = (750, y - 12, 1120, y + 12)
+            controls.append(
+                SimpleNamespace(
+                    control_id=control_id,
+                    token=f"token-{index}",
+                    bbox=bbox,
+                    center=(935, y),
+                )
+            )
+            spans.append(span(text, (935, y), bbox))
+        selected, visible_text, score = _choose_first_blessing(
+            SimpleNamespace(
+                controls=tuple(controls),
+                latest=SimpleNamespace(spans=tuple(spans)),
+            )
+        )
+        self.assertEqual(selected.control_id, "blessing_event.option_1")
+        self.assertIn("长明的定力", visible_text)
+        self.assertEqual(score, _score_first_blessing(visible_text))
 
     def test_explicit_opening_allowlist_does_not_change_default_driver_policy(
         self,
@@ -170,7 +210,7 @@ class OpeningContractTests(unittest.TestCase):
 
 
 class OpeningScenarioTests(unittest.TestCase):
-    def test_scenario_reaches_first_blessing_in_order(self) -> None:
+    def test_scenario_chooses_first_blessing_and_reaches_curse(self) -> None:
         digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary) / "state" / "runs" / "run"
@@ -205,12 +245,32 @@ class OpeningScenarioTests(unittest.TestCase):
                     "token-begin",
                     "blessing_event",
                 ),
+                (
+                    "blessing_event.option_1",
+                    "token-blessing",
+                    "curse_event",
+                ),
             )
             drivers = []
             for index, (control_id, token, post_screen) in enumerate(controls):
                 driver = mock.Mock()
+                visible_text = (
+                    "普通-特质：长明的定力 (耐心)"
+                    if control_id == "blessing_event.option_1"
+                    else control_id
+                )
+                bbox = (800, 860, 1080, 890)
+                visible_control = SimpleNamespace(
+                    control_id=control_id,
+                    token=token,
+                    bbox=bbox,
+                    center=(940, 875),
+                )
                 driver.observe_stable.return_value = SimpleNamespace(
-                    controls=(SimpleNamespace(control_id=control_id, token=token),)
+                    controls=(visible_control,),
+                    latest=SimpleNamespace(
+                        spans=(span(visible_text, (940, 875), bbox),)
+                    ),
                 )
                 driver.click_visible_control.return_value = {
                     "action": {
@@ -231,6 +291,45 @@ class OpeningScenarioTests(unittest.TestCase):
                     },
                 }
                 drivers.append(driver)
+            blessing_driver = drivers[-1]
+            blessing_choices = []
+            blessing_spans = []
+            for index, (control_id, text, y) in enumerate(
+                (
+                    (
+                        "blessing_event.option_1",
+                        "普通-特质：长明的定力 (耐心)",
+                        879,
+                    ),
+                    (
+                        "blessing_event.option_2",
+                        "普通-属性：权衡（+1管理）",
+                        934,
+                    ),
+                    (
+                        "blessing_event.option_3",
+                        "普通-生活方式：智海的拾贝（+750学识经验）",
+                        989,
+                    ),
+                )
+            ):
+                bbox = (740, y - 12, 1130, y + 12)
+                blessing_choices.append(
+                    SimpleNamespace(
+                        control_id=control_id,
+                        token=f"choice-{index}",
+                        bbox=bbox,
+                        center=(935, y),
+                    )
+                )
+                blessing_spans.append(span(text, (935, y), bbox))
+            blessing_driver.observe_stable.return_value = SimpleNamespace(
+                controls=tuple(blessing_choices),
+                latest=SimpleNamespace(spans=tuple(blessing_spans)),
+            )
+            blessing_driver.click_visible_control.return_value["action"][
+                "control_id"
+            ] = "blessing_event.option_1"
             with mock.patch(
                 "xar_autoplayer.vision.BoundGameWindow.bind_session",
                 return_value=window,
@@ -250,17 +349,22 @@ class OpeningScenarioTests(unittest.TestCase):
                     digest,
                     time.monotonic() + 30,
                 )
-            self.assertEqual(result["final_screen"], "blessing_event")
+            self.assertEqual(result["final_screen"], "curse_event")
             self.assertEqual(
                 [item["control_id"] for item in result["actions"]],
                 [item[0] for item in controls],
             )
-            self.assertEqual(driver_type.call_count, 5)
-            for driver, (_, token, _) in zip(drivers, controls):
+            self.assertEqual(driver_type.call_count, 6)
+            for driver, (_, token, _) in zip(drivers[:-1], controls[:-1]):
                 driver.click_visible_control.assert_called_once()
                 self.assertEqual(
                     driver.click_visible_control.call_args.args[0], token
                 )
+            blessing_driver.click_visible_control.assert_called_once_with(
+                "choice-0",
+                timeout_seconds=mock.ANY,
+            )
+            self.assertIn("长明的定力", result["first_blessing_choice"]["visible_text"])
 
     def test_cli_exposes_opening_smoke(self) -> None:
         args = cli.parser().parse_args(["opening-smoke"])

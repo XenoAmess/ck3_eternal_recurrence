@@ -101,6 +101,15 @@
       ],
       "negative_anchors": [],
       "pixel_probes": []
+    },
+    {
+      "screen_id": "curse_event",
+      "anchors": [
+        {"anchor_id": "curse.title", "text": "等价的咒痕", "region": [0.24, 0.24, 0.40, 0.32]},
+        {"anchor_id": "curse.payment", "text": "该付账了", "region": [0.24, 0.30, 0.42, 0.38], "contains": true}
+      ],
+      "negative_anchors": [],
+      "pixel_probes": []
     }
   ],
   "controls": [
@@ -155,7 +164,40 @@
       "post_screen": "blessing_event",
       "risk": "irreversible",
       "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "blessing_event.option_1",
+      "screen": "blessing_event",
+      "label": "first visible blessing",
+      "text": "(",
+      "region": [0.22, 0.59, 0.48, 0.63],
+      "post_screen": "curse_event",
+      "risk": "irreversible",
+      "contains": true,
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "blessing_event.option_2",
+      "screen": "blessing_event",
+      "label": "second visible blessing",
+      "text": "(",
+      "region": [0.22, 0.63, 0.48, 0.67],
+      "post_screen": "curse_event",
+      "risk": "irreversible",
+      "contains": true,
+      "allow_dynamic_pixels": true
+    },
+    {
+      "control_id": "blessing_event.option_3",
+      "screen": "blessing_event",
+      "label": "third visible blessing",
+      "text": "(",
+      "region": [0.22, 0.67, 0.48, 0.71],
+      "post_screen": "curse_event",
+      "risk": "irreversible",
+      "contains": true,
+      "allow_dynamic_pixels": true
     }
   ],
-  "forbidden_capabilities": ["blessing_event.choose_blessing"]
+  "forbidden_capabilities": ["curse_event.choose_curse"]
 }
