@@ -72,6 +72,12 @@ DEFAULT_ORDINARY_EVENT_COUNT = 3
 MAX_CHAINED_ORDINARY_EVENTS = 8
 GENERIC_EVENT_PREVIEW_REGION = (0.23, 0.22, 0.48, 0.80)
 
+# CK3 1.19.0.6 at the frozen 2560x1440/100% UI contract.  Alt+1..N only
+# addresses existing GUIBuildingItem tracks; the empty ``+`` slots are not in
+# that shortcut model.  The rightmost empty slot is therefore the one
+# unavoidable layout-derived mouse target in the construction flow.
+HOLDING_EMPTY_BUILDING_SLOT_CENTER = (608, 1118)
+
 # Frozen from Crusader Kings III/game/gui/shortcuts.shortcuts. Scan codes are
 # used so the binding does not depend on the active Windows keyboard layout.
 CK3_SHORTCUT_SCAN_CODES = {
@@ -1293,103 +1299,83 @@ def _drive_opening(
             post_predicate=holding_view,
         )
 
-        selected_slot: int | None = None
-        building_frame = None
-        slot_attempts: list[dict[str, object]] = []
-        for slot_number in range(1, 7):
-            key = str(slot_number)
-            scan_code = CK3_SHORTCUT_SCAN_CODES[key]
-            window.require_foreground()
-            append_event(
-                events,
-                {
-                    "kind": "opening_key_input_planned",
-                    "control_id": f"holding_view.building_slot_{slot_number}",
-                    "key": f"alt+{key}",
-                    "scan_code": scan_code,
-                    "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
-                    "expected_post_screen": "building_selection",
-                },
+        width = window.client_rect[2] - window.client_rect[0]
+        height = window.client_rect[3] - window.client_rect[1]
+        if (width, height) != (2560, 1440):
+            raise AgentError("holding building-slot layout differs from 2560x1440")
+        fresh_holding = driver.capture_once()
+        if not holding_view(fresh_holding):
+            raise AgentError("holding view changed before opening an empty slot")
+        slot_point = HOLDING_EMPTY_BUILDING_SLOT_CENTER
+        window.require_foreground()
+        window.require_unobscured(slot_point)
+        append_event(
+            events,
+            {
+                "kind": "opening_pointer_input_planned",
+                "control_id": "holding_view.rightmost_empty_building_slot",
+                "center": list(slot_point),
+                "expected_post_screen": "building_selection",
+            },
+        )
+        import pyautogui
+
+        pyautogui.FAILSAFE = True
+        screen_point = (
+            window.client_rect[0] + slot_point[0],
+            window.client_rect[1] + slot_point[1],
+        )
+        pyautogui.moveTo(*screen_point, duration=0.12)
+        time.sleep(0.2)
+        window.require_cursor_target(slot_point)
+        accepted, last_error = _prepare_left_click_batch(0.05)()
+        if accepted != 2:
+            raise AgentError(
+                "empty building-slot mouse click was partial: "
+                f"accepted={accepted}, last_error={last_error}"
             )
-            accepted, last_error = _prepare_key_chord_batch(
-                CK3_SHORTCUT_SCAN_CODES["left_alt"], scan_code
-            )()
-            if accepted != 4:
-                raise AgentError(
-                    f"alt+{key} building shortcut SendInput was partial: "
-                    f"accepted={accepted}, last_error={last_error}"
-                )
-            attempt: dict[str, object] = {
-                "slot_number": slot_number,
-                "key": f"alt+{key}",
+        _building_first, building_frame = wait_for_custom_state(
+            driver,
+            lambda frame: bool(_building_offer_summaries(frame)),
+            "building selection",
+        )
+        visible_offer_count = len(_building_offer_summaries(building_frame))
+        selected_slot = "rightmost_empty"
+        slot_attempts: list[dict[str, object]] = [
+            {
+                "slot": selected_slot,
+                "center": list(slot_point),
                 "send_input": {
-                    "requested": 4,
+                    "requested": 2,
                     "accepted": accepted,
                     "last_error": last_error,
                 },
-                "visible_construct_offers": 0,
+                "visible_construct_offers": visible_offer_count,
+                "result_observation_id": building_frame.observation_id,
             }
-            try:
-                _first, candidate = wait_for_custom_state(
-                    driver,
-                    lambda frame: bool(_building_offer_summaries(frame)),
-                    f"building slot {slot_number}",
-                    timeout_seconds=4.0,
-                )
-            except AgentError as error:
-                if "did not become visibly stable" not in str(error):
-                    raise
-                slot_attempts.append(attempt)
-                actions.append(
-                    {
-                        "control_id": f"holding_view.building_slot_{slot_number}",
-                        "status": "confirmed",
-                        "input_kind": "keyboard_shortcut",
-                        "key": f"alt+{key}",
-                        "scan_code": scan_code,
-                        "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
-                        "send_input": attempt["send_input"],
-                        "result_observation_id": None,
-                        "expected_post_screen": "building_selection",
-                        "visible_construct_offers": 0,
-                    }
-                )
-                continue
-            attempt["visible_construct_offers"] = len(
-                _building_offer_summaries(candidate)
-            )
-            attempt["result_observation_id"] = candidate.observation_id
-            slot_attempts.append(attempt)
-            actions.append(
-                {
-                    "control_id": f"holding_view.building_slot_{slot_number}",
-                    "status": "confirmed",
-                    "input_kind": "keyboard_shortcut",
-                    "key": f"alt+{key}",
-                    "scan_code": scan_code,
-                    "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
-                    "send_input": attempt["send_input"],
-                    "result_observation_id": candidate.observation_id,
-                    "expected_post_screen": "building_selection",
-                    "visible_construct_offers": attempt[
-                        "visible_construct_offers"
-                    ],
-                }
-            )
-            append_event(
-                events,
-                {
-                    "kind": "opening_step_completed",
-                    "control_id": f"holding_view.building_slot_{slot_number}",
-                    "result_screen": "building_selection",
-                    "result_observation_id": candidate.observation_id,
-                },
-            )
-            selected_slot = slot_number
-            building_frame = candidate
-            break
-        if selected_slot is None or building_frame is None:
-            raise AgentError("no building slot exposed a visible construction offer")
+        ]
+        actions.append(
+            {
+                "control_id": "holding_view.rightmost_empty_building_slot",
+                "status": "confirmed",
+                "input_kind": "visible_layout_click",
+                "click_point": list(slot_point),
+                "source_observation_id": fresh_holding.observation_id,
+                "send_input": slot_attempts[0]["send_input"],
+                "result_observation_id": building_frame.observation_id,
+                "expected_post_screen": "building_selection",
+                "visible_construct_offers": visible_offer_count,
+            }
+        )
+        append_event(
+            events,
+            {
+                "kind": "opening_step_completed",
+                "control_id": "holding_view.rightmost_empty_building_slot",
+                "result_screen": "building_selection",
+                "result_observation_id": building_frame.observation_id,
+            },
+        )
 
         offer = _choose_economic_building_offer(building_frame)
         button_center = tuple(offer["button_center"])
