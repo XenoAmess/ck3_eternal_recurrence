@@ -300,6 +300,17 @@ def _extract_map_date(observation: dict[str, object]) -> dict[str, object]:
     for item in ocr:
         if not isinstance(item, dict) or not isinstance(item.get("text"), str):
             continue
+        bbox = item.get("bbox")
+        if (
+            not isinstance(bbox, list)
+            or len(bbox) != 4
+            or any(type(value) is not int for value in bbox)
+        ):
+            continue
+        center_x = (bbox[0] + bbox[2]) // 2
+        center_y = (bbox[1] + bbox[3]) // 2
+        if not (1792 <= center_x <= 2381 and 1368 <= center_y < 1440):
+            continue
         text = re.sub(r"\s+", "", item["text"])
         match = re.search(
             r"(?:公元)?(\d{3,4})年(\d{1,2})月(\d{1,2})日",

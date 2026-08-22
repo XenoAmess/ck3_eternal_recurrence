@@ -289,7 +289,20 @@ class OpeningContractTests(unittest.TestCase):
             {
                 "screen": "map_running",
                 "observation_id": "observation-date",
-                "ocr": [{"text": "公元 1066 年 9 月 18 日"}],
+                "ocr": [
+                    {
+                        "text": "当前日期：1066年9月18日",
+                        "bbox": [2023, 1222, 2303, 1248],
+                    },
+                    {
+                        "text": "开始：1066年9月15日",
+                        "bbox": [2022, 1259, 2215, 1282],
+                    },
+                    {
+                        "text": "公元 1066 年 9 月 18 日",
+                        "bbox": [2079, 1407, 2285, 1433],
+                    },
+                ],
             }
         )
         self.assertEqual((state["year"], state["month"], state["day"]), (1066, 9, 18))
@@ -536,11 +549,17 @@ class OpeningScenarioTests(unittest.TestCase):
                     "map_hud.set_speed_five",
                 }:
                     driver.click_visible_control.return_value["observation"]["ocr"] = [
-                        {"text": "公元1066年9月15日"}
+                        {
+                            "text": "公元1066年9月15日",
+                            "bbox": [2079, 1407, 2285, 1433],
+                        }
                     ]
                 if control_id in {"map_hud.resume", "map_running.pause"}:
                     driver.click_visible_control.return_value["observation"]["ocr"] = [
-                        {"text": "公元1066年9月16日"}
+                        {
+                            "text": "公元1066年9月16日",
+                            "bbox": [2079, 1407, 2285, 1433],
+                        }
                     ]
                 drivers.append(driver)
             escape_driver = mock.Mock()
