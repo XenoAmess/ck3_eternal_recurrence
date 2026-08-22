@@ -66,6 +66,12 @@ class OpeningContractTests(unittest.TestCase):
         self.assertTrue(
             contract.control("bookmark_lobby.start_game").allow_dynamic_pixels
         )
+        self.assertTrue(
+            contract.control("pact_event.accept_contract").allow_dynamic_pixels
+        )
+        self.assertTrue(
+            contract.control("first_life_event.begin").allow_dynamic_pixels
+        )
         lobby_image = Image.new("RGB", contract.resolution, (0, 0, 0))
         lobby = next(
             item for item in contract.screens if item.screen_id == "bookmark_lobby"

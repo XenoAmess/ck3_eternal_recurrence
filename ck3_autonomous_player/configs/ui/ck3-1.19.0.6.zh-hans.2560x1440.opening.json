@@ -143,7 +143,8 @@
       "text": "我接受。让琉璃色的火见证。",
       "region": [0.30, 0.66, 0.43, 0.72],
       "post_screen": "first_life_event",
-      "risk": "irreversible"
+      "risk": "irreversible",
+      "allow_dynamic_pixels": true
     },
     {
       "control_id": "first_life_event.begin",
@@ -152,7 +153,8 @@
       "text": "那么，开始此生。",
       "region": [0.28, 0.62, 0.46, 0.78],
       "post_screen": "blessing_event",
-      "risk": "irreversible"
+      "risk": "irreversible",
+      "allow_dynamic_pixels": true
     }
   ],
   "forbidden_capabilities": ["blessing_event.choose_blessing"]
