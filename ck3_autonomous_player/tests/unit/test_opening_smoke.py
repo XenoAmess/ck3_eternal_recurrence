@@ -207,7 +207,7 @@ class OpeningContractTests(unittest.TestCase):
         )
         self.assertEqual(
             contract.control("map_hud.open_lifestyle").click_point_px,
-            (278, 1118),
+            (278, 1398),
         )
 
     def test_player_character_state_extracts_visible_family_baseline(self) -> None:
