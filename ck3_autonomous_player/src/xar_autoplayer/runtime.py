@@ -2612,12 +2612,10 @@ def _region_bbox(size: tuple[int, int], region: tuple[float, float, float, float
 
 def _ocr_items(image: object, region: tuple[float, float, float, float]) -> list[dict[str, object]]:
     import numpy as np
-    from rapidocr_onnxruntime import RapidOCR
+    from .vision.ocr import rapidocr_engine
 
-    if not hasattr(_ocr_items, "engine"):
-        _ocr_items.engine = RapidOCR()  # type: ignore[attr-defined]
     crop_box = _region_bbox(image.size, region)
-    result, _ = _ocr_items.engine(np.asarray(image.crop(crop_box)))  # type: ignore[attr-defined]
+    result, _ = rapidocr_engine()(np.asarray(image.crop(crop_box)))
     found: list[dict[str, object]] = []
     for box, text, score in result or []:
         score = float(score)

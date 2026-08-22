@@ -29,6 +29,9 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   并禁止 postflight。
 - OCR 连续两帧确认可见【新游戏】；每次启动前删除隔离 profile 的旧日志，再以新日志的唯一 session marker、精确单项
   enabled inventory、已安装 DLC mount 白名单、唯一隔离 mod mount 和零未知 mount 做 supervisor 取证，退出后再解析一次。
+- OCR 推理默认固定本机 NVIDIA `CUDAExecutionProvider` 的 device 0；检测、方向分类与文字识别三段模型全部优先使用独显，
+  doctor 会实际初始化三段 session 并报告 provider，无法使用 CUDA 时直接拒绝启动而不是静默退回 CPU。RTX 3080 上同一张
+  2560×1440 CK3 实机帧的热态耗时约 0.52–0.55 秒，原 CPU 路径约 1.3–2.5 秒。
 - 真实 profile 顶层文件、player/rulers/正常存档与 Steam 云存档条目在退出后回到语义 baseline，并连续稳定 5 秒；Workshop
   `ugc_*.mod` descriptor 内容哈希与已注册目标树的路径/大小/mtime 元数据只做退出后一次 baseline 比较。两者都不声称运行期间
   从未发生瞬时写入；Steam 自行刷新 `remotecache.vdf` 的允许字段单列报告。

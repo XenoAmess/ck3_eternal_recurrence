@@ -8,6 +8,74 @@ import unicodedata
 from .model import OcrSpan, RelativeRegion, Rect
 
 
+CUDA_EXECUTION_PROVIDER = "CUDAExecutionProvider"
+CUDA_DEVICE_ID = "0"
+_CUDA_PROVIDER = (
+    CUDA_EXECUTION_PROVIDER,
+    {
+        "device_id": CUDA_DEVICE_ID,
+        "arena_extend_strategy": "kNextPowerOfTwo",
+        "cudnn_conv_algo_search": "EXHAUSTIVE",
+        "do_copy_in_default_stream": "1",
+    },
+)
+
+
+def rapidocr_engine() -> object:
+    """Return the process-wide RapidOCR engine backed by NVIDIA CUDA device 0."""
+    if hasattr(rapidocr_engine, "engine"):
+        return rapidocr_engine.engine  # type: ignore[attr-defined]
+
+    import onnxruntime as ort
+    from rapidocr_onnxruntime import RapidOCR
+
+    ort.set_default_logger_severity(4)
+    ort.preload_dlls(directory="")
+    available = tuple(ort.get_available_providers())
+    if ort.get_device() != "GPU" or CUDA_EXECUTION_PROVIDER not in available:
+        raise RuntimeError(
+            "NVIDIA CUDA OCR is unavailable; "
+            f"device={ort.get_device()!r}, providers={available!r}"
+        )
+
+    # rapidocr-onnxruntime 1.2.3 wires its detector CUDA flag correctly, but
+    # leaves the classifier and recognizer on CPU. Move all three frozen model
+    # sessions to CUDA explicitly after construction.
+    engine = RapidOCR(det_use_cuda=True, det_model_path=None)
+    sessions = {
+        "detector": engine.text_detector.infer.session,
+        "classifier": engine.text_cls.infer.session,
+        "recognizer": engine.text_recognizer.session.session,
+    }
+    for name, session in sessions.items():
+        session.set_providers([_CUDA_PROVIDER, "CPUExecutionProvider"])
+        if (
+            not session.get_providers()
+            or session.get_providers()[0] != CUDA_EXECUTION_PROVIDER
+        ):
+            raise RuntimeError(
+                f"RapidOCR {name} did not select NVIDIA CUDA device {CUDA_DEVICE_ID}: "
+                f"{session.get_providers()!r}"
+            )
+    rapidocr_engine.engine = engine  # type: ignore[attr-defined]
+    rapidocr_engine.sessions = sessions  # type: ignore[attr-defined]
+    return engine
+
+
+def rapidocr_runtime() -> dict[str, object]:
+    """Initialize OCR and report the execution provider used by each model."""
+    rapidocr_engine()
+    sessions = rapidocr_engine.sessions  # type: ignore[attr-defined]
+    return {
+        "device": "NVIDIA CUDA",
+        "device_id": int(CUDA_DEVICE_ID),
+        "models": {
+            name: session.get_providers()[0]
+            for name, session in sessions.items()
+        },
+    }
+
+
 def normalize_visible_text(text: str) -> str:
     normalized = unicodedata.normalize("NFKC", text)
     normalized = normalized.replace("：", ":")
@@ -43,14 +111,8 @@ def ocr_spans(
     minimum_score: float = 0.45,
 ) -> tuple[OcrSpan, ...]:
     import numpy as np
-    from rapidocr_onnxruntime import RapidOCR
-
-    if not hasattr(ocr_spans, "engine"):
-        ocr_spans.engine = RapidOCR()  # type: ignore[attr-defined]
     crop = region_bbox(image.size, region)
-    result, _ = ocr_spans.engine(  # type: ignore[attr-defined]
-        np.asarray(image.crop(crop))
-    )
+    result, _ = rapidocr_engine()(np.asarray(image.crop(crop)))
     spans: list[OcrSpan] = []
     for box, text, score in result or []:
         score = float(score)
@@ -87,4 +149,3 @@ def matching_spans(
         if (target in span.normalized) if contains else (target == span.normalized):
             matches.append(span)
     return matches
-

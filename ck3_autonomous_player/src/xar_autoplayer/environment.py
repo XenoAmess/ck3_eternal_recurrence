@@ -40,8 +40,16 @@ RUNTIME_DISTRIBUTIONS = (
     "attrs",
     "jsonschema",
     "jsonschema-specifications",
+    "nvidia-cublas",
+    "nvidia-cuda-nvrtc",
+    "nvidia-cuda-runtime",
+    "nvidia-cudnn-cu13",
+    "nvidia-cufft",
+    "nvidia-curand",
+    "nvidia-nvjitlink",
     "numpy",
     "onnxruntime",
+    "onnxruntime-gpu",
     "opencv-python",
     "Pillow",
     "PyAutoGUI",
@@ -1054,6 +1062,13 @@ def doctor(spec: EnvironmentSpec, require_prepared: bool = False) -> dict[str, o
             errors.append(f"desktop must be 2560x1440, got {desktop[0]}x{desktop[1]}")
     except Exception as error:  # pragma: no cover - depends on interactive desktop
         errors.append(f"desktop inspection failed: {error}")
+    ocr_runtime: dict[str, object] | None = None
+    try:
+        from .vision.ocr import rapidocr_runtime
+
+        ocr_runtime = rapidocr_runtime()
+    except Exception as error:
+        errors.append(f"CUDA OCR initialization failed: {error}")
     if require_prepared:
         try:
             verify_profile(spec)
@@ -1067,6 +1082,7 @@ def doctor(spec: EnvironmentSpec, require_prepared: bool = False) -> dict[str, o
         "state_dir": str(spec.state_dir),
         "profile_dir": str(spec.profile_dir),
         "desktop": desktop,
+        "ocr_runtime": ocr_runtime,
         "protected_roots": [
             {"label": label, "path": str(path)} for label, path in protected_roots()
         ],

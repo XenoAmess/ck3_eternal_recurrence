@@ -25,6 +25,14 @@ dependencies = [
   "six==1.17.0",
   "pywin32==312; platform_system == 'Windows'",
   "rapidocr-onnxruntime==1.2.3",
+  "onnxruntime-gpu[cuda,cudnn]==1.28.0",
+  "nvidia-cublas==13.6.0.2",
+  "nvidia-cuda-nvrtc==13.3.33",
+  "nvidia-cuda-runtime==13.3.29",
+  "nvidia-cudnn-cu13==9.24.0.43",
+  "nvidia-cufft==12.3.0.29",
+  "nvidia-curand==10.4.3.29",
+  "nvidia-nvjitlink==13.3.33",
 ]
 
 [project.scripts]

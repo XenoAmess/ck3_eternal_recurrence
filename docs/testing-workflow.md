@@ -191,6 +191,11 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   此次错误 postcondition 还让动作一直消耗场景剩余预算、空跑约 228 秒和一百余张 OCR 帧；地图内即时面板跳转现使用
   20 秒局部后置超时。全屏 RapidOCR 单帧约 1.3–2.5 秒，一次完整点击通常需 8–15 秒，因此 20 秒既能容纳正常
   fresh/hover/双帧反证，又能在合约写错时尽快留下 RED，而不是等待数分钟全局超时。
+- 自主玩家 OCR 默认使用本机 NVIDIA 独显：`onnxruntime-gpu 1.28.0` 的 `CUDAExecutionProvider` 固定
+  `device_id=0`，检测、方向分类、文字识别三段模型都必须以 CUDA 为首选 provider；初始化失败会由 doctor
+  直接拒绝运行，不静默退回纯 CPU。2026-08-22 在 RTX 3080 上用同一张 2560×1440 实机 CK3 帧复测，热态
+  OCR 为 0.52–0.55 秒/帧，原 CPU 路径约 1.3–2.5 秒/帧，单帧实际加速约 3–5 倍。CUDA 13.3、cuDNN 9
+  与相关运行库均精确 pin 并纳入 environment 指纹；GPU runtime 变化后旧 ordinary/crash 资格自动失效。
 - 发布截图还要检查画面中心：2026-08-21 的 non-debug terminal artifact 实测把 CK3 原生
   `clausewitz/gfx/cursors/software_cursor_normal.dds`（100x100）留在 `(1280,720)`；它在地图上是深色方框，
   还会透过半透明事件窗，看起来像坏掉的事件控件。该方框不是 mod GUI。发布衍生图应优先换用无光标帧或收紧裁切；
