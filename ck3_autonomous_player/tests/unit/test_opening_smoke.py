@@ -40,6 +40,37 @@ class OpeningContractTests(unittest.TestCase):
             frozenset(item.control_id for item in contract.controls),
             OPENING_ALLOWED_CONTROLS,
         )
+        lobby_image = Image.new("RGB", contract.resolution, (0, 0, 0))
+        lobby = next(
+            item for item in contract.screens if item.screen_id == "bookmark_lobby"
+        )
+        for probe in lobby.pixel_probes:
+            colour = tuple(
+                round((minimum + maximum) / 2)
+                for minimum, maximum in zip(
+                    probe.mean_rgb_min, probe.mean_rgb_max
+                )
+            )
+            lobby_image.paste(colour, probe.rect)
+        lobby_spans = (
+            span("选择初始日期和角色", (500, 50), (400, 30, 600, 70)),
+            span(
+                "公爵弗拉季斯拉夫",
+                (1400, 450),
+                (1300, 420, 1500, 480),
+            ),
+            span("公爵罗贝尔", (1561, 1200), (1491, 1187, 1632, 1220)),
+        )
+        self.assertEqual(
+            contract.classify(lobby_spans, lobby_image)[0], "bookmark_lobby"
+        )
+        self.assertEqual(
+            contract.classify(
+                (*lobby_spans, span("开始", (2260, 1267), (2227, 1248, 2294, 1286))),
+                lobby_image,
+            )[0],
+            "bookmark_lobby_selected",
+        )
         image = Image.new("RGB", contract.resolution, (0, 0, 0))
         pact_spans = (
             span("终末之契", (792, 401), (715, 378, 870, 424)),
@@ -102,7 +133,7 @@ class OpeningScenarioTests(unittest.TestCase):
                 (
                     "bookmark_lobby.select_robert",
                     "token-robert",
-                    "bookmark_lobby",
+                    "bookmark_lobby_selected",
                 ),
                 ("bookmark_lobby.start_game", "token-start", "pact_event"),
             )

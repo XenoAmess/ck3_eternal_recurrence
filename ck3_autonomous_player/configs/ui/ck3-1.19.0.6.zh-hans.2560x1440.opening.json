@@ -47,6 +47,26 @@
       "negative_anchors": [
         {"anchor_id": "modal.welcome", "text": "欢迎来到", "region": [0.0, 0.0, 1.0, 1.0], "contains": true},
         {"anchor_id": "modal.confirm", "text": "确认", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "modal.cancel", "text": "取消", "region": [0.0, 0.0, 1.0, 1.0]},
+        {"anchor_id": "lobby.start_visible", "text": "开始", "region": [0.83, 0.84, 0.93, 0.92]}
+      ],
+      "pixel_probes": [
+        {"probe_id": "lobby.central_parchment", "rect": [1050, 350, 1070, 370], "mean_rgb_min": [178.1, 170.6, 154.2], "mean_rgb_max": [196.1, 188.6, 172.2]},
+        {"probe_id": "lobby.southern_parchment", "rect": [950, 1000, 970, 1020], "mean_rgb_min": [174.0, 166.8, 151.7], "mean_rgb_max": [192.0, 184.8, 169.7]},
+        {"probe_id": "lobby.eastern_parchment", "rect": [1200, 850, 1220, 870], "mean_rgb_min": [180.3, 172.9, 155.8], "mean_rgb_max": [198.3, 190.9, 173.8]}
+      ]
+    },
+    {
+      "screen_id": "bookmark_lobby_selected",
+      "anchors": [
+        {"anchor_id": "lobby.title", "text": "选择初始日期和角色", "region": [0.08, 0.00, 0.32, 0.07]},
+        {"anchor_id": "lobby.central_bookmark", "text": "公爵弗拉季斯拉夫", "region": [0.45, 0.20, 0.67, 0.47]},
+        {"anchor_id": "lobby.robert", "text": "公爵罗贝尔", "region": [0.45, 0.68, 0.72, 0.91]},
+        {"anchor_id": "lobby.start", "text": "开始", "region": [0.83, 0.84, 0.93, 0.92]}
+      ],
+      "negative_anchors": [
+        {"anchor_id": "modal.welcome", "text": "欢迎来到", "region": [0.0, 0.0, 1.0, 1.0], "contains": true},
+        {"anchor_id": "modal.confirm", "text": "确认", "region": [0.0, 0.0, 1.0, 1.0]},
         {"anchor_id": "modal.cancel", "text": "取消", "region": [0.0, 0.0, 1.0, 1.0]}
       ],
       "pixel_probes": [
@@ -81,12 +101,12 @@
       "label": "公爵罗贝尔",
       "text": "公爵罗贝尔",
       "region": [0.45, 0.68, 0.72, 0.91],
-      "post_screen": "bookmark_lobby",
+      "post_screen": "bookmark_lobby_selected",
       "risk": "reversible"
     },
     {
       "control_id": "bookmark_lobby.start_game",
-      "screen": "bookmark_lobby",
+      "screen": "bookmark_lobby_selected",
       "label": "开始",
       "text": "开始",
       "region": [0.83, 0.84, 0.93, 0.92],

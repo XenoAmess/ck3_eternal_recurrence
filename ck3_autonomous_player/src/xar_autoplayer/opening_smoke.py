@@ -185,7 +185,7 @@ def _drive_opening(
         "Robert selection",
     )
     final_observation = click(
-        "bookmark_lobby",
+        "bookmark_lobby_selected",
         "bookmark_lobby.start_game",
         "first pact event",
     )
@@ -336,4 +336,3 @@ def _opening_smoke_locked(
             f"opening smoke failed; report={report_path}: {primary_error}"
         ) from primary_error
     return report
-
