@@ -174,6 +174,17 @@ class OpeningContractTests(unittest.TestCase):
             contract.classify(character_spans, image)[0], "player_character"
         )
         self.assertEqual(
+            contract.classify(
+                tuple(
+                    item
+                    for item in character_spans
+                    if item.normalized != "玩家继承人"
+                ),
+                image,
+            )[0],
+            "player_character",
+        )
+        self.assertEqual(
             contract.control("map_hud.open_player_character").click_point_px,
             (150, 1100),
         )
