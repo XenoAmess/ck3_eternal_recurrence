@@ -88,6 +88,10 @@ CK3_SHORTCUT_SCAN_CODES = {
     "enter": 0x1C,
     "left_shift": 0x2A,
     "f1": 0x3B,
+    "f2": 0x3C,
+    "f3": 0x3D,
+    "f4": 0x3E,
+    "f8": 0x42,
     "space": 0x39,
 }
 EVENT_OPTION_SHORTCUTS = {
@@ -105,6 +109,12 @@ EVENT_OPTION_SHORTCUTS = {
     12: ("shift+=", CK3_SHORTCUT_SCAN_CODES["equals"]),
     13: ("shift+backspace", CK3_SHORTCUT_SCAN_CODES["backspace"]),
 }
+MAP_PANEL_SHORTCUTS = (
+    ("realm", "我的领地", "f2", CK3_SHORTCUT_SCAN_CODES["f2"]),
+    ("military", "军事", "f3", CK3_SHORTCUT_SCAN_CODES["f3"]),
+    ("council", "内阁", "f4", CK3_SHORTCUT_SCAN_CODES["f4"]),
+    ("decisions", "决议", "f8", CK3_SHORTCUT_SCAN_CODES["f8"]),
+)
 
 
 def _remaining(deadline: float, stage: str) -> float:
@@ -595,6 +605,73 @@ def _confirm_post_shortcut_event(
     raise AgentError("ordinary CK3 event transition did not stabilize")
 
 
+def _panel_summary(
+    panel_id: str,
+    expected_title: str,
+    first: object,
+    second: object,
+) -> dict[str, object]:
+    """Bind one keyboard-opened map panel to two consecutive OCR frames."""
+    from .vision.ocr import normalize_visible_text
+
+    first_sequence = getattr(first, "capture_sequence", None)
+    second_sequence = getattr(second, "capture_sequence", None)
+    if (
+        isinstance(first_sequence, bool)
+        or not isinstance(first_sequence, int)
+        or not isinstance(second_sequence, int)
+        or second_sequence != first_sequence + 1
+    ):
+        raise AgentError(f"{panel_id} panel frames are not consecutive")
+    target = normalize_visible_text(expected_title)
+
+    def title_candidates(frame: object) -> list[object]:
+        client_rect = tuple(getattr(frame, "client_rect", ()))
+        if len(client_rect) != 4:
+            return []
+        height = client_rect[3] - client_rect[1]
+        return [
+            item
+            for item in getattr(frame, "spans", ())
+            if normalize_visible_text(str(getattr(item, "text", ""))) == target
+            and getattr(item, "center", (0, height))[1] <= height * 0.25
+        ]
+
+    first_titles = title_candidates(first)
+    second_titles = title_candidates(second)
+    pairs = [
+        (old, new)
+        for old in first_titles
+        for new in second_titles
+        if abs(old.center[0] - new.center[0]) <= 30
+        and abs(old.center[1] - new.center[1]) <= 30
+    ]
+    if len(pairs) != 1:
+        raise AgentError(
+            f"{panel_id} panel title {expected_title!r} is not uniquely stable"
+        )
+    visible_text: list[str] = []
+    for item in getattr(second, "spans", ()):
+        text = str(getattr(item, "text", "")).strip()
+        if text and text not in visible_text:
+            visible_text.append(text)
+    return {
+        "panel": panel_id,
+        "title": expected_title,
+        "shortcut": next(
+            shortcut
+            for candidate_id, _title, shortcut, _scan in MAP_PANEL_SHORTCUTS
+            if candidate_id == panel_id
+        ),
+        "frame_observation_ids": [
+            getattr(first, "observation_id", None),
+            getattr(second, "observation_id", None),
+        ],
+        "visible_text": visible_text,
+        "policy_boundary": "player-visible OCR only",
+    }
+
+
 def _drive_opening(
     spec: EnvironmentSpec,
     handle: SessionHandle,
@@ -605,6 +682,7 @@ def _drive_opening(
     contract_sha256: str,
     deadline: float,
     ordinary_event_count: int = 1,
+    inspect_map_panels: bool = False,
 ) -> dict[str, object]:
     from .control import VisibleUiDriver
     from .control.executor import _prepare_key_chord_batch, _prepare_key_press_batch
@@ -841,6 +919,126 @@ def _drive_opening(
             post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
             summary_fields=summary_fields,
         )
+
+    def inspect_map_panel(
+        panel_id: str,
+        title: str,
+        key: str,
+        scan_code: int,
+    ) -> tuple[dict[str, object], dict[str, object]]:
+        driver = new_driver()
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": f"map_hud.open_{panel_id}",
+                "key": key,
+                "scan_code": scan_code,
+                "expected_post_screen": f"{panel_id}_panel",
+            },
+        )
+        accepted, last_error = _prepare_key_press_batch(scan_code)()
+        if accepted != 2:
+            raise AgentError(
+                f"{key} panel shortcut SendInput was partial: "
+                f"accepted={accepted}, last_error={last_error}"
+            )
+        panel_deadline = min(
+            deadline,
+            time.monotonic() + INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+        )
+        prior = None
+        summary = None
+        while time.monotonic() < panel_deadline:
+            frame = driver.capture_once()
+            if prior is not None:
+                try:
+                    summary = _panel_summary(panel_id, title, prior, frame)
+                    break
+                except AgentError:
+                    pass
+            prior = frame
+        if summary is None:
+            raise AgentError(f"{key} did not open a stable {panel_id} panel")
+        result_observation_id = summary["frame_observation_ids"][-1]
+        actions.append(
+            {
+                "control_id": f"map_hud.open_{panel_id}",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": key,
+                "scan_code": scan_code,
+                "send_input": {
+                    "requested": 2,
+                    "accepted": accepted,
+                    "last_error": last_error,
+                },
+                "result_observation_id": result_observation_id,
+                "expected_post_screen": f"{panel_id}_panel",
+            }
+        )
+        append_event(
+            events,
+            {
+                "kind": "opening_step_completed",
+                "control_id": f"map_hud.open_{panel_id}",
+                "result_screen": f"{panel_id}_panel",
+                "result_observation_id": result_observation_id,
+            },
+        )
+
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": f"{panel_id}_panel.close",
+                "key": key,
+                "scan_code": scan_code,
+                "expected_post_screen": "map_hud",
+            },
+        )
+        close_accepted, close_last_error = _prepare_key_press_batch(scan_code)()
+        if close_accepted != 2:
+            raise AgentError(
+                f"{key} panel-close shortcut SendInput was partial: "
+                f"accepted={close_accepted}, last_error={close_last_error}"
+            )
+        after = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, f"map after {panel_id} inspection"),
+            ),
+            stable_frames=2,
+        )
+        actions.append(
+            {
+                "control_id": f"{panel_id}_panel.close",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": key,
+                "scan_code": scan_code,
+                "send_input": {
+                    "requested": 2,
+                    "accepted": close_accepted,
+                    "last_error": close_last_error,
+                },
+                "result_observation_id": after.observation_id,
+                "expected_post_screen": "map_hud",
+            }
+        )
+        append_event(
+            events,
+            {
+                "kind": "opening_step_completed",
+                "control_id": f"{panel_id}_panel.close",
+                "result_screen": "map_hud",
+                "result_observation_id": after.observation_id,
+            },
+        )
+        return summary, after.to_policy_json()
 
     click(
         "main_menu",
@@ -1191,6 +1389,16 @@ def _drive_opening(
         )
     else:
         final_observation = post_state.to_policy_json()
+    map_panels: dict[str, dict[str, object]] = {}
+    if inspect_map_panels:
+        for panel_id, title, key, scan_code in MAP_PANEL_SHORTCUTS:
+            summary, final_observation = inspect_map_panel(
+                panel_id,
+                title,
+                key,
+                scan_code,
+            )
+            map_panels[panel_id] = summary
     paused_date = _extract_map_date(final_observation)
     if int(paused_date["ordinal"]) < int(running_date["ordinal"]):
         raise AgentError("paused map date moved backwards")
@@ -1214,6 +1422,7 @@ def _drive_opening(
         "lifestyle_state": lifestyle_state,
         "first_ordinary_event": ordinary_events[0],
         "ordinary_events": ordinary_events,
+        "map_panels": map_panels,
         "time_progression": {
             "strategy": "speed-five-visible-date-v1",
             "starting_date": starting_date,
@@ -1333,6 +1542,7 @@ def _opening_smoke_locked(
             contract_sha256,
             deadline,
             ordinary_event_count,
+            True,
         )
     except BaseException as error:
         primary_error = error

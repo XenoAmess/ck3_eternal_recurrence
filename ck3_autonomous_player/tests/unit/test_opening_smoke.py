@@ -23,6 +23,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     GENERIC_EVENT_PREVIEW_REGION,
     INITIAL_MAIN_MENU_TIMEOUT_SECONDS,
     INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+    MAP_PANEL_SHORTCUTS,
     OPENING_ALLOWED_CONTROLS,
     OPENING_CONTRACT,
     _choose_first_blessing,
@@ -35,6 +36,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _extract_player_character_state,
     _generic_event_in_frame,
     _generic_event_preview,
+    _panel_summary,
     _same_generic_event,
     _score_first_blessing,
     _score_first_curse,
@@ -449,6 +451,35 @@ class OpeningContractTests(unittest.TestCase):
         self.assertEqual(tied["option_number"], 1)
         self.assertEqual(tied_score, 0)
         self.assertEqual(tied_reasons, [])
+
+    def test_keyboard_map_panel_summary_binds_two_visible_frames(self) -> None:
+        def panel_frame(sequence: int, offset: int = 0):
+            return SimpleNamespace(
+                observation_id=f"realm-{sequence}",
+                capture_sequence=sequence,
+                client_rect=(0, 0, 2560, 1440),
+                spans=(
+                    span(
+                        "我的领地",
+                        (325 + offset, 78),
+                        (270 + offset, 64, 380 + offset, 92),
+                    ),
+                    span("领地上限：6/7", (390, 210), (320, 196, 460, 224)),
+                ),
+            )
+
+        summary = _panel_summary(
+            "realm", "我的领地", panel_frame(4), panel_frame(5, 2)
+        )
+        self.assertEqual(summary["shortcut"], "f2")
+        self.assertEqual(summary["frame_observation_ids"], ["realm-4", "realm-5"])
+        self.assertIn("领地上限：6/7", summary["visible_text"])
+        self.assertEqual(
+            [item[2] for item in MAP_PANEL_SHORTCUTS],
+            ["f2", "f3", "f4", "f8"],
+        )
+        with self.assertRaisesRegex(AgentError, "not consecutive"):
+            _panel_summary("realm", "我的领地", panel_frame(4), panel_frame(6))
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (
