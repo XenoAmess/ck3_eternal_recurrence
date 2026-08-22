@@ -65,6 +65,7 @@ class ControlSpec:
     click_hold_seconds: float = 0.0
     allow_dynamic_pixels: bool = False
     click_point_px: tuple[int, int] | None = None
+    pointer_move_seconds: float = 0.2
 
 
 @dataclass(frozen=True)
@@ -472,6 +473,7 @@ def load_ui_contract(
                 "click_point_px",
                 "click_hold_seconds",
                 "allow_dynamic_pixels",
+                "pointer_move_seconds",
             },
             f"control[{control_index}]",
         )
@@ -505,6 +507,13 @@ def load_ui_contract(
             or not 0 <= float(click_hold) <= 0.25
         ):
             raise AgentError("UI contract click hold duration is invalid")
+        pointer_move = item.get("pointer_move_seconds", 0.2)
+        if (
+            isinstance(pointer_move, bool)
+            or not isinstance(pointer_move, (int, float))
+            or not 0 <= float(pointer_move) <= 0.5
+        ):
+            raise AgentError("UI contract pointer move duration is invalid")
         controls_list.append(
             ControlSpec(
                 control_id=_text(item["control_id"], "control_id"),
@@ -534,6 +543,7 @@ def load_ui_contract(
                     if click_point_raw is not None
                     else None
                 ),
+                pointer_move_seconds=float(pointer_move),
             )
         )
     controls = tuple(controls_list)

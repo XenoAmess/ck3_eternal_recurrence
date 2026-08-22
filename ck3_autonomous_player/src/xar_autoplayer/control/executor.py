@@ -893,7 +893,7 @@ class VisibleUiDriver:
                 fresh_lease, fresh_consumed
             )
 
-            pyautogui.moveTo(*screen_point, duration=0.2)
+            pyautogui.moveTo(*screen_point, duration=spec.pointer_move_seconds)
             time.sleep(0.35)
 
             # Hover can change UI or another window can steal focus. Recapture,

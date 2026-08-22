@@ -305,6 +305,7 @@
       "post_screen": "map_hud",
       "risk": "reversible",
       "click_point_px": [592, 20],
+      "pointer_move_seconds": 0.0,
       "allow_dynamic_pixels": true
     },
     {

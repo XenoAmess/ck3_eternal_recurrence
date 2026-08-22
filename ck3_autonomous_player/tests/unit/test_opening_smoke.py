@@ -210,6 +210,10 @@ class OpeningContractTests(unittest.TestCase):
             (592, 20),
         )
         self.assertEqual(
+            contract.control("player_character.close").pointer_move_seconds,
+            0.0,
+        )
+        self.assertEqual(
             contract.control("map_hud.open_lifestyle").click_point_px,
             (278, 1118),
         )
