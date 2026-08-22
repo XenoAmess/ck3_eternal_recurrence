@@ -186,6 +186,9 @@ class OpeningContractTests(unittest.TestCase):
             contract.classify(character_spans, image)[0], "player_character"
         )
         self.assertEqual(
+            contract.classify(character_spans[:-1], image)[0], "player_character"
+        )
+        self.assertEqual(
             contract.control("map_hud.open_player_character").click_point_px,
             (150, 1100),
         )
@@ -250,7 +253,6 @@ class OpeningContractTests(unittest.TestCase):
                 "observation_id": "observation-player",
                 "ocr": [
                     {"text": "阿普利亚公爵，罗贝尔"},
-                    {"text": "这是你自己"},
                     {"text": "配偶"},
                     {"text": "玩家继承人"},
                     {"text": "亲族26"},

@@ -240,7 +240,7 @@ def _extract_player_character_state(observation: dict[str, object]) -> dict[str,
         for text in texts
         if "阿普利亚公爵" in text and "罗贝尔" in text
     ]
-    if len(names) != 1 or texts.count("这是你自己") != 1:
+    if len(names) != 1:
         raise AgentError("player character identity is not uniquely visible")
 
     def visible_count(prefix: str) -> int | None:
