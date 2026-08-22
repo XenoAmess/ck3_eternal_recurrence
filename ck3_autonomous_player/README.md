@@ -44,9 +44,9 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   Draft 2020-12 在 GREEN/RED 回放中强制验证 observation 与 action receipt；其余策略 schema 的全面运行期验证和不可变
   episode store 仍属于 Phase E，不能把“JSON 可解析”称为已完成约束。
 
-尚未实现的关键能力：游戏规则页的视觉复核、通用 HUD 状态抽取、战争与内政、保存续玩、自然死亡结算、episode
-学习与多局优化。opening smoke 已能合法新开局、接受契约、完成首轮祝福/咒痕并进入地图；下一价值目标是开始真实的
-地图经营，而不是继续扩展开局专用流程。
+尚未实现的关键能力：游戏规则页的视觉复核、战争与内政、保存续玩、自然死亡结算、episode 学习与多局优化。
+opening smoke 已能合法新开局、完成首轮交易，并从地图 HUD 打开玩家角色页读取配偶、继承人与臣属状态；下一价值目标是
+依据这份状态执行第一个真实角色发展或宫廷治理动作，而不是继续扩展开局专用流程。
 
 当前加固候选还增加了两项基础能力：crash 路径已有历史本机 GREEN；纯视觉路径已完成离线 sealed lifecycle，仍未向真实 CK3
 发送输入：
@@ -83,6 +83,11 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 【那么，开始此生】、策略选择首个祝福和策略选择首个咒痕，七次动作均为 `SendInput accepted=2/2`。本轮可见策略选择
 【普通-生活方式：兵棋的余局（+500军事经验）】与【普通-生活方式：千面的哑剧（-1000谋略经验）】，最终连续两帧
 识别 `map_hud`，随后完成 Job/tree/global inventory 清理。该 run 建立了首个可计分开局基线；下一功能切片是受控地图经营。
+
+提交 `106278f`、环境 `f11b248ccc09bb80b5a9d92f0b9e3bc19646af333d21ccd0961183d583c09cbe` 的
+`20260822T111130Z-opening-a27391b9` 进一步完成第八次 `SendInput accepted=2/2`：从地图 HUD 点击玩家头像，双帧确认
+`player_character`。可见 OCR 识别罗贝尔本人、配偶、玩家继承人与 7 名臣属；最终截图人工复核为正确的玩家角色页，
+退出后的 Job/tree/global inventory 清理仍为 GREEN。这是第一条真实地图内状态读取能力。
 
 提交 `226d80e` 曾在同一环境 `219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba`
 下通过 ordinary `20260822T005515Z-03f296c7` 与 post-resume crash
@@ -245,7 +250,7 @@ memory: cross-run retrieval / constrained reflection / strategy experiments
    非零引擎 diagnostics 的原始证据，且受保护存储在退出后回到同一语义 baseline。原生 Windows Job/句柄测试和两次启动期
    fail-closed RED 覆盖失败契约；加固 runtime 的 resume 后 supervisor 崩溃注入也已通过本机门禁。
 2. **Phase B（进行中）**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证。真实 `opening-smoke` 已完成
-   主菜单 → 1066 罗贝尔 →【开始】→接受契约→首轮祝福/咒痕→地图 HUD；下一竖切是首个受控地图经营动作。
+   主菜单 → 1066 罗贝尔 →【开始】→接受契约→首轮祝福/咒痕→地图 HUD→玩家角色页；下一竖切执行首个角色发展或宫廷治理动作。
 3. Phase C：先完成“罗贝尔 1066 → 契约 → 当铺 → 首轮垂青 → 十年低风险经营 → 自然死亡结算”的首个合法竖切，
    再扩到多种角色类型的有效整局基线后退出本阶段。
 4. Phase D：婚育、议会、生活方式、建设、宣战理由、军队和领地的分层规划器。

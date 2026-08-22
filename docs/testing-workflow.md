@@ -198,6 +198,10 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   `20260822T102802Z-opening-4cc459ce` 完成七次 `SendInput 2/2`：接受契约、开始此生，并按可见文本选择
   【兵棋的余局（+500军事经验）】与较低损失的【千面的哑剧（-1000谋略经验）】。最终连续两帧识别 `map_hud`，
   Job active 归零、tree gone、双源 CK3 inventory 为空；这是首个完成祝福/咒痕对并进入地图的可计分开局基线。
+- 提交 `106278f`、环境 `f11b248ccc09bb80b5a9d92f0b9e3bc19646af333d21ccd0961183d583c09cbe` 的
+  `20260822T111130Z-opening-a27391b9` 又执行第八次 `SendInput 2/2`，从地图 HUD 打开玩家角色页。最终双帧分类为
+  `player_character`，OCR 读出罗贝尔本人、配偶、玩家继承人与 7 名臣属；截图人工复核正确，进程树与双源 CK3 inventory
+  清理为 GREEN。该切片用于证明地图内状态读取，不代表已完成任何治理决策。
 - 用户真实纪录靠 tutorial.txt 备份/恢复保护；默认 selftest 与 `on-first-life/off` 会剥掉 `xar_hs_ge_*` 行（纪录 0），`on-recorded` 固定预置 100；`--import-record 100` 仅改变 selftest。
 - restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验。2026-08-20 实测发现宿主超时会终止 runner 的整个子进程树，普通 `Popen(CREATE_NO_WINDOW)` watchdog 也被一起杀死，遗留隔离后的 `dlc_load.json` 与测试 autosave；已从该次精确 backup 全量恢复并核对六项 hash。watchdog 现由 WMI `Win32_Process.Create` 启动在 runner 进程树之外。2026-08-19 另实测 dev selftest autosave 会让下一次 release 投影扫描已剥离的 `xar_selftest` 规则键并误报；现启动前先完整复制并校验全部 `autosave*.ck3`，写 ready 标记后才移走，结束时删除测试 autosave 并恢复原件。
 - 2026-08-19 长期平衡摇测发现当前播放集还启用了四个自动控制/改宗 mod，会污染领地、信仰与资源结果。runner 现同时备份 `dlc_load.json`，启动前把 `enabled_mods` 精确收敛为 `mod/ugc_3784706360.mod`，杀死测试 CK3 后再恢复；watchdog 同样覆盖此文件。

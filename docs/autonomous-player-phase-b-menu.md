@@ -19,6 +19,11 @@ OCR 歧义、焦点变化、进程身份变化或后置状态超时都会终止�
 首轮祝福→首轮咒痕；七份收据的 `SendInput.accepted` 均为 2，最终双帧确认 `map_hud`，退出后 CK3 inventory 为空。
 本轮选择【兵棋的余局（+500军事经验）】与【千面的哑剧（-1000谋略经验）】，形成首个可计分开局基线。
 
+随后提交 `106278f`、环境 `f11b248ccc09bb80b5a9d92f0b9e3bc19646af333d21ccd0961183d583c09cbe` 的 GREEN
+`20260822T111130Z-opening-a27391b9` 在相同七动作后，从地图 HUD 点击玩家头像并双帧确认 `player_character`。
+第八份收据同样为 `SendInput.accepted=2`；可见 OCR 读出罗贝尔本人、配偶、玩家继承人与 7 名臣属，随后完整清理 CK3。
+该结果把 Phase B 从“进入地图”推进到第一条真实地图内状态读取；下一步根据状态执行角色发展或宫廷治理动作。
+
 ## 固定信任边界
 
 - 仍使用 Phase A 的仓库外隔离 `-userdir`、production-only 投影、non-debug CK3、精确单 mod inventory、
