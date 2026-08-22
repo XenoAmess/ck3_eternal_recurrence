@@ -56,6 +56,7 @@ from xar_autoplayer.menu_smoke import (  # noqa: E402
     _memory_image_sha256,
     _replay_visible_frame,
     _report_body_sha256,
+    _run_menu_scenario,
     validate_menu_smoke_report,
 )
 from xar_autoplayer.runtime import (  # noqa: E402
@@ -130,6 +131,29 @@ def stable_observation(screen: str, *, controls: bool, sequence: int) -> dict[st
     }
 
 
+def foreground_attestation(pid: int = 42, hwnd: int = 84) -> dict[str, object]:
+    return {
+        "format_version": 1,
+        "target_pid": pid,
+        "target_hwnd": hwnd,
+        "target_thread_id": 100,
+        "caller_thread_id": 200,
+        "foreground_hwnd_before": hwnd,
+        "foreground_thread_id_before": 100,
+        "foreground_pid_before": pid,
+        "last_input_tick_before": 300,
+        "synthetic_input": False,
+        "mode": "already_foreground",
+        "attached_fallback": False,
+        "detach_succeeded": None,
+        "foreground_hwnd_after": hwnd,
+        "foreground_thread_id_after": 100,
+        "foreground_pid_after": pid,
+        "last_input_tick_after": 300,
+        "observed_last_input_tick_unchanged": True,
+    }
+
+
 def navigation_payload() -> dict[str, object]:
     start = stable_observation("main_menu", controls=True, sequence=1)
     after = stable_observation("bookmark_lobby", controls=False, sequence=20)
@@ -172,6 +196,7 @@ def navigation_payload() -> dict[str, object]:
     }
     return {
         "claim": "visible_main_menu_to_bookmark_lobby_only",
+        "foreground_activation": foreground_attestation(),
         "start_observation": start,
         "transition": {"action": action, "observation": after},
         "registered_capabilities": ["main_menu.new_game"],
@@ -225,6 +250,37 @@ def build_green_report(run_dir: Path) -> dict[str, object]:
     )
     append_event(events, {"kind": "ck3_launched", "pid": 42})
     append_event(events, {"kind": "single_mod_runtime_attested"})
+    append_event(
+        events,
+        {
+            "kind": "foreground_activation_planned",
+            "pid": 42,
+            "hwnd": 84,
+            "operation": "exact_hwnd_foreground_without_synthetic_input",
+            "synthetic_input": False,
+        },
+    )
+    append_event(
+        events,
+        {
+            "kind": "foreground_activation_armed",
+            "pid": 42,
+            "hwnd": 84,
+            "operation": "exact_hwnd_foreground_without_synthetic_input",
+            "foreground_may_have_changed": True,
+            "synthetic_input_may_have_occurred": False,
+        },
+    )
+    append_event(
+        events,
+        {
+            "kind": "foreground_activation_finished",
+            "pid": 42,
+            "hwnd": 84,
+            "status": "confirmed",
+            "attestation": navigation["foreground_activation"],
+        },
+    )
     append_event(
         events,
         {
@@ -479,6 +535,7 @@ def build_strict_green_report(
     profile = state / "profile"
     production = profile / "mod-content" / "xar-production"
     dlc_root = historical_root / "game" / "game" / "dlc" / "dlc001"
+    dlc_root_second = historical_root / "game" / "game" / "dlc" / "dlc002"
     game_exe = historical_root / "game" / "binaries" / "ck3.exe"
     vanilla_rules = historical_root / "game" / "game" / "common" / "game_rules" / "00_game_rules.txt"
 
@@ -611,10 +668,12 @@ def build_strict_green_report(
             "mode": "fullscreen",
         },
         "dlc": {
-            "installed_descriptor_count": 1,
+            "installed_descriptor_count": 2,
             "installed_descriptors_sha256": "4" * 64,
-            "allowed_mount_roots": [str(dlc_root)],
-            "allowed_mount_roots_sha256": snapshot_digest([str(dlc_root)]),
+            "allowed_mount_roots": [str(dlc_root), str(dlc_root_second)],
+            "allowed_mount_roots_sha256": snapshot_digest(
+                [str(dlc_root), str(dlc_root_second)]
+            ),
             "note": "fixture",
         },
         "persistent_tutorial_state": {"policy": "preserve"},
@@ -632,6 +691,7 @@ def build_strict_green_report(
     debug_prefix = (
         "Log system initialized\n"
         f"{EXPECTED_MOD_NAME}|{OUTER_DESCRIPTOR_REF}|Enabled\n"
+        f"Mounted Data: {dlc_root_second}\n"
         f"Mounted Data: {dlc_root}\n"
         f"Mounted Data: {production}\n"
     ).encode("utf-8")
@@ -653,10 +713,12 @@ def build_strict_green_report(
             {"name": EXPECTED_MOD_NAME, "descriptor": OUTER_DESCRIPTOR_REF}
         ],
         "isolated_mod_mounts": [str(production)],
-        "runtime_dlc_mounts": [str(dlc_root)],
+        # Preserve engine/debug-log order; it is not a lexical set encoding.
+        "runtime_dlc_mounts": [str(dlc_root_second), str(dlc_root)],
         "unclassified_mounts": [],
         "evidence_lines": [
             f"{EXPECTED_MOD_NAME}|{OUTER_DESCRIPTOR_REF}|Enabled",
+            f"Mounted Data: {dlc_root_second}",
             f"Mounted Data: {dlc_root}",
             f"Mounted Data: {production}",
         ],
@@ -969,6 +1031,7 @@ def build_strict_green_report(
     navigation = {
         "claim": MENU_ACCEPTANCE_CLAIM,
         "window_binding": binding,
+        "foreground_activation": foreground_attestation(pid, hwnd),
         "start_observation": start,
         "start_observation_audit": start_audit,
         "transition": {"action": action, "observation": after},
@@ -987,14 +1050,16 @@ def build_strict_green_report(
         "fresh_log_epoch_ns": 1,
         "prelaunch_logs_removed": [],
         "pre_resume_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [pid],
+            "wmi_pids": [pid],
             "processes": [
                 {
                     "pid": pid,
                     "parent_pid": 41,
                     "name": "ck3.exe",
                     "executable": str(game_exe),
-                    "creation_date": creation_date,
-                    "command_line": str(game_exe),
+                    "creation_date": "2026-08-22T00:00:00.0000000Z",
                 }
             ]
         },
@@ -1052,6 +1117,37 @@ def build_strict_green_report(
     )
     append_event(events, {"kind": "ck3_launched", "pid": pid})
     append_event(events, {"kind": "single_mod_runtime_attested"})
+    append_event(
+        events,
+        {
+            "kind": "foreground_activation_planned",
+            "pid": pid,
+            "hwnd": hwnd,
+            "operation": "exact_hwnd_foreground_without_synthetic_input",
+            "synthetic_input": False,
+        },
+    )
+    append_event(
+        events,
+        {
+            "kind": "foreground_activation_armed",
+            "pid": pid,
+            "hwnd": hwnd,
+            "operation": "exact_hwnd_foreground_without_synthetic_input",
+            "foreground_may_have_changed": True,
+            "synthetic_input_may_have_occurred": False,
+        },
+    )
+    append_event(
+        events,
+        {
+            "kind": "foreground_activation_finished",
+            "pid": pid,
+            "hwnd": hwnd,
+            "status": "confirmed",
+            "attestation": navigation["foreground_activation"],
+        },
+    )
     append_event(
         events,
         {
@@ -1432,18 +1528,31 @@ def build_red_report(
     rows = _event_payloads(run_dir)
     action_path = run_dir / "artifacts" / "00007-action.json"
     action = json.loads(action_path.read_text(encoding="utf-8"))
-    if mode == "clean-pre-input":
+    if mode in {
+        "clean-pre-input",
+        "foreground-failed",
+        "foreground-completed-no-observation",
+    }:
+        allowed = {
+            "smoke_started",
+            "ck3_launched",
+            "single_mod_runtime_attested",
+            "tracked_process_stopped",
+            "postflight_attested",
+        }
+        if mode in {"foreground-failed", "foreground-completed-no-observation"}:
+            allowed.update(
+                {
+                    "foreground_activation_planned",
+                    "foreground_activation_armed",
+                }
+            )
+        if mode == "foreground-completed-no-observation":
+            allowed.add("foreground_activation_finished")
         rows = [
             row
             for row in rows
-            if row["kind"]
-            in {
-                "smoke_started",
-                "ck3_launched",
-                "single_mod_runtime_attested",
-                "tracked_process_stopped",
-                "postflight_attested",
-            }
+            if row["kind"] in allowed
         ]
         report.pop("navigation_attestation")
         action_path.unlink()
@@ -1547,6 +1656,136 @@ def build_red_report(
     return report, replay_spans
 
 
+class ForegroundScenarioTests(unittest.TestCase):
+    def test_bound_foreground_failure_is_armed_once_and_never_retried(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-menu-foreground-") as temporary:
+            run_dir = Path(temporary).resolve() / "run"
+            artifacts = run_dir / "artifacts"
+            artifacts.mkdir(parents=True)
+            events = run_dir / "events.jsonl"
+            contract_archive = run_dir / "ui-contract.json"
+            contract_archive.write_text("{}\n", encoding="utf-8")
+            process = mock.Mock()
+            process.poll.return_value = None
+            handle = SimpleNamespace(process=process)
+            spec = SimpleNamespace(game_exe=Path("C:/game/binaries/ck3.exe"))
+            window = mock.Mock(pid=42, hwnd=84)
+            window.request_foreground_without_input.side_effect = AgentError(
+                "foreground fallback detach failed"
+            )
+            with mock.patch(
+                "xar_autoplayer.vision.load_ui_contract", return_value=object()
+            ), mock.patch(
+                "xar_autoplayer.vision.BoundGameWindow.bind_session",
+                return_value=window,
+            ) as bind, mock.patch(
+                "xar_autoplayer.control.VisibleUiDriver"
+            ) as driver:
+                with self.assertRaisesRegex(AgentError, "detach failed"):
+                    _run_menu_scenario(
+                        spec,
+                        handle,
+                        {"display": {"language": "l_simp_chinese"}},
+                        artifacts,
+                        events,
+                        contract_archive,
+                        "a" * 64,
+                        1,
+                    )
+            bind.assert_called_once_with(handle, spec.game_exe)
+            window.request_foreground_without_input.assert_called_once_with()
+            driver.assert_not_called()
+            rows = [
+                json.loads(line)
+                for line in events.read_text(encoding="utf-8").splitlines()
+            ]
+            self.assertEqual(
+                [row["kind"] for row in rows],
+                ["foreground_activation_planned", "foreground_activation_armed"],
+            )
+            self.assertFalse(rows[0]["synthetic_input"])
+            self.assertFalse(rows[1]["synthetic_input_may_have_occurred"])
+
+    def test_committed_foreground_wal_failures_preserve_single_prefix(self) -> None:
+        for failure_kind, expected_kinds, expected_request_count in (
+            (
+                "foreground_activation_planned",
+                ["foreground_activation_planned"],
+                0,
+            ),
+            (
+                "foreground_activation_armed",
+                ["foreground_activation_planned", "foreground_activation_armed"],
+                0,
+            ),
+            (
+                "foreground_activation_finished",
+                [
+                    "foreground_activation_planned",
+                    "foreground_activation_armed",
+                    "foreground_activation_finished",
+                ],
+                1,
+            ),
+        ):
+            with self.subTest(failure_kind=failure_kind), tempfile.TemporaryDirectory(
+                prefix="xar-menu-foreground-wal-"
+            ) as temporary:
+                run_dir = Path(temporary).resolve() / "run"
+                artifacts = run_dir / "artifacts"
+                artifacts.mkdir(parents=True)
+                events = run_dir / "events.jsonl"
+                contract_archive = run_dir / "ui-contract.json"
+                contract_archive.write_text("{}\n", encoding="utf-8")
+                process = mock.Mock()
+                process.poll.return_value = None
+                handle = SimpleNamespace(process=process)
+                spec = SimpleNamespace(game_exe=Path("C:/game/binaries/ck3.exe"))
+                window = mock.Mock(pid=42, hwnd=84)
+                window.request_foreground_without_input.return_value = (
+                    foreground_attestation()
+                )
+
+                def committed_then_raise(event_path: Path, payload: dict[str, object]):
+                    digest = append_event(event_path, payload)
+                    if payload.get("kind") == failure_kind:
+                        raise OSError(f"committed {failure_kind}")
+                    return digest
+
+                with mock.patch(
+                    "xar_autoplayer.vision.load_ui_contract", return_value=object()
+                ), mock.patch(
+                    "xar_autoplayer.vision.BoundGameWindow.bind_session",
+                    return_value=window,
+                ), mock.patch(
+                    "xar_autoplayer.control.VisibleUiDriver"
+                ) as driver, mock.patch(
+                    "xar_autoplayer.menu_smoke.append_event",
+                    side_effect=committed_then_raise,
+                ):
+                    with self.assertRaisesRegex(OSError, failure_kind):
+                        _run_menu_scenario(
+                            spec,
+                            handle,
+                            {"display": {"language": "l_simp_chinese"}},
+                            artifacts,
+                            events,
+                            contract_archive,
+                            "a" * 64,
+                            1,
+                        )
+                self.assertEqual(
+                    window.request_foreground_without_input.call_count,
+                    expected_request_count,
+                )
+                driver.assert_not_called()
+                rows = [
+                    json.loads(line)
+                    for line in events.read_text(encoding="utf-8").splitlines()
+                ]
+                self.assertEqual([row["kind"] for row in rows], expected_kinds)
+
+
 class MenuReportValidatorTests(unittest.TestCase):
     @staticmethod
     def _validate_strict(
@@ -1601,6 +1840,131 @@ class MenuReportValidatorTests(unittest.TestCase):
             relocated = root / "relocated" / run_dir.name
             shutil.copytree(run_dir, relocated)
             self.assertTrue(self._validate_strict(relocated, replay)["ok"])
+
+    def test_pre_resume_inventory_envelope_and_row_are_exact(self) -> None:
+        mutations = {
+            "extra-envelope": lambda value: value.update(extra=True),
+            "tasklist-rc": lambda value: value.update(tasklist_returncode=9),
+            "tasklist-pids": lambda value: value.update(tasklist_pids=[]),
+            "wmi-pids": lambda value: value.update(wmi_pids=[]),
+            "wrong-name": lambda value: value["processes"][0].update(
+                name="not-ck3.exe"
+            ),
+            "wrong-parent": lambda value: value["processes"][0].update(
+                parent_pid=0
+            ),
+            "extra-row-key": lambda value: value["processes"][0].update(
+                command_line="forged"
+            ),
+            "bad-creation": lambda value: value["processes"][0].update(
+                creation_date="not-a-process-time"
+            ),
+        }
+        for label, mutate in mutations.items():
+            with self.subTest(label=label), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-inventory-{label}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                report, replay = build_strict_green_report(run_dir)
+                mutate(report["process"]["pre_resume_ck3_inventory"])
+                write_json_atomic(run_dir / "report.json", report)
+                _resign_after_artifact_mutation(run_dir)
+                with self.assertRaisesRegex(AgentError, "process contract"):
+                    self._validate_strict(run_dir, replay)
+
+    def test_foreground_attestation_is_bound_to_events_and_rejects_input_claim(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-menu-foreground-proof-") as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-12345678"
+            )
+            report, replay = build_strict_green_report(run_dir)
+            rows = _event_payloads(run_dir)
+            attestation = report["navigation_attestation"]["foreground_activation"]
+            attestation["synthetic_input"] = True
+            finished = next(
+                row
+                for row in rows
+                if row["kind"] == "foreground_activation_finished"
+            )
+            finished["attestation"] = dict(attestation)
+            action = report["navigation_attestation"]["transition"]["action"]
+            _refinalize_green_fixture(run_dir, report, rows, action)
+            with self.assertRaisesRegex(AgentError, "foreground activation"):
+                self._validate_strict(run_dir, replay)
+
+    def test_foreground_direct_attestation_accepts_null_initial_foreground(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-menu-null-foreground-") as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-12345678"
+            )
+            report, replay = build_strict_green_report(run_dir)
+            rows = _event_payloads(run_dir)
+            attestation = report["navigation_attestation"]["foreground_activation"]
+            attestation.update(
+                {
+                    "foreground_hwnd_before": 0,
+                    "foreground_thread_id_before": 0,
+                    "foreground_pid_before": 0,
+                    "mode": "direct",
+                }
+            )
+            finished = next(
+                row
+                for row in rows
+                if row["kind"] == "foreground_activation_finished"
+            )
+            finished["attestation"] = dict(attestation)
+            action = report["navigation_attestation"]["transition"]["action"]
+            _refinalize_green_fixture(run_dir, report, rows, action)
+            self.assertTrue(self._validate_strict(run_dir, replay)["ok"])
+
+    def test_foreground_events_reject_resigned_extra_input_claims(self) -> None:
+        mutations = {
+            "planned": (
+                "foreground_activation_planned",
+                "synthetic_input_may_have_occurred",
+            ),
+            "armed": ("foreground_activation_armed", "synthetic_input"),
+            "finished": ("foreground_activation_finished", "synthetic_input"),
+        }
+        for label, (kind, key) in mutations.items():
+            with self.subTest(label=label), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-foreground-event-{label}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / "20260822T000000Z-menu-12345678"
+                )
+                report, replay = build_strict_green_report(run_dir)
+                rows = _event_payloads(run_dir)
+                next(row for row in rows if row["kind"] == kind)[key] = True
+                action = report["navigation_attestation"]["transition"]["action"]
+                _refinalize_green_fixture(run_dir, report, rows, action)
+                with self.assertRaisesRegex(AgentError, "event schema"):
+                    self._validate_strict(run_dir, replay)
+
+    def test_public_validator_rejects_resigned_invalid_event_timestamp(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-menu-event-time-") as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-12345678"
+            )
+            report, replay = build_strict_green_report(run_dir)
+            rows = _event_payloads(run_dir)
+            next(
+                row
+                for row in rows
+                if row["kind"] == "foreground_activation_armed"
+            )["at"] = "not-a-time"
+            action = report["navigation_attestation"]["transition"]["action"]
+            _refinalize_green_fixture(run_dir, report, rows, action)
+            with self.assertRaisesRegex(AgentError, "event timestamp"):
+                self._validate_strict(run_dir, replay)
 
     def test_public_validator_allows_wmi_path_visibility_to_vary_across_bindings(
         self,
@@ -1874,6 +2238,8 @@ class MenuReportValidatorTests(unittest.TestCase):
     def test_public_validator_replays_red_lifecycle_variants(self) -> None:
         for mode in (
             "clean-pre-input",
+            "foreground-failed",
+            "foreground-completed-no-observation",
             "armed-wal-failed-before-commit",
             "failed-after-input",
             "cleanup-contract-error",
@@ -2362,6 +2728,37 @@ class MenuLifecycleTests(unittest.TestCase):
             navigation = navigation_payload()
             action = navigation["transition"]["action"]
             write_json_atomic(artifacts / "00001-action.json", action)
+            append_event(
+                events,
+                {
+                    "kind": "foreground_activation_planned",
+                    "pid": 42,
+                    "hwnd": 84,
+                    "operation": "exact_hwnd_foreground_without_synthetic_input",
+                    "synthetic_input": False,
+                },
+            )
+            append_event(
+                events,
+                {
+                    "kind": "foreground_activation_armed",
+                    "pid": 42,
+                    "hwnd": 84,
+                    "operation": "exact_hwnd_foreground_without_synthetic_input",
+                    "foreground_may_have_changed": True,
+                    "synthetic_input_may_have_occurred": False,
+                },
+            )
+            append_event(
+                events,
+                {
+                    "kind": "foreground_activation_finished",
+                    "pid": 42,
+                    "hwnd": 84,
+                    "status": "confirmed",
+                    "attestation": navigation["foreground_activation"],
+                },
+            )
             append_event(events, {"kind": "visible_main_menu_attested"})
             append_event(events, {"kind": "ui_action_planned", "action_id": action["action_id"], "control_id": "main_menu.new_game"})
             append_event(events, {"kind": "ui_input_armed", "action_id": action["action_id"]})

@@ -56,14 +56,39 @@ monotonic 时间严格递增，并绑定同一 PID、创建时间、进程句柄
 `02_bookmark.png` 转场/遮挡候选中只放过 4 张，人工与 OCR 复核均为真实稳定大厅。源截图集合没有入库，当前仓库不能独立
 重建“377 张均稳定”的筛选过程；配置只冻结计数、摘要、阈值和来源规则，因此这仍不是本轮真实 `menu-smoke` 证据。
 
-## 一次性输入协议
+## 首次真实运行证据（2026-08-22）
+
+提交 `226d80e` 先在环境 SHA-256
+`219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba` 下取得普通 smoke
+`20260822T005515Z-03f296c7` 与 post-resume crash-smoke
+`20260822T005727Z-crash-38023ffc` 两项 GREEN，随后才运行第一次真实菜单竖切
+`20260822T010001Z-menu-193c8062`。该次运行在识别或输入前发现 CK3 已失去前台，以
+`bound CK3 client lost foreground; refusing input` 安全 RED 结束：主链中没有任何 `ui_*` 事件，artifact 中没有 action
+receipt，也没有鼠标移动、`SendInput` 或游戏点击。tracked shutdown、全局 CK3 空清点、protected postflight 与 production
+tree 复核均完成。这证明前台门禁确实阻止了误点，但不证明菜单导航成功，也不允许用同一候选直接重试。
+
+该不可变 RED 还暴露了两种跨 Windows API 的证据编码差异：COM WMI 把创建时间写成带本地偏移的 DMTF
+`20260822090033.870978+480`，PowerShell CIM 清点把同一时刻写成 UTC ISO
+`2026-08-22T01:00:33.8709780Z`；`runtime_dlc_mounts` 则保持 debug log 的引擎出现顺序，并非字典序集合。当前 validator
+严格解析两种时间后比较同一 UTC 时刻，并对 DLC mount 保留原顺序、要求绝对路径、白名单成员和不重复。修订后旧 RED
+可以原样公开回放；它没有被改写成 GREEN。由于这些修订改变 runtime 指纹，旧 ordinary/crash 资格也不能用于下一次尝试。
+
+## 一次性前台与输入协议
+
+唯一窗口出现后，前台获取本身也是一次性事务。场景先向主 `events.jsonl` 持久写入
+`foreground_activation_planned -> foreground_activation_armed`，再只允许一次直接 `SetForegroundWindow(exact_hwnd)`；
+若 Windows 前台锁仍拒绝，只允许一次把 caller thread attach 到两次稳定采样到的当前 foreground thread，重新认证目标
+PID/TID/HWND 后再调用一次 `SetForegroundWindow`，并在 `finally` 中强制验证同一线程对 detach 成功。成功时写入
+`foreground_activation_finished`，绑定前后 HWND/PID/TID、模式、detach 结果和采样 tick；不使用 Alt、PyAutoGUI、鼠标或
+`SendInput`。attach、detach、身份、前台后置条件或采样 tick 任一未知都直接结束本局，绝不循环抢焦或再次 attach。
+`GetLastInputInfo` 的 tick 相等只记录“两个采样值未变”，不证明期间没有人类输入。
 
 每个 run 只有一个不可恢复的输入预算。成功签发 token 后，一旦动作被接受，无论之后是在鼠标移动前拒绝、
 SendInput 部分失败，还是后置状态超时，都不得再签发或执行第二个动作。
 
 输入顺序为：
 
-1. 复核冻结环境、单 mod attestation、pinned CK3 进程、唯一窗口、固定 client rect、foreground 和无遮挡。
+1. 复核冻结环境、单 mod attestation、pinned CK3 进程、唯一窗口、固定 client rect、已完成且可回放的前台事务和无遮挡。
 2. 保存两帧 `main_menu` 及 OCR/观察证据，生成只对该 session、frame、bbox 和 control 语义有效的短期 token。
 3. 重新采集 fresh frame、重放分类并重新定位目标；此阶段仍未移动鼠标。若屏幕、控件唯一性或无遮挡条件变化，立即以
    零输入 RED 结束。
@@ -97,6 +122,9 @@ state lock + game launch lock
   -> protected-before + provisional RED report
   -> tracked launch + singleton-mod runtime attestation
   -> ui_bound
+  -> durable foreground planned / armed
+  -> one direct activation + at most one exact attach/detach fallback
+  -> foreground finished attestation
   -> two-frame main_menu
   -> ui_action_planned
   -> durable ui_input_armed

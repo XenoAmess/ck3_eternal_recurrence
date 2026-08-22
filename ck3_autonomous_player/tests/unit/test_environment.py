@@ -24,6 +24,8 @@ from xar_autoplayer.environment import (  # noqa: E402
     ck3_process_inventory,
     ensure_state_path_safe,
     prepare_profile,
+    process_creation_utc,
+    same_process_creation_time,
     sha256_file,
     verify_profile,
 )
@@ -76,6 +78,31 @@ class RuleContractTests(unittest.TestCase):
             list(MOD_RULES),
         )
         self.assertFalse(contract["ironman"])
+
+
+class ProcessCreationTimeTests(unittest.TestCase):
+    def test_dmtf_and_cim_utc_formats_compare_as_the_same_instant(self) -> None:
+        dmtf = "20260822090033.870978+480"
+        cim_utc = "2026-08-22T01:00:33.8709780Z"
+        self.assertEqual(process_creation_utc(dmtf), process_creation_utc(cim_utc))
+        self.assertTrue(same_process_creation_time(dmtf, cim_utc))
+
+    def test_wildcard_naive_and_malformed_process_times_fail_closed(self) -> None:
+        for value in (
+            "20260822090033.******+480",
+            "2026-08-22T01:00:33.870978",
+            "2026-08-22T01:00:33Z",
+            "not-a-process-time",
+        ):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                process_creation_utc(value)
+
+    def test_nonzero_cim_hundred_nanoseconds_do_not_collapse_to_dmtf(self) -> None:
+        dmtf = "20260822090033.870978+480"
+        cim_distinct = "2026-08-22T01:00:33.8709781Z"
+        with self.assertRaisesRegex(ValueError, "exceeds DMTF precision"):
+            process_creation_utc(cim_distinct)
+        self.assertFalse(same_process_creation_time(dmtf, cim_distinct))
 
 
 class PathSafetyTests(unittest.TestCase):

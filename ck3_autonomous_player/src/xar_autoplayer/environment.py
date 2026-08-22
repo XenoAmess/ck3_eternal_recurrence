@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import csv
 import hashlib
 import importlib.metadata
@@ -55,6 +55,56 @@ RUNTIME_DISTRIBUTIONS = (
     "Shapely",
     "six",
 )
+
+
+def process_creation_utc(value: object) -> datetime:
+    """Parse the two exact Windows process-time encodings used by this agent.
+
+    COM WMI exposes DMTF local time with a minute offset, while the global
+    PowerShell CIM inventory serializes the same value as seven-digit UTC ISO.
+    Raw strings remain in evidence; this helper is only for strict cross-source
+    identity comparison.
+    """
+    text = str(value).strip()
+    dmtf = re.fullmatch(
+        r"(?P<stamp>\d{14})\.(?P<fraction>\d{6})(?P<sign>[+-])(?P<offset>\d{3})",
+        text,
+    )
+    if dmtf is not None:
+        local = datetime.strptime(dmtf.group("stamp"), "%Y%m%d%H%M%S")
+        local = local.replace(microsecond=int(dmtf.group("fraction")))
+        minutes = int(dmtf.group("offset"))
+        if minutes > 14 * 60:
+            raise ValueError("DMTF UTC offset is outside the supported range")
+        if dmtf.group("sign") == "-":
+            minutes = -minutes
+        return local.replace(tzinfo=timezone(timedelta(minutes=minutes))).astimezone(
+            timezone.utc
+        )
+    iso = re.fullmatch(
+        r"(?P<stamp>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})\."
+        r"(?P<fraction>\d{7})Z",
+        text,
+    )
+    if iso is None:
+        raise ValueError("unsupported process creation timestamp")
+    # DMTF carries microseconds while CIM serializes Windows' seventh
+    # fractional (100 ns) digit as well.  Accepting a non-zero final digit and
+    # truncating it would collapse distinct process creations, so fail closed
+    # unless the CIM instant is exactly representable in DMTF precision.
+    if iso.group("fraction")[-1] != "0":
+        raise ValueError("CIM process timestamp exceeds DMTF precision")
+    utc = datetime.strptime(iso.group("stamp"), "%Y-%m-%dT%H:%M:%S")
+    return utc.replace(
+        microsecond=int(iso.group("fraction")[:6]), tzinfo=timezone.utc
+    )
+
+
+def same_process_creation_time(first: object, second: object) -> bool:
+    try:
+        return process_creation_utc(first) == process_creation_utc(second)
+    except (TypeError, ValueError, OverflowError):
+        return False
 
 
 def default_state_dir() -> Path:

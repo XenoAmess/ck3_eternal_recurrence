@@ -200,7 +200,6 @@ class VisibleUiWindowsIntegrationTests(unittest.TestCase):
                         binding.require_foreground()
                     with self.assertRaisesRegex(AgentError, "obscured"):
                         binding.require_client_unobscured()
-                    win32gui.SetForegroundWindow(hwnd)
                     win32gui.SetWindowPos(
                         overlay_hwnd,
                         win32con.HWND_TOPMOST,
@@ -218,13 +217,12 @@ class VisibleUiWindowsIntegrationTests(unittest.TestCase):
                     self._close(overlay, overlay_hwnd)
                     overlay = None
 
-                    win32gui.SetForegroundWindow(hwnd)
+                    binding.request_foreground_without_input()
                     point = (
                         binding.client_rect[0] + 600,
                         binding.client_rect[1] + 557,
                     )
                     win32api.SetCursorPos(point)
-                    time.sleep(0.1)
                     binding.require_cursor_target((600, 557))
                     submit = _prepare_left_click_batch()
                     self.assertEqual(submit(), (2, 0))

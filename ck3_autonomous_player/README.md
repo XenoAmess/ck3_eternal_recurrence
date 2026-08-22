@@ -75,6 +75,17 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   动作白名单精确只有主菜单【新游戏】，并显式禁止大厅【开始】。权威输入 WAL 位于本次 run 的主 `events.jsonl`，不是独立
   UI 日志。无害 Win32 helper 与离线截图回放已经通过，但尚未向真实 CK3 发出输入，不能据此声称已经能开局。
 
+提交 `226d80e` 曾在同一环境 `219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba`
+下通过 ordinary `20260822T005515Z-03f296c7` 与 post-resume crash
+`20260822T005727Z-crash-38023ffc`，随后执行第一次真实菜单竖切
+`20260822T010001Z-menu-193c8062`。它在任何 UI WAL、receipt、鼠标移动或 `SendInput` 前因
+`bound CK3 client lost foreground; refusing input` 安全 RED；tracked cleanup、全局空清点和 protected/production postflight
+均通过。该次运行促成了 DMTF/UTC ISO 进程创建时间的严格同一时刻比较、DLC mount 引擎顺序回放，以及持久化
+`foreground_activation_planned -> armed -> finished` 的一次性 exact-HWND 前台事务。事务只允许一次 direct
+`SetForegroundWindow` 与至多一次 caller→当前 foreground thread 的严格 attach/detach fallback；detach 或身份状态未知时
+立即 RED，绝不重试。`GetLastInputInfo` 相等只是一项采样观察，不是“无人输入”的证明。修订后的公开 validator 已能原样接受
+这份历史 RED，但不会把它升级为 GREEN；当前 runtime 已改变，所以上述资格不能用于下一次真实尝试。
+
 上述改动改变了受指纹保护的 runtime，因此旧提交的 Phase A 三连只证明历史冻结候选，不自动为后来实现背书。
 runtime 实现提交 `98d55caf3ed4a398b0a3bd7bc8e6ee16591d8f26` 已重新准备 profile，并在同一环境 SHA-256
 `5e7fb63ef98a7fd802caa864b64c593053c68bfb5f1798321cde6b02d6cd0d5f` 下通过普通 `smoke`

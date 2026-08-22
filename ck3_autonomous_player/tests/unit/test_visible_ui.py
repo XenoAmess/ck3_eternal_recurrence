@@ -372,6 +372,207 @@ class WindowBindingTests(unittest.TestCase):
             binding.acquire_foreground()
         require.assert_called_once_with()
 
+    @staticmethod
+    def _foreground_binding() -> BoundGameWindow:
+        process = mock.Mock()
+        process.poll.return_value = None
+        process.image_path.return_value = "C:/game/binaries/ck3.exe"
+        return BoundGameWindow(
+            process=process,
+            pid=10,
+            hwnd=20,
+            client_rect=(0, 0, 2560, 1440),
+            executable="C:/game/binaries/ck3.exe",
+            creation_date="created",
+            parent_pid=9,
+        )
+
+    def _foreground_context(self, *, attach_results=(True, True)):
+        import contextlib
+
+        state = {"foreground": 30}
+        set_foreground = mock.Mock()
+
+        def identity(hwnd: int):
+            return (100, 10) if int(hwnd) == 20 else (300, 30)
+
+        attach = mock.Mock(side_effect=list(attach_results))
+        attach.argtypes = None
+        attach.restype = None
+        stack = contextlib.ExitStack()
+        stack.enter_context(mock.patch("ctypes.WinDLL", return_value=types.SimpleNamespace(AttachThreadInput=attach)))
+        stack.enter_context(mock.patch("ctypes.set_last_error"))
+        stack.enter_context(mock.patch("ctypes.get_last_error", return_value=5))
+        stack.enter_context(mock.patch("win32api.GetCurrentThreadId", return_value=200))
+        stack.enter_context(mock.patch("win32api.GetLastInputInfo", return_value=500))
+        stack.enter_context(
+            mock.patch("win32gui.GetForegroundWindow", side_effect=lambda: state["foreground"])
+        )
+        stack.enter_context(mock.patch("win32gui.SetForegroundWindow", set_foreground))
+        stack.enter_context(mock.patch("win32gui.IsWindow", return_value=True))
+        stack.enter_context(mock.patch("win32gui.IsWindowVisible", return_value=True))
+        stack.enter_context(mock.patch("win32process.GetWindowThreadProcessId", side_effect=identity))
+        stack.enter_context(mock.patch("xar_autoplayer.vision.window._root_window", side_effect=lambda hwnd: hwnd))
+        stack.enter_context(
+            mock.patch(
+                "xar_autoplayer.vision.window._client_rect",
+                return_value=(0, 0, 2560, 1440),
+            )
+        )
+        return stack, state, set_foreground, attach
+
+    def test_foreground_direct_success_is_single_no_input_transaction(self) -> None:
+        binding = self._foreground_binding()
+        stack, state, set_foreground, attach = self._foreground_context()
+        set_foreground.side_effect = lambda hwnd: state.update(foreground=int(hwnd))
+        with stack, mock.patch.object(BoundGameWindow, "verify", return_value={}):
+            result = binding.request_foreground_without_input()
+        self.assertEqual(result["mode"], "direct")
+        self.assertFalse(result["synthetic_input"])
+        self.assertTrue(result["observed_last_input_tick_unchanged"])
+        set_foreground.assert_called_once_with(20)
+        attach.assert_not_called()
+
+    def test_foreground_direct_success_accepts_initially_null_foreground(self) -> None:
+        binding = self._foreground_binding()
+        stack, state, set_foreground, attach = self._foreground_context()
+        state["foreground"] = 0
+        set_foreground.side_effect = lambda hwnd: state.update(foreground=int(hwnd))
+        with stack, mock.patch.object(BoundGameWindow, "verify", return_value={}):
+            result = binding.request_foreground_without_input()
+        self.assertEqual(result["mode"], "direct")
+        self.assertEqual(
+            (
+                result["foreground_hwnd_before"],
+                result["foreground_thread_id_before"],
+                result["foreground_pid_before"],
+            ),
+            (0, 0, 0),
+        )
+        set_foreground.assert_called_once_with(20)
+        attach.assert_not_called()
+
+    def test_foreground_fallback_rejects_changed_initial_foreground(self) -> None:
+        binding = self._foreground_binding()
+        stack, state, set_foreground, attach = self._foreground_context()
+        set_foreground.side_effect = lambda _hwnd: state.update(foreground=40)
+        with stack, mock.patch.object(BoundGameWindow, "verify", return_value={}):
+            with self.assertRaisesRegex(AgentError, "fallback precondition"):
+                binding.request_foreground_without_input()
+        set_foreground.assert_called_once_with(20)
+        attach.assert_not_called()
+
+    def test_foreground_attached_fallback_requires_exact_attach_detach_pair(self) -> None:
+        binding = self._foreground_binding()
+        stack, state, set_foreground, attach = self._foreground_context()
+
+        def activate(hwnd: int) -> None:
+            if set_foreground.call_count == 2:
+                state["foreground"] = int(hwnd)
+
+        set_foreground.side_effect = activate
+        with stack, mock.patch.object(BoundGameWindow, "verify", return_value={}):
+            result = binding.request_foreground_without_input()
+        self.assertEqual(result["mode"], "attached_fallback")
+        self.assertTrue(result["detach_succeeded"])
+        self.assertEqual(
+            attach.call_args_list,
+            [mock.call(200, 300, True), mock.call(200, 300, False)],
+        )
+        self.assertEqual(set_foreground.call_count, 2)
+
+    def test_foreground_attached_critical_section_never_runs_full_verify(self) -> None:
+        binding = self._foreground_binding()
+        stack, state, set_foreground, attach = self._foreground_context()
+        attached = {"value": False}
+
+        def attach_pair(_caller: int, _foreground: int, join: bool) -> bool:
+            attached["value"] = bool(join)
+            return True
+
+        def verify() -> dict[str, object]:
+            if attached["value"]:
+                raise AssertionError("full process/WMI verify ran while queues attached")
+            return {}
+
+        attach.side_effect = attach_pair
+
+        def activate(hwnd: int) -> None:
+            if set_foreground.call_count == 2:
+                state["foreground"] = int(hwnd)
+
+        set_foreground.side_effect = activate
+        with stack, mock.patch.object(
+            BoundGameWindow, "verify", side_effect=verify
+        ) as full_verify:
+            result = binding.request_foreground_without_input()
+        self.assertEqual(result["mode"], "attached_fallback")
+        self.assertFalse(attached["value"])
+        self.assertGreaterEqual(full_verify.call_count, 3)
+        self.assertEqual(
+            attach.call_args_list,
+            [mock.call(200, 300, True), mock.call(200, 300, False)],
+        )
+
+    def test_foreground_attach_or_detach_failure_is_not_retried(self) -> None:
+        for label, results, expected_calls in (
+            ("attach", (False,), 1),
+            ("detach", (True, False), 2),
+        ):
+            with self.subTest(label=label):
+                binding = self._foreground_binding()
+                stack, state, set_foreground, attach = self._foreground_context(
+                    attach_results=results
+                )
+
+                def activate(hwnd: int) -> None:
+                    if set_foreground.call_count == 2:
+                        state["foreground"] = int(hwnd)
+
+                set_foreground.side_effect = activate
+                with stack, mock.patch.object(BoundGameWindow, "verify", return_value={}):
+                    with self.assertRaisesRegex(AgentError, f"(?i){label}"):
+                        binding.request_foreground_without_input()
+                self.assertEqual(attach.call_count, expected_calls)
+                self.assertLessEqual(set_foreground.call_count, 2)
+
+    def test_foreground_direct_api_exception_never_falls_back(self) -> None:
+        binding = self._foreground_binding()
+        stack, _state, set_foreground, attach = self._foreground_context()
+        set_foreground.side_effect = OSError("direct failure")
+        with stack, mock.patch.object(BoundGameWindow, "verify", return_value={}):
+            with self.assertRaisesRegex(AgentError, "direct foreground"):
+                binding.request_foreground_without_input()
+        set_foreground.assert_called_once_with(20)
+        attach.assert_not_called()
+
+    def test_foreground_async_attach_boundaries_attempt_one_exact_detach(self) -> None:
+        for label, results, expected_set_calls in (
+            ("attach-return-gap", (KeyboardInterrupt(), True), 1),
+            ("detach-return-gap", (True, KeyboardInterrupt()), 2),
+        ):
+            with self.subTest(label=label):
+                binding = self._foreground_binding()
+                stack, state, set_foreground, attach = self._foreground_context(
+                    attach_results=results
+                )
+
+                def activate(hwnd: int) -> None:
+                    if set_foreground.call_count == 2:
+                        state["foreground"] = int(hwnd)
+
+                set_foreground.side_effect = activate
+                with stack, mock.patch.object(
+                    BoundGameWindow, "verify", return_value={}
+                ):
+                    with self.assertRaises(KeyboardInterrupt):
+                        binding.request_foreground_without_input()
+                self.assertEqual(
+                    attach.call_args_list,
+                    [mock.call(200, 300, True), mock.call(200, 300, False)],
+                )
+                self.assertEqual(set_foreground.call_count, expected_set_calls)
+
 
 class UiDriverSafetyTests(unittest.TestCase):
     @staticmethod

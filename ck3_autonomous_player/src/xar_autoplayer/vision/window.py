@@ -135,6 +135,274 @@ class BoundGameWindow:
         """Compatibility shim: foreground is a precondition, never synthesized."""
         self.require_foreground()
 
+    def request_foreground_without_input(self) -> dict[str, object]:
+        """Activate the exact bound HWND using window APIs, never key/mouse input.
+
+        Windows foreground-lock policy can return focus to the calling shell
+        immediately after CK3 appears.  This method permits one direct
+        ``SetForegroundWindow`` call and, only if needed, one caller-to-current
+        foreground-thread attachment followed by one more call.  It never uses
+        Alt, ``SendInput`` or PyAutoGUI.  Attach and detach are exact mandatory
+        pairs, every mutation reauthenticates the pinned process/HWND, and no
+        failure is retried by this method.
+        """
+        import ctypes
+        import win32api
+        import win32gui
+        import win32process
+
+        user32 = ctypes.WinDLL("user32", use_last_error=True)
+        user32.AttachThreadInput.argtypes = (
+            ctypes.c_ulong,
+            ctypes.c_ulong,
+            ctypes.c_bool,
+        )
+        user32.AttachThreadInput.restype = ctypes.c_bool
+        def target_identity() -> int:
+            self.verify()
+            target_thread, target_pid = win32process.GetWindowThreadProcessId(
+                self.hwnd
+            )
+            if int(target_pid) != self.pid or int(target_thread) <= 0:
+                raise AgentError("bound CK3 target thread identity differs")
+            return int(target_thread)
+
+        target_thread = target_identity()
+        current_thread = int(win32api.GetCurrentThreadId())
+        input_tick = int(win32api.GetLastInputInfo())
+
+        def foreground_sample() -> tuple[int, int, int]:
+            raw = int(win32gui.GetForegroundWindow())
+            foreground = _root_window(raw) if raw else 0
+            if not foreground:
+                return 0, 0, 0
+            thread, pid = win32process.GetWindowThreadProcessId(foreground)
+            return foreground, int(thread), int(pid)
+
+        def success_payload(
+            *,
+            mode: str,
+            attached_fallback: bool,
+            detach_succeeded: bool | None,
+        ) -> dict[str, object]:
+            if target_identity() != target_thread:
+                raise AgentError("bound CK3 target thread changed after activation")
+            foreground_after, foreground_thread_after, foreground_pid_after = (
+                foreground_sample()
+            )
+            final_tick = int(win32api.GetLastInputInfo())
+            if (
+                foreground_after != self.hwnd
+                or foreground_thread_after != target_thread
+                or foreground_pid_after != self.pid
+                or final_tick != input_tick
+            ):
+                raise AgentError("foreground activation postcondition differs")
+            return {
+                **base,
+                "mode": mode,
+                "attached_fallback": attached_fallback,
+                "detach_succeeded": detach_succeeded,
+                "foreground_hwnd_after": foreground_after,
+                "foreground_thread_id_after": foreground_thread_after,
+                "foreground_pid_after": foreground_pid_after,
+                "last_input_tick_after": final_tick,
+                # GetLastInputInfo is only a sampled session tick.  Equality is
+                # recorded as an observation, never as proof that no human
+                # input occurred.
+                "observed_last_input_tick_unchanged": True,
+            }
+
+        foreground_before, foreground_thread, foreground_pid = foreground_sample()
+        before_triple = (foreground_before, foreground_thread, foreground_pid)
+        if not (
+            before_triple == (0, 0, 0)
+            or all(value > 0 for value in before_triple)
+        ):
+            raise AgentError(
+                "initial foreground identity is incomplete: "
+                f"{before_triple!r}"
+            )
+        base = {
+            "format_version": 1,
+            "target_pid": self.pid,
+            "target_hwnd": self.hwnd,
+            "target_thread_id": target_thread,
+            "caller_thread_id": current_thread,
+            "foreground_hwnd_before": foreground_before,
+            "foreground_thread_id_before": foreground_thread,
+            "foreground_pid_before": foreground_pid,
+            "last_input_tick_before": input_tick,
+            "synthetic_input": False,
+        }
+        if foreground_before == self.hwnd:
+            return success_payload(
+                mode="already_foreground",
+                attached_fallback=False,
+                detach_succeeded=None,
+            )
+
+        # One direct attempt is permitted.  Reauthenticate the exact target
+        # immediately before the mutation and accept only the observed root
+        # foreground postcondition.
+        if target_identity() != target_thread:
+            raise AgentError("bound CK3 target thread changed before activation")
+        if int(win32api.GetLastInputInfo()) != input_tick:
+            raise AgentError("user input changed before foreground activation")
+        try:
+            win32gui.SetForegroundWindow(self.hwnd)
+        except Exception as error:
+            raise AgentError(
+                f"direct foreground activation failed: {error}"
+            ) from error
+        foreground_after_direct, _direct_foreground_thread, _direct_foreground_pid = (
+            foreground_sample()
+        )
+        if foreground_after_direct == self.hwnd:
+            return success_payload(
+                mode="direct",
+                attached_fallback=False,
+                detach_succeeded=None,
+            )
+
+        # A single fallback may attach only the caller to one stable sampled
+        # foreground thread.  Every attach/detach result is mandatory; no
+        # target-thread attachment, Alt key, mouse event, or retry loop exists.
+        fallback_foreground, fallback_thread, fallback_pid = foreground_sample()
+        fallback_tick = int(win32api.GetLastInputInfo())
+        if (
+            not fallback_foreground
+            or fallback_thread <= 0
+            or fallback_pid <= 0
+            or (
+                fallback_foreground,
+                fallback_thread,
+                fallback_pid,
+            )
+            != before_triple
+            or fallback_thread == current_thread
+            or fallback_tick != input_tick
+        ):
+            raise AgentError(
+                "foreground fallback precondition differs: "
+                f"foreground={(fallback_foreground, fallback_thread, fallback_pid)!r}, "
+                f"caller_thread={current_thread}, "
+                f"last_input={(input_tick, fallback_tick)!r}"
+            )
+        if foreground_sample() != (
+            fallback_foreground,
+            fallback_thread,
+            fallback_pid,
+        ):
+            raise AgentError("foreground changed before attached fallback")
+        # Complete the potentially blocking process/WMI and desktop-enumeration
+        # checks before joining input queues.  Between a successful attach and
+        # its exact detach, only bounded local Win32 identity/geometry calls are
+        # permitted so a slow COM provider cannot leave the queues joined.
+        if target_identity() != target_thread:
+            raise AgentError("bound CK3 target changed before attached fallback")
+        if (
+            foreground_sample()
+            != (fallback_foreground, fallback_thread, fallback_pid)
+            or int(win32api.GetLastInputInfo()) != input_tick
+        ):
+            raise AgentError("foreground changed after fallback authentication")
+        attach_result: bool | None = None
+        attach_error = 0
+        detach_result: bool | None = None
+        detach_error = 0
+        detach_exception: BaseException | None = None
+        activation_error: BaseException | None = None
+        try:
+            ctypes.set_last_error(0)
+            attach_result = bool(
+                user32.AttachThreadInput(current_thread, fallback_thread, True)
+            )
+            attach_error = ctypes.get_last_error()
+            if not attach_result:
+                raise AgentError(
+                    "foreground fallback AttachThreadInput failed: "
+                    f"{attach_error}"
+                )
+            immediate_target_thread, immediate_target_pid = (
+                win32process.GetWindowThreadProcessId(self.hwnd)
+            )
+            if (
+                not win32gui.IsWindow(self.hwnd)
+                or not win32gui.IsWindowVisible(self.hwnd)
+                or _root_window(self.hwnd) != self.hwnd
+                or _client_rect(self.hwnd) != self.client_rect
+                or int(immediate_target_thread) != target_thread
+                or int(immediate_target_pid) != self.pid
+                or foreground_sample()
+                != (fallback_foreground, fallback_thread, fallback_pid)
+                or int(win32api.GetLastInputInfo()) != input_tick
+            ):
+                raise AgentError("foreground fallback identity changed")
+            win32gui.SetForegroundWindow(self.hwnd)
+        except BaseException as error:
+            activation_error = error
+        finally:
+            # None means an asynchronous interruption may have landed between
+            # the native attach call and its Python result assignment.  Treat
+            # that as possibly attached and attempt the exact detach once.
+            if attach_result is not False:
+                try:
+                    ctypes.set_last_error(0)
+                    detach_result = bool(
+                        user32.AttachThreadInput(
+                            current_thread, fallback_thread, False
+                        )
+                    )
+                    detach_error = ctypes.get_last_error()
+                except BaseException as error:
+                    detach_exception = error
+        if attach_result is False:
+            if activation_error is None:  # pragma: no cover - guarded by raise above.
+                raise AgentError(
+                    "foreground fallback attach failed without an error record"
+                )
+            raise activation_error
+        if detach_exception is not None:
+            if not isinstance(detach_exception, Exception):
+                if activation_error is not None:
+                    detach_exception.add_note(
+                        "foreground activation also failed: "
+                        f"{type(activation_error).__name__}: {activation_error}"
+                    )
+                raise detach_exception
+            if activation_error is not None:
+                activation_error.add_note(
+                    "foreground fallback detach raised: "
+                    f"{type(detach_exception).__name__}: {detach_exception}"
+                )
+                raise activation_error
+            raise AgentError(
+                f"foreground fallback detach raised: {detach_exception}"
+            ) from detach_exception
+        if detach_result is not True:
+            if activation_error is not None and not isinstance(
+                activation_error, Exception
+            ):
+                activation_error.add_note(
+                    f"foreground fallback detach also failed: {detach_error}"
+                )
+                raise activation_error
+            raise AgentError(
+                f"foreground fallback detach failed: {detach_error}"
+            )
+        if activation_error is not None:
+            if not isinstance(activation_error, Exception):
+                raise activation_error
+            raise AgentError(
+                f"foreground fallback activation failed: {activation_error}"
+            ) from activation_error
+        return success_payload(
+            mode="attached_fallback",
+            attached_fallback=True,
+            detach_succeeded=detach_result,
+        )
+
     def audit_binding(self) -> dict[str, object]:
         """Return the exact process/window identity bound to every UI receipt."""
         identity = self.verify()

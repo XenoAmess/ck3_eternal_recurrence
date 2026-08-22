@@ -27,6 +27,7 @@ from .environment import (
     ensure_state_path_safe,
     is_relative_to,
     mod_source_fingerprint,
+    same_process_creation_time,
     snapshot_digest,
     tree_snapshot,
     verify_profile,
@@ -795,6 +796,13 @@ def launch(
             or int(visible[0]["pid"]) != process.pid
             or int(visible[0]["parent_pid"]) != os.getpid()
             or str(visible[0]["name"]).casefold() != "ck3.exe"
+            or not same_process_creation_time(
+                visible[0].get("creation_date"), identity["creation_date"]
+            )
+            or (
+                visible[0].get("executable")
+                and not _same_executable(visible[0]["executable"], spec.game_exe)
+            )
         ):
             raise AgentError(
                 "pre-resume global CK3 inventory is not the exact suspended process: "

@@ -32,6 +32,7 @@ from .environment import (
     ensure_state_path_safe,
     is_relative_to,
     mod_source_fingerprint,
+    same_process_creation_time,
     sha256_file,
     snapshot_digest,
     tree_snapshot,
@@ -96,10 +97,14 @@ REPLAY_TRUST_MODEL = {
     "claim": "archive_schema_and_internal_consistency_only",
     "historical_execution_authenticity_proven": False,
 }
+FOREGROUND_OPERATION = "exact_hwnd_foreground_without_synthetic_input"
 GREEN_EVENT_ORDER = (
     "smoke_started",
     "ck3_launched",
     "single_mod_runtime_attested",
+    "foreground_activation_planned",
+    "foreground_activation_armed",
+    "foreground_activation_finished",
     "visible_main_menu_attested",
     "ui_action_planned",
     "ui_input_armed",
@@ -984,6 +989,30 @@ def _validate_navigation_success(
     _validate_window_binding(window_binding, process, environment)
     binding_process = window_binding.get("process")
     binding_window = window_binding.get("window")
+    pre_resume_inventory = (
+        process.get("pre_resume_ck3_inventory")
+        if isinstance(process, dict)
+        else None
+    )
+    pre_resume_processes = (
+        pre_resume_inventory.get("processes")
+        if isinstance(pre_resume_inventory, dict)
+        else None
+    )
+    pre_resume_parent = (
+        pre_resume_processes[0].get("parent_pid")
+        if isinstance(pre_resume_processes, list)
+        and len(pre_resume_processes) == 1
+        and isinstance(pre_resume_processes[0], dict)
+        else None
+    )
+    _validate_foreground_activation(
+        navigation.get("foreground_activation"),
+        process=process,
+        expected_hwnd=(
+            binding_window.get("hwnd") if isinstance(binding_window, dict) else None
+        ),
+    )
     bound_executable = Path(str(binding_process.get("executable", ""))) if isinstance(binding_process, dict) else Path()
     handle_executable = Path(str(binding_process.get("handle_executable", ""))) if isinstance(binding_process, dict) else Path()
     wmi_executable = str(binding_process.get("wmi_executable", "")) if isinstance(binding_process, dict) else ""
@@ -1014,6 +1043,7 @@ def _validate_navigation_success(
         or binding_process.get("name") != "ck3.exe"
         or type(binding_process.get("parent_pid")) is not int
         or binding_process["parent_pid"] <= 0
+        or pre_resume_parent != binding_process.get("parent_pid")
         or handle_executable.resolve() != bound_executable.resolve()
         or (
             wmi_executable
@@ -1633,13 +1663,13 @@ def _validate_archived_load(
         or (require_post_exit and load.get("post_exit_revalidated") is not True)
         or not isinstance(allowed_mounts, list)
         or not isinstance(runtime_dlc_mounts, list)
-        or runtime_dlc_mounts != sorted(set(runtime_dlc_mounts))
         or any(
             not isinstance(path, str)
             or not Path(path).is_absolute()
             or path not in allowed_mounts
             for path in runtime_dlc_mounts
         )
+        or len(runtime_dlc_mounts) != len(set(runtime_dlc_mounts))
     ):
         raise AgentError("menu smoke exact single-mod load proof differs")
     def validate_debug_archive(value: object, relative: str) -> bytes:
@@ -1895,6 +1925,7 @@ def _validate_process_contract(
         process.get("pre_resume_ck3_inventory") if isinstance(process, dict) else None
     )
     pre_processes = pre_resume.get("processes") if isinstance(pre_resume, dict) else None
+    pre_process = pre_processes[0] if isinstance(pre_processes, list) and len(pre_processes) == 1 else None
     if (
         not isinstance(process, dict)
         or type(process.get("pid")) is not int
@@ -1913,14 +1944,25 @@ def _validate_process_contract(
         or type(process.get("fresh_log_epoch_ns")) is not int
         or process["fresh_log_epoch_ns"] <= 0
         or not isinstance(process.get("prelaunch_logs_removed"), list)
-        or not isinstance(pre_processes, list)
-        or len(pre_processes) != 1
-        or not isinstance(pre_processes[0], dict)
-        or pre_processes[0].get("pid") != process.get("pid")
-        or pre_processes[0].get("creation_date") != process.get("creation_date")
+        or not isinstance(pre_resume, dict)
+        or set(pre_resume)
+        != {"tasklist_returncode", "tasklist_pids", "wmi_pids", "processes"}
+        or pre_resume.get("tasklist_returncode") != 0
+        or pre_resume.get("tasklist_pids") != [process.get("pid")]
+        or pre_resume.get("wmi_pids") != [process.get("pid")]
+        or not isinstance(pre_process, dict)
+        or set(pre_process)
+        != {"pid", "parent_pid", "name", "executable", "creation_date"}
+        or pre_process.get("pid") != process.get("pid")
+        or type(pre_process.get("parent_pid")) is not int
+        or pre_process["parent_pid"] <= 0
+        or str(pre_process.get("name", "")).casefold() != "ck3.exe"
+        or not same_process_creation_time(
+            pre_process.get("creation_date"), process.get("creation_date")
+        )
         or (
-            pre_processes[0].get("executable")
-            and Path(str(pre_processes[0]["executable"])).resolve()
+            pre_process.get("executable")
+            and Path(str(pre_process["executable"])).resolve()
             != executable.resolve()
         )
     ):
@@ -1992,6 +2034,185 @@ def _window_binding_core(binding: dict[str, object]) -> dict[str, object]:
             for key in ("hwnd", "client_rect", "client_size")
         },
     }
+
+
+def _validate_foreground_activation(
+    attestation: object,
+    *,
+    process: object,
+    expected_hwnd: object,
+) -> None:
+    """Validate the exact no-synthetic-input foreground transaction."""
+    expected_keys = {
+        "format_version",
+        "target_pid",
+        "target_hwnd",
+        "target_thread_id",
+        "caller_thread_id",
+        "foreground_hwnd_before",
+        "foreground_thread_id_before",
+        "foreground_pid_before",
+        "last_input_tick_before",
+        "synthetic_input",
+        "mode",
+        "attached_fallback",
+        "detach_succeeded",
+        "foreground_hwnd_after",
+        "foreground_thread_id_after",
+        "foreground_pid_after",
+        "last_input_tick_after",
+        "observed_last_input_tick_unchanged",
+    }
+    if (
+        not isinstance(attestation, dict)
+        or set(attestation) != expected_keys
+        or not isinstance(process, dict)
+        or type(expected_hwnd) is not int
+        or expected_hwnd <= 0
+        or attestation.get("format_version") != 1
+        or attestation.get("target_pid") != process.get("pid")
+        or attestation.get("target_hwnd") != expected_hwnd
+        or type(attestation.get("target_thread_id")) is not int
+        or attestation["target_thread_id"] <= 0
+        or type(attestation.get("caller_thread_id")) is not int
+        or attestation["caller_thread_id"] <= 0
+        or type(attestation.get("foreground_hwnd_before")) is not int
+        or attestation["foreground_hwnd_before"] < 0
+        or type(attestation.get("foreground_thread_id_before")) is not int
+        or attestation["foreground_thread_id_before"] < 0
+        or type(attestation.get("foreground_pid_before")) is not int
+        or attestation["foreground_pid_before"] < 0
+        or type(attestation.get("last_input_tick_before")) is not int
+        or attestation["last_input_tick_before"] < 0
+        or attestation.get("synthetic_input") is not False
+        or attestation.get("foreground_hwnd_after") != expected_hwnd
+        or attestation.get("foreground_thread_id_after")
+        != attestation.get("target_thread_id")
+        or attestation.get("foreground_pid_after") != process.get("pid")
+        or attestation.get("last_input_tick_after")
+        != attestation.get("last_input_tick_before")
+        or attestation.get("observed_last_input_tick_unchanged") is not True
+    ):
+        raise AgentError("menu smoke foreground activation attestation differs")
+    mode = attestation.get("mode")
+    before_is_target = (
+        attestation.get("foreground_hwnd_before") == expected_hwnd
+        and attestation.get("foreground_thread_id_before")
+        == attestation.get("target_thread_id")
+        and attestation.get("foreground_pid_before") == process.get("pid")
+    )
+    before_all_zero = (
+        attestation.get("foreground_hwnd_before") == 0
+        and attestation.get("foreground_thread_id_before") == 0
+        and attestation.get("foreground_pid_before") == 0
+    )
+    before_all_positive = (
+        attestation.get("foreground_hwnd_before") > 0
+        and attestation.get("foreground_thread_id_before") > 0
+        and attestation.get("foreground_pid_before") > 0
+    )
+    if mode == "already_foreground":
+        valid_mode = (
+            before_is_target
+            and attestation.get("attached_fallback") is False
+            and attestation.get("detach_succeeded") is None
+        )
+    elif mode == "direct":
+        valid_mode = (
+            not before_is_target
+            and (before_all_zero or before_all_positive)
+            and attestation.get("attached_fallback") is False
+            and attestation.get("detach_succeeded") is None
+        )
+    elif mode == "attached_fallback":
+        valid_mode = (
+            not before_is_target
+            and before_all_positive
+            and attestation.get("foreground_thread_id_before")
+            != attestation.get("caller_thread_id")
+            and attestation.get("attached_fallback") is True
+            and attestation.get("detach_succeeded") is True
+        )
+    else:
+        valid_mode = False
+    if not valid_mode:
+        raise AgentError("menu smoke foreground activation mode differs")
+
+
+def _validate_foreground_events(
+    report: dict[str, object], rows: list[dict[str, object]]
+) -> None:
+    by_kind = {
+        str(row.get("kind")): row
+        for row in rows
+        if str(row.get("kind", "")).startswith("foreground_activation_")
+    }
+    process = report.get("process")
+    planned = by_kind.get("foreground_activation_planned")
+    armed = by_kind.get("foreground_activation_armed")
+    finished = by_kind.get("foreground_activation_finished")
+    if not by_kind:
+        return
+    if not isinstance(process, dict) or planned is None:
+        raise AgentError("menu smoke foreground event lacks its process/planned proof")
+    envelope_keys = {"at", "previous_event_sha256", "event_sha256", "kind"}
+    if set(planned) != envelope_keys | {
+        "pid",
+        "hwnd",
+        "operation",
+        "synthetic_input",
+    }:
+        raise AgentError("menu smoke foreground planned event schema differs")
+    if (
+        planned.get("pid") != process.get("pid")
+        or type(planned.get("hwnd")) is not int
+        or planned["hwnd"] <= 0
+        or planned.get("operation") != FOREGROUND_OPERATION
+        or planned.get("synthetic_input") is not False
+    ):
+        raise AgentError("menu smoke foreground planned event differs")
+    if armed is not None:
+        if set(armed) != envelope_keys | {
+            "pid",
+            "hwnd",
+            "operation",
+            "foreground_may_have_changed",
+            "synthetic_input_may_have_occurred",
+        }:
+            raise AgentError("menu smoke foreground armed event schema differs")
+        if (
+            armed.get("pid") != process.get("pid")
+            or armed.get("hwnd") != planned.get("hwnd")
+            or armed.get("operation") != FOREGROUND_OPERATION
+            or armed.get("foreground_may_have_changed") is not True
+            or armed.get("synthetic_input_may_have_occurred") is not False
+        ):
+            raise AgentError("menu smoke foreground armed event differs")
+    if finished is not None:
+        if set(finished) != envelope_keys | {
+            "pid",
+            "hwnd",
+            "status",
+            "attestation",
+        }:
+            raise AgentError("menu smoke foreground finished event schema differs")
+        if armed is None or (
+            finished.get("pid") != process.get("pid")
+            or finished.get("hwnd") != planned.get("hwnd")
+            or finished.get("status") != "confirmed"
+        ):
+            raise AgentError("menu smoke foreground finished event differs")
+        _validate_foreground_activation(
+            finished.get("attestation"),
+            process=process,
+            expected_hwnd=planned.get("hwnd"),
+        )
+    navigation = report.get("navigation_attestation")
+    if navigation is not None:
+        if not isinstance(navigation, dict) or finished is None:
+            raise AgentError("menu smoke navigation lacks foreground completion")
+        if navigation.get("foreground_activation") != finished.get("attestation"):
+            raise AgentError("menu smoke navigation/foreground event binding differs")
 
 
 def _validate_shutdown_contract(
@@ -2331,6 +2552,19 @@ def _validate_event_semantics(
         json.loads(line)
         for line in (run_dir / "events.jsonl").read_text(encoding="utf-8").splitlines()
     ]
+    for row in rows:
+        at = row.get("at")
+        if not isinstance(at, str) or re.fullmatch(
+            r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?\+00:00",
+            at,
+        ) is None:
+            raise AgentError("menu smoke event timestamp differs")
+        try:
+            parsed_at = datetime.fromisoformat(at)
+        except ValueError as error:
+            raise AgentError("menu smoke event timestamp differs") from error
+        if parsed_at.utcoffset() is None or parsed_at.utcoffset().total_seconds() != 0:
+            raise AgentError("menu smoke event timestamp differs")
     kinds = [row.get("kind") for row in rows]
     if report.get("ok") is True:
         if tuple(kinds) != GREEN_EVENT_ORDER:
@@ -2347,6 +2581,11 @@ def _validate_event_semantics(
         ):
             raise AgentError(f"menu smoke RED event order differs: {kinds!r}")
         kind_set = set(kinds)
+        foreground_kinds = {
+            "foreground_activation_planned",
+            "foreground_activation_armed",
+            "foreground_activation_finished",
+        }
         if (
             (
                 kind_set
@@ -2360,6 +2599,29 @@ def _validate_event_semantics(
                 and "single_mod_runtime_attested" not in kind_set
             )
             or (
+                kind_set & foreground_kinds
+                and "single_mod_runtime_attested" not in kind_set
+            )
+            or (
+                "foreground_activation_armed" in kind_set
+                and "foreground_activation_planned" not in kind_set
+            )
+            or (
+                "foreground_activation_finished" in kind_set
+                and "foreground_activation_armed" not in kind_set
+            )
+            or (
+                kind_set
+                & {
+                    "visible_main_menu_attested",
+                    "ui_action_planned",
+                    "ui_input_armed",
+                    "ui_action_finished",
+                    "bookmark_lobby_attested",
+                }
+                and "foreground_activation_finished" not in kind_set
+            )
+            or (
                 kind_set & {"ui_action_planned", "ui_input_armed", "ui_action_finished"}
                 and "visible_main_menu_attested" not in kind_set
             )
@@ -2369,6 +2631,7 @@ def _validate_event_semantics(
             )
         ):
             raise AgentError("menu smoke RED event prerequisites differ")
+    _validate_foreground_events(report, rows)
     action_rows = [row for row in rows if str(row.get("kind", "")).startswith("ui_")]
     if report.get("ok") is True:
         if [row.get("kind") for row in action_rows] != [
@@ -3094,6 +3357,13 @@ def _validate_red_ui_evidence(
         after_policy = after_archive.get("policy_observation")
         if not isinstance(after_policy, dict):
             raise AgentError("menu smoke RED lobby policy differs")
+        foreground_rows = [
+            row
+            for row in rows
+            if row.get("kind") == "foreground_activation_finished"
+        ]
+        if len(foreground_rows) != 1:
+            raise AgentError("menu smoke RED confirmed receipt lacks foreground proof")
         after_stable = dict(after_policy)
         after_stable["stability"] = {
             "stable_frames": after_audit.get("stable_frames"),
@@ -3117,6 +3387,7 @@ def _validate_red_ui_evidence(
         synthetic_navigation = {
             "claim": MENU_ACCEPTANCE_CLAIM,
             "window_binding": binding,
+            "foreground_activation": foreground_rows[0].get("attestation"),
             "start_observation": stable_policy,
             "start_observation_audit": before,
             "transition": {"action": action, "observation": after_stable},
@@ -3422,9 +3693,6 @@ def _run_menu_scenario(
             raise AgentError("CK3 exited before its visible window could be bound")
         try:
             window = BoundGameWindow.bind_session(handle, spec.game_exe)
-            # Foreground is a natural precondition.  Never synthesize Alt/focus
-            # input before the driver's durable ui_input_armed boundary.
-            window.require_foreground()
             break
         except AgentError as error:
             last_binding_error = error
@@ -3433,6 +3701,41 @@ def _run_menu_scenario(
         raise last_binding_error or AgentError(
             "visible CK3 window did not become naturally foreground"
         )
+    # Binding may wait for the one exact 2560x1440 client to appear.  Once it
+    # exists, foreground acquisition is a one-shot transaction: no activation,
+    # attach, detach, identity, or sampled-input-tick failure is ever retried.
+    append_event(
+        events,
+        {
+            "kind": "foreground_activation_planned",
+            "pid": window.pid,
+            "hwnd": window.hwnd,
+            "operation": FOREGROUND_OPERATION,
+            "synthetic_input": False,
+        },
+    )
+    append_event(
+        events,
+        {
+            "kind": "foreground_activation_armed",
+            "pid": window.pid,
+            "hwnd": window.hwnd,
+            "operation": FOREGROUND_OPERATION,
+            "foreground_may_have_changed": True,
+            "synthetic_input_may_have_occurred": False,
+        },
+    )
+    foreground_activation = window.request_foreground_without_input()
+    append_event(
+        events,
+        {
+            "kind": "foreground_activation_finished",
+            "pid": window.pid,
+            "hwnd": window.hwnd,
+            "status": "confirmed",
+            "attestation": foreground_activation,
+        },
+    )
     driver = VisibleUiDriver(
         window,
         contract,
@@ -3497,6 +3800,7 @@ def _run_menu_scenario(
     return {
         "claim": "visible_main_menu_to_bookmark_lobby_only",
         "window_binding": window.audit_binding(),
+        "foreground_activation": foreground_activation,
         "start_observation": before.to_policy_json(),
         "start_observation_audit": before_audit,
         "transition": transition,

@@ -168,6 +168,17 @@
 post-resume crash-smoke GREEN；最后才允许一次真实 `menu-smoke`。未知模态、真实 CK3 hover patch 漂移或后置状态超时都只
 保留 RED，不得重试。
 
+第一次真实菜单竖切已按这套资格门禁运行：提交 `226d80e`、环境
+`219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba`、ordinary
+`20260822T005515Z-03f296c7`、crash `20260822T005727Z-crash-38023ffc`，菜单 run 为
+`20260822T010001Z-menu-193c8062`。它在任何 `ui_*` WAL、action receipt、鼠标移动或 `SendInput` 前检测到 CK3
+不在前台并安全 RED；cleanup、全局空清点和 protected/production postflight 完成。事故没有产生点击，也不算一次成功导航。
+修订后的窗口协议在唯一 HWND 绑定后先持久化 `foreground_activation_planned/armed`，只允许一次 direct
+`SetForegroundWindow` 与至多一次 caller→当前 foreground thread 的严格 attach/detach fallback，成功再写 finished
+attestation；attach/detach、身份、前台或采样状态任一未知都不重试。COM WMI 的 DMTF 创建时间与 PowerShell CIM 的 UTC ISO
+创建时间按严格解析后的同一 UTC 时刻比较；DLC mount 保留引擎日志顺序但仍要求白名单和不重复。旧 RED 已能原样公开回放，
+但修订改变 runtime 指纹，下一次尝试前必须重新提交、prepare，并取得新的同环境 ordinary/crash 双 GREEN。
+
 动作收据的独立格式契约是 `schemas/visible-control-action-receipt-v2.schema.json`；它描述可见控件执行器的审计收据，
 不是通用 `action-v1` 策略动作的迁移版本。
 
