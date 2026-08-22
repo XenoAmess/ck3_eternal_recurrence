@@ -114,6 +114,7 @@ class VisibleUiDriver:
         expected_language: str,
         expected_contract_sha256: str,
         durable_event_callback: Callable[[dict[str, object]], str],
+        allowed_controls: frozenset[str] | None = None,
     ) -> None:
         if contract.resolution != (2560, 1440):
             raise AgentError(f"unsupported UI resolution: {contract.resolution}")
@@ -122,11 +123,19 @@ class VisibleUiDriver:
             or contract.language != expected_language
         ):
             raise AgentError("UI contract game version or language differs")
-        require_canonical_phase_b_contract(contract, expected_contract_sha256)
         registered = frozenset(item.control_id for item in contract.controls)
-        if not registered <= self.PHASE_B_ALLOWED_CONTROLS:
+        if allowed_controls is None:
+            require_canonical_phase_b_contract(contract, expected_contract_sha256)
+            allowed_controls = self.PHASE_B_ALLOWED_CONTROLS
+        elif (
+            contract.source_sha256 != expected_contract_sha256
+            or not allowed_controls
+            or registered != allowed_controls
+        ):
+            raise AgentError("visible UI action contract or explicit allowlist differs")
+        if not registered <= allowed_controls:
             raise AgentError(
-                f"UI contract exceeds the Phase B action allowlist: {sorted(registered)!r}"
+                f"UI contract exceeds the action allowlist: {sorted(registered)!r}"
             )
         self.window = window
         self.contract = contract

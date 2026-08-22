@@ -48,6 +48,11 @@ def parser() -> argparse.ArgumentParser:
         help="click the unique visible New Game control and attest the bookmark lobby",
     )
     menu_parser.add_argument("--timeout", type=float, default=180)
+    opening_parser = commands.add_parser(
+        "opening-smoke",
+        help="select Robert in 1066, click Start, and reach the first pact event",
+    )
+    opening_parser.add_argument("--timeout", type=float, default=300)
     crash_parser = commands.add_parser(
         "crash-smoke",
         help="kill a post-resume supervisor and attest Job/watchdog recovery",
@@ -131,6 +136,10 @@ def main(argv: list[str] | None = None) -> int:
             from .menu_smoke import menu_smoke
 
             result = menu_smoke(spec, timeout_seconds=args.timeout)
+        elif args.command == "opening-smoke":
+            from .opening_smoke import opening_smoke
+
+            result = opening_smoke(spec, timeout_seconds=args.timeout)
         elif args.command == "crash-smoke":
             from .crash_probe import crash_smoke
 

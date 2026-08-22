@@ -89,12 +89,16 @@ class RepositoryContractTests(unittest.TestCase):
         paths = sorted((ROOT / "configs" / "ui").glob("*.json"))
         self.assertEqual(
             [path.name for path in paths],
-            ["ck3-1.19.0.6.zh-hans.2560x1440.json"],
+            [
+                "ck3-1.19.0.6.zh-hans.2560x1440.json",
+                "ck3-1.19.0.6.zh-hans.2560x1440.opening.json",
+            ],
         )
-        payload = json.loads(paths[0].read_text(encoding="utf-8"))
-        self.assertEqual(payload["game_version"], "1.19.0.6")
-        self.assertEqual(payload["language"], "l_simp_chinese")
-        self.assertEqual(payload["resolution"], [2560, 1440])
+        for path in paths:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(payload["game_version"], "1.19.0.6")
+            self.assertEqual(payload["language"], "l_simp_chinese")
+            self.assertEqual(payload["resolution"], [2560, 1440])
 
     def test_visible_v2_schemas_cover_the_current_producer_surface(self) -> None:
         observation = json.loads(

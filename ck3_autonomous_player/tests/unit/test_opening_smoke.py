@@ -1,0 +1,172 @@
+from __future__ import annotations
+
+import hashlib
+from pathlib import Path
+import sys
+import tempfile
+import time
+from types import SimpleNamespace
+import unittest
+from unittest import mock
+
+from PIL import Image
+
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "src"))
+
+from xar_autoplayer import cli  # noqa: E402
+from xar_autoplayer.control import VisibleUiDriver  # noqa: E402
+from xar_autoplayer.errors import AgentError  # noqa: E402
+from xar_autoplayer.opening_smoke import (  # noqa: E402
+    OPENING_ALLOWED_CONTROLS,
+    OPENING_CONTRACT,
+    _drive_opening,
+)
+from xar_autoplayer.vision import load_ui_contract  # noqa: E402
+from xar_autoplayer.vision.model import OcrSpan  # noqa: E402
+from xar_autoplayer.vision.ocr import normalize_visible_text  # noqa: E402
+
+
+def span(text: str, center: tuple[int, int], bbox: tuple[int, int, int, int]):
+    return OcrSpan(text, normalize_visible_text(text), 0.95, center, bbox)
+
+
+class OpeningContractTests(unittest.TestCase):
+    def test_contract_exposes_the_three_step_opening_and_pact_screen(self) -> None:
+        digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
+        contract = load_ui_contract(OPENING_CONTRACT, expected_sha256=digest)
+        self.assertEqual(
+            frozenset(item.control_id for item in contract.controls),
+            OPENING_ALLOWED_CONTROLS,
+        )
+        image = Image.new("RGB", contract.resolution, (0, 0, 0))
+        pact_spans = (
+            span("终末之契", (792, 401), (715, 378, 870, 424)),
+            span("又见面了，旅人。", (733, 471), (659, 460, 807, 483)),
+        )
+        self.assertEqual(contract.classify(pact_spans, image)[0], "pact_event")
+
+    def test_explicit_opening_allowlist_does_not_change_default_driver_policy(
+        self,
+    ) -> None:
+        digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
+        contract = load_ui_contract(OPENING_CONTRACT, expected_sha256=digest)
+        with tempfile.TemporaryDirectory() as temporary:
+            artifacts = Path(temporary) / "state" / "runs" / "run" / "artifacts"
+            artifacts.mkdir(parents=True)
+            driver = VisibleUiDriver(
+                mock.Mock(),
+                contract,
+                artifacts,
+                expected_game_version="1.19.0.6",
+                expected_language="l_simp_chinese",
+                expected_contract_sha256=digest,
+                durable_event_callback=lambda _event: "a" * 64,
+                allowed_controls=OPENING_ALLOWED_CONTROLS,
+            )
+            self.assertEqual(driver.registered_capabilities, OPENING_ALLOWED_CONTROLS)
+            with self.assertRaisesRegex(AgentError, "allowlist differs"):
+                VisibleUiDriver(
+                    mock.Mock(),
+                    contract,
+                    artifacts,
+                    expected_game_version="1.19.0.6",
+                    expected_language="l_simp_chinese",
+                    expected_contract_sha256=digest,
+                    durable_event_callback=lambda _event: "a" * 64,
+                    allowed_controls=frozenset({"main_menu.new_game"}),
+                )
+
+
+class OpeningScenarioTests(unittest.TestCase):
+    def test_scenario_clicks_new_game_robert_and_start_in_order(self) -> None:
+        digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary) / "state" / "runs" / "run"
+            artifacts = root / "artifacts"
+            artifacts.mkdir(parents=True)
+            contract = root / "opening-ui-contract.json"
+            contract.write_bytes(OPENING_CONTRACT.read_bytes())
+            events = root / "events.jsonl"
+            window = mock.Mock(pid=10, hwnd=20)
+            window.request_foreground_without_input.return_value = {
+                "status": "confirmed"
+            }
+            window.audit_binding.return_value = {"process": {"pid": 10}}
+            handle = SimpleNamespace(
+                process=mock.Mock(poll=mock.Mock(return_value=None))
+            )
+            controls = (
+                ("main_menu.new_game", "token-new", "bookmark_lobby"),
+                (
+                    "bookmark_lobby.select_robert",
+                    "token-robert",
+                    "bookmark_lobby",
+                ),
+                ("bookmark_lobby.start_game", "token-start", "pact_event"),
+            )
+            drivers = []
+            for index, (control_id, token, post_screen) in enumerate(controls):
+                driver = mock.Mock()
+                driver.observe_stable.return_value = SimpleNamespace(
+                    controls=(SimpleNamespace(control_id=control_id, token=token),)
+                )
+                driver.click_visible_control.return_value = {
+                    "action": {
+                        "control_id": control_id,
+                        "status": "confirmed",
+                        "receipt_artifact": f"artifacts/action-{index}.json",
+                        "send_input": {
+                            "requested": 2,
+                            "accepted": 2,
+                            "last_error": 0,
+                        },
+                        "result_observation_id": f"obs-{index}",
+                        "expected_post_screen": post_screen,
+                    },
+                    "observation": {
+                        "screen": post_screen,
+                        "observation_id": f"obs-{index}",
+                    },
+                }
+                drivers.append(driver)
+            with mock.patch(
+                "xar_autoplayer.vision.BoundGameWindow.bind_session",
+                return_value=window,
+            ), mock.patch(
+                "xar_autoplayer.control.VisibleUiDriver", side_effect=drivers
+            ) as driver_type:
+                result = _drive_opening(
+                    SimpleNamespace(
+                        game_exe=Path("ck3.exe"),
+                        expected_game_version="1.19.0.6",
+                    ),
+                    handle,
+                    {"display": {"language": "l_simp_chinese"}},
+                    artifacts,
+                    events,
+                    contract,
+                    digest,
+                    time.monotonic() + 30,
+                )
+            self.assertEqual(result["final_screen"], "pact_event")
+            self.assertEqual(
+                [item["control_id"] for item in result["actions"]],
+                [item[0] for item in controls],
+            )
+            self.assertEqual(driver_type.call_count, 3)
+            for driver, (_, token, _) in zip(drivers, controls):
+                driver.click_visible_control.assert_called_once()
+                self.assertEqual(
+                    driver.click_visible_control.call_args.args[0], token
+                )
+
+    def test_cli_exposes_opening_smoke(self) -> None:
+        args = cli.parser().parse_args(["opening-smoke"])
+        self.assertEqual(args.command, "opening-smoke")
+        self.assertEqual(args.timeout, 300)
+
+
+if __name__ == "__main__":
+    unittest.main()
