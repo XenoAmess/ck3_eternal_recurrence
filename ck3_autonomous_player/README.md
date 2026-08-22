@@ -44,8 +44,9 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   Draft 2020-12 在 GREEN/RED 回放中强制验证 observation 与 action receipt；其余策略 schema 的全面运行期验证和不可变
   episode store 仍属于 Phase E，不能把“JSON 可解析”称为已完成约束。
 
-尚未实现的关键能力：游戏规则页的视觉复核、正常 UI 新开局、事件/当铺/交易决策、HUD 状态抽取、战争与内政、
-保存续玩、自然死亡结算、episode 学习与多局优化。主菜单 smoke 只是基础设施证据，**不是有效得分局**。
+尚未实现的关键能力：游戏规则页的视觉复核、首个契约选项与后续当铺/交易决策、HUD 状态抽取、战争与内政、
+保存续玩、自然死亡结算、episode 学习与多局优化。opening smoke 已能合法新开局并看到首个契约事件，但仍未接受契约，
+因此**不是有效得分局**。
 
 当前加固候选还增加了两项基础能力：crash 路径已有历史本机 GREEN；纯视觉路径已完成离线 sealed lifecycle，仍未向真实 CK3
 发送输入：
@@ -75,6 +76,12 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   动作白名单精确只有主菜单【新游戏】，并显式禁止大厅【开始】。权威输入 WAL 位于本次 run 的主 `events.jsonl`，不是独立
   UI 日志。无害 Win32 helper 与离线截图回放已经通过；真实 CK3 已发生过一次目标内鼠标移动，但还没有提交按钮输入，不能据此
   声称已经完成菜单导航或能开局。
+
+上述段落保留 `menu-smoke` 的历史边界；功能性 `opening-smoke` 已在提交 `3a292c8`、环境
+`13496c86f545eee215a5adac679c027c05ad03d5f789b99fdee6b3c02e720221` 下取得首次真实 GREEN
+`20260822T095721Z-opening-019ba6a7`。它依次确认【新游戏】、1066 罗贝尔与【开始】三次动作均为
+`SendInput accepted=2/2`，最终两帧识别【终末之契】与【又见面了，旅人。】，随后完成 Job/tree/global inventory 清理。
+该 run 没有选择事件选项；下一功能切片是接受契约并确认当铺入口。
 
 提交 `226d80e` 曾在同一环境 `219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba`
 下通过 ordinary `20260822T005515Z-03f296c7` 与 post-resume crash
@@ -170,6 +177,7 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" smoke
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" crash-smoke
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" menu-smoke --timeout 180
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-smoke --timeout 300
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" recover-stale-control --run-id <finalized-RED-run-id>
 ```
 
@@ -235,8 +243,8 @@ memory: cross-run retrieval / constrained reflection / strategy experiments
 1. **Phase A（已完成）**：committed candidate 已连续三次通过 production、非 debug、单 mod 主菜单 isolation smoke；每次都保留
    非零引擎 diagnostics 的原始证据，且受保护存储在退出后回到同一语义 baseline。原生 Windows Job/句柄测试和两次启动期
    fail-closed RED 覆盖失败契约；加固 runtime 的 resume 后 supervisor 崩溃注入也已通过本机门禁。
-2. **Phase B（进行中）**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证，未知窗口 fail closed。主菜单到
-   稳定书签大厅的单动作 `menu-smoke` 已在真实 CK3 中 GREEN；下一竖切是选择 1066 罗贝尔、点击【开始】并视觉确认地图 HUD。
+2. **Phase B（进行中）**：纯视觉菜单/大厅/规则页/地图 HUD 驱动；点击必须有后置反证。真实 `opening-smoke` 已完成
+   主菜单 → 1066 罗贝尔 →【开始】→【终末之契】；下一竖切是选择接受契约并确认当铺/首轮垂青入口。
 3. Phase C：先完成“罗贝尔 1066 → 契约 → 当铺 → 首轮垂青 → 十年低风险经营 → 自然死亡结算”的首个合法竖切，
    再扩到多种角色类型的有效整局基线后退出本阶段。
 4. Phase D：婚育、议会、生活方式、建设、宣战理由、军队和领地的分层规划器。

@@ -129,7 +129,7 @@
 | 阶段 | 内容 | 退出标准 |
 |---|---|---|
 | A. 隔离环境（已完成） | 专用 CK3 用户目录、production mod、固定分辨率/语言、认证看门狗、环境与存储反证 | committed candidate 已连续三次只加载本 mod 到可见主菜单；原生 Job/句柄测试与启动期 fail-closed RED 覆盖当前失败契约 |
-| B. UI 驱动底座（进行中） | 窗口分类、OCR/像素反证、可靠点击、地图/HUD/事件通用恢复 | 首个单动作菜单竖切已完成离线 sealed lifecycle 与公开回放；真实 CK3 已移动过鼠标，但尚无按钮提交或书签页 GREEN |
+| B. UI 驱动底座（进行中） | 窗口分类、OCR/像素反证、可靠点击、地图/HUD/事件通用恢复 | `20260822T095721Z-opening-019ba6a7` 已真实完成三次按钮提交并到达首个【终末之契】；下一步处理契约选项与当铺入口 |
 | C. 合法基线玩家 | 固定规则策略完成开局、经营、事件、死亡和结算 | 至少完成多种角色类型的有效整局基线 |
 | D. 分层规划 | 增加战争、婚姻、领地、经济、生活方式、契约和交易决策 | 决策均有可审计状态输入和理由，分数不低于固定基线 |
 | E. 经验记忆与复盘 | episode schema、检索记忆、大模型局后复盘和策略版本化 | 新局能引用相关旧经验，错误经验可回滚和追踪来源 |
@@ -161,8 +161,8 @@
    把保守的 `ui_input_armed` 写入并 fsync 主 `events.jsonl`，紧邻移动前一次性消费 fresh lease。hover frame 再签发 5 秒
    `hover_click` lease，绑定同一 target、fresh lease 父授权和同一绝对 deadline；最终无 OCR、无落盘临界区紧邻 `SendInput` 前
    一次性消费它。任何 capture 完成时已越过 deadline 都拒绝；点击后的连续两帧后置观察只获得 deadline 剩余时间。
-5. 第一轮实机探索只探测并冻结大厅【游戏规则】、类别【游戏模式】、三个 production 规则卡与 Apply 的实际 bbox/文案。
-   在规则页尚未完成同卡标题—选项关联验证前，禁止点击大厅【开始】。
+5. `opening-smoke` 使用已冻结的隔离 profile 规则，已实测选择 1066 罗贝尔、点击【开始】并到达【终末之契】。
+   规则页视觉复核仍是独立待办，但不再阻塞这条功能竖切；下一步直接接首个契约选择和当铺入口。
 
 真实 Win32 helper-window 的 DPI、client/screen 坐标、Z-order、WMI 空路径与单批次 `SendInput` 已实测；固定 UI contract、
 截图、双帧 observation、receipt、hover/final patch 和主 `events.jsonl` 也已进入 menu report 与专用公开 validator。下一候选
@@ -253,12 +253,10 @@ RED 不能用一个布尔字段绕过进程、watchdog、控制文件、producti
 
 - 已完成候选：专用用户目录、存档隔离、非 debug production staging 单 mod 挂载；原六类基础 schema 加两份可见 UI schema；版本/mod/agent
   指纹、跨进程锁、认证 watchdog、Job 与单次 smoke 超时。
-- 部分完成：`menu-smoke` 已离线接通主菜单/书签双帧 OCR+像素分类、固定 UI contract、分阶段一次性授权、单批次点击、主链 WAL、
-  sealed 启停与 GREEN/RED 归档回放；无害 Win32 helper 已实测，真实 CK3 只发生过目标内鼠标移动，按钮提交仍为零。持续运行仍缺
-  磁盘、费用与重复失败预算。
-- 尚未实机接线：规则页、角色选择、HUD/事件通用状态机，以及独立 policy 进程与字段白名单。
-- 未开始：规则页/事件/HUD 的模板资产冻结；
-  开始游戏、处理事件、推进时间、死亡结算的最小合法策略；多角色固定基准；模型调用预算；带证据计数和版本回滚的策略记忆。
+- 已完成首个 opening 竖切：主菜单【新游戏】、1066 罗贝尔头像、【开始】三次真实按钮提交均为 2/2，最终视觉确认
+  【终末之契】并完成进程树清理。动态罗贝尔卡片、【开始】hover tooltip 与右下角 Chrome 通知均已有实机处理依据。
+- 尚未实机接线：契约选项、当铺/首轮垂青、规则页、通用 HUD/事件状态机，以及独立 policy 进程与字段白名单。
+- 未开始：推进时间、死亡结算的最小合法策略；多角色固定基准；模型调用预算；带证据计数和版本回滚的策略记忆。
 - Phase B 接入 policy 前的 crash 门禁已由 `20260821T220127Z-crash-adc0ac63` 本机 GREEN：完整 CK3 Job tree 回收、
   可做内部一致性重放的归档、真实 profile/Steam 的退出后语义 baseline 均通过；Workshop 只证明 descriptor 内容哈希与
   已注册 target 的 path/size/mtime 元数据在退出后一次 baseline 比较中相同。该门禁没有发送游戏输入，不能替代

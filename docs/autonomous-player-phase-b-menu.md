@@ -11,8 +11,12 @@ valid_score_episode = false
 growth100_lobby_adoption_proven = false
 ```
 
-它不选择角色、不打开规则页、不点击大厅【开始】，也不证明 Growth+100 已被大厅采用。任何未知窗口、遮罩、
+`menu-smoke` 本身不选择角色、不打开规则页、不点击大厅【开始】，也不证明 Growth+100 已被大厅采用。任何未知窗口、遮罩、
 OCR 歧义、焦点变化、进程身份变化或后置状态超时都会终止尝试；已经进入可能输入窗口后不得重试。
+
+功能性 `opening-smoke` 在该底座之上另有三动作白名单。2026-08-22 的 GREEN
+`20260822T095721Z-opening-019ba6a7` 已真实完成【新游戏】→1066 罗贝尔→【开始】，最终视觉确认【终末之契】；
+三份收据的 `SendInput.accepted` 均为 2，退出后 CK3 inventory 为空。它尚未选择契约选项，因此不是有效得分局。
 
 ## 固定信任边界
 
@@ -85,8 +89,8 @@ tree 复核均完成。这证明前台门禁确实阻止了误点，但不证明
 运行结束后的只读活体查询发现该窗口仍存在，title=`AlertWindow`、class=`HwndWrapper[...]`、`WS_EX_TOPMOST=true`，进程为
 Kaspersky `avpui.exe`，句柄查询到路径 `C:\Program Files (x86)\Kaspersky Lab\Kaspersky Internet Security 21.3\avpui.exe`。
 这些产品身份没有被不可变 run 归档；原报告只绑定 HWND 与矩形，因此它们只能作为高置信事故诊断，不能冒充历史验签字段。
-自主玩家不得自动关闭/点击该窗口，也不得照搬 acceptance runner 的通知白名单恢复；需要外部人工处理后，由新的 committed
-candidate、prepare 和同环境两项资格重新开始。
+自主玩家仍不得自动操作任意安全软件对话框；但用户已持续授权自动关闭右下角 Windows/Chrome/其他 Toast，且不得点击通知正文。
+`opening-smoke` 实机期间应直接保持 Chrome 退出，避免浏览器通知或窗口抢占 CK3 前台。
 
 提交 `38fd5fa` 引入 ordinary format v2 后，环境
 `75f8c6b0271d82183ba2d345a48e4a191e36ea2fd85d98b9a8d30327ce6c7367` 下的 ordinary
