@@ -25,7 +25,7 @@ from ..vision.classifier import (
 )
 from ..vision.model import Observation, OcrSpan, StableObservation, VisibleControl
 from ..vision.ocr import matching_spans, ocr_spans
-from ..vision.window import BoundGameWindow
+from ..vision.window import BoundGameWindow, ForegroundLossError
 
 
 _INPUT_MOUSE = 0
@@ -191,12 +191,20 @@ class VisibleUiDriver:
         ).encode("utf-8")
         return hmac.new(self._secret, payload, hashlib.sha256).hexdigest()
 
-    def _capture_observation_with_image(self) -> tuple[Observation, object]:
+    def _capture_observation_with_image(
+        self, expected_screen: str | None = None
+    ) -> tuple[Observation, object]:
         self._issued.clear()
         capture_started_at = _now()
         captured_monotonic = time.monotonic()
         self._capture_sequence += 1
-        image = self.window.capture()
+        try:
+            image = self.window.capture()
+        except ForegroundLossError as error:
+            raise error.with_context(
+                capture_sequence=self._capture_sequence,
+                expected_screen=expected_screen,
+            ) from error
         spans = ocr_spans(image)
         screen, confidence, reasons, anchors = self.contract.classify(spans, image)
         observation_id = uuid.uuid4().hex
@@ -273,8 +281,10 @@ class VisibleUiDriver:
         )
         return observation, image
 
-    def _capture_observation(self) -> Observation:
-        observation, _image = self._capture_observation_with_image()
+    def _capture_observation(
+        self, expected_screen: str | None = None
+    ) -> Observation:
+        observation, _image = self._capture_observation_with_image(expected_screen)
         return observation
 
     def _target_patch_bbox(
@@ -316,7 +326,7 @@ class VisibleUiDriver:
         hits = 0
         last: Observation | None = None
         while time.monotonic() < deadline:
-            last = self._capture_observation()
+            last = self._capture_observation(expected_screen)
             if last.screen != expected_screen:
                 hits = 0
                 prior = None
@@ -463,7 +473,7 @@ class VisibleUiDriver:
             result["durable_events"]["planned"] = planned_digest
             write_json_atomic(action_path, result)
             self.window.require_foreground()
-            fresh = self._capture_observation()
+            fresh = self._capture_observation(spec.screen)
             result["fresh_observation_id"] = fresh.observation_id
             result["fresh_observation"] = self._observation_evidence(fresh)
             if fresh.screen != before.screen or fresh.screen != spec.screen:
@@ -544,7 +554,7 @@ class VisibleUiDriver:
 
             # Hover can change UI or another window can steal focus. Recapture,
             # reclassify and relocate immediately before the input batch.
-            hover, hover_image = self._capture_observation_with_image()
+            hover, hover_image = self._capture_observation_with_image(spec.screen)
             result["hover_observation_id"] = hover.observation_id
             result["hover_observation"] = self._observation_evidence(hover)
             if hover.screen != before.screen:

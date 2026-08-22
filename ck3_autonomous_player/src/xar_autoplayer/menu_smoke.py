@@ -118,6 +118,11 @@ GREEN_EVENT_ORDER = (
     "postflight_attested",
     "smoke_finished",
 )
+RED_EVENT_ORDER = (
+    *GREEN_EVENT_ORDER[:10],
+    "foreground_lost",
+    *GREEN_EVENT_ORDER[10:],
+)
 
 
 def _validate_json_schema(instance: object, schema_path: Path, label: str) -> None:
@@ -300,6 +305,98 @@ def _publish_menu_provisional_report(
     ):
         report.pop(field, None)
     _write_final_report_transactionally(path, report)
+
+
+def _append_foreground_loss_event_transactionally(
+    events: Path, payload: dict[str, object]
+) -> tuple[str, dict[str, object]]:
+    """Publish one non-input loss row, reconciling committed-then-raise."""
+    before = validate_event_chain(events)
+    append_error: Exception | None = None
+    try:
+        digest = append_event(events, payload)
+    except Exception as error:
+        append_error = error
+        digest = ""
+    after = validate_event_chain(events)
+    tail = after.get("tail")
+    unsigned_tail = dict(tail) if isinstance(tail, dict) else {}
+    unsigned_tail.pop("at", None)
+    unsigned_tail.pop("previous_event_sha256", None)
+    unsigned_tail.pop("event_sha256", None)
+    if (
+        after.get("event_count") != int(before["event_count"]) + 1
+        or not isinstance(tail, dict)
+        or tail.get("previous_event_sha256") != before.get("tail_sha256")
+        or unsigned_tail != payload
+        or tail.get("event_sha256") != after.get("tail_sha256")
+        or (digest and digest != tail.get("event_sha256"))
+    ):
+        if append_error is not None:
+            raise append_error
+        raise AgentError("foreground-loss WAL row differs after append")
+    if append_error is not None:
+        try:
+            _fsync_existing_file(events)
+            durable = validate_event_chain(events)
+        except Exception as barrier_error:
+            raise append_error from barrier_error
+        if durable != after:
+            raise append_error
+    return str(tail["event_sha256"]), tail
+
+
+def _archive_foreground_loss(
+    error: object, artifacts: Path, events: Path
+) -> dict[str, object]:
+    """Bind immutable detection bytes to one artifact and the primary WAL."""
+    from .vision import ForegroundLossError
+
+    if not isinstance(error, ForegroundLossError):
+        raise AgentError("foreground-loss archive received a different error")
+    snapshot = error.snapshot
+    snapshot_id = str(snapshot.get("snapshot_id", ""))
+    if re.fullmatch(r"[0-9a-f]{32}", snapshot_id) is None:
+        raise AgentError("foreground-loss snapshot ID differs")
+    artifact = artifacts / f"foreground-loss-{snapshot_id}.json"
+    raw = error.snapshot_bytes + b"\n"
+    write_bytes_atomic(artifact, raw)
+    _fsync_existing_file(artifact)
+    relative = f"artifacts/{artifact.name}"
+    artifact_sha256 = sha256_file(artifact)
+    snapshot_sha256 = snapshot_digest(snapshot)
+    target = snapshot.get("target")
+    foreground = snapshot.get("foreground")
+    if not isinstance(target, dict) or not isinstance(foreground, dict):
+        raise AgentError("foreground-loss snapshot identity is missing")
+    payload = {
+        "kind": "foreground_lost",
+        "snapshot_id": snapshot_id,
+        "artifact_path": relative,
+        "artifact_sha256": artifact_sha256,
+        "artifact_size": len(raw),
+        "snapshot_sha256": snapshot_sha256,
+        "target_pid": target.get("pid"),
+        "target_hwnd": target.get("hwnd"),
+        "foreground_status": foreground.get("status"),
+        "foreground_root_hwnd": foreground.get("root_hwnd"),
+        "foreground_pid": foreground.get("pid"),
+        "checkpoint": snapshot.get("checkpoint"),
+        "synthetic_input": False,
+        "reusable_authorization": False,
+    }
+    event_sha256, _row = _append_foreground_loss_event_transactionally(
+        events, payload
+    )
+    return {
+        "format_version": 1,
+        "snapshot_id": snapshot_id,
+        "artifact_path": relative,
+        "artifact_sha256": artifact_sha256,
+        "artifact_size": len(raw),
+        "snapshot_sha256": snapshot_sha256,
+        "event_sha256": event_sha256,
+    }
 
 
 def _write_final_report_transactionally(
@@ -2417,6 +2514,430 @@ def _validate_foreground_events(
             raise AgentError("menu smoke navigation/foreground event binding differs")
 
 
+def _validate_foreground_loss_evidence(
+    report: dict[str, object],
+    rows: list[dict[str, object]],
+    verified: dict[str, Path],
+) -> None:
+    """Replay a detection-time foreground snapshot without live backfilling."""
+    loss_rows = [row for row in rows if row.get("kind") == "foreground_lost"]
+    loss_artifacts = [
+        relative
+        for relative in verified
+        if re.fullmatch(
+            r"artifacts/foreground-loss-[0-9a-f]{32}\.json", relative
+        )
+    ]
+    descriptor = report.get("foreground_loss")
+    if not loss_rows and not loss_artifacts and descriptor is None:
+        # Historical v1 RED reports predate typed loss evidence.
+        if report.get("error_type") == "ForegroundLossError":
+            raise AgentError(
+                "menu smoke typed foreground loss lacks its evidence set"
+            )
+        return
+    if (
+        len(loss_rows) != 1
+        or len(loss_artifacts) != 1
+        or not isinstance(descriptor, dict)
+        or set(descriptor)
+        != {
+            "format_version",
+            "snapshot_id",
+            "artifact_path",
+            "artifact_sha256",
+            "artifact_size",
+            "snapshot_sha256",
+            "event_sha256",
+        }
+        or descriptor.get("format_version") != 1
+        or report.get("error_type") != "ForegroundLossError"
+        or report.get("error")
+        != (
+            "runtime: ForegroundLossError: bound CK3 client lost "
+            "foreground; refusing input"
+        )
+    ):
+        raise AgentError("menu smoke foreground-loss evidence set differs")
+    row = loss_rows[0]
+    envelope = {"at", "previous_event_sha256", "event_sha256", "kind"}
+    if set(row) != envelope | {
+        "snapshot_id",
+        "artifact_path",
+        "artifact_sha256",
+        "artifact_size",
+        "snapshot_sha256",
+        "target_pid",
+        "target_hwnd",
+        "foreground_status",
+        "foreground_root_hwnd",
+        "foreground_pid",
+        "checkpoint",
+        "synthetic_input",
+        "reusable_authorization",
+    }:
+        raise AgentError("menu smoke foreground-loss event schema differs")
+    relative = descriptor.get("artifact_path")
+    if (
+        not isinstance(relative, str)
+        or relative != loss_artifacts[0]
+        or relative
+        != f"artifacts/foreground-loss-{descriptor.get('snapshot_id')}.json"
+        or relative not in verified
+        or row.get("artifact_path") != relative
+        or descriptor.get("event_sha256") != row.get("event_sha256")
+        or descriptor.get("snapshot_id") != row.get("snapshot_id")
+        or descriptor.get("artifact_sha256") != row.get("artifact_sha256")
+        or descriptor.get("artifact_size") != row.get("artifact_size")
+        or descriptor.get("snapshot_sha256") != row.get("snapshot_sha256")
+        or row.get("synthetic_input") is not False
+        or row.get("reusable_authorization") is not False
+    ):
+        raise AgentError("menu smoke foreground-loss report/event binding differs")
+    raw = verified[relative].read_bytes()
+    try:
+        snapshot = json.loads(raw.decode("utf-8"))
+    except (UnicodeError, json.JSONDecodeError) as error:
+        raise AgentError(
+            f"menu smoke foreground-loss artifact cannot be parsed: {error}"
+        ) from error
+    canonical = (
+        json.dumps(
+            snapshot,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        + b"\n"
+    )
+    if (
+        not isinstance(snapshot, dict)
+        or raw != canonical
+        or descriptor.get("artifact_sha256") != hashlib.sha256(raw).hexdigest()
+        or descriptor.get("artifact_size") != len(raw)
+        or descriptor.get("snapshot_sha256") != snapshot_digest(snapshot)
+    ):
+        raise AgentError("menu smoke foreground-loss artifact binding differs")
+    snapshot_keys = {
+        "format_version",
+        "kind",
+        "snapshot_id",
+        "observed_at",
+        "observed_monotonic_ns",
+        "checkpoint",
+        "capture_sequence",
+        "expected_screen",
+        "last_input_tick",
+        "instantaneous_observation_only",
+        "reusable_authorization",
+        "synthetic_input",
+        "target",
+        "foreground",
+    }
+    target = snapshot.get("target")
+    foreground = snapshot.get("foreground")
+    process = report.get("process")
+    if (
+        set(snapshot) != snapshot_keys
+        or snapshot.get("format_version") != 1
+        or snapshot.get("kind") != "foreground_loss_snapshot"
+        or not re.fullmatch(
+            r"[0-9a-f]{32}", str(snapshot.get("snapshot_id", ""))
+        )
+        or snapshot.get("snapshot_id") != descriptor.get("snapshot_id")
+        or snapshot.get("instantaneous_observation_only") is not True
+        or snapshot.get("reusable_authorization") is not False
+        or snapshot.get("synthetic_input") is not False
+        or type(snapshot.get("observed_monotonic_ns")) is not int
+        or snapshot["observed_monotonic_ns"] <= 0
+        or snapshot.get("checkpoint")
+        not in {
+            "foreground_guard",
+            "capture.pre_grab",
+            "capture.post_grab",
+            "capture_patch.pre_grab",
+            "capture_patch.post_grab",
+        }
+        or snapshot.get("expected_screen") not in {None, "main_menu", "bookmark_lobby"}
+        or (
+            snapshot.get("last_input_tick") is not None
+            and (
+                type(snapshot.get("last_input_tick")) is not int
+                or snapshot["last_input_tick"] < 0
+            )
+        )
+        or (
+            snapshot.get("capture_sequence") is not None
+            and (
+                type(snapshot.get("capture_sequence")) is not int
+                or snapshot["capture_sequence"] <= 0
+            )
+        )
+        or not isinstance(target, dict)
+        or not isinstance(foreground, dict)
+        or not isinstance(process, dict)
+    ):
+        raise AgentError("menu smoke foreground-loss snapshot contract differs")
+    try:
+        if re.fullmatch(
+            r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?\+00:00",
+            str(snapshot["observed_at"]),
+        ) is None:
+            raise ValueError("noncanonical UTC timestamp")
+        observed_at = datetime.fromisoformat(str(snapshot["observed_at"]))
+    except ValueError as error:
+        raise AgentError("menu smoke foreground-loss timestamp differs") from error
+    if observed_at.utcoffset() is None or observed_at.utcoffset().total_seconds() != 0:
+        raise AgentError("menu smoke foreground-loss timestamp differs")
+    try:
+        event_at = datetime.fromisoformat(str(row["at"]))
+    except ValueError as error:
+        raise AgentError("menu smoke foreground-loss event timestamp differs") from error
+    if event_at < observed_at:
+        raise AgentError("menu smoke foreground-loss event predates its snapshot")
+    target_keys = {
+        "pid",
+        "hwnd",
+        "thread_id",
+        "client_rect",
+        "executable",
+        "creation_date",
+        "identity_verified_before_sample",
+        "error",
+    }
+    finished = next(
+        (
+            event
+            for event in rows
+            if event.get("kind") == "foreground_activation_finished"
+        ),
+        None,
+    )
+    activation = finished.get("attestation") if isinstance(finished, dict) else None
+    target_thread = target.get("thread_id")
+    if (
+        set(target) != target_keys
+        or target.get("pid") != process.get("pid")
+        or target.get("hwnd") != row.get("target_hwnd")
+        or target.get("pid") != row.get("target_pid")
+        or target.get("creation_date") != process.get("creation_date")
+        or Path(str(target.get("executable", ""))).resolve()
+        != Path(str(process.get("executable", ""))).resolve()
+        or target.get("identity_verified_before_sample") is not True
+        or not isinstance(target.get("client_rect"), list)
+        or len(target["client_rect"]) != 4
+        or any(type(value) is not int for value in target["client_rect"])
+        or target["client_rect"][2] - target["client_rect"][0] != 2560
+        or target["client_rect"][3] - target["client_rect"][1] != 1440
+        or not isinstance(activation, dict)
+        or activation.get("target_pid") != target.get("pid")
+        or activation.get("target_hwnd") != target.get("hwnd")
+        or (
+            target_thread is not None
+            and (
+                type(target_thread) is not int
+                or target_thread <= 0
+                or target_thread != activation.get("target_thread_id")
+                or target.get("error") is not None
+            )
+        )
+        or (
+            target_thread is None
+            and not (
+                isinstance(target.get("error"), str) and target.get("error")
+            )
+        )
+    ):
+        raise AgentError("menu smoke foreground-loss target binding differs")
+    foreground_keys = {
+        "status",
+        "raw_hwnd",
+        "root_hwnd",
+        "thread_id",
+        "pid",
+        "class_name",
+        "rect",
+        "exstyle",
+        "topmost",
+        "visible",
+        "iconic",
+        "identity_revalidated",
+        "process_identity",
+        "error",
+    }
+    identity = foreground.get("process_identity")
+    if (
+        set(foreground) != foreground_keys
+        or type(foreground.get("raw_hwnd")) is not int
+        or foreground["raw_hwnd"] < 0
+        or type(foreground.get("root_hwnd")) is not int
+        or foreground["root_hwnd"] < 0
+        or foreground.get("root_hwnd") == target.get("hwnd")
+        or foreground.get("status") != row.get("foreground_status")
+        or foreground.get("root_hwnd") != row.get("foreground_root_hwnd")
+        or foreground.get("pid") != row.get("foreground_pid")
+        or snapshot.get("checkpoint") != row.get("checkpoint")
+        or not isinstance(identity, dict)
+        or set(identity)
+        != {
+            "status",
+            "pid",
+            "executable",
+            "creation_time_100ns",
+            "pin_method",
+            "error",
+        }
+    ):
+        raise AgentError("menu smoke foreground-loss observed binding differs")
+    if foreground.get("status") == "observed":
+        exstyle = foreground.get("exstyle")
+        if (
+            foreground.get("root_hwnd", 0) <= 0
+            or type(foreground.get("thread_id")) is not int
+            or foreground["thread_id"] <= 0
+            or type(foreground.get("pid")) is not int
+            or foreground["pid"] <= 0
+            or not isinstance(foreground.get("class_name"), str)
+            or not foreground["class_name"]
+            or not isinstance(foreground.get("rect"), list)
+            or len(foreground["rect"]) != 4
+            or any(type(value) is not int for value in foreground["rect"])
+            or type(exstyle) is not int
+            or foreground.get("topmost") is not bool(exstyle & 0x8)
+            or type(foreground.get("visible")) is not bool
+            or type(foreground.get("iconic")) is not bool
+            or foreground.get("error") is not None
+            or identity.get("pid") != foreground.get("pid")
+        ):
+            raise AgentError("menu smoke observed foreground identity differs")
+        if identity.get("status") == "proven":
+            if (
+                not isinstance(identity.get("executable"), str)
+                or not identity.get("executable")
+                or type(identity.get("creation_time_100ns")) is not int
+                or identity["creation_time_100ns"] <= 0
+                or identity.get("pin_method")
+                != "OpenProcess+GetProcessId+QueryFullProcessImageNameW+GetProcessTimes"
+                or identity.get("error") is not None
+                or foreground.get("identity_revalidated") is not True
+            ):
+                raise AgentError("menu smoke pinned foreground process differs")
+        elif identity.get("status") == "unknown":
+            if (
+                identity.get("executable") is not None
+                or identity.get("creation_time_100ns") is not None
+                or identity.get("pin_method") is not None
+                or not isinstance(identity.get("error"), str)
+                or not identity.get("error")
+                or foreground.get("identity_revalidated") is not False
+            ):
+                raise AgentError("menu smoke unknown foreground process differs")
+        else:
+            raise AgentError("menu smoke foreground process status differs")
+    elif foreground.get("status") == "unknown":
+        if (
+            any(
+                foreground.get(key) is not None
+                for key in (
+                    "thread_id",
+                    "pid",
+                    "class_name",
+                    "rect",
+                    "exstyle",
+                    "topmost",
+                    "visible",
+                    "iconic",
+                )
+            )
+            or foreground.get("identity_revalidated") is not False
+            or not isinstance(foreground.get("error"), str)
+            or not foreground.get("error")
+            or identity.get("status") != "unknown"
+            or identity.get("pid") is not None
+            or identity.get("executable") is not None
+            or identity.get("creation_time_100ns") is not None
+            or identity.get("pin_method") is not None
+            or not isinstance(identity.get("error"), str)
+            or not identity.get("error")
+        ):
+            raise AgentError("menu smoke unknown foreground identity differs")
+    else:
+        raise AgentError("menu smoke foreground-loss status differs")
+    observation_sequences: list[int] = []
+    for relative, path in verified.items():
+        if not relative.startswith("artifacts/") or not relative.endswith(
+            ".observation.json"
+        ):
+            continue
+        try:
+            observation = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise AgentError(
+                f"menu smoke foreground-loss observation cannot be parsed: {error}"
+            ) from error
+        private = (
+            observation.get("private_audit")
+            if isinstance(observation, dict)
+            else None
+        )
+        if not isinstance(private, dict):
+            continue
+        sequence = private.get("capture_sequence")
+        if (
+            type(sequence) is not int
+            or sequence <= 0
+            or sequence in observation_sequences
+        ):
+            raise AgentError(
+                "menu smoke foreground-loss observation sequence differs"
+            )
+        observation_sequences.append(sequence)
+        private_process = private.get("process")
+        if (
+            not isinstance(private_process, dict)
+            or private_process.get("pid") != target.get("pid")
+            or private_process.get("hwnd") != target.get("hwnd")
+            or private.get("client_rect") != target.get("client_rect")
+        ):
+            raise AgentError(
+                "menu smoke foreground-loss target/observation binding differs"
+            )
+    checkpoint = snapshot.get("checkpoint")
+    capture_sequence = snapshot.get("capture_sequence")
+    expected_screen = snapshot.get("expected_screen")
+    receipts = _action_receipts(verified)
+    if len(receipts) > 1:
+        raise AgentError(
+            "menu smoke foreground-loss capture stage has multiple receipts"
+        )
+    send_input = receipts[0].get("send_input") if receipts else None
+    if checkpoint in {"capture.pre_grab", "capture.post_grab"}:
+        derived_expected_screen = (
+            "bookmark_lobby"
+            if isinstance(send_input, dict) and send_input.get("accepted") == 2
+            else "main_menu"
+        )
+        if (
+            type(capture_sequence) is not int
+            or capture_sequence != max(observation_sequences, default=0) + 1
+            or expected_screen != derived_expected_screen
+        ):
+            raise AgentError("menu smoke foreground-loss capture context differs")
+    else:
+        if (
+            len(receipts) != 1
+            or not isinstance(send_input, dict)
+            or send_input.get("accepted") is not None
+        ):
+            raise AgentError(
+                "menu smoke foreground-loss action checkpoint differs"
+            )
+        if capture_sequence is not None or expected_screen is not None:
+            raise AgentError(
+                "menu smoke foreground-loss non-capture context differs"
+            )
+
+
 def _validate_shutdown_contract(
     report: dict[str, object], environment: dict[str, object]
 ) -> bool:
@@ -2553,6 +3074,7 @@ def _validate_success_payload(
     forbidden_failure_fields = {
         "error",
         "error_type",
+        "foreground_loss",
         "interrupted",
         "secondary_errors",
         "unsafe_cleanup",
@@ -2572,6 +3094,7 @@ def _validate_success_payload(
             .read_text(encoding="utf-8")
             .splitlines()
         ]
+    _validate_foreground_loss_evidence(report, event_rows, verified)
     postflight_rows = [
         row for row in event_rows if row.get("kind") == "postflight_attested"
     ]
@@ -2791,10 +3314,10 @@ def _validate_event_semantics(
             not kinds
             or kinds[0] != "smoke_started"
             or kinds[-1] != "smoke_finished"
-            or any(kind not in GREEN_EVENT_ORDER for kind in kinds)
+            or any(kind not in RED_EVENT_ORDER for kind in kinds)
             or len(kinds) != len(set(kinds))
-            or [GREEN_EVENT_ORDER.index(str(kind)) for kind in kinds]
-            != sorted(GREEN_EVENT_ORDER.index(str(kind)) for kind in kinds)
+            or [RED_EVENT_ORDER.index(str(kind)) for kind in kinds]
+            != sorted(RED_EVENT_ORDER.index(str(kind)) for kind in kinds)
         ):
             raise AgentError(f"menu smoke RED event order differs: {kinds!r}")
         kind_set = set(kinds)
@@ -2826,6 +3349,10 @@ def _validate_event_semantics(
             or (
                 "foreground_activation_finished" in kind_set
                 and "foreground_activation_armed" not in kind_set
+            )
+            or (
+                "foreground_lost" in kind_set
+                and "foreground_activation_finished" not in kind_set
             )
             or (
                 kind_set
@@ -3779,6 +4306,7 @@ def _validate_red_payload(
         )
     elif "single_mod_runtime_attested" in kinds:
         raise AgentError("menu smoke RED load event lacks its archived proof")
+    _validate_foreground_loss_evidence(report, rows, verified)
     _validate_red_ui_evidence(report, rows, verified, contract, environment)
     shutdown_present = "shutdown_attestation" in report
     cleanup = _validate_shutdown_contract(report, environment) if shutdown_present else False
@@ -4050,7 +4578,7 @@ def _run_menu_scenario(
     """Adapter point for the hardened visible driver supplied by launch-audit."""
     # Local imports avoid runtime -> executor -> runtime import recursion.
     from .control import VisibleUiDriver
-    from .vision import BoundGameWindow, load_ui_contract
+    from .vision import BoundGameWindow, ForegroundLossError, load_ui_contract
 
     display = manifest.get("display")
     if not isinstance(display, dict):
@@ -4116,33 +4644,53 @@ def _run_menu_scenario(
         expected_contract_sha256=contract_sha256,
         durable_event_callback=lambda event: append_event(events, event),
     )
-    before = driver.observe_stable(
-        "main_menu", _remaining(deadline, "stable visible main menu"), stable_frames=2
-    )
-    controls = [
-        control
-        for control in before.controls
-        if control.control_id == "main_menu.new_game"
-    ]
-    if len(before.controls) != 1 or len(controls) != 1:
-        raise AgentError("main menu did not expose the exact singleton New Game capability")
-    run_dir = artifacts.parent.resolve()
-    before_audit = _canonicalize_ui_artifact_references(
-        before.to_audit_evidence(), run_dir
-    )
-    append_event(
-        events,
-        {
-            "kind": "visible_main_menu_attested",
-            "contract_sha256": contract_sha256,
-            "observation_id": before.observation_id,
-            "frame_ids": [frame["frame_id"] for frame in before_audit["frames"]],
-        },
-    )
-    transition = driver.click_visible_control(
-        controls[0].token,
-        timeout_seconds=_remaining(deadline, "stable visible bookmark lobby"),
-    )
+    try:
+        before = driver.observe_stable(
+            "main_menu",
+            _remaining(deadline, "stable visible main menu"),
+            stable_frames=2,
+        )
+        controls = [
+            control
+            for control in before.controls
+            if control.control_id == "main_menu.new_game"
+        ]
+        if len(before.controls) != 1 or len(controls) != 1:
+            raise AgentError(
+                "main menu did not expose the exact singleton New Game capability"
+            )
+        run_dir = artifacts.parent.resolve()
+        before_audit = _canonicalize_ui_artifact_references(
+            before.to_audit_evidence(), run_dir
+        )
+        append_event(
+            events,
+            {
+                "kind": "visible_main_menu_attested",
+                "contract_sha256": contract_sha256,
+                "observation_id": before.observation_id,
+                "frame_ids": [
+                    frame["frame_id"] for frame in before_audit["frames"]
+                ],
+            },
+        )
+        transition = driver.click_visible_control(
+            controls[0].token,
+            timeout_seconds=_remaining(deadline, "stable visible bookmark lobby"),
+        )
+    except ForegroundLossError as error:
+        try:
+            evidence = _archive_foreground_loss(error, artifacts, events)
+        except BaseException as evidence_error:
+            try:
+                error.add_note(
+                    "foreground-loss evidence publication failed: "
+                    f"{type(evidence_error).__name__}: {evidence_error}"
+                )
+            except (AttributeError, TypeError):
+                pass
+            raise error
+        raise error.with_evidence(evidence) from error
     action = transition.get("action")
     after = transition.get("observation")
     if not isinstance(action, dict) or not isinstance(after, dict):
@@ -4603,6 +5151,12 @@ def _menu_smoke_locked(
             _remaining(deadline, "visible New Game transition"),
         )
     except BaseException as error:
+        from .vision import ForegroundLossError
+
+        if isinstance(error, ForegroundLossError):
+            report["foreground_loss"] = error.evidence or {
+                "status": "unavailable"
+            }
         record_error(error, "runtime")
     finally:
         if handle is not None:

@@ -51,6 +51,7 @@ from xar_autoplayer.menu_smoke import (  # noqa: E402
     UI_CONTRACT_AGENT_RUNTIME_PATH,
     UI_CONTRACT_ARCHIVE,
     UI_CONTRACT_REPOSITORY_RELATIVE,
+    _archive_foreground_loss,
     _archive_ui_contract,
     _archive_menu_qualification,
     _require_menu_qualification,
@@ -84,6 +85,7 @@ from xar_autoplayer.vision.model import (  # noqa: E402
     VisibleAnchor,
     VisibleControl,
 )
+from xar_autoplayer.vision.window import ForegroundLossError  # noqa: E402
 
 
 def stable_observation(screen: str, *, controls: bool, sequence: int) -> dict[str, object]:
@@ -162,6 +164,64 @@ def foreground_attestation(pid: int = 42, hwnd: int = 84) -> dict[str, object]:
         "foreground_pid_after": pid,
         "last_input_tick_after": 300,
         "observed_last_input_tick_unchanged": True,
+    }
+
+
+def foreground_loss_snapshot(
+    *,
+    pid: int = 42,
+    hwnd: int = 84,
+    executable: str = "C:/game/binaries/ck3.exe",
+    creation_date: str = "created",
+) -> dict[str, object]:
+    return {
+        "format_version": 1,
+        "kind": "foreground_loss_snapshot",
+        "snapshot_id": "f" * 32,
+        "observed_at": "2026-08-22T00:00:04+00:00",
+        "observed_monotonic_ns": 123456789,
+        "checkpoint": "capture.pre_grab",
+        "capture_sequence": 7,
+        "expected_screen": "main_menu",
+        "last_input_tick": 300,
+        "instantaneous_observation_only": True,
+        "reusable_authorization": False,
+        "synthetic_input": False,
+        "target": {
+            "pid": pid,
+            "hwnd": hwnd,
+            "thread_id": 100,
+            "client_rect": [0, 0, 2560, 1440],
+            "executable": executable,
+            "creation_date": creation_date,
+            "identity_verified_before_sample": True,
+            "error": None,
+        },
+        "foreground": {
+            "status": "observed",
+            "raw_hwnd": 900,
+            "root_hwnd": 900,
+            "thread_id": 901,
+            "pid": 902,
+            "class_name": "ExternalWindow",
+            "rect": [10, 20, 410, 320],
+            "exstyle": 8,
+            "topmost": True,
+            "visible": True,
+            "iconic": False,
+            "identity_revalidated": True,
+            "process_identity": {
+                "status": "proven",
+                "pid": 902,
+                "executable": "C:/external/app.exe",
+                "creation_time_100ns": 987654321,
+                "pin_method": (
+                    "OpenProcess+GetProcessId+QueryFullProcessImageNameW+GetProcessTimes"
+                ),
+                "error": None,
+            },
+            "error": None,
+        },
     }
 
 
@@ -1705,6 +1765,120 @@ def build_red_report(
 
 
 class ForegroundScenarioTests(unittest.TestCase):
+    def test_foreground_loss_artifact_barrier_failure_never_appends_wal(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-foreground-artifact-fail-"
+        ) as temporary:
+            run_dir = Path(temporary).resolve() / "run"
+            artifacts = run_dir / "artifacts"
+            artifacts.mkdir(parents=True)
+            events = run_dir / "events.jsonl"
+            for payload in (
+                {
+                    "kind": "foreground_activation_planned",
+                    "pid": 42,
+                    "hwnd": 84,
+                },
+                {
+                    "kind": "foreground_activation_armed",
+                    "pid": 42,
+                    "hwnd": 84,
+                },
+                {
+                    "kind": "foreground_activation_finished",
+                    "pid": 42,
+                    "hwnd": 84,
+                },
+            ):
+                append_event(events, payload)
+            error = ForegroundLossError("lost", foreground_loss_snapshot())
+            with mock.patch(
+                "xar_autoplayer.menu_smoke._fsync_existing_file",
+                side_effect=OSError("artifact fsync failed"),
+            ), self.assertRaisesRegex(OSError, "artifact fsync failed"):
+                _archive_foreground_loss(error, artifacts, events)
+            rows = [
+                json.loads(line)
+                for line in events.read_text(encoding="utf-8").splitlines()
+            ]
+            self.assertNotIn("foreground_lost", [row["kind"] for row in rows])
+            self.assertEqual(len(list(artifacts.glob("foreground-loss-*.json"))), 1)
+
+    def test_foreground_loss_committed_wal_is_archived_once_and_rethrown(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-menu-foreground-loss-") as temporary:
+            run_dir = Path(temporary).resolve() / "run"
+            artifacts = run_dir / "artifacts"
+            artifacts.mkdir(parents=True)
+            events = run_dir / "events.jsonl"
+            contract_archive = run_dir / "ui-contract.json"
+            contract_archive.write_text("{}\n", encoding="utf-8")
+            process = mock.Mock()
+            process.poll.return_value = None
+            handle = SimpleNamespace(process=process)
+            spec = SimpleNamespace(
+                game_exe=Path("C:/game/binaries/ck3.exe"),
+                expected_game_version="1.19.0.6",
+            )
+            window = mock.Mock(pid=42, hwnd=84)
+            window.request_foreground_without_input.return_value = (
+                foreground_attestation()
+            )
+            driver = mock.Mock()
+            driver.observe_stable.side_effect = ForegroundLossError(
+                "bound CK3 client lost foreground; refusing input",
+                foreground_loss_snapshot(),
+            )
+
+            def committed_then_raise(path: Path, payload: dict[str, object]) -> str:
+                digest = append_event(path, payload)
+                if payload.get("kind") == "foreground_lost":
+                    raise OSError("foreground loss WAL committed then raised")
+                return digest
+
+            with mock.patch(
+                "xar_autoplayer.vision.load_ui_contract", return_value=object()
+            ), mock.patch(
+                "xar_autoplayer.vision.BoundGameWindow.bind_session",
+                return_value=window,
+            ), mock.patch(
+                "xar_autoplayer.control.VisibleUiDriver", return_value=driver
+            ), mock.patch(
+                "xar_autoplayer.menu_smoke.append_event",
+                side_effect=committed_then_raise,
+            ):
+                with self.assertRaises(ForegroundLossError) as raised:
+                    _run_menu_scenario(
+                        spec,
+                        handle,
+                        {"display": {"language": "l_simp_chinese"}},
+                        artifacts,
+                        events,
+                        contract_archive,
+                        "a" * 64,
+                        1,
+                    )
+            evidence = raised.exception.evidence
+            self.assertIsInstance(evidence, dict)
+            self.assertEqual(evidence["snapshot_id"], "f" * 32)
+            rows = [
+                json.loads(line)
+                for line in events.read_text(encoding="utf-8").splitlines()
+            ]
+            self.assertEqual(
+                [row["kind"] for row in rows],
+                [
+                    "foreground_activation_planned",
+                    "foreground_activation_armed",
+                    "foreground_activation_finished",
+                    "foreground_lost",
+                ],
+            )
+            self.assertEqual(rows[-1]["event_sha256"], evidence["event_sha256"])
+            self.assertTrue(
+                (run_dir / str(evidence["artifact_path"])).is_file()
+            )
+            driver.click_visible_control.assert_not_called()
+
     def test_bound_foreground_failure_is_armed_once_and_never_retried(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-menu-foreground-") as temporary:
             run_dir = Path(temporary).resolve() / "run"
@@ -2014,6 +2188,358 @@ class MenuQualificationGenerationTests(unittest.TestCase):
 
 
 class MenuReportValidatorTests(unittest.TestCase):
+    @staticmethod
+    def _typed_foreground_loss_red(
+        run_dir: Path,
+        *,
+        process_identity_proven: bool = True,
+        foreground_observed: bool = True,
+        after_send_input: bool = False,
+    ) -> tuple[dict[str, object], dict[int, tuple[object, ...]]]:
+        report, replay = build_red_report(
+            run_dir,
+            (
+                "failed-after-input"
+                if after_send_input
+                else "foreground-completed-no-observation"
+            ),
+        )
+        rows = _event_payloads(run_dir)
+        activation = next(
+            row["attestation"]
+            for row in rows
+            if row["kind"] == "foreground_activation_finished"
+        )
+        events = run_dir / "events.jsonl"
+        events.unlink()
+        descriptor: dict[str, object] | None = None
+        for row in rows:
+            if row["kind"] == "tracked_process_stopped":
+                snapshot = foreground_loss_snapshot(
+                    pid=int(report["process"]["pid"]),
+                    hwnd=int(activation["target_hwnd"]),
+                    executable=str(report["process"]["executable"]),
+                    creation_date=str(report["process"]["creation_date"]),
+                )
+                if after_send_input:
+                    snapshot["expected_screen"] = "bookmark_lobby"
+                if not process_identity_proven:
+                    snapshot["foreground"]["identity_revalidated"] = False
+                    snapshot["foreground"]["process_identity"] = {
+                        "status": "unknown",
+                        "pid": 902,
+                        "executable": None,
+                        "creation_time_100ns": None,
+                        "pin_method": None,
+                        "error": "PermissionError: access denied",
+                    }
+                if not foreground_observed:
+                    snapshot["foreground"] = {
+                        "status": "unknown",
+                        "raw_hwnd": 900,
+                        "root_hwnd": 900,
+                        "thread_id": None,
+                        "pid": None,
+                        "class_name": None,
+                        "rect": None,
+                        "exstyle": None,
+                        "topmost": None,
+                        "visible": None,
+                        "iconic": None,
+                        "identity_revalidated": False,
+                        "process_identity": {
+                            "status": "unknown",
+                            "pid": None,
+                            "executable": None,
+                            "creation_time_100ns": None,
+                            "pin_method": None,
+                            "error": "foreground window identity changed while snapshotting",
+                        },
+                        "error": "foreground window identity changed while snapshotting",
+                    }
+                descriptor = _archive_foreground_loss(
+                    ForegroundLossError("lost foreground", snapshot),
+                    run_dir / "artifacts",
+                    events,
+                )
+            append_event(events, row)
+        if descriptor is None:
+            raise AssertionError("fixture did not place foreground-loss evidence")
+        report["foreground_loss"] = descriptor
+        report["error"] = (
+            "runtime: ForegroundLossError: bound CK3 client lost foreground; "
+            "refusing input"
+        )
+        report["error_type"] = "ForegroundLossError"
+        report["artifacts"] = _artifact_manifest(run_dir)
+        report["finalized"] = False
+        report["ok"] = False
+        body = _report_body_sha256(report)
+        report["report_body_sha256"] = body
+        report["final_event_sha256"] = append_event(
+            events,
+            {"kind": "smoke_finished", "ok": False, "report_body_sha256": body},
+        )
+        report["finalized"] = True
+        chain = validate_event_chain(events)
+        report["event_chain"] = {
+            "event_count": chain["event_count"],
+            "tail_sha256": chain["tail_sha256"],
+        }
+        write_json_atomic(run_dir / "report.json", report)
+        return report, replay
+
+    def test_public_validator_accepts_explicit_unknown_foreground_process_pin(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-unknown-foreground-process-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-unknownprocess"
+            )
+            _report, replay = self._typed_foreground_loss_red(
+                run_dir, process_identity_proven=False
+            )
+            validated = self._validate_strict(run_dir, replay)
+            self.assertFalse(validated["ok"])
+
+    def test_public_validator_accepts_fail_safe_unknown_window_snapshot(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-unknown-foreground-window-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-unknownwindow"
+            )
+            _report, replay = self._typed_foreground_loss_red(
+                run_dir, foreground_observed=False
+            )
+            validated = self._validate_strict(run_dir, replay)
+            self.assertFalse(validated["ok"])
+
+    def test_public_validator_binds_typed_foreground_loss_and_rejects_tamper(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-typed-foreground-loss-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-typedloss"
+            )
+            report, replay = self._typed_foreground_loss_red(run_dir)
+            validated = self._validate_strict(run_dir, replay)
+            self.assertFalse(validated["ok"])
+            report["error"] = "runtime: AgentError: forged different failure"
+            write_json_atomic(run_dir / "report.json", report)
+            _resign_after_artifact_mutation(run_dir)
+            with self.assertRaisesRegex(AgentError, "evidence set"):
+                self._validate_strict(run_dir, replay)
+            report = json.loads(
+                (run_dir / "report.json").read_text(encoding="utf-8")
+            )
+            report["error"] = (
+                "runtime: ForegroundLossError: bound CK3 client lost "
+                "foreground; refusing input"
+            )
+            write_json_atomic(run_dir / "report.json", report)
+            _resign_after_artifact_mutation(run_dir)
+            artifact = run_dir / str(report["foreground_loss"]["artifact_path"])
+            snapshot = json.loads(artifact.read_text(encoding="utf-8"))
+            snapshot["foreground"]["class_name"] = "ForgedWindow"
+            artifact.write_text(
+                json.dumps(
+                    snapshot,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            _resign_after_artifact_mutation(run_dir)
+            with self.assertRaisesRegex(AgentError, "foreground-loss"):
+                self._validate_strict(run_dir, replay)
+
+    def test_public_validator_binds_foreground_loss_event_and_canonical_filename(self) -> None:
+        def refinalize(
+            run_dir: Path,
+            report: dict[str, object],
+            rows: list[dict[str, object]],
+        ) -> None:
+            events = run_dir / "events.jsonl"
+            events.unlink()
+            for row in rows:
+                digest = append_event(events, row)
+                if row.get("kind") == "foreground_lost":
+                    report["foreground_loss"]["event_sha256"] = digest
+            report["artifacts"] = _artifact_manifest(run_dir)
+            report["finalized"] = False
+            report["ok"] = False
+            body = _report_body_sha256(report)
+            report["report_body_sha256"] = body
+            report["final_event_sha256"] = append_event(
+                events,
+                {"kind": "smoke_finished", "ok": False, "report_body_sha256": body},
+            )
+            report["finalized"] = True
+            chain = validate_event_chain(events)
+            report["event_chain"] = {
+                "event_count": chain["event_count"],
+                "tail_sha256": chain["tail_sha256"],
+            }
+            write_json_atomic(run_dir / "report.json", report)
+
+        for mutation in (
+            "event-path",
+            "filename-id",
+            "capture-sequence",
+            "expected-screen",
+            "post-input-phase",
+            "post-input-checkpoint",
+            "no-action-guard",
+            "no-action-patch",
+        ):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(
+                prefix=f"xar-menu-foreground-loss-{mutation}-"
+            ) as temporary:
+                run_dir = (
+                    Path(temporary).resolve()
+                    / f"20260822T000000Z-menu-{mutation.replace('-', '')}"
+                )
+                report, replay = self._typed_foreground_loss_red(
+                    run_dir,
+                    after_send_input=mutation
+                    in {"post-input-phase", "post-input-checkpoint"},
+                )
+                if mutation in {"post-input-phase", "post-input-checkpoint"}:
+                    self.assertFalse(self._validate_strict(run_dir, replay)["ok"])
+                rows = _event_payloads(run_dir)
+                loss_row = next(
+                    row for row in rows if row.get("kind") == "foreground_lost"
+                )
+                if mutation == "event-path":
+                    loss_row["artifact_path"] = (
+                        "artifacts/not-the-loss-artifact.json"
+                    )
+                elif mutation == "filename-id":
+                    old_relative = str(report["foreground_loss"]["artifact_path"])
+                    new_relative = f"artifacts/foreground-loss-{'e' * 32}.json"
+                    (run_dir / old_relative).rename(run_dir / new_relative)
+                    report["foreground_loss"]["artifact_path"] = new_relative
+                    loss_row["artifact_path"] = new_relative
+                else:
+                    relative = str(report["foreground_loss"]["artifact_path"])
+                    artifact = run_dir / relative
+                    snapshot = json.loads(artifact.read_text(encoding="utf-8"))
+                    if mutation == "capture-sequence":
+                        snapshot["capture_sequence"] = 999
+                    elif mutation == "expected-screen":
+                        snapshot["expected_screen"] = "bookmark_lobby"
+                    elif mutation == "post-input-phase":
+                        snapshot["expected_screen"] = "main_menu"
+                    elif mutation == "post-input-checkpoint":
+                        snapshot["checkpoint"] = "capture_patch.post_grab"
+                        snapshot["capture_sequence"] = None
+                        snapshot["expected_screen"] = None
+                    elif mutation == "no-action-guard":
+                        snapshot["checkpoint"] = "foreground_guard"
+                        snapshot["capture_sequence"] = None
+                        snapshot["expected_screen"] = None
+                    else:
+                        snapshot["checkpoint"] = "capture_patch.pre_grab"
+                        snapshot["capture_sequence"] = None
+                        snapshot["expected_screen"] = None
+                    artifact.write_bytes(
+                        (
+                            json.dumps(
+                                snapshot,
+                                ensure_ascii=False,
+                                sort_keys=True,
+                                separators=(",", ":"),
+                            )
+                            + "\n"
+                        ).encode("utf-8")
+                    )
+                    artifact_sha256 = sha256_file(artifact)
+                    snapshot_sha256 = snapshot_digest(snapshot)
+                    artifact_size = artifact.stat().st_size
+                    report["foreground_loss"].update(
+                        {
+                            "artifact_sha256": artifact_sha256,
+                            "artifact_size": artifact_size,
+                            "snapshot_sha256": snapshot_sha256,
+                        }
+                    )
+                    loss_row.update(
+                        {
+                            "artifact_sha256": artifact_sha256,
+                            "artifact_size": artifact_size,
+                            "snapshot_sha256": snapshot_sha256,
+                            "checkpoint": snapshot["checkpoint"],
+                        }
+                    )
+                refinalize(run_dir, report, rows)
+                with self.assertRaisesRegex(
+                    AgentError,
+                    (
+                        "foreground-loss capture context"
+                        if mutation
+                        in {
+                            "capture-sequence",
+                            "expected-screen",
+                            "post-input-phase",
+                        }
+                        else (
+                            "foreground-loss action checkpoint"
+                            if mutation
+                            in {
+                                "post-input-checkpoint",
+                                "no-action-guard",
+                                "no-action-patch",
+                            }
+                            else "foreground-loss report/event binding"
+                        )
+                    ),
+                ):
+                    self._validate_strict(run_dir, replay)
+
+    def test_public_validator_rejects_orphan_foreground_loss_event_and_artifact(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-orphan-foreground-loss-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-orphanloss"
+            )
+            report, replay = self._typed_foreground_loss_red(run_dir)
+            report.pop("foreground_loss")
+            write_json_atomic(run_dir / "report.json", report)
+            _resign_after_artifact_mutation(run_dir)
+            with self.assertRaisesRegex(AgentError, "evidence set"):
+                self._validate_strict(run_dir, replay)
+
+    def test_public_validator_rejects_typed_foreground_loss_without_evidence(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="xar-menu-typed-loss-without-evidence-"
+        ) as temporary:
+            run_dir = (
+                Path(temporary).resolve()
+                / "20260822T000000Z-menu-typeless"
+            )
+            _report, replay = build_red_report(
+                run_dir, "foreground-completed-no-observation"
+            )
+            report_path = run_dir / "report.json"
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            report["error"] = (
+                "runtime: ForegroundLossError: bound CK3 client lost "
+                "foreground; refusing input"
+            )
+            report["error_type"] = "ForegroundLossError"
+            write_json_atomic(report_path, report)
+            _resign_after_artifact_mutation(run_dir)
+            with self.assertRaisesRegex(AgentError, "lacks its evidence set"):
+                self._validate_strict(run_dir, replay)
+
     @staticmethod
     def _legacy_zero_input_red(
         run_dir: Path, *, retain_observations: bool = False
@@ -2562,6 +3088,12 @@ class MenuReportValidatorTests(unittest.TestCase):
             write_json_atomic(report_path, report)
             _resign_after_artifact_mutation(run)
 
+        def mutate_orphan_foreground_loss_artifact(run: Path) -> None:
+            (run / "artifacts" / f"foreground-loss-{'f' * 32}.json").write_text(
+                "{}\n", encoding="utf-8"
+            )
+            _resign_after_artifact_mutation(run)
+
         def mutate_forged_diagnostic(run: Path) -> None:
             report_path = run / "report.json"
             report = json.loads(report_path.read_text(encoding="utf-8"))
@@ -2683,6 +3215,9 @@ class MenuReportValidatorTests(unittest.TestCase):
 
         cases = {
             "missing-final-debug": mutate_missing_final_debug,
+            "green-orphan-foreground-loss-artifact": (
+                mutate_orphan_foreground_loss_artifact
+            ),
             "forged-diagnostic": mutate_forged_diagnostic,
             "honest-current-mod-diagnostic": mutate_honest_current_mod_diagnostic,
             "stale-empty-diagnostic": mutate_stale_empty_diagnostic,
@@ -2694,6 +3229,9 @@ class MenuReportValidatorTests(unittest.TestCase):
             ),
             "green-error": failure_field("error", "runtime: AgentError: forged"),
             "green-error-type": failure_field("error_type", "AgentError"),
+            "green-foreground-loss": failure_field(
+                "foreground_loss", {"status": "unavailable"}
+            ),
             "green-interrupted": failure_field("interrupted", True),
             "green-secondary-errors": failure_field(
                 "secondary_errors", ["postflight: forged"]

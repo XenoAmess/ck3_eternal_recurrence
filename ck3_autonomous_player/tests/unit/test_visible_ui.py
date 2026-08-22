@@ -42,7 +42,10 @@ from xar_autoplayer.vision.model import (  # noqa: E402
     VisibleControl,
 )
 from xar_autoplayer.vision.ocr import normalize_visible_text, ocr_spans  # noqa: E402
-from xar_autoplayer.vision.window import BoundGameWindow  # noqa: E402
+from xar_autoplayer.vision.window import (  # noqa: E402
+    BoundGameWindow,
+    ForegroundLossError,
+)
 
 
 UI_CONTRACT = (
@@ -371,6 +374,162 @@ class WindowBindingTests(unittest.TestCase):
         with mock.patch.object(BoundGameWindow, "require_foreground") as require:
             binding.acquire_foreground()
         require.assert_called_once_with()
+
+    def test_foreground_loss_freezes_one_read_only_observed_identity(self) -> None:
+        binding = self._foreground_binding()
+        fake_gui = types.SimpleNamespace(
+            GetForegroundWindow=mock.Mock(return_value=30),
+            IsWindow=mock.Mock(return_value=True),
+            GetClassName=mock.Mock(return_value="ExternalWindow"),
+            GetWindowRect=mock.Mock(return_value=(10, 20, 410, 320)),
+            GetWindowLong=mock.Mock(return_value=8),
+            IsWindowVisible=mock.Mock(return_value=True),
+            IsIconic=mock.Mock(return_value=False),
+        )
+        fake_process = types.SimpleNamespace(
+            GetWindowThreadProcessId=mock.Mock(
+                side_effect=lambda hwnd: (100, 10) if hwnd == 20 else (300, 30)
+            )
+        )
+        fake_api = types.SimpleNamespace(GetLastInputInfo=mock.Mock(return_value=777))
+
+        def pinned(pid: int, revalidate) -> tuple[dict[str, object], bool]:
+            self.assertEqual(pid, 30)
+            self.assertTrue(revalidate())
+            return (
+                {
+                    "status": "proven",
+                    "pid": 30,
+                    "executable": "C:/external/app.exe",
+                    "creation_time_100ns": 123456,
+                    "pin_method": (
+                        "OpenProcess+GetProcessId+QueryFullProcessImageNameW+GetProcessTimes"
+                    ),
+                    "error": None,
+                },
+                True,
+            )
+
+        with mock.patch.dict(
+            sys.modules,
+            {
+                "win32gui": fake_gui,
+                "win32process": fake_process,
+                "win32api": fake_api,
+            },
+        ), mock.patch.object(
+            BoundGameWindow, "verify", return_value={}
+        ), mock.patch(
+            "xar_autoplayer.vision.window._root_window", side_effect=lambda hwnd: hwnd
+        ), mock.patch(
+            "xar_autoplayer.vision.window._pinned_process_identity",
+            side_effect=pinned,
+        ):
+            with self.assertRaises(ForegroundLossError) as raised:
+                binding.require_foreground(checkpoint="capture.pre_grab")
+        snapshot = raised.exception.snapshot
+        self.assertEqual(snapshot["foreground"]["root_hwnd"], 30)
+        self.assertEqual(snapshot["foreground"]["class_name"], "ExternalWindow")
+        self.assertTrue(snapshot["foreground"]["topmost"])
+        self.assertEqual(snapshot["last_input_tick"], 777)
+        self.assertNotIn("title", snapshot["foreground"])
+        self.assertFalse(snapshot["synthetic_input"])
+        self.assertEqual(fake_gui.GetForegroundWindow.call_count, 2)
+
+    def test_capture_adds_sequence_context_without_mutating_loss_snapshot(self) -> None:
+        driver = object.__new__(VisibleUiDriver)
+        driver._issued = {}
+        driver._capture_sequence = 0
+        driver.window = mock.Mock()
+        original = {
+            "snapshot_id": "a" * 32,
+            "capture_sequence": None,
+            "expected_screen": None,
+        }
+        driver.window.capture.side_effect = ForegroundLossError("lost", original)
+        with self.assertRaises(ForegroundLossError) as raised:
+            driver._capture_observation("main_menu")
+        self.assertEqual(raised.exception.snapshot["capture_sequence"], 1)
+        self.assertEqual(raised.exception.snapshot["expected_screen"], "main_menu")
+        self.assertIsNone(original["capture_sequence"])
+
+    def test_foreground_process_pin_failure_is_explicit_unknown(self) -> None:
+        binding = self._foreground_binding()
+        fake_gui = types.SimpleNamespace(
+            GetForegroundWindow=mock.Mock(return_value=30),
+            IsWindow=mock.Mock(return_value=True),
+            GetClassName=mock.Mock(return_value="ExternalWindow"),
+            GetWindowRect=mock.Mock(return_value=(10, 20, 410, 320)),
+            GetWindowLong=mock.Mock(return_value=0),
+            IsWindowVisible=mock.Mock(return_value=True),
+            IsIconic=mock.Mock(return_value=False),
+        )
+        fake_process = types.SimpleNamespace(
+            GetWindowThreadProcessId=mock.Mock(
+                side_effect=lambda hwnd: (100, 10) if hwnd == 20 else (300, 30)
+            )
+        )
+        fake_api = types.SimpleNamespace(GetLastInputInfo=mock.Mock(return_value=777))
+        unknown = {
+            "status": "unknown",
+            "pid": 30,
+            "executable": None,
+            "creation_time_100ns": None,
+            "pin_method": None,
+            "error": "PermissionError: access denied",
+        }
+        with mock.patch.dict(
+            sys.modules,
+            {
+                "win32gui": fake_gui,
+                "win32process": fake_process,
+                "win32api": fake_api,
+            },
+        ), mock.patch.object(
+            BoundGameWindow, "verify", return_value={}
+        ), mock.patch(
+            "xar_autoplayer.vision.window._root_window", side_effect=lambda hwnd: hwnd
+        ), mock.patch(
+            "xar_autoplayer.vision.window._pinned_process_identity",
+            side_effect=[(unknown, None), (unknown, False)],
+        ):
+            with self.assertRaises(ForegroundLossError) as raised:
+                binding.require_foreground()
+            with self.assertRaises(ForegroundLossError) as changed:
+                binding.require_foreground()
+        foreground = raised.exception.snapshot["foreground"]
+        self.assertEqual(foreground["status"], "observed")
+        self.assertEqual(foreground["process_identity"], unknown)
+        self.assertFalse(foreground["identity_revalidated"])
+        changed_foreground = changed.exception.snapshot["foreground"]
+        self.assertEqual(changed_foreground["status"], "unknown")
+        self.assertIsNone(changed_foreground["pid"])
+        self.assertIsNone(changed_foreground["class_name"])
+
+    def test_foreground_api_failure_is_typed_unknown_not_fail_open(self) -> None:
+        binding = self._foreground_binding()
+        fake_gui = types.SimpleNamespace(
+            GetForegroundWindow=mock.Mock(side_effect=OSError("desktop unavailable"))
+        )
+        fake_process = types.SimpleNamespace(
+            GetWindowThreadProcessId=mock.Mock(return_value=(100, 10))
+        )
+        fake_api = types.SimpleNamespace(GetLastInputInfo=mock.Mock(return_value=777))
+        with mock.patch.dict(
+            sys.modules,
+            {
+                "win32gui": fake_gui,
+                "win32process": fake_process,
+                "win32api": fake_api,
+            },
+        ), mock.patch.object(BoundGameWindow, "verify", return_value={}):
+            with self.assertRaises(ForegroundLossError) as raised:
+                binding.require_foreground()
+        foreground = raised.exception.snapshot["foreground"]
+        self.assertEqual(foreground["status"], "unknown")
+        self.assertEqual(foreground["raw_hwnd"], 0)
+        self.assertEqual(foreground["root_hwnd"], 0)
+        self.assertIn("desktop unavailable", foreground["error"])
 
     @staticmethod
     def _foreground_binding() -> BoundGameWindow:

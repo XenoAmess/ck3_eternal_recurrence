@@ -6,10 +6,11 @@ from .classifier import (
     require_canonical_phase_b_contract,
 )
 from .model import Observation, OcrSpan, Rect, StableObservation
-from .window import BoundGameWindow
+from .window import BoundGameWindow, ForegroundLossError
 
 __all__ = [
     "BoundGameWindow",
+    "ForegroundLossError",
     "Observation",
     "OcrSpan",
     "Rect",

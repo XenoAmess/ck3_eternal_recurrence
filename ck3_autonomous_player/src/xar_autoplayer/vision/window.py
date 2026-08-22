@@ -3,14 +3,377 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
+import json
 import os
 from pathlib import Path
+import time
+import uuid
 
 from .model import Rect
 from ..errors import AgentError
 
 
 EXPECTED_CLIENT_SIZE = (2560, 1440)
+WS_EX_TOPMOST = 0x00000008
+
+
+class ForegroundLossError(AgentError):
+    """A foreground refusal carrying the immutable detection-time snapshot."""
+
+    def __init__(
+        self,
+        message: str,
+        snapshot: dict[str, object],
+        evidence: dict[str, object] | None = None,
+    ) -> None:
+        super().__init__(message)
+        self._snapshot_bytes = json.dumps(
+            snapshot,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        self._evidence_bytes = (
+            json.dumps(
+                evidence,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+            if evidence is not None
+            else None
+        )
+
+    @property
+    def snapshot(self) -> dict[str, object]:
+        value = json.loads(self._snapshot_bytes.decode("utf-8"))
+        if not isinstance(value, dict):  # pragma: no cover
+            raise AgentError("foreground-loss snapshot root differs")
+        return value
+
+    @property
+    def snapshot_bytes(self) -> bytes:
+        return self._snapshot_bytes
+
+    @property
+    def evidence(self) -> dict[str, object] | None:
+        if self._evidence_bytes is None:
+            return None
+        value = json.loads(self._evidence_bytes.decode("utf-8"))
+        return value if isinstance(value, dict) else None
+
+    def with_context(
+        self,
+        *,
+        capture_sequence: int | None,
+        expected_screen: str | None,
+    ) -> "ForegroundLossError":
+        snapshot = self.snapshot
+        if snapshot.get("capture_sequence") is not None:
+            raise AgentError("foreground-loss capture context is already frozen")
+        snapshot["capture_sequence"] = capture_sequence
+        snapshot["expected_screen"] = expected_screen
+        return ForegroundLossError(str(self), snapshot, self.evidence)
+
+    def with_evidence(
+        self, evidence: dict[str, object]
+    ) -> "ForegroundLossError":
+        if self.evidence is not None:
+            raise AgentError("foreground-loss evidence is already frozen")
+        return ForegroundLossError(str(self), self.snapshot, evidence)
+
+
+def _pinned_process_identity(
+    pid: int, revalidate: object
+) -> tuple[dict[str, object], bool | None]:
+    """Best-effort exact-handle identity for an arbitrary foreground owner."""
+    import ctypes
+    from ctypes import wintypes
+
+    unknown = {
+        "status": "unknown",
+        "pid": pid,
+        "executable": None,
+        "creation_time_100ns": None,
+        "pin_method": None,
+        "error": None,
+    }
+    handle = None
+    window_revalidated: bool | None = None
+    try:
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel32.OpenProcess.argtypes = (
+            wintypes.DWORD,
+            wintypes.BOOL,
+            wintypes.DWORD,
+        )
+        kernel32.OpenProcess.restype = wintypes.HANDLE
+        kernel32.CloseHandle.argtypes = (wintypes.HANDLE,)
+        kernel32.CloseHandle.restype = wintypes.BOOL
+        kernel32.GetProcessId.argtypes = (wintypes.HANDLE,)
+        kernel32.GetProcessId.restype = wintypes.DWORD
+        kernel32.QueryFullProcessImageNameW.argtypes = (
+            wintypes.HANDLE,
+            wintypes.DWORD,
+            wintypes.LPWSTR,
+            ctypes.POINTER(wintypes.DWORD),
+        )
+        kernel32.QueryFullProcessImageNameW.restype = wintypes.BOOL
+        kernel32.GetProcessTimes.argtypes = (
+            wintypes.HANDLE,
+            ctypes.POINTER(wintypes.FILETIME),
+            ctypes.POINTER(wintypes.FILETIME),
+            ctypes.POINTER(wintypes.FILETIME),
+            ctypes.POINTER(wintypes.FILETIME),
+        )
+        kernel32.GetProcessTimes.restype = wintypes.BOOL
+        handle = kernel32.OpenProcess(0x1000, False, pid)
+        if not handle:
+            raise OSError(ctypes.get_last_error(), "OpenProcess failed")
+        if int(kernel32.GetProcessId(handle)) != pid:
+            raise AgentError("foreground process handle PID differs")
+        size = wintypes.DWORD(32768)
+        buffer = ctypes.create_unicode_buffer(size.value)
+        if not kernel32.QueryFullProcessImageNameW(
+            handle, 0, buffer, ctypes.byref(size)
+        ):
+            raise OSError(
+                ctypes.get_last_error(), "QueryFullProcessImageNameW failed"
+            )
+        creation = wintypes.FILETIME()
+        exit_time = wintypes.FILETIME()
+        kernel = wintypes.FILETIME()
+        user = wintypes.FILETIME()
+        if not kernel32.GetProcessTimes(
+            handle,
+            ctypes.byref(creation),
+            ctypes.byref(exit_time),
+            ctypes.byref(kernel),
+            ctypes.byref(user),
+        ):
+            raise OSError(ctypes.get_last_error(), "GetProcessTimes failed")
+        try:
+            window_revalidated = bool(callable(revalidate) and revalidate())
+        except Exception:
+            window_revalidated = False
+            raise
+        if window_revalidated is not True:
+            raise AgentError("foreground window identity changed during process pin")
+        result = {
+            "status": "proven",
+            "pid": pid,
+            "executable": buffer.value,
+            "creation_time_100ns": (
+                (int(creation.dwHighDateTime) << 32)
+                | int(creation.dwLowDateTime)
+            ),
+            "pin_method": (
+                "OpenProcess+GetProcessId+QueryFullProcessImageNameW+GetProcessTimes"
+            ),
+            "error": None,
+        }
+        if not kernel32.CloseHandle(handle):
+            raise OSError(ctypes.get_last_error(), "CloseHandle failed")
+        handle = None
+        return result, window_revalidated
+    except BaseException as error:
+        if not isinstance(error, Exception):
+            raise
+        unknown["error"] = f"{type(error).__name__}: {error}"
+        return unknown, window_revalidated
+    finally:
+        if handle:
+            try:
+                if not kernel32.CloseHandle(handle):
+                    close_detail = (
+                        f"CloseHandle failed: {ctypes.get_last_error()}"
+                    )
+                    unknown["error"] = (
+                        f"{unknown['error']}; {close_detail}"
+                        if unknown.get("error")
+                        else close_detail
+                    )
+            except Exception as close_error:
+                close_detail = (
+                    f"CloseHandle raised: {type(close_error).__name__}: "
+                    f"{close_error}"
+                )
+                unknown["error"] = (
+                    f"{unknown['error']}; {close_detail}"
+                    if unknown.get("error")
+                    else close_detail
+                )
+
+
+def _foreground_loss_snapshot(
+    window: "BoundGameWindow",
+    *,
+    raw_hwnd: int,
+    root_hwnd: int,
+    checkpoint: str,
+    observed_at: str,
+    observed_monotonic_ns: int,
+    last_input_tick: int | None,
+    sample_error: str | None,
+) -> dict[str, object]:
+    """Enrich exactly one foreground sample without mutating the desktop."""
+    import win32gui
+    import win32process
+
+    foreground: dict[str, object] = {
+        "status": "unknown",
+        "raw_hwnd": raw_hwnd,
+        "root_hwnd": root_hwnd,
+        "thread_id": None,
+        "pid": None,
+        "class_name": None,
+        "rect": None,
+        "exstyle": None,
+        "topmost": None,
+        "visible": None,
+        "iconic": None,
+        "identity_revalidated": False,
+        "process_identity": {
+            "status": "unknown",
+            "pid": None,
+            "executable": None,
+            "creation_time_100ns": None,
+            "pin_method": None,
+            "error": "foreground HWND is unavailable",
+        },
+        "error": None,
+    }
+    target_thread: int | None = None
+    target_error: str | None = None
+    try:
+        thread, actual_pid = win32process.GetWindowThreadProcessId(window.hwnd)
+        if int(thread) <= 0 or int(actual_pid) != window.pid:
+            raise AgentError("bound CK3 target thread identity differs")
+        target_thread = int(thread)
+    except Exception as error:
+        target_error = f"{type(error).__name__}: {error}"
+    if not raw_hwnd or not root_hwnd:
+        foreground["error"] = (
+            sample_error or "GetForegroundWindow returned no root HWND"
+        )
+    else:
+        try:
+            thread, pid = win32process.GetWindowThreadProcessId(root_hwnd)
+            thread = int(thread)
+            pid = int(pid)
+            if thread <= 0 or pid <= 0 or not win32gui.IsWindow(root_hwnd):
+                raise AgentError("foreground root HWND identity is unavailable")
+            class_name = str(win32gui.GetClassName(root_hwnd))
+            if not class_name:
+                raise AgentError("foreground root HWND class is unavailable")
+            rect = [int(value) for value in win32gui.GetWindowRect(root_hwnd)]
+            exstyle = int(win32gui.GetWindowLong(root_hwnd, -20))
+            visible = bool(win32gui.IsWindowVisible(root_hwnd))
+            iconic = bool(win32gui.IsIconic(root_hwnd))
+            foreground.update(
+                {
+                    "status": "observed",
+                    "thread_id": thread,
+                    "pid": pid,
+                    "class_name": class_name,
+                    "rect": rect,
+                    "exstyle": exstyle,
+                    "topmost": bool(exstyle & WS_EX_TOPMOST),
+                    "visible": visible,
+                    "iconic": iconic,
+                    "error": None,
+                }
+            )
+
+            def revalidate() -> bool:
+                if int(win32gui.GetForegroundWindow()) != raw_hwnd:
+                    return False
+                if _root_window(raw_hwnd) != root_hwnd:
+                    return False
+                current_thread, current_pid = win32process.GetWindowThreadProcessId(
+                    root_hwnd
+                )
+                return bool(
+                    win32gui.IsWindow(root_hwnd)
+                    and int(current_thread) == thread
+                    and int(current_pid) == pid
+                    and str(win32gui.GetClassName(root_hwnd)) == class_name
+                    and [int(value) for value in win32gui.GetWindowRect(root_hwnd)]
+                    == rect
+                    and int(win32gui.GetWindowLong(root_hwnd, -20)) == exstyle
+                )
+
+            process_identity, window_revalidated = _pinned_process_identity(
+                pid, revalidate
+            )
+            if window_revalidated is None:
+                try:
+                    window_revalidated = revalidate()
+                except Exception:
+                    window_revalidated = False
+            if window_revalidated is not True:
+                foreground.update(
+                    {
+                        "status": "unknown",
+                        "thread_id": None,
+                        "pid": None,
+                        "class_name": None,
+                        "rect": None,
+                        "exstyle": None,
+                        "topmost": None,
+                        "visible": None,
+                        "iconic": None,
+                        "identity_revalidated": False,
+                        "process_identity": {
+                            "status": "unknown",
+                            "pid": None,
+                            "executable": None,
+                            "creation_time_100ns": None,
+                            "pin_method": None,
+                            "error": (
+                                "foreground window identity changed while "
+                                "snapshotting"
+                            ),
+                        },
+                        "error": (
+                            "foreground window identity changed while snapshotting"
+                        ),
+                    }
+                )
+            else:
+                foreground["process_identity"] = process_identity
+                foreground["identity_revalidated"] = (
+                    process_identity.get("status") == "proven"
+                )
+        except Exception as error:
+            foreground["status"] = "unknown"
+            foreground["error"] = f"{type(error).__name__}: {error}"
+    return {
+        "format_version": 1,
+        "kind": "foreground_loss_snapshot",
+        "snapshot_id": uuid.uuid4().hex,
+        "observed_at": observed_at,
+        "observed_monotonic_ns": observed_monotonic_ns,
+        "checkpoint": checkpoint,
+        "capture_sequence": None,
+        "expected_screen": None,
+        "last_input_tick": last_input_tick,
+        "instantaneous_observation_only": True,
+        "reusable_authorization": False,
+        "synthetic_input": False,
+        "target": {
+            "pid": window.pid,
+            "hwnd": window.hwnd,
+            "thread_id": target_thread,
+            "client_rect": list(window.client_rect),
+            "executable": window.executable,
+            "creation_date": window.creation_date,
+            "identity_verified_before_sample": True,
+            "error": target_error,
+        },
+        "foreground": foreground,
+    }
 
 
 def _client_rect(hwnd: int) -> Rect:
@@ -423,12 +786,42 @@ class BoundGameWindow:
             },
         }
 
-    def require_foreground(self) -> None:
+    def require_foreground(self, *, checkpoint: str = "foreground_guard") -> None:
+        import win32api
         import win32gui
 
         self.verify()
-        if _root_window(win32gui.GetForegroundWindow()) != self.hwnd:
-            raise AgentError("bound CK3 client lost foreground; refusing input")
+        observed_at = datetime.now(timezone.utc).isoformat()
+        observed_monotonic_ns = time.monotonic_ns()
+        sample_error: str | None = None
+        try:
+            raw_hwnd = int(win32gui.GetForegroundWindow())
+        except Exception as error:
+            raw_hwnd = 0
+            sample_error = f"{type(error).__name__}: {error}"
+        try:
+            last_input_tick: int | None = int(win32api.GetLastInputInfo())
+        except Exception:
+            last_input_tick = None
+        try:
+            root_hwnd = _root_window(raw_hwnd) if raw_hwnd else 0
+        except Exception as error:
+            root_hwnd = 0
+            sample_error = f"{type(error).__name__}: {error}"
+        if root_hwnd != self.hwnd:
+            raise ForegroundLossError(
+                "bound CK3 client lost foreground; refusing input",
+                _foreground_loss_snapshot(
+                    self,
+                    raw_hwnd=raw_hwnd,
+                    root_hwnd=root_hwnd,
+                    checkpoint=checkpoint,
+                    observed_at=observed_at,
+                    observed_monotonic_ns=observed_monotonic_ns,
+                    last_input_tick=last_input_tick,
+                    sample_error=sample_error,
+                ),
+            )
 
     def require_client_unobscured(self) -> None:
         """Reject every visible top-level window above and intersecting CK3."""
@@ -517,10 +910,10 @@ class BoundGameWindow:
     def capture(self) -> object:
         from PIL import ImageGrab
 
-        self.require_foreground()
+        self.require_foreground(checkpoint="capture.pre_grab")
         self.require_client_unobscured()
         image = ImageGrab.grab(bbox=self.client_rect, all_screens=True)
-        self.require_foreground()
+        self.require_foreground(checkpoint="capture.post_grab")
         self.require_client_unobscured()
         if image.size != EXPECTED_CLIENT_SIZE:
             raise AgentError(f"captured CK3 client has size {image.size}")
@@ -547,10 +940,10 @@ class BoundGameWindow:
             self.client_rect[0] + client_rect[2],
             self.client_rect[1] + client_rect[3],
         )
-        self.require_foreground()
+        self.require_foreground(checkpoint="capture_patch.pre_grab")
         self.require_client_unobscured()
         image = ImageGrab.grab(bbox=screen_rect, all_screens=True)
-        self.require_foreground()
+        self.require_foreground(checkpoint="capture_patch.post_grab")
         self.require_client_unobscured()
         expected_size = (
             client_rect[2] - client_rect[0],

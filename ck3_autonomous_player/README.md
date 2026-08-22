@@ -94,6 +94,25 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 protected/production postflight 完整。运行后的只读活体查询把 HWND 定位为 Kaspersky `avpui.exe` 的 WPF `AlertWindow`，但该
 身份没有被原 run 归档，只能作为事故诊断，不能升级为历史证明。自主玩家不会自动关闭或点击安全软件通知，同一 run/候选也不重试。
 
+提交 `38fd5fa` 把 ordinary 证据升级为 self-contained format v2；新环境
+`75f8c6b0271d82183ba2d345a48e4a191e36ea2fd85d98b9a8d30327ce6c7367` 下 ordinary
+`20260822T033531Z-9a595275` 与 crash `20260822T033759Z-crash-f289e776` 均通过公开回放。唯一一次菜单 run
+`20260822T034104Z-menu-49f9b8bd` 在输入前丢失前台并安全 RED：前台事务曾以 `already_foreground` 完成，随后两份
+2560×1440 全黑启动帧都通过 capture 前后 foreground/遮挡 guard，第三次 capture 的前或后 guard 才检测到丢焦。主链没有
+`visible_main_menu_attested`、任何 `ui_*`、navigation、action/receipt 或 `SendInput`，清理与 postflight 完整。该版本只保存了固定
+错误字符串，未保存失败瞬间的实际 foreground HWND/PID/TID，因此不能事后断言是外部进程、同 CK3 进程的另一 HWND 还是空前台；
+在补齐结构化 loss snapshot 前不得盲目重试。
+
+当前候选已补齐这条诊断链，但尚未据此再次启动 CK3：用于作出拒绝判定的同一次 foreground 样本会冻结
+`capture.pre_grab|capture.post_grab|foreground_guard|capture_patch.pre_grab|capture_patch.post_grab` checkpoint、
+capture sequence、UTC/monotonic、input tick、target HWND/PID/TID，以及 actual raw/root HWND、root HWND 对应的 PID/TID、class、
+rect、topmost。外部进程 image/creation 只有在持柄与窗口复核都成功时才标为 proven，
+否则显式记为 unknown；判定前仍沿用既有的只读 WMI/唯一窗口认证，但判定样本后的 enrichment 不读取窗口标题、
+不再做 WMI/全桌面枚举，也不激活、关闭、输入、sleep 或重试。快照 artifact 先单独 fsync，
+再写入主 `events.jsonl` 的唯一 `foreground_lost` WAL，并由 RED report/manifest/public validator 三向绑定。旧
+`49f9b8bd` 仍按无 typed snapshot 的历史 RED 原样回放；本次 runtime 变更同时使 `75f8...` 的两项 GREEN 只保留为历史证据，
+下一次唯一尝试仍须先提交、prepare-profile，并在新 environment 下重新取得 ordinary v2 与 crash GREEN。
+
 下一次输入资格只接受 self-contained format v2 ordinary GREEN；live 扫描与新 menu archive 都拒绝 v1。v1 仅为已经冻结、外层同样为
 RED 且没有任何 `ui_*` 输入 WAL、bookmark、navigation、action/receipt 的历史菜单 run 保留只读兼容；纯观察 PNG/JSON 可以保留，
 绝不能据此授权新输入。v2 最终报告先在同目录临时文件完成 flush/fsync，成功后才原子替换 provisional，避免 barrier 失败后留下

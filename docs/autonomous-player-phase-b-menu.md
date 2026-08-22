@@ -88,6 +88,25 @@ Kaspersky `avpui.exe`，句柄查询到路径 `C:\Program Files (x86)\Kaspersky 
 自主玩家不得自动关闭/点击该窗口，也不得照搬 acceptance runner 的通知白名单恢复；需要外部人工处理后，由新的 committed
 candidate、prepare 和同环境两项资格重新开始。
 
+提交 `38fd5fa` 引入 ordinary format v2 后，环境
+`75f8c6b0271d82183ba2d345a48e4a191e36ea2fd85d98b9a8d30327ce6c7367` 下的 ordinary
+`20260822T033531Z-9a595275` 与 crash `20260822T033759Z-crash-f289e776` 均公开回放 GREEN。唯一菜单 run
+`20260822T034104Z-menu-49f9b8bd` 仍在输入前安全 RED，但时序与前一次不同：foreground activation 在
+`2026-08-22T03:41:39.675959Z` 以 `already_foreground` 完成；随后两次 observation capture 的前后 foreground/unobscured guard
+均通过，归档画面却是逐像素全黑且 OCR 为空；第三次 capture 的前或后 guard 才发现丢焦。主链没有
+`visible_main_menu_attested`、任何 `ui_*`、bookmark、navigation、action/receipt 或 SendInput；Job、watchdog、control、双源 inventory、
+protected 与 production postflight 均通过。当前归档只证明“绑定 HWND 仍有效但已不是 foreground”，没有保存实际 raw/root foreground
+HWND、PID、TID 或检测 checkpoint，故不能从停机后的当前桌面反推历史抢焦者。原 run 永不重试；先增加 RED-only、只读、主链绑定的
+foreground-loss snapshot，再依据新证据选择方法。
+
+当前候选已实现这条 snapshot 链，尚未进行下一次真实菜单尝试。loss 判定冻结同一次 raw/root foreground 样本、
+`capture.pre_grab|capture.post_grab|foreground_guard|capture_patch.pre_grab|capture_patch.post_grab`、capture sequence、
+UTC/monotonic、input tick、target HWND/PID/TID，以及 actual raw/root HWND、root HWND 对应的 PID/TID、class、rect、topmost；
+外部进程 image/creation 只有持柄和 HWND 复核都成功才是 proven，否则为 unknown。判定前保留既有的只读 WMI/唯一窗口
+认证；判定样本后的 enrichment 明确不读窗口标题、不再做 WMI/全桌面枚举，也不激活、关闭、输入、sleep 或重试。canonical snapshot artifact 先 fsync，再发布唯一 `foreground_lost` 主 WAL；
+report/event/manifest/public validator 三向绑定，写入失败或孤儿证据会让 preseal 保持 provisional。旧 run 继续无回填兼容；代码指纹已变，
+所以下次 one-shot 前仍要在新提交/新 environment 下重新取得 ordinary v2 与 crash 两项资格。
+
 ## 一次性前台与输入协议
 
 唯一窗口出现后，前台获取本身也是一次性事务。场景先向主 `events.jsonl` 持久写入

@@ -195,6 +195,23 @@ live 菜单资格与新 menu archive 一律要求 v2；只有外层同样是 RED
 冻结历史 run 才能只读兼容 v1；纯观察 PNG/JSON 可以保留，但绝不据此授权输入。该深回放仍是无密钥 archive schema/内部一致性证明，
 不是历史真实性签名。
 
+提交 `38fd5fa` 随后生成首份 self-contained ordinary v2 资格：环境
+`75f8c6b0271d82183ba2d345a48e4a191e36ea2fd85d98b9a8d30327ce6c7367`，ordinary
+`20260822T033531Z-9a595275`，crash `20260822T033759Z-crash-f289e776`。两者公开重放均 GREEN 后，只执行了一次
+`20260822T034104Z-menu-49f9b8bd`。该 run 的 foreground transaction 为 `already_foreground`，没有 SetForeground/attach/合成输入；
+两次已归档观察均是通过前后窗口 guard 的 2560×1440 全黑启动帧，第三次采集的前或后 guard 才报 foreground lost。事件链没有 visible 主菜单、
+`ui_*`、navigation、action/receipt 或 SendInput，退出清理与 postflight 完整。旧异常只含字符串，无法把丢焦绑定到实际 HWND/PID/TID；
+这项未知必须由下一提交的只读瞬时 snapshot 闭合，而不是以延时或再次抢前台猜测性重试。
+
+当前实现已经把该 snapshot 接入 sealed lifecycle，但尚未用它执行新的真实 CK3 run。`require_foreground()` 以作出拒绝判定的
+同一次 raw foreground 样本为根，冻结 guard checkpoint、capture sequence、UTC/monotonic、input tick、target HWND/PID/TID，
+以及 actual raw/root HWND、root HWND 对应的 PID/TID、class、rect、topmost。actual process 的 image/creation 只在 `OpenProcess` 持柄和 HWND 身份复核都成功时
+标为 proven，查询或复核失败一律保留 unknown；判定前仍运行既有的只读 WMI/唯一窗口认证，判定样本后的 enrichment
+不读取标题、不再调用 WMI/桌面枚举，也不激活/关闭/输入/等待/重试。canonical
+artifact 经独立 fsync 后才发布唯一 `foreground_lost` 主 WAL，report、event、artifact manifest 与 public RED replay 逐字段绑定。
+若 artifact/WAL 发布代际不确定，preseal 保持 provisional，不能伪装成可回放 finalized RED。历史 `49f9b8bd` 继续按旧无快照档
+兼容，绝不回填停机后的桌面状态。
+
 动作收据的独立格式契约是 `schemas/visible-control-action-receipt-v2.schema.json`；它描述可见控件执行器的审计收据，
 不是通用 `action-v1` 策略动作的迁移版本。
 
