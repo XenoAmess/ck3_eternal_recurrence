@@ -62,6 +62,7 @@ class ControlSpec:
     contains: bool = False
     hover_tolerance_px: int = 3
     click_offset_px: tuple[int, int] = (0, 0)
+    click_hold_seconds: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -462,7 +463,12 @@ def load_ui_contract(
                 "post_screen",
                 "risk",
             },
-            {"contains", "hover_tolerance_px", "click_offset_px"},
+            {
+                "contains",
+                "hover_tolerance_px",
+                "click_offset_px",
+                "click_hold_seconds",
+            },
             f"control[{control_index}]",
         )
         hover_tolerance = item.get("hover_tolerance_px", 3)
@@ -478,6 +484,13 @@ def load_ui_contract(
             )
         ):
             raise AgentError("UI contract click offset is invalid")
+        click_hold = item.get("click_hold_seconds", 0.0)
+        if (
+            isinstance(click_hold, bool)
+            or not isinstance(click_hold, (int, float))
+            or not 0 <= float(click_hold) <= 0.25
+        ):
+            raise AgentError("UI contract click hold duration is invalid")
         controls_list.append(
             ControlSpec(
                 control_id=_text(item["control_id"], "control_id"),
@@ -496,6 +509,7 @@ def load_ui_contract(
                 click_offset_px=(
                     int(click_offset_raw[0]), int(click_offset_raw[1])
                 ),
+                click_hold_seconds=float(click_hold),
             )
         )
     controls = tuple(controls_list)

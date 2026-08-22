@@ -1336,6 +1336,19 @@ class UiDriverSafetyTests(unittest.TestCase):
         self.assertEqual(records[0].mi.dwFlags, _MOUSEEVENTF_LEFTDOWN)
         self.assertEqual(records[1].mi.dwFlags, _MOUSEEVENTF_LEFTUP)
 
+    def test_deliberate_click_holds_between_down_and_up(self) -> None:
+        send_input = mock.Mock(side_effect=[1, 1])
+        user32 = types.SimpleNamespace(SendInput=send_input)
+        with mock.patch(
+            "xar_autoplayer.control.executor.ctypes.WinDLL", return_value=user32
+        ), mock.patch("xar_autoplayer.control.executor.time.sleep") as sleep:
+            submit = _prepare_left_click_batch(0.12)
+            self.assertEqual(submit(), (2, 0))
+        self.assertEqual(send_input.call_count, 2)
+        self.assertEqual(send_input.call_args_list[0].args[0], 1)
+        self.assertEqual(send_input.call_args_list[1].args[0], 1)
+        sleep.assert_called_once_with(0.12)
+
     def test_anchor_motion_prevents_false_two_frame_stability(self) -> None:
         driver = object.__new__(VisibleUiDriver)
         first = observation(

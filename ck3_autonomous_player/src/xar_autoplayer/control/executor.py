@@ -54,8 +54,18 @@ class _INPUT(ctypes.Structure):
     _fields_ = (("type", wintypes.DWORD), ("value", _INPUT_VALUE))
 
 
-def _prepare_left_click_batch() -> Callable[[], tuple[int, int]]:
-    """Prepare one LEFTDOWN+LEFTUP SendInput call outside the final guard."""
+def _prepare_left_click_batch(
+    hold_seconds: float = 0.0,
+) -> Callable[[], tuple[int, int]]:
+    """Prepare an immediate or deliberately held left click."""
+    if (
+        isinstance(hold_seconds, bool)
+        or not isinstance(hold_seconds, (int, float))
+        or not math.isfinite(float(hold_seconds))
+        or not 0 <= float(hold_seconds) <= 0.25
+    ):
+        raise AgentError("visible click hold duration is invalid")
+    hold_seconds = float(hold_seconds)
     records = (_INPUT * 2)()
     records[0].type = _INPUT_MOUSE
     records[0].mi.dwFlags = _MOUSEEVENTF_LEFTDOWN
@@ -68,6 +78,23 @@ def _prepare_left_click_batch() -> Callable[[], tuple[int, int]]:
     send_input.restype = wintypes.UINT
 
     def submit() -> tuple[int, int]:
+        if hold_seconds:
+            sent_down = int(send_input(1, records, ctypes.sizeof(_INPUT)))
+            if sent_down != 1:
+                return sent_down, int(ctypes.get_last_error())
+            time.sleep(hold_seconds)
+            sent_up = int(
+                send_input(
+                    1,
+                    ctypes.cast(
+                        ctypes.byref(records, ctypes.sizeof(_INPUT)),
+                        ctypes.POINTER(_INPUT),
+                    ),
+                    ctypes.sizeof(_INPUT),
+                )
+            )
+            error = ctypes.get_last_error() if sent_up != 1 else 0
+            return sent_down + sent_up, int(error)
         sent = int(send_input(2, records, ctypes.sizeof(_INPUT)))
         error = ctypes.get_last_error() if sent != 2 else 0
         return sent, int(error)
@@ -766,7 +793,7 @@ class VisibleUiDriver:
             import pyautogui
 
             pyautogui.FAILSAFE = True
-            submit_left_click = _prepare_left_click_batch()
+            submit_left_click = _prepare_left_click_batch(spec.click_hold_seconds)
             screen_point = (
                 self.window.client_rect[0] + click_point[0],
                 self.window.client_rect[1] + click_point[1],

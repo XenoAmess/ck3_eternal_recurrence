@@ -49,6 +49,10 @@ class OpeningContractTests(unittest.TestCase):
             (0, -130),
         )
         self.assertEqual(
+            contract.control("bookmark_lobby.select_robert").click_hold_seconds,
+            0.12,
+        )
+        self.assertEqual(
             contract.control("bookmark_lobby.start_game").hover_tolerance_px,
             3,
         )

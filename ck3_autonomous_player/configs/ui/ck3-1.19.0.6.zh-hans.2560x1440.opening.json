@@ -104,7 +104,8 @@
       "post_screen": "bookmark_lobby_selected",
       "risk": "reversible",
       "hover_tolerance_px": 10,
-      "click_offset_px": [0, -130]
+      "click_offset_px": [0, -130],
+      "click_hold_seconds": 0.12
     },
     {
       "control_id": "bookmark_lobby.start_game",
