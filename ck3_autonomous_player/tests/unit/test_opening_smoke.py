@@ -30,6 +30,8 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _extract_map_date,
     _extract_lifestyle_state,
     _extract_player_character_state,
+    _generic_event_in_frame,
+    _same_generic_event,
     _score_first_blessing,
     _score_first_curse,
 )
@@ -164,7 +166,7 @@ class OpeningContractTests(unittest.TestCase):
         running_spans = (
             map_spans[1],
             span(
-                "公元1066年9月16日",
+                "公元1067年1月2日",
                 (2180, 1419),
                 (2078, 1405, 2283, 1433),
             ),
@@ -308,6 +310,37 @@ class OpeningContractTests(unittest.TestCase):
         )
         self.assertEqual((state["year"], state["month"], state["day"]), (1066, 9, 18))
         self.assertEqual(state["source_observation_id"], "observation-date")
+
+    def test_generic_event_detector_finds_stable_native_option_lane(self) -> None:
+        def observation(sequence: int, y_offset: int = 0):
+            return SimpleNamespace(
+                observation_id=f"event-{sequence}",
+                capture_sequence=sequence,
+                client_rect=(0, 0, 2560, 1440),
+                spans=(
+                    span("怀孕！", (764, 402 + y_offset), (717, 380, 812, 424)),
+                    span(
+                        "命运对我微笑！我的妻子怀上了我的孩子。",
+                        (904, 470),
+                        (624, 459, 1185, 482),
+                    ),
+                    span(
+                        "我等不及要将小婴儿抱在怀里了！",
+                        (932, 1043 + y_offset),
+                        (794, 1032, 1070, 1055),
+                    ),
+                    span("政治地图", (2449, 1180), (2409, 1168, 2490, 1192)),
+                ),
+            )
+
+        first = _generic_event_in_frame(observation(7))
+        second = _generic_event_in_frame(observation(8, 2))
+        self.assertIsNotNone(first)
+        self.assertIsNotNone(second)
+        self.assertTrue(_same_generic_event(first, second))
+        self.assertEqual(first["title"], "怀孕！")
+        self.assertEqual(first["options"][0]["option_number"], 1)
+        self.assertIn("小婴儿", first["options"][0]["visible_text"])
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (
@@ -543,6 +576,7 @@ class OpeningScenarioTests(unittest.TestCase):
                     screen=source_screens[control_id],
                     observation_id=f"before-{index}",
                     controls=(visible_control,),
+                    frames=(),
                     latest=SimpleNamespace(
                         spans=(span(visible_text, (940, 875), bbox),)
                     ),
@@ -733,6 +767,32 @@ class OpeningScenarioTests(unittest.TestCase):
                     to_policy_json=(lambda payload=curse_after_policy: dict(payload)),
                 ),
             )
+            event_driver = mock.Mock()
+
+            def event_frame(sequence: int, y_offset: int = 0):
+                return SimpleNamespace(
+                    observation_id=f"ordinary-event-{sequence}",
+                    capture_sequence=sequence,
+                    client_rect=(0, 0, 2560, 1440),
+                    spans=(
+                        span(
+                            "怀孕！",
+                            (764, 402 + y_offset),
+                            (717, 380, 812, 424),
+                        ),
+                        span(
+                            "我等不及要将小婴儿抱在怀里了！",
+                            (932, 1043 + y_offset),
+                            (794, 1032, 1070, 1055),
+                        ),
+                    ),
+                )
+
+            event_driver.capture_once.side_effect = (
+                event_frame(1),
+                event_frame(2, 2),
+            )
+            drivers.insert(16, event_driver)
             submit_key = mock.Mock(return_value=(2, 0))
             submit_chord = mock.Mock(return_value=(4, 0))
             with mock.patch(
@@ -764,9 +824,10 @@ class OpeningScenarioTests(unittest.TestCase):
                 [item["control_id"] for item in result["actions"]],
                 [item[0] for item in controls[:8]]
                 + ["player_character.close"]
-                + [item[0] for item in controls[8:]],
+                + [item[0] for item in controls[8:-1]]
+                + ["ordinary_event.option_1", controls[-1][0]],
             )
-            self.assertEqual(driver_type.call_count, 17)
+            self.assertEqual(driver_type.call_count, 18)
             initial_observation_timeout = drivers[0].observe_stable.call_args.args[1]
             self.assertGreater(initial_observation_timeout, 119.0)
             self.assertLessEqual(
@@ -783,7 +844,7 @@ class OpeningScenarioTests(unittest.TestCase):
                     controls[control_index][1],
                     timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
                 )
-            for index in (3, 4, 5, 6, 7, 8, 12, 13, 14, 15, 16):
+            for index in (3, 4, 5, 6, 7, 8, 12, 13, 14, 15, 16, 17):
                 drivers[index].click_visible_control.assert_not_called()
             self.assertEqual(
                 [call.args[0] for call in prepare_key.call_args_list],
@@ -791,10 +852,16 @@ class OpeningScenarioTests(unittest.TestCase):
             )
             self.assertEqual(
                 [call.args for call in prepare_chord.call_args_list],
-                [(0x2A, 0x02), (0x2A, 0x02), (0x2A, 0x02), (0x2A, 0x03)],
+                [
+                    (0x2A, 0x02),
+                    (0x2A, 0x02),
+                    (0x2A, 0x02),
+                    (0x2A, 0x03),
+                    (0x2A, 0x02),
+                ],
             )
             self.assertEqual(submit_key.call_count, 7)
-            self.assertEqual(submit_chord.call_count, 4)
+            self.assertEqual(submit_chord.call_count, 5)
             event_rows = [
                 json.loads(line)
                 for line in events.read_text(encoding="utf-8").splitlines()
@@ -816,6 +883,7 @@ class OpeningScenarioTests(unittest.TestCase):
                     "escape",
                     "5",
                     "space",
+                    "shift+1",
                     "space",
                 ],
             )
@@ -824,13 +892,17 @@ class OpeningScenarioTests(unittest.TestCase):
             self.assertTrue(result["player_character_state"]["spouse_visible"])
             self.assertTrue(result["player_character_state"]["player_heir_visible"])
             self.assertEqual(result["lifestyle_state"]["focus"], "权威")
+            self.assertEqual(
+                result["first_ordinary_event"]["selected_option_number"], 1
+            )
+            self.assertEqual(result["first_ordinary_event"]["title"], "怀孕！")
             self.assertEqual(result["time_progression"]["elapsed_days"], 1)
             self.assertEqual(result["final_screen"], "map_hud")
 
     def test_cli_exposes_opening_smoke(self) -> None:
         args = cli.parser().parse_args(["opening-smoke"])
         self.assertEqual(args.command, "opening-smoke")
-        self.assertEqual(args.timeout, 300)
+        self.assertEqual(args.timeout, 480)
 
 
 if __name__ == "__main__":

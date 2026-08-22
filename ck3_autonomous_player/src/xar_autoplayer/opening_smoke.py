@@ -66,6 +66,7 @@ OPENING_ALLOWED_CONTROLS = frozenset(
 
 INSTANT_UI_TRANSITION_TIMEOUT_SECONDS = 20.0
 INITIAL_MAIN_MENU_TIMEOUT_SECONDS = 120.0
+FIRST_ORDINARY_EVENT_TIMEOUT_SECONDS = 150.0
 
 # Frozen from Crusader Kings III/game/gui/shortcuts.shortcuts. Scan codes are
 # used so the binding does not depend on the active Windows keyboard layout.
@@ -368,6 +369,103 @@ def _extract_map_date(observation: dict[str, object]) -> dict[str, object]:
         "source_observation_id": observation.get("observation_id"),
         "policy_boundary": "player-visible OCR only",
     }
+
+
+def _generic_event_in_frame(observation: object) -> dict[str, object] | None:
+    """Recognize the standard CK3 event title and option lanes in one frame."""
+    spans = tuple(getattr(observation, "spans", ()))
+    client_rect = tuple(getattr(observation, "client_rect", ()))
+    if len(client_rect) != 4:
+        return None
+    width = client_rect[2] - client_rect[0]
+    height = client_rect[3] - client_rect[1]
+    if width <= 0 or height <= 0:
+        return None
+
+    titles = []
+    options = []
+    for item in spans:
+        text = str(getattr(item, "text", "")).strip()
+        bbox = tuple(getattr(item, "bbox", ()))
+        center = tuple(getattr(item, "center", ()))
+        score = float(getattr(item, "score", 0.0))
+        if not text or len(bbox) != 4 or len(center) != 2 or score < 0.55:
+            continue
+        box_width = bbox[2] - bbox[0]
+        box_height = bbox[3] - bbox[1]
+        x_ratio = center[0] / width
+        y_ratio = center[1] / height
+        if (
+            0.25 <= x_ratio <= 0.43
+            and 0.245 <= y_ratio <= 0.32
+            and box_width >= width * 0.025
+            and height * 0.018 <= box_height <= height * 0.05
+        ):
+            titles.append(item)
+        if (
+            0.31 <= x_ratio <= 0.45
+            and 0.56 <= y_ratio <= 0.76
+            and width * 0.025 <= box_width <= width * 0.30
+            and height * 0.010 <= box_height <= height * 0.035
+            and not re.fullmatch(r"[\d\s./:+-]+", text)
+        ):
+            options.append(item)
+    if len(titles) != 1 or not options:
+        return None
+
+    rows: list[object] = []
+    for item in sorted(options, key=lambda candidate: candidate.center[1]):
+        if rows and abs(item.center[1] - rows[-1].center[1]) <= 12:
+            if item.score > rows[-1].score:
+                rows[-1] = item
+            continue
+        rows.append(item)
+    if not 1 <= len(rows) <= len(EVENT_OPTION_SHORTCUTS):
+        return None
+    return {
+        "title": titles[0].text,
+        "title_center": list(titles[0].center),
+        "options": [
+            {
+                "option_number": index,
+                "visible_text": item.text,
+                "center": list(item.center),
+                "bbox": list(item.bbox),
+            }
+            for index, item in enumerate(rows, 1)
+        ],
+        "observation_id": getattr(observation, "observation_id", None),
+        "capture_sequence": getattr(observation, "capture_sequence", None),
+    }
+
+
+def _same_generic_event(
+    first: dict[str, object], second: dict[str, object]
+) -> bool:
+    """Require the same rendered event layout in consecutive captures."""
+    if first.get("title") != second.get("title"):
+        return False
+    first_options = first.get("options")
+    second_options = second.get("options")
+    if not isinstance(first_options, list) or not isinstance(second_options, list):
+        return False
+    if len(first_options) != len(second_options):
+        return False
+    for old, new in zip(first_options, second_options):
+        if not isinstance(old, dict) or not isinstance(new, dict):
+            return False
+        old_center = old.get("center")
+        new_center = new.get("center")
+        if (
+            not isinstance(old_center, list)
+            or not isinstance(new_center, list)
+            or len(old_center) != 2
+            or len(new_center) != 2
+            or abs(int(old_center[0]) - int(new_center[0])) > 20
+            or abs(int(old_center[1]) - int(new_center[1])) > 20
+        ):
+            return False
+    return True
 
 
 def _drive_opening(
@@ -767,15 +865,137 @@ def _drive_opening(
     running_date = _extract_map_date(final_observation)
     if int(running_date["ordinal"]) <= int(starting_date["ordinal"]):
         raise AgentError("CK3 timeline did not advance after resume")
-    final_observation = press_shortcut(
-        "map_running",
-        "map_running.pause",
-        "space",
-        CK3_SHORTCUT_SCAN_CODES["space"],
-        "map_hud",
-        "paused advanced timeline",
-        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+
+    event_deadline = min(
+        deadline, time.monotonic() + FIRST_ORDINARY_EVENT_TIMEOUT_SECONDS
     )
+    event_driver = new_driver()
+    prior_event: dict[str, object] | None = None
+    detected_event: dict[str, object] | None = None
+    while time.monotonic() < event_deadline:
+        frame = event_driver.capture_once()
+        candidate = _generic_event_in_frame(frame)
+        if candidate is None:
+            prior_event = None
+            continue
+        if (
+            prior_event is not None
+            and int(candidate["capture_sequence"])
+            == int(prior_event["capture_sequence"]) + 1
+            and _same_generic_event(prior_event, candidate)
+        ):
+            detected_event = candidate
+            break
+        prior_event = candidate
+    if detected_event is None:
+        raise AgentError("no stable ordinary CK3 event appeared before the deadline")
+
+    event_options = detected_event["options"]
+    if not isinstance(event_options, list) or not event_options:
+        raise AgentError("ordinary CK3 event has no visible option")
+    selected_event_option = event_options[0]
+    if not isinstance(selected_event_option, dict):
+        raise AgentError("ordinary CK3 event option is malformed")
+    option_number = int(selected_event_option["option_number"])
+    shortcut = EVENT_OPTION_SHORTCUTS.get(option_number)
+    if shortcut is None:
+        raise AgentError("ordinary CK3 event option lacks a native shortcut")
+    key, scan_code = shortcut
+    window.require_foreground()
+    append_event(
+        events,
+        {
+            "kind": "opening_key_input_planned",
+            "control_id": f"ordinary_event.option_{option_number}",
+            "key": key,
+            "scan_code": scan_code,
+            "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
+            "expected_post_screen": "map",
+        },
+    )
+    accepted, last_error = _prepare_key_chord_batch(
+        CK3_SHORTCUT_SCAN_CODES["left_shift"], scan_code
+    )()
+    if accepted != 4:
+        raise AgentError(
+            f"{key} ordinary-event shortcut SendInput was partial: "
+            f"accepted={accepted}, last_error={last_error}"
+        )
+
+    post_driver = new_driver()
+    post_state = None
+    running_error: AgentError | None = None
+    try:
+        post_state = post_driver.observe_stable(
+            "map_running",
+            min(
+                8.0,
+                _remaining(deadline, "ordinary event running postcondition"),
+            ),
+            stable_frames=2,
+        )
+    except AgentError as error:
+        running_error = error
+    if post_state is None:
+        try:
+            post_state = post_driver.observe_stable(
+                "map_hud",
+                min(
+                    8.0,
+                    _remaining(deadline, "ordinary event paused postcondition"),
+                ),
+                stable_frames=2,
+            )
+        except AgentError:
+            if running_error is not None:
+                raise running_error
+            raise
+    if any(_generic_event_in_frame(frame) is not None for frame in post_state.frames):
+        raise AgentError("ordinary CK3 event remained visible after its shortcut")
+
+    ordinary_action = {
+        "control_id": f"ordinary_event.option_{option_number}",
+        "status": "confirmed",
+        "input_kind": "keyboard_shortcut",
+        "key": key,
+        "scan_code": scan_code,
+        "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
+        "send_input": {
+            "requested": 4,
+            "accepted": accepted,
+            "last_error": last_error,
+        },
+        "event_title": detected_event["title"],
+        "visible_option": selected_event_option["visible_text"],
+        "visible_option_count": len(event_options),
+        "source_observation_id": detected_event["observation_id"],
+        "result_observation_id": post_state.observation_id,
+        "expected_post_screen": post_state.screen,
+    }
+    actions.append(ordinary_action)
+    append_event(
+        events,
+        {
+            "kind": "opening_step_completed",
+            "control_id": ordinary_action["control_id"],
+            "result_screen": post_state.screen,
+            "result_observation_id": post_state.observation_id,
+        },
+    )
+    if post_state.screen == "map_running":
+        final_observation = press_shortcut(
+            "map_running",
+            "map_running.pause",
+            "space",
+            CK3_SHORTCUT_SCAN_CODES["space"],
+            "map_hud",
+            "paused after first ordinary event",
+            driver=post_driver,
+            stable=post_state,
+            post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+        )
+    else:
+        final_observation = post_state.to_policy_json()
     paused_date = _extract_map_date(final_observation)
     if int(paused_date["ordinal"]) < int(running_date["ordinal"]):
         raise AgentError("paused map date moved backwards")
@@ -797,6 +1017,14 @@ def _drive_opening(
         },
         "player_character_state": player_state,
         "lifestyle_state": lifestyle_state,
+        "first_ordinary_event": {
+            "title": detected_event["title"],
+            "visible_options": event_options,
+            "selected_option_number": option_number,
+            "selected_visible_text": selected_event_option["visible_text"],
+            "strategy": "first-visible-option-v1",
+            "source_observation_id": detected_event["observation_id"],
+        },
         "time_progression": {
             "strategy": "speed-five-visible-date-v1",
             "starting_date": starting_date,
@@ -814,9 +1042,9 @@ def _drive_opening(
 
 
 def opening_smoke(
-    spec: EnvironmentSpec, timeout_seconds: float = 300
+    spec: EnvironmentSpec, timeout_seconds: float = 480
 ) -> dict[str, object]:
-    """Complete Robert's first bargain pair and choose his opening focus."""
+    """Complete Robert's opening and answer the first ordinary CK3 event."""
     ensure_state_path_safe(spec.state_dir)
     if (
         isinstance(timeout_seconds, bool)

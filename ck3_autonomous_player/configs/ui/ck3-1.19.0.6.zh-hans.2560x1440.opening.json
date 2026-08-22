@@ -115,7 +115,7 @@
       "anchors": [
         {"anchor_id": "map.pause", "text": "暂停", "region": [0.45, 0.08, 0.55, 0.18]},
         {"anchor_id": "map.mode", "text": "政治地图", "region": [0.92, 0.78, 0.99, 0.86]},
-        {"anchor_id": "map.year", "text": "公元1066年", "region": [0.70, 0.95, 0.93, 1.00], "contains": true}
+        {"anchor_id": "map.year", "text": "公元", "region": [0.70, 0.95, 0.93, 1.00], "contains": true}
       ],
       "negative_anchors": [
         {"anchor_id": "map.pact_modal", "text": "终末之契", "region": [0.0, 0.0, 1.0, 1.0]},
@@ -130,7 +130,7 @@
       "screen_id": "map_running",
       "anchors": [
         {"anchor_id": "map.mode", "text": "政治地图", "region": [0.92, 0.78, 0.99, 0.86]},
-        {"anchor_id": "map.year", "text": "公元1066年", "region": [0.70, 0.95, 0.93, 1.00], "contains": true}
+        {"anchor_id": "map.year", "text": "公元", "region": [0.70, 0.95, 0.93, 1.00], "contains": true}
       ],
       "negative_anchors": [
         {"anchor_id": "map.paused", "text": "暂停", "region": [0.45, 0.08, 0.55, 0.18]},
@@ -390,7 +390,7 @@
       "control_id": "map_hud.resume",
       "screen": "map_hud",
       "label": "resume timeline",
-      "text": "公元1066年",
+      "text": "公元",
       "region": [0.70, 0.95, 0.93, 1.00],
       "post_screen": "map_running",
       "risk": "reversible",
@@ -401,7 +401,7 @@
       "control_id": "map_running.pause",
       "screen": "map_running",
       "label": "pause timeline",
-      "text": "公元1066年",
+      "text": "公元",
       "region": [0.70, 0.95, 0.93, 1.00],
       "post_screen": "map_hud",
       "risk": "reversible",

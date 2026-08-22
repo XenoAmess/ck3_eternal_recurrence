@@ -605,6 +605,10 @@ class VisibleUiDriver:
         observation, _image = self._capture_observation_with_image(expected_screen)
         return observation
 
+    def capture_once(self, expected_screen: str | None = None) -> Observation:
+        """Capture one persisted visible frame without requiring a known screen."""
+        return self._capture_observation(expected_screen)
+
     def _target_patch_bbox(
         self, bbox: tuple[int, int, int, int]
     ) -> tuple[int, int, int, int]:
