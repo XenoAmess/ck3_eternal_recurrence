@@ -67,3 +67,19 @@ driver 只有在后续快照中看到该候选精确出现在玩家的 `betrothe
 `episode_run_id`、`lifecycle_intent=new_episode` 与 `cross_run_plan_used`。
 
 新局 planner 读取最新 `next_run_plan.priorities`，把最高优先项映射到 war / marriage / succession 开局族。至少战争优先会让 baseline checkpoint 后先做 native war discovery，婚姻优先则先做 native marriage discovery；返回的 plan 同样带 `cross_run_plan_used`，因此可直接观察跨局经验是否实际改变了行动顺序。没有已完成 episode 的第一局保持原默认顺序。
+
+## Minimized 实机闭环
+
+2026-08-24 的有继承人样本完成了端到端闭环。episode CharacterID `29829` 切换到继承人
+`38822` 后，Agent 只执行 `death-terminal`；native settlement 给出分数 `6.8`，并确认
+`tutorial.txt` 的 `xar_hs_ge_6` 连续两次稳定。跨局记录中
+`continue_as_heir_after_death=false`、`heir_gameplay_actions=0`，继承人没有收到婚姻、战争、
+存档或时间推进命令。
+
+随后 `start-next-episode` 从不可变 `xar_episode_seed.ck3` 把 CK3 从 PID `119628` 重启为
+PID `110972`，`lifecycle_intent=new_episode`。虽然 baseline 使用相同 CharacterID `29829`，
+新的 `episode_run_id` 与上一局不同，terminal 标记已清零，history 从
+`start-next-episode` 重新开始，结果携带上一局生成的 `cross_run_plan_used`。窗口最小化后，第二局
+继续通过 native MCP 提交一次军队移动，再推进 7 游戏日；军队省份 `2618 -> 2615`，最终地图暂停且
+`IsIconic=true`。该样本证明“结算上一局 -> 不玩继承人 -> 新建 run -> 在最小化状态继续自动游玩”
+已真实贯通。无继承人死亡仍是单独的待验收分支。

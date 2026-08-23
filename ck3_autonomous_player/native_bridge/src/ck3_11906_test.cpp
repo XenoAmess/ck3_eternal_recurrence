@@ -104,6 +104,7 @@ std::int32_t g_marriage_legacy_context_construct_calls = 0;
 bool g_marriage_redirect_ready = false;
 bool g_marriage_validate_result = true;
 bool g_global_variable_container_available = true;
+std::int32_t g_script_identifier_lookup_calls = 0;
 constexpr std::int32_t kMarriageMatchmakerCharacterId = 0x01000007;
 constexpr std::uint16_t kFixtureCharacterEventTargetKind = 4;
 constexpr std::int32_t kFixtureDeadCharacterId = 0x01000004;
@@ -178,13 +179,17 @@ xar::ck3_11906::GetGlobalVariableContainer
     g_global_variable_container_accessor =
         FixtureGetGlobalVariableContainer;
 
-void *FixtureGetStringTable() { return g_string_table_marker.data(); }
+void *FixtureGetScriptIdentifierTable() {
+  return g_string_table_marker.data();
+}
 
-std::int32_t FixtureInternStringId(void *string_table,
-                                   const void *opaque_view) {
-  if (string_table != g_string_table_marker.data() ||
+std::int32_t *FixtureLookupScriptIdentifierId(void *table,
+                                              std::int32_t *output,
+                                              const void *opaque_view) {
+  ++g_script_identifier_lookup_calls;
+  if (table != g_string_table_marker.data() || output == nullptr ||
       opaque_view == nullptr) {
-    return -1;
+    return nullptr;
   }
   const char *data = nullptr;
   std::int32_t size = 0;
@@ -192,16 +197,19 @@ std::int32_t FixtureInternStringId(void *string_table,
   std::memcpy(&size, static_cast<const std::byte *>(opaque_view) + 0x08,
               sizeof(size));
   if (data == nullptr || size < 0) {
-    return -1;
+    *output = -1;
+    return output;
   }
   const std::string_view name(data, static_cast<std::size_t>(size));
   for (std::size_t index = 0; index < kSettlementGlobalNames.size();
        ++index) {
     if (name == kSettlementGlobalNames[index]) {
-      return static_cast<std::int32_t>(1'000 + index);
+      *output = static_cast<std::int32_t>(1'000 + index);
+      return output;
     }
   }
-  return -1;
+  *output = -1;
+  return output;
 }
 
 bool FixtureIsEventTargetValid(const void *event_target) {
@@ -1116,8 +1124,8 @@ int main() {
       FixtureDefaultConstructCharacterInteractionContext;
   bindings.construct_war_resolution_interaction_context =
       FixtureConstructWarResolutionInteractionContext;
-  bindings.get_string_table = FixtureGetStringTable;
-  bindings.intern_string_id = FixtureInternStringId;
+  bindings.get_script_identifier_table = FixtureGetScriptIdentifierTable;
+  bindings.lookup_script_identifier_id = FixtureLookupScriptIdentifierId;
   bindings.is_event_target_valid = FixtureIsEventTargetValid;
   bindings.resolve_event_target_object =
       FixtureResolveEventTargetObject;
@@ -1179,6 +1187,7 @@ int main() {
   }
 
   FixtureSetGlobalNumeric(0, kFixtureFixedPointScale);
+  g_script_identifier_lookup_calls = 0;
   const void *const dead_source_event_target =
       g_global_variable_entries.data() + 2 * 0x20 + 0x10;
   if (FixtureIsEventTargetValid(dead_source_event_target) ||
@@ -1203,7 +1212,8 @@ int main() {
       snapshot.one_life_settlement.blessing_count != 3 ||
       snapshot.one_life_settlement.refusal_count != 2 ||
       snapshot.one_life_settlement.contract_progress != 7 ||
-      !snapshot.one_life_settlement.record_written) {
+      !snapshot.one_life_settlement.record_written ||
+      g_script_identifier_lookup_calls != 13) {
     return Fail(
         "one-life settlement lost exact globals or rejected its dead source");
   }
@@ -1231,6 +1241,12 @@ int main() {
   if (!xar::ck3_11906::ReadSnapshot(no_settlement_bindings, snapshot) ||
       snapshot.has_one_life_settlement) {
     return Fail("missing settlement bindings did not degrade to null");
+  }
+  no_settlement_bindings = bindings;
+  no_settlement_bindings.lookup_script_identifier_id = nullptr;
+  if (!xar::ck3_11906::ReadSnapshot(no_settlement_bindings, snapshot) ||
+      snapshot.has_one_life_settlement) {
+    return Fail("missing script-identifier lookup did not degrade to null");
   }
   FixtureSetGlobalNumeric(0, 0);
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||

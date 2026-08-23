@@ -94,8 +94,10 @@ constexpr std::uintptr_t kDefaultConstructCharacterInteractionContextRva =
     0x2C3F300;
 constexpr std::uintptr_t kConstructWarResolutionInteractionContextRva =
     0x0C569F0;
-constexpr std::uintptr_t kGetStringTableRva = 0x3B58870;
-constexpr std::uintptr_t kInternStringIdRva = 0x3B58330;
+constexpr std::uintptr_t kGetScriptIdentifierTableRva = 0x3B971A0;
+// Locks the script-identifier table, calls lookup-only RVA 0x3B96D40, then
+// unlocks. Unlike RVA 0x3B96E50 it never inserts a missing name.
+constexpr std::uintptr_t kLookupScriptIdentifierIdRva = 0x3B97020;
 constexpr std::uintptr_t kIsEventTargetValidRva = 0x3329B00;
 constexpr std::uintptr_t kResolveEventTargetObjectRva = 0x33299E0;
 
@@ -542,20 +544,25 @@ void *ResolveCharacter(const Bindings &bindings,
 const void *FindGlobalVariableValue(const Bindings &bindings,
                                     void *container,
                                     std::string_view name) noexcept {
-  if (container == nullptr || bindings.get_string_table == nullptr ||
-      bindings.intern_string_id == nullptr || name.empty() ||
+  if (container == nullptr ||
+      bindings.get_script_identifier_table == nullptr ||
+      bindings.lookup_script_identifier_id == nullptr || name.empty() ||
       name.size() >
           static_cast<std::size_t>(std::numeric_limits<std::int32_t>::max())) {
     return nullptr;
   }
-  void *const string_table = bindings.get_string_table();
-  if (string_table == nullptr) {
+  void *const identifier_table = bindings.get_script_identifier_table();
+  if (identifier_table == nullptr) {
     return nullptr;
   }
   const NativeStringView view{name.data(),
                               static_cast<std::int32_t>(name.size())};
-  const std::int32_t key =
-      bindings.intern_string_id(string_table, &view);
+  std::int32_t key = -1;
+  if (bindings.lookup_script_identifier_id(identifier_table, &key, &view) ==
+          nullptr ||
+      key < 0) {
+    return nullptr;
+  }
   void *const entries =
       LoadAt<void *>(container, kGlobalVariableEntriesOffset);
   const std::int32_t count = LoadAt<std::int32_t>(
@@ -1521,10 +1528,12 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.construct_war_resolution_interaction_context =
       reinterpret_cast<ConstructWarResolutionInteractionContext>(
           module + kConstructWarResolutionInteractionContextRva);
-  result.get_string_table =
-      reinterpret_cast<GetStringTable>(module + kGetStringTableRva);
-  result.intern_string_id =
-      reinterpret_cast<InternStringId>(module + kInternStringIdRva);
+  result.get_script_identifier_table =
+      reinterpret_cast<GetScriptIdentifierTable>(
+          module + kGetScriptIdentifierTableRva);
+  result.lookup_script_identifier_id =
+      reinterpret_cast<LookupScriptIdentifierId>(
+          module + kLookupScriptIdentifierIdRva);
   result.is_event_target_valid = reinterpret_cast<IsEventTargetValid>(
       module + kIsEventTargetValidRva);
   result.resolve_event_target_object =

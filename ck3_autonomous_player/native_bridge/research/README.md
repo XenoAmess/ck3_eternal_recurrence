@@ -39,7 +39,7 @@ bridge identity/heartbeat/ping.
 | numeric event option count/indexes | implemented, minimized live probe passed | executor bounds-check and option-array layout at RVA `0x33E68C0` + live 5→3 option snapshots | never inside native driver |
 | `game.command.save-checkpoint` | implemented, minimized live file creation passed | high static `CAutoSaveCommand` layout + offline queue fixture + 63,367,813-byte live save | explicit upper-layer policy only |
 | `game.state.snapshot.played_character` | implemented, live probe pending | player-character manager + Character storage alive projection + offline layout fixture | never inside native driver |
-| `game.state.xar-one-life-settlement` | implemented; second minimized death isolated the character resolver's post-storage liveness gate; direct CharacterID build awaits replay | exact live 12-global dump + character EventTarget kind/ID ABI + independently proven CFixedPoint scale + dead-source resolver-null fixture | never inside native driver |
+| `game.state.xar-one-life-settlement` | implemented, third minimized death snapshot passed while CK3 was minimized | exact live 12-global read + correct script-identifier registry + character EventTarget kind/ID ABI + independently proven CFixedPoint scale + dead-source fixture | never inside native driver |
 | `game.state.snapshot.pending_character_interaction` | implemented; four live requests advanced before a reproducible global-storage false positive exposed the missing recipient filter; filtered build awaits bounded live replay | exact notification-recipient predicate + native reply validator + offline multi-player fixture | never inside native driver |
 | `game.command.accept/reject-pending-character-interaction` | implemented; live accept advanced four locally addressed requests | high static UI enum/command/queue path + native actionability validation + offline command fixture | explicit upper-layer policy only |
 | `game.state.snapshot.active_wars` | implemented, minimized live declaration projected a new war | exact WarManager/storage/participant/score helpers + offline attacker/defender fixture | never inside native driver |
@@ -97,10 +97,19 @@ unavailable unless an upper layer explicitly chooses to restore the window.
 - Jomini's global-variable accessor is the function-pointer slot at
   `base + 0x570F750`. `CJominiGlobalVariableLink` RVA `0x3410F80` calls it,
   then scans the container's `+0x10` entries with `int32 +0x1C` count and
-  0x20-byte stride. Each entry has its Pdx string ID at `+0x08` and a complete
-  0x10-byte `CJominiEventTarget` at `+0x10`. The bridge obtains exact IDs with
-  the string-table getter/intern pair `0x3B58870/0x3B58330`; it does not hash
-  Mod names with a guessed algorithm.
+  0x20-byte stride. Each entry has its script-identifier ID at `+0x08` and a
+  complete 0x10-byte `CJominiEventTarget` at `+0x10`. These IDs do **not**
+  belong to the generic PdxString table returned by RVA `0x3B58870`: live
+  inspection showed that API maps `xa_settlement_ready` to ID `25393`, which
+  the script-identifier table reverse-maps to `student_flirt`, while the actual
+  global entry key is `44011`. The bridge instead gets the script-identifier
+  table with RVA `0x3B971A0` and calls the locking lookup-only wrapper RVA
+  `0x3B97020` with ABI `(table, int32* out, NativeStringView*) -> out`. That
+  wrapper locks `table+0x48`, calls raw lookup RVA `0x3B96D40`, and unlocks; it
+  never inserts a missing name. RVA `0x3B96E50` is lookup-or-insert and is not
+  used by the reader. Live reverse lookup confirmed IDs `44011` for
+  `xa_settlement_ready`, `44012` for `xa_settlement_source_character`, and
+  `44023` for `xa_settlement_commit_serial`.
 - The global-variable mutation path at RVA `0x338F221` independently proves
   numeric EventTarget kind `uint16 1` and signed `int64` CFixedPoint raw at
   payload `+0x08`. CFixedPoint conversion RVA `0x3A41DA0` divides that raw by
@@ -123,9 +132,15 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   storage to an object whose `+0x18` repeats the exact ID. It does not invoke the
   liveness-gated gameplay resolver. The offline fixture models both validity and
   resolver returning false/null while the dead object remains generation-valid
-  in storage. The public
-  settlement stays null unless `ready==1`, every payload field decodes, and a
-  final reread still sees `ready==1`; no partial settlement is synthesized.
+  in storage. A unique sidecar build using the corrected identifier registry
+  then re-read the still-persisted third-death globals from minimized PID 119628
+  without another game action. Snapshot `native:1` published source CharacterID
+  `29829`, scores `{raw:680000, scale:100000}`, candidate/old/delta `6/0/6`,
+  blessing/refusal/contract `1/0/0`, `record_written=true`, and serial `1`.
+  All twelve lookups matched the live container entries, closing both the
+  dead-source and ID-domain failure gates. The public settlement stays null
+  unless `ready==1`, every payload field decodes, and a final reread still sees
+  `ready==1`; no partial settlement is synthesized.
 - `CGameState + 0xA0` points to CK3 game data, whose embedded event manager is
   at `+0x2F4C0`. Engine getter RVA `0x2706AD0` locks that manager, scans its
   active-event pointer array (`+0x1F18`, count at `+0x1F24`) backward, applies

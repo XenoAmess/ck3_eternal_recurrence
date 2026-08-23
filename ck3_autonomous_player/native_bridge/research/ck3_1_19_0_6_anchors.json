@@ -359,16 +359,16 @@
       "pattern": "8B 46 60 48 8B 57 10 4C 63 47 1C 49 C1 E0 05 4C 03 C2 49 3B D0 74 0E 39 42 08 74 09 48 83 C2 20 49 3B D0 75 F2 45 33 F6 49 3B D0 49 0F 44 D6 48 8D 5A 10 48 85 D2 49 0F 44 DE 48 85 DB 0F 84 2D 02 00 00 0F B7 03 66 83 F8 01 0F 85 2E 02 00 00 48 8B 5B 08 48 8D 46 10 48 8D 4E 68 48 89 44 24"
     },
     {
-      "name": "pdx_string_table_getter",
-      "rva": "0x3B58870",
-      "confidence": "high-static",
-      "pattern": "48 83 EC 28 BA 10 00 00 00 65 48 8B 04 25 58 00 00 00 48 8B 08 8B 04 0A 39 05 EA 67 D0 01 7F 0C 48 8D 05 E9 67 D0 01 48 83 C4 28 C3 48 8D 0D D5"
+      "name": "script_identifier_table_getter",
+      "rva": "0x3B971A0",
+      "confidence": "high-static-live-confirmed",
+      "pattern": "48 83 EC 28 65 48 8B 04 25 58 00 00 00 BA 10 00 00 00 48 8B 08 8B 04 0A 39 05 7A 80 CC 01 7F 0C 48 8D 05 79 80 CC 01 48 83 C4 28 C3"
     },
     {
-      "name": "pdx_string_id_intern",
-      "rva": "0x3B58330",
-      "confidence": "high-static",
-      "pattern": "48 89 5C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 60 FE FF FF 48 81 EC A0 02 00 00 48 8B DA 48 8B F9 83 7A 08 00 0F 84 B9 00 00 00 48"
+      "name": "script_identifier_lookup_locked",
+      "rva": "0x3B97020",
+      "confidence": "high-static-live-confirmed",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B F2 48 8B D9 B8 02 00 00 00 F0 0F C1 41 48 BF FE FF FF FF A8 01"
     },
     {
       "name": "jomini_event_target_object_resolver",
@@ -421,8 +421,8 @@
     "validate_reply_character_interaction_command": "0x26B3540",
     "army_storage_slot": "0x570CC80",
     "global_variable_container_accessor_slot": "0x570F750",
-    "get_pdx_string_table": "0x3B58870",
-    "intern_pdx_string_id": "0x3B58330",
+    "get_script_identifier_table": "0x3B971A0",
+    "lookup_script_identifier_id": "0x3B97020",
     "is_event_target_valid": "0x3329B00",
     "resolve_event_target_object": "0x33299E0",
     "resolve_character_event_target_object": "0x201AD30",
@@ -554,6 +554,11 @@
       "length": "+0x08 int32",
       "owned_or_indirect": "+0x0C uint8; bridge passes 0 for a direct view"
     },
+    "ScriptIdentifierRegistry": {
+      "getter": "RVA 0x3B971A0; live table reverse lookup maps ID 44011 to xa_settlement_ready, 44012 to xa_settlement_source_character, and 44023 to xa_settlement_commit_serial",
+      "lookup_only": "RVA 0x3B97020 ABI (table rcx, int32* output rdx, CPdxStringView* name r8) -> output; locks table +0x48, calls raw lookup RVA 0x3B96D40, unlocks, and never inserts",
+      "wrong_domain": "generic PdxString getter/lookup RVAs 0x3B58870/0x3B58330 are not valid for global entry keys; live lookup mapped xa_settlement_ready to 25393, which is student_flirt in this registry"
+    },
     "CJominiGlobalVariableContainer": {
       "accessor_slot": "base +0x570F750 contains a no-argument function pointer; CJominiGlobalVariableLink RVA 0x3410F80 loads and calls it for each read",
       "entries": "+0x10 pointer",
@@ -561,7 +566,7 @@
       "entry_stride": "0x20"
     },
     "CJominiGlobalVariableEntry": {
-      "key": "+0x08 int32 Pdx string ID",
+      "key": "+0x08 int32 script-identifier ID; resolve names through getter RVA 0x3B971A0 and locking lookup-only wrapper RVA 0x3B97020, not the generic PdxString registry",
       "value": "+0x10 inline 0x10-byte CJominiEventTarget"
     },
     "CJominiEventTarget": {

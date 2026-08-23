@@ -149,11 +149,15 @@ tutorial lesson 队列异步完成。
 
 ## 6. 当前验证范围
 
-本次顺序修复没有重新启动 CK3；故障依据来自第 3 节记录的 2026-08-24 minimized live。Mod 静态链由
-`tools/validate_static.py` 检查；native reader 另由 pinned-exe anchor scanner、fresh MSVC build 和
-离线 CTest fixture 覆盖。native 静态 RE 已证明：
+Mod 静态链由 `tools/validate_static.py` 检查；native reader 另由 pinned-exe anchor scanner、fresh
+MSVC build 和离线 CTest fixture 覆盖。2026-08-24 第三次 minimized death 后，修正后的 unique sidecar
+在不重启 CK3、不执行第四次死亡的情况下重读 PID 119628 中仍保留的终局 globals，snapshot `native:1`
+已发布完整 `one_life_settlement`。native 静态 RE 与 live failure-directed probe 已证明：
 
-- global container accessor slot、entry key/value 布局与 string-ID accessor；
+- global container accessor slot、entry key/value 布局，以及 global key 所属的独立 script-identifier
+  registry：getter RVA `0x3B971A0`，带锁且不插入的 lookup-only wrapper RVA `0x3B97020`。旧 reader
+  错用通用 PdxString RVA `0x3B58870/0x3B58330`，把 `xa_settlement_ready` 解析成 ID `25393`；该 ID
+  在正确 registry 中反查为 `student_flirt`，而真实 global key 是 `44011`；
 - numeric EventTarget kind/raw ABI 与 CFixedPoint `100000` scale；
 - character EventTarget 为 kind `4`，payload `+0x08` 是完整 `int32` CharacterID；source
   只有在该 ID 经 generation-safe Character storage 反解到、且对象 `+0x18` 重复同一 ID 时
@@ -162,6 +166,11 @@ tutorial lesson 队列异步完成。
   显示十二个 global 全部完整、source 为 kind `4` / ID `29829`、死亡对象仍在 storage，
   但 `+0x1A8 == null`，这正是 revision 24 继续发布 `null` 的拒绝点；
 - `ready=0`、缺字段、非整除整数和非 Character source 都产生明确 `null`，不会发布部分对象。
+
+成功 live snapshot 的 source CharacterID 为 `29829`；两项 score 均为
+`{"raw":680000,"scale":100000}`，candidate/old/delta 为 `6/0/6`，blessing/refusal/contract 为
+`1/0/0`，`record_written=true`，`commit_serial=1`。十二个名称都命中真实 container entry，因而
+native reader 的 ID-domain、dead-source 与全部 payload gate 已闭合。
 
 Mod `tools/validate_static.py` 继续检查：
 
@@ -173,5 +182,18 @@ Mod `tools/validate_static.py` 继续检查：
   且 `ready=1` 之后不再直接写任何结算字段；
 - `xar.1001/1002` 只消费稳定 projection，且没有玩法授权或纪录提交入口。
 
-下一步实机闭环应分别覆盖有继承人与无继承人死亡，并由 native snapshot 读取 source、serial、分数和
-record result；有继承人样本必须确认继承人没有 `xa_enabled`，且 agent 未继续替其游玩。
+同一现场随后完成了完整 Agent 闭环。`death-terminal` 消费上述对象并返回 `score=6.8`；
+`tutorial.txt` 中的 `xar_hs_ge_6` 连续两次稳定，跨局 episode 记录
+`continue_as_heir_after_death=false`、`heir_gameplay_actions=0`。继承人 CharacterID `38822`
+没有收到任何玩法命令。
+
+之后 `start-next-episode` 停止 PID `119628`，以
+`-loadsave=xar_episode_seed` 启动 PID `110972`。新局仍可使用 baseline CharacterID `29829`，
+但 run ID 从 `native-29829-98d27e9823dd` 切换为
+`native-29829-ee172aa720db`，`one_life_terminal=false`，新局 history 只从
+`start-next-episode` 开始，并返回上一局生成的 `cross_run_plan_used`。窗口重新最小化后，Agent
+通过纯 native MCP 只提交一次 army move；下一 turn 根据 90 游戏日 move intent 选择
+`life-advance` 而没有重复提交。7 游戏日后 army province 从 `2618` 变为 `2615`，地图再次暂停，
+`IsIconic=true`。这证明结算、跨局重启和新局自动游玩在最小化屏幕下已经贯通。
+
+剩余独立验收项是无继承人死亡；该分支尚不能借本次有继承人结果宣称实测完成。

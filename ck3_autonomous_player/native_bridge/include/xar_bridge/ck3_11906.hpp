@@ -86,9 +86,9 @@ using ConstructWarResolutionInteractionContext = void (*)(void *context,
                                                            void *war,
                                                            bool surrender);
 using GetGlobalVariableContainer = void *(*)();
-using GetStringTable = void *(*)();
-using InternStringId = std::int32_t (*)(void *string_table,
-                                        const void *string_view);
+using GetScriptIdentifierTable = void *(*)();
+using LookupScriptIdentifierId = std::int32_t *(*)(
+    void *table, std::int32_t *output, const void *string_view);
 using IsEventTargetValid = bool (*)(const void *event_target);
 using ResolveEventTargetObject = void *(*)(const void *event_target);
 
@@ -177,8 +177,8 @@ struct Bindings {
       default_construct_character_interaction_context = nullptr;
   ConstructWarResolutionInteractionContext
       construct_war_resolution_interaction_context = nullptr;
-  GetStringTable get_string_table = nullptr;
-  InternStringId intern_string_id = nullptr;
+  GetScriptIdentifierTable get_script_identifier_table = nullptr;
+  LookupScriptIdentifierId lookup_script_identifier_id = nullptr;
   IsEventTargetValid is_event_target_valid = nullptr;
   ResolveEventTargetObject resolve_event_target_object = nullptr;
 };
