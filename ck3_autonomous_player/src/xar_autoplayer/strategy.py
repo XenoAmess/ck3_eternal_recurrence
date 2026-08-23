@@ -11,6 +11,10 @@ from .bridge.event_contract import (
     event_option_step,
     normalize_active_event,
 )
+from .bridge.declaration_contract import (
+    QUERY_DECLARABLE_WARS_STEP,
+    declare_war_step,
+)
 from .bridge.war_contract import (
     RAISE_TROOPS_STEP,
     controllable_armies,
@@ -94,6 +98,57 @@ def _latest_effective_result(
         if isinstance(result, dict):
             return result
     return None
+
+
+def _latest_prefix_index(
+    rows: list[dict[str, object]], prefix: str, *, successful_only: bool = True
+) -> int:
+    for fallback_index, row in reversed(tuple(enumerate(rows, start=1))):
+        command = _effective_command(row)
+        if (
+            isinstance(command, str)
+            and command.startswith(prefix)
+            and (not successful_only or row.get("ok") is True)
+        ):
+            raw_index = row.get("index")
+            return raw_index if isinstance(raw_index, int) else fallback_index
+    return 0
+
+
+def _preferred_native_declaration(
+    declarations: object,
+) -> dict[str, object] | None:
+    if not isinstance(declarations, list):
+        return None
+    rows = [row for row in declarations if isinstance(row, dict)]
+    if not rows:
+        return None
+
+    def preference(row: dict[str, object]) -> tuple[object, ...]:
+        def stable_integer(name: str) -> int:
+            value = row.get(name)
+            return value if isinstance(value, int) and not isinstance(value, bool) else 2**31 - 1
+
+        key = str(row.get("casus_belli_key") or "").casefold()
+        if "holy_war" in key and "county" in key:
+            key_rank = 0
+        elif "county" in key:
+            key_rank = 1
+        elif "claim" in key:
+            key_rank = 2
+        else:
+            key_rank = 3
+        titles = row.get("target_title_ids")
+        title_count = len(titles) if isinstance(titles, list) else 1_000_000
+        return (
+            key_rank,
+            title_count,
+            stable_integer("target_character_id"),
+            stable_integer("casus_belli_index"),
+            stable_integer("configuration_index"),
+        )
+
+    return min(rows, key=preference)
 
 
 def choose_one_life_turn(
@@ -478,6 +533,65 @@ def choose_one_life_turn(
             "selected_step": "save-checkpoint",
             "reason": "create a native CK3 recovery point before strategic mutations",
         }
+
+    declaration_index = _latest_prefix_index(rows, "declare-war-")
+    life_advance_index = _latest_index(rows, "life-advance")
+    if declaration_index > life_advance_index:
+        if "life-advance" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_declaration_progress",
+                "selected_step": "life-advance",
+                "reason": "the native declaration was submitted; advance once for the war state to materialize",
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_declaration_progress_unsupported",
+            "selected_step": None,
+            "required_step": "life-advance",
+            "reason": "the native declaration was submitted but this backend cannot advance the map",
+        }
+
+    declaration = _preferred_native_declaration(
+        snapshot.get("declarable_wars") if isinstance(snapshot, dict) else None
+    )
+    if isinstance(declaration, dict):
+        declaration_id = declaration.get("declaration_id")
+        if isinstance(declaration_id, str):
+            step = declare_war_step(declaration_id)
+            if step in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_declaration",
+                    "selected_step": step,
+                    "reason": "declare the best currently enumerated native county-scale war",
+                    "declaration": declaration,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_declaration_unsupported",
+                "selected_step": None,
+                "required_step": step,
+                "reason": "the selected native war declaration is not executable",
+                "declaration": declaration,
+            }
+
+    if QUERY_DECLARABLE_WARS_STEP in available_steps:
+        query_index = _latest_index(rows, QUERY_DECLARABLE_WARS_STEP)
+        if query_index > life_advance_index and "life-advance" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_discovery_progress",
+                "selected_step": "life-advance",
+                "reason": "no war was currently declarable; advance once before the next native query",
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_discovery",
+            "selected_step": QUERY_DECLARABLE_WARS_STEP,
+            "reason": "enumerate current native war declarations before using visual diplomacy",
+        }
+
     if not _latest_index(rows, "dynasty-review"):
         return {
             "policy": "one-life-turn-v1",

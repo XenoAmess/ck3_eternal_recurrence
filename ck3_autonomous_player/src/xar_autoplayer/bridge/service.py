@@ -13,6 +13,10 @@ from .event_contract import (
     event_option_step,
     normalize_active_event,
 )
+from .declaration_contract import (
+    QUERY_DECLARABLE_WARS_STEP,
+    declare_war_step,
+)
 from .war_contract import (
     RAISE_TROOPS_STEP,
     disband_army_step,
@@ -336,6 +340,51 @@ class GameplayBridgeService:
             "revision": snapshot["revision"],
             "backend_id": snapshot.get("backend_id"),
         }
+
+    def query_declarable_wars(
+        self, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        """Run CK3's native declaration evaluator on demand."""
+        if QUERY_DECLARABLE_WARS_STEP not in action_step_set(self.capabilities()):
+            raise UnsupportedStepError(
+                "selected backend cannot query native war declarations"
+            )
+        snapshot = self.snapshot()
+        result = self.execute_step(
+            QUERY_DECLARABLE_WARS_STEP,
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else int(snapshot["revision"])
+            ),
+        )
+        if not isinstance(result.get("declarable_wars"), list):
+            raise BridgeUnavailableError(
+                "native declaration query lacks declarable_wars"
+            )
+        return result
+
+    def declare_war(
+        self,
+        declaration_id: str,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Submit one exact choice returned by the latest native query."""
+        step = declare_war_step(declaration_id)
+        snapshot = self.snapshot()
+        if step not in action_step_set(self.capabilities()):
+            raise UnsupportedStepError(
+                f"selected backend cannot execute native declaration {declaration_id}"
+            )
+        return self.execute_step(
+            step,
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else int(snapshot["revision"])
+            ),
+        )
 
     def raise_troops_default(
         self, *, expected_revision: int | None = None

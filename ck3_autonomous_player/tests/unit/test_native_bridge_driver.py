@@ -789,6 +789,93 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "move-army-101-to-33", driver.capabilities()["action_steps"]
         )
 
+    def test_native_declaration_query_expands_and_starts_war(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.declarable-wars",
+                "game.command.query-declarable-wars",
+                "game.command.declare-war-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                played_character={"character_id": 707, "alive": True},
+            )
+        )
+        declaration = {
+            "declaration_id": "808-17-0",
+            "target_character_id": 808,
+            "casus_belli_index": 17,
+            "casus_belli_key": "county_conquest_cb",
+            "configuration_index": 0,
+            "claimant_character_id": -1,
+            "target_title_ids": [91],
+        }
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            result: dict[str, object] = {
+                "step": frame["step"],
+                "accepted": True,
+                "status": "submitted",
+            }
+            if frame["step"] == "query-declarable-wars":
+                result.update(
+                    {
+                        "status": "available",
+                        "query_sequence": 3,
+                        "declarable_wars": [declaration],
+                    }
+                )
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+            if frame["step"].startswith("declare-war-"):
+                endpoint.publish(
+                    _snapshot(
+                        41,
+                        played_character={"character_id": 707, "alive": True},
+                        active_wars=[_war(73)],
+                    )
+                )
+
+        endpoint.send_hook = answer
+        starting = driver.take_snapshot()
+        query = driver.execute_step(
+            "query-declarable-wars",
+            expected_revision=int(starting["revision"]),
+        )
+        self.assertEqual(query["declarable_wars"][0]["casus_belli_key"], "county_conquest_cb")
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            ["declare-war-808-17-0", "query-declarable-wars"],
+        )
+        queried = driver.take_snapshot()
+        self.assertEqual(queried["declaration_query_sequence"], 3)
+
+        declared = driver.execute_step(
+            "declare-war-808-17-0",
+            expected_revision=int(queried["revision"]),
+        )
+        self.assertEqual(declared["war_action"]["status"], "war_started")
+        self.assertEqual(declared["war_action"]["target_character_id"], 808)
+        self.assertEqual(driver.take_snapshot()["declarable_wars"], [])
+
     def test_native_raise_and_postwar_disband_wait_for_army_state(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
@@ -1716,7 +1803,11 @@ class NativeFallbackModeTests(unittest.TestCase):
                         "revision": 1,
                     },
                     execute=lambda step, _revision: visual_calls.append(step) or {},
-                    action_steps=("move-army-7-to-9",),
+                    action_steps=(
+                        "move-army-7-to-9",
+                        "query-declarable-wars",
+                        "declare-war-808-17-0",
+                    ),
                 ),
                 window_minimized=lambda: False,
             ),
@@ -1727,6 +1818,11 @@ class NativeFallbackModeTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
             driver.execute_step("move-army-7-to-9")
+        self.assertNotIn(
+            "declare-war-808-17-0", driver.capabilities()["action_steps"]
+        )
+        with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
+            driver.execute_step("declare-war-808-17-0")
         self.assertEqual(visual_calls, [])
 
 

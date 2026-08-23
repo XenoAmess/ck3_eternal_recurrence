@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <string>
 #include <vector>
 
 namespace xar::ck3_11906 {
@@ -33,6 +34,36 @@ using GetArmyMoveMode = std::int32_t (*)(void *army, void *province,
 using CanMoveArmy = bool (*)(std::int32_t command_kind, void *army,
                             std::int32_t move_mode);
 using InitializeArmyMovePath = void (*)(void *path_storage);
+using GetCasusBelliTypeDatabase = void *(*)();
+using EvaluateCasusBelli = bool (*)(void *casus_belli_type,
+                                    void *attacker_character,
+                                    void *defender_character,
+                                    void *output_configurations,
+                                    bool include_blocked,
+                                    bool unknown_flag,
+                                    void *evaluation_context);
+using DestroyValidCasusBelliConfiguration = void (*)(void *configuration);
+using ConstructCharacterInteractionContext = void *(*)(
+    void *context, void *interaction, std::int32_t actor_character_id,
+    std::int32_t recipient_character_id, void *extra_context,
+    bool initialize_special_data);
+using CopyNativeIntArray = void (*)(void *destination, const void *source);
+using AppendNativeIntArrayRange = void (*)(void *destination,
+                                           std::int32_t current_count,
+                                           const std::int32_t *begin,
+                                           const std::int32_t *end);
+using RefreshCharacterInteractionContext = void (*)(void *context,
+                                                     bool refresh);
+using FinalizeCharacterInteractionContext = void (*)(void *context);
+using ValidateCharacterInteractionContext = bool (*)(void *context,
+                                                      void *error_output);
+using ConstructSendCharacterInteractionCommand = void *(*)(
+    void *command, const void *context);
+using DestroyCharacterInteractionContext = void (*)(void *context);
+using DefaultConstructCharacterInteractionContext = void *(*)(void *context);
+using ConstructWarResolutionInteractionContext = void (*)(void *context,
+                                                           void *war,
+                                                           bool surrender);
 
 // Absolute addresses resolved only after the main executable matches the
 // pinned 1.19.0.6 SHA-256. Tests may supply a small in-memory fixture instead.
@@ -57,12 +88,17 @@ struct Bindings {
   std::uintptr_t move_army_secondary_vtable = 0;
   std::uintptr_t disband_army_primary_vtable = 0;
   std::uintptr_t disband_army_secondary_vtable = 0;
+  std::uintptr_t send_character_interaction_primary_vtable = 0;
+  std::uintptr_t send_character_interaction_secondary_vtable = 0;
+  std::uintptr_t war_declaration_vtable = 0;
   void **pending_character_interaction_storage_slot = nullptr;
   void **character_storage_slot = nullptr;
   void **army_storage_slot = nullptr;
+  void *valid_casus_belli_configuration_scratch = nullptr;
   std::size_t event_manager_offset = 0;
   std::size_t player_character_manager_offset = 0;
   std::size_t war_manager_offset = 0;
+  std::size_t declare_war_interaction_offset = 0;
   SubmitCommand submit_command = nullptr;
   GetLocalPlayer get_local_player = nullptr;
   GetCurrentEvent get_current_event = nullptr;
@@ -80,6 +116,48 @@ struct Bindings {
   CanMoveArmy can_move_army = nullptr;
   InitializeArmyMovePath initialize_army_move_path = nullptr;
   DestroyNativeCommand destroy_move_army_command = nullptr;
+  GetCasusBelliTypeDatabase get_casus_belli_type_database = nullptr;
+  EvaluateCasusBelli evaluate_casus_belli = nullptr;
+  DestroyValidCasusBelliConfiguration
+      destroy_valid_casus_belli_configuration = nullptr;
+  ConstructCharacterInteractionContext
+      construct_character_interaction_context = nullptr;
+  CopyNativeIntArray copy_native_int_array = nullptr;
+  AppendNativeIntArrayRange append_native_int_array_range = nullptr;
+  RefreshCharacterInteractionContext
+      refresh_character_interaction_context = nullptr;
+  FinalizeCharacterInteractionContext
+      finalize_character_interaction_context = nullptr;
+  ValidateCharacterInteractionContext
+      validate_character_interaction_context = nullptr;
+  ConstructSendCharacterInteractionCommand
+      construct_send_character_interaction_command = nullptr;
+  DestroyCharacterInteractionContext
+      destroy_character_interaction_context = nullptr;
+  DefaultConstructCharacterInteractionContext
+      default_construct_character_interaction_context = nullptr;
+  ConstructWarResolutionInteractionContext
+      construct_war_resolution_interaction_context = nullptr;
+};
+
+// A generation-bound native declaration choice. casus_belli_index is the
+// exact current CCasusBelliTypeDatabase array ordinal; casus_belli_key is the
+// stable canonical script key inherited from CGameDatabaseObject;
+// configuration_index is the evaluator result ordinal, or -1 for CK3's
+// combined/special-CB choice. Neither ordinal is presented as a persistent
+// semantic CasusBelli ID. The full value is retained so submission can
+// re-enumerate and reject a stale choice instead of silently sending a
+// different war.
+struct DeclarableWarSnapshot {
+  std::int32_t target_character_id = -1;
+  std::int32_t casus_belli_index = -1;
+  std::string casus_belli_key;
+  std::int32_t configuration_index = -1;
+  std::int32_t claimant_character_id = -1;
+  std::vector<std::int32_t> target_title_ids;
+
+  friend bool operator==(const DeclarableWarSnapshot &,
+                         const DeclarableWarSnapshot &) = default;
 };
 
 struct ArmySnapshot {
@@ -249,5 +327,59 @@ enum class DisbandArmyResult {
 
 DisbandArmyResult SubmitDisbandArmy(const Bindings &bindings,
                                     std::int32_t army_id) noexcept;
+
+enum class ReadDeclarableWarsResult {
+  available,
+  no_played_character,
+  target_not_found,
+  unavailable,
+};
+
+// Runs CK3's own CB evaluator against one explicit target. This is the cheap
+// path for a planner that already knows a CharacterID. The global overload is
+// intentionally separate because scanning every live Character is a much
+// heavier strategic query and should not run on every heartbeat snapshot.
+ReadDeclarableWarsResult ReadDeclarableWarsForTarget(
+    const Bindings &bindings, std::int32_t target_character_id,
+    std::vector<DeclarableWarSnapshot> &output) noexcept;
+
+bool ReadDeclarableWars(
+    const Bindings &bindings,
+    std::vector<DeclarableWarSnapshot> &output) noexcept;
+
+enum class DeclareWarResult {
+  submitted,
+  no_played_character,
+  target_not_found,
+  declaration_unavailable,
+  validation_failed,
+  unavailable,
+};
+
+// Re-runs native enumeration and requires an exact match of every choice
+// field before constructing CSendCharacterInteractionCommand. Queue cloning
+// is synchronous; both the copied command context and the original temporary
+// context are destroyed after submission in CK3's native order.
+DeclareWarResult SubmitDeclareWar(
+    const Bindings &bindings,
+    const DeclarableWarSnapshot &declaration) noexcept;
+
+enum class EnforceDemandsResult {
+  submitted,
+  no_played_character,
+  war_not_found,
+  player_not_participant,
+  player_not_war_leader,
+  validation_failed,
+  unavailable,
+};
+
+// Builds the same victory interaction context as WarOverviewWindow's victory
+// tab for one live CWar led by the played character, then sends the common
+// native character-interaction command. The visual confirmation wrapper is
+// intentionally not part of the gameplay command and is not needed in
+// headless mode.
+EnforceDemandsResult SubmitEnforceDemands(const Bindings &bindings,
+                                          std::int32_t war_id) noexcept;
 
 } // namespace xar::ck3_11906

@@ -35,6 +35,14 @@ from .event_contract import (
     event_option_step,
     normalize_active_event,
 )
+from .declaration_contract import (
+    DECLARE_WAR_CAPABILITY,
+    QUERY_DECLARABLE_WARS_STEP,
+    declare_war_step,
+    is_native_declaration_step,
+    normalize_declarable_wars,
+    parse_declare_war_step,
+)
 from .war_contract import (
     DISBAND_ARMY_CAPABILITY,
     ENFORCE_DEMANDS_CAPABILITY,
@@ -496,6 +504,8 @@ class NativeHeadlessGameplayDriver:
         self._session_bridge_pid: int | None = None
         self._driver_state_restored = False
         self._driver_state_error: str | None = None
+        self._declarable_wars: list[dict[str, object]] = []
+        self._declaration_query_sequence: int | None = None
         self.state = NativeProtocolState(self.pipe_name)
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
@@ -529,6 +539,13 @@ class NativeHeadlessGameplayDriver:
         bridge_capabilities = set(
             _string_list(result.get("bridge_capabilities"))
         )
+        with self._driver_state_lock:
+            declarations = copy.deepcopy(self._declarable_wars)
+        if DECLARE_WAR_CAPABILITY in bridge_capabilities:
+            action_steps.update(
+                declare_war_step(str(row["declaration_id"]))
+                for row in declarations
+            )
         composite_action_steps: list[str] = []
         if (
             result.get("snapshot") is True
@@ -637,6 +654,8 @@ class NativeHeadlessGameplayDriver:
                 identity_changed = True
             episode_character_id = self._episode_character_id
             episode_run_id = self._episode_run_id
+            declarable_wars = copy.deepcopy(self._declarable_wars)
+            declaration_query_sequence = self._declaration_query_sequence
         if identity_changed:
             self._persist_driver_state()
 
@@ -661,6 +680,8 @@ class NativeHeadlessGameplayDriver:
             "one_life_terminal": terminal_reason is not None,
             "one_life_terminal_reason": terminal_reason,
             "continue_as_heir_after_death": False,
+            "declarable_wars": declarable_wars,
+            "declaration_query_sequence": declaration_query_sequence,
         }
 
     def execute_step(
@@ -693,6 +714,13 @@ class NativeHeadlessGameplayDriver:
             "reject-pending-character-interaction",
         } and step in capabilities["action_steps"]:
             return self._execute_pending_character_interaction_reply(
+                step, expected_revision=expected_revision
+            )
+        if (
+            is_native_declaration_step(step)
+            and step in capabilities["action_steps"]
+        ):
+            return self._execute_declarable_war_step(
                 step, expected_revision=expected_revision
             )
         if is_native_war_step(step) and step in capabilities["action_steps"]:
@@ -783,6 +811,8 @@ class NativeHeadlessGameplayDriver:
             # restore-checkpoint lifecycle.  Keep the episode and history,
             # then persist the replacement PID for a later daemon restart.
             self._session_bridge_pid = bridge_pid
+            self._declarable_wars = []
+            self._declaration_query_sequence = None
         self._persist_driver_state()
 
     def _read_driver_state(
@@ -1034,6 +1064,89 @@ class NativeHeadlessGameplayDriver:
                 "sender_character_id": pending.get("sender_character_id"),
             },
             "remaining_pending_character_interaction": remaining,
+            "snapshot_id": changed["snapshot_id"],
+            "revision": changed["revision"],
+        }
+
+    def _execute_declarable_war_step(
+        self, step: str, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        if step == QUERY_DECLARABLE_WARS_STEP:
+            result = self._execute_primitive_step(
+                step, expected_revision=expected_revision
+            )
+            declarations = normalize_declarable_wars(
+                result.get("declarable_wars")
+            )
+            query_sequence = result.get("query_sequence")
+            if (
+                isinstance(query_sequence, bool)
+                or not isinstance(query_sequence, int)
+                or query_sequence < 1
+            ):
+                raise BridgeUnavailableError(
+                    "native declarable-war result lacks query_sequence"
+                )
+            with self._driver_state_lock:
+                self._declarable_wars = copy.deepcopy(declarations)
+                self._declaration_query_sequence = query_sequence
+            return {
+                **result,
+                "declarable_wars": declarations,
+                "query_sequence": query_sequence,
+            }
+
+        declaration_id = parse_declare_war_step(step)
+        if declaration_id is None:
+            raise UnsupportedStepError(
+                f"native Python bridge does not implement declaration step {step}"
+            )
+        with self._driver_state_lock:
+            declaration = next(
+                (
+                    copy.deepcopy(row)
+                    for row in self._declarable_wars
+                    if row.get("declaration_id") == declaration_id
+                ),
+                None,
+            )
+        if declaration is None:
+            raise BridgeUnavailableError(
+                "native declare-war choice is not in the latest query"
+            )
+        starting = self.take_snapshot()
+        starting_wars = starting.get("active_wars")
+        starting_count = len(starting_wars) if isinstance(starting_wars, list) else 0
+        try:
+            result = self._execute_primitive_step(
+                step, expected_revision=expected_revision
+            )
+        finally:
+            with self._driver_state_lock:
+                self._declarable_wars = []
+                self._declaration_query_sequence = None
+        changed = self._wait_for_snapshot(
+            self.take_snapshot(),
+            lambda snapshot: (
+                isinstance(snapshot.get("active_wars"), list)
+                and len(snapshot["active_wars"]) > starting_count
+            ),
+            timeout_seconds=self.command_timeout_seconds,
+        )
+        active_wars = changed.get("active_wars")
+        war_started = (
+            isinstance(active_wars, list) and len(active_wars) > starting_count
+        )
+        return {
+            **result,
+            "declaration": declaration,
+            "war_action": {
+                "status": "war_started" if war_started else "declaration_submitted",
+                "declaration_id": declaration_id,
+                "target_character_id": declaration["target_character_id"],
+                "casus_belli_key": declaration["casus_belli_key"],
+            },
+            "active_wars": active_wars if isinstance(active_wars, list) else [],
             "snapshot_id": changed["snapshot_id"],
             "revision": changed["revision"],
         }
@@ -1820,7 +1933,11 @@ class ConfiguredHybridFallbackDriver:
         action_steps = {
             step
             for step in action_steps
-            if not is_native_war_step(step) or step in native_steps
+            if (
+                not is_native_war_step(step)
+                and not is_native_declaration_step(step)
+            )
+            or step in native_steps
         }
         return {
             **base,
@@ -1857,7 +1974,7 @@ class ConfiguredHybridFallbackDriver:
                 "restore-checkpoint is pure native and will not use fallback"
             )
         if (
-            is_native_war_step(step)
+            (is_native_war_step(step) or is_native_declaration_step(step))
             and step
             not in _string_list(self.native.capabilities().get("action_steps"))
         ):
@@ -2023,6 +2140,7 @@ def _action_steps(
     pending_character_interaction: object = None,
     active_wars: object = None,
     player_armies: object = None,
+    declarable_wars: object = None,
 ) -> list[str]:
     steps: set[str] = set()
     expand_event_options = False
@@ -2030,6 +2148,7 @@ def _action_steps(
     expand_move_armies = False
     expand_disband_armies = False
     expand_enforce_demands = False
+    expand_declare_wars = False
     advertise_raise_troops = False
     for capability in capabilities:
         if not capability.startswith(_ACTION_CAPABILITY_PREFIX):
@@ -2048,6 +2167,8 @@ def _action_steps(
             expand_disband_armies = True
         elif capability == ENFORCE_DEMANDS_CAPABILITY:
             expand_enforce_demands = True
+        elif capability == DECLARE_WAR_CAPABILITY:
+            expand_declare_wars = True
         elif step == RAISE_TROOPS_STEP:
             advertise_raise_troops = True
         elif step:
@@ -2086,6 +2207,13 @@ def _action_steps(
             enforce_demands_step(int(war["war_id"]))
             for war in wars
             if isinstance(war.get("war_id"), int)
+        )
+    if expand_declare_wars and isinstance(declarable_wars, list):
+        steps.update(
+            declare_war_step(str(row["declaration_id"]))
+            for row in declarable_wars
+            if isinstance(row, dict)
+            and isinstance(row.get("declaration_id"), str)
         )
     if expand_disband_armies:
         steps.update(

@@ -25,7 +25,10 @@ Its current first gameplay slice is intentionally small:
   interaction without opening or focusing its notification window, and now
   exposes active wars/player armies plus native `raise-troops-default`,
   `move-army-<army_id>-to-<province_id>`, and
-  `disband-army-<army_id>` commands;
+  `disband-army-<army_id>` commands; explicit `query-declarable-wars`
+  returns current generation-bound choices, `declare-war-<choice>` submits
+  one exact revalidated choice, and `enforce-demands-<war_id>` resolves a
+  100% war led by the player;
 - `xar_ck3_bridge_host.exe` creates a minimal target with
   `CREATE_SUSPENDED`, runs the PID injector, verifies the complete
   hello/heartbeat/ping/pong exchange from inside that target, deliberately
@@ -138,6 +141,16 @@ native 0x28-byte command. Move and disband reject armies not owned by the
 current played character. Dynamic IDs are parsed as complete positive decimal
 strings; trailing bytes, signs, whitespace, missing separators, and overflow
 are rejected.
+
+War declaration discovery is an explicit request rather than part of the
+250 ms snapshot publisher: it evaluates current CBs across live characters
+and returns `declaration_id`, stable `casus_belli_key`, target/claimant IDs,
+and target title IDs. The ID's numeric CB/configuration components are runtime
+ordinals, not persistent semantic IDs. `declare-war-*` consumes only a choice
+from that query and re-enumerates the exact target before constructing CK3's
+native character-interaction command. `enforce-demands-*` uses the native war
+resolution context builder and accepts only a war for which the played
+character is the primary war leader.
 
 ## Runtime integration
 

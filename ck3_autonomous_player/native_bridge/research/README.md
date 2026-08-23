@@ -48,6 +48,9 @@ bridge identity/heartbeat/ping.
 | `game.command.raise-troops-default` | implemented, live probe pending | native default-province/construct/validate/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
 | `game.command.move-army-N-to-N` | implemented, live probe pending | native mode/can-move/path-init/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
 | `game.command.disband-army-N` | implemented, live probe pending | exact 0x28-byte command/vtables/clone + offline fixture | explicit upper-layer policy only |
+| `game.command.query-declarable-wars` | native C++ core implemented, bridge route/live probe pending | exact declare-war UI CB registry/evaluator/item rules + offline SSO/heap-key and configuration fixture | explicit upper-layer policy only |
+| `game.command.declare-war-<declaration_id>` | native C++ core implemented, bridge route/live probe pending | generation-bound exact re-enumeration + native context/validation/queue/destruction fixture | explicit upper-layer policy only |
+| `game.command.enforce-demands-<war_id>` | native C++ core implemented, bridge route/live probe pending | exact WarOverview victory context builder + common interaction command lifecycle fixture | explicit upper-layer policy only |
 | event title/option text | unsupported | no repeatable localized text projection yet | unsupported in pure native mode |
 | main-thread tick hook | anchor-only/not located | command submission uses a locked queue, so it is not a prerequisite for the first loop | unsupported |
 
@@ -218,6 +221,63 @@ destination ProvinceID at `+0x28`, move mode at `+0x2C`, `+0x30=2`, and
 `0x432BFE0`/`0x432C078`, `+0x20=2`, and ArmyID at `+0x24`; it submits with
 flags `7`. Clone RVA `0x26C2090` independently confirms the complete layout.
 
+Declare-war discovery is an explicit strategic query, not part of the 250 ms
+heartbeat snapshot. The global query scans live Character components and runs
+the original UI evaluator for each target/type pair, which is intentionally
+too expensive for continuous polling; a target-scoped native overload is also
+available when the planner already knows a CharacterID. The query returns a
+generation-bound opaque declaration choice:
+
+- `target_character_id`;
+- `casus_belli_index`, the current `CCasusBelliTypeDatabase` array ordinal;
+- `configuration_index`, or `-1` for CK3's combined/special-CB item;
+- `casus_belli_key`, the stable canonical script key;
+- exact claimant CharacterID and target TitleID vector used by the command.
+
+The public opaque ID remains `<target>-<cb-index>-<configuration-index>` and
+must be resolved against the query generation. The dense CB index is never
+presented as a semantic CasusBelli ID. `CCasusBelliType` inherits
+`CGameDatabaseObject`: constructor RVA `0x345E620` writes the dense index at
+`+0x10`, hashes the key into `uint32 +0x14`, and copies the canonical MSVC
+string to `+0x18` (size `+0x28`, capacity `+0x30`). The bridge publishes the
+full string rather than treating the non-unique 32-bit hash as identity.
+
+The original declare-war UI at RVA `0x1086440` reads the CB pointer array at
+database `+0x68`/count `+0x74`, skips a type when `[[type+0x38]+0x211]` is
+nonzero, clears global `CPdxArray<SValidCasusBelliConfiguration>` at
+`base+0x4FED598`, then calls evaluator RVA `0x2D95D00(type, actor, target,
+scratch, false, false, nullptr)`. Each `0x98`-byte configuration holds claimant
+CharacterID at `+0x00` and the declaration's target TitleID array at `+0x08`.
+When type flag bit 20 at `+0x1718` is clear, the UI emits one choice for each
+configuration whose target array is nonempty. Otherwise it emits one choice
+with claimant `-1` and concatenates every configuration's target array. The
+native fixture reproduces both branches and both MSVC key-string forms.
+
+`declare-war-<declaration_id>` re-runs that evaluator for the target and CB
+ordinal and requires the complete cached choice, including key, claimant and
+TitleIDs, to match before submitting. It constructs the 0x338-byte character
+interaction context using `CK3GameData +0x1070`, verifies the special data is
+a `CWarDeclaration` with vtable `0x411DAA0`, writes CB pointer `+0x08`, native
+TitleID array `+0x10`, and claimant `+0x28`, then follows the UI's refresh
+`0x2C40950`, finalize `0x2C40B20`, and validation `0x2C43F00` calls.
+Constructor RVA `0x26B3220` creates the complete 0x368-byte
+`CSendCharacterInteractionCommand` (vtables `0x40829F8`/`0x40829C8`, copied
+context at `+0x20`, derived payloads at `+0x358/+0x360`). Submission uses flags
+`0x0E`; the copied and original contexts are then destroyed with RVA
+`0x2C3F380`, matching UI send RVA `0xFE5190`.
+
+`enforce-demands-<war_id>` resolves the same live `CWar` storage used by the
+snapshot and rejects both a non-participant and a participating ally who is
+not one of the primary war leaders at `+0x288/+0x28C`. It default-constructs
+a 0x338-byte context with RVA `0x2C3F300`, then calls exact
+WarOverview builder `0xC569F0(context, war, false)`. That builder compares the
+played CharacterID with primary sides at `CWar +0x288/+0x28C`, chooses the
+opponent, and uses the enforce-demands interaction at `CK3GameData +0x1018`.
+WarOverview send RVA `0xF54FA0` proves the remaining native path is validation,
+`CSendCharacterInteractionCommand` construction, submit flags `0x0E`, and
+embedded-context destruction. Its visual confirmation window is only a UI
+wrapper and is not part of the headless gameplay command.
+
 The canonical marriage script key is `arrange_marriage_interaction` in the
 1.19.0.6 base-game `00_marriage_interactions.txt`. Static UI paths show
 `CSendCharacterInteractionCommand` is `0x368` bytes (vtables `0x40829F8` and
@@ -252,6 +312,7 @@ The same exact build then completed the next two background slices:
 
 No OCR, screenshot, focus, keyboard, or mouse backend participated. Checkpoint
 restore, incoming character-interaction reply, played-character terminal
-state, and the offline native war loop are now implemented. The bounded next
-war acceptance is a minimized exact-build probe of raise, movement, and
-disband; event and save are no longer pending live acceptance.
+state, and the native war loop now have offline implementations. The bounded
+next war acceptance is a minimized exact-build probe of declaration discovery,
+declare war, raise, movement, enforce demands, and disband; event and save are
+no longer pending live acceptance.

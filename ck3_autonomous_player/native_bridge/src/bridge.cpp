@@ -69,6 +69,24 @@ std::string SignedNumber(std::int64_t value) {
   return std::string(buffer.data(), result.ptr);
 }
 
+void AppendJsonString(std::string &result, std::string_view value) {
+  constexpr char hex[] = "0123456789ABCDEF";
+  result += '"';
+  for (const unsigned char character : value) {
+    if (character == '"' || character == '\\') {
+      result += '\\';
+      result += static_cast<char>(character);
+    } else if (character < 0x20U) {
+      result += "\\u00";
+      result += hex[(character >> 4U) & 0x0FU];
+      result += hex[character & 0x0FU];
+    } else {
+      result += static_cast<char>(character);
+    }
+  }
+  result += '"';
+}
+
 struct CheckpointSubmission {
   std::uint64_t sequence = 0;
   std::int32_t date_raw = 0;
@@ -108,7 +126,10 @@ std::string HelloFrame(bool ck3_gameplay_enabled) {
               "\"game.command.reject-pending-character-interaction\","
               "\"game.command.raise-troops-default\","
               "\"game.command.move-army-N-to-N\","
-              "\"game.command.disband-army-N\"";
+              "\"game.command.disband-army-N\","
+              "\"game.command.query-declarable-wars\","
+              "\"game.command.declare-war-N\","
+              "\"game.command.enforce-demands-N\"";
   }
   result += "]}";
   return result;
@@ -154,6 +175,47 @@ void AppendArmyArray(
     AppendArmySnapshot(result, armies[index]);
   }
   result += ']';
+}
+
+std::string DeclarationId(
+    const xar::ck3_11906::DeclarableWarSnapshot &declaration) {
+  std::string result = SignedNumber(declaration.target_character_id);
+  result += '-';
+  result += SignedNumber(declaration.casus_belli_index);
+  result += '-';
+  result += SignedNumber(declaration.configuration_index);
+  return result;
+}
+
+std::string DeclarationStep(
+    const xar::ck3_11906::DeclarableWarSnapshot &declaration) {
+  return "declare-war-" + DeclarationId(declaration);
+}
+
+void AppendDeclaration(
+    std::string &result,
+    const xar::ck3_11906::DeclarableWarSnapshot &declaration) {
+  result += "{\"declaration_id\":\"";
+  result += DeclarationId(declaration);
+  result += "\",\"target_character_id\":";
+  result += SignedNumber(declaration.target_character_id);
+  result += ",\"casus_belli_index\":";
+  result += SignedNumber(declaration.casus_belli_index);
+  result += ",\"casus_belli_key\":";
+  AppendJsonString(result, declaration.casus_belli_key);
+  result += ",\"configuration_index\":";
+  result += SignedNumber(declaration.configuration_index);
+  result += ",\"claimant_character_id\":";
+  result += SignedNumber(declaration.claimant_character_id);
+  result += ",\"target_title_ids\":[";
+  for (std::size_t index = 0; index < declaration.target_title_ids.size();
+       ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    result += SignedNumber(declaration.target_title_ids[index]);
+  }
+  result += "]}";
 }
 
 std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
@@ -294,6 +356,28 @@ std::string SaveCheckpointResultFrame(std::string_view request_id,
   return result;
 }
 
+std::string DeclarableWarsResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const std::vector<xar::ck3_11906::DeclarableWarSnapshot> &declarations) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result +=
+      "\",\"ok\":true,\"result\":{\"step\":\"query-declarable-wars\","
+      "\"accepted\":true,\"status\":\"available\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"declarable_wars\":[";
+  for (std::size_t index = 0; index < declarations.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    AppendDeclaration(result, declarations[index]);
+  }
+  result += "]}}";
+  return result;
+}
+
 std::int32_t FixedSpeedStep(std::string_view step) noexcept {
   constexpr std::string_view prefix = "set-speed-";
   if (!step.starts_with(prefix) || step.size() != prefix.size() + 1U) {
@@ -374,6 +458,15 @@ std::optional<MoveArmyStepIds> MoveArmyStep(
 std::optional<std::int32_t> DisbandArmyStep(
     std::string_view step) noexcept {
   constexpr std::string_view prefix = "disband-army-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
+std::optional<std::int32_t> EnforceDemandsStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix = "enforce-demands-";
   if (!step.starts_with(prefix)) {
     return std::nullopt;
   }
@@ -462,6 +555,8 @@ struct WorkerState {
   CheckpointSubmission checkpoint_submission{};
   std::uint64_t published_checkpoint_sequence = 0;
   std::optional<xar::ck3_11906::Snapshot> previous_snapshot;
+  std::uint64_t declaration_query_sequence = 0;
+  std::vector<xar::ck3_11906::DeclarableWarSnapshot> declarable_wars;
 };
 
 void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
@@ -475,6 +570,8 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
   auto &checkpoint_submission = state.checkpoint_submission;
   auto &published_checkpoint_sequence = state.published_checkpoint_sequence;
   auto &previous_snapshot = state.previous_snapshot;
+  auto &declaration_query_sequence = state.declaration_query_sequence;
+  auto &declarable_wars = state.declarable_wars;
 
   // A new MCP server has no copy of the previous semantic snapshot.  Force
   // the first heartbeat on every connection to republish current state and
@@ -610,6 +707,112 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
             }
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, false, error));
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step == "query-declarable-wars") {
+          declarable_wars.clear();
+          if (!xar::ck3_11906::ReadDeclarableWars(game, declarable_wars)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "CK3 declarable-war query is unavailable"));
+          } else {
+            ++declaration_query_sequence;
+            connected = xar::bridge::WriteFrame(
+                pipe, DeclarableWarsResultFrame(
+                          request_id, declaration_query_sequence,
+                          declarable_wars));
+          }
+        } else if (step.starts_with("declare-war-")) {
+          const xar::ck3_11906::DeclarableWarSnapshot *selected = nullptr;
+          for (const auto &candidate : declarable_wars) {
+            if (DeclarationStep(candidate) == step) {
+              selected = &candidate;
+              break;
+            }
+          }
+          if (selected == nullptr) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "declare-war choice is missing or stale; query first"));
+          } else {
+            const auto result =
+                xar::ck3_11906::SubmitDeclareWar(game, *selected);
+            if (result == xar::ck3_11906::DeclareWarResult::submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, true, "submitted"));
+              declarable_wars.clear();
+            } else {
+              std::string_view error = "CK3 declare-war state is unavailable";
+              if (result ==
+                  xar::ck3_11906::DeclareWarResult::no_played_character) {
+                error = "no living played CK3 character";
+              } else if (result ==
+                         xar::ck3_11906::DeclareWarResult::target_not_found) {
+                error = "CK3 declare-war target was not found";
+              } else if (
+                  result == xar::ck3_11906::DeclareWarResult::
+                                declaration_unavailable) {
+                error = "CK3 declare-war choice changed; query again";
+              } else if (result ==
+                         xar::ck3_11906::DeclareWarResult::validation_failed) {
+                error = "CK3 rejected declare-war validation";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step.starts_with("enforce-demands-")) {
+          const auto war_id = EnforceDemandsStep(step);
+          if (!war_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid enforce-demands-<war_id> step"));
+          } else {
+            const auto result = xar::ck3_11906::SubmitEnforceDemands(
+                game, war_id.value());
+            if (result == xar::ck3_11906::EnforceDemandsResult::submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, true, "submitted"));
+            } else {
+              std::string_view error =
+                  "CK3 enforce-demands state is unavailable";
+              if (result ==
+                  xar::ck3_11906::EnforceDemandsResult::
+                      no_played_character) {
+                error = "no living played CK3 character";
+              } else if (result ==
+                         xar::ck3_11906::EnforceDemandsResult::war_not_found) {
+                error = "CK3 war was not found";
+              } else if (
+                  result == xar::ck3_11906::EnforceDemandsResult::
+                                player_not_participant) {
+                error = "played CK3 character is not a war participant";
+              } else if (
+                  result == xar::ck3_11906::EnforceDemandsResult::
+                                player_not_war_leader) {
+                error = "played CK3 character is not the war leader";
+              } else if (result ==
+                         xar::ck3_11906::EnforceDemandsResult::
+                             validation_failed) {
+                error = "CK3 rejected enforce-demands validation";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
           }
           if (connected) {
             connected = PublishSnapshot(pipe, game, previous_snapshot,

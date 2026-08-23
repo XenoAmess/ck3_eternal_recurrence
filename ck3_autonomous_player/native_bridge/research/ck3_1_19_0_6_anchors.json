@@ -201,6 +201,66 @@
       "rva": "0x26C2090",
       "confidence": "high-static",
       "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 48 8B FA B9 28 00 00 00 E8 7A 3D 76 01 4C 8B C8 48 8D 05 F4 FC 9B 01 49 89 01 48"
+    },
+    {
+      "name": "casus_belli_type_database_getter",
+      "rva": "0x88E260",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 38 48 8B 05 ED DB E7 04 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 69 5A 7F 03 48 89 44 24 20"
+    },
+    {
+      "name": "declare_war_ui_enumerate_casus_belli",
+      "rva": "0x1086440",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 41 54 41 55 41 56 41 57 B8 20 10 00 00 E8 DE 05 DA 02 48 2B E0 48 8B E9 48 81 C1 08 01 00 00"
+    },
+    {
+      "name": "evaluate_valid_casus_belli_configurations",
+      "rva": "0x2D95D00",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 10 FC FF FF 48 81 EC F0 04 00 00 4D 8B E9 4D 8B F0 4C 8B FA 48 8B F9"
+    },
+    {
+      "name": "game_database_object_key_constructor",
+      "rva": "0x345E620",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B 41 08 48 8B D9 48 8D 0D 08 4C C3 00 49 8B F8 48 89 0B 48 8D 0D 1B 4C C3 00 48 63 40 04 48 89 4C 18 08 89 53 10"
+    },
+    {
+      "name": "construct_character_interaction_context",
+      "rva": "0x2C3EE50",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 48 89 4C 24 08 57 41 54 41 55 41 56 41 57 48 83 EC 30 41 8B F9 41 8B D8 4C 8B F2 48 8B F1 48 89 11"
+    },
+    {
+      "name": "declare_war_ui_apply_selected_declaration",
+      "rva": "0x1087C80",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC C0 00 00 00 48 8B F1 8B 81 28 01 00 00 89 44 24 20 48 63 99 3C 01 00 00 48 8B B9 30 01 00 00"
+    },
+    {
+      "name": "validate_character_interaction_context",
+      "rva": "0x2C43F00",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 00 00 00 48 8B FA 48 8B D9 4C 8B CA 41 B0 01 41 0F B6 D0 E8 0E EB FF FF 84 C0 0F 84 C9 00 00 00"
+    },
+    {
+      "name": "construct_send_character_interaction_command",
+      "rva": "0x26B3220",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 18 48 89 74 24 20 48 89 4C 24 08 57 48 83 EC 20 48 8B FA 48 8B F1 C6 41 08 00 33 C0 48 89 41 0C 89 41 14 48 8D 05 AA F7 9C 01 48 89 01 48 8D 05 70 F7 9C 01"
+    },
+    {
+      "name": "construct_war_resolution_interaction_context",
+      "rva": "0xC569F0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 81 EC 70 03 00 00 41 0F B6 F0 48 8B E9 8B BA 88 02 00 00 8B 1D C0 14 39 04 3B FB"
+    },
+    {
+      "name": "war_overview_enforce_demands_validate_and_submit",
+      "rva": "0xF54FA0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 03 00 00 48 8B FA 48 8B D9 80 B9 49 1C 00 00 00 74 48 33 D2 48 8B CF E8 3A EF CE 01 84 C0 74 3A 48 8B D7 48 8D 4C 24 20"
     }
   ],
   "rvas": {
@@ -238,6 +298,24 @@
     "move_army_destructor": "0x26B46D0",
     "disband_army_primary_vtable": "0x432BFE0",
     "disband_army_secondary_vtable": "0x432C078",
+    "send_character_interaction_primary_vtable": "0x40829F8",
+    "send_character_interaction_secondary_vtable": "0x40829C8",
+    "war_declaration_vtable": "0x411DAA0",
+    "valid_casus_belli_configuration_scratch": "0x4FED598",
+    "get_casus_belli_type_database": "0x88E260",
+    "evaluate_valid_casus_belli_configurations": "0x2D95D00",
+    "destroy_valid_casus_belli_configuration": "0x101B3C0",
+    "game_database_object_key_constructor": "0x345E620",
+    "construct_character_interaction_context": "0x2C3EE50",
+    "copy_native_int_array": "0xBDBC10",
+    "append_native_int_array_range": "0x975ED0",
+    "refresh_character_interaction_context": "0x2C40950",
+    "finalize_character_interaction_context": "0x2C40B20",
+    "validate_character_interaction_context": "0x2C43F00",
+    "construct_send_character_interaction_command": "0x26B3220",
+    "destroy_character_interaction_context": "0x2C3F380",
+    "default_construct_character_interaction_context": "0x2C3F300",
+    "construct_war_resolution_interaction_context": "0xC569F0",
     "game_state_type_descriptor": "0x546A670",
     "event_manager_type_descriptor": "0x54E12E8",
     "player_character_manager_type_descriptor": "0x54C4230"
@@ -282,6 +360,16 @@
       "name": "CDisbandArmyCommand.primary",
       "rva": "0x432BFE0",
       "function_rvas": ["0x801FD0", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26B5630", "0x803620", "0x26C2090"]
+    },
+    {
+      "name": "CSendCharacterInteractionCommand.primary",
+      "rva": "0x40829F8",
+      "function_rvas": ["0x801F40", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26B3350", "0x803620", "0x8037C0"]
+    },
+    {
+      "name": "CWarDeclaration.primary",
+      "rva": "0x411DAA0",
+      "function_rvas": ["0x10933F0", "0x3B8B090", "0x24D7840", "0x3B8B110", "0x24D7A10", "0x7E6490", "0x7E6490", "0x24D7810", "0x24D7690"]
     }
   ],
   "layouts": {
@@ -300,7 +388,9 @@
     "CK3GameData": {
       "event_manager": "+0x2F4C0 embedded EventManager",
       "war_manager": "+0x29C20 embedded CWarManager",
-      "province_array": "+0x140 pointer array; +0x14C int32 count; Province ID repeats at Province +0x10"
+      "province_array": "+0x140 pointer array; +0x14C int32 count; Province ID repeats at Province +0x10",
+      "enforce_demands_interaction": "+0x1018 pointer consumed by war-resolution builder RVA 0xC569F0 when surrender=false and the player is on the winning side",
+      "declare_war_interaction": "+0x1070 pointer passed to character-interaction context constructor RVA 0x2C3EE50"
     },
     "EventManager": {
       "active_events": "+0x1F18 pointer to ActiveEvent pointer array",
@@ -373,6 +463,7 @@
       "war_id": "+0x08 int32 component ID",
       "attackers": "+0x20 participant container; pointer array +0x08, count +0x14, participant CharacterID at element +0x08",
       "defenders": "+0x80 participant container with the same layout",
+      "primary_characters": "+0x288 attacker primary CharacterID, +0x28C defender primary CharacterID; RVA 0xC569F0 requires the local played CharacterID to match one and chooses the other as interaction recipient",
       "ended_data": "+0x358 pointer; non-null wars are omitted from active_wars",
       "war_score": "RVA 0x222A8A0 returns the attacker-relative int32 score for context=null; bridge negates it for a defending player"
     },
@@ -409,6 +500,52 @@
       "primary_vtable": "+0x00 = 0x432BFE0",
       "secondary_vtable": "+0x18 = 0x432C078",
       "payload": "+0x20=2 command kind, +0x24 ArmyID; submit flags 7"
+    },
+    "CCasusBelliTypeDatabase": {
+      "types": "+0x68 CCasusBelliType pointer array",
+      "count": "+0x74 int32",
+      "getter": "RVA 0x88E260"
+    },
+    "CCasusBelliType": {
+      "database_index": "+0x10 int32 dense runtime ordinal; generation-bound only and not a semantic ID",
+      "canonical_key": "+0x18 MSVC string inherited from CGameDatabaseObject; bytes/size/capacity at +0x18/+0x28/+0x30 and deterministic uint32 key hash at +0x14",
+      "rule": "+0x38 pointer; byte +0x211 nonzero disables the type from declare-war UI enumeration",
+      "selection_flags": "+0x1718 uint32; bit 20 selects CK3's one combined declaration item instead of one item per nonempty evaluator configuration"
+    },
+    "ValidCasusBelliConfigurationArray": {
+      "global_scratch": "base + 0x4FED598 native CPdxArray used by the original declare-war UI",
+      "array_layout": "+0x00 data pointer, +0x08 int32 capacity, +0x0C int32 count, +0x10 allocator pointer",
+      "element_size": "0x98; destructor RVA 0x101B3C0",
+      "claimant_character_id": "element +0x00 int32 CharacterID",
+      "target_title_ids": "element +0x08 native int32 TitleID array copied into CWarDeclaration",
+      "unclassified_secondary_ids": "element +0x50 native int32-ID array; retained by AI projection but not copied into CWarDeclaration, so it is not named or exposed"
+    },
+    "CCharacterInteractionContext": {
+      "size": "0x338",
+      "interaction": "+0x00 pointer",
+      "actor_character_id": "+0x2D8 int32",
+      "recipient_character_id": "+0x2DC int32",
+      "special_data": "+0x330 polymorphic pointer; declare_war_interaction constructs CWarDeclaration",
+      "lifecycle": "construct RVA 0x2C3EE50 or default construct RVA 0x2C3F300, validate RVA 0x2C43F00, destroy RVA 0x2C3F380"
+    },
+    "CWarDeclaration": {
+      "size": "0x30",
+      "primary_vtable": "+0x00 = 0x411DAA0",
+      "casus_belli_type": "+0x08 CCasusBelliType pointer",
+      "target_title_ids": "+0x10 native int32 TitleID array",
+      "claimant_character_id": "+0x28 int32 CharacterID; -1 for CK3's combined/special declaration item"
+    },
+    "CSendCharacterInteractionCommand": {
+      "size": "0x368",
+      "primary_vtable": "+0x00 = 0x40829F8",
+      "secondary_vtable": "+0x18 = 0x40829C8",
+      "context": "+0x20 owned 0x338-byte CCharacterInteractionContext copy",
+      "derived_payload": "+0x358 and +0x360 are populated only by constructor RVA 0x26B3220; never hand-filled",
+      "lifecycle": "validate source context RVA 0x2C43F00, construct command RVA 0x26B3220, submit flags 0x0E, destroy command+0x20 and the original temporary context with RVA 0x2C3F380"
+    },
+    "EnforceDemandsContext": {
+      "builder": "RVA 0xC569F0(default-constructed context, live CWar, false) selects the opponent and CK3GameData +0x1018 enforce-demands interaction",
+      "headless_path": "WarOverview send RVA 0xF54FA0 proves validate -> construct CSendCharacterInteractionCommand -> submit flags 0x0E; its visual confirmation object is not part of the gameplay command"
     }
   }
 }

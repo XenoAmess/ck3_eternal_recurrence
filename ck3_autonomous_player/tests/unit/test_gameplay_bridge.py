@@ -563,11 +563,38 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                         controllable=True,
                     )
                 ],
+                "declarable_wars": [
+                    {
+                        "declaration_id": "808-17-0",
+                        "target_character_id": 808,
+                        "casus_belli_index": 17,
+                        "casus_belli_key": "county_conquest_cb",
+                        "configuration_index": 0,
+                        "claimant_character_id": -1,
+                        "target_title_ids": [91],
+                    }
+                ],
             },
             execute=lambda step, revision: {
                 "step": step,
                 "expected_revision": revision,
                 **(
+                    {
+                        "declarable_wars": [
+                            {
+                                "declaration_id": "808-17-0",
+                                "target_character_id": 808,
+                                "casus_belli_index": 17,
+                                "casus_belli_key": "county_conquest_cb",
+                                "configuration_index": 0,
+                                "claimant_character_id": -1,
+                                "target_title_ids": [91],
+                            }
+                        ],
+                        "query_sequence": 1,
+                    }
+                    if step == "query-declarable-wars"
+                    else (
                     {
                         "checkpoint": {
                             "status": "saved",
@@ -594,6 +621,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                         if step == "restore-checkpoint"
                         else {}
                     )
+                    )
                 ),
             },
             action_steps=(
@@ -606,6 +634,8 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                 "move-army-81-to-60",
                 "disband-army-81",
                 "enforce-demands-88",
+                "query-declarable-wars",
+                "declare-war-808-17-0",
                 "select-event-option-1",
                 "select-event-option-2",
             ),
@@ -628,6 +658,8 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_restore_checkpoint",
                     "ck3_reply_pending_character_interaction",
                     "ck3_get_war_state",
+                    "ck3_query_declarable_wars",
+                    "ck3_declare_war",
                     "ck3_raise_troops_default",
                     "ck3_move_army",
                     "ck3_disband_army",
@@ -695,6 +727,21 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             war_state = await client.call_tool("ck3_get_war_state", {})
             self.assertFalse(war_state.is_error)
             self.assertEqual(war_state.structured_content["status"], "active")
+            declarations = await client.call_tool(
+                "ck3_query_declarable_wars", {"expected_revision": 4}
+            )
+            self.assertFalse(declarations.is_error)
+            self.assertEqual(
+                declarations.structured_content["declarable_wars"][0][
+                    "casus_belli_key"
+                ],
+                "county_conquest_cb",
+            )
+            declared = await client.call_tool(
+                "ck3_declare_war",
+                {"declaration_id": "808-17-0", "expected_revision": 4},
+            )
+            self.assertFalse(declared.is_error)
             raised = await client.call_tool(
                 "ck3_raise_troops_default", {"expected_revision": 4}
             )

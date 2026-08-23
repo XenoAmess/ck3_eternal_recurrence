@@ -19,8 +19,9 @@ std::array<std::byte, 0x20> g_pending_slots{};
 std::array<std::byte, 0x5C8> g_unrelated_pending_interaction{};
 std::array<std::byte, 0x5C8> g_pending_interaction{};
 std::array<std::byte, 0x40> g_character_storage{};
-std::array<std::byte, 0x30> g_character_slots{};
+std::array<std::byte, 0x40> g_character_slots{};
 std::array<std::byte, 0x1D0> g_played_character{};
+std::array<std::byte, 0x1D0> g_target_character{};
 std::array<std::byte, 0xE0> g_player_character_entry{};
 std::array<std::byte, sizeof(void *)> g_player_character_entries{};
 std::array<std::byte, 0x40> g_war_storage{};
@@ -37,6 +38,22 @@ std::array<std::byte, 0x178> g_enemy_army{};
 std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
 std::array<std::byte, 4 * sizeof(void *)> g_provinces{};
+std::array<std::byte, 0x78> g_casus_belli_database{};
+std::array<void *, 2> g_casus_belli_types{};
+std::array<std::byte, 0x1720> g_casus_belli_type_0{};
+std::array<std::byte, 0x1720> g_casus_belli_type_1{};
+constexpr char g_casus_belli_key_0[] = "claim_cb";
+constexpr char g_casus_belli_key_1[] = "county_conquest_cb";
+std::array<std::byte, 0x220> g_casus_belli_rule_0{};
+std::array<std::byte, 0x220> g_casus_belli_rule_1{};
+std::array<std::byte, 0x18> g_casus_belli_scratch{};
+std::array<std::byte, 2 * 0x98> g_casus_belli_configurations{};
+std::array<std::int32_t, 2> g_casus_belli_titles_0{};
+std::array<std::int32_t, 2> g_casus_belli_titles_1{};
+std::array<std::byte, 0x2A60> g_declare_war_interaction{};
+std::array<std::byte, 0x30> g_war_declaration{};
+std::array<std::int32_t, 8> g_war_declaration_titles{};
+std::array<std::byte, 8> g_enforce_demands_marker{};
 void *g_pending_storage_pointer = nullptr;
 void *g_character_storage_pointer = nullptr;
 void *g_army_storage_pointer = nullptr;
@@ -54,6 +71,16 @@ bool g_raise_validate_result = true;
 bool g_raise_destroy_called = false;
 bool g_move_path_initialized = false;
 bool g_move_destroy_called = false;
+std::int32_t g_casus_belli_evaluation_calls = 0;
+std::int32_t g_casus_belli_configuration_destroy_calls = 0;
+bool g_interaction_construct_called = false;
+bool g_interaction_refresh_called = false;
+bool g_interaction_finalize_called = false;
+bool g_interaction_validate_result = true;
+bool g_send_interaction_construct_called = false;
+std::int32_t g_interaction_destroy_calls = 0;
+bool g_interaction_default_construct_called = false;
+bool g_war_resolution_construct_called = false;
 enum class ExpectedCommand {
   pause,
   resume,
@@ -65,6 +92,8 @@ enum class ExpectedCommand {
   raise_troops,
   move_army,
   disband_army,
+  declare_war,
+  enforce_demands,
 };
 ExpectedCommand g_expected_command = ExpectedCommand::pause;
 
@@ -204,6 +233,207 @@ void *FixtureDestroyMoveArmyCommand(void *opaque_command,
   return opaque_command;
 }
 
+void *FixtureGetCasusBelliTypeDatabase() {
+  return g_casus_belli_database.data();
+}
+
+void FixtureSetNativeIntArray(void *native_array, std::int32_t *data,
+                              std::int32_t capacity,
+                              std::int32_t count) {
+  auto *const bytes = static_cast<std::byte *>(native_array);
+  std::memcpy(bytes, &data, sizeof(data));
+  std::memcpy(bytes + 0x08, &capacity, sizeof(capacity));
+  std::memcpy(bytes + 0x0C, &count, sizeof(count));
+}
+
+bool FixtureEvaluateCasusBelli(void *casus_belli_type,
+                               void *attacker_character,
+                               void *defender_character,
+                               void *output_configurations,
+                               bool include_blocked, bool unknown_flag,
+                               void *evaluation_context) {
+  ++g_casus_belli_evaluation_calls;
+  if (attacker_character != g_played_character.data() ||
+      defender_character != g_target_character.data() || include_blocked ||
+      unknown_flag || evaluation_context != nullptr ||
+      output_configurations != g_casus_belli_scratch.data()) {
+    return false;
+  }
+  std::memset(g_casus_belli_configurations.data(), 0,
+              g_casus_belli_configurations.size());
+  auto *const first = g_casus_belli_configurations.data();
+  auto *const second = first + 0x98;
+  if (casus_belli_type == g_casus_belli_type_0.data()) {
+    g_casus_belli_titles_0 = {101, 0};
+    g_casus_belli_titles_1 = {102, 103};
+    Store(g_casus_belli_configurations, 0x00,
+          std::int32_t{0x01000004});
+    Store(g_casus_belli_configurations, 0x98,
+          std::int32_t{0x01000005});
+    FixtureSetNativeIntArray(first + 0x08,
+                             g_casus_belli_titles_0.data(), 1, 1);
+    FixtureSetNativeIntArray(second + 0x08,
+                             g_casus_belli_titles_1.data(), 2, 2);
+  } else if (casus_belli_type == g_casus_belli_type_1.data()) {
+    g_casus_belli_titles_0 = {201, 0};
+    g_casus_belli_titles_1 = {202, 0};
+    Store(g_casus_belli_configurations, 0x00,
+          std::int32_t{0x01000006});
+    Store(g_casus_belli_configurations, 0x98,
+          std::int32_t{0x01000007});
+    FixtureSetNativeIntArray(first + 0x08,
+                             g_casus_belli_titles_0.data(), 1, 1);
+    FixtureSetNativeIntArray(second + 0x08,
+                             g_casus_belli_titles_1.data(), 1, 1);
+  } else {
+    return false;
+  }
+  FixtureSetNativeIntArray(g_casus_belli_scratch.data(),
+                           reinterpret_cast<std::int32_t *>(
+                               g_casus_belli_configurations.data()),
+                           2, 2);
+  return true;
+}
+
+void FixtureDestroyValidCasusBelliConfiguration(void *) {
+  ++g_casus_belli_configuration_destroy_calls;
+}
+
+void *FixtureConstructCharacterInteractionContext(
+    void *opaque_context, void *interaction,
+    std::int32_t actor_character_id,
+    std::int32_t recipient_character_id, void *extra_context,
+    bool initialize_special_data) {
+  auto *const context = static_cast<std::byte *>(opaque_context);
+  std::memset(context, 0, 0x338);
+  std::memset(g_war_declaration.data(), 0, g_war_declaration.size());
+  const std::uintptr_t declaration_vtable = 0x12121212;
+  const std::int32_t no_claimant = -1;
+  std::memcpy(g_war_declaration.data(), &declaration_vtable,
+              sizeof(declaration_vtable));
+  std::memcpy(g_war_declaration.data() + 0x28, &no_claimant,
+              sizeof(no_claimant));
+  FixtureSetNativeIntArray(g_war_declaration.data() + 0x10,
+                           g_war_declaration_titles.data(),
+                           static_cast<std::int32_t>(
+                               g_war_declaration_titles.size()),
+                           0);
+  void *const declaration = g_war_declaration.data();
+  std::memcpy(context, &interaction, sizeof(interaction));
+  std::memcpy(context + 0x2D8, &actor_character_id,
+              sizeof(actor_character_id));
+  std::memcpy(context + 0x2DC, &recipient_character_id,
+              sizeof(recipient_character_id));
+  std::memcpy(context + 0x330, &declaration, sizeof(declaration));
+  g_interaction_construct_called =
+      interaction == g_declare_war_interaction.data() &&
+      actor_character_id == 0x01000002 &&
+      recipient_character_id == 0x01000003 && extra_context == nullptr &&
+      initialize_special_data;
+  return opaque_context;
+}
+
+void FixtureCopyNativeIntArray(void *destination, const void *source) {
+  auto *destination_data = static_cast<std::int32_t *>(nullptr);
+  auto *source_data = static_cast<const std::int32_t *>(nullptr);
+  std::int32_t destination_capacity = 0;
+  std::int32_t source_count = 0;
+  std::memcpy(&destination_data, destination, sizeof(destination_data));
+  std::memcpy(&destination_capacity,
+              static_cast<std::byte *>(destination) + 0x08,
+              sizeof(destination_capacity));
+  std::memcpy(&source_data, source, sizeof(source_data));
+  std::memcpy(&source_count,
+              static_cast<const std::byte *>(source) + 0x0C,
+              sizeof(source_count));
+  if (source_count > 0 && source_count <= destination_capacity) {
+    std::memcpy(destination_data, source_data,
+                static_cast<std::size_t>(source_count) *
+                    sizeof(std::int32_t));
+  }
+  std::memcpy(static_cast<std::byte *>(destination) + 0x0C,
+              &source_count, sizeof(source_count));
+}
+
+void FixtureAppendNativeIntArrayRange(void *destination,
+                                      std::int32_t current_count,
+                                      const std::int32_t *begin,
+                                      const std::int32_t *end) {
+  auto *destination_data = static_cast<std::int32_t *>(nullptr);
+  std::int32_t destination_capacity = 0;
+  std::memcpy(&destination_data, destination, sizeof(destination_data));
+  std::memcpy(&destination_capacity,
+              static_cast<std::byte *>(destination) + 0x08,
+              sizeof(destination_capacity));
+  const auto added = static_cast<std::int32_t>(end - begin);
+  const auto new_count = current_count + added;
+  if (added > 0 && new_count <= destination_capacity) {
+    std::memcpy(destination_data + current_count, begin,
+                static_cast<std::size_t>(added) * sizeof(std::int32_t));
+  }
+  std::memcpy(static_cast<std::byte *>(destination) + 0x0C,
+              &new_count, sizeof(new_count));
+}
+
+void FixtureRefreshCharacterInteractionContext(void *, bool refresh) {
+  g_interaction_refresh_called = refresh;
+}
+
+void FixtureFinalizeCharacterInteractionContext(void *) {
+  g_interaction_finalize_called = true;
+}
+
+void *FixtureDefaultConstructCharacterInteractionContext(
+    void *opaque_context) {
+  std::memset(opaque_context, 0, 0x338);
+  g_interaction_default_construct_called = true;
+  return opaque_context;
+}
+
+void FixtureConstructWarResolutionInteractionContext(void *opaque_context,
+                                                     void *war,
+                                                     bool surrender) {
+  auto *const context = static_cast<std::byte *>(opaque_context);
+  const std::int32_t actor_id = 0x01000002;
+  const std::int32_t recipient_id = 0x01000003;
+  void *const marker = g_enforce_demands_marker.data();
+  std::memcpy(context + 0x2D8, &actor_id, sizeof(actor_id));
+  std::memcpy(context + 0x2DC, &recipient_id, sizeof(recipient_id));
+  std::memcpy(context + 0x330, &marker, sizeof(marker));
+  g_war_resolution_construct_called =
+      war == g_war.data() && !surrender;
+}
+
+bool FixtureValidateCharacterInteractionContext(void *opaque_context,
+                                                void *error_output) {
+  const auto *const context = static_cast<const std::byte *>(opaque_context);
+  void *declaration = nullptr;
+  std::memcpy(&declaration, context + 0x330, sizeof(declaration));
+  const void *const expected_special_data =
+      g_expected_command == ExpectedCommand::enforce_demands
+          ? static_cast<void *>(g_enforce_demands_marker.data())
+          : static_cast<void *>(g_war_declaration.data());
+  return g_interaction_validate_result && error_output == nullptr &&
+         declaration == expected_special_data;
+}
+
+void *FixtureConstructSendCharacterInteractionCommand(
+    void *opaque_command, const void *opaque_context) {
+  auto *const command = static_cast<std::byte *>(opaque_command);
+  const std::uintptr_t primary = 0x13131313;
+  const std::uintptr_t secondary = 0x14141414;
+  std::memset(command, 0, 0x368);
+  std::memcpy(command, &primary, sizeof(primary));
+  std::memcpy(command + 0x18, &secondary, sizeof(secondary));
+  std::memcpy(command + 0x20, opaque_context, 0x338);
+  g_send_interaction_construct_called = true;
+  return opaque_command;
+}
+
+void FixtureDestroyCharacterInteractionContext(void *) {
+  ++g_interaction_destroy_calls;
+}
+
 void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
   const auto *command = static_cast<const std::byte *>(opaque_command);
   std::uintptr_t primary = 0;
@@ -291,6 +521,58 @@ void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
                       flags == 7 && primary == 0xFFFFFFFF &&
                       secondary == 0xABABABAB && command_flags == 0 &&
                       player_id == 2 && army_id == 0x01000001;
+  } else if (g_expected_command == ExpectedCommand::declare_war) {
+    std::int32_t actor_id = -1;
+    std::int32_t recipient_id = -1;
+    void *declaration = nullptr;
+    std::memcpy(&actor_id, command + 0x20 + 0x2D8,
+                sizeof(actor_id));
+    std::memcpy(&recipient_id, command + 0x20 + 0x2DC,
+                sizeof(recipient_id));
+    std::memcpy(&declaration, command + 0x20 + 0x330,
+                sizeof(declaration));
+    void *casus_belli_type = nullptr;
+    std::int32_t claimant_id = -1;
+    std::int32_t title_count = 0;
+    std::int32_t *title_data = nullptr;
+    if (declaration != nullptr) {
+      const auto *const declaration_bytes =
+          static_cast<const std::byte *>(declaration);
+      std::memcpy(&casus_belli_type, declaration_bytes + 0x08,
+                  sizeof(casus_belli_type));
+      std::memcpy(&title_data, declaration_bytes + 0x10,
+                  sizeof(title_data));
+      std::memcpy(&title_count, declaration_bytes + 0x1C,
+                  sizeof(title_count));
+      std::memcpy(&claimant_id, declaration_bytes + 0x28,
+                  sizeof(claimant_id));
+    }
+    g_submit_called =
+        manager == reinterpret_cast<void *>(0x1234) && flags == 0x0E &&
+        primary == 0x13131313 && secondary == 0x14141414 &&
+        command_flags == 0 && actor_id == 0x01000002 &&
+        recipient_id == 0x01000003 &&
+        declaration == g_war_declaration.data() &&
+        casus_belli_type == g_casus_belli_type_0.data() &&
+        claimant_id == 0x01000005 && title_count == 2 &&
+        title_data != nullptr && title_data[0] == 102 &&
+        title_data[1] == 103;
+  } else if (g_expected_command == ExpectedCommand::enforce_demands) {
+    std::int32_t actor_id = -1;
+    std::int32_t recipient_id = -1;
+    void *special_data = nullptr;
+    std::memcpy(&actor_id, command + 0x20 + 0x2D8,
+                sizeof(actor_id));
+    std::memcpy(&recipient_id, command + 0x20 + 0x2DC,
+                sizeof(recipient_id));
+    std::memcpy(&special_data, command + 0x20 + 0x330,
+                sizeof(special_data));
+    g_submit_called =
+        manager == reinterpret_cast<void *>(0x1234) && flags == 0x0E &&
+        primary == 0x13131313 && secondary == 0x14141414 &&
+        command_flags == 0 && actor_id == 0x01000002 &&
+        recipient_id == 0x01000003 &&
+        special_data == g_enforce_demands_marker.data();
   }
 }
 
@@ -305,7 +587,7 @@ int main() {
   std::array<std::byte, 0xA8> game_state{};
   std::array<std::byte, 0x28> jomini_state{};
   std::array<std::byte, 0x200> players{};
-  std::array<std::byte, 0x400> game_data{};
+  std::array<std::byte, 0x1100> game_data{};
   void *game_state_pointer = game_state.data();
   void *jomini_state_pointer = jomini_state.data();
   Store(game_state, 0x08, std::int32_t{43'823'104});
@@ -321,6 +603,7 @@ int main() {
   g_expected_event_manager = game_data.data();
 
   constexpr std::int32_t played_character_id = 0x01000002;
+  constexpr std::int32_t enemy_character_id = 0x01000003;
   Store(game_data, 0x158,
         static_cast<void *>(g_player_character_entries.data()));
   Store(game_data, 0x164, std::int32_t{1});
@@ -330,14 +613,17 @@ int main() {
   Store(g_player_character_entry, 0xD8, std::int32_t{41});
   Store(g_character_storage, 0x20,
         static_cast<void *>(g_character_slots.data()));
-  Store(g_character_storage, 0x2C, std::int32_t{3});
+  Store(g_character_storage, 0x2C, std::int32_t{4});
   Store(g_character_slots, 0x28,
         static_cast<void *>(g_played_character.data()));
+  Store(g_character_slots, 0x38,
+        static_cast<void *>(g_target_character.data()));
   Store(g_played_character, 0x18, played_character_id);
   Store(g_played_character, 0x1C8, static_cast<void *>(nullptr));
+  Store(g_target_character, 0x18, enemy_character_id);
+  Store(g_target_character, 0x1C8, static_cast<void *>(nullptr));
   g_character_storage_pointer = g_character_storage.data();
 
-  constexpr std::int32_t enemy_character_id = 0x01000003;
   constexpr std::int32_t player_army_id = 0x01000001;
   constexpr std::int32_t enemy_army_id = 0x01000002;
   constexpr std::int32_t active_war_id = 0x01000001;
@@ -375,11 +661,36 @@ int main() {
   Store(g_war, 0x34, std::int32_t{1});
   Store(g_war, 0x88, static_cast<void *>(g_defender_participants.data()));
   Store(g_war, 0x94, std::int32_t{1});
+  Store(g_war, 0x288, played_character_id);
+  Store(g_war, 0x28C, enemy_character_id);
   Store(g_war, 0x358, static_cast<void *>(nullptr));
   Store(g_war_slots, 0x18, static_cast<void *>(g_war.data()));
   Store(g_war_storage, 0x20, static_cast<void *>(g_war_slots.data()));
   Store(g_war_storage, 0x2C, std::int32_t{2});
   Store(game_data, 0x220, static_cast<void *>(g_war_storage.data()));
+
+  g_casus_belli_types = {g_casus_belli_type_0.data(),
+                         g_casus_belli_type_1.data()};
+  Store(g_casus_belli_database, 0x68,
+        static_cast<void *>(g_casus_belli_types.data()));
+  Store(g_casus_belli_database, 0x74, std::int32_t{2});
+  Store(g_casus_belli_type_0, 0x38,
+        static_cast<void *>(g_casus_belli_rule_0.data()));
+  Store(g_casus_belli_type_1, 0x38,
+        static_cast<void *>(g_casus_belli_rule_1.data()));
+  std::memcpy(g_casus_belli_type_0.data() + 0x18, g_casus_belli_key_0,
+              sizeof(g_casus_belli_key_0));
+  Store(g_casus_belli_type_0, 0x28,
+        std::size_t{sizeof(g_casus_belli_key_0) - 1});
+  Store(g_casus_belli_type_0, 0x30, std::size_t{15});
+  Store(g_casus_belli_type_1, 0x18, g_casus_belli_key_1);
+  Store(g_casus_belli_type_1, 0x28,
+        std::size_t{sizeof(g_casus_belli_key_1) - 1});
+  Store(g_casus_belli_type_1, 0x30,
+        std::size_t{sizeof(g_casus_belli_key_1) - 1});
+  Store(g_casus_belli_type_1, 0x1718, std::uint32_t{1U << 20U});
+  Store(game_data, 0x1070,
+        static_cast<void *>(g_declare_war_interaction.data()));
 
   Bindings bindings{};
   bindings.enabled = true;
@@ -402,12 +713,18 @@ int main() {
   bindings.move_army_secondary_vtable = 0xEEEEEEEE;
   bindings.disband_army_primary_vtable = 0xFFFFFFFF;
   bindings.disband_army_secondary_vtable = 0xABABABAB;
+  bindings.send_character_interaction_primary_vtable = 0x13131313;
+  bindings.send_character_interaction_secondary_vtable = 0x14141414;
+  bindings.war_declaration_vtable = 0x12121212;
   bindings.pending_character_interaction_storage_slot =
       &g_pending_storage_pointer;
   bindings.character_storage_slot = &g_character_storage_pointer;
   bindings.army_storage_slot = &g_army_storage_pointer;
+  bindings.valid_casus_belli_configuration_scratch =
+      g_casus_belli_scratch.data();
   bindings.player_character_manager_offset = 0x100;
   bindings.war_manager_offset = 0x200;
+  bindings.declare_war_interaction_offset = 0x1070;
   bindings.submit_command = FixtureSubmit;
   bindings.get_local_player = FixtureGetLocalPlayer;
   bindings.get_current_event = FixtureGetCurrentEvent;
@@ -429,6 +746,30 @@ int main() {
   bindings.can_move_army = FixtureCanMoveArmy;
   bindings.initialize_army_move_path = FixtureInitializeArmyMovePath;
   bindings.destroy_move_army_command = FixtureDestroyMoveArmyCommand;
+  bindings.get_casus_belli_type_database =
+      FixtureGetCasusBelliTypeDatabase;
+  bindings.evaluate_casus_belli = FixtureEvaluateCasusBelli;
+  bindings.destroy_valid_casus_belli_configuration =
+      FixtureDestroyValidCasusBelliConfiguration;
+  bindings.construct_character_interaction_context =
+      FixtureConstructCharacterInteractionContext;
+  bindings.copy_native_int_array = FixtureCopyNativeIntArray;
+  bindings.append_native_int_array_range =
+      FixtureAppendNativeIntArrayRange;
+  bindings.refresh_character_interaction_context =
+      FixtureRefreshCharacterInteractionContext;
+  bindings.finalize_character_interaction_context =
+      FixtureFinalizeCharacterInteractionContext;
+  bindings.validate_character_interaction_context =
+      FixtureValidateCharacterInteractionContext;
+  bindings.construct_send_character_interaction_command =
+      FixtureConstructSendCharacterInteractionCommand;
+  bindings.destroy_character_interaction_context =
+      FixtureDestroyCharacterInteractionContext;
+  bindings.default_construct_character_interaction_context =
+      FixtureDefaultConstructCharacterInteractionContext;
+  bindings.construct_war_resolution_interaction_context =
+      FixtureConstructWarResolutionInteractionContext;
 
   if (bindings.army_storage_slot != &g_army_storage_pointer ||
       *bindings.army_storage_slot != g_army_storage.data()) {
@@ -700,6 +1041,127 @@ int main() {
     return Fail("disband-army accepted a non-player army");
   }
 
+  std::vector<xar::ck3_11906::DeclarableWarSnapshot> declarations;
+  if (xar::ck3_11906::ReadDeclarableWarsForTarget(
+          bindings, enemy_character_id, declarations) !=
+          xar::ck3_11906::ReadDeclarableWarsResult::available ||
+      declarations.size() != 3 ||
+      declarations[0].target_character_id != enemy_character_id ||
+      declarations[0].casus_belli_index != 0 ||
+      declarations[0].casus_belli_key != g_casus_belli_key_0 ||
+      declarations[0].configuration_index != 0 ||
+      declarations[0].claimant_character_id != 0x01000004 ||
+      declarations[0].target_title_ids != std::vector<std::int32_t>{101} ||
+      declarations[1].casus_belli_index != 0 ||
+      declarations[1].casus_belli_key != g_casus_belli_key_0 ||
+      declarations[1].configuration_index != 1 ||
+      declarations[1].claimant_character_id != 0x01000005 ||
+      declarations[1].target_title_ids !=
+          (std::vector<std::int32_t>{102, 103}) ||
+      declarations[2].casus_belli_index != 1 ||
+      declarations[2].casus_belli_key != g_casus_belli_key_1 ||
+      declarations[2].configuration_index != -1 ||
+      declarations[2].claimant_character_id != -1 ||
+      declarations[2].target_title_ids !=
+          (std::vector<std::int32_t>{201, 202})) {
+    return Fail("target-scoped native CB enumeration did not match UI rules");
+  }
+  std::vector<xar::ck3_11906::DeclarableWarSnapshot> global_declarations;
+  if (!xar::ck3_11906::ReadDeclarableWars(bindings,
+                                          global_declarations) ||
+      global_declarations != declarations) {
+    return Fail("global declaration scan did not retain exact target choices");
+  }
+  std::vector<xar::ck3_11906::DeclarableWarSnapshot> missing_declarations;
+  if (xar::ck3_11906::ReadDeclarableWarsForTarget(
+          bindings, 0x01000009, missing_declarations) !=
+          xar::ck3_11906::ReadDeclarableWarsResult::target_not_found ||
+      !missing_declarations.empty()) {
+    return Fail("missing declaration target was not rejected explicitly");
+  }
+
+  auto stale_declaration = declarations[1];
+  stale_declaration.target_title_ids[0] = 999;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitDeclareWar(bindings, stale_declaration) !=
+          xar::ck3_11906::DeclareWarResult::declaration_unavailable ||
+      g_submit_called) {
+    return Fail("stale declaration tuple was not rejected on re-enumeration");
+  }
+
+  g_interaction_validate_result = false;
+  g_interaction_destroy_calls = 0;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitDeclareWar(bindings, declarations[2]) !=
+          xar::ck3_11906::DeclareWarResult::validation_failed ||
+      g_submit_called || g_interaction_destroy_calls != 1 ||
+      g_war_declaration_titles[0] != 201 ||
+      g_war_declaration_titles[1] != 202) {
+    return Fail("combined declaration did not use native append/validation");
+  }
+  g_interaction_validate_result = true;
+
+  g_expected_command = ExpectedCommand::declare_war;
+  g_interaction_construct_called = false;
+  g_interaction_refresh_called = false;
+  g_interaction_finalize_called = false;
+  g_send_interaction_construct_called = false;
+  g_interaction_destroy_calls = 0;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitDeclareWar(bindings, declarations[1]) !=
+          xar::ck3_11906::DeclareWarResult::submitted ||
+      !g_interaction_construct_called || !g_interaction_refresh_called ||
+      !g_interaction_finalize_called ||
+      !g_send_interaction_construct_called || !g_submit_called ||
+      g_interaction_destroy_calls != 2) {
+    return Fail("declare-war did not use native context/validate/queue lifecycle");
+  }
+
+  if (xar::ck3_11906::SubmitEnforceDemands(bindings, 0x01000009) !=
+      xar::ck3_11906::EnforceDemandsResult::war_not_found) {
+    return Fail("enforce-demands accepted a missing war component");
+  }
+  Store(g_attacker_participant, 0x08, enemy_character_id);
+  Store(g_defender_participant, 0x08, enemy_character_id);
+  if (xar::ck3_11906::SubmitEnforceDemands(bindings, active_war_id) !=
+      xar::ck3_11906::EnforceDemandsResult::player_not_participant) {
+    return Fail("enforce-demands accepted a war belonging to other players");
+  }
+  Store(g_attacker_participant, 0x08, played_character_id);
+  Store(g_defender_participant, 0x08, enemy_character_id);
+  Store(g_war, 0x288, enemy_character_id);
+  Store(g_war, 0x28C, std::int32_t{0x01000004});
+  if (xar::ck3_11906::SubmitEnforceDemands(bindings, active_war_id) !=
+      xar::ck3_11906::EnforceDemandsResult::player_not_war_leader) {
+    return Fail("enforce-demands accepted a participating non-war-leader");
+  }
+  Store(g_war, 0x288, played_character_id);
+  Store(g_war, 0x28C, enemy_character_id);
+
+  g_expected_command = ExpectedCommand::enforce_demands;
+  g_interaction_validate_result = false;
+  g_interaction_destroy_calls = 0;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitEnforceDemands(bindings, active_war_id) !=
+          xar::ck3_11906::EnforceDemandsResult::validation_failed ||
+      g_submit_called || g_interaction_destroy_calls != 1) {
+    return Fail("enforce-demands submitted after native validation failed");
+  }
+  g_interaction_validate_result = true;
+  g_interaction_default_construct_called = false;
+  g_war_resolution_construct_called = false;
+  g_send_interaction_construct_called = false;
+  g_interaction_destroy_calls = 0;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitEnforceDemands(bindings, active_war_id) !=
+          xar::ck3_11906::EnforceDemandsResult::submitted ||
+      !g_interaction_default_construct_called ||
+      !g_war_resolution_construct_called ||
+      !g_send_interaction_construct_called || !g_submit_called ||
+      g_interaction_destroy_calls != 2) {
+    return Fail("enforce-demands did not use native war-context queue lifecycle");
+  }
+
   Store(jomini_state, 0x20, std::uint8_t{1});
   g_expected_command = ExpectedCommand::pause;
   g_submit_called = false;
@@ -740,6 +1202,10 @@ int main() {
                "army_storage_pointer_slot=1 "
                "raise_troops_command=1 move_army_command=1 "
                "disband_army_command=1 "
+               "declarable_war_enumeration=1 "
+               "declare_war_command=1 "
+               "enforce_demands_war_leader_filter=1 "
+               "enforce_demands_command=1 "
                "map_ready_gate=1 exact_build_gate=1\n";
   return 0;
 }

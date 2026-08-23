@@ -182,6 +182,26 @@ def create_server(driver: GameplayBridgeDriver):
         return service.war_state()
 
     @server.tool()
+    def ck3_query_declarable_wars(
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Enumerate CK3's currently valid native war declarations."""
+        return service.query_declarable_wars(
+            expected_revision=expected_revision
+        )
+
+    @server.tool()
+    def ck3_declare_war(
+        declaration_id: str,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Declare one exact choice returned by ck3_query_declarable_wars."""
+        return service.declare_war(
+            declaration_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
     def ck3_raise_troops_default(
         expected_revision: int | None = None,
     ) -> dict[str, object]:
