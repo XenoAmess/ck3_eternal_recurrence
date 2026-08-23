@@ -125,6 +125,18 @@
       "pattern": "48 83 EC 58 4C 8B C1 48 8B 15 6A 86 8B 04 48 85 D2 74 2A 44 8B 49 20 41 8B C1 25 FF FF FF 00 3B 42 2C 73 19 8B C8 48 03 C9 48 8B 42 20 48 8B 44"
     },
     {
+      "name": "pending_character_interaction_is_for_character",
+      "rva": "0x1266BA0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B 41 08 48 8B D9 48 83 C1 08 48 8B FA FF 50 08 84 C0 74 1C 44 8B 83 C0 05 00 00"
+    },
+    {
+      "name": "reply_character_interaction_validate",
+      "rva": "0x26B3540",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B F9 83 79 24 04 0F 84 D6 00 00 00 48 8B 05 65 BC 10 03"
+    },
+    {
       "name": "war_participant_container_contains_character",
       "rva": "0x2224870",
       "confidence": "high-static",
@@ -207,6 +219,8 @@
     "reply_character_interaction_primary_vtable": "0x4082930",
     "reply_character_interaction_secondary_vtable": "0x4082900",
     "pending_character_interaction_storage_slot": "0x57BF1C8",
+    "pending_character_interaction_is_for_character": "0x1266BA0",
+    "validate_reply_character_interaction_command": "0x26B3540",
     "army_storage_slot": "0x570CC80",
     "contains_war_participant": "0x2224870",
     "get_war_score_attacker_relative": "0x222A8A0",
@@ -340,7 +354,9 @@
     "CPendingCharacterInteraction": {
       "component_instance_id": "+0x10 int32; low 24 bits select the component-storage slot",
       "sender_character_id": "+0x2F0 int32 CharacterID handle returned by CharacterInteractionNotificationWindow.GetSender",
-      "auto_accept_notification": "+0x5C6 uint8; normal accept/reject commands must not answer acknowledgement-only notifications"
+      "recipient_routing": "+0x5C0 int32 kind; kinds 0 and 2 route to CharacterID +0x2F4, kind 1 routes to CharacterID +0x300, other kinds are not local reply notifications; exact predicate RVA 0x1266BA0 additionally checks object/context state for the played Character",
+      "auto_accept_notification": "+0x5C6 uint8; normal accept/reject commands must not answer acknowledgement-only notifications",
+      "actionable_accept": "after local-recipient and non-auto-accept filtering, RVA 0x26B3540 validates a constructed reply enum 0 command before the snapshot publishes the component"
     },
     "CReplyCharacterInteractionCommand": {
       "size": "0x28",

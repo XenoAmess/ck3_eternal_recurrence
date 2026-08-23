@@ -42,6 +42,9 @@ constexpr std::uintptr_t kDisbandArmySecondaryVtableRva = 0x432C078;
 constexpr std::uintptr_t kSubmitCommandRva = 0x0973E00;
 constexpr std::uintptr_t kGetLocalPlayerRva = 0x346B7C0;
 constexpr std::uintptr_t kGetCurrentEventRva = 0x2706AD0;
+constexpr std::uintptr_t kIsPendingInteractionForCharacterRva = 0x1266BA0;
+constexpr std::uintptr_t kValidateReplyCharacterInteractionCommandRva =
+    0x26B3540;
 constexpr std::uintptr_t kContainsWarParticipantRva = 0x2224870;
 constexpr std::uintptr_t kGetWarScoreRva = 0x222A8A0;
 constexpr std::uintptr_t kResolveDefaultRaiseProvinceRva = 0x224CC80;
@@ -72,6 +75,9 @@ constexpr std::size_t kComponentStorageSlotSize = 0x10;
 constexpr std::size_t kComponentStorageSlotObjectOffset = 0x08;
 constexpr std::size_t kPendingInteractionIdOffset = 0x10;
 constexpr std::size_t kPendingInteractionSenderIdOffset = 0x2F0;
+constexpr std::size_t kPendingInteractionRecipientIdOffset = 0x2F4;
+constexpr std::size_t kPendingInteractionAlternateRecipientIdOffset = 0x300;
+constexpr std::size_t kPendingInteractionRoutingKindOffset = 0x5C0;
 constexpr std::size_t kPendingInteractionAutoAcceptOffset = 0x5C6;
 constexpr std::size_t kPlayerCharacterEntriesOffset = 0x58;
 constexpr std::size_t kPlayerCharacterEntryCountOffset = 0x64;
@@ -279,10 +285,17 @@ bool ReadCurrentEvent(const Bindings &bindings, void *game_state,
 }
 
 bool ReadPendingCharacterInteraction(const Bindings &bindings,
+                                     void *played_character,
+                                     std::int32_t played_character_id,
                                      std::int32_t &instance_id,
                                      std::int32_t &sender_character_id,
                                      bool &auto_accept_notification) noexcept {
-  if (bindings.pending_character_interaction_storage_slot == nullptr) {
+  if (played_character == nullptr || played_character_id == -1 ||
+      bindings.pending_character_interaction_storage_slot == nullptr ||
+      bindings.is_pending_character_interaction_for_character == nullptr ||
+      bindings.validate_reply_character_interaction_command == nullptr ||
+      bindings.reply_character_interaction_primary_vtable == 0 ||
+      bindings.reply_character_interaction_secondary_vtable == 0) {
     return false;
   }
   void *const storage =
@@ -311,12 +324,52 @@ bool ReadPendingCharacterInteraction(const Bindings &bindings,
         static_cast<std::uint32_t>(index)) {
       continue;
     }
+
+    // CK3's notification enumeration calls RVA 0x1266BA0 with the pending
+    // object and the currently played Character.  Cheaply reproduce its
+    // routing switch first so the exact engine predicate is called only for
+    // requests addressed to this player, not every global pending component.
+    const std::int32_t routing_kind = LoadAt<std::int32_t>(
+        pending, kPendingInteractionRoutingKindOffset);
+    std::size_t recipient_offset = kPendingInteractionRecipientIdOffset;
+    if (routing_kind == 1) {
+      recipient_offset = kPendingInteractionAlternateRecipientIdOffset;
+    } else if (routing_kind != 0 && routing_kind != 2) {
+      continue;
+    }
+    if (LoadAt<std::int32_t>(pending, recipient_offset) !=
+        played_character_id) {
+      continue;
+    }
+
+    // Auto-accept notifications need reply enum 4 (acknowledge).  The public
+    // agent action is deliberately accept/reject, so exposing one would leave
+    // the planner parked on a request that neither public action can advance.
+    if (LoadAt<std::uint8_t>(pending,
+                             kPendingInteractionAutoAcceptOffset) != 0) {
+      continue;
+    }
+    if (!bindings.is_pending_character_interaction_for_character(
+            pending, played_character)) {
+      continue;
+    }
+
+    ReplyCharacterInteractionCommand accept_command{};
+    accept_command.primary_vtable =
+        bindings.reply_character_interaction_primary_vtable;
+    accept_command.secondary_vtable =
+        bindings.reply_character_interaction_secondary_vtable;
+    accept_command.pending_interaction_id = candidate_id;
+    accept_command.reply =
+        static_cast<std::int32_t>(PendingInteractionReply::accept);
+    if (!bindings.validate_reply_character_interaction_command(
+            &accept_command)) {
+      continue;
+    }
     instance_id = candidate_id;
     sender_character_id = LoadAt<std::int32_t>(
         pending, kPendingInteractionSenderIdOffset);
-    auto_accept_notification =
-        LoadAt<std::uint8_t>(pending,
-                             kPendingInteractionAutoAcceptOffset) != 0;
+    auto_accept_notification = false;
     return true;
   }
   return false;
@@ -735,6 +788,12 @@ Bindings BindCurrentProcess() noexcept {
       reinterpret_cast<GetLocalPlayer>(module + kGetLocalPlayerRva);
   result.get_current_event =
       reinterpret_cast<GetCurrentEvent>(module + kGetCurrentEventRva);
+  result.is_pending_character_interaction_for_character =
+      reinterpret_cast<IsPendingCharacterInteractionForCharacter>(
+          module + kIsPendingInteractionForCharacterRva);
+  result.validate_reply_character_interaction_command =
+      reinterpret_cast<ValidateReplyCharacterInteractionCommand>(
+          module + kValidateReplyCharacterInteractionCommandRva);
   result.contains_war_participant = reinterpret_cast<ContainsWarParticipant>(
       module + kContainsWarParticipantRva);
   result.get_war_score =
@@ -810,8 +869,14 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
     output.active_event_instance_id = -1;
     output.active_event_option_count = 0;
   }
+  void *const played_character = output.has_played_character
+                                     ? ResolveCharacter(
+                                           bindings,
+                                           output.played_character_id)
+                                     : nullptr;
   output.has_pending_character_interaction = ReadPendingCharacterInteraction(
-      bindings, output.pending_character_interaction_id,
+      bindings, played_character, output.played_character_id,
+      output.pending_character_interaction_id,
       output.pending_sender_character_id,
       output.pending_auto_accept_notification);
   if (!output.has_pending_character_interaction) {

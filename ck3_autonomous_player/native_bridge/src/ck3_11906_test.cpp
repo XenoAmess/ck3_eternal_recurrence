@@ -16,6 +16,7 @@ std::array<std::byte, 0x1C2> g_active_event{};
 std::array<std::byte, 0x1C0> g_event_data{};
 std::array<std::byte, 0x40> g_pending_storage{};
 std::array<std::byte, 0x20> g_pending_slots{};
+std::array<std::byte, 0x5C8> g_unrelated_pending_interaction{};
 std::array<std::byte, 0x5C8> g_pending_interaction{};
 std::array<std::byte, 0x40> g_character_storage{};
 std::array<std::byte, 0x30> g_character_slots{};
@@ -43,6 +44,10 @@ void *g_expected_event_manager = nullptr;
 bool g_has_active_event = true;
 bool g_has_local_player = false;
 bool g_submit_called = false;
+bool g_pending_visibility_result = true;
+bool g_pending_accept_validation_result = true;
+std::int32_t g_pending_visibility_calls = 0;
+std::int32_t g_pending_accept_validation_calls = 0;
 bool g_raise_construct_called = false;
 bool g_raise_validate_called = false;
 bool g_raise_validate_result = true;
@@ -78,6 +83,30 @@ void *FixtureGetCurrentEvent(void *event_manager) {
     return nullptr;
   }
   return g_active_event.data();
+}
+
+bool FixtureIsPendingCharacterInteractionForCharacter(
+    void *pending_interaction, void *character) {
+  ++g_pending_visibility_calls;
+  return g_pending_visibility_result &&
+         pending_interaction == g_pending_interaction.data() &&
+         character == g_played_character.data();
+}
+
+bool FixtureValidateReplyCharacterInteractionCommand(void *opaque_command) {
+  ++g_pending_accept_validation_calls;
+  const auto *command = static_cast<const std::byte *>(opaque_command);
+  std::uintptr_t primary = 0;
+  std::uintptr_t secondary = 0;
+  std::int32_t pending_id = -1;
+  std::int32_t reply = -1;
+  std::memcpy(&primary, command, sizeof(primary));
+  std::memcpy(&secondary, command + 0x18, sizeof(secondary));
+  std::memcpy(&pending_id, command + 0x20, sizeof(pending_id));
+  std::memcpy(&reply, command + 0x24, sizeof(reply));
+  return g_pending_accept_validation_result && primary == 0x99999999 &&
+         secondary == 0xAAAAAAAA && pending_id == 0x01000001 &&
+         reply == 0;
 }
 
 bool FixtureContainsWarParticipant(void *container,
@@ -382,6 +411,10 @@ int main() {
   bindings.submit_command = FixtureSubmit;
   bindings.get_local_player = FixtureGetLocalPlayer;
   bindings.get_current_event = FixtureGetCurrentEvent;
+  bindings.is_pending_character_interaction_for_character =
+      FixtureIsPendingCharacterInteractionForCharacter;
+  bindings.validate_reply_character_interaction_command =
+      FixtureValidateReplyCharacterInteractionCommand;
   bindings.contains_war_participant = FixtureContainsWarParticipant;
   bindings.get_war_score = FixtureGetWarScore;
   bindings.resolve_default_raise_province =
@@ -521,19 +554,49 @@ int main() {
   Store(g_pending_storage, 0x20,
         static_cast<void *>(g_pending_slots.data()));
   Store(g_pending_storage, 0x2C, std::int32_t{2});
+  Store(g_pending_slots, 0x08,
+        static_cast<void *>(g_unrelated_pending_interaction.data()));
   Store(g_pending_slots, 0x18,
         static_cast<void *>(g_pending_interaction.data()));
+  Store(g_unrelated_pending_interaction, 0x10,
+        std::int32_t{0x01000000});
+  Store(g_unrelated_pending_interaction, 0x2F0, std::int32_t{1234567});
+  Store(g_unrelated_pending_interaction, 0x2F4, enemy_character_id);
+  Store(g_unrelated_pending_interaction, 0x5C0, std::int32_t{0});
+  Store(g_unrelated_pending_interaction, 0x5C6, std::uint8_t{0});
   Store(g_pending_interaction, 0x10, std::int32_t{0x01000001});
   Store(g_pending_interaction, 0x2F0, std::int32_t{8675309});
+  Store(g_pending_interaction, 0x2F4, played_character_id);
+  Store(g_pending_interaction, 0x5C0, std::int32_t{0});
   Store(g_pending_interaction, 0x5C6, std::uint8_t{0});
   g_pending_storage_pointer = g_pending_storage.data();
+  g_pending_visibility_calls = 0;
+  g_pending_accept_validation_calls = 0;
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       !snapshot.has_pending_character_interaction ||
       snapshot.pending_character_interaction_id != 0x01000001 ||
       snapshot.pending_sender_character_id != 8675309 ||
-      snapshot.pending_auto_accept_notification) {
-    return Fail("pending character interaction snapshot did not match");
+      snapshot.pending_auto_accept_notification ||
+      g_pending_visibility_calls != 1 ||
+      g_pending_accept_validation_calls != 1) {
+    return Fail("pending snapshot did not skip the other player's request");
   }
+  Store(g_pending_interaction, 0x2F4, enemy_character_id);
+  Store(g_pending_interaction, 0x300, played_character_id);
+  Store(g_pending_interaction, 0x5C0, std::int32_t{1});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      !snapshot.has_pending_character_interaction ||
+      snapshot.pending_character_interaction_id != 0x01000001) {
+    return Fail("alternate pending recipient routing was not recognized");
+  }
+  Store(g_pending_interaction, 0x2F4, played_character_id);
+  Store(g_pending_interaction, 0x5C0, std::int32_t{0});
+  g_pending_visibility_result = false;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.has_pending_character_interaction) {
+    return Fail("native pending visibility failure remained actionable");
+  }
+  g_pending_visibility_result = true;
   g_expected_command = ExpectedCommand::reply_accept;
   g_submit_called = false;
   if (xar::ck3_11906::SubmitReplyToPendingInteraction(
@@ -550,14 +613,28 @@ int main() {
       !g_submit_called) {
     return Fail("pending interaction reject command layout did not match");
   }
-  Store(g_pending_interaction, 0x5C6, std::uint8_t{1});
+  g_pending_accept_validation_result = false;
   g_submit_called = false;
-  if (xar::ck3_11906::SubmitReplyToPendingInteraction(
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.has_pending_character_interaction ||
+      xar::ck3_11906::SubmitReplyToPendingInteraction(
           bindings, xar::ck3_11906::PendingInteractionReply::accept) !=
           xar::ck3_11906::ReplyPendingInteractionResult::
-              acknowledgement_required ||
+              no_pending_interaction ||
       g_submit_called) {
-    return Fail("auto-accept notification was submitted as a normal reply");
+    return Fail("native reply validation failure remained actionable");
+  }
+  g_pending_accept_validation_result = true;
+  Store(g_pending_interaction, 0x5C6, std::uint8_t{1});
+  g_submit_called = false;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.has_pending_character_interaction ||
+      xar::ck3_11906::SubmitReplyToPendingInteraction(
+          bindings, xar::ck3_11906::PendingInteractionReply::accept) !=
+          xar::ck3_11906::ReplyPendingInteractionResult::
+              no_pending_interaction ||
+      g_submit_called) {
+    return Fail("acknowledgement-only notification remained actionable");
   }
   g_pending_storage_pointer = nullptr;
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
@@ -655,7 +732,8 @@ int main() {
                "pause_resume_command_layout=1 "
                "set_speed_zero_based_mapping=1 "
                "select_event_option_layout=1 auto_save_layout=1 "
-               "pending_interaction_snapshot=1 "
+               "pending_interaction_local_player_filter=1 "
+               "pending_interaction_native_reply_validation=1 "
                "reply_character_interaction_layout=1 "
                "played_character_snapshot=1 alive_dead_projection=1 "
                "war_army_snapshot=1 relative_war_score=1 "

@@ -39,8 +39,8 @@ bridge identity/heartbeat/ping.
 | numeric event option count/indexes | implemented, minimized live probe passed | executor bounds-check and option-array layout at RVA `0x33E68C0` + live 5→3 option snapshots | never inside native driver |
 | `game.command.save-checkpoint` | implemented, minimized live file creation passed | high static `CAutoSaveCommand` layout + offline queue fixture + 63,367,813-byte live save | explicit upper-layer policy only |
 | `game.state.snapshot.played_character` | implemented, live probe pending | player-character manager + Character storage alive projection + offline layout fixture | never inside native driver |
-| `game.state.snapshot.pending_character_interaction` | implemented, live probe pending | high static component table/GetSender paths + offline layout fixture | never inside native driver |
-| `game.command.accept/reject-pending-character-interaction` | implemented, live probe pending | high static UI enum/command/queue path + offline command fixture | explicit upper-layer policy only |
+| `game.state.snapshot.pending_character_interaction` | implemented; four live requests advanced before a reproducible global-storage false positive exposed the missing recipient filter; filtered build awaits bounded live replay | exact notification-recipient predicate + native reply validator + offline multi-player fixture | never inside native driver |
+| `game.command.accept/reject-pending-character-interaction` | implemented; live accept advanced four locally addressed requests | high static UI enum/command/queue path + native actionability validation + offline command fixture | explicit upper-layer policy only |
 | `game.state.snapshot.active_wars` | implemented, live probe pending | exact WarManager/storage/participant/score helpers + offline attacker/defender fixture | never inside native driver |
 | `game.state.snapshot.player_armies` | implemented, live probe pending | exact Army storage/ID/owner/current-province fields + offline component fixture | never inside native driver |
 | allied/enemy army current province | implemented, live probe pending | war participant helper classifies each observable army owner | never inside native driver |
@@ -100,7 +100,18 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   slot stores the object pointer at `+0x08`. A valid pending object repeats its
   component ID at `+0x10`; the low 24 bits are its slot index. UI `GetSender`
   resolves the sender from the `int32 CharacterID` at pending object `+0x2F0`.
-  Byte `+0x5C6` is the UI's `IsAutoAcceptNotification` value.
+  The storage is global: slot order does **not** imply that the request belongs
+  to the local player. Notification enumeration at RVA `0xD9DAE0` resolves the
+  currently played Character and calls exact predicate RVA `0x1266BA0` for
+  each candidate. That predicate accepts routing kinds `0` and `2` only when
+  CharacterID `+0x2F4` is the played Character, kind `1` only when CharacterID
+  `+0x300` is the played Character, rejects other kinds, and checks the pending
+  object/context state. The bridge performs the cheap routing comparison
+  before calling the same predicate, then constructs an accept reply and calls
+  native command validator RVA `0x26B3540`. Only a candidate passing both is
+  published. Byte `+0x5C6` is the UI's `IsAutoAcceptNotification` value;
+  those require reply enum `4` (acknowledge), so the accept/reject snapshot
+  deliberately omits them.
 - `CK3GameData + 0x29C20` is `CWarManager`; its `+0x20` pointer is the
   `ComponentStorage<CWar>`. A live `CWar` repeats its component ID at `+0x08`
   and has a null end marker at `+0x358`. Attackers at `+0x20` and defenders at
@@ -169,7 +180,22 @@ secondary vtable `0x4082900` at `+0x18`, pending component ID at `+0x20`, and
 reply enum at `+0x24`, then submits with channel flags `0x0E`. Reflection
 thunks tie UI methods to enum `0=accept`, `1=reject`, `2=block`, and
 `4=acknowledge`. Heap clone RVA `0x8038E0` independently confirms the `0x28`
-size and both payload offsets.
+size and both payload offsets. Validator RVA `0x26B3540` resolves the pending
+component, verifies its live object and interaction context, and accepts enum
+`0` after those common checks. The bridge runs this validator on the exact
+command shape before advertising a pending request as accept/reject-actionable.
+
+## Reproduced global-pending blocker
+
+The first live interaction loop advanced four consecutive requests, then the
+old component-storage scan parked on instance `1308622950`. Native accept and
+reject submissions both left that instance unchanged until the driver's
+postcondition timed out. This was an actual-use failure: the scan returned the
+first globally live component without checking that its recipient was the
+played Character. The corrected offline fixture places another character's
+valid component in the lower storage slot, asserts that it is skipped, and
+publishes only the later locally routed component after the exact CK3
+visibility predicate and accept-command validator both pass.
 
 `CRaiseTroopsCommand` is `0x50` bytes. RVA `0x224CC80(Character*)` resolves
 the game's default rally province. Constructor RVA `0x26D6FC0` receives the

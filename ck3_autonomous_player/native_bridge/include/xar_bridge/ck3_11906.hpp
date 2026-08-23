@@ -14,6 +14,9 @@ using SubmitCommand = void (*)(void *manager, void *command,
                                std::uint32_t channel_flags);
 using GetLocalPlayer = void *(*)(void *jomini_state);
 using GetCurrentEvent = void *(*)(void *event_manager);
+using IsPendingCharacterInteractionForCharacter = bool (*)(
+    void *pending_interaction, void *character);
+using ValidateReplyCharacterInteractionCommand = bool (*)(void *command);
 using ContainsWarParticipant = bool (*)(void *participant_container,
                                         std::int32_t character_id);
 using GetWarScore = std::int32_t (*)(void *war, void *war_score_context);
@@ -63,6 +66,10 @@ struct Bindings {
   SubmitCommand submit_command = nullptr;
   GetLocalPlayer get_local_player = nullptr;
   GetCurrentEvent get_current_event = nullptr;
+  IsPendingCharacterInteractionForCharacter
+      is_pending_character_interaction_for_character = nullptr;
+  ValidateReplyCharacterInteractionCommand
+      validate_reply_character_interaction_command = nullptr;
   ContainsWarParticipant contains_war_participant = nullptr;
   GetWarScore get_war_score = nullptr;
   ResolveDefaultRaiseProvince resolve_default_raise_province = nullptr;
@@ -199,9 +206,10 @@ enum class ReplyPendingInteractionResult {
   unavailable,
 };
 
-// Replies to the first pending CK3 character interaction exposed by Snapshot.
-// CPendingCharacterInteraction's component ID is the int32 payload consumed by
-// CReplyCharacterInteractionCommand; accept/reject are native enum values 0/1.
+// Replies to the first locally addressed and natively actionable CK3 character
+// interaction exposed by Snapshot. CPendingCharacterInteraction's component ID
+// is the int32 payload consumed by CReplyCharacterInteractionCommand;
+// accept/reject are native enum values 0/1.
 ReplyPendingInteractionResult SubmitReplyToPendingInteraction(
     const Bindings &bindings, PendingInteractionReply reply) noexcept;
 
