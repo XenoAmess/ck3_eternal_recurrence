@@ -41,6 +41,11 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _extract_map_date,
     _extract_lifestyle_state,
     _extract_player_character_state,
+    _extract_current_life_succession_state,
+    _extract_death_terminal,
+    _child_portrait_candidates,
+    _death_terminal_state,
+    _marriage_acceptance_in_frame,
     _generic_event_in_frame,
     _generic_event_preview,
     _panel_summary,
@@ -57,6 +62,10 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _steward_development_assignment_confirmation,
     _steward_development_targeting_active,
     replay_opening_observation,
+)
+from xar_autoplayer.strategy import (  # noqa: E402
+    read_one_life_strategy,
+    record_one_life_episode,
 )
 from xar_autoplayer.vision import load_ui_contract  # noqa: E402
 from xar_autoplayer.vision.model import OcrSpan  # noqa: E402
@@ -313,6 +322,157 @@ class OpeningContractTests(unittest.TestCase):
             )["action"],
             "seek_player_spouse",
         )
+
+    def test_succession_state_is_current_life_only(self) -> None:
+        frame = SimpleNamespace(
+            observation_id="succession-observation",
+            spans=(
+                span("继承", (100, 100), (50, 80, 150, 120)),
+                span("玩家继承人", (200, 200), (150, 180, 250, 220)),
+                span("分割继承制", (300, 300), (250, 280, 350, 320)),
+                span("你将失去2个头衔", (400, 400), (320, 380, 480, 420)),
+            ),
+        )
+        state = _extract_current_life_succession_state(frame)
+        self.assertTrue(state["player_heir_visible"])
+        self.assertTrue(state["partition_risk_visible"])
+        self.assertTrue(state["strategy"]["death_is_terminal_settlement"])
+        self.assertFalse(state["strategy"]["continue_as_heir_after_death"])
+
+    def test_child_portrait_candidates_follow_native_seven_slot_grid(self) -> None:
+        frame = SimpleNamespace(
+            spans=(span("子女（7)", (46, 1146), (12, 1134, 81, 1158)),)
+        )
+        self.assertEqual(
+            _child_portrait_candidates(frame),
+            tuple((45 + 85 * index, 1210) for index in range(7)),
+        )
+
+    def test_marriage_acceptance_is_current_life_value(self) -> None:
+        frame = SimpleNamespace(
+            observation_id="marriage-response",
+            spans=(
+                span("我很乐意接受你的订婚提议！", (100, 100), (0, 80, 200, 120)),
+                span("你的女儿埃玛将与我的儿子贝内迪克特订婚。", (200, 200), (0, 180, 400, 220)),
+                span("太好了！", (300, 300), (250, 280, 350, 320)),
+            ),
+        )
+        result = _marriage_acceptance_in_frame(frame)
+        self.assertEqual(result["status"], "accepted_betrothal")
+        self.assertFalse(result["continue_as_heir_after_death"])
+
+    def test_death_terminal_distinguishes_handoff_and_settlement(self) -> None:
+        succession = SimpleNamespace(
+            observation_id="death-succession",
+            spans=(
+                span("你已过世", (1280, 200), (1150, 170, 1410, 230)),
+                span("继续扮演", (1500, 1120), (1400, 1090, 1600, 1150)),
+            ),
+        )
+        self.assertEqual(
+            _death_terminal_state(succession), "native_succession_handoff"
+        )
+
+        settlement = SimpleNamespace(
+            observation_id="death-settlement",
+            spans=(
+                span("轮回终结", (330, 150), (260, 125, 420, 175)),
+                span(
+                    "辛苦了，旅人。这一生的分量，我已仔细称过。",
+                    (500, 220),
+                    (170, 205, 830, 235),
+                ),
+                span("最终分数：123.5", (420, 650), (200, 630, 640, 670)),
+                span("此前纪录：100", (400, 690), (200, 670, 600, 710)),
+                span("差值：+23.5", (380, 730), (200, 710, 560, 750)),
+                span("很好。这笔账，已记入永恒。", (500, 800), (300, 780, 700, 820)),
+            ),
+        )
+        result = _extract_death_terminal(settlement)
+        self.assertEqual(result["terminal_kind"], "recurrence_settlement_event")
+        self.assertEqual(result["score"]["final"], 123.5)
+        self.assertEqual(result["score"]["previous_record"], 100)
+        self.assertEqual(result["score"]["delta"], 23.5)
+        self.assertFalse(result["continue_as_heir_after_death"])
+
+    def test_native_no_heir_settlement_reads_separate_score_column(self) -> None:
+        frame = SimpleNamespace(
+            observation_id="no-heir-settlement",
+            spans=(
+                span("轮回终结", (1280, 220), (1190, 195, 1370, 245)),
+                span("最终分量", (660, 330), (590, 310, 730, 350)),
+                span("42.5", (1440, 330), (1400, 310, 1480, 350)),
+                span("完成交易", (660, 390), (590, 370, 730, 410)),
+                span("3", (1440, 390), (1420, 370, 1460, 410)),
+                span("退出到菜单", (1280, 930), (1120, 900, 1440, 960)),
+            ),
+        )
+        result = _extract_death_terminal(frame)
+        self.assertEqual(result["terminal_kind"], "native_no_heir_settlement")
+        self.assertEqual(result["score"]["final"], 42.5)
+        self.assertEqual(result["score"]["completed_bargains"], 3)
+
+    def test_cross_run_strategy_records_one_life_outcomes(self) -> None:
+        commands = [
+            {
+                "command": "war-enforce-demands",
+                "ok": True,
+                "result": {"war_victory": {"status": "victory_enforced"}},
+            },
+            {
+                "command": "war-disband-armies",
+                "ok": True,
+                "result": {"army_disband": {"status": "disbanded"}},
+            },
+            {
+                "command": "succession-review",
+                "ok": True,
+                "result": {
+                    "succession_state": {"partition_risk_visible": True}
+                },
+            },
+            {
+                "command": "marriage-confirm-response",
+                "ok": True,
+                "result": {
+                    "marriage_result": {"status": "accepted_betrothal"}
+                },
+            },
+            {
+                "command": "save-checkpoint",
+                "ok": True,
+                "result": {
+                    "checkpoint": {
+                        "name": "life.ck3",
+                        "size": 10,
+                        "sha256": "a" * 64,
+                    }
+                },
+            },
+        ]
+        with tempfile.TemporaryDirectory() as temporary:
+            state = Path(temporary)
+            recorded = record_one_life_episode(
+                state,
+                run_id="run-one",
+                commands=commands,
+                terminal={
+                    "terminal": True,
+                    "technical_settlement_handoff": True,
+                    "score": {"final": 123.5},
+                },
+            )
+            episode = recorded["recorded_episode"]
+            self.assertTrue(episode["achievements"]["palermo_holy_war_won"])
+            self.assertTrue(episode["achievements"]["danish_betrothal_accepted"])
+            self.assertEqual(episode["heir_gameplay_actions"], 0)
+            self.assertFalse(recorded["continue_as_heir_after_death"])
+            reread = read_one_life_strategy(state)
+            self.assertEqual(len(reread["episodes"]), 1)
+            self.assertEqual(
+                reread["next_run_plan"]["priorities"][0]["action"],
+                "repeat_palermo_opening_war_when_visible_conditions_match",
+            )
 
     def test_palermo_target_comes_from_visible_map_label(self) -> None:
         frame = SimpleNamespace(
@@ -806,6 +966,248 @@ class OpeningContractTests(unittest.TestCase):
 
 
 class OpeningScenarioTests(unittest.TestCase):
+    def test_death_terminal_uses_heir_only_to_deliver_settlement(self) -> None:
+        def frame(sequence: int, texts: tuple[str, ...], screen: str = "unknown"):
+            spans = tuple(
+                span(
+                    text,
+                    (
+                        1280,
+                        1120 if text == "继续扮演" else 300 + index * 80,
+                    ),
+                    (
+                        900,
+                        1095 if text == "继续扮演" else 275 + index * 80,
+                        1660,
+                        1145 if text == "继续扮演" else 325 + index * 80,
+                    ),
+                )
+                for index, text in enumerate(texts)
+            )
+            return SimpleNamespace(
+                capture_sequence=sequence,
+                observation_id=f"handoff-{sequence}",
+                screen=screen,
+                spans=spans,
+                controls=(),
+                client_rect=(0, 0, 2560, 1440),
+            )
+
+        succession = ("你已过世", "继续扮演")
+        settlement = (
+            "轮回终结",
+            "辛苦了，旅人。这一生的分量，我已仔细称过。",
+            "最终分数：144",
+            "很好。这笔账，已记入永恒。",
+        )
+        frames = [
+            frame(1, succession),
+            frame(2, succession),
+            frame(3, succession),
+            frame(4, ("游戏已暂停",), "map_hud"),
+            frame(5, ("游戏已暂停",), "map_hud"),
+            frame(6, settlement),
+            frame(7, settlement),
+            frame(8, ("正在观察",), "map_hud"),
+            frame(9, ("正在观察",), "map_hud"),
+            frame(10, ("继续", "保存游戏", "载入游戏", "退出游戏")),
+            frame(11, ("继续", "保存游戏", "载入游戏", "退出游戏")),
+            frame(12, ("退出游戏", "退出到主菜单", "退出到桌面", "取消")),
+            frame(13, ("退出游戏", "退出到主菜单", "退出到桌面", "取消")),
+            frame(14, ("退出游戏", "退出到主菜单", "退出到桌面", "取消")),
+            frame(15, ("新游戏",), "main_menu"),
+            frame(16, ("新游戏",), "main_menu"),
+        ]
+        window = mock.Mock(pid=10, hwnd=20, client_rect=(0, 0, 2560, 1440))
+        window.request_foreground_without_input.return_value = {
+            "status": "confirmed"
+        }
+        window.audit_binding.return_value = {"process": {"pid": 10}}
+        driver = mock.Mock()
+        driver.capture_once.side_effect = frames
+        key_submit = mock.Mock(return_value=(2, 0))
+        chord_submit = mock.Mock(return_value=(4, 0))
+        click_submit = mock.Mock(return_value=(2, 0))
+        with tempfile.TemporaryDirectory() as temporary:
+            state = Path(temporary) / "state"
+            artifacts = state / "runs" / "handoff-run" / "artifacts"
+            artifacts.mkdir(parents=True)
+            events = artifacts.parent / "events.jsonl"
+            digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
+            with (
+                mock.patch(
+                    "xar_autoplayer.opening_smoke._bind_window",
+                    return_value=window,
+                ),
+                mock.patch(
+                    "xar_autoplayer.control.VisibleUiDriver",
+                    return_value=driver,
+                ),
+                mock.patch(
+                    "xar_autoplayer.control.executor._prepare_key_press_batch",
+                    return_value=key_submit,
+                ),
+                mock.patch(
+                    "xar_autoplayer.control.executor._prepare_key_chord_batch",
+                    return_value=chord_submit,
+                ),
+                mock.patch(
+                    "xar_autoplayer.control.executor._prepare_left_click_batch",
+                    return_value=click_submit,
+                ),
+                mock.patch("pyautogui.moveTo"),
+            ):
+                result = _drive_opening(
+                    SimpleNamespace(
+                        expected_game_version="1.19.0.6",
+                        state_dir=state,
+                        profile_dir=state / "profile",
+                        game_exe=Path("ck3.exe"),
+                    ),
+                    SimpleNamespace(
+                        process=mock.Mock(poll=mock.Mock(return_value=None))
+                    ),
+                    {"display": {"language": "l_simp_chinese"}},
+                    artifacts,
+                    events,
+                    OPENING_CONTRACT,
+                    digest,
+                    time.monotonic() + 60,
+                    ordinary_event_count=0,
+                    development_step="death-terminal",
+                )
+            history = read_one_life_strategy(state)
+
+        self.assertEqual(result["final_screen"], "main_menu")
+        self.assertTrue(result["terminal"]["technical_settlement_handoff"])
+        self.assertEqual(result["terminal"]["heir_gameplay_actions"], 0)
+        self.assertEqual(result["terminal"]["score"]["final"], 144)
+        self.assertEqual(click_submit.call_count, 2)
+        self.assertEqual(chord_submit.call_count, 1)
+        self.assertEqual(key_submit.call_count, 4)
+        self.assertEqual(history["episodes"][0]["successful_steps"], ["death-terminal"])
+        self.assertFalse(history["continue_as_heir_after_death"])
+
+    def test_death_terminal_confirms_settlement_and_returns_to_main_menu(
+        self,
+    ) -> None:
+        def frame(sequence: int, texts: tuple[str, ...], screen: str = "unknown"):
+            spans = tuple(
+                span(
+                    text,
+                    (1280, 300 + index * 80),
+                    (900, 275 + index * 80, 1660, 325 + index * 80),
+                )
+                for index, text in enumerate(texts)
+            )
+            return SimpleNamespace(
+                capture_sequence=sequence,
+                observation_id=f"death-{sequence}",
+                screen=screen,
+                spans=spans,
+                controls=(),
+                client_rect=(0, 0, 2560, 1440),
+            )
+
+        frames = [
+            frame(
+                1,
+                (
+                    "轮回终结",
+                    "辛苦了，旅人。这一生的分量，我已仔细称过。",
+                    "最终分数：88",
+                    "很好。这笔账，已记入永恒。",
+                ),
+            ),
+            frame(
+                2,
+                (
+                    "轮回终结",
+                    "辛苦了，旅人。这一生的分量，我已仔细称过。",
+                    "最终分数：88",
+                    "很好。这笔账，已记入永恒。",
+                ),
+            ),
+            frame(3, ("正在观察",), "map_hud"),
+            frame(4, ("正在观察",), "map_hud"),
+            frame(5, ("继续", "保存游戏", "载入游戏", "退出游戏")),
+            frame(6, ("继续", "保存游戏", "载入游戏", "退出游戏")),
+            frame(7, ("退出游戏", "退出到主菜单", "退出到桌面", "取消")),
+            frame(8, ("退出游戏", "退出到主菜单", "退出到桌面", "取消")),
+            frame(9, ("退出游戏", "退出到主菜单", "退出到桌面", "取消")),
+            frame(10, ("新游戏",), "main_menu"),
+            frame(11, ("新游戏",), "main_menu"),
+        ]
+        window = mock.Mock(
+            pid=10,
+            hwnd=20,
+            client_rect=(0, 0, 2560, 1440),
+        )
+        window.request_foreground_without_input.return_value = {
+            "status": "confirmed"
+        }
+        window.audit_binding.return_value = {"process": {"pid": 10}}
+        driver = mock.Mock()
+        driver.capture_once.side_effect = frames
+        key_submit = mock.Mock(return_value=(2, 0))
+        chord_submit = mock.Mock(return_value=(4, 0))
+        click_submit = mock.Mock(return_value=(2, 0))
+        with tempfile.TemporaryDirectory() as temporary:
+            state = Path(temporary) / "state"
+            artifacts = state / "runs" / "death-run" / "artifacts"
+            artifacts.mkdir(parents=True)
+            events = artifacts.parent / "events.jsonl"
+            digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
+            with (
+                mock.patch(
+                    "xar_autoplayer.opening_smoke._bind_window",
+                    return_value=window,
+                ),
+                mock.patch(
+                    "xar_autoplayer.control.VisibleUiDriver",
+                    return_value=driver,
+                ),
+                mock.patch(
+                    "xar_autoplayer.control.executor._prepare_key_press_batch",
+                    return_value=key_submit,
+                ),
+                mock.patch(
+                    "xar_autoplayer.control.executor._prepare_key_chord_batch",
+                    return_value=chord_submit,
+                ),
+                mock.patch(
+                    "xar_autoplayer.control.executor._prepare_left_click_batch",
+                    return_value=click_submit,
+                ),
+                mock.patch("pyautogui.moveTo"),
+            ):
+                result = _drive_opening(
+                    SimpleNamespace(
+                        expected_game_version="1.19.0.6",
+                        state_dir=state,
+                        profile_dir=state / "profile",
+                        game_exe=Path("ck3.exe"),
+                    ),
+                    SimpleNamespace(
+                        process=mock.Mock(poll=mock.Mock(return_value=None))
+                    ),
+                    {"display": {"language": "l_simp_chinese"}},
+                    artifacts,
+                    events,
+                    OPENING_CONTRACT,
+                    digest,
+                    time.monotonic() + 60,
+                    ordinary_event_count=0,
+                    development_step="death-terminal",
+                )
+        self.assertEqual(result["final_screen"], "main_menu")
+        self.assertEqual(result["terminal"]["score"]["final"], 88)
+        self.assertEqual(result["terminal"]["heir_gameplay_actions"], 0)
+        self.assertTrue(result["terminal"]["returned_to_main_menu"])
+        self.assertEqual(chord_submit.call_count, 1)
+        self.assertEqual(key_submit.call_count, 2)
+        self.assertEqual(click_submit.call_count, 1)
+
     def test_scenario_completes_first_pair_and_reaches_map(self) -> None:
         digest = hashlib.sha256(OPENING_CONTRACT.read_bytes()).hexdigest()
         with tempfile.TemporaryDirectory() as temporary:
@@ -1357,11 +1759,40 @@ class OpeningScenarioTests(unittest.TestCase):
             ["opening-step", "--step", "save-checkpoint"]
         )
         self.assertEqual(checkpoint_step.step, "save-checkpoint")
+        restore_step = cli.parser().parse_args(
+            ["opening-step", "--step", "restore-checkpoint"]
+        )
+        self.assertEqual(restore_step.step, "restore-checkpoint")
         dynasty_step = cli.parser().parse_args(
             ["opening-step", "--step", "dynasty-review"]
         )
         self.assertEqual(dynasty_step.step, "dynasty-review")
         self.assertIn("dynasty-review", OPENING_DEVELOPMENT_STEPS)
+        succession_step = cli.parser().parse_args(
+            ["opening-step", "--step", "succession-review"]
+        )
+        self.assertEqual(succession_step.step, "succession-review")
+        self.assertIn("succession-review", OPENING_DEVELOPMENT_STEPS)
+        marriage_step = cli.parser().parse_args(
+            ["opening-step", "--step", "marriage-review"]
+        )
+        self.assertEqual(marriage_step.step, "marriage-review")
+        self.assertIn("marriage-review", OPENING_DEVELOPMENT_STEPS)
+        marriage_action = cli.parser().parse_args(
+            ["opening-step", "--step", "marriage-alliance"]
+        )
+        self.assertEqual(marriage_action.step, "marriage-alliance")
+        self.assertIn("marriage-alliance", OPENING_DEVELOPMENT_STEPS)
+        marriage_response = cli.parser().parse_args(
+            ["opening-step", "--step", "marriage-confirm-response"]
+        )
+        self.assertEqual(marriage_response.step, "marriage-confirm-response")
+        death_terminal = cli.parser().parse_args(
+            ["opening-step", "--step", "death-terminal"]
+        )
+        self.assertEqual(death_terminal.step, "death-terminal")
+        strategy_review = cli.parser().parse_args(["strategy-review"])
+        self.assertEqual(strategy_review.command, "strategy-review")
         war_step = cli.parser().parse_args(
             ["opening-step", "--step", "war-review"]
         )
@@ -1391,6 +1822,50 @@ class OpeningScenarioTests(unittest.TestCase):
             ["opening-step", "--step", "war-declare-palermo"]
         )
         self.assertEqual(war_declare_step.step, "war-declare-palermo")
+        war_raise_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-raise-all"]
+        )
+        self.assertEqual(war_raise_step.step, "war-raise-all")
+        war_move_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-move-palermo"]
+        )
+        self.assertEqual(war_move_step.step, "war-move-palermo")
+        war_map_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-map-review"]
+        )
+        self.assertEqual(war_map_step.step, "war-map-review")
+        war_find_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-find-palermo"]
+        )
+        self.assertEqual(war_find_step.step, "war-find-palermo")
+        war_siege_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-siege-palermo"]
+        )
+        self.assertEqual(war_siege_step.step, "war-siege-palermo")
+        war_advance_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-advance-week"]
+        )
+        self.assertEqual(war_advance_step.step, "war-advance-week")
+        war_month_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-advance-month"]
+        )
+        self.assertEqual(war_month_step.step, "war-advance-month")
+        war_status_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-status"]
+        )
+        self.assertEqual(war_status_step.step, "war-status")
+        war_victory_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-enforce-demands"]
+        )
+        self.assertEqual(war_victory_step.step, "war-enforce-demands")
+        war_disband_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-disband-armies"]
+        )
+        self.assertEqual(war_disband_step.step, "war-disband-armies")
+        resolve_event_step = cli.parser().parse_args(
+            ["opening-step", "--step", "resolve-current-event"]
+        )
+        self.assertEqual(resolve_event_step.step, "resolve-current-event")
         dev_session = cli.parser().parse_args(["opening-dev-session"])
         self.assertEqual(dev_session.command, "opening-dev-session")
         self.assertEqual(dev_session.timeout, 21600)

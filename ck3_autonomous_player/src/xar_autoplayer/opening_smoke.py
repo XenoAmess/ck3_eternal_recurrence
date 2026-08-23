@@ -35,6 +35,7 @@ from .runtime import (
     utc_now,
     wait_for_runtime_attestation,
 )
+from .strategy import read_one_life_strategy, record_one_life_episode
 
 
 OPENING_CONTRACT = (
@@ -78,7 +79,14 @@ OPENING_DEVELOPMENT_STEPS = (
     "steward-development",
     "economic-event-cycle",
     "save-checkpoint",
+    "restore-checkpoint",
     "dynasty-review",
+    "succession-review",
+    "marriage-review",
+    "marriage-alliance",
+    "marriage-confirm-response",
+    "death-terminal",
+    "strategy-review",
     "war-review",
     "war-target-review",
     "war-interaction-review",
@@ -86,6 +94,17 @@ OPENING_DEVELOPMENT_STEPS = (
     "war-casus-belli-review",
     "war-goal-review",
     "war-declare-palermo",
+    "war-raise-all",
+    "war-move-palermo",
+    "war-map-review",
+    "war-find-palermo",
+    "war-siege-palermo",
+    "war-advance-week",
+    "war-advance-month",
+    "war-status",
+    "war-enforce-demands",
+    "war-disband-armies",
+    "resolve-current-event",
 )
 
 # CK3 1.19.0.6 at the frozen 2560x1440/100% UI contract.  Alt+1..N only
@@ -108,6 +127,10 @@ ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS = (
 )
 PALERMO_VISIBLE_LABEL_FALLBACK = (672, 1261)
 PALERMO_HOLY_WAR_GOAL_FALLBACK = (1690, 452)
+PALERMO_FORT_DESTINATION_FALLBACK = (1200, 650)
+CHILD_PORTRAIT_FIRST_CENTER_X = 45
+CHILD_PORTRAIT_COLUMN_WIDTH = 85
+CHILD_PORTRAIT_CENTER_BELOW_HEADER = 52
 
 # Frozen from Crusader Kings III/game/gui/shortcuts.shortcuts. Scan codes are
 # used so the binding does not depend on the active Windows keyboard layout.
@@ -127,7 +150,11 @@ CK3_SHORTCUT_SCAN_CODES = {
     "equals": 0x0D,
     "backspace": 0x0E,
     "enter": 0x1C,
+    "left_ctrl": 0x1D,
+    "q": 0x10,
+    "v": 0x2F,
     "w": 0x11,
+    "j": 0x24,
     "left_shift": 0x2A,
     "left_alt": 0x38,
     "f1": 0x3B,
@@ -398,6 +425,265 @@ def _choose_one_life_dynasty_action(state: dict[str, object]) -> dict[str, objec
             if isinstance(child_count, int)
             else "the current ruler already has a spouse and an heir"
         ),
+        "continue_as_heir_after_death": False,
+    }
+
+
+def _succession_panel_visible(frame: object) -> bool:
+    """Recognize the native F2/Ctrl+4 succession tab from rendered text."""
+    texts = {
+        re.sub(r"\s+", "", str(getattr(item, "text", "")))
+        for item in tuple(getattr(frame, "spans", ()))
+    }
+    has_succession = any("继承" in text for text in texts)
+    has_current_life_detail = any(
+        marker in text
+        for text in texts
+        for marker in ("玩家继承人", "当前继承人", "继承顺位", "头衔继承")
+    )
+    return has_succession and has_current_life_detail
+
+
+def _extract_current_life_succession_state(frame: object) -> dict[str, object]:
+    """Summarize succession as a current-ruler risk; death ends this run."""
+    if not _succession_panel_visible(frame):
+        raise AgentError("current-life succession state requires the native succession tab")
+    visible_text = [
+        str(getattr(item, "text", "")).strip()
+        for item in tuple(getattr(frame, "spans", ()))
+        if str(getattr(item, "text", "")).strip()
+    ]
+    normalized = [re.sub(r"\s+", "", text) for text in visible_text]
+    risk_text = [
+        text
+        for text in visible_text
+        if any(marker in re.sub(r"\s+", "", text) for marker in ("失去", "分割", "分封"))
+    ]
+    law_text = [
+        text
+        for text in visible_text
+        if any(marker in text for marker in ("继承制", "分割继承", "长子继承", "幼子继承"))
+    ]
+    return {
+        "player_heir_visible": any("玩家继承人" in text for text in normalized),
+        "partition_risk_visible": bool(risk_text),
+        "risk_text": risk_text,
+        "succession_law_text": law_text,
+        "visible_text": visible_text,
+        "source_observation_id": getattr(frame, "observation_id", None),
+        "strategy": {
+            "scope": "current_ruler_domain_and_alliance_stability",
+            "death_is_terminal_settlement": True,
+            "continue_as_heir_after_death": False,
+        },
+    }
+
+
+def _child_portrait_candidates(frame: object) -> tuple[tuple[int, int], ...]:
+    """Derive CK3's seven-slot child row from its rendered section heading."""
+    headers = [
+        item
+        for item in tuple(getattr(frame, "spans", ()))
+        if re.fullmatch(
+            r"子女[（(]?([0-9]+)[）)]?",
+            re.sub(r"\s+", "", str(getattr(item, "text", ""))),
+        )
+    ]
+    if len(headers) != 1:
+        raise AgentError("player family panel lacks one visible child heading")
+    match = re.fullmatch(
+        r"子女[（(]?([0-9]+)[）)]?",
+        re.sub(r"\s+", "", str(getattr(headers[0], "text", ""))),
+    )
+    if match is None:
+        raise AgentError("player family child count is malformed")
+    count = min(7, int(match.group(1)))
+    y = int(getattr(headers[0], "bbox")[3]) + CHILD_PORTRAIT_CENTER_BELOW_HEADER
+    return tuple(
+        (CHILD_PORTRAIT_FIRST_CENTER_X + CHILD_PORTRAIT_COLUMN_WIDTH * index, y)
+        for index in range(count)
+    )
+
+
+def _marriage_interaction_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "寻找配偶")
+        or _spans_with_text(frame, "安排婚姻")
+    )
+
+
+def _marriage_window_visible(frame: object) -> bool:
+    has_title = bool(
+        _spans_with_text(frame, "寻找配偶")
+        or _spans_with_text(frame, "安排婚姻")
+    )
+    return bool(
+        has_title
+        and _spans_with_text(frame, "排序规则", contains=True)
+        and _spans_with_text(frame, "选择结婚对象", contains=True)
+    )
+
+
+def _marriage_offer_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "安排婚姻")
+        and _spans_with_text(frame, "求婚")
+        and _spans_with_text(frame, "配偶")
+    )
+
+
+def _extract_marriage_review(frame: object) -> dict[str, object]:
+    if not _marriage_window_visible(frame):
+        raise AgentError("marriage review requires the native matchmaker window")
+    visible_text = [
+        str(getattr(item, "text", "")).strip()
+        for item in tuple(getattr(frame, "spans", ()))
+        if str(getattr(item, "text", "")).strip()
+    ]
+    return {
+        "status": "candidate_list_visible",
+        "visible_text": visible_text,
+        "source_observation_id": getattr(frame, "observation_id", None),
+        "selection_policy": "current-life alliance first; never heir continuation",
+        "continue_as_heir_after_death": False,
+    }
+
+
+def _marriage_acceptance_in_frame(frame: object) -> dict[str, object] | None:
+    texts = [
+        str(getattr(item, "text", "")).strip()
+        for item in tuple(getattr(frame, "spans", ()))
+        if str(getattr(item, "text", "")).strip()
+    ]
+    acceptance = [text for text in texts if "接受你的订婚提议" in text]
+    pairing = [text for text in texts if "埃玛" in text and "贝内迪克特" in text]
+    options = [text for text in texts if "太好了" in text]
+    if len(acceptance) != 1 or len(pairing) != 1 or len(options) != 1:
+        return None
+    return {
+        "status": "accepted_betrothal",
+        "acceptance_text": acceptance[0],
+        "pairing_text": pairing[0],
+        "option_text": options[0],
+        "source_observation_id": getattr(frame, "observation_id", None),
+        "current_life_value": "Danish alliance and family relationship",
+        "continue_as_heir_after_death": False,
+    }
+
+
+def _frame_visible_text(frame: object) -> list[str]:
+    return [
+        str(getattr(item, "text", "")).strip()
+        for item in tuple(getattr(frame, "spans", ()))
+        if str(getattr(item, "text", "")).strip()
+    ]
+
+
+def _death_terminal_state(frame: object) -> str | None:
+    """Classify only the three visible states used by one-life termination."""
+    texts = _frame_visible_text(frame)
+    compact = [re.sub(r"\s+", "", text) for text in texts]
+    has_title = any("轮回终结" in text for text in compact)
+    if has_title and any("退出到菜单" in text for text in compact):
+        return "native_no_heir_settlement"
+    if has_title and (
+        any("辛苦了,旅人" in text.replace("，", ",") for text in compact)
+        or any("这笔账" in text or "下次再来" in text for text in compact)
+    ):
+        return "recurrence_settlement_event"
+    if (
+        any(
+            marker in text
+            for text in compact
+            for marker in ("你已过世", "你已经去世", "你已死亡")
+        )
+        and any("继续扮演" in text for text in compact)
+    ):
+        return "native_succession_handoff"
+    return None
+
+
+def _observer_mode_visible(frame: object) -> bool:
+    return any("正在观察" in text for text in _frame_visible_text(frame))
+
+
+def _exit_to_main_menu_confirmation_visible(frame: object) -> bool:
+    texts = _frame_visible_text(frame)
+    return bool(
+        any("退出游戏" in text for text in texts)
+        and any("退出到主菜单" in text for text in texts)
+        and any("退出到桌面" in text for text in texts)
+    )
+
+
+def _visible_labeled_number(
+    frame: object, labels: tuple[str, ...]
+) -> int | float | None:
+    spans = tuple(getattr(frame, "spans", ()))
+    number_pattern = re.compile(r"[+-]?\d+(?:[.,]\d+)?")
+
+    def convert(raw: str) -> int | float:
+        value = float(raw.replace(",", "."))
+        return int(value) if value.is_integer() else value
+
+    for item in spans:
+        text = re.sub(r"\s+", "", str(getattr(item, "text", "")))
+        for label in labels:
+            position = text.find(label)
+            if position < 0:
+                continue
+            suffix = text[position + len(label) :].lstrip(":：")
+            match = number_pattern.search(suffix)
+            if match:
+                return convert(match.group(0))
+
+    label_spans = [
+        item
+        for item in spans
+        if any(label in re.sub(r"\s+", "", str(getattr(item, "text", ""))) for label in labels)
+    ]
+    for label_span in label_spans:
+        label_center = tuple(getattr(label_span, "center", ()))
+        if len(label_center) != 2:
+            continue
+        candidates: list[tuple[int, str]] = []
+        for item in spans:
+            raw = re.sub(r"\s+", "", str(getattr(item, "text", "")))
+            if number_pattern.fullmatch(raw) is None:
+                continue
+            center = tuple(getattr(item, "center", ()))
+            if (
+                len(center) == 2
+                and center[0] > label_center[0]
+                and abs(center[1] - label_center[1]) <= 28
+            ):
+                candidates.append((center[0] - label_center[0], raw))
+        if candidates:
+            return convert(min(candidates)[1])
+    return None
+
+
+def _extract_death_terminal(frame: object) -> dict[str, object]:
+    terminal_kind = _death_terminal_state(frame)
+    if terminal_kind is None:
+        raise AgentError("visible frame is not a one-life terminal")
+    score = {
+        "final": _visible_labeled_number(frame, ("最终分数", "最终分量")),
+        "previous_record": _visible_labeled_number(
+            frame, ("此前纪录", "此前余烬位阶")
+        ),
+        "candidate_record": _visible_labeled_number(frame, ("本世候选位阶",)),
+        "delta": _visible_labeled_number(frame, ("记录差值", "差值")),
+        "completed_bargains": _visible_labeled_number(frame, ("完成交易",)),
+        "refused_bargains": _visible_labeled_number(frame, ("拒绝垂青",)),
+        "contract_progress": _visible_labeled_number(frame, ("契约进度",)),
+    }
+    return {
+        "terminal": True,
+        "terminal_kind": terminal_kind,
+        "score": score,
+        "visible_text": _frame_visible_text(frame),
+        "source_observation_id": getattr(frame, "observation_id", None),
         "continue_as_heir_after_death": False,
     }
 
@@ -844,6 +1130,17 @@ def _save_window_visible(frame: object) -> bool:
     )
 
 
+def _load_window_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "载入游戏")
+        and _spans_with_text(frame, "显示无效", contains=True)
+    )
+
+
+def _title_finder_visible(frame: object) -> bool:
+    return bool(_spans_with_text(frame, "查找头衔", contains=True))
+
+
 def _overwrite_save_confirmation_visible(frame: object) -> bool:
     return bool(
         _spans_with_text(frame, "覆盖存档", contains=True)
@@ -873,6 +1170,21 @@ def _war_overview_visible(frame: object) -> bool:
         _spans_with_text(frame, "战争开始于", contains=True)
         and _spans_with_text(frame, "战争分数", contains=True)
         and _spans_with_text(frame, "强制执行要求", contains=True)
+    )
+
+
+def _war_results_victory_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "胜利", contains=True)
+        and _spans_with_text(frame, "就这样吧")
+    )
+
+
+def _army_disband_confirmation_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "解散军队", region=(0.30, 0.28, 0.70, 0.48))
+        and _spans_with_text(frame, "取消", region=(0.30, 0.45, 0.50, 0.62))
+        and _spans_with_text(frame, "解散", region=(0.50, 0.45, 0.70, 0.62))
     )
 
 
@@ -1050,6 +1362,23 @@ def _drive_opening(
     development_step: str | None = None,
     resume_saved_game: bool = False,
 ) -> dict[str, object]:
+    # This command only reads the agent's cross-run policy.  Keep it outside
+    # the CK3 binding/foreground/OCR path so it stays instant in a persistent
+    # development session.
+    if development_step == "strategy-review":
+        return {
+            "development_only": True,
+            "release_qualification": False,
+            "step": development_step,
+            "resume": None,
+            "actions": [],
+            "strategy": read_one_life_strategy(spec.state_dir),
+            "final_screen": "unchanged",
+            "final_observation_id": None,
+            "window_binding": None,
+            "foreground_activation": None,
+        }
+
     from .control import VisibleUiDriver
     from .control.executor import (
         _prepare_key_chord_batch,
@@ -1973,6 +2302,14 @@ def _drive_opening(
             interruption_index = len(ordinary_events) + 1
             control_id = f"ordinary_event.option_{option_number}"
             window.require_foreground()
+            speed_accepted, speed_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["1"]
+            )()
+            if speed_accepted != 2:
+                raise AgentError(
+                    "ordinary-event speed-one latch was partial: "
+                    f"accepted={speed_accepted}, last_error={speed_last_error}"
+                )
             append_event(
                 events,
                 {
@@ -2686,13 +3023,12 @@ def _drive_opening(
         )
 
         window.require_foreground()
-        close_accepted, close_last_error = _prepare_key_chord_batch(
-            CK3_SHORTCUT_SCAN_CODES["left_alt"],
-            CK3_SHORTCUT_SCAN_CODES["w"],
+        close_accepted, close_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["escape"]
         )()
-        if close_accepted != 4:
+        if close_accepted != 2:
             raise AgentError(
-                "alt+w war overview close was partial: "
+                "escape war overview close was partial: "
                 f"accepted={close_accepted}, last_error={close_last_error}"
             )
         _closed_first, closed_second = wait_for_custom_state(
@@ -2706,11 +3042,10 @@ def _drive_opening(
                 "control_id": "war_overview.close",
                 "status": "confirmed",
                 "input_kind": "keyboard_shortcut",
-                "key": "alt+w",
-                "scan_code": CK3_SHORTCUT_SCAN_CODES["w"],
-                "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                "key": "escape",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["escape"],
                 "send_input": {
-                    "requested": 4,
+                    "requested": 2,
                     "accepted": close_accepted,
                     "last_error": close_last_error,
                 },
@@ -2749,6 +3084,916 @@ def _drive_opening(
             "checkpoint": checkpoint,
             "pre_checkpoint_observation_id": final_map_observation_id,
             "final_observation_id": checkpoint_frame["observation_id"],
+        }
+
+    def raise_all_war_armies() -> dict[str, object]:
+        driver = new_driver()
+        source = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, "map before raising all armies"),
+            ),
+            stable_frames=2,
+        )
+        raise_region = (0.40, 0.92, 0.60, 1.00)
+        if len(
+            _spans_with_text(
+                source.latest,
+                "集结所有军队",
+                region=raise_region,
+            )
+        ) != 1:
+            raise AgentError("map lacks one visible raise-all-armies button")
+        first, second = click_visible_text_once(
+            driver,
+            source.latest,
+            text="集结所有军队",
+            region=raise_region,
+            control_id="war.raise_all_armies",
+            expected_post_screen="armies_raised",
+            post_predicate=lambda frame: not _spans_with_text(
+                frame,
+                "集结所有军队",
+                region=raise_region,
+            ),
+        )
+        visible_text: list[str] = []
+        for item in getattr(second, "spans", ()):
+            value = str(getattr(item, "text", "")).strip()
+            if value and value not in visible_text:
+                visible_text.append(value)
+        return {
+            "raised_all": True,
+            "source_observation_id": source.observation_id,
+            "frame_observation_ids": [
+                first.observation_id,
+                second.observation_id,
+            ],
+            "visible_text": visible_text,
+            "final_observation_id": second.observation_id,
+        }
+
+    def move_selected_army_to_palermo_fort() -> dict[str, object]:
+        driver = new_driver()
+        _initial = driver.capture_once()
+        latest = driver.capture_once()
+        if _spans_with_text(latest, "相邻统治者", contains=True):
+            window.require_foreground()
+            close_accepted, close_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["escape"]
+            )()
+            if close_accepted != 2:
+                raise AgentError(
+                    "character panel close before siege was partial: "
+                    f"accepted={close_accepted}, last_error={close_last_error}"
+                )
+        source = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, "selected army before Palermo siege"),
+            ),
+            stable_frames=2,
+        )
+        import pyautogui
+
+        pyautogui.FAILSAFE = True
+        if not _spans_with_text(source.latest, "阿普利亚第1军", contains=True):
+            window.require_foreground()
+            outliner_accepted, outliner_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["q"]
+            )()
+            if outliner_accepted != 2:
+                raise AgentError(
+                    "army outliner shortcut was partial: "
+                    f"accepted={outliner_accepted}, last_error={outliner_last_error}"
+                )
+            _outliner_first, outliner = wait_for_custom_state(
+                driver,
+                lambda frame: _spans_with_text(
+                    frame, "阿普利亚第1军", contains=True
+                ),
+                "raised army in the CK3 outliner",
+            )
+            window.require_foreground()
+            select_accepted, select_last_error = _prepare_key_chord_batch(
+                CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                CK3_SHORTCUT_SCAN_CODES["1"],
+            )()
+            if select_accepted != 4:
+                raise AgentError(
+                    "first outliner army shortcut was partial: "
+                    f"accepted={select_accepted}, last_error={select_last_error}"
+                )
+            _selected_first, selected = wait_for_custom_state(
+                driver,
+                lambda frame: _spans_with_text(
+                    frame, "阿普利亚第1军", contains=True
+                ),
+                "selected Apulia first army",
+            )
+            window.require_foreground()
+            close_accepted, close_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["q"]
+            )()
+            if close_accepted != 2:
+                raise AgentError(
+                    "army outliner close was partial: "
+                    f"accepted={close_accepted}, last_error={close_last_error}"
+                )
+            source = driver.observe_stable(
+                "map_hud",
+                min(
+                    INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                    _remaining(deadline, "selected army after outliner close"),
+                ),
+                stable_frames=2,
+            )
+            if not _spans_with_text(source.latest, "阿普利亚第1军", contains=True):
+                raise AgentError("Apulia first army did not become visibly selected")
+        find_palermo_title()
+        source = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, "selected army on the Palermo target map"),
+            ),
+            stable_frames=2,
+        )
+        if not _spans_with_text(source.latest, "阿普利亚第1军", contains=True):
+            raise AgentError("Palermo title pan did not preserve army selection")
+        point = PALERMO_FORT_DESTINATION_FALLBACK
+        window.require_foreground()
+        window.require_unobscured(point)
+        pyautogui.moveTo(
+            window.client_rect[0] + point[0],
+            window.client_rect[1] + point[1],
+            duration=0.12,
+        )
+        time.sleep(0.35)
+        window.require_cursor_target(point)
+        hover_first = driver.capture_once()
+        hover_second = driver.capture_once()
+        hover_text = [
+            str(getattr(item, "text", "")).strip()
+            for item in getattr(hover_second, "spans", ())
+            if str(getattr(item, "text", "")).strip()
+        ]
+        if not _spans_with_text(hover_second, "莱尔", contains=True):
+            raise AgentError(
+                "Palermo fort hover did not visibly name the war target: "
+                + " | ".join(hover_text[-20:])
+            )
+        append_event(
+            events,
+            {
+                "kind": "opening_pointer_input_planned",
+                "control_id": "war.selected_army.siege_palermo_fort",
+                "button": "right",
+                "center": list(point),
+                "visible_identity": "Palermo fortified holding",
+                "expected_post_screen": "army_moving_to_palermo_fort",
+            },
+        )
+        accepted, last_error = _prepare_right_click_batch()()
+        if accepted != 2:
+            raise AgentError(
+                "Palermo fort march was partial: "
+                f"accepted={accepted}, last_error={last_error}"
+            )
+        first = driver.capture_once()
+        second = driver.capture_once()
+        if getattr(second, "screen", None) not in {"map_hud", "map_running"}:
+            raise AgentError("Palermo fort march did not remain on the campaign map")
+        actions.append(
+            {
+                "control_id": "war.selected_army.siege_palermo_fort",
+                "status": "confirmed",
+                "input_kind": "visible_right_click",
+                "visible_identity": "Palermo fortified holding",
+                "click_point": list(point),
+                "send_input": {
+                    "requested": 2,
+                    "accepted": accepted,
+                    "last_error": last_error,
+                },
+                "source_observation_id": source.observation_id,
+                "hover_observation_ids": [
+                    hover_first.observation_id,
+                    hover_second.observation_id,
+                ],
+                "result_observation_id": second.observation_id,
+                "expected_post_screen": "army_moving_to_palermo_fort",
+            }
+        )
+        return {
+            "destination": "Palermo fortified holding",
+            "army": "阿普利亚第1军",
+            "click_point": list(point),
+            "hover_visible_text": hover_text,
+            "frame_observation_ids": [
+                first.observation_id,
+                second.observation_id,
+            ],
+            "final_observation_id": second.observation_id,
+        }
+
+    def review_current_war_map() -> dict[str, object]:
+        """Close a character overlay, if present, and archive the untouched war map."""
+        driver = new_driver()
+        _initial = driver.capture_once()
+        latest = driver.capture_once()
+        overlay_closed = False
+        if _spans_with_text(latest, "相邻统治者", contains=True):
+            window.require_foreground()
+            accepted, last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["escape"]
+            )()
+            if accepted != 2:
+                raise AgentError(
+                    "character panel close before map review was partial: "
+                    f"accepted={accepted}, last_error={last_error}"
+                )
+            overlay_closed = True
+            _first, latest = wait_for_custom_state(
+                driver,
+                lambda frame: (
+                    getattr(frame, "screen", None) == "map_hud"
+                    and not _spans_with_text(frame, "相邻统治者", contains=True)
+                ),
+                "unobstructed current war map",
+            )
+        elif getattr(latest, "screen", None) != "map_hud":
+            raise AgentError(
+                "current UI is neither the campaign map nor a closable character panel"
+            )
+        # Clear any stale province/character tooltip without clicking so the
+        # current army banner remains visible in the archived map frame.
+        import pyautogui
+
+        pyautogui.FAILSAFE = True
+        neutral_point = (2450, 1360)
+        window.require_foreground()
+        pyautogui.moveTo(
+            window.client_rect[0] + neutral_point[0],
+            window.client_rect[1] + neutral_point[1],
+            duration=0.12,
+        )
+        time.sleep(0.5)
+        window.require_cursor_target(neutral_point)
+        _clear_first = driver.capture_once()
+        latest = driver.capture_once()
+        visible_text: list[str] = []
+        for item in getattr(latest, "spans", ()):
+            value = str(getattr(item, "text", "")).strip()
+            if value and value not in visible_text:
+                visible_text.append(value)
+        return {
+            "overlay_closed": overlay_closed,
+            "visible_text": visible_text,
+            "final_observation_id": latest.observation_id,
+        }
+
+    def find_palermo_title() -> dict[str, object]:
+        """Use CK3's native title finder to pan to Palermo without map guesses."""
+        driver = new_driver()
+        _current_first = driver.capture_once()
+        current = driver.capture_once()
+        if _title_finder_visible(current):
+            finder = current
+            source_observation_id = current.observation_id
+        else:
+            source = driver.observe_stable(
+                "map_hud",
+                min(
+                    INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                    _remaining(deadline, "map before Palermo title search"),
+                ),
+                stable_frames=2,
+            )
+            source_observation_id = source.observation_id
+            window.require_foreground()
+            finder_accepted, finder_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["v"]
+            )()
+            if finder_accepted != 2:
+                raise AgentError(
+                    "title finder shortcut was partial: "
+                    f"accepted={finder_accepted}, last_error={finder_last_error}"
+                )
+            _finder_first, finder = wait_for_custom_state(
+                driver,
+                _title_finder_visible,
+                "CK3 title finder",
+            )
+
+        if _spans_with_text(finder, "拜莱尔姆", contains=True):
+            result = finder
+        else:
+            import pyperclip
+
+            prior_clipboard = pyperclip.paste()
+            try:
+                pyperclip.copy("拜莱尔姆")
+                window.require_foreground()
+                paste_accepted, paste_last_error = _prepare_key_chord_batch(
+                    CK3_SHORTCUT_SCAN_CODES["left_ctrl"],
+                    CK3_SHORTCUT_SCAN_CODES["v"],
+                )()
+                if paste_accepted != 4:
+                    raise AgentError(
+                        "Palermo title search paste was partial: "
+                        f"accepted={paste_accepted}, last_error={paste_last_error}"
+                    )
+                _result_first, result = wait_for_custom_state(
+                    driver,
+                    lambda frame: bool(
+                        _title_finder_visible(frame)
+                        and _spans_with_text(frame, "拜莱尔姆", contains=True)
+                    ),
+                    "Palermo title search result",
+                )
+            finally:
+                pyperclip.copy(prior_clipboard)
+        matches = _spans_with_text(result, "拜莱尔姆", contains=True)
+        visible_results = list(dict.fromkeys(item.text for item in matches))
+        target_matches = _spans_with_text(
+            result,
+            "拜莱尔姆谢赫国",
+            contains=True,
+            region=(0.76, 0.24, 0.88, 0.29),
+        )
+        title_panel_matches = _spans_with_text(
+            result,
+            "拜莱尔姆谢赫国",
+            contains=True,
+            region=(0.0, 0.0, 0.30, 0.08),
+        )
+        already_panned = len(target_matches) == 0 and len(title_panel_matches) == 1
+        if len(target_matches) != 1 and not already_panned:
+            raise AgentError(
+                "title finder lacks one visible Palermo realm result: "
+                f"{len(target_matches)}"
+            )
+        point = tuple(target_matches[0].center) if target_matches else None
+        if point is not None:
+            window.require_foreground()
+            window.require_unobscured(point)
+            import pyautogui
+
+            pyautogui.FAILSAFE = True
+            pyautogui.moveTo(
+                window.client_rect[0] + point[0],
+                window.client_rect[1] + point[1],
+                duration=0.12,
+            )
+            time.sleep(0.2)
+            window.require_cursor_target(point)
+            pan_accepted, pan_last_error = _prepare_right_click_batch()()
+            if pan_accepted != 2:
+                raise AgentError(
+                    "Palermo title finder pan was partial: "
+                    f"accepted={pan_accepted}, last_error={pan_last_error}"
+                )
+            _panned_first = driver.capture_once()
+            panned = driver.capture_once()
+        else:
+            panned = result
+        if _title_finder_visible(panned):
+            # Escape first dismisses an active IME composition, if any, and
+            # the following press closes the title finder itself.
+            for _attempt in range(3):
+                window.require_foreground()
+                close_finder_accepted, close_finder_last_error = (
+                    _prepare_key_press_batch(CK3_SHORTCUT_SCAN_CODES["escape"])()
+                )
+                if close_finder_accepted != 2:
+                    raise AgentError(
+                        "title finder close was partial: "
+                        f"accepted={close_finder_accepted}, "
+                        f"last_error={close_finder_last_error}"
+                    )
+                _closed_first = driver.capture_once()
+                panned = driver.capture_once()
+                if not _title_finder_visible(panned):
+                    break
+            else:
+                raise AgentError("title finder did not close after Palermo pan")
+        if _spans_with_text(panned, "头衔历史", contains=True):
+            window.require_foreground()
+            panel_accepted, panel_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["escape"]
+            )()
+            if panel_accepted != 2:
+                raise AgentError(
+                    "Palermo title panel close was partial: "
+                    f"accepted={panel_accepted}, last_error={panel_last_error}"
+                )
+        _map_first, final = wait_for_custom_state(
+            driver,
+            lambda frame: bool(
+                getattr(frame, "screen", None) == "map_hud"
+                and not _title_finder_visible(frame)
+                and not _spans_with_text(frame, "头衔历史", contains=True)
+            ),
+            "map centered on Palermo",
+        )
+        actions.append(
+            {
+                "control_id": "map_hud.find_palermo_title",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcuts",
+                "keys": ["v", "ctrl+v"],
+                "right_click_point": list(point) if point is not None else None,
+                "already_panned": already_panned,
+                "visible_identity": "拜莱尔姆",
+                "source_observation_id": source_observation_id,
+                "finder_observation_id": finder.observation_id,
+                "result_observation_id": final.observation_id,
+            }
+        )
+        return {
+            "query": "拜莱尔姆",
+            "visible_results": visible_results,
+            "result_observation_id": result.observation_id,
+            "final_observation_id": final.observation_id,
+        }
+
+    def advance_war_days(target_days: int, speed: str) -> dict[str, object]:
+        if target_days not in {7, 30} or speed not in {"3", "4"}:
+            raise AgentError("war time advance request is unsupported")
+        driver = new_driver()
+        paused = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, "paused campaign map before war advance"),
+            ),
+            stable_frames=2,
+        )
+        starting_date = _extract_map_date(paused.to_policy_json())
+        press_shortcut(
+            "map_hud",
+            f"map_hud.set_speed_{speed}_for_war",
+            speed,
+            CK3_SHORTCUT_SCAN_CODES[speed],
+            "map_hud",
+            f"war speed {speed}",
+            driver=driver,
+            stable=paused,
+            require_visible_control=False,
+            post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+        )
+        running = press_shortcut(
+            "map_hud",
+            "map_hud.resume_war_advance",
+            "space",
+            CK3_SHORTCUT_SCAN_CODES["space"],
+            "map_running",
+            "running war advance",
+            require_visible_control=False,
+            post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+        )
+        progress_driver = new_driver()
+        progress_deadline = min(deadline, time.monotonic() + 60.0)
+        last_frame = None
+        ending_date = None
+        while time.monotonic() < progress_deadline:
+            frame = progress_driver.capture_once()
+            event = _generic_event_in_frame(frame)
+            if event is not None:
+                raise AgentError(
+                    "ordinary event interrupted war advance; resolve it before continuing"
+                )
+            if getattr(frame, "screen", None) not in {"map_hud", "map_running"}:
+                last_frame = frame
+                continue
+            try:
+                observed_date = _extract_map_date(frame.to_policy_json())
+            except AgentError:
+                last_frame = frame
+                continue
+            last_frame = frame
+            if (
+                int(observed_date["ordinal"]) - int(starting_date["ordinal"])
+                >= target_days
+            ):
+                ending_date = observed_date
+                break
+        if last_frame is None or ending_date is None:
+            raise AgentError(
+                f"war timeline did not visibly advance {target_days} days"
+            )
+        if getattr(last_frame, "screen", None) == "map_running":
+            final = press_shortcut(
+                "map_running",
+                "map_running.pause_after_war_advance",
+                "space",
+                CK3_SHORTCUT_SCAN_CODES["space"],
+                "map_hud",
+                "paused after war advance",
+                driver=progress_driver,
+                stable=last_frame,
+                require_visible_control=False,
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+        else:
+            final = last_frame.to_policy_json()
+        return {
+            "starting_date": starting_date,
+            "ending_date": ending_date,
+            "requested_days": target_days,
+            "speed": int(speed),
+            "elapsed_days": int(ending_date["ordinal"])
+            - int(starting_date["ordinal"]),
+            "running_observation_id": running["observation_id"],
+            "final_screen": final["screen"],
+            "final_observation_id": final["observation_id"],
+            "visible_text": [
+                item["text"]
+                for item in final.get("ocr", [])
+                if isinstance(item, dict) and isinstance(item.get("text"), str)
+            ],
+        }
+
+    def advance_war_one_week() -> dict[str, object]:
+        return advance_war_days(7, "3")
+
+    def advance_war_one_month() -> dict[str, object]:
+        return advance_war_days(30, "4")
+
+    def inspect_active_war_status() -> dict[str, object]:
+        driver = new_driver()
+        source = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, "campaign map before war overview"),
+            ),
+            stable_frames=2,
+        )
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": "map_hud.inspect_active_war",
+                "key": "alt+w",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["w"],
+                "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                "expected_post_screen": "war_overview",
+            },
+        )
+        accepted, last_error = _prepare_key_chord_batch(
+            CK3_SHORTCUT_SCAN_CODES["left_alt"],
+            CK3_SHORTCUT_SCAN_CODES["w"],
+        )()
+        if accepted != 4:
+            raise AgentError(
+                "alt+w war status shortcut was partial: "
+                f"accepted={accepted}, last_error={last_error}"
+            )
+        first, second = wait_for_custom_state(
+            driver,
+            _war_overview_visible,
+            "active war overview",
+        )
+        visible_text: list[str] = []
+        war_score = None
+        for item in getattr(second, "spans", ()):
+            value = str(getattr(item, "text", "")).strip()
+            if value and value not in visible_text:
+                visible_text.append(value)
+            match = re.search(r"战争分数\s*([+-]?\d+)\s*%", value)
+            if match is not None:
+                war_score = int(match.group(1))
+        window.require_foreground()
+        close_accepted, close_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["escape"]
+        )()
+        if close_accepted != 2:
+            raise AgentError(
+                "war status close was partial: "
+                f"accepted={close_accepted}, last_error={close_last_error}"
+            )
+        _map_first, map_second = wait_for_custom_state(
+            driver,
+            lambda frame: getattr(frame, "screen", None) == "map_hud",
+            "paused campaign map after war overview",
+        )
+        actions.append(
+            {
+                "control_id": "map_hud.inspect_active_war",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": "alt+w",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["w"],
+                "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                "send_input": {
+                    "requested": 4,
+                    "accepted": accepted,
+                    "last_error": last_error,
+                },
+                "source_observation_id": source.observation_id,
+                "result_observation_id": second.observation_id,
+                "expected_post_screen": "war_overview",
+            }
+        )
+        return {
+            "war_score_percent": war_score,
+            "frame_observation_ids": [
+                first.observation_id,
+                second.observation_id,
+            ],
+            "visible_text": visible_text,
+            "final_observation_id": map_second.observation_id,
+        }
+
+    def enforce_active_war_demands() -> dict[str, object]:
+        driver = new_driver()
+        source = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, "campaign map before enforcing war demands"),
+            ),
+            stable_frames=2,
+        )
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": "map_hud.open_war_for_victory",
+                "key": "alt+w",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["w"],
+                "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                "expected_post_screen": "war_overview",
+            },
+        )
+        open_accepted, open_last_error = _prepare_key_chord_batch(
+            CK3_SHORTCUT_SCAN_CODES["left_alt"],
+            CK3_SHORTCUT_SCAN_CODES["w"],
+        )()
+        if open_accepted != 4:
+            raise AgentError(
+                "alt+w victory shortcut was partial: "
+                f"accepted={open_accepted}, last_error={open_last_error}"
+            )
+        _overview_first, overview = wait_for_custom_state(
+            driver,
+            _war_overview_visible,
+            "100-percent war overview",
+        )
+        score_matches: list[int] = []
+        for item in getattr(overview, "spans", ()):
+            match = re.search(
+                r"战争分数\s*([+-]?\d+)\s*%",
+                str(getattr(item, "text", "")),
+            )
+            if match is not None:
+                score_matches.append(int(match.group(1)))
+        if score_matches != [100]:
+            raise AgentError(
+                f"war demands require one visible +100% score: {score_matches!r}"
+            )
+        actions.append(
+            {
+                "control_id": "map_hud.open_war_for_victory",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": "alt+w",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["w"],
+                "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                "send_input": {
+                    "requested": 4,
+                    "accepted": open_accepted,
+                    "last_error": open_last_error,
+                },
+                "source_observation_id": source.observation_id,
+                "result_observation_id": overview.observation_id,
+                "expected_post_screen": "war_overview",
+            }
+        )
+
+        terms = overview
+        send_region = (0.42, 0.88, 0.58, 0.96)
+        if len(_spans_with_text(terms, "强制执行要求", region=send_region)) != 1:
+            _terms_first, terms = click_visible_text_once(
+                driver,
+                terms,
+                text="强制执行要求",
+                region=(0.54, 0.96, 0.68, 1.0),
+                control_id="war_overview.open_victory_terms",
+                expected_post_screen="war_victory_terms",
+                post_predicate=lambda frame: bool(
+                    _war_overview_visible(frame)
+                    and len(
+                        _spans_with_text(
+                            frame, "强制执行要求", region=send_region
+                        )
+                    )
+                    == 1
+                ),
+            )
+        else:
+            actions.append(
+                {
+                    "control_id": "war_overview.select_victory_terms",
+                    "status": "already_selected",
+                    "input_kind": "visible_state_verification",
+                    "source_observation_id": overview.observation_id,
+                    "result_observation_id": overview.observation_id,
+                    "expected_post_screen": "war_victory_terms",
+                }
+            )
+        _result_first, result = click_visible_text_once(
+            driver,
+            terms,
+            text="强制执行要求",
+            region=send_region,
+            control_id="war_victory_terms.enforce_demands",
+            expected_post_screen="war_results_victory",
+            post_predicate=_war_results_victory_visible,
+        )
+        _map_first, final = click_visible_text_once(
+            driver,
+            result,
+            text="就这样吧",
+            region=(0.25, 0.62, 0.75, 0.92),
+            control_id="war_results.dismiss_victory",
+            expected_post_screen="map_hud",
+            post_predicate=lambda frame: bool(
+                getattr(frame, "screen", None) == "map_hud"
+                and not _war_results_victory_visible(frame)
+            ),
+        )
+        final_policy = final.to_policy_json()
+        return {
+            "status": "victory_enforced",
+            "war_score_percent": 100,
+            "victory_terms_observation_id": terms.observation_id,
+            "war_results_observation_id": result.observation_id,
+            "final_observation_id": final.observation_id,
+            "ending_date": _extract_map_date(final_policy),
+            "strategy": "native-war-tab-plus-visible-send-v1",
+        }
+
+    def disband_war_armies() -> dict[str, object]:
+        driver = new_driver()
+
+        def armies_absent(frame: object) -> bool:
+            return bool(
+                getattr(frame, "screen", None) == "map_hud"
+                and not _spans_with_text(frame, "全部解散")
+                and not _spans_with_text(
+                    frame, "阿普利亚第1军", contains=True
+                )
+                and not _army_disband_confirmation_visible(frame)
+            )
+
+        def confirm_disband(frame: object) -> object:
+            _confirmed_first, confirmed = click_visible_text_once(
+                driver,
+                frame,
+                text="解散",
+                region=(0.50, 0.48, 0.62, 0.61),
+                control_id="army_disband_confirmation.confirm",
+                expected_post_screen="map_hud_without_raised_armies",
+                post_predicate=armies_absent,
+            )
+            return confirmed
+
+        source = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, "campaign map before army disband"),
+            ),
+            stable_frames=2,
+        )
+        if _army_disband_confirmation_visible(source.latest):
+            final = confirm_disband(source.latest)
+            return {
+                "status": "disbanded",
+                "army": "阿普利亚第1军",
+                "confirmation_resumed": True,
+                "final_observation_id": final.observation_id,
+                "strategy": "native-outliner-army-shortcut-v1",
+            }
+        if not _spans_with_text(source.latest, "全部解散"):
+            return {
+                "status": "already_disbanded",
+                "final_observation_id": source.observation_id,
+                "strategy": "native-outliner-army-shortcut-v1",
+            }
+        window.require_foreground()
+        outliner_accepted, outliner_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["q"]
+        )()
+        if outliner_accepted != 2:
+            raise AgentError(
+                "army outliner shortcut before disband was partial: "
+                f"accepted={outliner_accepted}, last_error={outliner_last_error}"
+            )
+        _outliner_first, outliner = wait_for_custom_state(
+            driver,
+            lambda frame: bool(
+                _spans_with_text(frame, "阿普利亚第1军", contains=True)
+            ),
+            "raised army in outliner before disband",
+        )
+        window.require_foreground()
+        select_accepted, select_last_error = _prepare_key_chord_batch(
+            CK3_SHORTCUT_SCAN_CODES["left_alt"],
+            CK3_SHORTCUT_SCAN_CODES["1"],
+        )()
+        if select_accepted != 4:
+            raise AgentError(
+                "first outliner army selection before disband was partial: "
+                f"accepted={select_accepted}, last_error={select_last_error}"
+            )
+        _selected_first, selected = wait_for_custom_state(
+            driver,
+            lambda frame: bool(
+                _spans_with_text(frame, "阿普利亚第1军", contains=True)
+            ),
+            "selected army before disband",
+        )
+        window.require_foreground()
+        close_accepted, close_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["q"]
+        )()
+        if close_accepted != 2:
+            raise AgentError(
+                "army outliner close before disband was partial: "
+                f"accepted={close_accepted}, last_error={close_last_error}"
+            )
+        _map_first, selected_map = wait_for_custom_state(
+            driver,
+            lambda frame: bool(
+                getattr(frame, "screen", None) == "map_hud"
+                and _spans_with_text(frame, "阿普利亚第1军", contains=True)
+            ),
+            "selected army on map before disband",
+        )
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": "selected_army.disband",
+                "key": "j",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["j"],
+                "expected_post_screen": "map_hud_without_raised_armies",
+            },
+        )
+        disband_accepted, disband_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["j"]
+        )()
+        if disband_accepted != 2:
+            raise AgentError(
+                "army J disband shortcut was partial: "
+                f"accepted={disband_accepted}, last_error={disband_last_error}"
+            )
+        _transition_first, transition = wait_for_custom_state(
+            driver,
+            lambda frame: bool(
+                armies_absent(frame)
+                or _army_disband_confirmation_visible(frame)
+            ),
+            "army disband result or confirmation",
+        )
+        final = (
+            confirm_disband(transition)
+            if _army_disband_confirmation_visible(transition)
+            else transition
+        )
+        actions.append(
+            {
+                "control_id": "selected_army.disband",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": "j",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["j"],
+                "send_input": {
+                    "requested": 2,
+                    "accepted": disband_accepted,
+                    "last_error": disband_last_error,
+                },
+                "source_observation_id": selected_map.observation_id,
+                "result_observation_id": final.observation_id,
+                "expected_post_screen": "map_hud_without_raised_armies",
+            }
+        )
+        return {
+            "status": "disbanded",
+            "army": "阿普利亚第1军",
+            "outliner_observation_id": outliner.observation_id,
+            "selected_observation_id": selected.observation_id,
+            "final_observation_id": final.observation_id,
+            "strategy": "native-outliner-army-shortcut-v1",
         }
 
     def save_development_checkpoint() -> tuple[
@@ -2972,13 +4217,180 @@ def _drive_opening(
             final_map.to_policy_json(),
         )
 
+    def restore_latest_development_checkpoint() -> dict[str, object]:
+        """Load the newest named checkpoint inside the owned CK3 process."""
+        save_root = spec.profile_dir / "save games"
+        checkpoints = [
+            path
+            for path in save_root.glob("*.ck3")
+            if path.is_file() and not path.name.casefold().startswith("autosave")
+        ]
+        if not checkpoints:
+            raise AgentError("no named development checkpoint is available")
+        checkpoint = max(checkpoints, key=lambda path: path.stat().st_mtime_ns)
+        expected_size = checkpoint.stat().st_size
+        expected_sha256 = sha256_file(checkpoint)
+
+        driver = new_driver()
+        _current_first = driver.capture_once()
+        current = driver.capture_once()
+        if not _pause_menu_visible(current) and not _load_window_visible(current):
+            if (
+                _spans_with_text(current, "阿普利亚第1军", contains=True)
+                or _spans_with_text(current, "相邻统治者", contains=True)
+            ):
+                window.require_foreground()
+                close_accepted, close_last_error = _prepare_key_press_batch(
+                    CK3_SHORTCUT_SCAN_CODES["escape"]
+                )()
+                if close_accepted != 2:
+                    raise AgentError(
+                        "current map overlay close before restore was partial: "
+                        f"accepted={close_accepted}, last_error={close_last_error}"
+                    )
+                _closed_first, current = wait_for_custom_state(
+                    driver,
+                    lambda frame: (
+                        getattr(frame, "screen", None) == "map_hud"
+                        and not _spans_with_text(
+                            frame, "阿普利亚第1军", contains=True
+                        )
+                        and not _spans_with_text(
+                            frame, "相邻统治者", contains=True
+                        )
+                    ),
+                    "plain campaign map before checkpoint restore",
+                )
+            window.require_foreground()
+            menu_accepted, menu_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["escape"]
+            )()
+            if menu_accepted != 2:
+                raise AgentError(
+                    "pause menu open before restore was partial: "
+                    f"accepted={menu_accepted}, last_error={menu_last_error}"
+                )
+            _menu_first, current = wait_for_custom_state(
+                driver,
+                _pause_menu_visible,
+                "pause menu before checkpoint restore",
+            )
+        if _pause_menu_visible(current):
+            window.require_foreground()
+            load_accepted, load_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["2"]
+            )()
+            if load_accepted != 2:
+                raise AgentError(
+                    "pause-menu load shortcut was partial: "
+                    f"accepted={load_accepted}, last_error={load_last_error}"
+                )
+            _load_first, current = wait_for_custom_state(
+                driver,
+                _load_window_visible,
+                "load checkpoint window",
+            )
+        if not _spans_with_text(current, checkpoint.stem, contains=True):
+            raise AgentError(
+                f"load window does not visibly contain checkpoint {checkpoint.stem!r}"
+            )
+
+        window.require_foreground()
+        select_accepted, select_last_error = _prepare_key_chord_batch(
+            CK3_SHORTCUT_SCAN_CODES["left_alt"],
+            CK3_SHORTCUT_SCAN_CODES["1"],
+        )()
+        if select_accepted != 4:
+            raise AgentError(
+                "first save selection shortcut was partial: "
+                f"accepted={select_accepted}, last_error={select_last_error}"
+            )
+        _selected_first, selected = wait_for_custom_state(
+            driver,
+            lambda frame: bool(
+                _load_window_visible(frame)
+                and _spans_with_text(frame, checkpoint.stem, contains=True)
+            ),
+            "selected named checkpoint",
+        )
+        window.require_foreground()
+        confirm_accepted, confirm_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["enter"]
+        )()
+        if confirm_accepted != 2:
+            raise AgentError(
+                "checkpoint load confirmation shortcut was partial: "
+                f"accepted={confirm_accepted}, last_error={confirm_last_error}"
+            )
+        _loaded_first, loaded = wait_for_custom_state(
+            driver,
+            lambda frame: bool(
+                getattr(frame, "screen", None) in {"map_hud", "map_running"}
+                or _pause_menu_visible(frame)
+            ),
+            "restored checkpoint state",
+            timeout_seconds=min(
+                INITIAL_MAIN_MENU_TIMEOUT_SECONDS,
+                _remaining(deadline, "checkpoint load"),
+            ),
+        )
+        if _pause_menu_visible(loaded):
+            window.require_foreground()
+            close_accepted, close_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["escape"]
+            )()
+            if close_accepted != 2:
+                raise AgentError(
+                    "pause menu close after checkpoint restore was partial: "
+                    f"accepted={close_accepted}, last_error={close_last_error}"
+                )
+            _map_first, loaded = wait_for_custom_state(
+                driver,
+                lambda frame: getattr(frame, "screen", None)
+                in {"map_hud", "map_running"},
+                "map after checkpoint restore",
+            )
+        if loaded.screen == "map_running":
+            final = press_shortcut(
+                "map_running",
+                "map_running.pause_after_checkpoint_restore",
+                "space",
+                CK3_SHORTCUT_SCAN_CODES["space"],
+                "map_hud",
+                "paused restored checkpoint",
+                driver=driver,
+                stable=SimpleNamespace(
+                    screen="map_running", controls=loaded.controls
+                ),
+                require_visible_control=False,
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+        else:
+            final = loaded.to_policy_json()
+        restored_date = _extract_map_date(final)
+        return {
+            "status": "restored",
+            "process_restarted": False,
+            "checkpoint": {
+                "name": checkpoint.name,
+                "size": expected_size,
+                "sha256": expected_sha256,
+            },
+            "restored_date": restored_date,
+            "selection_method": "pause-menu-load-alt-1-enter-v1",
+            "source_observation_id": selected.observation_id,
+            "final_observation_id": final["observation_id"],
+        }
+
     def run_ordinary_event_loop(
         event_target: int,
+        *,
+        initial_event: dict[str, object] | None = None,
     ) -> tuple[list[dict[str, object]], dict[str, object]]:
         ordinary_events: list[dict[str, object]] = []
         post_driver = None
         post_state = None
-        pending_event: dict[str, object] | None = None
+        pending_event: dict[str, object] | None = initial_event
         event_index = 0
         while event_index < event_target or pending_event is not None:
             event_index += 1
@@ -3024,6 +4436,14 @@ def _drive_opening(
             key, scan_code = EVENT_OPTION_SHORTCUTS[option_number]
             control_id = f"ordinary_event.option_{option_number}"
             window.require_foreground()
+            speed_accepted, speed_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["1"]
+            )()
+            if speed_accepted != 2:
+                raise AgentError(
+                    "ordinary-event speed-one latch was partial: "
+                    f"accepted={speed_accepted}, last_error={speed_last_error}"
+                )
             append_event(
                 events,
                 {
@@ -3044,36 +4464,49 @@ def _drive_opening(
                     f"{key} ordinary-event shortcut SendInput was partial: "
                     f"accepted={accepted}, last_error={last_error}"
                 )
+            # CK3 applies the option shortcut before it tears down the hard-
+            # pause event window.  A Space record submitted in the same input
+            # turn is swallowed by that window, so give the UI one bounded
+            # non-OCR frame to close while the underlying speed is already 1.
+            time.sleep(0.5)
+            pause_accepted, pause_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["space"]
+            )()
+            if pause_accepted != 2:
+                raise AgentError(
+                    "ordinary-event immediate pause was partial: "
+                    f"accepted={pause_accepted}, last_error={pause_last_error}"
+                )
 
             post_driver = new_driver()
             post_state = None
-            running_error: AgentError | None = None
+            paused_error: AgentError | None = None
             try:
                 post_state = post_driver.observe_stable(
-                    "map_running",
+                    "map_hud",
                     min(
                         8.0,
-                        _remaining(deadline, "ordinary event running postcondition"),
+                        _remaining(deadline, "ordinary event paused postcondition"),
                     ),
                     stable_frames=2,
                 )
             except AgentError as error:
-                running_error = error
+                paused_error = error
             if post_state is None:
                 try:
                     post_state = post_driver.observe_stable(
-                        "map_hud",
+                        "map_running",
                         min(
                             8.0,
                             _remaining(
-                                deadline, "ordinary event paused postcondition"
+                                deadline, "ordinary event running postcondition"
                             ),
                         ),
                         stable_frames=2,
                     )
                 except AgentError:
-                    if running_error is not None:
-                        raise running_error
+                    if paused_error is not None:
+                        raise paused_error
                     raise
             result_observation_id = post_state.observation_id
             result_screen = post_state.screen
@@ -3106,6 +4539,16 @@ def _drive_opening(
                         "requested": 4,
                         "accepted": accepted,
                         "last_error": last_error,
+                    },
+                    "speed_one_latch": {
+                        "requested": 2,
+                        "accepted": speed_accepted,
+                        "last_error": speed_last_error,
+                    },
+                    "immediate_pause": {
+                        "requested": 2,
+                        "accepted": pause_accepted,
+                        "last_error": pause_last_error,
                     },
                     "event_index": event_index,
                     "event_title": detected_event["title"],
@@ -3273,6 +4716,310 @@ def _drive_opening(
         }
 
     if development_step is not None:
+        if development_step == "death-terminal":
+            death_driver = new_driver()
+            _terminal_first, terminal_frame = wait_for_custom_state(
+                death_driver,
+                lambda frame: _death_terminal_state(frame) is not None,
+                "one-life death terminal",
+                timeout_seconds=min(
+                    30.0, _remaining(deadline, "one-life death terminal")
+                ),
+            )
+            terminal = _extract_death_terminal(terminal_frame)
+            technical_handoff = False
+
+            if terminal["terminal_kind"] == "native_succession_handoff":
+                technical_handoff = True
+                _handoff_first, handoff_after = click_visible_text_once(
+                    death_driver,
+                    terminal_frame,
+                    text="继续扮演",
+                    region=(0.45, 0.55, 0.80, 0.92),
+                    control_id="death.technical_settlement_handoff",
+                    expected_post_screen="settlement_handoff",
+                    post_predicate=lambda frame: bool(
+                        getattr(frame, "screen", None)
+                        in {"map_hud", "map_running"}
+                        or _death_terminal_state(frame)
+                        == "recurrence_settlement_event"
+                    ),
+                )
+                if (
+                    _death_terminal_state(handoff_after)
+                    != "recurrence_settlement_event"
+                ):
+                    window.require_foreground()
+                    append_event(
+                        events,
+                        {
+                            "kind": "opening_key_input_planned",
+                            "control_id": "death.handoff_speed_one",
+                            "key": "1",
+                            "scan_code": CK3_SHORTCUT_SCAN_CODES["1"],
+                            "expected_post_screen": "settlement_delivery",
+                        },
+                    )
+                    speed_accepted, speed_error = _prepare_key_press_batch(
+                        CK3_SHORTCUT_SCAN_CODES["1"]
+                    )()
+                    if speed_accepted != 2:
+                        raise AgentError(
+                            "settlement handoff speed shortcut was partial: "
+                            f"accepted={speed_accepted}, last_error={speed_error}"
+                        )
+                    resume_accepted = None
+                    resume_error = None
+                    if getattr(handoff_after, "screen", None) == "map_hud":
+                        resume_accepted, resume_error = _prepare_key_press_batch(
+                            CK3_SHORTCUT_SCAN_CODES["space"]
+                        )()
+                        if resume_accepted != 2:
+                            raise AgentError(
+                                "settlement handoff resume shortcut was partial: "
+                                f"accepted={resume_accepted}, last_error={resume_error}"
+                            )
+                    actions.append(
+                        {
+                            "control_id": "death.handoff_speed_one",
+                            "status": "confirmed",
+                            "input_kind": "keyboard_shortcut",
+                            "key": "1_then_space_if_paused",
+                            "technical_settlement_handoff": True,
+                            "heir_gameplay_actions": 0,
+                            "send_input": {
+                                "speed_requested": 2,
+                                "speed_accepted": speed_accepted,
+                                "speed_last_error": speed_error,
+                                "resume_requested": (
+                                    2 if resume_accepted is not None else 0
+                                ),
+                                "resume_accepted": resume_accepted,
+                                "resume_last_error": resume_error,
+                            },
+                        }
+                    )
+                    _settlement_first, terminal_frame = wait_for_custom_state(
+                        death_driver,
+                        lambda frame: _death_terminal_state(frame)
+                        == "recurrence_settlement_event",
+                        "recurrence settlement after succession handoff",
+                        timeout_seconds=min(
+                            30.0,
+                            _remaining(
+                                deadline,
+                                "recurrence settlement after succession handoff",
+                            ),
+                        ),
+                    )
+                else:
+                    terminal_frame = handoff_after
+                terminal = _extract_death_terminal(terminal_frame)
+
+            if terminal["terminal_kind"] == "recurrence_settlement_event":
+                if terminal["score"]["final"] is None:
+                    import pyautogui
+
+                    pyautogui.FAILSAFE = True
+                    scroll_point = (800, 720)
+                    window.require_foreground()
+                    window.require_unobscured(scroll_point)
+                    pyautogui.moveTo(
+                        window.client_rect[0] + scroll_point[0],
+                        window.client_rect[1] + scroll_point[1],
+                        duration=0.12,
+                    )
+                    window.require_cursor_target(scroll_point)
+                    pyautogui.scroll(-12)
+                    _score_first, score_frame = wait_for_custom_state(
+                        death_driver,
+                        lambda frame: _death_terminal_state(frame)
+                        == "recurrence_settlement_event",
+                        "scrolled recurrence settlement",
+                    )
+                    scrolled = _extract_death_terminal(score_frame)
+                    terminal["score"] = {
+                        key: (
+                            value
+                            if value is not None
+                            else terminal["score"].get(key)
+                        )
+                        for key, value in scrolled["score"].items()
+                    }
+                    terminal["scrolled_observation_id"] = score_frame.observation_id
+                    terminal_frame = score_frame
+                window.require_foreground()
+                append_event(
+                    events,
+                    {
+                        "kind": "opening_key_input_planned",
+                        "control_id": "death.settlement_confirm",
+                        "key": "shift+1",
+                        "scan_code": CK3_SHORTCUT_SCAN_CODES["1"],
+                        "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES[
+                            "left_shift"
+                        ],
+                        "expected_post_screen": "observer_mode",
+                    },
+                )
+                accepted, last_error = _prepare_key_chord_batch(
+                    CK3_SHORTCUT_SCAN_CODES["left_shift"],
+                    CK3_SHORTCUT_SCAN_CODES["1"],
+                )()
+                if accepted != 4:
+                    raise AgentError(
+                        "death settlement shortcut was partial: "
+                        f"accepted={accepted}, last_error={last_error}"
+                    )
+                _observer_first, observer_frame = wait_for_custom_state(
+                    death_driver,
+                    _observer_mode_visible,
+                    "observer mode after one-life settlement",
+                )
+                actions.append(
+                    {
+                        "control_id": "death.settlement_confirm",
+                        "status": "confirmed",
+                        "input_kind": "keyboard_shortcut",
+                        "key": "shift+1",
+                        "send_input": {
+                            "requested": 4,
+                            "accepted": accepted,
+                            "last_error": last_error,
+                        },
+                        "result_observation_id": observer_frame.observation_id,
+                        "heir_gameplay_actions": 0,
+                    }
+                )
+                window.require_foreground()
+                menu_accepted, menu_error = _prepare_key_press_batch(
+                    CK3_SHORTCUT_SCAN_CODES["escape"]
+                )()
+                if menu_accepted != 2:
+                    raise AgentError(
+                        "terminal pause-menu shortcut was partial: "
+                        f"accepted={menu_accepted}, last_error={menu_error}"
+                    )
+                _menu_first, pause_menu = wait_for_custom_state(
+                    death_driver, _pause_menu_visible, "terminal pause menu"
+                )
+                window.require_foreground()
+                exit_accepted, exit_error = _prepare_key_press_batch(
+                    CK3_SHORTCUT_SCAN_CODES["5"]
+                )()
+                if exit_accepted != 2:
+                    raise AgentError(
+                        "terminal exit-game shortcut was partial: "
+                        f"accepted={exit_accepted}, last_error={exit_error}"
+                    )
+                _exit_first, exit_confirmation = wait_for_custom_state(
+                    death_driver,
+                    _exit_to_main_menu_confirmation_visible,
+                    "terminal exit confirmation",
+                )
+                actions.extend(
+                    (
+                        {
+                            "control_id": "death.open_game_menu",
+                            "status": "confirmed",
+                            "input_kind": "keyboard_shortcut",
+                            "key": "escape",
+                            "send_input": {
+                                "requested": 2,
+                                "accepted": menu_accepted,
+                                "last_error": menu_error,
+                            },
+                            "result_observation_id": pause_menu.observation_id,
+                        },
+                        {
+                            "control_id": "death.open_exit_confirmation",
+                            "status": "confirmed",
+                            "input_kind": "keyboard_shortcut",
+                            "key": "5",
+                            "send_input": {
+                                "requested": 2,
+                                "accepted": exit_accepted,
+                                "last_error": exit_error,
+                            },
+                            "result_observation_id": (
+                                exit_confirmation.observation_id
+                            ),
+                        },
+                    )
+                )
+            elif terminal["terminal_kind"] == "native_no_heir_settlement":
+                _exit_first, exit_confirmation = click_visible_text_once(
+                    death_driver,
+                    terminal_frame,
+                    text="退出到菜单",
+                    region=(0.30, 0.55, 0.70, 0.98),
+                    control_id="death.no_heir_exit",
+                    expected_post_screen="exit_confirmation",
+                    post_predicate=_exit_to_main_menu_confirmation_visible,
+                )
+            else:
+                raise AgentError("one-life death did not reach a settlement screen")
+
+            _main_first, main_menu = click_visible_text_once(
+                death_driver,
+                exit_confirmation,
+                text="退出到主菜单",
+                region=(0.30, 0.25, 0.70, 0.70),
+                control_id="death.exit_to_main_menu",
+                expected_post_screen="main_menu",
+                post_predicate=lambda frame: getattr(frame, "screen", None)
+                == "main_menu",
+            )
+            terminal.update(
+                {
+                    "technical_settlement_handoff": technical_handoff,
+                    "heir_gameplay_actions": 0,
+                    "returned_to_main_menu": True,
+                    "final_observation_id": main_menu.observation_id,
+                }
+            )
+            prior_commands: list[dict[str, object]] = []
+            session_report_path = artifacts.parent / "report.json"
+            if session_report_path.exists():
+                try:
+                    session_report = json.loads(
+                        session_report_path.read_text(encoding="utf-8")
+                    )
+                except (OSError, json.JSONDecodeError) as error:
+                    raise AgentError(
+                        f"development session report is unreadable: {error}"
+                    ) from error
+                raw_commands = session_report.get("commands")
+                if isinstance(raw_commands, list):
+                    prior_commands = [
+                        row for row in raw_commands if isinstance(row, dict)
+                    ]
+            cross_run_strategy = record_one_life_episode(
+                spec.state_dir,
+                run_id=artifacts.parent.name,
+                commands=[
+                    *prior_commands,
+                    {
+                        "command": "death-terminal",
+                        "ok": True,
+                        "result": {"terminal": terminal},
+                    },
+                ],
+                terminal=terminal,
+            )
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "terminal": terminal,
+                "cross_run_strategy": cross_run_strategy,
+                "final_screen": "main_menu",
+                "final_observation_id": main_menu.observation_id,
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
         if not resume_saved_game:
             live_driver = new_driver()
             _live_first, live_map = wait_for_custom_state(
@@ -3283,12 +5030,50 @@ def _drive_opening(
                     or _steward_development_targeting_active(frame)
                     or _council_panel_visible(frame)
                     or _pause_menu_visible(frame)
+                    or _load_window_visible(frame)
+                    or _title_finder_visible(frame)
                     or _palermo_interactions_visible(frame)
                     or _declare_war_window_visible(frame)
+                    or _war_overview_visible(frame)
+                    or _marriage_window_visible(frame)
+                    or _marriage_acceptance_in_frame(frame) is not None
+                    or _generic_event_in_frame(frame) is not None
                 ),
                 "current development map",
             )
-            if _steward_development_targeting_active(live_map):
+            if _marriage_window_visible(live_map):
+                window.require_foreground()
+                close_matchmaker, close_matchmaker_error = _prepare_key_press_batch(
+                    CK3_SHORTCUT_SCAN_CODES["escape"]
+                )()
+                if close_matchmaker != 2:
+                    raise AgentError(
+                        "existing matchmaker close was partial: "
+                        f"accepted={close_matchmaker}, last_error={close_matchmaker_error}"
+                    )
+                _panel_first, _panel_second = wait_for_custom_state(
+                    live_driver,
+                    lambda frame: getattr(frame, "screen", None) == "player_character",
+                    "player panel after existing matchmaker close",
+                )
+                window.require_foreground()
+                close_panel, close_panel_error = _prepare_key_press_batch(
+                    CK3_SHORTCUT_SCAN_CODES["f1"]
+                )()
+                if close_panel != 2:
+                    raise AgentError(
+                        "existing player panel close was partial: "
+                        f"accepted={close_panel}, last_error={close_panel_error}"
+                    )
+                live_driver.observe_stable(
+                    "map_hud",
+                    min(
+                        INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                        _remaining(deadline, "map after existing matchmaker close"),
+                    ),
+                    stable_frames=2,
+                )
+            elif _steward_development_targeting_active(live_map):
                 window.require_foreground()
                 append_event(
                     events,
@@ -3385,6 +5170,45 @@ def _drive_opening(
                     ),
                     stable_frames=2,
                 )
+            elif _war_overview_visible(live_map):
+                window.require_foreground()
+                append_event(
+                    events,
+                    {
+                        "kind": "opening_key_input_planned",
+                        "control_id": "development_session.close_existing_war_overview",
+                        "key": "escape",
+                        "scan_code": CK3_SHORTCUT_SCAN_CODES["escape"],
+                        "expected_post_screen": "map",
+                    },
+                )
+                close_accepted, close_last_error = _prepare_key_press_batch(
+                    CK3_SHORTCUT_SCAN_CODES["escape"]
+                )()
+                if close_accepted != 2:
+                    raise AgentError(
+                        "existing war overview close was partial: "
+                        f"accepted={close_accepted}, last_error={close_last_error}"
+                    )
+                _map_first, post_overview_map = wait_for_custom_state(
+                    live_driver,
+                    lambda frame: getattr(frame, "screen", None)
+                    in {"map_hud", "map_running"},
+                    "map after existing war overview close",
+                )
+                if getattr(post_overview_map, "screen", None) == "map_running":
+                    press_shortcut(
+                        "map_running",
+                        "map_running.pause_after_existing_war_overview",
+                        "space",
+                        CK3_SHORTCUT_SCAN_CODES["space"],
+                        "map_hud",
+                        "paused map after existing war overview",
+                        driver=live_driver,
+                        stable=post_overview_map,
+                        require_visible_control=False,
+                        post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                    )
             elif live_map.screen == "map_running":
                 press_shortcut(
                     "map_running",
@@ -3400,6 +5224,34 @@ def _drive_opening(
                     ),
                     post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
                 )
+        if development_step == "resolve-current-event":
+            event_driver = new_driver()
+            first_frame = event_driver.capture_once()
+            second_frame = event_driver.capture_once()
+            first_event = _generic_event_in_frame(first_frame)
+            second_event = _generic_event_in_frame(second_frame)
+            if (
+                first_event is None
+                or second_event is None
+                or not _same_generic_event(first_event, second_event)
+            ):
+                raise AgentError("current ordinary event is not visibly stable")
+            resolved_events, final_observation = run_ordinary_event_loop(
+                1,
+                initial_event=second_event,
+            )
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "ordinary_events": resolved_events,
+                "final_screen": final_observation["screen"],
+                "final_observation_id": final_observation["observation_id"],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
         if development_step == "dynasty-review":
             player_observation = press_shortcut(
                 "map_hud",
@@ -3438,6 +5290,375 @@ def _drive_opening(
                 "dynasty_state": dynasty_state,
                 "final_screen": final_observation.get("screen"),
                 "final_observation_id": final_observation.get("observation_id"),
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "succession-review":
+            _realm_summary, _realm_frame = inspect_map_panel(
+                "realm",
+                "我的领地",
+                "f2",
+                CK3_SHORTCUT_SCAN_CODES["f2"],
+                leave_open=True,
+            )
+            realm_driver = new_driver()
+            window.require_foreground()
+            append_event(
+                events,
+                {
+                    "kind": "opening_key_input_planned",
+                    "control_id": "realm_panel.open_succession",
+                    "key": "ctrl+4",
+                    "scan_code": CK3_SHORTCUT_SCAN_CODES["4"],
+                    "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_ctrl"],
+                    "expected_post_screen": "succession_panel",
+                },
+            )
+            accepted, last_error = _prepare_key_chord_batch(
+                CK3_SHORTCUT_SCAN_CODES["left_ctrl"],
+                CK3_SHORTCUT_SCAN_CODES["4"],
+            )()
+            if accepted != 4:
+                raise AgentError(
+                    "Ctrl+4 succession-tab shortcut was partial: "
+                    f"accepted={accepted}, last_error={last_error}"
+                )
+            _succession_first, succession_frame = wait_for_custom_state(
+                realm_driver,
+                _succession_panel_visible,
+                "native succession tab",
+            )
+            actions.append(
+                {
+                    "control_id": "realm_panel.open_succession",
+                    "status": "confirmed",
+                    "input_kind": "keyboard_shortcut",
+                    "key": "ctrl+4",
+                    "scan_code": CK3_SHORTCUT_SCAN_CODES["4"],
+                    "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_ctrl"],
+                    "send_input": {
+                        "requested": 4,
+                        "accepted": accepted,
+                        "last_error": last_error,
+                    },
+                    "result_observation_id": succession_frame.observation_id,
+                    "expected_post_screen": "succession_panel",
+                }
+            )
+            succession_state = _extract_current_life_succession_state(
+                succession_frame
+            )
+            window.require_foreground()
+            close_accepted, close_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["f2"]
+            )()
+            if close_accepted != 2:
+                raise AgentError(
+                    "F2 succession-panel close was partial: "
+                    f"accepted={close_accepted}, last_error={close_last_error}"
+                )
+            final_map = realm_driver.observe_stable(
+                "map_hud",
+                min(
+                    INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                    _remaining(deadline, "map after succession review"),
+                ),
+                stable_frames=2,
+            )
+            actions.append(
+                {
+                    "control_id": "succession_panel.close",
+                    "status": "confirmed",
+                    "input_kind": "keyboard_shortcut",
+                    "key": "f2",
+                    "scan_code": CK3_SHORTCUT_SCAN_CODES["f2"],
+                    "send_input": {
+                        "requested": 2,
+                        "accepted": close_accepted,
+                        "last_error": close_last_error,
+                    },
+                    "result_observation_id": final_map.observation_id,
+                    "expected_post_screen": "map_hud",
+                }
+            )
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "succession_state": succession_state,
+                "final_screen": final_map.screen,
+                "final_observation_id": final_map.observation_id,
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step in {"marriage-review", "marriage-alliance"}:
+            player_observation = press_shortcut(
+                "map_hud",
+                "map_hud.open_player_character",
+                "f1",
+                CK3_SHORTCUT_SCAN_CODES["f1"],
+                "player_character",
+                "player family before marriage review",
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+            marriage_driver = new_driver()
+            _family_first, family_frame = wait_for_custom_state(
+                marriage_driver,
+                lambda frame: getattr(frame, "screen", None) == "player_character",
+                "stable player family for marriage review",
+            )
+            import pyautogui
+
+            pyautogui.FAILSAFE = True
+            selected_point = None
+            interaction_frame = None
+            interaction_text = None
+            attempted_points: list[list[int]] = []
+            for point in _child_portrait_candidates(family_frame):
+                attempted_points.append(list(point))
+                window.require_foreground()
+                window.require_unobscured(point)
+                append_event(
+                    events,
+                    {
+                        "kind": "opening_pointer_input_planned",
+                        "control_id": "player_character.child_interactions",
+                        "center": list(point),
+                        "input_kind": "right_click",
+                        "expected_post_screen": "character_interaction_menu",
+                    },
+                )
+                pyautogui.moveTo(
+                    window.client_rect[0] + point[0],
+                    window.client_rect[1] + point[1],
+                    duration=0.12,
+                )
+                window.require_cursor_target(point)
+                right_accepted, right_last_error = _prepare_right_click_batch()()
+                if right_accepted != 2:
+                    raise AgentError(
+                        "child portrait right click was partial: "
+                        f"accepted={right_accepted}, last_error={right_last_error}"
+                    )
+                first_menu = marriage_driver.capture_once()
+                second_menu = marriage_driver.capture_once()
+                if (
+                    _marriage_interaction_visible(first_menu)
+                    and _marriage_interaction_visible(second_menu)
+                ):
+                    selected_point = point
+                    interaction_frame = second_menu
+                    choices = [
+                        text
+                        for text in ("寻找配偶", "安排婚姻")
+                        if _spans_with_text(second_menu, text)
+                    ]
+                    interaction_text = choices[0]
+                    actions.append(
+                        {
+                            "control_id": "player_character.child_interactions",
+                            "status": "confirmed",
+                            "input_kind": "visible_right_click",
+                            "click_point": list(point),
+                            "visible_marriage_action": interaction_text,
+                            "result_observation_id": second_menu.observation_id,
+                            "send_input": {
+                                "requested": 2,
+                                "accepted": right_accepted,
+                                "last_error": right_last_error,
+                            },
+                        }
+                    )
+                    break
+                window.require_foreground()
+                escape_accepted, escape_last_error = _prepare_key_press_batch(
+                    CK3_SHORTCUT_SCAN_CODES["escape"]
+                )()
+                if escape_accepted != 2:
+                    raise AgentError(
+                        "interaction menu close was partial: "
+                        f"accepted={escape_accepted}, last_error={escape_last_error}"
+                    )
+            if selected_point is None or interaction_frame is None or interaction_text is None:
+                raise AgentError("no visible child exposes a marriage interaction")
+            _marriage_first, marriage_frame = click_visible_text_once(
+                marriage_driver,
+                interaction_frame,
+                text=interaction_text,
+                region=(0.0, 0.0, 1.0, 1.0),
+                control_id="child_interactions.open_matchmaker",
+                expected_post_screen="marriage_matchmaker",
+                post_predicate=_marriage_window_visible,
+            )
+            marriage_review = _extract_marriage_review(marriage_frame)
+            marriage_review["child_portrait_point"] = list(selected_point)
+            marriage_review["attempted_portrait_points"] = attempted_points
+            marriage_review["interaction"] = interaction_text
+            if development_step == "marriage-alliance":
+                candidate_spans = sorted(
+                    _spans_with_text(
+                        marriage_frame,
+                        "丹麦王子",
+                        contains=True,
+                        region=(0.35, 0.45, 0.60, 0.90),
+                    ),
+                    key=lambda item: (item.center[1], item.center[0]),
+                )
+                if not candidate_spans:
+                    raise AgentError("matchmaker exposes no visible Danish alliance candidate")
+                selected_candidate = candidate_spans[0]
+                _offer_first, offer_frame = click_visible_text_once(
+                    marriage_driver,
+                    marriage_frame,
+                    text=selected_candidate.text,
+                    region=(0.35, 0.45, 0.60, 0.90),
+                    control_id="marriage_matchmaker.select_alliance_candidate",
+                    expected_post_screen="marriage_offer",
+                    post_predicate=_marriage_offer_visible,
+                )
+                proposal_matches = _spans_with_text(offer_frame, "求婚")
+                if len(proposal_matches) != 1:
+                    raise AgentError("marriage offer lacks one visible proposal button")
+                _proposal_first, panel_frame = click_visible_text_once(
+                    marriage_driver,
+                    offer_frame,
+                    text="求婚",
+                    region=(0.20, 0.55, 0.80, 0.95),
+                    control_id="marriage_offer.send_proposal",
+                    expected_post_screen="player_character",
+                    post_predicate=lambda frame: bool(
+                        getattr(frame, "screen", None) == "player_character"
+                        and not _marriage_window_visible(frame)
+                    ),
+                )
+                marriage_review.update(
+                    {
+                        "status": "proposal_sent",
+                        "selected_candidate": selected_candidate.text,
+                        "strategy": "top-visible-related-alliance-candidate-v1",
+                    }
+                )
+            else:
+                window.require_foreground()
+                close_matchmaker_accepted, close_matchmaker_error = (
+                    _prepare_key_press_batch(CK3_SHORTCUT_SCAN_CODES["escape"])()
+                )
+                if close_matchmaker_accepted != 2:
+                    raise AgentError(
+                        "matchmaker close was partial: "
+                        f"accepted={close_matchmaker_accepted}, last_error={close_matchmaker_error}"
+                    )
+                _panel_first, panel_frame = wait_for_custom_state(
+                    marriage_driver,
+                    lambda frame: getattr(frame, "screen", None) == "player_character",
+                    "player panel after marriage review",
+                )
+            window.require_foreground()
+            close_panel_accepted, close_panel_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["f1"]
+            )()
+            if close_panel_accepted != 2:
+                raise AgentError(
+                    "F1 close after marriage review was partial: "
+                    f"accepted={close_panel_accepted}, last_error={close_panel_error}"
+                )
+            final_map = marriage_driver.observe_stable(
+                "map_hud",
+                min(
+                    INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                    _remaining(deadline, "map after marriage review"),
+                ),
+                stable_frames=2,
+            )
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "marriage_review": marriage_review,
+                "final_screen": final_map.screen,
+                "final_observation_id": final_map.observation_id,
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "marriage-confirm-response":
+            response_driver = new_driver()
+            first_response = response_driver.capture_once()
+            second_response = response_driver.capture_once()
+            first_acceptance = _marriage_acceptance_in_frame(first_response)
+            second_acceptance = _marriage_acceptance_in_frame(second_response)
+            if first_acceptance is None or second_acceptance is None:
+                raise AgentError("accepted marriage response is not visibly stable")
+            window.require_foreground()
+            append_event(
+                events,
+                {
+                    "kind": "opening_key_input_planned",
+                    "control_id": "marriage_response.accept",
+                    "key": "shift+1",
+                    "scan_code": CK3_SHORTCUT_SCAN_CODES["1"],
+                    "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
+                    "expected_post_screen": "map",
+                },
+            )
+            accepted, last_error = _prepare_key_chord_batch(
+                CK3_SHORTCUT_SCAN_CODES["left_shift"],
+                CK3_SHORTCUT_SCAN_CODES["1"],
+            )()
+            if accepted != 4:
+                raise AgentError(
+                    "marriage response shortcut was partial: "
+                    f"accepted={accepted}, last_error={last_error}"
+                )
+            _map_first, after = wait_for_custom_state(
+                response_driver,
+                lambda frame: getattr(frame, "screen", None)
+                in {"map_hud", "map_running"},
+                "map after accepted marriage response",
+            )
+            if after.screen == "map_running":
+                final = press_shortcut(
+                    "map_running",
+                    "map_running.pause_after_marriage_response",
+                    "space",
+                    CK3_SHORTCUT_SCAN_CODES["space"],
+                    "map_hud",
+                    "paused after accepted marriage response",
+                    driver=response_driver,
+                    stable=after,
+                    require_visible_control=False,
+                    post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                )
+            else:
+                final = after.to_policy_json()
+            actions.append(
+                {
+                    "control_id": "marriage_response.accept",
+                    "status": "confirmed",
+                    "input_kind": "keyboard_shortcut",
+                    "key": "shift+1",
+                    "send_input": {
+                        "requested": 4,
+                        "accepted": accepted,
+                        "last_error": last_error,
+                    },
+                    "result_observation_id": final["observation_id"],
+                    "expected_post_screen": "map_hud",
+                }
+            )
+            second_acceptance["ending_date"] = _extract_map_date(final)
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "marriage_result": second_acceptance,
+                "final_screen": final["screen"],
+                "final_observation_id": final["observation_id"],
                 "window_binding": window.audit_binding(),
                 "foreground_activation": foreground,
             }
@@ -3551,6 +5772,156 @@ def _drive_opening(
                 "window_binding": window.audit_binding(),
                 "foreground_activation": foreground,
             }
+        if development_step == "war-raise-all":
+            army_state = raise_all_war_armies()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "army": army_state,
+                "final_screen": "armies_raised",
+                "final_observation_id": army_state["final_observation_id"],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-move-palermo":
+            # Backward-compatible command alias.  The former implementation
+            # right-clicked an unverified map coordinate and failed in real
+            # play.  Route it through the proven title-search + fort-hover
+            # workflow instead.
+            march_state = move_selected_army_to_palermo_fort()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "march": march_state,
+                "final_screen": "army_moving_to_palermo_fort",
+                "final_observation_id": march_state["final_observation_id"],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-map-review":
+            map_state = review_current_war_map()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war_map": map_state,
+                "final_screen": "map_hud",
+                "final_observation_id": map_state["final_observation_id"],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-find-palermo":
+            target_state = find_palermo_title()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war_target_search": target_state,
+                "final_screen": "map_hud",
+                "final_observation_id": target_state["final_observation_id"],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-siege-palermo":
+            siege_state = move_selected_army_to_palermo_fort()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "siege": siege_state,
+                "final_screen": "army_moving_to_palermo_fort",
+                "final_observation_id": siege_state["final_observation_id"],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-advance-week":
+            progress_state = advance_war_one_week()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war_progress": progress_state,
+                "final_screen": progress_state["final_screen"],
+                "final_observation_id": progress_state[
+                    "final_observation_id"
+                ],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-advance-month":
+            progress_state = advance_war_one_month()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war_progress": progress_state,
+                "final_screen": progress_state["final_screen"],
+                "final_observation_id": progress_state[
+                    "final_observation_id"
+                ],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-status":
+            status_state = inspect_active_war_status()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war_status": status_state,
+                "final_screen": "map_hud",
+                "final_observation_id": status_state[
+                    "final_observation_id"
+                ],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-enforce-demands":
+            victory_state = enforce_active_war_demands()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war_victory": victory_state,
+                "final_screen": "map_hud",
+                "final_observation_id": victory_state["final_observation_id"],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-disband-armies":
+            disband_state = disband_war_armies()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "army_disband": disband_state,
+                "final_screen": "map_hud",
+                "final_observation_id": disband_state["final_observation_id"],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
         if development_step == "save-checkpoint":
             checkpoint, final_observation = save_development_checkpoint()
             return {
@@ -3562,6 +5933,20 @@ def _drive_opening(
                 "checkpoint": checkpoint,
                 "final_screen": final_observation.get("screen"),
                 "final_observation_id": final_observation.get("observation_id"),
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "restore-checkpoint":
+            restore_state = restore_latest_development_checkpoint()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "restore": restore_state,
+                "final_screen": "map_hud",
+                "final_observation_id": restore_state["final_observation_id"],
                 "window_binding": window.audit_binding(),
                 "foreground_activation": foreground,
             }
@@ -4256,7 +6641,12 @@ def _opening_dev_session_locked(
                     "type": "opening_dev_session_ready",
                     "run_id": run_id,
                     "pid": handle.process.pid,
-                    "commands": [*OPENING_DEVELOPMENT_STEPS, "status", "stop"],
+                    "commands": [
+                        *OPENING_DEVELOPMENT_STEPS,
+                        "strategy-review",
+                        "status",
+                        "stop",
+                    ],
                     "hot_reload": True,
                 },
                 ensure_ascii=False,
@@ -4297,25 +6687,30 @@ def _opening_dev_session_locked(
             }
             try:
                 policy = _reload_opening_development_policy()
-                command_contract = (
-                    run_dir / f"opening-ui-contract-command-{command_index}.json"
-                )
-                shutil.copy2(policy.OPENING_CONTRACT, command_contract)
-                command_contract_sha256 = policy.sha256_file(command_contract)
-                command_record["contract_sha256"] = command_contract_sha256
-                command_record["result"] = policy._drive_opening(
-                    spec,
-                    handle,
-                    manifest,
-                    artifacts,
-                    events,
-                    command_contract,
-                    command_contract_sha256,
-                    deadline,
-                    ordinary_event_count=0,
-                    development_step=command,
-                    resume_saved_game=False,
-                )
+                if command == "strategy-review":
+                    command_record["result"] = policy.read_one_life_strategy(
+                        spec.state_dir
+                    )
+                else:
+                    command_contract = (
+                        run_dir / f"opening-ui-contract-command-{command_index}.json"
+                    )
+                    shutil.copy2(policy.OPENING_CONTRACT, command_contract)
+                    command_contract_sha256 = policy.sha256_file(command_contract)
+                    command_record["contract_sha256"] = command_contract_sha256
+                    command_record["result"] = policy._drive_opening(
+                        spec,
+                        handle,
+                        manifest,
+                        artifacts,
+                        events,
+                        command_contract,
+                        command_contract_sha256,
+                        deadline,
+                        ordinary_event_count=0,
+                        development_step=command,
+                        resume_saved_game=False,
+                    )
                 command_record["ok"] = True
             except Exception as error:
                 command_record["error"] = f"{type(error).__name__}: {error}"

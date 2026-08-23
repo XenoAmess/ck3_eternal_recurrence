@@ -220,16 +220,34 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-replay --observation <observation.json> --check steward-development-active
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step steward-development --timeout 240
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step economic-event-cycle --timeout 240
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step save-checkpoint --timeout 240
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step restore-checkpoint --timeout 240
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step death-terminal --timeout 240
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" strategy-review
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-dev-session --timeout 21600
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" recover-stale-control --run-id <finalized-RED-run-id>
 ```
 
 日常 gameplay 开发不再把每次修改都当成发布验收。`opening-replay` 在不启动 CK3 的情况下直接重放已归档 OCR；
 `opening-step` 从隔离 autosave 的主菜单【继续游戏】进入，只执行一个步骤；`opening-dev-session` 则保持一个受控 CK3
-进程默认保持六小时存活，从 stdin 接收 `steward-development`、`economic-event-cycle`、`save-checkpoint`、
-`dynasty-review`、战争开发步骤、`status` 和 `stop`，每次 gameplay 命令前热加载 perception/control/policy
+进程默认保持六小时存活，从 stdin 接收建设、存档恢复、婚姻、当前生命继承评估、战争、死亡结算、
+`strategy-review`、`status` 和 `stop`，每次 gameplay 命令前热加载 perception/control/policy
 模块。这样修改画面判断或策略后可在同一进程继续测试。只有 mod/runtime/启动参数改变、需要确定性复位，或功能里程碑验收时，
 才重新执行完整 cold-start 与 ordinary/crash/opening 链。development step/session 明确不构成 release qualification 或有效得分局。
+
+### 当前可玩能力（2026-08-23）
+
+同一个未重启的 CK3 development session 已实际完成：从原生存档恢复、读取罗贝尔的配偶/继承人/7 名子女与分割继承风险、
+缔结丹麦订婚、发动并以 100% 战争分数赢得巴勒莫圣战、解散军队，以及用 CK3 原生暂停菜单保存四个检查点。战争的
+`war-move-palermo` 旧命令名现兼容地转到已实测成功的“搜索巴勒莫头衔 → 悬停确认堡垒 → 右键进军”流程，不再使用失败过的
+裸地图坐标。
+
+本项目按一代制 roguelike 运行：玩家死亡即结束本局，不规划或执行继承人玩法。有继承人时，原生【继续扮演】只作为让 mod
+延迟投递【轮回终结】结算事件的技术载体；智能体将速度降到 1、只等待结算、记录最终分数，继承人 gameplay action 固定为 0，
+随后立即返回主菜单。无继承人时则直接使用注入原生继承窗的【退出到菜单】。每个终局摘要写入
+`%LOCALAPPDATA%\XarAutoplayer\strategy\one-life-history.json`，`strategy-review` 可在不绑定 CK3、不跑 OCR 的情况下读取上一局
+战争、婚姻、分割风险、检查点和分数，并生成下一局优先级。死亡流程已有历史实机截图重放与完整模拟链测试；当前常驻存档尚未
+自然死亡，因此不得把它写成已完成的死亡实机验收。
 
 默认运行状态在 `%LOCALAPPDATA%\XarAutoplayer`，可用 `XAR_AUTOPLAYER_STATE_DIR` 或
 `--state-dir` 改写，但安全检查拒绝仓库、真实玩家目录、Steam userdata 与 Workshop 的父目录或子目录。

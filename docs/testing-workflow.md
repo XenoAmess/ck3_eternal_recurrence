@@ -298,6 +298,16 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - restore watchdog 等 runner 退出后，只终止 runner 启动的 CK3 PID，再用临时文件 + `os.replace` 原子恢复并做 SHA-256 校验。2026-08-20 实测发现宿主超时会终止 runner 的整个子进程树，普通 `Popen(CREATE_NO_WINDOW)` watchdog 也被一起杀死，遗留隔离后的 `dlc_load.json` 与测试 autosave；已从该次精确 backup 全量恢复并核对六项 hash。watchdog 现由 WMI `Win32_Process.Create` 启动在 runner 进程树之外。2026-08-19 另实测 dev selftest autosave 会让下一次 release 投影扫描已剥离的 `xar_selftest` 规则键并误报；现启动前先完整复制并校验全部 `autosave*.ck3`，写 ready 标记后才移走，结束时删除测试 autosave 并恢复原件。
 - 2026-08-19 长期平衡摇测发现当前播放集还启用了四个自动控制/改宗 mod，会污染领地、信仰与资源结果。runner 现同时备份 `dlc_load.json`，启动前把 `enabled_mods` 精确收敛为 `mod/ugc_3784706360.mod`，杀死测试 CK3 后再恢复；watchdog 同样覆盖此文件。
 - `--artifacts-dir` 只创建调用方给定的新目录；CI 上传只包含从本次日志 offset 起的新内容，严禁用 `%TEMP%\xar_accept*` 通配上传，因为 `xar_accept_backup_*` 可能含玩家现场。
+- gameplay Python 策略、OCR 条件或单步控制修改不要求重启 CK3。2026-08-23 的实机开发使用
+  `opening-dev-session` 在同一 PID 38416 内连续执行 71 个命令，覆盖存档、王朝/继承、婚姻和巴勒莫战争；每条命令前热加载模块。
+  只有 mod/runtime/启动参数改变、需要确定性状态复位或正式里程碑验收时才 cold start。纯 `strategy-review` 必须在窗口绑定前返回；
+  同一会话实测从原 UI 路径约 6 秒降到 11 ms。
+- 原生 CK3 检查点使用 Esc → `1`（保存游戏）→ Enter 接受默认名；2026-08-23 实测保存
+  `阿普利亚公爵，罗贝尔_1067_08_01.ck3`，约 10.2 MB，并记录 SHA-256。恢复测试必须通过主菜单【载入游戏】读取 CK3 自己的
+  存档列表与日期，不得用复制文件冒充游戏内载入成功。
+- 一代制 roguelike 的死亡测试分两类：有继承人时原生【继续扮演】仅允许作为延迟投递生产结算事件的技术载体，之后不得执行
+  任何继承人 gameplay；无继承人时直接使用注入原生继承窗的【退出到菜单】。两类最终都要记录结算分数并回到主菜单。
+  非 debug 常驻会话不能为测试强制 `die`，不应因此重启；先用历史 `10_death_settlement.jpg` 和确定性模拟链回归，等自然死亡再做实机终验。
 - 2026-08-21 同一发布候选的第一次矩阵在第二格到达主菜单前发生 CK3 原生 `C0000005`，crash bundle 停在数据库图标初始化，无 fixture marker、无 blocking project diagnostic，运行树、EXE 与受保护存储未变。该 RED 必须原样保留；只有全新 userdir 的同格重试完整 GREEN，且随后另一全新目录的正式三格矩阵 3/3 GREEN，才能把它判为一次性引擎冷启动崩溃，禁止直接重标原报告。
 - Windows Python Launcher 的 `py <script.py>` 会解释脚本首行的 `/usr/bin/env python3`，可能选中 `PATH` 里的另一套 Python，而不是刚由 `py -m pip` 安装依赖的默认解释器。2026-08-21 实测该分裂让非固定 Pillow 重建的三张 DXT1 DDS 与仓库字节不同，产生假 stale；项目 `.venv` 的 `Pillow==12.3.0` 与官方 CI 均 GREEN。遇到素材 parity 全红时先打印实际解释器和 Pillow 版本，本机 L0 优先直接调用 `tools\.venv\Scripts\python.exe`，禁止为消除环境假红而重写已发布素材。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。

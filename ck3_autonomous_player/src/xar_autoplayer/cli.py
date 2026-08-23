@@ -64,7 +64,14 @@ def parser() -> argparse.ArgumentParser:
             "steward-development",
             "economic-event-cycle",
             "save-checkpoint",
+            "restore-checkpoint",
             "dynasty-review",
+            "succession-review",
+            "marriage-review",
+            "marriage-alliance",
+            "marriage-confirm-response",
+            "death-terminal",
+            "strategy-review",
             "war-review",
             "war-target-review",
             "war-interaction-review",
@@ -72,6 +79,17 @@ def parser() -> argparse.ArgumentParser:
             "war-casus-belli-review",
             "war-goal-review",
             "war-declare-palermo",
+            "war-raise-all",
+            "war-move-palermo",
+            "war-map-review",
+            "war-find-palermo",
+            "war-siege-palermo",
+            "war-advance-week",
+            "war-advance-month",
+            "war-status",
+            "war-enforce-demands",
+            "war-disband-armies",
+            "resolve-current-event",
         ),
         default="steward-development",
     )
@@ -81,6 +99,10 @@ def parser() -> argparse.ArgumentParser:
         help="keep CK3 alive and hot-reload development steps read from stdin",
     )
     dev_session_parser.add_argument("--timeout", type=float, default=21600)
+    commands.add_parser(
+        "strategy-review",
+        help="show one-life episode history and the priorities for the next run",
+    )
     replay_parser = commands.add_parser(
         "opening-replay",
         help="replay one opening predicate against an archived OCR observation",
@@ -199,6 +221,11 @@ def main(argv: list[str] | None = None) -> int:
             from .opening_smoke import opening_dev_session
 
             result = opening_dev_session(spec, timeout_seconds=args.timeout)
+        elif args.command == "strategy-review":
+            from .strategy import read_one_life_strategy
+
+            ensure_state_path_safe(spec.state_dir)
+            result = read_one_life_strategy(spec.state_dir)
         elif args.command == "opening-replay":
             from .opening_smoke import replay_opening_observation
 
