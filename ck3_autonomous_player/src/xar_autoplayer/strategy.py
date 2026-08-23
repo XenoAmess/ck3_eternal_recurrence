@@ -18,6 +18,8 @@ from .bridge.declaration_contract import (
 from .bridge.marriage_contract import (
     QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
     arrange_marriage_step,
+    observed_marriage_status,
+    parse_arrange_marriage_step,
 )
 from .bridge.settlement_contract import ONE_LIFE_SETTLEMENT_CAPABILITY
 from .bridge.war_contract import (
@@ -37,7 +39,9 @@ from .runtime import utc_now
 
 ONE_LIFE_STRATEGY_RELATIVE_PATH = Path("strategy") / "one-life-history.json"
 _EMPTY_MARRIAGE_QUERY_LIMIT = 3
-_SUBMITTED_MARRIAGE_QUERY_LIMIT = 7
+_MARRIAGE_RETRY_QUERY_LIMIT = 3
+_MARRIAGE_PROPOSAL_MAX_ADVANCES = 7
+_MARRIAGE_PROPOSAL_MAX_GAME_DAYS = 30
 _NATIVE_MOVE_INTENT_MAX_GAME_DAYS = 90
 
 
@@ -184,6 +188,140 @@ def _cross_run_focus(plan: dict[str, object] | None) -> str | None:
             return "marriage"
         if any(token in action for token in ("succession", "partition")):
             return "succession"
+    return None
+
+
+def _native_marriage_attempt_state(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+) -> dict[str, object] | None:
+    """Recover the latest outbound proposal intent from persistent history."""
+    for position in range(len(commands) - 1, -1, -1):
+        row = commands[position]
+        choice_id = parse_arrange_marriage_step(_effective_command(row))
+        if choice_id is None:
+            continue
+        parsed_played, parsed_candidate = (
+            int(value) for value in choice_id.split("-", maxsplit=1)
+        )
+        row_index = (
+            row.get("index")
+            if isinstance(row.get("index"), int)
+            else position + 1
+        )
+        if row.get("ok") is not True:
+            return {
+                "status": "retry",
+                "reason": "submission_failed",
+                "played_character_id": parsed_played,
+                "candidate_character_id": parsed_candidate,
+                "attempt_index": row_index,
+                "retry_index": row_index,
+            }
+        result = row.get("result")
+        action = (
+            result.get("marriage_action")
+            if isinstance(result, dict)
+            else None
+        )
+        if not isinstance(action, dict):
+            return {
+                "status": "retry",
+                "reason": "submission_result_missing",
+                "played_character_id": parsed_played,
+                "candidate_character_id": parsed_candidate,
+                "attempt_index": row_index,
+                "retry_index": row_index,
+            }
+        played_character_id = action.get("played_character_id")
+        candidate_character_id = action.get("candidate_character_id")
+        if isinstance(played_character_id, bool) or not isinstance(
+            played_character_id, int
+        ):
+            played_character_id = parsed_played
+        if isinstance(candidate_character_id, bool) or not isinstance(
+            candidate_character_id, int
+        ):
+            candidate_character_id = parsed_candidate
+        if action.get("status") != "proposal_submitted":
+            return {
+                "status": "retry",
+                "reason": "submission_rejected",
+                "played_character_id": played_character_id,
+                "candidate_character_id": candidate_character_id,
+                "attempt_index": row_index,
+                "retry_index": row_index,
+            }
+
+        relationship_status = observed_marriage_status(
+            snapshot.get("played_character"),
+            played_character_id=played_character_id,
+            candidate_character_id=candidate_character_id,
+        )
+        recorded_outcome = result.get("marriage_result")
+        if relationship_status is not None or (
+            isinstance(recorded_outcome, dict)
+            and recorded_outcome.get("source")
+            == "native_relationship_snapshot"
+            and recorded_outcome.get("candidate_character_id")
+            == candidate_character_id
+            and recorded_outcome.get("status")
+            in {"accepted_betrothal", "accepted_marriage"}
+        ):
+            return {
+                "status": "completed",
+                "relationship_status": (
+                    relationship_status
+                    if relationship_status is not None
+                    else recorded_outcome.get("status")
+                ),
+                "played_character_id": played_character_id,
+                "candidate_character_id": candidate_character_id,
+                "attempt_index": row_index,
+            }
+
+        submitted_date_raw = action.get("submitted_date_raw")
+        current_date_raw = snapshot.get("date_raw")
+        elapsed_days: int | None = None
+        if (
+            isinstance(submitted_date_raw, int)
+            and not isinstance(submitted_date_raw, bool)
+            and isinstance(current_date_raw, int)
+            and not isinstance(current_date_raw, bool)
+            and current_date_raw >= submitted_date_raw
+        ):
+            elapsed_days = (current_date_raw - submitted_date_raw) // 24
+        advances = sum(
+            1
+            for later in commands[position + 1 :]
+            if _effective_command(later) == "life-advance"
+            and later.get("ok") is True
+        )
+        timed_out = (
+            advances >= _MARRIAGE_PROPOSAL_MAX_ADVANCES
+            or (
+                elapsed_days is not None
+                and elapsed_days >= _MARRIAGE_PROPOSAL_MAX_GAME_DAYS
+            )
+        )
+        return {
+            "status": "retry" if timed_out else "pending",
+            "reason": "proposal_timeout" if timed_out else "awaiting_relationship",
+            "played_character_id": played_character_id,
+            "candidate_character_id": candidate_character_id,
+            "submitted_date_raw": (
+                submitted_date_raw
+                if isinstance(submitted_date_raw, int)
+                and not isinstance(submitted_date_raw, bool)
+                else None
+            ),
+            "elapsed_days": elapsed_days,
+            "life_advances": advances,
+            "timeout_days": _MARRIAGE_PROPOSAL_MAX_GAME_DAYS,
+            "max_life_advances": _MARRIAGE_PROPOSAL_MAX_ADVANCES,
+            "attempt_index": row_index,
+            "retry_index": row_index,
+        }
     return None
 
 
@@ -718,8 +856,8 @@ def choose_one_life_turn(
             or bool(played_character.get("spouse_ids"))
         )
     )
-    successful_marriage_index = _latest_prefix_index(
-        rows, "arrange-marriage-"
+    marriage_attempt = _native_marriage_attempt_state(
+        rows, snapshot if isinstance(snapshot, dict) else {}
     )
     war_attempted = bool(
         _latest_index(rows, QUERY_DECLARABLE_WARS_STEP)
@@ -729,9 +867,35 @@ def choose_one_life_turn(
     defer_marriage_for_war = cross_run_focus == "war" and not war_attempted
     if (
         not native_relationship_present
-        and (native_relationship_known or not successful_marriage_index)
-        and not defer_marriage_for_war
+        and (marriage_attempt is not None or not defer_marriage_for_war)
     ):
+        if (
+            isinstance(marriage_attempt, dict)
+            and marriage_attempt.get("status") == "pending"
+        ):
+            if "life-advance" in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_arrange_marriage_response_wait",
+                    "selected_step": "life-advance",
+                    "reason": "advance one bounded interval while waiting for the exact spouse or betrothal relationship",
+                    "marriage_intent": marriage_attempt,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_arrange_marriage_response_wait_unsupported",
+                "selected_step": None,
+                "required_step": "life-advance",
+                "reason": "the native proposal is unresolved but this backend cannot advance time",
+                "marriage_intent": marriage_attempt,
+            }
+
+        retry_candidate_id = (
+            marriage_attempt.get("candidate_character_id")
+            if isinstance(marriage_attempt, dict)
+            and marriage_attempt.get("status") == "retry"
+            else None
+        )
         raw_marriage_choices = (
             snapshot.get("arrange_marriage_choices")
             if isinstance(snapshot, dict)
@@ -746,6 +910,7 @@ def choose_one_life_turn(
                 and isinstance(choice.get("candidate_character_id"), int)
             ),
             key=lambda choice: (
+                choice.get("candidate_character_id") == retry_candidate_id,
                 int(choice["candidate_character_id"]),
                 str(choice["choice_id"]),
             ),
@@ -758,8 +923,13 @@ def choose_one_life_turn(
                     "policy": "one-life-turn-v1",
                     "phase": "native_arrange_marriage",
                     "selected_step": step,
-                    "reason": "submit the first currently valid native marriage choice for this one-life ruler",
+                    "reason": (
+                        "submit a fresh valid candidate after the previous proposal failed or timed out"
+                        if retry_candidate_id is not None
+                        else "submit the first currently valid native marriage choice for this one-life ruler"
+                    ),
                     "marriage_choice": choice,
+                    "previous_marriage_intent": marriage_attempt,
                 }
             return {
                 "policy": "one-life-turn-v1",
@@ -769,51 +939,57 @@ def choose_one_life_turn(
                 "reason": "the selected native marriage choice is not executable",
                 "marriage_choice": choice,
             }
-        marriage_query_index = _latest_index(
-            rows, QUERY_ARRANGE_MARRIAGE_CHOICES_STEP
+        query_anchor = (
+            int(marriage_attempt.get("retry_index", 0))
+            if isinstance(marriage_attempt, dict)
+            and marriage_attempt.get("status") == "retry"
+            else 0
         )
-        marriage_attempt_index = _latest_prefix_index(
-            rows, "arrange-marriage-", successful_only=False
+        marriage_query_index = _latest_index(
+            rows,
+            QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+            successful_only=False,
+        )
+        successful_marriage_query_index = _latest_index(
+            rows, QUERY_ARRANGE_MARRIAGE_CHOICES_STEP
         )
         life_advance_index = _latest_index(rows, "life-advance")
         marriage_query_attempts = sum(
             1
             for fallback_index, row in enumerate(rows, start=1)
             if _effective_command(row) == QUERY_ARRANGE_MARRIAGE_CHOICES_STEP
-            and row.get("ok") is True
             and (
                 row.get("index")
                 if isinstance(row.get("index"), int)
                 else fallback_index
             )
-            > successful_marriage_index
+            > query_anchor
         )
         marriage_query_limit = (
-            _SUBMITTED_MARRIAGE_QUERY_LIMIT
-            if successful_marriage_index
+            _MARRIAGE_RETRY_QUERY_LIMIT
+            if query_anchor
             else _EMPTY_MARRIAGE_QUERY_LIMIT
         )
-        if (
-            successful_marriage_index
-            > max(marriage_query_index, life_advance_index)
-            and "life-advance" in available_steps
-        ):
-            return {
-                "policy": "one-life-turn-v1",
-                "phase": "native_arrange_marriage_response_wait",
-                "selected_step": "life-advance",
-                "reason": "advance once so CK3 can resolve the submitted marriage proposal",
-            }
+        latest_query_result = _latest_effective_result(
+            rows, QUERY_ARRANGE_MARRIAGE_CHOICES_STEP
+        )
+        lost_nonempty_query_cache = (
+            successful_marriage_query_index > query_anchor
+            and successful_marriage_query_index == marriage_query_index
+            and isinstance(latest_query_result, dict)
+            and isinstance(
+                latest_query_result.get("arrange_marriage_choices"), list
+            )
+            and bool(latest_query_result["arrange_marriage_choices"])
+        )
         if (
             marriage_query_attempts < marriage_query_limit
             and QUERY_ARRANGE_MARRIAGE_CHOICES_STEP in available_steps
             and (
-                marriage_query_index == 0
-                or (
-                    marriage_attempt_index > marriage_query_index
-                    and marriage_attempt_index > successful_marriage_index
-                )
+                marriage_query_index <= query_anchor
+                or successful_marriage_query_index != marriage_query_index
                 or life_advance_index > marriage_query_index
+                or lost_nonempty_query_cache
             )
         ):
             return {
@@ -821,10 +997,13 @@ def choose_one_life_turn(
                 "phase": "native_arrange_marriage_discovery",
                 "selected_step": QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
                 "reason": (
-                    "refresh native marriage choices after the world changed or a prior choice failed"
+                    "rebuild the native choice cache after reconnecting or refresh candidates after a failed proposal"
+                    if lost_nonempty_query_cache or query_anchor
+                    else "refresh native marriage choices after the world changed"
                     if marriage_query_index
                     else "enumerate valid native marriage choices before starting the first war"
                 ),
+                "previous_marriage_intent": marriage_attempt,
             }
         if (
             marriage_query_attempts < marriage_query_limit
@@ -836,6 +1015,7 @@ def choose_one_life_turn(
                 "phase": "native_arrange_marriage_refresh",
                 "selected_step": "life-advance",
                 "reason": "the latest native marriage query was empty; advance time once before refreshing it",
+                "previous_marriage_intent": marriage_attempt,
             }
 
     declaration_index = _latest_prefix_index(rows, "declare-war-")
@@ -1228,6 +1408,38 @@ def _successful_result_for_steps(
     return None
 
 
+def _accepted_marriage_result(
+    commands: Iterable[dict[str, object]],
+) -> dict[str, object] | None:
+    for row in reversed(_expanded_command_rows(commands)):
+        command = _effective_command(row)
+        if row.get("ok") is not True or not isinstance(command, str):
+            continue
+        result = row.get("result")
+        outcome = (
+            result.get("marriage_result")
+            if isinstance(result, dict)
+            else None
+        )
+        if (
+            not isinstance(result, dict)
+            or not isinstance(outcome, dict)
+            or outcome.get("status")
+            not in {"accepted_betrothal", "accepted_marriage"}
+        ):
+            continue
+        if command == "marriage-confirm-response":
+            return result
+        if (
+            parse_arrange_marriage_step(command) is not None
+            and outcome.get("source") == "native_relationship_snapshot"
+            and isinstance(outcome.get("candidate_character_id"), int)
+            and not isinstance(outcome.get("candidate_character_id"), bool)
+        ):
+            return result
+    return None
+
+
 def _next_run_plan(achievements: dict[str, bool]) -> dict[str, object]:
     priorities: list[dict[str, object]] = []
     if achievements["palermo_holy_war_won"]:
@@ -1331,10 +1543,7 @@ def record_one_life_episode(
     if not run_id or terminal.get("terminal") is not True:
         raise AgentError("one-life episode requires a terminal death result")
     succession = _successful_result(commands, "succession-review")
-    marriage = _successful_result_for_steps(
-        commands,
-        exact=("marriage-confirm-response",),
-    )
+    marriage = _accepted_marriage_result(commands)
     war = _successful_result_for_steps(
         commands,
         exact=("war-enforce-demands",),
@@ -1369,7 +1578,7 @@ def record_one_life_episode(
             isinstance(marriage, dict)
             and isinstance(marriage.get("marriage_result"), dict)
             and marriage["marriage_result"].get("status")
-            == "accepted_betrothal"
+            in {"accepted_betrothal", "accepted_marriage"}
         ),
         "partition_risk_visible": bool(
             isinstance(succession, dict)

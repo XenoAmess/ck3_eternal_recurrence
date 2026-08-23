@@ -872,6 +872,47 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertTrue(achievements["armies_disbanded"])
         self.assertFalse(achievements["danish_betrothal_accepted"])
 
+    def test_cross_run_marriage_requires_native_relationship_confirmation(self) -> None:
+        commands = [
+            {
+                "command": "arrange-marriage-707-809",
+                "ok": True,
+                "result": {
+                    "marriage_action": {
+                        "status": "proposal_submitted",
+                        "played_character_id": 707,
+                        "candidate_character_id": 809,
+                    },
+                    "marriage_result": {
+                        "status": "accepted_betrothal",
+                        "played_character_id": 707,
+                        "candidate_character_id": 809,
+                        "source": "native_relationship_snapshot",
+                    },
+                },
+            }
+        ]
+        terminal = {
+            "terminal": True,
+            "terminal_reason": "played_character_dead",
+            "continue_as_heir_after_death": False,
+            "heir_gameplay_actions": 0,
+            "score": 405.25,
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            recorded = record_one_life_episode(
+                Path(temporary),
+                run_id="native-707-married",
+                commands=commands,
+                terminal=terminal,
+            )
+
+        self.assertTrue(
+            recorded["recorded_episode"]["achievements"][
+                "danish_betrothal_accepted"
+            ]
+        )
+
     def test_bridge_driver_adapts_to_backend_neutral_runner(self) -> None:
         calls: list[tuple[str, int | None]] = []
         driver = CallbackGameplayDriver(

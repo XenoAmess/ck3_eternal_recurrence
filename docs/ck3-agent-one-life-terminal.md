@@ -54,8 +54,11 @@ Data Mod 和视觉 backend 都不会执行终局输入动作。
 - `war-disband-armies` 与 `disband-army-<army_id>` 的
   `army_disband.status=disbanded` 或 `war_action.status=disbanded`。
 
-`arrange-marriage-<choice>` 返回的 `proposal_submitted` 只证明提案已发出，不算婚约成功；只有既有
-确认链的 `marriage_result.status=accepted_betrothal` 计入跨局成就。
+`arrange-marriage-<choice>` 返回的 `proposal_submitted` 只证明提案已发出，不算婚约成功。Native
+driver 只有在后续快照中看到该候选精确出现在玩家的 `betrothed_id` 或 `spouse_ids`，才会把
+`marriage_result.status=accepted_betrothal` / `accepted_marriage` 与
+`source=native_relationship_snapshot` 写回命令历史并计入跨局成就；视觉旧链仍以稳定可见的
+`marriage-confirm-response` 为准。
 
 ## 跨局启动与策略消费
 

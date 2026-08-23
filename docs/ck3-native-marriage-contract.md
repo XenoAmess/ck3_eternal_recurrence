@@ -98,7 +98,9 @@ dynamic template `game.command.arrange-marriage-N`. The explicit query returns
 `query_sequence` plus `arrange_marriage_choices`; each public `choice_id` is
 `<played_character_id>-<candidate_character_id>`. Python only expands
 `arrange-marriage-<choice_id>` from the latest query and clears that cache after
-one submission attempt.
+one submission attempt. A successful submit is persisted in the episode command
+history as a proposal intent containing the exact played/candidate CharacterIDs
+and `submitted_date_raw`; it is still not a completed marriage.
 
 Typed MCP entry points are `ck3_query_arrange_marriage_choices` and
 `ck3_arrange_marriage`. In pure `native-headless` mode both work while CK3 is
@@ -109,13 +111,23 @@ silently switching to visual UI automation.
 The one-life planner runs this query after its baseline checkpoint and before
 the first war only when the relationship snapshot shows no spouse or
 betrothal. If CK3 returns choices, it submits the stable lowest candidate
-CharacterID. An empty query advances time once and refreshes the query; a stale
-or failed choice also forces a fresh query instead of permanently disabling
-marriage. After a submitted proposal, the planner advances and re-queries
-until the relationship snapshot supplies the completion evidence. To keep the
-rest of the one-life policy live, an initially empty query is retried at most
-three times and a submitted proposal is observed for at most seven refreshed
-queries before the planner continues with its other objectives.
+CharacterID. An empty or failed query advances/retries at most three times; a
+stale or rejected submit immediately forces a fresh query instead of
+permanently disabling marriage. If a reconnect preserved the query history but
+lost its process-local dynamic choice cache, the planner re-runs the query
+immediately.
+
+While a proposal intent remains unresolved, the planner chooses bounded
+`life-advance` steps even if the old candidate still appears in a cached choice
+list; it never re-submits the same pending proposal. Each new snapshot compares
+the exact submitted candidate with `betrothed_id` and `spouse_ids`. A match
+adds `marriage_result.status=accepted_betrothal` or `accepted_marriage` with
+`source=native_relationship_snapshot` to the persisted proposal history. Only
+that relationship-backed result counts as a cross-run marriage achievement.
+After 30 game days or seven completed advances without a match, the intent
+times out, a fresh query is issued, and another candidate is preferred when one
+is available. Three empty retry queries release the planner to its other
+one-life objectives rather than blocking the run forever.
 Any later incoming marriage/betrothal notification is handled by the existing
 pending-character-interaction accept command. Player death or a played-character
 identity change still ends the episode; the agent never continues as an heir.

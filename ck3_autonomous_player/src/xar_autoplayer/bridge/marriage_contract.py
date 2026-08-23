@@ -71,6 +71,25 @@ def is_native_marriage_step(step: object) -> bool:
     )
 
 
+def observed_marriage_status(
+    played_character: object,
+    *,
+    played_character_id: int,
+    candidate_character_id: int,
+) -> str | None:
+    """Return the exact relationship outcome for one submitted candidate."""
+    if not isinstance(played_character, dict):
+        return None
+    if played_character.get("character_id") != played_character_id:
+        return None
+    if played_character.get("betrothed_id") == candidate_character_id:
+        return "accepted_betrothal"
+    spouse_ids = played_character.get("spouse_ids")
+    if isinstance(spouse_ids, list) and candidate_character_id in spouse_ids:
+        return "accepted_marriage"
+    return None
+
+
 def _non_negative(value: object, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value < 0:
         raise ValueError(f"{name} must be a non-negative integer")

@@ -12,6 +12,7 @@ from xar_autoplayer.bridge.marriage_contract import (
     QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
     arrange_marriage_step,
     normalize_arrange_marriage_choices,
+    observed_marriage_status,
     parse_arrange_marriage_step,
 )
 from xar_autoplayer.strategy import choose_one_life_turn
@@ -45,6 +46,29 @@ class NativeMarriageContractTests(unittest.TestCase):
         changed["candidate_character_id"] = 809
         with self.assertRaisesRegex(ValueError, "choice_id"):
             normalize_arrange_marriage_choices([changed])
+
+    def test_relationship_outcome_requires_the_submitted_candidate(self) -> None:
+        played = {
+            "character_id": 707,
+            "betrothed_id": 808,
+            "primary_spouse_id": None,
+            "spouse_ids": [],
+        }
+        self.assertEqual(
+            observed_marriage_status(
+                played,
+                played_character_id=707,
+                candidate_character_id=808,
+            ),
+            "accepted_betrothal",
+        )
+        self.assertIsNone(
+            observed_marriage_status(
+                played,
+                played_character_id=707,
+                candidate_character_id=809,
+            )
+        )
 
     def test_planner_queries_then_submits_before_first_war(self) -> None:
         commands = [{"index": 1, "command": "save-checkpoint", "ok": True}]
@@ -176,6 +200,29 @@ class NativeMarriageContractTests(unittest.TestCase):
             QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
         )
 
+    def test_failed_query_is_retried_instead_of_stalling(self) -> None:
+        decision = choose_one_life_turn(
+            [
+                {"index": 1, "command": "save-checkpoint", "ok": True},
+                {
+                    "index": 2,
+                    "command": QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                    "ok": False,
+                    "error": "native query unavailable",
+                },
+            ],
+            snapshot={
+                "active_wars": [],
+                "player_armies": [],
+                "arrange_marriage_choices": [],
+                "declarable_wars": [],
+            },
+            action_steps={QUERY_ARRANGE_MARRIAGE_CHOICES_STEP, "life-advance"},
+        )
+        self.assertEqual(
+            decision["selected_step"], QUERY_ARRANGE_MARRIAGE_CHOICES_STEP
+        )
+
     def test_existing_native_marriage_skips_a_second_proposal(self) -> None:
         decision = choose_one_life_turn(
             [{"index": 1, "command": "save-checkpoint", "ok": True}],
@@ -199,7 +246,7 @@ class NativeMarriageContractTests(unittest.TestCase):
         )
         self.assertEqual(decision["selected_step"], "query-declarable-wars")
 
-    def test_submitted_native_proposal_waits_then_refreshes_until_observed(self) -> None:
+    def test_submitted_native_proposal_uses_bounded_advances_without_resubmit(self) -> None:
         snapshot = {
             "played_character": {
                 "character_id": 707,
@@ -240,12 +287,12 @@ class NativeMarriageContractTests(unittest.TestCase):
 
         waiting = choose_one_life_turn(
             commands,
-            snapshot=snapshot,
-            action_steps=steps,
+            snapshot={**snapshot, "arrange_marriage_choices": [_choice()]},
+            action_steps={*steps, "arrange-marriage-707-808"},
         )
         self.assertEqual(waiting["selected_step"], "life-advance")
 
-        refreshed = choose_one_life_turn(
+        still_waiting = choose_one_life_turn(
             [
                 *commands,
                 {"index": 4, "command": "life-advance", "ok": True},
@@ -253,9 +300,99 @@ class NativeMarriageContractTests(unittest.TestCase):
             snapshot=snapshot,
             action_steps=steps,
         )
+        self.assertEqual(still_waiting["selected_step"], "life-advance")
+
+        timed_out = choose_one_life_turn(
+            [
+                *commands,
+                *(
+                    {
+                        "index": index,
+                        "command": "life-advance",
+                        "ok": True,
+                    }
+                    for index in range(4, 11)
+                ),
+            ],
+            snapshot=snapshot,
+            action_steps=steps,
+        )
         self.assertEqual(
-            refreshed["selected_step"],
+            timed_out["selected_step"],
             QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+        )
+
+    def test_timed_out_proposal_prefers_a_different_candidate(self) -> None:
+        old = _choice()
+        alternate = {
+            "choice_id": "707-809",
+            "played_character_id": 707,
+            "candidate_character_id": 809,
+        }
+        decision = choose_one_life_turn(
+            [
+                {"index": 1, "command": "save-checkpoint", "ok": True},
+                {
+                    "index": 2,
+                    "command": "arrange-marriage-707-808",
+                    "ok": True,
+                    "result": {
+                        "marriage_action": {
+                            "status": "proposal_submitted",
+                            "played_character_id": 707,
+                            "candidate_character_id": 808,
+                            "submitted_date_raw": 1_000,
+                        }
+                    },
+                },
+            ],
+            snapshot={
+                "date_raw": 1_000 + 30 * 24,
+                "played_character": {
+                    "character_id": 707,
+                    "alive": True,
+                    "betrothed_id": None,
+                    "primary_spouse_id": None,
+                    "spouse_ids": [],
+                },
+                "active_wars": [],
+                "player_armies": [],
+                "arrange_marriage_choices": [old, alternate],
+                "declarable_wars": [],
+            },
+            action_steps={
+                "arrange-marriage-707-808",
+                "arrange-marriage-707-809",
+                QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                "life-advance",
+            },
+        )
+        self.assertEqual(decision["selected_step"], "arrange-marriage-707-809")
+
+    def test_reconnect_with_lost_choice_cache_requeries_immediately(self) -> None:
+        decision = choose_one_life_turn(
+            [
+                {"index": 1, "command": "save-checkpoint", "ok": True},
+                {
+                    "index": 2,
+                    "command": QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                    "ok": True,
+                    "result": {"arrange_marriage_choices": [_choice()]},
+                },
+            ],
+            snapshot={
+                "active_wars": [],
+                "player_armies": [],
+                "arrange_marriage_choices": [],
+                "declarable_wars": [],
+            },
+            action_steps={
+                QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                "life-advance",
+            },
+        )
+        self.assertEqual(
+            decision["selected_step"], QUERY_ARRANGE_MARRIAGE_CHOICES_STEP
         )
 
     def test_repeated_empty_queries_do_not_block_the_rest_of_the_life(self) -> None:

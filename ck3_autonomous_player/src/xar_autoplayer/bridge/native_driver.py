@@ -50,6 +50,7 @@ from .marriage_contract import (
     arrange_marriage_step,
     is_native_marriage_step,
     normalize_arrange_marriage_choices,
+    observed_marriage_status,
     parse_arrange_marriage_step,
 )
 from .settlement_contract import (
@@ -726,8 +727,10 @@ class NativeHeadlessGameplayDriver:
         transport_error = self._transport_error()
         if transport_error is not None:
             raise BridgeUnavailableError(transport_error)
+        snapshot = self._with_one_life_episode(self.state.semantic_snapshot())
+        self._observe_arrange_marriage_outcome(snapshot)
         return {
-            **self._with_one_life_episode(self.state.semantic_snapshot()),
+            **snapshot,
             "native_command_history": self._history_snapshot(),
         }
 
@@ -926,6 +929,71 @@ class NativeHeadlessGameplayDriver:
                 row["error"] = error
             self._command_history.append(row)
         self._persist_driver_state()
+
+    def _observe_arrange_marriage_outcome(
+        self, snapshot: dict[str, object]
+    ) -> None:
+        """Persist a proposal outcome only after the exact relationship exists."""
+        played_character = snapshot.get("played_character")
+        observed_date_raw = snapshot.get("date_raw")
+        changed = False
+        with self._history_lock:
+            for row in reversed(self._command_history):
+                choice_id = parse_arrange_marriage_step(row.get("command"))
+                if choice_id is None or row.get("ok") is not True:
+                    continue
+                result = row.get("result")
+                action = (
+                    result.get("marriage_action")
+                    if isinstance(result, dict)
+                    else None
+                )
+                if (
+                    not isinstance(result, dict)
+                    or not isinstance(action, dict)
+                    or action.get("status") != "proposal_submitted"
+                ):
+                    continue
+                played_character_id = action.get("played_character_id")
+                candidate_character_id = action.get("candidate_character_id")
+                if (
+                    isinstance(played_character_id, bool)
+                    or not isinstance(played_character_id, int)
+                    or isinstance(candidate_character_id, bool)
+                    or not isinstance(candidate_character_id, int)
+                ):
+                    continue
+                status = observed_marriage_status(
+                    played_character,
+                    played_character_id=played_character_id,
+                    candidate_character_id=candidate_character_id,
+                )
+                if status is None:
+                    continue
+                existing = result.get("marriage_result")
+                if (
+                    isinstance(existing, dict)
+                    and existing.get("status") == status
+                    and existing.get("candidate_character_id")
+                    == candidate_character_id
+                ):
+                    return
+                result["marriage_result"] = {
+                    "status": status,
+                    "played_character_id": played_character_id,
+                    "candidate_character_id": candidate_character_id,
+                    "observed_date_raw": (
+                        observed_date_raw
+                        if isinstance(observed_date_raw, int)
+                        and not isinstance(observed_date_raw, bool)
+                        else None
+                    ),
+                    "source": "native_relationship_snapshot",
+                }
+                changed = True
+                break
+        if changed:
+            self._persist_driver_state()
 
     def _bind_new_episode_from_seed_snapshot(
         self,
@@ -1873,6 +1941,10 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native arrange-marriage choice is not in the latest query"
             )
+        starting = self.take_snapshot()
+        submitted_date_raw = _date_raw(
+            starting, "arrange-marriage submission snapshot"
+        )
         try:
             result = self._execute_primitive_step(
                 step, expected_revision=expected_revision
@@ -1889,6 +1961,7 @@ class NativeHeadlessGameplayDriver:
                 "choice_id": choice_id,
                 "played_character_id": choice["played_character_id"],
                 "candidate_character_id": choice["candidate_character_id"],
+                "submitted_date_raw": submitted_date_raw,
             },
         }
 

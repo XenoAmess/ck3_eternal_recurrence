@@ -1759,7 +1759,30 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(
             submitted["marriage_action"]["candidate_character_id"], 808
         )
+        self.assertEqual(
+            submitted["marriage_action"]["submitted_date_raw"], 53_171_400
+        )
         self.assertEqual(driver.take_snapshot()["arrange_marriage_choices"], [])
+
+        endpoint.publish(
+            _snapshot(
+                41,
+                played_character={
+                    "character_id": 707,
+                    "alive": True,
+                    "betrothed_id": None,
+                    "primary_spouse_id": 808,
+                    "spouse_ids": [808],
+                },
+            )
+        )
+        observed = driver.take_snapshot()
+        outcome = observed["native_command_history"][-1]["result"][
+            "marriage_result"
+        ]
+        self.assertEqual(outcome["status"], "accepted_marriage")
+        self.assertEqual(outcome["candidate_character_id"], 808)
+        self.assertEqual(outcome["source"], "native_relationship_snapshot")
 
     def test_native_raise_and_postwar_disband_wait_for_army_state(self) -> None:
         endpoint = FakeEndpoint()
