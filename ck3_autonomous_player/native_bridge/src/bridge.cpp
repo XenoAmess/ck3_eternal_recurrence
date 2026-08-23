@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/protocol.hpp"
 
 #include <windows.h>
@@ -6,12 +7,13 @@
 #include <atomic>
 #include <charconv>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <string_view>
 
 namespace {
 
-static_assert(sizeof(void*) == 8, "the CK3 bridge is x64-only");
+static_assert(sizeof(void *) == 8, "the CK3 bridge is x64-only");
 
 constexpr wchar_t kPipeEnvironment[] = L"XAR_CK3_BRIDGE_PIPE";
 constexpr std::size_t kPipeNameCapacity = 256;
@@ -21,8 +23,7 @@ constexpr char kExpectedCk3Sha256[] =
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
 
 constexpr char kIdentityJson[] =
-    "{\"bridge\":\"xar_ck3_bridge\",\"bridge_version\":\""
-    XAR_BRIDGE_VERSION
+    "{\"bridge\":\"xar_ck3_bridge\",\"bridge_version\":\"" XAR_BRIDGE_VERSION
     "\",\"protocol_version\":1,\"architecture\":\"x86_64-windows-msvc\","
     "\"expected_ck3_version\":\"1.19.0.6\","
     "\"expected_ck3_sha256\":\""
@@ -31,9 +32,9 @@ constexpr char kIdentityJson[] =
 wchar_t g_pipe_name[kPipeNameCapacity]{};
 HANDLE g_stop_event = nullptr;
 HANDLE g_worker_thread = nullptr;
-std::atomic<long> g_lifecycle{0};  // 0 stopped, 1 starting/running
+std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running
 
-bool IsPipeName(const wchar_t* value, DWORD length) noexcept {
+bool IsPipeName(const wchar_t *value, DWORD length) noexcept {
   constexpr wchar_t prefix[] = L"\\\\.\\pipe\\";
   constexpr DWORD prefix_length =
       static_cast<DWORD>((sizeof(prefix) / sizeof(prefix[0])) - 1U);
@@ -50,26 +51,48 @@ bool IsPipeName(const wchar_t* value, DWORD length) noexcept {
 
 std::string Number(std::uint64_t value) {
   std::array<char, 32> buffer{};
-  const auto result = std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+  const auto result =
+      std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
   if (result.ec != std::errc{}) {
     return "0";
   }
   return std::string(buffer.data(), result.ptr);
 }
 
-std::string HelloFrame() {
+std::string SignedNumber(std::int64_t value) {
+  std::array<char, 32> buffer{};
+  const auto result =
+      std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+  if (result.ec != std::errc{}) {
+    return "0";
+  }
+  return std::string(buffer.data(), result.ptr);
+}
+
+std::string HelloFrame(bool ck3_gameplay_enabled) {
   std::string result =
       "{\"type\":\"hello\",\"protocol_version\":1,\"bridge_version\":\"";
   result += XAR_BRIDGE_VERSION;
   result += "\",\"pid\":";
   result += Number(GetCurrentProcessId());
-  result += ",\"session_generation\":0,\"architecture\":\"x86_64-windows-msvc\","
-            "\"expected_ck3_version\":\"";
+  result +=
+      ",\"session_generation\":0,\"architecture\":\"x86_64-windows-msvc\","
+      "\"expected_ck3_version\":\"";
   result += kExpectedCk3Version;
   result += "\",\"expected_ck3_sha256\":\"";
   result += kExpectedCk3Sha256;
-  result += "\",\"capabilities\":[\"bridge.identity\",\"bridge.heartbeat\","
-            "\"bridge.ping\"]}";
+  result += "\",\"ck3_build_match\":";
+  result += ck3_gameplay_enabled ? "true" : "false";
+  result += ",\"capabilities\":[\"bridge.identity\",\"bridge.heartbeat\","
+            "\"bridge.ping\"";
+  if (ck3_gameplay_enabled) {
+    result += ",\"game.state.snapshot\",\"game.command.pause-map\","
+              "\"game.command.resume-map\","
+              "\"game.command.set-speed-1\",\"game.command.set-speed-2\","
+              "\"game.command.set-speed-3\",\"game.command.set-speed-4\","
+              "\"game.command.set-speed-5\"";
+  }
+  result += "]}";
   return result;
 }
 
@@ -85,8 +108,75 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   return result;
 }
 
+std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
+                               std::uint64_t revision) {
+  std::string result = "{\"type\":\"state_snapshot\",\"protocol_version\":1,"
+                       "\"snapshot_id\":\"native:";
+  result += Number(revision);
+  result += "\",\"revision\":";
+  result += Number(revision);
+  result += ",\"state\":{\"date_raw\":";
+  result += SignedNumber(snapshot.date_raw);
+  result += ",\"speed\":";
+  result += SignedNumber(snapshot.speed);
+  result += ",\"paused\":";
+  result += snapshot.paused ? "true" : "false";
+  // This is Jomini's 32-bit local/network player id used by
+  // CPauseGameCommand, not CK3's 64-bit played-character id.
+  result += ",\"local_player_id\":";
+  result += SignedNumber(snapshot.player_id);
+  result += ",\"history\":[]}}";
+  return result;
+}
+
+std::string CommandResultFrame(std::string_view request_id,
+                               std::string_view step, bool ok,
+                               std::string_view status) {
+  std::string result = "{\"type\":\"command_result\",\"protocol_version\":1,"
+                       "\"request_id\":\"";
+  result += request_id;
+  result += "\",\"ok\":";
+  result += ok ? "true" : "false";
+  if (ok) {
+    result += ",\"result\":{\"step\":\"";
+    result += step;
+    result += "\",\"accepted\":true,\"status\":\"";
+    result += status;
+    result += "\"}}";
+  } else {
+    result += ",\"error\":\"";
+    result += status;
+    result += "\"}";
+  }
+  return result;
+}
+
+std::int32_t FixedSpeedStep(std::string_view step) noexcept {
+  constexpr std::string_view prefix = "set-speed-";
+  if (!step.starts_with(prefix) || step.size() != prefix.size() + 1U) {
+    return -1;
+  }
+  const char digit = step.back();
+  return digit >= '1' && digit <= '5' ? digit - '0' : -1;
+}
+
+bool PublishSnapshot(HANDLE pipe, const xar::ck3_11906::Bindings &bindings,
+                     std::optional<xar::ck3_11906::Snapshot> &previous,
+                     std::uint64_t &revision) {
+  xar::ck3_11906::Snapshot snapshot{};
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot)) {
+    return true;
+  }
+  if (previous.has_value() && previous.value() == snapshot) {
+    return true;
+  }
+  ++revision;
+  previous = snapshot;
+  return xar::bridge::WriteFrame(pipe, StateSnapshotFrame(snapshot, revision));
+}
+
 bool JsonStringField(std::string_view json, std::string_view key,
-                     std::string& output) {
+                     std::string &output) {
   std::string needle = "\"";
   needle += key;
   needle += "\":\"";
@@ -96,7 +186,8 @@ bool JsonStringField(std::string_view json, std::string_view key,
   }
   const std::size_t value_begin = begin + needle.size();
   const std::size_t end = json.find('"', value_begin);
-  if (end == std::string_view::npos || end == value_begin || end - value_begin > 128U) {
+  if (end == std::string_view::npos || end == value_begin ||
+      end - value_begin > 128U) {
     return false;
   }
   const auto value = json.substr(value_begin, end - value_begin);
@@ -112,11 +203,11 @@ bool IsSimpleRequestId(std::string_view value) noexcept {
     return false;
   }
   for (const char character : value) {
-    const bool accepted =
-        (character >= 'a' && character <= 'z') ||
-        (character >= 'A' && character <= 'Z') ||
-        (character >= '0' && character <= '9') || character == '-' ||
-        character == '_' || character == '.';
+    const bool accepted = (character >= 'a' && character <= 'z') ||
+                          (character >= 'A' && character <= 'Z') ||
+                          (character >= '0' && character <= '9') ||
+                          character == '-' || character == '_' ||
+                          character == '.';
     if (!accepted) {
       return false;
     }
@@ -140,18 +231,21 @@ HANDLE ConnectToHost() noexcept {
   return INVALID_HANDLE_VALUE;
 }
 
-DWORD WINAPI WorkerMain(void*) noexcept {
+DWORD WINAPI WorkerMain(void *) noexcept {
+  const xar::ck3_11906::Bindings game = xar::ck3_11906::BindCurrentProcess();
   HANDLE pipe = ConnectToHost();
   if (pipe == INVALID_HANDLE_VALUE) {
     return 1;
   }
 
-  if (!xar::bridge::WriteFrame(pipe, HelloFrame())) {
+  if (!xar::bridge::WriteFrame(pipe, HelloFrame(game.enabled))) {
     CloseHandle(pipe);
     return 2;
   }
 
   std::uint64_t sequence = 0;
+  std::uint64_t state_revision = 0;
+  std::optional<xar::ck3_11906::Snapshot> previous_snapshot;
   ULONGLONG next_heartbeat = GetTickCount64();
   bool connected = true;
   while (connected && WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
@@ -159,6 +253,10 @@ DWORD WINAPI WorkerMain(void*) noexcept {
     if (now >= next_heartbeat) {
       ++sequence;
       connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence));
+      if (connected && game.enabled) {
+        connected =
+            PublishSnapshot(pipe, game, previous_snapshot, state_revision);
+      }
       next_heartbeat = now + kHeartbeatIntervalMs;
       if (!connected) {
         break;
@@ -183,6 +281,63 @@ DWORD WINAPI WorkerMain(void*) noexcept {
         pong += Number(GetCurrentProcessId());
         pong += "}";
         connected = xar::bridge::WriteFrame(pipe, pong);
+      } else if (game.enabled && type == "execute_step" &&
+                 JsonStringField(incoming.payload, "request_id", request_id) &&
+                 IsSimpleRequestId(request_id)) {
+        std::string step;
+        if (!JsonStringField(incoming.payload, "step", step) ||
+            (step != "pause-map" && step != "resume-map")) {
+          const std::int32_t requested_speed = FixedSpeedStep(step);
+          if (requested_speed >= 1 &&
+              xar::ck3_11906::SubmitSetSpeed(game, requested_speed)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, true, "submitted"));
+            if (connected) {
+              connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                          state_revision);
+            }
+          } else {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "unsupported native gameplay step"));
+          }
+        } else if (step == "pause-map") {
+          const auto result = xar::ck3_11906::SubmitPauseMap(game);
+          if (result == xar::ck3_11906::PauseSubmitResult::unavailable) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "CK3 map state is unavailable"));
+          } else {
+            const std::string_view status =
+                result == xar::ck3_11906::PauseSubmitResult::submitted
+                    ? "submitted"
+                    : "already_paused";
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, true, status));
+            if (connected) {
+              connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                          state_revision);
+            }
+          }
+        } else {
+          const auto result = xar::ck3_11906::SubmitResumeMap(game);
+          if (result == xar::ck3_11906::ResumeSubmitResult::unavailable) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "CK3 map state is unavailable"));
+          } else {
+            const std::string_view status =
+                result == xar::ck3_11906::ResumeSubmitResult::submitted
+                    ? "submitted"
+                    : "already_running";
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, true, status));
+            if (connected) {
+              connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                          state_revision);
+            }
+          }
+        }
       }
     }
     WaitForSingleObject(g_stop_event, 10);
@@ -192,17 +347,12 @@ DWORD WINAPI WorkerMain(void*) noexcept {
   return 0;
 }
 
-BOOL StartFromEnvironment() noexcept {
+BOOL StartWithPipeName(const wchar_t *pipe_name, DWORD length) noexcept {
+  if (!IsPipeName(pipe_name, length)) {
+    return FALSE;
+  }
   if (g_lifecycle.exchange(1) != 0) {
     return TRUE;
-  }
-
-  wchar_t pipe_name[kPipeNameCapacity]{};
-  const DWORD length = GetEnvironmentVariableW(
-      kPipeEnvironment, pipe_name, static_cast<DWORD>(kPipeNameCapacity));
-  if (!IsPipeName(pipe_name, length)) {
-    g_lifecycle.store(0);
-    return FALSE;
   }
   for (DWORD index = 0; index <= length; ++index) {
     g_pipe_name[index] = pipe_name[index];
@@ -223,21 +373,43 @@ BOOL StartFromEnvironment() noexcept {
   return TRUE;
 }
 
+BOOL StartFromEnvironment() noexcept {
+  wchar_t pipe_name[kPipeNameCapacity]{};
+  const DWORD length = GetEnvironmentVariableW(
+      kPipeEnvironment, pipe_name, static_cast<DWORD>(kPipeNameCapacity));
+  return StartWithPipeName(pipe_name, length);
+}
+
 void SignalStop() noexcept {
   if (g_stop_event != nullptr) {
     SetEvent(g_stop_event);
   }
 }
 
-}  // namespace
+} // namespace
 
-extern "C" __declspec(dllexport) const char* WINAPI
+extern "C" __declspec(dllexport) const char *WINAPI
 XarCk3BridgeIdentity() noexcept {
   return kIdentityJson;
 }
 
 extern "C" __declspec(dllexport) BOOL WINAPI XarCk3BridgeStart() noexcept {
   return StartFromEnvironment();
+}
+
+// The signature intentionally matches LPTHREAD_START_ROUTINE on x64 Windows.
+// This lets the injector start an already-running process that did not inherit
+// XAR_CK3_BRIDGE_PIPE, without modifying that process's environment block.
+extern "C" __declspec(dllexport) BOOL WINAPI
+XarCk3BridgeStartWithPipe(const wchar_t *pipe_name) noexcept {
+  if (pipe_name == nullptr) {
+    return FALSE;
+  }
+  DWORD length = 0;
+  while (length < kPipeNameCapacity && pipe_name[length] != L'\0') {
+    ++length;
+  }
+  return StartWithPipeName(pipe_name, length);
 }
 
 extern "C" __declspec(dllexport) void WINAPI XarCk3BridgeStop() noexcept {

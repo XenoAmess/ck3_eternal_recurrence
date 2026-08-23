@@ -12,6 +12,12 @@ from .driver import (
     HybridGameplayDriver,
 )
 from .mod_driver import load_data_mod_driver
+from .native_driver import (
+    ConfiguredHybridFallbackDriver,
+    MinimizedRejectingVisualDriver,
+    NativeHeadlessGameplayDriver,
+    selected_pipe_name,
+)
 from .session_driver import DevelopmentSessionDriver
 from .service import GameplayBridgeService
 
@@ -31,6 +37,7 @@ def load_driver(
     *,
     userdir: str | os.PathLike[str] | None = None,
     state_dir: str | os.PathLike[str] | None = None,
+    pipe_name: str | None = None,
 ) -> GameplayBridgeDriver:
     """Load a daemon driver without coupling MCP to a concrete game bridge."""
     def selected_state_dir() -> Path:
@@ -47,11 +54,21 @@ def load_driver(
             load_data_mod_driver(userdir),
             DevelopmentSessionDriver(selected_state_dir()),
         )
+    if factory == "native-headless":
+        return NativeHeadlessGameplayDriver(selected_pipe_name(pipe_name))
+    if factory == "hybrid-fallback":
+        return ConfiguredHybridFallbackDriver(
+            NativeHeadlessGameplayDriver(selected_pipe_name(pipe_name)),
+            load_data_mod_driver(userdir),
+            MinimizedRejectingVisualDriver(
+                DevelopmentSessionDriver(selected_state_dir())
+            ),
+        )
     module_name, separator, attribute = factory.partition(":")
     if not separator or not module_name or not attribute:
         raise ValueError(
             "driver factory must be vision-report, vision-session, mod, "
-            "hybrid, or module:callable"
+            "hybrid, native-headless, hybrid-fallback, or module:callable"
         )
     candidate = getattr(importlib.import_module(module_name), attribute)
     if not callable(candidate):
@@ -85,6 +102,19 @@ def create_server(driver: GameplayBridgeDriver):
     def ck3_get_capabilities() -> dict[str, object]:
         """List the current bridge backend and gameplay steps it implements."""
         return service.capabilities()
+
+    @server.tool()
+    def ck3_get_bridge_diagnostics() -> dict[str, object]:
+        """Return live transport diagnostics without claiming CK3 game state."""
+        diagnostics = getattr(driver, "diagnostics", None)
+        if callable(diagnostics):
+            return diagnostics()
+        capabilities = service.capabilities()
+        nested = capabilities.get("diagnostics")
+        return nested if isinstance(nested, dict) else {
+            "backend_id": capabilities.get("backend_id"),
+            "connected": capabilities.get("connected"),
+        }
 
     @server.tool()
     def ck3_take_snapshot() -> dict[str, object]:
@@ -129,8 +159,8 @@ def parser() -> argparse.ArgumentParser:
         "--driver",
         default=os.environ.get("XAR_CK3_BRIDGE_DRIVER", "vision-report"),
         help=(
-            "vision-report, vision-session, mod, hybrid, or a module:factory returning "
-            "GameplayBridgeDriver"
+            "vision-report, vision-session, mod, hybrid, native-headless, "
+            "hybrid-fallback, or a module:factory returning GameplayBridgeDriver"
         ),
     )
     result.add_argument(
@@ -144,6 +174,14 @@ def parser() -> argparse.ArgumentParser:
         help="active CK3 user directory used by --driver mod",
     )
     result.add_argument(
+        "--pipe-name",
+        default=os.environ.get("XAR_CK3_BRIDGE_PIPE"),
+        help=(
+            r"native bridge pipe (default: \\.\pipe\xar_ck3_bridge_mcp); "
+            "also accepted through XAR_CK3_BRIDGE_PIPE"
+        ),
+    )
+    result.add_argument(
         "--transport", choices=("stdio", "streamable-http"), default="stdio"
     )
     result.add_argument("--host", default="127.0.0.1")
@@ -153,23 +191,28 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
-    server = create_server(
-        load_driver(
-            args.driver,
-            userdir=args.userdir,
-            state_dir=args.state_dir,
-        )
+    driver = load_driver(
+        args.driver,
+        userdir=args.userdir,
+        state_dir=args.state_dir,
+        pipe_name=args.pipe_name,
     )
-    if args.transport == "stdio":
-        server.run(transport="stdio")
-    else:
-        server.run(
-            transport="streamable-http",
-            host=args.host,
-            port=args.port,
-            stateless_http=True,
-            json_response=True,
-        )
+    server = create_server(driver)
+    try:
+        if args.transport == "stdio":
+            server.run(transport="stdio")
+        else:
+            server.run(
+                transport="streamable-http",
+                host=args.host,
+                port=args.port,
+                stateless_http=True,
+                json_response=True,
+            )
+    finally:
+        close = getattr(driver, "close", None)
+        if callable(close):
+            close()
     return 0
 
 

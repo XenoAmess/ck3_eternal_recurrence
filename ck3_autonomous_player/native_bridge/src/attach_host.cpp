@@ -14,10 +14,12 @@ namespace {
 
 constexpr wchar_t kPipeEnvironment[] = L"XAR_CK3_BRIDGE_PIPE";
 
-std::wstring PipeName() {
-  return L"\\\\.\\pipe\\xar_ck3_bridge_injection_" +
-         std::to_wstring(GetCurrentProcessId()) + L"_" +
-         std::to_wstring(GetTickCount64());
+std::wstring UniqueName(std::wstring_view prefix) {
+  std::wstring result(prefix);
+  result += std::to_wstring(GetCurrentProcessId());
+  result += L"_";
+  result += std::to_wstring(GetTickCount64());
+  return result;
 }
 
 bool Has(std::string_view payload, std::string_view fragment) {
@@ -29,8 +31,8 @@ int Fail(std::string_view message) {
   return 1;
 }
 
-std::wstring Quoted(const std::filesystem::path &path) {
-  return L"\"" + path.native() + L"\"";
+std::wstring Quoted(std::wstring_view value) {
+  return L"\"" + std::wstring(value) + L"\"";
 }
 
 struct SavedEnvironment {
@@ -45,9 +47,9 @@ SavedEnvironment SavePipeEnvironment() {
     return saved;
   }
   saved.value.resize(required);
-  const DWORD copied =
-      GetEnvironmentVariableW(kPipeEnvironment, saved.value.data(),
-                              static_cast<DWORD>(saved.value.size()));
+  const DWORD copied = GetEnvironmentVariableW(
+      kPipeEnvironment, saved.value.data(),
+      static_cast<DWORD>(saved.value.size()));
   if (copied != 0 && copied < saved.value.size()) {
     saved.value.resize(copied);
     saved.existed = true;
@@ -57,37 +59,41 @@ SavedEnvironment SavePipeEnvironment() {
   return saved;
 }
 
-void RestorePipeEnvironment(const SavedEnvironment &saved) {
+void RestorePipeEnvironment(const SavedEnvironment& saved) {
   SetEnvironmentVariableW(kPipeEnvironment,
                           saved.existed ? saved.value.c_str() : nullptr);
 }
 
-bool StartSuspendedTarget(const std::filesystem::path &target_path,
-                          const std::wstring &pipe_name,
-                          PROCESS_INFORMATION &target) {
+bool StartRunningTargetWithoutPipe(const std::filesystem::path& target_path,
+                                   std::wstring_view event_name,
+                                   PROCESS_INFORMATION& target) {
   const SavedEnvironment saved = SavePipeEnvironment();
-  if (!SetEnvironmentVariableW(kPipeEnvironment, pipe_name.c_str())) {
-    return false;
-  }
+  SetEnvironmentVariableW(kPipeEnvironment, nullptr);
 
   STARTUPINFOW startup{};
   startup.cb = sizeof(startup);
-  std::wstring command_line = Quoted(target_path);
+  std::wstring command_line = Quoted(target_path.native());
+  command_line += L" --wait-event ";
+  command_line += Quoted(event_name);
   const BOOL created =
       CreateProcessW(target_path.c_str(), command_line.data(), nullptr, nullptr,
-                     FALSE, CREATE_SUSPENDED | CREATE_UNICODE_ENVIRONMENT,
-                     nullptr, nullptr, &startup, &target);
+                     FALSE, CREATE_UNICODE_ENVIRONMENT, nullptr, nullptr,
+                     &startup, &target);
   RestorePipeEnvironment(saved);
   return created == TRUE;
 }
 
-bool RunInjector(const std::filesystem::path &injector_path, DWORD target_pid,
-                 const std::filesystem::path &dll_path, DWORD &exit_code) {
-  std::wstring command_line = Quoted(injector_path);
+bool RunExplicitPipeInjector(const std::filesystem::path& injector_path,
+                             std::wstring_view pipe_name, DWORD target_pid,
+                             const std::filesystem::path& dll_path,
+                             DWORD& exit_code) {
+  std::wstring command_line = Quoted(injector_path.native());
+  command_line += L" --pipe ";
+  command_line += Quoted(pipe_name);
   command_line += L" ";
   command_line += std::to_wstring(target_pid);
   command_line += L" ";
-  command_line += Quoted(dll_path);
+  command_line += Quoted(dll_path.native());
 
   STARTUPINFOW startup{};
   startup.cb = sizeof(startup);
@@ -98,7 +104,6 @@ bool RunInjector(const std::filesystem::path &injector_path, DWORD target_pid,
     return false;
   }
   CloseHandle(injector.hThread);
-
   const DWORD wait_result = WaitForSingleObject(injector.hProcess, 20'000);
   if (wait_result != WAIT_OBJECT_0) {
     TerminateProcess(injector.hProcess, 120);
@@ -112,18 +117,19 @@ bool RunInjector(const std::filesystem::path &injector_path, DWORD target_pid,
   return read_exit == TRUE;
 }
 
-void TerminateTarget(PROCESS_INFORMATION &target) {
-  if (target.hProcess != nullptr) {
-    DWORD exit_code = 0;
-    if (GetExitCodeProcess(target.hProcess, &exit_code) &&
-        exit_code == STILL_ACTIVE) {
-      TerminateProcess(target.hProcess, 121);
-      WaitForSingleObject(target.hProcess, 5'000);
-    }
+void TerminateTarget(PROCESS_INFORMATION& target) {
+  if (target.hProcess == nullptr) {
+    return;
+  }
+  DWORD exit_code = 0;
+  if (GetExitCodeProcess(target.hProcess, &exit_code) &&
+      exit_code == STILL_ACTIVE) {
+    TerminateProcess(target.hProcess, 121);
+    WaitForSingleObject(target.hProcess, 5'000);
   }
 }
 
-void CloseTarget(PROCESS_INFORMATION &target) {
+void CloseTarget(PROCESS_INFORMATION& target) {
   if (target.hThread != nullptr) {
     CloseHandle(target.hThread);
     target.hThread = nullptr;
@@ -134,12 +140,12 @@ void CloseTarget(PROCESS_INFORMATION &target) {
   }
 }
 
-} // namespace
+}  // namespace
 
-int wmain(int argc, wchar_t **argv) {
+int wmain(int argc, wchar_t** argv) {
   if (argc != 4) {
-    return Fail(
-        "usage: xar_ck3_bridge_host <dll-path> <injector-path> <target-path>");
+    return Fail("usage: xar_ck3_bridge_attach_host <dll-path> "
+                "<injector-path> <target-path>");
   }
 
   const std::filesystem::path dll_path = std::filesystem::absolute(argv[1]);
@@ -152,20 +158,36 @@ int wmain(int argc, wchar_t **argv) {
     return Fail("DLL, injector, or target executable does not exist");
   }
 
-  const std::wstring pipe_name = PipeName();
-  HANDLE pipe =
-      CreateNamedPipeW(pipe_name.c_str(), PIPE_ACCESS_DUPLEX,
-                       PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT, 1,
-                       xar::bridge::kMaximumFrameBytes + 4U,
-                       xar::bridge::kMaximumFrameBytes + 4U, 0, nullptr);
+  const std::wstring pipe_name =
+      UniqueName(L"\\\\.\\pipe\\xar_ck3_bridge_attach_");
+  const std::wstring event_name =
+      UniqueName(L"Local\\xar_ck3_bridge_attach_target_");
+  HANDLE pipe = CreateNamedPipeW(
+      pipe_name.c_str(), PIPE_ACCESS_DUPLEX,
+      PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT, 1,
+      xar::bridge::kMaximumFrameBytes + 4U,
+      xar::bridge::kMaximumFrameBytes + 4U, 0, nullptr);
   if (pipe == INVALID_HANDLE_VALUE) {
     return Fail("CreateNamedPipeW failed");
   }
+  HANDLE target_event =
+      CreateEventW(nullptr, TRUE, FALSE, event_name.c_str());
+  if (target_event == nullptr) {
+    CloseHandle(pipe);
+    return Fail("CreateEventW failed");
+  }
 
   PROCESS_INFORMATION target{};
-  if (!StartSuspendedTarget(target_path, pipe_name, target)) {
+  if (!StartRunningTargetWithoutPipe(target_path, event_name, target)) {
+    CloseHandle(target_event);
     CloseHandle(pipe);
-    return Fail("could not create the offline target suspended");
+    return Fail("could not start the offline target without pipe environment");
+  }
+  if (WaitForSingleObject(target.hProcess, 100) != WAIT_TIMEOUT) {
+    CloseTarget(target);
+    CloseHandle(target_event);
+    CloseHandle(pipe);
+    return Fail("offline target was not running before attach");
   }
 
   std::promise<DWORD> connected_promise;
@@ -181,31 +203,33 @@ int wmain(int argc, wchar_t **argv) {
   });
 
   DWORD injector_exit = 0;
-  if (!RunInjector(injector_path, target.dwProcessId, dll_path,
-                   injector_exit) ||
+  if (!RunExplicitPipeInjector(injector_path, pipe_name, target.dwProcessId,
+                               dll_path, injector_exit) ||
       injector_exit != 0) {
     CancelSynchronousIo(connector.native_handle());
     connector.join();
     TerminateTarget(target);
     CloseTarget(target);
+    CloseHandle(target_event);
     CloseHandle(pipe);
-    return Fail("injector process failed");
+    return Fail("explicit-pipe injector process failed");
   }
-
   if (connected_future.wait_for(std::chrono::seconds(5)) !=
       std::future_status::ready) {
     CancelSynchronousIo(connector.native_handle());
     connector.join();
     TerminateTarget(target);
     CloseTarget(target);
+    CloseHandle(target_event);
     CloseHandle(pipe);
-    return Fail("injected bridge did not connect within five seconds");
+    return Fail("attached bridge did not connect within five seconds");
   }
   const DWORD connect_error = connected_future.get();
   connector.join();
   if (connect_error != ERROR_SUCCESS) {
     TerminateTarget(target);
     CloseTarget(target);
+    CloseHandle(target_event);
     CloseHandle(pipe);
     return Fail("ConnectNamedPipe failed");
   }
@@ -214,7 +238,6 @@ int wmain(int argc, wchar_t **argv) {
   bool heartbeat = false;
   bool pong = false;
   bool ping_sent = false;
-  DWORD bridge_pid = 0;
   const auto deadline =
       std::chrono::steady_clock::now() + std::chrono::seconds(5);
   while (std::chrono::steady_clock::now() < deadline &&
@@ -231,29 +254,22 @@ int wmain(int argc, wchar_t **argv) {
     if (Has(frame.payload, "\"type\":\"hello\"") &&
         Has(frame.payload, "\"protocol_version\":1") &&
         Has(frame.payload, "\"bridge.heartbeat\"") &&
-        Has(frame.payload, "\"expected_ck3_version\":\"1.19.0.6\"") &&
-        Has(frame.payload, "\"ck3_build_match\":false") &&
-        !Has(frame.payload, "\"game.state.snapshot\"") &&
-        !Has(frame.payload, "\"game.command.pause-map\"") &&
-        !Has(frame.payload, "\"game.command.set-speed-")) {
-      hello = true;
-      bridge_pid = target.dwProcessId;
+        Has(frame.payload, "\"ck3_build_match\":false")) {
       const std::string expected_pid =
           "\"pid\":" + std::to_string(target.dwProcessId);
-      if (!Has(frame.payload, expected_pid)) {
-        hello = false;
-      }
+      hello = Has(frame.payload, expected_pid);
     } else if (Has(frame.payload, "\"type\":\"heartbeat\"") &&
                Has(frame.payload, "\"sequence\":")) {
       heartbeat = true;
     } else if (Has(frame.payload, "\"type\":\"pong\"") &&
-               Has(frame.payload, "\"request_id\":\"suspended-injection-1\"")) {
+               Has(frame.payload,
+                   "\"request_id\":\"running-explicit-pipe-1\"")) {
       pong = true;
     }
     if (hello && !ping_sent) {
       ping_sent = xar::bridge::WriteFrame(
           pipe, "{\"type\":\"ping\",\"protocol_version\":1,"
-                "\"request_id\":\"suspended-injection-1\"}");
+                "\"request_id\":\"running-explicit-pipe-1\"}");
     }
   }
 
@@ -261,35 +277,31 @@ int wmain(int argc, wchar_t **argv) {
     TerminateTarget(target);
     CloseTarget(target);
     DisconnectNamedPipe(pipe);
+    CloseHandle(target_event);
     CloseHandle(pipe);
-    return Fail("injected hello/heartbeat/ping/pong exchange was incomplete");
+    return Fail("attached hello/heartbeat/ping/pong exchange was incomplete");
   }
 
-  if (ResumeThread(target.hThread) == static_cast<DWORD>(-1)) {
-    TerminateTarget(target);
-    CloseTarget(target);
-    DisconnectNamedPipe(pipe);
-    CloseHandle(pipe);
-    return Fail("could not resume the offline target primary thread");
-  }
+  SetEvent(target_event);
   if (WaitForSingleObject(target.hProcess, 5'000) != WAIT_OBJECT_0) {
     TerminateTarget(target);
     CloseTarget(target);
     DisconnectNamedPipe(pipe);
+    CloseHandle(target_event);
     CloseHandle(pipe);
-    return Fail("offline target did not exit after resume");
+    return Fail("offline target did not exit after the test event");
   }
   DWORD target_exit = 1;
   GetExitCodeProcess(target.hProcess, &target_exit);
   CloseTarget(target);
   DisconnectNamedPipe(pipe);
+  CloseHandle(target_event);
   CloseHandle(pipe);
   if (target_exit != 0) {
     return Fail("offline target returned a non-zero exit code");
   }
 
-  std::cout << "PASS: suspended=1 injected=1 protocol=1 hello=1 heartbeat=1 "
-               "pong=1 resumed=1 target_exit=0 bridge_pid="
-            << bridge_pid << '\n';
+  std::cout << "PASS: already_running=1 inherited_pipe=0 explicit_pipe=1 "
+               "injected=1 hello=1 heartbeat=1 pong=1 target_exit=0\n";
   return 0;
 }

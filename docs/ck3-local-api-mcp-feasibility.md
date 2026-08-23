@@ -447,7 +447,8 @@ OCR；后来定位 `CSendCharacterInteractionCommand` 后，婚姻步骤再切�
 - Python planner、MCP daemon、driver 路由、schema 与 OCR 逻辑：可热更新，不需要重启 CK3。
 - MCP 在 vision/mod/native/hybrid 间切换：DLL 已随本局加载且能力兼容时，不需要重启 CK3。
 - 数据 Mod 脚本或 GUI 本身改变：通常需要重新加载内容或重启游戏。
-- DLL、hook 地址或进程内协议改变：需要重启 CK3 并重新注入。
+- DLL、hook 地址或进程内协议改变：开发期可用 injector `--pipe` 给现有 CK3 附加一个新的 DLL generation，无需重启；
+  正式/干净验收仍用 suspended pre-resume injection 启动新进程，避免旧 generation 继续驻留。
 
 `runtime.py` 已用 `CREATE_SUSPENDED` 创建 CK3；原生加载器的自然接点是在 Job/进程身份建立后、`process.resume()` 前。
 因此不需永久修改 `ck3.exe`，也不需要让每次 MCP/策略迭代承担一次游戏冷启动。
@@ -458,10 +459,35 @@ OCR；后来定位 `CSendCharacterInteractionCommand` 后，婚姻步骤再切�
 2. 已完成：MCP v2 tools/resources 与 hybrid capability routing；用 official Python SDK 做 in-memory 协议测试。
 3. 已完成离线原型：独立数据 Mod bridge 输出玩家 ID、日期与 total days，0.4 秒执行 typed `run` inbox，并以
    `BEGIN -> STATE -> ACK -> END` 回帧；Python `mod` driver 已闭合请求、增量日志解析和 MCP snapshot。游戏内链路仍待一次专用 profile 实测。
-4. 已完成离线原型：x64 薄 DLL、长度前缀 UTF-8 JSON、250ms heartbeat/ping/pong，以及独立 PID injector；测试宿主已连续
-   通过 `CREATE_SUSPENDED -> VirtualAllocEx/WriteProcessMemory/CreateRemoteThread(LoadLibraryW) -> pipe handshake -> resume`，尚未对 CK3 注入或读取游戏对象。
-5. 下一步：native 读取日期、暂停、速度、当前事件/选项；先让 `life-advance` 与事件处理摆脱 OCR。
-6. 再后：按实际收益依次接原生婚姻互动、战争宣战、抬兵/移动/解散、存档与死亡状态。
+4. 已完成首个 live native slice：x64 薄 DLL、长度前缀 UTF-8 JSON、250ms heartbeat/ping/pong、suspended 注入与已运行进程
+   `--pipe` attach；exact-build bridge 可读取日期 tick、公开 1–5 档速度、暂停状态和本地玩家 ID，并通过原生命令队列执行
+   `pause-map`、`resume-map`、`set-speed-1..5`。
+5. 2026-08-23 已用正式 MCP client/tools 在真实 CK3 1.19.0.6 的最小化窗口完成 headless loop：
+   `ck3_take_snapshot -> resume-map -> ck3_wait_for_change (date_raw 53171400 -> 53171424) -> pause-map`；该过程未调用
+   OCR、截图、窗口激活或键鼠。`native-session` 还会用 `-continuelastsave` 尝试直接载入最后存档。
+6. 下一步：定位 active event/选项并接 `CSelectEventOptionCommand`，先让 `life-advance` 与事件处理完全摆脱 OCR；再按实际收益
+   依次接原生婚姻互动、战争宣战、抬兵/移动/解散、存档与死亡状态。
 
 本项目是本机单人游戏自动玩家。当前开发优先级由“能否更快、更稳定地完成实际玩法”决定；与实际崩溃、错误动作或
 不可用版本无关的泛化安全证明，不进入这条功能路线的阻塞清单。
+
+### 12.5 最小化运行与可配置回落
+
+MCP 运行时必须把下面两种模式公开为不同配置，禁止用同一个名称隐式改变行为：
+
+| 模式 | 原生能力缺失时 | 最小化 CK3 | 视觉/键鼠 |
+|---|---|---|---|
+| `native-headless` | 返回 `unsupported` | 继续使用 DLL 状态快照与原生命令 | 永不调用，也不自动恢复或激活窗口 |
+| `hybrid-fallback` | 按公开的 backend 顺序尝试下一项 | native 与 data-Mod 能力可继续；vision fallback 不可用 | 只有窗口当前可见且该步骤尚无语义 backend 时才允许 |
+
+`native-headless` 是纯原生产品模式，不包含“为了完成任务临时切回 OCR”的隐藏分支。其 capability 响应必须明确包含
+`headless=true`、`minimized_operation=true`、`fallback_enabled=false` 和 `visual_fallback=false`。尚未完成逆向的步骤应保留为
+可查询的 unsupported capability，而不是唤醒窗口。
+
+`hybrid-fallback` 是另一个显式模式。它公开 `fallback_order`，初始顺序为 native → data Mod → vision session；快 backend
+已经接收某项动作后发生错误时不向下重放，只有调用前就确定为 unsupported 或 unavailable 时才选择下一 backend。视觉
+fallback 还必须先证明窗口处于可截图状态；最小化时直接返回该步骤当前不可执行，不得用 `ShowWindow`、前台激活或键鼠把
+窗口偷偷拉回来。这样用户可以在“保证全程后台”与“可见时优先完成更多功能”之间明确选择。
+
+最小化运行是否真正成立，以同一 PID 下的实机连续推进为准：窗口最小化后，MCP 仍能读取日期/暂停/速度/当前事件，调用
+原生命令推进游戏并收到新 revision。named-pipe heartbeat 只能证明 DLL 线程仍活着，不能替代上述游戏语义验收。

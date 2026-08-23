@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping, MutableMapping
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import hashlib
@@ -69,6 +70,25 @@ NORMAL_REPLAY_TRUST_MODEL = {
     "claim": "archive_schema_and_internal_consistency_only",
     "historical_execution_authenticity_proven": False,
 }
+
+NATIVE_BRIDGE_DISABLED = "disabled"
+NATIVE_BRIDGE_LAUNCH_MODES = frozenset({"native-headless", "hybrid-fallback"})
+DEFAULT_NATIVE_BRIDGE_PIPE = r"\\.\pipe\xar_ck3_bridge_mcp"
+NATIVE_BRIDGE_MODE_ENV = "XAR_CK3_BRIDGE_MODE"
+NATIVE_BRIDGE_PIPE_ENV = "XAR_CK3_BRIDGE_PIPE"
+NATIVE_BRIDGE_DLL_ENV = "XAR_CK3_BRIDGE_DLL"
+NATIVE_BRIDGE_INJECTOR_ENV = "XAR_CK3_BRIDGE_INJECTOR"
+NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS = 30.0
+
+
+@dataclass(frozen=True)
+class NativeBridgeLaunchConfig:
+    """Explicit opt-in configuration for pre-resume native DLL injection."""
+
+    mode: str
+    pipe_name: str
+    dll_path: Path
+    injector_path: Path
 
 
 @dataclass
@@ -176,6 +196,108 @@ def utc_now() -> str:
 
 def log(message: str) -> None:
     print(f"[xar-autoplayer {time.strftime('%H:%M:%S')}] {message}", file=sys.stderr, flush=True)
+
+
+def validate_native_bridge_launch_config(
+    config: NativeBridgeLaunchConfig,
+) -> NativeBridgeLaunchConfig:
+    """Validate and canonicalize an explicitly enabled native launch."""
+    if config.mode not in NATIVE_BRIDGE_LAUNCH_MODES:
+        raise AgentError(
+            "native bridge mode must be native-headless or hybrid-fallback"
+        )
+    pipe_name = config.pipe_name
+    pipe_prefix = "\\\\.\\pipe\\"
+    if (
+        not isinstance(pipe_name, str)
+        or not pipe_name.startswith(pipe_prefix)
+        or len(pipe_name) <= len(pipe_prefix)
+        or len(pipe_name) >= 256
+        or "\x00" in pipe_name
+        or "\r" in pipe_name
+        or "\n" in pipe_name
+    ):
+        raise AgentError(
+            "native bridge pipe must be a non-empty \\\\.\\pipe\\ name "
+            "shorter than 256 characters"
+        )
+    dll_path = Path(config.dll_path).resolve()
+    injector_path = Path(config.injector_path).resolve()
+    if not dll_path.is_file():
+        raise AgentError(f"native bridge DLL is missing: {dll_path}")
+    if not injector_path.is_file():
+        raise AgentError(f"native bridge injector is missing: {injector_path}")
+    return NativeBridgeLaunchConfig(
+        mode=config.mode,
+        pipe_name=pipe_name,
+        dll_path=dll_path,
+        injector_path=injector_path,
+    )
+
+
+def native_bridge_launch_config_from_environment(
+    environment: Mapping[str, str] | None = None,
+) -> NativeBridgeLaunchConfig | None:
+    """Read explicit launch opt-in; disabled mode ignores all path settings."""
+    selected = os.environ if environment is None else environment
+    mode = selected.get(NATIVE_BRIDGE_MODE_ENV, NATIVE_BRIDGE_DISABLED)
+    if mode == NATIVE_BRIDGE_DISABLED:
+        return None
+    dll_path = selected.get(NATIVE_BRIDGE_DLL_ENV)
+    injector_path = selected.get(NATIVE_BRIDGE_INJECTOR_ENV)
+    missing: list[str] = []
+    if not dll_path:
+        missing.append(NATIVE_BRIDGE_DLL_ENV)
+    if not injector_path:
+        missing.append(NATIVE_BRIDGE_INJECTOR_ENV)
+    if missing:
+        raise AgentError(
+            f"native bridge mode {mode!r} requires " + ", ".join(missing)
+        )
+    return validate_native_bridge_launch_config(
+        NativeBridgeLaunchConfig(
+            mode=mode,
+            pipe_name=selected.get(
+                NATIVE_BRIDGE_PIPE_ENV, DEFAULT_NATIVE_BRIDGE_PIPE
+            ),
+            dll_path=Path(dll_path),
+            injector_path=Path(injector_path),
+        )
+    )
+
+
+def configure_native_bridge_launch_environment(
+    mode: str,
+    *,
+    pipe_name: str | None = None,
+    dll_path: Path | None = None,
+    injector_path: Path | None = None,
+    environment: MutableMapping[str, str] | None = None,
+) -> NativeBridgeLaunchConfig | None:
+    """Apply CLI launch selection to this process and future CK3 children."""
+    target = os.environ if environment is None else environment
+    if mode == NATIVE_BRIDGE_DISABLED:
+        target[NATIVE_BRIDGE_MODE_ENV] = NATIVE_BRIDGE_DISABLED
+        return None
+    candidate = {
+        NATIVE_BRIDGE_MODE_ENV: mode,
+        NATIVE_BRIDGE_PIPE_ENV: pipe_name or DEFAULT_NATIVE_BRIDGE_PIPE,
+        NATIVE_BRIDGE_DLL_ENV: str(dll_path) if dll_path is not None else "",
+        NATIVE_BRIDGE_INJECTOR_ENV: (
+            str(injector_path) if injector_path is not None else ""
+        ),
+    }
+    config = native_bridge_launch_config_from_environment(candidate)
+    assert config is not None
+    target.update(
+        {
+            NATIVE_BRIDGE_MODE_ENV: config.mode,
+            NATIVE_BRIDGE_PIPE_ENV: config.pipe_name,
+            NATIVE_BRIDGE_DLL_ENV: str(config.dll_path),
+            NATIVE_BRIDGE_INJECTOR_ENV: str(config.injector_path),
+        }
+    )
+    return config
 
 
 def append_event(path: Path, event: dict[str, object]) -> str:
@@ -1976,25 +2098,106 @@ def _create_kill_on_close_job(name: str | None = None) -> object:
 
 
 def _create_suspended_process(
-    command: list[str], working_directory: Path
+    command: list[str],
+    working_directory: Path,
+    environment: Mapping[str, str] | None = None,
 ) -> _SuspendedWindowsProcess:
     import win32process
 
     startup = win32process.STARTUPINFO()
+    creation_flags = win32process.CREATE_SUSPENDED
+    if environment is not None:
+        creation_flags |= getattr(
+            win32process, "CREATE_UNICODE_ENVIRONMENT", 0x00000400
+        )
     process_handle, thread_handle, pid, _thread_id = win32process.CreateProcess(
         command[0],
         subprocess.list2cmdline(command),
         None,
         None,
         False,
-        win32process.CREATE_SUSPENDED,
-        None,
+        creation_flags,
+        None if environment is None else dict(environment),
         str(working_directory),
         startup,
     )
     return _SuspendedWindowsProcess(
         process_handle, thread_handle, int(pid), command
     )
+
+
+def _native_bridge_child_environment(
+    config: NativeBridgeLaunchConfig,
+    parent_environment: Mapping[str, str] | None = None,
+) -> dict[str, str]:
+    """Build the inherited environment read by the injected bridge DLL."""
+    source = os.environ if parent_environment is None else parent_environment
+    result = {
+        key: value
+        for key, value in source.items()
+        if key.casefold()
+        not in {
+            NATIVE_BRIDGE_MODE_ENV.casefold(),
+            NATIVE_BRIDGE_PIPE_ENV.casefold(),
+        }
+    }
+    result[NATIVE_BRIDGE_MODE_ENV] = config.mode
+    result[NATIVE_BRIDGE_PIPE_ENV] = config.pipe_name
+    return result
+
+
+def _ck3_launch_command(
+    spec: EnvironmentSpec, *, continue_last_save: bool = False
+) -> list[str]:
+    command = [
+        str(spec.game_exe),
+        "-gdpr-compliant",
+        f"-userdir={spec.profile_dir}",
+    ]
+    if continue_last_save:
+        command.append("-continuelastsave")
+    return command
+
+
+def _inject_native_bridge(
+    process: _SuspendedWindowsProcess,
+    config: NativeBridgeLaunchConfig,
+) -> None:
+    """Run the existing injector CLI while CK3's primary thread is suspended."""
+    command = [
+        str(config.injector_path),
+        str(process.pid),
+        str(config.dll_path),
+    ]
+    try:
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            errors="replace",
+            timeout=NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired) as error:
+        raise AgentError(
+            f"native bridge injector could not complete: {error}"
+        ) from error
+    if result.returncode != 0:
+        stdout = result.stdout.strip()
+        stderr = result.stderr.strip()
+        raise AgentError(
+            "native bridge injector failed before CK3 resume: "
+            f"rc={result.returncode}, stdout={stdout!r}, stderr={stderr!r}"
+        )
+
+
+def _resume_with_native_bridge(
+    process: _SuspendedWindowsProcess,
+    config: NativeBridgeLaunchConfig | None,
+) -> None:
+    if config is not None:
+        _inject_native_bridge(process, config)
+    process.resume()
 
 
 def _assign_process_to_job(
@@ -2063,7 +2266,14 @@ def launch(
     *,
     watchdog_final_evidence: Path | None = None,
     job_name: str | None = None,
+    native_bridge: NativeBridgeLaunchConfig | None = None,
+    continue_last_save: bool = False,
 ) -> SessionHandle:
+    native_bridge = (
+        native_bridge_launch_config_from_environment()
+        if native_bridge is None
+        else validate_native_bridge_launch_config(native_bridge)
+    )
     verify_profile(spec)
     if job_name is not None and not re.fullmatch(
         r"XarAutoplayer-Crash-[0-9a-f]{32}", job_name
@@ -2071,11 +2281,14 @@ def launch(
         raise AgentError(f"invalid crash Job name: {job_name!r}")
     if ck3_processes():
         raise AgentError("refusing to launch while any ck3.exe is already running")
-    command = [
-        str(spec.game_exe),
-        "-gdpr-compliant",
-        f"-userdir={spec.profile_dir}",
-    ]
+    command = _ck3_launch_command(
+        spec, continue_last_save=continue_last_save
+    )
+    child_environment = (
+        _native_bridge_child_environment(native_bridge)
+        if native_bridge is not None
+        else None
+    )
     control = spec.state_dir / "control"
     nonce = uuid.uuid4().hex
     pid_file = control / "ck3.json"
@@ -2202,7 +2415,11 @@ def launch(
     job_handle: object | None = None
     try:
         job_handle = _create_kill_on_close_job(job_name)
-        process = _create_suspended_process(command, spec.game_exe.parent)
+        process = _create_suspended_process(
+            command,
+            spec.game_exe.parent,
+            child_environment,
+        )
         write_json_atomic(
             unsafe_marker,
             {
@@ -2253,7 +2470,7 @@ def launch(
                 "pre-resume global CK3 inventory is not the exact suspended process: "
                 f"{visible!r}"
             )
-        process.resume()
+        _resume_with_native_bridge(process, native_bridge)
     except Exception as error:
         # A process that has not resumed cannot have spawned descendants. Once
         # resumed, assignment to the kill-on-close Job has already succeeded.

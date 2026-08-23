@@ -231,6 +231,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                 {tool.name for tool in listed.tools},
                 {
                     "ck3_get_capabilities",
+                    "ck3_get_bridge_diagnostics",
                     "ck3_take_snapshot",
                     "ck3_plan_turn",
                     "ck3_execute_step",

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -16,7 +17,13 @@ from .environment import (
 )
 from .errors import AgentError
 from .locking import exclusive_state_lock
-from .runtime import smoke
+from .runtime import (
+    DEFAULT_NATIVE_BRIDGE_PIPE,
+    NATIVE_BRIDGE_DISABLED,
+    NATIVE_BRIDGE_LAUNCH_MODES,
+    configure_native_bridge_launch_environment,
+    smoke,
+)
 
 
 def parser() -> argparse.ArgumentParser:
@@ -30,6 +37,43 @@ def parser() -> argparse.ArgumentParser:
         "--game-dir",
         type=Path,
         help="CK3 installation root (default: repository reference installation)",
+    )
+    root.add_argument(
+        "--bridge-mode",
+        choices=(NATIVE_BRIDGE_DISABLED, *sorted(NATIVE_BRIDGE_LAUNCH_MODES)),
+        default=os.environ.get("XAR_CK3_BRIDGE_MODE", NATIVE_BRIDGE_DISABLED),
+        help=(
+            "CK3 launch backend: disabled (default), pure native-headless, or "
+            "hybrid-fallback; runtime performs no fallback itself"
+        ),
+    )
+    root.add_argument(
+        "--bridge-pipe",
+        default=os.environ.get("XAR_CK3_BRIDGE_PIPE", DEFAULT_NATIVE_BRIDGE_PIPE),
+        help="named pipe inherited by CK3 when --bridge-mode is enabled",
+    )
+    root.add_argument(
+        "--bridge-dll",
+        type=Path,
+        default=(
+            Path(os.environ["XAR_CK3_BRIDGE_DLL"])
+            if os.environ.get("XAR_CK3_BRIDGE_DLL")
+            else None
+        ),
+        help="xar_ck3_bridge.dll path; required only when --bridge-mode is enabled",
+    )
+    root.add_argument(
+        "--bridge-injector",
+        type=Path,
+        default=(
+            Path(os.environ["XAR_CK3_BRIDGE_INJECTOR"])
+            if os.environ.get("XAR_CK3_BRIDGE_INJECTOR")
+            else None
+        ),
+        help=(
+            "xar_ck3_bridge_injector.exe path; required only when "
+            "--bridge-mode is enabled"
+        ),
     )
     commands = root.add_subparsers(dest="command", required=True)
     doctor_parser = commands.add_parser("doctor", help="check the host and safety boundary")
@@ -103,6 +147,14 @@ def parser() -> argparse.ArgumentParser:
         help="keep CK3 alive and hot-reload development steps read from stdin",
     )
     dev_session_parser.add_argument("--timeout", type=float, default=21600)
+    native_session_parser = commands.add_parser(
+        "native-session",
+        help=(
+            "launch and supervise pure native-headless CK3 for an MCP server; "
+            "no visual fallback"
+        ),
+    )
+    native_session_parser.add_argument("--timeout", type=float, default=21600)
     commands.add_parser(
         "strategy-review",
         help="show one-life episode history and the priorities for the next run",
@@ -169,6 +221,17 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     spec = make_spec(args.state_dir, args.game_dir)
     try:
+        if args.command == "native-session" and args.bridge_mode != "native-headless":
+            raise AgentError(
+                "native-session requires --bridge-mode native-headless; "
+                "use opening-dev-session for hybrid-fallback"
+            )
+        configure_native_bridge_launch_environment(
+            args.bridge_mode,
+            pipe_name=args.bridge_pipe,
+            dll_path=args.bridge_dll,
+            injector_path=args.bridge_injector,
+        )
         if args.command == "_crash-subject":
             from .crash_probe import run_crash_subject
 
@@ -225,6 +288,10 @@ def main(argv: list[str] | None = None) -> int:
             from .opening_smoke import opening_dev_session
 
             result = opening_dev_session(spec, timeout_seconds=args.timeout)
+        elif args.command == "native-session":
+            from .native_session import run_from_cli
+
+            result = run_from_cli(spec, timeout_seconds=args.timeout)
         elif args.command == "strategy-review":
             from .strategy import read_one_life_strategy
 

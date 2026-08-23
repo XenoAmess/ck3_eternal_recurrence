@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.19.0.6",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "pe_timestamp": "0x6A1EEE6D",
+    "image_base": "0x140000000",
+    "size_of_image": "0x5C2D000",
+    "architecture": "x86_64"
+  },
+  "signature_anchors": [
+    {
+      "name": "submit_command_clone_and_queue",
+      "rva": "0x973E00",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 4C 89 4C 24 20 57 48 83 EC 20 41 8B D8 4C 8B C2 48 8B F9 48 8B 02 48 8D 54 24 38 49 8B C8 FF 50 40 90"
+    },
+    {
+      "name": "locked_command_queue",
+      "rva": "0x341D990",
+      "confidence": "high-static",
+      "pattern": "4C 89 4C 24 20 48 89 54 24 10 53 56 57 48 83 EC 20 41 8B D8 48 8B FA 48 8B F1 41 8B C0 C1 E8 03 A8 01 74 07"
+    },
+    {
+      "name": "set_speed_ui_constructor_and_submit",
+      "rva": "0xA074E0",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 58 F6 05 95 AF D5 04 FD 75 50 85 C9 78 4C 3B 0D 4D CA 55 04 7D 44 C6 44 24 28 00 33 C0"
+    },
+    {
+      "name": "pause_ui_constructor_and_submit",
+      "rva": "0xA067DE",
+      "confidence": "high-static",
+      "pattern": "48 8B 0D D3 8F D0 04 E8 D6 4F A6 02 48 85 C0 74 05 8B 50 70 EB 05 BA FF FF FF FF 48 8B 05 B8 8F D0 04 0F B6 48 20"
+    },
+    {
+      "name": "game_state_constructor",
+      "rva": "0x2049330",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 18 48 89 6C 24 20 48 89 4C 24 08 56 57 41 56 48 83 EC 20 48 8B F9 C7 44 24 48 F8 77 9C 02"
+    },
+    {
+      "name": "set_game_speed_core",
+      "rva": "0x346AC80",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 70 01 00 00 49 8B F0 8B DA 48 8B F9"
+    },
+    {
+      "name": "set_pause_core",
+      "rva": "0x346B850",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 40 02 00 00 41 8B F0 0F B6 DA 48 8B F9"
+    },
+    {
+      "name": "get_local_player",
+      "rva": "0x346B7C0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B 59 18 45 32 C9 44 38 0D DB 3F 2A 02 48 8D BB F8 01 00 00"
+    },
+    {
+      "name": "event_manager_find_by_instance_id",
+      "rva": "0x2706A40",
+      "confidence": "medium-high-static",
+      "pattern": "40 53 48 83 EC 20 48 8B D9 B8 02 00 00 00 F0 0F C1 05 82 8B 00 03 41 BB FE FF FF FF"
+    },
+    {
+      "name": "select_event_option_execute",
+      "rva": "0x26FF190",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 7C 24 10 55 48 8D AC 24 E0 FE FF FF 48 81 EC 20 02 00 00 48 8B F9"
+    },
+    {
+      "name": "set_speed_command_heap_constructor",
+      "rva": "0x26D2E20",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 28 B9 28 00 00 00 E8 F6 2F 75 01 33 D2 48 89 44 24 30"
+    },
+    {
+      "name": "pause_command_heap_constructor",
+      "rva": "0x26D2DD0",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 28 B9 28 00 00 00 E8 46 30 75 01 33 D2 48 89 44 24 30"
+    },
+    {
+      "name": "select_event_option_heap_constructor",
+      "rva": "0x26FF920",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 28 B9 28 00 00 00 E8 F6 64 72 01 33 D2 48 89 44 24 30"
+    },
+    {
+      "name": "select_event_option_ui_submit",
+      "rva": "0x16D16D0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 54 41 56 41 57 48 83 EC 50 44 8B E2 4C 8B F1"
+    }
+  ],
+  "rvas": {
+    "game_state_pointer_slot": "0x570E068",
+    "jomini_state_pointer_slot": "0x570F7B8",
+    "command_manager_object": "0x57621F0",
+    "set_speed_primary_vtable": "0x432F3F0",
+    "set_speed_secondary_vtable": "0x432F260",
+    "pause_primary_vtable": "0x432F1C8",
+    "pause_secondary_vtable": "0x432F198",
+    "select_event_option_primary_vtable": "0x4335240",
+    "select_event_option_secondary_vtable": "0x4335210",
+    "game_state_type_descriptor": "0x546A670",
+    "event_manager_type_descriptor": "0x54E12E8",
+    "player_character_manager_type_descriptor": "0x54C4230"
+  },
+  "vtable_prefixes": [
+    {
+      "name": "CSetGameSpeedCommand.primary",
+      "rva": "0x432F3F0",
+      "function_rvas": ["0x801FD0", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x7E9220", "0x803620", "0x26D29D0"]
+    },
+    {
+      "name": "CPauseGameCommand.primary",
+      "rva": "0x432F1C8",
+      "function_rvas": ["0x801FD0", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26D2920", "0x803620", "0x26D2BA0"]
+    },
+    {
+      "name": "CSelectEventOptionCommand.primary",
+      "rva": "0x4335240",
+      "function_rvas": ["0x801FD0", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26FF410", "0x803620", "0x26FF700"]
+    }
+  ],
+  "layouts": {
+    "CGameState": {
+      "date_storage": "+0x08 qword HistoricalDate; date_raw is the low signed dword used by engine day/tick arithmetic",
+      "speed": "+0x70 int32 native 0..4; bridge public contract translates to 1..5"
+    },
+    "JominiGameState": {
+      "players": "+0x18 pointer",
+      "paused": "+0x20 uint8"
+    },
+    "PlayerCollection": {
+      "local_player_id": "+0x1F0 int32 local/network id; not a CK3 CharacterID"
+    },
+    "CPauseGameCommand": {
+      "size": "0x28",
+      "primary_vtable": "+0x00",
+      "flags": "+0x08 uint8 = 8",
+      "secondary_vtable": "+0x18",
+      "local_player_id": "+0x20 int32",
+      "paused": "+0x24 uint8"
+    },
+    "CSetGameSpeedCommand": {
+      "size": "0x28",
+      "primary_vtable": "+0x00",
+      "flags": "+0x08 uint8 = 0",
+      "secondary_vtable": "+0x18",
+      "speed": "+0x20 int32 native 0..4"
+    },
+    "CSelectEventOptionCommand": {
+      "size": "0x28",
+      "event_instance_id": "+0x20 int32",
+      "option_index": "+0x24 int32"
+    }
+  }
+}

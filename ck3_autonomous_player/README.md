@@ -247,11 +247,29 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver vision-session --transport stdio
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver mod --userdir <isolated-ck3-userdir> --transport stdio
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver hybrid --userdir <isolated-ck3-userdir> --transport stdio
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver native-headless --pipe-name '\\.\pipe\xar_ck3_bridge_mcp' --transport stdio
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver hybrid-fallback --pipe-name '\\.\pipe\xar_ck3_bridge_mcp' --userdir <isolated-ck3-userdir> --state-dir <XarAutoplayer-state> --transport stdio
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-session --timeout 21600
 ```
 
 `vision-session` 与 `hybrid` 需要由新代码启动的 `opening-dev-session`；它在 run 目录公开 `bridge/inbox`/`outbox`，MCP 请求与
 stdin 共用同一主线程命令处理，因此策略、MCP daemon 和大多数 Python driver 改动不要求重启这一局 CK3。数据 Mod 原型位于
 [`mod_bridge/`](mod_bridge/README.md)，原生桥与离线注入路线位于 [`native_bridge/`](native_bridge/README.md)。
+
+`native-headless` 是纯原生模式：只使用注入 DLL 的 named pipe 状态与命令，缺少能力时返回 `unsupported`，不会调用 OCR、
+键盘、鼠标、窗口激活或视觉 fallback，因此它是 CK3 最小化运行的目标模式。`hybrid-fallback` 是明确允许回落的另一配置，顺序为
+native → data Mod → vision session；窗口最小化或窗口可见性无法确认时，vision 分支会拒绝执行，而不会把 CK3 偷偷恢复到前台。
+两者都通过 `ck3_get_capabilities` 公布 mode、fallback、最小化与当前 native action 列表。当前 exact-build native DLL 已发布
+日期 tick、1–5 档速度、暂停状态与本地玩家 ID snapshot，并开放 `pause-map`、`resume-map`、`set-speed-1..5`。2026-08-23
+已用正式 MCP tools 在真实 CK3 1.19.0.6 的最小化窗口上完成无 OCR/键鼠实测：`ck3_execute_step` 后由
+`ck3_wait_for_change` 观察后台解除暂停、日期 tick 从 `53171400` 推进到 `53171424`、再暂停，全程窗口保持 minimized。
+事件、婚姻和战争等尚未完成的原生能力仍按 capability 返回 unsupported。
+
+纯原生模式需要两个并行进程：先启动 `mcp_server.py --driver native-headless` 建立 pipe server，再用上面的
+`agent.py ... native-session` 创建 suspended CK3、注入 DLL 并恢复游戏。`native-session` 只监管 PID/Job，stdin 仅接受
+`status`/`stop`，通过 `-continuelastsave` 尝试直接进入最后存档，其导入图中没有 vision、OCR 或输入模块；它拒绝
+`hybrid-fallback`。允许视觉回落时仍使用
+`opening-dev-session --bridge-mode hybrid-fallback ...`，因为只有该命令提供 vision-session 的主线程 inbox/outbox。
 
 日常 gameplay 开发不再把每次修改都当成发布验收。`opening-replay` 在不启动 CK3 的情况下直接重放已归档 OCR；
 `opening-step` 从隔离 autosave 的主菜单【继续游戏】进入，只执行一个步骤；`opening-dev-session` 则保持一个受控 CK3

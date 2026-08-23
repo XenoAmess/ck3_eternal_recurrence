@@ -39,12 +39,18 @@ bool ParsePid(std::wstring_view text, DWORD& pid) noexcept {
 }  // namespace
 
 int wmain(int argc, wchar_t** argv) {
-  if (argc != 3) {
-    return Fail(L"usage: xar_ck3_bridge_injector <pid> <dll-path>");
+  const bool explicit_pipe =
+      argc == 5 && std::wstring_view(argv[1]) == L"--pipe";
+  if (argc != 3 && !explicit_pipe) {
+    return Fail(L"usage: xar_ck3_bridge_injector [--pipe <pipe-name>] "
+                L"<pid> <dll-path>");
   }
 
+  const wchar_t* pipe_name = explicit_pipe ? argv[2] : nullptr;
+  const wchar_t* pid_text = explicit_pipe ? argv[3] : argv[1];
+  const wchar_t* dll_text = explicit_pipe ? argv[4] : argv[2];
   DWORD pid = 0;
-  if (!ParsePid(argv[1], pid)) {
+  if (!ParsePid(pid_text, pid)) {
     return Fail(L"pid must be a positive decimal process id");
   }
 
@@ -57,8 +63,29 @@ int wmain(int argc, wchar_t** argv) {
     return 2;
   }
 
-  const auto result =
-      xar::bridge::InjectLibrary(process, std::filesystem::path(argv[2]));
+  if (explicit_pipe) {
+    const auto result = xar::bridge::InjectLibraryAndStart(
+        process, std::filesystem::path(dll_text), pipe_name);
+    CloseHandle(process);
+    if (!result.succeeded) {
+      std::wcerr << L"FAIL: InjectLibraryAndStart error="
+                 << result.windows_error
+                 << L" remote_loadlibrary_exit="
+                 << result.remote_loadlibrary_exit_code
+                 << L" remote_start_exit=" << result.remote_start_exit_code
+                 << L'\n';
+      return 3;
+    }
+    std::wcout << L"PASS: attached pid=" << pid
+               << L" remote_loadlibrary_exit="
+               << result.remote_loadlibrary_exit_code
+               << L" remote_start_exit=" << result.remote_start_exit_code
+               << L'\n';
+    return 0;
+  }
+
+  const auto result = xar::bridge::InjectLibrary(
+      process, std::filesystem::path(dll_text));
   CloseHandle(process);
   if (!result.succeeded) {
     std::wcerr << L"FAIL: InjectLibrary error=" << result.windows_error
