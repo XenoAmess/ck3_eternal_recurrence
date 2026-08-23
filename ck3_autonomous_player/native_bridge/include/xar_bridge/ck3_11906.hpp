@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 
 namespace xar::ck3_11906 {
@@ -10,6 +11,7 @@ inline constexpr char kExecutableSha256[] =
 using SubmitCommand = void (*)(void *manager, void *command,
                                std::uint32_t channel_flags);
 using GetLocalPlayer = void *(*)(void *jomini_state);
+using GetCurrentEvent = void *(*)(void *event_manager);
 
 // Absolute addresses resolved only after the main executable matches the
 // pinned 1.19.0.6 SHA-256. Tests may supply a small in-memory fixture instead.
@@ -22,8 +24,12 @@ struct Bindings {
   std::uintptr_t pause_secondary_vtable = 0;
   std::uintptr_t set_speed_primary_vtable = 0;
   std::uintptr_t set_speed_secondary_vtable = 0;
+  std::uintptr_t select_event_option_primary_vtable = 0;
+  std::uintptr_t select_event_option_secondary_vtable = 0;
+  std::size_t event_manager_offset = 0;
   SubmitCommand submit_command = nullptr;
   GetLocalPlayer get_local_player = nullptr;
+  GetCurrentEvent get_current_event = nullptr;
 };
 
 struct Snapshot {
@@ -31,6 +37,9 @@ struct Snapshot {
   std::int32_t speed = 0;
   bool paused = false;
   std::int32_t player_id = -1;
+  bool has_active_event = false;
+  std::int32_t active_event_instance_id = -1;
+  std::int32_t active_event_option_count = 0;
 
   friend bool operator==(const Snapshot &, const Snapshot &) = default;
 };
@@ -66,5 +75,20 @@ ResumeSubmitResult SubmitResumeMap(const Bindings &bindings) noexcept;
 // Fixed public speeds 1..5 deliberately map to separate advertised gameplay
 // steps.  CK3's native CSetGameSpeedCommand payload is zero based (0..4).
 bool SubmitSetSpeed(const Bindings &bindings, std::int32_t speed) noexcept;
+
+enum class SelectEventOptionResult {
+  submitted,
+  no_active_event,
+  option_out_of_range,
+  unavailable,
+};
+
+// Selects a zero-based native option on the same current local-player event
+// returned in Snapshot. The public select-event-option-1..N step is translated
+// to this zero-based payload at the protocol boundary. CK3's executor performs
+// the same 0 <= index < option_count check before dispatching the effect.
+SelectEventOptionResult
+SubmitSelectEventOption(const Bindings &bindings,
+                        std::int32_t option_index) noexcept;
 
 } // namespace xar::ck3_11906

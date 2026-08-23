@@ -86,11 +86,13 @@ std::string HelloFrame(bool ck3_gameplay_enabled) {
   result += ",\"capabilities\":[\"bridge.identity\",\"bridge.heartbeat\","
             "\"bridge.ping\"";
   if (ck3_gameplay_enabled) {
-    result += ",\"game.state.snapshot\",\"game.command.pause-map\","
+    result += ",\"game.state.snapshot\",\"game.state.active-event\","
+              "\"game.command.pause-map\","
               "\"game.command.resume-map\","
               "\"game.command.set-speed-1\",\"game.command.set-speed-2\","
               "\"game.command.set-speed-3\",\"game.command.set-speed-4\","
-              "\"game.command.set-speed-5\"";
+              "\"game.command.set-speed-5\","
+              "\"game.command.select-event-option-N\"";
   }
   result += "]}";
   return result;
@@ -125,6 +127,24 @@ std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
   // CPauseGameCommand, not CK3's 64-bit played-character id.
   result += ",\"local_player_id\":";
   result += SignedNumber(snapshot.player_id);
+  result += ",\"active_event\":";
+  if (!snapshot.has_active_event) {
+    result += "null";
+  } else {
+    result += "{\"instance_id\":";
+    result += SignedNumber(snapshot.active_event_instance_id);
+    result += ",\"option_count\":";
+    result += SignedNumber(snapshot.active_event_option_count);
+    result += ",\"option_indexes\":[";
+    for (std::int32_t public_index = 1;
+         public_index <= snapshot.active_event_option_count; ++public_index) {
+      if (public_index != 1) {
+        result += ',';
+      }
+      result += SignedNumber(public_index);
+    }
+    result += "]}";
+  }
   result += ",\"history\":[]}}";
   return result;
 }
@@ -158,6 +178,26 @@ std::int32_t FixedSpeedStep(std::string_view step) noexcept {
   }
   const char digit = step.back();
   return digit >= '1' && digit <= '5' ? digit - '0' : -1;
+}
+
+std::optional<std::int32_t>
+EventOptionStep(std::string_view step) noexcept {
+  constexpr std::string_view prefix = "select-event-option-";
+  if (!step.starts_with(prefix) || step.size() == prefix.size()) {
+    return std::nullopt;
+  }
+  std::int32_t public_index = -1;
+  const auto suffix = step.substr(prefix.size());
+  const auto parsed = std::from_chars(suffix.data(),
+                                      suffix.data() + suffix.size(),
+                                      public_index);
+  if (parsed.ec != std::errc{} || parsed.ptr != suffix.data() + suffix.size() ||
+      public_index < 1) {
+    return std::nullopt;
+  }
+  // MCP/agent-facing event choices are one based. CK3's native command
+  // payload and executor are zero based.
+  return public_index - 1;
 }
 
 bool PublishSnapshot(HANDLE pipe, const xar::ck3_11906::Bindings &bindings,
@@ -285,22 +325,10 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                  JsonStringField(incoming.payload, "request_id", request_id) &&
                  IsSimpleRequestId(request_id)) {
         std::string step;
-        if (!JsonStringField(incoming.payload, "step", step) ||
-            (step != "pause-map" && step != "resume-map")) {
-          const std::int32_t requested_speed = FixedSpeedStep(step);
-          if (requested_speed >= 1 &&
-              xar::ck3_11906::SubmitSetSpeed(game, requested_speed)) {
-            connected = xar::bridge::WriteFrame(
-                pipe, CommandResultFrame(request_id, step, true, "submitted"));
-            if (connected) {
-              connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                          state_revision);
-            }
-          } else {
-            connected = xar::bridge::WriteFrame(
-                pipe, CommandResultFrame(request_id, step, false,
-                                         "unsupported native gameplay step"));
-          }
+        if (!JsonStringField(incoming.payload, "step", step)) {
+          connected = xar::bridge::WriteFrame(
+              pipe, CommandResultFrame(request_id, "", false,
+                                       "native gameplay step is missing"));
         } else if (step == "pause-map") {
           const auto result = xar::ck3_11906::SubmitPauseMap(game);
           if (result == xar::ck3_11906::PauseSubmitResult::unavailable) {
@@ -319,7 +347,7 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                                           state_revision);
             }
           }
-        } else {
+        } else if (step == "resume-map") {
           const auto result = xar::ck3_11906::SubmitResumeMap(game);
           if (result == xar::ck3_11906::ResumeSubmitResult::unavailable) {
             connected = xar::bridge::WriteFrame(
@@ -336,6 +364,45 @@ DWORD WINAPI WorkerMain(void *) noexcept {
               connected = PublishSnapshot(pipe, game, previous_snapshot,
                                           state_revision);
             }
+          }
+        } else if (const auto option_index = EventOptionStep(step);
+                   option_index.has_value()) {
+          const auto result = xar::ck3_11906::SubmitSelectEventOption(
+              game, option_index.value());
+          if (result ==
+              xar::ck3_11906::SelectEventOptionResult::submitted) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, true, "submitted"));
+          } else {
+            std::string_view error = "CK3 event state is unavailable";
+            if (result ==
+                xar::ck3_11906::SelectEventOptionResult::no_active_event) {
+              error = "no active CK3 event";
+            } else if (
+                result == xar::ck3_11906::SelectEventOptionResult::option_out_of_range) {
+              error = "event option index is out of range";
+            }
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false, error));
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision);
+          }
+        } else {
+          const std::int32_t requested_speed = FixedSpeedStep(step);
+          if (requested_speed >= 1 &&
+              xar::ck3_11906::SubmitSetSpeed(game, requested_speed)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, true, "submitted"));
+            if (connected) {
+              connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                          state_revision);
+            }
+          } else {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "unsupported native gameplay step"));
           }
         }
       }

@@ -6,6 +6,11 @@ import json
 from pathlib import Path
 from typing import Iterable
 
+from .bridge.event_contract import (
+    choose_event_option_number,
+    event_option_step,
+    normalize_active_event,
+)
 from .environment import write_json_atomic
 from .errors import AgentError
 from .runtime import utc_now
@@ -85,6 +90,9 @@ def _latest_effective_result(
 
 def choose_one_life_turn(
     commands: list[dict[str, object]],
+    *,
+    snapshot: dict[str, object] | None = None,
+    action_steps: Iterable[str] | None = None,
 ) -> dict[str, object]:
     """Choose one useful, inspectable action for the current life.
 
@@ -93,6 +101,69 @@ def choose_one_life_turn(
     the next choice instead of being hidden inside a long macro.
     """
     rows = _expanded_command_rows(commands)
+    available_steps = {
+        step for step in (action_steps or ()) if isinstance(step, str) and step
+    }
+    raw_active_event = (
+        snapshot.get("active_event", snapshot.get("current_event"))
+        if isinstance(snapshot, dict)
+        else None
+    )
+    active_event = normalize_active_event(
+        raw_active_event,
+        default_source=(
+            str(snapshot.get("source"))
+            if isinstance(snapshot, dict) and snapshot.get("source")
+            else "planner"
+        ),
+    )
+    if active_event is not None:
+        option_number = choose_event_option_number(active_event)
+        exact_step = (
+            event_option_step(option_number)
+            if option_number is not None
+            else None
+        )
+        event_summary = {
+            "instance_id": active_event.get("instance_id"),
+            "option_count": active_event.get("option_count"),
+            "selected_option_number": option_number,
+            "selected_option_index": (
+                option_number - 1 if option_number is not None else None
+            ),
+        }
+        if exact_step is not None and exact_step in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "active_event",
+                "selected_step": exact_step,
+                "reason": "select the best enabled option on the active CK3 event",
+                "active_event": event_summary,
+            }
+        if "resolve-current-event" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "active_event_visual_fallback",
+                "selected_step": "resolve-current-event",
+                "reason": (
+                    "the active event is delegated explicitly to the visual "
+                    "event resolver"
+                ),
+                "active_event": event_summary,
+            }
+        required_step = exact_step or "resolve-current-event"
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "active_event_unsupported",
+            "selected_step": None,
+            "required_step": required_step,
+            "reason": (
+                "the selected backend reported an active event but did not "
+                f"advertise {required_step}"
+            ),
+            "active_event": event_summary,
+        }
+
     last = rows[-1] if rows else None
     last_error = str(last.get("error", "")) if last is not None else ""
     if "one-life death terminal visible:" in last_error:

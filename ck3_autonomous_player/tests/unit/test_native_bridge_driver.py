@@ -67,7 +67,11 @@ def _hello(*capabilities: str) -> dict[str, object]:
     }
 
 
-def _snapshot(revision: int = 1) -> dict[str, object]:
+def _snapshot(
+    revision: int = 1,
+    *,
+    active_event: dict[str, object] | None = None,
+) -> dict[str, object]:
     return {
         "type": "state_snapshot",
         "protocol_version": 1,
@@ -77,6 +81,7 @@ def _snapshot(revision: int = 1) -> dict[str, object]:
             "phase": "map_hud",
             "date": "1066.9.15",
             "history": [],
+            "active_event": active_event,
         },
     }
 
@@ -177,6 +182,62 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(command["expected_revision"], 19)
         self.assertTrue(result["accepted"])
         self.assertEqual(result["backend_id"], "native-headless")
+
+    def test_event_wildcard_expands_from_current_option_count(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-event",
+                "game.command.select-event-option-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(23, active_event={"instance_id": 419, "option_count": 3})
+        )
+
+        capabilities = driver.capabilities()
+        self.assertEqual(
+            capabilities["action_steps"],
+            [
+                "select-event-option-1",
+                "select-event-option-2",
+                "select-event-option-3",
+            ],
+        )
+        self.assertNotIn("select-event-option-N", capabilities["action_steps"])
+        snapshot = driver.take_snapshot()
+        self.assertEqual(snapshot["active_event"]["instance_id"], 419)
+        self.assertEqual(snapshot["active_event"]["options"][2]["index"], 2)
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") == "execute_step":
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": True,
+                        "result": {"accepted": True},
+                    }
+                )
+
+        endpoint.send_hook = answer
+        driver.execute_step(
+            "select-event-option-3",
+            expected_revision=int(snapshot["revision"]),
+        )
+        command = next(
+            frame
+            for frame in reversed(endpoint.frames)
+            if frame.get("type") == "execute_step"
+        )
+        self.assertEqual(command["step"], "select-event-option-3")
+        self.assertEqual(command["expected_revision"], 23)
 
     def test_command_result_does_not_forge_a_semantic_change(self) -> None:
         endpoint = FakeEndpoint()

@@ -20,15 +20,23 @@ constexpr std::uintptr_t kPausePrimaryVtableRva = 0x432F1C8;
 constexpr std::uintptr_t kPauseSecondaryVtableRva = 0x432F198;
 constexpr std::uintptr_t kSetSpeedPrimaryVtableRva = 0x432F3F0;
 constexpr std::uintptr_t kSetSpeedSecondaryVtableRva = 0x432F260;
+constexpr std::uintptr_t kSelectEventOptionPrimaryVtableRva = 0x4335240;
+constexpr std::uintptr_t kSelectEventOptionSecondaryVtableRva = 0x4335210;
 constexpr std::uintptr_t kSubmitCommandRva = 0x0973E00;
 constexpr std::uintptr_t kGetLocalPlayerRva = 0x346B7C0;
+constexpr std::uintptr_t kGetCurrentEventRva = 0x2706AD0;
 
 constexpr std::size_t kGameStateDateOffset = 0x08;
 constexpr std::size_t kGameStateSpeedOffset = 0x70;
+constexpr std::size_t kGameStateGameDataOffset = 0xA0;
 constexpr std::size_t kJominiPlayersOffset = 0x18;
 constexpr std::size_t kJominiPausedOffset = 0x20;
 constexpr std::size_t kPlayersLocalIdOffset = 0x1F0;
 constexpr std::size_t kPlayerIdOffset = 0x70;
+constexpr std::size_t kEventManagerOffset = 0x2F4C0;
+constexpr std::size_t kActiveEventDataOffset = 0x1B0;
+constexpr std::size_t kActiveEventInstanceIdOffset = 0x1BC;
+constexpr std::size_t kEventDataOptionCountOffset = 0x1BC;
 
 struct PauseCommand {
   std::uintptr_t primary_vtable = 0;
@@ -55,6 +63,18 @@ struct SetSpeedCommand {
   std::array<std::byte, 4> payload_padding{};
 };
 
+struct SelectEventOptionCommand {
+  std::uintptr_t primary_vtable = 0;
+  std::uint8_t flags = 0;
+  std::array<std::byte, 3> flags_padding{};
+  std::uint32_t metadata_0c = 0;
+  std::uint32_t metadata_10 = 0;
+  std::uint32_t metadata_14 = 0;
+  std::uintptr_t secondary_vtable = 0;
+  std::int32_t event_instance_id = -1;
+  std::int32_t option_index = -1;
+};
+
 static_assert(sizeof(PauseCommand) == 0x28);
 static_assert(offsetof(PauseCommand, secondary_vtable) == 0x18);
 static_assert(offsetof(PauseCommand, player_id) == 0x20);
@@ -62,6 +82,10 @@ static_assert(offsetof(PauseCommand, paused) == 0x24);
 static_assert(sizeof(SetSpeedCommand) == 0x28);
 static_assert(offsetof(SetSpeedCommand, secondary_vtable) == 0x18);
 static_assert(offsetof(SetSpeedCommand, speed) == 0x20);
+static_assert(sizeof(SelectEventOptionCommand) == 0x28);
+static_assert(offsetof(SelectEventOptionCommand, secondary_vtable) == 0x18);
+static_assert(offsetof(SelectEventOptionCommand, event_instance_id) == 0x20);
+static_assert(offsetof(SelectEventOptionCommand, option_index) == 0x24);
 
 template <typename Value>
 Value LoadAt(const void *base, std::size_t offset) noexcept {
@@ -69,6 +93,39 @@ Value LoadAt(const void *base, std::size_t offset) noexcept {
   std::memcpy(&result, static_cast<const std::byte *>(base) + offset,
               sizeof(result));
   return result;
+}
+
+void *CurrentEvent(const Bindings &bindings, void *game_state) noexcept {
+  if (bindings.get_current_event == nullptr || game_state == nullptr) {
+    return nullptr;
+  }
+  void *const game_data =
+      LoadAt<void *>(game_state, kGameStateGameDataOffset);
+  if (game_data == nullptr) {
+    return nullptr;
+  }
+  void *const event_manager =
+      static_cast<std::byte *>(game_data) + bindings.event_manager_offset;
+  return bindings.get_current_event(event_manager);
+}
+
+bool ReadCurrentEvent(const Bindings &bindings, void *game_state,
+                      std::int32_t &instance_id,
+                      std::int32_t &option_count) noexcept {
+  void *const active_event = CurrentEvent(bindings, game_state);
+  if (active_event == nullptr) {
+    return false;
+  }
+  void *const event_data =
+      LoadAt<void *>(active_event, kActiveEventDataOffset);
+  if (event_data == nullptr) {
+    return false;
+  }
+  instance_id =
+      LoadAt<std::int32_t>(active_event, kActiveEventInstanceIdOffset);
+  option_count =
+      LoadAt<std::int32_t>(event_data, kEventDataOptionCountOffset);
+  return instance_id > 0 && option_count >= 0;
 }
 
 bool HashCurrentExecutable(std::array<std::uint8_t, 32> &output) noexcept {
@@ -175,10 +232,17 @@ Bindings BindCurrentProcess() noexcept {
   result.pause_secondary_vtable = module + kPauseSecondaryVtableRva;
   result.set_speed_primary_vtable = module + kSetSpeedPrimaryVtableRva;
   result.set_speed_secondary_vtable = module + kSetSpeedSecondaryVtableRva;
+  result.select_event_option_primary_vtable =
+      module + kSelectEventOptionPrimaryVtableRva;
+  result.select_event_option_secondary_vtable =
+      module + kSelectEventOptionSecondaryVtableRva;
+  result.event_manager_offset = kEventManagerOffset;
   result.submit_command =
       reinterpret_cast<SubmitCommand>(module + kSubmitCommandRva);
   result.get_local_player =
       reinterpret_cast<GetLocalPlayer>(module + kGetLocalPlayerRva);
+  result.get_current_event =
+      reinterpret_cast<GetCurrentEvent>(module + kGetCurrentEventRva);
   return result;
 }
 
@@ -206,6 +270,13 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
   output.speed = native_speed + 1;
   output.paused = LoadAt<std::uint8_t>(jomini_state, kJominiPausedOffset) != 0;
   output.player_id = LoadAt<std::int32_t>(players, kPlayersLocalIdOffset);
+  output.has_active_event = ReadCurrentEvent(
+      bindings, game_state, output.active_event_instance_id,
+      output.active_event_option_count);
+  if (!output.has_active_event) {
+    output.active_event_instance_id = -1;
+    output.active_event_option_count = 0;
+  }
   return true;
 }
 
@@ -300,6 +371,41 @@ bool SubmitSetSpeed(const Bindings &bindings, std::int32_t speed) noexcept {
   command.speed = speed - 1;
   bindings.submit_command(bindings.command_manager, &command, 7);
   return true;
+}
+
+SelectEventOptionResult
+SubmitSelectEventOption(const Bindings &bindings,
+                        std::int32_t option_index) noexcept {
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.select_event_option_primary_vtable == 0 ||
+      bindings.select_event_option_secondary_vtable == 0 ||
+      bindings.get_current_event == nullptr) {
+    return SelectEventOptionResult::unavailable;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  if (game_state == nullptr) {
+    return SelectEventOptionResult::unavailable;
+  }
+
+  std::int32_t event_instance_id = -1;
+  std::int32_t option_count = 0;
+  if (!ReadCurrentEvent(bindings, game_state, event_instance_id,
+                        option_count)) {
+    return SelectEventOptionResult::no_active_event;
+  }
+  if (option_index < 0 || option_index >= option_count) {
+    return SelectEventOptionResult::option_out_of_range;
+  }
+
+  SelectEventOptionCommand command{};
+  command.primary_vtable = bindings.select_event_option_primary_vtable;
+  command.secondary_vtable = bindings.select_event_option_secondary_vtable;
+  command.event_instance_id = event_instance_id;
+  command.option_index = option_index;
+  bindings.submit_command(bindings.command_manager, &command, 7);
+  return SelectEventOptionResult::submitted;
 }
 
 } // namespace xar::ck3_11906

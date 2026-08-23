@@ -747,7 +747,13 @@ class OpeningContractTests(unittest.TestCase):
         self.assertIsNotNone(second)
         self.assertTrue(_same_generic_event(first, second))
         self.assertEqual(first["title"], "怀孕！")
+        self.assertEqual(first["options"][0]["index"], 0)
         self.assertEqual(first["options"][0]["option_number"], 1)
+        self.assertEqual(
+            first["options"][0]["label"],
+            first["options"][0]["visible_text"],
+        )
+        self.assertTrue(first["options"][0]["enabled"])
         self.assertIn("小婴儿", first["options"][0]["visible_text"])
 
         faded = observation(9)

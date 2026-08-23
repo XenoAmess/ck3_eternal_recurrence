@@ -9,6 +9,8 @@ from pathlib import Path
 import time
 from typing import Protocol, runtime_checkable
 
+from .event_contract import normalize_active_event
+
 
 class BridgeUnavailableError(RuntimeError):
     """The selected game bridge is not connected to a live CK3 session."""
@@ -179,6 +181,9 @@ class HybridGameplayDriver:
             result["history"] = baseline.get("history", [])
             if fast.get("phase") is None:
                 result["phase"] = baseline.get("phase")
+            if fast.get("active_event") is None and baseline.get("active_event") is not None:
+                result["active_event"] = baseline["active_event"]
+                result["active_event_backend"] = baseline.get("backend_id")
         self._last_snapshot = result
         return result
 
@@ -314,6 +319,9 @@ class DevelopmentReportDriver:
             else None
         )
         revision = len(rows)
+        active_event = _reported_active_event(
+            effective_rows[-1] if effective_rows else last
+        )
         return _normalize_snapshot(
             {
                 "format_version": 1,
@@ -333,6 +341,7 @@ class DevelopmentReportDriver:
                 "history": rows,
                 "last_command": last,
                 "last_successful_turn": last_successful,
+                "active_event": active_event,
             },
             "vision-report",
         )
@@ -403,6 +412,34 @@ def _expanded_session_rows(
     return expanded
 
 
+def _reported_active_event(
+    last_command: dict[str, object] | None,
+) -> dict[str, object] | None:
+    """Project the event already reported by a vision session, if any."""
+    if not isinstance(last_command, dict):
+        return None
+    result = last_command.get("result")
+    for container in (last_command, result):
+        if not isinstance(container, dict):
+            continue
+        candidate = container.get("active_event", container.get("current_event"))
+        if isinstance(candidate, dict):
+            return candidate
+    if "ordinary event interrupted" in str(last_command.get("error", "")):
+        # The existing life/war advance loop has positively recognized a
+        # stable event but its failure row predates structured option export.
+        # Keep the event actionable by the explicit visual resolver without
+        # inventing a native event id or option count.
+        return {
+            "source": "vision",
+            "instance_id": None,
+            "option_count": None,
+            "title": None,
+            "options": [],
+        }
+    return None
+
+
 def _normalize_snapshot(
     snapshot: dict[str, object], backend_id: str
 ) -> dict[str, object]:
@@ -418,4 +455,22 @@ def _normalize_snapshot(
         or not snapshot_id
     ):
         raise BridgeUnavailableError("gameplay snapshot lacks an id or revision")
-    return {**snapshot, "backend_id": backend_id}
+    source = snapshot.get("source")
+    default_source = source if isinstance(source, str) and source else backend_id
+    raw_active_event = snapshot.get(
+        "active_event", snapshot.get("current_event")
+    )
+    try:
+        active_event = normalize_active_event(
+            raw_active_event,
+            default_source=default_source,
+        )
+    except ValueError as error:
+        raise BridgeUnavailableError(
+            f"gameplay snapshot has a malformed active_event: {error}"
+        ) from error
+    return {
+        **snapshot,
+        "backend_id": backend_id,
+        "active_event": active_event,
+    }

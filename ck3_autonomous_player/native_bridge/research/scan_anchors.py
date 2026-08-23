@@ -150,7 +150,9 @@ def main() -> int:
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     arguments = parser.parse_args()
     try:
-        failures = verify(arguments.exe.resolve(), arguments.manifest.resolve())
+        manifest_path = arguments.manifest.resolve()
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        failures = verify(arguments.exe.resolve(), manifest_path)
     except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as error:
         print(f"FAIL: {error}", file=sys.stderr)
         return 2
@@ -158,7 +160,11 @@ def main() -> int:
         for failure in failures:
             print(f"FAIL: {failure}", file=sys.stderr)
         return 1
-    print("PASS: exact_build=1 unique_signatures=14 vtable_prefixes=3")
+    print(
+        "PASS: exact_build=1 "
+        f"unique_signatures={len(manifest['signature_anchors'])} "
+        f"vtable_prefixes={len(manifest['vtable_prefixes'])}"
+    )
     return 0
 
 

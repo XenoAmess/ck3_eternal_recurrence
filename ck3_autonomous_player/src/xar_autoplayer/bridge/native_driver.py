@@ -25,6 +25,7 @@ from .driver import (
     HybridGameplayDriver,
     UnsupportedStepError,
 )
+from .event_contract import normalize_active_event
 
 
 PROTOCOL_VERSION = 1
@@ -157,7 +158,14 @@ class NativeProtocolState:
                 "snapshot": snapshot_supported,
                 "wait_for_change": snapshot_supported,
                 "action_steps": (
-                    _action_steps(raw_capabilities) if self._connected else []
+                    _action_steps(
+                        raw_capabilities,
+                        self._semantic_snapshot.get("active_event")
+                        if self._semantic_snapshot is not None
+                        else None,
+                    )
+                    if self._connected
+                    else []
                 ),
                 "bridge_capabilities": raw_capabilities,
                 "diagnostics": self._diagnostics_locked(),
@@ -698,6 +706,9 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
         "snapshot_id": snapshot_id,
         "revision": revision,
         "history": history if isinstance(history, list) else [],
+        "active_event": normalize_active_event(
+            state.get("active_event"), default_source="native"
+        ),
     }
 
 
@@ -707,13 +718,31 @@ def _string_list(value: object) -> list[str]:
     return list(dict.fromkeys(item for item in value if isinstance(item, str) and item))
 
 
-def _action_steps(capabilities: list[str]) -> list[str]:
-    return sorted(
-        capability.removeprefix(_ACTION_CAPABILITY_PREFIX)
-        for capability in capabilities
-        if capability.startswith(_ACTION_CAPABILITY_PREFIX)
-        and capability.removeprefix(_ACTION_CAPABILITY_PREFIX)
-    )
+def _action_steps(
+    capabilities: list[str], active_event: object = None
+) -> list[str]:
+    steps: set[str] = set()
+    expand_event_options = False
+    for capability in capabilities:
+        if not capability.startswith(_ACTION_CAPABILITY_PREFIX):
+            continue
+        step = capability.removeprefix(_ACTION_CAPABILITY_PREFIX)
+        if step == "select-event-option-N":
+            expand_event_options = True
+        elif step:
+            steps.add(step)
+    if expand_event_options and isinstance(active_event, dict):
+        option_count = active_event.get("option_count")
+        if (
+            not isinstance(option_count, bool)
+            and isinstance(option_count, int)
+            and option_count > 0
+        ):
+            steps.update(
+                f"select-event-option-{option_number}"
+                for option_number in range(1, option_count + 1)
+            )
+    return sorted(steps)
 
 
 def _validate_revision(value: object, name: str) -> None:

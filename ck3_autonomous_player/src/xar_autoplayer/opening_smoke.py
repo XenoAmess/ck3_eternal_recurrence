@@ -857,8 +857,13 @@ def _generic_event_in_frame(observation: object) -> dict[str, object] | None:
         "title_center": list(titles[0].center),
         "options": [
             {
+                # ``option_number`` is the rendered/shortcut ordinal.  The
+                # native command payload consumes the zero-based ``index``.
+                "index": index - 1,
                 "option_number": index,
+                "label": item.text,
                 "visible_text": item.text,
+                "enabled": True,
                 "center": list(item.center),
                 "bbox": list(item.bbox),
             }

@@ -9,6 +9,13 @@ from .driver import (
     HybridGameplayDriver,
     UnsupportedStepError,
 )
+from .event_contract import (
+    EVENT_OPTION_STEP_PREFIX,
+    choose_event_option_number,
+    event_option_step,
+    normalize_active_event,
+    parse_event_option_step,
+)
 from .mod_driver import DataModGameplayDriver, load_data_mod_driver
 from .native_driver import (
     ConfiguredHybridFallbackDriver,
@@ -28,6 +35,7 @@ __all__ = [
     "DataModGameplayDriver",
     "DevelopmentReportDriver",
     "DevelopmentSessionDriver",
+    "EVENT_OPTION_STEP_PREFIX",
     "GameplayBridgeDriver",
     "HybridGameplayDriver",
     "ConfiguredHybridFallbackDriver",
@@ -37,6 +45,10 @@ __all__ = [
     "NativeNamedPipeServer",
     "NativeProtocolState",
     "UnsupportedStepError",
+    "choose_event_option_number",
+    "event_option_step",
     "load_data_mod_driver",
+    "normalize_active_event",
+    "parse_event_option_step",
     "selected_pipe_name",
 ]

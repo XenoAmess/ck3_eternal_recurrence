@@ -215,12 +215,19 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
 
         driver = CallbackGameplayDriver(
             backend_id="native-fixture",
-            snapshot=lambda: _snapshot(4),
+            snapshot=lambda: {
+                **_snapshot(4),
+                "active_event": {"instance_id": 44, "option_count": 2},
+            },
             execute=lambda step, revision: {
                 "step": step,
                 "expected_revision": revision,
             },
-            action_steps=("life-advance",),
+            action_steps=(
+                "life-advance",
+                "select-event-option-1",
+                "select-event-option-2",
+            ),
             source="named-pipe",
             latency="realtime",
         )
@@ -235,6 +242,8 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_take_snapshot",
                     "ck3_plan_turn",
                     "ck3_execute_step",
+                    "ck3_select_event_option",
+                    "ck3_resolve_active_event",
                     "ck3_wait_for_change",
                 },
             )
@@ -248,6 +257,17 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             self.assertFalse(action.is_error)
             self.assertEqual(action.structured_content["backend_id"], "native-fixture")
             self.assertEqual(action.structured_content["expected_revision"], 4)
+            event_action = await client.call_tool(
+                "ck3_select_event_option",
+                {
+                    "option_number": 2,
+                    "event_instance_id": 44,
+                    "expected_revision": 4,
+                },
+            )
+            self.assertFalse(event_action.is_error)
+            self.assertEqual(event_action.structured_content["option_number"], 2)
+            self.assertEqual(event_action.structured_content["option_index"], 1)
 
 
 if __name__ == "__main__":

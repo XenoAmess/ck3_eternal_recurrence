@@ -65,6 +65,12 @@
       "pattern": "40 53 48 83 EC 20 48 8B D9 B8 02 00 00 00 F0 0F C1 05 82 8B 00 03 41 BB FE FF FF FF"
     },
     {
+      "name": "event_manager_current_local_event",
+      "rva": "0x2706AD0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 56 57 41 56 48 83 EC 30 48 8D 05 EF 8A 00 03 48 89 44 24 20 45 33 F6 44 89 74 24 28 B8 02 00 00 00"
+    },
+    {
       "name": "select_event_option_execute",
       "rva": "0x26FF190",
       "confidence": "high-static",
@@ -105,6 +111,7 @@
     "pause_secondary_vtable": "0x432F198",
     "select_event_option_primary_vtable": "0x4335240",
     "select_event_option_secondary_vtable": "0x4335210",
+    "get_current_event_for_local_player": "0x2706AD0",
     "game_state_type_descriptor": "0x546A670",
     "event_manager_type_descriptor": "0x54E12E8",
     "player_character_manager_type_descriptor": "0x54C4230"
@@ -129,7 +136,8 @@
   "layouts": {
     "CGameState": {
       "date_storage": "+0x08 qword HistoricalDate; date_raw is the low signed dword used by engine day/tick arithmetic",
-      "speed": "+0x70 int32 native 0..4; bridge public contract translates to 1..5"
+      "speed": "+0x70 int32 native 0..4; bridge public contract translates to 1..5",
+      "game_data": "+0xA0 pointer"
     },
     "JominiGameState": {
       "players": "+0x18 pointer",
@@ -137,6 +145,23 @@
     },
     "PlayerCollection": {
       "local_player_id": "+0x1F0 int32 local/network id; not a CK3 CharacterID"
+    },
+    "CK3GameData": {
+      "event_manager": "+0x2F4C0 embedded EventManager"
+    },
+    "EventManager": {
+      "active_events": "+0x1F18 pointer to ActiveEvent pointer array",
+      "active_event_count": "+0x1F24 int32",
+      "current_local_event": "RVA 0x2706AD0 scans active_events backward under the manager lock and returns the current local-player event"
+    },
+    "ActiveEvent": {
+      "event_data": "+0x1B0 pointer",
+      "local_recipient_id": "+0x1B8 int32 used by the current-local-event filter",
+      "instance_id": "+0x1BC int32"
+    },
+    "EventData": {
+      "options": "+0x1B0 pointer to option pointer array",
+      "option_count": "+0x1BC int32; executor RVA 0x33E68C0 bounds-checks the native zero-based index against it"
     },
     "CPauseGameCommand": {
       "size": "0x28",
@@ -155,8 +180,11 @@
     },
     "CSelectEventOptionCommand": {
       "size": "0x28",
+      "primary_vtable": "+0x00",
+      "flags": "+0x08 uint8 = 0",
+      "secondary_vtable": "+0x18",
       "event_instance_id": "+0x20 int32",
-      "option_index": "+0x24 int32"
+      "option_index": "+0x24 int32 native zero-based; public step suffix is one-based"
     }
   }
 }

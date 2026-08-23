@@ -14,10 +14,11 @@ Its current first gameplay slice is intentionally small:
   capabilities are present only when the process executable exactly matches
   the pinned CK3 1.19.0.6 SHA-256;
 - the DLL emits a heartbeat every 250 ms, publishes semantic state snapshots
-  on actual date/speed/pause/local-player changes, and answers a framed `ping`
-  with `pong`;
+  on actual date/speed/pause/local-player/active-event changes, and answers a
+  framed `ping` with `pong`;
 - for the exact pinned build it accepts `pause-map`, `resume-map`, and fixed
-  `set-speed-1`..`set-speed-5` steps through CK3's native locked command queue;
+  `set-speed-1`..`set-speed-5` steps plus one-based
+  `select-event-option-1..N` through CK3's native locked command queue;
 - `xar_ck3_bridge_host.exe` creates a minimal target with
   `CREATE_SUSPENDED`, runs the PID injector, verifies the complete
   hello/heartbeat/ping/pong exchange from inside that target, and only then
@@ -90,11 +91,13 @@ The current maximum payload is 1 MiB. Frame types are `hello`, `heartbeat`,
 `hello.capabilities` is authoritative. Non-matching executables advertise only
 bridge identity, heartbeat, and ping; they never expose game reads/actions.
 
-The snapshot currently contains `date_raw`, `speed`, `paused`, and
-`local_player_id`. The last field is Jomini's 32-bit local/network player ID
-used by the pause command, not CK3's 64-bit played-character ID. Public speed
-is `1..5`; the bridge maps it to and from CK3's zero-based native payload
-`0..4`.
+The snapshot currently contains `date_raw`, `speed`, `paused`,
+`local_player_id`, and a nullable `active_event` with instance ID and numeric
+option count/indexes. The player field is Jomini's 32-bit local/network player
+ID used by the pause command, not CK3's 64-bit played-character ID. Public
+speed is `1..5`; the bridge maps it to and from CK3's zero-based native payload
+`0..4`. Event steps likewise use public option numbers `1..N` and translate to
+the command's native zero-based option index.
 
 ## Runtime integration
 

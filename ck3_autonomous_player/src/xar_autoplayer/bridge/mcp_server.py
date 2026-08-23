@@ -134,6 +134,30 @@ def create_server(driver: GameplayBridgeDriver):
         return service.execute_step(step, expected_revision=expected_revision)
 
     @server.tool()
+    def ck3_select_event_option(
+        option_number: int,
+        event_instance_id: int | None = None,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Select a 1-based option on the current CK3 event."""
+        return service.select_event_option(
+            option_number,
+            event_instance_id=event_instance_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_resolve_active_event(
+        event_instance_id: int | None = None,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Choose and select the best enabled option on the current event."""
+        return service.resolve_active_event(
+            event_instance_id=event_instance_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
     def ck3_wait_for_change(
         after_revision: int, timeout_seconds: float = 10.0
     ) -> dict[str, object]:

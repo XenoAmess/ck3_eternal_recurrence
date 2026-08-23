@@ -217,6 +217,7 @@ class DataModGameplayDriver:
             "total_days": frame.total_days,
             "phase": None,
             "history": [],
+            "active_event": None,
         }
 
     def _wait_for_frame(
