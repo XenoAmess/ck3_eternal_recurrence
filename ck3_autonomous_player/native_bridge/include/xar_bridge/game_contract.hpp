@@ -37,6 +37,41 @@ struct ArrangeMarriageChoice {
                          const ArrangeMarriageChoice &) = default;
 };
 
+// Bounded, version-neutral evidence from one native marriage enumeration.
+// Role IDs are captured after the interaction's redirect script has run, so a
+// live empty result can be distinguished from storage traversal or context
+// routing failures without requiring the CK3 window to be visible.
+struct ArrangeMarriageValidationSample {
+  std::int32_t slot_index = -1;
+  std::int32_t candidate_character_id = -1;
+  std::int32_t actor_character_id = -1;
+  std::int32_t recipient_character_id = -1;
+  std::int32_t secondary_actor_character_id = -1;
+  std::int32_t secondary_recipient_character_id = -1;
+  std::int32_t intermediary_character_id = -1;
+
+  friend bool operator==(const ArrangeMarriageValidationSample &,
+                         const ArrangeMarriageValidationSample &) = default;
+};
+
+struct ArrangeMarriageQueryDiagnostics {
+  std::int32_t storage_capacity = 0;
+  std::int32_t slots_scanned = 0;
+  std::int32_t empty_slots = 0;
+  std::int32_t live_candidates = 0;
+  std::int32_t dead_candidates = 0;
+  std::int32_t self_candidates = 0;
+  std::int32_t generation_mismatch_candidates = 0;
+  std::int32_t contexts_constructed = 0;
+  std::int32_t context_construct_failures = 0;
+  std::int32_t native_validate_true = 0;
+  std::int32_t native_validate_false = 0;
+  std::vector<ArrangeMarriageValidationSample> validation_false_samples;
+
+  friend bool operator==(const ArrangeMarriageQueryDiagnostics &,
+                         const ArrangeMarriageQueryDiagnostics &) = default;
+};
+
 struct ArmySnapshot {
   std::int32_t army_id = -1;
   std::int32_t owner_character_id = -1;
@@ -72,6 +107,9 @@ struct Snapshot {
   bool has_played_character = false;
   std::int32_t played_character_id = -1;
   bool played_character_alive = false;
+  std::int32_t played_character_betrothed_id = -1;
+  std::int32_t played_character_primary_spouse_id = -1;
+  std::vector<std::int32_t> played_character_spouse_ids;
   bool has_active_event = false;
   std::int32_t active_event_instance_id = -1;
   std::int32_t active_event_option_count = 0;

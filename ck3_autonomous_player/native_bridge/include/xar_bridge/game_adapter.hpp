@@ -51,7 +51,8 @@ public:
   submit_declare_war(const DeclarableWarSnapshot &declaration) const
       noexcept = 0;
   virtual ReadArrangeMarriageChoicesResult read_arrange_marriage_choices(
-      std::vector<ArrangeMarriageChoice> &output) const noexcept = 0;
+      std::vector<ArrangeMarriageChoice> &output,
+      ArrangeMarriageQueryDiagnostics &diagnostics) const noexcept = 0;
   virtual ArrangeMarriageResult
   submit_arrange_marriage(const ArrangeMarriageChoice &choice) const
       noexcept = 0;
@@ -131,8 +132,9 @@ SubmitDeclareWar(const GameAdapter &game,
 }
 inline ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
     const GameAdapter &game,
-    std::vector<ArrangeMarriageChoice> &output) noexcept {
-  return game.read_arrange_marriage_choices(output);
+    std::vector<ArrangeMarriageChoice> &output,
+    ArrangeMarriageQueryDiagnostics &diagnostics) noexcept {
+  return game.read_arrange_marriage_choices(output, diagnostics);
 }
 inline ArrangeMarriageResult
 SubmitArrangeMarriage(const GameAdapter &game,

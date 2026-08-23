@@ -51,8 +51,8 @@ bridge identity/heartbeat/ping.
 | `game.command.query-declarable-wars` | native C++ core implemented, bridge route/live probe pending | exact declare-war UI CB registry/evaluator/item rules + offline SSO/heap-key and configuration fixture | explicit upper-layer policy only |
 | `game.command.declare-war-<declaration_id>` | native C++ core implemented, bridge route/live probe pending | generation-bound exact re-enumeration + native context/validation/queue/destruction fixture | explicit upper-layer policy only |
 | `game.command.enforce-demands-<war_id>` | native C++ core implemented, bridge route/live probe pending | exact WarOverview victory context builder + common interaction command lifecycle fixture | explicit upper-layer policy only |
-| `game.command.query-arrange-marriage-choices` | native C++ core implemented, bridge route/live probe pending | exact interaction registry/four-role context layout + native validation fixture | explicit upper-layer policy only |
-| `game.command.arrange-marriage-<choice_id>` | native C++ direct-player path implemented, bridge route/live probe pending | generation-bound CharacterIDs + refresh/finalize/validate/common-send fixture | explicit upper-layer policy only |
+| `game.command.query-arrange-marriage-choices` | implemented; minimized-live empty result was correctly explained by the played character's existing spouse | exact interaction registry, bounded enumeration diagnostics, generation-validated relationship snapshot, native validation fixture | explicit upper-layer policy only |
+| `game.command.arrange-marriage-<choice_id>` | native direct-player path implemented, minimized-live submit pending | generation-bound CharacterIDs + redirect/all-role/refresh/finalize/validate/common-send fixture; spouse/betrothal outcome is snapshot-observable | explicit upper-layer policy only |
 | event title/option text | unsupported | no repeatable localized text projection yet | unsupported in pure native mode |
 | main-thread tick hook | anchor-only/not located | command submission uses a locked queue, so it is not a prerequisite for the first loop | unsupported |
 
@@ -354,12 +354,39 @@ The canonical marriage script key is `arrange_marriage_interaction` in the
 `0x831890`.
 All-role context constructor `0x2C3F000` proves the exact role layout:
 actor `+0x2D8`, recipient `+0x2DC`, secondary actor `+0x2E0`, secondary
-recipient `+0x2E4`, and another optional CharacterID at `+0x2E8`. The
-marriage UI and AI direct paths leave `+0x2E8` at `-1`. UI selection writes
-the secondary IDs and then calls refresh `0x2C40950` followed by finalize
-`0x2C40B20`; complete context validation `0x2C43F00` is the authoritative
-eligibility check. Marriage versus betrothal is derived from the selected
-characters' age/state and is not a separate payload bool.
+recipient `+0x2E4`, and the intermediary CharacterID at `+0x2E8`. The
+marriage UI and AI direct paths leave `+0x2E8` at `-1`. Redirect helper
+`0x2C3C4C0(interaction, &actor, &recipient, &secondary_actor,
+&secondary_recipient, &intermediary)` mutates all five IDs in place. The original
+direct path at `0x18FA80E` initializes all roles before redirect and then calls
+`0x2C3F000(context, interaction, actor, recipient, secondary_actor,
+secondary_recipient, intermediary, nullptr)` at `0x18FA8A1`; Win64 stack slots
+`+0x20/+0x28/+0x30/+0x38` carry its last four arguments. Complete context
+validation `0x2C43F00` remains the authoritative eligibility check. Marriage
+versus betrothal is derived from the selected characters' age/state and is not
+a separate payload bool.
+
+The original UI also has a valid generic-constructor route: callbacks at
+`0x126F923` and `0x126FAF3` update `+0x2E0/+0x2E4` on an existing context,
+then refresh and finalize it. Therefore two-role construction followed by
+those role updates is not, by itself, evidence of a bug. The bridge currently
+uses the separately anchored all-role direct route: initialize
+`(played, candidate, played, candidate, -1)`, redirect all five IDs, construct,
+refresh, finalize, and validate. This is a pinned implementation route, not a
+claim that the original UI route is invalid or that constructor selection
+alone determines whether choices exist.
+
+The minimized query remained `available` with no choices after that route was
+installed. Bounded diagnostics showed contexts were constructed and rejected
+by CK3's native validator. Live memory then established the actual state for
+played CharacterID `29829`: no betrothed, primary spouse `34730`, and native
+spouse list `[34730]`. The empty result was therefore valid for the tested
+monogamous state, not a query-construction failure. Snapshot relationship
+projection reads `CCharacter +0x1A0` FamilyData, `FamilyData +0x10`
+betrothed, `+0x14` primary spouse, and the native CharacterID array at `+0x20`;
+every emitted ID is re-resolved with its full generation. The internal absent
+value is `-1`; bridge JSON emits null for the two scalar links and an empty
+array for no spouses. `FamilyData +0x18` is not exposed.
 
 The first headless query deliberately exposes only the immediately useful
 direct path: played Character as both actor and secondary actor, candidate as
@@ -373,7 +400,9 @@ proven standalone byte offset. Generic UI send `0xFE5190` proves the remaining
 path: validate, construct the `0x368`-byte `CSendCharacterInteractionCommand`,
 submit flags `0x0E`, then destroy its owned context at `+0x20`. Incoming
 marriage/betrothal acceptance remains the independent pending-interaction
-reply path.
+reply path. A submitted adult marriage is complete only when the candidate's
+full CharacterID appears in `played_character.spouse_ids`; a betrothal is
+complete only when `played_character.betrothed_id` equals that candidate.
 
 ## Completed and next live acceptance
 

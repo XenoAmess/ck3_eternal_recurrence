@@ -92,7 +92,8 @@ public:
   }
   xar::game::ReadArrangeMarriageChoicesResult
   read_arrange_marriage_choices(
-      std::vector<xar::game::ArrangeMarriageChoice> &) const noexcept override {
+      std::vector<xar::game::ArrangeMarriageChoice> &,
+      xar::game::ArrangeMarriageQueryDiagnostics &) const noexcept override {
     return xar::game::ReadArrangeMarriageChoicesResult::unavailable;
   }
   xar::game::ArrangeMarriageResult submit_arrange_marriage(

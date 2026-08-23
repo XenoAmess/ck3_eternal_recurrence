@@ -71,6 +71,10 @@ constexpr std::uintptr_t kDestroyValidCasusBelliConfigurationRva =
     0x101B3C0;
 constexpr std::uintptr_t kConstructCharacterInteractionContextRva =
     0x2C3EE50;
+constexpr std::uintptr_t kRedirectCharacterInteractionRolesRva =
+    0x2C3C4C0;
+constexpr std::uintptr_t kConstructCharacterInteractionContextAllRolesRva =
+    0x2C3F000;
 constexpr std::uintptr_t kCopyNativeIntArrayRva = 0x0BDBC10;
 constexpr std::uintptr_t kAppendNativeIntArrayRangeRva = 0x0975ED0;
 constexpr std::uintptr_t kRefreshCharacterInteractionContextRva =
@@ -116,7 +120,11 @@ constexpr std::size_t kPlayerCharacterEntryCountOffset = 0x64;
 constexpr std::size_t kPlayerCharacterIdOffset = 0xB0;
 constexpr std::size_t kPlayerCharacterPlayerIdOffset = 0xD8;
 constexpr std::size_t kCharacterIdOffset = 0x18;
+constexpr std::size_t kCharacterFamilyDataOffset = 0x1A0;
 constexpr std::size_t kCharacterDeathDataOffset = 0x1C8;
+constexpr std::size_t kFamilyBetrothedCharacterIdOffset = 0x10;
+constexpr std::size_t kFamilyPrimarySpouseCharacterIdOffset = 0x14;
+constexpr std::size_t kFamilySpouseCharacterIdsOffset = 0x20;
 constexpr std::size_t kWarStorageOffset = 0x20;
 constexpr std::size_t kWarIdOffset = 0x08;
 constexpr std::size_t kWarAttackersOffset = 0x20;
@@ -146,8 +154,6 @@ constexpr std::size_t kValidCasusBelliTargetTitlesOffset = 0x08;
 constexpr std::size_t kNativeArrayDataOffset = 0x00;
 constexpr std::size_t kNativeArrayCapacityOffset = 0x08;
 constexpr std::size_t kNativeArrayCountOffset = 0x0C;
-constexpr std::size_t kCharacterInteractionActorToMatchOffset = 0x2E0;
-constexpr std::size_t kCharacterInteractionRecipientToMatchOffset = 0x2E4;
 constexpr std::size_t kCharacterInteractionSpecialDataOffset = 0x330;
 constexpr std::size_t kWarDeclarationCasusBelliOffset = 0x08;
 constexpr std::size_t kWarDeclarationTargetTitlesOffset = 0x10;
@@ -160,6 +166,7 @@ constexpr std::int32_t kMaximumCasusBelliConfigurations = 10'000;
 constexpr std::int32_t kMaximumNativeTitleIds = 1'000'000;
 constexpr std::size_t kMaximumDatabaseObjectKeyBytes = 4'096;
 constexpr std::size_t kMsvcStringInlineCapacity = 15;
+constexpr std::size_t kMaximumMarriageValidationSamples = 8;
 
 struct PauseCommand {
   std::uintptr_t primary_vtable = 0;
@@ -541,7 +548,9 @@ bool HasArrangeMarriageReadBindings(const Bindings &bindings) noexcept {
          bindings.character_storage_slot != nullptr &&
          bindings.get_character_interaction_database != nullptr &&
          bindings.arrange_marriage_interaction_offset != 0 &&
-         bindings.construct_character_interaction_context != nullptr &&
+         bindings.redirect_character_interaction_roles != nullptr &&
+         bindings.construct_character_interaction_context_all_roles !=
+             nullptr &&
          bindings.refresh_character_interaction_context != nullptr &&
          bindings.finalize_character_interaction_context != nullptr &&
          bindings.validate_character_interaction_context != nullptr &&
@@ -565,23 +574,42 @@ void *ResolveCharacterInteraction(const Bindings &bindings,
 bool PrepareArrangeMarriageContext(
     const Bindings &bindings, std::int32_t played_character_id,
     std::int32_t candidate_character_id,
-    CharacterInteractionContextStorage &storage) noexcept {
+    CharacterInteractionContextStorage &storage,
+    ArrangeMarriageValidationSample *diagnostic_sample = nullptr) noexcept {
   void *const interaction =
       ResolveCharacterInteraction(
           bindings, bindings.arrange_marriage_interaction_offset);
   if (interaction == nullptr) {
     return false;
   }
+  std::int32_t actor_character_id = played_character_id;
+  std::int32_t recipient_character_id = candidate_character_id;
+  std::int32_t secondary_actor_character_id = played_character_id;
+  std::int32_t secondary_recipient_character_id = candidate_character_id;
+  std::int32_t intermediary_character_id = -1;
+  bindings.redirect_character_interaction_roles(
+      interaction, &actor_character_id, &recipient_character_id,
+      &secondary_actor_character_id, &secondary_recipient_character_id,
+      &intermediary_character_id);
+  if (diagnostic_sample != nullptr) {
+    diagnostic_sample->candidate_character_id = candidate_character_id;
+    diagnostic_sample->actor_character_id = actor_character_id;
+    diagnostic_sample->recipient_character_id = recipient_character_id;
+    diagnostic_sample->secondary_actor_character_id =
+        secondary_actor_character_id;
+    diagnostic_sample->secondary_recipient_character_id =
+        secondary_recipient_character_id;
+    diagnostic_sample->intermediary_character_id =
+        intermediary_character_id;
+  }
   void *const context = storage.bytes.data();
-  if (bindings.construct_character_interaction_context(
-          context, interaction, played_character_id,
-          candidate_character_id, nullptr, true) != context) {
+  if (bindings.construct_character_interaction_context_all_roles(
+          context, interaction, actor_character_id,
+          recipient_character_id, secondary_actor_character_id,
+          secondary_recipient_character_id, intermediary_character_id,
+          nullptr) != context) {
     return false;
   }
-  StoreAt(context, kCharacterInteractionActorToMatchOffset,
-          played_character_id);
-  StoreAt(context, kCharacterInteractionRecipientToMatchOffset,
-          candidate_character_id);
   bindings.refresh_character_interaction_context(context, true);
   bindings.finalize_character_interaction_context(context);
   return true;
@@ -603,6 +631,50 @@ bool ReadNativeIntArray(const void *native_array,
   output.reserve(static_cast<std::size_t>(count));
   for (std::int32_t index = 0; index < count; ++index) {
     output.push_back(data[index]);
+  }
+  return true;
+}
+
+bool ReadPlayedCharacterRelationships(
+    const Bindings &bindings, const void *played_character,
+    std::int32_t &betrothed_character_id,
+    std::int32_t &primary_spouse_character_id,
+    std::vector<std::int32_t> &spouse_character_ids) noexcept {
+  betrothed_character_id = -1;
+  primary_spouse_character_id = -1;
+  spouse_character_ids.clear();
+  if (played_character == nullptr) {
+    return true;
+  }
+  const void *const family_data =
+      LoadAt<const void *>(played_character, kCharacterFamilyDataOffset);
+  if (family_data == nullptr) {
+    return true;
+  }
+
+  const auto raw_betrothed_character_id = LoadAt<std::int32_t>(
+      family_data, kFamilyBetrothedCharacterIdOffset);
+  if (ResolveCharacter(bindings, raw_betrothed_character_id) != nullptr) {
+    betrothed_character_id = raw_betrothed_character_id;
+  }
+  const auto raw_primary_spouse_character_id = LoadAt<std::int32_t>(
+      family_data, kFamilyPrimarySpouseCharacterIdOffset);
+  if (ResolveCharacter(bindings, raw_primary_spouse_character_id) != nullptr) {
+    primary_spouse_character_id = raw_primary_spouse_character_id;
+  }
+
+  std::vector<std::int32_t> raw_spouse_character_ids;
+  if (!ReadNativeIntArray(
+          static_cast<const std::byte *>(family_data) +
+              kFamilySpouseCharacterIdsOffset,
+          raw_spouse_character_ids)) {
+    return false;
+  }
+  spouse_character_ids.reserve(raw_spouse_character_ids.size());
+  for (const auto spouse_character_id : raw_spouse_character_ids) {
+    if (ResolveCharacter(bindings, spouse_character_id) != nullptr) {
+      spouse_character_ids.push_back(spouse_character_id);
+    }
   }
   return true;
 }
@@ -1149,6 +1221,12 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.construct_character_interaction_context =
       reinterpret_cast<ConstructCharacterInteractionContext>(
           module + kConstructCharacterInteractionContextRva);
+  result.redirect_character_interaction_roles =
+      reinterpret_cast<RedirectCharacterInteractionRoles>(
+          module + kRedirectCharacterInteractionRolesRva);
+  result.construct_character_interaction_context_all_roles =
+      reinterpret_cast<ConstructCharacterInteractionContextAllRoles>(
+          module + kConstructCharacterInteractionContextAllRolesRva);
   result.copy_native_int_array = reinterpret_cast<CopyNativeIntArray>(
       module + kCopyNativeIntArrayRva);
   result.append_native_int_array_range =
@@ -1216,6 +1294,9 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
   if (!output.has_played_character) {
     output.played_character_id = -1;
     output.played_character_alive = false;
+    output.played_character_betrothed_id = -1;
+    output.played_character_primary_spouse_id = -1;
+    output.played_character_spouse_ids.clear();
   }
   output.has_active_event = ReadCurrentEvent(
       bindings, game_state, output.active_event_instance_id,
@@ -1229,6 +1310,14 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
                                            bindings,
                                            output.played_character_id)
                                      : nullptr;
+  if (output.has_played_character &&
+      !ReadPlayedCharacterRelationships(
+          bindings, played_character,
+          output.played_character_betrothed_id,
+          output.played_character_primary_spouse_id,
+          output.played_character_spouse_ids)) {
+    return false;
+  }
   output.has_pending_character_interaction = ReadPendingCharacterInteraction(
       bindings, played_character, output.played_character_id,
       output.pending_character_interaction_id,
@@ -1908,8 +1997,10 @@ DeclareWarResult SubmitDeclareWar(
 
 ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
     const Bindings &bindings,
-    std::vector<ArrangeMarriageChoice> &output) noexcept {
+    std::vector<ArrangeMarriageChoice> &output,
+    ArrangeMarriageQueryDiagnostics &diagnostics) noexcept {
   output.clear();
+  diagnostics = {};
   if (!HasArrangeMarriageReadBindings(bindings)) {
     return ReadArrangeMarriageChoicesResult::unavailable;
   }
@@ -1934,6 +2025,7 @@ ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
   void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
   const auto capacity =
       LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  diagnostics.storage_capacity = capacity;
   if (slots == nullptr || capacity <= 0 ||
       capacity > kMaximumComponentCapacity) {
     return ReadArrangeMarriageChoicesResult::unavailable;
@@ -1941,36 +2033,57 @@ ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
 
   std::vector<ArrangeMarriageChoice> choices;
   for (std::int32_t index = 0; index < capacity; ++index) {
+    ++diagnostics.slots_scanned;
     void *const candidate_character = LoadAt<void *>(
         slots, static_cast<std::size_t>(index) *
                        kComponentStorageSlotSize +
                    kComponentStorageSlotObjectOffset);
-    if (candidate_character == nullptr ||
-        candidate_character == played_character ||
-        LoadAt<void *>(candidate_character, kCharacterDeathDataOffset) !=
-            nullptr) {
+    if (candidate_character == nullptr) {
+      ++diagnostics.empty_slots;
+      continue;
+    }
+    if (candidate_character == played_character) {
+      ++diagnostics.self_candidates;
+      continue;
+    }
+    if (LoadAt<void *>(candidate_character, kCharacterDeathDataOffset) !=
+        nullptr) {
+      ++diagnostics.dead_candidates;
       continue;
     }
     const auto candidate_character_id =
         LoadAt<std::int32_t>(candidate_character, kCharacterIdOffset);
     if ((static_cast<std::uint32_t>(candidate_character_id) &
          0x00FFFFFFU) != static_cast<std::uint32_t>(index)) {
+      ++diagnostics.generation_mismatch_candidates;
       continue;
     }
+    ++diagnostics.live_candidates;
 
     CharacterInteractionContextStorage context_storage{};
     void *const context = context_storage.bytes.data();
+    ArrangeMarriageValidationSample sample{};
+    sample.slot_index = index;
+    sample.candidate_character_id = candidate_character_id;
     if (!PrepareArrangeMarriageContext(
             bindings, current.played_character_id,
-            candidate_character_id, context_storage)) {
+            candidate_character_id, context_storage, &sample)) {
+      ++diagnostics.context_construct_failures;
       return ReadArrangeMarriageChoicesResult::unavailable;
     }
+    ++diagnostics.contexts_constructed;
     const bool available =
         bindings.validate_character_interaction_context(context, nullptr);
     bindings.destroy_character_interaction_context(context);
     if (!available) {
+      ++diagnostics.native_validate_false;
+      if (diagnostics.validation_false_samples.size() <
+          kMaximumMarriageValidationSamples) {
+        diagnostics.validation_false_samples.push_back(sample);
+      }
       continue;
     }
+    ++diagnostics.native_validate_true;
     choices.push_back(
         {current.played_character_id, candidate_character_id});
   }

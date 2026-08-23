@@ -2526,6 +2526,58 @@ def _played_character(value: object) -> dict[str, object] | None:
                 "has_heir": has_heir,
             }
         )
+    relationship_fields = {
+        "betrothed_id",
+        "primary_spouse_id",
+        "spouse_ids",
+    }
+    if relationship_fields & value.keys():
+        if not relationship_fields <= value.keys():
+            raise ValueError(
+                "native played_character relationship state is incomplete"
+            )
+        betrothed_id = value.get("betrothed_id")
+        primary_spouse_id = value.get("primary_spouse_id")
+        spouse_ids = value.get("spouse_ids")
+        for name, related_id in (
+            ("betrothed_id", betrothed_id),
+            ("primary_spouse_id", primary_spouse_id),
+        ):
+            if related_id is not None and (
+                isinstance(related_id, bool)
+                or not isinstance(related_id, int)
+                or related_id < 0
+            ):
+                raise ValueError(
+                    f"native played_character {name} is malformed"
+                )
+        if not isinstance(spouse_ids, list) or any(
+            isinstance(related_id, bool)
+            or not isinstance(related_id, int)
+            or related_id < 0
+            for related_id in spouse_ids
+        ):
+            raise ValueError(
+                "native played_character spouse_ids is malformed"
+            )
+        if len(set(spouse_ids)) != len(spouse_ids):
+            raise ValueError(
+                "native played_character spouse_ids contains duplicates"
+            )
+        if (
+            primary_spouse_id is not None
+            and primary_spouse_id not in spouse_ids
+        ):
+            raise ValueError(
+                "native played_character primary_spouse_id is not a spouse"
+            )
+        result.update(
+            {
+                "betrothed_id": betrothed_id,
+                "primary_spouse_id": primary_spouse_id,
+                "spouse_ids": list(spouse_ids),
+            }
+        )
     return result
 
 

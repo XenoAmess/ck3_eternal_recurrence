@@ -238,6 +238,57 @@ void AppendMarriageChoice(
   result += '}';
 }
 
+void AppendMarriageQueryDiagnostics(
+    std::string &result,
+    const xar::game::ArrangeMarriageQueryDiagnostics &diagnostics) {
+  result += "{\"storage_capacity\":";
+  result += SignedNumber(diagnostics.storage_capacity);
+  result += ",\"slots_scanned\":";
+  result += SignedNumber(diagnostics.slots_scanned);
+  result += ",\"empty_slots\":";
+  result += SignedNumber(diagnostics.empty_slots);
+  result += ",\"live_candidates\":";
+  result += SignedNumber(diagnostics.live_candidates);
+  result += ",\"dead_candidates\":";
+  result += SignedNumber(diagnostics.dead_candidates);
+  result += ",\"self_candidates\":";
+  result += SignedNumber(diagnostics.self_candidates);
+  result += ",\"generation_mismatch_candidates\":";
+  result += SignedNumber(diagnostics.generation_mismatch_candidates);
+  result += ",\"contexts_constructed\":";
+  result += SignedNumber(diagnostics.contexts_constructed);
+  result += ",\"context_construct_failures\":";
+  result += SignedNumber(diagnostics.context_construct_failures);
+  result += ",\"native_validate_true\":";
+  result += SignedNumber(diagnostics.native_validate_true);
+  result += ",\"native_validate_false\":";
+  result += SignedNumber(diagnostics.native_validate_false);
+  result += ",\"validation_false_samples\":[";
+  for (std::size_t index = 0;
+       index < diagnostics.validation_false_samples.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    const auto &sample = diagnostics.validation_false_samples[index];
+    result += "{\"slot_index\":";
+    result += SignedNumber(sample.slot_index);
+    result += ",\"candidate_character_id\":";
+    result += SignedNumber(sample.candidate_character_id);
+    result += ",\"actor_character_id\":";
+    result += SignedNumber(sample.actor_character_id);
+    result += ",\"recipient_character_id\":";
+    result += SignedNumber(sample.recipient_character_id);
+    result += ",\"secondary_actor_character_id\":";
+    result += SignedNumber(sample.secondary_actor_character_id);
+    result += ",\"secondary_recipient_character_id\":";
+    result += SignedNumber(sample.secondary_recipient_character_id);
+    result += ",\"intermediary_character_id\":";
+    result += SignedNumber(sample.intermediary_character_id);
+    result += '}';
+  }
+  result += "]}";
+}
+
 std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
                                std::uint64_t revision,
                                const CheckpointSubmission &checkpoint) {
@@ -266,6 +317,27 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
     result += SignedNumber(snapshot.played_character_id);
     result += ",\"alive\":";
     result += snapshot.played_character_alive ? "true" : "false";
+    result += ",\"betrothed_id\":";
+    if (snapshot.played_character_betrothed_id == -1) {
+      result += "null";
+    } else {
+      result += SignedNumber(snapshot.played_character_betrothed_id);
+    }
+    result += ",\"primary_spouse_id\":";
+    if (snapshot.played_character_primary_spouse_id == -1) {
+      result += "null";
+    } else {
+      result += SignedNumber(snapshot.played_character_primary_spouse_id);
+    }
+    result += ",\"spouse_ids\":[";
+    for (std::size_t index = 0;
+         index < snapshot.played_character_spouse_ids.size(); ++index) {
+      if (index != 0) {
+        result += ',';
+      }
+      result += SignedNumber(snapshot.played_character_spouse_ids[index]);
+    }
+    result += ']';
     result += '}';
   }
   result += ",\"active_event\":";
@@ -400,7 +472,8 @@ std::string DeclarableWarsResultFrame(
 
 std::string ArrangeMarriageChoicesResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
-    const std::vector<xar::game::ArrangeMarriageChoice> &choices) {
+    const std::vector<xar::game::ArrangeMarriageChoice> &choices,
+    const xar::game::ArrangeMarriageQueryDiagnostics &diagnostics) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
       "\"request_id\":\"";
@@ -417,7 +490,9 @@ std::string ArrangeMarriageChoicesResultFrame(
     }
     AppendMarriageChoice(result, choices[index]);
   }
-  result += "]}}";
+  result += "],\"arrange_marriage_diagnostics\":";
+  AppendMarriageQueryDiagnostics(result, diagnostics);
+  result += "}}";
   return result;
 }
 
@@ -771,15 +846,16 @@ void RunConnectedSession(HANDLE pipe, const xar::game::GameAdapter &game,
           }
         } else if (step == "query-arrange-marriage-choices") {
           marriage_choices.clear();
+          xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};
           const auto result = xar::game::ReadArrangeMarriageChoices(
-              game, marriage_choices);
+              game, marriage_choices, diagnostics);
           if (result == xar::game::
                             ReadArrangeMarriageChoicesResult::available) {
             ++marriage_query_sequence;
             connected = xar::bridge::WriteFrame(
                 pipe, ArrangeMarriageChoicesResultFrame(
                           request_id, marriage_query_sequence,
-                          marriage_choices));
+                          marriage_choices, diagnostics));
           } else {
             const std::string_view error =
                 result == xar::game::

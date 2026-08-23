@@ -56,6 +56,18 @@ using ConstructCharacterInteractionContext = void *(*)(
     void *context, void *interaction, std::int32_t actor_character_id,
     std::int32_t recipient_character_id, void *extra_context,
     bool initialize_special_data);
+using RedirectCharacterInteractionRoles = void (*)(
+    void *interaction, std::int32_t *actor_character_id,
+    std::int32_t *recipient_character_id,
+    std::int32_t *secondary_actor_character_id,
+    std::int32_t *secondary_recipient_character_id,
+    std::int32_t *intermediary_character_id);
+using ConstructCharacterInteractionContextAllRoles = void *(*)(
+    void *context, void *interaction, std::int32_t actor_character_id,
+    std::int32_t recipient_character_id,
+    std::int32_t secondary_actor_character_id,
+    std::int32_t secondary_recipient_character_id,
+    std::int32_t intermediary_character_id, void *extra_context);
 using CopyNativeIntArray = void (*)(void *destination, const void *source);
 using AppendNativeIntArrayRange = void (*)(void *destination,
                                            std::int32_t current_count,
@@ -137,6 +149,10 @@ struct Bindings {
       destroy_valid_casus_belli_configuration = nullptr;
   ConstructCharacterInteractionContext
       construct_character_interaction_context = nullptr;
+  RedirectCharacterInteractionRoles redirect_character_interaction_roles =
+      nullptr;
+  ConstructCharacterInteractionContextAllRoles
+      construct_character_interaction_context_all_roles = nullptr;
   CopyNativeIntArray copy_native_int_array = nullptr;
   AppendNativeIntArrayRange append_native_int_array_range = nullptr;
   RefreshCharacterInteractionContext
@@ -157,6 +173,8 @@ struct Bindings {
 
 using game::ActiveWarSnapshot;
 using game::ArrangeMarriageChoice;
+using game::ArrangeMarriageQueryDiagnostics;
+using game::ArrangeMarriageValidationSample;
 using game::ArmySnapshot;
 using game::DeclarableWarSnapshot;
 using game::PlayerWarSide;
@@ -265,7 +283,8 @@ using game::ReadArrangeMarriageChoicesResult;
 // interaction.
 ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
     const Bindings &bindings,
-    std::vector<ArrangeMarriageChoice> &output) noexcept;
+    std::vector<ArrangeMarriageChoice> &output,
+    ArrangeMarriageQueryDiagnostics &diagnostics) noexcept;
 
 using game::ArrangeMarriageResult;
 

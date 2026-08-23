@@ -560,6 +560,33 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertFalse(capabilities["one_life_terminal"])
         self.assertNotIn("death-terminal", capabilities["action_steps"])
 
+    def test_played_character_relationship_state_is_preserved(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.state.played-character")
+        )
+        endpoint.publish(
+            _snapshot(
+                31,
+                played_character={
+                    "character_id": 707,
+                    "alive": True,
+                    "betrothed_id": None,
+                    "primary_spouse_id": 808,
+                    "spouse_ids": [808, 809],
+                },
+            )
+        )
+
+        played = driver.take_snapshot()["played_character"]
+        self.assertIsNone(played["betrothed_id"])
+        self.assertEqual(played["primary_spouse_id"], 808)
+        self.assertEqual(played["spouse_ids"], [808, 809])
+
     def test_map_ready_without_played_character_does_not_invent_terminal(
         self,
     ) -> None:

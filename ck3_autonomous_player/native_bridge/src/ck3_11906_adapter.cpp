@@ -100,8 +100,10 @@ public:
     return ck3_11906::SubmitDeclareWar(bindings_, declaration);
   }
   ReadArrangeMarriageChoicesResult read_arrange_marriage_choices(
-      std::vector<ArrangeMarriageChoice> &output) const noexcept override {
-    return ck3_11906::ReadArrangeMarriageChoices(bindings_, output);
+      std::vector<ArrangeMarriageChoice> &output,
+      ArrangeMarriageQueryDiagnostics &diagnostics) const noexcept override {
+    return ck3_11906::ReadArrangeMarriageChoices(bindings_, output,
+                                                  diagnostics);
   }
   ArrangeMarriageResult submit_arrange_marriage(
       const ArrangeMarriageChoice &choice) const noexcept override {

@@ -33,6 +33,8 @@ from .runtime import utc_now
 
 
 ONE_LIFE_STRATEGY_RELATIVE_PATH = Path("strategy") / "one-life-history.json"
+_EMPTY_MARRIAGE_QUERY_LIMIT = 3
+_SUBMITTED_MARRIAGE_QUERY_LIMIT = 7
 
 
 def _expanded_command_rows(
@@ -538,7 +540,30 @@ def choose_one_life_turn(
             "reason": "create a native CK3 recovery point before strategic mutations",
         }
 
-    if not _latest_prefix_index(rows, "arrange-marriage-"):
+    native_relationship_known = (
+        isinstance(played_character, dict)
+        and {
+            "betrothed_id",
+            "primary_spouse_id",
+            "spouse_ids",
+        }
+        <= played_character.keys()
+    )
+    native_relationship_present = (
+        native_relationship_known
+        and (
+            played_character.get("betrothed_id") is not None
+            or played_character.get("primary_spouse_id") is not None
+            or bool(played_character.get("spouse_ids"))
+        )
+    )
+    successful_marriage_index = _latest_prefix_index(
+        rows, "arrange-marriage-"
+    )
+    if (
+        not native_relationship_present
+        and (native_relationship_known or not successful_marriage_index)
+    ):
         raw_marriage_choices = (
             snapshot.get("arrange_marriage_choices")
             if isinstance(snapshot, dict)
@@ -576,15 +601,73 @@ def choose_one_life_turn(
                 "reason": "the selected native marriage choice is not executable",
                 "marriage_choice": choice,
             }
+        marriage_query_index = _latest_index(
+            rows, QUERY_ARRANGE_MARRIAGE_CHOICES_STEP
+        )
+        marriage_attempt_index = _latest_prefix_index(
+            rows, "arrange-marriage-", successful_only=False
+        )
+        life_advance_index = _latest_index(rows, "life-advance")
+        marriage_query_attempts = sum(
+            1
+            for fallback_index, row in enumerate(rows, start=1)
+            if _effective_command(row) == QUERY_ARRANGE_MARRIAGE_CHOICES_STEP
+            and row.get("ok") is True
+            and (
+                row.get("index")
+                if isinstance(row.get("index"), int)
+                else fallback_index
+            )
+            > successful_marriage_index
+        )
+        marriage_query_limit = (
+            _SUBMITTED_MARRIAGE_QUERY_LIMIT
+            if successful_marriage_index
+            else _EMPTY_MARRIAGE_QUERY_LIMIT
+        )
         if (
-            not _latest_index(rows, QUERY_ARRANGE_MARRIAGE_CHOICES_STEP)
+            successful_marriage_index
+            > max(marriage_query_index, life_advance_index)
+            and "life-advance" in available_steps
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_arrange_marriage_response_wait",
+                "selected_step": "life-advance",
+                "reason": "advance once so CK3 can resolve the submitted marriage proposal",
+            }
+        if (
+            marriage_query_attempts < marriage_query_limit
             and QUERY_ARRANGE_MARRIAGE_CHOICES_STEP in available_steps
+            and (
+                marriage_query_index == 0
+                or (
+                    marriage_attempt_index > marriage_query_index
+                    and marriage_attempt_index > successful_marriage_index
+                )
+                or life_advance_index > marriage_query_index
+            )
         ):
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "native_arrange_marriage_discovery",
                 "selected_step": QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
-                "reason": "enumerate valid native marriage choices before starting the first war",
+                "reason": (
+                    "refresh native marriage choices after the world changed or a prior choice failed"
+                    if marriage_query_index
+                    else "enumerate valid native marriage choices before starting the first war"
+                ),
+            }
+        if (
+            marriage_query_attempts < marriage_query_limit
+            and marriage_query_index > life_advance_index
+            and "life-advance" in available_steps
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_arrange_marriage_refresh",
+                "selected_step": "life-advance",
+                "reason": "the latest native marriage query was empty; advance time once before refreshing it",
             }
 
     declaration_index = _latest_prefix_index(rows, "declare-war-")

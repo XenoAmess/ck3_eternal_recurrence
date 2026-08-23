@@ -101,6 +101,197 @@ class NativeMarriageContractTests(unittest.TestCase):
         )
         self.assertEqual(after_submission["selected_step"], "query-declarable-wars")
 
+    def test_empty_query_advances_once_then_refreshes_choices(self) -> None:
+        commands = [
+            {"index": 1, "command": "save-checkpoint", "ok": True},
+            {
+                "index": 2,
+                "command": QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                "ok": True,
+                "result": {"arrange_marriage_choices": []},
+            },
+        ]
+        snapshot = {
+            "active_wars": [],
+            "player_armies": [],
+            "arrange_marriage_choices": [],
+            "declarable_wars": [],
+        }
+        steps = {
+            QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+            "life-advance",
+            "query-declarable-wars",
+        }
+
+        wait = choose_one_life_turn(
+            commands,
+            snapshot=snapshot,
+            action_steps=steps,
+        )
+        self.assertEqual(wait["selected_step"], "life-advance")
+
+        refreshed = choose_one_life_turn(
+            [
+                *commands,
+                {"index": 3, "command": "life-advance", "ok": True},
+            ],
+            snapshot=snapshot,
+            action_steps=steps,
+        )
+        self.assertEqual(
+            refreshed["selected_step"],
+            QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+        )
+
+    def test_failed_marriage_choice_forces_a_fresh_query(self) -> None:
+        decision = choose_one_life_turn(
+            [
+                {"index": 1, "command": "save-checkpoint", "ok": True},
+                {
+                    "index": 2,
+                    "command": QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                    "ok": True,
+                },
+                {
+                    "index": 3,
+                    "command": "arrange-marriage-707-808",
+                    "ok": False,
+                    "error": "choice became stale",
+                },
+            ],
+            snapshot={
+                "active_wars": [],
+                "player_armies": [],
+                "arrange_marriage_choices": [],
+                "declarable_wars": [],
+            },
+            action_steps={
+                QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                "life-advance",
+                "query-declarable-wars",
+            },
+        )
+        self.assertEqual(
+            decision["selected_step"],
+            QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+        )
+
+    def test_existing_native_marriage_skips_a_second_proposal(self) -> None:
+        decision = choose_one_life_turn(
+            [{"index": 1, "command": "save-checkpoint", "ok": True}],
+            snapshot={
+                "played_character": {
+                    "character_id": 707,
+                    "alive": True,
+                    "betrothed_id": None,
+                    "primary_spouse_id": 808,
+                    "spouse_ids": [808],
+                },
+                "active_wars": [],
+                "player_armies": [],
+                "arrange_marriage_choices": [],
+                "declarable_wars": [],
+            },
+            action_steps={
+                QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                "query-declarable-wars",
+            },
+        )
+        self.assertEqual(decision["selected_step"], "query-declarable-wars")
+
+    def test_submitted_native_proposal_waits_then_refreshes_until_observed(self) -> None:
+        snapshot = {
+            "played_character": {
+                "character_id": 707,
+                "alive": True,
+                "betrothed_id": None,
+                "primary_spouse_id": None,
+                "spouse_ids": [],
+            },
+            "active_wars": [],
+            "player_armies": [],
+            "arrange_marriage_choices": [],
+            "declarable_wars": [],
+        }
+        steps = {
+            QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+            "life-advance",
+            "query-declarable-wars",
+        }
+        commands = [
+            {"index": 1, "command": "save-checkpoint", "ok": True},
+            {
+                "index": 2,
+                "command": QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                "ok": True,
+            },
+            {
+                "index": 3,
+                "command": "arrange-marriage-707-808",
+                "ok": True,
+                "result": {
+                    "marriage_action": {
+                        "status": "proposal_submitted",
+                        "candidate_character_id": 808,
+                    }
+                },
+            },
+        ]
+
+        waiting = choose_one_life_turn(
+            commands,
+            snapshot=snapshot,
+            action_steps=steps,
+        )
+        self.assertEqual(waiting["selected_step"], "life-advance")
+
+        refreshed = choose_one_life_turn(
+            [
+                *commands,
+                {"index": 4, "command": "life-advance", "ok": True},
+            ],
+            snapshot=snapshot,
+            action_steps=steps,
+        )
+        self.assertEqual(
+            refreshed["selected_step"],
+            QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+        )
+
+    def test_repeated_empty_queries_do_not_block_the_rest_of_the_life(self) -> None:
+        decision = choose_one_life_turn(
+            [
+                {"index": 1, "command": "save-checkpoint", "ok": True},
+                *(
+                    {
+                        "index": index,
+                        "command": QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                        "ok": True,
+                    }
+                    for index in range(2, 5)
+                ),
+            ],
+            snapshot={
+                "played_character": {
+                    "character_id": 707,
+                    "alive": True,
+                    "betrothed_id": None,
+                    "primary_spouse_id": None,
+                    "spouse_ids": [],
+                },
+                "active_wars": [],
+                "player_armies": [],
+                "arrange_marriage_choices": [],
+                "declarable_wars": [],
+            },
+            action_steps={
+                QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                "life-advance",
+                "query-declarable-wars",
+            },
+        )
+        self.assertEqual(decision["selected_step"], "query-declarable-wars")
+
 
 if __name__ == "__main__":
     unittest.main()
