@@ -26,7 +26,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     MAP_PANEL_SHORTCUTS,
     OPENING_ALLOWED_CONTROLS,
     OPENING_CONTRACT,
-    ROBERT_CAPITAL_COUNTY_CANDIDATE_POINTS,
+    ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS,
     STEWARD_DEVELOP_COUNTY_TASK_CENTER,
     _building_construction_in_progress,
     _choose_first_blessing,
@@ -532,7 +532,7 @@ class OpeningContractTests(unittest.TestCase):
         )
         self.assertTrue(_building_construction_in_progress(frame))
 
-    def test_steward_development_states_bind_visible_task_and_capital(self) -> None:
+    def test_steward_development_states_bind_visible_task_and_foggia(self) -> None:
         targeting = SimpleNamespace(
             client_rect=(0, 0, 2560, 1440),
             spans=(
@@ -556,7 +556,7 @@ class OpeningContractTests(unittest.TestCase):
             client_rect=(0, 0, 2560, 1440),
             spans=(
                 span(
-                    "派遣你的财政总管前往阿普利亚伯爵领执行提升伯爵领发展度任务。",
+                    "派遣你的财政总管前往福贾伯爵领执行提升伯爵领发展度任务。",
                     (1280, 620),
                     (850, 600, 1710, 640),
                 ),
@@ -572,20 +572,15 @@ class OpeningContractTests(unittest.TestCase):
                 span("内阁", (2124, 95), (2092, 78, 2156, 112)),
                 span("财政总管", (2235, 546), (2194, 533, 2276, 560)),
                 span(
-                    "提升伯爵领发展度",
-                    (2050, 760),
-                    (1930, 744, 2170, 776),
-                ),
-                span(
-                    "阿普利亚伯爵领",
+                    "于福贾伯爵领提升伯爵领发展度",
                     (2230, 620),
-                    (2140, 604, 2320, 636),
+                    (2050, 604, 2410, 636),
                 ),
             ),
         )
         self.assertTrue(_steward_development_active(active))
         self.assertEqual(STEWARD_DEVELOP_COUNTY_TASK_CENTER, (2160, 803))
-        self.assertIn((1220, 560), ROBERT_CAPITAL_COUNTY_CANDIDATE_POINTS)
+        self.assertIn((1220, 560), ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS)
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (

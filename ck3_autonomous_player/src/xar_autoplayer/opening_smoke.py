@@ -82,9 +82,9 @@ HOLDING_EMPTY_BUILDING_SLOT_CENTER = (461, 1398)
 # CK3 1.19.0.6, 2560x1440/100% UI.  Council tasks do not expose native
 # shortcuts.  The task identity is therefore confirmed by its visible hover
 # tooltip before the single click.  County candidates are hover-probed and the
-# click is only submitted when CK3 visibly names Robert's capital county.
+# click is only submitted when CK3 visibly names the eligible Foggia county.
 STEWARD_DEVELOP_COUNTY_TASK_CENTER = (2160, 803)
-ROBERT_CAPITAL_COUNTY_CANDIDATE_POINTS = (
+ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS = (
     (1220, 560),
     (1320, 520),
     (1360, 560),
@@ -775,7 +775,7 @@ def _steward_development_active(frame: object) -> bool:
     return bool(
         _council_panel_visible(frame)
         and _spans_with_text(frame, "提升伯爵领发展度", contains=True)
-        and _spans_with_text(frame, "阿普利亚伯爵领", contains=True)
+        and _spans_with_text(frame, "福贾伯爵领", contains=True)
     )
 
 
@@ -1327,7 +1327,7 @@ def _drive_opening(
         )
         return first, second
 
-    def assign_steward_to_develop_capital() -> tuple[
+    def assign_steward_to_develop_foggia() -> tuple[
         dict[str, object], dict[str, object]
     ]:
         _council_summary, council_frame = inspect_map_panel(
@@ -1418,7 +1418,7 @@ def _drive_opening(
         target_point = None
         target_hover = None
         hover_attempts: list[dict[str, object]] = []
-        for candidate in ROBERT_CAPITAL_COUNTY_CANDIDATE_POINTS:
+        for candidate in ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS:
             window.require_foreground()
             window.require_unobscured(candidate)
             pyautogui.moveTo(
@@ -1432,10 +1432,10 @@ def _drive_opening(
                     lambda frame: bool(
                         _steward_development_targeting_active(frame)
                         and _spans_with_text(
-                            frame, "阿普利亚伯爵领", contains=True
+                            frame, "福贾伯爵领", contains=True
                         )
                     ),
-                    "capital county hover",
+                    "Foggia county hover",
                     timeout_seconds=4.0,
                 )
             except AgentError:
@@ -1456,7 +1456,7 @@ def _drive_opening(
             break
         if target_point is None or target_hover is None:
             raise AgentError(
-                "capital county was not visibly identified at any frozen map candidate"
+                "Foggia county was not visibly identified at any frozen map candidate"
             )
 
         append_event(
@@ -1465,14 +1465,14 @@ def _drive_opening(
                 "kind": "opening_pointer_input_planned",
                 "control_id": "steward_development_targeting.apulia_county",
                 "center": list(target_point),
-                "visible_identity": "阿普利亚伯爵领",
+                "visible_identity": "福贾伯爵领",
                 "expected_post_screen": "steward_development_assigned",
             },
         )
         target_accepted, target_last_error = _prepare_left_click_batch(0.05)()
         if target_accepted != 2:
             raise AgentError(
-                "capital county task click was partial: "
+                "Foggia county task click was partial: "
                 f"accepted={target_accepted}, last_error={target_last_error}"
             )
 
@@ -1498,7 +1498,7 @@ def _drive_opening(
                 "control_id": "steward_development_targeting.apulia_county",
                 "status": "confirmed",
                 "input_kind": "visible_layout_click",
-                "visible_identity": "阿普利亚伯爵领",
+                "visible_identity": "福贾伯爵领",
                 "click_point": list(target_point),
                 "source_observation_id": target_hover.observation_id,
                 "send_input": {
@@ -1600,7 +1600,7 @@ def _drive_opening(
                 "status": "confirmed",
                 "input_kind": "pointer_hover",
                 "visible_identity": "提升伯爵领发展度",
-                "visible_target": "阿普利亚伯爵领",
+                "visible_target": "福贾伯爵领",
                 "source_observation_id": getattr(
                     active_panel, "observation_id", None
                 ),
@@ -1665,14 +1665,14 @@ def _drive_opening(
             {
                 "councillor": "财政总管",
                 "task": "提升伯爵领发展度",
-                "target": "阿普利亚伯爵领",
+                "target": "福贾伯爵领",
                 "task_button_center": list(task_point),
                 "target_point": list(target_point),
                 "target_hover_attempts": hover_attempts,
                 "targeting_observation_id": targeting.observation_id,
                 "confirmation_observation_id": confirmation_observation_id,
                 "active_observation_id": active_frame.observation_id,
-                "strategy": "capital-development-first-v1",
+                "strategy": "visible-eligible-foggia-development-v1",
                 "policy_boundary": "player-visible task tooltip and county name",
             },
             final_map.to_policy_json(),
@@ -2376,7 +2376,7 @@ def _drive_opening(
     steward_development = None
     if assign_steward_development:
         steward_development, final_observation = (
-            assign_steward_to_develop_capital()
+            assign_steward_to_develop_foggia()
         )
     paused_date = _extract_map_date(final_observation)
     if int(paused_date["ordinal"]) < int(running_date["ordinal"]):
