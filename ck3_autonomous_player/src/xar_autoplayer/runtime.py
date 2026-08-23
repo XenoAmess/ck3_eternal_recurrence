@@ -2268,13 +2268,15 @@ def launch(
     job_name: str | None = None,
     native_bridge: NativeBridgeLaunchConfig | None = None,
     continue_last_save: bool = False,
+    verify_prepared_profile: bool = True,
 ) -> SessionHandle:
     native_bridge = (
         native_bridge_launch_config_from_environment()
         if native_bridge is None
         else validate_native_bridge_launch_config(native_bridge)
     )
-    verify_profile(spec)
+    if verify_prepared_profile:
+        verify_profile(spec)
     if job_name is not None and not re.fullmatch(
         r"XarAutoplayer-Crash-[0-9a-f]{32}", job_name
     ):

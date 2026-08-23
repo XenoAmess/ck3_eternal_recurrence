@@ -279,6 +279,12 @@ def _native_session_locked(
                             spec,
                             native_bridge=config,
                             continue_last_save=True,
+                            # The session owns both global launch and state
+                            # locks.  Its first launch already verified the
+                            # committed profile; repeating the full Git/runtime
+                            # fingerprint here can block a hot restore without
+                            # adding any new gameplay information.
+                            verify_prepared_profile=False,
                         )
                         pid = int(handle.process.pid)
                         result = {

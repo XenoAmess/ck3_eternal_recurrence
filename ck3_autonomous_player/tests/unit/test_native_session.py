@@ -256,6 +256,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
                     self.spec,
                     native_bridge=config,
                     continue_last_save=True,
+                    verify_prepared_profile=False,
                 ),
             ],
         )

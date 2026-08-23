@@ -404,8 +404,13 @@ def _git_lines(*arguments: str) -> list[str]:
             check=True,
             capture_output=True,
             text=True,
+            timeout=15,
         )
-    except (FileNotFoundError, subprocess.CalledProcessError) as error:
+    except (
+        FileNotFoundError,
+        subprocess.CalledProcessError,
+        subprocess.TimeoutExpired,
+    ) as error:
         raise AgentError(f"git {' '.join(arguments)} failed") from error
     return [line for line in result.stdout.splitlines() if line.strip()]
 

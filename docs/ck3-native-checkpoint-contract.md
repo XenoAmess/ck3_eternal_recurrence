@@ -58,6 +58,9 @@ MCP 同时保留 generic `ck3_execute_step("save-checkpoint")`，并提供 typed
 这条路径不导入 OCR、截图或输入模块，也不激活窗口。`native-headless` 缺少受管
 `native-session` 或 checkpoint 文件时直接失败；`hybrid-fallback` 对这一特定步骤也不会改走视觉
 `restore-checkpoint`。当前实现是固定 checkpoint 的进程级 `-continuelastsave`，不是同进程热读档。
+`native-session` 在入口已经验证一次 committed profile，并在整个会话期间独占同一 state/launch 锁；受管重启因此复用
+该验证结果，不再重复执行完整 Git/runtime 指纹。这样恢复时间由 CK3 重载决定，不会被第二次 `git ls-files` 卡住；普通冷启动
+仍执行完整验证，Git 子进程本身也有 15 秒上限。
 
 ## Minimized 实机结果
 

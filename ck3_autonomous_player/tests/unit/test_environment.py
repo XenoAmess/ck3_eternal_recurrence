@@ -21,6 +21,7 @@ from xar_autoplayer.environment import (  # noqa: E402
     REPO_ROOT,
     AgentError,
     EnvironmentSpec,
+    _git_lines,
     ck3_process_inventory,
     ensure_state_path_safe,
     prepare_profile,
@@ -121,6 +122,13 @@ class PathSafetyTests(unittest.TestCase):
 
 
 class PreparedProfileTests(unittest.TestCase):
+    def test_git_fingerprint_command_has_a_bounded_runtime(self) -> None:
+        with mock.patch(
+            "xar_autoplayer.environment.subprocess.run",
+            side_effect=subprocess.TimeoutExpired(["git", "ls-files"], 15),
+        ), self.assertRaisesRegex(AgentError, "git ls-files failed"):
+            _git_lines("ls-files")
+
     def setUp(self) -> None:
         self.process_patch = mock.patch(
             "xar_autoplayer.environment.ck3_processes", return_value=[]
