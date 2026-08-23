@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import importlib
+import json
 import math
 from pathlib import Path
 import re
 import shutil
+import sys
 import time
 from types import SimpleNamespace
 import uuid
@@ -771,12 +774,73 @@ def _steward_development_assignment_confirmation(frame: object) -> bool:
 
 
 def _steward_development_active(frame: object) -> bool:
-    """Bind the active steward task to its visible task name and county."""
+    """Recognize the steward's active assignment from the persistent task card."""
     return bool(
         _council_panel_visible(frame)
-        and _spans_with_text(frame, "提升伯爵领发展度", contains=True)
-        and _spans_with_text(frame, "福贾伯爵领", contains=True)
+        and _spans_with_text(frame, "在福贾伯爵领", contains=True)
+        and _spans_with_text(frame, "剩余", contains=True)
     )
+
+
+_OPENING_REPLAY_CHECKS = {
+    "council-panel": _council_panel_visible,
+    "steward-development-targeting": _steward_development_targeting_active,
+    "steward-development-confirmation": (
+        _steward_development_assignment_confirmation
+    ),
+    "steward-development-active": _steward_development_active,
+}
+
+
+def replay_opening_observation(
+    observation_path: Path, check: str
+) -> dict[str, object]:
+    """Evaluate a gameplay predicate against archived OCR without launching CK3."""
+    try:
+        payload = json.loads(observation_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, json.JSONDecodeError) as error:
+        raise AgentError(f"opening observation could not be read: {error}") from error
+    predicate = _OPENING_REPLAY_CHECKS.get(check)
+    if predicate is None:
+        raise AgentError(f"unknown opening replay check: {check}")
+    policy = payload.get("policy_observation")
+    private = payload.get("private_audit")
+    if not isinstance(policy, dict) or not isinstance(private, dict):
+        raise AgentError("opening observation archive is malformed")
+    ocr = policy.get("ocr")
+    client_rect = private.get("client_rect")
+    if not isinstance(ocr, list) or not isinstance(client_rect, list):
+        raise AgentError("opening observation OCR or client rect is missing")
+    spans = []
+    for item in ocr:
+        if not isinstance(item, dict):
+            raise AgentError("opening observation OCR row is malformed")
+        center = item.get("center")
+        bbox = item.get("bbox")
+        if not isinstance(center, list) or not isinstance(bbox, list):
+            raise AgentError("opening observation OCR geometry is malformed")
+        spans.append(
+            SimpleNamespace(
+                text=str(item.get("text", "")),
+                center=tuple(center),
+                bbox=tuple(bbox),
+            )
+        )
+    frame = SimpleNamespace(
+        client_rect=tuple(client_rect),
+        spans=tuple(spans),
+        screen=policy.get("screen"),
+    )
+    matched = bool(predicate(frame))
+    return {
+        "ok": matched,
+        "mode": "offline_observation_replay",
+        "check": check,
+        "observation_path": str(observation_path.resolve()),
+        "observation_id": policy.get("observation_id"),
+        "screen": policy.get("screen"),
+        "capture_sequence": private.get("capture_sequence"),
+    }
 
 
 def _building_offer_summaries(frame: object) -> list[dict[str, object]]:
@@ -849,6 +913,8 @@ def _drive_opening(
     inspect_map_panels: bool = False,
     construct_economic_building: bool = False,
     assign_steward_development: bool = False,
+    development_step: str | None = None,
+    resume_saved_game: bool = False,
 ) -> dict[str, object]:
     from .control import VisibleUiDriver
     from .control.executor import (
@@ -1345,6 +1411,73 @@ def _drive_opening(
         if not _council_panel_visible(council_frame):
             raise AgentError("council panel changed before steward assignment")
 
+        if _steward_development_active(council_frame):
+            actions.append(
+                {
+                    "control_id": "council.steward.develop_county.verify",
+                    "status": "already_active",
+                    "input_kind": "visible_state_verification",
+                    "visible_identity": "提升伯爵领发展度",
+                    "visible_target": "福贾伯爵领",
+                    "source_observation_id": council_frame.observation_id,
+                    "result_observation_id": council_frame.observation_id,
+                    "expected_post_screen": "council_panel",
+                }
+            )
+            window.require_foreground()
+            append_event(
+                events,
+                {
+                    "kind": "opening_key_input_planned",
+                    "control_id": "council_panel.close_after_steward_verification",
+                    "key": "f4",
+                    "scan_code": CK3_SHORTCUT_SCAN_CODES["f4"],
+                    "expected_post_screen": "map_hud",
+                },
+            )
+            close_accepted, close_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["f4"]
+            )()
+            if close_accepted != 2:
+                raise AgentError(
+                    "F4 council close after steward verification was partial: "
+                    f"accepted={close_accepted}, last_error={close_last_error}"
+                )
+            final_map = driver.observe_stable(
+                "map_hud",
+                min(
+                    INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                    _remaining(deadline, "map after steward verification"),
+                ),
+                stable_frames=2,
+            )
+            actions.append(
+                {
+                    "control_id": "council_panel.close_after_steward_verification",
+                    "status": "confirmed",
+                    "input_kind": "keyboard_shortcut",
+                    "key": "f4",
+                    "scan_code": CK3_SHORTCUT_SCAN_CODES["f4"],
+                    "send_input": {
+                        "requested": 2,
+                        "accepted": close_accepted,
+                        "last_error": close_last_error,
+                    },
+                    "result_observation_id": final_map.observation_id,
+                    "expected_post_screen": "map_hud",
+                }
+            )
+            return (
+                {
+                    "status": "already_active",
+                    "task": "提升伯爵领发展度",
+                    "county": "福贾伯爵领",
+                    "active_observation_id": council_frame.observation_id,
+                    "strategy": "visible-active-task-card-v1",
+                },
+                final_map.to_policy_json(),
+            )
+
         task_point = STEWARD_DEVELOP_COUNTY_TASK_CENTER
         window.require_foreground()
         window.require_unobscured(task_point)
@@ -1463,7 +1596,7 @@ def _drive_opening(
             events,
             {
                 "kind": "opening_pointer_input_planned",
-                "control_id": "steward_development_targeting.apulia_county",
+                "control_id": "steward_development_targeting.foggia_county",
                 "center": list(target_point),
                 "visible_identity": "福贾伯爵领",
                 "expected_post_screen": "steward_development_assigned",
@@ -1495,7 +1628,7 @@ def _drive_opening(
         )
         actions.append(
             {
-                "control_id": "steward_development_targeting.apulia_county",
+                "control_id": "steward_development_targeting.foggia_county",
                 "status": "confirmed",
                 "input_kind": "visible_layout_click",
                 "visible_identity": "福贾伯爵领",
@@ -1514,7 +1647,7 @@ def _drive_opening(
             events,
             {
                 "kind": "opening_step_completed",
-                "control_id": "steward_development_targeting.apulia_county",
+                "control_id": "steward_development_targeting.foggia_county",
                 "result_screen": "steward_development_assigned",
                 "result_observation_id": assigned_frame.observation_id,
             },
@@ -1581,24 +1714,16 @@ def _drive_opening(
                 CK3_SHORTCUT_SCAN_CODES["f4"],
                 leave_open=True,
             )
-        window.require_foreground()
-        window.require_unobscured(task_point)
-        pyautogui.moveTo(
-            window.client_rect[0] + task_point[0],
-            window.client_rect[1] + task_point[1],
-            duration=0.12,
-        )
         _active_first, active_frame = wait_for_custom_state(
             driver,
             _steward_development_active,
             "active steward development task",
         )
-        window.require_cursor_target(task_point)
         actions.append(
             {
                 "control_id": "council.steward.develop_county.verify",
                 "status": "confirmed",
-                "input_kind": "pointer_hover",
+                "input_kind": "visible_state_verification",
                 "visible_identity": "提升伯爵领发展度",
                 "visible_target": "福贾伯爵领",
                 "source_observation_id": getattr(
@@ -2010,6 +2135,153 @@ def _drive_opening(
             },
             final_observation,
         )
+
+    if development_step not in {None, "steward-development"}:
+        raise AgentError(
+            f"unsupported opening development step: {development_step}"
+        )
+    resume_info = None
+    if resume_saved_game:
+        resume_driver = new_driver()
+        main_menu = resume_driver.observe_stable(
+            "main_menu",
+            min(
+                INITIAL_MAIN_MENU_TIMEOUT_SECONDS,
+                _remaining(deadline, "main menu before saved-game resume"),
+            ),
+            stable_frames=2,
+        )
+        continue_matches = _spans_with_text(
+            main_menu.latest,
+            "继续游戏",
+            region=(0.02, 0.20, 0.42, 0.80),
+        )
+        if len(continue_matches) != 1:
+            raise AgentError(
+                "main menu lacks one visible Continue Game shortcut target"
+            )
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": "main_menu.continue_game",
+                "key": "enter",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["enter"],
+                "expected_post_screen": "saved_map",
+            },
+        )
+        continue_accepted, continue_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["enter"]
+        )()
+        if continue_accepted != 2:
+            raise AgentError(
+                "Continue Game shortcut was partial: "
+                f"accepted={continue_accepted}, last_error={continue_last_error}"
+            )
+        _loaded_first, loaded_map = wait_for_custom_state(
+            resume_driver,
+            lambda frame: getattr(frame, "screen", None)
+            in {"map_hud", "map_running"},
+            "saved map",
+            timeout_seconds=min(
+                INITIAL_MAIN_MENU_TIMEOUT_SECONDS,
+                _remaining(deadline, "saved-game load"),
+            ),
+        )
+        actions.append(
+            {
+                "control_id": "main_menu.continue_game",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "visible_identity": "继续游戏",
+                "key": "enter",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["enter"],
+                "send_input": {
+                    "requested": 2,
+                    "accepted": continue_accepted,
+                    "last_error": continue_last_error,
+                },
+                "result_observation_id": loaded_map.observation_id,
+                "expected_post_screen": loaded_map.screen,
+            }
+        )
+        if loaded_map.screen == "map_running":
+            paused = press_shortcut(
+                "map_running",
+                "map_running.pause",
+                "space",
+                CK3_SHORTCUT_SCAN_CODES["space"],
+                "map_hud",
+                "paused resumed map",
+                driver=resume_driver,
+                stable=SimpleNamespace(
+                    screen="map_running",
+                    controls=loaded_map.controls,
+                ),
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+            resumed_observation_id = paused.get("observation_id")
+        else:
+            resumed_observation_id = loaded_map.observation_id
+        resume_info = {
+            "method": "visible-main-menu-continue-shortcut",
+            "source_observation_id": main_menu.observation_id,
+            "result_observation_id": resumed_observation_id,
+        }
+
+    if development_step is not None:
+        if not resume_saved_game:
+            live_driver = new_driver()
+            _live_first, live_map = wait_for_custom_state(
+                live_driver,
+                lambda frame: getattr(frame, "screen", None)
+                in {"map_hud", "map_running"},
+                "current development map",
+            )
+            if live_map.screen == "map_running":
+                press_shortcut(
+                    "map_running",
+                    "map_running.pause",
+                    "space",
+                    CK3_SHORTCUT_SCAN_CODES["space"],
+                    "map_hud",
+                    "paused current development map",
+                    driver=live_driver,
+                    stable=SimpleNamespace(
+                        screen="map_running",
+                        controls=live_map.controls,
+                    ),
+                    post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                )
+        steward_development, final_observation = (
+            assign_steward_to_develop_foggia()
+        )
+        return {
+            "development_only": True,
+            "release_qualification": False,
+            "step": development_step,
+            "resume": resume_info,
+            "actions": actions,
+            "steward_development": steward_development,
+            "final_screen": final_observation.get("screen"),
+            "final_observation_id": final_observation.get("observation_id"),
+            "window_binding": window.audit_binding(),
+            "foreground_activation": foreground,
+        }
+
+    if resume_saved_game:
+        return {
+            "development_only": True,
+            "release_qualification": False,
+            "step": None,
+            "resume": resume_info,
+            "actions": actions,
+            "final_screen": "map_hud",
+            "final_observation_id": resume_info["result_observation_id"],
+            "window_binding": window.audit_binding(),
+            "foreground_activation": foreground,
+        }
 
     click(
         "main_menu",
@@ -2454,15 +2726,295 @@ def opening_smoke(
             )
 
 
+def opening_step(
+    spec: EnvironmentSpec,
+    step: str = "steward-development",
+    timeout_seconds: float = 240,
+) -> dict[str, object]:
+    """Resume the isolated autosave and exercise one development-only step."""
+    ensure_state_path_safe(spec.state_dir)
+    if step != "steward-development":
+        raise AgentError(f"unsupported opening development step: {step}")
+    if (
+        isinstance(timeout_seconds, bool)
+        or not isinstance(timeout_seconds, (int, float))
+        or not math.isfinite(float(timeout_seconds))
+        or timeout_seconds <= 0
+    ):
+        raise AgentError("opening step timeout must be finite and positive")
+    with exclusive_launch_lock(spec.game_exe):
+        with exclusive_state_lock(spec.state_dir, "opening-step"):
+            manifest = verify_profile(spec)
+            doctor(spec, require_prepared=True)
+            if ck3_process_inventory()["processes"]:
+                raise AgentError("refusing opening step while CK3 is already running")
+            save_root = spec.profile_dir / "save games"
+            if not any(save_root.glob("autosave*.ck3")):
+                raise AgentError("opening step requires an isolated autosave")
+            return _opening_smoke_locked(
+                spec,
+                manifest,
+                float(timeout_seconds),
+                0,
+                resume_step=step,
+            )
+
+
+def _reload_opening_development_policy():
+    """Reload perception and gameplay policy while the owned CK3 process stays up."""
+    importlib.invalidate_caches()
+    for name in (
+        "xar_autoplayer.vision.ocr",
+        "xar_autoplayer.vision.classifier",
+        "xar_autoplayer.vision.window",
+        "xar_autoplayer.vision",
+        "xar_autoplayer.control.executor",
+        "xar_autoplayer.control",
+    ):
+        module = sys.modules.get(name)
+        if module is not None:
+            importlib.reload(module)
+    return importlib.reload(sys.modules[__name__])
+
+
+def opening_dev_session(
+    spec: EnvironmentSpec,
+    timeout_seconds: float = 3600,
+) -> dict[str, object]:
+    """Keep one isolated CK3 process alive and hot-reload gameplay steps from stdin."""
+    ensure_state_path_safe(spec.state_dir)
+    if (
+        isinstance(timeout_seconds, bool)
+        or not isinstance(timeout_seconds, (int, float))
+        or not math.isfinite(float(timeout_seconds))
+        or timeout_seconds <= 0
+    ):
+        raise AgentError("opening dev-session timeout must be finite and positive")
+    with exclusive_launch_lock(spec.game_exe):
+        with exclusive_state_lock(spec.state_dir, "opening-dev-session"):
+            manifest = verify_profile(spec)
+            doctor(spec, require_prepared=True)
+            if ck3_process_inventory()["processes"]:
+                raise AgentError(
+                    "refusing opening dev session while CK3 is already running"
+                )
+            save_root = spec.profile_dir / "save games"
+            if not any(save_root.glob("autosave*.ck3")):
+                raise AgentError("opening dev session requires an isolated autosave")
+            return _opening_dev_session_locked(
+                spec, manifest, float(timeout_seconds)
+            )
+
+
+def _opening_dev_session_locked(
+    spec: EnvironmentSpec,
+    manifest: dict[str, object],
+    timeout_seconds: float,
+) -> dict[str, object]:
+    run_id = (
+        datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        + "-dev-session-"
+        + uuid.uuid4().hex[:8]
+    )
+    run_dir = spec.state_dir / "runs" / run_id
+    artifacts = run_dir / "artifacts"
+    events = run_dir / "events.jsonl"
+    artifacts.mkdir(parents=True, exist_ok=False)
+    report_path = run_dir / "report.json"
+    report: dict[str, object] = {
+        "format_version": 1,
+        "run_id": run_id,
+        "kind": "ck3_opening_development_session",
+        "started_at": utc_now(),
+        "environment_sha256": manifest.get("environment_sha256"),
+        "development_only": True,
+        "release_qualification": False,
+        "commands": [],
+        "finalized": False,
+        "ok": False,
+    }
+    write_json_atomic(report_path, report)
+    append_event(
+        events,
+        {
+            "kind": "opening_dev_session_started",
+            "environment_sha256": manifest.get("environment_sha256"),
+        },
+    )
+    deadline = time.monotonic() + timeout_seconds
+    handle: SessionHandle | None = None
+    primary_error: BaseException | None = None
+    try:
+        log("launching one persistent CK3 development session")
+        handle = launch(spec)
+        report["process"] = {
+            "pid": int(handle.process.pid),
+            "creation_date": handle.ck3_creation_date,
+        }
+        append_event(events, {"kind": "ck3_launched", "pid": handle.process.pid})
+        report["load_attestation"] = wait_for_runtime_attestation(
+            spec,
+            handle,
+            _remaining(deadline, "runtime load attestation"),
+        )
+        append_event(events, {"kind": "single_mod_runtime_attested"})
+        initial_contract = run_dir / "opening-ui-contract-initial.json"
+        shutil.copy2(OPENING_CONTRACT, initial_contract)
+        initial_contract_sha256 = sha256_file(initial_contract)
+        report["resume"] = _drive_opening(
+            spec,
+            handle,
+            manifest,
+            artifacts,
+            events,
+            initial_contract,
+            initial_contract_sha256,
+            deadline,
+            ordinary_event_count=0,
+            development_step=None,
+            resume_saved_game=True,
+        )
+        write_json_atomic(report_path, report)
+        print(
+            json.dumps(
+                {
+                    "type": "opening_dev_session_ready",
+                    "run_id": run_id,
+                    "pid": handle.process.pid,
+                    "commands": ["steward-development", "status", "stop"],
+                    "hot_reload": True,
+                },
+                ensure_ascii=False,
+            ),
+            flush=True,
+        )
+        command_index = 0
+        while time.monotonic() < deadline:
+            line = sys.stdin.readline()
+            if line == "":
+                break
+            command = line.strip()
+            if not command:
+                continue
+            if command == "stop":
+                break
+            if command == "status":
+                print(
+                    json.dumps(
+                        {
+                            "type": "opening_dev_session_status",
+                            "run_id": run_id,
+                            "pid": handle.process.pid,
+                            "running": handle.process.poll() is None,
+                            "command_count": len(report["commands"]),
+                        },
+                        ensure_ascii=False,
+                    ),
+                    flush=True,
+                )
+                continue
+            if command != "steward-development":
+                print(
+                    json.dumps(
+                        {
+                            "type": "opening_dev_command_result",
+                            "command": command,
+                            "ok": False,
+                            "error": "unsupported development command",
+                        },
+                        ensure_ascii=False,
+                    ),
+                    flush=True,
+                )
+                continue
+            command_index += 1
+            command_record: dict[str, object] = {
+                "index": command_index,
+                "command": command,
+                "started_at": utc_now(),
+                "ok": False,
+            }
+            try:
+                policy = _reload_opening_development_policy()
+                command_contract = (
+                    run_dir / f"opening-ui-contract-command-{command_index}.json"
+                )
+                shutil.copy2(policy.OPENING_CONTRACT, command_contract)
+                command_contract_sha256 = policy.sha256_file(command_contract)
+                command_record["contract_sha256"] = command_contract_sha256
+                command_record["result"] = policy._drive_opening(
+                    spec,
+                    handle,
+                    manifest,
+                    artifacts,
+                    events,
+                    command_contract,
+                    command_contract_sha256,
+                    deadline,
+                    ordinary_event_count=0,
+                    development_step=command,
+                    resume_saved_game=False,
+                )
+                command_record["ok"] = True
+            except Exception as error:
+                command_record["error"] = f"{type(error).__name__}: {error}"
+            command_record["finished_at"] = utc_now()
+            report["commands"].append(command_record)
+            write_json_atomic(report_path, report)
+            print(
+                json.dumps(
+                    {
+                        "type": "opening_dev_command_result",
+                        "command": command,
+                        "index": command_index,
+                        "ok": command_record["ok"],
+                        "error": command_record.get("error"),
+                    },
+                    ensure_ascii=False,
+                ),
+                flush=True,
+            )
+    except BaseException as error:
+        primary_error = error
+        report["error"] = f"{type(error).__name__}: {error}"
+    finally:
+        if handle is not None:
+            try:
+                report["shutdown_attestation"] = stop_tracked(
+                    handle, require_running=primary_error is None
+                )
+            except BaseException as error:
+                report["shutdown_error"] = f"{type(error).__name__}: {error}"
+                if primary_error is None:
+                    primary_error = error
+        report["finished_at"] = utc_now()
+        report["ok"] = primary_error is None
+        report["finalized"] = True
+        append_event(
+            events,
+            {"kind": "opening_dev_session_finished", "ok": report["ok"]},
+        )
+        write_json_atomic(report_path, report)
+    if primary_error is not None:
+        if not isinstance(primary_error, Exception):
+            raise primary_error
+        raise AgentError(
+            f"opening dev session failed; report={report_path}: {primary_error}"
+        ) from primary_error
+    return report
+
+
 def _opening_smoke_locked(
     spec: EnvironmentSpec,
     manifest: dict[str, object],
     timeout_seconds: float,
     ordinary_event_count: int,
+    resume_step: str | None = None,
 ) -> dict[str, object]:
+    run_kind = "step" if resume_step is not None else "opening"
     run_id = (
         datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-        + "-opening-"
+        + f"-{run_kind}-"
         + uuid.uuid4().hex[:8]
     )
     run_dir = spec.state_dir / "runs" / run_id
@@ -2475,7 +3027,11 @@ def _opening_smoke_locked(
     report: dict[str, object] = {
         "format_version": 1,
         "run_id": run_id,
-        "kind": "ck3_opening_smoke",
+        "kind": (
+            "ck3_opening_development_step"
+            if resume_step is not None
+            else "ck3_opening_smoke"
+        ),
         "started_at": utc_now(),
         "environment_sha256": manifest.get("environment_sha256"),
         "contract": {
@@ -2486,6 +3042,14 @@ def _opening_smoke_locked(
         "finalized": False,
         "ok": False,
     }
+    if resume_step is not None:
+        report.update(
+            {
+                "development_only": True,
+                "release_qualification": False,
+                "step": resume_step,
+            }
+        )
     report_path = run_dir / "report.json"
     write_json_atomic(report_path, report)
     append_event(
@@ -2500,7 +3064,11 @@ def _opening_smoke_locked(
     handle: SessionHandle | None = None
     primary_error: BaseException | None = None
     try:
-        log("launching CK3 for Robert 1066 opening")
+        log(
+            "launching CK3 for isolated saved-game step"
+            if resume_step is not None
+            else "launching CK3 for Robert 1066 opening"
+        )
         handle = launch(spec)
         report["process"] = {
             "pid": int(handle.process.pid),
@@ -2526,6 +3094,8 @@ def _opening_smoke_locked(
             True,
             True,
             True,
+            resume_step,
+            resume_step is not None,
         )
     except BaseException as error:
         primary_error = error
@@ -2570,6 +3140,6 @@ def _opening_smoke_locked(
         if not isinstance(primary_error, Exception):
             raise primary_error
         raise AgentError(
-            f"opening smoke failed; report={report_path}: {primary_error}"
+            f"opening {run_kind} failed; report={report_path}: {primary_error}"
         ) from primary_error
     return report

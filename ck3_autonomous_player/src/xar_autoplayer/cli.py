@@ -54,6 +54,36 @@ def parser() -> argparse.ArgumentParser:
     )
     opening_parser.add_argument("--timeout", type=float, default=900)
     opening_parser.add_argument("--ordinary-events", type=int, default=3)
+    step_parser = commands.add_parser(
+        "opening-step",
+        help="resume the isolated autosave and run one development-only gameplay step",
+    )
+    step_parser.add_argument(
+        "--step",
+        choices=("steward-development",),
+        default="steward-development",
+    )
+    step_parser.add_argument("--timeout", type=float, default=240)
+    dev_session_parser = commands.add_parser(
+        "opening-dev-session",
+        help="keep CK3 alive and hot-reload development steps read from stdin",
+    )
+    dev_session_parser.add_argument("--timeout", type=float, default=3600)
+    replay_parser = commands.add_parser(
+        "opening-replay",
+        help="replay one opening predicate against an archived OCR observation",
+    )
+    replay_parser.add_argument("--observation", type=Path, required=True)
+    replay_parser.add_argument(
+        "--check",
+        choices=(
+            "council-panel",
+            "steward-development-targeting",
+            "steward-development-confirmation",
+            "steward-development-active",
+        ),
+        required=True,
+    )
     crash_parser = commands.add_parser(
         "crash-smoke",
         help="kill a post-resume supervisor and attest Job/watchdog recovery",
@@ -145,6 +175,22 @@ def main(argv: list[str] | None = None) -> int:
                 timeout_seconds=args.timeout,
                 ordinary_event_count=args.ordinary_events,
             )
+        elif args.command == "opening-step":
+            from .opening_smoke import opening_step
+
+            result = opening_step(
+                spec,
+                step=args.step,
+                timeout_seconds=args.timeout,
+            )
+        elif args.command == "opening-dev-session":
+            from .opening_smoke import opening_dev_session
+
+            result = opening_dev_session(spec, timeout_seconds=args.timeout)
+        elif args.command == "opening-replay":
+            from .opening_smoke import replay_opening_observation
+
+            result = replay_opening_observation(args.observation, args.check)
         elif args.command == "crash-smoke":
             from .crash_probe import crash_smoke
 

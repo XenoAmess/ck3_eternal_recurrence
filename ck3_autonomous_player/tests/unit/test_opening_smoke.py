@@ -50,6 +50,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _steward_development_active,
     _steward_development_assignment_confirmation,
     _steward_development_targeting_active,
+    replay_opening_observation,
 )
 from xar_autoplayer.vision import load_ui_contract  # noqa: E402
 from xar_autoplayer.vision.model import OcrSpan  # noqa: E402
@@ -571,16 +572,68 @@ class OpeningContractTests(unittest.TestCase):
             spans=(
                 span("内阁", (2124, 95), (2092, 78, 2156, 112)),
                 span("财政总管", (2235, 546), (2194, 533, 2276, 560)),
-                span(
-                    "于福贾伯爵领提升伯爵领发展度",
-                    (2230, 620),
-                    (2050, 604, 2410, 636),
-                ),
+                span("收税", (2160, 803), (2125, 786, 2195, 820)),
+                span("在福贾伯爵领", (2230, 620), (2140, 604, 2320, 636)),
+                span("剩余3年", (2230, 655), (2180, 639, 2280, 671)),
             ),
         )
         self.assertTrue(_steward_development_active(active))
         self.assertEqual(STEWARD_DEVELOP_COUNTY_TASK_CENTER, (2160, 803))
         self.assertIn((1220, 560), ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS)
+
+    def test_archived_steward_state_replays_without_ck3(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-opening-replay-") as temporary:
+            artifact = Path(temporary) / "observation.json"
+            artifact.write_text(
+                json.dumps(
+                    {
+                        "format_version": 2,
+                        "policy_observation": {
+                            "observation_id": "f" * 32,
+                            "screen": "unknown",
+                            "ocr": [
+                                {
+                                    "text": "内阁",
+                                    "center": [2124, 95],
+                                    "bbox": [2092, 78, 2156, 112],
+                                },
+                                {
+                                    "text": "财政总管",
+                                    "center": [2235, 546],
+                                    "bbox": [2194, 533, 2276, 560],
+                                },
+                                {
+                                    "text": "收税",
+                                    "center": [1798, 801],
+                                    "bbox": [1772, 786, 1824, 817],
+                                },
+                                {
+                                    "text": "在福贾伯爵领",
+                                    "center": [2203, 855],
+                                    "bbox": [2144, 844, 2262, 867],
+                                },
+                                {
+                                    "text": "剩余3年",
+                                    "center": [2304, 881],
+                                    "bbox": [2269, 869, 2340, 894],
+                                },
+                            ],
+                        },
+                        "private_audit": {
+                            "client_rect": [0, 0, 2560, 1440],
+                            "capture_sequence": 10,
+                        },
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            replay = replay_opening_observation(
+                artifact, "steward-development-active"
+            )
+        self.assertTrue(replay["ok"])
+        self.assertEqual(replay["mode"], "offline_observation_replay")
+        self.assertEqual(replay["capture_sequence"], 10)
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (
@@ -1222,6 +1275,24 @@ class OpeningScenarioTests(unittest.TestCase):
         )
         self.assertEqual(custom.ordinary_events, 5)
         self.assertEqual(custom.timeout, 1200)
+        step = cli.parser().parse_args(["opening-step"])
+        self.assertEqual(step.command, "opening-step")
+        self.assertEqual(step.step, "steward-development")
+        self.assertEqual(step.timeout, 240)
+        dev_session = cli.parser().parse_args(["opening-dev-session"])
+        self.assertEqual(dev_session.command, "opening-dev-session")
+        self.assertEqual(dev_session.timeout, 3600)
+        replay = cli.parser().parse_args(
+            [
+                "opening-replay",
+                "--observation",
+                "observation.json",
+                "--check",
+                "steward-development-active",
+            ]
+        )
+        self.assertEqual(replay.command, "opening-replay")
+        self.assertEqual(replay.observation, Path("observation.json"))
 
 
 if __name__ == "__main__":
