@@ -113,12 +113,14 @@ def _visible_process_windows(pid: int) -> list[int]:
     return windows
 
 
-def _process_windows_minimized(pid: int) -> bool:
-    """Return true only when an existing visible window set is all iconic."""
+def _process_windows_minimized(pid: int) -> bool | None:
+    """Return the visible-window state, or None during a window transition."""
     import win32gui
 
     windows = _visible_process_windows(pid)
-    return bool(windows) and all(bool(win32gui.IsIconic(hwnd)) for hwnd in windows)
+    if not windows:
+        return None
+    return all(bool(win32gui.IsIconic(hwnd)) for hwnd in windows)
 
 
 def _minimize_process_windows(
@@ -211,6 +213,8 @@ def _native_session_locked(
     restart_shutdowns: list[dict[str, object]] = []
     restart_count = 0
     last_pid: int | None = None
+    last_known_window_minimized: bool | None = None
+    next_window_state_sample = started
     queue = PersistentSessionQueue(
         spec.state_dir / NATIVE_SESSION_QUEUE_DIRNAME,
         supported_commands=("status", "stop", NATIVE_SESSION_RESTORE_COMMAND),
@@ -250,6 +254,11 @@ def _native_session_locked(
             if now >= deadline:
                 exit_reason = "timeout"
                 break
+            if now >= next_window_state_sample:
+                sampled_window_state = _process_windows_minimized(pid)
+                if sampled_window_state is not None:
+                    last_known_window_minimized = sampled_window_state
+                next_window_state_sample = now + 0.5
             stop_requested = False
             if stdin is not None:
                 for line in stdin.poll():
@@ -318,9 +327,12 @@ def _native_session_locked(
                             request, config, spec
                         )
                         previous_pid = int(handle.process.pid)
-                        preserve_minimized = _process_windows_minimized(
+                        sampled_window_state = _process_windows_minimized(
                             previous_pid
                         )
+                        if sampled_window_state is not None:
+                            last_known_window_minimized = sampled_window_state
+                        preserve_minimized = last_known_window_minimized is True
                         restart_shutdown = stop_tracked(
                             handle, require_running=False
                         )
@@ -370,6 +382,10 @@ def _native_session_locked(
                                     "restore-checkpoint relaunched CK3 but "
                                     "could not preserve its minimized window state"
                                 )
+                        last_known_window_minimized = (
+                            True if minimized_preserved else None
+                        )
+                        next_window_state_sample = time.monotonic() + 0.5
                         result = {
                             "status": "relaunched",
                             "previous_pid": previous_pid,

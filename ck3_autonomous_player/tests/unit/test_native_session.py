@@ -250,7 +250,10 @@ class NativeSessionLifecycleTests(unittest.TestCase):
             side_effect=(shutdown, shutdown),
         ) as stop_mock, mock.patch(
             "xar_autoplayer.native_session._process_windows_minimized",
-            return_value=True,
+            # The regular loop observes minimized.  At the exact restore
+            # boundary the SDL window may temporarily disappear; retain the
+            # last concrete state instead of treating that as restored.
+            side_effect=(True, None),
         ) as minimized_before_mock, mock.patch(
             "xar_autoplayer.native_session._minimize_process_windows",
             return_value=True,
@@ -308,7 +311,10 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         )
         self.assertTrue(response["result"]["previous_window_minimized"])
         self.assertTrue(response["result"]["minimized_state_preserved"])
-        minimized_before_mock.assert_called_once_with(4545)
+        self.assertEqual(
+            minimized_before_mock.call_args_list,
+            [mock.call(4545), mock.call(4545)],
+        )
         minimize_after_mock.assert_called_once_with(
             4646,
             timeout_seconds=mock.ANY,
