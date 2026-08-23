@@ -44,6 +44,8 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _generic_event_in_frame,
     _generic_event_preview,
     _panel_summary,
+    _choose_one_life_dynasty_action,
+    _palermo_map_targets,
     _pause_menu_visible,
     _save_window_visible,
     _same_generic_event,
@@ -288,9 +290,39 @@ class OpeningContractTests(unittest.TestCase):
         self.assertEqual(state["character"], "阿普利亚公爵，罗贝尔")
         self.assertTrue(state["spouse_visible"])
         self.assertTrue(state["player_heir_visible"])
+        self.assertEqual(state["child_count"], None)
         self.assertEqual(state["kin_count"], 26)
         self.assertEqual(state["courtier_count"], 20)
         self.assertEqual(state["vassal_count"], 7)
+
+    def test_one_life_dynasty_strategy_never_continues_as_heir(self) -> None:
+        stable = _choose_one_life_dynasty_action(
+            {
+                "spouse_visible": True,
+                "player_heir_visible": True,
+                "child_count": 7,
+            }
+        )
+        self.assertEqual(
+            stable["action"], "hold_player_marriage_review_child_alliances_later"
+        )
+        self.assertFalse(stable["continue_as_heir_after_death"])
+        self.assertEqual(
+            _choose_one_life_dynasty_action(
+                {"spouse_visible": False, "player_heir_visible": True}
+            )["action"],
+            "seek_player_spouse",
+        )
+
+    def test_palermo_target_comes_from_visible_map_label(self) -> None:
+        frame = SimpleNamespace(
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span("辉莱尔", (672, 1261), (580, 1203, 765, 1319)),
+                span("萨莱诺", (1191, 643), (1092, 566, 1291, 721)),
+            ),
+        )
+        self.assertEqual(_palermo_map_targets(frame), ((672, 1261),))
 
     def test_lifestyle_state_records_selected_authority_focus(self) -> None:
         state = _extract_lifestyle_state(
@@ -1325,9 +1357,43 @@ class OpeningScenarioTests(unittest.TestCase):
             ["opening-step", "--step", "save-checkpoint"]
         )
         self.assertEqual(checkpoint_step.step, "save-checkpoint")
+        dynasty_step = cli.parser().parse_args(
+            ["opening-step", "--step", "dynasty-review"]
+        )
+        self.assertEqual(dynasty_step.step, "dynasty-review")
+        self.assertIn("dynasty-review", OPENING_DEVELOPMENT_STEPS)
+        war_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-review"]
+        )
+        self.assertEqual(war_step.step, "war-review")
+        self.assertIn("war-review", OPENING_DEVELOPMENT_STEPS)
+        target_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-target-review"]
+        )
+        self.assertEqual(target_step.step, "war-target-review")
+        interaction_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-interaction-review"]
+        )
+        self.assertEqual(interaction_step.step, "war-interaction-review")
+        declaration_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-declaration-review"]
+        )
+        self.assertEqual(declaration_step.step, "war-declaration-review")
+        casus_belli_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-casus-belli-review"]
+        )
+        self.assertEqual(casus_belli_step.step, "war-casus-belli-review")
+        war_goal_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-goal-review"]
+        )
+        self.assertEqual(war_goal_step.step, "war-goal-review")
+        war_declare_step = cli.parser().parse_args(
+            ["opening-step", "--step", "war-declare-palermo"]
+        )
+        self.assertEqual(war_declare_step.step, "war-declare-palermo")
         dev_session = cli.parser().parse_args(["opening-dev-session"])
         self.assertEqual(dev_session.command, "opening-dev-session")
-        self.assertEqual(dev_session.timeout, 3600)
+        self.assertEqual(dev_session.timeout, 21600)
         replay = cli.parser().parse_args(
             [
                 "opening-replay",

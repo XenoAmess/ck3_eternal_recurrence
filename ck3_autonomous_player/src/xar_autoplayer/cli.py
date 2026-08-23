@@ -64,6 +64,14 @@ def parser() -> argparse.ArgumentParser:
             "steward-development",
             "economic-event-cycle",
             "save-checkpoint",
+            "dynasty-review",
+            "war-review",
+            "war-target-review",
+            "war-interaction-review",
+            "war-declaration-review",
+            "war-casus-belli-review",
+            "war-goal-review",
+            "war-declare-palermo",
         ),
         default="steward-development",
     )
@@ -72,7 +80,7 @@ def parser() -> argparse.ArgumentParser:
         "opening-dev-session",
         help="keep CK3 alive and hot-reload development steps read from stdin",
     )
-    dev_session_parser.add_argument("--timeout", type=float, default=3600)
+    dev_session_parser.add_argument("--timeout", type=float, default=21600)
     replay_parser = commands.add_parser(
         "opening-replay",
         help="replay one opening predicate against an archived OCR observation",

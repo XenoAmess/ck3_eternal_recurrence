@@ -24,11 +24,14 @@ from xar_autoplayer.control.executor import (  # noqa: E402
     _KEYEVENTF_SCANCODE,
     _MOUSEEVENTF_LEFTDOWN,
     _MOUSEEVENTF_LEFTUP,
+    _MOUSEEVENTF_RIGHTDOWN,
+    _MOUSEEVENTF_RIGHTUP,
     VisibleUiDriver,
     _IssuedControl,
     _prepare_key_chord_batch,
     _prepare_key_press_batch,
     _prepare_left_click_batch,
+    _prepare_right_click_batch,
 )
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.vision.classifier import (  # noqa: E402
@@ -1350,6 +1353,22 @@ class UiDriverSafetyTests(unittest.TestCase):
         self.assertGreater(record_size, 0)
         self.assertEqual(records[0].mi.dwFlags, _MOUSEEVENTF_LEFTDOWN)
         self.assertEqual(records[1].mi.dwFlags, _MOUSEEVENTF_LEFTUP)
+
+    def test_win32_right_click_is_one_two_record_sendinput_batch(self) -> None:
+        send_input = mock.Mock(return_value=2)
+        user32 = types.SimpleNamespace(SendInput=send_input)
+        with mock.patch(
+            "xar_autoplayer.control.executor.ctypes.WinDLL", return_value=user32
+        ):
+            submit = _prepare_right_click_batch()
+            send_input.assert_not_called()
+            submit()
+        send_input.assert_called_once()
+        count, records, record_size = send_input.call_args.args
+        self.assertEqual(count, 2)
+        self.assertGreater(record_size, 0)
+        self.assertEqual(records[0].mi.dwFlags, _MOUSEEVENTF_RIGHTDOWN)
+        self.assertEqual(records[1].mi.dwFlags, _MOUSEEVENTF_RIGHTUP)
 
     def test_deliberate_click_holds_between_down_and_up(self) -> None:
         send_input = mock.Mock(side_effect=[1, 1])

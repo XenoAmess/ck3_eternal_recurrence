@@ -33,6 +33,8 @@ _INPUT_MOUSE = 0
 _INPUT_KEYBOARD = 1
 _MOUSEEVENTF_LEFTDOWN = 0x0002
 _MOUSEEVENTF_LEFTUP = 0x0004
+_MOUSEEVENTF_RIGHTDOWN = 0x0008
+_MOUSEEVENTF_RIGHTUP = 0x0010
 _KEYEVENTF_KEYUP = 0x0002
 _KEYEVENTF_SCANCODE = 0x0008
 
@@ -108,6 +110,26 @@ def _prepare_left_click_batch(
             )
             error = ctypes.get_last_error() if sent_up != 1 else 0
             return sent_down + sent_up, int(error)
+        sent = int(send_input(2, records, ctypes.sizeof(_INPUT)))
+        error = ctypes.get_last_error() if sent != 2 else 0
+        return sent, int(error)
+
+    return submit
+
+
+def _prepare_right_click_batch() -> Callable[[], tuple[int, int]]:
+    """Prepare one right-button down/up SendInput batch."""
+    records = (_INPUT * 2)()
+    records[0].type = _INPUT_MOUSE
+    records[0].mi.dwFlags = _MOUSEEVENTF_RIGHTDOWN
+    records[1].type = _INPUT_MOUSE
+    records[1].mi.dwFlags = _MOUSEEVENTF_RIGHTUP
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    send_input = user32.SendInput
+    send_input.argtypes = (wintypes.UINT, ctypes.POINTER(_INPUT), ctypes.c_int)
+    send_input.restype = wintypes.UINT
+
+    def submit() -> tuple[int, int]:
         sent = int(send_input(2, records, ctypes.sizeof(_INPUT)))
         error = ctypes.get_last_error() if sent != 2 else 0
         return sent, int(error)

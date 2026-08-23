@@ -78,6 +78,14 @@ OPENING_DEVELOPMENT_STEPS = (
     "steward-development",
     "economic-event-cycle",
     "save-checkpoint",
+    "dynasty-review",
+    "war-review",
+    "war-target-review",
+    "war-interaction-review",
+    "war-declaration-review",
+    "war-casus-belli-review",
+    "war-goal-review",
+    "war-declare-palermo",
 )
 
 # CK3 1.19.0.6 at the frozen 2560x1440/100% UI contract.  Alt+1..N only
@@ -98,6 +106,8 @@ ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS = (
     (1360, 560),
     (1190, 640),
 )
+PALERMO_VISIBLE_LABEL_FALLBACK = (672, 1261)
+PALERMO_HOLY_WAR_GOAL_FALLBACK = (1690, 452)
 
 # Frozen from Crusader Kings III/game/gui/shortcuts.shortcuts. Scan codes are
 # used so the binding does not depend on the active Windows keyboard layout.
@@ -117,6 +127,7 @@ CK3_SHORTCUT_SCAN_CODES = {
     "equals": 0x0D,
     "backspace": 0x0E,
     "enter": 0x1C,
+    "w": 0x11,
     "left_shift": 0x2A,
     "left_alt": 0x38,
     "f1": 0x3B,
@@ -353,11 +364,41 @@ def _extract_player_character_state(observation: dict[str, object]) -> dict[str,
         "is_player": True,
         "spouse_visible": texts.count("配偶") == 1,
         "player_heir_visible": texts.count("玩家继承人") == 1,
+        "child_count": visible_count("子女"),
         "kin_count": visible_count("亲族"),
         "courtier_count": visible_count("廷臣"),
         "vassal_count": visible_count("臣属"),
         "source_observation_id": observation.get("observation_id"),
         "policy_boundary": "player-visible OCR only",
+    }
+
+
+def _choose_one_life_dynasty_action(state: dict[str, object]) -> dict[str, object]:
+    """Choose dynasty work for the current life without planning heir continuation."""
+    if state.get("spouse_visible") is not True:
+        return {
+            "action": "seek_player_spouse",
+            "priority": 100,
+            "reason": "the current ruler has no visible spouse",
+            "continue_as_heir_after_death": False,
+        }
+    if state.get("player_heir_visible") is not True:
+        return {
+            "action": "prioritize_current_life_heir",
+            "priority": 90,
+            "reason": "the current ruler has no visible player heir",
+            "continue_as_heir_after_death": False,
+        }
+    child_count = state.get("child_count")
+    return {
+        "action": "hold_player_marriage_review_child_alliances_later",
+        "priority": 20,
+        "reason": (
+            f"the current ruler already has a spouse, an heir and {child_count} visible children"
+            if isinstance(child_count, int)
+            else "the current ruler already has a spouse and an heir"
+        ),
+        "continue_as_heir_after_death": False,
     }
 
 
@@ -810,6 +851,31 @@ def _overwrite_save_confirmation_visible(frame: object) -> bool:
     )
 
 
+def _palermo_interactions_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "宣战", contains=True)
+        and _spans_with_text(frame, "安排婚姻", contains=True)
+    )
+
+
+def _declare_war_window_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "宣战", contains=True)
+        and (
+            _spans_with_text(frame, "选择宣战理由", contains=True)
+            or _spans_with_text(frame, "选择一个目标", contains=True)
+        )
+    )
+
+
+def _war_overview_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "战争开始于", contains=True)
+        and _spans_with_text(frame, "战争分数", contains=True)
+        and _spans_with_text(frame, "强制执行要求", contains=True)
+    )
+
+
 def _county_label_target_candidates(
     frame: object, county_label: str
 ) -> tuple[tuple[int, int], ...]:
@@ -837,6 +903,17 @@ def _county_label_target_candidates(
         for point in candidates
         if 0 <= point[0] < width and 0 <= point[1] < height
     )
+
+
+def _palermo_map_targets(frame: object) -> tuple[tuple[int, int], ...]:
+    """Find the visible Palermo label despite OCR occasionally dropping characters."""
+    matches = _spans_with_text(
+        frame,
+        "莱尔",
+        contains=True,
+        region=(0.15, 0.68, 0.40, 0.95),
+    )
+    return tuple(dict.fromkeys(span.center for span in matches))
 
 
 _OPENING_REPLAY_CHECKS = {
@@ -978,6 +1055,7 @@ def _drive_opening(
         _prepare_key_chord_batch,
         _prepare_key_press_batch,
         _prepare_left_click_batch,
+        _prepare_right_click_batch,
     )
     from .vision import load_ui_contract
 
@@ -2202,6 +2280,477 @@ def _drive_opening(
             final_observation,
         )
 
+    def review_palermo_war_target() -> dict[str, object]:
+        driver = new_driver()
+        source = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, "map before Palermo target review"),
+            ),
+            stable_frames=2,
+        )
+        candidates = _palermo_map_targets(source.latest)
+        issued_point = (
+            min(
+                candidates,
+                key=lambda candidate: (
+                    (candidate[0] - PALERMO_VISIBLE_LABEL_FALLBACK[0]) ** 2
+                    + (candidate[1] - PALERMO_VISIBLE_LABEL_FALLBACK[1]) ** 2
+                ),
+            )
+            if candidates
+            else PALERMO_VISIBLE_LABEL_FALLBACK
+        )
+        target_source = "visible OCR" if candidates else "same-session observed label"
+        point = issued_point
+        window.require_foreground()
+        window.require_unobscured(point)
+        append_event(
+            events,
+            {
+                "kind": "opening_pointer_input_planned",
+                "control_id": "map_hud.select_palermo_war_target",
+                "visible_identity": "Palermo map label",
+                "target_source": target_source,
+                "center": list(point),
+                "expected_post_screen": "palermo_title_selection",
+            },
+        )
+        import pyautogui
+
+        pyautogui.FAILSAFE = True
+        pyautogui.moveTo(
+            window.client_rect[0] + point[0],
+            window.client_rect[1] + point[1],
+            duration=0.12,
+        )
+        time.sleep(0.2)
+        window.require_cursor_target(point)
+        accepted, last_error = _prepare_left_click_batch(0.05)()
+        if accepted != 2:
+            raise AgentError(
+                "Palermo target selection was partial: "
+                f"accepted={accepted}, last_error={last_error}"
+            )
+        first = driver.capture_once()
+        second = driver.capture_once()
+        visible_text: list[str] = []
+        for item in getattr(second, "spans", ()):
+            text = str(getattr(item, "text", "")).strip()
+            if text and text not in visible_text:
+                visible_text.append(text)
+        actions.append(
+            {
+                "control_id": "map_hud.select_palermo_war_target",
+                "status": "confirmed",
+                "input_kind": "visible_ocr_click",
+                "visible_identity": "Palermo map label",
+                "target_source": target_source,
+                "click_point": list(point),
+                "send_input": {
+                    "requested": 2,
+                    "accepted": accepted,
+                    "last_error": last_error,
+                },
+                "source_observation_id": source.observation_id,
+                "result_observation_id": second.observation_id,
+                "expected_post_screen": "palermo_title_selection",
+            }
+        )
+        return {
+            "target": "Palermo",
+            "ocr_target_point": list(point),
+            "target_source": target_source,
+            "frame_observation_ids": [
+                first.observation_id,
+                second.observation_id,
+            ],
+            "visible_text": visible_text,
+            "policy_boundary": "reversible visible map selection only",
+        }
+
+    def review_palermo_interactions() -> dict[str, object]:
+        driver = new_driver()
+        source = driver.capture_once()
+        if not _spans_with_text(source, "拜莱尔姆谢赫", contains=True):
+            review_palermo_war_target()
+            source = driver.capture_once()
+        if not _spans_with_text(source, "拜莱尔姆谢赫", contains=True):
+            raise AgentError("Palermo ruler is not visibly selected")
+        portrait_point = (150, 180)
+        window.require_foreground()
+        window.require_unobscured(portrait_point)
+        append_event(
+            events,
+            {
+                "kind": "opening_pointer_input_planned",
+                "control_id": "palermo_ruler.open_interactions",
+                "button": "right",
+                "center": list(portrait_point),
+                "expected_post_screen": "palermo_interactions",
+            },
+        )
+        import pyautogui
+
+        pyautogui.FAILSAFE = True
+        pyautogui.moveTo(
+            window.client_rect[0] + portrait_point[0],
+            window.client_rect[1] + portrait_point[1],
+            duration=0.12,
+        )
+        time.sleep(0.2)
+        window.require_cursor_target(portrait_point)
+        accepted, last_error = _prepare_right_click_batch()()
+        if accepted != 2:
+            raise AgentError(
+                "Palermo interaction right click was partial: "
+                f"accepted={accepted}, last_error={last_error}"
+            )
+        first, second = wait_for_custom_state(
+            driver,
+            lambda frame: bool(_spans_with_text(frame, "宣战", contains=True)),
+            "Palermo interaction menu",
+        )
+        visible_text: list[str] = []
+        for item in getattr(second, "spans", ()):
+            text = str(getattr(item, "text", "")).strip()
+            if text and text not in visible_text:
+                visible_text.append(text)
+        actions.append(
+            {
+                "control_id": "palermo_ruler.open_interactions",
+                "status": "confirmed",
+                "input_kind": "visible_right_click",
+                "visible_identity": "拜莱尔姆谢赫",
+                "click_point": list(portrait_point),
+                "send_input": {
+                    "requested": 2,
+                    "accepted": accepted,
+                    "last_error": last_error,
+                },
+                "source_observation_id": source.observation_id,
+                "result_observation_id": second.observation_id,
+                "expected_post_screen": "palermo_interactions",
+            }
+        )
+        return {
+            "target": "拜莱尔姆谢赫，优素福·伊本·阿卜杜拉",
+            "declare_war_visible": bool(
+                _spans_with_text(second, "宣战", contains=True)
+            ),
+            "frame_observation_ids": [
+                first.observation_id,
+                second.observation_id,
+            ],
+            "visible_text": visible_text,
+        }
+
+    def review_palermo_declaration() -> dict[str, object]:
+        driver = new_driver()
+        source = driver.capture_once()
+        if not _spans_with_text(source, "宣战", contains=True):
+            review_palermo_interactions()
+            source = driver.capture_once()
+        first, second = click_visible_text_once(
+            driver,
+            source,
+            text="宣战",
+            region=(0.12, 0.08, 0.28, 0.22),
+            control_id="palermo_interactions.declare_war",
+            expected_post_screen="declare_war_window",
+            post_predicate=lambda frame: bool(
+                _spans_with_text(frame, "选择宣战理由", contains=True)
+            ),
+        )
+        visible_text: list[str] = []
+        for item in getattr(second, "spans", ()):
+            text = str(getattr(item, "text", "")).strip()
+            if text and text not in visible_text:
+                visible_text.append(text)
+        return {
+            "target": "拜莱尔姆谢赫，优素福·伊本·阿卜杜拉",
+            "casus_belli_visible": bool(
+                _spans_with_text(second, "选择宣战理由", contains=True)
+            ),
+            "frame_observation_ids": [
+                first.observation_id,
+                second.observation_id,
+            ],
+            "visible_text": visible_text,
+        }
+
+    def review_palermo_county_holy_war() -> dict[str, object]:
+        driver = new_driver()
+        source = driver.capture_once()
+        if not _spans_with_text(source, "选择宣战理由", contains=True):
+            review_palermo_declaration()
+            source = driver.capture_once()
+        first, second = click_visible_text_once(
+            driver,
+            source,
+            text="伯爵领圣战",
+            region=(0.55, 0.27, 0.80, 0.47),
+            control_id="declare_war.select_county_holy_war",
+            expected_post_screen="declare_war_target_selection",
+            post_predicate=lambda frame: bool(
+                _spans_with_text(frame, "选择一个目标", contains=True)
+            ),
+        )
+        visible_text: list[str] = []
+        for item in getattr(second, "spans", ()):
+            text = str(getattr(item, "text", "")).strip()
+            if text and text not in visible_text:
+                visible_text.append(text)
+        return {
+            "target_ruler": "拜莱尔姆谢赫，优素福·伊本·阿卜杜拉",
+            "casus_belli": "伯爵领圣战",
+            "target_selection_visible": bool(
+                _spans_with_text(second, "选择一个目标", contains=True)
+            ),
+            "frame_observation_ids": [
+                first.observation_id,
+                second.observation_id,
+            ],
+            "visible_text": visible_text,
+        }
+
+    def select_palermo_war_goal() -> dict[str, object]:
+        driver = new_driver()
+        source = driver.capture_once()
+        if not _spans_with_text(source, "选择一个目标", contains=True):
+            review_palermo_county_holy_war()
+            source = driver.capture_once()
+        matches = _spans_with_text(
+            source,
+            "拜莱尔姆谢赫国",
+            region=(0.55, 0.27, 0.80, 0.39),
+        )
+        target = matches[0] if len(matches) == 1 else None
+        point = (
+            tuple(target.center)
+            if target is not None
+            else PALERMO_HOLY_WAR_GOAL_FALLBACK
+        )
+        target_text = target.text if target is not None else "拜莱尔姆谢赫国"
+        target_source = "visible OCR" if target is not None else "same-page observed row"
+        window.require_foreground()
+        window.require_unobscured(point)
+        append_event(
+            events,
+            {
+                "kind": "opening_pointer_input_planned",
+                "control_id": "declare_war.select_palermo_goal",
+                "visible_text": target_text,
+                "target_source": target_source,
+                "center": list(point),
+                "expected_post_screen": "declare_war_ready",
+            },
+        )
+        import pyautogui
+
+        pyautogui.FAILSAFE = True
+        pyautogui.moveTo(
+            window.client_rect[0] + point[0],
+            window.client_rect[1] + point[1],
+            duration=0.12,
+        )
+        time.sleep(0.2)
+        window.require_cursor_target(point)
+        accepted, last_error = _prepare_left_click_batch(0.05)()
+        if accepted != 2:
+            raise AgentError(
+                "Palermo war-goal selection was partial: "
+                f"accepted={accepted}, last_error={last_error}"
+            )
+        first = driver.capture_once()
+        second = driver.capture_once()
+        visible_text: list[str] = []
+        for item in getattr(second, "spans", ()):
+            text = str(getattr(item, "text", "")).strip()
+            if text and text not in visible_text:
+                visible_text.append(text)
+        actions.append(
+            {
+                "control_id": "declare_war.select_palermo_goal",
+                "status": "confirmed",
+                "input_kind": "visible_ocr_click",
+                "visible_text": target_text,
+                "target_source": target_source,
+                "click_point": list(point),
+                "send_input": {
+                    "requested": 2,
+                    "accepted": accepted,
+                    "last_error": last_error,
+                },
+                "source_observation_id": source.observation_id,
+                "result_observation_id": second.observation_id,
+                "expected_post_screen": "declare_war_ready",
+            }
+        )
+        return {
+            "target_ruler": "拜莱尔姆谢赫，优素福·伊本·阿卜杜拉",
+            "casus_belli": "伯爵领圣战",
+            "war_goal": target_text,
+            "target_source": target_source,
+            "frame_observation_ids": [
+                first.observation_id,
+                second.observation_id,
+            ],
+            "visible_text": visible_text,
+        }
+
+    def declare_palermo_county_holy_war() -> dict[str, object]:
+        driver = new_driver()
+        source = driver.capture_once()
+        final_buttons = _spans_with_text(
+            source,
+            "宣战",
+            region=(0.75, 0.82, 0.90, 0.95),
+        )
+        if len(final_buttons) != 1:
+            select_palermo_war_goal()
+            source = driver.capture_once()
+        if not _spans_with_text(
+            source,
+            "伯爵领圣战",
+            region=(0.55, 0.25, 0.82, 0.72),
+        ):
+            raise AgentError("Palermo county holy-war reason is not visible")
+        if not _spans_with_text(
+            source,
+            "拜莱尔姆谢赫国",
+            region=(0.55, 0.27, 0.82, 0.60),
+        ):
+            raise AgentError("Palermo county war goal is not visible")
+
+        _map_first, map_second = click_visible_text_once(
+            driver,
+            source,
+            text="宣战",
+            region=(0.75, 0.82, 0.90, 0.95),
+            control_id="declare_war.confirm_palermo_county_holy_war",
+            expected_post_screen="map_after_war_declaration",
+            post_predicate=lambda frame: getattr(frame, "screen", None)
+            in {"map_hud", "map_running"},
+        )
+
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": "map_hud.open_war_overview",
+                "key": "alt+w",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["w"],
+                "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                "expected_post_screen": "war_overview",
+            },
+        )
+        overview_accepted, overview_last_error = _prepare_key_chord_batch(
+            CK3_SHORTCUT_SCAN_CODES["left_alt"],
+            CK3_SHORTCUT_SCAN_CODES["w"],
+        )()
+        if overview_accepted != 4:
+            raise AgentError(
+                "alt+w war overview shortcut was partial: "
+                f"accepted={overview_accepted}, last_error={overview_last_error}"
+            )
+        overview_first, overview_second = wait_for_custom_state(
+            driver,
+            _war_overview_visible,
+            "Palermo war overview",
+        )
+        visible_text: list[str] = []
+        for item in getattr(overview_second, "spans", ()):
+            value = str(getattr(item, "text", "")).strip()
+            if value and value not in visible_text:
+                visible_text.append(value)
+        actions.append(
+            {
+                "control_id": "map_hud.open_war_overview",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": "alt+w",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["w"],
+                "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                "send_input": {
+                    "requested": 4,
+                    "accepted": overview_accepted,
+                    "last_error": overview_last_error,
+                },
+                "source_observation_id": map_second.observation_id,
+                "result_observation_id": overview_second.observation_id,
+                "expected_post_screen": "war_overview",
+            }
+        )
+
+        window.require_foreground()
+        close_accepted, close_last_error = _prepare_key_chord_batch(
+            CK3_SHORTCUT_SCAN_CODES["left_alt"],
+            CK3_SHORTCUT_SCAN_CODES["w"],
+        )()
+        if close_accepted != 4:
+            raise AgentError(
+                "alt+w war overview close was partial: "
+                f"accepted={close_accepted}, last_error={close_last_error}"
+            )
+        _closed_first, closed_second = wait_for_custom_state(
+            driver,
+            lambda frame: getattr(frame, "screen", None)
+            in {"map_hud", "map_running"},
+            "map after Palermo war overview",
+        )
+        actions.append(
+            {
+                "control_id": "war_overview.close",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": "alt+w",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["w"],
+                "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_alt"],
+                "send_input": {
+                    "requested": 4,
+                    "accepted": close_accepted,
+                    "last_error": close_last_error,
+                },
+                "source_observation_id": overview_second.observation_id,
+                "result_observation_id": closed_second.observation_id,
+                "expected_post_screen": "map_hud",
+            }
+        )
+        if getattr(closed_second, "screen", None) == "map_running":
+            paused = press_shortcut(
+                "map_running",
+                "map_running.pause_after_war_declaration",
+                "space",
+                CK3_SHORTCUT_SCAN_CODES["space"],
+                "map_hud",
+                "paused map after Palermo war declaration",
+                driver=driver,
+                stable=closed_second,
+                require_visible_control=False,
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+            final_map_observation_id = paused["observation_id"]
+        else:
+            final_map_observation_id = closed_second.observation_id
+        checkpoint, checkpoint_frame = save_development_checkpoint()
+        return {
+            "target_ruler": "拜莱尔姆谢赫，优素福·伊本·阿卜杜拉",
+            "casus_belli": "伯爵领圣战",
+            "war_goal": "拜莱尔姆谢赫国",
+            "declared": True,
+            "war_overview_frame_observation_ids": [
+                overview_first.observation_id,
+                overview_second.observation_id,
+            ],
+            "war_overview_visible_text": visible_text,
+            "checkpoint": checkpoint,
+            "pre_checkpoint_observation_id": final_map_observation_id,
+            "final_observation_id": checkpoint_frame["observation_id"],
+        }
+
     def save_development_checkpoint() -> tuple[
         dict[str, object], dict[str, object]
     ]:
@@ -2734,6 +3283,8 @@ def _drive_opening(
                     or _steward_development_targeting_active(frame)
                     or _council_panel_visible(frame)
                     or _pause_menu_visible(frame)
+                    or _palermo_interactions_visible(frame)
+                    or _declare_war_window_visible(frame)
                 ),
                 "current development map",
             )
@@ -2849,6 +3400,157 @@ def _drive_opening(
                     ),
                     post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
                 )
+        if development_step == "dynasty-review":
+            player_observation = press_shortcut(
+                "map_hud",
+                "map_hud.open_player_character",
+                "f1",
+                CK3_SHORTCUT_SCAN_CODES["f1"],
+                "player_character",
+                "player character dynasty review",
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+            dynasty_state = _extract_player_character_state(player_observation)
+            dynasty_state["strategy"] = _choose_one_life_dynasty_action(
+                dynasty_state
+            )
+            dynasty_state["visible_text"] = [
+                item["text"]
+                for item in player_observation.get("ocr", [])
+                if isinstance(item, dict) and isinstance(item.get("text"), str)
+            ]
+            final_observation = press_shortcut(
+                "player_character",
+                "player_character.close",
+                "f1",
+                CK3_SHORTCUT_SCAN_CODES["f1"],
+                "map_hud",
+                "map after dynasty review",
+                require_visible_control=False,
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "dynasty_state": dynasty_state,
+                "final_screen": final_observation.get("screen"),
+                "final_observation_id": final_observation.get("observation_id"),
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-review":
+            military_state, final_observation = inspect_map_panel(
+                *MAP_PANEL_SHORTCUTS[1]
+            )
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "military_state": military_state,
+                "final_screen": getattr(final_observation, "screen", None),
+                "final_observation_id": getattr(
+                    final_observation, "observation_id", None
+                ),
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-target-review":
+            target_state = review_palermo_war_target()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war_target": target_state,
+                "final_screen": "map_hud",
+                "final_observation_id": target_state["frame_observation_ids"][-1],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-interaction-review":
+            interaction_state = review_palermo_interactions()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war_interactions": interaction_state,
+                "final_screen": "palermo_interactions",
+                "final_observation_id": interaction_state[
+                    "frame_observation_ids"
+                ][-1],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-declaration-review":
+            declaration_state = review_palermo_declaration()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war_declaration": declaration_state,
+                "final_screen": "declare_war_window",
+                "final_observation_id": declaration_state[
+                    "frame_observation_ids"
+                ][-1],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-casus-belli-review":
+            casus_belli_state = review_palermo_county_holy_war()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war_casus_belli": casus_belli_state,
+                "final_screen": "declare_war_target_selection",
+                "final_observation_id": casus_belli_state[
+                    "frame_observation_ids"
+                ][-1],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-goal-review":
+            war_goal_state = select_palermo_war_goal()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war_goal": war_goal_state,
+                "final_screen": "declare_war_ready",
+                "final_observation_id": war_goal_state[
+                    "frame_observation_ids"
+                ][-1],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
+        if development_step == "war-declare-palermo":
+            war_state = declare_palermo_county_holy_war()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "war": war_state,
+                "final_screen": "map_hud",
+                "final_observation_id": war_state["final_observation_id"],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
         if development_step == "save-checkpoint":
             checkpoint, final_observation = save_development_checkpoint()
             return {
@@ -3452,7 +4154,7 @@ def _reload_opening_development_policy():
 
 def opening_dev_session(
     spec: EnvironmentSpec,
-    timeout_seconds: float = 3600,
+    timeout_seconds: float = 21600,
 ) -> dict[str, object]:
     """Keep one isolated CK3 process alive and hot-reload gameplay steps from stdin."""
     ensure_state_path_safe(spec.state_dir)
