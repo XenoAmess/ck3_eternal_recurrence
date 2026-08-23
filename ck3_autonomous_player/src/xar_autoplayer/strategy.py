@@ -774,7 +774,11 @@ def record_one_life_episode(
     episode = {
         "run_id": run_id,
         "finished_at": utc_now(),
-        "terminal_reason": "player_death",
+        "terminal_reason": (
+            terminal.get("terminal_reason")
+            if isinstance(terminal.get("terminal_reason"), str)
+            else "player_death"
+        ),
         "continue_as_heir_after_death": False,
         "technical_settlement_handoff": bool(
             terminal.get("technical_settlement_handoff")

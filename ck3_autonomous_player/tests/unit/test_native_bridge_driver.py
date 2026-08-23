@@ -491,6 +491,47 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertFalse(result["continue_as_heir_after_death"])
         self.assertEqual(result["played_character"]["character_id"], 17_031)
 
+    def test_native_death_terminal_records_cross_run_strategy(self) -> None:
+        endpoint = FakeEndpoint()
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    30,
+                    played_character={"character_id": 17_031, "alive": False},
+                )
+            )
+            snapshot = driver.take_snapshot()
+
+            result = driver.execute_step(
+                "death-terminal", expected_revision=int(snapshot["revision"])
+            )
+
+            history = result["cross_run_strategy"]
+            episode = history["recorded_episode"]
+            self.assertEqual(episode["run_id"], snapshot["episode_run_id"])
+            self.assertEqual(episode["terminal_reason"], "played_character_dead")
+            self.assertFalse(episode["continue_as_heir_after_death"])
+            self.assertEqual(episode["heir_gameplay_actions"], 0)
+            self.assertIn("death-terminal", episode["successful_steps"])
+            persisted = json.loads(
+                (state_dir / "strategy" / "one-life-history.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(len(persisted["episodes"]), 1)
+            self.assertEqual(
+                persisted["episodes"][0]["run_id"], snapshot["episode_run_id"]
+            )
+
     def test_played_character_switch_ends_episode_before_heir_gameplay(
         self,
     ) -> None:

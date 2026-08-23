@@ -519,3 +519,8 @@ fallback 还必须先证明窗口处于可截图状态；最小化时直接返�
 `native_played_character_changed` 区分该路径，绝不对新 ID 执行婚姻、战争或推进时间。恢复到死亡前 checkpoint 且 played ID 仍与
 锁定 ID 相同则继续本局。`played_character` 规范同时允许成对携带可选的 `primary_heir_id`/`has_heir`；这两个字段只作为策略信息，
 不会改变 episode identity 或授权继承人 gameplay。
+
+Native driver 现在还为每次锁定的 episode 生成稳定的 `episode_run_id`。当 `death-terminal` 被执行且 MCP 配置了
+`state_dir` 时，它会把本进程积累的原生命令历史、终局原因、检查点摘要和已有玩法成果直接写入
+`strategy/one-life-history.json`，并在结果中返回 `cross_run_strategy`。同一 driver 重复读取终局会以同一 run ID
+更新该 episode；下一局仍只读取这份智能体自己的历史来调整开局优先级，不继续扮演继承人。

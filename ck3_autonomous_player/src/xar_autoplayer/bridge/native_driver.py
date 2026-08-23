@@ -486,6 +486,7 @@ class NativeHeadlessGameplayDriver:
         self._command_history: list[dict[str, object]] = []
         self._episode_identity_lock = threading.Lock()
         self._episode_character_id: int | None = None
+        self._episode_run_id: str | None = None
         self.state = NativeProtocolState(self.pipe_name)
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
@@ -549,6 +550,7 @@ class NativeHeadlessGameplayDriver:
             composite_action_steps.append(_NATIVE_DEATH_TERMINAL_STEP)
         with self._episode_identity_lock:
             episode_character_id = self._episode_character_id
+            episode_run_id = self._episode_run_id
         return {
             **result,
             "action_steps": sorted(action_steps),
@@ -570,6 +572,7 @@ class NativeHeadlessGameplayDriver:
                 ),
             },
             "episode_character_id": episode_character_id,
+            "episode_run_id": episode_run_id,
             "one_life_terminal": isinstance(terminal_reason, str),
             "one_life_terminal_reason": terminal_reason,
             "continue_as_heir_after_death": False,
@@ -608,7 +611,11 @@ class NativeHeadlessGameplayDriver:
                 and isinstance(current_character_id, int)
             ):
                 self._episode_character_id = current_character_id
+                self._episode_run_id = (
+                    f"native-{current_character_id}-{uuid.uuid4().hex[:12]}"
+                )
             episode_character_id = self._episode_character_id
+            episode_run_id = self._episode_run_id
 
         terminal_reason: str | None = None
         if (
@@ -627,6 +634,7 @@ class NativeHeadlessGameplayDriver:
         return {
             **snapshot,
             "episode_character_id": episode_character_id,
+            "episode_run_id": episode_run_id,
             "one_life_terminal": terminal_reason is not None,
             "one_life_terminal_reason": terminal_reason,
             "continue_as_heir_after_death": False,
@@ -1142,7 +1150,7 @@ class NativeHeadlessGameplayDriver:
             if terminal_reason == "played_character_changed"
             else "native_played_character_dead"
         )
-        return {
+        result: dict[str, object] = {
             "step": _NATIVE_DEATH_TERMINAL_STEP,
             "backend_id": "native-headless",
             "terminal": True,
@@ -1157,6 +1165,30 @@ class NativeHeadlessGameplayDriver:
             "snapshot_id": snapshot["snapshot_id"],
             "revision": snapshot["revision"],
         }
+        if self.state_dir is not None:
+            from ..strategy import record_one_life_episode
+
+            episode_run_id = snapshot.get("episode_run_id")
+            if not isinstance(episode_run_id, str) or not episode_run_id:
+                raise BridgeUnavailableError(
+                    "native one-life episode lacks a stable run identity"
+                )
+            commands = self._history_snapshot()
+            commands.append(
+                {
+                    "index": len(commands) + 1,
+                    "command": _NATIVE_DEATH_TERMINAL_STEP,
+                    "ok": True,
+                    "result": copy.deepcopy(result),
+                }
+            )
+            result["cross_run_strategy"] = record_one_life_episode(
+                self.state_dir,
+                run_id=episode_run_id,
+                commands=commands,
+                terminal=result,
+            )
+        return result
 
     def _wait_for_restore_response(
         self,
