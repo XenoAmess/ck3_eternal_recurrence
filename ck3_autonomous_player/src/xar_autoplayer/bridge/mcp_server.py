@@ -177,6 +177,44 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_get_war_state() -> dict[str, object]:
+        """Return active native wars and the player's currently raised armies."""
+        return service.war_state()
+
+    @server.tool()
+    def ck3_raise_troops_default(
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Raise troops at CK3's native default rally point."""
+        return service.raise_troops_default(
+            expected_revision=expected_revision
+        )
+
+    @server.tool()
+    def ck3_move_army(
+        army_id: int,
+        target_province_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Move one native player army to an exact CK3 province."""
+        return service.move_army(
+            army_id,
+            target_province_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_disband_army(
+        army_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Disband one exact native player army."""
+        return service.disband_army(
+            army_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
     def ck3_select_event_option(
         option_number: int,
         event_instance_id: int | None = None,

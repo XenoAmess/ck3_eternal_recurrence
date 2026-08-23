@@ -81,6 +81,8 @@ def _snapshot(
     map_ready: bool = True,
     pending_character_interaction: dict[str, object] | None = None,
     played_character: dict[str, object] | None = None,
+    active_wars: list[dict[str, object]] | None = None,
+    player_armies: list[dict[str, object]] | None = None,
 ) -> dict[str, object]:
     return {
         "type": "state_snapshot",
@@ -98,7 +100,46 @@ def _snapshot(
             "active_event": active_event,
             "pending_character_interaction": pending_character_interaction,
             "played_character": played_character,
+            "active_wars": active_wars,
+            "player_armies": player_armies,
         },
+    }
+
+
+def _army(
+    army_id: int,
+    *,
+    soldiers: int | None = 1_000,
+    province_id: int | None = 10,
+    move_target_province_id: int | None = None,
+    observe_move_target: bool = True,
+    controllable: bool = True,
+) -> dict[str, object]:
+    result = {
+        "army_id": army_id,
+        "owner_character_id": 707 if controllable else 808,
+        "soldiers": soldiers,
+        "current_province_id": province_id,
+        "move_target_province_id": move_target_province_id,
+        "controllable": controllable,
+    }
+    if not observe_move_target:
+        result.pop("move_target_province_id")
+    return result
+
+
+def _war(
+    war_id: int = 61,
+    *,
+    allied_armies: list[dict[str, object]] | None = None,
+    enemy_armies: list[dict[str, object]] | None = None,
+) -> dict[str, object]:
+    return {
+        "war_id": war_id,
+        "player_side": "attacker",
+        "player_relative_war_score": 12,
+        "allied_armies": allied_armies or [],
+        "enemy_armies": enemy_armies or [],
     }
 
 
@@ -368,6 +409,211 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["terminal_kind"], "native_played_character_dead")
         self.assertFalse(result["continue_as_heir_after_death"])
         self.assertEqual(result["played_character"]["character_id"], 17_031)
+
+    def test_native_war_templates_expand_and_move_waits_for_target(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-wars",
+                "game.command.move-army-N-to-N",
+                "game.command.disband-army-N",
+            )
+        )
+        player = _army(101, soldiers=1_500, province_id=11)
+        enemy = _army(
+            202,
+            soldiers=2_400,
+            province_id=33,
+            controllable=False,
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                active_wars=[_war(allied_armies=[player], enemy_armies=[enemy])],
+                player_armies=[player],
+            )
+        )
+
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            ["disband-army-101", "move-army-101-to-33"],
+        )
+        before = driver.take_snapshot()
+        self.assertEqual(before["active_wars"][0]["enemy_armies"][0]["soldiers"], 2_400)
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"status": "submitted"},
+                }
+            )
+            moving = _army(
+                101,
+                soldiers=1_500,
+                province_id=11,
+                move_target_province_id=33,
+            )
+            endpoint.publish(
+                _snapshot(
+                    41,
+                    active_wars=[
+                        _war(allied_armies=[moving], enemy_armies=[enemy])
+                    ],
+                    player_armies=[moving],
+                )
+            )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step(
+            "move-army-101-to-33",
+            expected_revision=int(before["revision"]),
+        )
+
+        self.assertEqual(result["war_action"]["status"], "moving")
+        self.assertEqual(result["war_action"]["target_province_id"], 33)
+        command = next(
+            frame for frame in reversed(endpoint.frames)
+            if frame.get("type") == "execute_step"
+        )
+        self.assertEqual(command["step"], "move-army-101-to-33")
+        self.assertEqual(command["expected_revision"], 40)
+        self.assertNotIn(
+            "move-army-101-to-33", driver.capabilities()["action_steps"]
+        )
+
+    def test_native_raise_and_postwar_disband_wait_for_army_state(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-wars",
+                "game.command.raise-troops-default",
+                "game.command.disband-army-N",
+            )
+        )
+        enemy = _army(
+            302,
+            soldiers=None,
+            province_id=44,
+            controllable=False,
+        )
+        endpoint.publish(
+            _snapshot(50, active_wars=[_war(enemy_armies=[enemy])])
+        )
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            ["raise-troops-default"],
+        )
+
+        def answer_raise(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"status": "submitted"},
+                }
+            )
+            raised = _army(303, province_id=12)
+            endpoint.publish(
+                _snapshot(
+                    51,
+                    active_wars=[
+                        _war(allied_armies=[raised], enemy_armies=[enemy])
+                    ],
+                    player_armies=[raised],
+                )
+            )
+
+        endpoint.send_hook = answer_raise
+        raised = driver.execute_step("raise-troops-default")
+        self.assertEqual(raised["war_action"]["raised_army_ids"], [303])
+
+        remaining = _army(303, province_id=12)
+        endpoint.publish(_snapshot(52, active_wars=[], player_armies=[remaining]))
+        self.assertEqual(
+            driver.capabilities()["action_steps"], ["disband-army-303"]
+        )
+
+        def answer_disband(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"status": "submitted"},
+                }
+            )
+            endpoint.publish(_snapshot(53, active_wars=[], player_armies=[]))
+
+        endpoint.send_hook = answer_disband
+        disbanded = driver.execute_step("disband-army-303")
+        self.assertEqual(disbanded["war_action"]["status"], "disbanded")
+        self.assertEqual(disbanded["player_armies"], [])
+
+    def test_native_move_without_target_observation_uses_submission_ack(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.01,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.move-army-N-to-N",
+            )
+        )
+        player = _army(401, province_id=None, observe_move_target=False)
+        enemy = _army(402, province_id=90, controllable=False)
+        endpoint.publish(
+            _snapshot(
+                60,
+                active_wars=[_war(allied_armies=[player], enemy_armies=[enemy])],
+                player_armies=[player],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") == "execute_step":
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": True,
+                        "result": {"status": "submitted"},
+                    }
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("move-army-401-to-90")
+
+        self.assertEqual(result["war_action"]["status"], "move_submitted")
+        self.assertFalse(result["war_action"]["move_target_observable"])
 
     def test_save_checkpoint_waits_for_isolated_file_materialization(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -1081,6 +1327,42 @@ class NativeFallbackModeTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
             driver.execute_step("restore-checkpoint")
+        self.assertEqual(visual_calls, [])
+
+    def test_native_war_command_never_uses_hybrid_visual_fallback(self) -> None:
+        endpoint = FakeEndpoint()
+        native = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        visual_calls: list[str] = []
+        driver = ConfiguredHybridFallbackDriver(
+            native,
+            CallbackGameplayDriver(
+                backend_id="data-mod",
+                snapshot=lambda: {"snapshot_id": "mod:1", "revision": 1},
+                execute=lambda _step, _revision: {},
+                action_steps=(),
+            ),
+            MinimizedRejectingVisualDriver(
+                CallbackGameplayDriver(
+                    backend_id="vision-session",
+                    snapshot=lambda: {
+                        "snapshot_id": "vision:1",
+                        "revision": 1,
+                    },
+                    execute=lambda step, _revision: visual_calls.append(step) or {},
+                    action_steps=("move-army-7-to-9",),
+                ),
+                window_minimized=lambda: False,
+            ),
+        )
+
+        self.assertNotIn(
+            "move-army-7-to-9", driver.capabilities()["action_steps"]
+        )
+        with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
+            driver.execute_step("move-army-7-to-9")
         self.assertEqual(visual_calls, [])
 
 

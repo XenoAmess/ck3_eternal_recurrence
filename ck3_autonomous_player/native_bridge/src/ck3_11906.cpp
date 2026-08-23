@@ -8,6 +8,7 @@
 #include <cstring>
 #include <limits>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace xar::ck3_11906 {
@@ -31,9 +32,26 @@ constexpr std::uintptr_t kReplyCharacterInteractionSecondaryVtableRva =
 constexpr std::uintptr_t kPendingCharacterInteractionStorageSlotRva =
     0x57BF1C8;
 constexpr std::uintptr_t kCharacterStorageSlotRva = 0x570C130;
+constexpr std::uintptr_t kArmyStorageSlotRva = 0x572CC80;
+constexpr std::uintptr_t kRaiseTroopsPrimaryVtableRva = 0x41226D8;
+constexpr std::uintptr_t kRaiseTroopsSecondaryVtableRva = 0x41226A8;
+constexpr std::uintptr_t kMoveArmyPrimaryVtableRva = 0x432BF18;
+constexpr std::uintptr_t kMoveArmySecondaryVtableRva = 0x432BFB0;
+constexpr std::uintptr_t kDisbandArmyPrimaryVtableRva = 0x432BFE0;
+constexpr std::uintptr_t kDisbandArmySecondaryVtableRva = 0x432C078;
 constexpr std::uintptr_t kSubmitCommandRva = 0x0973E00;
 constexpr std::uintptr_t kGetLocalPlayerRva = 0x346B7C0;
 constexpr std::uintptr_t kGetCurrentEventRva = 0x2706AD0;
+constexpr std::uintptr_t kContainsWarParticipantRva = 0x2224870;
+constexpr std::uintptr_t kGetWarScoreRva = 0x222A8A0;
+constexpr std::uintptr_t kResolveDefaultRaiseProvinceRva = 0x224CC80;
+constexpr std::uintptr_t kConstructRaiseTroopsCommandRva = 0x26D6FC0;
+constexpr std::uintptr_t kValidateRaiseTroopsCommandRva = 0x26D7150;
+constexpr std::uintptr_t kDestroyRaiseTroopsCommandRva = 0x10E7950;
+constexpr std::uintptr_t kGetArmyMoveModeRva = 0x26B51B0;
+constexpr std::uintptr_t kCanMoveArmyRva = 0x26B4610;
+constexpr std::uintptr_t kInitializeArmyMovePathRva = 0x0C7BA70;
+constexpr std::uintptr_t kDestroyMoveArmyCommandRva = 0x26B46D0;
 
 constexpr std::size_t kGameStateDateOffset = 0x08;
 constexpr std::size_t kGameStateSpeedOffset = 0x70;
@@ -44,6 +62,7 @@ constexpr std::size_t kPlayersLocalIdOffset = 0x1F0;
 constexpr std::size_t kPlayerIdOffset = 0x70;
 constexpr std::size_t kEventManagerOffset = 0x2F4C0;
 constexpr std::size_t kPlayerCharacterManagerOffset = 0x1D4F0;
+constexpr std::size_t kWarManagerOffset = 0x29C20;
 constexpr std::size_t kActiveEventDataOffset = 0x1B0;
 constexpr std::size_t kActiveEventInstanceIdOffset = 0x1BC;
 constexpr std::size_t kEventDataOptionCountOffset = 0x1BC;
@@ -60,7 +79,19 @@ constexpr std::size_t kPlayerCharacterIdOffset = 0xB0;
 constexpr std::size_t kPlayerCharacterPlayerIdOffset = 0xD8;
 constexpr std::size_t kCharacterIdOffset = 0x18;
 constexpr std::size_t kCharacterDeathDataOffset = 0x1C8;
+constexpr std::size_t kWarStorageOffset = 0x20;
+constexpr std::size_t kWarIdOffset = 0x08;
+constexpr std::size_t kWarAttackersOffset = 0x20;
+constexpr std::size_t kWarDefendersOffset = 0x80;
+constexpr std::size_t kWarEndedDataOffset = 0x358;
+constexpr std::size_t kArmyIdOffset = 0x10;
+constexpr std::size_t kArmyCurrentProvinceOffset = 0x20;
+constexpr std::size_t kArmyOwnerCharacterIdOffset = 0x174;
+constexpr std::size_t kProvinceIdOffset = 0x10;
+constexpr std::size_t kGameDataProvinceArrayOffset = 0x140;
+constexpr std::size_t kGameDataProvinceCountOffset = 0x14C;
 constexpr std::int32_t kMaximumPlayerCharacterEntries = 1024;
+constexpr std::int32_t kMaximumComponentCapacity = 1'000'000;
 
 struct PauseCommand {
   std::uintptr_t primary_vtable = 0;
@@ -128,6 +159,44 @@ struct ReplyCharacterInteractionCommand {
   std::int32_t reply = 0;
 };
 
+struct alignas(16) RaiseTroopsCommandStorage {
+  std::array<std::byte, 0x50> bytes{};
+};
+
+struct RaiseEntry {
+  std::int32_t province_id = -1;
+  std::int32_t regiment_id = -1;
+};
+
+struct MoveArmyCommand {
+  std::uintptr_t primary_vtable = 0;
+  std::uint8_t flags = 0;
+  std::array<std::byte, 3> flags_padding{};
+  std::uint32_t metadata_0c = 0;
+  std::uint32_t metadata_10 = 0;
+  std::uint32_t metadata_14 = 0;
+  std::uintptr_t secondary_vtable = 0;
+  std::int32_t command_kind = 2;
+  std::int32_t army_id = -1;
+  std::int32_t destination_province_id = -1;
+  std::int32_t move_mode = 0;
+  std::int32_t route_kind = 2;
+  std::int32_t direct_target = 1;
+  std::array<std::byte, 0x130> path_storage{};
+};
+
+struct DisbandArmyCommand {
+  std::uintptr_t primary_vtable = 0;
+  std::uint8_t flags = 0;
+  std::array<std::byte, 3> flags_padding{};
+  std::uint32_t metadata_0c = 0;
+  std::uint32_t metadata_10 = 0;
+  std::uint32_t metadata_14 = 0;
+  std::uintptr_t secondary_vtable = 0;
+  std::int32_t command_kind = 2;
+  std::int32_t army_id = -1;
+};
+
 static_assert(sizeof(PauseCommand) == 0x28);
 static_assert(offsetof(PauseCommand, secondary_vtable) == 0x18);
 static_assert(offsetof(PauseCommand, player_id) == 0x20);
@@ -152,6 +221,21 @@ static_assert(
     offsetof(ReplyCharacterInteractionCommand, pending_interaction_id) ==
     0x20);
 static_assert(offsetof(ReplyCharacterInteractionCommand, reply) == 0x24);
+static_assert(sizeof(RaiseTroopsCommandStorage) == 0x50);
+static_assert(sizeof(RaiseEntry) == 0x08);
+static_assert(sizeof(MoveArmyCommand) == 0x168);
+static_assert(offsetof(MoveArmyCommand, secondary_vtable) == 0x18);
+static_assert(offsetof(MoveArmyCommand, command_kind) == 0x20);
+static_assert(offsetof(MoveArmyCommand, army_id) == 0x24);
+static_assert(offsetof(MoveArmyCommand, destination_province_id) == 0x28);
+static_assert(offsetof(MoveArmyCommand, move_mode) == 0x2C);
+static_assert(offsetof(MoveArmyCommand, route_kind) == 0x30);
+static_assert(offsetof(MoveArmyCommand, direct_target) == 0x34);
+static_assert(offsetof(MoveArmyCommand, path_storage) == 0x38);
+static_assert(sizeof(DisbandArmyCommand) == 0x28);
+static_assert(offsetof(DisbandArmyCommand, secondary_vtable) == 0x18);
+static_assert(offsetof(DisbandArmyCommand, command_kind) == 0x20);
+static_assert(offsetof(DisbandArmyCommand, army_id) == 0x24);
 
 template <typename Value>
 Value LoadAt(const void *base, std::size_t offset) noexcept {
@@ -311,6 +395,205 @@ bool ReadPlayedCharacter(const Bindings &bindings, void *game_state,
   return false;
 }
 
+void *ResolveArmy(const Bindings &bindings, std::int32_t army_id) noexcept {
+  if (army_id == -1 || bindings.army_storage_slot == nullptr) {
+    return nullptr;
+  }
+  void *const storage = *bindings.army_storage_slot;
+  if (storage == nullptr) {
+    return nullptr;
+  }
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const std::int32_t capacity =
+      LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  const std::uint32_t index =
+      static_cast<std::uint32_t>(army_id) & 0x00FFFFFFU;
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentCapacity ||
+      index >= static_cast<std::uint32_t>(capacity)) {
+    return nullptr;
+  }
+  const auto slot_offset = static_cast<std::size_t>(index) *
+                               kComponentStorageSlotSize +
+                           kComponentStorageSlotObjectOffset;
+  void *const army = LoadAt<void *>(slots, slot_offset);
+  if (army == nullptr || LoadAt<std::int32_t>(army, kArmyIdOffset) != army_id) {
+    return nullptr;
+  }
+  return army;
+}
+
+void *ResolveProvince(void *game_state, std::int32_t province_id) noexcept {
+  if (game_state == nullptr || province_id < 1) {
+    return nullptr;
+  }
+  void *const game_data =
+      LoadAt<void *>(game_state, kGameStateGameDataOffset);
+  if (game_data == nullptr) {
+    return nullptr;
+  }
+  void *const provinces =
+      LoadAt<void *>(game_data, kGameDataProvinceArrayOffset);
+  const std::int32_t province_count =
+      LoadAt<std::int32_t>(game_data, kGameDataProvinceCountOffset);
+  if (provinces == nullptr || province_count <= 1 ||
+      province_id >= province_count) {
+    return nullptr;
+  }
+  void *const province = LoadAt<void *>(
+      provinces, static_cast<std::size_t>(province_id) * sizeof(void *));
+  if (province == nullptr ||
+      LoadAt<std::int32_t>(province, kProvinceIdOffset) != province_id) {
+    return nullptr;
+  }
+  return province;
+}
+
+struct ResolvedArmySnapshot {
+  void *army = nullptr;
+  ArmySnapshot snapshot{};
+};
+
+std::vector<ResolvedArmySnapshot>
+ReadArmies(const Bindings &bindings,
+           std::int32_t played_character_id) noexcept {
+  std::vector<ResolvedArmySnapshot> result;
+  if (bindings.army_storage_slot == nullptr) {
+    return result;
+  }
+  void *const storage = *bindings.army_storage_slot;
+  if (storage == nullptr) {
+    return result;
+  }
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const std::int32_t capacity =
+      LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentCapacity) {
+    return result;
+  }
+  for (std::int32_t index = 0; index < capacity; ++index) {
+    const auto slot_offset = static_cast<std::size_t>(index) *
+                                 kComponentStorageSlotSize +
+                             kComponentStorageSlotObjectOffset;
+    void *const army = LoadAt<void *>(slots, slot_offset);
+    if (army == nullptr) {
+      continue;
+    }
+    const std::int32_t army_id =
+        LoadAt<std::int32_t>(army, kArmyIdOffset);
+    if ((static_cast<std::uint32_t>(army_id) & 0x00FFFFFFU) !=
+        static_cast<std::uint32_t>(index)) {
+      continue;
+    }
+
+    ArmySnapshot snapshot{};
+    snapshot.army_id = army_id;
+    snapshot.owner_character_id =
+        LoadAt<std::int32_t>(army, kArmyOwnerCharacterIdOffset);
+    snapshot.controllable =
+        snapshot.owner_character_id == played_character_id;
+    void *const current_province =
+        LoadAt<void *>(army, kArmyCurrentProvinceOffset);
+    if (current_province != nullptr) {
+      const std::int32_t province_id =
+          LoadAt<std::int32_t>(current_province, kProvinceIdOffset);
+      if (province_id > 0) {
+        snapshot.has_current_province = true;
+        snapshot.current_province_id = province_id;
+      }
+    }
+    result.push_back({army, snapshot});
+  }
+  return result;
+}
+
+void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
+                       std::int32_t played_character_id,
+                       Snapshot &output) noexcept {
+  output.active_wars.clear();
+  output.player_armies.clear();
+  const auto armies = ReadArmies(bindings, played_character_id);
+  for (const auto &army : armies) {
+    if (army.snapshot.controllable) {
+      output.player_armies.push_back(army.snapshot);
+    }
+  }
+  if (game_state == nullptr || bindings.contains_war_participant == nullptr ||
+      bindings.get_war_score == nullptr) {
+    return;
+  }
+  void *const game_data =
+      LoadAt<void *>(game_state, kGameStateGameDataOffset);
+  if (game_data == nullptr) {
+    return;
+  }
+  auto *const war_manager =
+      static_cast<std::byte *>(game_data) + bindings.war_manager_offset;
+  void *const war_storage =
+      LoadAt<void *>(war_manager, kWarStorageOffset);
+  if (war_storage == nullptr) {
+    return;
+  }
+  void *const slots =
+      LoadAt<void *>(war_storage, kComponentStorageSlotsOffset);
+  const std::int32_t capacity =
+      LoadAt<std::int32_t>(war_storage, kComponentStorageCapacityOffset);
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentCapacity) {
+    return;
+  }
+
+  for (std::int32_t index = 0; index < capacity; ++index) {
+    const auto slot_offset = static_cast<std::size_t>(index) *
+                                 kComponentStorageSlotSize +
+                             kComponentStorageSlotObjectOffset;
+    void *const war = LoadAt<void *>(slots, slot_offset);
+    if (war == nullptr || LoadAt<void *>(war, kWarEndedDataOffset) != nullptr) {
+      continue;
+    }
+    const std::int32_t war_id = LoadAt<std::int32_t>(war, kWarIdOffset);
+    if ((static_cast<std::uint32_t>(war_id) & 0x00FFFFFFU) !=
+        static_cast<std::uint32_t>(index)) {
+      continue;
+    }
+    void *const attackers =
+        static_cast<std::byte *>(war) + kWarAttackersOffset;
+    void *const defenders =
+        static_cast<std::byte *>(war) + kWarDefendersOffset;
+    const bool player_is_attacker =
+        bindings.contains_war_participant(attackers, played_character_id);
+    const bool player_is_defender =
+        bindings.contains_war_participant(defenders, played_character_id);
+    if (player_is_attacker == player_is_defender) {
+      continue;
+    }
+
+    ActiveWarSnapshot snapshot{};
+    snapshot.war_id = war_id;
+    snapshot.player_side = player_is_attacker ? PlayerWarSide::attacker
+                                              : PlayerWarSide::defender;
+    const std::int32_t attacker_score = bindings.get_war_score(war, nullptr);
+    snapshot.player_relative_war_score =
+        player_is_attacker ? attacker_score : -attacker_score;
+    void *const allied_participants =
+        player_is_attacker ? attackers : defenders;
+    void *const enemy_participants =
+        player_is_attacker ? defenders : attackers;
+    for (const auto &army : armies) {
+      if (bindings.contains_war_participant(
+              allied_participants, army.snapshot.owner_character_id)) {
+        snapshot.allied_armies.push_back(army.snapshot);
+      } else if (bindings.contains_war_participant(
+                     enemy_participants,
+                     army.snapshot.owner_character_id)) {
+        snapshot.enemy_armies.push_back(army.snapshot);
+      }
+    }
+    output.active_wars.push_back(std::move(snapshot));
+  }
+}
+
 bool HashCurrentExecutable(std::array<std::uint8_t, 32> &output) noexcept {
   std::array<wchar_t, 32'768> path{};
   const DWORD path_length =
@@ -425,20 +708,59 @@ Bindings BindCurrentProcess() noexcept {
       module + kReplyCharacterInteractionPrimaryVtableRva;
   result.reply_character_interaction_secondary_vtable =
       module + kReplyCharacterInteractionSecondaryVtableRva;
+  result.raise_troops_primary_vtable =
+      module + kRaiseTroopsPrimaryVtableRva;
+  result.raise_troops_secondary_vtable =
+      module + kRaiseTroopsSecondaryVtableRva;
+  result.move_army_primary_vtable = module + kMoveArmyPrimaryVtableRva;
+  result.move_army_secondary_vtable = module + kMoveArmySecondaryVtableRva;
+  result.disband_army_primary_vtable =
+      module + kDisbandArmyPrimaryVtableRva;
+  result.disband_army_secondary_vtable =
+      module + kDisbandArmySecondaryVtableRva;
   result.pending_character_interaction_storage_slot =
       reinterpret_cast<void **>(
           module + kPendingCharacterInteractionStorageSlotRva);
   result.character_storage_slot =
       reinterpret_cast<void **>(module + kCharacterStorageSlotRva);
+  result.army_storage_slot =
+      reinterpret_cast<void **>(module + kArmyStorageSlotRva);
   result.event_manager_offset = kEventManagerOffset;
   result.player_character_manager_offset =
       kPlayerCharacterManagerOffset;
+  result.war_manager_offset = kWarManagerOffset;
   result.submit_command =
       reinterpret_cast<SubmitCommand>(module + kSubmitCommandRva);
   result.get_local_player =
       reinterpret_cast<GetLocalPlayer>(module + kGetLocalPlayerRva);
   result.get_current_event =
       reinterpret_cast<GetCurrentEvent>(module + kGetCurrentEventRva);
+  result.contains_war_participant = reinterpret_cast<ContainsWarParticipant>(
+      module + kContainsWarParticipantRva);
+  result.get_war_score =
+      reinterpret_cast<GetWarScore>(module + kGetWarScoreRva);
+  result.resolve_default_raise_province =
+      reinterpret_cast<ResolveDefaultRaiseProvince>(
+          module + kResolveDefaultRaiseProvinceRva);
+  result.construct_raise_troops_command =
+      reinterpret_cast<ConstructRaiseTroopsCommand>(
+          module + kConstructRaiseTroopsCommandRva);
+  result.validate_raise_troops_command =
+      reinterpret_cast<ValidateRaiseTroopsCommand>(
+          module + kValidateRaiseTroopsCommandRva);
+  result.destroy_raise_troops_command =
+      reinterpret_cast<DestroyNativeCommand>(
+          module + kDestroyRaiseTroopsCommandRva);
+  result.get_army_move_mode =
+      reinterpret_cast<GetArmyMoveMode>(module + kGetArmyMoveModeRva);
+  result.can_move_army =
+      reinterpret_cast<CanMoveArmy>(module + kCanMoveArmyRva);
+  result.initialize_army_move_path =
+      reinterpret_cast<InitializeArmyMovePath>(
+          module + kInitializeArmyMovePathRva);
+  result.destroy_move_army_command =
+      reinterpret_cast<DestroyNativeCommand>(
+          module + kDestroyMoveArmyCommandRva);
   return result;
 }
 
@@ -496,6 +818,13 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
     output.pending_character_interaction_id = -1;
     output.pending_sender_character_id = -1;
     output.pending_auto_accept_notification = false;
+  }
+  if (output.has_played_character) {
+    ReadWarsAndArmies(bindings, game_state, output.played_character_id,
+                      output);
+  } else {
+    output.active_wars.clear();
+    output.player_armies.clear();
   }
   return true;
 }
@@ -685,6 +1014,159 @@ ReplyPendingInteractionResult SubmitReplyToPendingInteraction(
   command.reply = static_cast<std::int32_t>(reply);
   bindings.submit_command(bindings.command_manager, &command, 0x0E);
   return ReplyPendingInteractionResult::submitted;
+}
+
+RaiseTroopsResult SubmitRaiseTroopsDefault(
+    const Bindings &bindings) noexcept {
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.resolve_default_raise_province == nullptr ||
+      bindings.construct_raise_troops_command == nullptr ||
+      bindings.validate_raise_troops_command == nullptr ||
+      bindings.destroy_raise_troops_command == nullptr ||
+      bindings.raise_troops_primary_vtable == 0 ||
+      bindings.raise_troops_secondary_vtable == 0) {
+    return RaiseTroopsResult::unavailable;
+  }
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return RaiseTroopsResult::unavailable;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return RaiseTroopsResult::no_played_character;
+  }
+  void *const character =
+      ResolveCharacter(bindings, current.played_character_id);
+  if (character == nullptr) {
+    return RaiseTroopsResult::no_played_character;
+  }
+  void *const default_province =
+      bindings.resolve_default_raise_province(character);
+  if (default_province == nullptr) {
+    return RaiseTroopsResult::no_default_province;
+  }
+  const std::int32_t province_id =
+      LoadAt<std::int32_t>(default_province, kProvinceIdOffset);
+  void *const game_state = *bindings.game_state_slot;
+  if (province_id < 1 || ResolveProvince(game_state, province_id) == nullptr) {
+    return RaiseTroopsResult::no_default_province;
+  }
+
+  RaiseTroopsCommandStorage storage{};
+  RaiseEntry entry{province_id, -1};
+  void *const command = storage.bytes.data();
+  if (bindings.construct_raise_troops_command(
+          command, current.played_character_id, &entry) != command) {
+    return RaiseTroopsResult::unavailable;
+  }
+  const bool layout_matches =
+      LoadAt<std::uintptr_t>(command, 0x00) ==
+          bindings.raise_troops_primary_vtable &&
+      LoadAt<std::uintptr_t>(command, 0x18) ==
+          bindings.raise_troops_secondary_vtable;
+  if (!layout_matches) {
+    bindings.destroy_raise_troops_command(command, 0);
+    return RaiseTroopsResult::unavailable;
+  }
+  if (!bindings.validate_raise_troops_command(command, nullptr)) {
+    bindings.destroy_raise_troops_command(command, 0);
+    return RaiseTroopsResult::validation_failed;
+  }
+  bindings.submit_command(bindings.command_manager, command, 7);
+  bindings.destroy_raise_troops_command(command, 0);
+  return RaiseTroopsResult::submitted;
+}
+
+MoveArmyResult SubmitMoveArmy(const Bindings &bindings,
+                              std::int32_t army_id,
+                              std::int32_t province_id) noexcept {
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.get_army_move_mode == nullptr ||
+      bindings.can_move_army == nullptr ||
+      bindings.initialize_army_move_path == nullptr ||
+      bindings.destroy_move_army_command == nullptr ||
+      bindings.move_army_primary_vtable == 0 ||
+      bindings.move_army_secondary_vtable == 0) {
+    return MoveArmyResult::unavailable;
+  }
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return MoveArmyResult::unavailable;
+  }
+  void *const army = ResolveArmy(bindings, army_id);
+  if (army == nullptr) {
+    return MoveArmyResult::army_not_found;
+  }
+  bool controllable = false;
+  for (const auto &candidate : current.player_armies) {
+    if (candidate.army_id == army_id && candidate.controllable) {
+      controllable = true;
+      break;
+    }
+  }
+  if (!controllable) {
+    return MoveArmyResult::army_not_controllable;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  void *const province = ResolveProvince(game_state, province_id);
+  if (province == nullptr) {
+    return MoveArmyResult::province_not_found;
+  }
+  constexpr std::int32_t command_kind = 2;
+  constexpr std::int32_t direct_target = 1;
+  const std::int32_t move_mode =
+      bindings.get_army_move_mode(army, province, direct_target);
+  if (!bindings.can_move_army(command_kind, army, move_mode)) {
+    return MoveArmyResult::cannot_move;
+  }
+
+  MoveArmyCommand command{};
+  command.primary_vtable = bindings.move_army_primary_vtable;
+  command.secondary_vtable = bindings.move_army_secondary_vtable;
+  command.army_id = army_id;
+  command.destination_province_id = province_id;
+  command.move_mode = move_mode;
+  bindings.initialize_army_move_path(command.path_storage.data());
+  bindings.submit_command(bindings.command_manager, &command, 7);
+  bindings.destroy_move_army_command(&command, 0);
+  return MoveArmyResult::submitted;
+}
+
+DisbandArmyResult SubmitDisbandArmy(const Bindings &bindings,
+                                    std::int32_t army_id) noexcept {
+  if (!bindings.enabled || bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.disband_army_primary_vtable == 0 ||
+      bindings.disband_army_secondary_vtable == 0) {
+    return DisbandArmyResult::unavailable;
+  }
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return DisbandArmyResult::unavailable;
+  }
+  if (ResolveArmy(bindings, army_id) == nullptr) {
+    return DisbandArmyResult::army_not_found;
+  }
+  bool controllable = false;
+  for (const auto &candidate : current.player_armies) {
+    if (candidate.army_id == army_id && candidate.controllable) {
+      controllable = true;
+      break;
+    }
+  }
+  if (!controllable) {
+    return DisbandArmyResult::army_not_controllable;
+  }
+
+  DisbandArmyCommand command{};
+  command.primary_vtable = bindings.disband_army_primary_vtable;
+  command.secondary_vtable = bindings.disband_army_secondary_vtable;
+  command.army_id = army_id;
+  bindings.submit_command(bindings.command_manager, &command, 7);
+  return DisbandArmyResult::submitted;
 }
 
 } // namespace xar::ck3_11906

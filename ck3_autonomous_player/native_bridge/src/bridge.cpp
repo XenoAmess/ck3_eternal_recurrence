@@ -95,6 +95,8 @@ std::string HelloFrame(bool ck3_gameplay_enabled) {
               "\"game.state.played-character\","
               "\"game.state.active-event\","
               "\"game.state.pending-character-interaction\","
+              "\"game.state.active-wars\","
+              "\"game.state.player-armies\","
               "\"game.command.pause-map\","
               "\"game.command.resume-map\","
               "\"game.command.set-speed-1\",\"game.command.set-speed-2\","
@@ -103,7 +105,10 @@ std::string HelloFrame(bool ck3_gameplay_enabled) {
               "\"game.command.select-event-option-N\","
               "\"game.command.save-checkpoint\","
               "\"game.command.accept-pending-character-interaction\","
-              "\"game.command.reject-pending-character-interaction\"";
+              "\"game.command.reject-pending-character-interaction\","
+              "\"game.command.raise-troops-default\","
+              "\"game.command.move-army-N-to-N\","
+              "\"game.command.disband-army-N\"";
   }
   result += "]}";
   return result;
@@ -119,6 +124,36 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += Number(GetTickCount64());
   result += "}";
   return result;
+}
+
+void AppendArmySnapshot(std::string &result,
+                        const xar::ck3_11906::ArmySnapshot &army) {
+  result += "{\"army_id\":";
+  result += SignedNumber(army.army_id);
+  result += ",\"owner_character_id\":";
+  result += SignedNumber(army.owner_character_id);
+  result += ",\"current_province_id\":";
+  if (army.has_current_province) {
+    result += SignedNumber(army.current_province_id);
+  } else {
+    result += "null";
+  }
+  result += ",\"controllable\":";
+  result += army.controllable ? "true" : "false";
+  result += '}';
+}
+
+void AppendArmyArray(
+    std::string &result,
+    const std::vector<xar::ck3_11906::ArmySnapshot> &armies) {
+  result += '[';
+  for (std::size_t index = 0; index < armies.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    AppendArmySnapshot(result, armies[index]);
+  }
+  result += ']';
 }
 
 std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
@@ -181,6 +216,28 @@ std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
     result += snapshot.pending_auto_accept_notification ? "true" : "false";
     result += '}';
   }
+  result += ",\"active_wars\":[";
+  for (std::size_t index = 0; index < snapshot.active_wars.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    const auto &war = snapshot.active_wars[index];
+    result += "{\"war_id\":";
+    result += SignedNumber(war.war_id);
+    result += ",\"player_side\":\"";
+    result += war.player_side == xar::ck3_11906::PlayerWarSide::attacker
+                  ? "attacker"
+                  : "defender";
+    result += "\",\"player_relative_war_score\":";
+    result += SignedNumber(war.player_relative_war_score);
+    result += ",\"allied_armies\":";
+    AppendArmyArray(result, war.allied_armies);
+    result += ",\"enemy_armies\":";
+    AppendArmyArray(result, war.enemy_armies);
+    result += '}';
+  }
+  result += "],\"player_armies\":";
+  AppendArmyArray(result, snapshot.player_armies);
   result += ",\"last_checkpoint_submission\":";
   if (checkpoint.sequence == 0) {
     result += "null";
@@ -264,6 +321,63 @@ EventOptionStep(std::string_view step) noexcept {
   // MCP/agent-facing event choices are one based. CK3's native command
   // payload and executor are zero based.
   return public_index - 1;
+}
+
+std::optional<std::int32_t> PositiveNativeId(
+    std::string_view value) noexcept {
+  if (value.empty()) {
+    return std::nullopt;
+  }
+  for (const char character : value) {
+    if (character < '0' || character > '9') {
+      return std::nullopt;
+    }
+  }
+  std::int32_t parsed_value = -1;
+  const auto parsed = std::from_chars(
+      value.data(), value.data() + value.size(), parsed_value);
+  if (parsed.ec != std::errc{} ||
+      parsed.ptr != value.data() + value.size() || parsed_value < 1) {
+    return std::nullopt;
+  }
+  return parsed_value;
+}
+
+struct MoveArmyStepIds {
+  std::int32_t army_id = -1;
+  std::int32_t province_id = -1;
+};
+
+std::optional<MoveArmyStepIds> MoveArmyStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix = "move-army-";
+  constexpr std::string_view separator = "-to-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  const auto payload = step.substr(prefix.size());
+  const std::size_t separator_index = payload.find(separator);
+  if (separator_index == std::string_view::npos ||
+      payload.find(separator, separator_index + separator.size()) !=
+          std::string_view::npos) {
+    return std::nullopt;
+  }
+  const auto army_id = PositiveNativeId(payload.substr(0, separator_index));
+  const auto province_id = PositiveNativeId(
+      payload.substr(separator_index + separator.size()));
+  if (!army_id.has_value() || !province_id.has_value()) {
+    return std::nullopt;
+  }
+  return MoveArmyStepIds{army_id.value(), province_id.value()};
+}
+
+std::optional<std::int32_t> DisbandArmyStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix = "disband-army-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  return PositiveNativeId(step.substr(prefix.size()));
 }
 
 bool PublishSnapshot(HANDLE pipe, const xar::ck3_11906::Bindings &bindings,
@@ -493,6 +607,102 @@ DWORD WINAPI WorkerMain(void *) noexcept {
             }
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, false, error));
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step == "raise-troops-default") {
+          const auto result =
+              xar::ck3_11906::SubmitRaiseTroopsDefault(game);
+          if (result == xar::ck3_11906::RaiseTroopsResult::submitted) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, true, "submitted"));
+          } else {
+            std::string_view error = "CK3 raise-troops state is unavailable";
+            if (result == xar::ck3_11906::RaiseTroopsResult::
+                              no_played_character) {
+              error = "no living played CK3 character";
+            } else if (result == xar::ck3_11906::RaiseTroopsResult::
+                                     no_default_province) {
+              error = "no default CK3 rally province";
+            } else if (result == xar::ck3_11906::RaiseTroopsResult::
+                                     validation_failed) {
+              error = "CK3 rejected raise-troops validation";
+            }
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false, error));
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step.starts_with("move-army-")) {
+          const auto ids = MoveArmyStep(step);
+          if (!ids.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid move-army-<army_id>-to-<province_id> step"));
+          } else {
+            const auto result = xar::ck3_11906::SubmitMoveArmy(
+                game, ids->army_id, ids->province_id);
+            if (result == xar::ck3_11906::MoveArmyResult::submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, true, "submitted"));
+            } else {
+              std::string_view error = "CK3 move-army state is unavailable";
+              if (result ==
+                  xar::ck3_11906::MoveArmyResult::army_not_found) {
+                error = "CK3 army was not found";
+              } else if (result == xar::ck3_11906::MoveArmyResult::
+                                       army_not_controllable) {
+                error = "CK3 army is not player-controllable";
+              } else if (result == xar::ck3_11906::MoveArmyResult::
+                                       province_not_found) {
+                error = "CK3 destination province was not found";
+              } else if (result ==
+                         xar::ck3_11906::MoveArmyResult::cannot_move) {
+                error = "CK3 army cannot move to the destination";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step.starts_with("disband-army-")) {
+          const auto army_id = DisbandArmyStep(step);
+          if (!army_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid disband-army-<army_id> step"));
+          } else {
+            const auto result =
+                xar::ck3_11906::SubmitDisbandArmy(game, army_id.value());
+            if (result == xar::ck3_11906::DisbandArmyResult::submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, true, "submitted"));
+            } else {
+              std::string_view error = "CK3 disband-army state is unavailable";
+              if (result ==
+                  xar::ck3_11906::DisbandArmyResult::army_not_found) {
+                error = "CK3 army was not found";
+              } else if (result == xar::ck3_11906::DisbandArmyResult::
+                                       army_not_controllable) {
+                error = "CK3 army is not player-controllable";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
           }
           if (connected) {
             connected = PublishSnapshot(pipe, game, previous_snapshot,

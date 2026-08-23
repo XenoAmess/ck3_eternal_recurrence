@@ -20,7 +20,10 @@ Its current first gameplay slice is intentionally small:
   `set-speed-1`..`set-speed-5` steps plus one-based
   `select-event-option-1..N` and `save-checkpoint` through CK3's native locked
   command queue; it also accepts or rejects the current pending character
-  interaction without opening or focusing its notification window;
+  interaction without opening or focusing its notification window, and now
+  exposes active wars/player armies plus native `raise-troops-default`,
+  `move-army-<army_id>-to-<province_id>`, and
+  `disband-army-<army_id>` commands;
 - `xar_ck3_bridge_host.exe` creates a minimal target with
   `CREATE_SUSPENDED`, runs the PID injector, verifies the complete
   hello/heartbeat/ping/pong exchange from inside that target, and only then
@@ -96,7 +99,14 @@ bridge identity, heartbeat, and ping; they never expose game reads/actions.
 The snapshot currently contains `date_raw`, `speed`, `paused`, `map_ready`,
 `local_player_id`, nullable `played_character`, `active_event` and
 `pending_character_interaction` objects, and the last checkpoint queue
-submission. `played_character` exposes the current played `CharacterID` and
+submission. It also contains `active_wars` and `player_armies`. Each active
+war identifies the player's side, reports war score relative to that player,
+and groups currently observable armies into `allied_armies` and
+`enemy_armies`. Army records expose `army_id`, owner `CharacterID`, nullable
+current province, and whether the played character controls them. Soldier
+count and in-flight move target are deliberately absent: two candidate
+`+0x38/+0x44` interpretations conflict in the pinned binary, so this slice
+does not publish a guessed value. `played_character` exposes the current played `CharacterID` and
 the engine's alive/dead projection; the one-generation planner treats dead as
 an episode terminal and never continues as the heir. The pending object exposes the engine component instance ID, the
 sender's 32-bit `CharacterID` handle, and whether CK3 classifies it as an
@@ -115,6 +125,16 @@ the queue operation, while the produced file remains the completion check.
 `reject-pending-character-interaction` construct CK3's own 0x28-byte
 `CReplyCharacterInteractionCommand` for the currently published pending
 instance. They return a distinct error for acknowledgement-only notifications.
+
+`raise-troops-default` resolves CK3's own default rally province, runs the
+native 0x50-byte command constructor and validator, queues its clone, and then
+destroys the stack command. `move-army-*` resolves both component IDs, derives
+CK3's direct-move mode, runs the native can-move helper, initializes the
+0x168-byte command's path storage, and queues it. `disband-army-*` uses the
+native 0x28-byte command. Move and disband reject armies not owned by the
+current played character. Dynamic IDs are parsed as complete positive decimal
+strings; trailing bytes, signs, whitespace, missing separators, and overflow
+are rejected.
 
 ## Runtime integration
 

@@ -33,6 +33,38 @@ def _snapshot(revision: int = 0, history: list[dict[str, object]] | None = None)
     }
 
 
+def _army(
+    army_id: int,
+    *,
+    soldiers: int | None,
+    province_id: int,
+    controllable: bool,
+    move_target_province_id: int | None = None,
+) -> dict[str, object]:
+    return {
+        "army_id": army_id,
+        "owner_character_id": 707 if controllable else 808,
+        "soldiers": soldiers,
+        "current_province_id": province_id,
+        "move_target_province_id": move_target_province_id,
+        "controllable": controllable,
+    }
+
+
+def _war(
+    *,
+    allied_armies: list[dict[str, object]],
+    enemy_armies: list[dict[str, object]],
+) -> dict[str, object]:
+    return {
+        "war_id": 88,
+        "player_side": "attacker",
+        "player_relative_war_score": 17,
+        "allied_armies": allied_armies,
+        "enemy_armies": enemy_armies,
+    }
+
+
 class GameplayBridgeTests(unittest.TestCase):
     def test_hybrid_routes_supported_steps_to_fast_backend(self) -> None:
         calls: list[tuple[str, str]] = []
@@ -191,6 +223,180 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(plan["pending_character_interaction"]["instance_id"], 72)
 
+    def test_native_war_planner_raises_when_no_player_army_exists(self) -> None:
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(7),
+                "active_wars": [_war(allied_armies=[], enemy_armies=[])],
+                "player_armies": [],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("raise-troops-default",),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_raise")
+        self.assertEqual(plan["selected_step"], "raise-troops-default")
+
+    def test_native_war_planner_chases_largest_visible_enemy(self) -> None:
+        player = _army(
+            11, soldiers=1_700, province_id=20, controllable=True
+        )
+        smaller = _army(
+            21, soldiers=800, province_id=31, controllable=False
+        )
+        larger = _army(
+            22, soldiers=2_400, province_id=32, controllable=False
+        )
+        step = "move-army-11-to-32"
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(8),
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[smaller, larger],
+                    )
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(step,),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_pursuit")
+        self.assertEqual(plan["selected_step"], step)
+        self.assertEqual(plan["pursuit"]["target_army_id"], 22)
+        self.assertEqual(plan["pursuit"]["target_province_id"], 32)
+
+    def test_native_war_planner_uses_stable_enemy_when_soldiers_unknown(self) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        enemy_22 = _army(
+            22, soldiers=None, province_id=42, controllable=False
+        )
+        enemy_21 = _army(
+            21, soldiers=None, province_id=41, controllable=False
+        )
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(9),
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy_22, enemy_21],
+                    )
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("move-army-11-to-41",),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["selected_step"], "move-army-11-to-41")
+        self.assertEqual(plan["pursuit"]["target_army_id"], 21)
+
+    def test_native_war_planner_advances_after_unobservable_move_ack(self) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
+        history = [
+            {
+                "index": 1,
+                "command": "move-army-11-to-41",
+                "ok": True,
+                "result": {
+                    "war_action": {"status": "move_submitted"}
+                },
+            }
+        ]
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(9, history),
+                "active_wars": [
+                    _war(allied_armies=[player], enemy_armies=[enemy])
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("move-army-11-to-41", "life-advance"),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_pursuit_progress")
+        self.assertEqual(plan["selected_step"], "life-advance")
+
+    def test_native_war_planner_disbands_residual_postwar_army(self) -> None:
+        player = _army(
+            71, soldiers=1_100, province_id=50, controllable=True
+        )
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(10),
+                "active_wars": [],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("disband-army-71",),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_postwar_disband")
+        self.assertEqual(plan["selected_step"], "disband-army-71")
+
+    def test_typed_war_service_routes_exact_native_commands(self) -> None:
+        player = _army(
+            81, soldiers=1_300, province_id=50, controllable=True
+        )
+        enemy = _army(
+            91, soldiers=1_900, province_id=60, controllable=False
+        )
+        calls: list[tuple[str, int | None]] = []
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(14),
+                "active_wars": [
+                    _war(allied_armies=[player], enemy_armies=[enemy])
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda step, revision: calls.append((step, revision))
+            or {"status": "submitted"},
+            action_steps=(
+                "raise-troops-default",
+                "move-army-81-to-60",
+                "disband-army-81",
+            ),
+        )
+        service = GameplayBridgeService(driver)
+
+        state = service.war_state()
+        self.assertEqual(state["status"], "active")
+        self.assertEqual(state["active_wars"][0]["war_id"], 88)
+        service.raise_troops_default(expected_revision=14)
+        service.move_army(81, 60, expected_revision=14)
+        service.disband_army(81, expected_revision=14)
+
+        self.assertEqual(
+            calls,
+            [
+                ("raise-troops-default", 14),
+                ("move-army-81-to-60", 14),
+                ("disband-army-81", 14),
+            ],
+        )
+
     def test_service_auto_turn_plans_and_executes_one_supported_step(self) -> None:
         calls: list[tuple[str, int | None]] = []
         driver = CallbackGameplayDriver(
@@ -326,6 +532,34 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "sender_character_id": 901,
                     "auto_accept_notification": False,
                 },
+                "active_wars": [
+                    _war(
+                        allied_armies=[
+                            _army(
+                                81,
+                                soldiers=1_300,
+                                province_id=50,
+                                controllable=True,
+                            )
+                        ],
+                        enemy_armies=[
+                            _army(
+                                91,
+                                soldiers=1_900,
+                                province_id=60,
+                                controllable=False,
+                            )
+                        ],
+                    )
+                ],
+                "player_armies": [
+                    _army(
+                        81,
+                        soldiers=1_300,
+                        province_id=50,
+                        controllable=True,
+                    )
+                ],
             },
             execute=lambda step, revision: {
                 "step": step,
@@ -365,6 +599,9 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                 "restore-checkpoint",
                 "accept-pending-character-interaction",
                 "reject-pending-character-interaction",
+                "raise-troops-default",
+                "move-army-81-to-60",
+                "disband-army-81",
                 "select-event-option-1",
                 "select-event-option-2",
             ),
@@ -386,6 +623,10 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_save_checkpoint",
                     "ck3_restore_checkpoint",
                     "ck3_reply_pending_character_interaction",
+                    "ck3_get_war_state",
+                    "ck3_raise_troops_default",
+                    "ck3_move_army",
+                    "ck3_disband_army",
                     "ck3_select_event_option",
                     "ck3_resolve_active_event",
                     "ck3_wait_for_change",
@@ -446,6 +687,28 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(
                 interaction.structured_content["sender_character_id"], 901
             )
+            war_state = await client.call_tool("ck3_get_war_state", {})
+            self.assertFalse(war_state.is_error)
+            self.assertEqual(war_state.structured_content["status"], "active")
+            raised = await client.call_tool(
+                "ck3_raise_troops_default", {"expected_revision": 4}
+            )
+            self.assertFalse(raised.is_error)
+            moved = await client.call_tool(
+                "ck3_move_army",
+                {
+                    "army_id": 81,
+                    "target_province_id": 60,
+                    "expected_revision": 4,
+                },
+            )
+            self.assertFalse(moved.is_error)
+            self.assertEqual(moved.structured_content["army_id"], 81)
+            disbanded = await client.call_tool(
+                "ck3_disband_army",
+                {"army_id": 81, "expected_revision": 4},
+            )
+            self.assertFalse(disbanded.is_error)
             event_action = await client.call_tool(
                 "ck3_select_event_option",
                 {

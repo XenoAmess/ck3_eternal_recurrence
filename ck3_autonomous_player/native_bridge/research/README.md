@@ -41,6 +41,13 @@ bridge identity/heartbeat/ping.
 | `game.state.snapshot.played_character` | implemented, live probe pending | player-character manager + Character storage alive projection + offline layout fixture | never inside native driver |
 | `game.state.snapshot.pending_character_interaction` | implemented, live probe pending | high static component table/GetSender paths + offline layout fixture | never inside native driver |
 | `game.command.accept/reject-pending-character-interaction` | implemented, live probe pending | high static UI enum/command/queue path + offline command fixture | explicit upper-layer policy only |
+| `game.state.snapshot.active_wars` | implemented, live probe pending | exact WarManager/storage/participant/score helpers + offline attacker/defender fixture | never inside native driver |
+| `game.state.snapshot.player_armies` | implemented, live probe pending | exact Army storage/ID/owner/current-province fields + offline component fixture | never inside native driver |
+| allied/enemy army current province | implemented, live probe pending | war participant helper classifies each observable army owner | never inside native driver |
+| army soldier count / move target | unsupported | conflicting `+0x38/+0x44` interpretations at RVAs `0xC73D00` and `0x26B51B0`; no value guessed | unsupported |
+| `game.command.raise-troops-default` | implemented, live probe pending | native default-province/construct/validate/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
+| `game.command.move-army-N-to-N` | implemented, live probe pending | native mode/can-move/path-init/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
+| `game.command.disband-army-N` | implemented, live probe pending | exact 0x28-byte command/vtables/clone + offline fixture | explicit upper-layer policy only |
 | event title/option text | unsupported | no repeatable localized text projection yet | unsupported in pure native mode |
 | main-thread tick hook | anchor-only/not located | command submission uses a locked queue, so it is not a prerequisite for the first loop | unsupported |
 
@@ -94,6 +101,23 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   component ID at `+0x10`; the low 24 bits are its slot index. UI `GetSender`
   resolves the sender from the `int32 CharacterID` at pending object `+0x2F0`.
   Byte `+0x5C6` is the UI's `IsAutoAcceptNotification` value.
+- `CK3GameData + 0x29C20` is `CWarManager`; its `+0x20` pointer is the
+  `ComponentStorage<CWar>`. A live `CWar` repeats its component ID at `+0x08`
+  and has a null end marker at `+0x358`. Attackers at `+0x20` and defenders at
+  `+0x80` are participant containers (pointer array `+0x08`, count `+0x14`,
+  member `CharacterID` at element `+0x08`). Helper RVA `0x2224870` performs
+  membership tests. RVA `0x222A8A0(war, nullptr)` returns attacker-relative
+  `int32` war score, so the bridge negates it for a defending player.
+- `*(base + 0x572CC80)` is `ComponentStorage<CArmy>`. This corrects an early
+  transposed note that said `0x570CC80`; the RIP-relative lookup at RVA
+  `0xA84603` resolves unambiguously to `0x572CC80`. `CArmy +0x10` is its
+  component ID, `+0x174` is owner `CharacterID`, and `+0x20` is current
+  `Province*` (`Province +0x10` repeats its positive ID). The controllable
+  projection is owner equals the current played character. Candidate soldier
+  and move-target reads are omitted: RVA `0xC73D00` treats `+0x38/+0x44` as a
+  four-byte component-ID vector, while RVA `0x26B51B0` treats those offsets as
+  an eight-byte pointer vector. Their true relationship is not uniquely
+  classified, so the bridge publishes neither field.
 
 ## Command queue and object layouts
 
@@ -142,6 +166,27 @@ thunks tie UI methods to enum `0=accept`, `1=reject`, `2=block`, and
 `4=acknowledge`. Heap clone RVA `0x8038E0` independently confirms the `0x28`
 size and both payload offsets.
 
+`CRaiseTroopsCommand` is `0x50` bytes. RVA `0x224CC80(Character*)` resolves
+the game's default rally province. Constructor RVA `0x26D6FC0` receives the
+played `CharacterID` and one `{province_id, -1}` entry, installs vtables
+`0x41226D8`/`0x41226A8`, and produces the same `+0x40=-1`, `+0x44=1`,
+`+0x48=false` shape as the original path at RVA `0x27A2198`. The bridge calls
+validator `0x26D7150(command, nullptr)`, submits with flags `7`, then calls
+destructor `0x10E7950(command, 0)` after the queue synchronously clones it.
+
+`CMoveArmyCommand` is `0x168` bytes with vtables `0x432BF18`/`0x432BFB0`.
+The direct-target path at RVA `0x186B232` writes `+0x20=2`, ArmyID at `+0x24`,
+destination ProvinceID at `+0x28`, move mode at `+0x2C`, `+0x30=2`, and
+`+0x34=1`. The bridge reproduces the original helper order: mode
+`0x26B51B0(army, province, 1)`, can-move
+`0x26B4610(2, army, mode)`, path initialization
+`0xC7BA70(command+0x38)`, submit flags `7`, then destructor
+`0x26B46D0(command, 0)`. Heap clone RVA `0x26C1E50` confirms size and payload.
+
+`CDisbandArmyCommand` is `0x28` bytes: vtables
+`0x432BFE0`/`0x432C078`, `+0x20=2`, and ArmyID at `+0x24`; it submits with
+flags `7`. Clone RVA `0x26C2090` independently confirms the complete layout.
+
 The canonical marriage script key is `arrange_marriage_interaction` in the
 1.19.0.6 base-game `00_marriage_interactions.txt`. Static UI paths show
 `CSendCharacterInteractionCommand` is `0x368` bytes (vtables `0x40829F8` and
@@ -174,7 +219,8 @@ The same exact build then completed the next two background slices:
    `save games/xar_checkpoint.ck3` at 63,367,813 bytes (SHA-256
    `A50E61B839CD80C08661D402A9BC0D3EA42FDFD418EE21C294A089657D69BFA2`).
 
-No OCR, screenshot, focus, keyboard, or mouse backend participated. The next
-native gameplay priorities are checkpoint restore and semantic
-marriage/inheritance/war commands; event and save are no longer pending live
-acceptance.
+No OCR, screenshot, focus, keyboard, or mouse backend participated. Checkpoint
+restore, incoming character-interaction reply, played-character terminal
+state, and the offline native war loop are now implemented. The bounded next
+war acceptance is a minimized exact-build probe of raise, movement, and
+disband; event and save are no longer pending live acceptance.

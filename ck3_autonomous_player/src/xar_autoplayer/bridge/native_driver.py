@@ -35,6 +35,20 @@ from .event_contract import (
     event_option_step,
     normalize_active_event,
 )
+from .war_contract import (
+    DISBAND_ARMY_CAPABILITY,
+    MOVE_ARMY_CAPABILITY,
+    RAISE_TROOPS_STEP,
+    controllable_armies,
+    disband_army_step,
+    enemy_armies_from_wars,
+    is_native_war_step,
+    move_army_step,
+    normalize_active_wars,
+    parse_disband_army_step,
+    parse_move_army_step,
+    player_armies_from_state,
+)
 
 
 PROTOCOL_VERSION = 1
@@ -182,6 +196,12 @@ class NativeProtocolState:
                         self._semantic_snapshot.get(
                             "pending_character_interaction"
                         )
+                        if self._semantic_snapshot is not None
+                        else None,
+                        self._semantic_snapshot.get("active_wars")
+                        if self._semantic_snapshot is not None
+                        else None,
+                        self._semantic_snapshot.get("player_armies")
                         if self._semantic_snapshot is not None
                         else None,
                     )
@@ -598,6 +618,10 @@ class NativeHeadlessGameplayDriver:
             return self._execute_pending_character_interaction_reply(
                 step, expected_revision=expected_revision
             )
+        if is_native_war_step(step) and step in capabilities["action_steps"]:
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
         if (
             step == _RESTORE_CHECKPOINT_STEP
             and step in capabilities.get("composite_action_steps", [])
@@ -807,6 +831,136 @@ class NativeHeadlessGameplayDriver:
                 "sender_character_id": pending.get("sender_character_id"),
             },
             "remaining_pending_character_interaction": remaining,
+            "snapshot_id": changed["snapshot_id"],
+            "revision": changed["revision"],
+        }
+
+    def _execute_native_war_step(
+        self, step: str, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        starting = self.take_snapshot()
+        starting_revision = int(starting["revision"])
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else starting_revision
+        )
+        if step == RAISE_TROOPS_STEP:
+            starting_army_ids = _controllable_army_ids(starting)
+            result = self._execute_primitive_step(
+                step, expected_revision=selected_revision
+            )
+            changed = self._wait_for_snapshot(
+                self.take_snapshot(),
+                lambda snapshot: bool(
+                    _controllable_army_ids(snapshot) - starting_army_ids
+                ),
+                timeout_seconds=self.command_timeout_seconds,
+            )
+            raised_ids = sorted(
+                _controllable_army_ids(changed) - starting_army_ids
+            )
+            if not raised_ids:
+                raise BridgeUnavailableError(
+                    "native raise-troops-default did not expose a new "
+                    "controllable army"
+                )
+            return {
+                **result,
+                "war_action": {
+                    "status": "raised",
+                    "raised_army_ids": raised_ids,
+                },
+                "player_armies": changed.get("player_armies", []),
+                "snapshot_id": changed["snapshot_id"],
+                "revision": changed["revision"],
+            }
+
+        move = parse_move_army_step(step)
+        if move is not None:
+            army_id, province_id = move
+            starting_army = _army_by_id(starting, army_id)
+            if (
+                not isinstance(starting_army, dict)
+                or starting_army.get("controllable") is not True
+            ):
+                raise BridgeUnavailableError(
+                    f"native move-army-{army_id} requires a controllable "
+                    "player army"
+                )
+            result = self._execute_primitive_step(
+                step, expected_revision=selected_revision
+            )
+            if (
+                isinstance(starting_army, dict)
+                and starting_army.get("move_target_observable") is False
+                and (
+                    result.get("accepted") is True
+                    or result.get("status") in {"accepted", "submitted"}
+                )
+            ):
+                current = self.take_snapshot()
+                return {
+                    **result,
+                    "war_action": {
+                        "status": "move_submitted",
+                        "army_id": army_id,
+                        "target_province_id": province_id,
+                        "move_target_observable": False,
+                    },
+                    "player_armies": current.get("player_armies", []),
+                    "snapshot_id": current["snapshot_id"],
+                    "revision": current["revision"],
+                }
+            changed = self._wait_for_snapshot(
+                self.take_snapshot(),
+                lambda snapshot: _army_move_postcondition(
+                    snapshot, army_id, province_id
+                ) is not None,
+                timeout_seconds=self.command_timeout_seconds,
+            )
+            status = _army_move_postcondition(changed, army_id, province_id)
+            if status is None:
+                raise BridgeUnavailableError(
+                    f"native move-army-{army_id} did not target province "
+                    f"{province_id}"
+                )
+            return {
+                **result,
+                "war_action": {
+                    "status": status,
+                    "army_id": army_id,
+                    "target_province_id": province_id,
+                },
+                "player_armies": changed.get("player_armies", []),
+                "snapshot_id": changed["snapshot_id"],
+                "revision": changed["revision"],
+            }
+
+        army_id = parse_disband_army_step(step)
+        if army_id is None:
+            raise UnsupportedStepError(
+                f"native Python bridge does not implement war step {step}"
+            )
+        result = self._execute_primitive_step(
+            step, expected_revision=selected_revision
+        )
+        changed = self._wait_for_snapshot(
+            self.take_snapshot(),
+            lambda snapshot: _army_by_id(snapshot, army_id) is None,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+        if _army_by_id(changed, army_id) is not None:
+            raise BridgeUnavailableError(
+                f"native disband-army-{army_id} did not remove the army"
+            )
+        return {
+            **result,
+            "war_action": {
+                "status": "disbanded",
+                "army_id": army_id,
+            },
+            "player_armies": changed.get("player_armies", []),
             "snapshot_id": changed["snapshot_id"],
             "revision": changed["revision"],
         }
@@ -1383,6 +1537,11 @@ class ConfiguredHybridFallbackDriver:
         action_steps = set(_string_list(base.get("action_steps")))
         if _RESTORE_CHECKPOINT_STEP not in native_steps:
             action_steps.discard(_RESTORE_CHECKPOINT_STEP)
+        action_steps = {
+            step
+            for step in action_steps
+            if not is_native_war_step(step) or step in native_steps
+        }
         return {
             **base,
             "action_steps": sorted(action_steps),
@@ -1416,6 +1575,14 @@ class ConfiguredHybridFallbackDriver:
         ):
             raise UnsupportedStepError(
                 "restore-checkpoint is pure native and will not use fallback"
+            )
+        if (
+            is_native_war_step(step)
+            and step
+            not in _string_list(self.native.capabilities().get("action_steps"))
+        ):
+            raise UnsupportedStepError(
+                "native war steps are pure native and will not use fallback"
             )
         return self._delegate.execute_step(step, expected_revision=expected_revision)
 
@@ -1452,6 +1619,10 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
         raise ValueError("native state_snapshot lacks snapshot_id")
     _validate_revision(revision, "state_snapshot revision")
     history = state.get("history")
+    active_wars = normalize_active_wars(state.get("active_wars"))
+    player_armies = player_armies_from_state(
+        active_wars, state.get("player_armies")
+    )
     return {
         **state,
         "format_version": 1,
@@ -1467,6 +1638,8 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
                 state.get("pending_character_interaction")
             )
         ),
+        "active_wars": active_wars,
+        "player_armies": player_armies,
     }
 
 
@@ -1568,10 +1741,15 @@ def _action_steps(
     capabilities: list[str],
     active_event: object = None,
     pending_character_interaction: object = None,
+    active_wars: object = None,
+    player_armies: object = None,
 ) -> list[str]:
     steps: set[str] = set()
     expand_event_options = False
     pending_interaction_steps: set[str] = set()
+    expand_move_armies = False
+    expand_disband_armies = False
+    advertise_raise_troops = False
     for capability in capabilities:
         if not capability.startswith(_ACTION_CAPABILITY_PREFIX):
             continue
@@ -1583,6 +1761,12 @@ def _action_steps(
             "reject-pending-character-interaction",
         }:
             pending_interaction_steps.add(step)
+        elif capability == MOVE_ARMY_CAPABILITY:
+            expand_move_armies = True
+        elif capability == DISBAND_ARMY_CAPABILITY:
+            expand_disband_armies = True
+        elif step == RAISE_TROOPS_STEP:
+            advertise_raise_troops = True
         elif step:
             steps.add(step)
     if expand_event_options and isinstance(active_event, dict):
@@ -1601,7 +1785,85 @@ def _action_steps(
         and pending_character_interaction.get("auto_accept_notification") is False
     ):
         steps.update(pending_interaction_steps)
+    wars = (
+        [war for war in active_wars if isinstance(war, dict)]
+        if isinstance(active_wars, list)
+        else []
+    )
+    armies = (
+        [army for army in player_armies if isinstance(army, dict)]
+        if isinstance(player_armies, list)
+        else []
+    )
+    controllable = controllable_armies(armies)
+    if advertise_raise_troops and wars and not controllable:
+        steps.add(RAISE_TROOPS_STEP)
+    if expand_disband_armies:
+        steps.update(
+            disband_army_step(int(army["army_id"]))
+            for army in controllable
+            if isinstance(army.get("army_id"), int)
+        )
+    if expand_move_armies and wars:
+        target_provinces = {
+            int(army["current_province_id"])
+            for army in enemy_armies_from_wars(wars)
+            if isinstance(army.get("current_province_id"), int)
+        }
+        for army in controllable:
+            army_id = army.get("army_id")
+            if not isinstance(army_id, int):
+                continue
+            for province_id in target_provinces:
+                if province_id in {
+                    army.get("current_province_id"),
+                    army.get("move_target_province_id"),
+                }:
+                    continue
+                steps.add(move_army_step(army_id, province_id))
     return sorted(steps)
+
+
+def _controllable_army_ids(snapshot: dict[str, object]) -> set[int]:
+    armies = snapshot.get("player_armies")
+    if not isinstance(armies, list):
+        return set()
+    return {
+        int(army["army_id"])
+        for army in controllable_armies(
+            [row for row in armies if isinstance(row, dict)]
+        )
+        if isinstance(army.get("army_id"), int)
+    }
+
+
+def _army_by_id(
+    snapshot: dict[str, object], army_id: int
+) -> dict[str, object] | None:
+    armies = snapshot.get("player_armies")
+    if not isinstance(armies, list):
+        return None
+    return next(
+        (
+            army
+            for army in armies
+            if isinstance(army, dict) and army.get("army_id") == army_id
+        ),
+        None,
+    )
+
+
+def _army_move_postcondition(
+    snapshot: dict[str, object], army_id: int, province_id: int
+) -> str | None:
+    army = _army_by_id(snapshot, army_id)
+    if army is None:
+        return "army_no_longer_present"
+    if army.get("current_province_id") == province_id:
+        return "arrived"
+    if army.get("move_target_province_id") == province_id:
+        return "moving"
+    return None
 
 
 def _pending_character_interaction(value: object) -> dict[str, object] | None:

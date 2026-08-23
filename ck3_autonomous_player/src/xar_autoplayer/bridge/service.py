@@ -13,6 +13,13 @@ from .event_contract import (
     event_option_step,
     normalize_active_event,
 )
+from .war_contract import (
+    RAISE_TROOPS_STEP,
+    disband_army_step,
+    move_army_step,
+    normalize_active_wars,
+    player_armies_from_state,
+)
 from ..strategy import choose_one_life_turn
 
 
@@ -306,6 +313,83 @@ class GameplayBridgeService:
             "sender_character_id": pending.get("sender_character_id"),
             "accepted": accept,
         }
+
+    def war_state(self) -> dict[str, object]:
+        """Return the canonical native war/army slice without visual reads."""
+        snapshot = self.snapshot()
+        active_wars = normalize_active_wars(snapshot.get("active_wars"))
+        player_armies = player_armies_from_state(
+            active_wars, snapshot.get("player_armies")
+        )
+        return {
+            "status": (
+                "active"
+                if active_wars
+                else "postwar_armies"
+                if player_armies
+                else "idle"
+            ),
+            "active_wars": active_wars,
+            "player_armies": player_armies,
+            "snapshot_id": snapshot["snapshot_id"],
+            "revision": snapshot["revision"],
+            "backend_id": snapshot.get("backend_id"),
+        }
+
+    def raise_troops_default(
+        self, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        """Raise troops for the current war at CK3's native default point."""
+        return self._execute_typed_war_step(
+            RAISE_TROOPS_STEP, expected_revision=expected_revision
+        )
+
+    def move_army(
+        self,
+        army_id: int,
+        target_province_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Move one exact native army to one exact CK3 province."""
+        step = move_army_step(army_id, target_province_id)
+        return {
+            **self._execute_typed_war_step(
+                step, expected_revision=expected_revision
+            ),
+            "army_id": army_id,
+            "target_province_id": target_province_id,
+        }
+
+    def disband_army(
+        self,
+        army_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Disband one exact native player army."""
+        step = disband_army_step(army_id)
+        return {
+            **self._execute_typed_war_step(
+                step, expected_revision=expected_revision
+            ),
+            "army_id": army_id,
+        }
+
+    def _execute_typed_war_step(
+        self, step: str, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        if step not in action_step_set(self.capabilities()):
+            raise UnsupportedStepError(
+                f"selected backend does not implement native war step {step}"
+            )
+        snapshot = self.snapshot()
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(snapshot["revision"])
+        )
+        return self.execute_step(step, expected_revision=selected_revision)
 
     def wait_for_change(
         self, after_revision: int, *, timeout_seconds: float

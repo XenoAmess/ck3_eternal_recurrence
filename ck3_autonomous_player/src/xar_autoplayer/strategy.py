@@ -11,6 +11,13 @@ from .bridge.event_contract import (
     event_option_step,
     normalize_active_event,
 )
+from .bridge.war_contract import (
+    RAISE_TROOPS_STEP,
+    controllable_armies,
+    disband_army_step,
+    enemy_armies_from_wars,
+    move_army_step,
+)
 from .environment import write_json_atomic
 from .errors import AgentError
 from .runtime import utc_now
@@ -222,6 +229,163 @@ def choose_one_life_turn(
             "pending_character_interaction": summary,
         }
 
+    active_wars = (
+        [war for war in snapshot.get("active_wars", []) if isinstance(war, dict)]
+        if isinstance(snapshot, dict)
+        and isinstance(snapshot.get("active_wars"), list)
+        else []
+    )
+    player_armies = (
+        [army for army in snapshot.get("player_armies", []) if isinstance(army, dict)]
+        if isinstance(snapshot, dict)
+        and isinstance(snapshot.get("player_armies"), list)
+        else []
+    )
+    controlled_armies = controllable_armies(player_armies)
+    if active_wars:
+        war_summary = [
+            {
+                "war_id": war.get("war_id"),
+                "player_side": war.get("player_side"),
+                "player_relative_war_score": war.get(
+                    "player_relative_war_score"
+                ),
+            }
+            for war in active_wars
+        ]
+        if not controlled_armies:
+            if RAISE_TROOPS_STEP in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_raise",
+                    "selected_step": RAISE_TROOPS_STEP,
+                    "reason": "an active war has no controllable army; raise troops at the native default rally point",
+                    "active_wars": war_summary,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_raise_unsupported",
+                "selected_step": None,
+                "required_step": RAISE_TROOPS_STEP,
+                "reason": "the active war cannot continue until this backend can raise troops",
+                "active_wars": war_summary,
+            }
+
+        enemy = _stable_strongest_army(enemy_armies_from_wars(active_wars))
+        pursuit_army = _stable_strongest_army(controlled_armies)
+        target_province_id = (
+            enemy.get("current_province_id")
+            if isinstance(enemy, dict)
+            else None
+        )
+        if isinstance(pursuit_army, dict) and isinstance(target_province_id, int):
+            army_id = pursuit_army.get("army_id")
+            if isinstance(army_id, int):
+                step = move_army_step(army_id, target_province_id)
+                pursuit = {
+                    "army_id": army_id,
+                    "target_army_id": enemy.get("army_id"),
+                    "target_province_id": target_province_id,
+                    "target_soldiers": enemy.get("soldiers"),
+                }
+                if _unadvanced_move_submission(rows, step):
+                    if "life-advance" in available_steps:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_pursuit_progress",
+                            "selected_step": "life-advance",
+                            "reason": "the unobservable native move was accepted; advance time before issuing another pursuit order",
+                            "pursuit": pursuit,
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_pursuit_progress_unsupported",
+                        "selected_step": None,
+                        "required_step": "life-advance",
+                        "reason": "the native move was accepted but this backend cannot advance the march",
+                        "pursuit": pursuit,
+                        "active_wars": war_summary,
+                    }
+                if target_province_id in {
+                    pursuit_army.get("current_province_id"),
+                    pursuit_army.get("move_target_province_id"),
+                }:
+                    if "life-advance" in available_steps:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_pursuit_progress",
+                            "selected_step": "life-advance",
+                            "reason": "the native army is already at or moving toward the strongest visible enemy; advance the battle",
+                            "pursuit": pursuit,
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_pursuit_progress_unsupported",
+                        "selected_step": None,
+                        "required_step": "life-advance",
+                        "reason": "the army is already pursuing the enemy but this backend cannot advance time",
+                        "pursuit": pursuit,
+                        "active_wars": war_summary,
+                    }
+                if step in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_pursuit",
+                        "selected_step": step,
+                        "reason": "move the strongest controllable army to the strongest visible enemy army",
+                        "pursuit": pursuit,
+                        "active_wars": war_summary,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_pursuit_unsupported",
+                    "selected_step": None,
+                    "required_step": step,
+                    "reason": "the backend cannot issue the required native army move",
+                    "pursuit": pursuit,
+                    "active_wars": war_summary,
+                }
+        if "life-advance" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_reconnaissance",
+                "selected_step": "life-advance",
+                "reason": "no enemy province is currently published; advance one bounded native interval and inspect again",
+                "active_wars": war_summary,
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_reconnaissance_unsupported",
+            "selected_step": None,
+            "required_step": "life-advance",
+            "reason": "the active war has no published enemy province and time cannot advance",
+            "active_wars": war_summary,
+        }
+
+    if controlled_armies:
+        army = _stable_strongest_army(controlled_armies)
+        army_id = army.get("army_id") if isinstance(army, dict) else None
+        if isinstance(army_id, int):
+            step = disband_army_step(army_id)
+            if step in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_postwar_disband",
+                    "selected_step": step,
+                    "reason": "no active war remains; disband the strongest residual player army",
+                    "army_id": army_id,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_postwar_disband_unsupported",
+                "selected_step": None,
+                "required_step": step,
+                "reason": "a player army remains after the war but this backend cannot disband it",
+                "army_id": army_id,
+            }
+
     last = rows[-1] if rows else None
     last_error = str(last.get("error", "")) if last is not None else ""
     if "one-life death terminal visible:" in last_error:
@@ -388,6 +552,41 @@ def choose_one_life_turn(
         "selected_step": step,
         "reason": reason,
     }
+
+
+def _stable_strongest_army(
+    armies: Iterable[dict[str, object]],
+) -> dict[str, object] | None:
+    rows = [army for army in armies if isinstance(army.get("army_id"), int)]
+    if not rows:
+        return None
+    return max(
+        rows,
+        key=lambda army: (
+            army.get("soldiers")
+            if isinstance(army.get("soldiers"), int)
+            else -1,
+            -int(army["army_id"]),
+        ),
+    )
+
+
+def _unadvanced_move_submission(
+    commands: list[dict[str, object]], step: str
+) -> bool:
+    for row in reversed(commands):
+        command = _effective_command(row)
+        if command == "life-advance" and row.get("ok") is True:
+            return False
+        if command != step or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        action = result.get("war_action") if isinstance(result, dict) else None
+        return (
+            isinstance(action, dict)
+            and action.get("status") == "move_submitted"
+        )
+    return False
 
 
 def _successful_result(
