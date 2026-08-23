@@ -8,6 +8,9 @@
 
 - `war_id`
 - `player_side`: `attacker` 或 `defender`
+- `primary_opponent_character_id`: 玩家对侧的 primary war leader；完整 `CharacterID` 已按 generation 重新解析，过渡帧无法解析时为 `null`
+- `player_is_primary_war_leader`: 玩家是否正是本方 primary war leader；它是 `enforce-demands` 的必要前提
+- `enemy_primary_default_raise_province_id`: 对方 primary 角色的原生默认集结省；无法解析时为 `null`。该字段只是敌军省份不可见时的明确 fallback，不冒充 war goal、首都或真实行军目标
 - `player_relative_war_score`: 相对玩家视角的整数战争分
 - `allied_armies` / `enemy_armies`: 当前能从原生对象读取的军队数组
 
@@ -28,6 +31,7 @@ Python 会拒绝类型错误的 ID、阵营、分数和数组，同时把早期 
 
 DLL hello 广告：
 
+- `game.state.war-primary-opponent`
 - `game.command.raise-troops-default`
 - `game.command.move-army-N-to-N`
 - `game.command.disband-army-N`

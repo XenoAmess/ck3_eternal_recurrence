@@ -118,9 +118,14 @@ The snapshot currently contains `date_raw`, `speed`, `paused`, `map_ready`,
 `local_player_id`, nullable `played_character`, `active_event` and
 `pending_character_interaction` objects, and the last checkpoint queue
 submission. It also contains `active_wars` and `player_armies`. Each active
-war identifies the player's side, reports war score relative to that player,
-and groups currently observable armies into `allied_armies` and
-`enemy_armies`. Army records expose `army_id`, owner `CharacterID`, nullable
+war identifies the player's side, the generation-validated primary opponent,
+whether the player is their side's primary war leader, and war score relative
+to that player. Exact-build capability `game.state.war-primary-opponent` also
+publishes nullable `enemy_primary_default_raise_province_id`: the opponent's
+native default rally province, explicitly only a fallback when no enemy army
+province is observable, not a decoded war goal. Wars group currently
+observable armies into `allied_armies` and `enemy_armies`. Army records expose
+`army_id`, owner `CharacterID`, nullable
 current province, and whether the played character controls them. Soldier
 count and in-flight move target are deliberately absent: two candidate
 `+0x38/+0x44` interpretations conflict in the pinned binary, so this slice

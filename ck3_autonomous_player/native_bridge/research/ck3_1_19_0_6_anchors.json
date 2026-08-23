@@ -573,7 +573,8 @@
       "war_id": "+0x08 int32 component ID",
       "attackers": "+0x20 participant container; pointer array +0x08, count +0x14, participant CharacterID at element +0x08",
       "defenders": "+0x80 participant container with the same layout",
-      "primary_characters": "+0x288 attacker primary CharacterID, +0x28C defender primary CharacterID; RVA 0xC569F0 requires the local played CharacterID to match one and chooses the other as interaction recipient",
+      "primary_characters": "+0x288 attacker primary CharacterID, +0x28C defender primary CharacterID; RVA 0xC569F0 requires the local played CharacterID to match one and chooses the other as interaction recipient; active-war projection chooses the opposite field by player side, re-resolves its full generation-bearing CharacterID, and compares the player's own-side field to played CharacterID for player_is_primary_war_leader",
+      "enemy_primary_default_raise_province_fallback": "RVA 0x224CC80(primary opponent Character*) returns the same default rally Province resolver used by raise-troops-default; Province +0x10 ID is accepted only when it resolves through the current CK3GameData province array. This is an explicitly named fallback location, not a decoded war goal",
       "ended_data": "+0x358 pointer; non-null wars are omitted from active_wars",
       "war_score": "RVA 0x222A8A0 returns the attacker-relative int32 score for context=null; bridge negates it for a defending player"
     },

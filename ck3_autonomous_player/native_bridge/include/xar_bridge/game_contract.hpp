@@ -90,6 +90,9 @@ enum class PlayerWarSide {
 struct ActiveWarSnapshot {
   std::int32_t war_id = -1;
   PlayerWarSide player_side = PlayerWarSide::attacker;
+  std::int32_t primary_opponent_character_id = -1;
+  bool player_is_primary_war_leader = false;
+  std::int32_t enemy_primary_default_raise_province_id = -1;
   std::int32_t player_relative_war_score = 0;
   std::vector<ArmySnapshot> allied_armies;
   std::vector<ArmySnapshot> enemy_armies;

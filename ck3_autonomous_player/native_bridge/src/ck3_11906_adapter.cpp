@@ -8,13 +8,14 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 28> kCapabilities{
+constexpr std::array<std::string_view, 29> kCapabilities{
     "game.state.snapshot",
     "game.state.map-ready",
     "game.state.played-character",
     "game.state.active-event",
     "game.state.pending-character-interaction",
     "game.state.active-wars",
+    "game.state.war-primary-opponent",
     "game.state.player-armies",
     "game.command.pause-map",
     "game.command.resume-map",

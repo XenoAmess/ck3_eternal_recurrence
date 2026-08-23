@@ -41,7 +41,8 @@ std::array<std::byte, 0x17C> g_player_army{};
 std::array<std::byte, 0x17C> g_enemy_army{};
 std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
-std::array<std::byte, 4 * sizeof(void *)> g_provinces{};
+std::array<std::byte, 0x20> g_enemy_default_raise_province{};
+std::array<std::byte, 5 * sizeof(void *)> g_provinces{};
 std::array<std::byte, 0x78> g_casus_belli_database{};
 std::array<void *, 2> g_casus_belli_types{};
 std::array<std::byte, 0x1720> g_casus_belli_type_0{};
@@ -186,8 +187,12 @@ std::int32_t FixtureGetWarScore(void *war, void *context) {
 }
 
 void *FixtureResolveDefaultRaiseProvince(void *character) {
-  return character == g_played_character.data() ? g_player_province.data()
-                                                 : nullptr;
+  if (character == g_played_character.data()) {
+    return g_player_province.data();
+  }
+  return character == g_target_character.data()
+             ? g_enemy_default_raise_province.data()
+             : nullptr;
 }
 
 void *FixtureConstructRaiseTroopsCommand(void *opaque_command,
@@ -818,12 +823,15 @@ int main() {
   constexpr std::int32_t active_war_id = 0x01000001;
   Store(g_player_province, 0x10, std::int32_t{2});
   Store(g_enemy_province, 0x10, std::int32_t{3});
+  Store(g_enemy_default_raise_province, 0x10, std::int32_t{4});
   Store(g_provinces, 2 * sizeof(void *),
         static_cast<void *>(g_player_province.data()));
   Store(g_provinces, 3 * sizeof(void *),
         static_cast<void *>(g_enemy_province.data()));
+  Store(g_provinces, 4 * sizeof(void *),
+        static_cast<void *>(g_enemy_default_raise_province.data()));
   Store(game_data, 0x140, static_cast<void *>(g_provinces.data()));
-  Store(game_data, 0x14C, std::int32_t{4});
+  Store(game_data, 0x14C, std::int32_t{5});
 
   Store(g_player_army, 0x10, player_army_id);
   Store(g_player_army, 0x20,
@@ -1024,12 +1032,30 @@ int main() {
       snapshot.active_wars[0].war_id != active_war_id ||
       snapshot.active_wars[0].player_side !=
           xar::ck3_11906::PlayerWarSide::attacker ||
+      snapshot.active_wars[0].primary_opponent_character_id !=
+          enemy_character_id ||
+      !snapshot.active_wars[0].player_is_primary_war_leader ||
+      snapshot.active_wars[0].enemy_primary_default_raise_province_id != 4 ||
       snapshot.active_wars[0].player_relative_war_score != 37 ||
       snapshot.active_wars[0].allied_armies.size() != 1 ||
       snapshot.active_wars[0].enemy_armies.size() != 1 ||
       snapshot.active_wars[0].enemy_armies[0].army_id != enemy_army_id ||
       snapshot.active_wars[0].enemy_armies[0].current_province_id != 3) {
     return Fail("map-ready did not follow the resolved local player");
+  }
+  Bindings no_opponent_fallback = bindings;
+  no_opponent_fallback.resolve_default_raise_province = nullptr;
+  xar::ck3_11906::Snapshot no_opponent_fallback_snapshot{};
+  if (!xar::ck3_11906::ReadSnapshot(no_opponent_fallback,
+                                    no_opponent_fallback_snapshot) ||
+      no_opponent_fallback_snapshot.active_wars.size() != 1 ||
+      no_opponent_fallback_snapshot.active_wars[0]
+              .primary_opponent_character_id != enemy_character_id ||
+      !no_opponent_fallback_snapshot.active_wars[0]
+           .player_is_primary_war_leader ||
+      no_opponent_fallback_snapshot.active_wars[0]
+              .enemy_primary_default_raise_province_id != -1) {
+    return Fail("optional opponent fallback did not stay adapter-local");
   }
   Store(g_played_family_data, 0x10, stale_enemy_character_id);
   Store(g_played_family_data, 0x14, stale_enemy_character_id);
@@ -1045,10 +1071,16 @@ int main() {
   g_played_spouse_ids[0] = enemy_character_id;
   Store(g_attacker_participant, 0x08, enemy_character_id);
   Store(g_defender_participant, 0x08, played_character_id);
+  Store(g_war, 0x288, enemy_character_id);
+  Store(g_war, 0x28C, played_character_id);
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.active_wars.size() != 1 ||
       snapshot.active_wars[0].player_side !=
           xar::ck3_11906::PlayerWarSide::defender ||
+      snapshot.active_wars[0].primary_opponent_character_id !=
+          enemy_character_id ||
+      !snapshot.active_wars[0].player_is_primary_war_leader ||
+      snapshot.active_wars[0].enemy_primary_default_raise_province_id != 4 ||
       snapshot.active_wars[0].player_relative_war_score != -37 ||
       snapshot.active_wars[0].allied_armies.size() != 1 ||
       snapshot.active_wars[0].allied_armies[0].army_id != player_army_id ||
@@ -1056,8 +1088,19 @@ int main() {
       snapshot.active_wars[0].enemy_armies[0].army_id != enemy_army_id) {
     return Fail("defender war score and army sides did not project relatively");
   }
+  Store(g_war, 0x28C, std::int32_t{0x01000004});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars.size() != 1 ||
+      snapshot.active_wars[0].player_is_primary_war_leader ||
+      snapshot.active_wars[0].primary_opponent_character_id !=
+          enemy_character_id ||
+      snapshot.active_wars[0].enemy_primary_default_raise_province_id != 4) {
+    return Fail("war projection did not distinguish a non-primary player");
+  }
   Store(g_attacker_participant, 0x08, played_character_id);
   Store(g_defender_participant, 0x08, enemy_character_id);
+  Store(g_war, 0x288, played_character_id);
+  Store(g_war, 0x28C, enemy_character_id);
   Store(g_played_character, 0x1C8,
         reinterpret_cast<void *>(0x12345678));
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||

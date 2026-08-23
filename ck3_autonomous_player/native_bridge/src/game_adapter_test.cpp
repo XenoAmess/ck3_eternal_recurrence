@@ -148,6 +148,7 @@ int main() {
     return Fail("known CK3 build descriptor drifted");
   }
   if (!Contains(known.capabilities, "game.state.snapshot") ||
+      !Contains(known.capabilities, "game.state.war-primary-opponent") ||
       !Contains(known.capabilities, "game.command.declare-war-N") ||
       !Contains(known.capabilities,
                 "game.command.query-arrange-marriage-choices") ||
@@ -165,6 +166,7 @@ int main() {
   StubAdapter partial(kFutureDescriptor, true);
   if (!partial.supports("game.state.snapshot") ||
       !partial.supports("game.command.pause-map") ||
+      partial.supports("game.state.war-primary-opponent") ||
       partial.supports("game.command.declare-war-N") ||
       !partial.supports_snapshot() || !partial.supports_step("pause-map") ||
       partial.supports_step("declare-war-99-1-0") ||

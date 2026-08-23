@@ -41,7 +41,8 @@ bridge identity/heartbeat/ping.
 | `game.state.snapshot.played_character` | implemented, live probe pending | player-character manager + Character storage alive projection + offline layout fixture | never inside native driver |
 | `game.state.snapshot.pending_character_interaction` | implemented; four live requests advanced before a reproducible global-storage false positive exposed the missing recipient filter; filtered build awaits bounded live replay | exact notification-recipient predicate + native reply validator + offline multi-player fixture | never inside native driver |
 | `game.command.accept/reject-pending-character-interaction` | implemented; live accept advanced four locally addressed requests | high static UI enum/command/queue path + native actionability validation + offline command fixture | explicit upper-layer policy only |
-| `game.state.snapshot.active_wars` | implemented, live probe pending | exact WarManager/storage/participant/score helpers + offline attacker/defender fixture | never inside native driver |
+| `game.state.snapshot.active_wars` | implemented, minimized live declaration projected a new war | exact WarManager/storage/participant/score helpers + offline attacker/defender fixture | never inside native driver |
+| `game.state.war-primary-opponent` | implemented, live probe pending | exact primary-side fields + generation-safe opponent resolution + reused default-raise resolver + offline attacker/defender/non-primary fixture | never inside native driver |
 | `game.state.snapshot.player_armies` | implemented, live probe pending | exact Army storage/ID/owner/current-province fields + offline component fixture | never inside native driver |
 | allied/enemy army current province | implemented, live probe pending | war participant helper classifies each observable army owner | never inside native driver |
 | army soldier count / move target | unsupported | conflicting `+0x38/+0x44` interpretations at RVAs `0xC73D00` and `0x26B51B0`; no value guessed | unsupported |
@@ -123,7 +124,15 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   `+0x80` are participant containers (pointer array `+0x08`, count `+0x14`,
   member `CharacterID` at element `+0x08`). Helper RVA `0x2224870` performs
   membership tests. RVA `0x222A8A0(war, nullptr)` returns attacker-relative
-  `int32` war score, so the bridge negates it for a defending player.
+  `int32` war score, so the bridge negates it for a defending player. The
+  primary attacker and defender CharacterIDs are at `+0x288/+0x28C` (also
+  consumed by WarOverview context builder RVA `0xC569F0`). The snapshot picks
+  the opposite primary by the player's participant side and re-resolves the
+  complete generation-bearing CharacterID. It compares the own-side primary
+  with the played CharacterID for `player_is_primary_war_leader`. For the
+  resolved opponent, the already verified RVA `0x224CC80(Character*)`
+  supplies `enemy_primary_default_raise_province_id`; that value is explicitly
+  a fallback location for the opponent, not a decoded war goal or army target.
 - `base + 0x570CC80` is a pointer slot whose single dereference is
   `ComponentStorage<CArmy>`. RVA `0xA84603` ends at `0xA8460A`; adding its
   signed RIP displacement `0x4C88676` resolves to `0x570CC80`. Do not repeat

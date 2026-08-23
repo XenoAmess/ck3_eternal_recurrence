@@ -1075,6 +1075,38 @@ void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
     snapshot.war_id = war_id;
     snapshot.player_side = player_is_attacker ? PlayerWarSide::attacker
                                               : PlayerWarSide::defender;
+    const std::int32_t player_primary_character_id =
+        LoadAt<std::int32_t>(
+            war, player_is_attacker
+                     ? kWarPrimaryAttackerCharacterIdOffset
+                     : kWarPrimaryDefenderCharacterIdOffset);
+    snapshot.player_is_primary_war_leader =
+        player_primary_character_id == played_character_id;
+    const std::int32_t primary_opponent_character_id =
+        LoadAt<std::int32_t>(
+            war, player_is_attacker
+                     ? kWarPrimaryDefenderCharacterIdOffset
+                     : kWarPrimaryAttackerCharacterIdOffset);
+    void *const primary_opponent =
+        ResolveCharacter(bindings, primary_opponent_character_id);
+    if (primary_opponent != nullptr) {
+      snapshot.primary_opponent_character_id =
+          primary_opponent_character_id;
+      if (bindings.resolve_default_raise_province != nullptr) {
+        void *const default_raise_province =
+            bindings.resolve_default_raise_province(primary_opponent);
+        if (default_raise_province != nullptr) {
+          const std::int32_t default_raise_province_id =
+              LoadAt<std::int32_t>(default_raise_province,
+                                   kProvinceIdOffset);
+          if (ResolveProvince(game_state, default_raise_province_id) ==
+              default_raise_province) {
+            snapshot.enemy_primary_default_raise_province_id =
+                default_raise_province_id;
+          }
+        }
+      }
+    }
     const std::int32_t attacker_score = bindings.get_war_score(war, nullptr);
     snapshot.player_relative_war_score =
         player_is_attacker ? attacker_score : -attacker_score;

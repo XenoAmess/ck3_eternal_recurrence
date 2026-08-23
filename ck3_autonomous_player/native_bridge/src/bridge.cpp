@@ -382,7 +382,22 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
     result += war.player_side == xar::game::PlayerWarSide::attacker
                   ? "attacker"
                   : "defender";
-    result += "\",\"player_relative_war_score\":";
+    result += "\",\"primary_opponent_character_id\":";
+    if (war.primary_opponent_character_id == -1) {
+      result += "null";
+    } else {
+      result += SignedNumber(war.primary_opponent_character_id);
+    }
+    result += ",\"player_is_primary_war_leader\":";
+    result += war.player_is_primary_war_leader ? "true" : "false";
+    result += ",\"enemy_primary_default_raise_province_id\":";
+    if (war.enemy_primary_default_raise_province_id < 1) {
+      result += "null";
+    } else {
+      result +=
+          SignedNumber(war.enemy_primary_default_raise_province_id);
+    }
+    result += ",\"player_relative_war_score\":";
     result += SignedNumber(war.player_relative_war_score);
     result += ",\"allied_armies\":";
     AppendArmyArray(result, war.allied_armies);
