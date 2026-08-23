@@ -46,6 +46,15 @@ require a new injection generation; `--pipe` can attach such a build to an
 already-running CK3 process, while a clean production launch still injects it
 before the first resume.
 
+The DLL hashes the host executable once, selects an exact-build adapter from
+the registry, and exposes only that adapter's capability set. Semantic DTOs and
+results live in `game_contract.hpp`; pipe dispatch depends on `GameAdapter`
+rather than the 1.19.0.6 bindings. `hello` retains the protocol-v1 expected
+version/SHA fields and adds `game_adapter_id` plus
+`game_adapter_status=ready|unsupported_build`. See
+[`docs/ck3-native-version-adapters.md`](../../docs/ck3-native-version-adapters.md)
+for the migration contract and per-capability upgrade workflow.
+
 ## Build and offline test
 
 Use an x64 Visual Studio developer shell with CMake and Ninja:

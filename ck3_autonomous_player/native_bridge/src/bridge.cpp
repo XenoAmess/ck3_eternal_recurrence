@@ -1,4 +1,4 @@
-#include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
 
 #include <windows.h>
@@ -18,16 +18,6 @@ static_assert(sizeof(void *) == 8, "the CK3 bridge is x64-only");
 constexpr wchar_t kPipeEnvironment[] = L"XAR_CK3_BRIDGE_PIPE";
 constexpr std::size_t kPipeNameCapacity = 256;
 constexpr DWORD kHeartbeatIntervalMs = 250;
-constexpr char kExpectedCk3Version[] = "1.19.0.6";
-constexpr char kExpectedCk3Sha256[] =
-    "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
-
-constexpr char kIdentityJson[] =
-    "{\"bridge\":\"xar_ck3_bridge\",\"bridge_version\":\"" XAR_BRIDGE_VERSION
-    "\",\"protocol_version\":1,\"architecture\":\"x86_64-windows-msvc\","
-    "\"expected_ck3_version\":\"1.19.0.6\","
-    "\"expected_ck3_sha256\":\""
-    "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86\"}";
 
 wchar_t g_pipe_name[kPipeNameCapacity]{};
 HANDLE g_stop_event = nullptr;
@@ -87,12 +77,30 @@ void AppendJsonString(std::string &result, std::string_view value) {
   result += '"';
 }
 
+std::string IdentityFrame() {
+  const auto &descriptor = xar::game::PreferredAdapterDescriptor();
+  std::string result =
+      "{\"bridge\":\"xar_ck3_bridge\",\"bridge_version\":\"";
+  result += XAR_BRIDGE_VERSION;
+  result += "\",\"protocol_version\":1,\"architecture\":"
+            "\"x86_64-windows-msvc\",\"expected_ck3_version\":";
+  AppendJsonString(result, descriptor.game_version);
+  result += ",\"expected_ck3_sha256\":";
+  AppendJsonString(result, descriptor.executable_sha256);
+  result += ",\"game_adapter_id\":";
+  AppendJsonString(result, descriptor.adapter_id);
+  result += '}';
+  return result;
+}
+
 struct CheckpointSubmission {
   std::uint64_t sequence = 0;
   std::int32_t date_raw = 0;
+  std::string_view save_name;
 };
 
-std::string HelloFrame(bool ck3_gameplay_enabled) {
+std::string HelloFrame(const xar::game::GameAdapter &game) {
+  const auto &descriptor = game.descriptor();
   std::string result =
       "{\"type\":\"hello\",\"protocol_version\":1,\"bridge_version\":\"";
   result += XAR_BRIDGE_VERSION;
@@ -100,38 +108,23 @@ std::string HelloFrame(bool ck3_gameplay_enabled) {
   result += Number(GetCurrentProcessId());
   result +=
       ",\"session_generation\":0,\"architecture\":\"x86_64-windows-msvc\","
-      "\"expected_ck3_version\":\"";
-  result += kExpectedCk3Version;
-  result += "\",\"expected_ck3_sha256\":\"";
-  result += kExpectedCk3Sha256;
-  result += "\",\"ck3_build_match\":";
-  result += ck3_gameplay_enabled ? "true" : "false";
+      "\"expected_ck3_version\":";
+  AppendJsonString(result, descriptor.game_version);
+  result += ",\"expected_ck3_sha256\":";
+  AppendJsonString(result, descriptor.executable_sha256);
+  result += ",\"game_adapter_id\":";
+  AppendJsonString(result, descriptor.adapter_id);
+  result += ",\"game_adapter_status\":";
+  AppendJsonString(result, game.enabled() ? "ready" : "unsupported_build");
+  result += ",\"ck3_build_match\":";
+  result += game.enabled() ? "true" : "false";
   result += ",\"capabilities\":[\"bridge.identity\",\"bridge.heartbeat\","
             "\"bridge.ping\"";
-  if (ck3_gameplay_enabled) {
-    result += ",\"game.state.snapshot\",\"game.state.map-ready\","
-              "\"game.state.played-character\","
-              "\"game.state.active-event\","
-              "\"game.state.pending-character-interaction\","
-              "\"game.state.active-wars\","
-              "\"game.state.player-armies\","
-              "\"game.command.pause-map\","
-              "\"game.command.resume-map\","
-              "\"game.command.set-speed-1\",\"game.command.set-speed-2\","
-              "\"game.command.set-speed-3\",\"game.command.set-speed-4\","
-              "\"game.command.set-speed-5\","
-              "\"game.command.select-event-option-N\","
-              "\"game.command.save-checkpoint\","
-              "\"game.command.accept-pending-character-interaction\","
-              "\"game.command.reject-pending-character-interaction\","
-              "\"game.command.raise-troops-default\","
-              "\"game.command.move-army-N-to-N\","
-              "\"game.command.disband-army-N\","
-              "\"game.command.query-declarable-wars\","
-              "\"game.command.declare-war-N\","
-              "\"game.command.enforce-demands-N\","
-              "\"game.command.query-arrange-marriage-choices\","
-              "\"game.command.arrange-marriage-N\"";
+  if (game.enabled()) {
+    for (const auto capability : descriptor.capabilities) {
+      result += ',';
+      AppendJsonString(result, capability);
+    }
   }
   result += "]}";
   return result;
@@ -150,7 +143,7 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
 }
 
 void AppendArmySnapshot(std::string &result,
-                        const xar::ck3_11906::ArmySnapshot &army) {
+                        const xar::game::ArmySnapshot &army) {
   result += "{\"army_id\":";
   result += SignedNumber(army.army_id);
   result += ",\"owner_character_id\":";
@@ -168,7 +161,7 @@ void AppendArmySnapshot(std::string &result,
 
 void AppendArmyArray(
     std::string &result,
-    const std::vector<xar::ck3_11906::ArmySnapshot> &armies) {
+    const std::vector<xar::game::ArmySnapshot> &armies) {
   result += '[';
   for (std::size_t index = 0; index < armies.size(); ++index) {
     if (index != 0) {
@@ -180,7 +173,7 @@ void AppendArmyArray(
 }
 
 std::string DeclarationId(
-    const xar::ck3_11906::DeclarableWarSnapshot &declaration) {
+    const xar::game::DeclarableWarSnapshot &declaration) {
   std::string result = SignedNumber(declaration.target_character_id);
   result += '-';
   result += SignedNumber(declaration.casus_belli_index);
@@ -190,13 +183,13 @@ std::string DeclarationId(
 }
 
 std::string DeclarationStep(
-    const xar::ck3_11906::DeclarableWarSnapshot &declaration) {
+    const xar::game::DeclarableWarSnapshot &declaration) {
   return "declare-war-" + DeclarationId(declaration);
 }
 
 void AppendDeclaration(
     std::string &result,
-    const xar::ck3_11906::DeclarableWarSnapshot &declaration) {
+    const xar::game::DeclarableWarSnapshot &declaration) {
   result += "{\"declaration_id\":\"";
   result += DeclarationId(declaration);
   result += "\",\"target_character_id\":";
@@ -221,7 +214,7 @@ void AppendDeclaration(
 }
 
 std::string MarriageChoiceId(
-    const xar::ck3_11906::ArrangeMarriageChoice &choice) {
+    const xar::game::ArrangeMarriageChoice &choice) {
   std::string result = SignedNumber(choice.played_character_id);
   result += '-';
   result += SignedNumber(choice.candidate_character_id);
@@ -229,13 +222,13 @@ std::string MarriageChoiceId(
 }
 
 std::string MarriageStep(
-    const xar::ck3_11906::ArrangeMarriageChoice &choice) {
+    const xar::game::ArrangeMarriageChoice &choice) {
   return "arrange-marriage-" + MarriageChoiceId(choice);
 }
 
 void AppendMarriageChoice(
     std::string &result,
-    const xar::ck3_11906::ArrangeMarriageChoice &choice) {
+    const xar::game::ArrangeMarriageChoice &choice) {
   result += "{\"choice_id\":\"";
   result += MarriageChoiceId(choice);
   result += "\",\"played_character_id\":";
@@ -245,7 +238,7 @@ void AppendMarriageChoice(
   result += '}';
 }
 
-std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
+std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
                                std::uint64_t revision,
                                const CheckpointSubmission &checkpoint) {
   std::string result = "{\"type\":\"state_snapshot\",\"protocol_version\":1,"
@@ -314,7 +307,7 @@ std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
     result += "{\"war_id\":";
     result += SignedNumber(war.war_id);
     result += ",\"player_side\":\"";
-    result += war.player_side == xar::ck3_11906::PlayerWarSide::attacker
+    result += war.player_side == xar::game::PlayerWarSide::attacker
                   ? "attacker"
                   : "defender";
     result += "\",\"player_relative_war_score\":";
@@ -334,7 +327,7 @@ std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
     result += "{\"sequence\":";
     result += Number(checkpoint.sequence);
     result += ",\"requested_save_name\":\"";
-    result += xar::ck3_11906::kCheckpointSaveName;
+    result += checkpoint.save_name;
     result += "\",\"date_raw\":";
     result += SignedNumber(checkpoint.date_raw);
     result += ",\"status\":\"submitted\"}";
@@ -376,7 +369,7 @@ std::string SaveCheckpointResultFrame(std::string_view request_id,
             "\"submission\":{\"sequence\":";
   result += Number(checkpoint.sequence);
   result += ",\"requested_save_name\":\"";
-  result += xar::ck3_11906::kCheckpointSaveName;
+  result += checkpoint.save_name;
   result += "\",\"date_raw\":";
   result += SignedNumber(checkpoint.date_raw);
   result += "}}}";
@@ -385,7 +378,7 @@ std::string SaveCheckpointResultFrame(std::string_view request_id,
 
 std::string DeclarableWarsResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
-    const std::vector<xar::ck3_11906::DeclarableWarSnapshot> &declarations) {
+    const std::vector<xar::game::DeclarableWarSnapshot> &declarations) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
       "\"request_id\":\"";
@@ -407,7 +400,7 @@ std::string DeclarableWarsResultFrame(
 
 std::string ArrangeMarriageChoicesResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
-    const std::vector<xar::ck3_11906::ArrangeMarriageChoice> &choices) {
+    const std::vector<xar::game::ArrangeMarriageChoice> &choices) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
       "\"request_id\":\"";
@@ -523,13 +516,16 @@ std::optional<std::int32_t> EnforceDemandsStep(
   return PositiveNativeId(step.substr(prefix.size()));
 }
 
-bool PublishSnapshot(HANDLE pipe, const xar::ck3_11906::Bindings &bindings,
-                     std::optional<xar::ck3_11906::Snapshot> &previous,
+bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
+                     std::optional<xar::game::Snapshot> &previous,
                      std::uint64_t &revision,
                      const CheckpointSubmission &checkpoint,
                      std::uint64_t &published_checkpoint_sequence) {
-  xar::ck3_11906::Snapshot snapshot{};
-  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot)) {
+  if (!bindings.supports_snapshot()) {
+    return true;
+  }
+  xar::game::Snapshot snapshot{};
+  if (!xar::game::ReadSnapshot(bindings, snapshot)) {
     return true;
   }
   if (previous.has_value() && previous.value() == snapshot &&
@@ -604,16 +600,18 @@ struct WorkerState {
   std::uint64_t state_revision = 0;
   CheckpointSubmission checkpoint_submission{};
   std::uint64_t published_checkpoint_sequence = 0;
-  std::optional<xar::ck3_11906::Snapshot> previous_snapshot;
+  std::optional<xar::game::Snapshot> previous_snapshot;
   std::uint64_t declaration_query_sequence = 0;
-  std::vector<xar::ck3_11906::DeclarableWarSnapshot> declarable_wars;
+  std::vector<xar::game::DeclarableWarSnapshot> declarable_wars;
   std::uint64_t marriage_query_sequence = 0;
-  std::vector<xar::ck3_11906::ArrangeMarriageChoice> marriage_choices;
+  std::vector<xar::game::ArrangeMarriageChoice> marriage_choices;
 };
 
-void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
+void RunConnectedSession(HANDLE pipe, const xar::game::GameAdapter &game,
                          WorkerState &state) noexcept {
-  if (!xar::bridge::WriteFrame(pipe, HelloFrame(game.enabled))) {
+  state.checkpoint_submission.save_name =
+      game.descriptor().checkpoint_save_name;
+  if (!xar::bridge::WriteFrame(pipe, HelloFrame(game))) {
     return;
   }
 
@@ -639,7 +637,7 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
     if (now >= next_heartbeat) {
       ++sequence;
       connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence));
-      if (connected && game.enabled) {
+      if (connected && game.supports_snapshot()) {
         connected = PublishSnapshot(pipe, game, previous_snapshot,
                                     state_revision, checkpoint_submission,
                                     published_checkpoint_sequence);
@@ -668,7 +666,7 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
         pong += Number(GetCurrentProcessId());
         pong += "}";
         connected = xar::bridge::WriteFrame(pipe, pong);
-      } else if (game.enabled && type == "execute_step" &&
+      } else if (type == "execute_step" &&
                  JsonStringField(incoming.payload, "request_id", request_id) &&
                  IsSimpleRequestId(request_id)) {
         std::string step;
@@ -676,15 +674,19 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
           connected = xar::bridge::WriteFrame(
               pipe, CommandResultFrame(request_id, "", false,
                                        "native gameplay step is missing"));
+        } else if (!game.supports_step(step)) {
+          connected = xar::bridge::WriteFrame(
+              pipe, CommandResultFrame(request_id, step, false,
+                                       "unsupported native gameplay step"));
         } else if (step == "pause-map") {
-          const auto result = xar::ck3_11906::SubmitPauseMap(game);
-          if (result == xar::ck3_11906::PauseSubmitResult::unavailable) {
+          const auto result = xar::game::SubmitPauseMap(game);
+          if (result == xar::game::PauseSubmitResult::unavailable) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "CK3 map state is unavailable"));
           } else {
             const std::string_view status =
-                result == xar::ck3_11906::PauseSubmitResult::submitted
+                result == xar::game::PauseSubmitResult::submitted
                     ? "submitted"
                     : "already_paused";
             connected = xar::bridge::WriteFrame(
@@ -696,14 +698,14 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
             }
           }
         } else if (step == "resume-map") {
-          const auto result = xar::ck3_11906::SubmitResumeMap(game);
-          if (result == xar::ck3_11906::ResumeSubmitResult::unavailable) {
+          const auto result = xar::game::SubmitResumeMap(game);
+          if (result == xar::game::ResumeSubmitResult::unavailable) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "CK3 map state is unavailable"));
           } else {
             const std::string_view status =
-                result == xar::ck3_11906::ResumeSubmitResult::submitted
+                result == xar::game::ResumeSubmitResult::submitted
                     ? "submitted"
                     : "already_running";
             connected = xar::bridge::WriteFrame(
@@ -715,9 +717,9 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
             }
           }
         } else if (step == "save-checkpoint") {
-          const auto result = xar::ck3_11906::SubmitSaveCheckpoint(game);
+          const auto result = xar::game::SubmitSaveCheckpoint(game);
           if (result.status ==
-              xar::ck3_11906::SaveCheckpointStatus::submitted) {
+              xar::game::SaveCheckpointStatus::submitted) {
             ++checkpoint_submission.sequence;
             checkpoint_submission.date_raw = result.date_raw;
             connected = xar::bridge::WriteFrame(
@@ -731,7 +733,7 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
           } else {
             const std::string_view error =
                 result.status ==
-                        xar::ck3_11906::SaveCheckpointStatus::map_not_ready
+                        xar::game::SaveCheckpointStatus::map_not_ready
                     ? "CK3 map is not ready"
                     : "CK3 save state is unavailable";
             connected = xar::bridge::WriteFrame(
@@ -741,21 +743,21 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
                    step == "reject-pending-character-interaction") {
           const auto reply =
               step == "accept-pending-character-interaction"
-                  ? xar::ck3_11906::PendingInteractionReply::accept
-                  : xar::ck3_11906::PendingInteractionReply::reject;
+                  ? xar::game::PendingInteractionReply::accept
+                  : xar::game::PendingInteractionReply::reject;
           const auto result =
-              xar::ck3_11906::SubmitReplyToPendingInteraction(game, reply);
+              xar::game::SubmitReplyToPendingInteraction(game, reply);
           if (result ==
-              xar::ck3_11906::ReplyPendingInteractionResult::submitted) {
+              xar::game::ReplyPendingInteractionResult::submitted) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
           } else {
             std::string_view error =
                 "CK3 pending character interaction state is unavailable";
-            if (result == xar::ck3_11906::ReplyPendingInteractionResult::
+            if (result == xar::game::ReplyPendingInteractionResult::
                               no_pending_interaction) {
               error = "no pending CK3 character interaction";
-            } else if (result == xar::ck3_11906::ReplyPendingInteractionResult::
+            } else if (result == xar::game::ReplyPendingInteractionResult::
                                      acknowledgement_required) {
               error = "pending CK3 interaction requires acknowledgement";
             }
@@ -769,9 +771,9 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
           }
         } else if (step == "query-arrange-marriage-choices") {
           marriage_choices.clear();
-          const auto result = xar::ck3_11906::ReadArrangeMarriageChoices(
+          const auto result = xar::game::ReadArrangeMarriageChoices(
               game, marriage_choices);
-          if (result == xar::ck3_11906::
+          if (result == xar::game::
                             ReadArrangeMarriageChoicesResult::available) {
             ++marriage_query_sequence;
             connected = xar::bridge::WriteFrame(
@@ -780,7 +782,7 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
                           marriage_choices));
           } else {
             const std::string_view error =
-                result == xar::ck3_11906::
+                result == xar::game::
                               ReadArrangeMarriageChoicesResult::
                                   no_played_character
                     ? "no living played CK3 character"
@@ -789,7 +791,7 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
                 pipe, CommandResultFrame(request_id, step, false, error));
           }
         } else if (step.starts_with("arrange-marriage-")) {
-          const xar::ck3_11906::ArrangeMarriageChoice *selected = nullptr;
+          const xar::game::ArrangeMarriageChoice *selected = nullptr;
           for (const auto &candidate : marriage_choices) {
             if (MarriageStep(candidate) == step) {
               selected = &candidate;
@@ -804,9 +806,9 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
                           "query first"));
           } else {
             const auto result =
-                xar::ck3_11906::SubmitArrangeMarriage(game, *selected);
+                xar::game::SubmitArrangeMarriage(game, *selected);
             if (result ==
-                xar::ck3_11906::ArrangeMarriageResult::submitted) {
+                xar::game::ArrangeMarriageResult::submitted) {
               connected = xar::bridge::WriteFrame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
@@ -814,16 +816,16 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
             } else {
               std::string_view error =
                   "CK3 arrange-marriage state is unavailable";
-              if (result == xar::ck3_11906::ArrangeMarriageResult::
+              if (result == xar::game::ArrangeMarriageResult::
                                 no_played_character) {
                 error = "no living played CK3 character";
               } else if (result ==
-                         xar::ck3_11906::ArrangeMarriageResult::
+                         xar::game::ArrangeMarriageResult::
                              candidate_not_found) {
                 error = "CK3 arrange-marriage candidate was not found";
                 marriage_choices.clear();
               } else if (result ==
-                         xar::ck3_11906::ArrangeMarriageResult::
+                         xar::game::ArrangeMarriageResult::
                              choice_unavailable) {
                 error = "CK3 arrange-marriage choice changed; query again";
                 marriage_choices.clear();
@@ -839,7 +841,7 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
           }
         } else if (step == "query-declarable-wars") {
           declarable_wars.clear();
-          if (!xar::ck3_11906::ReadDeclarableWars(game, declarable_wars)) {
+          if (!xar::game::ReadDeclarableWars(game, declarable_wars)) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
@@ -852,7 +854,7 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
                           declarable_wars));
           }
         } else if (step.starts_with("declare-war-")) {
-          const xar::ck3_11906::DeclarableWarSnapshot *selected = nullptr;
+          const xar::game::DeclarableWarSnapshot *selected = nullptr;
           for (const auto &candidate : declarable_wars) {
             if (DeclarationStep(candidate) == step) {
               selected = &candidate;
@@ -866,8 +868,8 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
                           "declare-war choice is missing or stale; query first"));
           } else {
             const auto result =
-                xar::ck3_11906::SubmitDeclareWar(game, *selected);
-            if (result == xar::ck3_11906::DeclareWarResult::submitted) {
+                xar::game::SubmitDeclareWar(game, *selected);
+            if (result == xar::game::DeclareWarResult::submitted) {
               connected = xar::bridge::WriteFrame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
@@ -875,17 +877,17 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
             } else {
               std::string_view error = "CK3 declare-war state is unavailable";
               if (result ==
-                  xar::ck3_11906::DeclareWarResult::no_played_character) {
+                  xar::game::DeclareWarResult::no_played_character) {
                 error = "no living played CK3 character";
               } else if (result ==
-                         xar::ck3_11906::DeclareWarResult::target_not_found) {
+                         xar::game::DeclareWarResult::target_not_found) {
                 error = "CK3 declare-war target was not found";
               } else if (
-                  result == xar::ck3_11906::DeclareWarResult::
+                  result == xar::game::DeclareWarResult::
                                 declaration_unavailable) {
                 error = "CK3 declare-war choice changed; query again";
               } else if (result ==
-                         xar::ck3_11906::DeclareWarResult::validation_failed) {
+                         xar::game::DeclareWarResult::validation_failed) {
                 error = "CK3 rejected declare-war validation";
               }
               connected = xar::bridge::WriteFrame(
@@ -905,9 +907,9 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
                           request_id, step, false,
                           "invalid enforce-demands-<war_id> step"));
           } else {
-            const auto result = xar::ck3_11906::SubmitEnforceDemands(
+            const auto result = xar::game::SubmitEnforceDemands(
                 game, war_id.value());
-            if (result == xar::ck3_11906::EnforceDemandsResult::submitted) {
+            if (result == xar::game::EnforceDemandsResult::submitted) {
               connected = xar::bridge::WriteFrame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
@@ -915,22 +917,22 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
               std::string_view error =
                   "CK3 enforce-demands state is unavailable";
               if (result ==
-                  xar::ck3_11906::EnforceDemandsResult::
+                  xar::game::EnforceDemandsResult::
                       no_played_character) {
                 error = "no living played CK3 character";
               } else if (result ==
-                         xar::ck3_11906::EnforceDemandsResult::war_not_found) {
+                         xar::game::EnforceDemandsResult::war_not_found) {
                 error = "CK3 war was not found";
               } else if (
-                  result == xar::ck3_11906::EnforceDemandsResult::
+                  result == xar::game::EnforceDemandsResult::
                                 player_not_participant) {
                 error = "played CK3 character is not a war participant";
               } else if (
-                  result == xar::ck3_11906::EnforceDemandsResult::
+                  result == xar::game::EnforceDemandsResult::
                                 player_not_war_leader) {
                 error = "played CK3 character is not the war leader";
               } else if (result ==
-                         xar::ck3_11906::EnforceDemandsResult::
+                         xar::game::EnforceDemandsResult::
                              validation_failed) {
                 error = "CK3 rejected enforce-demands validation";
               }
@@ -944,20 +946,20 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
                                         published_checkpoint_sequence);
           }
         } else if (step == "raise-troops-default") {
-          const auto result = xar::ck3_11906::SubmitRaiseTroopsDefault(game);
-          if (result == xar::ck3_11906::RaiseTroopsResult::submitted) {
+          const auto result = xar::game::SubmitRaiseTroopsDefault(game);
+          if (result == xar::game::RaiseTroopsResult::submitted) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
           } else {
             std::string_view error = "CK3 raise-troops state is unavailable";
             if (result ==
-                xar::ck3_11906::RaiseTroopsResult::no_played_character) {
+                xar::game::RaiseTroopsResult::no_played_character) {
               error = "no living played CK3 character";
             } else if (result ==
-                       xar::ck3_11906::RaiseTroopsResult::no_default_province) {
+                       xar::game::RaiseTroopsResult::no_default_province) {
               error = "no default CK3 rally province";
             } else if (result ==
-                       xar::ck3_11906::RaiseTroopsResult::validation_failed) {
+                       xar::game::RaiseTroopsResult::validation_failed) {
               error = "CK3 rejected raise-troops validation";
             }
             connected = xar::bridge::WriteFrame(
@@ -976,24 +978,24 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
                           request_id, step, false,
                           "invalid move-army-<army_id>-to-<province_id> step"));
           } else {
-            const auto result = xar::ck3_11906::SubmitMoveArmy(
+            const auto result = xar::game::SubmitMoveArmy(
                 game, ids->army_id, ids->province_id);
-            if (result == xar::ck3_11906::MoveArmyResult::submitted) {
+            if (result == xar::game::MoveArmyResult::submitted) {
               connected = xar::bridge::WriteFrame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
             } else {
               std::string_view error = "CK3 move-army state is unavailable";
-              if (result == xar::ck3_11906::MoveArmyResult::army_not_found) {
+              if (result == xar::game::MoveArmyResult::army_not_found) {
                 error = "CK3 army was not found";
-              } else if (result == xar::ck3_11906::MoveArmyResult::
+              } else if (result == xar::game::MoveArmyResult::
                                        army_not_controllable) {
                 error = "CK3 army is not player-controllable";
               } else if (result ==
-                         xar::ck3_11906::MoveArmyResult::province_not_found) {
+                         xar::game::MoveArmyResult::province_not_found) {
                 error = "CK3 destination province was not found";
               } else if (result ==
-                         xar::ck3_11906::MoveArmyResult::cannot_move) {
+                         xar::game::MoveArmyResult::cannot_move) {
                 error = "CK3 army cannot move to the destination";
               }
               connected = xar::bridge::WriteFrame(
@@ -1014,16 +1016,16 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
                                    "invalid disband-army-<army_id> step"));
           } else {
             const auto result =
-                xar::ck3_11906::SubmitDisbandArmy(game, army_id.value());
-            if (result == xar::ck3_11906::DisbandArmyResult::submitted) {
+                xar::game::SubmitDisbandArmy(game, army_id.value());
+            if (result == xar::game::DisbandArmyResult::submitted) {
               connected = xar::bridge::WriteFrame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
             } else {
               std::string_view error = "CK3 disband-army state is unavailable";
-              if (result == xar::ck3_11906::DisbandArmyResult::army_not_found) {
+              if (result == xar::game::DisbandArmyResult::army_not_found) {
                 error = "CK3 army was not found";
-              } else if (result == xar::ck3_11906::DisbandArmyResult::
+              } else if (result == xar::game::DisbandArmyResult::
                                        army_not_controllable) {
                 error = "CK3 army is not player-controllable";
               }
@@ -1038,17 +1040,17 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
           }
         } else if (const auto option_index = EventOptionStep(step);
                    option_index.has_value()) {
-          const auto result = xar::ck3_11906::SubmitSelectEventOption(
+          const auto result = xar::game::SubmitSelectEventOption(
               game, option_index.value());
-          if (result == xar::ck3_11906::SelectEventOptionResult::submitted) {
+          if (result == xar::game::SelectEventOptionResult::submitted) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
           } else {
             std::string_view error = "CK3 event state is unavailable";
             if (result ==
-                xar::ck3_11906::SelectEventOptionResult::no_active_event) {
+                xar::game::SelectEventOptionResult::no_active_event) {
               error = "no active CK3 event";
-            } else if (result == xar::ck3_11906::SelectEventOptionResult::
+            } else if (result == xar::game::SelectEventOptionResult::
                                      option_out_of_range) {
               error = "event option index is out of range";
             }
@@ -1063,7 +1065,7 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
         } else {
           const std::int32_t requested_speed = FixedSpeedStep(step);
           if (requested_speed >= 1 &&
-              xar::ck3_11906::SubmitSetSpeed(game, requested_speed)) {
+              xar::game::SubmitSetSpeed(game, requested_speed)) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
             if (connected) {
@@ -1084,14 +1086,17 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
 }
 
 DWORD WINAPI WorkerMain(void *) noexcept {
-  const xar::ck3_11906::Bindings game = xar::ck3_11906::BindCurrentProcess();
+  const auto game = xar::game::SelectCurrentProcessAdapter();
+  if (game == nullptr) {
+    return 1;
+  }
   WorkerState state{};
   while (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
     HANDLE pipe = ConnectToHost();
     if (pipe == INVALID_HANDLE_VALUE) {
       return WaitForSingleObject(g_stop_event, 0) == WAIT_OBJECT_0 ? 0 : 1;
     }
-    RunConnectedSession(pipe, game, state);
+    RunConnectedSession(pipe, *game, state);
     CloseHandle(pipe);
     if (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
       WaitForSingleObject(g_stop_event, 50);
@@ -1143,7 +1148,8 @@ void SignalStop() noexcept {
 
 extern "C" __declspec(dllexport) const char *WINAPI
 XarCk3BridgeIdentity() noexcept {
-  return kIdentityJson;
+  static const std::string identity = IdentityFrame();
+  return identity.c_str();
 }
 
 extern "C" __declspec(dllexport) BOOL WINAPI XarCk3BridgeStart() noexcept {

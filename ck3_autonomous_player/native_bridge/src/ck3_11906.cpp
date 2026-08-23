@@ -1,7 +1,6 @@
 #include "xar_bridge/ck3_11906.hpp"
 
 #include <windows.h>
-#include <bcrypt.h>
 
 #include <array>
 #include <cstddef>
@@ -1022,92 +1021,11 @@ void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
   }
 }
 
-bool HashCurrentExecutable(std::array<std::uint8_t, 32> &output) noexcept {
-  std::array<wchar_t, 32'768> path{};
-  const DWORD path_length =
-      GetModuleFileNameW(nullptr, path.data(), static_cast<DWORD>(path.size()));
-  if (path_length == 0 || path_length >= path.size()) {
-    return false;
-  }
-
-  HANDLE file = CreateFileW(path.data(), GENERIC_READ, FILE_SHARE_READ, nullptr,
-                            OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-  if (file == INVALID_HANDLE_VALUE) {
-    return false;
-  }
-
-  BCRYPT_ALG_HANDLE algorithm = nullptr;
-  BCRYPT_HASH_HANDLE hash = nullptr;
-  std::vector<std::uint8_t> object;
-  bool ok = false;
-  do {
-    if (BCryptOpenAlgorithmProvider(&algorithm, BCRYPT_SHA256_ALGORITHM,
-                                    nullptr, 0) < 0) {
-      break;
-    }
-    DWORD object_size = 0;
-    DWORD copied = 0;
-    if (BCryptGetProperty(algorithm, BCRYPT_OBJECT_LENGTH,
-                          reinterpret_cast<PUCHAR>(&object_size),
-                          sizeof(object_size), &copied, 0) < 0 ||
-        object_size == 0) {
-      break;
-    }
-    object.resize(object_size);
-    if (BCryptCreateHash(algorithm, &hash, object.data(), object_size, nullptr,
-                         0, 0) < 0) {
-      break;
-    }
-
-    // The bridge worker uses the default Windows thread stack. Keep the file
-    // buffer comfortably below that limit; ck3.exe is streamed in chunks.
-    std::array<std::uint8_t, 64U * 1024U> buffer{};
-    while (true) {
-      DWORD read = 0;
-      if (!ReadFile(file, buffer.data(), static_cast<DWORD>(buffer.size()),
-                    &read, nullptr)) {
-        break;
-      }
-      if (read == 0) {
-        ok = BCryptFinishHash(hash, output.data(),
-                              static_cast<ULONG>(output.size()), 0) >= 0;
-        break;
-      }
-      if (BCryptHashData(hash, buffer.data(), read, 0) < 0) {
-        break;
-      }
-    }
-  } while (false);
-
-  if (hash != nullptr) {
-    BCryptDestroyHash(hash);
-  }
-  if (algorithm != nullptr) {
-    BCryptCloseAlgorithmProvider(algorithm, 0);
-  }
-  CloseHandle(file);
-  return ok;
-}
-
-bool MatchesExpectedExecutable() noexcept {
-  std::array<std::uint8_t, 32> digest{};
-  if (!HashCurrentExecutable(digest)) {
-    return false;
-  }
-  constexpr char digits[] = "0123456789ABCDEF";
-  std::array<char, 65> encoded{};
-  for (std::size_t index = 0; index < digest.size(); ++index) {
-    encoded[index * 2] = digits[digest[index] >> 4U];
-    encoded[index * 2 + 1] = digits[digest[index] & 0x0fU];
-  }
-  return std::string(encoded.data()) == kExecutableSha256;
-}
-
 } // namespace
 
-Bindings BindCurrentProcess() noexcept {
+Bindings BindCurrentProcess(bool executable_matches) noexcept {
   Bindings result{};
-  if (!MatchesExpectedExecutable()) {
+  if (!executable_matches) {
     return result;
   }
   const auto module =

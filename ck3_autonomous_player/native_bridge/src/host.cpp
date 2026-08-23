@@ -237,11 +237,13 @@ int wmain(int argc, wchar_t **argv) {
   bool heartbeat = false;
   bool pong = false;
   bool ping_sent = false;
+  bool unsupported_step = false;
+  bool unsupported_step_sent = false;
   DWORD bridge_pid = 0;
   const auto deadline =
       std::chrono::steady_clock::now() + std::chrono::seconds(5);
   while (std::chrono::steady_clock::now() < deadline &&
-         !(hello && heartbeat && pong)) {
+         !(hello && heartbeat && pong && unsupported_step)) {
     const auto frame = xar::bridge::TryReadFrame(pipe);
     if (frame.status == xar::bridge::ReadStatus::closed ||
         frame.status == xar::bridge::ReadStatus::invalid) {
@@ -255,6 +257,10 @@ int wmain(int argc, wchar_t **argv) {
         Has(frame.payload, "\"protocol_version\":1") &&
         Has(frame.payload, "\"bridge.heartbeat\"") &&
         Has(frame.payload, "\"expected_ck3_version\":\"1.19.0.6\"") &&
+        Has(frame.payload,
+            "\"game_adapter_id\":\"ck3-1.19.0.6-msvc-x64\"") &&
+        Has(frame.payload,
+            "\"game_adapter_status\":\"unsupported_build\"") &&
         Has(frame.payload, "\"ck3_build_match\":false") &&
         !Has(frame.payload, "\"game.state.snapshot\"") &&
         !Has(frame.payload, "\"game.command.pause-map\"") &&
@@ -272,20 +278,33 @@ int wmain(int argc, wchar_t **argv) {
     } else if (Has(frame.payload, "\"type\":\"pong\"") &&
                Has(frame.payload, "\"request_id\":\"suspended-injection-1\"")) {
       pong = true;
+    } else if (Has(frame.payload, "\"type\":\"command_result\"") &&
+               Has(frame.payload,
+                   "\"request_id\":\"unsupported-build-step\"") &&
+               Has(frame.payload,
+                   "\"error\":\"unsupported native gameplay step\"")) {
+      unsupported_step = true;
     }
     if (hello && !ping_sent) {
       ping_sent = xar::bridge::WriteFrame(
           pipe, "{\"type\":\"ping\",\"protocol_version\":1,"
                 "\"request_id\":\"suspended-injection-1\"}");
     }
+    if (hello && !unsupported_step_sent) {
+      unsupported_step_sent = xar::bridge::WriteFrame(
+          pipe, "{\"type\":\"execute_step\",\"protocol_version\":1,"
+                "\"request_id\":\"unsupported-build-step\","
+                "\"step\":\"pause-map\"}");
+    }
   }
 
-  if (!hello || !heartbeat || !pong || !ping_sent) {
+  if (!hello || !heartbeat || !pong || !ping_sent || !unsupported_step ||
+      !unsupported_step_sent) {
     TerminateTarget(target);
     CloseTarget(target);
     DisconnectNamedPipe(pipe);
     CloseHandle(pipe);
-    return Fail("injected hello/heartbeat/ping/pong exchange was incomplete");
+    return Fail("injected bridge transport/unsupported exchange was incomplete");
   }
 
   // Dropping an MCP daemon must not require reinjecting or restarting CK3.
