@@ -1,6 +1,6 @@
 # CK3 Mod 知识库索引
 
-本目录沉淀琉焰卿的永恒轮回开发过程中验证过的机制与教训。除文内明确标注“源码证据”“待实测”或“未查明”的项目外，结论均经过 1.19.0.6 日志或游戏内验证。
+本目录沉淀琉焰卿的永恒轮回开发过程中验证过的机制与教训。除文内明确标注“源码证据”“待实测”“未查明”或“架构预研”的项目外，结论均经过 1.19.0.6 日志或游戏内验证；预研文档以各自声明的证据等级为准，不受这项默认实测声明覆盖。
 
 ## 机制篇
 
@@ -12,6 +12,7 @@
 - [acceptance-runner-latency.md](acceptance-runner-latency.md) — 场景测试 runner 暂停弹窗延迟：按场景量化瓶颈、证据边界、两级恢复与验收建议
 - [courtier-creator.md](courtier-creator.md) — 付费自定义廷臣 v2：七页生成目录、数值步进、动态来处、玩家隔离状态与原子扣金（CK3 1.19.0.6 实机 GREEN）
 - [autonomous-player-agent.md](autonomous-player-agent.md) — 已启动的长期工程：不作弊的 CK3 高分自主玩家、production 单 mod 隔离、视觉驱动、经验记忆与持续多局优化；实现位于 `ck3_autonomous_player/`
+- [ck3-local-api-mcp-feasibility.md](ck3-local-api-mcp-feasibility.md) — CK3 状态/操作暴露为本地 HTTP 与 MCP 的可行性预研：普通 Mod 边界、日志/`run` 桥、存档、EXE 补丁、DLL 注入、推荐架构、安全门禁与验证路线
 - [autonomous-player-phase-a-evidence.md](autonomous-player-phase-a-evidence.md) — Phase A 三次真实 non-debug CK3 isolation smoke 的冻结指纹、hash-chain 一致性校验、诊断边界与明确非声明
 - [workshop-publishing.md](workshop-publishing.md) — **创意工坊发布**（启动器上传器）：物料清单、picture 路径解析、预览图 1MB 限制、remote_file_id 内外层之别、更新流程
 - [vivhite-courtier.md](vivhite-courtier.md) — **白绮特供独立版**：隔离边界、ervc 命名空间、生成/构建/验收与独立 Workshop 契约
