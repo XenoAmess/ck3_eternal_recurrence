@@ -219,6 +219,7 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-smoke --ordinary-events 3 --timeout 900
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-replay --observation <observation.json> --check steward-development-active
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step steward-development --timeout 240
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step economic-event-cycle --timeout 240
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-dev-session --timeout 3600
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" recover-stale-control --run-id <finalized-RED-run-id>
 ```

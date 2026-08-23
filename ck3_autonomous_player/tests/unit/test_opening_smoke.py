@@ -26,6 +26,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     MAP_PANEL_SHORTCUTS,
     OPENING_ALLOWED_CONTROLS,
     OPENING_CONTRACT,
+    OPENING_DEVELOPMENT_STEPS,
     ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS,
     STEWARD_DEVELOP_COUNTY_TASK_CENTER,
     _building_construction_in_progress,
@@ -1290,6 +1291,11 @@ class OpeningScenarioTests(unittest.TestCase):
         self.assertEqual(step.command, "opening-step")
         self.assertEqual(step.step, "steward-development")
         self.assertEqual(step.timeout, 240)
+        economic_step = cli.parser().parse_args(
+            ["opening-step", "--step", "economic-event-cycle"]
+        )
+        self.assertEqual(economic_step.step, "economic-event-cycle")
+        self.assertIn("economic-event-cycle", OPENING_DEVELOPMENT_STEPS)
         dev_session = cli.parser().parse_args(["opening-dev-session"])
         self.assertEqual(dev_session.command, "opening-dev-session")
         self.assertEqual(dev_session.timeout, 3600)

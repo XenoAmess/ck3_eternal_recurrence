@@ -74,6 +74,10 @@ ORDINARY_EVENT_WAIT_TIMEOUT_SECONDS = 180.0
 DEFAULT_ORDINARY_EVENT_COUNT = 3
 MAX_CHAINED_ORDINARY_EVENTS = 8
 GENERIC_EVENT_PREVIEW_REGION = (0.23, 0.22, 0.48, 0.80)
+OPENING_DEVELOPMENT_STEPS = (
+    "steward-development",
+    "economic-event-cycle",
+)
 
 # CK3 1.19.0.6 at the frozen 2560x1440/100% UI contract.  Alt+1..N only
 # addresses existing GUIBuildingItem tracks; the empty ``+`` slots are not in
@@ -2174,7 +2178,213 @@ def _drive_opening(
             final_observation,
         )
 
-    if development_step not in {None, "steward-development"}:
+    def run_ordinary_event_loop(
+        event_target: int,
+    ) -> tuple[list[dict[str, object]], dict[str, object]]:
+        ordinary_events: list[dict[str, object]] = []
+        post_driver = None
+        post_state = None
+        pending_event: dict[str, object] | None = None
+        event_index = 0
+        while event_index < event_target or pending_event is not None:
+            event_index += 1
+            if event_index > event_target + MAX_CHAINED_ORDINARY_EVENTS:
+                raise AgentError("ordinary CK3 event chain exceeded its bounded depth")
+            detected_event = pending_event
+            pending_event = None
+            if detected_event is None:
+                event_deadline = min(
+                    deadline,
+                    time.monotonic() + ORDINARY_EVENT_WAIT_TIMEOUT_SECONDS,
+                )
+                event_driver = new_driver()
+                preview_sequence = 0
+                while time.monotonic() < event_deadline:
+                    preview_sequence += 1
+                    if _generic_event_preview(window, preview_sequence) is None:
+                        continue
+                    first_frame = event_driver.capture_once()
+                    second_frame = event_driver.capture_once()
+                    prior_event = _generic_event_in_frame(first_frame)
+                    candidate = _generic_event_in_frame(second_frame)
+                    if (
+                        prior_event is not None
+                        and candidate is not None
+                        and int(candidate["capture_sequence"])
+                        == int(prior_event["capture_sequence"]) + 1
+                        and _same_generic_event(prior_event, candidate)
+                    ):
+                        detected_event = candidate
+                        break
+                if detected_event is None:
+                    raise AgentError(
+                        f"ordinary CK3 event {event_index}/{event_target} "
+                        "did not appear before the deadline"
+                    )
+
+            event_options = detected_event["options"]
+            selected_event_option, option_score, score_reasons = (
+                _choose_generic_event_option(detected_event)
+            )
+            option_number = int(selected_event_option["option_number"])
+            key, scan_code = EVENT_OPTION_SHORTCUTS[option_number]
+            control_id = f"ordinary_event.option_{option_number}"
+            window.require_foreground()
+            append_event(
+                events,
+                {
+                    "kind": "opening_key_input_planned",
+                    "control_id": control_id,
+                    "event_index": event_index,
+                    "key": key,
+                    "scan_code": scan_code,
+                    "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
+                    "expected_post_screen": "map",
+                },
+            )
+            accepted, last_error = _prepare_key_chord_batch(
+                CK3_SHORTCUT_SCAN_CODES["left_shift"], scan_code
+            )()
+            if accepted != 4:
+                raise AgentError(
+                    f"{key} ordinary-event shortcut SendInput was partial: "
+                    f"accepted={accepted}, last_error={last_error}"
+                )
+
+            post_driver = new_driver()
+            post_state = None
+            running_error: AgentError | None = None
+            try:
+                post_state = post_driver.observe_stable(
+                    "map_running",
+                    min(
+                        8.0,
+                        _remaining(deadline, "ordinary event running postcondition"),
+                    ),
+                    stable_frames=2,
+                )
+            except AgentError as error:
+                running_error = error
+            if post_state is None:
+                try:
+                    post_state = post_driver.observe_stable(
+                        "map_hud",
+                        min(
+                            8.0,
+                            _remaining(
+                                deadline, "ordinary event paused postcondition"
+                            ),
+                        ),
+                        stable_frames=2,
+                    )
+                except AgentError:
+                    if running_error is not None:
+                        raise running_error
+                    raise
+            result_observation_id = post_state.observation_id
+            result_screen = post_state.screen
+            post_candidate = _generic_event_in_frame(post_state.latest)
+            if post_candidate is not None:
+                pending_event, transition_frame = _confirm_post_shortcut_event(
+                    post_driver,
+                    post_candidate,
+                    min(deadline, time.monotonic() + 8.0),
+                )
+                result_observation_id = getattr(
+                    transition_frame, "observation_id", result_observation_id
+                )
+                if pending_event is not None:
+                    if pending_event.get("title") == detected_event.get("title"):
+                        raise AgentError(
+                            "ordinary CK3 event remained visible after its shortcut"
+                        )
+                    result_screen = "ordinary_event"
+
+            actions.append(
+                {
+                    "control_id": control_id,
+                    "status": "confirmed",
+                    "input_kind": "keyboard_shortcut",
+                    "key": key,
+                    "scan_code": scan_code,
+                    "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
+                    "send_input": {
+                        "requested": 4,
+                        "accepted": accepted,
+                        "last_error": last_error,
+                    },
+                    "event_index": event_index,
+                    "event_title": detected_event["title"],
+                    "visible_option": selected_event_option["visible_text"],
+                    "visible_option_count": len(event_options),
+                    "strategy_score": option_score,
+                    "strategy_reasons": score_reasons,
+                    "source_observation_id": detected_event["observation_id"],
+                    "result_observation_id": result_observation_id,
+                    "expected_post_screen": result_screen,
+                }
+            )
+            append_event(
+                events,
+                {
+                    "kind": "opening_step_completed",
+                    "control_id": control_id,
+                    "event_index": event_index,
+                    "result_screen": result_screen,
+                    "result_observation_id": result_observation_id,
+                },
+            )
+            ordinary_events.append(
+                {
+                    "event_index": event_index,
+                    "title": detected_event["title"],
+                    "visible_options": event_options,
+                    "selected_option_number": option_number,
+                    "selected_visible_text": selected_event_option["visible_text"],
+                    "strategy_score": option_score,
+                    "strategy_reasons": score_reasons,
+                    "strategy": "visible-option-utility-v1",
+                    "source_observation_id": detected_event["observation_id"],
+                }
+            )
+            if (
+                pending_event is None
+                and event_index < event_target
+                and post_state.screen == "map_hud"
+            ):
+                press_shortcut(
+                    "map_hud",
+                    "map_hud.resume",
+                    "space",
+                    CK3_SHORTCUT_SCAN_CODES["space"],
+                    "map_running",
+                    f"running timeline after ordinary event {event_index}",
+                    driver=post_driver,
+                    stable=post_state,
+                    post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                )
+
+        if post_driver is None or post_state is None:
+            raise AgentError("ordinary CK3 event loop produced no final state")
+        if post_state.screen == "map_running":
+            final_observation = press_shortcut(
+                "map_running",
+                "map_running.pause",
+                "space",
+                CK3_SHORTCUT_SCAN_CODES["space"],
+                "map_hud",
+                "paused after ordinary event loop",
+                driver=post_driver,
+                stable=post_state,
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+        else:
+            final_observation = post_state.to_policy_json()
+        return ordinary_events, final_observation
+
+    if development_step is not None and development_step not in (
+        OPENING_DEVELOPMENT_STEPS
+    ):
         raise AgentError(
             f"unsupported opening development step: {development_step}"
         )
@@ -2375,6 +2585,70 @@ def _drive_opening(
                     ),
                     post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
                 )
+        if development_step == "economic-event-cycle":
+            cycle_driver = new_driver()
+            paused_map = cycle_driver.observe_stable(
+                "map_hud",
+                min(
+                    INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                    _remaining(deadline, "economic cycle starting map"),
+                ),
+                stable_frames=2,
+            )
+            starting_date = _extract_map_date(paused_map.to_policy_json())
+            press_shortcut(
+                "map_hud",
+                "map_hud.set_speed_five",
+                "5",
+                CK3_SHORTCUT_SCAN_CODES["5"],
+                "map_hud",
+                "economic cycle speed five",
+                driver=cycle_driver,
+                stable=paused_map,
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+            press_shortcut(
+                "map_hud",
+                "map_hud.resume",
+                "space",
+                CK3_SHORTCUT_SCAN_CODES["space"],
+                "map_running",
+                "economic cycle running timeline",
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+            cycle_events, final_observation = run_ordinary_event_loop(1)
+            ending_date = _extract_map_date(final_observation)
+            if int(ending_date["ordinal"]) <= int(starting_date["ordinal"]):
+                raise AgentError("economic cycle did not advance the CK3 date")
+            panel_snapshots: dict[str, dict[str, object]] = {}
+            for panel_id, title, key, scan_code in (
+                MAP_PANEL_SHORTCUTS[0],
+                MAP_PANEL_SHORTCUTS[2],
+            ):
+                summary, final_observation = inspect_map_panel(
+                    panel_id,
+                    title,
+                    key,
+                    scan_code,
+                )
+                panel_snapshots[panel_id] = summary
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "starting_date": starting_date,
+                "ending_date": ending_date,
+                "elapsed_days": int(ending_date["ordinal"])
+                - int(starting_date["ordinal"]),
+                "ordinary_events": cycle_events,
+                "map_panels": panel_snapshots,
+                "final_screen": final_observation.get("screen"),
+                "final_observation_id": final_observation.get("observation_id"),
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
         steward_development, final_observation = (
             assign_steward_to_develop_foggia()
         )
@@ -2854,7 +3128,7 @@ def opening_step(
 ) -> dict[str, object]:
     """Resume the isolated autosave and exercise one development-only step."""
     ensure_state_path_safe(spec.state_dir)
-    if step != "steward-development":
+    if step not in OPENING_DEVELOPMENT_STEPS:
         raise AgentError(f"unsupported opening development step: {step}")
     if (
         isinstance(timeout_seconds, bool)
@@ -3002,7 +3276,7 @@ def _opening_dev_session_locked(
                     "type": "opening_dev_session_ready",
                     "run_id": run_id,
                     "pid": handle.process.pid,
-                    "commands": ["steward-development", "status", "stop"],
+                    "commands": [*OPENING_DEVELOPMENT_STEPS, "status", "stop"],
                     "hot_reload": True,
                 },
                 ensure_ascii=False,
@@ -3028,20 +3302,6 @@ def _opening_dev_session_locked(
                             "pid": handle.process.pid,
                             "running": handle.process.poll() is None,
                             "command_count": len(report["commands"]),
-                        },
-                        ensure_ascii=False,
-                    ),
-                    flush=True,
-                )
-                continue
-            if command != "steward-development":
-                print(
-                    json.dumps(
-                        {
-                            "type": "opening_dev_command_result",
-                            "command": command,
-                            "ok": False,
-                            "error": "unsupported development command",
                         },
                         ensure_ascii=False,
                     ),
