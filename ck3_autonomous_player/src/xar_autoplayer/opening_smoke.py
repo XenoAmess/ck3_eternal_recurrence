@@ -35,7 +35,10 @@ from .runtime import (
     utc_now,
     wait_for_runtime_attestation,
 )
-from .strategy import read_one_life_strategy, record_one_life_episode
+from .strategy import (
+    read_one_life_strategy,
+    record_one_life_episode,
+)
 
 
 OPENING_CONTRACT = (
@@ -74,8 +77,13 @@ INITIAL_MAIN_MENU_TIMEOUT_SECONDS = 120.0
 ORDINARY_EVENT_WAIT_TIMEOUT_SECONDS = 180.0
 DEFAULT_ORDINARY_EVENT_COUNT = 3
 MAX_CHAINED_ORDINARY_EVENTS = 8
-GENERIC_EVENT_PREVIEW_REGION = (0.23, 0.22, 0.48, 0.80)
+ACTIVE_EVENT_PREVIEW_REGION = (0.23, 0.08, 0.60, 0.86)
+DEVELOPMENT_EVENT_WAIT_SECONDS = 45.0
+ONE_LIFE_TURN_WAIT_SECONDS = 10.0
 OPENING_DEVELOPMENT_STEPS = (
+    "auto-turn",
+    "pause-map",
+    "life-advance",
     "steward-development",
     "economic-event-cycle",
     "save-checkpoint",
@@ -571,6 +579,32 @@ def _marriage_acceptance_in_frame(frame: object) -> dict[str, object] | None:
     }
 
 
+def _call_to_war_in_frame(frame: object) -> dict[str, object] | None:
+    """Recognize CK3's alliance call-to-war letter from visible text."""
+    titles = _spans_with_text(frame, "召集加入战争", contains=True)
+    reject = _spans_with_text(frame, "拒绝")
+    accept = _spans_with_text(frame, "同意")
+    if len(titles) != 1 or len(reject) != 1 or len(accept) != 1:
+        return None
+    visible_text = _frame_visible_text(frame)
+    war_text = next(
+        (
+            text
+            for text in visible_text
+            if "加入" in text and "战争" in text and text != "召集加入战争"
+        ),
+        None,
+    )
+    return {
+        "status": "alliance_call_visible",
+        "title": titles[0].text,
+        "war_text": war_text,
+        "accept_text": accept[0].text,
+        "reject_text": reject[0].text,
+        "source_observation_id": getattr(frame, "observation_id", None),
+    }
+
+
 def _frame_visible_text(frame: object) -> list[str]:
     return [
         str(getattr(item, "text", "")).strip()
@@ -856,19 +890,24 @@ def _same_generic_event(
     return True
 
 
-def _generic_event_preview(window: object, sequence: int) -> dict[str, object] | None:
-    """Check the event lane without persisting ordinary map polling frames."""
+def _visible_event_preview(
+    window: object, sequence: int
+) -> tuple[dict[str, object] | None, dict[str, object] | None, str | None]:
+    """Recognize actionable event lanes with one capture and one OCR pass."""
     from .vision.ocr import ocr_spans
 
     image = window.capture()
     width, height = image.size
-    return _generic_event_in_frame(
-        SimpleNamespace(
-            observation_id=None,
-            capture_sequence=sequence,
-            client_rect=(0, 0, width, height),
-            spans=ocr_spans(image, GENERIC_EVENT_PREVIEW_REGION),
-        )
+    frame = SimpleNamespace(
+        observation_id=None,
+        capture_sequence=sequence,
+        client_rect=(0, 0, width, height),
+        spans=ocr_spans(image, ACTIVE_EVENT_PREVIEW_REGION),
+    )
+    return (
+        _generic_event_in_frame(frame),
+        _call_to_war_in_frame(frame),
+        _death_terminal_state(frame),
     )
 
 
@@ -1362,6 +1401,51 @@ def _drive_opening(
     development_step: str | None = None,
     resume_saved_game: bool = False,
 ) -> dict[str, object]:
+    if development_step == "auto-turn":
+        # The persistent session may have imported an older strategy module;
+        # reload it here as well so adding planner behavior never requires a
+        # CK3 restart.
+        from . import strategy as strategy_policy
+
+        strategy_policy = importlib.reload(strategy_policy)
+        commands: list[dict[str, object]] = []
+        session_report_path = artifacts.parent / "report.json"
+        if session_report_path.exists():
+            try:
+                session_report = json.loads(
+                    session_report_path.read_text(encoding="utf-8")
+                )
+            except (OSError, json.JSONDecodeError) as error:
+                raise AgentError(
+                    f"development session report is unreadable: {error}"
+                ) from error
+            raw_commands = session_report.get("commands")
+            if isinstance(raw_commands, list):
+                commands = [row for row in raw_commands if isinstance(row, dict)]
+        turn = strategy_policy.choose_one_life_turn(commands)
+        selected_step = turn["selected_step"]
+        if not isinstance(selected_step, str) or selected_step == "auto-turn":
+            raise AgentError("one-life turn planner returned an invalid step")
+        result = _drive_opening(
+            spec,
+            handle,
+            manifest,
+            artifacts,
+            events,
+            contract_path,
+            contract_sha256,
+            deadline,
+            ordinary_event_count=ordinary_event_count,
+            inspect_map_panels=inspect_map_panels,
+            construct_economic_building=construct_economic_building,
+            assign_steward_development=assign_steward_development,
+            development_step=selected_step,
+            resume_saved_game=resume_saved_game,
+        )
+        result["requested_step"] = "auto-turn"
+        result["auto_turn"] = turn
+        return result
+
     # This command only reads the agent's cross-run policy.  Keep it outside
     # the CK3 binding/foreground/OCR path so it stays instant in a persistent
     # development session.
@@ -1394,30 +1478,58 @@ def _drive_opening(
     language = str(display.get("language", ""))
     contract = load_ui_contract(contract_path, expected_sha256=contract_sha256)
     window = _bind_window(spec, handle, deadline)
-    append_event(
-        events,
-        {
-            "kind": "foreground_activation_planned",
-            "pid": window.pid,
-            "hwnd": window.hwnd,
-        },
-    )
-    foreground = window.request_foreground_without_input(
-        responsive_gate_timeout_seconds=min(
-            30.0, _remaining(deadline, "foreground activation")
-        ),
-        responsive_gate_deadline=deadline,
-    )
-    append_event(
-        events,
-        {
-            "kind": "foreground_activation_finished",
-            "pid": window.pid,
-            "hwnd": window.hwnd,
+    persistent_hot_command = development_step is not None and not resume_saved_game
+    if persistent_hot_command:
+        # The persistent session already completed the full response/activation
+        # gate when it resumed the save.  Re-running its five-second streak for
+        # every hot-loaded turn adds no gameplay value.  Subsequent commands do
+        # a fresh process/window verification and require CK3 to still be the
+        # foreground window; they never steal focus here.
+        window.require_foreground()
+        foreground = {
+            "format_version": 1,
             "status": "confirmed",
-            "attestation": foreground,
-        },
-    )
+            "mode": "persistent_session_already_foreground",
+            "target_pid": window.pid,
+            "target_hwnd": window.hwnd,
+            "synthetic_input": False,
+            "full_gate_completed_at_session_start": True,
+        }
+        append_event(
+            events,
+            {
+                "kind": "foreground_activation_observed",
+                "pid": window.pid,
+                "hwnd": window.hwnd,
+                "status": "confirmed",
+                "attestation": foreground,
+            },
+        )
+    else:
+        append_event(
+            events,
+            {
+                "kind": "foreground_activation_planned",
+                "pid": window.pid,
+                "hwnd": window.hwnd,
+            },
+        )
+        foreground = window.request_foreground_without_input(
+            responsive_gate_timeout_seconds=min(
+                30.0, _remaining(deadline, "foreground activation")
+            ),
+            responsive_gate_deadline=deadline,
+        )
+        append_event(
+            events,
+            {
+                "kind": "foreground_activation_finished",
+                "pid": window.pid,
+                "hwnd": window.hwnd,
+                "status": "confirmed",
+                "attestation": foreground,
+            },
+        )
 
     def new_driver() -> VisibleUiDriver:
         return VisibleUiDriver(
@@ -1856,6 +1968,88 @@ def _drive_opening(
             },
         )
         return first, second
+
+    def accept_visible_call_to_war(
+        driver: VisibleUiDriver,
+        call: dict[str, object],
+    ) -> tuple[dict[str, object], dict[str, object]]:
+        window.require_foreground()
+        speed_accepted, speed_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["1"]
+        )()
+        if speed_accepted != 2:
+            raise AgentError(
+                "call-to-war speed-one shortcut was partial: "
+                f"accepted={speed_accepted}, last_error={speed_last_error}"
+            )
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": "diplomacy.call_to_war.accept",
+                "key": "shift+2",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["2"],
+                "modifier_scan_code": CK3_SHORTCUT_SCAN_CODES["left_shift"],
+                "expected_post_screen": "map",
+            },
+        )
+        accepted, last_error = _prepare_key_chord_batch(
+            CK3_SHORTCUT_SCAN_CODES["left_shift"],
+            CK3_SHORTCUT_SCAN_CODES["2"],
+        )()
+        if accepted != 4:
+            raise AgentError(
+                "call-to-war acceptance shortcut was partial: "
+                f"accepted={accepted}, last_error={last_error}"
+            )
+        time.sleep(0.5)
+        _map_first, after = wait_for_custom_state(
+            driver,
+            lambda frame: bool(
+                getattr(frame, "screen", None) in {"map_hud", "map_running"}
+                and _call_to_war_in_frame(frame) is None
+            ),
+            "map after accepting alliance call to war",
+        )
+        if after.screen == "map_running":
+            final = press_shortcut(
+                "map_running",
+                "map_running.pause_after_call_to_war",
+                "space",
+                CK3_SHORTCUT_SCAN_CODES["space"],
+                "map_hud",
+                "paused after accepting alliance call to war",
+                driver=driver,
+                stable=after,
+                require_visible_control=False,
+                post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+            )
+        else:
+            final = after.to_policy_json()
+        resolved = dict(call)
+        resolved.update(
+            {
+                "status": "accepted_alliance_call",
+                "strategy": "honor_current_life_alliance-v1",
+                "continue_as_heir_after_death": False,
+            }
+        )
+        actions.append(
+            {
+                "control_id": "diplomacy.call_to_war.accept",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": "shift+2",
+                "send_input": {
+                    "requested": 4,
+                    "accepted": accepted,
+                    "last_error": last_error,
+                },
+                "result_observation_id": final["observation_id"],
+                "expected_post_screen": "map_hud",
+            }
+        )
+        return resolved, final
 
     def assign_steward_to_develop_foggia() -> tuple[
         dict[str, object], dict[str, object]
@@ -4386,6 +4580,7 @@ def _drive_opening(
         event_target: int,
         *,
         initial_event: dict[str, object] | None = None,
+        wait_timeout_seconds: float = ORDINARY_EVENT_WAIT_TIMEOUT_SECONDS,
     ) -> tuple[list[dict[str, object]], dict[str, object]]:
         ordinary_events: list[dict[str, object]] = []
         post_driver = None
@@ -4397,20 +4592,43 @@ def _drive_opening(
             if event_index > event_target + MAX_CHAINED_ORDINARY_EVENTS:
                 raise AgentError("ordinary CK3 event chain exceeded its bounded depth")
             detected_event = pending_event
+            detected_call: dict[str, object] | None = None
             pending_event = None
             if detected_event is None:
                 event_deadline = min(
                     deadline,
-                    time.monotonic() + ORDINARY_EVENT_WAIT_TIMEOUT_SECONDS,
+                    time.monotonic() + wait_timeout_seconds,
                 )
                 event_driver = new_driver()
                 preview_sequence = 0
                 while time.monotonic() < event_deadline:
                     preview_sequence += 1
-                    if _generic_event_preview(window, preview_sequence) is None:
+                    generic_preview, call_preview, terminal_preview = (
+                        _visible_event_preview(window, preview_sequence)
+                    )
+                    if terminal_preview is not None:
+                        first_frame = event_driver.capture_once()
+                        second_frame = event_driver.capture_once()
+                        first_terminal = _death_terminal_state(first_frame)
+                        second_terminal = _death_terminal_state(second_frame)
+                        if (
+                            first_terminal is not None
+                            and first_terminal == second_terminal
+                        ):
+                            raise AgentError(
+                                "one-life death terminal visible: "
+                                f"{second_terminal}"
+                            )
+                        continue
+                    if generic_preview is None and call_preview is None:
                         continue
                     first_frame = event_driver.capture_once()
                     second_frame = event_driver.capture_once()
+                    first_call = _call_to_war_in_frame(first_frame)
+                    second_call = _call_to_war_in_frame(second_frame)
+                    if first_call is not None and second_call is not None:
+                        detected_call = second_call
+                        break
                     prior_event = _generic_event_in_frame(first_frame)
                     candidate = _generic_event_in_frame(second_frame)
                     if (
@@ -4422,11 +4640,95 @@ def _drive_opening(
                     ):
                         detected_event = candidate
                         break
-                if detected_event is None:
-                    raise AgentError(
-                        f"ordinary CK3 event {event_index}/{event_target} "
-                        "did not appear before the deadline"
-                    )
+                if detected_event is None and detected_call is None:
+                    first_frame = event_driver.capture_once()
+                    second_frame = event_driver.capture_once()
+                    first_terminal = _death_terminal_state(first_frame)
+                    second_terminal = _death_terminal_state(second_frame)
+                    if (
+                        first_terminal is not None
+                        and first_terminal == second_terminal
+                    ):
+                        raise AgentError(
+                            "one-life death terminal visible: "
+                            f"{second_terminal}"
+                        )
+                    first_call = _call_to_war_in_frame(first_frame)
+                    second_call = _call_to_war_in_frame(second_frame)
+                    if first_call is not None and second_call is not None:
+                        detected_call = second_call
+                    else:
+                        prior_event = _generic_event_in_frame(first_frame)
+                        candidate = _generic_event_in_frame(second_frame)
+                        if (
+                            prior_event is not None
+                            and candidate is not None
+                            and _same_generic_event(prior_event, candidate)
+                        ):
+                            detected_event = candidate
+                    if detected_event is None and detected_call is None:
+                        if (
+                            first_frame.screen != second_frame.screen
+                            or second_frame.screen
+                            not in {"map_hud", "map_running"}
+                        ):
+                            raise AgentError(
+                                "bounded event wait ended on an unknown visible state"
+                            )
+                        if second_frame.screen == "map_running":
+                            final = press_shortcut(
+                                "map_running",
+                                "map_running.pause_after_bounded_wait",
+                                "space",
+                                CK3_SHORTCUT_SCAN_CODES["space"],
+                                "map_hud",
+                                "paused after bounded no-event wait",
+                                driver=event_driver,
+                                stable=second_frame,
+                                require_visible_control=False,
+                                post_timeout_seconds=(
+                                    INSTANT_UI_TRANSITION_TIMEOUT_SECONDS
+                                ),
+                            )
+                        else:
+                            final = second_frame.to_policy_json()
+                        return ordinary_events, final
+
+            if detected_call is not None:
+                resolved_call, final = accept_visible_call_to_war(
+                    event_driver, detected_call
+                )
+                ordinary_events.append(
+                    {
+                        "event_index": event_index,
+                        "event_kind": "call_to_war",
+                        **resolved_call,
+                    }
+                )
+                if event_index >= event_target:
+                    return ordinary_events, final
+                post_driver = new_driver()
+                post_state = post_driver.observe_stable(
+                    "map_hud",
+                    min(
+                        INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                        _remaining(deadline, "map after alliance call"),
+                    ),
+                    stable_frames=2,
+                )
+                press_shortcut(
+                    "map_hud",
+                    "map_hud.resume_after_alliance_call",
+                    "space",
+                    CK3_SHORTCUT_SCAN_CODES["space"],
+                    "map_running",
+                    "running timeline after alliance call",
+                    driver=post_driver,
+                    stable=post_state,
+                    require_visible_control=False,
+                    post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                )
+                continue
 
             event_options = detected_event["options"]
             selected_event_option, option_score, score_reasons = (
@@ -4716,6 +5018,43 @@ def _drive_opening(
         }
 
     if development_step is not None:
+        if development_step == "pause-map":
+            pause_driver = new_driver()
+            _pause_first, current_map = wait_for_custom_state(
+                pause_driver,
+                lambda frame: getattr(frame, "screen", None)
+                in {"map_hud", "map_running"},
+                "current map before idempotent pause",
+            )
+            if current_map.screen == "map_running":
+                final = press_shortcut(
+                    "map_running",
+                    "map_running.pause_on_request",
+                    "space",
+                    CK3_SHORTCUT_SCAN_CODES["space"],
+                    "map_hud",
+                    "paused map on request",
+                    driver=pause_driver,
+                    stable=current_map,
+                    require_visible_control=False,
+                    post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                )
+                status = "paused"
+            else:
+                final = current_map.to_policy_json()
+                status = "already_paused"
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "pause": {"status": status},
+                "final_screen": final["screen"],
+                "final_observation_id": final["observation_id"],
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
         if development_step == "death-terminal":
             death_driver = new_driver()
             _terminal_first, terminal_frame = wait_for_custom_state(
@@ -5228,6 +5567,24 @@ def _drive_opening(
             event_driver = new_driver()
             first_frame = event_driver.capture_once()
             second_frame = event_driver.capture_once()
+            first_call = _call_to_war_in_frame(first_frame)
+            second_call = _call_to_war_in_frame(second_frame)
+            if first_call is not None and second_call is not None:
+                resolved_call, final = accept_visible_call_to_war(
+                    event_driver, second_call
+                )
+                return {
+                    "development_only": True,
+                    "release_qualification": False,
+                    "step": development_step,
+                    "resume": resume_info,
+                    "actions": actions,
+                    "diplomatic_event": resolved_call,
+                    "final_screen": final["screen"],
+                    "final_observation_id": final["observation_id"],
+                    "window_binding": window.audit_binding(),
+                    "foreground_activation": foreground,
+                }
             first_event = _generic_event_in_frame(first_frame)
             second_event = _generic_event_in_frame(second_frame)
             if (
@@ -5950,7 +6307,7 @@ def _drive_opening(
                 "window_binding": window.audit_binding(),
                 "foreground_activation": foreground,
             }
-        if development_step == "economic-event-cycle":
+        if development_step in {"life-advance", "economic-event-cycle"}:
             cycle_driver = new_driver()
             paused_map = cycle_driver.observe_stable(
                 "map_hud",
@@ -5979,24 +6336,34 @@ def _drive_opening(
                 CK3_SHORTCUT_SCAN_CODES["space"],
                 "map_running",
                 "economic cycle running timeline",
+                driver=cycle_driver,
+                stable=paused_map,
                 post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
             )
-            cycle_events, final_observation = run_ordinary_event_loop(1)
+            cycle_events, final_observation = run_ordinary_event_loop(
+                1,
+                wait_timeout_seconds=(
+                    ONE_LIFE_TURN_WAIT_SECONDS
+                    if development_step == "life-advance"
+                    else DEVELOPMENT_EVENT_WAIT_SECONDS
+                ),
+            )
             ending_date = _extract_map_date(final_observation)
             if int(ending_date["ordinal"]) <= int(starting_date["ordinal"]):
                 raise AgentError("economic cycle did not advance the CK3 date")
             panel_snapshots: dict[str, dict[str, object]] = {}
-            for panel_id, title, key, scan_code in (
-                MAP_PANEL_SHORTCUTS[0],
-                MAP_PANEL_SHORTCUTS[2],
-            ):
-                summary, final_observation = inspect_map_panel(
-                    panel_id,
-                    title,
-                    key,
-                    scan_code,
-                )
-                panel_snapshots[panel_id] = summary
+            if development_step == "economic-event-cycle":
+                for panel_id, title, key, scan_code in (
+                    MAP_PANEL_SHORTCUTS[0],
+                    MAP_PANEL_SHORTCUTS[2],
+                ):
+                    summary, final_observation = inspect_map_panel(
+                        panel_id,
+                        title,
+                        key,
+                        scan_code,
+                    )
+                    panel_snapshots[panel_id] = summary
             return {
                 "development_only": True,
                 "release_qualification": False,
@@ -6216,7 +6583,15 @@ def _drive_opening(
             preview_sequence = 0
             while time.monotonic() < event_deadline:
                 preview_sequence += 1
-                if _generic_event_preview(window, preview_sequence) is None:
+                generic_preview, _, terminal_preview = _visible_event_preview(
+                    window, preview_sequence
+                )
+                if terminal_preview is not None:
+                    raise AgentError(
+                        "one-life death terminal visible: "
+                        f"{terminal_preview}"
+                    )
+                if generic_preview is None:
                     continue
                 first_frame = event_driver.capture_once()
                 second_frame = event_driver.capture_once()
@@ -6530,6 +6905,7 @@ def _reload_opening_development_policy():
         "xar_autoplayer.vision",
         "xar_autoplayer.control.executor",
         "xar_autoplayer.control",
+        "xar_autoplayer.strategy",
     ):
         module = sys.modules.get(name)
         if module is not None:

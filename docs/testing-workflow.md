@@ -308,6 +308,12 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 一代制 roguelike 的死亡测试分两类：有继承人时原生【继续扮演】仅允许作为延迟投递生产结算事件的技术载体，之后不得执行
   任何继承人 gameplay；无继承人时直接使用注入原生继承窗的【退出到菜单】。两类最终都要记录结算分数并回到主菜单。
   非 debug 常驻会话不能为测试强制 `die`，不应因此重启；先用历史 `10_death_settlement.jpg` 和确定性模拟链回归，等自然死亡再做实机终验。
+- 2026-08-23 首个 `auto-turn` 在速度 5 下等待普通事件 180 秒，超时后没有暂停；游戏随后继续从 1067-08-02 推进，丹麦
+  【召集加入战争】信函被旧普通事件栏裁剪漏检并过期，地图可见记录【无视了国王斯温的召唤参战 -20】。因此常驻循环不得把“等到
+  下一个事件”为无界动作：`life-advance` 只开放约 10 秒现实时间窗口，无事件也必须返回 GREEN 且 `map_hud` 暂停；外交信函另用
+  中央 letter lane 预览，稳定后用原生 `Shift+2` 选择【同意】。普通事件、外交信函和死亡终端现共用一次裁剪 OCR，避免同一轮询
+  重复推理。同一 PID 修订后已连续推进、暂停，识别并处理真实事件【锈迹斑斑的工具】，把单回合实测从 41.3 秒降至 26.75 秒，
+  并在三个回合后自动保存 `阿普利亚公爵，罗贝尔_1069_01_21.ck3`。
 - 2026-08-21 同一发布候选的第一次矩阵在第二格到达主菜单前发生 CK3 原生 `C0000005`，crash bundle 停在数据库图标初始化，无 fixture marker、无 blocking project diagnostic，运行树、EXE 与受保护存储未变。该 RED 必须原样保留；只有全新 userdir 的同格重试完整 GREEN，且随后另一全新目录的正式三格矩阵 3/3 GREEN，才能把它判为一次性引擎冷启动崩溃，禁止直接重标原报告。
 - Windows Python Launcher 的 `py <script.py>` 会解释脚本首行的 `/usr/bin/env python3`，可能选中 `PATH` 里的另一套 Python，而不是刚由 `py -m pip` 安装依赖的默认解释器。2026-08-21 实测该分裂让非固定 Pillow 重建的三张 DXT1 DDS 与仓库字节不同，产生假 stale；项目 `.venv` 的 `Pillow==12.3.0` 与官方 CI 均 GREEN。遇到素材 parity 全红时先打印实际解释器和 Pillow 版本，本机 L0 优先直接调用 `tools\.venv\Scripts\python.exe`，禁止为消除环境假红而重写已发布素材。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。

@@ -20,7 +20,7 @@ from xar_autoplayer import cli  # noqa: E402
 from xar_autoplayer.control import VisibleUiDriver  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.opening_smoke import (  # noqa: E402
-    GENERIC_EVENT_PREVIEW_REGION,
+    ACTIVE_EVENT_PREVIEW_REGION,
     INITIAL_MAIN_MENU_TIMEOUT_SECONDS,
     INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
     MAP_PANEL_SHORTCUTS,
@@ -35,6 +35,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _choose_first_curse,
     _choose_economic_building_offer,
     _building_offer_summaries,
+    _call_to_war_in_frame,
     _choose_generic_event_option,
     _confirm_post_shortcut_event,
     _drive_opening,
@@ -47,7 +48,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _death_terminal_state,
     _marriage_acceptance_in_frame,
     _generic_event_in_frame,
-    _generic_event_preview,
+    _visible_event_preview,
     _panel_summary,
     _choose_one_life_dynasty_action,
     _palermo_map_targets,
@@ -64,6 +65,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     replay_opening_observation,
 )
 from xar_autoplayer.strategy import (  # noqa: E402
+    choose_one_life_turn,
     read_one_life_strategy,
     record_one_life_episode,
 )
@@ -361,6 +363,26 @@ class OpeningContractTests(unittest.TestCase):
         self.assertEqual(result["status"], "accepted_betrothal")
         self.assertFalse(result["continue_as_heir_after_death"])
 
+    def test_call_to_war_detector_reads_diplomatic_letter_layout(self) -> None:
+        frame = SimpleNamespace(
+            observation_id="call-to-war",
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span("召集加入战争", (1264, 177), (1176, 161, 1352, 194)),
+                span(
+                    "我要求你尊重我们的同盟并与我加入丹麦声索挪威王国战争！",
+                    (1280, 410),
+                    (1000, 390, 1560, 430),
+                ),
+                span("拒绝", (1160, 1167), (1138, 1154, 1183, 1180)),
+                span("同意", (1401, 1167), (1379, 1154, 1423, 1181)),
+            ),
+        )
+        result = _call_to_war_in_frame(frame)
+        self.assertIsNotNone(result)
+        self.assertEqual(result["status"], "alliance_call_visible")
+        self.assertIn("丹麦", result["war_text"])
+
     def test_death_terminal_distinguishes_handoff_and_settlement(self) -> None:
         succession = SimpleNamespace(
             observation_id="death-succession",
@@ -474,6 +496,97 @@ class OpeningContractTests(unittest.TestCase):
                 "repeat_palermo_opening_war_when_visible_conditions_match",
             )
 
+    def test_one_life_turn_planner_advances_milestones_and_interruptions(
+        self,
+    ) -> None:
+        commands: list[dict[str, object]] = []
+
+        def selected() -> str:
+            return str(choose_one_life_turn(commands)["selected_step"])
+
+        def success(command: str, result: dict[str, object] | None = None) -> None:
+            commands.append(
+                {
+                    "index": len(commands) + 1,
+                    "command": command,
+                    "ok": True,
+                    "result": result or {},
+                }
+            )
+
+        self.assertEqual(selected(), "save-checkpoint")
+        success("save-checkpoint")
+        self.assertEqual(selected(), "dynasty-review")
+        success("dynasty-review")
+        self.assertEqual(selected(), "succession-review")
+        success("succession-review")
+        self.assertEqual(selected(), "marriage-review")
+        success("marriage-review")
+        self.assertEqual(selected(), "marriage-alliance")
+        success("marriage-alliance")
+        self.assertEqual(selected(), "marriage-confirm-response")
+        commands.append(
+            {
+                "index": len(commands) + 1,
+                "command": "marriage-confirm-response",
+                "ok": False,
+                "error": "AgentError: accepted marriage response is not visibly stable",
+            }
+        )
+        self.assertEqual(selected(), "war-advance-week")
+        success("war-advance-week")
+        self.assertEqual(selected(), "marriage-confirm-response")
+        success("marriage-confirm-response")
+        self.assertEqual(selected(), "war-declare-palermo")
+        success("war-declare-palermo")
+        self.assertEqual(selected(), "war-raise-all")
+        success("war-raise-all")
+        self.assertEqual(selected(), "war-siege-palermo")
+        success("war-siege-palermo")
+        self.assertEqual(selected(), "war-status")
+        success("war-status", {"war_status": {"war_score_percent": 0}})
+        self.assertEqual(selected(), "war-advance-week")
+        success("war-advance-week")
+        self.assertEqual(selected(), "war-status")
+        success("war-status", {"war_status": {"war_score_percent": 100}})
+        self.assertEqual(selected(), "war-enforce-demands")
+        success("war-enforce-demands")
+        self.assertEqual(selected(), "war-disband-armies")
+        success("war-disband-armies")
+        self.assertEqual(selected(), "save-checkpoint")
+        success("save-checkpoint")
+        self.assertEqual(selected(), "life-advance")
+        success("life-advance")
+        success("life-advance")
+        success("life-advance")
+        self.assertEqual(selected(), "save-checkpoint")
+
+        commands.append(
+            {
+                "index": len(commands) + 1,
+                "command": "auto-turn",
+                "ok": False,
+                "error": "AgentError: ordinary event interrupted war advance",
+            }
+        )
+        self.assertEqual(selected(), "resolve-current-event")
+
+        commands.append(
+            {
+                "index": len(commands) + 1,
+                "command": "auto-turn",
+                "ok": False,
+                "error": (
+                    "AgentError: one-life death terminal visible: "
+                    "native_succession_handoff"
+                ),
+            }
+        )
+        self.assertEqual(selected(), "death-terminal")
+
+        success("death-terminal")
+        self.assertEqual(selected(), "strategy-review")
+
     def test_palermo_target_comes_from_visible_map_label(self) -> None:
         frame = SimpleNamespace(
             client_rect=(0, 0, 2560, 1440),
@@ -568,7 +681,7 @@ class OpeningContractTests(unittest.TestCase):
         self.assertIsNotNone(_generic_event_in_frame(faded))
         self.assertIsNone(_generic_event_in_frame(gone))
 
-    def test_generic_event_preview_uses_only_the_event_lane(self) -> None:
+    def test_visible_event_preview_uses_one_capture_and_ocr_pass(self) -> None:
         image = Image.new("RGB", (2560, 1440), "black")
         window = mock.Mock()
         window.capture.return_value = image
@@ -584,11 +697,13 @@ class OpeningContractTests(unittest.TestCase):
             "xar_autoplayer.vision.ocr.ocr_spans",
             return_value=preview_spans,
         ) as ocr:
-            detected = _generic_event_preview(window, 17)
+            detected, call_to_war, terminal = _visible_event_preview(window, 17)
         self.assertEqual(detected["title"], "怀孕！")
         self.assertEqual(detected["capture_sequence"], 17)
+        self.assertIsNone(call_to_war)
+        self.assertIsNone(terminal)
         window.capture.assert_called_once_with()
-        ocr.assert_called_once_with(image, GENERIC_EVENT_PREVIEW_REGION)
+        ocr.assert_called_once_with(image, ACTIVE_EVENT_PREVIEW_REGION)
 
     def test_post_shortcut_event_distinguishes_fade_from_chained_event(self) -> None:
         def event_frame(sequence: int, title: str, option: str):
@@ -966,6 +1081,44 @@ class OpeningContractTests(unittest.TestCase):
 
 
 class OpeningScenarioTests(unittest.TestCase):
+    def test_auto_turn_routes_terminal_history_to_read_only_strategy(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state = Path(temporary) / "state"
+            run = state / "runs" / "terminal-run"
+            artifacts = run / "artifacts"
+            artifacts.mkdir(parents=True)
+            (run / "report.json").write_text(
+                json.dumps(
+                    {
+                        "commands": [
+                            {
+                                "index": 1,
+                                "command": "death-terminal",
+                                "ok": True,
+                                "result": {},
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            result = _drive_opening(
+                SimpleNamespace(state_dir=state),
+                mock.Mock(),
+                {},
+                artifacts,
+                run / "events.jsonl",
+                Path("unused-contract.json"),
+                "0" * 64,
+                time.monotonic() + 5,
+                development_step="auto-turn",
+            )
+
+        self.assertEqual(result["requested_step"], "auto-turn")
+        self.assertEqual(result["step"], "strategy-review")
+        self.assertEqual(result["auto_turn"]["phase"], "terminal")
+        self.assertIsNone(result["window_binding"])
+
     def test_death_terminal_uses_heir_only_to_deliver_settlement(self) -> None:
         def frame(sequence: int, texts: tuple[str, ...], screen: str = "unknown"):
             spans = tuple(
@@ -1613,8 +1766,11 @@ class OpeningScenarioTests(unittest.TestCase):
                 "xar_autoplayer.control.executor._prepare_key_chord_batch",
                 return_value=submit_chord,
             ) as prepare_chord, mock.patch(
-                "xar_autoplayer.opening_smoke._generic_event_preview",
-                side_effect=({"candidate": 1}, {"candidate": 2}),
+                "xar_autoplayer.opening_smoke._visible_event_preview",
+                side_effect=(
+                    ({"candidate": 1}, None, None),
+                    ({"candidate": 2}, None, None),
+                ),
             ) as preview:
                 result = _drive_opening(
                     SimpleNamespace(
@@ -1750,6 +1906,19 @@ class OpeningScenarioTests(unittest.TestCase):
         self.assertEqual(step.command, "opening-step")
         self.assertEqual(step.step, "steward-development")
         self.assertEqual(step.timeout, 240)
+        auto_turn = cli.parser().parse_args(
+            ["opening-step", "--step", "auto-turn"]
+        )
+        self.assertEqual(auto_turn.step, "auto-turn")
+        self.assertIn("auto-turn", OPENING_DEVELOPMENT_STEPS)
+        pause_map = cli.parser().parse_args(
+            ["opening-step", "--step", "pause-map"]
+        )
+        self.assertEqual(pause_map.step, "pause-map")
+        life_advance = cli.parser().parse_args(
+            ["opening-step", "--step", "life-advance"]
+        )
+        self.assertEqual(life_advance.step, "life-advance")
         economic_step = cli.parser().parse_args(
             ["opening-step", "--step", "economic-event-cycle"]
         )

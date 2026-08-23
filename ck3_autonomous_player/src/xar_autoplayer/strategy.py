@@ -14,6 +14,226 @@ from .runtime import utc_now
 ONE_LIFE_STRATEGY_RELATIVE_PATH = Path("strategy") / "one-life-history.json"
 
 
+def _effective_command(row: dict[str, object]) -> str | None:
+    command = row.get("command")
+    if command != "auto-turn":
+        return command if isinstance(command, str) else None
+    result = row.get("result")
+    if not isinstance(result, dict):
+        return None
+    auto_turn = result.get("auto_turn")
+    if not isinstance(auto_turn, dict):
+        return None
+    selected = auto_turn.get("selected_step")
+    return selected if isinstance(selected, str) else None
+
+
+def _latest_index(
+    commands: list[dict[str, object]],
+    command: str,
+    *,
+    successful_only: bool = True,
+) -> int:
+    for fallback_index, row in reversed(tuple(enumerate(commands, start=1))):
+        if _effective_command(row) != command:
+            continue
+        if successful_only and row.get("ok") is not True:
+            continue
+        raw_index = row.get("index")
+        return raw_index if isinstance(raw_index, int) else fallback_index
+    return 0
+
+
+def _latest_effective_result(
+    commands: list[dict[str, object]], command: str
+) -> dict[str, object] | None:
+    for row in reversed(commands):
+        if _effective_command(row) != command or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        if isinstance(result, dict):
+            return result
+    return None
+
+
+def choose_one_life_turn(
+    commands: list[dict[str, object]],
+) -> dict[str, object]:
+    """Choose one useful, inspectable action for the current life.
+
+    This is deliberately a one-step planner.  The caller records the result,
+    then invokes it again; failures and newly visible events therefore change
+    the next choice instead of being hidden inside a long macro.
+    """
+    rows = [row for row in commands if isinstance(row, dict)]
+    last = rows[-1] if rows else None
+    last_error = str(last.get("error", "")) if last is not None else ""
+    if "one-life death terminal visible:" in last_error:
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "terminal_visible",
+            "selected_step": "death-terminal",
+            "reason": "player death is visibly stable; settle and end this episode",
+        }
+    if "ordinary event interrupted" in last_error:
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "visible_interruption",
+            "selected_step": "resolve-current-event",
+            "reason": "the previous timeline step stopped on a visible CK3 event",
+        }
+
+    if _latest_index(rows, "death-terminal"):
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "terminal",
+            "selected_step": "strategy-review",
+            "reason": "player death already ended this one-life episode",
+        }
+
+    if not _latest_index(rows, "save-checkpoint"):
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "baseline",
+            "selected_step": "save-checkpoint",
+            "reason": "create a native CK3 recovery point before strategic mutations",
+        }
+    if not _latest_index(rows, "dynasty-review"):
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "current_life_family",
+            "selected_step": "dynasty-review",
+            "reason": "read the current ruler's spouse, children and available family",
+        }
+    if not _latest_index(rows, "succession-review"):
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "current_life_domain",
+            "selected_step": "succession-review",
+            "reason": "measure title loss that matters while the current ruler is alive",
+        }
+
+    if not _latest_index(rows, "marriage-confirm-response"):
+        marriage_review_index = _latest_index(rows, "marriage-review")
+        marriage_alliance_index = _latest_index(rows, "marriage-alliance")
+        if not marriage_review_index:
+            step = "marriage-review"
+            reason = "compare visible child marriage candidates for a current-life alliance"
+        elif not marriage_alliance_index:
+            step = "marriage-alliance"
+            reason = "send the best visible current-life alliance proposal"
+        else:
+            confirmation_attempt = _latest_index(
+                rows, "marriage-confirm-response", successful_only=False
+            )
+            elapsed_after_attempt = max(
+                _latest_index(rows, "war-advance-week"),
+                _latest_index(rows, "resolve-current-event"),
+                _latest_index(rows, "life-advance"),
+                _latest_index(rows, "economic-event-cycle"),
+            )
+            if not confirmation_attempt or elapsed_after_attempt > confirmation_attempt:
+                step = "marriage-confirm-response"
+                reason = "check and accept the pending visible betrothal response"
+            else:
+                step = "war-advance-week"
+                reason = "advance one bounded week so the pending proposal can resolve"
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "current_life_marriage",
+            "selected_step": step,
+            "reason": reason,
+        }
+
+    victory_index = _latest_index(rows, "war-enforce-demands")
+    if not victory_index:
+        if not _latest_index(rows, "war-declare-palermo"):
+            step = "war-declare-palermo"
+            reason = "start the proven low-cost Palermo expansion"
+        elif not _latest_index(rows, "war-raise-all"):
+            step = "war-raise-all"
+            reason = "raise the army for the active Palermo war"
+        elif not _latest_index(rows, "war-siege-palermo"):
+            step = "war-siege-palermo"
+            reason = "move the selected army to the visibly confirmed Palermo fort"
+        else:
+            latest_status_index = _latest_index(rows, "war-status")
+            latest_advance_index = max(
+                _latest_index(rows, "war-advance-week"),
+                _latest_index(rows, "war-advance-month"),
+            )
+            status = _latest_effective_result(rows, "war-status")
+            war_status = status.get("war_status") if isinstance(status, dict) else None
+            score = (
+                war_status.get("war_score_percent")
+                if isinstance(war_status, dict)
+                else None
+            )
+            if latest_status_index <= latest_advance_index:
+                step = "war-status"
+                reason = "re-read visible war score after the latest campaign advance"
+            elif isinstance(score, int) and score >= 100:
+                step = "war-enforce-demands"
+                reason = "visible war score reached 100 percent"
+            else:
+                step = "war-advance-week"
+                reason = "continue the active siege for one bounded week"
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "palermo_war",
+            "selected_step": step,
+            "reason": reason,
+        }
+
+    disband_index = _latest_index(rows, "war-disband-armies")
+    if not disband_index or disband_index < victory_index:
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "postwar",
+            "selected_step": "war-disband-armies",
+            "reason": "remove raised-army costs after the confirmed victory",
+        }
+
+    checkpoint_index = _latest_index(rows, "save-checkpoint")
+    strategic_change_index = max(
+        victory_index,
+        disband_index,
+        _latest_index(rows, "marriage-confirm-response"),
+    )
+    if checkpoint_index < strategic_change_index:
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "post_milestone_checkpoint",
+            "selected_step": "save-checkpoint",
+            "reason": "persist the completed war and alliance milestones in a native save",
+        }
+
+    cycles_since_checkpoint = sum(
+        1
+        for row in rows
+        if row.get("ok") is True
+        and _effective_command(row) in {"life-advance", "economic-event-cycle"}
+        and (
+            not isinstance(row.get("index"), int)
+            or int(row["index"]) > checkpoint_index
+        )
+    )
+    if cycles_since_checkpoint >= 3:
+        step = "save-checkpoint"
+        reason = "three completed event cycles have elapsed since the last native save"
+        phase = "periodic_checkpoint"
+    else:
+        step = "life-advance"
+        reason = "advance the current life to the next visible event and reassess the realm"
+        phase = "current_life_loop"
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": phase,
+        "selected_step": step,
+        "reason": reason,
+    }
+
+
 def _successful_result(
     commands: Iterable[dict[str, object]], command: str
 ) -> dict[str, object] | None:

@@ -61,6 +61,9 @@ def parser() -> argparse.ArgumentParser:
     step_parser.add_argument(
         "--step",
         choices=(
+            "auto-turn",
+            "pause-map",
+            "life-advance",
             "steward-development",
             "economic-event-cycle",
             "save-checkpoint",

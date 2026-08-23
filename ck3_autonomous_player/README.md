@@ -47,9 +47,8 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
   Draft 2020-12 在 GREEN/RED 回放中强制验证 observation 与 action receipt；其余策略 schema 的全面运行期验证和不可变
   episode store 仍属于 Phase E，不能把“JSON 可解析”称为已完成约束。
 
-尚未实现的关键能力：游戏规则页的视觉复核、战争与内政、保存续玩、自然死亡结算、episode 学习与多局优化。
-opening smoke 已能合法新开局、完成首轮交易，并从地图 HUD 打开玩家角色页读取配偶、继承人与臣属状态；下一价值目标是
-依据这份状态执行第一个真实角色发展或宫廷治理动作，而不是继续扩展开局专用流程。
+当前已实现本世婚姻与继承读取、巴勒莫战争闭环、原生存档/恢复、单代死亡结算、跨局策略记忆和单步自主循环。尚未完成的关键能力是
+自然死亡实机终验、盟友战争的实际参战、动态战争目标比较、分割损失缓解，以及更多长期内政决策；游戏规则页视觉复核不阻塞这些玩法。
 
 当前加固候选还增加了两项基础能力：crash 路径已有历史本机 GREEN；纯视觉路径已完成离线 sealed lifecycle，仍未向真实 CK3
 发送输入：
@@ -222,6 +221,7 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step economic-event-cycle --timeout 240
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step save-checkpoint --timeout 240
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step restore-checkpoint --timeout 240
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step auto-turn --timeout 240
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step death-terminal --timeout 240
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" strategy-review
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-dev-session --timeout 21600
@@ -248,6 +248,15 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 `%LOCALAPPDATA%\XarAutoplayer\strategy\one-life-history.json`，`strategy-review` 可在不绑定 CK3、不跑 OCR 的情况下读取上一局
 战争、婚姻、分割风险、检查点和分数，并生成下一局优先级。死亡流程已有历史实机截图重放与完整模拟链测试；当前常驻存档尚未
 自然死亡，因此不得把它写成已完成的死亡实机验收。
+
+`auto-turn` 已把上述离散命令接成单步自主循环：根据当前 session 的成功结果选择尚未完成的王朝、婚姻、战争或存档里程碑；
+里程碑完成后进入 `life-advance`，每次用速度 5 推进一个约 10 秒的现实时间窗口，处理可见事件并保证结束时暂停，每三个推进回合
+自动生成一次原生 CK3 存档。实机同一 PID 已完成多次自主推进，并自动保存
+`阿普利亚公爵，罗贝尔_1068_09_24.ck3`。随后自主回合识别并处理真实事件【锈迹斑斑的工具】，把日期推进到 1069-01-21，
+再自动保存 `阿普利亚公爵，罗贝尔_1069_01_21.ck3`。普通事件、盟友参战和死亡终端共用一次预览 OCR 后，实机回合从 41.3 秒降到
+26.75 秒。第一版 180 秒事件等待曾把地图留在运行态，并漏掉丹麦【召集加入战争】信函，造成盟友
+关系实际下降 20；现有循环把无事件视为正常有界结果、主动暂停，并单独识别外交信函，优先用 `Shift+2` 履行本世联盟。该修复来自
+实际玩法损失，不是理论归档加固。
 
 默认运行状态在 `%LOCALAPPDATA%\XarAutoplayer`，可用 `XAR_AUTOPLAYER_STATE_DIR` 或
 `--state-dir` 改写，但安全检查拒绝仓库、真实玩家目录、Steam userdata 与 Workshop 的父目录或子目录。
