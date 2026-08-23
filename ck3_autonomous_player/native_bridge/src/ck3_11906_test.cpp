@@ -397,6 +397,11 @@ int main() {
   bindings.initialize_army_move_path = FixtureInitializeArmyMovePath;
   bindings.destroy_move_army_command = FixtureDestroyMoveArmyCommand;
 
+  if (bindings.army_storage_slot != &g_army_storage_pointer ||
+      *bindings.army_storage_slot != g_army_storage.data()) {
+    return Fail("army storage binding was not a single-dereference slot");
+  }
+
   xar::ck3_11906::Snapshot snapshot{};
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot)) {
     return Fail("fixture snapshot was unavailable");
@@ -654,6 +659,7 @@ int main() {
                "reply_character_interaction_layout=1 "
                "played_character_snapshot=1 alive_dead_projection=1 "
                "war_army_snapshot=1 relative_war_score=1 "
+               "army_storage_pointer_slot=1 "
                "raise_troops_command=1 move_army_command=1 "
                "disband_army_command=1 "
                "map_ready_gate=1 exact_build_gate=1\n";

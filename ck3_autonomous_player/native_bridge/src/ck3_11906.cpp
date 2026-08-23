@@ -32,7 +32,7 @@ constexpr std::uintptr_t kReplyCharacterInteractionSecondaryVtableRva =
 constexpr std::uintptr_t kPendingCharacterInteractionStorageSlotRva =
     0x57BF1C8;
 constexpr std::uintptr_t kCharacterStorageSlotRva = 0x570C130;
-constexpr std::uintptr_t kArmyStorageSlotRva = 0x572CC80;
+constexpr std::uintptr_t kArmyStorageSlotRva = 0x570CC80;
 constexpr std::uintptr_t kRaiseTroopsPrimaryVtableRva = 0x41226D8;
 constexpr std::uintptr_t kRaiseTroopsSecondaryVtableRva = 0x41226A8;
 constexpr std::uintptr_t kMoveArmyPrimaryVtableRva = 0x432BF18;

@@ -108,9 +108,14 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   member `CharacterID` at element `+0x08`). Helper RVA `0x2224870` performs
   membership tests. RVA `0x222A8A0(war, nullptr)` returns attacker-relative
   `int32` war score, so the bridge negates it for a defending player.
-- `*(base + 0x572CC80)` is `ComponentStorage<CArmy>`. This corrects an early
-  transposed note that said `0x570CC80`; the RIP-relative lookup at RVA
-  `0xA84603` resolves unambiguously to `0x572CC80`. `CArmy +0x10` is its
+- `base + 0x570CC80` is a pointer slot whose single dereference is
+  `ComponentStorage<CArmy>`. RVA `0xA84603` ends at `0xA8460A`; adding its
+  signed RIP displacement `0x4C88676` resolves to `0x570CC80`. Do not repeat
+  the discarded hand-arithmetic result `0x572CC80`: it points two MiB beyond
+  the real slot. On 2026-08-23 the wrong RVA reproducibly caused `C0000005`
+  during the first live snapshot at DLL RVA `0x890F` while reading the bogus
+  storage object's `+0x20`; the minidump is in local crash bundle
+  `ck3_20260823_213129`. `CArmy +0x10` is its
   component ID, `+0x174` is owner `CharacterID`, and `+0x20` is current
   `Province*` (`Province +0x10` repeats its positive ID). The controllable
   projection is owner equals the current played character. Candidate soldier

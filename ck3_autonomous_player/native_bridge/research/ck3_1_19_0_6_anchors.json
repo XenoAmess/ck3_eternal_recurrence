@@ -207,7 +207,7 @@
     "reply_character_interaction_primary_vtable": "0x4082930",
     "reply_character_interaction_secondary_vtable": "0x4082900",
     "pending_character_interaction_storage_slot": "0x57BF1C8",
-    "army_storage_slot": "0x572CC80",
+    "army_storage_slot": "0x570CC80",
     "contains_war_participant": "0x2224870",
     "get_war_score_attacker_relative": "0x222A8A0",
     "resolve_default_raise_province": "0x224CC80",
@@ -361,7 +361,7 @@
       "war_score": "RVA 0x222A8A0 returns the attacker-relative int32 score for context=null; bridge negates it for a defending player"
     },
     "CArmyStorage": {
-      "global_slot": "base + 0x572CC80 (the earlier 0x570CC80 research note was a transposition and is invalid)",
+      "global_slot": "base + 0x570CC80 pointer slot; dereference once to obtain ComponentStorage<CArmy>",
       "slots": "+0x20 pointer; each slot is 0x10 bytes and object pointer is +0x08",
       "capacity": "+0x2C int32"
     },
