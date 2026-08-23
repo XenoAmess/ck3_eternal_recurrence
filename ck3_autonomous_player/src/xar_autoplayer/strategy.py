@@ -636,7 +636,28 @@ def choose_one_life_turn(
         fallback_province_ids = enemy_primary_default_raise_province_ids(
             active_wars
         )
-        if isinstance(enemy, dict):
+        siege_objective_province_ids = _attacker_siege_objective_province_ids(
+            active_wars
+        )
+        objective_kind = "pursuit"
+        if isinstance(pursuit_army, dict) and siege_objective_province_ids:
+            current_province_id = pursuit_army.get("current_province_id")
+            local_enemies = [
+                army
+                for army in visible_enemies
+                if isinstance(current_province_id, int)
+                and army.get("current_province_id") == current_province_id
+            ]
+            if local_enemies:
+                enemy = _stable_strongest_army(local_enemies)
+                target_province_id = current_province_id
+                target_source = "enemy_army"
+            else:
+                enemy = None
+                target_province_id = siege_objective_province_ids[0]
+                target_source = "enemy_primary_default_raise_province"
+                objective_kind = "siege"
+        elif isinstance(enemy, dict):
             target_province_id = enemy.get("current_province_id")
             target_source = "enemy_army"
         else:
@@ -664,6 +685,7 @@ def choose_one_life_turn(
                         else None
                     ),
                     "target_source": target_source,
+                    "objective_kind": objective_kind,
                 }
                 active_move_intent = _active_native_move_intent(
                     rows,
@@ -720,7 +742,11 @@ def choose_one_life_turn(
                             "policy": "one-life-turn-v1",
                             "phase": "native_war_pursuit_progress",
                             "selected_step": "life-advance",
-                            "reason": "the native army is already at or moving toward the strongest visible enemy; advance the battle",
+                            "reason": (
+                                "the native army is already at or moving toward the stable siege objective; advance the occupation"
+                                if objective_kind == "siege"
+                                else "the native army is already at or moving toward the strongest visible enemy; advance the battle"
+                            ),
                             "pursuit": pursuit,
                             "active_wars": war_summary,
                         }
@@ -741,7 +767,11 @@ def choose_one_life_turn(
                         "reason": (
                             "move the strongest controllable army to the strongest visible enemy army"
                             if target_source == "enemy_army"
-                            else "no enemy army province is visible; move toward the primary opponent's default rally province fallback"
+                            else (
+                                "positive attacker war score is established; move to the primary opponent's default rally province as a stable siege objective"
+                                if objective_kind == "siege"
+                                else "no enemy army province is visible; move toward the primary opponent's default rally province fallback"
+                            )
                         ),
                         "pursuit": pursuit,
                         "active_wars": war_summary,
@@ -1227,6 +1257,27 @@ def _stable_strongest_army(
             -int(army["army_id"]),
         ),
     )
+
+
+def _attacker_siege_objective_province_ids(
+    wars: Iterable[dict[str, object]],
+) -> list[int]:
+    """Choose stable siege anchors only after an attacker earns war score."""
+    province_ids: set[int] = set()
+    for war in wars:
+        score = war.get("player_relative_war_score")
+        province_id = war.get("enemy_primary_default_raise_province_id")
+        if (
+            war.get("player_side") == "attacker"
+            and war.get("player_is_primary_war_leader") is True
+            and isinstance(score, int)
+            and not isinstance(score, bool)
+            and score > 0
+            and isinstance(province_id, int)
+            and not isinstance(province_id, bool)
+        ):
+            province_ids.add(province_id)
+    return sorted(province_ids)
 
 
 def _active_native_move_intent(

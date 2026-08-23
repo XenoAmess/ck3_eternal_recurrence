@@ -1435,7 +1435,11 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
 
         self.assertEqual(
             driver.capabilities()["action_steps"],
-            ["disband-army-101", "move-army-101-to-33"],
+            [
+                "disband-army-101",
+                "move-army-101-to-33",
+                "move-army-101-to-77",
+            ],
         )
         before = driver.take_snapshot()
         self.assertEqual(before["active_wars"][0]["enemy_armies"][0]["soldiers"], 2_400)
@@ -1474,7 +1478,11 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 _snapshot(
                     41,
                     active_wars=[
-                        _war(allied_armies=[moving], enemy_armies=[enemy])
+                        _war(
+                            allied_armies=[moving],
+                            enemy_armies=[enemy],
+                            enemy_primary_default_raise_province_id=77,
+                        )
                     ],
                     player_armies=[moving],
                 )
@@ -1496,6 +1504,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(command["expected_revision"], 40)
         self.assertNotIn(
             "move-army-101-to-33", driver.capabilities()["action_steps"]
+        )
+        self.assertIn(
+            "move-army-101-to-77", driver.capabilities()["action_steps"]
         )
 
     def test_exact_war_capability_expands_fallback_and_filters_enforce(self) -> None:

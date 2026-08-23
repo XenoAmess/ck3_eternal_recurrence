@@ -10,7 +10,7 @@
 - `player_side`: `attacker` 或 `defender`
 - `primary_opponent_character_id`: 玩家对侧的 primary war leader；完整 `CharacterID` 已按 generation 重新解析，过渡帧无法解析时为 `null`
 - `player_is_primary_war_leader`: 玩家是否正是本方 primary war leader；它是 `enforce-demands` 的必要前提
-- `enemy_primary_default_raise_province_id`: 对方 primary 角色的原生默认集结省；无法解析时为 `null`。该字段只是敌军省份不可见时的明确 fallback，不冒充 war goal、首都或真实行军目标
+- `enemy_primary_default_raise_province_id`: 对方 primary 角色的原生默认集结省；无法解析时为 `null`。它不是解码出的 war goal、首都或真实行军目标；planner 只把它用作明确 fallback，或在进攻方已取得正战争分后的稳定围城启发式锚点
 - `player_relative_war_score`: 相对玩家视角的整数战争分
 - `allied_armies` / `enemy_armies`: 当前能从原生对象读取的军队数组
 
@@ -42,7 +42,7 @@ DLL hello 广告：
 Python 根据当前 snapshot 展开为：
 
 - `raise-troops-default`: 有活动战争且没有可控军队时才出现
-- `move-army-<army_id>-to-<province_id>`: 可控玩家军队与可见敌军当前省的有效组合
+- `move-army-<army_id>-to-<province_id>`: 可控玩家军队与可见敌军当前省的有效组合；存在 exact `war-primary-opponent` capability 时，也始终展开有效的 `enemy_primary_default_raise_province_id`，即使敌军仍可见
 - `disband-army-<army_id>`: 每支当前可控玩家军队各一个
 - `enforce-demands-<war_id>`: 每场当前活动战争各一个；planner 只在玩家视角战争分达到 100 时选择
 - `query-declarable-wars`: 无活动战争时显式运行一次 CK3 原生 CB evaluator；该查询可能遍历很多角色，绝不放进 250ms heartbeat
@@ -81,10 +81,17 @@ Python 根据当前 snapshot 展开为：
 `2602` 后，planner 才进行一次重定向并得到新的 `move_submitted`。每个 turn 结束时游戏都重新暂停，且 CK3
 窗口始终为 `IsIconic=true`；全程没有 OCR、截图、键鼠或窗口恢复。
 
+同一最小化实机战争随后暴露了纯追击策略的实际价值问题：首战令战争分从 `0` 升至 `24`，但其后约 80 个游戏日
+持续追逐移动敌军时战争分保持 `24`。继续追逐约 70 日后分数才升至 `41` 并保存 checkpoint，说明追击偶尔能再次
+接战，但会长期被移动目标牵引。Python planner 因此只在玩家为进攻方、本方 primary war leader 且战争分已经大于
+零时，把 `enemy_primary_default_raise_province_id` 固定为围城启发式锚点；若玩家军与任一可见敌军同省，则仍优先
+原地推进战斗。该策略改动目前由离线 Python 契约测试覆盖，不把默认集结省宣称为已解码的真实 war goal。
+
 已提交的 move intent 保留 90 个游戏日，覆盖真实跨省行军所需时间；intent 未过期且所跟踪目标未改变时，
 planner 必须推进时间而不是重复下令。战争中的单次 `life-advance` 最多推进 30 个游戏日，提前停止只依据玩家/
 盟军军队位置、战争分、战争集合或待处理事件这些会改变下一步决策的信号；敌军逐日移动不单独造成一次推进提前
-结束。推进结束后的新决策点若发现所跟踪敌军已经换省，才提交一次新的追击目标。
+结束。追击模式下，推进结束后的新决策点若发现所跟踪敌军已经换省，才提交一次新的追击目标；围城模式下目标
+保持为稳定锚点，敌军在异省移动不会造成重定向。两种模式共用相同的 90 日 move intent 与 advance 去重。
 
 解散命令同样必须使用玩家路径：公开 ArmyID 只负责解析 `CArmy`，command payload 使用
 `CArmy+0x178` 的内部 target ID，并先调用原生 validator，再以 `kind=1` / flags `0x0E` 入队。
@@ -100,8 +107,9 @@ snapshot 的 `player_armies` 已为空。以上两条路径全程没有恢复窗
 1. baseline checkpoint 完成且当前无战争/残军时，显式 `query-declarable-wars`；优先 county holy war、county conquest、claim，随后按单 title 与稳定 runtime ID 排序，提交一个 `declare-war-*`。
 2. 任一活动战争达到玩家视角 100 分：先执行 `enforce-demands-<war_id>`，确认该 war 从 snapshot 消失，不再无意义推进时间。
 3. 有活动战争、无可控军队：`raise-troops-default`。
-4. 有可控军队和敌军省份：选择兵力最大的敌军，令最强可控军队追击其当前省。兵力未知时按最小 `army_id` 稳定选择，不阻塞闭环。敌军省份暂不可见时可以使用 `enemy_primary_default_raise_province_id` 维持行动，但该 fallback 只是对方 primary 角色的默认集结省，绝不是 war goal。
-5. 军队已经在目标省、已观察到向目标省移动，或 90 个游戏日内已有相同的 accepted/submitted move intent：执行一次最多 30 个游戏日的 `life-advance`，不重复提交 move。推进只因玩家/盟军军队位置、战争分、战争集合或待处理事件改变而提前结束；若下一决策点发现所跟踪敌军已经换省，再重定向一次。
-6. 战争消失但玩家军队仍在场：逐支执行 `disband-army-<army_id>`。
+4. 战争分为 0，或玩家是防守方/不是本方 primary war leader：选择兵力最大的可见敌军，令最强可控军队追击其当前省；兵力未知时按最小 `army_id` 稳定选择。敌军省份不可见时才用 `enemy_primary_default_raise_province_id` 维持行动。
+5. 玩家是进攻方、本方 primary war leader、战争分大于 0 且存在 fallback：若最强可控军队与任一可见敌军同省，优先原地推进战斗；否则把 fallback 作为稳定围城启发式锚点，不再追逐异省移动敌军。该锚点只是对方 primary 角色的默认集结省，绝不是解码出的 war goal。
+6. 军队已经在目标省、已观察到向目标省移动，或 90 个游戏日内已有相同的 accepted/submitted move intent：执行一次最多 30 个游戏日的 `life-advance`，不重复提交 move。追击模式只在下一决策点发现目标换省时重定向；围城模式忽略异省敌军移动并保持锚点。
+7. 战争消失但玩家军队仍在场：逐支执行 `disband-army-<army_id>`。
 
 Typed MCP 工具为 `ck3_get_war_state`、`ck3_query_declarable_wars`、`ck3_declare_war`、`ck3_raise_troops_default`、`ck3_move_army`、`ck3_enforce_demands` 和 `ck3_disband_army`。通用 `ck3_plan_turn` / `ck3_auto_turn` 使用同一份状态和 step，不另建旁路策略。纯 native 缺少任何 capability 时明确返回 unsupported；Python 不会回落到最小化窗口的视觉点击。

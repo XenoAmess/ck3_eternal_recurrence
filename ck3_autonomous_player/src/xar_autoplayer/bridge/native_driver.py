@@ -3677,7 +3677,7 @@ def _action_steps(
             for army in enemy_armies_from_wars(wars)
             if isinstance(army.get("current_province_id"), int)
         }
-        if not target_provinces and war_primary_opponent_supported:
+        if war_primary_opponent_supported:
             target_provinces.update(
                 enemy_primary_default_raise_province_ids(wars)
             )

@@ -191,7 +191,7 @@ def enemy_armies_from_wars(
 def enemy_primary_default_raise_province_ids(
     active_wars: Iterable[dict[str, object]],
 ) -> list[int]:
-    """Return stable fallback objectives when no enemy army is observable."""
+    """Return stable fallback objectives published for active wars."""
     province_ids: set[int] = set()
     for war in active_wars:
         province_id = war.get("enemy_primary_default_raise_province_id")
