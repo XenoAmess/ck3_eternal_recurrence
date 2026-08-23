@@ -1,0 +1,2 @@
+﻿# XAR MCP inbox default: intentionally no effects.
+# Copy this file to the active CK3 user directory as run/xar_mcp_inbox.txt.

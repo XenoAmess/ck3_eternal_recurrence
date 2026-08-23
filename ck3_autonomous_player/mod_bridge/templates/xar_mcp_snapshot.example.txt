@@ -1,0 +1,2 @@
+﻿# Example typed request.  REQUEST_ID must be a CK3 flag token.
+xar_mcp_take_snapshot = { REQUEST_ID = xar_req_000001 }

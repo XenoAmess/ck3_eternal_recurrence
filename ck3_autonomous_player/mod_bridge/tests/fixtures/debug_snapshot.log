@@ -1,0 +1,7 @@
+[12:00:00][effectimplementation.cpp:1]: unrelated log line
+[12:00:01][effectimplementation.cpp:1]: XAR_MCP:BEGIN|schema=1|kind=snapshot|request_id=xar_req_incomplete
+[12:00:01][effectimplementation.cpp:1]: XAR_MCP:STATE|player_id=111|date=1 January, 1066|total_days=389120
+[12:00:02][effectimplementation.cpp:1]: XAR_MCP:BEGIN|schema=1|kind=snapshot|request_id=xar_req_000001
+[12:00:02][effectimplementation.cpp:1]: XAR_MCP:STATE|player_id=4294967297|date=15 September, 1067|total_days=389742
+[12:00:02][effectimplementation.cpp:1]: XAR_MCP:ACK|schema=1|request_id=xar_req_000001|command=take_snapshot|status=ok
+[12:00:02][effectimplementation.cpp:1]: XAR_MCP:END|schema=1|request_id=xar_req_000001

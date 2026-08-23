@@ -50,6 +50,21 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 当前已实现本世婚姻与继承读取、巴勒莫战争闭环、原生存档/恢复、单代死亡结算、跨局策略记忆和单步自主循环。尚未完成的关键能力是
 自然死亡实机终验、盟友战争的实际参战、动态战争目标比较、分割损失缓解，以及更多长期内政决策；游戏规则页视觉复核不阻塞这些玩法。
 
+### 双后端与 MCP 高效模式
+
+智能体现在按“一套 planner、多个 I/O backend”演进，OCR/键鼠不会被删掉：
+
+- `GameplayStepExecutor` 与共用 runner 已从 `_drive_opening` 抽离；视觉代码通过 callback 接入。
+- `GameplayBridgeDriver` 统一 snapshot、semantic step、wait-for-change 与 capabilities。
+- `HybridGameplayDriver` 对已经实现的步骤优先走 Mod/DLL 快桥，其余步骤回落 OCR/快捷键/鼠标。
+- `xar-ck3-mcp` 使用官方 MCP Python SDK v2，提供 capabilities、snapshot、planner、execute-step、wait-for-change 五个 tools，
+  以及 `ck3://capabilities`、`ck3://state/current` 两个 resources。
+- `vision-report` 只读现有 session；`vision-session` 通过该 session 的文件队列执行原有视觉步骤；`mod` 通过独立数据 Mod
+  读取结构化玩家/日期 snapshot；`hybrid` 用 Mod 快照与视觉动作拼成一个可直接切换的 backend。x64 DLL 已闭合离线
+  `CREATE_SUSPENDED -> PID injector -> named pipe -> resume` 全链，下一步把同一注入调用接入 CK3 runtime 并定位首批游戏内状态/命令。
+
+完整架构与 DLL 逆向锚点见 [CK3 本地 API 与 MCP 桥接可行性](../docs/ck3-local-api-mcp-feasibility.md)。
+
 当前加固候选还增加了两项基础能力：crash 路径已有历史本机 GREEN；纯视觉路径已完成离线 sealed lifecycle，仍未向真实 CK3
 发送输入：
 
@@ -227,7 +242,16 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" strategy-review
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-dev-session --timeout 21600
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" recover-stale-control --run-id <finalized-RED-run-id>
+& "tools\.venv\Scripts\python.exe" -m pip install "mcp==2.0.0"
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver vision-report --transport stdio
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver vision-session --transport stdio
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver mod --userdir <isolated-ck3-userdir> --transport stdio
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver hybrid --userdir <isolated-ck3-userdir> --transport stdio
 ```
+
+`vision-session` 与 `hybrid` 需要由新代码启动的 `opening-dev-session`；它在 run 目录公开 `bridge/inbox`/`outbox`，MCP 请求与
+stdin 共用同一主线程命令处理，因此策略、MCP daemon 和大多数 Python driver 改动不要求重启这一局 CK3。数据 Mod 原型位于
+[`mod_bridge/`](mod_bridge/README.md)，原生桥与离线注入路线位于 [`native_bridge/`](native_bridge/README.md)。
 
 日常 gameplay 开发不再把每次修改都当成发布验收。`opening-replay` 在不启动 CK3 的情况下直接重放已归档 OCR；
 `opening-step` 从隔离 autosave 的主菜单【继续游戏】进入，只执行一个步骤；`opening-dev-session` 则保持一个受控 CK3

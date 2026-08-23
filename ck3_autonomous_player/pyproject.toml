@@ -37,6 +37,10 @@ dependencies = [
 
 [project.scripts]
 xar-autoplayer = "xar_autoplayer.cli:main"
+xar-ck3-mcp = "xar_autoplayer.bridge.mcp_server:main"
+
+[project.optional-dependencies]
+mcp = ["mcp==2.0.0"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}

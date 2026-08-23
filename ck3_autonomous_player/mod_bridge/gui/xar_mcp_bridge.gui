@@ -1,0 +1,33 @@
+﻿# Development-only polling bridge for the XAR autonomous-player profile.
+#
+# This follows the proven Voices of the Court counter-widget pattern: one
+# state runs the user-directory inbox, while another recreates the counter
+# after 0.4 seconds.  The registered parent is invisible and has no controls.
+window = {
+	name = "xar_mcp_bridge_window"
+	size = { 1 1 }
+	position = { 0 0 }
+	parentanchor = top|left
+	layer = tutorial
+	visible = "[GetPlayer.IsValid]"
+	alwaystransparent = yes
+
+	hbox = {
+		name = "xar_mcp_poll_counter"
+		size = { 1 1 }
+		alwaystransparent = yes
+
+		state = {
+			name = xar_mcp_run_inbox
+			trigger_on_create = yes
+			on_finish = "[ExecuteConsoleCommand('run xar_mcp_inbox.txt')]"
+		}
+
+		state = {
+			name = xar_mcp_schedule_next_poll
+			trigger_on_create = yes
+			duration = 0.4
+			on_finish = "[ExecuteConsoleCommand('gui.createwidget gui/xar_mcp_bridge.gui xar_mcp_poll_counter')]"
+		}
+	}
+}

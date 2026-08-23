@@ -1,0 +1,19 @@
+﻿# Development-only typed effects invoked by run/xar_mcp_inbox.txt.
+# REQUEST_ID must be a CK3 flag token, for example xar_req_000001.
+
+xar_mcp_take_snapshot = {
+	set_global_variable = {
+		name = xar_mcp_request_id
+		value = flag:$REQUEST_ID$
+	}
+
+	# GetPlayer is the only character root exposed by this bridge.  The GUI
+	# parent is valid only for the local player; no every_character/on_action
+	# path exists, so CK3 AI characters cannot trigger this effect.
+	debug_log = "XAR_MCP:BEGIN|schema=1|kind=snapshot|request_id=[GetGlobalVariable('xar_mcp_request_id').GetFlagName]"
+	debug_log = "XAR_MCP:STATE|player_id=[GetPlayer.GetID]|date=[GetCurrentDate.GetStringShort]|total_days=[GetCurrentDate.GetDateAsTotalDays]"
+	debug_log = "XAR_MCP:ACK|schema=1|request_id=[GetGlobalVariable('xar_mcp_request_id').GetFlagName]|command=take_snapshot|status=ok"
+	debug_log = "XAR_MCP:END|schema=1|request_id=[GetGlobalVariable('xar_mcp_request_id').GetFlagName]"
+
+	remove_global_variable = xar_mcp_request_id
+}

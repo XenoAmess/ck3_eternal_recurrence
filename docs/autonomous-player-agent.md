@@ -66,6 +66,9 @@
 
 - 首要目标是尽快获得能实际游玩 CK3 的闭环能力。安全问题只有在能证明会影响真实使用、破坏当前游戏/存档，或造成实际错误输入时才进入实现队列；纯理论的归档完备性问题不应挤占 gameplay 功能。
 - OCR/状态谓词修改先用历史 observation 离线重放；策略与评分先用历史 report 重放。两者都不启动 CK3。
+- 高效模式采用同一 planner 下的可替换 backend：`vision-session` 保留 OCR/快捷键/鼠标兜底，`mod` 用
+  `run`/`debug.log` 提供结构化快照，`native` 由薄 DLL/命名管道逐项接入原生状态与命令，`hybrid` 只把已实现能力切到快桥。
+  MCP daemon、策略和 Python driver 可热更新；只有数据 Mod 内容或 DLL/hook 本身变化才需要重新加载游戏内容。
 - 需要真实 UI 效果时，优先从隔离 autosave 继续到单个 gameplay step。连续调试使用常驻 development session，并在命令边界热加载 perception/control/policy，不因普通 Python 修改重启 CK3。
 - 只有 mod 内容、runtime、启动参数发生变化，必须恢复确定性初始状态，或准备里程碑验收时，才运行完整 cold-start、ordinary/crash 与 opening 流程。开发 session/step 永远标记为非资格、非有效局。
 

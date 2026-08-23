@@ -386,3 +386,82 @@ Paradox 2026-01-21 版 [User Agreement](https://legal.paradoxplaza.com/eula) 把
 在这些问题解决前，项目定位应保持为：
 
 > 单机、暂停态、显式授权、有限语义动作的 CK3 AI 控制桥；不是完整 CK3 API，不支持多人或 Ironman，也不保证跨版本原生 ABI。
+
+## 12. 2026-08-23 架构决策：一套策略，两种速度
+
+本轮结合已经跑通的 one-life planner、持久 CK3 development session 与本机 1.19.0.6 二进制后，决定不把
+“视觉智能体”和“MCP 智能体”做成两套产品。策略层只认识语义步骤与结果；感知/执行由可替换 backend 提供：
+
+```text
+one-life planner
+       |
+GameplayStepExecutor.execute_step(step) -> StepResult
+       |
+       +-- vision: OCR + CK3 快捷键 + 必要鼠标
+       +-- mod:    debug.log snapshot + run/*.txt scripted effect
+       +-- native: injected DLL + named pipe + CK3 command dispatcher
+       `-- hybrid: 当前步骤 native/mod 支持就走快桥，否则回落 vision
+```
+
+这不是全局二选一开关，而是**按能力逐步迁移**。例如原生桥先支持日期、暂停/速度和事件选项时，婚姻候选仍可走
+OCR；后来定位 `CSendCharacterInteractionCommand` 后，婚姻步骤再切过去。一个快桥已经声明支持的动作如果执行时报错，
+不会再盲目通过视觉后端重放；只有“该 backend 尚未实现此步骤”才选择 fallback。
+
+### 12.1 为什么现有 planner 可以直接复用
+
+`strategy.choose_one_life_turn()` 不消费截图对象。它主要读取命令历史，以及少数稳定的语义结果：战争分数、订婚是否接受、
+分割风险、胜利/解散状态、原生存档摘要、事件中断与本代死亡终点。因此无需先造一个覆盖 CK3 全部对象的巨型 API，
+也不应把 MCP 状态硬塞进强绑定 PNG/OCR 的 `observation-v2`。
+
+当前代码已抽出 backend-neutral `GameplayStepExecutor` 和共用的单回合/多回合 runner；视觉实现只是其中一个 callback。
+另有独立的 `GameplayBridgeDriver`、semantic-first hybrid 路由和 MCP v2 server facade。MCP 目前公开：
+
+- `ck3_get_capabilities`
+- `ck3_take_snapshot`
+- `ck3_plan_turn`
+- `ck3_execute_step`
+- `ck3_wait_for_change`
+- `ck3://capabilities`
+- `ck3://state/current`
+
+`vision-report` driver 只读现有持久 session 报告；`vision-session` 通过 run 目录内的原子 inbox/outbox，把 MCP semantic step
+交回该常驻 session 的主线程执行。`mod` driver 会原子写 `run/xar_mcp_inbox.txt`、增量读取 `debug.log` 的完整 request frame；
+`hybrid` 将数据 Mod 快照和视觉 session 的命令历史/未迁移动作合并。四者都复用同一个 planner 和同一组 MCP tools。
+
+### 12.2 原生动作已有的本机逆向锚点
+
+当前 `ck3.exe` 没有公开插件 ABI，但保留了足够多的 MSVC RTTI/断言字符串。本机只读枚举已经看到：
+
+- `CSelectEventOptionCommand`、`CRemoveEventCommand`
+- `CSendCharacterInteractionCommand`、`CReplyCharacterInteractionCommand`
+- `CExecuteDecisionCommand`
+- `CRaiseTroopsCommand`、`CMoveUnitCommand`、`CDisbandArmyCommand`
+- `CPauseGameCommand`、`CSetGameSpeedCommand`、`CAutoSaveCommand`
+- `CGameCommandHelper<T>`、`CJominiCommandHelper<T>`、`CEventManager`、`CWar`、`CArmy`
+
+这使“复用原生玩家 command”成为有具体入口的逆向任务，而不是直接写内存字段。第一条 native 端到端动作应选择
+`CSelectEventOptionCommand` 或 `CSetGameSpeedCommand`：它们能立即替换当前最频繁的全屏 OCR + 快捷键循环，验证价值也最直接。
+
+### 12.3 重启边界
+
+- Python planner、MCP daemon、driver 路由、schema 与 OCR 逻辑：可热更新，不需要重启 CK3。
+- MCP 在 vision/mod/native/hybrid 间切换：DLL 已随本局加载且能力兼容时，不需要重启 CK3。
+- 数据 Mod 脚本或 GUI 本身改变：通常需要重新加载内容或重启游戏。
+- DLL、hook 地址或进程内协议改变：需要重启 CK3 并重新注入。
+
+`runtime.py` 已用 `CREATE_SUSPENDED` 创建 CK3；原生加载器的自然接点是在 Job/进程身份建立后、`process.resume()` 前。
+因此不需永久修改 `ck3.exe`，也不需要让每次 MCP/策略迭代承担一次游戏冷启动。
+
+### 12.4 价值优先实施顺序
+
+1. 已完成：抽离 backend-neutral turn runner，保留 OCR/键鼠 baseline。
+2. 已完成：MCP v2 tools/resources 与 hybrid capability routing；用 official Python SDK 做 in-memory 协议测试。
+3. 已完成离线原型：独立数据 Mod bridge 输出玩家 ID、日期与 total days，0.4 秒执行 typed `run` inbox，并以
+   `BEGIN -> STATE -> ACK -> END` 回帧；Python `mod` driver 已闭合请求、增量日志解析和 MCP snapshot。游戏内链路仍待一次专用 profile 实测。
+4. 已完成离线原型：x64 薄 DLL、长度前缀 UTF-8 JSON、250ms heartbeat/ping/pong，以及独立 PID injector；测试宿主已连续
+   通过 `CREATE_SUSPENDED -> VirtualAllocEx/WriteProcessMemory/CreateRemoteThread(LoadLibraryW) -> pipe handshake -> resume`，尚未对 CK3 注入或读取游戏对象。
+5. 下一步：native 读取日期、暂停、速度、当前事件/选项；先让 `life-advance` 与事件处理摆脱 OCR。
+6. 再后：按实际收益依次接原生婚姻互动、战争宣战、抬兵/移动/解散、存档与死亡状态。
+
+本项目是本机单人游戏自动玩家。当前开发优先级由“能否更快、更稳定地完成实际玩法”决定；与实际崩溃、错误动作或
+不可用版本无关的泛化安全证明，不进入这条功能路线的阻塞清单。

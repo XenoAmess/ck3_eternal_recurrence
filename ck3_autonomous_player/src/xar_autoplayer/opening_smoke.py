@@ -14,6 +14,11 @@ import time
 from types import SimpleNamespace
 import uuid
 
+from .bridge.session_queue import (
+    PersistentSessionQueue,
+    StdinLinePump,
+    expected_revision_error,
+)
 from .environment import (
     REPO_ROOT,
     EnvironmentSpec,
@@ -1434,82 +1439,59 @@ def _drive_opening(
 ) -> dict[str, object]:
     auto_run_turns = _auto_run_turn_count(development_step)
     if development_step == "auto-turn" or auto_run_turns is not None:
-        # The persistent session may have imported an older strategy module;
-        # reload it here as well so adding planner behavior never requires a
-        # CK3 restart.
-        from . import strategy as strategy_policy
+        # The persistent session may have imported older policy/runner modules;
+        # reload them here so planner and backend-adapter changes never require
+        # a CK3 restart.
+        from . import gameplay_runner, strategy as strategy_policy
 
+        gameplay_runner = importlib.reload(gameplay_runner)
         strategy_policy = importlib.reload(strategy_policy)
         commands = _development_session_commands(artifacts)
+
+        def execute_visual_step(selected_step: str) -> dict[str, object]:
+            return _drive_opening(
+                spec,
+                handle,
+                manifest,
+                artifacts,
+                events,
+                contract_path,
+                contract_sha256,
+                deadline,
+                ordinary_event_count=ordinary_event_count,
+                inspect_map_panels=inspect_map_panels,
+                construct_economic_building=construct_economic_building,
+                assign_steward_development=assign_steward_development,
+                development_step=selected_step,
+                resume_saved_game=resume_saved_game,
+            )
+
+        executor = gameplay_runner.CallableGameplayStepExecutor(
+            execute_visual_step
+        )
         if auto_run_turns is not None:
-            turns: list[dict[str, object]] = []
-            status = "completed"
-            for turn_index in range(1, auto_run_turns + 1):
-                turn = strategy_policy.choose_one_life_turn(commands)
-                selected_step = turn.get("selected_step")
-                if (
-                    not isinstance(selected_step, str)
-                    or selected_step in {"auto-turn", "auto-run"}
-                ):
-                    raise AgentError("one-life turn planner returned an invalid step")
-                turn_record: dict[str, object] = {
-                    "index": turn_index,
-                    "command": "auto-turn",
-                    "started_at": utc_now(),
-                    "ok": False,
-                }
-                try:
-                    turn_result = _drive_opening(
-                        spec,
-                        handle,
-                        manifest,
-                        artifacts,
-                        events,
-                        contract_path,
-                        contract_sha256,
-                        deadline,
-                        ordinary_event_count=ordinary_event_count,
-                        inspect_map_panels=inspect_map_panels,
-                        construct_economic_building=construct_economic_building,
-                        assign_steward_development=assign_steward_development,
-                        development_step=selected_step,
-                        resume_saved_game=resume_saved_game,
-                    )
-                    turn_result["requested_step"] = "auto-turn"
-                    turn_result["auto_turn"] = turn
-                    turn_record["result"] = turn_result
-                    turn_record["ok"] = True
-                except Exception as error:
-                    turn_record["error"] = f"{type(error).__name__}: {error}"
-                turn_record["finished_at"] = utc_now()
-                turns.append(turn_record)
-                commands.append(turn_record)
-
-                if turn_record["ok"] is not True:
-                    error_text = str(turn_record.get("error", ""))
-                    if not any(
-                        marker in error_text
-                        for marker in (
-                            "ordinary event interrupted",
-                            "one-life death terminal visible:",
-                        )
-                    ):
-                        status = "stopped_on_error"
-                        break
-                elif selected_step in {"death-terminal", "strategy-review"}:
-                    status = "episode_complete"
-                    break
-
-            last_result = turns[-1].get("result") if turns else None
+            outcome = gameplay_runner.run_one_life_turns(
+                commands,
+                executor,
+                strategy_policy.choose_one_life_turn,
+                auto_run_turns,
+                now=utc_now,
+            )
+            turns = outcome["turns"]
+            last_result = (
+                turns[-1].get("result")
+                if isinstance(turns, list) and turns
+                else None
+            )
             return {
                 "development_only": True,
                 "release_qualification": False,
                 "step": "auto-run",
                 "requested_step": development_step,
-                "requested_turns": auto_run_turns,
-                "completed_turns": len(turns),
-                "status": status,
-                "all_turns_ok": all(row.get("ok") is True for row in turns),
+                "requested_turns": outcome["requested_turns"],
+                "completed_turns": outcome["completed_turns"],
+                "status": outcome["status"],
+                "all_turns_ok": outcome["all_turns_ok"],
                 "turns": turns,
                 "actions": [],
                 "final_screen": (
@@ -1534,29 +1516,11 @@ def _drive_opening(
                 ),
             }
 
-        turn = strategy_policy.choose_one_life_turn(commands)
-        selected_step = turn["selected_step"]
-        if not isinstance(selected_step, str) or selected_step == "auto-turn":
-            raise AgentError("one-life turn planner returned an invalid step")
-        result = _drive_opening(
-            spec,
-            handle,
-            manifest,
-            artifacts,
-            events,
-            contract_path,
-            contract_sha256,
-            deadline,
-            ordinary_event_count=ordinary_event_count,
-            inspect_map_panels=inspect_map_panels,
-            construct_economic_building=construct_economic_building,
-            assign_steward_development=assign_steward_development,
-            development_step=selected_step,
-            resume_saved_game=resume_saved_game,
+        return gameplay_runner.run_one_life_turn(
+            commands,
+            executor,
+            strategy_policy.choose_one_life_turn,
         )
-        result["requested_step"] = "auto-turn"
-        result["auto_turn"] = turn
-        return result
 
     # This command only reads the agent's cross-run policy.  Keep it outside
     # the CK3 binding/foreground/OCR path so it stays instant in a persistent
@@ -7068,6 +7032,14 @@ def _opening_dev_session_locked(
     artifacts = run_dir / "artifacts"
     events = run_dir / "events.jsonl"
     artifacts.mkdir(parents=True, exist_ok=False)
+    session_commands = tuple(
+        dict.fromkeys((*OPENING_DEVELOPMENT_STEPS, "strategy-review", "status", "stop"))
+    )
+    session_queue = PersistentSessionQueue(
+        run_dir,
+        supported_commands=session_commands,
+        action_steps=OPENING_DEVELOPMENT_STEPS,
+    )
     report_path = run_dir / "report.json"
     report: dict[str, object] = {
         "format_version": 1,
@@ -7077,6 +7049,7 @@ def _opening_dev_session_locked(
         "environment_sha256": manifest.get("environment_sha256"),
         "development_only": True,
         "release_qualification": False,
+        "bridge": session_queue.descriptor(),
         "commands": [],
         "finalized": False,
         "ok": False,
@@ -7129,50 +7102,55 @@ def _opening_dev_session_locked(
                     "type": "opening_dev_session_ready",
                     "run_id": run_id,
                     "pid": handle.process.pid,
-                    "commands": [
-                        *OPENING_DEVELOPMENT_STEPS,
-                        "strategy-review",
-                        "status",
-                        "stop",
-                    ],
+                    "commands": list(session_commands),
                     "hot_reload": True,
+                    "bridge": session_queue.descriptor(),
                 },
                 ensure_ascii=False,
             ),
             flush=True,
         )
         command_index = 0
-        while time.monotonic() < deadline:
-            line = sys.stdin.readline()
-            if line == "":
-                break
-            command = line.strip()
-            if not command:
-                continue
+
+        def execute_command(
+            command: str,
+            *,
+            source: str,
+            request_id: str | None = None,
+        ) -> tuple[dict[str, object], bool]:
+            nonlocal command_index
             if command == "stop":
-                break
+                return {
+                    "ok": True,
+                    "result": {
+                        "type": "opening_dev_session_stop",
+                        "run_id": run_id,
+                    },
+                    "error": None,
+                }, True
             if command == "status":
-                print(
-                    json.dumps(
-                        {
-                            "type": "opening_dev_session_status",
-                            "run_id": run_id,
-                            "pid": handle.process.pid,
-                            "running": handle.process.poll() is None,
-                            "command_count": len(report["commands"]),
-                        },
-                        ensure_ascii=False,
-                    ),
-                    flush=True,
-                )
-                continue
+                return {
+                    "ok": True,
+                    "result": {
+                        "type": "opening_dev_session_status",
+                        "run_id": run_id,
+                        "pid": handle.process.pid,
+                        "running": handle.process.poll() is None,
+                        "command_count": len(report["commands"]),
+                        "bridge_dir": str(session_queue.bridge_dir),
+                    },
+                    "error": None,
+                }, False
             command_index += 1
             command_record: dict[str, object] = {
                 "index": command_index,
                 "command": command,
+                "source": source,
                 "started_at": utc_now(),
                 "ok": False,
             }
+            if request_id is not None:
+                command_record["request_id"] = request_id
             try:
                 policy = _reload_opening_development_policy()
                 if command == "strategy-review":
@@ -7205,19 +7183,88 @@ def _opening_dev_session_locked(
             command_record["finished_at"] = utc_now()
             report["commands"].append(command_record)
             write_json_atomic(report_path, report)
-            print(
-                json.dumps(
-                    {
+            return {
+                "ok": bool(command_record["ok"]),
+                "result": command_record.get("result"),
+                "error": command_record.get("error"),
+                "index": command_index,
+            }, False
+
+        stdin = StdinLinePump(sys.stdin)
+        stdin.start()
+        stop_requested = False
+        stdin_eof = False
+        while time.monotonic() < deadline and not stop_requested:
+            handled_input = False
+            for request in session_queue.poll():
+                handled_input = True
+                if request.error is not None or request.command is None:
+                    session_queue.respond(
+                        request,
+                        ok=False,
+                        error=request.error or "request command is missing",
+                    )
+                    continue
+                revision_error = expected_revision_error(
+                    request.payload,
+                    len(report["commands"]),
+                )
+                if revision_error is not None:
+                    session_queue.respond(
+                        request,
+                        ok=False,
+                        error=revision_error,
+                    )
+                    continue
+                outcome, stop_requested = execute_command(
+                    request.command,
+                    source="bridge",
+                    request_id=request.request_id,
+                )
+                session_queue.respond(
+                    request,
+                    ok=bool(outcome["ok"]),
+                    result=outcome.get("result"),
+                    error=outcome.get("error"),
+                )
+                if stop_requested:
+                    break
+            if stop_requested:
+                break
+
+            stdin_batch = stdin.poll()
+            if stdin_batch.error is not None:
+                raise AgentError(f"opening dev-session stdin failed: {stdin_batch.error}")
+            stdin_eof = stdin_eof or stdin_batch.eof
+            for line in stdin_batch.lines:
+                command = line.strip()
+                if not command:
+                    continue
+                handled_input = True
+                outcome, stop_requested = execute_command(
+                    command,
+                    source="stdin",
+                )
+                if stop_requested:
+                    break
+                if command == "status":
+                    printable = outcome["result"]
+                else:
+                    printable = {
                         "type": "opening_dev_command_result",
                         "command": command,
-                        "index": command_index,
-                        "ok": command_record["ok"],
-                        "error": command_record.get("error"),
-                    },
-                    ensure_ascii=False,
-                ),
-                flush=True,
-            )
+                        "index": outcome.get("index"),
+                        "ok": outcome["ok"],
+                        "error": outcome.get("error"),
+                    }
+                print(
+                    json.dumps(printable, ensure_ascii=False),
+                    flush=True,
+                )
+            if stop_requested or stdin_eof:
+                break
+            if not handled_input:
+                time.sleep(0.05)
     except BaseException as error:
         primary_error = error
         report["error"] = f"{type(error).__name__}: {error}"

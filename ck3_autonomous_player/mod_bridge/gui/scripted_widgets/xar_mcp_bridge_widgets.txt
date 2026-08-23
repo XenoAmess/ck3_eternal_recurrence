@@ -1,0 +1,1 @@
+﻿gui/xar_mcp_bridge.gui = xar_mcp_bridge_window

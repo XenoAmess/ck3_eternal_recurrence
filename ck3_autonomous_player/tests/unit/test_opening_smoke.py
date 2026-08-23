@@ -19,6 +19,11 @@ sys.path.insert(0, str(ROOT / "src"))
 from xar_autoplayer import cli  # noqa: E402
 from xar_autoplayer.control import VisibleUiDriver  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
+from xar_autoplayer.gameplay_runner import (  # noqa: E402
+    CallableGameplayStepExecutor,
+    run_one_life_turn,
+    run_one_life_turns,
+)
 from xar_autoplayer.opening_smoke import (  # noqa: E402
     ACTIVE_EVENT_PREVIEW_REGION,
     INITIAL_MAIN_MENU_TIMEOUT_SECONDS,
@@ -618,6 +623,50 @@ class OpeningContractTests(unittest.TestCase):
         ]
         self.assertEqual(
             choose_one_life_turn(commands)["selected_step"], "dynasty-review"
+        )
+
+    def test_one_life_runner_uses_backend_neutral_step_executor(self) -> None:
+        commands: list[dict[str, object]] = []
+        executed: list[str] = []
+
+        def execute_step(step: str) -> dict[str, object]:
+            executed.append(step)
+            return {"step": step, "backend": "semantic-test-double"}
+
+        timestamps = iter(
+            (
+                "2026-08-23T00:00:01+00:00",
+                "2026-08-23T00:00:02+00:00",
+                "2026-08-23T00:00:03+00:00",
+                "2026-08-23T00:00:04+00:00",
+            )
+        )
+        executor = CallableGameplayStepExecutor(execute_step)
+        outcome = run_one_life_turns(
+            commands,
+            executor,
+            choose_one_life_turn,
+            2,
+            now=lambda: next(timestamps),
+        )
+
+        self.assertEqual(executed, ["save-checkpoint", "dynasty-review"])
+        self.assertEqual(outcome["status"], "completed")
+        self.assertEqual(outcome["completed_turns"], 2)
+        self.assertTrue(outcome["all_turns_ok"])
+        self.assertEqual(len(commands), 2)
+        self.assertEqual(
+            outcome["turns"][1]["result"]["auto_turn"]["selected_step"],
+            "dynasty-review",
+        )
+
+        next_result = run_one_life_turn(
+            commands, executor, choose_one_life_turn
+        )
+        self.assertEqual(executed[-1], "succession-review")
+        self.assertEqual(next_result["requested_step"], "auto-turn")
+        self.assertEqual(
+            next_result["auto_turn"]["selected_step"], "succession-review"
         )
 
     def test_palermo_target_comes_from_visible_map_label(self) -> None:
