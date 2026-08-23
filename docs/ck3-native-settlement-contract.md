@@ -32,9 +32,9 @@
 
 有继承人时必须在 scorer 后的同一个手写 wrapper 内发布 native payload，不能等 delayed carrier：
 native 可能先观察到 played character 从死者切到继承人并进入 terminal。预排的存活继承人 carrier
-继续保留，但现在只负责稍后显示 UI。CK3 1.19.0.6 曾实测死亡 root 的 scorer 后父链不稳定，因此
-wrapper 能否在该版本真实死亡路径中完成其尾部 commit 仍必须由下一轮实机确认；当前不把静态顺序
-冒充实测结果。
+继续保留，但现在只负责稍后显示 UI。2026-08-24 的 CK3 1.19.0.6 minimized live 已确认死亡 root
+能进入 wrapper、完成 scorer 并开始 commit；该次故障是 record writer 不返回，使其后的旧 publication
+顺序不可达。修复后的先发布顺序仍须在下一次实机死亡中确认，不把本轮静态检查冒充修复后实测结果。
 
 ## 2. 稳定全局投影
 
@@ -101,10 +101,18 @@ wrapper 能否在该版本真实死亡路径中完成其尾部 commit 仍必须�
 1. wrapper 若发现死者已有 `xa_settlement_committed` character flag，判定为重复调用并跳过 scorer/commit；
 2. 写 `ready=0`；
 3. 写 source 与全部 payload；
-4. 仅当 `candidate > old_record` 时调用一次生成的 `xar_write_record_effect`，并写
-   `record_written=1`；否则为 `0`；
+4. 若 `candidate > old_record`，先写 `record_written=1`；否则保留为 `0`；
 5. 直接写 `commit_serial=1`，并在死者上添加 `xa_settlement_committed`；
-6. 最后写 `ready=1`。其后不再写任何结算字段。
+6. 写 `ready=1`，完成终局 payload 发布；其后不再写任何结算字段；
+7. 仅当 `record_written=1` 时，最后调用一次生成的 `xar_write_record_effect`。
+
+这里故意先发布终局、再进入教程纪录 writer。2026-08-24 minimized live（PID 119596）中，真实
+`die` 后 native revision 11 已检测到 `played_character_changed`（episode CharacterID 29829，继承人
+38822）；`debug.log` 只有 on_action line 103 的 `XAR: computing score on death` 与 effect line 139 的
+`XAR: new record, writing bit`，之后没有发布终结，30 秒以上仍为 `settlement=null/pending`。这证明
+writer 在该实机路径不返回，使旧顺序中位于其后的 `record_written`、`commit_serial` 与 `ready` 不可达。
+新顺序让 native 先取得完整终局；若 `record_written=1`，Python terminal 仍会有界等待
+`tutorial.txt` 中对应量化位稳定，因此不会把尚未持久化的纪录判为完成。
 
 Rogue 模式明确禁止在同一存档继续扮演继承人，因此一个 save-scoped episode 只需要 `0 → 1`，不为
 不存在的第二位可玩角色建设跨生命计数器。直接赋 `1` 也兼容升级前已经签约、尚未拥有该变量的存档；
@@ -122,9 +130,9 @@ native reader 应缓存本 episode 起始 serial。死亡或 played-character �
 
 ## 4. 纪录持久化边界
 
-`record_written=1` 表示对应的 `xar_hs_ge_<candidate>` 存档内触发位已经由 writer 设置，且 writer
-不会为同一死者再次执行。跨存档介质 `tutorial.txt` 仍由 CK3 的 tutorial lesson 队列异步完成；
-因此 `ready=1` 不等于外部文件已经落盘。
+`record_written=1` 表示本次提交需要写入对应的 `xar_hs_ge_<candidate>`，不表示 writer 已返回或
+外部文件已经落盘。Mod 在发布 `ready=1` 后调用 writer；跨存档介质 `tutorial.txt` 仍由 CK3 的
+tutorial lesson 队列异步完成。
 
 需要保证跨局纪录后再退出 CK3 时，native terminal 还必须等待相应 lesson 在 `tutorial.txt` 中出现
 并稳定，或执行已有的等价 persistence handoff。该等待只在 `record_written=1` 时需要；Mod 侧不能用
@@ -141,8 +149,9 @@ native reader 应缓存本 episode 起始 serial。死亡或 played-character �
 
 ## 6. 当前验证范围
 
-本轮没有启动 CK3。Mod 静态链由 `tools/validate_static.py` 检查；native reader 另由 pinned-exe
-anchor scanner、fresh MSVC build 和离线 CTest fixture 覆盖。native 静态 RE 已证明：
+本次顺序修复没有重新启动 CK3；故障依据来自第 3 节记录的 2026-08-24 minimized live。Mod 静态链由
+`tools/validate_static.py` 检查；native reader 另由 pinned-exe anchor scanner、fresh MSVC build 和
+离线 CTest fixture 覆盖。native 静态 RE 已证明：
 
 - global container accessor slot、entry key/value 布局与 string-ID accessor；
 - numeric EventTarget kind/raw ABI 与 CFixedPoint `100000` scale；
@@ -156,7 +165,8 @@ Mod `tools/validate_static.py` 继续检查：
 - delayed `xar.1003` 不再包含 scorer、commit 或 record writer，只做 UI 分流；
 - record writer 只位于 commit effect 中一次；
 - source、八项数值、record result、serial 和 ready 的字段映射；
-- `ready=1` 是 commit effect 的最后一次 global 写；
+- `record_written=1`、`commit_serial=1`、死者 committed flag、`ready=1` 严格先于最后一次 writer 调用，
+  且 `ready=1` 之后不再直接写任何结算字段；
 - `xar.1001/1002` 只消费稳定 projection，且没有玩法授权或纪录提交入口。
 
 下一步实机闭环应分别覆盖有继承人与无继承人死亡，并由 native snapshot 读取 source、serial、分数和

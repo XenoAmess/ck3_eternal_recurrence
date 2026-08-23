@@ -115,8 +115,9 @@ xar_enable_player_pact_effect = {
 # Publish one completed death settlement for native/headless consumers. The
 # payload lives in global variables because the played character can switch to
 # an heir before a native snapshot observes the result. xa_settlement_ready is
-# deliberately the final write: readers ignore every payload field until it is
-# 1, then use commit_serial to distinguish a newly committed settlement.
+# the final settlement-field write: readers ignore every payload field until
+# it is 1, then use commit_serial to distinguish a newly committed settlement.
+# The potentially slow tutorial record writer runs only after publication.
 xar_compute_and_commit_death_settlement_effect = {
 	if = {
 		limit = { has_character_flag = xa_settlement_committed }
@@ -169,8 +170,6 @@ xar_commit_death_settlement_effect = {
 	set_global_variable = { name = xa_settlement_record_written value = 0 }
 	if = {
 		limit = { global_var:xa_record_candidate > global_var:xa_old_record }
-		debug_log = "XAR: new record, writing bit"
-		xar_write_record_effect = yes
 		set_global_variable = { name = xa_settlement_record_written value = 1 }
 	}
 	# Rogue mode has exactly one playable life per save: a fresh commit is
@@ -179,6 +178,15 @@ xar_commit_death_settlement_effect = {
 	set_global_variable = { name = xa_settlement_commit_serial value = 1 }
 	scope:xar_dead = { add_character_flag = xa_settlement_committed }
 	set_global_variable = { name = xa_settlement_ready value = 1 }
+	# Publishing before the tutorial writer is intentional. In a real CK3 death
+	# the writer can block for tens of seconds; native consumers use
+	# record_written=1 to wait for tutorial.txt persistence without losing the
+	# already complete terminal payload.
+	if = {
+		limit = { global_var:xa_record_candidate > global_var:xa_old_record }
+		debug_log = "XAR: new record, writing bit"
+		xar_write_record_effect = yes
+	}
 }
 
 xar_initialize_run_state_effect = {

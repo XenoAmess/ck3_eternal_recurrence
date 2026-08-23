@@ -1405,15 +1405,27 @@ def mechanic_checks(errors):
             "native death settlement commit lost its source/idempotency/serial contract")
     ready_write = (
         "set_global_variable = { name = xa_settlement_ready value = 1 }")
+    record_written_write = (
+        "set_global_variable = { name = xa_settlement_record_written value = 1 }")
+    serial_write = (
+        "set_global_variable = { name = xa_settlement_commit_serial value = 1 }")
+    committed_flag_write = (
+        "scope:xar_dead = { add_character_flag = xa_settlement_committed }")
+    writer_call = "xar_write_record_effect = yes"
+    record_written_index = settlement_commit_effect.find(record_written_write)
+    serial_write_index = settlement_commit_effect.find(serial_write)
+    committed_flag_index = settlement_commit_effect.find(committed_flag_write)
     ready_write_index = settlement_commit_effect.find(ready_write)
-    if (settlement_commit_effect.count("xar_write_record_effect = yes") != 1
+    writer_call_index = settlement_commit_effect.find(writer_call)
+    if (settlement_commit_effect.count(writer_call) != 1
             or settlement_commit_effect.count(ready_write) != 1
-            or ready_write_index < settlement_commit_effect.find(
-                "set_global_variable = { name = xa_settlement_commit_serial value = 1 }")
+            or not (record_written_index < serial_write_index
+                    < committed_flag_index < ready_write_index
+                    < writer_call_index)
             or settlement_commit_effect.find(
                 "set_global_variable", ready_write_index + len(ready_write)) >= 0):
         errors.append(
-            "death settlement must write one record signal, publish serial 1, and set ready last")
+            "death settlement must publish record signal/serial/flag/ready before its final writer call")
     if not all(token in run_state_effect for token in (
             "name = xa_settlement_ready value = 0",
             "name = xa_settlement_commit_serial value = 0")):
