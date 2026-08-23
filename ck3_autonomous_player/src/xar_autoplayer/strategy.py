@@ -116,17 +116,42 @@ def choose_one_life_turn(
         if isinstance(snapshot, dict)
         else None
     )
-    if (
-        isinstance(played_character, dict)
-        and played_character.get("alive") is False
-    ):
+    terminal_reason = (
+        snapshot.get("one_life_terminal_reason")
+        if isinstance(snapshot, dict)
+        and isinstance(snapshot.get("one_life_terminal_reason"), str)
+        else (
+            "played_character_dead"
+            if isinstance(played_character, dict)
+            and played_character.get("alive") is False
+            else None
+        )
+    )
+    if terminal_reason is not None:
+        episode_character_id = (
+            snapshot.get("episode_character_id")
+            if isinstance(snapshot, dict)
+            else None
+        )
+        reason = (
+            "CK3 changed the played CharacterID after the episode character; "
+            "end this one-life episode instead of continuing as the heir"
+            if terminal_reason == "played_character_changed"
+            else "the native played character is dead; end this one-life episode"
+        )
         if "death-terminal" in available_steps:
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "terminal_native",
                 "selected_step": "death-terminal",
-                "reason": "the native played character is dead; end this one-life episode",
-                "played_character": dict(played_character),
+                "reason": reason,
+                "terminal_reason": terminal_reason,
+                "episode_character_id": episode_character_id,
+                "played_character": (
+                    dict(played_character)
+                    if isinstance(played_character, dict)
+                    else None
+                ),
             }
         return {
             "policy": "one-life-turn-v1",
@@ -134,7 +159,13 @@ def choose_one_life_turn(
             "selected_step": None,
             "required_step": "death-terminal",
             "reason": "the backend cannot finalize the detected player death",
-            "played_character": dict(played_character),
+            "terminal_reason": terminal_reason,
+            "episode_character_id": episode_character_id,
+            "played_character": (
+                dict(played_character)
+                if isinstance(played_character, dict)
+                else None
+            ),
         }
     raw_active_event = (
         snapshot.get("active_event", snapshot.get("current_event"))

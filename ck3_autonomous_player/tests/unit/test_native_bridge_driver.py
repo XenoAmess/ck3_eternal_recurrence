@@ -383,6 +383,85 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         self.assertEqual(driver.capabilities()["action_steps"], [])
 
+    def test_episode_identity_locks_on_first_ready_character_and_keeps_heir_info(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.state.played-character")
+        )
+        endpoint.publish(
+            _snapshot(
+                28,
+                map_ready=False,
+                played_character={"character_id": 707, "alive": True},
+            )
+        )
+        self.assertIsNone(driver.take_snapshot()["episode_character_id"])
+
+        endpoint.publish(
+            _snapshot(
+                29,
+                played_character={
+                    "character_id": 707,
+                    "alive": True,
+                    "primary_heir_id": 808,
+                    "has_heir": True,
+                },
+            )
+        )
+        first_ready = driver.take_snapshot()
+        self.assertEqual(first_ready["episode_character_id"], 707)
+        self.assertFalse(first_ready["one_life_terminal"])
+        self.assertIsNone(first_ready["one_life_terminal_reason"])
+        self.assertEqual(first_ready["played_character"]["primary_heir_id"], 808)
+        self.assertTrue(first_ready["played_character"]["has_heir"])
+
+        endpoint.publish(
+            _snapshot(
+                30,
+                played_character={
+                    "character_id": 707,
+                    "alive": True,
+                    "primary_heir_id": None,
+                    "has_heir": False,
+                },
+            )
+        )
+        same_character = driver.take_snapshot()
+        capabilities = driver.capabilities()
+        self.assertEqual(same_character["episode_character_id"], 707)
+        self.assertFalse(same_character["one_life_terminal"])
+        self.assertEqual(capabilities["episode_character_id"], 707)
+        self.assertFalse(capabilities["one_life_terminal"])
+        self.assertNotIn("death-terminal", capabilities["action_steps"])
+
+    def test_map_ready_without_played_character_does_not_invent_terminal(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.state.played-character")
+        )
+        endpoint.publish(_snapshot(29, played_character=None))
+
+        snapshot = driver.take_snapshot()
+        capabilities = driver.capabilities()
+
+        self.assertIsNone(snapshot["episode_character_id"])
+        self.assertFalse(snapshot["one_life_terminal"])
+        self.assertIsNone(snapshot["one_life_terminal_reason"])
+        self.assertIsNone(capabilities["episode_character_id"])
+        self.assertNotIn("death-terminal", capabilities["action_steps"])
+
     def test_dead_played_character_exposes_one_life_terminal(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
@@ -407,8 +486,64 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
 
         self.assertTrue(result["terminal"])
         self.assertEqual(result["terminal_kind"], "native_played_character_dead")
+        self.assertEqual(result["terminal_reason"], "played_character_dead")
+        self.assertEqual(result["episode_character_id"], 17_031)
         self.assertFalse(result["continue_as_heir_after_death"])
         self.assertEqual(result["played_character"]["character_id"], 17_031)
+
+    def test_played_character_switch_ends_episode_before_heir_gameplay(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.state.played-character")
+        )
+        endpoint.publish(
+            _snapshot(
+                31,
+                played_character={
+                    "character_id": 707,
+                    "alive": True,
+                    "primary_heir_id": 808,
+                    "has_heir": True,
+                },
+            )
+        )
+        self.assertEqual(driver.take_snapshot()["episode_character_id"], 707)
+        endpoint.publish(
+            _snapshot(
+                32,
+                played_character={"character_id": 808, "alive": True},
+            )
+        )
+
+        switched = driver.take_snapshot()
+        capabilities = driver.capabilities()
+        service = GameplayBridgeService(driver)
+        plan = service.plan_turn()["plan"]
+        result = service.auto_turn()
+
+        self.assertEqual(switched["episode_character_id"], 707)
+        self.assertTrue(switched["one_life_terminal"])
+        self.assertEqual(
+            switched["one_life_terminal_reason"], "played_character_changed"
+        )
+        self.assertIn("death-terminal", capabilities["action_steps"])
+        self.assertEqual(plan["phase"], "terminal_native")
+        self.assertEqual(plan["selected_step"], "death-terminal")
+        self.assertEqual(plan["episode_character_id"], 707)
+        self.assertEqual(plan["terminal_reason"], "played_character_changed")
+        self.assertEqual(result["status"], "executed")
+        self.assertEqual(
+            result["result"]["terminal_kind"],
+            "native_played_character_changed",
+        )
+        self.assertEqual(result["result"]["episode_character_id"], 707)
+        self.assertFalse(result["result"]["continue_as_heir_after_death"])
 
     def test_native_war_templates_expand_and_move_waits_for_target(self) -> None:
         endpoint = FakeEndpoint()
@@ -760,7 +895,13 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 restore_poll_interval_seconds=0.005,
             )
             endpoint.publish(_hello("game.state.snapshot"))
-            endpoint.publish(_snapshot(40, date_raw=53_171_520))
+            endpoint.publish(
+                _snapshot(
+                    40,
+                    date_raw=53_171_520,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
             lifecycle_errors: list[BaseException] = []
             observed_request: dict[str, object] = {}
 
@@ -811,7 +952,15 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         }
                     )
                     endpoint.publish(
-                        _snapshot(1, date_raw=53_171_424, map_ready=True)
+                        _snapshot(
+                            1,
+                            date_raw=53_171_424,
+                            map_ready=True,
+                            played_character={
+                                "character_id": 707,
+                                "alive": True,
+                            },
+                        )
                     )
                 except BaseException as error:
                     lifecycle_errors.append(error)
@@ -848,6 +997,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             self.assertEqual(result["lifecycle"]["previous_pid"], 4242)
             self.assertEqual(result["lifecycle"]["pid"], 5252)
             self.assertTrue(result["map_ready"])
+            restored_snapshot = driver.take_snapshot()
+            self.assertEqual(restored_snapshot["episode_character_id"], 707)
+            self.assertFalse(restored_snapshot["one_life_terminal"])
+            self.assertIsNone(restored_snapshot["one_life_terminal_reason"])
 
     def test_composite_life_advance_resolves_native_event_and_stays_paused(
         self,

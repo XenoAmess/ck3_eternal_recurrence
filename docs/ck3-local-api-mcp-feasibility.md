@@ -472,7 +472,8 @@ OCR；后来定位 `CSendCharacterInteractionCommand` 后，婚姻步骤再切�
    `ck3_take_snapshot -> resume-map -> ck3_wait_for_change (date_raw 53171400 -> 53171424) -> pause-map`；该过程未调用
    OCR、截图、窗口激活或键鼠。`native-session` 还会用 `-continuelastsave` 尝试直接载入最后存档。
 6. 已完成：active event/选项、`CSelectEventOptionCommand`、`life-advance`、原生 checkpoint 落盘与进程级恢复；
-   玩家角色 `CharacterID`/生死已进入 snapshot，一代制死亡直接终止本局。
+   玩家角色 `CharacterID`/生死已进入 snapshot。Python native driver 在首次 `map_ready=true` 且存在玩家角色时锁定
+   `episode_character_id`；此后观察到角色死亡或 played `CharacterID` 改变都会直接终止一代制本局。
 7. 已完成离线实现、待真实样本：待处理角色互动 snapshot 与 `CReplyCharacterInteractionCommand` 接受/拒绝。
    下一步按实际收益接主动婚姻、战争状态、宣战、抬兵/移动/解散；缺少原生 capability 时，纯 native 明确返回
    unsupported，只有 `hybrid-fallback` 配置才允许回落。
@@ -500,3 +501,21 @@ fallback 还必须先证明窗口处于可截图状态；最小化时直接返�
 
 最小化运行是否真正成立，以同一 PID 下的实机连续推进为准：窗口最小化后，MCP 仍能读取日期/暂停/速度/当前事件，调用
 原生命令推进游戏并收到新 revision。named-pipe heartbeat 只能证明 DLL 线程仍活着，不能替代上述游戏语义验收。
+
+### 12.6 一代制角色身份契约
+
+`NativeHeadlessGameplayDriver` 的生命周期就是一局 rogue episode 的身份边界。第一份同时满足 `map_ready=true` 和
+`played_character.character_id` 有效的 snapshot 锁定 `episode_character_id`；加载期没有玩家角色时保持未锁定，不猜测角色，
+同一个 driver 经 `restore-checkpoint` 建立新的 DLL connection generation 时也不重置该 ID。
+
+每份 native snapshot 和 capability 响应显式返回：
+
+- `episode_character_id`：本局首次锁定的玩家角色，未进入可玩地图前为 `null`；
+- `one_life_terminal` 与 `one_life_terminal_reason`：同 ID 且存活时为 `false/null`；原角色 `alive=false` 时 reason 为
+  `played_character_dead`；当前 played ID 已变时为 `played_character_changed`；
+- `continue_as_heir_after_death=false`：primary heir 只参与当前生命的继承风险评估，不是下一位可玩角色。
+
+因此即使 CK3 在相邻两个采样间完成死亡与继承、没有留下 `alive=false` 帧，planner 仍会选择唯一的 `death-terminal`，其结果用
+`native_played_character_changed` 区分该路径，绝不对新 ID 执行婚姻、战争或推进时间。恢复到死亡前 checkpoint 且 played ID 仍与
+锁定 ID 相同则继续本局。`played_character` 规范同时允许成对携带可选的 `primary_heir_id`/`has_heir`；这两个字段只作为策略信息，
+不会改变 episode identity 或授权继承人 gameplay。

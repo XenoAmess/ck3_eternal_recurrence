@@ -267,8 +267,9 @@ submission snapshot，并开放 `pause-map`、`resume-map`、`set-speed-1..5`、
 `ck3_auto_turn`，用同一 planner 选择并执行一次当前可用的原生步骤。2026-08-23 已在真实
 CK3 1.19.0.6 的最小化窗口上完成无 OCR/键鼠实测：90 次复合回合推进 94 个游戏日；连续后台推进发现实例 14 的
 五选项事件并以原生命令选择第 1 项，随后观察到实例 15；原生 checkpoint 落盘为约 63 MB 的
-`xar_checkpoint.ck3`，新进程用 `-continuelastsave` 精确恢复到同一 `date_raw=53167488`。玩家死亡在本项目的
-一代制规则下直接产生 `death-terminal`，不会继续扮演继承人。主动发起婚姻、战争等尚未完成的原生能力仍按
+`xar_checkpoint.ck3`，新进程用 `-continuelastsave` 精确恢复到同一 `date_raw=53167488`。native driver 会锁定首次可玩
+snapshot 的 `episode_character_id`，restore 后仍保持该 ID；玩家死亡或 CK3 已切换 played `CharacterID` 都在本项目的
+一代制规则下直接产生 `death-terminal`，不会继续扮演继承人。可选的 primary-heir 字段只用于当前生命的策略信息。主动发起婚姻、战争等尚未完成的原生能力仍按
 capability 返回 unsupported；收到的角色互动已可原生接受或拒绝。
 
 纯原生模式需要两个并行进程：先启动 `mcp_server.py --driver native-headless` 建立 pipe server，再用上面的

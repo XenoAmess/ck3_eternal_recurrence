@@ -484,6 +484,8 @@ class NativeHeadlessGameplayDriver:
         self._last_checkpoint: dict[str, object] | None = None
         self._history_lock = threading.Lock()
         self._command_history: list[dict[str, object]] = []
+        self._episode_identity_lock = threading.Lock()
+        self._episode_character_id: int | None = None
         self.state = NativeProtocolState(self.pipe_name)
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
@@ -533,21 +535,20 @@ class NativeHeadlessGameplayDriver:
             action_steps.add(_RESTORE_CHECKPOINT_STEP)
             composite_action_steps.append(_RESTORE_CHECKPOINT_STEP)
         current_snapshot = (
-            self.state.semantic_snapshot()
+            self._with_one_life_episode(self.state.semantic_snapshot())
             if result.get("snapshot") is True
             else None
         )
-        played_character = (
-            current_snapshot.get("played_character")
+        terminal_reason = (
+            current_snapshot.get("one_life_terminal_reason")
             if isinstance(current_snapshot, dict)
             else None
         )
-        if (
-            isinstance(played_character, dict)
-            and played_character.get("alive") is False
-        ):
+        if isinstance(terminal_reason, str):
             action_steps.add(_NATIVE_DEATH_TERMINAL_STEP)
             composite_action_steps.append(_NATIVE_DEATH_TERMINAL_STEP)
+        with self._episode_identity_lock:
+            episode_character_id = self._episode_character_id
         return {
             **result,
             "action_steps": sorted(action_steps),
@@ -568,6 +569,10 @@ class NativeHeadlessGameplayDriver:
                     _RESTORE_CHECKPOINT_STEP in action_steps
                 ),
             },
+            "episode_character_id": episode_character_id,
+            "one_life_terminal": isinstance(terminal_reason, str),
+            "one_life_terminal_reason": terminal_reason,
+            "continue_as_heir_after_death": False,
             "transport_ready": transport_error is None,
             "diagnostics": diagnostics,
         }
@@ -582,8 +587,49 @@ class NativeHeadlessGameplayDriver:
         if transport_error is not None:
             raise BridgeUnavailableError(transport_error)
         return {
-            **self.state.semantic_snapshot(),
+            **self._with_one_life_episode(self.state.semantic_snapshot()),
             "native_command_history": self._history_snapshot(),
+        }
+
+    def _with_one_life_episode(
+        self, snapshot: dict[str, object]
+    ) -> dict[str, object]:
+        """Project the immutable character identity of this one-life episode."""
+        played_character = snapshot.get("played_character")
+        current_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        with self._episode_identity_lock:
+            if (
+                self._episode_character_id is None
+                and snapshot.get("map_ready") is True
+                and isinstance(current_character_id, int)
+            ):
+                self._episode_character_id = current_character_id
+            episode_character_id = self._episode_character_id
+
+        terminal_reason: str | None = None
+        if (
+            episode_character_id is not None
+            and isinstance(current_character_id, int)
+            and current_character_id != episode_character_id
+        ):
+            terminal_reason = "played_character_changed"
+        elif (
+            episode_character_id is not None
+            and isinstance(played_character, dict)
+            and played_character.get("alive") is False
+        ):
+            terminal_reason = "played_character_dead"
+
+        return {
+            **snapshot,
+            "episode_character_id": episode_character_id,
+            "one_life_terminal": terminal_reason is not None,
+            "one_life_terminal_reason": terminal_reason,
+            "continue_as_heir_after_death": False,
         }
 
     def execute_step(
@@ -1086,16 +1132,23 @@ class NativeHeadlessGameplayDriver:
                     f"expected {expected_revision}, current {snapshot['revision']}"
                 )
         played_character = snapshot.get("played_character")
-        if (
-            not isinstance(played_character, dict)
-            or played_character.get("alive") is not False
-        ):
-            raise BridgeUnavailableError("native played character is not dead")
+        terminal_reason = snapshot.get("one_life_terminal_reason")
+        if not isinstance(terminal_reason, str):
+            raise BridgeUnavailableError(
+                "native one-life episode has not reached a death terminal"
+            )
+        terminal_kind = (
+            "native_played_character_changed"
+            if terminal_reason == "played_character_changed"
+            else "native_played_character_dead"
+        )
         return {
             "step": _NATIVE_DEATH_TERMINAL_STEP,
             "backend_id": "native-headless",
             "terminal": True,
-            "terminal_kind": "native_played_character_dead",
+            "terminal_kind": terminal_kind,
+            "terminal_reason": terminal_reason,
+            "episode_character_id": snapshot.get("episode_character_id"),
             "technical_settlement_handoff": False,
             "continue_as_heir_after_death": False,
             "score": None,
@@ -1905,11 +1958,36 @@ def _played_character(value: object) -> dict[str, object] | None:
         or not isinstance(alive, bool)
     ):
         raise ValueError("native played_character is malformed")
-    return {
+    result: dict[str, object] = {
         "character_id": character_id,
         "alive": alive,
         "source": "native",
     }
+    if "primary_heir_id" in value or "has_heir" in value:
+        primary_heir_id = value.get("primary_heir_id")
+        has_heir = value.get("has_heir")
+        if not isinstance(has_heir, bool):
+            raise ValueError("native played_character has_heir is malformed")
+        if has_heir:
+            if (
+                isinstance(primary_heir_id, bool)
+                or not isinstance(primary_heir_id, int)
+                or primary_heir_id < 0
+            ):
+                raise ValueError(
+                    "native played_character primary_heir_id is malformed"
+                )
+        elif primary_heir_id is not None:
+            raise ValueError(
+                "native played_character primary_heir_id conflicts with has_heir"
+            )
+        result.update(
+            {
+                "primary_heir_id": primary_heir_id,
+                "has_heir": has_heir,
+            }
+        )
+    return result
 
 
 def _validate_revision(value: object, name: str) -> None:
