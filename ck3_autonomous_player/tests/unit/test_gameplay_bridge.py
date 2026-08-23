@@ -55,11 +55,19 @@ def _war(
     *,
     allied_armies: list[dict[str, object]],
     enemy_armies: list[dict[str, object]],
+    score: int = 17,
+    player_is_primary_war_leader: bool = True,
+    enemy_primary_default_raise_province_id: int | None = None,
 ) -> dict[str, object]:
     return {
         "war_id": 88,
         "player_side": "attacker",
-        "player_relative_war_score": 17,
+        "primary_opponent_character_id": 808,
+        "player_is_primary_war_leader": player_is_primary_war_leader,
+        "enemy_primary_default_raise_province_id": (
+            enemy_primary_default_raise_province_id
+        ),
+        "player_relative_war_score": score,
         "allied_armies": allied_armies,
         "enemy_armies": enemy_armies,
     }
@@ -303,6 +311,67 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["selected_step"], "move-army-11-to-41")
         self.assertEqual(plan["pursuit"]["target_army_id"], 21)
 
+    def test_native_war_planner_uses_primary_opponent_fallback(self) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        step = "move-army-11-to-77"
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(9),
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[],
+                        enemy_primary_default_raise_province_id=77,
+                    )
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(step,),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_pursuit")
+        self.assertEqual(plan["selected_step"], step)
+        self.assertEqual(
+            plan["pursuit"]["target_source"],
+            "enemy_primary_default_raise_province",
+        )
+        self.assertIsNone(plan["pursuit"]["target_army_id"])
+
+    def test_non_primary_war_participant_does_not_enforce_at_100(self) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
+        move_step = "move-army-11-to-41"
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(9),
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy],
+                        score=100,
+                        player_is_primary_war_leader=False,
+                    )
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "enforce-demands-88",
+                move_step,
+                "life-advance",
+            ),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_pursuit")
+        self.assertEqual(plan["selected_step"], move_step)
+
     def test_native_war_planner_advances_after_unobservable_move_ack(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)
         enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
@@ -312,14 +381,126 @@ class GameplayBridgeTests(unittest.TestCase):
                 "command": "move-army-11-to-41",
                 "ok": True,
                 "result": {
-                    "war_action": {"status": "move_submitted"}
+                    "accepted": True,
+                    "war_action": {
+                        "status": "move_submitted",
+                        "army_id": 11,
+                        "target_province_id": 41,
+                        "submitted_date_raw": 24_000,
+                    },
+                },
+            },
+            {
+                "index": 2,
+                "command": "life-advance",
+                "ok": True,
+                "result": {"elapsed_days": 5},
+            },
+            {
+                "index": 3,
+                "command": "life-advance",
+                "ok": True,
+                "result": {"elapsed_days": 5},
+            },
+        ]
+        state = {
+            **_snapshot(9),
+            "date_raw": 24_240,
+            "native_command_history": history,
+            "active_wars": [
+                _war(allied_armies=[player], enemy_armies=[enemy])
+            ],
+            "player_armies": [player],
+        }
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: dict(state),
+            execute=lambda _step, _revision: {},
+            action_steps=("move-army-11-to-41", "life-advance"),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_pursuit_progress")
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["move_intent"]["elapsed_days"], 10)
+
+        state["date_raw"] = 26_160
+        expired = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(expired["phase"], "native_war_pursuit")
+        self.assertEqual(expired["selected_step"], "move-army-11-to-41")
+
+    def test_native_move_intent_ends_when_enemy_target_changes(self) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        enemy = _army(21, soldiers=1_100, province_id=42, controllable=False)
+        history = [
+            {
+                "index": 1,
+                "command": "move-army-11-to-41",
+                "ok": True,
+                "result": {
+                    "accepted": True,
+                    "war_action": {
+                        "status": "move_submitted",
+                        "army_id": 11,
+                        "target_province_id": 41,
+                        "submitted_date_raw": 24_000,
+                    },
                 },
             }
         ]
         driver = CallbackGameplayDriver(
             backend_id="native-headless",
             snapshot=lambda: {
-                **_snapshot(9, history),
+                **_snapshot(10),
+                "date_raw": 24_024,
+                "native_command_history": history,
+                "active_wars": [
+                    _war(allied_armies=[player], enemy_armies=[enemy])
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("move-army-11-to-42", "life-advance"),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_pursuit")
+        self.assertEqual(plan["selected_step"], "move-army-11-to-42")
+
+    def test_native_move_intent_does_not_cross_checkpoint_restore(self) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
+        history = [
+            {
+                "index": 1,
+                "command": "move-army-11-to-41",
+                "ok": True,
+                "result": {
+                    "accepted": True,
+                    "war_action": {
+                        "status": "move_submitted",
+                        "army_id": 11,
+                        "target_province_id": 41,
+                        "submitted_date_raw": 24_000,
+                    },
+                },
+            },
+            {
+                "index": 2,
+                "command": "restore-checkpoint",
+                "ok": True,
+                "result": {"status": "restored"},
+            },
+        ]
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(11),
+                "date_raw": 23_976,
+                "native_command_history": history,
                 "active_wars": [
                     _war(allied_armies=[player], enemy_armies=[enemy])
                 ],
@@ -331,8 +512,8 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["phase"], "native_war_pursuit_progress")
-        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["phase"], "native_war_pursuit")
+        self.assertEqual(plan["selected_step"], "move-army-11-to-41")
 
     def test_native_war_planner_advances_after_move_is_deferred(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)

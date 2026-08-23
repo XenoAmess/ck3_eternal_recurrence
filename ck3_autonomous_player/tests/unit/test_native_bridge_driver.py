@@ -133,11 +133,19 @@ def _war(
     *,
     allied_armies: list[dict[str, object]] | None = None,
     enemy_armies: list[dict[str, object]] | None = None,
+    score: int = 12,
+    player_is_primary_war_leader: bool = True,
+    enemy_primary_default_raise_province_id: int | None = None,
 ) -> dict[str, object]:
     return {
         "war_id": war_id,
         "player_side": "attacker",
-        "player_relative_war_score": 12,
+        "primary_opponent_character_id": 808,
+        "player_is_primary_war_leader": player_is_primary_war_leader,
+        "enemy_primary_default_raise_province_id": (
+            enemy_primary_default_raise_province_id
+        ),
+        "player_relative_war_score": score,
         "allied_armies": allied_armies or [],
         "enemy_armies": enemy_armies or [],
     }
@@ -744,6 +752,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _hello(
                 "game.state.snapshot",
                 "game.state.active-wars",
+                "game.state.war-primary-opponent",
                 "game.command.move-army-N-to-N",
                 "game.command.disband-army-N",
             )
@@ -758,7 +767,13 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         endpoint.publish(
             _snapshot(
                 40,
-                active_wars=[_war(allied_armies=[player], enemy_armies=[enemy])],
+                active_wars=[
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy],
+                        enemy_primary_default_raise_province_id=77,
+                    )
+                ],
                 player_armies=[player],
             )
         )
@@ -769,6 +784,18 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         before = driver.take_snapshot()
         self.assertEqual(before["active_wars"][0]["enemy_armies"][0]["soldiers"], 2_400)
+        self.assertEqual(
+            before["active_wars"][0]["primary_opponent_character_id"], 808
+        )
+        self.assertTrue(
+            before["active_wars"][0]["player_is_primary_war_leader"]
+        )
+        self.assertEqual(
+            before["active_wars"][0][
+                "enemy_primary_default_raise_province_id"
+            ],
+            77,
+        )
 
         def answer(frame: dict[str, object]) -> None:
             if frame.get("type") != "execute_step":
@@ -815,6 +842,105 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertNotIn(
             "move-army-101-to-33", driver.capabilities()["action_steps"]
         )
+
+    def test_exact_war_capability_expands_fallback_and_filters_enforce(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-primary-opponent",
+                "game.command.move-army-N-to-N",
+                "game.command.enforce-demands-N",
+            )
+        )
+        player = _army(101, province_id=11)
+        allied_war = _war(
+            war_id=404,
+            allied_armies=[player],
+            score=100,
+            player_is_primary_war_leader=False,
+            enemy_primary_default_raise_province_id=77,
+        )
+        endpoint.publish(
+            _snapshot(
+                42,
+                active_wars=[allied_war],
+                player_armies=[player],
+            )
+        )
+
+        action_steps = driver.capabilities()["action_steps"]
+
+        self.assertIn("move-army-101-to-77", action_steps)
+        self.assertNotIn("enforce-demands-404", action_steps)
+
+        primary_war = {
+            **allied_war,
+            "player_is_primary_war_leader": True,
+        }
+        endpoint.publish(
+            _snapshot(
+                43,
+                active_wars=[primary_war],
+                player_armies=[player],
+            )
+        )
+        self.assertIn(
+            "enforce-demands-404", driver.capabilities()["action_steps"]
+        )
+
+    def test_legacy_war_adapter_keeps_previous_enforce_advertisement(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.enforce-demands-N",
+            )
+        )
+        legacy_war = _war(war_id=405, score=12)
+        legacy_war.pop("primary_opponent_character_id")
+        legacy_war.pop("player_is_primary_war_leader")
+        legacy_war.pop("enemy_primary_default_raise_province_id")
+        endpoint.publish(_snapshot(44, active_wars=[legacy_war]))
+
+        snapshot = driver.take_snapshot()
+
+        self.assertIsNone(
+            snapshot["active_wars"][0]["player_is_primary_war_leader"]
+        )
+        self.assertIn(
+            "enforce-demands-405", driver.capabilities()["action_steps"]
+        )
+
+    def test_native_war_primary_fields_reject_malformed_values(self) -> None:
+        endpoint = FakeEndpoint()
+        NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(_hello("game.state.snapshot"))
+        malformed_values = (
+            ("primary_opponent_character_id", "808"),
+            ("player_is_primary_war_leader", 1),
+            ("enemy_primary_default_raise_province_id", -1),
+        )
+        for revision, (field, value) in enumerate(
+            malformed_values, start=45
+        ):
+            with self.subTest(field=field):
+                war = {**_war(), field: value}
+                with self.assertRaises(ValueError):
+                    endpoint.publish(
+                        _snapshot(revision, active_wars=[war])
+                    )
 
     def test_native_declaration_query_expands_and_starts_war(self) -> None:
         endpoint = FakeEndpoint()
@@ -1072,6 +1198,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _hello(
                 "game.state.snapshot",
                 "game.state.active-wars",
+                "game.state.war-primary-opponent",
                 "game.command.enforce-demands-N",
             )
         )
@@ -1151,6 +1278,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
 
         self.assertEqual(result["war_action"]["status"], "move_submitted")
         self.assertFalse(result["war_action"]["move_target_observable"])
+        self.assertEqual(
+            result["war_action"]["submitted_date_raw"], 53_171_400
+        )
 
     def test_native_move_not_ready_is_a_deferred_war_action(self) -> None:
         endpoint = FakeEndpoint()
@@ -1653,6 +1783,324 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["starting_date_raw"], 53_171_424)
         self.assertEqual(result["ending_date_raw"], 53_171_448)
         self.assertEqual(result["elapsed_days"], 1)
+        self.assertTrue(result["paused"])
+
+    def test_active_war_life_advance_ignores_day_tick_and_enemy_motion(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        start_date = 53_171_400
+        player = _army(501, province_id=20)
+        enemy = _army(502, province_id=90, controllable=False)
+        starting_war = _war(
+            allied_armies=[player], enemy_armies=[enemy]
+        )
+        endpoint.publish(
+            _snapshot(
+                70,
+                date_raw=start_date,
+                active_wars=[starting_war],
+                player_armies=[player],
+            )
+        )
+        timers: list[threading.Timer] = []
+
+        def publish_running(
+            revision: int,
+            *,
+            date_raw: int,
+            score: int,
+            enemy_province_id: int,
+        ) -> None:
+            moved_enemy = _army(
+                502,
+                province_id=enemy_province_id,
+                controllable=False,
+            )
+            endpoint.publish(
+                _snapshot(
+                    revision,
+                    date_raw=date_raw,
+                    speed=5,
+                    paused=False,
+                    active_wars=[
+                        _war(
+                            allied_armies=[player],
+                            enemy_armies=[moved_enemy],
+                            score=score,
+                        )
+                    ],
+                    player_armies=[player],
+                )
+            )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-5":
+                endpoint.publish(
+                    _snapshot(
+                        71,
+                        date_raw=start_date,
+                        speed=5,
+                        active_wars=[starting_war],
+                        player_armies=[player],
+                    )
+                )
+            elif step == "resume-map":
+                publish_running(
+                    72,
+                    date_raw=start_date,
+                    score=12,
+                    enemy_province_id=90,
+                )
+                day_tick = threading.Timer(
+                    0.01,
+                    lambda: publish_running(
+                        73,
+                        date_raw=start_date + 24,
+                        score=12,
+                        enemy_province_id=91,
+                    ),
+                )
+                score_tick = threading.Timer(
+                    0.03,
+                    lambda: publish_running(
+                        74,
+                        date_raw=start_date + 48,
+                        score=13,
+                        enemy_province_id=92,
+                    ),
+                )
+                timers.extend((day_tick, score_tick))
+                day_tick.start()
+                score_tick.start()
+            elif step == "pause-map":
+                endpoint.publish(
+                    _snapshot(
+                        75,
+                        date_raw=start_date + 48,
+                        speed=5,
+                        paused=True,
+                        active_wars=[
+                            _war(
+                                allied_armies=[player],
+                                enemy_armies=[enemy],
+                                score=13,
+                            )
+                        ],
+                        player_armies=[player],
+                    )
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("life-advance")
+        for timer in timers:
+            timer.join(timeout=1.0)
+
+        self.assertEqual(result["elapsed_days"], 2)
+        self.assertEqual(result["progress_status"], "postcondition")
+        self.assertTrue(result["paused"])
+
+    def test_active_war_life_advance_wall_timeout_keeps_date_progress(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.05,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        start_date = 53_171_400
+        player = _army(501, province_id=20)
+        war = _war(allied_armies=[player])
+        endpoint.publish(
+            _snapshot(
+                80,
+                date_raw=start_date,
+                active_wars=[war],
+                player_armies=[player],
+            )
+        )
+        timer: threading.Timer | None = None
+
+        def answer(frame: dict[str, object]) -> None:
+            nonlocal timer
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-5":
+                endpoint.publish(
+                    _snapshot(
+                        81,
+                        date_raw=start_date,
+                        speed=5,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+            elif step == "resume-map":
+                endpoint.publish(
+                    _snapshot(
+                        82,
+                        date_raw=start_date,
+                        speed=5,
+                        paused=False,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+                timer = threading.Timer(
+                    0.01,
+                    lambda: endpoint.publish(
+                        _snapshot(
+                            83,
+                            date_raw=start_date + 24,
+                            speed=5,
+                            paused=False,
+                            active_wars=[war],
+                            player_armies=[player],
+                        )
+                    ),
+                )
+                timer.start()
+            elif step == "pause-map":
+                endpoint.publish(
+                    _snapshot(
+                        84,
+                        date_raw=start_date + 24,
+                        speed=5,
+                        paused=True,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("life-advance")
+        if timer is not None:
+            timer.join(timeout=1.0)
+
+        self.assertEqual(result["elapsed_days"], 1)
+        self.assertEqual(
+            result["progress_status"], "wall_timeout_with_date_progress"
+        )
+        self.assertTrue(result["paused"])
+
+    def test_active_war_life_advance_stops_at_thirty_day_horizon(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        start_date = 53_171_400
+        player = _army(501, province_id=20)
+        war = _war(allied_armies=[player])
+        endpoint.publish(
+            _snapshot(
+                90,
+                date_raw=start_date,
+                active_wars=[war],
+                player_armies=[player],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-5":
+                endpoint.publish(
+                    _snapshot(
+                        91,
+                        date_raw=start_date,
+                        speed=5,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+            elif step == "resume-map":
+                endpoint.publish(
+                    _snapshot(
+                        92,
+                        date_raw=start_date + 30 * 24,
+                        speed=5,
+                        paused=False,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+            elif step == "pause-map":
+                endpoint.publish(
+                    _snapshot(
+                        93,
+                        date_raw=start_date + 30 * 24,
+                        speed=5,
+                        paused=True,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("life-advance")
+
+        self.assertEqual(result["elapsed_days"], 30)
+        self.assertEqual(result["progress_status"], "postcondition")
         self.assertTrue(result["paused"])
 
     def test_composite_life_advance_retries_one_natural_revision_race(self) -> None:

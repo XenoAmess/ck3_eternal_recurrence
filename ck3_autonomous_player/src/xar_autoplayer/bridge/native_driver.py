@@ -56,8 +56,10 @@ from .war_contract import (
     ENFORCE_DEMANDS_CAPABILITY,
     MOVE_ARMY_CAPABILITY,
     RAISE_TROOPS_STEP,
+    WAR_PRIMARY_OPPONENT_CAPABILITY,
     controllable_armies,
     disband_army_step,
+    enemy_primary_default_raise_province_ids,
     enforce_demands_step,
     enemy_armies_from_wars,
     is_native_war_step,
@@ -83,6 +85,7 @@ _NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
 _NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 _RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
 _RESTORE_MAP_STABLE_SECONDS = 0.5
+_NATIVE_WAR_ADVANCE_MAX_DAYS = 30
 _ARMY_MOVE_DEFERRED_ERRORS = frozenset(
     {
         # Kept for protocol-v1 bridges built before the native rejection
@@ -1367,6 +1370,9 @@ class NativeHeadlessGameplayDriver:
                         "status": "move_submitted",
                         "army_id": army_id,
                         "target_province_id": province_id,
+                        "submitted_date_raw": _date_raw(
+                            starting, "move starting snapshot"
+                        ),
                         "move_target_observable": False,
                     },
                     "player_armies": current.get("player_armies", []),
@@ -1873,7 +1879,7 @@ class NativeHeadlessGameplayDriver:
             )
 
         progress_deadline = time.monotonic() + self.life_advance_timeout_seconds
-        while not _life_advance_progressed(current, starting_date_raw):
+        while not _life_advance_progressed(current, starting):
             remaining = progress_deadline - time.monotonic()
             if remaining <= 0:
                 break
@@ -1883,10 +1889,26 @@ class NativeHeadlessGameplayDriver:
             )
 
         current = self._pause_life_advance(current, actions)
-        if not _life_advance_progressed(current, starting_date_raw):
-            raise BridgeUnavailableError(
-                "native life-advance observed neither a date change nor an active event"
+        reached_progress_postcondition = _life_advance_progressed(
+            current, starting
+        )
+        if not reached_progress_postcondition:
+            current_date_raw = _date_raw(
+                current, "active-war bounded ending snapshot"
             )
+            if current_date_raw > starting_date_raw:
+                progress_status = "wall_timeout_with_date_progress"
+            elif starting.get("active_wars"):
+                raise BridgeUnavailableError(
+                    "native active-war life-advance observed no event, war "
+                    "or army progress, and did not reach its 30-day horizon"
+                )
+            else:
+                raise BridgeUnavailableError(
+                    "native life-advance observed neither a date change nor an active event"
+                )
+        else:
+            progress_status = "postcondition"
 
         ordinary_events: list[dict[str, object]] = []
         event_resolution = "none"
@@ -1937,6 +1959,7 @@ class NativeHeadlessGameplayDriver:
             "starting_date_raw": starting_date_raw,
             "ending_date_raw": ending_date_raw,
             "elapsed_days": max(0, (ending_date_raw - starting_date_raw) // 24),
+            "progress_status": progress_status,
             "ordinary_events": ordinary_events,
             "event_resolution": event_resolution,
             "actions": actions,
@@ -2270,17 +2293,72 @@ def _date_raw(snapshot: dict[str, object], name: str) -> int:
 
 
 def _life_advance_progressed(
-    snapshot: dict[str, object], starting_date_raw: int
+    snapshot: dict[str, object], starting_snapshot: dict[str, object]
 ) -> bool:
     active_event = snapshot.get("active_event")
     if isinstance(active_event, dict):
         return True
-    value = snapshot.get("date_raw")
-    return (
-        not isinstance(value, bool)
-        and isinstance(value, int)
-        and value > starting_date_raw
+    if isinstance(snapshot.get("one_life_terminal_reason"), str):
+        return True
+    starting_date_raw = _date_raw(
+        starting_snapshot, "life-advance starting snapshot"
     )
+    current_date_raw = snapshot.get("date_raw")
+    if isinstance(current_date_raw, bool) or not isinstance(
+        current_date_raw, int
+    ):
+        return False
+    starting_war_progress = _active_war_progress_signature(
+        starting_snapshot
+    )
+    if not starting_war_progress:
+        return current_date_raw > starting_date_raw
+    if _active_war_progress_signature(snapshot) != starting_war_progress:
+        return True
+    return current_date_raw >= (
+        starting_date_raw + _NATIVE_WAR_ADVANCE_MAX_DAYS * 24
+    )
+
+
+def _active_war_progress_signature(
+    snapshot: dict[str, object],
+) -> tuple[tuple[object, ...], ...]:
+    wars = snapshot.get("active_wars")
+    if not isinstance(wars, list):
+        return ()
+    result: list[tuple[object, ...]] = []
+    for war in wars:
+        if not isinstance(war, dict):
+            continue
+        war_id = war.get("war_id")
+        score = war.get("player_relative_war_score")
+        if (
+            isinstance(war_id, bool)
+            or not isinstance(war_id, int)
+            or isinstance(score, bool)
+            or not isinstance(score, int)
+        ):
+            continue
+        army_provinces: list[tuple[int, int]] = []
+        armies = war.get("allied_armies")
+        for army in armies if isinstance(armies, list) else []:
+            if not isinstance(army, dict) or army.get("controllable") is not True:
+                continue
+            army_id = army.get("army_id")
+            province_id = army.get("current_province_id")
+            if isinstance(army_id, bool) or not isinstance(army_id, int):
+                continue
+            army_provinces.append(
+                (
+                    army_id,
+                    province_id
+                    if isinstance(province_id, int)
+                    and not isinstance(province_id, bool)
+                    else -1,
+                )
+            )
+        result.append((war_id, score, tuple(sorted(army_provinces))))
+    return tuple(sorted(result))
 
 
 def _retryable_life_advance_change(
@@ -2366,6 +2444,9 @@ def _action_steps(
     arrange_marriage_choices: object = None,
 ) -> list[str]:
     steps: set[str] = set()
+    war_primary_opponent_supported = (
+        WAR_PRIMARY_OPPONENT_CAPABILITY in capabilities
+    )
     expand_event_options = False
     pending_interaction_steps: set[str] = set()
     expand_move_armies = False
@@ -2433,6 +2514,16 @@ def _action_steps(
             enforce_demands_step(int(war["war_id"]))
             for war in wars
             if isinstance(war.get("war_id"), int)
+            and (
+                not war_primary_opponent_supported
+                or (
+                    war.get("player_is_primary_war_leader") is True
+                    and isinstance(
+                        war.get("player_relative_war_score"), int
+                    )
+                    and int(war["player_relative_war_score"]) >= 100
+                )
+            )
         )
     if expand_declare_wars and isinstance(declarable_wars, list):
         steps.update(
@@ -2459,6 +2550,10 @@ def _action_steps(
             for army in enemy_armies_from_wars(wars)
             if isinstance(army.get("current_province_id"), int)
         }
+        if not target_provinces and war_primary_opponent_supported:
+            target_provinces.update(
+                enemy_primary_default_raise_province_ids(wars)
+            )
         for army in controllable:
             army_id = army.get("army_id")
             if not isinstance(army_id, int):

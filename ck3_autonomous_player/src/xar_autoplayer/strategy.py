@@ -23,9 +23,11 @@ from .bridge.war_contract import (
     RAISE_TROOPS_STEP,
     controllable_armies,
     disband_army_step,
+    enemy_primary_default_raise_province_ids,
     enforce_demands_step,
     enemy_armies_from_wars,
     move_army_step,
+    parse_move_army_step,
 )
 from .environment import write_json_atomic
 from .errors import AgentError
@@ -35,6 +37,7 @@ from .runtime import utc_now
 ONE_LIFE_STRATEGY_RELATIVE_PATH = Path("strategy") / "one-life-history.json"
 _EMPTY_MARRIAGE_QUERY_LIMIT = 3
 _SUBMITTED_MARRIAGE_QUERY_LIMIT = 7
+_NATIVE_MOVE_INTENT_MAX_GAME_DAYS = 90
 
 
 def _expanded_command_rows(
@@ -340,6 +343,15 @@ def choose_one_life_turn(
             {
                 "war_id": war.get("war_id"),
                 "player_side": war.get("player_side"),
+                "primary_opponent_character_id": war.get(
+                    "primary_opponent_character_id"
+                ),
+                "player_is_primary_war_leader": war.get(
+                    "player_is_primary_war_leader"
+                ),
+                "enemy_primary_default_raise_province_id": war.get(
+                    "enemy_primary_default_raise_province_id"
+                ),
                 "player_relative_war_score": war.get(
                     "player_relative_war_score"
                 ),
@@ -353,6 +365,14 @@ def choose_one_life_turn(
                 if isinstance(war.get("war_id"), int)
                 and isinstance(war.get("player_relative_war_score"), int)
                 and int(war["player_relative_war_score"]) >= 100
+                and (
+                    war.get("player_is_primary_war_leader") is True
+                    or (
+                        war.get("player_is_primary_war_leader") is None
+                        and enforce_demands_step(int(war["war_id"]))
+                        in available_steps
+                    )
+                )
             ),
             None,
         )
@@ -392,30 +412,79 @@ def choose_one_life_turn(
                 "active_wars": war_summary,
             }
 
-        enemy = _stable_strongest_army(enemy_armies_from_wars(active_wars))
+        visible_enemies = [
+            army
+            for army in enemy_armies_from_wars(active_wars)
+            if isinstance(army.get("current_province_id"), int)
+        ]
+        enemy = _stable_strongest_army(visible_enemies)
         pursuit_army = _stable_strongest_army(controlled_armies)
-        target_province_id = (
-            enemy.get("current_province_id")
-            if isinstance(enemy, dict)
-            else None
+        fallback_province_ids = enemy_primary_default_raise_province_ids(
+            active_wars
         )
+        if isinstance(enemy, dict):
+            target_province_id = enemy.get("current_province_id")
+            target_source = "enemy_army"
+        else:
+            target_province_id = (
+                fallback_province_ids[0]
+                if fallback_province_ids
+                else None
+            )
+            target_source = "enemy_primary_default_raise_province"
         if isinstance(pursuit_army, dict) and isinstance(target_province_id, int):
             army_id = pursuit_army.get("army_id")
             if isinstance(army_id, int):
                 step = move_army_step(army_id, target_province_id)
                 pursuit = {
                     "army_id": army_id,
-                    "target_army_id": enemy.get("army_id"),
+                    "target_army_id": (
+                        enemy.get("army_id")
+                        if isinstance(enemy, dict)
+                        else None
+                    ),
                     "target_province_id": target_province_id,
-                    "target_soldiers": enemy.get("soldiers"),
+                    "target_soldiers": (
+                        enemy.get("soldiers")
+                        if isinstance(enemy, dict)
+                        else None
+                    ),
+                    "target_source": target_source,
                 }
-                if _unadvanced_move_submission(rows, step):
+                active_move_intent = _active_native_move_intent(
+                    rows,
+                    snapshot if isinstance(snapshot, dict) else {},
+                    army_id=army_id,
+                    target_province_id=target_province_id,
+                )
+                if active_move_intent is not None:
                     if "life-advance" in available_steps:
                         return {
                             "policy": "one-life-turn-v1",
                             "phase": "native_war_pursuit_progress",
                             "selected_step": "life-advance",
-                            "reason": "the unobservable native move was accepted; advance time before issuing another pursuit order",
+                            "reason": "the accepted native move intent is still active; advance the war without submitting the same move again",
+                            "pursuit": pursuit,
+                            "move_intent": active_move_intent,
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_pursuit_progress_unsupported",
+                        "selected_step": None,
+                        "required_step": "life-advance",
+                        "reason": "the native move intent is still active but this backend cannot advance the march",
+                        "pursuit": pursuit,
+                        "move_intent": active_move_intent,
+                        "active_wars": war_summary,
+                    }
+                if _unadvanced_deferred_move(rows, step):
+                    if "life-advance" in available_steps:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_pursuit_progress",
+                            "selected_step": "life-advance",
+                            "reason": "the army was not move-ready; advance once before retrying the order",
                             "pursuit": pursuit,
                             "active_wars": war_summary,
                         }
@@ -424,7 +493,7 @@ def choose_one_life_turn(
                         "phase": "native_war_pursuit_progress_unsupported",
                         "selected_step": None,
                         "required_step": "life-advance",
-                        "reason": "the native move was accepted but this backend cannot advance the march",
+                        "reason": "the deferred native move needs time to advance but this backend cannot do so",
                         "pursuit": pursuit,
                         "active_wars": war_summary,
                     }
@@ -455,7 +524,11 @@ def choose_one_life_turn(
                         "policy": "one-life-turn-v1",
                         "phase": "native_war_pursuit",
                         "selected_step": step,
-                        "reason": "move the strongest controllable army to the strongest visible enemy army",
+                        "reason": (
+                            "move the strongest controllable army to the strongest visible enemy army"
+                            if target_source == "enemy_army"
+                            else "no enemy army province is visible; move toward the primary opponent's default rally province fallback"
+                        ),
                         "pursuit": pursuit,
                         "active_wars": war_summary,
                     }
@@ -881,7 +954,135 @@ def _stable_strongest_army(
     )
 
 
-def _unadvanced_move_submission(
+def _active_native_move_intent(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    army_id: int,
+    target_province_id: int,
+) -> dict[str, object] | None:
+    latest_position = -1
+    latest_row: dict[str, object] | None = None
+    for position in range(len(commands) - 1, -1, -1):
+        row = commands[position]
+        command = _effective_command(row)
+        if command == "restore-checkpoint" and row.get("ok") is True:
+            return None
+        parsed = parse_move_army_step(command)
+        if parsed is None or parsed[0] != army_id:
+            continue
+        latest_position = position
+        latest_row = row
+        break
+    if latest_row is None or latest_row.get("ok") is not True:
+        return None
+    parsed = parse_move_army_step(_effective_command(latest_row))
+    if parsed != (army_id, target_province_id):
+        return None
+    result = latest_row.get("result")
+    action = result.get("war_action") if isinstance(result, dict) else None
+    if (
+        not isinstance(action, dict)
+        or action.get("status") not in {"move_submitted", "moving"}
+        or result.get("accepted") is False
+    ):
+        return None
+    action_army_id = action.get("army_id")
+    action_target_province_id = action.get("target_province_id")
+    if (
+        action_army_id is not None
+        and action_army_id != army_id
+    ) or (
+        action_target_province_id is not None
+        and action_target_province_id != target_province_id
+    ):
+        return None
+
+    player_armies = snapshot.get("player_armies")
+    army = (
+        next(
+            (
+                row
+                for row in player_armies
+                if isinstance(row, dict) and row.get("army_id") == army_id
+            ),
+            None,
+        )
+        if isinstance(player_armies, list)
+        else None
+    )
+    if not isinstance(army, dict):
+        return None
+    if army.get("current_province_id") == target_province_id:
+        return None
+    observed_target = army.get("move_target_province_id")
+    if isinstance(observed_target, int) and observed_target != target_province_id:
+        return None
+
+    elapsed_days = _move_intent_elapsed_days(
+        commands,
+        latest_position=latest_position,
+        action=action,
+        snapshot=snapshot,
+    )
+    if elapsed_days >= _NATIVE_MOVE_INTENT_MAX_GAME_DAYS:
+        return None
+    return {
+        "status": "active",
+        "army_id": army_id,
+        "target_province_id": target_province_id,
+        "elapsed_days": elapsed_days,
+        "timeout_days": _NATIVE_MOVE_INTENT_MAX_GAME_DAYS,
+    }
+
+
+def _move_intent_elapsed_days(
+    commands: list[dict[str, object]],
+    *,
+    latest_position: int,
+    action: dict[str, object],
+    snapshot: dict[str, object],
+) -> int:
+    submitted_date_raw = action.get("submitted_date_raw")
+    current_date_raw = snapshot.get("date_raw")
+    if (
+        isinstance(submitted_date_raw, int)
+        and not isinstance(submitted_date_raw, bool)
+        and isinstance(current_date_raw, int)
+        and not isinstance(current_date_raw, bool)
+        and current_date_raw >= submitted_date_raw
+    ):
+        return (current_date_raw - submitted_date_raw) // 24
+
+    elapsed_days = 0
+    for row in commands[latest_position + 1 :]:
+        if _effective_command(row) != "life-advance" or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        if not isinstance(result, dict):
+            continue
+        elapsed = result.get("elapsed_days")
+        if (
+            isinstance(elapsed, int)
+            and not isinstance(elapsed, bool)
+            and elapsed >= 0
+        ):
+            elapsed_days += elapsed
+            continue
+        starting_date_raw = result.get("starting_date_raw")
+        ending_date_raw = result.get("ending_date_raw")
+        if (
+            isinstance(starting_date_raw, int)
+            and not isinstance(starting_date_raw, bool)
+            and isinstance(ending_date_raw, int)
+            and not isinstance(ending_date_raw, bool)
+            and ending_date_raw >= starting_date_raw
+        ):
+            elapsed_days += (ending_date_raw - starting_date_raw) // 24
+    return elapsed_days
+
+
+def _unadvanced_deferred_move(
     commands: list[dict[str, object]], step: str
 ) -> bool:
     for row in reversed(commands):
@@ -894,8 +1095,7 @@ def _unadvanced_move_submission(
         action = result.get("war_action") if isinstance(result, dict) else None
         return (
             isinstance(action, dict)
-            and action.get("status")
-            in {"move_submitted", "move_deferred"}
+            and action.get("status") == "move_deferred"
         )
     return False
 

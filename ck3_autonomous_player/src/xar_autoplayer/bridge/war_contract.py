@@ -8,6 +8,7 @@ from collections.abc import Iterable
 MOVE_ARMY_CAPABILITY = "game.command.move-army-N-to-N"
 DISBAND_ARMY_CAPABILITY = "game.command.disband-army-N"
 ENFORCE_DEMANDS_CAPABILITY = "game.command.enforce-demands-N"
+WAR_PRIMARY_OPPONENT_CAPABILITY = "game.state.war-primary-opponent"
 RAISE_TROOPS_STEP = "raise-troops-default"
 
 
@@ -32,10 +33,46 @@ def normalize_active_wars(value: object) -> list[dict[str, object]]:
                 "native active_wars"
                 f"[{index}].player_relative_war_score is malformed"
             )
+        primary_opponent_character_id = raw_war.get(
+            "primary_opponent_character_id"
+        )
+        if primary_opponent_character_id is not None:
+            primary_opponent_character_id = _non_negative_id(
+                primary_opponent_character_id,
+                "primary_opponent_character_id",
+            )
+        player_is_primary_war_leader = raw_war.get(
+            "player_is_primary_war_leader"
+        )
+        if (
+            player_is_primary_war_leader is not None
+            and not isinstance(player_is_primary_war_leader, bool)
+        ):
+            raise ValueError(
+                "native active_wars"
+                f"[{index}].player_is_primary_war_leader is malformed"
+            )
+        enemy_primary_default_raise_province_id = raw_war.get(
+            "enemy_primary_default_raise_province_id"
+        )
+        if enemy_primary_default_raise_province_id is not None:
+            enemy_primary_default_raise_province_id = _non_negative_id(
+                enemy_primary_default_raise_province_id,
+                "enemy_primary_default_raise_province_id",
+            )
         result.append(
             {
                 "war_id": war_id,
                 "player_side": player_side,
+                "primary_opponent_character_id": (
+                    primary_opponent_character_id
+                ),
+                "player_is_primary_war_leader": (
+                    player_is_primary_war_leader
+                ),
+                "enemy_primary_default_raise_province_id": (
+                    enemy_primary_default_raise_province_id
+                ),
                 "player_relative_war_score": score,
                 "allied_armies": normalize_armies(
                     raw_war.get("allied_armies"),
@@ -149,6 +186,18 @@ def enemy_armies_from_wars(
         if isinstance(rows, list):
             enemies.extend(row for row in rows if isinstance(row, dict))
     return deduplicate_armies(enemies)
+
+
+def enemy_primary_default_raise_province_ids(
+    active_wars: Iterable[dict[str, object]],
+) -> list[int]:
+    """Return stable fallback objectives when no enemy army is observable."""
+    province_ids: set[int] = set()
+    for war in active_wars:
+        province_id = war.get("enemy_primary_default_raise_province_id")
+        if isinstance(province_id, int) and not isinstance(province_id, bool):
+            province_ids.add(province_id)
+    return sorted(province_ids)
 
 
 def controllable_armies(
