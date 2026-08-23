@@ -14,6 +14,33 @@ from .runtime import utc_now
 ONE_LIFE_STRATEGY_RELATIVE_PATH = Path("strategy") / "one-life-history.json"
 
 
+def _expanded_command_rows(
+    commands: Iterable[dict[str, object]],
+) -> list[dict[str, object]]:
+    """Flatten bounded auto-runs into the same history used by one-step turns."""
+    expanded: list[dict[str, object]] = []
+    for row in commands:
+        if not isinstance(row, dict):
+            continue
+        command = row.get("command")
+        if isinstance(command, str) and (
+            command == "auto-run"
+            or (
+                command.startswith("auto-run ")
+                and command.removeprefix("auto-run ").isdigit()
+            )
+        ):
+            result = row.get("result")
+            turns = result.get("turns") if isinstance(result, dict) else None
+            if isinstance(turns, list):
+                for turn in turns:
+                    if isinstance(turn, dict):
+                        expanded.append({**turn, "index": len(expanded) + 1})
+                continue
+        expanded.append({**row, "index": len(expanded) + 1})
+    return expanded
+
+
 def _effective_command(row: dict[str, object]) -> str | None:
     command = row.get("command")
     if command != "auto-turn":
@@ -65,7 +92,7 @@ def choose_one_life_turn(
     then invokes it again; failures and newly visible events therefore change
     the next choice instead of being hidden inside a long macro.
     """
-    rows = [row for row in commands if isinstance(row, dict)]
+    rows = _expanded_command_rows(commands)
     last = rows[-1] if rows else None
     last_error = str(last.get("error", "")) if last is not None else ""
     if "one-life death terminal visible:" in last_error:
@@ -237,8 +264,8 @@ def choose_one_life_turn(
 def _successful_result(
     commands: Iterable[dict[str, object]], command: str
 ) -> dict[str, object] | None:
-    for row in reversed(tuple(commands)):
-        if row.get("command") != command or row.get("ok") is not True:
+    for row in reversed(_expanded_command_rows(commands)):
+        if _effective_command(row) != command or row.get("ok") is not True:
             continue
         result = row.get("result")
         if isinstance(result, dict):

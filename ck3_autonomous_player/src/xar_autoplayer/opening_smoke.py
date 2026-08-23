@@ -80,8 +80,11 @@ MAX_CHAINED_ORDINARY_EVENTS = 8
 ACTIVE_EVENT_PREVIEW_REGION = (0.23, 0.08, 0.60, 0.86)
 DEVELOPMENT_EVENT_WAIT_SECONDS = 45.0
 ONE_LIFE_TURN_WAIT_SECONDS = 10.0
+DEFAULT_AUTO_RUN_TURNS = 3
+MAX_AUTO_RUN_TURNS = 20
 OPENING_DEVELOPMENT_STEPS = (
     "auto-turn",
+    "auto-run",
     "pause-map",
     "life-advance",
     "steward-development",
@@ -1385,6 +1388,34 @@ def _building_construction_in_progress(frame: object) -> bool:
     )
 
 
+def _auto_run_turn_count(development_step: str | None) -> int | None:
+    if not isinstance(development_step, str):
+        return None
+    match = re.fullmatch(r"auto-run(?:\s+(\d+))?", development_step.strip())
+    if match is None:
+        return None
+    turns = int(match.group(1) or DEFAULT_AUTO_RUN_TURNS)
+    if not 1 <= turns <= MAX_AUTO_RUN_TURNS:
+        raise AgentError(
+            f"auto-run turns must be between 1 and {MAX_AUTO_RUN_TURNS}"
+        )
+    return turns
+
+
+def _development_session_commands(artifacts: Path) -> list[dict[str, object]]:
+    session_report_path = artifacts.parent / "report.json"
+    if not session_report_path.exists():
+        return []
+    try:
+        session_report = json.loads(session_report_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise AgentError(f"development session report is unreadable: {error}") from error
+    raw_commands = session_report.get("commands")
+    if not isinstance(raw_commands, list):
+        return []
+    return [row for row in raw_commands if isinstance(row, dict)]
+
+
 def _drive_opening(
     spec: EnvironmentSpec,
     handle: SessionHandle,
@@ -1401,27 +1432,108 @@ def _drive_opening(
     development_step: str | None = None,
     resume_saved_game: bool = False,
 ) -> dict[str, object]:
-    if development_step == "auto-turn":
+    auto_run_turns = _auto_run_turn_count(development_step)
+    if development_step == "auto-turn" or auto_run_turns is not None:
         # The persistent session may have imported an older strategy module;
         # reload it here as well so adding planner behavior never requires a
         # CK3 restart.
         from . import strategy as strategy_policy
 
         strategy_policy = importlib.reload(strategy_policy)
-        commands: list[dict[str, object]] = []
-        session_report_path = artifacts.parent / "report.json"
-        if session_report_path.exists():
-            try:
-                session_report = json.loads(
-                    session_report_path.read_text(encoding="utf-8")
-                )
-            except (OSError, json.JSONDecodeError) as error:
-                raise AgentError(
-                    f"development session report is unreadable: {error}"
-                ) from error
-            raw_commands = session_report.get("commands")
-            if isinstance(raw_commands, list):
-                commands = [row for row in raw_commands if isinstance(row, dict)]
+        commands = _development_session_commands(artifacts)
+        if auto_run_turns is not None:
+            turns: list[dict[str, object]] = []
+            status = "completed"
+            for turn_index in range(1, auto_run_turns + 1):
+                turn = strategy_policy.choose_one_life_turn(commands)
+                selected_step = turn.get("selected_step")
+                if (
+                    not isinstance(selected_step, str)
+                    or selected_step in {"auto-turn", "auto-run"}
+                ):
+                    raise AgentError("one-life turn planner returned an invalid step")
+                turn_record: dict[str, object] = {
+                    "index": turn_index,
+                    "command": "auto-turn",
+                    "started_at": utc_now(),
+                    "ok": False,
+                }
+                try:
+                    turn_result = _drive_opening(
+                        spec,
+                        handle,
+                        manifest,
+                        artifacts,
+                        events,
+                        contract_path,
+                        contract_sha256,
+                        deadline,
+                        ordinary_event_count=ordinary_event_count,
+                        inspect_map_panels=inspect_map_panels,
+                        construct_economic_building=construct_economic_building,
+                        assign_steward_development=assign_steward_development,
+                        development_step=selected_step,
+                        resume_saved_game=resume_saved_game,
+                    )
+                    turn_result["requested_step"] = "auto-turn"
+                    turn_result["auto_turn"] = turn
+                    turn_record["result"] = turn_result
+                    turn_record["ok"] = True
+                except Exception as error:
+                    turn_record["error"] = f"{type(error).__name__}: {error}"
+                turn_record["finished_at"] = utc_now()
+                turns.append(turn_record)
+                commands.append(turn_record)
+
+                if turn_record["ok"] is not True:
+                    error_text = str(turn_record.get("error", ""))
+                    if not any(
+                        marker in error_text
+                        for marker in (
+                            "ordinary event interrupted",
+                            "one-life death terminal visible:",
+                        )
+                    ):
+                        status = "stopped_on_error"
+                        break
+                elif selected_step in {"death-terminal", "strategy-review"}:
+                    status = "episode_complete"
+                    break
+
+            last_result = turns[-1].get("result") if turns else None
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": "auto-run",
+                "requested_step": development_step,
+                "requested_turns": auto_run_turns,
+                "completed_turns": len(turns),
+                "status": status,
+                "all_turns_ok": all(row.get("ok") is True for row in turns),
+                "turns": turns,
+                "actions": [],
+                "final_screen": (
+                    last_result.get("final_screen")
+                    if isinstance(last_result, dict)
+                    else "unchanged"
+                ),
+                "final_observation_id": (
+                    last_result.get("final_observation_id")
+                    if isinstance(last_result, dict)
+                    else None
+                ),
+                "window_binding": (
+                    last_result.get("window_binding")
+                    if isinstance(last_result, dict)
+                    else None
+                ),
+                "foreground_activation": (
+                    last_result.get("foreground_activation")
+                    if isinstance(last_result, dict)
+                    else None
+                ),
+            }
+
         turn = strategy_policy.choose_one_life_turn(commands)
         selected_step = turn["selected_step"]
         if not isinstance(selected_step, str) or selected_step == "auto-turn":

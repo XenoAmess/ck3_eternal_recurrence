@@ -62,6 +62,7 @@ def parser() -> argparse.ArgumentParser:
         "--step",
         choices=(
             "auto-turn",
+            "auto-run",
             "pause-map",
             "life-advance",
             "steward-development",

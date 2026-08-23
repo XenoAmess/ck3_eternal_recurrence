@@ -222,6 +222,7 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step save-checkpoint --timeout 240
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step restore-checkpoint --timeout 240
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step auto-turn --timeout 240
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step auto-run --timeout 900
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step death-terminal --timeout 240
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" strategy-review
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-dev-session --timeout 21600
@@ -257,6 +258,11 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 26.75 秒。第一版 180 秒事件等待曾把地图留在运行态，并漏掉丹麦【召集加入战争】信函，造成盟友
 关系实际下降 20；现有循环把无事件视为正常有界结果、主动暂停，并单独识别外交信函，优先用 `Shift+2` 履行本世联盟。该修复来自
 实际玩法损失，不是理论归档加固。
+
+常驻 `opening-dev-session` 的标准输入还接受 `auto-run N`（`1..20`，省略 N 默认 3）：它连续执行 N 个 `auto-turn`，每个子回合
+保留自己的规划、动作与结果；普通错误立即停止，只有已知的可见事件打断或死亡终局会转入下一策略步骤。实机 `auto-run 2` 已连续处理
+【锈迹斑斑的工具】两页事件；后续另一批次先按历史自动保存
+`阿普利亚公爵，罗贝尔_1069_05_08.ck3`，再把日期推进至 1069-06-25。持续模式因此不需要人工逐条重复发送 `auto-turn`。
 
 默认运行状态在 `%LOCALAPPDATA%\XarAutoplayer`，可用 `XAR_AUTOPLAYER_STATE_DIR` 或
 `--state-dir` 改写，但安全检查拒绝仓库、真实玩家目录、Steam userdata 与 Workshop 的父目录或子目录。

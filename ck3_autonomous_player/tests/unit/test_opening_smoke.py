@@ -30,6 +30,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS,
     STEWARD_DEVELOP_COUNTY_TASK_CENTER,
     _building_construction_in_progress,
+    _auto_run_turn_count,
     _county_label_target_candidates,
     _choose_first_blessing,
     _choose_first_curse,
@@ -587,6 +588,38 @@ class OpeningContractTests(unittest.TestCase):
         success("death-terminal")
         self.assertEqual(selected(), "strategy-review")
 
+    def test_auto_run_parser_and_nested_history(self) -> None:
+        self.assertEqual(_auto_run_turn_count("auto-run"), 3)
+        self.assertEqual(_auto_run_turn_count("auto-run 12"), 12)
+        self.assertIsNone(_auto_run_turn_count("auto-turn"))
+        with self.assertRaisesRegex(AgentError, "between 1 and 20"):
+            _auto_run_turn_count("auto-run 21")
+
+        commands = [
+            {
+                "index": 1,
+                "command": "auto-run 2",
+                "ok": True,
+                "result": {
+                    "turns": [
+                        {
+                            "index": 1,
+                            "command": "auto-turn",
+                            "ok": True,
+                            "result": {
+                                "auto_turn": {
+                                    "selected_step": "save-checkpoint"
+                                }
+                            },
+                        }
+                    ]
+                },
+            }
+        ]
+        self.assertEqual(
+            choose_one_life_turn(commands)["selected_step"], "dynasty-review"
+        )
+
     def test_palermo_target_comes_from_visible_map_label(self) -> None:
         frame = SimpleNamespace(
             client_rect=(0, 0, 2560, 1440),
@@ -1081,6 +1114,46 @@ class OpeningContractTests(unittest.TestCase):
 
 
 class OpeningScenarioTests(unittest.TestCase):
+    def test_auto_run_stops_after_terminal_strategy_review(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state = Path(temporary) / "state"
+            run = state / "runs" / "terminal-run"
+            artifacts = run / "artifacts"
+            artifacts.mkdir(parents=True)
+            (run / "report.json").write_text(
+                json.dumps(
+                    {
+                        "commands": [
+                            {
+                                "index": 1,
+                                "command": "death-terminal",
+                                "ok": True,
+                                "result": {},
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            result = _drive_opening(
+                SimpleNamespace(state_dir=state),
+                mock.Mock(),
+                {},
+                artifacts,
+                run / "events.jsonl",
+                Path("unused-contract.json"),
+                "0" * 64,
+                time.monotonic() + 5,
+                development_step="auto-run 5",
+            )
+
+        self.assertEqual(result["status"], "episode_complete")
+        self.assertEqual(result["completed_turns"], 1)
+        self.assertTrue(result["all_turns_ok"])
+        self.assertEqual(
+            result["turns"][0]["result"]["step"], "strategy-review"
+        )
+
     def test_auto_turn_routes_terminal_history_to_read_only_strategy(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             state = Path(temporary) / "state"
@@ -1911,6 +1984,11 @@ class OpeningScenarioTests(unittest.TestCase):
         )
         self.assertEqual(auto_turn.step, "auto-turn")
         self.assertIn("auto-turn", OPENING_DEVELOPMENT_STEPS)
+        auto_run = cli.parser().parse_args(
+            ["opening-step", "--step", "auto-run"]
+        )
+        self.assertEqual(auto_run.step, "auto-run")
+        self.assertIn("auto-run", OPENING_DEVELOPMENT_STEPS)
         pause_map = cli.parser().parse_args(
             ["opening-step", "--step", "pause-map"]
         )
