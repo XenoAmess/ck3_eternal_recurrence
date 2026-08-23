@@ -49,15 +49,22 @@ MCP 同时保留 generic `ck3_execute_step("save-checkpoint")`，并提供 typed
 
 1. MCP native driver 向 `<state>/native-session/bridge/inbox` 原子发布请求，并记录当前
    `connection_generation`；
-2. 持有 CK3 `SessionHandle` 的 `native-session` 主线程调用 `stop_tracked`，然后使用完全相同的
-   pipe、DLL 和 injector 再次执行 `launch(..., continue_last_save=True)`；
+2. 请求同时携带 `xar_checkpoint.ck3` 的 size、SHA-256 与已知保存日期；持有 CK3
+   `SessionHandle` 的 `native-session` 主线程在停止前和停止后各核对一次文件，再使用完全相同的
+   pipe、DLL 和 injector 执行 `launch(..., load_save_name="xar_checkpoint")`；
 3. 会话进程在 outbox 返回旧/新 PID；driver 仍不会立即宣称成功，而是等待 named pipe 出现更大的
-   `connection_generation`，并等待该代 DLL 发布 `map_ready=true` snapshot；
-4. 结果返回 `restored_date`、checkpoint 路径/大小/hash、新连接代次和新 PID。
+   `connection_generation`，等待该代 DLL 发布 `map_ready=true` snapshot，并要求语义 revision 至少稳定
+   0.5 秒；
+4. driver 核对恢复日期（有保存日期元数据时）、本局 played CharacterID 和 checkpoint hash，随后返回
+   `restored_date`、checkpoint 路径/大小/hash、新连接代次和新 PID。
 
 这条路径不导入 OCR、截图或输入模块，也不激活窗口。`native-headless` 缺少受管
 `native-session` 或 checkpoint 文件时直接失败；`hybrid-fallback` 对这一特定步骤也不会改走视觉
-`restore-checkpoint`。当前实现是固定 checkpoint 的进程级 `-continuelastsave`，不是同进程热读档。
+`restore-checkpoint`。当前实现是固定 checkpoint 的进程级 `-loadsave=xar_checkpoint`，不是同进程热读档。
+CK3 1.19.0.6 的启动分支在 RVA `0x34806E5`/`0x3480878` 分别处理
+`continuelastsave`/`loadsave`；后者把 basename 交给 save manager，由 `save games` 目录和 `.ck3`
+扩展拼出实际文件。因此参数必须是不带扩展名和路径的 `xar_checkpoint`。这避免了
+`-continuelastsave` 随 profile 根目录 `last_save.ck3` 漂移到更新 autosave 的实际功能错误。
 `native-session` 在入口已经验证一次 committed profile，并在整个会话期间独占同一 state/launch 锁；受管重启因此复用
 该验证结果，不再重复执行完整 Git/runtime 指纹。这样恢复时间由 CK3 重载决定，不会被第二次 `git ls-files` 卡住；普通冷启动
 仍执行完整验证，Git 子进程本身也有 15 秒上限。
@@ -75,5 +82,6 @@ MCP 同时保留 generic `ck3_execute_step("save-checkpoint")`，并提供 typed
   `e767471a9d0f2984f4dba5baeaa9dcb43cb72b055f585a650c2ff1501ffcc914`。
 
 这两次过程都没有调用 OCR、截图、聚焦、键盘或鼠标后端。上述自动生命周期队列将同样的实测手工
-重启路径封装成 MCP semantic step；其 Python 双进程闭环已有确定性测试，整条 MCP 自动重启路径仍需
-下一次最小化实机复验。同进程指定文件热加载尚未实现。
+重启路径封装成 MCP semantic step；其 Python 双进程闭环已有确定性测试。上述两次历史实测使用的是
+旧 `-continuelastsave` 路径；指定文件的 `-loadsave=xar_checkpoint` 自动重启与最小化状态继承仍需
+下一次实机复验。同进程指定文件热加载尚未实现。

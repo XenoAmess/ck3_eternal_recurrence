@@ -2147,8 +2147,29 @@ def _native_bridge_child_environment(
 
 
 def _ck3_launch_command(
-    spec: EnvironmentSpec, *, continue_last_save: bool = False
+    spec: EnvironmentSpec,
+    *,
+    continue_last_save: bool = False,
+    load_save_name: str | None = None,
 ) -> list[str]:
+    if continue_last_save and load_save_name is not None:
+        raise AgentError(
+            "CK3 launch cannot combine -continuelastsave with -loadsave"
+        )
+    if load_save_name is not None:
+        if (
+            not isinstance(load_save_name, str)
+            or not load_save_name
+            or Path(load_save_name).name != load_save_name
+            or Path(load_save_name).suffix
+            or any(
+                character in load_save_name for character in ("/", "\\", "\0")
+            )
+        ):
+            raise AgentError(
+                "CK3 -loadsave requires one save basename without a path or "
+                "extension"
+            )
     command = [
         str(spec.game_exe),
         "-gdpr-compliant",
@@ -2156,6 +2177,8 @@ def _ck3_launch_command(
     ]
     if continue_last_save:
         command.append("-continuelastsave")
+    elif load_save_name is not None:
+        command.append(f"-loadsave={load_save_name}")
     return command
 
 
@@ -2268,6 +2291,7 @@ def launch(
     job_name: str | None = None,
     native_bridge: NativeBridgeLaunchConfig | None = None,
     continue_last_save: bool = False,
+    load_save_name: str | None = None,
     verify_prepared_profile: bool = True,
 ) -> SessionHandle:
     native_bridge = (
@@ -2284,7 +2308,9 @@ def launch(
     if ck3_processes():
         raise AgentError("refusing to launch while any ck3.exe is already running")
     command = _ck3_launch_command(
-        spec, continue_last_save=continue_last_save
+        spec,
+        continue_last_save=continue_last_save,
+        load_save_name=load_save_name,
     )
     child_environment = (
         _native_bridge_child_environment(native_bridge)

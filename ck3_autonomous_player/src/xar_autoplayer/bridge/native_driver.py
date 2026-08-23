@@ -82,6 +82,7 @@ _NATIVE_DEATH_TERMINAL_STEP = "death-terminal"
 _NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
 _NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 _RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
+_RESTORE_MAP_STABLE_SECONDS = 0.5
 _ARMY_MOVE_DEFERRED_ERRORS = frozenset(
     {
         # Kept for protocol-v1 bridges built before the native rejection
@@ -1476,6 +1477,16 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native restore-checkpoint requires xar_checkpoint.ck3"
             )
+        checkpoint_size = signature[0]
+        checkpoint_sha256 = _sha256_file(checkpoint_path)
+        with self._driver_state_lock:
+            previous_checkpoint = copy.deepcopy(self._last_checkpoint) or {}
+            expected_episode_character_id = self._episode_character_id
+        checkpoint_saved_date_raw = previous_checkpoint.get("date_raw")
+        if not isinstance(checkpoint_saved_date_raw, int) or isinstance(
+            checkpoint_saved_date_raw, bool
+        ):
+            checkpoint_saved_date_raw = None
 
         starting = self.take_snapshot()
         starting_revision = int(starting["revision"])
@@ -1510,6 +1521,9 @@ class NativeHeadlessGameplayDriver:
                 "command": _RESTORE_CHECKPOINT_STEP,
                 "pipe": self.pipe_name,
                 "checkpoint_name": _CHECKPOINT_FILENAME,
+                "checkpoint_size": checkpoint_size,
+                "checkpoint_sha256": checkpoint_sha256,
+                "checkpoint_saved_date_raw": checkpoint_saved_date_raw,
             },
         )
 
@@ -1519,30 +1533,66 @@ class NativeHeadlessGameplayDriver:
         )
         restored = self._wait_for_restored_map(starting_generation, deadline)
         restored_date_raw = _date_raw(restored, "restored snapshot")
+        if (
+            checkpoint_saved_date_raw is not None
+            and restored_date_raw != checkpoint_saved_date_raw
+        ):
+            raise BridgeUnavailableError(
+                "native-session loaded a different save date than the requested "
+                "checkpoint: "
+                f"{restored_date_raw} != {checkpoint_saved_date_raw}"
+            )
+        restored_character = restored.get("played_character")
+        restored_character_id = (
+            restored_character.get("character_id")
+            if isinstance(restored_character, dict)
+            else None
+        )
+        if (
+            expected_episode_character_id is not None
+            and restored_character_id != expected_episode_character_id
+        ):
+            raise BridgeUnavailableError(
+                "native-session restored a different played character than the "
+                "checkpoint episode: "
+                f"{restored_character_id} != {expected_episode_character_id}"
+            )
         restored_signature = _checkpoint_signature(checkpoint_path)
         if restored_signature is None or restored_signature[0] <= 0:
             raise BridgeUnavailableError(
                 "native-session restored CK3 but its checkpoint file is missing"
             )
         size, mtime_ns = restored_signature
-        with self._driver_state_lock:
-            previous_checkpoint = copy.deepcopy(self._last_checkpoint) or {}
         lifecycle_result = response.get("result")
         lifecycle = (
             dict(lifecycle_result)
             if isinstance(lifecycle_result, dict)
             else {}
         )
+        lifecycle_checkpoint = lifecycle.get("checkpoint")
+        if not isinstance(lifecycle_checkpoint, dict) or (
+            lifecycle_checkpoint.get("name") != _CHECKPOINT_FILENAME
+            or lifecycle_checkpoint.get("size") != checkpoint_size
+            or lifecycle_checkpoint.get("sha256") != checkpoint_sha256
+        ):
+            raise BridgeUnavailableError(
+                "native-session did not attest the requested checkpoint bytes"
+            )
+        restored_sha256 = _sha256_file(checkpoint_path)
+        if restored_sha256 != checkpoint_sha256:
+            raise BridgeUnavailableError(
+                "native checkpoint bytes changed during restore"
+            )
         restored_checkpoint = {
             "status": "restored",
             "path": str(checkpoint_path.resolve()),
             "name": checkpoint_path.name,
             "size": size,
-            "sha256": _sha256_file(checkpoint_path),
+            "sha256": restored_sha256,
             "date_raw": restored_date_raw,
-            "saved_date_raw": previous_checkpoint.get("date_raw"),
+            "saved_date_raw": checkpoint_saved_date_raw,
             "mtime_ns": mtime_ns,
-            "strategy": "native-session-continuelastsave-v1",
+            "strategy": "native-session-loadsave-exact-v2",
         }
         return {
             "step": _RESTORE_CHECKPOINT_STEP,
@@ -1673,7 +1723,10 @@ class NativeHeadlessGameplayDriver:
         self, starting_generation: int, deadline: float
     ) -> dict[str, object]:
         observed_revision = self.state.public_revision()
+        stable_revision: int | None = None
+        stable_since: float | None = None
         while True:
+            now = time.monotonic()
             diagnostics = self.state.diagnostics()
             generation = diagnostics.get("connection_generation")
             if isinstance(generation, int) and generation > starting_generation:
@@ -1682,14 +1735,34 @@ class NativeHeadlessGameplayDriver:
                 except BridgeUnavailableError:
                     snapshot = None
                 if isinstance(snapshot, dict) and snapshot.get("map_ready") is True:
-                    return snapshot
-            remaining = deadline - time.monotonic()
+                    revision = int(snapshot["revision"])
+                    if revision != stable_revision:
+                        stable_revision = revision
+                        stable_since = now
+                    elif (
+                        stable_since is not None
+                        and now - stable_since >= _RESTORE_MAP_STABLE_SECONDS
+                    ):
+                        return snapshot
+                else:
+                    stable_revision = None
+                    stable_since = None
+            remaining = deadline - now
             if remaining <= 0:
                 raise BridgeUnavailableError(
                     "native-session relaunched CK3 but no newer DLL generation "
                     "published a map_ready snapshot"
                 )
-            self.state.wait_for_public_change(observed_revision, remaining)
+            wait_seconds = remaining
+            if stable_since is not None:
+                wait_seconds = min(
+                    wait_seconds,
+                    max(
+                        0.001,
+                        _RESTORE_MAP_STABLE_SECONDS - (now - stable_since),
+                    ),
+                )
+            self.state.wait_for_public_change(observed_revision, wait_seconds)
             observed_revision = self.state.public_revision()
 
     def _native_driver_state_path(self) -> Path:

@@ -267,7 +267,8 @@ submission snapshot，并开放 `pause-map`、`resume-map`、`set-speed-1..5`、
 `ck3_auto_turn`，用同一 planner 选择并执行一次当前可用的原生步骤。2026-08-23 已在真实
 CK3 1.19.0.6 的最小化窗口上完成无 OCR/键鼠实测：90 次复合回合推进 94 个游戏日；连续后台推进发现实例 14 的
 五选项事件并以原生命令选择第 1 项，随后观察到实例 15；原生 checkpoint 落盘为约 63 MB 的
-`xar_checkpoint.ck3`，新进程用 `-continuelastsave` 精确恢复到同一 `date_raw=53167488`。native driver 会锁定首次可玩
+`xar_checkpoint.ck3`，历史新进程曾用 `-continuelastsave` 恢复到同一 `date_raw=53167488`。当前 typed restore 已改用
+`-loadsave=xar_checkpoint` 直接指定该文件，并绑定 size/SHA、保存日期与本局角色，避免后续 autosave 改变“最后存档”。native driver 会锁定首次可玩
 snapshot 的 `episode_character_id`，restore 后仍保持该 ID；玩家死亡或 CK3 已切换 played `CharacterID` 都在本项目的
 一代制规则下直接产生 `death-terminal`，不会继续扮演继承人。可选的 primary-heir 字段只用于当前生命的策略信息。
 原生战争层现已支持显式枚举宣战理由、宣战、征兵、行军、强制要求与解散军队；2026-08-23 的最小化实测中，
@@ -277,7 +278,8 @@ snapshot 的 `episode_character_id`，restore 后仍保持该 ID；玩家死亡�
 纯原生模式需要两个并行进程：先启动 `mcp_server.py --driver native-headless` 建立 pipe server，再用上面的
 `agent.py ... native-session` 创建 suspended CK3、注入 DLL 并恢复游戏。`native-session` 监管 PID/Job，stdin 接受
 `status`/`stop`；同时在 `<state>/native-session/bridge` 接受纯原生 `restore-checkpoint`，停止当前受管进程后以同一
-pipe/DLL 和 `-continuelastsave` 重启。MCP driver 只有观察到新连接代次的 `map_ready` snapshot 才返回恢复成功；整个路径
+pipe/DLL 和 `-loadsave=xar_checkpoint` 重启。若旧进程的 CK3 窗口已最小化，生命周期 supervisor 会把新 PID 的窗口也恢复为
+最小化。MCP driver 只有观察到新连接代次中稳定的 `map_ready` snapshot，并核对保存日期、角色与 checkpoint bytes 后才返回恢复成功；整个路径
 不导入 vision、OCR 或输入模块。它拒绝 `hybrid-fallback`，且该步骤不会隐式回落。允许视觉回落时仍使用
 `opening-dev-session --bridge-mode hybrid-fallback ...`，因为只有该命令提供 vision-session 的主线程 inbox/outbox。
 

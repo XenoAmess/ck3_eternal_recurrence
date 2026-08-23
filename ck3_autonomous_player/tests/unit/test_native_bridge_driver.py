@@ -1388,7 +1388,16 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                                 "previous_pid": 4242,
                                 "pid": 5252,
                                 "pipe": endpoint.pipe_name,
-                                "continue_last_save": True,
+                                "continue_last_save": False,
+                                "load_save_name": "xar_checkpoint",
+                                "checkpoint": {
+                                    "name": "xar_checkpoint.ck3",
+                                    "size": len(checkpoint_payload),
+                                    "sha256": hashlib.sha256(
+                                        checkpoint_payload
+                                    ).hexdigest(),
+                                    "saved_date_raw": None,
+                                },
                             },
                             "error": None,
                         },
@@ -1403,6 +1412,21 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     endpoint.publish(
                         _snapshot(
                             1,
+                            date_raw=53_171_400,
+                            map_ready=True,
+                            played_character={
+                                "character_id": 707,
+                                "alive": True,
+                            },
+                        )
+                    )
+                    # Loading can publish one map-ready projection and then
+                    # immediately replace it.  Restore must return the settled
+                    # semantic revision, not the first transient map frame.
+                    time.sleep(0.05)
+                    endpoint.publish(
+                        _snapshot(
+                            2,
                             date_raw=53_171_424,
                             map_ready=True,
                             played_character={
@@ -1432,6 +1456,16 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 observed_request["command"], "restore-checkpoint"
             )
             self.assertEqual(observed_request["pipe"], endpoint.pipe_name)
+            self.assertEqual(
+                observed_request["checkpoint_name"], "xar_checkpoint.ck3"
+            )
+            self.assertEqual(
+                observed_request["checkpoint_size"], len(checkpoint_payload)
+            )
+            self.assertEqual(
+                observed_request["checkpoint_sha256"],
+                hashlib.sha256(checkpoint_payload).hexdigest(),
+            )
             self.assertEqual(result["status"], "restored")
             self.assertEqual(result["restored_date_raw"], 53_171_424)
             self.assertEqual(result["checkpoint"]["status"], "restored")

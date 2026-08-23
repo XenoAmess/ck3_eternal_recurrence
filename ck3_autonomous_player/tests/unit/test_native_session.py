@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import io
 import json
 from pathlib import Path
@@ -85,7 +86,11 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory(
             prefix="xar-native-session-lifecycle-"
         )
-        self.spec = SimpleNamespace(state_dir=Path(self.temporary.name))
+        root = Path(self.temporary.name)
+        self.spec = SimpleNamespace(
+            state_dir=root,
+            profile_dir=root / "profile",
+        )
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
@@ -207,6 +212,13 @@ class NativeSessionLifecycleTests(unittest.TestCase):
             injector_path=Path("injector.exe"),
         )
         bridge_dir = self.spec.state_dir / "native-session" / "bridge"
+        checkpoint_payload = b"native-session exact checkpoint"
+        checkpoint_path = (
+            self.spec.profile_dir / "save games" / "xar_checkpoint.ck3"
+        )
+        checkpoint_path.parent.mkdir(parents=True)
+        checkpoint_path.write_bytes(checkpoint_payload)
+        checkpoint_sha256 = hashlib.sha256(checkpoint_payload).hexdigest()
         write_json_atomic(
             bridge_dir / "inbox" / "01-restore.json",
             {
@@ -215,6 +227,9 @@ class NativeSessionLifecycleTests(unittest.TestCase):
                 "command": "restore-checkpoint",
                 "pipe": config.pipe_name,
                 "checkpoint_name": "xar_checkpoint.ck3",
+                "checkpoint_size": len(checkpoint_payload),
+                "checkpoint_sha256": checkpoint_sha256,
+                "checkpoint_saved_date_raw": 53_168_664,
             },
         )
         write_json_atomic(
@@ -233,7 +248,13 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         ) as launch_mock, mock.patch(
             "xar_autoplayer.native_session.stop_tracked",
             side_effect=(shutdown, shutdown),
-        ) as stop_mock:
+        ) as stop_mock, mock.patch(
+            "xar_autoplayer.native_session._process_windows_minimized",
+            return_value=True,
+        ) as minimized_before_mock, mock.patch(
+            "xar_autoplayer.native_session._minimize_process_windows",
+            return_value=True,
+        ) as minimize_after_mock:
             report = _native_session_locked(
                 self.spec,
                 config,
@@ -255,7 +276,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
                 mock.call(
                     self.spec,
                     native_bridge=config,
-                    continue_last_save=True,
+                    load_save_name="xar_checkpoint",
                     verify_prepared_profile=False,
                 ),
             ],
@@ -275,7 +296,24 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.assertTrue(response["ok"])
         self.assertEqual(response["result"]["previous_pid"], 4545)
         self.assertEqual(response["result"]["pid"], 4646)
-        self.assertTrue(response["result"]["continue_last_save"])
+        self.assertFalse(response["result"]["continue_last_save"])
+        self.assertEqual(
+            response["result"]["load_save_name"], "xar_checkpoint"
+        )
+        self.assertEqual(
+            response["result"]["checkpoint"]["sha256"], checkpoint_sha256
+        )
+        self.assertEqual(
+            response["result"]["checkpoint"]["saved_date_raw"], 53_168_664
+        )
+        self.assertTrue(response["result"]["previous_window_minimized"])
+        self.assertTrue(response["result"]["minimized_state_preserved"])
+        minimized_before_mock.assert_called_once_with(4545)
+        minimize_after_mock.assert_called_once_with(
+            4646,
+            timeout_seconds=mock.ANY,
+            poll_interval_seconds=0.001,
+        )
         self.assertEqual(report["restart_count"], 1)
         self.assertEqual(report["pid"], 4646)
         self.assertEqual(report["exit_reason"], "stop")

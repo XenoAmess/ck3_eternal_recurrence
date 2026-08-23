@@ -226,6 +226,41 @@ class NativeBridgeCreateProcessTests(unittest.TestCase):
             ],
         )
 
+    def test_native_exact_save_launch_uses_jomini_loadsave_argument(self) -> None:
+        spec = SimpleNamespace(
+            game_exe=Path("C:/game/ck3.exe"),
+            profile_dir=Path("C:/profile"),
+        )
+
+        command = _ck3_launch_command(spec, load_save_name="xar_checkpoint")
+
+        self.assertEqual(
+            command,
+            [
+                "C:\\game\\ck3.exe",
+                "-gdpr-compliant",
+                "-userdir=C:\\profile",
+                "-loadsave=xar_checkpoint",
+            ],
+        )
+
+    def test_native_exact_save_rejects_conflicts_and_paths(self) -> None:
+        spec = SimpleNamespace(
+            game_exe=Path("C:/game/ck3.exe"),
+            profile_dir=Path("C:/profile"),
+        )
+
+        with self.assertRaisesRegex(AgentError, "cannot combine"):
+            _ck3_launch_command(
+                spec,
+                continue_last_save=True,
+                load_save_name="xar_checkpoint",
+            )
+        with self.assertRaisesRegex(AgentError, "without a path"):
+            _ck3_launch_command(spec, load_save_name="save games/other")
+        with self.assertRaisesRegex(AgentError, "without a path"):
+            _ck3_launch_command(spec, load_save_name="xar_checkpoint.ck3")
+
     def test_default_launch_keeps_null_environment_and_original_flags(self) -> None:
         create = mock.Mock(return_value=(object(), object(), 81, 91))
         win32process = SimpleNamespace(

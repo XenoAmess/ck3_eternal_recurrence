@@ -6,8 +6,10 @@ import the visual driver, OCR, screenshots, or desktop input modules.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
+from pathlib import Path
 from queue import Empty, SimpleQueue
 import sys
 import threading
@@ -31,6 +33,8 @@ from .runtime import (
 PURE_NATIVE_MODE = "native-headless"
 NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
 NATIVE_SESSION_RESTORE_COMMAND = "restore-checkpoint"
+NATIVE_SESSION_CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
+NATIVE_SESSION_CHECKPOINT_LOAD_NAME = "xar_checkpoint"
 
 
 class _StdinMonitor:
@@ -88,6 +92,58 @@ def _status(
         "elapsed_seconds": round(max(0.0, time.monotonic() - started), 3),
         "running": running,
     }
+
+
+def _visible_process_windows(pid: int) -> list[int]:
+    """Return visible top-level windows owned by one exact process."""
+    import win32gui
+    import win32process
+
+    windows: list[int] = []
+
+    def collect(hwnd: int, _extra: object) -> bool:
+        if not win32gui.IsWindowVisible(hwnd):
+            return True
+        _thread_id, window_pid = win32process.GetWindowThreadProcessId(hwnd)
+        if int(window_pid) == pid:
+            windows.append(int(hwnd))
+        return True
+
+    win32gui.EnumWindows(collect, None)
+    return windows
+
+
+def _process_windows_minimized(pid: int) -> bool:
+    """Return true only when an existing visible window set is all iconic."""
+    import win32gui
+
+    windows = _visible_process_windows(pid)
+    return bool(windows) and all(bool(win32gui.IsIconic(hwnd)) for hwnd in windows)
+
+
+def _minimize_process_windows(
+    pid: int,
+    *,
+    timeout_seconds: float,
+    poll_interval_seconds: float,
+) -> bool:
+    """Wait for a relaunched CK3 window and restore its prior minimized state."""
+    import win32con
+    import win32gui
+
+    deadline = time.monotonic() + timeout_seconds
+    while True:
+        windows = _visible_process_windows(pid)
+        if windows:
+            for hwnd in windows:
+                if not win32gui.IsIconic(hwnd):
+                    win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
+            if all(bool(win32gui.IsIconic(hwnd)) for hwnd in windows):
+                return True
+        now = time.monotonic()
+        if now >= deadline:
+            return False
+        time.sleep(min(poll_interval_seconds, deadline - now))
 
 
 def native_session(
@@ -258,8 +314,13 @@ def _native_session_locked(
                         )
                         continue
                     try:
-                        _validate_restore_request(request, config)
+                        checkpoint = _validate_restore_request(
+                            request, config, spec
+                        )
                         previous_pid = int(handle.process.pid)
+                        preserve_minimized = _process_windows_minimized(
+                            previous_pid
+                        )
                         restart_shutdown = stop_tracked(
                             handle, require_running=False
                         )
@@ -275,10 +336,17 @@ def _native_session_locked(
                                     )
                                 )
                             )
+                        # The managed CK3 process is now stopped.  Recheck the
+                        # exact bytes immediately before asking Jomini to load
+                        # this filename so the lifecycle response describes the
+                        # file actually selected for the replacement process.
+                        checkpoint = _validate_restore_request(
+                            request, config, spec
+                        )
                         handle = launch(
                             spec,
                             native_bridge=config,
-                            continue_last_save=True,
+                            load_save_name=str(checkpoint["load_save_name"]),
                             # The session owns both global launch and state
                             # locks.  Its first launch already verified the
                             # committed profile; repeating the full Git/runtime
@@ -287,13 +355,32 @@ def _native_session_locked(
                             verify_prepared_profile=False,
                         )
                         pid = int(handle.process.pid)
+                        minimized_preserved = False
+                        if preserve_minimized:
+                            minimized_preserved = _minimize_process_windows(
+                                pid,
+                                timeout_seconds=min(
+                                    30.0,
+                                    max(0.001, deadline - time.monotonic()),
+                                ),
+                                poll_interval_seconds=poll_interval_seconds,
+                            )
+                            if not minimized_preserved:
+                                raise AgentError(
+                                    "restore-checkpoint relaunched CK3 but "
+                                    "could not preserve its minimized window state"
+                                )
                         result = {
                             "status": "relaunched",
                             "previous_pid": previous_pid,
                             "pid": pid,
                             "mode": PURE_NATIVE_MODE,
                             "pipe": config.pipe_name,
-                            "continue_last_save": True,
+                            "continue_last_save": False,
+                            "load_save_name": checkpoint["load_save_name"],
+                            "checkpoint": checkpoint,
+                            "previous_window_minimized": preserve_minimized,
+                            "minimized_state_preserved": minimized_preserved,
                         }
                         queue.respond(request, ok=True, result=result)
                         _emit(
@@ -374,8 +461,9 @@ def _native_session_locked(
 def _validate_restore_request(
     request: SessionQueueRequest,
     config: NativeBridgeLaunchConfig,
-) -> None:
-    """Bind a lifecycle request to the pure-native pipe being supervised."""
+    spec: EnvironmentSpec,
+) -> dict[str, object]:
+    """Bind a lifecycle request to one exact checkpoint in this profile."""
     payload = request.payload or {}
     requested_pipe = payload.get("pipe")
     if requested_pipe != config.pipe_name:
@@ -383,6 +471,69 @@ def _validate_restore_request(
             "restore-checkpoint pipe differs from the native-session pipe: "
             f"{requested_pipe!r} != {config.pipe_name!r}"
         )
+    checkpoint_name = payload.get("checkpoint_name")
+    if checkpoint_name != NATIVE_SESSION_CHECKPOINT_FILENAME:
+        raise AgentError(
+            "restore-checkpoint requires the managed checkpoint filename "
+            f"{NATIVE_SESSION_CHECKPOINT_FILENAME!r}"
+        )
+    expected_size = payload.get("checkpoint_size")
+    expected_sha256 = payload.get("checkpoint_sha256")
+    if (
+        isinstance(expected_size, bool)
+        or not isinstance(expected_size, int)
+        or expected_size <= 0
+        or not isinstance(expected_sha256, str)
+        or len(expected_sha256) != 64
+        or any(
+            character not in "0123456789abcdef"
+            for character in expected_sha256
+        )
+    ):
+        raise AgentError(
+            "restore-checkpoint requires exact checkpoint_size and sha256"
+        )
+    checkpoint_path = (
+        spec.profile_dir / "save games" / NATIVE_SESSION_CHECKPOINT_FILENAME
+    )
+    try:
+        size = checkpoint_path.stat().st_size
+    except OSError as error:
+        raise AgentError(
+            f"restore checkpoint is unavailable: {checkpoint_path}: {error}"
+        ) from error
+    if size != expected_size:
+        raise AgentError(
+            "restore checkpoint size changed before launch: "
+            f"{size} != {expected_size}"
+        )
+    digest = _sha256_file(checkpoint_path)
+    if digest != expected_sha256:
+        raise AgentError(
+            "restore checkpoint bytes changed before launch: "
+            f"{digest} != {expected_sha256}"
+        )
+    saved_date_raw = payload.get("checkpoint_saved_date_raw")
+    if saved_date_raw is not None and (
+        isinstance(saved_date_raw, bool) or not isinstance(saved_date_raw, int)
+    ):
+        raise AgentError("checkpoint_saved_date_raw must be an integer or null")
+    return {
+        "name": NATIVE_SESSION_CHECKPOINT_FILENAME,
+        "load_save_name": NATIVE_SESSION_CHECKPOINT_LOAD_NAME,
+        "path": str(checkpoint_path.resolve()),
+        "size": size,
+        "sha256": digest,
+        "saved_date_raw": saved_date_raw,
+    }
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def run_from_cli(
