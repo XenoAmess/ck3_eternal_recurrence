@@ -83,7 +83,9 @@ _CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
 _NATIVE_DEATH_TERMINAL_STEP = "death-terminal"
 _NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
 _NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
+_NATIVE_DRIVER_STATE_VERSION = 2
 _RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
+_COLD_RESTORE_SOURCE = "native-session-cold-start"
 _RESTORE_MAP_STABLE_SECONDS = 0.5
 _NATIVE_WAR_ADVANCE_MAX_DAYS = 30
 _ARMY_MOVE_DEFERRED_ERRORS = frozenset(
@@ -531,6 +533,10 @@ class NativeHeadlessGameplayDriver:
         self._session_bridge_pid: int | None = None
         self._driver_state_restored = False
         self._driver_state_error: str | None = None
+        self._driver_state_restore_kind: str | None = None
+        self._episode_binding_state = "unbound"
+        self._pending_cold_candidate: dict[str, object] | None = None
+        self._cold_candidate_rejection: str | None = None
         self._declarable_wars: list[dict[str, object]] = []
         self._declaration_query_sequence: int | None = None
         self._arrange_marriage_choices: list[dict[str, object]] = []
@@ -641,9 +647,15 @@ class NativeHeadlessGameplayDriver:
                 ),
                 "driver_state_restored": self._driver_state_restored,
                 "driver_state_error": self._driver_state_error,
+                "driver_state_restore_kind": self._driver_state_restore_kind,
+                "episode_binding_state": self._episode_binding_state,
+                "cold_candidate_rejection": self._cold_candidate_rejection,
             },
             "episode_character_id": episode_character_id,
             "episode_run_id": episode_run_id,
+            "episode_identity_pending": (
+                self._episode_binding_state == "pending_cold_candidate"
+            ),
             "one_life_terminal": isinstance(terminal_reason, str),
             "one_life_terminal_reason": terminal_reason,
             "continue_as_heir_after_death": False,
@@ -675,6 +687,9 @@ class NativeHeadlessGameplayDriver:
             if isinstance(played_character, dict)
             else None
         )
+        self._bind_episode_from_playable_snapshot(
+            snapshot, current_character_id=current_character_id
+        )
         identity_changed = False
         with self._episode_identity_lock:
             if (
@@ -686,6 +701,8 @@ class NativeHeadlessGameplayDriver:
                 self._episode_run_id = (
                     f"native-{current_character_id}-{uuid.uuid4().hex[:12]}"
                 )
+                self._episode_binding_state = "active_new"
+                self._driver_state_restore_kind = "new_episode"
                 identity_changed = True
             episode_character_id = self._episode_character_id
             episode_run_id = self._episode_run_id
@@ -718,6 +735,9 @@ class NativeHeadlessGameplayDriver:
             **snapshot,
             "episode_character_id": episode_character_id,
             "episode_run_id": episode_run_id,
+            "episode_identity_pending": (
+                self._episode_binding_state == "pending_cold_candidate"
+            ),
             "one_life_terminal": terminal_reason is not None,
             "one_life_terminal_reason": terminal_reason,
             "continue_as_heir_after_death": False,
@@ -827,14 +847,15 @@ class NativeHeadlessGameplayDriver:
             return copy.deepcopy(self._command_history)
 
     def _adopt_bridge_session(self, bridge_pid: int) -> None:
-        """Restore one daemon's state, while preserving in-process restores."""
+        """Adopt a bridge now, but delay cross-PID identity until map-ready."""
         first_connection = False
         with self._driver_state_lock:
             first_connection = self._session_bridge_pid is None
         restored: dict[str, object] | None = None
         if first_connection:
-            restored = self._read_driver_state(bridge_pid)
+            restored = self._read_driver_state()
 
+        should_persist = False
         with self._driver_state_lock:
             if self._session_bridge_pid is None:
                 self._command_history = []
@@ -842,7 +863,14 @@ class NativeHeadlessGameplayDriver:
                 self._episode_run_id = None
                 self._last_checkpoint = None
                 self._driver_state_restored = False
-                if restored is not None:
+                self._driver_state_restore_kind = None
+                self._episode_binding_state = "unbound"
+                self._pending_cold_candidate = None
+                self._cold_candidate_rejection = None
+                if (
+                    restored is not None
+                    and restored.get("bridge_pid") == bridge_pid
+                ):
                     self._command_history = copy.deepcopy(
                         restored["command_history"]
                     )
@@ -853,20 +881,232 @@ class NativeHeadlessGameplayDriver:
                     self._last_checkpoint = copy.deepcopy(
                         restored["last_checkpoint"]
                     )
+                    self._upgrade_checkpoint_anchor()
                     self._driver_state_restored = True
+                    self._driver_state_restore_kind = "same_pid_hot"
+                    self._episode_binding_state = (
+                        "active_resumed"
+                        if self._episode_character_id is not None
+                        else "unbound"
+                    )
+                    should_persist = True
+                elif restored is not None and self._cold_candidate_ready(restored):
+                    self._pending_cold_candidate = copy.deepcopy(restored)
+                    self._episode_binding_state = "pending_cold_candidate"
+                elif restored is not None:
+                    self._cold_candidate_rejection = "no_complete_checkpoint_anchor"
             # A PID change inside the same driver is the expected
             # restore-checkpoint lifecycle.  Keep the episode and history,
             # then persist the replacement PID for a later daemon restart.
             self._session_bridge_pid = bridge_pid
+            if not first_connection and self._pending_cold_candidate is None:
+                self._driver_state_restore_kind = "managed_hot_restore"
+                should_persist = True
             self._declarable_wars = []
             self._declaration_query_sequence = None
             self._arrange_marriage_choices = []
             self._arrange_marriage_query_sequence = None
+        if should_persist:
+            self._persist_driver_state()
+
+    def _upgrade_checkpoint_anchor(self) -> None:
+        """Attach a v2 history/episode anchor to an older hot-restored state."""
+        checkpoint = self._last_checkpoint
+        if (
+            not isinstance(checkpoint, dict)
+            or self._episode_character_id is None
+            or self._episode_run_id is None
+        ):
+            return
+        history_index = checkpoint.get("history_index")
+        if (
+            isinstance(history_index, bool)
+            or not isinstance(history_index, int)
+            or history_index < 1
+            or history_index > len(self._command_history)
+        ):
+            history_index = self._matching_checkpoint_history_index(checkpoint)
+            if history_index is None:
+                return
+            checkpoint["history_index"] = history_index
+        checkpoint["episode_character_id"] = self._episode_character_id
+        checkpoint["episode_run_id"] = self._episode_run_id
+
+    def _matching_checkpoint_history_index(
+        self, checkpoint: dict[str, object]
+    ) -> int | None:
+        expected_sha256 = checkpoint.get("sha256")
+        expected_size = checkpoint.get("size")
+        expected_date_raw = checkpoint.get("date_raw")
+        if (
+            not isinstance(expected_sha256, str)
+            or len(expected_sha256) != 64
+            or isinstance(expected_size, bool)
+            or not isinstance(expected_size, int)
+            or expected_size <= 0
+            or isinstance(expected_date_raw, bool)
+            or not isinstance(expected_date_raw, int)
+        ):
+            return None
+        for row in reversed(self._command_history):
+            if row.get("command") != "save-checkpoint" or row.get("ok") is not True:
+                continue
+            result = row.get("result")
+            saved = result.get("checkpoint") if isinstance(result, dict) else None
+            if not isinstance(saved, dict):
+                continue
+            if (
+                saved.get("sha256") == expected_sha256
+                and saved.get("size") == expected_size
+                and saved.get("date_raw") == expected_date_raw
+            ):
+                index = row.get("index")
+                return index if isinstance(index, int) else None
+        return None
+
+    def _cold_candidate_ready(self, candidate: dict[str, object]) -> bool:
+        if (
+            candidate.get("format_version") != _NATIVE_DRIVER_STATE_VERSION
+            or self.save_dir is None
+        ):
+            return False
+        character_id = candidate.get("episode_character_id")
+        run_id = candidate.get("episode_run_id")
+        history = candidate.get("command_history")
+        checkpoint = candidate.get("last_checkpoint")
+        if (
+            isinstance(character_id, bool)
+            or not isinstance(character_id, int)
+            or not isinstance(run_id, str)
+            or not run_id
+            or not isinstance(history, list)
+            or not isinstance(checkpoint, dict)
+        ):
+            return False
+        history_index = checkpoint.get("history_index")
+        sha256 = checkpoint.get("sha256")
+        size = checkpoint.get("size")
+        date_raw = checkpoint.get("date_raw")
+        if (
+            isinstance(history_index, bool)
+            or not isinstance(history_index, int)
+            or history_index < 1
+            or history_index > len(history)
+            or not isinstance(sha256, str)
+            or len(sha256) != 64
+            or any(character not in "0123456789abcdef" for character in sha256)
+            or isinstance(size, bool)
+            or not isinstance(size, int)
+            or size <= 0
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or checkpoint.get("episode_character_id") != character_id
+            or checkpoint.get("episode_run_id") != run_id
+        ):
+            return False
+        anchor = history[history_index - 1]
+        result = anchor.get("result") if isinstance(anchor, dict) else None
+        saved = result.get("checkpoint") if isinstance(result, dict) else None
+        return bool(
+            isinstance(anchor, dict)
+            and anchor.get("index") == history_index
+            and anchor.get("command") == "save-checkpoint"
+            and anchor.get("ok") is True
+            and isinstance(saved, dict)
+            and saved.get("sha256") == sha256
+            and saved.get("size") == size
+            and saved.get("date_raw") == date_raw
+        )
+
+    def _bind_episode_from_playable_snapshot(
+        self,
+        snapshot: dict[str, object],
+        *,
+        current_character_id: object,
+    ) -> None:
+        if (
+            snapshot.get("map_ready") is not True
+            or isinstance(current_character_id, bool)
+            or not isinstance(current_character_id, int)
+        ):
+            return
+        with self._driver_state_lock:
+            candidate = copy.deepcopy(self._pending_cold_candidate)
+        if candidate is None:
+            return
+
+        checkpoint = candidate["last_checkpoint"]
+        assert isinstance(checkpoint, dict)
+        checkpoint_path = self._checkpoint_path()
+        rejection: str | None = None
+        snapshot_date_raw = snapshot.get("date_raw")
+        if current_character_id != candidate.get("episode_character_id"):
+            rejection = "played_character_mismatch"
+        elif snapshot_date_raw != checkpoint.get("date_raw"):
+            rejection = "checkpoint_date_mismatch"
+        elif checkpoint_path is None:
+            rejection = "checkpoint_path_unavailable"
+        else:
+            signature = _checkpoint_signature(checkpoint_path)
+            if signature is None or signature[0] != checkpoint.get("size"):
+                rejection = "checkpoint_size_mismatch"
+            elif _sha256_file(checkpoint_path) != checkpoint.get("sha256"):
+                rejection = "checkpoint_sha256_mismatch"
+
+        with self._driver_state_lock:
+            if self._pending_cold_candidate != candidate:
+                return
+            if rejection is None:
+                history_index = int(checkpoint["history_index"])
+                history = copy.deepcopy(candidate["command_history"][:history_index])
+                previous_pid = candidate.get("bridge_pid")
+                synthetic_result = {
+                    "step": _RESTORE_CHECKPOINT_STEP,
+                    "accepted": True,
+                    "status": "restored",
+                    "backend_id": "native-headless",
+                    "source": _COLD_RESTORE_SOURCE,
+                    "checkpoint": copy.deepcopy(checkpoint),
+                    "restored_date_raw": snapshot_date_raw,
+                    "map_ready": True,
+                    "lifecycle": {
+                        "previous_pid": previous_pid,
+                        "pid": self._session_bridge_pid,
+                    },
+                }
+                history.append(
+                    {
+                        "index": len(history) + 1,
+                        "command": _RESTORE_CHECKPOINT_STEP,
+                        "ok": True,
+                        "result": synthetic_result,
+                    }
+                )
+                self._command_history = history
+                self._episode_character_id = int(
+                    candidate["episode_character_id"]
+                )
+                self._episode_run_id = str(candidate["episode_run_id"])
+                self._last_checkpoint = copy.deepcopy(checkpoint)
+                self._driver_state_restored = True
+                self._driver_state_restore_kind = "cold_checkpoint"
+                self._episode_binding_state = "active_resumed"
+                self._cold_candidate_rejection = None
+            else:
+                self._command_history = []
+                self._episode_character_id = current_character_id
+                self._episode_run_id = (
+                    f"native-{current_character_id}-{uuid.uuid4().hex[:12]}"
+                )
+                self._last_checkpoint = None
+                self._driver_state_restored = False
+                self._driver_state_restore_kind = "new_episode"
+                self._episode_binding_state = "active_new"
+                self._cold_candidate_rejection = rejection
+            self._pending_cold_candidate = None
         self._persist_driver_state()
 
-    def _read_driver_state(
-        self, bridge_pid: int
-    ) -> dict[str, object] | None:
+    def _read_driver_state(self) -> dict[str, object] | None:
         if self.state_dir is None:
             return None
         path = self._native_driver_state_path()
@@ -876,12 +1116,18 @@ class NativeHeadlessGameplayDriver:
             payload = json.loads(path.read_text(encoding="utf-8-sig"))
             if not isinstance(payload, dict):
                 raise ValueError("driver state must be a JSON object")
-            if (
-                payload.get("format_version") != 1
-                or payload.get("pipe_name") != self.pipe_name
-                or payload.get("bridge_pid") != bridge_pid
-            ):
+            format_version = payload.get("format_version")
+            if format_version not in (1, _NATIVE_DRIVER_STATE_VERSION):
                 return None
+            if payload.get("pipe_name") != self.pipe_name:
+                return None
+            persisted_bridge_pid = payload.get("bridge_pid")
+            if (
+                isinstance(persisted_bridge_pid, bool)
+                or not isinstance(persisted_bridge_pid, int)
+                or persisted_bridge_pid <= 0
+            ):
+                raise ValueError("driver state bridge_pid is malformed")
             character_id = payload.get("episode_character_id")
             run_id = payload.get("episode_run_id")
             if character_id is None:
@@ -912,6 +1158,8 @@ class NativeHeadlessGameplayDriver:
             ):
                 raise ValueError("driver state checkpoint is malformed")
             return {
+                "format_version": format_version,
+                "bridge_pid": persisted_bridge_pid,
                 "episode_character_id": character_id,
                 "episode_run_id": run_id,
                 "command_history": copy.deepcopy(history),
@@ -931,7 +1179,7 @@ class NativeHeadlessGameplayDriver:
             if self._session_bridge_pid is None:
                 return
             payload = {
-                "format_version": 1,
+                "format_version": _NATIVE_DRIVER_STATE_VERSION,
                 "pipe_name": self.pipe_name,
                 "bridge_pid": self._session_bridge_pid,
                 "episode_character_id": self._episode_character_id,
@@ -1060,8 +1308,10 @@ class NativeHeadlessGameplayDriver:
             "strategy": "native-autosave-command-v1",
         }
         with self._driver_state_lock:
+            checkpoint["history_index"] = len(self._command_history) + 1
+            checkpoint["episode_character_id"] = self._episode_character_id
+            checkpoint["episode_run_id"] = self._episode_run_id
             self._last_checkpoint = dict(checkpoint)
-        self._persist_driver_state()
         return {
             **submission_result,
             "checkpoint": checkpoint,

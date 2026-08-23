@@ -41,11 +41,19 @@ def _config(root: Path, mode: str = "native-headless") -> NativeBridgeLaunchConf
 class NativeSessionModeTests(unittest.TestCase):
     def test_parser_exposes_native_session(self) -> None:
         args = cli.parser().parse_args(
-            ["--bridge-mode", "native-headless", "native-session", "--timeout", "7"]
+            [
+                "--bridge-mode",
+                "native-headless",
+                "native-session",
+                "--timeout",
+                "7",
+                "--cold-start-checkpoint",
+            ]
         )
         self.assertEqual(args.command, "native-session")
         self.assertEqual(args.bridge_mode, "native-headless")
         self.assertEqual(args.timeout, 7)
+        self.assertTrue(args.cold_start_checkpoint)
 
     def test_native_session_rejects_hybrid_fallback_before_launch(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-native-session-") as temporary:
@@ -135,6 +143,84 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         lines = output.getvalue().splitlines()
         self.assertTrue(any('"type": "native_session_ready"' in line for line in lines))
         self.assertTrue(any('"type": "native_session_status"' in line for line in lines))
+
+    def test_explicit_cold_start_launches_exact_xar_checkpoint(self) -> None:
+        process = mock.Mock()
+        process.pid = 4250
+        process.poll.return_value = None
+        handle = SimpleNamespace(process=process)
+        config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\cold-start-test",
+            dll_path=Path("bridge.dll"),
+            injector_path=Path("injector.exe"),
+        )
+        checkpoint_payload = b"explicit cold checkpoint"
+        checkpoint_path = (
+            self.spec.profile_dir / "save games" / "xar_checkpoint.ck3"
+        )
+        checkpoint_path.parent.mkdir(parents=True)
+        checkpoint_path.write_bytes(checkpoint_payload)
+        checkpoint_sha256 = hashlib.sha256(checkpoint_payload).hexdigest()
+        checkpoint = {
+            "name": "xar_checkpoint.ck3",
+            "size": len(checkpoint_payload),
+            "sha256": checkpoint_sha256,
+            "date_raw": 53_168_784,
+            "history_index": 1,
+            "episode_character_id": 707,
+            "episode_run_id": "native-707-existing",
+        }
+        write_json_atomic(
+            self.spec.state_dir / "native-session" / "driver-state.json",
+            {
+                "format_version": 2,
+                "pipe_name": config.pipe_name,
+                "bridge_pid": 4242,
+                "episode_character_id": 707,
+                "episode_run_id": "native-707-existing",
+                "last_checkpoint": checkpoint,
+                "command_history": [
+                    {
+                        "index": 1,
+                        "command": "save-checkpoint",
+                        "ok": True,
+                        "result": {
+                            "step": "save-checkpoint",
+                            "checkpoint": checkpoint,
+                        },
+                    }
+                ],
+            },
+        )
+
+        with mock.patch(
+            "xar_autoplayer.native_session.launch", return_value=handle
+        ) as launch_mock, mock.patch(
+            "xar_autoplayer.native_session.stop_tracked",
+            return_value={"ok": True, "contract_errors": []},
+        ):
+            report = _native_session_locked(
+                self.spec,
+                config,
+                1.0,
+                input_stream=io.StringIO("stop\n"),
+                output_stream=None,
+                poll_interval_seconds=0.001,
+                cold_start_checkpoint=True,
+            )
+
+        launch_mock.assert_called_once_with(
+            self.spec,
+            native_bridge=config,
+            load_save_name="xar_checkpoint",
+        )
+        self.assertEqual(
+            report["cold_start_checkpoint"]["sha256"], checkpoint_sha256
+        )
+        self.assertEqual(
+            report["cold_start_checkpoint"]["history_index"], 1
+        )
 
     def test_timeout_stops_tracked_process(self) -> None:
         process = mock.Mock()

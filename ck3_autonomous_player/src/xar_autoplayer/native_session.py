@@ -35,6 +35,7 @@ NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
 NATIVE_SESSION_RESTORE_COMMAND = "restore-checkpoint"
 NATIVE_SESSION_CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
 NATIVE_SESSION_CHECKPOINT_LOAD_NAME = "xar_checkpoint"
+NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 
 
 class _StdinMonitor:
@@ -156,6 +157,7 @@ def native_session(
     input_stream: TextIO | None = None,
     output_stream: TextIO | None = None,
     poll_interval_seconds: float = 0.05,
+    cold_start_checkpoint: bool = False,
 ) -> dict[str, object]:
     """Launch/inject CK3 and supervise it without any visual fallback path."""
     if (
@@ -190,6 +192,7 @@ def native_session(
                 input_stream=input_stream,
                 output_stream=output_stream,
                 poll_interval_seconds=float(poll_interval_seconds),
+                cold_start_checkpoint=cold_start_checkpoint,
             )
 
 
@@ -201,6 +204,7 @@ def _native_session_locked(
     input_stream: TextIO | None,
     output_stream: TextIO | None,
     poll_interval_seconds: float,
+    cold_start_checkpoint: bool = False,
 ) -> dict[str, object]:
     started_wall = utc_now()
     started = time.monotonic()
@@ -220,15 +224,27 @@ def _native_session_locked(
         supported_commands=("status", "stop", NATIVE_SESSION_RESTORE_COMMAND),
         action_steps=(NATIVE_SESSION_RESTORE_COMMAND,),
     )
+    initial_checkpoint = (
+        _validate_cold_start_checkpoint(spec, config)
+        if cold_start_checkpoint
+        else None
+    )
 
     try:
         # Passing the validated config explicitly prevents environment changes
         # from selecting hybrid fallback between command parsing and launch.
-        handle = launch(
-            spec,
-            native_bridge=config,
-            continue_last_save=True,
-        )
+        if initial_checkpoint is None:
+            handle = launch(
+                spec,
+                native_bridge=config,
+                continue_last_save=True,
+            )
+        else:
+            handle = launch(
+                spec,
+                native_bridge=config,
+                load_save_name=NATIVE_SESSION_CHECKPOINT_LOAD_NAME,
+            )
         pid = int(handle.process.pid)
         last_pid = pid
         _emit(
@@ -239,6 +255,7 @@ def _native_session_locked(
                 "mode": PURE_NATIVE_MODE,
                 "pipe": config.pipe_name,
                 "lifecycle_queue": queue.descriptor(),
+                "cold_start_checkpoint": initial_checkpoint,
             },
         )
         stdin = _StdinMonitor(input_stream) if input_stream is not None else None
@@ -457,6 +474,7 @@ def _native_session_locked(
         "shutdown": shutdown,
         "restart_count": restart_count,
         "restart_shutdowns": restart_shutdowns,
+        "cold_start_checkpoint": initial_checkpoint,
         "ok": (
             primary_error is None
             and (shutdown is None or shutdown.get("ok") is True)
@@ -544,6 +562,96 @@ def _validate_restore_request(
     }
 
 
+def _validate_cold_start_checkpoint(
+    spec: EnvironmentSpec, config: NativeBridgeLaunchConfig
+) -> dict[str, object]:
+    """Resolve the exact v2 checkpoint selected by an explicit cold start."""
+    state_path = (
+        spec.state_dir / NATIVE_SESSION_QUEUE_DIRNAME / NATIVE_DRIVER_STATE_FILENAME
+    )
+    try:
+        payload = json.loads(state_path.read_text(encoding="utf-8-sig"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AgentError(
+            f"cold checkpoint state is unavailable: {state_path}: {error}"
+        ) from error
+    checkpoint = payload.get("last_checkpoint") if isinstance(payload, dict) else None
+    if (
+        not isinstance(payload, dict)
+        or payload.get("format_version") != 2
+        or payload.get("pipe_name") != config.pipe_name
+        or not isinstance(checkpoint, dict)
+        or checkpoint.get("name") != NATIVE_SESSION_CHECKPOINT_FILENAME
+    ):
+        raise AgentError(
+            "cold checkpoint start requires a v2 driver state for this pipe"
+        )
+    expected_size = checkpoint.get("size")
+    expected_sha256 = checkpoint.get("sha256")
+    saved_date_raw = checkpoint.get("date_raw")
+    history_index = checkpoint.get("history_index")
+    character_id = payload.get("episode_character_id")
+    run_id = payload.get("episode_run_id")
+    history = payload.get("command_history")
+    if (
+        isinstance(expected_size, bool)
+        or not isinstance(expected_size, int)
+        or expected_size <= 0
+        or not isinstance(expected_sha256, str)
+        or len(expected_sha256) != 64
+        or any(character not in "0123456789abcdef" for character in expected_sha256)
+        or isinstance(saved_date_raw, bool)
+        or not isinstance(saved_date_raw, int)
+        or isinstance(history_index, bool)
+        or not isinstance(history_index, int)
+        or history_index < 1
+        or isinstance(character_id, bool)
+        or not isinstance(character_id, int)
+        or not isinstance(run_id, str)
+        or not run_id
+        or not isinstance(history, list)
+        or history_index > len(history)
+        or checkpoint.get("episode_character_id") != character_id
+        or checkpoint.get("episode_run_id") != run_id
+    ):
+        raise AgentError("cold checkpoint state has an incomplete checkpoint anchor")
+    anchor = history[history_index - 1]
+    result = anchor.get("result") if isinstance(anchor, dict) else None
+    saved = result.get("checkpoint") if isinstance(result, dict) else None
+    if (
+        not isinstance(anchor, dict)
+        or anchor.get("index") != history_index
+        or anchor.get("command") != "save-checkpoint"
+        or anchor.get("ok") is not True
+        or not isinstance(saved, dict)
+        or saved.get("size") != expected_size
+        or saved.get("sha256") != expected_sha256
+        or saved.get("date_raw") != saved_date_raw
+    ):
+        raise AgentError("cold checkpoint history anchor does not match the save")
+    checkpoint_path = (
+        spec.profile_dir / "save games" / NATIVE_SESSION_CHECKPOINT_FILENAME
+    )
+    try:
+        size = checkpoint_path.stat().st_size
+    except OSError as error:
+        raise AgentError(
+            f"cold checkpoint is unavailable: {checkpoint_path}: {error}"
+        ) from error
+    digest = _sha256_file(checkpoint_path)
+    if size != expected_size or digest != expected_sha256:
+        raise AgentError("cold checkpoint bytes differ from the v2 driver state")
+    return {
+        "name": NATIVE_SESSION_CHECKPOINT_FILENAME,
+        "load_save_name": NATIVE_SESSION_CHECKPOINT_LOAD_NAME,
+        "path": str(checkpoint_path.resolve()),
+        "size": size,
+        "sha256": digest,
+        "saved_date_raw": saved_date_raw,
+        "history_index": history_index,
+    }
+
+
 def _sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as source:
@@ -556,6 +664,7 @@ def run_from_cli(
     spec: EnvironmentSpec,
     *,
     timeout_seconds: float,
+    cold_start_checkpoint: bool = False,
 ) -> dict[str, object]:
     """CLI adapter kept here so the generic CLI never imports visual code."""
     return native_session(
@@ -563,4 +672,5 @@ def run_from_cli(
         timeout_seconds=timeout_seconds,
         input_stream=sys.stdin,
         output_stream=sys.stdout,
+        cold_start_checkpoint=cold_start_checkpoint,
     )

@@ -1,6 +1,6 @@
 # CK3 native checkpoint contract
 
-更新时间：2026-08-23；目标版本：CK3 `1.19.0.6`。
+更新时间：2026-08-24；目标版本：CK3 `1.19.0.6`。
 
 `game.command.save-checkpoint` 只证明 DLL 已把固定名称 `xar_checkpoint` 的
 `CAutoSaveCommand` 提交到 CK3 command queue。planner 需要的是可恢复的存档文件，因此 Python
@@ -68,6 +68,39 @@ CK3 1.19.0.6 的启动分支在 RVA `0x34806E5`/`0x3480878` 分别处理
 `native-session` 在入口已经验证一次 committed profile，并在整个会话期间独占同一 state/launch 锁；受管重启因此复用
 该验证结果，不再重复执行完整 Git/runtime 指纹。这样恢复时间由 CK3 重载决定，不会被第二次 `git ls-files` 卡住；普通冷启动
 仍执行完整验证，Git 子进程本身也有 15 秒上限。
+
+## 完整 agent + CK3 冷重启连续性
+
+显式冷恢复入口为：
+
+```text
+xar-autoplayer ... --bridge-mode native-headless native-session --cold-start-checkpoint
+```
+
+该入口先读取 `<state>/native-session/driver-state.json` v2，核对当前 pipe、checkpoint
+size/SHA-256 和历史锚点，再明确调用 `launch(..., load_save_name="xar_checkpoint")`；不会使用
+`-continuelastsave`。如果 v2 元数据或 checkpoint 字节不匹配，进程不会启动。
+
+driver-state v2 在 `last_checkpoint` 中额外保存：
+
+- `history_index`：成功 `save-checkpoint` 在 command history 中的 1-based 位置；
+- `episode_character_id` 与 `episode_run_id`：该存档所属的一代 rogue episode。
+
+新 daemon 收到与持久状态相同 PID 的 hello 时仍走原有 hot 路径，立即恢复 episode/history。收到不同
+PID 时只建立 `pending_cold_candidate`，此时不会把旧角色误判成死亡或继承，也不会覆盖磁盘上的旧状态。
+首个同时满足 `map_ready=true` 且含有效 played CharacterID 的 snapshot 才完成绑定：
+
+1. CharacterID、snapshot `date_raw`、checkpoint size/SHA-256 全部与锚点一致：恢复原
+   episode/run id，把 history 截到 `history_index`，丢弃存档之后发生但已被回滚的命令，再追加一条
+   `source=native-session-cold-start` 的 synthetic `restore-checkpoint`；
+2. 任一项不一致：把当前角色作为新局创建新的 run id，清空旧 history/checkpoint；该首帧不是
+   one-life terminal。
+
+旧 v1 状态只允许同 PID hot 恢复。hot 恢复或下一次持久化时，driver 从最后一条 SHA/size/date
+都匹配的成功 `save-checkpoint` row 推导 `history_index`，补入 episode ids 并写成 v2；随后才能安全执行
+跨 PID 冷恢复。2026-08-24 的确定性 Python 验收覆盖了实机迁移形状：checkpoint 位于 index 8，
+index 9/10 的 `life-advance` 与 index 11 的 army move 在冷恢复时被截断，最终追加新的 index 9
+synthetic restore。CK3 冷启动实机验收尚未执行。
 
 ## Minimized 实机结果
 

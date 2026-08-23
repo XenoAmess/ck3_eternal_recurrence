@@ -106,6 +106,96 @@ def _snapshot(
     }
 
 
+def _write_driver_state_checkpoint_fixture(
+    state_dir: Path,
+    pipe_name: str,
+    *,
+    bridge_pid: int = 1111,
+    character_id: int = 707,
+    run_id: str = "native-707-existing",
+    date_raw: int = 53_168_784,
+    format_version: int = 2,
+    include_v2_anchor: bool = True,
+) -> tuple[Path, dict[str, object]]:
+    save_dir = state_dir / "profile" / "save games"
+    save_dir.mkdir(parents=True)
+    checkpoint_path = save_dir / "xar_checkpoint.ck3"
+    payload = b"cold-checkpoint-fixture"
+    checkpoint_path.write_bytes(payload)
+    checkpoint: dict[str, object] = {
+        "status": "saved",
+        "path": str(checkpoint_path.resolve()),
+        "name": checkpoint_path.name,
+        "size": len(payload),
+        "sha256": hashlib.sha256(payload).hexdigest(),
+        "date_raw": date_raw,
+        "strategy": "native-autosave-command-v1",
+    }
+    if include_v2_anchor:
+        checkpoint.update(
+            {
+                "history_index": 8,
+                "episode_character_id": character_id,
+                "episode_run_id": run_id,
+            }
+        )
+    history: list[dict[str, object]] = [
+        {
+            "index": index,
+            "command": "life-advance",
+            "ok": True,
+            "result": {"step": "life-advance", "ending_date_raw": date_raw},
+        }
+        for index in range(1, 8)
+    ]
+    history.append(
+        {
+            "index": 8,
+            "command": "save-checkpoint",
+            "ok": True,
+            "result": {
+                "step": "save-checkpoint",
+                "checkpoint": dict(checkpoint),
+            },
+        }
+    )
+    history.extend(
+        [
+            {
+                "index": 9,
+                "command": "life-advance",
+                "ok": True,
+                "result": {"step": "life-advance"},
+            },
+            {
+                "index": 10,
+                "command": "life-advance",
+                "ok": True,
+                "result": {"step": "life-advance"},
+            },
+            {
+                "index": 11,
+                "command": "move-army-1-to-2",
+                "ok": True,
+                "result": {"step": "move-army-1-to-2"},
+            },
+        ]
+    )
+    write_json_atomic(
+        state_dir / "native-session" / "driver-state.json",
+        {
+            "format_version": format_version,
+            "pipe_name": pipe_name,
+            "bridge_pid": bridge_pid,
+            "episode_character_id": character_id,
+            "episode_run_id": run_id,
+            "last_checkpoint": checkpoint,
+            "command_history": history,
+        },
+    )
+    return checkpoint_path, checkpoint
+
+
 def _army(
     army_id: int,
     *,
@@ -378,6 +468,153 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "driver_state_restored"
                 ]
             )
+
+    def test_v1_hot_migration_then_cold_checkpoint_resume_rolls_back_tail(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            pipe_name = r"\\.\pipe\xar_cold_migration"
+            checkpoint_path, _checkpoint = _write_driver_state_checkpoint_fixture(
+                state_dir,
+                pipe_name,
+                bridge_pid=140760,
+                character_id=29829,
+                run_id="native-29829-live-run",
+                format_version=1,
+                include_v2_anchor=False,
+            )
+            hot_endpoint = FakeEndpoint(pipe_name)
+            hot_driver = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=hot_endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            hot_endpoint.publish({**_hello("game.state.snapshot"), "pid": 140760})
+
+            hot_control = hot_driver.capabilities()["native_session_control"]
+            self.assertTrue(hot_control["driver_state_restored"])
+            self.assertEqual(hot_control["driver_state_restore_kind"], "same_pid_hot")
+            migrated = json.loads(
+                (
+                    state_dir / "native-session" / "driver-state.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(migrated["format_version"], 2)
+            self.assertEqual(migrated["last_checkpoint"]["history_index"], 8)
+            self.assertEqual(
+                migrated["last_checkpoint"]["episode_character_id"], 29829
+            )
+            self.assertEqual(
+                migrated["last_checkpoint"]["episode_run_id"],
+                "native-29829-live-run",
+            )
+
+            cold_endpoint = FakeEndpoint(pipe_name)
+            cold_driver = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=cold_endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            cold_endpoint.publish({**_hello("game.state.snapshot"), "pid": 150000})
+            pending = cold_driver.capabilities()["native_session_control"]
+            self.assertEqual(
+                pending["episode_binding_state"], "pending_cold_candidate"
+            )
+            self.assertFalse(pending["driver_state_restored"])
+
+            cold_endpoint.publish(
+                _snapshot(
+                    1,
+                    map_ready=False,
+                    date_raw=53_168_784,
+                    played_character={"character_id": 29829, "alive": True},
+                )
+            )
+            not_ready = cold_driver.take_snapshot()
+            self.assertTrue(not_ready["episode_identity_pending"])
+            self.assertFalse(not_ready["one_life_terminal"])
+            self.assertIsNone(not_ready["episode_character_id"])
+
+            cold_endpoint.publish(
+                _snapshot(
+                    2,
+                    date_raw=53_168_784,
+                    played_character={"character_id": 29829, "alive": True},
+                )
+            )
+            resumed = cold_driver.take_snapshot()
+            self.assertEqual(resumed["episode_character_id"], 29829)
+            self.assertEqual(resumed["episode_run_id"], "native-29829-live-run")
+            self.assertFalse(resumed["one_life_terminal"])
+            history = resumed["native_command_history"]
+            self.assertEqual(len(history), 9)
+            self.assertEqual(history[7]["command"], "save-checkpoint")
+            self.assertEqual(history[8]["command"], "restore-checkpoint")
+            self.assertEqual(
+                history[8]["result"]["source"], "native-session-cold-start"
+            )
+            self.assertNotIn("move-army-1-to-2", [row["command"] for row in history])
+            resumed_control = cold_driver.capabilities()["native_session_control"]
+            self.assertTrue(resumed_control["driver_state_restored"])
+            self.assertEqual(
+                resumed_control["driver_state_restore_kind"], "cold_checkpoint"
+            )
+            persisted = json.loads(
+                (
+                    state_dir / "native-session" / "driver-state.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(persisted["bridge_pid"], 150000)
+            self.assertEqual(len(persisted["command_history"]), 9)
+
+    def test_cold_checkpoint_mismatch_starts_nonterminal_new_episode(self) -> None:
+        cases = (
+            ("played_character", 909, 53_168_784, False),
+            ("date", 707, 53_168_785, False),
+            ("sha256", 707, 53_168_784, True),
+        )
+        for name, character_id, date_raw, mutate_bytes in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as temporary:
+                state_dir = Path(temporary)
+                pipe_name = rf"\\.\pipe\xar_cold_mismatch_{name}"
+                checkpoint_path, _checkpoint = (
+                    _write_driver_state_checkpoint_fixture(state_dir, pipe_name)
+                )
+                if mutate_bytes:
+                    checkpoint_path.write_bytes(b"cold-checkpoint-fixturf")
+                endpoint = FakeEndpoint(pipe_name)
+                driver = NativeHeadlessGameplayDriver(
+                    pipe_name,
+                    endpoint=endpoint,
+                    state_dir=state_dir,
+                    save_dir=checkpoint_path.parent,
+                )
+                endpoint.publish({**_hello("game.state.snapshot"), "pid": 2222})
+                endpoint.publish(
+                    _snapshot(
+                        1,
+                        date_raw=date_raw,
+                        played_character={
+                            "character_id": character_id,
+                            "alive": True,
+                        },
+                    )
+                )
+
+                current = driver.take_snapshot()
+                self.assertEqual(current["episode_character_id"], character_id)
+                self.assertNotEqual(
+                    current["episode_run_id"], "native-707-existing"
+                )
+                self.assertEqual(current["native_command_history"], [])
+                self.assertFalse(current["one_life_terminal"])
+                control = driver.capabilities()["native_session_control"]
+                self.assertFalse(control["driver_state_restored"])
+                self.assertEqual(control["driver_state_restore_kind"], "new_episode")
+                self.assertEqual(control["episode_binding_state"], "active_new")
 
     def test_event_wildcard_expands_from_current_option_count(self) -> None:
         endpoint = FakeEndpoint()
@@ -1340,6 +1577,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             driver = NativeHeadlessGameplayDriver(
                 endpoint.pipe_name,
                 endpoint=endpoint,
+                state_dir=Path(temporary) / "state",
                 save_dir=save_dir,
                 checkpoint_timeout_seconds=1.0,
                 checkpoint_poll_interval_seconds=0.005,
@@ -1347,7 +1585,13 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             endpoint.publish(
                 _hello("game.state.snapshot", "game.command.save-checkpoint")
             )
-            endpoint.publish(_snapshot(31, date_raw=53_171_424))
+            endpoint.publish(
+                _snapshot(
+                    31,
+                    date_raw=53_171_424,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
             payload = b"materialized native checkpoint"
             timer: threading.Timer | None = None
 
@@ -1403,6 +1647,11 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 checkpoint["sha256"], hashlib.sha256(payload).hexdigest()
             )
             self.assertEqual(checkpoint["date_raw"], 53_171_424)
+            self.assertEqual(checkpoint["history_index"], 1)
+            self.assertEqual(checkpoint["episode_character_id"], 707)
+            self.assertEqual(
+                checkpoint["episode_run_id"], snapshot["episode_run_id"]
+            )
             self.assertTrue(checkpoint["overwrite_confirmed"])
             self.assertTrue(result["materialization"]["available"])
             plan = GameplayBridgeService(driver).plan_turn()["plan"]

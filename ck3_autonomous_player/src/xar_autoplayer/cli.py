@@ -155,6 +155,11 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     native_session_parser.add_argument("--timeout", type=float, default=21600)
+    native_session_parser.add_argument(
+        "--cold-start-checkpoint",
+        action="store_true",
+        help="launch the exact v2 xar_checkpoint save instead of last_save.ck3",
+    )
     commands.add_parser(
         "strategy-review",
         help="show one-life episode history and the priorities for the next run",
@@ -291,7 +296,11 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "native-session":
             from .native_session import run_from_cli
 
-            result = run_from_cli(spec, timeout_seconds=args.timeout)
+            result = run_from_cli(
+                spec,
+                timeout_seconds=args.timeout,
+                cold_start_checkpoint=args.cold_start_checkpoint,
+            )
         elif args.command == "strategy-review":
             from .strategy import read_one_life_strategy
 
