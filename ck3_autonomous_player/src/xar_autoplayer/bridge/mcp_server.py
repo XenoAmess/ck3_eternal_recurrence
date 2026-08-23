@@ -43,6 +43,9 @@ def load_driver(
     def selected_state_dir() -> Path:
         return Path(state_dir) if state_dir else _default_state_dir()
 
+    def selected_save_dir() -> Path:
+        return selected_state_dir() / "profile" / "save games"
+
     if not factory or factory == "vision-report":
         return DevelopmentReportDriver(selected_state_dir())
     if factory == "vision-session":
@@ -55,10 +58,14 @@ def load_driver(
             DevelopmentSessionDriver(selected_state_dir()),
         )
     if factory == "native-headless":
-        return NativeHeadlessGameplayDriver(selected_pipe_name(pipe_name))
+        return NativeHeadlessGameplayDriver(
+            selected_pipe_name(pipe_name), save_dir=selected_save_dir()
+        )
     if factory == "hybrid-fallback":
         return ConfiguredHybridFallbackDriver(
-            NativeHeadlessGameplayDriver(selected_pipe_name(pipe_name)),
+            NativeHeadlessGameplayDriver(
+                selected_pipe_name(pipe_name), save_dir=selected_save_dir()
+            ),
             load_data_mod_driver(userdir),
             MinimizedRejectingVisualDriver(
                 DevelopmentSessionDriver(selected_state_dir())
@@ -134,6 +141,13 @@ def create_server(driver: GameplayBridgeDriver):
         return service.execute_step(step, expected_revision=expected_revision)
 
     @server.tool()
+    def ck3_save_checkpoint(
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Create and materialize the fixed isolated CK3 checkpoint save."""
+        return service.save_checkpoint(expected_revision=expected_revision)
+
+    @server.tool()
     def ck3_select_event_option(
         option_number: int,
         event_instance_id: int | None = None,
@@ -190,7 +204,10 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument(
         "--state-dir",
         default=os.environ.get("XAR_AUTOPLAYER_STATE_DIR"),
-        help="XarAutoplayer state root used by vision-report/session/hybrid",
+        help=(
+            "XarAutoplayer state root; native checkpoints materialize under "
+            "<state-dir>/profile/save games"
+        ),
     )
     result.add_argument(
         "--userdir",

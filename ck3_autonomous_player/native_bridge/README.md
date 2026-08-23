@@ -14,11 +14,12 @@ Its current first gameplay slice is intentionally small:
   capabilities are present only when the process executable exactly matches
   the pinned CK3 1.19.0.6 SHA-256;
 - the DLL emits a heartbeat every 250 ms, publishes semantic state snapshots
-  on actual date/speed/pause/local-player/active-event changes, and answers a
-  framed `ping` with `pong`;
+  on actual date/speed/pause/map-ready/local-player/active-event changes, and
+  answers a framed `ping` with `pong`;
 - for the exact pinned build it accepts `pause-map`, `resume-map`, and fixed
   `set-speed-1`..`set-speed-5` steps plus one-based
-  `select-event-option-1..N` through CK3's native locked command queue;
+  `select-event-option-1..N` and `save-checkpoint` through CK3's native locked
+  command queue;
 - `xar_ck3_bridge_host.exe` creates a minimal target with
   `CREATE_SUSPENDED`, runs the PID injector, verifies the complete
   hello/heartbeat/ping/pong exchange from inside that target, and only then
@@ -91,13 +92,17 @@ The current maximum payload is 1 MiB. Frame types are `hello`, `heartbeat`,
 `hello.capabilities` is authoritative. Non-matching executables advertise only
 bridge identity, heartbeat, and ping; they never expose game reads/actions.
 
-The snapshot currently contains `date_raw`, `speed`, `paused`,
-`local_player_id`, and a nullable `active_event` with instance ID and numeric
-option count/indexes. The player field is Jomini's 32-bit local/network player
-ID used by the pause command, not CK3's 64-bit played-character ID. Public
-speed is `1..5`; the bridge maps it to and from CK3's zero-based native payload
-`0..4`. Event steps likewise use public option numbers `1..N` and translate to
-the command's native zero-based option index.
+The snapshot currently contains `date_raw`, `speed`, `paused`, `map_ready`,
+`local_player_id`, a nullable `active_event`, and the last checkpoint queue
+submission. `map_ready` stays false until CK3 resolves a valid local player, so
+the caller can wait through early startup snapshots without retrying actions.
+The player field is Jomini's 32-bit local/network player ID used by the pause
+command, not CK3's 64-bit played-character ID. Public speed is `1..5`; the
+bridge maps it to and from CK3's zero-based native payload `0..4`. Event steps
+likewise use public option numbers `1..N` and translate to the command's native
+zero-based option index. Checkpoint results expose the fixed requested save
+name `xar_checkpoint`, submission sequence, and date; `submitted` describes
+the queue operation, while the produced file remains the completion check.
 
 ## Runtime integration
 
@@ -122,6 +127,14 @@ the pinned live `ck3.exe` while its window remained minimized. The official MCP
 client called `ck3_take_snapshot`, `ck3_execute_step`, and
 `ck3_wait_for_change`; the native queue resumed the map, advanced `date_raw`
 from `53171400` to `53171424`, then paused it again. No OCR, screenshot, focus,
-keyboard, or mouse backend participated in that loop.
+keyboard, or mouse backend participated in that loop. A later clean minimized
+session waited through `map_ready=false`, ran 90 composite `life-advance`
+turns for 94 game days, and remained paused and minimized after every turn.
+Another continuous run found event instance `14` with five options after 130
+game days, submitted option one, and observed the active event change to
+instance `15` with three options. Finally, minimized `save-checkpoint`
+materialized `save games/xar_checkpoint.ck3` (63,367,813 bytes) and its command
+result matched the forced `last_checkpoint_submission` snapshot. These are
+live completion checks, not only queue-submission fixtures.
 Reverse-engineering evidence, exact RVAs/signatures, and unsupported event
 boundaries are recorded under [`research/`](research/README.md).

@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -207,6 +208,26 @@ class GameplayBridgeTests(unittest.TestCase):
             with self.assertRaises(UnsupportedStepError):
                 driver.execute_step("life-advance")
 
+    def test_native_mcp_driver_receives_isolated_profile_save_dir(self) -> None:
+        from xar_autoplayer.bridge.mcp_server import load_driver
+
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            with mock.patch(
+                "xar_autoplayer.bridge.mcp_server.NativeHeadlessGameplayDriver"
+            ) as factory:
+                driver = load_driver(
+                    "native-headless",
+                    state_dir=state_dir,
+                    pipe_name=r"\\.\pipe\xar_save_fixture",
+                )
+
+        self.assertIs(driver, factory.return_value)
+        factory.assert_called_once_with(
+            r"\\.\pipe\xar_save_fixture",
+            save_dir=state_dir / "profile" / "save games",
+        )
+
 @unittest.skipIf(importlib.util.find_spec("mcp") is None, "optional MCP SDK not installed")
 class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
     async def test_official_mcp_client_lists_and_calls_ck3_tools(self) -> None:
@@ -222,9 +243,24 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             execute=lambda step, revision: {
                 "step": step,
                 "expected_revision": revision,
+                **(
+                    {
+                        "checkpoint": {
+                            "status": "saved",
+                            "name": "xar_checkpoint.ck3",
+                            "path": "C:/fixture/xar_checkpoint.ck3",
+                            "size": 123,
+                            "sha256": "a" * 64,
+                            "date_raw": 53_171_424,
+                        }
+                    }
+                    if step == "save-checkpoint"
+                    else {}
+                ),
             },
             action_steps=(
                 "life-advance",
+                "save-checkpoint",
                 "select-event-option-1",
                 "select-event-option-2",
             ),
@@ -242,6 +278,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_take_snapshot",
                     "ck3_plan_turn",
                     "ck3_execute_step",
+                    "ck3_save_checkpoint",
                     "ck3_select_event_option",
                     "ck3_resolve_active_event",
                     "ck3_wait_for_change",
@@ -257,6 +294,19 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             self.assertFalse(action.is_error)
             self.assertEqual(action.structured_content["backend_id"], "native-fixture")
             self.assertEqual(action.structured_content["expected_revision"], 4)
+            checkpoint = await client.call_tool(
+                "ck3_save_checkpoint",
+                {"expected_revision": 4},
+            )
+            self.assertFalse(checkpoint.is_error)
+            self.assertEqual(
+                checkpoint.structured_content["checkpoint"]["name"],
+                "xar_checkpoint.ck3",
+            )
+            self.assertEqual(
+                checkpoint.structured_content["checkpoint"]["date_raw"],
+                53_171_424,
+            )
             event_action = await client.call_tool(
                 "ck3_select_event_option",
                 {

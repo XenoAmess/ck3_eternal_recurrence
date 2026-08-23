@@ -57,11 +57,12 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 - `GameplayStepExecutor` 与共用 runner 已从 `_drive_opening` 抽离；视觉代码通过 callback 接入。
 - `GameplayBridgeDriver` 统一 snapshot、semantic step、wait-for-change 与 capabilities。
 - `HybridGameplayDriver` 对已经实现的步骤优先走 Mod/DLL 快桥，其余步骤回落 OCR/快捷键/鼠标。
-- `xar-ck3-mcp` 使用官方 MCP Python SDK v2，提供 capabilities、snapshot、planner、execute-step、wait-for-change 五个 tools，
-  以及 `ck3://capabilities`、`ck3://state/current` 两个 resources。
+- `xar-ck3-mcp` 使用官方 MCP Python SDK v2，提供 capabilities、diagnostics、snapshot、planner、execute-step、
+  save-checkpoint、select/resolve-event 与 wait-for-change 等 typed tools，以及 `ck3://capabilities`、
+  `ck3://state/current` 两个 resources。
 - `vision-report` 只读现有 session；`vision-session` 通过该 session 的文件队列执行原有视觉步骤；`mod` 通过独立数据 Mod
-  读取结构化玩家/日期 snapshot；`hybrid` 用 Mod 快照与视觉动作拼成一个可直接切换的 backend。x64 DLL 已闭合离线
-  `CREATE_SUSPENDED -> PID injector -> named pipe -> resume` 全链，下一步把同一注入调用接入 CK3 runtime 并定位首批游戏内状态/命令。
+  读取结构化玩家/日期 snapshot；`hybrid` 用 Mod 快照与视觉动作拼成一个可直接切换的 backend。x64 DLL 已闭合
+  `CREATE_SUSPENDED -> PID injector -> named pipe -> resume` 全链，并已接入 CK3 runtime 与纯原生 session。
 
 完整架构与 DLL 逆向锚点见 [CK3 本地 API 与 MCP 桥接可行性](../docs/ck3-local-api-mcp-feasibility.md)。
 
@@ -260,10 +261,12 @@ stdin 共用同一主线程命令处理，因此策略、MCP daemon 和大多数
 键盘、鼠标、窗口激活或视觉 fallback，因此它是 CK3 最小化运行的目标模式。`hybrid-fallback` 是明确允许回落的另一配置，顺序为
 native → data Mod → vision session；窗口最小化或窗口可见性无法确认时，vision 分支会拒绝执行，而不会把 CK3 偷偷恢复到前台。
 两者都通过 `ck3_get_capabilities` 公布 mode、fallback、最小化与当前 native action 列表。当前 exact-build native DLL 已发布
-日期 tick、1–5 档速度、暂停状态与本地玩家 ID snapshot，并开放 `pause-map`、`resume-map`、`set-speed-1..5`。2026-08-23
-已用正式 MCP tools 在真实 CK3 1.19.0.6 的最小化窗口上完成无 OCR/键鼠实测：`ck3_execute_step` 后由
-`ck3_wait_for_change` 观察后台解除暂停、日期 tick 从 `53171400` 推进到 `53171424`、再暂停，全程窗口保持 minimized。
-事件、婚姻和战争等尚未完成的原生能力仍按 capability 返回 unsupported。
+日期 tick、1–5 档速度、暂停、地图就绪、本地玩家、当前事件与 checkpoint submission snapshot，并开放
+`pause-map`、`resume-map`、`set-speed-1..5`、`select-event-option-N` 与 `save-checkpoint`。2026-08-23 已在真实
+CK3 1.19.0.6 的最小化窗口上完成无 OCR/键鼠实测：90 次复合回合推进 94 个游戏日；连续后台推进发现实例 14 的
+五选项事件并以原生命令选择第 1 项，随后观察到实例 15；原生 checkpoint 落盘为约 63 MB 的
+`xar_checkpoint.ck3`，新进程用 `-continuelastsave` 精确恢复到同一 `date_raw=53167488`。婚姻和战争等尚未完成的
+原生能力仍按 capability 返回 unsupported。
 
 纯原生模式需要两个并行进程：先启动 `mcp_server.py --driver native-headless` 建立 pipe server，再用上面的
 `agent.py ... native-session` 创建 suspended CK3、注入 DLL 并恢复游戏。`native-session` 只监管 PID/Job，stdin 仅接受

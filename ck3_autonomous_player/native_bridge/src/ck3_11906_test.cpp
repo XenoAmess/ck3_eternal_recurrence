@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <string>
 
 namespace {
 
@@ -15,8 +16,9 @@ std::array<std::byte, 0x1C2> g_active_event{};
 std::array<std::byte, 0x1C0> g_event_data{};
 void *g_expected_event_manager = nullptr;
 bool g_has_active_event = true;
+bool g_has_local_player = false;
 bool g_submit_called = false;
-enum class ExpectedCommand { pause, resume, speed, event_option };
+enum class ExpectedCommand { pause, resume, speed, event_option, auto_save };
 ExpectedCommand g_expected_command = ExpectedCommand::pause;
 
 template <typename Value, std::size_t Size>
@@ -25,7 +27,9 @@ void Store(std::array<std::byte, Size> &target, std::size_t offset,
   std::memcpy(target.data() + offset, &value, sizeof(value));
 }
 
-void *FixtureGetLocalPlayer(void *) { return g_player.data(); }
+void *FixtureGetLocalPlayer(void *) {
+  return g_has_local_player ? g_player.data() : nullptr;
+}
 
 void *FixtureGetCurrentEvent(void *event_manager) {
   if (event_manager != g_expected_event_manager || !g_has_active_event) {
@@ -57,13 +61,26 @@ void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
                       flags == 7 && primary == 0x33333333 &&
                       secondary == 0x44444444 && command_flags == 0 &&
                       player_id == 4;
-  } else {
+  } else if (g_expected_command == ExpectedCommand::event_option) {
     std::int32_t option_index = -1;
     std::memcpy(&option_index, command + 0x24, sizeof(option_index));
     g_submit_called = manager == reinterpret_cast<void *>(0x1234) &&
                       flags == 7 && primary == 0x55555555 &&
                       secondary == 0x66666666 && command_flags == 0 &&
                       player_id == 77 && option_index == 2;
+  } else {
+    std::uint64_t save_name_size = 0;
+    std::uint64_t save_name_capacity = 0;
+    std::memcpy(&save_name_size, command + 0x30, sizeof(save_name_size));
+    std::memcpy(&save_name_capacity, command + 0x38,
+                sizeof(save_name_capacity));
+    const std::string save_name(reinterpret_cast<const char *>(command + 0x20),
+                                save_name_size);
+    g_submit_called = manager == reinterpret_cast<void *>(0x1234) &&
+                      flags == 7 && primary == 0x77777777 &&
+                      secondary == 0x88888888 && command_flags == 0x20 &&
+                      save_name == xar::ck3_11906::kCheckpointSaveName &&
+                      save_name_capacity == 15;
   }
 }
 
@@ -104,6 +121,8 @@ int main() {
   bindings.set_speed_secondary_vtable = 0x44444444;
   bindings.select_event_option_primary_vtable = 0x55555555;
   bindings.select_event_option_secondary_vtable = 0x66666666;
+  bindings.auto_save_primary_vtable = 0x77777777;
+  bindings.auto_save_secondary_vtable = 0x88888888;
   bindings.submit_command = FixtureSubmit;
   bindings.get_local_player = FixtureGetLocalPlayer;
   bindings.get_current_event = FixtureGetCurrentEvent;
@@ -114,10 +133,33 @@ int main() {
   }
   if (snapshot.date_raw != 43'823'104 || snapshot.speed != 4 ||
       snapshot.paused || snapshot.player_id != 41 ||
+      snapshot.map_ready ||
       !snapshot.has_active_event || snapshot.active_event_instance_id != 77 ||
       snapshot.active_event_option_count != 3) {
     return Fail("fixture snapshot fields did not match the pinned offsets");
   }
+  g_has_local_player = true;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      !snapshot.map_ready) {
+    return Fail("map-ready did not follow the resolved local player");
+  }
+  g_has_local_player = false;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitSaveCheckpoint(bindings).status !=
+          xar::ck3_11906::SaveCheckpointStatus::map_not_ready ||
+      g_submit_called) {
+    return Fail("save-checkpoint ignored the early map-ready gate");
+  }
+  g_has_local_player = true;
+  g_expected_command = ExpectedCommand::auto_save;
+  const auto save_result = xar::ck3_11906::SubmitSaveCheckpoint(bindings);
+  if (save_result.status !=
+          xar::ck3_11906::SaveCheckpointStatus::submitted ||
+      save_result.date_raw != 43'823'104 || !g_submit_called) {
+    return Fail("save-checkpoint did not submit the pinned autosave command");
+  }
+  g_expected_command = ExpectedCommand::pause;
+  g_submit_called = false;
   if (xar::ck3_11906::SubmitPauseMap(bindings) !=
           xar::ck3_11906::PauseSubmitResult::submitted ||
       !g_submit_called) {
@@ -189,6 +231,7 @@ int main() {
   std::cout << "PASS: snapshot=1 active_event_snapshot=1 "
                "pause_resume_command_layout=1 "
                "set_speed_zero_based_mapping=1 "
-               "select_event_option_layout=1 exact_build_gate=1\n";
+               "select_event_option_layout=1 auto_save_layout=1 "
+               "map_ready_gate=1 exact_build_gate=1\n";
   return 0;
 }

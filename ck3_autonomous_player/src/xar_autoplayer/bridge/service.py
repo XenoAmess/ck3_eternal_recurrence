@@ -182,6 +182,23 @@ class GameplayBridgeService:
     ) -> dict[str, object]:
         return self.driver.execute_step(step, expected_revision=expected_revision)
 
+    def save_checkpoint(
+        self, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        """Execute the shared checkpoint step and return its materialization."""
+        if "save-checkpoint" not in action_step_set(self.capabilities()):
+            raise UnsupportedStepError(
+                "selected backend does not implement gameplay step save-checkpoint"
+            )
+        result = self.execute_step(
+            "save-checkpoint", expected_revision=expected_revision
+        )
+        if not isinstance(result.get("checkpoint"), dict):
+            raise BridgeUnavailableError(
+                "save-checkpoint result lacks checkpoint materialization"
+            )
+        return result
+
     def wait_for_change(
         self, after_revision: int, *, timeout_seconds: float
     ) -> dict[str, object]:

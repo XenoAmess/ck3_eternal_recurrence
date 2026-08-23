@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from pathlib import Path
 import struct
 import sys
+import tempfile
 import threading
 import time
 import unittest
@@ -71,6 +73,10 @@ def _snapshot(
     revision: int = 1,
     *,
     active_event: dict[str, object] | None = None,
+    date_raw: int = 53_171_400,
+    speed: int = 1,
+    paused: bool = True,
+    map_ready: bool = True,
 ) -> dict[str, object]:
     return {
         "type": "state_snapshot",
@@ -80,6 +86,10 @@ def _snapshot(
         "state": {
             "phase": "map_hud",
             "date": "1066.9.15",
+            "date_raw": date_raw,
+            "speed": speed,
+            "paused": paused,
+            "map_ready": map_ready,
             "history": [],
             "active_event": active_event,
         },
@@ -238,6 +248,370 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         self.assertEqual(command["step"], "select-event-option-3")
         self.assertEqual(command["expected_revision"], 23)
+
+    def test_save_checkpoint_waits_for_isolated_file_materialization(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            save_dir = Path(temporary) / "profile" / "save games"
+            save_dir.mkdir(parents=True)
+            checkpoint_path = save_dir / "xar_checkpoint.ck3"
+            checkpoint_path.write_bytes(b"old checkpoint")
+            old_mtime = checkpoint_path.stat().st_mtime_ns
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                save_dir=save_dir,
+                checkpoint_timeout_seconds=1.0,
+                checkpoint_poll_interval_seconds=0.005,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.command.save-checkpoint")
+            )
+            endpoint.publish(_snapshot(31, date_raw=53_171_424))
+            payload = b"materialized native checkpoint"
+            timer: threading.Timer | None = None
+
+            def answer(frame: dict[str, object]) -> None:
+                nonlocal timer
+                if frame.get("type") != "execute_step":
+                    return
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": True,
+                        "result": {
+                            "step": "save-checkpoint",
+                            "accepted": True,
+                            "status": "submitted",
+                            "submission": {
+                                "sequence": 2,
+                                "requested_save_name": "xar_checkpoint",
+                                "date_raw": 53_171_424,
+                            },
+                        },
+                    }
+                )
+
+                def materialize() -> None:
+                    checkpoint_path.write_bytes(payload)
+                    changed_mtime = old_mtime + 1_000_000_000
+                    os.utime(
+                        checkpoint_path,
+                        ns=(changed_mtime, changed_mtime),
+                    )
+
+                timer = threading.Timer(0.02, materialize)
+                timer.start()
+
+            endpoint.send_hook = answer
+            snapshot = driver.take_snapshot()
+            result = driver.execute_step(
+                "save-checkpoint",
+                expected_revision=int(snapshot["revision"]),
+            )
+            if timer is not None:
+                timer.join(timeout=1.0)
+
+            checkpoint = result["checkpoint"]
+            self.assertEqual(checkpoint["status"], "saved")
+            self.assertEqual(checkpoint["name"], "xar_checkpoint.ck3")
+            self.assertEqual(checkpoint["path"], str(checkpoint_path.resolve()))
+            self.assertEqual(checkpoint["size"], len(payload))
+            self.assertEqual(
+                checkpoint["sha256"], hashlib.sha256(payload).hexdigest()
+            )
+            self.assertEqual(checkpoint["date_raw"], 53_171_424)
+            self.assertTrue(checkpoint["overwrite_confirmed"])
+            self.assertTrue(result["materialization"]["available"])
+
+    def test_save_checkpoint_without_directory_keeps_submission_explicit(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.save-checkpoint")
+        )
+        endpoint.publish(_snapshot(8, date_raw=53_171_448))
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") == "execute_step":
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": True,
+                        "result": {
+                            "step": "save-checkpoint",
+                            "accepted": True,
+                            "status": "submitted",
+                            "submission": {
+                                "sequence": 1,
+                                "requested_save_name": "xar_checkpoint",
+                                "date_raw": 53_171_448,
+                            },
+                        },
+                    }
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("save-checkpoint")
+
+        self.assertTrue(result["accepted"])
+        self.assertEqual(
+            result["checkpoint"]["status"], "materialization_unavailable"
+        )
+        self.assertIsNone(result["checkpoint"]["path"])
+        self.assertFalse(result["materialization"]["available"])
+        self.assertEqual(
+            result["materialization"]["reason"], "save_dir_not_configured"
+        )
+
+    def test_composite_life_advance_resolves_native_event_and_stays_paused(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=1.0,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-event",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+                "game.command.select-event-option-N",
+            )
+        )
+        endpoint.publish(_snapshot(1, map_ready=False))
+        timers: list[threading.Timer] = []
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-5":
+                endpoint.publish(_snapshot(3, speed=5))
+            elif step == "resume-map":
+                endpoint.publish(_snapshot(4, speed=5, paused=False))
+                timer = threading.Timer(
+                    0.01,
+                    lambda: endpoint.publish(
+                        _snapshot(
+                            5,
+                            date_raw=53_171_424,
+                            speed=5,
+                            paused=False,
+                            active_event={"instance_id": 77, "option_count": 2},
+                        )
+                    ),
+                )
+                timers.append(timer)
+                timer.start()
+            elif step == "pause-map":
+                endpoint.publish(
+                    _snapshot(
+                        6,
+                        date_raw=53_171_424,
+                        speed=5,
+                        active_event={"instance_id": 77, "option_count": 2},
+                    )
+                )
+            elif step == "select-event-option-1":
+                endpoint.publish(
+                    _snapshot(7, date_raw=53_171_424, speed=5, paused=True)
+                )
+
+        endpoint.send_hook = answer
+        capabilities = driver.capabilities()
+        self.assertIn("life-advance", capabilities["action_steps"])
+        self.assertEqual(capabilities["composite_action_steps"], ["life-advance"])
+        starting_revision = int(driver.take_snapshot()["revision"])
+        ready_timer = threading.Timer(
+            0.02, lambda: endpoint.publish(_snapshot(2, map_ready=True))
+        )
+        timers.append(ready_timer)
+        ready_timer.start()
+
+        result = driver.execute_step(
+            "life-advance", expected_revision=starting_revision
+        )
+        for timer in timers:
+            timer.join(timeout=1.0)
+
+        commands = [
+            frame["step"]
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+        ]
+        self.assertEqual(
+            commands,
+            [
+                "set-speed-5",
+                "resume-map",
+                "pause-map",
+                "select-event-option-1",
+            ],
+        )
+        self.assertEqual(result["starting_date_raw"], 53_171_400)
+        self.assertEqual(result["ending_date_raw"], 53_171_424)
+        self.assertEqual(result["elapsed_days"], 1)
+        self.assertTrue(result["paused"])
+        self.assertEqual(result["event_resolution"], "selected")
+        self.assertEqual(
+            result["ordinary_events"][0]["selected_option_number"], 1
+        )
+        self.assertIsNone(result["active_event"])
+
+    def test_composite_life_advance_can_stop_after_date_without_event(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        endpoint.publish(_snapshot(1))
+        stale_revision = int(driver.take_snapshot()["revision"])
+        endpoint.publish(_snapshot(2, date_raw=53_171_424))
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-5":
+                endpoint.publish(
+                    _snapshot(3, date_raw=53_171_424, speed=5)
+                )
+            elif step == "resume-map":
+                endpoint.publish(
+                    _snapshot(
+                        4,
+                        date_raw=53_171_448,
+                        speed=5,
+                        paused=False,
+                    )
+                )
+            elif step == "pause-map":
+                endpoint.publish(
+                    _snapshot(5, date_raw=53_171_448, speed=5, paused=True)
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step(
+            "life-advance", expected_revision=stale_revision
+        )
+
+        self.assertEqual(result["ordinary_events"], [])
+        self.assertEqual(result["event_resolution"], "none")
+        self.assertEqual(result["starting_date_raw"], 53_171_424)
+        self.assertEqual(result["ending_date_raw"], 53_171_448)
+        self.assertEqual(result["elapsed_days"], 1)
+        self.assertTrue(result["paused"])
+
+    def test_composite_life_advance_retries_one_natural_revision_race(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        endpoint.publish(_snapshot(1))
+        original_take_snapshot = driver.take_snapshot
+        calls = 0
+
+        def racing_snapshot() -> dict[str, object]:
+            nonlocal calls
+            calls += 1
+            if calls == 2:
+                endpoint.publish(_snapshot(2, date_raw=53_171_424))
+            return original_take_snapshot()
+
+        driver.take_snapshot = racing_snapshot  # type: ignore[method-assign]
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-5":
+                endpoint.publish(
+                    _snapshot(3, date_raw=53_171_424, speed=5)
+                )
+            elif step == "resume-map":
+                endpoint.publish(
+                    _snapshot(
+                        4,
+                        date_raw=53_171_448,
+                        speed=5,
+                        paused=False,
+                    )
+                )
+            elif step == "pause-map":
+                endpoint.publish(
+                    _snapshot(5, date_raw=53_171_448, speed=5, paused=True)
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("life-advance")
+
+        wire_steps = [
+            frame["step"]
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+        ]
+        self.assertEqual(wire_steps, ["set-speed-5", "resume-map", "pause-map"])
+        self.assertEqual(result["starting_date_raw"], 53_171_400)
+        self.assertEqual(result["ending_date_raw"], 53_171_448)
+        self.assertTrue(result["paused"])
 
     def test_command_result_does_not_forge_a_semantic_change(self) -> None:
         endpoint = FakeEndpoint()

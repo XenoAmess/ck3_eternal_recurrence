@@ -10,9 +10,11 @@ from __future__ import annotations
 from collections.abc import Callable
 import ctypes
 from ctypes import wintypes
+import hashlib
 import json
 import math
 import os
+from pathlib import Path
 import struct
 import threading
 import time
@@ -25,13 +27,21 @@ from .driver import (
     HybridGameplayDriver,
     UnsupportedStepError,
 )
-from .event_contract import normalize_active_event
+from .event_contract import (
+    choose_event_option_number,
+    event_option_step,
+    normalize_active_event,
+)
 
 
 PROTOCOL_VERSION = 1
 MAXIMUM_FRAME_BYTES = 1024 * 1024
 DEFAULT_PIPE_NAME = r"\\.\pipe\xar_ck3_bridge_mcp"
 _ACTION_CAPABILITY_PREFIX = "game.command."
+_NATIVE_LIFE_ADVANCE_PRIMITIVES = frozenset(
+    {"set-speed-5", "resume-map", "pause-map"}
+)
+_CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
 
 
 class NativeBridgeEndpoint(Protocol):
@@ -409,10 +419,25 @@ class NativeHeadlessGameplayDriver:
         *,
         endpoint: NativeBridgeEndpoint | None = None,
         command_timeout_seconds: float = 10.0,
+        life_advance_timeout_seconds: float = 30.0,
+        save_dir: str | os.PathLike[str] | None = None,
+        checkpoint_timeout_seconds: float = 30.0,
+        checkpoint_poll_interval_seconds: float = 0.1,
     ) -> None:
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
             command_timeout_seconds, "command_timeout_seconds"
+        )
+        self.life_advance_timeout_seconds = _positive_seconds(
+            life_advance_timeout_seconds, "life_advance_timeout_seconds"
+        )
+        self.save_dir = Path(save_dir) if save_dir is not None else None
+        self.checkpoint_timeout_seconds = _positive_seconds(
+            checkpoint_timeout_seconds, "checkpoint_timeout_seconds"
+        )
+        self.checkpoint_poll_interval_seconds = _positive_seconds(
+            checkpoint_poll_interval_seconds,
+            "checkpoint_poll_interval_seconds",
         )
         self.state = NativeProtocolState(self.pipe_name)
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
@@ -440,8 +465,28 @@ class NativeHeadlessGameplayDriver:
         diagnostics = dict(result["diagnostics"])
         transport_error = self._transport_error()
         diagnostics["transport_fatal_error"] = transport_error
+        action_steps = set(_string_list(result.get("action_steps")))
+        bridge_capabilities = set(
+            _string_list(result.get("bridge_capabilities"))
+        )
+        composite_action_steps: list[str] = []
+        if (
+            result.get("snapshot") is True
+            and result.get("wait_for_change") is True
+            and _NATIVE_LIFE_ADVANCE_PRIMITIVES <= action_steps
+            and "game.command.life-advance" not in bridge_capabilities
+        ):
+            action_steps.add("life-advance")
+            composite_action_steps.append("life-advance")
         return {
             **result,
+            "action_steps": sorted(action_steps),
+            "composite_action_steps": composite_action_steps,
+            "checkpoint_materialization": {
+                "configured": self.save_dir is not None,
+                "save_dir": str(self.save_dir) if self.save_dir is not None else None,
+                "filename": _CHECKPOINT_FILENAME,
+            },
             "transport_ready": transport_error is None,
             "diagnostics": diagnostics,
         }
@@ -458,6 +503,27 @@ class NativeHeadlessGameplayDriver:
         return self.state.semantic_snapshot()
 
     def execute_step(
+        self, step: str, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        capabilities = self.capabilities()
+        if step == "save-checkpoint" and step in capabilities["action_steps"]:
+            return self._execute_save_checkpoint(
+                expected_revision=expected_revision
+            )
+        if step in capabilities.get("composite_action_steps", []):
+            if step == "life-advance":
+                return self._execute_life_advance(
+                    expected_revision=expected_revision
+                )
+            raise UnsupportedStepError(
+                f"native Python bridge does not implement composite step {step}"
+            )
+        return self._execute_primitive_step(
+            step,
+            expected_revision=expected_revision,
+        )
+
+    def _execute_primitive_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
@@ -505,6 +571,288 @@ class NativeHeadlessGameplayDriver:
             "result": result,
             "backend_id": "native-headless",
         }
+
+    def _execute_save_checkpoint(
+        self, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        checkpoint_path = (
+            self.save_dir / _CHECKPOINT_FILENAME
+            if self.save_dir is not None
+            else None
+        )
+        before = (
+            _checkpoint_signature(checkpoint_path)
+            if checkpoint_path is not None
+            else None
+        )
+        submission_result = self._execute_primitive_step(
+            "save-checkpoint", expected_revision=expected_revision
+        )
+        submission = submission_result.get("submission")
+        submitted_date_raw = (
+            submission.get("date_raw")
+            if isinstance(submission, dict)
+            and not isinstance(submission.get("date_raw"), bool)
+            and isinstance(submission.get("date_raw"), int)
+            else _date_raw(self.take_snapshot(), "checkpoint submission")
+        )
+        if checkpoint_path is None:
+            return {
+                **submission_result,
+                "checkpoint": {
+                    "status": "materialization_unavailable",
+                    "path": None,
+                    "name": _CHECKPOINT_FILENAME,
+                    "size": None,
+                    "sha256": None,
+                    "date_raw": submitted_date_raw,
+                    "strategy": "native-autosave-command-v1",
+                },
+                "materialization": {
+                    "available": False,
+                    "reason": "save_dir_not_configured",
+                },
+            }
+
+        signature = self._wait_for_checkpoint_materialization(
+            checkpoint_path, before
+        )
+        size, mtime_ns = signature
+        return {
+            **submission_result,
+            "checkpoint": {
+                "status": "saved",
+                "path": str(checkpoint_path.resolve()),
+                "name": checkpoint_path.name,
+                "size": size,
+                "sha256": _sha256_file(checkpoint_path),
+                "date_raw": submitted_date_raw,
+                "overwrite_confirmed": before is not None,
+                "strategy": "native-autosave-command-v1",
+            },
+            "materialization": {
+                "available": True,
+                "save_dir": str(self.save_dir.resolve()),
+                "mtime_ns": mtime_ns,
+            },
+        }
+
+    def _wait_for_checkpoint_materialization(
+        self,
+        checkpoint_path: Path,
+        before: tuple[int, int] | None,
+    ) -> tuple[int, int]:
+        deadline = time.monotonic() + self.checkpoint_timeout_seconds
+        prior_changed: tuple[int, int] | None = None
+        while True:
+            current = _checkpoint_signature(checkpoint_path)
+            if current is not None and current[0] > 0 and current != before:
+                if current == prior_changed:
+                    return current
+                prior_changed = current
+            else:
+                prior_changed = None
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise BridgeUnavailableError(
+                    "native save-checkpoint was submitted but "
+                    f"{checkpoint_path} did not materialize"
+                )
+            time.sleep(min(self.checkpoint_poll_interval_seconds, remaining))
+
+    def _execute_life_advance(
+        self, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        starting = self.take_snapshot()
+        if starting.get("map_ready") is not True:
+            starting = self._wait_for_snapshot(
+                starting,
+                lambda snapshot: snapshot.get("map_ready") is True,
+                timeout_seconds=self.life_advance_timeout_seconds,
+            )
+        if starting.get("map_ready") is not True:
+            raise BridgeUnavailableError(
+                "native life-advance timed out waiting for map_ready"
+            )
+        starting_revision = int(starting["revision"])
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision != starting_revision:
+                # life-advance is a bounded timeline transaction and always
+                # starts from a fresh native snapshot.  A date tick can race
+                # the caller's prior observation, so refresh once rather than
+                # rejecting the whole composite before it begins.
+                starting = self.take_snapshot()
+                starting_revision = int(starting["revision"])
+                if starting.get("active_event") is not None:
+                    raise BridgeUnavailableError(
+                        "native life-advance revision changed onto an active event"
+                    )
+        starting_date_raw = _date_raw(starting, "starting snapshot")
+        actions: list[dict[str, object]] = []
+
+        speed_result = self._execute_composite_primitive(
+            "set-speed-5", starting
+        )
+        actions.append({"step": "set-speed-5", "result": speed_result})
+        current = self._wait_for_snapshot(
+            self.take_snapshot(),
+            lambda snapshot: snapshot.get("speed") == 5,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+        if current.get("speed") != 5:
+            raise BridgeUnavailableError(
+                "native life-advance did not observe speed 5"
+            )
+
+        resume_result = self._execute_composite_primitive(
+            "resume-map", current
+        )
+        actions.append({"step": "resume-map", "result": resume_result})
+        current = self._wait_for_snapshot(
+            self.take_snapshot(),
+            lambda snapshot: snapshot.get("paused") is False,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+        if current.get("paused") is not False:
+            raise BridgeUnavailableError(
+                "native life-advance did not observe the running map"
+            )
+
+        progress_deadline = time.monotonic() + self.life_advance_timeout_seconds
+        while not _life_advance_progressed(current, starting_date_raw):
+            remaining = progress_deadline - time.monotonic()
+            if remaining <= 0:
+                break
+            current = self.wait_for_change(
+                int(current["revision"]),
+                timeout_seconds=remaining,
+            )
+
+        current = self._pause_life_advance(current, actions)
+        if not _life_advance_progressed(current, starting_date_raw):
+            raise BridgeUnavailableError(
+                "native life-advance observed neither a date change nor an active event"
+            )
+
+        ordinary_events: list[dict[str, object]] = []
+        event_resolution = "none"
+        active_event = current.get("active_event")
+        if isinstance(active_event, dict):
+            option_number = choose_event_option_number(active_event)
+            selection_step = (
+                event_option_step(option_number)
+                if option_number is not None
+                else None
+            )
+            if (
+                selection_step is not None
+                and selection_step in self.capabilities()["action_steps"]
+            ):
+                event_instance_id = active_event.get("instance_id")
+                selection_result = self._execute_composite_primitive(
+                    selection_step, current
+                )
+                actions.append(
+                    {"step": selection_step, "result": selection_result}
+                )
+                ordinary_events.append(
+                    _native_ordinary_event(active_event, option_number)
+                )
+                current = self._wait_for_snapshot(
+                    self.take_snapshot(),
+                    lambda snapshot: _event_instance_id(snapshot)
+                    != event_instance_id,
+                    timeout_seconds=self.command_timeout_seconds,
+                )
+                if _event_instance_id(current) == event_instance_id:
+                    raise BridgeUnavailableError(
+                        "native event selection did not advance the active event"
+                    )
+                current = self._pause_life_advance(current, actions)
+                event_resolution = "selected"
+            else:
+                event_resolution = "unsupported"
+
+        ending_date_raw = _date_raw(current, "ending snapshot")
+        return {
+            "step": "life-advance",
+            "backend_id": "native-headless",
+            "source": "native-composite",
+            "starting_date": {"date_raw": starting_date_raw},
+            "ending_date": {"date_raw": ending_date_raw},
+            "starting_date_raw": starting_date_raw,
+            "ending_date_raw": ending_date_raw,
+            "elapsed_days": max(0, (ending_date_raw - starting_date_raw) // 24),
+            "ordinary_events": ordinary_events,
+            "event_resolution": event_resolution,
+            "actions": actions,
+            "paused": current.get("paused") is True,
+            "active_event": current.get("active_event"),
+            "final_screen": "map_hud" if current.get("paused") is True else None,
+            "snapshot_id": current["snapshot_id"],
+            "revision": current["revision"],
+        }
+
+    def _pause_life_advance(
+        self,
+        snapshot: dict[str, object],
+        actions: list[dict[str, object]],
+    ) -> dict[str, object]:
+        if snapshot.get("paused") is True:
+            return snapshot
+        result = self._execute_composite_primitive("pause-map", snapshot)
+        actions.append({"step": "pause-map", "result": result})
+        paused = self._wait_for_snapshot(
+            self.take_snapshot(),
+            lambda candidate: candidate.get("paused") is True,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+        if paused.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native life-advance did not observe the paused map"
+            )
+        return paused
+
+    def _execute_composite_primitive(
+        self,
+        step: str,
+        observed_snapshot: dict[str, object],
+    ) -> dict[str, object]:
+        """Submit from a fresh revision, retrying one harmless state race."""
+        try:
+            return self._execute_primitive_step(
+                step,
+                expected_revision=int(observed_snapshot["revision"]),
+            )
+        except BridgeUnavailableError as error:
+            if "native gameplay revision mismatch" not in str(error):
+                raise
+            refreshed = self.take_snapshot()
+            if not _retryable_life_advance_change(observed_snapshot, refreshed):
+                raise
+            return self._execute_primitive_step(
+                step,
+                expected_revision=int(refreshed["revision"]),
+            )
+
+    def _wait_for_snapshot(
+        self,
+        snapshot: dict[str, object],
+        predicate: Callable[[dict[str, object]], bool],
+        *,
+        timeout_seconds: float,
+    ) -> dict[str, object]:
+        deadline = time.monotonic() + timeout_seconds
+        current = snapshot
+        while not predicate(current):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return current
+            current = self.wait_for_change(
+                int(current["revision"]), timeout_seconds=remaining
+            )
+        return current
 
     def wait_for_change(
         self, after_revision: int, *, timeout_seconds: float
@@ -710,6 +1058,94 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
             state.get("active_event"), default_source="native"
         ),
     }
+
+
+def _date_raw(snapshot: dict[str, object], name: str) -> int:
+    value = snapshot.get("date_raw")
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise BridgeUnavailableError(f"native {name} lacks date_raw")
+    return value
+
+
+def _life_advance_progressed(
+    snapshot: dict[str, object], starting_date_raw: int
+) -> bool:
+    active_event = snapshot.get("active_event")
+    if isinstance(active_event, dict):
+        return True
+    value = snapshot.get("date_raw")
+    return (
+        not isinstance(value, bool)
+        and isinstance(value, int)
+        and value > starting_date_raw
+    )
+
+
+def _retryable_life_advance_change(
+    previous: dict[str, object], refreshed: dict[str, object]
+) -> bool:
+    """Allow one retry when only the controlled timeline naturally moved."""
+    try:
+        previous_date = _date_raw(previous, "previous composite snapshot")
+        refreshed_date = _date_raw(refreshed, "refreshed composite snapshot")
+    except BridgeUnavailableError:
+        return False
+    return (
+        refreshed_date >= previous_date
+        and refreshed.get("active_event") == previous.get("active_event")
+        and refreshed.get("paused") == previous.get("paused")
+        and refreshed.get("speed") == previous.get("speed")
+    )
+
+
+def _event_instance_id(snapshot: dict[str, object]) -> object:
+    active_event = snapshot.get("active_event")
+    return active_event.get("instance_id") if isinstance(active_event, dict) else None
+
+
+def _native_ordinary_event(
+    active_event: dict[str, object], option_number: int
+) -> dict[str, object]:
+    options = active_event.get("options")
+    visible_options = options if isinstance(options, list) else []
+    selected = next(
+        (
+            option
+            for option in visible_options
+            if isinstance(option, dict)
+            and option.get("option_number") == option_number
+        ),
+        {},
+    )
+    return {
+        "event_index": 1,
+        "event_instance_id": active_event.get("instance_id"),
+        "title": active_event.get("title"),
+        "visible_options": visible_options,
+        "selected_option_number": option_number,
+        "selected_option_index": option_number - 1,
+        "selected_visible_text": selected.get("label"),
+        "strategy": "backend-neutral-event-v1",
+        "source": active_event.get("source"),
+    }
+
+
+def _checkpoint_signature(path: Path) -> tuple[int, int] | None:
+    try:
+        stat = path.stat()
+    except FileNotFoundError:
+        return None
+    if not path.is_file():
+        return None
+    return stat.st_size, stat.st_mtime_ns
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def _string_list(value: object) -> list[str]:

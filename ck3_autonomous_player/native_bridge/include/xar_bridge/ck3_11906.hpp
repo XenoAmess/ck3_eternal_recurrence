@@ -7,6 +7,7 @@ namespace xar::ck3_11906 {
 
 inline constexpr char kExecutableSha256[] =
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
+inline constexpr char kCheckpointSaveName[] = "xar_checkpoint";
 
 using SubmitCommand = void (*)(void *manager, void *command,
                                std::uint32_t channel_flags);
@@ -26,6 +27,8 @@ struct Bindings {
   std::uintptr_t set_speed_secondary_vtable = 0;
   std::uintptr_t select_event_option_primary_vtable = 0;
   std::uintptr_t select_event_option_secondary_vtable = 0;
+  std::uintptr_t auto_save_primary_vtable = 0;
+  std::uintptr_t auto_save_secondary_vtable = 0;
   std::size_t event_manager_offset = 0;
   SubmitCommand submit_command = nullptr;
   GetLocalPlayer get_local_player = nullptr;
@@ -37,6 +40,7 @@ struct Snapshot {
   std::int32_t speed = 0;
   bool paused = false;
   std::int32_t player_id = -1;
+  bool map_ready = false;
   bool has_active_event = false;
   std::int32_t active_event_instance_id = -1;
   std::int32_t active_event_option_count = 0;
@@ -90,5 +94,22 @@ enum class SelectEventOptionResult {
 SelectEventOptionResult
 SubmitSelectEventOption(const Bindings &bindings,
                         std::int32_t option_index) noexcept;
+
+enum class SaveCheckpointStatus {
+  submitted,
+  map_not_ready,
+  unavailable,
+};
+
+struct SaveCheckpointResult {
+  SaveCheckpointStatus status = SaveCheckpointStatus::unavailable;
+  std::int32_t date_raw = 0;
+};
+
+// Queues CK3's own CAutoSaveCommand with the fixed short save name
+// `xar_checkpoint`. The result confirms queue submission, not asynchronous
+// disk completion; the caller can correlate date_raw and the save name with
+// the produced save file.
+SaveCheckpointResult SubmitSaveCheckpoint(const Bindings &bindings) noexcept;
 
 } // namespace xar::ck3_11906

@@ -68,6 +68,37 @@ event data `+0x1B0` 为 option pointer array、`+0x1BC` 为 option count。
 `CSelectEventOptionCommand` 布局与提交队列证据见
 `ck3_autonomous_player/native_bridge/research/README.md`。
 
-本页 Python/MCP 接线已由纯宿主 fixture 覆盖；实际 minimized CK3 的事件发现、提交和事件消失
-仍需一次实机验证。完成该验证后，`life-advance` 可组合为：记录起始日期 → speed 5 → resume →
-等待 `active_event` → 必要时 pause → resolve → 返回终止日期与兼容的 `ordinary_events`。
+本页 Python/MCP 接线与下述 `life-advance` composite 已由纯宿主 fixture 覆盖，并于
+2026-08-23 完成 minimized CK3 实机验证：窗口保持最小化，`date_raw` 从
+`53167488` 推进到 `53170608`；原生快照发现 `instance_id=14`、`option_count=5`，
+提交 `select-event-option-1` 成功，下一快照已切换为 `instance_id=15`、
+`option_count=3`。整段过程未调用 OCR、截图、聚焦、键盘或鼠标后端。
+
+## Native composite `life-advance`
+
+Python native driver 在 DLL 同时广告 snapshot/wait、`set-speed-5`、`resume-map` 和
+`pause-map` 时额外广告 composite `life-advance`。它不是发给 DLL 的伪 primitive，而是以下严格
+native-headless 序列：
+
+1. 读取 fresh starting snapshot/date；
+2. 提交 `set-speed-5` 并等到 snapshot 确认 speed 5；
+3. 提交 `resume-map` 并等到 `paused=false`；
+4. 等到日期向前变化或出现 `active_event`；
+5. 若事件未自动暂停则提交 `pause-map`，并确认 `paused=true`；
+6. 若当前事件的精确 `select-event-option-N` 已广告，选择最高分 enabled option（无文本时第一项），
+   提交并等到 event instance 消失或切换；否则保持事件暂停、显式返回
+   `event_resolution=unsupported`；
+7. 返回 `starting_date(_raw)`、`ending_date(_raw)`、`elapsed_days`、`paused`、
+   `ordinary_events`、最终 snapshot id/revision 与 primitive action 记录。
+
+该 composite 不调用 OCR、键鼠、窗口恢复或视觉 backend。hybrid 只有在 native 没广告该 composite
+时才按既有 capability 路由选择其它 backend；一旦 native composite 开始，失败不会在视觉端重放。
+
+2026-08-23 minimized 实机预探针观察到：调用方持有 public revision `2` 时，自然 snapshot 已推进到
+`3`，直接 primitive 会被 Python optimistic revision 检查拒绝。composite 因此在每个 primitive 前
+使用 fresh snapshot；若 mismatch 只体现为日期向前、且 active event/paused/speed 未变，只允许重取并
+重试一次。事件或控制状态发生变化时不重试。对应 fake endpoint 状态推进与竞态 fixture 已覆盖。
+
+同日实机 composite 从 `map_ready=false` 的早期加载快照自然等到 ready，在窗口始终最小化
+的情况下连续完成 90 次 `life-advance`，共推进 94 个游戏日，每次都回到
+`paused=true`。该样本段没有出现事件；上述连续推进探针则独立闭合了事件分支。

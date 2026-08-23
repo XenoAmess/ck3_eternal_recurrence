@@ -69,6 +69,11 @@ std::string SignedNumber(std::int64_t value) {
   return std::string(buffer.data(), result.ptr);
 }
 
+struct CheckpointSubmission {
+  std::uint64_t sequence = 0;
+  std::int32_t date_raw = 0;
+};
+
 std::string HelloFrame(bool ck3_gameplay_enabled) {
   std::string result =
       "{\"type\":\"hello\",\"protocol_version\":1,\"bridge_version\":\"";
@@ -86,13 +91,15 @@ std::string HelloFrame(bool ck3_gameplay_enabled) {
   result += ",\"capabilities\":[\"bridge.identity\",\"bridge.heartbeat\","
             "\"bridge.ping\"";
   if (ck3_gameplay_enabled) {
-    result += ",\"game.state.snapshot\",\"game.state.active-event\","
+    result += ",\"game.state.snapshot\",\"game.state.map-ready\","
+              "\"game.state.active-event\","
               "\"game.command.pause-map\","
               "\"game.command.resume-map\","
               "\"game.command.set-speed-1\",\"game.command.set-speed-2\","
               "\"game.command.set-speed-3\",\"game.command.set-speed-4\","
               "\"game.command.set-speed-5\","
-              "\"game.command.select-event-option-N\"";
+              "\"game.command.select-event-option-N\","
+              "\"game.command.save-checkpoint\"";
   }
   result += "]}";
   return result;
@@ -111,7 +118,8 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
 }
 
 std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
-                               std::uint64_t revision) {
+                               std::uint64_t revision,
+                               const CheckpointSubmission &checkpoint) {
   std::string result = "{\"type\":\"state_snapshot\",\"protocol_version\":1,"
                        "\"snapshot_id\":\"native:";
   result += Number(revision);
@@ -127,6 +135,8 @@ std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
   // CPauseGameCommand, not CK3's 64-bit played-character id.
   result += ",\"local_player_id\":";
   result += SignedNumber(snapshot.player_id);
+  result += ",\"map_ready\":";
+  result += snapshot.map_ready ? "true" : "false";
   result += ",\"active_event\":";
   if (!snapshot.has_active_event) {
     result += "null";
@@ -144,6 +154,18 @@ std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
       result += SignedNumber(public_index);
     }
     result += "]}";
+  }
+  result += ",\"last_checkpoint_submission\":";
+  if (checkpoint.sequence == 0) {
+    result += "null";
+  } else {
+    result += "{\"sequence\":";
+    result += Number(checkpoint.sequence);
+    result += ",\"requested_save_name\":\"";
+    result += xar::ck3_11906::kCheckpointSaveName;
+    result += "\",\"date_raw\":";
+    result += SignedNumber(checkpoint.date_raw);
+    result += ",\"status\":\"submitted\"}";
   }
   result += ",\"history\":[]}}";
   return result;
@@ -168,6 +190,24 @@ std::string CommandResultFrame(std::string_view request_id,
     result += status;
     result += "\"}";
   }
+  return result;
+}
+
+std::string SaveCheckpointResultFrame(std::string_view request_id,
+                                      const CheckpointSubmission &checkpoint) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result += "\",\"ok\":true,\"result\":{\"step\":\"save-checkpoint\","
+            "\"accepted\":true,\"status\":\"submitted\","
+            "\"submission\":{\"sequence\":";
+  result += Number(checkpoint.sequence);
+  result += ",\"requested_save_name\":\"";
+  result += xar::ck3_11906::kCheckpointSaveName;
+  result += "\",\"date_raw\":";
+  result += SignedNumber(checkpoint.date_raw);
+  result += "}}}";
   return result;
 }
 
@@ -202,17 +242,22 @@ EventOptionStep(std::string_view step) noexcept {
 
 bool PublishSnapshot(HANDLE pipe, const xar::ck3_11906::Bindings &bindings,
                      std::optional<xar::ck3_11906::Snapshot> &previous,
-                     std::uint64_t &revision) {
+                     std::uint64_t &revision,
+                     const CheckpointSubmission &checkpoint,
+                     std::uint64_t &published_checkpoint_sequence) {
   xar::ck3_11906::Snapshot snapshot{};
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot)) {
     return true;
   }
-  if (previous.has_value() && previous.value() == snapshot) {
+  if (previous.has_value() && previous.value() == snapshot &&
+      published_checkpoint_sequence == checkpoint.sequence) {
     return true;
   }
   ++revision;
   previous = snapshot;
-  return xar::bridge::WriteFrame(pipe, StateSnapshotFrame(snapshot, revision));
+  published_checkpoint_sequence = checkpoint.sequence;
+  return xar::bridge::WriteFrame(
+      pipe, StateSnapshotFrame(snapshot, revision, checkpoint));
 }
 
 bool JsonStringField(std::string_view json, std::string_view key,
@@ -285,6 +330,8 @@ DWORD WINAPI WorkerMain(void *) noexcept {
 
   std::uint64_t sequence = 0;
   std::uint64_t state_revision = 0;
+  CheckpointSubmission checkpoint_submission{};
+  std::uint64_t published_checkpoint_sequence = 0;
   std::optional<xar::ck3_11906::Snapshot> previous_snapshot;
   ULONGLONG next_heartbeat = GetTickCount64();
   bool connected = true;
@@ -295,7 +342,9 @@ DWORD WINAPI WorkerMain(void *) noexcept {
       connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence));
       if (connected && game.enabled) {
         connected =
-            PublishSnapshot(pipe, game, previous_snapshot, state_revision);
+            PublishSnapshot(pipe, game, previous_snapshot, state_revision,
+                            checkpoint_submission,
+                            published_checkpoint_sequence);
       }
       next_heartbeat = now + kHeartbeatIntervalMs;
       if (!connected) {
@@ -344,7 +393,9 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                 pipe, CommandResultFrame(request_id, step, true, status));
             if (connected) {
               connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                          state_revision);
+                                          state_revision,
+                                          checkpoint_submission,
+                                          published_checkpoint_sequence);
             }
           }
         } else if (step == "resume-map") {
@@ -362,8 +413,34 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                 pipe, CommandResultFrame(request_id, step, true, status));
             if (connected) {
               connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                          state_revision);
+                                          state_revision,
+                                          checkpoint_submission,
+                                          published_checkpoint_sequence);
             }
+          }
+        } else if (step == "save-checkpoint") {
+          const auto result = xar::ck3_11906::SubmitSaveCheckpoint(game);
+          if (result.status ==
+              xar::ck3_11906::SaveCheckpointStatus::submitted) {
+            ++checkpoint_submission.sequence;
+            checkpoint_submission.date_raw = result.date_raw;
+            connected = xar::bridge::WriteFrame(
+                pipe, SaveCheckpointResultFrame(request_id,
+                                                checkpoint_submission));
+            if (connected) {
+              connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                          state_revision,
+                                          checkpoint_submission,
+                                          published_checkpoint_sequence);
+            }
+          } else {
+            const std::string_view error =
+                result.status ==
+                        xar::ck3_11906::SaveCheckpointStatus::map_not_ready
+                    ? "CK3 map is not ready"
+                    : "CK3 save state is unavailable";
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false, error));
           }
         } else if (const auto option_index = EventOptionStep(step);
                    option_index.has_value()) {
@@ -387,7 +464,8 @@ DWORD WINAPI WorkerMain(void *) noexcept {
           }
           if (connected) {
             connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                        state_revision);
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
           }
         } else {
           const std::int32_t requested_speed = FixedSpeedStep(step);
@@ -397,7 +475,9 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
             if (connected) {
               connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                          state_revision);
+                                          state_revision,
+                                          checkpoint_submission,
+                                          published_checkpoint_sequence);
             }
           } else {
             connected = xar::bridge::WriteFrame(

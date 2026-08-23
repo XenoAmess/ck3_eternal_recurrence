@@ -30,12 +30,14 @@ bridge identity/heartbeat/ping.
 | `game.state.snapshot.speed` | implemented, live minimized probe passed | high static + offline layout fixture + live exact-build probe | never inside native driver |
 | `game.state.snapshot.paused` | implemented, live minimized probe passed | high static + offline layout fixture + live exact-build probe | never inside native driver |
 | `game.state.snapshot.local_player_id` | implemented, live minimized probe passed | high static + offline layout fixture + live exact-build probe | never inside native driver |
+| `game.state.snapshot.map_ready` | implemented, live false→true transition passed | resolved local-player getter + early/ready fixture + minimized live probe | never inside native driver |
 | `game.command.pause-map` | implemented, live minimized probe passed | high static + offline command/queue fixture + live exact-build probe | explicit upper-layer policy only |
 | `game.command.resume-map` | implemented, live minimized probe passed | same native pause command with requested byte `0` | explicit upper-layer policy only |
 | `game.command.set-speed-1..5` | implemented, live minimized probe passed | high static + offline command/queue fixture + live exact-build probe | explicit upper-layer policy only |
-| `game.state.snapshot.active_event` | implemented; minimized live probe pending | high static current-event getter + offline layout fixture | never inside native driver |
-| `game.command.select-event-option-1..N` | implemented; minimized live probe pending | high static command/queue layout + offline fixture | explicit upper-layer policy only |
-| numeric event option count/indexes | implemented; minimized live probe pending | executor bounds-check and option-array layout at RVA `0x33E68C0` | never inside native driver |
+| `game.state.snapshot.active_event` | implemented, minimized live probe passed | high static current-event getter + offline layout fixture + live instance transition | never inside native driver |
+| `game.command.select-event-option-1..N` | implemented, minimized live probe passed | high static command/queue layout + offline fixture + live option submit | explicit upper-layer policy only |
+| numeric event option count/indexes | implemented, minimized live probe passed | executor bounds-check and option-array layout at RVA `0x33E68C0` + live 5→3 option snapshots | never inside native driver |
+| `game.command.save-checkpoint` | implemented, minimized live file creation passed | high static `CAutoSaveCommand` layout + offline queue fixture + 63,367,813-byte live save | explicit upper-layer policy only |
 | event title/option text | unsupported | no repeatable localized text projection yet | unsupported in pure native mode |
 | played-character `CharacterID` | unsupported | do not confuse with 32-bit local player ID | unsupported in pure native mode |
 | main-thread tick hook | anchor-only/not located | command submission uses a locked queue, so it is not a prerequisite for the first loop | unsupported |
@@ -65,6 +67,10 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   resolved local player object `+0x70` both hold the same **32-bit local/network
   player ID**. This ID is correct for `CPauseGameCommand`; it is not CK3's
   64-bit `CharacterID`, so the public field is named `local_player_id`.
+  `map_ready` is stricter: it becomes true only when RVA `0x346B7C0` resolves
+  a local-player object and that object's `int32 +0x70` ID is non-negative.
+  Startup snapshots may therefore expose date/speed/pause while keeping
+  gameplay commands gated until the map has actually finished initializing.
 - `CGameState + 0xA0` points to CK3 game data, whose embedded event manager is
   at `+0x2F4C0`. Engine getter RVA `0x2706AD0` locks that manager, scans its
   active-event pointer array (`+0x1F18`, count at `+0x1F24`) backward, applies
@@ -101,6 +107,17 @@ event and sends the event data plus index to RVA `0x33E68C0`, which reads
 `select-event-option-1..N`; the bridge subtracts one only when constructing
 this native payload.
 
+`CAutoSaveCommand` is `0x40` bytes: primary vtable `0x40AABE8`, flags byte
+`0x20` at `+0x08`, secondary vtable `0x40AAC80` at `+0x18`, and a CK3/MSVC
+small string at `+0x20` (inline bytes, size at `+0x30`, capacity at `+0x38`).
+The native save scheduler constructs and submits this shape with channel flags
+`7` at RVA `0x2051031`; executor RVA `0x26D4360` ignores an empty name and
+passes a non-empty name to the game save path. `save-checkpoint` requests the
+fixed short name `xar_checkpoint`. Its command result and the next forced
+snapshot report submission sequence, requested name, and `date_raw`; these
+confirm queue submission and deliberately do not claim asynchronous disk
+completion.
+
 ## Completed and next live acceptance
 
 The exact pinned build completed this bounded gameplay probe on 2026-08-23:
@@ -112,14 +129,19 @@ The exact pinned build completed this bounded gameplay probe on 2026-08-23:
 3. submit `pause-map`, observe a successful command result and `paused=true`;
 4. keep every unadvertised action explicitly unsupported in pure native mode.
 
-This closes the first useful background loop before event-option, marriage, or
-war command research is expanded.
+The same exact build then completed the next two background slices:
 
-The event slice is implemented and covered offline, but its live probe has not
-yet been performed. With an ordinary event visible before minimizing CK3:
+1. a clean session published an early `map_ready=false` snapshot and later
+   transitioned to `true` without action retries;
+2. while still minimized, a continuous speed-five run advanced 130 game days,
+   published active event instance `14` with five numeric options, accepted
+   `select-event-option-1`, and next published instance `15` with three options;
+3. a separate minimized session accepted `save-checkpoint`, forced a matching
+   `last_checkpoint_submission` snapshot, and materialized
+   `save games/xar_checkpoint.ck3` at 63,367,813 bytes (SHA-256
+   `A50E61B839CD80C08661D402A9BC0D3EA42FDFD418EE21C294A089657D69BFA2`).
 
-1. observe `active_event.instance_id`, `option_count`, and generated numeric
-   options in a pure native snapshot;
-2. execute `select-event-option-1` while CK3 remains minimized;
-3. observe a successful command result and the active event clearing or
-   changing on a later native snapshot, without OCR, focus, keyboard, or mouse.
+No OCR, screenshot, focus, keyboard, or mouse backend participated. The next
+native gameplay priorities are checkpoint restore and semantic
+marriage/inheritance/war commands; event and save are no longer pending live
+acceptance.
