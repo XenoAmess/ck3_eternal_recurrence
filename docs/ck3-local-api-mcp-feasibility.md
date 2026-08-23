@@ -474,9 +474,17 @@ OCR；后来定位 `CSendCharacterInteractionCommand` 后，婚姻步骤再切�
 6. 已完成：active event/选项、`CSelectEventOptionCommand`、`life-advance`、原生 checkpoint 落盘与进程级恢复；
    玩家角色 `CharacterID`/生死已进入 snapshot。Python native driver 在首次 `map_ready=true` 且存在玩家角色时锁定
    `episode_character_id`；此后观察到角色死亡或 played `CharacterID` 改变都会直接终止一代制本局。
-7. 已完成离线实现、待真实样本：待处理角色互动 snapshot 与 `CReplyCharacterInteractionCommand` 接受/拒绝。
+7. 已完成待处理角色互动 snapshot 与 `CReplyCharacterInteractionCommand` 接受/拒绝；接收方过滤已实机验证，仍待一条
+   属于当前玩家且原生 validator 通过的真实互动完成最终 reply 样本。
    下一步按实际收益接主动婚姻、战争状态、宣战、抬兵/移动/解散；缺少原生 capability 时，纯 native 明确返回
    unsupported，只有 `hybrid-fallback` 配置才允许回落。
+8. 2026-08-23 的第二轮最小化实测修正了两项实际阻塞。旧 pending 扫描会发布全局 component storage 中不属于当前
+   玩家、无法 reply 的条目并让 planner 永久卡住；现在先按 played character 接收方、原生可见性谓词和 reply validator
+   过滤，PID 122944 的同一存档进入地图后 `pending_character_interaction=null`。随后在窗口保持 `IsIconic=true` 时，
+   `life-advance` 用纯原生命令把 `date_raw` 从 53167488 推进到 53167512 并重新暂停，未调用 OCR、截图或键鼠。
+9. 同一次实测还验证了 daemon 热重启：关闭第一个 Python pipe server 后，不重启、不重注入 CK3；新的同名 server
+   自动收到同一 PID 122944 的 hello 和完整 `native:7` snapshot（日期 53167512、paused=true）。DLL 现把 pipe
+   disconnect 视为重新连接条件，并在每次新连接强制重发当前 semantic snapshot，而不是让 worker 永久退出。
 
 本项目是本机单人游戏自动玩家。当前开发优先级由“能否更快、更稳定地完成实际玩法”决定；与实际崩溃、错误动作或
 不可用版本无关的泛化安全证明，不进入这条功能路线的阻塞清单。
