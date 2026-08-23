@@ -32,6 +32,15 @@ std::array<std::byte, sizeof(void *)> g_player_character_entries{};
 std::array<std::byte, 0x40> g_war_storage{};
 std::array<std::byte, 0x20> g_war_slots{};
 std::array<std::byte, 0x360> g_war{};
+std::array<std::int32_t, 1> g_war_targeted_title_ids{};
+std::array<std::byte, 0x40> g_landed_title_storage{};
+std::array<std::byte, 0x50> g_landed_title_slots{};
+std::array<std::byte, 0x250> g_targeted_title{};
+std::array<std::byte, 0x250> g_capital_county_title{};
+std::array<std::byte, 0x250> g_capital_barony_title{};
+std::array<std::byte, 0x88> g_capital_county_template{};
+std::array<std::byte, 0x88> g_capital_barony_template{};
+std::array<std::int32_t, 1> g_capital_county_vassal_ids{};
 std::array<std::byte, 0x10> g_attacker_participant{};
 std::array<std::byte, 0x10> g_defender_participant{};
 std::array<std::byte, sizeof(void *)> g_attacker_participants{};
@@ -40,9 +49,12 @@ std::array<std::byte, 0x40> g_army_storage{};
 std::array<std::byte, 0x40> g_army_slots{};
 std::array<std::byte, 0x17C> g_player_army{};
 std::array<std::byte, 0x17C> g_enemy_army{};
+std::array<std::byte, 0x08> g_player_move_target_info{};
+std::array<void *, 1> g_player_move_path{};
 std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
 std::array<std::byte, 0x20> g_enemy_default_raise_province{};
+std::array<std::byte, 0x20> g_war_objective_province{};
 std::array<std::byte, 5 * sizeof(void *)> g_provinces{};
 std::array<std::byte, 0x78> g_casus_belli_database{};
 std::array<void *, 2> g_casus_belli_types{};
@@ -83,6 +95,8 @@ bool g_raise_destroy_called = false;
 bool g_move_path_initialized = false;
 bool g_move_destroy_called = false;
 std::int32_t g_move_mode_result = 5;
+std::int32_t g_player_army_state_code = 2;
+std::int32_t g_enemy_army_state_code = 6;
 bool g_character_command_kind_allowed = true;
 bool g_army_move_mode_allowed = true;
 bool g_move_validation_allowed = true;
@@ -348,6 +362,16 @@ void *FixtureDestroyRaiseTroopsCommand(void *command,
                                        std::int32_t delete_flags) {
   g_raise_destroy_called = command != nullptr && delete_flags == 0;
   return command;
+}
+
+std::int32_t FixtureGetUnitState(void *unit) {
+  if (unit == g_player_army.data()) {
+    return g_player_army_state_code;
+  }
+  if (unit == g_enemy_army.data()) {
+    return g_enemy_army_state_code;
+  }
+  return 0;
 }
 
 std::int32_t FixtureGetArmyMoveMode(void *army, void *province,
@@ -955,6 +979,11 @@ int main() {
   constexpr std::int32_t player_disband_command_target_id = 0x02000011;
   constexpr std::int32_t enemy_disband_command_target_id = 0x02000012;
   constexpr std::int32_t active_war_id = 0x01000001;
+  constexpr std::int32_t targeted_title_id = 0x01000001;
+  constexpr std::int32_t capital_county_title_id = 0x01000002;
+  constexpr std::int32_t capital_barony_title_id = 0x01000003;
+  constexpr std::int32_t war_objective_province_id = 1;
+  Store(g_war_objective_province, 0x10, war_objective_province_id);
   Store(g_player_province, 0x10, std::int32_t{2});
   Store(g_enemy_province, 0x10, std::int32_t{3});
   Store(g_enemy_default_raise_province, 0x10, std::int32_t{4});
@@ -964,17 +993,27 @@ int main() {
         static_cast<void *>(g_enemy_province.data()));
   Store(g_provinces, 4 * sizeof(void *),
         static_cast<void *>(g_enemy_default_raise_province.data()));
+  Store(g_provinces, 1 * sizeof(void *),
+        static_cast<void *>(g_war_objective_province.data()));
   Store(game_data, 0x140, static_cast<void *>(g_provinces.data()));
   Store(game_data, 0x14C, std::int32_t{5});
 
   Store(g_player_army, 0x10, player_army_id);
   Store(g_player_army, 0x20,
         static_cast<void *>(g_player_province.data()));
+  Store(g_player_move_target_info, 0x00, std::int32_t{3});
+  g_player_move_path = {g_player_move_target_info.data()};
+  Store(g_player_army, 0x38,
+        static_cast<void *>(g_player_move_path.data()));
+  Store(g_player_army, 0x40, std::int32_t{1});
+  Store(g_player_army, 0x44, std::int32_t{1});
+  Store(g_player_army, 0x170, std::int32_t{0});
   Store(g_player_army, 0x174, played_character_id);
   Store(g_player_army, 0x178, player_disband_command_target_id);
   Store(g_enemy_army, 0x10, enemy_army_id);
   Store(g_enemy_army, 0x20,
         static_cast<void *>(g_enemy_province.data()));
+  Store(g_enemy_army, 0x170, std::int32_t{1});
   Store(g_enemy_army, 0x174, enemy_character_id);
   Store(g_enemy_army, 0x178, enemy_disband_command_target_id);
   Store(g_army_slots, 0x18, static_cast<void *>(g_player_army.data()));
@@ -994,6 +1033,11 @@ int main() {
   Store(g_war, 0x34, std::int32_t{1});
   Store(g_war, 0x88, static_cast<void *>(g_defender_participants.data()));
   Store(g_war, 0x94, std::int32_t{1});
+  g_war_targeted_title_ids = {targeted_title_id};
+  Store(g_war, 0x270,
+        static_cast<void *>(g_war_targeted_title_ids.data()));
+  Store(g_war, 0x278, std::int32_t{1});
+  Store(g_war, 0x27C, std::int32_t{1});
   Store(g_war, 0x288, played_character_id);
   Store(g_war, 0x28C, enemy_character_id);
   Store(g_war, 0x358, static_cast<void *>(nullptr));
@@ -1001,6 +1045,33 @@ int main() {
   Store(g_war_storage, 0x20, static_cast<void *>(g_war_slots.data()));
   Store(g_war_storage, 0x2C, std::int32_t{2});
   Store(game_data, 0x220, static_cast<void *>(g_war_storage.data()));
+
+  Store(g_landed_title_slots, 0x18,
+        static_cast<void *>(g_targeted_title.data()));
+  Store(g_landed_title_slots, 0x28,
+        static_cast<void *>(g_capital_county_title.data()));
+  Store(g_landed_title_slots, 0x38,
+        static_cast<void *>(g_capital_barony_title.data()));
+  Store(g_landed_title_storage, 0x20,
+        static_cast<void *>(g_landed_title_slots.data()));
+  Store(g_landed_title_storage, 0x2C, std::int32_t{5});
+  Store(game_data, 0x320,
+        static_cast<void *>(g_landed_title_storage.data()));
+  Store(g_targeted_title, 0x10, targeted_title_id);
+  Store(g_targeted_title, 0x214, capital_county_title_id);
+  Store(g_capital_county_title, 0x10, capital_county_title_id);
+  Store(g_capital_county_title, 0x160,
+        static_cast<void *>(g_capital_county_template.data()));
+  Store(g_capital_county_template, 0x5C, std::int32_t{2});
+  g_capital_county_vassal_ids = {capital_barony_title_id};
+  Store(g_capital_county_title, 0x240,
+        static_cast<void *>(g_capital_county_vassal_ids.data()));
+  Store(g_capital_county_title, 0x248, std::int32_t{1});
+  Store(g_capital_county_title, 0x24C, std::int32_t{1});
+  Store(g_capital_barony_title, 0x10, capital_barony_title_id);
+  Store(g_capital_barony_title, 0x160,
+        static_cast<void *>(g_capital_barony_template.data()));
+  Store(g_capital_barony_template, 0x80, war_objective_province_id);
 
   g_casus_belli_types = {g_casus_belli_type_0.data(),
                          g_casus_belli_type_1.data()};
@@ -1066,6 +1137,7 @@ int main() {
       g_casus_belli_scratch.data();
   bindings.player_character_manager_offset = 0x100;
   bindings.war_manager_offset = 0x200;
+  bindings.landed_title_manager_offset = 0x300;
   bindings.arrange_marriage_interaction_offset = 0xF48;
   bindings.declare_war_interaction_offset = 0xF78;
   bindings.submit_command = FixtureSubmit;
@@ -1079,6 +1151,7 @@ int main() {
   bindings.get_war_score = FixtureGetWarScore;
   bindings.resolve_default_raise_province =
       FixtureResolveDefaultRaiseProvince;
+  bindings.get_unit_state = FixtureGetUnitState;
   bindings.construct_raise_troops_command =
       FixtureConstructRaiseTroopsCommand;
   bindings.validate_raise_troops_command =
@@ -1169,6 +1242,12 @@ int main() {
       snapshot.player_armies[0].owner_character_id != played_character_id ||
       !snapshot.player_armies[0].has_current_province ||
       snapshot.player_armies[0].current_province_id != 2 ||
+      !snapshot.player_armies[0].move_target_observable ||
+      snapshot.player_armies[0].move_target_province_id != 3 ||
+      snapshot.player_armies[0].army_state_code != 2 ||
+      snapshot.player_armies[0].army_state != "combat" ||
+      !snapshot.player_armies[0].in_combat ||
+      snapshot.player_armies[0].retreating ||
       !snapshot.player_armies[0].controllable ||
       snapshot.active_wars.size() != 1 ||
       snapshot.active_wars[0].war_id != active_war_id ||
@@ -1177,14 +1256,51 @@ int main() {
       snapshot.active_wars[0].primary_opponent_character_id !=
           enemy_character_id ||
       !snapshot.active_wars[0].player_is_primary_war_leader ||
+      snapshot.active_wars[0].targeted_title_ids !=
+          std::vector<std::int32_t>{targeted_title_id} ||
+      snapshot.active_wars[0].war_objective_province_ids !=
+          std::vector<std::int32_t>{war_objective_province_id} ||
       snapshot.active_wars[0].enemy_primary_default_raise_province_id != 4 ||
       snapshot.active_wars[0].player_relative_war_score != 37 ||
       snapshot.active_wars[0].allied_armies.size() != 1 ||
       snapshot.active_wars[0].enemy_armies.size() != 1 ||
       snapshot.active_wars[0].enemy_armies[0].army_id != enemy_army_id ||
-      snapshot.active_wars[0].enemy_armies[0].current_province_id != 3) {
+      snapshot.active_wars[0].enemy_armies[0].current_province_id != 3 ||
+      snapshot.active_wars[0].enemy_armies[0].move_target_observable ||
+      snapshot.active_wars[0].enemy_armies[0].move_target_province_id != -1 ||
+      snapshot.active_wars[0].enemy_armies[0].army_state_code != 6 ||
+      snapshot.active_wars[0].enemy_armies[0].army_state != "retreating" ||
+      snapshot.active_wars[0].enemy_armies[0].in_combat ||
+      !snapshot.active_wars[0].enemy_armies[0].retreating) {
     return Fail("map-ready did not follow the resolved local player");
   }
+
+  constexpr std::array<std::string_view, 9> expected_unit_state_names{
+      "regular",   "combat", "sieging", "embarked", "gathering",
+      "retreating", "moving", "raiding", "bartering",
+  };
+  for (std::int32_t state_code = 1; state_code <= 9; ++state_code) {
+    g_player_army_state_code = state_code;
+    if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+        snapshot.player_armies.size() != 1 ||
+        snapshot.player_armies[0].army_state_code != state_code ||
+        snapshot.player_armies[0].army_state !=
+            expected_unit_state_names[static_cast<std::size_t>(state_code - 1)] ||
+        snapshot.player_armies[0].in_combat != (state_code == 2)) {
+      return Fail("unit state code-to-name projection drifted");
+    }
+  }
+  g_player_army_state_code = 2;
+
+  Store(g_targeted_title, 0x10, std::int32_t{0x02000001});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars.size() != 1 ||
+      snapshot.active_wars[0].targeted_title_ids !=
+          std::vector<std::int32_t>{targeted_title_id} ||
+      !snapshot.active_wars[0].war_objective_province_ids.empty()) {
+    return Fail("war objective projection ignored TitleID generation");
+  }
+  Store(g_targeted_title, 0x10, targeted_title_id);
 
   FixtureSetGlobalNumeric(0, kFixtureFixedPointScale);
   g_script_identifier_lookup_calls = 0;

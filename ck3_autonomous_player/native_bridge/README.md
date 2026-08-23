@@ -130,16 +130,21 @@ be decoded. A published object contains `ready`, `commit_serial`,
 `{"raw":<signed int64>,"scale":100000}`. Each active
 war identifies the player's side, the generation-validated primary opponent,
 whether the player is their side's primary war leader, and war score relative
-to that player. Exact-build capability `game.state.war-primary-opponent` also
+to that player. Exact-build capability `game.state.war-objectives` publishes
+each war's exact `targeted_title_ids` and the deduplicated
+`war_objective_province_ids` obtained from each target title's capital county
+and capital barony. Exact-build capability `game.state.war-primary-opponent` also
 publishes nullable `enemy_primary_default_raise_province_id`: the opponent's
 native default rally province, explicitly only a fallback when no enemy army
 province is observable, not a decoded war goal. Wars group currently
 observable armies into `allied_armies` and `enemy_armies`. Army records expose
-`army_id`, owner `CharacterID`, nullable
-current province, and whether the played character controls them. Soldier
-count and in-flight move target are deliberately absent: two candidate
-`+0x38/+0x44` interpretations conflict in the pinned binary, so this slice
-does not publish a guessed value. `played_character` exposes the current played `CharacterID` and
+`army_id`, owner `CharacterID`, nullable current province, exact native
+`army_state_code`/`army_state`, `in_combat`, `retreating`, and whether the
+played character controls them. A valid nonempty native route publishes its
+last province as `move_target_province_id` with
+`move_target_observable=true`; no route remains `null/false`. Soldier count
+remains absent because its aggregate ABI has not been live-validated and this
+bridge does not publish a guessed value. `played_character` exposes the current played `CharacterID` and
 the engine's alive/dead projection; the one-generation planner treats dead as
 an episode terminal and never continues as the heir. The pending object exposes the engine component instance ID, the
 sender's 32-bit `CharacterID` handle, and whether CK3 classifies it as an

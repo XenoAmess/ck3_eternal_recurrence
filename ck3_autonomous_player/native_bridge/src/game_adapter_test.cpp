@@ -151,6 +151,7 @@ int main() {
       !Contains(known.capabilities,
                 "game.state.xar-one-life-settlement") ||
       !Contains(known.capabilities, "game.state.war-primary-opponent") ||
+      !Contains(known.capabilities, "game.state.war-objectives") ||
       !Contains(known.capabilities, "game.command.declare-war-N") ||
       !Contains(known.capabilities,
                 "game.command.query-arrange-marriage-choices") ||
@@ -169,6 +170,7 @@ int main() {
   if (!partial.supports("game.state.snapshot") ||
       !partial.supports("game.command.pause-map") ||
       partial.supports("game.state.war-primary-opponent") ||
+      partial.supports("game.state.war-objectives") ||
       partial.supports("game.command.declare-war-N") ||
       !partial.supports_snapshot() || !partial.supports_step("pause-map") ||
       partial.supports_step("declare-war-99-1-0") ||

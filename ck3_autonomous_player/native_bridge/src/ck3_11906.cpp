@@ -2,6 +2,7 @@
 
 #include <windows.h>
 
+#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <cstring>
@@ -57,6 +58,7 @@ constexpr std::uintptr_t kValidateReplyCharacterInteractionCommandRva =
 constexpr std::uintptr_t kContainsWarParticipantRva = 0x2224870;
 constexpr std::uintptr_t kGetWarScoreRva = 0x222A8A0;
 constexpr std::uintptr_t kResolveDefaultRaiseProvinceRva = 0x224CC80;
+constexpr std::uintptr_t kGetUnitStateRva = 0x0C7AAB0;
 constexpr std::uintptr_t kConstructRaiseTroopsCommandRva = 0x26D6FC0;
 constexpr std::uintptr_t kValidateRaiseTroopsCommandRva = 0x26D7150;
 constexpr std::uintptr_t kDestroyRaiseTroopsCommandRva = 0x10E7950;
@@ -111,6 +113,7 @@ constexpr std::size_t kPlayerIdOffset = 0x70;
 constexpr std::size_t kEventManagerOffset = 0x2F4C0;
 constexpr std::size_t kPlayerCharacterManagerOffset = 0x1D4F0;
 constexpr std::size_t kWarManagerOffset = 0x29C20;
+constexpr std::size_t kLandedTitleManagerOffset = 0x2FC8;
 constexpr std::size_t kActiveEventDataOffset = 0x1B0;
 constexpr std::size_t kActiveEventInstanceIdOffset = 0x1BC;
 constexpr std::size_t kEventDataOptionCountOffset = 0x1BC;
@@ -140,9 +143,23 @@ constexpr std::size_t kWarAttackersOffset = 0x20;
 constexpr std::size_t kWarDefendersOffset = 0x80;
 constexpr std::size_t kWarPrimaryAttackerCharacterIdOffset = 0x288;
 constexpr std::size_t kWarPrimaryDefenderCharacterIdOffset = 0x28C;
+constexpr std::size_t kWarTargetedTitleIdsOffset = 0x270;
 constexpr std::size_t kWarEndedDataOffset = 0x358;
+constexpr std::size_t kLandedTitleStorageOffset = 0x20;
+constexpr std::size_t kLandedTitleIdOffset = 0x10;
+constexpr std::size_t kLandedTitleTemplateOffset = 0x160;
+constexpr std::size_t kLandedTitleCapitalTitleIdOffset = 0x214;
+constexpr std::size_t kLandedTitleDeJureVassalIdsOffset = 0x240;
+constexpr std::size_t kLandedTitleTemplateTierOffset = 0x5C;
+constexpr std::size_t kLandedTitleTemplateProvinceIdOffset = 0x80;
+constexpr std::int32_t kCountyTitleTier = 2;
 constexpr std::size_t kArmyIdOffset = 0x10;
 constexpr std::size_t kArmyCurrentProvinceOffset = 0x20;
+constexpr std::size_t kUnitPathProvinceInfosOffset = 0x38;
+constexpr std::size_t kUnitPathProvinceInfoCapacityOffset = 0x40;
+constexpr std::size_t kUnitPathProvinceInfoCountOffset = 0x44;
+constexpr std::size_t kUnitPathProvinceIdOffset = 0x00;
+constexpr std::size_t kUnitRetreatStateOffset = 0x170;
 constexpr std::size_t kArmyOwnerCharacterIdOffset = 0x174;
 constexpr std::size_t kArmyDisbandCommandTargetIdOffset = 0x178;
 constexpr std::size_t kProvinceIdOffset = 0x10;
@@ -183,6 +200,7 @@ constexpr std::int32_t kMaximumGlobalVariableEntries = 1'000'000;
 constexpr std::int32_t kMaximumCasusBelliTypes = 10'000;
 constexpr std::int32_t kMaximumCasusBelliConfigurations = 10'000;
 constexpr std::int32_t kMaximumNativeTitleIds = 1'000'000;
+constexpr std::int32_t kMaximumUnitPathProvinceInfos = 1'000'000;
 constexpr std::size_t kMaximumDatabaseObjectKeyBytes = 4'096;
 constexpr std::size_t kMsvcStringInlineCapacity = 15;
 constexpr std::size_t kMaximumMarriageValidationSamples = 8;
@@ -1156,6 +1174,89 @@ void *ResolveProvince(void *game_state, std::int32_t province_id) noexcept {
   return province;
 }
 
+void *ResolveLandedTitle(const Bindings &bindings, void *game_state,
+                         std::int32_t title_id) noexcept {
+  if (game_state == nullptr || title_id == -1) {
+    return nullptr;
+  }
+  void *const game_data =
+      LoadAt<void *>(game_state, kGameStateGameDataOffset);
+  if (game_data == nullptr) {
+    return nullptr;
+  }
+  auto *const title_manager = static_cast<std::byte *>(game_data) +
+                              bindings.landed_title_manager_offset;
+  void *const storage =
+      LoadAt<void *>(title_manager, kLandedTitleStorageOffset);
+  if (storage == nullptr) {
+    return nullptr;
+  }
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const auto capacity =
+      LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  const auto index = static_cast<std::uint32_t>(title_id) & 0x00FFFFFFU;
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentCapacity ||
+      index >= static_cast<std::uint32_t>(capacity)) {
+    return nullptr;
+  }
+  void *const title = LoadAt<void *>(
+      slots, static_cast<std::size_t>(index) * kComponentStorageSlotSize +
+                 kComponentStorageSlotObjectOffset);
+  if (title == nullptr ||
+      LoadAt<std::int32_t>(title, kLandedTitleIdOffset) != title_id) {
+    return nullptr;
+  }
+  return title;
+}
+
+std::int32_t ResolveWarObjectiveProvinceId(
+    const Bindings &bindings, void *game_state,
+    std::int32_t targeted_title_id) noexcept {
+  void *const targeted_title =
+      ResolveLandedTitle(bindings, game_state, targeted_title_id);
+  if (targeted_title == nullptr) {
+    return -1;
+  }
+  const auto capital_title_id = LoadAt<std::int32_t>(
+      targeted_title, kLandedTitleCapitalTitleIdOffset);
+  void *const capital_title =
+      ResolveLandedTitle(bindings, game_state, capital_title_id);
+  if (capital_title == nullptr) {
+    return -1;
+  }
+  void *const capital_template =
+      LoadAt<void *>(capital_title, kLandedTitleTemplateOffset);
+  if (capital_template == nullptr ||
+      LoadAt<std::int32_t>(capital_template,
+                           kLandedTitleTemplateTierOffset) !=
+          kCountyTitleTier) {
+    return -1;
+  }
+  std::vector<std::int32_t> de_jure_vassal_ids;
+  if (!ReadNativeIntArray(
+          static_cast<std::byte *>(capital_title) +
+              kLandedTitleDeJureVassalIdsOffset,
+          de_jure_vassal_ids) ||
+      de_jure_vassal_ids.empty()) {
+    return -1;
+  }
+  void *const capital_barony =
+      ResolveLandedTitle(bindings, game_state, de_jure_vassal_ids.front());
+  if (capital_barony == nullptr) {
+    return -1;
+  }
+  void *const barony_template =
+      LoadAt<void *>(capital_barony, kLandedTitleTemplateOffset);
+  if (barony_template == nullptr) {
+    return -1;
+  }
+  const auto province_id = LoadAt<std::int32_t>(
+      barony_template, kLandedTitleTemplateProvinceIdOffset);
+  return ResolveProvince(game_state, province_id) == nullptr ? -1
+                                                             : province_id;
+}
+
 void *ResolveWar(const Bindings &bindings, void *game_state,
                  std::int32_t war_id) noexcept {
   if (game_state == nullptr || war_id == -1) {
@@ -1191,13 +1292,65 @@ void *ResolveWar(const Bindings &bindings, void *game_state,
   return war;
 }
 
+std::string_view UnitStateName(std::int32_t state_code) noexcept {
+  switch (state_code) {
+  case 1:
+    return "regular";
+  case 2:
+    return "combat";
+  case 3:
+    return "sieging";
+  case 4:
+    return "embarked";
+  case 5:
+    return "gathering";
+  case 6:
+    return "retreating";
+  case 7:
+    return "moving";
+  case 8:
+    return "raiding";
+  case 9:
+    return "bartering";
+  default:
+    return "unknown";
+  }
+}
+
+void ReadUnitMoveTarget(void *game_state, void *unit,
+                        ArmySnapshot &snapshot) noexcept {
+  void *const province_infos =
+      LoadAt<void *>(unit, kUnitPathProvinceInfosOffset);
+  const auto capacity = LoadAt<std::int32_t>(
+      unit, kUnitPathProvinceInfoCapacityOffset);
+  const auto count =
+      LoadAt<std::int32_t>(unit, kUnitPathProvinceInfoCountOffset);
+  if (province_infos == nullptr || count <= 0 || capacity < count ||
+      count > kMaximumUnitPathProvinceInfos) {
+    return;
+  }
+  void *const last_province_info = LoadAt<void *>(
+      province_infos,
+      static_cast<std::size_t>(count - 1) * sizeof(void *));
+  if (last_province_info == nullptr) {
+    return;
+  }
+  const auto province_id = LoadAt<std::int32_t>(
+      last_province_info, kUnitPathProvinceIdOffset);
+  if (ResolveProvince(game_state, province_id) == nullptr) {
+    return;
+  }
+  snapshot.move_target_observable = true;
+  snapshot.move_target_province_id = province_id;
+}
+
 struct ResolvedArmySnapshot {
   void *army = nullptr;
   ArmySnapshot snapshot{};
 };
 
 std::vector<ResolvedArmySnapshot>
-ReadArmies(const Bindings &bindings,
+ReadArmies(const Bindings &bindings, void *game_state,
            std::int32_t played_character_id) noexcept {
   std::vector<ResolvedArmySnapshot> result;
   if (bindings.army_storage_slot == nullptr) {
@@ -1245,6 +1398,17 @@ ReadArmies(const Bindings &bindings,
         snapshot.current_province_id = province_id;
       }
     }
+    if (bindings.get_unit_state != nullptr) {
+      const auto state_code = bindings.get_unit_state(army);
+      if (state_code >= 1 && state_code <= 9) {
+        snapshot.army_state_code = state_code;
+      }
+    }
+    snapshot.army_state = UnitStateName(snapshot.army_state_code);
+    snapshot.in_combat = snapshot.army_state_code == 2;
+    snapshot.retreating =
+        LoadAt<std::int32_t>(army, kUnitRetreatStateOffset) > 0;
+    ReadUnitMoveTarget(game_state, army, snapshot);
     result.push_back({army, snapshot});
   }
   return result;
@@ -1255,7 +1419,8 @@ void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
                        Snapshot &output) noexcept {
   output.active_wars.clear();
   output.player_armies.clear();
-  const auto armies = ReadArmies(bindings, played_character_id);
+  const auto armies = ReadArmies(bindings, game_state,
+                                 played_character_id);
   for (const auto &army : armies) {
     if (army.snapshot.controllable) {
       output.player_armies.push_back(army.snapshot);
@@ -1322,6 +1487,21 @@ void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
                      : kWarPrimaryDefenderCharacterIdOffset);
     snapshot.player_is_primary_war_leader =
         player_primary_character_id == played_character_id;
+    if (ReadNativeIntArray(
+            static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
+            snapshot.targeted_title_ids)) {
+      for (const auto targeted_title_id : snapshot.targeted_title_ids) {
+        const auto province_id = ResolveWarObjectiveProvinceId(
+            bindings, game_state, targeted_title_id);
+        if (province_id > 0 &&
+            std::find(snapshot.war_objective_province_ids.begin(),
+                      snapshot.war_objective_province_ids.end(),
+                      province_id) ==
+                snapshot.war_objective_province_ids.end()) {
+          snapshot.war_objective_province_ids.push_back(province_id);
+        }
+      }
+    }
     const std::int32_t primary_opponent_character_id =
         LoadAt<std::int32_t>(
             war, player_is_attacker
@@ -1433,6 +1613,7 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.player_character_manager_offset =
       kPlayerCharacterManagerOffset;
   result.war_manager_offset = kWarManagerOffset;
+  result.landed_title_manager_offset = kLandedTitleManagerOffset;
   result.arrange_marriage_interaction_offset =
       kArrangeMarriageInteractionOffset;
   result.declare_war_interaction_offset = kDeclareWarInteractionOffset;
@@ -1455,6 +1636,8 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.resolve_default_raise_province =
       reinterpret_cast<ResolveDefaultRaiseProvince>(
           module + kResolveDefaultRaiseProvinceRva);
+  result.get_unit_state =
+      reinterpret_cast<GetUnitState>(module + kGetUnitStateRva);
   result.construct_raise_troops_command =
       reinterpret_cast<ConstructRaiseTroopsCommand>(
           module + kConstructRaiseTroopsCommandRva);

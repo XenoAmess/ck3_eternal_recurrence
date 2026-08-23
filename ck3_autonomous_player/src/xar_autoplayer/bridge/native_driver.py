@@ -64,6 +64,7 @@ from .war_contract import (
     ENFORCE_DEMANDS_CAPABILITY,
     MOVE_ARMY_CAPABILITY,
     RAISE_TROOPS_STEP,
+    WAR_OBJECTIVES_CAPABILITY,
     WAR_PRIMARY_OPPONENT_CAPABILITY,
     controllable_armies,
     disband_army_step,
@@ -77,6 +78,7 @@ from .war_contract import (
     parse_enforce_demands_step,
     parse_move_army_step,
     player_armies_from_state,
+    war_objective_province_ids,
 )
 
 
@@ -2036,6 +2038,9 @@ class NativeHeadlessGameplayDriver:
                         "reason": "army_not_move_ready",
                         "army_id": army_id,
                         "target_province_id": province_id,
+                        "submitted_date_raw": _date_raw(
+                            starting, "deferred move starting snapshot"
+                        ),
                     },
                     "player_armies": current.get("player_armies", []),
                     "snapshot_id": current["snapshot_id"],
@@ -3010,6 +3015,8 @@ class NativeHeadlessGameplayDriver:
             "ending_date_raw": ending_date_raw,
             "elapsed_days": max(0, (ending_date_raw - starting_date_raw) // 24),
             "progress_status": progress_status,
+            "war_progress_before": _war_progress_summary(starting),
+            "war_progress_after": _war_progress_summary(current),
             "ordinary_events": ordinary_events,
             "event_resolution": event_resolution,
             "actions": actions,
@@ -3488,6 +3495,75 @@ def _active_war_progress_signature(
     return tuple(sorted(result))
 
 
+def _war_progress_summary(snapshot: dict[str, object]) -> dict[str, object]:
+    """Persist the small tactical slice needed to bound future war decisions."""
+    wars = snapshot.get("active_wars")
+    result: list[dict[str, object]] = []
+    for war in wars if isinstance(wars, list) else []:
+        if not isinstance(war, dict):
+            continue
+        result.append(
+            {
+                "war_id": war.get("war_id"),
+                "player_relative_war_score": war.get(
+                    "player_relative_war_score"
+                ),
+                "war_objective_province_ids": list(
+                    war.get("war_objective_province_ids", [])
+                ),
+                "enemy_primary_default_raise_province_id": war.get(
+                    "enemy_primary_default_raise_province_id"
+                ),
+                "player_armies": _war_progress_armies(
+                    war.get("allied_armies"), controllable=True
+                ),
+                "enemy_armies": _war_progress_armies(
+                    war.get("enemy_armies"), controllable=None
+                ),
+            }
+        )
+    return {"date_raw": snapshot.get("date_raw"), "wars": result}
+
+
+def _war_progress_armies(
+    value: object, *, controllable: bool | None
+) -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
+    for army in value if isinstance(value, list) else []:
+        if not isinstance(army, dict) or (
+            controllable is not None
+            and army.get("controllable") is not controllable
+        ):
+            continue
+        row = {
+            key: army.get(key)
+            for key in (
+                "army_id",
+                "current_province_id",
+                "soldiers",
+                "move_target_province_id",
+            )
+        }
+        for optional_flag in ("in_combat", "retreating"):
+            if isinstance(army.get(optional_flag), bool):
+                row[optional_flag] = army[optional_flag]
+        for optional_state in ("army_state", "army_state_code"):
+            if isinstance(army.get(optional_state), (str, int)) and not isinstance(
+                army.get(optional_state), bool
+            ):
+                row[optional_state] = army[optional_state]
+        rows.append(row)
+    return sorted(
+        rows,
+        key=lambda row: (
+            int(row["army_id"])
+            if isinstance(row.get("army_id"), int)
+            and not isinstance(row.get("army_id"), bool)
+            else 2**31 - 1
+        ),
+    )
+
+
 def _retryable_life_advance_change(
     previous: dict[str, object], refreshed: dict[str, object]
 ) -> bool:
@@ -3574,6 +3650,7 @@ def _action_steps(
     war_primary_opponent_supported = (
         WAR_PRIMARY_OPPONENT_CAPABILITY in capabilities
     )
+    war_objectives_supported = WAR_OBJECTIVES_CAPABILITY in capabilities
     expand_event_options = False
     pending_interaction_steps: set[str] = set()
     expand_move_armies = False
@@ -3681,6 +3758,8 @@ def _action_steps(
             target_provinces.update(
                 enemy_primary_default_raise_province_ids(wars)
             )
+        if war_objectives_supported:
+            target_provinces.update(war_objective_province_ids(wars))
         for army in controllable:
             army_id = army.get("army_id")
             if not isinstance(army_id, int):

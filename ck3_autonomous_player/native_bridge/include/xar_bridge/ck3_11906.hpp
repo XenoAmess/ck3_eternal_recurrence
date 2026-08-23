@@ -24,6 +24,7 @@ using ContainsWarParticipant = bool (*)(void *participant_container,
                                         std::int32_t character_id);
 using GetWarScore = std::int32_t (*)(void *war, void *war_score_context);
 using ResolveDefaultRaiseProvince = void *(*)(void *character);
+using GetUnitState = std::int32_t (*)(void *unit);
 using ConstructRaiseTroopsCommand = void *(*)(void *command,
                                               std::int32_t character_id,
                                               const void *raise_entry);
@@ -127,6 +128,7 @@ struct Bindings {
   std::size_t event_manager_offset = 0;
   std::size_t player_character_manager_offset = 0;
   std::size_t war_manager_offset = 0;
+  std::size_t landed_title_manager_offset = 0;
   std::size_t arrange_marriage_interaction_offset = 0;
   std::size_t declare_war_interaction_offset = 0;
   SubmitCommand submit_command = nullptr;
@@ -139,6 +141,7 @@ struct Bindings {
   ContainsWarParticipant contains_war_participant = nullptr;
   GetWarScore get_war_score = nullptr;
   ResolveDefaultRaiseProvince resolve_default_raise_province = nullptr;
+  GetUnitState get_unit_state = nullptr;
   ConstructRaiseTroopsCommand construct_raise_troops_command = nullptr;
   ValidateRaiseTroopsCommand validate_raise_troops_command = nullptr;
   DestroyNativeCommand destroy_raise_troops_command = nullptr;

@@ -2,6 +2,26 @@
 
 本页定义 `native-headless` 的战争状态、命令和最小决策闭环。该路径只走注入 DLL 的 named pipe；CK3 窗口最小化时仍可运行，也不会回落到 OCR、键鼠或窗口聚焦。
 
+## 2026-08-24 动态目标与军队运行态
+
+- `game.state.war-objectives` 发布 `targeted_title_ids` 和由目标头衔首都解析出的
+  `war_objective_province_ids`。planner 严格按“全部 exact 目标 → legacy
+  `enemy_primary_default_raise_province_id` fallback”轮转，不按省份数字混排。默认集结省不是 war goal。
+- 军队运行态使用 `army_state` / `army_state_code`：`combat=2`、`sieging=3`、
+  `retreating=6`、`moving=7`。`combat` 只允许有界接触推进，`sieging` 推进围城，
+  `retreating` 最多等待 30 游戏日；到期后不再盲目碰撞，planner 返回
+  `selected_step=null` / `required_step=query-safe-war-objectives`。
+- 每个 `life-advance` 结果持久保存 `war_progress_before/after`，只含日期、战争分数、
+  exact/fallback 目标和双方军队 ID、当前省、兵力、移动目标及运行态。若选定战争中
+  玩家军队在目标省从明确的 `sieging` 变为非围城，且分数上升或战争消失，则该目标
+  记为已完成并轮转到下一个目标；仅离开围城而未涨分不会误判。全部围城目标完成后，
+  planner 恢复选择安全的可见敌军；无敌军时只做有界推进并等待战争状态改变。legacy 快照以此将同省接触限制为
+  14 日或两次 probe；一次明显败退（分数下降至少 20）使对应敌军/省进入 90 日冷却。
+- `move_deferred` 不再每 turn 重试：同一目标按 7/14/30 游戏日退避。已接受且仍在
+  `moving` 的 exact 目标继续 `life-advance`，不重复提交 move。
+
+以上状态均来自最小化 CK3 的 native snapshot/command history，不需要 OCR 或恢复窗口。
+
 ## Snapshot
 
 顶层 `active_wars` 是数组；每场战争包含：
@@ -10,6 +30,8 @@
 - `player_side`: `attacker` 或 `defender`
 - `primary_opponent_character_id`: 玩家对侧的 primary war leader；完整 `CharacterID` 已按 generation 重新解析，过渡帧无法解析时为 `null`
 - `player_is_primary_war_leader`: 玩家是否正是本方 primary war leader；它是 `enforce-demands` 的必要前提
+- `targeted_title_ids`: 该场战争 `CCasusBelli.targeted_titles` 的完整 `TitleID` 数组
+- `war_objective_province_ids`: 每个目标头衔沿“首都头衔 → 首府男爵领 → 省份”解析并按顺序去重的真实目标省；某一目标无法完整解析时只省略该目标省，不丢失 `targeted_title_ids` 或整场战争
 - `enemy_primary_default_raise_province_id`: 对方 primary 角色的原生默认集结省；无法解析时为 `null`。它不是解码出的 war goal、首都或真实行军目标；planner 只把它用作明确 fallback，或在进攻方已取得正战争分后的稳定围城启发式锚点
 - `player_relative_war_score`: 相对玩家视角的整数战争分
 - `allied_armies` / `enemy_armies`: 当前能从原生对象读取的军队数组
@@ -21,8 +43,11 @@
 - `army_id`, `owner_character_id`
 - `soldiers`: 非负整数；当前构建若尚未稳定解析兵力偏移，允许为 `null`
 - `current_province_id`: 军队正在生成或销毁、原生对象暂时无省份时允许为 `null`
-- `move_target_province_id`: 目标偏移尚未稳定时允许为 `null`
-- `move_target_observable`: DLL 是否真实发布了目标字段
+- `move_target_province_id`: 原生路线最后一个 `SUnitPathProvinceInfo` 的省份；无有效路线时为 `null`
+- `move_target_observable`: 仅当 DLL 成功解析了非空原生路线末项时为 `true`；无路线为 `false`
+- `army_state_code` / `army_state`: `1 regular`、`2 combat`、`3 sieging`、`4 embarked`、`5 gathering`、`6 retreating`、`7 moving`、`8 raiding`、`9 bartering`
+- `in_combat`: `CUnit` 关联的 `CArmy+0x128` 是否解析到 generation 匹配且存活的 `CCombat`；不是“与敌军同省”的推断
+- `retreating`: `CUnit+0x170 > 0` 的直接投影
 - `controllable`
 
 Python 会拒绝类型错误的 ID、阵营、分数和数组，同时把早期 fixture 的 `soldier_count` 输入别名统一投影为 `soldiers`；MCP 输出永远使用 canonical 名称。
@@ -32,6 +57,7 @@ Python 会拒绝类型错误的 ID、阵营、分数和数组，同时把早期 
 DLL hello 广告：
 
 - `game.state.war-primary-opponent`
+- `game.state.war-objectives`
 - `game.command.raise-troops-default`
 - `game.command.move-army-N-to-N`
 - `game.command.disband-army-N`
@@ -64,6 +90,11 @@ Python 根据当前 snapshot 展开为：
 `declare-war-29097-11-0`。提交后并非只收到 command ack：下一份 native snapshot 实际新增
 `war_id=16777290`、`player_side=attacker`、`player_relative_war_score=0`；CK3 进程继续响应且窗口仍保持最小化。
 该路径未调用 OCR、截图、键鼠或视觉 fallback。
+
+同一存档中的战争 `16777290` 给出 `targeted_title_ids=[2388]`：目标为
+`d_spoleto`，其 `capital=2389`（`c_spoleto`），该郡首府男爵领为
+`2390`（`b_spoleto`），最终省份为 `2585`。对手默认集结省 `2543`
+属于 `b_firenze`；它确实由敌方持有且可围城，但不是该战争的目标省。
 
 2026-08-24 的后续实机回放补齐了移动与解散。旧 bridge 从 AI/controller 调用点抄入了
 `command kind=2` 与 queue flags `7`；这会在玩家军队的控制权校验处被拒绝。连续推进约 49 个游戏日、

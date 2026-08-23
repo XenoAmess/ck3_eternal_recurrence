@@ -1,8 +1,10 @@
 # CK3 1.19.0.6 native-headless anchors
 
 This directory freezes the first implementation-grade reverse-engineering
-result for the local `ck3.exe`. The analysis was offline only: no CK3 launch,
-process attachment, DLL injection, or desktop query was used to obtain it.
+result for the local `ck3.exe`. The original anchors were obtained offline;
+the army runtime additions below also use a read-only minimized-process probe
+and record its PID/IDs explicitly. No reverse-engineering probe issued a game
+command or restored/focused the window.
 
 Pinned executable:
 
@@ -44,9 +46,12 @@ bridge identity/heartbeat/ping.
 | `game.command.accept/reject-pending-character-interaction` | implemented; live accept advanced four locally addressed requests | high static UI enum/command/queue path + native actionability validation + offline command fixture | explicit upper-layer policy only |
 | `game.state.snapshot.active_wars` | implemented, minimized live declaration projected a new war | exact WarManager/storage/participant/score helpers + offline attacker/defender fixture | never inside native driver |
 | `game.state.war-primary-opponent` | implemented, live probe pending | exact primary-side fields + generation-safe opponent resolution + reused default-raise resolver + offline attacker/defender/non-primary fixture | never inside native driver |
-| `game.state.snapshot.player_armies` | implemented, live probe pending | exact Army storage/ID/owner/current-province fields + offline component fixture | never inside native driver |
-| allied/enemy army current province | implemented, live probe pending | war participant helper classifies each observable army owner | never inside native driver |
-| army soldier count / move target | unsupported | conflicting `+0x38/+0x44` interpretations at RVAs `0xC73D00` and `0x26B51B0`; no value guessed | unsupported |
+| `game.state.war-objectives` | implemented; live war 16777290 exposed target title 2388, checkpoint/native path resolves province 2585 | exact CB targeted-title serializer, generation-safe title storage, engine `title_province` capital-barony path + offline generation-mismatch fixture | never inside native driver |
+| `game.state.snapshot.player_armies` | implemented, minimized read-only live probe passed | exact CUnit storage/ID/owner/current-province fields + offline component fixture + PID 144324 probe | never inside native driver |
+| allied/enemy army current province | implemented, minimized read-only live probe passed | war participant helper classifies each observable CUnit owner | never inside native driver |
+| army state / combat / retreating | implemented, minimized read-only live probe passed | exact RVA `0xC7AAB0` state ABI, CUnit→CArmy→CCombat association and `CUnit+0x170` + nine-state fixture | never inside native driver |
+| army move target | implemented, minimized read-only live probe passed | RVA `0x26B51B0` consumes the last `CUnit+0x38` `SUnitPathProvinceInfo*`; fixture covers present/absent route | never inside native driver |
+| army soldier count | unsupported | no live-validated soldier aggregate ABI; no value guessed | unsupported |
 | `game.command.raise-troops-default` | implemented, live probe pending | native default-province/construct/validate/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
 | `game.command.move-army-N-to-N` | implemented and minimized-live accepted: player command submitted and army province changed | exact player-UI kind/channel plus native mode/state/can-move/path-init/clone/destruct lifecycle, offline fixture, and live movement | explicit upper-layer policy only |
 | `game.command.disband-army-N` | implemented; live exposed the distinct command-target ID and corrected build awaits replay | exact 0x28-byte command/vtables/payload source/clone + offline fixture | explicit upper-layer policy only |
@@ -181,21 +186,65 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   resolved opponent, the already verified RVA `0x224CC80(Character*)`
   supplies `enemy_primary_default_raise_province_id`; that value is explicitly
   a fallback location for the opponent, not a decoded war goal or army target.
+- `CWar +0xF8` embeds its `CCasusBelli`; the `targeted_titles` native int32
+  array is CB `+0x178`, therefore war `+0x270` (data `+0x270`, capacity
+  `+0x278`, count `+0x27C`). Serializer RVA `0x23E6B00` pairs that field with
+  script identifier `0x2B3C`, whose live reverse lookup is `targeted_titles`.
+  War `16777290` exposed the exact array `[2388]`. Title resolution starts at
+  embedded `CLandedTitleManager = CK3GameData +0x2FC8`, whose storage pointer
+  is `+0x20`; slots use the normal 0x10 stride/object `+0x08`, and full
+  generation-bearing `TitleID` repeats at `CLandedTitle +0x10`. The target's
+  capital `TitleID` is `+0x214` (serializer RVA `0x20B0DA0`). Engine
+  `title_province` evaluator RVA `0x19D5AB0` proves the remaining projection:
+  for county tier 2 it takes the first ID from the title's `+0x240` de-jure
+  vassal array as the capital barony, resolves that complete ID, then reads
+  ProvinceID from its template pointer `+0x160`, field `+0x80`. The checkpoint
+  path is `2388 d_spoleto -> 2389 c_spoleto -> 2390 b_spoleto -> province
+  2585`. Province `2543` is enemy-held `b_firenze` and can be sieged, but it is
+  only the opponent's default-raise fallback and is not this war objective.
 - `base + 0x570CC80` is a pointer slot whose single dereference is
-  `ComponentStorage<CArmy>`. RVA `0xA84603` ends at `0xA8460A`; adding its
+  `ComponentStorage<CUnit>`. RVA `0xA84603` ends at `0xA8460A`; adding its
   signed RIP displacement `0x4C88676` resolves to `0x570CC80`. Do not repeat
   the discarded hand-arithmetic result `0x572CC80`: it points two MiB beyond
   the real slot. On 2026-08-23 the wrong RVA reproducibly caused `C0000005`
   during the first live snapshot at DLL RVA `0x890F` while reading the bogus
   storage object's `+0x20`; the minidump is in local crash bundle
-  `ck3_20260823_213129`. `CArmy +0x10` is its
+  `ck3_20260823_213129`. `CUnit +0x10` is its
   component ID, `+0x174` is owner `CharacterID`, and `+0x20` is current
   `Province*` (`Province +0x10` repeats its positive ID). The controllable
-  projection is owner equals the current played character. Candidate soldier
-  and move-target reads are omitted: RVA `0xC73D00` treats `+0x38/+0x44` as a
-  four-byte component-ID vector, while RVA `0x26B51B0` treats those offsets as
-  an eight-byte pointer vector. Their true relationship is not uniquely
-  classified, so the bridge publishes neither field.
+  projection is owner equals the current played character. The earlier
+  `0xC73D00` conflict was a type-confusion: that helper consumes a different
+  aggregate object. On `CUnit`, RVA `0x26B51B0` proves `+0x38` is an
+  eight-byte `SUnitPathProvinceInfo*` array with capacity/count at
+  `+0x40/+0x44`; it reads the last pointer, then its `+0x00` ProvinceID, and
+  resolves that ID through the live province array. The bridge publishes that
+  last ID as `move_target_province_id` with `move_target_observable=true`;
+  an empty or invalid route remains `null/false`. Soldier count remains
+  unsupported because no soldier aggregate has equivalent live validation.
+- `CUnit +0x178` is the generation-bearing ID for the linked `CArmy` in
+  `ComponentStorage<CArmy>` at `base +0x570C730`. `CArmy +0x128` is its
+  `CCombat` ID, resolved through `ComponentStorage<CCombat>` at
+  `base +0x570C758`; `CCombat +0x08` repeats the full ID. The CCombat main
+  vtable is `base +0x4300C78`; its `+0x08` function is RVA `0x10495A0`, which
+  returns exactly `CCombat+0x08 != -1`. RVA `0xC7AAB0(CUnit*)` performs both
+  storage resolutions, generation checks and that live-vfunc call before
+  returning state code 2, so `in_combat` is not inferred from co-location.
+- RVA `0xC7AAB0(CUnit*) -> int32` has the exact localization-backed mapping
+  `1 regular`, `2 combat`, `3 sieging`, `4 embarked`, `5 gathering`,
+  `6 retreating`, `7 moving`, `8 raiding`, `9 bartering`. Its tail reads
+  positive `CUnit+0x170` for code 6 and nonzero route count `CUnit+0x44` for
+  code 7. The snapshot also publishes `retreating` directly from `+0x170 > 0`
+  so the actionable flag is retained independently of the prioritized state
+  label.
+- Read-only PID `144324` evidence on 2026-08-24: player CUnit `83886341` and
+  enemy CUnits `33554657`/`357` were all in province `2598`. Their linked
+  CArmy `+0x128` values all resolved the same live CCombat ID `318767109`, so
+  all three published `state=2/combat`, `in_combat=true`; all three
+  `CUnit+0x170` values were zero, so `retreating=false`. The player's seven
+  path entries ended at province `2543`, giving an exact observable move
+  target even while combat took priority over the moving state. No command
+  was issued during this probe. PID `144324` later disappeared before soldier
+  aggregation could be closed, so no soldier field is guessed.
 
 ## Command queue and object layouts
 

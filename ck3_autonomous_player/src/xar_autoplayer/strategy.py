@@ -31,6 +31,7 @@ from .bridge.war_contract import (
     enemy_armies_from_wars,
     move_army_step,
     parse_move_army_step,
+    war_objective_province_ids,
 )
 from .environment import write_json_atomic
 from .errors import AgentError
@@ -43,6 +44,12 @@ _MARRIAGE_RETRY_QUERY_LIMIT = 3
 _MARRIAGE_PROPOSAL_MAX_ADVANCES = 7
 _MARRIAGE_PROPOSAL_MAX_GAME_DAYS = 30
 _NATIVE_MOVE_INTENT_MAX_GAME_DAYS = 90
+_NATIVE_CONTACT_STALE_GAME_DAYS = 14
+_NATIVE_CONTACT_MAX_PROBES = 2
+_NATIVE_COLLISION_COOLDOWN_GAME_DAYS = 90
+_NATIVE_DEFEAT_SCORE_DROP = 20
+_NATIVE_RETREAT_MAX_GAME_DAYS = 30
+_NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
 
 
 def _expanded_command_rows(
@@ -626,52 +633,201 @@ def choose_one_life_turn(
                 "active_wars": war_summary,
             }
 
+        tactical_war = _stable_tactical_war(active_wars)
+        tactical_war_id = (
+            tactical_war.get("war_id")
+            if isinstance(tactical_war, dict)
+            else None
+        )
         visible_enemies = [
             army
-            for army in enemy_armies_from_wars(active_wars)
+            for army in enemy_armies_from_wars(
+                [tactical_war] if isinstance(tactical_war, dict) else []
+            )
             if isinstance(army.get("current_province_id"), int)
         ]
         enemy = _stable_strongest_army(visible_enemies)
         pursuit_army = _stable_strongest_army(controlled_armies)
+        army_id = (
+            pursuit_army.get("army_id")
+            if isinstance(pursuit_army, dict)
+            else None
+        )
+        tactical = _recent_war_tactics(
+            rows,
+            snapshot if isinstance(snapshot, dict) else {},
+            army_id=army_id if isinstance(army_id, int) else None,
+            war_id=(
+                tactical_war_id
+                if isinstance(tactical_war_id, int)
+                else None
+            ),
+        )
+        blocked_enemy_ids = set(tactical["blocked_enemy_ids"])
+        blocked_province_ids = set(tactical["blocked_province_ids"])
         fallback_province_ids = enemy_primary_default_raise_province_ids(
-            active_wars
+            [tactical_war] if isinstance(tactical_war, dict) else []
         )
         siege_objective_province_ids = _attacker_siege_objective_province_ids(
-            active_wars
+            [tactical_war] if isinstance(tactical_war, dict) else []
         )
+        completed_objectives = set(
+            tactical.get("completed_objective_province_ids", [])
+        )
+        all_siege_objectives_completed = bool(siege_objective_province_ids)
+        siege_objective_province_ids = [
+            province_id
+            for province_id in siege_objective_province_ids
+            if province_id not in completed_objectives
+        ]
+        all_siege_objectives_completed &= not siege_objective_province_ids
+        army_state = (
+            _army_tactical_state(pursuit_army)
+            if isinstance(pursuit_army, dict)
+            else None
+        )
+        if army_state == "sieging" and "life-advance" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_siege_progress",
+                "selected_step": "life-advance",
+                "reason": "the native army is sieging; advance the occupation",
+                "active_wars": war_summary,
+            }
+        if army_state == "retreating":
+            retreat_days = int(tactical.get("retreat_days", 0))
+            if "life-advance" in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": (
+                        "native_war_retreat_progress"
+                        if retreat_days < _NATIVE_RETREAT_MAX_GAME_DAYS
+                        else "native_war_recovery_wait"
+                    ),
+                    "selected_step": "life-advance",
+                    "reason": (
+                        "the native army is retreating; wait within the 30-day deadline"
+                        if retreat_days < _NATIVE_RETREAT_MAX_GAME_DAYS
+                        else "the retreat exceeded its normal deadline; keep advancing bounded intervals until CK3 releases the army"
+                    ),
+                    "retreat_days": retreat_days,
+                    "active_wars": war_summary,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_no_safe_target",
+                "selected_step": None,
+                "required_step": "query-safe-war-objectives",
+                "reason": "the native retreat exceeded its bounded deadline",
+                "active_wars": war_summary,
+            }
+        if (
+            army_state == "combat"
+            and tactical.get("contact_stale") is not True
+            and "life-advance" in available_steps
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_combat_progress",
+                "selected_step": "life-advance",
+                "reason": "the native army is in combat; run one bounded contact probe",
+                "active_wars": war_summary,
+            }
+
         objective_kind = "pursuit"
-        if isinstance(pursuit_army, dict) and siege_objective_province_ids:
-            current_province_id = pursuit_army.get("current_province_id")
-            local_enemies = [
-                army
-                for army in visible_enemies
-                if isinstance(current_province_id, int)
-                and army.get("current_province_id") == current_province_id
-            ]
-            if local_enemies:
-                enemy = _stable_strongest_army(local_enemies)
-                target_province_id = current_province_id
-                target_source = "enemy_army"
-            else:
-                enemy = None
-                target_province_id = siege_objective_province_ids[0]
-                target_source = "enemy_primary_default_raise_province"
-                objective_kind = "siege"
-        elif isinstance(enemy, dict):
-            target_province_id = enemy.get("current_province_id")
+        current_province_id = (
+            pursuit_army.get("current_province_id")
+            if isinstance(pursuit_army, dict)
+            else None
+        )
+        local_enemies = [
+            army
+            for army in visible_enemies
+            if army.get("current_province_id") == current_province_id
+            and army.get("army_id") not in blocked_enemy_ids
+            and current_province_id not in blocked_province_ids
+        ]
+        if local_enemies:
+            enemy = _stable_strongest_army(local_enemies)
+            target_province_id = current_province_id
             target_source = "enemy_army"
+        elif siege_objective_province_ids:
+            safe = [
+                province_id
+                for province_id in siege_objective_province_ids
+                if province_id not in blocked_province_ids
+                and not (
+                    blocked_enemy_ids
+                    and any(
+                        row.get("current_province_id") == province_id
+                        for row in visible_enemies
+                    )
+                )
+            ]
+            target_province_id = safe[0] if safe else None
+            enemy = None
+            target_source = (
+                "war_objective_province"
+                if target_province_id
+                in set(
+                    war_objective_province_ids(
+                        [tactical_war]
+                        if isinstance(tactical_war, dict)
+                        else []
+                    )
+                )
+                else "enemy_primary_default_raise_province"
+            )
+            objective_kind = "siege"
         else:
+            safe_enemies = [
+                row
+                for row in visible_enemies
+                if row.get("army_id") not in blocked_enemy_ids
+                and row.get("current_province_id") not in blocked_province_ids
+            ]
+            enemy = _stable_strongest_army(safe_enemies)
             target_province_id = (
-                fallback_province_ids[0]
-                if fallback_province_ids
+                enemy.get("current_province_id")
+                if isinstance(enemy, dict)
+                else fallback_province_ids[0]
+                if not visible_enemies
+                and fallback_province_ids
+                and not all_siege_objectives_completed
                 else None
             )
-            target_source = "enemy_primary_default_raise_province"
+            target_source = (
+                "enemy_army"
+                if isinstance(enemy, dict)
+                else "enemy_primary_default_raise_province"
+            )
+        if target_province_id is None and (
+            visible_enemies or siege_objective_province_ids
+        ):
+            if "life-advance" in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_recovery_wait",
+                    "selected_step": "life-advance",
+                    "reason": "all current targets are cooling down; advance one bounded interval and inspect again",
+                    "tactical_state": tactical,
+                    "active_wars": war_summary,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_no_safe_target",
+                "selected_step": None,
+                "required_step": "query-safe-war-objectives",
+                "reason": "all current targets are inside the defeat/retreat cooldown",
+                "tactical_state": tactical,
+                "active_wars": war_summary,
+            }
         if isinstance(pursuit_army, dict) and isinstance(target_province_id, int):
             army_id = pursuit_army.get("army_id")
             if isinstance(army_id, int):
                 step = move_army_step(army_id, target_province_id)
                 pursuit = {
+                    "war_id": tactical_war_id,
                     "army_id": army_id,
                     "target_army_id": (
                         enemy.get("army_id")
@@ -714,14 +870,20 @@ def choose_one_life_turn(
                         "move_intent": active_move_intent,
                         "active_wars": war_summary,
                     }
-                if _unadvanced_deferred_move(rows, step):
+                move_backoff = _deferred_move_backoff(
+                    rows,
+                    snapshot if isinstance(snapshot, dict) else {},
+                    step,
+                )
+                if move_backoff is not None and not move_backoff["retry_due"]:
                     if "life-advance" in available_steps:
                         return {
                             "policy": "one-life-turn-v1",
                             "phase": "native_war_pursuit_progress",
                             "selected_step": "life-advance",
-                            "reason": "the army was not move-ready; advance once before retrying the order",
+                            "reason": "the army was not move-ready; use the 7/14/30-day retry backoff",
                             "pursuit": pursuit,
+                            "move_backoff": move_backoff,
                             "active_wars": war_summary,
                         }
                     return {
@@ -731,6 +893,7 @@ def choose_one_life_turn(
                         "required_step": "life-advance",
                         "reason": "the deferred native move needs time to advance but this backend cannot do so",
                         "pursuit": pursuit,
+                        "move_backoff": move_backoff,
                         "active_wars": war_summary,
                     }
                 if target_province_id in {
@@ -1259,25 +1422,315 @@ def _stable_strongest_army(
     )
 
 
+def _stable_tactical_war(
+    wars: Iterable[dict[str, object]],
+) -> dict[str, object] | None:
+    rows = [war for war in wars if isinstance(war.get("war_id"), int)]
+    if not rows:
+        return None
+
+    def priority(war: dict[str, object]) -> tuple[int, int]:
+        exact_attacker = (
+            war.get("player_side") == "attacker"
+            and war.get("player_is_primary_war_leader") is True
+            and bool(war_objective_province_ids([war]))
+        )
+        rank = (
+            0
+            if exact_attacker
+            else 1
+            if war.get("player_is_primary_war_leader") is True
+            else 2
+        )
+        return rank, int(war["war_id"])
+
+    return min(rows, key=priority)
+
+
 def _attacker_siege_objective_province_ids(
     wars: Iterable[dict[str, object]],
 ) -> list[int]:
-    """Choose stable siege anchors only after an attacker earns war score."""
-    province_ids: set[int] = set()
+    """Order exact target-title capitals before the legacy rally fallback."""
+    qualifying: list[dict[str, object]] = []
     for war in wars:
         score = war.get("player_relative_war_score")
-        province_id = war.get("enemy_primary_default_raise_province_id")
         if (
             war.get("player_side") == "attacker"
             and war.get("player_is_primary_war_leader") is True
             and isinstance(score, int)
             and not isinstance(score, bool)
             and score > 0
-            and isinstance(province_id, int)
-            and not isinstance(province_id, bool)
         ):
-            province_ids.add(province_id)
-    return sorted(province_ids)
+            qualifying.append(war)
+    exact = war_objective_province_ids(qualifying)
+    fallback = enemy_primary_default_raise_province_ids(qualifying)
+    return exact + [
+        province_id for province_id in fallback if province_id not in exact
+    ]
+
+
+def _progress_siege_objectives(war: dict[str, object]) -> list[int]:
+    exact = war.get("war_objective_province_ids")
+    result = [
+        province_id
+        for province_id in (exact if isinstance(exact, list) else [])
+        if _native_int(province_id) is not None
+    ]
+    fallback = _native_int(war.get("enemy_primary_default_raise_province_id"))
+    if fallback is not None and fallback not in result:
+        result.append(fallback)
+    return result
+
+
+def _native_int(value: object) -> int | None:
+    return value if isinstance(value, int) and not isinstance(value, bool) else None
+
+
+def _army_tactical_state(army: dict[str, object]) -> str | None:
+    named = army.get("army_state")
+    if isinstance(named, str):
+        return named.casefold()
+    code = _native_int(army.get("army_state_code"))
+    if code is not None:
+        return {2: "combat", 3: "sieging", 6: "retreating", 7: "moving"}.get(code)
+    if army.get("retreating") is True:
+        return "retreating"
+    if army.get("in_combat") is True:
+        return "combat"
+    return None
+
+
+def _progress_slice(
+    result: object, name: str, war_id: int
+) -> tuple[int | None, dict[str, object] | None]:
+    summary = result.get(name) if isinstance(result, dict) else None
+    wars = summary.get("wars") if isinstance(summary, dict) else None
+    war = next(
+        (
+            row
+            for row in wars
+            if isinstance(row, dict) and row.get("war_id") == war_id
+        ),
+        None,
+    ) if isinstance(wars, list) else None
+    return (
+        _native_int(summary.get("date_raw")) if isinstance(summary, dict) else None,
+        war,
+    )
+
+
+def _progress_army(
+    war: dict[str, object] | None, role: str, army_id: int
+) -> dict[str, object] | None:
+    armies = war.get(role) if isinstance(war, dict) else None
+    if not isinstance(armies, list):
+        return None
+    return next(
+        (
+            row
+            for row in armies
+            if isinstance(row, dict) and row.get("army_id") == army_id
+        ),
+        None,
+    )
+
+
+def _history_after_latest_restore(
+    commands: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    for position in range(len(commands) - 1, -1, -1):
+        row = commands[position]
+        if (
+            _effective_command(row) == "restore-checkpoint"
+            and row.get("ok") is True
+        ):
+            return commands[position + 1 :]
+    return commands
+
+
+def _recent_war_tactics(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    army_id: int | None,
+    war_id: int | None,
+) -> dict[str, object]:
+    """Bound legacy same-province contact using compact advance summaries."""
+    if army_id is None or war_id is None:
+        return {
+            "blocked_enemy_ids": [],
+            "blocked_province_ids": [],
+            "retreat_days": 0,
+            "completed_objective_province_ids": [],
+        }
+    current_date = _native_int(snapshot.get("date_raw"))
+    blocked_enemies: dict[int, int] = {}
+    blocked_provinces: dict[int, int] = {}
+    completed_objectives: set[int] = set()
+    contact_days = contact_probes = retreat_days = 0
+
+    def block(
+        enemy_ids: set[int], province_id: int | None, date_raw: int | None
+    ) -> None:
+        if date_raw is None:
+            return
+        until = date_raw + _NATIVE_COLLISION_COOLDOWN_GAME_DAYS * 24
+        blocked_enemies.update({enemy_id: until for enemy_id in enemy_ids})
+        if province_id is not None:
+            blocked_provinces[province_id] = until
+
+    for row in _history_after_latest_restore(commands):
+        if _effective_command(row) != "life-advance" or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        before_date, before_war = _progress_slice(
+            result, "war_progress_before", war_id
+        )
+        after_date, after_war = _progress_slice(
+            result, "war_progress_after", war_id
+        )
+        if before_war is None:
+            continue
+        before_player = _progress_army(before_war, "player_armies", army_id)
+        after_player = _progress_army(after_war, "player_armies", army_id)
+        elapsed = (
+            max(0, (after_date - before_date) // 24)
+            if before_date is not None and after_date is not None
+            else 0
+        )
+        retreat_days = (
+            retreat_days + elapsed
+            if isinstance(after_player, dict)
+            and _army_tactical_state(after_player) == "retreating"
+            else 0
+        )
+        province = (
+            _native_int(before_player.get("current_province_id"))
+            if isinstance(before_player, dict)
+            else None
+        )
+        enemies = before_war.get("enemy_armies")
+        local_enemy_ids = {
+            int(enemy["army_id"])
+            for enemy in (enemies if isinstance(enemies, list) else [])
+            if isinstance(enemy, dict)
+            and _native_int(enemy.get("army_id")) is not None
+            and enemy.get("current_province_id") == province
+        }
+        after_enemies = after_war.get("enemy_armies") if after_war else None
+        after_enemy_ids = {
+            int(enemy["army_id"])
+            for enemy in (
+                after_enemies if isinstance(after_enemies, list) else []
+            )
+            if isinstance(enemy, dict)
+            and _native_int(enemy.get("army_id")) is not None
+        }
+        before_score = _native_int(
+            before_war.get("player_relative_war_score")
+        )
+        after_score = _native_int(
+            after_war.get("player_relative_war_score") if after_war else None
+        )
+        objective = (
+            _native_int(before_player.get("current_province_id"))
+            if isinstance(before_player, dict)
+            and _army_tactical_state(before_player) == "sieging"
+            else None
+        )
+        if (
+            objective in _progress_siege_objectives(before_war)
+            and _army_tactical_state(after_player or {}) != "sieging"
+            and (
+                after_war is None
+                or (
+                    before_score is not None
+                    and after_score is not None
+                    and after_score > before_score
+                )
+            )
+        ):
+            completed_objectives.add(int(objective))
+        improved = (
+            before_score is not None
+            and after_score is not None
+            and after_score > before_score
+        )
+        if improved or local_enemy_ids - after_enemy_ids:
+            contact_days = contact_probes = 0
+            for enemy_id in local_enemy_ids:
+                blocked_enemies.pop(enemy_id, None)
+            if province is not None:
+                blocked_provinces.pop(province, None)
+        elif local_enemy_ids:
+            contact_days += elapsed
+            contact_probes += 1
+            if (
+                contact_days >= _NATIVE_CONTACT_STALE_GAME_DAYS
+                or contact_probes >= _NATIVE_CONTACT_MAX_PROBES
+            ):
+                block(local_enemy_ids, province, after_date)
+        if (
+            before_score is not None
+            and after_score is not None
+            and before_score - after_score >= _NATIVE_DEFEAT_SCORE_DROP
+        ):
+            block(local_enemy_ids, province, after_date)
+
+    active_enemy = sorted(
+        key
+        for key, until in blocked_enemies.items()
+        if current_date is None or current_date < until
+    )
+    active_province = sorted(
+        key
+        for key, until in blocked_provinces.items()
+        if current_date is None or current_date < until
+    )
+    return {
+        "blocked_enemy_ids": active_enemy,
+        "blocked_province_ids": active_province,
+        "contact_stale": bool(active_enemy or active_province),
+        "retreat_days": retreat_days,
+        "completed_objective_province_ids": sorted(completed_objectives),
+    }
+
+
+def _deferred_move_backoff(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    step: str,
+) -> dict[str, object] | None:
+    deferred_dates: list[int | None] = []
+    current = _native_int(snapshot.get("date_raw"))
+    for row in _history_after_latest_restore(commands):
+        if _effective_command(row) != step or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        action = result.get("war_action") if isinstance(result, dict) else None
+        status = action.get("status") if isinstance(action, dict) else None
+        if status in {"move_submitted", "moving", "arrived"}:
+            deferred_dates.clear()
+        elif status == "move_deferred":
+            submitted = _native_int(action.get("submitted_date_raw"))
+            if submitted is not None:
+                deferred_dates.append(submitted)
+    if not deferred_dates:
+        return None
+    attempt = len(deferred_dates)
+    required = _NATIVE_MOVE_RETRY_BACKOFF_DAYS[min(attempt - 1, 2)]
+    latest = deferred_dates[-1]
+    elapsed = (
+        max(0, (current - latest) // 24)
+        if current is not None and latest is not None
+        else 0
+    )
+    return {
+        "attempt": attempt,
+        "elapsed_days": elapsed,
+        "required_days": required,
+        "retry_due": elapsed >= required,
+    }
 
 
 def _active_native_move_intent(
@@ -1406,24 +1859,6 @@ def _move_intent_elapsed_days(
         ):
             elapsed_days += (ending_date_raw - starting_date_raw) // 24
     return elapsed_days
-
-
-def _unadvanced_deferred_move(
-    commands: list[dict[str, object]], step: str
-) -> bool:
-    for row in reversed(commands):
-        command = _effective_command(row)
-        if command == "life-advance" and row.get("ok") is True:
-            return False
-        if command != step or row.get("ok") is not True:
-            continue
-        result = row.get("result")
-        action = result.get("war_action") if isinstance(result, dict) else None
-        return (
-            isinstance(action, dict)
-            and action.get("status") == "move_deferred"
-        )
-    return False
 
 
 def _successful_result(

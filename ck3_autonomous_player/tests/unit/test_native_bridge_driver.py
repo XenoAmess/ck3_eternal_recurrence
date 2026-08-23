@@ -251,6 +251,8 @@ def _war(
     score: int = 12,
     player_is_primary_war_leader: bool = True,
     enemy_primary_default_raise_province_id: int | None = None,
+    war_objective_province_ids: list[int] | None = None,
+    targeted_title_ids: list[int] | None = None,
 ) -> dict[str, object]:
     return {
         "war_id": war_id,
@@ -263,6 +265,8 @@ def _war(
         "player_relative_war_score": score,
         "allied_armies": allied_armies or [],
         "enemy_armies": enemy_armies or [],
+        "war_objective_province_ids": war_objective_province_ids or [],
+        "targeted_title_ids": targeted_title_ids or [],
     }
 
 
@@ -1519,6 +1523,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _hello(
                 "game.state.snapshot",
                 "game.state.war-primary-opponent",
+                "game.state.war-objectives",
                 "game.command.move-army-N-to-N",
                 "game.command.enforce-demands-N",
             )
@@ -1530,6 +1535,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             score=100,
             player_is_primary_war_leader=False,
             enemy_primary_default_raise_province_id=77,
+            targeted_title_ids=[9001],
+            war_objective_province_ids=[2585],
         )
         endpoint.publish(
             _snapshot(
@@ -1542,7 +1549,13 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         action_steps = driver.capabilities()["action_steps"]
 
         self.assertIn("move-army-101-to-77", action_steps)
+        self.assertIn("move-army-101-to-2585", action_steps)
         self.assertNotIn("enforce-demands-404", action_steps)
+        snapshot = driver.take_snapshot()
+        self.assertEqual(snapshot["active_wars"][0]["targeted_title_ids"], [9001])
+        self.assertEqual(
+            snapshot["active_wars"][0]["war_objective_province_ids"], [2585]
+        )
 
         primary_war = {
             **allied_war,
@@ -2743,7 +2756,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         player = _army(501, province_id=20)
         enemy = _army(502, province_id=90, controllable=False)
         starting_war = _war(
-            allied_armies=[player], enemy_armies=[enemy]
+            allied_armies=[player],
+            enemy_armies=[enemy],
+            war_objective_province_ids=[2585],
+            enemy_primary_default_raise_province_id=2543,
         )
         endpoint.publish(
             _snapshot(
@@ -2778,6 +2794,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                             allied_armies=[player],
                             enemy_armies=[moved_enemy],
                             score=score,
+                            war_objective_province_ids=[2585],
+                            enemy_primary_default_raise_province_id=2543,
                         )
                     ],
                     player_armies=[player],
@@ -2847,6 +2865,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                                 allied_armies=[player],
                                 enemy_armies=[enemy],
                                 score=13,
+                                war_objective_province_ids=[2585],
+                                enemy_primary_default_raise_province_id=2543,
                             )
                         ],
                         player_armies=[player],
@@ -2861,6 +2881,41 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["elapsed_days"], 2)
         self.assertEqual(result["progress_status"], "postcondition")
         self.assertTrue(result["paused"])
+        self.assertEqual(result["war_progress_before"]["date_raw"], start_date)
+        self.assertEqual(
+            result["war_progress_before"]["wars"][0][
+                "player_relative_war_score"
+            ],
+            12,
+        )
+        self.assertEqual(
+            result["war_progress_before"]["wars"][0][
+                "war_objective_province_ids"
+            ],
+            [2585],
+        )
+        self.assertEqual(
+            result["war_progress_before"]["wars"][0][
+                "enemy_primary_default_raise_province_id"
+            ],
+            2543,
+        )
+        self.assertEqual(
+            result["war_progress_before"]["wars"][0]["player_armies"][0],
+            {
+                "army_id": 501,
+                "current_province_id": 20,
+                "soldiers": 1_000,
+                "move_target_province_id": None,
+            },
+        )
+        self.assertEqual(result["war_progress_after"]["date_raw"], start_date + 48)
+        self.assertEqual(
+            result["war_progress_after"]["wars"][0][
+                "player_relative_war_score"
+            ],
+            13,
+        )
 
     def test_active_war_life_advance_wall_timeout_keeps_date_progress(self) -> None:
         endpoint = FakeEndpoint()

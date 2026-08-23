@@ -77,6 +77,12 @@ struct ArmySnapshot {
   std::int32_t owner_character_id = -1;
   bool has_current_province = false;
   std::int32_t current_province_id = -1;
+  bool move_target_observable = false;
+  std::int32_t move_target_province_id = -1;
+  std::int32_t army_state_code = 0;
+  std::string army_state = "unknown";
+  bool in_combat = false;
+  bool retreating = false;
   bool controllable = false;
 
   friend bool operator==(const ArmySnapshot &, const ArmySnapshot &) = default;
@@ -92,6 +98,8 @@ struct ActiveWarSnapshot {
   PlayerWarSide player_side = PlayerWarSide::attacker;
   std::int32_t primary_opponent_character_id = -1;
   bool player_is_primary_war_leader = false;
+  std::vector<std::int32_t> targeted_title_ids;
+  std::vector<std::int32_t> war_objective_province_ids;
   std::int32_t enemy_primary_default_raise_province_id = -1;
   std::int32_t player_relative_war_score = 0;
   std::vector<ArmySnapshot> allied_armies;

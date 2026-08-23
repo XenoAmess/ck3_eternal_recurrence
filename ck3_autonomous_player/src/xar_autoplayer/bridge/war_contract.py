@@ -9,6 +9,7 @@ MOVE_ARMY_CAPABILITY = "game.command.move-army-N-to-N"
 DISBAND_ARMY_CAPABILITY = "game.command.disband-army-N"
 ENFORCE_DEMANDS_CAPABILITY = "game.command.enforce-demands-N"
 WAR_PRIMARY_OPPONENT_CAPABILITY = "game.state.war-primary-opponent"
+WAR_OBJECTIVES_CAPABILITY = "game.state.war-objectives"
 RAISE_TROOPS_STEP = "raise-troops-default"
 
 
@@ -72,6 +73,14 @@ def normalize_active_wars(value: object) -> list[dict[str, object]]:
                 ),
                 "enemy_primary_default_raise_province_id": (
                     enemy_primary_default_raise_province_id
+                ),
+                "targeted_title_ids": _non_negative_id_list(
+                    raw_war.get("targeted_title_ids"),
+                    f"active_wars[{index}].targeted_title_ids",
+                ),
+                "war_objective_province_ids": _non_negative_id_list(
+                    raw_war.get("war_objective_province_ids"),
+                    f"active_wars[{index}].war_objective_province_ids",
                 ),
                 "player_relative_war_score": score,
                 "allied_armies": normalize_armies(
@@ -138,8 +147,7 @@ def normalize_armies(
         controllable = raw_army.get("controllable")
         if not isinstance(controllable, bool):
             raise ValueError(f"native {name}[{index}].controllable is malformed")
-        result.append(
-            {
+        normalized: dict[str, object] = {
                 "army_id": _non_negative_id(raw_army.get("army_id"), "army_id"),
                 "owner_character_id": _non_negative_id(
                     raw_army.get("owner_character_id"), "owner_character_id"
@@ -151,7 +159,27 @@ def normalize_armies(
                 "controllable": controllable,
                 "source": "native",
             }
-        )
+        for optional_flag in ("in_combat", "retreating"):
+            flag = raw_army.get(optional_flag)
+            if flag is not None and not isinstance(flag, bool):
+                raise ValueError(
+                    f"native {name}[{index}].{optional_flag} is malformed"
+                )
+            if isinstance(flag, bool):
+                normalized[optional_flag] = flag
+        army_state = raw_army.get("army_state")
+        if army_state is not None and (
+            not isinstance(army_state, str) or not army_state
+        ):
+            raise ValueError(f"native {name}[{index}].army_state is malformed")
+        if isinstance(army_state, str):
+            normalized["army_state"] = army_state
+        army_state_code = raw_army.get("army_state_code")
+        if army_state_code is not None:
+            normalized["army_state_code"] = _non_negative_id(
+                army_state_code, "army_state_code"
+            )
+        result.append(normalized)
     return result
 
 
@@ -197,6 +225,23 @@ def enemy_primary_default_raise_province_ids(
         province_id = war.get("enemy_primary_default_raise_province_id")
         if isinstance(province_id, int) and not isinstance(province_id, bool):
             province_ids.add(province_id)
+    return sorted(province_ids)
+
+
+def war_objective_province_ids(
+    active_wars: Iterable[dict[str, object]],
+) -> list[int]:
+    """Return exact target-title capital provinces published by the bridge."""
+    province_ids: set[int] = set()
+    for war in active_wars:
+        raw = war.get("war_objective_province_ids")
+        if isinstance(raw, list):
+            province_ids.update(
+                province_id
+                for province_id in raw
+                if isinstance(province_id, int)
+                and not isinstance(province_id, bool)
+            )
     return sorted(province_ids)
 
 
@@ -274,3 +319,11 @@ def _non_negative_id(value: object, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value < 0:
         raise ValueError(f"{name} must be a non-negative integer")
     return value
+
+
+def _non_negative_id_list(value: object, name: str) -> list[int]:
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError(f"native {name} must be an array")
+    return sorted({_non_negative_id(item, name) for item in value})

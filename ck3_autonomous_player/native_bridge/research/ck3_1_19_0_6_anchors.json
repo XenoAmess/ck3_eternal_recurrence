@@ -149,10 +149,58 @@
       "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 40 48 8B F2 48 8B E9 4C 8B CA 45 33 C0 48 8B D1 48 8D 4C 24 30"
     },
     {
+      "name": "war_targeted_titles_serialize",
+      "rva": "0x23E6B00",
+      "confidence": "high-static-live-validated",
+      "pattern": "4C 8D 87 78 01 00 00 BA 3C 2B 00 00 48 8B CB E8 6C CF 45 FF"
+    },
+    {
+      "name": "landed_title_capital_serialize",
+      "rva": "0x20B0DA0",
+      "confidence": "high-static",
+      "pattern": "83 BD 14 02 00 00 FF 74 3D 48 8B CE E8 3F 48 AE 01 BA FD 27 00 00"
+    },
+    {
+      "name": "title_province_county_capital_barony",
+      "rva": "0x19D5BA9",
+      "confidence": "high-static",
+      "pattern": "48 8B 83 60 01 00 00 83 78 5C 02 75 41 83 BB 4C 02 00 00 00 74 0A 48 8B 83 40 02 00 00 44 8B 30"
+    },
+    {
+      "name": "landed_title_manager_initialize",
+      "rva": "0x204D9F3",
+      "confidence": "high-static",
+      "pattern": "48 8B 9E A0 00 00 00 48 8D 8B C8 2F 00 00 E8 6A 18 6D 00 48 8B D6 48 8D 8B C8 2F 00 00"
+    },
+    {
       "name": "army_component_storage_lookup",
       "rva": "0xA84603",
       "confidence": "high-static",
       "pattern": "48 8B 15 76 86 C8 04 48 85 D2 74 24 8B C3 25 FF FF FF 00 3B 42 2C 73 18 8B C8 48 03 C9 48 8B 42 20 48 8B 7C C8 08 48 85"
+    },
+    {
+      "name": "unit_state_code",
+      "rva": "0xC7AAB0",
+      "confidence": "high-static-live-validated",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B 05 6F 1C A9 04 48 8B F9 48 85 C0 74 29 8B 91 78 01 00 00 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48 8B 40 20 48 03 C9"
+    },
+    {
+      "name": "unit_state_combat_association",
+      "rva": "0xC7AB0C",
+      "confidence": "high-static-live-validated",
+      "pattern": "48 8B 05 45 1C A9 04 48 85 C0 74 29 8B 93 28 01 00 00 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48 8B 40 20 48 03 C9"
+    },
+    {
+      "name": "unit_state_retreating_and_moving_tail",
+      "rva": "0xC7ABE2",
+      "confidence": "high-static-live-validated",
+      "pattern": "83 BF 70 01 00 00 00 7E 10 B8 06 00 00 00 48 8B 5C 24 30 48 83 C4 20 5F C3 83 7F 44 00 B8 07 00 00 00 75 05 B8 01 00 00 00"
+    },
+    {
+      "name": "unit_route_last_province",
+      "rva": "0x26B5251",
+      "confidence": "high-static-live-validated",
+      "pattern": "48 8B 05 10 8E 05 03 48 63 4F 44 4C 8B 80 A0 00 00 00 48 8B 47 38 48 8B 4C C8 F8 48 63 01 83 F8 01 7C 17 41 3B 80 4C 01 00 00 7D 0E 48 8B C8 49 8B 80 40 01 00 00 48 8B 14 C8"
     },
     {
       "name": "default_raise_province_for_character",
@@ -420,6 +468,9 @@
     "pending_character_interaction_is_for_character": "0x1266BA0",
     "validate_reply_character_interaction_command": "0x26B3540",
     "army_storage_slot": "0x570CC80",
+    "unit_state_code": "0xC7AAB0",
+    "army_internal_storage_slot": "0x570C730",
+    "combat_storage_slot": "0x570C758",
     "global_variable_container_accessor_slot": "0x570F750",
     "get_script_identifier_table": "0x3B971A0",
     "lookup_script_identifier_id": "0x3B97020",
@@ -430,6 +481,10 @@
     "cfixedpoint_to_semantic_integer_site": "0x3A48E16",
     "contains_war_participant": "0x2224870",
     "get_war_score_attacker_relative": "0x222A8A0",
+    "war_targeted_titles_serialize": "0x23E6B00",
+    "landed_title_capital_serialize": "0x20B0DA0",
+    "title_province_county_capital_barony": "0x19D5BA9",
+    "landed_title_manager_initialize": "0x204D9F3",
     "resolve_default_raise_province": "0x224CC80",
     "raise_troops_primary_vtable": "0x41226D8",
     "raise_troops_secondary_vtable": "0x41226A8",
@@ -588,6 +643,7 @@
     "CK3GameData": {
       "event_manager": "+0x2F4C0 embedded EventManager",
       "war_manager": "+0x29C20 embedded CWarManager",
+      "landed_title_manager": "+0x2FC8 embedded CLandedTitleManager; initialization caller RVA 0x204D9F3 passes CK3GameData+0x2FC8 to RVA 0x271F270",
       "province_array": "+0x140 pointer array; +0x14C int32 count; Province ID repeats at Province +0x10"
     },
     "CCharacterInteractionDatabase": {
@@ -667,23 +723,60 @@
       "war_id": "+0x08 int32 component ID",
       "attackers": "+0x20 participant container; pointer array +0x08, count +0x14, participant CharacterID at element +0x08",
       "defenders": "+0x80 participant container with the same layout",
+      "targeted_title_ids": "+0x270 native int32 TitleID array (embedded CCasusBelli +0xF8, targeted_titles +0x178); data +0x270, capacity +0x278, count +0x27C. Serializer RVA 0x23E6B00 uses identifier 0x2B3C=targeted_titles; live war 16777290 yielded [2388]",
       "primary_characters": "+0x288 attacker primary CharacterID, +0x28C defender primary CharacterID; RVA 0xC569F0 requires the local played CharacterID to match one and chooses the other as interaction recipient; active-war projection chooses the opposite field by player side, re-resolves its full generation-bearing CharacterID, and compares the player's own-side field to played CharacterID for player_is_primary_war_leader",
       "enemy_primary_default_raise_province_fallback": "RVA 0x224CC80(primary opponent Character*) returns the same default rally Province resolver used by raise-troops-default; Province +0x10 ID is accepted only when it resolves through the current CK3GameData province array. This is an explicitly named fallback location, not a decoded war goal",
       "ended_data": "+0x358 pointer; non-null wars are omitted from active_wars",
       "war_score": "RVA 0x222A8A0 returns the attacker-relative int32 score for context=null; bridge negates it for a defending player"
     },
+    "CLandedTitleManager": {
+      "title_storage": "+0x20 ComponentStorage<CLandedTitle> pointer"
+    },
+    "CLandedTitle": {
+      "title_id": "+0x10 int32 generation-bearing TitleID; storage creation RVA 0x271F270 writes it and title-province RVA 0x19D5B20 validates the complete ID",
+      "template": "+0x160 CLandedTitleTemplate pointer",
+      "capital_title_id": "+0x214 int32 TitleID; serializer RVA 0x20B0DA0 and dispatcher field branch RVA 0x20B2CD0",
+      "de_jure_vassal_title_ids": "+0x240 native int32 TitleID array; data +0x240, capacity +0x248, count +0x24C. For a county, title-province RVA 0x19D5BB6 takes the first ID as the capital barony"
+    },
+    "CLandedTitleTemplate": {
+      "tier": "+0x5C int32; value 2 is county in title-province RVA 0x19D5BB0",
+      "province_id": "+0x80 int32; title-province RVA 0x19D5BFE reads it from the resolved barony template"
+    },
+    "CUnitStorage": {
+      "global_slot": "base + 0x570CC80 pointer slot; dereference once to obtain ComponentStorage<CUnit>",
+      "slots": "+0x20 pointer; each slot is 0x10 bytes and object pointer is +0x08",
+      "capacity": "+0x2C int32"
+    },
+    "CUnit": {
+      "unit_id": "+0x10 int32 component ID exposed by the bridge as army_id",
+      "current_province": "+0x20 Province pointer; Province ID at +0x10",
+      "move_path": "+0x38 SUnitPathProvinceInfo** data, +0x40 int32 capacity, +0x44 int32 count; the last pointer's +0x00 int32 is the destination Province ID, exactly as consumed by RVA 0x26B51B0",
+      "retreat_state": "+0x170 int32; positive maps to state code 6 / retreating after higher-priority states",
+      "owner_character_id": "+0x174 int32 CharacterID",
+      "army_id": "+0x178 int32 CArmy component ID copied to CDisbandArmyCommand+0x24; distinct from the public CUnit ID at +0x10",
+      "controllable_projection": "owner CharacterID equals the current played CharacterID",
+      "state_code": "RVA 0xC7AAB0(CUnit*) returns 1 regular, 2 combat, 3 sieging, 4 embarked, 5 gathering, 6 retreating, 7 moving, 8 raiding, 9 bartering"
+    },
     "CArmyStorage": {
-      "global_slot": "base + 0x570CC80 pointer slot; dereference once to obtain ComponentStorage<CArmy>",
+      "global_slot": "base + 0x570C730 pointer slot; dereference once to obtain ComponentStorage<CArmy>",
       "slots": "+0x20 pointer; each slot is 0x10 bytes and object pointer is +0x08",
       "capacity": "+0x2C int32"
     },
     "CArmy": {
-      "army_id": "+0x10 int32 component ID",
-      "current_province": "+0x20 Province pointer; Province ID at +0x10",
-      "owner_character_id": "+0x174 int32 CharacterID",
-      "disband_command_target_id": "+0x178 int32 copied to CDisbandArmyCommand+0x24; distinct from the public component ID at +0x10",
-      "controllable_projection": "owner CharacterID equals the current played CharacterID",
-      "soldiers_and_move_target": "not published in this slice: the candidate +0x38/+0x44 interpretation conflicts between RVA 0xC73D00 and RVA 0x26B51B0, so no offset is guessed"
+      "army_id": "+0x10 int32 component ID referenced by CUnit+0x178",
+      "gathering_count": "+0x5C int32; nonzero maps to CUnit state code 5 after higher-priority states",
+      "owner_character_id": "+0x120 int32 CharacterID",
+      "unit_id": "+0x124 int32 CUnit component ID",
+      "combat_id": "+0x128 int32 CCombat component ID; state code 2 requires this ID to resolve to a live CCombat"
+    },
+    "CCombatStorage": {
+      "global_slot": "base + 0x570C758 pointer slot; dereference once to obtain ComponentStorage<CCombat>",
+      "slots": "+0x20 pointer; each slot is 0x10 bytes and object pointer is +0x08",
+      "capacity": "+0x2C int32"
+    },
+    "CCombat": {
+      "combat_id": "+0x08 int32 component ID; main vtable +0x08 calls RVA 0x10495A0, which returns combat_id != -1",
+      "in_combat_projection": "RVA 0xC7AAB0 resolves CUnit+0x178 -> CArmy, then CArmy+0x128 -> CCombat through base+0x570C758, validates the complete ID and vfunc, and returns state code 2"
     },
     "CRaiseTroopsCommand": {
       "size": "0x50",

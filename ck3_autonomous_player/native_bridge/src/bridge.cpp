@@ -154,6 +154,22 @@ void AppendArmySnapshot(std::string &result,
   } else {
     result += "null";
   }
+  result += ",\"move_target_province_id\":";
+  if (army.move_target_observable) {
+    result += SignedNumber(army.move_target_province_id);
+  } else {
+    result += "null";
+  }
+  result += ",\"move_target_observable\":";
+  result += army.move_target_observable ? "true" : "false";
+  result += ",\"army_state_code\":";
+  result += SignedNumber(army.army_state_code);
+  result += ",\"army_state\":";
+  AppendJsonString(result, army.army_state);
+  result += ",\"in_combat\":";
+  result += army.in_combat ? "true" : "false";
+  result += ",\"retreating\":";
+  result += army.retreating ? "true" : "false";
   result += ",\"controllable\":";
   result += army.controllable ? "true" : "false";
   result += '}';
@@ -168,6 +184,18 @@ void AppendArmyArray(
       result += ',';
     }
     AppendArmySnapshot(result, armies[index]);
+  }
+  result += ']';
+}
+
+void AppendInt32Array(std::string &result,
+                      const std::vector<std::int32_t> &values) {
+  result += '[';
+  for (std::size_t index = 0; index < values.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    result += SignedNumber(values[index]);
   }
   result += ']';
 }
@@ -435,6 +463,10 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
     }
     result += ",\"player_is_primary_war_leader\":";
     result += war.player_is_primary_war_leader ? "true" : "false";
+    result += ",\"targeted_title_ids\":";
+    AppendInt32Array(result, war.targeted_title_ids);
+    result += ",\"war_objective_province_ids\":";
+    AppendInt32Array(result, war.war_objective_province_ids);
     result += ",\"enemy_primary_default_raise_province_id\":";
     if (war.enemy_primary_default_raise_province_id < 1) {
       result += "null";
