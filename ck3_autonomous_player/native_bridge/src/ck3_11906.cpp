@@ -63,6 +63,7 @@ constexpr std::uintptr_t kCanMoveArmyRva = 0x26B4610;
 constexpr std::uintptr_t kInitializeArmyMovePathRva = 0x0C7BA70;
 constexpr std::uintptr_t kDestroyMoveArmyCommandRva = 0x26B46D0;
 constexpr std::uintptr_t kGetCasusBelliTypeDatabaseRva = 0x088E260;
+constexpr std::uintptr_t kGetCharacterInteractionDatabaseRva = 0x0831890;
 constexpr std::uintptr_t kEvaluateCasusBelliRva = 0x2D95D00;
 constexpr std::uintptr_t kDestroyValidCasusBelliConfigurationRva =
     0x101B3C0;
@@ -527,6 +528,7 @@ bool HasDeclarableWarReadBindings(const Bindings &bindings) noexcept {
          bindings.character_storage_slot != nullptr &&
          bindings.valid_casus_belli_configuration_scratch != nullptr &&
          bindings.get_casus_belli_type_database != nullptr &&
+         bindings.get_character_interaction_database != nullptr &&
          bindings.evaluate_casus_belli != nullptr &&
          bindings.destroy_valid_casus_belli_configuration != nullptr;
 }
@@ -534,6 +536,7 @@ bool HasDeclarableWarReadBindings(const Bindings &bindings) noexcept {
 bool HasArrangeMarriageReadBindings(const Bindings &bindings) noexcept {
   return bindings.enabled && bindings.game_state_slot != nullptr &&
          bindings.character_storage_slot != nullptr &&
+         bindings.get_character_interaction_database != nullptr &&
          bindings.arrange_marriage_interaction_offset != 0 &&
          bindings.construct_character_interaction_context != nullptr &&
          bindings.refresh_character_interaction_context != nullptr &&
@@ -542,27 +545,27 @@ bool HasArrangeMarriageReadBindings(const Bindings &bindings) noexcept {
          bindings.destroy_character_interaction_context != nullptr;
 }
 
-void *ResolveArrangeMarriageInteraction(const Bindings &bindings,
-                                        void *game_state) noexcept {
-  if (game_state == nullptr) {
+void *ResolveCharacterInteraction(const Bindings &bindings,
+                                  std::size_t interaction_offset) noexcept {
+  if (bindings.get_character_interaction_database == nullptr ||
+      interaction_offset == 0) {
     return nullptr;
   }
-  void *const game_data =
-      LoadAt<void *>(game_state, kGameStateGameDataOffset);
-  return game_data == nullptr
+  void *const interaction_database =
+      bindings.get_character_interaction_database();
+  return interaction_database == nullptr
              ? nullptr
              : LoadAt<void *>(
-                   game_data,
-                   bindings.arrange_marriage_interaction_offset);
+                   interaction_database, interaction_offset);
 }
 
 bool PrepareArrangeMarriageContext(
-    const Bindings &bindings, void *game_state,
-    std::int32_t played_character_id,
+    const Bindings &bindings, std::int32_t played_character_id,
     std::int32_t candidate_character_id,
     CharacterInteractionContextStorage &storage) noexcept {
   void *const interaction =
-      ResolveArrangeMarriageInteraction(bindings, game_state);
+      ResolveCharacterInteraction(
+          bindings, bindings.arrange_marriage_interaction_offset);
   if (interaction == nullptr) {
     return false;
   }
@@ -1205,6 +1208,9 @@ Bindings BindCurrentProcess() noexcept {
   result.get_casus_belli_type_database =
       reinterpret_cast<GetCasusBelliTypeDatabase>(
           module + kGetCasusBelliTypeDatabaseRva);
+  result.get_character_interaction_database =
+      reinterpret_cast<GetCharacterInteractionDatabase>(
+          module + kGetCharacterInteractionDatabaseRva);
   result.evaluate_casus_belli = reinterpret_cast<EvaluateCasusBelli>(
       module + kEvaluateCasusBelliRva);
   result.destroy_valid_casus_belli_configuration =
@@ -1829,16 +1835,8 @@ DeclareWarResult SubmitDeclareWar(
     return DeclareWarResult::declaration_unavailable;
   }
 
-  void *const game_state = *bindings.game_state_slot;
-  void *const game_data =
-      game_state == nullptr
-          ? nullptr
-          : LoadAt<void *>(game_state, kGameStateGameDataOffset);
-  void *const interaction =
-      game_data == nullptr
-          ? nullptr
-          : LoadAt<void *>(game_data,
-                           bindings.declare_war_interaction_offset);
+  void *const interaction = ResolveCharacterInteraction(
+      bindings, bindings.declare_war_interaction_offset);
   if (interaction == nullptr) {
     ClearValidCasusBelliConfigurations(bindings);
     return DeclareWarResult::unavailable;
@@ -1963,8 +1961,9 @@ ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
   if (!current.has_played_character || !current.played_character_alive) {
     return ReadArrangeMarriageChoicesResult::no_played_character;
   }
-  void *const game_state = *bindings.game_state_slot;
-  if (ResolveArrangeMarriageInteraction(bindings, game_state) == nullptr) {
+  if (ResolveCharacterInteraction(
+          bindings, bindings.arrange_marriage_interaction_offset) ==
+      nullptr) {
     return ReadArrangeMarriageChoicesResult::unavailable;
   }
   void *const played_character =
@@ -2003,7 +2002,7 @@ ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
     CharacterInteractionContextStorage context_storage{};
     void *const context = context_storage.bytes.data();
     if (!PrepareArrangeMarriageContext(
-            bindings, game_state, current.played_character_id,
+            bindings, current.played_character_id,
             candidate_character_id, context_storage)) {
       return ReadArrangeMarriageChoicesResult::unavailable;
     }
@@ -2050,11 +2049,10 @@ ArrangeMarriageResult SubmitArrangeMarriage(
     return ArrangeMarriageResult::candidate_not_found;
   }
 
-  void *const game_state = *bindings.game_state_slot;
   CharacterInteractionContextStorage context_storage{};
   void *const context = context_storage.bytes.data();
   if (!PrepareArrangeMarriageContext(
-          bindings, game_state, choice.played_character_id,
+          bindings, choice.played_character_id,
           choice.candidate_character_id, context_storage)) {
     return ArrangeMarriageResult::unavailable;
   }

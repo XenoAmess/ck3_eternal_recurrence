@@ -35,6 +35,7 @@ using CanMoveArmy = bool (*)(std::int32_t command_kind, void *army,
                             std::int32_t move_mode);
 using InitializeArmyMovePath = void (*)(void *path_storage);
 using GetCasusBelliTypeDatabase = void *(*)();
+using GetCharacterInteractionDatabase = void *(*)();
 using EvaluateCasusBelli = bool (*)(void *casus_belli_type,
                                     void *attacker_character,
                                     void *defender_character,
@@ -118,6 +119,8 @@ struct Bindings {
   InitializeArmyMovePath initialize_army_move_path = nullptr;
   DestroyNativeCommand destroy_move_army_command = nullptr;
   GetCasusBelliTypeDatabase get_casus_belli_type_database = nullptr;
+  GetCharacterInteractionDatabase get_character_interaction_database =
+      nullptr;
   EvaluateCasusBelli evaluate_casus_belli = nullptr;
   DestroyValidCasusBelliConfiguration
       destroy_valid_casus_belli_configuration = nullptr;

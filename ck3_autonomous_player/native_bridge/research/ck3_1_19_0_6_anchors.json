@@ -209,6 +209,12 @@
       "pattern": "48 83 EC 38 48 8B 05 ED DB E7 04 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 69 5A 7F 03 48 89 44 24 20"
     },
     {
+      "name": "character_interaction_database_getter",
+      "rva": "0x831890",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 38 48 8B 05 65 A8 ED 04 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 39 24 85 03 48 89 44 24 20 48 8D 54 24 20 C6 44 24 2C 00 41 B9 64 00 00 00 0F 28 44 24 20 45 33 C0 66 0F 7F 44 24 20 41 8D 49 9D E8 25 67 36 03 48 8B 05 1E A8 ED 04 48 83 C4 38 C3"
+    },
+    {
       "name": "declare_war_ui_enumerate_casus_belli",
       "rva": "0x1086440",
       "confidence": "high-static",
@@ -233,13 +239,13 @@
       "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 48 89 4C 24 08 57 41 54 41 55 41 56 41 57 48 83 EC 30 41 8B F9 41 8B D8 4C 8B F2 48 8B F1 48 89 11"
     },
     {
-      "name": "declare_war_interaction_game_data_registration",
+      "name": "declare_war_interaction_database_registration",
       "rva": "0x2C3EB3B",
       "confidence": "high-static",
       "pattern": "48 8D 05 EE C1 65 01 48 89 45 F0 4C 8D 83 78 0F 00 00 C7 45 F8 17 00 00 00 4C 8D 4D F0 C6 45 FC 00 48 8D 4D E0 48 89 7D E0 C7 45 E8 1E 00 00 00 C6 45 EC 00 E8 CC 82 00 00"
     },
     {
-      "name": "arrange_marriage_interaction_game_data_registration",
+      "name": "arrange_marriage_interaction_database_registration",
       "rva": "0x2C3EA90",
       "confidence": "high-static",
       "pattern": "48 8D 05 B1 B7 65 01 C7 45 F8 1C 00 00 00 4C 8D 83 48 0F 00 00 48 89 45 F0 4C 8D 4D F0 C6 45 FC 00 48 8D 4D E0 48 89 7D E0 C7 45 E8 1E 00 00 00 C6 45 EC 00 E8 77 83 00 00"
@@ -327,6 +333,7 @@
     "war_declaration_vtable": "0x411DAA0",
     "valid_casus_belli_configuration_scratch": "0x4FED598",
     "get_casus_belli_type_database": "0x88E260",
+    "get_character_interaction_database": "0x831890",
     "evaluate_valid_casus_belli_configurations": "0x2D95D00",
     "destroy_valid_casus_belli_configuration": "0x101B3C0",
     "game_database_object_key_constructor": "0x345E620",
@@ -415,7 +422,10 @@
     "CK3GameData": {
       "event_manager": "+0x2F4C0 embedded EventManager",
       "war_manager": "+0x29C20 embedded CWarManager",
-      "province_array": "+0x140 pointer array; +0x14C int32 count; Province ID repeats at Province +0x10",
+      "province_array": "+0x140 pointer array; +0x14C int32 count; Province ID repeats at Province +0x10"
+    },
+    "CCharacterInteractionDatabase": {
+      "getter": "RVA 0x831890 returns the independent singleton; these offsets are not relative to CK3GameData",
       "arrange_marriage_interaction": "+0xF48 pointer registered from canonical key arrange_marriage_interaction at RVA 0x2C3EA90",
       "enforce_demands_interaction": "+0x1018 pointer consumed by war-resolution builder RVA 0xC569F0 when surrender=false and the player is on the winning side",
       "declare_war_interaction": "+0xF78 pointer registered from canonical key declare_war_interaction at RVA 0x2C3EB3B and passed to character-interaction context constructor RVA 0x2C3EE50"
@@ -575,7 +585,7 @@
       "lifecycle": "validate source context RVA 0x2C43F00, construct command RVA 0x26B3220, submit flags 0x0E, destroy command+0x20 and the original temporary context with RVA 0x2C3F380"
     },
     "EnforceDemandsContext": {
-      "builder": "RVA 0xC569F0(default-constructed context, live CWar, false) selects the opponent and CK3GameData +0x1018 enforce-demands interaction",
+      "builder": "RVA 0xC569F0(default-constructed context, live CWar, false) selects the opponent and CCharacterInteractionDatabase +0x1018 enforce-demands interaction",
       "headless_path": "WarOverview send RVA 0xF54FA0 proves validate -> construct CSendCharacterInteractionCommand -> submit flags 0x0E; its visual confirmation object is not part of the gameplay command"
     }
   }

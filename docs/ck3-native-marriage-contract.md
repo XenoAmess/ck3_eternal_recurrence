@@ -35,7 +35,8 @@ command submission.
 
 On success it uses the common native character-interaction send chain:
 
-1. construct the `0x338`-byte context from `CK3GameData +0xF48`;
+1. call the exact-build getter at RVA `0x831890`, then construct the
+   `0x338`-byte context from `CCharacterInteractionDatabase +0xF48`;
 2. write secondary actor at `+0x2E0` and secondary recipient at `+0x2E4`;
 3. refresh (`0x2C40950`) and finalize (`0x2C40B20`);
 4. validate (`0x2C43F00`);
@@ -71,7 +72,8 @@ identity change still ends the episode; the agent never continues as an heir.
 
 ## Static and offline evidence
 
-- canonical interaction registration: `0x2C3EA90`, GameData `+0xF48`;
+- canonical interaction registration: `0x2C3EA90`,
+  `CCharacterInteractionDatabase +0xF48` (database getter RVA `0x831890`);
 - all-role context constructor: `0x2C3F000`;
 - generic UI validate/send wrapper: `0xFE5190`;
 - Release fixture covers query filtering, generation mismatch, native

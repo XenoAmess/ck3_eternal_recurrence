@@ -257,8 +257,9 @@ native fixture reproduces both branches and both MSVC key-string forms.
 
 `declare-war-<declaration_id>` re-runs that evaluator for the target and CB
 ordinal and requires the complete cached choice, including key, claimant and
-TitleIDs, to match before submitting. It constructs the 0x338-byte character
-interaction context using `CK3GameData +0xF78`, verifies the special data is
+TitleIDs, to match before submitting. It calls singleton getter RVA
+`0x831890` and constructs the 0x338-byte character interaction context using
+`CCharacterInteractionDatabase +0xF78`. It then verifies the special data is
 a `CWarDeclaration` with vtable `0x411DAA0`, writes CB pointer `+0x08`, native
 TitleID array `+0x10`, and claimant `+0x28`, then follows the UI's refresh
 `0x2C40950`, finalize `0x2C40B20`, and validation `0x2C43F00` calls.
@@ -274,8 +275,24 @@ registration at RVA `0x2C3EB3B`. An earlier live build incorrectly used
 context constructor because that slot contains unrelated `piety_level_%i`
 data. The 2026-08-23 minidump recorded execute AV RVA `0x431F5B0` through the
 wrong interaction's redirect evaluator before refresh, validation, queueing,
-or destruction. Correcting the registered slot fixes that actual submission
-path; it is not a command-lifetime workaround.
+or destruction.
+
+Changing only the slot to `+0xF78` exposed a second live failure. The minimized
+sequence reached `map_ready`, successfully returned declarable-war choices,
+then submitted `declare-war-29097-11-0`; CK3 exited with `0xC0000409`, WER
+fast-fail code 7, and dump `ck3.exe.104500.dmp` contained an original C++
+`std::bad_alloc`. Unwinding again stopped in the generic interaction-context
+constructor, where the context's first qword was an allocator object rather
+than an interaction definition. The remaining error was the base: `+0xF78`
+had been added to `[game_state+0xA0]`, but all interaction slots belong to the
+independent `CCharacterInteractionDatabase` returned by RVA `0x831890`.
+Direct call sites in declare-war AI/UI (`0x187B4C9`, `0x18BE80E`,
+`0x2E9E55D`), marriage UI (`0x126F609`, `0x126F6E9`, `0x126FF52`), and the
+generic interaction machinery (`0x2C3FF5B`, `0x2C45BA8`, `0x2C46E6D`)
+independently establish that base. The native fixture keeps non-null trap
+objects at the obsolete `CK3GameData +0xF48/+0xF78` locations, so either
+marriage or declare-war fails deterministically if the wrong-base regression
+returns.
 
 `enforce-demands-<war_id>` resolves the same live `CWar` storage used by the
 snapshot and rejects both a non-participant and a participating ally who is
@@ -283,7 +300,8 @@ not one of the primary war leaders at `+0x288/+0x28C`. It default-constructs
 a 0x338-byte context with RVA `0x2C3F300`, then calls exact
 WarOverview builder `0xC569F0(context, war, false)`. That builder compares the
 played CharacterID with primary sides at `CWar +0x288/+0x28C`, chooses the
-opponent, and uses the enforce-demands interaction at `CK3GameData +0x1018`.
+opponent, and uses the enforce-demands interaction at
+`CCharacterInteractionDatabase +0x1018`.
 WarOverview send RVA `0xF54FA0` proves the remaining native path is validation,
 `CSendCharacterInteractionCommand` construction, submit flags `0x0E`, and
 embedded-context destruction. Its visual confirmation window is only a UI
@@ -291,7 +309,9 @@ wrapper and is not part of the headless gameplay command.
 
 The canonical marriage script key is `arrange_marriage_interaction` in the
 1.19.0.6 base-game `00_marriage_interactions.txt`. Registration xref
-`0x2C3EA90` stores its interaction pointer at `CK3GameData +0xF48`.
+`0x2C3EA90` stores its interaction pointer at
+`CCharacterInteractionDatabase +0xF48`, reached through getter RVA
+`0x831890`.
 All-role context constructor `0x2C3F000` proves the exact role layout:
 actor `+0x2D8`, recipient `+0x2DC`, secondary actor `+0x2E0`, secondary
 recipient `+0x2E4`, and another optional CharacterID at `+0x2E8`. The

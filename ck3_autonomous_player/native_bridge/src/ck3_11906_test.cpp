@@ -47,6 +47,7 @@ constexpr char g_casus_belli_key_1[] = "county_conquest_cb";
 std::array<std::byte, 0x220> g_casus_belli_rule_0{};
 std::array<std::byte, 0x220> g_casus_belli_rule_1{};
 std::array<std::byte, 0x18> g_casus_belli_scratch{};
+std::array<std::byte, 0x1000> g_character_interaction_database{};
 std::array<std::byte, 2 * 0x98> g_casus_belli_configurations{};
 std::array<std::int32_t, 2> g_casus_belli_titles_0{};
 std::array<std::int32_t, 2> g_casus_belli_titles_1{};
@@ -241,6 +242,10 @@ void *FixtureGetCasusBelliTypeDatabase() {
   return g_casus_belli_database.data();
 }
 
+void *FixtureGetCharacterInteractionDatabase() {
+  return g_character_interaction_database.data();
+}
+
 void FixtureSetNativeIntArray(void *native_array, std::int32_t *data,
                               std::int32_t capacity,
                               std::int32_t count) {
@@ -321,7 +326,7 @@ void *FixtureConstructCharacterInteractionContext(
         extra_context == nullptr && initialize_special_data) {
       ++g_marriage_context_construct_calls;
     }
-  } else {
+  } else if (interaction == g_declare_war_interaction.data()) {
     std::memset(g_war_declaration.data(), 0, g_war_declaration.size());
     const std::uintptr_t declaration_vtable = 0x12121212;
     const std::int32_t no_claimant = -1;
@@ -336,6 +341,8 @@ void *FixtureConstructCharacterInteractionContext(
                              0);
     void *const declaration = g_war_declaration.data();
     std::memcpy(context + 0x330, &declaration, sizeof(declaration));
+  } else {
+    return nullptr;
   }
   g_interaction_construct_called =
       interaction == g_declare_war_interaction.data() &&
@@ -740,9 +747,14 @@ int main() {
   Store(g_casus_belli_type_1, 0x30,
         std::size_t{sizeof(g_casus_belli_key_1) - 1});
   Store(g_casus_belli_type_1, 0x1718, std::uint32_t{1U << 20U});
-  Store(game_data, 0xF48,
+  // The interaction offsets are relative to CCharacterInteractionDatabase,
+  // not to CK3GameData. Keep non-null traps at the obsolete base so this
+  // fixture fails if that live-crash regression returns.
+  Store(game_data, 0xF48, static_cast<void *>(g_enforce_demands_marker.data()));
+  Store(game_data, 0xF78, static_cast<void *>(g_enforce_demands_marker.data()));
+  Store(g_character_interaction_database, 0xF48,
         static_cast<void *>(g_arrange_marriage_interaction.data()));
-  Store(game_data, 0xF78,
+  Store(g_character_interaction_database, 0xF78,
         static_cast<void *>(g_declare_war_interaction.data()));
 
   Bindings bindings{};
@@ -802,6 +814,8 @@ int main() {
   bindings.destroy_move_army_command = FixtureDestroyMoveArmyCommand;
   bindings.get_casus_belli_type_database =
       FixtureGetCasusBelliTypeDatabase;
+  bindings.get_character_interaction_database =
+      FixtureGetCharacterInteractionDatabase;
   bindings.evaluate_casus_belli = FixtureEvaluateCasusBelli;
   bindings.destroy_valid_casus_belli_configuration =
       FixtureDestroyValidCasusBelliConfiguration;
