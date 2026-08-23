@@ -101,6 +101,39 @@ struct ActiveWarSnapshot {
                          const ActiveWarSnapshot &) = default;
 };
 
+// Exact, version-neutral representation of a CK3 CFixedPoint. Keeping the raw
+// numerator and the statically proven scale avoids losing score precision at
+// the native -> JSON boundary.
+struct FixedPointValue {
+  std::int64_t raw = 0;
+  std::int64_t scale = 100'000;
+
+  friend bool operator==(const FixedPointValue &,
+                         const FixedPointValue &) = default;
+};
+
+// One fully published Rogue one-life settlement. Adapters expose this object
+// only after the Mod's ready gate is exactly 1 and every required global can
+// be decoded without coercion. Integer fields are semantic values after exact
+// CFixedPoint division; the two scores retain their lossless raw numerator.
+struct OneLifeSettlementSnapshot {
+  bool ready = true;
+  std::int64_t commit_serial = 0;
+  std::int32_t source_character_id = -1;
+  FixedPointValue final_score;
+  FixedPointValue score_before_reject;
+  std::int64_t record_candidate = 0;
+  std::int64_t old_record = 0;
+  std::int64_t record_delta = 0;
+  std::int64_t blessing_count = 0;
+  std::int64_t refusal_count = 0;
+  std::int64_t contract_progress = 0;
+  bool record_written = false;
+
+  friend bool operator==(const OneLifeSettlementSnapshot &,
+                         const OneLifeSettlementSnapshot &) = default;
+};
+
 struct Snapshot {
   std::int32_t date_raw = 0;
   std::int32_t speed = 0;
@@ -122,6 +155,8 @@ struct Snapshot {
   bool pending_auto_accept_notification = false;
   std::vector<ActiveWarSnapshot> active_wars;
   std::vector<ArmySnapshot> player_armies;
+  bool has_one_life_settlement = false;
+  OneLifeSettlementSnapshot one_life_settlement;
 
   friend bool operator==(const Snapshot &, const Snapshot &) = default;
 };

@@ -19,6 +19,7 @@ from .bridge.marriage_contract import (
     QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
     arrange_marriage_step,
 )
+from .bridge.settlement_contract import ONE_LIFE_SETTLEMENT_CAPABILITY
 from .bridge.war_contract import (
     RAISE_TROOPS_STEP,
     controllable_armies,
@@ -198,6 +199,49 @@ def choose_one_life_turn(
             if isinstance(snapshot, dict)
             else None
         )
+        completed_terminal = _latest_effective_result(rows, "death-terminal")
+        if (
+            isinstance(completed_terminal, dict)
+            and completed_terminal.get("terminal") is True
+            and completed_terminal.get("score") is not None
+            and completed_terminal.get("settlement_status")
+            in {None, "complete"}
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "terminal_complete",
+                "selected_step": None,
+                "reason": "this one-life episode is already settled",
+                "terminal_reason": terminal_reason,
+                "episode_character_id": episode_character_id,
+                "score": completed_terminal.get("score"),
+                "continue_as_heir_after_death": False,
+                "heir_gameplay_actions": 0,
+            }
+        if (
+            isinstance(completed_terminal, dict)
+            and completed_terminal.get("settlement_status")
+            == "settlement_unavailable"
+            and isinstance(snapshot, dict)
+            and snapshot.get("one_life_settlement_status")
+            == "settlement_unavailable"
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "terminal_settlement_unavailable",
+                "selected_step": None,
+                "required_capability": (
+                    ONE_LIFE_SETTLEMENT_CAPABILITY
+                ),
+                "reason": (
+                    "the episode is terminal but this bridge cannot publish "
+                    "its score; wait for a settlement-capable backend"
+                ),
+                "terminal_reason": terminal_reason,
+                "episode_character_id": episode_character_id,
+                "continue_as_heir_after_death": False,
+                "heir_gameplay_actions": 0,
+            }
         reason = (
             "CK3 changed the played CharacterID after the episode character; "
             "end this one-life episode instead of continuing as the heir"
@@ -1112,6 +1156,27 @@ def _successful_result(
     return None
 
 
+def _successful_result_for_steps(
+    commands: Iterable[dict[str, object]],
+    *,
+    exact: tuple[str, ...] = (),
+    prefixes: tuple[str, ...] = (),
+) -> dict[str, object] | None:
+    for row in reversed(_expanded_command_rows(commands)):
+        command = _effective_command(row)
+        if not isinstance(command, str) or (
+            command not in exact
+            and not any(command.startswith(prefix) for prefix in prefixes)
+        ):
+            continue
+        if row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        if isinstance(result, dict):
+            return result
+    return None
+
+
 def _next_run_plan(achievements: dict[str, bool]) -> dict[str, object]:
     priorities: list[dict[str, object]] = []
     if achievements["palermo_holy_war_won"]:
@@ -1215,9 +1280,20 @@ def record_one_life_episode(
     if not run_id or terminal.get("terminal") is not True:
         raise AgentError("one-life episode requires a terminal death result")
     succession = _successful_result(commands, "succession-review")
-    marriage = _successful_result(commands, "marriage-confirm-response")
-    war = _successful_result(commands, "war-enforce-demands")
-    disband = _successful_result(commands, "war-disband-armies")
+    marriage = _successful_result_for_steps(
+        commands,
+        exact=("marriage-confirm-response",),
+    )
+    war = _successful_result_for_steps(
+        commands,
+        exact=("war-enforce-demands",),
+        prefixes=("enforce-demands-",),
+    )
+    disband = _successful_result_for_steps(
+        commands,
+        exact=("war-disband-armies",),
+        prefixes=("disband-army-",),
+    )
     checkpoint_result = _successful_result(commands, "save-checkpoint")
     achievements = {
         "palermo_holy_war_won": bool(
@@ -1227,8 +1303,16 @@ def record_one_life_episode(
         ),
         "armies_disbanded": bool(
             isinstance(disband, dict)
-            and isinstance(disband.get("army_disband"), dict)
-            and disband["army_disband"].get("status") == "disbanded"
+            and (
+                (
+                    isinstance(disband.get("army_disband"), dict)
+                    and disband["army_disband"].get("status") == "disbanded"
+                )
+                or (
+                    isinstance(disband.get("war_action"), dict)
+                    and disband["war_action"].get("status") == "disbanded"
+                )
+            )
         ),
         "danish_betrothal_accepted": bool(
             isinstance(marriage, dict)

@@ -10,6 +10,10 @@ import time
 from typing import Protocol, runtime_checkable
 
 from .event_contract import normalize_active_event
+from .settlement_contract import (
+    ONE_LIFE_SETTLEMENT_CAPABILITY,
+    settlement_ready_for_episode,
+)
 
 
 class BridgeUnavailableError(RuntimeError):
@@ -117,6 +121,8 @@ class HybridGameplayDriver:
         baseline = self.baseline.capabilities()
         fast_steps = _action_steps(fast)
         baseline_steps = _action_steps(baseline)
+        fast_bridge_capabilities = _bridge_capabilities(fast)
+        baseline_bridge_capabilities = _bridge_capabilities(baseline)
         return {
             "format_version": 1,
             "backend_id": "hybrid",
@@ -129,6 +135,9 @@ class HybridGameplayDriver:
             "action_steps": sorted(fast_steps | baseline_steps),
             "fast_action_steps": sorted(fast_steps),
             "baseline_action_steps": sorted(baseline_steps),
+            "bridge_capabilities": sorted(
+                fast_bridge_capabilities | baseline_bridge_capabilities
+            ),
             "backends": [fast, baseline],
         }
 
@@ -150,7 +159,21 @@ class HybridGameplayDriver:
             return result
 
         fast_history = fast.get("history")
-        needs_baseline_context = not isinstance(fast_history, list) or not fast_history
+        fast_capabilities = self.fast.capabilities()
+        fast_bridge_capabilities = _bridge_capabilities(fast_capabilities)
+        needs_settlement_fallback = bool(
+            (
+                fast.get("one_life_terminal") is True
+                or isinstance(fast.get("one_life_terminal_reason"), str)
+            )
+            and ONE_LIFE_SETTLEMENT_CAPABILITY
+            not in fast_bridge_capabilities
+        )
+        needs_baseline_context = (
+            not isinstance(fast_history, list)
+            or not fast_history
+            or needs_settlement_fallback
+        )
         baseline: dict[str, object] | None = None
         if needs_baseline_context:
             try:
@@ -184,6 +207,26 @@ class HybridGameplayDriver:
             if fast.get("active_event") is None and baseline.get("active_event") is not None:
                 result["active_event"] = baseline["active_event"]
                 result["active_event_backend"] = baseline.get("backend_id")
+            baseline_supports_settlement = bool(
+                ONE_LIFE_SETTLEMENT_CAPABILITY
+                in _bridge_capabilities(self.baseline.capabilities())
+            )
+            if needs_settlement_fallback and baseline_supports_settlement:
+                baseline_settlement = baseline.get("one_life_settlement")
+                result["one_life_settlement"] = baseline_settlement
+                result["one_life_settlement_backend"] = baseline.get("backend_id")
+                result["one_life_settlement_supported"] = True
+                if baseline_settlement is None:
+                    result["one_life_settlement_status"] = "pending"
+                else:
+                    result["one_life_settlement_status"] = (
+                        "ready"
+                        if settlement_ready_for_episode(
+                            baseline_settlement,
+                            result.get("episode_character_id"),
+                        )
+                        else "source_mismatch"
+                    )
         self._last_snapshot = result
         return result
 
@@ -384,6 +427,13 @@ def _action_steps(capabilities: dict[str, object]) -> set[str]:
     if not isinstance(raw, list):
         return set()
     return {step for step in raw if isinstance(step, str) and step}
+
+
+def _bridge_capabilities(capabilities: dict[str, object]) -> set[str]:
+    raw = capabilities.get("bridge_capabilities")
+    if not isinstance(raw, list):
+        return set()
+    return {item for item in raw if isinstance(item, str) and item}
 
 
 def _paired_revision(first: int, second: int) -> int:

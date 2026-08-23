@@ -56,9 +56,35 @@ wrapper 能否在该版本真实死亡路径中完成其尾部 commit 仍必须�
 | `xa_settlement_record_written` | 整数，scale 1，`0/1` | 本提交是否调用了量化纪录 writer |
 
 `final_score` 与 `score_before_reject` 保留 CK3 原生 `CFixedPoint`，Mod 没有把它们乘以猜测的
-`100`、`1000` 或其它 raw scale。当前逆向资料尚未证明 1.19.0.6 内存中 `CFixedPoint` 的 raw
-缩放因子；逐版本 native adapter 必须通过引擎类型/accessor 正确解码，再把“1.0 = 1 分”的语义值
-交给公共 snapshot。不得直接把未知 raw integer 当分数，也不得在 Mod 侧舍入成整数。
+`100`、`1000` 或其它 raw scale。CK3 1.19.0.6 的离线静态逆向现已闭合：转换函数 RVA
+`0x3A41DA0` 把 signed `int64` raw 除以 RVA `0x4594E08` 的 `100000.0f`，RVA
+`0x3A48E16` 的 signed magic-division 序列独立证明同一除数。因此该版本 adapter 以
+`{"raw": <int64>, "scale": 100000}` 无损发布两项分数；逐版本 adapter 仍必须分别重证，
+不得把本版本 scale 继承给未知 exe。
+
+公共 native snapshot capability 为 `game.state.xar-one-life-settlement`，state key 为
+`one_life_settlement`。未发布或任一必需字段不能精确解码时为 `null`；完整对象为：
+
+```json
+{
+  "ready": true,
+  "commit_serial": 1,
+  "source_character_id": 12345,
+  "final_score": {"raw": 12345678, "scale": 100000},
+  "score_before_reject": {"raw": 13000000, "scale": 100000},
+  "record_candidate": 123,
+  "old_record": 100,
+  "record_delta": 23,
+  "blessing_count": 4,
+  "refusal_count": 1,
+  "contract_progress": 8,
+  "record_written": true
+}
+```
+
+除两项 score 外的数值 global 在内存里同样使用 numeric EventTarget/CFixedPoint；adapter
+只有在 raw 可被 `100000` 精确整除时才发布语义整数。`ready` / `record_written` 还必须精确为
+`0/1`，不会舍入或强制转型。
 
 ## 3. 发布与幂等规则
 
@@ -115,7 +141,16 @@ native reader 应缓存本 episode 起始 serial。死亡或 played-character �
 
 ## 6. 当前验证范围
 
-本轮只修改手写生产脚本、静态契约和本文档，没有启动 CK3。`tools/validate_static.py` 检查：
+本轮没有启动 CK3。Mod 静态链由 `tools/validate_static.py` 检查；native reader 另由 pinned-exe
+anchor scanner、fresh MSVC build 和离线 CTest fixture 覆盖。native 静态 RE 已证明：
+
+- global container accessor slot、entry key/value 布局与 string-ID accessor；
+- numeric EventTarget kind/raw ABI 与 CFixedPoint `100000` scale；
+- scope EventTarget validity/object resolver；source 只有在完整 CharacterID 反解回同一
+  `CCharacter*` 时才成立；
+- `ready=0`、缺字段、非整除整数和非 Character source 都产生明确 `null`，不会发布部分对象。
+
+Mod `tools/validate_static.py` 继续检查：
 
 - 有/无继承人两条死亡链各调用同一 wrapper，wrapper 内严格先 scorer、后唯一 commit；
 - delayed `xar.1003` 不再包含 scorer、commit 或 record writer，只做 UI 分流；

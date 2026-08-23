@@ -54,6 +54,7 @@ class DataModGameplayDriverTests(unittest.TestCase):
             self.assertEqual(snapshot["date"], "15 September, 1067")
             self.assertEqual(snapshot["total_days"], 389_742)
             self.assertEqual(snapshot["revision"], 1)
+            self.assertIsNone(snapshot["one_life_settlement"])
             inbox_bytes = (userdir / "run" / "xar_mcp_inbox.txt").read_bytes()
             self.assertTrue(inbox_bytes.startswith(b"\xef\xbb\xbf"))
             inbox = inbox_bytes.decode("utf-8-sig")
@@ -63,9 +64,128 @@ class DataModGameplayDriverTests(unittest.TestCase):
             capabilities = driver.capabilities()
             self.assertTrue(capabilities["snapshot"])
             self.assertTrue(capabilities["wait_for_change"])
+            self.assertIn(
+                "game.state.xar-one-life-settlement",
+                capabilities["bridge_capabilities"],
+            )
             self.assertEqual(capabilities["action_steps"], [])
             with self.assertRaises(UnsupportedStepError):
                 driver.execute_step("life-advance")
+
+    def test_normalizes_committed_one_life_settlement(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            userdir = Path(temporary)
+            log_path = userdir / "logs" / "debug.log"
+            log_path.parent.mkdir(parents=True)
+            log_path.write_text("", encoding="utf-8")
+            fixture = (
+                ROOT
+                / "mod_bridge"
+                / "tests"
+                / "fixtures"
+                / "debug_snapshot_settlement.log"
+            ).read_text(encoding="utf-8")
+            published = False
+
+            def publish_fixture(_seconds: float) -> None:
+                nonlocal published
+                if published:
+                    return
+                inbox = userdir / "run" / "xar_mcp_inbox.txt"
+                if "xar_mcp_take_snapshot" not in inbox.read_text(
+                    encoding="utf-8-sig"
+                ):
+                    return
+                published = True
+                with log_path.open("a", encoding="utf-8") as log_file:
+                    log_file.write(fixture)
+
+            driver = DataModGameplayDriver(
+                userdir,
+                request_timeout_seconds=0.5,
+                poll_interval_seconds=0.001,
+                request_id_factory=lambda: "xar_req_settlement",
+                sleep=publish_fixture,
+            )
+
+            snapshot = driver.take_snapshot()
+
+            self.assertEqual(
+                {
+                    "ready": True,
+                    "commit_serial": 1,
+                    "source_character_id": 4_294_967_297,
+                    "final_score": 284.625,
+                    "score_before_reject": 287.5,
+                    "record_candidate": 284,
+                    "old_record": 250,
+                    "record_delta": 34,
+                    "blessing_count": 7,
+                    "refusal_count": 1,
+                    "contract_progress": 9,
+                    "record_written": True,
+                },
+                snapshot["one_life_settlement"],
+            )
+
+    def test_settlement_commit_advances_revision_without_a_date_change(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            userdir = Path(temporary)
+            log_path = userdir / "logs" / "debug.log"
+            log_path.parent.mkdir(parents=True)
+            log_path.write_text("", encoding="utf-8")
+            request_ids = iter(("xar_req_before_death", "xar_req_after_death"))
+            published: set[str] = set()
+
+            def publish_snapshot(_seconds: float) -> None:
+                request = (userdir / "run" / "xar_mcp_inbox.txt").read_text(
+                    encoding="utf-8-sig"
+                )
+                if "REQUEST_ID = " not in request:
+                    return
+                request_id = request.split("REQUEST_ID = ", 1)[1].split()[0]
+                if request_id in published:
+                    return
+                published.add(request_id)
+                committed = request_id == "xar_req_after_death"
+                settlement = (
+                    "XAR_MCP:SETTLEMENT|ready=1|commit_serial=1|"
+                    "source_character_id=17|final_score=10.000|"
+                    "score_before_reject=10.000|record_candidate=10|"
+                    "old_record=0|record_delta=10|blessing_count=0|"
+                    "refusal_count=0|contract_progress=0|record_written=1\n"
+                    if committed
+                    else "XAR_MCP:SETTLEMENT|ready=0|commit_serial=0\n"
+                )
+                with log_path.open("a", encoding="utf-8") as log_file:
+                    log_file.write(
+                        "XAR_MCP:BEGIN|schema=1|kind=snapshot|"
+                        f"request_id={request_id}\n"
+                        "XAR_MCP:STATE|player_id=17|date=1 January, 1067|"
+                        "total_days=389485\n"
+                        + settlement
+                        + "XAR_MCP:ACK|schema=1|"
+                        f"request_id={request_id}|command=take_snapshot|status=ok\n"
+                        "XAR_MCP:END|schema=1|"
+                        f"request_id={request_id}\n"
+                    )
+
+            driver = DataModGameplayDriver(
+                userdir,
+                request_timeout_seconds=0.5,
+                poll_interval_seconds=0.001,
+                request_id_factory=lambda: next(request_ids),
+                sleep=publish_snapshot,
+            )
+
+            before = driver.take_snapshot()
+            after = driver.wait_for_change(
+                int(before["revision"]), timeout_seconds=0.5
+            )
+
+            self.assertIsNone(before["one_life_settlement"])
+            self.assertEqual(int(before["revision"]) + 1, after["revision"])
+            self.assertEqual(10, after["one_life_settlement"]["final_score"])
 
     def test_ignores_matching_frame_before_request(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

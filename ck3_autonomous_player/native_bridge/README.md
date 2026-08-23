@@ -31,7 +31,9 @@ Its current first gameplay slice is intentionally small:
   100% war led by the player; `query-arrange-marriage-choices` returns
   natively valid direct matches for the played character and
   `arrange-marriage-<played_id>-<candidate_id>` submits only a cached exact
-  generation-bound pair;
+  generation-bound pair; exact-build snapshots additionally expose the Mod's
+  completed Rogue one-life death settlement without depending on the current
+  played character or a visible game window;
 - `xar_ck3_bridge_host.exe` creates a minimal target with
   `CREATE_SUSPENDED`, runs the PID injector, verifies the complete
   hello/heartbeat/ping/pong exchange from inside that target, deliberately
@@ -117,7 +119,15 @@ bridge identity, heartbeat, and ping; they never expose game reads/actions.
 The snapshot currently contains `date_raw`, `speed`, `paused`, `map_ready`,
 `local_player_id`, nullable `played_character`, `active_event` and
 `pending_character_interaction` objects, and the last checkpoint queue
-submission. It also contains `active_wars` and `player_armies`. Each active
+submission. It also contains `active_wars`, `player_armies`, and nullable
+`one_life_settlement`. The exact-build capability
+`game.state.xar-one-life-settlement` is authoritative for that field. It is
+null until `xa_settlement_ready` is exactly one and every required global can
+be decoded. A published object contains `ready`, `commit_serial`,
+`source_character_id`, `record_candidate`, `old_record`, `record_delta`,
+`blessing_count`, `refusal_count`, `contract_progress`, and `record_written`.
+`final_score` and `score_before_reject` are lossless CK3 fixed-point objects:
+`{"raw":<signed int64>,"scale":100000}`. Each active
 war identifies the player's side, the generation-validated primary opponent,
 whether the player is their side's primary war leader, and war score relative
 to that player. Exact-build capability `game.state.war-primary-opponent` also

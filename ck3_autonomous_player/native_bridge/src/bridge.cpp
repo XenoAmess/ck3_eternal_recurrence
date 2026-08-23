@@ -172,6 +172,45 @@ void AppendArmyArray(
   result += ']';
 }
 
+void AppendFixedPoint(std::string &result,
+                      const xar::game::FixedPointValue &value) {
+  result += "{\"raw\":";
+  result += SignedNumber(value.raw);
+  result += ",\"scale\":";
+  result += SignedNumber(value.scale);
+  result += '}';
+}
+
+void AppendOneLifeSettlement(
+    std::string &result,
+    const xar::game::OneLifeSettlementSnapshot &settlement) {
+  result += "{\"ready\":";
+  result += settlement.ready ? "true" : "false";
+  result += ",\"commit_serial\":";
+  result += SignedNumber(settlement.commit_serial);
+  result += ",\"source_character_id\":";
+  result += SignedNumber(settlement.source_character_id);
+  result += ",\"final_score\":";
+  AppendFixedPoint(result, settlement.final_score);
+  result += ",\"score_before_reject\":";
+  AppendFixedPoint(result, settlement.score_before_reject);
+  result += ",\"record_candidate\":";
+  result += SignedNumber(settlement.record_candidate);
+  result += ",\"old_record\":";
+  result += SignedNumber(settlement.old_record);
+  result += ",\"record_delta\":";
+  result += SignedNumber(settlement.record_delta);
+  result += ",\"blessing_count\":";
+  result += SignedNumber(settlement.blessing_count);
+  result += ",\"refusal_count\":";
+  result += SignedNumber(settlement.refusal_count);
+  result += ",\"contract_progress\":";
+  result += SignedNumber(settlement.contract_progress);
+  result += ",\"record_written\":";
+  result += settlement.record_written ? "true" : "false";
+  result += '}';
+}
+
 std::string DeclarationId(
     const xar::game::DeclarableWarSnapshot &declaration) {
   std::string result = SignedNumber(declaration.target_character_id);
@@ -339,6 +378,12 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
     }
     result += ']';
     result += '}';
+  }
+  result += ",\"one_life_settlement\":";
+  if (!snapshot.has_one_life_settlement) {
+    result += "null";
+  } else {
+    AppendOneLifeSettlement(result, snapshot.one_life_settlement);
   }
   result += ",\"active_event\":";
   if (!snapshot.has_active_event) {

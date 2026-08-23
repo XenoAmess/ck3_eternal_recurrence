@@ -39,6 +39,7 @@ bridge identity/heartbeat/ping.
 | numeric event option count/indexes | implemented, minimized live probe passed | executor bounds-check and option-array layout at RVA `0x33E68C0` + live 5→3 option snapshots | never inside native driver |
 | `game.command.save-checkpoint` | implemented, minimized live file creation passed | high static `CAutoSaveCommand` layout + offline queue fixture + 63,367,813-byte live save | explicit upper-layer policy only |
 | `game.state.snapshot.played_character` | implemented, live probe pending | player-character manager + Character storage alive projection + offline layout fixture | never inside native driver |
+| `game.state.xar-one-life-settlement` | implemented, minimized live death probe pending | exact Jomini global container/string-ID/EventTarget ABI + independently proven CFixedPoint scale + complete/incomplete offline fixture | never inside native driver |
 | `game.state.snapshot.pending_character_interaction` | implemented; four live requests advanced before a reproducible global-storage false positive exposed the missing recipient filter; filtered build awaits bounded live replay | exact notification-recipient predicate + native reply validator + offline multi-player fixture | never inside native driver |
 | `game.command.accept/reject-pending-character-interaction` | implemented; live accept advanced four locally addressed requests | high static UI enum/command/queue path + native actionability validation + offline command fixture | explicit upper-layer policy only |
 | `game.state.snapshot.active_wars` | implemented, minimized live declaration projected a new war | exact WarManager/storage/participant/score helpers + offline attacker/defender fixture | never inside native driver |
@@ -93,6 +94,29 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   the resolved Character object's pointer at `+0x1C8` is null while alive and
   non-null on the native death path. The bridge publishes only
   `{character_id, alive}` and does not infer an heir from this manager.
+- Jomini's global-variable accessor is the function-pointer slot at
+  `base + 0x570F750`. `CJominiGlobalVariableLink` RVA `0x3410F80` calls it,
+  then scans the container's `+0x10` entries with `int32 +0x1C` count and
+  0x20-byte stride. Each entry has its Pdx string ID at `+0x08` and a complete
+  0x10-byte `CJominiEventTarget` at `+0x10`. The bridge obtains exact IDs with
+  the string-table getter/intern pair `0x3B58870/0x3B58330`; it does not hash
+  Mod names with a guessed algorithm.
+- The global-variable mutation path at RVA `0x338F221` independently proves
+  numeric EventTarget kind `uint16 1` and signed `int64` CFixedPoint raw at
+  payload `+0x08`. CFixedPoint conversion RVA `0x3A41DA0` divides that raw by
+  the `100000.0f` constant at RVA `0x4594E08`; the signed magic-division
+  sequence at RVA `0x3A48E16` independently gives the same scale. Score
+  fields therefore cross the version-neutral boundary losslessly as
+  `{raw, scale:100000}`. Integer/boolean globals are published only when raw
+  is exactly divisible by 100000 (and booleans are exactly 0 or 1).
+- `xa_settlement_source_character` remains a scope EventTarget. Generic
+  validity RVA `0x3329B00` and object resolver RVA `0x33299E0` dispatch through
+  the registered type descriptor. The reader accepts the result only if
+  `object +0x18` supplies a complete CharacterID which resolves through the
+  Character component storage back to the identical pointer. Consequently a
+  different scope variant cannot be mislabeled as a Character. The public
+  settlement stays null unless `ready==1`, every payload field decodes, and a
+  final reread still sees `ready==1`; no partial settlement is synthesized.
 - `CGameState + 0xA0` points to CK3 game data, whose embedded event manager is
   at `+0x2F4C0`. Engine getter RVA `0x2706AD0` locks that manager, scans its
   active-event pointer array (`+0x1F18`, count at `+0x1F24`) backward, applies

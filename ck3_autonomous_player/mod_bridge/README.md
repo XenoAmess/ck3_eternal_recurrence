@@ -10,16 +10,19 @@
 xar_mcp_take_snapshot = { REQUEST_ID = xar_req_000001 }
 ```
 
-`REQUEST_ID` 是 CK3 flag token，只使用 ASCII 字母、数字和下划线。桥会在 `debug.log` 产生四行：
+`REQUEST_ID` 是 CK3 flag token，只使用 ASCII 字母、数字和下划线。桥会在 `debug.log` 产生基础状态，并额外投影琉焰卿主 Mod 已提交的一代制死亡结算：
 
 ```text
 XAR_MCP:BEGIN|schema=1|kind=snapshot|request_id=xar_req_000001
 XAR_MCP:STATE|player_id=4294967297|date=15 September, 1067|total_days=389742
+XAR_MCP:SETTLEMENT|ready=1|commit_serial=1|source_character_id=4294967297|final_score=284.625|score_before_reject=287.500|record_candidate=284|old_record=250|record_delta=34|blessing_count=7|refusal_count=1|contract_progress=9|record_written=1
 XAR_MCP:ACK|schema=1|request_id=xar_req_000001|command=take_snapshot|status=ok
 XAR_MCP:END|schema=1|request_id=xar_req_000001
 ```
 
-只有完整的 `BEGIN -> STATE -> ACK -> END` 才算成功。检测到 ACK 后立即把 inbox 原子替换回 no-op；在替换生效前，同一个只读请求可能被 0.4 秒轮询重复执行，伴随进程按 `request_id` 去重即可。当前 effect 只读取 `GetPlayer`、当前日期和 total days，不修改游戏状态，也没有任何 CK3 AI 入口。
+未结算时该行是 `XAR_MCP:SETTLEMENT|ready=0|commit_serial=0`；没有 `SETTLEMENT` 行的旧版四行 frame 仍可解析，其 `one_life_settlement` 为 `null`。只有完整的 `BEGIN -> STATE -> ACK -> END` 才算成功，可选投影必须位于该 frame 内。Data Mod driver 将完整 payload 归一为 `one_life_settlement`，并通过 `game.state.xar-one-life-settlement` capability 声明该字段。
+
+检测到 ACK 后立即把 inbox 原子替换回 no-op；在替换生效前，同一个只读请求可能被 0.4 秒轮询重复执行，伴随进程按 `request_id` 去重即可。当前 effect 只读取 `GetPlayer`、当前日期、total days 和主 Mod 已提交的 save-scoped `xa_settlement_*` globals，不修改游戏状态，也没有任何 CK3 AI 入口。
 
 ## 为什么这样挂 GUI
 
@@ -42,4 +45,4 @@ XAR_MCP:END|schema=1|request_id=xar_req_000001
 py -m unittest discover -s ck3_autonomous_player/mod_bridge/tests -p "test_*.py"
 ```
 
-测试覆盖 BOM、widget 注册与 0.4 秒循环、typed effect 字段、no-op inbox，以及带 CK3 日志前缀和残缺帧的解析 fixture。静态通过不等于游戏内链路已经通过。
+测试覆盖 BOM、widget 注册与 0.4 秒循环、typed effect 字段、no-op inbox、旧四行 frame 兼容，以及完整/未发布/损坏结算投影的解析。静态通过不等于游戏内链路已经通过。

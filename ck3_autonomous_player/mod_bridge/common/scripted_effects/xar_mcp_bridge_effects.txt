@@ -12,6 +12,16 @@ xar_mcp_take_snapshot = {
 	# path exists, so CK3 AI characters cannot trigger this effect.
 	debug_log = "XAR_MCP:BEGIN|schema=1|kind=snapshot|request_id=[GetGlobalVariable('xar_mcp_request_id').GetFlagName]"
 	debug_log = "XAR_MCP:STATE|player_id=[GetPlayer.GetID]|date=[GetCurrentDate.GetStringShort]|total_days=[GetCurrentDate.GetDateAsTotalDays]"
+	# The main Mod publishes this save-scoped payload before its delayed death
+	# UI.  Reading globals keeps the projection available after succession has
+	# changed GetPlayer.  Missing/uninitialised globals take the ready=0 path.
+	if = {
+		limit = { global_var:xa_settlement_ready = 1 }
+		debug_log = "XAR_MCP:SETTLEMENT|ready=1|commit_serial=[GetGlobalVariable('xa_settlement_commit_serial').GetValue|0]|source_character_id=[GetGlobalVariable('xa_settlement_source_character').Char.GetID]|final_score=[GetGlobalVariable('xa_settlement_final_score').GetValue|3]|score_before_reject=[GetGlobalVariable('xa_settlement_score_before_reject').GetValue|3]|record_candidate=[GetGlobalVariable('xa_settlement_record_candidate').GetValue|0]|old_record=[GetGlobalVariable('xa_settlement_old_record').GetValue|0]|record_delta=[GetGlobalVariable('xa_settlement_record_delta').GetValue|0]|blessing_count=[GetGlobalVariable('xa_settlement_blessing_count').GetValue|0]|refusal_count=[GetGlobalVariable('xa_settlement_refusal_count').GetValue|0]|contract_progress=[GetGlobalVariable('xa_settlement_contract_progress').GetValue|0]|record_written=[GetGlobalVariable('xa_settlement_record_written').GetValue|0]"
+	}
+	else = {
+		debug_log = "XAR_MCP:SETTLEMENT|ready=0|commit_serial=0"
+	}
 	debug_log = "XAR_MCP:ACK|schema=1|request_id=[GetGlobalVariable('xar_mcp_request_id').GetFlagName]|command=take_snapshot|status=ok"
 	debug_log = "XAR_MCP:END|schema=1|request_id=[GetGlobalVariable('xar_mcp_request_id').GetFlagName]"
 

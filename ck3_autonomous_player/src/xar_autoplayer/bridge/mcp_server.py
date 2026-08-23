@@ -133,6 +133,18 @@ def create_server(driver: GameplayBridgeDriver):
         return service.snapshot()
 
     @server.tool()
+    def ck3_get_one_life_settlement() -> dict[str, object]:
+        """Inspect the current death settlement and its episode binding."""
+        return service.one_life_settlement()
+
+    @server.tool()
+    def ck3_settle_one_life(
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Finish this life only after its score and new record are durable."""
+        return service.settle_one_life(expected_revision=expected_revision)
+
+    @server.tool()
     def ck3_plan_turn() -> dict[str, object]:
         """Choose the next one-life gameplay step from the shared planner."""
         return service.plan_turn()

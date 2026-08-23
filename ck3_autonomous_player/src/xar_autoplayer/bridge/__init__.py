@@ -30,6 +30,13 @@ from .marriage_contract import (
     normalize_arrange_marriage_choices,
     parse_arrange_marriage_step,
 )
+from .settlement_contract import (
+    ONE_LIFE_SETTLEMENT_CAPABILITY,
+    normalize_fixed_score,
+    normalize_one_life_settlement,
+    parse_completed_tutorial_lessons,
+    settlement_ready_for_episode,
+)
 from .mod_driver import DataModGameplayDriver, load_data_mod_driver
 from .native_driver import (
     ConfiguredHybridFallbackDriver,
@@ -52,6 +59,7 @@ __all__ = [
     "DECLARE_WAR_CAPABILITY",
     "ARRANGE_MARRIAGE_CAPABILITY",
     "EVENT_OPTION_STEP_PREFIX",
+    "ONE_LIFE_SETTLEMENT_CAPABILITY",
     "GameplayBridgeDriver",
     "HybridGameplayDriver",
     "ConfiguredHybridFallbackDriver",
@@ -69,10 +77,14 @@ __all__ = [
     "event_option_step",
     "load_data_mod_driver",
     "normalize_active_event",
+    "normalize_fixed_score",
+    "normalize_one_life_settlement",
     "normalize_declarable_wars",
     "normalize_arrange_marriage_choices",
     "parse_declare_war_step",
     "parse_arrange_marriage_step",
     "parse_event_option_step",
+    "parse_completed_tutorial_lessons",
     "selected_pipe_name",
+    "settlement_ready_for_episode",
 ]

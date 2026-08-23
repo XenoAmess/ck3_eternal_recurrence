@@ -7,6 +7,7 @@
 #include <cstring>
 #include <limits>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -32,6 +33,8 @@ constexpr std::uintptr_t kPendingCharacterInteractionStorageSlotRva =
     0x57BF1C8;
 constexpr std::uintptr_t kCharacterStorageSlotRva = 0x570C130;
 constexpr std::uintptr_t kArmyStorageSlotRva = 0x570CC80;
+constexpr std::uintptr_t kGlobalVariableContainerAccessorSlotRva =
+    0x570F750;
 constexpr std::uintptr_t kRaiseTroopsPrimaryVtableRva = 0x41226D8;
 constexpr std::uintptr_t kRaiseTroopsSecondaryVtableRva = 0x41226A8;
 constexpr std::uintptr_t kMoveArmyPrimaryVtableRva = 0x432BF18;
@@ -91,6 +94,10 @@ constexpr std::uintptr_t kDefaultConstructCharacterInteractionContextRva =
     0x2C3F300;
 constexpr std::uintptr_t kConstructWarResolutionInteractionContextRva =
     0x0C569F0;
+constexpr std::uintptr_t kGetStringTableRva = 0x3B58870;
+constexpr std::uintptr_t kInternStringIdRva = 0x3B58330;
+constexpr std::uintptr_t kIsEventTargetValidRva = 0x3329B00;
+constexpr std::uintptr_t kResolveEventTargetObjectRva = 0x33299E0;
 
 constexpr std::size_t kGameStateDateOffset = 0x08;
 constexpr std::size_t kGameStateSpeedOffset = 0x70;
@@ -155,18 +162,59 @@ constexpr std::size_t kNativeArrayDataOffset = 0x00;
 constexpr std::size_t kNativeArrayCapacityOffset = 0x08;
 constexpr std::size_t kNativeArrayCountOffset = 0x0C;
 constexpr std::size_t kCharacterInteractionSpecialDataOffset = 0x330;
+constexpr std::size_t kGlobalVariableEntriesOffset = 0x10;
+constexpr std::size_t kGlobalVariableEntryCountOffset = 0x1C;
+constexpr std::size_t kGlobalVariableEntrySize = 0x20;
+constexpr std::size_t kGlobalVariableEntryKeyOffset = 0x08;
+constexpr std::size_t kGlobalVariableEntryValueOffset = 0x10;
+constexpr std::uint16_t kNumericEventTargetKind = 1;
+constexpr std::int64_t kFixedPointScale = 100'000;
 constexpr std::size_t kWarDeclarationCasusBelliOffset = 0x08;
 constexpr std::size_t kWarDeclarationTargetTitlesOffset = 0x10;
 constexpr std::size_t kWarDeclarationClaimantOffset = 0x28;
 constexpr std::size_t kSendCharacterInteractionContextOffset = 0x20;
 constexpr std::int32_t kMaximumPlayerCharacterEntries = 1024;
 constexpr std::int32_t kMaximumComponentCapacity = 1'000'000;
+constexpr std::int32_t kMaximumGlobalVariableEntries = 1'000'000;
 constexpr std::int32_t kMaximumCasusBelliTypes = 10'000;
 constexpr std::int32_t kMaximumCasusBelliConfigurations = 10'000;
 constexpr std::int32_t kMaximumNativeTitleIds = 1'000'000;
 constexpr std::size_t kMaximumDatabaseObjectKeyBytes = 4'096;
 constexpr std::size_t kMsvcStringInlineCapacity = 15;
 constexpr std::size_t kMaximumMarriageValidationSamples = 8;
+
+constexpr std::string_view kSettlementReadyName = "xa_settlement_ready";
+constexpr std::string_view kSettlementCommitSerialName =
+    "xa_settlement_commit_serial";
+constexpr std::string_view kSettlementSourceCharacterName =
+    "xa_settlement_source_character";
+constexpr std::string_view kSettlementFinalScoreName =
+    "xa_settlement_final_score";
+constexpr std::string_view kSettlementScoreBeforeRejectName =
+    "xa_settlement_score_before_reject";
+constexpr std::string_view kSettlementRecordCandidateName =
+    "xa_settlement_record_candidate";
+constexpr std::string_view kSettlementOldRecordName =
+    "xa_settlement_old_record";
+constexpr std::string_view kSettlementRecordDeltaName =
+    "xa_settlement_record_delta";
+constexpr std::string_view kSettlementBlessingCountName =
+    "xa_settlement_blessing_count";
+constexpr std::string_view kSettlementRefusalCountName =
+    "xa_settlement_refusal_count";
+constexpr std::string_view kSettlementContractProgressName =
+    "xa_settlement_contract_progress";
+constexpr std::string_view kSettlementRecordWrittenName =
+    "xa_settlement_record_written";
+
+struct NativeStringView {
+  const char *data = nullptr;
+  std::int32_t size = 0;
+  std::uint8_t owned = 0;
+  std::array<std::byte, 3> padding{};
+};
+
+static_assert(sizeof(NativeStringView) == 0x10);
 
 struct PauseCommand {
   std::uintptr_t primary_vtable = 0;
@@ -487,6 +535,184 @@ void *ResolveCharacter(const Bindings &bindings,
     return nullptr;
   }
   return character;
+}
+
+const void *FindGlobalVariableValue(const Bindings &bindings,
+                                    void *container,
+                                    std::string_view name) noexcept {
+  if (container == nullptr || bindings.get_string_table == nullptr ||
+      bindings.intern_string_id == nullptr || name.empty() ||
+      name.size() >
+          static_cast<std::size_t>(std::numeric_limits<std::int32_t>::max())) {
+    return nullptr;
+  }
+  void *const string_table = bindings.get_string_table();
+  if (string_table == nullptr) {
+    return nullptr;
+  }
+  const NativeStringView view{name.data(),
+                              static_cast<std::int32_t>(name.size())};
+  const std::int32_t key =
+      bindings.intern_string_id(string_table, &view);
+  void *const entries =
+      LoadAt<void *>(container, kGlobalVariableEntriesOffset);
+  const std::int32_t count = LoadAt<std::int32_t>(
+      container, kGlobalVariableEntryCountOffset);
+  if (entries == nullptr || count < 0 ||
+      count > kMaximumGlobalVariableEntries) {
+    return nullptr;
+  }
+  const auto *entry = static_cast<const std::byte *>(entries);
+  for (std::int32_t index = 0; index < count;
+       ++index, entry += kGlobalVariableEntrySize) {
+    if (LoadAt<std::int32_t>(entry, kGlobalVariableEntryKeyOffset) == key) {
+      return entry + kGlobalVariableEntryValueOffset;
+    }
+  }
+  return nullptr;
+}
+
+bool ReadFixedPoint(const void *event_target,
+                    FixedPointValue &output) noexcept {
+  if (event_target == nullptr ||
+      LoadAt<std::uint16_t>(event_target, 0) != kNumericEventTargetKind) {
+    return false;
+  }
+  output.raw = LoadAt<std::int64_t>(event_target, 0x08);
+  output.scale = kFixedPointScale;
+  return true;
+}
+
+bool ReadSemanticInteger(const void *event_target,
+                         std::int64_t &output) noexcept {
+  FixedPointValue fixed{};
+  if (!ReadFixedPoint(event_target, fixed) ||
+      fixed.raw % fixed.scale != 0) {
+    return false;
+  }
+  output = fixed.raw / fixed.scale;
+  return true;
+}
+
+bool ReadSemanticBoolean(const void *event_target, bool &output) noexcept {
+  std::int64_t value = 0;
+  if (!ReadSemanticInteger(event_target, value) ||
+      (value != 0 && value != 1)) {
+    return false;
+  }
+  output = value == 1;
+  return true;
+}
+
+bool ReadSettlementSourceCharacter(const Bindings &bindings,
+                                   const void *event_target,
+                                   std::int32_t &character_id) noexcept {
+  if (event_target == nullptr || bindings.is_event_target_valid == nullptr ||
+      bindings.resolve_event_target_object == nullptr ||
+      !bindings.is_event_target_valid(event_target)) {
+    return false;
+  }
+  void *const object = bindings.resolve_event_target_object(event_target);
+  if (object == nullptr) {
+    return false;
+  }
+  const std::int32_t candidate_id =
+      LoadAt<std::int32_t>(object, kCharacterIdOffset);
+  if (ResolveCharacter(bindings, candidate_id) != object) {
+    return false;
+  }
+  character_id = candidate_id;
+  return true;
+}
+
+void ReadOneLifeSettlement(const Bindings &bindings,
+                           Snapshot &output) noexcept {
+  output.has_one_life_settlement = false;
+  output.one_life_settlement = {};
+  if (bindings.global_variable_container_accessor_slot == nullptr) {
+    return;
+  }
+  const GetGlobalVariableContainer accessor =
+      *bindings.global_variable_container_accessor_slot;
+  if (accessor == nullptr) {
+    return;
+  }
+  void *const container = accessor();
+  if (container == nullptr) {
+    return;
+  }
+
+  const void *const ready_value =
+      FindGlobalVariableValue(bindings, container, kSettlementReadyName);
+  bool ready = false;
+  if (!ReadSemanticBoolean(ready_value, ready) || !ready) {
+    return;
+  }
+
+  OneLifeSettlementSnapshot settlement{};
+  settlement.ready = true;
+  bool record_written = false;
+  if (!ReadSemanticInteger(
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementCommitSerialName),
+          settlement.commit_serial) ||
+      !ReadSettlementSourceCharacter(
+          bindings,
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementSourceCharacterName),
+          settlement.source_character_id) ||
+      !ReadFixedPoint(
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementFinalScoreName),
+          settlement.final_score) ||
+      !ReadFixedPoint(
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementScoreBeforeRejectName),
+          settlement.score_before_reject) ||
+      !ReadSemanticInteger(
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementRecordCandidateName),
+          settlement.record_candidate) ||
+      !ReadSemanticInteger(
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementOldRecordName),
+          settlement.old_record) ||
+      !ReadSemanticInteger(
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementRecordDeltaName),
+          settlement.record_delta) ||
+      !ReadSemanticInteger(
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementBlessingCountName),
+          settlement.blessing_count) ||
+      !ReadSemanticInteger(
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementRefusalCountName),
+          settlement.refusal_count) ||
+      !ReadSemanticInteger(
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementContractProgressName),
+          settlement.contract_progress) ||
+      !ReadSemanticBoolean(
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementRecordWrittenName),
+          record_written)) {
+    return;
+  }
+  settlement.record_written = record_written;
+
+  // A new episode invalidates the old payload by writing ready=0 first. Read
+  // the publication gate again so a transition cannot expose a mixed object.
+  ready = false;
+  if (!ReadSemanticBoolean(
+          FindGlobalVariableValue(bindings, container,
+                                  kSettlementReadyName),
+          ready) ||
+      !ready) {
+    return;
+  }
+  output.one_life_settlement = settlement;
+  output.has_one_life_settlement = true;
 }
 
 bool ReadPlayedCharacter(const Bindings &bindings, void *game_state,
@@ -1183,6 +1409,9 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       reinterpret_cast<void **>(module + kCharacterStorageSlotRva);
   result.army_storage_slot =
       reinterpret_cast<void **>(module + kArmyStorageSlotRva);
+  result.global_variable_container_accessor_slot =
+      reinterpret_cast<GetGlobalVariableContainer *>(
+          module + kGlobalVariableContainerAccessorSlotRva);
   result.valid_casus_belli_configuration_scratch =
       reinterpret_cast<void *>(
           module + kValidCasusBelliConfigurationScratchRva);
@@ -1285,6 +1514,15 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.construct_war_resolution_interaction_context =
       reinterpret_cast<ConstructWarResolutionInteractionContext>(
           module + kConstructWarResolutionInteractionContextRva);
+  result.get_string_table =
+      reinterpret_cast<GetStringTable>(module + kGetStringTableRva);
+  result.intern_string_id =
+      reinterpret_cast<InternStringId>(module + kInternStringIdRva);
+  result.is_event_target_valid = reinterpret_cast<IsEventTargetValid>(
+      module + kIsEventTargetValidRva);
+  result.resolve_event_target_object =
+      reinterpret_cast<ResolveEventTargetObject>(
+          module + kResolveEventTargetObjectRva);
   return result;
 }
 
@@ -1367,6 +1605,7 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
     output.active_wars.clear();
     output.player_armies.clear();
   }
+  ReadOneLifeSettlement(bindings, output);
   return true;
 }
 

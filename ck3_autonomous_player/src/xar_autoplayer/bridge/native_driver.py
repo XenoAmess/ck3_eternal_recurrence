@@ -51,6 +51,12 @@ from .marriage_contract import (
     normalize_arrange_marriage_choices,
     parse_arrange_marriage_step,
 )
+from .settlement_contract import (
+    ONE_LIFE_SETTLEMENT_CAPABILITY,
+    normalize_one_life_settlement,
+    settlement_ready_for_episode,
+    tutorial_record_observation,
+)
 from .war_contract import (
     DISBAND_ARMY_CAPABILITY,
     ENFORCE_DEMANDS_CAPABILITY,
@@ -498,6 +504,8 @@ class NativeHeadlessGameplayDriver:
         checkpoint_poll_interval_seconds: float = 0.1,
         restore_timeout_seconds: float = 180.0,
         restore_poll_interval_seconds: float = 0.05,
+        settlement_timeout_seconds: float = 30.0,
+        settlement_poll_interval_seconds: float = 0.05,
     ) -> None:
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
@@ -521,6 +529,13 @@ class NativeHeadlessGameplayDriver:
         self.restore_poll_interval_seconds = _positive_seconds(
             restore_poll_interval_seconds,
             "restore_poll_interval_seconds",
+        )
+        self.settlement_timeout_seconds = _positive_seconds(
+            settlement_timeout_seconds, "settlement_timeout_seconds"
+        )
+        self.settlement_poll_interval_seconds = _positive_seconds(
+            settlement_poll_interval_seconds,
+            "settlement_poll_interval_seconds",
         )
         self._driver_state_lock = threading.RLock()
         self._driver_state_write_lock = threading.Lock()
@@ -658,6 +673,14 @@ class NativeHeadlessGameplayDriver:
             ),
             "one_life_terminal": isinstance(terminal_reason, str),
             "one_life_terminal_reason": terminal_reason,
+            "one_life_settlement_supported": (
+                ONE_LIFE_SETTLEMENT_CAPABILITY in bridge_capabilities
+            ),
+            "one_life_settlement_status": (
+                current_snapshot.get("one_life_settlement_status")
+                if isinstance(current_snapshot, dict)
+                else None
+            ),
             "continue_as_heir_after_death": False,
             "transport_ready": transport_error is None,
             "diagnostics": diagnostics,
@@ -717,6 +740,7 @@ class NativeHeadlessGameplayDriver:
         if identity_changed:
             self._persist_driver_state()
 
+        settlement = snapshot.get("one_life_settlement")
         terminal_reason: str | None = None
         if (
             episode_character_id is not None
@@ -726,10 +750,32 @@ class NativeHeadlessGameplayDriver:
             terminal_reason = "played_character_changed"
         elif (
             episode_character_id is not None
+            and played_character is None
+            and settlement_ready_for_episode(
+                settlement, episode_character_id
+            )
+        ):
+            terminal_reason = "played_character_missing"
+        elif (
+            episode_character_id is not None
             and isinstance(played_character, dict)
             and played_character.get("alive") is False
         ):
             terminal_reason = "played_character_dead"
+
+        bridge_capabilities = set(
+            _string_list(self.state.capabilities().get("bridge_capabilities"))
+        )
+        if terminal_reason is None:
+            settlement_status = "not_terminal"
+        elif ONE_LIFE_SETTLEMENT_CAPABILITY not in bridge_capabilities:
+            settlement_status = "settlement_unavailable"
+        elif settlement_ready_for_episode(settlement, episode_character_id):
+            settlement_status = "ready"
+        elif isinstance(settlement, dict) and settlement.get("ready") is True:
+            settlement_status = "source_mismatch"
+        else:
+            settlement_status = "pending"
 
         return {
             **snapshot,
@@ -740,6 +786,7 @@ class NativeHeadlessGameplayDriver:
             ),
             "one_life_terminal": terminal_reason is not None,
             "one_life_terminal_reason": terminal_reason,
+            "one_life_settlement_status": settlement_status,
             "continue_as_heir_after_death": False,
             "declarable_wars": declarable_wars,
             "declaration_query_sequence": declaration_query_sequence,
@@ -1876,7 +1923,11 @@ class NativeHeadlessGameplayDriver:
         }
 
     def _execute_native_death_terminal(
-        self, *, expected_revision: int | None
+        self,
+        *,
+        expected_revision: int | None,
+        projected_settlement: dict[str, object] | None = None,
+        settlement_source: str = "native-headless",
     ) -> dict[str, object]:
         snapshot = self.take_snapshot()
         if expected_revision is not None:
@@ -1895,24 +1946,104 @@ class NativeHeadlessGameplayDriver:
         terminal_kind = (
             "native_played_character_changed"
             if terminal_reason == "played_character_changed"
-            else "native_played_character_dead"
+            else (
+                "native_played_character_missing"
+                if terminal_reason == "played_character_missing"
+                else "native_played_character_dead"
+            )
         )
+        episode_character_id = snapshot.get("episode_character_id")
         result: dict[str, object] = {
             "step": _NATIVE_DEATH_TERMINAL_STEP,
             "backend_id": "native-headless",
             "terminal": True,
             "terminal_kind": terminal_kind,
             "terminal_reason": terminal_reason,
-            "episode_character_id": snapshot.get("episode_character_id"),
+            "episode_character_id": episode_character_id,
             "technical_settlement_handoff": False,
             "continue_as_heir_after_death": False,
+            "heir_gameplay_actions": 0,
             "score": None,
             "played_character": copy.deepcopy(played_character),
             "date_raw": snapshot.get("date_raw"),
             "snapshot_id": snapshot["snapshot_id"],
             "revision": snapshot["revision"],
         }
-        if self.state_dir is not None:
+
+        bridge_capabilities = set(
+            _string_list(self.state.capabilities().get("bridge_capabilities"))
+        )
+        if projected_settlement is not None:
+            settlement = normalize_one_life_settlement(projected_settlement)
+            if not settlement_ready_for_episode(
+                settlement, episode_character_id
+            ):
+                raise BridgeUnavailableError(
+                    "projected one-life settlement does not match episode "
+                    f"CharacterID {episode_character_id}"
+                )
+            deadline = time.monotonic() + self.settlement_timeout_seconds
+            persistence = self._wait_for_settlement_record_persistence(
+                settlement, deadline=deadline
+            )
+            result.update(
+                {
+                    "settlement_status": "complete",
+                    "settlement_unavailable": False,
+                    "settlement_source": settlement_source,
+                    "one_life_settlement": copy.deepcopy(settlement),
+                    "record_persistence": persistence,
+                    "score": settlement["final_score"],
+                }
+            )
+        elif ONE_LIFE_SETTLEMENT_CAPABILITY not in bridge_capabilities:
+            result.update(
+                {
+                    "settlement_status": "settlement_unavailable",
+                    "settlement_unavailable": True,
+                    "one_life_settlement": None,
+                    "record_persistence": {
+                        "status": "settlement_unavailable",
+                        "required": False,
+                    },
+                }
+            )
+        else:
+            if (
+                isinstance(episode_character_id, bool)
+                or not isinstance(episode_character_id, int)
+            ):
+                raise BridgeUnavailableError(
+                    "native one-life terminal lacks an episode CharacterID"
+                )
+            deadline = time.monotonic() + self.settlement_timeout_seconds
+            settled_snapshot, settlement = self._wait_for_episode_settlement(
+                snapshot,
+                episode_character_id=episode_character_id,
+                deadline=deadline,
+            )
+            persistence = self._wait_for_settlement_record_persistence(
+                settlement, deadline=deadline
+            )
+            result.update(
+                {
+                    "settlement_status": "complete",
+                    "settlement_unavailable": False,
+                    "settlement_source": "native-headless",
+                    "one_life_settlement": copy.deepcopy(settlement),
+                    "record_persistence": persistence,
+                    "score": settlement["final_score"],
+                    "date_raw": settled_snapshot.get("date_raw"),
+                    "snapshot_id": settled_snapshot["snapshot_id"],
+                    "revision": settled_snapshot["revision"],
+                }
+            )
+
+        if (
+            self.state_dir is not None
+            and result.get("settlement_status") == "complete"
+            and result.get("score") is not None
+        ):
             from ..strategy import record_one_life_episode
 
             episode_run_id = snapshot.get("episode_run_id")
@@ -1936,6 +2067,141 @@ class NativeHeadlessGameplayDriver:
                 terminal=result,
             )
         return result
+
+    def finalize_projected_one_life_settlement(
+        self,
+        settlement: dict[str, object],
+        *,
+        expected_revision: int | None = None,
+        source: str,
+    ) -> dict[str, object]:
+        """Finalize a semantic settlement read by a non-visual fallback."""
+        try:
+            result = self._execute_native_death_terminal(
+                expected_revision=expected_revision,
+                projected_settlement=settlement,
+                settlement_source=source,
+            )
+        except Exception as error:
+            self._record_command(
+                _NATIVE_DEATH_TERMINAL_STEP,
+                ok=False,
+                error=f"{type(error).__name__}: {error}",
+            )
+            raise
+        self._record_command(
+            _NATIVE_DEATH_TERMINAL_STEP,
+            ok=True,
+            result=result,
+        )
+        return result
+
+    def _wait_for_episode_settlement(
+        self,
+        snapshot: dict[str, object],
+        *,
+        episode_character_id: int,
+        deadline: float,
+    ) -> tuple[dict[str, object], dict[str, object]]:
+        current = snapshot
+        while True:
+            settlement = current.get("one_life_settlement")
+            if settlement_ready_for_episode(settlement, episode_character_id):
+                return current, dict(settlement)
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                status = current.get("one_life_settlement_status")
+                raise BridgeUnavailableError(
+                    "native one-life settlement did not become ready for "
+                    f"episode CharacterID {episode_character_id}; status={status}"
+                )
+            self.state.wait_for_public_change(
+                int(current["revision"]),
+                min(self.settlement_poll_interval_seconds, remaining),
+            )
+            current = self.take_snapshot()
+
+    def _wait_for_settlement_record_persistence(
+        self,
+        settlement: dict[str, object],
+        *,
+        deadline: float,
+    ) -> dict[str, object]:
+        candidate = settlement["record_candidate"]
+        if not isinstance(candidate, int) or isinstance(candidate, bool):
+            raise BridgeUnavailableError(
+                "native one-life settlement lacks record_candidate"
+            )
+        if candidate == 0:
+            return {
+                "status": "not_required_zero_score",
+                "required": False,
+                "record_candidate": 0,
+            }
+        if settlement.get("record_written") is not True:
+            return {
+                "status": "not_required_no_new_record",
+                "required": False,
+                "record_candidate": candidate,
+            }
+        if self.state_dir is None:
+            raise BridgeUnavailableError(
+                "native new-record settlement requires state_dir to verify "
+                "tutorial.txt persistence"
+            )
+
+        tutorial_path = self.state_dir / "profile" / "tutorial.txt"
+        stable_signature: tuple[object, object] | None = None
+        stable_observations = 0
+        last_observation: dict[str, object] | None = None
+        while True:
+            try:
+                observation = tutorial_record_observation(
+                    tutorial_path, candidate
+                )
+            except (OSError, UnicodeError, ValueError) as error:
+                observation = {
+                    "path": str(tutorial_path),
+                    "lesson_id": f"xar_hs_ge_{candidate}",
+                    "present": False,
+                    "read_error": f"{type(error).__name__}: {error}",
+                }
+            last_observation = observation
+            if observation.get("present") is True:
+                signature = (
+                    observation.get("size"),
+                    observation.get("sha256"),
+                )
+                if signature == stable_signature:
+                    stable_observations += 1
+                else:
+                    stable_signature = signature
+                    stable_observations = 1
+                if stable_observations >= 2:
+                    return {
+                        **observation,
+                        "status": "persisted",
+                        "required": True,
+                        "record_candidate": candidate,
+                        "stable_observations": stable_observations,
+                    }
+            else:
+                stable_signature = None
+                stable_observations = 0
+
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                detail = (
+                    last_observation.get("read_error")
+                    if isinstance(last_observation, dict)
+                    else None
+                )
+                raise BridgeUnavailableError(
+                    "native one-life record lesson did not persist stably to "
+                    f"{tutorial_path}: xar_hs_ge_{candidate}"
+                    + (f" ({detail})" if isinstance(detail, str) else "")
+                )
+            time.sleep(min(self.settlement_poll_interval_seconds, remaining))
 
     def _wait_for_restore_response(
         self,
@@ -2456,6 +2722,26 @@ class ConfiguredHybridFallbackDriver:
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        if step == _NATIVE_DEATH_TERMINAL_STEP:
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            data_bridge_capabilities = set(
+                _string_list(
+                    self.data_mod.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                ONE_LIFE_SETTLEMENT_CAPABILITY
+                not in native_bridge_capabilities
+                and ONE_LIFE_SETTLEMENT_CAPABILITY
+                in data_bridge_capabilities
+            ):
+                return self._execute_data_mod_death_terminal(
+                    expected_revision=expected_revision
+                )
         if (
             step == _RESTORE_CHECKPOINT_STEP
             and step
@@ -2477,6 +2763,58 @@ class ConfiguredHybridFallbackDriver:
                 "native strategic steps are pure native and will not use fallback"
             )
         return self._delegate.execute_step(step, expected_revision=expected_revision)
+
+    def _execute_data_mod_death_terminal(
+        self, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        starting = self.take_snapshot()
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision != starting["revision"]:
+                raise BridgeUnavailableError(
+                    "hybrid gameplay revision mismatch: "
+                    f"expected {expected_revision}, current {starting['revision']}"
+                )
+        terminal_reason = starting.get("one_life_terminal_reason")
+        episode_character_id = starting.get("episode_character_id")
+        if not isinstance(terminal_reason, str) or (
+            isinstance(episode_character_id, bool)
+            or not isinstance(episode_character_id, int)
+        ):
+            raise BridgeUnavailableError(
+                "hybrid one-life settlement requires a native terminal identity"
+            )
+
+        deadline = time.monotonic() + self.native.settlement_timeout_seconds
+        settlement = starting.get("one_life_settlement")
+        while not settlement_ready_for_episode(
+            settlement, episode_character_id
+        ):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise BridgeUnavailableError(
+                    "data Mod one-life settlement did not become ready for "
+                    f"episode CharacterID {episode_character_id}"
+                )
+            time.sleep(
+                min(self.native.settlement_poll_interval_seconds, remaining)
+            )
+            data_snapshot = self.data_mod.take_snapshot()
+            settlement = normalize_one_life_settlement(
+                data_snapshot.get("one_life_settlement")
+            )
+
+        native_snapshot = self.native.take_snapshot()
+        result = self.native.finalize_projected_one_life_settlement(
+            dict(settlement),
+            expected_revision=int(native_snapshot["revision"]),
+            source="data-mod",
+        )
+        return {
+            **result,
+            "backend_id": "hybrid-fallback",
+            "settlement_projection_backend": "data-mod",
+        }
 
     def wait_for_change(
         self, after_revision: int, *, timeout_seconds: float
@@ -2523,6 +2861,9 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
         "history": history if isinstance(history, list) else [],
         "active_event": normalize_active_event(
             state.get("active_event"), default_source="native"
+        ),
+        "one_life_settlement": normalize_one_life_settlement(
+            state.get("one_life_settlement")
         ),
         "played_character": _played_character(state.get("played_character")),
         "pending_character_interaction": (

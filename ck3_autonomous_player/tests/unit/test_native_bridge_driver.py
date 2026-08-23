@@ -10,6 +10,7 @@ import tempfile
 import threading
 import time
 import unittest
+from unittest import mock
 import uuid
 
 
@@ -25,6 +26,9 @@ from xar_autoplayer.bridge.native_driver import (
     ConfiguredHybridFallbackDriver,
     MinimizedRejectingVisualDriver,
     NativeHeadlessGameplayDriver,
+)
+from xar_autoplayer.bridge.settlement_contract import (
+    ONE_LIFE_SETTLEMENT_CAPABILITY,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.environment import write_json_atomic
@@ -81,6 +85,7 @@ def _snapshot(
     map_ready: bool = True,
     pending_character_interaction: dict[str, object] | None = None,
     played_character: dict[str, object] | None = None,
+    one_life_settlement: dict[str, object] | None = None,
     active_wars: list[dict[str, object]] | None = None,
     player_armies: list[dict[str, object]] | None = None,
 ) -> dict[str, object]:
@@ -100,10 +105,30 @@ def _snapshot(
             "active_event": active_event,
             "pending_character_interaction": pending_character_interaction,
             "played_character": played_character,
+            "one_life_settlement": one_life_settlement,
             "active_wars": active_wars,
             "player_armies": player_armies,
         },
     }
+
+
+def _one_life_settlement(**overrides: object) -> dict[str, object]:
+    result: dict[str, object] = {
+        "ready": True,
+        "commit_serial": 1,
+        "source_character_id": 707,
+        "final_score": {"raw": 40_525_000, "scale": 100_000},
+        "score_before_reject": {"raw": 41_000_000, "scale": 100_000},
+        "record_candidate": 405,
+        "old_record": 405,
+        "record_delta": 0,
+        "blessing_count": 3,
+        "refusal_count": 1,
+        "contract_progress": 7,
+        "record_written": False,
+    }
+    result.update(overrides)
+    return result
 
 
 def _write_driver_state_checkpoint_fixture(
@@ -881,7 +906,222 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["terminal_reason"], "played_character_dead")
         self.assertEqual(result["episode_character_id"], 17_031)
         self.assertFalse(result["continue_as_heir_after_death"])
+        self.assertEqual(result["heir_gameplay_actions"], 0)
+        self.assertEqual(
+            result["settlement_status"], "settlement_unavailable"
+        )
+        self.assertTrue(result["settlement_unavailable"])
         self.assertEqual(result["played_character"]["character_id"], 17_031)
+
+    def test_terminal_waits_for_matching_native_settlement(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            settlement_timeout_seconds=0.5,
+            settlement_poll_interval_seconds=0.01,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.played-character",
+                ONE_LIFE_SETTLEMENT_CAPABILITY,
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                30,
+                played_character={"character_id": 707, "alive": False},
+                one_life_settlement={"ready": False, "commit_serial": 0},
+            )
+        )
+        starting = driver.take_snapshot()
+        self.assertEqual(starting["one_life_settlement_status"], "pending")
+
+        publisher = threading.Timer(
+            0.02,
+            lambda: endpoint.publish(
+                _snapshot(
+                    31,
+                    played_character={"character_id": 707, "alive": False},
+                    one_life_settlement=_one_life_settlement(),
+                )
+            ),
+        )
+        publisher.start()
+        try:
+            result = driver.execute_step(
+                "death-terminal",
+                expected_revision=int(starting["revision"]),
+            )
+        finally:
+            publisher.join(timeout=1.0)
+
+        self.assertEqual(result["settlement_status"], "complete")
+        self.assertFalse(result["settlement_unavailable"])
+        self.assertEqual(result["score"], 405.25)
+        self.assertEqual(
+            result["one_life_settlement"]["source_character_id"], 707
+        )
+        self.assertEqual(
+            result["record_persistence"]["status"],
+            "not_required_no_new_record",
+        )
+        self.assertFalse(result["continue_as_heir_after_death"])
+        self.assertEqual(result["heir_gameplay_actions"], 0)
+
+    def test_terminal_waits_for_new_record_tutorial_bit_to_stabilize(self) -> None:
+        endpoint = FakeEndpoint()
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            profile_dir = state_dir / "profile"
+            profile_dir.mkdir()
+            tutorial_path = profile_dir / "tutorial.txt"
+            tutorial_path.write_text(
+                'last_lesson_chain="reactive_advice"\ncompleted_lessons={\n}\n',
+                encoding="utf-8",
+            )
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+                settlement_timeout_seconds=0.5,
+                settlement_poll_interval_seconds=0.01,
+            )
+            endpoint.publish(
+                _hello(
+                    "game.state.snapshot",
+                    "game.state.played-character",
+                    ONE_LIFE_SETTLEMENT_CAPABILITY,
+                )
+            )
+            endpoint.publish(
+                _snapshot(
+                    30,
+                    played_character={"character_id": 707, "alive": False},
+                    one_life_settlement=_one_life_settlement(
+                        old_record=400,
+                        record_delta=5,
+                        record_written=True,
+                    ),
+                )
+            )
+            starting = driver.take_snapshot()
+            writer = threading.Timer(
+                0.02,
+                lambda: tutorial_path.write_text(
+                    'last_lesson_chain="reactive_advice"\n'
+                    "completed_lessons={\n\txar_hs_ge_405\n}\n",
+                    encoding="utf-8",
+                ),
+            )
+            writer.start()
+            try:
+                result = driver.execute_step(
+                    "death-terminal",
+                    expected_revision=int(starting["revision"]),
+                )
+            finally:
+                writer.join(timeout=1.0)
+
+        persistence = result["record_persistence"]
+        self.assertEqual(persistence["status"], "persisted")
+        self.assertEqual(persistence["lesson_id"], "xar_hs_ge_405")
+        self.assertGreaterEqual(persistence["stable_observations"], 2)
+        self.assertEqual(
+            result["cross_run_strategy"]["recorded_episode"]["score"],
+            405.25,
+        )
+
+    def test_terminal_rejects_settlement_for_the_heir(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            settlement_timeout_seconds=0.03,
+            settlement_poll_interval_seconds=0.005,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.played-character",
+                ONE_LIFE_SETTLEMENT_CAPABILITY,
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                31,
+                played_character={"character_id": 707, "alive": True},
+                one_life_settlement={"ready": False, "commit_serial": 0},
+            )
+        )
+        self.assertEqual(driver.take_snapshot()["episode_character_id"], 707)
+        endpoint.publish(
+            _snapshot(
+                32,
+                played_character={"character_id": 808, "alive": True},
+                one_life_settlement=_one_life_settlement(
+                    source_character_id=808
+                ),
+            )
+        )
+        switched = driver.take_snapshot()
+        self.assertEqual(
+            switched["one_life_settlement_status"], "source_mismatch"
+        )
+
+        with self.assertRaisesRegex(
+            BridgeUnavailableError, "CharacterID 707"
+        ):
+            driver.execute_step(
+                "death-terminal",
+                expected_revision=int(switched["revision"]),
+            )
+
+    def test_no_heir_missing_player_is_terminal_when_settlement_matches(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.played-character",
+                ONE_LIFE_SETTLEMENT_CAPABILITY,
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                31,
+                played_character={"character_id": 707, "alive": True},
+                one_life_settlement={"ready": False, "commit_serial": 0},
+            )
+        )
+        self.assertEqual(driver.take_snapshot()["episode_character_id"], 707)
+        endpoint.publish(
+            _snapshot(
+                32,
+                played_character=None,
+                one_life_settlement=_one_life_settlement(),
+            )
+        )
+
+        terminal = driver.take_snapshot()
+        result = driver.execute_step(
+            "death-terminal", expected_revision=int(terminal["revision"])
+        )
+
+        self.assertEqual(
+            terminal["one_life_terminal_reason"], "played_character_missing"
+        )
+        self.assertEqual(
+            result["terminal_kind"], "native_played_character_missing"
+        )
+        self.assertEqual(result["score"], 405.25)
+        self.assertEqual(result["heir_gameplay_actions"], 0)
 
     def test_native_death_terminal_records_cross_run_strategy(self) -> None:
         endpoint = FakeEndpoint()
@@ -893,12 +1133,19 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 state_dir=state_dir,
             )
             endpoint.publish(
-                _hello("game.state.snapshot", "game.state.played-character")
+                _hello(
+                    "game.state.snapshot",
+                    "game.state.played-character",
+                    ONE_LIFE_SETTLEMENT_CAPABILITY,
+                )
             )
             endpoint.publish(
                 _snapshot(
                     30,
                     played_character={"character_id": 17_031, "alive": False},
+                    one_life_settlement=_one_life_settlement(
+                        source_character_id=17_031
+                    ),
                 )
             )
             snapshot = driver.take_snapshot()
@@ -924,6 +1171,165 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 persisted["episodes"][0]["run_id"], snapshot["episode_run_id"]
             )
 
+    def test_unavailable_terminal_retries_after_capability_appears(self) -> None:
+        endpoint = FakeEndpoint()
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    31,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            driver.take_snapshot()
+            endpoint.publish(
+                _snapshot(
+                    32,
+                    played_character={"character_id": 808, "alive": True},
+                )
+            )
+            service = GameplayBridgeService(driver)
+
+            unavailable = service.auto_turn()
+            blocked = service.auto_turn()
+
+            self.assertEqual(
+                unavailable["result"]["settlement_status"],
+                "settlement_unavailable",
+            )
+            self.assertEqual(blocked["status"], "blocked")
+            self.assertEqual(
+                blocked["plan"]["phase"],
+                "terminal_settlement_unavailable",
+            )
+            self.assertFalse(
+                (state_dir / "strategy" / "one-life-history.json").exists()
+            )
+
+            endpoint.publish(
+                _hello(
+                    "game.state.snapshot",
+                    "game.state.played-character",
+                    ONE_LIFE_SETTLEMENT_CAPABILITY,
+                )
+            )
+            endpoint.publish(
+                _snapshot(
+                    33,
+                    played_character={"character_id": 808, "alive": True},
+                    one_life_settlement=_one_life_settlement(),
+                )
+            )
+            completed = service.auto_turn()
+
+            self.assertEqual(completed["status"], "executed")
+            self.assertEqual(completed["result"]["score"], 405.25)
+            persisted = json.loads(
+                (state_dir / "strategy" / "one-life-history.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(len(persisted["episodes"]), 1)
+            self.assertEqual(persisted["episodes"][0]["score"], 405.25)
+
+    def test_hybrid_uses_data_mod_settlement_without_visual_action(self) -> None:
+        endpoint = FakeEndpoint()
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            native = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    31,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            native.take_snapshot()
+            endpoint.publish(
+                _snapshot(
+                    32,
+                    played_character={"character_id": 808, "alive": True},
+                )
+            )
+            native_terminal = native.take_snapshot()
+            unavailable = native.execute_step(
+                "death-terminal",
+                expected_revision=int(native_terminal["revision"]),
+            )
+            self.assertEqual(
+                unavailable["settlement_status"], "settlement_unavailable"
+            )
+            self.assertFalse(
+                (state_dir / "strategy" / "one-life-history.json").exists()
+            )
+
+            data_mod = mock.Mock()
+            data_mod.capabilities.return_value = {
+                "snapshot": True,
+                "wait_for_change": True,
+                "action_steps": [],
+                "bridge_capabilities": [
+                    "game.state.snapshot",
+                    ONE_LIFE_SETTLEMENT_CAPABILITY,
+                ],
+            }
+            data_mod.take_snapshot.return_value = {
+                "format_version": 1,
+                "snapshot_id": "data-mod:33",
+                "revision": 33,
+                "backend_id": "data-mod",
+                "history": [{"command": "settlement-projection", "ok": True}],
+                "one_life_settlement": _one_life_settlement(),
+            }
+            visual = mock.Mock()
+            visual.capabilities.return_value = {
+                "snapshot": True,
+                "wait_for_change": True,
+                "action_steps": ["death-terminal"],
+                "bridge_capabilities": [],
+            }
+            hybrid = ConfiguredHybridFallbackDriver(native, data_mod, visual)
+            service = GameplayBridgeService(hybrid)
+
+            projected = service.one_life_settlement()
+            retry_plan = service.plan_turn()["plan"]
+            completed_turn = service.auto_turn()
+            completed = completed_turn["result"]
+            stopped = service.auto_turn()
+
+            self.assertEqual(projected["status"], "ready")
+            self.assertEqual(retry_plan["phase"], "terminal_native")
+            self.assertEqual(completed_turn["status"], "executed")
+            self.assertEqual(completed["score"], 405.25)
+            self.assertEqual(completed["backend_id"], "hybrid-fallback")
+            self.assertEqual(
+                completed["settlement_projection_backend"], "data-mod"
+            )
+            self.assertEqual(stopped["status"], "terminal")
+            data_mod.execute_step.assert_not_called()
+            visual.execute_step.assert_not_called()
+            persisted = json.loads(
+                (state_dir / "strategy" / "one-life-history.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(len(persisted["episodes"]), 1)
+            self.assertEqual(persisted["episodes"][0]["score"], 405.25)
+
     def test_played_character_switch_ends_episode_before_heir_gameplay(
         self,
     ) -> None:
@@ -933,7 +1339,11 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             endpoint=endpoint,
         )
         endpoint.publish(
-            _hello("game.state.snapshot", "game.state.played-character")
+            _hello(
+                "game.state.snapshot",
+                "game.state.played-character",
+                ONE_LIFE_SETTLEMENT_CAPABILITY,
+            )
         )
         endpoint.publish(
             _snapshot(
@@ -944,6 +1354,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "primary_heir_id": 808,
                     "has_heir": True,
                 },
+                one_life_settlement={"ready": False, "commit_serial": 0},
             )
         )
         self.assertEqual(driver.take_snapshot()["episode_character_id"], 707)
@@ -951,6 +1362,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _snapshot(
                 32,
                 played_character={"character_id": 808, "alive": True},
+                one_life_settlement=_one_life_settlement(),
             )
         )
 
@@ -977,6 +1389,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         self.assertEqual(result["result"]["episode_character_id"], 707)
         self.assertFalse(result["result"]["continue_as_heir_after_death"])
+        completed_plan = service.plan_turn()["plan"]
+        completed_turn = service.auto_turn()
+        self.assertEqual(completed_plan["phase"], "terminal_complete")
+        self.assertIsNone(completed_plan["selected_step"])
+        self.assertEqual(completed_plan["heir_gameplay_actions"], 0)
+        self.assertEqual(completed_turn["status"], "terminal")
 
     def test_native_war_templates_expand_and_move_waits_for_target(self) -> None:
         endpoint = FakeEndpoint()

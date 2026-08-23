@@ -21,6 +21,12 @@ from .marriage_contract import (
     QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
     arrange_marriage_step,
 )
+from .settlement_contract import (
+    ONE_LIFE_SETTLEMENT_CAPABILITY,
+    normalize_fixed_score,
+    normalize_one_life_settlement,
+    settlement_ready_for_episode,
+)
 from .war_contract import (
     RAISE_TROOPS_STEP,
     disband_army_step,
@@ -75,7 +81,12 @@ class GameplayBridgeService:
         selected_step = plan.get("selected_step") if isinstance(plan, dict) else None
         if not isinstance(selected_step, str) or not selected_step:
             return {
-                "status": "blocked",
+                "status": (
+                    "terminal"
+                    if isinstance(plan, dict)
+                    and plan.get("phase") == "terminal_complete"
+                    else "blocked"
+                ),
                 "plan": plan,
                 "snapshot_id": planned.get("snapshot_id"),
                 "revision": planned.get("revision"),
@@ -90,6 +101,89 @@ class GameplayBridgeService:
             "plan": plan,
             "result": result,
         }
+
+    def one_life_settlement(self) -> dict[str, object]:
+        """Return the terminal settlement state without scheduling heir play."""
+        snapshot = self.snapshot()
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        supported = bool(
+            isinstance(bridge_capabilities, list)
+            and ONE_LIFE_SETTLEMENT_CAPABILITY in bridge_capabilities
+        )
+        settlement = normalize_one_life_settlement(
+            snapshot.get("one_life_settlement")
+        )
+        episode_character_id = snapshot.get("episode_character_id")
+        terminal = snapshot.get("one_life_terminal") is True or isinstance(
+            snapshot.get("one_life_terminal_reason"), str
+        )
+        if not terminal:
+            status = "not_terminal"
+        elif not supported:
+            status = "settlement_unavailable"
+        elif settlement_ready_for_episode(settlement, episode_character_id):
+            status = "ready"
+        elif isinstance(settlement, dict) and settlement.get("ready") is True:
+            status = "source_mismatch"
+        else:
+            status = "pending"
+        return {
+            "status": status,
+            "supported": supported,
+            "terminal": terminal,
+            "terminal_reason": snapshot.get("one_life_terminal_reason"),
+            "episode_character_id": episode_character_id,
+            "one_life_settlement": settlement,
+            "continue_as_heir_after_death": False,
+            "heir_gameplay_actions": 0,
+            "snapshot_id": snapshot["snapshot_id"],
+            "revision": snapshot["revision"],
+            "backend_id": snapshot.get("backend_id"),
+        }
+
+    def settle_one_life(
+        self, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        """Wait for and record the current episode's bounded terminal handoff."""
+        snapshot = self.snapshot()
+        if not (
+            snapshot.get("one_life_terminal") is True
+            or isinstance(snapshot.get("one_life_terminal_reason"), str)
+            or (
+                isinstance(snapshot.get("played_character"), dict)
+                and snapshot["played_character"].get("alive") is False
+            )
+        ):
+            raise BridgeUnavailableError(
+                "CK3 has not reached a one-life terminal"
+            )
+        if "death-terminal" not in action_step_set(self.capabilities()):
+            raise UnsupportedStepError(
+                "selected backend cannot finalize the one-life terminal"
+            )
+        result = self.execute_step(
+            "death-terminal",
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else int(snapshot["revision"])
+            ),
+        )
+        if (
+            result.get("terminal") is not True
+            or result.get("continue_as_heir_after_death") is not False
+            or result.get("heir_gameplay_actions", 0) != 0
+        ):
+            raise BridgeUnavailableError(
+                "one-life terminal result violates the no-heir contract"
+            )
+        if result.get("settlement_status") != "settlement_unavailable":
+            result = {
+                **result,
+                "score": normalize_fixed_score(result.get("score"), "score"),
+            }
+        return result
 
     def select_event_option(
         self,

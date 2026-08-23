@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from decimal import Decimal, InvalidOperation
 import math
 import os
 from pathlib import Path
@@ -20,6 +21,10 @@ from typing import Protocol
 import uuid
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .settlement_contract import (
+    ONE_LIFE_SETTLEMENT_CAPABILITY,
+    normalize_one_life_settlement,
+)
 
 
 _LOG_PREFIX = "XAR_MCP:"
@@ -29,12 +34,28 @@ _NOOP_INBOX = (
 )
 
 
+class _OneLifeSettlementFrame(Protocol):
+    ready: bool
+    commit_serial: int
+    source_character_id: int | None
+    final_score: int | float | None
+    score_before_reject: int | float | None
+    record_candidate: int | None
+    old_record: int | None
+    record_delta: int | None
+    blessing_count: int | None
+    refusal_count: int | None
+    contract_progress: int | None
+    record_written: bool | None
+
+
 class _SnapshotFrame(Protocol):
     request_id: str
     player_id: int
     date: str
     total_days: int
     status: str
+    one_life_settlement: _OneLifeSettlementFrame | None
 
 
 try:
@@ -48,15 +69,32 @@ except ImportError:
     # parser available there as well so ``xar-ck3-mcp --driver mod`` does not
     # depend on the repository layout.
     @dataclass(frozen=True)
+    class _BundledOneLifeSettlementFrame:
+        ready: bool
+        commit_serial: int
+        source_character_id: int | None = None
+        final_score: int | float | None = None
+        score_before_reject: int | float | None = None
+        record_candidate: int | None = None
+        old_record: int | None = None
+        record_delta: int | None = None
+        blessing_count: int | None = None
+        refusal_count: int | None = None
+        contract_progress: int | None = None
+        record_written: bool | None = None
+
+    @dataclass(frozen=True)
     class _BundledSnapshotFrame:
         request_id: str
         player_id: int
         date: str
         total_days: int
         status: str
+        one_life_settlement: _BundledOneLifeSettlementFrame | None = None
 
     def _parse_complete_snapshots(log_text: str) -> list[_BundledSnapshotFrame]:
         pending: dict[str, dict[str, str]] = {}
+        pending_settlements: dict[str, dict[str, str]] = {}
         completed: list[_BundledSnapshotFrame] = []
 
         for line in log_text.splitlines():
@@ -74,10 +112,15 @@ except ImportError:
 
             if event == "BEGIN" and fields.get("kind") == "snapshot" and request_id:
                 pending[request_id] = dict(fields)
+                pending_settlements.pop(request_id, None)
                 continue
             if event == "STATE":
                 if pending:
                     pending[next(reversed(pending))].update(fields)
+                continue
+            if event == "SETTLEMENT":
+                if pending:
+                    pending_settlements[next(reversed(pending))] = dict(fields)
                 continue
             if event == "ACK" and request_id in pending:
                 pending[request_id].update(fields)
@@ -86,6 +129,9 @@ except ImportError:
                 continue
 
             frame = pending.pop(request_id)
+            settlement = _parse_bundled_settlement(
+                pending_settlements.pop(request_id, None)
+            )
             required = {"player_id", "date", "total_days", "status"}
             if not required.issubset(frame) or frame.get("status") != "ok":
                 continue
@@ -97,11 +143,66 @@ except ImportError:
                         date=frame["date"],
                         total_days=int(frame["total_days"]),
                         status=frame["status"],
+                        one_life_settlement=settlement,
                     )
                 )
             except ValueError:
                 continue
         return completed
+
+    def _parse_bundled_settlement(
+        fields: dict[str, str] | None,
+    ) -> _BundledOneLifeSettlementFrame | None:
+        if fields is None:
+            return None
+        ready = _parse_wire_bool(fields.get("ready"))
+        commit_serial = _parse_wire_int(fields.get("commit_serial"))
+        if ready is None or commit_serial is None:
+            return None
+        if not ready:
+            return _BundledOneLifeSettlementFrame(
+                ready=False,
+                commit_serial=commit_serial,
+            )
+
+        source_character_id = _parse_wire_int(fields.get("source_character_id"))
+        final_score = _parse_wire_number(fields.get("final_score"))
+        score_before_reject = _parse_wire_number(fields.get("score_before_reject"))
+        record_candidate = _parse_wire_int(fields.get("record_candidate"))
+        old_record = _parse_wire_int(fields.get("old_record"))
+        record_delta = _parse_wire_int(fields.get("record_delta"))
+        blessing_count = _parse_wire_int(fields.get("blessing_count"))
+        refusal_count = _parse_wire_int(fields.get("refusal_count"))
+        contract_progress = _parse_wire_int(fields.get("contract_progress"))
+        record_written = _parse_wire_bool(fields.get("record_written"))
+        required = (
+            source_character_id,
+            final_score,
+            score_before_reject,
+            record_candidate,
+            old_record,
+            record_delta,
+            blessing_count,
+            refusal_count,
+            contract_progress,
+            record_written,
+        )
+        if any(value is None for value in required):
+            return None
+        return _BundledOneLifeSettlementFrame(
+            ready=True,
+            commit_serial=commit_serial,
+            source_character_id=source_character_id,
+            final_score=final_score,
+            score_before_reject=score_before_reject,
+            record_candidate=record_candidate,
+            old_record=old_record,
+            record_delta=record_delta,
+            blessing_count=blessing_count,
+            refusal_count=refusal_count,
+            contract_progress=contract_progress,
+            record_written=record_written,
+        )
 
 
 class DataModGameplayDriver:
@@ -130,7 +231,7 @@ class DataModGameplayDriver:
         self._request_lock = threading.Lock()
         self._local_sequence = 0
         self._last_revision = 0
-        self._last_signature: tuple[int, str, int] | None = None
+        self._last_signature: tuple[object, ...] | None = None
 
     def capabilities(self) -> dict[str, object]:
         return {
@@ -140,6 +241,10 @@ class DataModGameplayDriver:
             "latency": "polling",
             "snapshot": True,
             "wait_for_change": True,
+            "bridge_capabilities": [
+                "game.state.snapshot",
+                ONE_LIFE_SETTLEMENT_CAPABILITY,
+            ],
             # Do not advertise an action until the data Mod has a real typed
             # effect and an acknowledged result for it.
             "action_steps": [],
@@ -199,7 +304,20 @@ class DataModGameplayDriver:
         finally:
             self._write_inbox(_NOOP_INBOX)
 
-        signature = (frame.player_id, frame.date, frame.total_days)
+        one_life_settlement = _normalize_one_life_settlement(
+            frame.one_life_settlement
+        )
+        settlement_signature = (
+            tuple(one_life_settlement.items())
+            if one_life_settlement is not None
+            else None
+        )
+        signature = (
+            frame.player_id,
+            frame.date,
+            frame.total_days,
+            settlement_signature,
+        )
         if signature != self._last_signature:
             self._local_sequence += 1
             self._last_revision += 1
@@ -218,6 +336,7 @@ class DataModGameplayDriver:
             "phase": None,
             "history": [],
             "active_event": None,
+            "one_life_settlement": one_life_settlement,
         }
 
     def _wait_for_frame(
@@ -312,6 +431,67 @@ def _is_ck3_flag_token(value: object) -> bool:
             for character in value
         )
     )
+
+
+def _normalize_one_life_settlement(
+    settlement: _OneLifeSettlementFrame | None,
+) -> dict[str, object] | None:
+    if settlement is None or not settlement.ready:
+        return None
+    values = {
+        "ready": True,
+        "commit_serial": settlement.commit_serial,
+        "source_character_id": settlement.source_character_id,
+        "final_score": settlement.final_score,
+        "score_before_reject": settlement.score_before_reject,
+        "record_candidate": settlement.record_candidate,
+        "old_record": settlement.old_record,
+        "record_delta": settlement.record_delta,
+        "blessing_count": settlement.blessing_count,
+        "refusal_count": settlement.refusal_count,
+        "contract_progress": settlement.contract_progress,
+        "record_written": settlement.record_written,
+    }
+    # The parser only constructs ready frames when every payload field is
+    # valid.  Keep this guard at the driver boundary for imported parser
+    # implementations and future protocol revisions.
+    if any(value is None for value in values.values()):
+        return None
+    return normalize_one_life_settlement(values)
+
+
+def _parse_wire_bool(value: str | None) -> bool | None:
+    if value == "0":
+        return False
+    if value == "1":
+        return True
+    return None
+
+
+def _parse_wire_int(value: str | None) -> int | None:
+    number = _parse_wire_decimal(value)
+    if number is None or number != number.to_integral_value():
+        return None
+    return int(number)
+
+
+def _parse_wire_number(value: str | None) -> int | float | None:
+    number = _parse_wire_decimal(value)
+    if number is None:
+        return None
+    if number == number.to_integral_value():
+        return int(number)
+    return float(number)
+
+
+def _parse_wire_decimal(value: str | None) -> Decimal | None:
+    if value is None:
+        return None
+    try:
+        number = Decimal(value)
+    except InvalidOperation:
+        return None
+    return number if number.is_finite() else None
 
 
 def _positive_finite(value: object, name: str) -> float:

@@ -1,0 +1,5 @@
+[12:00:02][effectimplementation.cpp:1]: XAR_MCP:BEGIN|schema=1|kind=snapshot|request_id=xar_req_settlement
+[12:00:02][effectimplementation.cpp:1]: XAR_MCP:STATE|player_id=9876543210|date=4 May, 1201|total_days=438412
+[12:00:02][effectimplementation.cpp:1]: XAR_MCP:SETTLEMENT|ready=1|commit_serial=1|source_character_id=4294967297|final_score=284.625|score_before_reject=287.500|record_candidate=284|old_record=250|record_delta=34|blessing_count=7|refusal_count=1|contract_progress=9|record_written=1
+[12:00:02][effectimplementation.cpp:1]: XAR_MCP:ACK|schema=1|request_id=xar_req_settlement|command=take_snapshot|status=ok
+[12:00:02][effectimplementation.cpp:1]: XAR_MCP:END|schema=1|request_id=xar_req_settlement

@@ -345,6 +345,54 @@
       "rva": "0xF54FA0",
       "confidence": "high-static",
       "pattern": "48 89 5C 24 08 57 48 81 EC 90 03 00 00 48 8B FA 48 8B D9 80 B9 49 1C 00 00 00 74 48 33 D2 48 8B CF E8 3A EF CE 01 84 C0 74 3A 48 8B D7 48 8D 4C 24 20"
+    },
+    {
+      "name": "jomini_global_variable_link_read",
+      "rva": "0x3410F80",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 49 8B 40 28 49 8B F0 48 8B FA 8B 58 08 48 8B 05 AD E7 2F 02 48 85 C0 0F 84 BA 00 00 00 FF D0 48 85"
+    },
+    {
+      "name": "jomini_global_variable_numeric_decode",
+      "rva": "0x338F221",
+      "confidence": "high-static",
+      "pattern": "8B 46 60 48 8B 57 10 4C 63 47 1C 49 C1 E0 05 4C 03 C2 49 3B D0 74 0E 39 42 08 74 09 48 83 C2 20 49 3B D0 75 F2 45 33 F6 49 3B D0 49 0F 44 D6 48 8D 5A 10 48 85 D2 49 0F 44 DE 48 85 DB 0F 84 2D 02 00 00 0F B7 03 66 83 F8 01 0F 85 2E 02 00 00 48 8B 5B 08 48 8D 46 10 48 8D 4E 68 48 89 44 24"
+    },
+    {
+      "name": "pdx_string_table_getter",
+      "rva": "0x3B58870",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 28 BA 10 00 00 00 65 48 8B 04 25 58 00 00 00 48 8B 08 8B 04 0A 39 05 EA 67 D0 01 7F 0C 48 8D 05 E9 67 D0 01 48 83 C4 28 C3 48 8D 0D D5"
+    },
+    {
+      "name": "pdx_string_id_intern",
+      "rva": "0x3B58330",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 60 FE FF FF 48 81 EC A0 02 00 00 48 8B DA 48 8B F9 83 7A 08 00 0F 84 B9 00 00 00 48"
+    },
+    {
+      "name": "jomini_event_target_object_resolver",
+      "rva": "0x33299E0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 0F B7 39 48 8B D9 E8 BB B8 09 00 39 78 0C 7E 12 E8 B1 B8 09 00 4C 8D 04 BF 49 C1 E0 04 4C 03 00 EB 07 4C 8D 05 9D"
+    },
+    {
+      "name": "jomini_event_target_validity",
+      "rva": "0x3329B00",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 0F B7 39 48 8B D9 E8 9B B7 09 00 39 78 0C 7E 12 E8 91 B7 09 00 4C 8D 04 BF 49 C1 E0 04 4C 03 00 EB 07 4C 8D 05 7D"
+    },
+    {
+      "name": "cfixedpoint_to_float_scale_100000",
+      "rva": "0x3A41DA0",
+      "confidence": "high-static",
+      "pattern": "0F 57 C0 F3 48 0F 2A 01 F3 0F 5E 05 58 30 B5 00 C3"
+    },
+    {
+      "name": "cfixedpoint_to_integer_divide_100000",
+      "rva": "0x3A48E16",
+      "confidence": "high-static",
+      "pattern": "48 B8 09 E1 D1 C6 11 6B F1 29 48 F7 29 48 8B CE 48 C1 FA 0E 48 8B C2 48 C1 E8 3F 48 03 D0 89 54 24 40 48"
     }
   ],
   "rvas": {
@@ -366,6 +414,13 @@
     "pending_character_interaction_is_for_character": "0x1266BA0",
     "validate_reply_character_interaction_command": "0x26B3540",
     "army_storage_slot": "0x570CC80",
+    "global_variable_container_accessor_slot": "0x570F750",
+    "get_pdx_string_table": "0x3B58870",
+    "intern_pdx_string_id": "0x3B58330",
+    "is_event_target_valid": "0x3329B00",
+    "resolve_event_target_object": "0x33299E0",
+    "cfixedpoint_to_float": "0x3A41DA0",
+    "cfixedpoint_to_semantic_integer_site": "0x3A48E16",
     "contains_war_participant": "0x2224870",
     "get_war_score_attacker_relative": "0x222A8A0",
     "resolve_default_raise_province": "0x224CC80",
@@ -485,6 +540,32 @@
     "CCharacter": {
       "character_id": "+0x18 int32 generation-bound CharacterID",
       "family_data": "+0x1A0 pointer"
+    },
+    "CPdxStringView": {
+      "size": "0x10",
+      "data": "+0x00 pointer",
+      "length": "+0x08 int32",
+      "owned_or_indirect": "+0x0C uint8; bridge passes 0 for a direct view"
+    },
+    "CJominiGlobalVariableContainer": {
+      "accessor_slot": "base +0x570F750 contains a no-argument function pointer; CJominiGlobalVariableLink RVA 0x3410F80 loads and calls it for each read",
+      "entries": "+0x10 pointer",
+      "count": "+0x1C int32",
+      "entry_stride": "0x20"
+    },
+    "CJominiGlobalVariableEntry": {
+      "key": "+0x08 int32 Pdx string ID",
+      "value": "+0x10 inline 0x10-byte CJominiEventTarget"
+    },
+    "CJominiEventTarget": {
+      "size": "0x10",
+      "kind": "+0x00 uint16; numeric CFixedPoint kind is exactly 1 at global-variable effect RVA 0x338F264",
+      "payload": "+0x08 qword; int64 CFixedPoint raw for kind 1",
+      "scope_resolution": "RVA 0x3329B00 dispatches descriptor +0x10 validity and RVA 0x33299E0 dispatches descriptor +0x38 object resolution; settlement source is accepted only when the resolved pointer round-trips through Character component storage using CCharacter+0x18"
+    },
+    "CFixedPoint": {
+      "storage": "signed int64 raw",
+      "scale": "100000 raw units per semantic unit; RVA 0x3A41DA0 divides by float 100000.0 at 0x4594E08, independently matched by the signed exact-division sequence at RVA 0x3A48E16"
     },
     "CCharacterFamilyData": {
       "betrothed_character_id": "+0x10 int32 CharacterID; getter RVA 0x19D4BA0",

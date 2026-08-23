@@ -85,6 +85,12 @@ using DefaultConstructCharacterInteractionContext = void *(*)(void *context);
 using ConstructWarResolutionInteractionContext = void (*)(void *context,
                                                            void *war,
                                                            bool surrender);
+using GetGlobalVariableContainer = void *(*)();
+using GetStringTable = void *(*)();
+using InternStringId = std::int32_t (*)(void *string_table,
+                                        const void *string_view);
+using IsEventTargetValid = bool (*)(const void *event_target);
+using ResolveEventTargetObject = void *(*)(const void *event_target);
 
 // Absolute addresses resolved only after the main executable matches the
 // pinned 1.19.0.6 SHA-256. Tests may supply a small in-memory fixture instead.
@@ -115,6 +121,8 @@ struct Bindings {
   void **pending_character_interaction_storage_slot = nullptr;
   void **character_storage_slot = nullptr;
   void **army_storage_slot = nullptr;
+  GetGlobalVariableContainer *global_variable_container_accessor_slot =
+      nullptr;
   void *valid_casus_belli_configuration_scratch = nullptr;
   std::size_t event_manager_offset = 0;
   std::size_t player_character_manager_offset = 0;
@@ -169,6 +177,10 @@ struct Bindings {
       default_construct_character_interaction_context = nullptr;
   ConstructWarResolutionInteractionContext
       construct_war_resolution_interaction_context = nullptr;
+  GetStringTable get_string_table = nullptr;
+  InternStringId intern_string_id = nullptr;
+  IsEventTargetValid is_event_target_valid = nullptr;
+  ResolveEventTargetObject resolve_event_target_object = nullptr;
 };
 
 using game::ActiveWarSnapshot;
@@ -177,6 +189,8 @@ using game::ArrangeMarriageQueryDiagnostics;
 using game::ArrangeMarriageValidationSample;
 using game::ArmySnapshot;
 using game::DeclarableWarSnapshot;
+using game::FixedPointValue;
+using game::OneLifeSettlementSnapshot;
 using game::PlayerWarSide;
 using game::Snapshot;
 using game::PauseSubmitResult;

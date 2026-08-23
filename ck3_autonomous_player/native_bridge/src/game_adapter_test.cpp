@@ -148,6 +148,8 @@ int main() {
     return Fail("known CK3 build descriptor drifted");
   }
   if (!Contains(known.capabilities, "game.state.snapshot") ||
+      !Contains(known.capabilities,
+                "game.state.xar-one-life-settlement") ||
       !Contains(known.capabilities, "game.state.war-primary-opponent") ||
       !Contains(known.capabilities, "game.command.declare-war-N") ||
       !Contains(known.capabilities,
