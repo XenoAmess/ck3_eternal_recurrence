@@ -44,6 +44,8 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _generic_event_in_frame,
     _generic_event_preview,
     _panel_summary,
+    _pause_menu_visible,
+    _save_window_visible,
     _same_generic_event,
     _score_first_blessing,
     _score_first_curse,
@@ -646,6 +648,29 @@ class OpeningContractTests(unittest.TestCase):
         self.assertTrue(replay["ok"])
         self.assertEqual(replay["mode"], "offline_observation_replay")
         self.assertEqual(replay["capture_sequence"], 10)
+
+    def test_native_save_states_are_visibly_distinct(self) -> None:
+        pause_menu = SimpleNamespace(
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span("保存游戏", (1280, 520), (1200, 500, 1360, 540)),
+                span("载入游戏", (1280, 590), (1200, 570, 1360, 610)),
+                span("继续", (1280, 450), (1240, 430, 1320, 470)),
+                span("退出游戏", (1280, 730), (1200, 710, 1360, 750)),
+            ),
+        )
+        save_window = SimpleNamespace(
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span("保存游戏", (1280, 360), (1200, 340, 1360, 380)),
+                span("存档名：", (1120, 440), (1060, 420, 1180, 460)),
+                span("保存", (1360, 1060), (1320, 1040, 1400, 1080)),
+            ),
+        )
+        self.assertTrue(_pause_menu_visible(pause_menu))
+        self.assertFalse(_save_window_visible(pause_menu))
+        self.assertTrue(_save_window_visible(save_window))
+        self.assertFalse(_pause_menu_visible(save_window))
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (
@@ -1296,6 +1321,10 @@ class OpeningScenarioTests(unittest.TestCase):
         )
         self.assertEqual(economic_step.step, "economic-event-cycle")
         self.assertIn("economic-event-cycle", OPENING_DEVELOPMENT_STEPS)
+        checkpoint_step = cli.parser().parse_args(
+            ["opening-step", "--step", "save-checkpoint"]
+        )
+        self.assertEqual(checkpoint_step.step, "save-checkpoint")
         dev_session = cli.parser().parse_args(["opening-dev-session"])
         self.assertEqual(dev_session.command, "opening-dev-session")
         self.assertEqual(dev_session.timeout, 3600)

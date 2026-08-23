@@ -77,6 +77,7 @@ GENERIC_EVENT_PREVIEW_REGION = (0.23, 0.22, 0.48, 0.80)
 OPENING_DEVELOPMENT_STEPS = (
     "steward-development",
     "economic-event-cycle",
+    "save-checkpoint",
 )
 
 # CK3 1.19.0.6 at the frozen 2560x1440/100% UI contract.  Alt+1..N only
@@ -783,6 +784,29 @@ def _steward_development_active(frame: object) -> bool:
         _council_panel_visible(frame)
         and _spans_with_text(frame, "在福贾伯爵领", contains=True)
         and _spans_with_text(frame, "剩余", contains=True)
+    )
+
+
+def _pause_menu_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "保存游戏")
+        and _spans_with_text(frame, "载入游戏")
+        and _spans_with_text(frame, "继续")
+        and _spans_with_text(frame, "退出游戏")
+    )
+
+
+def _save_window_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "保存游戏")
+        and _spans_with_text(frame, "存档名", contains=True)
+    )
+
+
+def _overwrite_save_confirmation_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "覆盖存档", contains=True)
+        and _spans_with_text(frame, "你确定要覆盖", contains=True)
     )
 
 
@@ -2178,6 +2202,227 @@ def _drive_opening(
             final_observation,
         )
 
+    def save_development_checkpoint() -> tuple[
+        dict[str, object], dict[str, object]
+    ]:
+        save_root = spec.profile_dir / "save games"
+        save_root.mkdir(parents=True, exist_ok=True)
+        before = {
+            path.name: (path.stat().st_size, path.stat().st_mtime_ns)
+            for path in save_root.glob("*.ck3")
+            if path.is_file()
+        }
+        driver = new_driver()
+        source = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, "map before development checkpoint"),
+            ),
+            stable_frames=2,
+        )
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": "map_hud.open_pause_menu",
+                "key": "escape",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["escape"],
+                "expected_post_screen": "pause_menu",
+            },
+        )
+        menu_accepted, menu_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["escape"]
+        )()
+        if menu_accepted != 2:
+            raise AgentError(
+                "pause-menu shortcut was partial: "
+                f"accepted={menu_accepted}, last_error={menu_last_error}"
+            )
+        _menu_first, pause_menu = wait_for_custom_state(
+            driver,
+            _pause_menu_visible,
+            "pause menu",
+        )
+        actions.append(
+            {
+                "control_id": "map_hud.open_pause_menu",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": "escape",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["escape"],
+                "send_input": {
+                    "requested": 2,
+                    "accepted": menu_accepted,
+                    "last_error": menu_last_error,
+                },
+                "source_observation_id": source.observation_id,
+                "result_observation_id": pause_menu.observation_id,
+                "expected_post_screen": "pause_menu",
+            }
+        )
+
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": "pause_menu.save_game",
+                "key": "1",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["1"],
+                "expected_post_screen": "save_window",
+            },
+        )
+        save_menu_accepted, save_menu_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["1"]
+        )()
+        if save_menu_accepted != 2:
+            raise AgentError(
+                "pause-menu save shortcut was partial: "
+                f"accepted={save_menu_accepted}, last_error={save_menu_last_error}"
+            )
+        _save_first, save_window = wait_for_custom_state(
+            driver,
+            _save_window_visible,
+            "save window",
+        )
+        actions.append(
+            {
+                "control_id": "pause_menu.save_game",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": "1",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["1"],
+                "send_input": {
+                    "requested": 2,
+                    "accepted": save_menu_accepted,
+                    "last_error": save_menu_last_error,
+                },
+                "source_observation_id": pause_menu.observation_id,
+                "result_observation_id": save_window.observation_id,
+                "expected_post_screen": "save_window",
+            }
+        )
+
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": "save_window.accept_default_name",
+                "key": "enter",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["enter"],
+                "expected_post_screen": "pause_menu_or_overwrite_confirmation",
+            },
+        )
+        save_accepted, save_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["enter"]
+        )()
+        if save_accepted != 2:
+            raise AgentError(
+                "save confirmation shortcut was partial: "
+                f"accepted={save_accepted}, last_error={save_last_error}"
+            )
+        _transition_first, transition = wait_for_custom_state(
+            driver,
+            lambda frame: bool(
+                _pause_menu_visible(frame)
+                or _overwrite_save_confirmation_visible(frame)
+            ),
+            "save completion or overwrite confirmation",
+        )
+        overwrite_confirmed = False
+        if _overwrite_save_confirmation_visible(transition):
+            overwrite_confirmed = True
+            window.require_foreground()
+            overwrite_accepted, overwrite_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["enter"]
+            )()
+            if overwrite_accepted != 2:
+                raise AgentError(
+                    "overwrite confirmation shortcut was partial: "
+                    f"accepted={overwrite_accepted}, last_error={overwrite_last_error}"
+                )
+            _pause_first, transition = wait_for_custom_state(
+                driver,
+                _pause_menu_visible,
+                "pause menu after save overwrite",
+            )
+        actions.append(
+            {
+                "control_id": "save_window.accept_default_name",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": "enter",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["enter"],
+                "send_input": {
+                    "requested": 2,
+                    "accepted": save_accepted,
+                    "last_error": save_last_error,
+                },
+                "overwrite_confirmed": overwrite_confirmed,
+                "source_observation_id": save_window.observation_id,
+                "result_observation_id": transition.observation_id,
+                "expected_post_screen": "pause_menu",
+            }
+        )
+
+        changed: list[Path] = []
+        save_deadline = min(deadline, time.monotonic() + 30.0)
+        prior_signature = None
+        while time.monotonic() < save_deadline:
+            changed = []
+            for path in save_root.glob("*.ck3"):
+                if not path.is_file():
+                    continue
+                current = (path.stat().st_size, path.stat().st_mtime_ns)
+                if before.get(path.name) != current:
+                    changed.append(path)
+            signature = tuple(
+                sorted(
+                    (path.name, path.stat().st_size, path.stat().st_mtime_ns)
+                    for path in changed
+                )
+            )
+            if signature and signature == prior_signature:
+                break
+            prior_signature = signature
+            time.sleep(0.25)
+        else:
+            raise AgentError("development checkpoint file did not become stable")
+        checkpoint = max(changed, key=lambda path: path.stat().st_mtime_ns)
+
+        window.require_foreground()
+        close_accepted, close_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["escape"]
+        )()
+        if close_accepted != 2:
+            raise AgentError(
+                "pause-menu close after save was partial: "
+                f"accepted={close_accepted}, last_error={close_last_error}"
+            )
+        final_map = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, "map after development checkpoint"),
+            ),
+            stable_frames=2,
+        )
+        return (
+            {
+                "status": "saved",
+                "path": str(checkpoint.resolve()),
+                "name": checkpoint.name,
+                "size": checkpoint.stat().st_size,
+                "sha256": sha256_file(checkpoint),
+                "overwrite_confirmed": overwrite_confirmed,
+                "strategy": "native-pause-menu-default-save-v1",
+            },
+            final_map.to_policy_json(),
+        )
+
     def run_ordinary_event_loop(
         event_target: int,
     ) -> tuple[list[dict[str, object]], dict[str, object]]:
@@ -2488,6 +2733,7 @@ def _drive_opening(
                     in {"map_hud", "map_running"}
                     or _steward_development_targeting_active(frame)
                     or _council_panel_visible(frame)
+                    or _pause_menu_visible(frame)
                 ),
                 "current development map",
             )
@@ -2570,6 +2816,24 @@ def _drive_opening(
                     ),
                     stable_frames=2,
                 )
+            elif _pause_menu_visible(live_map):
+                window.require_foreground()
+                close_accepted, close_last_error = _prepare_key_press_batch(
+                    CK3_SHORTCUT_SCAN_CODES["escape"]
+                )()
+                if close_accepted != 2:
+                    raise AgentError(
+                        "existing pause-menu close was partial: "
+                        f"accepted={close_accepted}, last_error={close_last_error}"
+                    )
+                live_driver.observe_stable(
+                    "map_hud",
+                    min(
+                        INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                        _remaining(deadline, "map after existing pause-menu close"),
+                    ),
+                    stable_frames=2,
+                )
             elif live_map.screen == "map_running":
                 press_shortcut(
                     "map_running",
@@ -2585,6 +2849,20 @@ def _drive_opening(
                     ),
                     post_timeout_seconds=INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
                 )
+        if development_step == "save-checkpoint":
+            checkpoint, final_observation = save_development_checkpoint()
+            return {
+                "development_only": True,
+                "release_qualification": False,
+                "step": development_step,
+                "resume": resume_info,
+                "actions": actions,
+                "checkpoint": checkpoint,
+                "final_screen": final_observation.get("screen"),
+                "final_observation_id": final_observation.get("observation_id"),
+                "window_binding": window.audit_binding(),
+                "foreground_activation": foreground,
+            }
         if development_step == "economic-event-cycle":
             cycle_driver = new_driver()
             paused_map = cycle_driver.observe_stable(

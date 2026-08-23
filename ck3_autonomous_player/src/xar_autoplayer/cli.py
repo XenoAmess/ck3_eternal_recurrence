@@ -60,7 +60,11 @@ def parser() -> argparse.ArgumentParser:
     )
     step_parser.add_argument(
         "--step",
-        choices=("steward-development", "economic-event-cycle"),
+        choices=(
+            "steward-development",
+            "economic-event-cycle",
+            "save-checkpoint",
+        ),
         default="steward-development",
     )
     step_parser.add_argument("--timeout", type=float, default=240)
