@@ -51,6 +51,8 @@ bridge identity/heartbeat/ping.
 | `game.command.query-declarable-wars` | native C++ core implemented, bridge route/live probe pending | exact declare-war UI CB registry/evaluator/item rules + offline SSO/heap-key and configuration fixture | explicit upper-layer policy only |
 | `game.command.declare-war-<declaration_id>` | native C++ core implemented, bridge route/live probe pending | generation-bound exact re-enumeration + native context/validation/queue/destruction fixture | explicit upper-layer policy only |
 | `game.command.enforce-demands-<war_id>` | native C++ core implemented, bridge route/live probe pending | exact WarOverview victory context builder + common interaction command lifecycle fixture | explicit upper-layer policy only |
+| `game.command.query-arrange-marriage-choices` | native C++ core implemented, bridge route/live probe pending | exact interaction registry/four-role context layout + native validation fixture | explicit upper-layer policy only |
+| `game.command.arrange-marriage-<choice_id>` | native C++ direct-player path implemented, bridge route/live probe pending | generation-bound CharacterIDs + refresh/finalize/validate/common-send fixture | explicit upper-layer policy only |
 | event title/option text | unsupported | no repeatable localized text projection yet | unsupported in pure native mode |
 | main-thread tick hook | anchor-only/not located | command submission uses a locked queue, so it is not a prerequisite for the first loop | unsupported |
 
@@ -256,7 +258,7 @@ native fixture reproduces both branches and both MSVC key-string forms.
 `declare-war-<declaration_id>` re-runs that evaluator for the target and CB
 ordinal and requires the complete cached choice, including key, claimant and
 TitleIDs, to match before submitting. It constructs the 0x338-byte character
-interaction context using `CK3GameData +0x1070`, verifies the special data is
+interaction context using `CK3GameData +0xF78`, verifies the special data is
 a `CWarDeclaration` with vtable `0x411DAA0`, writes CB pointer `+0x08`, native
 TitleID array `+0x10`, and claimant `+0x28`, then follows the UI's refresh
 `0x2C40950`, finalize `0x2C40B20`, and validation `0x2C43F00` calls.
@@ -265,6 +267,15 @@ Constructor RVA `0x26B3220` creates the complete 0x368-byte
 context at `+0x20`, derived payloads at `+0x358/+0x360`). Submission uses flags
 `0x0E`; the copied and original contexts are then destroyed with RVA
 `0x2C3F380`, matching UI send RVA `0xFE5190`.
+
+The `+0xF78` slot is pinned by the canonical `declare_war_interaction`
+registration at RVA `0x2C3EB3B`. An earlier live build incorrectly used
+`+0x1070`; the first minimized declaration then crashed inside the generic
+context constructor because that slot contains unrelated `piety_level_%i`
+data. The 2026-08-23 minidump recorded execute AV RVA `0x431F5B0` through the
+wrong interaction's redirect evaluator before refresh, validation, queueing,
+or destruction. Correcting the registered slot fixes that actual submission
+path; it is not a command-lifetime workaround.
 
 `enforce-demands-<war_id>` resolves the same live `CWar` storage used by the
 snapshot and rejects both a non-participant and a participating ally who is
@@ -279,13 +290,30 @@ embedded-context destruction. Its visual confirmation window is only a UI
 wrapper and is not part of the headless gameplay command.
 
 The canonical marriage script key is `arrange_marriage_interaction` in the
-1.19.0.6 base-game `00_marriage_interactions.txt`. Static UI paths show
-`CSendCharacterInteractionCommand` is `0x368` bytes (vtables `0x40829F8` and
-`0x40829C8`) and owns a copied context at `+0x20` containing four roles and
-option data. This slice does not guess those still-unclassified fields. A
-reply needs neither the key nor four role IDs: its pending component ID is the
-complete engine payload, so incoming marriage/betrothal acceptance ships
-independently of send-side construction.
+1.19.0.6 base-game `00_marriage_interactions.txt`. Registration xref
+`0x2C3EA90` stores its interaction pointer at `CK3GameData +0xF48`.
+All-role context constructor `0x2C3F000` proves the exact role layout:
+actor `+0x2D8`, recipient `+0x2DC`, secondary actor `+0x2E0`, secondary
+recipient `+0x2E4`, and another optional CharacterID at `+0x2E8`. The
+marriage UI and AI direct paths leave `+0x2E8` at `-1`. UI selection writes
+the secondary IDs and then calls refresh `0x2C40950` followed by finalize
+`0x2C40B20`; complete context validation `0x2C43F00` is the authoritative
+eligibility check. Marriage versus betrothal is derived from the selected
+characters' age/state and is not a separate payload bool.
+
+The first headless query deliberately exposes only the immediately useful
+direct path: played Character as both actor and secondary actor, candidate as
+both recipient and secondary recipient. It scans live Character components,
+constructs and natively validates each exact pair, and returns the two full
+CharacterID handles. Those handles include the component generation and form
+the opaque query choice; submission rebuilds and revalidates the exact pair.
+No dense slot index is published as identity. The default marriage option is
+left untouched; matrilineal configuration is a named interaction scope, not a
+proven standalone byte offset. Generic UI send `0xFE5190` proves the remaining
+path: validate, construct the `0x368`-byte `CSendCharacterInteractionCommand`,
+submit flags `0x0E`, then destroy its owned context at `+0x20`. Incoming
+marriage/betrothal acceptance remains the independent pending-interaction
+reply path.
 
 ## Completed and next live acceptance
 

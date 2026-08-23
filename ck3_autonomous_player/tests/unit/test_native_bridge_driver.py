@@ -876,6 +876,83 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(declared["war_action"]["target_character_id"], 808)
         self.assertEqual(driver.take_snapshot()["declarable_wars"], [])
 
+    def test_native_marriage_query_expands_and_submits_exact_choice(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-arrange-marriage-choices",
+                "game.command.arrange-marriage-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                played_character={"character_id": 707, "alive": True},
+            )
+        )
+        choice = {
+            "choice_id": "707-808",
+            "played_character_id": 707,
+            "candidate_character_id": 808,
+        }
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            result: dict[str, object] = {
+                "step": frame["step"],
+                "accepted": True,
+                "status": "submitted",
+            }
+            if frame["step"] == "query-arrange-marriage-choices":
+                result.update(
+                    {
+                        "status": "available",
+                        "query_sequence": 4,
+                        "arrange_marriage_choices": [choice],
+                    }
+                )
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+
+        endpoint.send_hook = answer
+        starting = driver.take_snapshot()
+        query = driver.execute_step(
+            "query-arrange-marriage-choices",
+            expected_revision=int(starting["revision"]),
+        )
+        self.assertEqual(query["arrange_marriage_choices"], [{**choice, "source": "native"}])
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            ["arrange-marriage-707-808", "query-arrange-marriage-choices"],
+        )
+
+        queried = driver.take_snapshot()
+        submitted = driver.execute_step(
+            "arrange-marriage-707-808",
+            expected_revision=int(queried["revision"]),
+        )
+        self.assertEqual(
+            submitted["marriage_action"]["status"], "proposal_submitted"
+        )
+        self.assertEqual(
+            submitted["marriage_action"]["candidate_character_id"], 808
+        )
+        self.assertEqual(driver.take_snapshot()["arrange_marriage_choices"], [])
+
     def test_native_raise_and_postwar_disband_wait_for_army_state(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
@@ -1807,6 +1884,8 @@ class NativeFallbackModeTests(unittest.TestCase):
                         "move-army-7-to-9",
                         "query-declarable-wars",
                         "declare-war-808-17-0",
+                        "query-arrange-marriage-choices",
+                        "arrange-marriage-707-809",
                     ),
                 ),
                 window_minimized=lambda: False,
@@ -1823,6 +1902,11 @@ class NativeFallbackModeTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
             driver.execute_step("declare-war-808-17-0")
+        self.assertNotIn(
+            "arrange-marriage-707-809", driver.capabilities()["action_steps"]
+        )
+        with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
+            driver.execute_step("arrange-marriage-707-809")
         self.assertEqual(visual_calls, [])
 
 

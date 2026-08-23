@@ -98,6 +98,7 @@ struct Bindings {
   std::size_t event_manager_offset = 0;
   std::size_t player_character_manager_offset = 0;
   std::size_t war_manager_offset = 0;
+  std::size_t arrange_marriage_interaction_offset = 0;
   std::size_t declare_war_interaction_offset = 0;
   SubmitCommand submit_command = nullptr;
   GetLocalPlayer get_local_player = nullptr;
@@ -158,6 +159,19 @@ struct DeclarableWarSnapshot {
 
   friend bool operator==(const DeclarableWarSnapshot &,
                          const DeclarableWarSnapshot &) = default;
+};
+
+// One directly sendable, generation-bound marriage choice for the minimal
+// headless path: the played Character is both the interaction actor and the
+// actor-side spouse, while candidate_character_id is both recipient and the
+// recipient-side spouse. CharacterID handles include CK3's component
+// generation, so neither field may be resolved by low-24-bit slot alone.
+struct ArrangeMarriageChoice {
+  std::int32_t played_character_id = -1;
+  std::int32_t candidate_character_id = -1;
+
+  friend bool operator==(const ArrangeMarriageChoice &,
+                         const ArrangeMarriageChoice &) = default;
 };
 
 struct ArmySnapshot {
@@ -363,6 +377,37 @@ enum class DeclareWarResult {
 DeclareWarResult SubmitDeclareWar(
     const Bindings &bindings,
     const DeclarableWarSnapshot &declaration) noexcept;
+
+enum class ReadArrangeMarriageChoicesResult {
+  available,
+  no_played_character,
+  unavailable,
+};
+
+// Explicit strategic query; it is intentionally not part of the heartbeat
+// snapshot. Every returned candidate has passed CK3's own arrange-marriage
+// context refresh/finalize/validation chain for the currently played
+// Character. Minors naturally produce a betrothal through the same native
+// interaction.
+ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
+    const Bindings &bindings,
+    std::vector<ArrangeMarriageChoice> &output) noexcept;
+
+enum class ArrangeMarriageResult {
+  submitted,
+  no_played_character,
+  candidate_not_found,
+  choice_unavailable,
+  unavailable,
+};
+
+// Rebuilds the context from both exact CharacterID handles and validates it
+// again before sending CSendCharacterInteractionCommand. This first slice is
+// deliberately the useful direct path (played Character <-> candidate), not
+// the wider four-role courtier matchmaking surface.
+ArrangeMarriageResult SubmitArrangeMarriage(
+    const Bindings &bindings,
+    const ArrangeMarriageChoice &choice) noexcept;
 
 enum class EnforceDemandsResult {
   submitted,

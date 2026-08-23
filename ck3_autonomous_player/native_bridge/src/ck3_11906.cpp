@@ -127,7 +127,8 @@ constexpr std::size_t kArmyOwnerCharacterIdOffset = 0x174;
 constexpr std::size_t kProvinceIdOffset = 0x10;
 constexpr std::size_t kGameDataProvinceArrayOffset = 0x140;
 constexpr std::size_t kGameDataProvinceCountOffset = 0x14C;
-constexpr std::size_t kDeclareWarInteractionOffset = 0x1070;
+constexpr std::size_t kArrangeMarriageInteractionOffset = 0xF48;
+constexpr std::size_t kDeclareWarInteractionOffset = 0xF78;
 constexpr std::size_t kCasusBelliTypeArrayOffset = 0x68;
 constexpr std::size_t kCasusBelliTypeCountOffset = 0x74;
 constexpr std::size_t kCasusBelliTypeKeyOffset = 0x18;
@@ -141,6 +142,8 @@ constexpr std::size_t kValidCasusBelliTargetTitlesOffset = 0x08;
 constexpr std::size_t kNativeArrayDataOffset = 0x00;
 constexpr std::size_t kNativeArrayCapacityOffset = 0x08;
 constexpr std::size_t kNativeArrayCountOffset = 0x0C;
+constexpr std::size_t kCharacterInteractionActorToMatchOffset = 0x2E0;
+constexpr std::size_t kCharacterInteractionRecipientToMatchOffset = 0x2E4;
 constexpr std::size_t kCharacterInteractionSpecialDataOffset = 0x330;
 constexpr std::size_t kWarDeclarationCasusBelliOffset = 0x08;
 constexpr std::size_t kWarDeclarationTargetTitlesOffset = 0x10;
@@ -526,6 +529,56 @@ bool HasDeclarableWarReadBindings(const Bindings &bindings) noexcept {
          bindings.get_casus_belli_type_database != nullptr &&
          bindings.evaluate_casus_belli != nullptr &&
          bindings.destroy_valid_casus_belli_configuration != nullptr;
+}
+
+bool HasArrangeMarriageReadBindings(const Bindings &bindings) noexcept {
+  return bindings.enabled && bindings.game_state_slot != nullptr &&
+         bindings.character_storage_slot != nullptr &&
+         bindings.arrange_marriage_interaction_offset != 0 &&
+         bindings.construct_character_interaction_context != nullptr &&
+         bindings.refresh_character_interaction_context != nullptr &&
+         bindings.finalize_character_interaction_context != nullptr &&
+         bindings.validate_character_interaction_context != nullptr &&
+         bindings.destroy_character_interaction_context != nullptr;
+}
+
+void *ResolveArrangeMarriageInteraction(const Bindings &bindings,
+                                        void *game_state) noexcept {
+  if (game_state == nullptr) {
+    return nullptr;
+  }
+  void *const game_data =
+      LoadAt<void *>(game_state, kGameStateGameDataOffset);
+  return game_data == nullptr
+             ? nullptr
+             : LoadAt<void *>(
+                   game_data,
+                   bindings.arrange_marriage_interaction_offset);
+}
+
+bool PrepareArrangeMarriageContext(
+    const Bindings &bindings, void *game_state,
+    std::int32_t played_character_id,
+    std::int32_t candidate_character_id,
+    CharacterInteractionContextStorage &storage) noexcept {
+  void *const interaction =
+      ResolveArrangeMarriageInteraction(bindings, game_state);
+  if (interaction == nullptr) {
+    return false;
+  }
+  void *const context = storage.bytes.data();
+  if (bindings.construct_character_interaction_context(
+          context, interaction, played_character_id,
+          candidate_character_id, nullptr, true) != context) {
+    return false;
+  }
+  StoreAt(context, kCharacterInteractionActorToMatchOffset,
+          played_character_id);
+  StoreAt(context, kCharacterInteractionRecipientToMatchOffset,
+          candidate_character_id);
+  bindings.refresh_character_interaction_context(context, true);
+  bindings.finalize_character_interaction_context(context);
+  return true;
 }
 
 bool ReadNativeIntArray(const void *native_array,
@@ -1108,6 +1161,8 @@ Bindings BindCurrentProcess() noexcept {
   result.player_character_manager_offset =
       kPlayerCharacterManagerOffset;
   result.war_manager_offset = kWarManagerOffset;
+  result.arrange_marriage_interaction_offset =
+      kArrangeMarriageInteractionOffset;
   result.declare_war_interaction_offset = kDeclareWarInteractionOffset;
   result.submit_command =
       reinterpret_cast<SubmitCommand>(module + kSubmitCommandRva);
@@ -1892,6 +1947,146 @@ DeclareWarResult SubmitDeclareWar(
       kSendCharacterInteractionContextOffset);
   bindings.destroy_character_interaction_context(context);
   return DeclareWarResult::submitted;
+}
+
+ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
+    const Bindings &bindings,
+    std::vector<ArrangeMarriageChoice> &output) noexcept {
+  output.clear();
+  if (!HasArrangeMarriageReadBindings(bindings)) {
+    return ReadArrangeMarriageChoicesResult::unavailable;
+  }
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return ReadArrangeMarriageChoicesResult::unavailable;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return ReadArrangeMarriageChoicesResult::no_played_character;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  if (ResolveArrangeMarriageInteraction(bindings, game_state) == nullptr) {
+    return ReadArrangeMarriageChoicesResult::unavailable;
+  }
+  void *const played_character =
+      ResolveCharacter(bindings, current.played_character_id);
+  void *const storage = *bindings.character_storage_slot;
+  if (played_character == nullptr || storage == nullptr) {
+    return ReadArrangeMarriageChoicesResult::unavailable;
+  }
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const auto capacity =
+      LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentCapacity) {
+    return ReadArrangeMarriageChoicesResult::unavailable;
+  }
+
+  std::vector<ArrangeMarriageChoice> choices;
+  for (std::int32_t index = 0; index < capacity; ++index) {
+    void *const candidate_character = LoadAt<void *>(
+        slots, static_cast<std::size_t>(index) *
+                       kComponentStorageSlotSize +
+                   kComponentStorageSlotObjectOffset);
+    if (candidate_character == nullptr ||
+        candidate_character == played_character ||
+        LoadAt<void *>(candidate_character, kCharacterDeathDataOffset) !=
+            nullptr) {
+      continue;
+    }
+    const auto candidate_character_id =
+        LoadAt<std::int32_t>(candidate_character, kCharacterIdOffset);
+    if ((static_cast<std::uint32_t>(candidate_character_id) &
+         0x00FFFFFFU) != static_cast<std::uint32_t>(index)) {
+      continue;
+    }
+
+    CharacterInteractionContextStorage context_storage{};
+    void *const context = context_storage.bytes.data();
+    if (!PrepareArrangeMarriageContext(
+            bindings, game_state, current.played_character_id,
+            candidate_character_id, context_storage)) {
+      return ReadArrangeMarriageChoicesResult::unavailable;
+    }
+    const bool available =
+        bindings.validate_character_interaction_context(context, nullptr);
+    bindings.destroy_character_interaction_context(context);
+    if (!available) {
+      continue;
+    }
+    choices.push_back(
+        {current.played_character_id, candidate_character_id});
+  }
+  output = std::move(choices);
+  return ReadArrangeMarriageChoicesResult::available;
+}
+
+ArrangeMarriageResult SubmitArrangeMarriage(
+    const Bindings &bindings,
+    const ArrangeMarriageChoice &choice) noexcept {
+  if (!HasArrangeMarriageReadBindings(bindings) ||
+      bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.construct_send_character_interaction_command == nullptr ||
+      bindings.send_character_interaction_primary_vtable == 0 ||
+      bindings.send_character_interaction_secondary_vtable == 0) {
+    return ArrangeMarriageResult::unavailable;
+  }
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return ArrangeMarriageResult::unavailable;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return ArrangeMarriageResult::no_played_character;
+  }
+  if (choice.played_character_id != current.played_character_id ||
+      choice.candidate_character_id == current.played_character_id) {
+    return ArrangeMarriageResult::choice_unavailable;
+  }
+  void *const candidate_character =
+      ResolveCharacter(bindings, choice.candidate_character_id);
+  if (candidate_character == nullptr ||
+      LoadAt<void *>(candidate_character, kCharacterDeathDataOffset) !=
+          nullptr) {
+    return ArrangeMarriageResult::candidate_not_found;
+  }
+
+  void *const game_state = *bindings.game_state_slot;
+  CharacterInteractionContextStorage context_storage{};
+  void *const context = context_storage.bytes.data();
+  if (!PrepareArrangeMarriageContext(
+          bindings, game_state, choice.played_character_id,
+          choice.candidate_character_id, context_storage)) {
+    return ArrangeMarriageResult::unavailable;
+  }
+  if (!bindings.validate_character_interaction_context(context, nullptr)) {
+    bindings.destroy_character_interaction_context(context);
+    return ArrangeMarriageResult::choice_unavailable;
+  }
+
+  SendCharacterInteractionCommandStorage command_storage{};
+  void *const command = command_storage.bytes.data();
+  if (bindings.construct_send_character_interaction_command(command,
+                                                             context) !=
+          command ||
+      LoadAt<std::uintptr_t>(command, 0) !=
+          bindings.send_character_interaction_primary_vtable ||
+      LoadAt<std::uintptr_t>(command, 0x18) !=
+          bindings.send_character_interaction_secondary_vtable) {
+    if (LoadAt<void *>(command,
+                       kSendCharacterInteractionContextOffset) != nullptr) {
+      bindings.destroy_character_interaction_context(
+          static_cast<std::byte *>(command) +
+          kSendCharacterInteractionContextOffset);
+    }
+    bindings.destroy_character_interaction_context(context);
+    return ArrangeMarriageResult::unavailable;
+  }
+  bindings.submit_command(bindings.command_manager, command, 0x0E);
+  bindings.destroy_character_interaction_context(
+      static_cast<std::byte *>(command) +
+      kSendCharacterInteractionContextOffset);
+  bindings.destroy_character_interaction_context(context);
+  return ArrangeMarriageResult::submitted;
 }
 
 EnforceDemandsResult SubmitEnforceDemands(const Bindings &bindings,

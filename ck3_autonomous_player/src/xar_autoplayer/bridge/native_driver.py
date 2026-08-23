@@ -43,6 +43,14 @@ from .declaration_contract import (
     normalize_declarable_wars,
     parse_declare_war_step,
 )
+from .marriage_contract import (
+    ARRANGE_MARRIAGE_CAPABILITY,
+    QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+    arrange_marriage_step,
+    is_native_marriage_step,
+    normalize_arrange_marriage_choices,
+    parse_arrange_marriage_step,
+)
 from .war_contract import (
     DISBAND_ARMY_CAPABILITY,
     ENFORCE_DEMANDS_CAPABILITY,
@@ -506,6 +514,8 @@ class NativeHeadlessGameplayDriver:
         self._driver_state_error: str | None = None
         self._declarable_wars: list[dict[str, object]] = []
         self._declaration_query_sequence: int | None = None
+        self._arrange_marriage_choices: list[dict[str, object]] = []
+        self._arrange_marriage_query_sequence: int | None = None
         self.state = NativeProtocolState(self.pipe_name)
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
@@ -541,10 +551,16 @@ class NativeHeadlessGameplayDriver:
         )
         with self._driver_state_lock:
             declarations = copy.deepcopy(self._declarable_wars)
+            marriage_choices = copy.deepcopy(self._arrange_marriage_choices)
         if DECLARE_WAR_CAPABILITY in bridge_capabilities:
             action_steps.update(
                 declare_war_step(str(row["declaration_id"]))
                 for row in declarations
+            )
+        if ARRANGE_MARRIAGE_CAPABILITY in bridge_capabilities:
+            action_steps.update(
+                arrange_marriage_step(str(row["choice_id"]))
+                for row in marriage_choices
             )
         composite_action_steps: list[str] = []
         if (
@@ -656,6 +672,12 @@ class NativeHeadlessGameplayDriver:
             episode_run_id = self._episode_run_id
             declarable_wars = copy.deepcopy(self._declarable_wars)
             declaration_query_sequence = self._declaration_query_sequence
+            arrange_marriage_choices = copy.deepcopy(
+                self._arrange_marriage_choices
+            )
+            arrange_marriage_query_sequence = (
+                self._arrange_marriage_query_sequence
+            )
         if identity_changed:
             self._persist_driver_state()
 
@@ -682,6 +704,8 @@ class NativeHeadlessGameplayDriver:
             "continue_as_heir_after_death": False,
             "declarable_wars": declarable_wars,
             "declaration_query_sequence": declaration_query_sequence,
+            "arrange_marriage_choices": arrange_marriage_choices,
+            "arrange_marriage_query_sequence": arrange_marriage_query_sequence,
         }
 
     def execute_step(
@@ -721,6 +745,10 @@ class NativeHeadlessGameplayDriver:
             and step in capabilities["action_steps"]
         ):
             return self._execute_declarable_war_step(
+                step, expected_revision=expected_revision
+            )
+        if is_native_marriage_step(step) and step in capabilities["action_steps"]:
+            return self._execute_arrange_marriage_step(
                 step, expected_revision=expected_revision
             )
         if is_native_war_step(step) and step in capabilities["action_steps"]:
@@ -813,6 +841,8 @@ class NativeHeadlessGameplayDriver:
             self._session_bridge_pid = bridge_pid
             self._declarable_wars = []
             self._declaration_query_sequence = None
+            self._arrange_marriage_choices = []
+            self._arrange_marriage_query_sequence = None
         self._persist_driver_state()
 
     def _read_driver_state(
@@ -1149,6 +1179,84 @@ class NativeHeadlessGameplayDriver:
             "active_wars": active_wars if isinstance(active_wars, list) else [],
             "snapshot_id": changed["snapshot_id"],
             "revision": changed["revision"],
+        }
+
+    def _execute_arrange_marriage_step(
+        self, step: str, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        if step == QUERY_ARRANGE_MARRIAGE_CHOICES_STEP:
+            result = self._execute_primitive_step(
+                step, expected_revision=expected_revision
+            )
+            choices = normalize_arrange_marriage_choices(
+                result.get("arrange_marriage_choices")
+            )
+            query_sequence = result.get("query_sequence")
+            if (
+                isinstance(query_sequence, bool)
+                or not isinstance(query_sequence, int)
+                or query_sequence < 1
+            ):
+                raise BridgeUnavailableError(
+                    "native arrange-marriage result lacks query_sequence"
+                )
+            current_character = self.take_snapshot().get("played_character")
+            current_character_id = (
+                current_character.get("character_id")
+                if isinstance(current_character, dict)
+                else None
+            )
+            if any(
+                choice["played_character_id"] != current_character_id
+                for choice in choices
+            ):
+                raise BridgeUnavailableError(
+                    "native arrange-marriage query returned another player"
+                )
+            with self._driver_state_lock:
+                self._arrange_marriage_choices = copy.deepcopy(choices)
+                self._arrange_marriage_query_sequence = query_sequence
+            return {
+                **result,
+                "arrange_marriage_choices": choices,
+                "query_sequence": query_sequence,
+            }
+
+        choice_id = parse_arrange_marriage_step(step)
+        if choice_id is None:
+            raise UnsupportedStepError(
+                f"native Python bridge does not implement marriage step {step}"
+            )
+        with self._driver_state_lock:
+            choice = next(
+                (
+                    copy.deepcopy(row)
+                    for row in self._arrange_marriage_choices
+                    if row.get("choice_id") == choice_id
+                ),
+                None,
+            )
+        if choice is None:
+            raise BridgeUnavailableError(
+                "native arrange-marriage choice is not in the latest query"
+            )
+        try:
+            result = self._execute_primitive_step(
+                step, expected_revision=expected_revision
+            )
+        finally:
+            with self._driver_state_lock:
+                self._arrange_marriage_choices = []
+                self._arrange_marriage_query_sequence = None
+        return {
+            **result,
+            "marriage_choice": choice,
+            "marriage_action": {
+                "status": "proposal_submitted",
+                "choice_id": choice_id,
+                "played_character_id": choice["played_character_id"],
+                "candidate_character_id": choice["candidate_character_id"],
+            },
         }
 
     def _execute_native_war_step(
@@ -1936,6 +2044,7 @@ class ConfiguredHybridFallbackDriver:
             if (
                 not is_native_war_step(step)
                 and not is_native_declaration_step(step)
+                and not is_native_marriage_step(step)
             )
             or step in native_steps
         }
@@ -1974,12 +2083,16 @@ class ConfiguredHybridFallbackDriver:
                 "restore-checkpoint is pure native and will not use fallback"
             )
         if (
-            (is_native_war_step(step) or is_native_declaration_step(step))
+            (
+                is_native_war_step(step)
+                or is_native_declaration_step(step)
+                or is_native_marriage_step(step)
+            )
             and step
             not in _string_list(self.native.capabilities().get("action_steps"))
         ):
             raise UnsupportedStepError(
-                "native war steps are pure native and will not use fallback"
+                "native strategic steps are pure native and will not use fallback"
             )
         return self._delegate.execute_step(step, expected_revision=expected_revision)
 
@@ -2141,6 +2254,7 @@ def _action_steps(
     active_wars: object = None,
     player_armies: object = None,
     declarable_wars: object = None,
+    arrange_marriage_choices: object = None,
 ) -> list[str]:
     steps: set[str] = set()
     expand_event_options = False
@@ -2149,6 +2263,7 @@ def _action_steps(
     expand_disband_armies = False
     expand_enforce_demands = False
     expand_declare_wars = False
+    expand_arrange_marriage = False
     advertise_raise_troops = False
     for capability in capabilities:
         if not capability.startswith(_ACTION_CAPABILITY_PREFIX):
@@ -2169,6 +2284,8 @@ def _action_steps(
             expand_enforce_demands = True
         elif capability == DECLARE_WAR_CAPABILITY:
             expand_declare_wars = True
+        elif capability == ARRANGE_MARRIAGE_CAPABILITY:
+            expand_arrange_marriage = True
         elif step == RAISE_TROOPS_STEP:
             advertise_raise_troops = True
         elif step:
@@ -2214,6 +2331,12 @@ def _action_steps(
             for row in declarable_wars
             if isinstance(row, dict)
             and isinstance(row.get("declaration_id"), str)
+        )
+    if expand_arrange_marriage and isinstance(arrange_marriage_choices, list):
+        steps.update(
+            arrange_marriage_step(str(row["choice_id"]))
+            for row in arrange_marriage_choices
+            if isinstance(row, dict) and isinstance(row.get("choice_id"), str)
         )
     if expand_disband_armies:
         steps.update(

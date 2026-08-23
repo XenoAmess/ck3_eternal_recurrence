@@ -17,6 +17,10 @@ from .declaration_contract import (
     QUERY_DECLARABLE_WARS_STEP,
     declare_war_step,
 )
+from .marriage_contract import (
+    QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+    arrange_marriage_step,
+)
 from .war_contract import (
     RAISE_TROOPS_STEP,
     disband_army_step,
@@ -340,6 +344,53 @@ class GameplayBridgeService:
             "revision": snapshot["revision"],
             "backend_id": snapshot.get("backend_id"),
         }
+
+    def query_arrange_marriage_choices(
+        self, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        """Enumerate exact native marriage choices for the played character."""
+        if QUERY_ARRANGE_MARRIAGE_CHOICES_STEP not in action_step_set(
+            self.capabilities()
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query native marriage choices"
+            )
+        snapshot = self.snapshot()
+        result = self.execute_step(
+            QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else int(snapshot["revision"])
+            ),
+        )
+        if not isinstance(result.get("arrange_marriage_choices"), list):
+            raise BridgeUnavailableError(
+                "native marriage query lacks arrange_marriage_choices"
+            )
+        return result
+
+    def arrange_marriage(
+        self,
+        choice_id: str,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Submit one exact choice returned by the latest marriage query."""
+        step = arrange_marriage_step(choice_id)
+        snapshot = self.snapshot()
+        if step not in action_step_set(self.capabilities()):
+            raise UnsupportedStepError(
+                f"selected backend cannot execute native marriage {choice_id}"
+            )
+        return self.execute_step(
+            step,
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else int(snapshot["revision"])
+            ),
+        )
 
     def query_declarable_wars(
         self, *, expected_revision: int | None = None

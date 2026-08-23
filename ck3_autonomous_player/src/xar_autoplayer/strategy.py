@@ -15,6 +15,10 @@ from .bridge.declaration_contract import (
     QUERY_DECLARABLE_WARS_STEP,
     declare_war_step,
 )
+from .bridge.marriage_contract import (
+    QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+    arrange_marriage_step,
+)
 from .bridge.war_contract import (
     RAISE_TROOPS_STEP,
     controllable_armies,
@@ -533,6 +537,55 @@ def choose_one_life_turn(
             "selected_step": "save-checkpoint",
             "reason": "create a native CK3 recovery point before strategic mutations",
         }
+
+    if not _latest_prefix_index(rows, "arrange-marriage-"):
+        raw_marriage_choices = (
+            snapshot.get("arrange_marriage_choices")
+            if isinstance(snapshot, dict)
+            else None
+        )
+        marriage_choices = sorted(
+            (
+                choice
+                for choice in raw_marriage_choices
+                if isinstance(choice, dict)
+                and isinstance(choice.get("choice_id"), str)
+                and isinstance(choice.get("candidate_character_id"), int)
+            ),
+            key=lambda choice: (
+                int(choice["candidate_character_id"]),
+                str(choice["choice_id"]),
+            ),
+        ) if isinstance(raw_marriage_choices, list) else []
+        if marriage_choices:
+            choice = marriage_choices[0]
+            step = arrange_marriage_step(str(choice["choice_id"]))
+            if step in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_arrange_marriage",
+                    "selected_step": step,
+                    "reason": "submit the first currently valid native marriage choice for this one-life ruler",
+                    "marriage_choice": choice,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_arrange_marriage_unsupported",
+                "selected_step": None,
+                "required_step": step,
+                "reason": "the selected native marriage choice is not executable",
+                "marriage_choice": choice,
+            }
+        if (
+            not _latest_index(rows, QUERY_ARRANGE_MARRIAGE_CHOICES_STEP)
+            and QUERY_ARRANGE_MARRIAGE_CHOICES_STEP in available_steps
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_arrange_marriage_discovery",
+                "selected_step": QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
+                "reason": "enumerate valid native marriage choices before starting the first war",
+            }
 
     declaration_index = _latest_prefix_index(rows, "declare-war-")
     life_advance_index = _latest_index(rows, "life-advance")

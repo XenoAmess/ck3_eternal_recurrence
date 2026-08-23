@@ -51,6 +51,7 @@ std::array<std::byte, 2 * 0x98> g_casus_belli_configurations{};
 std::array<std::int32_t, 2> g_casus_belli_titles_0{};
 std::array<std::int32_t, 2> g_casus_belli_titles_1{};
 std::array<std::byte, 0x2A60> g_declare_war_interaction{};
+std::array<std::byte, 8> g_arrange_marriage_interaction{};
 std::array<std::byte, 0x30> g_war_declaration{};
 std::array<std::int32_t, 8> g_war_declaration_titles{};
 std::array<std::byte, 8> g_enforce_demands_marker{};
@@ -81,6 +82,8 @@ bool g_send_interaction_construct_called = false;
 std::int32_t g_interaction_destroy_calls = 0;
 bool g_interaction_default_construct_called = false;
 bool g_war_resolution_construct_called = false;
+std::int32_t g_marriage_context_construct_calls = 0;
+bool g_marriage_validate_result = true;
 enum class ExpectedCommand {
   pause,
   resume,
@@ -93,6 +96,7 @@ enum class ExpectedCommand {
   move_army,
   disband_army,
   declare_war,
+  arrange_marriage,
   enforce_demands,
 };
 ExpectedCommand g_expected_command = ExpectedCommand::pause;
@@ -306,25 +310,33 @@ void *FixtureConstructCharacterInteractionContext(
     bool initialize_special_data) {
   auto *const context = static_cast<std::byte *>(opaque_context);
   std::memset(context, 0, 0x338);
-  std::memset(g_war_declaration.data(), 0, g_war_declaration.size());
-  const std::uintptr_t declaration_vtable = 0x12121212;
-  const std::int32_t no_claimant = -1;
-  std::memcpy(g_war_declaration.data(), &declaration_vtable,
-              sizeof(declaration_vtable));
-  std::memcpy(g_war_declaration.data() + 0x28, &no_claimant,
-              sizeof(no_claimant));
-  FixtureSetNativeIntArray(g_war_declaration.data() + 0x10,
-                           g_war_declaration_titles.data(),
-                           static_cast<std::int32_t>(
-                               g_war_declaration_titles.size()),
-                           0);
-  void *const declaration = g_war_declaration.data();
   std::memcpy(context, &interaction, sizeof(interaction));
   std::memcpy(context + 0x2D8, &actor_character_id,
               sizeof(actor_character_id));
   std::memcpy(context + 0x2DC, &recipient_character_id,
               sizeof(recipient_character_id));
-  std::memcpy(context + 0x330, &declaration, sizeof(declaration));
+  if (interaction == g_arrange_marriage_interaction.data()) {
+    if (actor_character_id == 0x01000002 &&
+        recipient_character_id == 0x01000003 &&
+        extra_context == nullptr && initialize_special_data) {
+      ++g_marriage_context_construct_calls;
+    }
+  } else {
+    std::memset(g_war_declaration.data(), 0, g_war_declaration.size());
+    const std::uintptr_t declaration_vtable = 0x12121212;
+    const std::int32_t no_claimant = -1;
+    std::memcpy(g_war_declaration.data(), &declaration_vtable,
+                sizeof(declaration_vtable));
+    std::memcpy(g_war_declaration.data() + 0x28, &no_claimant,
+                sizeof(no_claimant));
+    FixtureSetNativeIntArray(g_war_declaration.data() + 0x10,
+                             g_war_declaration_titles.data(),
+                             static_cast<std::int32_t>(
+                                 g_war_declaration_titles.size()),
+                             0);
+    void *const declaration = g_war_declaration.data();
+    std::memcpy(context + 0x330, &declaration, sizeof(declaration));
+  }
   g_interaction_construct_called =
       interaction == g_declare_war_interaction.data() &&
       actor_character_id == 0x01000002 &&
@@ -407,6 +419,25 @@ void FixtureConstructWarResolutionInteractionContext(void *opaque_context,
 bool FixtureValidateCharacterInteractionContext(void *opaque_context,
                                                 void *error_output) {
   const auto *const context = static_cast<const std::byte *>(opaque_context);
+  void *interaction = nullptr;
+  std::memcpy(&interaction, context, sizeof(interaction));
+  if (interaction == g_arrange_marriage_interaction.data()) {
+    std::int32_t actor_id = -1;
+    std::int32_t recipient_id = -1;
+    std::int32_t actor_to_match_id = -1;
+    std::int32_t recipient_to_match_id = -1;
+    std::memcpy(&actor_id, context + 0x2D8, sizeof(actor_id));
+    std::memcpy(&recipient_id, context + 0x2DC,
+                sizeof(recipient_id));
+    std::memcpy(&actor_to_match_id, context + 0x2E0,
+                sizeof(actor_to_match_id));
+    std::memcpy(&recipient_to_match_id, context + 0x2E4,
+                sizeof(recipient_to_match_id));
+    return g_marriage_validate_result && error_output == nullptr &&
+           actor_id == 0x01000002 && recipient_id == 0x01000003 &&
+           actor_to_match_id == actor_id &&
+           recipient_to_match_id == recipient_id;
+  }
   void *declaration = nullptr;
   std::memcpy(&declaration, context + 0x330, sizeof(declaration));
   const void *const expected_special_data =
@@ -557,6 +588,26 @@ void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
         claimant_id == 0x01000005 && title_count == 2 &&
         title_data != nullptr && title_data[0] == 102 &&
         title_data[1] == 103;
+  } else if (g_expected_command == ExpectedCommand::arrange_marriage) {
+    std::int32_t actor_id = -1;
+    std::int32_t recipient_id = -1;
+    std::int32_t actor_to_match_id = -1;
+    std::int32_t recipient_to_match_id = -1;
+    std::memcpy(&actor_id, command + 0x20 + 0x2D8,
+                sizeof(actor_id));
+    std::memcpy(&recipient_id, command + 0x20 + 0x2DC,
+                sizeof(recipient_id));
+    std::memcpy(&actor_to_match_id, command + 0x20 + 0x2E0,
+                sizeof(actor_to_match_id));
+    std::memcpy(&recipient_to_match_id, command + 0x20 + 0x2E4,
+                sizeof(recipient_to_match_id));
+    g_submit_called =
+        manager == reinterpret_cast<void *>(0x1234) && flags == 0x0E &&
+        primary == 0x13131313 && secondary == 0x14141414 &&
+        command_flags == 0 && actor_id == 0x01000002 &&
+        recipient_id == 0x01000003 &&
+        actor_to_match_id == actor_id &&
+        recipient_to_match_id == recipient_id;
   } else if (g_expected_command == ExpectedCommand::enforce_demands) {
     std::int32_t actor_id = -1;
     std::int32_t recipient_id = -1;
@@ -689,7 +740,9 @@ int main() {
   Store(g_casus_belli_type_1, 0x30,
         std::size_t{sizeof(g_casus_belli_key_1) - 1});
   Store(g_casus_belli_type_1, 0x1718, std::uint32_t{1U << 20U});
-  Store(game_data, 0x1070,
+  Store(game_data, 0xF48,
+        static_cast<void *>(g_arrange_marriage_interaction.data()));
+  Store(game_data, 0xF78,
         static_cast<void *>(g_declare_war_interaction.data()));
 
   Bindings bindings{};
@@ -724,7 +777,8 @@ int main() {
       g_casus_belli_scratch.data();
   bindings.player_character_manager_offset = 0x100;
   bindings.war_manager_offset = 0x200;
-  bindings.declare_war_interaction_offset = 0x1070;
+  bindings.arrange_marriage_interaction_offset = 0xF48;
+  bindings.declare_war_interaction_offset = 0xF78;
   bindings.submit_command = FixtureSubmit;
   bindings.get_local_player = FixtureGetLocalPlayer;
   bindings.get_current_event = FixtureGetCurrentEvent;
@@ -1117,6 +1171,61 @@ int main() {
     return Fail("declare-war did not use native context/validate/queue lifecycle");
   }
 
+  std::vector<xar::ck3_11906::ArrangeMarriageChoice> marriage_choices;
+  g_marriage_context_construct_calls = 0;
+  g_interaction_refresh_called = false;
+  g_interaction_finalize_called = false;
+  g_interaction_destroy_calls = 0;
+  if (xar::ck3_11906::ReadArrangeMarriageChoices(
+          bindings, marriage_choices) !=
+          xar::ck3_11906::ReadArrangeMarriageChoicesResult::available ||
+      marriage_choices.size() != 1 ||
+      marriage_choices[0].played_character_id != played_character_id ||
+      marriage_choices[0].candidate_character_id != enemy_character_id ||
+      g_marriage_context_construct_calls != 1 ||
+      !g_interaction_refresh_called || !g_interaction_finalize_called ||
+      g_interaction_destroy_calls != 1) {
+    return Fail("arrange-marriage query did not retain the exact valid pair");
+  }
+
+  auto stale_marriage_choice = marriage_choices[0];
+  stale_marriage_choice.played_character_id = 0x02000002;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitArrangeMarriage(
+          bindings, stale_marriage_choice) !=
+          xar::ck3_11906::ArrangeMarriageResult::choice_unavailable ||
+      g_submit_called) {
+    return Fail("stale arrange-marriage actor generation was not rejected");
+  }
+
+  g_marriage_validate_result = false;
+  g_interaction_destroy_calls = 0;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitArrangeMarriage(
+          bindings, marriage_choices[0]) !=
+          xar::ck3_11906::ArrangeMarriageResult::choice_unavailable ||
+      g_submit_called || g_interaction_destroy_calls != 1) {
+    return Fail("stale arrange-marriage choice bypassed native validation");
+  }
+  g_marriage_validate_result = true;
+
+  g_expected_command = ExpectedCommand::arrange_marriage;
+  g_marriage_context_construct_calls = 0;
+  g_interaction_refresh_called = false;
+  g_interaction_finalize_called = false;
+  g_send_interaction_construct_called = false;
+  g_interaction_destroy_calls = 0;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitArrangeMarriage(
+          bindings, marriage_choices[0]) !=
+          xar::ck3_11906::ArrangeMarriageResult::submitted ||
+      g_marriage_context_construct_calls != 1 ||
+      !g_interaction_refresh_called || !g_interaction_finalize_called ||
+      !g_send_interaction_construct_called || !g_submit_called ||
+      g_interaction_destroy_calls != 2) {
+    return Fail("arrange-marriage did not use native context/queue lifecycle");
+  }
+
   if (xar::ck3_11906::SubmitEnforceDemands(bindings, 0x01000009) !=
       xar::ck3_11906::EnforceDemandsResult::war_not_found) {
     return Fail("enforce-demands accepted a missing war component");
@@ -1204,6 +1313,8 @@ int main() {
                "disband_army_command=1 "
                "declarable_war_enumeration=1 "
                "declare_war_command=1 "
+               "arrange_marriage_query=1 "
+               "arrange_marriage_command=1 "
                "enforce_demands_war_leader_filter=1 "
                "enforce_demands_command=1 "
                "map_ready_gate=1 exact_build_gate=1\n";

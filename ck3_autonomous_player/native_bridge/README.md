@@ -28,7 +28,10 @@ Its current first gameplay slice is intentionally small:
   `disband-army-<army_id>` commands; explicit `query-declarable-wars`
   returns current generation-bound choices, `declare-war-<choice>` submits
   one exact revalidated choice, and `enforce-demands-<war_id>` resolves a
-  100% war led by the player;
+  100% war led by the player; `query-arrange-marriage-choices` returns
+  natively valid direct matches for the played character and
+  `arrange-marriage-<played_id>-<candidate_id>` submits only a cached exact
+  generation-bound pair;
 - `xar_ck3_bridge_host.exe` creates a minimal target with
   `CREATE_SUSPENDED`, runs the PID injector, verifies the complete
   hello/heartbeat/ping/pong exchange from inside that target, deliberately
@@ -151,6 +154,16 @@ from that query and re-enumerates the exact target before constructing CK3's
 native character-interaction command. `enforce-demands-*` uses the native war
 resolution context builder and accepts only a war for which the played
 character is the primary war leader.
+
+Marriage discovery is also an explicit request rather than a heartbeat field.
+Its successful `command_result` contains `query_sequence` and an
+`arrange_marriage_choices` array. Each item contains
+`choice_id="<played>-<candidate>"`, `played_character_id`, and
+`candidate_character_id`, all using the complete signed CharacterID handles.
+`arrange-marriage-*` resolves only an exact item from the latest cached query,
+then repeats native context construction and validation before sending. The
+minimal route matches the played character directly with the candidate; CK3
+derives marriage versus betrothal from their current state.
 
 ## Runtime integration
 

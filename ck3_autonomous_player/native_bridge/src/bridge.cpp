@@ -129,7 +129,9 @@ std::string HelloFrame(bool ck3_gameplay_enabled) {
               "\"game.command.disband-army-N\","
               "\"game.command.query-declarable-wars\","
               "\"game.command.declare-war-N\","
-              "\"game.command.enforce-demands-N\"";
+              "\"game.command.enforce-demands-N\","
+              "\"game.command.query-arrange-marriage-choices\","
+              "\"game.command.arrange-marriage-N\"";
   }
   result += "]}";
   return result;
@@ -216,6 +218,31 @@ void AppendDeclaration(
     result += SignedNumber(declaration.target_title_ids[index]);
   }
   result += "]}";
+}
+
+std::string MarriageChoiceId(
+    const xar::ck3_11906::ArrangeMarriageChoice &choice) {
+  std::string result = SignedNumber(choice.played_character_id);
+  result += '-';
+  result += SignedNumber(choice.candidate_character_id);
+  return result;
+}
+
+std::string MarriageStep(
+    const xar::ck3_11906::ArrangeMarriageChoice &choice) {
+  return "arrange-marriage-" + MarriageChoiceId(choice);
+}
+
+void AppendMarriageChoice(
+    std::string &result,
+    const xar::ck3_11906::ArrangeMarriageChoice &choice) {
+  result += "{\"choice_id\":\"";
+  result += MarriageChoiceId(choice);
+  result += "\",\"played_character_id\":";
+  result += SignedNumber(choice.played_character_id);
+  result += ",\"candidate_character_id\":";
+  result += SignedNumber(choice.candidate_character_id);
+  result += '}';
 }
 
 std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
@@ -373,6 +400,29 @@ std::string DeclarableWarsResultFrame(
       result += ',';
     }
     AppendDeclaration(result, declarations[index]);
+  }
+  result += "]}}";
+  return result;
+}
+
+std::string ArrangeMarriageChoicesResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const std::vector<xar::ck3_11906::ArrangeMarriageChoice> &choices) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result +=
+      "\",\"ok\":true,\"result\":{\"step\":"
+      "\"query-arrange-marriage-choices\",\"accepted\":true,"
+      "\"status\":\"available\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"arrange_marriage_choices\":[";
+  for (std::size_t index = 0; index < choices.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    AppendMarriageChoice(result, choices[index]);
   }
   result += "]}}";
   return result;
@@ -557,6 +607,8 @@ struct WorkerState {
   std::optional<xar::ck3_11906::Snapshot> previous_snapshot;
   std::uint64_t declaration_query_sequence = 0;
   std::vector<xar::ck3_11906::DeclarableWarSnapshot> declarable_wars;
+  std::uint64_t marriage_query_sequence = 0;
+  std::vector<xar::ck3_11906::ArrangeMarriageChoice> marriage_choices;
 };
 
 void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
@@ -572,6 +624,8 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
   auto &previous_snapshot = state.previous_snapshot;
   auto &declaration_query_sequence = state.declaration_query_sequence;
   auto &declarable_wars = state.declarable_wars;
+  auto &marriage_query_sequence = state.marriage_query_sequence;
+  auto &marriage_choices = state.marriage_choices;
 
   // A new MCP server has no copy of the previous semantic snapshot.  Force
   // the first heartbeat on every connection to republish current state and
@@ -707,6 +761,76 @@ void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
             }
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, false, error));
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step == "query-arrange-marriage-choices") {
+          marriage_choices.clear();
+          const auto result = xar::ck3_11906::ReadArrangeMarriageChoices(
+              game, marriage_choices);
+          if (result == xar::ck3_11906::
+                            ReadArrangeMarriageChoicesResult::available) {
+            ++marriage_query_sequence;
+            connected = xar::bridge::WriteFrame(
+                pipe, ArrangeMarriageChoicesResultFrame(
+                          request_id, marriage_query_sequence,
+                          marriage_choices));
+          } else {
+            const std::string_view error =
+                result == xar::ck3_11906::
+                              ReadArrangeMarriageChoicesResult::
+                                  no_played_character
+                    ? "no living played CK3 character"
+                    : "CK3 arrange-marriage query is unavailable";
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false, error));
+          }
+        } else if (step.starts_with("arrange-marriage-")) {
+          const xar::ck3_11906::ArrangeMarriageChoice *selected = nullptr;
+          for (const auto &candidate : marriage_choices) {
+            if (MarriageStep(candidate) == step) {
+              selected = &candidate;
+              break;
+            }
+          }
+          if (selected == nullptr) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "arrange-marriage choice is missing or stale; "
+                          "query first"));
+          } else {
+            const auto result =
+                xar::ck3_11906::SubmitArrangeMarriage(game, *selected);
+            if (result ==
+                xar::ck3_11906::ArrangeMarriageResult::submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, true, "submitted"));
+              marriage_choices.clear();
+            } else {
+              std::string_view error =
+                  "CK3 arrange-marriage state is unavailable";
+              if (result == xar::ck3_11906::ArrangeMarriageResult::
+                                no_played_character) {
+                error = "no living played CK3 character";
+              } else if (result ==
+                         xar::ck3_11906::ArrangeMarriageResult::
+                             candidate_not_found) {
+                error = "CK3 arrange-marriage candidate was not found";
+                marriage_choices.clear();
+              } else if (result ==
+                         xar::ck3_11906::ArrangeMarriageResult::
+                             choice_unavailable) {
+                error = "CK3 arrange-marriage choice changed; query again";
+                marriage_choices.clear();
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
           }
           if (connected) {
             connected = PublishSnapshot(pipe, game, previous_snapshot,

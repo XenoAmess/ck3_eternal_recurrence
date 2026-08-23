@@ -182,6 +182,26 @@ def create_server(driver: GameplayBridgeDriver):
         return service.war_state()
 
     @server.tool()
+    def ck3_query_arrange_marriage_choices(
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Enumerate native marriage choices for the current player character."""
+        return service.query_arrange_marriage_choices(
+            expected_revision=expected_revision
+        )
+
+    @server.tool()
+    def ck3_arrange_marriage(
+        choice_id: str,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Submit one exact choice from ck3_query_arrange_marriage_choices."""
+        return service.arrange_marriage(
+            choice_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
     def ck3_query_declarable_wars(
         expected_revision: int | None = None,
     ) -> dict[str, object]:

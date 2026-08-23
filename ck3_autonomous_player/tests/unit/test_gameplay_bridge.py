@@ -574,11 +574,30 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                         "target_title_ids": [91],
                     }
                 ],
+                "arrange_marriage_choices": [
+                    {
+                        "choice_id": "707-809",
+                        "played_character_id": 707,
+                        "candidate_character_id": 809,
+                    }
+                ],
             },
             execute=lambda step, revision: {
                 "step": step,
                 "expected_revision": revision,
                 **(
+                    {
+                        "arrange_marriage_choices": [
+                            {
+                                "choice_id": "707-809",
+                                "played_character_id": 707,
+                                "candidate_character_id": 809,
+                            }
+                        ],
+                        "query_sequence": 2,
+                    }
+                    if step == "query-arrange-marriage-choices"
+                    else (
                     {
                         "declarable_wars": [
                             {
@@ -622,6 +641,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                         else {}
                     )
                     )
+                    )
                 ),
             },
             action_steps=(
@@ -636,6 +656,8 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                 "enforce-demands-88",
                 "query-declarable-wars",
                 "declare-war-808-17-0",
+                "query-arrange-marriage-choices",
+                "arrange-marriage-707-809",
                 "select-event-option-1",
                 "select-event-option-2",
             ),
@@ -658,6 +680,8 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_restore_checkpoint",
                     "ck3_reply_pending_character_interaction",
                     "ck3_get_war_state",
+                    "ck3_query_arrange_marriage_choices",
+                    "ck3_arrange_marriage",
                     "ck3_query_declarable_wars",
                     "ck3_declare_war",
                     "ck3_raise_troops_default",
@@ -727,6 +751,22 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             war_state = await client.call_tool("ck3_get_war_state", {})
             self.assertFalse(war_state.is_error)
             self.assertEqual(war_state.structured_content["status"], "active")
+            marriage_choices = await client.call_tool(
+                "ck3_query_arrange_marriage_choices",
+                {"expected_revision": 4},
+            )
+            self.assertFalse(marriage_choices.is_error)
+            self.assertEqual(
+                marriage_choices.structured_content[
+                    "arrange_marriage_choices"
+                ][0]["candidate_character_id"],
+                809,
+            )
+            marriage = await client.call_tool(
+                "ck3_arrange_marriage",
+                {"choice_id": "707-809", "expected_revision": 4},
+            )
+            self.assertFalse(marriage.is_error)
             declarations = await client.call_tool(
                 "ck3_query_declarable_wars", {"expected_revision": 4}
             )
