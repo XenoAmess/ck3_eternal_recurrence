@@ -134,6 +134,29 @@ void CloseTarget(PROCESS_INFORMATION &target) {
   }
 }
 
+bool ConnectWithinFiveSeconds(HANDLE pipe) {
+  std::promise<DWORD> connected_promise;
+  auto connected_future = connected_promise.get_future();
+  std::thread connector([pipe,
+                         promise = std::move(connected_promise)]() mutable {
+    if (ConnectNamedPipe(pipe, nullptr)) {
+      promise.set_value(ERROR_SUCCESS);
+      return;
+    }
+    const DWORD error = GetLastError();
+    promise.set_value(error == ERROR_PIPE_CONNECTED ? ERROR_SUCCESS : error);
+  });
+  if (connected_future.wait_for(std::chrono::seconds(5)) !=
+      std::future_status::ready) {
+    CancelSynchronousIo(connector.native_handle());
+    connector.join();
+    return false;
+  }
+  const DWORD error = connected_future.get();
+  connector.join();
+  return error == ERROR_SUCCESS;
+}
+
 } // namespace
 
 int wmain(int argc, wchar_t **argv) {
@@ -265,6 +288,67 @@ int wmain(int argc, wchar_t **argv) {
     return Fail("injected hello/heartbeat/ping/pong exchange was incomplete");
   }
 
+  // Dropping an MCP daemon must not require reinjecting or restarting CK3.
+  // Recreate the server under the same name and require the already-loaded
+  // DLL to establish a fresh hello/heartbeat/ping/pong exchange.
+  DisconnectNamedPipe(pipe);
+  CloseHandle(pipe);
+  pipe = CreateNamedPipeW(pipe_name.c_str(), PIPE_ACCESS_DUPLEX,
+                          PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT, 1,
+                          xar::bridge::kMaximumFrameBytes + 4U,
+                          xar::bridge::kMaximumFrameBytes + 4U, 0, nullptr);
+  if (pipe == INVALID_HANDLE_VALUE || !ConnectWithinFiveSeconds(pipe)) {
+    TerminateTarget(target);
+    CloseTarget(target);
+    if (pipe != INVALID_HANDLE_VALUE) {
+      CloseHandle(pipe);
+    }
+    return Fail("injected bridge did not reconnect to a replacement server");
+  }
+
+  bool reconnect_hello = false;
+  bool reconnect_heartbeat = false;
+  bool reconnect_pong = false;
+  bool reconnect_ping_sent = false;
+  const auto reconnect_deadline =
+      std::chrono::steady_clock::now() + std::chrono::seconds(5);
+  while (std::chrono::steady_clock::now() < reconnect_deadline &&
+         !(reconnect_hello && reconnect_heartbeat && reconnect_pong)) {
+    const auto frame = xar::bridge::TryReadFrame(pipe);
+    if (frame.status == xar::bridge::ReadStatus::closed ||
+        frame.status == xar::bridge::ReadStatus::invalid) {
+      break;
+    }
+    if (frame.status == xar::bridge::ReadStatus::none) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(5));
+      continue;
+    }
+    if (Has(frame.payload, "\"type\":\"hello\"") &&
+        Has(frame.payload, "\"protocol_version\":1")) {
+      reconnect_hello = true;
+    } else if (Has(frame.payload, "\"type\":\"heartbeat\"") &&
+               Has(frame.payload, "\"sequence\":")) {
+      reconnect_heartbeat = true;
+    } else if (Has(frame.payload, "\"type\":\"pong\"") &&
+               Has(frame.payload,
+                   "\"request_id\":\"suspended-injection-reconnect\"")) {
+      reconnect_pong = true;
+    }
+    if (reconnect_hello && !reconnect_ping_sent) {
+      reconnect_ping_sent = xar::bridge::WriteFrame(
+          pipe, "{\"type\":\"ping\",\"protocol_version\":1,"
+                "\"request_id\":\"suspended-injection-reconnect\"}");
+    }
+  }
+  if (!reconnect_hello || !reconnect_heartbeat || !reconnect_pong ||
+      !reconnect_ping_sent) {
+    TerminateTarget(target);
+    CloseTarget(target);
+    DisconnectNamedPipe(pipe);
+    CloseHandle(pipe);
+    return Fail("reconnected bridge exchange was incomplete");
+  }
+
   if (ResumeThread(target.hThread) == static_cast<DWORD>(-1)) {
     TerminateTarget(target);
     CloseTarget(target);
@@ -289,7 +373,7 @@ int wmain(int argc, wchar_t **argv) {
   }
 
   std::cout << "PASS: suspended=1 injected=1 protocol=1 hello=1 heartbeat=1 "
-               "pong=1 resumed=1 target_exit=0 bridge_pid="
+               "pong=1 reconnected=1 resumed=1 target_exit=0 bridge_pid="
             << bridge_pid << '\n';
   return 0;
 }

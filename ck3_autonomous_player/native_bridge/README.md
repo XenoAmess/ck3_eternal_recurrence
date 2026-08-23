@@ -15,7 +15,9 @@ Its current first gameplay slice is intentionally small:
   the pinned CK3 1.19.0.6 SHA-256;
 - the DLL emits a heartbeat every 250 ms, publishes semantic state snapshots
   on actual date/speed/pause/map-ready/local-player/active-event/pending-
-  interaction changes, and answers a framed `ping` with `pong`;
+  interaction changes, and answers a framed `ping` with `pong`; if the MCP
+  daemon exits or drops its pipe, the same injected DLL reconnects to a new
+  server under the same pipe name and republishes its current snapshot;
 - for the exact pinned build it accepts `pause-map`, `resume-map`, and fixed
   `set-speed-1`..`set-speed-5` steps plus one-based
   `select-event-option-1..N` and `save-checkpoint` through CK3's native locked
@@ -26,8 +28,9 @@ Its current first gameplay slice is intentionally small:
   `disband-army-<army_id>` commands;
 - `xar_ck3_bridge_host.exe` creates a minimal target with
   `CREATE_SUSPENDED`, runs the PID injector, verifies the complete
-  hello/heartbeat/ping/pong exchange from inside that target, and only then
-  resumes its original primary thread.
+  hello/heartbeat/ping/pong exchange from inside that target, deliberately
+  replaces the pipe server and verifies a second exchange without reinjection,
+  and only then resumes its original primary thread.
 
 The bridge protocol is deliberately not MCP. The external Python daemon owns
 MCP (stdio first, Streamable HTTP if a persistent service is later useful) and
@@ -55,7 +58,7 @@ already running, then attaches and starts the bridge with an explicit pipe. A
 successful run includes:
 
 ```text
-PASS: suspended=1 injected=1 protocol=1 hello=1 heartbeat=1 pong=1 resumed=1 target_exit=0 ...
+PASS: suspended=1 injected=1 protocol=1 hello=1 heartbeat=1 pong=1 reconnected=1 resumed=1 target_exit=0 ...
 PASS: already_running=1 inherited_pipe=0 explicit_pipe=1 injected=1 hello=1 heartbeat=1 pong=1 target_exit=0
 ```
 

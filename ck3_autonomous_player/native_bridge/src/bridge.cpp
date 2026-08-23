@@ -456,23 +456,31 @@ HANDLE ConnectToHost() noexcept {
   return INVALID_HANDLE_VALUE;
 }
 
-DWORD WINAPI WorkerMain(void *) noexcept {
-  const xar::ck3_11906::Bindings game = xar::ck3_11906::BindCurrentProcess();
-  HANDLE pipe = ConnectToHost();
-  if (pipe == INVALID_HANDLE_VALUE) {
-    return 1;
-  }
-
-  if (!xar::bridge::WriteFrame(pipe, HelloFrame(game.enabled))) {
-    CloseHandle(pipe);
-    return 2;
-  }
-
+struct WorkerState {
   std::uint64_t sequence = 0;
   std::uint64_t state_revision = 0;
   CheckpointSubmission checkpoint_submission{};
   std::uint64_t published_checkpoint_sequence = 0;
   std::optional<xar::ck3_11906::Snapshot> previous_snapshot;
+};
+
+void RunConnectedSession(HANDLE pipe, const xar::ck3_11906::Bindings &game,
+                         WorkerState &state) noexcept {
+  if (!xar::bridge::WriteFrame(pipe, HelloFrame(game.enabled))) {
+    return;
+  }
+
+  auto &sequence = state.sequence;
+  auto &state_revision = state.state_revision;
+  auto &checkpoint_submission = state.checkpoint_submission;
+  auto &published_checkpoint_sequence = state.published_checkpoint_sequence;
+  auto &previous_snapshot = state.previous_snapshot;
+
+  // A new MCP server has no copy of the previous semantic snapshot.  Force
+  // the first heartbeat on every connection to republish current state and
+  // the latest checkpoint submission, even if CK3 itself did not change.
+  previous_snapshot.reset();
+  published_checkpoint_sequence = 0;
   ULONGLONG next_heartbeat = GetTickCount64();
   bool connected = true;
   while (connected && WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
@@ -481,10 +489,9 @@ DWORD WINAPI WorkerMain(void *) noexcept {
       ++sequence;
       connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence));
       if (connected && game.enabled) {
-        connected =
-            PublishSnapshot(pipe, game, previous_snapshot, state_revision,
-                            checkpoint_submission,
-                            published_checkpoint_sequence);
+        connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                    state_revision, checkpoint_submission,
+                                    published_checkpoint_sequence);
       }
       next_heartbeat = now + kHeartbeatIntervalMs;
       if (!connected) {
@@ -533,8 +540,7 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                 pipe, CommandResultFrame(request_id, step, true, status));
             if (connected) {
               connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                          state_revision,
-                                          checkpoint_submission,
+                                          state_revision, checkpoint_submission,
                                           published_checkpoint_sequence);
             }
           }
@@ -553,8 +559,7 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                 pipe, CommandResultFrame(request_id, step, true, status));
             if (connected) {
               connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                          state_revision,
-                                          checkpoint_submission,
+                                          state_revision, checkpoint_submission,
                                           published_checkpoint_sequence);
             }
           }
@@ -565,12 +570,11 @@ DWORD WINAPI WorkerMain(void *) noexcept {
             ++checkpoint_submission.sequence;
             checkpoint_submission.date_raw = result.date_raw;
             connected = xar::bridge::WriteFrame(
-                pipe, SaveCheckpointResultFrame(request_id,
-                                                checkpoint_submission));
+                pipe,
+                SaveCheckpointResultFrame(request_id, checkpoint_submission));
             if (connected) {
               connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                          state_revision,
-                                          checkpoint_submission,
+                                          state_revision, checkpoint_submission,
                                           published_checkpoint_sequence);
             }
           } else {
@@ -600,9 +604,8 @@ DWORD WINAPI WorkerMain(void *) noexcept {
             if (result == xar::ck3_11906::ReplyPendingInteractionResult::
                               no_pending_interaction) {
               error = "no pending CK3 character interaction";
-            } else if (
-                result == xar::ck3_11906::ReplyPendingInteractionResult::
-                              acknowledgement_required) {
+            } else if (result == xar::ck3_11906::ReplyPendingInteractionResult::
+                                     acknowledgement_required) {
               error = "pending CK3 interaction requires acknowledgement";
             }
             connected = xar::bridge::WriteFrame(
@@ -614,21 +617,20 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                                         published_checkpoint_sequence);
           }
         } else if (step == "raise-troops-default") {
-          const auto result =
-              xar::ck3_11906::SubmitRaiseTroopsDefault(game);
+          const auto result = xar::ck3_11906::SubmitRaiseTroopsDefault(game);
           if (result == xar::ck3_11906::RaiseTroopsResult::submitted) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
           } else {
             std::string_view error = "CK3 raise-troops state is unavailable";
-            if (result == xar::ck3_11906::RaiseTroopsResult::
-                              no_played_character) {
+            if (result ==
+                xar::ck3_11906::RaiseTroopsResult::no_played_character) {
               error = "no living played CK3 character";
-            } else if (result == xar::ck3_11906::RaiseTroopsResult::
-                                     no_default_province) {
+            } else if (result ==
+                       xar::ck3_11906::RaiseTroopsResult::no_default_province) {
               error = "no default CK3 rally province";
-            } else if (result == xar::ck3_11906::RaiseTroopsResult::
-                                     validation_failed) {
+            } else if (result ==
+                       xar::ck3_11906::RaiseTroopsResult::validation_failed) {
               error = "CK3 rejected raise-troops validation";
             }
             connected = xar::bridge::WriteFrame(
@@ -655,14 +657,13 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                   CommandResultFrame(request_id, step, true, "submitted"));
             } else {
               std::string_view error = "CK3 move-army state is unavailable";
-              if (result ==
-                  xar::ck3_11906::MoveArmyResult::army_not_found) {
+              if (result == xar::ck3_11906::MoveArmyResult::army_not_found) {
                 error = "CK3 army was not found";
               } else if (result == xar::ck3_11906::MoveArmyResult::
                                        army_not_controllable) {
                 error = "CK3 army is not player-controllable";
-              } else if (result == xar::ck3_11906::MoveArmyResult::
-                                       province_not_found) {
+              } else if (result ==
+                         xar::ck3_11906::MoveArmyResult::province_not_found) {
                 error = "CK3 destination province was not found";
               } else if (result ==
                          xar::ck3_11906::MoveArmyResult::cannot_move) {
@@ -681,9 +682,9 @@ DWORD WINAPI WorkerMain(void *) noexcept {
           const auto army_id = DisbandArmyStep(step);
           if (!army_id.has_value()) {
             connected = xar::bridge::WriteFrame(
-                pipe, CommandResultFrame(
-                          request_id, step, false,
-                          "invalid disband-army-<army_id> step"));
+                pipe,
+                CommandResultFrame(request_id, step, false,
+                                   "invalid disband-army-<army_id> step"));
           } else {
             const auto result =
                 xar::ck3_11906::SubmitDisbandArmy(game, army_id.value());
@@ -693,8 +694,7 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                   CommandResultFrame(request_id, step, true, "submitted"));
             } else {
               std::string_view error = "CK3 disband-army state is unavailable";
-              if (result ==
-                  xar::ck3_11906::DisbandArmyResult::army_not_found) {
+              if (result == xar::ck3_11906::DisbandArmyResult::army_not_found) {
                 error = "CK3 army was not found";
               } else if (result == xar::ck3_11906::DisbandArmyResult::
                                        army_not_controllable) {
@@ -713,8 +713,7 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                    option_index.has_value()) {
           const auto result = xar::ck3_11906::SubmitSelectEventOption(
               game, option_index.value());
-          if (result ==
-              xar::ck3_11906::SelectEventOptionResult::submitted) {
+          if (result == xar::ck3_11906::SelectEventOptionResult::submitted) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
           } else {
@@ -722,8 +721,8 @@ DWORD WINAPI WorkerMain(void *) noexcept {
             if (result ==
                 xar::ck3_11906::SelectEventOptionResult::no_active_event) {
               error = "no active CK3 event";
-            } else if (
-                result == xar::ck3_11906::SelectEventOptionResult::option_out_of_range) {
+            } else if (result == xar::ck3_11906::SelectEventOptionResult::
+                                     option_out_of_range) {
               error = "event option index is out of range";
             }
             connected = xar::bridge::WriteFrame(
@@ -742,8 +741,7 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
             if (connected) {
               connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                          state_revision,
-                                          checkpoint_submission,
+                                          state_revision, checkpoint_submission,
                                           published_checkpoint_sequence);
             }
           } else {
@@ -756,8 +754,22 @@ DWORD WINAPI WorkerMain(void *) noexcept {
     }
     WaitForSingleObject(g_stop_event, 10);
   }
+}
 
-  CloseHandle(pipe);
+DWORD WINAPI WorkerMain(void *) noexcept {
+  const xar::ck3_11906::Bindings game = xar::ck3_11906::BindCurrentProcess();
+  WorkerState state{};
+  while (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
+    HANDLE pipe = ConnectToHost();
+    if (pipe == INVALID_HANDLE_VALUE) {
+      return WaitForSingleObject(g_stop_event, 0) == WAIT_OBJECT_0 ? 0 : 1;
+    }
+    RunConnectedSession(pipe, game, state);
+    CloseHandle(pipe);
+    if (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
+      WaitForSingleObject(g_stop_event, 50);
+    }
+  }
   return 0;
 }
 
