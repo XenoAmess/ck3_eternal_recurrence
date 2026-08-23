@@ -125,6 +125,7 @@ constexpr std::size_t kWarEndedDataOffset = 0x358;
 constexpr std::size_t kArmyIdOffset = 0x10;
 constexpr std::size_t kArmyCurrentProvinceOffset = 0x20;
 constexpr std::size_t kArmyOwnerCharacterIdOffset = 0x174;
+constexpr std::size_t kArmyDisbandCommandTargetIdOffset = 0x178;
 constexpr std::size_t kProvinceIdOffset = 0x10;
 constexpr std::size_t kGameDataProvinceArrayOffset = 0x140;
 constexpr std::size_t kGameDataProvinceCountOffset = 0x14C;
@@ -259,7 +260,7 @@ struct DisbandArmyCommand {
   std::uint32_t metadata_14 = 0;
   std::uintptr_t secondary_vtable = 0;
   std::int32_t command_kind = 2;
-  std::int32_t army_id = -1;
+  std::int32_t command_target_id = -1;
 };
 
 struct alignas(8) CharacterInteractionContextStorage {
@@ -308,7 +309,7 @@ static_assert(offsetof(MoveArmyCommand, path_storage) == 0x38);
 static_assert(sizeof(DisbandArmyCommand) == 0x28);
 static_assert(offsetof(DisbandArmyCommand, secondary_vtable) == 0x18);
 static_assert(offsetof(DisbandArmyCommand, command_kind) == 0x20);
-static_assert(offsetof(DisbandArmyCommand, army_id) == 0x24);
+static_assert(offsetof(DisbandArmyCommand, command_target_id) == 0x24);
 static_assert(sizeof(CharacterInteractionContextStorage) == 0x338);
 static_assert(sizeof(SendCharacterInteractionCommandStorage) == 0x368);
 
@@ -1637,7 +1638,8 @@ DisbandArmyResult SubmitDisbandArmy(const Bindings &bindings,
   if (!ReadSnapshot(bindings, current)) {
     return DisbandArmyResult::unavailable;
   }
-  if (ResolveArmy(bindings, army_id) == nullptr) {
+  void *const army = ResolveArmy(bindings, army_id);
+  if (army == nullptr) {
     return DisbandArmyResult::army_not_found;
   }
   bool controllable = false;
@@ -1654,7 +1656,8 @@ DisbandArmyResult SubmitDisbandArmy(const Bindings &bindings,
   DisbandArmyCommand command{};
   command.primary_vtable = bindings.disband_army_primary_vtable;
   command.secondary_vtable = bindings.disband_army_secondary_vtable;
-  command.army_id = army_id;
+  command.command_target_id =
+      LoadAt<std::int32_t>(army, kArmyDisbandCommandTargetIdOffset);
   bindings.submit_command(bindings.command_manager, &command, 7);
   return DisbandArmyResult::submitted;
 }

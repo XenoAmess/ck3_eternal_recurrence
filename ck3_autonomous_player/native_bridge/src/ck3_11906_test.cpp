@@ -33,8 +33,8 @@ std::array<std::byte, sizeof(void *)> g_attacker_participants{};
 std::array<std::byte, sizeof(void *)> g_defender_participants{};
 std::array<std::byte, 0x40> g_army_storage{};
 std::array<std::byte, 0x40> g_army_slots{};
-std::array<std::byte, 0x178> g_player_army{};
-std::array<std::byte, 0x178> g_enemy_army{};
+std::array<std::byte, 0x17C> g_player_army{};
+std::array<std::byte, 0x17C> g_enemy_army{};
 std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
 std::array<std::byte, 4 * sizeof(void *)> g_provinces{};
@@ -553,12 +553,13 @@ void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
                       route_kind == 2 && direct_target == 1 &&
                       command[0x38] == std::byte{0x5A};
   } else if (g_expected_command == ExpectedCommand::disband_army) {
-    std::int32_t army_id = -1;
-    std::memcpy(&army_id, command + 0x24, sizeof(army_id));
+    std::int32_t command_target_id = -1;
+    std::memcpy(&command_target_id, command + 0x24,
+                sizeof(command_target_id));
     g_submit_called = manager == reinterpret_cast<void *>(0x1234) &&
                       flags == 7 && primary == 0xFFFFFFFF &&
                       secondary == 0xABABABAB && command_flags == 0 &&
-                      player_id == 2 && army_id == 0x01000001;
+                      player_id == 2 && command_target_id == 0x02000011;
   } else if (g_expected_command == ExpectedCommand::declare_war) {
     std::int32_t actor_id = -1;
     std::int32_t recipient_id = -1;
@@ -684,6 +685,8 @@ int main() {
 
   constexpr std::int32_t player_army_id = 0x01000001;
   constexpr std::int32_t enemy_army_id = 0x01000002;
+  constexpr std::int32_t player_disband_command_target_id = 0x02000011;
+  constexpr std::int32_t enemy_disband_command_target_id = 0x02000012;
   constexpr std::int32_t active_war_id = 0x01000001;
   Store(g_player_province, 0x10, std::int32_t{2});
   Store(g_enemy_province, 0x10, std::int32_t{3});
@@ -698,10 +701,12 @@ int main() {
   Store(g_player_army, 0x20,
         static_cast<void *>(g_player_province.data()));
   Store(g_player_army, 0x174, played_character_id);
+  Store(g_player_army, 0x178, player_disband_command_target_id);
   Store(g_enemy_army, 0x10, enemy_army_id);
   Store(g_enemy_army, 0x20,
         static_cast<void *>(g_enemy_province.data()));
   Store(g_enemy_army, 0x174, enemy_character_id);
+  Store(g_enemy_army, 0x178, enemy_disband_command_target_id);
   Store(g_army_slots, 0x18, static_cast<void *>(g_player_army.data()));
   Store(g_army_slots, 0x28, static_cast<void *>(g_enemy_army.data()));
   Store(g_army_storage, 0x20, static_cast<void *>(g_army_slots.data()));

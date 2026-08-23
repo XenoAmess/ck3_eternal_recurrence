@@ -46,8 +46,8 @@ bridge identity/heartbeat/ping.
 | allied/enemy army current province | implemented, live probe pending | war participant helper classifies each observable army owner | never inside native driver |
 | army soldier count / move target | unsupported | conflicting `+0x38/+0x44` interpretations at RVAs `0xC73D00` and `0x26B51B0`; no value guessed | unsupported |
 | `game.command.raise-troops-default` | implemented, live probe pending | native default-province/construct/validate/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
-| `game.command.move-army-N-to-N` | implemented, live probe pending | native mode/can-move/path-init/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
-| `game.command.disband-army-N` | implemented, live probe pending | exact 0x28-byte command/vtables/clone + offline fixture | explicit upper-layer policy only |
+| `game.command.move-army-N-to-N` | implemented; live correctly refused a freshly raised, still-gathering army | native mode/can-move/path-init/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
+| `game.command.disband-army-N` | implemented; live exposed the distinct command-target ID and corrected build awaits replay | exact 0x28-byte command/vtables/payload source/clone + offline fixture | explicit upper-layer policy only |
 | `game.command.query-declarable-wars` | native C++ core implemented, bridge route/live probe pending | exact declare-war UI CB registry/evaluator/item rules + offline SSO/heap-key and configuration fixture | explicit upper-layer policy only |
 | `game.command.declare-war-<declaration_id>` | native C++ core implemented, bridge route/live probe pending | generation-bound exact re-enumeration + native context/validation/queue/destruction fixture | explicit upper-layer policy only |
 | `game.command.enforce-demands-<war_id>` | native C++ core implemented, bridge route/live probe pending | exact WarOverview victory context builder + common interaction command lifecycle fixture | explicit upper-layer policy only |
@@ -218,10 +218,24 @@ destination ProvinceID at `+0x28`, move mode at `+0x2C`, `+0x30=2`, and
 `0x26B4610(2, army, mode)`, path initialization
 `0xC7BA70(command+0x38)`, submit flags `7`, then destructor
 `0x26B46D0(command, 0)`. Heap clone RVA `0x26C1E50` confirms size and payload.
+Move-mode RVA `0x26B51B0` returns `2` for an army that is not currently ready
+to move, and `0x26B4610(2, army, 2)` rejects that sentinel before a command is
+constructed. A 2026-08-24 minimized live run reproduced this after raising army
+`83886341` at province `2619` while the map remained paused: moves toward enemy
+army provinces `2564` and `2574` both returned `cannot_move`. This is not a
+command-layout failure; the native loop must advance time until the raised army
+finishes gathering, then retry movement.
 
 `CDisbandArmyCommand` is `0x28` bytes: vtables
-`0x432BFE0`/`0x432C078`, `+0x20=2`, and ArmyID at `+0x24`; it submits with
-flags `7`. Clone RVA `0x26C2090` independently confirms the complete layout.
+`0x432BFE0`/`0x432C078`, `+0x20=2`, and the command-target ID read from
+`CArmy+0x178` at `+0x24`; it submits with flags `7`. The public step still uses
+the component ArmyID from `CArmy+0x10` to resolve the army. The original AI
+construction at RVA `0x187954F` proves that the two IDs are distinct inputs,
+and clone RVA `0x26C2090` independently confirms the complete command layout.
+The same minimized run showed why this distinction matters: the old bridge
+queued a disband carrying the public component ID but the army remained in the
+next snapshot. The fixture now gives both fields deliberately different values
+and requires the `+0x178` value in the queued command.
 
 Declare-war discovery is an explicit strategic query, not part of the 250 ms
 heartbeat snapshot. The global query scans live Character components and runs

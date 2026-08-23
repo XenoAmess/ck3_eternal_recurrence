@@ -82,6 +82,13 @@ _NATIVE_DEATH_TERMINAL_STEP = "death-terminal"
 _NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
 _NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 _RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
+_ARMY_NOT_MOVE_READY_ERROR = "CK3 army cannot move to the destination"
+
+
+class _NativeCommandRejectedError(BridgeUnavailableError):
+    def __init__(self, native_error: str) -> None:
+        self.native_error = native_error
+        super().__init__(f"native gameplay step failed: {native_error}")
 
 
 class NativeBridgeEndpoint(Protocol):
@@ -972,8 +979,9 @@ class NativeHeadlessGameplayDriver:
                 f"native command_result timed out for gameplay step {step}"
             )
         if frame.get("ok") is not True:
-            raise BridgeUnavailableError(
-                f"native gameplay step failed: {frame.get('error') or 'unknown error'}"
+            native_error = frame.get("error")
+            raise _NativeCommandRejectedError(
+                native_error if isinstance(native_error, str) else "unknown error"
             )
         result = frame.get("result")
         if isinstance(result, dict):
@@ -1312,9 +1320,29 @@ class NativeHeadlessGameplayDriver:
                     f"native move-army-{army_id} requires a controllable "
                     "player army"
                 )
-            result = self._execute_primitive_step(
-                step, expected_revision=selected_revision
-            )
+            try:
+                result = self._execute_primitive_step(
+                    step, expected_revision=selected_revision
+                )
+            except _NativeCommandRejectedError as error:
+                if error.native_error != _ARMY_NOT_MOVE_READY_ERROR:
+                    raise
+                current = self.take_snapshot()
+                return {
+                    "step": step,
+                    "accepted": False,
+                    "status": "deferred",
+                    "backend_id": "native-headless",
+                    "war_action": {
+                        "status": "move_deferred",
+                        "reason": "army_not_move_ready",
+                        "army_id": army_id,
+                        "target_province_id": province_id,
+                    },
+                    "player_armies": current.get("player_armies", []),
+                    "snapshot_id": current["snapshot_id"],
+                    "revision": current["revision"],
+                }
             if (
                 isinstance(starting_army, dict)
                 and starting_army.get("move_target_observable") is False

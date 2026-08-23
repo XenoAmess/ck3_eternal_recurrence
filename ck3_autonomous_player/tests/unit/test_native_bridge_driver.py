@@ -1125,6 +1125,51 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["war_action"]["status"], "move_submitted")
         self.assertFalse(result["war_action"]["move_target_observable"])
 
+    def test_native_move_not_ready_is_a_deferred_war_action(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.01,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.move-army-N-to-N",
+            )
+        )
+        player = _army(401, province_id=20, observe_move_target=False)
+        enemy = _army(402, province_id=90, controllable=False)
+        endpoint.publish(
+            _snapshot(
+                60,
+                active_wars=[_war(allied_armies=[player], enemy_armies=[enemy])],
+                player_armies=[player],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") == "execute_step":
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": False,
+                        "error": "CK3 army cannot move to the destination",
+                    }
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("move-army-401-to-90")
+
+        self.assertFalse(result["accepted"])
+        self.assertEqual(result["status"], "deferred")
+        self.assertEqual(result["war_action"]["status"], "move_deferred")
+        self.assertEqual(
+            result["war_action"]["reason"], "army_not_move_ready"
+        )
+
     def test_save_checkpoint_waits_for_isolated_file_materialization(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             save_dir = Path(temporary) / "profile" / "save games"

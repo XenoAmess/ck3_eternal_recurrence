@@ -203,6 +203,12 @@
       "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 48 8B FA B9 28 00 00 00 E8 7A 3D 76 01 4C 8B C8 48 8D 05 F4 FC 9B 01 49 89 01 48"
     },
     {
+      "name": "disband_army_ai_construct_and_submit",
+      "rva": "0x187954F",
+      "confidence": "high-static",
+      "pattern": "8B 97 78 01 00 00 88 44 24 58 4C 89 7C 24 5C 44 89 7C 24 64 48 8D 05 76 2A AB 02 48 89 44 24 50 48 8D 05 02 2B AB 02 48 89 44 24 68 C7 44 24 70 02 00 00 00 89 54 24 74"
+    },
+    {
       "name": "casus_belli_type_database_getter",
       "rva": "0x88E260",
       "confidence": "high-static",
@@ -328,6 +334,7 @@
     "move_army_destructor": "0x26B46D0",
     "disband_army_primary_vtable": "0x432BFE0",
     "disband_army_secondary_vtable": "0x432C078",
+    "disband_army_ai_construct_and_submit": "0x187954F",
     "send_character_interaction_primary_vtable": "0x40829F8",
     "send_character_interaction_secondary_vtable": "0x40829C8",
     "war_declaration_vtable": "0x411DAA0",
@@ -514,6 +521,7 @@
       "army_id": "+0x10 int32 component ID",
       "current_province": "+0x20 Province pointer; Province ID at +0x10",
       "owner_character_id": "+0x174 int32 CharacterID",
+      "disband_command_target_id": "+0x178 int32 copied to CDisbandArmyCommand+0x24; distinct from the public component ID at +0x10",
       "controllable_projection": "owner CharacterID equals the current played CharacterID",
       "soldiers_and_move_target": "not published in this slice: the candidate +0x38/+0x44 interpretation conflicts between RVA 0xC73D00 and RVA 0x26B51B0, so no offset is guessed"
     },
@@ -531,13 +539,13 @@
       "secondary_vtable": "+0x18 = 0x432BFB0",
       "payload": "+0x20=2 command kind, +0x24 ArmyID, +0x28 destination ProvinceID, +0x2C move mode, +0x30=2 route kind, +0x34=1 direct target",
       "path_storage": "+0x38 initialized by RVA 0xC7BA70",
-      "lifecycle": "mode RVA 0x26B51B0(army, province, 1), can-move RVA 0x26B4610(2, army, mode), submit flags 7, destructor RVA 0x26B46D0 with delete_flags=0"
+      "lifecycle": "mode RVA 0x26B51B0(army, province, 1), can-move RVA 0x26B4610(2, army, mode), submit flags 7, destructor RVA 0x26B46D0 with delete_flags=0; mode 2 is an explicit not-ready/invalid sentinel rejected by can-move"
     },
     "CDisbandArmyCommand": {
       "size": "0x28",
       "primary_vtable": "+0x00 = 0x432BFE0",
       "secondary_vtable": "+0x18 = 0x432C078",
-      "payload": "+0x20=2 command kind, +0x24 ArmyID; submit flags 7"
+      "payload": "+0x20=2 command kind, +0x24 command-target ID loaded from CArmy+0x178; the public component ArmyID at CArmy+0x10 is only used to resolve the object; submit flags 7"
     },
     "CCasusBelliTypeDatabase": {
       "types": "+0x68 CCasusBelliType pointer array",

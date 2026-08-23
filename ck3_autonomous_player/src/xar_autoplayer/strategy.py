@@ -811,7 +811,8 @@ def _unadvanced_move_submission(
         action = result.get("war_action") if isinstance(result, dict) else None
         return (
             isinstance(action, dict)
-            and action.get("status") == "move_submitted"
+            and action.get("status")
+            in {"move_submitted", "move_deferred"}
         )
     return False
 
