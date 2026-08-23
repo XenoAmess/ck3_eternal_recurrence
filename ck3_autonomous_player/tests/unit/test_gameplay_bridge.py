@@ -78,6 +78,71 @@ def _war(
 
 
 class GameplayBridgeTests(unittest.TestCase):
+    def test_cross_run_plan_changes_native_opening_order_and_is_exposed(self) -> None:
+        plans = {
+            "war": [
+                {"priority": 100, "action": "reassess_first_low_cost_expansion"},
+                {"priority": 80, "action": "seek_current_life_marriage_alliance"},
+            ],
+            "marriage": [
+                {"priority": 100, "action": "seek_current_life_marriage_alliance"},
+                {"priority": 80, "action": "reassess_first_low_cost_expansion"},
+            ],
+        }
+        selected: dict[str, str | None] = {}
+        for label, priorities in plans.items():
+            with tempfile.TemporaryDirectory() as temporary:
+                state_dir = Path(temporary)
+                strategy_path = state_dir / "strategy" / "one-life-history.json"
+                strategy_path.parent.mkdir(parents=True)
+                strategy_path.write_text(
+                    json.dumps(
+                        {
+                            "format_version": 1,
+                            "mode": "one_life_roguelike",
+                            "continue_as_heir_after_death": False,
+                            "episodes": [{"run_id": "previous"}],
+                            "next_run_plan": {
+                                "policy": "fixture",
+                                "continue_as_heir_after_death": False,
+                                "priorities": priorities,
+                            },
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+                driver = CallbackGameplayDriver(
+                    backend_id="native-headless",
+                    snapshot=lambda: {
+                        **_snapshot(7),
+                        "played_character": {
+                            "character_id": 707,
+                            "alive": True,
+                            "betrothed_id": None,
+                            "primary_spouse_id": None,
+                            "spouse_ids": [],
+                        },
+                        "native_command_history": [
+                            {"index": 1, "command": "save-checkpoint", "ok": True}
+                        ],
+                    },
+                    execute=lambda step, revision: {"step": step},
+                    action_steps=(
+                        "query-arrange-marriage-choices",
+                        "query-declarable-wars",
+                        "life-advance",
+                    ),
+                )
+                driver.state_dir = state_dir
+                plan = GameplayBridgeService(driver).plan_turn()["plan"]
+                selected[label] = plan["selected_step"]
+                self.assertEqual(
+                    plan["cross_run_plan_used"]["priorities"], priorities
+                )
+
+        self.assertEqual(selected["war"], "query-declarable-wars")
+        self.assertEqual(selected["marriage"], "query-arrange-marriage-choices")
+
     def test_hybrid_propagates_semantic_settlement_without_visual_action(
         self,
     ) -> None:
@@ -1089,6 +1154,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_execute_step",
                     "ck3_save_checkpoint",
                     "ck3_restore_checkpoint",
+                    "ck3_start_next_episode",
                     "ck3_reply_pending_character_interaction",
                     "ck3_get_war_state",
                     "ck3_query_arrange_marriage_choices",

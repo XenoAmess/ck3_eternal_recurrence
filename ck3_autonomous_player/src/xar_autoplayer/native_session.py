@@ -33,8 +33,11 @@ from .runtime import (
 PURE_NATIVE_MODE = "native-headless"
 NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
 NATIVE_SESSION_RESTORE_COMMAND = "restore-checkpoint"
+NATIVE_SESSION_START_NEXT_EPISODE_COMMAND = "start-next-episode"
 NATIVE_SESSION_CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
 NATIVE_SESSION_CHECKPOINT_LOAD_NAME = "xar_checkpoint"
+NATIVE_SESSION_EPISODE_SEED_FILENAME = "xar_episode_seed.ck3"
+NATIVE_SESSION_EPISODE_SEED_LOAD_NAME = "xar_episode_seed"
 NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 
 
@@ -221,8 +224,16 @@ def _native_session_locked(
     next_window_state_sample = started
     queue = PersistentSessionQueue(
         spec.state_dir / NATIVE_SESSION_QUEUE_DIRNAME,
-        supported_commands=("status", "stop", NATIVE_SESSION_RESTORE_COMMAND),
-        action_steps=(NATIVE_SESSION_RESTORE_COMMAND,),
+        supported_commands=(
+            "status",
+            "stop",
+            NATIVE_SESSION_RESTORE_COMMAND,
+            NATIVE_SESSION_START_NEXT_EPISODE_COMMAND,
+        ),
+        action_steps=(
+            NATIVE_SESSION_RESTORE_COMMAND,
+            NATIVE_SESSION_START_NEXT_EPISODE_COMMAND,
+        ),
     )
     initial_checkpoint = (
         _validate_cold_start_checkpoint(spec, config)
@@ -329,19 +340,31 @@ def _native_session_locked(
                         )
                         stop_requested = True
                         break
-                    if request.command != NATIVE_SESSION_RESTORE_COMMAND:
+                    if request.command not in {
+                        NATIVE_SESSION_RESTORE_COMMAND,
+                        NATIVE_SESSION_START_NEXT_EPISODE_COMMAND,
+                    }:
                         queue.respond(
                             request,
                             ok=False,
                             error=(
-                                "native-session supports status, stop, and "
-                                f"{NATIVE_SESSION_RESTORE_COMMAND}"
+                                "native-session supports status, stop, "
+                                f"{NATIVE_SESSION_RESTORE_COMMAND}, and "
+                                f"{NATIVE_SESSION_START_NEXT_EPISODE_COMMAND}"
                             ),
                         )
                         continue
                     try:
-                        checkpoint = _validate_restore_request(
-                            request, config, spec
+                        starting_next_episode = (
+                            request.command
+                            == NATIVE_SESSION_START_NEXT_EPISODE_COMMAND
+                        )
+                        selected_save = (
+                            _validate_start_next_episode_request(
+                                request, config, spec
+                            )
+                            if starting_next_episode
+                            else _validate_restore_request(request, config, spec)
                         )
                         previous_pid = int(handle.process.pid)
                         sampled_window_state = _process_windows_minimized(
@@ -369,13 +392,17 @@ def _native_session_locked(
                         # exact bytes immediately before asking Jomini to load
                         # this filename so the lifecycle response describes the
                         # file actually selected for the replacement process.
-                        checkpoint = _validate_restore_request(
-                            request, config, spec
+                        selected_save = (
+                            _validate_start_next_episode_request(
+                                request, config, spec
+                            )
+                            if starting_next_episode
+                            else _validate_restore_request(request, config, spec)
                         )
                         handle = launch(
                             spec,
                             native_bridge=config,
-                            load_save_name=str(checkpoint["load_save_name"]),
+                            load_save_name=str(selected_save["load_save_name"]),
                             # The session owns both global launch and state
                             # locks.  Its first launch already verified the
                             # committed profile; repeating the full Git/runtime
@@ -410,16 +437,28 @@ def _native_session_locked(
                             "mode": PURE_NATIVE_MODE,
                             "pipe": config.pipe_name,
                             "continue_last_save": False,
-                            "load_save_name": checkpoint["load_save_name"],
-                            "checkpoint": checkpoint,
+                            "load_save_name": selected_save["load_save_name"],
+                            "lifecycle_intent": (
+                                "new_episode"
+                                if starting_next_episode
+                                else "restore"
+                            ),
                             "previous_window_minimized": preserve_minimized,
                             "minimized_state_preserved": minimized_preserved,
                         }
+                        if starting_next_episode:
+                            result["episode_seed"] = selected_save
+                        else:
+                            result["checkpoint"] = selected_save
                         queue.respond(request, ok=True, result=result)
                         _emit(
                             output_stream,
                             {
-                                "type": "native_session_restored",
+                                "type": (
+                                    "native_session_episode_started"
+                                    if starting_next_episode
+                                    else "native_session_restored"
+                                ),
                                 "request_id": request.request_id,
                                 **result,
                             },
@@ -559,6 +598,64 @@ def _validate_restore_request(
         "size": size,
         "sha256": digest,
         "saved_date_raw": saved_date_raw,
+    }
+
+
+def _validate_start_next_episode_request(
+    request: SessionQueueRequest,
+    config: NativeBridgeLaunchConfig,
+    spec: EnvironmentSpec,
+) -> dict[str, object]:
+    """Bind a new-episode relaunch to the immutable campaign seed."""
+    payload = request.payload or {}
+    if payload.get("pipe") != config.pipe_name:
+        raise AgentError("start-next-episode pipe differs from native-session")
+    if payload.get("seed_name") != NATIVE_SESSION_EPISODE_SEED_FILENAME:
+        raise AgentError(
+            "start-next-episode requires xar_episode_seed.ck3"
+        )
+    expected_size = payload.get("seed_size")
+    expected_sha256 = payload.get("seed_sha256")
+    seed_date_raw = payload.get("seed_date_raw")
+    seed_character_id = payload.get("seed_character_id")
+    source_run_id = payload.get("source_run_id")
+    if (
+        isinstance(expected_size, bool)
+        or not isinstance(expected_size, int)
+        or expected_size <= 0
+        or not isinstance(expected_sha256, str)
+        or len(expected_sha256) != 64
+        or any(character not in "0123456789abcdef" for character in expected_sha256)
+        or isinstance(seed_date_raw, bool)
+        or not isinstance(seed_date_raw, int)
+        or isinstance(seed_character_id, bool)
+        or not isinstance(seed_character_id, int)
+        or not isinstance(source_run_id, str)
+        or not source_run_id
+    ):
+        raise AgentError("start-next-episode seed metadata is incomplete")
+    seed_path = (
+        spec.profile_dir
+        / "save games"
+        / NATIVE_SESSION_EPISODE_SEED_FILENAME
+    )
+    try:
+        size = seed_path.stat().st_size
+    except OSError as error:
+        raise AgentError(f"episode seed is unavailable: {seed_path}: {error}") from error
+    digest = _sha256_file(seed_path)
+    if size != expected_size or digest != expected_sha256:
+        raise AgentError("episode seed bytes differ from the lifecycle request")
+    return {
+        "name": NATIVE_SESSION_EPISODE_SEED_FILENAME,
+        "load_save_name": NATIVE_SESSION_EPISODE_SEED_LOAD_NAME,
+        "path": str(seed_path.resolve()),
+        "size": size,
+        "sha256": digest,
+        "date_raw": seed_date_raw,
+        "character_id": seed_character_id,
+        "source_run_id": source_run_id,
+        "immutable": True,
     }
 
 

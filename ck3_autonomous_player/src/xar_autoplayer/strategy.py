@@ -161,11 +161,38 @@ def _preferred_native_declaration(
     return min(rows, key=preference)
 
 
+def _cross_run_focus(plan: dict[str, object] | None) -> str | None:
+    """Map the highest cross-run priority to one opening strategy family."""
+    priorities = plan.get("priorities") if isinstance(plan, dict) else None
+    if not isinstance(priorities, list):
+        return None
+    ranked = sorted(
+        (row for row in priorities if isinstance(row, dict)),
+        key=lambda row: (
+            -int(row.get("priority", 0))
+            if isinstance(row.get("priority"), int)
+            and not isinstance(row.get("priority"), bool)
+            else 0,
+            str(row.get("action") or ""),
+        ),
+    )
+    for row in ranked:
+        action = str(row.get("action") or "").casefold()
+        if any(token in action for token in ("war", "expansion", "palermo")):
+            return "war"
+        if any(token in action for token in ("marriage", "alliance", "betrothal")):
+            return "marriage"
+        if any(token in action for token in ("succession", "partition")):
+            return "succession"
+    return None
+
+
 def choose_one_life_turn(
     commands: list[dict[str, object]],
     *,
     snapshot: dict[str, object] | None = None,
     action_steps: Iterable[str] | None = None,
+    next_run_plan: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Choose one useful, inspectable action for the current life.
 
@@ -177,6 +204,7 @@ def choose_one_life_turn(
     available_steps = {
         step for step in (action_steps or ()) if isinstance(step, str) and step
     }
+    cross_run_focus = _cross_run_focus(next_run_plan)
     played_character = (
         snapshot.get("played_character")
         if isinstance(snapshot, dict)
@@ -210,7 +238,11 @@ def choose_one_life_turn(
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "terminal_complete",
-                "selected_step": None,
+                "selected_step": (
+                    "start-next-episode"
+                    if "start-next-episode" in available_steps
+                    else None
+                ),
                 "reason": "this one-life episode is already settled",
                 "terminal_reason": terminal_reason,
                 "episode_character_id": episode_character_id,
@@ -657,6 +689,18 @@ def choose_one_life_turn(
             "reason": "create a native CK3 recovery point before strategic mutations",
         }
 
+    if (
+        cross_run_focus == "succession"
+        and not _latest_index(rows, "succession-review")
+        and "succession-review" in available_steps
+    ):
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "cross_run_succession_first",
+            "selected_step": "succession-review",
+            "reason": "the previous episode promoted succession review to the first strategic action",
+        }
+
     native_relationship_known = (
         isinstance(played_character, dict)
         and {
@@ -677,9 +721,16 @@ def choose_one_life_turn(
     successful_marriage_index = _latest_prefix_index(
         rows, "arrange-marriage-"
     )
+    war_attempted = bool(
+        _latest_index(rows, QUERY_DECLARABLE_WARS_STEP)
+        or _latest_prefix_index(rows, "declare-war-", successful_only=False)
+        or _latest_prefix_index(rows, "enforce-demands-", successful_only=False)
+    )
+    defer_marriage_for_war = cross_run_focus == "war" and not war_attempted
     if (
         not native_relationship_present
         and (native_relationship_known or not successful_marriage_index)
+        and not defer_marriage_for_war
     ):
         raw_marriage_choices = (
             snapshot.get("arrange_marriage_choices")
@@ -1190,7 +1241,7 @@ def _next_run_plan(achievements: dict[str, bool]) -> dict[str, object]:
     else:
         priorities.append(
             {
-                "priority": 100,
+                "priority": 70,
                 "action": "reassess_first_low_cost_expansion",
                 "reason": "the previous life did not prove a completed Palermo victory",
             }
@@ -1206,7 +1257,7 @@ def _next_run_plan(achievements: dict[str, bool]) -> dict[str, object]:
     else:
         priorities.append(
             {
-                "priority": 80,
+                "priority": 100,
                 "action": "seek_current_life_marriage_alliance",
                 "reason": "the previous life has no confirmed alliance marriage",
             }

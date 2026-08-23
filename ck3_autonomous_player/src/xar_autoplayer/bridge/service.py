@@ -35,7 +35,7 @@ from .war_contract import (
     normalize_active_wars,
     player_armies_from_state,
 )
-from ..strategy import choose_one_life_turn
+from ..strategy import choose_one_life_turn, read_one_life_strategy
 
 
 class GameplayBridgeService:
@@ -63,16 +63,34 @@ class GameplayBridgeService:
             history.extend(
                 row for row in native_history if isinstance(row, dict)
             )
+        cross_run_plan = None
+        state_dir = self._strategy_state_dir()
+        if state_dir is not None:
+            strategy = read_one_life_strategy(state_dir)
+            if strategy.get("episodes"):
+                candidate = strategy.get("next_run_plan")
+                if isinstance(candidate, dict):
+                    cross_run_plan = candidate
         plan = choose_one_life_turn(
             history,
             snapshot=snapshot,
             action_steps=available_steps,
+            next_run_plan=cross_run_plan,
         )
+        if cross_run_plan is not None:
+            plan = {**plan, "cross_run_plan_used": cross_run_plan}
         return {
             "snapshot_id": snapshot["snapshot_id"],
             "revision": snapshot["revision"],
             "plan": _route_plan_to_available_step(plan, available_steps),
         }
+
+    def _strategy_state_dir(self):
+        state_dir = getattr(self.driver, "state_dir", None)
+        if state_dir is not None:
+            return state_dir
+        native = getattr(self.driver, "native", None)
+        return getattr(native, "state_dir", None)
 
     def auto_turn(self) -> dict[str, object]:
         """Plan and execute exactly one backend-supported gameplay turn."""
@@ -357,6 +375,28 @@ class GameplayBridgeService:
         ):
             raise BridgeUnavailableError(
                 "restore-checkpoint result lacks checkpoint or restored date"
+            )
+        return result
+
+    def start_next_episode(
+        self, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        """Start a fresh one-life run from the immutable native seed."""
+        if "start-next-episode" not in action_step_set(self.capabilities()):
+            raise UnsupportedStepError(
+                "selected backend cannot start the next pure-native episode"
+            )
+        result = self.execute_step(
+            "start-next-episode", expected_revision=expected_revision
+        )
+        if (
+            result.get("status") != "started"
+            or result.get("lifecycle_intent") != "new_episode"
+            or not isinstance(result.get("episode_run_id"), str)
+            or not isinstance(result.get("cross_run_plan_used"), dict)
+        ):
+            raise BridgeUnavailableError(
+                "start-next-episode result lacks new-run lifecycle data"
             )
         return result
 

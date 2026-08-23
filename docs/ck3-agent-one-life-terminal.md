@@ -56,3 +56,11 @@ Data Mod 和视觉 backend 都不会执行终局输入动作。
 
 `arrange-marriage-<choice>` 返回的 `proposal_submitted` 只证明提案已发出，不算婚约成功；只有既有
 确认链的 `marriage_result.status=accepted_betrothal` 计入跨局成就。
+
+## 跨局启动与策略消费
+
+终局只有在 `settlement_status=complete`、`score` 非空且同一 run 已写入 `one-life-history.json` 后，才会公开 `start-next-episode`。该动作从不可变
+`xar_episode_seed.ck3` 启动新 run；不会继续扮演继承人，也不会把 recovery `xar_checkpoint.ck3` 当作下一局种子。返回结果包含来源/新
+`episode_run_id`、`lifecycle_intent=new_episode` 与 `cross_run_plan_used`。
+
+新局 planner 读取最新 `next_run_plan.priorities`，把最高优先项映射到 war / marriage / succession 开局族。至少战争优先会让 baseline checkpoint 后先做 native war discovery，婚姻优先则先做 native marriage discovery；返回的 plan 同样带 `cross_run_plan_used`，因此可直接观察跨局经验是否实际改变了行动顺序。没有已完成 episode 的第一局保持原默认顺序。

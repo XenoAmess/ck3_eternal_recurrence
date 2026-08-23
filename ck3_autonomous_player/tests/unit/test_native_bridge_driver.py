@@ -2072,9 +2072,247 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
             self.assertTrue(checkpoint["overwrite_confirmed"])
             self.assertTrue(result["materialization"]["available"])
+            seed_path = save_dir / "xar_episode_seed.ck3"
+            self.assertEqual(seed_path.read_bytes(), payload)
+            self.assertEqual(result["episode_seed"]["name"], seed_path.name)
+            self.assertTrue(result["episode_seed"]["immutable"])
             plan = GameplayBridgeService(driver).plan_turn()["plan"]
             self.assertNotEqual(plan.get("selected_step"), "save-checkpoint")
             self.assertEqual(plan.get("required_step"), "dynasty-review")
+
+    def test_later_recovery_checkpoint_does_not_replace_episode_seed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            save_dir = root / "profile" / "save games"
+            save_dir.mkdir(parents=True)
+            checkpoint_path = save_dir / "xar_checkpoint.ck3"
+            checkpoint_path.write_bytes(b"old")
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=root,
+                save_dir=save_dir,
+                checkpoint_timeout_seconds=1.0,
+                checkpoint_poll_interval_seconds=0.005,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.command.save-checkpoint")
+            )
+            endpoint.publish(
+                _snapshot(1, played_character={"character_id": 707, "alive": True})
+            )
+            payloads = iter((b"baseline-seed", b"later-recovery"))
+
+            def answer(frame: dict[str, object]) -> None:
+                if frame.get("type") != "execute_step":
+                    return
+                payload = next(payloads)
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": True,
+                        "result": {
+                            "accepted": True,
+                            "submission": {"date_raw": 53_171_400},
+                        },
+                    }
+                )
+                previous = checkpoint_path.stat().st_mtime_ns
+                checkpoint_path.write_bytes(payload)
+                os.utime(checkpoint_path, ns=(previous + 1, previous + 1))
+
+            endpoint.send_hook = answer
+            driver.execute_step("save-checkpoint")
+            first_seed = (save_dir / "xar_episode_seed.ck3").read_bytes()
+            driver.execute_step("save-checkpoint")
+
+            self.assertEqual(first_seed, b"baseline-seed")
+            self.assertEqual(
+                (save_dir / "xar_episode_seed.ck3").read_bytes(), first_seed
+            )
+            self.assertEqual(checkpoint_path.read_bytes(), b"later-recovery")
+
+    def test_start_next_episode_rebinds_same_character_to_new_run(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            save_dir = state_dir / "profile" / "save games"
+            save_dir.mkdir(parents=True)
+            seed_payload = b"immutable episode seed"
+            seed_path = save_dir / "xar_episode_seed.ck3"
+            seed_path.write_bytes(seed_payload)
+            seed = {
+                "format_version": 1,
+                "name": seed_path.name,
+                "path": str(seed_path.resolve()),
+                "size": len(seed_payload),
+                "sha256": hashlib.sha256(seed_payload).hexdigest(),
+                "date_raw": 53_168_784,
+                "character_id": 707,
+                "source_run_id": "native-707-seed-source",
+                "immutable": True,
+            }
+            write_json_atomic(
+                state_dir / "native-session" / "episode-seed.json", seed
+            )
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+                save_dir=save_dir,
+                restore_timeout_seconds=1.5,
+                restore_poll_interval_seconds=0.005,
+            )
+            endpoint.publish(
+                _hello(
+                    "game.state.snapshot",
+                    "game.state.played-character",
+                    ONE_LIFE_SETTLEMENT_CAPABILITY,
+                )
+            )
+            endpoint.publish(
+                _snapshot(
+                    30,
+                    date_raw=53_171_400,
+                    played_character={"character_id": 707, "alive": False},
+                    one_life_settlement=_one_life_settlement(),
+                )
+            )
+            terminal_snapshot = driver.take_snapshot()
+            source_run_id = terminal_snapshot["episode_run_id"]
+            driver.execute_step(
+                "death-terminal",
+                expected_revision=int(terminal_snapshot["revision"]),
+            )
+            self.assertIn(
+                "start-next-episode", driver.capabilities()["action_steps"]
+            )
+            terminal_plan = GameplayBridgeService(driver).plan_turn()["plan"]
+            self.assertEqual(
+                terminal_plan["selected_step"], "start-next-episode"
+            )
+            errors: list[BaseException] = []
+
+            def lifecycle() -> None:
+                try:
+                    inbox = state_dir / "native-session" / "bridge" / "inbox"
+                    deadline = time.monotonic() + 1.0
+                    paths: list[Path] = []
+                    while time.monotonic() < deadline:
+                        paths = list(inbox.glob("next-episode-*.json"))
+                        if paths:
+                            break
+                        time.sleep(0.005)
+                    self.assertEqual(len(paths), 1)
+                    request = json.loads(paths[0].read_text(encoding="utf-8"))
+                    assert endpoint.on_disconnect is not None
+                    endpoint.on_disconnect()
+                    write_json_atomic(
+                        paths[0].parents[1] / "outbox" / paths[0].name,
+                        {
+                            "protocol_version": 1,
+                            "request_id": paths[0].stem,
+                            "ok": True,
+                            "result": {
+                                "status": "relaunched",
+                                "previous_pid": 4242,
+                                "pid": 5252,
+                                "pipe": endpoint.pipe_name,
+                                "load_save_name": "xar_episode_seed",
+                                "lifecycle_intent": "new_episode",
+                                "episode_seed": seed,
+                            },
+                            "error": None,
+                        },
+                    )
+                    endpoint.publish(
+                        {**_hello("game.state.snapshot"), "pid": 5252}
+                    )
+                    endpoint.publish(
+                        _snapshot(
+                            1,
+                            date_raw=53_168_784,
+                            played_character={"character_id": 707, "alive": True},
+                        )
+                    )
+                    self.assertEqual(request["source_run_id"], source_run_id)
+                except BaseException as error:
+                    errors.append(error)
+
+            worker = threading.Thread(target=lifecycle)
+            worker.start()
+            result = driver.execute_step(
+                "start-next-episode",
+                expected_revision=int(driver.take_snapshot()["revision"]),
+            )
+            worker.join(timeout=2.0)
+
+            self.assertEqual(errors, [])
+            self.assertEqual(result["lifecycle_intent"], "new_episode")
+            self.assertEqual(result["source_run_id"], source_run_id)
+            self.assertNotEqual(result["episode_run_id"], source_run_id)
+            self.assertEqual(result["episode_character_id"], 707)
+            self.assertTrue(result["same_character_id"])
+            self.assertIsInstance(result["cross_run_plan_used"], dict)
+            current = driver.take_snapshot()
+            self.assertFalse(current["one_life_terminal"])
+            self.assertEqual(
+                current["native_command_history"][0]["command"],
+                "start-next-episode",
+            )
+
+    def test_start_next_episode_rejects_terminal_without_complete_score(self) -> None:
+        endpoint = FakeEndpoint()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            save_dir = root / "profile" / "save games"
+            save_dir.mkdir(parents=True)
+            seed_path = save_dir / "xar_episode_seed.ck3"
+            seed_path.write_bytes(b"seed")
+            write_json_atomic(
+                root / "native-session" / "episode-seed.json",
+                {
+                    "format_version": 1,
+                    "name": seed_path.name,
+                    "size": 4,
+                    "sha256": hashlib.sha256(b"seed").hexdigest(),
+                    "date_raw": 53_168_784,
+                    "character_id": 707,
+                    "source_run_id": "seed-run",
+                    "immutable": True,
+                },
+            )
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=root,
+                save_dir=save_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    2,
+                    played_character={"character_id": 707, "alive": False},
+                )
+            )
+            terminal = driver.take_snapshot()
+            unavailable = driver.execute_step(
+                "death-terminal", expected_revision=int(terminal["revision"])
+            )
+
+            self.assertEqual(
+                unavailable["settlement_status"], "settlement_unavailable"
+            )
+            self.assertNotIn(
+                "start-next-episode", driver.capabilities()["action_steps"]
+            )
+            with self.assertRaises(UnsupportedStepError):
+                driver.execute_step("start-next-episode")
 
     def test_save_checkpoint_without_directory_keeps_submission_explicit(self) -> None:
         endpoint = FakeEndpoint()
@@ -3067,7 +3305,7 @@ class NativeFallbackModeTests(unittest.TestCase):
                         "revision": 1,
                     },
                     execute=lambda step, _revision: visual_calls.append(step) or {},
-                    action_steps=("restore-checkpoint",),
+                    action_steps=("restore-checkpoint", "start-next-episode"),
                 ),
                 window_minimized=lambda: False,
             ),
@@ -3078,6 +3316,11 @@ class NativeFallbackModeTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
             driver.execute_step("restore-checkpoint")
+        self.assertNotIn(
+            "start-next-episode", driver.capabilities()["action_steps"]
+        )
+        with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
+            driver.execute_step("start-next-episode")
         self.assertEqual(visual_calls, [])
 
     def test_native_war_command_never_uses_hybrid_visual_fallback(self) -> None:

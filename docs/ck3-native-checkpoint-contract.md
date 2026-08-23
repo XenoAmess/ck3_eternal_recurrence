@@ -140,3 +140,13 @@ synthetic restore。
   `save-checkpoint → life-advance → restore-checkpoint` history 保持连续，返回 revision 已稳定为 `12`。
 
 同进程指定文件热加载尚未实现；当前闭环使用受管进程重启。
+
+## Recovery checkpoint 与 episode seed 分离
+
+`xar_checkpoint.ck3` 只用于当前一局的故障恢复，可以被周期性存档覆盖。首次一局尚无已完成 episode 时，第一次成功、稳定落盘的 baseline checkpoint 同时冻结为
+`xar_episode_seed.ck3`，并在 `<state>/native-session/episode-seed.json` 记录 size、SHA-256、`date_raw`、CharacterID 与来源 run。之后的任何 recovery save 都不得覆盖 seed。
+
+完整计分的 `death-terminal` 之后，typed MCP `ck3_start_next_episode`（semantic step `start-next-episode`）经 native-session queue 停止旧 CK3，并明确执行
+`-loadsave=xar_episode_seed`。生命周期 marker 依次为 `relaunching_episode_seed -> binding -> active_new`；它与 `restore-checkpoint` 的 `lifecycle_intent=restore` 明确分离。首个稳定 map-ready snapshot 必须与 seed 的日期、CharacterID、size/SHA 全部匹配，否则新局绑定保持 blocked。
+
+匹配后即使 CharacterID 与上一局相同，也生成新的 `episode_run_id`，清空本局 command history、recovery checkpoint 引用以及战争/婚姻 query cache。普通游玩期间未携带该 marker 的 CharacterID 变化仍然是 one-life terminal，绝不会被误判成新局。`hybrid-fallback` 对 `start-next-episode` 与 `restore-checkpoint` 一样只允许 pure-native 实现，不走 Data Mod、OCR 或键鼠回落。

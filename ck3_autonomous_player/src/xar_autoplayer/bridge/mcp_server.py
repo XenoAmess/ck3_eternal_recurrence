@@ -176,6 +176,13 @@ def create_server(driver: GameplayBridgeDriver):
         return service.restore_checkpoint(expected_revision=expected_revision)
 
     @server.tool()
+    def ck3_start_next_episode(
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Start a new one-life run from the immutable native seed save."""
+        return service.start_next_episode(expected_revision=expected_revision)
+
+    @server.tool()
     def ck3_reply_pending_character_interaction(
         accept: bool,
         interaction_instance_id: int | None = None,

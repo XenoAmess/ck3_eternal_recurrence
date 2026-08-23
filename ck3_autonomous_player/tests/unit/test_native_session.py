@@ -410,6 +410,81 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.assertEqual(report["pid"], 4646)
         self.assertEqual(report["exit_reason"], "stop")
 
+    def test_start_next_episode_loads_immutable_seed_with_new_lifecycle_marker(
+        self,
+    ) -> None:
+        first_process = mock.Mock(pid=4545)
+        first_process.poll.return_value = None
+        second_process = mock.Mock(pid=4646)
+        second_process.poll.return_value = None
+        first_handle = SimpleNamespace(process=first_process)
+        second_handle = SimpleNamespace(process=second_process)
+        config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\next-episode-test",
+            dll_path=Path("bridge.dll"),
+            injector_path=Path("injector.exe"),
+        )
+        bridge_dir = self.spec.state_dir / "native-session" / "bridge"
+        seed_payload = b"immutable seed"
+        seed_path = self.spec.profile_dir / "save games" / "xar_episode_seed.ck3"
+        seed_path.parent.mkdir(parents=True)
+        seed_path.write_bytes(seed_payload)
+        digest = hashlib.sha256(seed_payload).hexdigest()
+        write_json_atomic(
+            bridge_dir / "inbox" / "01-next.json",
+            {
+                "protocol_version": 1,
+                "request_id": "01-next",
+                "command": "start-next-episode",
+                "pipe": config.pipe_name,
+                "seed_name": seed_path.name,
+                "seed_size": len(seed_payload),
+                "seed_sha256": digest,
+                "seed_date_raw": 53_168_784,
+                "seed_character_id": 707,
+                "source_run_id": "native-707-finished",
+            },
+        )
+        write_json_atomic(
+            bridge_dir / "inbox" / "02-stop.json",
+            {"protocol_version": 1, "request_id": "02-stop", "command": "stop"},
+        )
+        shutdown = {"ok": True, "contract_errors": []}
+        with mock.patch(
+            "xar_autoplayer.native_session.launch",
+            side_effect=(first_handle, second_handle),
+        ) as launch_mock, mock.patch(
+            "xar_autoplayer.native_session.stop_tracked",
+            side_effect=(shutdown, shutdown),
+        ):
+            report = _native_session_locked(
+                self.spec,
+                config,
+                1.0,
+                input_stream=None,
+                output_stream=None,
+                poll_interval_seconds=0.001,
+            )
+
+        self.assertEqual(
+            launch_mock.call_args_list[1],
+            mock.call(
+                self.spec,
+                native_bridge=config,
+                load_save_name="xar_episode_seed",
+                verify_prepared_profile=False,
+            ),
+        )
+        response = json.loads(
+            (bridge_dir / "outbox" / "01-next.json").read_text(encoding="utf-8")
+        )
+        self.assertTrue(response["ok"])
+        self.assertEqual(response["result"]["lifecycle_intent"], "new_episode")
+        self.assertEqual(response["result"]["episode_seed"]["sha256"], digest)
+        self.assertNotIn("checkpoint", response["result"])
+        self.assertEqual(report["restart_count"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()

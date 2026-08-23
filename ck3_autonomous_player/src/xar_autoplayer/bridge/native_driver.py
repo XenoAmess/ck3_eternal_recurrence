@@ -16,6 +16,7 @@ import json
 import math
 import os
 from pathlib import Path
+import shutil
 import struct
 import threading
 import time
@@ -86,11 +87,15 @@ _NATIVE_LIFE_ADVANCE_PRIMITIVES = frozenset(
     {"set-speed-5", "resume-map", "pause-map"}
 )
 _CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
+_EPISODE_SEED_FILENAME = "xar_episode_seed.ck3"
+_EPISODE_SEED_METADATA_FILENAME = "episode-seed.json"
+_EPISODE_TRANSITION_FILENAME = "episode-transition.json"
 _NATIVE_DEATH_TERMINAL_STEP = "death-terminal"
 _NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
 _NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 _NATIVE_DRIVER_STATE_VERSION = 2
 _RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
+_START_NEXT_EPISODE_STEP = "start-next-episode"
 _COLD_RESTORE_SOURCE = "native-session-cold-start"
 _RESTORE_MAP_STABLE_SECONDS = 0.5
 _NATIVE_WAR_ADVANCE_MAX_DAYS = 30
@@ -552,6 +557,17 @@ class NativeHeadlessGameplayDriver:
         self._episode_binding_state = "unbound"
         self._pending_cold_candidate: dict[str, object] | None = None
         self._cold_candidate_rejection: str | None = None
+        self._episode_seed: dict[str, object] | None = self._read_episode_seed()
+        self._episode_transition: dict[str, object] | None = (
+            self._read_pending_episode_transition()
+        )
+        self._episode_transition_error: str | None = (
+            str(self._episode_transition.get("error"))
+            if isinstance(self._episode_transition, dict)
+            and self._episode_transition.get("phase") == "blocked"
+            and self._episode_transition.get("error")
+            else None
+        )
         self._declarable_wars: list[dict[str, object]] = []
         self._declaration_query_sequence: int | None = None
         self._arrange_marriage_choices: list[dict[str, object]] = []
@@ -636,6 +652,18 @@ class NativeHeadlessGameplayDriver:
         with self._episode_identity_lock:
             episode_character_id = self._episode_character_id
             episode_run_id = self._episode_run_id
+            episode_seed = copy.deepcopy(self._episode_seed)
+            completed_terminal = self._completed_terminal_result_locked()
+            episode_transition = copy.deepcopy(self._episode_transition)
+        if (
+            isinstance(terminal_reason, str)
+            and completed_terminal is not None
+            and self.state_dir is not None
+            and self._episode_seed_matches_file(episode_seed)
+            and episode_transition is None
+        ):
+            action_steps.add(_START_NEXT_EPISODE_STEP)
+            composite_action_steps.append(_START_NEXT_EPISODE_STEP)
         return {
             **result,
             "action_steps": sorted(action_steps),
@@ -665,7 +693,10 @@ class NativeHeadlessGameplayDriver:
                 "driver_state_restore_kind": self._driver_state_restore_kind,
                 "episode_binding_state": self._episode_binding_state,
                 "cold_candidate_rejection": self._cold_candidate_rejection,
+                "episode_transition": episode_transition,
+                "episode_transition_error": self._episode_transition_error,
             },
+            "episode_seed": episode_seed,
             "episode_character_id": episode_character_id,
             "episode_run_id": episode_run_id,
             "episode_identity_pending": (
@@ -855,6 +886,13 @@ class NativeHeadlessGameplayDriver:
             return self._execute_native_death_terminal(
                 expected_revision=expected_revision
             )
+        if (
+            step == _START_NEXT_EPISODE_STEP
+            and step in capabilities.get("composite_action_steps", [])
+        ):
+            return self._execute_start_next_episode(
+                expected_revision=expected_revision
+            )
         if step in capabilities.get("composite_action_steps", []):
             if step == "life-advance":
                 return self._execute_life_advance(
@@ -888,6 +926,204 @@ class NativeHeadlessGameplayDriver:
                 row["error"] = error
             self._command_history.append(row)
         self._persist_driver_state()
+
+    def _bind_new_episode_from_seed_snapshot(
+        self,
+        snapshot: dict[str, object],
+        *,
+        current_character_id: int,
+    ) -> bool:
+        """Bind a seed relaunch as a new run, even when CharacterID is unchanged."""
+        with self._driver_state_lock:
+            transition = copy.deepcopy(self._episode_transition)
+        if transition is None:
+            return False
+        seed = transition.get("seed")
+        snapshot_date_raw = snapshot.get("date_raw")
+        rejection: str | None = None
+        if not isinstance(seed, dict):
+            rejection = "episode_seed_metadata_missing"
+        elif current_character_id != seed.get("character_id"):
+            rejection = "episode_seed_character_mismatch"
+        elif snapshot_date_raw != seed.get("date_raw"):
+            rejection = "episode_seed_date_mismatch"
+        elif not self._episode_seed_matches_file(seed, verify_sha256=True):
+            rejection = "episode_seed_bytes_mismatch"
+
+        with self._driver_state_lock:
+            if (
+                self._episode_transition is None
+                or self._episode_transition.get("request_id")
+                != transition.get("request_id")
+            ):
+                return True
+            if rejection is not None:
+                self._episode_transition_error = rejection
+                self._episode_binding_state = "episode_seed_blocked"
+                self._episode_transition["phase"] = "blocked"
+                self._episode_transition["error"] = rejection
+                self._persist_episode_transition_locked()
+                return True
+            previous_run_id = self._episode_run_id
+            self._command_history = []
+            self._last_checkpoint = None
+            self._episode_character_id = current_character_id
+            self._episode_run_id = (
+                f"native-{current_character_id}-{uuid.uuid4().hex[:12]}"
+            )
+            self._driver_state_restored = False
+            self._driver_state_restore_kind = "new_episode_seed"
+            self._episode_binding_state = "active_new"
+            self._cold_candidate_rejection = None
+            self._pending_cold_candidate = None
+            self._declarable_wars = []
+            self._declaration_query_sequence = None
+            self._arrange_marriage_choices = []
+            self._arrange_marriage_query_sequence = None
+            completed = {
+                **self._episode_transition,
+                "phase": "active_new",
+                "source_run_id": previous_run_id,
+                "episode_run_id": self._episode_run_id,
+                "episode_character_id": current_character_id,
+                "bridge_pid": self._session_bridge_pid,
+            }
+            self._episode_transition = None
+            self._episode_transition_error = None
+            self._write_episode_transition(completed)
+        self._persist_driver_state()
+        return True
+
+    def _completed_terminal_result_locked(self) -> dict[str, object] | None:
+        """Return the current run's durable, scored death terminal."""
+        for row in reversed(self._command_history):
+            if row.get("command") != _NATIVE_DEATH_TERMINAL_STEP:
+                continue
+            if row.get("ok") is not True:
+                return None
+            result = row.get("result")
+            score = result.get("score") if isinstance(result, dict) else None
+            settlement = (
+                result.get("one_life_settlement")
+                if isinstance(result, dict)
+                else None
+            )
+            strategy = (
+                result.get("cross_run_strategy")
+                if isinstance(result, dict)
+                else None
+            )
+            recorded = (
+                strategy.get("recorded_episode")
+                if isinstance(strategy, dict)
+                else None
+            )
+            if (
+                isinstance(result, dict)
+                and result.get("terminal") is True
+                and result.get("settlement_status") == "complete"
+                and isinstance(score, (int, float))
+                and not isinstance(score, bool)
+                and isinstance(settlement, dict)
+                and settlement.get("final_score") is not None
+                and isinstance(recorded, dict)
+                and recorded.get("run_id") == self._episode_run_id
+                and recorded.get("score") == score
+            ):
+                return copy.deepcopy(result)
+            return None
+        return None
+
+    def _episode_seed_path(self) -> Path | None:
+        return (
+            self.save_dir / _EPISODE_SEED_FILENAME
+            if self.save_dir is not None
+            else None
+        )
+
+    def _episode_seed_metadata_path(self) -> Path | None:
+        return (
+            self.state_dir
+            / _NATIVE_SESSION_QUEUE_DIRNAME
+            / _EPISODE_SEED_METADATA_FILENAME
+            if self.state_dir is not None
+            else None
+        )
+
+    def _episode_transition_path(self) -> Path | None:
+        return (
+            self.state_dir
+            / _NATIVE_SESSION_QUEUE_DIRNAME
+            / _EPISODE_TRANSITION_FILENAME
+            if self.state_dir is not None
+            else None
+        )
+
+    def _read_episode_seed(self) -> dict[str, object] | None:
+        metadata_path = self._episode_seed_metadata_path()
+        if metadata_path is None or not metadata_path.is_file():
+            return None
+        try:
+            payload = json.loads(metadata_path.read_text(encoding="utf-8-sig"))
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            return None
+        return dict(payload) if isinstance(payload, dict) else None
+
+    def _read_pending_episode_transition(self) -> dict[str, object] | None:
+        path = self._episode_transition_path()
+        if path is None or not path.is_file():
+            return None
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            return None
+        if (
+            isinstance(payload, dict)
+            and payload.get("command") == _START_NEXT_EPISODE_STEP
+            and payload.get("phase")
+            in {"relaunching_episode_seed", "binding", "blocked"}
+            and isinstance(payload.get("seed"), dict)
+        ):
+            return dict(payload)
+        return None
+
+    def _episode_seed_matches_file(
+        self,
+        seed: object,
+        *,
+        verify_sha256: bool = False,
+    ) -> bool:
+        path = self._episode_seed_path()
+        if not isinstance(seed, dict) or path is None:
+            return False
+        size = seed.get("size")
+        digest = seed.get("sha256")
+        if (
+            seed.get("name") != _EPISODE_SEED_FILENAME
+            or isinstance(size, bool)
+            or not isinstance(size, int)
+            or size <= 0
+            or not isinstance(digest, str)
+            or len(digest) != 64
+            or isinstance(seed.get("date_raw"), bool)
+            or not isinstance(seed.get("date_raw"), int)
+            or isinstance(seed.get("character_id"), bool)
+            or not isinstance(seed.get("character_id"), int)
+        ):
+            return False
+        signature = _checkpoint_signature(path)
+        if signature is None or signature[0] != size:
+            return False
+        return not verify_sha256 or _sha256_file(path) == digest
+
+    def _persist_episode_transition_locked(self) -> None:
+        if self._episode_transition is not None:
+            self._write_episode_transition(self._episode_transition)
+
+    def _write_episode_transition(self, payload: dict[str, object]) -> None:
+        path = self._episode_transition_path()
+        if path is not None:
+            write_json_atomic(path, payload)
 
     def _history_snapshot(self) -> list[dict[str, object]]:
         with self._history_lock:
@@ -947,8 +1183,14 @@ class NativeHeadlessGameplayDriver:
             # then persist the replacement PID for a later daemon restart.
             self._session_bridge_pid = bridge_pid
             if not first_connection and self._pending_cold_candidate is None:
-                self._driver_state_restore_kind = "managed_hot_restore"
-                should_persist = True
+                if self._episode_transition is not None:
+                    self._episode_transition["phase"] = "binding"
+                    self._episode_transition["bridge_pid"] = bridge_pid
+                    self._episode_binding_state = "binding_episode_seed"
+                    self._persist_episode_transition_locked()
+                else:
+                    self._driver_state_restore_kind = "managed_hot_restore"
+                    should_persist = True
             self._declarable_wars = []
             self._declaration_query_sequence = None
             self._arrange_marriage_choices = []
@@ -1075,6 +1317,10 @@ class NativeHeadlessGameplayDriver:
             snapshot.get("map_ready") is not True
             or isinstance(current_character_id, bool)
             or not isinstance(current_character_id, int)
+        ):
+            return
+        if self._bind_new_episode_from_seed_snapshot(
+            snapshot, current_character_id=int(current_character_id)
         ):
             return
         with self._driver_state_lock:
@@ -1359,15 +1605,85 @@ class NativeHeadlessGameplayDriver:
             checkpoint["episode_character_id"] = self._episode_character_id
             checkpoint["episode_run_id"] = self._episode_run_id
             self._last_checkpoint = dict(checkpoint)
+        episode_seed = self._establish_episode_seed(checkpoint_path, checkpoint)
         return {
             **submission_result,
             "checkpoint": checkpoint,
+            "episode_seed": episode_seed,
             "materialization": {
                 "available": True,
                 "save_dir": str(self.save_dir.resolve()),
                 "mtime_ns": mtime_ns,
             },
         }
+
+    def _establish_episode_seed(
+        self,
+        checkpoint_path: Path,
+        checkpoint: dict[str, object],
+    ) -> dict[str, object] | None:
+        """Freeze the first baseline save; later recovery saves never replace it."""
+        with self._driver_state_lock:
+            existing = copy.deepcopy(self._episode_seed)
+            character_id = self._episode_character_id
+            run_id = self._episode_run_id
+        if existing is not None:
+            return existing
+        if self.state_dir is None or self.save_dir is None:
+            return None
+        strategy_path = self.state_dir / "strategy" / "one-life-history.json"
+        if strategy_path.is_file():
+            try:
+                strategy = json.loads(strategy_path.read_text(encoding="utf-8-sig"))
+            except (OSError, UnicodeError, json.JSONDecodeError):
+                return None
+            if isinstance(strategy, dict) and strategy.get("episodes"):
+                return None
+        if (
+            isinstance(character_id, bool)
+            or not isinstance(character_id, int)
+            or not isinstance(run_id, str)
+            or not run_id
+        ):
+            return None
+        seed_path = self._episode_seed_path()
+        metadata_path = self._episode_seed_metadata_path()
+        if seed_path is None or metadata_path is None:
+            return None
+        if seed_path.exists():
+            # Bytes without their date/character metadata cannot be treated as
+            # a seed.  Most importantly, never overwrite them implicitly.
+            return None
+        seed_path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = seed_path.with_name(
+            f".{seed_path.name}.{uuid.uuid4().hex}.tmp"
+        )
+        try:
+            shutil.copyfile(checkpoint_path, temporary)
+            os.link(temporary, seed_path)
+        except FileExistsError:
+            return self._read_episode_seed()
+        finally:
+            try:
+                temporary.unlink()
+            except FileNotFoundError:
+                pass
+        seed = {
+            "format_version": 1,
+            "name": _EPISODE_SEED_FILENAME,
+            "path": str(seed_path.resolve()),
+            "size": seed_path.stat().st_size,
+            "sha256": _sha256_file(seed_path),
+            "date_raw": checkpoint.get("date_raw"),
+            "character_id": character_id,
+            "source_run_id": run_id,
+            "source_checkpoint_name": _CHECKPOINT_FILENAME,
+            "immutable": True,
+        }
+        write_json_atomic(metadata_path, seed)
+        with self._driver_state_lock:
+            self._episode_seed = dict(seed)
+        return seed
 
     def _execute_pending_character_interaction_reply(
         self, step: str, *, expected_revision: int | None
@@ -1920,6 +2236,151 @@ class NativeHeadlessGameplayDriver:
             "paused": restored.get("paused"),
             "snapshot_id": restored["snapshot_id"],
             "revision": restored["revision"],
+        }
+
+    def _execute_start_next_episode(
+        self, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        """Relaunch the immutable campaign seed and bind a fresh one-life run."""
+        if self.state_dir is None:
+            raise UnsupportedStepError(
+                "start-next-episode requires a managed pure-native session"
+            )
+        starting = self.take_snapshot()
+        starting_revision = int(starting["revision"])
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision != starting_revision:
+                raise BridgeUnavailableError(
+                    "native gameplay revision mismatch: "
+                    f"expected {expected_revision}, current {starting_revision}"
+                )
+        with self._driver_state_lock:
+            terminal = self._completed_terminal_result_locked()
+            seed = copy.deepcopy(self._episode_seed)
+            source_run_id = self._episode_run_id
+        if terminal is None:
+            raise BridgeUnavailableError(
+                "start-next-episode requires a complete scored death-terminal"
+            )
+        if not self._episode_seed_matches_file(seed, verify_sha256=True):
+            raise BridgeUnavailableError(
+                "start-next-episode requires the immutable xar_episode_seed.ck3"
+            )
+        assert isinstance(seed, dict)
+        diagnostics = self.state.diagnostics()
+        starting_generation = diagnostics.get("connection_generation")
+        if (
+            isinstance(starting_generation, bool)
+            or not isinstance(starting_generation, int)
+            or starting_generation < 1
+        ):
+            raise BridgeUnavailableError(
+                "start-next-episode requires a connected DLL generation"
+            )
+
+        request_id = f"next-episode-{uuid.uuid4().hex}"
+        transition = {
+            "format_version": 1,
+            "request_id": request_id,
+            "command": _START_NEXT_EPISODE_STEP,
+            "phase": "relaunching_episode_seed",
+            "source_run_id": source_run_id,
+            "seed": copy.deepcopy(seed),
+        }
+        with self._driver_state_lock:
+            self._episode_transition = transition
+            self._episode_transition_error = None
+            self._episode_binding_state = "relaunching_episode_seed"
+            self._persist_episode_transition_locked()
+
+        queue_dir = self._native_session_queue_dir()
+        response_path = queue_dir / "outbox" / f"{request_id}.json"
+        write_json_atomic(
+            queue_dir / "inbox" / f"{request_id}.json",
+            {
+                "protocol_version": SESSION_QUEUE_PROTOCOL_VERSION,
+                "request_id": request_id,
+                "command": _START_NEXT_EPISODE_STEP,
+                "pipe": self.pipe_name,
+                "seed_name": _EPISODE_SEED_FILENAME,
+                "seed_size": seed["size"],
+                "seed_sha256": seed["sha256"],
+                "seed_date_raw": seed["date_raw"],
+                "seed_character_id": seed["character_id"],
+                "source_run_id": source_run_id,
+            },
+        )
+        deadline = time.monotonic() + self.restore_timeout_seconds
+        try:
+            response = self._wait_for_restore_response(
+                response_path, request_id, deadline
+            )
+            lifecycle_result = response.get("result")
+            lifecycle = (
+                dict(lifecycle_result)
+                if isinstance(lifecycle_result, dict)
+                else {}
+            )
+            lifecycle_seed = lifecycle.get("episode_seed")
+            if not isinstance(lifecycle_seed, dict) or (
+                lifecycle_seed.get("name") != _EPISODE_SEED_FILENAME
+                or lifecycle_seed.get("size") != seed["size"]
+                or lifecycle_seed.get("sha256") != seed["sha256"]
+                or lifecycle.get("lifecycle_intent") != "new_episode"
+            ):
+                raise BridgeUnavailableError(
+                    "native-session did not attest the new-episode seed lifecycle"
+                )
+            resumed = self._wait_for_restored_map(starting_generation, deadline)
+            resumed = self._with_one_life_episode(resumed)
+            with self._driver_state_lock:
+                transition_error = self._episode_transition_error
+                new_run_id = self._episode_run_id
+                new_character_id = self._episode_character_id
+            if transition_error is not None:
+                raise BridgeUnavailableError(
+                    f"episode seed binding failed: {transition_error}"
+                )
+            if new_run_id == source_run_id or not isinstance(new_run_id, str):
+                raise BridgeUnavailableError(
+                    "episode seed relaunch did not create a new run identity"
+                )
+        except Exception:
+            with self._driver_state_lock:
+                if self._episode_transition is not None:
+                    self._episode_transition["phase"] = "blocked"
+                    self._persist_episode_transition_locked()
+            raise
+
+        from ..strategy import read_one_life_strategy
+
+        cross_run = read_one_life_strategy(self.state_dir)
+        return {
+            "step": _START_NEXT_EPISODE_STEP,
+            "accepted": True,
+            "status": "started",
+            "backend_id": "native-headless",
+            "source": "native-session-lifecycle-queue",
+            "lifecycle_intent": "new_episode",
+            "source_run_id": source_run_id,
+            "episode_run_id": new_run_id,
+            "episode_character_id": new_character_id,
+            "same_character_id": new_character_id == seed["character_id"],
+            "episode_seed": copy.deepcopy(seed),
+            "cross_run_plan_used": copy.deepcopy(cross_run["next_run_plan"]),
+            "lifecycle": {
+                **lifecycle,
+                "request_id": request_id,
+                "previous_connection_generation": starting_generation,
+                "connection_generation": resumed["diagnostics"][
+                    "connection_generation"
+                ],
+            },
+            "map_ready": True,
+            "paused": resumed.get("paused"),
+            "snapshot_id": resumed["snapshot_id"],
+            "revision": resumed["revision"],
         }
 
     def _execute_native_death_terminal(
@@ -2686,6 +3147,8 @@ class ConfiguredHybridFallbackDriver:
         action_steps = set(_string_list(base.get("action_steps")))
         if _RESTORE_CHECKPOINT_STEP not in native_steps:
             action_steps.discard(_RESTORE_CHECKPOINT_STEP)
+        if _START_NEXT_EPISODE_STEP not in native_steps:
+            action_steps.discard(_START_NEXT_EPISODE_STEP)
         action_steps = {
             step
             for step in action_steps
@@ -2743,12 +3206,12 @@ class ConfiguredHybridFallbackDriver:
                     expected_revision=expected_revision
                 )
         if (
-            step == _RESTORE_CHECKPOINT_STEP
+            step in {_RESTORE_CHECKPOINT_STEP, _START_NEXT_EPISODE_STEP}
             and step
             not in _string_list(self.native.capabilities().get("action_steps"))
         ):
             raise UnsupportedStepError(
-                "restore-checkpoint is pure native and will not use fallback"
+                f"{step} is pure native and will not use fallback"
             )
         if (
             (
