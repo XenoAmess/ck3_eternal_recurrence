@@ -104,6 +104,31 @@ def choose_one_life_turn(
     available_steps = {
         step for step in (action_steps or ()) if isinstance(step, str) and step
     }
+    played_character = (
+        snapshot.get("played_character")
+        if isinstance(snapshot, dict)
+        else None
+    )
+    if (
+        isinstance(played_character, dict)
+        and played_character.get("alive") is False
+    ):
+        if "death-terminal" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "terminal_native",
+                "selected_step": "death-terminal",
+                "reason": "the native played character is dead; end this one-life episode",
+                "played_character": dict(played_character),
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "terminal_native_unsupported",
+            "selected_step": None,
+            "required_step": "death-terminal",
+            "reason": "the backend cannot finalize the detected player death",
+            "played_character": dict(played_character),
+        }
     raw_active_event = (
         snapshot.get("active_event", snapshot.get("current_event"))
         if isinstance(snapshot, dict)
@@ -162,6 +187,39 @@ def choose_one_life_turn(
                 f"advertise {required_step}"
             ),
             "active_event": event_summary,
+        }
+
+    pending_interaction = (
+        snapshot.get("pending_character_interaction")
+        if isinstance(snapshot, dict)
+        else None
+    )
+    if (
+        isinstance(pending_interaction, dict)
+        and pending_interaction.get("auto_accept_notification") is False
+    ):
+        step = "accept-pending-character-interaction"
+        summary = {
+            "instance_id": pending_interaction.get("instance_id"),
+            "sender_character_id": pending_interaction.get(
+                "sender_character_id"
+            ),
+        }
+        if step in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "pending_character_interaction",
+                "selected_step": step,
+                "reason": "accept the current native character interaction",
+                "pending_character_interaction": summary,
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "pending_character_interaction_unsupported",
+            "selected_step": None,
+            "required_step": step,
+            "reason": "the backend cannot reply to the pending character interaction",
+            "pending_character_interaction": summary,
         }
 
     last = rows[-1] if rows else None

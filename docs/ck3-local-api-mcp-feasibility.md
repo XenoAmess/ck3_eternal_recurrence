@@ -419,7 +419,13 @@ OCR；后来定位 `CSendCharacterInteractionCommand` 后，婚姻步骤再切�
 - `ck3_get_capabilities`
 - `ck3_take_snapshot`
 - `ck3_plan_turn`
+- `ck3_auto_turn`
 - `ck3_execute_step`
+- `ck3_save_checkpoint`
+- `ck3_restore_checkpoint`
+- `ck3_reply_pending_character_interaction`
+- `ck3_select_event_option`
+- `ck3_resolve_active_event`
 - `ck3_wait_for_change`
 - `ck3://capabilities`
 - `ck3://state/current`
@@ -465,8 +471,11 @@ OCR；后来定位 `CSendCharacterInteractionCommand` 后，婚姻步骤再切�
 5. 2026-08-23 已用正式 MCP client/tools 在真实 CK3 1.19.0.6 的最小化窗口完成 headless loop：
    `ck3_take_snapshot -> resume-map -> ck3_wait_for_change (date_raw 53171400 -> 53171424) -> pause-map`；该过程未调用
    OCR、截图、窗口激活或键鼠。`native-session` 还会用 `-continuelastsave` 尝试直接载入最后存档。
-6. 下一步：定位 active event/选项并接 `CSelectEventOptionCommand`，先让 `life-advance` 与事件处理完全摆脱 OCR；再按实际收益
-   依次接原生婚姻互动、战争宣战、抬兵/移动/解散、存档与死亡状态。
+6. 已完成：active event/选项、`CSelectEventOptionCommand`、`life-advance`、原生 checkpoint 落盘与进程级恢复；
+   玩家角色 `CharacterID`/生死已进入 snapshot，一代制死亡直接终止本局。
+7. 已完成离线实现、待真实样本：待处理角色互动 snapshot 与 `CReplyCharacterInteractionCommand` 接受/拒绝。
+   下一步按实际收益接主动婚姻、战争状态、宣战、抬兵/移动/解散；缺少原生 capability 时，纯 native 明确返回
+   unsupported，只有 `hybrid-fallback` 配置才允许回落。
 
 本项目是本机单人游戏自动玩家。当前开发优先级由“能否更快、更稳定地完成实际玩法”决定；与实际崩溃、错误动作或
 不可用版本无关的泛化安全证明，不进入这条功能路线的阻塞清单。

@@ -29,20 +29,50 @@ class GameplayBridgeService:
     def plan_turn(self) -> dict[str, object]:
         snapshot = self.snapshot()
         capabilities = self.capabilities()
+        available_steps = action_step_set(capabilities)
         raw_history = snapshot.get("history")
         history = (
             [row for row in raw_history if isinstance(row, dict)]
             if isinstance(raw_history, list)
             else []
         )
+        native_history = snapshot.get("native_command_history")
+        if isinstance(native_history, list):
+            history.extend(
+                row for row in native_history if isinstance(row, dict)
+            )
+        plan = choose_one_life_turn(
+            history,
+            snapshot=snapshot,
+            action_steps=available_steps,
+        )
         return {
             "snapshot_id": snapshot["snapshot_id"],
             "revision": snapshot["revision"],
-            "plan": choose_one_life_turn(
-                history,
-                snapshot=snapshot,
-                action_steps=action_step_set(capabilities),
-            ),
+            "plan": _route_plan_to_available_step(plan, available_steps),
+        }
+
+    def auto_turn(self) -> dict[str, object]:
+        """Plan and execute exactly one backend-supported gameplay turn."""
+        planned = self.plan_turn()
+        plan = planned.get("plan")
+        selected_step = plan.get("selected_step") if isinstance(plan, dict) else None
+        if not isinstance(selected_step, str) or not selected_step:
+            return {
+                "status": "blocked",
+                "plan": plan,
+                "snapshot_id": planned.get("snapshot_id"),
+                "revision": planned.get("revision"),
+            }
+        result = self.execute_step(
+            selected_step,
+            expected_revision=int(planned["revision"]),
+        )
+        return {
+            "status": "executed",
+            "selected_step": selected_step,
+            "plan": plan,
+            "result": result,
         }
 
     def select_event_option(
@@ -199,9 +229,121 @@ class GameplayBridgeService:
             )
         return result
 
+    def restore_checkpoint(
+        self, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        """Restart the managed pure-native session at its latest checkpoint."""
+        if "restore-checkpoint" not in action_step_set(self.capabilities()):
+            raise UnsupportedStepError(
+                "selected backend does not implement gameplay step "
+                "restore-checkpoint"
+            )
+        result = self.execute_step(
+            "restore-checkpoint", expected_revision=expected_revision
+        )
+        if (
+            not isinstance(result.get("checkpoint"), dict)
+            or not isinstance(result.get("restored_date"), dict)
+        ):
+            raise BridgeUnavailableError(
+                "restore-checkpoint result lacks checkpoint or restored date"
+            )
+        return result
+
+    def reply_pending_character_interaction(
+        self,
+        *,
+        accept: bool,
+        interaction_instance_id: int | None = None,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Accept or reject the exact pending native character interaction."""
+        if not isinstance(accept, bool):
+            raise ValueError("accept must be a boolean")
+        if interaction_instance_id is not None and (
+            isinstance(interaction_instance_id, bool)
+            or not isinstance(interaction_instance_id, int)
+            or interaction_instance_id < 0
+        ):
+            raise ValueError(
+                "interaction_instance_id must be a non-negative integer"
+            )
+        snapshot = self.snapshot()
+        pending = snapshot.get("pending_character_interaction")
+        if not isinstance(pending, dict):
+            raise BridgeUnavailableError(
+                "CK3 has no pending character interaction"
+            )
+        actual_instance_id = pending.get("instance_id")
+        if (
+            interaction_instance_id is not None
+            and actual_instance_id != interaction_instance_id
+        ):
+            raise BridgeUnavailableError(
+                "pending character interaction instance mismatch: "
+                f"expected {interaction_instance_id}, current {actual_instance_id}"
+            )
+        step = (
+            "accept-pending-character-interaction"
+            if accept
+            else "reject-pending-character-interaction"
+        )
+        if step not in action_step_set(self.capabilities()):
+            raise UnsupportedStepError(
+                f"selected backend does not implement gameplay step {step}"
+            )
+        result = self.execute_step(
+            step,
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else int(snapshot["revision"])
+            ),
+        )
+        return {
+            **result,
+            "interaction_instance_id": actual_instance_id,
+            "sender_character_id": pending.get("sender_character_id"),
+            "accepted": accept,
+        }
+
     def wait_for_change(
         self, after_revision: int, *, timeout_seconds: float
     ) -> dict[str, object]:
         return self.driver.wait_for_change(
             after_revision, timeout_seconds=timeout_seconds
         )
+
+
+def _route_plan_to_available_step(
+    plan: dict[str, object], available_steps: set[str]
+) -> dict[str, object]:
+    """Keep a partial native backend playing instead of dispatching unsupported work."""
+    selected = plan.get("selected_step")
+    if not isinstance(selected, str) or selected in available_steps:
+        return plan
+    if selected in {"death-terminal", "strategy-review", "resolve-current-event"}:
+        return {
+            **plan,
+            "selected_step": None,
+            "required_step": selected,
+            "reason": f"selected backend does not implement required step {selected}",
+        }
+    if "life-advance" in available_steps:
+        return {
+            **plan,
+            "phase": "capability_progress",
+            "deferred_phase": plan.get("phase"),
+            "selected_step": "life-advance",
+            "required_step": selected,
+            "reason": (
+                f"selected backend does not yet implement {selected}; "
+                "continue the current life through native events"
+            ),
+        }
+    return {
+        **plan,
+        "selected_step": None,
+        "required_step": selected,
+        "reason": f"selected backend does not implement gameplay step {selected}",
+    }

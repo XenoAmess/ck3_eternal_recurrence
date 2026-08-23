@@ -29,7 +29,12 @@ struct Bindings {
   std::uintptr_t select_event_option_secondary_vtable = 0;
   std::uintptr_t auto_save_primary_vtable = 0;
   std::uintptr_t auto_save_secondary_vtable = 0;
+  std::uintptr_t reply_character_interaction_primary_vtable = 0;
+  std::uintptr_t reply_character_interaction_secondary_vtable = 0;
+  void **pending_character_interaction_storage_slot = nullptr;
+  void **character_storage_slot = nullptr;
   std::size_t event_manager_offset = 0;
+  std::size_t player_character_manager_offset = 0;
   SubmitCommand submit_command = nullptr;
   GetLocalPlayer get_local_player = nullptr;
   GetCurrentEvent get_current_event = nullptr;
@@ -41,9 +46,16 @@ struct Snapshot {
   bool paused = false;
   std::int32_t player_id = -1;
   bool map_ready = false;
+  bool has_played_character = false;
+  std::int32_t played_character_id = -1;
+  bool played_character_alive = false;
   bool has_active_event = false;
   std::int32_t active_event_instance_id = -1;
   std::int32_t active_event_option_count = 0;
+  bool has_pending_character_interaction = false;
+  std::int32_t pending_character_interaction_id = -1;
+  std::int32_t pending_sender_character_id = -1;
+  bool pending_auto_accept_notification = false;
 
   friend bool operator==(const Snapshot &, const Snapshot &) = default;
 };
@@ -111,5 +123,23 @@ struct SaveCheckpointResult {
 // disk completion; the caller can correlate date_raw and the save name with
 // the produced save file.
 SaveCheckpointResult SubmitSaveCheckpoint(const Bindings &bindings) noexcept;
+
+enum class PendingInteractionReply {
+  accept = 0,
+  reject = 1,
+};
+
+enum class ReplyPendingInteractionResult {
+  submitted,
+  no_pending_interaction,
+  acknowledgement_required,
+  unavailable,
+};
+
+// Replies to the first pending CK3 character interaction exposed by Snapshot.
+// CPendingCharacterInteraction's component ID is the int32 payload consumed by
+// CReplyCharacterInteractionCommand; accept/reject are native enum values 0/1.
+ReplyPendingInteractionResult SubmitReplyToPendingInteraction(
+    const Bindings &bindings, PendingInteractionReply reply) noexcept;
 
 } // namespace xar::ck3_11906

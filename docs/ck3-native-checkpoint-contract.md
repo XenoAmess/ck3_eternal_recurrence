@@ -42,6 +42,23 @@ MCP 同时保留 generic `ck3_execute_step("save-checkpoint")`，并提供 typed
 `ck3_save_checkpoint(expected_revision?)`。两者走同一个 semantic step；typed 工具要求结果含明确
 `checkpoint` 对象。
 
+## 进程级 restore-checkpoint
+
+`ck3_restore_checkpoint(expected_revision?)` 与 generic
+`ck3_execute_step("restore-checkpoint")` 走同一条纯 native 生命周期路径：
+
+1. MCP native driver 向 `<state>/native-session/bridge/inbox` 原子发布请求，并记录当前
+   `connection_generation`；
+2. 持有 CK3 `SessionHandle` 的 `native-session` 主线程调用 `stop_tracked`，然后使用完全相同的
+   pipe、DLL 和 injector 再次执行 `launch(..., continue_last_save=True)`；
+3. 会话进程在 outbox 返回旧/新 PID；driver 仍不会立即宣称成功，而是等待 named pipe 出现更大的
+   `connection_generation`，并等待该代 DLL 发布 `map_ready=true` snapshot；
+4. 结果返回 `restored_date`、checkpoint 路径/大小/hash、新连接代次和新 PID。
+
+这条路径不导入 OCR、截图或输入模块，也不激活窗口。`native-headless` 缺少受管
+`native-session` 或 checkpoint 文件时直接失败；`hybrid-fallback` 对这一特定步骤也不会改走视觉
+`restore-checkpoint`。当前实现是固定 checkpoint 的进程级 `-continuelastsave`，不是同进程热读档。
+
 ## Minimized 实机结果
 
 2026-08-23，精确匹配的 CK3 `1.19.0.6` 在窗口最小化时完成了两次闭环：
@@ -54,5 +71,6 @@ MCP 同时保留 generic `ck3_execute_step("save-checkpoint")`，并提供 typed
   文件，返回 `status=saved`、完整路径、同样的大小与新文件 SHA-256
   `e767471a9d0f2984f4dba5baeaa9dcb43cb72b055f585a650c2ff1501ffcc914`。
 
-这两次过程都没有调用 OCR、截图、聚焦、键盘或鼠标后端。当前恢复路径是进程级
-`continuelastsave`；同进程指定文件热加载尚未实现。
+这两次过程都没有调用 OCR、截图、聚焦、键盘或鼠标后端。上述自动生命周期队列将同样的实测手工
+重启路径封装成 MCP semantic step；其 Python 双进程闭环已有确定性测试，整条 MCP 自动重启路径仍需
+下一次最小化实机复验。同进程指定文件热加载尚未实现。

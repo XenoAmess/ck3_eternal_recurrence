@@ -38,8 +38,10 @@ bridge identity/heartbeat/ping.
 | `game.command.select-event-option-1..N` | implemented, minimized live probe passed | high static command/queue layout + offline fixture + live option submit | explicit upper-layer policy only |
 | numeric event option count/indexes | implemented, minimized live probe passed | executor bounds-check and option-array layout at RVA `0x33E68C0` + live 5→3 option snapshots | never inside native driver |
 | `game.command.save-checkpoint` | implemented, minimized live file creation passed | high static `CAutoSaveCommand` layout + offline queue fixture + 63,367,813-byte live save | explicit upper-layer policy only |
+| `game.state.snapshot.played_character` | implemented, live probe pending | player-character manager + Character storage alive projection + offline layout fixture | never inside native driver |
+| `game.state.snapshot.pending_character_interaction` | implemented, live probe pending | high static component table/GetSender paths + offline layout fixture | never inside native driver |
+| `game.command.accept/reject-pending-character-interaction` | implemented, live probe pending | high static UI enum/command/queue path + offline command fixture | explicit upper-layer policy only |
 | event title/option text | unsupported | no repeatable localized text projection yet | unsupported in pure native mode |
-| played-character `CharacterID` | unsupported | do not confuse with 32-bit local player ID | unsupported in pure native mode |
 | main-thread tick hook | anchor-only/not located | command submission uses a locked queue, so it is not a prerequisite for the first loop | unsupported |
 
 `native-headless` must return unsupported for the rows marked unsupported.
@@ -71,6 +73,13 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   a local-player object and that object's `int32 +0x70` ID is non-negative.
   Startup snapshots may therefore expose date/speed/pause while keeping
   gameplay commands gated until the map has actually finished initializing.
+- `CK3GameData + 0x1D4F0` is the player-character manager. Its pointer array
+  begins at `+0x58` with count at `+0x64`; each record's local-player key at
+  `+0xD8` selects the current player and `int32 +0xB0` is the played
+  `CharacterID`. `*(base + 0x570C130)` is the Character component storage;
+  the resolved Character object's pointer at `+0x1C8` is null while alive and
+  non-null on the native death path. The bridge publishes only
+  `{character_id, alive}` and does not infer an heir from this manager.
 - `CGameState + 0xA0` points to CK3 game data, whose embedded event manager is
   at `+0x2F4C0`. Engine getter RVA `0x2706AD0` locks that manager, scans its
   active-event pointer array (`+0x1F18`, count at `+0x1F24`) backward, applies
@@ -78,6 +87,13 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   event consumed by the event UI. The event instance ID is `ActiveEvent
   +0x1BC`; its event-data pointer is `+0x1B0`; option count is `EventData
   +0x1BC`.
+- `*(base + 0x57BF1C8)` is the component storage used by the original
+  character-interaction notification UI to resolve a pending interaction ID.
+  Its slot array is `+0x20`, capacity is `int32 +0x2C`, and each 0x10-byte
+  slot stores the object pointer at `+0x08`. A valid pending object repeats its
+  component ID at `+0x10`; the low 24 bits are its slot index. UI `GetSender`
+  resolves the sender from the `int32 CharacterID` at pending object `+0x2F0`.
+  Byte `+0x5C6` is the UI's `IsAutoAcceptNotification` value.
 
 ## Command queue and object layouts
 
@@ -117,6 +133,23 @@ fixed short name `xar_checkpoint`. Its command result and the next forced
 snapshot report submission sequence, requested name, and `date_raw`; these
 confirm queue submission and deliberately do not claim asynchronous disk
 completion.
+
+`CReplyCharacterInteractionCommand` is `0x28` bytes. The original UI action
+at RVA `0x1268270` writes primary vtable `0x4082930`, zero flags at `+0x08`,
+secondary vtable `0x4082900` at `+0x18`, pending component ID at `+0x20`, and
+reply enum at `+0x24`, then submits with channel flags `0x0E`. Reflection
+thunks tie UI methods to enum `0=accept`, `1=reject`, `2=block`, and
+`4=acknowledge`. Heap clone RVA `0x8038E0` independently confirms the `0x28`
+size and both payload offsets.
+
+The canonical marriage script key is `arrange_marriage_interaction` in the
+1.19.0.6 base-game `00_marriage_interactions.txt`. Static UI paths show
+`CSendCharacterInteractionCommand` is `0x368` bytes (vtables `0x40829F8` and
+`0x40829C8`) and owns a copied context at `+0x20` containing four roles and
+option data. This slice does not guess those still-unclassified fields. A
+reply needs neither the key nor four role IDs: its pending component ID is the
+complete engine payload, so incoming marriage/betrothal acceptance ships
+independently of send-side construction.
 
 ## Completed and next live acceptance
 

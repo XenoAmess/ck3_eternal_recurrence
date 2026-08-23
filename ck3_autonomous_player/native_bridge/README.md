@@ -14,12 +14,13 @@ Its current first gameplay slice is intentionally small:
   capabilities are present only when the process executable exactly matches
   the pinned CK3 1.19.0.6 SHA-256;
 - the DLL emits a heartbeat every 250 ms, publishes semantic state snapshots
-  on actual date/speed/pause/map-ready/local-player/active-event changes, and
-  answers a framed `ping` with `pong`;
+  on actual date/speed/pause/map-ready/local-player/active-event/pending-
+  interaction changes, and answers a framed `ping` with `pong`;
 - for the exact pinned build it accepts `pause-map`, `resume-map`, and fixed
   `set-speed-1`..`set-speed-5` steps plus one-based
   `select-event-option-1..N` and `save-checkpoint` through CK3's native locked
-  command queue;
+  command queue; it also accepts or rejects the current pending character
+  interaction without opening or focusing its notification window;
 - `xar_ck3_bridge_host.exe` creates a minimal target with
   `CREATE_SUSPENDED`, runs the PID injector, verifies the complete
   hello/heartbeat/ping/pong exchange from inside that target, and only then
@@ -93,8 +94,14 @@ The current maximum payload is 1 MiB. Frame types are `hello`, `heartbeat`,
 bridge identity, heartbeat, and ping; they never expose game reads/actions.
 
 The snapshot currently contains `date_raw`, `speed`, `paused`, `map_ready`,
-`local_player_id`, a nullable `active_event`, and the last checkpoint queue
-submission. `map_ready` stays false until CK3 resolves a valid local player, so
+`local_player_id`, nullable `played_character`, `active_event` and
+`pending_character_interaction` objects, and the last checkpoint queue
+submission. `played_character` exposes the current played `CharacterID` and
+the engine's alive/dead projection; the one-generation planner treats dead as
+an episode terminal and never continues as the heir. The pending object exposes the engine component instance ID, the
+sender's 32-bit `CharacterID` handle, and whether CK3 classifies it as an
+acknowledgement-only auto-accept notification. `map_ready` stays false until
+CK3 resolves a valid local player, so
 the caller can wait through early startup snapshots without retrying actions.
 The player field is Jomini's 32-bit local/network player ID used by the pause
 command, not CK3's 64-bit played-character ID. Public speed is `1..5`; the
@@ -103,6 +110,11 @@ likewise use public option numbers `1..N` and translate to the command's native
 zero-based option index. Checkpoint results expose the fixed requested save
 name `xar_checkpoint`, submission sequence, and date; `submitted` describes
 the queue operation, while the produced file remains the completion check.
+
+`accept-pending-character-interaction` and
+`reject-pending-character-interaction` construct CK3's own 0x28-byte
+`CReplyCharacterInteractionCommand` for the currently published pending
+instance. They return a distinct error for acknowledgement-only notifications.
 
 ## Runtime integration
 

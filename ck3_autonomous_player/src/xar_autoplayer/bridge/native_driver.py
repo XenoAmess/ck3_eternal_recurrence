@@ -8,6 +8,7 @@ semantic driver interface used by the visual and data-Mod backends.
 from __future__ import annotations
 
 from collections.abc import Callable
+import copy
 import ctypes
 from ctypes import wintypes
 import hashlib
@@ -21,12 +22,14 @@ import time
 from typing import Protocol
 import uuid
 
+from ..environment import write_json_atomic
 from .driver import (
     BridgeUnavailableError,
     GameplayBridgeDriver,
     HybridGameplayDriver,
     UnsupportedStepError,
 )
+from .session_queue import SESSION_QUEUE_PROTOCOL_VERSION
 from .event_contract import (
     choose_event_option_number,
     event_option_step,
@@ -42,6 +45,9 @@ _NATIVE_LIFE_ADVANCE_PRIMITIVES = frozenset(
     {"set-speed-5", "resume-map", "pause-map"}
 )
 _CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
+_NATIVE_DEATH_TERMINAL_STEP = "death-terminal"
+_NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
+_RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
 
 
 class NativeBridgeEndpoint(Protocol):
@@ -171,6 +177,11 @@ class NativeProtocolState:
                     _action_steps(
                         raw_capabilities,
                         self._semantic_snapshot.get("active_event")
+                        if self._semantic_snapshot is not None
+                        else None,
+                        self._semantic_snapshot.get(
+                            "pending_character_interaction"
+                        )
                         if self._semantic_snapshot is not None
                         else None,
                     )
@@ -420,9 +431,12 @@ class NativeHeadlessGameplayDriver:
         endpoint: NativeBridgeEndpoint | None = None,
         command_timeout_seconds: float = 10.0,
         life_advance_timeout_seconds: float = 30.0,
+        state_dir: str | os.PathLike[str] | None = None,
         save_dir: str | os.PathLike[str] | None = None,
         checkpoint_timeout_seconds: float = 30.0,
         checkpoint_poll_interval_seconds: float = 0.1,
+        restore_timeout_seconds: float = 180.0,
+        restore_poll_interval_seconds: float = 0.05,
     ) -> None:
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
@@ -431,6 +445,7 @@ class NativeHeadlessGameplayDriver:
         self.life_advance_timeout_seconds = _positive_seconds(
             life_advance_timeout_seconds, "life_advance_timeout_seconds"
         )
+        self.state_dir = Path(state_dir) if state_dir is not None else None
         self.save_dir = Path(save_dir) if save_dir is not None else None
         self.checkpoint_timeout_seconds = _positive_seconds(
             checkpoint_timeout_seconds, "checkpoint_timeout_seconds"
@@ -439,6 +454,16 @@ class NativeHeadlessGameplayDriver:
             checkpoint_poll_interval_seconds,
             "checkpoint_poll_interval_seconds",
         )
+        self.restore_timeout_seconds = _positive_seconds(
+            restore_timeout_seconds, "restore_timeout_seconds"
+        )
+        self.restore_poll_interval_seconds = _positive_seconds(
+            restore_poll_interval_seconds,
+            "restore_poll_interval_seconds",
+        )
+        self._last_checkpoint: dict[str, object] | None = None
+        self._history_lock = threading.Lock()
+        self._command_history: list[dict[str, object]] = []
         self.state = NativeProtocolState(self.pipe_name)
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
@@ -478,6 +503,31 @@ class NativeHeadlessGameplayDriver:
         ):
             action_steps.add("life-advance")
             composite_action_steps.append("life-advance")
+        checkpoint_path = self._checkpoint_path()
+        if (
+            result.get("snapshot") is True
+            and self.state_dir is not None
+            and checkpoint_path is not None
+            and _checkpoint_signature(checkpoint_path) is not None
+        ):
+            action_steps.add(_RESTORE_CHECKPOINT_STEP)
+            composite_action_steps.append(_RESTORE_CHECKPOINT_STEP)
+        current_snapshot = (
+            self.state.semantic_snapshot()
+            if result.get("snapshot") is True
+            else None
+        )
+        played_character = (
+            current_snapshot.get("played_character")
+            if isinstance(current_snapshot, dict)
+            else None
+        )
+        if (
+            isinstance(played_character, dict)
+            and played_character.get("alive") is False
+        ):
+            action_steps.add(_NATIVE_DEATH_TERMINAL_STEP)
+            composite_action_steps.append(_NATIVE_DEATH_TERMINAL_STEP)
         return {
             **result,
             "action_steps": sorted(action_steps),
@@ -486,6 +536,17 @@ class NativeHeadlessGameplayDriver:
                 "configured": self.save_dir is not None,
                 "save_dir": str(self.save_dir) if self.save_dir is not None else None,
                 "filename": _CHECKPOINT_FILENAME,
+            },
+            "native_session_control": {
+                "configured": self.state_dir is not None,
+                "queue_dir": (
+                    str(self._native_session_queue_dir())
+                    if self.state_dir is not None
+                    else None
+                ),
+                "restore_checkpoint": (
+                    _RESTORE_CHECKPOINT_STEP in action_steps
+                ),
             },
             "transport_ready": transport_error is None,
             "diagnostics": diagnostics,
@@ -500,14 +561,55 @@ class NativeHeadlessGameplayDriver:
         transport_error = self._transport_error()
         if transport_error is not None:
             raise BridgeUnavailableError(transport_error)
-        return self.state.semantic_snapshot()
+        return {
+            **self.state.semantic_snapshot(),
+            "native_command_history": self._history_snapshot(),
+        }
 
     def execute_step(
+        self, step: str, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        try:
+            result = self._execute_step_unrecorded(
+                step, expected_revision=expected_revision
+            )
+        except Exception as error:
+            self._record_command(
+                step,
+                ok=False,
+                error=f"{type(error).__name__}: {error}",
+            )
+            raise
+        self._record_command(step, ok=True, result=result)
+        return result
+
+    def _execute_step_unrecorded(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
         capabilities = self.capabilities()
         if step == "save-checkpoint" and step in capabilities["action_steps"]:
             return self._execute_save_checkpoint(
+                expected_revision=expected_revision
+            )
+        if step in {
+            "accept-pending-character-interaction",
+            "reject-pending-character-interaction",
+        } and step in capabilities["action_steps"]:
+            return self._execute_pending_character_interaction_reply(
+                step, expected_revision=expected_revision
+            )
+        if (
+            step == _RESTORE_CHECKPOINT_STEP
+            and step in capabilities.get("composite_action_steps", [])
+        ):
+            return self._execute_restore_checkpoint(
+                expected_revision=expected_revision
+            )
+        if (
+            step == _NATIVE_DEATH_TERMINAL_STEP
+            and step in capabilities.get("composite_action_steps", [])
+        ):
+            return self._execute_native_death_terminal(
                 expected_revision=expected_revision
             )
         if step in capabilities.get("composite_action_steps", []):
@@ -522,6 +624,30 @@ class NativeHeadlessGameplayDriver:
             step,
             expected_revision=expected_revision,
         )
+
+    def _record_command(
+        self,
+        step: str,
+        *,
+        ok: bool,
+        result: dict[str, object] | None = None,
+        error: str | None = None,
+    ) -> None:
+        with self._history_lock:
+            row: dict[str, object] = {
+                "index": len(self._command_history) + 1,
+                "command": step,
+                "ok": ok,
+            }
+            if result is not None:
+                row["result"] = copy.deepcopy(result)
+            if error is not None:
+                row["error"] = error
+            self._command_history.append(row)
+
+    def _history_snapshot(self) -> list[dict[str, object]]:
+        with self._history_lock:
+            return copy.deepcopy(self._command_history)
 
     def _execute_primitive_step(
         self, step: str, *, expected_revision: int | None = None
@@ -618,24 +744,287 @@ class NativeHeadlessGameplayDriver:
             checkpoint_path, before
         )
         size, mtime_ns = signature
+        checkpoint = {
+            "status": "saved",
+            "path": str(checkpoint_path.resolve()),
+            "name": checkpoint_path.name,
+            "size": size,
+            "sha256": _sha256_file(checkpoint_path),
+            "date_raw": submitted_date_raw,
+            "overwrite_confirmed": before is not None,
+            "strategy": "native-autosave-command-v1",
+        }
+        self._last_checkpoint = dict(checkpoint)
         return {
             **submission_result,
-            "checkpoint": {
-                "status": "saved",
-                "path": str(checkpoint_path.resolve()),
-                "name": checkpoint_path.name,
-                "size": size,
-                "sha256": _sha256_file(checkpoint_path),
-                "date_raw": submitted_date_raw,
-                "overwrite_confirmed": before is not None,
-                "strategy": "native-autosave-command-v1",
-            },
+            "checkpoint": checkpoint,
             "materialization": {
                 "available": True,
                 "save_dir": str(self.save_dir.resolve()),
                 "mtime_ns": mtime_ns,
             },
         }
+
+    def _execute_pending_character_interaction_reply(
+        self, step: str, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        starting = self.take_snapshot()
+        pending = starting.get("pending_character_interaction")
+        if not isinstance(pending, dict):
+            raise BridgeUnavailableError(
+                "CK3 has no pending character interaction"
+            )
+        instance_id = pending.get("instance_id")
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else int(starting["revision"])
+            ),
+        )
+        changed = self._wait_for_snapshot(
+            self.take_snapshot(),
+            lambda snapshot: (
+                not isinstance(
+                    snapshot.get("pending_character_interaction"), dict
+                )
+                or snapshot["pending_character_interaction"].get("instance_id")
+                != instance_id
+            ),
+            timeout_seconds=self.command_timeout_seconds,
+        )
+        remaining = changed.get("pending_character_interaction")
+        if isinstance(remaining, dict) and remaining.get("instance_id") == instance_id:
+            raise BridgeUnavailableError(
+                "native character interaction reply did not advance the pending request"
+            )
+        return {
+            **result,
+            "interaction_result": {
+                "status": "accepted" if step.startswith("accept-") else "rejected",
+                "instance_id": instance_id,
+                "sender_character_id": pending.get("sender_character_id"),
+            },
+            "remaining_pending_character_interaction": remaining,
+            "snapshot_id": changed["snapshot_id"],
+            "revision": changed["revision"],
+        }
+
+    def _execute_restore_checkpoint(
+        self, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        if self.state_dir is None:
+            raise UnsupportedStepError(
+                "native restore-checkpoint requires a configured state_dir"
+            )
+        checkpoint_path = self._checkpoint_path()
+        signature = (
+            _checkpoint_signature(checkpoint_path)
+            if checkpoint_path is not None
+            else None
+        )
+        if checkpoint_path is None or signature is None or signature[0] <= 0:
+            raise BridgeUnavailableError(
+                "native restore-checkpoint requires xar_checkpoint.ck3"
+            )
+
+        starting = self.take_snapshot()
+        starting_revision = int(starting["revision"])
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision != starting_revision:
+                raise BridgeUnavailableError(
+                    "native gameplay revision mismatch: "
+                    f"expected {expected_revision}, current {starting_revision}"
+                )
+        diagnostics = self.state.diagnostics()
+        starting_generation = diagnostics.get("connection_generation")
+        if (
+            isinstance(starting_generation, bool)
+            or not isinstance(starting_generation, int)
+            or starting_generation < 1
+        ):
+            raise BridgeUnavailableError(
+                "native restore-checkpoint requires a connected DLL generation"
+            )
+
+        request_id = f"restore-{uuid.uuid4().hex}"
+        queue_dir = self._native_session_queue_dir()
+        inbox_dir = queue_dir / "inbox"
+        outbox_dir = queue_dir / "outbox"
+        response_path = outbox_dir / f"{request_id}.json"
+        write_json_atomic(
+            inbox_dir / f"{request_id}.json",
+            {
+                "protocol_version": SESSION_QUEUE_PROTOCOL_VERSION,
+                "request_id": request_id,
+                "command": _RESTORE_CHECKPOINT_STEP,
+                "pipe": self.pipe_name,
+                "checkpoint_name": _CHECKPOINT_FILENAME,
+            },
+        )
+
+        deadline = time.monotonic() + self.restore_timeout_seconds
+        response = self._wait_for_restore_response(
+            response_path, request_id, deadline
+        )
+        restored = self._wait_for_restored_map(starting_generation, deadline)
+        restored_date_raw = _date_raw(restored, "restored snapshot")
+        restored_signature = _checkpoint_signature(checkpoint_path)
+        if restored_signature is None or restored_signature[0] <= 0:
+            raise BridgeUnavailableError(
+                "native-session restored CK3 but its checkpoint file is missing"
+            )
+        size, mtime_ns = restored_signature
+        previous_checkpoint = self._last_checkpoint or {}
+        lifecycle_result = response.get("result")
+        lifecycle = (
+            dict(lifecycle_result)
+            if isinstance(lifecycle_result, dict)
+            else {}
+        )
+        restored_checkpoint = {
+            "status": "restored",
+            "path": str(checkpoint_path.resolve()),
+            "name": checkpoint_path.name,
+            "size": size,
+            "sha256": _sha256_file(checkpoint_path),
+            "date_raw": restored_date_raw,
+            "saved_date_raw": previous_checkpoint.get("date_raw"),
+            "mtime_ns": mtime_ns,
+            "strategy": "native-session-continuelastsave-v1",
+        }
+        return {
+            "step": _RESTORE_CHECKPOINT_STEP,
+            "accepted": True,
+            "status": "restored",
+            "backend_id": "native-headless",
+            "source": "native-session-lifecycle-queue",
+            "starting_date": {"date_raw": _date_raw(starting, "starting snapshot")},
+            "restored_date": {"date_raw": restored_date_raw},
+            "starting_date_raw": _date_raw(starting, "starting snapshot"),
+            "restored_date_raw": restored_date_raw,
+            "checkpoint": restored_checkpoint,
+            "lifecycle": {
+                **lifecycle,
+                "request_id": request_id,
+                "previous_connection_generation": starting_generation,
+                "connection_generation": restored["diagnostics"][
+                    "connection_generation"
+                ],
+            },
+            "map_ready": True,
+            "paused": restored.get("paused"),
+            "snapshot_id": restored["snapshot_id"],
+            "revision": restored["revision"],
+        }
+
+    def _execute_native_death_terminal(
+        self, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        snapshot = self.take_snapshot()
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision != snapshot["revision"]:
+                raise BridgeUnavailableError(
+                    "native gameplay revision mismatch: "
+                    f"expected {expected_revision}, current {snapshot['revision']}"
+                )
+        played_character = snapshot.get("played_character")
+        if (
+            not isinstance(played_character, dict)
+            or played_character.get("alive") is not False
+        ):
+            raise BridgeUnavailableError("native played character is not dead")
+        return {
+            "step": _NATIVE_DEATH_TERMINAL_STEP,
+            "backend_id": "native-headless",
+            "terminal": True,
+            "terminal_kind": "native_played_character_dead",
+            "technical_settlement_handoff": False,
+            "continue_as_heir_after_death": False,
+            "score": None,
+            "played_character": copy.deepcopy(played_character),
+            "date_raw": snapshot.get("date_raw"),
+            "snapshot_id": snapshot["snapshot_id"],
+            "revision": snapshot["revision"],
+        }
+
+    def _wait_for_restore_response(
+        self,
+        response_path: Path,
+        request_id: str,
+        deadline: float,
+    ) -> dict[str, object]:
+        while True:
+            if response_path.is_file():
+                try:
+                    payload = json.loads(
+                        response_path.read_text(encoding="utf-8-sig")
+                    )
+                except (OSError, UnicodeError, json.JSONDecodeError) as error:
+                    raise BridgeUnavailableError(
+                        f"native-session restore response is malformed: {error}"
+                    ) from error
+                if (
+                    not isinstance(payload, dict)
+                    or payload.get("protocol_version")
+                    != SESSION_QUEUE_PROTOCOL_VERSION
+                    or payload.get("request_id") != request_id
+                ):
+                    raise BridgeUnavailableError(
+                        "native-session restore response does not match the request"
+                    )
+                if payload.get("ok") is not True:
+                    raise BridgeUnavailableError(
+                        "native-session restore failed: "
+                        f"{payload.get('error') or 'unknown error'}"
+                    )
+                return payload
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise BridgeUnavailableError(
+                    "native-session did not acknowledge restore-checkpoint"
+                )
+            time.sleep(min(self.restore_poll_interval_seconds, remaining))
+
+    def _wait_for_restored_map(
+        self, starting_generation: int, deadline: float
+    ) -> dict[str, object]:
+        observed_revision = self.state.public_revision()
+        while True:
+            diagnostics = self.state.diagnostics()
+            generation = diagnostics.get("connection_generation")
+            if isinstance(generation, int) and generation > starting_generation:
+                try:
+                    snapshot = self.state.semantic_snapshot()
+                except BridgeUnavailableError:
+                    snapshot = None
+                if isinstance(snapshot, dict) and snapshot.get("map_ready") is True:
+                    return snapshot
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise BridgeUnavailableError(
+                    "native-session relaunched CK3 but no newer DLL generation "
+                    "published a map_ready snapshot"
+                )
+            self.state.wait_for_public_change(observed_revision, remaining)
+            observed_revision = self.state.public_revision()
+
+    def _native_session_queue_dir(self) -> Path:
+        if self.state_dir is None:
+            raise UnsupportedStepError(
+                "native-session lifecycle queue requires state_dir"
+            )
+        return self.state_dir / _NATIVE_SESSION_QUEUE_DIRNAME / "bridge"
+
+    def _checkpoint_path(self) -> Path | None:
+        return (
+            self.save_dir / _CHECKPOINT_FILENAME
+            if self.save_dir is not None
+            else None
+        )
 
     def _wait_for_checkpoint_materialization(
         self,
@@ -988,8 +1377,15 @@ class ConfiguredHybridFallbackDriver:
 
     def capabilities(self) -> dict[str, object]:
         base = self._delegate.capabilities()
+        native_steps = set(
+            _string_list(self.native.capabilities().get("action_steps"))
+        )
+        action_steps = set(_string_list(base.get("action_steps")))
+        if _RESTORE_CHECKPOINT_STEP not in native_steps:
+            action_steps.discard(_RESTORE_CHECKPOINT_STEP)
         return {
             **base,
+            "action_steps": sorted(action_steps),
             "backend_id": "hybrid-fallback",
             "mode": "hybrid-fallback",
             "headless": False,
@@ -1013,6 +1409,14 @@ class ConfiguredHybridFallbackDriver:
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        if (
+            step == _RESTORE_CHECKPOINT_STEP
+            and step
+            not in _string_list(self.native.capabilities().get("action_steps"))
+        ):
+            raise UnsupportedStepError(
+                "restore-checkpoint is pure native and will not use fallback"
+            )
         return self._delegate.execute_step(step, expected_revision=expected_revision)
 
     def wait_for_change(
@@ -1056,6 +1460,12 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
         "history": history if isinstance(history, list) else [],
         "active_event": normalize_active_event(
             state.get("active_event"), default_source="native"
+        ),
+        "played_character": _played_character(state.get("played_character")),
+        "pending_character_interaction": (
+            _pending_character_interaction(
+                state.get("pending_character_interaction")
+            )
         ),
     }
 
@@ -1155,16 +1565,24 @@ def _string_list(value: object) -> list[str]:
 
 
 def _action_steps(
-    capabilities: list[str], active_event: object = None
+    capabilities: list[str],
+    active_event: object = None,
+    pending_character_interaction: object = None,
 ) -> list[str]:
     steps: set[str] = set()
     expand_event_options = False
+    pending_interaction_steps: set[str] = set()
     for capability in capabilities:
         if not capability.startswith(_ACTION_CAPABILITY_PREFIX):
             continue
         step = capability.removeprefix(_ACTION_CAPABILITY_PREFIX)
         if step == "select-event-option-N":
             expand_event_options = True
+        elif step in {
+            "accept-pending-character-interaction",
+            "reject-pending-character-interaction",
+        }:
+            pending_interaction_steps.add(step)
         elif step:
             steps.add(step)
     if expand_event_options and isinstance(active_event, dict):
@@ -1178,7 +1596,58 @@ def _action_steps(
                 f"select-event-option-{option_number}"
                 for option_number in range(1, option_count + 1)
             )
+    if (
+        isinstance(pending_character_interaction, dict)
+        and pending_character_interaction.get("auto_accept_notification") is False
+    ):
+        steps.update(pending_interaction_steps)
     return sorted(steps)
+
+
+def _pending_character_interaction(value: object) -> dict[str, object] | None:
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        raise ValueError("native pending_character_interaction must be an object")
+    instance_id = value.get("instance_id")
+    sender_character_id = value.get("sender_character_id")
+    auto_accept_notification = value.get("auto_accept_notification")
+    if (
+        isinstance(instance_id, bool)
+        or not isinstance(instance_id, int)
+        or instance_id < 0
+        or isinstance(sender_character_id, bool)
+        or not isinstance(sender_character_id, int)
+        or not isinstance(auto_accept_notification, bool)
+    ):
+        raise ValueError("native pending_character_interaction is malformed")
+    return {
+        "instance_id": instance_id,
+        "sender_character_id": sender_character_id,
+        "auto_accept_notification": auto_accept_notification,
+        "source": "native",
+    }
+
+
+def _played_character(value: object) -> dict[str, object] | None:
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        raise ValueError("native played_character must be an object")
+    character_id = value.get("character_id")
+    alive = value.get("alive")
+    if (
+        isinstance(character_id, bool)
+        or not isinstance(character_id, int)
+        or character_id < 0
+        or not isinstance(alive, bool)
+    ):
+        raise ValueError("native played_character is malformed")
+    return {
+        "character_id": character_id,
+        "alive": alive,
+        "source": "native",
+    }
 
 
 def _validate_revision(value: object, name: str) -> None:

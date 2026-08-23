@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -14,6 +15,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
 sys.path.insert(0, str(PACKAGE_ROOT))
 
 from xar_autoplayer import cli  # noqa: E402
+from xar_autoplayer.environment import write_json_atomic  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.native_session import (  # noqa: E402
     _native_session_locked,
@@ -79,6 +81,15 @@ class NativeSessionModeTests(unittest.TestCase):
 
 
 class NativeSessionLifecycleTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory(
+            prefix="xar-native-session-lifecycle-"
+        )
+        self.spec = SimpleNamespace(state_dir=Path(self.temporary.name))
+
+    def tearDown(self) -> None:
+        self.temporary.cleanup()
+
     def test_status_then_stop_uses_native_launch_and_tracked_cleanup(self) -> None:
         process = mock.Mock()
         process.pid = 4242
@@ -98,7 +109,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
             "xar_autoplayer.native_session.stop_tracked", return_value=shutdown
         ) as stop_mock:
             report = _native_session_locked(
-                SimpleNamespace(),
+                self.spec,
                 config,
                 1.0,
                 input_stream=io.StringIO("status\nstop\n"),
@@ -138,7 +149,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
             return_value={"ok": True, "contract_errors": []},
         ) as stop_mock:
             report = _native_session_locked(
-                SimpleNamespace(),
+                self.spec,
                 config,
                 0.005,
                 input_stream=None,
@@ -168,7 +179,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
             return_value={"ok": True, "contract_errors": []},
         ):
             report = _native_session_locked(
-                SimpleNamespace(),
+                self.spec,
                 config,
                 1.0,
                 input_stream=None,
@@ -179,6 +190,94 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.assertEqual(report["exit_reason"], "process_exit")
         self.assertEqual(report["process_exit_code"], 0)
         self.assertTrue(report["ok"])
+
+    def test_restore_request_restarts_managed_process_and_responds(self) -> None:
+        first_process = mock.Mock()
+        first_process.pid = 4545
+        first_process.poll.return_value = None
+        second_process = mock.Mock()
+        second_process.pid = 4646
+        second_process.poll.return_value = None
+        first_handle = SimpleNamespace(process=first_process)
+        second_handle = SimpleNamespace(process=second_process)
+        config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\restore-test",
+            dll_path=Path("bridge.dll"),
+            injector_path=Path("injector.exe"),
+        )
+        bridge_dir = self.spec.state_dir / "native-session" / "bridge"
+        write_json_atomic(
+            bridge_dir / "inbox" / "01-restore.json",
+            {
+                "protocol_version": 1,
+                "request_id": "01-restore",
+                "command": "restore-checkpoint",
+                "pipe": config.pipe_name,
+                "checkpoint_name": "xar_checkpoint.ck3",
+            },
+        )
+        write_json_atomic(
+            bridge_dir / "inbox" / "02-stop.json",
+            {
+                "protocol_version": 1,
+                "request_id": "02-stop",
+                "command": "stop",
+            },
+        )
+        shutdown = {"ok": True, "contract_errors": []}
+
+        with mock.patch(
+            "xar_autoplayer.native_session.launch",
+            side_effect=(first_handle, second_handle),
+        ) as launch_mock, mock.patch(
+            "xar_autoplayer.native_session.stop_tracked",
+            side_effect=(shutdown, shutdown),
+        ) as stop_mock:
+            report = _native_session_locked(
+                self.spec,
+                config,
+                1.0,
+                input_stream=None,
+                output_stream=None,
+                poll_interval_seconds=0.001,
+            )
+
+        self.assertEqual(launch_mock.call_count, 2)
+        self.assertEqual(
+            launch_mock.call_args_list,
+            [
+                mock.call(
+                    self.spec,
+                    native_bridge=config,
+                    continue_last_save=True,
+                ),
+                mock.call(
+                    self.spec,
+                    native_bridge=config,
+                    continue_last_save=True,
+                ),
+            ],
+        )
+        self.assertEqual(
+            stop_mock.call_args_list,
+            [
+                mock.call(first_handle, require_running=False),
+                mock.call(second_handle, require_running=False),
+            ],
+        )
+        response = json.loads(
+            (bridge_dir / "outbox" / "01-restore.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertTrue(response["ok"])
+        self.assertEqual(response["result"]["previous_pid"], 4545)
+        self.assertEqual(response["result"]["pid"], 4646)
+        self.assertTrue(response["result"]["continue_last_save"])
+        self.assertEqual(report["restart_count"], 1)
+        self.assertEqual(report["pid"], 4646)
+        self.assertEqual(report["exit_reason"], "stop")
 
 
 if __name__ == "__main__":

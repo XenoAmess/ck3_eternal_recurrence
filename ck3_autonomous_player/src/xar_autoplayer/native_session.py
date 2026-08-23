@@ -14,6 +14,7 @@ import threading
 import time
 from typing import TextIO
 
+from .bridge.session_queue import PersistentSessionQueue, SessionQueueRequest
 from .environment import EnvironmentSpec, ensure_state_path_safe
 from .errors import AgentError
 from .locking import exclusive_launch_lock, exclusive_state_lock
@@ -28,6 +29,8 @@ from .runtime import (
 
 
 PURE_NATIVE_MODE = "native-headless"
+NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
+NATIVE_SESSION_RESTORE_COMMAND = "restore-checkpoint"
 
 
 class _StdinMonitor:
@@ -149,6 +152,14 @@ def _native_session_locked(
     process_exit_code: int | None = None
     primary_error: BaseException | None = None
     shutdown: dict[str, object] | None = None
+    restart_shutdowns: list[dict[str, object]] = []
+    restart_count = 0
+    last_pid: int | None = None
+    queue = PersistentSessionQueue(
+        spec.state_dir / NATIVE_SESSION_QUEUE_DIRNAME,
+        supported_commands=("status", "stop", NATIVE_SESSION_RESTORE_COMMAND),
+        action_steps=(NATIVE_SESSION_RESTORE_COMMAND,),
+    )
 
     try:
         # Passing the validated config explicitly prevents environment changes
@@ -159,6 +170,7 @@ def _native_session_locked(
             continue_last_save=True,
         )
         pid = int(handle.process.pid)
+        last_pid = pid
         _emit(
             output_stream,
             {
@@ -166,6 +178,7 @@ def _native_session_locked(
                 "pid": pid,
                 "mode": PURE_NATIVE_MODE,
                 "pipe": config.pipe_name,
+                "lifecycle_queue": queue.descriptor(),
             },
         )
         stdin = _StdinMonitor(input_stream) if input_stream is not None else None
@@ -209,6 +222,93 @@ def _native_session_locked(
                                 "error": "only status and stop are supported",
                             },
                         )
+            if not stop_requested:
+                for request in queue.poll():
+                    if request.error is not None:
+                        queue.respond(request, ok=False, error=request.error)
+                        continue
+                    if request.command == "status":
+                        queue.respond(
+                            request,
+                            ok=True,
+                            result=_status(
+                                pid=pid,
+                                pipe_name=config.pipe_name,
+                                started=started,
+                                running=handle.process.poll() is None,
+                            ),
+                        )
+                        continue
+                    if request.command == "stop":
+                        queue.respond(
+                            request,
+                            ok=True,
+                            result={"status": "stopping", "pid": pid},
+                        )
+                        stop_requested = True
+                        break
+                    if request.command != NATIVE_SESSION_RESTORE_COMMAND:
+                        queue.respond(
+                            request,
+                            ok=False,
+                            error=(
+                                "native-session supports status, stop, and "
+                                f"{NATIVE_SESSION_RESTORE_COMMAND}"
+                            ),
+                        )
+                        continue
+                    try:
+                        _validate_restore_request(request, config)
+                        previous_pid = int(handle.process.pid)
+                        restart_shutdown = stop_tracked(
+                            handle, require_running=False
+                        )
+                        handle = None
+                        if restart_shutdown.get("ok") is not True:
+                            raise AgentError(
+                                "restore-checkpoint could not stop the current "
+                                "CK3 process: "
+                                + "; ".join(
+                                    str(item)
+                                    for item in restart_shutdown.get(
+                                        "contract_errors", []
+                                    )
+                                )
+                            )
+                        handle = launch(
+                            spec,
+                            native_bridge=config,
+                            continue_last_save=True,
+                        )
+                        pid = int(handle.process.pid)
+                        result = {
+                            "status": "relaunched",
+                            "previous_pid": previous_pid,
+                            "pid": pid,
+                            "mode": PURE_NATIVE_MODE,
+                            "pipe": config.pipe_name,
+                            "continue_last_save": True,
+                        }
+                        queue.respond(request, ok=True, result=result)
+                        _emit(
+                            output_stream,
+                            {
+                                "type": "native_session_restored",
+                                "request_id": request.request_id,
+                                **result,
+                            },
+                        )
+                    except BaseException as error:
+                        queue.respond(
+                            request,
+                            ok=False,
+                            error=f"{type(error).__name__}: {error}",
+                        )
+                        raise
+                    last_pid = pid
+                    restart_shutdowns.append(restart_shutdown)
+                    restart_count += 1
+                    process_exit_code = None
             if stop_requested:
                 exit_reason = "stop"
                 break
@@ -239,13 +339,15 @@ def _native_session_locked(
         "kind": "ck3_native_headless_session",
         "mode": PURE_NATIVE_MODE,
         "pipe": config.pipe_name,
-        "pid": int(handle.process.pid) if handle is not None else None,
+        "pid": last_pid,
         "started_at": started_wall,
         "finished_at": utc_now(),
         "elapsed_seconds": elapsed,
         "exit_reason": exit_reason,
         "process_exit_code": process_exit_code,
         "shutdown": shutdown,
+        "restart_count": restart_count,
+        "restart_shutdowns": restart_shutdowns,
         "ok": (
             primary_error is None
             and (shutdown is None or shutdown.get("ok") is True)
@@ -261,6 +363,20 @@ def _native_session_locked(
             f"{elapsed:.3f}s ({exit_reason}): {primary_error}"
         ) from primary_error
     return report
+
+
+def _validate_restore_request(
+    request: SessionQueueRequest,
+    config: NativeBridgeLaunchConfig,
+) -> None:
+    """Bind a lifecycle request to the pure-native pipe being supervised."""
+    payload = request.payload or {}
+    requested_pipe = payload.get("pipe")
+    if requested_pipe != config.pipe_name:
+        raise AgentError(
+            "restore-checkpoint pipe differs from the native-session pipe: "
+            f"{requested_pipe!r} != {config.pipe_name!r}"
+        )
 
 
 def run_from_cli(

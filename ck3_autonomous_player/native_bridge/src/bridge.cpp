@@ -92,14 +92,18 @@ std::string HelloFrame(bool ck3_gameplay_enabled) {
             "\"bridge.ping\"";
   if (ck3_gameplay_enabled) {
     result += ",\"game.state.snapshot\",\"game.state.map-ready\","
+              "\"game.state.played-character\","
               "\"game.state.active-event\","
+              "\"game.state.pending-character-interaction\","
               "\"game.command.pause-map\","
               "\"game.command.resume-map\","
               "\"game.command.set-speed-1\",\"game.command.set-speed-2\","
               "\"game.command.set-speed-3\",\"game.command.set-speed-4\","
               "\"game.command.set-speed-5\","
               "\"game.command.select-event-option-N\","
-              "\"game.command.save-checkpoint\"";
+              "\"game.command.save-checkpoint\","
+              "\"game.command.accept-pending-character-interaction\","
+              "\"game.command.reject-pending-character-interaction\"";
   }
   result += "]}";
   return result;
@@ -132,11 +136,21 @@ std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
   result += ",\"paused\":";
   result += snapshot.paused ? "true" : "false";
   // This is Jomini's 32-bit local/network player id used by
-  // CPauseGameCommand, not CK3's 64-bit played-character id.
+  // CPauseGameCommand, not CK3's played-character CharacterID.
   result += ",\"local_player_id\":";
   result += SignedNumber(snapshot.player_id);
   result += ",\"map_ready\":";
   result += snapshot.map_ready ? "true" : "false";
+  result += ",\"played_character\":";
+  if (!snapshot.has_played_character) {
+    result += "null";
+  } else {
+    result += "{\"character_id\":";
+    result += SignedNumber(snapshot.played_character_id);
+    result += ",\"alive\":";
+    result += snapshot.played_character_alive ? "true" : "false";
+    result += '}';
+  }
   result += ",\"active_event\":";
   if (!snapshot.has_active_event) {
     result += "null";
@@ -154,6 +168,18 @@ std::string StateSnapshotFrame(const xar::ck3_11906::Snapshot &snapshot,
       result += SignedNumber(public_index);
     }
     result += "]}";
+  }
+  result += ",\"pending_character_interaction\":";
+  if (!snapshot.has_pending_character_interaction) {
+    result += "null";
+  } else {
+    result += "{\"instance_id\":";
+    result += SignedNumber(snapshot.pending_character_interaction_id);
+    result += ",\"sender_character_id\":";
+    result += SignedNumber(snapshot.pending_sender_character_id);
+    result += ",\"auto_accept_notification\":";
+    result += snapshot.pending_auto_accept_notification ? "true" : "false";
+    result += '}';
   }
   result += ",\"last_checkpoint_submission\":";
   if (checkpoint.sequence == 0) {
@@ -441,6 +467,37 @@ DWORD WINAPI WorkerMain(void *) noexcept {
                     : "CK3 save state is unavailable";
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, false, error));
+          }
+        } else if (step == "accept-pending-character-interaction" ||
+                   step == "reject-pending-character-interaction") {
+          const auto reply =
+              step == "accept-pending-character-interaction"
+                  ? xar::ck3_11906::PendingInteractionReply::accept
+                  : xar::ck3_11906::PendingInteractionReply::reject;
+          const auto result =
+              xar::ck3_11906::SubmitReplyToPendingInteraction(game, reply);
+          if (result ==
+              xar::ck3_11906::ReplyPendingInteractionResult::submitted) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, true, "submitted"));
+          } else {
+            std::string_view error =
+                "CK3 pending character interaction state is unavailable";
+            if (result == xar::ck3_11906::ReplyPendingInteractionResult::
+                              no_pending_interaction) {
+              error = "no pending CK3 character interaction";
+            } else if (
+                result == xar::ck3_11906::ReplyPendingInteractionResult::
+                              acknowledgement_required) {
+              error = "pending CK3 interaction requires acknowledgement";
+            }
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false, error));
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
           }
         } else if (const auto option_index = EventOptionStep(step);
                    option_index.has_value()) {

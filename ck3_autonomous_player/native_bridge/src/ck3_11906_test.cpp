@@ -14,11 +14,29 @@ using xar::ck3_11906::Bindings;
 std::array<std::byte, 0x78> g_player{};
 std::array<std::byte, 0x1C2> g_active_event{};
 std::array<std::byte, 0x1C0> g_event_data{};
+std::array<std::byte, 0x40> g_pending_storage{};
+std::array<std::byte, 0x20> g_pending_slots{};
+std::array<std::byte, 0x5C8> g_pending_interaction{};
+std::array<std::byte, 0x40> g_character_storage{};
+std::array<std::byte, 0x30> g_character_slots{};
+std::array<std::byte, 0x1D0> g_played_character{};
+std::array<std::byte, 0xE0> g_player_character_entry{};
+std::array<std::byte, sizeof(void *)> g_player_character_entries{};
+void *g_pending_storage_pointer = nullptr;
+void *g_character_storage_pointer = nullptr;
 void *g_expected_event_manager = nullptr;
 bool g_has_active_event = true;
 bool g_has_local_player = false;
 bool g_submit_called = false;
-enum class ExpectedCommand { pause, resume, speed, event_option, auto_save };
+enum class ExpectedCommand {
+  pause,
+  resume,
+  speed,
+  event_option,
+  auto_save,
+  reply_accept,
+  reply_reject,
+};
 ExpectedCommand g_expected_command = ExpectedCommand::pause;
 
 template <typename Value, std::size_t Size>
@@ -68,7 +86,7 @@ void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
                       flags == 7 && primary == 0x55555555 &&
                       secondary == 0x66666666 && command_flags == 0 &&
                       player_id == 77 && option_index == 2;
-  } else {
+  } else if (g_expected_command == ExpectedCommand::auto_save) {
     std::uint64_t save_name_size = 0;
     std::uint64_t save_name_capacity = 0;
     std::memcpy(&save_name_size, command + 0x30, sizeof(save_name_size));
@@ -81,6 +99,14 @@ void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
                       secondary == 0x88888888 && command_flags == 0x20 &&
                       save_name == xar::ck3_11906::kCheckpointSaveName &&
                       save_name_capacity == 15;
+  } else {
+    std::int32_t reply = -1;
+    std::memcpy(&reply, command + 0x24, sizeof(reply));
+    g_submit_called =
+        manager == reinterpret_cast<void *>(0x1234) && flags == 0x0E &&
+        primary == 0x99999999 && secondary == 0xAAAAAAAA &&
+        command_flags == 0 && player_id == 0x01000001 &&
+        reply == (g_expected_command == ExpectedCommand::reply_accept ? 0 : 1);
   }
 }
 
@@ -95,12 +121,12 @@ int main() {
   std::array<std::byte, 0xA8> game_state{};
   std::array<std::byte, 0x28> jomini_state{};
   std::array<std::byte, 0x200> players{};
-  std::array<std::byte, 1> event_manager{};
+  std::array<std::byte, 0x200> game_data{};
   void *game_state_pointer = game_state.data();
   void *jomini_state_pointer = jomini_state.data();
   Store(game_state, 0x08, std::int32_t{43'823'104});
   Store(game_state, 0x70, std::int32_t{3});
-  Store(game_state, 0xA0, static_cast<void *>(event_manager.data()));
+  Store(game_state, 0xA0, static_cast<void *>(game_data.data()));
   Store(jomini_state, 0x18, static_cast<void *>(players.data()));
   Store(jomini_state, 0x20, std::uint8_t{0});
   Store(players, 0x1F0, std::int32_t{41});
@@ -108,7 +134,24 @@ int main() {
   Store(g_active_event, 0x1B0, static_cast<void *>(g_event_data.data()));
   Store(g_active_event, 0x1BC, std::int32_t{77});
   Store(g_event_data, 0x1BC, std::int32_t{3});
-  g_expected_event_manager = event_manager.data();
+  g_expected_event_manager = game_data.data();
+
+  constexpr std::int32_t played_character_id = 0x01000002;
+  Store(game_data, 0x158,
+        static_cast<void *>(g_player_character_entries.data()));
+  Store(game_data, 0x164, std::int32_t{1});
+  Store(g_player_character_entries, 0,
+        static_cast<void *>(g_player_character_entry.data()));
+  Store(g_player_character_entry, 0xB0, played_character_id);
+  Store(g_player_character_entry, 0xD8, std::int32_t{41});
+  Store(g_character_storage, 0x20,
+        static_cast<void *>(g_character_slots.data()));
+  Store(g_character_storage, 0x2C, std::int32_t{3});
+  Store(g_character_slots, 0x28,
+        static_cast<void *>(g_played_character.data()));
+  Store(g_played_character, 0x18, played_character_id);
+  Store(g_played_character, 0x1C8, static_cast<void *>(nullptr));
+  g_character_storage_pointer = g_character_storage.data();
 
   Bindings bindings{};
   bindings.enabled = true;
@@ -123,6 +166,12 @@ int main() {
   bindings.select_event_option_secondary_vtable = 0x66666666;
   bindings.auto_save_primary_vtable = 0x77777777;
   bindings.auto_save_secondary_vtable = 0x88888888;
+  bindings.reply_character_interaction_primary_vtable = 0x99999999;
+  bindings.reply_character_interaction_secondary_vtable = 0xAAAAAAAA;
+  bindings.pending_character_interaction_storage_slot =
+      &g_pending_storage_pointer;
+  bindings.character_storage_slot = &g_character_storage_pointer;
+  bindings.player_character_manager_offset = 0x100;
   bindings.submit_command = FixtureSubmit;
   bindings.get_local_player = FixtureGetLocalPlayer;
   bindings.get_current_event = FixtureGetCurrentEvent;
@@ -134,15 +183,29 @@ int main() {
   if (snapshot.date_raw != 43'823'104 || snapshot.speed != 4 ||
       snapshot.paused || snapshot.player_id != 41 ||
       snapshot.map_ready ||
+      snapshot.has_played_character || snapshot.played_character_id != -1 ||
+      snapshot.played_character_alive ||
       !snapshot.has_active_event || snapshot.active_event_instance_id != 77 ||
-      snapshot.active_event_option_count != 3) {
+      snapshot.active_event_option_count != 3 ||
+      snapshot.has_pending_character_interaction ||
+      snapshot.pending_character_interaction_id != -1 ||
+      snapshot.pending_sender_character_id != -1) {
     return Fail("fixture snapshot fields did not match the pinned offsets");
   }
   g_has_local_player = true;
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
-      !snapshot.map_ready) {
+      !snapshot.map_ready || !snapshot.has_played_character ||
+      snapshot.played_character_id != played_character_id ||
+      !snapshot.played_character_alive) {
     return Fail("map-ready did not follow the resolved local player");
   }
+  Store(g_played_character, 0x1C8,
+        reinterpret_cast<void *>(0x12345678));
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      !snapshot.has_played_character || snapshot.played_character_alive) {
+    return Fail("played-character death data did not project alive=false");
+  }
+  Store(g_played_character, 0x1C8, static_cast<void *>(nullptr));
   g_has_local_player = false;
   g_submit_called = false;
   if (xar::ck3_11906::SubmitSaveCheckpoint(bindings).status !=
@@ -200,6 +263,57 @@ int main() {
   }
   g_has_active_event = true;
 
+  Store(g_pending_storage, 0x20,
+        static_cast<void *>(g_pending_slots.data()));
+  Store(g_pending_storage, 0x2C, std::int32_t{2});
+  Store(g_pending_slots, 0x18,
+        static_cast<void *>(g_pending_interaction.data()));
+  Store(g_pending_interaction, 0x10, std::int32_t{0x01000001});
+  Store(g_pending_interaction, 0x2F0, std::int32_t{8675309});
+  Store(g_pending_interaction, 0x5C6, std::uint8_t{0});
+  g_pending_storage_pointer = g_pending_storage.data();
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      !snapshot.has_pending_character_interaction ||
+      snapshot.pending_character_interaction_id != 0x01000001 ||
+      snapshot.pending_sender_character_id != 8675309 ||
+      snapshot.pending_auto_accept_notification) {
+    return Fail("pending character interaction snapshot did not match");
+  }
+  g_expected_command = ExpectedCommand::reply_accept;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitReplyToPendingInteraction(
+          bindings, xar::ck3_11906::PendingInteractionReply::accept) !=
+          xar::ck3_11906::ReplyPendingInteractionResult::submitted ||
+      !g_submit_called) {
+    return Fail("pending interaction accept command layout did not match");
+  }
+  g_expected_command = ExpectedCommand::reply_reject;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitReplyToPendingInteraction(
+          bindings, xar::ck3_11906::PendingInteractionReply::reject) !=
+          xar::ck3_11906::ReplyPendingInteractionResult::submitted ||
+      !g_submit_called) {
+    return Fail("pending interaction reject command layout did not match");
+  }
+  Store(g_pending_interaction, 0x5C6, std::uint8_t{1});
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitReplyToPendingInteraction(
+          bindings, xar::ck3_11906::PendingInteractionReply::accept) !=
+          xar::ck3_11906::ReplyPendingInteractionResult::
+              acknowledgement_required ||
+      g_submit_called) {
+    return Fail("auto-accept notification was submitted as a normal reply");
+  }
+  g_pending_storage_pointer = nullptr;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.has_pending_character_interaction ||
+      xar::ck3_11906::SubmitReplyToPendingInteraction(
+          bindings, xar::ck3_11906::PendingInteractionReply::accept) !=
+          xar::ck3_11906::ReplyPendingInteractionResult::
+              no_pending_interaction) {
+    return Fail("no-pending-interaction state was not explicit");
+  }
+
   Store(jomini_state, 0x20, std::uint8_t{1});
   g_expected_command = ExpectedCommand::pause;
   g_submit_called = false;
@@ -232,6 +346,9 @@ int main() {
                "pause_resume_command_layout=1 "
                "set_speed_zero_based_mapping=1 "
                "select_event_option_layout=1 auto_save_layout=1 "
+               "pending_interaction_snapshot=1 "
+               "reply_character_interaction_layout=1 "
+               "played_character_snapshot=1 alive_dead_projection=1 "
                "map_ready_gate=1 exact_build_gate=1\n";
   return 0;
 }

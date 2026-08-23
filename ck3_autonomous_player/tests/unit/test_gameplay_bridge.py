@@ -142,8 +142,89 @@ class GameplayBridgeTests(unittest.TestCase):
             action_steps=(),
         )
         plan = GameplayBridgeService(driver).plan_turn()
-        self.assertEqual(plan["plan"]["selected_step"], "save-checkpoint")
+        self.assertIsNone(plan["plan"]["selected_step"])
+        self.assertEqual(plan["plan"]["required_step"], "save-checkpoint")
         self.assertEqual(plan["snapshot_id"], "session:0")
+
+    def test_partial_native_backend_keeps_advancing_at_capability_gap(self) -> None:
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: _snapshot(
+                4,
+                [
+                    {
+                        "command": "save-checkpoint",
+                        "ok": True,
+                        "result": {"checkpoint": {"status": "saved"}},
+                    }
+                ],
+            ),
+            execute=lambda _step, _revision: {},
+            action_steps=("save-checkpoint", "life-advance"),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["required_step"], "dynasty-review")
+        self.assertEqual(plan["deferred_phase"], "current_life_family")
+
+    def test_planner_prioritizes_pending_native_character_interaction(self) -> None:
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(6),
+                "pending_character_interaction": {
+                    "instance_id": 72,
+                    "sender_character_id": 501,
+                    "auto_accept_notification": False,
+                },
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("accept-pending-character-interaction",),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(
+            plan["selected_step"], "accept-pending-character-interaction"
+        )
+        self.assertEqual(plan["pending_character_interaction"]["instance_id"], 72)
+
+    def test_service_auto_turn_plans_and_executes_one_supported_step(self) -> None:
+        calls: list[tuple[str, int | None]] = []
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: _snapshot(11),
+            execute=lambda step, revision: calls.append((step, revision))
+            or {"step": step},
+            action_steps=("save-checkpoint",),
+        )
+
+        result = GameplayBridgeService(driver).auto_turn()
+
+        self.assertEqual(result["status"], "executed")
+        self.assertEqual(result["selected_step"], "save-checkpoint")
+        self.assertEqual(calls, [("save-checkpoint", 11)])
+
+    def test_service_auto_turn_ends_native_one_life_on_player_death(self) -> None:
+        calls: list[tuple[str, int | None]] = []
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(12),
+                "played_character": {"character_id": 707, "alive": False},
+            },
+            execute=lambda step, revision: calls.append((step, revision))
+            or {"terminal": True, "continue_as_heir_after_death": False},
+            action_steps=("death-terminal",),
+        )
+
+        result = GameplayBridgeService(driver).auto_turn()
+
+        self.assertEqual(result["selected_step"], "death-terminal")
+        self.assertTrue(result["result"]["terminal"])
+        self.assertEqual(calls, [("death-terminal", 12)])
 
     def test_bridge_driver_adapts_to_backend_neutral_runner(self) -> None:
         calls: list[tuple[str, int | None]] = []
@@ -225,6 +306,7 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertIs(driver, factory.return_value)
         factory.assert_called_once_with(
             r"\\.\pipe\xar_save_fixture",
+            state_dir=state_dir,
             save_dir=state_dir / "profile" / "save games",
         )
 
@@ -239,6 +321,11 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             snapshot=lambda: {
                 **_snapshot(4),
                 "active_event": {"instance_id": 44, "option_count": 2},
+                "pending_character_interaction": {
+                    "instance_id": 52,
+                    "sender_character_id": 901,
+                    "auto_accept_notification": False,
+                },
             },
             execute=lambda step, revision: {
                 "step": step,
@@ -255,12 +342,29 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                         }
                     }
                     if step == "save-checkpoint"
-                    else {}
+                    else (
+                        {
+                            "checkpoint": {
+                                "status": "restored",
+                                "name": "xar_checkpoint.ck3",
+                                "path": "C:/fixture/xar_checkpoint.ck3",
+                                "size": 123,
+                                "sha256": "a" * 64,
+                                "date_raw": 53_171_424,
+                            },
+                            "restored_date": {"date_raw": 53_171_424},
+                        }
+                        if step == "restore-checkpoint"
+                        else {}
+                    )
                 ),
             },
             action_steps=(
                 "life-advance",
                 "save-checkpoint",
+                "restore-checkpoint",
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
                 "select-event-option-1",
                 "select-event-option-2",
             ),
@@ -277,8 +381,11 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_get_bridge_diagnostics",
                     "ck3_take_snapshot",
                     "ck3_plan_turn",
+                    "ck3_auto_turn",
                     "ck3_execute_step",
                     "ck3_save_checkpoint",
+                    "ck3_restore_checkpoint",
+                    "ck3_reply_pending_character_interaction",
                     "ck3_select_event_option",
                     "ck3_resolve_active_event",
                     "ck3_wait_for_change",
@@ -294,6 +401,12 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             self.assertFalse(action.is_error)
             self.assertEqual(action.structured_content["backend_id"], "native-fixture")
             self.assertEqual(action.structured_content["expected_revision"], 4)
+            automatic = await client.call_tool("ck3_auto_turn", {})
+            self.assertFalse(automatic.is_error)
+            self.assertEqual(
+                automatic.structured_content["selected_step"],
+                "select-event-option-1",
+            )
             checkpoint = await client.call_tool(
                 "ck3_save_checkpoint",
                 {"expected_revision": 4},
@@ -306,6 +419,32 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(
                 checkpoint.structured_content["checkpoint"]["date_raw"],
                 53_171_424,
+            )
+            restored = await client.call_tool(
+                "ck3_restore_checkpoint",
+                {"expected_revision": 4},
+            )
+            self.assertFalse(restored.is_error)
+            self.assertEqual(
+                restored.structured_content["checkpoint"]["status"],
+                "restored",
+            )
+            self.assertEqual(
+                restored.structured_content["restored_date"]["date_raw"],
+                53_171_424,
+            )
+            interaction = await client.call_tool(
+                "ck3_reply_pending_character_interaction",
+                {
+                    "accept": True,
+                    "interaction_instance_id": 52,
+                    "expected_revision": 4,
+                },
+            )
+            self.assertFalse(interaction.is_error)
+            self.assertTrue(interaction.structured_content["accepted"])
+            self.assertEqual(
+                interaction.structured_content["sender_character_id"], 901
             )
             event_action = await client.call_tool(
                 "ck3_select_event_option",

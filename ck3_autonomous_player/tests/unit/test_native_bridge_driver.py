@@ -26,6 +26,8 @@ from xar_autoplayer.bridge.native_driver import (
     MinimizedRejectingVisualDriver,
     NativeHeadlessGameplayDriver,
 )
+from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.environment import write_json_atomic
 
 
 class FakeEndpoint:
@@ -77,6 +79,8 @@ def _snapshot(
     speed: int = 1,
     paused: bool = True,
     map_ready: bool = True,
+    pending_character_interaction: dict[str, object] | None = None,
+    played_character: dict[str, object] | None = None,
 ) -> dict[str, object]:
     return {
         "type": "state_snapshot",
@@ -92,6 +96,8 @@ def _snapshot(
             "map_ready": map_ready,
             "history": [],
             "active_event": active_event,
+            "pending_character_interaction": pending_character_interaction,
+            "played_character": played_character,
         },
     }
 
@@ -192,6 +198,17 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(command["expected_revision"], 19)
         self.assertTrue(result["accepted"])
         self.assertEqual(result["backend_id"], "native-headless")
+        self.assertEqual(
+            driver.take_snapshot()["native_command_history"],
+            [
+                {
+                    "index": 1,
+                    "command": "life-advance",
+                    "ok": True,
+                    "result": result,
+                }
+            ],
+        )
 
     def test_event_wildcard_expands_from_current_option_count(self) -> None:
         endpoint = FakeEndpoint()
@@ -248,6 +265,109 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         self.assertEqual(command["step"], "select-event-option-3")
         self.assertEqual(command["expected_revision"], 23)
+
+    def test_pending_character_interaction_routes_native_reply(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.pending-character-interaction",
+                "game.command.accept-pending-character-interaction",
+                "game.command.reject-pending-character-interaction",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                27,
+                pending_character_interaction={
+                    "instance_id": 91,
+                    "sender_character_id": 4_294_967,
+                    "auto_accept_notification": False,
+                },
+            )
+        )
+        snapshot = driver.take_snapshot()
+        self.assertEqual(
+            snapshot["pending_character_interaction"]["instance_id"], 91
+        )
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            [
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ],
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") == "execute_step":
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": True,
+                        "result": {"step": frame["step"], "status": "submitted"},
+                    }
+                )
+                endpoint.publish(_snapshot(28))
+
+        endpoint.send_hook = answer
+        result = driver.execute_step(
+            "accept-pending-character-interaction",
+            expected_revision=int(snapshot["revision"]),
+        )
+        self.assertEqual(result["status"], "submitted")
+        command = next(
+            frame
+            for frame in reversed(endpoint.frames)
+            if frame.get("type") == "execute_step"
+        )
+        self.assertEqual(
+            command["step"], "accept-pending-character-interaction"
+        )
+        self.assertEqual(command["expected_revision"], 27)
+        endpoint.publish(
+            _snapshot(
+                29,
+                pending_character_interaction={
+                    "instance_id": 92,
+                    "sender_character_id": 4_294_968,
+                    "auto_accept_notification": True,
+                },
+            )
+        )
+        self.assertEqual(driver.capabilities()["action_steps"], [])
+
+    def test_dead_played_character_exposes_one_life_terminal(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.state.played-character")
+        )
+        endpoint.publish(
+            _snapshot(
+                30,
+                played_character={"character_id": 17_031, "alive": False},
+            )
+        )
+        snapshot = driver.take_snapshot()
+
+        self.assertIn("death-terminal", driver.capabilities()["action_steps"])
+        result = driver.execute_step(
+            "death-terminal", expected_revision=int(snapshot["revision"])
+        )
+
+        self.assertTrue(result["terminal"])
+        self.assertEqual(result["terminal_kind"], "native_played_character_dead")
+        self.assertFalse(result["continue_as_heir_after_death"])
+        self.assertEqual(result["played_character"]["character_id"], 17_031)
 
     def test_save_checkpoint_waits_for_isolated_file_materialization(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -325,6 +445,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             self.assertEqual(checkpoint["date_raw"], 53_171_424)
             self.assertTrue(checkpoint["overwrite_confirmed"])
             self.assertTrue(result["materialization"]["available"])
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+            self.assertNotEqual(plan.get("selected_step"), "save-checkpoint")
+            self.assertEqual(plan.get("required_step"), "dynasty-review")
 
     def test_save_checkpoint_without_directory_keeps_submission_explicit(self) -> None:
         endpoint = FakeEndpoint()
@@ -370,6 +493,115 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(
             result["materialization"]["reason"], "save_dir_not_configured"
         )
+
+    def test_restore_checkpoint_relaunches_and_waits_for_new_map_generation(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            save_dir = state_dir / "profile" / "save games"
+            save_dir.mkdir(parents=True)
+            checkpoint_path = save_dir / "xar_checkpoint.ck3"
+            checkpoint_payload = b"native restore checkpoint fixture"
+            checkpoint_path.write_bytes(checkpoint_payload)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+                save_dir=save_dir,
+                restore_timeout_seconds=1.0,
+                restore_poll_interval_seconds=0.005,
+            )
+            endpoint.publish(_hello("game.state.snapshot"))
+            endpoint.publish(_snapshot(40, date_raw=53_171_520))
+            lifecycle_errors: list[BaseException] = []
+            observed_request: dict[str, object] = {}
+
+            def lifecycle() -> None:
+                try:
+                    inbox = (
+                        state_dir
+                        / "native-session"
+                        / "bridge"
+                        / "inbox"
+                    )
+                    deadline = time.monotonic() + 1.0
+                    request_paths: list[Path] = []
+                    while time.monotonic() < deadline:
+                        request_paths = list(inbox.glob("restore-*.json"))
+                        if request_paths:
+                            break
+                        time.sleep(0.005)
+                    self.assertEqual(len(request_paths), 1)
+                    request_path = request_paths[0]
+                    observed_request.update(
+                        json.loads(request_path.read_text(encoding="utf-8"))
+                    )
+                    assert endpoint.on_disconnect is not None
+                    endpoint.on_disconnect()
+                    outbox = request_path.parents[1] / "outbox"
+                    write_json_atomic(
+                        outbox / request_path.name,
+                        {
+                            "protocol_version": 1,
+                            "request_id": request_path.stem,
+                            "ok": True,
+                            "result": {
+                                "status": "relaunched",
+                                "previous_pid": 4242,
+                                "pid": 5252,
+                                "pipe": endpoint.pipe_name,
+                                "continue_last_save": True,
+                            },
+                            "error": None,
+                        },
+                    )
+                    endpoint.publish(
+                        {
+                            **_hello("game.state.snapshot"),
+                            "pid": 5252,
+                            "session_generation": 1,
+                        }
+                    )
+                    endpoint.publish(
+                        _snapshot(1, date_raw=53_171_424, map_ready=True)
+                    )
+                except BaseException as error:
+                    lifecycle_errors.append(error)
+
+            worker = threading.Thread(target=lifecycle)
+            worker.start()
+            snapshot = driver.take_snapshot()
+            self.assertIn(
+                "restore-checkpoint", driver.capabilities()["action_steps"]
+            )
+            result = driver.execute_step(
+                "restore-checkpoint",
+                expected_revision=int(snapshot["revision"]),
+            )
+            worker.join(timeout=1.0)
+
+            self.assertFalse(worker.is_alive())
+            self.assertEqual(lifecycle_errors, [])
+            self.assertEqual(
+                observed_request["command"], "restore-checkpoint"
+            )
+            self.assertEqual(observed_request["pipe"], endpoint.pipe_name)
+            self.assertEqual(result["status"], "restored")
+            self.assertEqual(result["restored_date_raw"], 53_171_424)
+            self.assertEqual(result["checkpoint"]["status"], "restored")
+            self.assertEqual(
+                result["checkpoint"]["sha256"],
+                hashlib.sha256(checkpoint_payload).hexdigest(),
+            )
+            self.assertEqual(
+                result["lifecycle"]["previous_connection_generation"], 1
+            )
+            self.assertEqual(result["lifecycle"]["connection_generation"], 2)
+            self.assertEqual(result["lifecycle"]["previous_pid"], 4242)
+            self.assertEqual(result["lifecycle"]["pid"], 5252)
+            self.assertTrue(result["map_ready"])
 
     def test_composite_life_advance_resolves_native_event_and_stays_paused(
         self,
@@ -811,6 +1043,45 @@ class NativeFallbackModeTests(unittest.TestCase):
         with self.assertRaisesRegex(BridgeUnavailableError, "minimized"):
             driver.execute_step("marriage-review")
         self.assertEqual(calls, [])
+
+    def test_restore_checkpoint_never_uses_hybrid_visual_fallback(self) -> None:
+        endpoint = FakeEndpoint()
+        native = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        visual_calls: list[str] = []
+        driver = ConfiguredHybridFallbackDriver(
+            native,
+            CallbackGameplayDriver(
+                backend_id="data-mod",
+                snapshot=lambda: {
+                    "snapshot_id": "mod:1",
+                    "revision": 1,
+                },
+                execute=lambda _step, _revision: {},
+                action_steps=(),
+            ),
+            MinimizedRejectingVisualDriver(
+                CallbackGameplayDriver(
+                    backend_id="vision-session",
+                    snapshot=lambda: {
+                        "snapshot_id": "vision:1",
+                        "revision": 1,
+                    },
+                    execute=lambda step, _revision: visual_calls.append(step) or {},
+                    action_steps=("restore-checkpoint",),
+                ),
+                window_minimized=lambda: False,
+            ),
+        )
+
+        self.assertNotIn(
+            "restore-checkpoint", driver.capabilities()["action_steps"]
+        )
+        with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
+            driver.execute_step("restore-checkpoint")
+        self.assertEqual(visual_calls, [])
 
 
 @unittest.skipUnless(os.name == "nt", "Windows named-pipe integration")

@@ -59,12 +59,16 @@ def load_driver(
         )
     if factory == "native-headless":
         return NativeHeadlessGameplayDriver(
-            selected_pipe_name(pipe_name), save_dir=selected_save_dir()
+            selected_pipe_name(pipe_name),
+            state_dir=selected_state_dir(),
+            save_dir=selected_save_dir(),
         )
     if factory == "hybrid-fallback":
         return ConfiguredHybridFallbackDriver(
             NativeHeadlessGameplayDriver(
-                selected_pipe_name(pipe_name), save_dir=selected_save_dir()
+                selected_pipe_name(pipe_name),
+                state_dir=selected_state_dir(),
+                save_dir=selected_save_dir(),
             ),
             load_data_mod_driver(userdir),
             MinimizedRejectingVisualDriver(
@@ -134,6 +138,11 @@ def create_server(driver: GameplayBridgeDriver):
         return service.plan_turn()
 
     @server.tool()
+    def ck3_auto_turn() -> dict[str, object]:
+        """Plan and execute exactly one supported one-life gameplay turn."""
+        return service.auto_turn()
+
+    @server.tool()
     def ck3_execute_step(
         step: str, expected_revision: int | None = None
     ) -> dict[str, object]:
@@ -146,6 +155,26 @@ def create_server(driver: GameplayBridgeDriver):
     ) -> dict[str, object]:
         """Create and materialize the fixed isolated CK3 checkpoint save."""
         return service.save_checkpoint(expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_restore_checkpoint(
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Restart the pure-native CK3 session and continue its checkpoint."""
+        return service.restore_checkpoint(expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_reply_pending_character_interaction(
+        accept: bool,
+        interaction_instance_id: int | None = None,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Accept or reject the current native character interaction."""
+        return service.reply_pending_character_interaction(
+            accept=accept,
+            interaction_instance_id=interaction_instance_id,
+            expected_revision=expected_revision,
+        )
 
     @server.tool()
     def ck3_select_event_option(

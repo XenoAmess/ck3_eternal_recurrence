@@ -261,17 +261,21 @@ stdin 共用同一主线程命令处理，因此策略、MCP daemon 和大多数
 键盘、鼠标、窗口激活或视觉 fallback，因此它是 CK3 最小化运行的目标模式。`hybrid-fallback` 是明确允许回落的另一配置，顺序为
 native → data Mod → vision session；窗口最小化或窗口可见性无法确认时，vision 分支会拒绝执行，而不会把 CK3 偷偷恢复到前台。
 两者都通过 `ck3_get_capabilities` 公布 mode、fallback、最小化与当前 native action 列表。当前 exact-build native DLL 已发布
-日期 tick、1–5 档速度、暂停、地图就绪、本地玩家、当前事件与 checkpoint submission snapshot，并开放
-`pause-map`、`resume-map`、`set-speed-1..5`、`select-event-option-N` 与 `save-checkpoint`。2026-08-23 已在真实
+日期 tick、1–5 档速度、暂停、地图就绪、本地玩家、玩家角色生死、当前事件、待处理角色互动与 checkpoint
+submission snapshot，并开放 `pause-map`、`resume-map`、`set-speed-1..5`、`select-event-option-N`、
+`accept/reject-pending-character-interaction`、`save-checkpoint` 与进程级 `restore-checkpoint`。MCP 还提供
+`ck3_auto_turn`，用同一 planner 选择并执行一次当前可用的原生步骤。2026-08-23 已在真实
 CK3 1.19.0.6 的最小化窗口上完成无 OCR/键鼠实测：90 次复合回合推进 94 个游戏日；连续后台推进发现实例 14 的
 五选项事件并以原生命令选择第 1 项，随后观察到实例 15；原生 checkpoint 落盘为约 63 MB 的
-`xar_checkpoint.ck3`，新进程用 `-continuelastsave` 精确恢复到同一 `date_raw=53167488`。婚姻和战争等尚未完成的
-原生能力仍按 capability 返回 unsupported。
+`xar_checkpoint.ck3`，新进程用 `-continuelastsave` 精确恢复到同一 `date_raw=53167488`。玩家死亡在本项目的
+一代制规则下直接产生 `death-terminal`，不会继续扮演继承人。主动发起婚姻、战争等尚未完成的原生能力仍按
+capability 返回 unsupported；收到的角色互动已可原生接受或拒绝。
 
 纯原生模式需要两个并行进程：先启动 `mcp_server.py --driver native-headless` 建立 pipe server，再用上面的
-`agent.py ... native-session` 创建 suspended CK3、注入 DLL 并恢复游戏。`native-session` 只监管 PID/Job，stdin 仅接受
-`status`/`stop`，通过 `-continuelastsave` 尝试直接进入最后存档，其导入图中没有 vision、OCR 或输入模块；它拒绝
-`hybrid-fallback`。允许视觉回落时仍使用
+`agent.py ... native-session` 创建 suspended CK3、注入 DLL 并恢复游戏。`native-session` 监管 PID/Job，stdin 接受
+`status`/`stop`；同时在 `<state>/native-session/bridge` 接受纯原生 `restore-checkpoint`，停止当前受管进程后以同一
+pipe/DLL 和 `-continuelastsave` 重启。MCP driver 只有观察到新连接代次的 `map_ready` snapshot 才返回恢复成功；整个路径
+不导入 vision、OCR 或输入模块。它拒绝 `hybrid-fallback`，且该步骤不会隐式回落。允许视觉回落时仍使用
 `opening-dev-session --bridge-mode hybrid-fallback ...`，因为只有该命令提供 vision-session 的主线程 inbox/outbox。
 
 日常 gameplay 开发不再把每次修改都当成发布验收。`opening-replay` 在不启动 CK3 的情况下直接重放已归档 OCR；

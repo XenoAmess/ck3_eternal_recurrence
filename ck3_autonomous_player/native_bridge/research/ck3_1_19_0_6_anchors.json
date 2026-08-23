@@ -111,6 +111,18 @@
       "rva": "0x26D4360",
       "confidence": "high-static",
       "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 48 8B D9 C7 44 24 20 09 00 00 00 BE 34 01 00 00"
+    },
+    {
+      "name": "reply_character_interaction_construct_and_submit",
+      "rva": "0x1268270",
+      "confidence": "high-static",
+      "pattern": "40 53 48 83 EC 50 48 8B D9 C6 44 24 28 00 33 C0 48 89 44 24 2C 89 44 24 34 48 8D 05 A0 A6 E1 02 48 89 44 24 20 48 8D 05 64 A6 E1 02 48 89 44 24"
+    },
+    {
+      "name": "pending_character_interaction_lookup_and_autoreply",
+      "rva": "0xF06B50",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 58 4C 8B C1 48 8B 15 6A 86 8B 04 48 85 D2 74 2A 44 8B 49 20 41 8B C1 25 FF FF FF 00 3B 42 2C 73 19 8B C8 48 03 C9 48 8B 42 20 48 8B 44"
     }
   ],
   "rvas": {
@@ -126,6 +138,9 @@
     "get_current_event_for_local_player": "0x2706AD0",
     "auto_save_primary_vtable": "0x40AABE8",
     "auto_save_secondary_vtable": "0x40AAC80",
+    "reply_character_interaction_primary_vtable": "0x4082930",
+    "reply_character_interaction_secondary_vtable": "0x4082900",
+    "pending_character_interaction_storage_slot": "0x57BF1C8",
     "game_state_type_descriptor": "0x546A670",
     "event_manager_type_descriptor": "0x54E12E8",
     "player_character_manager_type_descriptor": "0x54C4230"
@@ -150,6 +165,11 @@
       "name": "CAutoSaveCommand.primary",
       "rva": "0x40AABE8",
       "function_rvas": ["0x9FF880", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x7E9220", "0x803620", "0xA1BA60"]
+    },
+    {
+      "name": "CReplyCharacterInteractionCommand.primary",
+      "rva": "0x4082930",
+      "function_rvas": ["0x801FD0", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26B3540", "0x803620", "0x8038E0"]
     }
   ],
   "layouts": {
@@ -211,6 +231,24 @@
       "flags": "+0x08 uint8 = 0x20",
       "secondary_vtable": "+0x18",
       "save_name": "+0x20 CString; inline bytes +0x20, uint64 size +0x30, uint64 capacity +0x38; UI submits with channel flags 7"
+    },
+    "PendingCharacterInteractionStorage": {
+      "global_slot": "base + 0x57BF1C8",
+      "slots": "+0x20 pointer; each slot is 0x10 bytes and its object pointer is +0x08",
+      "capacity": "+0x2C int32"
+    },
+    "CPendingCharacterInteraction": {
+      "component_instance_id": "+0x10 int32; low 24 bits select the component-storage slot",
+      "sender_character_id": "+0x2F0 int32 CharacterID handle returned by CharacterInteractionNotificationWindow.GetSender",
+      "auto_accept_notification": "+0x5C6 uint8; normal accept/reject commands must not answer acknowledgement-only notifications"
+    },
+    "CReplyCharacterInteractionCommand": {
+      "size": "0x28",
+      "primary_vtable": "+0x00 = 0x4082930",
+      "flags": "+0x08 uint8 = 0",
+      "secondary_vtable": "+0x18 = 0x4082900",
+      "pending_interaction_id": "+0x20 int32 CPendingCharacterInteraction component instance ID",
+      "reply": "+0x24 int32; 0 accept, 1 reject, 2 block, 4 acknowledge; UI submits with channel flags 0x0E"
     }
   }
 }
