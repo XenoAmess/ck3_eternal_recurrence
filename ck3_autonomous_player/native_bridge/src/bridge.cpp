@@ -995,8 +995,17 @@ void RunConnectedSession(HANDLE pipe, const xar::game::GameAdapter &game,
                          xar::game::MoveArmyResult::province_not_found) {
                 error = "CK3 destination province was not found";
               } else if (result ==
-                         xar::game::MoveArmyResult::cannot_move) {
-                error = "CK3 army cannot move to the destination";
+                         xar::game::MoveArmyResult::move_mode_unavailable) {
+                error = "CK3 army has no move mode for the destination";
+              } else if (result == xar::game::MoveArmyResult::
+                                       character_state_rejected) {
+                error = "CK3 played character state rejects army movement";
+              } else if (result ==
+                         xar::game::MoveArmyResult::army_state_rejected) {
+                error = "CK3 army state rejects movement";
+              } else if (result ==
+                         xar::game::MoveArmyResult::validation_failed) {
+                error = "CK3 move-army command validation failed";
               }
               connected = xar::bridge::WriteFrame(
                   pipe, CommandResultFrame(request_id, step, false, error));

@@ -73,6 +73,12 @@ bool g_raise_validate_result = true;
 bool g_raise_destroy_called = false;
 bool g_move_path_initialized = false;
 bool g_move_destroy_called = false;
+std::int32_t g_move_mode_result = 5;
+bool g_character_command_kind_allowed = true;
+bool g_army_move_mode_allowed = true;
+bool g_move_validation_allowed = true;
+bool g_disband_validate_called = false;
+bool g_disband_validate_result = true;
 std::int32_t g_casus_belli_evaluation_calls = 0;
 std::int32_t g_casus_belli_configuration_destroy_calls = 0;
 bool g_interaction_construct_called = false;
@@ -217,13 +223,25 @@ std::int32_t FixtureGetArmyMoveMode(void *army, void *province,
                                     std::int32_t direct_target) {
   return army == g_player_army.data() && province == g_enemy_province.data() &&
                  direct_target == 1
-             ? 5
+             ? g_move_mode_result
              : 2;
+}
+
+bool FixtureCanArmyUseMoveMode(void *army, std::int32_t move_mode) {
+  return g_army_move_mode_allowed && army == g_player_army.data() &&
+         move_mode == g_move_mode_result;
+}
+
+bool FixtureCanCharacterUseCommandKind(void *character,
+                                       std::int32_t command_kind) {
+  return g_character_command_kind_allowed &&
+         character == g_played_character.data() && command_kind == 1;
 }
 
 bool FixtureCanMoveArmy(std::int32_t command_kind, void *army,
                         std::int32_t move_mode) {
-  return command_kind == 2 && army == g_player_army.data() && move_mode == 5;
+  return g_move_validation_allowed && command_kind == 1 &&
+         army == g_player_army.data() && move_mode == g_move_mode_result;
 }
 
 void FixtureInitializeArmyMovePath(void *path_storage) {
@@ -472,6 +490,15 @@ void FixtureDestroyCharacterInteractionContext(void *) {
   ++g_interaction_destroy_calls;
 }
 
+bool FixtureValidateDisbandArmyCommand(std::int32_t command_kind,
+                                       std::int32_t command_target_id,
+                                       void *error_output) {
+  g_disband_validate_called = command_kind == 1 &&
+                              command_target_id == 0x02000011 &&
+                              error_output == nullptr;
+  return g_disband_validate_called && g_disband_validate_result;
+}
+
 void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
   const auto *command = static_cast<const std::byte *>(opaque_command);
   std::uintptr_t primary = 0;
@@ -546,20 +573,22 @@ void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
     std::memcpy(&route_kind, command + 0x30, sizeof(route_kind));
     std::memcpy(&direct_target, command + 0x34, sizeof(direct_target));
     g_submit_called = manager == reinterpret_cast<void *>(0x1234) &&
-                      flags == 7 && primary == 0xDDDDDDDD &&
+                      flags == 0x0E && primary == 0xDDDDDDDD &&
                       secondary == 0xEEEEEEEE && command_flags == 0 &&
-                      player_id == 2 && army_id == 0x01000001 &&
+                      player_id == 1 && army_id == 0x01000001 &&
                       destination == 3 && move_mode == 5 &&
                       route_kind == 2 && direct_target == 1 &&
                       command[0x38] == std::byte{0x5A};
   } else if (g_expected_command == ExpectedCommand::disband_army) {
+    std::int32_t command_kind = -1;
     std::int32_t command_target_id = -1;
+    std::memcpy(&command_kind, command + 0x20, sizeof(command_kind));
     std::memcpy(&command_target_id, command + 0x24,
                 sizeof(command_target_id));
     g_submit_called = manager == reinterpret_cast<void *>(0x1234) &&
-                      flags == 7 && primary == 0xFFFFFFFF &&
+                      flags == 0x0E && primary == 0xFFFFFFFF &&
                       secondary == 0xABABABAB && command_flags == 0 &&
-                      player_id == 2 && command_target_id == 0x02000011;
+                      command_kind == 1 && command_target_id == 0x02000011;
   } else if (g_expected_command == ExpectedCommand::declare_war) {
     std::int32_t actor_id = -1;
     std::int32_t recipient_id = -1;
@@ -814,9 +843,14 @@ int main() {
   bindings.destroy_raise_troops_command =
       FixtureDestroyRaiseTroopsCommand;
   bindings.get_army_move_mode = FixtureGetArmyMoveMode;
+  bindings.can_character_use_command_kind =
+      FixtureCanCharacterUseCommandKind;
+  bindings.can_army_use_move_mode = FixtureCanArmyUseMoveMode;
   bindings.can_move_army = FixtureCanMoveArmy;
   bindings.initialize_army_move_path = FixtureInitializeArmyMovePath;
   bindings.destroy_move_army_command = FixtureDestroyMoveArmyCommand;
+  bindings.validate_disband_army_command =
+      FixtureValidateDisbandArmyCommand;
   bindings.get_casus_belli_type_database =
       FixtureGetCasusBelliTypeDatabase;
   bindings.get_character_interaction_database =
@@ -1091,6 +1125,35 @@ int main() {
       !g_move_destroy_called) {
     return Fail("move-army did not use the native mode/path/queue layout");
   }
+  g_move_mode_result = 2;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitMoveArmy(bindings, player_army_id, 3) !=
+          xar::ck3_11906::MoveArmyResult::move_mode_unavailable ||
+      g_submit_called) {
+    return Fail("move-army did not expose native move-mode rejection");
+  }
+  g_move_mode_result = 5;
+  g_character_command_kind_allowed = false;
+  if (xar::ck3_11906::SubmitMoveArmy(bindings, player_army_id, 3) !=
+          xar::ck3_11906::MoveArmyResult::character_state_rejected ||
+      g_submit_called) {
+    return Fail("move-army did not expose native character-state rejection");
+  }
+  g_character_command_kind_allowed = true;
+  g_army_move_mode_allowed = false;
+  if (xar::ck3_11906::SubmitMoveArmy(bindings, player_army_id, 3) !=
+          xar::ck3_11906::MoveArmyResult::army_state_rejected ||
+      g_submit_called) {
+    return Fail("move-army did not expose native army-state rejection");
+  }
+  g_army_move_mode_allowed = true;
+  g_move_validation_allowed = false;
+  if (xar::ck3_11906::SubmitMoveArmy(bindings, player_army_id, 3) !=
+          xar::ck3_11906::MoveArmyResult::validation_failed ||
+      g_submit_called) {
+    return Fail("move-army did not expose native command validation failure");
+  }
+  g_move_validation_allowed = true;
   g_submit_called = false;
   if (xar::ck3_11906::SubmitMoveArmy(bindings, enemy_army_id, 2) !=
           xar::ck3_11906::MoveArmyResult::army_not_controllable ||
@@ -1102,11 +1165,22 @@ int main() {
 
   g_expected_command = ExpectedCommand::disband_army;
   g_submit_called = false;
+  g_disband_validate_called = false;
+  g_disband_validate_result = true;
   if (xar::ck3_11906::SubmitDisbandArmy(bindings, player_army_id) !=
           xar::ck3_11906::DisbandArmyResult::submitted ||
-      !g_submit_called) {
-    return Fail("disband-army did not submit the pinned command layout");
+      !g_disband_validate_called || !g_submit_called) {
+    return Fail("disband-army did not validate and submit the player command");
   }
+  g_submit_called = false;
+  g_disband_validate_called = false;
+  g_disband_validate_result = false;
+  if (xar::ck3_11906::SubmitDisbandArmy(bindings, player_army_id) !=
+          xar::ck3_11906::DisbandArmyResult::army_not_controllable ||
+      !g_disband_validate_called || g_submit_called) {
+    return Fail("disband-army queued a command rejected by CK3 validation");
+  }
+  g_disband_validate_result = true;
   g_submit_called = false;
   if (xar::ck3_11906::SubmitDisbandArmy(bindings, enemy_army_id) !=
           xar::ck3_11906::DisbandArmyResult::army_not_controllable ||

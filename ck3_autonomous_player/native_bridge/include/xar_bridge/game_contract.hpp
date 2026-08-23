@@ -119,7 +119,10 @@ enum class MoveArmyResult {
   army_not_found,
   army_not_controllable,
   province_not_found,
-  cannot_move,
+  move_mode_unavailable,
+  character_state_rejected,
+  army_state_rejected,
+  validation_failed,
   unavailable,
 };
 enum class DisbandArmyResult {

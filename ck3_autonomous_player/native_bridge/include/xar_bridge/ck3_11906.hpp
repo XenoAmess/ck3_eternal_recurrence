@@ -33,9 +33,15 @@ using DestroyNativeCommand = void *(*)(void *command,
                                        std::int32_t delete_flags);
 using GetArmyMoveMode = std::int32_t (*)(void *army, void *province,
                                         std::int32_t direct_target);
+using CanCharacterUseCommandKind = bool (*)(void *character,
+                                            std::int32_t command_kind);
+using CanArmyUseMoveMode = bool (*)(void *army, std::int32_t move_mode);
 using CanMoveArmy = bool (*)(std::int32_t command_kind, void *army,
                             std::int32_t move_mode);
 using InitializeArmyMovePath = void (*)(void *path_storage);
+using ValidateDisbandArmyCommand = bool (*)(
+    std::int32_t command_kind, std::int32_t command_target_id,
+    void *error_output);
 using GetCasusBelliTypeDatabase = void *(*)();
 using GetCharacterInteractionDatabase = void *(*)();
 using EvaluateCasusBelli = bool (*)(void *casus_belli_type,
@@ -117,9 +123,12 @@ struct Bindings {
   ValidateRaiseTroopsCommand validate_raise_troops_command = nullptr;
   DestroyNativeCommand destroy_raise_troops_command = nullptr;
   GetArmyMoveMode get_army_move_mode = nullptr;
+  CanCharacterUseCommandKind can_character_use_command_kind = nullptr;
+  CanArmyUseMoveMode can_army_use_move_mode = nullptr;
   CanMoveArmy can_move_army = nullptr;
   InitializeArmyMovePath initialize_army_move_path = nullptr;
   DestroyNativeCommand destroy_move_army_command = nullptr;
+  ValidateDisbandArmyCommand validate_disband_army_command = nullptr;
   GetCasusBelliTypeDatabase get_casus_belli_type_database = nullptr;
   GetCharacterInteractionDatabase get_character_interaction_database =
       nullptr;

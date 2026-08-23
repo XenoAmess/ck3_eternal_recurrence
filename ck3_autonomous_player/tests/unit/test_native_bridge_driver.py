@@ -1148,6 +1148,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
         )
 
+        native_error = "CK3 army state rejects movement"
+
         def answer(frame: dict[str, object]) -> None:
             if frame.get("type") == "execute_step":
                 endpoint.publish(
@@ -1156,7 +1158,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         "protocol_version": 1,
                         "request_id": frame["request_id"],
                         "ok": False,
-                        "error": "CK3 army cannot move to the destination",
+                        "error": native_error,
                     }
                 )
 

@@ -61,6 +61,18 @@ Python 根据当前 snapshot 展开为：
 `war_id=16777290`、`player_side=attacker`、`player_relative_war_score=0`；CK3 进程继续响应且窗口仍保持最小化。
 该路径未调用 OCR、截图、键鼠或视觉 fallback。
 
+2026-08-24 的后续实机回放补齐了移动与解散。旧 bridge 从 AI/controller 调用点抄入了
+`command kind=2` 与 queue flags `7`；这会在玩家军队的控制权校验处被拒绝。连续推进约 49 个游戏日、
+更换目标省以及尝试停止集结都不能修复该问题，且运行时字段明确显示军队并未处于集结状态。玩家地图路径实际使用
+`kind=1`、queue flags `0x0E`。改为该路径后，窗口保持 `IsIconic=true` 时
+`move-army-83886341-to-2586` 返回 `move_submitted`；随后约 35 个游戏日内，同一军队的当前省从
+`2619` 变为 `2606`，证明发生了真实行军而非仅收到 command ack。
+
+解散命令同样必须使用玩家路径：公开 ArmyID 只负责解析 `CArmy`，command payload 使用
+`CArmy+0x178` 的内部 target ID，并先调用原生 validator，再以 `kind=1` / flags `0x0E` 入队。
+同一最小化实机回放中，`disband-army-83886341` 返回 `war_action.status=disbanded`，下一份
+snapshot 的 `player_armies` 已为空。以上两条路径全程没有恢复窗口，也没有调用 OCR、截图或键鼠。
+
 这些具体战争 step 即使运行在显式 `hybrid-fallback` 配置中也只允许 native 后端执行；native 未广告时不会转发到视觉后端。
 
 ## 一步 planner

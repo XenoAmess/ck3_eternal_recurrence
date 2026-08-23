@@ -46,7 +46,7 @@ bridge identity/heartbeat/ping.
 | allied/enemy army current province | implemented, live probe pending | war participant helper classifies each observable army owner | never inside native driver |
 | army soldier count / move target | unsupported | conflicting `+0x38/+0x44` interpretations at RVAs `0xC73D00` and `0x26B51B0`; no value guessed | unsupported |
 | `game.command.raise-troops-default` | implemented, live probe pending | native default-province/construct/validate/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
-| `game.command.move-army-N-to-N` | implemented; live correctly refused a freshly raised, still-gathering army | native mode/can-move/path-init/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
+| `game.command.move-army-N-to-N` | implemented and minimized-live accepted: player command submitted and army province changed | exact player-UI kind/channel plus native mode/state/can-move/path-init/clone/destruct lifecycle, offline fixture, and live movement | explicit upper-layer policy only |
 | `game.command.disband-army-N` | implemented; live exposed the distinct command-target ID and corrected build awaits replay | exact 0x28-byte command/vtables/payload source/clone + offline fixture | explicit upper-layer policy only |
 | `game.command.query-declarable-wars` | native C++ core implemented, bridge route/live probe pending | exact declare-war UI CB registry/evaluator/item rules + offline SSO/heap-key and configuration fixture | explicit upper-layer policy only |
 | `game.command.declare-war-<declaration_id>` | native C++ core implemented, bridge route/live probe pending | generation-bound exact re-enumeration + native context/validation/queue/destruction fixture | explicit upper-layer policy only |
@@ -211,31 +211,57 @@ validator `0x26D7150(command, nullptr)`, submits with flags `7`, then calls
 destructor `0x10E7950(command, 0)` after the queue synchronously clones it.
 
 `CMoveArmyCommand` is `0x168` bytes with vtables `0x432BF18`/`0x432BFB0`.
-The direct-target path at RVA `0x186B232` writes `+0x20=2`, ArmyID at `+0x24`,
-destination ProvinceID at `+0x28`, move mode at `+0x2C`, `+0x30=2`, and
-`+0x34=1`. The bridge reproduces the original helper order: mode
-`0x26B51B0(army, province, 1)`, can-move
-`0x26B4610(2, army, mode)`, path initialization
-`0xC7BA70(command+0x38)`, submit flags `7`, then destructor
+The actual player map UI path at RVA `0xA8464A` obtains mode with
+`0x26B51B0(army, province, direct_target)`, checks
+`0x2248860(army, mode)`, then constructs the command at RVA `0xA84722` with
+`+0x20=1`, ArmyID at `+0x24`, destination ProvinceID at `+0x28`, move mode at
+`+0x2C`, `+0x30=2`, and the direct-target flag at `+0x34`. It initializes
+the path via `0xC7BA70(command+0x38)` and submits with player channel flags
+`0x0E`. The command validator at RVA `0x26B4A3C` subsequently passes the
+stored `+0x20` kind to complete can-move wrapper `0x26B4610`; the bridge
+preflights the same wrapper with kind `1`, queues, then calls destructor
 `0x26B46D0(command, 0)`. Heap clone RVA `0x26C1E50` confirms size and payload.
-Move-mode RVA `0x26B51B0` returns `2` for an army that is not currently ready
-to move, and `0x26B4610(2, army, 2)` rejects that sentinel before a command is
-constructed. A 2026-08-24 minimized live run reproduced this after raising army
-`83886341` at province `2619` while the map remained paused: moves toward enemy
-army provinces `2564` and `2574` both returned `cannot_move`. This is not a
-command-layout failure; the native loop must advance time until the raised army
-finishes gathering, then retry movement.
+The superficially similar direct-target construction at RVA `0x186B232`
+uses kind `2` and submit flags `7`: it is an AI/controller path, not the
+player UI path. On the live player army, that wrong kind made the complete
+wrapper fail after move-mode and army-state gates had both passed.
+Move-mode RVA `0x26B51B0` can return sentinel `2`, which the complete wrapper
+rejects before a command is constructed. The bridge reports that separately
+from the `0x26B26A0(owner, 1)` character-state gate, the `0x2248860`
+army-state gate,
+and the remaining checks inside `0x26B4610`; do not infer the rejecting stage from a generic
+`cannot_move` result.
+
+A 2026-08-24 minimized live run raised army `83886341` at province `2619` and
+still received the old generic rejection after about 49 days of actual time
+advance, for both a neighboring province and changing enemy locations. Direct
+memory reads showed route count `CUnit+0x44=0`, state `CUnit+0x170=0`, linked
+`CArmy+0x5C=0`, and date field `CUnit+0x180` equal to the original raise date.
+The `+0x5C=0` value also makes CK3's stop-gathering validator at RVA
+`0x26B6230` return false, so this run is **not** blocked by ongoing gathering.
+The linked army's `+0x128=-1` causes the optional association check inside
+`0x2248860` to be skipped; it is not itself a rejection. The staged live probe
+then passed both move-mode and `0x2248860`, but failed the complete wrapper
+while the bridge supplied kind `2`; this reproduced the player-versus-AI
+command-path mismatch above. Adding more time delay or a stop-gathering
+command cannot address that failure. After changing the bridge to the player
+path (`kind=1`, submit flags `0x0E`), the minimized live call returned
+`move_submitted`; twelve seconds at speed 5 advanced roughly 35 in-game days
+and the same army's province changed from `2619` to `2606`. This is the direct
+gameplay acceptance for the move-command fix, not merely queue acceptance.
 
 `CDisbandArmyCommand` is `0x28` bytes: vtables
-`0x432BFE0`/`0x432C078`, `+0x20=2`, and the command-target ID read from
-`CArmy+0x178` at `+0x24`; it submits with flags `7`. The public step still uses
-the component ArmyID from `CArmy+0x10` to resolve the army. The original AI
-construction at RVA `0x187954F` proves that the two IDs are distinct inputs,
-and clone RVA `0x26C2090` independently confirms the complete command layout.
-The same minimized run showed why this distinction matters: the old bridge
-queued a disband carrying the public component ID but the army remained in the
-next snapshot. The fixture now gives both fields deliberately different values
-and requires the `+0x178` value in the queued command.
+`0x432BFE0`/`0x432C078`, and the command-target ID read from `CArmy+0x178` at
+`+0x24`. The public step still uses the component ArmyID from `CArmy+0x10` to
+resolve the army. The original player UI path at RVA `0xBC8EE0` calls validator
+`0x26B5710(1, command_target_id, nullptr)`, writes player command kind `1` at
+`+0x20`, and submits with flags `0x0E`. Kind `2` plus flags `7` at RVA
+`0x187954F` is an AI-controller path; its control check at RVA `0x26B26A0`
+rejects a player-owned army, so queueing that otherwise well-formed command is
+a silent no-op. Clone RVA `0x26C2090` independently confirms the complete
+command layout. The fixture gives the public and target IDs deliberately
+different values, requires the `+0x178` value, and separately pins player kind,
+validation, and channel flags.
 
 Declare-war discovery is an explicit strategic query, not part of the 250 ms
 heartbeat snapshot. The global query scans live Character components and runs

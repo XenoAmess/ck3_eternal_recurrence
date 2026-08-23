@@ -82,7 +82,15 @@ _NATIVE_DEATH_TERMINAL_STEP = "death-terminal"
 _NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
 _NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 _RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
-_ARMY_NOT_MOVE_READY_ERROR = "CK3 army cannot move to the destination"
+_ARMY_MOVE_DEFERRED_ERRORS = frozenset(
+    {
+        # Kept for protocol-v1 bridges built before the native rejection
+        # stages were split.
+        "CK3 army cannot move to the destination",
+        "CK3 army has no move mode for the destination",
+        "CK3 army state rejects movement",
+    }
+)
 
 
 class _NativeCommandRejectedError(BridgeUnavailableError):
@@ -1325,7 +1333,7 @@ class NativeHeadlessGameplayDriver:
                     step, expected_revision=selected_revision
                 )
             except _NativeCommandRejectedError as error:
-                if error.native_error != _ARMY_NOT_MOVE_READY_ERROR:
+                if error.native_error not in _ARMY_MOVE_DEFERRED_ERRORS:
                     raise
                 current = self.take_snapshot()
                 return {

@@ -58,9 +58,12 @@ constexpr std::uintptr_t kConstructRaiseTroopsCommandRva = 0x26D6FC0;
 constexpr std::uintptr_t kValidateRaiseTroopsCommandRva = 0x26D7150;
 constexpr std::uintptr_t kDestroyRaiseTroopsCommandRva = 0x10E7950;
 constexpr std::uintptr_t kGetArmyMoveModeRva = 0x26B51B0;
+constexpr std::uintptr_t kCanCharacterUseCommandKindRva = 0x26B26A0;
+constexpr std::uintptr_t kCanArmyUseMoveModeRva = 0x2248860;
 constexpr std::uintptr_t kCanMoveArmyRva = 0x26B4610;
 constexpr std::uintptr_t kInitializeArmyMovePathRva = 0x0C7BA70;
 constexpr std::uintptr_t kDestroyMoveArmyCommandRva = 0x26B46D0;
+constexpr std::uintptr_t kValidateDisbandArmyCommandRva = 0x26B5710;
 constexpr std::uintptr_t kGetCasusBelliTypeDatabaseRva = 0x088E260;
 constexpr std::uintptr_t kGetCharacterInteractionDatabaseRva = 0x0831890;
 constexpr std::uintptr_t kEvaluateCasusBelliRva = 0x2D95D00;
@@ -241,7 +244,7 @@ struct MoveArmyCommand {
   std::uint32_t metadata_10 = 0;
   std::uint32_t metadata_14 = 0;
   std::uintptr_t secondary_vtable = 0;
-  std::int32_t command_kind = 2;
+  std::int32_t command_kind = 1;
   std::int32_t army_id = -1;
   std::int32_t destination_province_id = -1;
   std::int32_t move_mode = 0;
@@ -258,7 +261,7 @@ struct DisbandArmyCommand {
   std::uint32_t metadata_10 = 0;
   std::uint32_t metadata_14 = 0;
   std::uintptr_t secondary_vtable = 0;
-  std::int32_t command_kind = 2;
+  std::int32_t command_kind = 1;
   std::int32_t command_target_id = -1;
 };
 
@@ -1116,6 +1119,11 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
           module + kDestroyRaiseTroopsCommandRva);
   result.get_army_move_mode =
       reinterpret_cast<GetArmyMoveMode>(module + kGetArmyMoveModeRva);
+  result.can_character_use_command_kind =
+      reinterpret_cast<CanCharacterUseCommandKind>(
+          module + kCanCharacterUseCommandKindRva);
+  result.can_army_use_move_mode = reinterpret_cast<CanArmyUseMoveMode>(
+      module + kCanArmyUseMoveModeRva);
   result.can_move_army =
       reinterpret_cast<CanMoveArmy>(module + kCanMoveArmyRva);
   result.initialize_army_move_path =
@@ -1124,6 +1132,9 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.destroy_move_army_command =
       reinterpret_cast<DestroyNativeCommand>(
           module + kDestroyMoveArmyCommandRva);
+  result.validate_disband_army_command =
+      reinterpret_cast<ValidateDisbandArmyCommand>(
+          module + kValidateDisbandArmyCommandRva);
   result.get_casus_belli_type_database =
       reinterpret_cast<GetCasusBelliTypeDatabase>(
           module + kGetCasusBelliTypeDatabaseRva);
@@ -1494,6 +1505,8 @@ MoveArmyResult SubmitMoveArmy(const Bindings &bindings,
       bindings.command_manager == nullptr ||
       bindings.submit_command == nullptr ||
       bindings.get_army_move_mode == nullptr ||
+      bindings.can_character_use_command_kind == nullptr ||
+      bindings.can_army_use_move_mode == nullptr ||
       bindings.can_move_army == nullptr ||
       bindings.initialize_army_move_path == nullptr ||
       bindings.destroy_move_army_command == nullptr ||
@@ -1524,22 +1537,38 @@ MoveArmyResult SubmitMoveArmy(const Bindings &bindings,
   if (province == nullptr) {
     return MoveArmyResult::province_not_found;
   }
-  constexpr std::int32_t command_kind = 2;
+  // The map UI submits the local-player command kind. Kind 2 is the
+  // AI/controller path and fails its controller gate for a player army.
+  constexpr std::int32_t command_kind = 1;
   constexpr std::int32_t direct_target = 1;
   const std::int32_t move_mode =
       bindings.get_army_move_mode(army, province, direct_target);
+  if (move_mode == 2) {
+    return MoveArmyResult::move_mode_unavailable;
+  }
+  void *const owner_character =
+      ResolveCharacter(bindings, current.played_character_id);
+  if (owner_character == nullptr ||
+      !bindings.can_character_use_command_kind(owner_character,
+                                                command_kind)) {
+    return MoveArmyResult::character_state_rejected;
+  }
+  if (!bindings.can_army_use_move_mode(army, move_mode)) {
+    return MoveArmyResult::army_state_rejected;
+  }
   if (!bindings.can_move_army(command_kind, army, move_mode)) {
-    return MoveArmyResult::cannot_move;
+    return MoveArmyResult::validation_failed;
   }
 
   MoveArmyCommand command{};
   command.primary_vtable = bindings.move_army_primary_vtable;
   command.secondary_vtable = bindings.move_army_secondary_vtable;
+  command.command_kind = command_kind;
   command.army_id = army_id;
   command.destination_province_id = province_id;
   command.move_mode = move_mode;
   bindings.initialize_army_move_path(command.path_storage.data());
-  bindings.submit_command(bindings.command_manager, &command, 7);
+  bindings.submit_command(bindings.command_manager, &command, 0x0E);
   bindings.destroy_move_army_command(&command, 0);
   return MoveArmyResult::submitted;
 }
@@ -1548,6 +1577,7 @@ DisbandArmyResult SubmitDisbandArmy(const Bindings &bindings,
                                     std::int32_t army_id) noexcept {
   if (!bindings.enabled || bindings.command_manager == nullptr ||
       bindings.submit_command == nullptr ||
+      bindings.validate_disband_army_command == nullptr ||
       bindings.disband_army_primary_vtable == 0 ||
       bindings.disband_army_secondary_vtable == 0) {
     return DisbandArmyResult::unavailable;
@@ -1571,12 +1601,20 @@ DisbandArmyResult SubmitDisbandArmy(const Bindings &bindings,
     return DisbandArmyResult::army_not_controllable;
   }
 
+  constexpr std::int32_t command_kind = 1;
+  const std::int32_t command_target_id =
+      LoadAt<std::int32_t>(army, kArmyDisbandCommandTargetIdOffset);
+  if (!bindings.validate_disband_army_command(
+          command_kind, command_target_id, nullptr)) {
+    return DisbandArmyResult::army_not_controllable;
+  }
+
   DisbandArmyCommand command{};
   command.primary_vtable = bindings.disband_army_primary_vtable;
   command.secondary_vtable = bindings.disband_army_secondary_vtable;
-  command.command_target_id =
-      LoadAt<std::int32_t>(army, kArmyDisbandCommandTargetIdOffset);
-  bindings.submit_command(bindings.command_manager, &command, 7);
+  command.command_kind = command_kind;
+  command.command_target_id = command_target_id;
+  bindings.submit_command(bindings.command_manager, &command, 0x0E);
   return DisbandArmyResult::submitted;
 }
 

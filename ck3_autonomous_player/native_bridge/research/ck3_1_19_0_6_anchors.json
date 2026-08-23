@@ -173,10 +173,10 @@
       "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D AC 24 F0 FE FF FF 48 81 EC 10 02 00 00 4C 8B FA 4C 8B F1 45 33 E4 41 8B FC 44 89 A5 40 01 00 00 44 39 61 34 0F 84 B2 01 00 00 4C 8B 05 95"
     },
     {
-      "name": "move_army_direct_target_construct_and_submit",
-      "rva": "0x186B232",
-      "confidence": "high-static",
-      "pattern": "48 8D 15 DF 0C AC 02 C7 44 24 40 02 00 00 00 41 8B 46 10 44 89 7C 24 4C C7 44 24 50 02 00 00 00 C7 44 24 54 01 00 00 00"
+      "name": "move_army_player_ui_construct_and_submit",
+      "rva": "0xA84722",
+      "confidence": "high-static-live-validated",
+      "pattern": "48 8D 0D EF 77 8A 03 48 89 4D 88 48 8D 0D 7C 78 8A 03 48 89 4D A0 C7 45 A8 01 00 00 00 89 5D AC 89 45 B0 44 89 75 B4 C7 45 B8 02 00 00 00"
     },
     {
       "name": "army_direct_move_mode",
@@ -189,6 +189,18 @@
       "rva": "0x26B4610",
       "confidence": "high-static",
       "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 41 8B F0 48 8B FA 8B E9 41 83 F8 02 74 7A 48 8B 42 08 48 8D"
+    },
+    {
+      "name": "army_move_mode_state_gate",
+      "rva": "0x2248860",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 8B EA 48 8B F9 83 FA 02 0F 84 A7 00 00 00 83 79 18 00 0F 85 9D 00 00 00"
+    },
+    {
+      "name": "character_command_kind_gate",
+      "rva": "0x26B26A0",
+      "confidence": "high-static",
+      "pattern": "40 53 48 83 EC 40 48 8B D9 83 FA 03 74 37 83 FA 02 75 3A 48 8B 89 A8 01 00 00 48 85 C9 74 11 48 8B 89 78 02 00 00 48 8B 01 FF 50 08"
     },
     {
       "name": "move_army_path_storage_initialize",
@@ -207,6 +219,18 @@
       "rva": "0x187954F",
       "confidence": "high-static",
       "pattern": "8B 97 78 01 00 00 88 44 24 58 4C 89 7C 24 5C 44 89 7C 24 64 48 8D 05 76 2A AB 02 48 89 44 24 50 48 8D 05 02 2B AB 02 48 89 44 24 68 C7 44 24 70 02 00 00 00 89 54 24 74"
+    },
+    {
+      "name": "disband_army_player_validate_construct_and_submit",
+      "rva": "0xBC8FBB",
+      "confidence": "high-static",
+      "pattern": "8B 96 78 01 00 00 41 8D 48 01 E8 46 C7 AE 01 84 C0 0F 84 88 00 00 00 8B 86 78 01 00 00 C6 44 24 28 00"
+    },
+    {
+      "name": "disband_army_validate",
+      "rva": "0x26B5710",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 70 FE FF FF 48 81 EC 90 02 00 00 4D 8B E8 8B D9 4C 8B 0D ED 6F 05 03 4D 85 C9 74 2A"
     },
     {
       "name": "casus_belli_type_database_getter",
@@ -329,11 +353,15 @@
     "move_army_primary_vtable": "0x432BF18",
     "move_army_secondary_vtable": "0x432BFB0",
     "move_army_mode": "0x26B51B0",
+    "move_army_character_command_kind_gate": "0x26B26A0",
+    "move_army_mode_state_gate": "0x2248860",
     "move_army_can_move": "0x26B4610",
     "move_army_path_initialize": "0xC7BA70",
     "move_army_destructor": "0x26B46D0",
     "disband_army_primary_vtable": "0x432BFE0",
     "disband_army_secondary_vtable": "0x432C078",
+    "disband_army_validate": "0x26B5710",
+    "disband_army_player_construct_and_submit": "0xBC8FBB",
     "disband_army_ai_construct_and_submit": "0x187954F",
     "send_character_interaction_primary_vtable": "0x40829F8",
     "send_character_interaction_secondary_vtable": "0x40829C8",
@@ -537,15 +565,16 @@
       "size": "0x168",
       "primary_vtable": "+0x00 = 0x432BF18",
       "secondary_vtable": "+0x18 = 0x432BFB0",
-      "payload": "+0x20=2 command kind, +0x24 ArmyID, +0x28 destination ProvinceID, +0x2C move mode, +0x30=2 route kind, +0x34=1 direct target",
+      "payload": "player UI path +0x20=1 command kind, +0x24 ArmyID, +0x28 destination ProvinceID, +0x2C move mode, +0x30=2 route kind, +0x34=direct-target flag",
       "path_storage": "+0x38 initialized by RVA 0xC7BA70",
-      "lifecycle": "mode RVA 0x26B51B0(army, province, 1), can-move RVA 0x26B4610(2, army, mode), submit flags 7, destructor RVA 0x26B46D0 with delete_flags=0; mode 2 is an explicit not-ready/invalid sentinel rejected by can-move"
+      "lifecycle": "player UI RVA 0xA8464A obtains mode with RVA 0x26B51B0, checks army state with RVA 0x2248860, constructs at RVA 0xA84722, initializes path, and submits flags 0x0E; command validator RVA 0x26B4A3C passes stored kind 1 to complete can-move RVA 0x26B4610. The bridge preflights character-state RVA 0x26B26A0(owner,1), army-state, and complete can-move before queueing, and reports each rejection separately. Kind 2 / flags 7 at RVA 0x186B232 is an AI/controller path rejected for a player-owned army"
     },
     "CDisbandArmyCommand": {
       "size": "0x28",
       "primary_vtable": "+0x00 = 0x432BFE0",
       "secondary_vtable": "+0x18 = 0x432C078",
-      "payload": "+0x20=2 command kind, +0x24 command-target ID loaded from CArmy+0x178; the public component ArmyID at CArmy+0x10 is only used to resolve the object; submit flags 7"
+      "payload": "player path +0x20=1 command kind, +0x24 command-target ID loaded from CArmy+0x178; the public component ArmyID at CArmy+0x10 is only used to resolve the object",
+      "lifecycle": "player UI RVA 0xBC8EE0 first calls validator RVA 0x26B5710(1, command_target_id, null), then submits with channel flags 0x0E; kind 2 / flags 7 at RVA 0x187954F is the AI-controller path and is rejected for a player-owned army"
     },
     "CCasusBelliTypeDatabase": {
       "types": "+0x68 CCasusBelliType pointer array",
