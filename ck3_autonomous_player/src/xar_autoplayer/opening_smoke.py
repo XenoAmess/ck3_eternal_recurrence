@@ -782,6 +782,35 @@ def _steward_development_active(frame: object) -> bool:
     )
 
 
+def _county_label_target_candidates(
+    frame: object, county_label: str
+) -> tuple[tuple[int, int], ...]:
+    """Derive map targets from the currently rendered county label."""
+    matches = _spans_with_text(
+        frame,
+        county_label,
+        region=(0.15, 0.12, 0.75, 0.85),
+    )
+    if len(matches) != 1:
+        raise AgentError(
+            f"map lacks one visible {county_label!r} county label: {len(matches)}"
+        )
+    x, y = matches[0].center
+    width = frame.client_rect[2] - frame.client_rect[0]
+    height = frame.client_rect[3] - frame.client_rect[1]
+    candidates = (
+        (x, y),
+        (x + 80, y),
+        (x, y + 60),
+        (x - 80, y),
+    )
+    return tuple(
+        point
+        for point in candidates
+        if 0 <= point[0] < width and 0 <= point[1] < height
+    )
+
+
 _OPENING_REPLAY_CHECKS = {
     "council-panel": _council_panel_visible,
     "steward-development-targeting": _steward_development_targeting_active,
@@ -1551,7 +1580,16 @@ def _drive_opening(
         target_point = None
         target_hover = None
         hover_attempts: list[dict[str, object]] = []
-        for candidate in ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS:
+        visible_county_candidates = _county_label_target_candidates(
+            targeting, "福贾"
+        )
+        candidate_points = tuple(
+            dict.fromkeys(
+                visible_county_candidates
+                + ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS
+            )
+        )
+        for candidate in candidate_points:
             window.require_foreground()
             window.require_unobscured(candidate)
             pyautogui.moveTo(
@@ -2235,11 +2273,94 @@ def _drive_opening(
             live_driver = new_driver()
             _live_first, live_map = wait_for_custom_state(
                 live_driver,
-                lambda frame: getattr(frame, "screen", None)
-                in {"map_hud", "map_running"},
+                lambda frame: (
+                    getattr(frame, "screen", None)
+                    in {"map_hud", "map_running"}
+                    or _steward_development_targeting_active(frame)
+                    or _council_panel_visible(frame)
+                ),
                 "current development map",
             )
-            if live_map.screen == "map_running":
+            if _steward_development_targeting_active(live_map):
+                window.require_foreground()
+                append_event(
+                    events,
+                    {
+                        "kind": "opening_key_input_planned",
+                        "control_id": "development_session.cancel_targeting",
+                        "key": "escape",
+                        "scan_code": CK3_SHORTCUT_SCAN_CODES["escape"],
+                        "expected_post_screen": "map_hud",
+                    },
+                )
+                cancel_accepted, cancel_last_error = _prepare_key_press_batch(
+                    CK3_SHORTCUT_SCAN_CODES["escape"]
+                )()
+                if cancel_accepted != 2:
+                    raise AgentError(
+                        "development targeting cancel was partial: "
+                        f"accepted={cancel_accepted}, last_error={cancel_last_error}"
+                    )
+                wait_for_custom_state(
+                    live_driver,
+                    _council_panel_visible,
+                    "council panel after targeting cancel",
+                )
+                append_event(
+                    events,
+                    {
+                        "kind": "opening_key_input_planned",
+                        "control_id": "development_session.close_council_after_cancel",
+                        "key": "f4",
+                        "scan_code": CK3_SHORTCUT_SCAN_CODES["f4"],
+                        "expected_post_screen": "map_hud",
+                    },
+                )
+                close_accepted, close_last_error = _prepare_key_press_batch(
+                    CK3_SHORTCUT_SCAN_CODES["f4"]
+                )()
+                if close_accepted != 2:
+                    raise AgentError(
+                        "F4 after development targeting cancel was partial: "
+                        f"accepted={close_accepted}, last_error={close_last_error}"
+                    )
+                live_driver.observe_stable(
+                    "map_hud",
+                    min(
+                        INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                        _remaining(deadline, "map after targeting cancel"),
+                    ),
+                    stable_frames=2,
+                )
+            elif _council_panel_visible(live_map):
+                window.require_foreground()
+                append_event(
+                    events,
+                    {
+                        "kind": "opening_key_input_planned",
+                        "control_id": "development_session.close_existing_council",
+                        "key": "f4",
+                        "scan_code": CK3_SHORTCUT_SCAN_CODES["f4"],
+                        "expected_post_screen": "map_hud",
+                    },
+                )
+                close_accepted, close_last_error = _prepare_key_press_batch(
+                    CK3_SHORTCUT_SCAN_CODES["f4"]
+                )()
+                if close_accepted != 2:
+                    raise AgentError(
+                        "existing council close was partial: "
+                        f"accepted={close_accepted}, last_error={close_last_error}"
+                    )
+                live_driver.observe_stable(
+                    "map_hud",
+                    min(
+                        INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                        _remaining(deadline, "map after existing council close"),
+                    ),
+                    stable_frames=2,
+                )
+            elif live_map.screen == "map_running":
                 press_shortcut(
                     "map_running",
                     "map_running.pause",

@@ -29,6 +29,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS,
     STEWARD_DEVELOP_COUNTY_TASK_CENTER,
     _building_construction_in_progress,
+    _county_label_target_candidates,
     _choose_first_blessing,
     _choose_first_curse,
     _choose_economic_building_offer,
@@ -552,6 +553,16 @@ class OpeningContractTests(unittest.TestCase):
         )
         self.assertTrue(_steward_development_targeting_active(targeting))
         self.assertFalse(_steward_development_active(targeting))
+
+        labeled_targeting = SimpleNamespace(
+            client_rect=(0, 0, 2560, 1440),
+            spans=targeting.spans
+            + (span("福贾", (1131, 350), (1090, 332, 1172, 368)),),
+        )
+        self.assertEqual(
+            _county_label_target_candidates(labeled_targeting, "福贾"),
+            ((1131, 350), (1211, 350), (1131, 410), (1051, 350)),
+        )
 
         confirmation = SimpleNamespace(
             client_rect=(0, 0, 2560, 1440),
