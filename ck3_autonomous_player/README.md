@@ -269,8 +269,10 @@ CK3 1.19.0.6 的最小化窗口上完成无 OCR/键鼠实测：90 次复合回�
 五选项事件并以原生命令选择第 1 项，随后观察到实例 15；原生 checkpoint 落盘为约 63 MB 的
 `xar_checkpoint.ck3`，新进程用 `-continuelastsave` 精确恢复到同一 `date_raw=53167488`。native driver 会锁定首次可玩
 snapshot 的 `episode_character_id`，restore 后仍保持该 ID；玩家死亡或 CK3 已切换 played `CharacterID` 都在本项目的
-一代制规则下直接产生 `death-terminal`，不会继续扮演继承人。可选的 primary-heir 字段只用于当前生命的策略信息。主动发起婚姻、战争等尚未完成的原生能力仍按
-capability 返回 unsupported；收到的角色互动已可原生接受或拒绝。
+一代制规则下直接产生 `death-terminal`，不会继续扮演继承人。可选的 primary-heir 字段只用于当前生命的策略信息。
+原生战争层现已支持显式枚举宣战理由、宣战、征兵、行军、强制要求与解散军队；2026-08-23 的最小化实测中，
+`declare-war-29097-11-0` 后 snapshot 真正出现 `war_id=16777290`，CK3 进程仍响应且窗口保持最小化。主动婚配查询与提交协议也已接入；
+同次实测查询正常返回但该存档没有可用候选，因此主动婚配提交仍标为待实机候选验证。收到的角色互动已可原生接受或拒绝。
 
 纯原生模式需要两个并行进程：先启动 `mcp_server.py --driver native-headless` 建立 pipe server，再用上面的
 `agent.py ... native-session` 创建 suspended CK3、注入 DLL 并恢复游戏。`native-session` 监管 PID/Job，stdin 接受

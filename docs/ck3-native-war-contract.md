@@ -56,6 +56,11 @@ Python 根据当前 snapshot 展开为：
   Python 等待 `active_wars` 增长；若原生命令已入队但战争尚未投影，返回 `declaration_submitted`，下一 turn 先推进时间而不重复宣战。
 - enforce：只允许当前玩家是该战争的 primary war leader；native builder、validator 与 command queue 接受后，Python 等待目标 war 消失。
 
+2026-08-23 实机验证使用 exact-build DLL 与 `native-headless`，在 CK3 窗口 `IsIconic=true` 时显式查询并提交
+`declare-war-29097-11-0`。提交后并非只收到 command ack：下一份 native snapshot 实际新增
+`war_id=16777290`、`player_side=attacker`、`player_relative_war_score=0`；CK3 进程继续响应且窗口仍保持最小化。
+该路径未调用 OCR、截图、键鼠或视觉 fallback。
+
 这些具体战争 step 即使运行在显式 `hybrid-fallback` 配置中也只允许 native 后端执行；native 未广告时不会转发到视觉后端。
 
 ## 一步 planner
