@@ -383,6 +383,12 @@
       "pattern": "48 89 5C 24 08 57 48 83 EC 20 0F B7 39 48 8B D9 E8 9B B7 09 00 39 78 0C 7E 12 E8 91 B7 09 00 4C 8D 04 BF 49 C1 E0 04 4C 03 00 EB 07 4C 8D 05 7D"
     },
     {
+      "name": "character_event_target_resolver_liveness_gate",
+      "rva": "0x201AD30",
+      "confidence": "high-static-live-confirmed",
+      "pattern": "40 53 48 83 EC 20 66 83 39 04 75 05 8B 51 08 EB 05 BA FF FF FF FF 48 8B 05 E3 13 6F 03 48 85 C0 74 23 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48 8B 40 20 48 03 C9 48 8B 5C C8 08 48 85 DB 74 05 39 53 18 74 07 48 8B 1D BC 13 6F 03 48 8B 43 10 48 8D 4B 10 FF 50 08 84 C0 74 1F 80 BB 9C 01 00 00 00 75 16 48 8B 8B A8 01 00 00 48 85 C9 74 0A"
+    },
+    {
       "name": "cfixedpoint_to_float_scale_100000",
       "rva": "0x3A41DA0",
       "confidence": "high-static",
@@ -419,6 +425,7 @@
     "intern_pdx_string_id": "0x3B58330",
     "is_event_target_valid": "0x3329B00",
     "resolve_event_target_object": "0x33299E0",
+    "resolve_character_event_target_object": "0x201AD30",
     "cfixedpoint_to_float": "0x3A41DA0",
     "cfixedpoint_to_semantic_integer_site": "0x3A48E16",
     "contains_war_participant": "0x2224870",
@@ -561,7 +568,8 @@
       "size": "0x10",
       "kind": "+0x00 uint16; numeric CFixedPoint kind is exactly 1 at global-variable effect RVA 0x338F264",
       "payload": "+0x08 qword; int64 CFixedPoint raw for kind 1",
-      "scope_resolution": "RVA 0x3329B00 dispatches descriptor +0x10 validity and RVA 0x33299E0 dispatches descriptor +0x38 object resolution; settlement source is accepted only when the resolved pointer round-trips through Character component storage using CCharacter+0x18"
+      "character_scope": "kind 4; +0x08 int32 full-generation CharacterID, proven at character resolver RVA 0x201AD30",
+      "scope_resolution": "generic RVA 0x33299E0 dispatches descriptor +0x38; the kind-4 character resolver performs generation-safe storage lookup but returns null when CCharacter+0x1A8 is null, so settlement decodes proven kind 4 directly and retains the storage + exact-ID roundtrip without the gameplay-liveness tail"
     },
     "CFixedPoint": {
       "storage": "signed int64 raw",

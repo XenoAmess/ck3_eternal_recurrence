@@ -168,6 +168,8 @@ constexpr std::size_t kGlobalVariableEntrySize = 0x20;
 constexpr std::size_t kGlobalVariableEntryKeyOffset = 0x08;
 constexpr std::size_t kGlobalVariableEntryValueOffset = 0x10;
 constexpr std::uint16_t kNumericEventTargetKind = 1;
+constexpr std::uint16_t kCharacterEventTargetKind = 4;
+constexpr std::size_t kEventTargetPayloadOffset = 0x08;
 constexpr std::int64_t kFixedPointScale = 100'000;
 constexpr std::size_t kWarDeclarationCasusBelliOffset = 0x08;
 constexpr std::size_t kWarDeclarationTargetTitlesOffset = 0x10;
@@ -605,20 +607,25 @@ bool ReadSemanticBoolean(const void *event_target, bool &output) noexcept {
 }
 
 bool ReadSettlementSourceCharacter(const Bindings &bindings,
-                                   const void *event_target,
-                                   std::int32_t &character_id) noexcept {
-  if (event_target == nullptr || bindings.is_event_target_valid == nullptr ||
-      bindings.resolve_event_target_object == nullptr ||
-      !bindings.is_event_target_valid(event_target)) {
+                                    const void *event_target,
+                                    std::int32_t &character_id) noexcept {
+  if (event_target == nullptr ||
+      LoadAt<std::uint16_t>(event_target, 0) != kCharacterEventTargetKind) {
     return false;
   }
-  void *const object = bindings.resolve_event_target_object(event_target);
+  // CK3 1.19.0.6's character EventTarget stores its complete CharacterID at
+  // +0x08. Its generic object resolver adds gameplay-liveness checks,
+  // including CCharacter+0x1A8, and therefore returns null for the retained
+  // scope:xar_dead. Settlement needs stable identity, not a live gameplay
+  // object, so decode the proven variant and require a generation-safe storage
+  // lookup to return that exact ID.
+  const std::int32_t candidate_id =
+      LoadAt<std::int32_t>(event_target, kEventTargetPayloadOffset);
+  void *const object = ResolveCharacter(bindings, candidate_id);
   if (object == nullptr) {
     return false;
   }
-  const std::int32_t candidate_id =
-      LoadAt<std::int32_t>(object, kCharacterIdOffset);
-  if (ResolveCharacter(bindings, candidate_id) != object) {
+  if (LoadAt<std::int32_t>(object, kCharacterIdOffset) != candidate_id) {
     return false;
   }
   character_id = candidate_id;

@@ -39,7 +39,7 @@ bridge identity/heartbeat/ping.
 | numeric event option count/indexes | implemented, minimized live probe passed | executor bounds-check and option-array layout at RVA `0x33E68C0` + live 5→3 option snapshots | never inside native driver |
 | `game.command.save-checkpoint` | implemented, minimized live file creation passed | high static `CAutoSaveCommand` layout + offline queue fixture + 63,367,813-byte live save | explicit upper-layer policy only |
 | `game.state.snapshot.played_character` | implemented, live probe pending | player-character manager + Character storage alive projection + offline layout fixture | never inside native driver |
-| `game.state.xar-one-life-settlement` | implemented, minimized live death probe pending | exact Jomini global container/string-ID/EventTarget ABI + independently proven CFixedPoint scale + complete/incomplete offline fixture | never inside native driver |
+| `game.state.xar-one-life-settlement` | implemented; second minimized death isolated the character resolver's post-storage liveness gate; direct CharacterID build awaits replay | exact live 12-global dump + character EventTarget kind/ID ABI + independently proven CFixedPoint scale + dead-source resolver-null fixture | never inside native driver |
 | `game.state.snapshot.pending_character_interaction` | implemented; four live requests advanced before a reproducible global-storage false positive exposed the missing recipient filter; filtered build awaits bounded live replay | exact notification-recipient predicate + native reply validator + offline multi-player fixture | never inside native driver |
 | `game.command.accept/reject-pending-character-interaction` | implemented; live accept advanced four locally addressed requests | high static UI enum/command/queue path + native actionability validation + offline command fixture | explicit upper-layer policy only |
 | `game.state.snapshot.active_wars` | implemented, minimized live declaration projected a new war | exact WarManager/storage/participant/score helpers + offline attacker/defender fixture | never inside native driver |
@@ -109,12 +109,21 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   fields therefore cross the version-neutral boundary losslessly as
   `{raw, scale:100000}`. Integer/boolean globals are published only when raw
   is exactly divisible by 100000 (and booleans are exactly 0 or 1).
-- `xa_settlement_source_character` remains a scope EventTarget. Generic
-  validity RVA `0x3329B00` and object resolver RVA `0x33299E0` dispatch through
-  the registered type descriptor. The reader accepts the result only if
-  `object +0x18` supplies a complete CharacterID which resolves through the
-  Character component storage back to the identical pointer. Consequently a
-  different scope variant cannot be mislabeled as a Character. The public
+- `xa_settlement_source_character` is character EventTarget kind `4`, with the
+  complete signed `int32` CharacterID at payload `+0x08`. Character resolver
+  RVA `0x201AD30` proves this variant before doing the same generation-safe
+  component-storage lookup as the bridge. The engine resolver then performs
+  additional gameplay-liveness checks and returns null when
+  `CCharacter+0x1A8` is null. On the second minimized production death on
+  2026-08-24, read-only PID 60728 inspection found all twelve globals complete,
+  source kind `4` / ID `29829`, the exact dead object still present in Character
+  storage, and `CCharacter+0x1A8 == null`; native revision 24 consequently still
+  returned `one_life_settlement=null`. The reader now decodes only proven kind
+  `4` directly and requires that full-generation ID to resolve through Character
+  storage to an object whose `+0x18` repeats the exact ID. It does not invoke the
+  liveness-gated gameplay resolver. The offline fixture models both validity and
+  resolver returning false/null while the dead object remains generation-valid
+  in storage. The public
   settlement stays null unless `ready==1`, every payload field decodes, and a
   final reread still sees `ready==1`; no partial settlement is synthesized.
 - `CGameState + 0xA0` points to CK3 game data, whose embedded event manager is

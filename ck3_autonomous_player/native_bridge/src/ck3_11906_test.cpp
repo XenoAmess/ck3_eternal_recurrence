@@ -105,7 +105,8 @@ bool g_marriage_redirect_ready = false;
 bool g_marriage_validate_result = true;
 bool g_global_variable_container_available = true;
 constexpr std::int32_t kMarriageMatchmakerCharacterId = 0x01000007;
-constexpr std::uint16_t kFixtureCharacterEventTargetKind = 7;
+constexpr std::uint16_t kFixtureCharacterEventTargetKind = 4;
+constexpr std::int32_t kFixtureDeadCharacterId = 0x01000004;
 constexpr std::int64_t kFixtureFixedPointScale = 100'000;
 constexpr std::array<std::string_view, 12> kSettlementGlobalNames{
     "xa_settlement_ready",
@@ -158,12 +159,13 @@ void FixtureSetGlobalNumeric(std::size_t index, std::int64_t raw) {
   StoreBytes(entry, 0x18, raw);
 }
 
-void FixtureSetGlobalCharacter(std::size_t index, void *character) {
+void FixtureSetGlobalCharacter(std::size_t index,
+                               std::int32_t character_id) {
   auto *const entry =
       g_global_variable_entries.data() + index * 0x20;
   StoreBytes(entry, 0x08, static_cast<std::int32_t>(1'000 + index));
   StoreBytes(entry, 0x10, kFixtureCharacterEventTargetKind);
-  StoreBytes(entry, 0x18, character);
+  StoreBytes(entry, 0x18, character_id);
 }
 
 void *FixtureGetGlobalVariableContainer() {
@@ -207,22 +209,28 @@ bool FixtureIsEventTargetValid(const void *event_target) {
     return false;
   }
   std::uint16_t kind = 0;
-  void *object = nullptr;
+  std::int32_t character_id = -1;
   std::memcpy(&kind, event_target, sizeof(kind));
-  std::memcpy(&object,
+  std::memcpy(&character_id,
               static_cast<const std::byte *>(event_target) + 0x08,
-              sizeof(object));
-  return kind == kFixtureCharacterEventTargetKind && object != nullptr;
+              sizeof(character_id));
+  return kind == kFixtureCharacterEventTargetKind &&
+         character_id != -1 && character_id != kFixtureDeadCharacterId;
 }
 
 void *FixtureResolveEventTargetObject(const void *event_target) {
-  void *object = nullptr;
-  if (event_target != nullptr) {
-    std::memcpy(&object,
-                static_cast<const std::byte *>(event_target) + 0x08,
-                sizeof(object));
+  if (event_target == nullptr) {
+    return nullptr;
   }
-  return object;
+  std::int32_t character_id = -1;
+  std::memcpy(&character_id,
+              static_cast<const std::byte *>(event_target) + 0x08,
+              sizeof(character_id));
+  // Model the engine resolver's post-storage gameplay-liveness rejection:
+  // the dead object remains generation-valid in storage but cannot be exposed
+  // as a live gameplay object.
+  return character_id == kFixtureDeadCharacterId ? nullptr
+                                                  : g_played_character.data();
 }
 
 void *FixtureGetLocalPlayer(void *) {
@@ -901,7 +909,7 @@ int main() {
   Store(g_played_character, 0x1C8, static_cast<void *>(nullptr));
   Store(g_target_character, 0x18, enemy_character_id);
   Store(g_target_character, 0x1C8, static_cast<void *>(nullptr));
-  Store(g_dead_character, 0x18, std::int32_t{0x01000004});
+  Store(g_dead_character, 0x18, kFixtureDeadCharacterId);
   Store(g_dead_character, 0x1C8,
         static_cast<void *>(g_dead_character.data()));
   Store(g_generation_mismatch_character, 0x18,
@@ -923,7 +931,7 @@ int main() {
   Store(g_global_variable_container, 0x1C, std::int32_t{12});
   FixtureSetGlobalNumeric(0, 0);
   FixtureSetGlobalNumeric(1, kFixtureFixedPointScale);
-  FixtureSetGlobalCharacter(2, g_dead_character.data());
+  FixtureSetGlobalCharacter(2, kFixtureDeadCharacterId);
   FixtureSetGlobalNumeric(3, 12'345'678);
   FixtureSetGlobalNumeric(4, 9'876'543);
   FixtureSetGlobalNumeric(5, 42 * kFixtureFixedPointScale);
@@ -1171,6 +1179,13 @@ int main() {
   }
 
   FixtureSetGlobalNumeric(0, kFixtureFixedPointScale);
+  const void *const dead_source_event_target =
+      g_global_variable_entries.data() + 2 * 0x20 + 0x10;
+  if (FixtureIsEventTargetValid(dead_source_event_target) ||
+      FixtureResolveEventTargetObject(dead_source_event_target) != nullptr) {
+    return Fail(
+        "fixture did not model the dead source's liveness-gated resolver");
+  }
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       !snapshot.has_one_life_settlement ||
       !snapshot.one_life_settlement.ready ||
@@ -1189,7 +1204,8 @@ int main() {
       snapshot.one_life_settlement.refusal_count != 2 ||
       snapshot.one_life_settlement.contract_progress != 7 ||
       !snapshot.one_life_settlement.record_written) {
-    return Fail("one-life settlement lost exact global-variable values");
+    return Fail(
+        "one-life settlement lost exact globals or rejected its dead source");
   }
 
   Store(g_global_variable_container, 0x1C, std::int32_t{11});
@@ -1204,12 +1220,12 @@ int main() {
     return Fail("non-integral semantic settlement integer was coerced");
   }
   FixtureSetGlobalNumeric(7, -8 * kFixtureFixedPointScale);
-  FixtureSetGlobalCharacter(2, g_player.data());
+  FixtureSetGlobalCharacter(2, std::int32_t{0x01000001});
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.has_one_life_settlement) {
     return Fail("non-character settlement source was exposed");
   }
-  FixtureSetGlobalCharacter(2, g_dead_character.data());
+  FixtureSetGlobalCharacter(2, kFixtureDeadCharacterId);
   Bindings no_settlement_bindings = bindings;
   no_settlement_bindings.global_variable_container_accessor_slot = nullptr;
   if (!xar::ck3_11906::ReadSnapshot(no_settlement_bindings, snapshot) ||
@@ -1798,8 +1814,10 @@ int main() {
                "pending_interaction_local_player_filter=1 "
                "pending_interaction_native_reply_validation=1 "
                "reply_character_interaction_layout=1 "
-               "played_character_snapshot=1 alive_dead_projection=1 "
-               "one_life_settlement_snapshot=1 fixed_point_scale=100000 "
+                "played_character_snapshot=1 alive_dead_projection=1 "
+                "one_life_settlement_snapshot=1 "
+                "dead_source_liveness_resolver_independent=1 "
+                "fixed_point_scale=100000 "
                "war_army_snapshot=1 relative_war_score=1 "
                "army_storage_pointer_slot=1 "
                "raise_troops_command=1 move_army_command=1 "

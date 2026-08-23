@@ -155,8 +155,12 @@ tutorial lesson 队列异步完成。
 
 - global container accessor slot、entry key/value 布局与 string-ID accessor；
 - numeric EventTarget kind/raw ABI 与 CFixedPoint `100000` scale；
-- scope EventTarget validity/object resolver；source 只有在完整 CharacterID 反解回同一
-  `CCharacter*` 时才成立；
+- character EventTarget 为 kind `4`，payload `+0x08` 是完整 `int32` CharacterID；source
+  只有在该 ID 经 generation-safe Character storage 反解到、且对象 `+0x18` 重复同一 ID 时
+  才成立。这里不调用 gameplay object resolver：RVA `0x201AD30` 在完成相同 storage lookup
+  后还要求 `CCharacter+0x1A8` 非空。2026-08-24 第二次最小化死亡的 PID 60728 只读检查
+  显示十二个 global 全部完整、source 为 kind `4` / ID `29829`、死亡对象仍在 storage，
+  但 `+0x1A8 == null`，这正是 revision 24 继续发布 `null` 的拒绝点；
 - `ready=0`、缺字段、非整除整数和非 Character source 都产生明确 `null`，不会发布部分对象。
 
 Mod `tools/validate_static.py` 继续检查：
