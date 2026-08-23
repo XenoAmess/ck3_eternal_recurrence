@@ -100,7 +100,16 @@ PID 时只建立 `pending_cold_candidate`，此时不会把旧角色误判成死
 都匹配的成功 `save-checkpoint` row 推导 `history_index`，补入 episode ids 并写成 v2；随后才能安全执行
 跨 PID 冷恢复。2026-08-24 的确定性 Python 验收覆盖了实机迁移形状：checkpoint 位于 index 8，
 index 9/10 的 `life-advance` 与 index 11 的 army move 在冷恢复时被截断，最终追加新的 index 9
-synthetic restore。CK3 冷启动实机验收尚未执行。
+synthetic restore。
+
+同日已在最小化 native 战争现场完成完整冷启动实测：旧 CK3 PID `140760` 与原 driver 全部退出后，
+`--cold-start-checkpoint` 预检并加载 SHA-256
+`5fcebff58331adef6966b4fbd9a46c3b13a9f0a45c16688b788882a45575d0f7`、大小 `63874876` 的
+`xar_checkpoint.ck3`，新 CK3 PID 为 `136776`。首个可玩 snapshot 精确回到 `date_raw=53168784`，
+恢复相同 `episode_character_id=29829` 与 `episode_run_id=native-29829-4759440ea347`，且
+`one_life_terminal=false`。持久历史只保留原 index 1–8，再追加 index 9、
+`source=native-session-cold-start` 的 restore；存档之后的两次推进与一次 move 均未泄漏到恢复后的策略状态。
+窗口随后保持最小化，snapshot/MCP 继续正常工作。
 
 ## Minimized 实机结果
 
