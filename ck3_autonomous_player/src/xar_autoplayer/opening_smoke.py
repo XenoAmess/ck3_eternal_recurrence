@@ -79,6 +79,18 @@ GENERIC_EVENT_PREVIEW_REGION = (0.23, 0.22, 0.48, 0.80)
 # rightmost ``+`` at this resolution is the duchy-building slot.
 HOLDING_EMPTY_BUILDING_SLOT_CENTER = (461, 1398)
 
+# CK3 1.19.0.6, 2560x1440/100% UI.  Council tasks do not expose native
+# shortcuts.  The task identity is therefore confirmed by its visible hover
+# tooltip before the single click.  County candidates are hover-probed and the
+# click is only submitted when CK3 visibly names Robert's capital county.
+STEWARD_DEVELOP_COUNTY_TASK_CENTER = (2160, 803)
+ROBERT_CAPITAL_COUNTY_CANDIDATE_POINTS = (
+    (1220, 560),
+    (1320, 520),
+    (1360, 560),
+    (1190, 640),
+)
+
 # Frozen from Crusader Kings III/game/gui/shortcuts.shortcuts. Scan codes are
 # used so the binding does not depend on the active Windows keyboard layout.
 CK3_SHORTCUT_SCAN_CODES = {
@@ -734,6 +746,39 @@ def _spans_with_text(
     return matches
 
 
+def _council_panel_visible(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "内阁", region=(0.72, 0.0, 0.95, 0.18))
+        and _spans_with_text(
+            frame, "财政总管", region=(0.72, 0.25, 0.98, 0.72)
+        )
+    )
+
+
+def _steward_development_targeting_active(frame: object) -> bool:
+    """Recognize CK3's county-targeting overlay for the steward task."""
+    return bool(
+        _spans_with_text(frame, "提升伯爵领发展度", contains=True)
+        and _spans_with_text(frame, "点击地图上的一处地点", contains=True)
+    )
+
+
+def _steward_development_assignment_confirmation(frame: object) -> bool:
+    return bool(
+        _spans_with_text(frame, "派遣你的", contains=True)
+        and _spans_with_text(frame, "提升伯爵领发展度", contains=True)
+    )
+
+
+def _steward_development_active(frame: object) -> bool:
+    """Bind the active steward task to its visible task name and county."""
+    return bool(
+        _council_panel_visible(frame)
+        and _spans_with_text(frame, "提升伯爵领发展度", contains=True)
+        and _spans_with_text(frame, "阿普利亚伯爵领", contains=True)
+    )
+
+
 def _building_offer_summaries(frame: object) -> list[dict[str, object]]:
     """Rank visible construction rows by player-visible economic language."""
     buttons = _spans_with_text(frame, "修建")
@@ -803,6 +848,7 @@ def _drive_opening(
     ordinary_event_count: int = 1,
     inspect_map_panels: bool = False,
     construct_economic_building: bool = False,
+    assign_steward_development: bool = False,
 ) -> dict[str, object]:
     from .control import VisibleUiDriver
     from .control.executor import (
@@ -1280,6 +1326,357 @@ def _drive_opening(
             },
         )
         return first, second
+
+    def assign_steward_to_develop_capital() -> tuple[
+        dict[str, object], dict[str, object]
+    ]:
+        _council_summary, council_frame = inspect_map_panel(
+            "council",
+            "内阁",
+            "f4",
+            CK3_SHORTCUT_SCAN_CODES["f4"],
+            leave_open=True,
+        )
+        driver = new_driver()
+        width = window.client_rect[2] - window.client_rect[0]
+        height = window.client_rect[3] - window.client_rect[1]
+        if (width, height) != (2560, 1440):
+            raise AgentError("council task layout differs from 2560x1440")
+        if not _council_panel_visible(council_frame):
+            raise AgentError("council panel changed before steward assignment")
+
+        task_point = STEWARD_DEVELOP_COUNTY_TASK_CENTER
+        window.require_foreground()
+        window.require_unobscured(task_point)
+        append_event(
+            events,
+            {
+                "kind": "opening_pointer_input_planned",
+                "control_id": "council.steward.develop_county",
+                "center": list(task_point),
+                "visible_identity": "提升伯爵领发展度",
+                "expected_post_screen": "steward_development_targeting",
+            },
+        )
+        import pyautogui
+
+        pyautogui.FAILSAFE = True
+        screen_point = (
+            window.client_rect[0] + task_point[0],
+            window.client_rect[1] + task_point[1],
+        )
+        pyautogui.moveTo(*screen_point, duration=0.12)
+        _task_hover_first, task_hover = wait_for_custom_state(
+            driver,
+            lambda frame: bool(
+                _council_panel_visible(frame)
+                and _spans_with_text(
+                    frame, "提升伯爵领发展度", contains=True
+                )
+            ),
+            "steward development task tooltip",
+        )
+        window.require_cursor_target(task_point)
+        accepted, last_error = _prepare_left_click_batch(0.05)()
+        if accepted != 2:
+            raise AgentError(
+                "steward development task click was partial: "
+                f"accepted={accepted}, last_error={last_error}"
+            )
+        _targeting_first, targeting = wait_for_custom_state(
+            driver,
+            _steward_development_targeting_active,
+            "steward development county targeting",
+        )
+        actions.append(
+            {
+                "control_id": "council.steward.develop_county",
+                "status": "confirmed",
+                "input_kind": "visible_layout_click",
+                "visible_identity": "提升伯爵领发展度",
+                "click_point": list(task_point),
+                "source_observation_id": task_hover.observation_id,
+                "send_input": {
+                    "requested": 2,
+                    "accepted": accepted,
+                    "last_error": last_error,
+                },
+                "result_observation_id": targeting.observation_id,
+                "expected_post_screen": "steward_development_targeting",
+            }
+        )
+        append_event(
+            events,
+            {
+                "kind": "opening_step_completed",
+                "control_id": "council.steward.develop_county",
+                "result_screen": "steward_development_targeting",
+                "result_observation_id": targeting.observation_id,
+            },
+        )
+
+        target_point = None
+        target_hover = None
+        hover_attempts: list[dict[str, object]] = []
+        for candidate in ROBERT_CAPITAL_COUNTY_CANDIDATE_POINTS:
+            window.require_foreground()
+            window.require_unobscured(candidate)
+            pyautogui.moveTo(
+                window.client_rect[0] + candidate[0],
+                window.client_rect[1] + candidate[1],
+                duration=0.12,
+            )
+            try:
+                _hover_first, hover_second = wait_for_custom_state(
+                    driver,
+                    lambda frame: bool(
+                        _steward_development_targeting_active(frame)
+                        and _spans_with_text(
+                            frame, "阿普利亚伯爵领", contains=True
+                        )
+                    ),
+                    "capital county hover",
+                    timeout_seconds=4.0,
+                )
+            except AgentError:
+                hover_attempts.append(
+                    {"center": list(candidate), "visible_target": False}
+                )
+                continue
+            window.require_cursor_target(candidate)
+            target_point = candidate
+            target_hover = hover_second
+            hover_attempts.append(
+                {
+                    "center": list(candidate),
+                    "visible_target": True,
+                    "observation_id": hover_second.observation_id,
+                }
+            )
+            break
+        if target_point is None or target_hover is None:
+            raise AgentError(
+                "capital county was not visibly identified at any frozen map candidate"
+            )
+
+        append_event(
+            events,
+            {
+                "kind": "opening_pointer_input_planned",
+                "control_id": "steward_development_targeting.apulia_county",
+                "center": list(target_point),
+                "visible_identity": "阿普利亚伯爵领",
+                "expected_post_screen": "steward_development_assigned",
+            },
+        )
+        target_accepted, target_last_error = _prepare_left_click_batch(0.05)()
+        if target_accepted != 2:
+            raise AgentError(
+                "capital county task click was partial: "
+                f"accepted={target_accepted}, last_error={target_last_error}"
+            )
+
+        def assignment_transition(frame: object) -> bool:
+            return bool(
+                _steward_development_assignment_confirmation(frame)
+                or (
+                    not _steward_development_targeting_active(frame)
+                    and (
+                        _council_panel_visible(frame)
+                        or _spans_with_text(frame, "政治地图", contains=True)
+                    )
+                )
+            )
+
+        _assigned_first, assigned_frame = wait_for_custom_state(
+            driver,
+            assignment_transition,
+            "steward development assignment transition",
+        )
+        actions.append(
+            {
+                "control_id": "steward_development_targeting.apulia_county",
+                "status": "confirmed",
+                "input_kind": "visible_layout_click",
+                "visible_identity": "阿普利亚伯爵领",
+                "click_point": list(target_point),
+                "source_observation_id": target_hover.observation_id,
+                "send_input": {
+                    "requested": 2,
+                    "accepted": target_accepted,
+                    "last_error": target_last_error,
+                },
+                "result_observation_id": assigned_frame.observation_id,
+                "expected_post_screen": "steward_development_assigned",
+            }
+        )
+        append_event(
+            events,
+            {
+                "kind": "opening_step_completed",
+                "control_id": "steward_development_targeting.apulia_county",
+                "result_screen": "steward_development_assigned",
+                "result_observation_id": assigned_frame.observation_id,
+            },
+        )
+
+        confirmation_observation_id = None
+        if _steward_development_assignment_confirmation(assigned_frame):
+            confirmation_observation_id = assigned_frame.observation_id
+            window.require_foreground()
+            append_event(
+                events,
+                {
+                    "kind": "opening_key_input_planned",
+                    "control_id": "steward_development_confirmation.accept",
+                    "key": "enter",
+                    "scan_code": CK3_SHORTCUT_SCAN_CODES["enter"],
+                    "expected_post_screen": "steward_development_assigned",
+                },
+            )
+            confirm_accepted, confirm_last_error = _prepare_key_press_batch(
+                CK3_SHORTCUT_SCAN_CODES["enter"]
+            )()
+            if confirm_accepted != 2:
+                raise AgentError(
+                    "steward task confirmation shortcut was partial: "
+                    f"accepted={confirm_accepted}, last_error={confirm_last_error}"
+                )
+            _confirm_first, assigned_frame = wait_for_custom_state(
+                driver,
+                lambda frame: bool(
+                    not _steward_development_targeting_active(frame)
+                    and not _steward_development_assignment_confirmation(frame)
+                    and (
+                        _council_panel_visible(frame)
+                        or _spans_with_text(frame, "政治地图", contains=True)
+                    )
+                ),
+                "confirmed steward development assignment",
+            )
+            actions.append(
+                {
+                    "control_id": "steward_development_confirmation.accept",
+                    "status": "confirmed",
+                    "input_kind": "keyboard_shortcut",
+                    "key": "enter",
+                    "scan_code": CK3_SHORTCUT_SCAN_CODES["enter"],
+                    "send_input": {
+                        "requested": 2,
+                        "accepted": confirm_accepted,
+                        "last_error": confirm_last_error,
+                    },
+                    "result_observation_id": assigned_frame.observation_id,
+                    "expected_post_screen": "steward_development_assigned",
+                }
+            )
+
+        if _council_panel_visible(assigned_frame):
+            active_panel = assigned_frame
+        else:
+            _active_summary, active_panel = inspect_map_panel(
+                "council",
+                "内阁",
+                "f4",
+                CK3_SHORTCUT_SCAN_CODES["f4"],
+                leave_open=True,
+            )
+        window.require_foreground()
+        window.require_unobscured(task_point)
+        pyautogui.moveTo(
+            window.client_rect[0] + task_point[0],
+            window.client_rect[1] + task_point[1],
+            duration=0.12,
+        )
+        _active_first, active_frame = wait_for_custom_state(
+            driver,
+            _steward_development_active,
+            "active steward development task",
+        )
+        window.require_cursor_target(task_point)
+        actions.append(
+            {
+                "control_id": "council.steward.develop_county.verify",
+                "status": "confirmed",
+                "input_kind": "pointer_hover",
+                "visible_identity": "提升伯爵领发展度",
+                "visible_target": "阿普利亚伯爵领",
+                "source_observation_id": getattr(
+                    active_panel, "observation_id", None
+                ),
+                "result_observation_id": active_frame.observation_id,
+                "expected_post_screen": "council_panel",
+            }
+        )
+
+        window.require_foreground()
+        append_event(
+            events,
+            {
+                "kind": "opening_key_input_planned",
+                "control_id": "council_panel.close_after_steward_assignment",
+                "key": "f4",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["f4"],
+                "expected_post_screen": "map_hud",
+            },
+        )
+        close_accepted, close_last_error = _prepare_key_press_batch(
+            CK3_SHORTCUT_SCAN_CODES["f4"]
+        )()
+        if close_accepted != 2:
+            raise AgentError(
+                "F4 council close was partial: "
+                f"accepted={close_accepted}, last_error={close_last_error}"
+            )
+        final_map = driver.observe_stable(
+            "map_hud",
+            min(
+                INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                _remaining(deadline, "map after steward assignment"),
+            ),
+            stable_frames=2,
+        )
+        actions.append(
+            {
+                "control_id": "council_panel.close_after_steward_assignment",
+                "status": "confirmed",
+                "input_kind": "keyboard_shortcut",
+                "key": "f4",
+                "scan_code": CK3_SHORTCUT_SCAN_CODES["f4"],
+                "send_input": {
+                    "requested": 2,
+                    "accepted": close_accepted,
+                    "last_error": close_last_error,
+                },
+                "result_observation_id": final_map.observation_id,
+                "expected_post_screen": "map_hud",
+            }
+        )
+        append_event(
+            events,
+            {
+                "kind": "opening_step_completed",
+                "control_id": "council_panel.close_after_steward_assignment",
+                "result_screen": "map_hud",
+                "result_observation_id": final_map.observation_id,
+            },
+        )
+        return (
+            {
+                "councillor": "财政总管",
+                "task": "提升伯爵领发展度",
+                "target": "阿普利亚伯爵领",
+                "task_button_center": list(task_point),
+                "target_point": list(target_point),
+                "target_hover_attempts": hover_attempts,
+                "targeting_observation_id": targeting.observation_id,
+                "confirmation_observation_id": confirmation_observation_id,
+                "active_observation_id": active_frame.observation_id,
+                "strategy": "capital-development-first-v1",
+                "policy_boundary": "player-visible task tooltip and county name",
+            },
+            final_map.to_policy_json(),
+        )
 
     def construct_first_economic_building() -> tuple[dict[str, object], dict[str, object]]:
         realm_title = "我的领地"
@@ -1976,6 +2373,11 @@ def _drive_opening(
     economic_building = None
     if construct_economic_building:
         economic_building, final_observation = construct_first_economic_building()
+    steward_development = None
+    if assign_steward_development:
+        steward_development, final_observation = (
+            assign_steward_to_develop_capital()
+        )
     paused_date = _extract_map_date(final_observation)
     if int(paused_date["ordinal"]) < int(running_date["ordinal"]):
         raise AgentError("paused map date moved backwards")
@@ -2001,6 +2403,7 @@ def _drive_opening(
         "ordinary_events": ordinary_events,
         "map_panels": map_panels,
         "economic_building": economic_building,
+        "steward_development": steward_development,
         "time_progression": {
             "strategy": "speed-five-visible-date-v1",
             "starting_date": starting_date,
@@ -2120,6 +2523,7 @@ def _opening_smoke_locked(
             contract_sha256,
             deadline,
             ordinary_event_count,
+            True,
             True,
             True,
         )

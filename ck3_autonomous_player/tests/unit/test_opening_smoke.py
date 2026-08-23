@@ -26,6 +26,8 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     MAP_PANEL_SHORTCUTS,
     OPENING_ALLOWED_CONTROLS,
     OPENING_CONTRACT,
+    ROBERT_CAPITAL_COUNTY_CANDIDATE_POINTS,
+    STEWARD_DEVELOP_COUNTY_TASK_CENTER,
     _building_construction_in_progress,
     _choose_first_blessing,
     _choose_first_curse,
@@ -45,6 +47,9 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _score_first_curse,
     _score_generic_event_option,
     _spans_with_text,
+    _steward_development_active,
+    _steward_development_assignment_confirmation,
+    _steward_development_targeting_active,
 )
 from xar_autoplayer.vision import load_ui_contract  # noqa: E402
 from xar_autoplayer.vision.model import OcrSpan  # noqa: E402
@@ -526,6 +531,61 @@ class OpeningContractTests(unittest.TestCase):
             )
         )
         self.assertTrue(_building_construction_in_progress(frame))
+
+    def test_steward_development_states_bind_visible_task_and_capital(self) -> None:
+        targeting = SimpleNamespace(
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span("财政总管任务", (1280, 120), (1210, 104, 1350, 136)),
+                span(
+                    "提升伯爵领发展度",
+                    (1280, 175),
+                    (1160, 158, 1400, 192),
+                ),
+                span(
+                    "点击地图上的一处地点指派任务",
+                    (1280, 225),
+                    (1080, 208, 1480, 242),
+                ),
+            ),
+        )
+        self.assertTrue(_steward_development_targeting_active(targeting))
+        self.assertFalse(_steward_development_active(targeting))
+
+        confirmation = SimpleNamespace(
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span(
+                    "派遣你的财政总管前往阿普利亚伯爵领执行提升伯爵领发展度任务。",
+                    (1280, 620),
+                    (850, 600, 1710, 640),
+                ),
+            ),
+        )
+        self.assertTrue(
+            _steward_development_assignment_confirmation(confirmation)
+        )
+
+        active = SimpleNamespace(
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span("内阁", (2124, 95), (2092, 78, 2156, 112)),
+                span("财政总管", (2235, 546), (2194, 533, 2276, 560)),
+                span(
+                    "提升伯爵领发展度",
+                    (2050, 760),
+                    (1930, 744, 2170, 776),
+                ),
+                span(
+                    "阿普利亚伯爵领",
+                    (2230, 620),
+                    (2140, 604, 2320, 636),
+                ),
+            ),
+        )
+        self.assertTrue(_steward_development_active(active))
+        self.assertEqual(STEWARD_DEVELOP_COUNTY_TASK_CENTER, (2160, 803))
+        self.assertIn((1220, 560), ROBERT_CAPITAL_COUNTY_CANDIDATE_POINTS)
 
     def test_first_blessing_strategy_prefers_permanent_trait(self) -> None:
         choices = (
