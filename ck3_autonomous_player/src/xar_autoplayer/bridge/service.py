@@ -16,6 +16,7 @@ from .event_contract import (
 from .war_contract import (
     RAISE_TROOPS_STEP,
     disband_army_step,
+    enforce_demands_step,
     move_army_step,
     normalize_active_wars,
     player_armies_from_state,
@@ -374,6 +375,21 @@ class GameplayBridgeService:
                 step, expected_revision=expected_revision
             ),
             "army_id": army_id,
+        }
+
+    def enforce_demands(
+        self,
+        war_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Enforce victory in one exact native war at 100% war score."""
+        step = enforce_demands_step(war_id)
+        return {
+            **self._execute_typed_war_step(
+                step, expected_revision=expected_revision
+            ),
+            "war_id": war_id,
         }
 
     def _execute_typed_war_step(

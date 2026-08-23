@@ -15,6 +15,7 @@ from .bridge.war_contract import (
     RAISE_TROOPS_STEP,
     controllable_armies,
     disband_army_step,
+    enforce_demands_step,
     enemy_armies_from_wars,
     move_army_step,
 )
@@ -284,6 +285,34 @@ def choose_one_life_turn(
             }
             for war in active_wars
         ]
+        enforceable = next(
+            (
+                war
+                for war in active_wars
+                if isinstance(war.get("war_id"), int)
+                and isinstance(war.get("player_relative_war_score"), int)
+                and int(war["player_relative_war_score"]) >= 100
+            ),
+            None,
+        )
+        if isinstance(enforceable, dict):
+            step = enforce_demands_step(int(enforceable["war_id"]))
+            if step in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_enforce_demands",
+                    "selected_step": step,
+                    "reason": "the native war reached 100%; enforce demands before issuing more army orders",
+                    "active_wars": war_summary,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_enforce_demands_unsupported",
+                "selected_step": None,
+                "required_step": step,
+                "reason": "the war reached 100% but this backend cannot enforce demands",
+                "active_wars": war_summary,
+            }
         if not controlled_armies:
             if RAISE_TROOPS_STEP in available_steps:
                 return {

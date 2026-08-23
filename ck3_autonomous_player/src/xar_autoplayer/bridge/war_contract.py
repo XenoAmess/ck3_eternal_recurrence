@@ -7,6 +7,7 @@ from collections.abc import Iterable
 
 MOVE_ARMY_CAPABILITY = "game.command.move-army-N-to-N"
 DISBAND_ARMY_CAPABILITY = "game.command.disband-army-N"
+ENFORCE_DEMANDS_CAPABILITY = "game.command.enforce-demands-N"
 RAISE_TROOPS_STEP = "raise-troops-default"
 
 
@@ -179,6 +180,10 @@ def disband_army_step(army_id: int) -> str:
     return f"disband-army-{_non_negative_id(army_id, 'army_id')}"
 
 
+def enforce_demands_step(war_id: int) -> str:
+    return f"enforce-demands-{_non_negative_id(war_id, 'war_id')}"
+
+
 def parse_move_army_step(step: object) -> tuple[int, int] | None:
     if not isinstance(step, str) or not step.startswith("move-army-"):
         return None
@@ -200,11 +205,19 @@ def parse_disband_army_step(step: object) -> int | None:
     return int(army_text) if army_text.isdigit() else None
 
 
+def parse_enforce_demands_step(step: object) -> int | None:
+    if not isinstance(step, str) or not step.startswith("enforce-demands-"):
+        return None
+    war_text = step.removeprefix("enforce-demands-")
+    return int(war_text) if war_text.isdigit() else None
+
+
 def is_native_war_step(step: object) -> bool:
     return (
         step == RAISE_TROOPS_STEP
         or parse_move_army_step(step) is not None
         or parse_disband_army_step(step) is not None
+        or parse_enforce_demands_step(step) is not None
     )
 
 

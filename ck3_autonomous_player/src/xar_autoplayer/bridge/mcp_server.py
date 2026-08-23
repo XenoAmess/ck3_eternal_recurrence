@@ -215,6 +215,17 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_enforce_demands(
+        war_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Enforce demands in an exact native war that reached 100%."""
+        return service.enforce_demands(
+            war_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
     def ck3_select_event_option(
         option_number: int,
         event_instance_id: int | None = None,

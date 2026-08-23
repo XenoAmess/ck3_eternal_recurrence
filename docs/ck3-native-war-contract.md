@@ -31,12 +31,14 @@ DLL hello 广告：
 - `game.command.raise-troops-default`
 - `game.command.move-army-N-to-N`
 - `game.command.disband-army-N`
+- `game.command.enforce-demands-N`
 
 Python 根据当前 snapshot 展开为：
 
 - `raise-troops-default`: 有活动战争且没有可控军队时才出现
 - `move-army-<army_id>-to-<province_id>`: 可控玩家军队与可见敌军当前省的有效组合
 - `disband-army-<army_id>`: 每支当前可控玩家军队各一个
+- `enforce-demands-<war_id>`: 每场当前活动战争各一个；planner 只在玩家视角战争分达到 100 时选择
 
 占位模板本身不会暴露给 planner。若军队已在目标省或已经以该省为目标，相同 move step 不再广告，避免提交无状态变化的重复命令。
 
@@ -52,9 +54,10 @@ Python 根据当前 snapshot 展开为：
 
 事件和待回复角色互动仍优先处理。其后每次 `ck3_auto_turn` 只执行一个战争动作：
 
-1. 有活动战争、无可控军队：`raise-troops-default`。
-2. 有可控军队和敌军省份：选择兵力最大的敌军，令最强可控军队追击其当前省。兵力未知时按最小 `army_id` 稳定选择，不阻塞闭环。
-3. 军队已经在目标省或已经向目标省移动：执行一次有界 `life-advance`。
-4. 战争消失但玩家军队仍在场：逐支执行 `disband-army-<army_id>`。
+1. 任一活动战争达到玩家视角 100 分：先执行 `enforce-demands-<war_id>`，确认该 war 从 snapshot 消失，不再无意义推进时间。
+2. 有活动战争、无可控军队：`raise-troops-default`。
+3. 有可控军队和敌军省份：选择兵力最大的敌军，令最强可控军队追击其当前省。兵力未知时按最小 `army_id` 稳定选择，不阻塞闭环。
+4. 军队已经在目标省或已经向目标省移动：执行一次有界 `life-advance`。
+5. 战争消失但玩家军队仍在场：逐支执行 `disband-army-<army_id>`。
 
-Typed MCP 工具为 `ck3_get_war_state`、`ck3_raise_troops_default`、`ck3_move_army` 和 `ck3_disband_army`。通用 `ck3_plan_turn` / `ck3_auto_turn` 使用同一份状态和 step，不另建旁路策略。
+Typed MCP 工具为 `ck3_get_war_state`、`ck3_raise_troops_default`、`ck3_move_army`、`ck3_enforce_demands` 和 `ck3_disband_army`。通用 `ck3_plan_turn` / `ck3_auto_turn` 使用同一份状态和 step，不另建旁路策略。C++ capability 尚未落地前，该 step 不会出现在 `native-headless`，planner 会明确返回 unsupported；Python 不会伪装已经结束战争。

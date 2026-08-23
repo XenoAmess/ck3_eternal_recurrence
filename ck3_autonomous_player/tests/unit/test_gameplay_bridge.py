@@ -377,6 +377,7 @@ class GameplayBridgeTests(unittest.TestCase):
                 "raise-troops-default",
                 "move-army-81-to-60",
                 "disband-army-81",
+                "enforce-demands-88",
             ),
         )
         service = GameplayBridgeService(driver)
@@ -387,6 +388,7 @@ class GameplayBridgeTests(unittest.TestCase):
         service.raise_troops_default(expected_revision=14)
         service.move_army(81, 60, expected_revision=14)
         service.disband_army(81, expected_revision=14)
+        service.enforce_demands(88, expected_revision=14)
 
         self.assertEqual(
             calls,
@@ -394,6 +396,7 @@ class GameplayBridgeTests(unittest.TestCase):
                 ("raise-troops-default", 14),
                 ("move-army-81-to-60", 14),
                 ("disband-army-81", 14),
+                ("enforce-demands-88", 14),
             ],
         )
 
@@ -602,6 +605,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                 "raise-troops-default",
                 "move-army-81-to-60",
                 "disband-army-81",
+                "enforce-demands-88",
                 "select-event-option-1",
                 "select-event-option-2",
             ),
@@ -627,6 +631,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_raise_troops_default",
                     "ck3_move_army",
                     "ck3_disband_army",
+                    "ck3_enforce_demands",
                     "ck3_select_event_option",
                     "ck3_resolve_active_event",
                     "ck3_wait_for_change",
@@ -709,6 +714,12 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                 {"army_id": 81, "expected_revision": 4},
             )
             self.assertFalse(disbanded.is_error)
+            enforced = await client.call_tool(
+                "ck3_enforce_demands",
+                {"war_id": 88, "expected_revision": 4},
+            )
+            self.assertFalse(enforced.is_error)
+            self.assertEqual(enforced.structured_content["war_id"], 88)
             event_action = await client.call_tool(
                 "ck3_select_event_option",
                 {

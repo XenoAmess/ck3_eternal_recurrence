@@ -750,6 +750,56 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(disbanded["war_action"]["status"], "disbanded")
         self.assertEqual(disbanded["player_armies"], [])
 
+    def test_native_enforce_demands_ends_war_before_more_army_orders(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-wars",
+                "game.command.enforce-demands-N",
+            )
+        )
+        won_war = _war(war_id=404)
+        won_war["player_relative_war_score"] = 100
+        endpoint.publish(_snapshot(60, active_wars=[won_war]))
+
+        snapshot = driver.take_snapshot()
+        self.assertIn(
+            "enforce-demands-404", driver.capabilities()["action_steps"]
+        )
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["phase"], "native_war_enforce_demands")
+        self.assertEqual(plan["selected_step"], "enforce-demands-404")
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"status": "submitted"},
+                }
+            )
+            endpoint.publish(_snapshot(61, active_wars=[]))
+
+        endpoint.send_hook = answer
+        result = driver.execute_step(
+            "enforce-demands-404",
+            expected_revision=int(snapshot["revision"]),
+        )
+
+        self.assertEqual(result["war_action"]["status"], "victory_enforced")
+        self.assertEqual(result["war_victory"]["war_id"], 404)
+        self.assertEqual(result["active_wars"], [])
+
     def test_native_move_without_target_observation_uses_submission_ack(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(

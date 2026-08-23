@@ -37,15 +37,18 @@ from .event_contract import (
 )
 from .war_contract import (
     DISBAND_ARMY_CAPABILITY,
+    ENFORCE_DEMANDS_CAPABILITY,
     MOVE_ARMY_CAPABILITY,
     RAISE_TROOPS_STEP,
     controllable_armies,
     disband_army_step,
+    enforce_demands_step,
     enemy_armies_from_wars,
     is_native_war_step,
     move_army_step,
     normalize_active_wars,
     parse_disband_army_step,
+    parse_enforce_demands_step,
     parse_move_army_step,
     player_armies_from_state,
 )
@@ -991,6 +994,40 @@ class NativeHeadlessGameplayDriver:
                 "revision": changed["revision"],
             }
 
+        war_id = parse_enforce_demands_step(step)
+        if war_id is not None:
+            if _war_by_id(starting, war_id) is None:
+                raise BridgeUnavailableError(
+                    f"native enforce-demands-{war_id} requires an active war"
+                )
+            result = self._execute_primitive_step(
+                step, expected_revision=selected_revision
+            )
+            changed = self._wait_for_snapshot(
+                self.take_snapshot(),
+                lambda snapshot: _war_by_id(snapshot, war_id) is None,
+                timeout_seconds=self.command_timeout_seconds,
+            )
+            if _war_by_id(changed, war_id) is not None:
+                raise BridgeUnavailableError(
+                    f"native enforce-demands-{war_id} did not end the war"
+                )
+            return {
+                **result,
+                "war_action": {
+                    "status": "victory_enforced",
+                    "war_id": war_id,
+                },
+                "war_victory": {
+                    "status": "victory_enforced",
+                    "war_id": war_id,
+                },
+                "active_wars": changed.get("active_wars", []),
+                "player_armies": changed.get("player_armies", []),
+                "snapshot_id": changed["snapshot_id"],
+                "revision": changed["revision"],
+            }
+
         army_id = parse_disband_army_step(step)
         if army_id is None:
             raise UnsupportedStepError(
@@ -1834,6 +1871,7 @@ def _action_steps(
     pending_interaction_steps: set[str] = set()
     expand_move_armies = False
     expand_disband_armies = False
+    expand_enforce_demands = False
     advertise_raise_troops = False
     for capability in capabilities:
         if not capability.startswith(_ACTION_CAPABILITY_PREFIX):
@@ -1850,6 +1888,8 @@ def _action_steps(
             expand_move_armies = True
         elif capability == DISBAND_ARMY_CAPABILITY:
             expand_disband_armies = True
+        elif capability == ENFORCE_DEMANDS_CAPABILITY:
+            expand_enforce_demands = True
         elif step == RAISE_TROOPS_STEP:
             advertise_raise_troops = True
         elif step:
@@ -1883,6 +1923,12 @@ def _action_steps(
     controllable = controllable_armies(armies)
     if advertise_raise_troops and wars and not controllable:
         steps.add(RAISE_TROOPS_STEP)
+    if expand_enforce_demands:
+        steps.update(
+            enforce_demands_step(int(war["war_id"]))
+            for war in wars
+            if isinstance(war.get("war_id"), int)
+        )
     if expand_disband_armies:
         steps.update(
             disband_army_step(int(army["army_id"]))
@@ -1933,6 +1979,22 @@ def _army_by_id(
             army
             for army in armies
             if isinstance(army, dict) and army.get("army_id") == army_id
+        ),
+        None,
+    )
+
+
+def _war_by_id(
+    snapshot: dict[str, object], war_id: int
+) -> dict[str, object] | None:
+    wars = snapshot.get("active_wars")
+    if not isinstance(wars, list):
+        return None
+    return next(
+        (
+            war
+            for war in wars
+            if isinstance(war, dict) and war.get("war_id") == war_id
         ),
         None,
     )
