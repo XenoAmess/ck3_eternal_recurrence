@@ -64,6 +64,7 @@ _NATIVE_LIFE_ADVANCE_PRIMITIVES = frozenset(
 _CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
 _NATIVE_DEATH_TERMINAL_STEP = "death-terminal"
 _NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
+_NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 _RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
 
 
@@ -484,12 +485,17 @@ class NativeHeadlessGameplayDriver:
             restore_poll_interval_seconds,
             "restore_poll_interval_seconds",
         )
+        self._driver_state_lock = threading.RLock()
+        self._driver_state_write_lock = threading.Lock()
+        self._history_lock = self._driver_state_lock
         self._last_checkpoint: dict[str, object] | None = None
-        self._history_lock = threading.Lock()
         self._command_history: list[dict[str, object]] = []
-        self._episode_identity_lock = threading.Lock()
+        self._episode_identity_lock = self._driver_state_lock
         self._episode_character_id: int | None = None
         self._episode_run_id: str | None = None
+        self._session_bridge_pid: int | None = None
+        self._driver_state_restored = False
+        self._driver_state_error: str | None = None
         self.state = NativeProtocolState(self.pipe_name)
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
@@ -498,6 +504,9 @@ class NativeHeadlessGameplayDriver:
     def _ingest(self, frame: dict[str, object]) -> None:
         frame_type = self.state.ingest(frame)
         if frame_type == "hello":
+            bridge_pid = frame.get("pid")
+            if isinstance(bridge_pid, int) and not isinstance(bridge_pid, bool):
+                self._adopt_bridge_session(bridge_pid)
             self._request_sequence += 1
             request_id = f"python-{self._request_sequence}-{uuid.uuid4().hex[:12]}"
             try:
@@ -573,6 +582,13 @@ class NativeHeadlessGameplayDriver:
                 "restore_checkpoint": (
                     _RESTORE_CHECKPOINT_STEP in action_steps
                 ),
+                "driver_state_path": (
+                    str(self._native_driver_state_path())
+                    if self.state_dir is not None
+                    else None
+                ),
+                "driver_state_restored": self._driver_state_restored,
+                "driver_state_error": self._driver_state_error,
             },
             "episode_character_id": episode_character_id,
             "episode_run_id": episode_run_id,
@@ -607,6 +623,7 @@ class NativeHeadlessGameplayDriver:
             if isinstance(played_character, dict)
             else None
         )
+        identity_changed = False
         with self._episode_identity_lock:
             if (
                 self._episode_character_id is None
@@ -617,8 +634,11 @@ class NativeHeadlessGameplayDriver:
                 self._episode_run_id = (
                     f"native-{current_character_id}-{uuid.uuid4().hex[:12]}"
                 )
+                identity_changed = True
             episode_character_id = self._episode_character_id
             episode_run_id = self._episode_run_id
+        if identity_changed:
+            self._persist_driver_state()
 
         terminal_reason: str | None = None
         if (
@@ -725,10 +745,134 @@ class NativeHeadlessGameplayDriver:
             if error is not None:
                 row["error"] = error
             self._command_history.append(row)
+        self._persist_driver_state()
 
     def _history_snapshot(self) -> list[dict[str, object]]:
         with self._history_lock:
             return copy.deepcopy(self._command_history)
+
+    def _adopt_bridge_session(self, bridge_pid: int) -> None:
+        """Restore one daemon's state, while preserving in-process restores."""
+        first_connection = False
+        with self._driver_state_lock:
+            first_connection = self._session_bridge_pid is None
+        restored: dict[str, object] | None = None
+        if first_connection:
+            restored = self._read_driver_state(bridge_pid)
+
+        with self._driver_state_lock:
+            if self._session_bridge_pid is None:
+                self._command_history = []
+                self._episode_character_id = None
+                self._episode_run_id = None
+                self._last_checkpoint = None
+                self._driver_state_restored = False
+                if restored is not None:
+                    self._command_history = copy.deepcopy(
+                        restored["command_history"]
+                    )
+                    self._episode_character_id = restored[
+                        "episode_character_id"
+                    ]
+                    self._episode_run_id = restored["episode_run_id"]
+                    self._last_checkpoint = copy.deepcopy(
+                        restored["last_checkpoint"]
+                    )
+                    self._driver_state_restored = True
+            # A PID change inside the same driver is the expected
+            # restore-checkpoint lifecycle.  Keep the episode and history,
+            # then persist the replacement PID for a later daemon restart.
+            self._session_bridge_pid = bridge_pid
+        self._persist_driver_state()
+
+    def _read_driver_state(
+        self, bridge_pid: int
+    ) -> dict[str, object] | None:
+        if self.state_dir is None:
+            return None
+        path = self._native_driver_state_path()
+        if not path.is_file():
+            return None
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8-sig"))
+            if not isinstance(payload, dict):
+                raise ValueError("driver state must be a JSON object")
+            if (
+                payload.get("format_version") != 1
+                or payload.get("pipe_name") != self.pipe_name
+                or payload.get("bridge_pid") != bridge_pid
+            ):
+                return None
+            character_id = payload.get("episode_character_id")
+            run_id = payload.get("episode_run_id")
+            if character_id is None:
+                if run_id is not None:
+                    raise ValueError("driver state has a run without a character")
+            elif (
+                isinstance(character_id, bool)
+                or not isinstance(character_id, int)
+                or not isinstance(run_id, str)
+                or not run_id
+            ):
+                raise ValueError("driver state episode identity is malformed")
+            history = payload.get("command_history")
+            if not isinstance(history, list):
+                raise ValueError("driver state command_history is malformed")
+            for index, row in enumerate(history, start=1):
+                if (
+                    not isinstance(row, dict)
+                    or row.get("index") != index
+                    or not isinstance(row.get("command"), str)
+                    or not row.get("command")
+                    or not isinstance(row.get("ok"), bool)
+                ):
+                    raise ValueError("driver state command history is malformed")
+            last_checkpoint = payload.get("last_checkpoint")
+            if last_checkpoint is not None and not isinstance(
+                last_checkpoint, dict
+            ):
+                raise ValueError("driver state checkpoint is malformed")
+            return {
+                "episode_character_id": character_id,
+                "episode_run_id": run_id,
+                "command_history": copy.deepcopy(history),
+                "last_checkpoint": copy.deepcopy(last_checkpoint),
+            }
+        except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+            with self._driver_state_lock:
+                self._driver_state_error = (
+                    f"{type(error).__name__}: {error}"
+                )
+            return None
+
+    def _persist_driver_state(self) -> None:
+        if self.state_dir is None:
+            return
+        with self._driver_state_lock:
+            if self._session_bridge_pid is None:
+                return
+            payload = {
+                "format_version": 1,
+                "pipe_name": self.pipe_name,
+                "bridge_pid": self._session_bridge_pid,
+                "episode_character_id": self._episode_character_id,
+                "episode_run_id": self._episode_run_id,
+                "last_checkpoint": copy.deepcopy(self._last_checkpoint),
+                "command_history": copy.deepcopy(self._command_history),
+            }
+        try:
+            with self._driver_state_write_lock:
+                write_json_atomic(self._native_driver_state_path(), payload)
+            with self._driver_state_lock:
+                self._driver_state_error = None
+        except (OSError, TypeError, ValueError) as error:
+            # A gameplay command has already happened by this point.  Keep the
+            # live agent usable and surface persistence failure in capabilities
+            # instead of falsely reporting that the game command failed.
+            with self._driver_state_lock:
+                self._driver_state_error = (
+                    f"{type(error).__name__}: {error}"
+                )
 
     def _execute_primitive_step(
         self, step: str, *, expected_revision: int | None = None
@@ -835,7 +979,9 @@ class NativeHeadlessGameplayDriver:
             "overwrite_confirmed": before is not None,
             "strategy": "native-autosave-command-v1",
         }
-        self._last_checkpoint = dict(checkpoint)
+        with self._driver_state_lock:
+            self._last_checkpoint = dict(checkpoint)
+        self._persist_driver_state()
         return {
             **submission_result,
             "checkpoint": checkpoint,
@@ -1122,7 +1268,8 @@ class NativeHeadlessGameplayDriver:
                 "native-session restored CK3 but its checkpoint file is missing"
             )
         size, mtime_ns = restored_signature
-        previous_checkpoint = self._last_checkpoint or {}
+        with self._driver_state_lock:
+            previous_checkpoint = copy.deepcopy(self._last_checkpoint) or {}
         lifecycle_result = response.get("result")
         lifecycle = (
             dict(lifecycle_result)
@@ -1287,6 +1434,17 @@ class NativeHeadlessGameplayDriver:
                 )
             self.state.wait_for_public_change(observed_revision, remaining)
             observed_revision = self.state.public_revision()
+
+    def _native_driver_state_path(self) -> Path:
+        if self.state_dir is None:
+            raise UnsupportedStepError(
+                "native driver state requires state_dir"
+            )
+        return (
+            self.state_dir
+            / _NATIVE_SESSION_QUEUE_DIRNAME
+            / _NATIVE_DRIVER_STATE_FILENAME
+        )
 
     def _native_session_queue_dir(self) -> Path:
         if self.state_dir is None:

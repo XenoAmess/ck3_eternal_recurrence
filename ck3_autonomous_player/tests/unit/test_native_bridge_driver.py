@@ -251,6 +251,126 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             ],
         )
 
+    def test_daemon_restart_restores_episode_and_command_history(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello(
+                    "game.state.snapshot",
+                    "game.state.played-character",
+                    "game.command.life-advance",
+                )
+            )
+            endpoint.publish(
+                _snapshot(
+                    19,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            first = driver.take_snapshot()
+
+            def answer(frame: dict[str, object]) -> None:
+                if frame.get("type") == "execute_step":
+                    endpoint.publish(
+                        {
+                            "type": "command_result",
+                            "protocol_version": 1,
+                            "request_id": frame["request_id"],
+                            "ok": True,
+                            "result": {
+                                "step": frame["step"],
+                                "accepted": True,
+                            },
+                        }
+                    )
+
+            endpoint.send_hook = answer
+            driver.execute_step(
+                "life-advance", expected_revision=int(first["revision"])
+            )
+            state_path = state_dir / "native-session" / "driver-state.json"
+            persisted = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(persisted["bridge_pid"], 4242)
+            self.assertEqual(persisted["episode_run_id"], first["episode_run_id"])
+            self.assertEqual(len(persisted["command_history"]), 1)
+
+            replacement_endpoint = FakeEndpoint(endpoint.pipe_name)
+            replacement = NativeHeadlessGameplayDriver(
+                replacement_endpoint.pipe_name,
+                endpoint=replacement_endpoint,
+                state_dir=state_dir,
+            )
+            replacement_endpoint.publish(
+                _hello(
+                    "game.state.snapshot",
+                    "game.state.played-character",
+                    "game.command.life-advance",
+                )
+            )
+            replacement_endpoint.publish(
+                _snapshot(
+                    20,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            restored = replacement.take_snapshot()
+            self.assertEqual(restored["episode_run_id"], first["episode_run_id"])
+            self.assertEqual(len(restored["native_command_history"]), 1)
+            self.assertTrue(
+                replacement.capabilities()["native_session_control"][
+                    "driver_state_restored"
+                ]
+            )
+
+            # A process-level restore inside the same driver keeps this
+            # one-life episode, and updates the PID used by the next daemon.
+            replacement_endpoint.publish({**_hello("game.state.snapshot"), "pid": 5000})
+            replacement_endpoint.publish(
+                _snapshot(
+                    21,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            after_process_restore = replacement.take_snapshot()
+            self.assertEqual(
+                after_process_restore["episode_run_id"], first["episode_run_id"]
+            )
+            self.assertEqual(
+                json.loads(state_path.read_text(encoding="utf-8"))["bridge_pid"],
+                5000,
+            )
+
+            new_endpoint = FakeEndpoint(endpoint.pipe_name)
+            new_driver = NativeHeadlessGameplayDriver(
+                new_endpoint.pipe_name,
+                endpoint=new_endpoint,
+                state_dir=state_dir,
+            )
+            new_endpoint.publish({**_hello("game.state.snapshot"), "pid": 6000})
+            new_endpoint.publish(
+                _snapshot(
+                    1,
+                    played_character={"character_id": 909, "alive": True},
+                )
+            )
+            new_episode = new_driver.take_snapshot()
+            self.assertEqual(new_episode["episode_character_id"], 909)
+            self.assertNotEqual(
+                new_episode["episode_run_id"], first["episode_run_id"]
+            )
+            self.assertEqual(new_episode["native_command_history"], [])
+            self.assertFalse(
+                new_driver.capabilities()["native_session_control"][
+                    "driver_state_restored"
+                ]
+            )
+
     def test_event_wildcard_expands_from_current_option_count(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(

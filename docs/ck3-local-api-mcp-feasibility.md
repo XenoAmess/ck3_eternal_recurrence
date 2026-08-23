@@ -485,6 +485,10 @@ OCR；后来定位 `CSendCharacterInteractionCommand` 后，婚姻步骤再切�
 9. 同一次实测还验证了 daemon 热重启：关闭第一个 Python pipe server 后，不重启、不重注入 CK3；新的同名 server
    自动收到同一 PID 122944 的 hello 和完整 `native:7` snapshot（日期 53167512、paused=true）。DLL 现把 pipe
    disconnect 视为重新连接条件，并在每次新连接强制重发当前 semantic snapshot，而不是让 worker 永久退出。
+10. Python native driver 会把同一 CK3 进程的 `episode_character_id`、`episode_run_id`、原生命令历史和最近一次 checkpoint
+    元数据原子写入 `state/native-session/driver-state.json`。MCP daemon 重启并收到相同 pipe/PID 的 hello 时恢复这些状态，
+    因而不会因为热更新 Python 就重复开局动作；同一 driver 执行 checkpoint 进程恢复时会更新保存的新 PID 并保持原 episode，
+    而一个全新的 driver 连接到不匹配的 PID 时会开启新 episode。
 
 本项目是本机单人游戏自动玩家。当前开发优先级由“能否更快、更稳定地完成实际玩法”决定；与实际崩溃、错误动作或
 不可用版本无关的泛化安全证明，不进入这条功能路线的阻塞清单。
