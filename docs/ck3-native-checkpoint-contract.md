@@ -83,5 +83,18 @@ CK3 1.19.0.6 的启动分支在 RVA `0x34806E5`/`0x3480878` 分别处理
 
 这两次过程都没有调用 OCR、截图、聚焦、键盘或鼠标后端。上述自动生命周期队列将同样的实测手工
 重启路径封装成 MCP semantic step；其 Python 双进程闭环已有确定性测试。上述两次历史实测使用的是
-旧 `-continuelastsave` 路径；指定文件的 `-loadsave=xar_checkpoint` 自动重启与最小化状态继承仍需
-下一次实机复验。同进程指定文件热加载尚未实现。
+旧 `-continuelastsave` 路径。
+
+2026-08-24 又完成了当前 exact restore 的最小化实测：
+
+- PID `25336` 的窗口在恢复前为 `SDL_app / IsIconic=true`；进程重启为 PID `126204` 后仍为
+  `SDL_app / IsIconic=true`，lifecycle 返回 `previous_window_minimized=true`、
+  `minimized_state_preserved=true`。
+- 固定文件 `xar_checkpoint.ck3` 的 SHA-256 为
+  `4e546e64d125838b846e0d67e4cd00554f4a2ec1b5b55ba12139ea4d7a11fd45`，大小
+  `63,955,822` 字节。游戏先由 `date_raw=53168664` 推进到 `53168688`，再由
+  `-loadsave=xar_checkpoint` 精确回到 `53168664`。
+- connection generation 从 `1` 变为 `2`；episode CharacterID `29829`、run ID 与
+  `save-checkpoint → life-advance → restore-checkpoint` history 保持连续，返回 revision 已稳定为 `12`。
+
+同进程指定文件热加载尚未实现；当前闭环使用受管进程重启。

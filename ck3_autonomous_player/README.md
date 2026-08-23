@@ -280,7 +280,9 @@ snapshot 的 `episode_character_id`，restore 后仍保持该 ID；玩家死亡�
 `status`/`stop`；同时在 `<state>/native-session/bridge` 接受纯原生 `restore-checkpoint`，停止当前受管进程后以同一
 pipe/DLL 和 `-loadsave=xar_checkpoint` 重启。若旧进程的 CK3 窗口已最小化，生命周期 supervisor 会把新 PID 的窗口也恢复为
 最小化。MCP driver 只有观察到新连接代次中稳定的 `map_ready` snapshot，并核对保存日期、角色与 checkpoint bytes 后才返回恢复成功；整个路径
-不导入 vision、OCR 或输入模块。它拒绝 `hybrid-fallback`，且该步骤不会隐式回落。允许视觉回落时仍使用
+不导入 vision、OCR 或输入模块。2026-08-24 的实机闭环已验证 PID `25336→126204`、日期
+`53168688→53168664`、generation `1→2`，且新旧 SDL 窗口都保持 `IsIconic=true`。它拒绝
+`hybrid-fallback`，且该步骤不会隐式回落。允许视觉回落时仍使用
 `opening-dev-session --bridge-mode hybrid-fallback ...`，因为只有该命令提供 vision-session 的主线程 inbox/outbox。
 
 日常 gameplay 开发不再把每次修改都当成发布验收。`opening-replay` 在不启动 CK3 的情况下直接重放已归档 OCR；
