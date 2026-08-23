@@ -519,6 +519,7 @@ def mechanic_checks(errors):
         "xa_baseline_pending": "1",
         "xa_contract_id": "0", "xa_contract_progress": "0",
         "xa_reroll_tokens": "0", "xa_seal_tokens": "0",
+        "xa_settlement_ready": "0", "xa_settlement_commit_serial": "0",
         "xa_bless_a": "0", "xa_bless_b": "0", "xa_bless_c": "0",
         "xa_curse_a": "0", "xa_curse_b": "0",
         "xa_curse_a_rarity": "0", "xa_curse_b_rarity": "0",
@@ -1262,6 +1263,15 @@ def mechanic_checks(errors):
     score_snapshot_event = extract_block(events, "xar.1002") or ""
     score_compute_event = extract_block(events, "xar.1000") or ""
     score_dispatch_event = extract_block(events, "xar.1003") or ""
+    score_visible_event = extract_block(events, "xar.1001") or ""
+    settlement_compute_commit_effect = extract_block(
+        production_effects,
+        "xar_compute_and_commit_death_settlement_effect",
+    ) or ""
+    settlement_commit_effect = extract_block(
+        production_effects, "xar_commit_death_settlement_effect") or ""
+    run_state_effect = extract_block(
+        production_effects, "xar_initialize_run_state_effect") or ""
     generated_score_effect = extract_block(
         read(MOD / "common/scripted_effects/xar_generated_scoring_effects.txt"),
         "xar_compute_score_effect",
@@ -1298,21 +1308,52 @@ def mechanic_checks(errors):
     dead_scope_index = death.find("save_scope_as = xar_dead")
     saved_carrier_index = death.find("save_scope_as = xar_death_carrier")
     carrier_index = death.find("trigger_event = { id = xar.1003 delayed = yes }")
-    inline_score_index = death.find("xar_compute_score_effect = yes")
-    no_heir_score_index = score_compute_event.find("xar_compute_score_effect = yes")
+    inline_score_index = death.find(
+        "xar_compute_and_commit_death_settlement_effect = yes")
+    no_heir_score_index = score_compute_event.find(
+        "xar_compute_and_commit_death_settlement_effect = yes")
     no_heir_dispatch_index = score_compute_event.find("trigger_event = xar.1003")
     if (death.count("trigger_event = xar.1000") != 1
-            or death.count("xar_compute_score_effect = yes") != 1
+            or death.count(
+                "xar_compute_and_commit_death_settlement_effect = yes") != 1
             or "limit = { exists = player_heir }" not in death
             or not 0 <= dead_scope_index < saved_carrier_index < carrier_index < inline_score_index
             or not 0 <= no_heir_score_index < no_heir_dispatch_index
             or "save_scope_as = xar_dead" not in generated_score_effect):
         errors.append(
             "death scoring must save its dead scope and queue the living-heir "
-            "carrier before computing, while preserving the no-heir commit boundary")
+            "UI carrier before synchronously computing/committing both death paths")
+    wrapper_score_index = settlement_compute_commit_effect.find(
+        "xar_compute_score_effect = yes")
+    wrapper_commit_index = settlement_compute_commit_effect.find(
+        "xar_commit_death_settlement_effect = yes")
+    if (settlement_compute_commit_effect.count(
+            "xar_compute_score_effect = yes") != 1
+            or settlement_compute_commit_effect.count(
+                "xar_commit_death_settlement_effect = yes") != 1
+            or not 0 <= wrapper_score_index < wrapper_commit_index
+            or not all(token in settlement_compute_commit_effect for token in (
+                "limit = { has_character_flag = xa_settlement_committed }",
+                "XAR: duplicate death settlement ignored"))):
+        errors.append(
+            "death settlement wrapper must compute then synchronously commit once")
     if (score_dispatch_event.count("id = xar.1001") != 2
             or score_dispatch_event.count("days = 1") != 2):
         errors.append("heir settlement paths must each contain one delayed xar.1001 trigger")
+    if ("xar_commit_death_settlement_effect = yes" in score_dispatch_event
+            or "xar_compute_score_effect = yes" in score_dispatch_event
+            or "xar_write_record_effect = yes" in score_dispatch_event):
+        errors.append(
+            "delayed death dispatch must remain UI-only after synchronous commit")
+    production_death_sources = on_actions + "\n" + events + "\n" + production_effects
+    if (production_death_sources.count(
+            "xar_commit_death_settlement_effect = yes") != 1
+            or production_death_sources.count(
+                "xar_compute_and_commit_death_settlement_effect = yes") != 2
+            or production_death_sources.count(
+                "xar_write_record_effect = yes") != 1):
+        errors.append(
+            "production death chain lost its two wrapper entries or unique commit/writer")
     if not all(token in score_dispatch_event for token in (
             "exists = scope:xar_dead",
             "global_var:xa_player_pact_character = scope:xar_dead",
@@ -1332,6 +1373,98 @@ def mechanic_checks(errors):
                      "refusals", "contract"):
         if f"name = xar_no_heir_{variable}" not in score_snapshot_event:
             errors.append(f"no-heir settlement lacks '{variable}' event-root snapshot")
+    settlement_payload = {
+        "xa_settlement_final_score": "xa_run_score",
+        "xa_settlement_score_before_reject": "xa_score_before_reject",
+        "xa_settlement_record_candidate": "xa_record_candidate",
+        "xa_settlement_old_record": "xa_old_record",
+        "xa_settlement_record_delta": "xa_score_delta",
+        "xa_settlement_blessing_count": "xa_bless_count",
+        "xa_settlement_refusal_count": "xa_bless_reject_count",
+        "xa_settlement_contract_progress": "xa_contract_progress",
+    }
+    for target, source in settlement_payload.items():
+        assignment = compact_script(
+            f"set_global_variable = {{ name = {target} "
+            f"value = {{ value = global_var:{source} }} }}")
+        if assignment not in compact_script(settlement_commit_effect):
+            errors.append(
+                f"native death settlement projection lost {target} <- {source}")
+    settlement_commit_requirements = (
+        "scope:xar_dead = { add_character_flag = xa_settlement_committed }",
+        "name = xa_settlement_source_character",
+        "value = scope:xar_dead",
+        "name = xa_settlement_record_written value = 0",
+        "name = xa_settlement_record_written value = 1",
+        "global_var:xa_record_candidate > global_var:xa_old_record",
+        "name = xa_settlement_commit_serial value = 1",
+    )
+    if any(token not in settlement_commit_effect
+           for token in settlement_commit_requirements):
+        errors.append(
+            "native death settlement commit lost its source/idempotency/serial contract")
+    ready_write = (
+        "set_global_variable = { name = xa_settlement_ready value = 1 }")
+    ready_write_index = settlement_commit_effect.find(ready_write)
+    if (settlement_commit_effect.count("xar_write_record_effect = yes") != 1
+            or settlement_commit_effect.count(ready_write) != 1
+            or ready_write_index < settlement_commit_effect.find(
+                "set_global_variable = { name = xa_settlement_commit_serial value = 1 }")
+            or settlement_commit_effect.find(
+                "set_global_variable", ready_write_index + len(ready_write)) >= 0):
+        errors.append(
+            "death settlement must write one record signal, publish serial 1, and set ready last")
+    if not all(token in run_state_effect for token in (
+            "name = xa_settlement_ready value = 0",
+            "name = xa_settlement_commit_serial value = 0")):
+        errors.append("new run state does not invalidate the prior settlement payload")
+    no_heir_projection = {
+        "score": "xa_settlement_final_score",
+        "subtotal": "xa_settlement_score_before_reject",
+        "candidate": "xa_settlement_record_candidate",
+        "old": "xa_settlement_old_record",
+        "delta": "xa_settlement_record_delta",
+        "pairs": "xa_settlement_blessing_count",
+        "refusals": "xa_settlement_refusal_count",
+        "contract": "xa_settlement_contract_progress",
+    }
+    for target, source in no_heir_projection.items():
+        if compact_script(
+                f"set_variable = {{ name = xar_no_heir_{target} "
+                f"value = {{ value = global_var:{source} }} }}"
+        ) not in compact_script(score_snapshot_event):
+            errors.append(
+                f"no-heir UI no longer consumes committed settlement field {source}")
+    visible_projection = {
+        "xar_bless_n": "xa_settlement_blessing_count",
+        "xar_reject_n": "xa_settlement_refusal_count",
+        "xar_subtotal": "xa_settlement_score_before_reject",
+        "xar_score": "xa_settlement_final_score",
+        "xar_candidate": "xa_settlement_record_candidate",
+        "xar_old": "xa_settlement_old_record",
+        "xar_delta": "xa_settlement_record_delta",
+        "xar_contract_progress": "xa_settlement_contract_progress",
+    }
+    for target, source in visible_projection.items():
+        if compact_script(
+                f"save_scope_value_as = {{ name = {target} value = global_var:{source} }}"
+        ) not in compact_script(score_visible_event):
+            errors.append(
+                f"heir UI no longer consumes committed settlement field {source}")
+    if not all(token in score_visible_event for token in (
+            "global_var:xa_settlement_record_written = 1",
+            "NOT = { global_var:xa_settlement_record_written = 1 }")):
+        errors.append("heir UI record options do not consume the committed result")
+    for ui_event_id, block in (
+            ("xar.1001", score_visible_event),
+            ("xar.1002", score_snapshot_event)):
+        if any(token in block for token in (
+                "xar_write_record_effect = yes",
+                "xar_compute_and_commit_death_settlement_effect = yes",
+                "xar_commit_death_settlement_effect = yes",
+                "xar_enable_player_pact_effect = yes",
+                "add_character_flag = xa_enabled")):
+            errors.append(f"{ui_event_id} is no longer a UI-only settlement consumer")
     death_probe_effect = read(
         MOD / "common/scripted_effects/xar_acceptance_death_effects.txt")
     death_probe_events = read(MOD / "events/xar_acceptance_events.txt")
@@ -1837,8 +1970,8 @@ def mechanic_checks(errors):
     if consume.find("name = xa_local_points") > consume.find("trigger_event = xar.0002"):
         errors.append("pact can open before imported shop points are assigned")
 
-    if "global_var:xa_record_candidate > global_var:xa_old_record" not in score_dispatch_event:
-        errors.append("death settlement dispatcher does not use strict candidate record comparison")
+    if "global_var:xa_record_candidate > global_var:xa_old_record" not in settlement_commit_effect:
+        errors.append("death settlement commit does not use strict candidate record comparison")
     if "global_var:xa_run_score > global_var:xa_old_record" in on_actions + events:
         errors.append("production record comparison still uses the real run score")
 

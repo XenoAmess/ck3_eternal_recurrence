@@ -106,7 +106,7 @@ customizable_localization 的 text 块按序取第一个 trigger 成立的。GUI
 - `xa_record_candidate`：真实分数向下映射得到的量化候选余烬位阶，最高为 166,600。
 - `xa_global_record_imported`：从历史 lesson 位汇总出的量化历史位阶（存档内镜像）。
 - `xa_local_points`：导入 ready 后从历史位阶复制的**本局可花费副本**；消费只扣副本，不动历史位阶。
-- 死亡：on_death → 算真实分数 → 生成 candidate → candidate 严格高于历史位阶才置位（通知先弹）→ 结算事件延迟 1 天显示。
+- 死亡：on_death → 两条继承路径调用同一手写 wrapper → 算真实分数并同步提交一次纪录信号与 native settlement → candidate 严格高于历史位阶才置位 → `xar.1003/1001/1002` 后续只做 UI。agent 的 serial/ready 字段与外部 `tutorial.txt` 落盘边界见 [ck3-native-settlement-contract.md](ck3-native-settlement-contract.md)。
 
 ### 显式导入协议
 

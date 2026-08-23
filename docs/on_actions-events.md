@@ -55,6 +55,7 @@ on_action 的 effect 与它触发的事件**并发执行，不是先后**：
 - 有 `player_heir` 时仍把 `xar.1001` 延迟 1 日发给继承人，避开死亡 root 失效。
 - 无 `player_heir` 时没有可供延迟承载的存活角色，只能在 `on_death` 的将死 root 上同步 `trigger_event = xar.1001`；代码用 `XAR: no player heir; synchronous settlement fallback` 标记该分支。
 - 2026-08-18 CK3 1.19.0.6 实测：链路改为 `on_death -> xar.1000` 计分提交 -> `xar.1003` 写位/分流 -> `xar.1002` 玩家变量快照。无继承人不再打开会被遮住的 `xar.1001`，而由生成器向原生继承窗注入结算 widget；八项数值、无“继续扮演”、退出确认和返回主菜单均有真实像素证据，run `xar_accept_fmq_wxxc`，0 `xar` errors。
+- 2026-08-24 为一代制 native agent 增加同步提交 wrapper：有/无继承人两条入口都调用 `xar_compute_and_commit_death_settlement_effect`，在 generated scorer 后立即写一次纪录信号并发布 source/final score/counts/serial，最后写 `ready=1`；delayed `xar.1003` 与 `xar.1001/1002` 只读取投影做 UI。此轮为静态施工，特别是既有“死亡 root scorer 后父链不稳定”结论要求下一轮实机直接确认 wrapper 尾部确已执行；字段契约见 [ck3-native-settlement-contract.md](ck3-native-settlement-contract.md)。
 
 ## 死亡钩子
 

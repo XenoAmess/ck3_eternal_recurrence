@@ -112,7 +112,81 @@ xar_enable_player_pact_effect = {
 	add_trait = xar_glassfire_gaze
 }
 
+# Publish one completed death settlement for native/headless consumers. The
+# payload lives in global variables because the played character can switch to
+# an heir before a native snapshot observes the result. xa_settlement_ready is
+# deliberately the final write: readers ignore every payload field until it is
+# 1, then use commit_serial to distinguish a newly committed settlement.
+xar_compute_and_commit_death_settlement_effect = {
+	if = {
+		limit = { has_character_flag = xa_settlement_committed }
+		debug_log = "XAR: duplicate death settlement ignored"
+	}
+	else = {
+		xar_compute_score_effect = yes
+		xar_commit_death_settlement_effect = yes
+	}
+}
+
+xar_commit_death_settlement_effect = {
+	set_global_variable = { name = xa_settlement_ready value = 0 }
+	set_global_variable = {
+		name = xa_settlement_source_character
+		value = scope:xar_dead
+	}
+	set_global_variable = {
+		name = xa_settlement_final_score
+		value = { value = global_var:xa_run_score }
+	}
+	set_global_variable = {
+		name = xa_settlement_score_before_reject
+		value = { value = global_var:xa_score_before_reject }
+	}
+	set_global_variable = {
+		name = xa_settlement_record_candidate
+		value = { value = global_var:xa_record_candidate }
+	}
+	set_global_variable = {
+		name = xa_settlement_old_record
+		value = { value = global_var:xa_old_record }
+	}
+	set_global_variable = {
+		name = xa_settlement_record_delta
+		value = { value = global_var:xa_score_delta }
+	}
+	set_global_variable = {
+		name = xa_settlement_blessing_count
+		value = { value = global_var:xa_bless_count }
+	}
+	set_global_variable = {
+		name = xa_settlement_refusal_count
+		value = { value = global_var:xa_bless_reject_count }
+	}
+	set_global_variable = {
+		name = xa_settlement_contract_progress
+		value = { value = global_var:xa_contract_progress }
+	}
+	set_global_variable = { name = xa_settlement_record_written value = 0 }
+	if = {
+		limit = { global_var:xa_record_candidate > global_var:xa_old_record }
+		debug_log = "XAR: new record, writing bit"
+		xar_write_record_effect = yes
+		set_global_variable = { name = xa_settlement_record_written value = 1 }
+	}
+	# Rogue mode has exactly one playable life per save: a fresh commit is
+	# always serial 1. Direct assignment also migrates already-signed saves
+	# whose newly introduced global did not exist when they were created.
+	set_global_variable = { name = xa_settlement_commit_serial value = 1 }
+	scope:xar_dead = { add_character_flag = xa_settlement_committed }
+	set_global_variable = { name = xa_settlement_ready value = 1 }
+}
+
 xar_initialize_run_state_effect = {
+	# This effect runs once when the current character accepts the pact. Create
+	# both publication gates unconditionally: has_global_variable is true for
+	# statically registered names even while their value is still none.
+	set_global_variable = { name = xa_settlement_ready value = 0 }
+	set_global_variable = { name = xa_settlement_commit_serial value = 0 }
 	set_global_variable = { name = xa_shop_page value = 1 }
 	set_global_variable = { name = xa_price_dip value = 25 }
 	set_global_variable = { name = xa_price_mar value = 25 }

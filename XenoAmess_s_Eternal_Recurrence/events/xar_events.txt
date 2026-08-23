@@ -524,7 +524,7 @@ xar.0011 = {
 	}
 }
 
-# No-heir path: commit score globals before record dispatch and GUI snapshots.
+# No-heir path: synchronously compute/publish before GUI dispatch and snapshots.
 xar.1000 = {
 	hidden = yes
 	trigger = {
@@ -539,12 +539,12 @@ xar.1000 = {
 		}
 	}
 	immediate = {
-		xar_compute_score_effect = yes
+		xar_compute_and_commit_death_settlement_effect = yes
 		trigger_event = xar.1003
 	}
 }
 
-# Write the committed score, then route either from the living heir carrier
+# Route the already committed settlement either from the living heir carrier
 # queued before scoring or from the synchronous dead-root no-heir chain.
 xar.1003 = {
 	hidden = yes
@@ -581,11 +581,6 @@ xar.1003 = {
 			debug_log = "XAR: TEST death-with-heir dispatch entered"
 		}
 		# XAR_ACCEPTANCE_ONLY_END
-		if = {
-			limit = { global_var:xa_record_candidate > global_var:xa_old_record }
-			debug_log = "XAR: new record, writing bit"
-			xar_write_record_effect = yes
-		}
 		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = {
@@ -626,14 +621,14 @@ xar.1002 = {
 	hidden = yes
 	trigger = { is_ai = no }
 	immediate = {
-		set_variable = { name = xar_no_heir_score value = { value = global_var:xa_run_score } }
-		set_variable = { name = xar_no_heir_subtotal value = { value = global_var:xa_score_before_reject } }
-		set_variable = { name = xar_no_heir_candidate value = { value = global_var:xa_record_candidate } }
-		set_variable = { name = xar_no_heir_old value = { value = global_var:xa_old_record } }
-		set_variable = { name = xar_no_heir_delta value = { value = global_var:xa_score_delta } }
-		set_variable = { name = xar_no_heir_pairs value = { value = global_var:xa_bless_count } }
-		set_variable = { name = xar_no_heir_refusals value = { value = global_var:xa_bless_reject_count } }
-		set_variable = { name = xar_no_heir_contract value = { value = global_var:xa_contract_progress } }
+		set_variable = { name = xar_no_heir_score value = { value = global_var:xa_settlement_final_score } }
+		set_variable = { name = xar_no_heir_subtotal value = { value = global_var:xa_settlement_score_before_reject } }
+		set_variable = { name = xar_no_heir_candidate value = { value = global_var:xa_settlement_record_candidate } }
+		set_variable = { name = xar_no_heir_old value = { value = global_var:xa_settlement_old_record } }
+		set_variable = { name = xar_no_heir_delta value = { value = global_var:xa_settlement_record_delta } }
+		set_variable = { name = xar_no_heir_pairs value = { value = global_var:xa_settlement_blessing_count } }
+		set_variable = { name = xar_no_heir_refusals value = { value = global_var:xa_settlement_refusal_count } }
+		set_variable = { name = xar_no_heir_contract value = { value = global_var:xa_settlement_contract_progress } }
 		# XAR_ACCEPTANCE_ONLY_BEGIN
 		if = {
 			limit = {
@@ -720,9 +715,9 @@ xar.1001 = {
 			trigger_event = xar.0007
 		}
 		# XAR_ACCEPTANCE_ONLY_END
-		save_scope_value_as = { name = xar_bless_n value = global_var:xa_bless_count }
-		save_scope_value_as = { name = xar_reject_n value = global_var:xa_bless_reject_count }
-		save_scope_value_as = { name = xar_subtotal value = global_var:xa_score_before_reject }
+		save_scope_value_as = { name = xar_bless_n value = global_var:xa_settlement_blessing_count }
+		save_scope_value_as = { name = xar_reject_n value = global_var:xa_settlement_refusal_count }
+		save_scope_value_as = { name = xar_subtotal value = global_var:xa_settlement_score_before_reject }
 		# attributes
 		save_scope_value_as = { name = xar_a_dip value = global_var:xa_a_dip }
 		save_scope_value_as = { name = xar_a_mar value = global_var:xa_a_mar }
@@ -781,26 +776,26 @@ xar.1001 = {
 		save_scope_value_as = { name = xar_l_realm value = global_var:xa_l_realm }
 		save_scope_value_as = { name = xar_p_realm value = global_var:xa_p_realm }
 		# totals
-		save_scope_value_as = { name = xar_score value = global_var:xa_run_score }
-		save_scope_value_as = { name = xar_candidate value = global_var:xa_record_candidate }
-		save_scope_value_as = { name = xar_old value = global_var:xa_old_record }
-		save_scope_value_as = { name = xar_delta value = global_var:xa_score_delta }
+		save_scope_value_as = { name = xar_score value = global_var:xa_settlement_final_score }
+		save_scope_value_as = { name = xar_candidate value = global_var:xa_settlement_record_candidate }
+		save_scope_value_as = { name = xar_old value = global_var:xa_settlement_old_record }
+		save_scope_value_as = { name = xar_delta value = global_var:xa_settlement_record_delta }
 		save_scope_value_as = { name = xar_challenge_ratio value = global_var:xa_inheritance_percent }
 		save_scope_value_as = { name = xar_challenge_baseline value = global_var:xa_score_baseline }
-		save_scope_value_as = { name = xar_contract_progress value = global_var:xa_contract_progress }
+		save_scope_value_as = { name = xar_contract_progress value = global_var:xa_settlement_contract_progress }
 		save_scope_value_as = { name = xar_rerolls value = global_var:xa_reroll_tokens }
 		save_scope_value_as = { name = xar_seals value = global_var:xa_seal_tokens }
 	}
 
 	option = {
 		name = xar.1001.new_record
-		trigger = { global_var:xa_record_candidate > global_var:xa_old_record }
+		trigger = { global_var:xa_settlement_record_written = 1 }
 		set_global_variable = xa_quit_to_menu
 	}
 
 	option = {
 		name = xar.1001.no_record
-		trigger = { NOT = { global_var:xa_record_candidate > global_var:xa_old_record } }
+		trigger = { NOT = { global_var:xa_settlement_record_written = 1 } }
 		set_global_variable = xa_quit_to_menu
 	}
 }

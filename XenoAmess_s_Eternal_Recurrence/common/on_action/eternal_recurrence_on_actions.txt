@@ -91,9 +91,10 @@ xar_contract_birthday = {
 	}
 }
 
-# Queue a normal succession's delayed carrier while the dying root and its saved
-# scope are still valid, then score before the carrier runs. No-heir deaths keep
-# the synchronous event chain because there is no valid living recipient.
+# Queue a normal succession's delayed UI carrier while the dying root and its
+# saved scope are still valid, then synchronously score and publish settlement.
+# No-heir deaths keep the synchronous event chain because there is no valid
+# living recipient.
 xar_on_death = {
 	effect = {
 		if = {
@@ -137,7 +138,7 @@ xar_on_death = {
 					debug_log = "XAR: BALANCE production carrier queued"
 				}
 				# XAR_ACCEPTANCE_ONLY_END
-				xar_compute_score_effect = yes
+				xar_compute_and_commit_death_settlement_effect = yes
 				# XAR_ACCEPTANCE_ONLY_BEGIN
 				if = {
 					limit = { has_global_variable = xa_balance_active }
