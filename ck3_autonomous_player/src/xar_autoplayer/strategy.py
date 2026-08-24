@@ -827,6 +827,13 @@ def choose_one_life_turn(
             if isinstance(pursuit_army, dict)
             else None
         )
+        stationary_threats = _stationary_province_threats(
+            current_province_id,
+            route_threat_enemies,
+        ) if (
+            observed_route_target is None
+            and army_state in {"regular", "sieging"}
+        ) else []
         if army_state == "gathering":
             if "life-advance" in available_steps:
                 return {
@@ -847,11 +854,11 @@ def choose_one_life_turn(
         if (
             army_state == "sieging"
             and observed_route_target is None
+            and not stationary_threats
             and (
                 not siege_objective_province_ids
                 or (
                     current_province_id in siege_objective_province_ids
-                    and current_province_id not in enemy_threat_province_ids
                 )
             )
             and "life-advance" in available_steps
@@ -1049,12 +1056,12 @@ def choose_one_life_turn(
                             }
                         )
                         continue
-                    if province_id in enemy_threat_province_ids:
+                    if stationary_threats:
                         route_rejections.append(
                             {
                                 "target_province_id": province_id,
                                 "status": "unsafe",
-                                "conflict_kind": "destination_threat",
+                                "conflicts": stationary_threats,
                             }
                         )
                         continue
@@ -1079,11 +1086,15 @@ def choose_one_life_turn(
                     isinstance(preview, dict)
                     and preview.get("status") == "deferred"
                 ):
-                    if active_route_unsafe:
+                    if active_route_unsafe or stationary_threats:
                         route_rejections.append(
                             {
                                 "target_province_id": province_id,
-                                "status": "deferred_while_active_route_unsafe",
+                                "status": (
+                                    "deferred_while_active_route_unsafe"
+                                    if active_route_unsafe
+                                    else "deferred_while_stationary_province_threatened"
+                                ),
                             }
                         )
                         continue
@@ -1198,6 +1209,10 @@ def choose_one_life_turn(
                     or province_id not in enemy_threat_province_ids
                 )
                 and not (
+                    province_id == current_province_id
+                    and stationary_threats
+                )
+                and not (
                     blocked_enemy_ids
                     and any(
                         row.get("current_province_id") == province_id
@@ -1245,6 +1260,28 @@ def choose_one_life_turn(
         if target_province_id is None and (
             visible_enemies or siege_objective_province_ids
         ):
+            if (
+                stationary_threats
+                and current_province_id in siege_objective_province_ids
+            ):
+                exact = current_province_id in exact_objective_province_ids
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": (
+                        "native_war_no_safe_exact_route"
+                        if exact
+                        else "native_war_no_safe_target"
+                    ),
+                    "selected_step": None,
+                    "required_step": (
+                        "safe-exact-war-route"
+                        if exact
+                        else "query-safe-war-objectives"
+                    ),
+                    "reason": "the stationary siege province is under observable enemy convergence and no alternate target is available",
+                    "route_rejections": stationary_threats,
+                    "active_wars": war_summary,
+                }
             if "life-advance" in available_steps:
                 return {
                     "policy": "one-life-turn-v1",
@@ -1297,6 +1334,30 @@ def choose_one_life_turn(
                     snapshot if isinstance(snapshot, dict) else {},
                     step,
                 )
+                if stationary_threats and (
+                    active_move_intent is not None
+                    or (
+                        move_backoff is not None
+                        and move_backoff.get("retry_due") is not True
+                    )
+                    or target_province_id
+                    in {
+                        pursuit_army.get("current_province_id"),
+                        pursuit_army.get("move_target_province_id"),
+                    }
+                ):
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_stationary_threat_blocked",
+                        "selected_step": None,
+                        "required_step": "replace-threatened-stationary-position",
+                        "reason": "enemy convergence threatens the stationary army; deferred, pending, or same-province alternatives cannot justify advancing time",
+                        "pursuit": pursuit,
+                        "route_rejections": stationary_threats,
+                        "move_intent": active_move_intent,
+                        "move_backoff": move_backoff,
+                        "active_wars": war_summary,
+                    }
                 if active_route_unsafe:
                     if (
                         active_move_intent is None
@@ -1424,6 +1485,16 @@ def choose_one_life_turn(
                     "pursuit": pursuit,
                     "active_wars": war_summary,
                 }
+        if stationary_threats:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_stationary_threat_blocked",
+                "selected_step": None,
+                "required_step": "replace-threatened-stationary-position",
+                "reason": "enemy convergence threatens the stationary army and no immediate reroute is available",
+                "route_rejections": stationary_threats,
+                "active_wars": war_summary,
+            }
         if "life-advance" in available_steps:
             return {
                 "policy": "one-life-turn-v1",
@@ -1976,6 +2047,40 @@ def _army_tactical_state(army: dict[str, object]) -> str | None:
     if army.get("in_combat") is True:
         return "combat"
     return None
+
+
+def _stationary_province_threats(
+    province_id: object,
+    enemies: Iterable[dict[str, object]],
+) -> list[dict[str, object]]:
+    """Return observable enemies converging on one stationary province."""
+    guarded_province_id = _native_int(province_id)
+    if guarded_province_id is None:
+        return []
+    conflicts: list[dict[str, object]] = []
+    for enemy in enemies:
+        if _army_tactical_state(enemy) == "retreating":
+            continue
+        enemy_id = _native_int(enemy.get("army_id"))
+        enemy_current = _native_int(enemy.get("current_province_id"))
+        enemy_target = _native_int(enemy.get("move_target_province_id"))
+        route = enemy.get("route_province_ids")
+        if enemy_current == guarded_province_id:
+            kind = "enemy_at_stationary_province"
+        elif enemy_target == guarded_province_id:
+            kind = "enemy_targeting_stationary_province"
+        elif isinstance(route, list) and guarded_province_id in route:
+            kind = "enemy_route_to_stationary_province"
+        else:
+            continue
+        conflicts.append(
+            {
+                "kind": kind,
+                "enemy_army_id": enemy_id,
+                "province_id": guarded_province_id,
+            }
+        )
+    return conflicts
 
 
 def _progress_slice(

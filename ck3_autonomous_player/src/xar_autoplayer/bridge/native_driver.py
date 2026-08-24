@@ -3581,6 +3581,12 @@ def _life_advance_progressed(
         return current_date_raw > starting_date_raw
     if _active_war_progress_signature(snapshot) != starting_war_progress:
         return True
+    starting_threats = set(
+        _stationary_army_threat_relations(starting_snapshot)
+    )
+    current_threats = set(_stationary_army_threat_relations(snapshot))
+    if current_threats - starting_threats:
+        return True
     return current_date_raw >= (
         starting_date_raw + _NATIVE_WAR_ADVANCE_MAX_DAYS * 24
     )
@@ -3605,7 +3611,7 @@ def _active_war_progress_signature(
             or not isinstance(score, int)
         ):
             continue
-        army_provinces: list[tuple[int, int]] = []
+        army_progress: list[tuple[object, ...]] = []
         armies = war.get("allied_armies")
         for army in armies if isinstance(armies, list) else []:
             if not isinstance(army, dict) or army.get("controllable") is not True:
@@ -3614,17 +3620,122 @@ def _active_war_progress_signature(
             province_id = army.get("current_province_id")
             if isinstance(army_id, bool) or not isinstance(army_id, int):
                 continue
-            army_provinces.append(
+            army_progress.append(
                 (
                     army_id,
                     province_id
                     if isinstance(province_id, int)
                     and not isinstance(province_id, bool)
                     else -1,
+                    (
+                        army.get("move_target_province_id")
+                        if isinstance(army.get("move_target_province_id"), int)
+                        and not isinstance(
+                            army.get("move_target_province_id"), bool
+                        )
+                        else -1
+                    ),
+                    (
+                        army.get("army_state")
+                        if isinstance(army.get("army_state"), str)
+                        else ""
+                    ),
+                    (
+                        army.get("army_state_code")
+                        if isinstance(army.get("army_state_code"), int)
+                        and not isinstance(army.get("army_state_code"), bool)
+                        else -1
+                    ),
+                    1 if army.get("in_combat") is True else 0,
+                    1 if army.get("retreating") is True else 0,
                 )
             )
-        result.append((war_id, score, tuple(sorted(army_provinces))))
+        result.append(
+            (
+                war_id,
+                score,
+                tuple(sorted(army_progress)),
+            )
+        )
     return tuple(sorted(result))
+
+
+def _stationary_army_threat_relations(
+    snapshot: dict[str, object],
+) -> tuple[tuple[int, int, int, int], ...]:
+    wars = snapshot.get("active_wars")
+    relations: list[tuple[int, int, int, int]] = []
+    for war in wars if isinstance(wars, list) else []:
+        if not isinstance(war, dict):
+            continue
+        war_id = war.get("war_id")
+        if isinstance(war_id, bool) or not isinstance(war_id, int):
+            continue
+        allied = war.get("allied_armies")
+        stationary: list[tuple[int, int]] = []
+        for army in allied if isinstance(allied, list) else []:
+            if not isinstance(army, dict) or army.get("controllable") is not True:
+                continue
+            army_id = army.get("army_id")
+            province_id = army.get("current_province_id")
+            move_target = army.get("move_target_province_id")
+            state = army.get("army_state")
+            state_code = army.get("army_state_code")
+            stationary_state = (
+                isinstance(state, str)
+                and state.casefold() in {"regular", "sieging"}
+            ) or (
+                not isinstance(state, str)
+                and isinstance(state_code, int)
+                and not isinstance(state_code, bool)
+                and state_code in {1, 3}
+            )
+            if (
+                isinstance(army_id, bool)
+                or not isinstance(army_id, int)
+                or isinstance(province_id, bool)
+                or not isinstance(province_id, int)
+                or not stationary_state
+                or (
+                    isinstance(move_target, int)
+                    and not isinstance(move_target, bool)
+                )
+                or army.get("in_combat") is True
+                or army.get("retreating") is True
+            ):
+                continue
+            stationary.append((army_id, province_id))
+
+        enemy = war.get("enemy_armies")
+        for hostile in enemy if isinstance(enemy, list) else []:
+            if not isinstance(hostile, dict):
+                continue
+            hostile_state = hostile.get("army_state")
+            if hostile.get("retreating") is True or (
+                isinstance(hostile_state, str)
+                and hostile_state.casefold() == "retreating"
+            ):
+                continue
+            hostile_id = hostile.get("army_id")
+            if isinstance(hostile_id, bool) or not isinstance(hostile_id, int):
+                continue
+            route = hostile.get("route_province_ids")
+            threatened = {
+                province_id
+                for province_id in (
+                    hostile.get("current_province_id"),
+                    hostile.get("move_target_province_id"),
+                    *(route if isinstance(route, list) else []),
+                )
+                if isinstance(province_id, int)
+                and not isinstance(province_id, bool)
+            }
+            relations.extend(
+                (war_id, army_id, hostile_id, province_id)
+                for army_id, province_id in stationary
+                if province_id in threatened
+            )
+    return tuple(sorted(relations))
 
 
 def _war_progress_summary(snapshot: dict[str, object]) -> dict[str, object]:

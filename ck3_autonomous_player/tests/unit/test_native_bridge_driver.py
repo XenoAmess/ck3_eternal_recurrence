@@ -3226,6 +3226,153 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             13,
         )
 
+    def test_active_war_life_advance_stops_on_stationary_army_threat(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        start_date = 53_171_400
+        player = _army(
+            501,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        starting_enemy = _army(
+            502,
+            province_id=2600,
+            controllable=False,
+            move_target_province_id=2596,
+            army_state="moving",
+            route_province_ids=[2596],
+        )
+        ordinary_enemy = _army(
+            502,
+            province_id=2599,
+            controllable=False,
+            move_target_province_id=2596,
+            army_state="moving",
+            route_province_ids=[],
+        )
+        threatening_enemy = _army(
+            502,
+            province_id=2599,
+            controllable=False,
+            move_target_province_id=2585,
+            army_state="moving",
+            route_province_ids=[2585],
+        )
+
+        def war(enemy: dict[str, object]) -> dict[str, object]:
+            return _war(
+                allied_armies=[player],
+                enemy_armies=[enemy],
+                war_objective_province_ids=[2585, 2510],
+            )
+
+        starting_war = war(starting_enemy)
+        endpoint.publish(
+            _snapshot(
+                80,
+                date_raw=start_date,
+                active_wars=[starting_war],
+                player_armies=[player],
+            )
+        )
+        threat_published = threading.Event()
+        pause_before_threat: list[bool] = []
+        timers: list[threading.Timer] = []
+
+        def publish_running(
+            revision: int,
+            date_raw: int,
+            enemy: dict[str, object],
+        ) -> None:
+            endpoint.publish(
+                _snapshot(
+                    revision,
+                    date_raw=date_raw,
+                    speed=5,
+                    paused=False,
+                    active_wars=[war(enemy)],
+                    player_armies=[player],
+                )
+            )
+
+        def publish_threat() -> None:
+            threat_published.set()
+            publish_running(84, start_date + 48, threatening_enemy)
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-5":
+                endpoint.publish(
+                    _snapshot(
+                        81,
+                        date_raw=start_date,
+                        speed=5,
+                        active_wars=[starting_war],
+                        player_armies=[player],
+                    )
+                )
+            elif step == "resume-map":
+                publish_running(82, start_date, starting_enemy)
+                ordinary = threading.Timer(
+                    0.01,
+                    lambda: publish_running(
+                        83, start_date + 24, ordinary_enemy
+                    ),
+                )
+                threat = threading.Timer(0.03, publish_threat)
+                timers.extend((ordinary, threat))
+                ordinary.start()
+                threat.start()
+            elif step == "pause-map":
+                pause_before_threat.append(not threat_published.is_set())
+                endpoint.publish(
+                    _snapshot(
+                        85,
+                        date_raw=start_date + 48,
+                        speed=5,
+                        paused=True,
+                        active_wars=[war(threatening_enemy)],
+                        player_armies=[player],
+                    )
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("life-advance")
+        for timer in timers:
+            timer.join(timeout=1.0)
+
+        self.assertEqual(pause_before_threat, [False])
+        self.assertEqual(result["elapsed_days"], 2)
+        self.assertEqual(result["progress_status"], "postcondition")
+        self.assertTrue(result["paused"])
+
     def test_active_war_life_advance_wall_timeout_keeps_date_progress(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(

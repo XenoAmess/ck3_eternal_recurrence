@@ -768,6 +768,83 @@ class GameplayBridgeTests(unittest.TestCase):
             plan["selected_step"], "preview-move-army-11-to-2510"
         )
 
+    def test_stationary_siege_threat_previews_next_exact_before_advance(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        approaching_enemy = _army(
+            21,
+            soldiers=800,
+            province_id=2600,
+            controllable=False,
+            move_target_province_id=2596,
+            army_state="moving",
+            route_province_ids=[2596, 2585],
+        )
+
+        reroute = _native_war_plan(
+            player=player,
+            enemies=[approaching_enemy],
+            score=24,
+            date_raw=24_000,
+            objectives=[2585, 2510],
+            steps=("preview-move-army-11-to-2510", "life-advance"),
+        )
+
+        self.assertEqual(reroute["phase"], "native_war_route_preview")
+        self.assertEqual(
+            reroute["selected_step"], "preview-move-army-11-to-2510"
+        )
+        self.assertNotEqual(reroute["selected_step"], "life-advance")
+
+        blocked = _native_war_plan(
+            player=player,
+            enemies=[approaching_enemy],
+            score=24,
+            date_raw=24_000,
+            objective=2585,
+            steps=("life-advance",),
+            move_route_preview_supported=False,
+        )
+        self.assertEqual(blocked["phase"], "native_war_no_safe_exact_route")
+        self.assertIsNone(blocked["selected_step"])
+
+        deferred = _native_war_plan(
+            player=player,
+            enemies=[approaching_enemy],
+            score=24,
+            date_raw=24_000,
+            history=[
+                {
+                    "index": 1,
+                    "command": "preview-move-army-11-to-2510",
+                    "ok": True,
+                    "result": {
+                        "route_preview": {
+                            "status": "deferred",
+                            "army_id": 11,
+                            "origin_province_id": 2585,
+                            "target_province_id": 2510,
+                            "previewed_date_raw": 24_000,
+                        }
+                    },
+                }
+            ],
+            objectives=[2585, 2510],
+            steps=("life-advance",),
+        )
+        self.assertEqual(
+            deferred["phase"], "native_war_no_safe_exact_route"
+        )
+        self.assertIsNone(deferred["selected_step"])
+
     def test_preview_without_passive_routes_is_explicitly_unsupported(
         self,
     ) -> None:
