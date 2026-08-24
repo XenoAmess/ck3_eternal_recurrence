@@ -285,6 +285,47 @@ flowchart LR
     class U,C unknown;
 ```
 
+### 合军后的一日切片复核
+
+- [live-confirmed] 玩家在日期 `53175984` 把 sibling `16777558` 合回原主军 `83886341`；暂停快照确认
+  source 消失、destination 保留，未推进日期完成合军。
+- [live-confirmed] 合军后的主军连续取得同一 fresh preview `[2595,2603,2604]`。它在前四个一日切片中仍报告
+  current `2596`、state `sieging`，到日期 `53176104` 才抵达首跳 `2595`，remaining route 自然缩短为
+  `[2603,2604]`、state 变为 `moving`。这证明 CK3 的省级 snapshot 在边内不发布连续进度；不能仅因
+  current/state 数日不变就把 route 判成 stale。
+- [live-confirmed] 同一个 `53176080 → 53176104` 切片后，敌军 `357` 仍在 `2581`，但 target 从 `2596`
+  改为 `2595`，route 从 `[2587,2597,2596]` 改为 `[2587,2599,2598,2595]`。
+- [live-confirmed] 因而 7/14 日 target cadence 不是“端点在窗口内不可变化”的锁；端点可以在已观测跨度不足
+  7 日时变化，counter-policy 必须逐个 paused frame 重审。
+- [unknown] 该一日切片内无法区分这次改令来自玩家抵达新省触发的 invalidation、恰逢原生定时评估，还是
+  其它事件；不得把相关性写成已经证实的即时追踪因果。
+- [live-confirmed] 日期 `53176248`，玩家又抵达 `2603`、remaining route 缩短为 `[2604]`；同帧 `357`
+  再把 target 从 `2595` 改为 `2603`，remaining route 变为
+  `[2587,2585,2586,2579,2589,2591,2602,8759,2603]`。这提供第二个独立的“玩家抵达与敌端点改令同帧”
+  观察，但触发因果仍然 unknown。
+- [live-confirmed] 日期 `53176344`，玩家仍在 `2603 → 2604` 的边内时，`357` 又把 target 从
+  `2603` 改为 `2604`，route 变为 `[2599,2598,2595,2603,2604]`。因此原生 AI 的 endpoint 不只会追踪
+  已观测 current；它也可能选择玩家公开 route 的 destination，但当前仍无法读出对应 objective kind/score。
+
+```mermaid
+flowchart LR
+    B["[live-confirmed] date 53176080<br/>player current 2596<br/>route 2595 → 2603 → 2604"]
+    B -->|"[live-confirmed] one-day slice"| A["[live-confirmed] date 53176104<br/>player current 2595<br/>route 2603 → 2604"]
+    E0["[live-confirmed] hostile 357<br/>target 2596<br/>route 2587 → 2597 → 2596"]
+    E0 -->|"[live-confirmed] same observed slice"| E1["[live-confirmed] hostile 357<br/>target 2595<br/>route 2587 → 2599 → 2598 → 2595"]
+    A -.-> U["[unknown] timer / invalidation / other trigger"]
+    U -.-> E1
+    A -->|"[live-confirmed] later daily slices"| A2["[live-confirmed] date 53176248<br/>player current 2603<br/>route 2604"]
+    E1 -->|"[live-confirmed] same later slice"| E2["[live-confirmed] hostile 357<br/>target 2603<br/>long remaining route ending 2603"]
+    A2 -.-> U2["[unknown] timer / invalidation / other trigger"]
+    U2 -.-> E2
+    E2 -->|"[live-confirmed] date 53176344"| E3["[live-confirmed] hostile 357<br/>target 2604<br/>route ending at player destination"]
+    A2 -.-> U3["[unknown] target-score cause"]
+    U3 -.-> E3
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U,U2,U3 unknown;
+```
+
 ### 为什么会看到“来回追踪”
 
 1. [live-confirmed] 在该快照时刻，`357` 的 endpoint 仍是玩家 current province `2596`，但玩家已经有

@@ -254,7 +254,7 @@ flowchart LR
 - [unknown] combat 开始后的 exact controller 调度、撤退命令构造和目的地评分仍未闭合；Mermaid 主树中的
   future exact forecast 分支不得由这些阈值自行解锁。
 
-## 当前 paused 战争 `16777290` / 日期 `53175984`
+## 战争 `16777290` 的初始 paused 决策 / 日期 `53175984`
 
 - [live-confirmed] 两支玩家可控军仍同在省 `2596`；主军有 target `2604`，拆出的 sibling 有 target `2600`。
 - [live-confirmed] 敌军 `357` 位于 `2581`，route 为 `[2587,2597,2596]`，endpoint 是玩家旧位置 `2596`。
@@ -272,6 +272,56 @@ flowchart LR
   `2587`，并由 exact objective 状态决定 `2604`、`2600` 或其它候选，不能仅凭 endpoint 拍板。
 - [inference][counter-policy] `357` 的 current-target `+100` 黏性可能让其暂时继续前往旧位置 `2596`，但这是
   可利用的观察窗口，不是 7 日安全承诺；任何提前 target/route 变化都立即重开 epoch。
+
+### 执行结果 / 日期 `53176104`
+
+- [live-confirmed] planner 选择 `merge-armies-83886341-with-16777558`；暂停快照证明 sibling 消失且原主军
+  保留，日期未在合军事务内推进。
+- [live-confirmed] Merge barrier 拒绝合军前 preview；合军后 fresh preview 与 observed remaining route 均为
+  `[2595,2603,2604]`，随后所有推进均使用 speed 1 的一日 paused-to-paused 切片。
+- [live-confirmed] 第五个切片后主军抵达 `2595`，remaining route 自然消费为 `[2603,2604]`；这是 P02
+  的同一 intent epoch，不因 route 前缀被正常消费而重开。
+- [live-confirmed] 同一切片后 `357` 的 endpoint 从 `2596` 改为 `2595`，新 route 为
+  `[2587,2599,2598,2595]`；旧 endpoint epoch 当帧关闭，新 epoch 从 `53176104` 开始。
+- [inference][counter-policy] 玩家 `[2603,2604]` 与当前两敌 remaining route 暂无几何交叉，但 `357`
+  endpoint 等于玩家 current，且没有双方 ETA/exact combat forecast；因此仍只允许一日推进并在每帧重审。
+- [unknown] target 变化的确切内部触发未知；实现只消费已发布的新 target/route，不把它命名为即时追踪或
+  定时器触发。
+- [live-confirmed] 到日期 `53176248`，玩家自然抵达 `2603`、remaining route 只剩 `[2604]`；`357` 同帧
+  再把 endpoint 改成 `2603`，并发布一条不与玩家 `[2604]` 相交的长 remaining route。counter-policy
+  关闭 `2595` epoch、建立 `2603` epoch，但不追敌 current，也不由两次相关观察推断内部触发器。
+- [live-confirmed] 日期 `53176344`，`357` 又把 endpoint 改为玩家 destination `2604`。暂停态重新预览全部
+  exact 目标后，每条 native route 都因边内 effective origin 而先经过 `2604`，因此都与敌 route/target
+  冲突；planner 返回 `native_war_no_safe_exact_route`、`selected_step=None`，没有用 advance 逃逸。
+- [inference][counter-policy] 这个 live 分支验证 P03/P07/P08 的组合门：敌 endpoint 提前变化立即关闭旧
+  epoch；所有候选做完整 M × N 审计；没有 exact combat forecast 时，共享终点不能作为主动接战例外。
+
+### 连续恢复的有界失败入口记忆
+
+- [live-confirmed] 从同一 checkpoint origin `2598` 已观察到两条最终进入无安全出口并执行 restore 的入口：
+  `target=2585, route=[2599,2587,2585]` 与
+  `target=2568, route=[2599,2587,2581,2568]`。
+- [live-confirmed] 第二次 restore 后，旧的单条 `native_rollback_war_failure` 只保留较新的 `2568` 入口；若只
+  消费这个字段，planner 会重新选择已经封口的 `2585` 分支。
+- [inference][counter-policy] 失败入口记忆严格限制为同 episode、checkpoint、war、army 和 restored origin 下
+  最新两条；按 target + route 逐项相同才阻断，fresh route 变化立即放行，第三条更旧记录淘汰。这是两次连续
+  restore 的最小闭环，不扩展成通用学习或永久目标黑名单。
+- [inference][counter-policy] factual command history 仍在 restore anchor 截断；失败入口属于 advisory，不能
+  复活已回滚分支中的 score、siege completion、cooldown 或 move intent。
+
+```mermaid
+flowchart TD
+    R["[live-confirmed] successful restore"] --> D["[inference][counter-policy] derive discarded-branch entry route"]
+    D --> S{"[inference][counter-policy] same episode/checkpoint/war/army/origin?"}
+    S -->|no| C["[inference][counter-policy] start a new bounded list"]
+    S -->|yes| U["[inference][counter-policy] exact target+route dedupe; newest first"]
+    C --> K["[inference][counter-policy] retain at most two entries"]
+    U --> K
+    K --> P["[inference][counter-policy] fresh preview compares every retained entry"]
+    P -->|exact match| B["[inference][counter-policy] block this route only"]
+    P -->|route changed| A["[inference][counter-policy] allow normal M×N audit"]
+    B --> N["[inference][counter-policy] preview another exact objective or remain paused"]
+```
 
 ## 定向测试矩阵
 
@@ -293,6 +343,7 @@ flowchart LR
 | P14 | [inference][counter-policy] | 任一玩家军 combat / retreat，另一军有安全 route | 不向前者 move/split/merge；全局审计后最多推进一日 | 用另一军安全路线放行长时间 |
 | P15 | [inference][counter-policy] | restore、战争结束、enemy ArmyID generation 改变 | 截断 ledger/history；新分支 age 从 0 开始 | 跨时间线复用 endpoint 黏性 |
 | P16 | [inference][counter-policy] | `war=16777290,date=53175984` 的双玩家/双敌快照 | 推荐 paused Merge recovery，随后 fresh preview；`2587` 保持 hazard | 追 `2581`、穿 `2587`、命名 `33554657`、直接 advance |
+| P17 | [inference][counter-policy] | 同一 checkpoint origin 连续两次 restore，入口分别为 `2585` / `2568` | 最新两条 advisory 都参与 exact route 比较；第三旧淘汰 | 单条覆盖后重演较早失败；把 target 永久拉黑 |
 
 ## 实现与验证边界
 
