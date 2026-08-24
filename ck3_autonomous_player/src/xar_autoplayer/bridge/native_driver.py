@@ -60,9 +60,11 @@ from .settlement_contract import (
     tutorial_record_observation,
 )
 from .war_contract import (
+    ARMY_ROUTES_CAPABILITY,
     DISBAND_ARMY_CAPABILITY,
     ENFORCE_DEMANDS_CAPABILITY,
     MOVE_ARMY_CAPABILITY,
+    PREVIEW_MOVE_ARMY_CAPABILITY,
     RAISE_TROOPS_STEP,
     WAR_OBJECTIVES_CAPABILITY,
     WAR_PRIMARY_OPPONENT_CAPABILITY,
@@ -77,6 +79,8 @@ from .war_contract import (
     parse_disband_army_step,
     parse_enforce_demands_step,
     parse_move_army_step,
+    parse_preview_move_army_step,
+    preview_move_army_step,
     player_armies_from_state,
     war_objective_province_ids,
 )
@@ -710,6 +714,12 @@ class NativeHeadlessGameplayDriver:
             "one_life_settlement_supported": (
                 ONE_LIFE_SETTLEMENT_CAPABILITY in bridge_capabilities
             ),
+            "army_routes_supported": (
+                ARMY_ROUTES_CAPABILITY in bridge_capabilities
+            ),
+            "move_route_preview_supported": (
+                PREVIEW_MOVE_ARMY_CAPABILITY in bridge_capabilities
+            ),
             "one_life_settlement_status": (
                 current_snapshot.get("one_life_settlement_status")
                 if isinstance(current_snapshot, dict)
@@ -824,6 +834,12 @@ class NativeHeadlessGameplayDriver:
             "one_life_terminal_reason": terminal_reason,
             "one_life_settlement_status": settlement_status,
             "continue_as_heir_after_death": False,
+            "army_routes_supported": (
+                ARMY_ROUTES_CAPABILITY in bridge_capabilities
+            ),
+            "move_route_preview_supported": (
+                PREVIEW_MOVE_ARMY_CAPABILITY in bridge_capabilities
+            ),
             "declarable_wars": declarable_wars,
             "declaration_query_sequence": declaration_query_sequence,
             "arrange_marriage_choices": arrange_marriage_choices,
@@ -2008,6 +2024,107 @@ class NativeHeadlessGameplayDriver:
                 "revision": changed["revision"],
             }
 
+        preview = parse_preview_move_army_step(step)
+        if preview is not None:
+            army_id, province_id = preview
+            if starting.get("paused") is not True:
+                raise BridgeUnavailableError(
+                    "native move preview requires the paused map"
+                )
+            starting_army = _army_by_id(starting, army_id)
+            if (
+                not isinstance(starting_army, dict)
+                or starting_army.get("controllable") is not True
+            ):
+                raise BridgeUnavailableError(
+                    f"native preview-move-army-{army_id} requires a "
+                    "controllable player army"
+                )
+            origin_province_id = starting_army.get("current_province_id")
+            if not isinstance(origin_province_id, int) or isinstance(
+                origin_province_id, bool
+            ):
+                raise BridgeUnavailableError(
+                    "native move preview requires the army's current province"
+                )
+            previewed_date_raw = _date_raw(
+                starting, "move preview starting snapshot"
+            )
+            try:
+                result = self._execute_primitive_step(
+                    step, expected_revision=selected_revision
+                )
+            except _NativeCommandRejectedError as error:
+                if error.native_error not in _ARMY_MOVE_DEFERRED_ERRORS:
+                    raise
+                current = self.take_snapshot()
+                return {
+                    "step": step,
+                    "accepted": False,
+                    "status": "deferred",
+                    "backend_id": "native-headless",
+                    "route_preview": {
+                        "status": "deferred",
+                        "reason": "army_not_move_ready",
+                        "army_id": army_id,
+                        "origin_province_id": origin_province_id,
+                        "target_province_id": province_id,
+                        "route_province_ids": [],
+                        "previewed_date_raw": previewed_date_raw,
+                    },
+                    "player_armies": current.get("player_armies", []),
+                    "snapshot_id": current["snapshot_id"],
+                    "revision": current["revision"],
+                }
+            route_preview = result.get("route_preview")
+            route_province_ids = (
+                route_preview.get("route_province_ids")
+                if isinstance(route_preview, dict)
+                else None
+            )
+            remaining_route = (
+                [
+                    item
+                    for item in route_province_ids
+                    if item != origin_province_id
+                ]
+                if isinstance(route_province_ids, list)
+                else []
+            )
+            route_reaches_target = (
+                province_id == origin_province_id and not remaining_route
+            ) or (
+                bool(remaining_route)
+                and remaining_route[-1] == province_id
+            )
+            if (
+                not isinstance(route_preview, dict)
+                or route_preview.get("status") != "available"
+                or route_preview.get("army_id") != army_id
+                or route_preview.get("origin_province_id")
+                != origin_province_id
+                or route_preview.get("target_province_id") != province_id
+                or not isinstance(route_province_ids, list)
+                or any(
+                    isinstance(item, bool)
+                    or not isinstance(item, int)
+                    or item <= 0
+                    for item in route_province_ids
+                )
+                or not route_reaches_target
+            ):
+                raise BridgeUnavailableError(
+                    "native move preview returned a malformed route_preview"
+                )
+            return {
+                **result,
+                "route_preview": {
+                    **route_preview,
+                    "route_province_ids": list(route_province_ids),
+                    "previewed_date_raw": previewed_date_raw,
+                },
+            }
+
         move = parse_move_army_step(step)
         if move is not None:
             army_id, province_id = move
@@ -2020,6 +2137,9 @@ class NativeHeadlessGameplayDriver:
                     f"native move-army-{army_id} requires a controllable "
                     "player army"
                 )
+            submitted_date_raw = _date_raw(
+                starting, "move starting snapshot"
+            )
             try:
                 result = self._execute_primitive_step(
                     step, expected_revision=selected_revision
@@ -2038,17 +2158,22 @@ class NativeHeadlessGameplayDriver:
                         "reason": "army_not_move_ready",
                         "army_id": army_id,
                         "target_province_id": province_id,
-                        "submitted_date_raw": _date_raw(
-                            starting, "deferred move starting snapshot"
-                        ),
+                        "submitted_date_raw": submitted_date_raw,
                     },
                     "player_armies": current.get("player_armies", []),
                     "snapshot_id": current["snapshot_id"],
                     "revision": current["revision"],
                 }
+            capability_payload = self.capabilities()
+            bridge_capabilities = capability_payload.get("bridge_capabilities")
+            army_routes_supported = bool(
+                isinstance(bridge_capabilities, list)
+                and ARMY_ROUTES_CAPABILITY in bridge_capabilities
+            )
             if (
                 isinstance(starting_army, dict)
                 and starting_army.get("move_target_observable") is False
+                and not army_routes_supported
                 and (
                     result.get("accepted") is True
                     or result.get("status") in {"accepted", "submitted"}
@@ -2061,9 +2186,7 @@ class NativeHeadlessGameplayDriver:
                         "status": "move_submitted",
                         "army_id": army_id,
                         "target_province_id": province_id,
-                        "submitted_date_raw": _date_raw(
-                            starting, "move starting snapshot"
-                        ),
+                        "submitted_date_raw": submitted_date_raw,
                         "move_target_observable": False,
                     },
                     "player_armies": current.get("player_armies", []),
@@ -2073,11 +2196,19 @@ class NativeHeadlessGameplayDriver:
             changed = self._wait_for_snapshot(
                 self.take_snapshot(),
                 lambda snapshot: _army_move_postcondition(
-                    snapshot, army_id, province_id
+                    snapshot,
+                    army_id,
+                    province_id,
+                    require_route=army_routes_supported,
                 ) is not None,
                 timeout_seconds=self.command_timeout_seconds,
             )
-            status = _army_move_postcondition(changed, army_id, province_id)
+            status = _army_move_postcondition(
+                changed,
+                army_id,
+                province_id,
+                require_route=army_routes_supported,
+            )
             if status is None:
                 raise BridgeUnavailableError(
                     f"native move-army-{army_id} did not target province "
@@ -2089,6 +2220,7 @@ class NativeHeadlessGameplayDriver:
                     "status": status,
                     "army_id": army_id,
                     "target_province_id": province_id,
+                    "submitted_date_raw": submitted_date_raw,
                 },
                 "player_armies": changed.get("player_armies", []),
                 "snapshot_id": changed["snapshot_id"],
@@ -3552,6 +3684,8 @@ def _war_progress_armies(
                 army.get(optional_state), bool
             ):
                 row[optional_state] = army[optional_state]
+        if isinstance(army.get("route_province_ids"), list):
+            row["route_province_ids"] = list(army["route_province_ids"])
         rows.append(row)
     return sorted(
         rows,
@@ -3654,6 +3788,7 @@ def _action_steps(
     expand_event_options = False
     pending_interaction_steps: set[str] = set()
     expand_move_armies = False
+    expand_preview_move_armies = False
     expand_disband_armies = False
     expand_enforce_demands = False
     expand_declare_wars = False
@@ -3672,6 +3807,8 @@ def _action_steps(
             pending_interaction_steps.add(step)
         elif capability == MOVE_ARMY_CAPABILITY:
             expand_move_armies = True
+        elif capability == PREVIEW_MOVE_ARMY_CAPABILITY:
+            expand_preview_move_armies = True
         elif capability == DISBAND_ARMY_CAPABILITY:
             expand_disband_armies = True
         elif capability == ENFORCE_DEMANDS_CAPABILITY:
@@ -3748,7 +3885,7 @@ def _action_steps(
             for army in controllable
             if isinstance(army.get("army_id"), int)
         )
-    if expand_move_armies and wars:
+    if (expand_move_armies or expand_preview_move_armies) and wars:
         target_provinces = {
             int(army["current_province_id"])
             for army in enemy_armies_from_wars(wars)
@@ -3770,7 +3907,10 @@ def _action_steps(
                     army.get("move_target_province_id"),
                 }:
                     continue
-                steps.add(move_army_step(army_id, province_id))
+                if expand_move_armies:
+                    steps.add(move_army_step(army_id, province_id))
+                if expand_preview_move_armies:
+                    steps.add(preview_move_army_step(army_id, province_id))
     return sorted(steps)
 
 
@@ -3820,7 +3960,11 @@ def _war_by_id(
 
 
 def _army_move_postcondition(
-    snapshot: dict[str, object], army_id: int, province_id: int
+    snapshot: dict[str, object],
+    army_id: int,
+    province_id: int,
+    *,
+    require_route: bool = False,
 ) -> str | None:
     army = _army_by_id(snapshot, army_id)
     if army is None:
@@ -3828,6 +3972,10 @@ def _army_move_postcondition(
     if army.get("current_province_id") == province_id:
         return "arrived"
     if army.get("move_target_province_id") == province_id:
+        if require_route:
+            route = army.get("route_province_ids")
+            if not isinstance(route, list) or not route or route[-1] != province_id:
+                return None
         return "moving"
     return None
 

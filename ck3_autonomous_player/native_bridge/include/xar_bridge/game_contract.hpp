@@ -77,6 +77,7 @@ struct ArmySnapshot {
   std::int32_t owner_character_id = -1;
   bool has_current_province = false;
   std::int32_t current_province_id = -1;
+  std::vector<std::int32_t> route_province_ids;
   bool move_target_observable = false;
   std::int32_t move_target_province_id = -1;
   std::int32_t army_state_code = 0;
@@ -208,6 +209,31 @@ enum class MoveArmyResult {
   army_state_rejected,
   validation_failed,
   unavailable,
+};
+enum class PreviewMoveArmyStatus {
+  available,
+  requires_paused,
+  army_not_found,
+  army_not_controllable,
+  province_not_found,
+  move_mode_unavailable,
+  character_state_rejected,
+  army_state_rejected,
+  validation_failed,
+  origin_unavailable,
+  route_unavailable,
+  unavailable,
+};
+
+struct PreviewMoveArmyResult {
+  PreviewMoveArmyStatus status = PreviewMoveArmyStatus::unavailable;
+  std::int32_t army_id = -1;
+  std::int32_t origin_province_id = -1;
+  std::int32_t target_province_id = -1;
+  std::vector<std::int32_t> route_province_ids;
+
+  friend bool operator==(const PreviewMoveArmyResult &,
+                         const PreviewMoveArmyResult &) = default;
 };
 enum class DisbandArmyResult {
   submitted,

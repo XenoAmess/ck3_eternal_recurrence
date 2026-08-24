@@ -45,14 +45,15 @@
 - `army_id`, `owner_character_id`
 - `soldiers`: 非负整数；当前构建若尚未稳定解析兵力偏移，允许为 `null`
 - `current_province_id`: 军队正在生成或销毁、原生对象暂时无省份时允许为 `null`
+- `route_province_ids`: CK3 原生“剩余路线”数组，严格保持引擎顺序和重复项；不人为补入 `current_province_id`。每项都必须经当前省份表解析，整条最多 4096 项；任一非法项或越界容器都原子发布 `[]`，绝不发布部分前缀。完整数组只在 paused snapshot 读取；running snapshot 固定为 `[]`，此时表示“未做完整读取”，不能解释成“没有路线”
 - `move_target_province_id`: 原生路线最后一个 `SUnitPathProvinceInfo` 的省份；无有效路线时为 `null`
-- `move_target_observable`: 仅当 DLL 成功解析了非空原生路线末项时为 `true`；无路线为 `false`
+- `move_target_observable`: 仅当 DLL 成功解析了非空原生路线末项时为 `true`；running snapshot 仍保留旧版单次末项读取，不遍历中间项
 - `army_state_code` / `army_state`: `1 regular`、`2 combat`、`3 sieging`、`4 embarked`、`5 gathering`、`6 retreating`、`7 moving`、`8 raiding`、`9 bartering`
 - `in_combat`: `CUnit` 关联的 `CArmy+0x128` 是否解析到 generation 匹配且存活的 `CCombat`；不是“与敌军同省”的推断
 - `retreating`: `CUnit+0x170 > 0` 的直接投影
 - `controllable`
 
-Python 会拒绝类型错误的 ID、阵营、分数和数组，同时把早期 fixture 的 `soldier_count` 输入别名统一投影为 `soldiers`；MCP 输出永远使用 canonical 名称。
+Python 会拒绝类型错误的 ID、阵营、分数和数组，同时把早期 fixture 的 `soldier_count` 输入别名统一投影为 `soldiers`；MCP 输出永远使用 canonical 名称。`route_province_ids` 是 additive 字段，但 Python 的 army normalizer 必须显式复制并校验它；仅依赖 `**state` 不会保留军队对象内部的未知键。
 
 ## Capability 与具体 step
 
@@ -60,6 +61,8 @@ DLL hello 广告：
 
 - `game.state.war-primary-opponent`
 - `game.state.war-objectives`
+- `game.state.army-routes`
+- `game.command.preview-move-army-N-to-N`
 - `game.command.raise-troops-default`
 - `game.command.move-army-N-to-N`
 - `game.command.disband-army-N`
@@ -79,9 +82,13 @@ Python 根据当前 snapshot 展开为：
 
 占位模板本身不会暴露给 planner。若军队已在目标省或已经以该省为目标，相同 move step 不再广告，避免提交无状态变化的重复命令。
 
+`preview-move-army-<army_id>-to-<province_id>` 只在地图已暂停时运行 CK3 原生路线规划器。成功结果为
+`route_preview={status:"available",army_id,origin_province_id,target_province_id,route_province_ids}`；同省目标返回空路线且不调用 A*。它复用 move 的 mode/character/army gates，但只构造、复制并析构 caller-owned 临时路径，既不绑定/调用 apply RVA `0x2248450`，也不进入 command queue。worker-thread 静态审计确认规划调用只写 per-call scratch、未见 world/global/TLS 写；由于引擎没有为 world graph 获取读锁，unpaused 调用明确返回 `requires_paused`。
+
 ## 命令后置条件
 
 - raise：等待 snapshot 出现新的可控军队；否则命令超时并返回失败。
+- preview move：纯查询，成功只返回完整原生路线，不改变 CK3 revision 或军队状态；Python driver 会把只读结果记录进 `native_command_history`，供下一 turn 的同日期、同起点 freshness 判定使用。任一 ProvinceID 无法解析、路线超过 4096 项或 native builder 失败时整次请求失败，不返回部分路线。
 - move：若 DLL 能观察 `move_target_province_id`，等待该军队的目标变为指定省或军队到达；若当前构建不能观察该字段，则以 native `command_result` 的 `accepted/submitted` 为提交成功，返回 `move_submitted`，随后由 `life-advance` 推动行军。
 - disband：等待目标军队从顶层 `player_armies` 消失。
 - declare：DLL 缓存查询得到的完整 choice；提交时按 target/CB 重新枚举，并要求 claimant、目标 title、configuration 与缓存完全相同。
@@ -139,6 +146,22 @@ snapshot 的 `player_armies` 已为空；该成功路径用于战争结束后的
 fallback `2543` 两点间轮转会同时受堵。公国/王国目标发布全部 de jure 伯爵领首府，正是为了给 planner
 提供更多安全围城点，而不是继续在这两个已被封锁的点上试探。
 
+同一 `date_raw=53174208` checkpoint 的定向恢复又复现了另一类实际失败：目标省 `2585` 本身没有敌军，
+但玩家军队从 `2568` 提交到 `2585` 的原生路线经过敌军当前省 `2581`，推进仅 1 游戏日就进入 2v1
+`combat`。因此“目标省安全”不等于“路线安全”；planner 提交 move 前必须审阅玩家候选路线的每个
+`route_province_ids` 条目，而不能只比较双方终点。确定的冲突只有三类：非撤退敌军当前省位于玩家路线、
+敌军 move target 位于玩家路线、双方下一跳相同；一般追击允许“被追击敌军恰在路线最后一项”这一种终点
+命中，但中途相遇、共同下一跳和其他敌军仍会阻断。该字段发布的是 CK3 已计算的剩余路线，不包含 bridge
+猜测或最短路重建。
+
+路线安全是全局时间推进门槛，不是“最强军队”局部提示。每次战争中的 `life-advance` 前，planner 会在
+paused snapshot 审计全部可控军队的活动路线，威胁集合取全部 active wars 的非撤退敌军；任一完整路线
+不可读或不安全，就不能推进所有军队。实际不安全的军队会优先改道；旧路线仍存在时，本轮只允许纯
+`preview-move-*` 或真正的 `move-army-*` 替换命令，替代目标已在当前省、preview/move deferred、retry
+backoff 都不能成为继续推进旧危险路线的理由。`game.command.preview-move-army-N-to-N` 只解决提交前查询，
+自动 exact routing 还必须同时广告 `game.state.army-routes`，否则明确返回 unsupported，避免未来 partial
+adapter 在提交后失去持续审计能力。
+
 以上移动、解散与围城观测全程没有恢复窗口，也没有调用 OCR、截图或键鼠。
 
 这些具体战争 step 即使运行在显式 `hybrid-fallback` 配置中也只允许 native 后端执行；native 未广告时不会转发到视觉后端。
@@ -150,9 +173,9 @@ fallback `2543` 两点间轮转会同时受堵。公国/王国目标发布全部
 1. baseline checkpoint 完成且当前无战争/残军时，显式 `query-declarable-wars`；优先 county holy war、county conquest、claim，随后按单 title 与稳定 runtime ID 排序，提交一个 `declare-war-*`。
 2. 任一活动战争达到玩家视角 100 分：先执行 `enforce-demands-<war_id>`，确认该 war 从 snapshot 消失，不再无意义推进时间。
 3. 有活动战争、无可控军队：`raise-troops-default`。
-4. 玩家是进攻方、本方 primary war leader 且存在 exact `war_objective_province_ids`：从战争刚开始的 0 分起就按 DLL 的 DFS 顺序围攻 exact 目标；Python 只做稳定去重，不按 ProvinceID 重排。敌军当前省或 route 终点威胁某一目标时，跳到下一个未完成且未受威胁的 exact 目标。
+4. 玩家是进攻方、本方 primary war leader 且存在 exact `war_objective_province_ids`：从战争刚开始的 0 分起就按 DLL 的 DFS 顺序围攻 exact 目标；Python 只做稳定去重，不按 ProvinceID 重排。paused 状态先预览完整原生路线，再按上面的三类冲突审计；不安全则预览下一个未完成 exact 目标，所有 exact 路线都不安全时保持暂停，绝不偷用 legacy fallback。
 5. 没有 exact 目标时，战争分为 0、玩家是防守方或不是本方 primary war leader：选择兵力最大的可见敌军，令最强可控军队追击其当前省；兵力未知时按最小 `army_id` 稳定选择。仅 legacy fallback 可用时，仍要求进攻方已经取得正分，才把 `enemy_primary_default_raise_province_id` 当作围城启发式锚点；它绝不是解码出的 war goal。
-6. 军队已经在目标省、已观察到向目标省移动，或 90 个游戏日内已有相同的 accepted/submitted move intent：执行一次最多 30 个游戏日的 `life-advance`，不重复提交 move。追击模式只在下一决策点发现目标换省时重定向；围城模式忽略异省敌军移动并保持锚点。
+6. 军队已经在目标省、已观察到向目标省移动，或 90 个游戏日内已有相同的 accepted/submitted move intent：只有全部可控活动路线的 fresh passive audit 都安全，才执行一次最多 30 个游戏日的 `life-advance`，不重复提交 move。running snapshot 先暂停再读完整路线；敌情变化后每次推进前重新审计，不把上一次 preview 当永久通行证。
 7. 战争消失但玩家军队仍在场：逐支执行 `disband-army-<army_id>`。
 
 Typed MCP 工具为 `ck3_get_war_state`、`ck3_query_declarable_wars`、`ck3_declare_war`、`ck3_raise_troops_default`、`ck3_move_army`、`ck3_enforce_demands` 和 `ck3_disband_army`。通用 `ck3_plan_turn` / `ck3_auto_turn` 使用同一份状态和 step，不另建旁路策略。纯 native 缺少任何 capability 时明确返回 unsupported；Python 不会回落到最小化窗口的视觉点击。

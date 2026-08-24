@@ -26,9 +26,10 @@ constexpr AdapterDescriptor kPreferredDescriptor{
     kPreferredCapabilities,
 };
 
-constexpr std::array<std::string_view, 2> kFutureCapabilities{
+constexpr std::array<std::string_view, 3> kFutureCapabilities{
     "game.state.snapshot",
     "game.command.pause-map",
+    "game.command.preview-move-army-N-to-N",
 };
 constexpr AdapterDescriptor kFutureDescriptor{
     "fixture-future",
@@ -77,6 +78,10 @@ public:
   xar::game::MoveArmyResult
   submit_move_army(std::int32_t, std::int32_t) const noexcept override {
     return xar::game::MoveArmyResult::unavailable;
+  }
+  xar::game::PreviewMoveArmyResult
+  preview_move_army(std::int32_t, std::int32_t) const noexcept override {
+    return {};
   }
   xar::game::DisbandArmyResult
   submit_disband_army(std::int32_t) const noexcept override {
@@ -152,6 +157,9 @@ int main() {
                 "game.state.xar-one-life-settlement") ||
       !Contains(known.capabilities, "game.state.war-primary-opponent") ||
       !Contains(known.capabilities, "game.state.war-objectives") ||
+      !Contains(known.capabilities, "game.state.army-routes") ||
+      !Contains(known.capabilities,
+                "game.command.preview-move-army-N-to-N") ||
       !Contains(known.capabilities, "game.command.declare-war-N") ||
       !Contains(known.capabilities,
                 "game.command.query-arrange-marriage-choices") ||
@@ -173,6 +181,7 @@ int main() {
       partial.supports("game.state.war-objectives") ||
       partial.supports("game.command.declare-war-N") ||
       !partial.supports_snapshot() || !partial.supports_step("pause-map") ||
+      !partial.supports_step("preview-move-army-1-to-2") ||
       partial.supports_step("declare-war-99-1-0") ||
       partial.supports_step("unsupported-step")) {
     return Fail("capability lookup did not use the selected adapter set");

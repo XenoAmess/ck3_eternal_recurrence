@@ -50,9 +50,10 @@ bridge identity/heartbeat/ping.
 | `game.state.snapshot.player_armies` | implemented, minimized read-only live probe passed | exact CUnit storage/ID/owner/current-province fields + offline component fixture + PID 144324 probe | never inside native driver |
 | allied/enemy army current province | implemented, minimized read-only live probe passed | war participant helper classifies each observable CUnit owner | never inside native driver |
 | army state / combat / retreating | implemented, minimized read-only live probe passed | exact RVA `0xC7AAB0` state ABI, CUnit→CArmy→CCombat association and `CUnit+0x170` + nine-state fixture | never inside native driver |
-| army move target | implemented, minimized read-only live probe passed | RVA `0x26B51B0` consumes the last `CUnit+0x38` `SUnitPathProvinceInfo*`; fixture covers present/absent route | never inside native driver |
+| `game.state.army-routes` / army move target | implemented from minimized-live-validated route ABI; paused full-array/running-tail fixture passed | paused snapshots validate the full `CUnit+0x38/+0x40/+0x44` remaining-route array; running snapshots retain only the legacy last-entry target read | never inside native driver |
 | army soldier count | unsupported | no live-validated soldier aggregate ABI; no value guessed | unsupported |
 | `game.command.raise-troops-default` | implemented, live probe pending | native default-province/construct/validate/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
+| `game.command.preview-move-army-N-to-N` | implemented, paused live probe pending | canonical plan/apply split + exact origin/PathCtx/MovePath/A* ABIs + success/failure/cleanup/bound/paused fixture; no apply binding or queue call | explicit upper-layer policy only; paused map required |
 | `game.command.move-army-N-to-N` | implemented and minimized-live accepted: player command submitted and army province changed | exact player-UI kind/channel plus native mode/state/can-move/path-init/clone/destruct lifecycle, offline fixture, and live movement | explicit upper-layer policy only |
 | `game.command.disband-army-N` | implemented; live exposed the distinct command-target ID and corrected build awaits replay | exact 0x28-byte command/vtables/payload source/clone + offline fixture | explicit upper-layer policy only |
 | `game.command.query-declarable-wars` | native C++ core implemented, bridge route/live probe pending | exact declare-war UI CB registry/evaluator/item rules + offline SSO/heap-key and configuration fixture | explicit upper-layer policy only |
@@ -238,11 +239,19 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   projection is owner equals the current played character. The earlier
   `0xC73D00` conflict was a type-confusion: that helper consumes a different
   aggregate object. On `CUnit`, RVA `0x26B51B0` proves `+0x38` is an
-  eight-byte `SUnitPathProvinceInfo*` array with capacity/count at
-  `+0x40/+0x44`; it reads the last pointer, then its `+0x00` ProvinceID, and
-  resolves that ID through the live province array. The bridge publishes that
-  last ID as `move_target_province_id` with `move_target_observable=true`;
-  an empty or invalid route remains `null/false`. Soldier count remains
+  eight-byte `SUnitPathProvinceInfo*` remaining-route array with
+  capacity/count at `+0x40/+0x44`; every entry stores its ProvinceID at
+  `+0x00`, and the native function reads the last entry as the destination and
+  resolves it through the live province array. While paused, the exact adapter
+  publishes all entries in their native order as `route_province_ids`. It does
+  not prepend `current_province_id` or deduplicate repeated entries. Traversal
+  is capped at 4096 entries and resolves every ID through the current province
+  table before publishing; any invalid entry suppresses the whole route, never
+  a prefix. While running, it does not traverse the mutable array and publishes
+  `route_province_ids=[]`, but preserves the old single last-entry read as
+  `move_target_province_id`/`move_target_observable`. Therefore an empty route
+  means "no complete paused route observation", not necessarily "no route".
+  Soldier count remains
   unsupported because no soldier aggregate has equivalent live validation.
 - `CUnit +0x178` is the generation-bearing ID for the linked `CArmy` in
   `ComponentStorage<CArmy>` at `base +0x570C730`. `CArmy +0x128` is its
@@ -348,6 +357,32 @@ played `CharacterID` and one `{province_id, -1}` entry, installs vtables
 `+0x48=false` shape as the original path at RVA `0x27A2198`. The bridge calls
 validator `0x26D7150(command, nullptr)`, submits with flags `7`, then calls
 destructor `0x10E7950(command, 0)` after the queue synchronously clones it.
+
+RVA `0x2248170(CUnit*, Province*, route_kind, mode_is_one)` is the canonical
+plan-then-apply path. The preview intentionally stops before its apply call at
+RVA `0x2248450`. It first calls `0x2248260` with an exact 0x18-byte origin
+context (`uint8* mode_is_one`, `CUnit*`, destination `Province*`), constructs
+a 0x130-byte `MovePath` with `0xC7BA70`, constructs a 0x70-byte caller-owned
+`PathCtx` with `0x23C32F0`, then calls
+`0x23C33D0(PathCtx*, origin, destination, 2, MovePath*)`. The fifth parameter
+is the Win64 stack argument. `MovePath+0x00/+0x08/+0x0C` is its pointer-array,
+capacity and count; each pointer's `+0x00` is a ProvinceID. The bridge copies
+only a complete, <=4096-entry route whose every ID resolves and whose final ID
+equals the requested destination. It embeds the path at a temporary complete
+`CMoveArmyCommand+0x38`, so every post-construction success/failure exit can
+use the already closed `0x26B46D0(command,0)` cleanup. `PathCtx` holds borrowed
+pointers and the canonical caller does not destroy it. Same-origin previews
+skip A* and return an empty route.
+
+Static worker-thread audit found no world write, TLS/global path cache write,
+main-thread assertion, or apply/queue path in origin/context/A*. A* recursively
+constructs fresh 0x70/0x130 per-call scratch, which is direct reentrancy
+evidence. It does not acquire a world-state read lock, however. Therefore the
+bridge rejects preview unless the current snapshot is paused. The passive
+snapshot likewise traverses the full CUnit route only while paused; while
+running it performs only the legacy final-entry read and publishes
+`route_province_ids=[]`. That empty running array means "not fully read", not
+"no route".
 
 `CMoveArmyCommand` is `0x168` bytes with vtables `0x432BF18`/`0x432BFB0`.
 The actual player map UI path at RVA `0xA8464A` obtains mode with

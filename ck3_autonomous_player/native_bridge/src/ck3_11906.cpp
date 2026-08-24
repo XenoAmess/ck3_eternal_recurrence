@@ -66,7 +66,10 @@ constexpr std::uintptr_t kGetArmyMoveModeRva = 0x26B51B0;
 constexpr std::uintptr_t kCanCharacterUseCommandKindRva = 0x26B26A0;
 constexpr std::uintptr_t kCanArmyUseMoveModeRva = 0x2248860;
 constexpr std::uintptr_t kCanMoveArmyRva = 0x26B4610;
-constexpr std::uintptr_t kInitializeArmyMovePathRva = 0x0C7BA70;
+constexpr std::uintptr_t kResolveMoveOriginRva = 0x2248260;
+constexpr std::uintptr_t kConstructMovePathContextRva = 0x23C32F0;
+constexpr std::uintptr_t kConstructArmyMovePathRva = 0x0C7BA70;
+constexpr std::uintptr_t kBuildArmyMoveRouteRva = 0x23C33D0;
 constexpr std::uintptr_t kDestroyMoveArmyCommandRva = 0x26B46D0;
 constexpr std::uintptr_t kValidateDisbandArmyCommandRva = 0x26B5710;
 constexpr std::uintptr_t kGetCasusBelliTypeDatabaseRva = 0x088E260;
@@ -201,7 +204,7 @@ constexpr std::int32_t kMaximumCasusBelliTypes = 10'000;
 constexpr std::int32_t kMaximumCasusBelliConfigurations = 10'000;
 constexpr std::int32_t kMaximumNativeTitleIds = 1'000'000;
 constexpr std::int32_t kMaximumWarObjectiveTitleIds = 4'096;
-constexpr std::int32_t kMaximumUnitPathProvinceInfos = 1'000'000;
+constexpr std::int32_t kMaximumUnitRouteProvinceInfos = 4'096;
 constexpr std::size_t kMaximumLandedTitleHierarchyDepth = 8;
 constexpr std::size_t kMaximumWarObjectiveProvinceIds = 4'096;
 constexpr std::size_t kMaximumDatabaseObjectKeyBytes = 4'096;
@@ -333,6 +336,27 @@ struct MoveArmyCommand {
   std::array<std::byte, 0x130> path_storage{};
 };
 
+struct MoveOriginContext {
+  const std::uint8_t *mode_is_one = nullptr;
+  void *army = nullptr;
+  void *destination_province = nullptr;
+};
+
+struct alignas(8) MovePathContextStorage {
+  std::array<std::byte, 0x70> bytes{};
+};
+
+struct MoveArmyCommandCleanup {
+  DestroyNativeCommand destroy = nullptr;
+  MoveArmyCommand *command = nullptr;
+
+  ~MoveArmyCommandCleanup() {
+    if (destroy != nullptr && command != nullptr) {
+      destroy(command, 0);
+    }
+  }
+};
+
 struct DisbandArmyCommand {
   std::uintptr_t primary_vtable = 0;
   std::uint8_t flags = 0;
@@ -388,6 +412,11 @@ static_assert(offsetof(MoveArmyCommand, move_mode) == 0x2C);
 static_assert(offsetof(MoveArmyCommand, route_kind) == 0x30);
 static_assert(offsetof(MoveArmyCommand, direct_target) == 0x34);
 static_assert(offsetof(MoveArmyCommand, path_storage) == 0x38);
+static_assert(sizeof(MoveOriginContext) == 0x18);
+static_assert(offsetof(MoveOriginContext, mode_is_one) == 0x00);
+static_assert(offsetof(MoveOriginContext, army) == 0x08);
+static_assert(offsetof(MoveOriginContext, destination_province) == 0x10);
+static_assert(sizeof(MovePathContextStorage) == 0x70);
 static_assert(sizeof(DisbandArmyCommand) == 0x28);
 static_assert(offsetof(DisbandArmyCommand, secondary_vtable) == 0x18);
 static_assert(offsetof(DisbandArmyCommand, command_kind) == 0x20);
@@ -1379,31 +1408,64 @@ std::string_view UnitStateName(std::int32_t state_code) noexcept {
   }
 }
 
-void ReadUnitMoveTarget(void *game_state, void *unit,
-                        ArmySnapshot &snapshot) noexcept {
+void ReadUnitRoute(void *game_state, void *unit, bool include_full_route,
+                   ArmySnapshot &snapshot) noexcept {
+  snapshot.route_province_ids.clear();
+  snapshot.move_target_observable = false;
+  snapshot.move_target_province_id = -1;
   void *const province_infos =
       LoadAt<void *>(unit, kUnitPathProvinceInfosOffset);
   const auto capacity = LoadAt<std::int32_t>(
       unit, kUnitPathProvinceInfoCapacityOffset);
   const auto count =
       LoadAt<std::int32_t>(unit, kUnitPathProvinceInfoCountOffset);
-  if (province_infos == nullptr || count <= 0 || capacity < count ||
-      count > kMaximumUnitPathProvinceInfos) {
+  if (capacity < 0 || count < 0 || count > capacity ||
+      count > kMaximumUnitRouteProvinceInfos) {
     return;
   }
-  void *const last_province_info = LoadAt<void *>(
-      province_infos,
-      static_cast<std::size_t>(count - 1) * sizeof(void *));
-  if (last_province_info == nullptr) {
+  if (count == 0) {
     return;
   }
-  const auto province_id = LoadAt<std::int32_t>(
-      last_province_info, kUnitPathProvinceIdOffset);
-  if (ResolveProvince(game_state, province_id) == nullptr) {
+  if (province_infos == nullptr) {
     return;
   }
+
+  if (!include_full_route) {
+    void *const last_province_info = LoadAt<void *>(
+        province_infos,
+        static_cast<std::size_t>(count - 1) * sizeof(void *));
+    if (last_province_info == nullptr) {
+      return;
+    }
+    const auto province_id = LoadAt<std::int32_t>(
+        last_province_info, kUnitPathProvinceIdOffset);
+    if (ResolveProvince(game_state, province_id) == nullptr) {
+      return;
+    }
+    snapshot.move_target_observable = true;
+    snapshot.move_target_province_id = province_id;
+    return;
+  }
+
+  std::vector<std::int32_t> route_province_ids;
+  route_province_ids.reserve(static_cast<std::size_t>(count));
+  for (std::int32_t index = 0; index < count; ++index) {
+    void *const province_info = LoadAt<void *>(
+        province_infos, static_cast<std::size_t>(index) * sizeof(void *));
+    if (province_info == nullptr) {
+      return;
+    }
+    const auto province_id =
+        LoadAt<std::int32_t>(province_info, kUnitPathProvinceIdOffset);
+    if (ResolveProvince(game_state, province_id) == nullptr) {
+      return;
+    }
+    route_province_ids.push_back(province_id);
+  }
+
+  snapshot.route_province_ids = std::move(route_province_ids);
   snapshot.move_target_observable = true;
-  snapshot.move_target_province_id = province_id;
+  snapshot.move_target_province_id = snapshot.route_province_ids.back();
 }
 
 struct ResolvedArmySnapshot {
@@ -1413,7 +1475,8 @@ struct ResolvedArmySnapshot {
 
 std::vector<ResolvedArmySnapshot>
 ReadArmies(const Bindings &bindings, void *game_state,
-           std::int32_t played_character_id) noexcept {
+           std::int32_t played_character_id,
+           bool include_full_routes) noexcept {
   std::vector<ResolvedArmySnapshot> result;
   if (bindings.army_storage_slot == nullptr) {
     return result;
@@ -1470,7 +1533,7 @@ ReadArmies(const Bindings &bindings, void *game_state,
     snapshot.in_combat = snapshot.army_state_code == 2;
     snapshot.retreating =
         LoadAt<std::int32_t>(army, kUnitRetreatStateOffset) > 0;
-    ReadUnitMoveTarget(game_state, army, snapshot);
+    ReadUnitRoute(game_state, army, include_full_routes, snapshot);
     result.push_back({army, snapshot});
   }
   return result;
@@ -1478,11 +1541,13 @@ ReadArmies(const Bindings &bindings, void *game_state,
 
 void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
                        std::int32_t played_character_id,
+                       bool include_full_routes,
                        Snapshot &output) noexcept {
   output.active_wars.clear();
   output.player_armies.clear();
   const auto armies = ReadArmies(bindings, game_state,
-                                 played_character_id);
+                                 played_character_id,
+                                 include_full_routes);
   for (const auto &army : armies) {
     if (army.snapshot.controllable) {
       output.player_armies.push_back(army.snapshot);
@@ -1723,9 +1788,16 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       module + kCanArmyUseMoveModeRva);
   result.can_move_army =
       reinterpret_cast<CanMoveArmy>(module + kCanMoveArmyRva);
-  result.initialize_army_move_path =
-      reinterpret_cast<InitializeArmyMovePath>(
-          module + kInitializeArmyMovePathRva);
+  result.resolve_move_origin = reinterpret_cast<ResolveMoveOrigin>(
+      module + kResolveMoveOriginRva);
+  result.construct_move_path_context =
+      reinterpret_cast<ConstructMovePathContext>(
+          module + kConstructMovePathContextRva);
+  result.construct_army_move_path =
+      reinterpret_cast<ConstructArmyMovePath>(
+          module + kConstructArmyMovePathRva);
+  result.build_army_move_route = reinterpret_cast<BuildArmyMoveRoute>(
+      module + kBuildArmyMoveRouteRva);
   result.destroy_move_army_command =
       reinterpret_cast<DestroyNativeCommand>(
           module + kDestroyMoveArmyCommandRva);
@@ -1866,7 +1938,7 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
   }
   if (output.has_played_character) {
     ReadWarsAndArmies(bindings, game_state, output.played_character_id,
-                      output);
+                      output.paused, output);
   } else {
     output.active_wars.clear();
     output.player_armies.clear();
@@ -2134,7 +2206,7 @@ MoveArmyResult SubmitMoveArmy(const Bindings &bindings,
       bindings.can_character_use_command_kind == nullptr ||
       bindings.can_army_use_move_mode == nullptr ||
       bindings.can_move_army == nullptr ||
-      bindings.initialize_army_move_path == nullptr ||
+      bindings.construct_army_move_path == nullptr ||
       bindings.destroy_move_army_command == nullptr ||
       bindings.move_army_primary_vtable == 0 ||
       bindings.move_army_secondary_vtable == 0) {
@@ -2193,10 +2265,185 @@ MoveArmyResult SubmitMoveArmy(const Bindings &bindings,
   command.army_id = army_id;
   command.destination_province_id = province_id;
   command.move_mode = move_mode;
-  bindings.initialize_army_move_path(command.path_storage.data());
+  bindings.construct_army_move_path(command.path_storage.data());
   bindings.submit_command(bindings.command_manager, &command, 0x0E);
   bindings.destroy_move_army_command(&command, 0);
   return MoveArmyResult::submitted;
+}
+
+PreviewMoveArmyResult PreviewMoveArmy(const Bindings &bindings,
+                                      std::int32_t army_id,
+                                      std::int32_t province_id) noexcept {
+  PreviewMoveArmyResult result{};
+  result.army_id = army_id;
+  result.target_province_id = province_id;
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.get_army_move_mode == nullptr ||
+      bindings.can_character_use_command_kind == nullptr ||
+      bindings.can_army_use_move_mode == nullptr ||
+      bindings.can_move_army == nullptr ||
+      bindings.resolve_move_origin == nullptr ||
+      bindings.construct_move_path_context == nullptr ||
+      bindings.construct_army_move_path == nullptr ||
+      bindings.build_army_move_route == nullptr ||
+      bindings.destroy_move_army_command == nullptr ||
+      bindings.move_army_primary_vtable == 0 ||
+      bindings.move_army_secondary_vtable == 0) {
+    return result;
+  }
+
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return result;
+  }
+  if (!current.paused) {
+    result.status = PreviewMoveArmyStatus::requires_paused;
+    return result;
+  }
+  void *const army = ResolveArmy(bindings, army_id);
+  if (army == nullptr) {
+    result.status = PreviewMoveArmyStatus::army_not_found;
+    return result;
+  }
+  bool controllable = false;
+  for (const auto &candidate : current.player_armies) {
+    if (candidate.army_id == army_id && candidate.controllable) {
+      controllable = true;
+      break;
+    }
+  }
+  if (!controllable) {
+    result.status = PreviewMoveArmyStatus::army_not_controllable;
+    return result;
+  }
+
+  void *const game_state = *bindings.game_state_slot;
+  void *const target_province = ResolveProvince(game_state, province_id);
+  if (target_province == nullptr) {
+    result.status = PreviewMoveArmyStatus::province_not_found;
+    return result;
+  }
+
+  constexpr std::int32_t command_kind = 1;
+  constexpr std::int32_t direct_target = 1;
+  constexpr std::int32_t route_kind = 2;
+  const std::int32_t move_mode =
+      bindings.get_army_move_mode(army, target_province, direct_target);
+  if (move_mode == 2) {
+    result.status = PreviewMoveArmyStatus::move_mode_unavailable;
+    return result;
+  }
+  void *const owner_character =
+      ResolveCharacter(bindings, current.played_character_id);
+  if (owner_character == nullptr ||
+      !bindings.can_character_use_command_kind(owner_character,
+                                                command_kind)) {
+    result.status = PreviewMoveArmyStatus::character_state_rejected;
+    return result;
+  }
+  if (!bindings.can_army_use_move_mode(army, move_mode)) {
+    result.status = PreviewMoveArmyStatus::army_state_rejected;
+    return result;
+  }
+  if (!bindings.can_move_army(command_kind, army, move_mode)) {
+    result.status = PreviewMoveArmyStatus::validation_failed;
+    return result;
+  }
+
+  const std::uint8_t mode_is_one = move_mode == 1 ? 1U : 0U;
+  MoveOriginContext origin_context{
+      &mode_is_one,
+      army,
+      target_province,
+  };
+  void *const origin_province =
+      bindings.resolve_move_origin(&origin_context);
+  if (origin_province == nullptr) {
+    result.status = PreviewMoveArmyStatus::origin_unavailable;
+    return result;
+  }
+  const auto origin_province_id =
+      LoadAt<std::int32_t>(origin_province, kProvinceIdOffset);
+  if (ResolveProvince(game_state, origin_province_id) != origin_province) {
+    result.status = PreviewMoveArmyStatus::origin_unavailable;
+    return result;
+  }
+  result.origin_province_id = origin_province_id;
+
+  MoveArmyCommand command{};
+  command.primary_vtable = bindings.move_army_primary_vtable;
+  command.secondary_vtable = bindings.move_army_secondary_vtable;
+  command.command_kind = command_kind;
+  command.army_id = army_id;
+  command.destination_province_id = province_id;
+  command.move_mode = move_mode;
+  command.route_kind = route_kind;
+  command.direct_target = direct_target;
+  void *const constructed_path =
+      bindings.construct_army_move_path(command.path_storage.data());
+  MoveArmyCommandCleanup cleanup{
+      bindings.destroy_move_army_command,
+      &command,
+  };
+  if (constructed_path != command.path_storage.data()) {
+    return result;
+  }
+
+  if (origin_province_id == province_id) {
+    result.status = PreviewMoveArmyStatus::available;
+    return result;
+  }
+
+  MovePathContextStorage path_context{};
+  if (bindings.construct_move_path_context(path_context.bytes.data(), army) !=
+      path_context.bytes.data()) {
+    result.status = PreviewMoveArmyStatus::route_unavailable;
+    return result;
+  }
+  if (!bindings.build_army_move_route(
+          path_context.bytes.data(), origin_province, target_province,
+          route_kind, command.path_storage.data())) {
+    result.status = PreviewMoveArmyStatus::route_unavailable;
+    return result;
+  }
+
+  void *const province_infos =
+      LoadAt<void *>(command.path_storage.data(), 0x00);
+  const auto capacity =
+      LoadAt<std::int32_t>(command.path_storage.data(), 0x08);
+  const auto count =
+      LoadAt<std::int32_t>(command.path_storage.data(), 0x0C);
+  if (capacity < 0 || count <= 0 || count > capacity ||
+      count > kMaximumUnitRouteProvinceInfos || province_infos == nullptr) {
+    result.status = PreviewMoveArmyStatus::route_unavailable;
+    return result;
+  }
+
+  std::vector<std::int32_t> route_province_ids;
+  route_province_ids.reserve(static_cast<std::size_t>(count));
+  for (std::int32_t index = 0; index < count; ++index) {
+    void *const province_info = LoadAt<void *>(
+        province_infos, static_cast<std::size_t>(index) * sizeof(void *));
+    if (province_info == nullptr) {
+      result.status = PreviewMoveArmyStatus::route_unavailable;
+      return result;
+    }
+    const auto route_province_id =
+        LoadAt<std::int32_t>(province_info, kUnitPathProvinceIdOffset);
+    if (ResolveProvince(game_state, route_province_id) == nullptr) {
+      result.status = PreviewMoveArmyStatus::route_unavailable;
+      return result;
+    }
+    route_province_ids.push_back(route_province_id);
+  }
+  if (route_province_ids.back() != province_id) {
+    result.status = PreviewMoveArmyStatus::route_unavailable;
+    return result;
+  }
+
+  result.route_province_ids = std::move(route_province_ids);
+  result.status = PreviewMoveArmyStatus::available;
+  return result;
 }
 
 DisbandArmyResult SubmitDisbandArmy(const Bindings &bindings,

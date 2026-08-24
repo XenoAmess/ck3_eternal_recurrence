@@ -39,7 +39,13 @@ using CanCharacterUseCommandKind = bool (*)(void *character,
 using CanArmyUseMoveMode = bool (*)(void *army, std::int32_t move_mode);
 using CanMoveArmy = bool (*)(std::int32_t command_kind, void *army,
                             std::int32_t move_mode);
-using InitializeArmyMovePath = void (*)(void *path_storage);
+using ResolveMoveOrigin = void *(*)(void *origin_context);
+using ConstructMovePathContext = void *(*)(void *path_context, void *army);
+using ConstructArmyMovePath = void *(*)(void *path_storage);
+using BuildArmyMoveRoute = bool (*)(void *path_context, void *origin_province,
+                                    void *target_province,
+                                    std::int32_t route_kind,
+                                    void *path_storage);
 using ValidateDisbandArmyCommand = bool (*)(
     std::int32_t command_kind, std::int32_t command_target_id,
     void *error_output);
@@ -149,7 +155,10 @@ struct Bindings {
   CanCharacterUseCommandKind can_character_use_command_kind = nullptr;
   CanArmyUseMoveMode can_army_use_move_mode = nullptr;
   CanMoveArmy can_move_army = nullptr;
-  InitializeArmyMovePath initialize_army_move_path = nullptr;
+  ResolveMoveOrigin resolve_move_origin = nullptr;
+  ConstructMovePathContext construct_move_path_context = nullptr;
+  ConstructArmyMovePath construct_army_move_path = nullptr;
+  BuildArmyMoveRoute build_army_move_route = nullptr;
   DestroyNativeCommand destroy_move_army_command = nullptr;
   ValidateDisbandArmyCommand validate_disband_army_command = nullptr;
   GetCasusBelliTypeDatabase get_casus_belli_type_database = nullptr;
@@ -261,6 +270,16 @@ using game::MoveArmyResult;
 MoveArmyResult SubmitMoveArmy(const Bindings &bindings,
                               std::int32_t army_id,
                               std::int32_t province_id) noexcept;
+
+using game::PreviewMoveArmyResult;
+using game::PreviewMoveArmyStatus;
+
+// Runs CK3's own route planner into a temporary MovePath and copies its
+// resolved ProvinceIDs before destroying that path. This never applies the
+// planned route and never queues a command.
+PreviewMoveArmyResult PreviewMoveArmy(const Bindings &bindings,
+                                      std::int32_t army_id,
+                                      std::int32_t province_id) noexcept;
 
 using game::DisbandArmyResult;
 

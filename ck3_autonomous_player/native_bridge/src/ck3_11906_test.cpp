@@ -67,8 +67,14 @@ std::array<std::byte, 0x40> g_army_storage{};
 std::array<std::byte, 0x40> g_army_slots{};
 std::array<std::byte, 0x17C> g_player_army{};
 std::array<std::byte, 0x17C> g_enemy_army{};
-std::array<std::byte, 0x08> g_player_move_target_info{};
-std::array<void *, 1> g_player_move_path{};
+std::array<std::byte, 0x08> g_player_move_route_info_0{};
+std::array<std::byte, 0x08> g_player_move_route_info_1{};
+std::array<std::byte, 0x08> g_player_move_route_info_2{};
+std::array<void *, 3> g_player_move_path{};
+std::array<std::byte, 0x08> g_preview_move_route_info_0{};
+std::array<std::byte, 0x08> g_preview_move_route_info_1{};
+std::array<std::byte, 0x08> g_preview_move_route_info_2{};
+std::array<void *, 3> g_preview_move_path{};
 std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
 std::array<std::byte, 0x20> g_enemy_default_raise_province{};
@@ -115,6 +121,13 @@ bool g_raise_destroy_called = false;
 bool g_move_path_initialized = false;
 bool g_move_destroy_called = false;
 std::int32_t g_move_mode_result = 5;
+bool g_preview_origin_available = true;
+bool g_preview_origin_called = false;
+std::uint8_t g_preview_origin_mode_is_one = 0xFF;
+bool g_preview_path_context_constructed = false;
+bool g_preview_route_built = false;
+bool g_preview_route_build_result = true;
+std::int32_t g_preview_route_count = 3;
 std::int32_t g_player_army_state_code = 2;
 std::int32_t g_enemy_army_state_code = 6;
 bool g_character_command_kind_allowed = true;
@@ -396,7 +409,10 @@ std::int32_t FixtureGetUnitState(void *unit) {
 
 std::int32_t FixtureGetArmyMoveMode(void *army, void *province,
                                     std::int32_t direct_target) {
-  return army == g_player_army.data() && province == g_enemy_province.data() &&
+  const bool supported_destination =
+      province == g_enemy_province.data() ||
+      province == g_player_province.data();
+  return army == g_player_army.data() && supported_destination &&
                  direct_target == 1
              ? g_move_mode_result
              : 2;
@@ -419,15 +435,72 @@ bool FixtureCanMoveArmy(std::int32_t command_kind, void *army,
          army == g_player_army.data() && move_mode == g_move_mode_result;
 }
 
-void FixtureInitializeArmyMovePath(void *path_storage) {
-  static_cast<std::byte *>(path_storage)[0] = std::byte{0x5A};
+void *FixtureResolveMoveOrigin(void *opaque_context) {
+  const auto *const context = static_cast<const std::byte *>(opaque_context);
+  const std::uint8_t *mode_is_one = nullptr;
+  void *army = nullptr;
+  void *destination = nullptr;
+  std::memcpy(&mode_is_one, context + 0x00, sizeof(mode_is_one));
+  std::memcpy(&army, context + 0x08, sizeof(army));
+  std::memcpy(&destination, context + 0x10, sizeof(destination));
+  g_preview_origin_called = true;
+  g_preview_origin_mode_is_one =
+      mode_is_one == nullptr ? 0xFF : *mode_is_one;
+  const bool valid_destination =
+      destination == g_enemy_province.data() ||
+      destination == g_player_province.data();
+  return g_preview_origin_available && army == g_player_army.data() &&
+                 valid_destination
+             ? g_player_province.data()
+             : nullptr;
+}
+
+void *FixtureConstructMovePathContext(void *path_context, void *army) {
+  g_preview_path_context_constructed =
+      path_context != nullptr && army == g_player_army.data();
+  if (g_preview_path_context_constructed) {
+    static_cast<std::byte *>(path_context)[0x68] = std::byte{0xA5};
+  }
+  return path_context;
+}
+
+void *FixtureConstructArmyMovePath(void *path_storage) {
+  std::memset(path_storage, 0, 0x130);
+  auto *const bytes = static_cast<std::byte *>(path_storage);
+  StoreBytes(path_storage, 0x10, static_cast<void *>(bytes + 0x18));
+  bytes[0x18] = std::byte{0x5A};
   g_move_path_initialized = true;
+  return path_storage;
+}
+
+bool FixtureBuildArmyMoveRoute(void *path_context, void *origin_province,
+                               void *target_province,
+                               std::int32_t route_kind,
+                               void *path_storage) {
+  g_preview_route_built =
+      path_context != nullptr &&
+      static_cast<std::byte *>(path_context)[0x68] == std::byte{0xA5} &&
+      origin_province == g_player_province.data() &&
+      target_province == g_enemy_province.data() && route_kind == 2 &&
+      path_storage != nullptr;
+  if (!g_preview_route_built) {
+    return false;
+  }
+  StoreBytes(path_storage, 0x00,
+             static_cast<void *>(g_preview_move_path.data()));
+  StoreBytes(path_storage, 0x08, g_preview_route_count);
+  StoreBytes(path_storage, 0x0C, g_preview_route_count);
+  return g_preview_route_build_result;
 }
 
 void *FixtureDestroyMoveArmyCommand(void *opaque_command,
                                     std::int32_t delete_flags) {
   auto *const command = static_cast<std::byte *>(opaque_command);
-  g_move_destroy_called = delete_flags == 0 && command[0x38] == std::byte{0x5A};
+  g_move_destroy_called =
+      delete_flags == 0 && command[0x50] == std::byte{0x5A};
+  StoreBytes(command + 0x38, 0x00, static_cast<void *>(nullptr));
+  StoreBytes(command + 0x38, 0x08, std::int32_t{0});
+  StoreBytes(command + 0x38, 0x0C, std::int32_t{0});
   return opaque_command;
 }
 
@@ -823,7 +896,7 @@ void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
                       player_id == 1 && army_id == 0x01000001 &&
                       destination == 3 && move_mode == 5 &&
                       route_kind == 2 && direct_target == 1 &&
-                      command[0x38] == std::byte{0x5A};
+                      command[0x50] == std::byte{0x5A};
   } else if (g_expected_command == ExpectedCommand::disband_army) {
     std::int32_t command_kind = -1;
     std::int32_t command_target_id = -1;
@@ -1037,12 +1110,22 @@ int main() {
   Store(g_player_army, 0x10, player_army_id);
   Store(g_player_army, 0x20,
         static_cast<void *>(g_player_province.data()));
-  Store(g_player_move_target_info, 0x00, std::int32_t{3});
-  g_player_move_path = {g_player_move_target_info.data()};
+  Store(g_player_move_route_info_0, 0x00, std::int32_t{4});
+  Store(g_player_move_route_info_1, 0x00, std::int32_t{5});
+  Store(g_player_move_route_info_2, 0x00, std::int32_t{3});
+  g_player_move_path = {g_player_move_route_info_0.data(),
+                        g_player_move_route_info_1.data(),
+                        g_player_move_route_info_2.data()};
+  Store(g_preview_move_route_info_0, 0x00, std::int32_t{4});
+  Store(g_preview_move_route_info_1, 0x00, std::int32_t{5});
+  Store(g_preview_move_route_info_2, 0x00, std::int32_t{3});
+  g_preview_move_path = {g_preview_move_route_info_0.data(),
+                         g_preview_move_route_info_1.data(),
+                         g_preview_move_route_info_2.data()};
   Store(g_player_army, 0x38,
         static_cast<void *>(g_player_move_path.data()));
-  Store(g_player_army, 0x40, std::int32_t{1});
-  Store(g_player_army, 0x44, std::int32_t{1});
+  Store(g_player_army, 0x40, std::int32_t{3});
+  Store(g_player_army, 0x44, std::int32_t{3});
   Store(g_player_army, 0x170, std::int32_t{0});
   Store(g_player_army, 0x174, played_character_id);
   Store(g_player_army, 0x178, player_disband_command_target_id);
@@ -1282,7 +1365,10 @@ int main() {
       FixtureCanCharacterUseCommandKind;
   bindings.can_army_use_move_mode = FixtureCanArmyUseMoveMode;
   bindings.can_move_army = FixtureCanMoveArmy;
-  bindings.initialize_army_move_path = FixtureInitializeArmyMovePath;
+  bindings.resolve_move_origin = FixtureResolveMoveOrigin;
+  bindings.construct_move_path_context = FixtureConstructMovePathContext;
+  bindings.construct_army_move_path = FixtureConstructArmyMovePath;
+  bindings.build_army_move_route = FixtureBuildArmyMoveRoute;
   bindings.destroy_move_army_command = FixtureDestroyMoveArmyCommand;
   bindings.validate_disband_army_command =
       FixtureValidateDisbandArmyCommand;
@@ -1361,6 +1447,7 @@ int main() {
       snapshot.player_armies[0].owner_character_id != played_character_id ||
       !snapshot.player_armies[0].has_current_province ||
       snapshot.player_armies[0].current_province_id != 2 ||
+      !snapshot.player_armies[0].route_province_ids.empty() ||
       !snapshot.player_armies[0].move_target_observable ||
       snapshot.player_armies[0].move_target_province_id != 3 ||
       snapshot.player_armies[0].army_state_code != 2 ||
@@ -1386,9 +1473,11 @@ int main() {
       snapshot.active_wars[0].enemy_primary_default_raise_province_id != 4 ||
       snapshot.active_wars[0].player_relative_war_score != 37 ||
       snapshot.active_wars[0].allied_armies.size() != 1 ||
+      !snapshot.active_wars[0].allied_armies[0].route_province_ids.empty() ||
       snapshot.active_wars[0].enemy_armies.size() != 1 ||
       snapshot.active_wars[0].enemy_armies[0].army_id != enemy_army_id ||
       snapshot.active_wars[0].enemy_armies[0].current_province_id != 3 ||
+      !snapshot.active_wars[0].enemy_armies[0].route_province_ids.empty() ||
       snapshot.active_wars[0].enemy_armies[0].move_target_observable ||
       snapshot.active_wars[0].enemy_armies[0].move_target_province_id != -1 ||
       snapshot.active_wars[0].enemy_armies[0].army_state_code != 6 ||
@@ -1397,6 +1486,46 @@ int main() {
       !snapshot.active_wars[0].enemy_armies[0].retreating) {
     return Fail("map-ready did not follow the resolved local player");
   }
+
+  Store(g_player_move_route_info_1, 0x00, std::int32_t{7});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.player_armies.size() != 1 ||
+      !snapshot.player_armies[0].route_province_ids.empty() ||
+      !snapshot.player_armies[0].move_target_observable ||
+      snapshot.player_armies[0].move_target_province_id != 3) {
+    return Fail("running snapshot traversed beyond the legacy route tail");
+  }
+
+  Store(jomini_state, 0x20, std::uint8_t{1});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.player_armies.size() != 1 ||
+      !snapshot.player_armies[0].route_province_ids.empty() ||
+      snapshot.player_armies[0].move_target_observable ||
+      snapshot.player_armies[0].move_target_province_id != -1) {
+    return Fail("unit route published a partial invalid province path");
+  }
+  Store(g_player_move_route_info_1, 0x00, std::int32_t{5});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.player_armies.size() != 1 ||
+      snapshot.player_armies[0].route_province_ids !=
+          std::vector<std::int32_t>{4, 5, 3} ||
+      !snapshot.player_armies[0].move_target_observable ||
+      snapshot.player_armies[0].move_target_province_id != 3) {
+    return Fail("paused snapshot omitted the complete native unit route");
+  }
+
+  Store(g_player_army, 0x40, std::int32_t{4'097});
+  Store(g_player_army, 0x44, std::int32_t{4'097});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.player_armies.size() != 1 ||
+      !snapshot.player_armies[0].route_province_ids.empty() ||
+      snapshot.player_armies[0].move_target_observable ||
+      snapshot.player_armies[0].move_target_province_id != -1) {
+    return Fail("unit route traversal was not bounded");
+  }
+  Store(g_player_army, 0x40, std::int32_t{3});
+  Store(g_player_army, 0x44, std::int32_t{3});
+  Store(jomini_state, 0x20, std::uint8_t{0});
 
   constexpr std::array<std::string_view, 9> expected_unit_state_names{
       "regular",   "combat", "sieging", "embarked", "gathering",
@@ -1790,6 +1919,96 @@ int main() {
   }
   g_raise_validate_result = true;
 
+  g_submit_called = false;
+  g_preview_origin_called = false;
+  g_preview_path_context_constructed = false;
+  g_preview_route_built = false;
+  g_move_path_initialized = false;
+  g_move_destroy_called = false;
+  auto route_preview =
+      xar::ck3_11906::PreviewMoveArmy(bindings, player_army_id, 3);
+  if (route_preview.status !=
+          xar::ck3_11906::PreviewMoveArmyStatus::requires_paused ||
+      g_preview_origin_called || g_preview_path_context_constructed ||
+      g_preview_route_built || g_move_path_initialized ||
+      g_move_destroy_called || g_submit_called) {
+    return Fail("move preview called the planner while the map was running");
+  }
+
+  Store(jomini_state, 0x20, std::uint8_t{1});
+  g_move_mode_result = 1;
+  g_preview_origin_called = false;
+  g_preview_origin_mode_is_one = 0xFF;
+  g_preview_path_context_constructed = false;
+  g_preview_route_built = false;
+  g_move_path_initialized = false;
+  g_move_destroy_called = false;
+  route_preview =
+      xar::ck3_11906::PreviewMoveArmy(bindings, player_army_id, 3);
+  if (route_preview.status !=
+          xar::ck3_11906::PreviewMoveArmyStatus::available ||
+      route_preview.army_id != player_army_id ||
+      route_preview.origin_province_id != 2 ||
+      route_preview.target_province_id != 3 ||
+      route_preview.route_province_ids !=
+          std::vector<std::int32_t>{4, 5, 3} ||
+      !g_preview_origin_called || g_preview_origin_mode_is_one != 1 ||
+      !g_preview_path_context_constructed || !g_preview_route_built ||
+      !g_move_path_initialized || !g_move_destroy_called || g_submit_called) {
+    return Fail("move preview did not copy and clean the native route");
+  }
+
+  g_preview_path_context_constructed = false;
+  g_preview_route_built = false;
+  g_move_path_initialized = false;
+  g_move_destroy_called = false;
+  route_preview =
+      xar::ck3_11906::PreviewMoveArmy(bindings, player_army_id, 2);
+  if (route_preview.status !=
+          xar::ck3_11906::PreviewMoveArmyStatus::available ||
+      route_preview.origin_province_id != 2 ||
+      route_preview.target_province_id != 2 ||
+      !route_preview.route_province_ids.empty() ||
+      g_preview_path_context_constructed || g_preview_route_built ||
+      !g_move_path_initialized || !g_move_destroy_called || g_submit_called) {
+    return Fail("same-province preview unnecessarily invoked the route planner");
+  }
+
+  g_preview_route_build_result = false;
+  g_move_destroy_called = false;
+  route_preview =
+      xar::ck3_11906::PreviewMoveArmy(bindings, player_army_id, 3);
+  if (route_preview.status !=
+          xar::ck3_11906::PreviewMoveArmyStatus::route_unavailable ||
+      !g_preview_route_built || !g_move_destroy_called || g_submit_called) {
+    return Fail("failed move preview did not destroy its partial native path");
+  }
+  g_preview_route_build_result = true;
+
+  Store(g_preview_move_route_info_1, 0x00, std::int32_t{99});
+  g_move_destroy_called = false;
+  route_preview =
+      xar::ck3_11906::PreviewMoveArmy(bindings, player_army_id, 3);
+  if (route_preview.status !=
+          xar::ck3_11906::PreviewMoveArmyStatus::route_unavailable ||
+      !g_move_destroy_called || g_submit_called) {
+    return Fail("move preview published an unresolved intermediate province");
+  }
+  Store(g_preview_move_route_info_1, 0x00, std::int32_t{5});
+
+  g_preview_route_count = 4'097;
+  g_move_destroy_called = false;
+  route_preview =
+      xar::ck3_11906::PreviewMoveArmy(bindings, player_army_id, 3);
+  if (route_preview.status !=
+          xar::ck3_11906::PreviewMoveArmyStatus::route_unavailable ||
+      !g_move_destroy_called || g_submit_called) {
+    return Fail("move preview route traversal was not bounded");
+  }
+  g_preview_route_count = 3;
+  g_move_mode_result = 5;
+  Store(jomini_state, 0x20, std::uint8_t{0});
+
   g_expected_command = ExpectedCommand::move_army;
   g_submit_called = false;
   g_move_path_initialized = false;
@@ -2135,7 +2354,8 @@ int main() {
                 "fixed_point_scale=100000 "
                "war_army_snapshot=1 relative_war_score=1 "
                "army_storage_pointer_slot=1 "
-               "raise_troops_command=1 move_army_command=1 "
+               "raise_troops_command=1 move_army_preview=1 "
+               "move_army_command=1 "
                "disband_army_command=1 "
                "declarable_war_enumeration=1 "
                "declare_war_command=1 "

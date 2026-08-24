@@ -144,9 +144,19 @@ province is observable, not a decoded war goal. Wars group currently
 observable armies into `allied_armies` and `enemy_armies`. Army records expose
 `army_id`, owner `CharacterID`, nullable current province, exact native
 `army_state_code`/`army_state`, `in_combat`, `retreating`, and whether the
-played character controls them. A valid nonempty native route publishes its
-last province as `move_target_province_id` with
-`move_target_observable=true`; no route remains `null/false`. Soldier count
+played character controls them. Exact-build capability
+`game.state.army-routes` adds `route_province_ids`: the complete native
+remaining-route array in engine order, without inserting the current province
+or deduplicating entries. Every item must resolve through the current province
+table and the route is bounded to 4096 entries; an empty, invalid, or oversized
+route publishes `[]` atomically. Full arrays are read only while the snapshot
+is paused because the engine route container has no read lock. A running
+snapshot deliberately leaves `route_province_ids=[]`; this means "not fully
+read", not necessarily "no route". It retains the pre-existing single-tail
+read as `move_target_province_id`/`move_target_observable`, so progress tracking
+does not lose its old signal. In a paused snapshot, a valid nonempty full route
+has `route_province_ids.back() == move_target_province_id`.
+Soldier count
 remains absent because its aggregate ABI has not been live-validated and this
 bridge does not publish a guessed value. `played_character` exposes the current played `CharacterID` and
 the engine's alive/dead projection; the one-generation planner treats dead as
@@ -177,6 +187,16 @@ native 0x28-byte command. Move and disband reject armies not owned by the
 current played character. Dynamic IDs are parsed as complete positive decimal
 strings; trailing bytes, signs, whitespace, missing separators, and overflow
 are rejected.
+
+Exact capability `game.command.preview-move-army-N-to-N` accepts only
+`preview-move-army-<army_id>-to-<province_id>` while the map is paused. It
+runs the same mode/character/army gates, resolves CK3's move origin, and calls
+the native A* route builder into caller-owned scratch. It copies and validates
+the complete route before destroying the temporary path. It neither binds nor
+calls the apply routine and never submits a command. Success returns
+`result.status="available"` and
+`route_preview={status:"available",army_id,origin_province_id,target_province_id,route_province_ids}`.
+The same-province case is available with an empty route and skips A*.
 
 War declaration discovery is an explicit request rather than part of the
 250 ms snapshot publisher: it evaluates current CBs across live characters

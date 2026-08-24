@@ -245,6 +245,36 @@
       "pattern": "48 89 5C 24 10 48 89 6C 24 18 56 57 41 56 48 83 EC 20 48 8B 41 08 48 8B F9 48 83 C1 08 41 8B D8 48 8B EA FF 50 08 84 C0"
     },
     {
+      "name": "move_plan_and_apply",
+      "rva": "0x2248170",
+      "confidence": "high-static",
+      "pattern": "4C 8B DC 49 89 5B 08 49 89 6B 10 56 57 41 56 48 81 EC F0 01"
+    },
+    {
+      "name": "resolve_move_origin",
+      "rva": "0x2248260",
+      "confidence": "high-static",
+      "pattern": "40 53 48 83 EC 20 48 8B 01 48 8B D9 80 38 00 0F"
+    },
+    {
+      "name": "apply_army_move_path",
+      "rva": "0x2248450",
+      "confidence": "high-static",
+      "pattern": "40 53 56 57 41 57 48 83 EC 28 83 79 44 00 41 8B"
+    },
+    {
+      "name": "construct_army_path_context",
+      "rva": "0x23C32F0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 18 55 56 57 48 83 EC 20 48 89 51 10"
+    },
+    {
+      "name": "build_army_route_preview",
+      "rva": "0x23C33D0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D AC 24 60 FC FF FF"
+    },
+    {
       "name": "army_can_move",
       "rva": "0x26B4610",
       "confidence": "high-static",
@@ -511,6 +541,11 @@
     "move_army_character_command_kind_gate": "0x26B26A0",
     "move_army_mode_state_gate": "0x2248860",
     "move_army_can_move": "0x26B4610",
+    "move_plan_and_apply": "0x2248170",
+    "resolve_move_origin": "0x2248260",
+    "apply_army_move_path": "0x2248450",
+    "construct_army_path_context": "0x23C32F0",
+    "build_army_route_preview": "0x23C33D0",
     "move_army_path_initialize": "0xC7BA70",
     "move_army_destructor": "0x26B46D0",
     "disband_army_primary_vtable": "0x432BFE0",
@@ -764,7 +799,8 @@
     "CUnit": {
       "unit_id": "+0x10 int32 component ID exposed by the bridge as army_id",
       "current_province": "+0x20 Province pointer; Province ID at +0x10",
-      "move_path": "+0x38 SUnitPathProvinceInfo** data, +0x40 int32 capacity, +0x44 int32 count; the last pointer's +0x00 int32 is the destination Province ID, exactly as consumed by RVA 0x26B51B0",
+      "move_path": "+0x38 SUnitPathProvinceInfo** remaining-route data, +0x40 int32 capacity, +0x44 int32 count; each pointer's +0x00 int32 is a Province ID in engine order and the last is the destination, exactly as consumed by RVA 0x26B51B0",
+      "route_projection": "paused snapshots publish only after every ProvinceID resolves through the current province table; preserve engine order and duplicates, do not prepend current province, hard bound 4096 entries; running snapshots skip full traversal and retain only the legacy last-entry target read",
       "retreat_state": "+0x170 int32; positive maps to state code 6 / retreating after higher-priority states",
       "owner_character_id": "+0x174 int32 CharacterID",
       "army_id": "+0x178 int32 CArmy component ID copied to CDisbandArmyCommand+0x24; distinct from the public CUnit ID at +0x10",
@@ -799,6 +835,15 @@
       "played_character_id": "+0x20 int32",
       "single_raise_entry": "constructor RVA 0x26D6FC0 receives {province_id, -1}; sets +0x40=-1, +0x44=1, +0x48=false",
       "lifecycle": "validate RVA 0x26D7150 with null context, submit flags 7, then destructor RVA 0x10E7950 with delete_flags=0"
+    },
+    "MoveRoutePreview": {
+      "canonical_source": "RVA 0x2248170 plans then applies; preview stops after RVA 0x23C33D0 and never binds/calls apply RVA 0x2248450",
+      "origin_context": "0x18 bytes: +0x00 pointer to uint8 mode_is_one, +0x08 CUnit pointer, +0x10 destination Province pointer; RVA 0x2248260 returns origin Province pointer",
+      "path_context": "0x70-byte caller-owned scratch constructed by RVA 0x23C32F0(PathCtx*, CUnit*); borrowed pointers only and no destructor in the canonical caller",
+      "move_path": "0x130-byte caller-owned scratch constructed by RVA 0xC7BA70; +0x00 SUnitPathProvinceInfo** data, +0x08 int32 capacity, +0x0C int32 count, +0x10 allocator, +0x128 int64 route cost",
+      "build": "RVA 0x23C33D0(PathCtx*, origin Province*, target Province*, route_kind=2, MovePath*) returns bool; mode_is_one is only an origin resolver input",
+      "cleanup": "embed MovePath at CMoveArmyCommand+0x38 and call RVA 0x26B46D0(command,0) on every post-construction exit; it frees path allocations without freeing the stack command",
+      "thread_boundary": "planner uses per-call scratch and has no observed world write, TLS, global cache write, or main-thread assertion, but it takes no world read lock; bridge worker preview therefore requires a paused snapshot"
     },
     "CMoveArmyCommand": {
       "size": "0x168",

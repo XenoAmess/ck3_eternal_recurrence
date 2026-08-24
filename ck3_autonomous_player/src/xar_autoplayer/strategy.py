@@ -31,6 +31,8 @@ from .bridge.war_contract import (
     enemy_armies_from_wars,
     move_army_step,
     parse_move_army_step,
+    parse_preview_move_army_step,
+    preview_move_army_step,
     war_objective_province_ids,
 )
 from .environment import write_json_atomic
@@ -633,22 +635,132 @@ def choose_one_life_turn(
                 "active_wars": war_summary,
             }
 
+        army_routes_supported = bool(
+            isinstance(snapshot, dict)
+            and snapshot.get("army_routes_supported") is True
+        )
+        move_route_preview_supported = bool(
+            isinstance(snapshot, dict)
+            and snapshot.get("move_route_preview_supported") is True
+        )
+        if (
+            (army_routes_supported or move_route_preview_supported)
+            and isinstance(snapshot, dict)
+            and snapshot.get("paused") is not True
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_route_wait_for_pause",
+                "selected_step": (
+                    "pause-map" if "pause-map" in available_steps else None
+                ),
+                "required_step": "pause-map",
+                "reason": "pause the map before reading or previewing a native army route",
+                "active_wars": war_summary,
+            }
+        if (
+            move_route_preview_supported
+            and not army_routes_supported
+            and war_objective_province_ids(active_wars)
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_route_monitoring_unsupported",
+                "selected_step": None,
+                "required_step": "game.state.army-routes",
+                "reason": "route preview without passive army routes cannot safely monitor a submitted march as enemy positions change",
+                "active_wars": war_summary,
+            }
+
+        route_threat_enemies = [
+            army
+            for army in enemy_armies_from_wars(active_wars)
+            if _army_tactical_state(army) != "retreating"
+        ]
+        all_exact_objective_ids = set(war_objective_province_ids(active_wars))
+        global_route_audits: list[dict[str, object]] = []
+        if army_routes_supported:
+            for controlled_army in controlled_armies:
+                controlled_army_id = _native_int(controlled_army.get("army_id"))
+                controlled_state = _army_tactical_state(controlled_army)
+                controlled_target = _native_int(
+                    controlled_army.get("move_target_province_id")
+                )
+                if (
+                    controlled_army_id is None
+                    or controlled_target is None
+                    or controlled_state in {"combat", "retreating", "gathering"}
+                ):
+                    continue
+                global_route_audits.append(
+                    {
+                        "army_id": controlled_army_id,
+                        "army_state": controlled_state,
+                        **_audit_war_route(
+                            controlled_army.get("route_province_ids"),
+                            origin_province_id=_native_int(
+                                controlled_army.get("current_province_id")
+                            ),
+                            target_province_id=controlled_target,
+                            enemies=route_threat_enemies,
+                            allow_enemy_at_destination=(
+                                controlled_target not in all_exact_objective_ids
+                            ),
+                        ),
+                    }
+                )
+        unsafe_army_ids = {
+            int(audit["army_id"])
+            for audit in global_route_audits
+            if audit.get("status") == "unsafe"
+            and isinstance(audit.get("army_id"), int)
+        }
+        unsafe_armies = [
+            army
+            for army in controlled_armies
+            if army.get("army_id") in unsafe_army_ids
+        ]
+        pursuit_army = (
+            _stable_strongest_army(unsafe_armies)
+            if unsafe_armies
+            else _stable_strongest_army(controlled_armies)
+        )
+        if not unsafe_armies:
+            unavailable_routes = [
+                audit
+                for audit in global_route_audits
+                if audit.get("status") == "unavailable"
+            ]
+            if unavailable_routes:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_route_audit_pending",
+                    "selected_step": None,
+                    "required_step": "game.state.army-routes",
+                    "reason": "at least one controllable active route is incomplete; do not advance every army until all routes are auditable",
+                    "route_audits": global_route_audits,
+                    "active_wars": war_summary,
+                }
+
         tactical_war = _stable_tactical_war(active_wars)
         tactical_war_id = (
             tactical_war.get("war_id")
             if isinstance(tactical_war, dict)
             else None
         )
-        visible_enemies = [
+        tactical_enemies = [
             army
             for army in enemy_armies_from_wars(
                 [tactical_war] if isinstance(tactical_war, dict) else []
             )
+            if _army_tactical_state(army) != "retreating"
+        ]
+        visible_enemies = [
+            army
+            for army in tactical_enemies
             if isinstance(army.get("current_province_id"), int)
-            and _army_tactical_state(army) != "retreating"
         ]
         enemy = _stable_strongest_army(visible_enemies)
-        pursuit_army = _stable_strongest_army(controlled_armies)
         army_id = (
             pursuit_army.get("army_id")
             if isinstance(pursuit_army, dict)
@@ -672,6 +784,9 @@ def choose_one_life_turn(
         siege_objective_province_ids = _attacker_siege_objective_province_ids(
             [tactical_war] if isinstance(tactical_war, dict) else []
         )
+        exact_objective_province_ids = war_objective_province_ids(
+            [tactical_war] if isinstance(tactical_war, dict) else []
+        )
         completed_objectives = set(
             tactical.get("completed_objective_province_ids", [])
         )
@@ -679,6 +794,11 @@ def choose_one_life_turn(
         siege_objective_province_ids = [
             province_id
             for province_id in siege_objective_province_ids
+            if province_id not in completed_objectives
+        ]
+        exact_objective_province_ids = [
+            province_id
+            for province_id in exact_objective_province_ids
             if province_id not in completed_objectives
         ]
         all_siege_objectives_completed &= not siege_objective_province_ids
@@ -694,7 +814,7 @@ def choose_one_life_turn(
         )
         enemy_threat_province_ids = {
             province_id
-            for row in visible_enemies
+            for row in route_threat_enemies
             for province_id in (
                 row.get("current_province_id"),
                 row.get("move_target_province_id"),
@@ -702,8 +822,31 @@ def choose_one_life_turn(
             if isinstance(province_id, int)
             and not isinstance(province_id, bool)
         }
+        observed_route_target = (
+            _native_int(pursuit_army.get("move_target_province_id"))
+            if isinstance(pursuit_army, dict)
+            else None
+        )
+        if army_state == "gathering":
+            if "life-advance" in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_gathering_progress",
+                    "selected_step": "life-advance",
+                    "reason": "the raised army is still gathering; advance before previewing or issuing movement",
+                    "active_wars": war_summary,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_gathering_progress_unsupported",
+                "selected_step": None,
+                "required_step": "life-advance",
+                "reason": "the raised army must finish gathering before route preview",
+                "active_wars": war_summary,
+            }
         if (
             army_state == "sieging"
+            and observed_route_target is None
             and (
                 not siege_objective_province_ids
                 or (
@@ -765,16 +908,11 @@ def choose_one_life_turn(
                 "active_wars": war_summary,
             }
 
-        observed_route_target = (
-            _native_int(pursuit_army.get("move_target_province_id"))
-            if isinstance(pursuit_army, dict)
-            else None
-        )
+        passive_route_audit: dict[str, object] | None = None
         if (
             isinstance(army_id, int)
-            and observed_route_target in siege_objective_province_ids
-            and observed_route_target not in blocked_province_ids
-            and observed_route_target not in enemy_threat_province_ids
+            and isinstance(pursuit_army, dict)
+            and isinstance(observed_route_target, int)
         ):
             observed_intent = _active_native_move_intent(
                 rows,
@@ -782,7 +920,59 @@ def choose_one_life_turn(
                 army_id=army_id,
                 target_province_id=observed_route_target,
             )
-            if observed_intent is not None:
+            if army_routes_supported:
+                passive_route_audit = next(
+                    (
+                        audit
+                        for audit in global_route_audits
+                        if audit.get("army_id") == army_id
+                        and audit.get("target_province_id")
+                        == observed_route_target
+                    ),
+                    _audit_war_route(
+                        pursuit_army.get("route_province_ids"),
+                        origin_province_id=current_province_id,
+                        target_province_id=observed_route_target,
+                        enemies=route_threat_enemies,
+                    ),
+                )
+                if passive_route_audit["status"] == "unavailable":
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_route_audit_pending",
+                        "selected_step": None,
+                        "required_step": "game.state.army-routes",
+                        "reason": "the accepted move has no complete passive route yet; do not advance into an unaudited path",
+                        "route_audit": passive_route_audit,
+                        "active_wars": war_summary,
+                    }
+                if passive_route_audit["status"] == "unsafe":
+                    blocked_province_ids.add(observed_route_target)
+                elif "life-advance" in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_route_progress",
+                        "selected_step": "life-advance",
+                        "reason": "the remaining native route is still clear of observable enemy convergence",
+                        "route_audit": passive_route_audit,
+                        "move_intent": observed_intent,
+                        "active_wars": war_summary,
+                    }
+                else:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_route_progress_unsupported",
+                        "selected_step": None,
+                        "required_step": "life-advance",
+                        "reason": "the remaining native route is safe but this backend cannot advance it",
+                        "route_audit": passive_route_audit,
+                        "move_intent": observed_intent,
+                        "active_wars": war_summary,
+                    }
+            elif (
+                observed_intent is not None
+                and observed_route_target not in enemy_threat_province_ids
+            ):
                 if "life-advance" in available_steps:
                     return {
                         "policy": "one-life-turn-v1",
@@ -822,7 +1012,163 @@ def choose_one_life_turn(
                     "active_wars": war_summary,
                 }
 
+        active_route_unsafe = bool(
+            isinstance(passive_route_audit, dict)
+            and passive_route_audit.get("status") == "unsafe"
+        )
         objective_kind = "pursuit"
+        preview_selected_target: int | None = None
+        selected_route_audit: dict[str, object] | None = None
+        route_preview_required = bool(
+            move_route_preview_supported
+        )
+        route_exact_candidates = [
+            province_id
+            for province_id in exact_objective_province_ids
+            if province_id in siege_objective_province_ids
+        ]
+        if (
+            route_preview_required
+            and isinstance(army_id, int)
+            and isinstance(current_province_id, int)
+            and route_exact_candidates
+        ):
+            route_rejections: list[dict[str, object]] = []
+            for province_id in route_exact_candidates:
+                if province_id in blocked_province_ids:
+                    route_rejections.append(
+                        {"target_province_id": province_id, "status": "blocked"}
+                    )
+                    continue
+                if province_id == current_province_id:
+                    if active_route_unsafe:
+                        route_rejections.append(
+                            {
+                                "target_province_id": province_id,
+                                "status": "cannot_replace_unsafe_active_route",
+                            }
+                        )
+                        continue
+                    if province_id in enemy_threat_province_ids:
+                        route_rejections.append(
+                            {
+                                "target_province_id": province_id,
+                                "status": "unsafe",
+                                "conflict_kind": "destination_threat",
+                            }
+                        )
+                        continue
+                    preview_selected_target = province_id
+                    selected_route_audit = {
+                        "status": "arrived",
+                        "target_province_id": province_id,
+                    }
+                    break
+                preview = _fresh_move_route_preview(
+                    rows,
+                    army_id=army_id,
+                    origin_province_id=current_province_id,
+                    target_province_id=province_id,
+                    date_raw=_native_int(
+                        snapshot.get("date_raw")
+                        if isinstance(snapshot, dict)
+                        else None
+                    ),
+                )
+                if (
+                    isinstance(preview, dict)
+                    and preview.get("status") == "deferred"
+                ):
+                    if active_route_unsafe:
+                        route_rejections.append(
+                            {
+                                "target_province_id": province_id,
+                                "status": "deferred_while_active_route_unsafe",
+                            }
+                        )
+                        continue
+                    if "life-advance" in available_steps:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_route_preview_deferred",
+                            "selected_step": "life-advance",
+                            "reason": "the army was not route-preview-ready at this date and origin; advance once before retrying",
+                            "route_preview": preview,
+                            "route_rejections": route_rejections,
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_route_preview_deferred_unsupported",
+                        "selected_step": None,
+                        "required_step": "life-advance",
+                        "reason": "the deferred route preview requires time to advance",
+                        "route_preview": preview,
+                        "route_rejections": route_rejections,
+                        "active_wars": war_summary,
+                    }
+                if preview is None:
+                    preview_step = preview_move_army_step(army_id, province_id)
+                    if preview_step in available_steps:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_route_preview",
+                            "selected_step": preview_step,
+                            "reason": "preview the exact objective route at the current date and origin before moving",
+                            "route_preview": {
+                                "status": "required",
+                                "army_id": army_id,
+                                "origin_province_id": current_province_id,
+                                "target_province_id": province_id,
+                            },
+                            "route_rejections": route_rejections,
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_route_preview_unsupported",
+                        "selected_step": None,
+                        "required_step": preview_step,
+                        "reason": "the exact objective requires a fresh route preview before movement",
+                        "route_rejections": route_rejections,
+                        "active_wars": war_summary,
+                    }
+                audit = _audit_war_route(
+                    preview.get("route_province_ids"),
+                    origin_province_id=current_province_id,
+                    target_province_id=province_id,
+                    enemies=route_threat_enemies,
+                )
+                if audit["status"] != "safe":
+                    route_rejections.append(audit)
+                    blocked_province_ids.add(province_id)
+                    continue
+                preview_selected_target = province_id
+                selected_route_audit = audit
+                break
+            if preview_selected_target is None:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_no_safe_exact_route",
+                    "selected_step": None,
+                    "required_step": "safe-exact-war-route",
+                    "reason": "every remaining exact objective route is blocked or observably intersects a non-retreating enemy",
+                    "route_rejections": route_rejections,
+                    "active_wars": war_summary,
+                }
+        if (
+            active_route_unsafe
+            and preview_selected_target is None
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_no_safe_exact_route",
+                "selected_step": None,
+                "required_step": "safe-exact-war-route",
+                "reason": "the active route became unsafe and no remaining exact objective has a safe preview",
+                "route_rejections": [passive_route_audit],
+                "active_wars": war_summary,
+            }
         local_enemies = [
             army
             for army in visible_enemies
@@ -833,7 +1179,12 @@ def choose_one_life_turn(
         exact_native_siege_routing = bool(siege_objective_province_ids) and (
             army_state is not None
         )
-        if local_enemies and not exact_native_siege_routing:
+        if preview_selected_target is not None:
+            target_province_id = preview_selected_target
+            enemy = None
+            target_source = "war_objective_province"
+            objective_kind = "siege"
+        elif local_enemies and not exact_native_siege_routing:
             enemy = _stable_strongest_army(local_enemies)
             target_province_id = current_province_id
             target_source = "enemy_army"
@@ -933,12 +1284,54 @@ def choose_one_life_turn(
                     "target_source": target_source,
                     "objective_kind": objective_kind,
                 }
+                if selected_route_audit is not None:
+                    pursuit["route_audit"] = selected_route_audit
                 active_move_intent = _active_native_move_intent(
                     rows,
                     snapshot if isinstance(snapshot, dict) else {},
                     army_id=army_id,
                     target_province_id=target_province_id,
                 )
+                move_backoff = _deferred_move_backoff(
+                    rows,
+                    snapshot if isinstance(snapshot, dict) else {},
+                    step,
+                )
+                if active_route_unsafe:
+                    if (
+                        active_move_intent is None
+                        and (
+                            move_backoff is None
+                            or move_backoff.get("retry_due") is True
+                        )
+                        and target_province_id
+                        not in {
+                            pursuit_army.get("current_province_id"),
+                            pursuit_army.get("move_target_province_id"),
+                        }
+                        and step in available_steps
+                    ):
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_unsafe_route_reroute",
+                            "selected_step": step,
+                            "reason": "replace the observably unsafe active route before any game-time advance",
+                            "pursuit": pursuit,
+                            "route_audit": passive_route_audit,
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_unsafe_route_blocked",
+                        "selected_step": None,
+                        "required_step": "replace-unsafe-native-route",
+                        "reason": "an unsafe route is still active; deferred, pending, or same-province alternatives cannot justify advancing it",
+                        "pursuit": pursuit,
+                        "route_audit": passive_route_audit,
+                        "move_intent": active_move_intent,
+                        "move_backoff": move_backoff,
+                        "active_wars": war_summary,
+                    }
                 if active_move_intent is not None:
                     if "life-advance" in available_steps:
                         return {
@@ -960,11 +1353,6 @@ def choose_one_life_turn(
                         "move_intent": active_move_intent,
                         "active_wars": war_summary,
                     }
-                move_backoff = _deferred_move_backoff(
-                    rows,
-                    snapshot if isinstance(snapshot, dict) else {},
-                    step,
-                )
                 if move_backoff is not None and not move_backoff["retry_due"]:
                     if "life-advance" in available_steps:
                         return {
@@ -1020,11 +1408,9 @@ def choose_one_life_turn(
                         "reason": (
                             "move the strongest controllable army to the strongest visible enemy army"
                             if target_source == "enemy_army"
-                            else (
-                                "positive attacker war score is established; move to the primary opponent's default rally province as a stable siege objective"
-                                if objective_kind == "siege"
-                                else "no enemy army province is visible; move toward the primary opponent's default rally province fallback"
-                            )
+                            else "move the army along a previewed safe route to the next exact war objective"
+                            if target_source == "war_objective_province"
+                            else "move toward the primary opponent's default rally province fallback"
                         ),
                         "pursuit": pursuit,
                         "active_wars": war_summary,
@@ -1638,6 +2024,145 @@ def _history_after_latest_restore(
         ):
             return commands[position + 1 :]
     return commands
+
+
+def _effective_command_result(row: dict[str, object]) -> dict[str, object] | None:
+    result = row.get("result")
+    if row.get("command") != "auto-turn":
+        return result if isinstance(result, dict) else None
+    if isinstance(result, dict) and isinstance(
+        result.get("route_preview"), dict
+    ):
+        return result
+    auto_turn = result.get("auto_turn") if isinstance(result, dict) else None
+    nested = auto_turn.get("result") if isinstance(auto_turn, dict) else None
+    if isinstance(nested, dict):
+        return nested
+    return result if isinstance(result, dict) else None
+
+
+def _fresh_move_route_preview(
+    commands: list[dict[str, object]],
+    *,
+    army_id: int,
+    origin_province_id: int,
+    target_province_id: int,
+    date_raw: int | None,
+) -> dict[str, object] | None:
+    if date_raw is None:
+        return None
+    expected_step = (army_id, target_province_id)
+    for row in reversed(_history_after_latest_restore(commands)):
+        if parse_preview_move_army_step(_effective_command(row)) != expected_step:
+            continue
+        if row.get("ok") is not True:
+            continue
+        result = _effective_command_result(row)
+        preview = result.get("route_preview") if isinstance(result, dict) else None
+        if (
+            not isinstance(preview, dict)
+            or preview.get("status") not in {"available", "deferred"}
+            or preview.get("army_id") != army_id
+            or preview.get("origin_province_id") != origin_province_id
+            or preview.get("target_province_id") != target_province_id
+            or preview.get("previewed_date_raw") != date_raw
+        ):
+            continue
+        if preview.get("status") == "deferred":
+            return {**preview, "route_province_ids": []}
+        route = preview.get("route_province_ids")
+        if not isinstance(route, list) or any(
+            isinstance(item, bool) or not isinstance(item, int) or item <= 0
+            for item in route
+        ):
+            continue
+        return {**preview, "route_province_ids": list(route)}
+    return None
+
+
+def _audit_war_route(
+    route_value: object,
+    *,
+    origin_province_id: int | None,
+    target_province_id: int,
+    enemies: Iterable[dict[str, object]],
+    allow_enemy_at_destination: bool = False,
+) -> dict[str, object]:
+    if not isinstance(route_value, list) or any(
+        isinstance(item, bool) or not isinstance(item, int) or item <= 0
+        for item in route_value
+    ):
+        return {
+            "status": "unavailable",
+            "target_province_id": target_province_id,
+            "reason": "route_not_observable",
+        }
+    remaining_route = [
+        int(province_id)
+        for province_id in route_value
+        if province_id != origin_province_id
+    ]
+    if not remaining_route or remaining_route[-1] != target_province_id:
+        return {
+            "status": "unavailable",
+            "target_province_id": target_province_id,
+            "route_province_ids": remaining_route,
+            "reason": "route_does_not_reach_target",
+        }
+
+    route_provinces = set(remaining_route)
+    conflicts: list[dict[str, object]] = []
+    for enemy in enemies:
+        if _army_tactical_state(enemy) == "retreating":
+            continue
+        enemy_id = _native_int(enemy.get("army_id"))
+        enemy_current = _native_int(enemy.get("current_province_id"))
+        enemy_target = _native_int(enemy.get("move_target_province_id"))
+        if enemy_current in route_provinces and not (
+            allow_enemy_at_destination
+            and enemy_current == target_province_id
+        ):
+            conflicts.append(
+                {
+                    "kind": "enemy_current_on_route",
+                    "enemy_army_id": enemy_id,
+                    "province_id": enemy_current,
+                }
+            )
+        if enemy_target in route_provinces:
+            conflicts.append(
+                {
+                    "kind": "enemy_target_on_route",
+                    "enemy_army_id": enemy_id,
+                    "province_id": enemy_target,
+                }
+            )
+        enemy_route = enemy.get("route_province_ids")
+        enemy_remaining = (
+            [
+                int(province_id)
+                for province_id in enemy_route
+                if isinstance(province_id, int)
+                and not isinstance(province_id, bool)
+                and province_id > 0
+            ]
+            if isinstance(enemy_route, list)
+            else []
+        )
+        if enemy_remaining and enemy_remaining[0] == remaining_route[0]:
+            conflicts.append(
+                {
+                    "kind": "shared_next_hop",
+                    "enemy_army_id": enemy_id,
+                    "province_id": remaining_route[0],
+                }
+            )
+    return {
+        "status": "unsafe" if conflicts else "safe",
+        "target_province_id": target_province_id,
+        "route_province_ids": remaining_route,
+        "conflicts": conflicts,
+    }
 
 
 def _recent_war_tactics(

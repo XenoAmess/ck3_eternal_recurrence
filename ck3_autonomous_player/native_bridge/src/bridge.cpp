@@ -142,6 +142,18 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   return result;
 }
 
+void AppendInt32Array(std::string &result,
+                      const std::vector<std::int32_t> &values) {
+  result += '[';
+  for (std::size_t index = 0; index < values.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    result += SignedNumber(values[index]);
+  }
+  result += ']';
+}
+
 void AppendArmySnapshot(std::string &result,
                         const xar::game::ArmySnapshot &army) {
   result += "{\"army_id\":";
@@ -154,6 +166,8 @@ void AppendArmySnapshot(std::string &result,
   } else {
     result += "null";
   }
+  result += ",\"route_province_ids\":";
+  AppendInt32Array(result, army.route_province_ids);
   result += ",\"move_target_province_id\":";
   if (army.move_target_observable) {
     result += SignedNumber(army.move_target_province_id);
@@ -184,18 +198,6 @@ void AppendArmyArray(
       result += ',';
     }
     AppendArmySnapshot(result, armies[index]);
-  }
-  result += ']';
-}
-
-void AppendInt32Array(std::string &result,
-                      const std::vector<std::int32_t> &values) {
-  result += '[';
-  for (std::size_t index = 0; index < values.size(); ++index) {
-    if (index != 0) {
-      result += ',';
-    }
-    result += SignedNumber(values[index]);
   }
   result += ']';
 }
@@ -522,6 +524,28 @@ std::string CommandResultFrame(std::string_view request_id,
   return result;
 }
 
+std::string RoutePreviewResultFrame(
+    std::string_view request_id, std::string_view step,
+    const xar::game::PreviewMoveArmyResult &preview) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result += "\",\"ok\":true,\"result\":{\"step\":\"";
+  result += step;
+  result += "\",\"accepted\":true,\"status\":\"available\","
+            "\"route_preview\":{\"status\":\"available\",\"army_id\":";
+  result += SignedNumber(preview.army_id);
+  result += ",\"origin_province_id\":";
+  result += SignedNumber(preview.origin_province_id);
+  result += ",\"target_province_id\":";
+  result += SignedNumber(preview.target_province_id);
+  result += ",\"route_province_ids\":";
+  AppendInt32Array(result, preview.route_province_ids);
+  result += "}}}";
+  return result;
+}
+
 std::string SaveCheckpointResultFrame(std::string_view request_id,
                                       const CheckpointSubmission &checkpoint) {
   std::string result =
@@ -642,9 +666,8 @@ struct MoveArmyStepIds {
   std::int32_t province_id = -1;
 };
 
-std::optional<MoveArmyStepIds> MoveArmyStep(
-    std::string_view step) noexcept {
-  constexpr std::string_view prefix = "move-army-";
+std::optional<MoveArmyStepIds> ArmyToProvinceStep(
+    std::string_view step, std::string_view prefix) noexcept {
   constexpr std::string_view separator = "-to-";
   if (!step.starts_with(prefix)) {
     return std::nullopt;
@@ -663,6 +686,16 @@ std::optional<MoveArmyStepIds> MoveArmyStep(
     return std::nullopt;
   }
   return MoveArmyStepIds{army_id.value(), province_id.value()};
+}
+
+std::optional<MoveArmyStepIds> MoveArmyStep(
+    std::string_view step) noexcept {
+  return ArmyToProvinceStep(step, "move-army-");
+}
+
+std::optional<MoveArmyStepIds> PreviewMoveArmyStep(
+    std::string_view step) noexcept {
+  return ArmyToProvinceStep(step, "preview-move-army-");
 }
 
 std::optional<std::int32_t> DisbandArmyStep(
@@ -1137,6 +1170,66 @@ void RunConnectedSession(HANDLE pipe, const xar::game::GameAdapter &game,
             connected = PublishSnapshot(pipe, game, previous_snapshot,
                                         state_revision, checkpoint_submission,
                                         published_checkpoint_sequence);
+          }
+        } else if (step.starts_with("preview-move-army-")) {
+          const auto ids = PreviewMoveArmyStep(step);
+          if (!ids.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid preview-move-army-<army_id>-to-<province_id> step"));
+          } else {
+            const auto preview = xar::game::PreviewMoveArmy(
+                game, ids->army_id, ids->province_id);
+            if (preview.status ==
+                xar::game::PreviewMoveArmyStatus::available) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, RoutePreviewResultFrame(request_id, step, preview));
+            } else {
+              std::string_view error =
+                  "CK3 move-army route preview is unavailable";
+              if (preview.status ==
+                  xar::game::PreviewMoveArmyStatus::requires_paused) {
+                error = "CK3 route preview requires a paused map";
+              } else if (preview.status ==
+                  xar::game::PreviewMoveArmyStatus::army_not_found) {
+                error = "CK3 army was not found";
+              } else if (preview.status ==
+                         xar::game::PreviewMoveArmyStatus::
+                             army_not_controllable) {
+                error = "CK3 army is not player-controllable";
+              } else if (preview.status ==
+                         xar::game::PreviewMoveArmyStatus::
+                             province_not_found) {
+                error = "CK3 destination province was not found";
+              } else if (preview.status ==
+                         xar::game::PreviewMoveArmyStatus::
+                             move_mode_unavailable) {
+                error = "CK3 army has no move mode for the destination";
+              } else if (preview.status ==
+                         xar::game::PreviewMoveArmyStatus::
+                             character_state_rejected) {
+                error = "CK3 played character state rejects army movement";
+              } else if (preview.status ==
+                         xar::game::PreviewMoveArmyStatus::
+                             army_state_rejected) {
+                error = "CK3 army state rejects movement";
+              } else if (preview.status ==
+                         xar::game::PreviewMoveArmyStatus::
+                             validation_failed) {
+                error = "CK3 move-army validation failed";
+              } else if (preview.status ==
+                         xar::game::PreviewMoveArmyStatus::
+                             origin_unavailable) {
+                error = "CK3 move origin is unavailable";
+              } else if (preview.status ==
+                         xar::game::PreviewMoveArmyStatus::
+                             route_unavailable) {
+                error = "CK3 could not build a complete move route";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
           }
         } else if (step.starts_with("move-army-")) {
           const auto ids = MoveArmyStep(step);

@@ -8,7 +8,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 31> kCapabilities{
+constexpr std::array<std::string_view, 33> kCapabilities{
     "game.state.snapshot",
     "game.state.xar-one-life-settlement",
     "game.state.map-ready",
@@ -19,6 +19,7 @@ constexpr std::array<std::string_view, 31> kCapabilities{
     "game.state.war-primary-opponent",
     "game.state.war-objectives",
     "game.state.player-armies",
+    "game.state.army-routes",
     "game.command.pause-map",
     "game.command.resume-map",
     "game.command.set-speed-1",
@@ -31,6 +32,7 @@ constexpr std::array<std::string_view, 31> kCapabilities{
     "game.command.accept-pending-character-interaction",
     "game.command.reject-pending-character-interaction",
     "game.command.raise-troops-default",
+    "game.command.preview-move-army-N-to-N",
     "game.command.move-army-N-to-N",
     "game.command.disband-army-N",
     "game.command.query-declarable-wars",
@@ -89,6 +91,11 @@ public:
                                   std::int32_t province_id) const
       noexcept override {
     return ck3_11906::SubmitMoveArmy(bindings_, army_id, province_id);
+  }
+  PreviewMoveArmyResult
+  preview_move_army(std::int32_t army_id,
+                    std::int32_t province_id) const noexcept override {
+    return ck3_11906::PreviewMoveArmy(bindings_, army_id, province_id);
   }
   DisbandArmyResult
   submit_disband_army(std::int32_t army_id) const noexcept override {

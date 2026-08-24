@@ -229,6 +229,7 @@ def _army(
     move_target_province_id: int | None = None,
     observe_move_target: bool = True,
     controllable: bool = True,
+    **state: object,
 ) -> dict[str, object]:
     result = {
         "army_id": army_id,
@@ -237,6 +238,7 @@ def _army(
         "current_province_id": province_id,
         "move_target_province_id": move_target_province_id,
         "controllable": controllable,
+        **state,
     }
     if not observe_move_target:
         result.pop("move_target_province_id")
@@ -1513,6 +1515,305 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "move-army-101-to-77", driver.capabilities()["action_steps"]
         )
 
+    def test_native_route_preview_expands_and_records_date_and_origin(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.state.army-routes",
+                "game.command.move-army-N-to-N",
+                "game.command.preview-move-army-N-to-N",
+            )
+        )
+        player = _army(101, province_id=11, route_province_ids=[])
+        war = _war(
+            allied_armies=[player],
+            war_objective_province_ids=[2585],
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=53_171_400,
+                active_wars=[war],
+                player_armies=[player],
+            )
+        )
+
+        steps = driver.capabilities()["action_steps"]
+        self.assertIn("move-army-101-to-2585", steps)
+        self.assertIn("preview-move-army-101-to-2585", steps)
+        projected = driver.take_snapshot()
+        self.assertTrue(projected["army_routes_supported"])
+        self.assertTrue(projected["move_route_preview_supported"])
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "available",
+                        "route_preview": {
+                            "status": "available",
+                            "army_id": 101,
+                            "origin_province_id": 11,
+                            "target_province_id": 2585,
+                            "route_province_ids": [11, 31, 31, 2585],
+                        },
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("preview-move-army-101-to-2585")
+
+        self.assertEqual(result["route_preview"]["origin_province_id"], 11)
+        self.assertEqual(
+            result["route_preview"]["previewed_date_raw"], 53_171_400
+        )
+        self.assertEqual(
+            result["route_preview"]["route_province_ids"],
+            [11, 31, 31, 2585],
+        )
+
+    def test_native_route_preview_rejects_unpaused_starting_snapshot(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.command.preview-move-army-N-to-N",
+            )
+        )
+        player = _army(101, province_id=11, route_province_ids=[])
+        endpoint.publish(
+            _snapshot(
+                40,
+                paused=False,
+                active_wars=[
+                    _war(
+                        allied_armies=[player],
+                        war_objective_province_ids=[2585],
+                    )
+                ],
+                player_armies=[player],
+            )
+        )
+
+        with self.assertRaisesRegex(BridgeUnavailableError, "paused map"):
+            driver.execute_step("preview-move-army-101-to-2585")
+        self.assertFalse(
+            any(
+                frame.get("type") == "execute_step"
+                for frame in endpoint.frames
+            )
+        )
+
+    def test_native_route_preview_accepts_empty_same_origin_route(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.preview-move-army-N-to-N",
+            )
+        )
+        player = _army(101, province_id=11, route_province_ids=[])
+        endpoint.publish(
+            _snapshot(
+                40,
+                active_wars=[_war(allied_armies=[player])],
+                player_armies=[player],
+            )
+        )
+
+        primitive_result = {
+            "step": "preview-move-army-101-to-11",
+            "accepted": True,
+            "status": "available",
+            "route_preview": {
+                "status": "available",
+                "army_id": 101,
+                "origin_province_id": 11,
+                "target_province_id": 11,
+                "route_province_ids": [],
+            },
+        }
+        with mock.patch.object(
+            driver,
+            "_execute_primitive_step",
+            return_value=primitive_result,
+        ):
+            result = driver._execute_native_war_step(
+                "preview-move-army-101-to-11", expected_revision=None
+            )
+
+        self.assertEqual(result["route_preview"]["route_province_ids"], [])
+        self.assertEqual(
+            result["route_preview"]["previewed_date_raw"], 53_171_400
+        )
+
+    def test_native_route_preview_not_ready_is_structured_deferred(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.command.preview-move-army-N-to-N",
+            )
+        )
+        player = _army(101, province_id=11, route_province_ids=[])
+        endpoint.publish(
+            _snapshot(
+                40,
+                active_wars=[
+                    _war(
+                        allied_armies=[player],
+                        war_objective_province_ids=[2585],
+                    )
+                ],
+                player_armies=[player],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": False,
+                    "error": "CK3 army state rejects movement",
+                }
+            )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("preview-move-army-101-to-2585")
+
+        self.assertFalse(result["accepted"])
+        self.assertEqual(result["status"], "deferred")
+        self.assertEqual(result["route_preview"]["status"], "deferred")
+        self.assertEqual(
+            result["route_preview"]["previewed_date_raw"], 53_171_400
+        )
+
+    def test_native_move_with_routes_waits_for_auditable_route(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-wars",
+                "game.state.army-routes",
+                "game.command.move-army-N-to-N",
+            )
+        )
+        player = _army(
+            401,
+            province_id=20,
+            observe_move_target=False,
+            route_province_ids=[],
+        )
+        enemy = _army(402, province_id=90, controllable=False)
+        endpoint.publish(
+            _snapshot(
+                60,
+                active_wars=[_war(allied_armies=[player], enemy_armies=[enemy])],
+                player_armies=[player],
+            )
+        )
+        timer: threading.Timer | None = None
+
+        def publish_auditable_route() -> None:
+            moving = _army(
+                401,
+                province_id=20,
+                move_target_province_id=90,
+                route_province_ids=[44, 90],
+            )
+            endpoint.publish(
+                _snapshot(
+                    62,
+                    active_wars=[
+                        _war(allied_armies=[moving], enemy_armies=[enemy])
+                    ],
+                    player_armies=[moving],
+                )
+            )
+
+        def answer(frame: dict[str, object]) -> None:
+            nonlocal timer
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"status": "submitted"},
+                }
+            )
+            waiting = _army(
+                401,
+                province_id=20,
+                observe_move_target=False,
+                route_province_ids=[],
+            )
+            endpoint.publish(
+                _snapshot(
+                    61,
+                    active_wars=[
+                        _war(allied_armies=[waiting], enemy_armies=[enemy])
+                    ],
+                    player_armies=[waiting],
+                )
+            )
+            timer = threading.Timer(0.01, publish_auditable_route)
+            timer.start()
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("move-army-401-to-90")
+        if timer is not None:
+            timer.join(timeout=0.2)
+
+        self.assertEqual(result["war_action"]["status"], "moving")
+        self.assertEqual(
+            result["war_action"]["submitted_date_raw"], 53_171_400
+        )
+        self.assertEqual(
+            result["player_armies"][0]["route_province_ids"], [44, 90]
+        )
+
     def test_exact_war_capability_expands_fallback_and_filters_enforce(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
@@ -1953,7 +2254,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.command.move-army-N-to-N",
             )
         )
-        player = _army(401, province_id=None, observe_move_target=False)
+        player = _army(
+            401,
+            province_id=None,
+            observe_move_target=False,
+            route_province_ids=[],
+        )
         enemy = _army(402, province_id=90, controllable=False)
         endpoint.publish(
             _snapshot(
@@ -1962,6 +2268,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 player_armies=[player],
             )
         )
+        projected = driver.take_snapshot()
+        self.assertFalse(projected["army_routes_supported"])
+        self.assertFalse(projected["move_route_preview_supported"])
 
         def answer(frame: dict[str, object]) -> None:
             if frame.get("type") == "execute_step":

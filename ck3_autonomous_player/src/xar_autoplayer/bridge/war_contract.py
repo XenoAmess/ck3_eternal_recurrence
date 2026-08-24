@@ -6,8 +6,10 @@ from collections.abc import Iterable
 
 
 MOVE_ARMY_CAPABILITY = "game.command.move-army-N-to-N"
+PREVIEW_MOVE_ARMY_CAPABILITY = "game.command.preview-move-army-N-to-N"
 DISBAND_ARMY_CAPABILITY = "game.command.disband-army-N"
 ENFORCE_DEMANDS_CAPABILITY = "game.command.enforce-demands-N"
+ARMY_ROUTES_CAPABILITY = "game.state.army-routes"
 WAR_PRIMARY_OPPONENT_CAPABILITY = "game.state.war-primary-opponent"
 WAR_OBJECTIVES_CAPABILITY = "game.state.war-objectives"
 RAISE_TROOPS_STEP = "raise-troops-default"
@@ -144,6 +146,13 @@ def normalize_armies(
             move_target = _non_negative_id(
                 move_target, "move_target_province_id"
             )
+        route_province_ids = raw_army.get("route_province_ids")
+        if "route_province_ids" in raw_army and not isinstance(
+            route_province_ids, list
+        ):
+            raise ValueError(
+                f"native {name}[{index}].route_province_ids must be an array"
+            )
         controllable = raw_army.get("controllable")
         if not isinstance(controllable, bool):
             raise ValueError(f"native {name}[{index}].controllable is malformed")
@@ -159,6 +168,18 @@ def normalize_armies(
                 "controllable": controllable,
                 "source": "native",
             }
+        if "route_province_ids" in raw_army:
+            normalized["route_province_ids"] = [
+                _positive_int32_id(
+                    province_id,
+                    f"{name}[{index}].route_province_ids",
+                )
+                for province_id in (
+                    route_province_ids
+                    if isinstance(route_province_ids, list)
+                    else []
+                )
+            ]
         for optional_flag in ("in_combat", "retreating"):
             flag = raw_army.get(optional_flag)
             if flag is not None and not isinstance(flag, bool):
@@ -279,6 +300,13 @@ def move_army_step(army_id: int, province_id: int) -> str:
     )
 
 
+def preview_move_army_step(army_id: int, province_id: int) -> str:
+    return (
+        f"preview-move-army-{_positive_int32_id(army_id, 'army_id')}"
+        f"-to-{_positive_int32_id(province_id, 'province_id')}"
+    )
+
+
 def disband_army_step(army_id: int) -> str:
     return f"disband-army-{_non_negative_id(army_id, 'army_id')}"
 
@@ -301,6 +329,24 @@ def parse_move_army_step(step: object) -> tuple[int, int] | None:
     return int(army_text), int(province_text)
 
 
+def parse_preview_move_army_step(step: object) -> tuple[int, int] | None:
+    if not isinstance(step, str) or not step.startswith("preview-move-army-"):
+        return None
+    payload = step.removeprefix("preview-move-army-")
+    army_text, separator, province_text = payload.partition("-to-")
+    if (
+        not separator
+        or not army_text.isdigit()
+        or not province_text.isdigit()
+    ):
+        return None
+    army_id = int(army_text)
+    province_id = int(province_text)
+    if not (0 < army_id <= 2**31 - 1 and 0 < province_id <= 2**31 - 1):
+        return None
+    return army_id, province_id
+
+
 def parse_disband_army_step(step: object) -> int | None:
     if not isinstance(step, str) or not step.startswith("disband-army-"):
         return None
@@ -318,6 +364,7 @@ def parse_enforce_demands_step(step: object) -> int | None:
 def is_native_war_step(step: object) -> bool:
     return (
         step == RAISE_TROOPS_STEP
+        or parse_preview_move_army_step(step) is not None
         or parse_move_army_step(step) is not None
         or parse_disband_army_step(step) is not None
         or parse_enforce_demands_step(step) is not None
@@ -327,6 +374,17 @@ def is_native_war_step(step: object) -> bool:
 def _non_negative_id(value: object, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value < 0:
         raise ValueError(f"{name} must be a non-negative integer")
+    return value
+
+
+def _positive_int32_id(value: object, name: str) -> int:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, int)
+        or value <= 0
+        or value > 2**31 - 1
+    ):
+        raise ValueError(f"{name} must be a positive int32")
     return value
 
 

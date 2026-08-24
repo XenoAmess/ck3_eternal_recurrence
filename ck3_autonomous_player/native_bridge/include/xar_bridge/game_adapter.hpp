@@ -43,6 +43,9 @@ public:
   virtual MoveArmyResult submit_move_army(std::int32_t army_id,
                                           std::int32_t province_id) const
       noexcept = 0;
+  virtual PreviewMoveArmyResult
+  preview_move_army(std::int32_t army_id,
+                    std::int32_t province_id) const noexcept = 0;
   virtual DisbandArmyResult submit_disband_army(std::int32_t army_id) const
       noexcept = 0;
   virtual bool read_declarable_wars(
@@ -115,6 +118,11 @@ inline MoveArmyResult SubmitMoveArmy(const GameAdapter &game,
                                      std::int32_t army_id,
                                      std::int32_t province_id) noexcept {
   return game.submit_move_army(army_id, province_id);
+}
+inline PreviewMoveArmyResult
+PreviewMoveArmy(const GameAdapter &game, std::int32_t army_id,
+                std::int32_t province_id) noexcept {
+  return game.preview_move_army(army_id, province_id);
 }
 inline DisbandArmyResult SubmitDisbandArmy(const GameAdapter &game,
                                            std::int32_t army_id) noexcept {
