@@ -1333,7 +1333,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         player["move_target_province_id"] = None
         player["route_province_ids"] = []
         player["army_state"] = "regular"
-        self.assertEqual(_life_advance_horizon_days(snapshot), 30)
+        self.assertEqual(_life_advance_horizon_days(snapshot), 7)
 
     def test_route_target_alone_enforces_one_day_horizon(self) -> None:
         player = _army(
@@ -1350,6 +1350,67 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         }
 
         self.assertEqual(_life_advance_horizon_days(snapshot), 1)
+
+    def test_any_controllable_combat_or_retreat_enforces_one_day_horizon(
+        self,
+    ) -> None:
+        safe = _army(
+            101,
+            province_id=20,
+            route_province_ids=[],
+            army_state="regular",
+        )
+        for tactical in (
+            {"army_state": "combat", "army_state_code": 2},
+            {"army_state": "retreating", "army_state_code": 6},
+            {"in_combat": True},
+            {"retreating": True},
+        ):
+            with self.subTest(tactical=tactical):
+                army = _army(202, province_id=31, **tactical)
+                snapshot = {
+                    "paused": True,
+                    "player_armies": [safe, army],
+                    "active_wars": [_war(allied_armies=[safe, army])],
+                }
+                self.assertEqual(_life_advance_horizon_days(snapshot), 1)
+
+    def test_combat_and_enemy_route_one_day_slices_use_speed_one(self) -> None:
+        combat = _army(
+            101, province_id=20, army_state="combat", army_state_code=2
+        )
+        combat_result, combat_steps = self._run_life_advance_speed_fixture(
+            active_wars=[_war(allied_armies=[combat])],
+            player_armies=[combat],
+            expected_speed=1,
+            horizon_days=1,
+        )
+        self.assertEqual(
+            combat_steps, ["set-speed-1", "resume-map", "pause-map"]
+        )
+        self.assertEqual(combat_result["elapsed_days"], 1)
+
+        player = _army(101, province_id=2585, army_state="sieging")
+        enemy = _army(
+            202,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        enemy_result, enemy_steps = self._run_life_advance_speed_fixture(
+            active_wars=[
+                _war(allied_armies=[player], enemy_armies=[enemy])
+            ],
+            player_armies=[player],
+            expected_speed=1,
+            horizon_days=1,
+        )
+        self.assertEqual(
+            enemy_steps, ["set-speed-1", "resume-map", "pause-map"]
+        )
+        self.assertEqual(enemy_result["elapsed_days"], 1)
 
     def test_moving_state_without_route_fields_enforces_one_day_horizon(
         self,
@@ -3950,6 +4011,46 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             [11, 31, 31, 2585],
         )
 
+    def test_existing_move_target_still_advertises_preview_not_duplicate_move(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.command.move-army-N-to-N",
+                "game.command.preview-move-army-N-to-N",
+            )
+        )
+        player = _army(
+            101,
+            province_id=11,
+            move_target_province_id=77,
+            route_province_ids=[77],
+            army_state="moving",
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                active_wars=[
+                    _war(
+                        allied_armies=[player],
+                        war_objective_province_ids=[77],
+                    )
+                ],
+                player_armies=[player],
+            )
+        )
+
+        steps = driver.capabilities()["action_steps"]
+        self.assertIn("preview-move-army-101-to-77", steps)
+        self.assertNotIn("move-army-101-to-77", steps)
+
     def test_native_route_preview_preserves_a_later_origin_loop(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
@@ -5332,6 +5433,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.active-event",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
                 "game.command.set-speed-5",
                 "game.command.select-event-option-N",
             )
@@ -5681,6 +5783,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.snapshot",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
                 "game.command.set-speed-5",
             )
         )
@@ -5745,7 +5848,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 _snapshot(
                     revision,
                     date_raw=date_raw,
-                    speed=5,
+                    speed=1,
                     paused=False,
                     active_wars=[war(enemy)],
                     player_armies=[player],
@@ -5769,12 +5872,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "result": {"step": step, "accepted": True},
                 }
             )
-            if step == "set-speed-5":
+            if step == "set-speed-1":
                 endpoint.publish(
                     _snapshot(
                         81,
                         date_raw=start_date,
-                        speed=5,
+                        speed=1,
                         active_wars=[starting_war],
                         player_armies=[player],
                     )
@@ -5796,8 +5899,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 endpoint.publish(
                     _snapshot(
                         85,
-                        date_raw=start_date + 48,
-                        speed=5,
+                        date_raw=start_date + 24,
+                        speed=1,
                         paused=True,
                         active_wars=[war(threatening_enemy)],
                         player_armies=[player],
@@ -5809,8 +5912,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         for timer in timers:
             timer.join(timeout=1.0)
 
-        self.assertEqual(pause_before_threat, [False])
-        self.assertEqual(result["elapsed_days"], 2)
+        self.assertEqual(pause_before_threat, [True])
+        self.assertEqual(result["elapsed_days"], 1)
         self.assertEqual(result["progress_status"], "postcondition")
         self.assertTrue(result["paused"])
 

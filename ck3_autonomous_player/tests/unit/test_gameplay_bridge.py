@@ -27,7 +27,11 @@ from xar_autoplayer.bridge.war_contract import (
     normalize_active_wars,
     war_objective_province_ids,
 )
-from xar_autoplayer.strategy import _audit_war_route, record_one_life_episode
+from xar_autoplayer.strategy import (
+    _audit_war_route,
+    _enemy_endpoint_epochs,
+    record_one_life_episode,
+)
 
 
 def _snapshot(revision: int = 0, history: list[dict[str, object]] | None = None):
@@ -50,6 +54,15 @@ def _army(
     move_target_province_id: int | None = None,
     **state: object,
 ) -> dict[str, object]:
+    if (
+        not controllable
+        and move_target_province_id is not None
+        and state.get("army_state") == "moving"
+        and "route_province_ids" not in state
+    ):
+        # A normal paused moving hostile fixture carries a complete remaining
+        # route.  Evidence-gap tests opt out explicitly with ``None``.
+        state["route_province_ids"] = [move_target_province_id]
     return {
         "army_id": army_id,
         "owner_character_id": 707 if controllable else 808,
@@ -181,6 +194,7 @@ def _war_progress(
         "army_state_code",
         "in_combat",
         "retreating",
+        "route_province_ids",
     )
 
     def compact(army: dict[str, object]) -> dict[str, object]:
@@ -311,6 +325,7 @@ def _preview_row(
 def _native_war_plan(
     *,
     player: dict[str, object],
+    players: list[dict[str, object]] | None = None,
     enemies: list[dict[str, object]],
     score: int,
     date_raw: int,
@@ -330,6 +345,7 @@ def _native_war_plan(
     assault_supported: bool = False,
     rollback_war_failure: dict[str, object] | None = None,
 ) -> dict[str, object]:
+    controlled = list(players) if players is not None else [player]
     route_field_present = "route_province_ids" in player
     driver = CallbackGameplayDriver(
         backend_id="native-headless",
@@ -358,7 +374,7 @@ def _native_war_plan(
             "native_rollback_war_failure": rollback_war_failure,
             "active_wars": [
                 _war(
-                    allied_armies=[player],
+                    allied_armies=controlled,
                     enemy_armies=enemies,
                     score=score,
                     enemy_primary_default_raise_province_id=fallback,
@@ -372,7 +388,7 @@ def _native_war_plan(
                     objective_province_states=objective_states,
                 )
             ],
-            "player_armies": [player],
+            "player_armies": controlled,
         },
         execute=lambda _step, _revision: {},
         action_steps=steps,
@@ -595,6 +611,172 @@ class GameplayBridgeTests(unittest.TestCase):
             [20, 31, 31, 2585],
         )
 
+    def test_enemy_endpoint_ledger_keeps_multi_stack_endpoints_separate(
+        self,
+    ) -> None:
+        enemies = [
+            _army(
+                357,
+                soldiers=800,
+                province_id=2581,
+                controllable=False,
+                move_target_province_id=2596,
+                army_state="moving",
+                route_province_ids=[2596],
+            ),
+            _army(
+                33_554_657,
+                soldiers=2_400,
+                province_id=2581,
+                controllable=False,
+                move_target_province_id=2587,
+                army_state="moving",
+                route_province_ids=[2587],
+            ),
+        ]
+
+        epochs = _enemy_endpoint_epochs(
+            [],
+            {
+                "date_raw": 53_175_984,
+                "active_wars": [
+                    _war(
+                        war_id=16_777_290,
+                        allied_armies=[],
+                        enemy_armies=enemies,
+                    )
+                ],
+            },
+        )
+
+        self.assertEqual(
+            [
+                (epoch["enemy_army_id"], epoch["endpoint_province_id"])
+                for epoch in epochs
+            ],
+            [(357, 2596), (33_554_657, 2587)],
+        )
+
+    def test_enemy_endpoint_ledger_keeps_natural_route_suffix_epoch(
+        self,
+    ) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2596, controllable=True
+        )
+        before_enemy = _army(
+            357,
+            soldiers=800,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            army_state="moving",
+            route_province_ids=[2581, 2587, 2596],
+        )
+        after_enemy = _army(
+            357,
+            soldiers=None,
+            province_id=2587,
+            controllable=False,
+            move_target_province_id=2596,
+            army_state="moving",
+            route_province_ids=[2587, 2596],
+        )
+        before = _war_progress(
+            53_175_984,
+            player=player,
+            enemies=[before_enemy],
+            score=12,
+            war_id=16_777_290,
+        )
+        after = _war_progress(
+            53_176_152,
+            player=player,
+            enemies=[after_enemy],
+            score=12,
+            war_id=16_777_290,
+        )
+        final = _war_progress(
+            53_176_320,
+            player=player,
+            enemies=[after_enemy],
+            score=12,
+            war_id=16_777_290,
+        )
+
+        epochs = _enemy_endpoint_epochs(
+            [
+                _advance_row(1, before, after),
+                _advance_row(2, after, final),
+            ],
+            {
+                "date_raw": 53_176_320,
+                "active_wars": [
+                    _war(
+                        war_id=16_777_290,
+                        allied_armies=[player],
+                        enemy_armies=[after_enemy],
+                    )
+                ],
+            },
+        )
+
+        self.assertEqual(len(epochs), 1)
+        self.assertEqual(epochs[0]["epoch_sequence"], 1)
+        self.assertEqual(epochs[0]["observed_span_days"], 14)
+        self.assertEqual(epochs[0]["milestones_crossed_days"], [7, 14])
+        self.assertEqual(epochs[0]["route_province_ids"], [2596])
+
+    def test_enemy_endpoint_ledger_reopens_on_nonprefix_reroute(self) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2596, controllable=True
+        )
+        before_enemy = _army(
+            357,
+            soldiers=800,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            army_state="moving",
+            route_province_ids=[2587, 2596],
+        )
+        after_enemy = {
+            **before_enemy,
+            "route_province_ids": [2589, 2596],
+        }
+        before = _war_progress(
+            53_175_984,
+            player=player,
+            enemies=[before_enemy],
+            score=12,
+            war_id=16_777_290,
+        )
+        after = _war_progress(
+            53_176_056,
+            player=player,
+            enemies=[after_enemy],
+            score=12,
+            war_id=16_777_290,
+        )
+
+        epochs = _enemy_endpoint_epochs(
+            [_advance_row(1, before, after)],
+            {
+                "date_raw": 53_176_056,
+                "active_wars": [
+                    _war(
+                        war_id=16_777_290,
+                        allied_armies=[player],
+                        enemy_armies=[after_enemy],
+                    )
+                ],
+            },
+        )
+
+        self.assertEqual([epoch["epoch_sequence"] for epoch in epochs], [1, 2])
+        self.assertFalse(epochs[0]["active"])
+        self.assertEqual(epochs[0]["closed_reason"], "intent_changed")
+        self.assertTrue(epochs[1]["active"])
+
     def test_exact_route_previews_first_then_moves_with_fresh_safe_route(
         self,
     ) -> None:
@@ -701,7 +883,6 @@ class GameplayBridgeTests(unittest.TestCase):
             origin_province_id=20,
             target_province_id=90,
             enemies=[enemy],
-            allow_enemy_at_destination=True,
         )
 
         self.assertEqual(audit["status"], "unsafe")
@@ -917,7 +1098,7 @@ class GameplayBridgeTests(unittest.TestCase):
 
         self.assertEqual(plan["selected_step"], "move-army-11-to-2585")
 
-    def test_passive_route_allows_only_the_pursued_enemy_at_destination(
+    def test_passive_route_rejects_enemy_at_nonobjective_destination(
         self,
     ) -> None:
         player = _army(
@@ -934,13 +1115,25 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         safe = _native_war_plan(
             player=player,
-            enemies=[target_enemy],
+            enemies=[],
             score=0,
             date_raw=24_000,
             steps=("life-advance",),
         )
         self.assertEqual(safe["phase"], "native_war_route_progress")
         self.assertEqual(safe["selected_step"], "life-advance")
+
+        destination_blocked = _native_war_plan(
+            player=player,
+            enemies=[target_enemy],
+            score=0,
+            date_raw=24_000,
+            steps=("life-advance",),
+        )
+        self.assertEqual(
+            destination_blocked["phase"], "native_war_no_safe_exact_route"
+        )
+        self.assertIsNone(destination_blocked["selected_step"])
 
         intermediate_enemy = _army(
             22, soldiers=700, province_id=52, controllable=False
@@ -1221,7 +1414,7 @@ class GameplayBridgeTests(unittest.TestCase):
             soldiers=800,
             province_id=2600,
             controllable=False,
-            move_target_province_id=2596,
+            move_target_province_id=2585,
             army_state="moving",
             route_province_ids=[2596, 2585],
         )
@@ -1797,6 +1990,199 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertNotEqual(plan["selected_step"], "life-advance")
 
+    def test_safe_active_route_does_not_hide_stationary_army_threat(
+        self,
+    ) -> None:
+        moving = _army(
+            11,
+            soldiers=1_500,
+            province_id=20,
+            controllable=True,
+            move_target_province_id=2585,
+            army_state="moving",
+            route_province_ids=[20, 52, 2585],
+        )
+        enemy = _army(
+            21,
+            soldiers=800,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            army_state="moving",
+            route_province_ids=[2587, 2597, 2596],
+        )
+        for stationary_state in ("regular", "sieging"):
+            with self.subTest(stationary_state=stationary_state):
+                stationary = _army(
+                    12,
+                    soldiers=500,
+                    province_id=2596,
+                    controllable=True,
+                    army_state=stationary_state,
+                    route_province_ids=[],
+                )
+                snapshot = {
+                    **_snapshot(90),
+                    "paused": True,
+                    "army_routes_supported": True,
+                    "move_route_preview_supported": True,
+                    "date_raw": 24_000,
+                    "native_command_history": [],
+                    "active_wars": [
+                        _war(
+                            allied_armies=[moving, stationary],
+                            enemy_armies=[enemy],
+                            score=24,
+                            war_objective_province_ids=[2596, 2510, 2585],
+                        )
+                    ],
+                    "player_armies": [moving, stationary],
+                }
+                driver = CallbackGameplayDriver(
+                    backend_id="native-headless",
+                    snapshot=lambda: snapshot,
+                    execute=lambda _step, _revision: {},
+                    action_steps=(
+                        "preview-move-army-12-to-2510",
+                        "life-advance",
+                    ),
+                )
+                safe_snapshot = {
+                    **snapshot,
+                    "active_wars": [
+                        {**snapshot["active_wars"][0], "enemy_armies": []}
+                    ],
+                }
+                safe_driver = CallbackGameplayDriver(
+                    backend_id="native-headless",
+                    snapshot=lambda: safe_snapshot,
+                    execute=lambda _step, _revision: {},
+                    action_steps=(
+                        "preview-move-army-12-to-2510",
+                        "life-advance",
+                    ),
+                )
+
+                safe_plan = GameplayBridgeService(safe_driver).plan_turn()[
+                    "plan"
+                ]
+                plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+                self.assertEqual(
+                    safe_plan["phase"], "native_war_route_progress"
+                )
+                self.assertEqual(safe_plan["selected_step"], "life-advance")
+                self.assertEqual(plan["phase"], "native_war_route_preview")
+                self.assertEqual(
+                    plan["selected_step"],
+                    "preview-move-army-12-to-2510",
+                )
+                self.assertNotEqual(plan["selected_step"], "life-advance")
+
+    def test_safe_active_assault_does_not_hide_stationary_army_threat(
+        self,
+    ) -> None:
+        assaulting = _army(
+            11,
+            soldiers=1_500,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        stationary = _army(
+            12,
+            soldiers=500,
+            province_id=2596,
+            controllable=True,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            21,
+            soldiers=800,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            army_state="moving",
+            route_province_ids=[2587, 2597, 2596],
+        )
+        snapshot = {
+            **_snapshot(90),
+            "paused": True,
+            "army_routes_supported": True,
+            "move_route_preview_supported": True,
+            "war_objective_garrison_supported": True,
+            "war_objective_siege_progress_supported": True,
+            "war_objective_assault_supported": True,
+            "date_raw": 24_000,
+            "native_command_history": [],
+            "active_wars": [
+                _war(
+                    allied_armies=[assaulting, stationary],
+                    enemy_armies=[enemy],
+                    score=24,
+                    war_objective_province_ids=[2585, 2596, 2510],
+                    objective_province_states=[
+                        _objective_state(
+                            2585,
+                            garrison_size=500,
+                            besieging_strength=1_500,
+                            active_siege=_active_siege(
+                                army_id=11,
+                                assault_observable=True,
+                                breach_level=1,
+                                assault_in_progress=True,
+                                can_start_assault=False,
+                                can_stop_assault=True,
+                                assault_daily_progress_raw=340_000,
+                                assault_daily_casualties=16,
+                            ),
+                        )
+                    ],
+                )
+            ],
+            "player_armies": [assaulting, stationary],
+        }
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: snapshot,
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "preview-move-army-12-to-2585",
+                "life-advance",
+            ),
+        )
+        safe_snapshot = {
+            **snapshot,
+            "active_wars": [
+                {**snapshot["active_wars"][0], "enemy_armies": []}
+            ],
+        }
+        safe_driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: safe_snapshot,
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "preview-move-army-12-to-2585",
+                "life-advance",
+            ),
+        )
+
+        safe_plan = GameplayBridgeService(safe_driver).plan_turn()["plan"]
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(
+            safe_plan["phase"], "native_war_assault_daily_progress"
+        )
+        self.assertEqual(safe_plan["selected_step"], "life-advance")
+        self.assertEqual(plan["phase"], "native_war_route_preview")
+        self.assertEqual(
+            plan["selected_step"],
+            "preview-move-army-12-to-2585",
+        )
+        self.assertNotEqual(plan["selected_step"], "life-advance")
+
     def test_unpaused_active_route_is_paused_before_route_audit(self) -> None:
         player = _army(
             11,
@@ -2160,7 +2546,547 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["phase"], "native_war_raise")
         self.assertEqual(plan["selected_step"], "raise-troops-default")
 
-    def test_native_war_planner_chases_largest_visible_enemy(self) -> None:
+    def test_two_army_partial_route_blocks_before_other_unsafe_route(self) -> None:
+        unsafe = _army(
+            101,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            move_target_province_id=2604,
+            army_state="moving",
+            route_province_ids=[31, 2604],
+        )
+        unavailable = _army(
+            202,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            move_target_province_id=2600,
+            army_state="moving",
+            route_province_ids=None,
+        )
+        enemy = _army(
+            357, soldiers=None, province_id=31, controllable=False
+        )
+
+        plan = _native_war_plan(
+            player=unsafe,
+            players=[unsafe, unavailable],
+            enemies=[enemy],
+            score=12,
+            date_raw=53_175_984,
+            objectives=[2604, 2600],
+            steps=(
+                "move-army-101-to-2600",
+                "merge-armies-101-with-202",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_route_evidence_blocked")
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["route_evidence_issues"][0]["army_id"], 202)
+
+    def test_hostile_partial_moving_route_blocks_global_matrix(self) -> None:
+        player = _army(
+            101,
+            soldiers=None,
+            province_id=2596,
+            controllable=True,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        hostile = _army(
+            357,
+            soldiers=None,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=None,
+        )
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=[hostile],
+            score=12,
+            date_raw=53_175_984,
+            objective=2604,
+            steps=("move-army-101-to-2604", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_route_evidence_blocked")
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["route_evidence_issues"][0]["role"], "enemy")
+
+    def test_global_route_matrix_catches_nonselected_fourth_cell(self) -> None:
+        main = _army(
+            101,
+            soldiers=2_000,
+            province_id=2596,
+            controllable=True,
+            move_target_province_id=2604,
+            army_state="moving",
+            route_province_ids=[2604],
+        )
+        sibling = _army(
+            202,
+            soldiers=500,
+            province_id=2596,
+            controllable=True,
+            move_target_province_id=2600,
+            army_state="moving",
+            route_province_ids=[2587, 2600],
+        )
+        enemies = [
+            _army(
+                357,
+                soldiers=800,
+                province_id=2581,
+                controllable=False,
+                move_target_province_id=2596,
+                army_state="moving",
+                route_province_ids=[2596],
+            ),
+            _army(
+                33_554_657,
+                soldiers=2_400,
+                province_id=2581,
+                controllable=False,
+                move_target_province_id=2587,
+                army_state="moving",
+                route_province_ids=[2587],
+            ),
+        ]
+
+        plan = _native_war_plan(
+            player=main,
+            players=[main, sibling],
+            enemies=enemies,
+            score=12,
+            date_raw=53_175_984,
+            objectives=[2604, 2600],
+            steps=("preview-move-army-202-to-2604", "life-advance"),
+        )
+
+        self.assertNotEqual(plan["selected_step"], "life-advance")
+        self.assertIn(
+            plan["phase"],
+            {"native_war_route_preview", "native_war_no_safe_exact_route"},
+        )
+
+    def test_live_split_receipt_recovers_original_main_with_unique_delta(
+        self,
+    ) -> None:
+        main = _army(
+            83_886_341,
+            soldiers=None,
+            province_id=2596,
+            controllable=True,
+            move_target_province_id=2604,
+            army_state="moving",
+            route_province_ids=[2604],
+        )
+        sibling = _army(
+            16_777_558,
+            soldiers=None,
+            province_id=2596,
+            controllable=True,
+            move_target_province_id=2600,
+            army_state="moving",
+            route_province_ids=[2600],
+        )
+        enemies = [
+            _army(
+                357,
+                soldiers=None,
+                province_id=2581,
+                controllable=False,
+                move_target_province_id=2596,
+                army_state="moving",
+                route_province_ids=[2596],
+            ),
+            _army(
+                33_554_657,
+                soldiers=None,
+                province_id=2581,
+                controllable=False,
+                move_target_province_id=2587,
+                army_state="moving",
+                route_province_ids=[2587],
+            ),
+        ]
+        split = {
+            "index": 109,
+            "command": "split-army-half-83886341",
+            "ok": True,
+            "result": {
+                "war_action": {
+                    "status": "split_submitted",
+                    "source_army_id": 83_886_341,
+                    "submitted_date_raw": 53_175_840,
+                    "player_army_ids_before": [83_886_341],
+                }
+            },
+        }
+
+        plan = _native_war_plan(
+            player=main,
+            players=[main, sibling],
+            enemies=enemies,
+            score=12,
+            date_raw=53_175_984,
+            history=[split],
+            objectives=[2604, 2600],
+            steps=(
+                "merge-armies-83886341-with-16777558",
+                "split-army-half-83886341",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_merge_recovery")
+        self.assertEqual(
+            plan["selected_step"],
+            "merge-armies-83886341-with-16777558",
+        )
+        self.assertNotEqual(plan["selected_step"], "life-advance")
+
+    def test_merge_submission_waits_without_resubmit_or_time(self) -> None:
+        main = _army(
+            101,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            route_province_ids=[],
+        )
+        sibling = _army(
+            202,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            route_province_ids=[],
+        )
+        history = [
+            {
+                "index": 1,
+                "command": "split-army-half-101",
+                "ok": True,
+                "result": {
+                    "war_action": {
+                        "status": "split_submitted",
+                        "source_army_id": 101,
+                        "player_army_ids_before": [101],
+                    }
+                },
+            },
+            {
+                "index": 2,
+                "command": "merge-armies-101-with-202",
+                "ok": True,
+                "result": {"war_action": {"status": "merge_submitted"}},
+            },
+        ]
+
+        plan = _native_war_plan(
+            player=main,
+            players=[main, sibling],
+            enemies=[],
+            score=12,
+            date_raw=24_000,
+            history=history,
+            objective=77,
+            steps=("merge-armies-101-with-202", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_merge_recovery_blocked")
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["merge_recovery"]["status"], "merge_pending")
+
+        failed_history = [
+            history[0],
+            {
+                **history[1],
+                "ok": False,
+                "error": "fixture validator rejected merge",
+            },
+        ]
+        failed = _native_war_plan(
+            player=main,
+            players=[main, sibling],
+            enemies=[],
+            score=12,
+            date_raw=24_000,
+            history=failed_history,
+            objective=77,
+            steps=("merge-armies-101-with-202", "life-advance"),
+        )
+        self.assertEqual(failed["phase"], "native_war_merge_recovery_blocked")
+        self.assertIsNone(failed["selected_step"])
+        self.assertEqual(failed["merge_recovery"]["status"], "merge_failed")
+
+    def test_separated_exact_split_pair_requires_safe_rendezvous(self) -> None:
+        main = _army(
+            101,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            route_province_ids=[],
+        )
+        sibling = _army(
+            202,
+            soldiers=None,
+            province_id=31,
+            controllable=True,
+            route_province_ids=[],
+        )
+        split = {
+            "index": 1,
+            "command": "split-army-half-101",
+            "ok": True,
+            "result": {
+                "war_action": {
+                    "status": "split_submitted",
+                    "source_army_id": 101,
+                    "player_army_ids_before": [101],
+                }
+            },
+        }
+
+        plan = _native_war_plan(
+            player=main,
+            players=[main, sibling],
+            enemies=[],
+            score=12,
+            date_raw=24_000,
+            history=[split],
+            objective=77,
+            steps=("move-army-101-to-77", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_merge_rendezvous_blocked")
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["merge_recovery"]["status"], "merge_requires_rendezvous"
+        )
+
+    def test_post_merge_requires_fresh_preview_and_matching_route(self) -> None:
+        main = _army(
+            101,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            move_target_province_id=77,
+            army_state="moving",
+            route_province_ids=[77],
+        )
+        split = {
+            "index": 2,
+            "command": "split-army-half-101",
+            "ok": True,
+            "result": {
+                "war_action": {
+                    "status": "split_submitted",
+                    "source_army_id": 101,
+                    "player_army_ids_before": [101],
+                }
+            },
+        }
+        merge = {
+            "index": 3,
+            "command": "merge-armies-101-with-202",
+            "ok": True,
+            "result": {"war_action": {"status": "merge_submitted"}},
+        }
+        old_preview = _preview_row(
+            1, army_id=101, origin=20, target=77, date_raw=24_000, route=[77]
+        )
+
+        preview_required = _native_war_plan(
+            player=main,
+            enemies=[],
+            score=12,
+            date_raw=24_000,
+            history=[old_preview, split, merge],
+            objective=77,
+            steps=("preview-move-army-101-to-77", "life-advance"),
+        )
+        self.assertEqual(
+            preview_required["phase"], "native_war_merge_route_preview"
+        )
+        self.assertEqual(
+            preview_required["selected_step"],
+            "preview-move-army-101-to-77",
+        )
+
+        fresh = _preview_row(
+            4, army_id=101, origin=20, target=77, date_raw=24_000, route=[77]
+        )
+        progress = _native_war_plan(
+            player=main,
+            enemies=[],
+            score=12,
+            date_raw=24_000,
+            history=[old_preview, split, merge, fresh],
+            objective=77,
+            steps=("preview-move-army-101-to-77", "life-advance"),
+        )
+        self.assertEqual(progress["phase"], "native_war_merge_route_progress")
+        self.assertEqual(progress["selected_step"], "life-advance")
+
+        mismatched = _preview_row(
+            4,
+            army_id=101,
+            origin=20,
+            target=77,
+            date_raw=24_000,
+            route=[31, 77],
+        )
+        blocked = _native_war_plan(
+            player=main,
+            enemies=[],
+            score=12,
+            date_raw=24_000,
+            history=[old_preview, split, merge, mismatched],
+            objective=77,
+            steps=("preview-move-army-101-to-77", "life-advance"),
+        )
+        self.assertEqual(
+            blocked["phase"], "native_war_merge_route_refresh_blocked"
+        )
+        self.assertIsNone(blocked["selected_step"])
+
+    def test_merge_barrier_discards_old_deferred_move_backoff(self) -> None:
+        main = _army(
+            101,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            route_province_ids=[],
+        )
+        history = [
+            {
+                "index": 1,
+                "command": "move-army-101-to-77",
+                "ok": True,
+                "result": {
+                    "war_action": {
+                        "status": "move_deferred",
+                        "submitted_date_raw": 24_000,
+                    }
+                },
+            },
+            {
+                "index": 2,
+                "command": "split-army-half-101",
+                "ok": True,
+                "result": {
+                    "war_action": {
+                        "status": "split_submitted",
+                        "source_army_id": 101,
+                        "player_army_ids_before": [101],
+                    }
+                },
+            },
+            {
+                "index": 3,
+                "command": "merge-armies-101-with-202",
+                "ok": True,
+                "result": {"war_action": {"status": "merge_submitted"}},
+            },
+        ]
+
+        plan = _native_war_plan(
+            player=main,
+            enemies=[],
+            score=12,
+            date_raw=24_024,
+            history=history,
+            objective=77,
+            move_route_preview_supported=False,
+            steps=("move-army-101-to-77", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_pursuit")
+        self.assertEqual(plan["selected_step"], "move-army-101-to-77")
+
+    def test_all_army_combat_gate_precedes_stronger_safe_route(self) -> None:
+        stronger = _army(
+            101,
+            soldiers=2_000,
+            province_id=20,
+            controllable=True,
+            move_target_province_id=77,
+            army_state="moving",
+            route_province_ids=[77],
+        )
+        weaker = _army(
+            202,
+            soldiers=500,
+            province_id=31,
+            controllable=True,
+            army_state="combat",
+            army_state_code=2,
+            route_province_ids=[],
+        )
+
+        plan = _native_war_plan(
+            player=stronger,
+            players=[stronger, weaker],
+            enemies=[],
+            score=12,
+            date_raw=24_000,
+            objective=77,
+            steps=("move-army-101-to-77", "life-advance"),
+        )
+
+        self.assertEqual(
+            plan["phase"], "native_war_global_combat_retreat_progress"
+        )
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["combat_retreat_armies"][0]["army_id"], 202)
+
+    def test_combat_army_does_not_hide_other_armys_urgent_reroute(self) -> None:
+        stronger = _army(
+            101,
+            soldiers=2_000,
+            province_id=20,
+            controllable=True,
+            move_target_province_id=77,
+            army_state="moving",
+            route_province_ids=[31, 77],
+        )
+        weaker = _army(
+            202,
+            soldiers=500,
+            province_id=40,
+            controllable=True,
+            army_state="combat",
+            army_state_code=2,
+            route_province_ids=[],
+        )
+        enemy = _army(
+            357, soldiers=None, province_id=31, controllable=False
+        )
+
+        plan = _native_war_plan(
+            player=stronger,
+            players=[stronger, weaker],
+            enemies=[enemy],
+            score=12,
+            date_raw=24_000,
+            objectives=[77, 88],
+            steps=("preview-move-army-101-to-88", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_route_preview")
+        self.assertEqual(
+            plan["selected_step"], "preview-move-army-101-to-88"
+        )
+        self.assertNotEqual(plan["selected_step"], "life-advance")
+
+    def test_native_war_planner_does_not_chase_largest_visible_enemy(self) -> None:
         player = _army(
             11, soldiers=1_700, province_id=20, controllable=True
         )
@@ -2189,12 +3115,11 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["phase"], "native_war_pursuit")
-        self.assertEqual(plan["selected_step"], step)
-        self.assertEqual(plan["pursuit"]["target_army_id"], 22)
-        self.assertEqual(plan["pursuit"]["target_province_id"], 32)
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
+        self.assertNotIn("pursuit", plan)
 
-    def test_native_war_planner_uses_stable_enemy_when_soldiers_unknown(self) -> None:
+    def test_native_war_planner_never_uses_soldiers_as_combat_prediction(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)
         enemy_22 = _army(
             22, soldiers=None, province_id=42, controllable=False
@@ -2220,10 +3145,10 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["selected_step"], "move-army-11-to-41")
-        self.assertEqual(plan["pursuit"]["target_army_id"], 21)
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
-    def test_zero_score_attacker_still_chases_visible_enemy(self) -> None:
+    def test_zero_score_attacker_holds_without_exact_objective(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)
         enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
         driver = CallbackGameplayDriver(
@@ -2249,9 +3174,8 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["selected_step"], "move-army-11-to-41")
-        self.assertEqual(plan["pursuit"]["objective_kind"], "pursuit")
-        self.assertEqual(plan["pursuit"]["target_army_id"], 21)
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
     def test_zero_score_attacker_uses_exact_objective_before_enemy(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)
@@ -2274,7 +3198,7 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["pursuit"]["objective_kind"], "siege")
         self.assertEqual(plan["pursuit"]["target_source"], "war_objective_province")
 
-    def test_positive_score_attacker_advances_same_province_battle(self) -> None:
+    def test_positive_score_attacker_does_not_infer_same_province_battle(self) -> None:
         player = _army(11, soldiers=900, province_id=41, controllable=True)
         enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
         driver = CallbackGameplayDriver(
@@ -2297,12 +3221,10 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["selected_step"], "life-advance")
-        self.assertEqual(plan["pursuit"]["objective_kind"], "pursuit")
-        self.assertEqual(plan["pursuit"]["target_army_id"], 21)
-        self.assertEqual(plan["pursuit"]["target_province_id"], 41)
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
-    def test_positive_score_attacker_switches_to_siege_objective(self) -> None:
+    def test_positive_score_attacker_does_not_use_rally_as_exact_objective(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)
         enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
         driver = CallbackGameplayDriver(
@@ -2328,12 +3250,10 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["selected_step"], "move-army-11-to-77")
-        self.assertEqual(plan["pursuit"]["objective_kind"], "siege")
-        self.assertIsNone(plan["pursuit"]["target_army_id"])
-        self.assertEqual(plan["pursuit"]["target_province_id"], 77)
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
-    def test_attacker_at_siege_objective_advances_without_retargeting(self) -> None:
+    def test_attacker_at_rally_fallback_holds_without_exact_objective(self) -> None:
         player = _army(11, soldiers=900, province_id=77, controllable=True)
         enemy = _army(21, soldiers=1_100, province_id=42, controllable=False)
         driver = CallbackGameplayDriver(
@@ -2356,9 +3276,8 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["selected_step"], "life-advance")
-        self.assertEqual(plan["pursuit"]["objective_kind"], "siege")
-        self.assertEqual(plan["pursuit"]["target_province_id"], 77)
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
     def test_exact_war_objective_precedes_legacy_rally_fallback(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)
@@ -2396,7 +3315,7 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["selected_step"], "move-army-11-to-2585")
         self.assertEqual(plan["pursuit"]["target_province_id"], 2585)
 
-    def test_completed_exact_objective_rotates_to_legacy_fallback(self) -> None:
+    def test_completed_exact_objective_does_not_rotate_to_legacy_fallback(self) -> None:
         sieging = _army(
             11, soldiers=900, province_id=2585, controllable=True,
             army_state="sieging",
@@ -2419,13 +3338,10 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("move-army-11-to-2585", "move-army-11-to-2543"),
         )
 
-        self.assertEqual(plan["selected_step"], "move-army-11-to-2543")
-        self.assertEqual(
-            plan["pursuit"]["target_source"],
-            "enemy_primary_default_raise_province",
-        )
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
-    def test_completed_exact_and_fallback_objectives_rotate_to_enemy(self) -> None:
+    def test_completed_objectives_do_not_rotate_to_enemy_or_rally(self) -> None:
         enemy = _army(21, soldiers=800, province_id=41, controllable=False)
         exact_siege = _army(
             11, soldiers=900, province_id=2585, controllable=True,
@@ -2468,8 +3384,8 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("move-army-11-to-41", "life-advance"),
         )
 
-        self.assertEqual(plan["selected_step"], "move-army-11-to-41")
-        self.assertEqual(plan["pursuit"]["target_source"], "enemy_army")
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
         waiting = _native_war_plan(
             player=fallback_done,
@@ -2481,8 +3397,8 @@ class GameplayBridgeTests(unittest.TestCase):
             fallback=2543,
             steps=("life-advance",),
         )
-        self.assertEqual(waiting["phase"], "native_war_reconnaissance")
-        self.assertEqual(waiting["selected_step"], "life-advance")
+        self.assertEqual(waiting["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(waiting["selected_step"])
 
     def test_exact_siege_state_keeps_advancing_current_objective(self) -> None:
         player = _army(
@@ -2668,7 +3584,7 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("start-assault-901", "life-advance"),
         )
 
-        self.assertEqual(plan["phase"], "native_war_route_audit_pending")
+        self.assertEqual(plan["phase"], "native_war_route_evidence_blocked")
         self.assertIsNone(plan["selected_step"])
 
     def test_moving_state_code_without_route_target_blocks_assault_and_time(
@@ -2711,7 +3627,7 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("start-assault-901", "life-advance"),
         )
 
-        self.assertEqual(plan["phase"], "native_war_route_audit_pending")
+        self.assertEqual(plan["phase"], "native_war_route_evidence_blocked")
         self.assertIsNone(plan["selected_step"])
 
     def test_started_assault_lifecycle_blocks_missing_rich_row_direct_and_decorated(
@@ -3850,7 +4766,9 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("move-army-11-to-2543", "life-advance"),
         )
 
-        self.assertEqual(plan["phase"], "native_war_reconnaissance")
+        self.assertEqual(
+            plan["phase"], "native_war_objective_settlement_progress"
+        )
         self.assertEqual(plan["selected_step"], "life-advance")
 
     def test_completed_exact_objective_ignores_stale_siege_state(self) -> None:
@@ -3873,7 +4791,9 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("move-army-11-to-2543", "life-advance"),
         )
 
-        self.assertEqual(plan["phase"], "native_war_reconnaissance")
+        self.assertEqual(
+            plan["phase"], "native_war_objective_settlement_progress"
+        )
         self.assertEqual(plan["selected_step"], "life-advance")
 
     def test_exact_siege_state_leaves_unrelated_province_for_objective(self) -> None:
@@ -3911,18 +4831,15 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("move-army-11-to-2543", "life-advance"),
         )
 
-        self.assertEqual(plan["phase"], "native_war_pursuit")
-        self.assertEqual(plan["selected_step"], "move-army-11-to-2543")
-        self.assertEqual(
-            plan["pursuit"]["target_source"],
-            "enemy_primary_default_raise_province",
-        )
+        self.assertEqual(plan["phase"], "native_war_no_safe_exact_route")
+        self.assertIsNone(plan["selected_step"])
 
     def test_safe_observed_fallback_route_finishes_before_retargeting(self) -> None:
         moving = _army(
             11, soldiers=900, province_id=2564, controllable=True,
             move_target_province_id=2543,
             army_state="moving", army_state_code=7,
+            route_province_ids=[2543],
         )
         history = [
             {
@@ -3946,7 +4863,7 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("move-army-11-to-2585", "life-advance"),
         )
 
-        self.assertEqual(plan["phase"], "native_war_pursuit_progress")
+        self.assertEqual(plan["phase"], "native_war_route_progress")
         self.assertEqual(plan["selected_step"], "life-advance")
         self.assertEqual(plan["move_intent"]["target_province_id"], 2543)
 
@@ -4082,9 +4999,8 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["selected_step"], "move-army-11-to-2585")
-        self.assertEqual(plan["pursuit"]["war_id"], 20)
-        self.assertIsNone(plan["pursuit"]["target_army_id"])
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
     def test_restore_discards_pre_restore_collision_and_move_backoff(self) -> None:
         player = _army(11, soldiers=800, province_id=20, controllable=True)
@@ -4118,7 +5034,7 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = _native_war_plan(
             player=player,
-            enemies=[enemy],
+            enemies=[],
             score=15,
             date_raw=24_456,
             history=history,
@@ -4163,8 +5079,8 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("life-advance",),
         )
 
-        self.assertEqual(plan["phase"], "native_war_recovery_wait")
-        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
         self.assertIn(21, plan["tactical_state"]["blocked_enemy_ids"])
         self.assertIn(41, plan["tactical_state"]["blocked_province_ids"])
 
@@ -4223,7 +5139,9 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("move-army-11-to-41", "life-advance"),
         )
 
-        self.assertEqual(plan["phase"], "native_war_recovery_wait")
+        self.assertEqual(
+            plan["phase"], "native_war_global_combat_retreat_progress"
+        )
         self.assertEqual(plan["selected_step"], "life-advance")
 
     def test_forced_retreat_after_deferred_move_submits_safe_objective_once(self) -> None:
@@ -4356,8 +5274,8 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("move-army-11-to-77", "life-advance"),
         )
 
-        self.assertEqual(plan["phase"], "native_war_recovery_wait")
-        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
     def test_score_gain_and_enemy_disappearance_clear_stale_contact(self) -> None:
         player = _army(11, soldiers=900, province_id=41, controllable=True)
@@ -4381,7 +5299,7 @@ class GameplayBridgeTests(unittest.TestCase):
             objective=77,
             steps=("life-advance", "move-army-11-to-77"),
         )
-        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["selected_step"], "move-army-11-to-77")
 
         stale = _advance_row(
             2,
@@ -4439,7 +5357,9 @@ class GameplayBridgeTests(unittest.TestCase):
             objective=77,
             steps=("life-advance", "move-army-11-to-77"),
         )
-        self.assertEqual(bounded["phase"], "native_war_combat_progress")
+        self.assertEqual(
+            bounded["phase"], "native_war_global_combat_retreat_progress"
+        )
         self.assertEqual(bounded["selected_step"], "life-advance")
 
         unsupported = _native_war_plan(
@@ -4458,7 +5378,8 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("move-army-11-to-77",),
         )
         self.assertEqual(
-            unsupported["phase"], "native_war_combat_progress_unsupported"
+            unsupported["phase"],
+            "native_war_global_combat_retreat_progress_unsupported",
         )
         self.assertIsNone(unsupported["selected_step"])
         self.assertEqual(unsupported["required_step"], "life-advance")
@@ -4472,7 +5393,9 @@ class GameplayBridgeTests(unittest.TestCase):
             objective=77,
             steps=("life-advance",),
         )
-        self.assertEqual(retreat["phase"], "native_war_retreat_progress")
+        self.assertEqual(
+            retreat["phase"], "native_war_global_combat_retreat_progress"
+        )
 
         sieging = {**combat, "army_state": "sieging", "army_state_code": 3}
         siege = _native_war_plan(
@@ -4485,7 +5408,7 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(siege["phase"], "native_war_siege_progress")
 
-    def test_defender_keeps_chasing_visible_enemy(self) -> None:
+    def test_defender_holds_without_exact_combat_prediction(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)
         enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
         driver = CallbackGameplayDriver(
@@ -4512,11 +5435,10 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["selected_step"], "move-army-11-to-41")
-        self.assertEqual(plan["pursuit"]["objective_kind"], "pursuit")
-        self.assertEqual(plan["pursuit"]["target_army_id"], 21)
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
-    def test_native_war_planner_uses_primary_opponent_fallback(self) -> None:
+    def test_native_war_planner_holds_on_primary_opponent_fallback(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)
         step = "move-army-11-to-77"
         driver = CallbackGameplayDriver(
@@ -4538,13 +5460,8 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["phase"], "native_war_pursuit")
-        self.assertEqual(plan["selected_step"], step)
-        self.assertEqual(
-            plan["pursuit"]["target_source"],
-            "enemy_primary_default_raise_province",
-        )
-        self.assertIsNone(plan["pursuit"]["target_army_id"])
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
     def test_non_primary_war_participant_does_not_enforce_at_100(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)
@@ -4574,10 +5491,10 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["phase"], "native_war_pursuit")
-        self.assertEqual(plan["selected_step"], move_step)
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
 
-    def test_native_war_planner_advances_after_unobservable_move_ack(self) -> None:
+    def test_native_war_planner_does_not_advance_unobservable_enemy_move_ack(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)
         enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
         history = [
@@ -4613,7 +5530,11 @@ class GameplayBridgeTests(unittest.TestCase):
             "date_raw": 24_240,
             "native_command_history": history,
             "active_wars": [
-                _war(allied_armies=[player], enemy_armies=[enemy])
+                _war(
+                    allied_armies=[player],
+                    enemy_armies=[],
+                    war_objective_province_ids=[41],
+                )
             ],
             "player_armies": [player],
         }
@@ -4661,8 +5582,12 @@ class GameplayBridgeTests(unittest.TestCase):
                 **_snapshot(10),
                 "date_raw": 24_024,
                 "native_command_history": history,
-                "active_wars": [
-                    _war(allied_armies=[player], enemy_armies=[enemy])
+            "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[],
+                        war_objective_province_ids=[42],
+                    )
                 ],
                 "player_armies": [player],
             },
@@ -4706,8 +5631,12 @@ class GameplayBridgeTests(unittest.TestCase):
                 **_snapshot(11),
                 "date_raw": 23_976,
                 "native_command_history": history,
-                "active_wars": [
-                    _war(allied_armies=[player], enemy_armies=[enemy])
+            "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[],
+                        war_objective_province_ids=[41],
+                    )
                 ],
                 "player_armies": [player],
             },
@@ -4737,8 +5666,12 @@ class GameplayBridgeTests(unittest.TestCase):
             backend_id="native-headless",
             snapshot=lambda: {
                 **_snapshot(9, history),
-                "active_wars": [
-                    _war(allied_armies=[player], enemy_armies=[enemy])
+            "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[],
+                        war_objective_province_ids=[41],
+                    )
                 ],
                 "player_armies": [player],
             },

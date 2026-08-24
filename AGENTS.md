@@ -148,6 +148,10 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 - 干活中学到的新知识**当场同步进 `docs/`**，不要等任务收尾：尤其是 Paradox 脚本语言
   （trigger/effect 语义、作用域切换、求值时机）与 CK3 实现细节（加载顺序、暂停行为、
   启动器/工坊合并行为）的实证结论
+- 任何会依据 CK3 原生 AI 行为调整自动玩家策略的工作，必须先按
+  `docs/ck3-native-ai/README.md` 研究并更新对应的原生决策树：冻结游戏版本与 EXE SHA，优先读取原版
+  AI 数据和 exact-build 调用链，必要时只读实机互证；同步维护 Mermaid 逻辑图并把未闭合分支画成虚线
+  `unknown`。原生树及证据边界落盘后，才允许设计或修改我方 counter-policy；禁止先猜行为、后补文档。
 - 落点按类型分：语法/引擎坑 → `docs/grammar/pitfalls.md`（按错误信息索引，现象/原因/解法三栏）；
   测试流程/工具 → `docs/testing-workflow.md`；机制权威定义 → 对应专题文档（如 blessing-curse-pools.md）
 - 标准：可复现、注明是否实测；存疑结论标「未查明」并写清绕开方案

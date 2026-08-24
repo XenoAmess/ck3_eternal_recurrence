@@ -29,9 +29,12 @@ from .bridge.war_contract import (
     enemy_primary_default_raise_province_ids,
     enforce_demands_step,
     enemy_armies_from_wars,
+    merge_armies_step,
     move_army_step,
+    parse_merge_armies_step,
     parse_move_army_step,
     parse_preview_move_army_step,
+    parse_split_army_half_step,
     parse_start_assault_step,
     parse_stop_assault_step,
     preview_move_army_step,
@@ -57,6 +60,7 @@ _NATIVE_DEFEAT_SCORE_DROP = 20
 _NATIVE_RETREAT_MAX_GAME_DAYS = 30
 _NATIVE_SIEGE_STALL_GAME_DAYS = 7
 _NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
+_NATIVE_ENEMY_TARGET_MILESTONES_DAYS = (7, 14)
 
 
 def _expanded_command_rows(
@@ -711,6 +715,64 @@ def choose_one_life_turn(
             for army in enemy_armies_from_wars(active_wars)
             if _army_tactical_state(army) != "retreating"
         ]
+        enemy_endpoint_epochs = _enemy_endpoint_epochs(
+            rows,
+            snapshot if isinstance(snapshot, dict) else {},
+        )
+        for summary in war_summary:
+            summary_war_id = _native_int(summary.get("war_id"))
+            summary["enemy_endpoint_epochs"] = [
+                epoch
+                for epoch in enemy_endpoint_epochs
+                if epoch.get("war_id") == summary_war_id
+            ]
+        route_evidence_issues = _route_evidence_issues(
+            active_wars, controlled_armies
+        )
+        if route_evidence_issues:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_route_evidence_blocked",
+                "selected_step": None,
+                "required_step": "observable-complete-army-routes",
+                "reason": "at least one controllable or non-retreating hostile active route lacks an exact target and complete matching endpoint; keep the map paused",
+                "route_evidence_issues": route_evidence_issues,
+                "active_wars": war_summary,
+            }
+        combat_retreat_armies = [
+            army
+            for army in controlled_armies
+            if _army_tactical_state(army) in {"combat", "retreating"}
+        ]
+        stationary_threats_by_army_id: dict[
+            int, list[dict[str, object]]
+        ] = {}
+        for controlled_army in controlled_armies:
+            controlled_army_id = _native_int(
+                controlled_army.get("army_id")
+            )
+            if (
+                controlled_army_id is None
+                or _native_int(
+                    controlled_army.get("move_target_province_id")
+                )
+                is not None
+                or _army_tactical_state(controlled_army)
+                not in {"regular", "sieging"}
+            ):
+                continue
+            threats = _stationary_province_threats(
+                controlled_army.get("current_province_id"),
+                route_threat_enemies,
+            )
+            if threats:
+                stationary_threats_by_army_id[controlled_army_id] = threats
+        threatened_stationary_armies = [
+            army
+            for army in controlled_armies
+            if _native_int(army.get("army_id"))
+            in stationary_threats_by_army_id
+        ]
         start_blocking_route_armies = [
             army
             for army in controlled_armies
@@ -728,7 +790,6 @@ def choose_one_life_turn(
                 or _native_int(army.get("army_state_code")) == 7
             )
         ]
-        all_exact_objective_ids = set(war_objective_province_ids(active_wars))
         global_route_audits: list[dict[str, object]] = []
         if army_routes_supported:
             for controlled_army in controlled_armies:
@@ -765,21 +826,19 @@ def choose_one_life_turn(
                             }
                         )
                     continue
+                route_audit = _audit_war_route(
+                    controlled_army.get("route_province_ids"),
+                    origin_province_id=_native_int(
+                        controlled_army.get("current_province_id")
+                    ),
+                    target_province_id=controlled_target,
+                    enemies=route_threat_enemies,
+                )
                 global_route_audits.append(
                     {
                         "army_id": controlled_army_id,
                         "army_state": controlled_state,
-                        **_audit_war_route(
-                            controlled_army.get("route_province_ids"),
-                            origin_province_id=_native_int(
-                                controlled_army.get("current_province_id")
-                            ),
-                            target_province_id=controlled_target,
-                            enemies=route_threat_enemies,
-                            allow_enemy_at_destination=(
-                                controlled_target not in all_exact_objective_ids
-                            ),
-                        ),
+                        **route_audit,
                     }
                 )
         unsafe_army_ids = {
@@ -796,24 +855,48 @@ def choose_one_life_turn(
         pursuit_army = (
             _stable_strongest_army(unsafe_armies)
             if unsafe_armies
+            else _stable_strongest_army(threatened_stationary_armies)
+            if threatened_stationary_armies
             else _stable_strongest_army(controlled_armies)
         )
-        if not unsafe_armies:
-            unavailable_routes = [
-                audit
-                for audit in global_route_audits
-                if audit.get("status") == "unavailable"
-            ]
-            if unavailable_routes:
-                return {
-                    "policy": "one-life-turn-v1",
-                    "phase": "native_war_route_audit_pending",
-                    "selected_step": None,
-                    "required_step": "game.state.army-routes",
-                    "reason": "at least one controllable active route is incomplete; do not advance every army until all routes are auditable",
-                    "route_audits": global_route_audits,
-                    "active_wars": war_summary,
-                }
+        unavailable_routes = [
+            audit
+            for audit in global_route_audits
+            if audit.get("status") == "unavailable"
+        ]
+        if unavailable_routes:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_route_audit_pending",
+                "selected_step": None,
+                "required_step": "game.state.army-routes",
+                "reason": "at least one controllable active route is incomplete; do not advance or mutate any army until every route is auditable",
+                "route_audits": global_route_audits,
+                "active_wars": war_summary,
+            }
+
+        split_recovery = _split_merge_recovery(
+            rows,
+            snapshot if isinstance(snapshot, dict) else {},
+            controlled_armies=controlled_armies,
+            active_wars=active_wars,
+        )
+        if isinstance(split_recovery, dict) and split_recovery.get("status") in {
+            "split_identity_pending",
+            "split_army_set_inconsistent",
+            "merge_pending",
+            "merge_failed",
+            "merge_postcondition_inconsistent",
+        }:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_merge_recovery_blocked",
+                "selected_step": None,
+                "required_step": "fresh-paused-merge-postcondition",
+                "reason": "the latest exact split/merge lifecycle is pending, failed, or inconsistent; keep the map paused and do not resubmit or advance time",
+                "merge_recovery": split_recovery,
+                "active_wars": war_summary,
+            }
 
         tactical_war = _stable_tactical_war(active_wars)
         tactical_war_id = (
@@ -851,9 +934,6 @@ def choose_one_life_turn(
         )
         blocked_enemy_ids = set(tactical["blocked_enemy_ids"])
         blocked_province_ids = set(tactical["blocked_province_ids"])
-        fallback_province_ids = enemy_primary_default_raise_province_ids(
-            [tactical_war] if isinstance(tactical_war, dict) else []
-        )
         siege_objective_province_ids = _attacker_siege_objective_province_ids(
             [tactical_war] if isinstance(tactical_war, dict) else []
         )
@@ -930,7 +1010,218 @@ def choose_one_life_turn(
                 "assault_states": active_assaults,
                 "active_wars": war_summary,
             }
-        if active_assaults and not unsafe_armies:
+        if (
+            combat_retreat_armies
+            and not unsafe_armies
+            and not threatened_stationary_armies
+        ):
+            tactical_states = [
+                {
+                    "army_id": _native_int(army.get("army_id")),
+                    "army_state": _army_tactical_state(army),
+                }
+                for army in combat_retreat_armies
+            ]
+            if "life-advance" in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_global_combat_retreat_progress",
+                    "selected_step": "life-advance",
+                    "reason": "at least one controllable army is in combat or retreat; all other routes and stationary positions passed the global audit, so advance at most one day and re-observe every army",
+                    "combat_retreat_armies": tactical_states,
+                    "active_wars": war_summary,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_global_combat_retreat_progress_unsupported",
+                "selected_step": None,
+                "required_step": "life-advance",
+                "reason": "a controllable army is in combat or retreat, but the backend cannot perform its required one-day observation slice",
+                "combat_retreat_armies": tactical_states,
+                "active_wars": war_summary,
+            }
+        if (
+            isinstance(split_recovery, dict)
+            and (
+                split_recovery.get("status") == "merge_requires_rendezvous"
+                or (
+                    split_recovery.get("status") == "merge_waiting_for_idle"
+                    and not unsafe_armies
+                    and not threatened_stationary_armies
+                )
+            )
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_merge_rendezvous_blocked",
+                "selected_step": None,
+                "required_step": "safe-exact-rendezvous",
+                "reason": "the exact split pair is separated or not merge-idle, and this first counter-policy stage has no proven safe rendezvous intent; keep both armies paused instead of issuing independent orders",
+                "merge_recovery": split_recovery,
+                "active_wars": war_summary,
+            }
+        if (
+            isinstance(split_recovery, dict)
+            and split_recovery.get("status") == "ready_to_merge"
+        ):
+            pair_ids = {
+                _native_int(split_recovery.get("original_army_id")),
+                _native_int(split_recovery.get("sibling_army_id")),
+            }
+            other_unsafe = [
+                army
+                for army in unsafe_armies
+                if _native_int(army.get("army_id")) not in pair_ids
+            ]
+            other_threatened = [
+                army
+                for army in threatened_stationary_armies
+                if _native_int(army.get("army_id")) not in pair_ids
+            ]
+            if not other_unsafe and not other_threatened:
+                merge_step = split_recovery.get("merge_step")
+                if isinstance(merge_step, str) and merge_step in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_merge_recovery",
+                        "selected_step": merge_step,
+                        "reason": "the exact latest split pair is still co-located, but no exact combat prediction proves both halves independently safe; merge the sibling back into the original army without advancing time",
+                        "merge_recovery": split_recovery,
+                        "active_wars": war_summary,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_merge_recovery_unsupported",
+                    "selected_step": None,
+                    "required_step": merge_step,
+                    "reason": "the exact co-located split pair requires recovery, but the generation-bound Merge action is not currently eligible; keep the map paused",
+                    "merge_recovery": split_recovery,
+                    "active_wars": war_summary,
+                }
+        if (
+            isinstance(split_recovery, dict)
+            and split_recovery.get("status") == "merge_completed"
+            and not unsafe_armies
+            and not threatened_stationary_armies
+        ):
+            merged_army_id = _native_int(
+                split_recovery.get("original_army_id")
+            )
+            merged_army = next(
+                (
+                    army
+                    for army in controlled_armies
+                    if _native_int(army.get("army_id")) == merged_army_id
+                ),
+                None,
+            )
+            merged_target = (
+                _native_int(merged_army.get("move_target_province_id"))
+                if isinstance(merged_army, dict)
+                else None
+            )
+            merged_origin = (
+                _native_int(merged_army.get("current_province_id"))
+                if isinstance(merged_army, dict)
+                else None
+            )
+            if (
+                merged_army_id is not None
+                and merged_target is not None
+                and merged_origin is not None
+            ):
+                fresh_after_merge = _fresh_move_route_preview(
+                    rows,
+                    army_id=merged_army_id,
+                    origin_province_id=merged_origin,
+                    target_province_id=merged_target,
+                    date_raw=_native_int(snapshot.get("date_raw")),
+                )
+                preview_step = preview_move_army_step(
+                    merged_army_id, merged_target
+                )
+                if fresh_after_merge is None:
+                    if preview_step in available_steps:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_merge_route_preview",
+                            "selected_step": preview_step,
+                            "reason": "the confirmed Merge invalidated every older same-date move intent and preview; preview the destination army's current target again before advancing",
+                            "merge_recovery": split_recovery,
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_merge_route_preview_unsupported",
+                        "selected_step": None,
+                        "required_step": preview_step,
+                        "reason": "the confirmed Merge invalidated the old route, but a fresh same-origin preview is not currently advertised; keep the map paused",
+                        "merge_recovery": split_recovery,
+                        "active_wars": war_summary,
+                    }
+                refreshed_audit = _audit_war_route(
+                    fresh_after_merge.get("route_province_ids"),
+                    origin_province_id=merged_origin,
+                    target_province_id=merged_target,
+                    enemies=route_threat_enemies,
+                )
+                if refreshed_audit.get("status") != "safe":
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_merge_route_preview_unsafe",
+                        "selected_step": None,
+                        "required_step": "safe-exact-war-route",
+                        "reason": "the first post-Merge preview is not safe against the current hostile route matrix; do not advance the retained pre-Merge route",
+                        "route_audit": refreshed_audit,
+                        "merge_recovery": split_recovery,
+                        "active_wars": war_summary,
+                    }
+                observed_after_merge = _normalized_remaining_route(
+                    merged_army
+                )
+                previewed_after_merge = refreshed_audit.get(
+                    "route_province_ids"
+                )
+                if observed_after_merge != previewed_after_merge:
+                    refreshed_move_step = move_army_step(
+                        merged_army_id, merged_target
+                    )
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_merge_route_refresh_blocked",
+                        "selected_step": None,
+                        "required_step": refreshed_move_step,
+                        "reason": "the first safe post-Merge preview does not match the retained route; the current action surface intentionally does not resubmit a same-target move, so keep the map paused for a future exact replace-route primitive",
+                        "route_audit": refreshed_audit,
+                        "observed_route_province_ids": observed_after_merge,
+                        "merge_recovery": split_recovery,
+                        "active_wars": war_summary,
+                    }
+                if "life-advance" in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_merge_route_progress",
+                        "selected_step": "life-advance",
+                        "reason": "the first post-Merge preview is safe and exactly matches the observed remaining route; advance one bounded slice from this fresh intent epoch",
+                        "route_audit": refreshed_audit,
+                        "merge_recovery": split_recovery,
+                        "active_wars": war_summary,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_merge_route_progress_unsupported",
+                    "selected_step": None,
+                    "required_step": "life-advance",
+                    "reason": "the post-Merge route is freshly revalidated but the backend cannot advance its bounded slice",
+                    "route_audit": refreshed_audit,
+                    "merge_recovery": split_recovery,
+                    "active_wars": war_summary,
+                }
+        if (
+            active_assaults
+            and not unsafe_armies
+            and not threatened_stationary_armies
+        ):
             if "life-advance" in available_steps:
                 return {
                     "policy": "one-life-turn-v1",
@@ -1043,13 +1334,11 @@ def choose_one_life_turn(
             if isinstance(pursuit_army, dict)
             else None
         )
-        stationary_threats = _stationary_province_threats(
-            current_province_id,
-            route_threat_enemies,
-        ) if (
-            observed_route_target is None
-            and army_state in {"regular", "sieging"}
-        ) else []
+        stationary_threats = (
+            list(stationary_threats_by_army_id.get(int(army_id), []))
+            if isinstance(army_id, int)
+            else []
+        )
         exact_siege_status = _current_exact_siege_status(
             snapshot if isinstance(snapshot, dict) else {},
             tactical_war_id=(
@@ -1614,34 +1903,17 @@ def choose_one_life_turn(
                 "route_rejections": [passive_route_audit],
                 "active_wars": war_summary,
             }
-        local_enemies = [
-            army
-            for army in visible_enemies
-            if army.get("current_province_id") == current_province_id
-            and army.get("army_id") not in blocked_enemy_ids
-            and current_province_id not in blocked_province_ids
-        ]
-        exact_native_siege_routing = bool(siege_objective_province_ids) and (
-            army_state is not None
-        )
         if preview_selected_target is not None:
             target_province_id = preview_selected_target
             enemy = None
             target_source = "war_objective_province"
             objective_kind = "siege"
-        elif local_enemies and not exact_native_siege_routing:
-            enemy = _stable_strongest_army(local_enemies)
-            target_province_id = current_province_id
-            target_source = "enemy_army"
-        elif siege_objective_province_ids:
+        elif exact_objective_province_ids:
             safe = [
                 province_id
-                for province_id in siege_objective_province_ids
+                for province_id in exact_objective_province_ids
                 if province_id not in blocked_province_ids
-                and (
-                    not exact_native_siege_routing
-                    or province_id not in enemy_threat_province_ids
-                )
+                and province_id not in enemy_threat_province_ids
                 and not (
                     province_id == current_province_id
                     and stationary_threats
@@ -1656,44 +1928,35 @@ def choose_one_life_turn(
             ]
             target_province_id = safe[0] if safe else None
             enemy = None
-            target_source = (
-                "war_objective_province"
-                if target_province_id
-                in set(
-                    war_objective_province_ids(
-                        [tactical_war]
-                        if isinstance(tactical_war, dict)
-                        else []
-                    )
-                )
-                else "enemy_primary_default_raise_province"
-            )
+            target_source = "war_objective_province"
             objective_kind = "siege"
         else:
-            safe_enemies = [
-                row
-                for row in visible_enemies
-                if row.get("army_id") not in blocked_enemy_ids
-                and row.get("current_province_id") not in blocked_province_ids
-            ]
-            enemy = _stable_strongest_army(safe_enemies)
-            target_province_id = (
-                enemy.get("current_province_id")
-                if isinstance(enemy, dict)
-                else fallback_province_ids[0]
-                if not visible_enemies
-                and fallback_province_ids
-                and not all_siege_objectives_completed
-                else None
-            )
-            target_source = (
-                "enemy_army"
-                if isinstance(enemy, dict)
-                else "enemy_primary_default_raise_province"
-            )
-        if target_province_id is None and (
-            visible_enemies or siege_objective_province_ids
-        ):
+            enemy = None
+            target_province_id = None
+            target_source = "exact_objective_unavailable"
+        if target_province_id is None:
+            if (
+                exact_occupation_fully_observable
+                and all_siege_objectives_completed
+                and not stationary_threats
+                and not unsafe_armies
+            ):
+                if "life-advance" in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_objective_settlement_progress",
+                        "selected_step": "life-advance",
+                        "reason": "every authoritative exact occupation objective is complete and the global route matrix is safe; advance one bounded settlement slice without selecting an enemy target",
+                        "active_wars": war_summary,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_objective_settlement_progress_unsupported",
+                    "selected_step": None,
+                    "required_step": "life-advance",
+                    "reason": "all authoritative exact objectives are complete, but the backend cannot advance the bounded war-settlement slice",
+                    "active_wars": war_summary,
+                }
             if isinstance(exact_siege_rejection, dict):
                 return {
                     "policy": "one-life-turn-v1",
@@ -1723,21 +1986,12 @@ def choose_one_life_turn(
                     "route_rejections": stationary_threats,
                     "active_wars": war_summary,
                 }
-            if "life-advance" in available_steps:
-                return {
-                    "policy": "one-life-turn-v1",
-                    "phase": "native_war_recovery_wait",
-                    "selected_step": "life-advance",
-                    "reason": "all current targets are cooling down; advance one bounded interval and inspect again",
-                    "tactical_state": tactical,
-                    "active_wars": war_summary,
-                }
             return {
                 "policy": "one-life-turn-v1",
-                "phase": "native_war_no_safe_target",
+                "phase": "native_war_counterpolicy_hold",
                 "selected_step": None,
-                "required_step": "query-safe-war-objectives",
-                "reason": "all current targets are inside the defeat/retreat cooldown",
+                "required_step": "safe-exact-war-objective-or-exact-combat-prediction",
+                "reason": "no safe exact objective is available and the adapter publishes no exact combat prediction; do not infer native power from soldiers or chase a visible enemy province",
                 "tactical_state": tactical,
                 "active_wars": war_summary,
             }
@@ -3324,15 +3578,488 @@ def _effective_command_result(row: dict[str, object]) -> dict[str, object] | Non
         # gameplay_runner decorates the actual executor result at the root and
         # stores the plan under auto_turn.  Prefer factual root postconditions
         # over any nested/planner-shaped payload.
-        if isinstance(result.get("assault_action"), dict):
-            return result
-        if isinstance(result.get("route_preview"), dict):
+        if any(
+            isinstance(result.get(name), dict)
+            for name in (
+                "assault_action",
+                "route_preview",
+                "war_action",
+                "war_progress_before",
+                "war_progress_after",
+            )
+        ):
             return result
     auto_turn = result.get("auto_turn") if isinstance(result, dict) else None
     nested = auto_turn.get("result") if isinstance(auto_turn, dict) else None
     if isinstance(nested, dict):
         return nested
     return result if isinstance(result, dict) else None
+
+
+def _normalized_remaining_route(
+    army: dict[str, object],
+) -> list[int] | None:
+    route = army.get("route_province_ids")
+    if not isinstance(route, list) or any(
+        isinstance(province_id, bool)
+        or not isinstance(province_id, int)
+        or province_id <= 0
+        for province_id in route
+    ):
+        return None
+    remaining = [int(province_id) for province_id in route]
+    current = _native_int(army.get("current_province_id"))
+    if remaining and remaining[0] == current:
+        remaining = remaining[1:]
+    return remaining
+
+
+def _active_route_evidence_issue(
+    army: dict[str, object], *, role: str, war_id: int | None = None
+) -> dict[str, object] | None:
+    target = _native_int(army.get("move_target_province_id"))
+    route = army.get("route_province_ids")
+    state = _army_tactical_state(army)
+    state_code = _native_int(army.get("army_state_code"))
+    route_present = isinstance(route, list) and bool(route)
+    active = bool(
+        state == "moving"
+        or state_code == 7
+        or route_present
+        or role == "player"
+        and target is not None
+    )
+    if not active:
+        return None
+    reason: str | None = None
+    remaining = _normalized_remaining_route(army)
+    if target is None or target <= 0:
+        reason = "active_route_target_unavailable"
+    elif remaining is None:
+        reason = "active_route_unavailable"
+    elif not remaining:
+        reason = "active_route_empty"
+    elif remaining[-1] != target:
+        reason = "active_route_endpoint_mismatch"
+    if reason is None:
+        return None
+    return {
+        "role": role,
+        "war_id": war_id,
+        "army_id": _native_int(army.get("army_id")),
+        "army_state": state,
+        "current_province_id": _native_int(army.get("current_province_id")),
+        "move_target_province_id": target,
+        "route_province_ids": (
+            list(route) if isinstance(route, list) else None
+        ),
+        "reason": reason,
+    }
+
+
+def _route_evidence_issues(
+    active_wars: list[dict[str, object]],
+    controlled_armies: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    issues = [
+        issue
+        for army in controlled_armies
+        if (
+            issue := _active_route_evidence_issue(
+                army, role="player", war_id=None
+            )
+        )
+        is not None
+    ]
+    for war in active_wars:
+        war_id = _native_int(war.get("war_id"))
+        enemies = war.get("enemy_armies")
+        for enemy in enemies if isinstance(enemies, list) else []:
+            if not isinstance(enemy, dict) or _army_tactical_state(enemy) == "retreating":
+                continue
+            issue = _active_route_evidence_issue(
+                enemy, role="enemy", war_id=war_id
+            )
+            if issue is not None:
+                issues.append(issue)
+    return issues
+
+
+def _enemy_endpoint_observation(
+    army: dict[str, object], *, war_id: int, date_raw: int
+) -> dict[str, object] | None:
+    army_id = _native_int(army.get("army_id"))
+    target = _native_int(army.get("move_target_province_id"))
+    remaining = _normalized_remaining_route(army)
+    state = _army_tactical_state(army)
+    if (
+        army_id is None
+        or army_id <= 0
+        or state in {"combat", "retreating"}
+        or target is None
+        or target <= 0
+        or remaining is None
+        or not remaining
+        or remaining[-1] != target
+    ):
+        return None
+    return {
+        "war_id": war_id,
+        "enemy_army_id": army_id,
+        "date_raw": date_raw,
+        "current_province_id": _native_int(army.get("current_province_id")),
+        "move_target_province_id": target,
+        "next_hop_province_id": remaining[0],
+        "endpoint_province_id": remaining[-1],
+        "route_province_ids": remaining,
+        # An observable active route is one intent state even if an adapter
+        # transiently names it regular while CK3 consumes the leading hop.
+        "intent_state": "moving",
+    }
+
+
+def _route_is_natural_suffix(
+    previous: list[int],
+    current: list[int],
+    *,
+    previous_current_province_id: object,
+    current_province_id: object,
+) -> bool:
+    if (
+        not current
+        or len(current) > len(previous)
+        or previous[len(previous) - len(current) :] != current
+    ):
+        return False
+    consumed = previous[: len(previous) - len(current)]
+    if not consumed:
+        return current_province_id == previous_current_province_id
+    return current_province_id == consumed[-1]
+
+
+def _enemy_endpoint_epochs(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+) -> list[dict[str, object]]:
+    """Derive contiguous observed endpoint epochs without native timer guesses."""
+    frames_by_date: dict[int, list[dict[str, object]]] = {}
+    for row in _history_after_latest_restore(commands):
+        if _effective_command(row) != "life-advance" or row.get("ok") is not True:
+            continue
+        result = _effective_command_result(row)
+        for name in ("war_progress_before", "war_progress_after"):
+            summary = result.get(name) if isinstance(result, dict) else None
+            date_raw = (
+                _native_int(summary.get("date_raw"))
+                if isinstance(summary, dict)
+                else None
+            )
+            wars = summary.get("wars") if isinstance(summary, dict) else None
+            if date_raw is not None and isinstance(wars, list):
+                frames_by_date[date_raw] = [
+                    war for war in wars if isinstance(war, dict)
+                ]
+    current_date = _native_int(snapshot.get("date_raw"))
+    current_wars = snapshot.get("active_wars")
+    if current_date is not None and isinstance(current_wars, list):
+        frames_by_date[current_date] = [
+            war for war in current_wars if isinstance(war, dict)
+        ]
+
+    epochs: list[dict[str, object]] = []
+    opened: dict[tuple[int, int], dict[str, object]] = {}
+    sequence_by_key: dict[tuple[int, int], int] = {}
+
+    def close(key: tuple[int, int], date_raw: int, reason: str) -> None:
+        epoch = opened.pop(key, None)
+        if epoch is None:
+            return
+        epoch["active"] = False
+        epoch["closed_date_raw"] = date_raw
+        epoch["closed_reason"] = reason
+
+    for date_raw in sorted(frames_by_date):
+        observations: dict[tuple[int, int], dict[str, object]] = {}
+        for war in frames_by_date[date_raw]:
+            war_id = _native_int(war.get("war_id"))
+            enemies = war.get("enemy_armies")
+            if war_id is None or war_id <= 0 or not isinstance(enemies, list):
+                continue
+            for enemy in enemies:
+                if not isinstance(enemy, dict):
+                    continue
+                observation = _enemy_endpoint_observation(
+                    enemy, war_id=war_id, date_raw=date_raw
+                )
+                if observation is None:
+                    continue
+                key = (war_id, int(observation["enemy_army_id"]))
+                observations[key] = observation
+
+        for key in tuple(opened):
+            if key not in observations:
+                close(key, date_raw, "observation_gap_or_intent_closed")
+
+        for key, observation in observations.items():
+            current_epoch = opened.get(key)
+            same_intent = bool(
+                isinstance(current_epoch, dict)
+                and current_epoch.get("move_target_province_id")
+                == observation["move_target_province_id"]
+                and current_epoch.get("endpoint_province_id")
+                == observation["endpoint_province_id"]
+                and current_epoch.get("intent_state")
+                == observation["intent_state"]
+                and _route_is_natural_suffix(
+                    list(current_epoch.get("route_province_ids", [])),
+                    list(observation["route_province_ids"]),
+                    previous_current_province_id=current_epoch.get(
+                        "current_province_id"
+                    ),
+                    current_province_id=observation.get(
+                        "current_province_id"
+                    ),
+                )
+            )
+            if not same_intent:
+                close(key, date_raw, "intent_changed")
+                sequence = sequence_by_key.get(key, 0) + 1
+                sequence_by_key[key] = sequence
+                current_epoch = {
+                    **observation,
+                    "epoch_sequence": sequence,
+                    "first_observed_date_raw": date_raw,
+                    "last_observed_date_raw": date_raw,
+                    "observed_span_days": 0,
+                    "sample_count": 1,
+                    "milestones_crossed_days": [],
+                    "active": True,
+                    "closed_date_raw": None,
+                    "closed_reason": None,
+                }
+                epochs.append(current_epoch)
+                opened[key] = current_epoch
+                continue
+            first_date = int(current_epoch["first_observed_date_raw"])
+            span_days = max(0, (date_raw - first_date) // 24)
+            current_epoch.update(
+                {
+                    **observation,
+                    "last_observed_date_raw": date_raw,
+                    "observed_span_days": span_days,
+                    "sample_count": int(current_epoch["sample_count"]) + 1,
+                    "milestones_crossed_days": [
+                        milestone
+                        for milestone in _NATIVE_ENEMY_TARGET_MILESTONES_DAYS
+                        if span_days >= milestone
+                    ],
+                }
+            )
+    return sorted(
+        epochs,
+        key=lambda epoch: (
+            int(epoch["war_id"]),
+            int(epoch["enemy_army_id"]),
+            int(epoch["epoch_sequence"]),
+        ),
+    )
+
+
+def _split_merge_recovery(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    controlled_armies: list[dict[str, object]],
+    active_wars: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Recover only an exact recent split pair; never rank IDs or soldiers."""
+    scoped = _history_after_latest_restore(commands)
+    current_by_id = {
+        int(army["army_id"]): army
+        for army in controlled_armies
+        if _native_int(army.get("army_id")) is not None
+        and int(army["army_id"]) > 0
+    }
+    current_ids = set(current_by_id)
+    for split_position in range(len(scoped) - 1, -1, -1):
+        split_row = scoped[split_position]
+        original_army_id = parse_split_army_half_step(
+            _effective_command(split_row)
+        )
+        if original_army_id is None or split_row.get("ok") is not True:
+            continue
+        result = _effective_command_result(split_row)
+        action = result.get("war_action") if isinstance(result, dict) else None
+        if not isinstance(action, dict) or action.get("status") not in {
+            "split_submitted",
+            "split_applied",
+        }:
+            continue
+        action_source = _native_int(action.get("source_army_id"))
+        before_raw = action.get("player_army_ids_before")
+        if action_source not in {None, original_army_id} or not isinstance(
+            before_raw, list
+        ):
+            continue
+        before_ids = [
+            int(army_id)
+            for army_id in before_raw
+            if _native_int(army_id) is not None and int(army_id) > 0
+        ]
+        before_set = set(before_ids)
+        if (
+            len(before_ids) != len(before_raw)
+            or len(before_set) != len(before_ids)
+            or original_army_id not in before_set
+        ):
+            continue
+
+        later_rows = scoped[split_position + 1 :]
+        sibling_candidates: set[int] = set()
+        action_sibling = _native_int(action.get("sibling_army_id"))
+        if action_sibling is not None and action_sibling not in before_set:
+            sibling_candidates.add(action_sibling)
+        current_delta = current_ids - before_set
+        if len(current_delta) == 1:
+            sibling_candidates.update(current_delta)
+        exact_merge_rows: list[dict[str, object]] = []
+        for later_row in later_rows:
+            parsed_merge = parse_merge_armies_step(
+                _effective_command(later_row)
+            )
+            if parsed_merge is None or parsed_merge[0] != original_army_id:
+                continue
+            if parsed_merge[1] not in before_set:
+                sibling_candidates.add(parsed_merge[1])
+                exact_merge_rows.append(later_row)
+        if len(sibling_candidates) != 1:
+            return {
+                "status": "split_identity_pending",
+                "original_army_id": original_army_id,
+                "split_history_position": split_position,
+                "reason": "the exact split receipt and current army-set delta do not identify one sibling",
+            }
+        sibling_army_id = next(iter(sibling_candidates))
+        expected_split_ids = before_set | {sibling_army_id}
+        if current_ids != before_set and current_ids != expected_split_ids:
+            return {
+                "status": "split_army_set_inconsistent",
+                "original_army_id": original_army_id,
+                "sibling_army_id": sibling_army_id,
+                "player_army_ids_before": sorted(before_set),
+                "current_player_army_ids": sorted(current_ids),
+            }
+
+        merge_step = merge_armies_step(original_army_id, sibling_army_id)
+        latest_merge = exact_merge_rows[-1] if exact_merge_rows else None
+        if latest_merge is not None:
+            merge_result = _effective_command_result(latest_merge)
+            merge_action = (
+                merge_result.get("war_action")
+                if isinstance(merge_result, dict)
+                else None
+            )
+            if latest_merge.get("ok") is not True:
+                return {
+                    "status": "merge_failed",
+                    "original_army_id": original_army_id,
+                    "sibling_army_id": sibling_army_id,
+                    "merge_step": merge_step,
+                    "error": latest_merge.get("error"),
+                    "war_action": merge_action,
+                }
+            if current_ids == before_set and original_army_id in current_ids:
+                return {
+                    "status": "merge_completed",
+                    "original_army_id": original_army_id,
+                    "sibling_army_id": sibling_army_id,
+                    "merge_step": merge_step,
+                    "war_action": merge_action,
+                }
+            if (
+                isinstance(merge_action, dict)
+                and merge_action.get("status") == "merge_applied"
+            ):
+                return {
+                    "status": "merge_postcondition_inconsistent",
+                    "original_army_id": original_army_id,
+                    "sibling_army_id": sibling_army_id,
+                    "merge_step": merge_step,
+                    "current_player_army_ids": sorted(current_ids),
+                    "war_action": merge_action,
+                }
+            return {
+                "status": "merge_pending",
+                "original_army_id": original_army_id,
+                "sibling_army_id": sibling_army_id,
+                "merge_step": merge_step,
+                "war_action": merge_action,
+            }
+
+        if current_ids == before_set:
+            return {
+                "status": "split_identity_pending",
+                "original_army_id": original_army_id,
+                "sibling_army_id": sibling_army_id,
+                "reason": "the submitted split has no observable sibling yet",
+            }
+        original = current_by_id.get(original_army_id)
+        sibling = current_by_id.get(sibling_army_id)
+        if not isinstance(original, dict) or not isinstance(sibling, dict):
+            return None
+        province_id = _native_int(original.get("current_province_id"))
+        if province_id is None or province_id <= 0 or _native_int(
+            sibling.get("current_province_id")
+        ) != province_id:
+            return {
+                "status": "merge_requires_rendezvous",
+                "original_army_id": original_army_id,
+                "sibling_army_id": sibling_army_id,
+                "merge_step": merge_step,
+            }
+        if any(
+            _army_tactical_state(army) in {"combat", "retreating"}
+            for army in (original, sibling)
+        ):
+            return {
+                "status": "merge_waiting_for_idle",
+                "original_army_id": original_army_id,
+                "sibling_army_id": sibling_army_id,
+                "merge_step": merge_step,
+            }
+        exact_objectives = set(war_objective_province_ids(active_wars))
+        durable_goal_army_ids = sorted(
+            army_id
+            for army_id, army in (
+                (original_army_id, original),
+                (sibling_army_id, sibling),
+            )
+            if _native_int(army.get("move_target_province_id"))
+            in exact_objectives
+        )
+        return {
+            "status": "ready_to_merge",
+            "original_army_id": original_army_id,
+            "sibling_army_id": sibling_army_id,
+            "province_id": province_id,
+            "merge_step": merge_step,
+            "durable_goal_army_ids": durable_goal_army_ids,
+            "missing_proofs": ["exact_combat_prediction_unavailable"],
+            "submitted_date_raw": _native_int(action.get("submitted_date_raw")),
+            "player_army_ids_before": sorted(before_set),
+        }
+    return None
+
+
+def _successful_merge_barrier(
+    row: dict[str, object], army_id: int
+) -> bool:
+    parsed = parse_merge_armies_step(_effective_command(row))
+    return bool(
+        row.get("ok") is True
+        and parsed is not None
+        and army_id in parsed
+    )
 
 
 def _fresh_move_route_preview(
@@ -3347,6 +4074,8 @@ def _fresh_move_route_preview(
         return None
     expected_step = (army_id, target_province_id)
     for row in reversed(_history_after_latest_restore(commands)):
+        if _successful_merge_barrier(row, army_id):
+            return None
         if parse_preview_move_army_step(_effective_command(row)) != expected_step:
             continue
         if row.get("ok") is not True:
@@ -3426,7 +4155,6 @@ def _audit_war_route(
     origin_province_id: int | None,
     target_province_id: int,
     enemies: Iterable[dict[str, object]],
-    allow_enemy_at_destination: bool = False,
 ) -> dict[str, object]:
     if not isinstance(route_value, list) or any(
         isinstance(item, bool) or not isinstance(item, int) or item <= 0
@@ -3456,10 +4184,7 @@ def _audit_war_route(
         enemy_id = _native_int(enemy.get("army_id"))
         enemy_current = _native_int(enemy.get("current_province_id"))
         enemy_target = _native_int(enemy.get("move_target_province_id"))
-        if enemy_current in route_provinces and not (
-            allow_enemy_at_destination
-            and enemy_current == target_province_id
-        ):
+        if enemy_current in route_provinces:
             conflicts.append(
                 {
                     "kind": "enemy_current_on_route",
@@ -3700,7 +4425,15 @@ def _deferred_move_backoff(
 ) -> dict[str, object] | None:
     deferred_dates: list[int | None] = []
     current = _native_int(snapshot.get("date_raw"))
-    for row in _history_after_latest_restore(commands):
+    scoped = _history_after_latest_restore(commands)
+    parsed_step = parse_move_army_step(step)
+    if parsed_step is not None:
+        army_id = parsed_step[0]
+        for position in range(len(scoped) - 1, -1, -1):
+            if _successful_merge_barrier(scoped[position], army_id):
+                scoped = scoped[position + 1 :]
+                break
+    for row in scoped:
         if _effective_command(row) != step or row.get("ok") is not True:
             continue
         result = row.get("result")
@@ -3741,6 +4474,8 @@ def _active_native_move_intent(
     latest_row: dict[str, object] | None = None
     for position in range(len(commands) - 1, -1, -1):
         row = commands[position]
+        if _successful_merge_barrier(row, army_id):
+            return None
         command = _effective_command(row)
         if command == "restore-checkpoint" and row.get("ok") is True:
             return None

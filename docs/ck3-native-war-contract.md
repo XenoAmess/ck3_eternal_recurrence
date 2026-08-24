@@ -6,24 +6,24 @@
 
 - `game.state.war-objectives` 发布 `targeted_title_ids` 和按目标头衔 de jure 层级解析出的
   `war_objective_province_ids`：男爵领目标取自身省，伯爵领目标取首府男爵领省，公国/王国目标递归发布全部
-  de jure 伯爵领首府省。没有权威目标省状态的旧 adapter 仍按“全部 exact 目标 → legacy
-  `enemy_primary_default_raise_province_id` fallback”轮转；完整 row map 中只有
+  de jure 伯爵领首府省。`enemy_primary_default_raise_province_id` 只保留为历史/诊断字段，不再作为可自动
+  行军的目标；完整 row map 中只有
   `occupation_observable=true` 的省逐省覆盖 legacy 完成推断，unknown 省保留旧推断。仅当全部 exact 行的占领
   都可观测时，planner 才只处理真实 exact 目标，并在全部占领后停止使用默认集结省。默认集结省不是 war goal。
 - 军队运行态使用 `army_state` / `army_state_code`：`combat=2`、`sieging=3`、
   `retreating=6`、`moving=7`。`combat` 只允许有界接触推进，`sieging` 推进围城，
-  `retreating` 先按 30 游戏日正常期限等待；超过期限后仍以有界 `life-advance`
+  `retreating` 的 30 游戏日只是整体恢复期限；每个 observation slice 最多一日。超过期限后仍以有界 `life-advance`
   等 CK3 释放军队，不能在暂停地图上以 `selected_step=null` 自锁。
 - 每个 `life-advance` 结果持久保存 paused-to-paused 的 `war_progress_before/after`，包括目标省占领与
   exact siege 的 fixed-point work。四个目标省 capability 各自独立 gate；字段出现但 capability 未广告时
   planner 不使用，`null`/`observable=false` 也永远不是零。每个可观测省只有当前占领者属于已知玩家侧
   CharacterID 才完成 exact 目标；目标被夺回会重新进入候选。不可观测省继续保留“离开 `sieging` 且涨分”推断。
-- 玩家确实参与 active siege 时，`life-advance` 从 30 日通用战争上限缩为 7 日；running snapshot 按契约不读
+- 玩家确实参与 active siege 时，`life-advance` 使用 7 日上限；running snapshot 按契约不读
   `CSiege`，所以运行帧中的 `siege_observable=false/active_siege=null` 不会被误判成围城结束。暂停后的同一
   `siege_id` 若 7 日内 `current_work` 与 `progress_fraction` 均未增长，或原生
   `besieging_strength < garrison_size`，当前省被拒绝并立即轮转到下一个 exact 目标；相等仍可推进，
   有增长则继续围城。
-  全部 exact 目标完成后，planner 恢复选择安全的可见敌军；无敌军时只做有界推进并等待战争状态改变。
+  全部 authoritative exact 目标完成后，planner 只做有界结算推进并等待战争状态改变，不恢复追逐可见敌军。
   legacy 快照仍将同省接触限制为 14 日或两次 probe；一次明显败退（分数下降至少 20）使对应敌军/省进入
   90 日冷却。
 - `move_deferred` 不再每 turn 重试：同一目标按 7/14/30 游戏日退避。已接受且仍在
@@ -43,7 +43,7 @@
 - `targeted_title_ids`: 该场战争 `CCasusBelli.targeted_titles` 的完整 `TitleID` 数组
 - `war_objective_province_ids`: 每个目标头衔按原生 de jure 子头衔顺序展开并稳定去重的可围城目标省。男爵领取自身省；伯爵领取 `+0x240` 首个 de jure 男爵领的省；公国、王国及更高层级递归到全部 de jure 伯爵领并取各自首府。每场战争最多解析 4096 个 generation 匹配的头衔，递归深度最多 8；任一目标的层级出现失效 ID、非法 tier、无首府或越界数组时，该目标的整组省份不发布，但保留 `targeted_title_ids` 和其他可完整解析的目标
 - `objective_province_states`: 与 `war_objective_province_ids` 同序的 additive 省份状态；下述四个 capability 分域公布，未知 build、partial adapter、过渡帧或超出共享预算时保持空数组/不可观测，不能把 unknown 当成零
-- `enemy_primary_default_raise_province_id`: 对方 primary 角色的原生默认集结省；无法解析时为 `null`。它不是解码出的 war goal、首都或真实行军目标；planner 只把它用作明确 fallback，或在进攻方已取得正战争分后的稳定围城启发式锚点
+- `enemy_primary_default_raise_province_id`: 对方 primary 角色的原生默认集结省；无法解析时为 `null`。它不是解码出的 war goal、首都或真实行军目标；当前只为诊断与旧 adapter 兼容而发布，不是 planner 的自动目标
 - `player_relative_war_score`: 相对玩家视角的整数战争分
 - `allied_armies` / `enemy_armies`: 当前能从原生对象读取的军队数组
 
@@ -247,6 +247,9 @@ fresh MSVC Release fixture 覆盖上述投影。此处只声明静态与离线�
 `move-army-83886341-to-2586` 返回 `move_submitted`；随后约 35 个游戏日内，同一军队的当前省从
 `2619` 变为 `2606`，证明发生了真实行军而非仅收到 command ack。
 
+以下两段是 `[historical-old-policy]` 实机记录，只证明当时命令与状态链可运行；其中追敌 current、legacy rally
+fallback 和 30 日通用 slice 已被本页后续 counter-policy 取代，不能当作当前 planner 规范。
+
 同日的后续最小化实机验证覆盖了跨 driver 重启的移动意图。driver 从持久历史读回旧的、已经
 `accepted/submitted` 的 move 后，planner 选择 `life-advance`，没有再次提交同一 move。第一次推进将原始日期
 `53168688` 推到 `53168784`（4 个游戏日），军队从省 `2619` 移到 `2618`；继续推进 7 个游戏日后到达
@@ -286,8 +289,8 @@ fallback `2543` 两点间轮转会同时受堵。公国/王国目标发布全部
 `combat`。因此“目标省安全”不等于“路线安全”；planner 提交 move 前必须审阅玩家候选路线的每个
 `route_province_ids` 条目，而不能只比较双方终点。硬冲突包括：非撤退敌军当前省位于玩家路线、敌军 move target
 位于玩家路线、双方下一跳相同、双方剩余路线共享任一未来省，以及双方以相反方向使用同一条边。共享省会记录
-双方各自的 1-based hop；当前没有每段地形/速度 ETA，不能仅凭 hop 差声称必然错峰。一般追击允许“被追击敌军
-恰在路线最后一项”这一种终点命中，但中途相遇、共同下一跳、未来共享省和其他敌军仍会阻断。该字段发布的是 CK3 已计算的剩余路线，不包含 bridge
+双方各自的 1-based hop；当前没有每段地形/速度 ETA，不能仅凭 hop 差声称必然错峰。缺少 exact combat
+forecast 时，敌军位于非 objective 路线终点也必须阻断，不再存在“被追击敌军恰在最后一项”的豁免。该字段发布的是 CK3 已计算的剩余路线，不包含 bridge
 猜测或最短路重建。
 
 路线安全是全局时间推进门槛，不是“最强军队”局部提示。每次战争中的 `life-advance` 前，planner 会在
@@ -302,8 +305,9 @@ adapter 在提交后失去持续审计能力。
 exact-build 实机从 `date_raw=53175216` 恢复时间，旧 Python composite 固定发送 `set-speed-5`；由于 DLL
 语义 snapshot 的 heartbeat 周期为 250 ms，首次满足一日停止条件时游戏已经到 `53175264`，实际推进
 `elapsed_days=2`。因此一日 route/Assault slice 现在必须先成功观察 `set-speed-1` 再 `resume-map`；缺该
-capability 就保持暂停并报错。普通七日 siege 与三十日 war slice 继续用速度 5。该改动只处理上述已实证
-的真实 overshoot，不改变路线冲突判定或 7/30 日 horizon。
+capability 就保持暂停并报错。普通七日 siege 与无 tactical route 的 active-war slice 使用速度 5；后者也以
+7 日为上限，不能无观察跨过第一个敌军 target cadence milestone。该改动只处理上述已实证的真实 overshoot，
+不改变路线冲突判定。
 
 没有活动路线的驻地军队也不是自动安全。paused 决策帧会针对该军当前省单独检查所有非撤退敌军的
 `current_province_id`、`move_target_province_id` 和完整 `route_province_ids`；敌军正在汇聚到当前围城点时，
@@ -313,6 +317,16 @@ native DFS / fort rank 较前的一条路线安全就立即提交。全部候选
 全部 exact 目标无解则保持暂停，不能继续围城推进。该全量收集只用于“驻守 exact 围城且当前省受到汇聚威胁”
 的撤离分支；普通目标规划仍按既有 rank 逐项查询，不额外消耗 preview。驻地检查只保护当前省，不会把敌军
 路线上的任意远端交叉省加入通用目标黑名单。
+
+该驻地门槛必须覆盖**全部**可控军队，而不是只覆盖本轮最强或已经选中的军队。2026-08-24 的真实最小化现场在
+`date_raw=53175960` 同时存在两支可控军：`83886341` 驻守 `2596`、没有 move target；敌军 `357`
+从 `2581` 沿 `[2587,2597,2596]` 明确汇聚；`16777558` 则仍有一条安全活动路线 `[2600]`。
+旧 planner 只审计后者并错误返回 `native_war_route_progress/life-advance`。同一控制流随后由 production planner
+的确定性双军 fixture 复现，不依赖伪造归档或测试专用分支。修复后的决策优先级为：先处理 unsafe active route，
+再处理受到汇聚威胁的 stationary `regular/sieging` 军队，最后才按兵力选择普通 strongest 军队；任一安全 active
+Assault 的每日提前推进也必须等待全体驻地威胁审计通过。这样每轮仍只执行一个战争动作，但不会用另一支军队的
+安全路线或安全 Assault 替受威胁的驻军放行时间。该修复已通过确定性 Python production-path 回归；本段不把它
+称为修复后的新 CK3 实机闭环，后续仍需在同一现场重新观察 reroute/保持暂停的后置条件。
 
 同一实机现场在玩家到达 `2604` 后给出了更强的完整路线反例：玩家回到 `2585` 的预览为
 `[2603,2595,2598,2599,2587,2585]`，敌军 `357` 从 `2597` 去 `2604` 的剩余路线为
@@ -368,7 +382,7 @@ OCR、截图或键鼠；每次时间推进后的决策帧都重新暂停。
 ## Known limitations
 
 - `CSiege` 是 Province 全局对象；若多场 active war 共享同一目标省，当前 snapshot 不能证明该围城归属哪一场战争。
-- 多军 planner 仍以 strongest 可控军为单一决策对象，可能忽略较弱玩家军正在进行的围城；尚未形成完整多军闭环。
+- 多军 planner 每轮仍只为一支军队选择一个动作，尚未形成围城目标分配与协同调度的完整闭环；但时间推进门槛会审计全部活动路线与全部 stationary `regular/sieging` 驻地威胁，并优先处理不安全路线和受威胁驻军，不再由 strongest 军队单独放行时间。
 - `_stable_tactical_war` 固定优先 exact attacker、primary leader 与稳定 `war_id`，不会因首战目标已全占或另一战正在失分而动态切换；尚未形成完整 multi-war 闭环。
 - 当前单军能力可以读出围城是否真实推进、在追兵汇聚时安全撤离，却不能保证完成 115–217 天级围城。没有经验证的 assault、第二军/合军、补员或雇佣能力时，所有 exact 目标都被快速追踪后应明确停机或恢复 checkpoint，不能把无占领的轮转描述为获胜闭环。
 
@@ -380,8 +394,8 @@ OCR、截图或键鼠；每次时间推进后的决策帧都重新暂停。
 2. 任一活动战争达到玩家视角 100 分：先执行 `enforce-demands-<war_id>`，确认该 war 从 snapshot 消失，不再无意义推进时间。
 3. 有活动战争、无可控军队：`raise-troops-default`。
 4. 玩家是进攻方、本方 primary war leader 且存在 exact `war_objective_province_ids`：从战争刚开始的 0 分起围攻 exact 目标。rich fort/garrison 可观测时按 `fort_level, garrison_size, native DFS tie-break` 优先选择更易目标；capability 缺失、值 unknown 或同值时保留 native DFS 顺序。这是有意的策略层重排，不改变 snapshot 的契约顺序。paused 状态先预览完整原生路线，再按上面的硬冲突审计；普通规划不安全才预览下一目标，受威胁 exact 围城撤离则先收齐同日/同 origin 的全部候选，再选 hop 最短、rank 稳定的安全路线。所有 exact 路线都不安全时保持暂停，绝不偷用 legacy fallback；恢复 advisory 命中的旧 target+route 组合也视为不可选。
-5. 没有 exact 目标时，战争分为 0、玩家是防守方或不是本方 primary war leader：选择兵力最大的可见敌军，令最强可控军队追击其当前省；兵力未知时按最小 `army_id` 稳定选择。仅 legacy fallback 可用时，仍要求进攻方已经取得正分，才把 `enemy_primary_default_raise_province_id` 当作围城启发式锚点；它绝不是解码出的 war goal。
-6. 军队已经在目标省、已观察到向目标省移动，或 90 个游戏日内已有相同的 accepted/submitted move intent：只有全部可控活动路线的 fresh passive audit 都安全，才执行一次最多 30 个游戏日的 `life-advance`，不重复提交 move。running snapshot 先暂停再读完整路线；敌情变化后每次推进前重新审计，不把上一次 preview 当永久通行证。
+5. 没有 safe exact 目标且没有 exact combat forecast 时，保持暂停，或仅执行已有 exact-safe 的 hold / rendezvous；禁止按 `soldiers` 选择最大可见敌军、追逐其 current province，也禁止把 legacy `enemy_primary_default_raise_province_id` 当作自动目标。
+6. 军队已经在 exact 目标省或已有仍安全的 accepted/submitted move intent：只有全部可控军与全部非撤退敌军的完整 M × N route audit、全部 stationary `regular/sieging` 驻地威胁审计都安全，才允许 `life-advance`。任一玩家/敌军 tactical route、任一可控军 combat/retreat 或 active Assault 都强制一日 paused-to-paused slice；其余 active-war slice 最多 7 日，不得无观察跨过 7/14 日 target milestone。unsafe route 优先于普通目标推进；安全 active Assault 也不能越过全局门槛。running snapshot 先暂停再读完整路线；敌情变化后每次推进前重新审计，不把上一次 preview 当永久通行证。
 7. 战争消失但玩家军队仍在场：逐支执行 `disband-army-<army_id>`。
 
 Typed MCP 工具为 `ck3_get_war_state`、`ck3_query_declarable_wars`、`ck3_declare_war`、`ck3_raise_troops_default`、`ck3_move_army`、`ck3_enforce_demands` 和 `ck3_disband_army`。通用 `ck3_plan_turn` / `ck3_auto_turn` 使用同一份状态和 step，不另建旁路策略。纯 native 缺少任何 capability 时明确返回 unsupported；Python 不会回落到最小化窗口的视觉点击。

@@ -127,6 +127,7 @@ _NATIVE_WAR_ADVANCE_MAX_DAYS = 30
 _NATIVE_SIEGE_ADVANCE_MAX_DAYS = 7
 _NATIVE_ASSAULT_ADVANCE_MAX_DAYS = 1
 _NATIVE_ACTIVE_ROUTE_ADVANCE_MAX_DAYS = 1
+_NATIVE_COMBAT_RETREAT_ADVANCE_MAX_DAYS = 1
 _ARMY_MOVE_DEFERRED_ERRORS = frozenset(
     {
         # Kept for protocol-v1 bridges built before the native rejection
@@ -4232,13 +4233,23 @@ def _life_advance_horizon_days(snapshot: dict[str, object]) -> int:
     Rich CSiege state is intentionally unavailable in running snapshots.  We
     therefore only classify the starting paused frame and stop by date; a
     running ``active_siege=null`` can never masquerade as siege completion.
-    Because running frames also suppress full routes, any active controlled
-    route takes the highest-priority one-day horizon. An active assault has the
-    same one-day bound; an ordinary stationary siege retains seven days.
+    Because running frames also suppress full routes, any active controlled or
+    hostile route takes a one-day horizon. Any controllable combat/retreat or
+    active assault has the same one-day bound. An ordinary stationary siege
+    and an otherwise route-free active war retain a seven-day ceiling so a
+    direct MCP advance cannot skip the first enemy-target cadence milestone.
     """
-    if snapshot.get("paused") is not True:
-        return _NATIVE_WAR_ADVANCE_MAX_DAYS
     player_armies = snapshot.get("player_armies")
+    for army in player_armies if isinstance(player_armies, list) else []:
+        if (
+            isinstance(army, dict)
+            and army.get("controllable") is True
+            and _army_in_combat_or_retreat(army)
+        ):
+            # Combat and retreat can resolve or redirect another stack between
+            # ticks.  Re-observe the whole M x N matrix after one day even if
+            # this snapshot started while the map was already running.
+            return _NATIVE_COMBAT_RETREAT_ADVANCE_MAX_DAYS
     for army in player_armies if isinstance(player_armies, list) else []:
         if not isinstance(army, dict) or army.get("controllable") is not True:
             continue
@@ -4258,6 +4269,42 @@ def _life_advance_horizon_days(snapshot: dict[str, object]) -> int:
             # before CK3 can retarget enemies for several unseen game days.
             return _NATIVE_ACTIVE_ROUTE_ADVANCE_MAX_DAYS
     wars = snapshot.get("active_wars")
+    for war in wars if isinstance(wars, list) else []:
+        if not isinstance(war, dict):
+            continue
+        enemies = war.get("enemy_armies")
+        for enemy in enemies if isinstance(enemies, list) else []:
+            if not isinstance(enemy, dict):
+                continue
+            state = enemy.get("army_state")
+            state_code = enemy.get("army_state_code")
+            if (
+                enemy.get("retreating") is True
+                or isinstance(state, str)
+                and state.casefold() == "retreating"
+                or state_code == 6
+            ):
+                continue
+            target = enemy.get("move_target_province_id")
+            route = enemy.get("route_province_ids")
+            if (
+                _positive_native_id(target)
+                or isinstance(route, list)
+                and bool(route)
+                or isinstance(state, str)
+                and state.casefold() == "moving"
+                or state_code == 7
+            ):
+                # The enemy endpoint epoch is re-evaluated after every
+                # tactical day.  Seven/fourteen days are observations, not a
+                # license to run blind through them.
+                return _NATIVE_ACTIVE_ROUTE_ADVANCE_MAX_DAYS
+    if snapshot.get("paused") is not True:
+        return (
+            _NATIVE_SIEGE_ADVANCE_MAX_DAYS
+            if isinstance(wars, list) and bool(wars)
+            else _NATIVE_WAR_ADVANCE_MAX_DAYS
+        )
     player_siege_observed = False
     for war in wars if isinstance(wars, list) else []:
         if not isinstance(war, dict):
@@ -4286,7 +4333,11 @@ def _life_advance_horizon_days(snapshot: dict[str, object]) -> int:
         and snapshot.get("war_objective_siege_progress_supported") is True
     ):
         return _NATIVE_SIEGE_ADVANCE_MAX_DAYS
-    return _NATIVE_WAR_ADVANCE_MAX_DAYS
+    return (
+        _NATIVE_SIEGE_ADVANCE_MAX_DAYS
+        if isinstance(wars, list) and bool(wars)
+        else _NATIVE_WAR_ADVANCE_MAX_DAYS
+    )
 
 
 def _active_war_progress_signature(
@@ -4608,7 +4659,7 @@ def _war_objective_capability_flags(
     }
 
 
-def _army_known_merge_blocked(army: dict[str, object]) -> bool:
+def _army_in_combat_or_retreat(army: dict[str, object]) -> bool:
     state = army.get("army_state")
     state_code = army.get("army_state_code")
     return bool(
@@ -4624,6 +4675,10 @@ def _army_known_merge_blocked(army: dict[str, object]) -> bool:
             and state_code in {2, 6}
         )
     )
+
+
+def _army_known_merge_blocked(army: dict[str, object]) -> bool:
+    return _army_in_combat_or_retreat(army)
 
 
 def _action_steps(
@@ -4851,12 +4906,12 @@ def _action_steps(
             if not isinstance(army_id, int):
                 continue
             for province_id in target_provinces:
-                if province_id in {
-                    army.get("current_province_id"),
-                    army.get("move_target_province_id"),
-                }:
+                if province_id == army.get("current_province_id"):
                     continue
-                if expand_move_armies:
+                if (
+                    expand_move_armies
+                    and province_id != army.get("move_target_province_id")
+                ):
                     steps.add(move_army_step(army_id, province_id))
                 if expand_preview_move_armies:
                     steps.add(preview_move_army_step(army_id, province_id))
