@@ -53,8 +53,9 @@ MCP 同时保留 generic `ck3_execute_step("save-checkpoint")`，并提供 typed
    `SessionHandle` 的 `native-session` 主线程在停止前和停止后各核对一次文件，再使用完全相同的
    pipe、DLL 和 injector 执行 `launch(..., load_save_name="xar_checkpoint")`；
 3. 会话进程在 outbox 返回旧/新 PID；driver 仍不会立即宣称成功，而是等待 named pipe 出现更大的
-   `connection_generation`，等待该代 DLL 发布 `map_ready=true` snapshot，并要求语义 revision 至少稳定
-   0.5 秒；
+   `connection_generation`，等待该代 DLL 发布 `map_ready=true` 且带有已验证 `played_character` 的
+   snapshot，并要求语义 revision 至少稳定 0.5 秒；加载期间短暂出现的
+   `map_ready=true, played_character=null` 会清空稳定计时并继续等待；
 4. driver 核对恢复日期（有保存日期元数据时）、本局 played CharacterID 和 checkpoint hash，随后返回
    `restored_date`、checkpoint 路径/大小/hash、新连接代次和新 PID。
 
@@ -138,6 +139,11 @@ synthetic restore。
   `-loadsave=xar_checkpoint` 精确回到 `53168664`。
 - connection generation 从 `1` 变为 `2`；episode CharacterID `29829`、run ID 与
   `save-checkpoint → life-advance → restore-checkpoint` history 保持连续，返回 revision 已稳定为 `12`。
+
+同日另一轮 exact restore 又实测到 CK3 PID `68716 → 2012` 的加载过渡：新 DLL 代次曾持续发布
+`map_ready=true, played_character=null`，随后才在 revision `148` 发布 CharacterID `29829`、
+`date_raw=53174208` 的正确暂停帧；checkpoint size/SHA 与 episode run 均保持一致。该过渡帧不是换角、
+死亡或错误存档，restore barrier 必须等到带身份的稳定可玩帧再做精确日期/角色校验。
 
 同进程指定文件热加载尚未实现；当前闭环使用受管进程重启。
 

@@ -2927,7 +2927,11 @@ class NativeHeadlessGameplayDriver:
                     snapshot = self.state.semantic_snapshot()
                 except BridgeUnavailableError:
                     snapshot = None
-                if isinstance(snapshot, dict) and snapshot.get("map_ready") is True:
+                if (
+                    isinstance(snapshot, dict)
+                    and snapshot.get("map_ready") is True
+                    and isinstance(snapshot.get("played_character"), dict)
+                ):
                     revision = int(snapshot["revision"])
                     if revision != stable_revision:
                         stable_revision = revision
@@ -2944,7 +2948,7 @@ class NativeHeadlessGameplayDriver:
             if remaining <= 0:
                 raise BridgeUnavailableError(
                     "native-session relaunched CK3 but no newer DLL generation "
-                    "published a map_ready snapshot"
+                    "published a stable map_ready snapshot with played_character"
                 )
             wait_seconds = remaining
             if stable_since is not None:

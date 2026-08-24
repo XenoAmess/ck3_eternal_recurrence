@@ -2731,7 +2731,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 endpoint=endpoint,
                 state_dir=state_dir,
                 save_dir=save_dir,
-                restore_timeout_seconds=1.0,
+                restore_timeout_seconds=3.0,
                 restore_poll_interval_seconds=0.005,
             )
             endpoint.publish(_hello("game.state.snapshot"))
@@ -2805,16 +2805,14 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                             1,
                             date_raw=53_171_400,
                             map_ready=True,
-                            played_character={
-                                "character_id": 707,
-                                "alive": True,
-                            },
+                            played_character=None,
                         )
                     )
-                    # Loading can publish one map-ready projection and then
-                    # immediately replace it.  Restore must return the settled
-                    # semantic revision, not the first transient map frame.
-                    time.sleep(0.05)
+                    # CK3 can publish map_ready while the loaded save still has
+                    # no playable character.  Keep this transient frame alive
+                    # longer than the ordinary semantic stability window: it
+                    # must never be accepted as the restored episode identity.
+                    time.sleep(0.6)
                     endpoint.publish(
                         _snapshot(
                             2,
