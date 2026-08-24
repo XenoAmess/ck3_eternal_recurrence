@@ -298,6 +298,13 @@ backoff 都不能成为继续推进旧危险路线的理由。`game.command.prev
 自动 exact routing 还必须同时广告 `game.state.army-routes`，否则明确返回 unsupported，避免未来 partial
 adapter 在提交后失去持续审计能力。
 
+活动路线使用一日 paused-to-paused horizon 时，时间速度本身也是契约的一部分。2026-08-24 的最小化
+exact-build 实机从 `date_raw=53175216` 恢复时间，旧 Python composite 固定发送 `set-speed-5`；由于 DLL
+语义 snapshot 的 heartbeat 周期为 250 ms，首次满足一日停止条件时游戏已经到 `53175264`，实际推进
+`elapsed_days=2`。因此一日 route/Assault slice 现在必须先成功观察 `set-speed-1` 再 `resume-map`；缺该
+capability 就保持暂停并报错。普通七日 siege 与三十日 war slice 继续用速度 5。该改动只处理上述已实证
+的真实 overshoot，不改变路线冲突判定或 7/30 日 horizon。
+
 没有活动路线的驻地军队也不是自动安全。paused 决策帧会针对该军当前省单独检查所有非撤退敌军的
 `current_province_id`、`move_target_province_id` 和完整 `route_province_ids`；敌军正在汇聚到当前围城点时，
 planner 会在同一 `date_raw`、同一物理 origin 下依次补齐所有未阻断 exact 目标的 fresh preview；不能因为

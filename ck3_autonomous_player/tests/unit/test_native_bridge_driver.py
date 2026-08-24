@@ -353,6 +353,99 @@ def _war(
 
 
 class NativeHeadlessGameplayDriverTests(unittest.TestCase):
+    def _run_life_advance_speed_fixture(
+        self,
+        *,
+        active_wars: list[dict[str, object]],
+        player_armies: list[dict[str, object]],
+        extra_capabilities: tuple[str, ...] = (),
+        expected_speed: int,
+        horizon_days: int,
+    ) -> tuple[dict[str, object], list[str]]:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-5",
+                *extra_capabilities,
+            )
+        )
+        start_date = 53_175_216
+
+        def publish(
+            revision: int, *, date_raw: int, speed: int, paused: bool
+        ) -> None:
+            endpoint.publish(
+                _snapshot(
+                    revision,
+                    date_raw=date_raw,
+                    speed=speed,
+                    paused=paused,
+                    active_wars=active_wars,
+                    player_armies=player_armies,
+                )
+            )
+
+        publish(1, date_raw=start_date, speed=3, paused=True)
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == f"set-speed-{expected_speed}":
+                publish(
+                    2,
+                    date_raw=start_date,
+                    speed=expected_speed,
+                    paused=True,
+                )
+            elif step == "resume-map":
+                publish(
+                    3,
+                    date_raw=start_date,
+                    speed=expected_speed,
+                    paused=False,
+                )
+                publish(
+                    4,
+                    date_raw=start_date + horizon_days * 24,
+                    speed=expected_speed,
+                    paused=False,
+                )
+            elif step == "pause-map":
+                publish(
+                    5,
+                    date_raw=start_date + horizon_days * 24,
+                    speed=expected_speed,
+                    paused=True,
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("life-advance")
+        steps = [
+            str(frame["step"])
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+        ]
+        return result, steps
+
     def test_current_dll_only_exposes_connection_diagnostics(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
@@ -1096,6 +1189,128 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(_life_advance_horizon_days(snapshot), 1)
         siege["assault_in_progress"] = False
         self.assertEqual(_life_advance_horizon_days(snapshot), 7)
+
+    def test_active_route_one_day_slice_uses_speed_one(self) -> None:
+        player = _army(
+            101,
+            province_id=2598,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[_war(allied_armies=[player])],
+            player_armies=[player],
+            expected_speed=1,
+            horizon_days=1,
+        )
+
+        self.assertEqual(
+            steps, ["set-speed-1", "resume-map", "pause-map"]
+        )
+        self.assertEqual(result["elapsed_days"], 1)
+
+    def test_active_assault_one_day_slice_uses_speed_one(self) -> None:
+        player = _army(101, province_id=2585, army_state="sieging")
+        siege = _active_siege(
+            assault_observable=True,
+            breach_level=1,
+            assault_in_progress=True,
+            can_start_assault=False,
+            can_stop_assault=True,
+            assault_daily_progress_raw=340_000,
+            assault_daily_casualties=16,
+        )
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[
+                _war(
+                    allied_armies=[player],
+                    war_objective_province_ids=[2585],
+                    objective_province_states=[
+                        _objective_state(2585, active_siege=siege)
+                    ],
+                )
+            ],
+            player_armies=[player],
+            extra_capabilities=("game.state.war-objective-assault",),
+            expected_speed=1,
+            horizon_days=1,
+        )
+
+        self.assertEqual(
+            steps, ["set-speed-1", "resume-map", "pause-map"]
+        )
+        self.assertEqual(result["elapsed_days"], 1)
+
+    def test_ordinary_siege_seven_day_slice_keeps_speed_five(self) -> None:
+        player = _army(101, province_id=2585, army_state="sieging")
+        siege = _active_siege(
+            assault_observable=False,
+        )
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[
+                _war(
+                    allied_armies=[player],
+                    war_objective_province_ids=[2585],
+                    objective_province_states=[
+                        _objective_state(2585, active_siege=siege)
+                    ],
+                )
+            ],
+            player_armies=[player],
+            extra_capabilities=(
+                "game.state.war-objective-siege-progress",
+            ),
+            expected_speed=5,
+            horizon_days=7,
+        )
+
+        self.assertEqual(
+            steps, ["set-speed-5", "resume-map", "pause-map"]
+        )
+        self.assertEqual(result["elapsed_days"], 7)
+
+    def test_one_day_slice_without_speed_one_fails_before_resume(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        player = _army(
+            101,
+            province_id=2598,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        endpoint.publish(
+            _snapshot(
+                1,
+                speed=5,
+                active_wars=[_war(allied_armies=[player])],
+                player_armies=[player],
+            )
+        )
+
+        with self.assertRaisesRegex(
+            BridgeUnavailableError, "requires set-speed-1.*not resumed"
+        ):
+            driver.execute_step("life-advance")
+
+        self.assertFalse(
+            any(
+                frame.get("type") == "execute_step"
+                for frame in endpoint.frames
+            )
+        )
 
     def test_active_route_life_advance_horizon_is_one_day_until_arrival(
         self,
@@ -5792,6 +6007,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.army-routes",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
                 "game.command.set-speed-5",
             )
         )
@@ -5827,12 +6043,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "result": {"step": step, "accepted": True},
                 }
             )
-            if step == "set-speed-5":
+            if step == "set-speed-1":
                 endpoint.publish(
                     _snapshot(
                         91,
                         date_raw=start_date,
-                        speed=5,
+                        speed=1,
                         active_wars=[war],
                         player_armies=[player],
                     )
@@ -5842,7 +6058,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     _snapshot(
                         92,
                         date_raw=start_date + 24,
-                        speed=5,
+                        speed=1,
                         paused=False,
                         active_wars=[war],
                         player_armies=[player],
@@ -5854,7 +6070,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     _snapshot(
                         93,
                         date_raw=start_date + 24,
-                        speed=5,
+                        speed=1,
                         paused=True,
                         active_wars=[war],
                         player_armies=[player],

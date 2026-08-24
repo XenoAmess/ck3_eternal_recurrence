@@ -313,7 +313,7 @@ Assault 是可由原生 Stop 命令退出、但会持续消耗军队的状态。
 
 1. paused snapshot 验证同一 SiegeID/generation/backlink，读取上述完整 assault 子域；
 2. 只有 `can_start_assault=true`、预期一日伤亡在策略预算内，且下一暂停点早于敌军安全边界时才提交；
-3. 提交后先验证 Start 后置条件，再只推进最多一个游戏日；
+3. 提交后先验证 Start 后置条件；一日 horizon 必须先切到原生速度 1，再恢复时间；
 4. 重新暂停，重读 work、兵力、breach、active flag、每日 projection/casualties 和敌军 ETA；
 5. 任一 gate 消失、伤亡/威胁预算不再满足或不能证明继续安全时，调用完整 Stop 路径并验证后置条件。
 
@@ -364,7 +364,9 @@ Start/Stop 收到 `*_submitted` ACK 后，driver 等待同一 war、同一 objec
 - 全局没有任一 controllable army 处于 `moving`/state code 7，或仍带 move target/非空 route。即使军队
   同帧仍报告 `sieging`，移动 intent 也优先，禁止 Start。
 
-Assault active 后，`life-advance` horizon 强制为一个游戏日。每个 paused 终点重新读取 Siege work、
+Assault active 后，`life-advance` horizon 强制为一个游戏日，而且该 horizon 只能使用
+`game.command.set-speed-1`；若 exact adapter 没有广告速度 1，driver 在 `resume-map` 前 fail-close。
+普通七日围城和三十日战争 slice 仍使用速度 5。每个 paused 终点重新读取 Siege work、
 eligible besieging strength、当日 projection/casualties 和敌军汇聚；上一切片只用同一 objective 的
 `before_state`/`after_state.besieging_strength` 计算非负 `strength_loss`。它只是 eligible besieging strength
 的帧间净变化，不能冒充精确伤亡；progress frame 中的 army `soldiers` 可为 `null`，若偶尔存在也只作诊断，
@@ -376,7 +378,7 @@ siege/assault 子域不可观测，planner 与 direct MCP `life-advance` 都会�
 同 SiegeID inactive、`siege_observable=true && active_siege=null`、不同的正 generation、war 结束、成功
 `assault_stopped` 或 checkpoint restore 都会闭合/隔离旧 latch，避免卡住后来 Siege。Start 后最新一次
 `life-advance` 若 `ok!=true`，由于可能已经 resume/推进但没有完整 postcondition，下一轮必须 Stop/阻断；
-direct MCP 在发送 `set-speed-5`/`resume-map` 前执行同一检查。decorated `auto-turn` 优先读取根部真实
+direct MCP 在发送选定的 `set-speed-*`/`resume-map` 前执行同一检查。decorated `auto-turn` 优先读取根部真实
 `assault_action`，不把 planner payload 当作 applied 事实。
 策略只保留 `projection_horizon_days=1`，不使用普通 `days_left`，也不从当前 progress/casualties 外推
 Assault ETA。
@@ -388,6 +390,13 @@ planner 直接等待完整 paused route，不允许 Start 或推进。原因是 
 等待跨 hop 后才重新审计敌军改道。
 到达并清空 route/target 后，若没有 active assault，horizon 才恢复到对应的 7/30 日规则。该门槛来自
 `53176368` 的实机故障：`[2597,2596]` 的活动路线曾单次推进 12 日才因跨 hop 停止。
+
+2026-08-24 的后续最小化实机又证明“horizon=1”本身仍不等于精确一日。活动路线 slice 从
+`date_raw=53175216` 开始，旧实现固定使用速度 5；DLL 只在 250 ms heartbeat 发布运行 snapshot，Python
+看到日界后再提交 Pause，最终停在 `53175264`，`elapsed_days=2`。这是已经影响真实路线审计、也会破坏
+Assault 每日 casualty budget 的可复现 overshoot。修复因此只把一日路线/Assault slice 降到速度 1；
+7/30 日吞吐不变。确定性回归分别钉死 active route、active Assault、普通 siege 选速，以及缺
+`set-speed-1` 时不得恢复时间；修复后的精确一日仍须在同一可恢复现场复验。
 
 上述消费层由完整 Python 回归夹具覆盖；仍不替代本页要求的可恢复实机后置条件验收。
 

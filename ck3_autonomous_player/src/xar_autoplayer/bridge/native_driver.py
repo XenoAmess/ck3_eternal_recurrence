@@ -3508,20 +3508,30 @@ class NativeHeadlessGameplayDriver:
                     "lifecycle without observable same-SiegeID rich state"
                 )
         starting_date_raw = _date_raw(starting, "starting snapshot")
+        horizon_days = _life_advance_horizon_days(starting)
+        timeline_speed = 1 if horizon_days == 1 else 5
+        speed_step = f"set-speed-{timeline_speed}"
+        if speed_step not in self.capabilities()["action_steps"]:
+            raise BridgeUnavailableError(
+                "native life-advance requires "
+                f"{speed_step} for its {horizon_days}-day paused timeline "
+                "slice; the map was not resumed"
+            )
         actions: list[dict[str, object]] = []
 
         speed_result = self._execute_composite_primitive(
-            "set-speed-5", starting
+            speed_step, starting
         )
-        actions.append({"step": "set-speed-5", "result": speed_result})
+        actions.append({"step": speed_step, "result": speed_result})
         current = self._wait_for_snapshot(
             self.take_snapshot(),
-            lambda snapshot: snapshot.get("speed") == 5,
+            lambda snapshot: snapshot.get("speed") == timeline_speed,
             timeout_seconds=self.command_timeout_seconds,
         )
-        if current.get("speed") != 5:
+        if current.get("speed") != timeline_speed:
             raise BridgeUnavailableError(
-                "native life-advance did not observe speed 5"
+                "native life-advance did not observe "
+                f"speed {timeline_speed}"
             )
 
         resume_result = self._execute_composite_primitive(
@@ -3559,7 +3569,6 @@ class NativeHeadlessGameplayDriver:
             if current_date_raw > starting_date_raw:
                 progress_status = "wall_timeout_with_date_progress"
             elif starting.get("active_wars"):
-                horizon_days = _life_advance_horizon_days(starting)
                 raise BridgeUnavailableError(
                     "native active-war life-advance observed no event, war "
                     "or army progress, and did not reach its "
