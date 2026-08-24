@@ -19,7 +19,10 @@ from xar_autoplayer.bridge.driver import (
     HybridGameplayDriver,
     UnsupportedStepError,
 )
-from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.service import (
+    GameplayBridgeService,
+    _route_plan_to_available_step,
+)
 from xar_autoplayer.bridge.settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
 )
@@ -30,6 +33,7 @@ from xar_autoplayer.bridge.war_contract import (
 from xar_autoplayer.strategy import (
     _audit_war_route,
     _enemy_endpoint_epochs,
+    choose_one_life_turn,
     record_one_life_episode,
 )
 
@@ -344,6 +348,7 @@ def _native_war_plan(
     siege_progress_supported: bool = False,
     assault_supported: bool = False,
     rollback_war_failure: dict[str, object] | None = None,
+    rollback_war_failures: list[dict[str, object]] | None = None,
 ) -> dict[str, object]:
     controlled = list(players) if players is not None else [player]
     route_field_present = "route_province_ids" in player
@@ -372,6 +377,11 @@ def _native_war_plan(
             "date_raw": date_raw,
             "native_command_history": history or [],
             "native_rollback_war_failure": rollback_war_failure,
+            **(
+                {"native_rollback_war_failures": rollback_war_failures}
+                if rollback_war_failures is not None
+                else {}
+            ),
             "active_wars": [
                 _war(
                     allied_armies=controlled,
@@ -397,6 +407,23 @@ def _native_war_plan(
 
 
 class GameplayBridgeTests(unittest.TestCase):
+    def test_irreversible_war_steps_never_fallback_to_life_advance(self) -> None:
+        for step in (
+            "declare-war-808-17-0",
+            "war-declare-palermo",
+            "offer-white-peace-88",
+            "surrender-war-88",
+            "query-war-termination-options-88",
+            "enforce-demands-88",
+        ):
+            with self.subTest(step=step):
+                routed = _route_plan_to_available_step(
+                    {"phase": "fixture", "selected_step": step},
+                    {"life-advance"},
+                )
+                self.assertIsNone(routed["selected_step"])
+                self.assertEqual(routed["required_step"], step)
+
     def test_war_contract_preserves_adapter_objective_order(self) -> None:
         normalized = normalize_active_wars(
             [
@@ -1749,6 +1776,110 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(changed_route["selected_step"], "move-army-11-to-2568")
 
+    def test_two_rollback_memories_block_both_exact_routes_but_not_new_route(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=2598,
+            controllable=True,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            21,
+            soldiers=800,
+            province_id=2600,
+            controllable=False,
+            move_target_province_id=2598,
+            army_state="moving",
+            route_province_ids=[2596, 2598],
+        )
+
+        def failure(target: int, route: list[int]) -> dict[str, object]:
+            return {
+                "status": "rolled_back_active_route",
+                "episode_run_id": "native-707-test",
+                "war_id": 88,
+                "army_id": 11,
+                "restored_origin_province_id": 2598,
+                "target_province_id": target,
+                "route_origin_province_id": 2598,
+                "route_province_ids": list(route),
+            }
+
+        newest = failure(2568, [2599, 2587, 2572, 2568])
+        older = failure(2548, [2599, 2587, 2572, 2548])
+        history = [
+            _preview_row(
+                1,
+                origin=2598,
+                target=2568,
+                date_raw=24_000,
+                route=[2599, 2587, 2572, 2568],
+            ),
+            _preview_row(
+                2,
+                origin=2598,
+                target=2548,
+                date_raw=24_000,
+                route=[2599, 2587, 2572, 2548],
+            ),
+        ]
+        blocked = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=24,
+            date_raw=24_000,
+            history=history,
+            objectives=[2598, 2568, 2548],
+            steps=(
+                "move-army-11-to-2568",
+                "move-army-11-to-2548",
+                "life-advance",
+            ),
+            rollback_war_failure=newest,
+            rollback_war_failures=[newest, older],
+        )
+
+        self.assertIsNone(blocked["selected_step"])
+        self.assertEqual(
+            [
+                rejection["target_province_id"]
+                for rejection in blocked["route_rejections"]
+                if rejection.get("status") == "rolled_back_route_failure"
+            ],
+            [2568, 2548],
+        )
+
+        changed_route_history = [
+            history[0],
+            _preview_row(
+                2,
+                origin=2598,
+                target=2548,
+                date_raw=24_000,
+                route=[2587, 2572, 2548],
+            ),
+        ]
+        changed_route = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=24,
+            date_raw=24_000,
+            history=changed_route_history,
+            objectives=[2598, 2568, 2548],
+            steps=(
+                "move-army-11-to-2568",
+                "move-army-11-to-2548",
+                "life-advance",
+            ),
+            rollback_war_failure=newest,
+            rollback_war_failures=[newest, older],
+        )
+        self.assertEqual(changed_route["selected_step"], "move-army-11-to-2548")
+
     def test_stationary_threat_blocks_nonobjective_recovery_advance(
         self,
     ) -> None:
@@ -2318,6 +2449,66 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(selected["war"], "query-declarable-wars")
         self.assertEqual(selected["marriage"], "query-arrange-marriage-choices")
 
+    def test_legal_native_declaration_does_not_bypass_war_entry_evidence(self) -> None:
+        snapshot = {
+            **_snapshot(7),
+            "played_character": {
+                "character_id": 707,
+                "alive": True,
+                "betrothed_id": None,
+                "primary_spouse_id": None,
+                "spouse_ids": [],
+            },
+            "active_wars": [],
+            "player_armies": [],
+            "declarable_wars": [
+                {
+                    "declaration_id": "808-17-0",
+                    "target_character_id": 808,
+                    "casus_belli_index": 17,
+                    "casus_belli_key": "conquer_county_cb",
+                    "configuration_index": 0,
+                    "claimant_character_id": 707,
+                    "target_title_ids": [9001],
+                }
+            ],
+        }
+        plan = choose_one_life_turn(
+            [{"index": 1, "command": "save-checkpoint", "ok": True}],
+            snapshot=snapshot,
+            action_steps=(
+                "declare-war-808-17-0",
+                "query-declarable-wars",
+                "life-advance",
+            ),
+            next_run_plan={
+                "policy": "fixture",
+                "continue_as_heir_after_death": False,
+                "priorities": [
+                    {
+                        "priority": 100,
+                        "action": "reassess_first_low_cost_expansion",
+                    },
+                    {
+                        "priority": 80,
+                        "action": "seek_current_life_marriage_alliance",
+                    },
+                ],
+            },
+        )
+
+        self.assertEqual(plan["phase"], "native_war_entry_evidence_required")
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["declaration"]["declaration_id"], "808-17-0")
+        self.assertIn(
+            "game.command.query-combat-simulation-inputs",
+            plan["required_capabilities"],
+        )
+        self.assertIn(
+            "game.forecast.combat-monte-carlo-v1",
+            plan["required_capabilities"],
+        )
+
     def test_hybrid_propagates_semantic_settlement_without_visual_action(
         self,
     ) -> None:
@@ -2528,6 +2719,87 @@ class GameplayBridgeTests(unittest.TestCase):
             plan["selected_step"], "accept-pending-character-interaction"
         )
         self.assertEqual(plan["pending_character_interaction"]["instance_id"], 72)
+
+    def test_active_war_does_not_accept_unclassified_pending_interaction(self) -> None:
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            army_state="regular",
+        )
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(7),
+                "pending_character_interaction": {
+                    "instance_id": 72,
+                    "sender_character_id": 501,
+                    "auto_accept_notification": False,
+                },
+                "active_wars": [
+                    _war(allied_armies=[player], enemy_armies=[])
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+                "life-advance",
+            ),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(
+            plan["phase"], "pending_war_interaction_evidence_required"
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "game.command.query-war-termination-options-N",
+            plan["required_capabilities"],
+        )
+
+    def test_enforce_demands_precedes_unclassified_pending_war_interaction(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            army_state="regular",
+        )
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(7),
+                "pending_character_interaction": {
+                    "instance_id": 72,
+                    "sender_character_id": 501,
+                    "auto_accept_notification": False,
+                },
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[],
+                        score=100,
+                    )
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "accept-pending-character-interaction",
+                "enforce-demands-88",
+            ),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_enforce_demands")
+        self.assertEqual(plan["selected_step"], "enforce-demands-88")
 
     def test_native_war_planner_raises_when_no_player_army_exists(self) -> None:
         driver = CallbackGameplayDriver(
@@ -3671,6 +3943,34 @@ class GameplayBridgeTests(unittest.TestCase):
                     plan["assault_lifecycles"][0]["reason"],
                     "objective_row_unavailable_after_start",
                 )
+
+    def test_enforce_demands_precedes_unobservable_started_assault_lifecycle(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=100,
+            date_raw=24_000,
+            history=[_assault_action_row(1, status="assault_started")],
+            objective=2585,
+            objective_states=[],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("enforce-demands-88", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_enforce_demands")
+        self.assertEqual(plan["selected_step"], "enforce-demands-88")
 
     def test_started_assault_lifecycle_closes_on_exact_no_siege_stop_or_restore(
         self,
@@ -4934,6 +5234,7 @@ class GameplayBridgeTests(unittest.TestCase):
             enemy_armies=[enemy_a],
             score=15,
             player_side="defender",
+            player_is_primary_war_leader=False,
         )
         war_b = _war(
             war_id=20,
@@ -5435,8 +5736,109 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertEqual(
+            plan["phase"], "defensive_war_exit_evidence_required"
+        )
         self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["active_wars"][0]["war_exit_assessment"]["status"],
+            "unavailable",
+        )
+        self.assertIn(
+            "game.command.query-war-termination-options-N",
+            plan["required_capabilities"],
+        )
+
+    def test_primary_defender_may_raise_before_exit_evidence_gate(self) -> None:
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(11),
+                "active_wars": [
+                    _war(
+                        allied_armies=[],
+                        enemy_armies=[],
+                        score=-10,
+                        player_side="defender",
+                    )
+                ],
+                "player_armies": [],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("raise-troops-default", "life-advance"),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_raise")
+        self.assertEqual(plan["selected_step"], "raise-troops-default")
+
+    def test_defender_with_unknown_primary_identity_fails_closed(self) -> None:
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            army_state="regular",
+        )
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(11),
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[],
+                        score=-10,
+                        player_side="defender",
+                        player_is_primary_war_leader=None,
+                    )
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("life-advance",),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(
+            plan["phase"], "defensive_war_exit_evidence_required"
+        )
+        self.assertIsNone(plan["selected_step"])
+
+    def test_primary_defender_enforces_victory_before_exit_evidence_gate(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            army_state="regular",
+        )
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(11),
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[],
+                        score=100,
+                        player_side="defender",
+                    )
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("enforce-demands-88", "life-advance"),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_enforce_demands")
+        self.assertEqual(plan["selected_step"], "enforce-demands-88")
 
     def test_native_war_planner_holds_on_primary_opponent_fallback(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)

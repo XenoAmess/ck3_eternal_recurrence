@@ -46,7 +46,7 @@ class NativeDeclarationContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "declaration_id"):
             normalize_declarable_wars([changed])
 
-    def test_planner_queries_then_selects_a_native_declaration(self) -> None:
+    def test_planner_queries_then_requires_war_entry_evidence(self) -> None:
         commands = [
             {"index": 1, "command": "save-checkpoint", "ok": True},
         ]
@@ -74,10 +74,19 @@ class NativeDeclarationContractTests(unittest.TestCase):
                 "life-advance",
             },
         )
-        self.assertEqual(declaration["selected_step"], "declare-war-808-17-0")
+        self.assertEqual(declaration["phase"], "native_war_entry_evidence_required")
+        self.assertIsNone(declaration["selected_step"])
         self.assertEqual(
             declaration["declaration"]["casus_belli_key"],
             "county_conquest_cb",
+        )
+        self.assertIn(
+            "game.command.query-combat-simulation-inputs",
+            declaration["required_capabilities"],
+        )
+        self.assertIn(
+            "game.forecast.combat-monte-carlo-v1",
+            declaration["required_capabilities"],
         )
 
     def test_submitted_declaration_advances_before_another_query(self) -> None:

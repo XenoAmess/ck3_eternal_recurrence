@@ -234,6 +234,36 @@ def _write_driver_state_checkpoint_fixture(
     return checkpoint_path, checkpoint
 
 
+def _rollback_failure(
+    checkpoint: dict[str, object],
+    *,
+    target: int,
+    route: list[int],
+    run_id: str,
+    war_id: int = 61,
+    army_id: int = 1,
+    origin: int = 2598,
+) -> dict[str, object]:
+    return {
+        "status": "rolled_back_active_route",
+        "source": "checkpoint_discarded_branch",
+        "episode_run_id": run_id,
+        "checkpoint_sha256": checkpoint["sha256"],
+        "checkpoint_date_raw": checkpoint["date_raw"],
+        "war_id": war_id,
+        "army_id": army_id,
+        "restored_origin_province_id": origin,
+        "target_province_id": target,
+        "route_origin_province_id": origin,
+        "route_province_ids": list(route),
+        "previewed_date_raw": checkpoint["date_raw"],
+        "terminal_failure_target_province_id": target,
+        "terminal_failure_route_origin_province_id": origin,
+        "terminal_failure_route_province_ids": list(route),
+        "restored_date_raw": checkpoint["date_raw"],
+    }
+
+
 def _army(
     army_id: int,
     *,
@@ -2000,12 +2030,14 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             self.assertEqual(failure["restored_origin_province_id"], 1)
             self.assertEqual(failure["target_province_id"], 2)
             self.assertEqual(failure["route_province_ids"], [3, 2])
+            self.assertEqual(restored["native_rollback_war_failures"], [failure])
             self.assertNotIn(
                 "move-army-1-to-2",
                 [row["command"] for row in restored["native_command_history"]],
             )
             on_disk = json.loads(state_path.read_text(encoding="utf-8"))
             self.assertEqual(on_disk["rollback_war_failure"], failure)
+            self.assertEqual(on_disk["rollback_war_failures"], [failure])
 
             resumed_endpoint = FakeEndpoint(pipe_name)
             resumed_driver = NativeHeadlessGameplayDriver(
@@ -2036,6 +2068,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 resumed_driver.take_snapshot()["native_rollback_war_failure"],
                 failure,
             )
+            self.assertEqual(
+                resumed_driver.take_snapshot()["native_rollback_war_failures"],
+                [failure],
+            )
 
             next_endpoint = FakeEndpoint(pipe_name)
             next_driver = NativeHeadlessGameplayDriver(
@@ -2059,6 +2095,184 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             new_episode = next_driver.take_snapshot()
             self.assertEqual(new_episode["episode_character_id"], 909)
             self.assertIsNone(new_episode["native_rollback_war_failure"])
+            self.assertEqual(new_episode["native_rollback_war_failures"], [])
+
+    def test_legacy_singular_seeds_two_entry_migration_and_round_trips(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            pipe_name = r"\\.\pipe\xar_two_rollback_memories"
+            run_id = "native-707-two-rollback-memories"
+            checkpoint_path, checkpoint = _write_driver_state_checkpoint_fixture(
+                state_dir,
+                pipe_name,
+                bridge_pid=140760,
+                character_id=707,
+                run_id=run_id,
+            )
+            state_path = state_dir / "native-session" / "driver-state.json"
+            persisted = json.loads(state_path.read_text(encoding="utf-8"))
+            history = persisted["command_history"][:8]
+
+            def append(command: str, result: dict[str, object]) -> None:
+                history.append(
+                    {
+                        "index": len(history) + 1,
+                        "command": command,
+                        "ok": True,
+                        "result": result,
+                    }
+                )
+
+            def append_completed_epoch(target: int, route: list[int]) -> None:
+                preview = {
+                    "status": "available",
+                    "army_id": 1,
+                    "origin_province_id": 2598,
+                    "target_province_id": target,
+                    "route_province_ids": list(route),
+                    "previewed_date_raw": checkpoint["date_raw"],
+                }
+                moving = _army(
+                    1,
+                    province_id=2598,
+                    move_target_province_id=target,
+                    army_state="moving",
+                    route_province_ids=list(route),
+                )
+                append(
+                    f"preview-move-army-1-to-{target}",
+                    {"route_preview": preview},
+                )
+                append(
+                    f"move-army-1-to-{target}",
+                    {
+                        "war_action": {
+                            "status": "moving",
+                            "army_id": 1,
+                            "target_province_id": target,
+                            "submitted_date_raw": checkpoint["date_raw"],
+                        },
+                        "player_armies": [moving],
+                    },
+                )
+                append("life-advance", {"player_armies": [moving]})
+                append("restore-checkpoint", {"status": "restored"})
+
+            # The oldest completed epoch is beyond the compatibility scan.
+            append_completed_epoch(2500, [2599, 2500])
+            append_completed_epoch(2585, [2599, 2587, 2585])
+            append_completed_epoch(
+                2568, [2599, 2587, 2585, 2572, 2568]
+            )
+            persisted["command_history"] = history
+            persisted["rollback_war_failure"] = _rollback_failure(
+                checkpoint,
+                target=2568,
+                route=[2599, 2587, 2585, 2572, 2568],
+                run_id=run_id,
+            )
+            persisted.pop("rollback_war_failures", None)
+            write_json_atomic(state_path, persisted)
+
+            restored_army = _army(
+                1,
+                province_id=2598,
+                army_state="regular",
+                route_province_ids=[],
+            )
+            endpoint = FakeEndpoint(pipe_name)
+            driver = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            endpoint.publish({**_hello("game.state.snapshot"), "pid": 150000})
+            endpoint.publish(
+                _snapshot(
+                    1,
+                    date_raw=int(checkpoint["date_raw"]),
+                    played_character={"character_id": 707, "alive": True},
+                    active_wars=[_war(61, allied_armies=[restored_army])],
+                    player_armies=[restored_army],
+                )
+            )
+
+            restored = driver.take_snapshot()
+            failures = restored["native_rollback_war_failures"]
+            self.assertEqual(
+                [failure["target_province_id"] for failure in failures],
+                [2568, 2585],
+            )
+            self.assertNotIn(
+                2500,
+                [failure["target_province_id"] for failure in failures],
+            )
+            self.assertEqual(restored["native_rollback_war_failure"], failures[0])
+            on_disk = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(on_disk["rollback_war_failures"], failures)
+            self.assertEqual(on_disk["rollback_war_failure"], failures[0])
+
+            # Once factual history has been truncated, a separately
+            # live-confirmed legacy route can still be seeded as an advisory
+            # without inventing terminal diagnostics.  The reader preserves
+            # it and evicts an overfull third entry.
+            manually_seeded_older = {
+                "status": "rolled_back_active_route",
+                "source": "live-confirmed legacy reconstruction",
+                "episode_run_id": run_id,
+                "checkpoint_sha256": checkpoint["sha256"],
+                "checkpoint_date_raw": checkpoint["date_raw"],
+                "war_id": 61,
+                "army_id": 1,
+                "restored_origin_province_id": 2598,
+                "target_province_id": 2585,
+                "route_origin_province_id": 2598,
+                "route_province_ids": [2599, 2587, 2585],
+                "restored_date_raw": checkpoint["date_raw"],
+            }
+            on_disk["rollback_war_failures"] = [
+                failures[0],
+                manually_seeded_older,
+                _rollback_failure(
+                    checkpoint,
+                    target=2500,
+                    route=[2599, 2500],
+                    run_id=run_id,
+                ),
+            ]
+            write_json_atomic(state_path, on_disk)
+
+            resumed_endpoint = FakeEndpoint(pipe_name)
+            resumed = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=resumed_endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            resumed_endpoint.publish(
+                {**_hello("game.state.snapshot"), "pid": 150000}
+            )
+            resumed_endpoint.publish(
+                _snapshot(
+                    2,
+                    date_raw=int(checkpoint["date_raw"]),
+                    played_character={"character_id": 707, "alive": True},
+                    active_wars=[_war(61, allied_armies=[restored_army])],
+                    player_armies=[restored_army],
+                )
+            )
+            resumed_failures = resumed.take_snapshot()[
+                "native_rollback_war_failures"
+            ]
+            self.assertEqual(
+                resumed_failures, [failures[0], manually_seeded_older]
+            )
+            self.assertNotIn(
+                "terminal_failure_target_province_id", resumed_failures[1]
+            )
 
     def test_managed_restore_transaction_recovers_after_new_pid_daemon_crash(
         self,
@@ -2117,6 +2331,15 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "ok": True,
                 "result": {"player_armies": [active_army]},
             }
+            older_failure = _rollback_failure(
+                checkpoint,
+                target=4,
+                route=[5, 4],
+                run_id="native-707-managed-restore",
+                origin=1,
+            )
+            persisted["rollback_war_failure"] = older_failure
+            persisted["rollback_war_failures"] = [older_failure]
             write_json_atomic(state_path, persisted)
 
             endpoint = FakeEndpoint(pipe_name)
@@ -2213,9 +2436,17 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             failure = recovered["native_rollback_war_failure"]
             self.assertEqual(failure["target_province_id"], 2)
             self.assertEqual(failure["route_province_ids"], [3, 2])
+            self.assertEqual(
+                recovered["native_rollback_war_failures"],
+                [failure, older_failure],
+            )
             finalized = json.loads(state_path.read_text(encoding="utf-8"))
             self.assertIsNone(finalized["managed_restore_transaction"])
             self.assertEqual(len(finalized["command_history"]), 9)
+            self.assertEqual(
+                finalized["rollback_war_failures"],
+                [failure, older_failure],
+            )
 
     def test_cold_v2_migration_scans_only_two_completed_restore_epochs(
         self,
@@ -4949,6 +5180,19 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
 
             endpoint.send_hook = answer
             snapshot = driver.take_snapshot()
+            with driver._driver_state_lock:
+                driver._rollback_war_failures = [
+                    _rollback_failure(
+                        {
+                            "sha256": "b" * 64,
+                            "date_raw": 53_171_400,
+                        },
+                        target=20,
+                        route=[20],
+                        run_id=str(snapshot["episode_run_id"]),
+                        origin=10,
+                    )
+                ]
             result = driver.execute_step(
                 "save-checkpoint",
                 expected_revision=int(snapshot["revision"]),
@@ -4972,6 +5216,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
             self.assertTrue(checkpoint["overwrite_confirmed"])
             self.assertTrue(result["materialization"]["available"])
+            self.assertEqual(
+                driver.take_snapshot()["native_rollback_war_failures"], []
+            )
             seed_path = save_dir / "xar_episode_seed.ck3"
             self.assertEqual(seed_path.read_bytes(), payload)
             self.assertEqual(result["episode_seed"]["name"], seed_path.name)

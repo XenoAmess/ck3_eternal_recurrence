@@ -87,21 +87,24 @@ driver-state v2 在 `last_checkpoint` 中额外保存：
 - `history_index`：成功 `save-checkpoint` 在 command history 中的 1-based 位置；
 - `episode_character_id` 与 `episode_run_id`：该存档所属的一代 rogue episode。
 
-v2 顶层另允许一个可选、非事实字段 `rollback_war_failure`。它最多保存一条由两段证据组成的 advisory：epoch
+v2 顶层另允许可选、非事实字段 `rollback_war_failures`：它是最新优先、最多两条的 advisory 列表；
+`rollback_war_failure` 继续投影列表首项，供旧 reader 兼容。每条 advisory 仍由两段证据组成：epoch
 末端仍有 unresolved active route，只用于证明整个分支确实被 restore 放弃；真正的阻断键则取该 epoch 中同一
 army **第一条** `previewed_date_raw == submitted_date_raw`、且 preview `origin_province_id` 等于恢复后物理
 origin 的成功 move。`target_province_id / route_origin_province_id / route_province_ids` 保存这条入口 move，
 `terminal_failure_target_province_id / terminal_failure_route_origin_province_id /
 terminal_failure_route_province_ids` 只作诊断。找不到 restored-origin 入口就不发布 advisory，不能拿分支末端
-的 mid-edge route 代替。driver 读取时还要求阻断 route origin 等于 restored origin，且 checkpoint SHA 与当前
-`last_checkpoint` 一致；新 checkpoint 或新 episode 会清空。snapshot 将其单独投影为
-`native_rollback_war_failure`，不会把它插回 `native_command_history`。
+的 mid-edge route 代替。列表只合并同一 episode、checkpoint SHA、war、army 与 restored origin 的条目，按
+入口 `target_province_id + route_province_ids` 精确去重；新提炼条目在前，第三条更旧记录被淘汰。driver 读取时
+还要求阻断 route origin 等于 restored origin，且 checkpoint SHA 与当前 `last_checkpoint` 一致；新 checkpoint
+或新 episode 会清空。snapshot 分别投影为 `native_rollback_war_failures` 与 singular latest
+`native_rollback_war_failure`，不会把 advisory 插回 `native_command_history`。
 
 v2 顶层还允许一个仅在 managed restore 进行中的内部 `managed_restore_transaction`。driver 在把请求写入
 native-session inbox **之前**先原子持久化 request id、源 PID 与 checkpoint/history anchor；replacement
 hello 到达后再补入 replacement PID，并立即转成与冷启动相同的 checkpoint candidate。这样即使 daemon
 在新 hello 与最终 command record 之间退出，下一 daemon 也不会因磁盘 PID 已等于新 CK3 PID 而走
-`same_pid_hot` 复活未截断 tail。checkpoint 首帧完成绑定时，history/advisory 与 marker 在同一次
+`same_pid_hot` 复活未截断 tail。checkpoint 首帧完成绑定时，history/advisories 与 marker 在同一次
 driver-state 写入中定稿。若失败发生在进程替换前，失败 command record 会清 marker；若 daemon 恰在
 marker 写入与 inbox 写入之间退出，同源 PID hot 恢复会在确认 inbox/outbox 均无对应 request 后清除孤儿
 marker。该字段不是通用 WAL，也不进入 snapshot 或事实 history。
@@ -114,16 +117,17 @@ marker。该字段不是通用 WAL，也不进入 snapshot 或事实 history。
 1. CharacterID、snapshot `date_raw`、checkpoint size/SHA-256 全部与锚点一致：恢复原
    episode/run id，把 history 截到 `history_index`，丢弃存档之后发生但已被回滚的命令，再追加一条
    `source=native-session-cold-start` 的 synthetic `restore-checkpoint`；若被丢弃 tail 的末端成功 move
-   仍有 unresolved active route，并能向前找到上述 restored-origin fresh entry move，才提炼一条 advisory；
+   仍有 unresolved active route，并能向前找到上述 restored-origin fresh entry move，才提炼新 advisory，
+   再与同 scope 的既有列表合并、去重并截为两条；
 2. 任一项不一致：把当前角色作为新局创建新的 run id，清空旧 history/checkpoint；该首帧不是
    one-life terminal。
 
 同一 driver 发起的 managed restore 采用相同事实边界：成功后保留 `history_index` 指向的
-`save-checkpoint` 行，删除其后的分支事实，再追加新的 restore 行；提炼 advisory 在截断前完成。由此 siege
+`save-checkpoint` 行，删除其后的分支事实，再追加新的 restore 行；提炼与合并 advisory 在截断前完成。由此 siege
 stall、war score、objective completion 等事实分析只读取恢复后的真实分支，而 planner 仍能避免立刻重走
 导致锁边恢复的同一 target+route 组合；若 fresh preview 已给出不同 route，则不阻断该 target。2026-08-24
-的确定性 Python 测试覆盖了 hot anchor 不误删、cold tail 提炼、持久化重读、新 episode 清理与 route
-变化后放行。同日的 managed restore 实机从末端锁边分支恢复到 checkpoint
+的确定性 Python 测试覆盖了 hot anchor 不误删、cold tail 提炼、双条持久化重读、restore transaction
+崩溃续接、新 checkpoint/episode 清理、第三旧条目淘汰与 route 变化后放行。同日的 managed restore 实机从末端锁边分支恢复到 checkpoint
 `date_raw=53174208`、SHA-256
 `187CA01BA0EF308B4ED88BB7CFE4FC8E7DAA09FB3B09735112E81B80A092A8D5`：CK3 PID 从
 `146240` 更换为 `90040`，事实 history 精确保留 save anchor 后写入 synthetic restore；advisory 记录
@@ -131,14 +135,24 @@ stall、war score、objective completion 等事实分析只读取恢复后的真
 origin `2585`、target `2596`、route `[2587,2597,2596]`。checkpoint 文件未被覆盖，恢复后的
 planner 不会把已回滚命令重新当作事实。
 
-兼容旧代码已经写出的 v2 状态时还存在一个窄迁移路径：旧状态可能已有成功 restore row，却没有独立
-advisory。旧 extractor 产生的 `route_origin != restored_origin` advisory 也按缺失处理。仅在 cold bind 且
-有效 persisted advisory 缺失时，driver 先检查当前未封口 epoch；若没有完整的
-unresolved move 证据，再从新到旧检查最多 **两个已经由成功 restore 封口的 epoch**，命中第一条同时具备
-restored-origin fresh entry move、成功 move 和末尾 active target/route observation 的分支后立即停止。不会继续扫描第三个或
-更老 epoch；新代码正常产生的状态依赖持久 advisory，不使用这条兼容回看。三次 restore fixture 覆盖了
-“最新已完成 epoch 已抵达、次新 epoch 的 index 44 是 restored-origin 入口而末端已移动到另一 origin”、
-“末端有活动路线但没有入口时 fail closed”以及“失败只在第三个更老 epoch 时不得提炼”。
+兼容旧代码已经写出的 v2 状态时还存在一个窄迁移路径：旧状态没有 plural 字段时，driver 先把有效 singular
+作为最新一项；即使 singular 已存在，也会从新到旧检查最多 **两个仍留存在 history、且已经由成功 restore
+封口的 epoch**，补入
+同 scope 且 `target+route` 不同的条目，最终仍只保留两项。若 singular 缺失或旧 extractor 生成的
+`route_origin != restored_origin` singular 无效，则在第一个 exact restored snapshot 到达后用同一有界窗口提炼。
+扫描不会继续到第三个或更老 epoch；已经被旧代码从 factual history 截断的分支不能被该扫描“恢复”，plural
+一旦落盘，正常路径也不再兼容回看。确定性 fixture 人工保留了“singular 是较新的 `2598→2568`，completed
+history 仍含较早 `2598→2585`”这一兼容输入，并断言迁移顺序为 `[2568, 2585]`；这不是对当前磁盘 history
+仍含旧分支的声明。若旧分支事实已经消失，只能把另行 live-confirmed 的同 scope 入口作为显式 advisory seed：
+例如 `source="live-confirmed legacy reconstruction"`、target `2585`、route `[2599,2587,2585]`，并省略无法
+准确重建的整组 `terminal_failure_*` 诊断。roundtrip fixture 已覆盖这种无 terminal 诊断 seed 的持久化及第三条
+旧记录淘汰。
+
+2026-08-24 的 paused live state 只剩 45 条 history：row 41 是 save anchor、row 42 是本次 restore，row
+43–45 是恢复后的新 previews；较早的 `2598→2585` 分支已经被旧代码截断。因此该现场不能依靠兼容扫描补回
+2585，只能在 hot reload 后把先前独立 live-confirmed 的 target `2585` / route `[2599,2587,2585]` 作为上述
+无 terminal 诊断 seed，与现存较新 singular `2598→2568` 合并。这里记录的是迁移边界，不宣称 seed 已由本次
+离线实现写入实机状态。
 
 旧 v1 状态只允许同 PID hot 恢复。hot 恢复或下一次持久化时，driver 从最后一条 SHA/size/date
 都匹配的成功 `save-checkpoint` row 推导 `history_index`，补入 episode ids 并写成 v2；随后才能安全执行

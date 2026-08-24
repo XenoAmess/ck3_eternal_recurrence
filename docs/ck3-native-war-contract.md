@@ -362,17 +362,22 @@ Assault 的每日提前推进也必须等待全体驻地威胁审计通过。这
 checkpoint restore。未越过阈值时 Halt 才能把路线清空；这两种后置条件属于版本 adapter 的原生语义，
 上层不得假定 Halt 总能原地停车。
 
-restore 后的失败经验与游戏事实分层保存。driver 只保留一条 checkpoint/episode scoped
-`native_rollback_war_failure` advisory。它采用两段证据：被丢弃 epoch 末端必须仍有 unresolved active route，
+restore 后的失败经验与游戏事实分层保存。driver 保留最新优先、最多两条的 checkpoint/episode scoped
+`native_rollback_war_failures` advisory，并继续用 singular `native_rollback_war_failure` 投影最新一条以兼容旧
+consumer。它们采用两段证据：被丢弃 epoch 末端必须仍有 unresolved active route，
 证明 restore 放弃了整段；用于重试阻断的 target/route 则取同一 army 在该 epoch 中第一条成功、preview 日期
 与 move 提交日期相同、且 preview origin 等于恢复 origin 的入口 move。末端 target/origin/route 仅保存在
 `terminal_failure_*` 诊断字段中；没有 restored-origin 入口就 fail closed，不生成 advisory。恢复后的 factual
 `native_command_history` 仍截到 `save-checkpoint` anchor 后再追加 restore；planner 不从已回滚命令推导围城、
-分数或完成状态，只在相同 war/army/恢复 origin 下再次出现相同入口 target，且 fresh preview 的 origin 与 route
-都逐项匹配入口阻断键
-时排除；同 target 已得到不同路线则允许，避免一次回滚把该省永久封死。覆盖成新 checkpoint 或进入新 episode
-会清空这条 advisory。该隔离和 cold restore 持久化已于 2026-08-24 通过确定性 Python 测试；尚未把它称为
-新的 CK3 实机胜利证据。
+分数或完成状态。列表仅合并同 episode/checkpoint/war/army/恢复 origin 的记录，按入口 target+route 精确去重并
+在第三条出现时淘汰最旧项。planner 对列表中的每一项都只在同 scope 再次出现相同入口 target，且 fresh preview
+的 origin 与 route 逐项匹配入口阻断键时排除；同 target 得到不同路线则允许，避免一次回滚把该省永久封死。
+覆盖成新 checkpoint 或进入新 episode 会清空整个列表。旧 v2 仅有 singular 时先以它作为最新项，再从最多两个
+**仍留存在 history** 的 completed restore epoch 补 distinct 旧项；确定性兼容 fixture 的顺序为较新
+`2598→2568`、较旧 `2598→2585`。若旧代码已截断旧 epoch，scan 不会猜测或魔法恢复它；只能把另行
+live-confirmed 的同 scope target/route 作为显式 seed，并省略不准确的 `terminal_failure_*` 诊断。该隔离、
+双条持久化、无 terminal 诊断 seed roundtrip 和 restore-transaction 崩溃恢复已于 2026-08-24 通过确定性
+Python 测试；尚未把它称为新的 CK3 实机胜利证据。
 
 除上文明确列出的 checkpoint restore 外，以上移动、解散与围城观测没有激活或恢复游戏窗口，也没有调用
 OCR、截图或键鼠；每次时间推进后的决策帧都重新暂停。
@@ -384,15 +389,25 @@ OCR、截图或键鼠；每次时间推进后的决策帧都重新暂停。
 - `CSiege` 是 Province 全局对象；若多场 active war 共享同一目标省，当前 snapshot 不能证明该围城归属哪一场战争。
 - 多军 planner 每轮仍只为一支军队选择一个动作，尚未形成围城目标分配与协同调度的完整闭环；但时间推进门槛会审计全部活动路线与全部 stationary `regular/sieging` 驻地威胁，并优先处理不安全路线和受威胁驻军，不再由 strongest 军队单独放行时间。
 - `_stable_tactical_war` 固定优先 exact attacker、primary leader 与稳定 `war_id`，不会因首战目标已全占或另一战正在失分而动态切换；尚未形成完整 multi-war 闭环。
-- 当前单军能力可以读出围城是否真实推进、在追兵汇聚时安全撤离，却不能保证完成 115–217 天级围城。没有经验证的 assault、第二军/合军、补员或雇佣能力时，所有 exact 目标都被快速追踪后应明确停机或恢复 checkpoint，不能把无占领的轮转描述为获胜闭环。
+- 当前能力可以读出围城是否真实推进，并已具备受限的 split/merge 原子命令；但没有野战编成/胜率、可靠补员或
+  雇佣评估，Assault 也尚无当前现场的完整安全验收，因此仍不能保证完成 115–217 天级围城。所有 exact 目标都被
+  快速追踪后应明确停机或恢复 checkpoint，不能把无占领的轮转描述为获胜闭环。
 
 ## 一步 planner
 
-事件和待回复角色互动仍优先处理。其后每次 `ck3_auto_turn` 只执行一个战争动作：
+事件仍优先处理。无活动战争时，普通待回复角色互动沿用既有处理；有活动战争时，未发布 interaction kind、WarID、
+outcome 与完整条款的 pending interaction 一律不自动接受或拒绝，只有己方 100 分的 enforce-demands 保持更高优先级。
+其后每次 `ck3_auto_turn` 只执行一个战争动作：
 
-1. baseline checkpoint 完成且当前无战争/残军时，显式 `query-declarable-wars`；优先 county holy war、county conquest、claim，随后按单 title 与稳定 runtime ID 排序，提交一个 `declare-war-*`。
+1. baseline checkpoint 完成且当前无战争/残军时，可显式 `query-declarable-wars`；现有 key/title-count 排序只选出
+   一条诊断候选。由于 payload 不含同 epoch 的 power、Monte Carlo forecast、campaign cost 与 exit assessment，
+   planner 固定返回 `native_war_entry_evidence_required` / `selected_step=None`，不得自动提交 `declare-war-*`。
+   native query 缺失时也不回退到 legacy `war-declare-palermo` 视觉宣战；该命令名称不构成 power/forecast 证据。
 2. 任一活动战争达到玩家视角 100 分：先执行 `enforce-demands-<war_id>`，确认该 war 从 snapshot 消失，不再无意义推进时间。
 3. 有活动战争、无可控军队：`raise-troops-default`。
+   若玩家是某场战争的 primary defender，raise 后必须先取得完整终止条款、对手接受态度与 campaign forecast；
+   当前能力缺失时返回 `defensive_war_exit_evidence_required` 并保持暂停，不盲目继续，也不因 unknown 自动投降；
+   primary 身份本身 unknown 也按此 fail closed，只有明确的非 primary 盟军战争不触发该退出门。
 4. 玩家是进攻方、本方 primary war leader 且存在 exact `war_objective_province_ids`：从战争刚开始的 0 分起围攻 exact 目标。rich fort/garrison 可观测时按 `fort_level, garrison_size, native DFS tie-break` 优先选择更易目标；capability 缺失、值 unknown 或同值时保留 native DFS 顺序。这是有意的策略层重排，不改变 snapshot 的契约顺序。paused 状态先预览完整原生路线，再按上面的硬冲突审计；普通规划不安全才预览下一目标，受威胁 exact 围城撤离则先收齐同日/同 origin 的全部候选，再选 hop 最短、rank 稳定的安全路线。所有 exact 路线都不安全时保持暂停，绝不偷用 legacy fallback；恢复 advisory 命中的旧 target+route 组合也视为不可选。
 5. 没有 safe exact 目标且没有 exact combat forecast 时，保持暂停，或仅执行已有 exact-safe 的 hold / rendezvous；禁止按 `soldiers` 选择最大可见敌军、追逐其 current province，也禁止把 legacy `enemy_primary_default_raise_province_id` 当作自动目标。
 6. 军队已经在 exact 目标省或已有仍安全的 accepted/submitted move intent：只有全部可控军与全部非撤退敌军的完整 M × N route audit、全部 stationary `regular/sieging` 驻地威胁审计都安全，才允许 `life-advance`。任一玩家/敌军 tactical route、任一可控军 combat/retreat 或 active Assault 都强制一日 paused-to-paused slice；其余 active-war slice 最多 7 日，不得无观察跨过 7/14 日 target milestone。unsafe route 优先于普通目标推进；安全 active Assault 也不能越过全局门槛。running snapshot 先暂停再读完整路线；敌情变化后每次推进前重新审计，不把上一次 preview 当永久通行证。

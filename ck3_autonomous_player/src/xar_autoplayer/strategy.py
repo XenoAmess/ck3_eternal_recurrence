@@ -524,11 +524,18 @@ def choose_one_life_turn(
             "active_event": event_summary,
         }
 
+    active_wars = (
+        [war for war in snapshot.get("active_wars", []) if isinstance(war, dict)]
+        if isinstance(snapshot, dict)
+        and isinstance(snapshot.get("active_wars"), list)
+        else []
+    )
     pending_interaction = (
         snapshot.get("pending_character_interaction")
         if isinstance(snapshot, dict)
         else None
     )
+    pending_war_interaction: dict[str, object] | None = None
     if (
         isinstance(pending_interaction, dict)
         and pending_interaction.get("auto_accept_notification") is False
@@ -540,7 +547,12 @@ def choose_one_life_turn(
                 "sender_character_id"
             ),
         }
-        if step in available_steps:
+        if active_wars:
+            # The current snapshot does not identify the interaction type,
+            # related WarID, outcome, or terms.  Defer the response until
+            # after the enforce-demands priority check, then fail closed.
+            pending_war_interaction = summary
+        elif step in available_steps:
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "pending_character_interaction",
@@ -548,21 +560,15 @@ def choose_one_life_turn(
                 "reason": "accept the current native character interaction",
                 "pending_character_interaction": summary,
             }
-        return {
-            "policy": "one-life-turn-v1",
-            "phase": "pending_character_interaction_unsupported",
-            "selected_step": None,
-            "required_step": step,
-            "reason": "the backend cannot reply to the pending character interaction",
-            "pending_character_interaction": summary,
-        }
-
-    active_wars = (
-        [war for war in snapshot.get("active_wars", []) if isinstance(war, dict)]
-        if isinstance(snapshot, dict)
-        and isinstance(snapshot.get("active_wars"), list)
-        else []
-    )
+        else:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "pending_character_interaction_unsupported",
+                "selected_step": None,
+                "required_step": step,
+                "reason": "the backend cannot reply to the pending character interaction",
+                "pending_character_interaction": summary,
+            }
     player_armies = (
         [army for army in snapshot.get("player_armies", []) if isinstance(army, dict)]
         if isinstance(snapshot, dict)
@@ -590,21 +596,19 @@ def choose_one_life_turn(
             }
             for war in active_wars
         ]
-        if isinstance(snapshot, dict) and snapshot.get("paused") is True:
-            latched_unobservable_assaults = _unobservable_started_assaults(
-                snapshot,
-                active_wars=active_wars,
-                commands=rows,
-            )
-            if latched_unobservable_assaults:
-                return {
-                    "policy": "one-life-turn-v1",
-                    "phase": "native_war_assault_lifecycle_blocked",
-                    "selected_step": None,
-                    "required_step": "observable-exact-assault-state",
-                    "reason": "a proven assault_started lifecycle has no exact completed, stopped, restored, or currently observable same-SiegeID state; do not advance time",
-                    "assault_lifecycles": latched_unobservable_assaults,
-                    "active_wars": war_summary,
+        for summary in war_summary:
+            if summary.get("player_side") == "defender":
+                summary["war_exit_assessment"] = {
+                    "status": "unavailable",
+                    "reason": (
+                        "the bridge does not yet publish complete termination "
+                        "terms, opponent acceptance, or a campaign outcome "
+                        "forecast; do not infer surrender value from war score"
+                    ),
+                    "required_capabilities": [
+                        "game.command.query-war-termination-options-N",
+                        "game.forecast.campaign-outcomes-v1",
+                    ],
                 }
         enforceable = next(
             (
@@ -642,6 +646,39 @@ def choose_one_life_turn(
                 "reason": "the war reached 100% but this backend cannot enforce demands",
                 "active_wars": war_summary,
             }
+        if isinstance(snapshot, dict) and snapshot.get("paused") is True:
+            latched_unobservable_assaults = _unobservable_started_assaults(
+                snapshot,
+                active_wars=active_wars,
+                commands=rows,
+            )
+            if latched_unobservable_assaults:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_assault_lifecycle_blocked",
+                    "selected_step": None,
+                    "required_step": "observable-exact-assault-state",
+                    "reason": "a proven assault_started lifecycle has no exact completed, stopped, restored, or currently observable same-SiegeID state; do not advance time",
+                    "assault_lifecycles": latched_unobservable_assaults,
+                    "active_wars": war_summary,
+                }
+        if pending_war_interaction is not None:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "pending_war_interaction_evidence_required",
+                "selected_step": None,
+                "required_capabilities": [
+                    "game.state.pending-character-interaction-semantics",
+                    "game.command.query-war-termination-options-N",
+                ],
+                "reason": (
+                    "an active war has an unclassified pending interaction; "
+                    "do not accept or reject it without the related WarID, "
+                    "outcome, and complete terms"
+                ),
+                "pending_character_interaction": pending_war_interaction,
+                "active_wars": war_summary,
+            }
         if not controlled_armies:
             if RAISE_TROOPS_STEP in available_steps:
                 return {
@@ -657,6 +694,30 @@ def choose_one_life_turn(
                 "selected_step": None,
                 "required_step": RAISE_TROOPS_STEP,
                 "reason": "the active war cannot continue until this backend can raise troops",
+                "active_wars": war_summary,
+            }
+
+        primary_defensive_wars = [
+            summary
+            for summary in war_summary
+            if summary.get("player_side") == "defender"
+            and summary.get("player_is_primary_war_leader") is not False
+        ]
+        if primary_defensive_wars:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "defensive_war_exit_evidence_required",
+                "selected_step": None,
+                "required_capabilities": [
+                    "game.command.query-war-termination-options-N",
+                    "game.forecast.campaign-outcomes-v1",
+                ],
+                "reason": (
+                    "a primary defensive war requires complete victory, white-"
+                    "peace, and surrender terms plus opponent acceptance and a "
+                    "campaign forecast before more time or army orders are issued"
+                ),
+                "defensive_wars": primary_defensive_wars,
                 "active_wars": war_summary,
             }
 
@@ -2509,25 +2570,28 @@ def choose_one_life_turn(
         snapshot.get("declarable_wars") if isinstance(snapshot, dict) else None
     )
     if isinstance(declaration, dict):
-        declaration_id = declaration.get("declaration_id")
-        if isinstance(declaration_id, str):
-            step = declare_war_step(declaration_id)
-            if step in available_steps:
-                return {
-                    "policy": "one-life-turn-v1",
-                    "phase": "native_war_declaration",
-                    "selected_step": step,
-                    "reason": "declare the best currently enumerated native county-scale war",
-                    "declaration": declaration,
-                }
-            return {
-                "policy": "one-life-turn-v1",
-                "phase": "native_war_declaration_unsupported",
-                "selected_step": None,
-                "required_step": step,
-                "reason": "the selected native war declaration is not executable",
-                "declaration": declaration,
-            }
+        # The current native declaration row proves that CK3 considers the
+        # declaration legal.  It does not expose either side's native power,
+        # a battle forecast, campaign costs, or acceptable exit terms.  CB
+        # identity and title count therefore cannot authorize an automatic
+        # war: fail closed until a future, explicitly versioned assessment
+        # contract publishes all four evidence groups.
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_entry_evidence_required",
+            "selected_step": None,
+            "reason": (
+                "the native declaration is legally available, but automatic "
+                "war entry requires a fresh power assessment, combat forecast, "
+                "campaign-cost model, and exit assessment"
+            ),
+            "required_capabilities": [
+                "game.command.query-combat-simulation-inputs",
+                "game.forecast.combat-monte-carlo-v1",
+                "game.command.query-war-entry-assessments",
+            ],
+            "declaration": declaration,
+        }
 
     if QUERY_DECLARABLE_WARS_STEP in available_steps:
         query_index = _latest_index(rows, QUERY_DECLARABLE_WARS_STEP)
@@ -2595,8 +2659,25 @@ def choose_one_life_turn(
     victory_index = _latest_index(rows, "war-enforce-demands")
     if not victory_index:
         if not _latest_index(rows, "war-declare-palermo"):
-            step = "war-declare-palermo"
-            reason = "start the proven low-cost Palermo expansion"
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_entry_evidence_required",
+                "selected_step": None,
+                "reason": (
+                    "the legacy Palermo declaration has no same-epoch power "
+                    "assessment, combat forecast, campaign-cost model, or "
+                    "exit assessment; do not declare through the visual fallback"
+                ),
+                "required_capabilities": [
+                    "game.command.query-combat-simulation-inputs",
+                    "game.forecast.combat-monte-carlo-v1",
+                    "game.command.query-war-entry-assessments",
+                ],
+                "declaration": {
+                    "source": "legacy-visual-palermo",
+                    "step": "war-declare-palermo",
+                },
+            }
         elif not _latest_index(rows, "war-raise-all"):
             step = "war-raise-all"
             reason = "raise the army for the active Palermo war"
@@ -4113,40 +4194,47 @@ def _matching_rollback_war_failure(
     route_province_ids: object,
 ) -> dict[str, object] | None:
     """Return advisory rollback memory without treating it as game history."""
-    failure = snapshot.get("native_rollback_war_failure")
-    if not isinstance(failure, dict):
-        return None
-    if (
-        failure.get("status") != "rolled_back_active_route"
-        or (war_id is not None and failure.get("war_id") != war_id)
-        or failure.get("army_id") != army_id
-        or failure.get("restored_origin_province_id") != origin_province_id
-        or failure.get("route_origin_province_id") != origin_province_id
-        or failure.get("target_province_id") != target_province_id
-    ):
-        return None
-    failed_route = failure.get("route_province_ids")
-    if not isinstance(failed_route, list) or not isinstance(
-        route_province_ids, list
-    ):
-        return None
-    normalized_failed_route = list(failed_route)
-    if (
-        normalized_failed_route
-        and normalized_failed_route[0] == origin_province_id
-    ):
-        normalized_failed_route = normalized_failed_route[1:]
-    if normalized_failed_route != route_province_ids:
-        return None
-    run_id = snapshot.get("episode_run_id")
-    failure_run_id = failure.get("episode_run_id")
-    if (
-        isinstance(run_id, str)
-        and isinstance(failure_run_id, str)
-        and run_id != failure_run_id
-    ):
-        return None
-    return dict(failure)
+    plural = snapshot.get("native_rollback_war_failures")
+    failures = (
+        [failure for failure in plural if isinstance(failure, dict)]
+        if isinstance(plural, list)
+        else [snapshot.get("native_rollback_war_failure")]
+    )
+    for failure in failures:
+        if not isinstance(failure, dict) or (
+            failure.get("status") != "rolled_back_active_route"
+            or (war_id is not None and failure.get("war_id") != war_id)
+            or failure.get("army_id") != army_id
+            or failure.get("restored_origin_province_id")
+            != origin_province_id
+            or failure.get("route_origin_province_id")
+            != origin_province_id
+            or failure.get("target_province_id") != target_province_id
+        ):
+            continue
+        failed_route = failure.get("route_province_ids")
+        if not isinstance(failed_route, list) or not isinstance(
+            route_province_ids, list
+        ):
+            continue
+        normalized_failed_route = list(failed_route)
+        if (
+            normalized_failed_route
+            and normalized_failed_route[0] == origin_province_id
+        ):
+            normalized_failed_route = normalized_failed_route[1:]
+        if normalized_failed_route != route_province_ids:
+            continue
+        run_id = snapshot.get("episode_run_id")
+        failure_run_id = failure.get("episode_run_id")
+        if (
+            isinstance(run_id, str)
+            and isinstance(failure_run_id, str)
+            and run_id != failure_run_id
+        ):
+            continue
+        return dict(failure)
+    return None
 
 
 def _audit_war_route(

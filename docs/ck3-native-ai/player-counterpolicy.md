@@ -323,6 +323,15 @@ flowchart TD
     B --> N["[inference][counter-policy] preview another exact objective or remain paused"]
 ```
 
+### Restore 后的 14 日 milestone 实证
+
+- [live-confirmed] 新分支中 `33554657` 从 `53174328` 到 `53174640` 保持 endpoint `2604`，并在
+  `53174664` 改回 `2543`；两个端点起始观察相差恰好 14 游戏日。
+- [inference][counter-policy] ledger 只把它记录为“已跨普通 7 日与 lopsided 14 日两个 milestone，随后观测到
+  endpoint 变化”；它不会反推 native power 比、stance 或 timer identity。
+- [unknown] 改令是否由 lopsided timer、普通评估叠加、objective invalidation 或其它事件触发仍未闭合。
+  策略的正确性来自每个 paused frame 重读 target/route，而不是预测第 14 日必改令。
+
 ## 定向测试矩阵
 
 | ID | 证据 | Fixture | 预期 Counter-policy | 禁止的推断或动作 |

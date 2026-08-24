@@ -688,7 +688,19 @@ def _route_plan_to_available_step(
     selected = plan.get("selected_step")
     if not isinstance(selected, str) or selected in available_steps:
         return plan
-    if selected in {"death-terminal", "strategy-review", "resolve-current-event"}:
+    fail_closed_prefixes = (
+        "declare-war-",
+        "war-declare-",
+        "offer-white-peace-",
+        "surrender-war-",
+        "query-war-termination-options-",
+        "enforce-demands-",
+    )
+    if (
+        selected
+        in {"death-terminal", "strategy-review", "resolve-current-event"}
+        or selected.startswith(fail_closed_prefixes)
+    ):
         return {
             **plan,
             "selected_step": None,

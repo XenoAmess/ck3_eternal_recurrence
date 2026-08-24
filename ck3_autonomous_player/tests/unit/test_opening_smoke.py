@@ -543,7 +543,19 @@ class OpeningContractTests(unittest.TestCase):
         success("war-advance-week")
         self.assertEqual(selected(), "marriage-confirm-response")
         success("marriage-confirm-response")
-        self.assertEqual(selected(), "war-declare-palermo")
+        blocked_declaration = choose_one_life_turn(commands)
+        self.assertEqual(
+            blocked_declaration["phase"],
+            "native_war_entry_evidence_required",
+        )
+        self.assertIsNone(blocked_declaration["selected_step"])
+        self.assertEqual(
+            blocked_declaration["declaration"]["step"],
+            "war-declare-palermo",
+        )
+        # Preserve coverage of the already-declared legacy campaign path by
+        # injecting a historical/manual declaration.  The planner itself no
+        # longer selects this command without the assessment contract.
         success("war-declare-palermo")
         self.assertEqual(selected(), "war-raise-all")
         success("war-raise-all")

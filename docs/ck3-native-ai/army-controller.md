@@ -326,6 +326,25 @@ flowchart LR
     class U,U2,U3 unknown;
 ```
 
+### Restore 分支中的 14 日端点观察
+
+- [live-confirmed] restore 到 `53174208` 后，敌军 `33554657` 在日期 `53174328` 把 target 改为 `2604`，
+  route 为 `[2560,2565,2568,2572,2574,2579,2589,2591,2602,8759,2604]`。
+- [live-confirmed] 此 endpoint 持续到 `53174640`；日期 `53174664` 的下一 paused frame 中，target 改回
+  `2543`，route 变为 `[2560,2559,2543]`。两次端点观察相差 raw `336`，即恰好 14 游戏日。
+- [static-confirmed] 原版 lopsided target cadence 是 14 日；[unknown] 当前没有 exact native power、timer phase
+  或 assignment score，因此这次恰好 14 日的变化只能视为与该 cadence 一致，不能证明本战争走了 lopsided
+  timer 分支，也不能推广成每次第 14 日必改令。
+
+```mermaid
+flowchart LR
+    A["[live-confirmed] 53174328<br/>33554657 target 2604"] -->|"[live-confirmed] endpoint observed for 14 days"| B["[live-confirmed] 53174664<br/>target 2543"]
+    T["[static-confirmed] lopsided target cadence = 14 days"] -.-> U["[unknown] same timer caused this retarget?"]
+    U -.-> B
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
 ### 为什么会看到“来回追踪”
 
 1. [live-confirmed] 在该快照时刻，`357` 的 endpoint 仍是玩家 current province `2596`，但玩家已经有

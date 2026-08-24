@@ -118,6 +118,8 @@ _NATIVE_DEATH_TERMINAL_STEP = "death-terminal"
 _NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
 _NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 _NATIVE_DRIVER_STATE_VERSION = 2
+_MAX_ROLLBACK_WAR_FAILURES = 2
+_ROLLBACK_WAR_FAILURE_COMPLETED_EPOCH_LIMIT = 2
 _RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
 _MANAGED_RESTORE_TRANSACTION_STATUS = "awaiting_checkpoint_rebind"
 _START_NEXT_EPISODE_STEP = "start-next-episode"
@@ -576,7 +578,8 @@ class NativeHeadlessGameplayDriver:
         self._history_lock = self._driver_state_lock
         self._last_checkpoint: dict[str, object] | None = None
         self._command_history: list[dict[str, object]] = []
-        self._rollback_war_failure: dict[str, object] | None = None
+        self._rollback_war_failures: list[dict[str, object]] = []
+        self._rollback_war_failures_migration_required = False
         self._managed_restore_transaction: dict[str, object] | None = None
         self._episode_identity_lock = self._driver_state_lock
         self._episode_character_id: int | None = None
@@ -767,11 +770,17 @@ class NativeHeadlessGameplayDriver:
         snapshot = self._with_one_life_episode(self.state.semantic_snapshot())
         self._observe_arrange_marriage_outcome(snapshot)
         with self._driver_state_lock:
-            rollback_war_failure = copy.deepcopy(self._rollback_war_failure)
+            rollback_war_failures = copy.deepcopy(self._rollback_war_failures)
+            rollback_war_failure = (
+                copy.deepcopy(rollback_war_failures[0])
+                if rollback_war_failures
+                else None
+            )
         return {
             **snapshot,
             "native_command_history": self._history_snapshot(),
             "native_rollback_war_failure": rollback_war_failure,
+            "native_rollback_war_failures": rollback_war_failures,
         }
 
     def _with_one_life_episode(
@@ -813,6 +822,7 @@ class NativeHeadlessGameplayDriver:
             )
         if identity_changed:
             self._persist_driver_state()
+        self._migrate_legacy_rollback_war_failures(snapshot)
 
         settlement = snapshot.get("one_life_settlement")
         terminal_reason: str | None = None
@@ -874,6 +884,32 @@ class NativeHeadlessGameplayDriver:
             "arrange_marriage_choices": arrange_marriage_choices,
             "arrange_marriage_query_sequence": arrange_marriage_query_sequence,
         }
+
+    def _migrate_legacy_rollback_war_failures(
+        self, snapshot: dict[str, object]
+    ) -> None:
+        """Finish a missing-plural v2 migration at the first exact frame."""
+        with self._driver_state_lock:
+            if (
+                not self._rollback_war_failures_migration_required
+                or self._pending_cold_candidate is not None
+                or snapshot.get("map_ready") is not True
+            ):
+                return
+            completed = _derive_completed_rollback_war_failures(
+                self._command_history,
+                checkpoint=self._last_checkpoint,
+                restored_snapshot=snapshot,
+                episode_run_id=self._episode_run_id,
+                completed_restore_epoch_limit=(
+                    _ROLLBACK_WAR_FAILURE_COMPLETED_EPOCH_LIMIT
+                ),
+            )
+            self._rollback_war_failures = _bounded_rollback_war_failures(
+                self._rollback_war_failures, completed
+            )
+            self._rollback_war_failures_migration_required = False
+        self._persist_driver_state()
 
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
@@ -1104,7 +1140,8 @@ class NativeHeadlessGameplayDriver:
             previous_run_id = self._episode_run_id
             self._command_history = []
             self._last_checkpoint = None
-            self._rollback_war_failure = None
+            self._rollback_war_failures = []
+            self._rollback_war_failures_migration_required = False
             self._managed_restore_transaction = None
             self._episode_character_id = current_character_id
             self._episode_run_id = (
@@ -1269,7 +1306,8 @@ class NativeHeadlessGameplayDriver:
             return copy.deepcopy(self._command_history)
 
     def _driver_state_payload_locked(self) -> dict[str, object]:
-        return {
+        rollback_war_failures = copy.deepcopy(self._rollback_war_failures)
+        payload = {
             "format_version": _NATIVE_DRIVER_STATE_VERSION,
             "pipe_name": self.pipe_name,
             "bridge_pid": self._session_bridge_pid,
@@ -1277,13 +1315,21 @@ class NativeHeadlessGameplayDriver:
             "episode_run_id": self._episode_run_id,
             "last_checkpoint": copy.deepcopy(self._last_checkpoint),
             "command_history": copy.deepcopy(self._command_history),
-            "rollback_war_failure": copy.deepcopy(
-                self._rollback_war_failure
+            # Singular stays as the latest advisory for old readers.
+            "rollback_war_failure": (
+                copy.deepcopy(rollback_war_failures[0])
+                if rollback_war_failures
+                else None
             ),
             "managed_restore_transaction": copy.deepcopy(
                 self._managed_restore_transaction
             ),
         }
+        # Keep an old-state migration recognizable across a crash before the
+        # first playable snapshot supplies the restored physical origin.
+        if not self._rollback_war_failures_migration_required:
+            payload["rollback_war_failures"] = rollback_war_failures
+        return payload
 
     def _managed_restore_request_state(
         self, transaction: dict[str, object]
@@ -1326,7 +1372,8 @@ class NativeHeadlessGameplayDriver:
                 self._episode_character_id = None
                 self._episode_run_id = None
                 self._last_checkpoint = None
-                self._rollback_war_failure = None
+                self._rollback_war_failures = []
+                self._rollback_war_failures_migration_required = False
                 self._managed_restore_transaction = None
                 self._driver_state_restored = False
                 self._driver_state_restore_kind = None
@@ -1362,8 +1409,13 @@ class NativeHeadlessGameplayDriver:
                     self._last_checkpoint = copy.deepcopy(
                         restored["last_checkpoint"]
                     )
-                    self._rollback_war_failure = copy.deepcopy(
-                        restored.get("rollback_war_failure")
+                    self._rollback_war_failures = copy.deepcopy(
+                        restored.get("rollback_war_failures", [])
+                    )
+                    self._rollback_war_failures_migration_required = bool(
+                        restored.get(
+                            "rollback_war_failures_migration_required"
+                        )
                     )
                     self._managed_restore_transaction = copy.deepcopy(
                         restored_transaction
@@ -1606,11 +1658,21 @@ class NativeHeadlessGameplayDriver:
                     checkpoint=checkpoint,
                     restored_snapshot=snapshot,
                     episode_run_id=str(candidate["episode_run_id"]),
-                    completed_restore_epoch_limit=(
-                        2
-                        if candidate.get("rollback_war_failure") is None
-                        else 0
-                    ),
+                )
+                completed_failures = (
+                    _derive_completed_rollback_war_failures(
+                        candidate["command_history"],
+                        checkpoint=checkpoint,
+                        restored_snapshot=snapshot,
+                        episode_run_id=str(candidate["episode_run_id"]),
+                        completed_restore_epoch_limit=(
+                            _ROLLBACK_WAR_FAILURE_COMPLETED_EPOCH_LIMIT
+                        ),
+                    )
+                    if candidate.get(
+                        "rollback_war_failures_migration_required"
+                    )
+                    else []
                 )
                 history = copy.deepcopy(candidate["command_history"][:history_index])
                 previous_pid = candidate.get("bridge_pid")
@@ -1642,10 +1704,12 @@ class NativeHeadlessGameplayDriver:
                 )
                 self._episode_run_id = str(candidate["episode_run_id"])
                 self._last_checkpoint = copy.deepcopy(checkpoint)
-                self._rollback_war_failure = (
-                    rollback_war_failure
-                    or copy.deepcopy(candidate.get("rollback_war_failure"))
+                self._rollback_war_failures = _bounded_rollback_war_failures(
+                    [rollback_war_failure],
+                    candidate.get("rollback_war_failures"),
+                    completed_failures,
                 )
+                self._rollback_war_failures_migration_required = False
                 self._driver_state_restored = True
                 self._driver_state_restore_kind = "cold_checkpoint"
                 self._episode_binding_state = "active_resumed"
@@ -1657,7 +1721,8 @@ class NativeHeadlessGameplayDriver:
                     f"native-{current_character_id}-{uuid.uuid4().hex[:12]}"
                 )
                 self._last_checkpoint = None
-                self._rollback_war_failure = None
+                self._rollback_war_failures = []
+                self._rollback_war_failures_migration_required = False
                 self._driver_state_restored = False
                 self._driver_state_restore_kind = "new_episode"
                 self._episode_binding_state = "active_new"
@@ -1717,18 +1782,54 @@ class NativeHeadlessGameplayDriver:
                 last_checkpoint, dict
             ):
                 raise ValueError("driver state checkpoint is malformed")
-            rollback_war_failure = _normalize_rollback_war_failure(
+            plural_present = "rollback_war_failures" in payload
+            persisted_plural = payload.get("rollback_war_failures")
+            if plural_present and not isinstance(persisted_plural, list):
+                raise ValueError(
+                    "driver state rollback_war_failures is malformed"
+                )
+            singular_failure = _normalize_rollback_war_failure(
                 payload.get("rollback_war_failure")
             )
-            if (
-                rollback_war_failure is not None
-                and (
-                    not isinstance(last_checkpoint, dict)
-                    or rollback_war_failure.get("checkpoint_sha256")
-                    != last_checkpoint.get("sha256")
+            rollback_war_failures = _bounded_rollback_war_failures(
+                persisted_plural if plural_present else [singular_failure]
+            )
+            rollback_war_failures = [
+                failure
+                for failure in rollback_war_failures
+                if isinstance(last_checkpoint, dict)
+                and failure.get("checkpoint_sha256")
+                == last_checkpoint.get("sha256")
+                and failure.get("episode_run_id") == run_id
+            ]
+            migration_required = bool(
+                not plural_present
+                and isinstance(last_checkpoint, dict)
+                and isinstance(run_id, str)
+                and run_id
+            )
+            if migration_required and rollback_war_failures:
+                # A valid v2 singular is the newest seed.  Its exact scope is
+                # enough to inspect any completed restore epochs that still
+                # survive in this compatible state.  Once old factual rows
+                # have already been truncated, this scan cannot reconstruct
+                # them.  It never reaches an arbitrary third-or-older epoch.
+                scope_snapshot = _rollback_war_failure_scope_snapshot(
+                    rollback_war_failures[0]
                 )
-            ):
-                rollback_war_failure = None
+                completed = _derive_completed_rollback_war_failures(
+                    history,
+                    checkpoint=last_checkpoint,
+                    restored_snapshot=scope_snapshot,
+                    episode_run_id=run_id,
+                    completed_restore_epoch_limit=(
+                        _ROLLBACK_WAR_FAILURE_COMPLETED_EPOCH_LIMIT
+                    ),
+                )
+                rollback_war_failures = _bounded_rollback_war_failures(
+                    rollback_war_failures, completed
+                )
+                migration_required = False
             managed_restore_transaction = (
                 _normalize_managed_restore_transaction(
                     payload.get("managed_restore_transaction"),
@@ -1746,7 +1847,17 @@ class NativeHeadlessGameplayDriver:
                 "episode_run_id": run_id,
                 "command_history": copy.deepcopy(history),
                 "last_checkpoint": copy.deepcopy(last_checkpoint),
-                "rollback_war_failure": rollback_war_failure,
+                "rollback_war_failure": (
+                    copy.deepcopy(rollback_war_failures[0])
+                    if rollback_war_failures
+                    else None
+                ),
+                "rollback_war_failures": copy.deepcopy(
+                    rollback_war_failures
+                ),
+                "rollback_war_failures_migration_required": (
+                    migration_required
+                ),
                 "managed_restore_transaction": managed_restore_transaction,
             }
         except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
@@ -1888,12 +1999,10 @@ class NativeHeadlessGameplayDriver:
             checkpoint["episode_character_id"] = self._episode_character_id
             checkpoint["episode_run_id"] = self._episode_run_id
             self._last_checkpoint = dict(checkpoint)
-            if (
-                isinstance(self._rollback_war_failure, dict)
-                and self._rollback_war_failure.get("checkpoint_sha256")
-                != checkpoint["sha256"]
-            ):
-                self._rollback_war_failure = None
+            # A new save anchor starts a new rollback scope even if CK3 emits
+            # byte-identical checkpoint contents at the same date.
+            self._rollback_war_failures = []
+            self._rollback_war_failures_migration_required = False
         episode_seed = self._establish_episode_seed(checkpoint_path, checkpoint)
         return {
             **submission_result,
@@ -2876,7 +2985,10 @@ class NativeHeadlessGameplayDriver:
                 abandoned_snapshot=starting,
             )
             if rollback_war_failure is not None:
-                self._rollback_war_failure = rollback_war_failure
+                self._rollback_war_failures = _bounded_rollback_war_failures(
+                    [rollback_war_failure], self._rollback_war_failures
+                )
+                self._rollback_war_failures_migration_required = False
         return {
             "step": _RESTORE_CHECKPOINT_STEP,
             "accepted": True,
@@ -5217,11 +5329,40 @@ def _derive_rollback_war_failure(
     )
     if failure is not None or completed_restore_epoch_limit <= 0:
         return failure
+    completed = _derive_completed_rollback_war_failures(
+        history,
+        checkpoint=checkpoint,
+        restored_snapshot=restored_snapshot,
+        episode_run_id=episode_run_id,
+        completed_restore_epoch_limit=completed_restore_epoch_limit,
+    )
+    return completed[0] if completed else None
 
-    # Compatibility only: old v2 states could persist successful restore rows
-    # without the separate advisory.  Inspect at most the newest N completed
-    # restore epochs, newest first, and stop on the first complete active-route
-    # proof.  Never walk arbitrary older play history.
+
+def _derive_completed_rollback_war_failures(
+    history: list[dict[str, object]],
+    *,
+    checkpoint: object,
+    restored_snapshot: dict[str, object],
+    episode_run_id: object,
+    completed_restore_epoch_limit: int,
+) -> list[dict[str, object]]:
+    """Read newest completed restore epochs without crossing the fixed bound."""
+    history_index = _checkpoint_history_index(checkpoint, history)
+    if (
+        history_index is None
+        or not isinstance(checkpoint, dict)
+        or completed_restore_epoch_limit <= 0
+    ):
+        return []
+    restore_positions: list[int] = []
+    for position in range(history_index, len(history)):
+        row = history[position]
+        step, _result = _effective_native_history_entry(row)
+        if step == _RESTORE_CHECKPOINT_STEP and row.get("ok") is True:
+            restore_positions.append(position)
+
+    failures: list[dict[str, object]] = []
     for restore_offset in range(
         len(restore_positions) - 1,
         max(-1, len(restore_positions) - 1 - completed_restore_epoch_limit),
@@ -5240,8 +5381,8 @@ def _derive_rollback_war_failure(
             episode_run_id=episode_run_id,
         )
         if failure is not None:
-            return failure
-    return None
+            failures.append(failure)
+    return _bounded_rollback_war_failures(failures)
 
 
 def _derive_rollback_war_failure_from_epoch(
@@ -5444,6 +5585,77 @@ def _normalize_rollback_war_failure(value: object) -> dict[str, object] | None:
             terminal_route
         )
     return normalized
+
+
+def _rollback_war_failure_scope(
+    failure: dict[str, object],
+) -> tuple[object, object, object, object, object]:
+    return (
+        failure.get("episode_run_id"),
+        failure.get("checkpoint_sha256"),
+        failure.get("war_id"),
+        failure.get("army_id"),
+        failure.get("restored_origin_province_id"),
+    )
+
+
+def _bounded_rollback_war_failures(
+    *groups: object,
+) -> list[dict[str, object]]:
+    """Merge newest-first advisories within one exact restored scope."""
+    merged: list[dict[str, object]] = []
+    scope: tuple[object, object, object, object, object] | None = None
+    seen_routes: set[tuple[object, tuple[object, ...]]] = set()
+    for group in groups:
+        values = group if isinstance(group, list) else [group]
+        for value in values:
+            failure = _normalize_rollback_war_failure(value)
+            if failure is None:
+                continue
+            failure_scope = _rollback_war_failure_scope(failure)
+            if scope is None:
+                scope = failure_scope
+            elif failure_scope != scope:
+                continue
+            route = failure.get("route_province_ids")
+            assert isinstance(route, list)
+            dedupe_key = (failure.get("target_province_id"), tuple(route))
+            if dedupe_key in seen_routes:
+                continue
+            seen_routes.add(dedupe_key)
+            merged.append(failure)
+            if len(merged) >= _MAX_ROLLBACK_WAR_FAILURES:
+                return merged
+    return merged
+
+
+def _rollback_war_failure_scope_snapshot(
+    failure: dict[str, object],
+) -> dict[str, object]:
+    """Build only the exact public facts needed for legacy epoch extraction."""
+    army_id = int(failure["army_id"])
+    war_id = int(failure["war_id"])
+    origin = int(failure["restored_origin_province_id"])
+    army = {
+        "army_id": army_id,
+        "current_province_id": origin,
+        "move_target_province_id": None,
+        "route_province_ids": [],
+        "army_state": "regular",
+        "controllable": True,
+    }
+    return {
+        "date_raw": failure.get(
+            "restored_date_raw", failure.get("checkpoint_date_raw")
+        ),
+        "player_armies": [army],
+        "active_wars": [
+            {
+                "war_id": war_id,
+                "allied_armies": [army],
+            }
+        ],
+    }
 
 
 def _army_move_postcondition(
