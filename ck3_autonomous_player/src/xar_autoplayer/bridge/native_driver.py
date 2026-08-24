@@ -67,6 +67,10 @@ from .war_contract import (
     PREVIEW_MOVE_ARMY_CAPABILITY,
     RAISE_TROOPS_STEP,
     WAR_OBJECTIVES_CAPABILITY,
+    WAR_OBJECTIVE_FORT_LEVEL_CAPABILITY,
+    WAR_OBJECTIVE_GARRISON_CAPABILITY,
+    WAR_OBJECTIVE_OCCUPATION_CAPABILITY,
+    WAR_OBJECTIVE_SIEGE_PROGRESS_CAPABILITY,
     WAR_PRIMARY_OPPONENT_CAPABILITY,
     controllable_armies,
     disband_army_step,
@@ -106,6 +110,7 @@ _START_NEXT_EPISODE_STEP = "start-next-episode"
 _COLD_RESTORE_SOURCE = "native-session-cold-start"
 _RESTORE_MAP_STABLE_SECONDS = 0.5
 _NATIVE_WAR_ADVANCE_MAX_DAYS = 30
+_NATIVE_SIEGE_ADVANCE_MAX_DAYS = 7
 _ARMY_MOVE_DEFERRED_ERRORS = frozenset(
     {
         # Kept for protocol-v1 bridges built before the native rejection
@@ -720,6 +725,7 @@ class NativeHeadlessGameplayDriver:
             "move_route_preview_supported": (
                 PREVIEW_MOVE_ARMY_CAPABILITY in bridge_capabilities
             ),
+            **_war_objective_capability_flags(bridge_capabilities),
             "one_life_settlement_status": (
                 current_snapshot.get("one_life_settlement_status")
                 if isinstance(current_snapshot, dict)
@@ -840,6 +846,7 @@ class NativeHeadlessGameplayDriver:
             "move_route_preview_supported": (
                 PREVIEW_MOVE_ARMY_CAPABILITY in bridge_capabilities
             ),
+            **_war_objective_capability_flags(bridge_capabilities),
             "declarable_wars": declarable_wars,
             "declaration_query_sequence": declaration_query_sequence,
             "arrange_marriage_choices": arrange_marriage_choices,
@@ -3090,9 +3097,11 @@ class NativeHeadlessGameplayDriver:
             if current_date_raw > starting_date_raw:
                 progress_status = "wall_timeout_with_date_progress"
             elif starting.get("active_wars"):
+                horizon_days = _life_advance_horizon_days(starting)
                 raise BridgeUnavailableError(
                     "native active-war life-advance observed no event, war "
-                    "or army progress, and did not reach its 30-day horizon"
+                    "or army progress, and did not reach its "
+                    f"{horizon_days}-day horizon"
                 )
             else:
                 raise BridgeUnavailableError(
@@ -3592,8 +3601,40 @@ def _life_advance_progressed(
     if current_threats - starting_threats:
         return True
     return current_date_raw >= (
-        starting_date_raw + _NATIVE_WAR_ADVANCE_MAX_DAYS * 24
+        starting_date_raw + _life_advance_horizon_days(starting_snapshot) * 24
     )
+
+
+def _life_advance_horizon_days(snapshot: dict[str, object]) -> int:
+    """Use short paused-to-paused slices while the player owns a siege.
+
+    Rich CSiege state is intentionally unavailable in running snapshots.  We
+    therefore only classify the starting paused frame and stop by date; a
+    running ``active_siege=null`` can never masquerade as siege completion.
+    """
+    if (
+        snapshot.get("paused") is not True
+        or snapshot.get("war_objective_siege_progress_supported") is not True
+    ):
+        return _NATIVE_WAR_ADVANCE_MAX_DAYS
+    wars = snapshot.get("active_wars")
+    for war in wars if isinstance(wars, list) else []:
+        if not isinstance(war, dict):
+            continue
+        states = war.get("objective_province_states")
+        for state in states if isinstance(states, list) else []:
+            active_siege = (
+                state.get("active_siege")
+                if isinstance(state, dict)
+                and state.get("siege_observable") is True
+                else None
+            )
+            if (
+                isinstance(active_siege, dict)
+                and active_siege.get("player_army_besieging") is True
+            ):
+                return _NATIVE_SIEGE_ADVANCE_MAX_DAYS
+    return _NATIVE_WAR_ADVANCE_MAX_DAYS
 
 
 def _active_war_progress_signature(
@@ -3758,6 +3799,13 @@ def _war_progress_summary(snapshot: dict[str, object]) -> dict[str, object]:
                 "war_objective_province_ids": list(
                     war.get("war_objective_province_ids", [])
                 ),
+                "objective_province_states": copy.deepcopy(
+                    war.get("objective_province_states", [])
+                    if isinstance(
+                        war.get("objective_province_states"), list
+                    )
+                    else []
+                ),
                 "enemy_primary_default_raise_province_id": war.get(
                     "enemy_primary_default_raise_province_id"
                 ),
@@ -3884,6 +3932,25 @@ def _string_list(value: object) -> list[str]:
     if not isinstance(value, list):
         return []
     return list(dict.fromkeys(item for item in value if isinstance(item, str) and item))
+
+
+def _war_objective_capability_flags(
+    capabilities: set[str],
+) -> dict[str, bool]:
+    return {
+        "war_objective_occupation_supported": (
+            WAR_OBJECTIVE_OCCUPATION_CAPABILITY in capabilities
+        ),
+        "war_objective_fort_level_supported": (
+            WAR_OBJECTIVE_FORT_LEVEL_CAPABILITY in capabilities
+        ),
+        "war_objective_garrison_supported": (
+            WAR_OBJECTIVE_GARRISON_CAPABILITY in capabilities
+        ),
+        "war_objective_siege_progress_supported": (
+            WAR_OBJECTIVE_SIEGE_PROGRESS_CAPABILITY in capabilities
+        ),
+    }
 
 
 def _action_steps(

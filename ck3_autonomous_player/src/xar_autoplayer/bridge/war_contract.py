@@ -12,7 +12,19 @@ ENFORCE_DEMANDS_CAPABILITY = "game.command.enforce-demands-N"
 ARMY_ROUTES_CAPABILITY = "game.state.army-routes"
 WAR_PRIMARY_OPPONENT_CAPABILITY = "game.state.war-primary-opponent"
 WAR_OBJECTIVES_CAPABILITY = "game.state.war-objectives"
+WAR_OBJECTIVE_OCCUPATION_CAPABILITY = (
+    "game.state.war-objective-occupation"
+)
+WAR_OBJECTIVE_FORT_LEVEL_CAPABILITY = (
+    "game.state.war-objective-fort-level"
+)
+WAR_OBJECTIVE_GARRISON_CAPABILITY = "game.state.war-objective-garrison"
+WAR_OBJECTIVE_SIEGE_PROGRESS_CAPABILITY = (
+    "game.state.war-objective-siege-progress"
+)
 RAISE_TROOPS_STEP = "raise-troops-default"
+
+CK3_FIXED_POINT_SCALE = 100_000
 
 
 def normalize_active_wars(value: object) -> list[dict[str, object]]:
@@ -63,6 +75,10 @@ def normalize_active_wars(value: object) -> list[dict[str, object]]:
                 enemy_primary_default_raise_province_id,
                 "enemy_primary_default_raise_province_id",
             )
+        objective_province_ids = _non_negative_id_list(
+            raw_war.get("war_objective_province_ids"),
+            f"active_wars[{index}].war_objective_province_ids",
+        )
         result.append(
             {
                 "war_id": war_id,
@@ -80,9 +96,16 @@ def normalize_active_wars(value: object) -> list[dict[str, object]]:
                     raw_war.get("targeted_title_ids"),
                     f"active_wars[{index}].targeted_title_ids",
                 ),
-                "war_objective_province_ids": _non_negative_id_list(
-                    raw_war.get("war_objective_province_ids"),
-                    f"active_wars[{index}].war_objective_province_ids",
+                "war_objective_province_ids": objective_province_ids,
+                "objective_province_states": (
+                    normalize_objective_province_states(
+                        raw_war.get("objective_province_states"),
+                        objective_province_ids=objective_province_ids,
+                        name=(
+                            f"active_wars[{index}]"
+                            ".objective_province_states"
+                        ),
+                    )
                 ),
                 "player_relative_war_score": score,
                 "allied_armies": normalize_armies(
@@ -97,6 +120,167 @@ def normalize_active_wars(value: object) -> list[dict[str, object]]:
             }
         )
     return result
+
+
+def normalize_objective_province_states(
+    value: object,
+    *,
+    objective_province_ids: list[int],
+    name: str = "objective_province_states",
+) -> list[dict[str, object]]:
+    """Normalize the paused-only rich state for exact war objectives.
+
+    An empty array is a valid unavailable projection: older adapters do not
+    publish this additive field, and the native reader atomically suppresses
+    a war whose rows exceed its shared snapshot budget.  A non-empty array is
+    complete and must exactly follow the objective ID order.
+    """
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError(f"native {name} must be an array")
+    normalized = [
+        _normalize_objective_province_state(
+            row,
+            name=f"{name}[{index}]",
+        )
+        for index, row in enumerate(value)
+    ]
+    if normalized and [
+        int(row["province_id"]) for row in normalized
+    ] != objective_province_ids:
+        raise ValueError(
+            f"native {name} must completely match war_objective_province_ids"
+        )
+    return normalized
+
+
+def _normalize_objective_province_state(
+    value: object, *, name: str
+) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise ValueError(f"native {name} must be an object")
+    province_id = _positive_int32_id(
+        value.get("province_id"), f"{name}.province_id"
+    )
+    occupation_observable = _strict_bool(
+        value.get("occupation_observable"),
+        f"{name}.occupation_observable",
+    )
+    is_occupied = value.get("is_occupied")
+    occupying_character_id = value.get("occupying_character_id")
+    if not occupation_observable:
+        if is_occupied is not None or occupying_character_id is not None:
+            raise ValueError(
+                f"native {name} cannot publish an unobservable occupation"
+            )
+    else:
+        is_occupied = _strict_bool(is_occupied, f"{name}.is_occupied")
+        if is_occupied:
+            occupying_character_id = _positive_int32_id(
+                occupying_character_id,
+                f"{name}.occupying_character_id",
+            )
+        elif occupying_character_id is not None:
+            raise ValueError(
+                f"native {name} cannot publish an occupant when unoccupied"
+            )
+
+    fort_level = _optional_non_negative_int32(
+        value.get("fort_level"), f"{name}.fort_level"
+    )
+    garrison_size = _optional_non_negative_int32(
+        value.get("garrison_size"), f"{name}.garrison_size"
+    )
+    besieging_strength = _optional_non_negative_int32(
+        value.get("besieging_strength"), f"{name}.besieging_strength"
+    )
+    siege_observable = _strict_bool(
+        value.get("siege_observable"), f"{name}.siege_observable"
+    )
+    raw_active_siege = value.get("active_siege")
+    if not siege_observable:
+        if raw_active_siege is not None:
+            raise ValueError(
+                f"native {name} cannot publish an unobservable active siege"
+            )
+        active_siege = None
+    elif raw_active_siege is None:
+        active_siege = None
+    else:
+        active_siege = _normalize_active_siege(
+            raw_active_siege, name=f"{name}.active_siege"
+        )
+    return {
+        "province_id": province_id,
+        "occupation_observable": occupation_observable,
+        "is_occupied": is_occupied,
+        "occupying_character_id": occupying_character_id,
+        "fort_level": fort_level,
+        "garrison_size": garrison_size,
+        "besieging_strength": besieging_strength,
+        "siege_observable": siege_observable,
+        "active_siege": active_siege,
+    }
+
+
+def _normalize_active_siege(
+    value: object, *, name: str
+) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise ValueError(f"native {name} must be an object or null")
+    progress = _fixed_point(
+        value.get("progress_fraction"),
+        f"{name}.progress_fraction",
+        fraction=True,
+    )
+    current = _fixed_point(
+        value.get("current_work"), f"{name}.current_work"
+    )
+    total = _fixed_point(value.get("total_work"), f"{name}.total_work")
+    return {
+        "siege_id": _positive_int32_id(
+            value.get("siege_id"), f"{name}.siege_id"
+        ),
+        "besieging_army_id": _optional_positive_int32_id(
+            value.get("besieging_army_id"),
+            f"{name}.besieging_army_id",
+        ),
+        "player_army_besieging": _strict_bool(
+            value.get("player_army_besieging"),
+            f"{name}.player_army_besieging",
+        ),
+        "progress_fraction": progress,
+        "current_work": current,
+        "total_work": total,
+        "remaining_work": {
+            "raw": max(int(total["raw"]) - int(current["raw"]), 0),
+            "scale": CK3_FIXED_POINT_SCALE,
+        },
+        "days_left": _optional_non_negative_int32(
+            value.get("days_left"), f"{name}.days_left"
+        ),
+    }
+
+
+def _fixed_point(
+    value: object, name: str, *, fraction: bool = False
+) -> dict[str, int]:
+    if not isinstance(value, dict) or set(value) != {"raw", "scale"}:
+        raise ValueError(f"native {name} must contain raw and scale")
+    raw = value.get("raw")
+    scale = value.get("scale")
+    if (
+        isinstance(raw, bool)
+        or not isinstance(raw, int)
+        or raw < 0
+        or raw > 2**63 - 1
+        or scale != CK3_FIXED_POINT_SCALE
+    ):
+        raise ValueError(f"native {name} fixed value is malformed")
+    if fraction and raw > CK3_FIXED_POINT_SCALE:
+        raise ValueError(f"native {name} fraction is out of range")
+    return {"raw": raw, "scale": CK3_FIXED_POINT_SCALE}
 
 
 def normalize_armies(
@@ -385,6 +569,31 @@ def _positive_int32_id(value: object, name: str) -> int:
         or value > 2**31 - 1
     ):
         raise ValueError(f"{name} must be a positive int32")
+    return value
+
+
+def _optional_positive_int32_id(value: object, name: str) -> int | None:
+    if value is None:
+        return None
+    return _positive_int32_id(value, name)
+
+
+def _optional_non_negative_int32(value: object, name: str) -> int | None:
+    if value is None:
+        return None
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, int)
+        or value < 0
+        or value > 2**31 - 1
+    ):
+        raise ValueError(f"{name} must be a non-negative int32 or null")
+    return value
+
+
+def _strict_bool(value: object, name: str) -> bool:
+    if not isinstance(value, bool):
+        raise ValueError(f"{name} must be boolean")
     return value
 
 

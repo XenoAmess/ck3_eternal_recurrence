@@ -61,6 +61,55 @@ def _army(
     }
 
 
+def _active_siege(
+    *,
+    siege_id: int = 901,
+    army_id: int | None = 11,
+    player: bool = True,
+    progress_raw: int = 25_000,
+    current_work_raw: int = 2_500_000,
+    total_work_raw: int = 10_000_000,
+    days_left: int | None = 12,
+) -> dict[str, object]:
+    return {
+        "siege_id": siege_id,
+        "besieging_army_id": army_id,
+        "player_army_besieging": player,
+        "progress_fraction": {"raw": progress_raw, "scale": 100_000},
+        "current_work": {"raw": current_work_raw, "scale": 100_000},
+        "total_work": {"raw": total_work_raw, "scale": 100_000},
+        "days_left": days_left,
+    }
+
+
+def _objective_state(
+    province_id: int,
+    *,
+    occupant: int | None = None,
+    occupation_observable: bool = True,
+    fort_level: int | None = 2,
+    garrison_size: int | None = 500,
+    besieging_strength: int | None = 650,
+    siege_observable: bool = True,
+    active_siege: dict[str, object] | None = None,
+) -> dict[str, object]:
+    return {
+        "province_id": province_id,
+        "occupation_observable": occupation_observable,
+        "is_occupied": (
+            occupant is not None if occupation_observable else None
+        ),
+        "occupying_character_id": (
+            occupant if occupation_observable else None
+        ),
+        "fort_level": fort_level,
+        "garrison_size": garrison_size,
+        "besieging_strength": besieging_strength,
+        "siege_observable": siege_observable,
+        "active_siege": active_siege if siege_observable else None,
+    }
+
+
 def _war(
     *,
     war_id: int = 88,
@@ -71,6 +120,7 @@ def _war(
     player_is_primary_war_leader: bool = True,
     enemy_primary_default_raise_province_id: int | None = None,
     war_objective_province_ids: list[int] | None = None,
+    objective_province_states: list[dict[str, object]] | None = None,
     targeted_title_ids: list[int] | None = None,
 ) -> dict[str, object]:
     return {
@@ -85,6 +135,7 @@ def _war(
         "allied_armies": allied_armies,
         "enemy_armies": enemy_armies,
         "war_objective_province_ids": war_objective_province_ids or [],
+        "objective_province_states": objective_province_states or [],
         "targeted_title_ids": targeted_title_ids or [],
     }
 
@@ -97,6 +148,7 @@ def _war_progress(
     score: int,
     war_id: int = 88,
     objectives: list[int] | None = None,
+    objective_states: list[dict[str, object]] | None = None,
     fallback: int | None = None,
 ) -> dict[str, object]:
     keys = (
@@ -120,6 +172,7 @@ def _war_progress(
                 "war_id": war_id,
                 "player_relative_war_score": score,
                 "war_objective_province_ids": objectives or [],
+                "objective_province_states": objective_states or [],
                 "enemy_primary_default_raise_province_id": fallback,
                 "player_armies": [compact(player)],
                 "enemy_armies": [compact(enemy) for enemy in enemies],
@@ -190,6 +243,11 @@ def _native_war_plan(
     paused: bool = True,
     army_routes_supported: bool | None = None,
     move_route_preview_supported: bool | None = None,
+    objective_states: list[dict[str, object]] | None = None,
+    occupation_supported: bool = False,
+    fort_level_supported: bool = False,
+    garrison_supported: bool = False,
+    siege_progress_supported: bool = False,
 ) -> dict[str, object]:
     route_field_present = "route_province_ids" in player
     driver = CallbackGameplayDriver(
@@ -207,6 +265,12 @@ def _native_war_plan(
                 if move_route_preview_supported is None
                 else move_route_preview_supported
             ),
+            "war_objective_occupation_supported": occupation_supported,
+            "war_objective_fort_level_supported": fort_level_supported,
+            "war_objective_garrison_supported": garrison_supported,
+            "war_objective_siege_progress_supported": (
+                siege_progress_supported
+            ),
             "date_raw": date_raw,
             "native_command_history": history or [],
             "active_wars": [
@@ -222,6 +286,7 @@ def _native_war_plan(
                         if objective is not None
                         else []
                     ),
+                    objective_province_states=objective_states,
                 )
             ],
             "player_armies": [player],
@@ -254,6 +319,111 @@ class GameplayBridgeTests(unittest.TestCase):
             war_objective_province_ids(normalized),
             [2585, 2510, 2548],
         )
+
+    def test_war_contract_normalizes_exact_objective_state(self) -> None:
+        state = _objective_state(
+            2585,
+            active_siege=_active_siege(
+                current_work_raw=2_500_001,
+                total_work_raw=10_000_000,
+            ),
+        )
+        normalized = normalize_active_wars(
+            [
+                _war(
+                    allied_armies=[],
+                    enemy_armies=[],
+                    war_objective_province_ids=[2585],
+                    objective_province_states=[state],
+                )
+            ]
+        )[0]["objective_province_states"]
+
+        self.assertEqual(len(normalized), 1)
+        siege = normalized[0]["active_siege"]
+        self.assertEqual(
+            siege["remaining_work"],
+            {"raw": 7_499_999, "scale": 100_000},
+        )
+        self.assertEqual(normalized[0]["garrison_size"], 500)
+
+    def test_war_contract_distinguishes_unknown_from_zero(self) -> None:
+        unknown = _objective_state(
+            2585,
+            occupation_observable=False,
+            fort_level=None,
+            garrison_size=None,
+            besieging_strength=None,
+            siege_observable=False,
+        )
+        zero = _objective_state(
+            2510,
+            fort_level=0,
+            garrison_size=0,
+            besieging_strength=0,
+            active_siege=None,
+        )
+        states = normalize_active_wars(
+            [
+                _war(
+                    allied_armies=[],
+                    enemy_armies=[],
+                    war_objective_province_ids=[2585, 2510],
+                    objective_province_states=[unknown, zero],
+                )
+            ]
+        )[0]["objective_province_states"]
+
+        self.assertIsNone(states[0]["is_occupied"])
+        self.assertIsNone(states[0]["garrison_size"])
+        self.assertFalse(states[0]["siege_observable"])
+        self.assertFalse(states[1]["is_occupied"])
+        self.assertEqual(states[1]["garrison_size"], 0)
+        self.assertTrue(states[1]["siege_observable"])
+        self.assertIsNone(states[1]["active_siege"])
+
+    def test_war_contract_rejects_partial_or_malformed_objective_state(self) -> None:
+        with self.assertRaisesRegex(ValueError, "completely match"):
+            normalize_active_wars(
+                [
+                    _war(
+                        allied_armies=[],
+                        enemy_armies=[],
+                        war_objective_province_ids=[2585, 2510],
+                        objective_province_states=[_objective_state(2585)],
+                    )
+                ]
+            )
+
+        malformed = _objective_state(
+            2585, active_siege=_active_siege()
+        )
+        malformed["active_siege"]["progress_fraction"]["scale"] = 1_000
+        with self.assertRaisesRegex(ValueError, "fixed value is malformed"):
+            normalize_active_wars(
+                [
+                    _war(
+                        allied_armies=[],
+                        enemy_armies=[],
+                        war_objective_province_ids=[2585],
+                        objective_province_states=[malformed],
+                    )
+                ]
+            )
+
+        contradictory = _objective_state(2585)
+        contradictory["occupation_observable"] = False
+        with self.assertRaisesRegex(ValueError, "unobservable occupation"):
+            normalize_active_wars(
+                [
+                    _war(
+                        allied_armies=[],
+                        enemy_armies=[],
+                        war_objective_province_ids=[2585],
+                        objective_province_states=[contradictory],
+                    )
+                ]
+            )
 
     def test_war_contract_preserves_route_order_and_repetition(self) -> None:
         normalized = normalize_active_wars(
@@ -896,6 +1066,41 @@ class GameplayBridgeTests(unittest.TestCase):
             deferred["phase"], "native_war_no_safe_exact_route"
         )
         self.assertIsNone(deferred["selected_step"])
+
+    def test_stationary_threat_blocks_nonobjective_recovery_advance(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=2598,
+            controllable=True,
+            army_state="regular",
+        )
+        approaching_enemy = _army(
+            21,
+            soldiers=800,
+            province_id=2585,
+            controllable=False,
+            move_target_province_id=2598,
+            army_state="moving",
+        )
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=[approaching_enemy],
+            score=24,
+            date_raw=24_000,
+            objective=2585,
+            steps=("life-advance",),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_no_safe_target")
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["route_rejections"][0]["kind"],
+            "enemy_targeting_stationary_province",
+        )
 
     def test_stationary_army_chooses_route_without_enemy_route_overlap(
         self,
@@ -1780,6 +1985,484 @@ class GameplayBridgeTests(unittest.TestCase):
         )
 
         self.assertEqual(plan["phase"], "native_war_siege_progress")
+        self.assertEqual(plan["selected_step"], "life-advance")
+
+    def test_exact_player_siege_uses_authoritative_progress_state(self) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="sieging",
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_000,
+            objective=2585,
+            objective_states=[
+                _objective_state(
+                    2585,
+                    garrison_size=650,
+                    besieging_strength=650,
+                    active_siege=_active_siege(),
+                )
+            ],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            steps=("life-advance",),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_siege_progress")
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["siege_state"]["status"], "progressing")
+
+    def test_occupation_only_capability_keeps_legacy_siege_stickiness(
+        self,
+    ) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="sieging",
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_000,
+            objectives=[2585, 2510],
+            objective_states=[
+                _objective_state(2585, fort_level=3),
+                _objective_state(2510, fort_level=1),
+            ],
+            occupation_supported=True,
+            fort_level_supported=True,
+            siege_progress_supported=False,
+            steps=("move-army-11-to-2510", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_siege_progress")
+        self.assertEqual(plan["selected_step"], "life-advance")
+
+    def test_insufficient_exact_siege_strength_moves_to_next_objective(
+        self,
+    ) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="sieging",
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_000,
+            objectives=[2585, 2510],
+            objective_states=[
+                _objective_state(
+                    2585,
+                    garrison_size=500,
+                    besieging_strength=499,
+                    active_siege=_active_siege(),
+                ),
+                _objective_state(
+                    2510,
+                    garrison_size=300,
+                    besieging_strength=0,
+                ),
+            ],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            steps=("move-army-11-to-2510", "life-advance"),
+        )
+
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2510")
+        self.assertEqual(plan["pursuit"]["target_province_id"], 2510)
+
+    def test_rejected_exact_siege_does_not_advance_deferred_preview(
+        self,
+    ) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="sieging", route_province_ids=[],
+        )
+        states = [
+            _objective_state(
+                2585,
+                garrison_size=500,
+                besieging_strength=499,
+                active_siege=_active_siege(),
+            ),
+            _objective_state(2510, besieging_strength=0),
+        ]
+        deferred_preview = {
+            "index": 1,
+            "command": "preview-move-army-11-to-2510",
+            "ok": True,
+            "result": {
+                "accepted": True,
+                "route_preview": {
+                    "status": "deferred",
+                    "army_id": 11,
+                    "origin_province_id": 2585,
+                    "target_province_id": 2510,
+                    "previewed_date_raw": 24_000,
+                },
+            },
+        }
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_000,
+            history=[deferred_preview],
+            objectives=[2585, 2510],
+            objective_states=states,
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            steps=("preview-move-army-11-to-2510", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_no_safe_exact_route")
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["route_rejections"][-1]["status"],
+            "deferred_while_exact_siege_rejected",
+        )
+
+    def test_rejected_exact_siege_does_not_advance_move_backoff(
+        self,
+    ) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="sieging",
+        )
+        deferred_move = {
+            "index": 1,
+            "command": "move-army-11-to-2510",
+            "ok": True,
+            "result": {
+                "accepted": False,
+                "war_action": {
+                    "status": "move_deferred",
+                    "army_id": 11,
+                    "target_province_id": 2510,
+                    "submitted_date_raw": 24_000,
+                },
+            },
+        }
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_000,
+            history=[deferred_move],
+            objectives=[2585, 2510],
+            objective_states=[
+                _objective_state(
+                    2585,
+                    garrison_size=500,
+                    besieging_strength=499,
+                    active_siege=_active_siege(),
+                ),
+                _objective_state(2510, besieging_strength=0),
+            ],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            steps=("move-army-11-to-2510", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_siege_exit_blocked")
+        self.assertIsNone(plan["selected_step"])
+        self.assertFalse(plan["move_backoff"]["retry_due"])
+
+    def test_seven_day_exact_siege_stall_moves_to_next_objective(self) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="sieging",
+        )
+        active = _objective_state(
+            2585,
+            active_siege=_active_siege(),
+        )
+        other = _objective_state(2510, besieging_strength=0)
+        before = _war_progress(
+            24_000,
+            player=player,
+            enemies=[],
+            score=24,
+            objectives=[2585, 2510],
+            objective_states=[active, other],
+        )
+        after = _war_progress(
+            24_168,
+            player=player,
+            enemies=[],
+            score=24,
+            objectives=[2585, 2510],
+            objective_states=[active, other],
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_168,
+            history=[_advance_row(1, before, after)],
+            objectives=[2585, 2510],
+            objective_states=[active, other],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            steps=("move-army-11-to-2510", "life-advance"),
+        )
+
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2510")
+        self.assertEqual(plan["pursuit"]["target_province_id"], 2510)
+
+    def test_exact_siege_work_progress_resets_stall(self) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="sieging",
+        )
+        before_state = _objective_state(
+            2585,
+            active_siege=_active_siege(),
+        )
+        after_state = _objective_state(
+            2585,
+            active_siege=_active_siege(
+                progress_raw=32_000,
+                current_work_raw=3_200_000,
+            ),
+        )
+        history = [
+            _advance_row(
+                1,
+                _war_progress(
+                    24_000,
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    objectives=[2585],
+                    objective_states=[before_state],
+                ),
+                _war_progress(
+                    24_168,
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    objectives=[2585],
+                    objective_states=[after_state],
+                ),
+            )
+        ]
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_168,
+            history=history,
+            objective=2585,
+            objective_states=[after_state],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            steps=("life-advance",),
+        )
+
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["siege_state"]["stall_days"], 0)
+
+    def test_exact_siege_stall_requires_uninterrupted_player_control(
+        self,
+    ) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="sieging",
+        )
+        player_state = _objective_state(
+            2585, active_siege=_active_siege()
+        )
+        ally_state = _objective_state(
+            2585,
+            active_siege=_active_siege(army_id=12, player=False),
+        )
+
+        def progress(
+            date_raw: int,
+            states: list[dict[str, object]],
+        ) -> dict[str, object]:
+            return _war_progress(
+                date_raw,
+                player=player,
+                enemies=[],
+                score=24,
+                objectives=[2585, 2510],
+                objective_states=states,
+            )
+
+        history = [
+            _advance_row(1, progress(24_000, [player_state]),
+                         progress(24_096, [player_state])),
+            _advance_row(2, progress(24_096, []), progress(24_120, [])),
+            _advance_row(3, progress(24_120, [ally_state]),
+                         progress(24_216, [ally_state])),
+            _advance_row(4, progress(24_216, [player_state]),
+                         progress(24_312, [player_state])),
+        ]
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_312,
+            history=history,
+            objectives=[2585, 2510],
+            objective_states=[player_state, _objective_state(2510)],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            steps=("move-army-11-to-2510", "life-advance"),
+        )
+
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["siege_state"]["stall_days"], 4)
+
+    def test_player_occupied_exact_objective_is_skipped(self) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="regular",
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=30,
+            date_raw=24_000,
+            objectives=[2585, 2510],
+            objective_states=[
+                _objective_state(2585, occupant=707),
+                _objective_state(2510),
+            ],
+            occupation_supported=True,
+            siege_progress_supported=True,
+            steps=("move-army-11-to-2510", "life-advance"),
+        )
+
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2510")
+        self.assertEqual(plan["pursuit"]["target_province_id"], 2510)
+
+    def test_mixed_exact_occupation_overrides_legacy_per_province(
+        self,
+    ) -> None:
+        enemy = _army(21, soldiers=800, province_id=41, controllable=False)
+        siege_2585 = _army(
+            11, soldiers=900, province_id=2585, controllable=True,
+            army_state="sieging",
+        )
+        siege_2510 = _army(
+            11, soldiers=900, province_id=2510, controllable=True,
+            army_state="sieging",
+        )
+        idle_2585 = _army(
+            11, soldiers=900, province_id=2585, controllable=True
+        )
+        idle_2510 = _army(
+            11, soldiers=900, province_id=2510, controllable=True
+        )
+        current = _army(
+            11, soldiers=900, province_id=2600, controllable=True,
+            army_state="regular",
+        )
+        history = [
+            _advance_row(
+                1,
+                _war_progress(24_000, player=siege_2585, enemies=[enemy],
+                              score=24, objectives=[2585, 2510]),
+                _war_progress(24_168, player=idle_2585, enemies=[enemy],
+                              score=30, objectives=[2585, 2510]),
+            ),
+            _advance_row(
+                2,
+                _war_progress(24_168, player=siege_2510, enemies=[enemy],
+                              score=30, objectives=[2585, 2510]),
+                _war_progress(24_336, player=idle_2510, enemies=[enemy],
+                              score=36, objectives=[2585, 2510]),
+            ),
+        ]
+        unknown = _objective_state(
+            2585,
+            occupation_observable=False,
+            fort_level=None,
+            garrison_size=None,
+            besieging_strength=None,
+            siege_observable=False,
+        )
+        lost = _objective_state(
+            2510,
+            fort_level=None,
+            garrison_size=None,
+            besieging_strength=None,
+            siege_observable=False,
+        )
+
+        plan = _native_war_plan(
+            player=current,
+            enemies=[enemy],
+            score=36,
+            date_raw=24_336,
+            history=history,
+            objectives=[2585, 2510],
+            objective_states=[unknown, lost],
+            occupation_supported=True,
+            steps=("move-army-11-to-2585", "move-army-11-to-2510"),
+        )
+
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2510")
+        self.assertEqual(plan["pursuit"]["target_province_id"], 2510)
+
+    def test_all_exact_objectives_occupied_does_not_use_rally_fallback(
+        self,
+    ) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="regular",
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=30,
+            date_raw=24_000,
+            objective=2585,
+            fallback=2543,
+            objective_states=[_objective_state(2585, occupant=707)],
+            occupation_supported=True,
+            siege_progress_supported=True,
+            steps=("move-army-11-to-2543", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_reconnaissance")
+        self.assertEqual(plan["selected_step"], "life-advance")
+
+    def test_completed_exact_objective_ignores_stale_siege_state(self) -> None:
+        player = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="sieging",
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=30,
+            date_raw=24_000,
+            objective=2585,
+            fallback=2543,
+            objective_states=[
+                _objective_state(2585, occupant=707, active_siege=None)
+            ],
+            occupation_supported=True,
+            siege_progress_supported=True,
+            steps=("move-army-11-to-2543", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_reconnaissance")
         self.assertEqual(plan["selected_step"], "life-advance")
 
     def test_exact_siege_state_leaves_unrelated_province_for_objective(self) -> None:

@@ -51,6 +51,7 @@ _NATIVE_CONTACT_MAX_PROBES = 2
 _NATIVE_COLLISION_COOLDOWN_GAME_DAYS = 90
 _NATIVE_DEFEAT_SCORE_DROP = 20
 _NATIVE_RETREAT_MAX_GAME_DAYS = 30
+_NATIVE_SIEGE_STALL_GAME_DAYS = 7
 _NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
 
 
@@ -643,8 +644,20 @@ def choose_one_life_turn(
             isinstance(snapshot, dict)
             and snapshot.get("move_route_preview_supported") is True
         )
+        paused_objective_state_supported = bool(
+            isinstance(snapshot, dict)
+            and (
+                snapshot.get("war_objective_garrison_supported") is True
+                or snapshot.get("war_objective_siege_progress_supported")
+                is True
+            )
+        )
         if (
-            (army_routes_supported or move_route_preview_supported)
+            (
+                army_routes_supported
+                or move_route_preview_supported
+                or paused_objective_state_supported
+            )
             and isinstance(snapshot, dict)
             and snapshot.get("paused") is not True
         ):
@@ -655,7 +668,7 @@ def choose_one_life_turn(
                     "pause-map" if "pause-map" in available_steps else None
                 ),
                 "required_step": "pause-map",
-                "reason": "pause the map before reading or previewing a native army route",
+                "reason": "pause the map before reading deep native route or objective state",
                 "active_wars": war_summary,
             }
         if (
@@ -787,9 +800,64 @@ def choose_one_life_turn(
         exact_objective_province_ids = war_objective_province_ids(
             [tactical_war] if isinstance(tactical_war, dict) else []
         )
+        exact_objective_state_by_id = _objective_province_state_by_id(
+            tactical_war if isinstance(tactical_war, dict) else None
+        )
+        exact_occupation_rows_complete = bool(
+            exact_objective_province_ids
+            and isinstance(snapshot, dict)
+            and snapshot.get("war_objective_occupation_supported") is True
+            and list(exact_objective_state_by_id)
+            == exact_objective_province_ids
+        )
+        exact_occupation_fully_observable = bool(
+            exact_occupation_rows_complete
+            and all(
+                exact_objective_state_by_id[province_id].get(
+                    "occupation_observable"
+                )
+                is True
+                for province_id in exact_objective_province_ids
+            )
+        )
         completed_objectives = set(
             tactical.get("completed_objective_province_ids", [])
         )
+        if exact_occupation_rows_complete:
+            player_occupied_objectives = _player_occupied_objective_ids(
+                snapshot if isinstance(snapshot, dict) else {},
+                tactical_war if isinstance(tactical_war, dict) else None,
+                exact_objective_state_by_id,
+            )
+            for province_id in exact_objective_province_ids:
+                if (
+                    exact_objective_state_by_id[province_id].get(
+                        "occupation_observable"
+                    )
+                    is not True
+                ):
+                    continue
+                completed_objectives.discard(province_id)
+                if province_id in player_occupied_objectives:
+                    completed_objectives.add(province_id)
+        exact_objective_province_ids = _rank_exact_objectives(
+            exact_objective_province_ids,
+            exact_objective_state_by_id,
+            fort_supported=(
+                isinstance(snapshot, dict)
+                and snapshot.get("war_objective_fort_level_supported") is True
+            ),
+            garrison_supported=(
+                isinstance(snapshot, dict)
+                and snapshot.get("war_objective_garrison_supported") is True
+            ),
+        )
+        if exact_occupation_fully_observable:
+            # Only a fully observable exact set can retire the legacy rally
+            # fallback. Unknown provinces retain their prior completion state.
+            siege_objective_province_ids = list(
+                exact_objective_province_ids
+            )
         all_siege_objectives_completed = bool(siege_objective_province_ids)
         siege_objective_province_ids = [
             province_id
@@ -834,6 +902,43 @@ def choose_one_life_turn(
             observed_route_target is None
             and army_state in {"regular", "sieging"}
         ) else []
+        exact_siege_status = _current_exact_siege_status(
+            snapshot if isinstance(snapshot, dict) else {},
+            tactical_war_id=(
+                tactical_war_id
+                if isinstance(tactical_war_id, int)
+                else None
+            ),
+            province_id=(
+                current_province_id
+                if isinstance(current_province_id, int)
+                else None
+            ),
+            objective_state_by_id=exact_objective_state_by_id,
+            commands=rows,
+        )
+        exact_siege_rejection = (
+            exact_siege_status
+            if current_province_id in siege_objective_province_ids
+            and isinstance(exact_siege_status, dict)
+            and (
+                exact_siege_status.get("status") in {
+                    "not_player_besieging",
+                    "insufficient_strength",
+                    "stalled",
+                }
+                or (
+                    exact_siege_status.get("status") == "not_active"
+                    and army_state == "sieging"
+                )
+            )
+            else None
+        )
+        if (
+            isinstance(exact_siege_rejection, dict)
+            and isinstance(current_province_id, int)
+        ):
+            blocked_province_ids.add(current_province_id)
         if army_state == "gathering":
             if "life-advance" in available_steps:
                 return {
@@ -852,13 +957,31 @@ def choose_one_life_turn(
                 "active_wars": war_summary,
             }
         if (
+            isinstance(exact_siege_status, dict)
+            and exact_siege_status.get("status") == "progressing"
+            and observed_route_target is None
+            and not stationary_threats
+            and current_province_id in siege_objective_province_ids
+            and "life-advance" in available_steps
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_siege_progress",
+                "selected_step": "life-advance",
+                "reason": "the exact paused state confirms a player siege; advance one seven-day progress slice",
+                "siege_state": exact_siege_status,
+                "active_wars": war_summary,
+            }
+        if (
             army_state == "sieging"
             and observed_route_target is None
             and not stationary_threats
+            and exact_siege_status is None
             and (
-                not siege_objective_province_ids
+                current_province_id in siege_objective_province_ids
                 or (
-                    current_province_id in siege_objective_province_ids
+                    not siege_objective_province_ids
+                    and not exact_occupation_fully_observable
                 )
             )
             and "life-advance" in available_steps
@@ -1086,7 +1209,11 @@ def choose_one_life_turn(
                     isinstance(preview, dict)
                     and preview.get("status") == "deferred"
                 ):
-                    if active_route_unsafe or stationary_threats:
+                    if (
+                        active_route_unsafe
+                        or stationary_threats
+                        or isinstance(exact_siege_rejection, dict)
+                    ):
                         route_rejections.append(
                             {
                                 "target_province_id": province_id,
@@ -1094,6 +1221,8 @@ def choose_one_life_turn(
                                     "deferred_while_active_route_unsafe"
                                     if active_route_unsafe
                                     else "deferred_while_stationary_province_threatened"
+                                    if stationary_threats
+                                    else "deferred_while_exact_siege_rejected"
                                 ),
                             }
                         )
@@ -1260,10 +1389,17 @@ def choose_one_life_turn(
         if target_province_id is None and (
             visible_enemies or siege_objective_province_ids
         ):
-            if (
-                stationary_threats
-                and current_province_id in siege_objective_province_ids
-            ):
+            if isinstance(exact_siege_rejection, dict):
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_siege_stalled",
+                    "selected_step": None,
+                    "required_step": "progress-capable-exact-war-objective",
+                    "reason": "the current exact siege is not progressing and no alternate exact objective is available",
+                    "siege_state": exact_siege_rejection,
+                    "active_wars": war_summary,
+                }
+            if stationary_threats:
                 exact = current_province_id in exact_objective_province_ids
                 return {
                     "policy": "one-life-turn-v1",
@@ -1278,7 +1414,7 @@ def choose_one_life_turn(
                         if exact
                         else "query-safe-war-objectives"
                     ),
-                    "reason": "the stationary siege province is under observable enemy convergence and no alternate target is available",
+                    "reason": "the stationary province is under observable enemy convergence and no alternate target is available",
                     "route_rejections": stationary_threats,
                     "active_wars": war_summary,
                 }
@@ -1393,6 +1529,30 @@ def choose_one_life_turn(
                         "move_backoff": move_backoff,
                         "active_wars": war_summary,
                     }
+                if isinstance(exact_siege_rejection, dict) and (
+                    active_move_intent is not None
+                    or (
+                        move_backoff is not None
+                        and move_backoff.get("retry_due") is not True
+                    )
+                    or target_province_id
+                    in {
+                        pursuit_army.get("current_province_id"),
+                        pursuit_army.get("move_target_province_id"),
+                    }
+                ):
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_siege_exit_blocked",
+                        "selected_step": None,
+                        "required_step": "replace-rejected-siege-position",
+                        "reason": "the exact siege was rejected; deferred, pending, or same-province movement cannot justify advancing time",
+                        "siege_state": exact_siege_rejection,
+                        "pursuit": pursuit,
+                        "move_intent": active_move_intent,
+                        "move_backoff": move_backoff,
+                        "active_wars": war_summary,
+                    }
                 if active_move_intent is not None:
                     if "life-advance" in available_steps:
                         return {
@@ -1493,6 +1653,16 @@ def choose_one_life_turn(
                 "required_step": "replace-threatened-stationary-position",
                 "reason": "enemy convergence threatens the stationary army and no immediate reroute is available",
                 "route_rejections": stationary_threats,
+                "active_wars": war_summary,
+            }
+        if isinstance(exact_siege_rejection, dict):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_siege_exit_blocked",
+                "selected_step": None,
+                "required_step": "replace-rejected-siege-position",
+                "reason": "the exact siege was rejected and no safe replacement route is active; do not advance time",
+                "siege_state": exact_siege_rejection,
                 "active_wars": war_summary,
             }
         if "life-advance" in available_steps:
@@ -2031,6 +2201,145 @@ def _progress_siege_objectives(war: dict[str, object]) -> list[int]:
     return result
 
 
+def _objective_province_state_by_id(
+    war: dict[str, object] | None,
+) -> dict[int, dict[str, object]]:
+    states = war.get("objective_province_states") if isinstance(war, dict) else None
+    result: dict[int, dict[str, object]] = {}
+    for state in states if isinstance(states, list) else []:
+        if not isinstance(state, dict):
+            continue
+        province_id = _native_int(state.get("province_id"))
+        if province_id is not None and province_id not in result:
+            result[province_id] = state
+    return result
+
+
+def _player_occupied_objective_ids(
+    snapshot: dict[str, object],
+    war: dict[str, object] | None,
+    state_by_id: dict[int, dict[str, object]],
+) -> set[int]:
+    known_player_side: set[int] = set()
+    played_character = snapshot.get("played_character")
+    if isinstance(played_character, dict):
+        character_id = _native_int(played_character.get("character_id"))
+        if character_id is not None:
+            known_player_side.add(character_id)
+    armies = war.get("allied_armies") if isinstance(war, dict) else None
+    for army in armies if isinstance(armies, list) else []:
+        if not isinstance(army, dict):
+            continue
+        owner_id = _native_int(army.get("owner_character_id"))
+        if owner_id is not None:
+            known_player_side.add(owner_id)
+    return {
+        province_id
+        for province_id, state in state_by_id.items()
+        if state.get("occupation_observable") is True
+        and state.get("is_occupied") is True
+        and state.get("occupying_character_id") in known_player_side
+    }
+
+
+def _rank_exact_objectives(
+    province_ids: list[int],
+    state_by_id: dict[int, dict[str, object]],
+    *,
+    fort_supported: bool,
+    garrison_supported: bool,
+) -> list[int]:
+    if not fort_supported and not garrison_supported:
+        return list(province_ids)
+    native_order = {
+        province_id: index for index, province_id in enumerate(province_ids)
+    }
+
+    def rank(province_id: int) -> tuple[int, int, int]:
+        state = state_by_id.get(province_id, {})
+        fort = _native_int(state.get("fort_level"))
+        garrison = _native_int(state.get("garrison_size"))
+        return (
+            fort if fort_supported and fort is not None else 2**31 - 1,
+            (
+                garrison
+                if garrison_supported and garrison is not None
+                else 2**31 - 1
+            ),
+            native_order[province_id],
+        )
+
+    return sorted(province_ids, key=rank)
+
+
+def _current_exact_siege_status(
+    snapshot: dict[str, object],
+    *,
+    tactical_war_id: int | None,
+    province_id: int | None,
+    objective_state_by_id: dict[int, dict[str, object]],
+    commands: list[dict[str, object]],
+) -> dict[str, object] | None:
+    if (
+        province_id is None
+        or snapshot.get("war_objective_siege_progress_supported") is not True
+    ):
+        return None
+    state = objective_state_by_id.get(province_id)
+    if not isinstance(state, dict) or state.get("siege_observable") is not True:
+        return None
+    active_siege = state.get("active_siege")
+    if not isinstance(active_siege, dict):
+        return {
+            "status": "not_active",
+            "province_id": province_id,
+        }
+    siege_id = _native_int(active_siege.get("siege_id"))
+    result: dict[str, object] = {
+        "status": "progressing",
+        "province_id": province_id,
+        "siege_id": siege_id,
+        "besieging_army_id": active_siege.get("besieging_army_id"),
+        "player_army_besieging": active_siege.get(
+            "player_army_besieging"
+        ),
+        "garrison_size": state.get("garrison_size"),
+        "besieging_strength": state.get("besieging_strength"),
+        "progress_fraction": active_siege.get("progress_fraction"),
+        "current_work": active_siege.get("current_work"),
+        "total_work": active_siege.get("total_work"),
+        "remaining_work": active_siege.get("remaining_work"),
+        "days_left": active_siege.get("days_left"),
+    }
+    if active_siege.get("player_army_besieging") is not True:
+        result["status"] = "not_player_besieging"
+        return result
+    garrison = _native_int(state.get("garrison_size"))
+    strength = _native_int(state.get("besieging_strength"))
+    if (
+        snapshot.get("war_objective_garrison_supported") is True
+        and garrison is not None
+        and strength is not None
+        and strength < garrison
+    ):
+        result["status"] = "insufficient_strength"
+        return result
+    stall_days = (
+        _recent_exact_siege_stall_days(
+            commands,
+            war_id=tactical_war_id,
+            province_id=province_id,
+            siege_id=siege_id,
+        )
+        if tactical_war_id is not None and siege_id is not None
+        else 0
+    )
+    result["stall_days"] = stall_days
+    if stall_days >= _NATIVE_SIEGE_STALL_GAME_DAYS:
+        result["status"] = "stalled"
+    return result
+
+
 def _native_int(value: object) -> int | None:
     return value if isinstance(value, int) and not isinstance(value, bool) else None
 
@@ -2116,6 +2425,97 @@ def _progress_army(
         ),
         None,
     )
+
+
+def _progress_objective_state(
+    war: dict[str, object] | None, province_id: int
+) -> dict[str, object] | None:
+    states = war.get("objective_province_states") if isinstance(war, dict) else None
+    if not isinstance(states, list):
+        return None
+    return next(
+        (
+            state
+            for state in states
+            if isinstance(state, dict)
+            and state.get("province_id") == province_id
+        ),
+        None,
+    )
+
+
+def _progress_active_siege(
+    state: dict[str, object] | None,
+    siege_id: int,
+) -> dict[str, object] | None:
+    active_siege = state.get("active_siege") if isinstance(state, dict) else None
+    if (
+        isinstance(active_siege, dict)
+        and active_siege.get("siege_id") == siege_id
+        and active_siege.get("player_army_besieging") is True
+    ):
+        return active_siege
+    return None
+
+
+def _fixed_raw(value: object) -> int | None:
+    raw = value.get("raw") if isinstance(value, dict) else None
+    return _native_int(raw)
+
+
+def _recent_exact_siege_stall_days(
+    commands: list[dict[str, object]],
+    *,
+    war_id: int,
+    province_id: int,
+    siege_id: int,
+) -> int:
+    """Count consecutive paused-to-paused days with no exact siege work."""
+    stalled_days = 0
+    for row in _history_after_latest_restore(commands):
+        if _effective_command(row) != "life-advance" or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        before_date, before_war = _progress_slice(
+            result, "war_progress_before", war_id
+        )
+        after_date, after_war = _progress_slice(
+            result, "war_progress_after", war_id
+        )
+        if (
+            before_date is None
+            or after_date is None
+            or after_date < before_date
+            or before_war is None
+            or after_war is None
+        ):
+            stalled_days = 0
+            continue
+        before = _progress_active_siege(
+            _progress_objective_state(before_war, province_id), siege_id
+        )
+        after = _progress_active_siege(
+            _progress_objective_state(after_war, province_id), siege_id
+        )
+        if before is None or after is None:
+            stalled_days = 0
+            continue
+        elapsed = max(0, (after_date - before_date) // 24)
+        before_work = _fixed_raw(before.get("current_work"))
+        after_work = _fixed_raw(after.get("current_work"))
+        before_fraction = _fixed_raw(before.get("progress_fraction"))
+        after_fraction = _fixed_raw(after.get("progress_fraction"))
+        advanced = bool(
+            before_work is not None
+            and after_work is not None
+            and after_work > before_work
+        ) or bool(
+            before_fraction is not None
+            and after_fraction is not None
+            and after_fraction > before_fraction
+        )
+        stalled_days = 0 if advanced else stalled_days + elapsed
+    return stalled_days
 
 
 def _history_after_latest_restore(

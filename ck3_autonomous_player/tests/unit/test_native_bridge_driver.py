@@ -245,6 +245,50 @@ def _army(
     return result
 
 
+def _active_siege(
+    *,
+    siege_id: int = 901,
+    army_id: int | None = 101,
+    player: bool = True,
+    progress_raw: int = 25_000,
+    current_work_raw: int = 2_500_000,
+    total_work_raw: int = 10_000_000,
+    days_left: int | None = 12,
+) -> dict[str, object]:
+    return {
+        "siege_id": siege_id,
+        "besieging_army_id": army_id,
+        "player_army_besieging": player,
+        "progress_fraction": {"raw": progress_raw, "scale": 100_000},
+        "current_work": {"raw": current_work_raw, "scale": 100_000},
+        "total_work": {"raw": total_work_raw, "scale": 100_000},
+        "days_left": days_left,
+    }
+
+
+def _objective_state(
+    province_id: int,
+    *,
+    occupant: int | None = None,
+    fort_level: int | None = 2,
+    garrison_size: int | None = 500,
+    besieging_strength: int | None = 650,
+    siege_observable: bool = True,
+    active_siege: dict[str, object] | None = None,
+) -> dict[str, object]:
+    return {
+        "province_id": province_id,
+        "occupation_observable": True,
+        "is_occupied": occupant is not None,
+        "occupying_character_id": occupant,
+        "fort_level": fort_level,
+        "garrison_size": garrison_size,
+        "besieging_strength": besieging_strength,
+        "siege_observable": siege_observable,
+        "active_siege": active_siege if siege_observable else None,
+    }
+
+
 def _war(
     war_id: int = 61,
     *,
@@ -254,6 +298,7 @@ def _war(
     player_is_primary_war_leader: bool = True,
     enemy_primary_default_raise_province_id: int | None = None,
     war_objective_province_ids: list[int] | None = None,
+    objective_province_states: list[dict[str, object]] | None = None,
     targeted_title_ids: list[int] | None = None,
 ) -> dict[str, object]:
     return {
@@ -268,6 +313,7 @@ def _war(
         "allied_armies": allied_armies or [],
         "enemy_armies": enemy_armies or [],
         "war_objective_province_ids": war_objective_province_ids or [],
+        "objective_province_states": objective_province_states or [],
         "targeted_title_ids": targeted_title_ids or [],
     }
 
@@ -288,6 +334,60 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertFalse(disconnected["fallback_enabled"])
         self.assertFalse(disconnected["snapshot"])
         self.assertEqual(disconnected["action_steps"], [])
+
+    def test_exact_objective_capabilities_and_state_are_projected(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objective-occupation",
+                "game.state.war-objective-fort-level",
+                "game.state.war-objective-garrison",
+                "game.state.war-objective-siege-progress",
+            )
+        )
+        player = _army(101, province_id=2585, army_state="sieging")
+        endpoint.publish(
+            _snapshot(
+                2,
+                active_wars=[
+                    _war(
+                        allied_armies=[player],
+                        war_objective_province_ids=[2585],
+                        objective_province_states=[
+                            _objective_state(
+                                2585,
+                                active_siege=_active_siege(),
+                            )
+                        ],
+                    )
+                ],
+                player_armies=[player],
+            )
+        )
+
+        projected = driver.take_snapshot()
+        capabilities = driver.capabilities()
+
+        for name in (
+            "war_objective_occupation_supported",
+            "war_objective_fort_level_supported",
+            "war_objective_garrison_supported",
+            "war_objective_siege_progress_supported",
+        ):
+            self.assertTrue(projected[name])
+            self.assertTrue(capabilities[name])
+        siege = projected["active_wars"][0]["objective_province_states"][0][
+            "active_siege"
+        ]
+        self.assertEqual(
+            siege["remaining_work"],
+            {"raw": 7_500_000, "scale": 100_000},
+        )
 
         endpoint.publish(
             _hello("bridge.identity", "bridge.heartbeat", "bridge.ping")
@@ -3550,6 +3650,152 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["elapsed_days"], 30)
         self.assertEqual(result["progress_status"], "postcondition")
         self.assertTrue(result["paused"])
+
+    def test_player_siege_uses_seven_day_horizon_and_ignores_running_gap(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objective-occupation",
+                "game.state.war-objective-fort-level",
+                "game.state.war-objective-garrison",
+                "game.state.war-objective-siege-progress",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        start_date = 53_171_400
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            army_state_code=3,
+        )
+
+        def war(*, paused_rich: bool, progressed: bool = False):
+            return _war(
+                allied_armies=[player],
+                war_objective_province_ids=[2585],
+                objective_province_states=[
+                    _objective_state(
+                        2585,
+                        siege_observable=paused_rich,
+                        active_siege=(
+                            _active_siege(
+                                progress_raw=(32_000 if progressed else 25_000),
+                                current_work_raw=(
+                                    3_200_000 if progressed else 2_500_000
+                                ),
+                            )
+                            if paused_rich
+                            else None
+                        ),
+                    )
+                ],
+            )
+
+        starting_war = war(paused_rich=True)
+        endpoint.publish(
+            _snapshot(
+                100,
+                date_raw=start_date,
+                active_wars=[starting_war],
+                player_armies=[player],
+            )
+        )
+        timers: list[threading.Timer] = []
+        last_running_date = start_date
+        pause_dates: list[int] = []
+
+        def publish_running(revision: int, date_raw: int) -> None:
+            nonlocal last_running_date
+            last_running_date = date_raw
+            endpoint.publish(
+                _snapshot(
+                    revision,
+                    date_raw=date_raw,
+                    speed=5,
+                    paused=False,
+                    active_wars=[war(paused_rich=False)],
+                    player_armies=[player],
+                )
+            )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-5":
+                endpoint.publish(
+                    _snapshot(
+                        101,
+                        date_raw=start_date,
+                        speed=5,
+                        active_wars=[starting_war],
+                        player_armies=[player],
+                    )
+                )
+            elif step == "resume-map":
+                publish_running(102, start_date + 24)
+                timer = threading.Timer(
+                    0.01,
+                    lambda: publish_running(103, start_date + 7 * 24),
+                )
+                timers.append(timer)
+                timer.start()
+            elif step == "pause-map":
+                pause_dates.append(last_running_date)
+                endpoint.publish(
+                    _snapshot(
+                        104,
+                        date_raw=last_running_date,
+                        speed=5,
+                        paused=True,
+                        active_wars=[
+                            war(paused_rich=True, progressed=True)
+                        ],
+                        player_armies=[player],
+                    )
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("life-advance")
+        for timer in timers:
+            timer.join(timeout=1.0)
+
+        self.assertEqual(pause_dates, [start_date + 7 * 24])
+        self.assertEqual(result["elapsed_days"], 7)
+        before_state = result["war_progress_before"]["wars"][0][
+            "objective_province_states"
+        ][0]
+        after_state = result["war_progress_after"]["wars"][0][
+            "objective_province_states"
+        ][0]
+        self.assertEqual(
+            before_state["active_siege"]["current_work"]["raw"],
+            2_500_000,
+        )
+        self.assertEqual(
+            after_state["active_siege"]["current_work"]["raw"],
+            3_200_000,
+        )
 
     def test_composite_life_advance_retries_one_natural_revision_race(self) -> None:
         endpoint = FakeEndpoint()
