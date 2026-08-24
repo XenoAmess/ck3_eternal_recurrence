@@ -4,13 +4,14 @@
 
 ## 2026-08-24 动态目标与军队运行态
 
-- `game.state.war-objectives` 发布 `targeted_title_ids` 和由目标头衔首都解析出的
-  `war_objective_province_ids`。planner 严格按“全部 exact 目标 → legacy
+- `game.state.war-objectives` 发布 `targeted_title_ids` 和按目标头衔 de jure 层级解析出的
+  `war_objective_province_ids`：男爵领目标取自身省，伯爵领目标取首府男爵领省，公国/王国目标递归发布全部
+  de jure 伯爵领首府省。planner 严格按“全部 exact 目标 → legacy
   `enemy_primary_default_raise_province_id` fallback”轮转，不按省份数字混排。默认集结省不是 war goal。
 - 军队运行态使用 `army_state` / `army_state_code`：`combat=2`、`sieging=3`、
   `retreating=6`、`moving=7`。`combat` 只允许有界接触推进，`sieging` 推进围城，
-  `retreating` 最多等待 30 游戏日；到期后不再盲目碰撞，planner 返回
-  `selected_step=null` / `required_step=query-safe-war-objectives`。
+  `retreating` 先按 30 游戏日正常期限等待；超过期限后仍以有界 `life-advance`
+  等 CK3 释放军队，不能在暂停地图上以 `selected_step=null` 自锁。
 - 每个 `life-advance` 结果持久保存 `war_progress_before/after`，只含日期、战争分数、
   exact/fallback 目标和双方军队 ID、当前省、兵力、移动目标及运行态。若选定战争中
   玩家军队在目标省从明确的 `sieging` 变为非围城，且分数上升或战争消失，则该目标
@@ -18,7 +19,8 @@
   planner 恢复选择安全的可见敌军；无敌军时只做有界推进并等待战争状态改变。legacy 快照以此将同省接触限制为
   14 日或两次 probe；一次明显败退（分数下降至少 20）使对应敌军/省进入 90 日冷却。
 - `move_deferred` 不再每 turn 重试：同一目标按 7/14/30 游戏日退避。已接受且仍在
-  `moving` 的 exact 目标继续 `life-advance`，不重复提交 move。
+  `moving` 的 exact 目标继续 `life-advance`，不重复提交 move；若 exact 运行态已回到
+  `regular`/`sieging` 等非行军状态且原生路线为空，旧 move intent 立即失效。
 
 以上状态均来自最小化 CK3 的 native snapshot/command history，不需要 OCR 或恢复窗口。
 
@@ -31,7 +33,7 @@
 - `primary_opponent_character_id`: 玩家对侧的 primary war leader；完整 `CharacterID` 已按 generation 重新解析，过渡帧无法解析时为 `null`
 - `player_is_primary_war_leader`: 玩家是否正是本方 primary war leader；它是 `enforce-demands` 的必要前提
 - `targeted_title_ids`: 该场战争 `CCasusBelli.targeted_titles` 的完整 `TitleID` 数组
-- `war_objective_province_ids`: 每个目标头衔沿“首都头衔 → 首府男爵领 → 省份”解析并按顺序去重的真实目标省；某一目标无法完整解析时只省略该目标省，不丢失 `targeted_title_ids` 或整场战争
+- `war_objective_province_ids`: 每个目标头衔按原生 de jure 子头衔顺序展开并稳定去重的可围城目标省。男爵领取自身省；伯爵领取 `+0x240` 首个 de jure 男爵领的省；公国、王国及更高层级递归到全部 de jure 伯爵领并取各自首府。每场战争最多解析 4096 个 generation 匹配的头衔，递归深度最多 8；任一目标的层级出现失效 ID、非法 tier、无首府或越界数组时，该目标的整组省份不发布，但保留 `targeted_title_ids` 和其他可完整解析的目标
 - `enemy_primary_default_raise_province_id`: 对方 primary 角色的原生默认集结省；无法解析时为 `null`。它不是解码出的 war goal、首都或真实行军目标；planner 只把它用作明确 fallback，或在进攻方已取得正战争分后的稳定围城启发式锚点
 - `player_relative_war_score`: 相对玩家视角的整数战争分
 - `allied_armies` / `enemy_armies`: 当前能从原生对象读取的军队数组
@@ -95,6 +97,7 @@ Python 根据当前 snapshot 展开为：
 `d_spoleto`，其 `capital=2389`（`c_spoleto`），该郡首府男爵领为
 `2390`（`b_spoleto`），最终省份为 `2585`。对手默认集结省 `2543`
 属于 `b_firenze`；它确实由敌方持有且可围城，但不是该战争的目标省。
+旧投影只返回目标头衔的单个首都省；exact 1.19.0.6 的新投影改走完整 de jure 子树，因此公国/王国战争不再被压缩成一个围城点。
 
 2026-08-24 的后续实机回放补齐了移动与解散。旧 bridge 从 AI/controller 调用点抄入了
 `command kind=2` 与 queue flags `7`；这会在玩家军队的控制权校验处被拒绝。连续推进约 49 个游戏日、
@@ -127,7 +130,16 @@ planner 必须推进时间而不是重复下令。战争中的单次 `life-advan
 解散命令同样必须使用玩家路径：公开 ArmyID 只负责解析 `CArmy`，command payload 使用
 `CArmy+0x178` 的内部 target ID，并先调用原生 validator，再以 `kind=1` / flags `0x0E` 入队。
 同一最小化实机回放中，`disband-army-83886341` 返回 `war_action.status=disbanded`，下一份
-snapshot 的 `player_armies` 已为空。以上两条路径全程没有恢复窗口，也没有调用 OCR、截图或键鼠。
+snapshot 的 `player_armies` 已为空；该成功路径用于战争结束后的残军清理，不能推广成战时重置军队。
+
+同局后续 checkpoint 的 `date_raw=53174208`、玩家战争分 `41`，军队 `83886341` 位于省 `2598` 且为
+`sieging`。推进 30 游戏日后仍未进入 `combat`；战时尝试 `disband-army-83886341` 被原生 validator 以
+`CK3 army is not player-controllable` 拒绝，军队状态未变，因此不得采用“战时解散再重拉”的自动策略。
+向 exact 目标 `2585` 围城推进 60 日后，两支敌军的原生 route 都锁定 `2585`；仅在 `2585` 与 legacy
+fallback `2543` 两点间轮转会同时受堵。公国/王国目标发布全部 de jure 伯爵领首府，正是为了给 planner
+提供更多安全围城点，而不是继续在这两个已被封锁的点上试探。
+
+以上移动、解散与围城观测全程没有恢复窗口，也没有调用 OCR、截图或键鼠。
 
 这些具体战争 step 即使运行在显式 `hybrid-fallback` 配置中也只允许 native 后端执行；native 未广告时不会转发到视觉后端。
 
@@ -138,8 +150,8 @@ snapshot 的 `player_armies` 已为空。以上两条路径全程没有恢复窗
 1. baseline checkpoint 完成且当前无战争/残军时，显式 `query-declarable-wars`；优先 county holy war、county conquest、claim，随后按单 title 与稳定 runtime ID 排序，提交一个 `declare-war-*`。
 2. 任一活动战争达到玩家视角 100 分：先执行 `enforce-demands-<war_id>`，确认该 war 从 snapshot 消失，不再无意义推进时间。
 3. 有活动战争、无可控军队：`raise-troops-default`。
-4. 战争分为 0，或玩家是防守方/不是本方 primary war leader：选择兵力最大的可见敌军，令最强可控军队追击其当前省；兵力未知时按最小 `army_id` 稳定选择。敌军省份不可见时才用 `enemy_primary_default_raise_province_id` 维持行动。
-5. 玩家是进攻方、本方 primary war leader、战争分大于 0 且存在 fallback：若最强可控军队与任一可见敌军同省，优先原地推进战斗；否则把 fallback 作为稳定围城启发式锚点，不再追逐异省移动敌军。该锚点只是对方 primary 角色的默认集结省，绝不是解码出的 war goal。
+4. 玩家是进攻方、本方 primary war leader 且存在 exact `war_objective_province_ids`：从战争刚开始的 0 分起就按 DLL 的 DFS 顺序围攻 exact 目标；Python 只做稳定去重，不按 ProvinceID 重排。敌军当前省或 route 终点威胁某一目标时，跳到下一个未完成且未受威胁的 exact 目标。
+5. 没有 exact 目标时，战争分为 0、玩家是防守方或不是本方 primary war leader：选择兵力最大的可见敌军，令最强可控军队追击其当前省；兵力未知时按最小 `army_id` 稳定选择。仅 legacy fallback 可用时，仍要求进攻方已经取得正分，才把 `enemy_primary_default_raise_province_id` 当作围城启发式锚点；它绝不是解码出的 war goal。
 6. 军队已经在目标省、已观察到向目标省移动，或 90 个游戏日内已有相同的 accepted/submitted move intent：执行一次最多 30 个游戏日的 `life-advance`，不重复提交 move。追击模式只在下一决策点发现目标换省时重定向；围城模式忽略异省敌军移动并保持锚点。
 7. 战争消失但玩家军队仍在场：逐支执行 `disband-army-<army_id>`。
 

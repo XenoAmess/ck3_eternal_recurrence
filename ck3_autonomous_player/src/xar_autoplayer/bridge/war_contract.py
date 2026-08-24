@@ -220,29 +220,38 @@ def enemy_primary_default_raise_province_ids(
     active_wars: Iterable[dict[str, object]],
 ) -> list[int]:
     """Return stable fallback objectives published for active wars."""
-    province_ids: set[int] = set()
+    province_ids: list[int] = []
+    seen: set[int] = set()
     for war in active_wars:
         province_id = war.get("enemy_primary_default_raise_province_id")
-        if isinstance(province_id, int) and not isinstance(province_id, bool):
-            province_ids.add(province_id)
-    return sorted(province_ids)
+        if (
+            isinstance(province_id, int)
+            and not isinstance(province_id, bool)
+            and province_id not in seen
+        ):
+            seen.add(province_id)
+            province_ids.append(province_id)
+    return province_ids
 
 
 def war_objective_province_ids(
     active_wars: Iterable[dict[str, object]],
 ) -> list[int]:
-    """Return exact target-title capital provinces published by the bridge."""
-    province_ids: set[int] = set()
+    """Return exact objectives in the adapter's stable traversal order."""
+    province_ids: list[int] = []
+    seen: set[int] = set()
     for war in active_wars:
         raw = war.get("war_objective_province_ids")
         if isinstance(raw, list):
-            province_ids.update(
-                province_id
-                for province_id in raw
-                if isinstance(province_id, int)
-                and not isinstance(province_id, bool)
-            )
-    return sorted(province_ids)
+            for province_id in raw:
+                if (
+                    isinstance(province_id, int)
+                    and not isinstance(province_id, bool)
+                    and province_id not in seen
+                ):
+                    seen.add(province_id)
+                    province_ids.append(province_id)
+    return province_ids
 
 
 def controllable_armies(
@@ -326,4 +335,11 @@ def _non_negative_id_list(value: object, name: str) -> list[int]:
         return []
     if not isinstance(value, list):
         raise ValueError(f"native {name} must be an array")
-    return sorted({_non_negative_id(item, name) for item in value})
+    result: list[int] = []
+    seen: set[int] = set()
+    for item in value:
+        normalized = _non_negative_id(item, name)
+        if normalized not in seen:
+            seen.add(normalized)
+            result.append(normalized)
+    return result

@@ -132,8 +132,12 @@ war identifies the player's side, the generation-validated primary opponent,
 whether the player is their side's primary war leader, and war score relative
 to that player. Exact-build capability `game.state.war-objectives` publishes
 each war's exact `targeted_title_ids` and the deduplicated
-`war_objective_province_ids` obtained from each target title's capital county
-and capital barony. Exact-build capability `game.state.war-primary-opponent` also
+`war_objective_province_ids`. A barony target contributes its own province, a
+county contributes its capital barony province, and a duchy/kingdom target
+walks its complete de jure title tree and contributes every county capital.
+The generation-safe walk is bounded to 4096 resolved titles and depth 8;
+an invalid branch suppresses that target's entire partial projection.
+Exact-build capability `game.state.war-primary-opponent` also
 publishes nullable `enemy_primary_default_raise_province_id`: the opponent's
 native default rally province, explicitly only a fallback when no enemy army
 province is observable, not a decoded war goal. Wars group currently

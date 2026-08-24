@@ -23,6 +23,10 @@ from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge.settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
 )
+from xar_autoplayer.bridge.war_contract import (
+    normalize_active_wars,
+    war_objective_province_ids,
+)
 from xar_autoplayer.strategy import record_one_life_episode
 
 
@@ -152,6 +156,7 @@ def _native_war_plan(
     date_raw: int,
     history: list[dict[str, object]] | None = None,
     objective: int | None = None,
+    objectives: list[int] | None = None,
     fallback: int | None = None,
     steps: tuple[str, ...] = (),
 ) -> dict[str, object]:
@@ -168,7 +173,11 @@ def _native_war_plan(
                     score=score,
                     enemy_primary_default_raise_province_id=fallback,
                     war_objective_province_ids=(
-                        [objective] if objective is not None else []
+                        list(objectives)
+                        if objectives is not None
+                        else [objective]
+                        if objective is not None
+                        else []
                     ),
                 )
             ],
@@ -181,6 +190,28 @@ def _native_war_plan(
 
 
 class GameplayBridgeTests(unittest.TestCase):
+    def test_war_contract_preserves_adapter_objective_order(self) -> None:
+        normalized = normalize_active_wars(
+            [
+                _war(
+                    allied_armies=[],
+                    enemy_armies=[],
+                    targeted_title_ids=[2388, 2200, 2388],
+                    war_objective_province_ids=[2585, 2510, 2548, 2585],
+                )
+            ]
+        )
+
+        self.assertEqual(normalized[0]["targeted_title_ids"], [2388, 2200])
+        self.assertEqual(
+            normalized[0]["war_objective_province_ids"],
+            [2585, 2510, 2548],
+        )
+        self.assertEqual(
+            war_objective_province_ids(normalized),
+            [2585, 2510, 2548],
+        )
+
     def test_cross_run_plan_changes_native_opening_order_and_is_exposed(self) -> None:
         plans = {
             "war": [
@@ -567,6 +598,27 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["pursuit"]["objective_kind"], "pursuit")
         self.assertEqual(plan["pursuit"]["target_army_id"], 21)
 
+    def test_zero_score_attacker_uses_exact_objective_before_enemy(self) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
+        plan = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            objective=2585,
+            fallback=2543,
+            steps=(
+                "move-army-11-to-41",
+                "move-army-11-to-2585",
+                "move-army-11-to-2543",
+            ),
+        )
+
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2585")
+        self.assertEqual(plan["pursuit"]["objective_kind"], "siege")
+        self.assertEqual(plan["pursuit"]["target_source"], "war_objective_province")
+
     def test_positive_score_attacker_advances_same_province_battle(self) -> None:
         player = _army(11, soldiers=900, province_id=41, controllable=True)
         enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
@@ -670,6 +722,25 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["selected_step"], "move-army-11-to-2585")
         self.assertEqual(plan["pursuit"]["target_source"], "war_objective_province")
 
+    def test_exact_war_objectives_preserve_native_dfs_order(self) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_000,
+            objectives=[2585, 2510, 2548, 2585],
+            fallback=2543,
+            steps=(
+                "move-army-11-to-2585",
+                "move-army-11-to-2510",
+                "move-army-11-to-2548",
+            ),
+        )
+
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2585")
+        self.assertEqual(plan["pursuit"]["target_province_id"], 2585)
+
     def test_completed_exact_objective_rotates_to_legacy_fallback(self) -> None:
         sieging = _army(
             11, soldiers=900, province_id=2585, controllable=True,
@@ -771,6 +842,112 @@ class GameplayBridgeTests(unittest.TestCase):
 
         self.assertEqual(plan["phase"], "native_war_siege_progress")
         self.assertEqual(plan["selected_step"], "life-advance")
+
+    def test_exact_siege_state_leaves_unrelated_province_for_objective(self) -> None:
+        player = _army(
+            11, soldiers=900, province_id=2598, controllable=True,
+            army_state="sieging",
+        )
+        retreating_enemy = _army(
+            21, soldiers=800, province_id=2598, controllable=False,
+            army_state="retreating", army_state_code=6,
+        )
+        plan = _native_war_plan(
+            player=player, enemies=[retreating_enemy], score=41, date_raw=24_000,
+            objective=2585, fallback=2543,
+            steps=("move-army-11-to-2585", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_pursuit")
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2585")
+        self.assertEqual(plan["pursuit"]["target_source"], "war_objective_province")
+
+    def test_exact_siege_retargets_when_enemy_marches_to_objective(self) -> None:
+        player = _army(
+            11, soldiers=900, province_id=2585, controllable=True,
+            army_state="sieging", army_state_code=3,
+        )
+        approaching_enemy = _army(
+            21, soldiers=800, province_id=2572, controllable=False,
+            move_target_province_id=2585,
+            army_state="moving", army_state_code=7,
+        )
+        plan = _native_war_plan(
+            player=player, enemies=[approaching_enemy], score=41, date_raw=24_000,
+            objective=2585, fallback=2543,
+            steps=("move-army-11-to-2543", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_pursuit")
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2543")
+        self.assertEqual(
+            plan["pursuit"]["target_source"],
+            "enemy_primary_default_raise_province",
+        )
+
+    def test_safe_observed_fallback_route_finishes_before_retargeting(self) -> None:
+        moving = _army(
+            11, soldiers=900, province_id=2564, controllable=True,
+            move_target_province_id=2543,
+            army_state="moving", army_state_code=7,
+        )
+        history = [
+            {
+                "index": 1,
+                "command": "move-army-11-to-2543",
+                "ok": True,
+                "result": {
+                    "accepted": True,
+                    "war_action": {
+                        "status": "move_submitted",
+                        "army_id": 11,
+                        "target_province_id": 2543,
+                        "submitted_date_raw": 24_000,
+                    },
+                },
+            }
+        ]
+        plan = _native_war_plan(
+            player=moving, enemies=[], score=41, date_raw=24_240,
+            history=history, objective=2585, fallback=2543,
+            steps=("move-army-11-to-2585", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_pursuit_progress")
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["move_intent"]["target_province_id"], 2543)
+
+    def test_observable_cleared_route_releases_old_move_intent(self) -> None:
+        idle = _army(
+            11, soldiers=900, province_id=2564, controllable=True,
+            move_target_province_id=None,
+            move_target_observable=False,
+            army_state="regular", army_state_code=1,
+        )
+        history = [
+            {
+                "index": 1,
+                "command": "move-army-11-to-2543",
+                "ok": True,
+                "result": {
+                    "accepted": True,
+                    "war_action": {
+                        "status": "move_submitted",
+                        "army_id": 11,
+                        "target_province_id": 2543,
+                        "submitted_date_raw": 24_000,
+                    },
+                },
+            }
+        ]
+        plan = _native_war_plan(
+            player=idle, enemies=[], score=41, date_raw=24_240,
+            history=history, objective=2585, fallback=2543,
+            steps=("move-army-11-to-2585", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_pursuit")
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2585")
 
     def test_siege_exit_without_score_gain_does_not_complete_objective(self) -> None:
         sieging = _army(
@@ -1226,11 +1403,32 @@ class GameplayBridgeTests(unittest.TestCase):
                     _war_progress(24_360, player=combat, enemies=[enemy], score=15),
                 )
             ],
-            objective=41,
-            steps=("life-advance",),
+            objective=77,
+            steps=("life-advance", "move-army-11-to-77"),
         )
-        self.assertEqual(bounded["phase"], "native_war_recovery_wait")
+        self.assertEqual(bounded["phase"], "native_war_combat_progress")
         self.assertEqual(bounded["selected_step"], "life-advance")
+
+        unsupported = _native_war_plan(
+            player=combat,
+            enemies=[enemy],
+            score=15,
+            date_raw=24_360,
+            history=[
+                _advance_row(
+                    1,
+                    _war_progress(24_000, player=combat, enemies=[enemy], score=15),
+                    _war_progress(24_360, player=combat, enemies=[enemy], score=15),
+                )
+            ],
+            objective=77,
+            steps=("move-army-11-to-77",),
+        )
+        self.assertEqual(
+            unsupported["phase"], "native_war_combat_progress_unsupported"
+        )
+        self.assertIsNone(unsupported["selected_step"])
+        self.assertEqual(unsupported["required_step"], "life-advance")
 
         retreating = {**combat, "army_state": "retreating", "army_state_code": 6}
         retreat = _native_war_plan(

@@ -173,6 +173,18 @@
       "pattern": "48 8B 9E A0 00 00 00 48 8D 8B C8 2F 00 00 E8 6A 18 6D 00 48 8B D6 48 8D 8B C8 2F 00 00"
     },
     {
+      "name": "landed_title_de_jure_child_array_dispatch",
+      "rva": "0x20B2C62",
+      "confidence": "high-static",
+      "pattern": "41 8B C8 81 E9 D7 27 00 00 74 4F 83 E9 02 74 36 83 E9 02 74 1D 83 F9 01 0F 85 84 0B 00 00 49 8D 96 40 02 00 00"
+    },
+    {
+      "name": "landed_title_recursive_de_jure_child_resolution",
+      "rva": "0x20B4DAC",
+      "confidence": "high-static",
+      "pattern": "48 8B 86 40 02 00 00 8B 14 98 8B C2 25 FF FF FF 00 3B 41 2C 73 16 48 8B 49 20 48 03 C0 48 8B 4C C1 08 48 85 C9 74 05 39 51 10 74 07"
+    },
+    {
       "name": "army_component_storage_lookup",
       "rva": "0xA84603",
       "confidence": "high-static",
@@ -485,6 +497,8 @@
     "landed_title_capital_serialize": "0x20B0DA0",
     "title_province_county_capital_barony": "0x19D5BA9",
     "landed_title_manager_initialize": "0x204D9F3",
+    "landed_title_de_jure_child_array_dispatch": "0x20B2C62",
+    "landed_title_recursive_de_jure_provinces": "0x20B4D50",
     "resolve_default_raise_province": "0x224CC80",
     "raise_troops_primary_vtable": "0x41226D8",
     "raise_troops_secondary_vtable": "0x41226A8",
@@ -736,11 +750,11 @@
       "title_id": "+0x10 int32 generation-bearing TitleID; storage creation RVA 0x271F270 writes it and title-province RVA 0x19D5B20 validates the complete ID",
       "template": "+0x160 CLandedTitleTemplate pointer",
       "capital_title_id": "+0x214 int32 TitleID; serializer RVA 0x20B0DA0 and dispatcher field branch RVA 0x20B2CD0",
-      "de_jure_vassal_title_ids": "+0x240 native int32 TitleID array; data +0x240, capacity +0x248, count +0x24C. For a county, title-province RVA 0x19D5BB6 takes the first ID as the capital barony"
+      "de_jure_vassal_title_ids": "+0x240 native int32 TitleID array; data +0x240, capacity +0x248, count +0x24C. Dispatcher RVA 0x20B2C80 selects this exact field. Recursive engine walker RVA 0x20B4D50 traverses every direct child, masks only for the storage index, compares the complete child TitleID at +0x10, then recurses. For a county, title-province RVA 0x19D5BB6 takes the first ID as the capital barony"
     },
     "CLandedTitleTemplate": {
-      "tier": "+0x5C int32; value 2 is county in title-province RVA 0x19D5BB0",
-      "province_id": "+0x80 int32; title-province RVA 0x19D5BFE reads it from the resolved barony template"
+      "tier": "+0x5C int32; 1=barony in recursive province walker RVA 0x20B4D6C, 2=county in title-province RVA 0x19D5BB0",
+      "province_id": "+0x80 int32; title-province RVA 0x19D5BFE and recursive province walker RVA 0x20B4D72 read it from a barony template"
     },
     "CUnitStorage": {
       "global_slot": "base + 0x570CC80 pointer slot; dereference once to obtain ComponentStorage<CUnit>",

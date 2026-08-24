@@ -645,6 +645,7 @@ def choose_one_life_turn(
                 [tactical_war] if isinstance(tactical_war, dict) else []
             )
             if isinstance(army.get("current_province_id"), int)
+            and _army_tactical_state(army) != "retreating"
         ]
         enemy = _stable_strongest_army(visible_enemies)
         pursuit_army = _stable_strongest_army(controlled_armies)
@@ -686,7 +687,32 @@ def choose_one_life_turn(
             if isinstance(pursuit_army, dict)
             else None
         )
-        if army_state == "sieging" and "life-advance" in available_steps:
+        current_province_id = (
+            pursuit_army.get("current_province_id")
+            if isinstance(pursuit_army, dict)
+            else None
+        )
+        enemy_threat_province_ids = {
+            province_id
+            for row in visible_enemies
+            for province_id in (
+                row.get("current_province_id"),
+                row.get("move_target_province_id"),
+            )
+            if isinstance(province_id, int)
+            and not isinstance(province_id, bool)
+        }
+        if (
+            army_state == "sieging"
+            and (
+                not siege_objective_province_ids
+                or (
+                    current_province_id in siege_objective_province_ids
+                    and current_province_id not in enemy_threat_province_ids
+                )
+            )
+            and "life-advance" in available_steps
+        ):
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "native_war_siege_progress",
@@ -721,25 +747,82 @@ def choose_one_life_turn(
                 "reason": "the native retreat exceeded its bounded deadline",
                 "active_wars": war_summary,
             }
-        if (
-            army_state == "combat"
-            and tactical.get("contact_stale") is not True
-            and "life-advance" in available_steps
-        ):
+        if army_state == "combat":
+            if "life-advance" in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_combat_progress",
+                    "selected_step": "life-advance",
+                    "reason": "the exact native army state is still combat; advance one bounded interval instead of issuing a move that CK3 cannot accept",
+                    "active_wars": war_summary,
+                }
             return {
                 "policy": "one-life-turn-v1",
-                "phase": "native_war_combat_progress",
-                "selected_step": "life-advance",
-                "reason": "the native army is in combat; run one bounded contact probe",
+                "phase": "native_war_combat_progress_unsupported",
+                "selected_step": None,
+                "required_step": "life-advance",
+                "reason": "the exact native army state is combat but this backend cannot advance time",
                 "active_wars": war_summary,
             }
 
-        objective_kind = "pursuit"
-        current_province_id = (
-            pursuit_army.get("current_province_id")
+        observed_route_target = (
+            _native_int(pursuit_army.get("move_target_province_id"))
             if isinstance(pursuit_army, dict)
             else None
         )
+        if (
+            isinstance(army_id, int)
+            and observed_route_target in siege_objective_province_ids
+            and observed_route_target not in blocked_province_ids
+            and observed_route_target not in enemy_threat_province_ids
+        ):
+            observed_intent = _active_native_move_intent(
+                rows,
+                snapshot if isinstance(snapshot, dict) else {},
+                army_id=army_id,
+                target_province_id=observed_route_target,
+            )
+            if observed_intent is not None:
+                if "life-advance" in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_pursuit_progress",
+                        "selected_step": "life-advance",
+                        "reason": "the accepted native route is still observable and safe; finish it before reconsidering siege priority",
+                        "pursuit": {
+                            "war_id": tactical_war_id,
+                            "army_id": army_id,
+                            "target_army_id": None,
+                            "target_province_id": observed_route_target,
+                            "target_soldiers": None,
+                            "target_source": (
+                                "war_objective_province"
+                                if observed_route_target
+                                in set(
+                                    war_objective_province_ids(
+                                        [tactical_war]
+                                        if isinstance(tactical_war, dict)
+                                        else []
+                                    )
+                                )
+                                else "enemy_primary_default_raise_province"
+                            ),
+                            "objective_kind": "siege",
+                        },
+                        "move_intent": observed_intent,
+                        "active_wars": war_summary,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_pursuit_progress_unsupported",
+                    "selected_step": None,
+                    "required_step": "life-advance",
+                    "reason": "the accepted native siege route is active but this backend cannot advance it",
+                    "move_intent": observed_intent,
+                    "active_wars": war_summary,
+                }
+
+        objective_kind = "pursuit"
         local_enemies = [
             army
             for army in visible_enemies
@@ -747,7 +830,10 @@ def choose_one_life_turn(
             and army.get("army_id") not in blocked_enemy_ids
             and current_province_id not in blocked_province_ids
         ]
-        if local_enemies:
+        exact_native_siege_routing = bool(siege_objective_province_ids) and (
+            army_state is not None
+        )
+        if local_enemies and not exact_native_siege_routing:
             enemy = _stable_strongest_army(local_enemies)
             target_province_id = current_province_id
             target_source = "enemy_army"
@@ -756,6 +842,10 @@ def choose_one_life_turn(
                 province_id
                 for province_id in siege_objective_province_ids
                 if province_id not in blocked_province_ids
+                and (
+                    not exact_native_siege_routing
+                    or province_id not in enemy_threat_province_ids
+                )
                 and not (
                     blocked_enemy_ids
                     and any(
@@ -1451,7 +1541,8 @@ def _attacker_siege_objective_province_ids(
     wars: Iterable[dict[str, object]],
 ) -> list[int]:
     """Order exact target-title capitals before the legacy rally fallback."""
-    qualifying: list[dict[str, object]] = []
+    exact_qualifying: list[dict[str, object]] = []
+    fallback_qualifying: list[dict[str, object]] = []
     for war in wars:
         score = war.get("player_relative_war_score")
         if (
@@ -1459,11 +1550,12 @@ def _attacker_siege_objective_province_ids(
             and war.get("player_is_primary_war_leader") is True
             and isinstance(score, int)
             and not isinstance(score, bool)
-            and score > 0
         ):
-            qualifying.append(war)
-    exact = war_objective_province_ids(qualifying)
-    fallback = enemy_primary_default_raise_province_ids(qualifying)
+            exact_qualifying.append(war)
+            if score > 0:
+                fallback_qualifying.append(war)
+    exact = war_objective_province_ids(exact_qualifying)
+    fallback = enemy_primary_default_raise_province_ids(fallback_qualifying)
     return exact + [
         province_id for province_id in fallback if province_id not in exact
     ]
@@ -1795,6 +1887,18 @@ def _active_native_move_intent(
     if army.get("current_province_id") == target_province_id:
         return None
     observed_target = army.get("move_target_province_id")
+    if (
+        observed_target is None
+        and (
+            army.get("move_target_observable") is True
+            or (
+                army.get("move_target_observable") is False
+                and _army_tactical_state(army)
+                in {"regular", "sieging", "gathering", "raiding", "bartering"}
+            )
+        )
+    ):
+        return None
     if isinstance(observed_target, int) and observed_target != target_province_id:
         return None
 

@@ -148,10 +148,10 @@ constexpr std::size_t kWarEndedDataOffset = 0x358;
 constexpr std::size_t kLandedTitleStorageOffset = 0x20;
 constexpr std::size_t kLandedTitleIdOffset = 0x10;
 constexpr std::size_t kLandedTitleTemplateOffset = 0x160;
-constexpr std::size_t kLandedTitleCapitalTitleIdOffset = 0x214;
 constexpr std::size_t kLandedTitleDeJureVassalIdsOffset = 0x240;
 constexpr std::size_t kLandedTitleTemplateTierOffset = 0x5C;
 constexpr std::size_t kLandedTitleTemplateProvinceIdOffset = 0x80;
+constexpr std::int32_t kBaronyTitleTier = 1;
 constexpr std::int32_t kCountyTitleTier = 2;
 constexpr std::size_t kArmyIdOffset = 0x10;
 constexpr std::size_t kArmyCurrentProvinceOffset = 0x20;
@@ -200,7 +200,10 @@ constexpr std::int32_t kMaximumGlobalVariableEntries = 1'000'000;
 constexpr std::int32_t kMaximumCasusBelliTypes = 10'000;
 constexpr std::int32_t kMaximumCasusBelliConfigurations = 10'000;
 constexpr std::int32_t kMaximumNativeTitleIds = 1'000'000;
+constexpr std::int32_t kMaximumWarObjectiveTitleIds = 4'096;
 constexpr std::int32_t kMaximumUnitPathProvinceInfos = 1'000'000;
+constexpr std::size_t kMaximumLandedTitleHierarchyDepth = 8;
+constexpr std::size_t kMaximumWarObjectiveProvinceIds = 4'096;
 constexpr std::size_t kMaximumDatabaseObjectKeyBytes = 4'096;
 constexpr std::size_t kMsvcStringInlineCapacity = 15;
 constexpr std::size_t kMaximumMarriageValidationSamples = 8;
@@ -873,16 +876,17 @@ bool PrepareArrangeMarriageContext(
   return true;
 }
 
-bool ReadNativeIntArray(const void *native_array,
-                        std::vector<std::int32_t> &output) noexcept {
+bool ReadNativeIntArray(
+    const void *native_array, std::vector<std::int32_t> &output,
+    std::int32_t maximum_count = kMaximumNativeTitleIds) noexcept {
   const auto capacity =
       LoadAt<std::int32_t>(native_array, kNativeArrayCapacityOffset);
   const auto count =
       LoadAt<std::int32_t>(native_array, kNativeArrayCountOffset);
   const auto *const data =
       LoadAt<const std::int32_t *>(native_array, kNativeArrayDataOffset);
-  if (capacity < 0 || count < 0 || count > capacity ||
-      count > kMaximumNativeTitleIds || (count > 0 && data == nullptr)) {
+  if (maximum_count < 0 || capacity < 0 || count < 0 || count > capacity ||
+      count > maximum_count || (count > 0 && data == nullptr)) {
     return false;
   }
   output.clear();
@@ -1210,51 +1214,109 @@ void *ResolveLandedTitle(const Bindings &bindings, void *game_state,
   return title;
 }
 
-std::int32_t ResolveWarObjectiveProvinceId(
-    const Bindings &bindings, void *game_state,
-    std::int32_t targeted_title_id) noexcept {
-  void *const targeted_title =
-      ResolveLandedTitle(bindings, game_state, targeted_title_id);
-  if (targeted_title == nullptr) {
-    return -1;
+bool AppendUniqueWarObjectiveProvinceId(
+    std::vector<std::int32_t> &province_ids,
+    std::int32_t province_id) noexcept {
+  if (std::find(province_ids.begin(), province_ids.end(), province_id) !=
+      province_ids.end()) {
+    return true;
   }
-  const auto capital_title_id = LoadAt<std::int32_t>(
-      targeted_title, kLandedTitleCapitalTitleIdOffset);
-  void *const capital_title =
-      ResolveLandedTitle(bindings, game_state, capital_title_id);
-  if (capital_title == nullptr) {
-    return -1;
+  if (province_ids.size() >= kMaximumWarObjectiveProvinceIds) {
+    return false;
   }
-  void *const capital_template =
-      LoadAt<void *>(capital_title, kLandedTitleTemplateOffset);
-  if (capital_template == nullptr ||
-      LoadAt<std::int32_t>(capital_template,
-                           kLandedTitleTemplateTierOffset) !=
-          kCountyTitleTier) {
-    return -1;
+  province_ids.push_back(province_id);
+  return true;
+}
+
+bool CollectWarObjectiveProvinceIds(
+    const Bindings &bindings, void *game_state, std::int32_t title_id,
+    bool is_target_root, std::size_t depth,
+    std::size_t &remaining_title_budget,
+    std::vector<std::int32_t> &visited_title_ids,
+    std::vector<std::int32_t> &province_ids) noexcept {
+  if (depth > kMaximumLandedTitleHierarchyDepth) {
+    return false;
   }
+  if (std::find(visited_title_ids.begin(), visited_title_ids.end(),
+                title_id) != visited_title_ids.end()) {
+    return false;
+  }
+  if (remaining_title_budget == 0) {
+    return false;
+  }
+  void *const title = ResolveLandedTitle(bindings, game_state, title_id);
+  if (title == nullptr) {
+    return false;
+  }
+  --remaining_title_budget;
+  visited_title_ids.push_back(title_id);
+
+  void *const title_template =
+      LoadAt<void *>(title, kLandedTitleTemplateOffset);
+  if (title_template == nullptr) {
+    return false;
+  }
+  const auto title_tier = LoadAt<std::int32_t>(
+      title_template, kLandedTitleTemplateTierOffset);
+  if (title_tier == kBaronyTitleTier) {
+    if (!is_target_root) {
+      return false;
+    }
+    const auto province_id = LoadAt<std::int32_t>(
+        title_template, kLandedTitleTemplateProvinceIdOffset);
+    return ResolveProvince(game_state, province_id) != nullptr &&
+           AppendUniqueWarObjectiveProvinceId(province_ids, province_id);
+  }
+
   std::vector<std::int32_t> de_jure_vassal_ids;
   if (!ReadNativeIntArray(
-          static_cast<std::byte *>(capital_title) +
+          static_cast<std::byte *>(title) +
               kLandedTitleDeJureVassalIdsOffset,
-          de_jure_vassal_ids) ||
-      de_jure_vassal_ids.empty()) {
-    return -1;
+          de_jure_vassal_ids, kMaximumWarObjectiveTitleIds)) {
+    return false;
   }
-  void *const capital_barony =
-      ResolveLandedTitle(bindings, game_state, de_jure_vassal_ids.front());
-  if (capital_barony == nullptr) {
-    return -1;
+  if (title_tier == kCountyTitleTier) {
+    if (de_jure_vassal_ids.empty()) {
+      return false;
+    }
+    const auto capital_barony_title_id = de_jure_vassal_ids.front();
+    if (remaining_title_budget == 0 ||
+        std::find(visited_title_ids.begin(), visited_title_ids.end(),
+                  capital_barony_title_id) != visited_title_ids.end()) {
+      return false;
+    }
+    void *const capital_barony = ResolveLandedTitle(
+        bindings, game_state, capital_barony_title_id);
+    if (capital_barony == nullptr) {
+      return false;
+    }
+    --remaining_title_budget;
+    visited_title_ids.push_back(capital_barony_title_id);
+    void *const barony_template =
+        LoadAt<void *>(capital_barony, kLandedTitleTemplateOffset);
+    if (barony_template == nullptr ||
+        LoadAt<std::int32_t>(barony_template,
+                             kLandedTitleTemplateTierOffset) !=
+            kBaronyTitleTier) {
+      return false;
+    }
+    const auto province_id = LoadAt<std::int32_t>(
+        barony_template, kLandedTitleTemplateProvinceIdOffset);
+    return ResolveProvince(game_state, province_id) != nullptr &&
+           AppendUniqueWarObjectiveProvinceId(province_ids, province_id);
   }
-  void *const barony_template =
-      LoadAt<void *>(capital_barony, kLandedTitleTemplateOffset);
-  if (barony_template == nullptr) {
-    return -1;
+  if (title_tier <= kBaronyTitleTier) {
+    return false;
   }
-  const auto province_id = LoadAt<std::int32_t>(
-      barony_template, kLandedTitleTemplateProvinceIdOffset);
-  return ResolveProvince(game_state, province_id) == nullptr ? -1
-                                                             : province_id;
+
+  for (const auto child_title_id : de_jure_vassal_ids) {
+    if (!CollectWarObjectiveProvinceIds(
+            bindings, game_state, child_title_id, false, depth + 1,
+            remaining_title_budget, visited_title_ids, province_ids)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 void *ResolveWar(const Bindings &bindings, void *game_state,
@@ -1489,16 +1551,21 @@ void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
         player_primary_character_id == played_character_id;
     if (ReadNativeIntArray(
             static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
-            snapshot.targeted_title_ids)) {
+            snapshot.targeted_title_ids, kMaximumWarObjectiveTitleIds)) {
+      std::size_t remaining_title_budget =
+          static_cast<std::size_t>(kMaximumWarObjectiveTitleIds);
       for (const auto targeted_title_id : snapshot.targeted_title_ids) {
-        const auto province_id = ResolveWarObjectiveProvinceId(
-            bindings, game_state, targeted_title_id);
-        if (province_id > 0 &&
-            std::find(snapshot.war_objective_province_ids.begin(),
-                      snapshot.war_objective_province_ids.end(),
-                      province_id) ==
-                snapshot.war_objective_province_ids.end()) {
-          snapshot.war_objective_province_ids.push_back(province_id);
+        std::vector<std::int32_t> visited_title_ids;
+        std::vector<std::int32_t> target_province_ids;
+        if (!CollectWarObjectiveProvinceIds(
+                bindings, game_state, targeted_title_id, true, 0,
+                remaining_title_budget, visited_title_ids,
+                target_province_ids)) {
+          continue;
+        }
+        for (const auto province_id : target_province_ids) {
+          AppendUniqueWarObjectiveProvinceId(
+              snapshot.war_objective_province_ids, province_id);
         }
       }
     }

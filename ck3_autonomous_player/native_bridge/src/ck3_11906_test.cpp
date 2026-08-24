@@ -32,15 +32,33 @@ std::array<std::byte, sizeof(void *)> g_player_character_entries{};
 std::array<std::byte, 0x40> g_war_storage{};
 std::array<std::byte, 0x20> g_war_slots{};
 std::array<std::byte, 0x360> g_war{};
-std::array<std::int32_t, 1> g_war_targeted_title_ids{};
+std::array<std::int32_t, 4> g_war_targeted_title_ids{};
 std::array<std::byte, 0x40> g_landed_title_storage{};
-std::array<std::byte, 0x50> g_landed_title_slots{};
+std::array<std::byte, 0xB0> g_landed_title_slots{};
 std::array<std::byte, 0x250> g_targeted_title{};
+std::array<std::byte, 0x250> g_targeted_duchy_a_title{};
+std::array<std::byte, 0x250> g_targeted_duchy_b_title{};
 std::array<std::byte, 0x250> g_capital_county_title{};
+std::array<std::byte, 0x250> g_second_county_title{};
+std::array<std::byte, 0x250> g_third_county_title{};
 std::array<std::byte, 0x250> g_capital_barony_title{};
+std::array<std::byte, 0x250> g_second_capital_barony_title{};
+std::array<std::byte, 0x250> g_third_capital_barony_title{};
+std::array<std::byte, 0x88> g_targeted_title_template{};
+std::array<std::byte, 0x88> g_targeted_duchy_a_template{};
+std::array<std::byte, 0x88> g_targeted_duchy_b_template{};
 std::array<std::byte, 0x88> g_capital_county_template{};
+std::array<std::byte, 0x88> g_second_county_template{};
+std::array<std::byte, 0x88> g_third_county_template{};
 std::array<std::byte, 0x88> g_capital_barony_template{};
+std::array<std::byte, 0x88> g_second_capital_barony_template{};
+std::array<std::byte, 0x88> g_third_capital_barony_template{};
+std::array<std::int32_t, 2> g_targeted_title_vassal_ids{};
+std::array<std::int32_t, 2> g_targeted_duchy_a_vassal_ids{};
+std::array<std::int32_t, 1> g_targeted_duchy_b_vassal_ids{};
 std::array<std::int32_t, 1> g_capital_county_vassal_ids{};
+std::array<std::int32_t, 1> g_second_county_vassal_ids{};
+std::array<std::int32_t, 1> g_third_county_vassal_ids{};
 std::array<std::byte, 0x10> g_attacker_participant{};
 std::array<std::byte, 0x10> g_defender_participant{};
 std::array<std::byte, sizeof(void *)> g_attacker_participants{};
@@ -55,7 +73,9 @@ std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
 std::array<std::byte, 0x20> g_enemy_default_raise_province{};
 std::array<std::byte, 0x20> g_war_objective_province{};
-std::array<std::byte, 5 * sizeof(void *)> g_provinces{};
+std::array<std::byte, 0x20> g_second_war_objective_province{};
+std::array<std::byte, 0x20> g_third_war_objective_province{};
+std::array<std::byte, 7 * sizeof(void *)> g_provinces{};
 std::array<std::byte, 0x78> g_casus_belli_database{};
 std::array<void *, 2> g_casus_belli_types{};
 std::array<std::byte, 0x1720> g_casus_belli_type_0{};
@@ -980,10 +1000,22 @@ int main() {
   constexpr std::int32_t enemy_disband_command_target_id = 0x02000012;
   constexpr std::int32_t active_war_id = 0x01000001;
   constexpr std::int32_t targeted_title_id = 0x01000001;
-  constexpr std::int32_t capital_county_title_id = 0x01000002;
-  constexpr std::int32_t capital_barony_title_id = 0x01000003;
+  constexpr std::int32_t targeted_duchy_a_title_id = 0x01000002;
+  constexpr std::int32_t targeted_duchy_b_title_id = 0x01000003;
+  constexpr std::int32_t capital_county_title_id = 0x01000004;
+  constexpr std::int32_t second_county_title_id = 0x01000005;
+  constexpr std::int32_t third_county_title_id = 0x01000006;
+  constexpr std::int32_t capital_barony_title_id = 0x01000007;
+  constexpr std::int32_t second_capital_barony_title_id = 0x01000008;
+  constexpr std::int32_t third_capital_barony_title_id = 0x01000009;
   constexpr std::int32_t war_objective_province_id = 1;
+  constexpr std::int32_t second_war_objective_province_id = 5;
+  constexpr std::int32_t third_war_objective_province_id = 6;
   Store(g_war_objective_province, 0x10, war_objective_province_id);
+  Store(g_second_war_objective_province, 0x10,
+        second_war_objective_province_id);
+  Store(g_third_war_objective_province, 0x10,
+        third_war_objective_province_id);
   Store(g_player_province, 0x10, std::int32_t{2});
   Store(g_enemy_province, 0x10, std::int32_t{3});
   Store(g_enemy_default_raise_province, 0x10, std::int32_t{4});
@@ -995,8 +1027,12 @@ int main() {
         static_cast<void *>(g_enemy_default_raise_province.data()));
   Store(g_provinces, 1 * sizeof(void *),
         static_cast<void *>(g_war_objective_province.data()));
+  Store(g_provinces, 5 * sizeof(void *),
+        static_cast<void *>(g_second_war_objective_province.data()));
+  Store(g_provinces, 6 * sizeof(void *),
+        static_cast<void *>(g_third_war_objective_province.data()));
   Store(game_data, 0x140, static_cast<void *>(g_provinces.data()));
-  Store(game_data, 0x14C, std::int32_t{5});
+  Store(game_data, 0x14C, std::int32_t{7});
 
   Store(g_player_army, 0x10, player_army_id);
   Store(g_player_army, 0x20,
@@ -1033,11 +1069,13 @@ int main() {
   Store(g_war, 0x34, std::int32_t{1});
   Store(g_war, 0x88, static_cast<void *>(g_defender_participants.data()));
   Store(g_war, 0x94, std::int32_t{1});
-  g_war_targeted_title_ids = {targeted_title_id};
+  g_war_targeted_title_ids = {
+      targeted_title_id, targeted_duchy_a_title_id,
+      second_county_title_id, third_capital_barony_title_id};
   Store(g_war, 0x270,
         static_cast<void *>(g_war_targeted_title_ids.data()));
-  Store(g_war, 0x278, std::int32_t{1});
-  Store(g_war, 0x27C, std::int32_t{1});
+  Store(g_war, 0x278, std::int32_t{4});
+  Store(g_war, 0x27C, std::int32_t{4});
   Store(g_war, 0x288, played_character_id);
   Store(g_war, 0x28C, enemy_character_id);
   Store(g_war, 0x358, static_cast<void *>(nullptr));
@@ -1049,16 +1087,59 @@ int main() {
   Store(g_landed_title_slots, 0x18,
         static_cast<void *>(g_targeted_title.data()));
   Store(g_landed_title_slots, 0x28,
-        static_cast<void *>(g_capital_county_title.data()));
+        static_cast<void *>(g_targeted_duchy_a_title.data()));
   Store(g_landed_title_slots, 0x38,
+        static_cast<void *>(g_targeted_duchy_b_title.data()));
+  Store(g_landed_title_slots, 0x48,
+        static_cast<void *>(g_capital_county_title.data()));
+  Store(g_landed_title_slots, 0x58,
+        static_cast<void *>(g_second_county_title.data()));
+  Store(g_landed_title_slots, 0x68,
+        static_cast<void *>(g_third_county_title.data()));
+  Store(g_landed_title_slots, 0x78,
         static_cast<void *>(g_capital_barony_title.data()));
+  Store(g_landed_title_slots, 0x88,
+        static_cast<void *>(g_second_capital_barony_title.data()));
+  Store(g_landed_title_slots, 0x98,
+        static_cast<void *>(g_third_capital_barony_title.data()));
   Store(g_landed_title_storage, 0x20,
         static_cast<void *>(g_landed_title_slots.data()));
-  Store(g_landed_title_storage, 0x2C, std::int32_t{5});
+  Store(g_landed_title_storage, 0x2C, std::int32_t{11});
   Store(game_data, 0x320,
         static_cast<void *>(g_landed_title_storage.data()));
+
   Store(g_targeted_title, 0x10, targeted_title_id);
-  Store(g_targeted_title, 0x214, capital_county_title_id);
+  Store(g_targeted_title, 0x160,
+        static_cast<void *>(g_targeted_title_template.data()));
+  Store(g_targeted_title_template, 0x5C, std::int32_t{4});
+  g_targeted_title_vassal_ids = {targeted_duchy_a_title_id,
+                                 targeted_duchy_b_title_id};
+  Store(g_targeted_title, 0x240,
+        static_cast<void *>(g_targeted_title_vassal_ids.data()));
+  Store(g_targeted_title, 0x248, std::int32_t{2});
+  Store(g_targeted_title, 0x24C, std::int32_t{2});
+
+  Store(g_targeted_duchy_a_title, 0x10, targeted_duchy_a_title_id);
+  Store(g_targeted_duchy_a_title, 0x160,
+        static_cast<void *>(g_targeted_duchy_a_template.data()));
+  Store(g_targeted_duchy_a_template, 0x5C, std::int32_t{3});
+  g_targeted_duchy_a_vassal_ids = {capital_county_title_id,
+                                   second_county_title_id};
+  Store(g_targeted_duchy_a_title, 0x240,
+        static_cast<void *>(g_targeted_duchy_a_vassal_ids.data()));
+  Store(g_targeted_duchy_a_title, 0x248, std::int32_t{2});
+  Store(g_targeted_duchy_a_title, 0x24C, std::int32_t{2});
+
+  Store(g_targeted_duchy_b_title, 0x10, targeted_duchy_b_title_id);
+  Store(g_targeted_duchy_b_title, 0x160,
+        static_cast<void *>(g_targeted_duchy_b_template.data()));
+  Store(g_targeted_duchy_b_template, 0x5C, std::int32_t{3});
+  g_targeted_duchy_b_vassal_ids = {third_county_title_id};
+  Store(g_targeted_duchy_b_title, 0x240,
+        static_cast<void *>(g_targeted_duchy_b_vassal_ids.data()));
+  Store(g_targeted_duchy_b_title, 0x248, std::int32_t{1});
+  Store(g_targeted_duchy_b_title, 0x24C, std::int32_t{1});
+
   Store(g_capital_county_title, 0x10, capital_county_title_id);
   Store(g_capital_county_title, 0x160,
         static_cast<void *>(g_capital_county_template.data()));
@@ -1068,10 +1149,48 @@ int main() {
         static_cast<void *>(g_capital_county_vassal_ids.data()));
   Store(g_capital_county_title, 0x248, std::int32_t{1});
   Store(g_capital_county_title, 0x24C, std::int32_t{1});
+
+  Store(g_second_county_title, 0x10, second_county_title_id);
+  Store(g_second_county_title, 0x160,
+        static_cast<void *>(g_second_county_template.data()));
+  Store(g_second_county_template, 0x5C, std::int32_t{2});
+  g_second_county_vassal_ids = {second_capital_barony_title_id};
+  Store(g_second_county_title, 0x240,
+        static_cast<void *>(g_second_county_vassal_ids.data()));
+  Store(g_second_county_title, 0x248, std::int32_t{1});
+  Store(g_second_county_title, 0x24C, std::int32_t{1});
+
+  Store(g_third_county_title, 0x10, third_county_title_id);
+  Store(g_third_county_title, 0x160,
+        static_cast<void *>(g_third_county_template.data()));
+  Store(g_third_county_template, 0x5C, std::int32_t{2});
+  g_third_county_vassal_ids = {third_capital_barony_title_id};
+  Store(g_third_county_title, 0x240,
+        static_cast<void *>(g_third_county_vassal_ids.data()));
+  Store(g_third_county_title, 0x248, std::int32_t{1});
+  Store(g_third_county_title, 0x24C, std::int32_t{1});
+
   Store(g_capital_barony_title, 0x10, capital_barony_title_id);
   Store(g_capital_barony_title, 0x160,
         static_cast<void *>(g_capital_barony_template.data()));
+  Store(g_capital_barony_template, 0x5C, std::int32_t{1});
   Store(g_capital_barony_template, 0x80, war_objective_province_id);
+
+  Store(g_second_capital_barony_title, 0x10,
+        second_capital_barony_title_id);
+  Store(g_second_capital_barony_title, 0x160,
+        static_cast<void *>(g_second_capital_barony_template.data()));
+  Store(g_second_capital_barony_template, 0x5C, std::int32_t{1});
+  Store(g_second_capital_barony_template, 0x80,
+        second_war_objective_province_id);
+
+  Store(g_third_capital_barony_title, 0x10,
+        third_capital_barony_title_id);
+  Store(g_third_capital_barony_title, 0x160,
+        static_cast<void *>(g_third_capital_barony_template.data()));
+  Store(g_third_capital_barony_template, 0x5C, std::int32_t{1});
+  Store(g_third_capital_barony_template, 0x80,
+        third_war_objective_province_id);
 
   g_casus_belli_types = {g_casus_belli_type_0.data(),
                          g_casus_belli_type_1.data()};
@@ -1257,9 +1376,13 @@ int main() {
           enemy_character_id ||
       !snapshot.active_wars[0].player_is_primary_war_leader ||
       snapshot.active_wars[0].targeted_title_ids !=
-          std::vector<std::int32_t>{targeted_title_id} ||
+          std::vector<std::int32_t>{
+              targeted_title_id, targeted_duchy_a_title_id,
+              second_county_title_id, third_capital_barony_title_id} ||
       snapshot.active_wars[0].war_objective_province_ids !=
-          std::vector<std::int32_t>{war_objective_province_id} ||
+          std::vector<std::int32_t>{war_objective_province_id,
+                                    second_war_objective_province_id,
+                                    third_war_objective_province_id} ||
       snapshot.active_wars[0].enemy_primary_default_raise_province_id != 4 ||
       snapshot.active_wars[0].player_relative_war_score != 37 ||
       snapshot.active_wars[0].allied_armies.size() != 1 ||
@@ -1292,6 +1415,43 @@ int main() {
   }
   g_player_army_state_code = 2;
 
+  std::array<std::int32_t, 1> single_targeted_title_id{
+      targeted_title_id};
+  Store(g_war, 0x270,
+        static_cast<void *>(single_targeted_title_id.data()));
+  Store(g_war, 0x278, std::int32_t{1});
+  Store(g_war, 0x27C, std::int32_t{1});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars.size() != 1 ||
+      snapshot.active_wars[0].war_objective_province_ids !=
+          std::vector<std::int32_t>{war_objective_province_id,
+                                    second_war_objective_province_id,
+                                    third_war_objective_province_id}) {
+    return Fail("kingdom target did not project every county capital");
+  }
+  single_targeted_title_id[0] = targeted_duchy_a_title_id;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars.size() != 1 ||
+      snapshot.active_wars[0].war_objective_province_ids !=
+          std::vector<std::int32_t>{war_objective_province_id,
+                                    second_war_objective_province_id}) {
+    return Fail("duchy target did not project every county capital");
+  }
+  single_targeted_title_id[0] = second_county_title_id;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars.size() != 1 ||
+      snapshot.active_wars[0].war_objective_province_ids !=
+          std::vector<std::int32_t>{second_war_objective_province_id}) {
+    return Fail("county target did not project its capital barony province");
+  }
+  single_targeted_title_id[0] = third_capital_barony_title_id;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars.size() != 1 ||
+      snapshot.active_wars[0].war_objective_province_ids !=
+          std::vector<std::int32_t>{third_war_objective_province_id}) {
+    return Fail("barony target did not project its own province");
+  }
+  single_targeted_title_id[0] = targeted_title_id;
   Store(g_targeted_title, 0x10, std::int32_t{0x02000001});
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.active_wars.size() != 1 ||
@@ -1301,6 +1461,29 @@ int main() {
     return Fail("war objective projection ignored TitleID generation");
   }
   Store(g_targeted_title, 0x10, targeted_title_id);
+
+  Store(g_second_county_title, 0x10, std::int32_t{0x02000005});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars.size() != 1 ||
+      !snapshot.active_wars[0].war_objective_province_ids.empty()) {
+    return Fail(
+        "war objective projection published a partial stale hierarchy");
+  }
+  Store(g_second_county_title, 0x10, second_county_title_id);
+
+  Store(g_targeted_title, 0x248, std::int32_t{4'097});
+  Store(g_targeted_title, 0x24C, std::int32_t{4'097});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars.size() != 1 ||
+      !snapshot.active_wars[0].war_objective_province_ids.empty()) {
+    return Fail("war objective hierarchy traversal was not bounded");
+  }
+  Store(g_targeted_title, 0x248, std::int32_t{2});
+  Store(g_targeted_title, 0x24C, std::int32_t{2});
+  Store(g_war, 0x270,
+        static_cast<void *>(g_war_targeted_title_ids.data()));
+  Store(g_war, 0x278, std::int32_t{4});
+  Store(g_war, 0x27C, std::int32_t{4});
 
   FixtureSetGlobalNumeric(0, kFixtureFixedPointScale);
   g_script_identifier_lookup_calls = 0;

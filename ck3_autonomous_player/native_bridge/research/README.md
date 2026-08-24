@@ -46,7 +46,7 @@ bridge identity/heartbeat/ping.
 | `game.command.accept/reject-pending-character-interaction` | implemented; live accept advanced four locally addressed requests | high static UI enum/command/queue path + native actionability validation + offline command fixture | explicit upper-layer policy only |
 | `game.state.snapshot.active_wars` | implemented, minimized live declaration projected a new war | exact WarManager/storage/participant/score helpers + offline attacker/defender fixture | never inside native driver |
 | `game.state.war-primary-opponent` | implemented, live probe pending | exact primary-side fields + generation-safe opponent resolution + reused default-raise resolver + offline attacker/defender/non-primary fixture | never inside native driver |
-| `game.state.war-objectives` | implemented; live war 16777290 exposed target title 2388, checkpoint/native path resolves province 2585 | exact CB targeted-title serializer, generation-safe title storage, engine `title_province` capital-barony path + offline generation-mismatch fixture | never inside native driver |
+| `game.state.war-objectives` | implemented; live war 16777290 exposed target title 2388 and province 2585; multi-county hierarchy projection passed offline fixture | exact CB targeted-title serializer, generation-safe title storage, engine recursive de-jure walker + `title_province` capital-barony path + hierarchy/generation/bound fixtures | never inside native driver |
 | `game.state.snapshot.player_armies` | implemented, minimized read-only live probe passed | exact CUnit storage/ID/owner/current-province fields + offline component fixture + PID 144324 probe | never inside native driver |
 | allied/enemy army current province | implemented, minimized read-only live probe passed | war participant helper classifies each observable CUnit owner | never inside native driver |
 | army state / combat / retreating | implemented, minimized read-only live probe passed | exact RVA `0xC7AAB0` state ABI, CUnit→CArmy→CCombat association and `CUnit+0x170` + nine-state fixture | never inside native driver |
@@ -202,6 +202,29 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   path is `2388 d_spoleto -> 2389 c_spoleto -> 2390 b_spoleto -> province
   2585`. Province `2543` is enemy-held `b_firenze` and can be sieged, but it is
   only the opponent's default-raise fallback and is not this war objective.
+  The original adapter stopped at that single capital county. Static RE now
+  closes the full child-container ABI: landed-title field dispatcher RVA
+  `0x20B2C80` selects the native int32 array at `+0x240`, and engine recursive
+  province walker RVA `0x20B4D50` reads count `+0x24C`, indexes 4-byte TitleIDs,
+  resolves each child through title storage, compares the complete generation
+  ID at child `+0x10`, and recurses. At barony tier 1 it reads template
+  ProvinceID `+0x80`. The adapter therefore projects a barony target directly,
+  a county through its first de-jure capital barony, and a duchy/kingdom through
+  every de-jure county capital in stable depth-first child order. It uses one
+  4096-title budget per war, depth limit 8, and stable ProvinceID de-duplication.
+  If any target hierarchy is stale, malformed, or over bound, that target's
+  partial result is discarded while its original `targeted_title_ids` entry
+  remains visible.
+- A later minimized replay at checkpoint date raw `53174208` had player war
+  score `41` and CUnit `83886341` at province `2598` in `sieging` state. After
+  30 game days it was still not in combat. A wartime
+  `disband-army-83886341` was rejected by the native validator as
+  `CK3 army is not player-controllable`, with no state change, so wartime
+  disband/re-raise is not a supported recovery strategy. After 60 game days
+  of siege progress toward exact province `2585`, both enemy native routes
+  ended at `2585`. Restricting the planner to exact `2585` and fallback `2543`
+  therefore left both points blocked; exposing every de-jure county capital
+  is the direct value reason for the multi-objective projection.
 - `base + 0x570CC80` is a pointer slot whose single dereference is
   `ComponentStorage<CUnit>`. RVA `0xA84603` ends at `0xA8460A`; adding its
   signed RIP displacement `0x4C88676` resolves to `0x570CC80`. Do not repeat
@@ -245,6 +268,16 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   target even while combat took priority over the moving state. No command
   was issued during this probe. PID `144324` later disappeared before soldier
   aggregation could be closed, so no soldier field is guessed.
+- Soldier-count RE remains explicitly unsupported. Stock GUI calls
+  `Army.GetSoldierCount` (name string RVA `0x40D8BD0`) and also exposes
+  `ArmyComposition.GetCurrentNumberOfSoldiers` / `GetMaxNumberOfSoldiers`
+  (name strings RVA `0x4138E18` / `0x4138E38`), but their reflection callbacks
+  and receiver types are not yet closed. RVA `0x1164480` is not evidence for
+  `CArmy+0x130`: its only located wrapper belongs to Jomini FastFileTransfer.
+  The next valid anchor is the GUI reflection registration that maps one of
+  those names to a callback, followed by proof that its receiver is the
+  generation-resolved `CUnit`/composition aggregate and that it counts live
+  soldiers at unit scale.
 
 ## Command queue and object layouts
 
