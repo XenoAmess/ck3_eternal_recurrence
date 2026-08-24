@@ -12,6 +12,8 @@ from types import SimpleNamespace
 import unittest
 from unittest import mock
 
+from jsonschema import Draft202012Validator
+
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
 sys.path.insert(0, str(PACKAGE_ROOT))
@@ -23,7 +25,10 @@ from xar_autoplayer.environment import (  # noqa: E402
     EnvironmentSpec,
     _git_lines,
     ck3_process_inventory,
+    doctor,
     ensure_state_path_safe,
+    launcher_identity,
+    make_spec,
     prepare_profile,
     process_creation_utc,
     same_process_creation_time,
@@ -135,6 +140,128 @@ class PreparedProfileTests(unittest.TestCase):
         )
         self.process_patch.start()
         self.addCleanup(self.process_patch.stop)
+
+    def test_default_profile_has_no_python_product_version_pin(self) -> None:
+        spec = make_spec(Path("C:/xar-state"), GAME_DIR)
+        self.assertIsNone(spec.expected_game_version)
+
+    def test_game_upgrade_requires_reprepare_without_a_schema_migration(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-agent-test-") as temporary:
+            spec = EnvironmentSpec(Path(temporary).resolve(), GAME_DIR.resolve())
+            original = prepare_profile(spec)
+            self.assertEqual(original["format_version"], 1)
+
+            persistent_files = {
+                spec.profile_dir / "tutorial.txt": b"tutorial-upgrade-sentinel\n",
+                spec.profile_dir
+                / "save games"
+                / "xar_checkpoint.ck3": b"checkpoint-upgrade-sentinel\n",
+                spec.state_dir
+                / "native-session"
+                / "driver-state.json": b'{"upgrade":"sentinel"}\n',
+            }
+            for path, sentinel in persistent_files.items():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(sentinel)
+
+            upgraded_identity = launcher_identity(GAME_DIR)
+            upgraded_identity.update(
+                {
+                    "raw_version": "9.99.0-future-fixture",
+                    "display_version": "9.99.0 (future fixture)",
+                }
+            )
+            actual_sha256_file = sha256_file
+
+            def upgraded_sha256(path: Path) -> str:
+                if Path(path).resolve() == spec.game_exe.resolve():
+                    return "a" * 64
+                return actual_sha256_file(Path(path))
+
+            with mock.patch(
+                "xar_autoplayer.environment.launcher_identity",
+                return_value=upgraded_identity,
+            ), mock.patch(
+                "xar_autoplayer.environment.sha256_file",
+                side_effect=upgraded_sha256,
+            ):
+                with self.assertRaisesRegex(
+                    AgentError, "current launcher identity differs for raw_version"
+                ):
+                    verify_profile(spec)
+
+                migrated = prepare_profile(spec)
+                self.assertEqual(migrated["format_version"], 1)
+                self.assertEqual(
+                    migrated["game"]["raw_version"],
+                    upgraded_identity["raw_version"],
+                )
+                self.assertEqual(
+                    migrated["game"]["executable_sha256"],
+                    "a" * 64,
+                )
+                schema = json.loads(
+                    (
+                        REPO_ROOT
+                        / "ck3_autonomous_player"
+                        / "schemas"
+                        / "environment-v1.schema.json"
+                    ).read_text(encoding="utf-8")
+                )
+                Draft202012Validator(schema).validate(migrated)
+                self.assertEqual(
+                    verify_profile(spec)["environment_sha256"],
+                    migrated["environment_sha256"],
+                )
+            for path, sentinel in persistent_files.items():
+                self.assertEqual(path.read_bytes(), sentinel)
+
+    def test_explicit_product_version_constraint_remains_available(self) -> None:
+        identity = launcher_identity(GAME_DIR)
+        required_version = identity["raw_version"]
+        identity["raw_version"] = "9.99.0-future-fixture"
+        with tempfile.TemporaryDirectory(prefix="xar-agent-test-") as temporary:
+            spec = EnvironmentSpec(
+                Path(temporary).resolve(),
+                GAME_DIR.resolve(),
+                expected_game_version=required_version,
+            )
+            with mock.patch(
+                "xar_autoplayer.environment.launcher_identity",
+                return_value=identity,
+            ), self.assertRaisesRegex(AgentError, "explicitly required"):
+                prepare_profile(spec)
+
+    def test_prepare_rejects_an_empty_launcher_product_version(self) -> None:
+        identity = launcher_identity(GAME_DIR)
+        identity["raw_version"] = ""
+        with tempfile.TemporaryDirectory(prefix="xar-agent-test-") as temporary:
+            spec = EnvironmentSpec(Path(temporary).resolve(), GAME_DIR.resolve())
+            with mock.patch(
+                "xar_autoplayer.environment.launcher_identity",
+                return_value=identity,
+            ), self.assertRaisesRegex(AgentError, "empty raw_version"):
+                prepare_profile(spec)
+
+    def test_doctor_remains_a_visible_ui_version_preflight(self) -> None:
+        identity = launcher_identity(GAME_DIR)
+        identity["raw_version"] = "9.99.0-future-fixture"
+        with tempfile.TemporaryDirectory(prefix="xar-agent-test-") as temporary:
+            spec = EnvironmentSpec(Path(temporary).resolve(), GAME_DIR.resolve())
+            with mock.patch(
+                "xar_autoplayer.environment.launcher_identity",
+                return_value=identity,
+            ), mock.patch(
+                "xar_autoplayer.environment.build_release.release_source_errors",
+                return_value=[],
+            ), mock.patch(
+                "pyautogui.size", return_value=(2560, 1440)
+            ), mock.patch(
+                "xar_autoplayer.vision.ocr.rapidocr_runtime", return_value={}
+            ), self.assertRaisesRegex(
+                AgentError, "visible UI preflight requires CK3 version"
+            ):
+                doctor(spec)
 
     def test_prepare_is_single_mod_and_preserves_tutorial(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-agent-test-") as temporary:

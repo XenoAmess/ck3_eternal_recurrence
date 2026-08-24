@@ -1157,6 +1157,11 @@ def choose_one_life_turn(
             for province_id in exact_objective_province_ids
             if province_id in siege_objective_province_ids
         ]
+        threatened_exact_siege = bool(
+            stationary_threats
+            and army_state == "sieging"
+            and current_province_id in siege_objective_province_ids
+        )
         if (
             route_preview_required
             and isinstance(army_id, int)
@@ -1164,7 +1169,10 @@ def choose_one_life_turn(
             and route_exact_candidates
         ):
             route_rejections: list[dict[str, object]] = []
-            for province_id in route_exact_candidates:
+            safe_route_candidates: list[
+                tuple[int, int, int, dict[str, object]]
+            ] = []
+            for objective_rank, province_id in enumerate(route_exact_candidates):
                 if province_id in blocked_province_ids:
                     route_rejections.append(
                         {"target_province_id": province_id, "status": "blocked"}
@@ -1193,7 +1201,14 @@ def choose_one_life_turn(
                         "status": "arrived",
                         "target_province_id": province_id,
                     }
-                    break
+                    if not threatened_exact_siege:
+                        break
+                    safe_route_candidates.append(
+                        (0, objective_rank, province_id, selected_route_audit)
+                    )
+                    preview_selected_target = None
+                    selected_route_audit = None
+                    continue
                 preview = _fresh_move_route_preview(
                     rows,
                     army_id=army_id,
@@ -1283,9 +1298,60 @@ def choose_one_life_turn(
                     route_rejections.append(audit)
                     blocked_province_ids.add(province_id)
                     continue
+                rollback_failure = _matching_rollback_war_failure(
+                    snapshot if isinstance(snapshot, dict) else {},
+                    war_id=(
+                        tactical_war_id
+                        if isinstance(tactical_war_id, int)
+                        else None
+                    ),
+                    army_id=army_id,
+                    origin_province_id=current_province_id,
+                    target_province_id=province_id,
+                    route_province_ids=audit.get("route_province_ids"),
+                )
+                if rollback_failure is not None:
+                    route_rejections.append(
+                        {
+                            "status": "rolled_back_route_failure",
+                            "target_province_id": province_id,
+                            "route_province_ids": list(
+                                audit.get("route_province_ids", [])
+                            ),
+                            "failure": rollback_failure,
+                        }
+                    )
+                    blocked_province_ids.add(province_id)
+                    continue
                 preview_selected_target = province_id
                 selected_route_audit = audit
-                break
+                if not threatened_exact_siege:
+                    break
+                safe_route_candidates.append(
+                    (
+                        len(audit.get("route_province_ids", [])),
+                        objective_rank,
+                        province_id,
+                        audit,
+                    )
+                )
+                preview_selected_target = None
+                selected_route_audit = None
+            if threatened_exact_siege and safe_route_candidates:
+                (
+                    route_hops,
+                    objective_rank,
+                    preview_selected_target,
+                    selected_route_audit,
+                ) = min(safe_route_candidates, key=lambda candidate: candidate[:2])
+                selected_route_audit = {
+                    **selected_route_audit,
+                    "selection": {
+                        "policy": "shortest_safe_route_then_objective_rank",
+                        "route_hops": route_hops,
+                        "objective_rank": objective_rank,
+                    },
+                }
             if preview_selected_target is None:
                 return {
                     "policy": "one-life-turn-v1",
@@ -2583,6 +2649,52 @@ def _fresh_move_route_preview(
             continue
         return {**preview, "route_province_ids": list(route)}
     return None
+
+
+def _matching_rollback_war_failure(
+    snapshot: dict[str, object],
+    *,
+    war_id: int | None,
+    army_id: int,
+    origin_province_id: int,
+    target_province_id: int,
+    route_province_ids: object,
+) -> dict[str, object] | None:
+    """Return advisory rollback memory without treating it as game history."""
+    failure = snapshot.get("native_rollback_war_failure")
+    if not isinstance(failure, dict):
+        return None
+    if (
+        failure.get("status") != "rolled_back_active_route"
+        or (war_id is not None and failure.get("war_id") != war_id)
+        or failure.get("army_id") != army_id
+        or failure.get("restored_origin_province_id") != origin_province_id
+        or failure.get("route_origin_province_id") != origin_province_id
+        or failure.get("target_province_id") != target_province_id
+    ):
+        return None
+    failed_route = failure.get("route_province_ids")
+    if not isinstance(failed_route, list) or not isinstance(
+        route_province_ids, list
+    ):
+        return None
+    normalized_failed_route = list(failed_route)
+    if (
+        normalized_failed_route
+        and normalized_failed_route[0] == origin_province_id
+    ):
+        normalized_failed_route = normalized_failed_route[1:]
+    if normalized_failed_route != route_province_ids:
+        return None
+    run_id = snapshot.get("episode_run_id")
+    failure_run_id = failure.get("episode_run_id")
+    if (
+        isinstance(run_id, str)
+        and isinstance(failure_run_id, str)
+        and run_id != failure_run_id
+    ):
+        return None
+    return dict(failure)
 
 
 def _audit_war_route(

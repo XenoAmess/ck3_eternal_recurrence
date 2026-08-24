@@ -6,6 +6,7 @@
 #include <cstring>
 #include <iostream>
 #include <limits>
+#include <new>
 #include <string>
 #include <string_view>
 
@@ -115,6 +116,7 @@ void *g_expected_event_manager = nullptr;
 bool g_has_active_event = true;
 bool g_has_local_player = false;
 bool g_submit_called = false;
+bool g_submit_result = true;
 bool g_pending_visibility_result = true;
 bool g_pending_accept_validation_result = true;
 std::int32_t g_pending_visibility_calls = 0;
@@ -145,6 +147,22 @@ bool g_army_move_mode_allowed = true;
 bool g_move_validation_allowed = true;
 bool g_disband_validate_called = false;
 bool g_disband_validate_result = true;
+bool g_split_validate_called = false;
+bool g_split_validate_result = true;
+bool g_split_clone_called = false;
+bool g_split_destroy_called = false;
+std::array<std::byte, 0x30> g_split_cloned_command{};
+bool g_merge_factory_called = false;
+bool g_merge_append_called = false;
+bool g_merge_validate_called = false;
+bool g_merge_validate_result = true;
+bool g_merge_clone_called = false;
+bool g_merge_destroy_called = false;
+bool g_merge_source_array_destroyed = false;
+std::byte *g_merge_factory_command = nullptr;
+std::int32_t *g_merge_owned_source_ids = nullptr;
+std::int32_t g_merge_cloned_destination_id = -1;
+std::array<std::int32_t, 1> g_merge_cloned_source_ids{};
 std::int32_t g_casus_belli_evaluation_calls = 0;
 std::int32_t g_casus_belli_configuration_destroy_calls = 0;
 bool g_interaction_construct_called = false;
@@ -191,6 +209,8 @@ enum class ExpectedCommand {
   raise_troops,
   move_army,
   disband_army,
+  split_army_half,
+  merge_armies,
   declare_war,
   arrange_marriage,
   enforce_demands,
@@ -790,6 +810,23 @@ void FixtureAppendNativeIntArrayRange(void *destination,
                                       std::int32_t current_count,
                                       const std::int32_t *begin,
                                       const std::int32_t *end) {
+  if (g_merge_factory_command != nullptr &&
+      destination == g_merge_factory_command + 0x28) {
+    const auto added = static_cast<std::int32_t>(end - begin);
+    if (current_count == 0 && added == 1 &&
+        g_merge_owned_source_ids == nullptr) {
+      auto *const owned = new (std::nothrow) std::int32_t[1];
+      if (owned != nullptr) {
+        owned[0] = begin[0];
+        g_merge_owned_source_ids = owned;
+        StoreBytes(destination, 0x00, owned);
+        StoreBytes(destination, 0x08, std::int32_t{1});
+        StoreBytes(destination, 0x0C, std::int32_t{1});
+        g_merge_append_called = true;
+      }
+    }
+    return;
+  }
   auto *destination_data = static_cast<std::int32_t *>(nullptr);
   std::int32_t destination_capacity = 0;
   std::memcpy(&destination_data, destination, sizeof(destination_data));
@@ -894,7 +931,95 @@ bool FixtureValidateDisbandArmyCommand(std::int32_t command_kind,
   return g_disband_validate_called && g_disband_validate_result;
 }
 
-void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
+bool FixtureValidateSplitArmyHalfCommand(std::int32_t command_kind,
+                                          std::int32_t source_army_id,
+                                          std::int32_t played_character_id,
+                                          void *error_output) {
+  g_split_validate_called =
+      command_kind == 1 && source_army_id == 0x02000011 &&
+      played_character_id == 0x01000002 && error_output == nullptr;
+  return g_split_validate_called && g_split_validate_result;
+}
+
+void *FixtureDestroySplitArmyHalfCommand(void *opaque_command,
+                                         std::int32_t delete_flags) {
+  g_split_destroy_called = opaque_command != nullptr && delete_flags == 0 &&
+                           g_split_clone_called;
+  if (opaque_command != nullptr) {
+    std::memset(opaque_command, 0xDD, 0x30);
+  }
+  return opaque_command;
+}
+
+void *FixtureCreateMergeArmiesCommand() {
+  auto *const command = new (std::nothrow) std::byte[0x40];
+  if (command == nullptr) {
+    return nullptr;
+  }
+  std::memset(command, 0, 0x40);
+  StoreBytes(command, 0x00, std::uintptr_t{0x17171717});
+  StoreBytes(command, 0x18, std::uintptr_t{0x18181818});
+  StoreBytes(command, 0x24, std::int32_t{-1});
+  StoreBytes(command, 0x38, reinterpret_cast<void *>(0x19191919));
+  g_merge_factory_called = true;
+  g_merge_factory_command = command;
+  return command;
+}
+
+bool FixtureValidateMergeArmiesCommand(void *opaque_command,
+                                       void *error_output) {
+  const auto *const command = static_cast<const std::byte *>(opaque_command);
+  std::uintptr_t primary = 0;
+  std::uintptr_t secondary = 0;
+  std::int32_t kind = -1;
+  std::int32_t destination_id = -1;
+  std::int32_t *source_ids = nullptr;
+  std::int32_t capacity = 0;
+  std::int32_t count = 0;
+  void *allocator = nullptr;
+  std::memcpy(&primary, command + 0x00, sizeof(primary));
+  std::memcpy(&secondary, command + 0x18, sizeof(secondary));
+  std::memcpy(&kind, command + 0x20, sizeof(kind));
+  std::memcpy(&destination_id, command + 0x24,
+              sizeof(destination_id));
+  std::memcpy(&source_ids, command + 0x28, sizeof(source_ids));
+  std::memcpy(&capacity, command + 0x30, sizeof(capacity));
+  std::memcpy(&count, command + 0x34, sizeof(count));
+  std::memcpy(&allocator, command + 0x38, sizeof(allocator));
+  g_merge_validate_called =
+      opaque_command == g_merge_factory_command && error_output == nullptr &&
+      primary == 0x17171717 && secondary == 0x18181818 && kind == 1 &&
+      destination_id == 0x01000001 && source_ids != nullptr &&
+      source_ids == g_merge_owned_source_ids && capacity == 1 && count == 1 &&
+      source_ids[0] == 0x01000002 &&
+      allocator == reinterpret_cast<void *>(0x19191919);
+  return g_merge_validate_called && g_merge_validate_result;
+}
+
+void *FixtureDestroyMergeArmiesCommand(void *opaque_command,
+                                       std::int32_t delete_flags) {
+  auto *const command = static_cast<std::byte *>(opaque_command);
+  std::int32_t *source_ids = nullptr;
+  if (command != nullptr) {
+    std::memcpy(&source_ids, command + 0x28, sizeof(source_ids));
+  }
+  g_merge_destroy_called = command == g_merge_factory_command &&
+                           delete_flags == 1;
+  if (source_ids != nullptr && source_ids == g_merge_owned_source_ids) {
+    source_ids[0] = std::numeric_limits<std::int32_t>::min();
+    delete[] source_ids;
+    g_merge_owned_source_ids = nullptr;
+    g_merge_source_array_destroyed = true;
+  }
+  if (command != nullptr) {
+    std::memset(command, 0xDD, 0x40);
+    delete[] command;
+  }
+  g_merge_factory_command = nullptr;
+  return nullptr;
+}
+
+bool FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
   const auto *command = static_cast<const std::byte *>(opaque_command);
   std::uintptr_t primary = 0;
   std::uintptr_t secondary = 0;
@@ -984,6 +1109,55 @@ void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
                       flags == 0x0E && primary == 0xFFFFFFFF &&
                       secondary == 0xABABABAB && command_flags == 0 &&
                       command_kind == 1 && command_target_id == 0x02000011;
+  } else if (g_expected_command == ExpectedCommand::split_army_half) {
+    std::int32_t command_kind = -1;
+    std::int32_t played_character_id = -1;
+    std::int32_t source_army_id = -1;
+    std::memcpy(&command_kind, command + 0x20, sizeof(command_kind));
+    std::memcpy(&played_character_id, command + 0x24,
+                sizeof(played_character_id));
+    std::memcpy(&source_army_id, command + 0x28,
+                sizeof(source_army_id));
+    g_submit_called = manager == reinterpret_cast<void *>(0x1234) &&
+                      flags == 0x0E && primary == 0x15151515 &&
+                      secondary == 0x16161616 && command_flags == 0 &&
+                      command_kind == 1 &&
+                      played_character_id == 0x01000002 &&
+                      source_army_id == 0x02000011;
+    if (g_submit_called) {
+      std::memcpy(g_split_cloned_command.data(), command,
+                  g_split_cloned_command.size());
+      g_split_clone_called = true;
+    }
+  } else if (g_expected_command == ExpectedCommand::merge_armies) {
+    std::int32_t command_kind = -1;
+    std::int32_t destination_id = -1;
+    std::int32_t *source_ids = nullptr;
+    std::int32_t capacity = 0;
+    std::int32_t count = 0;
+    void *allocator = nullptr;
+    std::memcpy(&command_kind, command + 0x20, sizeof(command_kind));
+    std::memcpy(&destination_id, command + 0x24,
+                sizeof(destination_id));
+    std::memcpy(&source_ids, command + 0x28, sizeof(source_ids));
+    std::memcpy(&capacity, command + 0x30, sizeof(capacity));
+    std::memcpy(&count, command + 0x34, sizeof(count));
+    std::memcpy(&allocator, command + 0x38, sizeof(allocator));
+    g_submit_called =
+        manager == reinterpret_cast<void *>(0x1234) && flags == 0x0E &&
+        primary == 0x17171717 && secondary == 0x18181818 &&
+        command_flags == 0 && command_kind == 1 &&
+        destination_id == 0x01000001 && source_ids != nullptr &&
+        source_ids == g_merge_owned_source_ids && capacity == 1 &&
+        count == 1 && source_ids[0] == 0x01000002 &&
+        allocator == reinterpret_cast<void *>(0x19191919);
+    if (g_submit_called) {
+      // Model primary-vtable +0x40 / RVA 0x26C26B0: the queued command owns a
+      // copied array value, not the original command's soon-to-be-freed data.
+      g_merge_cloned_destination_id = destination_id;
+      g_merge_cloned_source_ids[0] = source_ids[0];
+      g_merge_clone_called = true;
+    }
   } else if (g_expected_command == ExpectedCommand::declare_war) {
     std::int32_t actor_id = -1;
     std::int32_t recipient_id = -1;
@@ -1057,6 +1231,7 @@ void FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
         recipient_id == 0x01000003 &&
         special_data == g_enforce_demands_marker.data();
   }
+  return g_submit_called && g_submit_result;
 }
 
 int Fail(const char *message) {
@@ -1146,8 +1321,8 @@ int main() {
 
   constexpr std::int32_t player_army_id = 0x01000001;
   constexpr std::int32_t enemy_army_id = 0x01000002;
-  constexpr std::int32_t player_disband_command_target_id = 0x02000011;
-  constexpr std::int32_t enemy_disband_command_target_id = 0x02000012;
+  constexpr std::int32_t player_internal_army_id = 0x02000011;
+  constexpr std::int32_t enemy_internal_army_id = 0x02000012;
   constexpr std::int32_t active_war_id = 0x01000001;
   constexpr std::int32_t targeted_title_id = 0x01000001;
   constexpr std::int32_t targeted_duchy_a_title_id = 0x01000002;
@@ -1216,13 +1391,13 @@ int main() {
   Store(g_player_army, 0x44, std::int32_t{3});
   Store(g_player_army, 0x170, std::int32_t{0});
   Store(g_player_army, 0x174, played_character_id);
-  Store(g_player_army, 0x178, player_disband_command_target_id);
+  Store(g_player_army, 0x178, player_internal_army_id);
   Store(g_enemy_army, 0x10, enemy_army_id);
   Store(g_enemy_army, 0x20,
         static_cast<void *>(g_enemy_province.data()));
   Store(g_enemy_army, 0x170, std::int32_t{1});
   Store(g_enemy_army, 0x174, enemy_character_id);
-  Store(g_enemy_army, 0x178, enemy_disband_command_target_id);
+  Store(g_enemy_army, 0x178, enemy_internal_army_id);
   Store(g_army_slots, 0x18, static_cast<void *>(g_player_army.data()));
   Store(g_army_slots, 0x28, static_cast<void *>(g_enemy_army.data()));
   Store(g_army_storage, 0x20, static_cast<void *>(g_army_slots.data()));
@@ -1232,7 +1407,7 @@ int main() {
   Store(g_siege, 0x08, active_siege_id);
   Store(g_siege, 0x200,
         static_cast<void *>(g_war_objective_province.data()));
-  Store(g_siege, 0x208, player_disband_command_target_id);
+  Store(g_siege, 0x208, player_internal_army_id);
   Store(g_siege, 0x3D0, std::int64_t{2'500'000});
   Store(g_siege_slots, 0x18, static_cast<void *>(g_siege.data()));
   Store(g_siege_storage, 0x20,
@@ -1425,6 +1600,10 @@ int main() {
   bindings.move_army_secondary_vtable = 0xEEEEEEEE;
   bindings.disband_army_primary_vtable = 0xFFFFFFFF;
   bindings.disband_army_secondary_vtable = 0xABABABAB;
+  bindings.split_army_half_primary_vtable = 0x15151515;
+  bindings.split_army_half_secondary_vtable = 0x16161616;
+  bindings.merge_armies_primary_vtable = 0x17171717;
+  bindings.merge_armies_secondary_vtable = 0x18181818;
   bindings.send_character_interaction_primary_vtable = 0x13131313;
   bindings.send_character_interaction_secondary_vtable = 0x14141414;
   bindings.war_declaration_vtable = 0x12121212;
@@ -1481,6 +1660,16 @@ int main() {
   bindings.destroy_move_army_command = FixtureDestroyMoveArmyCommand;
   bindings.validate_disband_army_command =
       FixtureValidateDisbandArmyCommand;
+  bindings.validate_split_army_half_command =
+      FixtureValidateSplitArmyHalfCommand;
+  bindings.destroy_split_army_half_command =
+      FixtureDestroySplitArmyHalfCommand;
+  bindings.create_merge_armies_command =
+      FixtureCreateMergeArmiesCommand;
+  bindings.validate_merge_armies_command =
+      FixtureValidateMergeArmiesCommand;
+  bindings.destroy_merge_armies_command =
+      FixtureDestroyMergeArmiesCommand;
   bindings.get_casus_belli_type_database =
       FixtureGetCasusBelliTypeDatabase;
   bindings.get_character_interaction_database =
@@ -1729,7 +1918,7 @@ int main() {
   }
   Store(g_second_war_objective_province, 0x744, enemy_character_id);
 
-  Store(g_enemy_army, 0x178, player_disband_command_target_id);
+  Store(g_enemy_army, 0x178, player_internal_army_id);
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.active_wars[0]
               .objective_province_states[0]
@@ -1739,7 +1928,7 @@ int main() {
            .player_army_besieging) {
     return Fail("ambiguous CArmy-to-CUnit join selected an arbitrary unit");
   }
-  Store(g_enemy_army, 0x178, enemy_disband_command_target_id);
+  Store(g_enemy_army, 0x178, enemy_internal_army_id);
 
   Store(jomini_state, 0x20, std::uint8_t{0});
   Store(g_player_move_route_info_1, 0x00, std::int32_t{7});
@@ -2556,6 +2745,210 @@ int main() {
     return Fail("disband-army accepted a non-player army");
   }
 
+  g_expected_command = ExpectedCommand::split_army_half;
+  g_submit_called = false;
+  g_split_validate_called = false;
+  g_split_validate_result = true;
+  g_split_clone_called = false;
+  g_split_destroy_called = false;
+  g_split_cloned_command.fill(std::byte{0});
+  if (xar::ck3_11906::SubmitSplitArmyHalf(bindings, player_army_id) !=
+          xar::ck3_11906::SplitArmyHalfResult::split_submitted ||
+      !g_split_validate_called || !g_submit_called ||
+      !g_split_clone_called || !g_split_destroy_called) {
+    return Fail("split-army-half did not validate, clone, queue, and destroy");
+  }
+  std::uintptr_t split_clone_primary = 0;
+  std::uintptr_t split_clone_secondary = 0;
+  std::int32_t split_clone_kind = -1;
+  std::int32_t split_clone_actor_id = -1;
+  std::int32_t split_clone_source_army_id = -1;
+  std::memcpy(&split_clone_primary, g_split_cloned_command.data() + 0x00,
+              sizeof(split_clone_primary));
+  std::memcpy(&split_clone_secondary, g_split_cloned_command.data() + 0x18,
+              sizeof(split_clone_secondary));
+  std::memcpy(&split_clone_kind, g_split_cloned_command.data() + 0x20,
+              sizeof(split_clone_kind));
+  std::memcpy(&split_clone_actor_id, g_split_cloned_command.data() + 0x24,
+              sizeof(split_clone_actor_id));
+  std::memcpy(&split_clone_source_army_id,
+              g_split_cloned_command.data() + 0x28,
+              sizeof(split_clone_source_army_id));
+  if (split_clone_primary != 0x15151515 ||
+      split_clone_secondary != 0x16161616 || split_clone_kind != 1 ||
+      split_clone_actor_id != played_character_id ||
+      split_clone_source_army_id != player_internal_army_id) {
+    return Fail("split-army-half clone lost the public-to-internal ID payload");
+  }
+
+  // Queue submission is the complete synchronous bridge result. The fixture
+  // intentionally does not execute CK3's cloned command, so the adapter must
+  // not fabricate a sibling CUnit or claim a split postcondition.
+  xar::ck3_11906::Snapshot post_split_submission{};
+  if (!xar::ck3_11906::ReadSnapshot(bindings, post_split_submission) ||
+      post_split_submission.player_armies.size() != 1 ||
+      post_split_submission.player_armies[0].army_id != player_army_id) {
+    return Fail("split submission guessed a sibling CUnit postcondition");
+  }
+
+  g_submit_called = false;
+  g_submit_result = false;
+  g_split_validate_called = false;
+  g_split_clone_called = false;
+  g_split_destroy_called = false;
+  if (xar::ck3_11906::SubmitSplitArmyHalf(bindings, player_army_id) !=
+          xar::ck3_11906::SplitArmyHalfResult::submission_failed ||
+      !g_split_validate_called || !g_submit_called ||
+      !g_split_clone_called || !g_split_destroy_called) {
+    return Fail("split-army-half hid queue rejection or leaked its original");
+  }
+  g_submit_result = true;
+
+  g_submit_called = false;
+  g_split_validate_called = false;
+  g_split_validate_result = false;
+  g_split_clone_called = false;
+  g_split_destroy_called = false;
+  if (xar::ck3_11906::SubmitSplitArmyHalf(bindings, player_army_id) !=
+          xar::ck3_11906::SplitArmyHalfResult::validator_rejected ||
+      !g_split_validate_called || g_submit_called || g_split_clone_called ||
+      g_split_destroy_called) {
+    return Fail("split-army-half queued a command rejected by CK3 validation");
+  }
+  g_split_validate_result = true;
+  g_split_validate_called = false;
+  if (xar::ck3_11906::SubmitSplitArmyHalf(bindings, enemy_army_id) !=
+          xar::ck3_11906::SplitArmyHalfResult::army_not_controllable ||
+      g_split_validate_called || g_submit_called) {
+    return Fail("split-army-half accepted a non-player army");
+  }
+  if (xar::ck3_11906::SubmitSplitArmyHalf(bindings, 0x02000001) !=
+          xar::ck3_11906::SplitArmyHalfResult::army_not_found ||
+      g_split_validate_called || g_submit_called) {
+    return Fail("split-army-half ignored the public CUnit generation");
+  }
+
+  // Reuse the second generation-valid CUnit as a second player army only for
+  // this slice. The public IDs stay distinct while owner/province/state are
+  // made compatible; CK3's complete validator remains the authority for all
+  // merge gates.
+  Store(g_enemy_army, 0x20,
+        static_cast<void *>(g_player_province.data()));
+  Store(g_enemy_army, 0x170, std::int32_t{0});
+  Store(g_enemy_army, 0x174, played_character_id);
+  g_player_army_state_code = 3;
+  g_enemy_army_state_code = 3;
+
+  g_expected_command = ExpectedCommand::merge_armies;
+  g_submit_called = false;
+  g_merge_factory_called = false;
+  g_merge_append_called = false;
+  g_merge_validate_called = false;
+  g_merge_validate_result = true;
+  g_merge_clone_called = false;
+  g_merge_destroy_called = false;
+  g_merge_source_array_destroyed = false;
+  g_merge_cloned_destination_id = -1;
+  g_merge_cloned_source_ids.fill(-1);
+  if (xar::ck3_11906::SubmitMergeArmies(
+          bindings, player_army_id, enemy_army_id) !=
+          xar::ck3_11906::MergeArmiesResult::merge_submitted ||
+      !g_merge_factory_called || !g_merge_append_called ||
+      !g_merge_validate_called || !g_submit_called ||
+      !g_merge_clone_called || !g_merge_destroy_called ||
+      !g_merge_source_array_destroyed ||
+      g_merge_factory_command != nullptr ||
+      g_merge_owned_source_ids != nullptr ||
+      g_merge_cloned_destination_id != player_army_id ||
+      g_merge_cloned_source_ids[0] != enemy_army_id) {
+    return Fail("merge-armies did not deep-copy, validate, queue, and clean up");
+  }
+
+  // Submission alone does not execute the fixture's queued clone. Its owned
+  // source copy survives original cleanup, while the current snapshot still
+  // contains both public CUnit IDs until an executor/postcondition observes
+  // the source disappear.
+  xar::ck3_11906::Snapshot post_merge_submission{};
+  if (!xar::ck3_11906::ReadSnapshot(bindings, post_merge_submission) ||
+      post_merge_submission.player_armies.size() != 2 ||
+      post_merge_submission.player_armies[0].army_id != player_army_id ||
+      post_merge_submission.player_armies[1].army_id != enemy_army_id ||
+      g_merge_cloned_source_ids[0] != enemy_army_id) {
+    return Fail("merge submission fabricated an immediate source postcondition");
+  }
+
+  g_submit_called = false;
+  g_submit_result = false;
+  g_merge_factory_called = false;
+  g_merge_append_called = false;
+  g_merge_validate_called = false;
+  g_merge_clone_called = false;
+  g_merge_destroy_called = false;
+  g_merge_source_array_destroyed = false;
+  if (xar::ck3_11906::SubmitMergeArmies(
+          bindings, player_army_id, enemy_army_id) !=
+          xar::ck3_11906::MergeArmiesResult::submission_failed ||
+      !g_merge_factory_called || !g_merge_append_called ||
+      !g_merge_validate_called || !g_submit_called ||
+      !g_merge_clone_called || !g_merge_destroy_called ||
+      !g_merge_source_array_destroyed ||
+      g_merge_factory_command != nullptr ||
+      g_merge_owned_source_ids != nullptr) {
+    return Fail("merge-armies hid queue rejection or leaked its original");
+  }
+  g_submit_result = true;
+
+  g_submit_called = false;
+  g_merge_factory_called = false;
+  g_merge_append_called = false;
+  g_merge_validate_called = false;
+  g_merge_validate_result = false;
+  g_merge_clone_called = false;
+  g_merge_destroy_called = false;
+  g_merge_source_array_destroyed = false;
+  if (xar::ck3_11906::SubmitMergeArmies(
+          bindings, player_army_id, enemy_army_id) !=
+          xar::ck3_11906::MergeArmiesResult::validator_rejected ||
+      !g_merge_factory_called || !g_merge_append_called ||
+      !g_merge_validate_called || g_submit_called || g_merge_clone_called ||
+      !g_merge_destroy_called || !g_merge_source_array_destroyed ||
+      g_merge_factory_command != nullptr ||
+      g_merge_owned_source_ids != nullptr) {
+    return Fail("merge-armies leaked or queued after validator rejection");
+  }
+  g_merge_validate_result = true;
+
+  g_merge_factory_called = false;
+  g_merge_validate_called = false;
+  if (xar::ck3_11906::SubmitMergeArmies(
+          bindings, player_army_id, player_army_id) !=
+          xar::ck3_11906::MergeArmiesResult::same_army ||
+      g_merge_factory_called || g_merge_validate_called) {
+    return Fail("merge-armies accepted identical public CUnit IDs");
+  }
+
+  Store(g_enemy_army, 0x20,
+        static_cast<void *>(g_enemy_province.data()));
+  Store(g_enemy_army, 0x170, std::int32_t{1});
+  Store(g_enemy_army, 0x174, enemy_character_id);
+  g_player_army_state_code = 2;
+  g_enemy_army_state_code = 6;
+  if (xar::ck3_11906::SubmitMergeArmies(
+          bindings, player_army_id, enemy_army_id) !=
+          xar::ck3_11906::MergeArmiesResult::source_not_controllable ||
+      xar::ck3_11906::SubmitMergeArmies(
+          bindings, enemy_army_id, player_army_id) !=
+          xar::ck3_11906::MergeArmiesResult::destination_not_controllable ||
+      xar::ck3_11906::SubmitMergeArmies(
+          bindings, 0x02000001, player_army_id) !=
+          xar::ck3_11906::MergeArmiesResult::destination_not_found ||
+      xar::ck3_11906::SubmitMergeArmies(
+          bindings, player_army_id, 0x02000002) !=
+          xar::ck3_11906::MergeArmiesResult::source_not_found ||
+      g_merge_factory_called || g_merge_validate_called) {
+    return Fail("merge-armies ignored generation or controllability gates");
+  }
+
   std::vector<xar::ck3_11906::DeclarableWarSnapshot> declarations;
   if (xar::ck3_11906::ReadDeclarableWarsForTarget(
           bindings, enemy_character_id, declarations) !=
@@ -2831,6 +3224,7 @@ int main() {
                "raise_troops_command=1 move_army_preview=1 "
                "move_army_command=1 "
                "disband_army_command=1 "
+               "split_army_half_command=1 "
                "declarable_war_enumeration=1 "
                "declare_war_command=1 "
                "arrange_marriage_query=1 "

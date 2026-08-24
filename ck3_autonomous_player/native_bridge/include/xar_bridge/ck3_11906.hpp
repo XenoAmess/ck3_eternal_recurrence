@@ -13,7 +13,7 @@ inline constexpr char kExecutableSha256[] =
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
 inline constexpr char kCheckpointSaveName[] = "xar_checkpoint";
 
-using SubmitCommand = void (*)(void *manager, void *command,
+using SubmitCommand = bool (*)(void *manager, void *command,
                                std::uint32_t channel_flags);
 using GetLocalPlayer = void *(*)(void *jomini_state);
 using GetCurrentEvent = void *(*)(void *event_manager);
@@ -55,6 +55,12 @@ using BuildArmyMoveRoute = bool (*)(void *path_context, void *origin_province,
 using ValidateDisbandArmyCommand = bool (*)(
     std::int32_t command_kind, std::int32_t command_target_id,
     void *error_output);
+using ValidateSplitArmyHalfCommand = bool (*)(
+    std::int32_t command_kind, std::int32_t source_army_id,
+    std::int32_t played_character_id, void *error_output);
+using CreateMergeArmiesCommand = void *(*)();
+using ValidateMergeArmiesCommand = bool (*)(void *command,
+                                             void *error_output);
 using GetCasusBelliTypeDatabase = void *(*)();
 using GetCharacterInteractionDatabase = void *(*)();
 using EvaluateCasusBelli = bool (*)(void *casus_belli_type,
@@ -83,7 +89,7 @@ using ConstructCharacterInteractionContextAllRoles = void *(*)(
     std::int32_t intermediary_character_id, void *extra_context);
 using CopyNativeIntArray = void (*)(void *destination, const void *source);
 using AppendNativeIntArrayRange = void (*)(void *destination,
-                                           std::int32_t current_count,
+                                           std::int32_t insertion_index,
                                            const std::int32_t *begin,
                                            const std::int32_t *end);
 using RefreshCharacterInteractionContext = void (*)(void *context,
@@ -128,6 +134,10 @@ struct Bindings {
   std::uintptr_t move_army_secondary_vtable = 0;
   std::uintptr_t disband_army_primary_vtable = 0;
   std::uintptr_t disband_army_secondary_vtable = 0;
+  std::uintptr_t split_army_half_primary_vtable = 0;
+  std::uintptr_t split_army_half_secondary_vtable = 0;
+  std::uintptr_t merge_armies_primary_vtable = 0;
+  std::uintptr_t merge_armies_secondary_vtable = 0;
   std::uintptr_t send_character_interaction_primary_vtable = 0;
   std::uintptr_t send_character_interaction_secondary_vtable = 0;
   std::uintptr_t war_declaration_vtable = 0;
@@ -176,6 +186,11 @@ struct Bindings {
   BuildArmyMoveRoute build_army_move_route = nullptr;
   DestroyNativeCommand destroy_move_army_command = nullptr;
   ValidateDisbandArmyCommand validate_disband_army_command = nullptr;
+  ValidateSplitArmyHalfCommand validate_split_army_half_command = nullptr;
+  DestroyNativeCommand destroy_split_army_half_command = nullptr;
+  CreateMergeArmiesCommand create_merge_armies_command = nullptr;
+  ValidateMergeArmiesCommand validate_merge_armies_command = nullptr;
+  DestroyNativeCommand destroy_merge_armies_command = nullptr;
   GetCasusBelliTypeDatabase get_casus_belli_type_database = nullptr;
   GetCharacterInteractionDatabase get_character_interaction_database =
       nullptr;
@@ -301,6 +316,27 @@ using game::DisbandArmyResult;
 
 DisbandArmyResult SubmitDisbandArmy(const Bindings &bindings,
                                     std::int32_t army_id) noexcept;
+
+using game::SplitArmyHalfResult;
+
+// Resolves the public generation-bearing CUnit ID to its internal CArmyID,
+// passes the current played CharacterID through CK3's complete Split Half
+// validator, queues the 0x30-byte player command, then destroys the stack
+// object after the queue wrapper has synchronously cloned it. Submission is
+// not a claim that the next snapshot already contains the sibling CUnit.
+SplitArmyHalfResult SubmitSplitArmyHalf(const Bindings &bindings,
+                                        std::int32_t army_id) noexcept;
+
+using game::MergeArmiesResult;
+
+// Uses the original heap constructor and native range-copy helper to build a
+// one-source CMergeUnitsCommand. Both IDs are public generation-bearing CUnit
+// IDs; CK3's complete validator owns province/combat/movement/siege gates.
+// Submission preserves destination identity but is not an immediate outcome
+// claim: a later paused snapshot must prove that the source disappeared.
+MergeArmiesResult SubmitMergeArmies(const Bindings &bindings,
+                                    std::int32_t destination_army_id,
+                                    std::int32_t source_army_id) noexcept;
 
 using game::ReadDeclarableWarsResult;
 

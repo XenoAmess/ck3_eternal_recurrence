@@ -274,6 +274,27 @@ enum class DisbandArmyResult {
   army_not_controllable,
   unavailable,
 };
+enum class SplitArmyHalfResult {
+  split_submitted,
+  submission_failed,
+  no_played_character,
+  army_not_found,
+  army_not_controllable,
+  validator_rejected,
+  unavailable,
+};
+enum class MergeArmiesResult {
+  merge_submitted,
+  submission_failed,
+  no_played_character,
+  destination_not_found,
+  source_not_found,
+  destination_not_controllable,
+  source_not_controllable,
+  same_army,
+  validator_rejected,
+  unavailable,
+};
 enum class ReadDeclarableWarsResult {
   available,
   no_played_character,

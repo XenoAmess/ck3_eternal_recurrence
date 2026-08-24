@@ -8,6 +8,8 @@ from collections.abc import Iterable
 MOVE_ARMY_CAPABILITY = "game.command.move-army-N-to-N"
 PREVIEW_MOVE_ARMY_CAPABILITY = "game.command.preview-move-army-N-to-N"
 DISBAND_ARMY_CAPABILITY = "game.command.disband-army-N"
+SPLIT_ARMY_HALF_CAPABILITY = "game.command.split-army-half-N"
+MERGE_ARMIES_CAPABILITY = "game.command.merge-armies-N-with-N"
 ENFORCE_DEMANDS_CAPABILITY = "game.command.enforce-demands-N"
 ARMY_ROUTES_CAPABILITY = "game.state.army-routes"
 WAR_PRIMARY_OPPONENT_CAPABILITY = "game.state.war-primary-opponent"
@@ -495,6 +497,22 @@ def disband_army_step(army_id: int) -> str:
     return f"disband-army-{_non_negative_id(army_id, 'army_id')}"
 
 
+def split_army_half_step(army_id: int) -> str:
+    return f"split-army-half-{_positive_int32_id(army_id, 'army_id')}"
+
+
+def merge_armies_step(
+    destination_army_id: int, source_army_id: int
+) -> str:
+    destination = _positive_int32_id(
+        destination_army_id, "destination_army_id"
+    )
+    source = _positive_int32_id(source_army_id, "source_army_id")
+    if destination == source:
+        raise ValueError("merge army IDs must be distinct")
+    return f"merge-armies-{destination}-with-{source}"
+
+
 def enforce_demands_step(war_id: int) -> str:
     return f"enforce-demands-{_non_negative_id(war_id, 'war_id')}"
 
@@ -538,6 +556,40 @@ def parse_disband_army_step(step: object) -> int | None:
     return int(army_text) if army_text.isdigit() else None
 
 
+def parse_split_army_half_step(step: object) -> int | None:
+    if not isinstance(step, str) or not step.startswith("split-army-half-"):
+        return None
+    army_text = step.removeprefix("split-army-half-")
+    if not army_text.isascii() or not army_text.isdigit():
+        return None
+    army_id = int(army_text)
+    return army_id if 0 < army_id <= 2**31 - 1 else None
+
+
+def parse_merge_armies_step(step: object) -> tuple[int, int] | None:
+    if not isinstance(step, str) or not step.startswith("merge-armies-"):
+        return None
+    payload = step.removeprefix("merge-armies-")
+    destination_text, separator, source_text = payload.partition("-with-")
+    if (
+        not separator
+        or not destination_text.isascii()
+        or not destination_text.isdigit()
+        or not source_text.isascii()
+        or not source_text.isdigit()
+    ):
+        return None
+    destination = int(destination_text)
+    source = int(source_text)
+    if not (
+        0 < destination <= 2**31 - 1
+        and 0 < source <= 2**31 - 1
+        and destination != source
+    ):
+        return None
+    return destination, source
+
+
 def parse_enforce_demands_step(step: object) -> int | None:
     if not isinstance(step, str) or not step.startswith("enforce-demands-"):
         return None
@@ -551,6 +603,8 @@ def is_native_war_step(step: object) -> bool:
         or parse_preview_move_army_step(step) is not None
         or parse_move_army_step(step) is not None
         or parse_disband_army_step(step) is not None
+        or parse_split_army_half_step(step) is not None
+        or parse_merge_armies_step(step) is not None
         or parse_enforce_demands_step(step) is not None
     )
 

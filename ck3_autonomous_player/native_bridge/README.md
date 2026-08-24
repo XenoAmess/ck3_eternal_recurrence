@@ -25,7 +25,10 @@ Its current first gameplay slice is intentionally small:
   interaction without opening or focusing its notification window, and now
   exposes active wars/player armies plus native `raise-troops-default`,
   `move-army-<army_id>-to-<province_id>`, and
-  `disband-army-<army_id>` commands; explicit `query-declarable-wars`
+  `disband-army-<army_id>` commands; it also exposes the exact player command
+  `split-army-half-<army_id>` for one public CUnit ID and strict pair command
+  `merge-armies-<destination_army_id>-with-<source_army_id>`; explicit
+  `query-declarable-wars`
   returns current generation-bound choices, `declare-war-<choice>` submits
   one exact revalidated choice, and `enforce-demands-<war_id>` resolves a
   100% war led by the player; `query-arrange-marriage-choices` returns
@@ -203,6 +206,36 @@ native 0x28-byte command. Move and disband reject armies not owned by the
 current played character. Dynamic IDs are parsed as complete positive decimal
 strings; trailing bytes, signs, whitespace, missing separators, and overflow
 are rejected.
+
+Exact capability `game.command.split-army-half-N` accepts only
+`split-army-half-<army_id>`, where the ID is the public generation-bearing
+CUnit ID already exposed in `player_armies`. The 1.19.0.6 adapter resolves the
+distinct internal CArmyID from that CUnit, passes it together with the current
+played CharacterID through CK3's complete Split Half validator, constructs the
+original 0x30-byte player command, and queues its synchronous heap clone with
+flags `0x0E` before destroying the stack object. Success status
+`split_submitted` means only that validation and queue submission completed;
+it does not claim that a sibling CUnit is already present. A later paused
+snapshot must establish the actual postcondition. Validator rejection is
+reported directly, including native combat/raid/barter/retreat/movement-lock
+or insufficient-live-regiment gates; the adapter does not reproduce those
+rules with guessed bridge-side predicates.
+
+Exact capability `game.command.merge-armies-N-with-N` accepts only
+`merge-armies-<destination_public_CUnitID>-with-<source_public_CUnitID>`.
+Both complete generation-bearing IDs must be distinct and present as
+player-controllable armies in the current snapshot. The underlying
+`CMergeUnitsCommand` is a batch command, but the bridge always constructs a
+single-element source array so native validation cannot degrade into partial
+success. The exact adapter uses CK3's heap factory, canonical int32 range-copy
+helper, complete object validator, synchronous deep-clone submit with player
+flags `0x0E`, and paired deleting destructor; no array ever borrows a stack
+ID. Success is only `merge_submitted`. A later paused snapshot must prove the
+destination ID remains and the source ID disappears. Province, combat,
+retreat, movement-lock, raid and land/naval compatibility stay under CK3's
+complete validator. See
+[`docs/ck3-native-merge-contract.md`](../../docs/ck3-native-merge-contract.md)
+for the exact-build ABI, ownership and postcondition contract.
 
 Exact capability `game.command.preview-move-army-N-to-N` accepts only
 `preview-move-army-<army_id>-to-<province_id>` while the map is paused. It

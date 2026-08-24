@@ -794,6 +794,46 @@ std::optional<std::int32_t> DisbandArmyStep(
   return PositiveNativeId(step.substr(prefix.size()));
 }
 
+std::optional<std::int32_t> SplitArmyHalfStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix = "split-army-half-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
+struct MergeArmiesStepIds {
+  std::int32_t destination_army_id = -1;
+  std::int32_t source_army_id = -1;
+};
+
+std::optional<MergeArmiesStepIds> MergeArmiesStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix = "merge-armies-";
+  constexpr std::string_view separator = "-with-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  const auto payload = step.substr(prefix.size());
+  const std::size_t separator_index = payload.find(separator);
+  if (separator_index == std::string_view::npos ||
+      payload.find(separator, separator_index + separator.size()) !=
+          std::string_view::npos) {
+    return std::nullopt;
+  }
+  const auto destination_army_id =
+      PositiveNativeId(payload.substr(0, separator_index));
+  const auto source_army_id = PositiveNativeId(
+      payload.substr(separator_index + separator.size()));
+  if (!destination_army_id.has_value() || !source_army_id.has_value() ||
+      destination_army_id.value() == source_army_id.value()) {
+    return std::nullopt;
+  }
+  return MergeArmiesStepIds{destination_army_id.value(),
+                            source_army_id.value()};
+}
+
 std::optional<std::int32_t> EnforceDemandsStep(
     std::string_view step) noexcept {
   constexpr std::string_view prefix = "enforce-demands-";
@@ -1385,6 +1425,104 @@ void RunConnectedSession(HANDLE pipe, const xar::game::GameAdapter &game,
               } else if (result == xar::game::DisbandArmyResult::
                                        army_not_controllable) {
                 error = "CK3 army is not player-controllable";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step.starts_with("split-army-half-")) {
+          const auto army_id = SplitArmyHalfStep(step);
+          if (!army_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe,
+                CommandResultFrame(request_id, step, false,
+                                   "invalid split-army-half-<army_id> step"));
+          } else {
+            const auto result =
+                xar::game::SubmitSplitArmyHalf(game, army_id.value());
+            if (result ==
+                xar::game::SplitArmyHalfResult::split_submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, true,
+                                           "split_submitted"));
+            } else {
+              std::string_view error =
+                  "CK3 split-army-half state is unavailable";
+              if (result == xar::game::SplitArmyHalfResult::
+                                no_played_character) {
+                error = "no living played CK3 character";
+              } else if (result ==
+                         xar::game::SplitArmyHalfResult::army_not_found) {
+                error = "CK3 army was not found";
+              } else if (result ==
+                         xar::game::SplitArmyHalfResult::
+                             army_not_controllable) {
+                error = "CK3 army is not player-controllable";
+              } else if (result ==
+                         xar::game::SplitArmyHalfResult::
+                             validator_rejected) {
+                error = "CK3 rejected split-army-half validation";
+              } else if (result == xar::game::SplitArmyHalfResult::
+                                       submission_failed) {
+                error = "CK3 rejected split-army-half queue submission";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step.starts_with("merge-armies-")) {
+          const auto army_ids = MergeArmiesStep(step);
+          if (!army_ids.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid merge-armies-<destination_army_id>-with-"
+                          "<source_army_id> step"));
+          } else {
+            const auto result = xar::game::SubmitMergeArmies(
+                game, army_ids->destination_army_id,
+                army_ids->source_army_id);
+            if (result == xar::game::MergeArmiesResult::merge_submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, true,
+                                           "merge_submitted"));
+            } else {
+              std::string_view error =
+                  "CK3 merge-armies state is unavailable";
+              if (result ==
+                  xar::game::MergeArmiesResult::no_played_character) {
+                error = "no living played CK3 character";
+              } else if (result == xar::game::MergeArmiesResult::
+                                       destination_not_found) {
+                error = "CK3 destination army was not found";
+              } else if (result ==
+                         xar::game::MergeArmiesResult::source_not_found) {
+                error = "CK3 source army was not found";
+              } else if (result == xar::game::MergeArmiesResult::
+                                       destination_not_controllable) {
+                error = "CK3 destination army is not player-controllable";
+              } else if (result == xar::game::MergeArmiesResult::
+                                       source_not_controllable) {
+                error = "CK3 source army is not player-controllable";
+              } else if (result ==
+                         xar::game::MergeArmiesResult::same_army) {
+                error = "CK3 merge-armies IDs must be distinct";
+              } else if (result == xar::game::MergeArmiesResult::
+                                       validator_rejected) {
+                error = "CK3 rejected merge-armies validation";
+              } else if (result == xar::game::MergeArmiesResult::
+                                       submission_failed) {
+                error = "CK3 rejected merge-armies queue submission";
               }
               connected = xar::bridge::WriteFrame(
                   pipe, CommandResultFrame(request_id, step, false, error));

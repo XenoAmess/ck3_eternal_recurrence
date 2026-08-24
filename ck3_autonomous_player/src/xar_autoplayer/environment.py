@@ -31,7 +31,10 @@ import build_release  # noqa: E402
 
 
 STEAM_APP_ID = "1158310"
-EXPECTED_GAME_VERSION = "1.19.0.6"
+# Visible UI/OCR contracts are calibrated against this exact build.  Prepared
+# profiles and native-headless launch are intentionally not pinned to it: the
+# native bridge selects an exact-build adapter from the executable SHA-256.
+VISIBLE_UI_BASELINE_GAME_VERSION = "1.19.0.6"
 OUTER_DESCRIPTOR_NAME = "xar_autoplayer.mod"
 OUTER_DESCRIPTOR_REF = f"mod/{OUTER_DESCRIPTOR_NAME}"
 EXPECTED_MOD_NAME = "琉焰卿的永恒轮回"
@@ -147,7 +150,9 @@ def real_ck3_profile() -> Path:
 class EnvironmentSpec:
     state_dir: Path
     game_dir: Path
-    expected_game_version: str = EXPECTED_GAME_VERSION
+    # Optional operator/test constraint.  The production CLI leaves this unset
+    # so an unknown build can reach the native bridge's unsupported_build hello.
+    expected_game_version: str | None = None
 
     @property
     def profile_dir(self) -> Path:
@@ -326,6 +331,27 @@ def launcher_identity(game_dir: Path) -> dict[str, str]:
         "distribution": str(payload.get("distPlatform", "")),
         "launcher_settings_sha256": sha256_file(path),
     }
+
+
+def _launcher_identity_error(identity: dict[str, str]) -> str | None:
+    for key in ("raw_version", "display_version", "distribution"):
+        if not identity.get(key, "").strip():
+            return f"launcher identity has an empty {key}"
+    return None
+
+
+def _requested_game_version_error(
+    spec: EnvironmentSpec, identity: dict[str, str]
+) -> str | None:
+    if (
+        spec.expected_game_version is not None
+        and identity.get("raw_version") != spec.expected_game_version
+    ):
+        return (
+            f"game version {identity.get('raw_version')!r} != "
+            f"explicitly required {spec.expected_game_version!r}"
+        )
+    return None
 
 
 def installed_dlc_fingerprint(game_dir: Path) -> dict[str, object]:
@@ -639,11 +665,12 @@ def _prepare_profile_locked(spec: EnvironmentSpec) -> dict[str, object]:
     """Create or refresh the profile without touching persistent tutorial state."""
     ensure_state_path_safe(spec.state_dir)
     identity = launcher_identity(spec.game_dir)
-    if identity["raw_version"] != spec.expected_game_version:
-        raise AgentError(
-            "unsupported CK3 version: "
-            f"{identity['raw_version']!r}, expected {spec.expected_game_version!r}"
-        )
+    identity_error = _launcher_identity_error(identity)
+    if identity_error is not None:
+        raise AgentError(identity_error)
+    version_error = _requested_game_version_error(spec, identity)
+    if version_error is not None:
+        raise AgentError(version_error)
     if not spec.game_exe.is_file():
         raise AgentError(f"CK3 executable not found: {spec.game_exe}")
     source_errors = build_release.release_source_errors(build_release.DEFAULT_SOURCE)
@@ -818,6 +845,9 @@ def verify_profile(spec: EnvironmentSpec) -> dict[str, object]:
 
     game = manifest.get("game", {})
     current_identity = launcher_identity(spec.game_dir)
+    identity_error = _launcher_identity_error(current_identity)
+    if identity_error is not None:
+        raise AgentError(identity_error)
     for key in (
         "raw_version",
         "display_version",
@@ -826,11 +856,9 @@ def verify_profile(spec: EnvironmentSpec) -> dict[str, object]:
     ):
         if game.get(key) != current_identity[key]:
             raise AgentError(f"current launcher identity differs for {key}")
-    if current_identity["raw_version"] != spec.expected_game_version:
-        raise AgentError(
-            f"current game version is not {spec.expected_game_version}: "
-            f"{current_identity['raw_version']}"
-        )
+    version_error = _requested_game_version_error(spec, current_identity)
+    if version_error is not None:
+        raise AgentError(version_error)
     if game.get("executable") != str(spec.game_exe.resolve()):
         raise AgentError("environment manifest points to a different CK3 executable")
     if not spec.game_exe.is_file() or game.get("executable_sha256") != sha256_file(
@@ -1042,14 +1070,22 @@ def ck3_processes() -> list[str]:
 
 
 def doctor(spec: EnvironmentSpec, require_prepared: bool = False) -> dict[str, object]:
+    """Run the visible-desktop/OCR preflight for the calibrated UI build."""
     ensure_state_path_safe(spec.state_dir)
     identity = launcher_identity(spec.game_dir)
     errors: list[str] = []
     if os.name != "nt":
         errors.append("CK3 desktop operation requires Windows")
-    if identity["raw_version"] != spec.expected_game_version:
+    identity_error = _launcher_identity_error(identity)
+    if identity_error is not None:
+        errors.append(identity_error)
+    doctor_game_version = (
+        spec.expected_game_version or VISIBLE_UI_BASELINE_GAME_VERSION
+    )
+    if identity.get("raw_version") != doctor_game_version:
         errors.append(
-            f"game version {identity['raw_version']!r} != {spec.expected_game_version!r}"
+            "visible UI preflight requires CK3 version "
+            f"{doctor_game_version!r}, got {identity.get('raw_version')!r}"
         )
     if not spec.game_exe.is_file():
         errors.append(f"CK3 executable not found: {spec.game_exe}")

@@ -21,6 +21,7 @@ from .bridge.session_queue import (
 )
 from .environment import (
     REPO_ROOT,
+    VISIBLE_UI_BASELINE_GAME_VERSION,
     EnvironmentSpec,
     ck3_process_inventory,
     doctor,
@@ -1617,7 +1618,7 @@ def _drive_opening(
             window,
             contract,
             artifacts,
-            expected_game_version=spec.expected_game_version,
+            expected_game_version=VISIBLE_UI_BASELINE_GAME_VERSION,
             expected_language=language,
             expected_contract_sha256=contract_sha256,
             durable_event_callback=lambda event: append_event(events, event),

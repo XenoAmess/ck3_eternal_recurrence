@@ -63,9 +63,11 @@ from .war_contract import (
     ARMY_ROUTES_CAPABILITY,
     DISBAND_ARMY_CAPABILITY,
     ENFORCE_DEMANDS_CAPABILITY,
+    MERGE_ARMIES_CAPABILITY,
     MOVE_ARMY_CAPABILITY,
     PREVIEW_MOVE_ARMY_CAPABILITY,
     RAISE_TROOPS_STEP,
+    SPLIT_ARMY_HALF_CAPABILITY,
     WAR_OBJECTIVES_CAPABILITY,
     WAR_OBJECTIVE_FORT_LEVEL_CAPABILITY,
     WAR_OBJECTIVE_GARRISON_CAPABILITY,
@@ -78,14 +80,18 @@ from .war_contract import (
     enforce_demands_step,
     enemy_armies_from_wars,
     is_native_war_step,
+    merge_armies_step,
     move_army_step,
     normalize_active_wars,
     parse_disband_army_step,
     parse_enforce_demands_step,
+    parse_merge_armies_step,
     parse_move_army_step,
     parse_preview_move_army_step,
+    parse_split_army_half_step,
     preview_move_army_step,
     player_armies_from_state,
+    split_army_half_step,
     war_objective_province_ids,
 )
 
@@ -106,6 +112,7 @@ _NATIVE_SESSION_QUEUE_DIRNAME = "native-session"
 _NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 _NATIVE_DRIVER_STATE_VERSION = 2
 _RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
+_MANAGED_RESTORE_TRANSACTION_STATUS = "awaiting_checkpoint_rebind"
 _START_NEXT_EPISODE_STEP = "start-next-episode"
 _COLD_RESTORE_SOURCE = "native-session-cold-start"
 _RESTORE_MAP_STABLE_SECONDS = 0.5
@@ -559,6 +566,8 @@ class NativeHeadlessGameplayDriver:
         self._history_lock = self._driver_state_lock
         self._last_checkpoint: dict[str, object] | None = None
         self._command_history: list[dict[str, object]] = []
+        self._rollback_war_failure: dict[str, object] | None = None
+        self._managed_restore_transaction: dict[str, object] | None = None
         self._episode_identity_lock = self._driver_state_lock
         self._episode_character_id: int | None = None
         self._episode_run_id: str | None = None
@@ -747,9 +756,12 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(transport_error)
         snapshot = self._with_one_life_episode(self.state.semantic_snapshot())
         self._observe_arrange_marriage_outcome(snapshot)
+        with self._driver_state_lock:
+            rollback_war_failure = copy.deepcopy(self._rollback_war_failure)
         return {
             **snapshot,
             "native_command_history": self._history_snapshot(),
+            "native_rollback_war_failure": rollback_war_failure,
         }
 
     def _with_one_life_episode(
@@ -943,6 +955,28 @@ class NativeHeadlessGameplayDriver:
         error: str | None = None,
     ) -> None:
         with self._history_lock:
+            if step == _RESTORE_CHECKPOINT_STEP:
+                if ok:
+                    history_index = _checkpoint_history_index(
+                        self._last_checkpoint, self._command_history
+                    )
+                    if history_index is not None:
+                        self._command_history = self._command_history[
+                            :history_index
+                        ]
+                    self._managed_restore_transaction = None
+                elif (
+                    isinstance(self._managed_restore_transaction, dict)
+                    and self._managed_restore_transaction.get(
+                        "replacement_bridge_pid"
+                    )
+                    is None
+                    and self._pending_cold_candidate is None
+                ):
+                    # A pre-relaunch failure leaves the original CK3 process
+                    # and factual branch authoritative.  Disarm the marker so
+                    # the next ordinary hello is not held for reconciliation.
+                    self._managed_restore_transaction = None
             row: dict[str, object] = {
                 "index": len(self._command_history) + 1,
                 "command": step,
@@ -1060,6 +1094,8 @@ class NativeHeadlessGameplayDriver:
             previous_run_id = self._episode_run_id
             self._command_history = []
             self._last_checkpoint = None
+            self._rollback_war_failure = None
+            self._managed_restore_transaction = None
             self._episode_character_id = current_character_id
             self._episode_run_id = (
                 f"native-{current_character_id}-{uuid.uuid4().hex[:12]}"
@@ -1222,6 +1258,48 @@ class NativeHeadlessGameplayDriver:
         with self._history_lock:
             return copy.deepcopy(self._command_history)
 
+    def _driver_state_payload_locked(self) -> dict[str, object]:
+        return {
+            "format_version": _NATIVE_DRIVER_STATE_VERSION,
+            "pipe_name": self.pipe_name,
+            "bridge_pid": self._session_bridge_pid,
+            "episode_character_id": self._episode_character_id,
+            "episode_run_id": self._episode_run_id,
+            "last_checkpoint": copy.deepcopy(self._last_checkpoint),
+            "command_history": copy.deepcopy(self._command_history),
+            "rollback_war_failure": copy.deepcopy(
+                self._rollback_war_failure
+            ),
+            "managed_restore_transaction": copy.deepcopy(
+                self._managed_restore_transaction
+            ),
+        }
+
+    def _managed_restore_request_state(
+        self, transaction: dict[str, object]
+    ) -> str:
+        request_id = transaction.get("request_id")
+        if not isinstance(request_id, str) or not request_id:
+            return "missing"
+        queue_dir = self._native_session_queue_dir()
+        inbox_path = queue_dir / "inbox" / f"{request_id}.json"
+        outbox_path = queue_dir / "outbox" / f"{request_id}.json"
+        if outbox_path.is_file():
+            try:
+                response = json.loads(
+                    outbox_path.read_text(encoding="utf-8-sig")
+                )
+            except (OSError, UnicodeError, json.JSONDecodeError):
+                return "present"
+            if (
+                isinstance(response, dict)
+                and response.get("request_id") == request_id
+                and response.get("ok") is False
+            ):
+                return "failed"
+            return "present"
+        return "present" if inbox_path.is_file() else "missing"
+
     def _adopt_bridge_session(self, bridge_pid: int) -> None:
         """Adopt a bridge now, but delay cross-PID identity until map-ready."""
         first_connection = False
@@ -1238,14 +1316,31 @@ class NativeHeadlessGameplayDriver:
                 self._episode_character_id = None
                 self._episode_run_id = None
                 self._last_checkpoint = None
+                self._rollback_war_failure = None
+                self._managed_restore_transaction = None
                 self._driver_state_restored = False
                 self._driver_state_restore_kind = None
                 self._episode_binding_state = "unbound"
                 self._pending_cold_candidate = None
                 self._cold_candidate_rejection = None
+                restored_transaction = (
+                    restored.get("managed_restore_transaction")
+                    if isinstance(restored, dict)
+                    else None
+                )
+                transaction_crossed_process = bool(
+                    isinstance(restored_transaction, dict)
+                    and (
+                        restored_transaction.get("replacement_bridge_pid")
+                        == bridge_pid
+                        or restored_transaction.get("source_bridge_pid")
+                        != bridge_pid
+                    )
+                )
                 if (
                     restored is not None
                     and restored.get("bridge_pid") == bridge_pid
+                    and not transaction_crossed_process
                 ):
                     self._command_history = copy.deepcopy(
                         restored["command_history"]
@@ -1257,6 +1352,28 @@ class NativeHeadlessGameplayDriver:
                     self._last_checkpoint = copy.deepcopy(
                         restored["last_checkpoint"]
                     )
+                    self._rollback_war_failure = copy.deepcopy(
+                        restored.get("rollback_war_failure")
+                    )
+                    self._managed_restore_transaction = copy.deepcopy(
+                        restored_transaction
+                    )
+                    if (
+                        isinstance(self._managed_restore_transaction, dict)
+                        and self._managed_restore_transaction.get(
+                            "replacement_bridge_pid"
+                        )
+                        is None
+                        and self._managed_restore_request_state(
+                            self._managed_restore_transaction
+                        )
+                        in {"missing", "failed"}
+                    ):
+                        # The daemon may have died after persisting the marker
+                        # but before publishing the lifecycle request.  With
+                        # the original PID still authoritative, a missing (or
+                        # terminally failed) request disarms that orphan.
+                        self._managed_restore_transaction = None
                     self._upgrade_checkpoint_anchor()
                     self._driver_state_restored = True
                     self._driver_state_restore_kind = "same_pid_hot"
@@ -1268,12 +1385,42 @@ class NativeHeadlessGameplayDriver:
                     should_persist = True
                 elif restored is not None and self._cold_candidate_ready(restored):
                     self._pending_cold_candidate = copy.deepcopy(restored)
+                    self._managed_restore_transaction = copy.deepcopy(
+                        restored_transaction
+                    )
                     self._episode_binding_state = "pending_cold_candidate"
                 elif restored is not None:
                     self._cold_candidate_rejection = "no_complete_checkpoint_anchor"
-            # A PID change inside the same driver is the expected
-            # restore-checkpoint lifecycle.  Keep the episode and history,
-            # then persist the replacement PID for a later daemon restart.
+            # A managed restore transaction turns the replacement hello into
+            # the same cold checkpoint rebind used after a daemon restart.
+            # Persist the marker with the new PID before the first playable
+            # snapshot so a crash here cannot revive the discarded branch as
+            # same-PID factual history.
+            if (
+                not first_connection
+                and self._episode_transition is None
+                and isinstance(self._managed_restore_transaction, dict)
+                and self._managed_restore_transaction.get(
+                    "source_bridge_pid"
+                )
+                != bridge_pid
+            ):
+                self._managed_restore_transaction[
+                    "replacement_bridge_pid"
+                ] = bridge_pid
+                candidate = self._driver_state_payload_locked()
+                if self._cold_candidate_ready(candidate):
+                    self._pending_cold_candidate = candidate
+                    self._episode_binding_state = "pending_cold_candidate"
+                    self._driver_state_restore_kind = (
+                        "managed_restore_checkpoint_rebind"
+                    )
+                else:
+                    self._cold_candidate_rejection = (
+                        "no_complete_checkpoint_anchor"
+                    )
+                should_persist = True
+
             self._session_bridge_pid = bridge_pid
             if not first_connection and self._pending_cold_candidate is None:
                 if self._episode_transition is not None:
@@ -1444,6 +1591,17 @@ class NativeHeadlessGameplayDriver:
                 return
             if rejection is None:
                 history_index = int(checkpoint["history_index"])
+                rollback_war_failure = _derive_rollback_war_failure(
+                    candidate["command_history"],
+                    checkpoint=checkpoint,
+                    restored_snapshot=snapshot,
+                    episode_run_id=str(candidate["episode_run_id"]),
+                    completed_restore_epoch_limit=(
+                        2
+                        if candidate.get("rollback_war_failure") is None
+                        else 0
+                    ),
+                )
                 history = copy.deepcopy(candidate["command_history"][:history_index])
                 previous_pid = candidate.get("bridge_pid")
                 synthetic_result = {
@@ -1474,6 +1632,10 @@ class NativeHeadlessGameplayDriver:
                 )
                 self._episode_run_id = str(candidate["episode_run_id"])
                 self._last_checkpoint = copy.deepcopy(checkpoint)
+                self._rollback_war_failure = (
+                    rollback_war_failure
+                    or copy.deepcopy(candidate.get("rollback_war_failure"))
+                )
                 self._driver_state_restored = True
                 self._driver_state_restore_kind = "cold_checkpoint"
                 self._episode_binding_state = "active_resumed"
@@ -1485,11 +1647,13 @@ class NativeHeadlessGameplayDriver:
                     f"native-{current_character_id}-{uuid.uuid4().hex[:12]}"
                 )
                 self._last_checkpoint = None
+                self._rollback_war_failure = None
                 self._driver_state_restored = False
                 self._driver_state_restore_kind = "new_episode"
                 self._episode_binding_state = "active_new"
                 self._cold_candidate_rejection = rejection
             self._pending_cold_candidate = None
+            self._managed_restore_transaction = None
         self._persist_driver_state()
 
     def _read_driver_state(self) -> dict[str, object] | None:
@@ -1543,6 +1707,28 @@ class NativeHeadlessGameplayDriver:
                 last_checkpoint, dict
             ):
                 raise ValueError("driver state checkpoint is malformed")
+            rollback_war_failure = _normalize_rollback_war_failure(
+                payload.get("rollback_war_failure")
+            )
+            if (
+                rollback_war_failure is not None
+                and (
+                    not isinstance(last_checkpoint, dict)
+                    or rollback_war_failure.get("checkpoint_sha256")
+                    != last_checkpoint.get("sha256")
+                )
+            ):
+                rollback_war_failure = None
+            managed_restore_transaction = (
+                _normalize_managed_restore_transaction(
+                    payload.get("managed_restore_transaction"),
+                    checkpoint=last_checkpoint,
+                    history=history,
+                    bridge_pid=persisted_bridge_pid,
+                    episode_character_id=character_id,
+                    episode_run_id=run_id,
+                )
+            )
             return {
                 "format_version": format_version,
                 "bridge_pid": persisted_bridge_pid,
@@ -1550,6 +1736,8 @@ class NativeHeadlessGameplayDriver:
                 "episode_run_id": run_id,
                 "command_history": copy.deepcopy(history),
                 "last_checkpoint": copy.deepcopy(last_checkpoint),
+                "rollback_war_failure": rollback_war_failure,
+                "managed_restore_transaction": managed_restore_transaction,
             }
         except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
             with self._driver_state_lock:
@@ -1564,15 +1752,7 @@ class NativeHeadlessGameplayDriver:
         with self._driver_state_lock:
             if self._session_bridge_pid is None:
                 return
-            payload = {
-                "format_version": _NATIVE_DRIVER_STATE_VERSION,
-                "pipe_name": self.pipe_name,
-                "bridge_pid": self._session_bridge_pid,
-                "episode_character_id": self._episode_character_id,
-                "episode_run_id": self._episode_run_id,
-                "last_checkpoint": copy.deepcopy(self._last_checkpoint),
-                "command_history": copy.deepcopy(self._command_history),
-            }
+            payload = self._driver_state_payload_locked()
         try:
             with self._driver_state_write_lock:
                 write_json_atomic(self._native_driver_state_path(), payload)
@@ -1698,6 +1878,12 @@ class NativeHeadlessGameplayDriver:
             checkpoint["episode_character_id"] = self._episode_character_id
             checkpoint["episode_run_id"] = self._episode_run_id
             self._last_checkpoint = dict(checkpoint)
+            if (
+                isinstance(self._rollback_war_failure, dict)
+                and self._rollback_war_failure.get("checkpoint_sha256")
+                != checkpoint["sha256"]
+            ):
+                self._rollback_war_failure = None
         episode_seed = self._establish_episode_seed(checkpoint_path, checkpoint)
         return {
             **submission_result,
@@ -2031,6 +2217,118 @@ class NativeHeadlessGameplayDriver:
                 "revision": changed["revision"],
             }
 
+        source_army_id = parse_split_army_half_step(step)
+        if source_army_id is not None:
+            starting_army = _army_by_id(starting, source_army_id)
+            if (
+                not isinstance(starting_army, dict)
+                or starting_army.get("controllable") is not True
+            ):
+                raise BridgeUnavailableError(
+                    f"native split-army-half-{source_army_id} requires a "
+                    "controllable player army"
+                )
+            submitted_date_raw = _date_raw(
+                starting, "split-army-half starting snapshot"
+            )
+            player_army_ids_before = sorted(
+                _controllable_army_ids(starting)
+            )
+            result = self._execute_primitive_step(
+                step, expected_revision=selected_revision
+            )
+            immediate = self.take_snapshot()
+            player_army_ids_immediate = _controllable_army_ids(immediate)
+            new_army_ids = sorted(
+                player_army_ids_immediate - set(player_army_ids_before)
+            )
+            split_applied = (
+                source_army_id in player_army_ids_immediate
+                and len(new_army_ids) == 1
+            )
+            war_action: dict[str, object] = {
+                "status": (
+                    "split_applied" if split_applied else "split_submitted"
+                ),
+                "source_army_id": source_army_id,
+                "submitted_date_raw": submitted_date_raw,
+                "player_army_ids_before": player_army_ids_before,
+            }
+            if split_applied:
+                war_action["sibling_army_id"] = new_army_ids[0]
+            return {
+                **result,
+                "war_action": war_action,
+            }
+
+        merge = parse_merge_armies_step(step)
+        if merge is not None:
+            destination_army_id, source_army_id = merge
+            destination_before = _army_by_id(starting, destination_army_id)
+            source_before = _army_by_id(starting, source_army_id)
+            if not (
+                isinstance(destination_before, dict)
+                and destination_before.get("controllable") is True
+                and isinstance(source_before, dict)
+                and source_before.get("controllable") is True
+            ):
+                raise BridgeUnavailableError(
+                    "native merge-armies requires two controllable player "
+                    "armies"
+                )
+            destination_province_id = destination_before.get(
+                "current_province_id"
+            )
+            if not (
+                _positive_native_id(destination_province_id)
+                and source_before.get("current_province_id")
+                == destination_province_id
+                and not _army_known_merge_blocked(destination_before)
+                and not _army_known_merge_blocked(source_before)
+            ):
+                raise BridgeUnavailableError(
+                    "native merge-armies requires an advertised same-province "
+                    "non-combat pair"
+                )
+            submitted_date_raw = _date_raw(
+                starting, "merge-armies starting snapshot"
+            )
+            player_army_ids_before = sorted(
+                _controllable_army_ids(starting)
+            )
+            result = self._execute_primitive_step(
+                step, expected_revision=selected_revision
+            )
+            immediate = self.take_snapshot()
+            player_army_ids_immediate = _controllable_army_ids(immediate)
+            destination_immediate = _army_by_id(
+                immediate, destination_army_id
+            )
+            merge_applied = bool(
+                isinstance(destination_immediate, dict)
+                and destination_immediate.get("owner_character_id")
+                == destination_before.get("owner_character_id")
+                and destination_immediate.get("current_province_id")
+                == destination_province_id
+                and _army_by_id(immediate, source_army_id) is None
+                and player_army_ids_immediate
+                == set(player_army_ids_before) - {source_army_id}
+            )
+            return {
+                **result,
+                "war_action": {
+                    "status": (
+                        "merge_applied"
+                        if merge_applied
+                        else "merge_submitted"
+                    ),
+                    "destination_army_id": destination_army_id,
+                    "source_army_id": source_army_id,
+                    "submitted_date_raw": submitted_date_raw,
+                    "player_army_ids_before": player_army_ids_before,
+                },
+            }
+
         preview = parse_preview_move_army_step(step)
         if preview is not None:
             army_id, province_id = preview
@@ -2350,6 +2648,22 @@ class NativeHeadlessGameplayDriver:
         inbox_dir = queue_dir / "inbox"
         outbox_dir = queue_dir / "outbox"
         response_path = outbox_dir / f"{request_id}.json"
+        with self._driver_state_lock:
+            self._managed_restore_transaction = {
+                "status": _MANAGED_RESTORE_TRANSACTION_STATUS,
+                "request_id": request_id,
+                "source_bridge_pid": self._session_bridge_pid,
+                "checkpoint_sha256": checkpoint_sha256,
+                "checkpoint_size": checkpoint_size,
+                "checkpoint_date_raw": checkpoint_saved_date_raw,
+                "history_index": previous_checkpoint.get("history_index"),
+                "episode_character_id": self._episode_character_id,
+                "episode_run_id": self._episode_run_id,
+            }
+        # This marker must reach disk before native-session can replace CK3.
+        # The replacement hello may otherwise persist a new PID alongside the
+        # still-untrimmed factual branch and make a daemon restart look hot.
+        self._persist_driver_state()
         write_json_atomic(
             inbox_dir / f"{request_id}.json",
             {
@@ -2431,6 +2745,16 @@ class NativeHeadlessGameplayDriver:
             "mtime_ns": mtime_ns,
             "strategy": "native-session-loadsave-exact-v2",
         }
+        with self._driver_state_lock:
+            rollback_war_failure = _derive_rollback_war_failure(
+                self._command_history,
+                checkpoint=previous_checkpoint,
+                restored_snapshot=restored,
+                episode_run_id=self._episode_run_id,
+                abandoned_snapshot=starting,
+            )
+            if rollback_war_failure is not None:
+                self._rollback_war_failure = rollback_war_failure
         return {
             "step": _RESTORE_CHECKPOINT_STEP,
             "accepted": True,
@@ -3954,6 +4278,24 @@ def _war_objective_capability_flags(
     }
 
 
+def _army_known_merge_blocked(army: dict[str, object]) -> bool:
+    state = army.get("army_state")
+    state_code = army.get("army_state_code")
+    return bool(
+        army.get("in_combat") is True
+        or army.get("retreating") is True
+        or (
+            isinstance(state, str)
+            and state.casefold() in {"combat", "retreating"}
+        )
+        or (
+            isinstance(state_code, int)
+            and not isinstance(state_code, bool)
+            and state_code in {2, 6}
+        )
+    )
+
+
 def _action_steps(
     capabilities: list[str],
     active_event: object = None,
@@ -3973,6 +4315,8 @@ def _action_steps(
     expand_move_armies = False
     expand_preview_move_armies = False
     expand_disband_armies = False
+    expand_split_armies = False
+    expand_merge_armies = False
     expand_enforce_demands = False
     expand_declare_wars = False
     expand_arrange_marriage = False
@@ -3994,6 +4338,19 @@ def _action_steps(
             expand_preview_move_armies = True
         elif capability == DISBAND_ARMY_CAPABILITY:
             expand_disband_armies = True
+        elif capability == SPLIT_ARMY_HALF_CAPABILITY:
+            expand_split_armies = True
+        elif step.startswith("split-army-half-"):
+            # Split Half is generation-bound and may only be expanded from the
+            # exact adapter template above. Never expose an unknown adapter's
+            # literal or placeholder spelling as an executable step.
+            continue
+        elif capability == MERGE_ARMIES_CAPABILITY:
+            expand_merge_armies = True
+        elif step.startswith("merge-armies-"):
+            # Merge is a generation-bound ordered pair and must only be
+            # expanded from the exact adapter template above.
+            continue
         elif capability == ENFORCE_DEMANDS_CAPABILITY:
             expand_enforce_demands = True
         elif capability == DECLARE_WAR_CAPABILITY:
@@ -4068,6 +4425,36 @@ def _action_steps(
             for army in controllable
             if isinstance(army.get("army_id"), int)
         )
+    if expand_split_armies:
+        steps.update(
+            split_army_half_step(int(army["army_id"]))
+            for army in controllable
+            if isinstance(army.get("army_id"), int)
+            and not isinstance(army.get("army_id"), bool)
+            and 0 < int(army["army_id"]) <= 2**31 - 1
+        )
+    if expand_merge_armies:
+        merge_candidates = [
+            army
+            for army in controllable
+            if _positive_native_id(army.get("army_id"))
+            and _positive_native_id(army.get("current_province_id"))
+            and not _army_known_merge_blocked(army)
+        ]
+        for destination in merge_candidates:
+            for source in merge_candidates:
+                destination_army_id = int(destination["army_id"])
+                source_army_id = int(source["army_id"])
+                if (
+                    destination_army_id != source_army_id
+                    and destination.get("current_province_id")
+                    == source.get("current_province_id")
+                ):
+                    steps.add(
+                        merge_armies_step(
+                            destination_army_id, source_army_id
+                        )
+                    )
     if (expand_move_armies or expand_preview_move_armies) and wars:
         target_provinces = {
             int(army["current_province_id"])
@@ -4140,6 +4527,437 @@ def _war_by_id(
         ),
         None,
     )
+
+
+def _checkpoint_history_index(
+    checkpoint: object,
+    history: list[dict[str, object]],
+) -> int | None:
+    if not isinstance(checkpoint, dict):
+        return None
+    index = checkpoint.get("history_index")
+    if (
+        isinstance(index, bool)
+        or not isinstance(index, int)
+        or not 1 <= index <= len(history)
+    ):
+        return None
+    anchor = history[index - 1]
+    result = anchor.get("result")
+    saved = result.get("checkpoint") if isinstance(result, dict) else None
+    return index if (
+        anchor.get("index") == index
+        and anchor.get("command") == "save-checkpoint"
+        and anchor.get("ok") is True
+        and isinstance(saved, dict)
+        and all(
+            saved.get(key) == checkpoint.get(key)
+            for key in ("sha256", "size", "date_raw")
+        )
+    ) else None
+
+
+def _normalize_managed_restore_transaction(
+    value: object,
+    *,
+    checkpoint: object,
+    history: list[dict[str, object]],
+    bridge_pid: int,
+    episode_character_id: object,
+    episode_run_id: object,
+) -> dict[str, object] | None:
+    if not isinstance(value, dict):
+        return None
+    source_pid = value.get("source_bridge_pid")
+    replacement_pid = value.get("replacement_bridge_pid")
+    request_id = value.get("request_id")
+    digest = value.get("checkpoint_sha256")
+    size = value.get("checkpoint_size")
+    date_raw = value.get("checkpoint_date_raw")
+    history_index = value.get("history_index")
+    if (
+        value.get("status") != _MANAGED_RESTORE_TRANSACTION_STATUS
+        or not isinstance(request_id, str)
+        or not request_id.startswith("restore-")
+        or isinstance(source_pid, bool)
+        or not isinstance(source_pid, int)
+        or source_pid <= 0
+        or (
+            replacement_pid is not None
+            and (
+                isinstance(replacement_pid, bool)
+                or not isinstance(replacement_pid, int)
+                or replacement_pid <= 0
+            )
+        )
+        or bridge_pid
+        != (replacement_pid if replacement_pid is not None else source_pid)
+        or not isinstance(digest, str)
+        or len(digest) != 64
+        or any(character not in "0123456789abcdef" for character in digest)
+        or isinstance(size, bool)
+        or not isinstance(size, int)
+        or size <= 0
+        or isinstance(date_raw, bool)
+        or not isinstance(date_raw, int)
+        or isinstance(history_index, bool)
+        or not isinstance(history_index, int)
+        or value.get("episode_character_id") != episode_character_id
+        or value.get("episode_run_id") != episode_run_id
+        or not isinstance(checkpoint, dict)
+        or checkpoint.get("sha256") != digest
+        or checkpoint.get("size") != size
+        or checkpoint.get("date_raw") != date_raw
+        or _checkpoint_history_index(checkpoint, history) != history_index
+    ):
+        return None
+    return copy.deepcopy(value)
+
+
+def _effective_native_history_entry(
+    row: dict[str, object],
+) -> tuple[str | None, dict[str, object] | None]:
+    command = row.get("command")
+    result = row.get("result")
+    if command == "auto-turn" and isinstance(result, dict):
+        auto_turn = result.get("auto_turn")
+        selected = (
+            auto_turn.get("selected_step")
+            if isinstance(auto_turn, dict)
+            else None
+        )
+        command = selected if isinstance(selected, str) else None
+        if not set(result).intersection(
+            {
+                "route_preview",
+                "war_action",
+                "war_progress_before",
+                "war_progress_after",
+                "player_armies",
+            }
+        ):
+            nested = (
+                auto_turn.get("result")
+                if isinstance(auto_turn, dict)
+                else None
+            )
+            if isinstance(nested, dict):
+                result = nested
+    return (
+        command if isinstance(command, str) else None,
+        result if isinstance(result, dict) else None,
+    )
+
+
+def _result_army_observations(
+    result: dict[str, object],
+) -> list[dict[str, object]]:
+    direct = result.get("player_armies")
+    observations = (
+        [army for army in direct if isinstance(army, dict)]
+        if isinstance(direct, list)
+        else []
+    )
+    progress = result.get("war_progress_after")
+    wars = progress.get("wars") if isinstance(progress, dict) else None
+    for war in wars if isinstance(wars, list) else []:
+        armies = war.get("player_armies") if isinstance(war, dict) else None
+        if isinstance(armies, list):
+            observations.extend(army for army in armies if isinstance(army, dict))
+    return observations
+
+
+def _war_id_for_army(
+    snapshot: dict[str, object], army_id: int
+) -> int | None:
+    wars = snapshot.get("active_wars")
+    for war in wars if isinstance(wars, list) else []:
+        if not isinstance(war, dict):
+            continue
+        armies = war.get("allied_armies")
+        if not any(
+            isinstance(army, dict)
+            and army.get("army_id") == army_id
+            and army.get("controllable") is True
+            for army in (armies if isinstance(armies, list) else [])
+        ):
+            continue
+        war_id = war.get("war_id")
+        return int(war_id) if _positive_native_id(war_id) else None
+    return None
+
+
+def _positive_native_id(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value > 0
+
+
+def _valid_native_route(value: object) -> bool:
+    return isinstance(value, list) and bool(value) and all(
+        _positive_native_id(province_id) for province_id in value
+    )
+
+
+def _derive_rollback_war_failure(
+    history: list[dict[str, object]],
+    *,
+    checkpoint: object,
+    restored_snapshot: dict[str, object],
+    episode_run_id: object,
+    abandoned_snapshot: dict[str, object] | None = None,
+    completed_restore_epoch_limit: int = 0,
+) -> dict[str, object] | None:
+    """Extract one unresolved route from facts discarded by exact restore."""
+    history_index = _checkpoint_history_index(checkpoint, history)
+    if history_index is None or not isinstance(checkpoint, dict):
+        return None
+    restore_positions: list[int] = []
+    for position in range(history_index, len(history)):
+        row = history[position]
+        step, _result = _effective_native_history_entry(row)
+        if (
+            step == _RESTORE_CHECKPOINT_STEP
+            and row.get("ok") is True
+        ):
+            restore_positions.append(position)
+    branch_start = (
+        restore_positions[-1] + 1 if restore_positions else history_index
+    )
+    failure = _derive_rollback_war_failure_from_epoch(
+        history[branch_start:],
+        checkpoint=checkpoint,
+        restored_snapshot=restored_snapshot,
+        episode_run_id=episode_run_id,
+        abandoned_snapshot=abandoned_snapshot,
+    )
+    if failure is not None or completed_restore_epoch_limit <= 0:
+        return failure
+
+    # Compatibility only: old v2 states could persist successful restore rows
+    # without the separate advisory.  Inspect at most the newest N completed
+    # restore epochs, newest first, and stop on the first complete active-route
+    # proof.  Never walk arbitrary older play history.
+    for restore_offset in range(
+        len(restore_positions) - 1,
+        max(-1, len(restore_positions) - 1 - completed_restore_epoch_limit),
+        -1,
+    ):
+        epoch_end = restore_positions[restore_offset]
+        epoch_start = (
+            restore_positions[restore_offset - 1] + 1
+            if restore_offset > 0
+            else history_index
+        )
+        failure = _derive_rollback_war_failure_from_epoch(
+            history[epoch_start:epoch_end],
+            checkpoint=checkpoint,
+            restored_snapshot=restored_snapshot,
+            episode_run_id=episode_run_id,
+        )
+        if failure is not None:
+            return failure
+    return None
+
+
+def _derive_rollback_war_failure_from_epoch(
+    rows: list[dict[str, object]],
+    *,
+    checkpoint: dict[str, object],
+    restored_snapshot: dict[str, object],
+    episode_run_id: object,
+    abandoned_snapshot: dict[str, object] | None = None,
+) -> dict[str, object] | None:
+    previews: dict[tuple[int, int], dict[str, object]] = {}
+    successful_moves: list[tuple[int, int, dict[str, object]]] = []
+    latest_armies: dict[int, dict[str, object]] = {}
+    failed_move: tuple[int, int, dict[str, object]] | None = None
+    for row in rows:
+        step, result = _effective_native_history_entry(row)
+        if row.get("ok") is not True or not isinstance(result, dict):
+            continue
+        parsed_preview = parse_preview_move_army_step(step)
+        preview = result.get("route_preview")
+        if (
+            parsed_preview is not None
+            and isinstance(preview, dict)
+            and preview.get("status") == "available"
+            and preview.get("army_id") == parsed_preview[0]
+            and preview.get("target_province_id") == parsed_preview[1]
+            and _positive_native_id(preview.get("origin_province_id"))
+            and _valid_native_route(preview.get("route_province_ids"))
+        ):
+            previews[parsed_preview] = preview
+        parsed_move = parse_move_army_step(step)
+        action = result.get("war_action")
+        if parsed_move is not None and isinstance(action, dict):
+            if action.get("status") in {"move_submitted", "moving"}:
+                matching_preview = previews.get(parsed_move)
+                fresh_preview = bool(
+                    matching_preview
+                    and action.get("army_id") == parsed_move[0]
+                    and action.get("target_province_id") == parsed_move[1]
+                    and action.get("submitted_date_raw")
+                    == matching_preview.get("previewed_date_raw")
+                )
+                failed_move = (
+                    (*parsed_move, matching_preview)
+                    if fresh_preview and matching_preview is not None
+                    else None
+                )
+                if failed_move is not None:
+                    successful_moves.append(failed_move)
+            elif action.get("status") == "arrived":
+                failed_move = None
+        for army in _result_army_observations(result):
+            army_id = army.get("army_id")
+            if _positive_native_id(army_id):
+                latest_armies[int(army_id)] = army
+    if failed_move is None:
+        return None
+    move_army_id, move_target_id, preview = failed_move
+
+    active_army = (
+        _army_by_id(abandoned_snapshot, move_army_id)
+        if isinstance(abandoned_snapshot, dict)
+        else latest_armies.get(move_army_id)
+    )
+    active_route = (
+        active_army.get("route_province_ids")
+        if isinstance(active_army, dict)
+        else None
+    )
+    if not (
+        isinstance(active_army, dict)
+        and active_army.get("move_target_province_id") == move_target_id
+        and _valid_native_route(active_route)
+    ):
+        return None
+
+    terminal_route = preview.get("route_province_ids")
+    terminal_route_origin = preview.get("origin_province_id")
+    if not (
+        _valid_native_route(terminal_route)
+        and _positive_native_id(terminal_route_origin)
+    ):
+        return None
+
+    restored_army = _army_by_id(restored_snapshot, move_army_id)
+    restored_origin = (
+        restored_army.get("current_province_id")
+        if isinstance(restored_army, dict)
+        else None
+    )
+    war_id = _war_id_for_army(restored_snapshot, move_army_id)
+    checkpoint_sha256 = checkpoint.get("sha256")
+    if not (
+        isinstance(episode_run_id, str)
+        and episode_run_id
+        and _positive_native_id(restored_origin)
+        and war_id is not None
+        and isinstance(checkpoint_sha256, str)
+        and len(checkpoint_sha256) == 64
+    ):
+        return None
+
+    entry_move = next(
+        (
+            candidate
+            for candidate in successful_moves
+            if candidate[0] == move_army_id
+            and candidate[2].get("origin_province_id") == restored_origin
+        ),
+        None,
+    )
+    if entry_move is None:
+        return None
+    _entry_army_id, entry_target_id, entry_preview = entry_move
+    entry_route = entry_preview.get("route_province_ids")
+    entry_route_origin = entry_preview.get("origin_province_id")
+    if not (
+        _valid_native_route(entry_route)
+        and entry_route_origin == restored_origin
+    ):
+        return None
+    failure = {
+        "status": "rolled_back_active_route",
+        "source": "checkpoint_discarded_branch",
+        "episode_run_id": episode_run_id,
+        "checkpoint_sha256": checkpoint_sha256,
+        "checkpoint_date_raw": checkpoint.get("date_raw"),
+        "war_id": war_id,
+        "army_id": move_army_id,
+        "restored_origin_province_id": int(restored_origin),
+        "target_province_id": entry_target_id,
+        "route_origin_province_id": int(entry_route_origin),
+        "route_province_ids": list(entry_route),
+        "previewed_date_raw": entry_preview.get("previewed_date_raw"),
+        "terminal_failure_target_province_id": move_target_id,
+        "terminal_failure_route_origin_province_id": int(
+            terminal_route_origin
+        ),
+        "terminal_failure_route_province_ids": list(terminal_route),
+        "abandoned_date_raw": (
+            abandoned_snapshot.get("date_raw")
+            if isinstance(abandoned_snapshot, dict)
+            else None
+        ),
+        "restored_date_raw": restored_snapshot.get("date_raw"),
+    }
+    return _normalize_rollback_war_failure(failure)
+
+
+def _normalize_rollback_war_failure(value: object) -> dict[str, object] | None:
+    if not isinstance(value, dict) or value.get("status") != "rolled_back_active_route":
+        return None
+    required_ids = (
+        "war_id",
+        "army_id",
+        "restored_origin_province_id",
+        "target_province_id",
+        "route_origin_province_id",
+    )
+    if any(not _positive_native_id(value.get(name)) for name in required_ids):
+        return None
+    if value.get("route_origin_province_id") != value.get(
+        "restored_origin_province_id"
+    ):
+        return None
+    route = value.get("route_province_ids")
+    if not _valid_native_route(route):
+        return None
+    terminal_target = value.get("terminal_failure_target_province_id")
+    terminal_origin = value.get("terminal_failure_route_origin_province_id")
+    terminal_route = value.get("terminal_failure_route_province_ids")
+    has_terminal_diagnostics = any(
+        name in value
+        for name in (
+            "terminal_failure_target_province_id",
+            "terminal_failure_route_origin_province_id",
+            "terminal_failure_route_province_ids",
+        )
+    )
+    if has_terminal_diagnostics and not (
+        _positive_native_id(terminal_target)
+        and _positive_native_id(terminal_origin)
+        and _valid_native_route(terminal_route)
+    ):
+        return None
+    run_id = value.get("episode_run_id")
+    digest = value.get("checkpoint_sha256")
+    if not (
+        isinstance(run_id, str)
+        and run_id
+        and isinstance(digest, str)
+        and len(digest) == 64
+        and all(character in "0123456789abcdef" for character in digest)
+    ):
+        return None
+    normalized = copy.deepcopy(value)
+    normalized["route_province_ids"] = list(route)
+    if has_terminal_diagnostics and isinstance(terminal_route, list):
+        normalized["terminal_failure_route_province_ids"] = list(
+            terminal_route
+        )
+    return normalized
 
 
 def _army_move_postcondition(

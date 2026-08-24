@@ -20,9 +20,9 @@ import uuid
 from pathlib import Path
 
 from .environment import (
-    EXPECTED_GAME_VERSION,
     EXPECTED_MOD_NAME,
     OUTER_DESCRIPTOR_REF,
+    VISIBLE_UI_BASELINE_GAME_VERSION,
     _contract_digest,
     EnvironmentSpec,
     ck3_process_inventory,
@@ -759,7 +759,7 @@ def _validate_normal_environment(
         or not profile_dir.is_absolute()
         or profile_dir.resolve() != (state_dir / "profile").resolve()
         or not isinstance(game, dict)
-        or game.get("raw_version") != EXPECTED_GAME_VERSION
+        or game.get("raw_version") != VISIBLE_UI_BASELINE_GAME_VERSION
         or game.get("debug_mode") is not False
         or not isinstance(mod, dict)
         or mod.get("name") != EXPECTED_MOD_NAME

@@ -14,7 +14,22 @@
 
 当前 DLL 启动时会散列宿主进程在磁盘上的 EXE。只有完整 SHA-256 相同，`BindCurrentProcess()` 才把模块基址加到固定 RVA 上并令 `Bindings.enabled=true`。普通 CK3 更新即使仍显示相近的产品版本，只要 EXE 字节改变，也不会继续使用 1.19.0.6 的地址。
 
-因此，升级后的预期行为是：
+### 正式启动前的 profile 密封不是 adapter allowlist
+
+`prepare-profile` 不再把产品版本与某个 Python 全局常量比较。它接受任意**非空**的 launcher 原始版本、展示版本和发行平台，并把下列当前安装身份写入 format v1 environment manifest：
+
+- launcher 原始/展示版本、发行平台和 `launcher-settings.json` SHA-256；
+- `ck3.exe` 的绝对路径和完整 SHA-256；
+- 原版 rules 文件的路径/SHA-256 与已安装 DLC descriptor 指纹；
+- production Mod、单 Mod load profile 和 agent runtime 的既有密封字段。
+
+`verify-profile` 没有被跳过或放宽成“文件存在即可”。每次正式 launch 前，它仍要求当前 launcher 身份、EXE 路径与字节、rules、DLC、production tree 和 runtime 全部等于已准备 manifest。CK3 升级后，旧 profile 因身份或 EXE 指纹变化而拒绝启动；应在确认没有 CK3 进程后重新运行 `prepare-profile`。它会原地生成新的 format v1 manifest，并继续保留既有 tutorial、save 与 native driver state，不需要手改、删除或升级 schema。format v1 的读取与字段语义保持兼容；部署本次 Python 改动本身会令旧 manifest 的 agent runtime fingerprint 失配，这也按同一条显式 re-prepare 路径迁移。
+
+这道密封回答的是“当前安装是否仍是准备时那一份”，不是“DLL 是否支持这个 build”。重新 prepare 后，未知产品版本可以经过 `native-session` 的正常 `verify-profile` 到达 DLL；随后由 DLL 对完整 EXE SHA 做 exact adapter 选择，并通过 `hello.game_adapter_status=unsupported_build` 安全拒绝未知 gameplay ABI。
+
+`doctor`、normal/menu/opening/crash smoke 仍是 2560×1440 简体中文视觉/OCR preflight，默认明确要求 `VISIBLE_UI_BASELINE_GAME_VERSION=1.19.0.6`。`native-session` 不调用 `doctor`，也不导入视觉驱动。新增第二个 native exact adapter 不需要修改这个视觉 baseline；只有重新采集、验证并发布新的 UI/OCR contract 时才更新视觉版本。
+
+因此，重新 prepare 后的预期行为是：
 
 1. 通用 x64 DLL 注入、worker、named pipe、`hello`、heartbeat 和 ping/pong 通常仍能工作；这些代码不依赖 CK3 游戏对象布局。
 2. `hello.ck3_build_match=false`，只公布 `bridge.identity`、`bridge.heartbeat` 和 `bridge.ping`。
@@ -161,9 +176,10 @@ Python 已经根据 `hello.capabilities` 生成 action steps，并能从 capabil
 
 ### A. 冻结新 build 身份
 
-1. 保存产品版本、完整 SHA-256、file size、PE timestamp、preferred image base 和 size of image。
-2. 新建该版本的 adapter 目录与 anchor manifest；禁止直接覆盖上一版本资料。
-3. registry 只有在该 adapter 至少通过离线绑定检查后才加入新 SHA。
+1. 确认 CK3 已退出，在升级后的安装上重新运行 `prepare-profile`；不要编辑 manifest 来绕过旧身份，也不要为新 adapter 修改 Python 的默认产品版本。
+2. 保存产品版本、完整 SHA-256、file size、PE timestamp、preferred image base 和 size of image。
+3. 新建该版本的 adapter 目录与 anchor manifest；禁止直接覆盖上一版本资料。
+4. registry 只有在该 adapter 至少通过离线绑定检查后才加入新 SHA。
 
 ### B. 重定位与复核 ABI
 
@@ -174,6 +190,13 @@ Python 已经根据 `hello.capabilities` 生成 action steps，并能从 capabil
 5. 按能力族实现并公布 capability；未完成族保持缺席。
 
 路线预览还要单独复核“引擎 effective origin”与公共 origin 的区别：公共合同以同一 paused snapshot 的军队当前省为稳定 origin；版本 adapter 只可把原生 resolver 的结果认作当前省或该 snapshot 剩余路线首项。若为后者，adapter 把它补到未经简化的 native route 最前；若两者都不是则拒绝整次 preview。不得让某个版本的 mid-edge 内部起点泄漏成上层 origin，也不得跨版本用去重/删回环改变路线碰撞语义。即使目标等于观测当前省，effective origin 不同也必须完成当前边并规划返回，不能误报空路线。
+
+Halt/取消移动也必须逐版本重新验证，不能只迁移命令对象地址。1.19.0.6 的
+`CHaltUnitsCommand` 在 commitment threshold 之前清空路线；越过阈值后只删除旧路线首项之后的
+suffix，保留 `[old_route.front]` 并让军队走完当前边。它既不会瞬移回物理当前省，也不会反向退出边；旧路线
+只剩一跳时 validator 还会拒绝，因为已经没有可取消的后缀。未来 adapter 若公开 Halt，稳定 result 必须表达
+“立即空路线”与“只保留旧首跳”两种后置条件，并重新锚定 threshold/effective-destination 语义；不得把某版 GUI
+按钮名翻译成跨版本恒真的“原地停车”。
 
 ### C. 离线验证
 
@@ -235,5 +258,6 @@ Python 已经根据 `hello.capabilities` 生成 action steps，并能从 capabil
 5. capability 来自 adapter，测试至少覆盖 exact match、unknown build 和 partial capability dispatch。
 6. anchor scanner、C++ fixture、protocol tests 和既有 Python native-driver tests 通过。
 7. 下一 CK3 版本可以通过新增 adapter 完成迁移，不需要复制或修改 `bridge.cpp`、MCP tools 与 planner。
+8. Python CLI/profile 不含 native build allowlist；新增 exact adapter 不要求修改 Python 产品版本常量，视觉 baseline 独立演进。
 
 第 7 项要到实际出现第二个 EXE 后才能最终验证；在此之前标为架构验收目标，不宣称已经证明跨版本兼容。

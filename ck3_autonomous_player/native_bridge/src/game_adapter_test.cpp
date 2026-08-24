@@ -26,10 +26,12 @@ constexpr AdapterDescriptor kPreferredDescriptor{
     kPreferredCapabilities,
 };
 
-constexpr std::array<std::string_view, 3> kFutureCapabilities{
+constexpr std::array<std::string_view, 5> kFutureCapabilities{
     "game.state.snapshot",
     "game.command.pause-map",
     "game.command.preview-move-army-N-to-N",
+    "game.command.split-army-half-N",
+    "game.command.merge-armies-N-with-N",
 };
 constexpr AdapterDescriptor kFutureDescriptor{
     "fixture-future",
@@ -86,6 +88,14 @@ public:
   xar::game::DisbandArmyResult
   submit_disband_army(std::int32_t) const noexcept override {
     return xar::game::DisbandArmyResult::unavailable;
+  }
+  xar::game::SplitArmyHalfResult
+  submit_split_army_half(std::int32_t) const noexcept override {
+    return xar::game::SplitArmyHalfResult::unavailable;
+  }
+  xar::game::MergeArmiesResult
+  submit_merge_armies(std::int32_t, std::int32_t) const noexcept override {
+    return xar::game::MergeArmiesResult::unavailable;
   }
   bool read_declarable_wars(
       std::vector<xar::game::DeclarableWarSnapshot> &) const noexcept override {
@@ -168,6 +178,9 @@ int main() {
       !Contains(known.capabilities, "game.state.army-routes") ||
       !Contains(known.capabilities,
                 "game.command.preview-move-army-N-to-N") ||
+      !Contains(known.capabilities, "game.command.split-army-half-N") ||
+      !Contains(known.capabilities,
+                "game.command.merge-armies-N-with-N") ||
       !Contains(known.capabilities, "game.command.declare-war-N") ||
       !Contains(known.capabilities,
                 "game.command.query-arrange-marriage-choices") ||
@@ -191,6 +204,8 @@ int main() {
       partial.supports("game.command.declare-war-N") ||
       !partial.supports_snapshot() || !partial.supports_step("pause-map") ||
       !partial.supports_step("preview-move-army-1-to-2") ||
+      !partial.supports_step("split-army-half-1") ||
+      !partial.supports_step("merge-armies-1-with-2") ||
       partial.supports_step("declare-war-99-1-0") ||
       partial.supports_step("unsupported-step")) {
     return Fail("capability lookup did not use the selected adapter set");

@@ -14,6 +14,7 @@
       "name": "submit_command_clone_and_queue",
       "rva": "0x973E00",
       "confidence": "high-static",
+      "return": "bool in AL copied from locked_command_queue; false means the clone was rejected and destroyed rather than enqueued",
       "pattern": "48 89 5C 24 08 4C 89 4C 24 20 57 48 83 EC 20 41 8B D8 4C 8B C2 48 8B F9 48 8B 02 48 8D 54 24 38 49 8B C8 FF 50 40 90"
     },
     {
@@ -383,6 +384,114 @@
       "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 70 FE FF FF 48 81 EC 90 02 00 00 4D 8B E8 8B D9 4C 8B 0D ED 6F 05 03 4D 85 C9 74 2A"
     },
     {
+      "name": "split_half_army_player_validate_construct_and_submit",
+      "rva": "0x1242100",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 18 57 48 83 EC 50 48 8B D9 45 33 C9 44 8B 05 C9 5D DA 03 8B 91 F8 00 00 00 41 8D 49 01 E8 0A 5F 47 01"
+    },
+    {
+      "name": "split_half_army_complete_validate",
+      "rva": "0x26B8030",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 18 55 41 56 41 57 48 83 EC 20 41 8B D8 4D 8B F9 4C 8B 05 E5 46 05 03 44 8B F1 4D 85 C0"
+    },
+    {
+      "name": "split_half_army_state_and_regiment_gates",
+      "rva": "0x26B6A90",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 D0 FE FF FF 48 81 EC 30 02 00 00 45 0F B6 F9 49 8B D8 48 8B F9 40 B6 01 4C 8B 05 B5 61 05 03"
+    },
+    {
+      "name": "split_half_army_serialize_payload",
+      "rva": "0x26B7F10",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 44 8B 41 20 48 8B D9 48 8B CA 48 8B FA E8 64 8E F3 FF 48 8B CF E8 BC D6 4D 01 BA AA 28 00 00"
+    },
+    {
+      "name": "split_half_army_command_heap_clone",
+      "rva": "0x26C2270",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 48 8B FA B9 30 00 00 00 E8 9A 3B 76 01 4C 8B C8 48 8D 05 14 FB 9B 01"
+    },
+    {
+      "name": "split_half_army_command_destructor",
+      "rva": "0x963C60",
+      "confidence": "high-static",
+      "pattern": "40 53 48 83 EC 20 48 8D 05 3B E1 71 03 48 8B D9 48 89 01 F6 C2 01 74 0A BA 30 00 00 00"
+    },
+    {
+      "name": "split_half_army_execute_create_sibling",
+      "rva": "0x26B73E0",
+      "confidence": "high-static",
+      "pattern": "48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 78 D7 FF FF B8 88 29 00 00 E8 3D F6 76 01 48 2B E0"
+    },
+    {
+      "name": "split_half_army_clone_source_unit",
+      "rva": "0x26B67C0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 30 48 8B 05 8D 78 05 03 48 8B F9 4C 8B 05 9B 64 05 03"
+    },
+    {
+      "name": "merge_units_gui_reflection_entry",
+      "rva": "0x1241FD0",
+      "confidence": "high-static",
+      "pattern": "48 8B 81 D0 00 00 00 48 8B 15 52 A7 4C 04 4C 8B 80 A0 06 00 00 48 85 D2 74 2D 44 8B 89 F8 00 00 00 41 8B C1 25 FF FF FF"
+    },
+    {
+      "name": "merge_units_player_action",
+      "rva": "0xC71B10",
+      "confidence": "high-static",
+      "pattern": "40 55 56 57 41 54 41 55 41 56 41 57 48 81 EC A0 00 00 00 48 8D 6C 24 20 48 89 9D C0 00 00 00 0F 29 75 70 48 8B F2 8B D9"
+    },
+    {
+      "name": "merge_units_command_heap_constructor",
+      "rva": "0x26C6CE0",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 28 B9 40 00 00 00 E8 36 F1 75 01 33 D2 48 89 44 24 30 48 8D 0D CC 66 C6 01 C6 40 08 00 48 89 08 48 8D 0D 8E 66"
+    },
+    {
+      "name": "native_int32_array_insert_range",
+      "rva": "0x975ED0",
+      "confidence": "high-static",
+      "pattern": "4D 3B C1 0F 84 7B 01 00 00 53 56 57 41 56 48 83 EC 28 48 63 41 0C 49 8B D8 48 89 6C 24 50 48 8B F9 8B 49 08 49 8B E9 48 2B EB 4C 89 7C 24 20 48 C1 FD 02 49 8B F1 4C 63 F2 44 8D 3C 28 44 3B F9 0F 8E E8 00 00 00 66 0F 6E C1 41 B8 04 00 00 00 48 8B 4F 10"
+    },
+    {
+      "name": "merge_units_command_validate",
+      "rva": "0x26BA050",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 4C 8B 05 1A 2C 05 03 48 8B F2 48 8B F9 4D 85 C0 74 28 8B 51 24 8B C2 25 FF"
+    },
+    {
+      "name": "merge_units_command_heap_clone",
+      "rva": "0x26C26B0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 57 48 83 EC 20 48 8B D9 48 8B F2 B9 40 00 00 00 E8 55 37 76 01 48 89 44 24 38 48 8B F8 48"
+    },
+    {
+      "name": "merge_units_command_deleting_destructor",
+      "rva": "0x26B5330",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 8B DA 48 8B F9 E8 2C 90 3C FE F6 C3 01 74 0D BA 40 00 00 00 48 8B CF E8 7E 0E 77 01 48 8B"
+    },
+    {
+      "name": "merge_units_command_execute",
+      "rva": "0x26B9F60",
+      "confidence": "high-static",
+      "pattern": "4C 8B DC 49 89 5B 10 57 48 81 EC 80 00 00 00 48 8B D9 33 FF 49 89 7B A8 49 89 7B B0 49 8D 43 C0 49 89 43 B8 48 8D 05 6D"
+    },
+    {
+      "name": "merge_units_complete_validate",
+      "rva": "0x2947D10",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 90 FE FF FF 48 81 EC 70 02 00 00 49"
+    },
+    {
+      "name": "merge_units_bulk_execute_core",
+      "rva": "0x2948680",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 00 EF FF FF B8 00 12 00 00 E8 99 E3 4D 01 48"
+    },
+    {
       "name": "casus_belli_type_database_getter",
       "rva": "0x88E260",
       "confidence": "high-static",
@@ -623,6 +732,28 @@
     "disband_army_validate": "0x26B5710",
     "disband_army_player_construct_and_submit": "0xBC8FBB",
     "disband_army_ai_construct_and_submit": "0x187954F",
+    "split_army_half_primary_vtable": "0x432D5C0",
+    "split_army_half_secondary_vtable": "0x432D658",
+    "split_army_half_player_ui": "0x1242100",
+    "split_army_half_validate": "0x26B8030",
+    "split_army_half_state_and_regiment_gates": "0x26B6A90",
+    "split_army_half_serialize": "0x26B7F10",
+    "split_army_half_destructor": "0x963C60",
+    "split_army_half_heap_clone": "0x26C2270",
+    "split_army_half_execute": "0x26B73E0",
+    "split_army_half_clone_source_unit": "0x26B67C0",
+    "merge_armies_primary_vtable": "0x432D3C8",
+    "merge_armies_secondary_vtable": "0x432D398",
+    "merge_armies_gui_reflection_entry": "0x1241FD0",
+    "merge_armies_player_action": "0xC71B10",
+    "merge_armies_heap_constructor": "0x26C6CE0",
+    "merge_armies_validate": "0x26BA050",
+    "merge_armies_complete_validate": "0x2947D10",
+    "merge_armies_heap_clone": "0x26C26B0",
+    "merge_armies_destructor": "0x26B5330",
+    "merge_armies_execute": "0x26B9F60",
+    "merge_armies_bulk_execute_core": "0x2948680",
+    "played_character_id_global": "0x4FE7EE0",
     "send_character_interaction_primary_vtable": "0x40829F8",
     "send_character_interaction_secondary_vtable": "0x40829C8",
     "war_declaration_vtable": "0x411DAA0",
@@ -698,6 +829,26 @@
       "name": "CDisbandArmyCommand.primary",
       "rva": "0x432BFE0",
       "function_rvas": ["0x801FD0", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26B5630", "0x803620", "0x26C2090"]
+    },
+    {
+      "name": "CSplitHalfArmyCommand.primary",
+      "rva": "0x432D5C0",
+      "function_rvas": ["0x963C60", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26B7EF0", "0x803620", "0x26C2270", "0x26C2300", "0x7E6490", "0x26C2310", "0x26C2330", "0x26C2340", "0x26C2350", "0x26C2360"]
+    },
+    {
+      "name": "CSplitHalfArmyCommand.secondary",
+      "rva": "0x432D658",
+      "function_rvas": ["0x26B2850", "0x26B73E0", "0x7E6490", "0x7E6490", "0x7E9220"]
+    },
+    {
+      "name": "CMergeUnitsCommand.primary",
+      "rva": "0x432D3C8",
+      "function_rvas": ["0x26B5330", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26BA050", "0x803620", "0x26C26B0", "0x26C2770", "0x7E6490", "0x26C2780", "0x26C27A0", "0x26C27B0", "0x26C27C0", "0x26C27D0"]
+    },
+    {
+      "name": "CMergeUnitsCommand.secondary",
+      "rva": "0x432D398",
+      "function_rvas": ["0x26B2850", "0x26B9F60", "0x7E6490", "0x7E6490", "0x7E9220"]
     },
     {
       "name": "CSendCharacterInteractionCommand.primary",
@@ -958,6 +1109,30 @@
       "secondary_vtable": "+0x18 = 0x432C078",
       "payload": "player path +0x20=1 command kind, +0x24 command-target ID loaded from CArmy+0x178; the public component ArmyID at CArmy+0x10 is only used to resolve the object",
       "lifecycle": "player UI RVA 0xBC8EE0 first calls validator RVA 0x26B5710(1, command_target_id, null), then submits with channel flags 0x0E; kind 2 / flags 7 at RVA 0x187954F is the AI-controller path and is rejected for a player-owned army"
+    },
+    "CSplitHalfArmyCommand": {
+      "size": "0x30",
+      "primary_vtable": "+0x00 = 0x432D5C0",
+      "secondary_vtable": "+0x18 = 0x432D658",
+      "payload": "+0x20=1 player command kind, +0x24 current played CharacterID, +0x28 generation-bearing source CArmyID loaded from the public CUnit+0x178",
+      "validator": "RVA 0x26B8030(kind, source CArmyID, played CharacterID, error) resolves CArmy -> CUnit -> owner and requires actor/owner identity before complete gates RVA 0x26B6A90(..., split_half=true)",
+      "gates": "not-owner, combat, raid, barter, retreat and movement-lock reject; split-half additionally requires at least two total and two live/nonempty regiments. No war or siege gate exists; ordinary movement is not blanket-rejected outside retreat/movement-lock",
+      "serialization": "RVA 0x26B7F10 serializes +0x24 with tag 0x28AA and +0x28 with tag 0x296A; schema/type RVA 0x26C2300 returns 0x2C0B",
+      "lifecycle": "player GUI RVA 0x1242100 validates, constructs and submits a synchronous clone with flags 0x0E; primary-vtable +0x40 / RVA 0x26C2270 is the 0x30-byte heap clone. Common wrapper RVA 0x973E00 returns the locked queue bool; the bridge maps false to submission_failed and then explicitly destroys its original stack object through RVA 0x963C60(delete_flags=0)",
+      "execution": "secondary executor RVA 0x26B73E0 calls RVA 0x26B67C0 to create a distinct sibling CArmy/CUnit before partitioning regiments; bridge result remains split_submitted until a later snapshot proves the new public CUnit"
+    },
+    "CMergeUnitsCommand": {
+      "size": "0x40",
+      "primary_vtable": "+0x00 = 0x432D3C8",
+      "secondary_vtable": "+0x18 = 0x432D398",
+      "payload": "+0x20=1 player command kind, +0x24 destination public generation-bearing CUnitID, +0x28 native int32 array of source public CUnitIDs; the bridge fixes count=1",
+      "source_array": "+0x28 data pointer, +0x30 int32 capacity, +0x34 int32 count, +0x38 allocator pointer; factory RVA 0x26C6CE0 initializes allocator base+0x4FEADE0",
+      "validator": "object wrapper RVA 0x26BA050 resolves destination CUnit and owner, enforces kind 1, then tail-calls complete validator RVA 0x2947D10(destination CUnitID, source array, error)",
+      "gates": "destination and each usable source must resolve; destination rejects combat, retreat, movement lock and invalid out-of-territory raid; compatible source requires distinct CArmy, exact same ProvinceID, no source combat, exact same full owner CharacterID and matching land/naval mode. No explicit in-war or active-siege gate exists",
+      "serialization": "RVA 0x26BA140 uses kind tag 0x340A, destination tag 0x6B and source-array tag 0x27F8; schema/type RVA 0x26C2770 returns 0x2FA1",
+      "lifecycle": "factory RVA 0x26C6CE0 allocates an engine-owned 0x40 object; range helper RVA 0x975ED0(header, insertion_index, begin, end) allocates and synchronously copies source IDs; wrapper RVA 0x973E00 deep-clones through primary +0x40 / RVA 0x26C26B0, submits player flags 0x0E, and returns the locked queue bool; false maps to submission_failed. Deleting destructor RVA 0x26B5330(command,1) frees the original source buffer then the factory object on every exit",
+      "execution": "secondary executor RVA 0x26B9F60 reaches bulk core RVA 0x2948680; each compatible source transfers subordinate units into the destination and the source CUnit/CArmy is removed, preserving the destination public CUnit identity",
+      "bridge_contract": "strict merge-armies-<destination public CUnitID>-with-<source public CUnitID>; both IDs must be distinct and currently player-controllable before the complete native validator; typed success is only merge_submitted until a later paused snapshot proves destination remains and source disappears"
     },
     "CCasusBelliTypeDatabase": {
       "types": "+0x68 CCasusBelliType pointer array",

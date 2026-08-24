@@ -25,6 +25,7 @@ from .environment import (
     EXPECTED_MOD_NAME,
     OUTER_DESCRIPTOR_REF,
     REPO_ROOT,
+    VISIBLE_UI_BASELINE_GAME_VERSION,
     _contract_digest,
     EnvironmentSpec,
     ck3_process_inventory,
@@ -2082,7 +2083,7 @@ def _validate_archived_environment(
         or display.get("resolution") != [2560, 1440]
         or display.get("mode") != "fullscreen"
         or not isinstance(game, dict)
-        or game.get("raw_version") != "1.19.0.6"
+        or game.get("raw_version") != VISIBLE_UI_BASELINE_GAME_VERSION
         or game.get("debug_mode") is not False
         or not isinstance(load_profile, dict)
         or load_profile.get("enabled_mods") != [OUTER_DESCRIPTOR_REF]
@@ -5687,7 +5688,7 @@ def _run_menu_scenario(
         window,
         contract,
         artifacts,
-        expected_game_version=spec.expected_game_version,
+        expected_game_version=VISIBLE_UI_BASELINE_GAME_VERSION,
         expected_language=language,
         expected_contract_sha256=contract_sha256,
         durable_event_callback=lambda event: append_event(events, event),

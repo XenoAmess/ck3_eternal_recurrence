@@ -48,9 +48,9 @@ from xar_autoplayer.crash_probe import (  # noqa: E402
     _wait_pinned_exit,
 )
 from xar_autoplayer.environment import (  # noqa: E402
-    EXPECTED_GAME_VERSION,
     EXPECTED_MOD_NAME,
     OUTER_DESCRIPTOR_REF,
+    VISIBLE_UI_BASELINE_GAME_VERSION,
     _contract_digest,
     EnvironmentSpec,
     sha256_file,
@@ -246,8 +246,8 @@ class CrashReportContractTests(unittest.TestCase):
             "state_dir": str(state.resolve()),
             "profile_dir": str((state / "profile").resolve()),
             "game": {
-                "raw_version": EXPECTED_GAME_VERSION,
-                "display_version": EXPECTED_GAME_VERSION,
+                "raw_version": VISIBLE_UI_BASELINE_GAME_VERSION,
+                "display_version": VISIBLE_UI_BASELINE_GAME_VERSION,
                 "distribution": "steam",
                 "launcher_settings_sha256": "4" * 64,
                 "executable": str(game_exe),

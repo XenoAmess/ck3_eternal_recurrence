@@ -60,6 +60,8 @@ bridge identity/heartbeat/ping.
 | `game.command.preview-move-army-N-to-N` | implemented; paused minimized live probe exposed and closed the mid-edge effective-origin case | canonical plan/apply split + exact origin/PathCtx/MovePath/A* ABIs + current/route-front normalization + success/failure/cleanup/bound/paused fixture; no apply binding or queue call | explicit upper-layer policy only; paused map required |
 | `game.command.move-army-N-to-N` | implemented and minimized-live accepted: player command submitted and army province changed | exact player-UI kind/channel plus native mode/state/can-move/path-init/clone/destruct lifecycle, offline fixture, and live movement | explicit upper-layer policy only |
 | `game.command.disband-army-N` | implemented; live exposed the distinct command-target ID and corrected build awaits replay | exact 0x28-byte command/vtables/payload source/clone + offline fixture | explicit upper-layer policy only |
+| `game.command.split-army-half-N` | native C++ slice implemented; live execution pending | exact player GUI/validator/0x30-byte command/vtables/clone/destruct/executor path + offline public/internal-ID fixture | explicit upper-layer policy only |
+| `game.command.merge-armies-N-with-N` | native C++ strict-pair slice implemented; live execution pending | exact batch GUI/public-CUnit payload/0x40-byte command + canonical factory/range-copy/deep-clone/destruct and offline owned-array fixture | explicit upper-layer policy only |
 | `game.command.query-declarable-wars` | native C++ core implemented, bridge route/live probe pending | exact declare-war UI CB registry/evaluator/item rules + offline SSO/heap-key and configuration fixture | explicit upper-layer policy only |
 | `game.command.declare-war-<declaration_id>` | native C++ core implemented, bridge route/live probe pending | generation-bound exact re-enumeration + native context/validation/queue/destruction fixture | explicit upper-layer policy only |
 | `game.command.enforce-demands-<war_id>` | native C++ core implemented, bridge route/live probe pending | exact WarOverview victory context builder + common interaction command lifecycle fixture | explicit upper-layer policy only |
@@ -323,10 +325,12 @@ unavailable unless an upper layer explicitly chooses to restore the window.
 ## Command queue and object layouts
 
 The common submission wrapper is RVA `0x973E00`; the command manager object is
-`base + 0x57621F0`. It calls the command virtual at `+0x40` to clone the stack
-object, then calls RVA `0x341D990`. For UI channel flags `7`, that function
-takes the queue lock at the manager's internal queue `+0x78`, enqueues, and
-unlocks. This is strong static evidence that the bridge worker may submit
+`base + 0x57621F0`. It calls the command virtual at `+0x40` to clone the source
+object, then calls RVA `0x341D990` and returns that locked queue's `bool` in
+`AL`. A false return means the queue rejected and destroyed the clone rather
+than accepting it. For UI channel flags `7`, the normal path takes the queue
+lock at the manager's internal queue `+0x78`, enqueues, and unlocks. This is
+strong static evidence that the bridge worker may submit
 without a main-thread callback; the minimized pause/speed probe has already
 confirmed that queue path. Event selection still needs its bounded minimized
 live probe.
@@ -484,6 +488,79 @@ path (`kind=1`, submit flags `0x0E`), the minimized live call returned
 `move_submitted`; twelve seconds at speed 5 advanced roughly 35 in-game days
 and the same army's province changed from `2619` to `2606`. This is the direct
 gameplay acceptance for the move-command fix, not merely queue acceptance.
+
+`CSplitHalfArmyCommand` is the original player-facing path behind
+`window_army.gui`'s `ArmyWindow.SplitHalfSelected`; its adjacent enabled gate
+is `CanSplitHalfSelected`. GUI body RVA `0x1242100` calls
+`0x26B8030(1, source CArmyID, played CharacterID, nullptr)`, constructs a
+`0x30`-byte stack object with primary/secondary vtables
+`0x432D5C0/0x432D658`, writes player kind `1` at `+0x20`, the current played
+`CharacterID` at `+0x24`, and the source generation-bearing `CArmyID` at
+`+0x28`, then queues with flags `0x0E`. The public bridge step remains
+`split-army-half-<public CUnitID>`: it generation-resolves that CUnit through
+storage `base+0x570CC80` and reads the distinct internal ID from
+`CUnit+0x178`; it never passes the public CUnit ID as the command target.
+
+Primary validator wrapper RVA `0x26B7EF0` forwards those three payload fields
+to complete validator `0x26B8030`. That validator independently resolves the
+source CArmy through `base+0x570C730`, its `CArmy+0x124` CUnit, the unit owner
+and both full-generation Characters, requires the played actor to equal the
+owner, runs the player command-kind gate, and calls complete split predicate
+`0x26B6A90(..., split_half=true)`. The latter rejects not-owner, combat, raid,
+barter, retreat and movement-lock states and requires at least two total plus
+two live/nonempty regiments. It has no in-war or siege blocker; ordinary
+movement is not a blanket blocker apart from retreat and the committed
+movement-lock phase. These are native validator facts, not bridge guesses.
+
+Heap clone RVA `0x26C2270` allocates exactly `0x30` bytes and copies all three
+payload fields. Serializer RVA `0x26B7F10` records actor tag `0x28AA` and
+source-army tag `0x296A`; schema/type RVA `0x26C2300` returns `0x2C0B`.
+Bridge submission uses common wrapper `0x973E00`, which synchronously
+dispatches the primary-vtable `+0x40` clone and returns the locked queue's
+`bool`; false maps to `submission_failed`. The bridge then destroys its
+original stack object with RVA `0x963C60(command,0)`. The offline fixture deliberately uses different
+public CUnit and internal CArmy IDs, emulates that synchronous clone, poisons
+the destroyed source object, and verifies the clone retains kind/actor/source.
+It also pins validator rejection and queue rejection, and verifies queue acceptance does not
+fabricate a second army in the same snapshot.
+
+The executor is secondary vfunc RVA `0x26B73E0`. It resolves `object+0x28`,
+calls `0x26B67C0`, and only then partitions regiment/component data between
+source and returned sibling. RVA `0x26B67C0` resolves the source CArmy's CUnit,
+calls original creation RVA `0x27BF0A0`, obtains a distinct CArmy whose
+`+0x124` resolves to a new CUnit, and copies relevant unit/movement state.
+Therefore execution is capable of producing a separately snapshot-visible
+and movable public CUnit rather than an internal regiment grouping. The
+stable command result is nevertheless only `split_submitted`; a later paused
+snapshot must prove the source persists and the player-controllable public
+CUnit set gains exactly one ID. Independent control requires a subsequent
+move of only the non-besieging sibling while the other remains in place.
+No live command was issued while freezing this slice.
+
+CK3 also has a distinct `CHaltUnitsCommand`; it is not a move-command flag.
+The original `ArmyWindow.GetOrders.GetHalt` / `PostCommand` player path builds
+kind `1` at RVA `0x123C4F0` and submits with flags `0x0E`. The command is
+`0x40` bytes, uses primary/secondary vtables `0x432C0D8/0x432C0A8`, constructor
+`0x26B52C0`, destructor `0x26B5330`, validator `0x26B5400`, executor
+`0x26B5370`, and heap clone `0x26C1F60`; its serializer type ID is `0x6A`.
+The payload is a deep-copied native array of full generation-bearing CUnit IDs
+at `+0x28/+0x30/+0x34`, while `+0x20` stores the player command kind. A bridge
+request must contain one CUnit only because the validator accepts when any
+array member is actionable whereas the executor visits all members.
+
+The executor calls `0x2246CD0(CUnit*)` to choose the halt destination and then
+the canonical `0x2248170(unit,destination,2,0)` plan/apply path. Before the
+movement commitment threshold, the destination is the observed current
+Province and apply clears the route. After the threshold, the destination is
+the old route front; apply removes the suffix but reinserts that front, so the
+exact postcondition is `[old_route.front]`. A committed route that already has
+only one entry is rejected by halt eligibility RVA `0x2248940`, since no
+suffix remains to cancel. Therefore Halt cannot reverse a mid-edge unit. In
+the minimized live deadlock with observed Province `8759`, route front `2602`
+and enemy route ending at `2602`, Halt could only have produced `[2602]` and
+was not a safe alternative to exact checkpoint restore. This ABI is frozen as
+research only; no Halt capability is advertised until implementation,
+fixture coverage and a recoverable live postcondition replay are complete.
 
 `CDisbandArmyCommand` is `0x28` bytes: vtables
 `0x432BFE0`/`0x432C078`, and the command-target ID read from `CArmy+0x178` at
@@ -668,3 +745,69 @@ state, and the native war loop now have offline implementations. The bounded
 next war acceptance is a minimized exact-build probe of declaration discovery,
 declare war, raise, movement, enforce demands, and disband; event and save are
 no longer pending live acceptance.
+
+## Assault Fort static ABI index
+
+The full frozen contract is
+[`docs/ck3-native-assault-contract.md`](../../../docs/ck3-native-assault-contract.md).
+This is exact-build static evidence for CK3 1.19.0.6 SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`, not a
+bridge capability or live acceptance result. No CK3 process was accessed and
+no command was submitted during this research slice.
+
+Original GUI reflection dispatches `SiegeWindow.StartStopAssault` through thunk
+RVA `0x131E910` to action `0x131D770`. Start and Stop are separate `0x30`-byte
+Jomini command objects. Start uses primary/secondary vtables
+`0x432CB30/0x432CB00`, ctor `0x26C69B0`, clone `0x26C2FC0`, validator
+`0x26BE8C0`, executor `0x26BE450`, and type `0x3163`; Stop uses
+`0x432CBC8/0x432CA08`, ctor `0x26C6960`, clone `0x26C30C0`, validator
+`0x26BEA90`, executor `0x26BE9A0`, and type `0x3164`. Both use destructor
+`0x963C60`, carry kind/played CharacterID/SiegeID at `+0x20/+0x24/+0x28`,
+and the original GUI submits player kind `1` with flags `0x0E`.
+
+For this build, `CSiege+0x3D8` is `breach_level` with the closed valid range
+`0..2`, and `CSiege+0x44C` is the assault-active flag. Start requires a live
+breach and eligible besieging strength at least equal to the current garrison;
+Stop requires the active flag but does not repeat those two gates. Native daily
+casualties are calculated by `0x229F410`; pre-start progress projection must
+use core `0x229F610`, while active-only wrapper `0x229F580` intentionally
+returns zero before Start. See the contract for fail-closed snapshot semantics,
+one-day Start/Stop postconditions, migration gates, and the bounded 53-day
+decision. No anchor bundle or production code was changed for this index.
+
+## Merge Armies exact native slice
+
+The frozen contract is
+[`docs/ck3-native-merge-contract.md`](../../../docs/ck3-native-merge-contract.md).
+This slice is offline/static plus native fixture evidence for the exact pinned
+build; no CK3 process was accessed and no live command was submitted.
+
+Original `window_army.gui` dispatches `ArmyWindow.MergeSelected` through
+reflection RVA `0x1241FD0` to action `0xC71B10`. The underlying
+`CMergeUnitsCommand` is a batch command, size `0x40`, with primary/secondary
+vtables `0x432D3C8/0x432D398`, player kind at `+0x20`, destination public
+generation-bearing CUnitID at `+0x24`, and a native array of source public
+CUnitIDs at `+0x28/+0x30/+0x34/+0x38`. Neither payload field is the linked
+internal CArmyID.
+
+The bridge deliberately exposes only
+`merge-armies-<destination>-with-<source>` and fixes count to one. It uses
+zero-argument engine-heap factory `0x26C6CE0`, which initializes the array
+allocator, then canonical range insertion `0x975ED0(header,0,begin,end)`.
+Object validator `0x26BA050` resolves destination/owner and tail-calls complete
+validator `0x2947D10`. Submit wrapper `0x973E00` queues with player flags
+`0x0E`, synchronously invokes deep clone `0x26C26B0`, and returns the locked
+queue's `bool`; false maps to `submission_failed`. Deleting destructor
+`0x26B5330(command,1)` releases the original source buffer and `0x40` object.
+The array has no borrowed/inline ownership state, so a stack pointer at `+0x28`
+would be invalid and is never used.
+
+Complete validation owns same-province, destination/source combat, owner,
+land/naval, destination retreat/movement-lock and raid-territory gates. The
+bulk executor wrapper/core are `0x26B9F60/0x2948680`: compatible sources are
+transferred into the destination, destination identity is preserved, and the
+source CUnit/CArmy is removed. The only stable success is `merge_submitted`;
+a later paused snapshot must prove destination remains and source disappears.
+For Split Half recovery, preserve the desired original army as destination and
+add siege-ID/backlink continuity when it is the besieging army. Live outcome
+acceptance remains pending.

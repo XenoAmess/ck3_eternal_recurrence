@@ -8,7 +8,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 37> kCapabilities{
+constexpr std::array<std::string_view, 39> kCapabilities{
     "game.state.snapshot",
     "game.state.xar-one-life-settlement",
     "game.state.map-ready",
@@ -39,6 +39,8 @@ constexpr std::array<std::string_view, 37> kCapabilities{
     "game.command.preview-move-army-N-to-N",
     "game.command.move-army-N-to-N",
     "game.command.disband-army-N",
+    "game.command.split-army-half-N",
+    "game.command.merge-armies-N-with-N",
     "game.command.query-declarable-wars",
     "game.command.declare-war-N",
     "game.command.enforce-demands-N",
@@ -104,6 +106,16 @@ public:
   DisbandArmyResult
   submit_disband_army(std::int32_t army_id) const noexcept override {
     return ck3_11906::SubmitDisbandArmy(bindings_, army_id);
+  }
+  SplitArmyHalfResult
+  submit_split_army_half(std::int32_t army_id) const noexcept override {
+    return ck3_11906::SubmitSplitArmyHalf(bindings_, army_id);
+  }
+  MergeArmiesResult submit_merge_armies(
+      std::int32_t destination_army_id,
+      std::int32_t source_army_id) const noexcept override {
+    return ck3_11906::SubmitMergeArmies(bindings_, destination_army_id,
+                                        source_army_id);
   }
   bool read_declarable_wars(
       std::vector<DeclarableWarSnapshot> &output) const noexcept override {

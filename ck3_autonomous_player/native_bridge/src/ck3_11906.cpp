@@ -43,6 +43,10 @@ constexpr std::uintptr_t kMoveArmyPrimaryVtableRva = 0x432BF18;
 constexpr std::uintptr_t kMoveArmySecondaryVtableRva = 0x432BFB0;
 constexpr std::uintptr_t kDisbandArmyPrimaryVtableRva = 0x432BFE0;
 constexpr std::uintptr_t kDisbandArmySecondaryVtableRva = 0x432C078;
+constexpr std::uintptr_t kSplitArmyHalfPrimaryVtableRva = 0x432D5C0;
+constexpr std::uintptr_t kSplitArmyHalfSecondaryVtableRva = 0x432D658;
+constexpr std::uintptr_t kMergeArmiesPrimaryVtableRva = 0x432D3C8;
+constexpr std::uintptr_t kMergeArmiesSecondaryVtableRva = 0x432D398;
 constexpr std::uintptr_t kSendCharacterInteractionPrimaryVtableRva =
     0x40829F8;
 constexpr std::uintptr_t kSendCharacterInteractionSecondaryVtableRva =
@@ -81,6 +85,11 @@ constexpr std::uintptr_t kConstructArmyMovePathRva = 0x0C7BA70;
 constexpr std::uintptr_t kBuildArmyMoveRouteRva = 0x23C33D0;
 constexpr std::uintptr_t kDestroyMoveArmyCommandRva = 0x26B46D0;
 constexpr std::uintptr_t kValidateDisbandArmyCommandRva = 0x26B5710;
+constexpr std::uintptr_t kValidateSplitArmyHalfCommandRva = 0x26B8030;
+constexpr std::uintptr_t kDestroySplitArmyHalfCommandRva = 0x0963C60;
+constexpr std::uintptr_t kCreateMergeArmiesCommandRva = 0x26C6CE0;
+constexpr std::uintptr_t kValidateMergeArmiesCommandRva = 0x26BA050;
+constexpr std::uintptr_t kDestroyMergeArmiesCommandRva = 0x26B5330;
 constexpr std::uintptr_t kGetCasusBelliTypeDatabaseRva = 0x088E260;
 constexpr std::uintptr_t kGetCharacterInteractionDatabaseRva = 0x0831890;
 constexpr std::uintptr_t kEvaluateCasusBelliRva = 0x2D95D00;
@@ -385,6 +394,53 @@ struct DisbandArmyCommand {
   std::int32_t command_target_id = -1;
 };
 
+struct SplitArmyHalfCommand {
+  std::uintptr_t primary_vtable = 0;
+  std::uint8_t flags = 0;
+  std::array<std::byte, 3> flags_padding{};
+  std::uint32_t metadata_0c = 0;
+  std::uint32_t metadata_10 = 0;
+  std::uint32_t metadata_14 = 0;
+  std::uintptr_t secondary_vtable = 0;
+  std::int32_t command_kind = 1;
+  std::int32_t played_character_id = -1;
+  std::int32_t source_army_id = -1;
+  std::array<std::byte, 4> payload_padding{};
+};
+
+struct NativeIntArrayHeader {
+  std::int32_t *data = nullptr;
+  std::int32_t capacity = 0;
+  std::int32_t count = 0;
+  void *allocator = nullptr;
+};
+
+struct MergeArmiesCommand {
+  std::uintptr_t primary_vtable = 0;
+  std::uint8_t flags = 0;
+  std::array<std::byte, 3> flags_padding{};
+  std::uint32_t metadata_0c = 0;
+  std::uint32_t metadata_10 = 0;
+  std::uint32_t metadata_14 = 0;
+  std::uintptr_t secondary_vtable = 0;
+  std::int32_t command_kind = 0;
+  std::int32_t destination_army_id = -1;
+  NativeIntArrayHeader source_army_ids{};
+};
+
+struct MergeArmiesCommandCleanup {
+  DestroyNativeCommand destroy = nullptr;
+  MergeArmiesCommand *command = nullptr;
+
+  ~MergeArmiesCommandCleanup() {
+    if (destroy != nullptr && command != nullptr) {
+      // The canonical factory allocated both the 0x40-byte object and, after
+      // range insertion, its source array. Bit 1 frees both in native order.
+      destroy(command, 1);
+    }
+  }
+};
+
 struct alignas(8) CharacterInteractionContextStorage {
   std::array<std::byte, 0x338> bytes{};
 };
@@ -437,6 +493,18 @@ static_assert(sizeof(DisbandArmyCommand) == 0x28);
 static_assert(offsetof(DisbandArmyCommand, secondary_vtable) == 0x18);
 static_assert(offsetof(DisbandArmyCommand, command_kind) == 0x20);
 static_assert(offsetof(DisbandArmyCommand, command_target_id) == 0x24);
+static_assert(sizeof(SplitArmyHalfCommand) == 0x30);
+static_assert(offsetof(SplitArmyHalfCommand, secondary_vtable) == 0x18);
+static_assert(offsetof(SplitArmyHalfCommand, command_kind) == 0x20);
+static_assert(offsetof(SplitArmyHalfCommand, played_character_id) == 0x24);
+static_assert(offsetof(SplitArmyHalfCommand, source_army_id) == 0x28);
+static_assert(sizeof(NativeIntArrayHeader) == 0x18);
+static_assert(offsetof(NativeIntArrayHeader, allocator) == 0x10);
+static_assert(sizeof(MergeArmiesCommand) == 0x40);
+static_assert(offsetof(MergeArmiesCommand, secondary_vtable) == 0x18);
+static_assert(offsetof(MergeArmiesCommand, command_kind) == 0x20);
+static_assert(offsetof(MergeArmiesCommand, destination_army_id) == 0x24);
+static_assert(offsetof(MergeArmiesCommand, source_army_ids) == 0x28);
 static_assert(sizeof(CharacterInteractionContextStorage) == 0x338);
 static_assert(sizeof(SendCharacterInteractionCommandStorage) == 0x368);
 
@@ -1925,6 +1993,14 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       module + kDisbandArmyPrimaryVtableRva;
   result.disband_army_secondary_vtable =
       module + kDisbandArmySecondaryVtableRva;
+  result.split_army_half_primary_vtable =
+      module + kSplitArmyHalfPrimaryVtableRva;
+  result.split_army_half_secondary_vtable =
+      module + kSplitArmyHalfSecondaryVtableRva;
+  result.merge_armies_primary_vtable =
+      module + kMergeArmiesPrimaryVtableRva;
+  result.merge_armies_secondary_vtable =
+      module + kMergeArmiesSecondaryVtableRva;
   result.send_character_interaction_primary_vtable =
       module + kSendCharacterInteractionPrimaryVtableRva;
   result.send_character_interaction_secondary_vtable =
@@ -2026,6 +2102,21 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.validate_disband_army_command =
       reinterpret_cast<ValidateDisbandArmyCommand>(
           module + kValidateDisbandArmyCommandRva);
+  result.validate_split_army_half_command =
+      reinterpret_cast<ValidateSplitArmyHalfCommand>(
+          module + kValidateSplitArmyHalfCommandRva);
+  result.destroy_split_army_half_command =
+      reinterpret_cast<DestroyNativeCommand>(
+          module + kDestroySplitArmyHalfCommandRva);
+  result.create_merge_armies_command =
+      reinterpret_cast<CreateMergeArmiesCommand>(
+          module + kCreateMergeArmiesCommandRva);
+  result.validate_merge_armies_command =
+      reinterpret_cast<ValidateMergeArmiesCommand>(
+          module + kValidateMergeArmiesCommandRva);
+  result.destroy_merge_armies_command =
+      reinterpret_cast<DestroyNativeCommand>(
+          module + kDestroyMergeArmiesCommandRva);
   result.get_casus_belli_type_database =
       reinterpret_cast<GetCasusBelliTypeDatabase>(
           module + kGetCasusBelliTypeDatabaseRva);
@@ -2754,6 +2845,150 @@ DisbandArmyResult SubmitDisbandArmy(const Bindings &bindings,
   command.command_target_id = command_target_id;
   bindings.submit_command(bindings.command_manager, &command, 0x0E);
   return DisbandArmyResult::submitted;
+}
+
+SplitArmyHalfResult SubmitSplitArmyHalf(const Bindings &bindings,
+                                        std::int32_t army_id) noexcept {
+  if (!bindings.enabled || bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.validate_split_army_half_command == nullptr ||
+      bindings.destroy_split_army_half_command == nullptr ||
+      bindings.split_army_half_primary_vtable == 0 ||
+      bindings.split_army_half_secondary_vtable == 0) {
+    return SplitArmyHalfResult::unavailable;
+  }
+
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return SplitArmyHalfResult::unavailable;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return SplitArmyHalfResult::no_played_character;
+  }
+
+  // The public ArmySnapshot ID is CUnit+0x10. Split Half instead consumes the
+  // generation-bearing CArmyID linked from CUnit+0x178.
+  void *const unit = ResolveArmy(bindings, army_id);
+  if (unit == nullptr) {
+    return SplitArmyHalfResult::army_not_found;
+  }
+  const auto selected = std::find_if(
+      current.player_armies.begin(), current.player_armies.end(),
+      [army_id](const ArmySnapshot &candidate) {
+        return candidate.army_id == army_id && candidate.controllable;
+      });
+  if (selected == current.player_armies.end()) {
+    return SplitArmyHalfResult::army_not_controllable;
+  }
+
+  constexpr std::int32_t command_kind = 1;
+  const auto source_army_id =
+      LoadAt<std::int32_t>(unit, kUnitArmyIdOffset);
+  if (!bindings.validate_split_army_half_command(
+          command_kind, source_army_id, current.played_character_id,
+          nullptr)) {
+    return SplitArmyHalfResult::validator_rejected;
+  }
+
+  SplitArmyHalfCommand command{};
+  command.primary_vtable = bindings.split_army_half_primary_vtable;
+  command.secondary_vtable = bindings.split_army_half_secondary_vtable;
+  command.command_kind = command_kind;
+  command.played_character_id = current.played_character_id;
+  command.source_army_id = source_army_id;
+  // SubmitCommand invokes the primary-vtable +0x40 heap clone synchronously
+  // and returns whether the queue accepted that clone with player flags 0x0E.
+  const bool submitted =
+      bindings.submit_command(bindings.command_manager, &command, 0x0E);
+  bindings.destroy_split_army_half_command(&command, 0);
+  return submitted ? SplitArmyHalfResult::split_submitted
+                   : SplitArmyHalfResult::submission_failed;
+}
+
+MergeArmiesResult SubmitMergeArmies(const Bindings &bindings,
+                                    std::int32_t destination_army_id,
+                                    std::int32_t source_army_id) noexcept {
+  if (!bindings.enabled || bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.create_merge_armies_command == nullptr ||
+      bindings.validate_merge_armies_command == nullptr ||
+      bindings.destroy_merge_armies_command == nullptr ||
+      bindings.append_native_int_array_range == nullptr ||
+      bindings.merge_armies_primary_vtable == 0 ||
+      bindings.merge_armies_secondary_vtable == 0) {
+    return MergeArmiesResult::unavailable;
+  }
+
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return MergeArmiesResult::unavailable;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return MergeArmiesResult::no_played_character;
+  }
+  if (destination_army_id == source_army_id) {
+    return MergeArmiesResult::same_army;
+  }
+  if (ResolveArmy(bindings, destination_army_id) == nullptr) {
+    return MergeArmiesResult::destination_not_found;
+  }
+  if (ResolveArmy(bindings, source_army_id) == nullptr) {
+    return MergeArmiesResult::source_not_found;
+  }
+
+  const auto is_controllable = [&current](std::int32_t army_id) {
+    return std::any_of(
+        current.player_armies.begin(), current.player_armies.end(),
+        [army_id](const ArmySnapshot &candidate) {
+          return candidate.army_id == army_id && candidate.controllable;
+        });
+  };
+  if (!is_controllable(destination_army_id)) {
+    return MergeArmiesResult::destination_not_controllable;
+  }
+  if (!is_controllable(source_army_id)) {
+    return MergeArmiesResult::source_not_controllable;
+  }
+
+  auto *const command = static_cast<MergeArmiesCommand *>(
+      bindings.create_merge_armies_command());
+  if (command == nullptr) {
+    return MergeArmiesResult::unavailable;
+  }
+  MergeArmiesCommandCleanup cleanup{
+      bindings.destroy_merge_armies_command, command};
+  if (command->primary_vtable != bindings.merge_armies_primary_vtable ||
+      command->secondary_vtable != bindings.merge_armies_secondary_vtable ||
+      command->source_army_ids.data != nullptr ||
+      command->source_army_ids.capacity != 0 ||
+      command->source_army_ids.count != 0 ||
+      command->source_army_ids.allocator == nullptr) {
+    return MergeArmiesResult::unavailable;
+  }
+
+  constexpr std::int32_t command_kind = 1;
+  command->command_kind = command_kind;
+  command->destination_army_id = destination_army_id;
+  bindings.append_native_int_array_range(
+      &command->source_army_ids, 0, &source_army_id, &source_army_id + 1);
+  if (command->source_army_ids.data == nullptr ||
+      command->source_army_ids.capacity < 1 ||
+      command->source_army_ids.count != 1 ||
+      command->source_army_ids.data[0] != source_army_id) {
+    return MergeArmiesResult::unavailable;
+  }
+  if (!bindings.validate_merge_armies_command(command, nullptr)) {
+    return MergeArmiesResult::validator_rejected;
+  }
+
+  // SubmitCommand synchronously calls primary-vtable +0x40, whose exact-build
+  // clone repeats the same canonical range copy. The RAII cleanup then frees
+  // only the original engine-owned array/object; the wrapper's clone is
+  // distinct whether the queue accepts or rejects it.
+  const bool submitted =
+      bindings.submit_command(bindings.command_manager, command, 0x0E);
+  return submitted ? MergeArmiesResult::merge_submitted
+                   : MergeArmiesResult::submission_failed;
 }
 
 ReadDeclarableWarsResult ReadDeclarableWarsForTarget(

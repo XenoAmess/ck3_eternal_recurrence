@@ -48,6 +48,11 @@ public:
                     std::int32_t province_id) const noexcept = 0;
   virtual DisbandArmyResult submit_disband_army(std::int32_t army_id) const
       noexcept = 0;
+  virtual SplitArmyHalfResult
+  submit_split_army_half(std::int32_t army_id) const noexcept = 0;
+  virtual MergeArmiesResult
+  submit_merge_armies(std::int32_t destination_army_id,
+                      std::int32_t source_army_id) const noexcept = 0;
   virtual bool read_declarable_wars(
       std::vector<DeclarableWarSnapshot> &output) const noexcept = 0;
   virtual DeclareWarResult
@@ -127,6 +132,15 @@ PreviewMoveArmy(const GameAdapter &game, std::int32_t army_id,
 inline DisbandArmyResult SubmitDisbandArmy(const GameAdapter &game,
                                            std::int32_t army_id) noexcept {
   return game.submit_disband_army(army_id);
+}
+inline SplitArmyHalfResult SubmitSplitArmyHalf(const GameAdapter &game,
+                                               std::int32_t army_id) noexcept {
+  return game.submit_split_army_half(army_id);
+}
+inline MergeArmiesResult SubmitMergeArmies(
+    const GameAdapter &game, std::int32_t destination_army_id,
+    std::int32_t source_army_id) noexcept {
+  return game.submit_merge_armies(destination_army_id, source_army_id);
 }
 inline bool ReadDeclarableWars(
     const GameAdapter &game,

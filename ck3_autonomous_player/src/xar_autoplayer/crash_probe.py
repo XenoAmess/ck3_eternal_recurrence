@@ -24,10 +24,10 @@ import time
 import uuid
 
 from .environment import (
-    EXPECTED_GAME_VERSION,
     EXPECTED_MOD_NAME,
     OUTER_DESCRIPTOR_REF,
     REPO_ROOT,
+    VISIBLE_UI_BASELINE_GAME_VERSION,
     _contract_digest,
     EnvironmentSpec,
     ck3_process_inventory,
@@ -377,7 +377,7 @@ def _validate_environment_archive_semantics(environment: dict[str, object]) -> N
     if (
         not isinstance(game, dict)
         or set(game) != expected_game_fields
-        or game.get("raw_version") != EXPECTED_GAME_VERSION
+        or game.get("raw_version") != VISIBLE_UI_BASELINE_GAME_VERSION
         or not isinstance(game.get("display_version"), str)
         or not game["display_version"]
         or not isinstance(game.get("distribution"), str)

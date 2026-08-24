@@ -30,6 +30,13 @@ from xar_autoplayer.bridge.native_driver import (
 from xar_autoplayer.bridge.settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
 )
+from xar_autoplayer.bridge.war_contract import (
+    is_native_war_step,
+    merge_armies_step,
+    parse_merge_armies_step,
+    parse_split_army_half_step,
+    split_army_half_step,
+)
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.environment import write_json_atomic
 
@@ -334,6 +341,155 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertFalse(disconnected["fallback_enabled"])
         self.assertFalse(disconnected["snapshot"])
         self.assertEqual(disconnected["action_steps"], [])
+
+    def test_split_army_half_step_parser_is_exact(self) -> None:
+        self.assertEqual(split_army_half_step(1), "split-army-half-1")
+        self.assertEqual(
+            split_army_half_step(2**31 - 1),
+            "split-army-half-2147483647",
+        )
+        self.assertEqual(parse_split_army_half_step("split-army-half-1"), 1)
+        self.assertTrue(is_native_war_step("split-army-half-1"))
+
+        malformed_steps: tuple[object, ...] = (
+            None,
+            True,
+            "",
+            "split-army-half-",
+            "split-army-half-0",
+            "split-army-half--1",
+            "split-army-half-+1",
+            "split-army-half-1 ",
+            "split-army-half-1-extra",
+            "split-army-half-2147483648",
+            "split-army-half-１",
+        )
+        for malformed in malformed_steps:
+            with self.subTest(step=malformed):
+                self.assertIsNone(parse_split_army_half_step(malformed))
+                self.assertFalse(is_native_war_step(malformed))
+        for malformed_id in (0, -1, 2**31, True):
+            with self.subTest(army_id=malformed_id):
+                with self.assertRaises(ValueError):
+                    split_army_half_step(malformed_id)
+
+    def test_partial_hello_does_not_advertise_split_army_literals(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.disband-army-N",
+                "game.command.split-army-half-X",
+            )
+        )
+        endpoint.publish(
+            _snapshot(2, player_armies=[_army(101), _army(202)])
+        )
+
+        capabilities = driver.capabilities()
+        self.assertNotIn(
+            "game.command.split-army-half-N",
+            capabilities["bridge_capabilities"],
+        )
+        self.assertFalse(
+            any(
+                step.startswith("split-army-half-")
+                for step in capabilities["action_steps"]
+            )
+        )
+
+    def test_merge_armies_step_parser_is_exact(self) -> None:
+        self.assertEqual(
+            merge_armies_step(1, 2), "merge-armies-1-with-2"
+        )
+        self.assertEqual(
+            merge_armies_step(2**31 - 1, 1),
+            "merge-armies-2147483647-with-1",
+        )
+        self.assertEqual(
+            parse_merge_armies_step("merge-armies-1-with-2"), (1, 2)
+        )
+        self.assertTrue(is_native_war_step("merge-armies-1-with-2"))
+
+        malformed_steps: tuple[object, ...] = (
+            None,
+            True,
+            "",
+            "merge-armies-",
+            "merge-armies-1",
+            "merge-armies-0-with-2",
+            "merge-armies-1-with-0",
+            "merge-armies--1-with-2",
+            "merge-armies-+1-with-2",
+            "merge-armies-1-with--2",
+            "merge-armies-1-with-+2",
+            "merge-armies-1 -with-2",
+            "merge-armies-1-with-2 ",
+            "merge-armies-1-with-2-extra",
+            "merge-armies-1-with-2-with-3",
+            "merge-armies-2147483648-with-2",
+            "merge-armies-1-with-2147483648",
+            "merge-armies-1-with-1",
+            "merge-armies-１-with-2",
+            "merge-armies-1-with-２",
+        )
+        for malformed in malformed_steps:
+            with self.subTest(step=malformed):
+                self.assertIsNone(parse_merge_armies_step(malformed))
+                self.assertFalse(is_native_war_step(malformed))
+        for destination, source in (
+            (0, 1),
+            (-1, 1),
+            (2**31, 1),
+            (True, 1),
+            (1, 0),
+            (1, -1),
+            (1, 2**31),
+            (1, True),
+            (7, 7),
+        ):
+            with self.subTest(destination=destination, source=source):
+                with self.assertRaises(ValueError):
+                    merge_armies_step(destination, source)
+
+    def test_partial_hello_does_not_advertise_merge_army_literals(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.merge-armies-N-with-X",
+                "game.command.merge-armies-101-with-202",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                2,
+                player_armies=[
+                    _army(101, province_id=11),
+                    _army(202, province_id=11),
+                ],
+            )
+        )
+
+        capabilities = driver.capabilities()
+        self.assertNotIn(
+            "game.command.merge-armies-N-with-N",
+            capabilities["bridge_capabilities"],
+        )
+        self.assertFalse(
+            any(
+                step.startswith("merge-armies-")
+                for step in capabilities["action_steps"]
+            )
+        )
 
     def test_exact_objective_capabilities_and_state_are_projected(self) -> None:
         endpoint = FakeEndpoint()
@@ -700,6 +856,780 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
             self.assertEqual(persisted["bridge_pid"], 150000)
             self.assertEqual(len(persisted["command_history"]), 9)
+
+    def test_restore_record_keeps_save_anchor_and_discards_factual_tail(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(_hello("game.state.snapshot"))
+            checkpoint = {
+                "history_index": 2,
+                "sha256": "a" * 64,
+                "size": 123,
+                "date_raw": 24_000,
+            }
+            driver._last_checkpoint = dict(checkpoint)
+            driver._command_history = [
+                {
+                    "index": 1,
+                    "command": "life-advance",
+                    "ok": True,
+                    "result": {},
+                },
+                {
+                    "index": 2,
+                    "command": "save-checkpoint",
+                    "ok": True,
+                    "result": {"checkpoint": dict(checkpoint)},
+                },
+                {
+                    "index": 3,
+                    "command": "move-army-1-to-2",
+                    "ok": True,
+                    "result": {},
+                },
+            ]
+
+            driver._record_command(
+                "restore-checkpoint",
+                ok=True,
+                result={"status": "restored"},
+            )
+
+            history = driver._history_snapshot()
+            self.assertEqual(
+                [row["command"] for row in history],
+                ["life-advance", "save-checkpoint", "restore-checkpoint"],
+            )
+            self.assertEqual([row["index"] for row in history], [1, 2, 3])
+
+    def test_cold_restore_uses_root_auto_turn_result_for_route_memory(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            pipe_name = r"\\.\pipe\xar_cold_route_memory"
+            checkpoint_path, checkpoint = _write_driver_state_checkpoint_fixture(
+                state_dir,
+                pipe_name,
+                bridge_pid=140760,
+                character_id=707,
+                run_id="native-707-route-memory",
+            )
+            state_path = state_dir / "native-session" / "driver-state.json"
+            persisted = json.loads(state_path.read_text(encoding="utf-8"))
+            persisted["command_history"][8] = {
+                "index": 9,
+                "command": "auto-turn",
+                "ok": True,
+                "result": {
+                    "route_preview": {
+                        "status": "available",
+                        "army_id": 1,
+                        "origin_province_id": 1,
+                        "target_province_id": 2,
+                        "route_province_ids": [3, 2],
+                        "previewed_date_raw": 53_168_784,
+                    },
+                    "auto_turn": {
+                        "selected_step": "preview-move-army-1-to-2",
+                        "result": {
+                            "route_preview": {
+                                "status": "deferred",
+                                "army_id": 1,
+                                "target_province_id": 999,
+                            }
+                        },
+                    },
+                },
+            }
+            persisted["command_history"][9] = {
+                "index": 10,
+                "command": "auto-turn",
+                "ok": True,
+                "result": {
+                    "war_action": {
+                        "status": "moving",
+                        "army_id": 1,
+                        "target_province_id": 2,
+                        "submitted_date_raw": 53_168_784,
+                    },
+                    "player_armies": [
+                        _army(
+                            1,
+                            province_id=1,
+                            move_target_province_id=2,
+                            army_state="moving",
+                            route_province_ids=[3, 2],
+                        )
+                    ],
+                    "auto_turn": {
+                        "selected_step": "move-army-1-to-2",
+                        "result": {"war_action": {"status": "arrived"}},
+                    },
+                },
+            }
+            persisted["command_history"][10] = {
+                "index": 11,
+                "command": "life-advance",
+                "ok": True,
+                "result": {},
+            }
+            write_json_atomic(state_path, persisted)
+
+            restored_player = _army(
+                1,
+                province_id=1,
+                army_state="regular",
+                route_province_ids=[],
+            )
+            endpoint = FakeEndpoint(pipe_name)
+            driver = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            endpoint.publish({**_hello("game.state.snapshot"), "pid": 150000})
+            endpoint.publish(
+                _snapshot(
+                    1,
+                    date_raw=int(checkpoint["date_raw"]),
+                    played_character={"character_id": 707, "alive": True},
+                    active_wars=[
+                        _war(
+                            61,
+                            allied_armies=[restored_player],
+                            war_objective_province_ids=[2, 4],
+                        )
+                    ],
+                    player_armies=[restored_player],
+                )
+            )
+
+            restored = driver.take_snapshot()
+            self.assertEqual(
+                [row["command"] for row in restored["native_command_history"]],
+                ["life-advance"] * 7
+                + ["save-checkpoint", "restore-checkpoint"],
+            )
+            failure = restored["native_rollback_war_failure"]
+            self.assertEqual(failure["status"], "rolled_back_active_route")
+            self.assertEqual(failure["war_id"], 61)
+            self.assertEqual(failure["army_id"], 1)
+            self.assertEqual(failure["restored_origin_province_id"], 1)
+            self.assertEqual(failure["target_province_id"], 2)
+            self.assertEqual(failure["route_province_ids"], [3, 2])
+            self.assertNotIn(
+                "move-army-1-to-2",
+                [row["command"] for row in restored["native_command_history"]],
+            )
+            on_disk = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(on_disk["rollback_war_failure"], failure)
+
+            resumed_endpoint = FakeEndpoint(pipe_name)
+            resumed_driver = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=resumed_endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            resumed_endpoint.publish(
+                {**_hello("game.state.snapshot"), "pid": 150000}
+            )
+            resumed_endpoint.publish(
+                _snapshot(
+                    2,
+                    date_raw=int(checkpoint["date_raw"]),
+                    played_character={"character_id": 707, "alive": True},
+                    active_wars=[
+                        _war(
+                            61,
+                            allied_armies=[restored_player],
+                            war_objective_province_ids=[2, 4],
+                        )
+                    ],
+                    player_armies=[restored_player],
+                )
+            )
+            self.assertEqual(
+                resumed_driver.take_snapshot()["native_rollback_war_failure"],
+                failure,
+            )
+
+            next_endpoint = FakeEndpoint(pipe_name)
+            next_driver = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=next_endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            next_endpoint.publish(
+                {**_hello("game.state.snapshot"), "pid": 160000}
+            )
+            next_endpoint.publish(
+                _snapshot(
+                    1,
+                    date_raw=int(checkpoint["date_raw"]),
+                    played_character={"character_id": 909, "alive": True},
+                    player_armies=[],
+                    active_wars=[],
+                )
+            )
+            new_episode = next_driver.take_snapshot()
+            self.assertEqual(new_episode["episode_character_id"], 909)
+            self.assertIsNone(new_episode["native_rollback_war_failure"])
+
+    def test_managed_restore_transaction_recovers_after_new_pid_daemon_crash(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            pipe_name = r"\\.\pipe\xar_managed_restore_transaction"
+            checkpoint_path, checkpoint = _write_driver_state_checkpoint_fixture(
+                state_dir,
+                pipe_name,
+                bridge_pid=140760,
+                character_id=707,
+                run_id="native-707-managed-restore",
+            )
+            state_path = state_dir / "native-session" / "driver-state.json"
+            persisted = json.loads(state_path.read_text(encoding="utf-8"))
+            persisted["command_history"][8] = {
+                "index": 9,
+                "command": "preview-move-army-1-to-2",
+                "ok": True,
+                "result": {
+                    "route_preview": {
+                        "status": "available",
+                        "army_id": 1,
+                        "origin_province_id": 1,
+                        "target_province_id": 2,
+                        "route_province_ids": [3, 2],
+                        "previewed_date_raw": checkpoint["date_raw"],
+                    }
+                },
+            }
+            active_army = _army(
+                1,
+                province_id=1,
+                move_target_province_id=2,
+                army_state="moving",
+                route_province_ids=[3, 2],
+            )
+            persisted["command_history"][9] = {
+                "index": 10,
+                "command": "move-army-1-to-2",
+                "ok": True,
+                "result": {
+                    "war_action": {
+                        "status": "moving",
+                        "army_id": 1,
+                        "target_province_id": 2,
+                        "submitted_date_raw": checkpoint["date_raw"],
+                    },
+                    "player_armies": [active_army],
+                },
+            }
+            persisted["command_history"][10] = {
+                "index": 11,
+                "command": "life-advance",
+                "ok": True,
+                "result": {"player_armies": [active_army]},
+            }
+            write_json_atomic(state_path, persisted)
+
+            endpoint = FakeEndpoint(pipe_name)
+            driver = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            endpoint.publish(
+                {**_hello("game.state.snapshot"), "pid": 140760}
+            )
+            with driver._driver_state_lock:
+                driver._managed_restore_transaction = {
+                    "status": "awaiting_checkpoint_rebind",
+                    "request_id": "restore-crash-window",
+                    "source_bridge_pid": 140760,
+                    "checkpoint_sha256": checkpoint["sha256"],
+                    "checkpoint_size": checkpoint["size"],
+                    "checkpoint_date_raw": checkpoint["date_raw"],
+                    "history_index": checkpoint["history_index"],
+                    "episode_character_id": 707,
+                    "episode_run_id": "native-707-managed-restore",
+                }
+            driver._persist_driver_state()
+
+            # The managed CK3 replacement says hello, but the daemon dies
+            # before a playable snapshot can bind and before execute_step can
+            # append its final restore row.
+            endpoint.publish(
+                {**_hello("game.state.snapshot"), "pid": 150000}
+            )
+            interrupted = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(interrupted["bridge_pid"], 150000)
+            self.assertEqual(len(interrupted["command_history"]), 11)
+            self.assertEqual(
+                interrupted["managed_restore_transaction"][
+                    "replacement_bridge_pid"
+                ],
+                150000,
+            )
+
+            replacement_endpoint = FakeEndpoint(pipe_name)
+            replacement = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=replacement_endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            replacement_endpoint.publish(
+                {**_hello("game.state.snapshot"), "pid": 150000}
+            )
+            self.assertEqual(
+                replacement.capabilities()["native_session_control"][
+                    "episode_binding_state"
+                ],
+                "pending_cold_candidate",
+            )
+            restored_army = _army(
+                1,
+                province_id=1,
+                army_state="regular",
+                route_province_ids=[],
+            )
+            replacement_endpoint.publish(
+                _snapshot(
+                    1,
+                    date_raw=int(checkpoint["date_raw"]),
+                    played_character={"character_id": 707, "alive": True},
+                    active_wars=[
+                        _war(
+                            61,
+                            allied_armies=[restored_army],
+                            war_objective_province_ids=[2, 4],
+                        )
+                    ],
+                    player_armies=[restored_army],
+                )
+            )
+
+            recovered = replacement.take_snapshot()
+            self.assertEqual(
+                [
+                    row["command"]
+                    for row in recovered["native_command_history"]
+                ],
+                ["life-advance"] * 7
+                + ["save-checkpoint", "restore-checkpoint"],
+            )
+            self.assertEqual(
+                recovered["native_command_history"][-1]["result"]["source"],
+                "native-session-cold-start",
+            )
+            failure = recovered["native_rollback_war_failure"]
+            self.assertEqual(failure["target_province_id"], 2)
+            self.assertEqual(failure["route_province_ids"], [3, 2])
+            finalized = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertIsNone(finalized["managed_restore_transaction"])
+            self.assertEqual(len(finalized["command_history"]), 9)
+
+    def test_cold_v2_migration_scans_only_two_completed_restore_epochs(
+        self,
+    ) -> None:
+        for second_epoch, expected_target in (
+            ("restored_origin_entry", 2568),
+            ("arrived", None),
+            ("terminal_without_entry", None),
+        ):
+            with self.subTest(second_epoch=second_epoch):
+                with tempfile.TemporaryDirectory() as temporary:
+                    state_dir = Path(temporary)
+                    pipe_name = (
+                        r"\\.\pipe\xar_v2_completed_restore_epochs_"
+                        + second_epoch
+                    )
+                    checkpoint_path, checkpoint = (
+                        _write_driver_state_checkpoint_fixture(
+                            state_dir,
+                            pipe_name,
+                            bridge_pid=140760,
+                            character_id=707,
+                            run_id="native-707-v2-epoch-migration",
+                        )
+                    )
+                    state_path = (
+                        state_dir / "native-session" / "driver-state.json"
+                    )
+                    persisted = json.loads(
+                        state_path.read_text(encoding="utf-8")
+                    )
+                    history = persisted["command_history"][:8]
+
+                    def append(
+                        command: str, result: dict[str, object]
+                    ) -> None:
+                        history.append(
+                            {
+                                "index": len(history) + 1,
+                                "command": command,
+                                "ok": True,
+                                "result": result,
+                            }
+                        )
+
+                    def fill_before(index: int) -> None:
+                        while len(history) < index - 1:
+                            append("life-advance", {})
+
+                    def append_active_route(
+                        target: int,
+                        *,
+                        origin: int = 2598,
+                        route: list[int] | None = None,
+                        date_raw: int | None = None,
+                    ) -> None:
+                        selected_route = route or [target]
+                        selected_date = (
+                            int(checkpoint["date_raw"])
+                            if date_raw is None
+                            else date_raw
+                        )
+                        append(
+                            f"preview-move-army-1-to-{target}",
+                            {
+                                "route_preview": {
+                                    "status": "available",
+                                    "army_id": 1,
+                                    "origin_province_id": origin,
+                                    "target_province_id": target,
+                                    "route_province_ids": selected_route,
+                                    "previewed_date_raw": selected_date,
+                                }
+                            },
+                        )
+                        moving = _army(
+                            1,
+                            province_id=origin,
+                            move_target_province_id=target,
+                            army_state="moving",
+                            route_province_ids=selected_route,
+                        )
+                        append(
+                            f"move-army-1-to-{target}",
+                            {
+                                "war_action": {
+                                    "status": "moving",
+                                    "army_id": 1,
+                                    "target_province_id": target,
+                                    "submitted_date_raw": selected_date,
+                                },
+                                "player_armies": [moving],
+                            },
+                        )
+                        append("life-advance", {"player_armies": [moving]})
+
+                    def append_arrived_route(target: int) -> None:
+                        append_active_route(target)
+                        append(
+                            f"move-army-1-to-{target}",
+                            {
+                                "war_action": {
+                                    "status": "arrived",
+                                    "army_id": 1,
+                                    "target_province_id": target,
+                                },
+                                "player_armies": [
+                                    _army(
+                                        1,
+                                        province_id=target,
+                                        army_state="regular",
+                                        route_province_ids=[],
+                                    )
+                                ],
+                            },
+                        )
+
+                    # Oldest completed epoch is deliberately a tempting
+                    # failure.  The compatibility path must never reach it.
+                    fill_before(39)
+                    append_active_route(2500)
+                    fill_before(42)
+                    append("restore-checkpoint", {"status": "restored"})
+
+                    if second_epoch == "restored_origin_entry":
+                        entry_route = [2599, 2587, 2585, 2572, 2568]
+                        terminal_route = [
+                            8759,
+                            2602,
+                            2591,
+                            2589,
+                            2579,
+                            2574,
+                            2572,
+                            2568,
+                        ]
+                        # Mirrors the real legacy epoch: row 44 is the first
+                        # successful move from the restored province, while
+                        # the unresolved terminal move was previewed later
+                        # from a mid-branch province.
+                        append_active_route(2568, route=entry_route)
+                        append_active_route(
+                            2568,
+                            origin=2604,
+                            route=terminal_route,
+                            date_raw=int(checkpoint["date_raw"]) + 1_296,
+                        )
+                    elif second_epoch == "terminal_without_entry":
+                        append_active_route(
+                            2568,
+                            origin=2604,
+                            route=[8759, 2602, 2591, 2589, 2568],
+                            date_raw=int(checkpoint["date_raw"]) + 1_296,
+                        )
+                    else:
+                        append_arrived_route(2602)
+                    fill_before(87)
+                    append("restore-checkpoint", {"status": "restored"})
+
+                    # The newest completed epoch ended safely, matching the
+                    # real legacy state immediately before restore row 132.
+                    append_arrived_route(2604)
+                    fill_before(132)
+                    append("restore-checkpoint", {"status": "restored"})
+                    self.assertEqual(len(history), 132)
+                    persisted["command_history"] = history
+                    if second_epoch == "restored_origin_entry":
+                        # The old extractor persisted the terminal preview as
+                        # the blocking route even though it originated after
+                        # leaving the restored province.  New code rejects
+                        # that shape and uses the bounded v2 migration scan.
+                        persisted["rollback_war_failure"] = {
+                            "status": "rolled_back_active_route",
+                            "episode_run_id": (
+                                "native-707-v2-epoch-migration"
+                            ),
+                            "checkpoint_sha256": checkpoint["sha256"],
+                            "war_id": 61,
+                            "army_id": 1,
+                            "restored_origin_province_id": 2598,
+                            "target_province_id": 2568,
+                            "route_origin_province_id": 2604,
+                            "route_province_ids": terminal_route,
+                        }
+                    else:
+                        persisted.pop("rollback_war_failure", None)
+                    write_json_atomic(state_path, persisted)
+
+                    endpoint = FakeEndpoint(pipe_name)
+                    driver = NativeHeadlessGameplayDriver(
+                        pipe_name,
+                        endpoint=endpoint,
+                        state_dir=state_dir,
+                        save_dir=checkpoint_path.parent,
+                    )
+                    endpoint.publish(
+                        {**_hello("game.state.snapshot"), "pid": 150000}
+                    )
+                    restored_army = _army(
+                        1,
+                        province_id=2598,
+                        army_state="regular",
+                        route_province_ids=[],
+                    )
+                    endpoint.publish(
+                        _snapshot(
+                            1,
+                            date_raw=int(checkpoint["date_raw"]),
+                            played_character={
+                                "character_id": 707,
+                                "alive": True,
+                            },
+                            active_wars=[
+                                _war(61, allied_armies=[restored_army])
+                            ],
+                            player_armies=[restored_army],
+                        )
+                    )
+
+                    restored = driver.take_snapshot()
+                    failure = restored["native_rollback_war_failure"]
+                    if expected_target is None:
+                        self.assertIsNone(failure)
+                    else:
+                        self.assertEqual(
+                            failure["target_province_id"], expected_target
+                        )
+                        self.assertEqual(
+                            failure["route_origin_province_id"], 2598
+                        )
+                        self.assertEqual(
+                            failure["route_province_ids"], entry_route
+                        )
+                        self.assertEqual(
+                            failure[
+                                "terminal_failure_target_province_id"
+                            ],
+                            2568,
+                        )
+                        self.assertEqual(
+                            failure[
+                                "terminal_failure_route_origin_province_id"
+                            ],
+                            2604,
+                        )
+                        self.assertEqual(
+                            failure[
+                                "terminal_failure_route_province_ids"
+                            ],
+                            terminal_route,
+                        )
+                    self.assertEqual(
+                        len(restored["native_command_history"]), 9
+                    )
+
+    def test_managed_restore_failure_disarms_transaction_before_pid_change(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            pipe_name = r"\\.\pipe\xar_managed_restore_failure"
+            checkpoint_path, checkpoint = _write_driver_state_checkpoint_fixture(
+                state_dir,
+                pipe_name,
+                bridge_pid=4242,
+                character_id=707,
+                run_id="native-707-restore-failure",
+            )
+            endpoint = FakeEndpoint(pipe_name)
+            driver = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            endpoint.publish(_hello("game.state.snapshot"))
+            endpoint.publish(
+                _snapshot(
+                    20,
+                    date_raw=int(checkpoint["date_raw"]) + 96,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            with mock.patch.object(
+                driver,
+                "_wait_for_restore_response",
+                side_effect=BridgeUnavailableError("fixture restore rejected"),
+            ):
+                with self.assertRaisesRegex(
+                    BridgeUnavailableError, "fixture restore rejected"
+                ):
+                    driver.execute_step("restore-checkpoint")
+
+            state_path = state_dir / "native-session" / "driver-state.json"
+            failed = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertIsNone(failed["managed_restore_transaction"])
+            self.assertEqual(
+                failed["command_history"][-1]["command"],
+                "restore-checkpoint",
+            )
+            self.assertFalse(failed["command_history"][-1]["ok"])
+
+            replacement_endpoint = FakeEndpoint(pipe_name)
+            replacement = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=replacement_endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            replacement_endpoint.publish(_hello("game.state.snapshot"))
+            replacement_endpoint.publish(
+                _snapshot(
+                    21,
+                    date_raw=int(checkpoint["date_raw"]) + 96,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            resumed = replacement.take_snapshot()
+            self.assertFalse(resumed["episode_identity_pending"])
+            self.assertEqual(
+                resumed["native_command_history"][-1]["command"],
+                "restore-checkpoint",
+            )
+            self.assertEqual(
+                replacement.capabilities()["native_session_control"][
+                    "driver_state_restore_kind"
+                ],
+                "same_pid_hot",
+            )
+
+    def test_same_pid_hot_restart_disarms_marker_without_queue_request(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            pipe_name = r"\\.\pipe\xar_orphan_restore_marker"
+            checkpoint_path, checkpoint = _write_driver_state_checkpoint_fixture(
+                state_dir,
+                pipe_name,
+                bridge_pid=4242,
+                character_id=707,
+                run_id="native-707-orphan-marker",
+            )
+            state_path = state_dir / "native-session" / "driver-state.json"
+            persisted = json.loads(state_path.read_text(encoding="utf-8"))
+            persisted["managed_restore_transaction"] = {
+                "status": "awaiting_checkpoint_rebind",
+                "request_id": "restore-never-enqueued",
+                "source_bridge_pid": 4242,
+                "checkpoint_sha256": checkpoint["sha256"],
+                "checkpoint_size": checkpoint["size"],
+                "checkpoint_date_raw": checkpoint["date_raw"],
+                "history_index": checkpoint["history_index"],
+                "episode_character_id": 707,
+                "episode_run_id": "native-707-orphan-marker",
+            }
+            write_json_atomic(state_path, persisted)
+
+            endpoint = FakeEndpoint(pipe_name)
+            driver = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            endpoint.publish(_hello("game.state.snapshot"))
+            endpoint.publish(
+                _snapshot(
+                    1,
+                    date_raw=int(checkpoint["date_raw"]) + 96,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+
+            resumed = driver.take_snapshot()
+            self.assertFalse(resumed["episode_identity_pending"])
+            self.assertEqual(
+                driver.capabilities()["native_session_control"][
+                    "driver_state_restore_kind"
+                ],
+                "same_pid_hot",
+            )
+            self.assertIsNone(
+                json.loads(state_path.read_text(encoding="utf-8"))[
+                    "managed_restore_transaction"
+                ]
+            )
 
     def test_cold_checkpoint_mismatch_starts_nonterminal_new_episode(self) -> None:
         cases = (
@@ -1501,6 +2431,426 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertIsNone(completed_plan["selected_step"])
         self.assertEqual(completed_plan["heir_gameplay_actions"], 0)
         self.assertEqual(completed_turn["status"], "terminal")
+
+    def test_split_army_half_expands_and_returns_queue_only_receipt(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.01,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.split-army-half-N",
+            )
+        )
+        source = _army(101, province_id=11)
+        second = _army(303, province_id=12)
+        foreign = _army(202, province_id=13, controllable=False)
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=53_171_400,
+                player_armies=[source, foreign, second],
+            )
+        )
+        service = GameplayBridgeService(driver)
+
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            ["split-army-half-101", "split-army-half-303"],
+        )
+        planned_step = service.plan_turn()["plan"].get("selected_step")
+        self.assertFalse(
+            isinstance(planned_step, str)
+            and planned_step.startswith("split-army-half-")
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "split_submitted",
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        result = service.execute_step(
+            "split-army-half-101",
+            expected_revision=int(driver.take_snapshot()["revision"]),
+        )
+
+        self.assertEqual(
+            result["war_action"],
+            {
+                "status": "split_submitted",
+                "source_army_id": 101,
+                "submitted_date_raw": 53_171_400,
+                "player_army_ids_before": [101, 303],
+            },
+        )
+        self.assertNotIn("sibling_army_id", result["war_action"])
+        self.assertNotIn("player_armies", result)
+        self.assertEqual(
+            [
+                frame["step"]
+                for frame in endpoint.frames
+                if frame.get("type") == "execute_step"
+            ],
+            ["split-army-half-101"],
+        )
+        self.assertEqual(
+            sorted(
+                int(army["army_id"])
+                for army in driver.take_snapshot()["player_armies"]
+                if army.get("controllable") is True
+            ),
+            [101, 303],
+        )
+
+    def test_split_army_half_projects_one_immediate_sibling(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.01,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.split-army-half-N",
+            )
+        )
+        source = _army(83886341, province_id=2585)
+        endpoint.publish(
+            _snapshot(40, date_raw=53_171_400, player_armies=[source])
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "split_submitted",
+                    },
+                }
+            )
+            sibling = _army(83886342, province_id=2585)
+            endpoint.publish(
+                _snapshot(
+                    41,
+                    date_raw=53_171_400,
+                    player_armies=[source, sibling],
+                )
+            )
+
+        endpoint.send_hook = answer
+        result = GameplayBridgeService(driver).execute_step(
+            "split-army-half-83886341"
+        )
+
+        self.assertEqual(
+            result["war_action"],
+            {
+                "status": "split_applied",
+                "source_army_id": 83886341,
+                "submitted_date_raw": 53_171_400,
+                "player_army_ids_before": [83886341],
+                "sibling_army_id": 83886342,
+            },
+        )
+
+    def test_split_army_half_does_not_guess_between_immediate_additions(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.split-army-half-N",
+            )
+        )
+        source = _army(101, province_id=2585)
+        endpoint.publish(
+            _snapshot(40, date_raw=53_171_400, player_armies=[source])
+        )
+
+        def submit_without_identity_proof(
+            _step: str, *, expected_revision: int | None
+        ) -> dict[str, object]:
+            self.assertEqual(expected_revision, 2)
+            endpoint.publish(
+                _snapshot(
+                    41,
+                    date_raw=53_171_400,
+                    player_armies=[
+                        source,
+                        _army(102, province_id=2585),
+                        _army(103, province_id=2585),
+                    ],
+                )
+            )
+            return {"status": "split_submitted"}
+
+        with mock.patch.object(
+            driver,
+            "_execute_primitive_step",
+            side_effect=submit_without_identity_proof,
+        ):
+            result = driver._execute_native_war_step(
+                "split-army-half-101", expected_revision=None
+            )
+
+        self.assertEqual(result["war_action"]["status"], "split_submitted")
+        self.assertNotIn("sibling_army_id", result["war_action"])
+
+    def test_merge_armies_expands_ordered_pairs_and_returns_queue_receipt(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.merge-armies-N-with-N",
+            )
+        )
+        destination = _army(
+            101,
+            province_id=11,
+            army_state="moving",
+            in_combat=False,
+            retreating=False,
+        )
+        source = _army(303, province_id=11)
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=53_171_400,
+                player_armies=[
+                    destination,
+                    source,
+                    _army(404, province_id=11, in_combat=True),
+                    _army(505, province_id=11, retreating=True),
+                    _army(606, province_id=12),
+                    _army(707, province_id=11, controllable=False),
+                ],
+            )
+        )
+        service = GameplayBridgeService(driver)
+
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            [
+                "merge-armies-101-with-303",
+                "merge-armies-303-with-101",
+            ],
+        )
+        planned_step = service.plan_turn()["plan"].get("selected_step")
+        self.assertFalse(
+            isinstance(planned_step, str)
+            and planned_step.startswith("merge-armies-")
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "merge_submitted",
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        result = service.execute_step(
+            "merge-armies-101-with-303",
+            expected_revision=int(driver.take_snapshot()["revision"]),
+        )
+
+        self.assertEqual(
+            result["war_action"],
+            {
+                "status": "merge_submitted",
+                "destination_army_id": 101,
+                "source_army_id": 303,
+                "submitted_date_raw": 53_171_400,
+                "player_army_ids_before": [101, 303, 404, 505, 606],
+            },
+        )
+        self.assertEqual(
+            [
+                frame["step"]
+                for frame in endpoint.frames
+                if frame.get("type") == "execute_step"
+            ],
+            ["merge-armies-101-with-303"],
+        )
+
+    def test_merge_armies_projects_exact_immediate_removal(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.merge-armies-N-with-N",
+            )
+        )
+        destination = _army(101, province_id=11)
+        source = _army(303, province_id=11)
+        unaffected = _army(404, province_id=12)
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=53_171_400,
+                player_armies=[destination, source, unaffected],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "merge_submitted",
+                    },
+                }
+            )
+            endpoint.publish(
+                _snapshot(
+                    41,
+                    date_raw=53_171_400,
+                    player_armies=[destination, unaffected],
+                )
+            )
+
+        endpoint.send_hook = answer
+        result = GameplayBridgeService(driver).execute_step(
+            "merge-armies-101-with-303"
+        )
+
+        self.assertEqual(result["war_action"]["status"], "merge_applied")
+        self.assertEqual(
+            result["war_action"]["player_army_ids_before"],
+            [101, 303, 404],
+        )
+
+    def test_merge_armies_does_not_guess_from_partial_immediate_state(
+        self,
+    ) -> None:
+        destination_before = _army(101, province_id=11)
+        source_before = _army(303, province_id=11)
+        unchanged = _army(404, province_id=12)
+        changed_owner = _army(101, province_id=11)
+        changed_owner["owner_character_id"] = 909
+        cases = {
+            "destination_moved": [
+                _army(101, province_id=12),
+                unchanged,
+            ],
+            "destination_owner_changed": [changed_owner, unchanged],
+            "unexpected_new_army": [
+                destination_before,
+                unchanged,
+                _army(505, province_id=12),
+            ],
+            "source_still_exists": [
+                destination_before,
+                _army(303, province_id=11, controllable=False),
+                unchanged,
+            ],
+        }
+        for name, immediate_armies in cases.items():
+            with self.subTest(case=name):
+                endpoint = FakeEndpoint()
+                driver = NativeHeadlessGameplayDriver(
+                    endpoint.pipe_name,
+                    endpoint=endpoint,
+                )
+                endpoint.publish(
+                    _hello(
+                        "game.state.snapshot",
+                        "game.command.merge-armies-N-with-N",
+                    )
+                )
+                endpoint.publish(
+                    _snapshot(
+                        40,
+                        date_raw=53_171_400,
+                        player_armies=[
+                            destination_before,
+                            source_before,
+                            unchanged,
+                        ],
+                    )
+                )
+
+                def submit_and_publish(
+                    _step: str, *, expected_revision: int | None
+                ) -> dict[str, object]:
+                    endpoint.publish(
+                        _snapshot(
+                            41,
+                            date_raw=53_171_400,
+                            player_armies=immediate_armies,
+                        )
+                    )
+                    return {"status": "merge_submitted"}
+
+                with mock.patch.object(
+                    driver,
+                    "_execute_primitive_step",
+                    side_effect=submit_and_publish,
+                ):
+                    result = driver._execute_native_war_step(
+                        "merge-armies-101-with-303",
+                        expected_revision=None,
+                    )
+
+                self.assertEqual(
+                    result["war_action"]["status"], "merge_submitted"
+                )
 
     def test_native_war_templates_expand_and_move_waits_for_target(self) -> None:
         endpoint = FakeEndpoint()
@@ -4218,6 +5568,8 @@ class NativeFallbackModeTests(unittest.TestCase):
                     execute=lambda step, _revision: visual_calls.append(step) or {},
                     action_steps=(
                         "move-army-7-to-9",
+                        "split-army-half-7",
+                        "merge-armies-7-with-8",
                         "query-declarable-wars",
                         "declare-war-808-17-0",
                         "query-arrange-marriage-choices",
@@ -4233,6 +5585,16 @@ class NativeFallbackModeTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
             driver.execute_step("move-army-7-to-9")
+        self.assertNotIn(
+            "split-army-half-7", driver.capabilities()["action_steps"]
+        )
+        with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
+            driver.execute_step("split-army-half-7")
+        self.assertNotIn(
+            "merge-armies-7-with-8", driver.capabilities()["action_steps"]
+        )
+        with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
+            driver.execute_step("merge-armies-7-with-8")
         self.assertNotIn(
             "declare-war-808-17-0", driver.capabilities()["action_steps"]
         )
