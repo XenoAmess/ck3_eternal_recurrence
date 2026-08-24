@@ -150,9 +150,10 @@ fallback `2543` 两点间轮转会同时受堵。公国/王国目标发布全部
 同一 `date_raw=53174208` checkpoint 的定向恢复又复现了另一类实际失败：目标省 `2585` 本身没有敌军，
 但玩家军队从 `2568` 提交到 `2585` 的原生路线经过敌军当前省 `2581`，推进仅 1 游戏日就进入 2v1
 `combat`。因此“目标省安全”不等于“路线安全”；planner 提交 move 前必须审阅玩家候选路线的每个
-`route_province_ids` 条目，而不能只比较双方终点。确定的冲突只有三类：非撤退敌军当前省位于玩家路线、
-敌军 move target 位于玩家路线、双方下一跳相同；一般追击允许“被追击敌军恰在路线最后一项”这一种终点
-命中，但中途相遇、共同下一跳和其他敌军仍会阻断。该字段发布的是 CK3 已计算的剩余路线，不包含 bridge
+`route_province_ids` 条目，而不能只比较双方终点。硬冲突包括：非撤退敌军当前省位于玩家路线、敌军 move target
+位于玩家路线、双方下一跳相同、双方剩余路线共享任一未来省，以及双方以相反方向使用同一条边。共享省会记录
+双方各自的 1-based hop；当前没有每段地形/速度 ETA，不能仅凭 hop 差声称必然错峰。一般追击允许“被追击敌军
+恰在路线最后一项”这一种终点命中，但中途相遇、共同下一跳、未来共享省和其他敌军仍会阻断。该字段发布的是 CK3 已计算的剩余路线，不包含 bridge
 猜测或最短路重建。
 
 路线安全是全局时间推进门槛，不是“最强军队”局部提示。每次战争中的 `life-advance` 前，planner 会在
@@ -168,6 +169,12 @@ adapter 在提交后失去持续审计能力。
 planner 先预览下一个 exact 目标，全部 exact 目标无解则保持暂停，不能继续围城推进。该检查只保护当前驻地，
 不会把敌军路线上的任意远端交叉省加入通用目标黑名单。
 
+同一实机现场在玩家到达 `2604` 后给出了更强的完整路线反例：玩家回到 `2585` 的预览为
+`[2603,2595,2598,2599,2587,2585]`，敌军 `357` 从 `2597` 去 `2604` 的剩余路线为
+`[2596,2595,2603,2604]`。双方在 `2603` / `2595` 共享未来省，并在 `2603→2595` 与
+`2595→2603` 形成反向共边，因此不得提交。到 `2596`、`2600` 的候选也共享 `2603/2595`；
+到 `2568` 的候选 `[8759,2602,2591,2589,2579,2574,2572,2568]` 则与两支敌军当时的完整路线无交集。
+
 以上移动、解散与围城观测全程没有恢复窗口，也没有调用 OCR、截图或键鼠。
 
 这些具体战争 step 即使运行在显式 `hybrid-fallback` 配置中也只允许 native 后端执行；native 未广告时不会转发到视觉后端。
@@ -179,7 +186,7 @@ planner 先预览下一个 exact 目标，全部 exact 目标无解则保持暂�
 1. baseline checkpoint 完成且当前无战争/残军时，显式 `query-declarable-wars`；优先 county holy war、county conquest、claim，随后按单 title 与稳定 runtime ID 排序，提交一个 `declare-war-*`。
 2. 任一活动战争达到玩家视角 100 分：先执行 `enforce-demands-<war_id>`，确认该 war 从 snapshot 消失，不再无意义推进时间。
 3. 有活动战争、无可控军队：`raise-troops-default`。
-4. 玩家是进攻方、本方 primary war leader 且存在 exact `war_objective_province_ids`：从战争刚开始的 0 分起就按 DLL 的 DFS 顺序围攻 exact 目标；Python 只做稳定去重，不按 ProvinceID 重排。paused 状态先预览完整原生路线，再按上面的三类冲突审计；不安全则预览下一个未完成 exact 目标，所有 exact 路线都不安全时保持暂停，绝不偷用 legacy fallback。
+4. 玩家是进攻方、本方 primary war leader 且存在 exact `war_objective_province_ids`：从战争刚开始的 0 分起就按 DLL 的 DFS 顺序围攻 exact 目标；Python 只做稳定去重，不按 ProvinceID 重排。paused 状态先预览完整原生路线，再按上面的硬冲突审计；不安全则预览下一个未完成 exact 目标，所有 exact 路线都不安全时保持暂停，绝不偷用 legacy fallback。
 5. 没有 exact 目标时，战争分为 0、玩家是防守方或不是本方 primary war leader：选择兵力最大的可见敌军，令最强可控军队追击其当前省；兵力未知时按最小 `army_id` 稳定选择。仅 legacy fallback 可用时，仍要求进攻方已经取得正分，才把 `enemy_primary_default_raise_province_id` 当作围城启发式锚点；它绝不是解码出的 war goal。
 6. 军队已经在目标省、已观察到向目标省移动，或 90 个游戏日内已有相同的 accepted/submitted move intent：只有全部可控活动路线的 fresh passive audit 都安全，才执行一次最多 30 个游戏日的 `life-advance`，不重复提交 move。running snapshot 先暂停再读完整路线；敌情变化后每次推进前重新审计，不把上一次 preview 当永久通行证。
 7. 战争消失但玩家军队仍在场：逐支执行 `disband-army-<army_id>`。

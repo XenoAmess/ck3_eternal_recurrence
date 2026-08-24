@@ -404,6 +404,15 @@ class GameplayBridgeTests(unittest.TestCase):
                 army_state="moving",
                 route_province_ids=[31, 99],
             ),
+            "enemy_route_intersection": _army(
+                21,
+                soldiers=800,
+                province_id=90,
+                controllable=False,
+                move_target_province_id=99,
+                army_state="moving",
+                route_province_ids=[52, 31, 99],
+            ),
         }
         for conflict_kind, enemy in cases.items():
             with self.subTest(conflict_kind=conflict_kind):
@@ -437,6 +446,49 @@ class GameplayBridgeTests(unittest.TestCase):
                     plan["route_rejections"][0]["conflicts"][0]["kind"],
                     conflict_kind,
                 )
+
+    def test_exact_route_rejects_opposite_enemy_edge(self) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=20,
+            controllable=True,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            21,
+            soldiers=800,
+            province_id=90,
+            controllable=False,
+            move_target_province_id=99,
+            army_state="moving",
+            route_province_ids=[52, 31, 99],
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            history=[
+                _preview_row(
+                    1,
+                    origin=20,
+                    target=2585,
+                    date_raw=24_000,
+                    route=[20, 31, 52, 2585],
+                )
+            ],
+            objectives=[2585, 2510],
+            steps=("preview-move-army-11-to-2510", "life-advance"),
+        )
+
+        kinds = {
+            conflict["kind"]
+            for conflict in plan["route_rejections"][0]["conflicts"]
+        }
+        self.assertIn("enemy_route_intersection", kinds)
+        self.assertIn("opposite_edge_intersection", kinds)
 
     def test_exact_route_ignores_retreating_enemy(self) -> None:
         player = _army(
@@ -844,6 +896,59 @@ class GameplayBridgeTests(unittest.TestCase):
             deferred["phase"], "native_war_no_safe_exact_route"
         )
         self.assertIsNone(deferred["selected_step"])
+
+    def test_stationary_army_chooses_route_without_enemy_route_overlap(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=2604,
+            controllable=True,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            21,
+            soldiers=800,
+            province_id=2597,
+            controllable=False,
+            move_target_province_id=2604,
+            army_state="moving",
+            route_province_ids=[2596, 2595, 2603, 2604],
+        )
+        history = [
+            _preview_row(
+                1,
+                origin=2604,
+                target=2585,
+                date_raw=24_000,
+                route=[2603, 2595, 2598, 2599, 2587, 2585],
+            ),
+            _preview_row(
+                2,
+                origin=2604,
+                target=2568,
+                date_raw=24_000,
+                route=[8759, 2602, 2591, 2589, 2579, 2574, 2572, 2568],
+            ),
+        ]
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=38,
+            date_raw=24_000,
+            history=history,
+            objectives=[2585, 2568],
+            steps=(
+                "move-army-11-to-2585",
+                "move-army-11-to-2568",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2568")
 
     def test_preview_without_passive_routes_is_explicitly_unsupported(
         self,

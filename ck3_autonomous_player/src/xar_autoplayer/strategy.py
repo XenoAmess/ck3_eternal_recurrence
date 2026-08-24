@@ -2254,12 +2254,58 @@ def _audit_war_route(
             if isinstance(enemy_route, list)
             else []
         )
+        if enemy_current is not None:
+            enemy_remaining = [
+                province_id
+                for province_id in enemy_remaining
+                if province_id != enemy_current
+            ]
         if enemy_remaining and enemy_remaining[0] == remaining_route[0]:
             conflicts.append(
                 {
                     "kind": "shared_next_hop",
                     "enemy_army_id": enemy_id,
                     "province_id": remaining_route[0],
+                }
+            )
+        enemy_hops: dict[int, int] = {}
+        for enemy_hop, province_id in enumerate(enemy_remaining, start=1):
+            enemy_hops.setdefault(province_id, enemy_hop)
+        for player_hop, province_id in enumerate(remaining_route, start=1):
+            enemy_hop = enemy_hops.get(province_id)
+            if enemy_hop is None:
+                continue
+            conflicts.append(
+                {
+                    "kind": "enemy_route_intersection",
+                    "enemy_army_id": enemy_id,
+                    "province_id": province_id,
+                    "player_hop": player_hop,
+                    "enemy_hop": enemy_hop,
+                }
+            )
+        reverse_enemy_edges = {
+            (destination, origin): enemy_hop
+            for enemy_hop, (origin, destination) in enumerate(
+                zip(enemy_remaining, enemy_remaining[1:]),
+                start=1,
+            )
+        }
+        for player_hop, edge in enumerate(
+            zip(remaining_route, remaining_route[1:]),
+            start=1,
+        ):
+            enemy_hop = reverse_enemy_edges.get(edge)
+            if enemy_hop is None:
+                continue
+            conflicts.append(
+                {
+                    "kind": "opposite_edge_intersection",
+                    "enemy_army_id": enemy_id,
+                    "from_province_id": edge[0],
+                    "to_province_id": edge[1],
+                    "player_hop": player_hop,
+                    "enemy_hop": enemy_hop,
                 }
             )
     return {
