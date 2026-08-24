@@ -149,6 +149,66 @@
       "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 40 48 8B F2 48 8B E9 4C 8B CA 45 33 C0 48 8B D1 48 8D 4C 24 30"
     },
     {
+      "name": "native_component_alive_id_gate",
+      "rva": "0x10495A0",
+      "confidence": "high-static",
+      "pattern": "83 79 08 FF 0F 95 C0 C3 CC CC CC CC CC CC CC CC 40 53 48 83 EC 20"
+    },
+    {
+      "name": "province_is_occupied",
+      "rva": "0x220C4A0",
+      "confidence": "high-static",
+      "pattern": "83 B9 44 07 00 00 FF 0F 95 C0 C3 CC CC CC CC CC 48 83 EC 28 C7 81 44 07 00 00 FF FF FF FF"
+    },
+    {
+      "name": "province_fort_level",
+      "rva": "0x2209D20",
+      "confidence": "high-static",
+      "pattern": "8B 81 58 08 00 00 C3 CC CC CC CC CC CC CC CC CC 83 B9 58 08 00 00 00 0F 9F C0 C3"
+    },
+    {
+      "name": "province_current_garrison_size",
+      "rva": "0x220E710",
+      "confidence": "high-static",
+      "pattern": "48 81 C1 20 06 00 00 E9 54 94 FE FF CC CC CC CC"
+    },
+    {
+      "name": "province_eligible_besieging_strength",
+      "rva": "0x220E580",
+      "confidence": "high-static",
+      "pattern": "40 55 56 48 83 EC 28 8B 81 54 07 00 00 33 ED 48 8B F1 85 C0 0F 8E 69 01 00 00"
+    },
+    {
+      "name": "province_has_active_siege",
+      "rva": "0x220CBC0",
+      "confidence": "high-static",
+      "pattern": "83 B9 90 07 00 00 FF 0F 95 C0 C3 CC CC CC CC CC 48 89 5C 24 08 48 89 74 24 10"
+    },
+    {
+      "name": "siege_component_storage_lookup",
+      "rva": "0x1849BD0",
+      "confidence": "high-static",
+      "pattern": "41 8B 87 90 07 00 00 4C 8B 05 DA 55 F7 03 4D 85 C0 74 26 8B C8 81 E1 FF FF FF 00 41 3B 48 2C 73 18 8B D1 48 03 D2 49 8B 48 20 48 8B 5C D1 08 48 85 DB 74 05 39 43 08 74 07"
+    },
+    {
+      "name": "siege_progress_fraction",
+      "rva": "0x229B960",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B DA 48 8B F9 48 8D 54 24 40 E8 26 13 00 00 4C 8B 44 24 40 4D 85 C0"
+    },
+    {
+      "name": "siege_total_work",
+      "rva": "0x229CCA0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 56 57 41 56 48 83 EC 30 48 8B F2 48 8B E9 48 8B B9 00 02 00 00 48 63 9F 38 07 00 00"
+    },
+    {
+      "name": "siege_days_left",
+      "rva": "0x229BAA0",
+      "confidence": "high-static",
+      "pattern": "40 56 48 83 EC 40 48 8B 01 48 8B F1 FF 50 08 84 C0 0F 84 CD 01 00 00 48 8B CE E8 51 04 00 00"
+    },
+    {
       "name": "war_targeted_titles_serialize",
       "rva": "0x23E6B00",
       "confidence": "high-static-live-validated",
@@ -523,6 +583,16 @@
     "cfixedpoint_to_semantic_integer_site": "0x3A48E16",
     "contains_war_participant": "0x2224870",
     "get_war_score_attacker_relative": "0x222A8A0",
+    "siege_storage_slot": "0x57BF1B8",
+    "native_component_alive_id_gate": "0x10495A0",
+    "province_is_occupied": "0x220C4A0",
+    "province_fort_level": "0x2209D20",
+    "province_current_garrison_size": "0x220E710",
+    "province_eligible_besieging_strength": "0x220E580",
+    "province_has_active_siege": "0x220CBC0",
+    "siege_progress_fraction": "0x229B960",
+    "siege_total_work": "0x229CCA0",
+    "siege_days_left": "0x229BAA0",
     "war_targeted_titles_serialize": "0x23E6B00",
     "landed_title_capital_serialize": "0x20B0DA0",
     "title_province_county_capital_barony": "0x19D5BA9",
@@ -584,6 +654,11 @@
     "player_character_manager_type_descriptor": "0x54C4230"
   },
   "vtable_prefixes": [
+    {
+      "name": "CSiege.main",
+      "rva": "0x42FD6A8",
+      "function_rvas": ["0x229AC50", "0x10495A0"]
+    },
     {
       "name": "CSetGameSpeedCommand.primary",
       "rva": "0x432F3F0",
@@ -694,6 +769,29 @@
       "war_manager": "+0x29C20 embedded CWarManager",
       "landed_title_manager": "+0x2FC8 embedded CLandedTitleManager; initialization caller RVA 0x204D9F3 passes CK3GameData+0x2FC8 to RVA 0x271F270",
       "province_array": "+0x140 pointer array; +0x14C int32 count; Province ID repeats at Province +0x10"
+    },
+    "CProvince": {
+      "province_id": "+0x10 int32 stable Province ID; every objective state first round-trips through the current CK3GameData province array",
+      "occupying_character_id": "+0x744 int32 full-generation CharacterID; -1 means unoccupied and RVA 0x220C4A0 returns exactly whether this field differs from -1; non--1 publication requires an exact Character storage roundtrip",
+      "active_siege_id": "+0x790 int32 full-generation SiegeID; -1 means no active siege at RVA 0x220CBC0",
+      "fort_level": "+0x858 int32 plain fort level returned by RVA 0x2209D20; zero is a valid no-fort value",
+      "current_garrison_size": "plain int32 soldier count returned by Province wrapper RVA 0x220E710, which passes Province+0x620 to shared Holding/Garrison getter RVA 0x21F7B70",
+      "eligible_besieging_strength": "plain int32 soldier count returned by RVA 0x220E580; stock CSiege.GetSiegeMenBalance combines it with the same current-garrison getter"
+    },
+    "CSiegeStorage": {
+      "global_slot": "base +0x57BF1B8; lookup anchor RVA 0x1849BD0 resolves Province+0x790 through this slot",
+      "slots": "+0x20 pointer; each slot is 0x10 bytes and object pointer is +0x08",
+      "capacity": "+0x2C int32"
+    },
+    "CSiege": {
+      "vtable": "main vtable RVA 0x42FD6A8; slot 1 is shared component-alive RVA 0x10495A0",
+      "siege_id": "+0x08 int32 full-generation SiegeID; resolver masks only for the slot index, then requires this complete value",
+      "province": "+0x200 CProvince pointer; objective publication requires exact pointer equality with the Province that supplied active_siege_id",
+      "besieging_army_id": "+0x208 int32 full CArmyID; bridge joins it against generation-valid CUnit+0x178 values and publishes a public CUnit ID only for exactly one match",
+      "current_work": "+0x3D0 signed int64 CFixedPoint raw work, scale 100000",
+      "total_work": "RVA 0x229CCA0(CSiege*, int64* out) writes signed CFixedPoint raw work and returns out",
+      "progress_fraction": "RVA 0x229B960(CSiege*, int64* out) writes min(current,total)/total as CFixedPoint raw 0..100000; this is a 0..1 fraction, not UI percent",
+      "days_left": "RVA 0x229BAA0(CSiege*) returns int32 ceil(remaining/daily) game days; INT_MAX means invalid/dead/stalled/no daily progress and is published as null, while zero is valid"
     },
     "CCharacterInteractionDatabase": {
       "getter": "RVA 0x831890 returns the independent singleton; these offsets are not relative to CK3GameData",

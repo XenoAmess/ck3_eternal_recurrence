@@ -34,6 +34,7 @@ constexpr std::uintptr_t kPendingCharacterInteractionStorageSlotRva =
     0x57BF1C8;
 constexpr std::uintptr_t kCharacterStorageSlotRva = 0x570C130;
 constexpr std::uintptr_t kArmyStorageSlotRva = 0x570CC80;
+constexpr std::uintptr_t kSiegeStorageSlotRva = 0x57BF1B8;
 constexpr std::uintptr_t kGlobalVariableContainerAccessorSlotRva =
     0x570F750;
 constexpr std::uintptr_t kRaiseTroopsPrimaryVtableRva = 0x41226D8;
@@ -57,6 +58,14 @@ constexpr std::uintptr_t kValidateReplyCharacterInteractionCommandRva =
     0x26B3540;
 constexpr std::uintptr_t kContainsWarParticipantRva = 0x2224870;
 constexpr std::uintptr_t kGetWarScoreRva = 0x222A8A0;
+constexpr std::uintptr_t kIsNativeComponentAliveRva = 0x10495A0;
+constexpr std::uintptr_t kGetSiegeProgressRva = 0x229B960;
+constexpr std::uintptr_t kGetSiegeTotalWorkRva = 0x229CCA0;
+constexpr std::uintptr_t kGetSiegeDaysLeftRva = 0x229BAA0;
+constexpr std::uintptr_t kIsProvinceOccupiedRva = 0x220C4A0;
+constexpr std::uintptr_t kGetProvinceFortLevelRva = 0x2209D20;
+constexpr std::uintptr_t kGetProvinceGarrisonSizeRva = 0x220E710;
+constexpr std::uintptr_t kGetProvinceBesiegingStrengthRva = 0x220E580;
 constexpr std::uintptr_t kResolveDefaultRaiseProvinceRva = 0x224CC80;
 constexpr std::uintptr_t kGetUnitStateRva = 0x0C7AAB0;
 constexpr std::uintptr_t kConstructRaiseTroopsCommandRva = 0x26D6FC0;
@@ -164,8 +173,14 @@ constexpr std::size_t kUnitPathProvinceInfoCountOffset = 0x44;
 constexpr std::size_t kUnitPathProvinceIdOffset = 0x00;
 constexpr std::size_t kUnitRetreatStateOffset = 0x170;
 constexpr std::size_t kArmyOwnerCharacterIdOffset = 0x174;
-constexpr std::size_t kArmyDisbandCommandTargetIdOffset = 0x178;
+constexpr std::size_t kUnitArmyIdOffset = 0x178;
 constexpr std::size_t kProvinceIdOffset = 0x10;
+constexpr std::size_t kProvinceOccupyingCharacterIdOffset = 0x744;
+constexpr std::size_t kProvinceActiveSiegeIdOffset = 0x790;
+constexpr std::size_t kSiegeIdOffset = 0x08;
+constexpr std::size_t kSiegeProvinceOffset = 0x200;
+constexpr std::size_t kSiegeBesiegingArmyIdOffset = 0x208;
+constexpr std::size_t kSiegeCurrentWorkOffset = 0x3D0;
 constexpr std::size_t kGameDataProvinceArrayOffset = 0x140;
 constexpr std::size_t kGameDataProvinceCountOffset = 0x14C;
 constexpr std::size_t kArrangeMarriageInteractionOffset = 0xF48;
@@ -207,6 +222,7 @@ constexpr std::int32_t kMaximumWarObjectiveTitleIds = 4'096;
 constexpr std::int32_t kMaximumUnitRouteProvinceInfos = 4'096;
 constexpr std::size_t kMaximumLandedTitleHierarchyDepth = 8;
 constexpr std::size_t kMaximumWarObjectiveProvinceIds = 4'096;
+constexpr std::size_t kMaximumWarObjectiveProvinceStateCount = 256;
 constexpr std::size_t kMaximumDatabaseObjectKeyBytes = 4'096;
 constexpr std::size_t kMsvcStringInlineCapacity = 15;
 constexpr std::size_t kMaximumMarriageValidationSamples = 8;
@@ -1207,6 +1223,37 @@ void *ResolveProvince(void *game_state, std::int32_t province_id) noexcept {
   return province;
 }
 
+void *ResolveSiege(const Bindings &bindings,
+                   std::int32_t siege_id) noexcept {
+  if (siege_id == -1 || bindings.siege_storage_slot == nullptr ||
+      bindings.is_native_component_alive == nullptr) {
+    return nullptr;
+  }
+  void *const storage = *bindings.siege_storage_slot;
+  if (storage == nullptr) {
+    return nullptr;
+  }
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const auto capacity =
+      LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  const auto index =
+      static_cast<std::uint32_t>(siege_id) & 0x00FFFFFFU;
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentCapacity ||
+      index >= static_cast<std::uint32_t>(capacity)) {
+    return nullptr;
+  }
+  void *const siege = LoadAt<void *>(
+      slots, static_cast<std::size_t>(index) * kComponentStorageSlotSize +
+                 kComponentStorageSlotObjectOffset);
+  if (siege == nullptr ||
+      LoadAt<std::int32_t>(siege, kSiegeIdOffset) != siege_id ||
+      !bindings.is_native_component_alive(siege)) {
+    return nullptr;
+  }
+  return siege;
+}
+
 void *ResolveLandedTitle(const Bindings &bindings, void *game_state,
                          std::int32_t title_id) noexcept {
   if (game_state == nullptr || title_id == -1) {
@@ -1539,6 +1586,156 @@ ReadArmies(const Bindings &bindings, void *game_state,
   return result;
 }
 
+WarObjectiveProvinceState ReadWarObjectiveProvinceState(
+    const Bindings &bindings, void *game_state, std::int32_t province_id,
+    const std::vector<ResolvedArmySnapshot> &armies,
+    bool include_paused_details) noexcept {
+  WarObjectiveProvinceState state{};
+  state.province_id = province_id;
+  void *const province = ResolveProvince(game_state, province_id);
+  if (province == nullptr) {
+    return state;
+  }
+
+  if (bindings.is_province_occupied != nullptr) {
+    const bool occupied = bindings.is_province_occupied(province);
+    if (!occupied) {
+      state.occupation_observable = true;
+    } else {
+      const auto occupying_character_id = LoadAt<std::int32_t>(
+          province, kProvinceOccupyingCharacterIdOffset);
+      if (ResolveCharacter(bindings, occupying_character_id) != nullptr) {
+        state.occupation_observable = true;
+        state.is_occupied = true;
+        state.occupying_character_id = occupying_character_id;
+      }
+    }
+  }
+
+  if (bindings.get_province_fort_level != nullptr) {
+    const auto fort_level = bindings.get_province_fort_level(province);
+    if (fort_level >= 0) {
+      state.fort_level_observable = true;
+      state.fort_level = fort_level;
+    }
+  }
+  // The remaining getters traverse mutable Holding/CUnit/CSiege subgraphs.
+  // No engine read lock has been identified, so the worker calls them only
+  // while CK3 is paused. Occupation and fort level above are direct Province
+  // scalar getters and remain useful in running snapshots.
+  if (!include_paused_details) {
+    return state;
+  }
+  if (bindings.get_province_garrison_size != nullptr) {
+    const auto garrison_size =
+        bindings.get_province_garrison_size(province);
+    if (garrison_size >= 0) {
+      state.garrison_size_observable = true;
+      state.garrison_size = garrison_size;
+    }
+  }
+  if (bindings.get_province_besieging_strength != nullptr) {
+    const auto besieging_strength =
+        bindings.get_province_besieging_strength(province);
+    if (besieging_strength >= 0) {
+      state.besieging_strength_observable = true;
+      state.besieging_strength = besieging_strength;
+    }
+  }
+
+  const bool has_siege_reader =
+      bindings.siege_storage_slot != nullptr &&
+      bindings.is_native_component_alive != nullptr &&
+      bindings.get_siege_progress != nullptr &&
+      bindings.get_siege_total_work != nullptr &&
+      bindings.get_siege_days_left != nullptr;
+  if (!has_siege_reader) {
+    return state;
+  }
+  const auto siege_id =
+      LoadAt<std::int32_t>(province, kProvinceActiveSiegeIdOffset);
+  if (siege_id == -1) {
+    state.siege_observable = true;
+    return state;
+  }
+  void *const siege = ResolveSiege(bindings, siege_id);
+  if (siege == nullptr ||
+      LoadAt<void *>(siege, kSiegeProvinceOffset) != province) {
+    return state;
+  }
+
+  std::int64_t progress_raw = 0;
+  std::int64_t total_work_raw = 0;
+  if (bindings.get_siege_progress(siege, &progress_raw) != &progress_raw ||
+      bindings.get_siege_total_work(siege, &total_work_raw) !=
+          &total_work_raw) {
+    return state;
+  }
+  const auto current_work_raw =
+      LoadAt<std::int64_t>(siege, kSiegeCurrentWorkOffset);
+  if (progress_raw < 0 || progress_raw > kFixedPointScale ||
+      current_work_raw < 0 || total_work_raw < 0) {
+    return state;
+  }
+
+  state.siege_observable = true;
+  state.has_active_siege = true;
+  state.siege_id = siege_id;
+  state.siege_progress_fraction.raw = progress_raw;
+  state.siege_current_work.raw = current_work_raw;
+  state.siege_total_work.raw = total_work_raw;
+
+  const auto besieging_carmy_id =
+      LoadAt<std::int32_t>(siege, kSiegeBesiegingArmyIdOffset);
+  std::int32_t unique_besieging_unit_id = -1;
+  std::size_t besieging_unit_matches = 0;
+  if (besieging_carmy_id != -1) {
+    for (const auto &army : armies) {
+      if (LoadAt<std::int32_t>(army.army, kUnitArmyIdOffset) !=
+          besieging_carmy_id) {
+        continue;
+      }
+      ++besieging_unit_matches;
+      unique_besieging_unit_id = army.snapshot.army_id;
+      state.player_army_besieging =
+          state.player_army_besieging || army.snapshot.controllable;
+    }
+  }
+  if (besieging_unit_matches == 1) {
+    state.besieging_army_id = unique_besieging_unit_id;
+  }
+
+  const auto days_left = bindings.get_siege_days_left(siege);
+  if (days_left >= 0 && days_left != std::numeric_limits<std::int32_t>::max()) {
+    state.siege_days_left_observable = true;
+    state.siege_days_left = days_left;
+  }
+  return state;
+}
+
+void ReadWarObjectiveProvinceStates(
+    const Bindings &bindings, void *game_state,
+    const std::vector<ResolvedArmySnapshot> &armies,
+    bool include_paused_details, std::size_t &remaining_state_budget,
+    ActiveWarSnapshot &war) noexcept {
+  war.objective_province_states.clear();
+  // Publish a war atomically or not at all. The shared snapshot budget is
+  // deliberately smaller than the 4096-ID hierarchy ceiling because paused
+  // heartbeats still run every 250 ms and each rich row calls engine getters.
+  // Multiple concurrent wars share this budget.
+  if (war.war_objective_province_ids.size() > remaining_state_budget) {
+    return;
+  }
+  war.objective_province_states.reserve(
+      war.war_objective_province_ids.size());
+  for (const auto province_id : war.war_objective_province_ids) {
+    war.objective_province_states.push_back(
+        ReadWarObjectiveProvinceState(bindings, game_state, province_id,
+                                      armies, include_paused_details));
+  }
+  remaining_state_budget -= war.objective_province_states.size();
+}
+
 void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
                        std::int32_t played_character_id,
                        bool include_full_routes,
@@ -1577,6 +1774,8 @@ void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
       capacity > kMaximumComponentCapacity) {
     return;
   }
+  std::size_t remaining_objective_state_budget =
+      kMaximumWarObjectiveProvinceStateCount;
 
   for (std::int32_t index = 0; index < capacity; ++index) {
     const auto slot_offset = static_cast<std::size_t>(index) *
@@ -1634,6 +1833,9 @@ void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
         }
       }
     }
+    ReadWarObjectiveProvinceStates(
+        bindings, game_state, armies, include_full_routes,
+        remaining_objective_state_budget, snapshot);
     const std::int32_t primary_opponent_character_id =
         LoadAt<std::int32_t>(
             war, player_is_attacker
@@ -1735,6 +1937,8 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       reinterpret_cast<void **>(module + kCharacterStorageSlotRva);
   result.army_storage_slot =
       reinterpret_cast<void **>(module + kArmyStorageSlotRva);
+  result.siege_storage_slot =
+      reinterpret_cast<void **>(module + kSiegeStorageSlotRva);
   result.global_variable_container_accessor_slot =
       reinterpret_cast<GetGlobalVariableContainer *>(
           module + kGlobalVariableContainerAccessorSlotRva);
@@ -1765,6 +1969,24 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       module + kContainsWarParticipantRva);
   result.get_war_score =
       reinterpret_cast<GetWarScore>(module + kGetWarScoreRva);
+  result.is_native_component_alive =
+      reinterpret_cast<IsNativeComponentAlive>(
+          module + kIsNativeComponentAliveRva);
+  result.get_siege_progress = reinterpret_cast<ReadSiegeFixedPoint>(
+      module + kGetSiegeProgressRva);
+  result.get_siege_total_work = reinterpret_cast<ReadSiegeFixedPoint>(
+      module + kGetSiegeTotalWorkRva);
+  result.get_siege_days_left = reinterpret_cast<GetSiegeDaysLeft>(
+      module + kGetSiegeDaysLeftRva);
+  result.is_province_occupied = reinterpret_cast<IsProvinceOccupied>(
+      module + kIsProvinceOccupiedRva);
+  result.get_province_fort_level = reinterpret_cast<GetProvinceInt32>(
+      module + kGetProvinceFortLevelRva);
+  result.get_province_garrison_size = reinterpret_cast<GetProvinceInt32>(
+      module + kGetProvinceGarrisonSizeRva);
+  result.get_province_besieging_strength =
+      reinterpret_cast<GetProvinceInt32>(
+          module + kGetProvinceBesiegingStrengthRva);
   result.resolve_default_raise_province =
       reinterpret_cast<ResolveDefaultRaiseProvince>(
           module + kResolveDefaultRaiseProvinceRva);
@@ -2476,7 +2698,7 @@ DisbandArmyResult SubmitDisbandArmy(const Bindings &bindings,
 
   constexpr std::int32_t command_kind = 1;
   const std::int32_t command_target_id =
-      LoadAt<std::int32_t>(army, kArmyDisbandCommandTargetIdOffset);
+      LoadAt<std::int32_t>(army, kUnitArmyIdOffset);
   if (!bindings.validate_disband_army_command(
           command_kind, command_target_id, nullptr)) {
     return DisbandArmyResult::army_not_controllable;

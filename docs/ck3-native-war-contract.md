@@ -34,11 +34,47 @@
 - `player_is_primary_war_leader`: 玩家是否正是本方 primary war leader；它是 `enforce-demands` 的必要前提
 - `targeted_title_ids`: 该场战争 `CCasusBelli.targeted_titles` 的完整 `TitleID` 数组
 - `war_objective_province_ids`: 每个目标头衔按原生 de jure 子头衔顺序展开并稳定去重的可围城目标省。男爵领取自身省；伯爵领取 `+0x240` 首个 de jure 男爵领的省；公国、王国及更高层级递归到全部 de jure 伯爵领并取各自首府。每场战争最多解析 4096 个 generation 匹配的头衔，递归深度最多 8；任一目标的层级出现失效 ID、非法 tier、无首府或越界数组时，该目标的整组省份不发布，但保留 `targeted_title_ids` 和其他可完整解析的目标
+- `objective_province_states`: 与 `war_objective_province_ids` 同序的 additive 省份状态；下述四个 capability 分域公布，未知 build、partial adapter、过渡帧或超出共享预算时保持空数组/不可观测，不能把 unknown 当成零
 - `enemy_primary_default_raise_province_id`: 对方 primary 角色的原生默认集结省；无法解析时为 `null`。它不是解码出的 war goal、首都或真实行军目标；planner 只把它用作明确 fallback，或在进攻方已取得正战争分后的稳定围城启发式锚点
 - `player_relative_war_score`: 相对玩家视角的整数战争分
 - `allied_armies` / `enemy_armies`: 当前能从原生对象读取的军队数组
 
 顶层 `player_armies` 保留玩家仍在场的可控军队。它不能只从 `active_wars` 临时推导：战争结束后的下一帧必须还能看见残留军队，planner 才能发出解散命令。
+
+### Exact 目标省状态
+
+每一项 `objective_province_states` 的稳定 JSON 形状为：
+
+```json
+{
+  "province_id": 2585,
+  "occupation_observable": true,
+  "is_occupied": false,
+  "occupying_character_id": null,
+  "fort_level": 2,
+  "garrison_size": 500,
+  "besieging_strength": 650,
+  "siege_observable": true,
+  "active_siege": {
+    "siege_id": 16777217,
+    "besieging_army_id": 83886341,
+    "player_army_besieging": true,
+    "progress_fraction": {"raw": 25000, "scale": 100000},
+    "current_work": {"raw": 2500000, "scale": 100000},
+    "total_work": {"raw": 10000000, "scale": 100000},
+    "days_left": 12
+  }
+}
+```
+
+- `occupation_observable=true` 才允许解释 `is_occupied`。占领者来自 `Province+0x744` 的完整 `CharacterID`；非 `-1` 时必须按 generation 回查 Character storage，失败则整个占领域保持 unknown。未占领是可观测的 `false/null`，不是 unknown。
+- `fort_level` 是 plain `int32`，零是合法值。它和占领状态都是 Province 直接标量 getter，可在 running snapshot 发布。
+- `garrison_size` 与 `besieging_strength` 都是 plain 当前兵数，不使用 fixed-point scale；前者来自 Province wrapper `0x220E710`，后者来自 `0x220E580`。后者正是原生 `CSiege.GetSiegeMenBalance` 的进攻方分子，可用于判断“围城军少于守军/进度停滞”。这两个 getter 会进入可变 Holding/CUnit 子图，因此只在 paused snapshot 可观测。
+- paused 行中 `siege_observable=true, active_siege=null` 明确表示 `Province+0x790 == -1`，即当前没有围城；`siege_observable=false` 才表示未读取或解析失败。running snapshot 不进入 CSiege storage，固定保持 `siege_observable=false`。
+- active siege 必须依次通过完整 `SiegeID` storage roundtrip、`CSiege+0x08` full-ID、原生 alive gate 和 `CSiege+0x200 == Province*` 回指；任一失败都不发布部分 siege。`CSiege+0x208` 是内部 `CArmyID`，只有与本帧 generation-valid `CUnit+0x178` **唯一**匹配时，才映射为公开 `ArmySnapshot.army_id`；零个或多个匹配均保持 `null`。任一匹配属于玩家仍可令 `player_army_besieging=true`。
+- `progress_fraction` 是 CK3 的 0..1 CFixedPoint 比例，`raw=100000` 才是 100%，不是 UI 百分数 100。current/total work 与它共用 `{raw,scale:100000}` 表示，但工作量本身不能重命名成兵数或天数。比例越界或工作量为负时整个 active siege 被抑制。
+- `days_left=0` 合法；原生 `INT_MAX` 表示失效、停滞或没有每日进度，桥接为 `null`，绝不发布成 2147483647 天。
+- rich state 使用全 snapshot 共享的 256 行预算：暂停时 heartbeat 仍每 250 ms 运行，不能让最多 4096 个目标省各自反复调用多组引擎 getter。按战争原子发布；一场战争的完整列表放不下时，该场 `objective_province_states=[]`，不发布截断前缀。fixture 构造 257 个完整郡首府单独钉死该边界，并覆盖目标树 4096 上限、running/paused 分界、无围城与 unavailable 区分、ID generation、alive、Province 回指、非法进度、停滞天数和内部军队 ID 歧义。
 
 军队 canonical 字段为：
 
@@ -61,6 +97,10 @@ DLL hello 广告：
 
 - `game.state.war-primary-opponent`
 - `game.state.war-objectives`
+- `game.state.war-objective-occupation`
+- `game.state.war-objective-fort-level`
+- `game.state.war-objective-garrison`
+- `game.state.war-objective-siege-progress`
 - `game.state.army-routes`
 - `game.command.preview-move-army-N-to-N`
 - `game.command.raise-troops-default`
@@ -105,6 +145,12 @@ Python 根据当前 snapshot 展开为：
 `2390`（`b_spoleto`），最终省份为 `2585`。对手默认集结省 `2543`
 属于 `b_firenze`；它确实由敌方持有且可围城，但不是该战争的目标省。
 旧投影只返回目标头衔的单个首都省；exact 1.19.0.6 的新投影改走完整 de jure 子树，因此公国/王国战争不再被压缩成一个围城点。
+
+2026-08-24 的静态逆向与离线内存 fixture 已闭合目标省状态链：围城 storage slot 为
+`base+0x57BF1B8`，查找点 `0x1849BD0` 同时证明 Province 的 SiegeID、low-24-bit slot、0x10 stride、
+object `+0x08` 与 full-ID 比较；围城进度/总工作/剩余日 getter 分别为
+`0x229B960/0x229CCA0/0x229BAA0`。anchor scanner 当前验证 90 个唯一 signature 与 11 个 vtable prefix，
+fresh MSVC Release fixture 覆盖上述投影。此处只声明静态与离线验收；exact-build 最小化实机值尚待后续读取，不把它写成已实测通过。
 
 2026-08-24 的后续实机回放补齐了移动与解散。旧 bridge 从 AI/controller 调用点抄入了
 `command kind=2` 与 queue flags `7`；这会在玩家军队的控制权校验处被拒绝。连续推进约 49 个游戏日、

@@ -211,6 +211,90 @@ void AppendFixedPoint(std::string &result,
   result += '}';
 }
 
+void AppendWarObjectiveProvinceState(
+    std::string &result,
+    const xar::game::WarObjectiveProvinceState &state) {
+  result += "{\"province_id\":";
+  result += SignedNumber(state.province_id);
+  result += ",\"occupation_observable\":";
+  result += state.occupation_observable ? "true" : "false";
+  result += ",\"is_occupied\":";
+  if (!state.occupation_observable) {
+    result += "null";
+  } else {
+    result += state.is_occupied ? "true" : "false";
+  }
+  result += ",\"occupying_character_id\":";
+  if (!state.occupation_observable || !state.is_occupied ||
+      state.occupying_character_id == -1) {
+    result += "null";
+  } else {
+    result += SignedNumber(state.occupying_character_id);
+  }
+  result += ",\"fort_level\":";
+  if (!state.fort_level_observable) {
+    result += "null";
+  } else {
+    result += SignedNumber(state.fort_level);
+  }
+  result += ",\"garrison_size\":";
+  if (!state.garrison_size_observable) {
+    result += "null";
+  } else {
+    result += SignedNumber(state.garrison_size);
+  }
+  result += ",\"besieging_strength\":";
+  if (!state.besieging_strength_observable) {
+    result += "null";
+  } else {
+    result += SignedNumber(state.besieging_strength);
+  }
+  result += ",\"siege_observable\":";
+  result += state.siege_observable ? "true" : "false";
+  result += ",\"active_siege\":";
+  if (!state.siege_observable || !state.has_active_siege) {
+    result += "null";
+  } else {
+    result += "{\"siege_id\":";
+    result += SignedNumber(state.siege_id);
+    result += ",\"besieging_army_id\":";
+    if (state.besieging_army_id == -1) {
+      result += "null";
+    } else {
+      result += SignedNumber(state.besieging_army_id);
+    }
+    result += ",\"player_army_besieging\":";
+    result += state.player_army_besieging ? "true" : "false";
+    result += ",\"progress_fraction\":";
+    AppendFixedPoint(result, state.siege_progress_fraction);
+    result += ",\"current_work\":";
+    AppendFixedPoint(result, state.siege_current_work);
+    result += ",\"total_work\":";
+    AppendFixedPoint(result, state.siege_total_work);
+    result += ",\"days_left\":";
+    if (!state.siege_days_left_observable) {
+      result += "null";
+    } else {
+      result += SignedNumber(state.siege_days_left);
+    }
+    result += '}';
+  }
+  result += '}';
+}
+
+void AppendWarObjectiveProvinceStates(
+    std::string &result,
+    const std::vector<xar::game::WarObjectiveProvinceState> &states) {
+  result += '[';
+  for (std::size_t index = 0; index < states.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    AppendWarObjectiveProvinceState(result, states[index]);
+  }
+  result += ']';
+}
+
 void AppendOneLifeSettlement(
     std::string &result,
     const xar::game::OneLifeSettlementSnapshot &settlement) {
@@ -469,6 +553,9 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
     AppendInt32Array(result, war.targeted_title_ids);
     result += ",\"war_objective_province_ids\":";
     AppendInt32Array(result, war.war_objective_province_ids);
+    result += ",\"objective_province_states\":";
+    AppendWarObjectiveProvinceStates(result,
+                                     war.objective_province_states);
     result += ",\"enemy_primary_default_raise_province_id\":";
     if (war.enemy_primary_default_raise_province_id < 1) {
       result += "null";

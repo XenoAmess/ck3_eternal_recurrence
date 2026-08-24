@@ -47,6 +47,10 @@ bridge identity/heartbeat/ping.
 | `game.state.snapshot.active_wars` | implemented, minimized live declaration projected a new war | exact WarManager/storage/participant/score helpers + offline attacker/defender fixture | never inside native driver |
 | `game.state.war-primary-opponent` | implemented, live probe pending | exact primary-side fields + generation-safe opponent resolution + reused default-raise resolver + offline attacker/defender/non-primary fixture | never inside native driver |
 | `game.state.war-objectives` | implemented; live war 16777290 exposed target title 2388 and province 2585; multi-county hierarchy projection passed offline fixture | exact CB targeted-title serializer, generation-safe title storage, engine recursive de-jure walker + `title_province` capital-barony path + hierarchy/generation/bound fixtures | never inside native driver |
+| `game.state.war-objective-occupation` | implemented; exact-build live projection pending | Province occupied getter + full-generation occupying CharacterID roundtrip + offline occupied/unoccupied/stale-generation fixture | never inside native driver |
+| `game.state.war-objective-fort-level` | implemented; exact-build live projection pending | plain int32 Province getter + running/paused offline fixture | never inside native driver |
+| `game.state.war-objective-garrison` | implemented for paused snapshots; exact-build live projection pending | canonical Province garrison wrapper and eligible-besieger getter + zero/nonzero fixture | never inside native driver |
+| `game.state.war-objective-siege-progress` | implemented for paused snapshots; exact-build live projection pending | exact Siege storage/generation/alive/Province-backlink chain + native CFixedPoint progress/work and days-left getters + transition fixture | never inside native driver |
 | `game.state.snapshot.player_armies` | implemented, minimized read-only live probe passed | exact CUnit storage/ID/owner/current-province fields + offline component fixture + PID 144324 probe | never inside native driver |
 | allied/enemy army current province | implemented, minimized read-only live probe passed | war participant helper classifies each observable CUnit owner | never inside native driver |
 | army state / combat / retreating | implemented, minimized read-only live probe passed | exact RVA `0xC7AAB0` state ABI, CUnit→CArmy→CCombat association and `CUnit+0x170` + nine-state fixture | never inside native driver |
@@ -216,6 +220,34 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   If any target hierarchy is stale, malformed, or over bound, that target's
   partial result is discarded while its original `targeted_title_ids` entry
   remains visible.
+- Each resolved objective Province has an additive `objective_province_states`
+  row in the same stable order. Direct getters expose `Province+0x744` occupied
+  state (a non--1 full CharacterID must round-trip through Character storage)
+  and plain `int32 Province+0x858` fort level even in a running snapshot.
+  Rich Holding/Siege reads are paused-only: current garrison wrapper RVA
+  `0x220E710`, eligible besieging strength RVA `0x220E580`, and every CSiege
+  pointer/getter remain uncalled while the map is running because no read lock
+  for their mutable subgraphs has been identified. `Province+0x790 == -1`
+  means a paused row has observably no active siege. Otherwise the adapter
+  resolves the full SiegeID through `*(base+0x57BF1B8)`, checks `CSiege+0x08`,
+  calls component-alive RVA `0x10495A0`, and requires `CSiege+0x200` to point
+  back to that exact Province. Any failed gate leaves the siege domain
+  unavailable rather than publishing a partial object.
+- A valid active siege publishes progress fraction from RVA `0x229B960` as
+  `{raw,scale:100000}` in the native 0..1 range, plus current work from
+  `CSiege+0x3D0` and total work from RVA `0x229CCA0` in the same lossless
+  CFixedPoint representation. Fractions outside raw `0..100000`, or negative
+  work values, suppress the entire siege object. RVA `0x229BAA0` returns game
+  days left; `INT_MAX` is the engine's invalid/dead/stalled/no-progress result
+  and maps to JSON null, whereas zero remains a valid value. `CSiege+0x208`
+  is a CArmyID, not the public CUnitID. The bridge scans only the already
+  generation-valid CUnits and publishes `besieging_army_id` after exactly one
+  full-ID join; ambiguous/no matches stay null, while player participation is
+  true if any exact match is controllable. A shared per-snapshot state budget
+  of 256 rows keeps paused 250 ms heartbeats from multiplying engine getter
+  calls. Each war publishes atomically; an over-budget war gets an empty
+  unknown state array. The fixture constructs 257 complete county capitals to
+  pin this boundary independently from the 4096-title hierarchy ceiling.
 - A later minimized replay at checkpoint date raw `53174208` had player war
   score `41` and CUnit `83886341` at province `2598` in `sieging` state. After
   30 game days it was still not in combat. A wartime

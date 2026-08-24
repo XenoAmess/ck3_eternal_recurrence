@@ -89,6 +89,49 @@ struct ArmySnapshot {
   friend bool operator==(const ArmySnapshot &, const ArmySnapshot &) = default;
 };
 
+// Exact, version-neutral representation of a CK3 CFixedPoint. Keeping the raw
+// numerator and the statically proven scale avoids losing precision at the
+// native -> JSON boundary.
+struct FixedPointValue {
+  std::int64_t raw = 0;
+  std::int64_t scale = 100'000;
+
+  friend bool operator==(const FixedPointValue &,
+                         const FixedPointValue &) = default;
+};
+
+// Additive state for one exact war-objective Province. Each observable flag
+// distinguishes an unavailable/transitioning native subgraph from a real
+// zero, empty garrison, unoccupied Province, or Province with no active siege.
+// besieging_army_id uses the public CUnit-backed ArmySnapshot ID only after a
+// unique exact CArmyID join; zero/ambiguous joins remain -1 and native storage
+// handles never cross this contract.
+struct WarObjectiveProvinceState {
+  std::int32_t province_id = -1;
+  bool occupation_observable = false;
+  bool is_occupied = false;
+  std::int32_t occupying_character_id = -1;
+  bool fort_level_observable = false;
+  std::int32_t fort_level = 0;
+  bool garrison_size_observable = false;
+  std::int32_t garrison_size = 0;
+  bool besieging_strength_observable = false;
+  std::int32_t besieging_strength = 0;
+  bool siege_observable = false;
+  bool has_active_siege = false;
+  std::int32_t siege_id = -1;
+  std::int32_t besieging_army_id = -1;
+  bool player_army_besieging = false;
+  FixedPointValue siege_progress_fraction;
+  FixedPointValue siege_current_work;
+  FixedPointValue siege_total_work;
+  bool siege_days_left_observable = false;
+  std::int32_t siege_days_left = 0;
+
+  friend bool operator==(const WarObjectiveProvinceState &,
+                         const WarObjectiveProvinceState &) = default;
+};
+
 enum class PlayerWarSide {
   attacker,
   defender,
@@ -101,6 +144,7 @@ struct ActiveWarSnapshot {
   bool player_is_primary_war_leader = false;
   std::vector<std::int32_t> targeted_title_ids;
   std::vector<std::int32_t> war_objective_province_ids;
+  std::vector<WarObjectiveProvinceState> objective_province_states;
   std::int32_t enemy_primary_default_raise_province_id = -1;
   std::int32_t player_relative_war_score = 0;
   std::vector<ArmySnapshot> allied_armies;
@@ -108,17 +152,6 @@ struct ActiveWarSnapshot {
 
   friend bool operator==(const ActiveWarSnapshot &,
                          const ActiveWarSnapshot &) = default;
-};
-
-// Exact, version-neutral representation of a CK3 CFixedPoint. Keeping the raw
-// numerator and the statically proven scale avoids losing score precision at
-// the native -> JSON boundary.
-struct FixedPointValue {
-  std::int64_t raw = 0;
-  std::int64_t scale = 100'000;
-
-  friend bool operator==(const FixedPointValue &,
-                         const FixedPointValue &) = default;
 };
 
 // One fully published Rogue one-life settlement. Adapters expose this object

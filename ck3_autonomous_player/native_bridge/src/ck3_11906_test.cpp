@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <limits>
 #include <string>
 #include <string_view>
 
@@ -65,6 +66,9 @@ std::array<std::byte, sizeof(void *)> g_attacker_participants{};
 std::array<std::byte, sizeof(void *)> g_defender_participants{};
 std::array<std::byte, 0x40> g_army_storage{};
 std::array<std::byte, 0x40> g_army_slots{};
+std::array<std::byte, 0x40> g_siege_storage{};
+std::array<std::byte, 0x20> g_siege_slots{};
+std::array<std::byte, 0x3D8> g_siege{};
 std::array<std::byte, 0x17C> g_player_army{};
 std::array<std::byte, 0x17C> g_enemy_army{};
 std::array<std::byte, 0x08> g_player_move_route_info_0{};
@@ -78,9 +82,9 @@ std::array<void *, 3> g_preview_move_path{};
 std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
 std::array<std::byte, 0x20> g_enemy_default_raise_province{};
-std::array<std::byte, 0x20> g_war_objective_province{};
-std::array<std::byte, 0x20> g_second_war_objective_province{};
-std::array<std::byte, 0x20> g_third_war_objective_province{};
+std::array<std::byte, 0x860> g_war_objective_province{};
+std::array<std::byte, 0x860> g_second_war_objective_province{};
+std::array<std::byte, 0x860> g_third_war_objective_province{};
 std::array<std::byte, 7 * sizeof(void *)> g_provinces{};
 std::array<std::byte, 0x78> g_casus_belli_database{};
 std::array<void *, 2> g_casus_belli_types{};
@@ -106,6 +110,7 @@ std::array<std::byte, 8> g_string_table_marker{};
 void *g_pending_storage_pointer = nullptr;
 void *g_character_storage_pointer = nullptr;
 void *g_army_storage_pointer = nullptr;
+void *g_siege_storage_pointer = nullptr;
 void *g_expected_event_manager = nullptr;
 bool g_has_active_event = true;
 bool g_has_local_player = false;
@@ -130,6 +135,10 @@ bool g_preview_route_build_result = true;
 std::int32_t g_preview_route_count = 3;
 std::int32_t g_player_army_state_code = 2;
 std::int32_t g_enemy_army_state_code = 6;
+bool g_siege_alive = true;
+std::int64_t g_siege_progress_raw = 25'000;
+std::int64_t g_siege_total_work_raw = 10'000'000;
+std::int32_t g_siege_days_left = 12;
 bool g_character_command_kind_allowed = true;
 bool g_army_move_mode_allowed = true;
 bool g_move_validation_allowed = true;
@@ -349,6 +358,69 @@ bool FixtureContainsWarParticipant(void *container,
 
 std::int32_t FixtureGetWarScore(void *war, void *context) {
   return war == g_war.data() && context == nullptr ? 37 : 0;
+}
+
+bool FixtureIsNativeComponentAlive(void *component) {
+  return g_siege_alive && component == g_siege.data();
+}
+
+std::int64_t *FixtureGetSiegeProgress(void *siege,
+                                      std::int64_t *output) {
+  if (siege != g_siege.data() || output == nullptr) {
+    return nullptr;
+  }
+  *output = g_siege_progress_raw;
+  return output;
+}
+
+std::int64_t *FixtureGetSiegeTotalWork(void *siege,
+                                       std::int64_t *output) {
+  if (siege != g_siege.data() || output == nullptr) {
+    return nullptr;
+  }
+  *output = g_siege_total_work_raw;
+  return output;
+}
+
+std::int32_t FixtureGetSiegeDaysLeft(void *siege) {
+  return siege == g_siege.data()
+             ? g_siege_days_left
+             : std::numeric_limits<std::int32_t>::max();
+}
+
+bool FixtureIsProvinceOccupied(void *province) {
+  std::int32_t occupying_character_id = -1;
+  std::memcpy(&occupying_character_id,
+              static_cast<std::byte *>(province) + 0x744,
+              sizeof(occupying_character_id));
+  return occupying_character_id != -1;
+}
+
+std::int32_t FixtureGetProvinceFortLevel(void *province) {
+  std::int32_t fort_level = -1;
+  std::memcpy(&fort_level, static_cast<std::byte *>(province) + 0x858,
+              sizeof(fort_level));
+  return fort_level;
+}
+
+std::int32_t FixtureGetProvinceGarrisonSize(void *province) {
+  if (province == g_war_objective_province.data()) {
+    return 500;
+  }
+  if (province == g_second_war_objective_province.data()) {
+    return 0;
+  }
+  return province == g_third_war_objective_province.data() ? 800 : -1;
+}
+
+std::int32_t FixtureGetProvinceBesiegingStrength(void *province) {
+  if (province == g_war_objective_province.data()) {
+    return 650;
+  }
+  if (province == g_second_war_objective_province.data()) {
+    return 0;
+  }
+  return province == g_third_war_objective_province.data() ? 900 : -1;
 }
 
 void *FixtureResolveDefaultRaiseProvince(void *character) {
@@ -1084,11 +1156,21 @@ int main() {
   constexpr std::int32_t war_objective_province_id = 1;
   constexpr std::int32_t second_war_objective_province_id = 5;
   constexpr std::int32_t third_war_objective_province_id = 6;
+  constexpr std::int32_t active_siege_id = 0x01000001;
   Store(g_war_objective_province, 0x10, war_objective_province_id);
   Store(g_second_war_objective_province, 0x10,
         second_war_objective_province_id);
   Store(g_third_war_objective_province, 0x10,
         third_war_objective_province_id);
+  Store(g_war_objective_province, 0x744, std::int32_t{-1});
+  Store(g_second_war_objective_province, 0x744, enemy_character_id);
+  Store(g_third_war_objective_province, 0x744, std::int32_t{-1});
+  Store(g_war_objective_province, 0x790, active_siege_id);
+  Store(g_second_war_objective_province, 0x790, std::int32_t{-1});
+  Store(g_third_war_objective_province, 0x790, std::int32_t{-1});
+  Store(g_war_objective_province, 0x858, std::int32_t{2});
+  Store(g_second_war_objective_province, 0x858, std::int32_t{0});
+  Store(g_third_war_objective_province, 0x858, std::int32_t{3});
   Store(g_player_province, 0x10, std::int32_t{2});
   Store(g_enemy_province, 0x10, std::int32_t{3});
   Store(g_enemy_default_raise_province, 0x10, std::int32_t{4});
@@ -1140,6 +1222,17 @@ int main() {
   Store(g_army_storage, 0x20, static_cast<void *>(g_army_slots.data()));
   Store(g_army_storage, 0x2C, std::int32_t{4});
   g_army_storage_pointer = g_army_storage.data();
+
+  Store(g_siege, 0x08, active_siege_id);
+  Store(g_siege, 0x200,
+        static_cast<void *>(g_war_objective_province.data()));
+  Store(g_siege, 0x208, player_disband_command_target_id);
+  Store(g_siege, 0x3D0, std::int64_t{2'500'000});
+  Store(g_siege_slots, 0x18, static_cast<void *>(g_siege.data()));
+  Store(g_siege_storage, 0x20,
+        static_cast<void *>(g_siege_slots.data()));
+  Store(g_siege_storage, 0x2C, std::int32_t{2});
+  g_siege_storage_pointer = g_siege_storage.data();
 
   Store(g_attacker_participant, 0x08, played_character_id);
   Store(g_defender_participant, 0x08, enemy_character_id);
@@ -1333,6 +1426,7 @@ int main() {
       &g_pending_storage_pointer;
   bindings.character_storage_slot = &g_character_storage_pointer;
   bindings.army_storage_slot = &g_army_storage_pointer;
+  bindings.siege_storage_slot = &g_siege_storage_pointer;
   bindings.global_variable_container_accessor_slot =
       &g_global_variable_container_accessor;
   bindings.valid_casus_belli_configuration_scratch =
@@ -1351,6 +1445,15 @@ int main() {
       FixtureValidateReplyCharacterInteractionCommand;
   bindings.contains_war_participant = FixtureContainsWarParticipant;
   bindings.get_war_score = FixtureGetWarScore;
+  bindings.is_native_component_alive = FixtureIsNativeComponentAlive;
+  bindings.get_siege_progress = FixtureGetSiegeProgress;
+  bindings.get_siege_total_work = FixtureGetSiegeTotalWork;
+  bindings.get_siege_days_left = FixtureGetSiegeDaysLeft;
+  bindings.is_province_occupied = FixtureIsProvinceOccupied;
+  bindings.get_province_fort_level = FixtureGetProvinceFortLevel;
+  bindings.get_province_garrison_size = FixtureGetProvinceGarrisonSize;
+  bindings.get_province_besieging_strength =
+      FixtureGetProvinceBesiegingStrength;
   bindings.resolve_default_raise_province =
       FixtureResolveDefaultRaiseProvince;
   bindings.get_unit_state = FixtureGetUnitState;
@@ -1486,7 +1589,153 @@ int main() {
       !snapshot.active_wars[0].enemy_armies[0].retreating) {
     return Fail("map-ready did not follow the resolved local player");
   }
+  if (snapshot.active_wars[0].objective_province_states.size() != 3) {
+    return Fail("exact war objectives omitted Province state rows");
+  }
+  const auto &running_objective_state =
+      snapshot.active_wars[0].objective_province_states[0];
+  if (!running_objective_state.occupation_observable ||
+      !running_objective_state.fort_level_observable ||
+      running_objective_state.garrison_size_observable ||
+      running_objective_state.besieging_strength_observable ||
+      running_objective_state.siege_observable) {
+    return Fail("running snapshot traversed a mutable siege subgraph");
+  }
 
+  Store(jomini_state, 0x20, std::uint8_t{1});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars.size() != 1 ||
+      snapshot.active_wars[0].objective_province_states.size() != 3) {
+    return Fail("paused objective Province state was unavailable");
+  }
+  const auto &active_siege_state =
+      snapshot.active_wars[0].objective_province_states[0];
+  const auto &occupied_state =
+      snapshot.active_wars[0].objective_province_states[1];
+  const auto &idle_state =
+      snapshot.active_wars[0].objective_province_states[2];
+  if (active_siege_state.province_id != war_objective_province_id ||
+      !active_siege_state.occupation_observable ||
+      active_siege_state.is_occupied ||
+      active_siege_state.occupying_character_id != -1 ||
+      !active_siege_state.fort_level_observable ||
+      active_siege_state.fort_level != 2 ||
+      !active_siege_state.garrison_size_observable ||
+      active_siege_state.garrison_size != 500 ||
+      !active_siege_state.besieging_strength_observable ||
+      active_siege_state.besieging_strength != 650 ||
+      !active_siege_state.siege_observable ||
+      !active_siege_state.has_active_siege ||
+      active_siege_state.siege_id != active_siege_id ||
+      active_siege_state.besieging_army_id != player_army_id ||
+      !active_siege_state.player_army_besieging ||
+      active_siege_state.siege_progress_fraction.raw != 25'000 ||
+      active_siege_state.siege_progress_fraction.scale !=
+          kFixtureFixedPointScale ||
+      active_siege_state.siege_current_work.raw != 2'500'000 ||
+      active_siege_state.siege_total_work.raw != 10'000'000 ||
+      !active_siege_state.siege_days_left_observable ||
+      active_siege_state.siege_days_left != 12) {
+    return Fail("active objective siege projection drifted");
+  }
+  if (occupied_state.province_id != second_war_objective_province_id ||
+      !occupied_state.occupation_observable || !occupied_state.is_occupied ||
+      occupied_state.occupying_character_id != enemy_character_id ||
+      !occupied_state.fort_level_observable || occupied_state.fort_level != 0 ||
+      !occupied_state.garrison_size_observable ||
+      occupied_state.garrison_size != 0 ||
+      !occupied_state.besieging_strength_observable ||
+      occupied_state.besieging_strength != 0 ||
+      !occupied_state.siege_observable || occupied_state.has_active_siege ||
+      occupied_state.siege_id != -1) {
+    return Fail("occupied/no-siege objective state was not explicit");
+  }
+  if (idle_state.province_id != third_war_objective_province_id ||
+      !idle_state.occupation_observable || idle_state.is_occupied ||
+      !idle_state.fort_level_observable || idle_state.fort_level != 3 ||
+      !idle_state.garrison_size_observable || idle_state.garrison_size != 800 ||
+      !idle_state.besieging_strength_observable ||
+      idle_state.besieging_strength != 900 || !idle_state.siege_observable ||
+      idle_state.has_active_siege) {
+    return Fail("idle objective Province state projection drifted");
+  }
+
+  Store(g_war_objective_province, 0x790, std::int32_t{-1});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      !snapshot.active_wars[0].objective_province_states[0].siege_observable ||
+      snapshot.active_wars[0]
+          .objective_province_states[0]
+          .has_active_siege) {
+    return Fail("no-active-siege was confused with unavailable siege state");
+  }
+  Store(g_war_objective_province, 0x790, active_siege_id);
+
+  Store(g_siege, 0x08, std::int32_t{0x02000001});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0].objective_province_states[0].siege_observable) {
+    return Fail("siege projection ignored SiegeID generation");
+  }
+  Store(g_siege, 0x08, active_siege_id);
+
+  Store(g_siege, 0x200,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0].objective_province_states[0].siege_observable) {
+    return Fail("siege projection ignored the Province backlink");
+  }
+  Store(g_siege, 0x200,
+        static_cast<void *>(g_war_objective_province.data()));
+
+  g_siege_alive = false;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0].objective_province_states[0].siege_observable) {
+    return Fail("siege projection ignored native component liveness");
+  }
+  g_siege_alive = true;
+
+  g_siege_progress_raw = -1;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0].objective_province_states[0].siege_observable) {
+    return Fail("invalid native siege fraction was partially published");
+  }
+  g_siege_progress_raw = 25'000;
+
+  g_siege_days_left = std::numeric_limits<std::int32_t>::max();
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      !snapshot.active_wars[0].objective_province_states[0].siege_observable ||
+      !snapshot.active_wars[0]
+           .objective_province_states[0]
+           .has_active_siege ||
+      snapshot.active_wars[0]
+          .objective_province_states[0]
+          .siege_days_left_observable) {
+    return Fail("stalled siege INT_MAX was exposed as a real day count");
+  }
+  g_siege_days_left = 12;
+
+  Store(g_second_war_objective_province, 0x744,
+        std::int32_t{0x02000003});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0]
+          .objective_province_states[1]
+          .occupation_observable) {
+    return Fail("occupation projection ignored CharacterID generation");
+  }
+  Store(g_second_war_objective_province, 0x744, enemy_character_id);
+
+  Store(g_enemy_army, 0x178, player_disband_command_target_id);
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0]
+              .objective_province_states[0]
+              .besieging_army_id != -1 ||
+      !snapshot.active_wars[0]
+           .objective_province_states[0]
+           .player_army_besieging) {
+    return Fail("ambiguous CArmy-to-CUnit join selected an arbitrary unit");
+  }
+  Store(g_enemy_army, 0x178, enemy_disband_command_target_id);
+
+  Store(jomini_state, 0x20, std::uint8_t{0});
   Store(g_player_move_route_info_1, 0x00, std::int32_t{7});
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.player_armies.size() != 1 ||
@@ -1586,7 +1835,8 @@ int main() {
       snapshot.active_wars.size() != 1 ||
       snapshot.active_wars[0].targeted_title_ids !=
           std::vector<std::int32_t>{targeted_title_id} ||
-      !snapshot.active_wars[0].war_objective_province_ids.empty()) {
+      !snapshot.active_wars[0].war_objective_province_ids.empty() ||
+      !snapshot.active_wars[0].objective_province_states.empty()) {
     return Fail("war objective projection ignored TitleID generation");
   }
   Store(g_targeted_title, 0x10, targeted_title_id);
@@ -1594,7 +1844,8 @@ int main() {
   Store(g_second_county_title, 0x10, std::int32_t{0x02000005});
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.active_wars.size() != 1 ||
-      !snapshot.active_wars[0].war_objective_province_ids.empty()) {
+      !snapshot.active_wars[0].war_objective_province_ids.empty() ||
+      !snapshot.active_wars[0].objective_province_states.empty()) {
     return Fail(
         "war objective projection published a partial stale hierarchy");
   }
@@ -1604,7 +1855,8 @@ int main() {
   Store(g_targeted_title, 0x24C, std::int32_t{4'097});
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.active_wars.size() != 1 ||
-      !snapshot.active_wars[0].war_objective_province_ids.empty()) {
+      !snapshot.active_wars[0].war_objective_province_ids.empty() ||
+      !snapshot.active_wars[0].objective_province_states.empty()) {
     return Fail("war objective hierarchy traversal was not bounded");
   }
   Store(g_targeted_title, 0x248, std::int32_t{2});
@@ -1613,6 +1865,125 @@ int main() {
         static_cast<void *>(g_war_targeted_title_ids.data()));
   Store(g_war, 0x278, std::int32_t{4});
   Store(g_war, 0x27C, std::int32_t{4});
+
+  // The hierarchy may legitimately expose more exact Province IDs than the
+  // rich-state heartbeat budget. Build 257 complete county-capital branches
+  // and require an atomic empty state array rather than a 256-row prefix.
+  {
+    constexpr std::size_t budget_province_count = 257;
+    constexpr std::size_t root_title_index = 1;
+    constexpr std::size_t first_county_title_index = 2;
+    constexpr std::size_t first_barony_title_index =
+        first_county_title_index + budget_province_count;
+    constexpr std::size_t budget_title_capacity =
+        first_barony_title_index + budget_province_count;
+    std::vector<std::array<std::byte, 0x250>> budget_titles(
+        budget_title_capacity);
+    std::vector<std::array<std::byte, 0x88>> budget_title_templates(
+        budget_title_capacity);
+    std::vector<std::array<std::int32_t, 1>> budget_county_children(
+        budget_province_count);
+    std::vector<std::int32_t> budget_root_children(
+        budget_province_count);
+    std::vector<std::byte> budget_title_slots(
+        budget_title_capacity * 0x10);
+    std::array<std::byte, 0x40> budget_title_storage{};
+    std::vector<std::array<std::byte, 0x20>> budget_provinces(
+        budget_province_count + 1);
+    std::vector<void *> budget_province_pointers(
+        budget_province_count + 1, nullptr);
+
+    const auto component_id = [](std::size_t index) {
+      return static_cast<std::int32_t>(0x01000000U |
+                                       static_cast<std::uint32_t>(index));
+    };
+    const auto root_title_id = component_id(root_title_index);
+    Store(budget_titles[root_title_index], 0x10, root_title_id);
+    Store(budget_titles[root_title_index], 0x160,
+          static_cast<void *>(
+              budget_title_templates[root_title_index].data()));
+    Store(budget_title_templates[root_title_index], 0x5C,
+          std::int32_t{3});
+    StoreBytes(budget_title_slots.data(), root_title_index * 0x10 + 0x08,
+               static_cast<void *>(budget_titles[root_title_index].data()));
+
+    for (std::size_t index = 0; index < budget_province_count; ++index) {
+      const auto county_index = first_county_title_index + index;
+      const auto barony_index = first_barony_title_index + index;
+      const auto county_id = component_id(county_index);
+      const auto barony_id = component_id(barony_index);
+      const auto province_id = static_cast<std::int32_t>(index + 1);
+      budget_root_children[index] = county_id;
+      budget_county_children[index][0] = barony_id;
+
+      Store(budget_titles[county_index], 0x10, county_id);
+      Store(budget_titles[county_index], 0x160,
+            static_cast<void *>(budget_title_templates[county_index].data()));
+      Store(budget_title_templates[county_index], 0x5C,
+            std::int32_t{2});
+      Store(budget_titles[county_index], 0x240,
+            static_cast<void *>(budget_county_children[index].data()));
+      Store(budget_titles[county_index], 0x248, std::int32_t{1});
+      Store(budget_titles[county_index], 0x24C, std::int32_t{1});
+      StoreBytes(budget_title_slots.data(), county_index * 0x10 + 0x08,
+                 static_cast<void *>(budget_titles[county_index].data()));
+
+      Store(budget_titles[barony_index], 0x10, barony_id);
+      Store(budget_titles[barony_index], 0x160,
+            static_cast<void *>(budget_title_templates[barony_index].data()));
+      Store(budget_title_templates[barony_index], 0x5C,
+            std::int32_t{1});
+      Store(budget_title_templates[barony_index], 0x80, province_id);
+      StoreBytes(budget_title_slots.data(), barony_index * 0x10 + 0x08,
+                 static_cast<void *>(budget_titles[barony_index].data()));
+
+      Store(budget_provinces[index + 1], 0x10, province_id);
+      budget_province_pointers[index + 1] =
+          budget_provinces[index + 1].data();
+    }
+    Store(budget_titles[root_title_index], 0x240,
+          static_cast<void *>(budget_root_children.data()));
+    Store(budget_titles[root_title_index], 0x248,
+          static_cast<std::int32_t>(budget_root_children.size()));
+    Store(budget_titles[root_title_index], 0x24C,
+          static_cast<std::int32_t>(budget_root_children.size()));
+    Store(budget_title_storage, 0x20,
+          static_cast<void *>(budget_title_slots.data()));
+    Store(budget_title_storage, 0x2C,
+          static_cast<std::int32_t>(budget_title_capacity));
+    Store(game_data, 0x140,
+          static_cast<void *>(budget_province_pointers.data()));
+    Store(game_data, 0x14C,
+          static_cast<std::int32_t>(budget_province_pointers.size()));
+    Store(game_data, 0x320,
+          static_cast<void *>(budget_title_storage.data()));
+    std::array<std::int32_t, 1> budget_target{root_title_id};
+    Store(g_war, 0x270, static_cast<void *>(budget_target.data()));
+    Store(g_war, 0x278, std::int32_t{1});
+    Store(g_war, 0x27C, std::int32_t{1});
+
+    const bool budget_was_atomic =
+        xar::ck3_11906::ReadSnapshot(bindings, snapshot) &&
+        snapshot.active_wars.size() == 1 &&
+        snapshot.active_wars[0].war_objective_province_ids.size() ==
+            budget_province_count &&
+        snapshot.active_wars[0].war_objective_province_ids.front() == 1 &&
+        snapshot.active_wars[0].war_objective_province_ids.back() ==
+            static_cast<std::int32_t>(budget_province_count) &&
+        snapshot.active_wars[0].objective_province_states.empty();
+
+    Store(game_data, 0x140, static_cast<void *>(g_provinces.data()));
+    Store(game_data, 0x14C, std::int32_t{7});
+    Store(game_data, 0x320,
+          static_cast<void *>(g_landed_title_storage.data()));
+    Store(g_war, 0x270,
+          static_cast<void *>(g_war_targeted_title_ids.data()));
+    Store(g_war, 0x278, std::int32_t{4});
+    Store(g_war, 0x27C, std::int32_t{4});
+    if (!budget_was_atomic) {
+      return Fail("257 objective states exceeded the atomic heartbeat budget");
+    }
+  }
 
   FixtureSetGlobalNumeric(0, kFixtureFixedPointScale);
   g_script_identifier_lookup_calls = 0;

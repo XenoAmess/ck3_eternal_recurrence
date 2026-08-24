@@ -145,7 +145,10 @@ class GameAdapter {
 | active event/select option | event manager、event command ABI | option 提交后 active event 或实例状态改变 |
 | checkpoint/restore | save command ABI、外部进程恢复器 | 文件真实产生；恢复后新进程重新连通并回到旧日期 |
 | pending interaction/reply | component storage、接收方谓词、reply validator | 当前玩家请求被识别且回复后消失/推进 |
-| war state | war/army storage、participant/score helpers | snapshot 与当前局面一致 |
+| war state 基础 | war/army storage、participant/score helpers | snapshot 与当前局面一致 |
+| war objective hierarchy | title storage、de jure tree、Province table | exact 目标省完整、稳定、无部分 stale 分支 |
+| war objective occupation/fort | Province 标量 getter、Character generation | occupied/empty/零级要塞与 unknown 可区分 |
+| war objective garrison/siege | Holding/CSiege storage、progress/work/days getter | 仅 paused 发布；无围城、停滞与 unavailable 可区分 |
 | declare/enforce | CB/interaction database、context/command ABI | 战争真实新增；100% 战争真实结算 |
 | raise/move/disband | army IDs、province、各 command ABI | 军队真实出现、换省或消失；不能只看 queue submitted |
 | arrange marriage | interaction database、四角色 context、validator | query 给出真实有效候选，提交后关系或互动真实变化 |

@@ -23,6 +23,12 @@ using ValidateReplyCharacterInteractionCommand = bool (*)(void *command);
 using ContainsWarParticipant = bool (*)(void *participant_container,
                                         std::int32_t character_id);
 using GetWarScore = std::int32_t (*)(void *war, void *war_score_context);
+using IsNativeComponentAlive = bool (*)(void *component);
+using ReadSiegeFixedPoint = std::int64_t *(*)(void *siege,
+                                              std::int64_t *output);
+using GetSiegeDaysLeft = std::int32_t (*)(void *siege);
+using IsProvinceOccupied = bool (*)(void *province);
+using GetProvinceInt32 = std::int32_t (*)(void *province);
 using ResolveDefaultRaiseProvince = void *(*)(void *character);
 using GetUnitState = std::int32_t (*)(void *unit);
 using ConstructRaiseTroopsCommand = void *(*)(void *command,
@@ -128,6 +134,7 @@ struct Bindings {
   void **pending_character_interaction_storage_slot = nullptr;
   void **character_storage_slot = nullptr;
   void **army_storage_slot = nullptr;
+  void **siege_storage_slot = nullptr;
   GetGlobalVariableContainer *global_variable_container_accessor_slot =
       nullptr;
   void *valid_casus_belli_configuration_scratch = nullptr;
@@ -146,6 +153,14 @@ struct Bindings {
       validate_reply_character_interaction_command = nullptr;
   ContainsWarParticipant contains_war_participant = nullptr;
   GetWarScore get_war_score = nullptr;
+  IsNativeComponentAlive is_native_component_alive = nullptr;
+  ReadSiegeFixedPoint get_siege_progress = nullptr;
+  ReadSiegeFixedPoint get_siege_total_work = nullptr;
+  GetSiegeDaysLeft get_siege_days_left = nullptr;
+  IsProvinceOccupied is_province_occupied = nullptr;
+  GetProvinceInt32 get_province_fort_level = nullptr;
+  GetProvinceInt32 get_province_garrison_size = nullptr;
+  GetProvinceInt32 get_province_besieging_strength = nullptr;
   ResolveDefaultRaiseProvince resolve_default_raise_province = nullptr;
   GetUnitState get_unit_state = nullptr;
   ConstructRaiseTroopsCommand construct_raise_troops_command = nullptr;
@@ -205,6 +220,7 @@ using game::FixedPointValue;
 using game::OneLifeSettlementSnapshot;
 using game::PlayerWarSide;
 using game::Snapshot;
+using game::WarObjectiveProvinceState;
 using game::PauseSubmitResult;
 using game::ResumeSubmitResult;
 

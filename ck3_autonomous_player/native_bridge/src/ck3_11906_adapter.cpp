@@ -8,7 +8,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 33> kCapabilities{
+constexpr std::array<std::string_view, 37> kCapabilities{
     "game.state.snapshot",
     "game.state.xar-one-life-settlement",
     "game.state.map-ready",
@@ -18,6 +18,10 @@ constexpr std::array<std::string_view, 33> kCapabilities{
     "game.state.active-wars",
     "game.state.war-primary-opponent",
     "game.state.war-objectives",
+    "game.state.war-objective-occupation",
+    "game.state.war-objective-fort-level",
+    "game.state.war-objective-garrison",
+    "game.state.war-objective-siege-progress",
     "game.state.player-armies",
     "game.state.army-routes",
     "game.command.pause-map",

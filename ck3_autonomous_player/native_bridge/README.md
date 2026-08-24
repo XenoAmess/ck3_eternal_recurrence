@@ -137,6 +137,22 @@ county contributes its capital barony province, and a duchy/kingdom target
 walks its complete de jure title tree and contributes every county capital.
 The generation-safe walk is bounded to 4096 resolved titles and depth 8;
 an invalid branch suppresses that target's entire partial projection.
+Four independent exact-build capabilities add `objective_province_states` in
+the same order: `game.state.war-objective-occupation`,
+`game.state.war-objective-fort-level`,
+`game.state.war-objective-garrison`, and
+`game.state.war-objective-siege-progress`. Occupation and fort level are direct
+Province scalar reads. Garrison, eligible besieging strength, and active-siege
+details are observable only in paused snapshots; running snapshots leave those
+fields null and `siege_observable=false` rather than traversing mutable native
+containers without an engine read lock. In a paused row,
+`siege_observable=true` with `active_siege=null` means the Province really has
+no active siege. A non-null siege contains its generation-validated ID,
+nullable uniquely joined public army ID, player involvement, native fixed-point
+progress/current-work/total-work objects, and nullable days left. Stalled siege
+`INT_MAX` maps to null, not a large day count. The total rich-state budget is
+256 objective Provinces per snapshot because paused heartbeats still run every
+250 ms; a war is published atomically or its state array remains empty/unknown.
 Exact-build capability `game.state.war-primary-opponent` also
 publishes nullable `enemy_primary_default_raise_province_id`: the opponent's
 native default rally province, explicitly only a fallback when no enemy army

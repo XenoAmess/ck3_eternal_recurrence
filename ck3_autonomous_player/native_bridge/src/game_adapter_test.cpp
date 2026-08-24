@@ -157,6 +157,14 @@ int main() {
                 "game.state.xar-one-life-settlement") ||
       !Contains(known.capabilities, "game.state.war-primary-opponent") ||
       !Contains(known.capabilities, "game.state.war-objectives") ||
+      !Contains(known.capabilities,
+                "game.state.war-objective-occupation") ||
+      !Contains(known.capabilities,
+                "game.state.war-objective-fort-level") ||
+      !Contains(known.capabilities,
+                "game.state.war-objective-garrison") ||
+      !Contains(known.capabilities,
+                "game.state.war-objective-siege-progress") ||
       !Contains(known.capabilities, "game.state.army-routes") ||
       !Contains(known.capabilities,
                 "game.command.preview-move-army-N-to-N") ||
@@ -179,6 +187,7 @@ int main() {
       !partial.supports("game.command.pause-map") ||
       partial.supports("game.state.war-primary-opponent") ||
       partial.supports("game.state.war-objectives") ||
+      partial.supports("game.state.war-objective-siege-progress") ||
       partial.supports("game.command.declare-war-N") ||
       !partial.supports_snapshot() || !partial.supports_step("pause-map") ||
       !partial.supports_step("preview-move-army-1-to-2") ||
