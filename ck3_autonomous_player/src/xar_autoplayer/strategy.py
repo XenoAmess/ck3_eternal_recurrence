@@ -2602,11 +2602,9 @@ def _audit_war_route(
             "target_province_id": target_province_id,
             "reason": "route_not_observable",
         }
-    remaining_route = [
-        int(province_id)
-        for province_id in route_value
-        if province_id != origin_province_id
-    ]
+    remaining_route = [int(province_id) for province_id in route_value]
+    if remaining_route and remaining_route[0] == origin_province_id:
+        remaining_route = remaining_route[1:]
     if not remaining_route or remaining_route[-1] != target_province_id:
         return {
             "status": "unavailable",
@@ -2654,12 +2652,8 @@ def _audit_war_route(
             if isinstance(enemy_route, list)
             else []
         )
-        if enemy_current is not None:
-            enemy_remaining = [
-                province_id
-                for province_id in enemy_remaining
-                if province_id != enemy_current
-            ]
+        if enemy_remaining and enemy_remaining[0] == enemy_current:
+            enemy_remaining = enemy_remaining[1:]
         if enemy_remaining and enemy_remaining[0] == remaining_route[0]:
             conflicts.append(
                 {

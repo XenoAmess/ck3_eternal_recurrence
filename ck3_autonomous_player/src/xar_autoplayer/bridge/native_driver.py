@@ -2090,14 +2090,15 @@ class NativeHeadlessGameplayDriver:
                 else None
             )
             remaining_route = (
-                [
-                    item
-                    for item in route_province_ids
-                    if item != origin_province_id
-                ]
+                list(route_province_ids)
                 if isinstance(route_province_ids, list)
                 else []
             )
+            if (
+                remaining_route
+                and remaining_route[0] == origin_province_id
+            ):
+                remaining_route = remaining_route[1:]
             route_reaches_target = (
                 province_id == origin_province_id and not remaining_route
             ) or (

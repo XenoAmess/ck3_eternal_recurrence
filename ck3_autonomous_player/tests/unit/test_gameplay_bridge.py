@@ -27,7 +27,7 @@ from xar_autoplayer.bridge.war_contract import (
     normalize_active_wars,
     war_objective_province_ids,
 )
-from xar_autoplayer.strategy import record_one_life_episode
+from xar_autoplayer.strategy import _audit_war_route, record_one_life_episode
 
 
 def _snapshot(revision: int = 0, history: list[dict[str, object]] | None = None):
@@ -499,6 +499,74 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(
             move["pursuit"]["route_audit"]["route_province_ids"],
             [31, 31, 2585],
+        )
+
+    def test_route_audit_preserves_a_later_return_to_physical_origin(
+        self,
+    ) -> None:
+        enemy = _army(
+            21,
+            soldiers=800,
+            province_id=90,
+            controllable=False,
+            move_target_province_id=99,
+            army_state="moving",
+            route_province_ids=[52, 8759, 99],
+        )
+
+        audit = _audit_war_route(
+            [2602, 8759, 2604],
+            origin_province_id=8759,
+            target_province_id=2604,
+            enemies=[enemy],
+        )
+
+        self.assertEqual(audit["status"], "unsafe")
+        self.assertEqual(
+            audit["route_province_ids"], [2602, 8759, 2604]
+        )
+        self.assertIn(
+            {
+                "kind": "enemy_route_intersection",
+                "enemy_army_id": 21,
+                "province_id": 8759,
+                "player_hop": 2,
+                "enemy_hop": 2,
+            },
+            audit["conflicts"],
+        )
+
+    def test_route_audit_strips_only_the_enemy_leading_current_province(
+        self,
+    ) -> None:
+        enemy = _army(
+            21,
+            soldiers=800,
+            province_id=90,
+            controllable=False,
+            move_target_province_id=99,
+            army_state="moving",
+            route_province_ids=[90, 52, 90, 99],
+        )
+
+        audit = _audit_war_route(
+            [31, 90],
+            origin_province_id=20,
+            target_province_id=90,
+            enemies=[enemy],
+            allow_enemy_at_destination=True,
+        )
+
+        self.assertEqual(audit["status"], "unsafe")
+        self.assertIn(
+            {
+                "kind": "enemy_route_intersection",
+                "enemy_army_id": 21,
+                "province_id": 90,
+                "player_hop": 2,
+                "enemy_hop": 2,
+            },
+            audit["conflicts"],
         )
 
     def test_decorated_auto_turn_preview_is_fresh_from_root_result(self) -> None:

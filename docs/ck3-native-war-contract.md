@@ -131,12 +131,12 @@ Python 根据当前 snapshot 展开为：
 占位模板本身不会暴露给 planner。若军队已在目标省或已经以该省为目标，相同 move step 不再广告，避免提交无状态变化的重复命令。
 
 `preview-move-army-<army_id>-to-<province_id>` 只在地图已暂停时运行 CK3 原生路线规划器。成功结果为
-`route_preview={status:"available",army_id,origin_province_id,target_province_id,route_province_ids}`；同省目标返回空路线且不调用 A*。它复用 move 的 mode/character/army gates，但只构造、复制并析构 caller-owned 临时路径，既不绑定/调用 apply RVA `0x2248450`，也不进入 command queue。worker-thread 静态审计确认规划调用只写 per-call scratch、未见 world/global/TLS 写；由于引擎没有为 world graph 获取读锁，unpaused 调用明确返回 `requires_paused`。
+`route_preview={status:"available",army_id,origin_province_id,target_province_id,route_province_ids}`。公开 `origin_province_id` 固定为同一 paused snapshot 中军队观测到的当前省；行军已进入省际边时，CK3 `ResolveMoveOrigin` 可能返回该 snapshot 剩余路线的首项。1.19.0.6 adapter 只接受“观测当前省”或“精确 paused route 首项”这两种 native effective origin，其他值 fail closed；两者不同时把 effective origin 插到未经简化的 A* 结果最前，保留回环与重复省。只有“目标省 = 观测当前省 = effective origin”才返回空路线；若正在省际边上而目标是观测当前省，仍须走完当前边后由 A* 返回。目标等于不同的 effective origin 时返回只含 effective origin 的单项路线且不调用 A*。它复用 move 的 mode/character/army gates，但只构造、复制并析构 caller-owned 临时路径，既不绑定/调用 apply RVA `0x2248450`，也不进入 command queue。worker-thread 静态审计确认规划调用只写 per-call scratch、未见 world/global/TLS 写；由于引擎没有为 world graph 获取读锁，unpaused 调用明确返回 `requires_paused`。
 
 ## 命令后置条件
 
 - raise：等待 snapshot 出现新的可控军队；否则命令超时并返回失败。
-- preview move：纯查询，成功只返回完整原生路线，不改变 CK3 revision 或军队状态；Python driver 会把只读结果记录进 `native_command_history`，供下一 turn 的同日期、同起点 freshness 判定使用。任一 ProvinceID 无法解析、路线超过 4096 项或 native builder 失败时整次请求失败，不返回部分路线。
+- preview move：纯查询，成功只返回完整原生路线，不改变 CK3 revision 或军队状态；Python driver 会把只读结果记录进 `native_command_history`，供下一 turn 的同日期、同起点 freshness 判定使用。任一 ProvinceID 无法解析、native A* tail 超过 4096 项或 native builder 失败时整次请求失败，不返回部分路线；mid-edge 归一化允许在该完整 tail 前额外补一项 effective origin。
 - move：若 DLL 能观察 `move_target_province_id`，等待该军队的目标变为指定省或军队到达；若当前构建不能观察该字段，则以 native `command_result` 的 `accepted/submitted` 为提交成功，返回 `move_submitted`，随后由 `life-advance` 推动行军。
 - disband：等待目标军队从顶层 `player_armies` 消失。
 - declare：DLL 缓存查询得到的完整 choice；提交时按 target/CB 重新枚举，并要求 claimant、目标 title、configuration 与缓存完全相同。

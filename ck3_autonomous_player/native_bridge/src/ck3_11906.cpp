@@ -2527,19 +2527,33 @@ PreviewMoveArmyResult PreviewMoveArmy(const Bindings &bindings,
     result.status = PreviewMoveArmyStatus::army_not_found;
     return result;
   }
-  bool controllable = false;
+  const ArmySnapshot *selected_army = nullptr;
   for (const auto &candidate : current.player_armies) {
     if (candidate.army_id == army_id && candidate.controllable) {
-      controllable = true;
+      selected_army = &candidate;
       break;
     }
   }
-  if (!controllable) {
+  if (selected_army == nullptr) {
     result.status = PreviewMoveArmyStatus::army_not_controllable;
     return result;
   }
 
   void *const game_state = *bindings.game_state_slot;
+  if (!selected_army->has_current_province) {
+    result.status = PreviewMoveArmyStatus::origin_unavailable;
+    return result;
+  }
+  const auto observed_current_province_id =
+      selected_army->current_province_id;
+  void *const observed_current_province =
+      ResolveProvince(game_state, observed_current_province_id);
+  if (observed_current_province == nullptr ||
+      LoadAt<void *>(army, kArmyCurrentProvinceOffset) !=
+          observed_current_province) {
+    result.status = PreviewMoveArmyStatus::origin_unavailable;
+    return result;
+  }
   void *const target_province = ResolveProvince(game_state, province_id);
   if (target_province == nullptr) {
     result.status = PreviewMoveArmyStatus::province_not_found;
@@ -2578,19 +2592,36 @@ PreviewMoveArmyResult PreviewMoveArmy(const Bindings &bindings,
       army,
       target_province,
   };
-  void *const origin_province =
+  void *const effective_origin_province =
       bindings.resolve_move_origin(&origin_context);
-  if (origin_province == nullptr) {
+  if (effective_origin_province == nullptr) {
     result.status = PreviewMoveArmyStatus::origin_unavailable;
     return result;
   }
-  const auto origin_province_id =
-      LoadAt<std::int32_t>(origin_province, kProvinceIdOffset);
-  if (ResolveProvince(game_state, origin_province_id) != origin_province) {
+  const auto effective_origin_province_id =
+      LoadAt<std::int32_t>(effective_origin_province, kProvinceIdOffset);
+  if (ResolveProvince(game_state, effective_origin_province_id) !=
+      effective_origin_province) {
     result.status = PreviewMoveArmyStatus::origin_unavailable;
     return result;
   }
-  result.origin_province_id = origin_province_id;
+  const bool effective_origin_is_observed_current =
+      effective_origin_province_id == observed_current_province_id;
+  const bool effective_origin_is_paused_route_front =
+      !selected_army->route_province_ids.empty() &&
+      effective_origin_province_id ==
+          selected_army->route_province_ids.front();
+  if (!effective_origin_is_observed_current &&
+      !effective_origin_is_paused_route_front) {
+    result.status = PreviewMoveArmyStatus::origin_unavailable;
+    return result;
+  }
+  // ResolveMoveOrigin advances to the next Province while a CUnit is already
+  // travelling along an edge. Keep the public origin stable at the Province
+  // observed in the same paused snapshot and expose that effective origin as
+  // the first remaining route entry instead. Do not simplify the native A*
+  // tail: revisiting the observed Province is a real mid-edge route shape.
+  result.origin_province_id = observed_current_province_id;
 
   MoveArmyCommand command{};
   command.primary_vtable = bindings.move_army_primary_vtable;
@@ -2611,7 +2642,13 @@ PreviewMoveArmyResult PreviewMoveArmy(const Bindings &bindings,
     return result;
   }
 
-  if (origin_province_id == province_id) {
+  if (observed_current_province_id == province_id &&
+      effective_origin_is_observed_current) {
+    result.status = PreviewMoveArmyStatus::available;
+    return result;
+  }
+  if (effective_origin_province_id == province_id) {
+    result.route_province_ids.push_back(effective_origin_province_id);
     result.status = PreviewMoveArmyStatus::available;
     return result;
   }
@@ -2623,7 +2660,8 @@ PreviewMoveArmyResult PreviewMoveArmy(const Bindings &bindings,
     return result;
   }
   if (!bindings.build_army_move_route(
-          path_context.bytes.data(), origin_province, target_province,
+          path_context.bytes.data(), effective_origin_province,
+          target_province,
           route_kind, command.path_storage.data())) {
     result.status = PreviewMoveArmyStatus::route_unavailable;
     return result;
@@ -2642,7 +2680,12 @@ PreviewMoveArmyResult PreviewMoveArmy(const Bindings &bindings,
   }
 
   std::vector<std::int32_t> route_province_ids;
-  route_province_ids.reserve(static_cast<std::size_t>(count));
+  route_province_ids.reserve(
+      static_cast<std::size_t>(count) +
+      (effective_origin_is_observed_current ? 0U : 1U));
+  if (!effective_origin_is_observed_current) {
+    route_province_ids.push_back(effective_origin_province_id);
+  }
   for (std::int32_t index = 0; index < count; ++index) {
     void *const province_info = LoadAt<void *>(
         province_infos, static_cast<std::size_t>(index) * sizeof(void *));

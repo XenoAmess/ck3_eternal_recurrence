@@ -1688,6 +1688,87 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             [11, 31, 31, 2585],
         )
 
+    def test_native_route_preview_preserves_a_later_origin_loop(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.state.army-routes",
+                "game.command.preview-move-army-N-to-N",
+            )
+        )
+        player = _army(
+            83886341,
+            province_id=8759,
+            move_target_province_id=2568,
+            army_state="moving",
+            route_province_ids=[
+                2602,
+                2591,
+                2589,
+                2579,
+                2574,
+                2572,
+                2568,
+            ],
+        )
+        endpoint.publish(
+            _snapshot(
+                163,
+                date_raw=53_177_568,
+                active_wars=[
+                    _war(
+                        allied_armies=[player],
+                        war_objective_province_ids=[2604],
+                    )
+                ],
+                player_armies=[player],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "available",
+                        "route_preview": {
+                            "status": "available",
+                            "army_id": 83886341,
+                            "origin_province_id": 8759,
+                            "target_province_id": 2604,
+                            "route_province_ids": [2602, 8759, 2604],
+                        },
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step(
+            "preview-move-army-83886341-to-2604"
+        )
+
+        self.assertEqual(
+            result["route_preview"]["route_province_ids"],
+            [2602, 8759, 2604],
+        )
+        self.assertEqual(
+            result["route_preview"]["previewed_date_raw"], 53_177_568
+        )
+
     def test_native_route_preview_rejects_unpaused_starting_snapshot(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(

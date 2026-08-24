@@ -940,6 +940,7 @@
       "path_context": "0x70-byte caller-owned scratch constructed by RVA 0x23C32F0(PathCtx*, CUnit*); borrowed pointers only and no destructor in the canonical caller",
       "move_path": "0x130-byte caller-owned scratch constructed by RVA 0xC7BA70; +0x00 SUnitPathProvinceInfo** data, +0x08 int32 capacity, +0x0C int32 count, +0x10 allocator, +0x128 int64 route cost",
       "build": "RVA 0x23C33D0(PathCtx*, origin Province*, target Province*, route_kind=2, MovePath*) returns bool; mode_is_one is only an origin resolver input",
+      "public_normalization": "RVA 0x2248260 may return the paused CUnit remaining-route front while CUnit+0x20 still reports the Province being left. The adapter accepts only observed current or the exact paused route front, always publishes observed current as origin_province_id, and prepends a differing effective origin before the untouched A* output; no deduplication or loop removal",
       "cleanup": "embed MovePath at CMoveArmyCommand+0x38 and call RVA 0x26B46D0(command,0) on every post-construction exit; it frees path allocations without freeing the stack command",
       "thread_boundary": "planner uses per-call scratch and has no observed world write, TLS, global cache write, or main-thread assertion, but it takes no world read lock; bridge worker preview therefore requires a paused snapshot"
     },

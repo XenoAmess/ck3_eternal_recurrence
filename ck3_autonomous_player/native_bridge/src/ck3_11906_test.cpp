@@ -127,6 +127,7 @@ bool g_move_path_initialized = false;
 bool g_move_destroy_called = false;
 std::int32_t g_move_mode_result = 5;
 bool g_preview_origin_available = true;
+void *g_preview_effective_origin = nullptr;
 bool g_preview_origin_called = false;
 std::uint8_t g_preview_origin_mode_is_one = 0xFF;
 bool g_preview_path_context_constructed = false;
@@ -483,7 +484,8 @@ std::int32_t FixtureGetArmyMoveMode(void *army, void *province,
                                     std::int32_t direct_target) {
   const bool supported_destination =
       province == g_enemy_province.data() ||
-      province == g_player_province.data();
+      province == g_player_province.data() ||
+      province == g_enemy_default_raise_province.data();
   return army == g_player_army.data() && supported_destination &&
                  direct_target == 1
              ? g_move_mode_result
@@ -520,10 +522,11 @@ void *FixtureResolveMoveOrigin(void *opaque_context) {
       mode_is_one == nullptr ? 0xFF : *mode_is_one;
   const bool valid_destination =
       destination == g_enemy_province.data() ||
-      destination == g_player_province.data();
+      destination == g_player_province.data() ||
+      destination == g_enemy_default_raise_province.data();
   return g_preview_origin_available && army == g_player_army.data() &&
                  valid_destination
-             ? g_player_province.data()
+             ? g_preview_effective_origin
              : nullptr;
 }
 
@@ -552,8 +555,10 @@ bool FixtureBuildArmyMoveRoute(void *path_context, void *origin_province,
   g_preview_route_built =
       path_context != nullptr &&
       static_cast<std::byte *>(path_context)[0x68] == std::byte{0xA5} &&
-      origin_province == g_player_province.data() &&
-      target_province == g_enemy_province.data() && route_kind == 2 &&
+      origin_province == g_preview_effective_origin &&
+      (target_province == g_enemy_province.data() ||
+       target_province == g_player_province.data()) &&
+      route_kind == 2 &&
       path_storage != nullptr;
   if (!g_preview_route_built) {
     return false;
@@ -1174,6 +1179,7 @@ int main() {
   Store(g_player_province, 0x10, std::int32_t{2});
   Store(g_enemy_province, 0x10, std::int32_t{3});
   Store(g_enemy_default_raise_province, 0x10, std::int32_t{4});
+  g_preview_effective_origin = g_player_province.data();
   Store(g_provinces, 2 * sizeof(void *),
         static_cast<void *>(g_player_province.data()));
   Store(g_provinces, 3 * sizeof(void *),
@@ -2329,6 +2335,103 @@ int main() {
     return Fail("move preview did not copy and clean the native route");
   }
 
+  // A travelling CUnit still reports the Province it is leaving as current,
+  // while CK3's origin resolver advances to the first remaining route entry.
+  // The public origin remains the paused-snapshot current Province and the
+  // effective origin is prepended without simplifying a native loop back.
+  g_preview_effective_origin = g_enemy_default_raise_province.data();
+  Store(g_preview_move_route_info_0, 0x00, std::int32_t{2});
+  Store(g_preview_move_route_info_1, 0x00, std::int32_t{3});
+  g_preview_route_count = 2;
+  g_preview_path_context_constructed = false;
+  g_preview_route_built = false;
+  g_move_path_initialized = false;
+  g_move_destroy_called = false;
+  route_preview =
+      xar::ck3_11906::PreviewMoveArmy(bindings, player_army_id, 3);
+  if (route_preview.status !=
+          xar::ck3_11906::PreviewMoveArmyStatus::available ||
+      route_preview.origin_province_id != 2 ||
+      route_preview.target_province_id != 3 ||
+      route_preview.route_province_ids !=
+          std::vector<std::int32_t>{4, 2, 3} ||
+      !g_preview_path_context_constructed || !g_preview_route_built ||
+      !g_move_path_initialized || !g_move_destroy_called || g_submit_called) {
+    return Fail("in-flight move preview did not normalize its effective origin");
+  }
+
+  Store(g_preview_move_route_info_0, 0x00, std::int32_t{4});
+  Store(g_preview_move_route_info_1, 0x00, std::int32_t{2});
+  Store(g_preview_move_route_info_2, 0x00, std::int32_t{3});
+  g_preview_route_count = 3;
+  g_preview_route_built = false;
+  g_move_destroy_called = false;
+  route_preview =
+      xar::ck3_11906::PreviewMoveArmy(bindings, player_army_id, 3);
+  if (route_preview.status !=
+          xar::ck3_11906::PreviewMoveArmyStatus::available ||
+      route_preview.origin_province_id != 2 ||
+      route_preview.route_province_ids !=
+          std::vector<std::int32_t>{4, 4, 2, 3} ||
+      !g_preview_route_built || !g_move_destroy_called || g_submit_called) {
+    return Fail("in-flight move preview simplified a native duplicate/loop");
+  }
+
+  g_preview_path_context_constructed = false;
+  g_preview_route_built = false;
+  g_move_path_initialized = false;
+  g_move_destroy_called = false;
+  route_preview =
+      xar::ck3_11906::PreviewMoveArmy(bindings, player_army_id, 4);
+  if (route_preview.status !=
+          xar::ck3_11906::PreviewMoveArmyStatus::available ||
+      route_preview.origin_province_id != 2 ||
+      route_preview.target_province_id != 4 ||
+      route_preview.route_province_ids !=
+          std::vector<std::int32_t>{4} ||
+      g_preview_path_context_constructed || g_preview_route_built ||
+      !g_move_path_initialized || !g_move_destroy_called || g_submit_called) {
+    return Fail("effective-origin target preview did not expose one remaining hop");
+  }
+
+  g_preview_path_context_constructed = false;
+  g_preview_route_built = false;
+  g_move_path_initialized = false;
+  g_move_destroy_called = false;
+  Store(g_preview_move_route_info_0, 0x00, std::int32_t{2});
+  g_preview_route_count = 1;
+  route_preview =
+      xar::ck3_11906::PreviewMoveArmy(bindings, player_army_id, 2);
+  if (route_preview.status !=
+          xar::ck3_11906::PreviewMoveArmyStatus::available ||
+      route_preview.origin_province_id != 2 ||
+      route_preview.target_province_id != 2 ||
+      route_preview.route_province_ids !=
+          std::vector<std::int32_t>{4, 2} ||
+      !g_preview_path_context_constructed || !g_preview_route_built ||
+      !g_move_path_initialized || !g_move_destroy_called || g_submit_called) {
+    return Fail("in-flight current target did not finish the edge and route back");
+  }
+
+  g_preview_effective_origin = g_second_war_objective_province.data();
+  g_preview_path_context_constructed = false;
+  g_preview_route_built = false;
+  g_move_path_initialized = false;
+  g_move_destroy_called = false;
+  route_preview =
+      xar::ck3_11906::PreviewMoveArmy(bindings, player_army_id, 3);
+  if (route_preview.status !=
+          xar::ck3_11906::PreviewMoveArmyStatus::origin_unavailable ||
+      route_preview.origin_province_id != -1 ||
+      g_preview_path_context_constructed || g_preview_route_built ||
+      g_move_path_initialized || g_move_destroy_called || g_submit_called) {
+    return Fail("move preview accepted an origin outside current/route-front");
+  }
+
+  g_preview_effective_origin = g_player_province.data();
+  Store(g_preview_move_route_info_0, 0x00, std::int32_t{4});
+  Store(g_preview_move_route_info_1, 0x00, std::int32_t{5});
+  g_preview_route_count = 3;
   g_preview_path_context_constructed = false;
   g_preview_route_built = false;
   g_move_path_initialized = false;

@@ -212,7 +212,16 @@ the complete route before destroying the temporary path. It neither binds nor
 calls the apply routine and never submits a command. Success returns
 `result.status="available"` and
 `route_preview={status:"available",army_id,origin_province_id,target_province_id,route_province_ids}`.
-The same-province case is available with an empty route and skips A*.
+`origin_province_id` is the selected army's current Province from the same
+paused snapshot. While an army is already between Provinces, CK3's native
+origin resolver may instead return the first entry of that snapshot's
+remaining route. The exact adapter accepts only those two possibilities and,
+when they differ, prepends the effective origin to the untouched native A*
+output. Loops and duplicate Province IDs are deliberately preserved. A target
+equal to the observed current Province returns an empty route only when it is
+also the effective origin; in flight, CK3 must finish the current edge and A*
+may route back. A target equal to a differing effective origin returns the
+one-entry route containing that effective origin and skips A*.
 
 War declaration discovery is an explicit request rather than part of the
 250 ms snapshot publisher: it evaluates current CBs across live characters

@@ -173,6 +173,8 @@ Python 已经根据 `hello.capabilities` 生成 action steps，并能从 capabil
 4. 检查语义是否改变，而不只是寻找“看起来相近”的指令字节；若游戏语义确实改变，由 adapter 翻译为现有公共语义，无法无损翻译时才考虑升级 `game_contract`/protocol。
 5. 按能力族实现并公布 capability；未完成族保持缺席。
 
+路线预览还要单独复核“引擎 effective origin”与公共 origin 的区别：公共合同以同一 paused snapshot 的军队当前省为稳定 origin；版本 adapter 只可把原生 resolver 的结果认作当前省或该 snapshot 剩余路线首项。若为后者，adapter 把它补到未经简化的 native route 最前；若两者都不是则拒绝整次 preview。不得让某个版本的 mid-edge 内部起点泄漏成上层 origin，也不得跨版本用去重/删回环改变路线碰撞语义。即使目标等于观测当前省，effective origin 不同也必须完成当前边并规划返回，不能误报空路线。
+
 ### C. 离线验证
 
 1. 对新 manifest 运行：

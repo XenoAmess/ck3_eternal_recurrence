@@ -57,7 +57,7 @@ bridge identity/heartbeat/ping.
 | `game.state.army-routes` / army move target | implemented from minimized-live-validated route ABI; paused full-array/running-tail fixture passed | paused snapshots validate the full `CUnit+0x38/+0x40/+0x44` remaining-route array; running snapshots retain only the legacy last-entry target read | never inside native driver |
 | army soldier count | unsupported | no live-validated soldier aggregate ABI; no value guessed | unsupported |
 | `game.command.raise-troops-default` | implemented, live probe pending | native default-province/construct/validate/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
-| `game.command.preview-move-army-N-to-N` | implemented, paused live probe pending | canonical plan/apply split + exact origin/PathCtx/MovePath/A* ABIs + success/failure/cleanup/bound/paused fixture; no apply binding or queue call | explicit upper-layer policy only; paused map required |
+| `game.command.preview-move-army-N-to-N` | implemented; paused minimized live probe exposed and closed the mid-edge effective-origin case | canonical plan/apply split + exact origin/PathCtx/MovePath/A* ABIs + current/route-front normalization + success/failure/cleanup/bound/paused fixture; no apply binding or queue call | explicit upper-layer policy only; paused map required |
 | `game.command.move-army-N-to-N` | implemented and minimized-live accepted: player command submitted and army province changed | exact player-UI kind/channel plus native mode/state/can-move/path-init/clone/destruct lifecycle, offline fixture, and live movement | explicit upper-layer policy only |
 | `game.command.disband-army-N` | implemented; live exposed the distinct command-target ID and corrected build awaits replay | exact 0x28-byte command/vtables/payload source/clone + offline fixture | explicit upper-layer policy only |
 | `game.command.query-declarable-wars` | native C++ core implemented, bridge route/live probe pending | exact declare-war UI CB registry/evaluator/item rules + offline SSO/heap-key and configuration fixture | explicit upper-layer policy only |
@@ -403,8 +403,37 @@ only a complete, <=4096-entry route whose every ID resolves and whose final ID
 equals the requested destination. It embeds the path at a temporary complete
 `CMoveArmyCommand+0x38`, so every post-construction success/failure exit can
 use the already closed `0x26B46D0(command,0)` cleanup. `PathCtx` holds borrowed
-pointers and the canonical caller does not destroy it. Same-origin previews
-skip A* and return an empty route.
+pointers and the canonical caller does not destroy it.
+
+A minimized paused live replay on 2026-08-24 captured army current Province
+`8759`, its already active remaining route beginning at `2602`, and
+`ResolveMoveOrigin=2602` for every candidate. This is a real mid-edge state:
+the stable public origin must remain the same paused snapshot's `8759`, while
+`2602` is the effective origin from which A* plans. Raw A* returned:
+
+- target `2585`: `[2591,2589,2579,2586,2585]`;
+- target `2596`: `[8759,2603,2595,2596]`;
+- target `2600`: `[2600]`;
+- target `2604`: `[8759,2604]`.
+
+The adapter therefore requires the native effective origin to equal either
+the observed current Province or the exact paused remaining-route front. It
+always publishes the observed current as `origin_province_id`; when the two
+differ, it prepends the effective origin to the raw A* vector without removing
+duplicates or loops. The four normalized routes above consequently begin
+with `2602`. This is gameplay-significant: enemy army `357` had remaining
+route `[2595,2603,8759,2602]`, so every normalized candidate intersects it and
+the route-safety policy correctly stays paused. Publishing `origin=2602` with
+an unprefixed tail had violated the stable upper-layer contract and rejected
+the preview as malformed.
+
+If a target equals the differing effective origin, the normalized remaining
+route is `[effective]` and A* is skipped. An empty route is valid only when
+observed current, effective origin, and target are all equal. If the target is
+the observed current while the army is mid-edge, the unit must finish that
+edge and A* may route back; the fixture pins this as `[effective,...,current]`.
+Any effective origin outside current/route-front fails closed before path
+construction.
 
 Static worker-thread audit found no world write, TLS/global path cache write,
 main-thread assertion, or apply/queue path in origin/context/A*. A* recursively
