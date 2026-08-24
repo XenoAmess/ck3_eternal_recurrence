@@ -26,6 +26,8 @@ from xar_autoplayer.bridge.native_driver import (
     ConfiguredHybridFallbackDriver,
     MinimizedRejectingVisualDriver,
     NativeHeadlessGameplayDriver,
+    _life_advance_horizon_days,
+    _native_unobservable_started_assaults,
 )
 from xar_autoplayer.bridge.settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
@@ -34,8 +36,12 @@ from xar_autoplayer.bridge.war_contract import (
     is_native_war_step,
     merge_armies_step,
     parse_merge_armies_step,
+    parse_start_assault_step,
+    parse_stop_assault_step,
     parse_split_army_half_step,
     split_army_half_step,
+    start_assault_step,
+    stop_assault_step,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.environment import write_json_atomic
@@ -261,6 +267,13 @@ def _active_siege(
     current_work_raw: int = 2_500_000,
     total_work_raw: int = 10_000_000,
     days_left: int | None = 12,
+    assault_observable: bool = False,
+    breach_level: int | None = None,
+    assault_in_progress: bool | None = None,
+    can_start_assault: bool | None = None,
+    can_stop_assault: bool | None = None,
+    assault_daily_progress_raw: int | None = None,
+    assault_daily_casualties: int | None = None,
 ) -> dict[str, object]:
     return {
         "siege_id": siege_id,
@@ -270,6 +283,20 @@ def _active_siege(
         "current_work": {"raw": current_work_raw, "scale": 100_000},
         "total_work": {"raw": total_work_raw, "scale": 100_000},
         "days_left": days_left,
+        "assault_observable": assault_observable,
+        "breach_level": breach_level,
+        "assault_in_progress": assault_in_progress,
+        "can_start_assault": can_start_assault,
+        "can_stop_assault": can_stop_assault,
+        "assault_daily_progress": (
+            {
+                "raw": assault_daily_progress_raw,
+                "scale": 100_000,
+            }
+            if assault_daily_progress_raw is not None
+            else None
+        ),
+        "assault_daily_casualties": assault_daily_casualties,
     }
 
 
@@ -490,6 +517,676 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 for step in capabilities["action_steps"]
             )
         )
+
+    def test_assault_step_parsers_are_exact(self) -> None:
+        self.assertEqual(start_assault_step(1), "start-assault-1")
+        self.assertEqual(
+            stop_assault_step(2**31 - 1),
+            "stop-assault-2147483647",
+        )
+        self.assertEqual(parse_start_assault_step("start-assault-901"), 901)
+        self.assertEqual(parse_stop_assault_step("stop-assault-901"), 901)
+        self.assertTrue(is_native_war_step("start-assault-901"))
+        self.assertTrue(is_native_war_step("stop-assault-901"))
+
+        malformed_steps: tuple[object, ...] = (
+            None,
+            True,
+            "",
+            "start-assault-",
+            "start-assault-0",
+            "start-assault--1",
+            "start-assault-+1",
+            "start-assault-1 ",
+            "start-assault-1-extra",
+            "start-assault-2147483648",
+            "start-assault-１",
+            "stop-assault-",
+            "stop-assault-0",
+            "stop-assault--1",
+            "stop-assault-+1",
+            "stop-assault-1 ",
+            "stop-assault-1-extra",
+            "stop-assault-2147483648",
+            "stop-assault-１",
+        )
+        for malformed in malformed_steps:
+            with self.subTest(step=malformed):
+                self.assertIsNone(parse_start_assault_step(malformed))
+                self.assertIsNone(parse_stop_assault_step(malformed))
+                self.assertFalse(is_native_war_step(malformed))
+        for malformed_id in (0, -1, 2**31, True):
+            with self.subTest(siege_id=malformed_id):
+                with self.assertRaises(ValueError):
+                    start_assault_step(malformed_id)
+                with self.assertRaises(ValueError):
+                    stop_assault_step(malformed_id)
+
+    def test_assault_literals_require_exact_state_and_command_capabilities(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objective-assault",
+                "game.command.start-assault-X",
+                "game.command.stop-assault-901",
+            )
+        )
+        siege = _active_siege(
+            assault_observable=True,
+            breach_level=1,
+            assault_in_progress=False,
+            can_start_assault=True,
+            can_stop_assault=False,
+            assault_daily_progress_raw=340_000,
+            assault_daily_casualties=16,
+        )
+        endpoint.publish(
+            _snapshot(
+                2,
+                active_wars=[
+                    _war(
+                        war_objective_province_ids=[2585],
+                        objective_province_states=[
+                            _objective_state(2585, active_siege=siege)
+                        ],
+                    )
+                ],
+            )
+        )
+
+        capabilities = driver.capabilities()
+        self.assertTrue(capabilities["war_objective_assault_supported"])
+        self.assertFalse(
+            any(
+                step.startswith(("start-assault-", "stop-assault-"))
+                for step in capabilities["action_steps"]
+            )
+        )
+
+    def test_assault_start_requires_complete_stop_recovery_bundle(self) -> None:
+        cases = (
+            {
+                "name": "start_without_stop",
+                "commands": ("game.command.start-assault-N",),
+                "active": False,
+                "expected": (),
+            },
+            {
+                "name": "stop_recovery_only",
+                "commands": ("game.command.stop-assault-N",),
+                "active": True,
+                "expected": ("stop-assault-901",),
+            },
+            {
+                "name": "complete_bundle",
+                "commands": (
+                    "game.command.start-assault-N",
+                    "game.command.stop-assault-N",
+                ),
+                "active": False,
+                "expected": ("start-assault-901",),
+            },
+        )
+        for case in cases:
+            with self.subTest(case=case["name"]):
+                endpoint = FakeEndpoint()
+                driver = NativeHeadlessGameplayDriver(
+                    endpoint.pipe_name,
+                    endpoint=endpoint,
+                )
+                endpoint.publish(
+                    _hello(
+                        "game.state.snapshot",
+                        "game.state.war-objective-assault",
+                        *case["commands"],
+                    )
+                )
+                active = bool(case["active"])
+                endpoint.publish(
+                    _snapshot(
+                        2,
+                        active_wars=[
+                            _war(
+                                war_objective_province_ids=[2585],
+                                objective_province_states=[
+                                    _objective_state(
+                                        2585,
+                                        active_siege=_active_siege(
+                                            assault_observable=True,
+                                            breach_level=1,
+                                            assault_in_progress=active,
+                                            can_start_assault=not active,
+                                            can_stop_assault=active,
+                                            assault_daily_progress_raw=340_000,
+                                            assault_daily_casualties=16,
+                                        ),
+                                    )
+                                ],
+                            )
+                        ],
+                    )
+                )
+
+                assault_steps = tuple(
+                    step
+                    for step in driver.capabilities()["action_steps"]
+                    if step.startswith(("start-assault-", "stop-assault-"))
+                )
+                self.assertEqual(assault_steps, case["expected"])
+
+    def test_start_and_stop_assault_wait_for_same_paused_siege_flag(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objective-assault",
+                "game.command.start-assault-N",
+                "game.command.stop-assault-N",
+            )
+        )
+
+        def frame(revision: int, active: bool) -> dict[str, object]:
+            siege = _active_siege(
+                assault_observable=True,
+                breach_level=1,
+                assault_in_progress=active,
+                can_start_assault=not active,
+                can_stop_assault=active,
+                assault_daily_progress_raw=340_000,
+                assault_daily_casualties=16,
+            )
+            return _snapshot(
+                revision,
+                paused=True,
+                active_wars=[
+                    _war(
+                        war_id=61,
+                        war_objective_province_ids=[2585],
+                        objective_province_states=[
+                            _objective_state(2585, active_siege=siege)
+                        ],
+                    )
+                ],
+            )
+
+        endpoint.publish(frame(2, False))
+        self.assertIn("start-assault-901", driver.capabilities()["action_steps"])
+
+        def answer_start(request: dict[str, object]) -> None:
+            if request.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": request["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": request["step"],
+                        "accepted": True,
+                        "status": "start_submitted",
+                    },
+                }
+            )
+            endpoint.publish(frame(3, True))
+
+        endpoint.send_hook = answer_start
+        started = driver.execute_step("start-assault-901")
+        self.assertEqual(started["assault_action"]["status"], "assault_started")
+        self.assertTrue(started["active_siege"]["assault_in_progress"])
+        self.assertEqual(started["assault_action"]["province_id"], 2585)
+        self.assertIn("stop-assault-901", driver.capabilities()["action_steps"])
+
+        def answer_stop(request: dict[str, object]) -> None:
+            if request.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": request["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": request["step"],
+                        "accepted": True,
+                        "status": "stop_submitted",
+                    },
+                }
+            )
+            endpoint.publish(frame(4, False))
+
+        endpoint.send_hook = answer_stop
+        stopped = driver.execute_step("stop-assault-901")
+        self.assertEqual(stopped["assault_action"]["status"], "assault_stopped")
+        self.assertFalse(stopped["active_siege"]["assault_in_progress"])
+
+    def test_assault_ack_without_flag_postcondition_is_not_applied(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.01,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objective-assault",
+                "game.command.start-assault-N",
+                "game.command.stop-assault-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                2,
+                active_wars=[
+                    _war(
+                        war_objective_province_ids=[2585],
+                        objective_province_states=[
+                            _objective_state(
+                                2585,
+                                active_siege=_active_siege(
+                                    assault_observable=True,
+                                    breach_level=1,
+                                    assault_in_progress=False,
+                                    can_start_assault=True,
+                                    can_stop_assault=False,
+                                    assault_daily_progress_raw=340_000,
+                                    assault_daily_casualties=16,
+                                ),
+                            )
+                        ],
+                    )
+                ],
+            )
+        )
+
+        def ack_only(request: dict[str, object]) -> None:
+            if request.get("type") == "execute_step":
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": request["request_id"],
+                        "ok": True,
+                        "result": {
+                            "step": request["step"],
+                            "accepted": True,
+                            "status": "start_submitted",
+                        },
+                    }
+                )
+
+        endpoint.send_hook = ack_only
+        with self.assertRaisesRegex(
+            BridgeUnavailableError, "same-SiegeID paused postcondition"
+        ):
+            driver.execute_step("start-assault-901")
+
+    def test_direct_life_advance_blocks_open_unobservable_assault_before_resume(
+        self,
+    ) -> None:
+        start_history = {
+            "index": 1,
+            "command": "start-assault-901",
+            "ok": True,
+            "result": {
+                "assault_action": {
+                    "status": "assault_started",
+                    "siege_id": 901,
+                    "war_id": 61,
+                    "province_id": 2585,
+                }
+            },
+        }
+        for paused in (True, False):
+            with self.subTest(paused=paused):
+                endpoint = FakeEndpoint()
+                driver = NativeHeadlessGameplayDriver(
+                    endpoint.pipe_name,
+                    endpoint=endpoint,
+                )
+                endpoint.publish(
+                    _hello(
+                        "game.state.snapshot",
+                        "game.state.war-objective-assault",
+                        "game.command.pause-map",
+                        "game.command.resume-map",
+                        "game.command.set-speed-5",
+                    )
+                )
+                endpoint.publish(
+                    _snapshot(
+                        2,
+                        paused=paused,
+                        active_wars=[
+                            _war(
+                                war_id=61,
+                                war_objective_province_ids=[2585],
+                                objective_province_states=[],
+                            )
+                        ],
+                    )
+                )
+                driver._command_history = [dict(start_history)]
+
+                with self.assertRaisesRegex(
+                    BridgeUnavailableError,
+                    "assault_started|paused rich snapshot",
+                ):
+                    driver.execute_step("life-advance")
+
+                self.assertFalse(
+                    any(
+                        frame.get("type") == "execute_step"
+                        for frame in endpoint.frames
+                    )
+                )
+
+    def test_direct_life_advance_blocks_latest_failed_active_assault_slice(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objective-assault",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        active_siege = _active_siege(
+            assault_observable=True,
+            breach_level=1,
+            assault_in_progress=True,
+            can_start_assault=False,
+            can_stop_assault=True,
+            assault_daily_progress_raw=340_000,
+            assault_daily_casualties=16,
+        )
+        endpoint.publish(
+            _snapshot(
+                2,
+                active_wars=[
+                    _war(
+                        war_id=61,
+                        war_objective_province_ids=[2585],
+                        objective_province_states=[
+                            _objective_state(
+                                2585, active_siege=active_siege
+                            )
+                        ],
+                    )
+                ],
+            )
+        )
+        driver._command_history = [
+            {
+                "index": 1,
+                "command": "start-assault-901",
+                "ok": True,
+                "result": {
+                    "assault_action": {
+                        "status": "assault_started",
+                        "siege_id": 901,
+                        "war_id": 61,
+                        "province_id": 2585,
+                    }
+                },
+            },
+            {
+                "index": 2,
+                "command": "life-advance",
+                "ok": False,
+                "error": "fixture partial composite failure",
+            },
+        ]
+
+        with self.assertRaisesRegex(
+            BridgeUnavailableError, "unresolved assault_started"
+        ):
+            driver.execute_step("life-advance")
+        self.assertFalse(
+            any(
+                frame.get("type") == "execute_step"
+                for frame in endpoint.frames
+            )
+        )
+
+    def test_failed_assault_slice_does_not_block_exact_no_siege_completion(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objective-assault",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        player = _army(101, province_id=2585, army_state="regular")
+
+        def frame(
+            revision: int, *, paused: bool, speed: int, score: int
+        ) -> dict[str, object]:
+            return _snapshot(
+                revision,
+                paused=paused,
+                speed=speed,
+                active_wars=[
+                    _war(
+                        war_id=61,
+                        allied_armies=[player],
+                        score=score,
+                        war_objective_province_ids=[2585],
+                        objective_province_states=[
+                            _objective_state(2585, active_siege=None)
+                        ],
+                    )
+                ],
+                player_armies=[player],
+            )
+
+        endpoint.publish(frame(1, paused=True, speed=1, score=12))
+        driver._command_history = [
+            {
+                "index": 1,
+                "command": "start-assault-901",
+                "ok": True,
+                "result": {
+                    "assault_action": {
+                        "status": "assault_started",
+                        "siege_id": 901,
+                        "war_id": 61,
+                        "province_id": 2585,
+                    }
+                },
+            },
+            {
+                "index": 2,
+                "command": "life-advance",
+                "ok": False,
+                "error": "fixture partial composite failure",
+            },
+        ]
+        self.assertEqual(
+            _native_unobservable_started_assaults(
+                driver.take_snapshot(), driver._history_snapshot()
+            ),
+            [],
+        )
+
+        def answer(request: dict[str, object]) -> None:
+            if request.get("type") != "execute_step":
+                return
+            step = str(request["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": request["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-5":
+                endpoint.publish(frame(2, paused=True, speed=5, score=12))
+            elif step == "resume-map":
+                endpoint.publish(frame(3, paused=False, speed=5, score=13))
+            elif step == "pause-map":
+                endpoint.publish(frame(4, paused=True, speed=5, score=13))
+
+        endpoint.send_hook = answer
+        driver.execute_step("life-advance")
+        wire_steps = [
+            frame["step"]
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+        ]
+        self.assertEqual(
+            wire_steps, ["set-speed-5", "resume-map", "pause-map"]
+        )
+
+    def test_active_assault_life_advance_horizon_is_one_day(self) -> None:
+        siege = _active_siege(
+            assault_observable=True,
+            breach_level=1,
+            assault_in_progress=True,
+            can_start_assault=False,
+            can_stop_assault=True,
+            assault_daily_progress_raw=340_000,
+            assault_daily_casualties=16,
+        )
+        snapshot = {
+            "paused": True,
+            "war_objective_siege_progress_supported": True,
+            "war_objective_assault_supported": True,
+            "active_wars": [
+                _war(
+                    war_objective_province_ids=[2585],
+                    objective_province_states=[
+                        _objective_state(2585, active_siege=siege)
+                    ],
+                )
+            ],
+        }
+
+        self.assertEqual(_life_advance_horizon_days(snapshot), 1)
+        siege["assault_in_progress"] = False
+        self.assertEqual(_life_advance_horizon_days(snapshot), 7)
+
+    def test_active_route_life_advance_horizon_is_one_day_until_arrival(
+        self,
+    ) -> None:
+        player = _army(
+            101,
+            province_id=2597,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        snapshot = {
+            "paused": True,
+            "war_objective_siege_progress_supported": False,
+            "player_armies": [player],
+            "active_wars": [_war(allied_armies=[player])],
+        }
+
+        self.assertEqual(_life_advance_horizon_days(snapshot), 1)
+        player["move_target_province_id"] = None
+        player["route_province_ids"] = []
+        player["army_state"] = "regular"
+        self.assertEqual(_life_advance_horizon_days(snapshot), 30)
+
+    def test_route_target_alone_enforces_one_day_horizon(self) -> None:
+        player = _army(
+            101,
+            province_id=2597,
+            move_target_province_id=2596,
+            army_state="moving",
+        )
+        snapshot = {
+            "paused": True,
+            "war_objective_siege_progress_supported": True,
+            "player_armies": [player],
+            "active_wars": [],
+        }
+
+        self.assertEqual(_life_advance_horizon_days(snapshot), 1)
+
+    def test_moving_state_without_route_fields_enforces_one_day_horizon(
+        self,
+    ) -> None:
+        for state in (
+            {"army_state": "moving"},
+            {"army_state_code": 7},
+        ):
+            with self.subTest(state=state):
+                player = _army(
+                    101,
+                    province_id=2597,
+                    observe_move_target=False,
+                    **state,
+                )
+                snapshot = {
+                    "paused": True,
+                    "war_objective_siege_progress_supported": False,
+                    "player_armies": [player],
+                    "active_wars": [_war(allied_armies=[player])],
+                }
+
+                self.assertEqual(_life_advance_horizon_days(snapshot), 1)
+
+    def test_active_assault_horizon_does_not_require_siege_progress_capability(
+        self,
+    ) -> None:
+        snapshot = {
+            "paused": True,
+            "war_objective_siege_progress_supported": False,
+            "war_objective_assault_supported": True,
+            "active_wars": [
+                _war(
+                    objective_province_states=[
+                        _objective_state(
+                            2585,
+                            active_siege=_active_siege(
+                                assault_observable=True,
+                                breach_level=1,
+                                assault_in_progress=True,
+                                can_start_assault=False,
+                                can_stop_assault=True,
+                                assault_daily_progress_raw=340_000,
+                                assault_daily_casualties=16,
+                            ),
+                        )
+                    ]
+                )
+            ],
+        }
+
+        self.assertEqual(_life_advance_horizon_days(snapshot), 1)
 
     def test_exact_objective_capabilities_and_state_are_projected(self) -> None:
         endpoint = FakeEndpoint()
@@ -5079,6 +5776,96 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         result = driver.execute_step("life-advance")
 
         self.assertEqual(result["elapsed_days"], 30)
+        self.assertEqual(result["progress_status"], "postcondition")
+        self.assertTrue(result["paused"])
+
+    def test_active_route_composite_stops_after_one_game_day(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.army-routes",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        start_date = 53_176_368
+        player = _army(
+            501,
+            province_id=2597,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        war = _war(allied_armies=[player])
+        endpoint.publish(
+            _snapshot(
+                90,
+                date_raw=start_date,
+                active_wars=[war],
+                player_armies=[player],
+            )
+        )
+        paused_dates: list[int] = []
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-5":
+                endpoint.publish(
+                    _snapshot(
+                        91,
+                        date_raw=start_date,
+                        speed=5,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+            elif step == "resume-map":
+                endpoint.publish(
+                    _snapshot(
+                        92,
+                        date_raw=start_date + 24,
+                        speed=5,
+                        paused=False,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+            elif step == "pause-map":
+                paused_dates.append(start_date + 24)
+                endpoint.publish(
+                    _snapshot(
+                        93,
+                        date_raw=start_date + 24,
+                        speed=5,
+                        paused=True,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step("life-advance")
+
+        self.assertEqual(paused_dates, [start_date + 24])
+        self.assertEqual(result["elapsed_days"], 1)
         self.assertEqual(result["progress_status"], "postcondition")
         self.assertTrue(result["paused"])
 

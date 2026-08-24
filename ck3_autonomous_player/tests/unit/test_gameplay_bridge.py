@@ -70,6 +70,13 @@ def _active_siege(
     current_work_raw: int = 2_500_000,
     total_work_raw: int = 10_000_000,
     days_left: int | None = 12,
+    assault_observable: bool = False,
+    breach_level: int | None = None,
+    assault_in_progress: bool | None = None,
+    can_start_assault: bool | None = None,
+    can_stop_assault: bool | None = None,
+    assault_daily_progress_raw: int | None = None,
+    assault_daily_casualties: int | None = None,
 ) -> dict[str, object]:
     return {
         "siege_id": siege_id,
@@ -79,6 +86,20 @@ def _active_siege(
         "current_work": {"raw": current_work_raw, "scale": 100_000},
         "total_work": {"raw": total_work_raw, "scale": 100_000},
         "days_left": days_left,
+        "assault_observable": assault_observable,
+        "breach_level": breach_level,
+        "assault_in_progress": assault_in_progress,
+        "can_start_assault": can_start_assault,
+        "can_stop_assault": can_stop_assault,
+        "assault_daily_progress": (
+            {
+                "raw": assault_daily_progress_raw,
+                "scale": 100_000,
+            }
+            if assault_daily_progress_raw is not None
+            else None
+        ),
+        "assault_daily_casualties": assault_daily_casualties,
     }
 
 
@@ -201,6 +222,64 @@ def _advance_row(
     }
 
 
+def _assault_action_row(
+    index: int,
+    *,
+    status: str,
+    siege_id: int = 901,
+    war_id: int = 88,
+    province_id: int = 2585,
+    decorated: bool = False,
+) -> dict[str, object]:
+    step = (
+        f"start-assault-{siege_id}"
+        if status == "assault_started"
+        else f"stop-assault-{siege_id}"
+    )
+    action = {
+        "status": status,
+        "siege_id": siege_id,
+        "war_id": war_id,
+        "province_id": province_id,
+    }
+    result: dict[str, object] = {
+        "assault_action": dict(action),
+        "war_action": dict(action),
+    }
+    command = step
+    if decorated:
+        command = "auto-turn"
+        result.update(
+            {
+                "requested_step": "auto-turn",
+                "auto_turn": {"selected_step": step},
+            }
+        )
+    return {
+        "index": index,
+        "command": command,
+        "ok": True,
+        "result": result,
+    }
+
+
+def _failed_life_advance_row(
+    index: int, *, decorated: bool = False
+) -> dict[str, object]:
+    result: dict[str, object] = {}
+    command = "life-advance"
+    if decorated:
+        command = "auto-turn"
+        result = {"auto_turn": {"selected_step": "life-advance"}}
+    return {
+        "index": index,
+        "command": command,
+        "ok": False,
+        "result": result,
+        "error": "fixture composite postcondition failed",
+    }
+
+
 def _preview_row(
     index: int,
     *,
@@ -248,6 +327,7 @@ def _native_war_plan(
     fort_level_supported: bool = False,
     garrison_supported: bool = False,
     siege_progress_supported: bool = False,
+    assault_supported: bool = False,
     rollback_war_failure: dict[str, object] | None = None,
 ) -> dict[str, object]:
     route_field_present = "route_province_ids" in player
@@ -272,6 +352,7 @@ def _native_war_plan(
             "war_objective_siege_progress_supported": (
                 siege_progress_supported
             ),
+            "war_objective_assault_supported": assault_supported,
             "date_raw": date_raw,
             "native_command_history": history or [],
             "native_rollback_war_failure": rollback_war_failure,
@@ -348,6 +429,70 @@ class GameplayBridgeTests(unittest.TestCase):
             {"raw": 7_499_999, "scale": 100_000},
         )
         self.assertEqual(normalized[0]["garrison_size"], 500)
+
+    def test_war_contract_normalizes_assault_subdomain_all_or_none(self) -> None:
+        active = _active_siege(
+            assault_observable=True,
+            breach_level=2,
+            assault_in_progress=False,
+            can_start_assault=True,
+            can_stop_assault=False,
+            assault_daily_progress_raw=340_000,
+            assault_daily_casualties=16,
+        )
+        normalized = normalize_active_wars(
+            [
+                _war(
+                    allied_armies=[],
+                    enemy_armies=[],
+                    war_objective_province_ids=[2585],
+                    objective_province_states=[
+                        _objective_state(2585, active_siege=active)
+                    ],
+                )
+            ]
+        )[0]["objective_province_states"][0]["active_siege"]
+
+        self.assertTrue(normalized["assault_observable"])
+        self.assertEqual(normalized["breach_level"], 2)
+        self.assertTrue(normalized["walls_breached"])
+        self.assertEqual(
+            normalized["assault_daily_progress"],
+            {"raw": 340_000, "scale": 100_000},
+        )
+        self.assertEqual(normalized["assault_daily_casualties"], 16)
+
+        partial = _active_siege()
+        partial["breach_level"] = 1
+        with self.assertRaisesRegex(ValueError, "unobservable assault"):
+            normalize_active_wars(
+                [
+                    _war(
+                        allied_armies=[],
+                        enemy_armies=[],
+                        war_objective_province_ids=[2585],
+                        objective_province_states=[
+                            _objective_state(2585, active_siege=partial)
+                        ],
+                    )
+                ]
+            )
+
+        malformed = dict(active)
+        malformed["breach_level"] = 3
+        with self.assertRaisesRegex(ValueError, "range 0..2"):
+            normalize_active_wars(
+                [
+                    _war(
+                        allied_armies=[],
+                        enemy_armies=[],
+                        war_objective_province_ids=[2585],
+                        objective_province_states=[
+                            _objective_state(2585, active_siege=malformed)
+                        ],
+                    )
+                ]
+            )
 
     def test_war_contract_distinguishes_unknown_from_zero(self) -> None:
         unknown = _objective_state(
@@ -1677,6 +1822,28 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(plan["selected_step"], "pause-map")
 
+    def test_assault_only_capability_requires_pause_before_rich_state(self) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=0,
+            date_raw=24_000,
+            objective=2585,
+            steps=("pause-map", "life-advance"),
+            paused=False,
+            assault_supported=True,
+        )
+
+        self.assertEqual(plan["phase"], "native_war_route_wait_for_pause")
+        self.assertEqual(plan["selected_step"], "pause-map")
+
     def test_route_field_without_capabilities_keeps_legacy_direct_move(self) -> None:
         player = _army(
             11,
@@ -2359,6 +2526,906 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["phase"], "native_war_siege_progress")
         self.assertEqual(plan["selected_step"], "life-advance")
         self.assertEqual(plan["siege_state"]["status"], "progressing")
+
+    def test_breached_safe_exact_siege_starts_assault(self) -> None:
+        player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        active_siege = _active_siege(
+            assault_observable=True,
+            breach_level=1,
+            assault_in_progress=False,
+            can_start_assault=True,
+            can_stop_assault=False,
+            assault_daily_progress_raw=340_000,
+            assault_daily_casualties=16,
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_000,
+            objective=2585,
+            objective_states=[
+                _objective_state(
+                    2585,
+                    garrison_size=500,
+                    besieging_strength=650,
+                    active_siege=active_siege,
+                )
+            ],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("start-assault-901", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_assault_start")
+        self.assertEqual(plan["selected_step"], "start-assault-901")
+        self.assertTrue(plan["assault_state"]["one_day_safe"])
+        self.assertEqual(
+            plan["assault_state"]["projection_horizon_days"], 1
+        )
+        self.assertNotIn("eta", str(plan).casefold())
+
+    def test_assault_start_is_blocked_by_unsafe_active_siege_route(self) -> None:
+        player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            move_target_province_id=2600,
+            army_state="sieging",
+            route_province_ids=[2590, 2600],
+        )
+        enemy = _army(
+            21,
+            soldiers=700,
+            province_id=2590,
+            controllable=False,
+            army_state="regular",
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=24,
+            date_raw=24_000,
+            objective=2585,
+            objective_states=[
+                _objective_state(
+                    2585,
+                    garrison_size=500,
+                    besieging_strength=650,
+                    active_siege=_active_siege(
+                        assault_observable=True,
+                        breach_level=1,
+                        assault_in_progress=False,
+                        can_start_assault=True,
+                        can_stop_assault=False,
+                        assault_daily_progress_raw=340_000,
+                        assault_daily_casualties=16,
+                    ),
+                )
+            ],
+            army_routes_supported=True,
+            move_route_preview_supported=False,
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=(
+                "start-assault-901",
+                "move-army-11-to-2590",
+                "life-advance",
+            ),
+        )
+
+        self.assertNotEqual(plan["phase"], "native_war_assault_start")
+        self.assertNotEqual(plan["selected_step"], "start-assault-901")
+
+    def test_moving_army_without_route_target_blocks_assault_and_time(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            army_state="moving",
+            route_province_ids=[],
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_000,
+            objective=2585,
+            objective_states=[
+                _objective_state(
+                    2585,
+                    active_siege=_active_siege(
+                        assault_observable=True,
+                        breach_level=1,
+                        assault_in_progress=False,
+                        can_start_assault=True,
+                        can_stop_assault=False,
+                        assault_daily_progress_raw=340_000,
+                        assault_daily_casualties=16,
+                    ),
+                )
+            ],
+            army_routes_supported=True,
+            move_route_preview_supported=False,
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("start-assault-901", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_route_audit_pending")
+        self.assertIsNone(plan["selected_step"])
+
+    def test_moving_state_code_without_route_target_blocks_assault_and_time(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            army_state_code=7,
+            route_province_ids=[],
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_000,
+            objective=2585,
+            objective_states=[
+                _objective_state(
+                    2585,
+                    active_siege=_active_siege(
+                        assault_observable=True,
+                        breach_level=1,
+                        assault_in_progress=False,
+                        can_start_assault=True,
+                        can_stop_assault=False,
+                        assault_daily_progress_raw=340_000,
+                        assault_daily_casualties=16,
+                    ),
+                )
+            ],
+            army_routes_supported=True,
+            move_route_preview_supported=False,
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("start-assault-901", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_route_audit_pending")
+        self.assertIsNone(plan["selected_step"])
+
+    def test_started_assault_lifecycle_blocks_missing_rich_row_direct_and_decorated(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        for decorated in (False, True):
+            with self.subTest(decorated=decorated):
+                plan = _native_war_plan(
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    date_raw=24_000,
+                    history=[
+                        _assault_action_row(
+                            1,
+                            status="assault_started",
+                            decorated=decorated,
+                        )
+                    ],
+                    objective=2585,
+                    objective_states=[],
+                    occupation_supported=True,
+                    garrison_supported=True,
+                    siege_progress_supported=True,
+                    assault_supported=True,
+                    steps=("life-advance",),
+                )
+
+                self.assertEqual(
+                    plan["phase"], "native_war_assault_lifecycle_blocked"
+                )
+                self.assertIsNone(plan["selected_step"])
+                self.assertEqual(
+                    plan["assault_lifecycles"][0]["reason"],
+                    "objective_row_unavailable_after_start",
+                )
+
+    def test_started_assault_lifecycle_closes_on_exact_no_siege_stop_or_restore(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        cases = {
+            "exact_no_siege": {
+                "history": [
+                    _assault_action_row(1, status="assault_started")
+                ],
+                "states": [_objective_state(2585, active_siege=None)],
+            },
+            "stopped": {
+                "history": [
+                    _assault_action_row(1, status="assault_started"),
+                    _assault_action_row(2, status="assault_stopped"),
+                ],
+                "states": [],
+            },
+            "restored": {
+                "history": [
+                    _assault_action_row(1, status="assault_started"),
+                    {
+                        "index": 2,
+                        "command": "restore-checkpoint",
+                        "ok": True,
+                        "result": {"status": "restored"},
+                    },
+                ],
+                "states": [],
+            },
+        }
+        for name, case in cases.items():
+            with self.subTest(case=name):
+                plan = _native_war_plan(
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    date_raw=24_000,
+                    history=case["history"],
+                    objective=2585,
+                    objective_states=case["states"],
+                    occupation_supported=True,
+                    garrison_supported=True,
+                    siege_progress_supported=True,
+                    assault_supported=True,
+                    steps=("life-advance",),
+                )
+
+                self.assertNotEqual(
+                    plan["phase"], "native_war_assault_lifecycle_blocked"
+                )
+
+    def test_failed_assault_slice_stops_direct_and_decorated_history(self) -> None:
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        active_state = _objective_state(
+            2585,
+            garrison_size=500,
+            besieging_strength=634,
+            active_siege=_active_siege(
+                assault_observable=True,
+                breach_level=1,
+                assault_in_progress=True,
+                can_start_assault=False,
+                can_stop_assault=True,
+                assault_daily_progress_raw=330_000,
+                assault_daily_casualties=16,
+            ),
+        )
+        for decorated in (False, True):
+            with self.subTest(decorated=decorated):
+                plan = _native_war_plan(
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    date_raw=24_024,
+                    history=[
+                        _assault_action_row(
+                            1,
+                            status="assault_started",
+                            decorated=decorated,
+                        ),
+                        _failed_life_advance_row(
+                            2, decorated=decorated
+                        ),
+                    ],
+                    objective=2585,
+                    objective_states=[active_state],
+                    occupation_supported=True,
+                    garrison_supported=True,
+                    siege_progress_supported=True,
+                    assault_supported=True,
+                    steps=("stop-assault-901", "life-advance"),
+                )
+
+                self.assertEqual(plan["selected_step"], "stop-assault-901")
+                self.assertIn(
+                    "previous_assault_slice_failed_unknown",
+                    plan["assault_state"]["one_day_rejection_reasons"],
+                )
+
+    def test_assault_start_requires_breach_native_gate_and_one_day_budget(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        cases = (
+            {
+                "name": "intact",
+                "breach_level": 0,
+                "can_start": True,
+                "casualties": 16,
+            },
+            {
+                "name": "validator",
+                "breach_level": 1,
+                "can_start": False,
+                "casualties": 16,
+            },
+            {
+                "name": "casualties",
+                "breach_level": 1,
+                "can_start": True,
+                "casualties": 151,
+            },
+        )
+        for case in cases:
+            with self.subTest(case=case["name"]):
+                active_siege = _active_siege(
+                    assault_observable=True,
+                    breach_level=int(case["breach_level"]),
+                    assault_in_progress=False,
+                    can_start_assault=bool(case["can_start"]),
+                    can_stop_assault=False,
+                    assault_daily_progress_raw=340_000,
+                    assault_daily_casualties=int(case["casualties"]),
+                )
+                plan = _native_war_plan(
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    date_raw=24_000,
+                    objective=2585,
+                    objective_states=[
+                        _objective_state(
+                            2585,
+                            garrison_size=500,
+                            besieging_strength=650,
+                            active_siege=active_siege,
+                        )
+                    ],
+                    occupation_supported=True,
+                    garrison_supported=True,
+                    siege_progress_supported=True,
+                    assault_supported=True,
+                    steps=("start-assault-901", "life-advance"),
+                )
+
+                self.assertNotEqual(
+                    plan["selected_step"], "start-assault-901"
+                )
+
+    def test_active_assault_advances_one_day_then_stops_when_unsafe(self) -> None:
+        player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+
+        def assault(casualties: int) -> dict[str, object]:
+            return _active_siege(
+                assault_observable=True,
+                breach_level=1,
+                assault_in_progress=True,
+                can_start_assault=False,
+                can_stop_assault=True,
+                assault_daily_progress_raw=340_000,
+                assault_daily_casualties=casualties,
+            )
+
+        safe = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_000,
+            objective=2585,
+            objective_states=[
+                _objective_state(
+                    2585,
+                    garrison_size=500,
+                    besieging_strength=650,
+                    active_siege=assault(16),
+                )
+            ],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("stop-assault-901", "life-advance"),
+        )
+        self.assertEqual(safe["phase"], "native_war_assault_daily_progress")
+        self.assertEqual(safe["selected_step"], "life-advance")
+        self.assertEqual(safe["assault_state"]["projection_horizon_days"], 1)
+
+        unsafe = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_024,
+            objective=2585,
+            objective_states=[
+                _objective_state(
+                    2585,
+                    garrison_size=500,
+                    besieging_strength=650,
+                    active_siege=assault(151),
+                )
+            ],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("stop-assault-901", "life-advance"),
+        )
+        self.assertEqual(unsafe["phase"], "native_war_assault_stop")
+        self.assertEqual(unsafe["selected_step"], "stop-assault-901")
+        self.assertIn(
+            "projected_strength_below_garrison",
+            unsafe["assault_state"]["one_day_rejection_reasons"],
+        )
+
+    def test_active_assault_stops_before_observed_enemy_convergence(self) -> None:
+        player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        enemy = _army(
+            21,
+            soldiers=900,
+            province_id=2600,
+            controllable=False,
+            move_target_province_id=2585,
+            route_province_ids=[2590, 2585],
+            army_state="moving",
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=24,
+            date_raw=24_000,
+            objective=2585,
+            objective_states=[
+                _objective_state(
+                    2585,
+                    garrison_size=500,
+                    besieging_strength=650,
+                    active_siege=_active_siege(
+                        assault_observable=True,
+                        breach_level=1,
+                        assault_in_progress=True,
+                        can_start_assault=False,
+                        can_stop_assault=True,
+                        assault_daily_progress_raw=340_000,
+                        assault_daily_casualties=16,
+                    ),
+                )
+            ],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("stop-assault-901", "life-advance"),
+        )
+
+        self.assertEqual(plan["selected_step"], "stop-assault-901")
+        self.assertIn(
+            "enemy_convergence_observed",
+            plan["assault_state"]["one_day_rejection_reasons"],
+        )
+
+    def test_active_assault_rechecks_realized_daily_progress_and_losses(
+        self,
+    ) -> None:
+        before_player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        after_player = _army(
+            11,
+            soldiers=634,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        active_siege = _active_siege(
+            assault_observable=True,
+            breach_level=1,
+            assault_in_progress=True,
+            can_start_assault=False,
+            can_stop_assault=True,
+            assault_daily_progress_raw=340_000,
+            assault_daily_casualties=16,
+        )
+        state = _objective_state(
+            2585,
+            garrison_size=500,
+            besieging_strength=634,
+            active_siege=active_siege,
+        )
+        history = [
+            _advance_row(
+                1,
+                _war_progress(
+                    24_000,
+                    player=before_player,
+                    enemies=[],
+                    score=24,
+                    objectives=[2585],
+                    objective_states=[state],
+                ),
+                _war_progress(
+                    24_024,
+                    player=after_player,
+                    enemies=[],
+                    score=24,
+                    objectives=[2585],
+                    objective_states=[state],
+                ),
+            )
+        ]
+        plan = _native_war_plan(
+            player=after_player,
+            enemies=[],
+            score=24,
+            date_raw=24_024,
+            history=history,
+            objective=2585,
+            objective_states=[state],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("stop-assault-901", "life-advance"),
+        )
+
+        self.assertEqual(plan["selected_step"], "stop-assault-901")
+        self.assertEqual(
+            plan["assault_state"]["previous_assault_day"]["soldier_loss"],
+            16,
+        )
+        self.assertEqual(
+            plan["assault_state"]["previous_assault_day"]["strength_loss"],
+            0,
+        )
+        self.assertIn(
+            "previous_assault_day_no_work_progress",
+            plan["assault_state"]["one_day_rejection_reasons"],
+        )
+
+    def test_active_assault_continues_from_realized_strength_with_null_soldiers(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        before_state = _objective_state(
+            2585,
+            garrison_size=500,
+            besieging_strength=650,
+            active_siege=_active_siege(
+                current_work_raw=2_500_000,
+                assault_observable=True,
+                breach_level=1,
+                assault_in_progress=True,
+                can_start_assault=False,
+                can_stop_assault=True,
+                assault_daily_progress_raw=340_000,
+                assault_daily_casualties=16,
+            ),
+        )
+        after_state = _objective_state(
+            2585,
+            garrison_size=500,
+            besieging_strength=634,
+            active_siege=_active_siege(
+                current_work_raw=2_840_000,
+                assault_observable=True,
+                breach_level=1,
+                assault_in_progress=True,
+                can_start_assault=False,
+                can_stop_assault=True,
+                assault_daily_progress_raw=330_000,
+                assault_daily_casualties=16,
+            ),
+        )
+        history = [
+            _advance_row(
+                1,
+                _war_progress(
+                    24_000,
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    objectives=[2585],
+                    objective_states=[before_state],
+                ),
+                _war_progress(
+                    24_024,
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    objectives=[2585],
+                    objective_states=[after_state],
+                ),
+            )
+        ]
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_024,
+            history=history,
+            objective=2585,
+            objective_states=[after_state],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("stop-assault-901", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_assault_daily_progress")
+        self.assertEqual(plan["selected_step"], "life-advance")
+        previous_day = plan["assault_state"]["previous_assault_day"]
+        self.assertEqual(previous_day["strength_loss"], 16)
+        self.assertIsNone(previous_day["soldier_loss"])
+        self.assertTrue(plan["assault_state"]["one_day_safe"])
+
+    def test_active_assault_stops_when_realized_strength_is_unavailable(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        before_state = _objective_state(
+            2585,
+            garrison_size=500,
+            besieging_strength=None,
+            active_siege=_active_siege(
+                current_work_raw=2_500_000,
+                assault_observable=True,
+                breach_level=1,
+                assault_in_progress=True,
+                can_start_assault=False,
+                can_stop_assault=True,
+                assault_daily_progress_raw=340_000,
+                assault_daily_casualties=16,
+            ),
+        )
+        after_state = _objective_state(
+            2585,
+            garrison_size=500,
+            besieging_strength=634,
+            active_siege=_active_siege(
+                current_work_raw=2_840_000,
+                assault_observable=True,
+                breach_level=1,
+                assault_in_progress=True,
+                can_start_assault=False,
+                can_stop_assault=True,
+                assault_daily_progress_raw=330_000,
+                assault_daily_casualties=16,
+            ),
+        )
+        history = [
+            _advance_row(
+                1,
+                _war_progress(
+                    24_000,
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    objectives=[2585],
+                    objective_states=[before_state],
+                ),
+                _war_progress(
+                    24_024,
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    objectives=[2585],
+                    objective_states=[after_state],
+                ),
+            )
+        ]
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_024,
+            history=history,
+            objective=2585,
+            objective_states=[after_state],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("stop-assault-901", "life-advance"),
+        )
+
+        self.assertEqual(plan["selected_step"], "stop-assault-901")
+        self.assertIn(
+            "previous_assault_day_strength_change_unavailable",
+            plan["assault_state"]["one_day_rejection_reasons"],
+        )
+
+    def test_active_assault_stops_after_strength_falls_below_garrison(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        before_state = _objective_state(
+            2585,
+            garrison_size=500,
+            besieging_strength=650,
+            active_siege=_active_siege(
+                current_work_raw=2_500_000,
+                assault_observable=True,
+                breach_level=1,
+                assault_in_progress=True,
+                can_start_assault=False,
+                can_stop_assault=True,
+                assault_daily_progress_raw=340_000,
+                assault_daily_casualties=16,
+            ),
+        )
+        after_state = _objective_state(
+            2585,
+            garrison_size=500,
+            besieging_strength=499,
+            active_siege=_active_siege(
+                current_work_raw=2_840_000,
+                assault_observable=True,
+                breach_level=1,
+                assault_in_progress=True,
+                can_start_assault=False,
+                can_stop_assault=True,
+                assault_daily_progress_raw=330_000,
+                assault_daily_casualties=4,
+            ),
+        )
+        history = [
+            _advance_row(
+                1,
+                _war_progress(
+                    24_000,
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    objectives=[2585],
+                    objective_states=[before_state],
+                ),
+                _war_progress(
+                    24_024,
+                    player=player,
+                    enemies=[],
+                    score=24,
+                    objectives=[2585],
+                    objective_states=[after_state],
+                ),
+            )
+        ]
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_024,
+            history=history,
+            objective=2585,
+            objective_states=[after_state],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("stop-assault-901", "life-advance"),
+        )
+
+        self.assertEqual(plan["selected_step"], "stop-assault-901")
+        self.assertEqual(
+            plan["assault_state"]["previous_assault_day"]["strength_loss"],
+            151,
+        )
+        self.assertIn(
+            "projected_strength_below_garrison",
+            plan["assault_state"]["one_day_rejection_reasons"],
+        )
+
+    def test_advertised_but_unobservable_assault_state_blocks_time(self) -> None:
+        player = _army(
+            11,
+            soldiers=650,
+            province_id=2585,
+            controllable=True,
+            army_state="sieging",
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=24,
+            date_raw=24_000,
+            objective=2585,
+            objective_states=[
+                _objective_state(
+                    2585,
+                    active_siege=_active_siege(
+                        assault_observable=False
+                    ),
+                )
+            ],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("life-advance",),
+        )
+
+        self.assertEqual(
+            plan["phase"], "native_war_assault_observation_blocked"
+        )
+        self.assertIsNone(plan["selected_step"])
 
     def test_occupation_only_capability_keeps_legacy_siege_stickiness(
         self,
@@ -4183,6 +5250,8 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                 "raise-troops-default",
                 "move-army-81-to-60",
                 "merge-armies-81-with-82",
+                "start-assault-901",
+                "stop-assault-901",
                 "disband-army-81",
                 "enforce-demands-88",
                 "query-declarable-wars",
@@ -4220,6 +5289,8 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_declare_war",
                     "ck3_raise_troops_default",
                     "ck3_move_army",
+                    "ck3_start_assault",
+                    "ck3_stop_assault",
                     "ck3_disband_army",
                     "ck3_enforce_demands",
                     "ck3_select_event_option",
@@ -4349,6 +5420,18 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             )
             self.assertFalse(moved.is_error)
             self.assertEqual(moved.structured_content["army_id"], 81)
+            started_assault = await client.call_tool(
+                "ck3_start_assault",
+                {"siege_id": 901, "expected_revision": 4},
+            )
+            self.assertFalse(started_assault.is_error)
+            self.assertEqual(started_assault.structured_content["siege_id"], 901)
+            stopped_assault = await client.call_tool(
+                "ck3_stop_assault",
+                {"siege_id": 901, "expected_revision": 4},
+            )
+            self.assertFalse(stopped_assault.is_error)
+            self.assertEqual(stopped_assault.structured_content["siege_id"], 901)
             disbanded = await client.call_tool(
                 "ck3_disband_army",
                 {"army_id": 81, "expected_revision": 4},

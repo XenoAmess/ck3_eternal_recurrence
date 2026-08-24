@@ -48,9 +48,9 @@ bridge identity/heartbeat/ping.
 | `game.state.war-primary-opponent` | implemented, live probe pending | exact primary-side fields + generation-safe opponent resolution + reused default-raise resolver + offline attacker/defender/non-primary fixture | never inside native driver |
 | `game.state.war-objectives` | implemented; live war 16777290 exposed target title 2388 and province 2585; multi-county hierarchy projection passed offline fixture | exact CB targeted-title serializer, generation-safe title storage, engine recursive de-jure walker + `title_province` capital-barony path + hierarchy/generation/bound fixtures | never inside native driver |
 | `game.state.war-objective-occupation` | implemented; exact-build live projection pending | Province occupied getter + full-generation occupying CharacterID roundtrip + offline occupied/unoccupied/stale-generation fixture | never inside native driver |
-| `game.state.war-objective-fort-level` | implemented; exact-build live projection pending | plain int32 Province getter + running/paused offline fixture | never inside native driver |
-| `game.state.war-objective-garrison` | implemented for paused snapshots; exact-build live projection pending | canonical Province garrison wrapper and eligible-besieger getter + zero/nonzero fixture | never inside native driver |
-| `game.state.war-objective-siege-progress` | implemented for paused snapshots; exact-build live projection pending | exact Siege storage/generation/alive/Province-backlink chain + native CFixedPoint progress/work and days-left getters + transition fixture | never inside native driver |
+| `game.state.war-objective-fort-level` | implemented; minimized exact-build live projection passed | plain int32 Province getter + running/paused offline fixture + live objective value | never inside native driver |
+| `game.state.war-objective-garrison` | implemented for paused snapshots; minimized exact-build live projection passed | canonical Province garrison wrapper and eligible-besieger getter + zero/nonzero fixture + live siege values | never inside native driver |
+| `game.state.war-objective-siege-progress` | implemented for paused snapshots; minimized exact-build live progression passed | exact Siege storage/generation/alive/Province-backlink chain + native CFixedPoint progress/work and days-left getters + transition fixture + same-SiegeID live progression | never inside native driver |
 | `game.state.snapshot.player_armies` | implemented, minimized read-only live probe passed | exact CUnit storage/ID/owner/current-province fields + offline component fixture + PID 144324 probe | never inside native driver |
 | allied/enemy army current province | implemented, minimized read-only live probe passed | war participant helper classifies each observable CUnit owner | never inside native driver |
 | army state / combat / retreating | implemented, minimized read-only live probe passed | exact RVA `0xC7AAB0` state ABI, CUnit→CArmy→CCombat association and `CUnit+0x170` + nine-state fixture | never inside native driver |
@@ -60,8 +60,8 @@ bridge identity/heartbeat/ping.
 | `game.command.preview-move-army-N-to-N` | implemented; paused minimized live probe exposed and closed the mid-edge effective-origin case | canonical plan/apply split + exact origin/PathCtx/MovePath/A* ABIs + current/route-front normalization + success/failure/cleanup/bound/paused fixture; no apply binding or queue call | explicit upper-layer policy only; paused map required |
 | `game.command.move-army-N-to-N` | implemented and minimized-live accepted: player command submitted and army province changed | exact player-UI kind/channel plus native mode/state/can-move/path-init/clone/destruct lifecycle, offline fixture, and live movement | explicit upper-layer policy only |
 | `game.command.disband-army-N` | implemented; live exposed the distinct command-target ID and corrected build awaits replay | exact 0x28-byte command/vtables/payload source/clone + offline fixture | explicit upper-layer policy only |
-| `game.command.split-army-half-N` | native C++ slice implemented; live execution pending | exact player GUI/validator/0x30-byte command/vtables/clone/destruct/executor path + offline public/internal-ID fixture | explicit upper-layer policy only |
-| `game.command.merge-armies-N-with-N` | native C++ strict-pair slice implemented; live execution pending | exact batch GUI/public-CUnit payload/0x40-byte command + canonical factory/range-copy/deep-clone/destruct and offline owned-array fixture | explicit upper-layer policy only |
+| `game.command.split-army-half-N` | implemented; minimized live split and independent-control postcondition passed | exact player GUI/validator/0x30-byte command/vtables/clone/destruct/executor path + offline public/internal-ID fixture + live sibling CUnit | explicit upper-layer policy only |
+| `game.command.merge-armies-N-with-N` | implemented; minimized live strict-pair source-removal postcondition passed | exact batch GUI/public-CUnit payload/0x40-byte command + canonical factory/range-copy/deep-clone/destruct, offline owned-array fixture and live merge | explicit upper-layer policy only |
 | `game.command.query-declarable-wars` | native C++ core implemented, bridge route/live probe pending | exact declare-war UI CB registry/evaluator/item rules + offline SSO/heap-key and configuration fixture | explicit upper-layer policy only |
 | `game.command.declare-war-<declaration_id>` | native C++ core implemented, bridge route/live probe pending | generation-bound exact re-enumeration + native context/validation/queue/destruction fixture | explicit upper-layer policy only |
 | `game.command.enforce-demands-<war_id>` | native C++ core implemented, bridge route/live probe pending | exact WarOverview victory context builder + common interaction command lifecycle fixture | explicit upper-layer policy only |
@@ -535,7 +535,17 @@ stable command result is nevertheless only `split_submitted`; a later paused
 snapshot must prove the source persists and the player-controllable public
 CUnit set gains exactly one ID. Independent control requires a subsequent
 move of only the non-besieging sibling while the other remains in place.
-No live command was issued while freezing this slice.
+The slice was initially frozen without a live command. On 2026-08-24 a
+minimized, paused exact-build session submitted the step for public CUnit
+`83886341`. The immediate native result remained correctly limited to
+`split_submitted`; within two wall-clock seconds, without advancing the game
+date, the paused snapshot retained the source and exposed exactly one new
+player-controllable sibling, `67108903`. After merging that proof sibling, a
+second split produced `83886119`. The two public CUnits were then routed
+independently: the sibling created player siege `67108912` in province `2596`
+while the original created player siege `83886106` in province `2585`. This is
+the live postcondition proof for a distinct, independently controllable CUnit;
+it does not change the stable synchronous result from `split_submitted`.
 
 CK3 also has a distinct `CHaltUnitsCommand`; it is not a move-command flag.
 The original `ArmyWindow.GetOrders.GetHalt` / `PostCommand` player path builds
@@ -746,14 +756,15 @@ next war acceptance is a minimized exact-build probe of declaration discovery,
 declare war, raise, movement, enforce demands, and disband; event and save are
 no longer pending live acceptance.
 
-## Assault Fort static ABI index
+## Assault Fort exact native slice
 
 The full frozen contract is
 [`docs/ck3-native-assault-contract.md`](../../../docs/ck3-native-assault-contract.md).
-This is exact-build static evidence for CK3 1.19.0.6 SHA-256
-`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`, not a
-bridge capability or live acceptance result. No CK3 process was accessed and
-no command was submitted during this research slice.
+This is exact-build static plus native-fixture evidence for CK3 1.19.0.6
+SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+The exact adapter now advertises the Assault snapshot and Start/Stop command
+capabilities; this is not a live acceptance result. No CK3 process was accessed
+and no command was submitted to CK3 during this implementation slice.
 
 Original GUI reflection dispatches `SiegeWindow.StartStopAssault` through thunk
 RVA `0x131E910` to action `0x131D770`. Start and Stop are separate `0x30`-byte
@@ -773,14 +784,19 @@ casualties are calculated by `0x229F410`; pre-start progress projection must
 use core `0x229F610`, while active-only wrapper `0x229F580` intentionally
 returns zero before Start. See the contract for fail-closed snapshot semantics,
 one-day Start/Stop postconditions, migration gates, and the bounded 53-day
-decision. No anchor bundle or production code was changed for this index.
+decision. The pinned scanner now closes the two complete validators, both daily
+calculators and all four primary/secondary vtables; the fixture closes paused-only
+publication, exact payload cloning, full-generation IDs, validator rejection,
+bool queue rejection and original-object destruction. Live outcome acceptance
+remains pending.
 
 ## Merge Armies exact native slice
 
 The frozen contract is
 [`docs/ck3-native-merge-contract.md`](../../../docs/ck3-native-merge-contract.md).
-This slice is offline/static plus native fixture evidence for the exact pinned
-build; no CK3 process was accessed and no live command was submitted.
+This slice was first closed from offline/static and native fixture evidence for
+the exact pinned build. A later minimized, paused exact-build replay supplied
+the live postcondition described below.
 
 Original `window_army.gui` dispatches `ArmyWindow.MergeSelected` through
 reflection RVA `0x1241FD0` to action `0xC71B10`. The underlying
@@ -809,5 +825,14 @@ transferred into the destination, destination identity is preserved, and the
 source CUnit/CArmy is removed. The only stable success is `merge_submitted`;
 a later paused snapshot must prove destination remains and source disappears.
 For Split Half recovery, preserve the desired original army as destination and
-add siege-ID/backlink continuity when it is the besieging army. Live outcome
-acceptance remains pending.
+add siege-ID/backlink continuity when it is the besieging army. On 2026-08-24,
+`merge-armies-83886341-with-67108903` returned `merge_submitted`; within two
+wall-clock seconds at the same paused game date the source CUnit disappeared,
+the destination retained its public ID, owner and province, and the player
+controllable ID set was exactly the prior set minus the source. A later merge
+of `83886119` into `83886341` at game date `53176104` repeated the same
+source-removal/destination-preservation postcondition while both armies were at
+the same active siege province. The latter snapshot retained siege
+`83886106` and reported combined eligible besieging strength `1501`; this is
+evidence for same-frame siege continuity, not a claim that queue ACK alone
+proves a merge or that arbitrary merge timing is safe.

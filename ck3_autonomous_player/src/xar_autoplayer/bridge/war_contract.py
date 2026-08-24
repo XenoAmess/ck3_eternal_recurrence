@@ -10,6 +10,8 @@ PREVIEW_MOVE_ARMY_CAPABILITY = "game.command.preview-move-army-N-to-N"
 DISBAND_ARMY_CAPABILITY = "game.command.disband-army-N"
 SPLIT_ARMY_HALF_CAPABILITY = "game.command.split-army-half-N"
 MERGE_ARMIES_CAPABILITY = "game.command.merge-armies-N-with-N"
+START_ASSAULT_CAPABILITY = "game.command.start-assault-N"
+STOP_ASSAULT_CAPABILITY = "game.command.stop-assault-N"
 ENFORCE_DEMANDS_CAPABILITY = "game.command.enforce-demands-N"
 ARMY_ROUTES_CAPABILITY = "game.state.army-routes"
 WAR_PRIMARY_OPPONENT_CAPABILITY = "game.state.war-primary-opponent"
@@ -24,6 +26,7 @@ WAR_OBJECTIVE_GARRISON_CAPABILITY = "game.state.war-objective-garrison"
 WAR_OBJECTIVE_SIEGE_PROGRESS_CAPABILITY = (
     "game.state.war-objective-siege-progress"
 )
+WAR_OBJECTIVE_ASSAULT_CAPABILITY = "game.state.war-objective-assault"
 RAISE_TROOPS_STEP = "raise-troops-default"
 
 CK3_FIXED_POINT_SCALE = 100_000
@@ -240,6 +243,60 @@ def _normalize_active_siege(
         value.get("current_work"), f"{name}.current_work"
     )
     total = _fixed_point(value.get("total_work"), f"{name}.total_work")
+    assault_observable = value.get("assault_observable", False)
+    if not isinstance(assault_observable, bool):
+        raise ValueError(
+            f"native {name}.assault_observable must be a boolean"
+        )
+    assault_fields = (
+        "breach_level",
+        "assault_in_progress",
+        "can_start_assault",
+        "can_stop_assault",
+        "assault_daily_progress",
+        "assault_daily_casualties",
+    )
+    if not assault_observable:
+        if any(value.get(field) is not None for field in assault_fields):
+            raise ValueError(
+                f"native {name} cannot publish an unobservable assault"
+            )
+        breach_level = None
+        assault_in_progress = None
+        can_start_assault = None
+        can_stop_assault = None
+        assault_daily_progress = None
+        assault_daily_casualties = None
+    else:
+        breach_level = _optional_non_negative_int32(
+            value.get("breach_level"), f"{name}.breach_level"
+        )
+        if breach_level is None or breach_level > 2:
+            raise ValueError(
+                f"native {name}.breach_level must be in range 0..2"
+            )
+        assault_in_progress = _strict_bool(
+            value.get("assault_in_progress"),
+            f"{name}.assault_in_progress",
+        )
+        can_start_assault = _strict_bool(
+            value.get("can_start_assault"), f"{name}.can_start_assault"
+        )
+        can_stop_assault = _strict_bool(
+            value.get("can_stop_assault"), f"{name}.can_stop_assault"
+        )
+        assault_daily_progress = _fixed_point(
+            value.get("assault_daily_progress"),
+            f"{name}.assault_daily_progress",
+        )
+        assault_daily_casualties = _optional_non_negative_int32(
+            value.get("assault_daily_casualties"),
+            f"{name}.assault_daily_casualties",
+        )
+        if assault_daily_casualties is None:
+            raise ValueError(
+                f"native {name}.assault_daily_casualties is required"
+            )
     return {
         "siege_id": _positive_int32_id(
             value.get("siege_id"), f"{name}.siege_id"
@@ -262,6 +319,16 @@ def _normalize_active_siege(
         "days_left": _optional_non_negative_int32(
             value.get("days_left"), f"{name}.days_left"
         ),
+        "assault_observable": assault_observable,
+        "breach_level": breach_level,
+        "walls_breached": (
+            breach_level > 0 if breach_level is not None else None
+        ),
+        "assault_in_progress": assault_in_progress,
+        "can_start_assault": can_start_assault,
+        "can_stop_assault": can_stop_assault,
+        "assault_daily_progress": assault_daily_progress,
+        "assault_daily_casualties": assault_daily_casualties,
     }
 
 
@@ -513,6 +580,14 @@ def merge_armies_step(
     return f"merge-armies-{destination}-with-{source}"
 
 
+def start_assault_step(siege_id: int) -> str:
+    return f"start-assault-{_positive_int32_id(siege_id, 'siege_id')}"
+
+
+def stop_assault_step(siege_id: int) -> str:
+    return f"stop-assault-{_positive_int32_id(siege_id, 'siege_id')}"
+
+
 def enforce_demands_step(war_id: int) -> str:
     return f"enforce-demands-{_non_negative_id(war_id, 'war_id')}"
 
@@ -590,6 +665,24 @@ def parse_merge_armies_step(step: object) -> tuple[int, int] | None:
     return destination, source
 
 
+def parse_start_assault_step(step: object) -> int | None:
+    return _parse_assault_step(step, prefix="start-assault-")
+
+
+def parse_stop_assault_step(step: object) -> int | None:
+    return _parse_assault_step(step, prefix="stop-assault-")
+
+
+def _parse_assault_step(step: object, *, prefix: str) -> int | None:
+    if not isinstance(step, str) or not step.startswith(prefix):
+        return None
+    siege_text = step.removeprefix(prefix)
+    if not siege_text.isascii() or not siege_text.isdecimal():
+        return None
+    siege_id = int(siege_text)
+    return siege_id if 0 < siege_id <= 2**31 - 1 else None
+
+
 def parse_enforce_demands_step(step: object) -> int | None:
     if not isinstance(step, str) or not step.startswith("enforce-demands-"):
         return None
@@ -605,6 +698,8 @@ def is_native_war_step(step: object) -> bool:
         or parse_disband_army_step(step) is not None
         or parse_split_army_half_step(step) is not None
         or parse_merge_armies_step(step) is not None
+        or parse_start_assault_step(step) is not None
+        or parse_stop_assault_step(step) is not None
         or parse_enforce_demands_step(step) is not None
     )
 

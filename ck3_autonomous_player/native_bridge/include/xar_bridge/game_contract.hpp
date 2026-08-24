@@ -127,6 +127,16 @@ struct WarObjectiveProvinceState {
   FixedPointValue siege_total_work;
   bool siege_days_left_observable = false;
   std::int32_t siege_days_left = 0;
+  // Exact-build Assault Fort state. This subdomain is published atomically
+  // only from a paused rich-siege read. A false observable flag means every
+  // following value is unavailable rather than a real zero/false.
+  bool assault_observable = false;
+  std::int32_t breach_level = 0;
+  bool assault_in_progress = false;
+  bool can_start_assault = false;
+  bool can_stop_assault = false;
+  FixedPointValue assault_daily_progress;
+  std::int32_t assault_daily_casualties = 0;
 
   friend bool operator==(const WarObjectiveProvinceState &,
                          const WarObjectiveProvinceState &) = default;
@@ -292,6 +302,24 @@ enum class MergeArmiesResult {
   destination_not_controllable,
   source_not_controllable,
   same_army,
+  validator_rejected,
+  unavailable,
+};
+enum class StartAssaultResult {
+  start_submitted,
+  submission_failed,
+  no_played_character,
+  siege_not_found,
+  assault_already_active,
+  validator_rejected,
+  unavailable,
+};
+enum class StopAssaultResult {
+  stop_submitted,
+  submission_failed,
+  no_played_character,
+  siege_not_found,
+  assault_not_active,
   validator_rejected,
   unavailable,
 };

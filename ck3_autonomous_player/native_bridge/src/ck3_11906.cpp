@@ -47,6 +47,10 @@ constexpr std::uintptr_t kSplitArmyHalfPrimaryVtableRva = 0x432D5C0;
 constexpr std::uintptr_t kSplitArmyHalfSecondaryVtableRva = 0x432D658;
 constexpr std::uintptr_t kMergeArmiesPrimaryVtableRva = 0x432D3C8;
 constexpr std::uintptr_t kMergeArmiesSecondaryVtableRva = 0x432D398;
+constexpr std::uintptr_t kStartAssaultPrimaryVtableRva = 0x432CB30;
+constexpr std::uintptr_t kStartAssaultSecondaryVtableRva = 0x432CB00;
+constexpr std::uintptr_t kStopAssaultPrimaryVtableRva = 0x432CBC8;
+constexpr std::uintptr_t kStopAssaultSecondaryVtableRva = 0x432CA08;
 constexpr std::uintptr_t kSendCharacterInteractionPrimaryVtableRva =
     0x40829F8;
 constexpr std::uintptr_t kSendCharacterInteractionSecondaryVtableRva =
@@ -66,6 +70,11 @@ constexpr std::uintptr_t kIsNativeComponentAliveRva = 0x10495A0;
 constexpr std::uintptr_t kGetSiegeProgressRva = 0x229B960;
 constexpr std::uintptr_t kGetSiegeTotalWorkRva = 0x229CCA0;
 constexpr std::uintptr_t kGetSiegeDaysLeftRva = 0x229BAA0;
+constexpr std::uintptr_t kReadAssaultDailyProgressRva = 0x229F610;
+constexpr std::uintptr_t kGetAssaultDailyCasualtiesRva = 0x229F410;
+constexpr std::uintptr_t kValidateStartAssaultCommandRva = 0x26BE8C0;
+constexpr std::uintptr_t kValidateStopAssaultCommandRva = 0x26BEA90;
+constexpr std::uintptr_t kDestroyAssaultCommandRva = 0x0963C60;
 constexpr std::uintptr_t kIsProvinceOccupiedRva = 0x220C4A0;
 constexpr std::uintptr_t kGetProvinceFortLevelRva = 0x2209D20;
 constexpr std::uintptr_t kGetProvinceGarrisonSizeRva = 0x220E710;
@@ -190,6 +199,8 @@ constexpr std::size_t kSiegeIdOffset = 0x08;
 constexpr std::size_t kSiegeProvinceOffset = 0x200;
 constexpr std::size_t kSiegeBesiegingArmyIdOffset = 0x208;
 constexpr std::size_t kSiegeCurrentWorkOffset = 0x3D0;
+constexpr std::size_t kSiegeBreachLevelOffset = 0x3D8;
+constexpr std::size_t kSiegeAssaultInProgressOffset = 0x44C;
 constexpr std::size_t kGameDataProvinceArrayOffset = 0x140;
 constexpr std::size_t kGameDataProvinceCountOffset = 0x14C;
 constexpr std::size_t kArrangeMarriageInteractionOffset = 0xF48;
@@ -441,6 +452,20 @@ struct MergeArmiesCommandCleanup {
   }
 };
 
+struct AssaultCommand {
+  std::uintptr_t primary_vtable = 0;
+  std::uint8_t flags = 0;
+  std::array<std::byte, 3> flags_padding{};
+  std::uint32_t metadata_0c = 0;
+  std::uint32_t metadata_10 = 0;
+  std::uint32_t metadata_14 = 0;
+  std::uintptr_t secondary_vtable = 0;
+  std::int32_t command_kind = 1;
+  std::int32_t played_character_id = -1;
+  std::int32_t siege_id = -1;
+  std::array<std::byte, 4> payload_padding{};
+};
+
 struct alignas(8) CharacterInteractionContextStorage {
   std::array<std::byte, 0x338> bytes{};
 };
@@ -505,6 +530,11 @@ static_assert(offsetof(MergeArmiesCommand, secondary_vtable) == 0x18);
 static_assert(offsetof(MergeArmiesCommand, command_kind) == 0x20);
 static_assert(offsetof(MergeArmiesCommand, destination_army_id) == 0x24);
 static_assert(offsetof(MergeArmiesCommand, source_army_ids) == 0x28);
+static_assert(sizeof(AssaultCommand) == 0x30);
+static_assert(offsetof(AssaultCommand, secondary_vtable) == 0x18);
+static_assert(offsetof(AssaultCommand, command_kind) == 0x20);
+static_assert(offsetof(AssaultCommand, played_character_id) == 0x24);
+static_assert(offsetof(AssaultCommand, siege_id) == 0x28);
 static_assert(sizeof(CharacterInteractionContextStorage) == 0x338);
 static_assert(sizeof(SendCharacterInteractionCommandStorage) == 0x368);
 
@@ -1656,6 +1686,7 @@ ReadArmies(const Bindings &bindings, void *game_state,
 
 WarObjectiveProvinceState ReadWarObjectiveProvinceState(
     const Bindings &bindings, void *game_state, std::int32_t province_id,
+    std::int32_t played_character_id,
     const std::vector<ResolvedArmySnapshot> &armies,
     bool include_paused_details) noexcept {
   WarObjectiveProvinceState state{};
@@ -1773,6 +1804,55 @@ WarObjectiveProvinceState ReadWarObjectiveProvinceState(
     state.besieging_army_id = unique_besieging_unit_id;
   }
 
+  // Assault is an all-or-none paused subdomain. Never expose +0x3D8/+0x44C
+  // directly: only the exact adapter maps their validated representation to
+  // version-neutral breach/active semantics. An intact wall has no legal
+  // daily assault projection, so its exact public projection is zero without
+  // calling the casualty routine that indexes breach_level - 1.
+  const bool has_assault_reader =
+      bindings.read_assault_daily_progress != nullptr &&
+      bindings.get_assault_daily_casualties != nullptr &&
+      bindings.validate_start_assault_command != nullptr &&
+      bindings.validate_stop_assault_command != nullptr &&
+      state.besieging_strength_observable;
+  if (has_assault_reader) {
+    const auto breach_level =
+        LoadAt<std::int32_t>(siege, kSiegeBreachLevelOffset);
+    const auto active_raw =
+        LoadAt<std::uint8_t>(siege, kSiegeAssaultInProgressOffset);
+    if (breach_level >= 0 && breach_level <= 2 && active_raw <= 1) {
+      constexpr std::int32_t command_kind = 1;
+      const bool can_start = bindings.validate_start_assault_command(
+          command_kind, played_character_id, siege_id, nullptr);
+      const bool can_stop = bindings.validate_stop_assault_command(
+          command_kind, played_character_id, siege_id, nullptr);
+      std::int64_t daily_progress_raw = 0;
+      std::int32_t daily_casualties = 0;
+      bool projection_valid = true;
+      if (breach_level > 0) {
+        projection_valid =
+            bindings.read_assault_daily_progress(
+                siege, &daily_progress_raw, state.besieging_strength) ==
+                &daily_progress_raw &&
+            daily_progress_raw >= 0;
+        if (projection_valid) {
+          daily_casualties =
+              bindings.get_assault_daily_casualties(siege);
+          projection_valid = daily_casualties >= 0;
+        }
+      }
+      if (projection_valid) {
+        state.assault_observable = true;
+        state.breach_level = breach_level;
+        state.assault_in_progress = active_raw != 0;
+        state.can_start_assault = can_start;
+        state.can_stop_assault = can_stop;
+        state.assault_daily_progress.raw = daily_progress_raw;
+        state.assault_daily_casualties = daily_casualties;
+      }
+    }
+  }
+
   const auto days_left = bindings.get_siege_days_left(siege);
   if (days_left >= 0 && days_left != std::numeric_limits<std::int32_t>::max()) {
     state.siege_days_left_observable = true;
@@ -1783,6 +1863,7 @@ WarObjectiveProvinceState ReadWarObjectiveProvinceState(
 
 void ReadWarObjectiveProvinceStates(
     const Bindings &bindings, void *game_state,
+    std::int32_t played_character_id,
     const std::vector<ResolvedArmySnapshot> &armies,
     bool include_paused_details, std::size_t &remaining_state_budget,
     ActiveWarSnapshot &war) noexcept {
@@ -1799,7 +1880,8 @@ void ReadWarObjectiveProvinceStates(
   for (const auto province_id : war.war_objective_province_ids) {
     war.objective_province_states.push_back(
         ReadWarObjectiveProvinceState(bindings, game_state, province_id,
-                                      armies, include_paused_details));
+                                      played_character_id, armies,
+                                      include_paused_details));
   }
   remaining_state_budget -= war.objective_province_states.size();
 }
@@ -1902,7 +1984,8 @@ void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
       }
     }
     ReadWarObjectiveProvinceStates(
-        bindings, game_state, armies, include_full_routes,
+        bindings, game_state, played_character_id, armies,
+        include_full_routes,
         remaining_objective_state_budget, snapshot);
     const std::int32_t primary_opponent_character_id =
         LoadAt<std::int32_t>(
@@ -2001,6 +2084,14 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       module + kMergeArmiesPrimaryVtableRva;
   result.merge_armies_secondary_vtable =
       module + kMergeArmiesSecondaryVtableRva;
+  result.start_assault_primary_vtable =
+      module + kStartAssaultPrimaryVtableRva;
+  result.start_assault_secondary_vtable =
+      module + kStartAssaultSecondaryVtableRva;
+  result.stop_assault_primary_vtable =
+      module + kStopAssaultPrimaryVtableRva;
+  result.stop_assault_secondary_vtable =
+      module + kStopAssaultSecondaryVtableRva;
   result.send_character_interaction_primary_vtable =
       module + kSendCharacterInteractionPrimaryVtableRva;
   result.send_character_interaction_secondary_vtable =
@@ -2054,6 +2145,21 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       module + kGetSiegeTotalWorkRva);
   result.get_siege_days_left = reinterpret_cast<GetSiegeDaysLeft>(
       module + kGetSiegeDaysLeftRva);
+  result.read_assault_daily_progress =
+      reinterpret_cast<ReadAssaultDailyProgress>(
+          module + kReadAssaultDailyProgressRva);
+  result.get_assault_daily_casualties =
+      reinterpret_cast<GetAssaultDailyCasualties>(
+          module + kGetAssaultDailyCasualtiesRva);
+  result.validate_start_assault_command =
+      reinterpret_cast<ValidateAssaultCommand>(
+          module + kValidateStartAssaultCommandRva);
+  result.validate_stop_assault_command =
+      reinterpret_cast<ValidateAssaultCommand>(
+          module + kValidateStopAssaultCommandRva);
+  result.destroy_assault_command =
+      reinterpret_cast<DestroyNativeCommand>(
+          module + kDestroyAssaultCommandRva);
   result.is_province_occupied = reinterpret_cast<IsProvinceOccupied>(
       module + kIsProvinceOccupiedRva);
   result.get_province_fort_level = reinterpret_cast<GetProvinceInt32>(
@@ -2989,6 +3095,132 @@ MergeArmiesResult SubmitMergeArmies(const Bindings &bindings,
       bindings.submit_command(bindings.command_manager, command, 0x0E);
   return submitted ? MergeArmiesResult::merge_submitted
                    : MergeArmiesResult::submission_failed;
+}
+
+StartAssaultResult SubmitStartAssault(const Bindings &bindings,
+                                      std::int32_t siege_id) noexcept {
+  if (!bindings.enabled || bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.validate_start_assault_command == nullptr ||
+      bindings.destroy_assault_command == nullptr ||
+      bindings.start_assault_primary_vtable == 0 ||
+      bindings.start_assault_secondary_vtable == 0) {
+    return StartAssaultResult::unavailable;
+  }
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return StartAssaultResult::unavailable;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return StartAssaultResult::no_played_character;
+  }
+  void *const siege = ResolveSiege(bindings, siege_id);
+  if (siege == nullptr) {
+    return StartAssaultResult::siege_not_found;
+  }
+  void *const siege_province =
+      LoadAt<void *>(siege, kSiegeProvinceOffset);
+  const auto siege_province_id = siege_province != nullptr
+                                     ? LoadAt<std::int32_t>(
+                                           siege_province, kProvinceIdOffset)
+                                     : -1;
+  void *const game_state = bindings.game_state_slot != nullptr
+                               ? *bindings.game_state_slot
+                               : nullptr;
+  if (siege_province == nullptr ||
+      ResolveProvince(game_state, siege_province_id) != siege_province ||
+      LoadAt<std::int32_t>(siege_province,
+                           kProvinceActiveSiegeIdOffset) != siege_id) {
+    return StartAssaultResult::siege_not_found;
+  }
+  const auto active_raw =
+      LoadAt<std::uint8_t>(siege, kSiegeAssaultInProgressOffset);
+  if (active_raw > 1) {
+    return StartAssaultResult::unavailable;
+  }
+  if (active_raw != 0) {
+    return StartAssaultResult::assault_already_active;
+  }
+
+  constexpr std::int32_t command_kind = 1;
+  if (!bindings.validate_start_assault_command(
+          command_kind, current.played_character_id, siege_id, nullptr)) {
+    return StartAssaultResult::validator_rejected;
+  }
+  AssaultCommand command{};
+  command.primary_vtable = bindings.start_assault_primary_vtable;
+  command.secondary_vtable = bindings.start_assault_secondary_vtable;
+  command.command_kind = command_kind;
+  command.played_character_id = current.played_character_id;
+  command.siege_id = siege_id;
+  const bool submitted =
+      bindings.submit_command(bindings.command_manager, &command, 0x0E);
+  bindings.destroy_assault_command(&command, 0);
+  return submitted ? StartAssaultResult::start_submitted
+                   : StartAssaultResult::submission_failed;
+}
+
+StopAssaultResult SubmitStopAssault(const Bindings &bindings,
+                                    std::int32_t siege_id) noexcept {
+  if (!bindings.enabled || bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.validate_stop_assault_command == nullptr ||
+      bindings.destroy_assault_command == nullptr ||
+      bindings.stop_assault_primary_vtable == 0 ||
+      bindings.stop_assault_secondary_vtable == 0) {
+    return StopAssaultResult::unavailable;
+  }
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return StopAssaultResult::unavailable;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return StopAssaultResult::no_played_character;
+  }
+  void *const siege = ResolveSiege(bindings, siege_id);
+  if (siege == nullptr) {
+    return StopAssaultResult::siege_not_found;
+  }
+  void *const siege_province =
+      LoadAt<void *>(siege, kSiegeProvinceOffset);
+  const auto siege_province_id = siege_province != nullptr
+                                     ? LoadAt<std::int32_t>(
+                                           siege_province, kProvinceIdOffset)
+                                     : -1;
+  void *const game_state = bindings.game_state_slot != nullptr
+                               ? *bindings.game_state_slot
+                               : nullptr;
+  if (siege_province == nullptr ||
+      ResolveProvince(game_state, siege_province_id) != siege_province ||
+      LoadAt<std::int32_t>(siege_province,
+                           kProvinceActiveSiegeIdOffset) != siege_id) {
+    return StopAssaultResult::siege_not_found;
+  }
+  const auto active_raw =
+      LoadAt<std::uint8_t>(siege, kSiegeAssaultInProgressOffset);
+  if (active_raw > 1) {
+    return StopAssaultResult::unavailable;
+  }
+  if (active_raw == 0) {
+    return StopAssaultResult::assault_not_active;
+  }
+
+  constexpr std::int32_t command_kind = 1;
+  if (!bindings.validate_stop_assault_command(
+          command_kind, current.played_character_id, siege_id, nullptr)) {
+    return StopAssaultResult::validator_rejected;
+  }
+  AssaultCommand command{};
+  command.primary_vtable = bindings.stop_assault_primary_vtable;
+  command.secondary_vtable = bindings.stop_assault_secondary_vtable;
+  command.command_kind = command_kind;
+  command.played_character_id = current.played_character_id;
+  command.siege_id = siege_id;
+  const bool submitted =
+      bindings.submit_command(bindings.command_manager, &command, 0x0E);
+  bindings.destroy_assault_command(&command, 0);
+  return submitted ? StopAssaultResult::stop_submitted
+                   : StopAssaultResult::submission_failed;
 }
 
 ReadDeclarableWarsResult ReadDeclarableWarsForTarget(

@@ -4,10 +4,11 @@
 
 本契约只适用于 CK3 `1.19.0.6`、`ck3.exe` SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
-本轮只读取了该 exe 与原版 GUI，未连接、注入、启动或操作 CK3。命令 ABI、完整
-validator、clone、析构和 executor 均已静态闭合；native fixture 已覆盖构造、数组
-深拷贝、validator 拒绝、queue clone、原对象清理和 generation/控制权拒绝。真实存档
-执行与后置条件仍标为**未实机**。
+命令 ABI、完整 validator、clone、析构和 executor 先通过该 exe、原版 GUI 与 native fixture
+离线闭合；fixture 覆盖构造、数组深拷贝、validator 拒绝、queue clone、原对象清理和
+generation/控制权拒绝。2026-08-24 又在可恢复 checkpoint 上完成了最小化、暂停态实机
+Merge，并由后续 snapshot 证明 source 消失与 destination 保留。同步 `merge_submitted`
+仍只表示队列接受，不能替代该后置条件。
 
 对“同省、非战斗的两支玩家军能否安全合并”的精确回答是：命令对象的内存所有权和
 提交生命周期已经闭合；若两个 public CUnitID 不同、均由当前玩家控制，并通过原版
@@ -132,8 +133,13 @@ unit/regiment 关联转入 destination，随后销毁 source `CArmy` 并移除 s
 若 Merge 用作 `split-army-half` 的恢复配对，规划器应把原本需要保留的军队作为
 destination。若该军正在围城，还要额外证明同一个 `active_siege_id` 仍存在、其
 `besieging_army_id` 仍指向 destination，并且 siege work/progress 没有异常回退。
-这些都是后续 snapshot postcondition，不得由 `merge_submitted` 猜测。本轮未在真实
-存档执行 Merge，因此 source 实际消失与围城连续性仍是实机验收项。
+这些都是后续 snapshot postcondition，不得由 `merge_submitted` 猜测。2026-08-24 的
+第一次实机 Merge 把 `67108903` 合入 `83886341`：回执为 `merge_submitted`，两秒内的同日
+paused snapshot 中 source 已消失，destination 的 ID、owner 与 ProvinceID 均保留，玩家可控
+ID 集合恰好减少 source。第二次把 `83886119` 合入同一 destination 时，两军位于 `2585` 的
+同一个活动围城；同日 snapshot 再次证明 source 消失、destination 保留，且
+`SiegeID=83886106` 仍存在、eligible besieging strength 为 `1501`。这证明本次安全切片的
+围城连续性，不推广为所有状态下 Merge 都不会改变围城参与者。
 
 ## Python/MCP 生命周期
 
@@ -148,7 +154,8 @@ driver 在 primitive 前保存排序后的可控 ID 集合及 destination/source
 snapshot，不等待也不推进：destination 必须保留同一 ID、owner 与 ProvinceID，source 必须完全消失，且 after
 可控 ID 集合必须精确等于 before 减 source；三项同时成立才返回上层 `merge_applied`，否则一律
 `merge_submitted`。目的军移动/换 owner、source 仅失去 controllable、额外新增或移除其他军都不会被误判为完成。
-这些 Python/MCP 边界有确定性 unit fixture；仍没有新的 CK3 实机 Merge 声明。
+这些 Python/MCP 边界有确定性 unit fixture；上述两次 CK3 实机结果另外闭合了延迟
+snapshot 后置条件，但不把 immediate `merge_submitted` 提升为无条件 `merge_applied`。
 
 ## 版本迁移与解耦
 
@@ -162,11 +169,12 @@ gates、同步 deep clone、deleting destructor、player flags `0x0E`、executor
 destination-preserving/source-removal 语义。任何一项未闭合都应只让新版本适配器把
 Merge 标为 unsupported；不得复用旧 RVA，也不得退化为栈指针或手写 allocator。
 
-## 离线验收
+## 离线与实机验收
 
 - anchor scanner：`108` 个唯一签名、`15` 个 vtable 前缀（加入本能力后的冻结计数）；
 - native fixture：固定 count 1、public/public payload、factory allocator、canonical
   range copy、完整 validator 调用、flags `0x0E`、deep-clone 后原 buffer 清理；
 - negative fixture：相同 ID、过期 generation、destination/source 非玩家控制、native
   validator 拒绝、submit wrapper 返回 `false`；
-- 未执行 CK3 live probe，未声称 gameplay postcondition 已实机通过。
+- 2026-08-24 exact-build 最小化实机：两次 strict-pair Merge 均在 queue ACK 后由 paused
+  snapshot 证明 source 移除、destination 身份保留；第二次同时保持同一 SiegeID。

@@ -32,7 +32,11 @@ from .bridge.war_contract import (
     move_army_step,
     parse_move_army_step,
     parse_preview_move_army_step,
+    parse_start_assault_step,
+    parse_stop_assault_step,
     preview_move_army_step,
+    start_assault_step,
+    stop_assault_step,
     war_objective_province_ids,
 )
 from .environment import write_json_atomic
@@ -582,6 +586,22 @@ def choose_one_life_turn(
             }
             for war in active_wars
         ]
+        if isinstance(snapshot, dict) and snapshot.get("paused") is True:
+            latched_unobservable_assaults = _unobservable_started_assaults(
+                snapshot,
+                active_wars=active_wars,
+                commands=rows,
+            )
+            if latched_unobservable_assaults:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_assault_lifecycle_blocked",
+                    "selected_step": None,
+                    "required_step": "observable-exact-assault-state",
+                    "reason": "a proven assault_started lifecycle has no exact completed, stopped, restored, or currently observable same-SiegeID state; do not advance time",
+                    "assault_lifecycles": latched_unobservable_assaults,
+                    "active_wars": war_summary,
+                }
         enforceable = next(
             (
                 war
@@ -650,6 +670,7 @@ def choose_one_life_turn(
                 snapshot.get("war_objective_garrison_supported") is True
                 or snapshot.get("war_objective_siege_progress_supported")
                 is True
+                or snapshot.get("war_objective_assault_supported") is True
             )
         )
         if (
@@ -690,20 +711,59 @@ def choose_one_life_turn(
             for army in enemy_armies_from_wars(active_wars)
             if _army_tactical_state(army) != "retreating"
         ]
+        start_blocking_route_armies = [
+            army
+            for army in controlled_armies
+            if (
+                (
+                    (target := _native_int(army.get("move_target_province_id")))
+                    is not None
+                    and target > 0
+                )
+                or (
+                    isinstance(army.get("route_province_ids"), list)
+                    and bool(army["route_province_ids"])
+                )
+                or _army_tactical_state(army) == "moving"
+                or _native_int(army.get("army_state_code")) == 7
+            )
+        ]
         all_exact_objective_ids = set(war_objective_province_ids(active_wars))
         global_route_audits: list[dict[str, object]] = []
         if army_routes_supported:
             for controlled_army in controlled_armies:
                 controlled_army_id = _native_int(controlled_army.get("army_id"))
                 controlled_state = _army_tactical_state(controlled_army)
+                controlled_state_code = _native_int(
+                    controlled_army.get("army_state_code")
+                )
                 controlled_target = _native_int(
                     controlled_army.get("move_target_province_id")
                 )
                 if (
                     controlled_army_id is None
-                    or controlled_target is None
                     or controlled_state in {"combat", "retreating", "gathering"}
                 ):
+                    continue
+                controlled_route = controlled_army.get("route_province_ids")
+                if controlled_target is None:
+                    if (
+                        controlled_state == "moving"
+                        or controlled_state_code == 7
+                        or (
+                            isinstance(controlled_route, list)
+                            and bool(controlled_route)
+                        )
+                    ):
+                        global_route_audits.append(
+                            {
+                                "army_id": controlled_army_id,
+                                "army_state": controlled_state,
+                                "status": "unavailable",
+                                "reason": "active controlled movement lacks an observable exact move target",
+                                "conflicts": [],
+                            }
+                        )
                     continue
                 global_route_audits.append(
                     {
@@ -803,6 +863,94 @@ def choose_one_life_turn(
         exact_objective_state_by_id = _objective_province_state_by_id(
             tactical_war if isinstance(tactical_war, dict) else None
         )
+        assault_reviews = _review_all_player_assaults(
+            snapshot if isinstance(snapshot, dict) else {},
+            active_wars=active_wars,
+            enemies=route_threat_enemies,
+            commands=rows,
+        )
+        unobservable_assaults = [
+            review
+            for review in assault_reviews
+            if review.get("status") == "unavailable"
+        ]
+        if unobservable_assaults:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_assault_observation_blocked",
+                "selected_step": None,
+                "required_step": "observable-exact-assault-state",
+                "reason": "at least one player siege has an unavailable exact assault subdomain; do not advance a potentially active assault",
+                "assault_states": unobservable_assaults,
+                "active_wars": war_summary,
+            }
+        active_assaults = [
+            review
+            for review in assault_reviews
+            if review.get("status") == "active"
+        ]
+        unsafe_assaults = [
+            review
+            for review in active_assaults
+            if review.get("one_day_safe") is not True
+        ]
+        if unsafe_assaults:
+            unsafe_assault = min(
+                unsafe_assaults,
+                key=lambda review: _native_int(review.get("siege_id"))
+                or 2**31,
+            )
+            unsafe_siege_id = _native_int(unsafe_assault.get("siege_id"))
+            stop_step = (
+                stop_assault_step(unsafe_siege_id)
+                if unsafe_siege_id is not None
+                else None
+            )
+            if (
+                stop_step is not None
+                and unsafe_assault.get("can_stop_assault") is True
+                and stop_step in available_steps
+            ):
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_assault_stop",
+                    "selected_step": stop_step,
+                    "reason": "an active exact assault failed its daily progress, casualty, or threat review; stop it before any time advance",
+                    "assault_state": unsafe_assault,
+                    "assault_states": active_assaults,
+                    "active_wars": war_summary,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_assault_stop_blocked",
+                "selected_step": None,
+                "required_step": stop_step or "exact-stop-assault",
+                "reason": "an active assault failed its one-day safety review but no exact Stop Assault action is eligible",
+                "assault_state": unsafe_assault,
+                "assault_states": active_assaults,
+                "active_wars": war_summary,
+            }
+        if active_assaults and not unsafe_armies:
+            if "life-advance" in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_assault_daily_progress",
+                    "selected_step": "life-advance",
+                    "reason": "every active exact assault and every controlled route passed the current one-day review; advance exactly one day and re-observe all armies",
+                    "assault_state": active_assaults[0],
+                    "assault_states": active_assaults,
+                    "active_wars": war_summary,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_assault_daily_progress_unsupported",
+                "selected_step": None,
+                "required_step": "life-advance",
+                "reason": "active assaults may only advance through one-day paused-to-paused slices",
+                "assault_state": active_assaults[0],
+                "assault_states": active_assaults,
+                "active_wars": war_summary,
+            }
         exact_occupation_rows_complete = bool(
             exact_objective_province_ids
             and isinstance(snapshot, dict)
@@ -917,6 +1065,23 @@ def choose_one_life_turn(
             objective_state_by_id=exact_objective_state_by_id,
             commands=rows,
         )
+        exact_assault_state = _current_exact_assault_state(
+            snapshot if isinstance(snapshot, dict) else {},
+            province_id=(
+                current_province_id
+                if isinstance(current_province_id, int)
+                else None
+            ),
+            objective_state_by_id=exact_objective_state_by_id,
+            stationary_threats=stationary_threats,
+            siege_status=exact_siege_status,
+            commands=rows,
+            tactical_war_id=(
+                tactical_war_id
+                if isinstance(tactical_war_id, int)
+                else None
+            ),
+        )
         exact_siege_rejection = (
             exact_siege_status
             if current_province_id in siege_objective_province_ids
@@ -956,6 +1121,80 @@ def choose_one_life_turn(
                 "reason": "the raised army must finish gathering before route preview",
                 "active_wars": war_summary,
             }
+        if isinstance(exact_assault_state, dict):
+            assault_status = exact_assault_state.get("status")
+            siege_id = _native_int(exact_assault_state.get("siege_id"))
+            if assault_status == "unavailable":
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_assault_observation_blocked",
+                    "selected_step": None,
+                    "required_step": "observable-exact-assault-state",
+                    "reason": "the exact adapter advertises assault state but the current SiegeID is not atomically observable; do not advance an unknown potentially active assault",
+                    "assault_state": exact_assault_state,
+                    "active_wars": war_summary,
+                }
+            if assault_status == "active" and siege_id is not None:
+                if exact_assault_state.get("one_day_safe") is True:
+                    if "life-advance" in available_steps:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_assault_daily_progress",
+                            "selected_step": "life-advance",
+                            "reason": "the same exact SiegeID remains assaulting and its current one-day progress, casualties, and enemy convergence projection are safe; advance exactly one day and re-observe",
+                            "assault_state": exact_assault_state,
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_assault_daily_progress_unsupported",
+                        "selected_step": None,
+                        "required_step": "life-advance",
+                        "reason": "an active assault may only advance through one-day paused-to-paused slices",
+                        "assault_state": exact_assault_state,
+                        "active_wars": war_summary,
+                    }
+                stop_step = stop_assault_step(siege_id)
+                if (
+                    exact_assault_state.get("can_stop_assault") is True
+                    and stop_step in available_steps
+                ):
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_assault_stop",
+                        "selected_step": stop_step,
+                        "reason": "the next assault day no longer satisfies the exact progress, casualty, or threat budget; stop it before advancing time",
+                        "assault_state": exact_assault_state,
+                        "active_wars": war_summary,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_assault_stop_blocked",
+                    "selected_step": None,
+                    "required_step": stop_step,
+                    "reason": "the active assault failed its one-day safety review but no exact Stop Assault action is currently eligible",
+                    "assault_state": exact_assault_state,
+                    "active_wars": war_summary,
+                }
+            if (
+                assault_status == "inactive"
+                and siege_id is not None
+                and exact_assault_state.get("walls_breached") is True
+                and exact_assault_state.get("can_start_assault") is True
+                and exact_assault_state.get("one_day_safe") is True
+                and not start_blocking_route_armies
+                and not unsafe_armies
+            ):
+                start_step = start_assault_step(siege_id)
+                if start_step in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_assault_start",
+                        "selected_step": start_step,
+                        "reason": "the walls are breached, CK3's exact validator accepts Start Assault, and the projected next day stays inside the progress, casualty, and threat budget",
+                        "assault_state": exact_assault_state,
+                        "active_wars": war_summary,
+                    }
         if (
             isinstance(exact_siege_status, dict)
             and exact_siege_status.get("status") == "progressing"
@@ -2338,6 +2577,153 @@ def _rank_exact_objectives(
     return sorted(province_ids, key=rank)
 
 
+def _open_assault_lifecycles(
+    commands: list[dict[str, object]],
+) -> list[dict[str, int]]:
+    """Return exact Start lifecycles not closed by a proven Stop.
+
+    A submitted ACK is deliberately insufficient: only the driver's
+    ``assault_started``/``assault_stopped`` paused postconditions participate.
+    Successful restore starts a new factual branch and isolates older rows.
+    """
+    opened: dict[tuple[int, int, int], dict[str, int]] = {}
+    for fallback_index, row in enumerate(
+        _history_after_latest_restore(commands), start=1
+    ):
+        if row.get("ok") is not True:
+            continue
+        command = _effective_command(row)
+        result = _effective_command_result(row)
+        if not isinstance(result, dict):
+            continue
+        action = result.get("assault_action")
+        if not isinstance(action, dict):
+            candidate = result.get("war_action")
+            action = candidate if isinstance(candidate, dict) else None
+        if not isinstance(action, dict):
+            continue
+        siege_id = _native_int(action.get("siege_id"))
+        war_id = _native_int(action.get("war_id"))
+        province_id = _native_int(action.get("province_id"))
+        if (
+            siege_id is None
+            or siege_id <= 0
+            or war_id is None
+            or war_id <= 0
+            or province_id is None
+            or province_id <= 0
+        ):
+            continue
+        key = (war_id, province_id, siege_id)
+        status = action.get("status")
+        if (
+            status == "assault_started"
+            and parse_start_assault_step(command) == siege_id
+        ):
+            raw_index = row.get("index")
+            opened[key] = {
+                "war_id": war_id,
+                "province_id": province_id,
+                "siege_id": siege_id,
+                "started_index": (
+                    raw_index
+                    if isinstance(raw_index, int)
+                    and not isinstance(raw_index, bool)
+                    else fallback_index
+                ),
+            }
+        elif (
+            status == "assault_stopped"
+            and parse_stop_assault_step(command) == siege_id
+        ):
+            opened.pop(key, None)
+    return sorted(
+        opened.values(),
+        key=lambda row: (
+            row["started_index"],
+            row["war_id"],
+            row["province_id"],
+            row["siege_id"],
+        ),
+    )
+
+
+def _unobservable_started_assaults(
+    snapshot: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    commands: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    """Latch proven Starts until the same assault is observable or closed."""
+    pending: list[dict[str, object]] = []
+    wars_by_id = {
+        war_id: war
+        for war in active_wars
+        if (war_id := _native_int(war.get("war_id"))) is not None
+    }
+    for lifecycle in _open_assault_lifecycles(commands):
+        war_id = lifecycle["war_id"]
+        province_id = lifecycle["province_id"]
+        siege_id = lifecycle["siege_id"]
+        war = wars_by_id.get(war_id)
+        if not isinstance(war, dict):
+            # The exact active-war set no longer contains this generation.
+            continue
+        state_by_id = _objective_province_state_by_id(war)
+        state = state_by_id.get(province_id)
+        if isinstance(state, dict) and province_id in (
+            _player_occupied_objective_ids(snapshot, war, state_by_id)
+        ):
+            # Exact occupation is the completion postcondition for the old
+            # siege, even when active_siege has already disappeared.
+            continue
+
+        reason: str | None = None
+        if snapshot.get("war_objective_assault_supported") is not True:
+            reason = "assault_capability_unavailable_after_start"
+        elif not isinstance(state, dict):
+            reason = "objective_row_unavailable_after_start"
+        elif state.get("siege_observable") is not True:
+            reason = "siege_unobservable_after_start"
+        else:
+            active_siege = state.get("active_siege")
+            if "active_siege" in state and active_siege is None:
+                # siege_observable=true plus explicit null is the exact
+                # completed/no-active-siege fact for the old lifecycle.
+                continue
+            if not isinstance(active_siege, dict):
+                reason = "active_siege_unavailable_after_start"
+            else:
+                observed_siege_id = _native_int(active_siege.get("siege_id"))
+                if observed_siege_id != siege_id:
+                    # A different full-generation SiegeID proves that this
+                    # lifecycle cannot still govern the replacement siege.
+                    if observed_siege_id is not None and observed_siege_id > 0:
+                        continue
+                    reason = "siege_generation_unavailable_after_start"
+                elif active_siege.get("assault_observable") is not True:
+                    reason = "assault_subdomain_unobservable_after_start"
+                elif active_siege.get("assault_in_progress") is False:
+                    # Same-SiegeID inactive is an exact completed/stopped fact.
+                    continue
+                elif active_siege.get("assault_in_progress") is True:
+                    if active_siege.get("player_army_besieging") is True:
+                        # The ordinary active-assault review owns this row.
+                        continue
+                    reason = "player_besieger_unavailable_after_start"
+                else:
+                    reason = "assault_flag_unavailable_after_start"
+
+        pending.append(
+            {
+                **lifecycle,
+                "status": "unavailable",
+                "reason": reason or "assault_state_unavailable_after_start",
+            }
+        )
+    return pending
+
+
 def _current_exact_siege_status(
     snapshot: dict[str, object],
     *,
@@ -2404,6 +2790,192 @@ def _current_exact_siege_status(
     if stall_days >= _NATIVE_SIEGE_STALL_GAME_DAYS:
         result["status"] = "stalled"
     return result
+
+
+def _current_exact_assault_state(
+    snapshot: dict[str, object],
+    *,
+    province_id: int | None,
+    objective_state_by_id: dict[int, dict[str, object]],
+    stationary_threats: list[dict[str, object]],
+    siege_status: dict[str, object] | None,
+    commands: list[dict[str, object]],
+    tactical_war_id: int | None,
+) -> dict[str, object] | None:
+    """Project only the next assault day; never invent a multi-day ETA."""
+    if (
+        province_id is None
+        or snapshot.get("war_objective_assault_supported") is not True
+    ):
+        return None
+    state = objective_state_by_id.get(province_id)
+    active_siege = (
+        state.get("active_siege")
+        if isinstance(state, dict)
+        and state.get("siege_observable") is True
+        else None
+    )
+    if not isinstance(active_siege, dict):
+        return None
+    siege_id = _native_int(active_siege.get("siege_id"))
+    base: dict[str, object] = {
+        "province_id": province_id,
+        "siege_id": siege_id,
+        "assault_observable": active_siege.get("assault_observable") is True,
+    }
+    if active_siege.get("assault_observable") is not True:
+        return {
+            **base,
+            "status": "unavailable",
+            "one_day_safe": False,
+            "one_day_rejection_reasons": ["assault_subdomain_unobservable"],
+        }
+
+    breach_level = _native_int(active_siege.get("breach_level"))
+    walls_breached = breach_level in {1, 2}
+    assault_in_progress = active_siege.get("assault_in_progress") is True
+    daily_progress = active_siege.get("assault_daily_progress")
+    daily_progress_raw = _fixed_raw(daily_progress)
+    daily_casualties = _native_int(
+        active_siege.get("assault_daily_casualties")
+    )
+    besieging_strength = _native_int(state.get("besieging_strength"))
+    garrison_size = _native_int(state.get("garrison_size"))
+    projected_strength = (
+        besieging_strength - daily_casualties
+        if besieging_strength is not None and daily_casualties is not None
+        else None
+    )
+    previous_day = (
+        _latest_assault_day_observation(
+            commands,
+            war_id=tactical_war_id,
+            province_id=province_id,
+            siege_id=siege_id,
+        )
+        if tactical_war_id is not None and siege_id is not None
+        else None
+    )
+    rejection_reasons: list[str] = []
+    if siege_id is None:
+        rejection_reasons.append("siege_id_unavailable")
+    if active_siege.get("player_army_besieging") is not True:
+        rejection_reasons.append("player_not_primary_besieger")
+    if not walls_breached:
+        rejection_reasons.append("walls_not_breached")
+    if daily_progress_raw is None or daily_progress_raw <= 0:
+        rejection_reasons.append("daily_progress_not_positive")
+    if daily_casualties is None:
+        rejection_reasons.append("daily_casualties_unavailable")
+    if besieging_strength is None or garrison_size is None:
+        rejection_reasons.append("one_day_strength_budget_unavailable")
+    elif (
+        projected_strength is None
+        or projected_strength <= 0
+        or projected_strength < garrison_size
+    ):
+        rejection_reasons.append("projected_strength_below_garrison")
+    if stationary_threats:
+        rejection_reasons.append("enemy_convergence_observed")
+    if (
+        isinstance(siege_status, dict)
+        and siege_status.get("status") != "progressing"
+    ):
+        rejection_reasons.append(
+            f"siege_{siege_status.get('status') or 'unavailable'}"
+        )
+    if isinstance(previous_day, dict):
+        previous_day_reason = previous_day.get("reason")
+        if (
+            previous_day.get("status") == "unknown"
+            and isinstance(previous_day_reason, str)
+        ):
+            rejection_reasons.append(previous_day_reason)
+        if previous_day.get("elapsed_days") != 1:
+            rejection_reasons.append("previous_assault_slice_not_one_day")
+        previous_work_delta = _native_int(
+            previous_day.get("work_delta_raw")
+        )
+        if previous_work_delta is None or previous_work_delta <= 0:
+            rejection_reasons.append("previous_assault_day_no_work_progress")
+        if previous_day.get("strength_loss") is None:
+            rejection_reasons.append(
+                "previous_assault_day_strength_change_unavailable"
+            )
+    return {
+        **base,
+        "status": "active" if assault_in_progress else "inactive",
+        "breach_level": breach_level,
+        "walls_breached": walls_breached,
+        "assault_in_progress": assault_in_progress,
+        "can_start_assault": active_siege.get("can_start_assault") is True,
+        "can_stop_assault": active_siege.get("can_stop_assault") is True,
+        "assault_daily_progress": daily_progress,
+        "assault_daily_casualties": daily_casualties,
+        "besieging_strength": besieging_strength,
+        "garrison_size": garrison_size,
+        "projected_strength_after_one_day": projected_strength,
+        "threats": list(stationary_threats),
+        "one_day_safe": not rejection_reasons,
+        "one_day_rejection_reasons": rejection_reasons,
+        "projection_horizon_days": 1,
+        "previous_assault_day": previous_day,
+    }
+
+
+def _review_all_player_assaults(
+    snapshot: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    enemies: list[dict[str, object]],
+    commands: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    if snapshot.get("war_objective_assault_supported") is not True:
+        return []
+    reviews: list[dict[str, object]] = []
+    for war in active_wars:
+        tactical_war_id = _native_int(war.get("war_id"))
+        if tactical_war_id is None:
+            continue
+        objective_state_by_id = _objective_province_state_by_id(war)
+        for province_id, state in objective_state_by_id.items():
+            active_siege = (
+                state.get("active_siege")
+                if state.get("siege_observable") is True
+                else None
+            )
+            if not (
+                isinstance(active_siege, dict)
+                and active_siege.get("player_army_besieging") is True
+            ):
+                continue
+            siege_status = _current_exact_siege_status(
+                snapshot,
+                tactical_war_id=tactical_war_id,
+                province_id=province_id,
+                objective_state_by_id=objective_state_by_id,
+                commands=commands,
+            )
+            review = _current_exact_assault_state(
+                snapshot,
+                province_id=province_id,
+                objective_state_by_id=objective_state_by_id,
+                stationary_threats=_stationary_province_threats(
+                    province_id, enemies
+                ),
+                siege_status=siege_status,
+                commands=commands,
+                tactical_war_id=tactical_war_id,
+            )
+            if isinstance(review, dict):
+                reviews.append({**review, "war_id": tactical_war_id})
+    return sorted(
+        reviews,
+        key=lambda review: (
+            _native_int(review.get("siege_id")) or 2**31,
+            _native_int(review.get("province_id")) or 2**31,
+        ),
+    )
 
 
 def _native_int(value: object) -> int | None:
@@ -2529,6 +3101,153 @@ def _fixed_raw(value: object) -> int | None:
     return _native_int(raw)
 
 
+def _latest_assault_day_observation(
+    commands: list[dict[str, object]],
+    *,
+    war_id: int,
+    province_id: int,
+    siege_id: int,
+) -> dict[str, object] | None:
+    """Read the latest completed assault slice without extrapolating an ETA."""
+    scoped_history = _history_after_latest_restore(commands)
+    opened = next(
+        (
+            lifecycle
+            for lifecycle in reversed(_open_assault_lifecycles(commands))
+            if lifecycle["war_id"] == war_id
+            and lifecycle["province_id"] == province_id
+            and lifecycle["siege_id"] == siege_id
+        ),
+        None,
+    )
+    started_index = opened.get("started_index") if isinstance(opened, dict) else None
+
+    def unknown(reason: str) -> dict[str, object]:
+        return {
+            "status": "unknown",
+            "reason": reason,
+            "elapsed_days": None,
+            "work_delta_raw": None,
+            "strength_loss": None,
+            "starting_besieging_strength": None,
+            "ending_besieging_strength": None,
+            "soldier_loss": None,
+            "starting_soldiers": None,
+            "ending_soldiers": None,
+        }
+
+    indexed_history = list(enumerate(scoped_history, start=1))
+    for fallback_index, row in reversed(indexed_history):
+        raw_index = row.get("index")
+        row_index = (
+            raw_index
+            if isinstance(raw_index, int) and not isinstance(raw_index, bool)
+            else fallback_index
+        )
+        if isinstance(started_index, int) and row_index <= started_index:
+            break
+        if _effective_command(row) != "life-advance":
+            continue
+        if row.get("ok") is not True:
+            if isinstance(started_index, int):
+                return unknown("previous_assault_slice_failed_unknown")
+            continue
+        result = row.get("result")
+        before_date, before_war = _progress_slice(
+            result, "war_progress_before", war_id
+        )
+        after_date, after_war = _progress_slice(
+            result, "war_progress_after", war_id
+        )
+        before_state = _progress_objective_state(before_war, province_id)
+        before_siege = _progress_active_siege(before_state, siege_id)
+        if not (
+            isinstance(before_siege, dict)
+            and before_siege.get("assault_observable") is True
+            and before_siege.get("assault_in_progress") is True
+        ):
+            if isinstance(started_index, int):
+                return unknown("previous_assault_slice_state_unavailable")
+            continue
+        after_state = _progress_objective_state(after_war, province_id)
+        after_siege = _progress_active_siege(after_state, siege_id)
+        before_work = _fixed_raw(before_siege.get("current_work"))
+        after_work = (
+            _fixed_raw(after_siege.get("current_work"))
+            if isinstance(after_siege, dict)
+            else None
+        )
+        before_strength = (
+            _native_int(before_state.get("besieging_strength"))
+            if isinstance(before_state, dict)
+            else None
+        )
+        after_strength = (
+            _native_int(after_state.get("besieging_strength"))
+            if isinstance(after_state, dict)
+            else None
+        )
+        if before_strength is not None and before_strength < 0:
+            before_strength = None
+        if after_strength is not None and after_strength < 0:
+            after_strength = None
+        army_id = _native_int(before_siege.get("besieging_army_id"))
+        before_army = (
+            _progress_army(before_war, "player_armies", army_id)
+            if army_id is not None
+            else None
+        )
+        after_army = (
+            _progress_army(after_war, "player_armies", army_id)
+            if army_id is not None
+            else None
+        )
+        before_soldiers = (
+            _native_int(before_army.get("soldiers"))
+            if isinstance(before_army, dict)
+            else None
+        )
+        after_soldiers = (
+            _native_int(after_army.get("soldiers"))
+            if isinstance(after_army, dict)
+            else None
+        )
+        elapsed_days = (
+            max(0, (after_date - before_date) // 24)
+            if before_date is not None and after_date is not None
+            else None
+        )
+        return {
+            "elapsed_days": elapsed_days,
+            "work_delta_raw": (
+                after_work - before_work
+                if before_work is not None and after_work is not None
+                else None
+            ),
+            # This is the authoritative realized safety input.  It measures
+            # the eligible besieging-strength change published on the same
+            # objective, rather than requiring army soldiers (which exact
+            # progress frames may legitimately omit).
+            "strength_loss": (
+                max(0, before_strength - after_strength)
+                if before_strength is not None and after_strength is not None
+                else None
+            ),
+            "starting_besieging_strength": before_strength,
+            "ending_besieging_strength": after_strength,
+            # Army soldiers remain useful diagnostics when a producer happens
+            # to publish them, but never gate the next one-day assault slice.
+            "soldier_loss": (
+                max(0, before_soldiers - after_soldiers)
+                if before_soldiers is not None and after_soldiers is not None
+                else None
+            ),
+            "starting_soldiers": before_soldiers,
+            "ending_soldiers": after_soldiers,
+        }
+    return None
+
+
 def _recent_exact_siege_stall_days(
     commands: list[dict[str, object]],
     *,
@@ -2601,10 +3320,14 @@ def _effective_command_result(row: dict[str, object]) -> dict[str, object] | Non
     result = row.get("result")
     if row.get("command") != "auto-turn":
         return result if isinstance(result, dict) else None
-    if isinstance(result, dict) and isinstance(
-        result.get("route_preview"), dict
-    ):
-        return result
+    if isinstance(result, dict):
+        # gameplay_runner decorates the actual executor result at the root and
+        # stores the plan under auto_turn.  Prefer factual root postconditions
+        # over any nested/planner-shaped payload.
+        if isinstance(result.get("assault_action"), dict):
+            return result
+        if isinstance(result.get("route_preview"), dict):
+            return result
     auto_turn = result.get("auto_turn") if isinstance(result, dict) else None
     nested = auto_turn.get("result") if isinstance(auto_turn, dict) else None
     if isinstance(nested, dict):

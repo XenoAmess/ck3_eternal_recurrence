@@ -69,7 +69,7 @@ std::array<std::byte, 0x40> g_army_storage{};
 std::array<std::byte, 0x40> g_army_slots{};
 std::array<std::byte, 0x40> g_siege_storage{};
 std::array<std::byte, 0x20> g_siege_slots{};
-std::array<std::byte, 0x3D8> g_siege{};
+std::array<std::byte, 0x450> g_siege{};
 std::array<std::byte, 0x17C> g_player_army{};
 std::array<std::byte, 0x17C> g_enemy_army{};
 std::array<std::byte, 0x08> g_player_move_route_info_0{};
@@ -142,6 +142,16 @@ bool g_siege_alive = true;
 std::int64_t g_siege_progress_raw = 25'000;
 std::int64_t g_siege_total_work_raw = 10'000'000;
 std::int32_t g_siege_days_left = 12;
+std::int64_t g_assault_daily_progress_raw = 340'000;
+std::int32_t g_assault_daily_casualties = 16;
+bool g_assault_progress_available = true;
+bool g_start_assault_validate_allowed = true;
+bool g_stop_assault_validate_allowed = true;
+bool g_start_assault_validate_called = false;
+bool g_stop_assault_validate_called = false;
+bool g_assault_clone_called = false;
+bool g_assault_destroy_called = false;
+std::array<std::byte, 0x30> g_assault_cloned_command{};
 bool g_character_command_kind_allowed = true;
 bool g_army_move_mode_allowed = true;
 bool g_move_validation_allowed = true;
@@ -211,6 +221,8 @@ enum class ExpectedCommand {
   disband_army,
   split_army_half,
   merge_armies,
+  start_assault,
+  stop_assault,
   declare_war,
   arrange_marriage,
   enforce_demands,
@@ -407,6 +419,60 @@ std::int32_t FixtureGetSiegeDaysLeft(void *siege) {
   return siege == g_siege.data()
              ? g_siege_days_left
              : std::numeric_limits<std::int32_t>::max();
+}
+
+std::int64_t *FixtureReadAssaultDailyProgress(
+    void *siege, std::int64_t *output, std::int32_t eligible_besiegers) {
+  if (!g_assault_progress_available || siege != g_siege.data() ||
+      output == nullptr || eligible_besiegers != 650) {
+    return nullptr;
+  }
+  *output = g_assault_daily_progress_raw;
+  return output;
+}
+
+std::int32_t FixtureGetAssaultDailyCasualties(void *siege) {
+  return siege == g_siege.data() ? g_assault_daily_casualties : -1;
+}
+
+bool FixtureValidateStartAssaultCommand(
+    std::int32_t command_kind, std::int32_t played_character_id,
+    std::int32_t siege_id, void *error_output) {
+  std::int32_t breach_level = -1;
+  std::uint8_t assault_active = 0xFF;
+  std::memcpy(&breach_level, g_siege.data() + 0x3D8,
+              sizeof(breach_level));
+  std::memcpy(&assault_active, g_siege.data() + 0x44C,
+              sizeof(assault_active));
+  g_start_assault_validate_called =
+      command_kind == 1 && played_character_id == 0x01000002 &&
+      siege_id == 0x01000001 && error_output == nullptr;
+  return g_start_assault_validate_called &&
+         g_start_assault_validate_allowed && breach_level > 0 &&
+         breach_level <= 2 && assault_active == 0;
+}
+
+bool FixtureValidateStopAssaultCommand(
+    std::int32_t command_kind, std::int32_t played_character_id,
+    std::int32_t siege_id, void *error_output) {
+  std::uint8_t assault_active = 0xFF;
+  std::memcpy(&assault_active, g_siege.data() + 0x44C,
+              sizeof(assault_active));
+  g_stop_assault_validate_called =
+      command_kind == 1 && played_character_id == 0x01000002 &&
+      siege_id == 0x01000001 && error_output == nullptr;
+  return g_stop_assault_validate_called &&
+         g_stop_assault_validate_allowed && assault_active == 1;
+}
+
+void *FixtureDestroyAssaultCommand(void *opaque_command,
+                                   std::int32_t delete_flags) {
+  g_assault_destroy_called = opaque_command != nullptr && delete_flags == 0 &&
+                             g_assault_clone_called;
+  if (opaque_command != nullptr) {
+    std::memset(opaque_command, 0xDD, 0x30);
+  }
+  return opaque_command;
 }
 
 bool FixtureIsProvinceOccupied(void *province) {
@@ -1158,6 +1224,30 @@ bool FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
       g_merge_cloned_source_ids[0] = source_ids[0];
       g_merge_clone_called = true;
     }
+  } else if (g_expected_command == ExpectedCommand::start_assault ||
+             g_expected_command == ExpectedCommand::stop_assault) {
+    std::int32_t command_kind = -1;
+    std::int32_t played_character_id = -1;
+    std::int32_t siege_id = -1;
+    std::memcpy(&command_kind, command + 0x20, sizeof(command_kind));
+    std::memcpy(&played_character_id, command + 0x24,
+                sizeof(played_character_id));
+    std::memcpy(&siege_id, command + 0x28, sizeof(siege_id));
+    const bool starting =
+        g_expected_command == ExpectedCommand::start_assault;
+    g_submit_called =
+        manager == reinterpret_cast<void *>(0x1234) && flags == 0x0E &&
+        primary == (starting ? 0x1A1A1A1A : 0x1C1C1C1C) &&
+        secondary == (starting ? 0x1B1B1B1B : 0x1D1D1D1D) &&
+        command_flags == 0 && command_kind == 1 &&
+        played_character_id == 0x01000002 && siege_id == 0x01000001;
+    if (g_submit_called) {
+      // Model primary +0x40: the queue owns a complete 0x30-byte clone, while
+      // the bridge must destroy its original stack object after the bool ACK.
+      std::memcpy(g_assault_cloned_command.data(), command,
+                  g_assault_cloned_command.size());
+      g_assault_clone_called = true;
+    }
   } else if (g_expected_command == ExpectedCommand::declare_war) {
     std::int32_t actor_id = -1;
     std::int32_t recipient_id = -1;
@@ -1409,6 +1499,8 @@ int main() {
         static_cast<void *>(g_war_objective_province.data()));
   Store(g_siege, 0x208, player_internal_army_id);
   Store(g_siege, 0x3D0, std::int64_t{2'500'000});
+  Store(g_siege, 0x3D8, std::int32_t{1});
+  Store(g_siege, 0x44C, std::uint8_t{0});
   Store(g_siege_slots, 0x18, static_cast<void *>(g_siege.data()));
   Store(g_siege_storage, 0x20,
         static_cast<void *>(g_siege_slots.data()));
@@ -1604,6 +1696,10 @@ int main() {
   bindings.split_army_half_secondary_vtable = 0x16161616;
   bindings.merge_armies_primary_vtable = 0x17171717;
   bindings.merge_armies_secondary_vtable = 0x18181818;
+  bindings.start_assault_primary_vtable = 0x1A1A1A1A;
+  bindings.start_assault_secondary_vtable = 0x1B1B1B1B;
+  bindings.stop_assault_primary_vtable = 0x1C1C1C1C;
+  bindings.stop_assault_secondary_vtable = 0x1D1D1D1D;
   bindings.send_character_interaction_primary_vtable = 0x13131313;
   bindings.send_character_interaction_secondary_vtable = 0x14141414;
   bindings.war_declaration_vtable = 0x12121212;
@@ -1634,6 +1730,15 @@ int main() {
   bindings.get_siege_progress = FixtureGetSiegeProgress;
   bindings.get_siege_total_work = FixtureGetSiegeTotalWork;
   bindings.get_siege_days_left = FixtureGetSiegeDaysLeft;
+  bindings.read_assault_daily_progress =
+      FixtureReadAssaultDailyProgress;
+  bindings.get_assault_daily_casualties =
+      FixtureGetAssaultDailyCasualties;
+  bindings.validate_start_assault_command =
+      FixtureValidateStartAssaultCommand;
+  bindings.validate_stop_assault_command =
+      FixtureValidateStopAssaultCommand;
+  bindings.destroy_assault_command = FixtureDestroyAssaultCommand;
   bindings.is_province_occupied = FixtureIsProvinceOccupied;
   bindings.get_province_fort_level = FixtureGetProvinceFortLevel;
   bindings.get_province_garrison_size = FixtureGetProvinceGarrisonSize;
@@ -1793,7 +1898,8 @@ int main() {
       !running_objective_state.fort_level_observable ||
       running_objective_state.garrison_size_observable ||
       running_objective_state.besieging_strength_observable ||
-      running_objective_state.siege_observable) {
+      running_objective_state.siege_observable ||
+      running_objective_state.assault_observable) {
     return Fail("running snapshot traversed a mutable siege subgraph");
   }
 
@@ -1830,7 +1936,16 @@ int main() {
       active_siege_state.siege_current_work.raw != 2'500'000 ||
       active_siege_state.siege_total_work.raw != 10'000'000 ||
       !active_siege_state.siege_days_left_observable ||
-      active_siege_state.siege_days_left != 12) {
+      active_siege_state.siege_days_left != 12 ||
+      !active_siege_state.assault_observable ||
+      active_siege_state.breach_level != 1 ||
+      active_siege_state.assault_in_progress ||
+      !active_siege_state.can_start_assault ||
+      active_siege_state.can_stop_assault ||
+      active_siege_state.assault_daily_progress.raw != 340'000 ||
+      active_siege_state.assault_daily_progress.scale !=
+          kFixtureFixedPointScale ||
+      active_siege_state.assault_daily_casualties != 16) {
     return Fail("active objective siege projection drifted");
   }
   if (occupied_state.province_id != second_war_objective_province_id ||
@@ -1842,7 +1957,7 @@ int main() {
       !occupied_state.besieging_strength_observable ||
       occupied_state.besieging_strength != 0 ||
       !occupied_state.siege_observable || occupied_state.has_active_siege ||
-      occupied_state.siege_id != -1) {
+      occupied_state.siege_id != -1 || occupied_state.assault_observable) {
     return Fail("occupied/no-siege objective state was not explicit");
   }
   if (idle_state.province_id != third_war_objective_province_id ||
@@ -1851,7 +1966,7 @@ int main() {
       !idle_state.garrison_size_observable || idle_state.garrison_size != 800 ||
       !idle_state.besieging_strength_observable ||
       idle_state.besieging_strength != 900 || !idle_state.siege_observable ||
-      idle_state.has_active_siege) {
+      idle_state.has_active_siege || idle_state.assault_observable) {
     return Fail("idle objective Province state projection drifted");
   }
 
@@ -1860,7 +1975,10 @@ int main() {
       !snapshot.active_wars[0].objective_province_states[0].siege_observable ||
       snapshot.active_wars[0]
           .objective_province_states[0]
-          .has_active_siege) {
+          .has_active_siege ||
+      snapshot.active_wars[0]
+          .objective_province_states[0]
+          .assault_observable) {
     return Fail("no-active-siege was confused with unavailable siege state");
   }
   Store(g_war_objective_province, 0x790, active_siege_id);
@@ -1907,6 +2025,52 @@ int main() {
     return Fail("stalled siege INT_MAX was exposed as a real day count");
   }
   g_siege_days_left = 12;
+
+  Store(g_siege, 0x3D8, std::int32_t{3});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      !snapshot.active_wars[0].objective_province_states[0].siege_observable ||
+      snapshot.active_wars[0]
+          .objective_province_states[0]
+          .assault_observable) {
+    return Fail("invalid breach level did not fail the assault subdomain closed");
+  }
+  Store(g_siege, 0x3D8, std::int32_t{1});
+
+  g_assault_progress_available = false;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      !snapshot.active_wars[0].objective_province_states[0].siege_observable ||
+      snapshot.active_wars[0]
+          .objective_province_states[0]
+          .assault_observable) {
+    return Fail("failed daily projection partially published assault state");
+  }
+  g_assault_progress_available = true;
+
+  Store(g_siege, 0x44C, std::uint8_t{2});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0]
+          .objective_province_states[0]
+          .assault_observable) {
+    return Fail("invalid assault flag was coerced into a public bool");
+  }
+  Store(g_siege, 0x44C, std::uint8_t{0});
+
+  Store(g_siege, 0x3D8, std::int32_t{0});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot)) {
+    return Fail("intact-wall assault projection was unavailable");
+  }
+  const auto &intact_assault_state =
+      snapshot.active_wars[0].objective_province_states[0];
+  if (!intact_assault_state.assault_observable ||
+      intact_assault_state.breach_level != 0 ||
+      intact_assault_state.assault_in_progress ||
+      intact_assault_state.can_start_assault ||
+      intact_assault_state.can_stop_assault ||
+      intact_assault_state.assault_daily_progress.raw != 0 ||
+      intact_assault_state.assault_daily_casualties != 0) {
+    return Fail("intact walls did not publish a closed zero projection");
+  }
+  Store(g_siege, 0x3D8, std::int32_t{1});
 
   Store(g_second_war_objective_province, 0x744,
         std::int32_t{0x02000003});
@@ -2949,6 +3113,150 @@ int main() {
     return Fail("merge-armies ignored generation or controllability gates");
   }
 
+  Store(g_siege, 0x3D8, std::int32_t{1});
+  Store(g_siege, 0x44C, std::uint8_t{0});
+  g_expected_command = ExpectedCommand::start_assault;
+  g_submit_called = false;
+  g_submit_result = true;
+  g_start_assault_validate_allowed = true;
+  g_start_assault_validate_called = false;
+  g_assault_clone_called = false;
+  g_assault_destroy_called = false;
+  g_assault_cloned_command.fill(std::byte{0});
+  if (xar::ck3_11906::SubmitStartAssault(bindings, active_siege_id) !=
+          xar::ck3_11906::StartAssaultResult::start_submitted ||
+      !g_start_assault_validate_called || !g_submit_called ||
+      !g_assault_clone_called || !g_assault_destroy_called) {
+    return Fail("start-assault did not validate, clone, queue, and destroy");
+  }
+  std::uintptr_t assault_clone_primary = 0;
+  std::uintptr_t assault_clone_secondary = 0;
+  std::int32_t assault_clone_kind = -1;
+  std::int32_t assault_clone_actor = -1;
+  std::int32_t assault_clone_siege = -1;
+  std::memcpy(&assault_clone_primary,
+              g_assault_cloned_command.data() + 0x00,
+              sizeof(assault_clone_primary));
+  std::memcpy(&assault_clone_secondary,
+              g_assault_cloned_command.data() + 0x18,
+              sizeof(assault_clone_secondary));
+  std::memcpy(&assault_clone_kind,
+              g_assault_cloned_command.data() + 0x20,
+              sizeof(assault_clone_kind));
+  std::memcpy(&assault_clone_actor,
+              g_assault_cloned_command.data() + 0x24,
+              sizeof(assault_clone_actor));
+  std::memcpy(&assault_clone_siege,
+              g_assault_cloned_command.data() + 0x28,
+              sizeof(assault_clone_siege));
+  if (assault_clone_primary != 0x1A1A1A1A ||
+      assault_clone_secondary != 0x1B1B1B1B ||
+      assault_clone_kind != 1 ||
+      assault_clone_actor != played_character_id ||
+      assault_clone_siege != active_siege_id) {
+    return Fail("start-assault clone lost its exact native payload");
+  }
+  // Queue acceptance does not execute the fixture clone or fabricate the
+  // Start postcondition in the same snapshot.
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0]
+          .objective_province_states[0]
+          .assault_in_progress) {
+    return Fail("start-assault ACK fabricated an applied postcondition");
+  }
+
+  g_submit_called = false;
+  g_submit_result = false;
+  g_assault_clone_called = false;
+  g_assault_destroy_called = false;
+  if (xar::ck3_11906::SubmitStartAssault(bindings, active_siege_id) !=
+          xar::ck3_11906::StartAssaultResult::submission_failed ||
+      !g_submit_called || !g_assault_clone_called ||
+      !g_assault_destroy_called) {
+    return Fail("start-assault hid queue rejection or leaked its original");
+  }
+  g_submit_result = true;
+  g_submit_called = false;
+  g_start_assault_validate_allowed = false;
+  g_assault_clone_called = false;
+  g_assault_destroy_called = false;
+  if (xar::ck3_11906::SubmitStartAssault(bindings, active_siege_id) !=
+          xar::ck3_11906::StartAssaultResult::validator_rejected ||
+      g_submit_called || g_assault_clone_called || g_assault_destroy_called) {
+    return Fail("start-assault queued after complete validator rejection");
+  }
+  g_start_assault_validate_allowed = true;
+  if (xar::ck3_11906::SubmitStartAssault(bindings, 0x02000001) !=
+      xar::ck3_11906::StartAssaultResult::siege_not_found) {
+    return Fail("start-assault ignored the full SiegeID generation");
+  }
+  Store(g_war_objective_province, 0x790, std::int32_t{-1});
+  if (xar::ck3_11906::SubmitStartAssault(bindings, active_siege_id) !=
+      xar::ck3_11906::StartAssaultResult::siege_not_found) {
+    return Fail("start-assault ignored the Province/Siege backlink");
+  }
+  Store(g_war_objective_province, 0x790, active_siege_id);
+
+  Store(g_siege, 0x44C, std::uint8_t{1});
+  if (xar::ck3_11906::SubmitStartAssault(bindings, active_siege_id) !=
+      xar::ck3_11906::StartAssaultResult::assault_already_active) {
+    return Fail("start-assault did not report an already-active siege");
+  }
+  g_expected_command = ExpectedCommand::stop_assault;
+  g_submit_called = false;
+  g_stop_assault_validate_allowed = true;
+  g_stop_assault_validate_called = false;
+  g_assault_clone_called = false;
+  g_assault_destroy_called = false;
+  g_assault_cloned_command.fill(std::byte{0});
+  if (xar::ck3_11906::SubmitStopAssault(bindings, active_siege_id) !=
+          xar::ck3_11906::StopAssaultResult::stop_submitted ||
+      !g_stop_assault_validate_called || !g_submit_called ||
+      !g_assault_clone_called || !g_assault_destroy_called) {
+    return Fail("stop-assault did not validate, clone, queue, and destroy");
+  }
+  std::memcpy(&assault_clone_primary,
+              g_assault_cloned_command.data() + 0x00,
+              sizeof(assault_clone_primary));
+  std::memcpy(&assault_clone_secondary,
+              g_assault_cloned_command.data() + 0x18,
+              sizeof(assault_clone_secondary));
+  if (assault_clone_primary != 0x1C1C1C1C ||
+      assault_clone_secondary != 0x1D1D1D1D) {
+    return Fail("stop-assault clone used the Start command class");
+  }
+
+  g_submit_called = false;
+  g_submit_result = false;
+  g_assault_clone_called = false;
+  g_assault_destroy_called = false;
+  if (xar::ck3_11906::SubmitStopAssault(bindings, active_siege_id) !=
+          xar::ck3_11906::StopAssaultResult::submission_failed ||
+      !g_submit_called || !g_assault_clone_called ||
+      !g_assault_destroy_called) {
+    return Fail("stop-assault hid queue rejection or leaked its original");
+  }
+  g_submit_result = true;
+  g_submit_called = false;
+  g_stop_assault_validate_allowed = false;
+  g_assault_clone_called = false;
+  g_assault_destroy_called = false;
+  if (xar::ck3_11906::SubmitStopAssault(bindings, active_siege_id) !=
+          xar::ck3_11906::StopAssaultResult::validator_rejected ||
+      g_submit_called || g_assault_clone_called || g_assault_destroy_called) {
+    return Fail("stop-assault queued after complete validator rejection");
+  }
+  g_stop_assault_validate_allowed = true;
+  Store(g_siege, 0x44C, std::uint8_t{0});
+  if (xar::ck3_11906::SubmitStopAssault(bindings, active_siege_id) !=
+      xar::ck3_11906::StopAssaultResult::assault_not_active) {
+    return Fail("stop-assault did not report an inactive siege");
+  }
+  if (xar::ck3_11906::SubmitStopAssault(bindings, 0x02000001) !=
+      xar::ck3_11906::StopAssaultResult::siege_not_found) {
+    return Fail("stop-assault ignored the full SiegeID generation");
+  }
+
   std::vector<xar::ck3_11906::DeclarableWarSnapshot> declarations;
   if (xar::ck3_11906::ReadDeclarableWarsForTarget(
           bindings, enemy_character_id, declarations) !=
@@ -3225,6 +3533,8 @@ int main() {
                "move_army_command=1 "
                "disband_army_command=1 "
                "split_army_half_command=1 "
+               "merge_armies_command=1 "
+               "assault_snapshot=1 assault_commands=1 "
                "declarable_war_enumeration=1 "
                "declare_war_command=1 "
                "arrange_marriage_query=1 "

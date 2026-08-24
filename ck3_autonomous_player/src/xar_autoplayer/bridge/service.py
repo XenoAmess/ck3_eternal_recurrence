@@ -34,6 +34,8 @@ from .war_contract import (
     move_army_step,
     normalize_active_wars,
     player_armies_from_state,
+    start_assault_step,
+    stop_assault_step,
 )
 from ..strategy import choose_one_life_turn, read_one_life_strategy
 
@@ -594,6 +596,36 @@ class GameplayBridgeService:
             ),
             "army_id": army_id,
             "target_province_id": target_province_id,
+        }
+
+    def start_assault(
+        self,
+        siege_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Start Assault on one exact full-generation native SiegeID."""
+        step = start_assault_step(siege_id)
+        return {
+            **self._execute_typed_war_step(
+                step, expected_revision=expected_revision
+            ),
+            "siege_id": siege_id,
+        }
+
+    def stop_assault(
+        self,
+        siege_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Stop Assault on one exact full-generation native SiegeID."""
+        step = stop_assault_step(siege_id)
+        return {
+            **self._execute_typed_war_step(
+                step, expected_revision=expected_revision
+            ),
+            "siege_id": siege_id,
         }
 
     def disband_army(

@@ -142,6 +142,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = "game.command.split-army-half-N";
   } else if (step.starts_with("merge-armies-")) {
     capability = "game.command.merge-armies-N-with-N";
+  } else if (step.starts_with("start-assault-")) {
+    capability = "game.command.start-assault-N";
+  } else if (step.starts_with("stop-assault-")) {
+    capability = "game.command.stop-assault-N";
   } else if (step.starts_with("select-event-option-")) {
     capability = "game.command.select-event-option-N";
   } else if (step.size() == 11 && step.starts_with("set-speed-") &&

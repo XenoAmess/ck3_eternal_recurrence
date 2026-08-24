@@ -53,6 +53,10 @@ public:
   virtual MergeArmiesResult
   submit_merge_armies(std::int32_t destination_army_id,
                       std::int32_t source_army_id) const noexcept = 0;
+  virtual StartAssaultResult
+  submit_start_assault(std::int32_t siege_id) const noexcept = 0;
+  virtual StopAssaultResult
+  submit_stop_assault(std::int32_t siege_id) const noexcept = 0;
   virtual bool read_declarable_wars(
       std::vector<DeclarableWarSnapshot> &output) const noexcept = 0;
   virtual DeclareWarResult
@@ -141,6 +145,14 @@ inline MergeArmiesResult SubmitMergeArmies(
     const GameAdapter &game, std::int32_t destination_army_id,
     std::int32_t source_army_id) noexcept {
   return game.submit_merge_armies(destination_army_id, source_army_id);
+}
+inline StartAssaultResult SubmitStartAssault(const GameAdapter &game,
+                                             std::int32_t siege_id) noexcept {
+  return game.submit_start_assault(siege_id);
+}
+inline StopAssaultResult SubmitStopAssault(const GameAdapter &game,
+                                           std::int32_t siege_id) noexcept {
+  return game.submit_stop_assault(siege_id);
 }
 inline bool ReadDeclarableWars(
     const GameAdapter &game,

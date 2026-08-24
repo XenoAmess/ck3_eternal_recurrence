@@ -26,12 +26,15 @@ constexpr AdapterDescriptor kPreferredDescriptor{
     kPreferredCapabilities,
 };
 
-constexpr std::array<std::string_view, 5> kFutureCapabilities{
+constexpr std::array<std::string_view, 8> kFutureCapabilities{
     "game.state.snapshot",
     "game.command.pause-map",
     "game.command.preview-move-army-N-to-N",
     "game.command.split-army-half-N",
     "game.command.merge-armies-N-with-N",
+    "game.state.war-objective-assault",
+    "game.command.start-assault-N",
+    "game.command.stop-assault-N",
 };
 constexpr AdapterDescriptor kFutureDescriptor{
     "fixture-future",
@@ -96,6 +99,14 @@ public:
   xar::game::MergeArmiesResult
   submit_merge_armies(std::int32_t, std::int32_t) const noexcept override {
     return xar::game::MergeArmiesResult::unavailable;
+  }
+  xar::game::StartAssaultResult
+  submit_start_assault(std::int32_t) const noexcept override {
+    return xar::game::StartAssaultResult::unavailable;
+  }
+  xar::game::StopAssaultResult
+  submit_stop_assault(std::int32_t) const noexcept override {
+    return xar::game::StopAssaultResult::unavailable;
   }
   bool read_declarable_wars(
       std::vector<xar::game::DeclarableWarSnapshot> &) const noexcept override {
@@ -175,12 +186,16 @@ int main() {
                 "game.state.war-objective-garrison") ||
       !Contains(known.capabilities,
                 "game.state.war-objective-siege-progress") ||
+      !Contains(known.capabilities,
+                "game.state.war-objective-assault") ||
       !Contains(known.capabilities, "game.state.army-routes") ||
       !Contains(known.capabilities,
                 "game.command.preview-move-army-N-to-N") ||
       !Contains(known.capabilities, "game.command.split-army-half-N") ||
       !Contains(known.capabilities,
                 "game.command.merge-armies-N-with-N") ||
+      !Contains(known.capabilities, "game.command.start-assault-N") ||
+      !Contains(known.capabilities, "game.command.stop-assault-N") ||
       !Contains(known.capabilities, "game.command.declare-war-N") ||
       !Contains(known.capabilities,
                 "game.command.query-arrange-marriage-choices") ||
@@ -206,6 +221,8 @@ int main() {
       !partial.supports_step("preview-move-army-1-to-2") ||
       !partial.supports_step("split-army-half-1") ||
       !partial.supports_step("merge-armies-1-with-2") ||
+      !partial.supports_step("start-assault-16777217") ||
+      !partial.supports_step("stop-assault-16777217") ||
       partial.supports_step("declare-war-99-1-0") ||
       partial.supports_step("unsupported-step")) {
     return Fail("capability lookup did not use the selected adapter set");

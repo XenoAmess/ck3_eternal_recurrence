@@ -164,8 +164,8 @@ sibling CArmy，随后才在 source/sibling 间分配 regiment。因此该命令
 不是同一 CUnit 内部的 regiment 分组；但同步成功仍只称 `split_submitted`，绝不提前声明第二军已经出现；
 队列拒绝则明确返回 `submission_failed`。
 最小后置条件必须由后续 paused snapshot 验证：原 source ID 仍存在、玩家可控 CUnit 集合恰好净增一个 ID；
-若需证明独立控制，只移动不承担围城的一支，并确认另一支留守且原围城继续。当前 native C++ slice 与离线 fixture
-已覆盖 ID 映射、validator、clone/submit/destructor 和“不伪造后置状态”；尚未操作 CK3 做实机提交。
+若需证明独立控制，只移动不承担围城的一支，并确认另一支留守且原围城继续。native C++ slice 与离线 fixture
+覆盖 ID 映射、validator、clone/submit/destructor 和“不伪造后置状态”；2026-08-24 的实机结果另见下文。
 
 Python/MCP 只在 hello **精确**包含 `game.command.split-army-half-N` 时，才为当前 snapshot 中每个
 `controllable=true` 的 public CUnit 动态展开 `split-army-half-<id>`；partial/unknown adapter 不会得到
@@ -177,8 +177,8 @@ Python driver 提交 primitive 前记录 `source_army_id`、`submitted_date_raw`
 `player_army_ids_before`。primitive 成功后只读取一次当下已经到达的 snapshot，绝不等待：若 source 仍存在且
 可控 CUnit 集合相对 before 恰好新增一个 ID，则回执为 `war_action.status=split_applied` 并附
 `sibling_army_id`；没有即时 sibling、出现多个新 ID 或 source 已消失都仍返回 `split_submitted`，不当成失败。
-该 primitive 不自动推进时间，当前 planner 也刻意不选择 split；实机策略与稳定后置条件闭合前只能由显式 MCP
-调用触发。
+该 primitive 不自动推进时间，当前 planner 也刻意不选择 split；它只能由显式 MCP 调用触发，避免在未知 regiment
+分配与围城窗口中自动削弱主力。
 
 ### Merge Armies Python/MCP 提交契约
 
@@ -194,6 +194,15 @@ pure-native backend；MCP 继续使用通用 `ck3_execute_step`，不增加专�
 `war_action.status=merge_applied`；任一证据缺失、目的军移动/换 owner、source 仍可见或发生额外军队增减，都只返回
 `merge_submitted`，不猜部分完成。这里的 `merge_applied` 是 Python 对一次即时帧的严格投影；native 同步 typed
 success 仍只有 `merge_submitted`。
+
+2026-08-24 的 exact-build、最小化、暂停态实机闭合了两条后置链。第一次对 `83886341`
+执行 Split，native 回执为 `split_submitted`；两秒内、游戏日期未推进的 snapshot 保留 source，并恰好新增
+可控 sibling `67108903`。把 sibling 合回后再次 Split 得到 `83886119`；随后 sibling 独立移动到 `2596`
+并建立 `SiegeID=67108912`，original 独立移动到 `2585` 并建立 `SiegeID=83886106`，证明它们是可分别
+控制的 public CUnit，而非同军内部标签。两次 Merge 都先只返回 `merge_submitted`，再由 paused snapshot
+证明 source 消失、destination `83886341` 的 ID/owner/ProvinceID 保留；第二次发生在游戏日期
+`53176104`、两军同驻 `2585` 时，合并后同一围城 `83886106` 仍存在并报告
+`besieging_strength=1501`。这些证据验证的是后续 snapshot，不改变 ACK-only 的稳定 typed 语义。
 
 ## 命令后置条件
 

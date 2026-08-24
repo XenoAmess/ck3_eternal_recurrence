@@ -277,6 +277,44 @@ void AppendWarObjectiveProvinceState(
     } else {
       result += SignedNumber(state.siege_days_left);
     }
+    result += ",\"assault_observable\":";
+    result += state.assault_observable ? "true" : "false";
+    result += ",\"breach_level\":";
+    if (!state.assault_observable) {
+      result += "null";
+    } else {
+      result += SignedNumber(state.breach_level);
+    }
+    result += ",\"assault_in_progress\":";
+    if (!state.assault_observable) {
+      result += "null";
+    } else {
+      result += state.assault_in_progress ? "true" : "false";
+    }
+    result += ",\"can_start_assault\":";
+    if (!state.assault_observable) {
+      result += "null";
+    } else {
+      result += state.can_start_assault ? "true" : "false";
+    }
+    result += ",\"can_stop_assault\":";
+    if (!state.assault_observable) {
+      result += "null";
+    } else {
+      result += state.can_stop_assault ? "true" : "false";
+    }
+    result += ",\"assault_daily_progress\":";
+    if (!state.assault_observable) {
+      result += "null";
+    } else {
+      AppendFixedPoint(result, state.assault_daily_progress);
+    }
+    result += ",\"assault_daily_casualties\":";
+    if (!state.assault_observable) {
+      result += "null";
+    } else {
+      result += SignedNumber(state.assault_daily_casualties);
+    }
     result += '}';
   }
   result += '}';
@@ -797,6 +835,14 @@ std::optional<std::int32_t> DisbandArmyStep(
 std::optional<std::int32_t> SplitArmyHalfStep(
     std::string_view step) noexcept {
   constexpr std::string_view prefix = "split-army-half-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
+std::optional<std::int32_t> AssaultStep(
+    std::string_view step, std::string_view prefix) noexcept {
   if (!step.starts_with(prefix)) {
     return std::nullopt;
   }
@@ -1523,6 +1569,90 @@ void RunConnectedSession(HANDLE pipe, const xar::game::GameAdapter &game,
               } else if (result == xar::game::MergeArmiesResult::
                                        submission_failed) {
                 error = "CK3 rejected merge-armies queue submission";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step.starts_with("start-assault-")) {
+          const auto siege_id = AssaultStep(step, "start-assault-");
+          if (!siege_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid start-assault-<siege_id> step"));
+          } else {
+            const auto result =
+                xar::game::SubmitStartAssault(game, siege_id.value());
+            if (result == xar::game::StartAssaultResult::start_submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, true,
+                                           "start_submitted"));
+            } else {
+              std::string_view error =
+                  "CK3 start-assault state is unavailable";
+              if (result == xar::game::StartAssaultResult::
+                                no_played_character) {
+                error = "no living played CK3 character";
+              } else if (result ==
+                         xar::game::StartAssaultResult::siege_not_found) {
+                error = "CK3 siege was not found";
+              } else if (result == xar::game::StartAssaultResult::
+                                       assault_already_active) {
+                error = "CK3 assault is already active";
+              } else if (result == xar::game::StartAssaultResult::
+                                       validator_rejected) {
+                error = "CK3 rejected start-assault validation";
+              } else if (result == xar::game::StartAssaultResult::
+                                       submission_failed) {
+                error = "CK3 rejected start-assault queue submission";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step.starts_with("stop-assault-")) {
+          const auto siege_id = AssaultStep(step, "stop-assault-");
+          if (!siege_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid stop-assault-<siege_id> step"));
+          } else {
+            const auto result =
+                xar::game::SubmitStopAssault(game, siege_id.value());
+            if (result == xar::game::StopAssaultResult::stop_submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, true,
+                                           "stop_submitted"));
+            } else {
+              std::string_view error =
+                  "CK3 stop-assault state is unavailable";
+              if (result == xar::game::StopAssaultResult::
+                                no_played_character) {
+                error = "no living played CK3 character";
+              } else if (result ==
+                         xar::game::StopAssaultResult::siege_not_found) {
+                error = "CK3 siege was not found";
+              } else if (result == xar::game::StopAssaultResult::
+                                       assault_not_active) {
+                error = "CK3 assault is not active";
+              } else if (result == xar::game::StopAssaultResult::
+                                       validator_rejected) {
+                error = "CK3 rejected stop-assault validation";
+              } else if (result == xar::game::StopAssaultResult::
+                                       submission_failed) {
+                error = "CK3 rejected stop-assault queue submission";
               }
               connected = xar::bridge::WriteFrame(
                   pipe, CommandResultFrame(request_id, step, false, error));

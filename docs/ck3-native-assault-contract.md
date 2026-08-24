@@ -3,25 +3,65 @@
 更新时间：2026-08-24；目标镜像：CK3 `1.19.0.6`，SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 
-本文冻结原版围城窗口 **Assault Fort / Stop Assault** 的只读逆向结果，供后续
-exact-build adapter、snapshot 和 command 实现使用。稳定的上层语义与逐版本 ABI 必须分离：
+本文冻结原版围城窗口 **Assault Fort / Stop Assault** 的只读逆向结果及其已实现的
+exact-build adapter、snapshot 和 command 契约。稳定的上层语义与逐版本 ABI 必须分离：
 本文中的 RVA、vtable、对象偏移和 command bytes 只属于上述精确 EXE，不是跨版本接口。
 
 ## 证据状态与边界
 
-本轮只有以下证据：
+当前证据包括：
 
 - 对精确 `ck3.exe` 的离线反汇编、MSVC RTTI、vtable 和 xref；
 - 原版 `game/gui/window_siege.gui`、英文本地化与 `00_defines.txt`；
 - 已有 rich siege snapshot 的历史实机数值，用来说明决策还缺什么字段。
+- 版本专属 C++ fixture、完整 MSVC 构建/CTest 与精确 EXE 离线 anchor 扫描。
 
-以下内容均为 **静态确认**：原版 GUI 入口、Start/Stop command 生命周期、validator 条件、
-breach 字段语义、每日 assault 进度和伤亡计算入口。以下内容仍为 **未实机**：bridge 实现、
-capability 广告、真实 Start/Stop 提交、当前存档的 `breach_level`、原生每日投影值以及 53 天内
-完成围城的结果。本轮没有连接、读取或操作 CK3 进程，也没有提交任何游戏命令。
+以下内容均为 **静态与 fixture 确认**：原版 GUI 入口、Start/Stop command 生命周期、validator 条件、
+breach 字段语义、每日 assault 进度和伤亡计算入口、bridge schema、严格 step、bool queue ACK 与
+原对象销毁。以下内容仍为 **未实机**：真实 Start/Stop 提交、当前存档的 `breach_level`、原生每日
+投影值以及 53 天内完成围城的结果。本轮没有连接、读取或操作 CK3 进程，也没有提交任何游戏命令。
 
-因此本页不能被引用为 Assault capability 已经可用或实机通过。实现后仍须分别完成版本专属
-fixture 和可恢复的最小化实机后置条件验收。
+因此本页可证明 exact adapter 的离线 capability 与 fixture 已闭环，但不能被引用为实机通过。
+实际用兵仍须完成可恢复的最小化实机后置条件验收。
+
+## 已实现的稳定桥接契约
+
+精确 adapter 只广告三项稳定能力：
+
+- `game.state.war-objective-assault`；
+- `game.command.start-assault-N`；
+- `game.command.stop-assault-N`。
+
+动态 literal 严格为 `start-assault-<full-generation SiegeID>` 与
+`stop-assault-<full-generation SiegeID>`；ID 必须是无符号十进制正 `int32`，不接受符号、空串、额外
+分隔符或尾随字符。它不是 ProvinceID、公开 ArmyID 或低 24 位 slot。
+
+paused rich-siege 的 `active_siege` JSON 内新增：
+
+```json
+{
+  "assault_observable": true,
+  "breach_level": 1,
+  "assault_in_progress": false,
+  "can_start_assault": true,
+  "can_stop_assault": false,
+  "assault_daily_progress": {"raw": 340000, "scale": 100000},
+  "assault_daily_casualties": 16
+}
+```
+
+这些值是一个原子子域：running snapshot、无 active Siege、generation/alive/backlink 失败、非法
+`breach_level`、非法 active byte、缺少任一 binding 或任一每日投影失败时，
+`assault_observable=false` 且其他六项全为 `null`。完整 validator 的 `false` 是可观测 eligibility，
+不是读取失败。`breach_level=0` 时不调用会以 `breach_level-1` 索引 defines 的 casualty routine；公开
+每日进度与伤亡严格为零，两个 eligibility 仍来自完整 validator。
+
+Start 的 native enum 为 `start_submitted | submission_failed | no_played_character |
+siege_not_found | assault_already_active | validator_rejected | unavailable`；Stop 对应
+`stop_submitted | submission_failed | no_played_character | siege_not_found | assault_not_active |
+validator_rejected | unavailable`。只有两个 `*_submitted` 通过 pipe 返回 `ok=true`；它们仅是同步 clone
+进入 locked queue 的 bool ACK。其余结果 fail closed，且 ACK 后主动发布的一帧也不能被当作 applied：
+上层必须等待后续 paused consistent snapshot，再执行本页的一日后置语义。
 
 ## 原版 GUI 与 reflection 入口
 
@@ -298,6 +338,59 @@ queue ACK、`submitted`、单次 work delta 或出现 casualty 都不能单独�
 如果 paused 帧暂时出现 `current_work >= total_work` 但 Province/Siege 关系尚未完成结算，应等待下一
 consistent snapshot，不能绕过 occupation 后置条件。
 
+## Python / MCP 消费层（离线闭环）
+
+上层只在 hello 广告完整 recovery bundle 时，才从当前 paused `active_siege` 展开 generation-bound
+literal：Start 必须同时具备 `game.state.war-objective-assault`、`game.command.start-assault-N` 与
+`game.command.stop-assault-N`；Stop 为恢复已存在的 Assault，只要求 state + Stop。`start-assault-X`、
+直接广告某个 literal 或任何缺件都不会产生 Start。公开 MCP typed tools 为 `ck3_start_assault(siege_id)` 与
+`ck3_stop_assault(siege_id)`；通用 `ck3_execute_step` 使用同一 parser 和后置条件，不存在旁路。
+
+Python normalization 把 `assault_observable=false` 与合法的 false/zero 完全分开：不可观测时六个子字段
+必须同时为 `null`；可观测时 `breach_level` 必须在 `0..2`，三个 flag 必须为 bool，daily progress 必须
+是 scale `100000` 的非负 fixed point，casualties 必须是非负 int32。稳定层派生
+`walls_breached = breach_level > 0`，但不会反推或替代原生 validator。
+
+Start/Stop 收到 `*_submitted` ACK 后，driver 等待同一 war、同一 objective Province、同一完整 SiegeID
+的后续 paused snapshot。只有目标 flag 分别变为 true/false 才返回 `assault_started` / `assault_stopped`；
+超时、SiegeID/backlink 变化、子域不可观测或 flag 未变都报失败，不把 ACK 重标成 applied。
+
+自动策略的 Start gate 同时要求：
+
+- `walls_breached=true` 且 `can_start_assault=true`；
+- 原生当日 progress 为正，daily casualties 可观测；
+- 当日伤亡扣除后的 eligible besieging strength 仍不低于当前 garrison；
+- 当前 Siege 仍由玩家军队推进，且没有非撤退敌军的 current/target/route 指向驻守省份；
+- 全局没有任一 controllable army 处于 `moving`/state code 7，或仍带 move target/非空 route。即使军队
+  同帧仍报告 `sieging`，移动 intent 也优先，禁止 Start。
+
+Assault active 后，`life-advance` horizon 强制为一个游戏日。每个 paused 终点重新读取 Siege work、
+eligible besieging strength、当日 projection/casualties 和敌军汇聚；上一切片只用同一 objective 的
+`before_state`/`after_state.besieging_strength` 计算非负 `strength_loss`。它只是 eligible besieging strength
+的帧间净变化，不能冒充精确伤亡；progress frame 中的 army `soldiers` 可为 `null`，若偶尔存在也只作诊断，
+绝不成为继续下一日的门槛。上一 assault 切片不是恰好一日、work 未增长、strength change 不可观测，或
+当前/下一日投影兵力跌破 garrison，都会退出安全预算。任一 gate 失败时先选 exact Stop；Stop 不可用则
+阻断时间推进。
+成功 `assault_started` 还会在 command history 中打开 lifecycle latch。只要同 war/objective 的 row 缺失、
+siege/assault 子域不可观测，planner 与 direct MCP `life-advance` 都会阻断，不会因 review 为空退回 30 日。
+同 SiegeID inactive、`siege_observable=true && active_siege=null`、不同的正 generation、war 结束、成功
+`assault_stopped` 或 checkpoint restore 都会闭合/隔离旧 latch，避免卡住后来 Siege。Start 后最新一次
+`life-advance` 若 `ok!=true`，由于可能已经 resume/推进但没有完整 postcondition，下一轮必须 Stop/阻断；
+direct MCP 在发送 `set-speed-5`/`resume-map` 前执行同一检查。decorated `auto-turn` 优先读取根部真实
+`assault_action`，不把 planner payload 当作 applied 事实。
+策略只保留 `projection_horizon_days=1`，不使用普通 `days_left`，也不从当前 progress/casualties 外推
+Assault ETA。
+
+同一 horizon 还覆盖尚未进入围城的行军：paused 起始帧只要任一 controllable army 仍有非空
+`route_province_ids`、正 `move_target_province_id`，或 army state 明确为 `moving`/code 7，`life-advance` 就
+优先采用一日上限，而不是普通战争的 30 日或普通围城的 7 日。若 moving 帧因解析失败没有 target/route，
+planner 直接等待完整 paused route，不允许 Start 或推进。原因是 running snapshot 不发布完整 route，不能
+等待跨 hop 后才重新审计敌军改道。
+到达并清空 route/target 后，若没有 active assault，horizon 才恢复到对应的 7/30 日规则。该门槛来自
+`53176368` 的实机故障：`[2597,2596]` 的活动路线曾单次推进 12 日才因跨 hop 停止。
+
+上述消费层由完整 Python 回归夹具覆盖；仍不替代本页要求的可恢复实机后置条件验收。
+
 ## 当前 1614/500 与 53 天边界
 
 历史 rich siege 现场给出的相关量约为：eligible besieging strength `1614`、current garrison
@@ -348,4 +441,26 @@ CK3 升级时必须按能力族迁移：
 
 任一 anchor、布局或语义关系不匹配时，只移除 Assault 相关 snapshot/command capability；不应关闭已经
 迁移完成的 pause、event、checkpoint 或其他战争能力，也绝不在未知版本上扫描若干相似 pattern 后试调用。
-本轮只冻结研究文档，没有修改 `ck3_1_19_0_6_anchors.json` 或生产代码。
+当前 1.19.0.6 adapter 已加入版本专属实现、fixture 与 anchor；这里的“已实现”仍只表示离线闭环，
+不替代上述可恢复实机 Start → 一日 tick → Stop/完成验收。
+
+## 2026-08-24 离线验证记录
+
+本轮在全新 `build-assault-fort-msvc-release-2` 目录使用 MSVC `19.51` 完成 Release 配置与构建；随后
+以 Visual Studio 自带 CTest 重跑四项 native test，结果为 `4/4 passed`：game-access fixture、adapter
+registry、suspended-injection fixture 与 running-attach fixture。后两项连接的都是仓库自带测试 target，
+不是 CK3 进程。
+
+game-access fixture 明确通过 `assault_snapshot=1 assault_commands=1`；adapter registry fixture 通过
+`known_descriptor=1 adapter_capability_set=1 unknown_build_unsupported=1 future_adapter_registry=1`。
+对目标 `ck3.exe` 的只读离线 scanner 通过 `112` 个唯一签名和 `19` 个 vtable 前缀，并再次匹配本文的
+四个 Assault 函数入口及 Start/Stop 主、次 vtable；扫描期间没有启动、附加或操作 CK3。
+
+该次 fresh build 的诊断产物 SHA-256 为：
+
+```text
+xar_ck3_bridge.dll          E34F848FA1525D2ED3F9FED9AB647B8AE4DC5D03A8000F78F763140334215327
+xar_ck3_bridge_injector.exe 398105D40FFB46EABE52AFA48CE9649E9C945650035C0B460495700D1E57FE2F
+```
+
+这些 hash 只冻结本轮离线构建证据，不是发布通道或实机验收标记；build 目录本身不进入版本库。

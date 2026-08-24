@@ -123,7 +123,13 @@ marker。该字段不是通用 WAL，也不进入 snapshot 或事实 history。
 stall、war score、objective completion 等事实分析只读取恢复后的真实分支，而 planner 仍能避免立刻重走
 导致锁边恢复的同一 target+route 组合；若 fresh preview 已给出不同 route，则不阻断该 target。2026-08-24
 的确定性 Python 测试覆盖了 hot anchor 不误删、cold tail 提炼、持久化重读、新 episode 清理与 route
-变化后放行；这部分尚无额外 CK3 实机声明。
+变化后放行。同日的 managed restore 实机从末端锁边分支恢复到 checkpoint
+`date_raw=53174208`、SHA-256
+`187CA01BA0EF308B4ED88BB7CFE4FC8E7DAA09FB3B09735112E81B80A092A8D5`：CK3 PID 从
+`146240` 更换为 `90040`，事实 history 精确保留 save anchor 后写入 synthetic restore；advisory 记录
+恢复 origin `2598` 的入口 target `2585`、route `[2599,2587,2585]`，末端失败诊断则保留
+origin `2585`、target `2596`、route `[2587,2597,2596]`。checkpoint 文件未被覆盖，恢复后的
+planner 不会把已回滚命令重新当作事实。
 
 兼容旧代码已经写出的 v2 状态时还存在一个窄迁移路径：旧状态可能已有成功 restore row，却没有独立
 advisory。旧 extractor 产生的 `route_origin != restored_origin` advisory 也按缺失处理。仅在 cold bind 且

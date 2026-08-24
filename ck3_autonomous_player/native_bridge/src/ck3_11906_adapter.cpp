@@ -8,7 +8,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 39> kCapabilities{
+constexpr std::array<std::string_view, 42> kCapabilities{
     "game.state.snapshot",
     "game.state.xar-one-life-settlement",
     "game.state.map-ready",
@@ -22,6 +22,7 @@ constexpr std::array<std::string_view, 39> kCapabilities{
     "game.state.war-objective-fort-level",
     "game.state.war-objective-garrison",
     "game.state.war-objective-siege-progress",
+    "game.state.war-objective-assault",
     "game.state.player-armies",
     "game.state.army-routes",
     "game.command.pause-map",
@@ -41,6 +42,8 @@ constexpr std::array<std::string_view, 39> kCapabilities{
     "game.command.disband-army-N",
     "game.command.split-army-half-N",
     "game.command.merge-armies-N-with-N",
+    "game.command.start-assault-N",
+    "game.command.stop-assault-N",
     "game.command.query-declarable-wars",
     "game.command.declare-war-N",
     "game.command.enforce-demands-N",
@@ -116,6 +119,14 @@ public:
       std::int32_t source_army_id) const noexcept override {
     return ck3_11906::SubmitMergeArmies(bindings_, destination_army_id,
                                         source_army_id);
+  }
+  StartAssaultResult
+  submit_start_assault(std::int32_t siege_id) const noexcept override {
+    return ck3_11906::SubmitStartAssault(bindings_, siege_id);
+  }
+  StopAssaultResult
+  submit_stop_assault(std::int32_t siege_id) const noexcept override {
+    return ck3_11906::SubmitStopAssault(bindings_, siege_id);
   }
   bool read_declarable_wars(
       std::vector<DeclarableWarSnapshot> &output) const noexcept override {

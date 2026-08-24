@@ -27,6 +27,12 @@ using IsNativeComponentAlive = bool (*)(void *component);
 using ReadSiegeFixedPoint = std::int64_t *(*)(void *siege,
                                               std::int64_t *output);
 using GetSiegeDaysLeft = std::int32_t (*)(void *siege);
+using ReadAssaultDailyProgress = std::int64_t *(*)(
+    void *siege, std::int64_t *output, std::int32_t eligible_besiegers);
+using GetAssaultDailyCasualties = std::int32_t (*)(void *siege);
+using ValidateAssaultCommand = bool (*)(
+    std::int32_t command_kind, std::int32_t played_character_id,
+    std::int32_t siege_id, void *error_output);
 using IsProvinceOccupied = bool (*)(void *province);
 using GetProvinceInt32 = std::int32_t (*)(void *province);
 using ResolveDefaultRaiseProvince = void *(*)(void *character);
@@ -138,6 +144,10 @@ struct Bindings {
   std::uintptr_t split_army_half_secondary_vtable = 0;
   std::uintptr_t merge_armies_primary_vtable = 0;
   std::uintptr_t merge_armies_secondary_vtable = 0;
+  std::uintptr_t start_assault_primary_vtable = 0;
+  std::uintptr_t start_assault_secondary_vtable = 0;
+  std::uintptr_t stop_assault_primary_vtable = 0;
+  std::uintptr_t stop_assault_secondary_vtable = 0;
   std::uintptr_t send_character_interaction_primary_vtable = 0;
   std::uintptr_t send_character_interaction_secondary_vtable = 0;
   std::uintptr_t war_declaration_vtable = 0;
@@ -167,6 +177,11 @@ struct Bindings {
   ReadSiegeFixedPoint get_siege_progress = nullptr;
   ReadSiegeFixedPoint get_siege_total_work = nullptr;
   GetSiegeDaysLeft get_siege_days_left = nullptr;
+  ReadAssaultDailyProgress read_assault_daily_progress = nullptr;
+  GetAssaultDailyCasualties get_assault_daily_casualties = nullptr;
+  ValidateAssaultCommand validate_start_assault_command = nullptr;
+  ValidateAssaultCommand validate_stop_assault_command = nullptr;
+  DestroyNativeCommand destroy_assault_command = nullptr;
   IsProvinceOccupied is_province_occupied = nullptr;
   GetProvinceInt32 get_province_fort_level = nullptr;
   GetProvinceInt32 get_province_garrison_size = nullptr;
@@ -337,6 +352,17 @@ using game::MergeArmiesResult;
 MergeArmiesResult SubmitMergeArmies(const Bindings &bindings,
                                     std::int32_t destination_army_id,
                                     std::int32_t source_army_id) noexcept;
+
+using game::StartAssaultResult;
+using game::StopAssaultResult;
+
+// These commands contain only player kind, full-generation played
+// CharacterID and full-generation SiegeID. Queue acceptance is a typed ACK;
+// applied/complete remains a later paused-snapshot postcondition.
+StartAssaultResult SubmitStartAssault(const Bindings &bindings,
+                                      std::int32_t siege_id) noexcept;
+StopAssaultResult SubmitStopAssault(const Bindings &bindings,
+                                    std::int32_t siege_id) noexcept;
 
 using game::ReadDeclarableWarsResult;
 

@@ -210,6 +210,30 @@
       "pattern": "40 56 48 83 EC 40 48 8B 01 48 8B F1 FF 50 08 84 C0 0F 84 CD 01 00 00 48 8B CE E8 51 04 00 00"
     },
     {
+      "name": "start_assault_complete_validator",
+      "rva": "0x26BE8C0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 20 8B DA 49 8B E9 48 8B 15 4A D8 04 03 41 8B F8 44 8B F1"
+    },
+    {
+      "name": "stop_assault_complete_validator",
+      "rva": "0x26BEA90",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 30 8B DA 4D 8B F1 48 8B 15 7A D6 04 03 41 8B F8 8B E9"
+    },
+    {
+      "name": "assault_daily_progress_core",
+      "rva": "0x229F610",
+      "confidence": "high-static",
+      "pattern": "40 53 57 48 83 EC 38 48 8B FA 48 8B D9 48 63 15 48 F3 46 03 85 D2 7F 0F 33 C0 48 89 07 48 8B C7 48 83 C4 38 5F 5B C3"
+    },
+    {
+      "name": "assault_daily_casualties",
+      "rva": "0x229F410",
+      "confidence": "high-static",
+      "pattern": "40 53 48 83 EC 20 48 8B D9 48 8B 89 00 02 00 00 48 8B 01 FF 50 30 84 C0 74 0E 48 8B 8B 00 02 00 00 E8 4A F1 F6 FF"
+    },
+    {
       "name": "war_targeted_titles_serialize",
       "rva": "0x23E6B00",
       "confidence": "high-static-live-validated",
@@ -702,6 +726,20 @@
     "siege_progress_fraction": "0x229B960",
     "siege_total_work": "0x229CCA0",
     "siege_days_left": "0x229BAA0",
+    "assault_start_primary_vtable": "0x432CB30",
+    "assault_start_secondary_vtable": "0x432CB00",
+    "assault_stop_primary_vtable": "0x432CBC8",
+    "assault_stop_secondary_vtable": "0x432CA08",
+    "assault_start_validate": "0x26BE8C0",
+    "assault_stop_validate": "0x26BEA90",
+    "assault_start_execute": "0x26BE450",
+    "assault_stop_execute": "0x26BE9A0",
+    "assault_start_heap_constructor": "0x26C69B0",
+    "assault_stop_heap_constructor": "0x26C6960",
+    "assault_start_heap_clone": "0x26C2FC0",
+    "assault_stop_heap_clone": "0x26C30C0",
+    "assault_daily_progress_core": "0x229F610",
+    "assault_daily_casualties": "0x229F410",
     "war_targeted_titles_serialize": "0x23E6B00",
     "landed_title_capital_serialize": "0x20B0DA0",
     "title_province_county_capital_barony": "0x19D5BA9",
@@ -851,6 +889,26 @@
       "function_rvas": ["0x26B2850", "0x26B9F60", "0x7E6490", "0x7E6490", "0x7E9220"]
     },
     {
+      "name": "CStartAssaultCommand.primary",
+      "rva": "0x432CB30",
+      "function_rvas": ["0x963C60", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26BE4B0", "0x803620", "0x26C2FC0", "0x26C3050", "0x7E6490", "0x26C3060", "0x26C3080", "0x26C3090", "0x26C30A0", "0x26C30B0", "0x26BE4D0", "0x26BE570"]
+    },
+    {
+      "name": "CStartAssaultCommand.secondary",
+      "rva": "0x432CB00",
+      "function_rvas": ["0x26B2850", "0x26BE450", "0x7E6490", "0x7E6490", "0x7E9220"]
+    },
+    {
+      "name": "CStopAssaultCommand.primary",
+      "rva": "0x432CBC8",
+      "function_rvas": ["0x963C60", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26BEA00", "0x803620", "0x26C30C0", "0x26C3150", "0x7E6490", "0x26C3160", "0x26C3180", "0x26C3190", "0x26C31A0", "0x26C31B0", "0x26BE4D0", "0x26BE570"]
+    },
+    {
+      "name": "CStopAssaultCommand.secondary",
+      "rva": "0x432CA08",
+      "function_rvas": ["0x26B2850", "0x26BE9A0", "0x7E6490", "0x7E6490", "0x7E9220"]
+    },
+    {
       "name": "CSendCharacterInteractionCommand.primary",
       "rva": "0x40829F8",
       "function_rvas": ["0x801F40", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26B3350", "0x803620", "0x8037C0"]
@@ -940,6 +998,8 @@
       "province": "+0x200 CProvince pointer; objective publication requires exact pointer equality with the Province that supplied active_siege_id",
       "besieging_army_id": "+0x208 int32 full CArmyID; bridge joins it against generation-valid CUnit+0x178 values and publishes a public CUnit ID only for exactly one match",
       "current_work": "+0x3D0 signed int64 CFixedPoint raw work, scale 100000",
+      "breach_level": "+0x3D8 int32; exact public range 0..2, any other value makes the complete assault subdomain unavailable",
+      "assault_in_progress": "+0x44C uint8; exact public range 0..1, written by Start/Stop executors",
       "total_work": "RVA 0x229CCA0(CSiege*, int64* out) writes signed CFixedPoint raw work and returns out",
       "progress_fraction": "RVA 0x229B960(CSiege*, int64* out) writes min(current,total)/total as CFixedPoint raw 0..100000; this is a 0..1 fraction, not UI percent",
       "days_left": "RVA 0x229BAA0(CSiege*) returns int32 ceil(remaining/daily) game days; INT_MAX means invalid/dead/stalled/no daily progress and is published as null, while zero is valid"
@@ -1133,6 +1193,16 @@
       "lifecycle": "factory RVA 0x26C6CE0 allocates an engine-owned 0x40 object; range helper RVA 0x975ED0(header, insertion_index, begin, end) allocates and synchronously copies source IDs; wrapper RVA 0x973E00 deep-clones through primary +0x40 / RVA 0x26C26B0, submits player flags 0x0E, and returns the locked queue bool; false maps to submission_failed. Deleting destructor RVA 0x26B5330(command,1) frees the original source buffer then the factory object on every exit",
       "execution": "secondary executor RVA 0x26B9F60 reaches bulk core RVA 0x2948680; each compatible source transfers subordinate units into the destination and the source CUnit/CArmy is removed, preserving the destination public CUnit identity",
       "bridge_contract": "strict merge-armies-<destination public CUnitID>-with-<source public CUnitID>; both IDs must be distinct and currently player-controllable before the complete native validator; typed success is only merge_submitted until a later paused snapshot proves destination remains and source disappears"
+    },
+    "CStartStopAssaultCommand": {
+      "size": "0x30 for each separate class",
+      "start_vtables": "+0x00 = 0x432CB30, +0x18 = 0x432CB00",
+      "stop_vtables": "+0x00 = 0x432CBC8, +0x18 = 0x432CA08",
+      "payload": "+0x20=1 player command kind, +0x24 full-generation played CharacterID, +0x28 full-generation SiegeID",
+      "validators": "Start RVA 0x26BE8C0 and Stop RVA 0x26BEA90 consume (kind, CharacterID, SiegeID, error); bridge always calls the complete function with null error before submission",
+      "projection": "paused rich-siege calls both complete validators, core daily progress RVA 0x229F610 and casualties RVA 0x229F410; intact breach level 0 publishes exact zero projections without calling the casualties function that indexes breach_level-1",
+      "lifecycle": "common wrapper RVA 0x973E00 synchronously clones through primary +0x40 (Start 0x26C2FC0, Stop 0x26C30C0), submits flags 0x0E, and returns locked queue bool; bridge maps false to submission_failed then destroys its original stack object with RVA 0x963C60(delete_flags=0)",
+      "execution": "secondary executors Start 0x26BE450 / Stop 0x26BE9A0 write CSiege+0x44C to 1/0 respectively; submitted is not an applied or one-day outcome claim"
     },
     "CCasusBelliTypeDatabase": {
       "types": "+0x68 CCasusBelliType pointer array",

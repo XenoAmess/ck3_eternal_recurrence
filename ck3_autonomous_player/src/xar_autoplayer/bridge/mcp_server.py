@@ -263,6 +263,28 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_start_assault(
+        siege_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Start Assault for one exact full-generation native SiegeID."""
+        return service.start_assault(
+            siege_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_stop_assault(
+        siege_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Stop Assault for one exact full-generation native SiegeID."""
+        return service.stop_assault(
+            siege_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
     def ck3_disband_army(
         army_id: int,
         expected_revision: int | None = None,
