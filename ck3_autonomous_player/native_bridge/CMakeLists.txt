@@ -55,6 +55,7 @@ add_library(xar_ck3_bridge SHARED
   src/combat_v3_test_only.cpp
   src/game_adapter.cpp
   src/main_thread_query_mailbox_v1.cpp
+  src/route_contact_horizon_v1_mailbox.cpp
   src/startup_dx11_render_context_draw_guard_v1.cpp
   src/startup_localize_current_root_guard_v1.cpp
   src/startup_particle2_consumer_null_guard_v1.cpp
@@ -114,6 +115,7 @@ if(BUILD_TESTING)
   add_executable(xar_ck3_game_access_test
     src/ck3_11906.cpp
     src/ck3_11906_test.cpp
+    src/route_contact_horizon_v1_mailbox.cpp
   )
   target_include_directories(xar_ck3_game_access_test PRIVATE include)
   target_link_libraries(xar_ck3_game_access_test PRIVATE bcrypt)
@@ -138,6 +140,7 @@ if(BUILD_TESTING)
     src/ck3_11906_adapter.cpp
     src/ck3_11906.cpp
     src/combat_v3.cpp
+    src/route_contact_horizon_v1_mailbox.cpp
     src/war_entry_assessments_v1.cpp
     src/game_adapter_test.cpp
   )

@@ -188,7 +188,7 @@ int main(int argc, char **argv) {
   if (!ContainsAll(
           ck3_adapter_source,
           {
-              "constexpr std::array<std::string_view, 50> kCapabilities",
+              "constexpr std::array<std::string_view, 51> kCapabilities",
               "game.command.query-combat-simulation-inputs-v3-N",
               "read_combat_simulation_inputs_v3(",
               "ck3_11906::ReadCombatSimulationInputsV3(bindings_",

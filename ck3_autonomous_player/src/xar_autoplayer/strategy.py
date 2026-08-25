@@ -31,21 +31,26 @@ from .bridge.marriage_contract import (
 )
 from .bridge.settlement_contract import ONE_LIFE_SETTLEMENT_CAPABILITY
 from .bridge.war_contract import (
+    MAX_ROUTE_CONTACT_HOSTILE_IDS,
     RAISE_TROOPS_STEP,
+    advance_route_contact_horizon_step,
     controllable_armies,
     disband_army_step,
     enemy_primary_default_raise_province_ids,
     enforce_demands_step,
     enemy_armies_from_wars,
+    is_life_advance_step,
     merge_armies_step,
     move_army_step,
     parse_merge_armies_step,
     parse_move_army_step,
     parse_preview_move_army_step,
+    parse_query_route_contact_horizon_step,
     parse_split_army_half_step,
     parse_start_assault_step,
     parse_stop_assault_step,
     preview_move_army_step,
+    query_route_contact_horizon_step,
     query_war_termination_options_step,
     start_assault_step,
     stop_assault_step,
@@ -121,6 +126,19 @@ def _latest_index(
 ) -> int:
     for fallback_index, row in reversed(tuple(enumerate(commands, start=1))):
         if _effective_command(row) != command:
+            continue
+        if successful_only and row.get("ok") is not True:
+            continue
+        raw_index = row.get("index")
+        return raw_index if isinstance(raw_index, int) else fallback_index
+    return 0
+
+
+def _latest_life_advance_index(
+    commands: list[dict[str, object]], *, successful_only: bool = True
+) -> int:
+    for fallback_index, row in reversed(tuple(enumerate(commands, start=1))):
+        if not is_life_advance_step(_effective_command(row)):
             continue
         if successful_only and row.get("ok") is not True:
             continue
@@ -489,7 +507,7 @@ def _native_marriage_attempt_state(
         advances = sum(
             1
             for later in commands[position + 1 :]
-            if _effective_command(later) == "life-advance"
+            if is_life_advance_step(_effective_command(later))
             and later.get("ok") is True
         )
         timed_out = (
@@ -1073,6 +1091,10 @@ def choose_one_life_turn(
             isinstance(snapshot, dict)
             and snapshot.get("move_route_preview_supported") is True
         )
+        route_contact_horizon_supported = bool(
+            isinstance(snapshot, dict)
+            and snapshot.get("route_contact_horizon_supported") is True
+        )
         paused_objective_state_supported = bool(
             isinstance(snapshot, dict)
             and (
@@ -1086,6 +1108,7 @@ def choose_one_life_turn(
             (
                 army_routes_supported
                 or move_route_preview_supported
+                or route_contact_horizon_supported
                 or paused_objective_state_supported
             )
             and isinstance(snapshot, dict)
@@ -1120,6 +1143,22 @@ def choose_one_life_turn(
             for army in enemy_armies_from_wars(active_wars)
             if _army_tactical_state(army) != "retreating"
         ]
+        route_threat_enemy_ids = tuple(
+            sorted(
+                {
+                    enemy_id
+                    for enemy in route_threat_enemies
+                    if (enemy_id := _native_int(enemy.get("army_id")))
+                    is not None
+                    and enemy_id > 0
+                }
+            )
+        )
+        route_contact_scope_supported = bool(
+            route_contact_horizon_supported
+            and 0 < len(route_threat_enemy_ids)
+            <= MAX_ROUTE_CONTACT_HOSTILE_IDS
+        )
         enemy_endpoint_epochs = _enemy_endpoint_epochs(
             rows,
             snapshot if isinstance(snapshot, dict) else {},
@@ -2010,6 +2049,105 @@ def choose_one_life_turn(
                         "active_wars": war_summary,
                     }
                 if passive_route_audit["status"] == "unsafe":
+                    contact_horizon = (
+                        _fresh_route_contact_horizon(
+                            rows,
+                            snapshot,
+                            army_id=army_id,
+                            origin_province_id=current_province_id,
+                            target_province_id=observed_route_target,
+                            hostile_army_ids=route_threat_enemy_ids,
+                            route_province_ids=pursuit_army.get(
+                                "route_province_ids"
+                            ),
+                        )
+                        if route_contact_scope_supported
+                        else None
+                    )
+                    if (
+                        route_contact_scope_supported
+                        and contact_horizon is None
+                    ):
+                        horizon_step = query_route_contact_horizon_step(
+                            army_id,
+                            observed_route_target,
+                            route_threat_enemy_ids,
+                        )
+                        if horizon_step in available_steps:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_route_contact_horizon",
+                                "selected_step": horizon_step,
+                                "reason": "read the exact one-day native arrival/contact horizon before advancing an intersecting active route",
+                                "route_audit": passive_route_audit,
+                                "active_wars": war_summary,
+                            }
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_route_contact_horizon_unsupported",
+                            "selected_step": None,
+                            "required_step": horizon_step,
+                            "reason": "the intersecting active route requires a fresh exact one-day contact horizon",
+                            "route_audit": passive_route_audit,
+                            "active_wars": war_summary,
+                        }
+                    if (
+                        isinstance(contact_horizon, dict)
+                        and contact_horizon.get("one_day_contact_free") is True
+                    ):
+                        passive_route_audit = {
+                            **passive_route_audit,
+                            "status": "safe_one_day_contact_horizon",
+                            "contact_horizon": contact_horizon,
+                        }
+                        other_unsafe_armies = [
+                            candidate
+                            for candidate in unsafe_armies
+                            if candidate.get("army_id") != army_id
+                        ]
+                        if (
+                            other_unsafe_armies
+                            or threatened_stationary_armies
+                            or [
+                                candidate
+                                for candidate in combat_retreat_armies
+                                if candidate.get("army_id") != army_id
+                            ]
+                        ):
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_route_contact_horizon_global_blocked",
+                                "selected_step": None,
+                                "required_step": "complete-global-route-contact-horizon",
+                                "reason": "one army's contact-free horizon cannot authorize time while another controllable army remains unsafe or threatened",
+                                "route_audit": passive_route_audit,
+                                "other_unsafe_armies": other_unsafe_armies,
+                                "threatened_stationary_armies": threatened_stationary_armies,
+                                "active_wars": war_summary,
+                            }
+                        advance_step = advance_route_contact_horizon_step(
+                            army_id,
+                            observed_route_target,
+                            route_threat_enemy_ids,
+                        )
+                        if advance_step in available_steps:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_route_contact_horizon_progress",
+                                "selected_step": advance_step,
+                                "reason": "the exact native timeline proves the intersecting active route contact-free for the next day",
+                                "route_audit": passive_route_audit,
+                                "move_intent": observed_intent,
+                                "active_wars": war_summary,
+                            }
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_route_contact_horizon_progress_unsupported",
+                            "selected_step": None,
+                            "required_step": advance_step,
+                            "reason": "the exact route is contact-free for one day but this backend cannot advance it",
+                            "route_audit": passive_route_audit,
+                        }
                     blocked_province_ids.add(observed_route_target)
                 elif "life-advance" in available_steps:
                     return {
@@ -2227,7 +2365,55 @@ def choose_one_life_turn(
                     target_province_id=province_id,
                     enemies=route_threat_enemies,
                 )
-                if audit["status"] != "safe":
+                if (
+                    audit["status"] == "unsafe"
+                    and route_contact_scope_supported
+                ):
+                    contact_horizon = _fresh_route_contact_horizon(
+                        rows,
+                        snapshot,
+                        army_id=army_id,
+                        origin_province_id=current_province_id,
+                        target_province_id=province_id,
+                        hostile_army_ids=route_threat_enemy_ids,
+                        route_province_ids=preview.get("route_province_ids"),
+                    )
+                    if contact_horizon is None:
+                        horizon_step = query_route_contact_horizon_step(
+                            army_id, province_id, route_threat_enemy_ids
+                        )
+                        if horizon_step in available_steps:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_candidate_contact_horizon",
+                                "selected_step": horizon_step,
+                                "reason": "resolve a geometric route intersection with the exact one-day native arrival/contact timeline",
+                                "route_preview": preview,
+                                "route_audit": audit,
+                                "route_rejections": route_rejections,
+                                "active_wars": war_summary,
+                            }
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_candidate_contact_horizon_unsupported",
+                            "selected_step": None,
+                            "required_step": horizon_step,
+                            "reason": "the intersecting candidate route requires a fresh exact one-day contact horizon",
+                            "route_preview": preview,
+                            "route_audit": audit,
+                            "route_rejections": route_rejections,
+                            "active_wars": war_summary,
+                        }
+                    if contact_horizon.get("one_day_contact_free") is True:
+                        audit = {
+                            **audit,
+                            "status": "safe_one_day_contact_horizon",
+                            "contact_horizon": contact_horizon,
+                        }
+                if audit["status"] not in {
+                    "safe",
+                    "safe_one_day_contact_horizon",
+                }:
                     route_rejections.append(audit)
                     blocked_province_ids.add(province_id)
                     continue
@@ -2827,7 +3013,7 @@ def choose_one_life_turn(
         successful_marriage_query_index = _latest_index(
             rows, QUERY_ARRANGE_MARRIAGE_CHOICES_STEP
         )
-        life_advance_index = _latest_index(rows, "life-advance")
+        life_advance_index = _latest_life_advance_index(rows)
         marriage_query_attempts = sum(
             1
             for fallback_index, row in enumerate(rows, start=1)
@@ -2893,7 +3079,7 @@ def choose_one_life_turn(
             }
 
     declaration_index = _latest_prefix_index(rows, "declare-war-")
-    life_advance_index = _latest_index(rows, "life-advance")
+    life_advance_index = _latest_life_advance_index(rows)
     if declaration_index > life_advance_index:
         if "life-advance" in available_steps:
             return {
@@ -3081,7 +3267,7 @@ def choose_one_life_turn(
             elapsed_after_attempt = max(
                 _latest_index(rows, "war-advance-week"),
                 _latest_index(rows, "resolve-current-event"),
-                _latest_index(rows, "life-advance"),
+                _latest_life_advance_index(rows),
                 _latest_index(rows, "economic-event-cycle"),
             )
             if not confirmation_attempt or elapsed_after_attempt > confirmation_attempt:
@@ -3181,7 +3367,10 @@ def choose_one_life_turn(
         1
         for row in rows
         if row.get("ok") is True
-        and _effective_command(row) in {"life-advance", "economic-event-cycle"}
+        and (
+            is_life_advance_step(_effective_command(row))
+            or _effective_command(row) == "economic-event-cycle"
+        )
         and (
             not isinstance(row.get("index"), int)
             or int(row["index"]) > checkpoint_index
@@ -3922,7 +4111,7 @@ def _latest_assault_day_observation(
         )
         if isinstance(started_index, int) and row_index <= started_index:
             break
-        if _effective_command(row) != "life-advance":
+        if not is_life_advance_step(_effective_command(row)):
             continue
         if row.get("ok") is not True:
             if isinstance(started_index, int):
@@ -4034,7 +4223,10 @@ def _recent_exact_siege_stall_days(
     """Count consecutive paused-to-paused days with no exact siege work."""
     stalled_days = 0
     for row in _history_after_latest_restore(commands):
-        if _effective_command(row) != "life-advance" or row.get("ok") is not True:
+        if (
+            not is_life_advance_step(_effective_command(row))
+            or row.get("ok") is not True
+        ):
             continue
         result = row.get("result")
         before_date, before_war = _progress_slice(
@@ -4266,7 +4458,10 @@ def _enemy_endpoint_epochs(
     """Derive contiguous observed endpoint epochs without native timer guesses."""
     frames_by_date: dict[int, list[dict[str, object]]] = {}
     for row in _history_after_latest_restore(commands):
-        if _effective_command(row) != "life-advance" or row.get("ok") is not True:
+        if (
+            not is_life_advance_step(_effective_command(row))
+            or row.get("ok") is not True
+        ):
             continue
         result = _effective_command_result(row)
         for name in ("war_progress_before", "war_progress_after"):
@@ -4625,6 +4820,93 @@ def _fresh_move_route_preview(
     return None
 
 
+def _fresh_route_contact_horizon(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    army_id: int,
+    origin_province_id: int,
+    target_province_id: int,
+    hostile_army_ids: tuple[int, ...],
+    route_province_ids: object,
+) -> dict[str, object] | None:
+    if not hostile_army_ids or not isinstance(route_province_ids, list):
+        return None
+    expected_step = (army_id, target_province_id, hostile_army_ids)
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    expected_route = list(route_province_ids)
+    if expected_route and expected_route[0] == origin_province_id:
+        expected_route = expected_route[1:]
+    for row in reversed(_history_after_latest_restore(commands)):
+        if _successful_merge_barrier(row, army_id):
+            return None
+        if (
+            parse_query_route_contact_horizon_step(_effective_command(row))
+            != expected_step
+            or row.get("ok") is not True
+        ):
+            continue
+        result = _effective_command_result(row)
+        horizon = (
+            result.get("route_contact_horizon")
+            if isinstance(result, dict)
+            else None
+        )
+        subject_route = (
+            horizon.get("subject_route")
+            if isinstance(horizon, dict)
+            else None
+        )
+        observed_route = (
+            subject_route.get("route_province_ids")
+            if isinstance(subject_route, dict)
+            else None
+        )
+        normalized_observed = (
+            list(observed_route) if isinstance(observed_route, list) else None
+        )
+        if (
+            isinstance(normalized_observed, list)
+            and normalized_observed
+            and normalized_observed[0] == origin_province_id
+        ):
+            normalized_observed = normalized_observed[1:]
+        if not (
+            isinstance(horizon, dict)
+            and horizon.get("status") == "available"
+            and horizon.get("subject_army_id") == army_id
+            and horizon.get("target_province_id") == target_province_id
+            and tuple(horizon.get("hostile_army_ids", ()))
+            == hostile_army_ids
+            and horizon.get("date_raw") == snapshot.get("date_raw")
+            and horizon.get("snapshot_revision")
+            == snapshot.get("native_revision")
+            and result.get("queried_snapshot_id")
+            == snapshot.get("snapshot_id")
+            and result.get("queried_revision") == snapshot.get("revision")
+            and result.get("queried_native_revision")
+            == snapshot.get("native_revision")
+            and result.get("queried_connection_generation")
+            == connection_generation
+            and result.get("queried_episode_run_id")
+            == snapshot.get("episode_run_id")
+            and isinstance(subject_route, dict)
+            and subject_route.get("army_id") == army_id
+            and subject_route.get("current_province_id")
+            == origin_province_id
+            and normalized_observed == expected_route
+            and isinstance(horizon.get("one_day_contact_free"), bool)
+        ):
+            continue
+        return dict(horizon)
+    return None
+
+
 def _matching_rollback_war_failure(
     snapshot: dict[str, object],
     *,
@@ -4831,7 +5113,10 @@ def _recent_war_tactics(
             blocked_provinces[province_id] = until
 
     for row in _history_after_latest_restore(commands):
-        if _effective_command(row) != "life-advance" or row.get("ok") is not True:
+        if (
+            not is_life_advance_step(_effective_command(row))
+            or row.get("ok") is not True
+        ):
             continue
         result = row.get("result")
         before_date, before_war = _progress_slice(
@@ -5108,7 +5393,10 @@ def _move_intent_elapsed_days(
 
     elapsed_days = 0
     for row in commands[latest_position + 1 :]:
-        if _effective_command(row) != "life-advance" or row.get("ok") is not True:
+        if (
+            not is_life_advance_step(_effective_command(row))
+            or row.get("ok") is not True
+        ):
             continue
         result = row.get("result")
         if not isinstance(result, dict):

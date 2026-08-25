@@ -278,6 +278,49 @@ unsafe marker was added. The isolated shader cache was already warm, and no
 typed war-entry mailbox request was made, so neither pristine-cache causality
 nor first-live war-entry acceptance follows from this value result.
 
+[live-confirmed managed auto-run, 2026-08-26] The production owner then cold-
+restored the same `53176104` anchor in PID `81684`, performed three same-frame
+WarID `16777290` termination queries interleaved with three semantic one-day
+advances, and reached `53176176`. Exactly after the third eligible advance it
+materialized a 66,420,106-byte checkpoint, SHA-256
+`E8041581C789C21792280A893325082452F8A9717C8CDD421358FF9739189F07`, whose
+date and history index `166` matched the current snapshot and history tail.
+Managed shutdown removed CK3, injector, and host with no unsafe marker or new
+crash bundle. Independent PID `34084` then cold-restored those new bytes and
+reproduced the date and episode binding, so this is both write and restore
+evidence rather than a save-command ACK. That replay did not qualify as a
+continued autonomous run: four fresh objective-route previews all crossed
+hostile ArmyID `357`'s target/remaining route, and the planner stopped with
+`native_war_no_safe_exact_route`. Cleanup still passed. That run established
+exact contact/ETA observation as the next dependency. The acceptance below now
+closes native arrival and one-day avoidance; the current dependency is the
+same-day candidate/stored-order actual-contact scope, followed, where contact
+cannot be avoided, by an exact combat forecast. Base-power diagnostics must
+not be promoted to either result.
+
+[live-confirmed route-contact horizon, 2026-08-26] The first diagnostic replay
+at paused date `53176176` submitted the typed route query but cancelled its
+still-queued ticket after the generic two-second wait; the application-main
+pump had not executed it. Exact EXE SHA, adapter binding, and native timing
+bindings had all passed, so this was a mailbox scheduling failure, not an ABI
+or reader failure. The route worker now retains the same queued ticket for a
+bounded 8,000 ms and, once execution begins, waits in 2,000 ms slices until the
+terminal result. A deterministic fixture delays the pump by 2,200 ms and proves
+that the original ticket executes exactly once and is reclaimed.
+
+The rebuilt production DLL SHA-256
+`7AF3472A67218BDC407693D93A51826E2D99E29DB101EF724DC0B10FA60DC524`
+then qualified on the same checkpoint. The query became `available` in 2.466 s
+and mailbox `executed_requests` advanced `0 -> 1`. Its complete hostile scope
+(`357`, `33554657`) and native per-route arrival timelines proved the interval
+`53176176..53176200` contact-free, authorizing exactly one speed-1
+paused-to-paused advance to `53176200`. The war snapshot changed, a
+66,415,726-byte checkpoint was materialized with SHA-256
+`51A3C202D6785988F3E3E7F028B64C4F0949DD83A4E32F3222E286B110224BE8`,
+and managed cleanup was proven. This accepts production native arrival and the
+bounded one-day route-contact horizon only; it does not infer actual contact
+sides/order, so the same-day stored-order gate remains closed.
+
 ## Implemented capability matrix
 
 | Capability | Native-headless state | Evidence | Visual fallback |
@@ -309,11 +352,12 @@ nor first-live war-entry acceptance follows from this value result.
 | allied/enemy army current province | implemented, minimized read-only live probe passed | war participant helper classifies each observable CUnit owner | never inside native driver |
 | army state / combat / retreating | implemented, minimized read-only live probe passed | exact RVA `0xC7AAB0` state ABI, CUnit→CArmy→CCombat association and `CUnit+0x170` + nine-state fixture | never inside native driver |
 | `game.state.army-routes` / army move target | implemented from minimized-live-validated route ABI; paused full-array/running-tail fixture passed | paused snapshots validate the full `CUnit+0x38/+0x40/+0x44` remaining-route array; running snapshots retain only the legacy last-entry target read | never inside native driver |
+| `game.command.query-route-contact-horizon-v1-N` | implemented and exact-build live accepted for one-day paused progress | typed application-main mailbox, complete active-war hostile scope, exact per-route native arrival dates, one-day closed-boundary vertex/opposing-edge conflicts, delayed-pump fixture, and production replay | never use as actual-contact side/order proof; same-day stored order remains unknown |
 | `game.command.query-army-strengths-v1` | implemented; paused revision 4 exact-build live probe passed for three public ArmyIDs | exact CUnit/CArmy/CRegiment storages, original current/max helpers, AI collector power loop, full-generation/fallback/predicate/empty/partial-row offline fixtures + live `83886341`/`33554657`/`357` rows | never inside native driver |
 | `game.command.query-combat-simulation-inputs-v2-N` | explicit hypothetical-contact paused read-only query implemented; exact-build live probe pending | partitioned participants/final-edge entry, exact effective-stat/counter/knight/commander/terrain/crossing/role/holding/width ABIs, strict available/partial fixtures | never inside native driver |
 | `game.command.query-combat-simulation-inputs-v3-N` | production exact-build capability advertised; paused live acceptance pending | v2 base object + 81 exact native leaves + 51 offline derivations = 132/132, original temporary-shell advantage helpers, strict same-frame candidate-source row equality/digest, available/unavailable production goldens and Python normalizer | never inside native driver |
 | `game.command.query-combat-phase-event-trace-v1-N` | production DLL source present but explicitly not advertised or dispatched | real kind-11 scope evaluator probe, fixed-width seven-boundary ring, exact-build transactional detour installer, full-generation capture-plan builder, typed paused begin/finish executors and bounded checkpoint/drain serializer are compiled; shared mailbox union dispatch, recoverable external one-day driver, live sequence and full mutable feedback bundle remain closed | never inside native driver until the managed lifecycle is wired and accepted live |
-| `main_thread_query_mailbox_v1` infrastructure | application-main TLS boundary live-confirmed and production-wired only for the typed war-entry reader; typed executor live result pending | paused SDL pump, TLS global/context/+0x20 marker, date and game identities were stable; the earlier `failure=32` was only a transient scoped RNG-owner mismatch and is now raw provenance, not admission | never call it simulation-main and never admit a generic effect/evaluator; fresh Snapshot before/middle/after plus one pre-submit same-paused-frame declaration set |
+| `main_thread_query_mailbox_v1` infrastructure | application-main TLS boundary live-confirmed; route-contact typed executor live accepted, war-entry typed result still pending | paused SDL pump, TLS global/context/+0x20 marker, stable date/game identities, delayed 2.2 s pump fixture, and live `executed_requests 0 -> 1`; the earlier `failure=32` remains raw RNG provenance, not admission | never call it simulation-main and never admit a generic effect/evaluator; only the two explicitly bound typed readers are admitted |
 | `game.command.raise-troops-default` | implemented, live probe pending | native default-province/construct/validate/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
 | `game.command.preview-move-army-N-to-N` | implemented; paused minimized live probe exposed and closed the mid-edge effective-origin case | canonical plan/apply split + exact origin/PathCtx/MovePath/A* ABIs + current/route-front normalization + success/failure/cleanup/bound/paused fixture; no apply binding or queue call | explicit upper-layer policy only; paused map required |
 | `game.command.move-army-N-to-N` | implemented and minimized-live accepted: player command submitted and army province changed | exact player-UI kind/channel plus native mode/state/can-move/path-init/clone/destruct lifecycle, offline fixture, and live movement | explicit upper-layer policy only |

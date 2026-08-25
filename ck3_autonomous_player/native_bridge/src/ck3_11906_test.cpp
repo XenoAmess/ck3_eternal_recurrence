@@ -1,5 +1,7 @@
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -79,9 +81,9 @@ std::array<std::byte, 0x40> g_army_slots{};
 std::array<std::byte, 0x40> g_siege_storage{};
 std::array<std::byte, 0x20> g_siege_slots{};
 std::array<std::byte, 0x450> g_siege{};
-std::array<std::byte, 0x17C> g_player_army{};
-std::array<std::byte, 0x17C> g_enemy_army{};
-std::array<std::byte, 0x17C> g_third_army{};
+std::array<std::byte, 0x200> g_player_army{};
+std::array<std::byte, 0x200> g_enemy_army{};
+std::array<std::byte, 0x200> g_third_army{};
 std::array<std::byte, 0x40> g_internal_army_storage{};
 std::array<std::byte, 0x140> g_internal_army_slots{};
 std::array<std::byte, 0x130> g_player_internal_army{};
@@ -118,19 +120,31 @@ std::array<std::byte, 0x778> g_plains_terrain{};
 std::array<std::byte, 0x40> g_combat_storage{};
 std::array<std::byte, 0x20> g_combat_slots{};
 std::array<std::byte, 0x718> g_player_combat{};
-std::array<std::byte, 0x08> g_player_move_route_info_0{};
-std::array<std::byte, 0x08> g_player_move_route_info_1{};
-std::array<std::byte, 0x08> g_player_move_route_info_2{};
+std::array<std::byte, 0x10> g_player_move_route_info_0{};
+std::array<std::byte, 0x10> g_player_move_route_info_1{};
+std::array<std::byte, 0x10> g_player_move_route_info_2{};
 std::array<void *, 3> g_player_move_path{};
-std::array<std::byte, 0x08> g_preview_move_route_info_0{};
-std::array<std::byte, 0x08> g_preview_move_route_info_1{};
-std::array<std::byte, 0x08> g_preview_move_route_info_2{};
+std::array<std::byte, 0x10> g_preview_move_route_info_0{};
+std::array<std::byte, 0x10> g_preview_move_route_info_1{};
+std::array<std::byte, 0x10> g_preview_move_route_info_2{};
+std::array<std::byte, 0x10> g_enemy_move_route_info_0{};
+std::array<void *, 1> g_enemy_move_path{};
 std::array<void *, 3> g_preview_move_path{};
 std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
 std::array<std::byte, 0x20> g_enemy_default_raise_province{};
-std::array<std::byte, 0x60> g_player_map_node{};
-std::array<std::byte, 0x60> g_enemy_map_node{};
+std::array<std::byte, 0xC0> g_player_map_node{};
+std::array<std::byte, 0xC0> g_enemy_map_node{};
+std::array<std::byte, 0xC0> g_route_map_node_4{};
+std::array<std::byte, 0xC0> g_route_map_node_5{};
+std::array<std::byte, 0x10> g_route_origin_info_2{};
+std::array<std::byte, 0x10> g_route_origin_info_3{};
+std::array<std::byte, 0x10> g_route_origin_info_4{};
+std::array<std::byte, 0x10> g_route_origin_info_5{};
+std::array<std::byte, 2 * 0x30> g_route_adjacencies_2{};
+std::array<std::byte, 0x30> g_route_adjacencies_3{};
+std::array<std::byte, 2 * 0x30> g_route_adjacencies_4{};
+std::array<std::byte, 2 * 0x30> g_route_adjacencies_5{};
 std::array<std::byte, 0x30> g_player_target_adjacency{};
 std::array<std::byte, 0x30> g_enemy_target_adjacency{};
 std::array<std::byte, 0x860> g_war_objective_province{};
@@ -233,6 +247,13 @@ bool g_preview_path_context_constructed = false;
 bool g_preview_route_built = false;
 bool g_preview_route_build_result = true;
 std::int32_t g_preview_route_count = 3;
+std::int32_t g_route_duration_calls = 0;
+bool g_route_duration_prefix_zeroed = true;
+bool g_route_duration_failure = false;
+bool g_route_duration_late_zero_speed_accumulation = false;
+std::int64_t g_route_land_speed_raw = 100'000;
+std::int64_t g_route_naval_speed_raw = 100'000;
+std::int64_t g_route_current_edge_speed_raw = 100'000;
 std::int32_t g_player_army_state_code = 2;
 std::int32_t g_enemy_army_state_code = 6;
 std::int32_t g_army_current_soldiers_calls = 0;
@@ -1218,6 +1239,81 @@ bool FixtureBuildArmyMoveRoute(void *path_context, void *origin_province,
   StoreBytes(path_storage, 0x08, g_preview_route_count);
   StoreBytes(path_storage, 0x0C, g_preview_route_count);
   return g_preview_route_build_result;
+}
+
+std::int64_t *FixtureReadUnitLandRouteSpeed(void *unit,
+                                            std::int64_t *output) {
+  if (output == nullptr ||
+      (unit != g_player_army.data() && unit != g_enemy_army.data())) {
+    return nullptr;
+  }
+  *output = g_route_land_speed_raw;
+  return output;
+}
+
+std::int64_t *FixtureReadUnitNavalRouteSpeed(void *unit,
+                                             std::int64_t *output) {
+  if (output == nullptr ||
+      (unit != g_player_army.data() && unit != g_enemy_army.data())) {
+    return nullptr;
+  }
+  *output = g_route_naval_speed_raw;
+  return output;
+}
+
+std::int64_t *FixtureReadUnitCurrentEdgeSpeed(void *unit,
+                                              std::int64_t *output) {
+  if (output == nullptr ||
+      (unit != g_player_army.data() && unit != g_enemy_army.data())) {
+    return nullptr;
+  }
+  *output = g_route_current_edge_speed_raw;
+  return output;
+}
+
+std::int64_t *FixtureReadRouteTravelDuration(
+    void *unit, std::int64_t *output, const void *path_storage,
+    void *origin_province) {
+  ++g_route_duration_calls;
+  if (output == nullptr || path_storage == nullptr ||
+      (unit != g_player_army.data() && unit != g_enemy_army.data()) ||
+      origin_province == nullptr) {
+    return nullptr;
+  }
+  const auto *const bytes = static_cast<const std::byte *>(path_storage);
+  for (std::size_t index = 0x08; index < 0x0C; ++index) {
+    if (bytes[index] != std::byte{}) {
+      g_route_duration_prefix_zeroed = false;
+      break;
+    }
+  }
+  for (std::size_t index = 0x10; index < 0x130; ++index) {
+    if (bytes[index] != std::byte{}) {
+      g_route_duration_prefix_zeroed = false;
+      break;
+    }
+  }
+  void *province_infos = nullptr;
+  std::int32_t count = 0;
+  std::memcpy(&province_infos, bytes + 0x00, sizeof(province_infos));
+  std::memcpy(&count, bytes + 0x0C, sizeof(count));
+  if (count <= 0 || count > 4'096 ||
+      (province_infos != g_preview_move_path.data() &&
+       province_infos != g_player_move_path.data() &&
+       province_infos != g_enemy_move_path.data())) {
+    return nullptr;
+  }
+  if (g_route_duration_failure) {
+    *output = 0xFFFF'FFFFLL;
+  } else if (g_route_duration_late_zero_speed_accumulation && count >= 2) {
+    *output = static_cast<std::int64_t>(count - 1) * 100'000 +
+              0xFFFF'FFFFLL;
+  } else if (province_infos == g_player_move_path.data()) {
+    *output = static_cast<std::int64_t>(count) * 100'000 - 50'000;
+  } else {
+    *output = static_cast<std::int64_t>(count) * 100'000;
+  }
+  return output;
 }
 
 void *FixtureDestroyMoveArmyCommand(void *opaque_command,
@@ -2406,6 +2502,134 @@ int Fail(const char *message) {
 } // namespace
 
 int main() {
+  xar::game::RouteContactHorizonRequest parsed_route_request{};
+  if (!xar::ck3_11906::ParseRouteContactHorizonV1Step(
+          "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218-33554433",
+          parsed_route_request) ||
+      parsed_route_request.subject_army_id != 16'777'217 ||
+      parsed_route_request.target_province_id != 3 ||
+      parsed_route_request.hostile_army_ids !=
+          std::vector<std::int32_t>{16'777'218, 33'554'433}) {
+    return Fail("route-contact canonical step parser rejected a valid scope");
+  }
+  constexpr std::array<std::string_view, 7> invalid_route_steps{
+      "query-route-contact-horizon-v1-016777217-to-3-h-1-16777218",
+      "query-route-contact-horizon-v1-16777217-to-03-h-1-16777218",
+      "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218",
+      "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218-16777218",
+      "query-route-contact-horizon-v1-16777217-to-3-h-1-16777217",
+      "query-route-contact-horizon-v1-16777217-to-3-h-0-16777218",
+      "query-route-contact-horizon-v1-16777217-to-3-h-2-33554433-16777218",
+  };
+  for (const auto invalid : invalid_route_steps) {
+    if (xar::ck3_11906::ParseRouteContactHorizonV1Step(
+            invalid, parsed_route_request)) {
+      return Fail("route-contact parser accepted a non-canonical scope");
+    }
+  }
+  std::uint64_t parsed_expected_revision = 0;
+  if (!xar::ck3_11906::ParseRouteContactExpectedRevisionV1(
+          "{\"type\":\"execute_step\",\"expected_revision\":4294967297,"
+          "\"step\":\"query-route-contact-horizon-v1-16777217-to-3-h-1-16777218\"}",
+          parsed_expected_revision) ||
+      parsed_expected_revision != 4'294'967'297ULL) {
+    return Fail("route-contact revision parser narrowed uint64 state");
+  }
+  if (!xar::ck3_11906::ParseRouteContactExpectedRevisionV1(
+          "{\"type\": \"execute_step\", \"expected_revision\": "
+          "4294967297 , \"step\": \"route\"}",
+          parsed_expected_revision) ||
+      parsed_expected_revision != 4'294'967'297ULL) {
+    return Fail("route-contact revision parser rejected JSON whitespace");
+  }
+  constexpr std::array<std::string_view, 5> invalid_route_envelopes{
+      "{\"type\":\"execute_step\"}",
+      "{\"expected_revision\":0}",
+      "{\"expected_revision\":01}",
+      "{\"expected_revision\":\"7\"}",
+      "{\"expected_revision\":7,\"expected_revision\":8}",
+  };
+  for (const auto invalid : invalid_route_envelopes) {
+    if (xar::ck3_11906::ParseRouteContactExpectedRevisionV1(
+            invalid, parsed_expected_revision)) {
+      return Fail("route-contact parser accepted an ambiguous revision");
+    }
+  }
+  xar::game::Snapshot route_scope_snapshot{};
+  route_scope_snapshot.paused = true;
+  parsed_route_request.subject_army_id = 16'777'217;
+  parsed_route_request.target_province_id = 3;
+  parsed_route_request.hostile_army_ids = {16'777'218, 33'554'433};
+  xar::game::ArmySnapshot route_scope_subject{};
+  route_scope_subject.army_id = 16'777'217;
+  route_scope_subject.controllable = true;
+  route_scope_snapshot.player_armies.push_back(route_scope_subject);
+  route_scope_snapshot.active_wars.resize(2);
+  xar::game::ArmySnapshot first_scope_enemy{};
+  first_scope_enemy.army_id = 16'777'218;
+  xar::game::ArmySnapshot second_scope_enemy{};
+  second_scope_enemy.army_id = 33'554'433;
+  xar::game::ArmySnapshot retreating_scope_enemy{};
+  retreating_scope_enemy.army_id = 50'331'649;
+  retreating_scope_enemy.retreating = true;
+  route_scope_snapshot.active_wars[0].enemy_armies = {
+      first_scope_enemy, retreating_scope_enemy};
+  route_scope_snapshot.active_wars[1].enemy_armies = {
+      second_scope_enemy};
+  if (!xar::ck3_11906::RouteContactHostileScopeMatchesSnapshotV1(
+          route_scope_snapshot, parsed_route_request)) {
+    return Fail("route-contact preflight omitted another active war's enemy");
+  }
+  parsed_route_request.hostile_army_ids = {16'777'218};
+  if (xar::ck3_11906::RouteContactHostileScopeMatchesSnapshotV1(
+          route_scope_snapshot, parsed_route_request)) {
+    return Fail("route-contact preflight accepted an incomplete hostile union");
+  }
+  xar::ck3_11906::RouteContactHorizonMailboxContextV1 forged_route_query{};
+  xar::ck3_11906::MainThreadExecutionStampV1 forged_route_stamp{};
+  if (xar::ck3_11906::ExecuteRouteContactHorizonMailboxQueryV1(
+          &forged_route_query, forged_route_stamp) ||
+      forged_route_query.completion !=
+          xar::ck3_11906::RouteContactHorizonMailboxCompletionV1::
+              infrastructure_rejected) {
+    return Fail("route-contact executor accepted a direct worker-thread call");
+  }
+  using RouteCompletion =
+      xar::ck3_11906::RouteContactHorizonMailboxCompletionV1;
+  using RouteStatus = xar::game::RouteContactHorizonStatus;
+  using RouteWait = xar::ck3_11906::MainThreadQueryWaitResultV1;
+  if (xar::ck3_11906::RouteContactHorizonFailureMessageV1(
+          RouteWait::executor_failed, RouteCompletion::not_executed,
+          RouteStatus::unavailable, false) !=
+          "application-main route-contact executor failed before recording completion" ||
+      xar::ck3_11906::RouteContactHorizonFailureMessageV1(
+          RouteWait::executor_failed,
+          RouteCompletion::infrastructure_rejected,
+          RouteStatus::unavailable, false) !=
+          "application-main route-contact executor gate rejected execution" ||
+      xar::ck3_11906::RouteContactHorizonFailureMessageV1(
+          RouteWait::infrastructure_failed, RouteCompletion::available,
+          RouteStatus::available, false) !=
+          "application-main route-contact boundary drifted after execution" ||
+      xar::ck3_11906::RouteContactHorizonFailureMessageV1(
+          RouteWait::timeout_cancelled_before_execution,
+          RouteCompletion::not_executed, RouteStatus::unavailable, false) !=
+          "application-main route-contact query timed out before execution" ||
+      xar::ck3_11906::RouteContactHorizonFailureMessageV1(
+          RouteWait::completed, RouteCompletion::query_unavailable,
+          RouteStatus::timeline_unavailable, false) !=
+          "CK3 route arrival timeline is unavailable" ||
+      xar::ck3_11906::RouteContactHorizonFailureMessageV1(
+          RouteWait::completed, RouteCompletion::query_unavailable,
+          RouteStatus::unavailable, false) !=
+          "CK3 route-contact reader is unavailable" ||
+      xar::ck3_11906::RouteContactHorizonFailureMessageV1(
+          RouteWait::completed, RouteCompletion::available,
+          RouteStatus::available, false) !=
+          "route-contact completion snapshot changed") {
+    return Fail("route-contact failure stages collapsed into a generic error");
+  }
+
   std::array<std::byte, 0xA8> game_state{};
   std::array<std::byte, 0x28> jomini_state{};
   std::array<std::byte, 0x200> players{};
@@ -2731,6 +2955,7 @@ int main() {
   Store(g_player_army, 0x170, std::int32_t{0});
   Store(g_player_army, 0x174, played_character_id);
   Store(g_player_army, 0x178, player_internal_army_id);
+  Store(g_player_army, 0x190, std::int64_t{100'000});
   Store(g_enemy_army, 0x10, enemy_army_id);
   Store(g_enemy_army, 0x20,
         static_cast<void *>(g_enemy_province.data()));
@@ -2739,6 +2964,7 @@ int main() {
   Store(g_enemy_army, 0x170, std::int32_t{1});
   Store(g_enemy_army, 0x174, enemy_character_id);
   Store(g_enemy_army, 0x178, enemy_internal_army_id);
+  Store(g_enemy_army, 0x190, std::int64_t{100'000});
   Store(g_third_army, 0x10, third_army_id);
   Store(g_third_army, 0x20,
         static_cast<void *>(g_enemy_province.data()));
@@ -3285,6 +3511,14 @@ int main() {
   bindings.construct_move_path_context = FixtureConstructMovePathContext;
   bindings.construct_army_move_path = FixtureConstructArmyMovePath;
   bindings.build_army_move_route = FixtureBuildArmyMoveRoute;
+  bindings.read_unit_land_route_speed =
+      FixtureReadUnitLandRouteSpeed;
+  bindings.read_unit_naval_route_speed =
+      FixtureReadUnitNavalRouteSpeed;
+  bindings.read_unit_current_edge_speed =
+      FixtureReadUnitCurrentEdgeSpeed;
+  bindings.read_route_travel_duration =
+      FixtureReadRouteTravelDuration;
   bindings.destroy_move_army_command = FixtureDestroyMoveArmyCommand;
   bindings.validate_disband_army_command =
       FixtureValidateDisbandArmyCommand;
@@ -5083,6 +5317,250 @@ int main() {
     return Fail("move preview route traversal was not bounded");
   }
   g_preview_route_count = 3;
+
+  // Route timing is a separate application-main query in production.  The
+  // native fixture exercises its atomic reader directly: every helper call
+  // receives a zeroed 0x130 shallow prefix, exact Q100000 durations use CK3's
+  // half-up nonnegative day rounding, and a full hostile scope is mandatory.
+  // Install the exact Province adjacency graph and MovePath land/water rows
+  // consumed by the duration ABI; the combat fixture above uses a narrower
+  // one-edge graph that is deliberately insufficient for route projection.
+  Store(g_enemy_default_raise_province, 0x08,
+        static_cast<void *>(g_route_map_node_4.data()));
+  Store(g_second_war_objective_province, 0x08,
+        static_cast<void *>(g_route_map_node_5.data()));
+  Store(g_player_map_node, 0x50,
+        static_cast<void *>(g_route_adjacencies_2.data()));
+  Store(g_player_map_node, 0x5C, std::int32_t{2});
+  Store(g_enemy_map_node, 0x50,
+        static_cast<void *>(g_route_adjacencies_3.data()));
+  Store(g_enemy_map_node, 0x5C, std::int32_t{1});
+  Store(g_route_map_node_4, 0x50,
+        static_cast<void *>(g_route_adjacencies_4.data()));
+  Store(g_route_map_node_4, 0x5C, std::int32_t{2});
+  Store(g_route_map_node_5, 0x50,
+        static_cast<void *>(g_route_adjacencies_5.data()));
+  Store(g_route_map_node_5, 0x5C, std::int32_t{2});
+  Store(g_player_map_node, 0xB0,
+        static_cast<void *>(g_route_origin_info_2.data()));
+  Store(g_enemy_map_node, 0xB0,
+        static_cast<void *>(g_route_origin_info_3.data()));
+  Store(g_route_map_node_4, 0xB0,
+        static_cast<void *>(g_route_origin_info_4.data()));
+  Store(g_route_map_node_5, 0xB0,
+        static_cast<void *>(g_route_origin_info_5.data()));
+  Store(g_route_origin_info_2, 0x00, std::int32_t{2});
+  Store(g_route_origin_info_3, 0x00, std::int32_t{3});
+  Store(g_route_origin_info_4, 0x00, std::int32_t{4});
+  Store(g_route_origin_info_5, 0x00, std::int32_t{5});
+  for (auto *const info : {g_route_origin_info_2.data(),
+                           g_route_origin_info_3.data(),
+                           g_route_origin_info_4.data(),
+                           g_route_origin_info_5.data(),
+                           g_player_move_route_info_0.data(),
+                           g_player_move_route_info_1.data(),
+                           g_player_move_route_info_2.data(),
+                           g_preview_move_route_info_0.data(),
+                           g_preview_move_route_info_1.data(),
+                           g_preview_move_route_info_2.data(),
+                           g_enemy_move_route_info_0.data()}) {
+    StoreBytes(info, 0x09, std::uint8_t{1});
+    StoreBytes(info, 0x0B, std::uint8_t{0});
+  }
+  Store(g_route_adjacencies_2, 0x04, std::int32_t{4});
+  Store(g_route_adjacencies_2, 0x30 + 0x04, std::int32_t{3});
+  Store(g_route_adjacencies_3, 0x04, std::int32_t{2});
+  Store(g_route_adjacencies_4, 0x04, std::int32_t{5});
+  Store(g_route_adjacencies_4, 0x30 + 0x04, std::int32_t{2});
+  Store(g_route_adjacencies_5, 0x04, std::int32_t{3});
+  Store(g_route_adjacencies_5, 0x30 + 0x04, std::int32_t{4});
+  Store(jomini_state, 0x20, std::uint8_t{1});
+  g_enemy_army_state_code = 1;
+  Store(g_enemy_army, 0x170, std::int32_t{0});
+  g_player_army_state_code = 7;
+  g_move_mode_result = 1;
+  g_preview_effective_origin = g_player_province.data();
+  Store(g_preview_move_route_info_0, 0x00, std::int32_t{4});
+  Store(g_preview_move_route_info_1, 0x00, std::int32_t{5});
+  Store(g_preview_move_route_info_2, 0x00, std::int32_t{3});
+  g_preview_route_count = 3;
+  g_preview_route_built = false;
+  g_route_duration_calls = 0;
+  g_route_duration_prefix_zeroed = true;
+  g_route_duration_failure = false;
+  g_route_duration_late_zero_speed_accumulation = false;
+  g_route_land_speed_raw = 100'000;
+  g_route_naval_speed_raw = 100'000;
+  g_route_current_edge_speed_raw = 100'000;
+  xar::game::RouteContactHorizonRequest route_contact_request{};
+  route_contact_request.subject_army_id = player_army_id;
+  route_contact_request.target_province_id = 3;
+  route_contact_request.hostile_army_ids = {enemy_army_id};
+  xar::game::RouteContactHorizonSnapshot route_contact{};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::available ||
+      route_contact.status !=
+          xar::game::RouteContactHorizonStatus::available ||
+      route_contact.date_raw != 43'823'104 ||
+      route_contact.horizon_start_date_raw != 43'823'104 ||
+      route_contact.horizon_end_date_raw != 43'823'128 ||
+      !route_contact.one_day_contact_free ||
+      !route_contact.conflicts.empty() ||
+      !route_contact.subject_route.timeline_observable ||
+      route_contact.subject_route.current_province_id != 2 ||
+      route_contact.subject_route.effective_origin_province_id != 4 ||
+      route_contact.subject_route.route_province_ids !=
+          std::vector<std::int32_t>{4, 5, 3} ||
+      route_contact.subject_route.arrival_date_raws !=
+          std::vector<std::int32_t>{43'823'128, 43'823'152,
+                                    43'823'176} ||
+      route_contact.hostile_routes.size() != 1 ||
+      !route_contact.hostile_routes[0].timeline_observable ||
+      route_contact.hostile_routes[0].army_id != enemy_army_id ||
+      route_contact.hostile_routes[0].current_province_id != 3 ||
+      !route_contact.hostile_routes[0].route_province_ids.empty() ||
+      !route_contact.hostile_routes[0].arrival_date_raws.empty() ||
+      g_preview_route_built ||
+      g_route_duration_calls != 3 ||
+      !g_route_duration_prefix_zeroed) {
+    return Fail(
+        "active route-contact timeline did not preserve the committed path");
+  }
+
+  // The native duration helper silently skips an unresolvable adjacency.
+  // Reject the complete route before making any timing ABI call, including
+  // when the missing edge is later than an otherwise valid first segment.
+  Store(g_route_adjacencies_4, 0x04, std::int32_t{99});
+  g_route_duration_calls = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::timeline_unavailable ||
+      route_contact.subject_route.timeline_observable ||
+      g_route_duration_calls != 0) {
+    return Fail("route timing called the ABI with a missing later adjacency");
+  }
+  Store(g_route_adjacencies_4, 0x04, std::int32_t{5});
+
+  // A later zero-speed edge contributes uint32 0xffffffff to the already
+  // accumulated Q100000 duration, so the final value is not the bare sentinel
+  // and used to pass the range/monotonic checks.  Model land->water->water:
+  // embark is fixed-cost, but the second segment requires positive naval
+  // speed and must fail before the duration ABI can return that sum.
+  Store(g_player_move_route_info_0, 0x09, std::uint8_t{0});
+  Store(g_player_move_route_info_0, 0x0B, std::uint8_t{1});
+  Store(g_player_move_route_info_1, 0x09, std::uint8_t{0});
+  Store(g_player_move_route_info_1, 0x0B, std::uint8_t{1});
+  g_route_naval_speed_raw = 0;
+  g_route_duration_late_zero_speed_accumulation = true;
+  g_route_duration_calls = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::timeline_unavailable ||
+      route_contact.subject_route.timeline_observable ||
+      g_route_duration_calls != 0) {
+    return Fail("route timing accepted a later zero-speed accumulated value");
+  }
+  Store(g_player_move_route_info_0, 0x09, std::uint8_t{1});
+  Store(g_player_move_route_info_0, 0x0B, std::uint8_t{0});
+  Store(g_player_move_route_info_1, 0x09, std::uint8_t{1});
+  Store(g_player_move_route_info_1, 0x0B, std::uint8_t{0});
+  g_route_naval_speed_raw = 100'000;
+  g_route_duration_late_zero_speed_accumulation = false;
+
+  // At the one-day boundary, entering a Province occupied by a hostile is
+  // conservatively contact even though normal occupancy is [enter, leave).
+  Store(g_player_move_route_info_2, 0x00, std::int32_t{4});
+  Store(g_preview_move_route_info_0, 0x00, std::int32_t{3});
+  g_preview_route_count = 1;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::available ||
+      route_contact.one_day_contact_free ||
+      route_contact.conflicts.size() != 1 ||
+      route_contact.conflicts[0].kind != "same_province" ||
+      route_contact.conflicts[0].hostile_army_id != enemy_army_id ||
+      route_contact.conflicts[0].province_id != 3 ||
+      route_contact.conflicts[0].overlap_start_date_raw != 43'823'128 ||
+      route_contact.conflicts[0].overlap_end_date_raw != 43'823'128) {
+    return Fail("route-contact did not close the exact arrival boundary");
+  }
+
+  // Simultaneous reverse traversal is contact as well; exact-boundary
+  // occupancy conflicts may coexist with the explicit opposing-edge row.
+  Store(g_enemy_move_route_info_0, 0x00, std::int32_t{2});
+  g_enemy_move_path = {g_enemy_move_route_info_0.data()};
+  Store(g_enemy_army, 0x38,
+        static_cast<void *>(g_enemy_move_path.data()));
+  Store(g_enemy_army, 0x40, std::int32_t{1});
+  Store(g_enemy_army, 0x44, std::int32_t{1});
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::available ||
+      route_contact.one_day_contact_free ||
+      std::none_of(
+          route_contact.conflicts.begin(), route_contact.conflicts.end(),
+          [enemy_army_id](
+              const xar::game::RouteContactConflictSnapshot &conflict) {
+            return conflict.kind == "opposing_edge" &&
+                   conflict.hostile_army_id == enemy_army_id &&
+                   conflict.subject_from_province_id == 2 &&
+                   conflict.subject_to_province_id == 3 &&
+                   conflict.hostile_from_province_id == 3 &&
+                   conflict.hostile_to_province_id == 2 &&
+                   conflict.overlap_start_date_raw == 43'823'104 &&
+                   conflict.overlap_end_date_raw == 43'823'128;
+          })) {
+    return Fail("route-contact omitted simultaneous opposing-edge contact");
+  }
+  Store(g_enemy_army, 0x38, static_cast<void *>(nullptr));
+  Store(g_enemy_army, 0x40, std::int32_t{0});
+  Store(g_enemy_army, 0x44, std::int32_t{0});
+
+  // Mid-edge replanning first accounts for the committed active edge, then
+  // adds each candidate-tail duration before doing canonical day rounding.
+  g_route_duration_calls = 0;
+  g_preview_effective_origin = g_enemy_default_raise_province.data();
+  Store(g_preview_move_route_info_0, 0x00, std::int32_t{2});
+  Store(g_preview_move_route_info_1, 0x00, std::int32_t{3});
+  g_preview_route_count = 2;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::available ||
+      route_contact.subject_route.effective_origin_province_id != 4 ||
+      route_contact.subject_route.route_province_ids !=
+          std::vector<std::int32_t>{4, 2, 3} ||
+      route_contact.subject_route.arrival_date_raws !=
+          std::vector<std::int32_t>{43'823'128, 43'823'152,
+                                    43'823'176}) {
+    return Fail("mid-edge route timeline omitted committed-edge duration");
+  }
+
+  g_preview_effective_origin = g_player_province.data();
+  Store(g_preview_move_route_info_0, 0x00, std::int32_t{3});
+  g_preview_route_count = 1;
+  g_route_duration_failure = true;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::timeline_unavailable ||
+      route_contact.subject_route.timeline_observable) {
+    return Fail("route timing accepted the native 0xffffffff failure value");
+  }
+  g_route_duration_failure = false;
+  g_preview_effective_origin = g_player_province.data();
+  Store(g_preview_move_route_info_0, 0x00, std::int32_t{4});
+  Store(g_preview_move_route_info_1, 0x00, std::int32_t{5});
+  Store(g_preview_move_route_info_2, 0x00, std::int32_t{3});
+  g_preview_route_count = 3;
+  g_enemy_army_state_code = 6;
+  Store(g_enemy_army, 0x170, std::int32_t{1});
+  g_player_army_state_code = 2;
   g_move_mode_result = 5;
   Store(jomini_state, 0x20, std::uint8_t{0});
 

@@ -98,6 +98,7 @@ from .war_contract import (
     MOVE_ARMY_CAPABILITY,
     OFFER_WHITE_PEACE_CAPABILITY,
     PREVIEW_MOVE_ARMY_CAPABILITY,
+    QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
     QUERY_ARMY_STRENGTHS_CAPABILITY,
     QUERY_ARMY_STRENGTHS_STEP,
     QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
@@ -114,6 +115,8 @@ from .war_contract import (
     WAR_OBJECTIVE_OCCUPATION_CAPABILITY,
     WAR_OBJECTIVE_SIEGE_PROGRESS_CAPABILITY,
     WAR_PRIMARY_OPPONENT_CAPABILITY,
+    ADVANCE_ROUTE_CONTACT_HORIZON_STEP_PREFIX,
+    advance_route_contact_horizon_step,
     army_strength_query_status,
     army_strength_scope,
     controllable_armies,
@@ -122,10 +125,12 @@ from .war_contract import (
     enforce_demands_step,
     enemy_armies_from_wars,
     is_native_war_step,
+    is_life_advance_step,
     merge_armies_step,
     move_army_step,
     normalize_active_wars,
     normalize_army_strengths,
+    normalize_route_contact_horizon,
     normalize_war_termination_options,
     normalize_war_termination_terms,
     parse_disband_army_step,
@@ -134,6 +139,8 @@ from .war_contract import (
     parse_move_army_step,
     parse_offer_white_peace_step,
     parse_preview_move_army_step,
+    parse_advance_route_contact_horizon_step,
+    parse_query_route_contact_horizon_step,
     parse_query_war_termination_options_step,
     parse_query_war_termination_terms_step,
     parse_split_army_half_step,
@@ -141,6 +148,7 @@ from .war_contract import (
     parse_stop_assault_step,
     parse_surrender_war_step,
     preview_move_army_step,
+    query_route_contact_horizon_step,
     player_armies_from_state,
     query_war_termination_options_step,
     query_war_termination_terms_step,
@@ -157,6 +165,9 @@ DEFAULT_PIPE_NAME = r"\\.\pipe\xar_ck3_bridge_mcp"
 _ACTION_CAPABILITY_PREFIX = "game.command."
 _NATIVE_LIFE_ADVANCE_PRIMITIVES = frozenset(
     {"set-speed-5", "resume-map", "pause-map"}
+)
+_NATIVE_EXACT_DAY_ADVANCE_PRIMITIVES = frozenset(
+    {"set-speed-1", "resume-map", "pause-map"}
 )
 _CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
 _EPISODE_SEED_FILENAME = "xar_episode_seed.ck3"
@@ -738,6 +749,16 @@ class NativeHeadlessGameplayDriver:
             else None
         )
         if (
+            QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY in bridge_capabilities
+            and _NATIVE_EXACT_DAY_ADVANCE_PRIMITIVES <= action_steps
+            and isinstance(current_snapshot, dict)
+        ):
+            proof_steps = _fresh_route_contact_advance_steps(
+                current_snapshot, self._history_snapshot()
+            )
+            action_steps.update(proof_steps)
+            composite_action_steps.extend(sorted(proof_steps))
+        if (
             QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY in bridge_capabilities
             and isinstance(current_snapshot, dict)
             and current_snapshot.get("paused") is True
@@ -829,6 +850,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "move_route_preview_supported": (
                 PREVIEW_MOVE_ARMY_CAPABILITY in bridge_capabilities
+            ),
+            "route_contact_horizon_supported": (
+                QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY
+                in bridge_capabilities
             ),
             "army_strength_query_supported": (
                 QUERY_ARMY_STRENGTHS_CAPABILITY in bridge_capabilities
@@ -1032,6 +1057,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "move_route_preview_supported": (
                 PREVIEW_MOVE_ARMY_CAPABILITY in bridge_capabilities
+            ),
+            "route_contact_horizon_supported": (
+                QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY
+                in bridge_capabilities
             ),
             "combat_simulation_inputs_query_supported": (
                 QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY
@@ -1788,6 +1817,48 @@ class NativeHeadlessGameplayDriver:
     def _execute_step_unrecorded(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        life_advance_starting: dict[str, object] | None = None
+        if step == "life-advance":
+            # Bind the caller's revision before capability projection.  A
+            # loading -> map_ready snapshot can arrive while capabilities()
+            # is being assembled; that is an internal readiness transition,
+            # not permission to accept an already-stale paused-map request.
+            try:
+                life_advance_starting = self.take_snapshot()
+            except UnsupportedStepError:
+                # Preserve the ordinary unsupported-composite result below
+                # when this bridge never advertised snapshot state.
+                life_advance_starting = None
+            if (
+                life_advance_starting is not None
+                and expected_revision is not None
+            ):
+                _validate_revision(expected_revision, "expected_revision")
+                current_revision = int(life_advance_starting["revision"])
+                if expected_revision != current_revision:
+                    raise BridgeUnavailableError(
+                        "native life-advance revision mismatch: "
+                        f"expected {expected_revision}, current "
+                        f"{current_revision}"
+                    )
+        route_contact_query = parse_query_route_contact_horizon_step(step)
+        route_contact_advance = parse_advance_route_contact_horizon_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith("query-route-contact-horizon-v1-")
+            and route_contact_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed or incomplete route-contact horizon step"
+            )
+        if (
+            isinstance(step, str)
+            and step.startswith(ADVANCE_ROUTE_CONTACT_HORIZON_STEP_PREFIX)
+            and route_contact_advance is None
+        ):
+            raise UnsupportedStepError(
+                "malformed or incomplete route-contact horizon advance step"
+            )
         war_entry_targets = parse_query_war_entry_assessments_step(step)
         if (
             isinstance(step, str)
@@ -1925,10 +1996,19 @@ class NativeHeadlessGameplayDriver:
             return self._execute_start_next_episode(
                 expected_revision=expected_revision
             )
+        if route_contact_advance is not None:
+            if step not in capabilities.get("composite_action_steps", []):
+                raise UnsupportedStepError(
+                    "route-contact one-day advance lacks a fresh native proof"
+                )
+            return self._execute_route_contact_horizon_advance(
+                step, expected_revision=expected_revision
+            )
         if step in capabilities.get("composite_action_steps", []):
             if step == "life-advance":
                 return self._execute_life_advance(
-                    expected_revision=expected_revision
+                    expected_revision=expected_revision,
+                    starting_snapshot=life_advance_starting,
                 )
             raise UnsupportedStepError(
                 f"native Python bridge does not implement composite step {step}"
@@ -3577,6 +3657,101 @@ class NativeHeadlessGameplayDriver:
                     "submitted_date_raw": submitted_date_raw,
                     "player_army_ids_before": player_army_ids_before,
                 },
+            }
+
+        route_contact_query = parse_query_route_contact_horizon_step(step)
+        if route_contact_query is not None:
+            subject_army_id, target_province_id, hostile_army_ids = (
+                route_contact_query
+            )
+            if starting.get("paused") is not True:
+                raise BridgeUnavailableError(
+                    "native route-contact horizon query requires a paused map"
+                )
+            subject = _army_by_id(starting, subject_army_id)
+            if (
+                not isinstance(subject, dict)
+                or subject.get("controllable") is not True
+            ):
+                raise BridgeUnavailableError(
+                    "native route-contact horizon subject is not controllable"
+                )
+            expected_hostiles = _route_contact_hostile_ids(starting)
+            if hostile_army_ids != expected_hostiles:
+                raise BridgeUnavailableError(
+                    "native route-contact horizon hostile scope is incomplete"
+                )
+            date_raw = _date_raw(starting, "route-contact starting snapshot")
+            native_revision = starting.get("native_revision")
+            if (
+                isinstance(native_revision, bool)
+                or not isinstance(native_revision, int)
+                or not 1 <= native_revision <= 2**64 - 1
+            ):
+                raise BridgeUnavailableError(
+                    "native route-contact horizon lacks a native revision"
+                )
+            result = self._execute_primitive_step(
+                step, expected_revision=selected_revision
+            )
+            if (
+                set(result)
+                != {
+                    "step",
+                    "accepted",
+                    "status",
+                    "query_sequence",
+                    "snapshot_revision",
+                    "route_contact_horizon",
+                    "backend_id",
+                }
+                or result.get("step") != step
+                or result.get("accepted") is not True
+                or result.get("status") != "available"
+                or result.get("snapshot_revision") != native_revision
+            ):
+                raise BridgeUnavailableError(
+                    "native route-contact horizon returned malformed status"
+                )
+            query_sequence = result.get("query_sequence")
+            if (
+                isinstance(query_sequence, bool)
+                or not isinstance(query_sequence, int)
+                or not 1 <= query_sequence <= 2**64 - 1
+            ):
+                raise BridgeUnavailableError(
+                    "native route-contact horizon lacks query_sequence"
+                )
+            try:
+                horizon = normalize_route_contact_horizon(
+                    result.get("route_contact_horizon"),
+                    expected_subject_army_id=subject_army_id,
+                    expected_target_province_id=target_province_id,
+                    expected_hostile_army_ids=hostile_army_ids,
+                    expected_date_raw=date_raw,
+                    expected_snapshot_revision=native_revision,
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(str(error)) from error
+            current = self.take_snapshot()
+            if not _same_paused_native_frame(starting, current):
+                raise BridgeUnavailableError(
+                    "native route-contact horizon crossed a snapshot revision"
+                )
+            return {
+                **result,
+                "route_contact_horizon": horizon,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": native_revision,
+                "queried_connection_generation": (
+                    starting.get("diagnostics", {}).get(
+                        "connection_generation"
+                    )
+                    if isinstance(starting.get("diagnostics"), dict)
+                    else None
+                ),
+                "queried_episode_run_id": starting.get("episode_run_id"),
             }
 
         preview = parse_preview_move_army_step(step)
@@ -5441,10 +5616,47 @@ class NativeHeadlessGameplayDriver:
                 )
             time.sleep(min(self.checkpoint_poll_interval_seconds, remaining))
 
-    def _execute_life_advance(
-        self, *, expected_revision: int | None
+    def _execute_route_contact_horizon_advance(
+        self, step: str, *, expected_revision: int | None
     ) -> dict[str, object]:
         starting = self.take_snapshot()
+        starting_revision = int(starting["revision"])
+        if expected_revision is None:
+            raise BridgeUnavailableError(
+                "route-contact one-day advance requires expected_revision"
+            )
+        _validate_revision(expected_revision, "expected_revision")
+        if expected_revision != starting_revision:
+            raise BridgeUnavailableError(
+                "route-contact one-day advance revision mismatch: "
+                f"expected {expected_revision}, current {starting_revision}"
+            )
+        if step not in _fresh_route_contact_advance_steps(
+            starting, self._history_snapshot()
+        ):
+            raise BridgeUnavailableError(
+                "route-contact one-day advance proof is stale or incomplete"
+            )
+        return self._execute_life_advance(
+            expected_revision=expected_revision,
+            exact_one_day=True,
+            result_step=step,
+        )
+
+    def _execute_life_advance(
+        self,
+        *,
+        expected_revision: int | None,
+        exact_one_day: bool = False,
+        result_step: str = "life-advance",
+        starting_snapshot: dict[str, object] | None = None,
+    ) -> dict[str, object]:
+        revision_validated_at_entry = starting_snapshot is not None
+        starting = (
+            copy.deepcopy(starting_snapshot)
+            if starting_snapshot is not None
+            else self.take_snapshot()
+        )
         if starting.get("map_ready") is not True:
             starting = self._wait_for_snapshot(
                 starting,
@@ -5458,7 +5670,16 @@ class NativeHeadlessGameplayDriver:
         starting_revision = int(starting["revision"])
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
-            if expected_revision != starting_revision:
+            if (
+                not revision_validated_at_entry
+                and expected_revision != starting_revision
+            ):
+                if exact_one_day or starting.get("paused") is True:
+                    raise BridgeUnavailableError(
+                        "native life-advance revision mismatch: "
+                        f"expected {expected_revision}, current "
+                        f"{starting_revision}"
+                    )
                 # life-advance is a bounded timeline transaction and always
                 # starts from a fresh native snapshot.  A date tick can race
                 # the caller's prior observation, so refresh once rather than
@@ -5469,6 +5690,10 @@ class NativeHeadlessGameplayDriver:
                     raise BridgeUnavailableError(
                         "native life-advance revision changed onto an active event"
                     )
+        if exact_one_day and starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "route-contact one-day advance requires a paused map"
+            )
         assault_history = self._history_snapshot()
         open_assaults = _native_open_assault_lifecycles(assault_history)
         if open_assaults and starting.get("paused") is not True:
@@ -5486,7 +5711,7 @@ class NativeHeadlessGameplayDriver:
                     "lifecycle without observable same-SiegeID rich state"
                 )
         starting_date_raw = _date_raw(starting, "starting snapshot")
-        horizon_days = _life_advance_horizon_days(starting)
+        horizon_days = 1 if exact_one_day else _life_advance_horizon_days(starting)
         timeline_speed = 1 if horizon_days == 1 else 5
         speed_step = f"set-speed-{timeline_speed}"
         if speed_step not in self.capabilities()["action_steps"]:
@@ -5527,7 +5752,11 @@ class NativeHeadlessGameplayDriver:
             )
 
         progress_deadline = time.monotonic() + self.life_advance_timeout_seconds
-        while not _life_advance_progressed(current, starting):
+        while not _life_advance_progressed(
+            current,
+            starting,
+            horizon_days_override=(1 if exact_one_day else None),
+        ):
             remaining = progress_deadline - time.monotonic()
             if remaining <= 0:
                 break
@@ -5538,7 +5767,9 @@ class NativeHeadlessGameplayDriver:
 
         current = self._pause_life_advance(current, actions)
         reached_progress_postcondition = _life_advance_progressed(
-            current, starting
+            current,
+            starting,
+            horizon_days_override=(1 if exact_one_day else None),
         )
         if not reached_progress_postcondition:
             current_date_raw = _date_raw(
@@ -5599,8 +5830,13 @@ class NativeHeadlessGameplayDriver:
                 event_resolution = "unsupported"
 
         ending_date_raw = _date_raw(current, "ending snapshot")
+        if exact_one_day and ending_date_raw > starting_date_raw + 24:
+            raise BridgeUnavailableError(
+                "route-contact one-day advance exceeded its 24-hour native "
+                f"horizon: {starting_date_raw} -> {ending_date_raw}"
+            )
         return {
-            "step": "life-advance",
+            "step": result_step,
             "backend_id": "native-headless",
             "source": "native-composite",
             "starting_date": {"date_raw": starting_date_raw},
@@ -6193,7 +6429,10 @@ def _date_raw(snapshot: dict[str, object], name: str) -> int:
 
 
 def _life_advance_progressed(
-    snapshot: dict[str, object], starting_snapshot: dict[str, object]
+    snapshot: dict[str, object],
+    starting_snapshot: dict[str, object],
+    *,
+    horizon_days_override: int | None = None,
 ) -> bool:
     active_event = snapshot.get("active_event")
     if isinstance(active_event, dict):
@@ -6221,9 +6460,12 @@ def _life_advance_progressed(
     current_threats = set(_stationary_army_threat_relations(snapshot))
     if current_threats - starting_threats:
         return True
-    return current_date_raw >= (
-        starting_date_raw + _life_advance_horizon_days(starting_snapshot) * 24
+    horizon_days = (
+        horizon_days_override
+        if horizon_days_override is not None
+        else _life_advance_horizon_days(starting_snapshot)
     )
+    return current_date_raw >= starting_date_raw + horizon_days * 24
 
 
 def _native_history_after_latest_restore(
@@ -6298,7 +6540,7 @@ def _native_latest_assault_life_advance_failed(
     for position in range(len(scoped), started_history_position, -1):
         row = scoped[position - 1]
         command, _result = _effective_native_history_entry(row)
-        if command == "life-advance":
+        if is_life_advance_step(command):
             return row.get("ok") is not True
     return False
 
@@ -6849,6 +7091,7 @@ def _action_steps(
     pending_interaction_steps: set[str] = set()
     expand_move_armies = False
     expand_preview_move_armies = False
+    expand_route_contact_horizons = False
     expand_disband_armies = False
     expand_split_armies = False
     expand_merge_armies = False
@@ -6877,6 +7120,8 @@ def _action_steps(
             expand_move_armies = True
         elif capability == PREVIEW_MOVE_ARMY_CAPABILITY:
             expand_preview_move_armies = True
+        elif capability == QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY:
+            expand_route_contact_horizons = True
         elif capability == DISBAND_ARMY_CAPABILITY:
             expand_disband_armies = True
         elif capability == SPLIT_ARMY_HALF_CAPABILITY:
@@ -7110,18 +7355,37 @@ def _action_steps(
                     and active_siege.get("can_stop_assault") is True
                 ):
                     steps.add(stop_assault_step(siege_id))
-    if (expand_move_armies or expand_preview_move_armies) and wars:
+    if (
+        expand_move_armies
+        or expand_preview_move_armies
+        or expand_route_contact_horizons
+    ) and wars:
         target_provinces = {
             int(army["current_province_id"])
             for army in enemy_armies_from_wars(wars)
             if isinstance(army.get("current_province_id"), int)
         }
+        target_provinces.update(
+            int(army["move_target_province_id"])
+            for army in controllable
+            if _positive_native_id(army.get("move_target_province_id"))
+        )
         if war_primary_opponent_supported:
             target_provinces.update(
                 enemy_primary_default_raise_province_ids(wars)
             )
         if war_objectives_supported:
             target_provinces.update(war_objective_province_ids(wars))
+        hostile_ids = sorted(
+            {
+                int(enemy["army_id"])
+                for enemy in enemy_armies_from_wars(wars)
+                if _positive_native_id(enemy.get("army_id"))
+                and enemy.get("retreating") is not True
+                and enemy.get("army_state") != "retreating"
+                and enemy.get("army_state_code") != 6
+            }
+        )
         for army in controllable:
             army_id = army.get("army_id")
             if not isinstance(army_id, int):
@@ -7136,6 +7400,16 @@ def _action_steps(
                     steps.add(move_army_step(army_id, province_id))
                 if expand_preview_move_armies:
                     steps.add(preview_move_army_step(army_id, province_id))
+                if (
+                    expand_route_contact_horizons
+                    and paused is True
+                    and 0 < len(hostile_ids) <= 64
+                ):
+                    steps.add(
+                        query_route_contact_horizon_step(
+                            army_id, province_id, hostile_ids
+                        )
+                    )
     return sorted(steps)
 
 
@@ -7150,6 +7424,195 @@ def _controllable_army_ids(snapshot: dict[str, object]) -> set[int]:
         )
         if isinstance(army.get("army_id"), int)
     }
+
+
+def _route_contact_hostile_ids(
+    snapshot: dict[str, object],
+) -> tuple[int, ...]:
+    wars = snapshot.get("active_wars")
+    if not isinstance(wars, list):
+        return ()
+    return tuple(
+        sorted(
+            {
+                int(enemy["army_id"])
+                for enemy in enemy_armies_from_wars(
+                    [war for war in wars if isinstance(war, dict)]
+                )
+                if _positive_native_id(enemy.get("army_id"))
+                and enemy.get("retreating") is not True
+                and enemy.get("army_state") != "retreating"
+                and enemy.get("army_state_code") != 6
+            }
+        )
+    )
+
+
+def _fresh_route_contact_advance_steps(
+    snapshot: dict[str, object],
+    history: list[dict[str, object]],
+) -> set[str]:
+    """Return one-shot advances backed by a true proof on this exact frame."""
+    if snapshot.get("paused") is not True:
+        return set()
+    hostiles = _route_contact_hostile_ids(snapshot)
+    if not 0 < len(hostiles) <= 64:
+        return set()
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    date_raw = snapshot.get("date_raw")
+    native_revision = snapshot.get("native_revision")
+    if (
+        isinstance(date_raw, bool)
+        or not isinstance(date_raw, int)
+        or isinstance(native_revision, bool)
+        or not isinstance(native_revision, int)
+        or native_revision <= 0
+    ):
+        return set()
+
+    advances: set[str] = set()
+    seen_queries: set[tuple[int, int, tuple[int, ...]]] = set()
+    scoped_history = _native_history_after_latest_restore(history)
+    for row in reversed(scoped_history):
+        command, result = _effective_native_history_entry(row)
+        query = parse_query_route_contact_horizon_step(command)
+        if query is None or query in seen_queries:
+            continue
+        seen_queries.add(query)
+        subject_army_id, target_province_id, requested_hostiles = query
+        if row.get("ok") is not True or requested_hostiles != hostiles:
+            continue
+        subject = _army_by_id(snapshot, subject_army_id)
+        horizon = (
+            result.get("route_contact_horizon")
+            if isinstance(result, dict)
+            else None
+        )
+        subject_route = (
+            horizon.get("subject_route")
+            if isinstance(horizon, dict)
+            else None
+        )
+        snapshot_route = _canonical_remaining_route(subject)
+        proof_route = _canonical_timed_route(subject_route)
+        if not (
+            isinstance(subject, dict)
+            and subject.get("controllable") is True
+            and subject.get("move_target_province_id") == target_province_id
+            and snapshot_route
+            and snapshot_route[-1] == target_province_id
+            and proof_route == snapshot_route
+            and isinstance(subject_route, dict)
+            and subject_route.get("army_id") == subject_army_id
+            and subject_route.get("current_province_id")
+            == subject.get("current_province_id")
+            and isinstance(horizon, dict)
+            and horizon.get("status") == "available"
+            and horizon.get("one_day_contact_free") is True
+            and horizon.get("date_raw") == date_raw
+            and horizon.get("snapshot_revision") == native_revision
+            and horizon.get("subject_army_id") == subject_army_id
+            and horizon.get("target_province_id") == target_province_id
+            and tuple(horizon.get("hostile_army_ids", ())) == hostiles
+            and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
+            and result.get("queried_revision") == snapshot.get("revision")
+            and result.get("queried_native_revision") == native_revision
+            and result.get("queried_connection_generation")
+            == connection_generation
+            and result.get("queried_episode_run_id")
+            == snapshot.get("episode_run_id")
+            and _route_contact_advance_scope_isolated(
+                snapshot, subject_army_id=subject_army_id
+            )
+        ):
+            continue
+        advances.add(
+            advance_route_contact_horizon_step(
+                subject_army_id, target_province_id, hostiles
+            )
+        )
+    return advances
+
+
+def _canonical_remaining_route(army: object) -> list[int] | None:
+    if not isinstance(army, dict):
+        return None
+    route = army.get("route_province_ids")
+    if not isinstance(route, list) or any(
+        isinstance(value, bool) or not isinstance(value, int) or value <= 0
+        for value in route
+    ):
+        return None
+    normalized = list(route)
+    current = army.get("current_province_id")
+    if normalized and normalized[0] == current:
+        normalized = normalized[1:]
+    return normalized
+
+
+def _canonical_timed_route(route: object) -> list[int] | None:
+    if not isinstance(route, dict) or route.get("timeline_observable") is not True:
+        return None
+    values = route.get("route_province_ids")
+    if not isinstance(values, list) or any(
+        isinstance(value, bool) or not isinstance(value, int) or value <= 0
+        for value in values
+    ):
+        return None
+    normalized = list(values)
+    if normalized and normalized[0] == route.get("current_province_id"):
+        normalized = normalized[1:]
+    return normalized
+
+
+def _route_contact_advance_scope_isolated(
+    snapshot: dict[str, object], *, subject_army_id: int
+) -> bool:
+    """Fail closed when one subject proof would advance another risky army."""
+    armies = snapshot.get("player_armies")
+    if not isinstance(armies, list):
+        return False
+    wars = snapshot.get("active_wars")
+    enemies = enemy_armies_from_wars(
+        [war for war in wars if isinstance(war, dict)]
+        if isinstance(wars, list)
+        else []
+    )
+    for army in controllable_armies(
+        [row for row in armies if isinstance(row, dict)]
+    ):
+        army_id = army.get("army_id")
+        if army_id == subject_army_id:
+            continue
+        if _army_in_combat_or_retreat(army):
+            return False
+        route = _canonical_remaining_route(army)
+        if _positive_native_id(army.get("move_target_province_id")) or route:
+            return False
+        province_id = army.get("current_province_id")
+        if not _positive_native_id(province_id):
+            return False
+        for enemy in enemies:
+            if (
+                enemy.get("retreating") is True
+                or enemy.get("army_state") == "retreating"
+                or enemy.get("army_state_code") == 6
+            ):
+                continue
+            enemy_route = enemy.get("route_province_ids")
+            if province_id in {
+                enemy.get("current_province_id"),
+                enemy.get("move_target_province_id"),
+            } or (
+                isinstance(enemy_route, list) and province_id in enemy_route
+            ):
+                return False
+    return True
 
 
 def _army_by_id(

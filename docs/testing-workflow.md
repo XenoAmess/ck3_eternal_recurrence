@@ -327,6 +327,32 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   `periodic_checkpoint` 统计之前早返回。因此生产 owner 另行只累计 `life-advance`/`economic-event-cycle` 中
   `progress_status=postcondition` 且 snapshot 有语义变化的回合，每三个后在第四个 gameplay action 前强制物化 checkpoint；
   query、ACK、失败、同帧 cache 更新都不计数。验收必须重算文件 size/SHA 并核对 native history anchor，不能只看 command ACK。
+- 2026-08-26 `native-auto-run --turns 6 --cold-start-checkpoint` 在 default-OFF production12 上完成首次生产 owner
+  实机闭环：PID `81684` 从 checkpoint 日期 `53176104` 冷恢复，依次执行三次同帧战争终止查询与三次
+  `progress_status=postcondition` 的一日 `life-advance`，推进至 `53176176`；第 3 个 eligible advance 后立即写出
+  66,420,106-byte checkpoint，SHA-256
+  `E8041581C789C21792280A893325082452F8A9717C8CDD421358FF9739189F07`，其 `history_index=166` 与当时 history tail
+  相同。退出后 CK3、injector、host 均不存在，`tree_gone=true`、`cleanup_proven=true`，且没有新增 crash bundle 或
+  unsafe marker。随后 PID `34084` 从这份新 checkpoint 再次冷恢复到同一日期与角色，证明产物可加载；该重放在四个
+  fresh route preview 后因所有 objective 路线都与敌军 `357` 的 `target/route` 相交而按既有策略停止，并完整回收。
+  因此“周期存档和恢复”已实证闭合，但“从任意检查点继续整局”仍受 exact combat/contact forecast 缺口阻断；不得把
+  第二次的安全停止写成完整自治通过。
+- 2026-08-26 同一 `53176176` checkpoint 的首轮 route-contact 诊断在 native reader 执行前 RED：ticket 仍为
+  `queued`，被通用 2 s wait 取消；exact EXE SHA、adapter 与 timing bindings 已通过，不能把这次超时归咎于
+  RVA/ABI。修复让同一 queued ticket 最多保留 8,000 ms，若已进入 `executing` 则以 2,000 ms slice 等到
+  terminal；2,200 ms delayed-pump fixture 验证原 ticket 只执行一次并正常 reclaim。最终生产 DLL SHA-256
+  `7AF3472A67218BDC407693D93A51826E2D99E29DB101EF724DC0B10FA60DC524` 的重放在 2.466 s 返回
+  `available`，mailbox `executed_requests 0 -> 1`；完整敌军 scope 的 route timeline 证明一日无接触，controller
+  才执行 speed 1 paused-to-paused 的 `53176176 -> 53176200`。war snapshot 发生语义变化，随后物化 checkpoint
+  SHA-256 `51A3C202D6785988F3E3E7F028B64C4F0949DD83A4E32F3222E286B110224BE8`，normal cleanup proven。
+  该 GREEN 只验收 production arrival/一日 contact horizon；同日 stored order 与 actual contact sides 仍未闭合。
+- 2026-08-26 post-fix continuation 从 `53176200` 依次完成 `12 + 30 + 90 + 60 + 15` turns 的五轮托管冷恢复，
+  五轮全部 qualified；连同修复后的首轮 3 turns，累计 `210/210` successful turns、78 个 visible gameplay turns，
+  从 `53176176` 累计推进 75 game days 至 `53177976`（续跑本身增加 74 days）。过程中多次执行 route horizon 与
+  普通 clear-route advance，抵达 `2568` 后逐候选 preview，对 `2600` 完成 candidate contact horizon、提交 move，
+  并完成周期及最终 checkpoint；全程没有 recovery，每轮 cleanup 均 proven。当前 checkpoint SHA-256 为
+  `12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D`。这是持续自治进展实证，不代表整局已经
+  完成，也不改变 `actual_contact_scope_ready=false`。
 - 2026-08-21 同一发布候选的第一次矩阵在第二格到达主菜单前发生 CK3 原生 `C0000005`，crash bundle 停在数据库图标初始化，无 fixture marker、无 blocking project diagnostic，运行树、EXE 与受保护存储未变。该 RED 必须原样保留；只有全新 userdir 的同格重试完整 GREEN，且随后另一全新目录的正式三格矩阵 3/3 GREEN，才能把它判为一次性引擎冷启动崩溃，禁止直接重标原报告。
 - Windows Python Launcher 的 `py <script.py>` 会解释脚本首行的 `/usr/bin/env python3`，可能选中 `PATH` 里的另一套 Python，而不是刚由 `py -m pip` 安装依赖的默认解释器。2026-08-21 实测该分裂让非固定 Pillow 重建的三张 DXT1 DDS 与仓库字节不同，产生假 stale；项目 `.venv` 的 `Pillow==12.3.0` 与官方 CI 均 GREEN。遇到素材 parity 全红时先打印实际解释器和 Pillow 版本，本机 L0 优先直接调用 `tools\.venv\Scripts\python.exe`，禁止为消除环境假红而重写已发布素材。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。

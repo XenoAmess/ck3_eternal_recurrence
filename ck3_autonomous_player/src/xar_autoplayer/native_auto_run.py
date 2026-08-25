@@ -17,6 +17,7 @@ import time
 from .bridge.driver import BridgeUnavailableError, UnsupportedStepError
 from .bridge.native_driver import NativeHeadlessGameplayDriver
 from .bridge.service import GameplayBridgeService
+from .bridge.war_contract import is_life_advance_step
 from .environment import EnvironmentSpec, ensure_state_path_safe
 from .errors import AgentError
 from .native_session import native_session
@@ -912,7 +913,7 @@ def _eligible_advance(
 ) -> bool:
     result = outcome.get("result")
     return bool(
-        step in _ELIGIBLE_ADVANCE_STEPS
+        (step in _ELIGIBLE_ADVANCE_STEPS or is_life_advance_step(step))
         and evidence
         and isinstance(result, dict)
         and result.get("progress_status") == "postcondition"

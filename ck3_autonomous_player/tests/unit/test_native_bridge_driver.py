@@ -26,6 +26,7 @@ from xar_autoplayer.bridge.native_driver import (
     ConfiguredHybridFallbackDriver,
     MinimizedRejectingVisualDriver,
     NativeHeadlessGameplayDriver,
+    _fresh_route_contact_advance_steps,
     _life_advance_horizon_days,
     _native_unobservable_started_assaults,
 )
@@ -33,6 +34,7 @@ from xar_autoplayer.bridge.settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
 )
 from xar_autoplayer.bridge.war_contract import (
+    advance_route_contact_horizon_step,
     is_native_war_step,
     merge_armies_step,
     parse_merge_armies_step,
@@ -4419,6 +4421,283 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             [11, 31, 31, 2585],
         )
 
+    def test_route_contact_horizon_is_atomic_and_scope_complete(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.state.army-routes",
+                "game.command.query-route-contact-horizon-v1-N",
+            )
+        )
+        player = _army(101, province_id=2603, route_province_ids=[])
+        enemy = _army(
+            31,
+            province_id=2583,
+            controllable=False,
+            move_target_province_id=2604,
+            army_state="moving",
+            route_province_ids=[2594, 2599, 2604],
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=53_176_176,
+                active_wars=[
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy],
+                        war_objective_province_ids=[2585],
+                    )
+                ],
+                player_armies=[player],
+            )
+        )
+        step = "query-route-contact-horizon-v1-101-to-2585-h-1-31"
+        self.assertIn(step, driver.capabilities()["action_steps"])
+        self.assertTrue(
+            driver.take_snapshot()["route_contact_horizon_supported"]
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "available",
+                        "query_sequence": 1,
+                        "snapshot_revision": 40,
+                        "route_contact_horizon": {
+                            "status": "available",
+                            "date_raw": 53_176_176,
+                            "snapshot_revision": 40,
+                            "subject_army_id": 101,
+                            "target_province_id": 2585,
+                            "hostile_army_ids": [31],
+                            "subject_route": {
+                                "timeline_observable": True,
+                                "army_id": 101,
+                                "current_province_id": 2603,
+                                "effective_origin_province_id": 2604,
+                                "route_province_ids": [2604, 2595, 2585],
+                                "arrival_date_raws": [
+                                    53_176_200,
+                                    53_176_248,
+                                    53_176_296,
+                                ],
+                            },
+                            "hostile_routes": [
+                                {
+                                    "timeline_observable": True,
+                                    "army_id": 31,
+                                    "current_province_id": 2583,
+                                    "effective_origin_province_id": 2583,
+                                    "route_province_ids": [2594, 2599, 2604],
+                                    "arrival_date_raws": [
+                                        53_176_224,
+                                        53_176_272,
+                                        53_176_320,
+                                    ],
+                                }
+                            ],
+                            "horizon_start_date_raw": 53_176_176,
+                            "horizon_end_date_raw": 53_176_200,
+                            "one_day_contact_free": True,
+                            "conflicts": [],
+                        },
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step(step)
+        self.assertTrue(
+            result["route_contact_horizon"]["one_day_contact_free"]
+        )
+        self.assertEqual(result["queried_native_revision"], 40)
+        command = next(
+            frame
+            for frame in reversed(endpoint.frames)
+            if frame.get("type") == "execute_step"
+        )
+        self.assertEqual(command["expected_revision"], 40)
+
+        with self.assertRaises(UnsupportedStepError):
+            driver.execute_step(
+                "query-route-contact-horizon-v1-101-to-2585-h-1-41"
+            )
+
+    def test_fresh_contact_proof_advertises_and_consumes_exact_day_once(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+            life_advance_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.state.army-routes",
+                "game.command.query-route-contact-horizon-v1-N",
+                "game.command.set-speed-1",
+                "game.command.resume-map",
+                "game.command.pause-map",
+            )
+        )
+        start_date = 53_176_176
+        player = _army(
+            101,
+            province_id=2603,
+            move_target_province_id=2585,
+            army_state="moving",
+            route_province_ids=[2604, 2595, 2585],
+        )
+        enemy = _army(
+            31,
+            province_id=2583,
+            controllable=False,
+            move_target_province_id=2600,
+            army_state="moving",
+            route_province_ids=[2594, 2600],
+        )
+        war = _war(
+            allied_armies=[player],
+            enemy_armies=[enemy],
+            war_objective_province_ids=[2585],
+        )
+
+        def publish_snapshot(
+            revision: int, *, paused: bool, date_raw: int, speed: int
+        ) -> None:
+            endpoint.publish(
+                _snapshot(
+                    revision,
+                    paused=paused,
+                    date_raw=date_raw,
+                    speed=speed,
+                    active_wars=[war],
+                    player_armies=[player],
+                )
+            )
+
+        publish_snapshot(40, paused=True, date_raw=start_date, speed=5)
+        query_step = (
+            "query-route-contact-horizon-v1-101-to-2585-h-1-31"
+        )
+        advance_step = advance_route_contact_horizon_step(
+            101, 2585, (31,)
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            result: dict[str, object] = {"step": step, "accepted": True}
+            if step == query_step:
+                result.update(
+                    {
+                        "status": "available",
+                        "query_sequence": 1,
+                        "snapshot_revision": 40,
+                        "route_contact_horizon": {
+                            "status": "available",
+                            "date_raw": start_date,
+                            "snapshot_revision": 40,
+                            "subject_army_id": 101,
+                            "target_province_id": 2585,
+                            "hostile_army_ids": [31],
+                            "subject_route": {
+                                "timeline_observable": True,
+                                "army_id": 101,
+                                "current_province_id": 2603,
+                                "effective_origin_province_id": 2604,
+                                "route_province_ids": [2604, 2595, 2585],
+                                "arrival_date_raws": [
+                                    start_date + 24,
+                                    start_date + 48,
+                                    start_date + 72,
+                                ],
+                            },
+                            "hostile_routes": [
+                                {
+                                    "timeline_observable": True,
+                                    "army_id": 31,
+                                    "current_province_id": 2583,
+                                    "effective_origin_province_id": 2594,
+                                    "route_province_ids": [2594, 2600],
+                                    "arrival_date_raws": [
+                                        start_date + 24,
+                                        start_date + 48,
+                                    ],
+                                }
+                            ],
+                            "horizon_start_date_raw": start_date,
+                            "horizon_end_date_raw": start_date + 24,
+                            "one_day_contact_free": True,
+                            "conflicts": [],
+                        },
+                    }
+                )
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+            if step == "set-speed-1":
+                publish_snapshot(
+                    41, paused=True, date_raw=start_date, speed=1
+                )
+            elif step == "resume-map":
+                publish_snapshot(
+                    42,
+                    paused=False,
+                    date_raw=start_date + 24,
+                    speed=1,
+                )
+            elif step == "pause-map":
+                publish_snapshot(
+                    43,
+                    paused=True,
+                    date_raw=start_date + 24,
+                    speed=1,
+                )
+
+        endpoint.send_hook = answer
+        driver.execute_step(query_step)
+        self.assertIn(advance_step, driver.capabilities()["action_steps"])
+        revision = int(driver.take_snapshot()["revision"])
+
+        result = driver.execute_step(
+            advance_step, expected_revision=revision
+        )
+
+        self.assertEqual(result["starting_date_raw"], start_date)
+        self.assertEqual(result["ending_date_raw"], start_date + 24)
+        self.assertEqual(result["elapsed_days"], 1)
+        self.assertTrue(result["paused"])
+        self.assertNotIn(advance_step, driver.capabilities()["action_steps"])
+
     def test_existing_move_target_still_advertises_preview_not_duplicate_move(
         self,
     ) -> None:
@@ -6495,7 +6774,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(capabilities["composite_action_steps"], ["life-advance"])
         starting_revision = int(driver.take_snapshot()["revision"])
         ready_timer = threading.Timer(
-            0.02, lambda: endpoint.publish(_snapshot(2, map_ready=True))
+            0.1, lambda: endpoint.publish(_snapshot(2, map_ready=True))
         )
         timers.append(ready_timer)
         ready_timer.start()
@@ -6546,8 +6825,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
         )
         endpoint.publish(_snapshot(1))
-        stale_revision = int(driver.take_snapshot()["revision"])
+        driver.take_snapshot()
         endpoint.publish(_snapshot(2, date_raw=53_171_424))
+        starting_revision = int(driver.take_snapshot()["revision"])
 
         def answer(frame: dict[str, object]) -> None:
             if frame.get("type") != "execute_step":
@@ -6582,7 +6862,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
 
         endpoint.send_hook = answer
         result = driver.execute_step(
-            "life-advance", expected_revision=stale_revision
+            "life-advance", expected_revision=starting_revision
         )
 
         self.assertEqual(result["ordinary_events"], [])
@@ -6591,6 +6871,39 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["ending_date_raw"], 53_171_448)
         self.assertEqual(result["elapsed_days"], 1)
         self.assertTrue(result["paused"])
+
+    def test_paused_life_advance_rejects_stale_revision_before_resume(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-5",
+            )
+        )
+        endpoint.publish(_snapshot(1))
+        stale_revision = int(driver.take_snapshot()["revision"])
+        endpoint.publish(_snapshot(2, date_raw=53_171_424))
+
+        with self.assertRaisesRegex(
+            BridgeUnavailableError, "life-advance revision mismatch"
+        ):
+            driver.execute_step(
+                "life-advance", expected_revision=stale_revision
+            )
+
+        self.assertFalse(
+            any(
+                frame.get("type") == "execute_step"
+                for frame in endpoint.frames
+            )
+        )
 
     def test_active_war_life_advance_ignores_day_tick_and_enemy_motion(self) -> None:
         endpoint = FakeEndpoint()

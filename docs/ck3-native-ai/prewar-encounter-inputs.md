@@ -20,9 +20,14 @@
   `CWarDeclaration` special-interaction payload；命令克隆后，原生 executor 将该向量原样交给
   `0x27A2210`，后者原样复制到新 `CWar+0x270 targeted_titles`。因此可以在不建战、不提交命令的
   前提下复用已实机确认的 landed-title 层级 walker，精确投影 declaration-bound objective Provinces。
-- [unknown] 当前结果仍不是完整 encounter forecast。自愿盟友/宗主接受、假设路径耗时、真实到达次序与
-  contact opponent stored order 尚未闭合，所以 capability 继续保持关闭；但 active declare preview 的
-  强制防守者、objective Provinces 与当前 CUnit scope 已形成可独立实机对照的最小只读切片。
+- [live-confirmed] 假设路径的 native duration/date ABI 与 active-war production reader 已闭合：规划器的
+  `MovePath+0x128` cost 不直接参与
+  到达时间换算；`0x2247320` 按 route row 重算 Q100000-day duration，并扣除已经行进的首边部分，
+  `0x2947A60` 再按最近整数日换成 CK3 date raw hours。`query-route-contact-horizon-v1-N` 已在 paused exact-build
+  replay 返回完整 subject/hostile timelines，并安全授权一日推进。
+- [unknown] 当前结果仍不是完整 encounter forecast。自愿盟友/宗主接受、宣战候选与 timing reader 的生产接线、
+  同日 tick 顺序与 contact opponent stored order 尚未闭合，所以 prewar forecast capability 继续保持关闭；但
+  active-war native arrival 与 bounded one-day contact horizon 已独立完成实机验收。
 
 ## 版本与证据边界
 
@@ -356,14 +361,49 @@ readiness 为真。
   `objective_provinces_live_ready=false`。
 - [static-confirmed] native path builder ABI 为
   `0x23C33D0(PathCtx*, origin Province*, target Province*, route_kind=2, MovePath*)`；
-  `MovePath+0x128` 是 int64 route cost。它只生成 caller-owned path 输出。
-- [unknown] route cost 到 arrival date 的单位、CUnit/CArmy movement-speed modifiers、embark/disembark 与
-  同日 tie-break 尚未闭合，所以不能把 route row 数量当天数。
+  `MovePath+0x128` 是 int64 A* planning cost。它只生成 caller-owned path 输出；arrival wrapper
+  `0x2947A60` 不读取该 cost，而是另行调用 per-edge calculator。因此不能把 route cost 或 row 数量当天数。
+- [static-confirmed] arrival wrapper 的真实五参数 Win64 ABI 为
+  `CDate* 0x2947A60(CDate* out, CUnit*, CProvince* origin, CProvince* target,
+  const CDate* base_date)`，第五参数位于 caller stack `+0x28`。其直接 xref 为
+  `0x23D3519/0x261F336/0x3DE6645`。它构造 `0x130`-byte `MovePath` 与 `0x70`-byte `PathCtx`，以
+  `route_kind=2` 调 `0x23C33D0`，但不检查 builder 返回的 bool，随后无条件调用 `0x2247320`；生产 reader
+  不得照搬这个失败语义。
+- [static-confirmed] duration calculator ABI 为
+  `int64* 0x2247320(CUnit*, int64* out_q100000_days, const MovePath*, const CProvince* origin)`；直接 xref 为
+  `0xC70E25/0x2249530/0x2947AEB`。它只读 `MovePath+0x00` row-pointer data 与 `+0x0C` count，按原存储顺序
+  逐 row 在当前 Province 的 adjacency `+0x50/+0x5C` 中找边，调用 `0x23C45B0` 累加每边 duration，
+  再把 row ProvinceID 解析为下一 origin。它不去重，所以 route 的 loops/duplicates 与每个 index 必须原样保留。
+- [static-confirmed] `0x2246EC0` 计算 land speed，使用 native exact aggregate index `0x189`、条件 aggregate
+  `0x19D/0x18A`、friendly-area bonus、minimum clamp，以及 normal/retreat movement-speed define；
+  `0x2247180` 使用 aggregate index `0x10F`、minimum clamp 与 fleet-speed define 计算 naval speed。
+  `0x23C45B0` 在 land/water 边上选择相应速度，跨入 water 或 land 时分别用 Q100000
+  `EMBARK_COST`/`DISEMBARK_COST` 覆盖普通边耗时。stock define 值为 `30`/`10` days。
+- [static-confirmed] 若 `CUnit+0x44` existing-route count 非零，且 proposed path 首 row ProvinceID 等于
+  `CUnit+0x38` existing route 首 row，calculator 会从总 duration 恰好扣一次当前边已走部分：progress raw
+  为 `CUnit+0x168`，speed 优先取正值 `CUnit+0x190`，否则经 `0x2247B40` 重算，再做 signed Q100000
+  fixed division。tick path `0x2247D3C..0x2247D94` 同样每 tick 把该 speed 加到 `+0x168`，到达当前边 raw cost
+  后扣 cost 并 pop row，独立印证 progress/speed 字段语义。
+- [static-confirmed] `0x2947A60` 的精确换算为
+  `days = trunc_toward_zero((q >= 0 ? q + 50000 : q - 50000) / 100000)`，然后
+  `arrival.raw = base_date.raw + days * 24`。即最近整数日、恰好半日时远离零；合法非负 duration 等价于
+  `floor((q + 50000) / 100000)`。`CDate` raw 单位为 hour。短 prefix 可以得到 `0` days，多个相邻 route index
+  可以合法落在同一 date，不能要求日期严格递增。
+- [static-confirmed] `0x2247320` 不写 path/header/rows，始终返回 caller 的 out pointer，没有成功 bool：空 path
+  返回零，找不到 adjacency 时静默跳过该 row。land/naval divisor 或 current-edge correction speed 为零时，
+  相关分支的 `mov eax,0xffffffff` 在 x64 上零扩展为 `4294967295`：它会成为边 duration，或从累计 duration
+  中被扣除，而不是 int64 `-1` status。再加上 wrapper 忽略 builder bool，`arrival == base_date` 不能证明成功。
+  严格 reader 必须保留 builder bool，逐 row generation-resolve ProvinceID、验证 exact adjacency 与最终 target，
+  并拒绝非正 speed、负 duration、异常大 duration 或 prefix duration 下降；合法相等值必须保留。
+- [live-confirmed] `0x2247320` 与速度 helper 的生产调用边界固定在 paused application-main mailbox：同 revision
+  generation preflight 之后、owner `MovePath` 析构之前同步调用；不允许从 worker thread 直调。该边界已经由
+  active-war route-contact replay 验收。arrival 同日 ties 与 Province stored-order/contact tick 的先后关系仍未闭合。
 - [static-confirmed] 真正 contact opponent builder `0x2209450` 按 target
   `CProvince+0x748/+0x754` 的 CUnit stored order 选对手；实际 constructor path `0x27FB7C0` 会创建
   `CCombat`，paused query 禁止调用。
-- [unknown] objective Province 已闭合，但在没有 arrival time 与同日 stored-order 投影时，仍无法提前确定
-  真实 contact opponent set/order。当前 province/route 只能作为输入，不是 contact 结论。
+- [unknown] production/live arrival 已闭合为有界 active-war 输入，但同日 stored-order 投影未通过时，仍无法提前
+  确定真实 contact opponent set/order。当前 province/route/timeline 与一日 predicate 只能证明所查询窗口无冲突，
+  不是实际 contact 结论。
 
 ## 最小 DTO 与 readiness
 
@@ -420,8 +460,8 @@ readiness 为真。
 | `objective_provinces_live_ready` | `false` | 尚缺 active-preview paused source 对照 |
 | `complete_initial_participants_ready` | `false` | 缺 voluntary allies/overlord 与非 UI materialization |
 | `objective_provinces_ready` | static fixture `true`；production `false` | 静态投影闭合；live gate 尚未通过 |
-| `native_arrival_timeline_ready` | `false` | 缺 cost/speed/date ABI |
-| `actual_contact_scope_ready` | `false` | 缺 arrival + Province stored order |
+| `native_arrival_timeline_ready` | `false` | 该键专属 prewar declaration-bound timing；active-war sibling `route_contact_horizon_supported` 已实机通过，但不能改写此门 |
+| `actual_contact_scope_ready` | `false` | 缺同日 Province candidate/stored order/tick；一日无冲突不能证明实际 contact sides/order |
 | `combat_v3_prewar_scope_ready` | `false` | 还未形成有序双方 CArmy scenario |
 | `war_entry_forecast_inputs_ready` | `false` | 上述门未全闭合 |
 | capability advertised | `false` | 不接 production bridge/MCP |
@@ -441,13 +481,14 @@ flowchart TD
     S --> J
     T --> W["[S] CWarDeclaration -> CWar targeted_titles<br/>identity proof"]
     W --> O["[S] landed-title hierarchy -> objective Provinces<br/>live pending"]
-    U -. "[U] route cost + speed -> date" .-> A["[U] arrival timeline"]
-    O -.-> A
+    U --> Q["[S] 0x2247320 per-prefix Q100000 duration<br/>首边 progress correction"]
+    O --> Q
+    Q --> A["[L] nearest-day, then date raw + days*24<br/>active-war reader live accepted"]
     A -. "[U] same-day Province stored order" .-> C["[U] actual contact sides/order"]
     J -.-> C
     C -.-> V["[U] combat-v3 prewar admission"]
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
-    class J,A,C,V unknown;
+    class J,C,V unknown;
 ```
 
 ## 下一项 RE 与最短 live 验收
@@ -466,10 +507,30 @@ flowchart TD
 4. [static-confirmed] objective Province 的最短 reader 已可施工：在上述 passive mirror 中额外 gate
    `CWarDeclaration` vtable `0x411DAA0` 与 fields，再把 selected TitleIDs 交给现有 generation-safe landed-title
    walker。只读 reader 不调用 `0x1087C80/0x2C3FA20/0x27A2210`；这些 RVA 只构成恒等来源证明。
-5. [unknown] arrival 在目标 Province 闭合后继续 `0x23C33D0` 与 movement speed/date 单位；contact 最后接
-   `0x2209450` 的 stored-order policy，但永不调用 `0x27FB7C0` 做查询。
+5. [live-confirmed] active-war arrival reader 已按此入口施工：在 paused main-thread mailbox 内调用
+   `0x23C33D0` 并保留其 bool；owner `MovePath` 存活期间，为 route index `i` 建一个只复制同一 row-pointer data、
+   `count=i+1` 的 caller-owned shallow prefix header，逐 prefix 调 `0x2247320`。shallow header 不得析构；
+   full owner 最后按原生路径清理。输出 array 必须与 route indexes 一一平行并保留 loops/duplicates；每个 prefix
+   独立应用 `0x2947A60` 的 exact rounding，允许相同 date。任一 Province/edge/speed/duration gate 失败则整条
+   timeline unavailable，不能从 route cost/hops/soldiers 猜值。
+6. [unknown] contact 最后继续 `0x220842F..0x2208646` 的 same-tick candidate mutation/scan 与
+   `0x2209450` stored-order policy；paused query 永不调用 `0x27FB7C0`。
 
-### 最短 paused live acceptance
+### Active-war arrival / 一日 horizon 实机验收
+
+[live-confirmed, 2026-08-26] 首次从 paused date `53176176` 重放时，route ticket 在 native executor 运行前因
+通用 2 s queued wait 超时；exact EXE/hash 与 bindings 均已通过。修复让同一 queued ticket 保留 8,000 ms，并在
+executing 后以 2,000 ms slices 等到 terminal；2,200 ms delayed-pump fixture 覆盖该真实失败。
+
+最终生产 DLL SHA-256
+`7AF3472A67218BDC407693D93A51826E2D99E29DB101EF724DC0B10FA60DC524` 对 ArmyID `83886341`、target
+`2604` 与完整 hostile scope `[357,33554657]` 在 2.466 s 返回 `available`，mailbox `executed_requests 0 -> 1`。
+timeline 给出 `one_day_contact_free=true`，只授权 `53176176 -> 53176200` 的一日 speed-1 paused-to-paused
+推进；war projection 发生变化，checkpoint SHA-256 为
+`51A3C202D6785988F3E3E7F028B64C4F0949DD83A4E32F3222E286B110224BE8`，normal cleanup proven。
+这闭合 production arrival/一日 contact horizon，不闭合同日 stored order 或 actual contact sides/order。
+
+### 宣战前完整输入的最短 paused live acceptance
 
 [live-pending] 不操作宣战命令：人工打开一个合法宣战 interaction，选中 CB 与 title 后暂停；只读 reader：
 
@@ -486,8 +547,12 @@ flowchart TD
    `objective_province_ids` 可重复，并与窗口目标头衔的 barony/county hierarchy 一致；若随后由人工另行提交，
    可把新 active war 的 `targeted_title_ids/war_objective_province_ids` 作为第二阶段对照，但第一阶段不提交即可
    验收只读 prewar query；
-6. 关闭 capability，报告 title、objective、participant 与 current deployment partial readiness；
-   arrival/contact/combat-v3 gates 必须仍为 false。
+6. 复用已实机通过的 timing adapter，在同一 paused mailbox revision 对 declaration-bound current Province ->
+   objective route 做两次完整采样：
+   builder 必须成功，每个 route index 必须有同 index prefix duration/date，duration 非负且单调不降、date
+   单调不降并允许相等；full-prefix 结果必须等于 full-path 单次结果，两次采样必须逐字段相等；
+7. active-war arrival gate 已为 true；在第 6 项通过前只保持 prewar binding 为 pending。通过后仍保持
+   contact/combat-v3 gates 为 false，直到 same-day candidate/stored-order 分支单独闭合。
 
 第一阶段一次即可同时证实根链、active candidate binding、command-bound title identity、objective projection、
 forced-defender rows 与 CUnit/CArmy identity；它不发送 interaction、不推进时间，也不把 GUI 预览冒充最终

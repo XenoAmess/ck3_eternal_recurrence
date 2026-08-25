@@ -232,6 +232,8 @@ int main() {
       !Contains(known.capabilities, "game.state.army-routes") ||
       !Contains(known.capabilities,
                 "game.command.preview-move-army-N-to-N") ||
+      !Contains(known.capabilities,
+                "game.command.query-route-contact-horizon-v1-N") ||
       !Contains(known.capabilities, "game.command.split-army-half-N") ||
       !Contains(known.capabilities,
                 "game.command.merge-armies-N-with-N") ||
@@ -334,6 +336,10 @@ int main() {
   if (exact_adapter == nullptr || !exact_adapter->enabled() ||
       !exact_adapter->supports_step(canonical_combat_step) ||
       !exact_adapter->supports_step(canonical_v3_combat_step) ||
+      !exact_adapter->supports_step(
+          "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218-33554433") ||
+      exact_adapter->supports_step(
+          "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218-16777218") ||
       !exact_adapter->supports_step(
           "query-war-termination-terms-v1-16777290") ||
       exact_adapter->supports_step(

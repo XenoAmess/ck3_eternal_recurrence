@@ -296,6 +296,49 @@ flowchart LR
 - [inference][counter-policy] 这个 live 分支验证 P03/P07/P08 的组合门：敌 endpoint 提前变化立即关闭旧
   epoch；所有候选做完整 M × N 审计；没有 exact combat forecast 时，共享终点不能作为主动接战例外。
 
+### 生产 owner 的 checkpoint 重放 / 日期 `53176176`
+
+- [live-confirmed] 2026-08-26 的 default-OFF production12 `native-auto-run` 从 `53176104` 连续完成三次一日
+  paused-to-paused 推进，并由生产 owner 在 `53176176` 自动物化 checkpoint；ArmyID `83886341` 位于 `2603`、
+  remaining route 为 `[2604]`，敌军 `357` 位于 `2583`、target 为 `2604`、remaining route 为
+  `[2594,2599,2598,2595,2603,2604]`。
+- [live-confirmed] 独立 PID `34084` 随后从该 checkpoint 恢复到同一日期、CharacterID `29829` 与战争
+  `16777290`。对 `2568/2585/2596/2600` 的 fresh preview 分别返回
+  `[2604,8759,2602,2591,2589,2579,2574,2572,2568]`、
+  `[2604,2603,2595,2598,2599,2587,2585]`、`[2604,2603,2595,2596]` 与
+  `[2604,2603,2595,2600]`；四条路线都至少经过敌军 target/route 中的 `2604`。
+- [live-confirmed] planner 因而返回 `native_war_no_safe_exact_route`，没有提交 move 或 advance；生产 owner
+  仍按 `stop_event -> native-session stop_tracked -> driver.close` 完整回收。该结果证明 checkpoint 可恢复，也证明
+  当前整局循环在真实的边内 committed movement/contact 局面会被缺失的 exact forecast 阻断。
+- [inference][counter-policy] 在该次安全停止时，下一项施工依赖不是放宽 M × N 冲突矩阵，也不是用 base power 或
+  soldiers 猜输赢；当时应先补能区分“完成已承诺边后尚有脱离窗口”与“不可避免接触”的 exact-build contact/ETA
+  观测。下节已闭合 arrival 与一日脱离窗口；当前依赖收窄为 same-day candidate/stored order 的 actual-contact
+  scope，随后才是在确实需要接战时补语义明确的 exact combat forecast。本节既有 fail-closed 分支保持不变。
+
+### Exact route-contact 一日窗口实机闭合
+
+- [live-confirmed] 首次从日期 `53176176` 重放时，typed route ticket 在 application-main 执行前仍处于
+  `queued`，被通用 2 s 等待取消；exact EXE SHA、adapter 与 timing bindings 均已通过。生产 worker 改为让同一
+  queued ticket 最多存活 8,000 ms，进入 `executing` 后按 2,000 ms slice 等到 terminal；2,200 ms delayed-pump
+  fixture 证明原 ticket 只执行一次且可回收。
+- [live-confirmed] 最终生产 DLL
+  `7AF3472A67218BDC407693D93A51826E2D99E29DB101EF724DC0B10FA60DC524` 在 2.466 s 内返回 `available`，
+  mailbox `executed_requests` 从 `0` 增至 `1`。ArmyID `83886341` 到 `2604`、完整敌军 scope
+  `[357,33554657]` 的 exact timeline 给出 `one_day_contact_free=true`，于是 planner 只授权 speed 1 的一日
+  paused-to-paused 推进 `53176176 -> 53176200`；war projection 确有变化，未把 command ACK 冒充进展。
+- [live-confirmed] 推进后 checkpoint SHA-256 为
+  `51A3C202D6785988F3E3E7F028B64C4F0949DD83A4E32F3222E286B110224BE8`，normal managed cleanup 完整证明。
+  因而 production arrival/一日 route-contact horizon 已闭合；`actual_contact_scope_ready` 仍为 `false`，同日
+  candidate/stored order 与真实 contact sides/order 不能从本结果推断。
+
+[live-confirmed continuation] 随后从 `53176200` 连续完成 `12 + 30 + 90 + 60 + 15` turns 的五轮 qualified
+托管冷恢复；连同首轮 3 turns，共 `210/210` successful turns、78 个 visible gameplay turns，并从 `53176176`
+累计推进 75 game days 至 `53177976`。循环先后使用多次 route horizon、普通 clear-route advance、到达 `2568`
+后的逐候选 preview、对 `2600` 的 candidate contact horizon、move submission 及周期/最终 checkpoint；没有
+recovery，所有 cleanup proven，当前 checkpoint SHA-256 为
+`12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D`。这证明 post-fix 循环可以持续产生可见游戏
+进展，但不代表整局完成，也不使 `actual_contact_scope_ready` 变为 `true`。
+
 ### 连续恢复的有界失败入口记忆
 
 - [live-confirmed] 从同一 checkpoint origin `2598` 已观察到两条最终进入无安全出口并执行 restore 的入口：

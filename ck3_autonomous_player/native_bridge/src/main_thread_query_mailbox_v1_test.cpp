@@ -1,4 +1,5 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 
 #include <windows.h>
 #include <bcrypt.h>
@@ -182,6 +183,12 @@ bool Execute(void *opaque,
   return context.return_value;
 }
 
+bool ExecuteSecondary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 struct BlockingExecutorContext {
   HANDLE entered = nullptr;
   HANDLE release = nullptr;
@@ -210,6 +217,17 @@ DWORD WINAPI DrainOnFixtureThread(void *opaque) {
       xar::ck3_11906::kSdlWindowsPumpFirstPeekReturnRva,
       context.owner_thread_id);
   return 0;
+}
+
+struct DelayedDrainThreadContext {
+  DrainThreadContext drain{};
+  std::uint32_t delay_milliseconds = 0;
+};
+
+DWORD WINAPI DelayedDrainOnFixtureThread(void *opaque) {
+  auto &context = *static_cast<DelayedDrainThreadContext *>(opaque);
+  Sleep(context.delay_milliseconds);
+  return DrainOnFixtureThread(&context.drain);
 }
 
 std::uint32_t g_original_peek_calls = 0;
@@ -668,6 +686,48 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
+  // The old route worker cancelled a still-queued ticket after two seconds.
+  // A verified paused pump arriving just beyond that interval must instead
+  // execute the original ticket, join the pump thread, and reclaim cleanly.
+  g_failure_stage = "queued_wait_crosses_delayed_paused_pump";
+  constexpr std::uint32_t delayed_pump_milliseconds = 2'200;
+  static_assert(kRouteContactHorizonV1QueuedWaitBudgetMilliseconds >
+                delayed_pump_milliseconds);
+  static_assert(kRouteContactHorizonV1QueuedWaitBudgetMilliseconds < 10'000);
+  ExecutorContext delayed_context{};
+  MainThreadQueryTicketV1 delayed_ticket{};
+  if (TrySubmitMainThreadQueryV1(mailbox, &Execute, &delayed_context,
+                                delayed_ticket) !=
+      MainThreadQuerySubmitResultV1::submitted) {
+    return false;
+  }
+  DelayedDrainThreadContext delayed_drain{
+      {&mailbox, owner_thread, false}, delayed_pump_milliseconds};
+  HANDLE delayed_thread =
+      CreateThread(nullptr, 0, &DelayedDrainOnFixtureThread, &delayed_drain,
+                   0, nullptr);
+  if (delayed_thread == nullptr) {
+    (void)WaitForMainThreadQueryV1(mailbox, delayed_ticket, 0);
+    (void)ReclaimMainThreadQueryV1(mailbox, delayed_ticket);
+    return false;
+  }
+  const auto delayed_wait = WaitForMainThreadQueryV1(
+      mailbox, delayed_ticket,
+      kRouteContactHorizonV1QueuedWaitBudgetMilliseconds);
+  const auto delayed_thread_wait =
+      WaitForSingleObject(delayed_thread, 1'000);
+  CloseHandle(delayed_thread);
+  const auto delayed_reclaim =
+      ReclaimMainThreadQueryV1(mailbox, delayed_ticket);
+  if (delayed_wait != MainThreadQueryWaitResultV1::completed ||
+      delayed_thread_wait != WAIT_OBJECT_0 || !delayed_drain.drain.executor_ran ||
+      delayed_context.calls != 1 ||
+      delayed_reclaim != MainThreadQueryReclaimResultV1::reclaimed ||
+      mailbox.state.load(std::memory_order_acquire) !=
+          MainThreadQueryMailboxStateV1::idle) {
+    return false;
+  }
+
   ExecutorContext failed_context{};
   failed_context.return_value = false;
   MainThreadQueryTicketV1 failed_ticket{};
@@ -924,6 +984,44 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
+  // Production exposes two exact typed reader identities, never a generic
+  // callback slot.  Both admitted identities execute normally; a third
+  // callback is rejected before it can enter the queue.
+  auto typed_environment =
+      runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
+  typed_environment.permitted_executor = &Execute;
+  typed_environment.permitted_executor_secondary = &ExecuteSecondary;
+  g_failure_stage = "typed_executor_pair";
+  if (!InstallMainThreadQueryMailboxV1(mailbox, typed_environment) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread)) {
+    return false;
+  }
+  ExecutorContext typed_context{};
+  MainThreadQueryTicketV1 typed_ticket{};
+  BlockingExecutorContext rejected_typed_context{};
+  MainThreadQueryTicketV1 rejected_typed_ticket{};
+  if (TrySubmitMainThreadQueryV1(
+          mailbox, &BlockingExecute, &rejected_typed_context,
+          rejected_typed_ticket) !=
+          MainThreadQuerySubmitResultV1::invalid_request ||
+      TrySubmitMainThreadQueryV1(mailbox, &ExecuteSecondary, &typed_context,
+                                typed_ticket) !=
+          MainThreadQuerySubmitResultV1::submitted ||
+      !ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      typed_context.calls != 1 ||
+      WaitForMainThreadQueryV1(mailbox, typed_ticket, 0) !=
+          MainThreadQueryWaitResultV1::completed ||
+      ReclaimMainThreadQueryV1(mailbox, typed_ticket) !=
+          MainThreadQueryReclaimResultV1::reclaimed ||
+      UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
+          MainThreadQueryUninstallResultV1::uninstalled) {
+    return false;
+  }
+
   runtime.protection.fail_next_readonly_restore = true;
   g_failure_stage = "iat_protection_rollback";
   if (InstallMainThreadQueryMailboxV1(
@@ -962,7 +1060,7 @@ bool TestSourceContract(int argc, char **argv) {
       kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs != 2) {
     return false;
   }
-  constexpr std::array<std::string_view, 41> source_tokens{
+  constexpr std::array<std::string_view, 42> source_tokens{
       "InterlockedCompareExchangePointer",
       "kPeekMessageWIatSlotRva",
       "kSdlWindowsPumpFirstPeekReturnRva",
@@ -1002,6 +1100,7 @@ bool TestSourceContract(int argc, char **argv) {
       "SameVerifiedPumpIdentity",
       "executor_submission_disabled",
       "mailbox.permitted_executor",
+      "mailbox.permitted_executor_secondary",
       "Process-lifetime pin",
       "mailbox.failure_flags.load(std::memory_order_acquire) != 0",
   };
@@ -1049,7 +1148,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 38> bridge_tokens{
+  constexpr std::array<std::string_view, 40> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1075,10 +1174,12 @@ bool TestSourceContract(int argc, char **argv) {
       "expected_lifecycle == 1 ? TRUE : FALSE",
       "kMainThreadQueryMailboxV1AdapterId",
       "kMainThreadQueryMailboxV1CandidateId",
-      "war_entry_only",
+      "typed_war_entry_route_contact",
       "ExecuteWarEntryAssessmentMailboxQueryV1",
+      "ExecuteRouteContactHorizonMailboxQueryV1",
       "TrySubmitMainThreadQueryV1",
       "permitted_executor",
+      "permitted_executor_secondary",
       "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
       "CaptureWarEntryBridgeFrame",
       "ReadSnapshot(*context->game",
@@ -1097,6 +1198,60 @@ bool TestSourceContract(int argc, char **argv) {
   if (Contains(bridge, "g_lifecycle.exchange(1)") ||
       Contains(bridge, "game.command.main-thread-query-mailbox") ||
       Contains(bridge, "game.command.query-main-thread")) {
+    return false;
+  }
+  // The stale-revision branch must precede every route snapshot/native call,
+  // and a second worker snapshot must bind the main-thread result back to the
+  // same published revision before serialization.
+  const auto route_handler =
+      bridge.find("kRouteContactHorizonV1StepPrefix");
+  const auto route_revision_parse = bridge.find(
+      "ParseRouteContactExpectedRevisionV1", route_handler);
+  const auto route_revision_gate = bridge.find(
+      "expected_revision != state_revision", route_revision_parse);
+  const auto route_preflight_snapshot = bridge.find(
+      "xar::game::Snapshot current_snapshot{}", route_revision_gate);
+  const auto route_scope_gate = bridge.find(
+      "RouteHostileScopeMatchesSnapshot", route_preflight_snapshot);
+  const auto route_bind = bridge.find(
+      "BindCurrentProcess(true)", route_scope_gate);
+  const auto route_submit = bridge.find(
+      "TrySubmitMainThreadQueryV1", route_bind);
+  const auto route_queued_wait_budget = bridge.find(
+      "kRouteContactHorizonV1QueuedWaitBudgetMilliseconds", route_submit);
+  const auto route_executing_wait_slice = bridge.find(
+      "kRouteContactHorizonV1ExecutingWaitSliceMilliseconds",
+      route_queued_wait_budget);
+  const auto route_completion_snapshot = bridge.find(
+      "xar::game::Snapshot completion_snapshot{}",
+      route_executing_wait_slice);
+  const auto route_completion_read = bridge.find(
+      "ReadSnapshot(game, completion_snapshot)",
+      route_completion_snapshot);
+  const auto route_revision_publish = bridge.find(
+      "query.result.snapshot_revision = state_revision",
+      route_completion_read);
+  if (route_handler == std::string::npos ||
+      route_revision_parse == std::string::npos ||
+      route_revision_gate == std::string::npos ||
+      route_preflight_snapshot == std::string::npos ||
+      route_scope_gate == std::string::npos ||
+      route_bind == std::string::npos || route_submit == std::string::npos ||
+      route_queued_wait_budget == std::string::npos ||
+      route_executing_wait_slice == std::string::npos ||
+      route_completion_snapshot == std::string::npos ||
+      route_completion_read == std::string::npos ||
+      route_revision_publish == std::string::npos ||
+      !(route_handler < route_revision_parse &&
+        route_revision_parse < route_revision_gate &&
+        route_revision_gate < route_preflight_snapshot &&
+        route_preflight_snapshot < route_scope_gate &&
+        route_scope_gate < route_bind && route_bind < route_submit &&
+        route_submit < route_queued_wait_budget &&
+        route_queued_wait_budget < route_executing_wait_slice &&
+        route_executing_wait_slice < route_completion_snapshot &&
+        route_completion_snapshot < route_completion_read &&
+        route_completion_read < route_revision_publish)) {
     return false;
   }
   const auto lifetime_constructor = bridge.find(

@@ -2,10 +2,12 @@
 
 ## Result and scope
 
-`main_thread_query_mailbox_v1` now has one production use only:
-`query-war-entry-assessments-v1`. The candidate identity is
-`application_main_thread_war_entry_v1`. It is not a general native-call,
-effect, combat-phase, or scripted-VM executor.
+`main_thread_query_mailbox_v1` now has two bounded production uses:
+`query-war-entry-assessments-v1` and
+`query-route-contact-horizon-v1-N`. The candidate identity remains
+`application_main_thread_war_entry_v1`; the heartbeat query scope is
+`typed_war_entry_route_contact`. It is not a general native-call, effect,
+combat-phase, or scripted-VM executor.
 
 The first paused live counter run reached SDL `PeekMessageW` return
 `0x3CE4222` continuously. It reported `failure=32` because the application
@@ -15,9 +17,12 @@ as a thread rejection: independent call-graph review proved that
 earlier HandlePdxEvents TLS gate. Therefore the application-main boundary is
 live-confirmed; RNG owner remains raw provenance only.
 
-The typed executor still awaits its first live result. Production is limited
-to one target per request, at most one request per pump, and the single
-permitted callback `ExecuteWarEntryAssessmentMailboxQueryV1`.
+The route-contact typed executor has an exact-build live result; the war-entry
+typed executor still awaits its first. Production admits at most one request
+per pump and only the callbacks `ExecuteWarEntryAssessmentMailboxQueryV1` and
+`ExecuteRouteContactHorizonMailboxQueryV1`. War-entry remains limited to one
+target per request; route-contact is limited to one controllable subject and
+the exact complete hostile scope, at most 64 ArmyIDs.
 
 Frozen build: CK3 `1.19.0.6`; every managed live run uses the project copy
 `Z:\ck3_mod_rewrite\Crusader Kings III\binaries\ck3.exe`. The production9
@@ -74,7 +79,7 @@ flowchart TD
     E --> F[Observe exact return 0x3CE4222]
     F --> G{TLS + paused + date + identity stable twice?}
     G -- no --> F
-    G -- yes --> H[War-entry-only mailbox ready]
+    G -- yes --> H[Two typed read-only executors ready]
     H --> I[Stop]
     I --> J[Restore original IAT and drain counted hooks]
     J --> K[Detached; process-pinned storage retained]
@@ -89,11 +94,12 @@ TID, TLS context, Jomini/game identity, or date drift starts a new streak at
 one.
 
 Production install sets `permitted_executor` to
-`ExecuteWarEntryAssessmentMailboxQueryV1`. `TrySubmitMainThreadQueryV1`
-rejects every other callback. The first-live bridge additionally requires
-exactly one target. Timeout can cancel a queued request only. Once state is
-`executing`, the worker retains the caller-owned context until a terminal wait
-and successful reclaim.
+`ExecuteWarEntryAssessmentMailboxQueryV1` and `permitted_executor_secondary`
+to `ExecuteRouteContactHorizonMailboxQueryV1`.
+`TrySubmitMainThreadQueryV1` rejects every other callback. The war-entry bridge
+additionally requires exactly one target. Timeout can cancel a queued request
+only. Once state is `executing`, the worker retains the caller-owned context
+until a terminal wait and successful reclaim.
 
 Before, middle, and after world samples are fresh native observations. Each
 `CaptureWarEntryBridgeFrame` call runs on the application-main thread and
@@ -613,6 +619,36 @@ keeps a separate cadence over successful, semantically visible
 turns and same-frame ACKs do not advance that counter. File bytes and the
 native history anchor are rechecked before the next gameplay action.
 
+### Route-contact delayed-pump diagnosis and live acceptance
+
+[live-confirmed, 2026-08-26] The first route-contact replay at paused date
+`53176176` failed before native execution: its ticket remained queued until the
+generic 2 s wait cancelled it. The exact CK3 executable SHA, adapter admission,
+snapshot revision, hostile-scope gate, and native timing bindings had already
+passed. The failure therefore localized to the interval between worker submit
+and the next verified application-main pump, not to an RVA or reader result.
+
+The route worker now keeps the same queued ticket published for at most
+8,000 ms. If the pump has changed it to `executing`, the worker keeps the
+caller-owned context alive and joins in 2,000 ms slices until a terminal
+result, preserving the existing no-dangling-context rule. The fixture delays a
+verified drain by 2,200 ms and asserts that the original ticket executes once,
+reclaims, and leaves the mailbox idle; it does not replace the production live
+check.
+
+[live-confirmed] Production DLL SHA-256
+`7AF3472A67218BDC407693D93A51826E2D99E29DB101EF724DC0B10FA60DC524`
+replayed the same checkpoint and returned the route-contact query `available`
+in 2.466 s; heartbeat `executed_requests` changed from `0` to `1`. The result
+covered both hostile ArmyIDs and authorized exactly one contact-free day,
+`53176176 -> 53176200`, executed at speed 1 and ending paused. The before/after
+war projection changed, and the controller materialized checkpoint SHA-256
+`51A3C202D6785988F3E3E7F028B64C4F0949DD83A4E32F3222E286B110224BE8`.
+Managed cleanup was proven normally. This accepts the typed mailbox for native
+arrival timelines and the bounded one-day route-contact predicate only;
+same-day contact candidate/stored order and actual contact sides remain
+unobserved.
+
 ## Readiness ledger
 
 | Gate | Current | Evidence / next step |
@@ -622,8 +658,10 @@ native history anchor are rechecked before the next gameplay action.
 | Application-main paused boundary | true | live pump plus TLS gate; RNG mismatch recorded as provenance |
 | War-entry direct-call graph excludes RNG/effect VM | true | independent depth-12 review |
 | Fresh before/middle/after frame capture | true in build | deterministic source/fixture checks |
-| Only permitted executor | true in build | production install and submit identity gate |
+| Only permitted executors | true in build | production primary/secondary install and submit identity gate |
 | First-live one-target result | pending | deploy this artifact and query one declarable target while paused |
+| First-live route-contact result | true | 2.466 s available result; `executed_requests 0 -> 1`; one-day advance completed |
+| Actual contact sides/order | false | same-day Province candidate/stored-order branch remains unobserved |
 | General native evaluator | false | intentionally unsupported |
 
 Machine-readable authority:

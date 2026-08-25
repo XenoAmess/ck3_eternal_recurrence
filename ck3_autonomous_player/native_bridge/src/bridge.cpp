@@ -1,5 +1,6 @@
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/startup_dx11_render_context_draw_guard_v1.hpp"
 #include "xar_bridge/startup_localize_current_root_guard_v1.hpp"
@@ -199,7 +200,7 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += "\"candidate_id\":";
   AppendJsonString(result,
                    xar::ck3_11906::kMainThreadQueryMailboxV1CandidateId);
-  result += ",\"query_scope\":\"war_entry_only\"";
+  result += ",\"query_scope\":\"typed_war_entry_route_contact\"";
   result += ",\"installed\":";
   result += mailbox.iat_installed ? "true" : "false";
   result += ",\"stop\":";
@@ -1643,6 +1644,103 @@ std::string RoutePreviewResultFrame(
   return result;
 }
 
+void AppendRouteTimeline(
+    std::string &result,
+    const xar::game::RouteTimelineSnapshot &timeline) {
+  result += "{\"timeline_observable\":";
+  result += timeline.timeline_observable ? "true" : "false";
+  result += ",\"army_id\":";
+  result += SignedNumber(timeline.army_id);
+  result += ",\"current_province_id\":";
+  result += SignedNumber(timeline.current_province_id);
+  result += ",\"effective_origin_province_id\":";
+  result += SignedNumber(timeline.effective_origin_province_id);
+  result += ",\"route_province_ids\":";
+  AppendInt32Array(result, timeline.route_province_ids);
+  result += ",\"arrival_date_raws\":";
+  AppendInt32Array(result, timeline.arrival_date_raws);
+  result += '}';
+}
+
+void AppendRouteContactConflict(
+    std::string &result,
+    const xar::game::RouteContactConflictSnapshot &conflict) {
+  result += "{\"kind\":";
+  AppendJsonString(result, conflict.kind);
+  result += ",\"hostile_army_id\":";
+  result += SignedNumber(conflict.hostile_army_id);
+  if (conflict.kind == "same_province") {
+    result += ",\"province_id\":";
+    result += SignedNumber(conflict.province_id);
+  } else if (conflict.kind == "opposing_edge") {
+    result += ",\"subject_from_province_id\":";
+    result += SignedNumber(conflict.subject_from_province_id);
+    result += ",\"subject_to_province_id\":";
+    result += SignedNumber(conflict.subject_to_province_id);
+    result += ",\"hostile_from_province_id\":";
+    result += SignedNumber(conflict.hostile_from_province_id);
+    result += ",\"hostile_to_province_id\":";
+    result += SignedNumber(conflict.hostile_to_province_id);
+  }
+  result += ",\"overlap_start_date_raw\":";
+  result += SignedNumber(conflict.overlap_start_date_raw);
+  result += ",\"overlap_end_date_raw\":";
+  result += SignedNumber(conflict.overlap_end_date_raw);
+  result += '}';
+}
+
+std::string RouteContactHorizonResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const xar::game::RouteContactHorizonSnapshot &horizon) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result +=
+      ",\"accepted\":true,\"status\":\"available\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(horizon.snapshot_revision);
+  result += ",\"route_contact_horizon\":{\"status\":\"available\",";
+  result += "\"snapshot_revision\":";
+  result += Number(horizon.snapshot_revision);
+  result += ",\"date_raw\":";
+  result += SignedNumber(horizon.date_raw);
+  result += ",\"subject_army_id\":";
+  result += SignedNumber(horizon.subject_army_id);
+  result += ",\"target_province_id\":";
+  result += SignedNumber(horizon.target_province_id);
+  result += ",\"hostile_army_ids\":";
+  AppendInt32Array(result, horizon.hostile_army_ids);
+  result += ",\"subject_route\":";
+  AppendRouteTimeline(result, horizon.subject_route);
+  result += ",\"hostile_routes\":[";
+  for (std::size_t index = 0; index < horizon.hostile_routes.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    AppendRouteTimeline(result, horizon.hostile_routes[index]);
+  }
+  result += "],\"horizon_start_date_raw\":";
+  result += SignedNumber(horizon.horizon_start_date_raw);
+  result += ",\"horizon_end_date_raw\":";
+  result += SignedNumber(horizon.horizon_end_date_raw);
+  result += ",\"one_day_contact_free\":";
+  result += horizon.one_day_contact_free ? "true" : "false";
+  result += ",\"conflicts\":[";
+  for (std::size_t index = 0; index < horizon.conflicts.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    AppendRouteContactConflict(result, horizon.conflicts[index]);
+  }
+  result += "]}}}";
+  return result;
+}
+
 std::string SaveCheckpointResultFrame(std::string_view request_id,
                                       const CheckpointSubmission &checkpoint) {
   std::string result =
@@ -2111,6 +2209,8 @@ public:
     environment.executor_submission_enabled = true;
     environment.permitted_executor =
         &xar::ck3_11906::ExecuteWarEntryAssessmentMailboxQueryV1;
+    environment.permitted_executor_secondary =
+        &xar::ck3_11906::ExecuteRouteContactHorizonMailboxQueryV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -2140,6 +2240,13 @@ private:
   bool attempted_ = false;
   bool installed_ = false;
 };
+
+bool RouteHostileScopeMatchesSnapshot(
+    const xar::game::Snapshot &snapshot,
+    const xar::game::RouteContactHorizonRequest &request) {
+  return xar::ck3_11906::RouteContactHostileScopeMatchesSnapshotV1(
+      snapshot, request);
+}
 
 bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
                      std::optional<xar::game::Snapshot> &previous,
@@ -2234,6 +2341,7 @@ struct WorkerState {
   std::uint64_t declaration_query_sequence = 0;
   std::vector<xar::game::DeclarableWarSnapshot> declarable_wars;
   std::uint64_t war_entry_assessment_query_sequence = 0;
+  std::uint64_t route_contact_horizon_query_sequence = 0;
   std::uint64_t army_strength_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t war_termination_query_sequence = 0;
@@ -2260,6 +2368,8 @@ void RunConnectedSession(
   auto &declarable_wars = state.declarable_wars;
   auto &war_entry_assessment_query_sequence =
       state.war_entry_assessment_query_sequence;
+  auto &route_contact_horizon_query_sequence =
+      state.route_contact_horizon_query_sequence;
   auto &army_strength_query_sequence =
       state.army_strength_query_sequence;
   auto &combat_inputs_query_sequence =
@@ -3127,6 +3237,124 @@ void RunConnectedSession(
             connected = PublishSnapshot(pipe, game, previous_snapshot,
                                         state_revision, checkpoint_submission,
                                         published_checkpoint_sequence);
+          }
+        } else if (step.starts_with(
+                       xar::ck3_11906::kRouteContactHorizonV1StepPrefix)) {
+          xar::game::RouteContactHorizonRequest route_request{};
+          std::uint64_t expected_revision = 0;
+          if (!xar::ck3_11906::ParseRouteContactHorizonV1Step(
+                  step, route_request) ||
+              !xar::ck3_11906::ParseRouteContactExpectedRevisionV1(
+                  incoming.payload, expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "route-contact-horizon request is malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "route-contact expected revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value()) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "route-contact snapshot changed; retry after heartbeat"));
+            } else if (!RouteHostileScopeMatchesSnapshot(
+                           current_snapshot, route_request)) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "route-contact hostile scope is incomplete or stale"));
+            } else {
+              xar::ck3_11906::RouteContactHorizonMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.request = route_request;
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecuteRouteContactHorizonMailboxQueryV1,
+                      &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main route-contact executor is unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error = "application-main route-contact executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kRouteContactHorizonV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  // As in the war-entry worker, the application-main executor
+                  // owns this stack context once it starts.  Keep it alive
+                  // until terminal rather than returning a dangling request.
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kRouteContactHorizonV1ExecutingWaitSliceMilliseconds);
+                }
+
+                std::string response;
+                bool completion_snapshot_stable = false;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion == xar::ck3_11906::
+                                            RouteContactHorizonMailboxCompletionV1::
+                                                available) {
+                  xar::game::Snapshot completion_snapshot{};
+                  if (state_revision == expected_revision &&
+                      previous_snapshot.has_value() &&
+                      xar::game::ReadSnapshot(game, completion_snapshot) &&
+                      completion_snapshot == current_snapshot &&
+                      completion_snapshot == previous_snapshot.value()) {
+                    completion_snapshot_stable = true;
+                    query.result.snapshot_revision = state_revision;
+                    ++route_contact_horizon_query_sequence;
+                    response = RouteContactHorizonResultFrame(
+                        request_id, step,
+                        route_contact_horizon_query_sequence, query.result);
+                  }
+                }
+                if (response.empty()) {
+                  const auto error = xar::ck3_11906::
+                      RouteContactHorizonFailureMessageV1(
+                          wait, query.completion, query.result.status,
+                          completion_snapshot_stable);
+                  response =
+                      CommandResultFrame(request_id, step, false, error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::
+                                         reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main route-contact result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
           }
         } else if (step.starts_with("preview-move-army-")) {
           const auto ids = PreviewMoveArmyStep(step);

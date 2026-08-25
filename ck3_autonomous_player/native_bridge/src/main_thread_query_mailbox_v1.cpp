@@ -434,7 +434,8 @@ bool InstallMainThreadQueryMailboxV1(
   }
   if (!environment.offline_fixture &&
       environment.executor_submission_enabled &&
-      environment.permitted_executor == nullptr) {
+      environment.permitted_executor == nullptr &&
+      environment.permitted_executor_secondary == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
   }
@@ -553,6 +554,8 @@ bool InstallMainThreadQueryMailboxV1(
   mailbox.executor_submission_enabled =
       environment.executor_submission_enabled;
   mailbox.permitted_executor = environment.permitted_executor;
+  mailbox.permitted_executor_secondary =
+      environment.permitted_executor_secondary;
   mailbox.executor = nullptr;
   mailbox.executor_context = nullptr;
   mailbox.executor_succeeded = false;
@@ -685,8 +688,10 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
   if (executor == nullptr || context == nullptr) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
-  if (mailbox.permitted_executor != nullptr &&
-      executor != mailbox.permitted_executor) {
+  if ((mailbox.permitted_executor != nullptr ||
+       mailbox.permitted_executor_secondary != nullptr) &&
+      executor != mailbox.permitted_executor &&
+      executor != mailbox.permitted_executor_secondary) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
   if (!mailbox.executor_submission_enabled) {

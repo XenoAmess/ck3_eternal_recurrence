@@ -96,6 +96,11 @@ using BuildArmyMoveRoute = bool (*)(void *path_context, void *origin_province,
                                     void *target_province,
                                     std::int32_t route_kind,
                                     void *path_storage);
+using ReadRouteTravelDuration = std::int64_t *(*)(
+    void *unit, std::int64_t *output, const void *path_storage,
+    void *origin_province);
+using ReadUnitRouteSpeed = std::int64_t *(*)(void *unit,
+                                             std::int64_t *output);
 using ValidateDisbandArmyCommand = bool (*)(
     std::int32_t command_kind, std::int32_t command_target_id,
     void *error_output);
@@ -314,6 +319,10 @@ struct Bindings {
   ConstructMovePathContext construct_move_path_context = nullptr;
   ConstructArmyMovePath construct_army_move_path = nullptr;
   BuildArmyMoveRoute build_army_move_route = nullptr;
+  ReadUnitRouteSpeed read_unit_land_route_speed = nullptr;
+  ReadUnitRouteSpeed read_unit_naval_route_speed = nullptr;
+  ReadUnitRouteSpeed read_unit_current_edge_speed = nullptr;
+  ReadRouteTravelDuration read_route_travel_duration = nullptr;
   DestroyNativeCommand destroy_move_army_command = nullptr;
   ValidateDisbandArmyCommand validate_disband_army_command = nullptr;
   ValidateSplitArmyHalfCommand validate_split_army_half_command = nullptr;
@@ -493,6 +502,9 @@ MoveArmyResult SubmitMoveArmy(const Bindings &bindings,
 
 using game::PreviewMoveArmyResult;
 using game::PreviewMoveArmyStatus;
+using game::RouteContactHorizonRequest;
+using game::RouteContactHorizonSnapshot;
+using game::RouteContactHorizonStatus;
 
 // Runs CK3's own route planner into a temporary MovePath and copies its
 // resolved ProvinceIDs before destroying that path. This never applies the
@@ -500,6 +512,14 @@ using game::PreviewMoveArmyStatus;
 PreviewMoveArmyResult PreviewMoveArmy(const Bindings &bindings,
                                       std::int32_t army_id,
                                       std::int32_t province_id) noexcept;
+
+// Main-thread-only exact-build reader.  Production calls this exclusively
+// through RouteContactHorizonMailboxContextV1; the direct entry point exists
+// for the deterministic native fixture.  It builds CK3-owned MovePath state,
+// copies only atomic public IDs/dates, and never queues a command.
+RouteContactHorizonStatus ReadRouteContactHorizon(
+    const Bindings &bindings, const RouteContactHorizonRequest &request,
+    RouteContactHorizonSnapshot &output) noexcept;
 
 using game::DisbandArmyResult;
 

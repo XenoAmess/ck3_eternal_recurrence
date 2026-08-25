@@ -198,10 +198,12 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadMemoryProtectV1 memory_protect_override = nullptr;
   std::size_t system_page_size_override = 0;
   bool executor_submission_enabled = false;
-  // Non-null in production. It prevents this infrastructure from becoming a
-  // generic native-call trampoline; the first admitted callback is the typed
-  // war-entry assessment reader only.
+  // At least one slot is non-null in production.  These exact typed callback
+  // identities prevent the infrastructure from becoming a generic native-call
+  // trampoline.  V1 deliberately admits only war-entry and route-contact
+  // readers.
   MainThreadQueryExecutorV1 permitted_executor = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_secondary = nullptr;
 };
 
 struct MainThreadQueryMailboxDiagnosticsV1 {
@@ -274,6 +276,7 @@ struct MainThreadQueryMailboxV1 {
   bool offline_fixture = false;
   bool executor_submission_enabled = false;
   MainThreadQueryExecutorV1 permitted_executor = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_secondary = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes
   // only the atomic consecutive count; this stamp never crosses threads.

@@ -817,6 +817,77 @@ struct PreviewMoveArmyResult {
   friend bool operator==(const PreviewMoveArmyResult &,
                          const PreviewMoveArmyResult &) = default;
 };
+
+// One atomic, paused projection of the remaining native movement timeline for
+// a public full-generation CUnit.  Arrival dates are CK3 raw dates (hours) and
+// are parallel to route_province_ids.  A published row is therefore never a
+// partial path/timing mixture.
+struct RouteTimelineSnapshot {
+  bool timeline_observable = false;
+  std::int32_t army_id = -1;
+  std::int32_t current_province_id = -1;
+  std::int32_t effective_origin_province_id = -1;
+  std::vector<std::int32_t> route_province_ids;
+  std::vector<std::int32_t> arrival_date_raws;
+
+  friend bool operator==(const RouteTimelineSnapshot &,
+                         const RouteTimelineSnapshot &) = default;
+};
+
+struct RouteContactConflictSnapshot {
+  std::string kind;
+  std::int32_t hostile_army_id = -1;
+  std::int32_t province_id = -1;
+  std::int32_t subject_from_province_id = -1;
+  std::int32_t subject_to_province_id = -1;
+  std::int32_t hostile_from_province_id = -1;
+  std::int32_t hostile_to_province_id = -1;
+  std::int32_t overlap_start_date_raw = 0;
+  std::int32_t overlap_end_date_raw = 0;
+
+  friend bool operator==(const RouteContactConflictSnapshot &,
+                         const RouteContactConflictSnapshot &) = default;
+};
+
+struct RouteContactHorizonRequest {
+  std::int32_t subject_army_id = -1;
+  std::int32_t target_province_id = -1;
+  std::vector<std::int32_t> hostile_army_ids;
+
+  friend bool operator==(const RouteContactHorizonRequest &,
+                         const RouteContactHorizonRequest &) = default;
+};
+
+enum class RouteContactHorizonStatus {
+  available,
+  requires_paused,
+  subject_army_not_found,
+  subject_army_not_controllable,
+  target_province_not_found,
+  hostile_scope_mismatch,
+  route_unavailable,
+  timeline_unavailable,
+  state_changed,
+  unavailable,
+};
+
+struct RouteContactHorizonSnapshot {
+  RouteContactHorizonStatus status = RouteContactHorizonStatus::unavailable;
+  std::uint64_t snapshot_revision = 0;
+  std::int32_t date_raw = 0;
+  std::int32_t subject_army_id = -1;
+  std::int32_t target_province_id = -1;
+  std::vector<std::int32_t> hostile_army_ids;
+  RouteTimelineSnapshot subject_route;
+  std::vector<RouteTimelineSnapshot> hostile_routes;
+  std::int32_t horizon_start_date_raw = 0;
+  std::int32_t horizon_end_date_raw = 0;
+  bool one_day_contact_free = false;
+  std::vector<RouteContactConflictSnapshot> conflicts;
+
+  friend bool operator==(const RouteContactHorizonSnapshot &,
+                         const RouteContactHorizonSnapshot &) = default;
+};
 enum class DisbandArmyResult {
   submitted,
   army_not_found,

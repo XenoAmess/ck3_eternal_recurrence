@@ -7,6 +7,12 @@ from collections.abc import Iterable
 
 MOVE_ARMY_CAPABILITY = "game.command.move-army-N-to-N"
 PREVIEW_MOVE_ARMY_CAPABILITY = "game.command.preview-move-army-N-to-N"
+QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY = (
+    "game.command.query-route-contact-horizon-v1-N"
+)
+ADVANCE_ROUTE_CONTACT_HORIZON_STEP_PREFIX = (
+    "advance-route-contact-horizon-v1-"
+)
 DISBAND_ARMY_CAPABILITY = "game.command.disband-army-N"
 SPLIT_ARMY_HALF_CAPABILITY = "game.command.split-army-half-N"
 MERGE_ARMIES_CAPABILITY = "game.command.merge-armies-N-with-N"
@@ -43,6 +49,7 @@ RAISE_TROOPS_STEP = "raise-troops-default"
 
 CK3_FIXED_POINT_SCALE = 100_000
 MAX_ARMY_STRENGTH_REQUEST_IDS = 64
+MAX_ROUTE_CONTACT_HOSTILE_IDS = 64
 
 _TERMINATION_TERMS_GAME_VERSION = "1.19.0.6"
 _TERMINATION_TERMS_EXECUTABLE_SHA256 = (
@@ -517,6 +524,284 @@ def normalize_armies(
     return result
 
 
+_ROUTE_CONTACT_HORIZON_KEYS = {
+    "status",
+    "date_raw",
+    "snapshot_revision",
+    "subject_army_id",
+    "target_province_id",
+    "hostile_army_ids",
+    "subject_route",
+    "hostile_routes",
+    "horizon_start_date_raw",
+    "horizon_end_date_raw",
+    "one_day_contact_free",
+    "conflicts",
+}
+_TIMED_ROUTE_KEYS = {
+    "timeline_observable",
+    "army_id",
+    "current_province_id",
+    "effective_origin_province_id",
+    "route_province_ids",
+    "arrival_date_raws",
+}
+_SAME_PROVINCE_CONFLICT_KEYS = {
+    "kind",
+    "hostile_army_id",
+    "province_id",
+    "overlap_start_date_raw",
+    "overlap_end_date_raw",
+}
+_OPPOSING_EDGE_CONFLICT_KEYS = {
+    "kind",
+    "hostile_army_id",
+    "subject_from_province_id",
+    "subject_to_province_id",
+    "hostile_from_province_id",
+    "hostile_to_province_id",
+    "overlap_start_date_raw",
+    "overlap_end_date_raw",
+}
+
+
+def normalize_route_contact_horizon(
+    value: object,
+    *,
+    expected_subject_army_id: int,
+    expected_target_province_id: int,
+    expected_hostile_army_ids: Iterable[int],
+    expected_date_raw: int,
+    expected_snapshot_revision: int,
+) -> dict[str, object]:
+    """Validate the atomic one-day native route/contact proof."""
+    if not isinstance(value, dict) or set(value) != _ROUTE_CONTACT_HORIZON_KEYS:
+        raise ValueError("native route_contact_horizon has a malformed schema")
+    if value.get("status") != "available":
+        raise ValueError("native route_contact_horizon is not available")
+    subject = _positive_int32_id(
+        value.get("subject_army_id"), "route_contact_horizon.subject_army_id"
+    )
+    target = _positive_int32_id(
+        value.get("target_province_id"),
+        "route_contact_horizon.target_province_id",
+    )
+    date_raw = _signed_int32(
+        value.get("date_raw"), "route_contact_horizon.date_raw"
+    )
+    revision = value.get("snapshot_revision")
+    if (
+        isinstance(revision, bool)
+        or not isinstance(revision, int)
+        or not 1 <= revision <= 2**64 - 1
+    ):
+        raise ValueError(
+            "route_contact_horizon.snapshot_revision must be positive uint64"
+        )
+    expected_hostiles = sorted(
+        {
+            _positive_int32_id(army_id, "expected_hostile_army_ids")
+            for army_id in expected_hostile_army_ids
+        }
+    )
+    hostile_ids = [
+        _positive_int32_id(
+            army_id, "route_contact_horizon.hostile_army_ids"
+        )
+        for army_id in _required_list(
+            value.get("hostile_army_ids"),
+            "route_contact_horizon.hostile_army_ids",
+        )
+    ]
+    if (
+        subject != expected_subject_army_id
+        or target != expected_target_province_id
+        or date_raw != expected_date_raw
+        or revision != expected_snapshot_revision
+        or hostile_ids != expected_hostiles
+        or not hostile_ids
+        or subject in hostile_ids
+    ):
+        raise ValueError("native route_contact_horizon scope binding disagrees")
+
+    subject_route = _normalize_timed_route(
+        value.get("subject_route"),
+        expected_army_id=subject,
+        date_raw=date_raw,
+        name="route_contact_horizon.subject_route",
+    )
+    if not (
+        subject_route["route_province_ids"]
+        and subject_route["route_province_ids"][-1] == target
+        or not subject_route["route_province_ids"]
+        and subject_route["current_province_id"] == target
+    ):
+        raise ValueError("native route_contact_horizon subject route misses target")
+    raw_hostile_routes = _required_list(
+        value.get("hostile_routes"),
+        "route_contact_horizon.hostile_routes",
+    )
+    hostile_routes = [
+        _normalize_timed_route(
+            route,
+            expected_army_id=hostile_ids[index],
+            date_raw=date_raw,
+            name=f"route_contact_horizon.hostile_routes[{index}]",
+        )
+        for index, route in enumerate(raw_hostile_routes)
+    ] if len(raw_hostile_routes) == len(hostile_ids) else []
+    if len(hostile_routes) != len(hostile_ids):
+        raise ValueError("native route_contact_horizon hostile scope is incomplete")
+
+    horizon_start = _signed_int32(
+        value.get("horizon_start_date_raw"),
+        "route_contact_horizon.horizon_start_date_raw",
+    )
+    horizon_end = _signed_int32(
+        value.get("horizon_end_date_raw"),
+        "route_contact_horizon.horizon_end_date_raw",
+    )
+    contact_free = _strict_bool(
+        value.get("one_day_contact_free"),
+        "route_contact_horizon.one_day_contact_free",
+    )
+    if horizon_start != date_raw or horizon_end != date_raw + 24:
+        raise ValueError("native route_contact_horizon is not a one-day window")
+    raw_conflicts = _required_list(
+        value.get("conflicts"), "route_contact_horizon.conflicts"
+    )
+    conflicts: list[dict[str, object]] = []
+    for index, conflict in enumerate(raw_conflicts):
+        if not isinstance(conflict, dict):
+            raise ValueError(
+                f"native route_contact_horizon.conflicts[{index}] is malformed"
+            )
+        kind = conflict.get("kind")
+        expected_keys = (
+            _SAME_PROVINCE_CONFLICT_KEYS
+            if kind == "same_province"
+            else _OPPOSING_EDGE_CONFLICT_KEYS
+            if kind == "opposing_edge"
+            else None
+        )
+        if expected_keys is None or set(conflict) != expected_keys:
+            raise ValueError(
+                f"native route_contact_horizon.conflicts[{index}] has an unknown shape"
+            )
+        hostile_id = _positive_int32_id(
+            conflict.get("hostile_army_id"),
+            f"route_contact_horizon.conflicts[{index}].hostile_army_id",
+        )
+        if hostile_id not in hostile_ids:
+            raise ValueError(
+                f"native route_contact_horizon.conflicts[{index}] lacks scope"
+            )
+        normalized_conflict: dict[str, object] = {
+            "kind": kind,
+            "hostile_army_id": hostile_id,
+        }
+        id_fields = (
+            ("province_id",)
+            if kind == "same_province"
+            else (
+                "subject_from_province_id",
+                "subject_to_province_id",
+                "hostile_from_province_id",
+                "hostile_to_province_id",
+            )
+        )
+        for field in id_fields:
+            normalized_conflict[field] = _positive_int32_id(
+                conflict.get(field),
+                f"route_contact_horizon.conflicts[{index}].{field}",
+            )
+        overlap_start = _signed_int32(
+            conflict.get("overlap_start_date_raw"),
+            f"route_contact_horizon.conflicts[{index}].overlap_start_date_raw",
+        )
+        overlap_end = _signed_int32(
+            conflict.get("overlap_end_date_raw"),
+            f"route_contact_horizon.conflicts[{index}].overlap_end_date_raw",
+        )
+        if not (
+            horizon_start <= overlap_start <= overlap_end <= horizon_end
+        ):
+            raise ValueError(
+                f"native route_contact_horizon.conflicts[{index}] is outside the horizon"
+            )
+        normalized_conflict["overlap_start_date_raw"] = overlap_start
+        normalized_conflict["overlap_end_date_raw"] = overlap_end
+        conflicts.append(normalized_conflict)
+    if contact_free == bool(conflicts):
+        raise ValueError("native route_contact_horizon predicate disagrees")
+    return {
+        "status": "available",
+        "date_raw": date_raw,
+        "snapshot_revision": revision,
+        "subject_army_id": subject,
+        "target_province_id": target,
+        "hostile_army_ids": hostile_ids,
+        "subject_route": subject_route,
+        "hostile_routes": hostile_routes,
+        "horizon_start_date_raw": horizon_start,
+        "horizon_end_date_raw": horizon_end,
+        "one_day_contact_free": contact_free,
+        "conflicts": conflicts,
+    }
+
+
+def _normalize_timed_route(
+    value: object,
+    *,
+    expected_army_id: int,
+    date_raw: int,
+    name: str,
+) -> dict[str, object]:
+    if not isinstance(value, dict) or set(value) != _TIMED_ROUTE_KEYS:
+        raise ValueError(f"native {name} has a malformed schema")
+    if value.get("timeline_observable") is not True:
+        raise ValueError(f"native {name} timeline is not observable")
+    army_id = _positive_int32_id(value.get("army_id"), f"{name}.army_id")
+    current = _positive_int32_id(
+        value.get("current_province_id"), f"{name}.current_province_id"
+    )
+    effective_origin = _positive_int32_id(
+        value.get("effective_origin_province_id"),
+        f"{name}.effective_origin_province_id",
+    )
+    route = [
+        _positive_int32_id(province_id, f"{name}.route_province_ids")
+        for province_id in _required_list(
+            value.get("route_province_ids"), f"{name}.route_province_ids"
+        )
+    ]
+    arrivals = [
+        _signed_int32(arrival, f"{name}.arrival_date_raws")
+        for arrival in _required_list(
+            value.get("arrival_date_raws"), f"{name}.arrival_date_raws"
+        )
+    ]
+    if (
+        army_id != expected_army_id
+        or len(route) != len(arrivals)
+        or not route
+        and effective_origin != current
+        or route
+        and effective_origin not in {current, route[0]}
+        or any(arrival < date_raw for arrival in arrivals)
+        or any(left > right for left, right in zip(arrivals, arrivals[1:]))
+    ):
+        raise ValueError(f"native {name} timeline is malformed")
+    return {
+        "timeline_observable": True,
+        "army_id": army_id,
+        "current_province_id": current,
+        "effective_origin_province_id": effective_origin,
+        "route_province_ids": route,
+        "arrival_date_raws": arrivals,
+    }
+
+
 def player_armies_from_state(
     active_wars: Iterable[dict[str, object]],
     explicit_player_armies: object,
@@ -860,6 +1145,47 @@ def preview_move_army_step(army_id: int, province_id: int) -> str:
     )
 
 
+def query_route_contact_horizon_step(
+    subject_army_id: int,
+    target_province_id: int,
+    hostile_army_ids: Iterable[int],
+) -> str:
+    """Build the canonical exact-build route/contact query literal."""
+    subject = _positive_int32_id(subject_army_id, "subject_army_id")
+    target = _positive_int32_id(target_province_id, "target_province_id")
+    hostiles = sorted(
+        {
+            _positive_int32_id(army_id, "hostile_army_ids")
+            for army_id in hostile_army_ids
+        }
+    )
+    if not hostiles or len(hostiles) > MAX_ROUTE_CONTACT_HOSTILE_IDS:
+        raise ValueError(
+            "hostile_army_ids must contain 1..64 unique positive int32 IDs"
+        )
+    if subject in hostiles:
+        raise ValueError("subject army cannot also be hostile")
+    suffix = "-".join(str(army_id) for army_id in hostiles)
+    return (
+        f"query-route-contact-horizon-v1-{subject}-to-{target}"
+        f"-h-{len(hostiles)}-{suffix}"
+    )
+
+
+def advance_route_contact_horizon_step(
+    subject_army_id: int,
+    target_province_id: int,
+    hostile_army_ids: Iterable[int],
+) -> str:
+    """Build the proof-bound one-day composite step literal."""
+    query = query_route_contact_horizon_step(
+        subject_army_id, target_province_id, hostile_army_ids
+    )
+    return ADVANCE_ROUTE_CONTACT_HORIZON_STEP_PREFIX + query.removeprefix(
+        "query-route-contact-horizon-v1-"
+    )
+
+
 def disband_army_step(army_id: int) -> str:
     return f"disband-army-{_non_negative_id(army_id, 'army_id')}"
 
@@ -944,6 +1270,66 @@ def parse_preview_move_army_step(step: object) -> tuple[int, int] | None:
     if not (0 < army_id <= 2**31 - 1 and 0 < province_id <= 2**31 - 1):
         return None
     return army_id, province_id
+
+
+def parse_query_route_contact_horizon_step(
+    step: object,
+) -> tuple[int, int, tuple[int, ...]] | None:
+    prefix = "query-route-contact-horizon-v1-"
+    if not isinstance(step, str) or not step.startswith(prefix):
+        return None
+    payload = step.removeprefix(prefix)
+    subject_text, to_separator, tail = payload.partition("-to-")
+    target_text, hostile_separator, hostile_tail = tail.partition("-h-")
+    if (
+        not to_separator
+        or not hostile_separator
+        or not subject_text.isdigit()
+        or not target_text.isdigit()
+    ):
+        return None
+    count_text, count_separator, ids_text = hostile_tail.partition("-")
+    if not count_separator or not count_text.isdigit() or not ids_text:
+        return None
+    subject = int(subject_text)
+    target = int(target_text)
+    count = int(count_text)
+    id_tokens = ids_text.split("-")
+    if (
+        not 0 < subject <= 2**31 - 1
+        or not 0 < target <= 2**31 - 1
+        or not 0 < count <= MAX_ROUTE_CONTACT_HOSTILE_IDS
+        or len(id_tokens) != count
+        or any(not token.isdigit() for token in id_tokens)
+    ):
+        return None
+    hostiles = tuple(int(token) for token in id_tokens)
+    if (
+        any(not 0 < army_id <= 2**31 - 1 for army_id in hostiles)
+        or tuple(sorted(set(hostiles))) != hostiles
+        or subject in hostiles
+    ):
+        return None
+    return subject, target, hostiles
+
+
+def parse_advance_route_contact_horizon_step(
+    step: object,
+) -> tuple[int, int, tuple[int, ...]] | None:
+    if not isinstance(step, str) or not step.startswith(
+        ADVANCE_ROUTE_CONTACT_HORIZON_STEP_PREFIX
+    ):
+        return None
+    query = "query-route-contact-horizon-v1-" + step.removeprefix(
+        ADVANCE_ROUTE_CONTACT_HORIZON_STEP_PREFIX
+    )
+    return parse_query_route_contact_horizon_step(query)
+
+
+def is_life_advance_step(step: object) -> bool:
+    return step == "life-advance" or (
+        parse_advance_route_contact_horizon_step(step) is not None
+    )
 
 
 def parse_disband_army_step(step: object) -> int | None:
@@ -1628,6 +2014,7 @@ def is_native_war_step(step: object) -> bool:
         step == RAISE_TROOPS_STEP
         or step == QUERY_ARMY_STRENGTHS_STEP
         or parse_preview_move_army_step(step) is not None
+        or parse_query_route_contact_horizon_step(step) is not None
         or parse_move_army_step(step) is not None
         or parse_disband_army_step(step) is not None
         or parse_split_army_half_step(step) is not None
@@ -1714,6 +2101,12 @@ def _signed_fixed_point(value: object, name: str) -> dict[str, int]:
 def _strict_bool(value: object, name: str) -> bool:
     if not isinstance(value, bool):
         raise ValueError(f"{name} must be boolean")
+    return value
+
+
+def _required_list(value: object, name: str) -> list[object]:
+    if not isinstance(value, list):
+        raise ValueError(f"native {name} must be an array")
     return value
 
 
