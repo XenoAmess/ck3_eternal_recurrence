@@ -21,8 +21,8 @@ constexpr std::array<std::string_view, 18> kConstructorCallOrder{
     "supply_0",
     "supply_1",
     "holding_defender_1",
-    "recently_disembarked_0",
-    "recently_disembarked_1",
+    "gathering_army_0",
+    "gathering_army_1",
     "debt_0_owner_then_treasury",
     "debt_1_owner_then_treasury",
     "unreformed_faith_0",
@@ -413,8 +413,8 @@ void AppendAdvantageSideInputs(
     AppendIdArray(output, side.ordered_army_ids);
     output += ",\"supply\":";
     AppendSupply(output, side.supply);
-    output += ",\"primary_army_recently_disembarked_raw\":";
-    AppendSigned(output, side.primary_army_recently_disembarked_raw);
+    output += ",\"primary_army_gathering_raw\":";
+    AppendSigned(output, side.primary_army_gathering_raw);
     output += ",\"owner_character_id\":";
     AppendSigned(output, side.owner_character_id);
     output += ",\"owner_debt_selector_raw\":";

@@ -2,6 +2,7 @@
 
 #include "xar_bridge/war_entry_assessments_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
+#include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 
 #include "xar_bridge/ck3_11906_adapter.hpp"
 
@@ -297,6 +298,13 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     if (ck3_11906::ParseWarEntryAssessmentsV1Step(step,
                                                    war_entry_targets)) {
       capability = ck3_11906::kWarEntryAssessmentsV1Capability;
+    }
+  }
+  if (capability.empty()) {
+    ActualContactScopeRequest actual_contact_request{};
+    if (ck3_11906::ParseActualContactScopeV1Step(
+            step, actual_contact_request)) {
+      capability = ck3_11906::kActualContactScopeV1Capability;
     }
   }
   if (capability.empty()) {

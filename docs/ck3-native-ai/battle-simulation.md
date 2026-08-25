@@ -22,7 +22,7 @@
 - [live-blocker → superseded] 旧 `combat-simulation-inputs-v1` 需要调用前已经存在可匹配的 current
   position/move-to-target 接触形状；当前玩家 `83886341@2596` 与两敌 `357/33554657@2581` 无法构造同一个
   v1 三军 gate。生产 v2 改为显式 target、attacker final-edge entry 与有序 A/D partitions，不依赖先下 move；
-  其 conditional request order 也不冒充真实 arrival/Province stored order。详见
+  其 conditional request order 也不冒充真实 arrival/Province full-CUnitID 数值序与 daily contact queue。详见
   [combat-simulation-inputs.md](combat-simulation-inputs.md)。
 - [counter-policy] 当前既不能证明“能打赢”，也不能证明“数学上不可战胜”。在 planner 的 fail-closed 语义中，
   它只能被当成**未证明安全的接战**；人数比、原生 prediction ratio 或战争分都不得填进 probability 字段。

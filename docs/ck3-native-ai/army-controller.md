@@ -235,6 +235,10 @@ flowchart TD
 
 - [static-confirmed] “追击”在已证部分表现为：`enemy_unit_province` 生成一个可见敌军所在省的候选，最终 assignment
   保存 target province，再由普通 AI move command 建路；它不是已证的逐帧锁定敌军 handle。
+- [static-confirmed] assignment/move command 之后的 normal daily movement 与实际同省接触不再属于 target-score
+  账本：[army-contact-resolution.md](army-contact-resolution.md) 已闭合 unit-manager traversal → deferred contact queue、
+  Province full-CUnitID 数值序 opponent、已有战斗优先与攻守分配。接触 resolver 不会重新计算 stance、objective
+  score 或 AI combat ratio。
 - [inference] 因此移动目标在两次 target evaluation 之间继续运动时，追兵可先走向敌军旧省；到 7/14 日刷新、
   assignment invalidation 或旧省抵达后才可能换向。
 - [static-confirmed] “围城”在评分层有明确黏性：本 unit 已在特定省围城 `+500`，继续本 stack 的 ongoing siege
@@ -251,8 +255,8 @@ flowchart TD
 
 | 证据 | 条件 | 已证行为边界 |
 |---|---|---|
-| [static-confirmed] | 普通 combat prediction ratio ≥ `0.5` | AI 认为进入附近敌军所在省是 valid。 |
-| [static-confirmed] | desperate combat ratio ≥ `0.4` | desperate 模式降低进入风险省份的阈值。 |
+| [static-confirmed] | 普通 combat prediction ratio > `0.5` | AI 的接战候选通过该 ratio 门；等于 `0.5` 仍拒绝。 |
+| [static-confirmed] | desperate combat ratio > `0.4` | desperate 模式降低进入风险省份的阈值；等于 `0.4` 仍拒绝。 |
 | [static-confirmed] | prediction ratio < `0.66` | unit stack 尝试请求增援；达到 `0.75` 后停止继续请求。 |
 | [static-confirmed] | 当前 unit stack 被敌方 out-powered 达 `ASK_FOR_HELP_OTHER_STACK_TROOPS_RATIO=1.5` 门槛 | 尝试请求附近友军 stack 介入；现有证据不把该 define 改写成未经闭合的分子/分母公式。 |
 | [static-confirmed] | siege 进度 ≥ `0.6` | 为救援而打断 siege 的门槛改为更保守的 `1.7`。 |
@@ -420,7 +424,8 @@ flowchart LR
 - [unknown] 目标死亡、离开视野、进入战斗、占领变化等事件触发的即时 assignment invalidation 表。
 - [unknown] `CAISubunitStack+0x48` 的完整类型、assignment 枚举与 live score ledger。
 - [unknown] `0x191B080`/`0x1873100` local-objective helpers 对 siege/wait/support 的精确分工。
-- [unknown] active combat、retreat、stand-and-fight 的 exact 调度入口、分支顺序和目的地评分。
+- [unknown] active combat 的 AI controller 调度优先级、retreat、stand-and-fight 的分支顺序和目的地评分；
+  normal daily placement/contact 的引擎顺序已在 `army-contact-resolution.md` 单独闭合，不属于此 unknown。
 - [unknown] 不同 owner 的 allied armies 是共享一个 higher-level coordinator，还是经多个 coordinator
   交换 war-plan/支援信息。
 - [unknown] 当前 `33554657` 的 exact objective kind；`2587` endpoint 本身不能证明它在拦截或驻防。

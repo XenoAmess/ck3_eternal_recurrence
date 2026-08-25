@@ -64,8 +64,7 @@ constexpr std::uintptr_t kGameRuleTokenRegistrySlot = 0x57D3CE8;
 constexpr std::uintptr_t kGameRuleTokenFallbackSlot = 0x57D7430;
 
 constexpr std::uintptr_t kTraitDatabaseRva = 0x8318F0;
-constexpr std::uintptr_t kResolveTraitOrGroupRva = 0x2CB33A0;
-constexpr std::uintptr_t kCharacterTraitOrGroupRankRva = 0x261A730;
+constexpr std::uintptr_t kCharacterHasTraitRva = 0x260F740;
 constexpr std::uintptr_t kCharacterTraitTracksRva = 0x260F640;
 constexpr std::uintptr_t kTraitTrackIndexRva = 0x2CAFFD0;
 constexpr std::uintptr_t kCharacterLiegeRva = 0x2613480;
@@ -83,6 +82,8 @@ constexpr std::uintptr_t kVariableIdentifierNameRva = 0x3B97090;
 constexpr std::uintptr_t kLookupScriptIdentifierRva = 0x3B588E0;
 constexpr std::uintptr_t kScriptIdentifierNameRva = 0x3B58970;
 constexpr std::uintptr_t kCharacterModifierDatabaseRva = 0x88F370;
+constexpr std::uintptr_t kCharacterModifierLookupRva = 0xA41F10;
+constexpr std::uintptr_t kCharacterModifierFallbackSlot = 0x570C968;
 constexpr std::uintptr_t kCharacterGovernmentRva = 0x26165B0;
 constexpr std::uintptr_t kFaithHostilityRva = 0x24EDB20;
 constexpr std::uintptr_t kRuleSettingKeyHashRva = 0x3B8B000;
@@ -107,7 +108,7 @@ constexpr std::uintptr_t kReadSideDynamicAdvantageRva = 0x2307CB0;
 constexpr std::uintptr_t kReadCommanderDynamicAdvantageRva = 0x2307680;
 constexpr std::uintptr_t kReadSideModifierAdvantageRva = 0x2307230;
 constexpr std::uintptr_t kReadCombatRelationKindRva = 0x2307080;
-constexpr std::uintptr_t kCombatDebugIdEnabledRva = 0x4F3CF81;
+constexpr std::uintptr_t kCombatSideSavedVariablesEnabledRva = 0x4F3CF81;
 constexpr std::uintptr_t kSupplyThresholdDataRva = 0x4F61F08;
 constexpr std::uintptr_t kSupplyThresholdCountRva = 0x4F61F14;
 
@@ -145,7 +146,7 @@ constexpr std::size_t kEffectAdvantagePointsOffset = 0x38;
 constexpr std::size_t kEffectStableKeyOffset = 0x18;
 constexpr std::size_t kTerrainAttackerEffectOffset = 0x40;
 constexpr std::size_t kTerrainDefenderEffectOffset = 0x48;
-constexpr std::size_t kCombatRuleRecentlyDisembarkedOffset = 0xF18;
+constexpr std::size_t kCombatRuleGatheringArmyOffset = 0xF18;
 constexpr std::size_t kCombatRuleHoldingDefenderOffset = 0xF28;
 constexpr std::size_t kCombatRuleSupplySuppliedOffset = 0xF38;
 constexpr std::size_t kCombatRuleSupplyRunningLowOffset = 0xF48;
@@ -225,6 +226,9 @@ constexpr std::array<std::string_view, 56> kTraitOrGroupKeys{
     "fragile_bones",
     "tourney_participant",
 };
+
+constexpr std::array<std::string_view, 3> kPhysiqueGoodTraitKeys{
+    "physique_good_1", "physique_good_2", "physique_good_3"};
 
 constexpr std::array<std::string_view, 12> kInnovationKeys{
     "innovation_quilted_armor",      "innovation_sarawit",
@@ -600,82 +604,83 @@ bool SameSnapshotFrame(const game::Snapshot &left,
          left.player_armies == right.player_armies;
 }
 
-struct TraitDescriptorRow {
+struct TraitDefinitionRow {
   std::string_view key;
-  void *descriptor = nullptr;
+  std::vector<void *> concrete_traits;
   void *single_trait = nullptr;
 };
 
 struct TraitReadContext {
   void *database = nullptr;
-  std::vector<TraitDescriptorRow> rows;
+  std::vector<TraitDefinitionRow> rows;
 };
 
 using GetDatabase = void *(*)();
-using ResolveTraitOrGroup = void *(*)(void *, const NativeStringView64 *);
-using CharacterTraitOrGroupRank = std::int32_t (*)(void *, const void *);
+using CharacterHasTrait = bool (*)(void *, const void *);
 using CharacterTraitTracks = void *(*)(void *, void *, const void *);
 using TraitTrackIndex = std::int32_t (*)(const void *, const std::string *);
 
-bool BuildTraitReadContext(std::uintptr_t module,
-                           TraitReadContext &context) noexcept {
+bool BuildTraitReadContext(std::uintptr_t module, TraitReadContext &context,
+                           std::string &failure) noexcept {
   context = {};
+  failure.clear();
+  const auto fail = [&failure](std::string_view stage,
+                               std::string_view key = {},
+                               std::int32_t index = -1) {
+    failure = "native_phase_trait_context_";
+    failure += stage;
+    if (!key.empty()) {
+      failure += ':';
+      failure += key;
+    }
+    if (index >= 0) {
+      failure += ':';
+      failure += std::to_string(index);
+    }
+    return false;
+  };
   context.database =
       reinterpret_cast<GetDatabase>(module + kTraitDatabaseRva)();
   if (context.database == nullptr) {
-    return false;
+    return fail("database_unavailable");
   }
   void *const trait_data = LoadAt<void *>(context.database, 0x68);
   const auto trait_count =
       LoadAt<std::int32_t>(context.database, 0x74);
   if (!ValidSpan(trait_data, trait_count)) {
-    return false;
+    return fail("database_span_invalid");
   }
   context.rows.reserve(kTraitOrGroupKeys.size());
   for (const auto key : kTraitOrGroupKeys) {
-    const NativeStringView64 view{key.data(),
-                                  static_cast<std::int64_t>(key.size())};
-    void *const descriptor = reinterpret_cast<ResolveTraitOrGroup>(
-        module + kResolveTraitOrGroupRva)(context.database, &view);
-    if (descriptor == nullptr) {
-      return false;
-    }
-    void *const children = LoadAt<void *>(descriptor, 0x08);
-    const auto count = LoadAt<std::int32_t>(descriptor, 0x14);
-    if (!ValidSpan(children, count, 64) || count == 0) {
-      return false;
-    }
-    void *single = nullptr;
-    std::vector<void *> seen;
-    seen.reserve(static_cast<std::size_t>(count));
-    for (std::int32_t index = 0; index < count; ++index) {
-      void *const trait =
-          LoadAt<void *>(children, static_cast<std::size_t>(index) * 8);
-      if (trait == nullptr ||
-          std::find(seen.begin(), seen.end(), trait) != seen.end()) {
-        return false;
+    std::vector<void *> concrete_traits;
+    if (key == "physique_good") {
+      concrete_traits.reserve(kPhysiqueGoodTraitKeys.size());
+      for (std::int32_t index = 0;
+           index < static_cast<std::int32_t>(kPhysiqueGoodTraitKeys.size());
+           ++index) {
+        void *const trait = FindUniqueDatabaseObject(
+            context.database,
+            kPhysiqueGoodTraitKeys[static_cast<std::size_t>(index)]);
+        if (trait == nullptr) {
+          return fail("group_child_unavailable", key, index);
+        }
+        concrete_traits.push_back(trait);
       }
-      std::string child_key;
-      if (!ReadMsvcString(static_cast<std::byte *>(trait) + 0x18,
-                          child_key) ||
-          child_key.empty()) {
-        return false;
+    } else {
+      void *const trait = FindUniqueDatabaseObject(context.database, key);
+      if (trait == nullptr) {
+        return fail("definition_unavailable", key);
       }
-      void *const round_trip =
-          FindUniqueDatabaseObject(context.database, child_key);
-      if (round_trip != trait) {
-        return false;
-      }
-      seen.push_back(trait);
-      single = trait;
+      concrete_traits.push_back(trait);
     }
-    context.rows.push_back(
-        {key, descriptor, count == 1 ? single : nullptr});
+    void *const single =
+        concrete_traits.size() == 1 ? concrete_traits.front() : nullptr;
+    context.rows.push_back({key, std::move(concrete_traits), single});
   }
   return true;
 }
 
-const TraitDescriptorRow *FindTraitDescriptor(
+const TraitDefinitionRow *FindTraitDefinition(
     const TraitReadContext &context, std::string_view key) noexcept {
   const auto iterator = std::find_if(
       context.rows.begin(), context.rows.end(),
@@ -688,14 +693,18 @@ bool ReadTraitPresence(std::uintptr_t module,
                        std::vector<NamedBoolV3> &output) noexcept {
   output.clear();
   output.reserve(context.rows.size());
-  const auto rank = reinterpret_cast<CharacterTraitOrGroupRank>(
-      module + kCharacterTraitOrGroupRankRva);
+  const auto has_trait =
+      reinterpret_cast<CharacterHasTrait>(module + kCharacterHasTraitRva);
   for (const auto &row : context.rows) {
-    const auto value = rank(character, row.descriptor);
-    if (value < 0 || value > 64) {
+    if (row.concrete_traits.empty()) {
       return false;
     }
-    output.push_back({std::string(row.key), value > 0});
+    const bool present = std::any_of(
+        row.concrete_traits.begin(), row.concrete_traits.end(),
+        [character, has_trait](void *trait) {
+          return trait != nullptr && has_trait(character, trait);
+        });
+    output.push_back({std::string(row.key), present});
   }
   return true;
 }
@@ -714,7 +723,7 @@ bool NamedBoolValue(const std::vector<NamedBoolV3> &values,
 }
 
 bool ReadTraitTrackXp(std::uintptr_t module, void *character,
-                      const TraitDescriptorRow &descriptor,
+                      const TraitDefinitionRow &descriptor,
                       std::string_view track_key,
                       std::int64_t &output) noexcept {
   output = 0;
@@ -843,11 +852,11 @@ bool ReadCharacterTraits(std::uintptr_t module,
     return false;
   }
   output.fragile_bones_rank_raw = fragile_present ? kFixedScale : 0;
-  const auto *const fragile = FindTraitDescriptor(traits, "fragile_bones");
+  const auto *const fragile = FindTraitDefinition(traits, "fragile_bones");
   const auto *const blademaster =
-      FindTraitDescriptor(traits, "lifestyle_blademaster");
+      FindTraitDefinition(traits, "lifestyle_blademaster");
   const auto *const tourney =
-      FindTraitDescriptor(traits, "tourney_participant");
+      FindTraitDefinition(traits, "tourney_participant");
   return fragile != nullptr && blademaster != nullptr && tourney != nullptr &&
          ReadTraitTrackXp(module, character, *fragile, "fragile_bones",
                           output.fragile_bones_xp_raw) &&
@@ -890,6 +899,7 @@ struct QueryDefinitionContext {
 using RuleSettingKeyHash = std::int32_t (*)(void *, const char *,
                                              std::uint32_t);
 using LookupRuleSettingToken = void *(*)(void *, std::int32_t);
+using LookupCharacterModifier = void *(*)(void *, std::int32_t);
 
 bool ResolveRuleSettingToken(std::uintptr_t module, std::string_view key,
                              void *&output) noexcept {
@@ -912,8 +922,20 @@ bool ResolveRuleSettingToken(std::uintptr_t module, std::string_view key,
 }
 
 bool BuildQueryDefinitionContext(std::uintptr_t module,
-                                 QueryDefinitionContext &output) noexcept {
+                                 QueryDefinitionContext &output,
+                                 std::string &failure) noexcept {
   output = {};
+  failure.clear();
+  const auto fail = [&failure](std::string_view stage,
+                               std::string_view key = {}) {
+    failure = "native_phase_definition_context_";
+    failure += stage;
+    if (!key.empty()) {
+      failure += ':';
+      failure += key;
+    }
+    return false;
+  };
   void *const dynasty_perks = reinterpret_cast<GetDatabase>(
       module + kDynastyPerkDatabaseRva)();
   void *const character_perks = reinterpret_cast<GetDatabase>(
@@ -924,29 +946,38 @@ bool BuildQueryDefinitionContext(std::uintptr_t module,
       FindUniqueDatabaseObject(dynasty_perks, "warfare_legacy_3");
   output.stalwart_leader =
       FindUniqueDatabaseObject(character_perks, "stalwart_leader_perk");
-  // CharacterModifier has a wider database header and stable key at +0x38.
-  if (modifiers != nullptr) {
-    void *const data = LoadAt<void *>(modifiers, 0x1210);
-    const auto count = LoadAt<std::int32_t>(modifiers, 0x121C);
-    if (!ValidSpan(data, count)) {
-      return false;
-    }
-    for (std::int32_t index = 0; index < count; ++index) {
-      void *const modifier =
-          LoadAt<void *>(data, static_cast<std::size_t>(index) * 8);
-      if (StableKeyEquals(modifier, 0x38,
-                          "ai_extreme_conqueror_modifier")) {
-        if (output.extreme_conqueror_modifier != nullptr) {
-          return false;
-        }
-        output.extreme_conqueror_modifier = modifier;
-      }
-    }
+  // Mirror the compiled has_character_modifier initializer: hash the stable
+  // key, use the CharacterModifier database's own read lookup, and then
+  // reject its fallback, and round-trip the returned key at +0x18.  The
+  // modifier payload starts at +0x38; it is not the stable key.
+  constexpr std::string_view kExtremeConquerorModifier =
+      "ai_extreme_conqueror_modifier";
+  if (modifiers == nullptr ||
+      kExtremeConquerorModifier.size() >
+          std::numeric_limits<std::uint32_t>::max()) {
+    return fail("modifier_database_unavailable");
   }
-  if (output.warfare_legacy_3 == nullptr ||
-      output.stalwart_leader == nullptr ||
-      output.extreme_conqueror_modifier == nullptr) {
-    return false;
+  const auto modifier_hash = reinterpret_cast<RuleSettingKeyHash>(
+      module + kRuleSettingKeyHashRva)(
+      modifiers, kExtremeConquerorModifier.data(),
+      static_cast<std::uint32_t>(kExtremeConquerorModifier.size()));
+  output.extreme_conqueror_modifier =
+      reinterpret_cast<LookupCharacterModifier>(
+          module + kCharacterModifierLookupRva)(modifiers, modifier_hash);
+  if (output.warfare_legacy_3 == nullptr) {
+    return fail("definition_unavailable", "warfare_legacy_3");
+  }
+  if (output.stalwart_leader == nullptr) {
+    return fail("definition_unavailable", "stalwart_leader_perk");
+  }
+  if (output.extreme_conqueror_modifier ==
+          *reinterpret_cast<void **>(module +
+                                      kCharacterModifierFallbackSlot) ||
+      !StableKeyEquals(output.extreme_conqueror_modifier, 0x18,
+                       kExtremeConquerorModifier)) {
+    output.extreme_conqueror_modifier = nullptr;
+    return fail("definition_unavailable",
+                kExtremeConquerorModifier);
   }
   void *const court_position_types =
       *reinterpret_cast<void **>(module + kCourtPositionTypeDatabaseSlot);
@@ -955,14 +986,18 @@ bool BuildQueryDefinitionContext(std::uintptr_t module,
   if (output.garuda_court_position_type == nullptr ||
       IsFallback(module, kCourtPositionTypeFallbackSlot,
                  output.garuda_court_position_type)) {
-    return false;
+    return fail("definition_unavailable", "garuda_court_position");
   }
   if (!ResolveRuleSettingToken(module, "easy_difficulty",
-                               output.easy_difficulty) ||
-      !ResolveRuleSettingToken(module, "very_easy_difficulty",
-                               output.very_easy_difficulty) ||
-      output.easy_difficulty == output.very_easy_difficulty) {
-    return false;
+                               output.easy_difficulty)) {
+    return fail("rule_setting_unavailable", "easy_difficulty");
+  }
+  if (!ResolveRuleSettingToken(module, "very_easy_difficulty",
+                               output.very_easy_difficulty)) {
+    return fail("rule_setting_unavailable", "very_easy_difficulty");
+  }
+  if (output.easy_difficulty == output.very_easy_difficulty) {
+    return fail("rule_setting_collision");
   }
 
   void *const innovation_db =
@@ -970,14 +1005,14 @@ bool BuildQueryDefinitionContext(std::uintptr_t module,
   void *const tradition_db =
       *reinterpret_cast<void **>(module + kTraditionDatabaseSlot);
   if (innovation_db == nullptr || tradition_db == nullptr) {
-    return false;
+    return fail("culture_definition_database_unavailable");
   }
   output.innovations.reserve(kInnovationKeys.size());
   for (const auto key : kInnovationKeys) {
     void *const object = FindUniqueDatabaseObject(innovation_db, key);
     if (object == nullptr ||
         IsFallback(module, kInnovationFallbackSlot, object)) {
-      return false;
+      return fail("innovation_unavailable", key);
     }
     output.innovations.push_back({key, object});
   }
@@ -987,7 +1022,7 @@ bool BuildQueryDefinitionContext(std::uintptr_t module,
     bool valid = false;
     if (object == nullptr || IsFallback(module, kTraditionFallbackSlot, object) ||
         !VcallBool(object, 0, valid) || !valid) {
-      return false;
+      return fail("tradition_unavailable", key);
     }
     output.traditions.push_back({key, object});
   }
@@ -996,7 +1031,7 @@ bool BuildQueryDefinitionContext(std::uintptr_t module,
   for (const auto key : kCultureParameterKeys) {
     std::int32_t identifier = -1;
     if (!ResolveScriptIdentifier(module, key, identifier)) {
-      return false;
+      return fail("culture_parameter_unavailable", key);
     }
     output.culture_parameter_ids.push_back(
         {std::string(key), identifier});
@@ -1004,40 +1039,52 @@ bool BuildQueryDefinitionContext(std::uintptr_t module,
   output.accolade_parameter_ids.reserve(kAccoladeParameterKeys.size());
   for (const auto key : kAccoladeParameterKeys) {
     std::int32_t identifier = -1;
-    if (!ResolveScriptIdentifier(module, key, identifier)) {
-      return false;
+    if (!ResolveVariableIdentifier(module, key, identifier)) {
+      return fail("accolade_parameter_unavailable", key);
     }
     output.accolade_parameter_ids.push_back(
         {std::string(key), identifier});
   }
   if (!ResolveScriptIdentifier(module, "death_is_glory",
-                               output.death_is_glory_id) ||
-      !ResolveScriptIdentifier(module, "government_is_nomadic",
-                               output.government_is_nomadic_id) ||
-      !ResolveScriptIdentifier(module, "men_at_arms",
-                               output.men_at_arms_category_id)) {
-    return false;
+                               output.death_is_glory_id)) {
+    return fail("script_identifier_unavailable", "death_is_glory");
+  }
+  if (!ResolveScriptIdentifier(module, "government_is_nomadic",
+                               output.government_is_nomadic_id)) {
+    return fail("script_identifier_unavailable", "government_is_nomadic");
+  }
+  if (!ResolveVariableIdentifier(module, "men_at_arms",
+                                 output.men_at_arms_category_id)) {
+    return fail("script_identifier_unavailable", "men_at_arms");
   }
 
   const auto resolve_variable = [module](std::string_view key,
                                          std::int32_t &id) {
     return ResolveVariableIdentifier(module, key, id);
   };
-  if (!resolve_variable("conqueror", output.conqueror_variable_id) ||
-      !resolve_variable("hold_court_8050_knight",
-                        output.hold_court_knight_variable_id) ||
-      !resolve_variable("hold_court_8050_promise",
-                        output.hold_court_promise_variable_id) ||
-      !resolve_variable("accolade_progress",
+  if (!resolve_variable("conqueror", output.conqueror_variable_id)) {
+    return fail("variable_identifier_unavailable", "conqueror");
+  }
+  if (!resolve_variable("hold_court_8050_knight",
+                        output.hold_court_knight_variable_id)) {
+    return fail("variable_identifier_unavailable",
+                "hold_court_8050_knight");
+  }
+  if (!resolve_variable("hold_court_8050_promise",
+                        output.hold_court_promise_variable_id)) {
+    return fail("variable_identifier_unavailable",
+                "hold_court_8050_promise");
+  }
+  if (!resolve_variable("accolade_progress",
                         output.accolade_progress_variable_id)) {
-    return false;
+    return fail("variable_identifier_unavailable", "accolade_progress");
   }
   output.attribute_variable_ids.reserve(kAttributeUnlockKeys.size());
   for (const auto short_key : kAttributeUnlockKeys) {
     const auto full_key = std::string(short_key) + "_attribute_unlock";
     std::int32_t identifier = -1;
     if (!resolve_variable(full_key, identifier)) {
-      return false;
+      return fail("variable_identifier_unavailable", full_key);
     }
     output.attribute_variable_ids.push_back(
         {std::string(short_key), identifier});
@@ -1170,9 +1217,14 @@ bool ReadFaithCulture(std::uintptr_t module,
   output.culture_parameters.reserve(
       definitions.culture_parameter_ids.size());
   if (culture != nullptr) {
-    for (std::int32_t category = 0; category < 5; ++category) {
+    void *const pillar_data = LoadAt<void *>(culture, 0x190);
+    const auto pillar_count = LoadAt<std::int32_t>(culture, 0x19C);
+    if (!ValidSpan(pillar_data, pillar_count, 16) || pillar_count != 5) {
+      return false;
+    }
+    for (std::int32_t category = 0; category < pillar_count; ++category) {
       void *const pillar = LoadAt<void *>(
-          culture, 0x190 + static_cast<std::size_t>(category) * 8);
+          pillar_data, static_cast<std::size_t>(category) * 8);
       if (pillar == nullptr) {
         return false;
       }
@@ -1454,7 +1506,21 @@ bool ReadInt32SpanContains(const void *span, std::int32_t needle,
 bool ReadAccolade(std::uintptr_t module,
                   const QueryDefinitionContext &definitions,
                   void *character,
-                  CombatPhaseCharacterV3 &output) noexcept {
+                  CombatPhaseCharacterV3 &output,
+                  std::string &failure) noexcept {
+  failure.clear();
+  const auto fail = [&failure, &output](std::string_view stage,
+                                        std::int32_t index = -1) {
+    failure = "native_phase_character_reader_accolade_";
+    failure += stage;
+    failure += ':';
+    failure += std::to_string(output.character_id);
+    if (index >= 0) {
+      failure += ':';
+      failure += std::to_string(index);
+    }
+    return false;
+  };
   output.accolade = {};
   output.is_acclaimed = false;
   output.accolade_has_men_at_arms_category = false;
@@ -1467,7 +1533,7 @@ bool ReadAccolade(std::uintptr_t module,
   if (!ResolveOptionalComponent(module, kAccoladeStoreSlot,
                                 kAccoladeFallbackSlot, accolade_id, 0x08,
                                 output.accolade, accolade)) {
-    return false;
+    return fail("resolve_failed");
   }
   if (accolade == nullptr) {
     for (const auto &definition : definitions.accolade_parameter_ids) {
@@ -1475,29 +1541,31 @@ bool ReadAccolade(std::uintptr_t module,
     }
   } else {
     if (!reinterpret_cast<AccoladeValidate>(module + kAccoladeValidateRva)(
-            accolade) ||
-        !VcallBool(accolade, 0x08, output.is_acclaimed)) {
-      return false;
+            accolade)) {
+      return fail("validation_failed");
+    }
+    if (!VcallBool(accolade, 0x08, output.is_acclaimed)) {
+      return fail("status_unavailable");
     }
     void *const rows = LoadAt<void *>(accolade, 0x58);
     const auto count = LoadAt<std::int32_t>(accolade, 0x64);
     if (!ValidSpan(rows, count)) {
-      return false;
+      return fail("attribute_span_invalid");
     }
     for (std::int32_t index = 0; index < count; ++index) {
       const auto *const row = static_cast<const std::byte *>(rows) +
                               static_cast<std::size_t>(index) * 0x18;
       void *const attribute = LoadAt<void *>(row, 0x10);
       if (attribute == nullptr) {
-        return false;
+        return fail("attribute_null", index);
       }
       const auto *const category_span =
           static_cast<const std::byte *>(attribute) + 0x3E8;
       bool has_category = false;
       if (!ReadInt32SpanContains(category_span,
                                  definitions.men_at_arms_category_id,
-                                 has_category)) {
-        return false;
+                                 has_category, false)) {
+        return fail("category_span_invalid", index);
       }
       if (has_category) {
         output.accolade_has_men_at_arms_category = true;
@@ -1806,25 +1874,58 @@ bool ReadArmyMaa(std::uintptr_t module,
 bool ReadCharacterPhaseRow(std::uintptr_t module,
                            const TraitReadContext &traits,
                            const QueryDefinitionContext &definitions,
-                           CombatPhaseCharacterV3 &output) noexcept {
+                           CombatPhaseCharacterV3 &output,
+                           std::string &failure) noexcept {
+  failure.clear();
+  const auto fail = [&failure, &output](std::string_view stage) {
+    failure = "native_phase_character_reader_";
+    failure += stage;
+    failure += ':';
+    failure += std::to_string(output.character_id);
+    return false;
+  };
   void *const character = ResolveComponent(
       module, kCharacterStoreSlot, output.character_id, 0x18);
   if (character == nullptr ||
-      IsFallback(module, kCharacterFallbackSlot, character) ||
-      !ReadCharacterIdentity(module, character, output.character_id,
-                             output) ||
-      !ReadCharacterTraits(module, traits, character, output) ||
-      !ReadCharacterRelationsAndPerks(module, definitions, character,
-                                      output) ||
-      !ReadFaithCulture(module, definitions, character, output) ||
-      !ReadAccolade(module, definitions, character, output) ||
-      !ReadVariables(module, definitions, character, output) ||
-      !ReadGovernment(module, definitions, character, output) ||
-      !ReadCourtPosition(module, definitions, character, output)) {
+      IsFallback(module, kCharacterFallbackSlot, character)) {
+    return fail("resolve_failed");
+  }
+  if (!ReadCharacterIdentity(module, character, output.character_id, output)) {
+    return fail("identity_unavailable");
+  }
+  if (!ReadCharacterTraits(module, traits, character, output)) {
+    return fail("traits_unavailable");
+  }
+  if (!ReadCharacterRelationsAndPerks(module, definitions, character,
+                                      output)) {
+    return fail("relations_perks_unavailable");
+  }
+  if (!ReadFaithCulture(module, definitions, character, output)) {
+    return fail("faith_culture_unavailable");
+  }
+  std::string accolade_failure;
+  if (!ReadAccolade(module, definitions, character, output,
+                    accolade_failure)) {
+    failure = accolade_failure.empty()
+                  ? "native_phase_character_reader_accolade_unavailable:" +
+                        std::to_string(output.character_id)
+                  : std::move(accolade_failure);
     return false;
   }
-  return ResolveComponent(module, kCharacterStoreSlot, output.character_id,
-                          0x18) == character;
+  if (!ReadVariables(module, definitions, character, output)) {
+    return fail("variables_unavailable");
+  }
+  if (!ReadGovernment(module, definitions, character, output)) {
+    return fail("government_unavailable");
+  }
+  if (!ReadCourtPosition(module, definitions, character, output)) {
+    return fail("court_position_unavailable");
+  }
+  if (ResolveComponent(module, kCharacterStoreSlot, output.character_id,
+                       0x18) != character) {
+    return fail("generation_drift");
+  }
+  return true;
 }
 
 bool AppendOrMergeCharacter(std::vector<CombatPhaseCharacterV3> &characters,
@@ -1851,9 +1952,26 @@ bool AppendOrMergeCharacter(std::vector<CombatPhaseCharacterV3> &characters,
 bool BuildCharacterRoster(std::uintptr_t module,
                           const game::CombatSimulationInputsSnapshot &base,
                           std::vector<CombatPhaseCharacterV3> &characters,
-                          std::vector<CombatPhaseSideV3> &sides) noexcept {
+                          std::vector<CombatPhaseSideV3> &sides,
+                          std::string &failure) noexcept {
   characters.clear();
   sides.clear();
+  failure.clear();
+  const auto fail = [&failure](std::string_view stage,
+                               std::int32_t first = -1,
+                               std::int32_t second = -1) {
+    failure = "native_phase_roster_";
+    failure += stage;
+    if (first >= 0) {
+      failure += ':';
+      failure += std::to_string(first);
+    }
+    if (second >= 0) {
+      failure += ':';
+      failure += std::to_string(second);
+    }
+    return false;
+  };
   sides.resize(2);
   sides[0].side_index = 0;
   sides[0].encounter_role = "attacker";
@@ -1871,7 +1989,7 @@ bool BuildCharacterRoster(std::uintptr_t module,
     const auto side_index = army.encounter_role == "attacker" ? 0 : 1;
     if (army.encounter_role != "attacker" &&
         army.encounter_role != "defender") {
-      return false;
+      return fail("army_role_invalid", army.army_id);
     }
     auto &side = sides[side_index];
     if (army.commander.status == game::CombatObservationStatus::available) {
@@ -1880,15 +1998,19 @@ bool BuildCharacterRoster(std::uintptr_t module,
       row.source_army_id = army.army_id;
       row.encounter_role = army.encounter_role;
       row.phase_roles = {"commander"};
-      if (row.character_id <= 0 || !AppendOrMergeCharacter(characters, row)) {
-        return false;
+      if (row.character_id <= 0) {
+        return fail("commander_id_invalid", army.army_id);
+      }
+      if (!AppendOrMergeCharacter(characters, row)) {
+        return fail("commander_merge_invalid", army.army_id,
+                    row.character_id);
       }
       side.ordered_commander_ids.push_back(row.character_id);
       expected_commander_sources[side_index].push_back(
           {"commander", army.army_id, -1, row.character_id});
     } else if (army.commander.status ==
                game::CombatObservationStatus::unavailable) {
-      return false;
+      return fail("commander_unavailable", army.army_id);
     }
 
     std::vector<std::pair<std::int32_t, std::int32_t>> native_knights;
@@ -1896,26 +2018,36 @@ bool BuildCharacterRoster(std::uintptr_t module,
       void *const regiment = ResolveComponent(
           module, kRegimentStoreSlot, regiment_row.regiment_id, 0x10);
       if (regiment == nullptr ||
-          IsFallback(module, kRegimentFallbackSlot, regiment) ||
-          LoadAt<std::int32_t>(regiment, 0x140) != army.native_carmy_id) {
-        return false;
+          IsFallback(module, kRegimentFallbackSlot, regiment)) {
+        return fail("regiment_resolve_failed", army.army_id,
+                    regiment_row.regiment_id);
+      }
+      if (LoadAt<std::int32_t>(regiment, 0x140) !=
+          army.native_carmy_id) {
+        return fail("regiment_army_mismatch", army.army_id,
+                    regiment_row.regiment_id);
       }
       const auto character_id = LoadAt<std::int32_t>(regiment, 0x148);
       if (character_id == -1) {
         continue;
       }
       if (character_id <= 0) {
-        return false;
+        return fail("knight_id_invalid", army.army_id,
+                    regiment_row.regiment_id);
       }
       void *const character = ResolveComponent(
           module, kCharacterStoreSlot, character_id, 0x18);
       void *const link =
           character == nullptr ? nullptr : LoadAt<void *>(character, 0x1B0);
       if (character == nullptr ||
-          IsFallback(module, kCharacterFallbackSlot, character) ||
-          link == nullptr ||
+          IsFallback(module, kCharacterFallbackSlot, character)) {
+        return fail("knight_character_resolve_failed", army.army_id,
+                    character_id);
+      }
+      if (link == nullptr ||
           LoadAt<std::int32_t>(link, 0xF8) != regiment_row.regiment_id) {
-        return false;
+        return fail("knight_regiment_backlink_mismatch", army.army_id,
+                    regiment_row.regiment_id);
       }
       native_knights.emplace_back(character_id, regiment_row.regiment_id);
       CombatPhaseCharacterV3 row{};
@@ -1925,15 +2057,17 @@ bool BuildCharacterRoster(std::uintptr_t module,
       row.encounter_role = army.encounter_role;
       row.phase_roles = {"knight"};
       if (!AppendOrMergeCharacter(characters, std::move(row))) {
-        return false;
+        return fail("knight_merge_invalid", army.army_id, character_id);
       }
       side.ordered_knight_ids.push_back(character_id);
       expected_knight_sources[side_index].push_back(
           {"knight", army.army_id, regiment_row.regiment_id, character_id});
     }
-    if (!army.knights.available ||
-        native_knights.size() != army.knights.members.size()) {
-      return false;
+    if (!army.knights.available) {
+      return fail("base_knights_unavailable", army.army_id);
+    }
+    if (native_knights.size() != army.knights.members.size()) {
+      return fail("base_knights_count_mismatch", army.army_id);
     }
     for (const auto &[character_id, regiment_id] : native_knights) {
       const auto matched = std::find_if(
@@ -1943,7 +2077,8 @@ bool BuildCharacterRoster(std::uintptr_t module,
                    candidate.source_regiment_id == regiment_id;
           });
       if (matched == army.knights.members.end()) {
-        return false;
+        return fail("base_knight_member_mismatch", army.army_id,
+                    regiment_id);
       }
     }
   }
@@ -1966,7 +2101,7 @@ bool BuildCharacterRoster(std::uintptr_t module,
     side.candidate_source_proof.source_vector_equivalence = false;
     side.candidate_source_proof.sequence_sha256.clear();
     if (side.ordered_army_ids.empty()) {
-      return false;
+      return fail("side_armies_empty", static_cast<std::int32_t>(side_index));
     }
   }
   return true;
@@ -3237,26 +3372,75 @@ bool ReadAdvantageModel(
     game::CombatAdvantageModelV3TestOnly &output) noexcept {
   output = {};
   output.observation_origin = "native_exact_build_production";
-  output.unavailable_reason = "native_advantage_model_unavailable";
+  output.unavailable_reason = "native_advantage_model_preconditions_unavailable";
   try {
     const auto module = ModuleBase();
-    if (module == 0 || !bindings.enabled ||
-        bindings.get_province_terrain == nullptr ||
-        bindings.get_character_modifier_aggregator == nullptr ||
-        bindings.is_holding_defender == nullptr || sides.size() != 2 ||
-        base.scenario.attacker_army_ids.empty() ||
-        base.scenario.defender_army_ids.empty() ||
-        !base.target_province.available ||
-        !base.target_province.terrain.available ||
-        !base.target_province.crossing.available ||
-        !base.target_province.defender_context.available ||
-        base.target_province.defender_context.holding_defender_status !=
-            game::CombatObservationStatus::available ||
-        *reinterpret_cast<const std::uint8_t *>(
-             module + kCombatDebugIdEnabledRva) != 0) {
+    const auto fail_precondition = [&](const char *reason) noexcept {
+      output.unavailable_reason = reason;
       return false;
+    };
+    if (module == 0) {
+      return fail_precondition("native_advantage_model_precondition_module");
+    }
+    if (!bindings.enabled) {
+      return fail_precondition("native_advantage_model_precondition_bindings");
+    }
+    if (bindings.get_province_terrain == nullptr) {
+      return fail_precondition(
+          "native_advantage_model_precondition_terrain_binding");
+    }
+    if (bindings.get_character_modifier_aggregator == nullptr) {
+      return fail_precondition(
+          "native_advantage_model_precondition_modifier_binding");
+    }
+    if (bindings.is_holding_defender == nullptr) {
+      return fail_precondition(
+          "native_advantage_model_precondition_holding_binding");
+    }
+    if (sides.size() != 2) {
+      return fail_precondition(
+          "native_advantage_model_precondition_side_count");
+    }
+    if (base.scenario.attacker_army_ids.empty()) {
+      return fail_precondition(
+          "native_advantage_model_precondition_attackers");
+    }
+    if (base.scenario.defender_army_ids.empty()) {
+      return fail_precondition(
+          "native_advantage_model_precondition_defenders");
+    }
+    if (!base.target_province.available) {
+      return fail_precondition("native_advantage_model_precondition_target");
+    }
+    if (!base.target_province.terrain.available) {
+      return fail_precondition("native_advantage_model_precondition_terrain");
+    }
+    if (!base.target_province.crossing.available) {
+      return fail_precondition("native_advantage_model_precondition_crossing");
+    }
+    if (!base.target_province.defender_context.available) {
+      return fail_precondition(
+          "native_advantage_model_precondition_defender_context");
+    }
+    if (base.target_province.defender_context.holding_defender_status !=
+        game::CombatObservationStatus::available) {
+      return fail_precondition(
+          "native_advantage_model_precondition_holding_status");
+    }
+    const bool saved_variables_enabled =
+        *reinterpret_cast<const std::uint8_t *>(
+            module + kCombatSideSavedVariablesEnabledRva) != 0;
+    void *const game_state = bindings.game_state_slot == nullptr
+                                 ? nullptr
+                                 : *bindings.game_state_slot;
+    if (saved_variables_enabled &&
+        (game_state == nullptr ||
+         LoadAt<void *>(game_state, kGameStateGameDataOffset) == nullptr)) {
+      return fail_precondition(
+          "native_advantage_model_precondition_saved_variables_manager");
     }
 
+    output.unavailable_reason = "native_advantage_model_target_unavailable";
     void *const target = ResolveProvinceV3(bindings, base.target_province_id);
     if (target == nullptr) {
       return false;
@@ -3266,6 +3450,7 @@ bool ReadAdvantageModel(
         !StableKeyEquals(terrain, 0x18, base.target_province.terrain.key)) {
       return false;
     }
+    output.unavailable_reason = "native_advantage_model_rules_unavailable";
     const auto get_rules = reinterpret_cast<GetCombatRuleDatabaseV3>(
         module + kCombatRuleDatabaseRva);
     void *const combat_rules = get_rules();
@@ -3273,11 +3458,15 @@ bool ReadAdvantageModel(
       return false;
     }
 
+    output.unavailable_reason =
+        "native_advantage_model_army_contexts_unavailable";
     std::array<std::vector<AdvantageArmyContextV3>, 2> army_contexts;
     if (!BuildAdvantageArmyContextsV3(module, base, army_contexts)) {
       return false;
     }
 
+    output.unavailable_reason =
+        "native_advantage_model_side_construction_unavailable";
     const auto construct_side = reinterpret_cast<ConstructCombatSideV3>(
         module + kConstructCombatSideRva);
     const auto populate_side = reinterpret_cast<PopulateCombatSideV3>(
@@ -3311,6 +3500,14 @@ bool ReadAdvantageModel(
         return false;
       }
       local.MarkConstructed();
+      const auto saved_variables_slot = LoadAt<std::int32_t>(side, 0x08);
+      if ((saved_variables_enabled && saved_variables_slot < 0) ||
+          (!saved_variables_enabled && saved_variables_slot != -1)) {
+        output.unavailable_reason =
+            "native_advantage_model_side_saved_variables_slot_unavailable:" +
+            std::to_string(side_index);
+        return false;
+      }
       void *const local_context = local.local_context(side_index);
       void *const population_allocator = LoadAt<void *>(side, 0x50);
       if (population_allocator == nullptr) {
@@ -3342,15 +3539,23 @@ bool ReadAdvantageModel(
                             gathering_raw > 0 ? 1 : 0);
     }
 
+    output.unavailable_reason =
+        "native_advantage_model_commander_selection_unavailable";
     std::array<void *, 2> selected_commanders{};
     std::array<std::int32_t, 2> selected_commander_ids{-1, -1};
     for (std::size_t side_index = 0; side_index < 2; ++side_index) {
       void *const side = local.side(side_index);
+      output.unavailable_reason =
+          "native_advantage_model_commander_selection_null:" +
+          std::to_string(side_index);
       void *const commander = select_commander(side);
       if (commander == nullptr) {
         return false;
       }
       const auto commander_id = LoadAt<std::int32_t>(commander, 0x18);
+      output.unavailable_reason =
+          "native_advantage_model_commander_selection_identity:" +
+          std::to_string(side_index) + ":" + std::to_string(commander_id);
       if ((commander_id == -1 &&
            !IsFallback(module, kCharacterFallbackSlot, commander)) ||
           (commander_id != -1 &&
@@ -3369,12 +3574,16 @@ bool ReadAdvantageModel(
     }
     for (std::size_t side_index = 0; side_index < 2; ++side_index) {
       void *const side = local.side(side_index);
+      output.unavailable_reason =
+          "native_advantage_model_strength_refresh_unavailable:" +
+          std::to_string(side_index);
       refresh_strength(side);
-      if (read_side_strength(side) != sides[side_index].side_strength_raw) {
-        return false;
-      }
+      // 0x23CB840 only refreshes intermediate entry totals.  The final
+      // 0x23CC340 side_strength equality becomes valid after 0x2308D50 has
+      // completed dynamic entry materialization and is checked below.
     }
 
+    output.unavailable_reason = "native_advantage_model_side_inputs_unavailable";
     output.side_inputs.resize(2);
     std::array<void *, 2> supply_effects{};
     const auto debt_selector = reinterpret_cast<SelectDebtAdvantageV3>(
@@ -3399,19 +3608,21 @@ bool ReadAdvantageModel(
                                  supply_effects[side_index])) {
         return false;
       }
-      side_input.primary_army_recently_disembarked_raw =
+      side_input.primary_army_gathering_raw =
           LoadAt<std::int32_t>(army_contexts[side_index].front().army,
                                0x5C);
       side_input.owner_character_id =
           army_contexts[side_index].front().owner_character_id;
       side_input.owner_debt_selector_raw = debt_selector(
           army_contexts[side_index].front().owner, 0);
-      if (!ResolveDebtEffectV3(combat_rules,
-                               side_input.owner_debt_selector_raw, false,
-                               owner_debt_effects[side_index],
-                               owner_debt_keys[side_index]) ||
-          !ReadEffectValidityV3(owner_debt_effects[side_index],
-                                owner_debt_effect_valid[side_index])) {
+      if (side_input.owner_debt_selector_raw < -1 ||
+          (side_input.owner_debt_selector_raw != -1 &&
+           (!ResolveDebtEffectV3(combat_rules,
+                                side_input.owner_debt_selector_raw, false,
+                                owner_debt_effects[side_index],
+                                owner_debt_keys[side_index]) ||
+            !ReadEffectValidityV3(owner_debt_effects[side_index],
+                                  owner_debt_effect_valid[side_index])))) {
         return false;
       }
       if (!ReadTreasuryDebtSelectorV3(
@@ -3421,12 +3632,14 @@ bool ReadAdvantageModel(
         return false;
       }
       if (side_input.treasury_debt_selector_observable &&
-          (!ResolveDebtEffectV3(
-               combat_rules, side_input.treasury_debt_selector_raw, true,
-               treasury_debt_effects[side_index],
-               treasury_debt_keys[side_index]) ||
-           !ReadEffectValidityV3(treasury_debt_effects[side_index],
-                                 treasury_debt_effect_valid[side_index]))) {
+          (side_input.treasury_debt_selector_raw < -1 ||
+           (side_input.treasury_debt_selector_raw != -1 &&
+            (!ResolveDebtEffectV3(
+                 combat_rules, side_input.treasury_debt_selector_raw, true,
+                 treasury_debt_effects[side_index],
+                 treasury_debt_keys[side_index]) ||
+             !ReadEffectValidityV3(treasury_debt_effects[side_index],
+                                   treasury_debt_effect_valid[side_index]))))) {
         return false;
       }
     }
@@ -3582,25 +3795,21 @@ bool ReadAdvantageModel(
       return false;
     }
 
-    void *const disembarked_effect = LoadAt<void *>(
-        combat_rules, kCombatRuleRecentlyDisembarkedOffset);
-    if (!RequireEffectKeyV3(disembarked_effect,
-                            "recently_disembarked_advantage")) {
+    void *const gathering_effect =
+        LoadAt<void *>(combat_rules, kCombatRuleGatheringArmyOffset);
+    if (!RequireEffectKeyV3(gathering_effect, "gathering_army_advantage")) {
       return false;
     }
     for (std::size_t side_index = 0; side_index < 2; ++side_index) {
       const bool selected =
-          output.side_inputs[side_index]
-              .primary_army_recently_disembarked_raw != 0;
+          output.side_inputs[side_index].primary_army_gathering_raw != 0;
       if (!AppendAdvantageSourceV3(
               output, ledgers,
-              side_index == 0 ? "recently_disembarked_0"
-                              : "recently_disembarked_1",
-              side_index, selected ? disembarked_effect : nullptr, selected,
+              side_index == 0 ? "gathering_army_0" : "gathering_army_1",
+              side_index, selected ? gathering_effect : nullptr, selected,
               selected, kFixedScale,
-              selected ? "recently_disembarked_advantage" : std::string{},
-              "primary_army_not_recently_disembarked", append_order,
-              accumulator)) {
+              selected ? "gathering_army_advantage" : std::string{},
+              "primary_army_not_gathering", append_order, accumulator)) {
         return false;
       }
     }
@@ -3912,15 +4121,36 @@ ReadCombatSimulationInputsV3Result ReadCombatSimulationInputsV3(
           output.phase_event_inputs = std::move(phase);
           return ReadCombatSimulationInputsV3Result::phase_inputs_unavailable;
         };
-    if (!BuildTraitReadContext(module, traits) ||
-        !BuildQueryDefinitionContext(module, definitions) ||
-        !BuildCharacterRoster(module, base, phase.characters,
-                              phase.sides)) {
-      return phase_unavailable("native_phase_roster_unavailable");
+    std::string trait_context_failure;
+    if (!BuildTraitReadContext(module, traits, trait_context_failure)) {
+      return phase_unavailable(
+          trait_context_failure.empty()
+              ? std::string("native_phase_trait_context_unavailable")
+              : std::move(trait_context_failure));
+    }
+    std::string definition_context_failure;
+    if (!BuildQueryDefinitionContext(module, definitions,
+                                     definition_context_failure)) {
+      return phase_unavailable(
+          definition_context_failure.empty()
+              ? std::string("native_phase_definition_context_unavailable")
+              : std::move(definition_context_failure));
+    }
+    std::string roster_failure;
+    if (!BuildCharacterRoster(module, base, phase.characters, phase.sides,
+                              roster_failure)) {
+      return phase_unavailable(
+          roster_failure.empty() ? std::string("native_phase_roster_unavailable")
+                                 : std::move(roster_failure));
     }
     for (auto &character : phase.characters) {
-      if (!ReadCharacterPhaseRow(module, traits, definitions, character)) {
-        return phase_unavailable("native_phase_character_reader_unavailable");
+      std::string character_failure;
+      if (!ReadCharacterPhaseRow(module, traits, definitions, character,
+                                 character_failure)) {
+        return phase_unavailable(
+            character_failure.empty()
+                ? std::string("native_phase_character_reader_unavailable")
+                : std::move(character_failure));
       }
     }
 
@@ -3959,7 +4189,10 @@ ReadCombatSimulationInputsV3Result ReadCombatSimulationInputsV3(
     }
     if (!ReadAdvantageModel(bindings, base, phase.sides,
                             phase.advantage_model)) {
-      return phase_unavailable("native_advantage_model_unavailable");
+      return phase_unavailable(
+          phase.advantage_model.unavailable_reason.empty()
+              ? "native_advantage_model_unavailable"
+              : phase.advantage_model.unavailable_reason);
     }
     for (const auto &side : phase.sides) {
       if (!ValidateCandidateSourceProofV3(side, phase.characters)) {

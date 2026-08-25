@@ -48,6 +48,7 @@ from .war_entry_contract import (
     query_war_entry_assessments_step,
     require_declarable_war_targets,
 )
+from .actual_contact_contract import query_actual_contact_scope_step
 from ..simulation.loaded_playset_proof import (
     LoadedPlaysetProofError,
     build_loaded_playset_proof,
@@ -934,6 +935,34 @@ class GameplayBridgeService:
             "scope_army_ids": scope_ids,
             "army_strengths": selected_rows,
         }
+
+    def query_actual_contact_scope(
+        self,
+        subject_army_id: int,
+        target_province_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Predict contact or read its actual CombatID and ordered sides."""
+        step = query_actual_contact_scope_step(
+            subject_army_id, target_province_id
+        )
+        result = self._execute_typed_war_step(
+            step, expected_revision=expected_revision
+        )
+        scope = result.get("actual_contact_scope")
+        if not (
+            isinstance(scope, dict)
+            and scope.get("subject_army_id") == subject_army_id
+            and scope.get("target_province_id") == target_province_id
+            and scope.get("scope_kind")
+            in {"pre_contact_prediction", "post_contact_observation"}
+            and scope.get("actual_contact_scope_ready") is True
+        ):
+            raise BridgeUnavailableError(
+                "native actual-contact query lacks its exact ordered scope"
+            )
+        return result
 
     def query_combat_simulation_inputs(
         self,

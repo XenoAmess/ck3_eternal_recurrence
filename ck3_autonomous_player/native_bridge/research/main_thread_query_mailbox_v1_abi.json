@@ -141,7 +141,12 @@
     "transport": "existing_250ms_heartbeat_metadata_not_capability_not_command_not_MCP",
     "object_key": "main_thread_query_mailbox_v1",
     "executor_submission_enabled": true,
-    "permitted_executor": "ExecuteWarEntryAssessmentMailboxQueryV1_only",
+    "permitted_executors": [
+      "ExecuteWarEntryAssessmentMailboxQueryV1",
+      "ExecuteRouteContactHorizonMailboxQueryV1",
+      "ExecuteActualContactScopeMailboxQueryV1",
+      "ExecuteCombatSimulationInputsV3MailboxQuery"
+    ],
     "required_fields": [
       "installed",
       "stop",
@@ -176,7 +181,7 @@
     "live_paused_application_main_pump_observed": true,
     "live_typed_executor_observed": false,
     "query_specific_reader_attached": true,
-    "only_permitted_executor_locked": true,
+    "fixed_typed_executor_registry_locked": true,
     "first_live_target_limit": 1,
     "capability_ready": true
   }

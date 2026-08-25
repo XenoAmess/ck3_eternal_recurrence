@@ -474,21 +474,22 @@ v3 逆向施工清单，不允许长期返回 `null` 后宣称 capability 完成
 | identity / role | full CharacterID、source army/regiment、attacker/defender、commander/knight、alive、`is_ai` | 所有 root/side iterator、effect alive gate | [static-confirmed] Character store `module+0x570C130`、identity `+0x18`；alive 是 validity vfunc 且 `+0x1C8==null`；`is_ai` 复用 `0x28BCEB0` 的 human-player ID membership 后取反；role/army membership 复用 v2 exact traversal |
 | skills | martial、prowess、learning；三者都是 signed int32 point，`scale=1` | `commander_killed.is_valid`；全部 injury chance；`knight_increase_prowess_chance_effect` | [static-confirmed] 六技能数组从 `CCharacter+0xD4` 开始，enum `diplomacy/martial/stewardship/intrigue/learning/prowess = 0..5`；故三项分别为 `+0xD8/+0xE8/+0xE4` |
 | wound / injury | wounded rank、fragile-bones present/xp、one-legged、disfigured、one-eyed、maimed、incapable | commander/knight valid/chance；`increase_wounds_effect`、`maimed_in_battle_effect` | [static-confirmed] stable-key Trait DB、`0x260F740` membership、`0x260F640` track span、`0x2CAFFD0` track-key index 已闭合；wounded rank 由 concrete `wounded_1/2/3` 唯一命中归一化 |
-| combat/personality traits | berserker、shieldmaiden、brave、craven、wrathful、giant、calm、impatient、sadistic、ambitious、content、compassionate、temperate、lazy、patient，以及 accolade unlock 所需 trait/group 与 tourney XP | special attack valid/chance、injury/death chance、13 个 accolade random branch | [static-confirmed] concrete trait 继续使用 stable-key resolver 与 `0x260F740`；`physique_good` 等 group alias 必须经 `0x2CB33A0` descriptor + `0x261A730 > 0`，不能伪装成 concrete trait；tourney `bow/foot/horse` 复用 exact track span |
+| combat/personality traits | berserker、shieldmaiden、brave、craven、wrathful、giant、calm、impatient、sadistic、ambitious、content、compassionate、temperate、lazy、patient，以及 accolade unlock 所需 trait/group 与 tourney XP | special attack valid/chance、injury/death chance、13 个 accolade random branch | [live-corrected] concrete trait 从完整 Trait DB 做唯一 stable-key lookup 后调用 `0x260F740`；本 manifest 唯一 group alias `physique_good` 展开冻结的 `physique_good_1/2/3`，any-child 与 native `0x261A730 > 0` 等价且不依赖 descriptor cache；tourney `bow/foot/horse` 复用 exact track span |
 | perk / dynasty / difficulty | stalwart leader、warfare legacy 3、acclaimed、extreme-conqueror bonus、easy/very-easy | commander/knight none 与所有主要 chance modifier | [static-confirmed] Character→House→Dynasty perk、Character perk、Character→Accolade identity 与 current selected game-rule token membership 已分别闭合 `warfare_legacy_3`、`stalwart_leader_perk`、`is_acclaimed`、`easy_difficulty`、`very_easy_difficulty`；`conqueror` variable 与 loaded Character-modifier pointer membership 也已闭合 extreme bonus 的离线判定 |
-| faith / culture | death-is-glory、warmonger、Germanic religion、north-Germanic heritage、knights-prone-to-injury、敌我 faith hostility、accolade 所需 innovation/tradition/parameter | injury chance、become-berserker、accolade fanatic/MAA branches | [static-confirmed] Character→Faith/Culture/Religion full-ID reader、doctrine/parameter reader、precontact request-order participant container、`0x24EDB20` directional faith-hostility、innovation `0x282CE90` mirror 与 tradition `0x282D990` mirror 均已闭合 |
-| house / liege / accolade | root/liege house IDs、liege ID、can-be-acclaimed、accolade progress、root/side accolade parameter tiers、unlock variables、current accolade `men_at_arms` category | family protection、hostile-knight death tier、qualification valid/chance/effect | [static-confirmed] `0x2613480(CCharacter*)` 读取 liege，`CCharacter+0x150` 读取 full HouseID，`0x28A4870(character,null,null)` 读取当前 `can_be_acclaimed`；Character variable context、liege progress、source-order parameter roster 与 `0x2819960` category mirror 已闭合；13 个 branch-validity 由这些 raw leaves 离线组装 |
-| side context | source-order commander/knight IDs、primary participant、side strength raw、side army size raw、敌方对应值 | side-knight iterator、outnumbering、5x immunity、valiant branch | [implementation-confirmed] v2 roster、request-order primary、`0x23CC340` strength、army-size mirror 与 accolade-parameter rows 已接入 production fixture；paused-live 待验收 |
+| faith / culture | death-is-glory、warmonger、Germanic religion、north-Germanic heritage、knights-prone-to-injury、敌我 faith hostility、accolade 所需 innovation/tradition/parameter | injury chance、become-berserker、accolade fanatic/MAA branches | [static-confirmed + live-corrected] Character→Faith/Culture/Religion full-ID reader、doctrine/parameter reader、precontact request-order participant container、`0x24EDB20` directional faith-hostility、innovation `0x282CE90` mirror 与 tradition `0x282D990` mirror 均已闭合；Culture pillar 是 `+0x190` data、`+0x19C` count 的 span，不是五个 inline pointer |
+| house / liege / accolade | root/liege house IDs、liege ID、can-be-acclaimed、accolade progress、root/side accolade parameter tiers、unlock variables、current accolade `men_at_arms` category | family protection、hostile-knight death tier、qualification valid/chance/effect | [static-confirmed + shared-live] `0x2613480(CCharacter*)` 读取 liege，`CCharacter+0x150` 读取 full HouseID，application-main `0x28A4870(character,null,null)` 读取当前 `can_be_acclaimed`；Character variable context、liege progress、source-order parameter roster 与 `0x2819960` category mirror 已闭合；13 个 branch-validity 由这些 raw leaves 离线组装 |
+| side context | source-order commander/knight IDs、primary participant、side strength raw、side army size raw、敌方对应值 | side-knight iterator、outnumbering、5x immunity、valiant branch | [static-confirmed + shared-live] v2 roster、request-order primary、`0x23CC340` strength、army-size mirror 与 accolade-parameter rows 已接入；shared combined-defensive payload 返回两侧 strength `129975/65172`、army-size raw `325100000/141300000` 与 source-vector equality |
 | army MAA | regiment count、按 skirmisher/archer/crossbow/pike/heavy infantry/light cavalry/heavy cavalry/camel/elephant/horse archer/gunpowder 分类的 count | `knight_qualify_for_accolade` valid 与 13 个 random-list branches | [static-confirmed] `knight_army`、原版 total/base-type/exact-type 三条计数链与 11 个 family raw 已闭合；不能用 v2 `kind` 或 `CRegiment+0x118` 替代；完整 accolade branch AST 已在后文闭合 |
 | current row differential | 对每个 Character/type/row 发布 `valid/chance_raw/int_weight` | selector `event+0x38/+0x118` | 仅真实 `CCombatSide`：`0x334C510`、`0x337B210` 已闭合；hypothetical precontact 明确 unsupported |
-| advantage / dynamic effects | 每 army supply state；每 side first-army recently-disembarked、owner/debt selection、unreformed-faith；holding defender；source-order `CCombatEffect* + scale_raw` rows；constructor signed/clamped total；dynamic resolved raw；original raw advantage | phase damage 前的 advantage pipeline；不能只用 terrain/crossing/holding 与 commander generic points | [implementation-confirmed] constructor/source order、`0x2307CB0/0x2307680/0x2307230` zero-roll decomposition、canonical battle commander、无注册临时 context、teardown 与 original-total runtime equality gate 已接入 production；paused-live 待验收 |
+| advantage / dynamic effects | 每 army supply state；每 side first-army gathering source、owner/debt selection、unreformed-faith；holding defender；source-order `CCombatEffect* + scale_raw` rows；constructor signed/clamped total；dynamic resolved raw；original raw advantage | phase damage 前的 advantage pipeline；不能只用 terrain/crossing/holding 与 commander generic points | [static-confirmed + shared-live] `CArmy+0x5C` 与 rules DB `+0xF18` 是 gathering，不是 recently-disembarked；constructor/source order、`0x2307CB0/0x2307680/0x2307230` zero-roll decomposition、canonical battle commander、application-main 临时 context、teardown 与 original-total equality 已在 combined-defensive paused frame 跑通 |
 
 ### 132-ref quantitative closure ledger
 
 该计数绑定 manifest `required_state_refs` 的 `count=132` 与 SHA-256
 `2B5E8445EFD14DC65D8BA4046242BBC37A0226C2BCD971D805D9A6F0064A1DD0`。这里严格区分
 “exact-build leaf reader ABI 已闭合”“production machine contract/fixture 已完成”与“production MCP 已实机验收”：
-前两者已经 `132/132`，paused-live 仍是 `0/132`。capability 已正式广告，但不得把机器合同冒充 live evidence。
+前两者已经 `132/132`；后述 shared combined-defensive paused artifact 也已在该帧返回 `132/132`。这仍只是一个
+live frame/场景，不能把机器合同或单次成功外推成所有角色组合、边界值与四场 matrix 全部通过。
 132 项中有 105 项 raw/container ref 与 27 项 derived ref；derived 只能由 raw leaves
 在进程外按 manifest 计算，不应再造一个 native `derived.*` reader。
 
@@ -499,7 +500,7 @@ v3 逆向施工清单，不允许长期返回 `null` 后宣称 capability 完成
 | side | 10 | 8 | 2 | 0 | roster/commander/primary/strength/army-size、precontact request-order owner→FaithID 与 commander/knight accolade-parameter containers 已闭合 |
 | global | 3 | 2 | 1 | 0 | easy/very-easy 是 current selected-token leaf；`game_rules` 是离线 container |
 | derived | 27 | 0 | 27 | 0 | 所有 derived 均由已闭合 leaf/container 在进程外计算 |
-| **总计** | **132** | **81** | **51** | **0** | ABI + production fixture `132/132`；paused-live 仍 `0/132` |
+| **总计** | **132** | **81** | **51** | **0** | ABI + production fixture `132/132`；shared combined-defensive paused frame 也返回 `132/132` |
 
 当前 51 项 exact offline derived/container 是：`root.house_and_liege_relations`、
 `root.knight_army.maa_counts`、`game_rules`、`root.traits_and_culture_for_blademaster`、
@@ -518,8 +519,9 @@ v3 逆向施工清单，不允许长期返回 `null` 后宣称 capability 完成
 native 重复发布一个可能漂移的结果。`stock_enemy_knight_selection_weight_raw` 也已由 candidate 的 exact
 `is_acclaimed`、stalwart perk 与 warfare legacy 三个 leaf 按 stock source order 离线闭合。
 
-ABI-level 已没有缺失 ref。这里的 `132/132` 只表示每个 manifest state ref 都有 exact-build raw reader 或确定的
-offline AST；它不表示相应 native DTO、serializer、MCP、fixture 与 paused-live 已经完成。尤其不能把
+ABI-level 已没有缺失 ref。这个计数本身只表示每个 manifest state ref 都有 exact-build raw reader 或确定的
+offline AST；不能仅凭计数推导 native DTO、serializer、MCP、fixture 或 live 已完成。当前这些工程层和一场 shared
+paused live 的完成证据分别记录在后文，仍不能外推到其余场景或 transition fidelity。尤其不能把
 attribute-unlock variable presence 或 MAA count 单独冒充 `*.valid`；完整 13-branch AST 在后文冻结。
 
 ```mermaid
@@ -577,7 +579,7 @@ bool character_is_ai = character_alive
 evaluator 对 invalid/dead character 返回 `true` 的边界一致。query row 仍必须先通过 full-generation identity gate；
 不得把 sentinel Character 当作一个可用 AI participant。
 
-Trait 读取链为：
+[static-confirmed] Trait 读取链为：
 
 ```cpp
 TraitDbContext* trait_database();                                  // RVA 0x8318F0
@@ -590,8 +592,8 @@ TraitTrackSpan* character_trait_tracks(
 int32_t trait_track_index(
     const CTrait*, const std::string* stable_track_key);            // RVA 0x2CAFFD0
 
-// Initializer 0x28803C0 first obtains the Trait DB with 0x8318F0,
-// then resolves a stable script key to a concrete-trait-or-group descriptor.
+// Initializer 0x28803C0 first obtains the Trait DB with 0x8318F0, then asks
+// the compiled-trigger descriptor cache for this script key.
 const TraitOrGroupDescriptor* resolve_trait_or_group(
     TraitDbContext*, const StringView* stable_key);                  // RVA 0x2CB33A0
 int32_t character_trait_or_group_rank(
@@ -601,15 +603,19 @@ int32_t character_trait_or_group_rank(
 - Trait DB 的 pointer array/count 在 context `+0x68/+0x74`；`CTrait+0x10` 是 full trait ID，stable key
   `std::string` 在 `+0x18`（length `+0x28`、capacity `+0x30`、capacity `<16` 时 SSO）。native 按 manifest
   required stable keys 枚举并要求唯一命中，不能硬编码本次进程的 trait ID 或 pointer。
+- `0x2CB33A0` **不是完整 Trait DB lookup**：它只扫描 DB `+0x10B8/+0x10C4` 的懒加载
+  `TraitOrGroupDescriptor*` cache（descriptor stable key 在 `+0x20`）。`0x2CB3460` 才会在 miss 时分配并
+  tail-append descriptor；只读 bridge 禁止调用该创建路径。因而 descriptor miss 不能证明 concrete trait 缺失，
+  更不能成为 paused observation 的随机 readiness gate。
 - `0x260F740` 取 `CTrait+0x10`，在 `CCharacter+0xF0/+0xFC` 的升序 int32 trait-ID array 做 exact
   lower-bound。required key 缺失/重复、array 非法/失序/重复都使整个 `phase_event_inputs` unavailable。
 - 原 `has_trait` literal 在 RVA `0x4298FA8`，注册函数始于 `0x54D280`；constant evaluator
   `0x2880700` 对 compiled object `+0x108` 的 descriptor 调 `0x261A730`，返回值 `>0` 才是 true。
   descriptor 的 concrete `CTrait*` child array 位于 `+0x08`，signed count 位于 `+0x14`；helper 以
   `count-1 .. 0` 顺序读取 child `CTrait+0x10` full ID 并搜索 Character trait-ID span，返回一基 child rank，
-  无命中返回 `0`。因此 `physique_good`（`physique_good_1/2/3` 的 group）必须走该 helper；把 group 名送入
-  `0x260F740` 或硬猜一个 concrete ID 都是错误实现。所有 direct trait 也可统一走 descriptor helper，前提是
-  descriptor/key/child 列表经 exact round-trip 且结构合法。
+  无命中返回 `0`。production reader 对 direct key 必须从完整 concrete DB 唯一解析后调用 `0x260F740`；对本
+  manifest 唯一 group `physique_good`，按冻结的 `00_traits.txt` 唯一解析 `physique_good_1/2/3` 并做 any-child，
+  这与当前只需的 native `rank > 0` 严格等价，且不依赖或修改 descriptor cache。
 - wounded rank 不调用未闭合的 generic group-rank helper；只允许 concrete keys `wounded_1/2/3` 中零个或一个
   命中，映射为 rank `0..3`。多个 wounded key 同时命中是 malformed snapshot，必须原子失败。
 - `CTrait+0x288/+0x294` 是 track descriptor array/count，stride `0x650`；每个 descriptor `+0x00`
@@ -620,9 +626,14 @@ int32_t character_trait_or_group_rank(
   `span.count==0` 时于 `0x287D895` 明确输出 raw `0`，所以 absent trait / canonical empty span 是 exact `0 XP`。
   只有 track index `-1`、nonempty span index 越界、DB/descriptor malformed 或 helper ABI 失败才是 whole-v3
   unavailable。
-- accolade trigger 的 `tourney_participant` 先经 `0x2CB33A0` 解析；production reader 必须确认该 descriptor
-  唯一指向一个 concrete `CTrait`，再对同一 Character 调 `0x260F640`，并以 `0x2CAFFD0` exact-key 解析
+- accolade trigger 的 `tourney_participant` 是 concrete trait；production reader 从完整 Trait DB 对 stable key
+  唯一解析，再对同一 Character 调 `0x260F640`，并以 `0x2CAFFD0` exact-key 解析
   `bow`、`foot`、`horse` 三个 track。wire 均为 signed Q100000；脚本阈值 `30` 即 raw `3000000`。
+
+[live-confirmed 2026-08-26] 同一 paused checkpoint 的首轮 v3 query 在完整 DB/span 已成功后返回
+`native_phase_trait_context_descriptor_unavailable:ambitious`（artifact SHA-256
+`78D084E2137BF2D687114A03D716751618EFF889B548F462639FF239C6F08B0D`）。这条实证否定了“descriptor cache
+可作为完整 stable-key 目录”的 production 假设；它不证明 `ambitious` concrete definition 缺失。
   absent trait/canonical empty span 是原生确定的 `0`，但 descriptor 多 child、track key missing/OOB、span malformed
   或 generation/revision 漂移必须使 whole v3 unavailable。
 
@@ -632,9 +643,9 @@ flowchart TD
     C --> S["+0xD4 skill_points[6]<br/>martial / learning / prowess, scale 1"]
     C --> L["validity && +0x1C8 null<br/>alive"]
     L --> A["0x28BCEB0 human-player set<br/>is_ai = !human when alive"]
-    M["manifest required trait keys"] --> D["0x8318F0 Trait DB<br/>unique stable-key resolution"]
-    D --> H["concrete: 0x260F740 membership"]
-    D --> G["0x2CB33A0 trait/group descriptor<br/>0x261A730 rank > 0"]
+    M["manifest required trait keys"] --> D["0x8318F0 complete Trait DB<br/>unique concrete-key resolution"]
+    D --> H["direct concrete: 0x260F740 membership"]
+    D --> G["physique_good_1/2/3<br/>any child == native rank > 0"]
     D --> X["descriptor +0x288, stride 0x650<br/>0x2CAFFD0 track index"]
     X --> P["0x260F640 qword span<br/>XP Q100000"]
     S --> O["atomic phase_event character row"]
@@ -698,12 +709,13 @@ education/intellect trait 擅自归一为最高 rank：原脚本是逐 modifier 
 `phase_event_inputs` 原子 unavailable，不能只把单项填 `false/null`。fixture 至少覆盖：各 additive modifier、多个
 trait 同时命中、culture 乘法位于 additive 后、level-3 XP 零化、absent lifestyle trait 的 canonical XP=0，及
 root/selected-enemy 相同 CharacterID 得到相同容器。由此两项 manifest container 已可从 exact leaves 离线组装，
-无需新增 native derived reader；production fixture 与 paused-live 仍未通过。
+无需新增 native derived reader；production fixture 已通过，shared combined-defensive paused payload 也将这些 refs
+纳入 `132/132`。这一次 live 命中不替代上述 true/false 与 malformed 边界 fixture。
 
 ```mermaid
 flowchart LR
     C["full-generation Character"] --> T["Trait DB unique concrete keys<br/>0x260F740 membership"]
-    C --> TG["physique_good descriptor<br/>0x261A730 rank > 0"]
+    C --> TG["physique_good_1/2/3<br/>any-child == native rank > 0"]
     C --> X["0x260F640 lifestyle XP<br/>Q100000"]
     C --> U["Culture resolve + parameter<br/>blademaster_traits_more_common"]
     T --> B["ordered raw leaf container"]
@@ -768,8 +780,8 @@ const CCharacter* character_liege(const CCharacter* character); // RVA 0x2613480
 当 `status=absent` 时对应 ID 必须为 `null`；`unavailable` 不允许伪装成 `absent` row，而是沿
 `phase_event_inputs` 原子失败路径返回。由此在 ABI 层闭合四项 manifest ref：`root.house_id`、
 `root.liege`、`root.liege.house_id` 与离线 container `root.house_and_liege_relations`。fixture 至少覆盖
-无 liege、liege 无 house、同 house、不同 house、stale-generation 以及非 canonical fallback；paused-live
-通过前 production 计数仍为零。
+无 liege、liege 无 house、同 house、不同 house、stale-generation 以及非 canonical fallback。shared
+combined-defensive paused payload 已携带这些 root/liege refs 并通过 `132/132`；它不替代上述边界 fixture。
 
 ```mermaid
 flowchart TD
@@ -851,7 +863,8 @@ loaded perk definition 的稳定解析链也已闭合：`0xC8CF40()` 返回的 D
 `root.dynasty.perks.warfare_legacy_3`、`candidate.dynasty.perks.warfare_legacy_3` 与
 `selected_enemy_knight.dynasty.perks.warfare_legacy_3` 三项 manifest ref。fixture 至少覆盖 perk present、
 valid dynasty without perk、no house、no dynasty、missing/duplicate loaded key、stale House/Dynasty generation、
-malformed pointer span；paused-live 通过前 production 计数仍为零。
+malformed pointer span。shared combined-defensive paused payload 已携带这三项 refs 并通过 `132/132`；它不替代
+上述边界 fixture。
 
 ```mermaid
 flowchart TD
@@ -926,7 +939,8 @@ length/capacity 位于 `+0x28/+0x30`。compiled-object initializer `0x2867FD0` �
 `perks.stalwart_leader` raw ref，并使 `root_ai_stalwart = present && is_ai`、
 `root_player_stalwart = present && !is_ai` 两项 derived ref 可在进程外 exact 计算。fixture 至少覆盖
 present、valid character without perk、canonical empty span、missing/duplicate DB key、malformed count、
-stale generation；paused-live 通过前 production 计数仍为零。
+stale generation。shared combined-defensive paused payload 已携带这些 raw/derived refs 并通过 `132/132`；它不替代
+上述边界 fixture。
 
 ```mermaid
 flowchart TD
@@ -957,7 +971,7 @@ CultureID 与 `+0xB4` 的 full FaithID。`+0xB8` 是 secret-faith ID，不能替
 | current culture | `CCharacter+0xB0` full ID；Culture store/fallback `module+0x570CB80/+0x570CB78`；`CCulture+0x10` identity | `culture_id` 是 generation-bearing signed int32 |
 | current faith | `CCharacter+0xB4` full ID；Faith store/fallback `module+0x570C728/+0x570C238`；`CFaith+0x08` identity | `faith_id`；selected enemy knight 也发布该 raw ID |
 | religion | `CFaith+0x1C` full ReligionID；Religion store/fallback `module+0x570C760/+0x570C6E0`；`CReligion+0x08` identity | `religion_id`；stable script key 是 `std::string CReligion+0x58`，length/capacity `+0x68/+0x70` |
-| cultural pillar | `CCulture+0x190` 指向五个 selected pillar pointer；category `0..4`；`CCulturePillar+0x18` stable key，length/capacity `+0x28/+0x30` | 枚举五个 slot，exact byte compare `heritage_north_germanic` |
+| cultural pillar | `CCulture+0x190` 是 selected-pillar pointer data，signed count 在 `+0x19C`；本 build 合法 count 为 `5`、category `0..4`；`CCulturePillar+0x18` stable key，length/capacity `+0x28/+0x30` | 先验证 data/count，再按 category 枚举五个 pointer，exact byte compare `heritage_north_germanic` |
 | cultural parameter | `bool 0x22C5800(const CCulture*, int32 parameter_identifier_id)` | `knights_slightly_more_prone_to_injury` |
 | doctrine | `CFaith+0x278` resolved-doctrine container；`bool 0x24ECFA0(container*, const SDoctrineType**)`；pointer data/count `+0x08/+0x14`；`SDoctrineType+0x18` stable key | exact membership `tenet_warmonger` |
 | doctrine parameter | `void* 0x24EE100(container_at_faith_plus_0x278, int32 parameter_identifier_id)`；返回 row 的 bool 在 `+0x08` | `death_is_glory = row != null && row+0x08 != 0` |
@@ -966,8 +980,15 @@ CultureID 与 `+0xB4` 的 full FaithID。`+0xB8` 是 secret-faith ID，不能替
 `has_cultural_parameter` 是 `0x282DBD0`，`has_doctrine` 是 `0x2843720`，
 `has_doctrine_parameter` 是 `0x2843870`，`has_religion` 是 `0x2845600`。其中 pillar evaluator
 从 compiled object `+0x70` 取得目标 `CCulturePillar*`，再用 `pillar+0x1610` 的 category 选择
-`CCulture+0x190` 对应 slot；bridge 以五个 selected pointer 的 stable key 镜像同一结果，不能把所有
+`*(CCulture+0x190)[category]`；bridge 以 data/count span 中五个 selected pointer 的 stable key 镜像同一结果，不能把所有
 loaded pillars 中“存在某 key”误当作该文化已选择它。
+
+[live-confirmed 2026-08-26] detached paused query 曾把 `CCulture+0x190+category*8` 当成五个 inline pointer，
+进入 culture direct-container 阶段后 CK3 进程退出。改为先读 `data=*(culture+0x190)`、
+`count=*(int32_t*)(culture+0x19C)` 并要求本 build 的 `count==5` 后，同一 checkpoint 的 culture direct
+container、`0x22C5800` cultural-parameter helper、faith direct container 与 `0x24EE100` doctrine-parameter
+helper 均通过，后续完整 detached phase reader 也可返回 available。这证明旧 inline 布局会影响真实使用；后述
+共享 application-main artifact 又以同一修正返回完整 phase available，完成了 production-path 互证。
 
 两项 parameter 不能调用会插入全局表的 identifier interner `0x3B58330`。只读 ABI 固定为：
 
@@ -1009,8 +1030,8 @@ snapshot/query 调用栈中有效；literal `StringRef` 是 caller-owned。每�
 `false`；identifier 缺失或 round-trip 不等、loaded stable key 缺失/重复、任一 span/pointer/count 非法、
 fallback 混入、identity/generation 不一致，则整个 `phase_event_inputs` 原子 `unavailable`，不得把故障降级为
 `false`。fixture 至少覆盖五个 true/false 对照、current/secret faith 不同、lookup sentinel/round-trip mismatch、
-pillar category 越界、doctrine span malformed 与 stale generation；paused-live 通过前 production 仍为
-`0/132`。
+pillar category 越界、doctrine span malformed 与 stale generation。修正 `+0x190` data/`+0x19C` count 后，shared
+combined-defensive paused payload 已携带这些 refs 并通过 `132/132`；它不替代上述边界 fixture。
 
 这批在 ABI 层闭合六项 manifest leaf：root 的两项 culture、两项 faith、一个 religion check，以及
 `selected_enemy_knight.faith`。precontact `combat_side.enemy_faiths` 的 participant source-order mirror 已在下一节
@@ -1206,7 +1227,9 @@ malformed、fallback 混入、count/span 非法、helper 与镜像结果不等�
 夹成零。fixture 最少覆盖十个 base family、三个 crossbow exact key、mixed archer subtraction、零命中、
 `T->vtable[0]==false` 但 v2 判作 special 的 regiment、stale/fallback/malformed registry、knight-army mismatch
 与溢出。该 ABI 闭合 11 个 family leaf，并把 `root.knight_army.maa_counts` 作为 exact offline container；
-production named-key fixture 与 strict normalizer 已通过；paused-live 尚未执行，所以 live-confirmed 计数仍是 `0/132`。
+production named-key fixture 与 strict normalizer 已通过；detached query 先携带了这些 rows，后述共享
+application-main artifact 又在真实 can-be 与 corrected gathering 下返回 `132/132`，所以该 combined-defensive
+paused frame 已达到 observation-level live acceptance。
 
 ```mermaid
 flowchart TD
@@ -1303,8 +1326,8 @@ pointer，仅在同一 paused query 中有效。registry/service/result null、f
 span pointer/count/乘法越界、重复目标 token、两个 difficulty token 同时 selected，或 query 前后 selection
 span identity/count 改变，都使整个 `phase_event_inputs` 原子 unavailable；绝不能回退读取
 `player/game_rules/presets.txt`。fixture 至少覆盖 normal、easy、very-easy、hash-collision round-trip、fallback、
-service/result null、malformed span、重复/双选与 mid-query change。production complete-key fixture 已接入；
-paused-live 通过前 live-confirmed 仍是 `0/132`。
+service/result null、malformed span、重复/双选与 mid-query change。production complete-key fixture 已接入；shared
+combined-defensive paused payload 已携带两个 exact leaf 并通过 `132/132`，但单次 live 不替代这些边界 fixture。
 
 ```mermaid
 flowchart TD
@@ -1359,23 +1382,57 @@ predicate。`accolade_link == nullptr` 或 `accolade_id == -1` 是合法 `false`
 原子 `unavailable`，不得把 stale ID 降级为 `false`。native 可以严格镜像上述链，并用同一 Character scope 对
 `0x28190C0` 做 fixture equality；production 不需要构造 accolade scope token。
 
-`0x2819200` 同样严格解析 kind-4 Character，随后固定：
+[static-confirmed] `0x2819200` 同样严格解析 kind-4 Character，随后固定：
 
 ```cpp
 bool can_be_acclaimed_current(
     CCharacter* character,
-    void* optional_result_or_failure_rows,
-    void* optional_diagnostic_sink); // RVA 0x28A4870
+    PotentialAccoladeRows* optional_result_rows,
+    std::string* optional_diagnostic); // RVA 0x28A4870
 
 bool value = can_be_acclaimed_current(character, nullptr, nullptr);
 ```
 
 这里只冻结原 compiled leaf 与 GUI getter `0x251D440..0x251D46D` 都实际采用的两个 null optional 参数形式；
-不得猜测两个 optional receiver 的结构或传入自造对象。`0x28A4870` 检查 Character validity/alive、当前可用的
-accolade 条件与候选，并在栈/临时 heap scratch 中组装、销毁候选；该 null-output 路径不创建 accolade、不注册
-ID、不抽 RNG，也不要求 Combat/CombatSide scope。native 必须在 paused main-thread adapter 内调用，调用前后复核
-Character full ID/generation；异常、辅助服务缺失、scratch 构造/析构失败或 revision 改变均使整个 v3 原子失败。
-helper 返回的 `false` 本身是合法当前状态，不能标 unavailable。
+不得传入 bridge 自造 receiver。`0x28A4870` 不是一个字段 getter，而是完整资格评估器。当前已闭合的控制树只到
+下列边界，不对未闭合的具体 trigger 内容或 sort comparator 作推断：
+
+1. 验证 Character identity、validity 与 alive；
+2. 排除已经占用 current 或 successor accolade 位置的 Character；
+3. 解析 owner，构造真实 kind-4 Character scope，并插入已经注册的 named scope `owner`；
+4. 从 accolade scripted-rules singleton 求全局资格规则；
+5. 遍历完整 loaded AccoladeType DB，对各 type 执行其资格 trigger、weight，并组装、排序候选 scratch rows；
+6. 可选输出为 null 时仍执行上述资格工作及临时容器析构，最后只返回 bool。
+
+因此 null-output 路径虽不创建 accolade、不注册新 ID、不抽 RNG，也不要求 Combat/CombatSide scope，却仍会进入
+scripted-rule、scope、type-DB 与临时分配服务。它必须在 paused **application-main** mailbox callback 内调用，而不是
+bridge worker。进入 reader 前只读检查 `module+0x57C2060`（absolute `0x1457C2060`）的 accolade
+scripted-rules singleton、
+`module+0x570C030` 的 AccoladeType DB backing singleton，并要求已注册的 `owner` named-key ID
+`module+0x57EB620 != -1`；这些门只检查既有状态，禁止调用 lazy constructor 或 identifier interner。整个 callback
+还要在调用前后复核完整 paused Snapshot、date、revision 与 Character generation。helper 返回 `false` 是合法当前
+状态；singleton 未初始化、scope/key 缺失、异常、scratch 构造/析构失败或 frame 漂移才使 whole-v3 unavailable。
+
+[static-confirmed] `0x28A4870` 在 `0x28A4C04` 无条件调用 accessor `0x1B36670`。该 accessor 读取上述
+`0x1457C2060`；若为 null，会调用 `0x3B98000` lazy-construct，再回读 slot。mailbox 的 prerequisite gate 只做 raw
+read，不能把少写一个十六进制位的 `+0x5702060` 当成同一对象，也不应为消除 unavailable 私自调用 constructor。
+
+[live-confirmed address correction 2026-08-26] 首次 shared run 正是用错 `+0x5702060`，因此得到 typed
+`native_phase_accolade_scripted_rules_singleton_uninitialized`，但 managed cleanup 正常；该负向 artifact SHA-256 为
+`B706AD1FC82201A7B2EB5127426111FA7CAC2414EBD3EE0ABF0E4A27EBFA8737`。这证明失败来自 gate RVA 写错，不能解释成
+正确 `+0x57C2060` slot 的 lazy state；修正 RVA 后，同一未变 checkpoint 才取得下述 shared available。
+
+[live-confirmed failure boundary 2026-08-26] 早先直接从 bridge worker 调用 `0x28A4870` 的 managed paused
+诊断会挂起或令 CK3 退出；同一 reader 把这一 leaf 临时固定为 `false` 后可以继续越过全部 Character rows，并最终
+返回 phase inputs available。这个 A/B 证据与上述完整 evaluator 调用链共同否定 worker-thread 调用方式，但没有
+验证固定值本身。
+
+[shared-live-confirmed 2026-08-26] corrected application-main mailbox 在未改 checkpoint 上执行了真实
+`0x28A4870`：27 个 Character rows 中 `can_be_acclaimed=true` 为 10 个、`false` 为 17 个，whole phase
+available。这排除了“共享 payload 仍在发布诊断常量”的可能。成功 artifact SHA-256 为
+`EBEA36EC41811C7736B0819DC31A2D0B0ABE7205D4FBA76D1FBD7AE629535DA5`；完整 frame/cleanup 与其它数值见
+本章 production acceptance。该结果只接受这一 paused combined-defensive observation，不推断资格规则在未来
+game build、其它 playset 或状态变更后的值。
 
 每个 v3 Character row 发布两个非空 bool；即使 manifest 当前只在 knight root 上读取 eligibility，统一发布可以
 避免同一角色在 candidate/root 角色切换时补值漂移：
@@ -1394,7 +1451,8 @@ fixture 至少覆盖：无 link、`-1` sentinel、真实 acclaimed identity、st
 compiled Character-scope leaf 对拍。该批闭合 4 个 manifest leaf，并使
 `stock_enemy_knight_selection_weight_raw` 可由 acclaimed、stalwart 与 warfare-legacy 三个 exact leaf 按
 stock modifier source order 离线求出。本小节闭合的字段已经计入顶部当前账本
-`81 leaf + 51 offline = 132/132`；production fixture/normalizer 已通过，paused-live 尚未执行。
+`81 leaf + 51 offline = 132/132`；production fixture/normalizer 与真实 application-main
+`can_be_acclaimed` paused-live 均已通过这一场 observation milestone。
 
 ```mermaid
 flowchart TD
@@ -1428,14 +1486,16 @@ bool accolade_has_parameter(const CAccolade* accolade,
 ```
 
 `0x251CB60` 是只读 helper：先以 `0x251C200(accolade)` 验证 `CAccolade+0x58/count+0x64` 的
-`0x18`-byte attribute rows；随后按 row order，以
+`0x18`-byte attribute rows；随后按 row order，以 rank resolver
 `0x28A32A0(*(int32_t*)(row+0x08), *(void**)(row+0x10)+0x400)` 解析当前 rank/type data，并对 resolved data `+0x5E0`
 的 int32 parameter-ID span 调 `0x975B50(span,&id)`。`0x975B50` 的 span 是 data `+0x00`、signed count
-`+0x0C`、stride `4`，只做 exact int32 membership。该链不抽 RNG、不创建 accolade、不改变 glory/rank；
+`+0x0C`、stride `4`，按当前内存顺序做 linear exact int32 membership，**不要求排序**。该链不抽 RNG、
+不创建 accolade、不改变 glory/rank；
 production 可以在 paused main thread 对已严格解析的 borrowed `CAccolade*` 调用，并在整批前后复核 identity。
 
-六个 stock combat parameter key 都通过既有 script-identifier lookup-only ABI `0x3B588E0` 解析，并用
-`0x3B58970` exact byte round-trip；不得 interning 新 key：
+六个 stock combat parameter key 属于 shared dynamic-ID/PdxIntegerFlags 域：先以 `0x3B971A0()` 取得 table，
+再用 lookup-only `0x3B97020(table,&id,&view)` 解析，并以 `0x3B97090(table,id)` exact byte round-trip；
+不得调用 insert path `0x3B96E50`，也不得误用另一套 `0x3B588E0/0x3B58970` script-identifier 域：
 
 - `accolade_defends_family_low/medium/high`；
 - `accolade_increase_hostile_knight_death_low/medium/high`。
@@ -1452,11 +1512,11 @@ roster 顺序同样不需要 fake kind-11 scope：
   Character target，**不去重**；
 - `0x19DD670` 是 real-side knight builder；它按 `CCombatSide+0x40/count+0x4C` 的 `0x60`-byte entry order，
   strict resolve entry `+0x08` CRegimentID、读取 `CRegiment+0x148` knight full CharacterID，每个非 `-1`
-  ID同样 append；
+  ID 同样 append；
 - hypothetical v3 按显式 request-order armies 重放同一 materializer order：每军 commander 先保留其 army
-  source index；knight 按该军原生 `CArmy+0x38/+0x44` RegimentID order 与 side-entry bucket order发布。
+  source index；knight 按该军原生 `CArmy+0x38/+0x44` RegimentID order 与 side-entry bucket order 发布。
   同一 Character 若指挥两军或也作为 knight，保留多行及各自 role/source；不能复用一个按 ID 排序/去重的
-  public presentation list冒充 script iterator order。
+  public presentation list 冒充 script iterator order。
 
 ```json
 {
@@ -1490,7 +1550,7 @@ low→`125000`，无 tier时 `any_tier=false`、factor `100000`。这些常量�
 derivation 当作 simulation fidelity-ready。
 
 任一 roster Army/Regiment/Character/Accolade full-generation resolve、fallback rejection、parameter key round-trip、
-span/count/stride、attribute validity call或 query 前后 identity/revision 失败，整个 v3 原子 unavailable；helper 对合法
+span/count/stride、attribute validity call 或 query 前后 identity/revision 失败，整个 v3 原子 unavailable；helper 对合法
 active accolade 返回 false 是真实“不含该 parameter”，不能标 unknown。fixture 至少覆盖 no accolade、每个单 tier、
 同角色 low+high（最高 tier胜出）、commander/knight overlap、同 commander 多 army、mixed role/source order、
 stale AccoladeID、fallback、malformed attribute/parameter span、key mismatch 与 helper/direct-membership 对拍。
@@ -1503,7 +1563,7 @@ flowchart TD
     K --> R
     R --> L["CCharacter+0x1A8 → +0x568 AccoladeID"]
     L --> S["module+0x57BF1E0 store<br/>identity +0x08"]
-    I["0x3B588E0 lookup-only<br/>0x3B58970 exact key"] --> H["0x251CB60 parameter helper"]
+    I["0x3B971A0 table<br/>0x3B97020 lookup-only<br/>0x3B97090 exact key"] --> H["0x251CB60 parameter helper"]
     S --> H
     H --> P["six bools per roster row"]
     P --> F["offline highest defends-family tier"]
@@ -1569,15 +1629,16 @@ null 是合法 absent；任何非 sentinel ID 必须经 Character store `module+
 `CCharacter+0x18` 并在 query 前后复核 generation。它输出的仍是 kind-4 real Character target，可传给
 `0x3329A40`，无需伪造 Combat/CombatSide scope。
 
-extreme-conqueror 的第二个叶子是 Character modifier pointer membership。`has_character_modifier` literal
+[static-confirmed] extreme-conqueror 的第二个叶子是 Character modifier pointer membership。`has_character_modifier` literal
 RVA `0x41A87D8`，注册链 `0x31A800..0x31A893`，compiled vtable `0x41A8998`，Character-scope evaluator
 `+0xC8 = 0x1947180`。精确链为：
 
 ```cpp
 // Resolve the stable key ai_extreme_conqueror_modifier uniquely first.
 void* loaded_modifier_db = get_character_modifier_database();       // RVA 0x88F370
-// DB pointer array: db+0x1210 data, +0x121C signed count, qword stride.
-// CCharacterModifier stable std::string: +0x38, length/capacity +0x48/+0x50.
+// DB pointer array: db+0x68 data, +0x74 signed count, qword stride.
+// CCharacterModifier stable std::string: +0x18, length/capacity +0x28/+0x30.
+// Modifier payload begins at +0x38; it is not the stable key.
 
 void* modifier_state = *(void**)(character + 0x1A8);
 // null => legitimate false
@@ -1585,10 +1646,12 @@ void* modifier_state = *(void**)(character + 0x1A8);
 // stride 0x48; first qword of each row is CCharacterModifier*.
 ```
 
-原 initializer `0x1946B10` 用 `0x3B8B000` hash 与 `0xA41F10` 从 loaded DB 解析 key，并把目标 pointer
-写到 compiled object `+0x70`；原 evaluator `0x1947180` 对 active rows 只做 pointer equality。bridge 应枚举
-`db+0x1210` 并以 `modifier+0x38` stable bytes 唯一解析 `ai_extreme_conqueror_modifier`，随后严格镜像 membership；
-不得只信 32-bit hash。于是 stock scripted trigger 可离线精确组装：
+原 initializer `0x1946B10` 先用 `0x3B8B000` 计算 key hash，再调用
+`0xA41F10(loaded_modifier_db, hash, key)`；lookup failure 会返回 canonical fallback
+`*(module+0x570C968)`，不能把它当作 definition。原 evaluator `0x1947180` 对 active rows 只做 pointer equality。
+bridge 可用同一 hash+lookup+fallback rejection，并以 DB `+0x68/+0x74` 中唯一对象的 `modifier+0x18` stable bytes
+round-trip；也可枚举该完整 span，但都不得只信 32-bit hash 或把 payload `+0x38` 当 key。随后严格镜像 membership。
+于是 stock scripted trigger 可离线精确组装：
 
 ```text
 root.ai_should_get_extreme_conqueror_bonuses =
@@ -1646,7 +1709,8 @@ flowchart TD
     C --> E["CCharacter+0x1B0 → relation+0xC8<br/>employer full CharacterID"]
     E --> T2["employer kind-4 target"]
     T2 --> V2["employer variable context"]
-    DB["0x88F370 loaded modifier DB<br/>stable-key unique pointer"] --> M["CCharacter+0x1A8 active rows<br/>pointer membership"]
+    DB["0x88F370 loaded modifier DB<br/>+0x68/+0x74; key +0x18"] --> L["0x3B8B000 hash + 0xA41F10 lookup<br/>reject +0x570C968 fallback"]
+    L --> M["CCharacter+0x1A8 active rows<br/>pointer membership"]
     P --> X["offline extreme-conqueror bool"]
     M --> X
     U["null context / malformed span / wrong kind<br/>fallback / stale ID / duplicate key"] -.-> F["whole phase_event_inputs unavailable"]
@@ -1765,9 +1829,9 @@ desert_warrior, flexible_leader, nomadic_philosophy, scholar,
 brave, berserker
 ```
 
-它们统一走本章前述 `0x2CB33A0` descriptor 与 `0x261A730 > 0`；其中 `physique_good` 已由
-`00_traits.txt` 证实是 `physique_good_1/2/3` 的 group，不能调用 concrete-only `0x260F740` 假装解析。
-`tourney_participant` descriptor 必须唯一落到一个 concrete `CTrait`，再由 `0x260F640` 与
+其中 direct key 从完整 Trait DB 唯一解析后走 `0x260F740`；`physique_good` 已由 `00_traits.txt` 证实是
+`physique_good_1/2/3` 的唯一 group，production 以 any-child membership 镜像 native rank `>0`，不能把 group 名
+直接传给 concrete-only `0x260F740`。`tourney_participant` 必须唯一落到一个 concrete `CTrait`，再由 `0x260F640` 与
 `0x2CAFFD0` 读取 `bow/foot/horse` 三个 Q100000 track。direct trait absent 与 canonical empty XP span 分别是
 合法 `false/0`；descriptor/child/key 重复、track key missing/OOB 或 span malformed 是 whole-v3 failure。
 
@@ -1849,7 +1913,7 @@ evaluator 得到 observed `false`，不是 unavailable**。
 
 #### Current accolade category leaf
 
-`single_maa_attribute_allowance` 需要分开观测“当前 accolade 是否存在”与“该 accolade 是否已有
+[static-confirmed] `single_maa_attribute_allowance` 需要分开观测“当前 accolade 是否存在”与“该 accolade 是否已有
 `men_at_arms` category”。前者复用 `CCharacter+0x1A8 -> +0x568` 的 optional full CAccoladeID；后者镜像
 `has_accolade_category` 的原 evaluator `0x2819960`：
 
@@ -1857,11 +1921,15 @@ evaluator 得到 observed `false`，不是 unavailable**。
 // CAccolade store/fallback: module+0x57BF1E0 / module+0x57BF198
 // identity: CAccolade+0x08; validity helper: 0x251C200(CAccolade*)
 // attribute rows: CAccolade+0x58 data / +0x64 count, stride 0x18
-// row+0x10 -> attribute/type object; its sorted category-ID span is +0x3E8
+// row+0x10 -> attribute/type object; its unordered category-ID span is +0x3E8
 bool int32_span_contains(/* attribute+0x3E8, &category_id */); // RVA 0x975B50
 ```
 
-category ID 同样使用 `0x3B588E0("men_at_arms")` + `0x3B58970`，不能 intern。合法 absent accolade 表示
+`0x2819960` 按 `CAccolade+0x58/+0x64` row order 遍历，每行从 `row+0x10` 取得 attribute/type 对象，再对
+`attribute+0x3E8` 调 `0x975B50`。该 helper 是线性 exact int32 membership；category span 不要求、也不得被
+bridge 擅自要求排序。category key `men_at_arms` 与六个 parameter 一样属于 shared dynamic-ID/PdxIntegerFlags
+域，使用 `0x3B971A0 -> 0x3B97020 -> 0x3B97090` lookup-only + exact round-trip；不能 intern，也不能改用
+`0x3B588E0/0x3B58970`。合法 absent accolade 表示
 `status=absent`，offline allowance 为 true，且不调用 Accolade receiver；合法 existing accolade 的 empty rows/no hit
 是 `has_men_at_arms_category=false`。stale/fallback ID、`0x251C200` failure、malformed rows/category span、key
 round-trip failure 或 mid-query identity change 均使 whole v3 unavailable。
@@ -1987,7 +2055,7 @@ Combat fixture 还应把 offline 13 bool 与 `0x334C510` 对拍；precontact 仍
 
 ```mermaid
 flowchart TD
-    C["full-generation root Character"] --> T["trait/group descriptors<br/>0x2CB33A0 + 0x261A730"]
+    C["full-generation root Character"] --> T["complete Trait DB<br/>direct membership + physique child set"]
     C --> X["tourney tracks<br/>0x260F640 + 0x2CAFFD0"]
     C --> CU["Culture full ID"]
     CU --> I["innovation DB/owned span<br/>0xE71070 + 0x9A3C20"]
@@ -2051,9 +2119,15 @@ side_strength_raw = sum_in_native_bucket_and_entry_order(entry_strength_raw)
 这正是 stock `side_strength` numeric adapter 发布的 signed raw 值；adapter `0x9A35F0` 不再乘
 `100000`。wire 仍把它标成原版 numeric `scale=100000`，以便 normalized AST 原样做 side-to-side
 比较、除法与 `×5`，但**绝不能**把 `raw/100000` 命名成士兵数、AI power 或胜率。native 应对已经由
-v2 安全 local-side constructor/materializer 形成的、caller-owned 且未注册的 side 直接调用
-`0x23CC340`，并用同一 rows 的离线镜像做 fixture equality；任一 entry/stat 未闭合则 whole v3
-`unavailable`。
+v2 安全 local-side constructor/materializer 形成的、caller-owned 且未注册的 side 调用
+`0x23CC340`，并用同一 rows 的离线镜像做 fixture equality；但 equality **只能在**
+`0x2308D50(local_shell)` 完成 side finalize/materialization 后断言，不能在刚执行 `0x23C9100` 或早期 refresh 后
+提前比较。任一 entry/stat 未闭合则 whole v3 `unavailable`。
+
+[live-confirmed timing boundary 2026-08-26] detached paused diagnostic 中，attacker local side 在
+`0x2308D50` 前的 helper 值为 `124831`，而同帧 source mirror 是 `129975`；执行 `0x2308D50` 后 helper 变为
+`129975` 并与 mirror 相等。最终两侧 raw 为 attacker `129975`、defender `65172`。这证明早期不等不是 mirror
+错误，也不能用 early value 拒绝整个 phase reader。
 
 `side_army_size` 的 `0x284FE10` 则遍历 `CCombatSide+0x10/count+0x1C` 的 full CArmyID，依次经
 `base+0x570C730` 解析并回读 `CArmy+0x10`，再遍历 `CArmy+0x38/count+0x44` 的 full
@@ -2092,7 +2166,8 @@ regiment current-soldier 严格和相等。
 flowchart LR
     Q["explicit hypothetical side<br/>ordered full ArmyIDs"] --> P["first army → CUnit owner<br/>conditional primary participant"]
     Q --> B["safe unregistered local side<br/>0x23C7D30 + 0x23C9100"]
-    B --> E["two Entry60 buckets<br/>current-main + effective damage/toughness"]
+    B --> FZ["0x2308D50 local-shell finalize"]
+    FZ --> E["two Entry60 buckets<br/>current-main + effective damage/toughness"]
     E --> H["0x23D2D70 per entry<br/>two trunc0 fixed divisions"]
     H --> S["0x23CC340<br/>side_strength_raw"]
     Q --> A["strict CArmy/CRegiment generation traversal"]
@@ -2109,7 +2184,7 @@ flowchart LR
 ### Advantage constructor exact source order
 
 [static-confirmed] `0x2304830` 的 constructor append 顺序固定为：side0 supply → side1 supply → holding
-defender → side0 first-army recently-disembarked → side1 first-army recently-disembarked → side0 debt → side1 debt →
+defender → side0 first-army gathering → side1 first-army gathering → side0 debt → side1 debt →
 side0 unreformed faith → side1 unreformed faith。v3 必须按该顺序发布每个实际 append 的 source row，不能把同名 points
 预先求和后丢失顺序；完整证据表另见
 [combat-simulation-inputs.md](combat-simulation-inputs.md#v3-advantage-constructor-source-trace)。
@@ -2130,21 +2205,30 @@ void append_advantage_source(
   eligible soldiers 计算严格多数 supply category；每 army supply raw 来自 `CArmy+0x180` Q100000 后转整数。
   `supplied > 50%` 才是 supplied；否则 `supplied + running_low > 50%` 才是 running-low，平票落入更坏类别；
   返回 DB singleton `+0xF38/+0xF48/+0xF58`。
-- [static-confirmed] recently-disembarked 只看各 side request/source-order 第一支 army 的 `CArmy+0x5C != 0`，
-  effect singleton 是 `+0xF18`。这不是“任一 army recently disembarked”。
-- [static-confirmed] `0x2304EC0` 从 first army 到 `CUnit+0x174` owner；`0x28DBB70(owner,0)` 与
+- [static-confirmed + live-corrected] 这一步只看各 side request/source-order 第一支 army 的
+  `CArmy+0x5C != 0`，effect singleton 是 rules DB `+0xF18`；两者的 exact loaded key/语义是
+  **gathering army**，不是 recently-disembarked。`CArmy+0x1D0 > 0 -> CCombatSide+0x340` 是另一个 local-side
+  gathering flag，二者也不能混成同一字段。当前 reader 不得再发布 `recently_disembarked` 名称或声称已经观测
+  下船惩罚。
+- [static-confirmed + detached-live] `0x2304EC0` 从 first army 到 `CUnit+0x174` owner；`0x28DBB70(owner,0)` 与
   `0x28DBB70(owner,3)` 选择 debt effect，数组分别为 singleton `+0xFE8/count+0xFF4`、
-  `+0x1090/count+0x109C`，selector 越界均回退 `+0xF78` no-income。v3 应发布 selected source identity 与 raw
-  contribution，不把它压成自定义 debt tier 名称。
+  `+0x1090/count+0x109C`。owner selector 的 `-1` 是合法“无 debt effect”，不能当作读取失败；
+  `0<=i<count` 选择 tier，`i==count` 选择 `+0xF78` no-income，其它值才 fail closed。v3 应发布 raw selector 与
+  selected/absent source identity，不把它压成自定义 debt tier 名称。最终 detached artifact 的两侧 owner selector
+  都是 `-1`、两行 debt source 都合法 unselected，而 whole phase 仍 available，提供了该 absent 语义的 live 互证。
 - [static-confirmed] `0x2305290` 按每 side first-army owner/faith 与 target 判断 unreformed-faith source，effect
   singleton 是 `+0xF68`。
 - [static-confirmed] 当前真正用于伤害的 resolved 值满足
   `CCombat+0x710 = CCombat+0x6C8 + 0x2307CB0(side0) - 0x2307CB0(side1)`。`0x2307CB0` 的 roll、
   target-condition residual、canonical battle commander (`0x23C8A60` + `0x2307680`) 与 side aggregator
   (`0x2307230`) decomposition 已闭合；precontact wrapper 只能使用 caller-owned、unregistered、zeroed `0x718`
-  local shell，不能调用会注册 combat 或写 `CUnit+0x168` 的 constructor。production source/ledger fixture 与
-  runtime original-helper equality gate 已接入；paused-live 尚未执行。任一帧 equality 不成立时整段 unavailable，
-  仍不得拿 v2 `generic_advantage_points` 代替。
+  local shell，不能调用会注册 combat 或写 `CUnit+0x168` 的完整 CCombat constructor。每个 local
+  `CCombatSide` 必须由 `0x23C7D30` 在 application-main 构造，并在同一 paused callback 内由 complete destructor
+  `0x2303B00` 逆序销毁；`module+0x4F3CF81` 在该 build 静态为 `1`，所以 constructor 会取得 saved-variable slot，
+  不能把该 byte 误记成“debug ID enabled”并直接拒绝。production source/ledger fixture 与 runtime original-helper
+  equality gate 已接入；detached diagnostic 先跑通，随后共享 application-main/can-be/corrected-gathering 版也在
+  paused combined-defensive frame 返回 helper match。任一帧 equality 不成立时整段 unavailable，仍不得拿 v2
+  `generic_advantage_points` 代替。
 
 current revision 4 的 combined defensive fixture 冻结了 3 commanders + 25 knights；v3 必须对下列每个 ID 发布上表
 适用字段，且 `(character_id, source_army_id, phase_role)` 唯一，不能只补玩家侧：
@@ -2168,9 +2252,11 @@ coverage 是 `81` 个 exact native leaf + `51` 个 offline-derived/container con
 这会打开 observation readiness；同一 payload 的 132 refs 还会经过 13/13/13 strict audit，并逐 side 验证
 `candidate_source_proof` 的 compact-JSON digest 与 commander/knight/army/character/regiment roster；candidate materialization/order
 因此已对该 production payload 闭合。15 项 battle-horizon feedback 仍未闭合，所以
-`ast_evaluator_ready=false`。`loaded_playset_verified` 只由 episode-bound proof 按本帧决定，`original_trace_ready` 仍关闭；本轮
-没有新增 paused-live acceptance。side primary、`side_strength_raw` 与 `side_army_size_raw` 是 typed side 字段，并与 closed state refs
-交叉校验；任一 side helper/generation/materialization/equality 失败时保留完整 v2 `base_inputs`，但整段
+`ast_evaluator_ready=false`。`loaded_playset_verified` 只由 episode-bound proof 按本帧决定，`original_trace_ready` 仍关闭。
+detached 诊断版与随后修正的共享 application-main build 均已有 paused-live available（边界与 SHA 见下文）；后者已
+覆盖真实 can-be、corrected gathering 与同 callback teardown。side primary、`side_strength_raw` 与
+`side_army_size_raw` 是 typed side 字段，并与
+closed state refs 交叉校验；任一 side helper/generation/materialization/equality 失败时保留完整 v2 `base_inputs`，但整段
 `phase_event_inputs` 原子 `unavailable`，不发布 partial raw/advantage。
 
 ```json
@@ -2216,8 +2302,9 @@ coverage 是 `81` 个 exact native leaf + `51` 个 offline-derived/container con
       {
         "army_id": 357,
         "supply_state": "normal",
-        "owner_debt_tier": "none",
-        "recently_disembarked": false
+        "owner_debt_selector_raw": -1,
+        "owner_debt_effect_selected": false,
+        "primary_army_gathering_raw": 0
       }
     ],
     "sides": [
@@ -2263,13 +2350,47 @@ snapshot，不能冻结给多日 trial。
 
 1. 每个 CharacterID/army/encounter role/phase role 唯一，3 commanders 与 25 knights 不漏不重；
 2. 当前适用的所有 manifest `state_dependencies` 都能由 raw DTO 确定，不能为 `null`；
-3. 三支 army 的 supply、两侧 first-army disembark/debt/faith 与 holding 都在同 revision；constructor rows 严格按
+3. 三支 army 的 supply、两侧 first-army gathering/debt/faith 与 holding 都在同 revision；constructor rows 严格按
    `0x2304830` 顺序逐项用 `0x23045F0` 规则 signed-add/clamp，等于发布的 constructor total；resolved/raw
    advantage 另通过 `0x2307CB0` decomposition 对拍，terrain/crossing/holding 单独保留来源标签；
 4. hypothetical precontact 的 differential 必须明确 `unsupported` 且没有 fake CombatID；ongoing differential 只接受
    native 验证过的真实 Combat/side；
 5. 任一 required ref、identity、revision 或 source-sum gate 不满足时，当帧整个 v3 phase observation
    `unavailable`；production capability 保持广告，使调用者能在下一 paused frame 重试。v2 capability 继续兼容。
+
+[detached paused-live diagnostic 2026-08-26] checkpoint date `53177976` 上的 combined defensive query
+（attacker `[33554657,357]`、defender `[83886341]`、target `2585`、entry `2586`）最终返回
+`status=available`、`phase_event_inputs.status=available`、`phase_event_inputs_ready=true`。payload 含 27 个
+Character rows、3 个 Army rows 与 15 个 constructor-source rows；base static advantage 为 `-500000`，resolved
+zero-roll 与 original helper 都为 `-2500000`，final side strengths 为 `129975/65172`。managed session 正常清理；
+artifact `combat-v3-paused-live-acceptance.json` 的 SHA-256 是
+`4E50F1FEA510A92F9155F05A1844196D69C9A66540A6AFEC94EE15CA2F4094D2`。
+artifact 自身仍明确给出 `loaded_playset_verified=false`、`ast_evaluator_ready=false`、
+`original_trace_ready=false`、`monte_carlo_ready=false` 与 `planner_usable=false`；其中 loaded-playset proof 因该诊断
+hello 未发布非空 game version 而 unavailable，不能用本次 phase raw success 代替。
+
+这份 artifact **不是共享 production acceptance**：它来自 detached 诊断 worktree，真实
+`0x28A4870 can_be_acclaimed` 被临时固定为 `false`；其中两行 `recently_disembarked_*`/对应 raw 字段也是后来已由
+exact RE 证明错误的旧标签，正确语义是 `CArmy+0x5C`/DB `+0xF18` gathering。它可证明其余 phase reader、
+culture 修正、local-side lifecycle、final strength timing 与 advantage helper equality 在该 paused frame 可执行，
+本身不能证明真实 can-be 值、corrected gathering schema 或共享 application-main build。
+
+[shared application-main live-confirmed 2026-08-26] 随后的共享 fresh build 对同一个未变 checkpoint
+（SHA-256 `12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D`）在 date
+`53177976` 重跑同一 combined-defensive query，返回 command/phase available、
+`phase_event_inputs_ready=true`。payload 有 27 Character、3 Army、15 source，coverage
+`132 = 81 native + 51 offline`；真实 can-be 是 10 true/17 false，gathering side0/side1 raw 都是 `0`，两侧
+owner debt selector 都是 `-1`（合法“无 debt effect”）；base `-500000`、resolved/helper 都是 `-2500000` 且
+match，final side strengths 是 `129975/65172`。managed
+stop/cleanup 为 true，最终 CK3 inventory 为 0。artifact
+`combat-v3-shared-main-thread-paused-live-acceptance.json` SHA-256：
+`EBEA36EC41811C7736B0819DC31A2D0B0ABE7205D4FBA76D1FBD7AE629535DA5`。
+
+这关闭了该 paused frame 的共享 application-main observation milestone，包括真实 `0x28A4870`、corrected
+gathering schema、local-side complete teardown 与 original helper equality。它只覆盖四场 matrix 中的 combined
+defensive 一场；`monte_carlo_ready=false` 仍由 `damage_to_casualty_allocation`、`pursuit_transition`、
+`battle_end_and_retreat_transition`、`phase_event_rng_and_effects` 以及 loaded-playset/AST/original-trace fidelity gates
+造成，不是本次 raw observation 未就绪。因此 P1、完整 simulator 与主动接战仍不能宣称完成。
 
 ```mermaid
 flowchart TD
@@ -2345,12 +2466,14 @@ original-trace fixture 还必须覆盖：wound rank `3 -> death`、fragile-bones
    已在隔离 kernel 与 family golden 中实现；它们的原生 draw parity、死亡后同日 participant/contribution/commander
    replacement refresh 时点仍未通过 original trace；
 4. advantage constructor source-order/append、temporary-shell teardown、zero-roll dynamic decomposition 与
-   runtime original-helper equality gate 已接入 production；paused-live equality 尚未执行，且永远不能用 generic
-   advantage 代替；
+   runtime original-helper equality gate 已接入 production；共享 application-main combined-defensive paused
+   artifact 已以真实 can-be、corrected gathering 和 complete teardown 取得 live equality。其余三场 matrix 与
+   transition fidelity 仍待闭合，且永远不能用 generic advantage 代替；
 5. battle-end result envelope、validator 与静态顺序 core 已闭合；loaded result effects、AI retreat policy、simulator 与
    original trace 仍是独立 transition gate。
 
-这些缺口不是把 phase input 长期留 null 的许可。下一观测口是对 ongoing、generation-valid 的真实 `CCombat`/
-`CCombatSide` 接入 `0x334C510/0x337B210` differential trace、phase fire cadence、PRNG state/draw counter 与
-before/after 角色状态快照；随后做 v3 四场 paused acceptance 和 evaluator/original effect trace 对拍，最后把已验证的
+这些缺口不是把 phase input 长期留 null 的许可。下一步补齐 v3 matrix 剩余 single/combined × defensive/offensive
+三场，并对 ongoing、generation-valid 的真实 `CCombat`/`CCombatSide` 接入
+`0x334C510/0x337B210` differential trace、phase fire cadence、PRNG state/draw counter 与 before/after 角色状态快照，
+再做 evaluator/original effect trace 对拍，最后把已验证的
 状态转移接入已冻结的 battle-end/retreat core。在该 trace gate 闭合前，planner 与主动攻击继续禁用。

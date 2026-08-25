@@ -68,7 +68,9 @@ constexpr std::uintptr_t kArmyStorageSlotRva = 0x570CC80;
 constexpr std::uintptr_t kArmyInternalStorageSlotRva = 0x570C730;
 constexpr std::uintptr_t kRegimentStorageSlotRva = 0x57BF4C8;
 constexpr std::uintptr_t kCombatStorageSlotRva = 0x570C758;
+constexpr std::uintptr_t kBattleResultStorageSlotRva = 0x57C0328;
 constexpr std::uintptr_t kSiegeStorageSlotRva = 0x57BF1B8;
+constexpr std::uintptr_t kContactGameModeSlotRva = 0x576CC68;
 constexpr std::uintptr_t kGlobalVariableContainerAccessorSlotRva =
     0x570F750;
 constexpr std::uintptr_t kRaiseTroopsPrimaryVtableRva = 0x41226D8;
@@ -235,6 +237,12 @@ constexpr std::uintptr_t kGetScriptIdentifierTableRva = 0x3B971A0;
 constexpr std::uintptr_t kLookupScriptIdentifierIdRva = 0x3B97020;
 constexpr std::uintptr_t kIsEventTargetValidRva = 0x3329B00;
 constexpr std::uintptr_t kResolveEventTargetObjectRva = 0x33299E0;
+constexpr std::uintptr_t kIsCharacterHostileRva = 0x2900470;
+constexpr std::uintptr_t kIsArmyEmptyForContactRva = 0x2277290;
+constexpr std::uintptr_t kIsArmyInCombatRva = 0x22771F0;
+constexpr std::uintptr_t kReadProvinceHolderCharacterIdRva = 0x220C3F0;
+constexpr std::uintptr_t kClassifyContactDefenderByHolderRva = 0x2900710;
+constexpr std::uintptr_t kClassifyContactDefenderFallbackRva = 0x290CD60;
 
 constexpr std::size_t kGameStateDateOffset = 0x08;
 constexpr std::size_t kGameStateSpeedOffset = 0x70;
@@ -318,6 +326,7 @@ constexpr std::size_t kInternalArmyRegimentCountOffset = 0x44;
 constexpr std::size_t kInternalArmyCommanderCharacterIdOffset = 0x120;
 constexpr std::size_t kInternalArmyUnitIdOffset = 0x124;
 constexpr std::size_t kInternalArmyCombatIdOffset = 0x128;
+constexpr std::size_t kInternalArmyGatheringCountOffset = 0x5C;
 constexpr std::size_t kRegimentIdentitySubobjectOffset = 0x08;
 constexpr std::size_t kRegimentIdOffset = 0x10;
 constexpr std::size_t kRegimentCurrentSoldiersOffset = 0x38;
@@ -357,6 +366,16 @@ constexpr std::size_t kCombatBaseAdvantageOffset = 0x6C8;
 constexpr std::size_t kCombatSide0RollOffset = 0x6D0;
 constexpr std::size_t kCombatSide1RollOffset = 0x6D4;
 constexpr std::size_t kCombatResolvedAdvantageOffset = 0x710;
+constexpr std::size_t kCombatAttackerSideOffset = 0x20;
+constexpr std::size_t kCombatDefenderSideOffset = 0x368;
+constexpr std::size_t kCombatWinnerOffset = 0x6E0;
+constexpr std::size_t kCombatFinalizedOffset = 0x704;
+constexpr std::size_t kCombatBattleResultIdOffset = 0x708;
+constexpr std::size_t kCombatSideArmyIdsOffset = 0x10;
+constexpr std::size_t kCombatSideArmyCountOffset = 0x1C;
+constexpr std::size_t kCombatSidePrimaryCharacterIdOffset = 0x70;
+constexpr std::size_t kBattleResultIdOffset = 0x08;
+constexpr std::size_t kBattleResultReadyOffset = 0x28;
 constexpr std::size_t kEncounterMaaStatsMaximumOffset = 0x08;
 constexpr std::size_t kEncounterMaaStatsSiegeOffset = 0x10;
 constexpr std::size_t kEncounterMaaStatsDamageOffset = 0x18;
@@ -374,7 +393,13 @@ constexpr std::size_t kMapAdjacencyTargetProvinceIdOffset = 0x04;
 constexpr std::size_t kPathProvinceInfoLandOffset = 0x09;
 constexpr std::size_t kPathProvinceInfoWaterOffset = 0x0B;
 constexpr std::size_t kProvinceOccupyingCharacterIdOffset = 0x744;
+constexpr std::size_t kProvinceContactGatePointerOffset = 0x20;
+constexpr std::size_t kProvinceUnitIdsOffset = 0x748;
+constexpr std::size_t kProvinceUnitIdCountOffset = 0x754;
+constexpr std::size_t kProvinceCombatIdsOffset = 0x760;
+constexpr std::size_t kProvinceCombatIdCountOffset = 0x76C;
 constexpr std::size_t kProvinceActiveSiegeIdOffset = 0x790;
+constexpr std::size_t kProvinceFortLevelOffset = 0x858;
 constexpr std::size_t kSiegeIdOffset = 0x08;
 constexpr std::size_t kSiegeProvinceOffset = 0x200;
 constexpr std::size_t kSiegeBesiegingArmyIdOffset = 0x208;
@@ -439,6 +464,10 @@ constexpr std::int32_t kMaximumNativeTitleIds = 1'000'000;
 constexpr std::int32_t kMaximumArmyRegiments = 65'536;
 constexpr std::int32_t kMaximumWarObjectiveTitleIds = 4'096;
 constexpr std::int32_t kMaximumUnitRouteProvinceInfos = 4'096;
+constexpr std::int32_t kMaximumActualContactProvinceUnits = 4'096;
+constexpr std::int32_t kMaximumActualContactProvinceCombats = 1'024;
+constexpr std::int32_t kMaximumActualContactSideArmies = 4'096;
+constexpr std::int32_t kMaximumActualContactRegiments = 4'096;
 constexpr std::size_t kMaximumLandedTitleHierarchyDepth = 8;
 constexpr std::size_t kMaximumWarObjectiveProvinceIds = 4'096;
 constexpr std::size_t kMaximumWarObjectiveProvinceStateCount = 256;
@@ -4174,7 +4203,7 @@ bool CheckedMultiplySigned(std::int64_t left, std::int64_t right,
 using RegimentIdentityPredicate = bool (*)(void *regiment_subobject);
 
 bool ReadSubobjectPredicate(void *object, std::size_t subobject_offset,
-                            bool &value) noexcept {
+                             bool &value) noexcept {
   void *const subobject =
       static_cast<std::byte *>(object) + subobject_offset;
   void *const vtable = LoadAt<void *>(subobject, 0);
@@ -4189,6 +4218,23 @@ bool ReadSubobjectPredicate(void *object, std::size_t subobject_offset,
   const auto predicate =
       reinterpret_cast<RegimentIdentityPredicate>(predicate_address);
   value = predicate(subobject);
+  return true;
+}
+
+bool ReadObjectPredicateAtSlot(void *object, std::size_t vtable_slot_offset,
+                               bool &value) noexcept {
+  void *const vtable = LoadAt<void *>(object, 0);
+  if (vtable == nullptr) {
+    return false;
+  }
+  const auto predicate_address =
+      LoadAt<std::uintptr_t>(vtable, vtable_slot_offset);
+  if (predicate_address == 0) {
+    return false;
+  }
+  const auto predicate =
+      reinterpret_cast<RegimentIdentityPredicate>(predicate_address);
+  value = predicate(object);
   return true;
 }
 
@@ -5918,8 +5964,12 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       reinterpret_cast<void **>(module + kRegimentStorageSlotRva);
   result.combat_storage_slot =
       reinterpret_cast<void **>(module + kCombatStorageSlotRva);
+  result.battle_result_storage_slot =
+      reinterpret_cast<void **>(module + kBattleResultStorageSlotRva);
   result.siege_storage_slot =
       reinterpret_cast<void **>(module + kSiegeStorageSlotRva);
+  result.contact_game_mode_slot =
+      reinterpret_cast<void **>(module + kContactGameModeSlotRva);
   result.global_variable_container_accessor_slot =
       reinterpret_cast<GetGlobalVariableContainer *>(
           module + kGlobalVariableContainerAccessorSlotRva);
@@ -6209,6 +6259,22 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.resolve_event_target_object =
       reinterpret_cast<ResolveEventTargetObject>(
           module + kResolveEventTargetObjectRva);
+  result.is_character_hostile = reinterpret_cast<IsCharacterHostile>(
+      module + kIsCharacterHostileRva);
+  result.is_army_empty_for_contact =
+      reinterpret_cast<ArmyContactPredicate>(
+          module + kIsArmyEmptyForContactRva);
+  result.is_army_in_combat = reinterpret_cast<ArmyContactPredicate>(
+      module + kIsArmyInCombatRva);
+  result.read_province_holder_character_id =
+      reinterpret_cast<ReadProvinceHolderCharacterId>(
+          module + kReadProvinceHolderCharacterIdRva);
+  result.classify_contact_defender_by_holder =
+      reinterpret_cast<CharacterRelationPredicate>(
+          module + kClassifyContactDefenderByHolderRva);
+  result.classify_contact_defender_fallback =
+      reinterpret_cast<CharacterProvincePredicate>(
+          module + kClassifyContactDefenderFallbackRva);
   result.read_unit_land_route_speed =
       reinterpret_cast<ReadUnitRouteSpeed>(
           module + kReadUnitLandRouteSpeedRva);
@@ -7988,6 +8054,716 @@ RouteContactHorizonStatus ReadRouteContactHorizon(
   }
   output.one_day_contact_free = output.conflicts.empty();
   output.status = RouteContactHorizonStatus::available;
+  return output.status;
+}
+
+namespace {
+
+bool ReadContactIdArray(const void *owner, std::size_t data_offset,
+                        std::size_t count_offset, std::int32_t maximum,
+                        std::vector<std::int32_t> &output,
+                        bool require_strictly_sorted) {
+  output.clear();
+  void *const data = LoadAt<void *>(owner, data_offset);
+  const auto count = LoadAt<std::int32_t>(owner, count_offset);
+  if (count < 0 || count > maximum || (count > 0 && data == nullptr)) {
+    return false;
+  }
+  output.reserve(static_cast<std::size_t>(count));
+  for (std::int32_t index = 0; index < count; ++index) {
+    const auto id = LoadAt<std::int32_t>(
+        data, static_cast<std::size_t>(index) * sizeof(std::int32_t));
+    if (id <= 0 ||
+        (require_strictly_sorted && !output.empty() &&
+         output.back() >= id)) {
+      output.clear();
+      return false;
+    }
+    output.push_back(id);
+  }
+  return true;
+}
+
+bool ResolveContactCharacter(const Bindings &bindings,
+                             std::int32_t character_id,
+                             void *&character) noexcept {
+  character = ResolveCharacter(bindings, character_id);
+  if (character == nullptr) {
+    return false;
+  }
+  bool identity_valid = false;
+  return ReadSubobjectPredicate(character, kCharacterValiditySubobjectOffset,
+                                identity_valid) &&
+         identity_valid;
+}
+
+bool NativeArmyIdsToPublicUnitIds(
+    const Bindings &bindings,
+    const std::vector<std::int32_t> &native_army_ids,
+    std::vector<std::int32_t> &public_unit_ids) noexcept {
+  public_unit_ids.clear();
+  public_unit_ids.reserve(native_army_ids.size());
+  for (const auto native_id : native_army_ids) {
+    void *const army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot, native_id,
+        kInternalArmyIdOffset);
+    if (army == nullptr) {
+      public_unit_ids.clear();
+      return false;
+    }
+    const auto unit_id =
+        LoadAt<std::int32_t>(army, kInternalArmyUnitIdOffset);
+    void *const unit = ResolveStoredComponent(
+        bindings.army_storage_slot, unit_id, kArmyIdOffset);
+    if (unit == nullptr ||
+        LoadAt<std::int32_t>(unit, kUnitArmyIdOffset) != native_id) {
+      public_unit_ids.clear();
+      return false;
+    }
+    public_unit_ids.push_back(unit_id);
+  }
+  return true;
+}
+
+bool ReadCombatSidePublicUnitIds(
+    const Bindings &bindings, const void *combat,
+    std::size_t side_offset,
+    std::vector<std::int32_t> &output) noexcept {
+  std::vector<std::int32_t> native_ids;
+  const auto *const side = static_cast<const std::byte *>(combat) + side_offset;
+  return ReadContactIdArray(
+             side, kCombatSideArmyIdsOffset, kCombatSideArmyCountOffset,
+             kMaximumActualContactSideArmies, native_ids, false) &&
+         NativeArmyIdsToPublicUnitIds(bindings, native_ids, output);
+}
+
+bool ReadActiveCombatSidePublicUnitIds(
+    const Bindings &bindings, const void *combat,
+    std::size_t side_offset, std::int32_t expected_combat_id,
+    std::vector<std::int32_t> &output) noexcept {
+  output.clear();
+  std::vector<std::int32_t> native_ids;
+  const auto *const side = static_cast<const std::byte *>(combat) + side_offset;
+  if (!ReadContactIdArray(
+          side, kCombatSideArmyIdsOffset, kCombatSideArmyCountOffset,
+          kMaximumActualContactSideArmies, native_ids, false) ||
+      native_ids.empty()) {
+    return false;
+  }
+  output.reserve(native_ids.size());
+  for (const auto native_id : native_ids) {
+    void *const army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot, native_id,
+        kInternalArmyIdOffset);
+    if (army == nullptr ||
+        LoadAt<std::int32_t>(army, kInternalArmyCombatIdOffset) !=
+            expected_combat_id) {
+      output.clear();
+      return false;
+    }
+    const auto unit_id =
+        LoadAt<std::int32_t>(army, kInternalArmyUnitIdOffset);
+    void *const unit = ResolveStoredComponent(
+        bindings.army_storage_slot, unit_id, kArmyIdOffset);
+    if (unit == nullptr ||
+        LoadAt<std::int32_t>(unit, kUnitArmyIdOffset) != native_id ||
+        std::find(output.begin(), output.end(), unit_id) != output.end()) {
+      output.clear();
+      return false;
+    }
+    output.push_back(unit_id);
+  }
+  return true;
+}
+
+ActualContactScopeStatus ReadExistingActualContact(
+    const Bindings &bindings, void *game_state, void *unit,
+    void *native_army, void *requested_province,
+    const game::ActualContactScopeRequest &request,
+    game::ActualContactScopeSnapshot &output) noexcept {
+  const auto combat_id = LoadAt<std::int32_t>(
+      native_army, kInternalArmyCombatIdOffset);
+  if (combat_id <= 0) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  void *const combat = ResolveStoredComponent(
+      bindings.combat_storage_slot, combat_id, kCombatIdOffset);
+  if (combat == nullptr ||
+      LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset) != 0) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  void *const actual_province =
+      LoadAt<void *>(combat, kCombatProvinceOffset);
+  if (actual_province == nullptr) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  const auto actual_province_id =
+      LoadAt<std::int32_t>(actual_province, kProvinceIdOffset);
+  if (actual_province_id <= 0 ||
+      actual_province_id != request.target_province_id ||
+      actual_province != requested_province ||
+      LoadAt<void *>(unit, kArmyCurrentProvinceOffset) != actual_province ||
+      ResolveProvince(game_state, actual_province_id) != actual_province) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  output.target_province_id = actual_province_id;
+  if (!ReadContactIdArray(
+          actual_province, kProvinceUnitIdsOffset,
+          kProvinceUnitIdCountOffset, kMaximumActualContactProvinceUnits,
+          output.province_unit_army_ids, true) ||
+      !ReadContactIdArray(
+          actual_province, kProvinceCombatIdsOffset,
+          kProvinceCombatIdCountOffset,
+          kMaximumActualContactProvinceCombats,
+          output.province_combat_ids, true) ||
+      !std::binary_search(output.province_unit_army_ids.begin(),
+                          output.province_unit_army_ids.end(),
+                          request.subject_army_id)) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  const auto selected = std::lower_bound(output.province_combat_ids.begin(),
+                                         output.province_combat_ids.end(),
+                                         combat_id);
+  if (selected == output.province_combat_ids.end() ||
+      *selected != combat_id ||
+      !ReadActiveCombatSidePublicUnitIds(
+          bindings, combat, kCombatAttackerSideOffset, combat_id,
+          output.attacker_army_ids) ||
+      !ReadActiveCombatSidePublicUnitIds(
+          bindings, combat, kCombatDefenderSideOffset, combat_id,
+          output.defender_army_ids)) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  const auto attacker_subject_count = static_cast<std::size_t>(std::count(
+      output.attacker_army_ids.begin(), output.attacker_army_ids.end(),
+      request.subject_army_id));
+  const auto defender_subject_count = static_cast<std::size_t>(std::count(
+      output.defender_army_ids.begin(), output.defender_army_ids.end(),
+      request.subject_army_id));
+  if (attacker_subject_count + defender_subject_count != 1) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  for (const auto attacker_id : output.attacker_army_ids) {
+    if (std::find(output.defender_army_ids.begin(),
+                  output.defender_army_ids.end(), attacker_id) !=
+        output.defender_army_ids.end()) {
+      return ActualContactScopeStatus::state_changed;
+    }
+  }
+  if (ResolveStoredComponent(bindings.combat_storage_slot, combat_id,
+                             kCombatIdOffset) != combat ||
+      LoadAt<std::int32_t>(native_army, kInternalArmyCombatIdOffset) !=
+          combat_id) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  output.scope_kind = "post_contact_observation";
+  output.transition_kind = "in_combat";
+  output.selected_combat_id = combat_id;
+  output.selected_combat_array_index = static_cast<std::int32_t>(
+      std::distance(output.province_combat_ids.begin(), selected));
+  output.actual_contact_scope_ready = true;
+  output.combat_v3_participant_scope_ready = true;
+  return ActualContactScopeStatus::available;
+}
+
+bool HasPositiveContactSoldiers(const Bindings &bindings, void *army,
+                                bool &positive) noexcept {
+  positive = false;
+  std::vector<std::int32_t> regiment_ids;
+  if (!ReadContactIdArray(army, kInternalArmyRegimentIdsOffset,
+                          kInternalArmyRegimentCountOffset,
+                          kMaximumActualContactRegiments, regiment_ids,
+                          false)) {
+    return false;
+  }
+  std::int64_t total = 0;
+  for (const auto regiment_id : regiment_ids) {
+    void *const regiment = ResolveStoredComponent(
+        bindings.regiment_storage_slot, regiment_id, kRegimentIdOffset);
+    if (regiment == nullptr) {
+      return false;
+    }
+    bool identity_valid = false;
+    if (!ReadRegimentIdentity(regiment, identity_valid)) {
+      return false;
+    }
+    if (!identity_valid) {
+      continue;
+    }
+    const auto soldiers =
+        LoadAt<std::int32_t>(regiment, kRegimentCurrentSoldiersOffset);
+    if (soldiers < 0 ||
+        total > std::numeric_limits<std::int32_t>::max() - soldiers) {
+      return false;
+    }
+    total += soldiers;
+  }
+  positive = total > 0;
+  return true;
+}
+
+bool AppendLoserExclusions(const Bindings &bindings, void *combat,
+                           std::vector<std::int32_t> &output) noexcept {
+  const auto battle_result_id =
+      LoadAt<std::int32_t>(combat, kCombatBattleResultIdOffset);
+  void *const battle_result = ResolveStoredComponent(
+      bindings.battle_result_storage_slot, battle_result_id,
+      kBattleResultIdOffset);
+  if (battle_result == nullptr) {
+    return true;
+  }
+  bool identity_valid = false;
+  if (!ReadSubobjectPredicate(battle_result, 0, identity_valid)) {
+    return false;
+  }
+  if (!identity_valid) {
+    return true;
+  }
+  const auto winner = LoadAt<std::int32_t>(combat, kCombatWinnerOffset);
+  if (LoadAt<std::uint8_t>(battle_result, kBattleResultReadyOffset) == 0 ||
+      winner == -1) {
+    return true;
+  }
+  const auto loser_side = winner == 0 ? kCombatDefenderSideOffset
+                                      : kCombatAttackerSideOffset;
+  std::vector<std::int32_t> loser_ids;
+  const auto *const side = static_cast<const std::byte *>(combat) + loser_side;
+  if (!ReadContactIdArray(side, kCombatSideArmyIdsOffset,
+                          kCombatSideArmyCountOffset,
+                          kMaximumActualContactSideArmies, loser_ids,
+                          false)) {
+    return false;
+  }
+  output.insert(output.end(), loser_ids.begin(), loser_ids.end());
+  return true;
+}
+
+bool ReadContactAdjacencyKind(void *unit, std::int32_t &kind) noexcept {
+  kind = 0;
+  void *const current = LoadAt<void *>(unit, kArmyCurrentProvinceOffset);
+  void *const prior = LoadAt<void *>(unit, kArmyTargetProvinceOffset);
+  if (current == nullptr || prior == nullptr) {
+    return true;
+  }
+  bool current_valid = false;
+  bool prior_valid = false;
+  if (!ReadObjectPredicateAtSlot(current, 0x30, current_valid) ||
+      !ReadObjectPredicateAtSlot(prior, 0x30, prior_valid)) {
+    return false;
+  }
+  if (!current_valid || !prior_valid) {
+    return true;
+  }
+  void *const map_node = LoadAt<void *>(current, kProvinceMapNodeOffset);
+  if (map_node == nullptr) {
+    return false;
+  }
+  void *const rows = LoadAt<void *>(map_node, kMapNodeAdjacencyDataOffset);
+  const auto count =
+      LoadAt<std::int32_t>(map_node, kMapNodeAdjacencyCountOffset);
+  if (count < 0 || count > kMaximumProvinceAdjacencies ||
+      (count > 0 && rows == nullptr)) {
+    return false;
+  }
+  const auto prior_id = LoadAt<std::int32_t>(prior, kProvinceIdOffset);
+  for (std::int32_t index = 0; index < count; ++index) {
+    const auto *const row = static_cast<const std::byte *>(rows) +
+                            static_cast<std::size_t>(index) *
+                                kMapAdjacencyStride;
+    if (LoadAt<std::int32_t>(row,
+                             kMapAdjacencyTargetProvinceIdOffset) == prior_id) {
+      kind = LoadAt<std::int32_t>(row, kMapAdjacencyKindOffset);
+      return true;
+    }
+  }
+  return true;
+}
+
+ActualContactScopeStatus ReadActualContactScopeSample(
+    const Bindings &bindings, const game::ActualContactScopeRequest &request,
+    game::ActualContactScopeSnapshot &output) noexcept {
+  output = {};
+  output.subject_army_id = request.subject_army_id;
+  output.target_province_id = request.target_province_id;
+  void *const game_state = *bindings.game_state_slot;
+  void *const unit = ResolveStoredComponent(
+      bindings.army_storage_slot, request.subject_army_id, kArmyIdOffset);
+  if (unit == nullptr) {
+    return ActualContactScopeStatus::subject_army_not_found;
+  }
+  void *const province =
+      ResolveProvince(game_state, request.target_province_id);
+  if (province == nullptr) {
+    return ActualContactScopeStatus::target_province_not_found;
+  }
+  if (LoadAt<void *>(unit, kArmyCurrentProvinceOffset) != province) {
+    return ActualContactScopeStatus::subject_not_at_target;
+  }
+  const auto native_army_id =
+      LoadAt<std::int32_t>(unit, kUnitArmyIdOffset);
+  void *const native_army = ResolveStoredComponent(
+      bindings.army_internal_storage_slot, native_army_id,
+      kInternalArmyIdOffset);
+  if (native_army == nullptr ||
+      LoadAt<std::int32_t>(native_army, kInternalArmyUnitIdOffset) !=
+          request.subject_army_id) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  const auto owner_id =
+      LoadAt<std::int32_t>(unit, kArmyOwnerCharacterIdOffset);
+  void *owner = nullptr;
+  if (!ResolveContactCharacter(bindings, owner_id, owner)) {
+    return ActualContactScopeStatus::entry_rejected;
+  }
+  output.subject_native_carmy_id = native_army_id;
+  output.subject_owner_character_id = owner_id;
+
+  const bool subject_in_combat = bindings.is_army_in_combat(native_army);
+  if (subject_in_combat) {
+    return ReadExistingActualContact(
+        bindings, game_state, unit, native_army, province, request, output);
+  }
+
+  void *const province_gate =
+      LoadAt<void *>(province, kProvinceContactGatePointerOffset);
+  void *const mode_root = *bindings.contact_game_mode_slot;
+  void *const mode = mode_root == nullptr
+                         ? nullptr
+                         : LoadAt<void *>(mode_root, 0x1C0);
+  if (province_gate == nullptr ||
+      LoadAt<std::uint8_t>(province_gate, 0x1B) == 0 || mode == nullptr ||
+      LoadAt<std::uint8_t>(mode, 0x28) != 0 ||
+      LoadAt<std::int32_t>(unit, 0x18) != 0 ||
+      LoadAt<std::int32_t>(unit, kUnitRetreatStateOffset) > 0 ||
+      bindings.is_army_empty_for_contact(native_army)) {
+    return ActualContactScopeStatus::entry_rejected;
+  }
+
+  if (!ReadContactIdArray(
+          province, kProvinceUnitIdsOffset, kProvinceUnitIdCountOffset,
+          kMaximumActualContactProvinceUnits,
+          output.province_unit_army_ids, true) ||
+      !ReadContactIdArray(
+          province, kProvinceCombatIdsOffset, kProvinceCombatIdCountOffset,
+          kMaximumActualContactProvinceCombats,
+          output.province_combat_ids, true) ||
+      !std::binary_search(output.province_unit_army_ids.begin(),
+                          output.province_unit_army_ids.end(),
+                          request.subject_army_id)) {
+    return ActualContactScopeStatus::state_changed;
+  }
+
+  void *selected_combat = nullptr;
+  for (std::size_t index = 0; index < output.province_combat_ids.size();
+       ++index) {
+    const auto combat_id = output.province_combat_ids[index];
+    void *const combat = ResolveStoredComponent(
+        bindings.combat_storage_slot, combat_id, kCombatIdOffset);
+    if (combat == nullptr ||
+        LoadAt<void *>(combat, kCombatProvinceOffset) != province) {
+      return ActualContactScopeStatus::state_changed;
+    }
+    bool compatible = false;
+    if (LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset) == 0) {
+      const auto attacker_primary_id = LoadAt<std::int32_t>(
+          combat, kCombatAttackerSideOffset +
+                      kCombatSidePrimaryCharacterIdOffset);
+      const auto defender_primary_id = LoadAt<std::int32_t>(
+          combat, kCombatDefenderSideOffset +
+                      kCombatSidePrimaryCharacterIdOffset);
+      void *attacker_primary = nullptr;
+      void *defender_primary = nullptr;
+      if (!ResolveContactCharacter(bindings, attacker_primary_id,
+                                   attacker_primary) ||
+          !ResolveContactCharacter(bindings, defender_primary_id,
+                                   defender_primary)) {
+        return ActualContactScopeStatus::relation_unavailable;
+      }
+      const bool hostile_to_attacker =
+          bindings.is_character_hostile(owner, attacker_primary, false);
+      const bool hostile_to_defender =
+          bindings.is_character_hostile(owner, defender_primary, false);
+      compatible = hostile_to_attacker != hostile_to_defender;
+    }
+    if (compatible) {
+      selected_combat = combat;
+      output.selected_combat_id = combat_id;
+      output.selected_combat_array_index =
+          static_cast<std::int32_t>(index);
+      continue;
+    }
+    if (selected_combat == nullptr &&
+        !AppendLoserExclusions(
+            bindings, combat,
+            output.loser_excluded_native_carmy_ids)) {
+      return ActualContactScopeStatus::state_changed;
+    }
+  }
+
+  if (selected_combat != nullptr) {
+    const auto attacker_primary_id = LoadAt<std::int32_t>(
+        selected_combat, kCombatAttackerSideOffset +
+                             kCombatSidePrimaryCharacterIdOffset);
+    const auto defender_primary_id = LoadAt<std::int32_t>(
+        selected_combat, kCombatDefenderSideOffset +
+                             kCombatSidePrimaryCharacterIdOffset);
+    void *attacker_primary = nullptr;
+    void *defender_primary = nullptr;
+    if (!ResolveContactCharacter(bindings, attacker_primary_id,
+                                 attacker_primary) ||
+        !ResolveContactCharacter(bindings, defender_primary_id,
+                                 defender_primary)) {
+      return ActualContactScopeStatus::relation_unavailable;
+    }
+    const bool joins_defender =
+        bindings.is_character_hostile(attacker_primary, owner, false);
+    const bool joins_attacker =
+        bindings.is_character_hostile(defender_primary, owner, false);
+    if (joins_defender == joins_attacker ||
+        !ReadCombatSidePublicUnitIds(bindings, selected_combat,
+                                     kCombatAttackerSideOffset,
+                                     output.attacker_army_ids) ||
+        !ReadCombatSidePublicUnitIds(bindings, selected_combat,
+                                     kCombatDefenderSideOffset,
+                                     output.defender_army_ids)) {
+      return ActualContactScopeStatus::relation_unavailable;
+    }
+    auto &joined_side = joins_defender ? output.defender_army_ids
+                                       : output.attacker_army_ids;
+    if (std::find(joined_side.begin(), joined_side.end(),
+                  request.subject_army_id) == joined_side.end()) {
+      joined_side.push_back(request.subject_army_id);
+    }
+    output.transition_kind = "join_existing";
+    output.join_side = joins_defender ? "defender" : "attacker";
+    output.actual_contact_scope_ready = true;
+    output.combat_v3_participant_scope_ready = true;
+    return ActualContactScopeStatus::available;
+  }
+
+  std::vector<std::int32_t> opponent_native_army_ids;
+  for (const auto candidate_unit_id : output.province_unit_army_ids) {
+    void *const candidate_unit = ResolveStoredComponent(
+        bindings.army_storage_slot, candidate_unit_id, kArmyIdOffset);
+    if (candidate_unit == nullptr) {
+      return ActualContactScopeStatus::state_changed;
+    }
+    const auto candidate_owner_id = LoadAt<std::int32_t>(
+        candidate_unit, kArmyOwnerCharacterIdOffset);
+    if (candidate_owner_id == owner_id ||
+        LoadAt<std::int32_t>(candidate_unit, 0x18) != 0 ||
+        LoadAt<std::int32_t>(candidate_unit, kUnitRetreatStateOffset) > 0) {
+      continue;
+    }
+    const auto candidate_native_id = LoadAt<std::int32_t>(
+        candidate_unit, kUnitArmyIdOffset);
+    void *const candidate_army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot, candidate_native_id,
+        kInternalArmyIdOffset);
+    if (candidate_army == nullptr) {
+      return ActualContactScopeStatus::state_changed;
+    }
+    if (bindings.is_army_empty_for_contact(candidate_army) ||
+        bindings.is_army_in_combat(candidate_army) ||
+        std::find(output.loser_excluded_native_carmy_ids.begin(),
+                  output.loser_excluded_native_carmy_ids.end(),
+                  candidate_native_id) !=
+            output.loser_excluded_native_carmy_ids.end()) {
+      continue;
+    }
+    void *candidate_owner = nullptr;
+    if (!ResolveContactCharacter(bindings, candidate_owner_id,
+                                 candidate_owner)) {
+      return ActualContactScopeStatus::relation_unavailable;
+    }
+    if (bindings.is_character_hostile(owner, candidate_owner, false)) {
+      output.defender_seed_character_id = candidate_owner_id;
+      break;
+    }
+  }
+  if (output.defender_seed_character_id == -1) {
+    output.actual_contact_scope_ready = true;
+    return ActualContactScopeStatus::available;
+  }
+  bool positive_soldiers = false;
+  if (!HasPositiveContactSoldiers(bindings, native_army,
+                                  positive_soldiers)) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  if (!positive_soldiers) {
+    // The hostile seed is only part of a create-new projection.  Native stops
+    // before construction when the initiator has no positive regiment
+    // strength, so do not expose the intermediate scan candidate as a
+    // transition participant.
+    output.defender_seed_character_id = -1;
+    output.actual_contact_scope_ready = true;
+    return ActualContactScopeStatus::available;
+  }
+
+  for (const auto candidate_unit_id : output.province_unit_army_ids) {
+    void *const candidate_unit = ResolveStoredComponent(
+        bindings.army_storage_slot, candidate_unit_id, kArmyIdOffset);
+    if (candidate_unit == nullptr) {
+      return ActualContactScopeStatus::state_changed;
+    }
+    if (LoadAt<std::int32_t>(candidate_unit, 0x18) != 0 ||
+        LoadAt<std::int32_t>(candidate_unit, kUnitRetreatStateOffset) > 0) {
+      continue;
+    }
+    const auto candidate_native_id = LoadAt<std::int32_t>(
+        candidate_unit, kUnitArmyIdOffset);
+    void *const candidate_army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot, candidate_native_id,
+        kInternalArmyIdOffset);
+    if (candidate_army == nullptr) {
+      return ActualContactScopeStatus::state_changed;
+    }
+    if (bindings.is_army_empty_for_contact(candidate_army) ||
+        bindings.is_army_in_combat(candidate_army)) {
+      continue;
+    }
+    const auto candidate_owner_id = LoadAt<std::int32_t>(
+        candidate_unit, kArmyOwnerCharacterIdOffset);
+    void *candidate_owner = nullptr;
+    if (!ResolveContactCharacter(bindings, candidate_owner_id,
+                                 candidate_owner)) {
+      return ActualContactScopeStatus::relation_unavailable;
+    }
+    if (candidate_owner_id == output.defender_seed_character_id ||
+        bindings.is_character_hostile(candidate_owner, owner, false)) {
+      if (LoadAt<std::int32_t>(candidate_army,
+                               kInternalArmyUnitIdOffset) !=
+          candidate_unit_id) {
+        return ActualContactScopeStatus::state_changed;
+      }
+      opponent_native_army_ids.push_back(candidate_native_id);
+      output.opponent_army_ids.push_back(candidate_unit_id);
+    }
+  }
+  if (output.opponent_army_ids.empty()) {
+    return ActualContactScopeStatus::state_changed;
+  }
+
+  bool initiator_is_defender = false;
+  if (LoadAt<std::int32_t>(province, kProvinceFortLevelOffset) > 0) {
+    std::int32_t holder_id = -1;
+    if (bindings.read_province_holder_character_id(province, &holder_id) !=
+        &holder_id) {
+      return ActualContactScopeStatus::relation_unavailable;
+    }
+    if (holder_id != -1) {
+      void *holder = nullptr;
+      if (!ResolveContactCharacter(bindings, holder_id, holder)) {
+        return ActualContactScopeStatus::relation_unavailable;
+      }
+      initiator_is_defender =
+          bindings.classify_contact_defender_by_holder(owner, holder);
+    }
+  }
+  if (!initiator_is_defender) {
+    initiator_is_defender =
+        bindings.classify_contact_defender_fallback(owner, province);
+  }
+  output.initiator_is_defender = initiator_is_defender;
+  if (!ReadContactAdjacencyKind(unit, output.adjacency_kind_raw)) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  std::vector<std::int32_t> unique_opponent_native_army_ids;
+  unique_opponent_native_army_ids.reserve(opponent_native_army_ids.size());
+  for (const auto opponent_native_id : opponent_native_army_ids) {
+    if (std::find(unique_opponent_native_army_ids.begin(),
+                  unique_opponent_native_army_ids.end(),
+                  opponent_native_id) ==
+        unique_opponent_native_army_ids.end()) {
+      unique_opponent_native_army_ids.push_back(opponent_native_id);
+    }
+  }
+  std::vector<std::int32_t> unique_opponent_army_ids;
+  if (!NativeArmyIdsToPublicUnitIds(bindings,
+                                    unique_opponent_native_army_ids,
+                                    unique_opponent_army_ids)) {
+    return ActualContactScopeStatus::state_changed;
+  }
+  if (initiator_is_defender) {
+    output.attacker_army_ids = std::move(unique_opponent_army_ids);
+    output.defender_army_ids = {request.subject_army_id};
+  } else {
+    output.attacker_army_ids = {request.subject_army_id};
+    output.defender_army_ids = std::move(unique_opponent_army_ids);
+  }
+  output.transition_kind = "create_new";
+  output.actual_contact_scope_ready = true;
+  output.combat_v3_participant_scope_ready = true;
+  return ActualContactScopeStatus::available;
+}
+
+} // namespace
+
+ActualContactScopeStatus ReadActualContactScope(
+    const Bindings &bindings, const ActualContactScopeRequest &request,
+    ActualContactScopeSnapshot &output) noexcept {
+  output = {};
+  output.subject_army_id = request.subject_army_id;
+  output.target_province_id = request.target_province_id;
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.jomini_state_slot == nullptr ||
+      bindings.army_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      bindings.regiment_storage_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.combat_storage_slot == nullptr ||
+      bindings.battle_result_storage_slot == nullptr ||
+      bindings.contact_game_mode_slot == nullptr ||
+      bindings.is_character_hostile == nullptr ||
+      bindings.is_army_empty_for_contact == nullptr ||
+      bindings.is_army_in_combat == nullptr ||
+      bindings.read_province_holder_character_id == nullptr ||
+      bindings.classify_contact_defender_by_holder == nullptr ||
+      bindings.classify_contact_defender_fallback == nullptr ||
+      request.subject_army_id <= 0 || request.target_province_id <= 0) {
+    output.status = ActualContactScopeStatus::unavailable;
+    return output.status;
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before)) {
+    output.status = ActualContactScopeStatus::unavailable;
+    return output.status;
+  }
+  if (!before.paused) {
+    output.status = ActualContactScopeStatus::requires_paused;
+    return output.status;
+  }
+  const auto *const subject =
+      FindArmySnapshot(before, request.subject_army_id);
+  if (subject == nullptr) {
+    output.status = ActualContactScopeStatus::subject_army_not_found;
+    return output.status;
+  }
+  if (!subject->controllable) {
+    output.status = ActualContactScopeStatus::subject_army_not_controllable;
+    return output.status;
+  }
+  if (!subject->has_current_province ||
+      subject->current_province_id != request.target_province_id) {
+    output.status = ActualContactScopeStatus::subject_not_at_target;
+    return output.status;
+  }
+
+  ActualContactScopeSnapshot first{};
+  ActualContactScopeSnapshot second{};
+  const auto first_status =
+      ReadActualContactScopeSample(bindings, request, first);
+  const auto second_status =
+      ReadActualContactScopeSample(bindings, request, second);
+  Snapshot after{};
+  if (first_status != second_status || first != second ||
+      !ReadSnapshot(bindings, after) || before != after) {
+    output.status = ActualContactScopeStatus::state_changed;
+    return output.status;
+  }
+  output = std::move(second);
+  output.date_raw = before.date_raw;
+  output.status = second_status;
   return output.status;
 }
 

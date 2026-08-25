@@ -1,9 +1,12 @@
 #include "xar_bridge/ck3_11906_adapter.hpp"
+#include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/game_adapter.hpp"
 
 #include <algorithm>
 #include <array>
+#include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <iostream>
 #include <memory>
 #include <span>
@@ -234,6 +237,8 @@ int main() {
                 "game.command.preview-move-army-N-to-N") ||
       !Contains(known.capabilities,
                 "game.command.query-route-contact-horizon-v1-N") ||
+      !Contains(known.capabilities,
+                "game.command.query-actual-contact-scope-v1-N") ||
       !Contains(known.capabilities, "game.command.split-army-half-N") ||
       !Contains(known.capabilities,
                 "game.command.merge-armies-N-with-N") ||
@@ -295,6 +300,84 @@ int main() {
                                                  combat_request)) {
     return Fail("canonical production v3 combat literal did not parse");
   }
+  std::uint64_t combat_v3_revision = 0;
+  if (!xar::ck3_11906::ParseCombatSimulationInputsV3ExpectedRevision(
+          "{\"expected_revision\":4294967297}", combat_v3_revision) ||
+      combat_v3_revision != 4'294'967'297ULL ||
+      xar::ck3_11906::ParseCombatSimulationInputsV3ExpectedRevision(
+          "{\"expected_revision\":7,\"expected_revision\":8}",
+          combat_v3_revision) ||
+      xar::ck3_11906::ParseCombatSimulationInputsV3ExpectedRevision(
+          "{\"expected_revision\":0}", combat_v3_revision)) {
+    return Fail("combat-v3 revision parser lost strict uint64 binding");
+  }
+  xar::ck3_11906::CombatSimulationInputsV3MailboxContext
+      forged_combat_query{};
+  xar::ck3_11906::MainThreadExecutionStampV1 forged_combat_stamp{};
+  if (xar::ck3_11906::ExecuteCombatSimulationInputsV3MailboxQuery(
+          &forged_combat_query, forged_combat_stamp) ||
+      forged_combat_query.completion !=
+          xar::ck3_11906::CombatSimulationInputsV3MailboxCompletion::
+              infrastructure_rejected) {
+    return Fail("combat-v3 executor accepted a direct worker-thread call");
+  }
+  constexpr auto combat_v3_runtime_slot_base =
+      xar::ck3_11906::kCombatSimulationInputsV3AccoladeTypeDatabaseSlotRva;
+  constexpr auto combat_v3_scripted_rules_slot_delta =
+      xar::ck3_11906::
+          kCombatSimulationInputsV3AccoladeScriptedRulesSingletonSlotRva -
+      combat_v3_runtime_slot_base;
+  constexpr auto combat_v3_type_database_slot_delta =
+      xar::ck3_11906::kCombatSimulationInputsV3AccoladeTypeDatabaseSlotRva -
+      combat_v3_runtime_slot_base;
+  constexpr auto combat_v3_owner_key_delta =
+      xar::ck3_11906::kCombatSimulationInputsV3AccoladeOwnerNamedKeyIdRva -
+      combat_v3_runtime_slot_base;
+  std::vector<std::byte> combat_v3_runtime_slots(
+      combat_v3_owner_key_delta + sizeof(std::int32_t));
+  const auto fake_combat_v3_module =
+      reinterpret_cast<std::uintptr_t>(combat_v3_runtime_slots.data()) -
+      combat_v3_runtime_slot_base;
+  std::uintptr_t fake_singleton = 1;
+  std::int32_t missing_named_key = -1;
+  std::memcpy(combat_v3_runtime_slots.data() + combat_v3_owner_key_delta,
+              &missing_named_key, sizeof(missing_named_key));
+  if (xar::ck3_11906::ReadCombatSimulationInputsV3PhaseRuntimeStatus(0) !=
+          xar::ck3_11906::CombatSimulationInputsV3PhaseRuntimeStatus::
+              module_unavailable ||
+      xar::ck3_11906::ReadCombatSimulationInputsV3PhaseRuntimeStatus(
+          fake_combat_v3_module) !=
+          xar::ck3_11906::CombatSimulationInputsV3PhaseRuntimeStatus::
+              accolade_scripted_rules_uninitialized) {
+    return Fail(
+        "combat-v3 accolade rules gate accepted an empty singleton");
+  }
+  std::memcpy(combat_v3_runtime_slots.data() +
+                  combat_v3_scripted_rules_slot_delta,
+              &fake_singleton, sizeof(fake_singleton));
+  if (xar::ck3_11906::ReadCombatSimulationInputsV3PhaseRuntimeStatus(
+      fake_combat_v3_module) !=
+      xar::ck3_11906::CombatSimulationInputsV3PhaseRuntimeStatus::
+          accolade_type_database_uninitialized) {
+    return Fail("combat-v3 accolade type gate accepted an empty database");
+  }
+  std::memcpy(
+      combat_v3_runtime_slots.data() + combat_v3_type_database_slot_delta,
+      &fake_singleton, sizeof(fake_singleton));
+  if (xar::ck3_11906::ReadCombatSimulationInputsV3PhaseRuntimeStatus(
+          fake_combat_v3_module) !=
+      xar::ck3_11906::CombatSimulationInputsV3PhaseRuntimeStatus::
+          accolade_owner_named_key_unregistered) {
+    return Fail("combat-v3 accolade owner gate accepted an unregistered key");
+  }
+  std::int32_t registered_named_key = 0;
+  std::memcpy(combat_v3_runtime_slots.data() + combat_v3_owner_key_delta,
+              &registered_named_key, sizeof(registered_named_key));
+  if (xar::ck3_11906::ReadCombatSimulationInputsV3PhaseRuntimeStatus(
+          fake_combat_v3_module) !=
+      xar::ck3_11906::CombatSimulationInputsV3PhaseRuntimeStatus::ready) {
+    return Fail("combat-v3 phase runtime gate rejected initialized singletons");
+  }
   constexpr std::array<std::string_view, 15> invalid_combat_steps{
       "query-combat-simulation-inputs-v1-900-22-12",
       "query-combat-simulation-inputs-v2-900",
@@ -340,6 +423,12 @@ int main() {
           "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218-33554433") ||
       exact_adapter->supports_step(
           "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218-16777218") ||
+      !exact_adapter->supports_step(
+          "query-actual-contact-scope-v1-16777217-at-3") ||
+      exact_adapter->supports_step(
+          "query-actual-contact-scope-v1-016777217-at-3") ||
+      exact_adapter->supports_step(
+          "query-actual-contact-scope-v1-16777217-at-0") ||
       !exact_adapter->supports_step(
           "query-war-termination-terms-v1-16777290") ||
       exact_adapter->supports_step(
@@ -433,6 +522,6 @@ int main() {
 
   std::cout << "PASS: known_descriptor=1 adapter_capability_set=1 "
                "unknown_build_unsupported=1 future_adapter_registry=1 "
-               "empty_registry=1\n";
+               "empty_registry=1 combat_v3_mailbox_gate=1\n";
   return 0;
 }

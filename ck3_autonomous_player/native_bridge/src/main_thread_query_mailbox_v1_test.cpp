@@ -189,6 +189,18 @@ bool ExecuteSecondary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteTertiary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
+bool ExecuteQuaternary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 struct BlockingExecutorContext {
   HANDLE entered = nullptr;
   HANDLE release = nullptr;
@@ -984,14 +996,16 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
-  // Production exposes two exact typed reader identities, never a generic
-  // callback slot.  Both admitted identities execute normally; a third
+  // Production exposes four exact typed reader identities, never a generic
+  // callback slot.  Every admitted identity executes normally; a fifth
   // callback is rejected before it can enter the queue.
   auto typed_environment =
       runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
   typed_environment.permitted_executor = &Execute;
   typed_environment.permitted_executor_secondary = &ExecuteSecondary;
-  g_failure_stage = "typed_executor_pair";
+  typed_environment.permitted_executor_tertiary = &ExecuteTertiary;
+  typed_environment.permitted_executor_quaternary = &ExecuteQuaternary;
+  g_failure_stage = "typed_executor_registry";
   if (!InstallMainThreadQueryMailboxV1(mailbox, typed_environment) ||
       ObserveMainThreadPumpAndDrainV1(
           mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
@@ -1000,23 +1014,31 @@ bool TestMailboxStateMachine() {
     return false;
   }
   ExecutorContext typed_context{};
-  MainThreadQueryTicketV1 typed_ticket{};
   BlockingExecutorContext rejected_typed_context{};
   MainThreadQueryTicketV1 rejected_typed_ticket{};
   if (TrySubmitMainThreadQueryV1(
           mailbox, &BlockingExecute, &rejected_typed_context,
           rejected_typed_ticket) !=
-          MainThreadQuerySubmitResultV1::invalid_request ||
-      TrySubmitMainThreadQueryV1(mailbox, &ExecuteSecondary, &typed_context,
-                                typed_ticket) !=
-          MainThreadQuerySubmitResultV1::submitted ||
-      !ObserveMainThreadPumpAndDrainV1(
-          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
-      typed_context.calls != 1 ||
-      WaitForMainThreadQueryV1(mailbox, typed_ticket, 0) !=
-          MainThreadQueryWaitResultV1::completed ||
-      ReclaimMainThreadQueryV1(mailbox, typed_ticket) !=
-          MainThreadQueryReclaimResultV1::reclaimed ||
+          MainThreadQuerySubmitResultV1::invalid_request) {
+    return false;
+  }
+  constexpr std::array<MainThreadQueryExecutorV1, 4> typed_executors{
+      &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary};
+  for (const auto executor : typed_executors) {
+    MainThreadQueryTicketV1 typed_ticket{};
+    if (TrySubmitMainThreadQueryV1(mailbox, executor, &typed_context,
+                                  typed_ticket) !=
+            MainThreadQuerySubmitResultV1::submitted ||
+        !ObserveMainThreadPumpAndDrainV1(
+            mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+        WaitForMainThreadQueryV1(mailbox, typed_ticket, 0) !=
+            MainThreadQueryWaitResultV1::completed ||
+        ReclaimMainThreadQueryV1(mailbox, typed_ticket) !=
+            MainThreadQueryReclaimResultV1::reclaimed) {
+      return false;
+    }
+  }
+  if (typed_context.calls != typed_executors.size() ||
       UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
           MainThreadQueryUninstallResultV1::uninstalled) {
     return false;
@@ -1060,7 +1082,7 @@ bool TestSourceContract(int argc, char **argv) {
       kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs != 2) {
     return false;
   }
-  constexpr std::array<std::string_view, 42> source_tokens{
+  constexpr std::array<std::string_view, 44> source_tokens{
       "InterlockedCompareExchangePointer",
       "kPeekMessageWIatSlotRva",
       "kSdlWindowsPumpFirstPeekReturnRva",
@@ -1101,6 +1123,8 @@ bool TestSourceContract(int argc, char **argv) {
       "executor_submission_disabled",
       "mailbox.permitted_executor",
       "mailbox.permitted_executor_secondary",
+      "mailbox.permitted_executor_tertiary",
+      "mailbox.permitted_executor_quaternary",
       "Process-lifetime pin",
       "mailbox.failure_flags.load(std::memory_order_acquire) != 0",
   };
@@ -1148,7 +1172,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 40> bridge_tokens{
+  constexpr std::array<std::string_view, 44> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1174,12 +1198,16 @@ bool TestSourceContract(int argc, char **argv) {
       "expected_lifecycle == 1 ? TRUE : FALSE",
       "kMainThreadQueryMailboxV1AdapterId",
       "kMainThreadQueryMailboxV1CandidateId",
-      "typed_war_entry_route_contact",
+      "typed_war_entry_route_actual_contact_combat_v3",
       "ExecuteWarEntryAssessmentMailboxQueryV1",
       "ExecuteRouteContactHorizonMailboxQueryV1",
+      "ExecuteActualContactScopeMailboxQueryV1",
+      "ExecuteCombatSimulationInputsV3MailboxQuery",
       "TrySubmitMainThreadQueryV1",
       "permitted_executor",
       "permitted_executor_secondary",
+      "permitted_executor_tertiary",
+      "permitted_executor_quaternary",
       "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
       "CaptureWarEntryBridgeFrame",
       "ReadSnapshot(*context->game",

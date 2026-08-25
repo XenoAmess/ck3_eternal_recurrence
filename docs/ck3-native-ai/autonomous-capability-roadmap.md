@@ -1,0 +1,421 @@
+# CK3 全游戏自治能力路线图
+
+## 目标、边界与当前结论
+
+本路线图服务于一个单一目标：在 CK3 `1.19.0.6` exact build 上构建能够长期、聪明且无需人工接管地完成
+“观察 → 决策 → 操作 → 验证”循环的玩家智能体。最终能力面必须覆盖当前 playset 中全部策略性玩法与玩家可执行的
+gameplay 能力，
+不能把“会跑一个罗贝尔开局脚本”“能提交若干命令”或“单元测试覆盖很多”写成全游戏自治。
+
+本页绑定：
+
+- CK3 版本：`1.19.0.6`；
+- `Crusader Kings III/binaries/ck3.exe` SHA-256：
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；
+- 盘点日期：2026-08-26；
+- 当前代码基线：`e608afc`；
+- 当前持续实机 checkpoint：日期 `53177976`，SHA-256
+  `12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D`。
+
+现状可以概括为：
+
+1. exact-build native bridge 已经具备可靠的时间、事件编号、玩家身份、婚姻关系、战争、军队、路线、围城、
+   存档与一代结算等窄状态面，也有一组对应命令；
+2. planner 已经能在一个既有战争 checkpoint 中持续做路线预览、敌军路线审计、一日接触窗口、行军、围城观察、
+   定期存档与冷恢复；
+3. 2026-08-26 累计 `210/210` 回合成功、78 个可见 gameplay 回合、推进 75 游戏日且每轮清理成立；
+4. 2026-08-26 已完成 actual-contact prediction → CombatID/真实双方顺序 → actual-side combat-v3 → 战中存档/冷恢复；
+   combat v3 combined-defensive observation 也已 paused live accepted，但 `join_existing`/multiple-compatible 矩阵、
+   Monte Carlo、retreat/reinforce 动作与主动接战策略仍不可用；
+5. 战争以外的大部分 CK3 决策域尚无原生 AI 树、原生观测或通用动作，视觉实现也主要是固定 1066 罗贝尔路线。
+
+安全工作不单列为路线图。只有已经在生产路径产生可复现玩法故障的问题才进入相应能力包，并只修到恢复实际使用；
+理论安全、取证扩张和与玩法无关的协议加固不得挤占下列功能施工。
+
+本次盘点以这些实现入口为准，后续 capability 变化必须同步更新本页：
+
+- exact adapter capability descriptor：
+  [`ck3_11906_adapter.cpp`](../../ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp)；
+- native snapshot/query/action contract：
+  [`game_contract.hpp`](../../ck3_autonomous_player/native_bridge/include/xar_bridge/game_contract.hpp)；
+- Python generation-bound action 展开与 checkpoint/session：
+  [`native_driver.py`](../../ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py)；
+- public MCP tools：
+  [`mcp_server.py`](../../ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py)；
+- one-step planner：
+  [`strategy.py`](../../ck3_autonomous_player/src/xar_autoplayer/strategy.py)；
+- managed production long run：
+  [`native_auto_run.py`](../../ck3_autonomous_player/src/xar_autoplayer/native_auto_run.py)；
+- native evidence matrix 与实机记录：
+  [`native_bridge/research/README.md`](../../ck3_autonomous_player/native_bridge/research/README.md) 和
+  [`testing-workflow.md`](../testing-workflow.md)。
+
+## “完成一个能力域”的统一定义
+
+每个玩法域只有同时通过以下五道门，才可标为完成。任一层缺失都必须保留为 partial 或 unavailable。
+
+| 层 | 完成条件 |
+|---|---|
+| 原生 AI 树 | 先冻结 exact build，读取原版数据和 EXE 调用链；专题文档同时有证据正文与 Mermaid 决策图；每条边标记 `static-confirmed`、`live-confirmed`、`inference` 或虚线 `unknown`。 |
+| 观测 | 决策所需输入由 typed native query/state 返回，并在 paused live snapshot 中验证对象 identity、generation 与真实值；长期为 `null`、OCR 猜值、命令 ACK 或 schema 字段名都不算完成。 |
+| 动作 | 玩家可执行的对应操作拥有 generation-bound/native semantic command、前置验证与下一帧后置条件；只有确无稳定 native 入口时才保留明确的视觉 fallback。 |
+| 策略 | planner 会比较多个合法候选，消费原生 AI 树揭示的输入，并结合我方长期目标、机会成本和不确定性作选择；固定第一项、固定坐标或单一剧本序列不算智能策略。 |
+| 验证 | production、非 debug 实机完成至少一次该域的完整“观察 → 决策 → 操作 → 后置状态”闭环；高风险或持续性域还须跨 checkpoint 冷恢复并在长跑中复现。 |
+
+跨域的最终验收还要求：
+
+- 中断优先级正确：事件、外交请求、死亡、战争与时间推进不会互相漏掉；
+- 决策有持久目标与预算，经济、军事、继承、关系和风险不会各自局部最优却全局失败；
+- 一个自然产生的完整统治者生命周期可无人工输入结束并结算；
+- 另有普通 CK3 campaign policy 能跨继承继续，而不是永久硬编码
+  `continue_as_heir_after_death=false`；一代制只是本 mod 的一种策略模式；
+- 每个启用 DLC/政府形态的支持状态都由 feature manifest 明列，未安装或未逆向的系统不得被“base game 已覆盖”吞掉。
+- campaign setup 也是能力：bookmark/ruler/game rules/难度与长期 policy 必须可枚举、选择并在进入地图后验证，
+  不能永远把固定罗贝尔 seed 当作通用开局。
+
+## 当前架构与真实能力面
+
+```mermaid
+flowchart LR
+    G["CK3 1.19.0.6"] --> B["exact-build native bridge"]
+    G --> M["data Mod snapshot"]
+    G --> V["visual/OCR fallback"]
+    B --> S["typed semantic snapshot / query"]
+    M --> S
+    V --> S
+    S --> P["one-step planner"]
+    P --> A["native semantic action"]
+    P --> F["explicit visual fallback"]
+    A --> N["next paused snapshot / postcondition"]
+    F --> N
+    N --> P
+    P --> C["checkpoint / restore / episode memory"]
+```
+
+### Native snapshot 与只读查询
+
+下表只描述当前 production surface，不把未实机的实现写成 live 能力。
+
+| 状态域 | 当前可读内容 | 当前证据与缺口 |
+|---|---|---|
+| 会话与时间 | `date_raw`、速度、暂停、local player、`map_ready` | exact-build live-confirmed；可在最小化窗口推进和重新暂停。 |
+| 玩家角色 | CharacterID、存活、配偶/婚约 CharacterID 列表 | native 实现；只覆盖身份与关系结果，不含属性、资源、头衔、继承、健康、压力、教育、生活方式或意见。 |
+| 事件 | 当前 instance、选项数量与 1-based index | instance/数量/提交 live-confirmed；没有事件 key、标题、选项文本、enabled trigger、AI weight 或效果。native planner 因而通常选第一项。 |
+| 角色互动 | instance、sender、是否 auto-accept notification | 有 recipient filter 与 accept/reject 命令；不含 interaction key、条款、接受度或战略后果，最新过滤版本仍需 bounded live replay。 |
+| 婚姻 | 当前配偶/婚约；合法 arrange-marriage CharacterID 候选 | 只知道“可提交”，不知道年龄、属性、继承、联盟、声望、遗传、接受度或近亲风险；策略选择最小/首个候选。 |
+| 宣战候选 | target、CB key/index、configuration、claimant、target titles | C++ core 与 typed contract 已有；完整 bridge/live 宣战闭环仍未收口。 |
+| 战争入口评估 | actor/target 原生 strategic power、network contribution、ratio、distance | exact native reader/策略接线已有；application-main typed result 仍需实机闭合，且它不是战斗胜率或战争效用。 |
+| 战争总览 | WarID、攻守、主对手、leader、目标 titles/provinces、相对战分、敌我/盟军 | 多项 live-confirmed；没有完整参战承诺、补给、财政、全部 score 成因与战争全局机会成本。 |
+| 目标与围城 | 占领、fort、garrison、besieger、进度、days left、breach、assault 状态/日进度/伤亡 | 基础围城 live-confirmed；assault 动作与完整 outcome 仍需实机矩阵。 |
+| 军队与路线 | ArmyID、owner、province、route、move target、state、combat/retreat、controllable | 大部分 live-confirmed。没有补给/损耗、兵种组成常驻快照、军队 commander policy、embark、raid、站位或多 war assignment。 |
+| 路线接触 | subject/全部 active-war hostile 的 exact arrival timeline；下一日 vertex/opposing-edge 冲突 | production live accepted；当前 fixture 的 ETA `53178264` 与首个真实 contact 帧相等。 |
+| 军力 | current/max soldiers、原生 AI base power 聚合 | 三个 ArmyID paused live accepted；明确不是胜率。 |
+| 假设接战 v2 | regiment effective stats/counter、knights、commander、terrain、crossing、holding、width | native query 已实现，paused live acceptance pending。 |
+| 实际接触 | current/ongoing CombatID、actual Province、两侧原生 stored-order ArmyIDs | create-new contact 与战中 cold restore production live accepted；join-existing/multiple-compatible 分支矩阵仍待实机。 |
+| 战斗 v3 | v2 base + 132/132 phase input refs/derivations | combined-defensive production paused live accepted，actual sides 与 cold restore 后均可复查；phase transition/original trace 未闭合，`monte_carlo_ready=false`。 |
+| 战争终止 | 三种 outcome 的 legality/AI acceptance、score/duration/CB；claim-CB disposition | termination options 已 live；claim terms getter/destructor live pending；完整 exit terms v2 因已复现的 loaded-effect preview 崩溃而 production disabled。 |
+| 一代结算 | final score、record、blessing/refusal、contract progress、commit serial | 最小化窗口死亡 snapshot 已 live-confirmed；自然死亡完整 episode 终验仍待完成。 |
+
+### Native 动作与 MCP surface
+
+exact adapter 当前声明 51 个状态/命令 capability。Python 层会按当前 snapshot 展开 generation-bound literal，不能把
+DLL template 本身当成随时可执行动作。
+
+已存在的动作族：
+
+- 暂停、恢复、速度 1–5、有限时间 `life-advance`；
+- 选择事件选项、接受/拒绝当前角色互动；
+- 保存 checkpoint、冷恢复 checkpoint、结束一代、从 immutable seed 开下一代 episode；
+- 查询/提交婚姻；
+- 查询宣战候选与战力，提交宣战；
+- 默认集结、路线 preview、移动、半分军、合并、解散；
+- Start/Stop Assault、enforce demands；
+- 查询 route contact、army strength、combat v2/v3、termination options/claim terms。
+
+重要限制：
+
+- `surrender-war-N` 与 `offer-white-peace-N` 虽有 native typed command，Python/MCP 因 structured exit terms 与
+  campaign-decision readiness 未闭合而明确冻结；
+- combat v2/v3 可返回输入，不等于已有胜率，也没有授权主动接战；
+- MCP 提供 typed snapshot、planner、auto-turn、save/restore、event、marriage、declaration、army move、assault、
+  disband、enforce、combat query 与 termination query；split/merge、route preview/contact 等仍主要经
+  `ck3_execute_step` + capability literal 使用，后续应补成 first-class typed tools；
+- 纯 native 模式没有事件文本，视觉 fallback 也不能在窗口最小化时偷偷参与。
+
+### 当前 planner 覆盖
+
+当前 `one-life-turn-v1` 的真实策略能力是：
+
+- 先建立 checkpoint；死亡时结算并写少量跨局 achievement memory；
+- 活跃事件优先处理，但 native 无 score 时按显示序选择第一项；
+- 当前角色无配偶时查询婚姻并提交第一个合法候选，等待 spouse/betrothed 后置关系；
+- 宣战前会读取原生 strategic power 并比较目标，但因 participant ETA、combat forecast、campaign cost、exit outcome 与
+  校准效用缺失，正确地停在 `native_war_entry_evidence_required`；
+- 对已经存在的战争可集结、比较 objectives/enemy endpoints、preview 路线、审计所有军队 route、执行 route-contact
+  horizon、移动、追击、围城、按一日预算 Start/Stop Assault，并处理 split/merge 恢复；
+- 当前军队已 in-combat/retreat 时只能一日推进后重观测，没有真实 battle forecast、reinforcement assignment 或主动撤退决策；
+- 防御战会查询 termination evidence，但 surrender/white peace 尚不进入生产 planner；
+- 视觉 fallback 的经济、内阁、婚姻、继承和巴勒莫战争是 1066 罗贝尔固定场景，不是通用 CK3 policy；
+- 跨局记忆目前只有巴勒莫胜利、军队解散、丹麦婚约、partition risk 等少量布尔结果，尚无可学习的世界模型或策略校准。
+
+### 实机验收边界
+
+已闭合的关键实机能力：
+
+- production/non-debug/single-mod 的启动、最小化 native 会话、暂停/时间推进、numeric event、选项提交、存档物化；
+- checkpoint 冷恢复的日期、角色与 history anchor；
+- 已有战争中的军队位置/路线、route preview、move、split/merge、围城进度与部分 termination query；
+- route-contact 修复后累计 `210/210` 成功回合、75 游戏日、无 recovery，定期与最终 checkpoint 均物化且每轮 cleanup proven。
+
+尚未闭合：
+
+- 从和平状态由 planner 自主选择并宣告一场有效用依据的战争，再一直打到胜/和/降并处理战后；
+- 一次不可避免接敌的“预测 → 接战/绕行/增援/撤退 → 实际战斗结果”闭环；
+- 盟友召集/加入、多个战争、补给/损耗、海运、佣兵/骑士团、raid、great holy war；
+- 通用事件、经济、内阁、生活方式、继承、婚姻、外交、封臣、派系、谋略、文化宗教、活动/旅行等长期自治；
+- 自然死亡完整终验，以及普通 campaign 跨继承继续。
+
+## 原生 AI 文档覆盖账本
+
+已有较深入的 native tree/evidence：
+
+- [war-declaration.md](war-declaration.md)：宣战候选与原生评分树；
+- [army-controller.md](army-controller.md)：stance、目标评分、分派与追击/围城/撤退边界；
+- [combat-prediction.md](combat-prediction.md)：原生确定性战力预测与阈值；
+- [battle-simulation.md](battle-simulation.md)：真实 battle tick、damage/casualty/pursuit/PRNG；
+- [combat-phase-events.md](combat-phase-events.md) 与
+  [combat-phase-event-trace.md](combat-phase-event-trace.md)：phase event 与 trace；
+- [war-termination.md](war-termination.md)：胜利、白和、投降提出/接受树；
+- [prewar-encounter-inputs.md](prewar-encounter-inputs.md)：宣战前 participant/route/encounter 输入；
+- [army-contact-resolution.md](army-contact-resolution.md)：normal daily arrival/contact queue、Province full-CUnitID
+  数值序、已有战斗优先与 participant/攻守构造的静态决策树；live actual-contact scope 与 non-daily placement 仍待施工。
+
+已有实现/我方策略说明但不能代替完整原生 AI 树：
+
+- [combat-simulation-inputs.md](combat-simulation-inputs.md)、
+  [combat-simulator-core.md](combat-simulator-core.md)、
+  [main-thread-query-mailbox.md](main-thread-query-mailbox.md)；
+- [player-counterpolicy.md](player-counterpolicy.md)、
+  [player-war-entry-policy.md](player-war-entry-policy.md)、
+  [player-war-exit-policy.md](player-war-exit-policy.md)。
+
+仍缺独立原生 AI 决策树的主要域：
+
+- 事件与角色互动；
+- 婚姻、联盟、教育、继承和王朝；
+- 资源预算、domain/building、council、control/development 与生活方式；
+- MAA、骑士、commanders、集结/补给/损耗/海运/raid 的长期军备树；
+- 外交关系、封臣管理、契约、派系、头衔授予/撤销；
+- schemes、hooks、secrets、prisoners/crime；
+- health/stress、decisions、faith、culture、innovations、laws/government；
+- activities/travel、royal court、artifacts、accolades 与 enabled-DLC 专题。
+
+任何针对这些域的 planner 施工，都必须先创建相应专题并按本目录 README 工作流维护证据与 Mermaid 图。
+
+## 价值与依赖排序
+
+排序规则固定为：先解除当前真实 run 的阻点，再闭合会反复中断所有玩法的能力，然后构建和平期经济/角色基础，最后扩展
+更多制度与 DLC 域。每个包都应以一个可见 OODA 里程碑收口；不得连续交付多个只有 schema 或 offline fixture 的“能力”。
+
+### F0：全能力 manifest、世界发现与开局（与 P0 并行维护）
+
+- 原生 AI 树：从当前 playset 的 `game/common` 数据库、GUI reflection 与 RTTI 建立机器可读 capability ledger；对原生 AI
+  没有对应决策的 bookmark/game-rule/player-ruler 选择，明确标为 `not-applicable` 并给出证据，不能伪造一棵 AI 树。
+- 观测：发布 enabled feature/DLC/government manifest，以及通用 character/title/province/realm 搜索与关系图；上层策略不应
+  为每个剧本重复发明世界发现逻辑。
+- 动作：枚举并选择 bookmark/ruler/game rules，进入地图后以 native state 验证实际 player、日期、rules 与 enabled features。
+- 策略：依据测试目标或长期 policy 选择开局；固定罗贝尔只保留为 regression fixture，不再等同默认智能决策。
+- 验证：至少两个不同 rank/realm 的开局从配置选择到 paused map 全链成立；capability ledger 能解释当前所有 action/domain 是
+  `supported`、`pending`、`not_present` 或 `not_applicable`。
+
+### P0：实际接敌 scope 与同日顺序（2026-08-26 production milestone 完成）
+
+- 原生 AI 树：完成 [army-contact-resolution.md](army-contact-resolution.md)，闭合 arrival/contact tick、已有战斗加入、
+  首个敌对代表、Province `CUnit` stored order 与 coalition 构造；未闭合分支保持虚线。
+- 观测：新增 paused、只读、same-revision actual-contact query，返回 ordered attacker/defender ArmyID partitions、目标 Province、
+  contact time、已有 CombatID（若真实存在）及 participant source；使真实场景的 `actual_contact_scope_ready=true`。
+- 动作：本包优先复用现有 move/route/一日 advance；若 contact 已不可避免，动作面必须至少能保持/改道，并为 P1 的
+  retreat/reinforce 留出 exact command 入口。
+- 策略：route horizon 发现同日 contact 时不再无限 hold；把真实 ordered sides 传给 combat v3，或在输入尚不完整时选择
+  能证实的无接触路线。
+- 验证：从当前 checkpoint 在暂停帧查询真实 contact candidate，推进到接敌前后，验证预测 participant 与下一帧
+  `in_combat`/CombatID 一致；保存并冷恢复。只读 ACK 不算验收。
+
+完成证据：route ETA `53178264` 与真实 contact 帧一致；`CombatID=335544325`，attacker `[83886341]`，
+defender stored order `[357,33554657]`，战中 checkpoint 冷恢复后六项 identity 全相等。仍需：让另一支军队在稍后 tick
+加入同一 CombatID、制造 Province 多个 compatible combats，以及把 route conflict → actual scope → combat-v3 接入生产策略；
+这些属于紧随其后的 P1 reinforcement/controller 扩展矩阵，不再阻塞 P0 identity milestone。本次还实证发现动作枚举包含敌军
+当前位置但不包含敌军 `move_target_province_id`；固定这一候选缺口并纳入 tactical target enumeration 是 P1 的直接施工项。
+
+### P1：可行动的真实战斗预测与 battle controller
+
+- 原生 AI 树：以 [battle-controller.md](battle-controller.md) 为当前入口，在现有 combat prediction/simulation/phase-event
+  树上补齐 actual CCombat side entry、加入/离开、撤退触发、reinforcement 与同日 feedback；同步更新 Mermaid。
+- 观测：combat v3 combined-defensive paused live acceptance 已完成；继续发布 ongoing CombatID 的实际 phase/day、完整 sides/regiments/knights/commander/terrain/
+  advantage/counter、实际 phase/day、补给/损耗和即将加入者 ETA；闭合 phase-event loaded playset、effect feedback 与 original trace。
+- 动作：补 exact retreat、改派增援、保持接战/脱离所需动作与后置条件；move 命令不能冒充已经撤退。
+- 策略：输出有校准边界的胜率/损失分布；比较接战、绕行、等待增援、撤退和牺牲阻滞，考虑 commander/knight 风险、
+  stack wipe 与战争目标价值。
+- 验证：至少覆盖优势接战、劣势绕行、战中增援、主动撤退四类 production 场景；预测、动作和真实 battle result 对账，
+  并从 battle 中间 checkpoint 恢复继续。
+
+施工优先顺序固定为：ongoing battle frame → retreat reasons/native destinations/exact action → reinforcement ETA/join →
+forecast/terminal。不得因为 combat-v3 或 P0 identity 已 live 就跳过前两项直接编写概率策略。
+
+### P2：把当前战争打到合法终局
+
+- 原生 AI 树：补齐 army-controller 的 supply/attrition/embark/merge/rally/assault 决策，并完成 termination 的 terms、
+  acceptance 与何时退出树。
+- 观测：完整 score breakdown/ticking、所有 objective 状态、occupation owner、补给/损耗、war participants、盟友到达、
+  财政续航与 structured exit terms；claim 以外 CB 也必须 feature-gated 明列。
+- 动作：实机验收 raise、assault start/stop、disband、enforce；恢复 white peace/surrender 的 Python/MCP surface；补 call ally、
+  rally selection、embark 与需要的 army reassignment。
+- 策略：在攻城、追击、守目标、回补给、合并/分军、雇佣援军和退出之间做 campaign-level expected utility；多 army 不只跟随
+  单个 strongest stack。
+- 验证：从当前 active-war checkpoint 无人工输入到 victory/white peace/surrender 之一，核对领土/资源/停战后置状态，解散军队、
+  保存、冷恢复；再从和平 seed 自主宣战并重复一次，才算完整战争闭环。
+
+### P3：事件、通知与角色互动语义
+
+- 原生 AI 树：新建 `events-and-interactions.md`，研究 stock `ai_chance`/`ai_will_do`、interaction acceptance、event option
+  trigger/effect 与优先级；区分 AI 权重与玩家效用。
+- 观测：发布 event key/chain、scope actors、每项 enabled、文本 key、主要效果 preview 与资源/关系/健康风险；互动发布 type、条款、
+  sender/recipient、acceptance 和 deadline。不能只返回 option count。
+- 动作：保留 index submit，但绑定同一 event/interaction identity；覆盖多页事件、letter、toast、自动接受与需答复请求。
+- 策略：依据当前长期计划为每个选项评分，处理不确定效果、角色关系与后续链；禁止默认第一项或一律接受互动。
+- 验证：production 长跑中连续处理至少 50 个不同 key、包含链式事件与外交 deadline，零漏答、零固定首项，并核对关键资源/关系后置状态。
+
+### P4：和平期资源、domain 与军备基础
+
+- 原生 AI 树：分别建立 `economy-and-buildings.md`、`council-and-development.md`、`military-preparation.md`，覆盖预算桶、
+  建筑 ROI、control/development、council task、MAA/knight/commander、raise/maintenance 与 reserve。
+- 观测：gold/prestige/piety/legitimacy/renown、income/expense breakdown、domain holdings/buildings/slots/construction、control/development、
+  councilors/tasks、levy/MAA/reinforcement、knights/commanders、mercenary/holy-order 市场。
+- 动作：建造/升级/取消、council assign/task/target、lifestyle/focus/perk、招募/升级/解散 MAA、knight/commander 管理、雇佣兵与骑士团。
+- 策略：维护应急与战争 runway，按边际收益、时间和暴露风险选择建设/军备/发展；和平期不再只是 `life-advance` 等事件。
+- 验证：至少 10 年 production 自治，完成多轮建设、council 重派与军备调整，财政不因 planner 自己的选择破产；随后用已建军备完成一战。
+
+### P5：智能宣战、联盟与多战争调度
+
+- 原生 AI 树：扩充 war-declaration/prewar 树的财政、CB cost、ally willingness、participant join ETA、multi-war 与 truce 分支。
+- 观测：所有合法 CB 的成本/收益、目标 title 价值、双方可动员 reserve、盟友/宗主可召性与接受度、其它战争占用、truce/faction/
+  succession 风险及 participant arrival bounds。
+- 动作：declare、call ally/house member、offer/join war、hire/raise/assign、拒绝不值当的盟友战争；所有请求均有后置 participant 验证。
+- 策略：完整 war-entry expected utility，比较多个目标、CB 与暂不宣战，纳入战争时间、伤亡、财政、机会成本、退出选项与目标战略价值。
+- 验证：从至少五个实时 legal candidates 中选择一个，也能选择“现在不打”；覆盖进攻战、防御战、盟友召唤与同时两战。
+
+### P6：家庭、婚姻、教育、继承与王朝
+
+- 原生 AI 树：新建 `marriage-and-alliance.md`、`education-and-guardians.md`、`succession-and-title-planning.md`，梳理候选评分、
+  生育/遗传、联盟、继承、title grant 与 disinherit 等原生树。
+- 观测：完整家族/继承序列、titles/laws、claim、年龄/属性/traits/health/fertility、联盟价值、婚姻接受度、教育 focus/guardian、
+  partition loss 与可行修复动作。
+- 动作：求婚/订婚/离婚、guardian/education、指定或影响继承、title grant、create/destroy/usurp、disinherit/restore（按合法资源与策略）。
+- 策略：婚姻不再选首个合法 CharacterID；按当前继承、联盟、遗传、声望、近亲和长期 title plan 联合评分，并为 ruler death 提前布局。
+- 验证：生产场景中完成配偶/子女婚姻、教育和 partition 缓解；一代死亡后后置 title distribution 与预测一致。普通 campaign 模式再继续继承人。
+
+### P7：外交、封臣、契约与派系
+
+- 原生 AI 树：新建 `diplomacy-and-vassals.md`、`factions-and-rebellions.md`，覆盖 sway/gift/alliance、vassal contract、grant/revoke、
+  faction join/leave/ultimatum 与 tyrant/risk gates。
+- 观测：opinion breakdown、relations、alliances、truce、hooks、vassal taxes/levies/contracts、powerful-vassal/council、faction members/power/
+  discontent、realm stability。
+- 动作：外交互动、gift/sway/befriend、contract change、grant/revoke/transfer、council appeasement、faction response、negotiate/repress rebellion。
+- 策略：以最低长期成本维持统治，同时利用关系网络扩张；比较让步、分化、结盟、威慑和战争，不能只在 ultimatum 后被动处理。
+- 验证：处理一个真实强派系和一组合同/头衔调整，派系 power/意见/财政后置状态符合计划；覆盖避免战争与镇压两条路线。
+
+### P8：谋略、秘密、囚犯、犯罪、健康与压力
+
+- 原生 AI 树：新建 `schemes-and-secrets.md`、`prisoners-and-crime.md`、`health-and-stress.md`，闭合 scheme selection/agent、
+  expose/blackmail、imprison/ransom/punish、treatment/stress coping。
+- 观测：scheme progress/secrecy/agents、hooks/secrets、crime/tyranny、prisoners/ransom、health modifiers、disease、stress与死亡风险。
+- 动作：scheme start/stop/agent、find secrets/blackmail/expose、imprison/release/ransom/execute、physician/treatment、stress decisions。
+- 策略：把谋略收益与暴露、关系、继承、战争和角色风险联合计算；健康策略服务于继承与当前目标，不盲目延寿或减压。
+- 验证：至少一条 hostile/personal scheme、一轮囚犯处置、一段疾病/高压力场景均由 native state 驱动并核对结果。
+
+### P9：法律、政府、信仰、文化、创新与决议
+
+- 原生 AI 树：按系统建立 `laws-and-government.md`、`faith-and-culture.md`、`decisions.md`，覆盖 authority/law、convert/reform、
+  culture fascination/tradition/hybrid/diverge 和 major decision 触发/权重。
+- 观测：government、laws、authority、succession law、faith/culture/doctrines/tenets/traditions、fervor/acceptance、innovations、所有 decision
+  eligibility/cost/effect。
+- 动作：change law/authority、convert/reform、promote/convert county、culture action、fascination、take decision。
+- 策略：把合法性、封臣反应、财政、军事与长期目标纳入制度选择；决议按时间窗口与机会成本排序。
+- 验证：至少覆盖一次 law/authority 变更、faith 或 culture 项目与一个 major decision；跨年观察预期长期效果。
+
+### P10：活动、旅行、宫廷、宝物、勋号与 DLC feature packs
+
+- 原生 AI 树：按 enabled feature 建立 `activities-and-travel.md`、`royal-court-and-artifacts.md`、`accolades.md`，并为
+  administrative、clan、tribal、nomad、landless/adventurer 等政府/身份，以及 regency/diarchy、plague、legend 等
+  enabled 系统建立独立专题。
+- 观测：activity candidates/invites/options、travel route/danger/entourage、court grandeur/positions、artifacts/claims、accolades、
+  government-specific currencies/offices/actions。
+- 动作：plan/join activity、travel route与 entourage、court position/grandeur、artifact equip/repair/claim、accolade management 及各政府专属动作。
+- 策略：评估时间离位、旅行风险、资源、关系和长期收益；按 feature availability 组合而非写死某 DLC。
+- 验证：每个 enabled feature 至少一个 production OODA 场景；未启用系统在 manifest 中明确 `not_present`，不能算失败也不能算已支持。
+
+### P11：长期世界模型、目标调度与整局验收
+
+- 原生 AI 树：建立 `grand-strategy-and-goal-selection.md`，梳理原生 AI 的 goal/stance/recalculation cadence，明确哪些是原生事实、
+  哪些是我方更高层 policy。
+- 观测：把上述域汇总为稳定 world state、变化事件与历史趋势；同一事实只有一个 canonical source，支持多 war、多角色、多目标依赖。
+- 动作：所有域统一走 semantic action registry，并能取消/替换长期 intent；checkpoint/restore 后重建 intent，不重复不可逆动作。
+- 策略：层次化规划（生存/继承 → 战争与稳定 → 经济增长 → 王朝/制度长期目标），具备预算、deadline、反事实比较、探索与结果校准；
+  cross-run memory 保存可验证 outcome，而不是少量剧本布尔值。
+- 验证：至少完成以下矩阵，且全程无需人工点击：
+  1. 当前 mod 的完整自然统治者生命周期至结算；
+  2. 普通 campaign 跨一次继承继续；
+  3. 伯爵/公爵/国王三种规模；
+  4. 进攻战、防御战、内战/派系与盟友战争；
+  5. 十年以上和平发展与随后战争；
+  6. 至少两种政府以及当前 playset 中每个 enabled DLC feature 的代表场景；
+  7. checkpoint 冷恢复后继续相同高层计划并达到可见里程碑。
+
+## 全游戏能力域完成清单
+
+下表用于防止施工长期只围绕战争。`当前` 取值：`live-loop`（已有实机闭环）、`live-primitive`（只有实机原语）、
+`implemented`（实现/fixture 为主）、`research`（只有研究）、`visual-narrow`（固定视觉剧本）或 `absent`。
+
+| 顺序 | 能力域 | 当前 | 本域最终完成场景 |
+|---:|---|---|---|
+| 0 | actual contact / route timing | create-new + cold restore `live-loop`；join/multi 分支与策略接线 pending | 预测 ordered participants 与真实接战帧一致。 |
+| 1 | combat / reinforcement / retreat | combat-v3 observation `live-primitive`；controller/action pending | 四类战斗策略与真实结果闭环。 |
+| 2 | active war / siege / termination | `live-loop` 部分 | 任意 checkpoint 自主打到合法终局并处理战后。 |
+| 3 | events / notifications / interactions | numeric `live-primitive` | 50-key 长跑中语义选择且无漏答。 |
+| 4 | economy / domain / buildings | `visual-narrow` | 十年通用财政与建设循环。 |
+| 5 | council / lifestyle / development / control | `visual-narrow` | 多 council task 与 perk 路线按 realm 目标动态调整。 |
+| 6 | army composition / supply / mercenary / holy order | `research`/partial input | 和平备战、动员、补给、战争、复员闭环。 |
+| 7 | war entry / CB / ally / multi-war | tree `research`，策略 blocked | 能比较并自主选择宣战或不战。 |
+| 8 | marriage / alliance | ID-only `implemented` | 多候选联合评分并验证关系/联盟结果。 |
+| 9 | children / education / dynasty | `visual-narrow` | 多子女教育与王朝资源规划。 |
+| 10 | succession / titles / laws | `visual-narrow` | 预测并缓解 partition，普通 campaign 跨继承。 |
+| 11 | diplomacy / relations | interaction ID-only `implemented` | 通用外交组合改善可测关系/战略位置。 |
+| 12 | vassals / contracts / factions / rebellions | `absent` | 预防并处理强派系，两种结果路线。 |
+| 13 | schemes / hooks / secrets | `absent` | hostile/personal scheme 与风险反馈闭环。 |
+| 14 | prisoners / crime / tyranny | `absent` | 囚犯与犯罪处置符合稳定/财政目标。 |
+| 15 | health / stress / fertility | `absent` | 疾病、高压和继承风险联合管理。 |
+| 16 | faith / culture / innovations | `absent` | 至少一个长期制度项目闭环。 |
+| 17 | decisions / laws / government | decision OCR read-only `visual-narrow` | 动态选择并执行 major decision/法律。 |
+| 18 | activities / travel | `absent` | 规划、旅行、事件与返程完整闭环。 |
+| 19 | royal court / positions / artifacts / accolades | combat accolade input only `research` | enabled feature 各一条 OODA。 |
+| 20 | raids / embark / great holy wars / special wars | `absent` | feature-gated 战争类型各有完整闭环。 |
+| 21 | save / restore / process ownership | `live-loop` | 长跑和域场景持续复用；只修实际故障。 |
+| 22 | death settlement / next episode | primitive `live` | 自然死亡完整结算、下一 episode；另有跨继承 campaign。 |
+| 23 | long-horizon goals / learning / memory | minimal booleans `implemented` | 多域层次规划与 outcome 校准通过整局矩阵。 |
+| 24 | campaign setup / bookmark / ruler / game rules | fixed Robert `visual-narrow` | 从候选开局中按目标选择并验证地图初始状态。 |
+| 25 | map/world search / title and character discovery | war-scoped partial | 通用查找角色、头衔、领地和战略邻域，供所有上层 planner 复用。 |
+
+## 施工节奏与提交门
+
+每个工作包按以下小循环持续推进，不等待“大版本”统一收尾：
+
+1. 在对应 native-AI 专题冻结证据与 Mermaid 树；
+2. 实现一个能解除当前决策阻点的最小只读状态/query；
+3. 用 paused production snapshot 验收真实值；
+4. 接入一个可见策略选择与 semantic action；
+5. 验证下一帧 postcondition，并在需要时保存/冷恢复；
+6. 当场更新专题、此路线图状态和 testing workflow；
+7. commit + push，然后立即进入仍未完成的下一个最高优先级包。
+
+允许定期提交，但不允许因为某个 query、fixture、单场 GREEN 或测试套件通过就停止。只有 P0–P11 与能力清单中当前 playset
+适用的各域都达到五层完成定义，并通过整局矩阵，才可以声明“高智商全游戏智能体”已经实现。

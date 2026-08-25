@@ -53,9 +53,10 @@ bool ReadSource(const char *path, std::string &output) {
 } // namespace
 
 int main(int argc, char **argv) {
-  if (argc != 5) {
+  if (argc != 6) {
     return Fail("usage: combat_v3_source_contract_test <combat_v3.cpp> "
-                "<game_adapter.cpp> <ck3_adapter.cpp> <bridge.cpp>")
+                "<game_adapter.cpp> <ck3_adapter.cpp> <bridge.cpp> "
+                "<combat_v3_mailbox.cpp>")
                ? 0
                : 1;
   }
@@ -63,10 +64,12 @@ int main(int argc, char **argv) {
   std::string game_adapter_source;
   std::string ck3_adapter_source;
   std::string bridge_source;
+  std::string mailbox_source;
   if (!ReadSource(argv[1], source) ||
       !ReadSource(argv[2], game_adapter_source) ||
       !ReadSource(argv[3], ck3_adapter_source) ||
-      !ReadSource(argv[4], bridge_source)) {
+      !ReadSource(argv[4], bridge_source) ||
+      !ReadSource(argv[5], mailbox_source)) {
     return 1;
   }
   const std::string_view view(source);
@@ -137,8 +140,8 @@ int main(int argc, char **argv) {
               "\"supply_0\"",
               "\"supply_1\"",
               "\"holding_defender_1\"",
-              "\"recently_disembarked_0\"",
-              "\"recently_disembarked_1\"",
+              "\"gathering_army_0\"",
+              "\"gathering_army_1\"",
               "\"debt_0_owner\"",
               "\"debt_1_owner\"",
               "\"debt_0_treasury\"",
@@ -188,7 +191,7 @@ int main(int argc, char **argv) {
   if (!ContainsAll(
           ck3_adapter_source,
           {
-              "constexpr std::array<std::string_view, 51> kCapabilities",
+              "constexpr std::array<std::string_view, 52> kCapabilities",
               "game.command.query-combat-simulation-inputs-v3-N",
               "read_combat_simulation_inputs_v3(",
               "ck3_11906::ReadCombatSimulationInputsV3(bindings_",
@@ -204,7 +207,11 @@ int main(int argc, char **argv) {
               "std::string CombatSimulationInputsV3ResultFrame(",
               "query-combat-simulation-inputs-v3-",
               "ParseCombatSimulationInputsV3Step(",
-              "ReadCombatSimulationInputsV3(",
+              "ParseCombatSimulationInputsV3ExpectedRevision(",
+              "CombatSimulationInputsV3MailboxContext query{}",
+              "ExecuteCombatSimulationInputsV3MailboxQuery",
+              "TrySubmitMainThreadQueryV1(",
+              "WaitForMainThreadQueryV1(",
               "phase_inputs_unavailable",
           }) ||
       !AppearsInOrder(
@@ -212,11 +219,45 @@ int main(int argc, char **argv) {
           {
               "query-combat-simulation-inputs-v3-",
               "ParseCombatSimulationInputsV3Step(",
-              "ReadCombatSimulationInputsV3(",
+              "ParseCombatSimulationInputsV3ExpectedRevision(",
+              "CombatSimulationInputsV3MailboxContext query{}",
+              "TrySubmitMainThreadQueryV1(",
+              "WaitForMainThreadQueryV1(",
               "phase_inputs_unavailable",
               "CombatSimulationInputsV3ResultFrame(",
-          })) {
+          }) ||
+      bridge_source.find("xar::game::ReadCombatSimulationInputsV3(") !=
+          std::string::npos) {
     return Fail("production v3 bridge dispatch/frame contract is incomplete")
+               ? 0
+               : 1;
+  }
+  if (!ContainsAll(
+          mailbox_source,
+          {
+              "kCombatSimulationInputsV3AccoladeScriptedRulesSingletonSlotRva",
+              "kCombatSimulationInputsV3AccoladeTypeDatabaseSlotRva",
+              "kCombatSimulationInputsV3AccoladeOwnerNamedKeyIdRva",
+              "PhaseRuntimeReady(",
+              "ReadBaseOnlyPhaseUnavailable(",
+              "ReadCombatSimulationInputsV3(query->bindings",
+              "ReadSnapshot(query->bindings, before)",
+              "ReadSnapshot(query->bindings, after)",
+              "after != before",
+              "snapshot == query.expected_snapshot",
+              "GenerationBoundEncounterMatchesExpectedSnapshot(",
+              "SnapshotContainsFullGenerationArmyId(",
+              "query.expected_snapshot_revision == 0",
+          }) ||
+      !AppearsInOrder(
+          mailbox_source,
+          {
+              "PhaseRuntimeReady(query->module_base",
+              "ReadSnapshot(query->bindings, before)",
+              "ReadCombatSimulationInputsV3(query->bindings",
+              "ReadSnapshot(query->bindings, after)",
+          })) {
+    return Fail("production v3 application-main mailbox contract is incomplete")
                ? 0
                : 1;
   }

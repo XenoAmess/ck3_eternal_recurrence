@@ -159,7 +159,12 @@
       "ready"
     ],
     "executor_submission_enabled": true,
-    "permitted_executor": "ExecuteWarEntryAssessmentMailboxQueryV1",
+    "permitted_executors": [
+      "ExecuteWarEntryAssessmentMailboxQueryV1",
+      "ExecuteRouteContactHorizonMailboxQueryV1",
+      "ExecuteActualContactScopeMailboxQueryV1",
+      "ExecuteCombatSimulationInputsV3MailboxQuery"
+    ],
     "first_live_target_limit": 1,
     "expected_consecutive_verified": 2,
     "transport": "heartbeat_metadata_plus_typed_war_entry_command"

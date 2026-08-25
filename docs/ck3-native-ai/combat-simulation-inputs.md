@@ -28,7 +28,9 @@
   `game.command.query-combat-simulation-inputs-v3-N`，Python/MCP 正式口为
   `ck3_query_combat_simulation_inputs_v3`。一次 paused、same-frame 查询原子组合 v2 `base_inputs`、81 个
   exact native leaves、51 个 exact offline derivations 和原生 temporary-shell advantage 对拍；两份 production
-  command-result golden 已逐键通过 strict normalizer。这个结论还不是 paused CK3 live acceptance，更不是胜率；
+  command-result golden 已逐键通过 strict normalizer。detached 诊断 build 先取得 paused available；随后共享
+  application-main/corrected-schema build 在真实 `can_be_acclaimed` 下也取得 combined-defensive paused available，
+  artifact SHA `EBEA36EC...535DA5`。这个 observation milestone 仍不是胜率；
   `phase_event_inputs_ready=true` 与 transition fidelity / `monte_carlo_ready` 是互不替代的门。
 - [static-confirmed] 原版 AI 使用的 `combat prediction ratio`、画面兵数比例和 Monte Carlo
   `win_probability` 是三个不同量。[combat-prediction.md](combat-prediction.md) 已把 exact-build 主计算闭合为确定性的
@@ -51,7 +53,7 @@
 |---|---|---|---|
 | CUnit / 公共 Army | [static-confirmed] full-generation `army_id`、owner、current Province、paused full route、move target、九态 state、combat、retreat | 这些字段全部保留 | 已支持，但只够定位与状态机判断 |
 | CUnit → CArmy | [live-confirmed] `CUnit+0x178` generation-bearing CArmy ID 已由 `army-strength-v1` production query 实机走通 | 兵团构成、补员和单位来源 | identity 与 aggregate 已发布；detail 留给下一口 |
-| CArmy | [live-confirmed] `+0x10` ID、`+0x38` regiment ID array data、`+0x44` count 的只读聚合已由 paused live query 验收；[static-confirmed] `+0x120` commander CharacterID、`+0x124` CUnit ID、`+0x128` CCombat ID；contact advantage builder 把 `+0x5C!=0` 作为 recently-disembarked predicate | levy/MAA/event troop/knight 构成、有效 modifiers | regiment count/current/max/base power 已发布；`+0x5C` 只可发布 raw/predicate，不能猜剩余天数 |
+| CArmy | [live-confirmed] `+0x10` ID、`+0x38` regiment ID array data、`+0x44` count 的只读聚合已由 paused live query 验收；[static-confirmed + live-corrected] `+0x120` commander CharacterID、`+0x124` CUnit ID、`+0x128` CCombat ID；contact advantage builder 的 `+0x5C!=0` 是 first-army gathering predicate | levy/MAA/event troop/knight 构成、有效 modifiers | regiment count/current/max/base power 已发布；`+0x5C` 只能发布 gathering raw/predicate，不能命名成 recently-disembarked |
 | CCombat | [static-confirmed] storage 在 `base+0x570C758`，`CCombat+0x08` 回读 full ID；`+0x6B8` 是 encounter Province；phase/day、base/final width、roll、advantage、**winner** 与 roll cadence 布局已闭合，详见 [battle-simulation.md](battle-simulation.md) | 已知布局的原子发布，以及完整 side entries、伤亡、增援、撤退与仍在作战状态 | 这些字段只在 live CCombat 存在；pre-contact 场景不得伪造 phase/width/roll |
 | 士兵总数 | [live-confirmed] `army-strength-v1` 已发布 per-army current/max；[static-confirmed] canonical helpers 是 `0x27BD9E0(array,flags=0)` / `0x226F350(CArmy*)` | 每个 regiment current/max | aggregate 与 v2 per-regiment detail 均已 paused 实机验收 |
 | 兵团 / levy | [static-confirmed] CArmy `+0x38/+0x44` 是 4-byte full CRegimentID 数组；CRegiment `+0x10` 回读 full ID，`+0x38/+0x3C` 是 current/max，`+0x40` 是 AI 收集器累加的 power qword；combat type 取 `CRegiment+0x18`，原生 `0x23C9100` 用其 validity 与 `0x239CEB0` 把每个 CRegiment 唯一分流到 levy/MAA；type `+0xA0A` 是主阶段资格 | 每个兵团的可靠 kind、hard/soft casualties、是否主阶段作战、live effective 属性 | kind 与主阶段资格 ABI 已闭合；CRegiment 没有 knight bucket，骑士来自独立 character participant 链 |
@@ -59,8 +61,8 @@
 | Knights | [static-confirmed] `0x19DD670` 从 `CRegiment+0x148` full CharacterID 构造 combat-side knight list；`0x239CAE0/0x28FDBC0` 给出 effective prowess/effectiveness/damage/toughness | traits/health 对阶段事件资格与受伤/死亡后的移除时点 | [live-confirmed] identity、membership 与有效数值已随五个 v2 场景返回；loaded phase-event feedback 仍未验收 |
 | Commander | [static-confirmed] `CArmy+0x120` 是 full CharacterID；`0x23CBFA0` 闭合 battle-side commander 的 character/terrain modifier roll endpoints | traits、动态 advantage/effects、是否亲征 | paused query 可镜像 effective roll bounds；不得调用会消费 RNG 的 roll helper |
 | Terrain | [static-confirmed] `0x220D940(CProvince*)` 返回 terrain；contact constructor 闭合 adjacency kind、side role 与首次 width，holding 用 `0x2900BB0` | 其它动态攻守 effect | [live-confirmed] hills、无 crossing、攻守/holding 与 absolute pre-contact width 已在 defensive/offensive 五个 v2 场景验收 |
-| Supply / debt / disembark | [static-confirmed] `0x23049E0/0x2304830/0x2304EC0` 已闭合 exact selector、first-army 语义与 constructor order | 每一侧命中的 supply effect、`+0x5C` raw predicate、owner/treasury debt selector 与 loaded effect value | v3 production reader 与完整 15-stage golden 已发布；paused-live acceptance 仍待执行 |
-| Advantage | [static-confirmed] `0x23045F0` 的逐来源 Q100000、side sign、clamp 与 ledger 已闭合；`0x2308D50` 证明 resolved=`base+side0-side1`；`0x2307CB0/0x2307680/0x2307230` 的 zero-roll dynamic decomposition 与无注册 local-shell lifecycle 也已闭合 | constructor source ledger、每轮 roll、commander/side dynamic contributors | production temporary-shell reader、original-total equality 门、serializer 与 available/unavailable goldens 已闭合；live equality 待验收，transition fidelity 仍关闭 |
+| Supply / debt / gathering | [static-confirmed + shared-live] `0x23049E0/0x2304830/0x2304EC0` 已闭合 exact selector、first-army 语义与 constructor order；`+0x5C`/DB `+0xF18` 是 gathering，owner debt selector `-1` 是合法无 effect | 每一侧命中的 supply/gathering effect、owner/treasury debt selector 与 loaded effect value；recently-disembarked 若策略需要须另补真实 leaf | corrected schema 在共享 combined-defensive paused frame 返回 gathering raw `0/0`、debt `-1/-1` 与 phase available |
+| Advantage | [static-confirmed + shared-live] `0x23045F0` 的逐来源 Q100000、side sign、clamp 与 ledger 已闭合；`0x2308D50` 证明 resolved=`base+side0-side1`；`0x2307CB0/0x2307680/0x2307230` 的 zero-roll dynamic decomposition 与 local-shell lifecycle 也已闭合 | constructor source ledger、每轮 roll、commander/side dynamic contributors | shared application-main/can-be paused helper equality 已通过一场；transition fidelity 仍关闭 |
 | CombatSide | [static-confirmed] GUI 有 composition、current fighting men、soft casualties、still fighting | side participant 集、attacker/defender、current/hard/soft casualties、reinforcement join/leave | 未发布 |
 | active combat MAA | [static-confirmed] GUI 有 `CombatMaaItem.GetStat/GetCurrentStrength/GetMaxStrength/GetCountered/GetTerrainBonus` | 每类 MAA 的聚合有效值与 counter 分配 | 很强的后续 RE 锚点；callback / receiver 未闭合 |
 | 原生 AI prediction | [static-confirmed] [combat-prediction.md](combat-prediction.md) 已闭合 RVA `0x19186E0` 的输入 ABI、direct xrefs 与确定性 power-share 主公式；`0x19179E0` 的 `entry+0x08/+0x10` 已闭合为 identity-valid regiment 的 current soldiers / power sum | 对一个明确 encounter 与 participant set 的 exact 原生返回值，以及 paused worker 的只读线程安全性 | base aggregate 可先发布；完整 predictor 仍缺合法 `CAISubunitStack` 构造、mode/flags/lane 与 worker 生命周期，不得从 soldiers 反推，也不得命名为胜率 |
@@ -141,8 +143,9 @@ flowchart LR
 - [static-confirmed] wetlands 还给攻守双方 `hard_casualty_modifier=+0.2`、`retreat_losses=+0.25`；
   desert mountains 给 defender `retreat_losses=-0.3`。
 - [static-confirmed] river / large river / strait 给 defender 的 adjacency advantage 分别是 `+10/+20/+30`。
-- [static-confirmed] running low / starving 的 supply advantage 是 `-10/-25`，recently disembarked 是 `-30`；
-  debt combat effect 从 `-5` 逐级到 `-100`，gathering army 为 `-5`。
+- [static-confirmed] stock 文本声明 running low / starving supply 为 `-10/-25`、recently disembarked 为 `-30`，
+  debt 从 `-5` 逐级到 `-100`、gathering army 为 `-5`；但 exact constructor 的 DB `+0xF18` 命中的是
+  gathering `-5`。文本里存在 recently-disembarked effect 不等于当前 bridge 已定位其 native predicate/slot。
 - [static-confirmed] 每个 MAA type 的原版数据库至少声明 base damage、toughness、pursuit、screen、
   `fights_in_main_phase`、stack、terrain bonuses 和 counters；owner、stationing、buildings、culture、traits、
   accolades 等仍会改变 live 有效值。
@@ -438,9 +441,10 @@ flowchart LR
 ### v3：开战时 advantage constructor source trace
 
 [static-confirmed] v2 发布的 `generic_advantage_points` 不是接战时的 resolved advantage。v3 必须在同一个
-explicit hypothetical contact 中发布原版实际选择的 supply、holding、recently-disembarked、debt、faith、
-adjacency 与 terrain effect，并保留原版的**跨 side 调用顺序**。本节只绑定页首 exact build；尚未完成
-production fixture 与 paused live acceptance 前，不能把它写成 `[live-confirmed]`。
+explicit hypothetical contact 中发布原版实际选择的 supply、holding、first-army gathering、debt、faith、
+adjacency 与 terrain effect，并保留原版的**跨 side 调用顺序**。`CArmy+0x5C`/DB `+0xF18` 已被 exact RE
+纠正为 gathering；这条链没有证明 recently-disembarked leaf。detached diagnostic 先跑通一帧，随后共享
+application-main/corrected-schema build 也在 combined-defensive paused frame 返回 available。
 
 原版 contact builder 的顺序由 `0x220999D..0x2209BDF` 和 `0x2304830..0x23049B1` 闭合为：
 
@@ -449,7 +453,7 @@ production fixture 与 paused live acceptance 前，不能把它写成 `[live-co
    依次为 `0x2209A82`、`0x2209B46`、`0x2209B75`、`0x2209BA7`；river 的 defender 候选仍先执行已经闭合的
    `no_water_crossing_penalty` 检查；
 3. `0x23CBCE0` 依次刷新 side0、side1；
-4. `0x2304830(CCombat*)` 内严格执行 supply side0、supply side1、holding defender、recently-disembarked
+4. `0x2304830(CCombat*)` 内严格执行 supply side0、supply side1、holding defender、first-army gathering
    side0、side1、debt side0（owner 后 optional treasury）、debt side1（同序）、unreformed-faith side0、side1；
 5. `0x23CC2B0` 依次用 target Province 刷新两侧 terrain operands。它影响后续动态 side contribution，不能
    被误记成新的 `CCombatEffect` append。
@@ -480,10 +484,13 @@ CFixedPoint 的逐次向零截断与 overflow-aware slow path；不能先把多�
 | terrain | `CTerrainType+0x40` attacker effect、`+0x48` defender effect | output key 用 `terrain:<terrain_key>:attacker|defender`；embedded effect 不得伪造数据库 stable key |
 | supply | `const CCombatEffect* 0x23049E0(PdxArrayHeader<int32 full_CArmyID>* side_armies)`；header data `+0x00`、count `+0x0C` | 返回 database `+0xF38/+0xF48/+0xF58`，对应 `supply_state_supplied_advantage` / `running_low` / `starving` |
 | holding | 已闭合的 `0x2900BB0(first_defender_owner,target)`，再镜像 `0x2304D10` 的 dynamic scale | database `+0xF28`，`holding_defender_advantage`；只对 defender，effect points 是 multiplier，实际 points 取决于 scale |
-| recently disembarked | 每侧仅取 request/insertion order 第一 CArmy；原生 predicate 是 `int32 CArmy+0x5C != 0` | database `+0xF18`，`recently_disembarked_advantage`；`+0x5C` 只发布 raw 与 bool，不猜“剩余天数” |
-| owner debt | 第一 CArmy→`CArmy+0x124` CUnit→`CUnit+0x174` owner；`int32 0x28DBB70(CCharacter*,0)` | pointer array `db+0xFE8`、count `+0xFF4`；`0<=i<count` 为 `combat_debt_level_i`，`i==count` 为 `db+0xF78 combat_debt_level_no_income`，其它值 fail closed |
+| gathering army | 每侧仅取 request/insertion order 第一 CArmy；原生 predicate 是 `int32 CArmy+0x5C != 0` | database `+0xF18`，exact loaded key/语义是 `gathering_army_advantage`；不得发布为 recently-disembarked。另一个 `CArmy+0x1D0 > 0 -> CCombatSide+0x340` local-side gathering flag 独立保留 |
+| owner debt | 第一 CArmy→`CArmy+0x124` CUnit→`CUnit+0x174` owner；`int32 0x28DBB70(CCharacter*,0)` | `-1` 合法表示不选 debt effect；pointer array `db+0xFE8`、count `+0xFF4`；`0<=i<count` 为 `combat_debt_level_i`，`i==count` 为 `db+0xF78 combat_debt_level_no_income`，其它值 fail closed |
 | treasury debt | `0x23050D4..0x230516B` 的 owner/live-realm/treasury-valid 且 treasury raw `+0x440<0` gate 后，`0x28DBB70(owner,3)` | pointer array `db+0x1090`、count `+0x109C`；index 与 no-income 规则同上；资格链任一对象或 generation 不可读时不能悄悄省略该来源 |
 | unreformed faith | `0x2305290` 的每侧第一军 owner-faith 与 target Province holding-faith equality predicate | database `+0xF68`，`unreformed_faith_province`；query 镜像 predicate，不能调用最终会进入 `0x23045F0` 的 wrapper |
+
+[detached-live] 最终 artifact 的 attacker/defender `owner_debt_selector_raw` 都是 `-1`，对应两行 owner-debt
+source 都是合法 `selected=false`，而 whole phase 仍为 available；这直接互证 `-1` 是“无效果”，不是 unavailable。
 
 `0x23049E0` 对每军读取 `CArmy+0x180` Q100000 supply operand，向零除以 `100000` 后走 loaded threshold
 array；权重不是“军队数”，而是该 helper 自己筛出的 current soldiers。令 `S` 为 supplied 权重、`R` 为
@@ -505,17 +512,22 @@ stock `00_combat_effects.txt` 的 owner/treasury tiers 实际是
 | 层 | exact-build ABI / layout | query 约束 |
 |---|---|---|
 | shell | caller-owned、先清零的 `0x718` bytes；attacker side=`shell+0x20`，defender side=`shell+0x368`，每侧 `0x348` bytes | `shell+0x08=-1`；不注册、不取得 CombatID，不把 shell 指针交给任何异步或 storage resolver |
-| side constructor | `CCombatSide* 0x23C7D30(CCombatSide* RCX, CCombat* parent RDX)` | 调用前先读 exact global byte RVA `0x4F3CF81`；非零会使 constructor 分配 debug ID，因此本口必须整体 unavailable，不能继续调用 |
+| side constructor | `CCombatSide* 0x23C7D30(CCombatSide* RCX, CCombat* parent RDX)` | exact global byte `module+0x4F3CF81` 是 saved-variable-slot enable flag，本 build 静态为 `1`，不是 debug-ID gate；constructor 会从当前 game-data manager 取得 side `+0x08` slot，因此只能在 application-main 同帧生命周期内调用，不能因 byte 非零直接 unavailable |
 | local population context | 每侧另有 caller-owned zeroed auxiliary object；`+0x38` 是 `Entry50` vector header，`+0x48` allocator 取该侧已初始化的 `CCombatSide+0x50` allocator；`CCombatSide+0xC8=&local_ctx` | `Entry50` stride `0x50`；buffer 仅由本 query 的 allocator 分配，结束时经同一 allocator `vtable+0x10(...,buffer,8)` 释放；不得借用 Province battle-manager object |
 | side population | `void 0x23C9100(CCombatSide* RCX, CArmy* RDX)` | 只按 request order 逐军调用这个 direct helper；禁止调用会写 `CUnit+0x168` 的 `0x23043F0/0x23044F0` live-join wrappers |
 | target flags | `shell+0x6B8=target`；`shell+0x6FD=0xBC24E0(target)`；`shell+0x6FC=1`；`shell+0x6D0/+0x6D4=0` | `+0x6D0/+0x6D4` 是两侧 roll points，不是 Q100000；query 固定零，Monte Carlo 在进程外按已发布 bounds 抽样 |
 | battle commander selector | `CCharacter* 0x23C8A60(CCombatSide* RCX)`；返回对象的 full CharacterID 在 `+0x18` | 原 builder `0x220994D/0x2209973` 对两侧各调用一次并写 `CCombatSide+0x74`；helper 从 `side+0x10` ArmyID 顺序逐军取 `CArmy+0x120` commander，并用 `0x2307680` 的 encounter contribution 选择，不能简化成首军 commander |
-| gathering flag | 每侧 request/insertion order 第一军的 `int32 CArmy+0x1D0 > 0` 写 `CCombatSide+0x340` | 这是 `0x2303F52..0x2304002` 的真实 constructor 语义；与 `CArmy+0x5C` recently-disembarked 完全不同 |
-| resolved total | `void 0x2308D50(CCombat*)` | 只刷新两个 local side aggregator/terrain operand，调用两次 `0x2307CB0` 并写 local `shell+0x710`；已闭合闭包不读 CombatID、不抽 RNG、不写 world |
+| gathering flag | 每侧 request/insertion order 第一军的 `int32 CArmy+0x1D0 > 0` 写 `CCombatSide+0x340` | 这是 `0x2303F52..0x2304002` 的 local-side flag；`CArmy+0x5C` 也是 gathering-family raw，但用于 DB `+0xF18` advantage predicate，两个 offset/消费者必须分开发布 |
+| resolved/finalize point | `void 0x2308D50(CCombat*)` | 完成两个 local side 的本轮 materialization/aggregator/terrain refresh，调用两次 `0x2307CB0` 并写 local `shell+0x710`；`side_strength` 只能在它返回后断言。已闭合闭包不读 CombatID、不抽 RNG、不写持久 world state |
 | side dynamic | `int64* 0x2307CB0(CCombat* RCX, int64* out RDX, int32 side R8D, Breakdown* optional R9)` | `side=0/1`；`optional=nullptr`，同步返回 caller-owned `out`；原式从该侧 roll 开始，再加 target conditional、commander 与 side aggregator |
 | commander component | `int64* 0x2307680(CCombat*,int64* out,CCharacter*,int32 side,int32 relation_kind,Breakdown*)` | 后两个参数是 Win64 stack args；`relation_kind=0x2307080(shell,side)`，`Breakdown*=nullptr` |
 | side component | `int64* 0x2307230(CCombat*,int64* out,ModifierAggregator*,int32 side,int32 relation_kind,Breakdown*)` | aggregator 是 `CCombatSide+0x110`；同样只允许 null breakdown |
-| destructor | `void 0x2303B00(CCombatSide*)` | reverse construction order 析构所有成功构造的 local side；随后释放 auxiliary `Entry50` buffer。每个 failure edge 都必须走 constructed-mask cleanup |
+| complete destructor | `void 0x2303B00(CCombatSide*)` | 在同一 application-main paused callback 内按 reverse construction order 析构所有成功构造的 local side，归还 `+0x08` saved-variable slot；随后释放 auxiliary `Entry50` buffer。每个 failure edge 都必须走 constructed-mask cleanup，任何 local side/slot/pointer 都不能跨帧或返回 worker |
+
+这里的“query 只读”指没有持久化游戏语义变更，不等于完全不触碰 engine allocator/manager：
+`0x23C7D30` 在该 build 的 flag=`1` 路径会暂借 saved-variable slot，`0x2303B00` 才完成配对释放。因此
+`construct -> populate -> select -> 0x2308D50 -> read -> complete destroy` 必须是同一个 application-main mailbox
+callback 内的同步事务；worker-thread 构造、跨 callback 缓存或遗漏 destructor 都不在已闭合合同内。
 
 原版 commander selection 发生在 static advantage ledger 与 holding flag 建成**之前**。因此 wrapper 必须先保持
 `shell+0x6C8=0`、两侧 effect ledger 为空、`shell+0x6FE=0`，写 target、`+0x6FD` 与 gathering 后调用
@@ -526,6 +538,11 @@ stock `00_combat_effects.txt` 的 owner/treasury tiers 实际是
 Province battle-manager 对象都不被修改。
 
 最终调用 `0x2308D50(shell)`，并用下列独立 component calls 做同次一致性断言：
+
+`side_strength_raw` 的 original-helper equality 也必须放在这次调用之后。detached paused live 中 attacker side
+在 `0x2308D50` 前读到 `124831`，而同帧 regiment/source mirror 为 `129975`；调用后 helper 变为
+`129975` 并相等，defender final 为 `65172`。因此早期 helper 值只是尚未完成 materialization 的中间态，不能用它
+否定 mirror 或提前 fail closed。
 
 ```text
 side_total_raw = 0x2307CB0(shell, side)
@@ -566,9 +583,9 @@ data/visual fallback 或 `life-advance`。production payload 固定为
           "selected_key": "supply_state_running_low_advantage",
           "selected_effect_points": -10
         },
-        "primary_army_recently_disembarked_raw": 0,
+        "primary_army_gathering_raw": 0,
         "owner_character_id": 1,
-        "owner_debt_selector_raw": 0,
+        "owner_debt_selector_raw": -1,
         "treasury_debt_selector_raw": null
       }
     ],
@@ -649,9 +666,37 @@ resolved advantage 的原生公式由 `0x2308D50` 闭合为
 `CCombat+0x710 = CCombat+0x6C8 + 0x2307CB0(side0) - 0x2307CB0(side1)`；上面的 temporary-context
 contract 已经关闭“必须有真实 CombatID”这一错误前提。production reader、source scanner、完整 named-key fixture、
 original-helper equality gate 与正式 serializer 已闭合并开始广告；任一帧无法满足这些门时只返回原子的
-`phase_event_inputs.status=unavailable`，绝不返回 `resolved_dynamic=null` 冒充成功。paused live equality 仍待验收。
+`phase_event_inputs.status=unavailable`，绝不返回 `resolved_dynamic=null` 冒充成功。
 即使该观测返回 available，零 roll 结果也只是 Monte Carlo 的确定性初始输入；phase-event、
 casualty/pursuit 与 battle-end transition gate 仍使 `monte_carlo_ready=false`。
+
+[detached paused-live diagnostic 2026-08-26] date `53177976` 的 combined defensive query 返回完整
+phase inputs available：27 个 Character rows、3 个 Army rows、15 个 ordered constructor-source rows；
+`base_static_accumulator_raw=-500000`，`resolved_advantage_at_zero_roll_raw=-2500000`，
+`original_total_helper_raw=-2500000` 且 match，final side strengths 为 `129975/65172`。managed cleanup 已证明。
+artifact SHA-256：`4E50F1FEA510A92F9155F05A1844196D69C9A66540A6AFEC94EE15CA2F4094D2`。
+payload 同时保持 `loaded_playset_verified/ast_evaluator_ready/original_trace_ready/monte_carlo_ready/planner_usable`
+全部为 false；raw observation available 不能越过这些 fidelity gates。
+
+证据边界必须保留：该 run 来自 detached diagnostic worktree，`0x28A4870 can_be_acclaimed` 被固定为 false，
+并仍输出后来被推翻的 `recently_disembarked_*` 旧标签；所以它证明 local shell、finalize 后 strength 与 original
+advantage helper 在该帧可对拍，却不接受真实 can-be、corrected gathering schema 或共享 application-main build。
+这份 detached artifact 本身不接受这些路径。
+
+[shared application-main live-confirmed 2026-08-26] 随后用未变 checkpoint（SHA-256
+`12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D`）在 date `53177976` 重跑同一
+combined-defensive query，command 与 phase 均为 available，`phase_event_inputs_ready=true`。artifact
+`combat-v3-shared-main-thread-paused-live-acceptance.json`（SHA-256
+`EBEA36EC41811C7736B0819DC31A2D0B0ABE7205D4FBA76D1FBD7AE629535DA5`）返回 27 个 Character rows、3 个
+Army rows、15 个 ordered constructor-source rows，以及完整 `132 = 81 native + 51 offline` refs。真实
+`can_be_acclaimed` 为 10 true/17 false；corrected gathering side0/side1 raw 为 `0/0`，owner debt selectors
+为 `-1/-1`；base 为 `-500000`，resolved/helper 均为 `-2500000` 且 match，final side strengths 为
+`129975/65172`。managed stop/cleanup 为 true，最终 CK3 process inventory 为 0。
+
+这关闭的是该 paused frame 的共享 application-main/can-be/corrected-gathering observation milestone，只覆盖四场
+matrix 中的一场。`monte_carlo_ready=false` 仍由 `damage_to_casualty_allocation`、`pursuit_transition`、
+`battle_end_and_retreat_transition`、`phase_event_rng_and_effects`，以及 loaded-playset/AST/original-trace fidelity
+gates 造成；它不否定本次 raw observation 已就绪，也不允许宣称 P1、simulator 或主动接战 ready。
 
 ```mermaid
 flowchart TD
@@ -659,15 +704,16 @@ flowchart TD
     G --> X["adjacency attacker → defender<br/>terrain attacker → defender"]
     X --> S["0x23049E0 supply<br/>side0 → side1; strict majority"]
     S --> H["holding defender"]
-    H --> R["first-army disembark<br/>side0 → side1"]
+    H --> R["first-army gathering advantage<br/>CArmy+0x5C; side0 → side1"]
     R --> D["owner debt → optional treasury debt<br/>side0 → side1"]
     D --> F["unreformed faith<br/>side0 → side1"]
     F --> L["mirror 0x23045F0<br/>Q100000 mul; sign; clamp each source"]
     L --> B["ordered constructor_sources<br/>base_static_accumulator_raw"]
-    B --> T["caller-owned 0x718 shell<br/>0x23C7D30 local sides; no registry"]
+    B --> T["caller-owned 0x718 shell<br/>application-main 0x23C7D30<br/>saved slot flag=1; no combat registry"]
     T --> C["0x23C8A60 battle commander<br/>first-army CArmy+1D0 gathering"]
-    C --> Y["0x2308D50 / 0x2307CB0<br/>zero roll + commander + side dynamic"]
-    Y --> O{"81 native leaves + advantage<br/>same paused frame all matched?"}
+    C --> Y["0x2308D50 / 0x2307CB0<br/>final strength + zero-roll dynamic"]
+    Y --> DT["0x2303B00 complete dtor<br/>same callback; reverse order"]
+    DT --> O{"81 native leaves + advantage<br/>same paused frame all matched?"}
     O -->|yes| P["production v3 observation<br/>132/132 state refs ready"]
     O -->|no| U["phase_event_inputs unavailable<br/>base_inputs preserved; no partial raw"]
     P --> FG{"loaded playset + AST evaluator<br/>original transition traces ready?"}
@@ -734,15 +780,18 @@ flowchart TD
 每行再分别覆盖 `+0xA0A=0/1`，并断言 `identity_valid` 只随 `CRegiment+0x10==-1` 改变，不能替代
 kind 或主阶段资格。
 
-### Participant join / ETA：dynamic forecast 的下一条独立观测口
+### Participant join / ETA：静态顺序已闭合，live scope 仍待发布
 
-[static-confirmed] participant 的**实际加入**入口已定位，但抵达 ETA 仍未闭合。它不阻塞 v2 明确声明的
+[static-confirmed] participant 的**实际加入**入口与 normal daily movement 的同日顺序均已静态闭合；完整链见
+[army-contact-resolution.md](army-contact-resolution.md)。这不等于当前 bridge 已经发布真实 contact participant scope，
+也不阻塞 v2 明确声明的
 `explicit_hypothetical_fixed_at_contact_no_reinforcements` 条件情景，也不得被误解为 v2 已预测真实路线增援：
 
 - `void 0x23040A0(CCombat* RCX, CArmy* RDX)` 是现有战斗加入军队的 central dispatcher；direct caller
   只有 `0x2208641`。caller 在 Province/contact tick 中扫描候选 CCombat，完成 full-generation CCombatID 与
   incoming `CUnit+0x178 → CArmy` 解析后调用它。
-- `0x23040A0` 以 relation helper `0x2900470` 对 incoming owner 和两侧 representative owner 做方向判定；
+- `0x23040A0` 以 relation helper `0x2900470` 做方向判定：先测
+  `side0_representative_owner → incoming_owner`，再测 `side1_representative_owner → incoming_owner`；
   defender 分支调用 `0x23044F0(CCombat*,CArmy*)`，attacker 分支调用
   `0x23043F0(CCombat*,CArmy*)`。两个 wrapper 分别把 `CCombatSide*` 设为
   `combat+0x368` / `combat+0x20`，随后共同调用 `0x23C9100(side,army)`；所以前述 regiment
@@ -750,13 +799,17 @@ kind 或主阶段资格。
 - 加入后原生写 `CArmy+0x128 = CCombat+0x08`，重算两侧 `0x23CB840` fighting totals；若当前 phase
   为 pursuit (`CCombat+0x6B0==2`)，它把 phase 重开为 main 并清 `winner +0x6E0=-1`。已有 base width 时还会
   调 `0x2305580` 走原生 width history/update。这些都是 join transition，不能在 paused query 中调用。
-- dynamic route-timeline port 的下一 RE 队列固定从 `0x220842F..0x2208646` 向上追 contact tick 的 CUnit 候选数组、route
-  arrival date 与同日迭代顺序，再以 `0x23040A0` 为 golden transition endpoint。仅知道军队当前 route 或直线距离
-  不能填 `participant_join_eta`。
+- normal daily chain 是 `0x27F9B50` 按 unit-manager stored order 逐 CUnit 调 movement，成功 placement 把
+  CArmyID tail-append 到 deferred queue；全表结束后才由 `0x27C0E90` 按 queue order 调 contact resolver。
+  target Province 的 `+0x748/+0x754` 则由 `0x220BAA0` 按 unsigned full CUnitID 数值 lower-bound 维护，
+  所以 opponent order 是 post-movement Province 数值序，不是 arrival queue order。
+- [unknown] 尚未发布的 live actual-contact scope 仍需在同一 paused revision 投影 queue/Province 原生集合与 eligibility；
+  仅知道军队当前 route、静态顺序或直线距离仍不能填 `participant_join_eta`，也不能声称真实 participant 已观测。
 
 ```mermaid
 flowchart LR
-    P["Province/contact tick<br/>0x220842F..."] --> C["scan generation-valid<br/>candidate CCombat IDs"]
+    M["normal daily movement<br/>unit-manager stored order"] --> P["deferred queue<br/>0x27C0E90"]
+    P --> C["scan generation-valid<br/>candidate CCombat IDs"]
     C --> J["0x2208641 → 0x23040A0<br/>CCombat + incoming CArmy"]
     J --> R{"0x2900470<br/>relation to native sides"}
     R -->|attacker| A["0x23043F0<br/>side0 +0x20"]
@@ -764,7 +817,7 @@ flowchart LR
     A --> B["0x23C9100<br/>insert army/regiments"]
     D --> B
     B --> U["write CArmy+0x128<br/>recompute totals/width"]
-    E["dynamic route arrival date + same-day order"] -. "separate port; not closed" .-> P
+    E["live actual-contact participant / ETA scope"] -. "not yet published" .-> P
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class E unknown;
 ```
@@ -846,7 +899,7 @@ flowchart LR
 | 字段 | v2 状态 | 下一 exact-build 入口 |
 |---|---|---|
 | `archetype/event subtype` | combat kind 已精确闭合为 `levy|men_at_arms`；更细数据库 archetype/event subtype 尚未独立发布 | 若模拟规则确实依赖更细 subtype，沿 `T+0x270/+0x2B8` 与 loaded type key manifest 增量补口；不得破坏已闭合的 combat bucket |
-| mixed-owner side 的最终 counter multiplier | [live-confirmed] v2 exact ABI/adapter 与 mixed-owner combined scenario 已验收 | conditional side 按显式 ArmyID request order 的首军 owner，亦即 synthetic `CCombatSide+0x70`；真实接战则另按 target Province stored order，不得混为一谈 |
+| mixed-owner side 的最终 counter multiplier | [live-confirmed] v2 exact ABI/adapter 与 mixed-owner combined scenario 已验收 | conditional side 按显式 ArmyID request order 的首军 owner，亦即 synthetic `CCombatSide+0x70`；真实接战则另按 target Province full-CUnitID 数值序与 `initiator_is_defender` 决定，不得混为一谈 |
 | knights | [live-confirmed] 五个场景均返回 identity/membership/effective rows | `0x19DD670` 的真实 list source 是 `CRegiment+0x148` full CharacterID；`0x23DB1C0` 只是 type/variant contribution ledger helper，不能枚举骑士 |
 | effective commander roll bounds / battle commander | [live-confirmed] 五个场景均返回 `0..10` 与各军 commander contribution | `0x23CBFA0` 证明 modifier/terrain bounds 与 RNG 入口；paused query 只镜像 bounds，绝不调用该随机 helper |
 | crossing / defender / holding | [live-confirmed] 五个场景均为 explicit edge kind `none`；defensive player holding=false、offensive enemy holding=true | conditional mixed-owner defender 按显式 request order 首军 owner调 `0x2900BB0`；实际接战顺序另记 |
@@ -1352,7 +1405,7 @@ dynamic reinforcement/leave/third-party 与 same-day arrival 是另一个 `dynam
         "base_advantage": { "raw": 0, "scale": 100000 }
       },
       "supply_state": "supplied",
-      "recently_disembarked_raw": 0,
+      "primary_army_gathering_raw": 0,
       "debt_effect_key": null,
       "regiments": [
         {
@@ -1648,7 +1701,8 @@ production query 不可达。v2 不再做这种推断：调用者显式提供一
   defender owner/target generation 后直接调用。live CCombat 则直接读 `+0x6FE`。
 - [static-confirmed] **真实 native contact** 的 mixed-owner“首军”顺序已由 builder 闭合，不是 MCP request
   order，也不是每个 owner 分别求 holding：`0x2209450` 按 target `CProvince+0x748` 的 full CUnitID array、count
-  `+0x754` 原 stored order 扫描合格对手；每项先 generation-resolve CUnit，再沿 `CUnit+0x178` resolve CArmy，
+  `+0x754` 的 unsigned full-CUnitID 数值升序扫描合格对手；该表由 `0x220BAA0` lower-bound 维护。每项先
+  generation-resolve CUnit，再沿 `CUnit+0x178` resolve CArmy，
   并按扫描顺序 append 到 `Vector<CArmy*> opponents`。`0x2209939` 的 exact call 是：
 
   ```cpp
@@ -1656,16 +1710,17 @@ production query 不可达。v2 不再做这种推断：调用者显式提供一
       CCombatStorage* storage,
       CArmy* initiating_army,
       Vector<CArmy*>* opponents,
-      bool initiator_is_attacker,
+      bool initiator_is_defender,
       CProvince* target,
       int32_t adjacency_kind);
   // RVA 0x27FB7C0; allocates and calls CCombat ctor RVA 0x2303CF0
   ```
 
-  ctor 在 `initiator_is_attacker=true` 时先用 `0x23044F0` 把 initiating army 加入 side0，再按 opponents stored
-  order 用 `0x23043F0` 加入 side1。两 wrapper 最终调用
+  ctor 在 `initiator_is_defender=true` 时先用 `0x23044F0` 把 initiating army 加入 side1 defender，再按
+  opponents 的 Province 数值序用 `0x23043F0` 加入 side0 attacker；false 时恰好相反。两 wrapper 最终调用
   `0x23C9100(CCombatSide*,CArmy*)`；它只在 side `+0x10/count+0x1C` 尚无该 full CArmyID 时 append。因此
-  side1 `+0x10` 的首项就是 target Province stored order 中第一个通过原版 contact filter 的 opponent army。
+  defender side `+0x10` 的首项取决于上述 bool：true 时是 initiating army；false、即 opponents 是 defender 时，
+  才是 target Province full-CUnitID 数值序中第一个通过原版 contact filter 的 opponent army。
 - [static-confirmed] `CCombatSide+0x70` 的 `side_primary_participant` 与 holding source 独立走到同一选择：
   `0x23C9361..0x23C93E7` 从 side `+0x10` 首军 resolve CUnit owner 写入 `+0x70`；后续添加其它 owner 时，
   `0x23C9600` 只要确认当前 primary owner 仍拥有 side 内至少一军便保留它。holding 仍直接读取首军，不调用
@@ -1676,7 +1731,7 @@ paused v2 hypothetical query **不读取 target 当前驻军表来重排 partici
 `0x2900BB0`；mixed owner 本身不是失败条件。数组中每个 ID 仍必须通过 same-revision scope、opposite-coalition、
 full-generation CUnit→CArmy→owner 回读，重复、越界或 identity drift 令对应严格域 unavailable。合同字面值
 `defender_insertion_order_policy=explicit_request_order_hypothetical` 是关键证据边界：它回答一个 fixed participant
-counterfactual，不声称复刻真实 arrival/Province stored order。若输出声称预测真实自动接战，则另需投影原生 contact
+counterfactual，不声称复刻真实 arrival/Province full-CUnitID 数值序。若输出声称预测真实自动接战，则另需投影原生 contact
 filter 后的完整 opponents set 与 order；不能用 v2 request order 代替，也不能悄悄忽略同省第三军。
 
 ### base / final contact width
@@ -1756,14 +1811,17 @@ request order、且不依赖当前驻军排序；`current_province_id=null` 也�
   subtype 与 production paused acceptance 仍待后续按需闭合。
 - [live-confirmed] Province terrain、显式 final-edge 的 river/large-river/strait、attacker/defender、mixed-owner
   首 defender/holding 与首次 contact width ABI 已闭合；v2 production adapter/offline fixture 与五个 paused live
-  scenario 均已通过。v2 首 defender 来自 request order；原版真实 contact 的 Province stored order 已另行闭合，
+  scenario 均已通过。v2 首 defender 来自 request order；原版真实 contact 的 Province full-CUnitID 数值序与
+  `initiator_is_defender` 极性已另行闭合，
   两者不得混写。
 - [static-confirmed] battle commander roll bounds、knight identity/membership/prowess/effectiveness 与有效
-  damage/toughness ABI 已闭合；supply、debt、recently-disembarked、holding/faith/terrain/adjacency 的原生
+  damage/toughness ABI 已闭合；supply、debt、gathering、holding/faith/terrain/adjacency 的原生
   constructor selector、跨 side 顺序与逐来源 accumulator 已闭合为 v3 source-ledger ABI；`0x2307CB0` 的
   commander/side dynamic decomposition、zero-roll local shell 与 original-total equality contract 也已静态闭合。
-  production native reader、完整 fixture/serializer 与 capability/MCP 已发布；paused-live equality 仍待验收，
-  不能用 generic advantage 替代，也不能把 132/132 observation readiness 升格为 transition fidelity。
+  detached paused diagnostic 已通过一次 equality，但 can-be 被短路且 gathering 仍带旧标签；随后共享 application-main
+  corrected-schema build 已在 combined-defensive paused frame 以真实 can-be、gathering `0/0`、debt `-1/-1`、
+  132/132 refs 与 helper equality 通过。其余三场 matrix 仍待验收；recently-disembarked 若仍是策略依赖，必须另补
+  真实 native leaf。不能用 generic advantage 替代，也不能把 132/132 observation readiness 升格为 transition fidelity。
 - [static-confirmed] CCombat 两侧 base、phase/day、roll、advantage、**winner** 与 roll cadence 布局，以及每日
   phase dispatcher 已闭合；v2 对 generation-valid live CCombat 已发布 raw context，完整 side entry resume 仍待下一口。
 - [static-confirmed] main casualty、pursuit 与 battle-end/manual-retreat/force-result 核心 transition 已闭合；simulator

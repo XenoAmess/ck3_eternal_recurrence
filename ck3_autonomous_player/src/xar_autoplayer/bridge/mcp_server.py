@@ -122,6 +122,20 @@ def _ck3_query_war_entry_assessments(
     )
 
 
+def _ck3_query_actual_contact_scope(
+    service: GameplayBridgeService,
+    subject_army_id: int,
+    target_province_id: int,
+    expected_revision: int | None = None,
+) -> dict[str, object]:
+    """Official pre-contact prediction or post-contact observation facade."""
+    return service.query_actual_contact_scope(
+        subject_army_id,
+        target_province_id,
+        expected_revision=expected_revision,
+    )
+
+
 def create_server(driver: GameplayBridgeDriver):
     """Build the MCP server lazily so baseline vision installs need no SDK."""
     try:
@@ -346,6 +360,20 @@ def create_server(driver: GameplayBridgeDriver):
         """Read soldiers and AI base power; never interpret them as win odds."""
         return service.query_army_strengths(
             army_ids,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_actual_contact_scope(
+        subject_army_id: int,
+        target_province_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Predict contact or read actual CombatID/sides; pass order to v3."""
+        return _ck3_query_actual_contact_scope(
+            service,
+            subject_army_id,
+            target_province_id,
             expected_revision=expected_revision,
         )
 

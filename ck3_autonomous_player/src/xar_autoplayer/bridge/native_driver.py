@@ -90,6 +90,13 @@ from .war_entry_contract import (
     query_war_entry_assessments_step,
     require_declarable_war_targets,
 )
+from .actual_contact_contract import (
+    QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY,
+    QUERY_ACTUAL_CONTACT_SCOPE_STEP_PREFIX,
+    normalize_actual_contact_scope,
+    parse_query_actual_contact_scope_step,
+    query_actual_contact_scope_step,
+)
 from .war_contract import (
     ARMY_ROUTES_CAPABILITY,
     DISBAND_ARMY_CAPABILITY,
@@ -855,6 +862,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY
                 in bridge_capabilities
             ),
+            "actual_contact_scope_query_supported": (
+                QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY
+                in bridge_capabilities
+            ),
             "army_strength_query_supported": (
                 QUERY_ARMY_STRENGTHS_CAPABILITY in bridge_capabilities
             ),
@@ -1060,6 +1071,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "route_contact_horizon_supported": (
                 QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY
+                in bridge_capabilities
+            ),
+            "actual_contact_scope_query_supported": (
+                QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY
                 in bridge_capabilities
             ),
             "combat_simulation_inputs_query_supported": (
@@ -1841,6 +1856,15 @@ class NativeHeadlessGameplayDriver:
                         f"expected {expected_revision}, current "
                         f"{current_revision}"
                     )
+        actual_contact_query = parse_query_actual_contact_scope_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_ACTUAL_CONTACT_SCOPE_STEP_PREFIX)
+            and actual_contact_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed actual-contact scope query step"
+            )
         route_contact_query = parse_query_route_contact_horizon_step(step)
         route_contact_advance = parse_advance_route_contact_horizon_step(step)
         if (
@@ -1870,6 +1894,20 @@ class NativeHeadlessGameplayDriver:
                 "step"
             )
         capabilities = self.capabilities()
+        if actual_contact_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query the actual contact scope"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
         if war_entry_targets is not None:
             bridge_capabilities = set(
                 _string_list(capabilities.get("bridge_capabilities"))
@@ -3362,6 +3400,94 @@ class NativeHeadlessGameplayDriver:
                 starting=starting,
                 selected_revision=selected_revision,
             )
+        actual_contact_query = parse_query_actual_contact_scope_step(step)
+        if actual_contact_query is not None:
+            subject_army_id, target_province_id = actual_contact_query
+            if starting.get("paused") is not True:
+                raise BridgeUnavailableError(
+                    "native actual-contact query requires a paused map"
+                )
+            subject = _army_by_id(starting, subject_army_id)
+            if not (
+                isinstance(subject, dict)
+                and subject.get("controllable") is True
+                and subject.get("current_province_id") == target_province_id
+            ):
+                raise BridgeUnavailableError(
+                    "native actual-contact subject is not a controllable "
+                    "army at the requested Province"
+                )
+            date_raw = _date_raw(starting, "actual-contact starting snapshot")
+            native_revision = starting.get("native_revision")
+            if (
+                isinstance(native_revision, bool)
+                or not isinstance(native_revision, int)
+                or not 1 <= native_revision <= 2**64 - 1
+            ):
+                raise BridgeUnavailableError(
+                    "native actual-contact query lacks a native revision"
+                )
+            result = self._execute_primitive_step(
+                step, expected_revision=selected_revision
+            )
+            if (
+                set(result)
+                != {
+                    "step",
+                    "accepted",
+                    "status",
+                    "query_sequence",
+                    "snapshot_revision",
+                    "actual_contact_scope",
+                    "backend_id",
+                }
+                or result.get("step") != step
+                or result.get("accepted") is not True
+                or result.get("status") != "available"
+                or result.get("snapshot_revision") != native_revision
+            ):
+                raise BridgeUnavailableError(
+                    "native actual-contact query returned malformed status"
+                )
+            query_sequence = result.get("query_sequence")
+            if (
+                isinstance(query_sequence, bool)
+                or not isinstance(query_sequence, int)
+                or not 1 <= query_sequence <= 2**64 - 1
+            ):
+                raise BridgeUnavailableError(
+                    "native actual-contact query lacks query_sequence"
+                )
+            try:
+                scope = normalize_actual_contact_scope(
+                    result.get("actual_contact_scope"),
+                    expected_subject_army_id=subject_army_id,
+                    expected_target_province_id=target_province_id,
+                    expected_date_raw=date_raw,
+                    expected_snapshot_revision=native_revision,
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(str(error)) from error
+            current = self.take_snapshot()
+            if not _same_paused_native_frame(starting, current):
+                raise BridgeUnavailableError(
+                    "native actual-contact query crossed a snapshot revision"
+                )
+            return {
+                **result,
+                "actual_contact_scope": scope,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": native_revision,
+                "queried_connection_generation": (
+                    starting.get("diagnostics", {}).get(
+                        "connection_generation"
+                    )
+                    if isinstance(starting.get("diagnostics"), dict)
+                    else None
+                ),
+                "queried_episode_run_id": starting.get("episode_run_id"),
+            }
         termination_query_war_id = (
             parse_query_war_termination_options_step(step)
         )
@@ -7068,6 +7194,23 @@ def _army_in_combat_or_retreat(army: dict[str, object]) -> bool:
     )
 
 
+def _army_retreating(army: dict[str, object]) -> bool:
+    state = army.get("army_state")
+    state_code = army.get("army_state_code")
+    return bool(
+        army.get("retreating") is True
+        or (
+            isinstance(state, str)
+            and state.casefold() == "retreating"
+        )
+        or (
+            isinstance(state_code, int)
+            and not isinstance(state_code, bool)
+            and state_code == 6
+        )
+    )
+
+
 def _army_known_merge_blocked(army: dict[str, object]) -> bool:
     return _army_in_combat_or_retreat(army)
 
@@ -7092,6 +7235,7 @@ def _action_steps(
     expand_move_armies = False
     expand_preview_move_armies = False
     expand_route_contact_horizons = False
+    expand_actual_contact_scopes = False
     expand_disband_armies = False
     expand_split_armies = False
     expand_merge_armies = False
@@ -7122,6 +7266,8 @@ def _action_steps(
             expand_preview_move_armies = True
         elif capability == QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY:
             expand_route_contact_horizons = True
+        elif capability == QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY:
+            expand_actual_contact_scopes = True
         elif capability == DISBAND_ARMY_CAPABILITY:
             expand_disband_armies = True
         elif capability == SPLIT_ARMY_HALF_CAPABILITY:
@@ -7269,6 +7415,16 @@ def _action_steps(
         )
     if advertise_army_strength_query and paused is True:
         steps.add(QUERY_ARMY_STRENGTHS_STEP)
+    if expand_actual_contact_scopes and paused is True:
+        steps.update(
+            query_actual_contact_scope_step(
+                int(army["army_id"]), int(army["current_province_id"])
+            )
+            for army in controllable
+            if _positive_native_id(army.get("army_id"))
+            and _positive_native_id(army.get("current_province_id"))
+            and not _army_retreating(army)
+        )
     if expand_declare_wars and isinstance(declarable_wars, list):
         steps.update(
             declare_war_step(str(row["declaration_id"]))

@@ -19,8 +19,16 @@
 
 ## 文档
 
+- [counter-policy] [autonomous-capability-roadmap.md](autonomous-capability-roadmap.md) 盘点全游戏自治能力面、
+  当前 bridge/MCP/planner 的可玩边界、依赖顺序与持续验收里程碑；它是施工路线图，不代表 CK3 原生行为。
 - [static-confirmed] [army-controller.md](army-controller.md) 记录战争 stance、目标候选和评分、重算节拍、
   `CAISubunitStack` 分派状态机、围城/追击/战斗/撤退切换边界，以及战争 `16777290` 的双敌军实例。
+- [static-confirmed] [army-contact-resolution.md](army-contact-resolution.md) 把原生 AI 的目标/避战门连接到
+  normal daily movement，并闭合“全军移动后按 queue 接触”、省份 full-CUnitID 数值序 opponent、已有战斗优先、
+  多战斗 tie-break、新战斗 participant 顺序与 `initiator_is_defender` 攻守极性；非 daily placement 仍为虚线 unknown。
+- [live-confirmed] [actual-contact-scope.md](actual-contact-scope.md) 把同一链冻结为机器可读 ABI/fixture 与
+  application-main 只读 query；已完成真实 contact date、CombatID、两侧 stored order、combat-v3 复用和战中冷恢复对照，
+  `join_existing` 与 multiple-compatible 实机分支仍待闭合。
 - [static-confirmed] [war-declaration.md](war-declaration.md) 记录周期/人格/cooldown 门、目标与盟友军力聚合、
   战争中目标的 power-ratio 上限、hostage、CB 评分、90% 截断、Top-5 加权随机与声明提交顺序；未闭合的
   财政和军力细项均保留为虚线 `unknown`。
@@ -29,6 +37,9 @@
 - [static-confirmed] [battle-simulation.md](battle-simulation.md) 记录真实 `CCombat` phase/day tick、战宽、
   commander roll、advantage、MAA counter、主阶段 damage、casualty/pursuit 与 PRNG 边界；同时冻结
   exact-native-parity Monte Carlo 的完整输入门，并明确当前局胜率为 unavailable，而不是近似人数比。
+- [static-confirmed] [battle-controller.md](battle-controller.md) 把接触/参战、求援/增援、主动撤退、
+  溃退、追击与战斗终结串成原生控制树；吸收 P0 实机 CombatID/ordered-sides/cold-restore 基线，并按
+  ongoing frame → retreat → reinforcement → forecast/terminal 排定我方 P1 typed observation/action 门。
 - [implementation-confirmed] [combat-phase-events.md](combat-phase-events.md) 冻结 stock commander/knight
   phase-event 的 13 个顶层 row、canonical machine manifest、独立 golden、伤残死亡与 prowess 状态转移、同日刷新
   顺序；同时给出 v3 character/side/army/accolade/advantage required-field matrix、precontact 不伪造 CombatID 的边界，

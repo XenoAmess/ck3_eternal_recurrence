@@ -43,6 +43,7 @@ target_compile_definitions(xar_bridge_injector PUBLIC
 )
 
 add_library(xar_ck3_bridge SHARED
+  src/actual_contact_scope_v1_mailbox.cpp
   src/bridge.cpp
   src/ck3_11906.cpp
   src/ck3_11906_adapter.cpp
@@ -50,6 +51,7 @@ add_library(xar_ck3_bridge SHARED
   src/combat_phase_event_trace_managed_v1.cpp
   src/combat_phase_event_trace_ring_v1.cpp
   src/combat_phase_event_trace_wire_v1.cpp
+  src/combat_simulation_inputs_v3_mailbox.cpp
   src/combat_v3.cpp
   src/combat_v3_serializer.cpp
   src/combat_v3_test_only.cpp
@@ -113,6 +115,7 @@ endif()
 include(CTest)
 if(BUILD_TESTING)
   add_executable(xar_ck3_game_access_test
+    src/actual_contact_scope_v1_mailbox.cpp
     src/ck3_11906.cpp
     src/ck3_11906_test.cpp
     src/route_contact_horizon_v1_mailbox.cpp
@@ -136,6 +139,8 @@ if(BUILD_TESTING)
   )
 
   add_executable(xar_ck3_adapter_registry_test
+    src/actual_contact_scope_v1_mailbox.cpp
+    src/combat_simulation_inputs_v3_mailbox.cpp
     src/game_adapter.cpp
     src/ck3_11906_adapter.cpp
     src/ck3_11906.cpp
@@ -223,6 +228,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/game_adapter.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_11906_adapter.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/combat_simulation_inputs_v3_mailbox.cpp
   )
 
   add_executable(xar_ck3_combat_phase_event_trace_v1_source_contract_test

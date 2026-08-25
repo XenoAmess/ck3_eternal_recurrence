@@ -14,6 +14,17 @@ namespace {
 
 static_assert(sizeof(void*) == 8, "the CK3 bridge injector is x64-only");
 
+constexpr bool IsSuccessfulRemoteBoolean(DWORD exit_code) noexcept {
+  // XarCk3BridgePrepareStartup and XarCk3BridgeStartWithPipe are BOOL
+  // entrypoints.  An exception terminates their remote thread with a nonzero
+  // NTSTATUS (for example 0xC0000005), which must never be mistaken for TRUE.
+  return exit_code == static_cast<DWORD>(TRUE);
+}
+
+static_assert(IsSuccessfulRemoteBoolean(1));
+static_assert(!IsSuccessfulRemoteBoolean(0));
+static_assert(!IsSuccessfulRemoteBoolean(0xC0000005U));
+
 InjectionResult Failure(DWORD error) noexcept {
   return {false, error == ERROR_SUCCESS ? ERROR_GEN_FAILURE : error, 0};
 }
@@ -263,7 +274,7 @@ StartupInjectionResult InjectLibraryAndPrepareStartup(
                           load_result.remote_exit_code,
                           prepare_result.remote_exit_code);
   }
-  if (prepare_result.remote_exit_code == 0) {
+  if (!IsSuccessfulRemoteBoolean(prepare_result.remote_exit_code)) {
     return StartupFailure(ERROR_DLL_INIT_FAILED,
                           load_result.remote_exit_code,
                           prepare_result.remote_exit_code);
@@ -359,7 +370,7 @@ AttachResult InjectLibraryAndStart(HANDLE process,
                          load_result.remote_exit_code,
                          start_result.remote_exit_code);
   }
-  if (start_result.remote_exit_code == 0) {
+  if (!IsSuccessfulRemoteBoolean(start_result.remote_exit_code)) {
     return AttachFailure(ERROR_DLL_INIT_FAILED,
                          load_result.remote_exit_code,
                          start_result.remote_exit_code);

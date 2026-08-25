@@ -26,8 +26,9 @@
   `0x2947A60` 再按最近整数日换成 CK3 date raw hours。`query-route-contact-horizon-v1-N` 已在 paused exact-build
   replay 返回完整 subject/hostile timelines，并安全授权一日推进。
 - [unknown] 当前结果仍不是完整 encounter forecast。自愿盟友/宗主接受、宣战候选与 timing reader 的生产接线、
-  同日 tick 顺序与 contact opponent stored order 尚未闭合，所以 prewar forecast capability 继续保持关闭；但
-  active-war native arrival 与 bounded one-day contact horizon 已独立完成实机验收。
+  live actual-contact participant scope 尚未发布，所以 prewar forecast capability 继续保持关闭；但 active-war
+  native arrival 与 bounded one-day contact horizon 已独立完成实机验收，normal daily 同日 tick/Province
+  full-CUnitID 数值序规则也已由 exact-build 静态闭合。
 
 ## 版本与证据边界
 
@@ -397,13 +398,15 @@ readiness 为真。
   并拒绝非正 speed、负 duration、异常大 duration 或 prefix duration 下降；合法相等值必须保留。
 - [live-confirmed] `0x2247320` 与速度 helper 的生产调用边界固定在 paused application-main mailbox：同 revision
   generation preflight 之后、owner `MovePath` 析构之前同步调用；不允许从 worker thread 直调。该边界已经由
-  active-war route-contact replay 验收。arrival 同日 ties 与 Province stored-order/contact tick 的先后关系仍未闭合。
-- [static-confirmed] 真正 contact opponent builder `0x2209450` 按 target
-  `CProvince+0x748/+0x754` 的 CUnit stored order 选对手；实际 constructor path `0x27FB7C0` 会创建
-  `CCombat`，paused query 禁止调用。
-- [unknown] production/live arrival 已闭合为有界 active-war 输入，但同日 stored-order 投影未通过时，仍无法提前
-  确定真实 contact opponent set/order。当前 province/route/timeline 与一日 predicate 只能证明所查询窗口无冲突，
-  不是实际 contact 结论。
+  active-war route-contact replay 验收。
+- [static-confirmed] normal daily arrival tie 已由 [army-contact-resolution.md](army-contact-resolution.md) 静态闭合：
+  `0x27F9B50` 的 unit-manager stored order 传播到 tail-appended CArmy contact queue；所有 movement 完成后，
+  `0x27C0E90` 才按 queue order 处理。target `CProvince+0x748/+0x754` 又由 `0x220BAA0` 按 unsigned
+  full CUnitID 数值 lower-bound 维护，所以 `0x2209450` 的 opponent 顺序是 post-movement Province 数值序，
+  不是 arrival queue order；实际 constructor path `0x27FB7C0` 会创建 `CCombat`，paused query 禁止调用。
+- [unknown] 静态顺序闭合不等于 production/live actual-contact participant 已投影。当前 province/route/timeline
+  与一日 predicate 只能证明所查询窗口无冲突；在 paused scope 尚未回读原生 queue、Province 完整集合与 eligibility
+  前，仍不能声称实际 contact opponent set/order 已观测。non-daily placement 的统一全序也尚未闭合。
 
 ## 最小 DTO 与 readiness
 
@@ -484,11 +487,13 @@ flowchart TD
     U --> Q["[S] 0x2247320 per-prefix Q100000 duration<br/>首边 progress correction"]
     O --> Q
     Q --> A["[L] nearest-day, then date raw + days*24<br/>active-war reader live accepted"]
-    A -. "[U] same-day Province stored order" .-> C["[U] actual contact sides/order"]
-    J -.-> C
-    C -.-> V["[U] combat-v3 prewar admission"]
+    A --> SDO["[S] normal daily manager order → deferred queue<br/>Province full-CUnitID numeric opponent order"]
+    SDO --> C["[S] native contact transition law"]
+    J -. "[U] complete participant set" .-> L["[U] live actual-contact scope"]
+    C -. "[U] paused projection not published" .-> L
+    L -.-> V["[U] combat-v3 prewar admission"]
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
-    class J,C,V unknown;
+    class J,L,V unknown;
 ```
 
 ## 下一项 RE 与最短 live 验收
@@ -513,8 +518,10 @@ flowchart TD
    full owner 最后按原生路径清理。输出 array 必须与 route indexes 一一平行并保留 loops/duplicates；每个 prefix
    独立应用 `0x2947A60` 的 exact rounding，允许相同 date。任一 Province/edge/speed/duration gate 失败则整条
    timeline unavailable，不能从 route cost/hops/soldiers 猜值。
-6. [unknown] contact 最后继续 `0x220842F..0x2208646` 的 same-tick candidate mutation/scan 与
-   `0x2209450` stored-order policy；paused query 永不调用 `0x27FB7C0`。
+6. [static-confirmed] normal daily contact 顺序已闭合为 unit-manager stored order → deferred CArmy queue →
+   post-movement Province unsigned full-CUnitID 数值序 opponent；详见 `army-contact-resolution.md`。paused query
+   永不调用 `0x27FB7C0`。
+7. [unknown] live actual-contact scope 仍未发布，non-daily placement 的统一全序也仍未闭合。
 
 ### Active-war arrival / 一日 horizon 实机验收
 

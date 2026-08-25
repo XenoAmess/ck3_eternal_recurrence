@@ -1,6 +1,8 @@
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
+#include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/startup_dx11_render_context_draw_guard_v1.hpp"
 #include "xar_bridge/startup_localize_current_root_guard_v1.hpp"
@@ -200,7 +202,8 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += "\"candidate_id\":";
   AppendJsonString(result,
                    xar::ck3_11906::kMainThreadQueryMailboxV1CandidateId);
-  result += ",\"query_scope\":\"typed_war_entry_route_contact\"";
+  result +=
+      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3\"";
   result += ",\"installed\":";
   result += mailbox.iat_installed ? "true" : "false";
   result += ",\"stop\":";
@@ -1741,6 +1744,88 @@ std::string RouteContactHorizonResultFrame(
   return result;
 }
 
+std::string ActualContactScopeResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const xar::game::ActualContactScopeSnapshot &scope) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result +=
+      ",\"accepted\":true,\"status\":\"available\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(scope.snapshot_revision);
+  result += ",\"actual_contact_scope\":{\"schema_version\":1,";
+  result += "\"contract_stage\":\"production_exact_current_province\",";
+  result += "\"status\":\"available\",\"scope_kind\":";
+  AppendJsonString(result, scope.scope_kind);
+  result += ",\"snapshot_revision\":";
+  result += Number(scope.snapshot_revision);
+  result += ",\"date_raw\":";
+  result += SignedNumber(scope.date_raw);
+  result += ",\"subject_army_id\":";
+  result += SignedNumber(scope.subject_army_id);
+  result += ",\"subject_native_carmy_id\":";
+  result += SignedNumber(scope.subject_native_carmy_id);
+  result += ",\"subject_owner_character_id\":";
+  result += SignedNumber(scope.subject_owner_character_id);
+  result += ",\"target_province_id\":";
+  result += SignedNumber(scope.target_province_id);
+  result += ",\"province_unit_army_ids\":";
+  AppendInt32Array(result, scope.province_unit_army_ids);
+  result += ",\"province_combat_ids\":";
+  AppendInt32Array(result, scope.province_combat_ids);
+  result += ",\"stored_order_policy\":\"numeric_full_id\",";
+  result += "\"transition_kind\":";
+  AppendJsonString(result, scope.transition_kind);
+  result += ",\"selected_combat_id\":";
+  if (scope.selected_combat_id > 0) {
+    result += SignedNumber(scope.selected_combat_id);
+  } else {
+    result += "null";
+  }
+  result += ",\"selected_combat_array_index\":";
+  if (scope.selected_combat_array_index >= 0) {
+    result += SignedNumber(scope.selected_combat_array_index);
+  } else {
+    result += "null";
+  }
+  result += ",\"join_side\":";
+  if (scope.join_side == "none") {
+    result += "null";
+  } else {
+    AppendJsonString(result, scope.join_side);
+  }
+  result += ",\"defender_seed_character_id\":";
+  if (scope.defender_seed_character_id > 0) {
+    result += SignedNumber(scope.defender_seed_character_id);
+  } else {
+    result += "null";
+  }
+  result += ",\"initiator_is_defender\":";
+  result += scope.initiator_is_defender ? "true" : "false";
+  result += ",\"adjacency_kind_raw\":";
+  result += SignedNumber(scope.adjacency_kind_raw);
+  result += ",\"loser_excluded_native_carmy_ids\":";
+  AppendInt32Array(result, scope.loser_excluded_native_carmy_ids);
+  result += ",\"opponent_army_ids\":";
+  AppendInt32Array(result, scope.opponent_army_ids);
+  result += ",\"attacker_army_ids\":";
+  AppendInt32Array(result, scope.attacker_army_ids);
+  result += ",\"defender_army_ids\":";
+  AppendInt32Array(result, scope.defender_army_ids);
+  result += ",\"actual_contact_scope_ready\":";
+  result += scope.actual_contact_scope_ready ? "true" : "false";
+  result += ",\"combat_v3_participant_scope_ready\":";
+  result += scope.combat_v3_participant_scope_ready ? "true" : "false";
+  result += "}}}";
+  return result;
+}
+
 std::string SaveCheckpointResultFrame(std::string_view request_id,
                                       const CheckpointSubmission &checkpoint) {
   std::string result =
@@ -2211,6 +2296,10 @@ public:
         &xar::ck3_11906::ExecuteWarEntryAssessmentMailboxQueryV1;
     environment.permitted_executor_secondary =
         &xar::ck3_11906::ExecuteRouteContactHorizonMailboxQueryV1;
+    environment.permitted_executor_tertiary =
+        &xar::ck3_11906::ExecuteActualContactScopeMailboxQueryV1;
+    environment.permitted_executor_quaternary =
+        &xar::ck3_11906::ExecuteCombatSimulationInputsV3MailboxQuery;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -2342,6 +2431,7 @@ struct WorkerState {
   std::vector<xar::game::DeclarableWarSnapshot> declarable_wars;
   std::uint64_t war_entry_assessment_query_sequence = 0;
   std::uint64_t route_contact_horizon_query_sequence = 0;
+  std::uint64_t actual_contact_scope_query_sequence = 0;
   std::uint64_t army_strength_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t war_termination_query_sequence = 0;
@@ -2370,6 +2460,8 @@ void RunConnectedSession(
       state.war_entry_assessment_query_sequence;
   auto &route_contact_horizon_query_sequence =
       state.route_contact_horizon_query_sequence;
+  auto &actual_contact_scope_query_sequence =
+      state.actual_contact_scope_query_sequence;
   auto &army_strength_query_sequence =
       state.army_strength_query_sequence;
   auto &combat_inputs_query_sequence =
@@ -2776,67 +2868,124 @@ void RunConnectedSession(
         } else if (step.starts_with(
                        "query-combat-simulation-inputs-v3-")) {
           xar::game::CombatSimulationInputsRequest combat_request{};
+          std::uint64_t expected_revision = 0;
           if (!xar::game::ParseCombatSimulationInputsV3Step(
-                  step, combat_request)) {
+                  step, combat_request) ||
+              !xar::ck3_11906::
+                  ParseCombatSimulationInputsV3ExpectedRevision(
+                      incoming.payload, expected_revision)) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "combat-input v3 query step is not canonical"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "combat-input v3 expected revision is stale"));
           } else {
-            xar::game::CombatSimulationInputsV3Snapshot snapshot{};
-            const auto query_result =
-                xar::game::ReadCombatSimulationInputsV3(
-                    game, combat_request, snapshot);
-            if (query_result ==
-                    xar::game::ReadCombatSimulationInputsV3Result::available ||
-                query_result == xar::game::ReadCombatSimulationInputsV3Result::
-                                    phase_inputs_unavailable) {
-              ++combat_inputs_query_sequence;
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused) {
               connected = xar::bridge::WriteFrame(
-                  pipe, CombatSimulationInputsV3ResultFrame(
-                            request_id, step, combat_inputs_query_sequence,
-                            query_result, snapshot));
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "combat-input v3 snapshot changed; retry after heartbeat"));
             } else {
-              std::string_view error =
-                  "CK3 combat-input v3 query is unavailable";
-              switch (query_result) {
-              case xar::game::ReadCombatSimulationInputsV3Result::
-                  requires_paused:
-                error = "CK3 combat-input v3 query requires a paused map";
-                break;
-              case xar::game::ReadCombatSimulationInputsV3Result::
-                  no_played_character:
-                error = "no living played CK3 character";
-                break;
-              case xar::game::ReadCombatSimulationInputsV3Result::
-                  invalid_arguments:
-                error = "combat-input v3 query arguments are invalid";
-                break;
-              case xar::game::ReadCombatSimulationInputsV3Result::
-                  target_province_not_found:
-                error = "combat-input v3 target province was not found";
-                break;
-              case xar::game::ReadCombatSimulationInputsV3Result::
-                  army_not_in_scope:
-                error = "combat-input v3 army is outside allowed scope";
-                break;
-              case xar::game::ReadCombatSimulationInputsV3Result::
-                  invalid_encounter:
-                error =
-                    "selected armies do not form a canonical v3 encounter";
-                break;
-              case xar::game::ReadCombatSimulationInputsV3Result::
-                  base_inputs_unavailable:
-                error = "CK3 combat-input v3 base slice is unavailable";
-                break;
-              case xar::game::ReadCombatSimulationInputsV3Result::available:
-              case xar::game::ReadCombatSimulationInputsV3Result::
-                  phase_inputs_unavailable:
-              case xar::game::ReadCombatSimulationInputsV3Result::unavailable:
-                break;
+              xar::ck3_11906::CombatSimulationInputsV3MailboxContext query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.request = combat_request;
+              query.expected_snapshot_revision = expected_revision;
+              query.expected_snapshot = current_snapshot;
+              query.module_base = reinterpret_cast<std::uintptr_t>(
+                  GetModuleHandleW(nullptr));
+
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecuteCombatSimulationInputsV3MailboxQuery,
+                      &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main combat-input v3 executor is unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error = "application-main combat-input v3 executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kCombatSimulationInputsV3QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  // The application-main reader owns the stack context after
+                  // execution starts.  Retain it until terminal/reclaim even
+                  // when the exact CK3 phase model is expensive.
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kCombatSimulationInputsV3ExecutingWaitSliceMilliseconds);
+                }
+
+                std::string response;
+                bool completion_snapshot_stable = false;
+                const bool typed_result =
+                    query.completion == xar::ck3_11906::
+                                            CombatSimulationInputsV3MailboxCompletion::
+                                                available ||
+                    query.completion == xar::ck3_11906::
+                                            CombatSimulationInputsV3MailboxCompletion::
+                                                phase_inputs_unavailable;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    typed_result) {
+                  xar::game::Snapshot completion_snapshot{};
+                  if (state_revision == expected_revision &&
+                      previous_snapshot.has_value() &&
+                      xar::game::ReadSnapshot(game, completion_snapshot) &&
+                      completion_snapshot == current_snapshot &&
+                      completion_snapshot == previous_snapshot.value()) {
+                    completion_snapshot_stable = true;
+                    ++combat_inputs_query_sequence;
+                    response = CombatSimulationInputsV3ResultFrame(
+                        request_id, step, combat_inputs_query_sequence,
+                        query.query_result, query.result);
+                  }
+                }
+                if (response.empty()) {
+                  const auto error = xar::ck3_11906::
+                      CombatSimulationInputsV3FailureMessage(
+                          wait, query.completion, query.query_result,
+                          completion_snapshot_stable);
+                  response =
+                      CommandResultFrame(request_id, step, false, error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::
+                                         reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main combat-input v3 result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
               }
-              connected = xar::bridge::WriteFrame(
-                  pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
         } else if (step.starts_with(
@@ -3237,6 +3386,130 @@ void RunConnectedSession(
             connected = PublishSnapshot(pipe, game, previous_snapshot,
                                         state_revision, checkpoint_submission,
                                         published_checkpoint_sequence);
+          }
+        } else if (step.starts_with(
+                       xar::ck3_11906::kActualContactScopeV1StepPrefix)) {
+          xar::game::ActualContactScopeRequest contact_request{};
+          std::uint64_t expected_revision = 0;
+          if (!xar::ck3_11906::ParseActualContactScopeV1Step(
+                  step, contact_request) ||
+              !xar::ck3_11906::ParseActualContactExpectedRevisionV1(
+                  incoming.payload, expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "actual-contact-scope request is malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "actual-contact expected revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            const auto subject = [&]()
+                -> const xar::game::ArmySnapshot * {
+              if (!previous_snapshot.has_value()) {
+                return nullptr;
+              }
+              for (const auto &army : previous_snapshot->player_armies) {
+                if (army.army_id == contact_request.subject_army_id) {
+                  return &army;
+                }
+              }
+              return nullptr;
+            }();
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                subject == nullptr || !subject->controllable ||
+                !subject->has_current_province ||
+                subject->current_province_id !=
+                    contact_request.target_province_id) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "actual-contact snapshot or subject scope changed"));
+            } else {
+              xar::ck3_11906::ActualContactScopeMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.request = contact_request;
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecuteActualContactScopeMailboxQueryV1,
+                      &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main actual-contact executor is unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error = "application-main actual-contact executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kActualContactScopeV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kActualContactScopeV1ExecutingWaitSliceMilliseconds);
+                }
+                std::string response;
+                bool completion_snapshot_stable = false;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion == xar::ck3_11906::
+                                            ActualContactScopeMailboxCompletionV1::
+                                                available) {
+                  xar::game::Snapshot completion_snapshot{};
+                  if (state_revision == expected_revision &&
+                      previous_snapshot.has_value() &&
+                      xar::game::ReadSnapshot(game, completion_snapshot) &&
+                      completion_snapshot == current_snapshot &&
+                      completion_snapshot == previous_snapshot.value()) {
+                    completion_snapshot_stable = true;
+                    query.result.snapshot_revision = state_revision;
+                    ++actual_contact_scope_query_sequence;
+                    response = ActualContactScopeResultFrame(
+                        request_id, step,
+                        actual_contact_scope_query_sequence, query.result);
+                  }
+                }
+                if (response.empty()) {
+                  const auto error = xar::ck3_11906::
+                      ActualContactScopeFailureMessageV1(
+                          wait, query.completion, query.result.status,
+                          completion_snapshot_stable);
+                  response =
+                      CommandResultFrame(request_id, step, false, error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::
+                                         reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main actual-contact result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
           }
         } else if (step.starts_with(
                        xar::ck3_11906::kRouteContactHorizonV1StepPrefix)) {

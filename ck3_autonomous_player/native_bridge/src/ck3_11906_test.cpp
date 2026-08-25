@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 
 #include <algorithm>
@@ -120,6 +121,20 @@ std::array<std::byte, 0x778> g_plains_terrain{};
 std::array<std::byte, 0x40> g_combat_storage{};
 std::array<std::byte, 0x20> g_combat_slots{};
 std::array<std::byte, 0x718> g_player_combat{};
+std::array<std::byte, 0x40> g_contact_combat_storage{};
+std::array<std::byte, 0x40> g_contact_combat_slots{};
+std::array<std::byte, 0x718> g_contact_combat_0{};
+std::array<std::byte, 0x718> g_contact_combat_1{};
+std::array<std::int32_t, 1> g_contact_combat_0_attacker_armies{};
+std::array<std::int32_t, 1> g_contact_combat_0_defender_armies{};
+std::array<std::int32_t, 2> g_contact_combat_1_attacker_armies{};
+std::array<std::int32_t, 1> g_contact_combat_1_defender_armies{};
+std::array<std::byte, 0x40> g_contact_battle_result_storage{};
+std::array<std::byte, 0x20> g_contact_battle_result_slots{};
+std::array<std::byte, 0x30> g_contact_battle_result{};
+std::array<std::uintptr_t, 2> g_contact_battle_result_vtable{};
+std::array<std::uintptr_t, 7> g_contact_province_vtable{};
+bool g_contact_prior_province_valid = true;
 std::array<std::byte, 0x10> g_player_move_route_info_0{};
 std::array<std::byte, 0x10> g_player_move_route_info_1{};
 std::array<std::byte, 0x10> g_player_move_route_info_2{};
@@ -147,6 +162,11 @@ std::array<std::byte, 2 * 0x30> g_route_adjacencies_4{};
 std::array<std::byte, 2 * 0x30> g_route_adjacencies_5{};
 std::array<std::byte, 0x30> g_player_target_adjacency{};
 std::array<std::byte, 0x30> g_enemy_target_adjacency{};
+std::array<std::byte, 0x20> g_contact_province_gate{};
+std::array<std::byte, 0x1C8> g_contact_game_mode_root{};
+std::array<std::byte, 0x30> g_contact_game_mode{};
+std::array<std::int32_t, 3> g_contact_province_unit_ids{};
+std::array<std::int32_t, 2> g_contact_province_combat_ids{};
 std::array<std::byte, 0x860> g_war_objective_province{};
 std::array<std::byte, 0x860> g_second_war_objective_province{};
 std::array<std::byte, 0x860> g_third_war_objective_province{};
@@ -219,6 +239,9 @@ void *g_army_storage_pointer = nullptr;
 void *g_internal_army_storage_pointer = nullptr;
 void *g_regiment_storage_pointer = nullptr;
 void *g_combat_storage_pointer = nullptr;
+void *g_contact_combat_storage_pointer = nullptr;
+void *g_contact_battle_result_storage_pointer = nullptr;
+void *g_contact_game_mode_pointer = nullptr;
 void *g_siege_storage_pointer = nullptr;
 void *g_expected_event_manager = nullptr;
 bool g_has_active_event = true;
@@ -794,6 +817,66 @@ bool FixtureRegimentIdentityValid(void *subobject) {
 bool FixtureCharacterValid(void *subobject) {
   return subobject == g_played_character.data() + 0x10 ||
          subobject == g_target_character.data() + 0x10;
+}
+
+bool FixtureBattleResultValid(void *object) {
+  return object == g_contact_battle_result.data();
+}
+
+bool FixtureContactProvinceValid(void *object) {
+  if (object == g_war_objective_province.data()) {
+    return true;
+  }
+  return object == g_second_war_objective_province.data() &&
+         g_contact_prior_province_valid;
+}
+
+bool FixtureIsCharacterHostile(void *left_character,
+                               void *right_character, bool mode) {
+  if (mode) {
+    return false;
+  }
+  return (left_character == g_played_character.data() &&
+          right_character == g_target_character.data()) ||
+         (left_character == g_target_character.data() &&
+          right_character == g_played_character.data());
+}
+
+bool FixtureArmyIsEmptyForContact(void *army) {
+  return army != g_player_internal_army.data() &&
+         army != g_enemy_internal_army.data() &&
+         army != g_third_internal_army.data();
+}
+
+bool FixtureArmyIsInCombat(void *army) {
+  if (army != g_player_internal_army.data() &&
+      army != g_enemy_internal_army.data() &&
+      army != g_third_internal_army.data()) {
+    return true;
+  }
+  std::int32_t combat_id = -1;
+  std::memcpy(&combat_id, static_cast<std::byte *>(army) + 0x128,
+              sizeof(combat_id));
+  return combat_id != -1;
+}
+
+std::int32_t *FixtureReadProvinceHolderCharacterId(
+    void *province, std::int32_t *output) {
+  if (province == nullptr || output == nullptr) {
+    return nullptr;
+  }
+  std::memcpy(output, static_cast<std::byte *>(province) + 0x744,
+              sizeof(*output));
+  return output;
+}
+
+bool FixtureClassifyContactDefenderByHolder(void *owner, void *holder) {
+  return owner == g_played_character.data() &&
+         holder == g_played_character.data();
+}
+
+bool FixtureClassifyContactDefenderFallback(void *, void *) {
+  return false;
 }
 
 bool FixtureDatabaseObjectValid(void *object) {
@@ -2502,6 +2585,47 @@ int Fail(const char *message) {
 } // namespace
 
 int main() {
+  xar::game::ActualContactScopeRequest parsed_contact_request{};
+  if (!xar::ck3_11906::ParseActualContactScopeV1Step(
+          "query-actual-contact-scope-v1-16777217-at-3",
+          parsed_contact_request) ||
+      parsed_contact_request.subject_army_id != 16'777'217 ||
+      parsed_contact_request.target_province_id != 3) {
+    return Fail("actual-contact canonical parser rejected a valid scope");
+  }
+  constexpr std::array<std::string_view, 5> invalid_contact_steps{
+      "query-actual-contact-scope-v1-016777217-at-3",
+      "query-actual-contact-scope-v1-16777217-at-03",
+      "query-actual-contact-scope-v1-16777217-at-0",
+      "query-actual-contact-scope-v1-16777217-at-3-at-4",
+      "query-actual-contact-scope-v1-2147483648-at-3",
+  };
+  for (const auto invalid : invalid_contact_steps) {
+    if (xar::ck3_11906::ParseActualContactScopeV1Step(
+            invalid, parsed_contact_request)) {
+      return Fail("actual-contact parser accepted a non-canonical scope");
+    }
+  }
+  std::uint64_t parsed_contact_revision = 0;
+  if (!xar::ck3_11906::ParseActualContactExpectedRevisionV1(
+          "{\"expected_revision\":4294967297}",
+          parsed_contact_revision) ||
+      parsed_contact_revision != 4'294'967'297ULL ||
+      xar::ck3_11906::ParseActualContactExpectedRevisionV1(
+          "{\"expected_revision\":7,\"expected_revision\":8}",
+          parsed_contact_revision)) {
+    return Fail("actual-contact revision parser lost strict uint64 binding");
+  }
+  xar::ck3_11906::ActualContactScopeMailboxContextV1 forged_contact_query{};
+  xar::ck3_11906::MainThreadExecutionStampV1 forged_contact_stamp{};
+  if (xar::ck3_11906::ExecuteActualContactScopeMailboxQueryV1(
+          &forged_contact_query, forged_contact_stamp) ||
+      forged_contact_query.completion !=
+          xar::ck3_11906::ActualContactScopeMailboxCompletionV1::
+              infrastructure_rejected) {
+    return Fail("actual-contact executor accepted a direct worker-thread call");
+  }
+
   xar::game::RouteContactHorizonRequest parsed_route_request{};
   if (!xar::ck3_11906::ParseRouteContactHorizonV1Step(
           "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218-33554433",
@@ -2868,6 +2992,9 @@ int main() {
   constexpr std::int32_t enemy_regiment_0_id = 0x01000003;
   constexpr std::int32_t enemy_regiment_1_id = 0x01000004;
   constexpr std::int32_t active_combat_id = 0x01000001;
+  constexpr std::int32_t contact_combat_0_id = 0x01000002;
+  constexpr std::int32_t contact_combat_1_id = 0x01000003;
+  constexpr std::int32_t contact_battle_result_id = 0x01000001;
   constexpr std::int32_t active_war_id = 0x01000001;
   constexpr std::int32_t targeted_title_id = 0x01000001;
   constexpr std::int32_t targeted_duchy_a_title_id = 0x01000002;
@@ -3153,6 +3280,66 @@ int main() {
   Store(g_combat_storage, 0x2C, std::int32_t{2});
   g_combat_storage_pointer = g_combat_storage.data();
 
+  g_contact_combat_0_attacker_armies = {enemy_internal_army_id};
+  g_contact_combat_0_defender_armies = {third_internal_army_id};
+  g_contact_combat_1_attacker_armies = {third_internal_army_id};
+  g_contact_combat_1_defender_armies = {enemy_internal_army_id};
+  const auto initialize_contact_combat =
+      [&](auto &combat, std::int32_t combat_id,
+          std::int32_t attacker_primary_character_id,
+          std::int32_t defender_primary_character_id,
+          auto &attacker_army_ids, auto &defender_army_ids) {
+        Store(combat, 0x08, combat_id);
+        Store(combat, 0x20 + 0x10,
+              static_cast<void *>(attacker_army_ids.data()));
+        Store(combat, 0x20 + 0x18, std::int32_t{1});
+        Store(combat, 0x20 + 0x1C, std::int32_t{1});
+        Store(combat, 0x20 + 0x70, attacker_primary_character_id);
+        Store(combat, 0x368 + 0x10,
+              static_cast<void *>(defender_army_ids.data()));
+        Store(combat, 0x368 + 0x18, std::int32_t{1});
+        Store(combat, 0x368 + 0x1C, std::int32_t{1});
+        Store(combat, 0x368 + 0x70, defender_primary_character_id);
+        Store(combat, 0x6B8,
+              static_cast<void *>(g_war_objective_province.data()));
+        Store(combat, 0x6E0, std::int32_t{-1});
+        Store(combat, 0x704, std::uint8_t{0});
+        Store(combat, 0x708, std::int32_t{-1});
+      };
+  initialize_contact_combat(
+      g_contact_combat_0, contact_combat_0_id, enemy_character_id,
+      played_character_id, g_contact_combat_0_attacker_armies,
+      g_contact_combat_0_defender_armies);
+  initialize_contact_combat(
+      g_contact_combat_1, contact_combat_1_id, played_character_id,
+      enemy_character_id, g_contact_combat_1_attacker_armies,
+      g_contact_combat_1_defender_armies);
+  Store(g_contact_combat_slots, 0x28,
+        static_cast<void *>(g_contact_combat_0.data()));
+  Store(g_contact_combat_slots, 0x38,
+        static_cast<void *>(g_contact_combat_1.data()));
+  Store(g_contact_combat_storage, 0x20,
+        static_cast<void *>(g_contact_combat_slots.data()));
+  Store(g_contact_combat_storage, 0x2C, std::int32_t{4});
+  g_contact_combat_storage_pointer = g_contact_combat_storage.data();
+  g_contact_battle_result_vtable[1] =
+      reinterpret_cast<std::uintptr_t>(&FixtureBattleResultValid);
+  Store(g_contact_battle_result, 0x00,
+        static_cast<void *>(g_contact_battle_result_vtable.data()));
+  Store(g_contact_battle_result, 0x08, contact_battle_result_id);
+  Store(g_contact_battle_result, 0x28, std::uint8_t{1});
+  Store(g_contact_battle_result_slots, 0x18,
+        static_cast<void *>(g_contact_battle_result.data()));
+  Store(g_contact_battle_result_storage, 0x20,
+        static_cast<void *>(g_contact_battle_result_slots.data()));
+  Store(g_contact_battle_result_storage, 0x2C, std::int32_t{2});
+  g_contact_battle_result_storage_pointer =
+      g_contact_battle_result_storage.data();
+  Store(g_contact_game_mode_root, 0x1C0,
+        static_cast<void *>(g_contact_game_mode.data()));
+  g_contact_game_mode_pointer = g_contact_game_mode_root.data();
+  Store(g_contact_province_gate, 0x1B, std::uint8_t{1});
+
   Store(g_siege, 0x08, active_siege_id);
   Store(g_siege, 0x200,
         static_cast<void *>(g_war_objective_province.data()));
@@ -3421,7 +3608,10 @@ int main() {
       &g_internal_army_storage_pointer;
   bindings.regiment_storage_slot = &g_regiment_storage_pointer;
   bindings.combat_storage_slot = &g_combat_storage_pointer;
+  bindings.battle_result_storage_slot =
+      &g_contact_battle_result_storage_pointer;
   bindings.siege_storage_slot = &g_siege_storage_pointer;
+  bindings.contact_game_mode_slot = &g_contact_game_mode_pointer;
   bindings.global_variable_container_accessor_slot =
       &g_global_variable_container_accessor;
   bindings.valid_casus_belli_configuration_scratch =
@@ -3590,6 +3780,15 @@ int main() {
   bindings.is_event_target_valid = FixtureIsEventTargetValid;
   bindings.resolve_event_target_object =
       FixtureResolveEventTargetObject;
+  bindings.is_character_hostile = FixtureIsCharacterHostile;
+  bindings.is_army_empty_for_contact = FixtureArmyIsEmptyForContact;
+  bindings.is_army_in_combat = FixtureArmyIsInCombat;
+  bindings.read_province_holder_character_id =
+      FixtureReadProvinceHolderCharacterId;
+  bindings.classify_contact_defender_by_holder =
+      FixtureClassifyContactDefenderByHolder;
+  bindings.classify_contact_defender_fallback =
+      FixtureClassifyContactDefenderFallback;
 
   if (bindings.army_storage_slot != &g_army_storage_pointer ||
       *bindings.army_storage_slot != g_army_storage.data()) {
@@ -3771,6 +3970,239 @@ int main() {
       g_army_maximum_soldiers_calls != 2) {
     return Fail("paused army-strength aggregate drifted from exact ABI");
   }
+
+  // Freeze the production actual-contact mirror against the exact stored
+  // ordering semantics.  These are read-only predictions: no join/create
+  // helper is present in Bindings and no fixture object is mutated by the
+  // reader itself.
+  g_contact_province_unit_ids = {player_army_id, enemy_army_id,
+                                 third_army_id};
+  g_contact_province_combat_ids = {contact_combat_0_id,
+                                   contact_combat_1_id};
+  Store(g_war_objective_province, 0x08,
+        static_cast<void *>(g_player_map_node.data()));
+  g_contact_province_vtable[6] =
+      reinterpret_cast<std::uintptr_t>(&FixtureContactProvinceValid);
+  Store(g_war_objective_province, 0x00,
+        static_cast<void *>(g_contact_province_vtable.data()));
+  Store(g_second_war_objective_province, 0x00,
+        static_cast<void *>(g_contact_province_vtable.data()));
+  Store(g_war_objective_province, 0x20,
+        static_cast<void *>(g_contact_province_gate.data()));
+  Store(g_war_objective_province, 0x748,
+        static_cast<void *>(g_contact_province_unit_ids.data()));
+  Store(g_war_objective_province, 0x750, std::int32_t{3});
+  Store(g_war_objective_province, 0x754, std::int32_t{3});
+  Store(g_war_objective_province, 0x760,
+        static_cast<void *>(g_contact_province_combat_ids.data()));
+  Store(g_war_objective_province, 0x768, std::int32_t{2});
+  Store(g_war_objective_province, 0x76C, std::int32_t{1});
+  Store(g_war_objective_province, 0x858, std::int32_t{0});
+  Store(g_player_army, 0x20,
+        static_cast<void *>(g_war_objective_province.data()));
+  Store(g_enemy_army, 0x20,
+        static_cast<void *>(g_war_objective_province.data()));
+  Store(g_third_army, 0x20,
+        static_cast<void *>(g_war_objective_province.data()));
+  Store(g_third_army, 0x174, enemy_character_id);
+  Store(g_army_slots, 0x38, static_cast<void *>(g_third_army.data()));
+  Store(g_enemy_army, 0x170, std::int32_t{0});
+  Store(g_player_internal_army, 0x128, std::int32_t{-1});
+  g_contact_combat_0_defender_armies = {enemy_internal_army_id};
+  Store(g_contact_combat_0, 0x6E0, std::int32_t{0});
+  Store(g_contact_combat_0, 0x704, std::uint8_t{1});
+  Store(g_contact_combat_0, 0x708, contact_battle_result_id);
+  g_player_army_state_code = 1;
+  g_enemy_army_state_code = 1;
+  bindings.combat_storage_slot = &g_contact_combat_storage_pointer;
+
+  const xar::game::ActualContactScopeRequest actual_contact_request{
+      player_army_id, war_objective_province_id};
+  xar::game::ActualContactScopeSnapshot actual_contact{};
+  if (xar::ck3_11906::ReadActualContactScope(
+          bindings, actual_contact_request, actual_contact) !=
+          xar::game::ActualContactScopeStatus::available ||
+      actual_contact.status !=
+          xar::game::ActualContactScopeStatus::available ||
+      actual_contact.date_raw != 43'823'104 ||
+      actual_contact.subject_army_id != player_army_id ||
+      actual_contact.subject_native_carmy_id != player_internal_army_id ||
+      actual_contact.subject_owner_character_id != played_character_id ||
+      actual_contact.target_province_id != war_objective_province_id ||
+      actual_contact.province_unit_army_ids !=
+          std::vector<std::int32_t>{player_army_id, enemy_army_id,
+                                    third_army_id} ||
+      actual_contact.province_combat_ids !=
+          std::vector<std::int32_t>{contact_combat_0_id} ||
+      actual_contact.transition_kind != "create_new" ||
+      actual_contact.selected_combat_id != -1 ||
+      actual_contact.selected_combat_array_index != -1 ||
+      actual_contact.join_side != "none" ||
+      actual_contact.defender_seed_character_id != enemy_character_id ||
+      actual_contact.initiator_is_defender ||
+      actual_contact.adjacency_kind_raw != 2 ||
+      actual_contact.loser_excluded_native_carmy_ids !=
+          std::vector<std::int32_t>{enemy_internal_army_id} ||
+      actual_contact.opponent_army_ids !=
+          std::vector<std::int32_t>{enemy_army_id, third_army_id} ||
+      actual_contact.attacker_army_ids !=
+          std::vector<std::int32_t>{player_army_id} ||
+      actual_contact.defender_army_ids !=
+          std::vector<std::int32_t>{enemy_army_id, third_army_id} ||
+      !actual_contact.actual_contact_scope_ready ||
+      !actual_contact.combat_v3_participant_scope_ready) {
+    return Fail(
+        "actual-contact create mirror lost Province order or side polarity");
+  }
+
+  // A gathering army can pass the native empty-army gate while every valid
+  // regiment currently has zero soldiers.  Native finds a hostile seed, then
+  // stops before construction; the public no-transition shape must not retain
+  // that intermediate seed or claim a combat-v3 participant scope.
+  Store(g_player_internal_army, 0x5C, std::int32_t{1});
+  Store(g_player_regiment_0, 0x38, std::int32_t{0});
+  Store(g_player_regiment_1, 0x38, std::int32_t{0});
+  if (xar::ck3_11906::ReadActualContactScope(
+          bindings, actual_contact_request, actual_contact) !=
+          xar::game::ActualContactScopeStatus::available ||
+      actual_contact.transition_kind != "none" ||
+      actual_contact.defender_seed_character_id != -1 ||
+      !actual_contact.opponent_army_ids.empty() ||
+      !actual_contact.attacker_army_ids.empty() ||
+      !actual_contact.defender_army_ids.empty() ||
+      !actual_contact.actual_contact_scope_ready ||
+      actual_contact.combat_v3_participant_scope_ready) {
+    return Fail(
+        "actual-contact zero-strength stop leaked an intermediate seed");
+  }
+  Store(g_player_regiment_0, 0x38, std::int32_t{600});
+  Store(g_player_regiment_1, 0x38, std::int32_t{400});
+  Store(g_player_internal_army, 0x5C, std::int32_t{0});
+
+  g_contact_prior_province_valid = false;
+  if (xar::ck3_11906::ReadActualContactScope(
+          bindings, actual_contact_request, actual_contact) !=
+          xar::game::ActualContactScopeStatus::available ||
+      actual_contact.transition_kind != "create_new" ||
+      actual_contact.adjacency_kind_raw != 0 ||
+      !actual_contact.actual_contact_scope_ready ||
+      !actual_contact.combat_v3_participant_scope_ready) {
+    return Fail(
+        "actual-contact adjacency used an identity-invalid Province edge");
+  }
+  g_contact_prior_province_valid = true;
+
+  Store(g_third_army, 0x174, played_character_id);
+  g_contact_combat_0_defender_armies = {third_internal_army_id};
+  Store(g_contact_combat_0, 0x6E0, std::int32_t{-1});
+  Store(g_contact_combat_0, 0x704, std::uint8_t{0});
+  Store(g_contact_combat_0, 0x708, std::int32_t{-1});
+  Store(g_war_objective_province, 0x76C, std::int32_t{2});
+  if (xar::ck3_11906::ReadActualContactScope(
+          bindings, actual_contact_request, actual_contact) !=
+          xar::game::ActualContactScopeStatus::available ||
+      actual_contact.status !=
+          xar::game::ActualContactScopeStatus::available ||
+      actual_contact.province_unit_army_ids !=
+          std::vector<std::int32_t>{player_army_id, enemy_army_id,
+                                    third_army_id} ||
+      actual_contact.province_combat_ids !=
+          std::vector<std::int32_t>{contact_combat_0_id,
+                                    contact_combat_1_id} ||
+      actual_contact.transition_kind != "join_existing" ||
+      actual_contact.selected_combat_id != contact_combat_1_id ||
+      actual_contact.selected_combat_array_index != 1 ||
+      actual_contact.join_side != "attacker" ||
+      actual_contact.attacker_army_ids !=
+          std::vector<std::int32_t>{third_army_id, player_army_id} ||
+      actual_contact.defender_army_ids !=
+          std::vector<std::int32_t>{enemy_army_id} ||
+      !actual_contact.opponent_army_ids.empty() ||
+      !actual_contact.actual_contact_scope_ready ||
+      !actual_contact.combat_v3_participant_scope_ready) {
+    return Fail(
+        "actual-contact join mirror did not select the last compatible combat");
+  }
+
+  // Materialize the predicted join exactly as the native mutator would: the
+  // incoming CArmy is tail-appended to attacker, every participant links the
+  // same positive CombatID, and the Combat remains in the Province's sorted
+  // table. The same query must now publish actual—not predicted—side order.
+  g_contact_combat_1_attacker_armies = {
+      third_internal_army_id, player_internal_army_id};
+  Store(g_contact_combat_1, 0x20 + 0x18, std::int32_t{2});
+  Store(g_contact_combat_1, 0x20 + 0x1C, std::int32_t{2});
+  Store(g_player_internal_army, 0x128, contact_combat_1_id);
+  Store(g_enemy_internal_army, 0x128, contact_combat_1_id);
+  Store(g_third_internal_army, 0x128, contact_combat_1_id);
+  g_player_army_state_code = 2;
+  if (xar::ck3_11906::ReadActualContactScope(
+          bindings, actual_contact_request, actual_contact) !=
+          xar::game::ActualContactScopeStatus::available ||
+      actual_contact.scope_kind != "post_contact_observation" ||
+      actual_contact.transition_kind != "in_combat" ||
+      actual_contact.target_province_id != war_objective_province_id ||
+      actual_contact.selected_combat_id != contact_combat_1_id ||
+      actual_contact.selected_combat_array_index != 1 ||
+      actual_contact.join_side != "none" ||
+      actual_contact.attacker_army_ids !=
+          std::vector<std::int32_t>{third_army_id, player_army_id} ||
+      actual_contact.defender_army_ids !=
+          std::vector<std::int32_t>{enemy_army_id} ||
+      !actual_contact.actual_contact_scope_ready ||
+      !actual_contact.combat_v3_participant_scope_ready) {
+    return Fail(
+        "actual-contact post-contact observation lost CombatID or side order");
+  }
+
+  Store(g_enemy_internal_army, 0x128, std::int32_t{-1});
+  if (xar::ck3_11906::ReadActualContactScope(
+          bindings, actual_contact_request, actual_contact) !=
+          xar::game::ActualContactScopeStatus::state_changed ||
+      actual_contact.actual_contact_scope_ready ||
+      actual_contact.combat_v3_participant_scope_ready) {
+    return Fail(
+        "actual-contact accepted a side participant without Combat backlink");
+  }
+  Store(g_player_internal_army, 0x128, std::int32_t{-1});
+  Store(g_enemy_internal_army, 0x128, std::int32_t{-1});
+  Store(g_third_internal_army, 0x128, std::int32_t{-1});
+  g_contact_combat_1_attacker_armies = {third_internal_army_id, 0};
+  Store(g_contact_combat_1, 0x20 + 0x18, std::int32_t{1});
+  Store(g_contact_combat_1, 0x20 + 0x1C, std::int32_t{1});
+  g_player_army_state_code = 1;
+
+  g_contact_province_unit_ids = {enemy_army_id, player_army_id,
+                                 third_army_id};
+  if (xar::ck3_11906::ReadActualContactScope(
+          bindings, actual_contact_request, actual_contact) !=
+          xar::game::ActualContactScopeStatus::state_changed ||
+      actual_contact.actual_contact_scope_ready ||
+      actual_contact.combat_v3_participant_scope_ready) {
+    return Fail("actual-contact reader accepted a noncanonical Province order");
+  }
+
+  bindings.combat_storage_slot = &g_combat_storage_pointer;
+  Store(g_army_slots, 0x38, static_cast<void *>(nullptr));
+  Store(g_player_army, 0x20,
+        static_cast<void *>(g_player_province.data()));
+  Store(g_enemy_army, 0x20,
+        static_cast<void *>(g_enemy_province.data()));
+  Store(g_third_army, 0x20,
+        static_cast<void *>(g_enemy_province.data()));
+  Store(g_enemy_army, 0x170, std::int32_t{1});
+  Store(g_player_internal_army, 0x128, active_combat_id);
+  g_player_army_state_code = 2;
+  g_enemy_army_state_code = 6;
+  Store(g_war_objective_province, 0x08, static_cast<void *>(nullptr));
+  Store(g_war_objective_province, 0x20, static_cast<void *>(nullptr));
+  Store(g_war_objective_province, 0x748, static_cast<void *>(nullptr));
+  Store(g_war_objective_province, 0x750, std::int32_t{0});
+  Store(g_war_objective_province, 0x754, std::int32_t{0});
+  Store(g_war_objective_province, 0x760, static_cast<void *>(nullptr));
+  Store(g_war_objective_province, 0x768, std::int32_t{0});
+  Store(g_war_objective_province, 0x76C, std::int32_t{0});
+  Store(g_war_objective_province, 0x858, std::int32_t{2});
 
   // Freeze one explicit hypothetical contact. The final entry edge is
   // Province 2 -> target 5; current positions and move orders are irrelevant.
@@ -6983,6 +7415,7 @@ int main() {
                "war_army_snapshot=1 relative_war_score=1 "
                "army_strength_query=1 army_strength_partial_rows=1 "
                "combat_simulation_inputs_query=1 "
+               "actual_contact_scope_v1=1 "
                "army_storage_pointer_slot=1 "
                "raise_troops_command=1 move_army_preview=1 "
                "move_army_command=1 "

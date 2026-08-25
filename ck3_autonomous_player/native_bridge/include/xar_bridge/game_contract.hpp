@@ -888,6 +888,61 @@ struct RouteContactHorizonSnapshot {
   friend bool operator==(const RouteContactHorizonSnapshot &,
                          const RouteContactHorizonSnapshot &) = default;
 };
+
+// Exact read-only mirror of either the contact transition CK3 would resolve
+// for one public CUnit already committed to its current Province, or the
+// active CCombat produced by that transition. Participant-side army IDs are
+// public CUnitIDs; native CArmyIDs appear only in explicitly named evidence
+// fields used to audit exact-build resolution.
+struct ActualContactScopeRequest {
+  std::int32_t subject_army_id = -1;
+  std::int32_t target_province_id = -1;
+
+  friend bool operator==(const ActualContactScopeRequest &,
+                         const ActualContactScopeRequest &) = default;
+};
+
+enum class ActualContactScopeStatus {
+  available,
+  requires_paused,
+  subject_army_not_found,
+  subject_army_not_controllable,
+  target_province_not_found,
+  subject_not_at_target,
+  entry_rejected,
+  relation_unavailable,
+  state_changed,
+  unavailable,
+};
+
+struct ActualContactScopeSnapshot {
+  ActualContactScopeStatus status = ActualContactScopeStatus::unavailable;
+  std::string scope_kind = "pre_contact_prediction";
+  std::uint64_t snapshot_revision = 0;
+  std::int32_t date_raw = 0;
+  std::int32_t subject_army_id = -1;
+  std::int32_t subject_native_carmy_id = -1;
+  std::int32_t subject_owner_character_id = -1;
+  std::int32_t target_province_id = -1;
+  std::vector<std::int32_t> province_unit_army_ids;
+  std::vector<std::int32_t> province_combat_ids;
+  std::string transition_kind = "none";
+  std::int32_t selected_combat_id = -1;
+  std::int32_t selected_combat_array_index = -1;
+  std::string join_side = "none";
+  std::int32_t defender_seed_character_id = -1;
+  bool initiator_is_defender = false;
+  std::int32_t adjacency_kind_raw = 0;
+  std::vector<std::int32_t> loser_excluded_native_carmy_ids;
+  std::vector<std::int32_t> opponent_army_ids;
+  std::vector<std::int32_t> attacker_army_ids;
+  std::vector<std::int32_t> defender_army_ids;
+  bool actual_contact_scope_ready = false;
+  bool combat_v3_participant_scope_ready = false;
+
+  friend bool operator==(const ActualContactScopeSnapshot &,
+                         const ActualContactScopeSnapshot &) = default;
+};
 enum class DisbandArmyResult {
   submitted,
   army_not_found,

@@ -1,0 +1,432 @@
+{
+  "schema_version": 1,
+  "contract": "actual-contact-scope-v1-static-research",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "not_live_evidence": true,
+  "source_same_day_scheduler": {
+    "cunit_manager_ids_stored_order": [
+      16777220,
+      16777210,
+      16777230
+    ],
+    "normal_movement_commits_by_cunit_id": {
+      "16777220": [
+        {
+          "native_carmy_id": 33554452,
+          "target_province_id": 900,
+          "enqueue_suppressed_raw": false
+        }
+      ],
+      "16777210": [
+        {
+          "native_carmy_id": 33554442,
+          "target_province_id": 900,
+          "enqueue_suppressed_raw": false
+        }
+      ],
+      "16777230": []
+    },
+    "target_province_cunit_ids_after_all_movement": [
+      16777210,
+      16777220,
+      16777240
+    ],
+    "all_full_ids_match": true
+  },
+  "source_join_existing": {
+    "incoming": {
+      "public_cunit_id": 16777300,
+      "native_carmy_id": 33554532,
+      "owner_character_id": 100
+    },
+    "province_id": 901,
+    "combat_rows_numeric_id_order": [
+      {
+        "combat_id": 50331669,
+        "full_id_matches": true,
+        "finalized": true,
+        "attacker": {
+          "primary_character_id": 201,
+          "native_carmy_ids": [
+            7001
+          ]
+        },
+        "defender": {
+          "primary_character_id": 301,
+          "native_carmy_ids": [
+            9001,
+            9002
+          ]
+        },
+        "battle_result": {
+          "full_id_matches": true,
+          "ready": true,
+          "winner_side": 0
+        }
+      },
+      {
+        "combat_id": 50331673,
+        "full_id_matches": true,
+        "finalized": false,
+        "attacker": {
+          "primary_character_id": 202,
+          "native_carmy_ids": [
+            7002
+          ]
+        },
+        "defender": {
+          "primary_character_id": 302,
+          "native_carmy_ids": [
+            9003
+          ]
+        },
+        "battle_result": {
+          "full_id_matches": false,
+          "ready": false,
+          "winner_side": -1
+        }
+      },
+      {
+        "combat_id": 50331678,
+        "full_id_matches": true,
+        "finalized": false,
+        "attacker": {
+          "primary_character_id": 203,
+          "native_carmy_ids": [
+            7003
+          ]
+        },
+        "defender": {
+          "primary_character_id": 303,
+          "native_carmy_ids": [
+            9004
+          ]
+        },
+        "battle_result": {
+          "full_id_matches": false,
+          "ready": false,
+          "winner_side": -1
+        }
+      }
+    ],
+    "directed_contact_relations": {
+      "100->202": true,
+      "100->302": false,
+      "100->203": false,
+      "100->303": true,
+      "203->100": false,
+      "303->100": true
+    },
+    "two_samples_equal": true
+  },
+  "source_create_new": {
+    "incoming": {
+      "public_cunit_id": 1000,
+      "native_carmy_id": 2000,
+      "owner_character_id": 10,
+      "current_soldiers": 600,
+      "full_ids_match": true
+    },
+    "province": {
+      "province_id": 902,
+      "fort_level": 1,
+      "holder_character_id": 10,
+      "raw_adjacency_kind": 2
+    },
+    "combat_rows_numeric_id_order": [
+      {
+        "combat_id": 6000,
+        "full_id_matches": true,
+        "finalized": true,
+        "attacker": {
+          "primary_character_id": 80,
+          "native_carmy_ids": [
+            2800
+          ]
+        },
+        "defender": {
+          "primary_character_id": 81,
+          "native_carmy_ids": [
+            2001
+          ]
+        },
+        "battle_result": {
+          "full_id_matches": true,
+          "ready": true,
+          "winner_side": 0
+        }
+      }
+    ],
+    "province_unit_rows_numeric_cunit_id_order": [
+      {
+        "public_cunit_id": 1000,
+        "native_carmy_id": 2000,
+        "owner_character_id": 10,
+        "unit_state_raw": 0,
+        "retreat_state": 0,
+        "empty_without_gathering": false,
+        "has_valid_combat": false,
+        "full_ids_match": true
+      },
+      {
+        "public_cunit_id": 1001,
+        "native_carmy_id": 2001,
+        "owner_character_id": 20,
+        "unit_state_raw": 0,
+        "retreat_state": 0,
+        "empty_without_gathering": false,
+        "has_valid_combat": false,
+        "full_ids_match": true
+      },
+      {
+        "public_cunit_id": 1002,
+        "native_carmy_id": 2002,
+        "owner_character_id": 30,
+        "unit_state_raw": 0,
+        "retreat_state": 0,
+        "empty_without_gathering": false,
+        "has_valid_combat": false,
+        "full_ids_match": true
+      },
+      {
+        "public_cunit_id": 1003,
+        "native_carmy_id": 2003,
+        "owner_character_id": 30,
+        "unit_state_raw": 0,
+        "retreat_state": 0,
+        "empty_without_gathering": false,
+        "has_valid_combat": false,
+        "full_ids_match": true
+      },
+      {
+        "public_cunit_id": 1004,
+        "native_carmy_id": 2004,
+        "owner_character_id": 40,
+        "unit_state_raw": 0,
+        "retreat_state": 0,
+        "empty_without_gathering": false,
+        "has_valid_combat": false,
+        "full_ids_match": true
+      },
+      {
+        "public_cunit_id": 1005,
+        "native_carmy_id": 2005,
+        "owner_character_id": 10,
+        "unit_state_raw": 0,
+        "retreat_state": 0,
+        "empty_without_gathering": false,
+        "has_valid_combat": false,
+        "full_ids_match": true
+      },
+      {
+        "public_cunit_id": 1006,
+        "native_carmy_id": 2006,
+        "owner_character_id": 50,
+        "unit_state_raw": 0,
+        "retreat_state": 0,
+        "empty_without_gathering": true,
+        "has_valid_combat": false,
+        "full_ids_match": true
+      },
+      {
+        "public_cunit_id": 1007,
+        "native_carmy_id": 2007,
+        "owner_character_id": 60,
+        "unit_state_raw": 0,
+        "retreat_state": 0,
+        "empty_without_gathering": false,
+        "has_valid_combat": true,
+        "full_ids_match": true
+      },
+      {
+        "public_cunit_id": 1008,
+        "native_carmy_id": 2008,
+        "owner_character_id": 70,
+        "unit_state_raw": 0,
+        "retreat_state": 1,
+        "empty_without_gathering": false,
+        "has_valid_combat": false,
+        "full_ids_match": true
+      }
+    ],
+    "directed_contact_relations": {
+      "10->20": true,
+      "10->30": true,
+      "20->10": true,
+      "40->10": true
+    },
+    "holder_relation": true,
+    "province_fallback_relation": false,
+    "two_samples_equal": true
+  },
+  "source_in_combat_observation": {
+    "subject": {
+      "public_cunit_id": 1000,
+      "native_carmy_id": 2000,
+      "linked_combat_id": 7000,
+      "current_province_id": 902,
+      "controllable": true,
+      "full_ids_match": true
+    },
+    "requested_target_province_id": 902,
+    "province_combat_ids_numeric_order": [
+      6000,
+      7000
+    ],
+    "combat": {
+      "combat_id": 7000,
+      "full_id_matches": true,
+      "active_predicate": true,
+      "finalized": false,
+      "province_id": 902,
+      "province_identity_matches": true,
+      "attacker_native_carmy_ids_stored_order": [
+        2002,
+        2000
+      ],
+      "defender_native_carmy_ids_stored_order": [
+        2001,
+        2003
+      ]
+    },
+    "participant_identity_rows": [
+      {
+        "native_carmy_id": 2000,
+        "public_cunit_id": 1000,
+        "linked_combat_id": 7000,
+        "carmy_cunit_backlink_matches": true
+      },
+      {
+        "native_carmy_id": 2001,
+        "public_cunit_id": 1001,
+        "linked_combat_id": 7000,
+        "carmy_cunit_backlink_matches": true
+      },
+      {
+        "native_carmy_id": 2002,
+        "public_cunit_id": 1002,
+        "linked_combat_id": 7000,
+        "carmy_cunit_backlink_matches": true
+      },
+      {
+        "native_carmy_id": 2003,
+        "public_cunit_id": 1003,
+        "linked_combat_id": 7000,
+        "carmy_cunit_backlink_matches": true
+      }
+    ],
+    "two_samples_equal": true
+  },
+  "expected_projection": {
+    "same_day_scheduler": {
+      "contact_queue_native_carmy_ids": [
+        33554452,
+        33554442
+      ],
+      "target_province_cunit_ids": [
+        16777210,
+        16777220,
+        16777240
+      ],
+      "initiator_order_source": "cunit_manager_stored_order_then_per_unit_commit_order",
+      "opponent_order_source": "post_movement_numeric_full_cunit_id_order"
+    },
+    "join_existing": {
+      "transition_kind": "join_existing",
+      "combat_id": 50331678,
+      "combat_array_index": 2,
+      "predicted_side": "attacker",
+      "current_attacker_native_carmy_ids": [
+        7003
+      ],
+      "current_defender_native_carmy_ids": [
+        9004
+      ],
+      "predicted_attacker_native_carmy_ids": [
+        7003,
+        33554532
+      ],
+      "predicted_defender_native_carmy_ids": [
+        9004
+      ],
+      "loser_exclusion_native_carmy_ids": [
+        9001,
+        9002
+      ]
+    },
+    "create_new": {
+      "transition_kind": "create_new",
+      "defender_seed_character_id": 30,
+      "defender_seed_public_cunit_id": 1002,
+      "loser_exclusion_native_carmy_ids": [
+        2001
+      ],
+      "ordered_opponents": [
+        {
+          "public_cunit_id": 1001,
+          "native_carmy_id": 2001,
+          "owner_character_id": 20
+        },
+        {
+          "public_cunit_id": 1002,
+          "native_carmy_id": 2002,
+          "owner_character_id": 30
+        },
+        {
+          "public_cunit_id": 1003,
+          "native_carmy_id": 2003,
+          "owner_character_id": 30
+        },
+        {
+          "public_cunit_id": 1004,
+          "native_carmy_id": 2004,
+          "owner_character_id": 40
+        }
+      ],
+      "initiator_is_defender": true,
+      "initiator_side": "defender",
+      "opponent_side": "attacker",
+      "predicted_attacker_native_carmy_ids": [
+        2001,
+        2002,
+        2003,
+        2004
+      ],
+      "predicted_defender_native_carmy_ids": [
+        2000
+      ],
+      "raw_adjacency_kind": 2
+    },
+    "in_combat_observation": {
+      "scope_kind": "post_contact_observation",
+      "transition_kind": "in_combat",
+      "combat_id": 7000,
+      "combat_array_index": 1,
+      "actual_target_province_id": 902,
+      "subject_side": "attacker",
+      "actual_attacker_public_cunit_ids": [
+        1002,
+        1000
+      ],
+      "actual_defender_public_cunit_ids": [
+        1001,
+        1003
+      ]
+    },
+    "readiness": {
+      "exact_build_ready": true,
+      "same_day_scheduler_static_ready": true,
+      "province_candidate_order_static_ready": true,
+      "existing_combat_selection_static_ready": true,
+      "new_combat_opponent_order_static_ready": true,
+      "constructor_side_polarity_static_ready": true,
+      "actual_contact_scope_static_ready": true,
+      "post_contact_observation_static_ready": true,
+      "actual_contact_scope_live_ready": true,
+      "actual_contact_scope_ready": true,
+      "production_query_ready": true,
+      "capability_advertised": true
+    }
+  }
+}

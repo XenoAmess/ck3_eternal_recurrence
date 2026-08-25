@@ -2,12 +2,13 @@
 
 ## Result and scope
 
-`main_thread_query_mailbox_v1` now has two bounded production uses:
-`query-war-entry-assessments-v1` and
-`query-route-contact-horizon-v1-N`. The candidate identity remains
+`main_thread_query_mailbox_v1` now has four bounded production uses:
+`query-war-entry-assessments-v1`, `query-route-contact-horizon-v1-N`,
+`query-actual-contact-scope-v1-N` and
+`query-combat-simulation-inputs-v3-N`. The candidate identity remains
 `application_main_thread_war_entry_v1`; the heartbeat query scope is
-`typed_war_entry_route_contact`. It is not a general native-call, effect,
-combat-phase, or scripted-VM executor.
+`typed_war_entry_route_actual_contact_combat_v3`. It is not a general
+native-call, effect, or scripted-VM executor.
 
 The first paused live counter run reached SDL `PeekMessageW` return
 `0x3CE4222` continuously. It reported `failure=32` because the application
@@ -17,12 +18,15 @@ as a thread rejection: independent call-graph review proved that
 earlier HandlePdxEvents TLS gate. Therefore the application-main boundary is
 live-confirmed; RNG owner remains raw provenance only.
 
-The route-contact typed executor has an exact-build live result; the war-entry
-typed executor still awaits its first. Production admits at most one request
-per pump and only the callbacks `ExecuteWarEntryAssessmentMailboxQueryV1` and
-`ExecuteRouteContactHorizonMailboxQueryV1`. War-entry remains limited to one
-target per request; route-contact is limited to one controllable subject and
-the exact complete hostile scope, at most 64 ArmyIDs.
+The route-contact and combat-v3 typed executors have exact-build live results;
+the war-entry and actual-contact application-main paths still require their
+own paused live acceptance. Production admits at most one request per pump and
+only four named callbacks: `ExecuteWarEntryAssessmentMailboxQueryV1`,
+`ExecuteRouteContactHorizonMailboxQueryV1`,
+`ExecuteActualContactScopeMailboxQueryV1`, and
+`ExecuteCombatSimulationInputsV3MailboxQuery`. War-entry remains limited to
+one target per request; route-contact is limited to one controllable subject
+and the exact complete hostile scope, at most 64 ArmyIDs.
 
 Frozen build: CK3 `1.19.0.6`; every managed live run uses the project copy
 `Z:\ck3_mod_rewrite\Crusader Kings III\binaries\ck3.exe`. The production9
@@ -79,7 +83,7 @@ flowchart TD
     E --> F[Observe exact return 0x3CE4222]
     F --> G{TLS + paused + date + identity stable twice?}
     G -- no --> F
-    G -- yes --> H[Two typed read-only executors ready]
+    G -- yes --> H[Four typed read-only executors ready]
     H --> I[Stop]
     I --> J[Restore original IAT and drain counted hooks]
     J --> K[Detached; process-pinned storage retained]
@@ -95,7 +99,9 @@ one.
 
 Production install sets `permitted_executor` to
 `ExecuteWarEntryAssessmentMailboxQueryV1` and `permitted_executor_secondary`
-to `ExecuteRouteContactHorizonMailboxQueryV1`.
+to `ExecuteRouteContactHorizonMailboxQueryV1`; the tertiary and quaternary
+slots are fixed to `ExecuteActualContactScopeMailboxQueryV1` and
+`ExecuteCombatSimulationInputsV3MailboxQuery`.
 `TrySubmitMainThreadQueryV1` rejects every other callback. The war-entry bridge
 additionally requires exactly one target. Timeout can cancel a queued request
 only. Once state is `executing`, the worker retains the caller-owned context
@@ -113,6 +119,111 @@ native reader independently revalidates actor, target,
 AI-context, power leaves, repeated native output, and the mailbox performs a
 post-callback TLS/pause/date/object double sample. Any drift discards the
 payload.
+
+Combat-v3 binds the caller's positive `expected_revision`, the complete last
+published paused snapshot, and its full-generation encounter IDs before
+submission. Its executor re-reads that snapshot on application-main, requires
+the mailbox date/pause stamp to match, performs the entire
+`ReadCombatSimulationInputsV3` call once, and then repeats the full snapshot
+comparison. The worker repeats revision and snapshot checks before publishing
+the result. Before entering the phase reader it also reads the exact-build
+accolade scripted-rules singleton slot `module+0x57C2060` (absolute
+`0x1457C2060`) and AccoladeType DB
+backing slot `module+0x570C030`, then requires the already-registered `owner`
+named-key ID at `module+0x57EB620` to differ from `-1`. These raw reads happen
+before any snapshot/Character resolution and never call the lazy constructor
+or key interner. If a prerequisite is unavailable, the executor does not enter
+the phase reader: it reads only the already-safe base slice and publishes typed
+`phase_inputs_unavailable`.
+
+### Why combat-v3, `can_be_acclaimed`, and local sides stay on application-main
+
+[static-confirmed] `0x28A4870` has ABI
+`bool(CCharacter*, PotentialAccoladeRows* optional_out, std::string* optional_diagnostic)`.
+The stock compiled leaf and GUI getter pass `(character,nullptr,nullptr)`, but
+that does **not** make it a scalar getter. The closed control tree validates
+identity/alive, rejects current/successor accolade occupancy, resolves owner,
+builds a real Character scope with named `owner`, evaluates the global
+accolade rules, traverses the complete AccoladeType database, evaluates
+candidate triggers/weights, and constructs/sorts temporary rows before
+returning the bool. The exact trigger bodies and sort comparator remain outside
+the current evidence; the mailbox does not infer them.
+
+[live-confirmed failure boundary, 2026-08-26] Managed paused diagnostics that
+called `0x28A4870` directly from the bridge worker hung or exited CK3. With only
+that leaf forced to `false`, the same detached reader progressed through all
+Character rows and ultimately returned phase inputs available. This A/B result
+proves the worker path affects actual use; it does not validate the forced bool.
+The bounded repair is the application-main executor plus the three existing-
+state gates at `+0x57C2060`, `+0x570C030`, and `+0x57EB620`. The corrected
+shared mailbox has now run this real helper in paused CK3; the acceptance below
+returned 10 true and 17 false `can_be_acclaimed` leaves, so no diagnostic
+constant remained in the published payload.
+
+The address distinction is exact-build significant. `0x28A4870` calls
+accessor `0x1B36670` unconditionally at `0x28A4C04`; that accessor reads
+absolute `0x1457C2060`, calls lazy constructor `0x3B98000` when null, and then
+re-reads the slot. The mailbox prerequisite deliberately performs only the raw
+read. `module+0x5702060` is a different, incorrect address and must not be
+accepted as an alias.
+
+[static-confirmed] The advantage shell has a second application-main reason.
+`0x23C7D30(CCombatSide*,CCombat*)` constructs a local side; the byte at
+`module+0x4F3CF81` is the saved-variable-slot enable flag and is statically `1`
+in 1.19.0.6, not a debug-ID rejection gate. Each constructor therefore borrows
+a side saved-variable slot. The complete destructor `0x2303B00(CCombatSide*)`
+must run in reverse construction order inside the same paused callback and
+return it. The whole synchronous lifecycle is
+`construct -> populate -> select -> 0x2308D50 -> read -> complete destroy`.
+No side, slot, engine pointer, or local shell may cross back to the worker.
+Before/after full Snapshot equality and revision checks reject any visible
+frame drift. This is query-level non-persistence, not a claim that the engine
+allocator/manager is untouched.
+
+The strength equality gate belongs after `0x2308D50`, not merely after side
+population. In the detached paused frame, attacker `0x23CC340` returned
+`124831` before finalize while the independent mirror was `129975`; after
+`0x2308D50` it returned `129975`, matching the mirror. The final defender value
+was `65172`. The early value is an intermediate materialization state, not an
+observation failure.
+
+[detached-live evidence only] A diagnostic artifact with SHA-256
+`4E50F1FEA510A92F9155F05A1844196D69C9A66540A6AFEC94EE15CA2F4094D2`
+returned 27 Character rows, 3 Army rows, 15 constructor-source rows,
+base `-500000`, resolved/helper `-2500000`, and final side strengths
+`129975/65172`. It bypassed real `can_be_acclaimed` and retained two now-known
+wrong `recently_disembarked` labels for the `CArmy+0x5C`/DB `+0xF18`
+gathering source. It therefore supports the local lifecycle and helper timing,
+but is not live acceptance of the shared application-main/corrected-schema
+path.
+
+[live-confirmed, 2026-08-26] The first shared run exposed the RVA typo rather
+than a CK3 initialization failure: gate `+0x5702060` returned null and produced
+typed `native_phase_accolade_scripted_rules_singleton_uninitialized` while the
+managed session still stopped cleanly. That negative artifact has SHA-256
+`B706AD1FC82201A7B2EB5127426111FA7CAC2414EBD3EE0ABF0E4A27EBFA8737`.
+After correcting the gate to `+0x57C2060`, the same unchanged checkpoint
+(`12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D`)
+returned shared `status=available`, phase available, and
+`phase_event_inputs_ready=true` on date `53177976`.
+
+The successful artifact
+`combat-v3-shared-main-thread-paused-live-acceptance.json`, SHA-256
+`EBEA36EC41811C7736B0819DC31A2D0B0ABE7205D4FBA76D1FBD7AE629535DA5`,
+contains 27 Character rows, 3 Army rows, 15 constructor-source rows, all
+`132 = 81 native + 51 offline` refs, corrected gathering raws `0/0`, owner
+debt selectors `-1/-1` (valid “no debt effect”), base `-500000`,
+resolved/helper `-2500000` with equality, and side strengths
+`129975/65172`. Managed stop reported cleanup true and zero CK3 processes.
+This accepts the bounded application-main executor, real `0x28A4870`, all
+three singleton/named-key prerequisites, corrected gathering schema, and the
+same-callback local-side lifecycle for this combined-defensive paused frame.
+It does not accept transition/RNG fidelity: `monte_carlo_ready` remains false
+for `damage_to_casualty_allocation`, `pursuit_transition`,
+`battle_end_and_retreat_transition`, `phase_event_rng_and_effects`, plus the
+loaded-playset/AST/original-trace fidelity gates. That false gate does not
+negate this raw observation milestone and must not be rewritten as phase-input
+unavailability.
 
 ```mermaid
 stateDiagram-v2
@@ -658,10 +769,11 @@ unobserved.
 | Application-main paused boundary | true | live pump plus TLS gate; RNG mismatch recorded as provenance |
 | War-entry direct-call graph excludes RNG/effect VM | true | independent depth-12 review |
 | Fresh before/middle/after frame capture | true in build | deterministic source/fixture checks |
-| Only permitted executors | true in build | production primary/secondary install and submit identity gate |
+| Only permitted executors | true in build | four fixed production slots plus submit identity gate |
 | First-live one-target result | pending | deploy this artifact and query one declarable target while paused |
 | First-live route-contact result | true | 2.466 s available result; `executed_requests 0 -> 1`; one-day advance completed |
 | Actual contact sides/order | false | same-day Province candidate/stored-order branch remains unobserved |
+| First-live combat-v3 application-main result | true | shared artifact `EBEA36EC...535DA5`; real can-be, 132/132 refs, corrected gathering, helper equality, cleanup proven |
 | General native evaluator | false | intentionally unsupported |
 
 Machine-readable authority:

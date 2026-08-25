@@ -78,7 +78,7 @@ struct CombatAdvantageSideInputV3TestOnly {
   std::int32_t primary_army_id = -1;
   std::vector<std::int32_t> ordered_army_ids;
   CombatAdvantageSupplyInputV3TestOnly supply;
-  std::int32_t primary_army_recently_disembarked_raw = 0;
+  std::int32_t primary_army_gathering_raw = 0;
   std::int32_t owner_character_id = -1;
   std::int32_t owner_debt_selector_raw = 0;
   bool treasury_debt_selector_observable = false;

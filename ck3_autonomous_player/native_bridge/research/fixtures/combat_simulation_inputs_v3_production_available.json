@@ -1015,7 +1015,7 @@
                                 "eligible_soldiers_running_low": 0,
                                 "eligible_soldiers_starving": 0
                             },
-                            "primary_army_recently_disembarked_raw": 0,
+                            "primary_army_gathering_raw": 0,
                             "owner_character_id": 16777218,
                             "owner_debt_selector_raw": 0,
                             "treasury_debt_selector_raw": null
@@ -1035,7 +1035,7 @@
                                 "eligible_soldiers_running_low": 800,
                                 "eligible_soldiers_starving": 0
                             },
-                            "primary_army_recently_disembarked_raw": 0,
+                            "primary_army_gathering_raw": 0,
                             "owner_character_id": 16777219,
                             "owner_debt_selector_raw": 1,
                             "treasury_debt_selector_raw": null
@@ -1052,8 +1052,8 @@
                         "supply_0",
                         "supply_1",
                         "holding_defender_1",
-                        "recently_disembarked_0",
-                        "recently_disembarked_1",
+                        "gathering_army_0",
+                        "gathering_army_1",
                         "debt_0_owner_then_treasury",
                         "debt_1_owner_then_treasury",
                         "unreformed_faith_0",
@@ -1170,7 +1170,7 @@
                         {
                             "stage_order": 7,
                             "append_order": null,
-                            "stage": "recently_disembarked_0",
+                            "stage": "gathering_army_0",
                             "side": "attacker",
                             "source_key": null,
                             "effect_advantage_points": null,
@@ -1180,12 +1180,12 @@
                             "accumulator_after_raw": -1600000,
                             "selected": false,
                             "applied": false,
-                            "skip_reason": "primary_army_not_recently_disembarked"
+                            "skip_reason": "primary_army_not_gathering"
                         },
                         {
                             "stage_order": 8,
                             "append_order": null,
-                            "stage": "recently_disembarked_1",
+                            "stage": "gathering_army_1",
                             "side": "defender",
                             "source_key": null,
                             "effect_advantage_points": null,
@@ -1195,7 +1195,7 @@
                             "accumulator_after_raw": -1600000,
                             "selected": false,
                             "applied": false,
-                            "skip_reason": "primary_army_not_recently_disembarked"
+                            "skip_reason": "primary_army_not_gathering"
                         },
                         {
                             "stage_order": 9,

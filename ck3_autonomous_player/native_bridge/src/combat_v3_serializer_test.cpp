@@ -260,10 +260,10 @@ xar::ck3_11906::CombatPhaseInputsV3 Fixture() {
              "supply_state_running_low_advantage", -10, {});
   add_source("holding_defender_1", "defender", true, true,
              "holding_defender_advantage", 5, {});
-  add_source("recently_disembarked_0", "attacker", false, false, {}, 0,
-             "primary_army_not_recently_disembarked");
-  add_source("recently_disembarked_1", "defender", false, false, {}, 0,
-             "primary_army_not_recently_disembarked");
+  add_source("gathering_army_0", "attacker", false, false, {}, 0,
+             "primary_army_not_gathering");
+  add_source("gathering_army_1", "defender", false, false, {}, 0,
+             "primary_army_not_gathering");
   add_source("debt_0_owner", "attacker", true, true,
              "combat_debt_level_0", -5, {});
   add_source("debt_0_treasury", "attacker", false, false, {}, 0,

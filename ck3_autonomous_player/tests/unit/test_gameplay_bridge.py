@@ -7202,6 +7202,44 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                         ],
                     }
                 )
+            elif step == "query-actual-contact-scope-v1-81-at-50":
+                result.update(
+                    {
+                        "status": "available",
+                        "query_sequence": 12,
+                        "snapshot_revision": 4,
+                        "actual_contact_scope": {
+                            "schema_version": 1,
+                            "contract_stage": (
+                                "production_exact_current_province"
+                            ),
+                            "status": "available",
+                            "scope_kind": "post_contact_observation",
+                            "snapshot_revision": 4,
+                            "date_raw": 53_171_424,
+                            "subject_army_id": 81,
+                            "subject_native_carmy_id": 181,
+                            "subject_owner_character_id": 707,
+                            "target_province_id": 50,
+                            "province_unit_army_ids": [81, 82, 91],
+                            "province_combat_ids": [700],
+                            "stored_order_policy": "numeric_full_id",
+                            "transition_kind": "in_combat",
+                            "selected_combat_id": 700,
+                            "selected_combat_array_index": 0,
+                            "join_side": None,
+                            "defender_seed_character_id": None,
+                            "initiator_is_defender": False,
+                            "adjacency_kind_raw": 0,
+                            "loser_excluded_native_carmy_ids": [],
+                            "opponent_army_ids": [],
+                            "attacker_army_ids": [81, 82],
+                            "defender_army_ids": [91],
+                            "actual_contact_scope_ready": True,
+                            "combat_v3_participant_scope_ready": True,
+                        },
+                    }
+                )
             elif step == "query-arrange-marriage-choices":
                 result.update(
                     {
@@ -7336,6 +7374,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                 "disband-army-81",
                 "enforce-demands-88",
                 "query-army-strengths-v1",
+                "query-actual-contact-scope-v1-81-at-50",
                 "query-war-termination-options-88",
                 "query-war-termination-terms-v1-88",
                 "query-war-termination-exit-terms-v2-16777300",
@@ -7379,6 +7418,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_disband_army",
                     "ck3_enforce_demands",
                     "ck3_query_army_strengths",
+                    "ck3_query_actual_contact_scope",
                     "ck3_query_combat_simulation_inputs",
                     "ck3_query_combat_simulation_inputs_v3",
                     "ck3_query_war_entry_assessments",
@@ -7552,6 +7592,24 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             self.assertNotIn(
                 "win_probability", strengths.structured_content
             )
+            actual_contact = await client.call_tool(
+                "ck3_query_actual_contact_scope",
+                {
+                    "subject_army_id": 81,
+                    "target_province_id": 50,
+                    "expected_revision": 4,
+                },
+            )
+            self.assertFalse(actual_contact.is_error)
+            actual_scope = actual_contact.structured_content[
+                "actual_contact_scope"
+            ]
+            self.assertEqual(
+                actual_scope["scope_kind"], "post_contact_observation"
+            )
+            self.assertEqual(actual_scope["selected_combat_id"], 700)
+            self.assertEqual(actual_scope["attacker_army_ids"], [81, 82])
+            self.assertEqual(actual_scope["defender_army_ids"], [91])
             termination = await client.call_tool(
                 "ck3_query_war_termination_options",
                 {"war_id": 88, "expected_revision": 4},

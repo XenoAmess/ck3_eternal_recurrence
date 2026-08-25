@@ -76,13 +76,36 @@ for the migration contract and per-capability upgrade workflow.
 
 ## Build and offline test
 
-Use an x64 Visual Studio developer shell with CMake and Ninja:
+Use an x64 Visual Studio developer shell and the fresh-build helper for every
+DLL that will be injected into CK3:
 
 ```powershell
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build
-ctest --test-dir build --output-on-failure
+.\tools\build_fresh.ps1
 ```
+
+The helper always allocates a new `build-fresh-*` directory and refuses an
+existing path. It requests English MSVC `/showIncludes` output and, on the
+Chinese MSVC 19.51 distribution that ships only `2052/clui.dll`, repairs
+CMake's incorrectly decoded UTF-8 dependency prefix in the generated Ninja
+rules before compiling. It then verifies that Ninja recorded `ck3_11906.hpp`
+for both sides of the `Bindings` ABI, runs the offline CTest suite, and rejects
+the artifacts if native sources changed while the build was running. This gate
+exists because a localized Ninja dependency database with zero header
+dependencies once linked a new `Bindings` producer to an old adapter object
+and made CK3 crash during pre-resume injection. The locale repair does not
+bypass that gate: `ninja -t deps` must still contain the header for both
+objects.
+
+To choose the fresh path explicitly, or only inspect the intended build without
+creating it:
+
+```powershell
+.\tools\build_fresh.ps1 -BuildDir ..\build-fresh-production
+.\tools\build_fresh.ps1 -BuildDir ..\build-fresh-production -PlanOnly
+```
+
+`-BuildDir` must not already exist. `-SkipTests` is available for a diagnostic
+compile, but such an artifact is not a production-tested bridge.
 
 The offline tests inject only into the purpose-built
 `xar_ck3_bridge_target.exe`; they do not start or touch CK3. One test covers

@@ -1,0 +1,391 @@
+{
+  "schema_version": 1,
+  "contract": "actual-contact-scope-v1-static-research",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "advertised": true,
+  "production_wired": true,
+  "live_validated": false,
+  "execution_boundary": {
+    "research_mode": "exact_build_static_plus_production_read_only",
+    "ck3_started_or_controlled": false,
+    "paused_application_main_required_for_future_query": true,
+    "two_complete_samples_must_match": true,
+    "forbidden_calls": [
+      "0x23040A0_existing_combat_join_mutator",
+      "0x2209450_opponent_builder_continues_into_combat_creation",
+      "0x27FB7C0_contact_combat_constructor",
+      "0x220BAA0_province_unit_insert_and_contact_queue_producer",
+      "0xA886F0_vector_tail_append",
+      "0x21A8A0_sorted_combat_id_insert",
+      "0x2116E0_array_remove"
+    ],
+    "allowed_algorithm": "mirror fields and branch order only; relation predicates may be invoked synchronously on application-main only after their existing read-only call boundary is retained",
+    "live_boundary": "pre-contact and post-contact read paths are production-wired, but actual_contact_scope_ready remains false until paused fixtures compare predictions with native join/create transitions and the resulting CombatID/side arrays"
+  },
+  "component_storage": {
+    "shape": {
+      "slots": "+0x20",
+      "capacity": "+0x2C signed int32",
+      "slot_stride": "0x10",
+      "slot_object": "+0x08",
+      "full_id_rule": "mask only the low 24-bit slot index, then require the complete generation-bearing ID to match the resolved object"
+    },
+    "cunit_slot_rva": "0x570CC80",
+    "carmy_slot_rva": "0x570C730",
+    "carmy_fallback_slot_rva_forbidden": "0x570C720",
+    "ccombat_slot_rva": "0x570C758",
+    "character_slot_rva": "0x570C130",
+    "cregiment_slot_rva": "0x57BF4C8"
+  },
+  "layouts": {
+    "CProvince": {
+      "+0x08": "map node; adjacency data +0x50, signed count +0x5C, row stride 0x30",
+      "+0x10": "full ProvinceID",
+      "+0x20_then_+0x1B": "raw target contact-admission byte; business name not closed",
+      "+0x740": "full landed TitleID fallback for holder projection",
+      "+0x744": "full holder CharacterID; -1 enters title fallback",
+      "+0x748/+0x754": "full CUnitID data/count scanned for seed and opponents",
+      "+0x760/+0x76C": "full CCombatID data/count scanned for join candidates",
+      "+0x858": "fort level int32"
+    },
+    "CUnit": {
+      "+0x10": "full public CUnitID",
+      "+0x18": "raw contact-state int32; resolver requires zero",
+      "+0x20": "current CProvince*",
+      "+0x30": "movement-target CProvince*",
+      "+0x38/+0x44": "remaining route pointer data/signed count",
+      "+0x170": "retreat state int32; resolver requires <= 0",
+      "+0x174": "full owner CharacterID",
+      "+0x178": "full internal CArmyID"
+    },
+    "CArmy": {
+      "+0x10": "full CArmyID identity",
+      "+0x38/+0x44": "full CRegimentID data/signed count",
+      "+0x5C": "gathering count int32",
+      "+0x124": "full backing CUnitID",
+      "+0x128": "full CCombatID; valid resolve means already in combat"
+    },
+    "CRegiment": {
+      "+0x10": "full CRegimentID identity",
+      "+0x38": "current soldiers int32"
+    },
+    "CCombat": {
+      "+0x08": "full CCombatID identity",
+      "+0x20": "attacker CCombatSide",
+      "+0x368": "defender CCombatSide",
+      "+0x6B8": "encounter CProvince*",
+      "+0x6E0": "winner side index int32; -1 unresolved",
+      "+0x704": "finalized byte used by contact candidate scan",
+      "+0x708": "full BattleResultID"
+    },
+    "CCombatSide": {
+      "+0x10/+0x1C": "full CArmyID data/signed count",
+      "+0x70": "primary participant full CharacterID; absolute CCombat offsets +0x90 attacker and +0x3D8 defender",
+      "public_id_mapping": "resolve each internal CArmyID, require CArmy+0x124 full CUnitID to resolve and backlink to that CArmy, then publish the CUnitID as public army_id",
+      "insert_semantics": "0x23C9100 checks the existing side ArmyID array and tail-appends through 0xA886F0 only when the full CArmyID is absent"
+    },
+    "BattleResult": {
+      "+0x08": "full BattleResultID identity",
+      "+0x28": "ready byte required before loser-side exclusion is collected"
+    }
+  },
+  "same_day_scheduler": {
+    "cunit_manager_rtti": {
+      "primary_vtable_rva": "0x4340468",
+      "secondary_vtable_rva": "0x43404A0"
+    },
+    "daily_rva": "0x27F9B50",
+    "cunit_manager_order": {
+      "data": "+0x20 full CUnitID array",
+      "count": "+0x2C signed int32",
+      "iteration": "freeze end at entry, generation-resolve each ID, then call 0x2247C50(CUnit*) serially in stored order",
+      "post_loop": "tail-call 0x27C0E90 only after all movement updates"
+    },
+    "normal_movement_enqueue": {
+      "movement_tick_rva": "0x2247C50",
+      "movement_commit_rva": "0x224B1B0",
+      "normal_flags_byte0_zero_rva": "0x2247ED9",
+      "movement_commit_callsite_rva": "0x2247F19",
+      "new_province_add_callsite_rva": "0x224B460",
+      "province_add_rva": "0x220BAA0",
+      "flag_name_boundary": "the first flag byte is only proven to suppress contact enqueue when nonzero; call it normal_movement_enqueue_suppressed_raw, not a broader gameplay name"
+    },
+    "province_unit_order": {
+      "duplicate_probe_range": "0x220BAF0..0x220BB2D",
+      "unsigned_insertion_range": "0x220BB2D..0x220BB7A",
+      "insert_helper_rva": "0x1118F20",
+      "rule": "after rejecting an existing equal ID, insert the full CUnitID at its unsigned-32-bit lower-bound-equivalent position",
+      "daily_consequence": "the post-movement Province array consumed by contact scans is unsigned full-CUnitID order for normal movement additions, not arrival append order"
+    },
+    "contact_queue": {
+      "manager_root": "*(module+0x570E068), then +0xA0 game-data pointer, then +0x25580 embedded manager",
+      "data_capacity_count": "+0x98/+0xA0/+0xA4",
+      "producer_range": "0x220BB88..0x220BBEF",
+      "tail_append_rva": "0xA886F0",
+      "tail_append_range": "0xA886F0..0xA887DC",
+      "element": "full CArmyID",
+      "producer_gate": "normal_movement_enqueue_suppressed_raw == 0, CUnit+0x18 == 0, and CUnit+0x178 resolves to an identity-matching CArmy",
+      "order": "pure tail append with no sort and no dedupe; append execution order inherits the serial CUnitManager traversal, with any multiple commits by one CUnit remaining in that CUnit's execution order"
+    },
+    "consumer": {
+      "rva_range": "0x27C0E90..0x27C103C",
+      "order": "scan queue +0x98 to frozen end in append order",
+      "per_entry": "resolve CArmyID, skip a generation-valid existing CCombat, resolve CArmy+0x124 to CUnit and its current CUnit+0x20 Province, then call 0x2208320(Province*,CUnit*)",
+      "postcondition": "clear queue count +0xA4 to zero",
+      "same_day_tie": "normal daily arrival initiator order is the CUnitManager stored traversal order, while each target Province opponent order is the post-movement unsigned full-CUnitID order"
+    }
+  },
+  "contact_resolver": {
+    "rva_range": "0x2208320..0x22088EF",
+    "abi": "bool resolve_contact(CProvince* target, CUnit* incoming)",
+    "entry_gates": [
+      "target CProvince+0x20 pointer raw byte +0x1B is nonzero",
+      "(*(module+0x576CC68)+0x1C0)+0x28 raw byte is zero",
+      "inline mirror of 0x290CFF0(incoming,true): CUnit+0x18==0, retreat<=0, linked CArmy is not empty-without-gathering and has no valid combat",
+      "incoming CUnit+0x174 owner CharacterID resolves and passes its identity predicate"
+    ],
+    "army_empty_predicate": {
+      "rva": "0x2277290",
+      "true_when": "sum of current_soldiers from generation-valid CArmy+0x38 regiments is <= 0 and CArmy+0x5C gathering_count is zero"
+    },
+    "army_in_combat_predicate": {
+      "rva": "0x22771F0",
+      "true_when": "CArmy+0x128 resolves to a full-ID-matching CCombat whose identity predicate is true"
+    }
+  },
+  "existing_combat_selection": {
+    "scan_range": "0x220842F..0x22085F4",
+    "source": "target CProvince+0x760/+0x76C full CCombatID array",
+    "order": "unsigned full-CCombatID ascending because creation inserts through 0x22099AD..0x2209A0D",
+    "compatibility": "for each non-finalized combat, call 0x2900470(incoming_owner, attacker_primary,0) and 0x2900470(incoming_owner, defender_primary,0); compatible iff exactly one result is true",
+    "selection": "overwrite the saved candidate for every compatible row; therefore the final result is the last compatible CCombat in unsigned full-CCombatID ascending order, not the first",
+    "join_mutator_callsite": "0x2208641 calls forbidden 0x23040A0(CCombat*,CArmy*)",
+    "predicted_join_side": {
+      "mirror_range": "0x2304172..0x230422A",
+      "rule": "0x2900470(attacker_primary,incoming_owner,0) true predicts defender side; otherwise 0x2900470(defender_primary,incoming_owner,0) true predicts attacker side",
+      "strict_query_gate": "require exactly one reverse-direction relation before publishing a side; relation asymmetry is unavailable rather than guessed",
+      "post_transition_arrays": "strictly map both current CCombatSide arrays, then tail-append the incoming internal CArmyID to the predicted side using 0x23C9100 first-seen semantics"
+    },
+    "loser_exclusion": {
+      "collection_range": "0x2208551..0x22085DC",
+      "gate": "only while no compatible combat has yet been saved; require valid BattleResultID, BattleResult+0x28 nonzero, and winner index != -1",
+      "payload": "append the losing CCombatSide's CArmyID array in its stored order to a temporary exclusion vector",
+      "winner_mapping": "winner 0 attacker -> copy defender +0x368; winner nonzero -> copy attacker +0x20",
+      "impact_boundary": "used only by the first-hostile seed scan; it does not alter existing-combat selection and is not passed into 0x2209450, so it does not directly filter the final opponent vector"
+    }
+  },
+  "new_combat_selection": {
+    "seed_scan_range": "0x2208651..0x22087C5",
+    "source": "target CProvince+0x748/+0x754 full CUnitID array in unsigned order",
+    "seed_rule": "choose the first candidate that passes every gate",
+    "candidate_gates": [
+      "candidate owner full CharacterID differs from incoming owner",
+      "CUnit+0x18 == 0",
+      "CUnit+0x170 <= 0",
+      "CUnit+0x178 resolves to an identity-matching CArmy",
+      "0x2277290(CArmy*) is false",
+      "0x22771F0(CArmy*) is false",
+      "CArmyID is absent from the temporary loser-exclusion vector",
+      "0x2900470(incoming_owner,candidate_owner,0) is true"
+    ],
+    "initiator_strength_gate_range": "0x2208817..0x220888A",
+    "initiator_strength_gate": "sum current_soldiers over generation-valid initiating CArmy regiments must be positive",
+    "builder_callsite": "0x2208896 calls 0x2209450(target,initiating_carmy,defender_seed_owner_id)",
+    "no_seed_result": "no contact transition; native resolver may take a non-contact fallback, which the read-only query does not emulate"
+  },
+  "opponent_builder": {
+    "rva": "0x2209450",
+    "abi": "void build_and_create_contact(CProvince* target, CArmy* initiating, int32 defender_seed_owner_id)",
+    "scan_range": "0x2209583..0x22097E8",
+    "source": "target CProvince+0x748/+0x754 full CUnitID unsigned order",
+    "candidate_gates": [
+      "CUnit+0x18 == 0",
+      "CUnit+0x170 <= 0",
+      "linked CArmy is identity-valid",
+      "0x2277290(CArmy*) is false",
+      "0x22771F0(CArmy*) is false",
+      "candidate owner equals defender_seed_owner_id, or 0x2900470(candidate_owner,initiating_owner,0) is true"
+    ],
+    "order_and_membership": "append every passing CArmy* to the temporary opponent vector in Province unsigned full-CUnitID order; the vector has no sort, no dedupe, and no loser-exclusion check",
+    "final_side_boundary": "0x2303CF0 feeds the temporary vector through 0x23C9100, so final CCombatSide ArmyID arrays retain only the first occurrence of each full CArmyID while preserving vector order",
+    "forbidden_boundary": "0x2209450 is not callable by a read-only query because it continues to 0x27FB7C0"
+  },
+  "side_orientation": {
+    "classifier_ranges": [
+      "0x22097F9..0x2209918",
+      "0x2209C2B..0x2209C45"
+    ],
+    "fort_branch": "if CProvince+0x858 > 0, derive the holder from +0x744 or the +0x740 landed-title fallback and test 0x2900710(initiating_owner,holder)",
+    "fallback_branch": "if the fort/holder relation did not classify the initiator, test 0x290CD60(initiating_owner,target)",
+    "constructor_boolean": "initiator_is_defender, equivalently initiator_on_side1",
+    "polarity_proof": {
+      "constructor_rva": "0x2303CF0",
+      "dispatch_range": "0x2303E82..0x2303F50",
+      "attacker_insert_rva": "0x23043F0 inserts into CCombat+0x20",
+      "defender_insert_rva": "0x23044F0 inserts into CCombat+0x368",
+      "true": "initiating CArmy -> defender side1; opponents -> attacker side0",
+      "false": "initiating CArmy -> attacker side0; opponents -> defender side1",
+      "correction": "the boolean must not be named initiator_is_attacker",
+      "predicted_arrays_true": "attacker = first-seen opponent CArmyIDs; defender = [initiating CArmyID]",
+      "predicted_arrays_false": "attacker = [initiating CArmyID]; defender = first-seen opponent CArmyIDs"
+    },
+    "adjacency_kind": {
+      "range": "0x2209C48..0x2209D0F",
+      "source": "initiating CArmy+0x124 -> CUnit; origin +0x20, target +0x30; scan origin map-node adjacency rows",
+      "row": "stride 0x30, kind +0x00, target ProvinceID +0x04",
+      "default": "raw kind zero when the validated edge is absent"
+    }
+  },
+  "mutation_visibility": {
+    "forbidden_constructor": {
+      "rva_range": "0x27FB7C0..0x27FBA13",
+      "callsite_rva": "0x2209945",
+      "writes": [
+        "allocate and construct a 0x718-byte CCombat",
+        "write the new full CCombatID to initiating and opponent CArmy+0x128",
+        "populate attacker/defender side arrays",
+        "return a registered CCombat"
+      ]
+    },
+    "province_combat_insert": {
+      "range": "0x22099AD..0x2209A0D",
+      "rule": "unsigned-32-bit lower-bound insert of the new full CCombatID into CProvince+0x760",
+      "same_batch_effect": "later queue entries on the same daily pass observe the newly created combat in the sorted active-combat array"
+    },
+    "combat_end_rescan": {
+      "range": "0x230AE6B..0x230AE86",
+      "rule": "remove ended CombatID from CProvince+0x760, refresh Province state, then call 0x220D2A0(CProvince*)",
+      "rescan_rva": "0x220D2A0",
+      "rescan_order": "freeze Province+0x754 count and process CUnitIDs by index while reloading +0x748; call 0x2208320 for eligible non-combat units"
+    }
+  },
+  "post_contact_observation": {
+    "entry": "when exact 0x22771F0 reports that the subject CArmy has a generation-valid active CCombat",
+    "algorithm": [
+      "read the positive full CCombatID from subject CArmy+0x128 and strict-resolve CCombat storage +0x08",
+      "require CCombat+0x704 finalized byte zero for the just-created/joined contact outcome",
+      "strict-resolve CCombat+0x6B8 Province and require actual ProvinceID, requested target and subject CUnit+0x20 current Province to be identical",
+      "read the Province +0x748 CUnitID and +0x760 CCombatID tables in their native numeric order and locate subject and CombatID",
+      "read attacker CCombat+0x20 and defender CCombat+0x368 ArmyID arrays without sorting",
+      "for every side CArmyID require CArmy+0x128 to link this same CombatID, map CArmy+0x124 to a full public CUnitID, and require the CUnit+0x178 backlink",
+      "require nonempty disjoint sides and require the subject public CUnitID to occur in exactly one side",
+      "repeat the entire observation and publish only when both samples and the outer paused snapshot revision match"
+    ],
+    "result": {
+      "scope_kind": "post_contact_observation",
+      "transition_kind": "in_combat",
+      "selected_combat_id": "positive full CCombatID from CArmy+0x128",
+      "target_province_id": "actual strict-resolved CCombat ProvinceID",
+      "attacker_army_ids": "ordered public CUnitIDs mapped from CCombat attacker side",
+      "defender_army_ids": "ordered public CUnitIDs mapped from CCombat defender side"
+    },
+    "reconciliation": "pre-contact predicted attacker/defender public CUnitID arrays must equal post-contact actual arrays by value and order; set equality or a command ACK is insufficient"
+  },
+  "minimum_read_only_query": {
+    "name": "query_actual_contact_scope_v1",
+    "input": "public full CUnitID and expected current/target ProvinceID",
+    "thread": "paused application-main mailbox",
+    "algorithm": [
+      "strictly resolve CUnit, linked CArmy, owner Character and current Province; mirror all entry gates",
+      "if CArmy+0x128 resolves through 0x22771F0, read and validate the actual CCombat Province and ordered public attacker/defender CUnitID arrays, then return in_combat without invoking relation or mutation helpers",
+      "scan every Province CombatID in stored unsigned full-ID order and retain the last forward-direction relation-XOR-compatible combat while collecting only the native loser exclusions allowed before the first saved candidate",
+      "if a combat was retained, mirror the reverse-direction join-side checks, strictly map both current side arrays, append incoming to the predicted side with 0x23C9100 first-seen semantics, and return join_existing without calling 0x23040A0",
+      "otherwise choose the first eligible hostile seed in Province unsigned full-CUnitID order, applying loser exclusions only here",
+      "rescan the complete Province CUnit array with 0x2209450's filters and directed relation order to build the ordered opponent ArmyID vector",
+      "mirror holder/fallback side classification and adjacency kind, project final side arrays with 0x23C9100 first-seen semantics, then return create_new without calling 0x2209450 or 0x27FB7C0",
+      "repeat the entire read and publish only when both complete samples match"
+    ],
+    "result": {
+      "status": "available | unavailable | invalid",
+      "target_province_id": "full ProvinceID",
+      "incoming": "public CUnitID, internal CArmyID, owner CharacterID",
+      "scheduler_provenance": "optional CUnitManager stored index and projected queue index",
+      "scope_kind": "pre_contact_prediction | post_contact_observation",
+      "transition_kind": "join_existing | create_new | none | in_combat",
+      "in_combat": "positive existing CCombatID, actual target ProvinceID, Combat array index, and actual ordered attacker/defender public CUnitID arrays",
+      "join_existing": "full CCombatID, saved combat-array index, predicted side, current and predicted attacker/defender public/internal ArmyID arrays",
+      "create_new": "defender seed CharacterID, ordered public/internal raw opponent vector, predicted attacker/defender public/internal ArmyID arrays, initiator_is_defender, initiator side, opponent side, raw adjacency kind",
+      "evidence": "array counts, relation booleans in their exact call directions, exclusion IDs, and two-sample equality"
+    },
+    "bounds": {
+      "province_units": 4096,
+      "province_combats": 1024,
+      "side_armies": 4096,
+      "regiments_per_army": 4096,
+      "contact_queue": 16384,
+      "adjacency_rows": 4096
+    },
+    "fail_closed": [
+      "negative or over-limit counts",
+      "generation or backlink mismatch",
+      "null target gate chain",
+      "relation helper call-boundary unavailable",
+      "reverse-direction join relation is not exactly one",
+      "arithmetic overflow while summing soldiers",
+      "two complete samples differ"
+    ]
+  },
+  "reproduction": {
+    "disassembler": "tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py <RVA> --size <bounded-size>",
+    "xrefs": "tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/find_xrefs.py <RVA>",
+    "required_ranges": [
+      "0x27F9B50 size 0xA0",
+      "0x2247C50 size 0x330",
+      "0x224B1B0 size 0x3A0",
+      "0x220BAA0 size 0x180",
+      "0xA886F0 size 0xF0",
+      "0x27C0E90 size 0x1B0",
+      "0x2208320 size 0x5D0",
+      "0x22771F0 size 0x50",
+      "0x2277290 size 0xB0",
+      "0x2209450 size 0x8D0",
+      "0x2303CF0 size 0x270",
+      "0x23040A0 size 0x190",
+      "0x23C9100 size 0x80",
+      "0x27FB7C0 size 0x260",
+      "0x230AE60 size 0x30",
+      "0x220D2A0 size 0x150"
+    ]
+  },
+  "live_acceptance": {
+    "date": "2026-08-26",
+    "starting_checkpoint_sha256": "12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D",
+    "predicted_contact_date_raw": 53178264,
+    "actual_contact_date_raw": 53178264,
+    "combat_id": 335544325,
+    "target_province_id": 2586,
+    "attacker_army_ids": [
+      83886341
+    ],
+    "defender_army_ids": [
+      357,
+      33554657
+    ],
+    "first_contact_artifact_sha256": "265D4FFCC644DCEFCFE192A273880DB6D37901B89AF733C12FA304B530597B5C",
+    "combat_checkpoint_sha256": "40D4E73D2B45BEF7F8F94F9FC8007A5A039031840C24D72758E5D6452E1A2C6C",
+    "cold_restore_artifact_sha256": "0CFFD7BDC211F8723A2E0826617450F0808BA14AA757F6B884F217BA24DD3F2C",
+    "cold_restore_identity_equal": true,
+    "combat_v3_available_before_and_after_restore": true,
+    "managed_cleanup_proven": true,
+    "baseline_restored": true,
+    "remaining_live_matrix": [
+      "separate later arrival joins an existing combat",
+      "multiple relation-compatible combats preserve the last-compatible selection"
+    ]
+  },
+  "readiness": {
+    "exact_build_ready": true,
+    "same_day_scheduler_static_ready": true,
+    "province_candidate_order_static_ready": true,
+    "existing_combat_selection_static_ready": true,
+    "new_combat_opponent_order_static_ready": true,
+    "constructor_side_polarity_static_ready": true,
+    "actual_contact_scope_static_ready": true,
+    "post_contact_observation_static_ready": true,
+    "actual_contact_scope_live_ready": true,
+    "actual_contact_scope_ready": true,
+    "production_query_ready": true,
+    "capability_advertised": true
+  }
+}

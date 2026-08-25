@@ -187,6 +187,15 @@ using LookupScriptIdentifierId = std::int32_t *(*)(
     void *table, std::int32_t *output, const void *string_view);
 using IsEventTargetValid = bool (*)(const void *event_target);
 using ResolveEventTargetObject = void *(*)(const void *event_target);
+using IsCharacterHostile = bool (*)(void *left_character,
+                                    void *right_character, bool mode);
+using ArmyContactPredicate = bool (*)(void *army);
+using ReadProvinceHolderCharacterId = std::int32_t *(*)(
+    void *province, std::int32_t *output);
+using CharacterRelationPredicate = bool (*)(void *left_character,
+                                             void *right_character);
+using CharacterProvincePredicate = bool (*)(void *character,
+                                             void *province);
 
 // Absolute addresses resolved only after the main executable matches the
 // pinned 1.19.0.6 SHA-256. Tests may supply a small in-memory fixture instead.
@@ -246,7 +255,9 @@ struct Bindings {
   void **army_internal_storage_slot = nullptr;
   void **regiment_storage_slot = nullptr;
   void **combat_storage_slot = nullptr;
+  void **battle_result_storage_slot = nullptr;
   void **siege_storage_slot = nullptr;
+  void **contact_game_mode_slot = nullptr;
   GetGlobalVariableContainer *global_variable_container_accessor_slot =
       nullptr;
   void *valid_casus_belli_configuration_scratch = nullptr;
@@ -382,6 +393,12 @@ struct Bindings {
   LookupScriptIdentifierId lookup_script_identifier_id = nullptr;
   IsEventTargetValid is_event_target_valid = nullptr;
   ResolveEventTargetObject resolve_event_target_object = nullptr;
+  IsCharacterHostile is_character_hostile = nullptr;
+  ArmyContactPredicate is_army_empty_for_contact = nullptr;
+  ArmyContactPredicate is_army_in_combat = nullptr;
+  ReadProvinceHolderCharacterId read_province_holder_character_id = nullptr;
+  CharacterRelationPredicate classify_contact_defender_by_holder = nullptr;
+  CharacterProvincePredicate classify_contact_defender_fallback = nullptr;
 };
 
 using game::ActiveWarSnapshot;
@@ -505,6 +522,9 @@ using game::PreviewMoveArmyStatus;
 using game::RouteContactHorizonRequest;
 using game::RouteContactHorizonSnapshot;
 using game::RouteContactHorizonStatus;
+using game::ActualContactScopeRequest;
+using game::ActualContactScopeSnapshot;
+using game::ActualContactScopeStatus;
 
 // Runs CK3's own route planner into a temporary MovePath and copies its
 // resolved ProvinceIDs before destroying that path. This never applies the
@@ -520,6 +540,12 @@ PreviewMoveArmyResult PreviewMoveArmy(const Bindings &bindings,
 RouteContactHorizonStatus ReadRouteContactHorizon(
     const Bindings &bindings, const RouteContactHorizonRequest &request,
     RouteContactHorizonSnapshot &output) noexcept;
+
+// Main-thread-only mirror of 0x2208320/0x2209450.  It reads the current
+// Province stored arrays twice and never calls any join/create mutator.
+ActualContactScopeStatus ReadActualContactScope(
+    const Bindings &bindings, const ActualContactScopeRequest &request,
+    ActualContactScopeSnapshot &output) noexcept;
 
 using game::DisbandArmyResult;
 

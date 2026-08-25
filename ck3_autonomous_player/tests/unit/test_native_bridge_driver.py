@@ -4421,6 +4421,131 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             [11, 31, 31, 2585],
         )
 
+    def test_actual_contact_scope_is_atomic_and_combat_v3_ready(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-actual-contact-scope-v1-N",
+            )
+        )
+        player = _army(101, province_id=2585, route_province_ids=[])
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=53_176_176,
+                player_armies=[player],
+            )
+        )
+        step = "query-actual-contact-scope-v1-101-at-2585"
+        self.assertIn(step, driver.capabilities()["action_steps"])
+        self.assertTrue(
+            driver.take_snapshot()["actual_contact_scope_query_supported"]
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "available",
+                        "query_sequence": 1,
+                        "snapshot_revision": 40,
+                        "actual_contact_scope": {
+                            "schema_version": 1,
+                            "contract_stage": (
+                                "production_exact_current_province"
+                            ),
+                            "status": "available",
+                            "scope_kind": "pre_contact_prediction",
+                            "snapshot_revision": 40,
+                            "date_raw": 53_176_176,
+                            "subject_army_id": 101,
+                            "subject_native_carmy_id": 201,
+                            "subject_owner_character_id": 7,
+                            "target_province_id": 2585,
+                            "province_unit_army_ids": [31, 41, 101],
+                            "province_combat_ids": [],
+                            "stored_order_policy": "numeric_full_id",
+                            "transition_kind": "create_new",
+                            "selected_combat_id": None,
+                            "selected_combat_array_index": None,
+                            "join_side": None,
+                            "defender_seed_character_id": 19,
+                            "initiator_is_defender": False,
+                            "adjacency_kind_raw": 2,
+                            "loser_excluded_native_carmy_ids": [],
+                            "opponent_army_ids": [31, 41],
+                            "attacker_army_ids": [101],
+                            "defender_army_ids": [31, 41],
+                            "actual_contact_scope_ready": True,
+                            "combat_v3_participant_scope_ready": True,
+                        },
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        result = GameplayBridgeService(driver).query_actual_contact_scope(
+            101, 2585
+        )
+        scope = result["actual_contact_scope"]
+        self.assertEqual(scope["attacker_army_ids"], [101])
+        self.assertEqual(scope["defender_army_ids"], [31, 41])
+        self.assertTrue(scope["combat_v3_participant_scope_ready"])
+        command = next(
+            frame
+            for frame in reversed(endpoint.frames)
+            if frame.get("type") == "execute_step"
+        )
+        self.assertEqual(command["expected_revision"], 40)
+
+    def test_actual_contact_scope_step_includes_combat_but_excludes_retreat(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-actual-contact-scope-v1-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=53_176_176,
+                player_armies=[
+                    _army(101, province_id=2585),
+                    _army(202, province_id=2585, in_combat=True),
+                    _army(303, province_id=2585, retreating=True),
+                ],
+            )
+        )
+
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            [
+                "query-actual-contact-scope-v1-101-at-2585",
+                "query-actual-contact-scope-v1-202-at-2585",
+            ],
+        )
+
     def test_route_contact_horizon_is_atomic_and_scope_complete(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(

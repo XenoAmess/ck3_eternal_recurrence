@@ -236,7 +236,7 @@ def _v3_payload() -> tuple[dict[str, object], dict[str, object]]:
                     "eligible_soldiers_running_low": 0,
                     "eligible_soldiers_starving": 0,
                 },
-                "primary_army_recently_disembarked_raw": 0,
+                "primary_army_gathering_raw": 0,
                 "owner_character_id": 1,
                 "owner_debt_selector_raw": 0,
                 "treasury_debt_selector_raw": None,
@@ -516,6 +516,56 @@ class CombatPhaseInputsV3ContractTests(unittest.TestCase):
             ],
             5_000_000,
         )
+
+    def test_gathering_army_side_input_and_stages_are_exact(self) -> None:
+        payload, scope = _v3_payload()
+        phase = payload["phase_event_inputs"]
+        assert isinstance(phase, dict)
+        advantage = phase["advantage_model"]
+        assert isinstance(advantage, dict)
+        rows = advantage["constructor_sources"]
+        assert isinstance(rows, list)
+        for row in rows:
+            if row["stage"] in {"gathering_army_0", "gathering_army_1"}:
+                row["skip_reason"] = "primary_army_not_gathering"
+
+        normalized = _normalize(payload, scope)
+        normalized_advantage = normalized["phase_event_inputs"][
+            "advantage_model"
+        ]
+        self.assertEqual(
+            [
+                row["stage"]
+                for row in normalized_advantage["constructor_sources"]
+                if row["stage"].startswith("gathering_army_")
+            ],
+            ["gathering_army_0", "gathering_army_1"],
+        )
+        self.assertTrue(
+            all(
+                row["skip_reason"] == "primary_army_not_gathering"
+                for row in normalized_advantage["constructor_sources"]
+                if row["stage"].startswith("gathering_army_")
+            )
+        )
+        self.assertTrue(
+            all(
+                "primary_army_gathering_raw" in side
+                for side in normalized_advantage["side_inputs"]
+            )
+        )
+
+        legacy_payload, legacy_scope = _v3_payload()
+        legacy_phase = legacy_payload["phase_event_inputs"]
+        assert isinstance(legacy_phase, dict)
+        legacy_advantage = legacy_phase["advantage_model"]
+        assert isinstance(legacy_advantage, dict)
+        legacy_side = legacy_advantage["side_inputs"][0]
+        legacy_side["primary_army_recently_disembarked_raw"] = legacy_side.pop(
+            "primary_army_gathering_raw"
+        )
+        with self.assertRaisesRegex(ValueError, "schema is malformed"):
+            _normalize(legacy_payload, legacy_scope)
 
     def test_fake_precontact_combat_id_is_rejected_by_exact_schema(self) -> None:
         payload, scope = _v3_payload()
