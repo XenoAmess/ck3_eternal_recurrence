@@ -161,6 +161,7 @@ def native_session(
     output_stream: TextIO | None = None,
     poll_interval_seconds: float = 0.05,
     cold_start_checkpoint: bool = False,
+    stop_event: threading.Event | None = None,
 ) -> dict[str, object]:
     """Launch/inject CK3 and supervise it without any visual fallback path."""
     if (
@@ -196,6 +197,7 @@ def native_session(
                 output_stream=output_stream,
                 poll_interval_seconds=float(poll_interval_seconds),
                 cold_start_checkpoint=cold_start_checkpoint,
+                stop_event=stop_event,
             )
 
 
@@ -208,6 +210,7 @@ def _native_session_locked(
     output_stream: TextIO | None,
     poll_interval_seconds: float,
     cold_start_checkpoint: bool = False,
+    stop_event: threading.Event | None = None,
 ) -> dict[str, object]:
     started_wall = utc_now()
     started = time.monotonic()
@@ -282,13 +285,15 @@ def _native_session_locked(
             if now >= deadline:
                 exit_reason = "timeout"
                 break
-            if now >= next_window_state_sample:
+            stop_requested = bool(
+                stop_event is not None and stop_event.is_set()
+            )
+            if not stop_requested and now >= next_window_state_sample:
                 sampled_window_state = _process_windows_minimized(pid)
                 if sampled_window_state is not None:
                     last_known_window_minimized = sampled_window_state
                 next_window_state_sample = now + 0.5
-            stop_requested = False
-            if stdin is not None:
+            if not stop_requested and stdin is not None:
                 for line in stdin.poll():
                     command = line.strip().casefold()
                     if not command:

@@ -257,6 +257,27 @@ the original fault recurs, the next bounded diagnostic is a one-shot tuple-
 specific observation for `gfx/FX/cw/particle2.shader` plus `ParticleColor`, not
 another global total.
 
+[live-confirmed production value path, 2026-08-26] The default-OFF production12
+DLL `D48A45CA043F91A2E0927BC620694EF854B946A8D6A267B68E580F9696C48702`,
+same-tree injector
+`7D4F39C650F14A2B0B16DCCD02DA2406205A3CA972BC971C670545F52A7ECB14`,
+and host
+`4CFF5AC0A58C83C9EDC9077163FC982DCB081DBABD4E7FC4401B5AD4988AF54F`
+subsequently crossed map and mailbox readiness with containment and recorder
+both false. A first planner loop queried WarID `16777290` termination options
+and completed one paused-to-paused native day (`53175816 -> 53175840`). A
+second cold start completed 12 more one-day native actions, interleaved with 12
+same-frame termination queries, moving ArmyID `83886341` from Province `2596`
+to `2603` and advancing to `53176104`. Native save then replaced the isolated
+checkpoint with a 66,426,917-byte file, SHA-256
+`6F4970AEACBEEEA18E7F2502D63A4E31D1163A2F0F211AD9C7137A090EC1DD16`.
+A third independent CK3 PID cold-restored those exact bytes and reproduced the
+date, alive CharacterID `29829`, Province `2603`, and remaining route `[2604]`
+on one ready paused frame. All managed cleanups passed; no crash bundle or
+unsafe marker was added. The isolated shader cache was already warm, and no
+typed war-entry mailbox request was made, so neither pristine-cache causality
+nor first-live war-entry acceptance follows from this value result.
+
 ## Implemented capability matrix
 
 | Capability | Native-headless state | Evidence | Visual fallback |
@@ -302,7 +323,7 @@ another global total.
 | `game.command.query-declarable-wars` | native C++ core implemented, bridge route/live probe pending | exact declare-war UI CB registry/evaluator/item rules + offline SSO/heap-key and configuration fixture | explicit upper-layer policy only |
 | `game.command.declare-war-<declaration_id>` | native C++ core implemented, bridge route/live probe pending | generation-bound exact re-enumeration + native context/validation/queue/destruction fixture | explicit upper-layer policy only |
 | `game.command.enforce-demands-<war_id>` | native C++ core implemented, bridge route/live probe pending | exact WarOverview victory context builder + common interaction command lifecycle fixture | explicit upper-layer policy only |
-| `game.command.query-war-termination-options-N` | implemented paused read-only query; exact-build live probe pending | exact WarOverview three-context construction/validation, score/duration/CB/acceptance ABIs + no-submit offline fixture | never inside native driver |
+| `game.command.query-war-termination-options-N` | implemented paused read-only query; default-OFF exact-build live probe passed repeatedly | exact WarOverview three-context construction/validation, score/duration/CB/acceptance ABIs + no-submit offline fixture + live WarID `16777290` same-frame results | never inside native driver |
 | `game.command.query-war-termination-terms-v1-N` | implemented narrow paused read-only claim-CB union; exact getter/destructor live probe pending | `CWar+0x270/+0x290`, full-generation Title/Character resolution, `0x28B1AA0`, present-only vtable-slot-0 destruction, strict available/unsupported fixtures | never inside native driver |
 | `game.command.surrender-war-N` | native typed primary-leader command implemented; Python/MCP action frozen pending structured exit terms v2 | exact absolute-outcome WarOverview builder (`true` attacker victory / `false` attacker defeat) + validator/common-send/bool-queue/destruction fixture | unadvertised by upper-layer policy |
 | `game.command.offer-white-peace-N` | native typed primary-leader command implemented; Python/MCP action frozen pending structured exit terms v2 | active-CB permission + full-generation opponent + special index 3 + validator/common-send/bool-queue/two-context destruction fixture | unadvertised by upper-layer policy |

@@ -160,6 +160,31 @@ def parser() -> argparse.ArgumentParser:
         action="store_true",
         help="launch the exact v2 xar_checkpoint save instead of last_save.ck3",
     )
+    native_auto_run_parser = commands.add_parser(
+        "native-auto-run",
+        help=(
+            "own pure native CK3, plan bounded turns, verify progress, and "
+            "checkpoint without MCP or visual fallback"
+        ),
+    )
+    native_auto_run_parser.add_argument(
+        "--turns",
+        type=int,
+        required=True,
+        help="maximum number of planner turns",
+    )
+    native_auto_run_parser.add_argument("--timeout", type=float, default=21600)
+    native_auto_run_parser.add_argument(
+        "--readiness-timeout",
+        type=float,
+        default=300,
+        help="maximum seconds to wait for a stable paused native map",
+    )
+    native_auto_run_parser.add_argument(
+        "--cold-start-checkpoint",
+        action="store_true",
+        help="launch and bind the exact v2 xar_checkpoint save",
+    )
     commands.add_parser(
         "strategy-review",
         help="show one-life episode history and the priorities for the next run",
@@ -226,9 +251,12 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     spec = make_spec(args.state_dir, args.game_dir)
     try:
-        if args.command == "native-session" and args.bridge_mode != "native-headless":
+        if (
+            args.command in {"native-session", "native-auto-run"}
+            and args.bridge_mode != "native-headless"
+        ):
             raise AgentError(
-                "native-session requires --bridge-mode native-headless; "
+                f"{args.command} requires --bridge-mode native-headless; "
                 "use opening-dev-session for hybrid-fallback"
             )
         configure_native_bridge_launch_environment(
@@ -301,6 +329,16 @@ def main(argv: list[str] | None = None) -> int:
                 timeout_seconds=args.timeout,
                 cold_start_checkpoint=args.cold_start_checkpoint,
             )
+        elif args.command == "native-auto-run":
+            from .native_auto_run import native_auto_run
+
+            result = native_auto_run(
+                spec,
+                turn_count=args.turns,
+                timeout_seconds=args.timeout,
+                readiness_timeout_seconds=args.readiness_timeout,
+                cold_start_checkpoint=args.cold_start_checkpoint,
+            )
         elif args.command == "strategy-review":
             from .strategy import read_one_life_strategy
 
@@ -320,4 +358,6 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
     print(json.dumps(_summary(args.command, result), ensure_ascii=False, indent=2))
+    if args.command == "native-auto-run" and result.get("ok") is not True:
+        return 1
     return 0

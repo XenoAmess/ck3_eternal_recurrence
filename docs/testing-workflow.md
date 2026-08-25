@@ -317,6 +317,16 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 常驻开发会话的 `auto-run N` 必须按子回合顺序更新同一份策略历史，而不是把 N 次动作当成一条不可见宏。2026-08-23 实机先发现
   `auto-run 2` 的带参数命令名未被历史展开器识别，导致周期存档少算两回合；修订后下一批真实执行先保存
   `阿普利亚公爵，罗贝尔_1069_05_08.ck3`，再推进到 1069-06-25。回归应使用带数字的真实命令字符串，不能只测裸 `auto-run`。
+- 纯原生 `native-auto-run` 必须先建立 named pipe driver，再在后台启动持有 launch/state lock 的 `native-session`；停止顺序相反：
+  先设置 session stop event 并等待 `stop_tracked` 返回 `tree_gone=true/cleanup_proven=true`，最后才关闭 driver。外层不得重复获取
+  session 已持有的锁，也不得先关 pipe 后等待 CK3。initial readiness 要在同一 PID/generation 上同时闭合 exact-build hello、
+  default-OFF containment/recorder、paused map、存活 episode character 与同日期 main-thread mailbox；cold checkpoint 还要闭合
+  `driver_state_restore_kind=cold_checkpoint`、`episode_binding_state=active_resumed` 且无 candidate rejection。
+- 2026-08-26 default-OFF 实机连续执行 12 次成功的战时 `life-advance`，但自动 planner 没有选择 checkpoint；最后的
+  66,426,917-byte 存档是控制器显式提交，不能倒推为周期存档成功。原因是 active-war 分支在通用
+  `periodic_checkpoint` 统计之前早返回。因此生产 owner 另行只累计 `life-advance`/`economic-event-cycle` 中
+  `progress_status=postcondition` 且 snapshot 有语义变化的回合，每三个后在第四个 gameplay action 前强制物化 checkpoint；
+  query、ACK、失败、同帧 cache 更新都不计数。验收必须重算文件 size/SHA 并核对 native history anchor，不能只看 command ACK。
 - 2026-08-21 同一发布候选的第一次矩阵在第二格到达主菜单前发生 CK3 原生 `C0000005`，crash bundle 停在数据库图标初始化，无 fixture marker、无 blocking project diagnostic，运行树、EXE 与受保护存储未变。该 RED 必须原样保留；只有全新 userdir 的同格重试完整 GREEN，且随后另一全新目录的正式三格矩阵 3/3 GREEN，才能把它判为一次性引擎冷启动崩溃，禁止直接重标原报告。
 - Windows Python Launcher 的 `py <script.py>` 会解释脚本首行的 `/usr/bin/env python3`，可能选中 `PATH` 里的另一套 Python，而不是刚由 `py -m pip` 安装依赖的默认解释器。2026-08-21 实测该分裂让非固定 Pillow 重建的三张 DXT1 DDS 与仓库字节不同，产生假 stale；项目 `.venv` 的 `Pillow==12.3.0` 与官方 CI 均 GREEN。遇到素材 parity 全红时先打印实际解释器和 Pillow 版本，本机 L0 优先直接调用 `tools\.venv\Scripts\python.exe`，禁止为消除环境假红而重写已发布素材。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。

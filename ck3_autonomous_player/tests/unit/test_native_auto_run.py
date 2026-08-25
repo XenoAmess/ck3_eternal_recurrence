@@ -1,0 +1,726 @@
+from __future__ import annotations
+
+import contextlib
+import copy
+import hashlib
+import io
+from pathlib import Path
+import sys
+import tempfile
+import threading
+import time
+import unittest
+from unittest import mock
+
+
+PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
+sys.path.insert(0, str(PACKAGE_ROOT))
+
+from xar_autoplayer import cli  # noqa: E402
+from xar_autoplayer.environment import EnvironmentSpec  # noqa: E402
+from xar_autoplayer.errors import AgentError  # noqa: E402
+from xar_autoplayer.runtime import NativeBridgeLaunchConfig  # noqa: E402
+import xar_autoplayer.native_auto_run as native_auto_run_module  # noqa: E402
+
+
+_CHECKPOINT_PAYLOAD = b"native-auto-run periodic checkpoint fixture"
+
+
+def _session_report(pipe_name: str) -> dict[str, object]:
+    return {
+        "kind": "ck3_native_session",
+        "mode": "native-headless",
+        "pipe": pipe_name,
+        "pid": 4242,
+        "started_at": "2026-08-26T00:00:00Z",
+        "finished_at": "2026-08-26T00:00:01Z",
+        "elapsed_seconds": 1.0,
+        "exit_reason": "stop",
+        "process_exit_code": 0,
+        "restart_count": 0,
+        "ok": True,
+        "shutdown": {
+            "ok": True,
+            "tree_gone": True,
+            "cleanup_proven": True,
+        },
+    }
+
+
+class _NativeAutoRunHarness:
+    def __init__(
+        self,
+        spec: EnvironmentSpec,
+        actions: list[str],
+        *,
+        initial_unready_snapshot: bool = True,
+    ) -> None:
+        self.spec = spec
+        self.actions = list(actions)
+        self.initial_unready_snapshot = initial_unready_snapshot
+        self.events: list[str] = []
+        self.date_raw = 53_171_400
+        self.native_revision = 1
+        self.public_revision = 101
+        self.heartbeat_date_raw = self.date_raw
+        self.heartbeat_lag_capability_reads = 0
+        self.terminal = False
+        self.history: list[dict[str, object]] = []
+        self.ready_snapshot_observed = False
+        self.driver: _FakeNativeDriver | None = None
+
+    def make_driver(
+        self,
+        pipe_name: str,
+        *,
+        state_dir: Path,
+        save_dir: Path,
+    ) -> "_FakeNativeDriver":
+        self.events.append("driver_init")
+        self.driver = _FakeNativeDriver(
+            self,
+            pipe_name=pipe_name,
+            state_dir=state_dir,
+            save_dir=save_dir,
+        )
+        return self.driver
+
+    def make_service(self, driver: "_FakeNativeDriver") -> "_FakeGameplayService":
+        if driver is not self.driver:
+            raise AssertionError("service did not receive the pipe-owning driver")
+        self.events.append("service_init")
+        return _FakeGameplayService(self, driver)
+
+    def run_session(self, spec: EnvironmentSpec, **kwargs: object) -> dict[str, object]:
+        if self.driver is None:
+            raise AssertionError("native session started before pipe driver construction")
+        if spec is not self.spec:
+            raise AssertionError("native session received a different environment")
+        stop_event = kwargs.get("stop_event")
+        config = kwargs.get("native_bridge")
+        if not isinstance(stop_event, threading.Event):
+            raise AssertionError("native session lacks the shared stop event")
+        if not isinstance(config, NativeBridgeLaunchConfig):
+            raise AssertionError("native session lacks the validated launch config")
+        self.events.append("session_start")
+        if not stop_event.wait(timeout=2.0):
+            raise AssertionError("native auto-run did not stop its managed session")
+        self.events.append("session_stop")
+        report = _session_report(config.pipe_name)
+        self.events.append("session_return")
+        return report
+
+    def capabilities(self) -> dict[str, object]:
+        diagnostics = self._diagnostics()
+        if self.heartbeat_lag_capability_reads > 0:
+            self.heartbeat_lag_capability_reads -= 1
+            if self.heartbeat_lag_capability_reads == 0:
+                self.heartbeat_date_raw = self.date_raw
+        return {
+            "format_version": 1,
+            "backend_id": "native-headless",
+            "mode": "native-headless",
+            "visual_fallback": False,
+            "transport_ready": True,
+            "snapshot": True,
+            "wait_for_change": True,
+            "diagnostics": diagnostics,
+            "native_session_control": {
+                "configured": True,
+                "driver_state_restored": False,
+                "driver_state_error": None,
+                "driver_state_restore_kind": "new_episode",
+                "episode_binding_state": "active_new",
+                "cold_candidate_rejection": None,
+            },
+            "checkpoint_materialization": {
+                "configured": True,
+                "save_dir": str(self.spec.profile_dir / "save games"),
+                "filename": "xar_checkpoint.ck3",
+            },
+        }
+
+    def snapshot(self) -> dict[str, object]:
+        map_ready = True
+        if self.initial_unready_snapshot:
+            self.initial_unready_snapshot = False
+            map_ready = False
+            self.events.append("snapshot_unready")
+        elif not self.ready_snapshot_observed:
+            self.ready_snapshot_observed = True
+            self.events.append("snapshot_ready")
+        return {
+            "format_version": 1,
+            "backend_id": "native-headless",
+            "source": "fake-native-pipe",
+            "snapshot_id": f"native:{self.native_revision}",
+            "revision": self.public_revision,
+            "native_revision": self.native_revision,
+            "date": "1066.9.15",
+            "date_raw": self.date_raw,
+            "phase": "map_hud",
+            "map_ready": map_ready,
+            "paused": True,
+            "played_character": {
+                "character_id": 707,
+                "alive": not self.terminal,
+            },
+            "episode_character_id": 707,
+            "episode_run_id": "native-707-test-run",
+            "episode_identity_pending": False,
+            "one_life_terminal": self.terminal,
+            "one_life_terminal_reason": (
+                "played_character_dead" if self.terminal else None
+            ),
+            "active_event": None,
+            "active_wars": [],
+            "player_armies": [],
+            "native_command_history": copy.deepcopy(self.history),
+            "diagnostics": self._diagnostics(),
+        }
+
+    def execute_auto_turn(self) -> dict[str, object]:
+        if not self.ready_snapshot_observed:
+            raise AssertionError("auto_turn executed before initial readiness")
+        if not self.actions:
+            raise AssertionError("fake planner action list is exhausted")
+        action = self.actions.pop(0)
+        self.events.append(f"auto_turn:{action}")
+        if action == "blocked":
+            return {
+                "status": "blocked",
+                "plan": {
+                    "phase": "blocked",
+                    "reason": "fixture_has_no_executable_step",
+                },
+                "snapshot_id": f"native:{self.native_revision}",
+                "revision": self.public_revision,
+            }
+
+        if action in {"query", "query_change"}:
+            step = "query-declarable-wars"
+            if action == "query_change":
+                self.date_raw += 1
+                self.native_revision += 1
+                self.public_revision += 1
+            result = {
+                "step": step,
+                "accepted": True,
+                "status": "queried",
+            }
+        elif action in {
+            "advance",
+            "lagged_advance",
+            "slow_advance",
+            "terminal_advance",
+            "no_delta_advance",
+        }:
+            step = "life-advance"
+            starting_date_raw = self.date_raw
+            if action in {
+                "advance",
+                "lagged_advance",
+                "slow_advance",
+                "terminal_advance",
+            }:
+                if action == "slow_advance":
+                    time.sleep(0.02)
+                self.date_raw += 1
+                self.native_revision += 1
+                self.public_revision += 1
+                if action == "lagged_advance":
+                    self.heartbeat_lag_capability_reads = 3
+                else:
+                    self.heartbeat_date_raw = self.date_raw
+                if action == "terminal_advance":
+                    self.terminal = True
+            result = {
+                "step": step,
+                "accepted": True,
+                "status": "completed",
+                "progress_status": "postcondition",
+                "starting_date_raw": starting_date_raw,
+                "ending_date_raw": self.date_raw,
+                "elapsed_days": self.date_raw - starting_date_raw,
+            }
+        else:
+            raise AssertionError(f"unsupported fake action {action!r}")
+
+        self._append_history(step, result)
+        return {
+            "status": "executed",
+            "selected_step": step,
+            "plan": {
+                "phase": "fixture",
+                "selected_step": step,
+            },
+            "result": copy.deepcopy(result),
+        }
+
+    def save_checkpoint(self, *, expected_revision: int) -> dict[str, object]:
+        if expected_revision != self.public_revision:
+            raise AssertionError(
+                "checkpoint was not bound to the current public revision"
+            )
+        self.events.append("save_checkpoint")
+        path = self.spec.profile_dir / "save games" / "xar_checkpoint.ck3"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(_CHECKPOINT_PAYLOAD)
+        digest = hashlib.sha256(_CHECKPOINT_PAYLOAD).hexdigest()
+        history_index = len(self.history) + 1
+        checkpoint = {
+            "status": "saved",
+            "path": str(path.resolve()),
+            "name": path.name,
+            "size": len(_CHECKPOINT_PAYLOAD),
+            "sha256": digest,
+            "date_raw": self.date_raw,
+            "overwrite_confirmed": False,
+            "strategy": "native-autosave-command-v1",
+            "history_index": history_index,
+            "episode_character_id": 707,
+            "episode_run_id": "native-707-test-run",
+        }
+        result = {
+            "step": "save-checkpoint",
+            "accepted": True,
+            "status": "submitted",
+            "checkpoint": checkpoint,
+            "materialization": {
+                "available": True,
+                "save_dir": str(path.parent.resolve()),
+                "mtime_ns": path.stat().st_mtime_ns,
+            },
+        }
+        self._append_history("save-checkpoint", result)
+        return copy.deepcopy(result)
+
+    def _append_history(self, command: str, result: dict[str, object]) -> None:
+        self.history.append(
+            {
+                "index": len(self.history) + 1,
+                "command": command,
+                "ok": True,
+                "result": copy.deepcopy(result),
+            }
+        )
+
+    def _diagnostics(self) -> dict[str, object]:
+        return {
+            "protocol_version": 1,
+            "pipe_name": r"\\.\pipe\native-auto-run-test",
+            "connected": True,
+            "connection_generation": 1,
+            "bridge_pid": 4242,
+            "semantic_state_available": True,
+            "transport_fatal_error": None,
+            "hello": {
+                "type": "hello",
+                "protocol_version": 1,
+                "pid": 4242,
+                "bridge_version": "0.1.0-test",
+                "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+                "game_adapter_status": "ready",
+                "ck3_build_match": True,
+                "executable_sha256": "2" * 64,
+            },
+            "last_heartbeat": {
+                "type": "heartbeat",
+                "protocol_version": 1,
+                "sequence": self.native_revision,
+                "startup_failure_containment_enabled": False,
+                "startup_particle2_stage_recorder_enabled": False,
+                "main_thread_query_mailbox_v1": {
+                    "installed": True,
+                    "stop": False,
+                    "failure": 0,
+                    "ready": True,
+                    "executor_submission_enabled": True,
+                    "date_raw": self.heartbeat_date_raw,
+                    "paused": True,
+                    "executed_requests": len(self.history),
+                },
+            },
+        }
+
+
+class _FakeNativeDriver:
+    def __init__(
+        self,
+        harness: _NativeAutoRunHarness,
+        *,
+        pipe_name: str,
+        state_dir: Path,
+        save_dir: Path,
+    ) -> None:
+        self.harness = harness
+        self.pipe_name = pipe_name
+        self.state_dir = state_dir
+        self.save_dir = save_dir
+
+    def capabilities(self) -> dict[str, object]:
+        return self.harness.capabilities()
+
+    def take_snapshot(self) -> dict[str, object]:
+        return self.harness.snapshot()
+
+    def close(self) -> None:
+        self.harness.events.append("driver_close")
+
+
+class _FakeGameplayService:
+    def __init__(
+        self,
+        harness: _NativeAutoRunHarness,
+        driver: _FakeNativeDriver,
+    ) -> None:
+        self.harness = harness
+        self.driver = driver
+
+    def auto_turn(self) -> dict[str, object]:
+        return self.harness.execute_auto_turn()
+
+    def snapshot(self) -> dict[str, object]:
+        return self.driver.take_snapshot()
+
+    def save_checkpoint(self, *, expected_revision: int) -> dict[str, object]:
+        return self.harness.save_checkpoint(expected_revision=expected_revision)
+
+
+class NativeAutoRunTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory(prefix="xar-native-auto-run-")
+        root = Path(self.temporary.name)
+        self.spec = EnvironmentSpec(root / "state", root / "game")
+        self.dll_path = root / "xar_ck3_bridge.dll"
+        self.injector_path = root / "xar_ck3_bridge_injector.exe"
+        self.dll_path.write_bytes(b"fake bridge dll")
+        self.injector_path.write_bytes(b"fake bridge injector")
+        self.config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\native-auto-run-test",
+            dll_path=self.dll_path,
+            injector_path=self.injector_path,
+        )
+
+    def tearDown(self) -> None:
+        self.temporary.cleanup()
+
+    def _run(
+        self,
+        actions: list[str],
+        *,
+        initial_unready_snapshot: bool = True,
+        timeout_seconds: float = 2.0,
+    ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
+        harness = _NativeAutoRunHarness(
+            self.spec,
+            actions,
+            initial_unready_snapshot=initial_unready_snapshot,
+        )
+        with mock.patch.object(
+            native_auto_run_module,
+            "NativeHeadlessGameplayDriver",
+            side_effect=harness.make_driver,
+        ), mock.patch.object(
+            native_auto_run_module,
+            "GameplayBridgeService",
+            side_effect=harness.make_service,
+        ), mock.patch.object(
+            native_auto_run_module,
+            "native_session",
+            side_effect=harness.run_session,
+        ):
+            report = native_auto_run_module.native_auto_run(
+                self.spec,
+                turn_count=len(actions),
+                timeout_seconds=timeout_seconds,
+                readiness_timeout_seconds=0.25,
+                native_bridge=self.config,
+                readiness_stable_seconds=0.0,
+                poll_interval_seconds=0.001,
+            )
+        return report, harness
+
+    def test_parser_exposes_bounded_native_auto_run(self) -> None:
+        args = cli.parser().parse_args(
+            [
+                "--bridge-mode",
+                "native-headless",
+                "native-auto-run",
+                "--turns",
+                "7",
+                "--timeout",
+                "19",
+                "--readiness-timeout",
+                "3",
+                "--cold-start-checkpoint",
+            ]
+        )
+
+        self.assertEqual(args.command, "native-auto-run")
+        self.assertEqual(args.bridge_mode, "native-headless")
+        self.assertEqual(args.turns, 7)
+        self.assertEqual(args.timeout, 19)
+        self.assertEqual(args.readiness_timeout, 3)
+        self.assertTrue(args.cold_start_checkpoint)
+
+    def test_non_native_cli_is_rejected_before_configuration_or_run(self) -> None:
+        stderr = io.StringIO()
+        with mock.patch.object(
+            cli, "make_spec", return_value=self.spec
+        ), mock.patch.object(
+            cli, "configure_native_bridge_launch_environment"
+        ) as configure_mock, mock.patch.object(
+            native_auto_run_module, "native_auto_run"
+        ) as run_mock, contextlib.redirect_stderr(stderr):
+            code = cli.main(
+                [
+                    "--bridge-mode",
+                    "hybrid-fallback",
+                    "native-auto-run",
+                    "--turns",
+                    "1",
+                ]
+            )
+
+        self.assertEqual(code, 1)
+        self.assertIn("requires --bridge-mode native-headless", stderr.getvalue())
+        configure_mock.assert_not_called()
+        run_mock.assert_not_called()
+
+    def test_ready_loop_counts_only_visible_advances_and_checkpoints_third(
+        self,
+    ) -> None:
+        report, harness = self._run(
+            ["query", "advance", "advance", "lagged_advance"]
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "turn_limit")
+        self.assertEqual(report["outcome"], "qualified")
+        auto_run = report["auto_run"]
+        self.assertEqual(auto_run["visible_gameplay_turns"], 3)
+        self.assertEqual(
+            auto_run["counts"],
+            {
+                "query": 1,
+                "gameplay": 3,
+                "checkpoint": 1,
+                "recovery": 0,
+                "terminal": 0,
+            },
+        )
+        turns = auto_run["turns"]
+        self.assertEqual(turns[0]["class"], "query")
+        self.assertEqual(turns[0]["evidence"], ["same_frame_query"])
+        for turn in turns[1:]:
+            self.assertEqual(turn["selected_step"], "life-advance")
+            self.assertEqual(turn["result"]["progress_status"], "postcondition")
+            self.assertIn("date_advanced", turn["evidence"])
+
+        self.assertEqual(len(report["checkpoints"]), 1)
+        checkpoint = report["checkpoints"][0]
+        self.assertEqual(checkpoint["phase"], "periodic_checkpoint")
+        self.assertEqual(checkpoint["turn_index"], 4)
+        self.assertEqual(checkpoint["eligible_advance_ordinal"], 3)
+        path = Path(checkpoint["path"])
+        self.assertEqual(path.read_bytes(), _CHECKPOINT_PAYLOAD)
+        self.assertEqual(checkpoint["size"], len(_CHECKPOINT_PAYLOAD))
+        self.assertEqual(
+            checkpoint["sha256"],
+            hashlib.sha256(_CHECKPOINT_PAYLOAD).hexdigest(),
+        )
+        history_index = checkpoint["history_index"]
+        anchor = harness.history[history_index - 1]
+        self.assertEqual(anchor["index"], history_index)
+        self.assertEqual(anchor["command"], "save-checkpoint")
+        self.assertTrue(anchor["ok"])
+        self.assertEqual(
+            anchor["result"]["checkpoint"]["sha256"],
+            checkpoint["sha256"],
+        )
+
+        events = harness.events
+        self.assertLess(events.index("driver_init"), events.index("session_start"))
+        self.assertLess(events.index("snapshot_unready"), events.index("snapshot_ready"))
+        self.assertLess(events.index("snapshot_ready"), events.index("auto_turn:query"))
+        self.assertEqual(
+            [event for event in events if event.startswith("auto_turn:")],
+            [
+                "auto_turn:query",
+                "auto_turn:advance",
+                "auto_turn:advance",
+                "auto_turn:lagged_advance",
+            ],
+        )
+        self.assertGreater(
+            events.index("save_checkpoint"),
+            max(
+                index
+                for index, event in enumerate(events)
+                if event in {"auto_turn:advance", "auto_turn:lagged_advance"}
+            ),
+        )
+        self.assertLess(events.index("session_stop"), events.index("session_return"))
+        self.assertLess(events.index("session_return"), events.index("driver_close"))
+        self.assertTrue(report["cleanup"]["ok"])
+
+    def test_blocked_planner_returns_failed_report(self) -> None:
+        report, _harness = self._run(["blocked"])
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "blocked")
+        self.assertEqual(report["outcome"], "failed")
+        self.assertIn("fixture_has_no_executable_step", report["error"])
+        self.assertTrue(report["cleanup"]["ok"])
+
+    def test_postcondition_ack_without_visible_delta_is_not_qualified(self) -> None:
+        report, _harness = self._run(["no_delta_advance"])
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "turn_limit")
+        self.assertEqual(report["outcome"], "not_qualified")
+        self.assertIsNone(report["error"])
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
+        self.assertEqual(
+            report["auto_run"]["eligible_advances_since_checkpoint"], 0
+        )
+        self.assertEqual(report["checkpoints"], [])
+        self.assertEqual(
+            report["auto_run"]["turns"][0]["evidence"],
+            ["no_semantic_delta"],
+        )
+
+    def test_turn_limit_materializes_visible_tail_checkpoint(self) -> None:
+        report, harness = self._run(["advance"])
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "turn_limit")
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 1)
+        self.assertEqual(report["auto_run"]["counts"]["checkpoint"], 1)
+        self.assertEqual(len(report["checkpoints"]), 1)
+        self.assertEqual(
+            report["checkpoints"][0]["phase"], "final_checkpoint"
+        )
+        self.assertEqual(harness.events.count("save_checkpoint"), 1)
+        self.assertFalse(
+            report["auto_run"]["dirty_gameplay_since_checkpoint"]
+        )
+
+    def test_read_only_query_must_remain_on_same_paused_frame(self) -> None:
+        report, _harness = self._run(["query_change"])
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["outcome"], "failed")
+        self.assertIn("read-only native query changed", report["error"])
+        self.assertEqual(report["auto_run"]["counts"]["query"], 1)
+        self.assertIn(
+            "date_advanced", report["auto_run"]["turns"][0]["evidence"]
+        )
+
+    def test_checkpoint_must_bind_current_date_and_latest_history_row(self) -> None:
+        for stale_kind in ("date", "history"):
+            with self.subTest(stale_kind=stale_kind):
+                harness = _NativeAutoRunHarness(
+                    self.spec,
+                    [],
+                    initial_unready_snapshot=False,
+                )
+                result = harness.save_checkpoint(
+                    expected_revision=harness.public_revision
+                )
+                if stale_kind == "date":
+                    harness.date_raw += 1
+                else:
+                    harness._append_history(
+                        "query-declarable-wars",
+                        {"step": "query-declarable-wars", "accepted": True},
+                    )
+                snapshot = harness.snapshot()
+
+                with self.assertRaisesRegex(
+                    AgentError,
+                    "materialization metadata is incomplete|history anchor",
+                ):
+                    native_auto_run_module._verify_checkpoint_result(
+                        result,
+                        snapshot=snapshot,
+                        expected_save_dir=self.spec.profile_dir / "save games",
+                    )
+
+    def test_third_advance_skips_checkpoint_if_it_enters_terminal(self) -> None:
+        report, harness = self._run(
+            ["advance", "advance", "terminal_advance"]
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "turn_limit_terminal_pending")
+        self.assertEqual(report["outcome"], "not_qualified")
+        self.assertEqual(report["checkpoints"], [])
+        self.assertNotIn("save_checkpoint", harness.events)
+        self.assertEqual(
+            report["auto_run"]["eligible_advances_since_checkpoint"], 3
+        )
+
+    def test_action_finishing_after_deadline_cannot_qualify(self) -> None:
+        report, harness = self._run(
+            ["slow_advance"], timeout_seconds=0.01
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "timeout")
+        self.assertEqual(report["outcome"], "failed")
+        self.assertIn("expired during auto-turn", report["error"])
+        self.assertNotIn("save_checkpoint", harness.events)
+
+    def test_cli_returns_nonzero_for_blocked_or_unqualified_report(self) -> None:
+        failures = (
+            {"ok": False, "status": "blocked", "outcome": "failed"},
+            {
+                "ok": False,
+                "status": "turn_limit",
+                "outcome": "not_qualified",
+            },
+        )
+        for failure in failures:
+            with self.subTest(status=failure["status"]):
+                stdout = io.StringIO()
+                with mock.patch.object(
+                    cli, "make_spec", return_value=self.spec
+                ), mock.patch.object(
+                    cli,
+                    "configure_native_bridge_launch_environment",
+                    return_value=self.config,
+                ), mock.patch.object(
+                    native_auto_run_module,
+                    "native_auto_run",
+                    return_value=failure,
+                ) as run_mock, contextlib.redirect_stdout(stdout):
+                    code = cli.main(
+                        [
+                            "--bridge-mode",
+                            "native-headless",
+                            "--bridge-dll",
+                            str(self.dll_path),
+                            "--bridge-injector",
+                            str(self.injector_path),
+                            "native-auto-run",
+                            "--turns",
+                            "1",
+                        ]
+                    )
+
+                self.assertEqual(code, 1)
+                self.assertIn('"ok": false', stdout.getvalue())
+                run_mock.assert_called_once_with(
+                    self.spec,
+                    turn_count=1,
+                    timeout_seconds=21600,
+                    readiness_timeout_seconds=300,
+                    cold_start_checkpoint=False,
+                )
+
+
+if __name__ == "__main__":
+    unittest.main()

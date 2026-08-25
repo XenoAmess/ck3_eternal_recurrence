@@ -551,6 +551,68 @@ next bounded observation should correlate only the specific
 `gfx/FX/cw/particle2.shader` + `ParticleColor` tuple (or retain this recorder
 state in its dump) without suppressing the native result.
 
+### Default-OFF map-ready value loop and checkpoint recovery
+
+[live-confirmed, 2026-08-26] The separately rebuilt production12 candidate was
+then exercised on the gameplay path with both startup containment and the
+particle2 stage recorder disabled. The exact artifacts used were DLL
+`D48A45CA043F91A2E0927BC620694EF854B946A8D6A267B68E580F9696C48702`,
+injector
+`7D4F39C650F14A2B0B16DCCD02DA2406205A3CA972BC971C670545F52A7ECB14`,
+and host
+`4CFF5AC0A58C83C9EDC9077163FC982DCB081DBABD4E7FC4401B5AD4988AF54F`.
+The isolated profile already contained a populated shader cache, so this is a
+production-path value result, not a pristine-cache reproduction of the old
+particle2 fault.
+
+The first managed cold start loaded the 66,594,755-byte checkpoint SHA-256
+`5BA2136911EAD0CAF1F7D2F3DE02EAFBD8039861C46F01F35F698B3B5CFFFC5F`.
+PID `65736` reached a native paused snapshot and heartbeat with
+`semantic_state_available=true`, mailbox `installed=true`, `failure=0`,
+`ready=true`, `executor_submission_enabled=true`, containment false, and
+recorder false. The planner first selected the read-only
+`query-war-termination-options-16777290`, which returned `available` for the
+same paused revision, then selected `life-advance`. The composite action
+accepted `set-speed-1`, `resume-map`, and `pause-map`; `date_raw` advanced from
+`53175816` to `53175840`, `progress_status=postcondition`, and the final
+snapshot remained paused, map-ready, alive CharacterID `29829`, and the same
+episode. Managed stop proved an empty process tree.
+
+A second independent PID (`40940`) restored the same old checkpoint and ran 24
+planner turns: 12 same-frame termination observations interleaved with 12
+one-day native gameplay actions. Every `life-advance` returned
+`postcondition`; the date advanced from `53175816` to `53176104`, and player
+ArmyID `83886341` moved from Province `2596` with route
+`[2595,2603,2604]` to Province `2603` with route `[2604]`. While paused and
+map-ready, native `save-checkpoint` materialized a new 66,426,917-byte save,
+SHA-256
+`6F4970AEACBEEEA18E7F2502D63A4E31D1163A2F0F211AD9C7137A090EC1DD16`,
+anchored at history index `158` and `date_raw=53176104`.
+
+A third independent PID (`46344`) cold-loaded those exact new bytes. Its first
+ready paused snapshot and mailbox agreed on `date_raw=53176104`; CharacterID
+`29829` was alive, ArmyID `83886341` was in Province `2603` with route
+`[2604]`, and history row `159` recorded a successful process-level
+`restore-checkpoint`. All three sessions ended through the managed supervisor
+with cleanup proven. The Paradox crash-bundle count stayed at nine and the
+newest bundle remained `ck3_20260825_200506`; no unsafe-cleanup marker was
+left behind.
+
+This closes the default-OFF startup, native observation, planner, action,
+postcondition, save, and cold-restore path for this exact checkpoint. It does
+not qualify the still-unexecuted typed war-entry mailbox request: the live
+turns used the already-supported termination-options reader, and the readiness
+ledger below therefore keeps the one-target war-entry result pending.
+
+The final save in that 24-turn run was an explicit controller command, not an
+automatic planner checkpoint. The twelve successful active-war
+`life-advance` rows exposed that the war branches return before the generic
+three-cycle checkpoint clause. The production `native-auto-run` owner therefore
+keeps a separate cadence over successful, semantically visible
+`postcondition` advances and materializes a checkpoint after the third; query
+turns and same-frame ACKs do not advance that counter. File bytes and the
+native history anchor are rechecked before the next gameplay action.
+
 ## Readiness ledger
 
 | Gate | Current | Evidence / next step |

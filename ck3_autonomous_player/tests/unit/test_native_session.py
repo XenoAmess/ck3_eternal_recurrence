@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import threading
 from types import SimpleNamespace
 import unittest
 from unittest import mock
@@ -143,6 +144,40 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         lines = output.getvalue().splitlines()
         self.assertTrue(any('"type": "native_session_ready"' in line for line in lines))
         self.assertTrue(any('"type": "native_session_status"' in line for line in lines))
+
+    def test_pre_set_stop_event_uses_tracked_cleanup_once(self) -> None:
+        process = mock.Mock()
+        process.pid = 4243
+        process.poll.return_value = None
+        handle = SimpleNamespace(process=process)
+        shutdown = {"ok": True, "contract_errors": []}
+        config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\native-session-stop-event-test",
+            dll_path=Path("bridge.dll"),
+            injector_path=Path("injector.exe"),
+        )
+        stop_event = threading.Event()
+        stop_event.set()
+
+        with mock.patch(
+            "xar_autoplayer.native_session.launch", return_value=handle
+        ), mock.patch(
+            "xar_autoplayer.native_session.stop_tracked", return_value=shutdown
+        ) as stop_mock:
+            report = _native_session_locked(
+                self.spec,
+                config,
+                1.0,
+                input_stream=None,
+                output_stream=None,
+                poll_interval_seconds=0.001,
+                stop_event=stop_event,
+            )
+
+        stop_mock.assert_called_once_with(handle, require_running=False)
+        self.assertEqual(report["exit_reason"], "stop")
+        self.assertTrue(report["ok"])
 
     def test_explicit_cold_start_launches_exact_xar_checkpoint(self) -> None:
         process = mock.Mock()

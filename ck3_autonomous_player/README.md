@@ -251,7 +251,13 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver native-headless --pipe-name '\\.\pipe\xar_ck3_bridge_mcp' --transport stdio
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver hybrid-fallback --pipe-name '\\.\pipe\xar_ck3_bridge_mcp' --userdir <isolated-ck3-userdir> --state-dir <XarAutoplayer-state> --transport stdio
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-session --timeout 21600
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-auto-run --turns 20 --timeout 21600 --readiness-timeout 300 --cold-start-checkpoint
 ```
+
+`native-auto-run` 是单进程 ownership 入口：它先建立 named pipe，再启动受管 CK3，会在 exact-build、默认关闭启动探针、
+paused map、episode identity 与 main-thread mailbox 全部就绪后有界执行 planner。查询与玩法回合分账；每三个确实返回
+`postcondition` 且产生语义变化的推进回合自动物化并核验 checkpoint，回合上限结束时也保存尚未落盘的可见进度。
+`--cold-start-checkpoint` 要求 `--state-dir` 中的 v2 checkpoint anchor 与同一 pipe 名完全匹配；不恢复现有 checkpoint 时省略它。
 
 `vision-session` 与 `hybrid` 需要由新代码启动的 `opening-dev-session`；它在 run 目录公开 `bridge/inbox`/`outbox`，MCP 请求与
 stdin 共用同一主线程命令处理，因此策略、MCP daemon 和大多数 Python driver 改动不要求重启这一局 CK3。数据 Mod 原型位于
@@ -350,8 +356,11 @@ MCP 不输出胜率，策略也不会因 v3 observation ready 自动攻击。que
 `decision_status=blocked`、`selected_action=null`；即使合成输入显示 90% unconditional win 且所有外部 gate 为 true，独立 activation
 仍为 false，不会产生 move/attack。
 
-纯原生模式需要两个并行进程：先启动 `mcp_server.py --driver native-headless` 建立 pipe server，再用上面的
-`agent.py ... native-session` 创建 suspended CK3、注入 DLL 并恢复游戏。`native-session` 监管 PID/Job，stdin 接受
+纯原生模式有两种互斥的 ownership。外部 MCP 模式需要两个并行进程：先启动
+`mcp_server.py --driver native-headless` 建立 pipe server，再用上面的 `agent.py ... native-session` 创建 suspended CK3、
+注入 DLL 并恢复游戏。`native-auto-run` 则在同一 Python 进程持有 pipe driver、`GameplayBridgeService` 与受管
+`native-session`，不需要启动 MCP server，也不需要 `mcp` 可选依赖；两种入口不得同时占用同一 pipe 或 state directory。
+`native-session` 监管 PID/Job，stdin 接受
 `status`/`stop`；同时在 `<state>/native-session/bridge` 接受纯原生 `restore-checkpoint`，停止当前受管进程后以同一
 pipe/DLL 和 `-loadsave=xar_checkpoint` 重启。若旧进程的 CK3 窗口已最小化，生命周期 supervisor 会把新 PID 的窗口也恢复为
 最小化。MCP driver 只有观察到新连接代次中稳定的 `map_ready` snapshot，并核对保存日期、角色与 checkpoint bytes 后才返回恢复成功；整个路径
@@ -366,6 +375,8 @@ pipe/DLL 和 `-loadsave=xar_checkpoint` 重启。若旧进程的 CK3 窗口已�
 `strategy-review`、`status` 和 `stop`，每次 gameplay 命令前热加载 perception/control/policy
 模块。这样修改画面判断或策略后可在同一进程继续测试。只有 mod/runtime/启动参数改变、需要确定性复位，或功能里程碑验收时，
 才重新执行完整 cold-start 与 ordinary/crash/opening 链。development step/session 明确不构成 release qualification 或有效得分局。
+`native-auto-run` 与 development-only 的 `opening-step --step auto-run` 不是别名：前者全程只使用 native-headless bridge，
+不导入 OCR、视觉或桌面输入，并且只有真实语义推进才能让一次运行得到 `outcome=qualified`。
 
 ### 当前可玩能力（2026-08-23）
 
