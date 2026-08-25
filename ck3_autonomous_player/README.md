@@ -275,6 +275,81 @@ snapshot 的 `episode_character_id`，restore 后仍保持该 ID；玩家死亡�
 `declare-war-29097-11-0` 后 snapshot 真正出现 `war_id=16777290`，CK3 进程仍响应且窗口保持最小化。主动婚配查询与提交协议也已接入；
 同次实测查询正常返回但该存档没有可用候选，因此主动婚配提交仍标为待实机候选验证。收到的角色互动已可原生接受或拒绝。
 
+战争终止现另有 typed MCP 口 `ck3_query_war_termination_options`：它只在暂停态按完整 generation `WarID` 查询，返回战争时长、
+attacker-relative 双方总战分与四项分解、CB 身份/白和许可，以及投降、白和、胜利三个原生上下文的 validator、AI acceptance
+FixedPoint 和 auto-accept。第二个只读 MCP `ck3_query_war_termination_terms` 以同一 paused revision 查询
+`claim_cb` 的 claimant、ordered target Titles、`0x28B1AA0` claim 四态与三 outcome 的 claim/title disposition；非 claim CB 返回 typed
+unsupported，不用空 ID 占位。CB 动态 gold/prestige/truce/PoW 条款尚未闭合时不得从战分、acceptance 或 v1 claim 方向推断完整退出效用。
+exact native adapter 已包含 typed surrender 与 special-index-3 white-peace 两个机械 command capability，并有 validator、queue bool 与析构
+fixture；但 Python `action_steps` 不广告二者，通用 MCP 直接调用也会在发送 native frame 前 fail closed，直到
+`claim_cb_exit_terms_v2` 和 campaign decision readiness 完整。planner 当前仍明确禁止自动投降或自动白和。以上终止查询链已通过
+Python/native fixture，并由官方 MCP SDK client 覆盖 tool 枚举和进程内调用。2026-08-25 已在 paused `WarID=16777290` 完成 options query 的只读实机验收：
+`claim_cb`、347 天、战分 +41（全部来自 battles）；修正结果极性后 surrender/attacker-defeat validator=true、AI acceptance=+860、
+auto=true，white peace validator=true、AI acceptance=+11、auto=false，victory/attacker-victory validator=false、acceptance=-58、
+auto=false。日期保持 `53175816`，未提交任何终战动作。v1 getter/dtor query 与动态 v2 条款仍待新 DLL 实机验收，因此仍不能宣称完成实机终战。
+
+战斗观测的第一只读切片是 `ck3_query_army_strengths(army_ids, expected_revision)`。调用者必须显式给出
+1–64 个非重复的 full-generation 公共 CUnit ID；driver 只在暂停且 revision 精确匹配时，让 native 一次原子读取当前
+`player_armies` 与 active war 的 allied/enemy army 全 scope，再验证 scope 身份并按请求顺序过滤。逐军返回
+current/max soldiers、regiment count 和原生 AI 的 active-regiment base-power raw（FixedPoint scale `100000`）；任一
+CArmy/CRegiment generation、数组或 predicate 读取失败都会让该军整行 `unavailable`，数值保持 `null`，合法零兵仍是数值 `0`。
+这个 base power 不含地形、将领、兵种克制、骑士、补给或双方 relation lane，因此 MCP 明确不输出 ratio、胜率或接战建议，planner
+当前也不会据此自动接战。同一 paused frame 的完整结果会进入 snapshot cache；日期、snapshot ID、connection generation 或
+episode 任一变化都会使缓存失效。
+
+下令前可用的完整条件接触观测口是
+`ck3_query_combat_simulation_inputs(target_province_id, attacker_entry_province_id, attacker_army_ids, defender_army_ids, expected_revision)`。
+两侧数组都必须非空，合计最多 64 个有序、非重复的 full-generation ArmyID；所有军队必须位于当前玩家/active-war scope，
+attacker 与 defender 必须属于同一个 active WarID 的相反阵营。`attacker_entry_province_id` 是所有攻击军在条件场景中的最后入场边起点；
+native 只验证它与 target 的唯一合法 adjacency，不要求军队已经收到 move 命令，也不把当前 route 冒充场景事实。查询只允许绑定同一暂停
+revision，cache 还同时绑定 snapshot ID、native revision、connection generation、episode、目标省、入场省与两侧有序 ArmyID 列表。
+返回 `scenario.kind=explicit_hypothetical_contact`，明确表示 fixed-at-contact/no-reinforcements 条件模型。返回值严格保留
+terrain/crossing/attacker-defender holding、contact width、commanders、
+regiments、effective stats、counter operands、knights、ongoing combats 与 counter resolutions 的 native 状态/null 合同；FixedPoint
+scale 固定为 `100000`。`status=available` 只表示 `input_observation_ready=true`。当前 `monte_carlo_ready` 必须仍为 `false`，且
+`missing_required_domains` 明列伤亡分配、追击转换、战斗结束/撤退转换和 phase event RNG/effects 四个模拟器缺口，因此本 MCP 不输出
+胜率，也不得把 partial/available 误解为 simulation ready。两侧数组顺序是条件场景的显式 CCombatSide insertion order，不是实际 arrival
+预测；`defender_insertion_order_policy=explicit_request_order_hypothetical` 固定这一证据边界。多 owner coalition 以各自 request order 首军 owner
+构造 holding 与 side-wide counter context，后续军队不会导致 composition、effective stats、knights 或逐 regiment counter operands 被抹掉。
+
+同一请求现在另有 production v3 只读口
+`ck3_query_combat_simulation_inputs_v3(target_province_id, attacker_entry_province_id, attacker_army_ids, defender_army_ids, expected_revision)`。
+它复用 v2 的条件接触场景和军队 scope gate，并由 exact-build native 在同一暂停帧原子发布 phase-event raw、15-stage advantage
+constructor ledger 与完整固定 Named-key 对象；Python 严格归一化 81 个 native leaf，再离线推导 51 个确定性 state ref，并逐 context
+证明与固定 manifest 的 132 项集合精确分割。随后 strict AST evaluator 逐节点白名单解释全部 13 个 stock row：trigger/chance/effect
+结构覆盖为 `13/13/13`（688 个 AST node），event row 与 random-list 保留 source order，所有数值保持 signed Q100000 且逐次向零截断。
+`random_side_knight` evaluator 已按 exact-build `CCombatSide` source order、shared→source predicate、tail-swap-remove、
+signed-int32 Q100000 weight conversion/accumulator 与单次 draw selector 实现，并用会区分 stable-filter 的四候选 golden、
+负/零权和 int32 wrap 测试冻结。production `raw.sides[*].candidate_source_proof` 现另外发布 exact
+`CCombatSide` commander→knight source vector 等价证明；Python 重建包含 `side_index`、policy 与 ordered rows 的 compact-JSON
+SHA-256，并逐行对拍现有 army/character/commander/knight/regiment roster，不能只相信 digest。通过该 proof 的 payload 得到
+`algorithm_ready=true`、`materialization_input_ready=true` 与组合 candidate gate true。
+evaluator 合同版本为 `ck3-1.19.0.6-stock-phase-event-ast-v3`，canonical SHA-256 为
+`29C1B1B01E23F7CF37266D075D33E6BB5EAB75480FDF0B0E53D7BAAFB41CA62B`；13 个 family 的独立 AST hash、node count 与
+trait/wound/maim/death/detach/commander advantage removal/variable writeback golden 已冻结。available/unavailable 两条正式 C++ serializer
+golden 都经过相同 strict normalizer；任一 native reader 或 AST/effect whitelist 校验失败时都 fail closed，不允许 partial payload 冒充 production。
+
+`input_observation_ready=true` 只代表这 132 项输入已可观测，绝不等于模拟器 fidelity ready。v3 返回独立的
+`loaded_playset_proof`：仅在当前受管 episode/frame、environment fingerprint、live native PID、singleton
+`enabled_mods=["mod/xar_autoplayer.mod"]` 全部绑定，production tree 未以同路径或 `replace_path` 覆盖 manifest 的 11 个来源，并且 11 个
+stock 文件逐一重算 SHA-256 相等时，运行期 `loaded_playset_verified` 才为 true；proof 自身另有 canonical SHA，episode、frame、environment、
+`dlc_load.json`、mod tree 或 stock bytes 任一变化都会拒绝旧 proof。静态 manifest 仍不把运行期 gate 写成全局 true；只有本次 v3 payload
+的 132 refs 完整且 13/13 AST/effect audit 全通过，只能得到 `structural_ready=true`。candidate materialization/input order 已由本次
+production proof 逐 payload 闭合；当前 AST hard blocker 是 manifest 中 15 类 `observational_only`/delayed side effect 的 battle-horizon
+feedback 尚未闭合。该 ledger 逐项记录 prestige、glory、house relation、memory、death/location/Mongol variables、cranial trophy、slain list、
+battle event/toast/interface message，以及 1 日 hold-court、2 日 wound treatment/infection、30 日 epilepsy 的最短延迟；CK3 battle horizon
+没有相应上界，所以不能仅凭“delayed”裁掉。因此 `ast_evaluator_ready=false`，`original_trace_ready` 也独立为 false，同日
+participant/contribution/commander refresh 与原生 effect draw trace 尚未对拍。当前 `transition_fidelity_gate`、`monte_carlo_ready`、
+`planner_usable` 和 `active_attack_allowed` 继续为 false，
+MCP 不输出胜率，策略也不会因 v3 observation ready 自动攻击。query template 及任意 concrete v2/v3 query 都是 critical read-only prefix；
+不支持时 fail closed，绝不会回落成 `life-advance`、data Mod 或视觉动作。
+
+未来策略接线的 `combat-entry-eu-v1` 已在独立只读合同中冻结 94 个 required path（同帧 identity、七个 fidelity gate、
+含 no-resolution 的 Q100000 概率分割、trial/component-vector hash、hard-loss/角色灾难尾部、campaign feedback 与版本化 utility policy），
+合同 SHA-256 为 `A737A10FCC2B1393B8F2A50F3D6170C6881FCC1745E970356F1C3975D65EA43C`。当前模块只验证字段并固定
+`decision_status=blocked`、`selected_action=null`；即使合成输入显示 90% unconditional win 且所有外部 gate 为 true，独立 activation
+仍为 false，不会产生 move/attack。
+
 纯原生模式需要两个并行进程：先启动 `mcp_server.py --driver native-headless` 建立 pipe server，再用上面的
 `agent.py ... native-session` 创建 suspended CK3、注入 DLL 并恢复游戏。`native-session` 监管 PID/Job，stdin 接受
 `status`/`stop`；同时在 `<state>/native-session/bridge` 接受纯原生 `restore-checkpoint`，停止当前受管进程后以同一

@@ -150,6 +150,42 @@
       "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 40 48 8B F2 48 8B E9 4C 8B CA 45 33 C0 48 8B D1 48 8D 4C 24 30"
     },
     {
+      "name": "war_score_imprisonment_attacker_relative",
+      "rva": "0x29030B0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 40 48 8B DA 4C 8B CA 48 8B D1 48 8B F9 48 8D 4C 24 30 45 33 C0 E8 CD F4 FF FF 0F 10 00 0F 11"
+    },
+    {
+      "name": "war_score_battles_base_attacker_relative",
+      "rva": "0x2903150",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 B0 FD FF FF 48 81 EC 50 03 00 00 4C"
+    },
+    {
+      "name": "war_score_battles_side_attacker_relative",
+      "rva": "0x2903DA0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 48 8D AC 24 60 FE FF FF 48 81 EC A0 02 00 00 49 8B D8 0F B6 F2 4C 8B D1"
+    },
+    {
+      "name": "war_score_occupation_side_packed",
+      "rva": "0x2904B00",
+      "confidence": "high-static",
+      "pattern": "4C 89 44 24 18 88 54 24 10 55 53 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 98 F4 FF FF 48 81 EC 68 0C 00 00 44 0F B6 E2"
+    },
+    {
+      "name": "war_score_ticking_side_attacker_relative",
+      "rva": "0x2905BC0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 4C 89 64 24 20 55 41 56 41 57 48 8D AC 24 60 FE FF FF 48 81 EC A0 02 00 00 4D 8B F0 44 0F B6 D2 48"
+    },
+    {
+      "name": "war_days_trigger_evaluator",
+      "rva": "0x2848230",
+      "confidence": "high-static",
+      "pattern": "48 8B 02 66 83 38 10 75 06 44 8B 40 08 EB 06 41 B8 FF FF FF FF 48 8B 15 F4 44 EC 02 48 85 D2 74 26 41 8B C0 25 FF FF FF"
+    },
+    {
       "name": "native_component_alive_id_gate",
       "rva": "0x10495A0",
       "confidence": "high-static",
@@ -274,6 +310,18 @@
       "rva": "0xA84603",
       "confidence": "high-static",
       "pattern": "48 8B 15 76 86 C8 04 48 85 D2 74 24 8B C3 25 FF FF FF 00 3B 42 2C 73 18 8B C8 48 03 C9 48 8B 42 20 48 8B 7C C8 08 48 85"
+    },
+    {
+      "name": "army_current_soldiers_from_regiment_array",
+      "rva": "0x27BD9E0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 20 48 8B 19 45 33 F6 48 63 41 0C 0F B6 FA"
+    },
+    {
+      "name": "army_maximum_soldiers",
+      "rva": "0x226F350",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 08 48 8B 41 38 45 33 C9 48 63 49 44 48 8D 0C 88 48 3B C1 74 5D 4C 8B 1D 59 01 55 03"
     },
     {
       "name": "unit_state_code",
@@ -612,6 +660,18 @@
       "pattern": "48 89 5C 24 08 57 48 81 EC 90 00 00 00 48 8B FA 48 8B D9 4C 8B CA 41 B0 01 41 0F B6 D0 E8 0E EB FF FF 84 C0 0F 84 C9 00 00 00"
     },
     {
+      "name": "character_interaction_answer_score",
+      "rva": "0x2C44320",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 01 00 00 48 8B DA 48 8B F9 8B 81 DC 02 00 00 39 81 D8 02 00 00 75 0C 48 C7 02 80 96 98 00"
+    },
+    {
+      "name": "character_interaction_auto_accept_trigger_evaluator",
+      "rva": "0x334C510",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 30 04 00 00 48 8B DA 48 8B F9 48 8D 4C 24 50 E8 FE 7D 00 00 48 8D 8C 24 78 01"
+    },
+    {
       "name": "construct_send_character_interaction_command",
       "rva": "0x26B3220",
       "confidence": "high-static",
@@ -622,6 +682,12 @@
       "rva": "0xC569F0",
       "confidence": "high-static",
       "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 81 EC 70 03 00 00 41 0F B6 F0 48 8B E9 8B BA 88 02 00 00 8B 1D C0 14 39 04 3B FB"
+    },
+    {
+      "name": "construct_special_character_interaction_context",
+      "rva": "0x2225D40",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 30 41 8B D9 0F B6 EA 41 8B F8 48 8B F1 E8 25"
     },
     {
       "name": "war_overview_enforce_demands_validate_and_submit",
@@ -672,6 +738,90 @@
       "pattern": "40 53 48 83 EC 20 66 83 39 04 75 05 8B 51 08 EB 05 BA FF FF FF FF 48 8B 05 E3 13 6F 03 48 85 C0 74 23 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48 8B 40 20 48 03 C9 48 8B 5C C8 08 48 85 DB 74 05 39 53 18 74 07 48 8B 1D BC 13 6F 03 48 8B 43 10 48 8D 4B 10 FF 50 08 84 C0 74 1F 80 BB 9C 01 00 00 00 75 16 48 8B 8B A8 01 00 00 48 85 C9 74 0A"
     },
     {
+      "name": "combat_army_commander_resolver",
+      "rva": "0x2278F70",
+      "confidence": "high-static",
+      "pattern": "48 8B 05 B9 31 49 03 48 85 C0 74 29 8B 91 20 01 00 00 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16"
+    },
+    {
+      "name": "combat_generic_commander_advantage",
+      "rva": "0xBC5410",
+      "confidence": "high-static",
+      "pattern": "4C 89 44 24 18 48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 A8 FA FF FF 48 81 EC 58 06 00 00"
+    },
+    {
+      "name": "province_terrain_core",
+      "rva": "0x220D940",
+      "confidence": "high-static",
+      "pattern": "48 8B 41 20 48 8B 80 B8 00 00 00 C3 CC CC CC CC 48 8B 41 20 48 8B 88 B8 00 00 00"
+    },
+    {
+      "name": "combat_regiment_effective_stats_at_province",
+      "rva": "0x239CAE0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 60 49 8B F0 48 8B FA 48 8B D9 E8 B3 03 00 00 84 C0 74 5B"
+    },
+    {
+      "name": "combat_regiment_special_classifier",
+      "rva": "0x239CEB0",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 28 8B 91 48 01 00 00 83 FA FF 74 4C 48 8B 05 6A F2 36 03 48 85 C0 74 23 8B CA 81 E1 FF FF FF 00"
+    },
+    {
+      "name": "character_modifier_aggregator",
+      "rva": "0x26172C0",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 28 48 8B 81 A8 01 00 00 48 85 C0 74 1B 48 8B 80 58 02 00 00 48 85 C0 74 0F 48 39 48 08"
+    },
+    {
+      "name": "character_modifier_fixed_point_read",
+      "rva": "0x20AB950",
+      "confidence": "high-static",
+      "pattern": "40 57 B8 FF FF 00 00 45 0F B7 D8 4C 8B D2 48 8B F9 66 44 3B C0 75 0A 33 C0 48 89 02 48 8B C2 5F C3"
+    },
+    {
+      "name": "combat_rules_getter",
+      "rva": "0x82DC40",
+      "confidence": "high-static",
+      "pattern": "48 83 EC 38 48 8B 05 D5 E4 ED 04 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 89 60 85 03"
+    },
+    {
+      "name": "combat_counter_current_chunk",
+      "rva": "0x23D2B90",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 8B 59 18 4C 8B D2 48 8B 15 25 C9 3E 03 48 85 D2 74 2A 44 8B 41 08"
+    },
+    {
+      "name": "combat_counter_class_resolution",
+      "rva": "0x23CF1B0",
+      "confidence": "high-static",
+      "pattern": "4C 89 44 24 18 48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 81 EC 98 00 00 00 48 8D 6C 24 20 45 33 F6 4C 8B FA 4D 85 C9 41 8B FE 49 0F 4F F9 E8 59 EA 45 FE"
+    },
+    {
+      "name": "combat_counter_context_scale",
+      "rva": "0x2946B50",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 18 48 89 6C 24 20 56 57 41 56 4C 8B 5A 68 49 8B F8 4C 63 52 74 48 8B DA"
+    },
+    {
+      "name": "knight_effectiveness_context",
+      "rva": "0x2613480",
+      "confidence": "high-static",
+      "pattern": "40 57 48 83 EC 20 48 8B 81 B0 01 00 00 48 8B F9 48 8B 89 B8 01 00 00 48 85 C9 74 2F"
+    },
+    {
+      "name": "knight_effectiveness_fixed_point_read",
+      "rva": "0x28FD990",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 56 57 41 56 48 83 EC 30 48 8B F1 4D 8B F0 48 8B CA 48 8B FA"
+    },
+    {
+      "name": "combat_holding_defender_predicate",
+      "rva": "0x2900BB0",
+      "confidence": "high-static",
+      "pattern": "4C 89 44 24 18 53 48 83 EC 20 48 8B C2 48 8B D9 48 8B C8 48 8D 54 24 40 E8 23 B8 90 FF"
+    },
+    {
       "name": "cfixedpoint_to_float_scale_100000",
       "rva": "0x3A41DA0",
       "confidence": "high-static",
@@ -682,6 +832,12 @@
       "rva": "0x3A48E16",
       "confidence": "high-static",
       "pattern": "48 B8 09 E1 D1 C6 11 6B F1 29 48 F7 29 48 8B CE 48 C1 FA 0E 48 8B C2 48 C1 E8 3F 48 03 D0 89 54 24 40 48"
+    },
+    {
+      "name": "read_character_claim",
+      "rva": "0x28B1AA0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 18 48 89 6C 24 20 41 56 48 83 EC 40 48 8B D9 49 8B E8 48 8B CA 4C 8B F2 E8 CF 84 D6 FF"
     }
   ],
   "rvas": {
@@ -705,7 +861,30 @@
     "army_storage_slot": "0x570CC80",
     "unit_state_code": "0xC7AAB0",
     "army_internal_storage_slot": "0x570C730",
+    "regiment_storage_slot": "0x57BF4C8",
+    "army_current_soldiers_from_regiment_array": "0x27BD9E0",
+    "army_maximum_soldiers": "0x226F350",
     "combat_storage_slot": "0x570C758",
+    "combat_army_commander_resolver": "0x2278F70",
+    "combat_generic_commander_advantage": "0xBC5410",
+    "province_terrain_core": "0x220D940",
+    "combat_regiment_effective_stats_at_province": "0x239CAE0",
+    "combat_regiment_special_classifier": "0x239CEB0",
+    "character_modifier_aggregator": "0x26172C0",
+    "character_modifier_fixed_point_read": "0x20AB950",
+    "combat_rules_getter": "0x82DC40",
+    "combat_counter_current_chunk": "0x23D2B90",
+    "combat_counter_class_resolution": "0x23CF1B0",
+    "combat_counter_context_scale": "0x2946B50",
+    "knight_effectiveness_context": "0x2613480",
+    "knight_effectiveness_fixed_point_read": "0x28FD990",
+    "combat_holding_defender_predicate": "0x2900BB0",
+    "commander_min_roll_define": "0x570ED7C",
+    "commander_max_roll_define": "0x570ED80",
+    "minimum_combat_width_define": "0x570ED84",
+    "base_combat_width_ratio_define": "0x570EDB8",
+    "knight_damage_per_prowess_define": "0x570EDF8",
+    "knight_toughness_per_prowess_define": "0x570EDFC",
     "global_variable_container_accessor_slot": "0x570F750",
     "get_script_identifier_table": "0x3B971A0",
     "lookup_script_identifier_id": "0x3B97020",
@@ -716,6 +895,12 @@
     "cfixedpoint_to_semantic_integer_site": "0x3A48E16",
     "contains_war_participant": "0x2224870",
     "get_war_score_attacker_relative": "0x222A8A0",
+    "get_war_score_imprisonment_attacker_relative": "0x29030B0",
+    "get_war_score_battles_base_attacker_relative": "0x2903150",
+    "get_war_score_battles_side_attacker_relative": "0x2903DA0",
+    "get_war_score_occupation_side_packed": "0x2904B00",
+    "get_war_score_ticking_side_attacker_relative": "0x2905BC0",
+    "war_days_trigger_evaluator": "0x2848230",
     "siege_storage_slot": "0x57BF1B8",
     "native_component_alive_id_gate": "0x10495A0",
     "province_is_occupied": "0x220C4A0",
@@ -814,10 +999,15 @@
     "refresh_character_interaction_context": "0x2C40950",
     "finalize_character_interaction_context": "0x2C40B20",
     "validate_character_interaction_context": "0x2C43F00",
+    "read_character_interaction_answer_score": "0x2C44320",
+    "evaluate_character_interaction_auto_accept_trigger": "0x334C510",
     "construct_send_character_interaction_command": "0x26B3220",
     "destroy_character_interaction_context": "0x2C3F380",
     "default_construct_character_interaction_context": "0x2C3F300",
     "construct_war_resolution_interaction_context": "0xC569F0",
+    "construct_special_character_interaction_context": "0x2225D40",
+    "read_character_claim": "0x28B1AA0",
+    "character_claim_vtable": "0x40E3060",
     "game_state_type_descriptor": "0x546A670",
     "event_manager_type_descriptor": "0x54E12E8",
     "player_character_manager_type_descriptor": "0x54C4230"
@@ -917,6 +1107,26 @@
       "name": "CWarDeclaration.primary",
       "rva": "0x411DAA0",
       "function_rvas": ["0x10933F0", "0x3B8B090", "0x24D7840", "0x3B8B110", "0x24D7A10", "0x7E6490", "0x7E6490", "0x24D7810", "0x24D7690"]
+    },
+    {
+      "name": "CCharacterClaim.present",
+      "rva": "0x40E3060",
+      "function_rvas": ["0x81B620"]
+    },
+    {
+      "name": "CStressImpactEffect.primary",
+      "rva": "0x446FE58",
+      "function_rvas": ["0x2EE97D0", "0x337EFE0", "0x2EEA260"]
+    },
+    {
+      "name": "CAddBasedOnContribution<1>.primary",
+      "rva": "0x444AE10",
+      "function_rvas": ["0x2EA2AE0", "0x337EFE0", "0x2EA5000"]
+    },
+    {
+      "name": "CAddBasedOnContribution<0>.primary",
+      "rva": "0x444AED8",
+      "function_rvas": ["0x2EA2AE0", "0x337EFE0", "0x2EA5000"]
     }
   ],
   "layouts": {
@@ -1007,7 +1217,8 @@
     "CCharacterInteractionDatabase": {
       "getter": "RVA 0x831890 returns the independent singleton; these offsets are not relative to CK3GameData",
       "arrange_marriage_interaction": "+0xF48 pointer registered from canonical key arrange_marriage_interaction at RVA 0x2C3EA90",
-      "enforce_demands_interaction": "+0x1018 pointer consumed by war-resolution builder RVA 0xC569F0 when surrender=false and the player is on the winning side",
+      "enforce_demands_interaction": "+0x1018 pointer consumed by war-resolution builder RVA 0xC569F0 when the absolute attacker_victory boolean selects the played primary leader's victory",
+      "white_peace_interaction": "+0x1020 pointer selected by special-interaction helper RVA 0x2225D40 with uint8 index 3 (database base +0x1008 + index*8)",
       "declare_war_interaction": "+0xF78 pointer registered from canonical key declare_war_interaction at RVA 0x2C3EB3B and passed to character-interaction context constructor RVA 0x2C3EE50"
     },
     "EventManager": {
@@ -1081,11 +1292,15 @@
       "war_id": "+0x08 int32 component ID",
       "attackers": "+0x20 participant container; pointer array +0x08, count +0x14, participant CharacterID at element +0x08",
       "defenders": "+0x80 participant container with the same layout",
+      "start_date_raw": "+0xE0 signed int32 HistoricalDate low dword; native war_days evaluator RVA 0x2848230 computes (current CGameState date_raw - start_date_raw) / 24",
+      "active_casus_belli_type": "+0x100 CCasusBelliType pointer from the embedded CCasusBelli; null is published as no active CB and suppresses all type-dependent fields",
       "targeted_title_ids": "+0x270 native int32 TitleID array (embedded CCasusBelli +0xF8, targeted_titles +0x178); data +0x270, capacity +0x278, count +0x27C. Serializer RVA 0x23E6B00 uses identifier 0x2B3C=targeted_titles; live war 16777290 yielded [2388]",
       "primary_characters": "+0x288 attacker primary CharacterID, +0x28C defender primary CharacterID; RVA 0xC569F0 requires the local played CharacterID to match one and chooses the other as interaction recipient; active-war projection chooses the opposite field by player side, re-resolves its full generation-bearing CharacterID, and compares the player's own-side field to played CharacterID for player_is_primary_war_leader",
       "enemy_primary_default_raise_province_fallback": "RVA 0x224CC80(primary opponent Character*) returns the same default rally Province resolver used by raise-troops-default; Province +0x10 ID is accepted only when it resolves through the current CK3GameData province array. This is an explicitly named fallback location, not a decoded war goal",
       "ended_data": "+0x358 pointer; non-null wars are omitted from active_wars",
-      "war_score": "RVA 0x222A8A0 returns the attacker-relative int32 score for context=null; bridge negates it for a defending player"
+      "war_score": "RVA 0x222A8A0 returns the attacker-relative int32 total for context=null; defender absolute score is its checked negation",
+      "war_score_breakdown": "all int32 values are attacker-relative and context=null: imprisonment=0x29030B0; battles=0x2903150 + 0x2903DA0(side=false) - 0x2903DA0(side=true); ticking=0x2905BC0(false,null,true) - 0x2905BC0(true,null,false)",
+      "occupation_war_score": "RVA 0x2904B00 returns uint64 packed: low int32 score and high-byte authoritative flag. Read side=false first; use low1 if authoritative, otherwise read side=true and use -low2 if its flag is authoritative, else low1-low2. Any overflow suppresses the complete breakdown"
     },
     "CLandedTitleManager": {
       "title_storage": "+0x20 ComponentStorage<CLandedTitle> pointer"
@@ -1123,10 +1338,28 @@
     },
     "CArmy": {
       "army_id": "+0x10 int32 component ID referenced by CUnit+0x178",
+      "regiment_ids": "+0x38 native int32 full CRegimentID array; data +0x38, capacity +0x40, signed count +0x44. Every ID must resolve through the exact storage and match CRegiment+0x10; the engine fallback object is forbidden in the bridge",
       "gathering_count": "+0x5C int32; nonzero maps to CUnit state code 5 after higher-priority states",
-      "owner_character_id": "+0x120 int32 CharacterID",
-      "unit_id": "+0x124 int32 CUnit component ID",
+      "commander_character_id": "+0x120 full CharacterID; -1 is the exact absent sentinel; resolve through base+0x570C130 and re-read CCharacter+0x18",
+      "unit_id": "+0x124 full CUnit component ID; resolve through base+0x570CC80 and re-read CUnit+0x10; CUnit+0x174 is the army owner CharacterID",
       "combat_id": "+0x128 int32 CCombat component ID; state code 2 requires this ID to resolve to a live CCombat"
+    },
+    "CRegimentStorage": {
+      "global_slot": "base + 0x57BF4C8 pointer slot; dereference once to obtain the exact ComponentStorage<CRegiment>. Engine fallback/default slot base + 0x57BF4C0 is never accepted",
+      "slots": "+0x20 pointer; each slot is 0x10 bytes and object pointer is +0x08",
+      "capacity": "+0x2C int32"
+    },
+    "CRegiment": {
+      "identity_valid": "+0x08 subobject; vtable slot +0x08 calls RVA 0x10495A0 and proves only CRegiment+0x10 != -1. It is not a combat-active or participation predicate",
+      "regiment_id": "+0x10 int32 generation-bearing CRegimentID",
+      "combat_type": "+0x18 pointer T. T vtable slot +0 validates the type; levy iff !type_valid && !RVA0x239CEB0(CRegiment*), otherwise men_at_arms. T+0xA0A uint8 is fights_in_main_phase for both buckets",
+      "current_soldiers": "+0x38 nonnegative int32; identity-valid aggregate",
+      "maximum_soldiers": "+0x3C int32; all generation-resolved regiments aggregate",
+      "ai_base_power": "+0x40 signed int64 CFixedPoint raw, scale 100000; identity-valid aggregate used by AI power collection, not a battle prediction",
+      "maa_type": "+0x118 nullable/null-object CMenAtArmsType pointer; valid object stable key +0x18. Null/validity-false means absent and never implies levy",
+      "counter": "T+0x68 int32 stack size, +0x270 signed class index, +0x2B8 target data, +0x2C4 signed count, target stride0x10 with class+0/effectiveness Q100000+8",
+      "army_id": "+0x140 full CArmyID membership postcondition for pre-contact knights",
+      "knight_character_id": "+0x148 full CharacterID; -1 is no knight"
     },
     "CCombatStorage": {
       "global_slot": "base + 0x570C758 pointer slot; dereference once to obtain ComponentStorage<CCombat>",
@@ -1135,7 +1368,13 @@
     },
     "CCombat": {
       "combat_id": "+0x08 int32 component ID; main vtable +0x08 calls RVA 0x10495A0, which returns combat_id != -1",
-      "in_combat_projection": "RVA 0xC7AAB0 resolves CUnit+0x178 -> CArmy, then CArmy+0x128 -> CCombat through base+0x570C758, validates the complete ID and vfunc, and returns state code 2"
+      "in_combat_projection": "RVA 0xC7AAB0 resolves CUnit+0x178 -> CArmy, then CArmy+0x128 -> CCombat through base+0x570C758, validates the complete ID and vfunc, and returns state code 2",
+      "sides": "+0x20 physical side0 attacker; +0x368 physical side1 defender",
+      "phase_and_day": "+0x6B0 int32 phase, +0x6B4 int32 phase day",
+      "province": "+0x6B8 CProvince pointer",
+      "width_and_advantage": "+0x6C0/+0x6C4 int32 base/final width; +0x6C8 int32 base advantage; +0x710 int32 resolved advantage",
+      "rolls": "+0x6D0/+0x6D4 int32 side0/side1 rolls",
+      "holding_defender": "+0x6FE uint8 live result corresponding to paused RVA0x2900BB0(defender owner,target)"
     },
     "CRaiseTroopsCommand": {
       "size": "0x50",
@@ -1213,7 +1452,7 @@
       "database_index": "+0x10 int32 dense runtime ordinal; generation-bound only and not a semantic ID",
       "canonical_key": "+0x18 MSVC string inherited from CGameDatabaseObject; bytes/size/capacity at +0x18/+0x28/+0x30 and deterministic uint32 key hash at +0x14",
       "rule": "+0x38 pointer; byte +0x211 nonzero disables the type from declare-war UI enumeration",
-      "selection_flags": "+0x1718 uint32; bit 20 selects CK3's one combined declaration item instead of one item per nonempty evaluator configuration"
+      "selection_flags": "+0x1718 uint32; bit 7 (0x80) is WarOverview IsWhitePeacePossible and bit 20 selects CK3's one combined declaration item instead of one item per nonempty evaluator configuration"
     },
     "ValidCasusBelliConfigurationArray": {
       "global_scratch": "base + 0x4FED598 native CPdxArray used by the original declare-war UI",
@@ -1226,13 +1465,18 @@
     "CCharacterInteractionContext": {
       "size": "0x338",
       "interaction": "+0x00 pointer",
+      "event_target_scope": "+0x08 initialized scope passed to auto_accept trigger evaluator RVA 0x334C510",
       "actor_character_id": "+0x2D8 int32",
       "recipient_character_id": "+0x2DC int32",
       "secondary_actor_character_id": "+0x2E0 int32; actor-side spouse for arrange_marriage_interaction",
       "secondary_recipient_character_id": "+0x2E4 int32; recipient-side spouse for arrange_marriage_interaction",
       "optional_third_character_id": "+0x2E8 int32; marriage UI and AI paths keep -1 for direct matchmaking",
       "special_data": "+0x330 polymorphic pointer; declare_war_interaction constructs CWarDeclaration",
-      "lifecycle": "generic two-role construct RVA 0x2C3EE50, or redirect five CharacterID pointers with RVA 0x2C3C4C0 then all-role construct RVA 0x2C3F000, or default construct RVA 0x2C3F300; refresh RVA 0x2C40950, finalize RVA 0x2C40B20, validate RVA 0x2C43F00, destroy RVA 0x2C3F380"
+      "lifecycle": "generic two-role construct RVA 0x2C3EE50, or redirect five CharacterID pointers with RVA 0x2C3C4C0 then all-role construct RVA 0x2C3F000, or default construct RVA 0x2C3F300; refresh RVA 0x2C40950, finalize RVA 0x2C40B20, validate RVA 0x2C43F00, answer-score RVA 0x2C44320, destroy RVA 0x2C3F380"
+    },
+    "CCharacterInteraction": {
+      "auto_accept_trigger": "+0x2580 optional trigger pointer; if non-null call RVA 0x334C510(trigger, context+0x08)",
+      "auto_accept_scalar": "+0x2A48 uint8 bool fallback only when the trigger pointer is null"
     },
     "CWarDeclaration": {
       "size": "0x30",
@@ -1250,8 +1494,37 @@
       "lifecycle": "validate source context RVA 0x2C43F00, construct command RVA 0x26B3220, submit flags 0x0E, destroy command+0x20 and the original temporary context with RVA 0x2C3F380"
     },
     "EnforceDemandsContext": {
-      "builder": "RVA 0xC569F0(default-constructed context, live CWar, false) selects the opponent and CCharacterInteractionDatabase +0x1018 enforce-demands interaction",
+      "builder": "RVA 0xC569F0(default-constructed context, live CWar, attacker_victory): pass true for a primary attacker's victory and false for a primary defender's victory; selects the opponent and CCharacterInteractionDatabase +0x1018 enforce-demands interaction",
       "headless_path": "WarOverview send RVA 0xF54FA0 proves validate -> construct CSendCharacterInteractionCommand -> submit flags 0x0E; its visual confirmation object is not part of the gameplay command"
+    },
+    "WarTerminationContexts": {
+      "surrender_and_victory": "RVA 0xC569F0(default-constructed context, live CWar, attacker_victory) uses true for absolute attacker victory and false for absolute attacker defeat; WarOverview Victory/Defeat maps through the played primary leader's physical side",
+      "white_peace": "only when CCasusBelliType+0x1718 bit 7 is set and the played Character is a primary leader: RVA 0x2225D40(context, uint8 index=3, played CharacterID, opposite primary CharacterID)",
+      "availability": "context special_data +0x330 must be non-null and common validator RVA 0x2C43F00 must pass; paused query destroys all temporary contexts and never constructs or submits a command",
+      "ai_acceptance": "RVA 0x2C44320(context, int64* out) returns out; value is signed CFixedPoint raw with scale 100000 and is not GUI-clamped",
+      "auto_accept": "interaction+0x2580 trigger ? RVA 0x334C510(trigger, context+0x08) : bool(interaction+0x2A48)",
+      "terms_boundary": "only absolute outcome labels attacker_victory, white_peace and attacker_defeat plus hostage_variant=none are proven; CB-specific title, gold, prestige, piety, legitimacy, truce and prisoner effects remain unavailable and must not be inferred",
+      "surrender_command": "strict full-generation WarID, paused map and played primary leader; rebuild the player's absolute defeat with attacker_victory=player_is_primary_defender, validate, construct CSendCharacterInteractionCommand, submit flags 0x0E and destroy both context copies. Success is submitted ACK only; later WarID disappearance is the end-state proof",
+      "claim_terms_v1": "CWar+0x270 target TitleID array and +0x290 claimant CharacterID are full-generation resolved and re-read; RVA 0x28B1AA0 fills a 0x18 claim row. present=false publishes only absent and is not destroyed; present=true requires vptr RVA 0x40E3060, copies strong/implicit/title ID, then calls vtable slot 0 with delete_flags=0. All rows and the paused War/CB identity are atomic."
+    },
+    "ArmyStrengthQuery": {
+      "scope": "one paused ReadSnapshot; stable first-seen union of player_armies, then each active war's allied_armies and enemy_armies. Full public CUnitID dedupe; role priority player > active_war_ally > active_war_enemy; WarIDs union in snapshot order",
+      "current_helper": "RVA 0x27BD9E0(CArmy+0x38 array, flags=0) repeats exact storage resolution and public-ID identity predicate before summing CRegiment+0x38",
+      "maximum_helper": "RVA 0x226F350(CArmy*) resolves every regiment and sums CRegiment+0x3C",
+      "base_power": "instruction-mirror the identity-predicate loop proven in AI collector RVA 0x19179E0 and checked-sum signed CRegiment+0x40 raw values; scale is the independently proven CFixedPoint 100000",
+      "fallback_boundary": "RVA 0x27BD9E0 and 0x226F350 have engine fallbacks at base+0x57BF4C0; the bridge prevalidates every complete ID against base+0x57BF4C8 and requires helper/mirror equality, so fallback data is never published",
+      "atomicity": "one invalid CUnit/CArmy/CRegiment generation, malformed bounded array, missing identity predicate or checked-sum/helper mismatch makes that row status unavailable with all aggregates null; top status becomes partial. No entry is skipped and no command is queued"
+    },
+    "CombatSimulationInputsQuery": {
+      "literal_step": "query-combat-simulation-inputs-v2-<target>-<entry>-a-<Acount>-<A...>-d-<Dcount>-<D...>; strict positive canonical ASCII int32 tokens, exact nonempty counts each <=63 and combined <=64, target != entry, ArmyIDs distinct across partitions",
+      "atomic_scope": "paused one-snapshot validation against player plus active-war ally/enemy scope; every selected ArmyID shares a WarID, each explicit partition is one coalition, and the partitions are opposite. The explicit_hypothetical_fixed_at_contact_no_reinforcements scenario never depends on current position, move target, or route",
+      "effective_stats": "RVA 0x239CAE0(CRegiment*,Stats38*out,CProvince* target), synchronous caller-owned 0x38-byte out: +0x08 int32 max, +0x10/+0x18/+0x20/+0x28/+0x30 signed Q100000 siege/damage/toughness/pursuit/screen",
+      "counter": "synthetic Entry60 reads only full RegimentID+0x08 and current soldiers Q100000+0x18; RVA0x23D2B90 yields current chunk, RVA0x2946B50 yields the context scale from each hypothetical side's first request-order CArmy owner, and RVA0x23CF1B0 outputs caller-preallocated damage retention by class",
+      "knights": "CRegiment+0x148 CharacterID with Character+0x1B0/+0xF8 reverse membership and CRegiment+0x140 army match; RVA0x2613480 borrowed context plus RVA0x28FD990(out,context,0) yields effectiveness Q100000; RVA0x239CAE0 contribution cross-check uses signed int32 defines base+0x570EDF8/+0x570EDFC, never hard-coded stock values",
+      "commander": "CArmy+0x120 full CharacterID; generic RVA0xBC5410(character,-1,false); paused roll bounds mirror default defines plus modifier indices 0x108/0x109 and uint16 terrain modifier indices +0x76E/+0x770 without consuming RNG",
+      "contact_roles_crossing_holding": "side0 attacker/side1 defender; the explicit generation-valid entry Province has one target edge: kind0 none,1 strait,2 river,3 large_river, while 4/5/6 and missing edge reject. Request order is the hypothetical CCombat insertion order; holding calls RVA0x2900BB0 with the first defender owner even for mixed-owner partitions",
+      "precontact_width": "sum selected identity-valid regiment current soldiers per side in Q100000; base=max(1,trunc(((side0+side1)/2)*BASE_WIDTH_RATIO)); final=max(MINIMUM_COMBAT_WIDTH,trunc(base*terrain_width_multiplier))",
+      "readiness": "input_observation_ready is true only when every advertised input domain is available. monte_carlo_ready remains false and missing_required_domains contains only four external simulator gaps: damage_to_casualty_allocation, pursuit_transition, battle_end_and_retreat_transition, phase_event_rng_and_effects. No world write, RNG call, date advance, or command submission"
     }
   }
 }

@@ -13,6 +13,18 @@ MERGE_ARMIES_CAPABILITY = "game.command.merge-armies-N-with-N"
 START_ASSAULT_CAPABILITY = "game.command.start-assault-N"
 STOP_ASSAULT_CAPABILITY = "game.command.stop-assault-N"
 ENFORCE_DEMANDS_CAPABILITY = "game.command.enforce-demands-N"
+QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY = (
+    "game.command.query-war-termination-options-N"
+)
+QUERY_WAR_TERMINATION_TERMS_CAPABILITY = (
+    "game.command.query-war-termination-terms-v1-N"
+)
+QUERY_ARMY_STRENGTHS_CAPABILITY = (
+    "game.command.query-army-strengths-v1"
+)
+QUERY_ARMY_STRENGTHS_STEP = "query-army-strengths-v1"
+SURRENDER_WAR_CAPABILITY = "game.command.surrender-war-N"
+OFFER_WHITE_PEACE_CAPABILITY = "game.command.offer-white-peace-N"
 ARMY_ROUTES_CAPABILITY = "game.state.army-routes"
 WAR_PRIMARY_OPPONENT_CAPABILITY = "game.state.war-primary-opponent"
 WAR_OBJECTIVES_CAPABILITY = "game.state.war-objectives"
@@ -30,6 +42,54 @@ WAR_OBJECTIVE_ASSAULT_CAPABILITY = "game.state.war-objective-assault"
 RAISE_TROOPS_STEP = "raise-troops-default"
 
 CK3_FIXED_POINT_SCALE = 100_000
+MAX_ARMY_STRENGTH_REQUEST_IDS = 64
+
+_TERMINATION_TERMS_GAME_VERSION = "1.19.0.6"
+_TERMINATION_TERMS_EXECUTABLE_SHA256 = (
+    "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+)
+_TERMINATION_TERMS_CLAIM_SCRIPT_SHA256 = (
+    "D9AA37BDC45F81B4F6185B2697A3EBD09404084EA0D3CF77BBE3C1D2C962E8B1"
+)
+_TERMINATION_TERMS_NATIVE_READER = "CWar+0x270/+0x290;0x28B1AA0"
+_TERMINATION_TERMS_CLAIM_LIFECYCLE = (
+    "present_only_vtable_slot_0_delete_flags_0"
+)
+_TERMINATION_TERMS_OUTCOMES = {
+    "attacker_victory": {
+        "declared_title_disposition": (
+            "transfer_to_claimant_via_conquest_claim"
+        ),
+        "claim_disposition": "resolve_with_add_claim_on_loss",
+    },
+    "white_peace": {
+        "declared_title_disposition": "unchanged",
+        "claim_disposition": "retain_and_strengthen_weak",
+    },
+    "attacker_defeat": {
+        "declared_title_disposition": "unchanged",
+        "claim_disposition": "remove_declared_target_claims",
+    },
+}
+
+_ARMY_STRENGTH_ROW_KEYS = {
+    "status",
+    "army_id",
+    "native_carmy_id",
+    "scope_role",
+    "war_ids",
+    "regiment_count",
+    "current_soldiers",
+    "maximum_soldiers",
+    "ai_base_power_raw",
+    "ai_base_power_scale",
+    "unavailable_reason",
+}
+_ARMY_STRENGTH_SCOPE_ROLES = {
+    "player",
+    "active_war_ally",
+    "active_war_enemy",
+}
 
 
 def normalize_active_wars(value: object) -> list[dict[str, object]]:
@@ -546,6 +606,246 @@ def deduplicate_armies(
     return list(by_id.values())
 
 
+def army_strength_scope(
+    snapshot: dict[str, object],
+) -> list[dict[str, object]]:
+    """Derive the exact public-CUnit scope of one paused strength query.
+
+    Membership, ordering, and roles come only from the already published
+    snapshot.  Character ownership is deliberately irrelevant: it cannot
+    safely reconstruct a war relation lane.
+    """
+    raw_player_armies = snapshot.get("player_armies")
+    raw_active_wars = snapshot.get("active_wars")
+    if not isinstance(raw_player_armies, list):
+        raise ValueError("army-strength scope requires player_armies")
+    if not isinstance(raw_active_wars, list):
+        raise ValueError("army-strength scope requires active_wars")
+
+    rows: list[dict[str, object]] = []
+    by_id: dict[int, dict[str, object]] = {}
+
+    def admit(raw_army: object, role: str) -> None:
+        if not isinstance(raw_army, dict):
+            raise ValueError("army-strength scope contains a malformed army")
+        army_id = _positive_int32_id(
+            raw_army.get("army_id"), "army-strength scope army_id"
+        )
+        current = by_id.get(army_id)
+        if current is None:
+            current = {
+                "army_id": army_id,
+                "scope_role": role,
+                "war_ids": [],
+            }
+            by_id[army_id] = current
+            rows.append(current)
+            return
+        precedence = {
+            "active_war_enemy": 0,
+            "active_war_ally": 1,
+            "player": 2,
+        }
+        if precedence[role] > precedence[str(current["scope_role"])]:
+            current["scope_role"] = role
+
+    for raw_army in raw_player_armies:
+        admit(raw_army, "player")
+
+    wars: list[tuple[int, list[object], list[object]]] = []
+    for raw_war in raw_active_wars:
+        if not isinstance(raw_war, dict):
+            raise ValueError("army-strength scope contains a malformed war")
+        war_id = _positive_int32_id(
+            raw_war.get("war_id"), "army-strength scope war_id"
+        )
+        allied = raw_war.get("allied_armies")
+        enemy = raw_war.get("enemy_armies")
+        if not isinstance(allied, list) or not isinstance(enemy, list):
+            raise ValueError(
+                "army-strength scope requires allied and enemy army arrays"
+            )
+        wars.append((war_id, allied, enemy))
+        for raw_army in allied:
+            admit(raw_army, "active_war_ally")
+        for raw_army in enemy:
+            admit(raw_army, "active_war_enemy")
+
+    for war_id, allied, enemy in wars:
+        members: set[int] = set()
+        for raw_army in [*allied, *enemy]:
+            if not isinstance(raw_army, dict):
+                raise ValueError(
+                    "army-strength scope contains a malformed war army"
+                )
+            members.add(
+                _positive_int32_id(
+                    raw_army.get("army_id"),
+                    "army-strength scope war army_id",
+                )
+            )
+        for army_id in members:
+            row = by_id[army_id]
+            war_ids = row["war_ids"]
+            if isinstance(war_ids, list) and war_id not in war_ids:
+                war_ids.append(war_id)
+    return rows
+
+
+def normalize_army_strength_request_ids(value: object) -> list[int]:
+    """Validate the explicit MCP subset without silently deduplicating it."""
+    if not isinstance(value, list):
+        raise ValueError("army_ids must be an array")
+    if not 1 <= len(value) <= MAX_ARMY_STRENGTH_REQUEST_IDS:
+        raise ValueError(
+            "army_ids must contain between 1 and "
+            f"{MAX_ARMY_STRENGTH_REQUEST_IDS} IDs"
+        )
+    result: list[int] = []
+    seen: set[int] = set()
+    for index, raw_army_id in enumerate(value):
+        army_id = _positive_int32_id(
+            raw_army_id, f"army_ids[{index}]"
+        )
+        if army_id in seen:
+            raise ValueError("army_ids must not contain duplicates")
+        seen.add(army_id)
+        result.append(army_id)
+    return result
+
+
+def normalize_army_strengths(
+    value: object,
+    *,
+    expected_scope: list[dict[str, object]] | None = None,
+) -> list[dict[str, object]]:
+    """Normalize one exact-build, row-atomic army strength result."""
+    if not isinstance(value, list):
+        raise ValueError("native army_strengths must be an array")
+    rows = [
+        _normalize_army_strength_row(
+            raw_row, name=f"army_strengths[{index}]"
+        )
+        for index, raw_row in enumerate(value)
+    ]
+    ids = [int(row["army_id"]) for row in rows]
+    if len(ids) != len(set(ids)):
+        raise ValueError("native army_strengths contains duplicate ArmyIDs")
+    if expected_scope is not None:
+        expected_identity = [
+            {
+                "army_id": _positive_int32_id(
+                    row.get("army_id"), "expected army-strength scope army_id"
+                ),
+                "scope_role": row.get("scope_role"),
+                "war_ids": row.get("war_ids"),
+            }
+            for row in expected_scope
+        ]
+        actual_identity = [
+            {
+                "army_id": row["army_id"],
+                "scope_role": row["scope_role"],
+                "war_ids": row["war_ids"],
+            }
+            for row in rows
+        ]
+        if actual_identity != expected_identity:
+            raise ValueError(
+                "native army_strengths does not match the paused snapshot scope"
+            )
+    return rows
+
+
+def army_strength_query_status(
+    rows: Iterable[dict[str, object]],
+) -> str:
+    return (
+        "available"
+        if all(row.get("status") == "available" for row in rows)
+        else "partial"
+    )
+
+
+def _normalize_army_strength_row(
+    value: object, *, name: str
+) -> dict[str, object]:
+    if not isinstance(value, dict) or set(value) != _ARMY_STRENGTH_ROW_KEYS:
+        raise ValueError(f"native {name} schema is malformed")
+    status = value.get("status")
+    if status not in {"available", "unavailable"}:
+        raise ValueError(f"native {name}.status is malformed")
+    scope_role = value.get("scope_role")
+    if scope_role not in _ARMY_STRENGTH_SCOPE_ROLES:
+        raise ValueError(f"native {name}.scope_role is malformed")
+    war_ids = _strict_positive_int32_id_list(
+        value.get("war_ids"), f"{name}.war_ids"
+    )
+    native_carmy_id = _optional_positive_int32_id(
+        value.get("native_carmy_id"), f"{name}.native_carmy_id"
+    )
+    regiment_count = _optional_non_negative_int32(
+        value.get("regiment_count"), f"{name}.regiment_count"
+    )
+    current_soldiers = _optional_non_negative_int32(
+        value.get("current_soldiers"), f"{name}.current_soldiers"
+    )
+    maximum_soldiers = _optional_non_negative_int32(
+        value.get("maximum_soldiers"), f"{name}.maximum_soldiers"
+    )
+    ai_base_power_raw = value.get("ai_base_power_raw")
+    if ai_base_power_raw is not None and (
+        isinstance(ai_base_power_raw, bool)
+        or not isinstance(ai_base_power_raw, int)
+        or ai_base_power_raw < -(2**63)
+        or ai_base_power_raw > 2**63 - 1
+    ):
+        raise ValueError(
+            f"native {name}.ai_base_power_raw must be signed int64 or null"
+        )
+    if value.get("ai_base_power_scale") != CK3_FIXED_POINT_SCALE:
+        raise ValueError(
+            f"native {name}.ai_base_power_scale must be "
+            f"{CK3_FIXED_POINT_SCALE}"
+        )
+    unavailable_reason = value.get("unavailable_reason")
+    aggregates = (
+        regiment_count,
+        current_soldiers,
+        maximum_soldiers,
+        ai_base_power_raw,
+    )
+    if status == "available":
+        if native_carmy_id is None or any(item is None for item in aggregates):
+            raise ValueError(f"native available {name} is incomplete")
+        if unavailable_reason is not None:
+            raise ValueError(
+                f"native available {name} cannot have unavailable_reason"
+            )
+    else:
+        if any(item is not None for item in aggregates):
+            raise ValueError(
+                f"native unavailable {name} must null every aggregate"
+            )
+        if not isinstance(unavailable_reason, str) or not unavailable_reason:
+            raise ValueError(
+                f"native unavailable {name} requires a reason"
+            )
+    return {
+        "status": status,
+        "army_id": _positive_int32_id(value.get("army_id"), f"{name}.army_id"),
+        "native_carmy_id": native_carmy_id,
+        "scope_role": scope_role,
+        "war_ids": war_ids,
+        "regiment_count": regiment_count,
+        "current_soldiers": current_soldiers,
+        "maximum_soldiers": maximum_soldiers,
+        "ai_base_power_raw": ai_base_power_raw,
+        "ai_base_power_scale": CK3_FIXED_POINT_SCALE,
+        "unavailable_reason": unavailable_reason,
+    }
+
+
 def move_army_step(army_id: int, province_id: int) -> str:
     return (
         f"move-army-{_non_negative_id(army_id, 'army_id')}"
@@ -590,6 +890,28 @@ def stop_assault_step(siege_id: int) -> str:
 
 def enforce_demands_step(war_id: int) -> str:
     return f"enforce-demands-{_non_negative_id(war_id, 'war_id')}"
+
+
+def query_war_termination_options_step(war_id: int) -> str:
+    return (
+        "query-war-termination-options-"
+        f"{_positive_int32_id(war_id, 'war_id')}"
+    )
+
+
+def query_war_termination_terms_step(war_id: int) -> str:
+    return (
+        "query-war-termination-terms-v1-"
+        f"{_positive_int32_id(war_id, 'war_id')}"
+    )
+
+
+def surrender_war_step(war_id: int) -> str:
+    return f"surrender-war-{_positive_int32_id(war_id, 'war_id')}"
+
+
+def offer_white_peace_step(war_id: int) -> str:
+    return f"offer-white-peace-{_positive_int32_id(war_id, 'war_id')}"
 
 
 def parse_move_army_step(step: object) -> tuple[int, int] | None:
@@ -690,9 +1012,621 @@ def parse_enforce_demands_step(step: object) -> int | None:
     return int(war_text) if war_text.isdigit() else None
 
 
+def parse_query_war_termination_options_step(step: object) -> int | None:
+    return _parse_generation_war_step(
+        step, prefix="query-war-termination-options-"
+    )
+
+
+def parse_query_war_termination_terms_step(step: object) -> int | None:
+    return _parse_generation_war_step(
+        step, prefix="query-war-termination-terms-v1-"
+    )
+
+
+def parse_surrender_war_step(step: object) -> int | None:
+    return _parse_generation_war_step(step, prefix="surrender-war-")
+
+
+def parse_offer_white_peace_step(step: object) -> int | None:
+    return _parse_generation_war_step(step, prefix="offer-white-peace-")
+
+
+def _parse_generation_war_step(step: object, *, prefix: str) -> int | None:
+    """Parse only the canonical spelling of a full-generation WarID step."""
+    if not isinstance(step, str) or not step.startswith(prefix):
+        return None
+    war_text = step.removeprefix(prefix)
+    if (
+        not war_text
+        or not war_text.isascii()
+        or not war_text.isdecimal()
+        or war_text.startswith("0")
+    ):
+        return None
+    war_id = int(war_text)
+    return war_id if 0 < war_id <= 2**31 - 1 else None
+
+
+def normalize_war_termination_terms(
+    value: object,
+    *,
+    expected_war_id: int | None = None,
+) -> dict[str, object]:
+    """Normalize the complete, narrow claim-CB disposition slice."""
+    if not isinstance(value, dict):
+        raise ValueError("native war_termination_terms must be an object")
+    status = value.get("status")
+    common_keys = {
+        "schema_version",
+        "status",
+        "war_id",
+        "casus_belli",
+        "supported_slice",
+        "readiness",
+        "provenance",
+    }
+    if status == "available":
+        expected_keys = common_keys | {
+            "claimant_character_id",
+            "target_title_ids",
+            "claims",
+            "outcomes",
+        }
+    elif status == "unsupported":
+        expected_keys = common_keys | {"reason"}
+    else:
+        raise ValueError("native war_termination_terms.status is malformed")
+    if set(value) != expected_keys or value.get("schema_version") != 1:
+        raise ValueError(
+            "native war_termination_terms top-level schema is malformed"
+        )
+
+    war_id = _positive_int32_id(
+        value.get("war_id"), "war_termination_terms.war_id"
+    )
+    if expected_war_id is not None and war_id != _positive_int32_id(
+        expected_war_id, "expected_war_id"
+    ):
+        raise ValueError("native war_termination_terms WarID mismatch")
+    casus_belli = value.get("casus_belli")
+    if not isinstance(casus_belli, dict) or set(casus_belli) != {
+        "database_index",
+        "canonical_key",
+    }:
+        raise ValueError("native war_termination_terms.casus_belli malformed")
+    database_index = _optional_non_negative_int32(
+        casus_belli.get("database_index"),
+        "war_termination_terms.casus_belli.database_index",
+    )
+    if database_index is None:
+        raise ValueError(
+            "native war_termination_terms CB database index is required"
+        )
+    canonical_key = casus_belli.get("canonical_key")
+    if not isinstance(canonical_key, str) or not canonical_key:
+        raise ValueError(
+            "native war_termination_terms CB canonical key is malformed"
+        )
+    if value.get("supported_slice") != "claim_cb_claim_disposition":
+        raise ValueError(
+            "native war_termination_terms supported slice drifted"
+        )
+    provenance = _normalize_war_termination_terms_provenance(
+        value.get("provenance")
+    )
+
+    if status == "unsupported":
+        if canonical_key == "claim_cb" or value.get("reason") != (
+            "casus_belli_not_claim_cb"
+        ):
+            raise ValueError(
+                "native war_termination_terms unsupported branch malformed"
+            )
+        readiness = value.get("readiness")
+        if not isinstance(readiness, dict) or readiness != {"ready": False}:
+            raise ValueError(
+                "native war_termination_terms unsupported readiness malformed"
+            )
+        return {
+            "schema_version": 1,
+            "status": "unsupported",
+            "war_id": war_id,
+            "casus_belli": {
+                "database_index": database_index,
+                "canonical_key": canonical_key,
+            },
+            "supported_slice": "claim_cb_claim_disposition",
+            "reason": "casus_belli_not_claim_cb",
+            "readiness": {"ready": False},
+            "provenance": provenance,
+        }
+
+    if canonical_key != "claim_cb":
+        raise ValueError(
+            "native war_termination_terms available branch is not claim_cb"
+        )
+    claimant_character_id = _positive_int32_id(
+        value.get("claimant_character_id"),
+        "war_termination_terms.claimant_character_id",
+    )
+    target_title_ids = _strict_positive_int32_id_list(
+        value.get("target_title_ids"),
+        "war_termination_terms.target_title_ids",
+    )
+    if not target_title_ids:
+        raise ValueError(
+            "native war_termination_terms target titles must be nonempty"
+        )
+    raw_claims = value.get("claims")
+    if not isinstance(raw_claims, list) or len(raw_claims) != len(
+        target_title_ids
+    ):
+        raise ValueError(
+            "native war_termination_terms claims must match target titles"
+        )
+    claims: list[dict[str, object]] = []
+    for index, (raw_claim, title_id) in enumerate(
+        zip(raw_claims, target_title_ids, strict=True)
+    ):
+        name = f"war_termination_terms.claims[{index}]"
+        if not isinstance(raw_claim, dict):
+            raise ValueError(f"native {name} must be an object")
+        present = _strict_bool(raw_claim.get("present"), f"{name}.present")
+        expected_claim_keys = (
+            {"title_id", "present", "strong", "implicit", "state"}
+            if present
+            else {"title_id", "present", "state"}
+        )
+        if set(raw_claim) != expected_claim_keys or _positive_int32_id(
+            raw_claim.get("title_id"), f"{name}.title_id"
+        ) != title_id:
+            raise ValueError(f"native {name} schema/title order is malformed")
+        if not present:
+            if raw_claim.get("state") != "absent":
+                raise ValueError(f"native {name} absent state is malformed")
+            claims.append(
+                {"title_id": title_id, "present": False, "state": "absent"}
+            )
+            continue
+        strong = _strict_bool(raw_claim.get("strong"), f"{name}.strong")
+        implicit = _strict_bool(
+            raw_claim.get("implicit"), f"{name}.implicit"
+        )
+        expected_state = (
+            ("strong_" if strong else "weak_")
+            + ("implicit" if implicit else "explicit")
+        )
+        if raw_claim.get("state") != expected_state:
+            raise ValueError(f"native {name} claim state is inconsistent")
+        claims.append(
+            {
+                "title_id": title_id,
+                "present": True,
+                "strong": strong,
+                "implicit": implicit,
+                "state": expected_state,
+            }
+        )
+
+    outcomes = value.get("outcomes")
+    if not isinstance(outcomes, dict) or set(outcomes) != set(
+        _TERMINATION_TERMS_OUTCOMES
+    ):
+        raise ValueError("native war_termination_terms outcomes malformed")
+    normalized_outcomes: dict[str, dict[str, str]] = {}
+    for outcome, expected_disposition in _TERMINATION_TERMS_OUTCOMES.items():
+        disposition = outcomes.get(outcome)
+        if not isinstance(disposition, dict) or disposition != (
+            expected_disposition
+        ):
+            raise ValueError(
+                f"native war_termination_terms outcome {outcome} drifted"
+            )
+        normalized_outcomes[outcome] = dict(expected_disposition)
+    readiness = value.get("readiness")
+    expected_readiness = {
+        "identity_ready": True,
+        "targets_ready": True,
+        "claim_rows_ready": True,
+        "claim_disposition_ready": True,
+        "ready": True,
+    }
+    if not isinstance(readiness, dict) or readiness != expected_readiness:
+        raise ValueError(
+            "native war_termination_terms available readiness malformed"
+        )
+    return {
+        "schema_version": 1,
+        "status": "available",
+        "war_id": war_id,
+        "casus_belli": {
+            "database_index": database_index,
+            "canonical_key": "claim_cb",
+        },
+        "supported_slice": "claim_cb_claim_disposition",
+        "claimant_character_id": claimant_character_id,
+        "target_title_ids": target_title_ids,
+        "claims": claims,
+        "outcomes": normalized_outcomes,
+        "readiness": expected_readiness,
+        "provenance": provenance,
+    }
+
+
+def _normalize_war_termination_terms_provenance(
+    value: object,
+) -> dict[str, str]:
+    expected = {
+        "game_version": _TERMINATION_TERMS_GAME_VERSION,
+        "executable_sha256": _TERMINATION_TERMS_EXECUTABLE_SHA256,
+        "native_reader": _TERMINATION_TERMS_NATIVE_READER,
+        "present_claim_lifecycle": _TERMINATION_TERMS_CLAIM_LIFECYCLE,
+        "claim_script_sha256": _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256,
+    }
+    if not isinstance(value, dict) or value != expected:
+        raise ValueError(
+            "native war_termination_terms provenance is malformed"
+        )
+    return dict(expected)
+
+
+def normalize_war_termination_options(
+    value: object,
+    *,
+    expected_war_id: int | None = None,
+) -> dict[str, object]:
+    """Normalize one atomic native war-termination query.
+
+    The exact-build reader publishes each context, native validator, opponent
+    answer score, and auto-accept result atomically.  CB-specific terms remain
+    explicit unavailable data and may not be inferred from those values.
+    """
+    if not isinstance(value, dict):
+        raise ValueError("native war_termination_options must be an object")
+    expected_keys = {
+        "war_id",
+        "player_side",
+        "player_is_primary_war_leader",
+        "player_relative_war_score",
+        "war_duration_days",
+        "absolute_war_scores_observable",
+        "attacker_war_score",
+        "defender_war_score",
+        "war_score_breakdown",
+        "active_casus_belli_present",
+        "active_casus_belli_identity",
+        "cb_allows_white_peace",
+        "options",
+    }
+    if set(value) != expected_keys:
+        raise ValueError(
+            "native war_termination_options top-level schema is malformed"
+        )
+    war_id = _positive_int32_id(value.get("war_id"), "war_id")
+    if expected_war_id is not None and war_id != _positive_int32_id(
+        expected_war_id, "expected_war_id"
+    ):
+        raise ValueError("native war_termination_options WarID mismatch")
+    player_side = value.get("player_side")
+    if player_side not in {"attacker", "defender"}:
+        raise ValueError(
+            "native war_termination_options.player_side is malformed"
+        )
+    is_primary = _strict_bool(
+        value.get("player_is_primary_war_leader"),
+        "war_termination_options.player_is_primary_war_leader",
+    )
+    score = value.get("player_relative_war_score")
+    if (
+        isinstance(score, bool)
+        or not isinstance(score, int)
+        or score < -(2**31)
+        or score > 2**31 - 1
+    ):
+        raise ValueError(
+            "native war_termination_options.player_relative_war_score "
+            "must be a signed int32"
+        )
+    war_duration_days = _optional_non_negative_int32(
+        value.get("war_duration_days"),
+        "war_termination_options.war_duration_days",
+    )
+    active_cb = _optional_strict_bool(
+        value.get("active_casus_belli_present"),
+        "war_termination_options.active_casus_belli_present",
+    )
+    white_peace_allowed = _optional_strict_bool(
+        value.get("cb_allows_white_peace"),
+        "war_termination_options.cb_allows_white_peace",
+    )
+    if white_peace_allowed is not None and active_cb is not True:
+        raise ValueError(
+            "native war_termination_options cannot publish white-peace "
+            "permission without an active casus belli"
+        )
+    active_cb_identity = _normalize_active_casus_belli_identity(
+        value.get("active_casus_belli_identity"),
+        active_casus_belli_present=active_cb,
+    )
+    absolute_scores_observable = _strict_bool(
+        value.get("absolute_war_scores_observable"),
+        "war_termination_options.absolute_war_scores_observable",
+    )
+    attacker_score = _optional_signed_int32(
+        value.get("attacker_war_score"),
+        "war_termination_options.attacker_war_score",
+    )
+    defender_score = _optional_signed_int32(
+        value.get("defender_war_score"),
+        "war_termination_options.defender_war_score",
+    )
+    if absolute_scores_observable:
+        if attacker_score is None or defender_score is None:
+            raise ValueError(
+                "native observable absolute war scores must both be present"
+            )
+        if defender_score != -attacker_score:
+            raise ValueError(
+                "native defender_war_score must negate attacker_war_score"
+            )
+        expected_player_score = (
+            attacker_score if player_side == "attacker" else defender_score
+        )
+        if score != expected_player_score:
+            raise ValueError(
+                "native absolute war scores disagree with player-relative score"
+            )
+    elif attacker_score is not None or defender_score is not None:
+        raise ValueError(
+            "native unobservable absolute war scores must both be null"
+        )
+    war_score_breakdown = _normalize_war_score_breakdown(
+        value.get("war_score_breakdown")
+    )
+    raw_options = value.get("options")
+    if not isinstance(raw_options, dict) or set(raw_options) != {
+        "surrender",
+        "white_peace",
+        "victory",
+    }:
+        raise ValueError(
+            "native war_termination_options.options must contain exactly "
+            "surrender, white_peace, and victory"
+        )
+    surrender_outcome = (
+        "attacker_defeat" if player_side == "attacker" else "attacker_victory"
+    )
+    victory_outcome = (
+        "attacker_victory" if player_side == "attacker" else "attacker_defeat"
+    )
+    options = {
+        "surrender": _normalize_war_termination_option(
+            raw_options.get("surrender"),
+            name="surrender",
+            expected_outcome=surrender_outcome,
+        ),
+        "white_peace": _normalize_war_termination_option(
+            raw_options.get("white_peace"),
+            name="white_peace",
+            expected_outcome="white_peace",
+        ),
+        "victory": _normalize_war_termination_option(
+            raw_options.get("victory"),
+            name="victory",
+            expected_outcome=victory_outcome,
+        ),
+    }
+    if not is_primary and any(
+        option["context_constructed"] for option in options.values()
+    ):
+        raise ValueError(
+            "native war_termination_options constructed a context for a "
+            "non-primary participant"
+        )
+    if (
+        white_peace_allowed is not True
+        and options["white_peace"]["context_constructed"]
+    ):
+        raise ValueError(
+            "native war_termination_options constructed white peace for a "
+            "casus belli that forbids it"
+        )
+    return {
+        "war_id": war_id,
+        "player_side": player_side,
+        "player_is_primary_war_leader": is_primary,
+        "player_relative_war_score": score,
+        "war_duration_days": war_duration_days,
+        "active_casus_belli_present": active_cb,
+        "active_casus_belli_identity": active_cb_identity,
+        "cb_allows_white_peace": white_peace_allowed,
+        "absolute_war_scores_observable": absolute_scores_observable,
+        "attacker_war_score": attacker_score,
+        "defender_war_score": defender_score,
+        "war_score_breakdown": war_score_breakdown,
+        "options": options,
+        "source": "native",
+    }
+
+
+def _normalize_active_casus_belli_identity(
+    value: object,
+    *,
+    active_casus_belli_present: bool | None,
+) -> dict[str, object] | None:
+    if value is None:
+        return None
+    if active_casus_belli_present is not True or not isinstance(value, dict) or set(
+        value
+    ) != {"database_index", "canonical_key"}:
+        raise ValueError(
+            "native active_casus_belli_identity is malformed"
+        )
+    database_index = _optional_non_negative_int32(
+        value.get("database_index"),
+        "war_termination_options.active_casus_belli_identity.database_index",
+    )
+    canonical_key = value.get("canonical_key")
+    if database_index is None or not isinstance(canonical_key, str) or not (
+        canonical_key
+    ):
+        raise ValueError(
+            "native active_casus_belli_identity is incomplete"
+        )
+    return {
+        "database_index": database_index,
+        "canonical_key": canonical_key,
+    }
+
+
+def _normalize_war_score_breakdown(
+    value: object,
+) -> dict[str, int] | None:
+    if value is None:
+        return None
+    fields = {"imprisonment", "battles", "occupation", "ticking"}
+    if not isinstance(value, dict) or set(value) != fields:
+        raise ValueError(
+            "native war_score_breakdown must be null or contain all four fields"
+        )
+    return {
+        field: _signed_int32(
+            value.get(field),
+            f"war_termination_options.war_score_breakdown.{field}",
+        )
+        for field in sorted(fields)
+    }
+
+
+def _normalize_war_termination_option(
+    value: object,
+    *,
+    name: str,
+    expected_outcome: str,
+) -> dict[str, object]:
+    if not isinstance(value, dict) or set(value) != {
+        "outcome",
+        "hostage_variant",
+        "context_constructed",
+        "native_validator_passed",
+        "available",
+        "terms_observable",
+        "terms",
+        "ai_acceptance_observable",
+        "ai_acceptance",
+        "auto_accept_observable",
+        "auto_accept",
+    }:
+        raise ValueError(
+            f"native war_termination_options.options.{name} is malformed"
+        )
+    if value.get("outcome") != expected_outcome:
+        raise ValueError(
+            f"native war_termination_options.options.{name}.outcome is "
+            "inconsistent with player_side"
+        )
+    if value.get("hostage_variant") != "none":
+        raise ValueError(
+            "native war_termination_options only supports the no-hostage "
+            f"variant for {name}"
+        )
+    context_constructed = _strict_bool(
+        value.get("context_constructed"),
+        f"war_termination_options.options.{name}.context_constructed",
+    )
+    validator = value.get("native_validator_passed")
+    if validator is not None and not isinstance(validator, bool):
+        raise ValueError(
+            "native war_termination_options.options."
+            f"{name}.native_validator_passed must be boolean or null"
+        )
+    if not context_constructed and validator is not None:
+        raise ValueError(
+            "native war_termination_options.options."
+            f"{name} cannot publish a validator result without a context"
+        )
+    available = _strict_bool(
+        value.get("available"),
+        f"war_termination_options.options.{name}.available",
+    )
+    if available is not (context_constructed and validator is True):
+        raise ValueError(
+            "native war_termination_options.options."
+            f"{name}.available is inconsistent with context and validator"
+        )
+    terms_observable = _strict_bool(
+        value.get("terms_observable"),
+        f"war_termination_options.options.{name}.terms_observable",
+    )
+    terms = value.get("terms")
+    if terms_observable or terms != {
+        "status": "unavailable",
+        "reason": "cb_specific_terms_not_observable",
+    }:
+        raise ValueError(
+            "native war_termination_options option terms must remain "
+            "explicitly unavailable"
+        )
+    acceptance_observable = _strict_bool(
+        value.get("ai_acceptance_observable"),
+        f"war_termination_options.options.{name}.ai_acceptance_observable",
+    )
+    acceptance = (
+        _signed_fixed_point(
+            value.get("ai_acceptance"),
+            f"war_termination_options.options.{name}.ai_acceptance",
+        )
+        if acceptance_observable
+        else None
+    )
+    if not acceptance_observable and value.get("ai_acceptance") is not None:
+        raise ValueError(
+            "native war_termination_options cannot publish an unobservable "
+            f"AI acceptance score for {name}"
+        )
+    auto_accept_observable = _strict_bool(
+        value.get("auto_accept_observable"),
+        f"war_termination_options.options.{name}.auto_accept_observable",
+    )
+    auto_accept = value.get("auto_accept")
+    if auto_accept_observable:
+        auto_accept = _strict_bool(
+            auto_accept,
+            f"war_termination_options.options.{name}.auto_accept",
+        )
+    elif auto_accept is not None:
+        raise ValueError(
+            "native war_termination_options cannot publish an unobservable "
+            f"auto-accept result for {name}"
+        )
+    if not context_constructed and (
+        acceptance_observable or auto_accept_observable
+    ):
+        raise ValueError(
+            "native war_termination_options cannot evaluate acceptance "
+            f"without a constructed {name} context"
+        )
+    return {
+        "outcome": expected_outcome,
+        "hostage_variant": "none",
+        "context_constructed": context_constructed,
+        # Null is an observed unknown and must never be coerced to false.
+        "native_validator_passed": validator,
+        "available": available,
+        "terms_observable": False,
+        "terms": terms,
+        "ai_acceptance_observable": acceptance_observable,
+        "ai_acceptance": acceptance,
+        "auto_accept_observable": auto_accept_observable,
+        "auto_accept": auto_accept,
+    }
+
+
 def is_native_war_step(step: object) -> bool:
     return (
         step == RAISE_TROOPS_STEP
+        or step == QUERY_ARMY_STRENGTHS_STEP
         or parse_preview_move_army_step(step) is not None
         or parse_move_army_step(step) is not None
         or parse_disband_army_step(step) is not None
@@ -701,6 +1635,10 @@ def is_native_war_step(step: object) -> bool:
         or parse_start_assault_step(step) is not None
         or parse_stop_assault_step(step) is not None
         or parse_enforce_demands_step(step) is not None
+        or parse_query_war_termination_options_step(step) is not None
+        or parse_query_war_termination_terms_step(step) is not None
+        or parse_surrender_war_step(step) is not None
+        or parse_offer_white_peace_step(step) is not None
     )
 
 
@@ -740,10 +1678,49 @@ def _optional_non_negative_int32(value: object, name: str) -> int | None:
     return value
 
 
+def _signed_int32(value: object, name: str) -> int:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, int)
+        or value < -(2**31)
+        or value > 2**31 - 1
+    ):
+        raise ValueError(f"{name} must be a signed int32")
+    return value
+
+
+def _optional_signed_int32(value: object, name: str) -> int | None:
+    if value is None:
+        return None
+    return _signed_int32(value, name)
+
+
+def _signed_fixed_point(value: object, name: str) -> dict[str, int]:
+    if not isinstance(value, dict) or set(value) != {"raw", "scale"}:
+        raise ValueError(f"native {name} must contain raw and scale")
+    raw = value.get("raw")
+    scale = value.get("scale")
+    if (
+        isinstance(raw, bool)
+        or not isinstance(raw, int)
+        or raw < -(2**63)
+        or raw > 2**63 - 1
+        or scale != CK3_FIXED_POINT_SCALE
+    ):
+        raise ValueError(f"native {name} fixed value is malformed")
+    return {"raw": raw, "scale": CK3_FIXED_POINT_SCALE}
+
+
 def _strict_bool(value: object, name: str) -> bool:
     if not isinstance(value, bool):
         raise ValueError(f"{name} must be boolean")
     return value
+
+
+def _optional_strict_bool(value: object, name: str) -> bool | None:
+    if value is None:
+        return None
+    return _strict_bool(value, name)
 
 
 def _non_negative_id_list(value: object, name: str) -> list[int]:
@@ -758,4 +1735,18 @@ def _non_negative_id_list(value: object, name: str) -> list[int]:
         if normalized not in seen:
             seen.add(normalized)
             result.append(normalized)
+    return result
+
+
+def _strict_positive_int32_id_list(value: object, name: str) -> list[int]:
+    if not isinstance(value, list):
+        raise ValueError(f"native {name} must be an array")
+    result: list[int] = []
+    seen: set[int] = set()
+    for index, item in enumerate(value):
+        normalized = _positive_int32_id(item, f"{name}[{index}]")
+        if normalized in seen:
+            raise ValueError(f"native {name} must not contain duplicates")
+        seen.add(normalized)
+        result.append(normalized)
     return result

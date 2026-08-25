@@ -1,0 +1,48 @@
+{
+  "schema": "xar.ck3.startup_particle2_null_guard_v1.source_contract",
+  "fixture_kind": "offline executable and source contract",
+  "live_ck3_observation": false,
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "installed_by_default": false,
+  "frozen_boundaries": {
+    "function_begin": "0x1DABD50",
+    "unwind_prologue_size": "0x1D",
+    "patch_after_prologue": "0x1DABD6D",
+    "nonnull_continue": "0x1DABD82",
+    "normal_epilogue": "0x1DABEA0",
+    "root_slot": "0x570F908",
+    "slot_expression": "0xA8 + index * 8",
+    "patch_bytes": 13,
+    "stub_bytes": 130
+  },
+  "offline_cases": [
+    "exact-build rejection",
+    "primary-thread-suspended rejection",
+    "unsupported production override rejection",
+    "anchor drift rejection",
+    "root null returns through the original epilogue and updates diagnostics",
+    "slot null returns through the original epilogue and updates count and mask",
+    "slot nonnull reaches the continuation marker",
+    "index greater than 7 never reads the slot array",
+    "allocation failure leaves target bytes unchanged",
+    "target flush failure performs transactional_rollback",
+    "target protection-restore failure performs transactional_rollback",
+    "successful reinstall after rollback proves ownership release",
+    "unproven rollback retains installed state, executable stub, target jump, and global ownership"
+  ],
+  "executable_fixture": {
+    "uses_virtual_alloc_code": true,
+    "calls_patched_synthetic_function": true,
+    "executes_generated_stub": true,
+    "executes_exact_normal_epilogue": true,
+    "stub_dispatch_calls": 0,
+    "stub_dispatch_allocations": 0,
+    "stub_dispatch_logs": 0
+  },
+  "negative_claims": [
+    "This fixture is not a live CK3 run.",
+    "This guard does not prove the particle categories were initialized.",
+    "This guard does not advertise gameplay readiness or a native query capability."
+  ]
+}

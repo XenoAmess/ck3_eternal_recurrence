@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import copy
+
 from .driver import (
     BridgeUnavailableError,
     GameplayBridgeDriver,
@@ -21,6 +23,36 @@ from .marriage_contract import (
     QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
     arrange_marriage_step,
 )
+from .combat_contract import (
+    QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY,
+    combat_simulation_encounter_scope,
+    combat_simulation_inputs_status,
+    normalize_combat_simulation_inputs,
+    normalize_combat_simulation_request,
+    query_combat_simulation_inputs_step,
+)
+from .combat_phase_contract import (
+    QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
+    combat_simulation_inputs_v3_status,
+    normalize_combat_simulation_inputs_v3,
+    query_combat_simulation_inputs_v3_step,
+)
+from .war_exit_terms_contract import (
+    WAR_TERMINATION_EXIT_TERMS_PRODUCTION_ENABLED,
+    query_war_termination_exit_terms_step,
+)
+from .war_entry_contract import (
+    QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY,
+    normalize_war_entry_assessments,
+    normalize_war_entry_target_ids,
+    query_war_entry_assessments_step,
+    require_declarable_war_targets,
+)
+from ..simulation.loaded_playset_proof import (
+    LoadedPlaysetProofError,
+    build_loaded_playset_proof,
+    unavailable_loaded_playset_proof,
+)
 from .settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
     normalize_fixed_score,
@@ -28,14 +60,23 @@ from .settlement_contract import (
     settlement_ready_for_episode,
 )
 from .war_contract import (
+    QUERY_ARMY_STRENGTHS_STEP,
     RAISE_TROOPS_STEP,
+    army_strength_query_status,
+    army_strength_scope,
     disband_army_step,
     enforce_demands_step,
     move_army_step,
     normalize_active_wars,
+    normalize_army_strength_request_ids,
+    normalize_army_strengths,
+    offer_white_peace_step,
     player_armies_from_state,
+    query_war_termination_options_step,
+    query_war_termination_terms_step,
     start_assault_step,
     stop_assault_step,
+    surrender_war_step,
 )
 from ..strategy import choose_one_life_turn, read_one_life_strategy
 
@@ -93,6 +134,57 @@ class GameplayBridgeService:
             return state_dir
         native = getattr(self.driver, "native", None)
         return getattr(native, "state_dir", None)
+
+    def _loaded_playset_proof_for_snapshot(
+        self, snapshot: dict[str, object]
+    ) -> dict[str, object]:
+        """Attest the managed loaded playset without changing static manifest truth."""
+        episode_run_id = snapshot.get("episode_run_id")
+        state_dir = self._strategy_state_dir()
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        snapshot_binding = {
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": snapshot.get("revision"),
+            "native_revision": snapshot.get("native_revision"),
+        }
+        if state_dir is None:
+            return unavailable_loaded_playset_proof(
+                episode_run_id=episode_run_id,
+                reason="managed_state_dir_unavailable",
+            )
+        try:
+            proof = build_loaded_playset_proof(
+                state_dir,
+                episode_run_id=episode_run_id,
+                snapshot_binding=snapshot_binding,
+                native_hello=hello,
+            )
+            latest = self.snapshot()
+            latest_binding = {
+                "snapshot_id": latest.get("snapshot_id"),
+                "revision": latest.get("revision"),
+                "native_revision": latest.get("native_revision"),
+            }
+            if not (
+                latest.get("paused") is True
+                and latest.get("episode_run_id") == episode_run_id
+                and latest_binding == snapshot_binding
+            ):
+                return unavailable_loaded_playset_proof(
+                    episode_run_id=episode_run_id,
+                    reason="snapshot_changed_during_loaded_playset_proof",
+                )
+            return proof
+        except (LoadedPlaysetProofError, OSError, UnicodeError) as error:
+            return unavailable_loaded_playset_proof(
+                episode_run_id=episode_run_id,
+                reason=f"{type(error).__name__}: {error}",
+            )
 
     def auto_turn(self) -> dict[str, object]:
         """Plan and execute exactly one backend-supported gameplay turn."""
@@ -476,6 +568,32 @@ class GameplayBridgeService:
             ),
             "active_wars": active_wars,
             "player_armies": player_armies,
+            "war_termination_options": (
+                snapshot.get("war_termination_options")
+                if isinstance(snapshot.get("war_termination_options"), list)
+                else []
+            ),
+            "war_termination_terms": (
+                snapshot.get("war_termination_terms")
+                if isinstance(snapshot.get("war_termination_terms"), list)
+                else []
+            ),
+            "war_termination_exit_terms": (
+                snapshot.get("war_termination_exit_terms")
+                if isinstance(
+                    snapshot.get("war_termination_exit_terms"), list
+                )
+                else []
+            ),
+            "army_strengths": (
+                snapshot.get("army_strengths")
+                if isinstance(snapshot.get("army_strengths"), list)
+                else []
+            ),
+            "army_strengths_status": snapshot.get("army_strengths_status"),
+            "army_strengths_query_sequence": snapshot.get(
+                "army_strengths_query_sequence"
+            ),
             "snapshot_id": snapshot["snapshot_id"],
             "revision": snapshot["revision"],
             "backend_id": snapshot.get("backend_id"),
@@ -658,6 +776,778 @@ class GameplayBridgeService:
             "war_id": war_id,
         }
 
+    def query_war_termination_options(
+        self,
+        war_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read CK3's exact termination contexts for one active WarID."""
+        step = query_war_termination_options_step(war_id)
+        result = self._execute_typed_war_step(
+            step, expected_revision=expected_revision
+        )
+        options = result.get("war_termination_options")
+        if not isinstance(options, dict) or options.get("war_id") != war_id:
+            raise BridgeUnavailableError(
+                "native termination query lacks matching war_termination_options"
+            )
+        return {**result, "war_id": war_id}
+
+    def query_war_termination_terms(
+        self,
+        war_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read the complete claim-CB disposition slice for one WarID."""
+        step = query_war_termination_terms_step(war_id)
+        result = self._execute_typed_war_step(
+            step, expected_revision=expected_revision
+        )
+        terms = result.get("war_termination_terms")
+        if not isinstance(terms, dict) or terms.get("war_id") != war_id:
+            raise BridgeUnavailableError(
+                "native terms query lacks matching war_termination_terms"
+            )
+        return {**result, "war_id": war_id}
+
+    def query_war_termination_exit_terms(
+        self,
+        war_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read the complete dry-preview claim-CB exit slice for one WarID."""
+        if not WAR_TERMINATION_EXIT_TERMS_PRODUCTION_ENABLED:
+            raise BridgeUnavailableError(
+                "war-termination exit-terms v2 is disabled after a "
+                "reproducible native loaded-effect preview crash"
+            )
+        step = query_war_termination_exit_terms_step(war_id)
+        result = self._execute_typed_war_step(
+            step, expected_revision=expected_revision
+        )
+        terms = result.get("war_termination_exit_terms")
+        if not isinstance(terms, dict) or terms.get("war_id") != war_id:
+            raise BridgeUnavailableError(
+                "native exit-terms query lacks matching "
+                "war_termination_exit_terms"
+            )
+        return {**result, "war_id": war_id}
+
+    def query_army_strengths(
+        self,
+        army_ids: list[int],
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read a requested subset of native base aggregates atomically.
+
+        This is deliberately not a combat prediction: soldier totals and the
+        AI regiment base-power lane omit terrain, commanders, counters, and
+        other encounter context.
+        """
+        requested_ids = normalize_army_strength_request_ids(army_ids)
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "army-strength queries require a paused CK3 snapshot"
+            )
+        try:
+            scope = army_strength_scope(snapshot)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"army-strength scope is malformed: {error}"
+            ) from error
+        scope_ids = [int(row["army_id"]) for row in scope]
+        outside_scope = [
+            army_id for army_id in requested_ids if army_id not in scope_ids
+        ]
+        if outside_scope:
+            raise BridgeUnavailableError(
+                "army_ids are outside the current published player/war "
+                f"scope: {outside_scope}"
+            )
+        if QUERY_ARMY_STRENGTHS_STEP not in action_step_set(
+            self.capabilities()
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query native army strengths"
+            )
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(snapshot["revision"])
+        )
+        result = self.execute_step(
+            QUERY_ARMY_STRENGTHS_STEP,
+            expected_revision=selected_revision,
+        )
+        try:
+            rows = normalize_army_strengths(
+                result.get("army_strengths"), expected_scope=scope
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native army-strength result is malformed: {error}"
+            ) from error
+        scope_status = army_strength_query_status(rows)
+        if result.get("status") != scope_status:
+            raise BridgeUnavailableError(
+                "native army-strength status disagrees with its full scope"
+            )
+        by_id = {int(row["army_id"]): row for row in rows}
+        selected_rows = [by_id[army_id] for army_id in requested_ids]
+        status = army_strength_query_status(selected_rows)
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        return {
+            **result,
+            "schema_version": 1,
+            "status": status,
+            "scope_status": scope_status,
+            "scope": "player-and-active-war-participants",
+            "source": {
+                "game_version": (
+                    hello.get("game_version")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "executable_sha256": (
+                    hello.get("executable_sha256")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": snapshot.get("revision"),
+                "native_revision": snapshot.get("native_revision"),
+                "date_raw": snapshot.get("date_raw"),
+                "paused": True,
+                "backend_id": snapshot.get("backend_id"),
+            },
+            "army_ids": requested_ids,
+            "scope_army_ids": scope_ids,
+            "army_strengths": selected_rows,
+        }
+
+    def query_combat_simulation_inputs(
+        self,
+        target_province_id: int,
+        attacker_entry_province_id: int,
+        attacker_army_ids: list[int],
+        defender_army_ids: list[int],
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read exact-build inputs for one hypothetical contact scenario.
+
+        ``available`` means only that all native observation domains needed by
+        the documented combat model are present.  It never means that Monte
+        Carlo simulation is ready.
+        """
+        target, entry, attackers, defenders = normalize_combat_simulation_request(
+            target_province_id,
+            attacker_entry_province_id,
+            attacker_army_ids,
+            defender_army_ids,
+        )
+        step = query_combat_simulation_inputs_step(
+            target, entry, attackers, defenders
+        )
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "combat simulation input queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if isinstance(revision, bool) or not isinstance(revision, int):
+            raise BridgeUnavailableError(
+                "combat simulation input query lacks a valid snapshot revision"
+            )
+        if expected_revision is not None:
+            if (
+                isinstance(expected_revision, bool)
+                or not isinstance(expected_revision, int)
+                or expected_revision < 0
+            ):
+                raise ValueError(
+                    "expected_revision must be a non-negative integer"
+                )
+            if expected_revision != revision:
+                raise BridgeUnavailableError(
+                    "combat simulation input revision mismatch: expected "
+                    f"{expected_revision}, current {revision}"
+                )
+        try:
+            encounter_scope = combat_simulation_encounter_scope(
+                snapshot, attackers, defenders
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"combat simulation encounter scope is malformed: {error}"
+            ) from error
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query combat simulation inputs"
+            )
+        result = self.execute_step(
+            step,
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else revision
+            ),
+        )
+        if not isinstance(result, dict):
+            raise BridgeUnavailableError(
+                "combat simulation input backend returned a non-object result"
+            )
+        required_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "combat_simulation_inputs",
+            "backend_id",
+        }
+        optional_result_keys = {
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+        }
+        if (
+            not required_result_keys <= set(result)
+            or set(result) - required_result_keys - optional_result_keys
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") not in {"available", "partial"}
+        ):
+            raise BridgeUnavailableError(
+                "combat simulation input backend returned a malformed result"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "combat simulation input result lacks query_sequence"
+            )
+        try:
+            normalized = normalize_combat_simulation_inputs(
+                result.get("combat_simulation_inputs"),
+                expected_target_province_id=target,
+                expected_attacker_entry_province_id=entry,
+                expected_encounter_scope=encounter_scope,
+            )
+            status = combat_simulation_inputs_status(normalized)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"combat simulation input result is malformed: {error}"
+            ) from error
+        if result.get("status") != status:
+            raise BridgeUnavailableError(
+                "combat simulation input status disagrees with "
+                "input_observation_ready"
+            )
+        if (
+            "queried_snapshot_id" in result
+            and result.get("queried_snapshot_id")
+            != snapshot.get("snapshot_id")
+        ) or (
+            "queried_revision" in result
+            and result.get("queried_revision") != revision
+        ) or (
+            "queried_native_revision" in result
+            and result.get("queried_native_revision")
+            != snapshot.get("native_revision")
+        ):
+            raise BridgeUnavailableError(
+                "combat simulation input result is bound to another snapshot"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot.get("snapshot_id")
+            and current.get("native_revision")
+            == snapshot.get("native_revision")
+        ):
+            raise BridgeUnavailableError(
+                "combat simulation input query crossed a snapshot revision"
+            )
+        try:
+            if combat_simulation_encounter_scope(
+                current, attackers, defenders
+            ) != encounter_scope:
+                raise BridgeUnavailableError(
+                    "combat simulation encounter scope changed during query"
+                )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"combat simulation encounter scope became malformed: {error}"
+            ) from error
+        completeness = normalized["completeness"]
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        return {
+            **result,
+            "schema_version": 2,
+            "status": status,
+            "scope": "explicit-hypothetical-active-war-contact",
+            "source": {
+                "game_version": (
+                    hello.get("game_version")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "executable_sha256": (
+                    hello.get("executable_sha256")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": revision,
+                "native_revision": snapshot.get("native_revision"),
+                "date_raw": snapshot.get("date_raw"),
+                "paused": True,
+                "backend_id": snapshot.get("backend_id"),
+            },
+            "target_province_id": target,
+            "attacker_entry_province_id": entry,
+            "attacker_army_ids": attackers,
+            "defender_army_ids": defenders,
+            "attacker_side": encounter_scope["attacker_side"],
+            "defender_side": encounter_scope["defender_side"],
+            "common_war_ids": encounter_scope["common_war_ids"],
+            "input_observation_ready": completeness[
+                "input_observation_ready"
+            ],
+            "monte_carlo_ready": completeness["monte_carlo_ready"],
+            "missing_required_domains": copy.deepcopy(
+                completeness["missing_required_domains"]
+            ),
+            "combat_simulation_inputs": normalized,
+        }
+
+    def query_combat_simulation_inputs_v3(
+        self,
+        target_province_id: int,
+        attacker_entry_province_id: int,
+        attacker_army_ids: list[int],
+        defender_army_ids: list[int],
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read and offline-normalize the exact 132-ref phase-event slice."""
+        target, entry, attackers, defenders = normalize_combat_simulation_request(
+            target_province_id,
+            attacker_entry_province_id,
+            attacker_army_ids,
+            defender_army_ids,
+        )
+        step = query_combat_simulation_inputs_v3_step(
+            target, entry, attackers, defenders
+        )
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "production combat phase queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if isinstance(revision, bool) or not isinstance(revision, int):
+            raise BridgeUnavailableError(
+                "production combat phase query lacks a valid snapshot revision"
+            )
+        if expected_revision is not None:
+            if (
+                isinstance(expected_revision, bool)
+                or not isinstance(expected_revision, int)
+                or expected_revision < 0
+            ):
+                raise ValueError(
+                    "expected_revision must be a non-negative integer"
+                )
+            if expected_revision != revision:
+                raise BridgeUnavailableError(
+                    "production combat phase revision mismatch: expected "
+                    f"{expected_revision}, current {revision}"
+                )
+        try:
+            encounter_scope = combat_simulation_encounter_scope(
+                snapshot, attackers, defenders
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"production combat phase encounter scope is malformed: {error}"
+            ) from error
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query production combat phase inputs"
+            )
+        result = self.execute_step(
+            step,
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else revision
+            ),
+        )
+        if not isinstance(result, dict):
+            raise BridgeUnavailableError(
+                "production combat phase backend returned a non-object result"
+            )
+        required_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "combat_simulation_inputs",
+            "backend_id",
+        }
+        optional_result_keys = {
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+        }
+        if (
+            not required_result_keys <= set(result)
+            or set(result) - required_result_keys - optional_result_keys
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") not in {"available", "unavailable"}
+        ):
+            raise BridgeUnavailableError(
+                "production combat phase backend returned a malformed result"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "production combat phase result lacks query_sequence"
+            )
+        try:
+            normalized = normalize_combat_simulation_inputs_v3(
+                result.get("combat_simulation_inputs"),
+                expected_target_province_id=target,
+                expected_attacker_entry_province_id=entry,
+                expected_encounter_scope=encounter_scope,
+            )
+            status = combat_simulation_inputs_v3_status(normalized)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"production combat phase result is malformed: {error}"
+            ) from error
+        if result.get("status") != status:
+            raise BridgeUnavailableError(
+                "production combat phase status disagrees with "
+                "phase_event_inputs_ready"
+            )
+        if (
+            "queried_snapshot_id" in result
+            and result.get("queried_snapshot_id")
+            != snapshot.get("snapshot_id")
+        ) or (
+            "queried_revision" in result
+            and result.get("queried_revision") != revision
+        ) or (
+            "queried_native_revision" in result
+            and result.get("queried_native_revision")
+            != snapshot.get("native_revision")
+        ):
+            raise BridgeUnavailableError(
+                "production combat phase result is bound to another snapshot"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot.get("snapshot_id")
+            and current.get("native_revision")
+            == snapshot.get("native_revision")
+            and current.get("episode_run_id")
+            == snapshot.get("episode_run_id")
+        ):
+            raise BridgeUnavailableError(
+                "production combat phase query crossed a snapshot revision"
+            )
+        try:
+            if combat_simulation_encounter_scope(
+                current, attackers, defenders
+            ) != encounter_scope:
+                raise BridgeUnavailableError(
+                    "production combat phase encounter scope changed during query"
+                )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"production combat phase scope became malformed: {error}"
+            ) from error
+        completeness = normalized["completeness"]
+        loaded_playset_proof = self._loaded_playset_proof_for_snapshot(
+            current
+        )
+        loaded_playset_verified = (
+            loaded_playset_proof.get("status") == "verified"
+            and isinstance(loaded_playset_proof.get("claims"), dict)
+            and loaded_playset_proof["claims"].get(
+                "loaded_playset_verified"
+            )
+            is True
+        )
+        phase_event_manifest_fidelity = copy.deepcopy(
+            completeness["phase_event_manifest_fidelity"]
+        )
+        phase_event_manifest_fidelity["loaded_playset_verified"] = (
+            loaded_playset_verified
+        )
+        phase_event_manifest_fidelity["fidelity_gate"] = all(
+            phase_event_manifest_fidelity.get(key) is True
+            for key in (
+                "loaded_playset_verified",
+                "ast_evaluator_ready",
+                "original_trace_ready",
+            )
+        )
+        missing_fidelity_gates = [
+            key
+            for key in completeness["missing_fidelity_gates"]
+            if key != "loaded_playset_verified" or not loaded_playset_verified
+        ]
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        return {
+            **result,
+            "schema_version": 3,
+            "status": status,
+            "scope": "explicit-hypothetical-active-war-contact",
+            "source": {
+                "game_version": (
+                    hello.get("game_version")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "executable_sha256": (
+                    hello.get("executable_sha256")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": revision,
+                "native_revision": snapshot.get("native_revision"),
+                "date_raw": snapshot.get("date_raw"),
+                "paused": True,
+                "backend_id": snapshot.get("backend_id"),
+            },
+            "target_province_id": target,
+            "attacker_entry_province_id": entry,
+            "attacker_army_ids": attackers,
+            "defender_army_ids": defenders,
+            "attacker_side": encounter_scope["attacker_side"],
+            "defender_side": encounter_scope["defender_side"],
+            "common_war_ids": encounter_scope["common_war_ids"],
+            "base_input_observation_ready": completeness[
+                "base_input_observation_ready"
+            ],
+            "phase_raw_observation_ready": completeness[
+                "phase_raw_observation_ready"
+            ],
+            "offline_exact_state_refs_ready": completeness[
+                "offline_exact_state_refs_ready"
+            ],
+            "phase_event_inputs_ready": completeness[
+                "phase_event_inputs_ready"
+            ],
+            "input_observation_ready": completeness[
+                "input_observation_ready"
+            ],
+            "monte_carlo_ready": completeness["monte_carlo_ready"],
+            "transition_fidelity_gate": completeness[
+                "transition_fidelity_gate"
+            ],
+            "planner_usable": completeness["planner_usable"],
+            "active_attack_allowed": completeness[
+                "active_attack_allowed"
+            ],
+            "phase_event_manifest_fidelity": phase_event_manifest_fidelity,
+            "loaded_playset_proof": loaded_playset_proof,
+            "missing_observation_domains": copy.deepcopy(
+                completeness["missing_observation_domains"]
+            ),
+            "missing_fidelity_gates": missing_fidelity_gates,
+            "missing_required_domains": copy.deepcopy(
+                completeness["missing_required_domains"]
+            ),
+            "combat_simulation_inputs": normalized,
+        }
+
+    def query_war_entry_assessments(
+        self,
+        target_character_ids: list[int],
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read exact native strategic power for one declaration target."""
+        # Reject an over-broad public request before reading a snapshot or
+        # entering any driver/pipe path. The first production contract is
+        # one-target end to end.
+        targets = normalize_war_entry_target_ids(target_character_ids)
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "war-entry assessment queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if isinstance(revision, bool) or not isinstance(revision, int):
+            raise BridgeUnavailableError(
+                "war-entry assessment query lacks a valid snapshot revision"
+            )
+        if expected_revision is not None:
+            if (
+                isinstance(expected_revision, bool)
+                or not isinstance(expected_revision, int)
+                or expected_revision < 0
+            ):
+                raise ValueError(
+                    "expected_revision must be a non-negative integer"
+                )
+            if expected_revision != revision:
+                raise BridgeUnavailableError(
+                    "war-entry assessment revision mismatch: expected "
+                    f"{expected_revision}, current {revision}"
+                )
+        try:
+            targets = require_declarable_war_targets(
+                snapshot, targets
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"war-entry assessment target scope is malformed: {error}"
+            ) from error
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query native war-entry assessments"
+            )
+        step = query_war_entry_assessments_step(targets)
+        result = self.execute_step(
+            step,
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else revision
+            ),
+        )
+        played_character = snapshot.get("played_character")
+        actor_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        native_revision = snapshot.get("native_revision")
+        try:
+            normalized = normalize_war_entry_assessments(
+                result.get("war_entry_assessments"),
+                expected_target_character_ids=targets,
+                expected_actor_character_id=actor_id,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native war-entry assessment result is malformed: {error}"
+            ) from error
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("snapshot_id") == snapshot.get("snapshot_id")
+            and current.get("revision") == revision
+            and current.get("native_revision") == native_revision
+            and current.get("episode_run_id")
+            == snapshot.get("episode_run_id")
+        ):
+            raise BridgeUnavailableError(
+                "war-entry assessment query crossed a snapshot revision"
+            )
+        try:
+            require_declarable_war_targets(current, targets)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"war-entry declarations changed during query: {error}"
+            ) from error
+        return {
+            **result,
+            "schema_version": 1,
+            "status": "available",
+            "target_character_ids": targets,
+            "war_entry_assessments": normalized,
+            "queried_snapshot_id": snapshot.get("snapshot_id"),
+            "queried_revision": revision,
+            "queried_native_revision": native_revision,
+        }
+
+    def surrender_war(
+        self,
+        war_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Submit a query-proven surrender; never infer it from war score."""
+        step = surrender_war_step(war_id)
+        return {
+            **self._execute_typed_war_step(
+                step, expected_revision=expected_revision
+            ),
+            "war_id": war_id,
+        }
+
+    def offer_white_peace(
+        self,
+        war_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Submit white peace only when native support and query both prove it."""
+        step = offer_white_peace_step(war_id)
+        return {
+            **self._execute_typed_war_step(
+                step, expected_revision=expected_revision
+            ),
+            "war_id": war_id,
+        }
+
     def _execute_typed_war_step(
         self, step: str, *, expected_revision: int | None
     ) -> dict[str, object]:
@@ -694,6 +1584,11 @@ def _route_plan_to_available_step(
         "offer-white-peace-",
         "surrender-war-",
         "query-war-termination-options-",
+        "query-war-termination-terms-v1-",
+        "query-war-termination-exit-terms-v2-",
+        "query-combat-simulation-inputs-v2-",
+        "query-combat-simulation-inputs-v3-",
+        "query-war-entry-assessments-v1-",
         "enforce-demands-",
     )
     if (

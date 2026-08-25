@@ -24,6 +24,8 @@ from .environment import (
     OUTER_DESCRIPTOR_REF,
     VISIBLE_UI_BASELINE_GAME_VERSION,
     _contract_digest,
+    _is_access_denied,
+    _toolhelp_process_identity,
     EnvironmentSpec,
     ck3_process_inventory,
     ck3_processes,
@@ -79,6 +81,8 @@ NATIVE_BRIDGE_PIPE_ENV = "XAR_CK3_BRIDGE_PIPE"
 NATIVE_BRIDGE_DLL_ENV = "XAR_CK3_BRIDGE_DLL"
 NATIVE_BRIDGE_INJECTOR_ENV = "XAR_CK3_BRIDGE_INJECTOR"
 NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS = 30.0
+_FALLBACK_WATCHDOG_COMMAND_LINES: dict[int, str] = {}
+_FALLBACK_WATCHDOG_PROCESSES: dict[int, subprocess.Popen[bytes]] = {}
 
 
 @dataclass(frozen=True)
@@ -1817,13 +1821,24 @@ def _pid_running(pid: int) -> bool:
 def _process_identity(pid: int) -> dict[str, object] | None:
     if os.name != "nt":
         return None
-    import win32com.client
+    try:
+        import win32com.client
 
-    service = win32com.client.GetObject("winmgmts:")
-    rows = service.ExecQuery(
-        "SELECT ProcessId,ParentProcessId,Name,ExecutablePath,CreationDate,CommandLine "
-        f"FROM Win32_Process WHERE ProcessId={pid}"
-    )
+        service = win32com.client.GetObject("winmgmts:")
+        rows = service.ExecQuery(
+            "SELECT ProcessId,ParentProcessId,Name,ExecutablePath,CreationDate,CommandLine "
+            f"FROM Win32_Process WHERE ProcessId={pid}"
+        )
+    except Exception as error:
+        if not _is_access_denied(error):
+            raise
+        identity = _toolhelp_process_identity(pid)
+        if identity is None:
+            return None
+        return {
+            **identity,
+            "command_line": _FALLBACK_WATCHDOG_COMMAND_LINES.get(pid, ""),
+        }
     row = next(iter(rows), None)
     if row is None:
         return None
@@ -1908,6 +1923,7 @@ def _stop_authenticated_watchdog(
             pid, creation_date, parent_pid, nonce
         )
         if state == "absent":
+            _forget_fallback_watchdog(pid)
             return False
         raise UnsafeCleanupError(
             f"authenticated watchdog PID {pid} could not be pinned: {error}"
@@ -1924,9 +1940,35 @@ def _stop_authenticated_watchdog(
         result = win32event.WaitForSingleObject(process_handle, 10_000)
         if result != win32event.WAIT_OBJECT_0:
             raise AgentError(f"authenticated watchdog PID {pid} did not exit")
+        _forget_fallback_watchdog(pid)
         return True
     finally:
         win32api.CloseHandle(process_handle)
+
+
+def _forget_fallback_watchdog(pid: int) -> None:
+    process = _FALLBACK_WATCHDOG_PROCESSES.pop(pid, None)
+    _FALLBACK_WATCHDOG_COMMAND_LINES.pop(pid, None)
+    if process is None:
+        return
+    try:
+        process.wait(timeout=1)
+    except (subprocess.TimeoutExpired, OSError):
+        pass
+
+
+def _rebind_fallback_watchdog(bootstrap_pid: int, actual_pid: int) -> None:
+    if bootstrap_pid == actual_pid:
+        return
+    command = _FALLBACK_WATCHDOG_COMMAND_LINES.pop(bootstrap_pid, None)
+    process = _FALLBACK_WATCHDOG_PROCESSES.pop(bootstrap_pid, None)
+    if process is not None:
+        try:
+            process.wait(timeout=1)
+        except (subprocess.TimeoutExpired, OSError):
+            pass
+    if command is not None:
+        _FALLBACK_WATCHDOG_COMMAND_LINES[actual_pid] = command
 
 
 def _start_process_watchdog(
@@ -1976,17 +2018,85 @@ def _start_process_watchdog(
         check=False,
         timeout=15,
     )
-    if result.returncode != 0:
+    detached_fallback = result.returncode != 0 and _is_access_denied(
+        result.stderr
+    )
+    if result.returncode != 0 and not detached_fallback:
         raise AgentError(
             f"process watchdog launch failed: rc={result.returncode}, "
             f"stderr={result.stderr.strip()!r}"
         )
-    try:
-        bootstrap_pid = int(result.stdout.strip().splitlines()[-1])
-    except (IndexError, ValueError) as error:
-        raise AgentError(
-            f"process watchdog returned no PID: {result.stdout!r}"
-        ) from error
+    if detached_fallback:
+        try:
+            bootstrap_process = subprocess.Popen(
+                arguments,
+                close_fds=True,
+                creationflags=(
+                    subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
+                ),
+            )
+        except OSError as error:
+            raise AgentError(
+                f"process watchdog fallback launch failed: {error}"
+            ) from error
+        bootstrap_pid = int(bootstrap_process.pid)
+        _FALLBACK_WATCHDOG_COMMAND_LINES[bootstrap_pid] = command
+        _FALLBACK_WATCHDOG_PROCESSES[bootstrap_pid] = bootstrap_process
+    else:
+        if result.stdout.strip():
+            try:
+                bootstrap_pid = int(result.stdout.strip().splitlines()[-1])
+            except ValueError as error:
+                raise AgentError(
+                    f"process watchdog returned no PID: {result.stdout!r}"
+                ) from error
+        else:
+            # In the managed sandbox Win32_Process.Create succeeds but its
+            # ProcessId projection is suppressed.  The child still proves its
+            # exact PID by atomically publishing the nonce-bound ready record.
+            no_pid_deadline = time.monotonic() + 10
+            error_file = record_file.with_suffix(".watchdog_error")
+            while time.monotonic() < no_pid_deadline:
+                if error_file.is_file():
+                    detail = error_file.read_text(
+                        encoding="utf-8", errors="replace"
+                    ).strip()
+                    raise AgentError(
+                        f"process watchdog bootstrap failed: {detail}"
+                    )
+                if ready_file.is_file():
+                    try:
+                        bootstrap_pid = int(
+                            json.loads(
+                                ready_file.read_text(encoding="ascii")
+                            )["watchdog_pid"]
+                        )
+                    except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+                        raise AgentError(
+                            "process watchdog ready record cannot recover the "
+                            "suppressed PID"
+                        ) from error
+                    _FALLBACK_WATCHDOG_COMMAND_LINES[bootstrap_pid] = command
+                    break
+                time.sleep(0.1)
+            else:
+                try:
+                    bootstrap_process = subprocess.Popen(
+                        arguments,
+                        close_fds=True,
+                        creationflags=(
+                            subprocess.CREATE_NEW_PROCESS_GROUP
+                            | subprocess.DETACHED_PROCESS
+                        ),
+                    )
+                except OSError as error:
+                    raise UnsafeCleanupError(
+                        "process watchdog launch produced neither PID nor ready "
+                        f"proof, and fallback launch failed: {error}"
+                    ) from error
+                bootstrap_pid = int(bootstrap_process.pid)
+                _FALLBACK_WATCHDOG_COMMAND_LINES[bootstrap_pid] = command
+                _FALLBACK_WATCHDOG_PROCESSES[bootstrap_pid] = bootstrap_process
     error_file = record_file.with_suffix(".watchdog_error")
     actual_pid: int | None = None
     creation_date = ""
@@ -2022,6 +2132,7 @@ def _start_process_watchdog(
                         f"process watchdog ready identity differs: {ready!r}"
                     )
                 actual_pid = int(ready["watchdog_pid"])
+                _rebind_fallback_watchdog(bootstrap_pid, actual_pid)
                 identity = _process_identity(actual_pid)
                 if identity is None:
                     raise AgentError(

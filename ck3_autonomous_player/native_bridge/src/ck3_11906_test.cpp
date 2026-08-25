@@ -22,11 +22,18 @@ std::array<std::byte, 0x20> g_pending_slots{};
 std::array<std::byte, 0x5C8> g_unrelated_pending_interaction{};
 std::array<std::byte, 0x5C8> g_pending_interaction{};
 std::array<std::byte, 0x40> g_character_storage{};
-std::array<std::byte, 0x60> g_character_slots{};
+std::array<std::byte, 0x70> g_character_slots{};
 std::array<std::byte, 0x1D0> g_played_character{};
 std::array<std::byte, 0x1D0> g_target_character{};
 std::array<std::byte, 0x1D0> g_dead_character{};
 std::array<std::byte, 0x1D0> g_generation_mismatch_character{};
+std::array<std::byte, 0x1D0> g_ally_character{};
+std::array<std::byte, 0x300> g_played_character_extension{};
+std::array<std::byte, 0x300> g_target_character_extension{};
+std::array<std::byte, 0x290> g_dead_character_extension{};
+std::array<std::byte, 0x30> g_played_legitimacy_data{};
+std::array<std::byte, 0x30> g_target_legitimacy_data{};
+std::array<std::byte, 0x08> g_dead_prison_relation{};
 std::array<std::byte, 0x40> g_played_family_data{};
 std::array<std::int32_t, 2> g_played_spouse_ids{};
 std::array<std::byte, 0xE0> g_player_character_entry{};
@@ -37,15 +44,15 @@ std::array<std::byte, 0x360> g_war{};
 std::array<std::int32_t, 4> g_war_targeted_title_ids{};
 std::array<std::byte, 0x40> g_landed_title_storage{};
 std::array<std::byte, 0xB0> g_landed_title_slots{};
-std::array<std::byte, 0x250> g_targeted_title{};
-std::array<std::byte, 0x250> g_targeted_duchy_a_title{};
-std::array<std::byte, 0x250> g_targeted_duchy_b_title{};
-std::array<std::byte, 0x250> g_capital_county_title{};
-std::array<std::byte, 0x250> g_second_county_title{};
-std::array<std::byte, 0x250> g_third_county_title{};
-std::array<std::byte, 0x250> g_capital_barony_title{};
-std::array<std::byte, 0x250> g_second_capital_barony_title{};
-std::array<std::byte, 0x250> g_third_capital_barony_title{};
+std::array<std::byte, 0x290> g_targeted_title{};
+std::array<std::byte, 0x290> g_targeted_duchy_a_title{};
+std::array<std::byte, 0x290> g_targeted_duchy_b_title{};
+std::array<std::byte, 0x290> g_capital_county_title{};
+std::array<std::byte, 0x290> g_second_county_title{};
+std::array<std::byte, 0x290> g_third_county_title{};
+std::array<std::byte, 0x290> g_capital_barony_title{};
+std::array<std::byte, 0x290> g_second_capital_barony_title{};
+std::array<std::byte, 0x290> g_third_capital_barony_title{};
 std::array<std::byte, 0x88> g_targeted_title_template{};
 std::array<std::byte, 0x88> g_targeted_duchy_a_template{};
 std::array<std::byte, 0x88> g_targeted_duchy_b_template{};
@@ -61,9 +68,11 @@ std::array<std::int32_t, 1> g_targeted_duchy_b_vassal_ids{};
 std::array<std::int32_t, 1> g_capital_county_vassal_ids{};
 std::array<std::int32_t, 1> g_second_county_vassal_ids{};
 std::array<std::int32_t, 1> g_third_county_vassal_ids{};
+std::array<std::int32_t, 1> g_targeted_title_succession_ids{};
 std::array<std::byte, 0x10> g_attacker_participant{};
+std::array<std::byte, 0x10> g_third_attacker_participant{};
 std::array<std::byte, 0x10> g_defender_participant{};
-std::array<std::byte, sizeof(void *)> g_attacker_participants{};
+std::array<std::byte, 2 * sizeof(void *)> g_attacker_participants{};
 std::array<std::byte, sizeof(void *)> g_defender_participants{};
 std::array<std::byte, 0x40> g_army_storage{};
 std::array<std::byte, 0x40> g_army_slots{};
@@ -72,6 +81,43 @@ std::array<std::byte, 0x20> g_siege_slots{};
 std::array<std::byte, 0x450> g_siege{};
 std::array<std::byte, 0x17C> g_player_army{};
 std::array<std::byte, 0x17C> g_enemy_army{};
+std::array<std::byte, 0x17C> g_third_army{};
+std::array<std::byte, 0x40> g_internal_army_storage{};
+std::array<std::byte, 0x140> g_internal_army_slots{};
+std::array<std::byte, 0x130> g_player_internal_army{};
+std::array<std::byte, 0x130> g_enemy_internal_army{};
+std::array<std::byte, 0x130> g_third_internal_army{};
+std::array<std::int32_t, 2> g_player_regiment_ids{};
+std::array<std::int32_t, 2> g_enemy_regiment_ids{};
+std::array<std::byte, 0x40> g_regiment_storage{};
+std::array<std::byte, 0x50> g_regiment_slots{};
+std::array<std::byte, 0x150> g_player_regiment_0{};
+std::array<std::byte, 0x150> g_player_regiment_1{};
+std::array<std::byte, 0x150> g_enemy_regiment_0{};
+std::array<std::byte, 0x150> g_enemy_regiment_1{};
+std::array<std::uintptr_t, 2> g_regiment_identity_vtable{};
+std::array<std::uintptr_t, 2> g_character_validity_vtable{};
+std::array<std::uintptr_t, 1> g_database_object_validity_vtable{};
+std::array<std::uintptr_t, 1> g_database_object_absent_vtable{};
+std::array<std::uintptr_t, 1> g_combat_type_validity_vtable{};
+std::array<std::byte, 0x2B0> g_bowmen_type{};
+std::array<std::byte, 0x2B0> g_armored_horsemen_type{};
+std::array<std::byte, 0x2B0> g_absent_maa_type{};
+std::array<std::byte, 0xA10> g_player_regiment_0_inner_type{};
+std::array<std::byte, 0xA10> g_player_regiment_1_inner_type{};
+std::array<std::byte, 0xA10> g_enemy_regiment_0_inner_type{};
+std::array<std::byte, 0xA10> g_enemy_regiment_1_inner_type{};
+std::array<std::byte, 0x20> g_player_counter_targets{};
+std::array<std::byte, 0x20> g_enemy_counter_targets{};
+std::array<std::byte, 0xF18> g_combat_rules{};
+std::array<std::byte, 0x100> g_played_knight_link{};
+std::array<std::byte, 0x100> g_target_knight_link{};
+constexpr char g_armored_horsemen_key[] = "armored_horsemen";
+std::array<std::byte, 0x778> g_hills_terrain{};
+std::array<std::byte, 0x778> g_plains_terrain{};
+std::array<std::byte, 0x40> g_combat_storage{};
+std::array<std::byte, 0x20> g_combat_slots{};
+std::array<std::byte, 0x718> g_player_combat{};
 std::array<std::byte, 0x08> g_player_move_route_info_0{};
 std::array<std::byte, 0x08> g_player_move_route_info_1{};
 std::array<std::byte, 0x08> g_player_move_route_info_2{};
@@ -83,6 +129,10 @@ std::array<void *, 3> g_preview_move_path{};
 std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
 std::array<std::byte, 0x20> g_enemy_default_raise_province{};
+std::array<std::byte, 0x60> g_player_map_node{};
+std::array<std::byte, 0x60> g_enemy_map_node{};
+std::array<std::byte, 0x30> g_player_target_adjacency{};
+std::array<std::byte, 0x30> g_enemy_target_adjacency{};
 std::array<std::byte, 0x860> g_war_objective_province{};
 std::array<std::byte, 0x860> g_second_war_objective_province{};
 std::array<std::byte, 0x860> g_third_war_objective_province{};
@@ -96,7 +146,7 @@ constexpr char g_casus_belli_key_1[] = "county_conquest_cb";
 std::array<std::byte, 0x220> g_casus_belli_rule_0{};
 std::array<std::byte, 0x220> g_casus_belli_rule_1{};
 std::array<std::byte, 0x18> g_casus_belli_scratch{};
-std::array<std::byte, 0x1000> g_character_interaction_database{};
+std::array<std::byte, 0x1100> g_character_interaction_database{};
 std::array<std::byte, 2 * 0x98> g_casus_belli_configurations{};
 std::array<std::int32_t, 2> g_casus_belli_titles_0{};
 std::array<std::int32_t, 2> g_casus_belli_titles_1{};
@@ -105,16 +155,63 @@ std::array<std::byte, 8> g_arrange_marriage_interaction{};
 std::array<std::byte, 0x30> g_war_declaration{};
 std::array<std::int32_t, 8> g_war_declaration_titles{};
 std::array<std::byte, 8> g_enforce_demands_marker{};
+std::array<std::byte, 8> g_surrender_marker{};
+std::array<std::byte, 8> g_white_peace_marker{};
+std::array<std::byte, 0x2A50> g_victory_interaction{};
+std::array<std::byte, 0x2A50> g_surrender_interaction{};
+std::array<std::byte, 0x2A50> g_white_peace_interaction{};
+std::array<std::byte, 8> g_auto_accept_trigger{};
+std::array<std::uintptr_t, 1> g_character_claim_vtable{};
+std::array<void *, 128> g_effect_preview_collector_vtable{};
+std::array<void *, 12> g_white_peace_loaded_effect_vtable{};
+std::array<void *, 12> g_defeat_loaded_effect_vtable{};
+std::array<void *, 12> g_scripted_effect_vtable{};
+std::array<void *, 12> g_context_effect_vtable{};
+std::array<void *, 1> g_scripted_effect_template_vtable{};
+std::array<void *, 1> g_hidden_effect_vtable{};
+std::array<std::byte, 0xA0> g_truce_scripted_effect{};
+std::array<std::byte, 0x128> g_truce_scripted_effect_template{};
+std::array<std::byte, 0x60> g_truce_scripted_default_effect{};
+std::array<std::byte, 0x60> g_truce_hidden_effect{};
+std::array<std::byte, 0x100> g_truce_context_effect{};
+std::array<void *, 13> g_exit_root_effect_children{};
+std::array<void *, 19> g_defeat_root_effect_children{};
+std::array<void *, 6> g_truce_scripted_default_children{};
+std::array<void *, 1> g_truce_hidden_children{};
+std::array<void *, 1> g_truce_context_children{};
+std::array<std::byte, 0x118> g_prestige_effect_node{};
+std::array<std::byte, 0x118> g_legitimacy_effect_node{};
+std::array<std::byte, 0x118> g_stress_effect_node{};
+std::array<std::byte, 0x118> g_attacker_contribution_effect_node{};
+std::array<std::byte, 0x118> g_defender_contribution_effect_node{};
+std::array<std::byte, 0x118> g_gold_transfer_effect_node{};
+std::array<std::byte, 0x118> g_truce_effect_node{};
+std::array<std::byte, 0x118> g_unknown_effect_node{};
+std::array<std::byte, 0x10> g_exit_attacker_scope{};
+std::array<std::byte, 0x10> g_exit_defender_scope{};
+std::array<std::byte, 0x10> g_exit_ally_scope{};
+std::array<std::byte, 0x08> g_effect_context_data_100{};
+std::array<std::byte, 0x08> g_effect_context_data_18{};
+std::array<void *, 3> g_effect_context_allocator_vtable{};
+std::array<std::byte, sizeof(void *)> g_effect_context_allocator{};
+std::array<std::byte, 0x20> g_exit_terms_variable_container{};
+std::array<std::byte, 0x20> g_exit_terms_variable_row{};
 std::array<std::byte, 0x20> g_global_variable_container{};
 std::array<std::byte, 12 * 0x20> g_global_variable_entries{};
 std::array<std::byte, 8> g_string_table_marker{};
 void *g_pending_storage_pointer = nullptr;
 void *g_character_storage_pointer = nullptr;
 void *g_army_storage_pointer = nullptr;
+void *g_internal_army_storage_pointer = nullptr;
+void *g_regiment_storage_pointer = nullptr;
+void *g_combat_storage_pointer = nullptr;
 void *g_siege_storage_pointer = nullptr;
 void *g_expected_event_manager = nullptr;
 bool g_has_active_event = true;
 bool g_has_local_player = false;
+std::int32_t g_current_event_calls = 0;
+std::int32_t g_war_participant_calls = 0;
+std::int32_t g_settlement_accessor_calls = 0;
 bool g_submit_called = false;
 bool g_submit_result = true;
 bool g_pending_visibility_result = true;
@@ -138,6 +235,22 @@ bool g_preview_route_build_result = true;
 std::int32_t g_preview_route_count = 3;
 std::int32_t g_player_army_state_code = 2;
 std::int32_t g_enemy_army_state_code = 6;
+std::int32_t g_army_current_soldiers_calls = 0;
+std::int32_t g_army_maximum_soldiers_calls = 0;
+std::int32_t g_effective_stats_calls = 0;
+void *g_effective_stats_failed_regiment = nullptr;
+std::int32_t g_character_modifier_calls = 0;
+std::int32_t g_counter_current_chunk_calls = 0;
+std::int32_t g_counter_resolution_calls = 0;
+bool g_knight_effectiveness_context_available = true;
+bool g_holding_defender_result = true;
+void *g_last_holding_defender_owner = nullptr;
+std::int32_t g_commander_min_roll = 0;
+std::int32_t g_commander_max_roll = 10;
+std::int32_t g_knight_damage_per_prowess = 50;
+std::int32_t g_knight_toughness_per_prowess = 10;
+std::int32_t g_minimum_combat_width = 100;
+std::int64_t g_base_combat_width_ratio = 100'000;
 bool g_siege_alive = true;
 std::int64_t g_siege_progress_raw = 25'000;
 std::int64_t g_siege_total_work_raw = 10'000'000;
@@ -183,6 +296,44 @@ bool g_send_interaction_construct_called = false;
 std::int32_t g_interaction_destroy_calls = 0;
 bool g_interaction_default_construct_called = false;
 bool g_war_resolution_construct_called = false;
+bool g_war_resolution_attacker_victory = false;
+bool g_war_resolution_context_available = true;
+std::int32_t g_war_resolution_construct_calls = 0;
+std::array<bool, 4> g_war_resolution_absolute_outcomes{};
+std::int32_t g_character_claim_read_calls = 0;
+std::int32_t g_character_claim_destroy_calls = 0;
+bool g_character_claim_title_mismatch = false;
+bool g_character_claim_malformed_bool = false;
+bool g_exit_terms_fixture_active = false;
+bool g_exit_terms_unknown_node = false;
+bool g_exit_terms_malformed_contribution = false;
+bool g_exit_terms_duplicate_truce = false;
+bool g_exit_terms_income_mismatch = false;
+bool g_exit_terms_factor_malformed = false;
+bool g_exit_terms_collector_lifecycle_valid = true;
+bool g_exit_terms_context_lifecycle_valid = true;
+std::uint8_t g_exit_terms_answer_status_override = 0xFF;
+void *g_exit_terms_effect_context = nullptr;
+std::int32_t g_exit_terms_effect_context_construct_calls = 0;
+std::int32_t g_exit_terms_effect_context_populate_calls = 0;
+std::int32_t g_exit_terms_collector_construct_calls = 0;
+std::int32_t g_exit_terms_collector_destroy_calls = 0;
+std::int32_t g_exit_terms_traverse_calls = 0;
+std::int32_t g_exit_terms_forward_calls = 0;
+std::int32_t g_exit_terms_projected_root_preview_calls = 0;
+std::array<std::int32_t, 2> g_exit_terms_projected_callback_counts{};
+std::int32_t g_exit_terms_hidden_truce_preview_calls = 0;
+std::int32_t g_exit_terms_context_teardown_stage = 0;
+std::int32_t g_exit_terms_truce_duration_calls = 0;
+std::int32_t g_exit_terms_primary_title_calls = 0;
+std::int32_t g_exit_terms_monthly_income_calls = 0;
+std::int32_t g_exit_terms_answer_calls = 0;
+std::int32_t g_exit_terms_factor_identifier_id = 82;
+std::int32_t g_white_peace_construct_calls = 0;
+std::uint8_t g_last_special_interaction_index = 0;
+std::int32_t g_last_special_actor_character_id = -1;
+std::int32_t g_last_special_recipient_character_id = -1;
+std::int32_t g_auto_accept_trigger_calls = 0;
 std::int32_t g_marriage_context_construct_calls = 0;
 std::int32_t g_marriage_redirect_calls = 0;
 std::int32_t g_marriage_legacy_context_construct_calls = 0;
@@ -193,6 +344,7 @@ std::int32_t g_script_identifier_lookup_calls = 0;
 constexpr std::int32_t kMarriageMatchmakerCharacterId = 0x01000007;
 constexpr std::uint16_t kFixtureCharacterEventTargetKind = 4;
 constexpr std::int32_t kFixtureDeadCharacterId = 0x01000004;
+constexpr std::int32_t kFixtureAllyCharacterId = 0x01000006;
 constexpr std::int64_t kFixtureFixedPointScale = 100'000;
 constexpr std::array<std::string_view, 12> kSettlementGlobalNames{
     "xa_settlement_ready",
@@ -226,6 +378,8 @@ enum class ExpectedCommand {
   declare_war,
   arrange_marriage,
   enforce_demands,
+  surrender_war,
+  offer_white_peace,
 };
 ExpectedCommand g_expected_command = ExpectedCommand::pause;
 
@@ -239,6 +393,14 @@ template <typename Value>
 void StoreBytes(void *target, std::size_t offset, Value value) {
   std::memcpy(static_cast<std::byte *>(target) + offset, &value,
               sizeof(value));
+}
+
+template <typename Value>
+Value LoadBytes(const void *source, std::size_t offset) {
+  Value value{};
+  std::memcpy(&value, static_cast<const std::byte *>(source) + offset,
+              sizeof(value));
+  return value;
 }
 
 void FixtureSetGlobalNumeric(std::size_t index, std::int64_t raw) {
@@ -259,6 +421,7 @@ void FixtureSetGlobalCharacter(std::size_t index,
 }
 
 void *FixtureGetGlobalVariableContainer() {
+  ++g_settlement_accessor_calls;
   return g_global_variable_container_available
              ? g_global_variable_container.data()
              : nullptr;
@@ -335,6 +498,7 @@ void *FixtureGetLocalPlayer(void *) {
 }
 
 void *FixtureGetCurrentEvent(void *event_manager) {
+  ++g_current_event_calls;
   if (event_manager != g_expected_event_manager || !g_has_active_event) {
     return nullptr;
   }
@@ -367,6 +531,7 @@ bool FixtureValidateReplyCharacterInteractionCommand(void *opaque_command) {
 
 bool FixtureContainsWarParticipant(void *container,
                                    std::int32_t character_id) {
+  ++g_war_participant_calls;
   auto *const bytes = static_cast<std::byte *>(container);
   void *entries = nullptr;
   std::int32_t count = 0;
@@ -391,6 +556,38 @@ bool FixtureContainsWarParticipant(void *container,
 
 std::int32_t FixtureGetWarScore(void *war, void *context) {
   return war == g_war.data() && context == nullptr ? 37 : 0;
+}
+
+std::int32_t FixtureGetImprisonmentWarScore(void *war, void *context) {
+  return war == g_war.data() && context == nullptr ? 4 : 0;
+}
+
+std::int32_t FixtureGetBattleWarScoreBase(void *war, void *context) {
+  return war == g_war.data() && context == nullptr ? 10 : 0;
+}
+
+std::int32_t FixtureGetBattleWarScoreSide(void *war, bool side,
+                                         void *context) {
+  if (war != g_war.data() || context != nullptr) {
+    return 0;
+  }
+  return side ? 2 : 3;
+}
+
+std::uint64_t FixtureGetOccupationWarScoreSide(void *war, bool side,
+                                               void *context) {
+  if (war != g_war.data() || context != nullptr) {
+    return 0;
+  }
+  return static_cast<std::uint32_t>(side ? 3 : 8);
+}
+
+std::int32_t FixtureGetTickingWarScoreSide(void *war, bool side,
+                                          void *context, bool mode) {
+  if (war != g_war.data() || context != nullptr || mode == side) {
+    return 0;
+  }
+  return side ? 2 : 7;
 }
 
 bool FixtureIsNativeComponentAlive(void *component) {
@@ -564,6 +761,373 @@ std::int32_t FixtureGetUnitState(void *unit) {
     return g_enemy_army_state_code;
   }
   return 0;
+}
+
+bool FixtureRegimentIdentityValid(void *subobject) {
+  return subobject == g_player_regiment_0.data() + 0x08 ||
+         subobject == g_player_regiment_1.data() + 0x08 ||
+         subobject == g_enemy_regiment_0.data() + 0x08 ||
+         subobject == g_enemy_regiment_1.data() + 0x08;
+}
+
+bool FixtureCharacterValid(void *subobject) {
+  return subobject == g_played_character.data() + 0x10 ||
+         subobject == g_target_character.data() + 0x10;
+}
+
+bool FixtureDatabaseObjectValid(void *object) {
+  return object == g_bowmen_type.data() ||
+         object == g_armored_horsemen_type.data();
+}
+
+bool FixtureDatabaseObjectAbsent(void *object) {
+  return object != nullptr && object == g_absent_maa_type.data() && false;
+}
+
+bool FixtureCombatTypeValid(void *object) {
+  return object == g_player_regiment_0_inner_type.data() ||
+         object == g_enemy_regiment_0_inner_type.data();
+}
+
+bool FixtureIsSpecialCombatRegiment(void *regiment) {
+  return regiment == g_enemy_regiment_1.data();
+}
+
+void *FixtureGetArmyCommander(void *army) {
+  if (army == g_player_internal_army.data()) {
+    return g_played_character.data();
+  }
+  return army == g_enemy_internal_army.data() ? nullptr : nullptr;
+}
+
+std::int32_t FixtureGetCommanderAdvantage(void *character,
+                                          std::int32_t context,
+                                          bool include_roll) {
+  return character == g_played_character.data() && context == -1 &&
+                 !include_roll
+             ? 3
+             : std::numeric_limits<std::int32_t>::min();
+}
+
+void *FixtureGetProvinceTerrain(void *province) {
+  if (province == g_player_province.data() ||
+      province == g_second_war_objective_province.data()) {
+    return g_hills_terrain.data();
+  }
+  if (province == g_enemy_province.data() ||
+      province == g_enemy_default_raise_province.data()) {
+    return g_plains_terrain.data();
+  }
+  return nullptr;
+}
+
+void *FixtureEvaluateRegimentStatsAtProvince(void *regiment,
+                                             void *output,
+                                             void *province) {
+  if (output == nullptr ||
+      province != g_second_war_objective_province.data() ||
+      regiment == g_effective_stats_failed_regiment) {
+    return nullptr;
+  }
+  ++g_effective_stats_calls;
+  auto *const bytes = static_cast<std::byte *>(output);
+  if (regiment == g_player_regiment_0.data()) {
+    StoreBytes(bytes, 0x08, std::int32_t{880});
+    StoreBytes(bytes, 0x10, std::int64_t{100'000});
+    StoreBytes(bytes, 0x18, std::int64_t{60'000'000});
+    StoreBytes(bytes, 0x20, std::int64_t{12'000'000});
+    StoreBytes(bytes, 0x28, std::int64_t{300'000});
+    StoreBytes(bytes, 0x30, std::int64_t{500'000});
+    return output;
+  }
+  if (regiment == g_player_regiment_1.data()) {
+    StoreBytes(bytes, 0x08, std::int32_t{420});
+    StoreBytes(bytes, 0x10, std::int64_t{200'000});
+    StoreBytes(bytes, 0x18, std::int64_t{600'000});
+    StoreBytes(bytes, 0x20, std::int64_t{700'000});
+    StoreBytes(bytes, 0x28, std::int64_t{100'000});
+    StoreBytes(bytes, 0x30, std::int64_t{200'000});
+    return output;
+  }
+  if (regiment == g_enemy_regiment_0.data()) {
+    StoreBytes(bytes, 0x08, std::int32_t{1'100});
+    StoreBytes(bytes, 0x10, std::int64_t{300'000});
+    StoreBytes(bytes, 0x18, std::int64_t{48'000'000});
+    StoreBytes(bytes, 0x20, std::int64_t{9'600'000});
+    StoreBytes(bytes, 0x28, std::int64_t{400'000});
+    StoreBytes(bytes, 0x30, std::int64_t{600'000});
+    return output;
+  }
+  if (regiment == g_enemy_regiment_1.data()) {
+    StoreBytes(bytes, 0x08, std::int32_t{550});
+    StoreBytes(bytes, 0x10, std::int64_t{400'000});
+    StoreBytes(bytes, 0x18, std::int64_t{900'000});
+    StoreBytes(bytes, 0x20, std::int64_t{1'000'000});
+    StoreBytes(bytes, 0x28, std::int64_t{200'000});
+    StoreBytes(bytes, 0x30, std::int64_t{300'000});
+    return output;
+  }
+  return nullptr;
+}
+
+void *FixtureGetCharacterModifierAggregator(void *character) {
+  return character == g_played_character.data() ||
+                 character == g_target_character.data() ||
+                 character == g_dead_character.data()
+             ? character
+             : nullptr;
+}
+
+std::int64_t *FixtureReadCharacterModifier(void *aggregator,
+                                           std::int64_t *output,
+                                           std::int32_t modifier_index) {
+  if (output == nullptr ||
+      (aggregator != g_played_character.data() &&
+       aggregator != g_target_character.data() &&
+       aggregator != g_dead_character.data())) {
+    return nullptr;
+  }
+  ++g_character_modifier_calls;
+  if (aggregator == g_dead_character.data()) {
+    if (modifier_index == 0x106 || modifier_index == 0x107) {
+      *output = 0;
+      return output;
+    }
+    return nullptr;
+  }
+  if (aggregator == g_target_character.data()) {
+    if (modifier_index == 0x106) {
+      *output = 30'000;
+      return output;
+    }
+    if (modifier_index == 0x107) {
+      *output = 40'000;
+      return output;
+    }
+    return nullptr;
+  }
+  switch (modifier_index) {
+  case 0x106:
+    *output = 10'000;
+    break;
+  case 0x107:
+    *output = 20'000;
+    break;
+  case 0x108:
+    *output = -150'000;
+    break;
+  case 0x109:
+    *output = 150'000;
+    break;
+  case 0x200:
+    *output = -150'000;
+    break;
+  case 0x201:
+    *output = 250'000;
+    break;
+  case 0x202:
+    *output = 50'000;
+    break;
+  case 0x203:
+    *output = -150'000;
+    break;
+  default:
+    return nullptr;
+  }
+  return output;
+}
+
+void *FixtureGetCombatRules() { return g_combat_rules.data(); }
+
+std::int64_t *FixtureReadCounterCurrentChunk(const void *opaque_entry,
+                                             std::int64_t *output) {
+  if (opaque_entry == nullptr || output == nullptr) {
+    return nullptr;
+  }
+  ++g_counter_current_chunk_calls;
+  std::int32_t regiment_id = -1;
+  std::int64_t current_raw = -1;
+  std::memcpy(&regiment_id,
+              static_cast<const std::byte *>(opaque_entry) + 0x08,
+              sizeof(regiment_id));
+  std::memcpy(&current_raw,
+              static_cast<const std::byte *>(opaque_entry) + 0x18,
+              sizeof(current_raw));
+  void *inner_type = nullptr;
+  switch (regiment_id) {
+  case 0x01000001:
+    inner_type = g_player_regiment_0_inner_type.data();
+    break;
+  case 0x01000002:
+    inner_type = g_player_regiment_1_inner_type.data();
+    break;
+  case 0x01000003:
+    inner_type = g_enemy_regiment_0_inner_type.data();
+    break;
+  case 0x01000004:
+    inner_type = g_enemy_regiment_1_inner_type.data();
+    break;
+  default:
+    return nullptr;
+  }
+  std::int32_t stack_size = 0;
+  std::memcpy(&stack_size,
+              static_cast<std::byte *>(inner_type) + 0x68,
+              sizeof(stack_size));
+  if (stack_size == 0) {
+    *output = -1;
+    return output;
+  }
+  *output = (current_raw * kFixtureFixedPointScale) /
+            (static_cast<std::int64_t>(stack_size) *
+             kFixtureFixedPointScale);
+  return output;
+}
+
+struct FixtureNativeArrayHeader {
+  void *data;
+  std::int32_t capacity;
+  std::int32_t count;
+};
+static_assert(sizeof(FixtureNativeArrayHeader) == 0x10);
+
+void FixtureResolveCounterClasses(void *opaque_countered,
+                                  void *opaque_countering,
+                                  void *opaque_output,
+                                  std::int64_t context_scale) {
+  ++g_counter_resolution_calls;
+  auto *const countered =
+      static_cast<FixtureNativeArrayHeader *>(opaque_countered);
+  auto *const countering =
+      static_cast<FixtureNativeArrayHeader *>(opaque_countering);
+  auto *const output =
+      static_cast<FixtureNativeArrayHeader *>(opaque_output);
+  if (countered == nullptr || countering == nullptr || output == nullptr ||
+      countered->count < 0 || countered->count > countered->capacity ||
+      countering->count < 0 || countering->count > countering->capacity ||
+      output->data == nullptr || output->capacity != 3 ||
+      output->count != 3) {
+    return;
+  }
+  auto *const values = static_cast<std::int64_t *>(output->data);
+  if (context_scale == 104'000) {
+    values[0] = 100'000;
+    values[1] = 80'000;
+    values[2] = 60'000;
+  } else if (context_scale == 66'000) {
+    values[0] = 90'000;
+    values[1] = 70'000;
+    values[2] = 50'000;
+  }
+}
+
+std::int64_t *FixtureGetCounterContextScale(
+    std::int64_t *output, void *countered_aggregator,
+    void *countering_aggregator) {
+  if (output == nullptr) {
+    return nullptr;
+  }
+  const auto efficiency =
+      countering_aggregator == g_played_character.data()
+          ? 10'000
+          : countering_aggregator == g_target_character.data() ? 30'000
+                                                                : -1;
+  const auto resistance =
+      countered_aggregator == g_played_character.data()
+          ? 20'000
+          : countered_aggregator == g_target_character.data() ? 40'000
+                                                               : -1;
+  if (efficiency < 0 || resistance < 0) {
+    return nullptr;
+  }
+  *output = ((kFixtureFixedPointScale - resistance) *
+             (kFixtureFixedPointScale + efficiency)) /
+            kFixtureFixedPointScale;
+  return output;
+}
+
+void *FixtureGetKnightEffectivenessContext(void *character) {
+  if (!g_knight_effectiveness_context_available) {
+    return nullptr;
+  }
+  return character == g_played_character.data() ||
+                 character == g_target_character.data()
+             ? character
+             : nullptr;
+}
+
+std::int64_t *FixtureReadKnightEffectiveness(
+    std::int64_t *output, void *effectiveness_context,
+    std::uint64_t mode) {
+  if (output == nullptr || mode != 0) {
+    return nullptr;
+  }
+  if (effectiveness_context == g_played_character.data()) {
+    *output = 100'000;
+    return output;
+  }
+  if (effectiveness_context == g_target_character.data()) {
+    *output = 120'000;
+    return output;
+  }
+  return nullptr;
+}
+
+bool FixtureIsHoldingDefender(void *defender_owner,
+                              void *target_province) {
+  g_last_holding_defender_owner = defender_owner;
+  const bool valid_owner = defender_owner == g_played_character.data() ||
+                           defender_owner == g_target_character.data();
+  return valid_owner &&
+         target_province == g_second_war_objective_province.data() &&
+         g_holding_defender_result;
+}
+
+std::int32_t FixtureGetArmyCurrentSoldiers(
+    const void *regiment_id_array, std::uint8_t flags) {
+  ++g_army_current_soldiers_calls;
+  if (flags != 0) {
+    return -1;
+  }
+  if (regiment_id_array == g_player_internal_army.data() + 0x38) {
+    std::int32_t count = -1;
+    std::memcpy(&count, g_player_internal_army.data() + 0x44,
+                sizeof(count));
+    if (count == 0) {
+      return 0;
+    }
+    return 1000;
+  }
+  if (regiment_id_array == g_enemy_internal_army.data() + 0x38) {
+    std::int32_t count = -1;
+    std::memcpy(&count, g_enemy_internal_army.data() + 0x44,
+                sizeof(count));
+    return count == 0 ? 0 : 800;
+  }
+  if (regiment_id_array == g_third_internal_army.data() + 0x38) {
+    return 0;
+  }
+  return -1;
+}
+
+std::int32_t FixtureGetArmyMaximumSoldiers(void *army) {
+  ++g_army_maximum_soldiers_calls;
+  if (army == g_player_internal_army.data()) {
+    std::int32_t count = -1;
+    std::memcpy(&count, g_player_internal_army.data() + 0x44,
+                sizeof(count));
+    return count == 0 ? 0 : 1200;
+  }
+  if (army == g_enemy_internal_army.data()) {
+    std::int32_t count = -1;
+    std::memcpy(&count, g_enemy_internal_army.data() + 0x44,
+                sizeof(count));
+    return count == 0 ? 0 : 1500;
+  }
+  if (army == g_third_internal_army.data()) {
+    return 0;
+  }
+  return -1;
 }
 
 std::int32_t FixtureGetArmyMoveMode(void *army, void *province,
@@ -926,16 +1490,484 @@ void *FixtureDefaultConstructCharacterInteractionContext(
 
 void FixtureConstructWarResolutionInteractionContext(void *opaque_context,
                                                      void *war,
-                                                     bool surrender) {
+                                                     bool attacker_victory) {
   auto *const context = static_cast<std::byte *>(opaque_context);
   const std::int32_t actor_id = 0x01000002;
   const std::int32_t recipient_id = 0x01000003;
-  void *const marker = g_enforce_demands_marker.data();
+  void *const marker =
+      !g_war_resolution_context_available
+          ? nullptr
+          : (attacker_victory
+                 ? static_cast<void *>(g_enforce_demands_marker.data())
+                 : static_cast<void *>(g_surrender_marker.data()));
+  void *const interaction =
+      attacker_victory
+          ? static_cast<void *>(g_victory_interaction.data())
+          : static_cast<void *>(g_surrender_interaction.data());
+  std::memcpy(context, &interaction, sizeof(interaction));
   std::memcpy(context + 0x2D8, &actor_id, sizeof(actor_id));
   std::memcpy(context + 0x2DC, &recipient_id, sizeof(recipient_id));
   std::memcpy(context + 0x330, &marker, sizeof(marker));
-  g_war_resolution_construct_called =
-      war == g_war.data() && !surrender;
+  g_war_resolution_construct_called = war == g_war.data();
+  g_war_resolution_attacker_victory = attacker_victory;
+  if (g_war_resolution_construct_calls <
+      static_cast<std::int32_t>(g_war_resolution_absolute_outcomes.size())) {
+    g_war_resolution_absolute_outcomes[
+        static_cast<std::size_t>(g_war_resolution_construct_calls)] =
+        attacker_victory;
+  }
+  ++g_war_resolution_construct_calls;
+}
+
+void *FixtureConstructSpecialCharacterInteractionContext(
+    void *opaque_context, std::uint8_t special_index,
+    std::int32_t actor_character_id,
+    std::int32_t recipient_character_id) {
+  g_last_special_interaction_index = special_index;
+  g_last_special_actor_character_id = actor_character_id;
+  g_last_special_recipient_character_id = recipient_character_id;
+  std::memset(opaque_context, 0, 0x338);
+  auto *const context = static_cast<std::byte *>(opaque_context);
+  if (special_index == 3) {
+    void *const marker = g_white_peace_marker.data();
+    void *const interaction = g_white_peace_interaction.data();
+    std::memcpy(context, &interaction, sizeof(interaction));
+    std::memcpy(context + 0x2D8, &actor_character_id,
+                sizeof(actor_character_id));
+    std::memcpy(context + 0x2DC, &recipient_character_id,
+                sizeof(recipient_character_id));
+    std::memcpy(context + 0x330, &marker, sizeof(marker));
+    ++g_white_peace_construct_calls;
+  }
+  return opaque_context;
+}
+
+void *FixtureDestroyCharacterClaim(void *opaque_claim,
+                                   std::int32_t delete_flags) {
+  if (opaque_claim != nullptr && delete_flags == 0) {
+    ++g_character_claim_destroy_calls;
+  }
+  return opaque_claim;
+}
+
+void *FixtureReadCharacterClaim(void *opaque_claim, void *claimant,
+                                void *title) {
+  ++g_character_claim_read_calls;
+  if (opaque_claim == nullptr || claimant != g_played_character.data() ||
+      title == nullptr) {
+    return nullptr;
+  }
+  std::memset(opaque_claim, 0, 0x18);
+  auto *const claim = static_cast<std::byte *>(opaque_claim);
+  std::int32_t title_id = -1;
+  std::memcpy(&title_id, static_cast<std::byte *>(title) + 0x10,
+              sizeof(title_id));
+  bool present = true;
+  bool strong = false;
+  bool implicit = false;
+  switch (title_id & 0x00FFFFFF) {
+  case 1:
+    break;
+  case 2:
+    strong = true;
+    break;
+  case 5:
+    implicit = true;
+    break;
+  case 9:
+    present = false;
+    break;
+  default:
+    return nullptr;
+  }
+  const auto published_title_id =
+      g_character_claim_title_mismatch ? title_id + 1 : title_id;
+  std::memcpy(claim + 0x08, &published_title_id,
+              sizeof(published_title_id));
+  if (!present) {
+    return opaque_claim;
+  }
+  void *const vtable = g_character_claim_vtable.data();
+  std::memcpy(claim, &vtable, sizeof(vtable));
+  const auto strong_raw = static_cast<std::uint8_t>(
+      g_character_claim_malformed_bool ? 2 : (strong ? 1 : 0));
+  const auto implicit_raw = static_cast<std::uint8_t>(implicit ? 1 : 0);
+  const auto present_raw = std::uint8_t{1};
+  std::memcpy(claim + 0x0C, &strong_raw, sizeof(strong_raw));
+  std::memcpy(claim + 0x0D, &implicit_raw, sizeof(implicit_raw));
+  std::memcpy(claim + 0x10, &present_raw, sizeof(present_raw));
+  return opaque_claim;
+}
+
+struct FixturePreviewFixedPayload {
+  std::uint32_t tag = 1;
+  std::uint32_t padding = 0;
+  std::int64_t raw = 0;
+};
+
+using FixtureEffectPreviewCallback = void (*)(
+    void *collector, const void *first_scope, const void *second_scope,
+    const FixturePreviewFixedPayload *payload, void *effect_node,
+    void *forwarded_argument);
+
+void FixtureOriginalEffectPreviewCallback(
+    void *, const void *, const void *,
+    const FixturePreviewFixedPayload *, void *, void *) {
+  ++g_exit_terms_forward_calls;
+}
+
+void FixtureFreeEffectContextArray(void *allocator, void *data,
+                                   std::uint64_t alignment) {
+  const bool allocator_valid =
+      allocator == g_effect_context_allocator.data() && alignment == 8;
+  if (data == g_effect_context_data_100.data() &&
+      g_exit_terms_context_teardown_stage == 2) {
+    g_exit_terms_context_teardown_stage = 3;
+  } else if (data == g_effect_context_data_18.data() &&
+             g_exit_terms_context_teardown_stage == 3) {
+    g_exit_terms_context_teardown_stage = 4;
+  } else {
+    g_exit_terms_context_lifecycle_valid = false;
+  }
+  g_exit_terms_context_lifecycle_valid =
+      g_exit_terms_context_lifecycle_valid && allocator_valid;
+}
+
+void *FixtureConstructWarEffectContext(void *opaque_context) {
+  if (opaque_context == nullptr) {
+    return nullptr;
+  }
+  std::memset(opaque_context, 0, 0x170);
+  StoreBytes(opaque_context, 0x18,
+             static_cast<void *>(g_effect_context_data_18.data()));
+  StoreBytes(opaque_context, 0x24, std::int32_t{1});
+  StoreBytes(opaque_context, 0x28,
+             static_cast<void *>(g_effect_context_allocator.data()));
+  StoreBytes(opaque_context, 0x100,
+             static_cast<void *>(g_effect_context_data_100.data()));
+  StoreBytes(opaque_context, 0x108, std::int32_t{1});
+  StoreBytes(opaque_context, 0x110,
+             static_cast<void *>(g_effect_context_allocator.data()));
+  g_exit_terms_effect_context = opaque_context;
+  g_exit_terms_projected_root_preview_calls = 0;
+  g_exit_terms_projected_callback_counts.fill(0);
+  g_exit_terms_context_teardown_stage = 0;
+  ++g_exit_terms_effect_context_construct_calls;
+  return opaque_context;
+}
+
+void FixturePopulateWarEffectContext(void *opaque_context, void *war,
+                                     bool unknown_flag) {
+  if (opaque_context != g_exit_terms_effect_context ||
+      war != g_war.data() || unknown_flag) {
+    g_exit_terms_context_lifecycle_valid = false;
+  }
+  ++g_exit_terms_effect_context_populate_calls;
+}
+
+void *FixtureConstructEffectPreviewCollector(void *opaque_collector) {
+  if (opaque_collector == nullptr) {
+    return nullptr;
+  }
+  std::memset(opaque_collector, 0, 0xD8);
+  void *const vtable = g_effect_preview_collector_vtable.data();
+  std::memcpy(opaque_collector, &vtable, sizeof(vtable));
+  ++g_exit_terms_collector_construct_calls;
+  return opaque_collector;
+}
+
+void FixtureDestroyEffectPreviewCollector(void *opaque_collector) {
+  void *vtable = nullptr;
+  if (opaque_collector != nullptr) {
+    std::memcpy(&vtable, opaque_collector, sizeof(vtable));
+  }
+  g_exit_terms_collector_lifecycle_valid =
+      g_exit_terms_collector_lifecycle_valid &&
+      vtable == g_effect_preview_collector_vtable.data();
+  ++g_exit_terms_collector_destroy_calls;
+}
+
+void FixtureLoadedEffectSlot58(void *loaded_effect, void *,
+                               std::uint32_t mode, void *collector) {
+  void **vtable = nullptr;
+  if (collector != nullptr) {
+    std::memcpy(&vtable, collector, sizeof(vtable));
+  }
+  if (mode != 0 || vtable == nullptr || vtable[1] == nullptr) {
+    g_exit_terms_collector_lifecycle_valid = false;
+    return;
+  }
+  const auto callback =
+      reinterpret_cast<FixtureEffectPreviewCallback>(vtable[1]);
+  const auto emit_resource =
+      [callback, collector](void *scope, std::int64_t raw, void *node) {
+        const FixturePreviewFixedPayload payload{1, 0, raw};
+        callback(collector, scope, nullptr, &payload, node, nullptr);
+      };
+  const auto emit_truce = [callback, collector]() {
+    callback(collector, g_exit_attacker_scope.data(),
+             g_exit_defender_scope.data(), nullptr,
+             g_truce_effect_node.data(), nullptr);
+  };
+
+  if (loaded_effect == g_truce_context_effect.data()) {
+    ++g_exit_terms_hidden_truce_preview_calls;
+    emit_truce();
+    if (g_exit_terms_duplicate_truce) {
+      emit_truce();
+    }
+    return;
+  }
+
+  const auto projected_outcome_index =
+      static_cast<std::size_t>(g_exit_terms_projected_root_preview_calls);
+  const bool projected_outcome_valid = projected_outcome_index < 2;
+  void *const projected_root_children =
+      loaded_effect == nullptr
+          ? nullptr
+          : LoadBytes<void *>(loaded_effect, 0x40);
+  void *const projected_scripted_effect =
+      projected_root_children == nullptr
+          ? nullptr
+          : LoadBytes<void *>(projected_root_children,
+                              8 * sizeof(void *));
+  void *const projected_template =
+      projected_scripted_effect == nullptr
+          ? nullptr
+          : LoadBytes<void *>(projected_scripted_effect, 0x60);
+  void *const projected_default_effect =
+      projected_template == nullptr
+          ? nullptr
+          : LoadBytes<void *>(projected_template, 0x120);
+  void *const projected_default_children =
+      projected_default_effect == nullptr
+          ? nullptr
+          : LoadBytes<void *>(projected_default_effect, 0x40);
+  bool projection_valid =
+      projected_outcome_valid &&
+      loaded_effect != nullptr &&
+      loaded_effect != g_casus_belli_type_0.data() + 0x9C8 &&
+      loaded_effect != g_casus_belli_type_0.data() + 0xA28 &&
+      LoadBytes<void *>(loaded_effect, 0x00) ==
+          g_white_peace_loaded_effect_vtable.data() &&
+      LoadBytes<std::int32_t>(loaded_effect, 0x48) == 13 &&
+      LoadBytes<std::int32_t>(loaded_effect, 0x4C) == 10 &&
+      projected_root_children != nullptr &&
+      projected_scripted_effect != nullptr &&
+      projected_scripted_effect != g_truce_scripted_effect.data() &&
+      LoadBytes<void *>(projected_scripted_effect, 0x00) ==
+          g_scripted_effect_vtable.data() &&
+      LoadBytes<std::int32_t>(projected_scripted_effect, 0x94) == 0 &&
+      projected_template != nullptr &&
+      projected_template != g_truce_scripted_effect_template.data() &&
+      LoadBytes<void *>(projected_template, 0x00) ==
+          g_scripted_effect_template_vtable.data() &&
+      projected_default_effect != nullptr &&
+      projected_default_effect != g_truce_scripted_default_effect.data() &&
+      LoadBytes<void *>(projected_default_effect, 0x00) ==
+          g_white_peace_loaded_effect_vtable.data() &&
+      LoadBytes<std::int32_t>(projected_default_effect, 0x48) == 6 &&
+      LoadBytes<std::int32_t>(projected_default_effect, 0x4C) == 5 &&
+      projected_default_children != nullptr &&
+      LoadBytes<void *>(projected_default_children,
+                        2 * sizeof(void *)) ==
+          g_truce_context_effect.data();
+  for (std::size_t index = 0; index < 10 && projection_valid; ++index) {
+    if (index != 8) {
+      projection_valid =
+          LoadBytes<void *>(projected_root_children,
+                            index * sizeof(void *)) ==
+          g_exit_root_effect_children[index];
+    }
+  }
+  for (std::size_t index = 0; index < 5 && projection_valid; ++index) {
+    if (index != 2) {
+      projection_valid =
+          LoadBytes<void *>(projected_default_children,
+                            index * sizeof(void *)) ==
+          g_truce_scripted_default_children[index];
+    }
+  }
+  if (!projection_valid) {
+    g_exit_terms_collector_lifecycle_valid = false;
+    return;
+  }
+  ++g_exit_terms_projected_root_preview_calls;
+  const auto callbacks_before = g_exit_terms_forward_calls;
+
+  const FixturePreviewFixedPayload attacker_contribution{1, 0, 10'500'000};
+  callback(collector, g_exit_attacker_scope.data(), nullptr,
+           &attacker_contribution,
+           g_attacker_contribution_effect_node.data(),
+           g_exit_terms_malformed_contribution
+               ? nullptr
+               : static_cast<void *>(g_string_table_marker.data()));
+  const FixturePreviewFixedPayload defender_contribution{1, 0, 10'500'000};
+  callback(collector, g_exit_defender_scope.data(), nullptr,
+           &defender_contribution,
+           g_defender_contribution_effect_node.data(),
+           static_cast<void *>(g_string_table_marker.data()));
+
+  if (g_exit_terms_unknown_node) {
+    emit_resource(g_exit_attacker_scope.data(), 1,
+                  g_unknown_effect_node.data());
+  }
+  // Stock claim_cb walks allies and may use contribution-specific effect
+  // node vtables.  Both a known and an unknown third-party row must be
+  // forwarded to the native collector but stay outside the primary grid.
+  emit_resource(g_exit_ally_scope.data(), 2'000'000,
+                g_prestige_effect_node.data());
+  emit_resource(g_exit_ally_scope.data(), 3'000'000,
+                g_unknown_effect_node.data());
+  if (projected_outcome_index == 0) {
+    emit_resource(g_exit_attacker_scope.data(), -3'500'000,
+                  g_prestige_effect_node.data());
+    emit_resource(g_exit_attacker_scope.data(), 3'400'000,
+                  g_stress_effect_node.data());
+  } else if (projected_outcome_index == 1) {
+    emit_resource(g_exit_attacker_scope.data(), -7'000'000,
+                  g_prestige_effect_node.data());
+    emit_resource(g_exit_defender_scope.data(), 7'000'000,
+                  g_prestige_effect_node.data());
+    emit_resource(g_exit_defender_scope.data(), 5'000'000,
+                  g_legitimacy_effect_node.data());
+    const FixturePreviewFixedPayload gold{1, 0, 15'000'000};
+    callback(collector, g_exit_attacker_scope.data(),
+             g_exit_defender_scope.data(), &gold,
+             g_gold_transfer_effect_node.data(), nullptr);
+  } else {
+    g_exit_terms_collector_lifecycle_valid = false;
+  }
+  FixtureLoadedEffectSlot58(g_truce_context_effect.data(), nullptr, mode,
+                            collector);
+  g_exit_terms_projected_callback_counts[projected_outcome_index] =
+      g_exit_terms_forward_calls - callbacks_before;
+}
+
+void FixtureTraverseLoadedEffect(void *loaded_effect, void *effect_context,
+                                 void *collector) {
+  ++g_exit_terms_traverse_calls;
+  void **root_vtable = nullptr;
+  if (loaded_effect != nullptr) {
+    std::memcpy(&root_vtable, loaded_effect, sizeof(root_vtable));
+  }
+  if (effect_context != g_exit_terms_effect_context ||
+      root_vtable == nullptr || root_vtable[11] == nullptr) {
+    g_exit_terms_collector_lifecycle_valid = false;
+    return;
+  }
+
+  std::memset(g_exit_terms_variable_container.data(), 0,
+              g_exit_terms_variable_container.size());
+  std::memset(g_exit_terms_variable_row.data(), 0,
+              g_exit_terms_variable_row.size());
+  Store(g_exit_terms_variable_container, 0x00,
+        static_cast<void *>(g_exit_terms_variable_row.data()));
+  Store(g_exit_terms_variable_container, 0x08, std::int32_t{1});
+  Store(g_exit_terms_variable_container, 0x0C, std::int32_t{1});
+  Store(g_exit_terms_variable_row, 0x00,
+        g_exit_terms_factor_identifier_id);
+  Store(g_exit_terms_variable_row, 0x08,
+        static_cast<std::uint16_t>(g_exit_terms_factor_malformed ? 2 : 1));
+  Store(g_exit_terms_variable_row, 0x0A, std::uint16_t{0});
+  Store(g_exit_terms_variable_row, 0x10, std::int64_t{700'000});
+  Store(g_exit_terms_variable_row, 0x18, std::uint8_t{0});
+  std::array<std::byte, 0x30> wrapper{};
+  Store(wrapper, 0x18,
+        static_cast<void *>(g_exit_terms_variable_container.data()));
+
+  using LoadedEffectSlot58 = void (*)(void *, void *, std::uint32_t, void *);
+  reinterpret_cast<LoadedEffectSlot58>(root_vtable[11])(
+      loaded_effect, wrapper.data(), 0, collector);
+}
+
+void FixtureDestroyEffectContext118(void *subobject) {
+  if (g_exit_terms_effect_context == nullptr ||
+      subobject != static_cast<std::byte *>(g_exit_terms_effect_context) +
+                       0x118 ||
+      g_exit_terms_context_teardown_stage != 0) {
+    g_exit_terms_context_lifecycle_valid = false;
+    return;
+  }
+  g_exit_terms_context_teardown_stage = 1;
+}
+
+void FixtureDestroyEffectContextArrayRow(void *subobject) {
+  if (g_exit_terms_effect_context == nullptr ||
+      subobject != static_cast<std::byte *>(g_exit_terms_effect_context) +
+                       0x100 ||
+      g_exit_terms_context_teardown_stage != 1) {
+    g_exit_terms_context_lifecycle_valid = false;
+    return;
+  }
+  g_exit_terms_context_teardown_stage = 2;
+}
+
+std::int32_t FixtureEvaluateTruceDurationDays(
+    void *script_value, void *effect_context, void *evaluation_context) {
+  ++g_exit_terms_truce_duration_calls;
+  if (script_value != g_truce_effect_node.data() + 0x108 ||
+      effect_context != g_exit_terms_effect_context ||
+      evaluation_context !=
+          static_cast<std::byte *>(g_exit_terms_effect_context) + 0x28) {
+    return -1;
+  }
+  return 1'825;
+}
+
+void *FixtureGetCharacterPrimaryTitle(void *character) {
+  ++g_exit_terms_primary_title_calls;
+  if (character == g_played_character.data()) {
+    return g_targeted_title.data();
+  }
+  return character == g_target_character.data()
+             ? static_cast<void *>(g_targeted_duchy_a_title.data())
+             : nullptr;
+}
+
+std::int64_t *FixtureReadMonthlyGoldIncome(
+    std::int64_t *output, void *character, void *optional_breakdown,
+    void *evaluation_context) {
+  ++g_exit_terms_monthly_income_calls;
+  if (output == nullptr || optional_breakdown != nullptr ||
+      evaluation_context != nullptr) {
+    return nullptr;
+  }
+  void *extension = nullptr;
+  std::memcpy(&extension, static_cast<std::byte *>(character) + 0x1A8,
+              sizeof(extension));
+  if (extension == nullptr) {
+    *output = 0;
+    return output;
+  }
+  std::memcpy(output, static_cast<std::byte *>(extension) + 0x2B0,
+              sizeof(*output));
+  if (g_exit_terms_income_mismatch &&
+      character == g_played_character.data()) {
+    ++*output;
+  }
+  return output;
+}
+
+std::uint8_t FixtureEvaluateCharacterInteractionAnswer(
+    void *opaque_context, std::uint8_t answer_mode, std::uint8_t flag,
+    void *error_sink_a, void *error_sink_b) {
+  ++g_exit_terms_answer_calls;
+  if (opaque_context == nullptr || answer_mode != 1 || flag != 0 ||
+      error_sink_a != nullptr || error_sink_b != nullptr) {
+    return 3;
+  }
+  if (g_exit_terms_answer_status_override != 0xFF) {
+    return g_exit_terms_answer_status_override;
+  }
+  void *special_data = nullptr;
+  std::memcpy(&special_data,
+              static_cast<std::byte *>(opaque_context) + 0x330,
+              sizeof(special_data));
+  if (special_data == g_white_peace_marker.data()) {
+    return 0;
+  }
+  return special_data == g_surrender_marker.data() ? 1 : 3;
 }
 
 bool FixtureValidateCharacterInteractionContext(void *opaque_context,
@@ -963,12 +1995,46 @@ bool FixtureValidateCharacterInteractionContext(void *opaque_context,
   }
   void *declaration = nullptr;
   std::memcpy(&declaration, context + 0x330, sizeof(declaration));
+  if (declaration == g_enforce_demands_marker.data() ||
+      declaration == g_surrender_marker.data() ||
+      declaration == g_white_peace_marker.data()) {
+    return g_interaction_validate_result && error_output == nullptr;
+  }
   const void *const expected_special_data =
-      g_expected_command == ExpectedCommand::enforce_demands
-          ? static_cast<void *>(g_enforce_demands_marker.data())
-          : static_cast<void *>(g_war_declaration.data());
+      static_cast<void *>(g_war_declaration.data());
   return g_interaction_validate_result && error_output == nullptr &&
          declaration == expected_special_data;
+}
+
+std::int64_t *FixtureReadCharacterInteractionAnswerScore(
+    void *opaque_context, std::int64_t *output) {
+  if (opaque_context == nullptr || output == nullptr) {
+    return nullptr;
+  }
+  void *special_data = nullptr;
+  std::memcpy(&special_data,
+              static_cast<std::byte *>(opaque_context) + 0x330,
+              sizeof(special_data));
+  if (special_data == g_surrender_marker.data()) {
+    *output = g_exit_terms_fixture_active ? 86'000'000 : 10'000'000;
+  } else if (special_data == g_white_peace_marker.data()) {
+    *output = g_exit_terms_fixture_active ? 1'100'000 : -2'500'000;
+  } else if (special_data == g_enforce_demands_marker.data()) {
+    *output = 3'700'000;
+  } else {
+    return nullptr;
+  }
+  return output;
+}
+
+bool FixtureEvaluateCharacterInteractionTrigger(
+    void *trigger, const void *event_target_scope) {
+  if (trigger != g_auto_accept_trigger.data() ||
+      event_target_scope == nullptr) {
+    return false;
+  }
+  ++g_auto_accept_trigger_calls;
+  return true;
 }
 
 void *FixtureConstructSendCharacterInteractionCommand(
@@ -1304,7 +2370,9 @@ bool FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
         recipient_id == kMarriageMatchmakerCharacterId &&
         actor_to_match_id == actor_id &&
         recipient_to_match_id == 0x01000003;
-  } else if (g_expected_command == ExpectedCommand::enforce_demands) {
+  } else if (g_expected_command == ExpectedCommand::enforce_demands ||
+             g_expected_command == ExpectedCommand::surrender_war ||
+             g_expected_command == ExpectedCommand::offer_white_peace) {
     std::int32_t actor_id = -1;
     std::int32_t recipient_id = -1;
     void *special_data = nullptr;
@@ -1314,12 +2382,18 @@ bool FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
                 sizeof(recipient_id));
     std::memcpy(&special_data, command + 0x20 + 0x330,
                 sizeof(special_data));
+    void *const expected_marker =
+        g_expected_command == ExpectedCommand::surrender_war
+            ? static_cast<void *>(g_surrender_marker.data())
+            : g_expected_command == ExpectedCommand::offer_white_peace
+                  ? static_cast<void *>(g_white_peace_marker.data())
+                  : static_cast<void *>(g_enforce_demands_marker.data());
     g_submit_called =
         manager == reinterpret_cast<void *>(0x1234) && flags == 0x0E &&
         primary == 0x13131313 && secondary == 0x14141414 &&
         command_flags == 0 && actor_id == 0x01000002 &&
         recipient_id == 0x01000003 &&
-        special_data == g_enforce_demands_marker.data();
+        special_data == expected_marker;
   }
   return g_submit_called && g_submit_result;
 }
@@ -1370,6 +2444,8 @@ int main() {
         static_cast<void *>(g_dead_character.data()));
   Store(g_character_slots, 0x58,
         static_cast<void *>(g_generation_mismatch_character.data()));
+  Store(g_character_slots, 0x68,
+        static_cast<void *>(g_ally_character.data()));
   Store(g_played_character, 0x18, played_character_id);
   Store(g_played_character, 0x1A0,
         static_cast<void *>(g_played_family_data.data()));
@@ -1383,6 +2459,56 @@ int main() {
         std::int32_t{0x01000006});
   Store(g_generation_mismatch_character, 0x1C8,
         static_cast<void *>(nullptr));
+  Store(g_ally_character, 0x18, kFixtureAllyCharacterId);
+  Store(g_ally_character, 0x1C8, static_cast<void *>(nullptr));
+  g_character_validity_vtable[1] =
+      reinterpret_cast<std::uintptr_t>(&FixtureCharacterValid);
+  Store(g_played_character, 0x10,
+        static_cast<void *>(g_character_validity_vtable.data()));
+  Store(g_target_character, 0x10,
+        static_cast<void *>(g_character_validity_vtable.data()));
+  Store(g_played_character, 0xE8, std::int32_t{12});
+  Store(g_target_character, 0xE8, std::int32_t{8});
+  Store(g_played_character, 0x1B0,
+        static_cast<void *>(g_played_knight_link.data()));
+  Store(g_target_character, 0x1B0,
+        static_cast<void *>(g_target_knight_link.data()));
+  Store(g_played_character, 0x1A8,
+        static_cast<void *>(g_played_character_extension.data()));
+  Store(g_target_character, 0x1A8,
+        static_cast<void *>(g_target_character_extension.data()));
+  Store(g_played_character, 0x1C0,
+        static_cast<void *>(g_played_legitimacy_data.data()));
+  Store(g_target_character, 0x1C0,
+        static_cast<void *>(g_target_legitimacy_data.data()));
+  Store(g_played_character_extension, 0x100,
+        std::int64_t{35'000'000});
+  Store(g_played_character_extension, 0x110,
+        std::int64_t{5'000'000});
+  Store(g_played_character_extension, 0x118,
+        std::int64_t{30'000'000});
+  Store(g_played_character_extension, 0x130,
+        std::int64_t{12'000'000});
+  Store(g_played_character_extension, 0x138,
+        std::int64_t{100'000'000});
+  Store(g_played_character_extension, 0x2B0,
+        std::int64_t{500'000});
+  Store(g_target_character_extension, 0x100,
+        std::int64_t{80'000'000});
+  Store(g_target_character_extension, 0x110,
+        std::int64_t{9'000'000});
+  Store(g_target_character_extension, 0x118,
+        std::int64_t{60'000'000});
+  Store(g_target_character_extension, 0x130,
+        std::int64_t{45'000'000});
+  Store(g_target_character_extension, 0x138,
+        std::int64_t{200'000'000});
+  Store(g_target_character_extension, 0x2B0,
+        std::int64_t{800'000});
+  Store(g_played_character_extension, 0x2F8, std::int32_t{42});
+  Store(g_target_character_extension, 0x2F8, std::int32_t{87});
+  Store(g_played_legitimacy_data, 0x28, std::int64_t{8'000'000});
+  Store(g_target_legitimacy_data, 0x28, std::int64_t{7'000'000});
   constexpr std::int32_t stale_enemy_character_id = 0x02000003;
   Store(g_played_family_data, 0x10, enemy_character_id);
   Store(g_played_family_data, 0x14, enemy_character_id);
@@ -1392,6 +2518,104 @@ int main() {
   Store(g_played_family_data, 0x28, std::int32_t{2});
   Store(g_played_family_data, 0x2C, std::int32_t{2});
   g_character_storage_pointer = g_character_storage.data();
+
+  Store(g_exit_attacker_scope, 0x00, std::uint16_t{4});
+  Store(g_exit_attacker_scope, 0x08, played_character_id);
+  Store(g_exit_defender_scope, 0x00, std::uint16_t{4});
+  Store(g_exit_defender_scope, 0x08, enemy_character_id);
+  Store(g_exit_ally_scope, 0x00, std::uint16_t{4});
+  Store(g_exit_ally_scope, 0x08, kFixtureAllyCharacterId);
+  g_effect_preview_collector_vtable[1] =
+      reinterpret_cast<void *>(&FixtureOriginalEffectPreviewCallback);
+  const auto prestige_vtable =
+      reinterpret_cast<std::uintptr_t>(g_prestige_effect_node.data());
+  const auto legitimacy_vtable =
+      reinterpret_cast<std::uintptr_t>(g_legitimacy_effect_node.data());
+  const auto stress_vtable =
+      reinterpret_cast<std::uintptr_t>(g_stress_effect_node.data());
+  const auto attacker_contribution_vtable =
+      reinterpret_cast<std::uintptr_t>(
+          g_attacker_contribution_effect_node.data());
+  const auto defender_contribution_vtable =
+      reinterpret_cast<std::uintptr_t>(
+          g_defender_contribution_effect_node.data());
+  const auto gold_vtable = reinterpret_cast<std::uintptr_t>(
+      g_gold_transfer_effect_node.data());
+  const auto truce_vtable =
+      reinterpret_cast<std::uintptr_t>(g_truce_effect_node.data());
+  const auto unknown_vtable =
+      reinterpret_cast<std::uintptr_t>(g_unknown_effect_node.data());
+  Store(g_prestige_effect_node, 0x00, prestige_vtable);
+  Store(g_legitimacy_effect_node, 0x00, legitimacy_vtable);
+  Store(g_stress_effect_node, 0x00, stress_vtable);
+  Store(g_attacker_contribution_effect_node, 0x00,
+        attacker_contribution_vtable);
+  Store(g_defender_contribution_effect_node, 0x00,
+        defender_contribution_vtable);
+  Store(g_gold_transfer_effect_node, 0x00, gold_vtable);
+  Store(g_truce_effect_node, 0x00, truce_vtable);
+  Store(g_unknown_effect_node, 0x00, unknown_vtable);
+  g_white_peace_loaded_effect_vtable[11] =
+      reinterpret_cast<void *>(&FixtureLoadedEffectSlot58);
+  g_defeat_loaded_effect_vtable[11] =
+      reinterpret_cast<void *>(&FixtureLoadedEffectSlot58);
+  g_context_effect_vtable[11] =
+      reinterpret_cast<void *>(&FixtureLoadedEffectSlot58);
+  Store(g_casus_belli_type_0, 0x9C8,
+        static_cast<void *>(g_white_peace_loaded_effect_vtable.data()));
+  Store(g_casus_belli_type_0, 0xA28,
+        static_cast<void *>(g_white_peace_loaded_effect_vtable.data()));
+
+  g_exit_root_effect_children.fill(g_unknown_effect_node.data());
+  g_exit_root_effect_children[8] = g_truce_scripted_effect.data();
+  g_defeat_root_effect_children.fill(g_unknown_effect_node.data());
+  g_defeat_root_effect_children[9] = g_truce_scripted_effect.data();
+  g_truce_scripted_default_children.fill(g_unknown_effect_node.data());
+  g_truce_scripted_default_children[2] = g_truce_hidden_effect.data();
+  g_truce_hidden_children[0] = g_truce_context_effect.data();
+  g_truce_context_children[0] = g_truce_effect_node.data();
+  Store(g_casus_belli_type_0, 0x9C8 + 0x40,
+        static_cast<void *>(g_exit_root_effect_children.data()));
+  Store(g_casus_belli_type_0, 0x9C8 + 0x48, std::int32_t{13});
+  Store(g_casus_belli_type_0, 0x9C8 + 0x4C, std::int32_t{10});
+  Store(g_casus_belli_type_0, 0xA28 + 0x40,
+        static_cast<void *>(g_defeat_root_effect_children.data()));
+  Store(g_casus_belli_type_0, 0xA28 + 0x48, std::int32_t{19});
+  Store(g_casus_belli_type_0, 0xA28 + 0x4C, std::int32_t{14});
+  Store(g_truce_scripted_effect, 0x00,
+        static_cast<void *>(g_scripted_effect_vtable.data()));
+  Store(g_truce_scripted_effect, 0x60,
+        static_cast<void *>(g_truce_scripted_effect_template.data()));
+  Store(g_truce_scripted_effect, 0x94, std::int32_t{0});
+  Store(g_truce_scripted_effect_template, 0x00,
+        static_cast<void *>(g_scripted_effect_template_vtable.data()));
+  Store(g_truce_scripted_effect_template, 0x120,
+        static_cast<void *>(g_truce_scripted_default_effect.data()));
+  Store(g_truce_scripted_default_effect, 0x00,
+        static_cast<void *>(g_white_peace_loaded_effect_vtable.data()));
+  Store(g_truce_scripted_default_effect, 0x40,
+        static_cast<void *>(g_truce_scripted_default_children.data()));
+  Store(g_truce_scripted_default_effect, 0x48, std::int32_t{6});
+  Store(g_truce_scripted_default_effect, 0x4C, std::int32_t{5});
+  Store(g_truce_hidden_effect, 0x00,
+        static_cast<void *>(g_hidden_effect_vtable.data()));
+  Store(g_truce_hidden_effect, 0x40,
+        static_cast<void *>(g_truce_hidden_children.data()));
+  Store(g_truce_hidden_effect, 0x48, std::int32_t{1});
+  Store(g_truce_hidden_effect, 0x4C, std::int32_t{1});
+  Store(g_truce_context_effect, 0x00,
+        static_cast<void *>(g_context_effect_vtable.data()));
+  Store(g_truce_context_effect, 0x40,
+        static_cast<void *>(g_truce_context_children.data()));
+  Store(g_truce_context_effect, 0x48, std::int32_t{1});
+  Store(g_truce_context_effect, 0x4C, std::int32_t{1});
+  Store(g_truce_context_effect, 0x60,
+        static_cast<void *>(g_exit_attacker_scope.data()));
+  Store(g_truce_context_effect, 0x6C, std::int32_t{1});
+  g_effect_context_allocator_vtable[2] =
+      reinterpret_cast<void *>(&FixtureFreeEffectContextArray);
+  Store(g_effect_context_allocator, 0x00,
+        static_cast<void *>(g_effect_context_allocator_vtable.data()));
 
   Store(g_global_variable_container, 0x10,
         static_cast<void *>(g_global_variable_entries.data()));
@@ -1411,8 +2635,15 @@ int main() {
 
   constexpr std::int32_t player_army_id = 0x01000001;
   constexpr std::int32_t enemy_army_id = 0x01000002;
+  constexpr std::int32_t third_army_id = 0x01000003;
   constexpr std::int32_t player_internal_army_id = 0x02000011;
   constexpr std::int32_t enemy_internal_army_id = 0x02000012;
+  constexpr std::int32_t third_internal_army_id = 0x02000013;
+  constexpr std::int32_t player_regiment_0_id = 0x01000001;
+  constexpr std::int32_t player_regiment_1_id = 0x01000002;
+  constexpr std::int32_t enemy_regiment_0_id = 0x01000003;
+  constexpr std::int32_t enemy_regiment_1_id = 0x01000004;
+  constexpr std::int32_t active_combat_id = 0x01000001;
   constexpr std::int32_t active_war_id = 0x01000001;
   constexpr std::int32_t targeted_title_id = 0x01000001;
   constexpr std::int32_t targeted_duchy_a_title_id = 0x01000002;
@@ -1444,6 +2675,22 @@ int main() {
   Store(g_player_province, 0x10, std::int32_t{2});
   Store(g_enemy_province, 0x10, std::int32_t{3});
   Store(g_enemy_default_raise_province, 0x10, std::int32_t{4});
+  Store(g_player_province, 0x08,
+        static_cast<void *>(g_player_map_node.data()));
+  Store(g_enemy_province, 0x08,
+        static_cast<void *>(g_enemy_map_node.data()));
+  Store(g_player_map_node, 0x50,
+        static_cast<void *>(g_player_target_adjacency.data()));
+  Store(g_player_map_node, 0x5C, std::int32_t{1});
+  Store(g_player_target_adjacency, 0x00, std::int32_t{2});
+  Store(g_player_target_adjacency, 0x04,
+        second_war_objective_province_id);
+  Store(g_enemy_map_node, 0x50,
+        static_cast<void *>(g_enemy_target_adjacency.data()));
+  Store(g_enemy_map_node, 0x5C, std::int32_t{1});
+  Store(g_enemy_target_adjacency, 0x00, std::int32_t{2});
+  Store(g_enemy_target_adjacency, 0x04,
+        second_war_objective_province_id);
   g_preview_effective_origin = g_player_province.data();
   Store(g_provinces, 2 * sizeof(void *),
         static_cast<void *>(g_player_province.data()));
@@ -1463,6 +2710,8 @@ int main() {
   Store(g_player_army, 0x10, player_army_id);
   Store(g_player_army, 0x20,
         static_cast<void *>(g_player_province.data()));
+  Store(g_player_army, 0x30,
+        static_cast<void *>(g_second_war_objective_province.data()));
   Store(g_player_move_route_info_0, 0x00, std::int32_t{4});
   Store(g_player_move_route_info_1, 0x00, std::int32_t{5});
   Store(g_player_move_route_info_2, 0x00, std::int32_t{3});
@@ -1485,14 +2734,198 @@ int main() {
   Store(g_enemy_army, 0x10, enemy_army_id);
   Store(g_enemy_army, 0x20,
         static_cast<void *>(g_enemy_province.data()));
+  Store(g_enemy_army, 0x30,
+        static_cast<void *>(g_second_war_objective_province.data()));
   Store(g_enemy_army, 0x170, std::int32_t{1});
   Store(g_enemy_army, 0x174, enemy_character_id);
   Store(g_enemy_army, 0x178, enemy_internal_army_id);
+  Store(g_third_army, 0x10, third_army_id);
+  Store(g_third_army, 0x20,
+        static_cast<void *>(g_enemy_province.data()));
+  Store(g_third_army, 0x30,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  Store(g_third_army, 0x170, std::int32_t{0});
+  Store(g_third_army, 0x174, played_character_id);
+  Store(g_third_army, 0x178, third_internal_army_id);
   Store(g_army_slots, 0x18, static_cast<void *>(g_player_army.data()));
   Store(g_army_slots, 0x28, static_cast<void *>(g_enemy_army.data()));
   Store(g_army_storage, 0x20, static_cast<void *>(g_army_slots.data()));
   Store(g_army_storage, 0x2C, std::int32_t{4});
   g_army_storage_pointer = g_army_storage.data();
+
+  g_player_regiment_ids = {player_regiment_0_id, player_regiment_1_id};
+  g_enemy_regiment_ids = {enemy_regiment_0_id, enemy_regiment_1_id};
+  Store(g_player_internal_army, 0x10, player_internal_army_id);
+  Store(g_player_internal_army, 0x38,
+        static_cast<void *>(g_player_regiment_ids.data()));
+  Store(g_player_internal_army, 0x40, std::int32_t{2});
+  Store(g_player_internal_army, 0x44, std::int32_t{2});
+  Store(g_player_internal_army, 0x120, played_character_id);
+  Store(g_player_internal_army, 0x124, player_army_id);
+  Store(g_player_internal_army, 0x128, active_combat_id);
+  Store(g_enemy_internal_army, 0x10, enemy_internal_army_id);
+  Store(g_enemy_internal_army, 0x38,
+        static_cast<void *>(g_enemy_regiment_ids.data()));
+  Store(g_enemy_internal_army, 0x40, std::int32_t{2});
+  Store(g_enemy_internal_army, 0x44, std::int32_t{2});
+  Store(g_enemy_internal_army, 0x120, std::int32_t{-1});
+  Store(g_enemy_internal_army, 0x124, enemy_army_id);
+  Store(g_enemy_internal_army, 0x128, std::int32_t{-1});
+  Store(g_third_internal_army, 0x10, third_internal_army_id);
+  Store(g_third_internal_army, 0x38, static_cast<void *>(nullptr));
+  Store(g_third_internal_army, 0x40, std::int32_t{0});
+  Store(g_third_internal_army, 0x44, std::int32_t{0});
+  Store(g_third_internal_army, 0x120, std::int32_t{-1});
+  Store(g_third_internal_army, 0x124, third_army_id);
+  Store(g_third_internal_army, 0x128, std::int32_t{-1});
+  Store(g_internal_army_slots, 0x118,
+        static_cast<void *>(g_player_internal_army.data()));
+  Store(g_internal_army_slots, 0x128,
+        static_cast<void *>(g_enemy_internal_army.data()));
+  Store(g_internal_army_slots, 0x138,
+        static_cast<void *>(g_third_internal_army.data()));
+  Store(g_internal_army_storage, 0x20,
+        static_cast<void *>(g_internal_army_slots.data()));
+  Store(g_internal_army_storage, 0x2C, std::int32_t{20});
+  g_internal_army_storage_pointer = g_internal_army_storage.data();
+
+  g_regiment_identity_vtable[1] =
+      reinterpret_cast<std::uintptr_t>(&FixtureRegimentIdentityValid);
+  const auto initialize_regiment = [](auto &regiment, std::int32_t id,
+                                      std::int32_t current,
+                                      std::int32_t maximum,
+                                      std::int64_t base_power) {
+    Store(regiment, 0x08,
+          static_cast<void *>(g_regiment_identity_vtable.data()));
+    Store(regiment, 0x10, id);
+    Store(regiment, 0x38, current);
+    Store(regiment, 0x3C, maximum);
+    Store(regiment, 0x40, base_power);
+  };
+  initialize_regiment(g_player_regiment_0, player_regiment_0_id, 600, 800,
+                      std::int64_t{100'000'000});
+  initialize_regiment(g_player_regiment_1, player_regiment_1_id, 400, 400,
+                      std::int64_t{50'000'000});
+  initialize_regiment(g_enemy_regiment_0, enemy_regiment_0_id, 500, 1000,
+                      std::int64_t{150'000'000});
+  initialize_regiment(g_enemy_regiment_1, enemy_regiment_1_id, 300, 500,
+                      std::int64_t{90'000'000});
+  Store(g_player_regiment_0, 0x140, player_internal_army_id);
+  Store(g_player_regiment_1, 0x140, player_internal_army_id);
+  Store(g_enemy_regiment_0, 0x140, enemy_internal_army_id);
+  Store(g_enemy_regiment_1, 0x140, enemy_internal_army_id);
+  Store(g_player_regiment_0, 0x148, played_character_id);
+  Store(g_player_regiment_1, 0x148, std::int32_t{-1});
+  Store(g_enemy_regiment_0, 0x148, enemy_character_id);
+  Store(g_enemy_regiment_1, 0x148, std::int32_t{-1});
+  Store(g_played_knight_link, 0xF8, player_regiment_0_id);
+  Store(g_target_knight_link, 0xF8, enemy_regiment_0_id);
+  g_database_object_validity_vtable[0] =
+      reinterpret_cast<std::uintptr_t>(&FixtureDatabaseObjectValid);
+  g_database_object_absent_vtable[0] =
+      reinterpret_cast<std::uintptr_t>(&FixtureDatabaseObjectAbsent);
+  g_combat_type_validity_vtable[0] =
+      reinterpret_cast<std::uintptr_t>(&FixtureCombatTypeValid);
+  Store(g_bowmen_type, 0x00,
+        static_cast<void *>(g_database_object_validity_vtable.data()));
+  std::memcpy(g_bowmen_type.data() + 0x18, "bowmen", 7);
+  Store(g_bowmen_type, 0x28, std::size_t{6});
+  Store(g_bowmen_type, 0x30, std::size_t{15});
+  Store(g_armored_horsemen_type, 0x00,
+        static_cast<void *>(g_database_object_validity_vtable.data()));
+  Store(g_armored_horsemen_type, 0x18, g_armored_horsemen_key);
+  Store(g_armored_horsemen_type, 0x28,
+        std::size_t{sizeof(g_armored_horsemen_key) - 1});
+  Store(g_armored_horsemen_type, 0x30,
+        std::size_t{sizeof(g_armored_horsemen_key) - 1});
+  Store(g_absent_maa_type, 0x00,
+        static_cast<void *>(g_database_object_absent_vtable.data()));
+  Store(g_player_regiment_0, 0x118,
+        static_cast<void *>(g_bowmen_type.data()));
+  Store(g_player_regiment_1, 0x118,
+        static_cast<void *>(g_absent_maa_type.data()));
+  Store(g_enemy_regiment_0, 0x118,
+        static_cast<void *>(g_armored_horsemen_type.data()));
+  Store(g_enemy_regiment_1, 0x118, static_cast<void *>(nullptr));
+
+  const auto initialize_inner_type = [](auto &inner_type,
+                                        std::int32_t class_index,
+                                        void *targets,
+                                        std::int32_t target_count,
+                                        bool fights_in_main_phase) {
+    Store(inner_type, 0x00,
+          static_cast<void *>(g_combat_type_validity_vtable.data()));
+    Store(inner_type, 0x68, std::int32_t{100});
+    Store(inner_type, 0x270, class_index);
+    Store(inner_type, 0x2B8, targets);
+    Store(inner_type, 0x2C4, target_count);
+    Store(inner_type, 0xA0A,
+          static_cast<std::uint8_t>(fights_in_main_phase ? 1 : 0));
+  };
+  Store(g_player_counter_targets, 0x00, std::int32_t{1});
+  Store(g_player_counter_targets, 0x08, std::int64_t{50'000});
+  Store(g_enemy_counter_targets, 0x00, std::int32_t{0});
+  Store(g_enemy_counter_targets, 0x08, std::int64_t{75'000});
+  initialize_inner_type(g_player_regiment_0_inner_type, 0,
+                        g_player_counter_targets.data(), 1, true);
+  initialize_inner_type(g_player_regiment_1_inner_type, -1, nullptr, 0,
+                        false);
+  initialize_inner_type(g_enemy_regiment_0_inner_type, 1,
+                        g_enemy_counter_targets.data(), 1, true);
+  initialize_inner_type(g_enemy_regiment_1_inner_type, 2, nullptr, 0,
+                        false);
+  Store(g_player_regiment_0, 0x18,
+        static_cast<void *>(g_player_regiment_0_inner_type.data()));
+  Store(g_player_regiment_1, 0x18,
+        static_cast<void *>(g_player_regiment_1_inner_type.data()));
+  Store(g_enemy_regiment_0, 0x18,
+        static_cast<void *>(g_enemy_regiment_0_inner_type.data()));
+  Store(g_enemy_regiment_1, 0x18,
+        static_cast<void *>(g_enemy_regiment_1_inner_type.data()));
+  Store(g_combat_rules, 0xF14, std::int32_t{3});
+
+  std::memcpy(g_hills_terrain.data() + 0x18, "hills", 6);
+  Store(g_hills_terrain, 0x28, std::size_t{5});
+  Store(g_hills_terrain, 0x30, std::size_t{15});
+  Store(g_hills_terrain, 0x58, std::int64_t{80'000});
+  Store(g_hills_terrain, 0x76E, std::uint16_t{0x200});
+  Store(g_hills_terrain, 0x770, std::uint16_t{0x201});
+  std::memcpy(g_plains_terrain.data() + 0x18, "plains", 7);
+  Store(g_plains_terrain, 0x28, std::size_t{6});
+  Store(g_plains_terrain, 0x30, std::size_t{15});
+  Store(g_plains_terrain, 0x58, std::int64_t{100'000});
+  Store(g_plains_terrain, 0x76E, std::uint16_t{0x202});
+  Store(g_plains_terrain, 0x770, std::uint16_t{0x203});
+  Store(g_regiment_slots, 0x18,
+        static_cast<void *>(g_player_regiment_0.data()));
+  Store(g_regiment_slots, 0x28,
+        static_cast<void *>(g_player_regiment_1.data()));
+  Store(g_regiment_slots, 0x38,
+        static_cast<void *>(g_enemy_regiment_0.data()));
+  Store(g_regiment_slots, 0x48,
+        static_cast<void *>(g_enemy_regiment_1.data()));
+  Store(g_regiment_storage, 0x20,
+        static_cast<void *>(g_regiment_slots.data()));
+  Store(g_regiment_storage, 0x2C, std::int32_t{5});
+  g_regiment_storage_pointer = g_regiment_storage.data();
+
+  Store(g_player_combat, 0x08, active_combat_id);
+  Store(g_player_combat, 0x6B0, std::int32_t{1});
+  Store(g_player_combat, 0x6B4, std::int32_t{4});
+  Store(g_player_combat, 0x6B8,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  Store(g_player_combat, 0x6C0, std::int32_t{1'200});
+  Store(g_player_combat, 0x6C4, std::int32_t{960});
+  Store(g_player_combat, 0x6C8, std::int32_t{5});
+  Store(g_player_combat, 0x6D0, std::int32_t{7});
+  Store(g_player_combat, 0x6D4, std::int32_t{3});
+  Store(g_player_combat, 0x710, std::int32_t{9});
+  Store(g_combat_slots, 0x18,
+        static_cast<void *>(g_player_combat.data()));
+  Store(g_combat_storage, 0x20,
+        static_cast<void *>(g_combat_slots.data()));
+  Store(g_combat_storage, 0x2C, std::int32_t{2});
+  g_combat_storage_pointer = g_combat_storage.data();
 
   Store(g_siege, 0x08, active_siege_id);
   Store(g_siege, 0x200,
@@ -1515,9 +2948,14 @@ int main() {
         static_cast<void *>(g_defender_participant.data()));
   Store(g_war, 0x08, active_war_id);
   Store(g_war, 0x28, static_cast<void *>(g_attacker_participants.data()));
+  Store(g_war, 0x30, std::int32_t{1});
   Store(g_war, 0x34, std::int32_t{1});
   Store(g_war, 0x88, static_cast<void *>(g_defender_participants.data()));
+  Store(g_war, 0x90, std::int32_t{1});
   Store(g_war, 0x94, std::int32_t{1});
+  Store(g_war, 0xE0, std::int32_t{43'822'864});
+  Store(g_war, 0x100,
+        static_cast<void *>(g_casus_belli_type_0.data()));
   g_war_targeted_title_ids = {
       targeted_title_id, targeted_duchy_a_title_id,
       second_county_title_id, third_capital_barony_title_id};
@@ -1527,6 +2965,7 @@ int main() {
   Store(g_war, 0x27C, std::int32_t{4});
   Store(g_war, 0x288, played_character_id);
   Store(g_war, 0x28C, enemy_character_id);
+  Store(g_war, 0x290, played_character_id);
   Store(g_war, 0x358, static_cast<void *>(nullptr));
   Store(g_war_slots, 0x18, static_cast<void *>(g_war.data()));
   Store(g_war_storage, 0x20, static_cast<void *>(g_war_slots.data()));
@@ -1650,11 +3089,13 @@ int main() {
         static_cast<void *>(g_casus_belli_rule_0.data()));
   Store(g_casus_belli_type_1, 0x38,
         static_cast<void *>(g_casus_belli_rule_1.data()));
+  Store(g_casus_belli_type_1, 0x10, std::int32_t{1});
   std::memcpy(g_casus_belli_type_0.data() + 0x18, g_casus_belli_key_0,
               sizeof(g_casus_belli_key_0));
   Store(g_casus_belli_type_0, 0x28,
         std::size_t{sizeof(g_casus_belli_key_0) - 1});
   Store(g_casus_belli_type_0, 0x30, std::size_t{15});
+  Store(g_casus_belli_type_0, 0x1718, std::uint32_t{1U << 7U});
   Store(g_casus_belli_type_1, 0x18, g_casus_belli_key_1);
   Store(g_casus_belli_type_1, 0x28,
         std::size_t{sizeof(g_casus_belli_key_1) - 1});
@@ -1670,6 +3111,15 @@ int main() {
         static_cast<void *>(g_arrange_marriage_interaction.data()));
   Store(g_character_interaction_database, 0xF78,
         static_cast<void *>(g_declare_war_interaction.data()));
+  Store(g_surrender_interaction, 0x2580,
+        static_cast<void *>(g_auto_accept_trigger.data()));
+  Store(g_surrender_interaction, 0x2A48, std::uint8_t{0});
+  Store(g_white_peace_interaction, 0x2580,
+        static_cast<void *>(nullptr));
+  Store(g_white_peace_interaction, 0x2A48, std::uint8_t{0});
+  Store(g_victory_interaction, 0x2580,
+        static_cast<void *>(nullptr));
+  Store(g_victory_interaction, 0x2A48, std::uint8_t{1});
 
   Bindings bindings{};
   bindings.enabled = true;
@@ -1703,10 +3153,48 @@ int main() {
   bindings.send_character_interaction_primary_vtable = 0x13131313;
   bindings.send_character_interaction_secondary_vtable = 0x14141414;
   bindings.war_declaration_vtable = 0x12121212;
+  g_character_claim_vtable[0] =
+      reinterpret_cast<std::uintptr_t>(&FixtureDestroyCharacterClaim);
+  bindings.character_claim_vtable =
+      reinterpret_cast<std::uintptr_t>(g_character_claim_vtable.data());
+  bindings.effect_preview_collector_vtable =
+      reinterpret_cast<std::uintptr_t>(
+          g_effect_preview_collector_vtable.data());
+  bindings.jomini_effect_vtable = reinterpret_cast<std::uintptr_t>(
+      g_white_peace_loaded_effect_vtable.data());
+  bindings.jomini_scripted_effect_vtable =
+      reinterpret_cast<std::uintptr_t>(g_scripted_effect_vtable.data());
+  bindings.jomini_scripted_effect_template_vtable =
+      reinterpret_cast<std::uintptr_t>(
+          g_scripted_effect_template_vtable.data());
+  bindings.hidden_effect_vtable =
+      reinterpret_cast<std::uintptr_t>(g_hidden_effect_vtable.data());
+  bindings.jomini_context_effect_vtable =
+      reinterpret_cast<std::uintptr_t>(g_context_effect_vtable.data());
+  bindings.prestige_effect_vtable = prestige_vtable;
+  bindings.prestige_experience_effect_vtable =
+      prestige_vtable + sizeof(void *);
+  bindings.piety_effect_vtable = prestige_vtable + 2 * sizeof(void *);
+  bindings.piety_experience_effect_vtable =
+      prestige_vtable + 3 * sizeof(void *);
+  bindings.legitimacy_effect_vtable = legitimacy_vtable;
+  bindings.stress_impact_effect_vtable = stress_vtable;
+  bindings.add_from_contribution_attackers_effect_vtable =
+      attacker_contribution_vtable;
+  bindings.add_from_contribution_defenders_effect_vtable =
+      defender_contribution_vtable;
+  bindings.gold_transfer_effect_vtable = gold_vtable;
+  bindings.truce_effect_vtable = truce_vtable;
+  bindings.cb_prestige_factor_identifier_id =
+      &g_exit_terms_factor_identifier_id;
   bindings.pending_character_interaction_storage_slot =
       &g_pending_storage_pointer;
   bindings.character_storage_slot = &g_character_storage_pointer;
   bindings.army_storage_slot = &g_army_storage_pointer;
+  bindings.army_internal_storage_slot =
+      &g_internal_army_storage_pointer;
+  bindings.regiment_storage_slot = &g_regiment_storage_pointer;
+  bindings.combat_storage_slot = &g_combat_storage_pointer;
   bindings.siege_storage_slot = &g_siege_storage_pointer;
   bindings.global_variable_container_accessor_slot =
       &g_global_variable_container_accessor;
@@ -1726,6 +3214,13 @@ int main() {
       FixtureValidateReplyCharacterInteractionCommand;
   bindings.contains_war_participant = FixtureContainsWarParticipant;
   bindings.get_war_score = FixtureGetWarScore;
+  bindings.get_imprisonment_war_score =
+      FixtureGetImprisonmentWarScore;
+  bindings.get_battle_war_score_base = FixtureGetBattleWarScoreBase;
+  bindings.get_battle_war_score_side = FixtureGetBattleWarScoreSide;
+  bindings.get_occupation_war_score_side =
+      FixtureGetOccupationWarScoreSide;
+  bindings.get_ticking_war_score_side = FixtureGetTickingWarScoreSide;
   bindings.is_native_component_alive = FixtureIsNativeComponentAlive;
   bindings.get_siege_progress = FixtureGetSiegeProgress;
   bindings.get_siege_total_work = FixtureGetSiegeTotalWork;
@@ -1747,6 +3242,34 @@ int main() {
   bindings.resolve_default_raise_province =
       FixtureResolveDefaultRaiseProvince;
   bindings.get_unit_state = FixtureGetUnitState;
+  bindings.get_army_current_soldiers =
+      FixtureGetArmyCurrentSoldiers;
+  bindings.get_army_maximum_soldiers =
+      FixtureGetArmyMaximumSoldiers;
+  bindings.get_army_commander = FixtureGetArmyCommander;
+  bindings.get_commander_advantage = FixtureGetCommanderAdvantage;
+  bindings.get_province_terrain = FixtureGetProvinceTerrain;
+  bindings.evaluate_regiment_stats_at_province =
+      FixtureEvaluateRegimentStatsAtProvince;
+  bindings.is_special_combat_regiment = FixtureIsSpecialCombatRegiment;
+  bindings.get_character_modifier_aggregator =
+      FixtureGetCharacterModifierAggregator;
+  bindings.read_character_modifier = FixtureReadCharacterModifier;
+  bindings.get_combat_rules = FixtureGetCombatRules;
+  bindings.read_counter_current_chunk = FixtureReadCounterCurrentChunk;
+  bindings.resolve_counter_classes = FixtureResolveCounterClasses;
+  bindings.get_counter_context_scale = FixtureGetCounterContextScale;
+  bindings.get_knight_effectiveness_context =
+      FixtureGetKnightEffectivenessContext;
+  bindings.read_knight_effectiveness = FixtureReadKnightEffectiveness;
+  bindings.is_holding_defender = FixtureIsHoldingDefender;
+  bindings.commander_min_roll = &g_commander_min_roll;
+  bindings.commander_max_roll = &g_commander_max_roll;
+  bindings.knight_damage_per_prowess = &g_knight_damage_per_prowess;
+  bindings.knight_toughness_per_prowess =
+      &g_knight_toughness_per_prowess;
+  bindings.minimum_combat_width = &g_minimum_combat_width;
+  bindings.base_combat_width_ratio = &g_base_combat_width_ratio;
   bindings.construct_raise_troops_command =
       FixtureConstructRaiseTroopsCommand;
   bindings.validate_raise_troops_command =
@@ -1797,6 +3320,10 @@ int main() {
       FixtureFinalizeCharacterInteractionContext;
   bindings.validate_character_interaction_context =
       FixtureValidateCharacterInteractionContext;
+  bindings.read_character_interaction_answer_score =
+      FixtureReadCharacterInteractionAnswerScore;
+  bindings.evaluate_character_interaction_trigger =
+      FixtureEvaluateCharacterInteractionTrigger;
   bindings.construct_send_character_interaction_command =
       FixtureConstructSendCharacterInteractionCommand;
   bindings.destroy_character_interaction_context =
@@ -1805,6 +3332,25 @@ int main() {
       FixtureDefaultConstructCharacterInteractionContext;
   bindings.construct_war_resolution_interaction_context =
       FixtureConstructWarResolutionInteractionContext;
+  bindings.construct_special_character_interaction_context =
+      FixtureConstructSpecialCharacterInteractionContext;
+  bindings.read_character_claim = FixtureReadCharacterClaim;
+  bindings.construct_war_effect_context = FixtureConstructWarEffectContext;
+  bindings.populate_war_effect_context = FixturePopulateWarEffectContext;
+  bindings.construct_effect_preview_collector =
+      FixtureConstructEffectPreviewCollector;
+  bindings.destroy_effect_preview_collector =
+      FixtureDestroyEffectPreviewCollector;
+  bindings.traverse_loaded_effect = FixtureTraverseLoadedEffect;
+  bindings.destroy_effect_context_118 = FixtureDestroyEffectContext118;
+  bindings.destroy_effect_context_array_row =
+      FixtureDestroyEffectContextArrayRow;
+  bindings.evaluate_truce_duration_days =
+      FixtureEvaluateTruceDurationDays;
+  bindings.get_character_primary_title = FixtureGetCharacterPrimaryTitle;
+  bindings.read_monthly_gold_income = FixtureReadMonthlyGoldIncome;
+  bindings.evaluate_character_interaction_answer =
+      FixtureEvaluateCharacterInteractionAnswer;
   bindings.get_script_identifier_table = FixtureGetScriptIdentifierTable;
   bindings.lookup_script_identifier_id = FixtureLookupScriptIdentifierId;
   bindings.is_event_target_valid = FixtureIsEventTargetValid;
@@ -1815,8 +3361,30 @@ int main() {
       *bindings.army_storage_slot != g_army_storage.data()) {
     return Fail("army storage binding was not a single-dereference slot");
   }
+  if (bindings.army_internal_storage_slot !=
+          &g_internal_army_storage_pointer ||
+      *bindings.army_internal_storage_slot !=
+          g_internal_army_storage.data() ||
+      bindings.regiment_storage_slot != &g_regiment_storage_pointer ||
+      *bindings.regiment_storage_slot != g_regiment_storage.data()) {
+    return Fail("army-strength storage bindings were not exact slots");
+  }
 
   xar::ck3_11906::Snapshot snapshot{};
+  snapshot.has_active_event = true;
+  snapshot.active_event_instance_id = 999;
+  snapshot.active_event_option_count = 999;
+  snapshot.has_pending_character_interaction = true;
+  snapshot.pending_character_interaction_id = 999;
+  snapshot.pending_sender_character_id = 999;
+  snapshot.pending_auto_accept_notification = true;
+  snapshot.active_wars.push_back({});
+  snapshot.player_armies.push_back({});
+  snapshot.has_one_life_settlement = true;
+  snapshot.one_life_settlement.commit_serial = 999;
+  g_current_event_calls = 0;
+  g_war_participant_calls = 0;
+  g_settlement_accessor_calls = 0;
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot)) {
     return Fail("fixture snapshot was unavailable");
   }
@@ -1828,12 +3396,17 @@ int main() {
       snapshot.played_character_betrothed_id != -1 ||
       snapshot.played_character_primary_spouse_id != -1 ||
       !snapshot.played_character_spouse_ids.empty() ||
-      !snapshot.has_active_event || snapshot.active_event_instance_id != 77 ||
-      snapshot.active_event_option_count != 3 ||
+      snapshot.has_active_event || snapshot.active_event_instance_id != -1 ||
+      snapshot.active_event_option_count != 0 ||
       snapshot.has_pending_character_interaction ||
       snapshot.pending_character_interaction_id != -1 ||
       snapshot.pending_sender_character_id != -1 ||
-      snapshot.has_one_life_settlement) {
+      snapshot.pending_auto_accept_notification ||
+      !snapshot.active_wars.empty() || !snapshot.player_armies.empty() ||
+      snapshot.has_one_life_settlement ||
+      snapshot.one_life_settlement.commit_serial != 0 ||
+      g_current_event_calls != 0 || g_war_participant_calls != 0 ||
+      g_settlement_accessor_calls != 0) {
     return Fail("fixture snapshot fields did not match the pinned offsets");
   }
   g_has_local_player = true;
@@ -1903,12 +3476,689 @@ int main() {
     return Fail("running snapshot traversed a mutable siege subgraph");
   }
 
+  std::vector<xar::ck3_11906::ArmyStrengthSnapshot> army_strengths;
+  const xar::game::CombatSimulationInputsRequest combat_request{
+      second_war_objective_province_id,
+      2,
+      {player_army_id},
+      {enemy_army_id},
+  };
+  xar::ck3_11906::CombatSimulationInputsSnapshot combat_inputs{};
+  if (xar::ck3_11906::ReadArmyStrengths(bindings, army_strengths) !=
+          xar::ck3_11906::ReadArmyStrengthsResult::requires_paused ||
+      !army_strengths.empty()) {
+    return Fail("running map exposed mutable army-strength data");
+  }
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::requires_paused ||
+      combat_inputs != xar::ck3_11906::CombatSimulationInputsSnapshot{}) {
+    return Fail("running map exposed mutable combat simulation inputs");
+  }
+
   Store(jomini_state, 0x20, std::uint8_t{1});
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.active_wars.size() != 1 ||
       snapshot.active_wars[0].objective_province_states.size() != 3) {
     return Fail("paused objective Province state was unavailable");
   }
+  g_army_current_soldiers_calls = 0;
+  g_army_maximum_soldiers_calls = 0;
+  if (xar::ck3_11906::ReadArmyStrengths(bindings, army_strengths) !=
+          xar::ck3_11906::ReadArmyStrengthsResult::available ||
+      army_strengths.size() != 2 ||
+      !army_strengths[0].available ||
+      army_strengths[0].army_id != player_army_id ||
+      !army_strengths[0].native_carmy_id_observable ||
+      army_strengths[0].native_carmy_id != player_internal_army_id ||
+      army_strengths[0].scope_role !=
+          xar::ck3_11906::ArmyStrengthScopeRole::player ||
+      army_strengths[0].war_ids !=
+          std::vector<std::int32_t>{active_war_id} ||
+      army_strengths[0].regiment_count != 2 ||
+      army_strengths[0].current_soldiers != 1000 ||
+      army_strengths[0].maximum_soldiers != 1200 ||
+      army_strengths[0].ai_base_power_raw != 150'000'000 ||
+      army_strengths[0].ai_base_power_scale !=
+          kFixtureFixedPointScale ||
+      !army_strengths[0].unavailable_reason.empty() ||
+      !army_strengths[1].available ||
+      army_strengths[1].army_id != enemy_army_id ||
+      army_strengths[1].native_carmy_id != enemy_internal_army_id ||
+      army_strengths[1].scope_role !=
+          xar::ck3_11906::ArmyStrengthScopeRole::active_war_enemy ||
+      army_strengths[1].war_ids !=
+          std::vector<std::int32_t>{active_war_id} ||
+      army_strengths[1].regiment_count != 2 ||
+      army_strengths[1].current_soldiers != 800 ||
+      army_strengths[1].maximum_soldiers != 1500 ||
+      army_strengths[1].ai_base_power_raw != 240'000'000 ||
+      g_army_current_soldiers_calls != 2 ||
+      g_army_maximum_soldiers_calls != 2) {
+    return Fail("paused army-strength aggregate drifted from exact ABI");
+  }
+
+  // Freeze one explicit hypothetical contact. The final entry edge is
+  // Province 2 -> target 5; current positions and move orders are irrelevant.
+  Store(g_enemy_army, 0x20,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  g_last_holding_defender_owner = nullptr;
+  g_effective_stats_calls = 0;
+  g_counter_current_chunk_calls = 0;
+  g_counter_resolution_calls = 0;
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::available ||
+      combat_inputs.target_province_id !=
+          second_war_objective_province_id ||
+      combat_inputs.scenario.attacker_entry_province_id != 2 ||
+      combat_inputs.scenario.attacker_army_ids !=
+          std::vector<std::int32_t>{player_army_id} ||
+      combat_inputs.scenario.defender_army_ids !=
+          std::vector<std::int32_t>{enemy_army_id} ||
+      combat_inputs.scenario.attacker_side != "player_or_allied" ||
+      combat_inputs.scenario.defender_side != "enemy" ||
+      combat_inputs.armies.size() != 2 ||
+      combat_inputs.armies[0].encounter_role != "attacker" ||
+      combat_inputs.armies[1].encounter_role != "defender" ||
+      !combat_inputs.target_province.available ||
+      combat_inputs.target_province.province_id !=
+          second_war_objective_province_id ||
+      !combat_inputs.target_province.terrain.available ||
+      combat_inputs.target_province.terrain.key != "hills" ||
+      combat_inputs.target_province.terrain.combat_width_multiplier_raw !=
+          80'000 ||
+      !combat_inputs.target_province.crossing.available ||
+      combat_inputs.target_province.crossing.kind != "river" ||
+      !combat_inputs.target_province.defender_context.available ||
+      combat_inputs.target_province.defender_context.defender_side !=
+          "enemy" ||
+      combat_inputs.target_province.defender_context.holding_defender_status !=
+          xar::game::CombatObservationStatus::available ||
+      !combat_inputs.target_province.defender_context.holding_defender ||
+      g_last_holding_defender_owner != g_target_character.data() ||
+      !combat_inputs.target_province.precontact_width.available ||
+      combat_inputs.target_province.precontact_width.base != 900 ||
+      combat_inputs.target_province.precontact_width.final != 720 ||
+      !combat_inputs.input_observation_ready ||
+      combat_inputs.monte_carlo_ready ||
+      combat_inputs.missing_required_domains !=
+          std::vector<std::string>{
+              "damage_to_casualty_allocation", "pursuit_transition",
+              "battle_end_and_retreat_transition",
+              "phase_event_rng_and_effects"}) {
+    return Fail("target-first combat input envelope drifted");
+  }
+  const auto &player_combat_army = combat_inputs.armies[0];
+  const auto &enemy_combat_army = combat_inputs.armies[1];
+  if (!player_combat_army.available ||
+      player_combat_army.army_id != player_army_id ||
+      player_combat_army.native_carmy_id != player_internal_army_id ||
+      !player_combat_army.current_province_observable ||
+      player_combat_army.current_province_id != 2 ||
+      player_combat_army.owner.status !=
+          xar::ck3_11906::CombatObservationStatus::available ||
+      player_combat_army.owner.character_id != played_character_id ||
+      player_combat_army.owner.counter_efficiency_raw != 10'000 ||
+      player_combat_army.owner.counter_resistance_raw != 20'000 ||
+      player_combat_army.commander.status !=
+          xar::ck3_11906::CombatObservationStatus::available ||
+      player_combat_army.commander.character_id != played_character_id ||
+      !player_combat_army.commander.generic_advantage_observable ||
+      player_combat_army.commander.generic_advantage_points != 3 ||
+      !player_combat_army.commander.battle_context.available ||
+      player_combat_army.commander.battle_context.province_id !=
+          second_war_objective_province_id ||
+      player_combat_army.commander.battle_context.effective_min_roll != -2 ||
+      player_combat_army.commander.battle_context.effective_max_roll != 13 ||
+      !player_combat_army.regiments_observable ||
+      player_combat_army.regiments.size() != 2) {
+    return Fail("player combat army context drifted from exact ABI");
+  }
+  const auto &player_bowmen = player_combat_army.regiments[0];
+  const auto &player_absent_type = player_combat_army.regiments[1];
+  if (!player_bowmen.available || !player_bowmen.identity_valid ||
+      player_bowmen.current_soldiers != 600 ||
+      player_bowmen.maximum_soldiers != 800 ||
+      player_bowmen.maa_type.status !=
+          xar::ck3_11906::CombatObservationStatus::available ||
+      player_bowmen.maa_type.key != "bowmen" ||
+      player_bowmen.kind.status !=
+          xar::ck3_11906::CombatObservationStatus::available ||
+      player_bowmen.kind.value != "men_at_arms" ||
+      !player_bowmen.kind.fights_in_main_phase ||
+      !player_bowmen.effective_stats.available ||
+      player_bowmen.effective_stats.source_target_province_id !=
+          second_war_objective_province_id ||
+      player_bowmen.effective_stats.max_size != 880 ||
+      player_bowmen.effective_stats.siege_value_raw != 100'000 ||
+      player_bowmen.effective_stats.damage_raw != 60'000'000 ||
+      player_bowmen.effective_stats.toughness_raw != 12'000'000 ||
+      player_bowmen.counter.status !=
+          xar::ck3_11906::CombatObservationStatus::available ||
+      player_bowmen.counter.class_index != 0 ||
+      player_bowmen.counter.current_chunk_raw != 600'000 ||
+      player_bowmen.counter.targets.size() != 1 ||
+      player_bowmen.counter.targets[0].class_index != 1 ||
+      player_bowmen.counter.targets[0].effectiveness_raw != 50'000 ||
+      !player_absent_type.available || !player_absent_type.identity_valid ||
+      player_absent_type.maa_type.status !=
+          xar::ck3_11906::CombatObservationStatus::absent ||
+      player_absent_type.kind.status !=
+          xar::ck3_11906::CombatObservationStatus::available ||
+      player_absent_type.kind.value != "levy" ||
+      player_absent_type.kind.fights_in_main_phase ||
+      !player_absent_type.effective_stats.available ||
+      player_absent_type.effective_stats.max_size != 420 ||
+      player_absent_type.counter.status !=
+          xar::ck3_11906::CombatObservationStatus::absent) {
+    return Fail("per-regiment type/effective/counter projection drifted");
+  }
+  if (!enemy_combat_army.available ||
+      enemy_combat_army.army_id != enemy_army_id ||
+      enemy_combat_army.owner.status !=
+          xar::ck3_11906::CombatObservationStatus::available ||
+      enemy_combat_army.owner.character_id != enemy_character_id ||
+      enemy_combat_army.owner.counter_efficiency_raw != 30'000 ||
+      enemy_combat_army.owner.counter_resistance_raw != 40'000 ||
+      enemy_combat_army.commander.status !=
+          xar::ck3_11906::CombatObservationStatus::absent ||
+      !enemy_combat_army.commander.battle_context.available ||
+      enemy_combat_army.commander.battle_context.effective_min_roll != 0 ||
+      enemy_combat_army.commander.battle_context.effective_max_roll != 0 ||
+      enemy_combat_army.regiments.size() != 2 ||
+      enemy_combat_army.regiments[0].maa_type.key !=
+          g_armored_horsemen_key ||
+      enemy_combat_army.regiments[0].kind.value != "men_at_arms" ||
+      !enemy_combat_army.regiments[0].kind.fights_in_main_phase ||
+      enemy_combat_army.regiments[1].maa_type.status !=
+          xar::ck3_11906::CombatObservationStatus::absent ||
+      enemy_combat_army.regiments[1].kind.value != "men_at_arms" ||
+      enemy_combat_army.regiments[1].kind.fights_in_main_phase ||
+      enemy_combat_army.regiments[1].counter.current_chunk_raw != 300'000) {
+    return Fail("enemy combat army context drifted from exact ABI");
+  }
+  if (!player_combat_army.knights.available ||
+      player_combat_army.knights.members.size() != 1 ||
+      !player_combat_army.knights.members[0].eligible ||
+      !player_combat_army.knights.members[0]
+           .participant_army_membership_verified ||
+      player_combat_army.knights.members[0].character_id !=
+          played_character_id ||
+      player_combat_army.knights.members[0].source_regiment_id !=
+          player_regiment_0_id ||
+      player_combat_army.knights.members[0].army_id !=
+          player_internal_army_id ||
+      player_combat_army.knights.members[0].prowess != 12 ||
+      player_combat_army.knights.members[0].knight_effectiveness_raw !=
+          100'000 ||
+      player_combat_army.knights.members[0].effective_damage_raw !=
+          60'000'000 ||
+      player_combat_army.knights.members[0].effective_toughness_raw !=
+          12'000'000 ||
+      !enemy_combat_army.knights.available ||
+      enemy_combat_army.knights.members.size() != 1 ||
+      enemy_combat_army.knights.members[0].character_id !=
+          enemy_character_id ||
+      enemy_combat_army.knights.members[0].prowess != 8 ||
+      enemy_combat_army.knights.members[0].knight_effectiveness_raw !=
+          120'000 ||
+      enemy_combat_army.knights.members[0].effective_damage_raw !=
+          48'000'000 ||
+      enemy_combat_army.knights.members[0].effective_toughness_raw !=
+          9'600'000) {
+    return Fail("knight identity/effectiveness projection drifted");
+  }
+  if (combat_inputs.counter_resolutions.size() != 2 ||
+      !combat_inputs.counter_resolutions[0].available ||
+      combat_inputs.counter_resolutions[0].countered_side !=
+          "player_or_allied" ||
+      combat_inputs.counter_resolutions[0].countering_side != "enemy" ||
+      combat_inputs.counter_resolutions[0].context_scale_raw != 104'000 ||
+      combat_inputs.counter_resolutions[0]
+              .damage_retention_by_class_raw !=
+          std::vector<std::int64_t>{100'000, 80'000, 60'000} ||
+      !combat_inputs.counter_resolutions[1].available ||
+      combat_inputs.counter_resolutions[1].context_scale_raw != 66'000 ||
+      combat_inputs.counter_resolutions[1]
+              .damage_retention_by_class_raw !=
+          std::vector<std::int64_t>{90'000, 70'000, 50'000} ||
+      combat_inputs.ongoing_combats.size() != 1 ||
+      !combat_inputs.ongoing_combats[0].available ||
+      combat_inputs.ongoing_combats[0].combat_id != active_combat_id ||
+      combat_inputs.ongoing_combats[0].province_id !=
+          second_war_objective_province_id ||
+      combat_inputs.ongoing_combats[0].base_combat_width != 1'200 ||
+      combat_inputs.ongoing_combats[0].final_combat_width != 960 ||
+      combat_inputs.ongoing_combats[0].orientation !=
+          "native_side_0_attacker_side_1_defender" ||
+      combat_inputs.ongoing_combats[0].resolved_advantage != 9 ||
+      g_effective_stats_calls != 4 ||
+      g_counter_current_chunk_calls != 3 ||
+      g_counter_resolution_calls != 2) {
+    return Fail("counter resolution or live CCombat projection drifted");
+  }
+
+  Store(g_player_army, 0x30, static_cast<void *>(g_enemy_province.data()));
+  Store(g_enemy_army, 0x20, static_cast<void *>(g_enemy_province.data()));
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::available ||
+      combat_inputs.target_province.crossing.kind != "river") {
+    return Fail("hypothetical contact depended on move target or current side");
+  }
+  Store(g_player_army, 0x30,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  Store(g_enemy_army, 0x20,
+        static_cast<void *>(g_second_war_objective_province.data()));
+
+  constexpr std::array<std::string_view, 4> expected_crossing_kinds{
+      "none", "strait", "river", "large_river"};
+  for (std::int32_t edge_kind = 0; edge_kind < 4; ++edge_kind) {
+    Store(g_player_target_adjacency, 0x00, edge_kind);
+    if (xar::ck3_11906::ReadCombatSimulationInputs(
+            bindings, combat_request, combat_inputs) !=
+            xar::ck3_11906::ReadCombatSimulationInputsResult::available ||
+        !combat_inputs.target_province.crossing.available ||
+        combat_inputs.target_province.crossing.kind !=
+            expected_crossing_kinds[static_cast<std::size_t>(edge_kind)] ||
+        !combat_inputs.target_province.defender_context.available ||
+        combat_inputs.target_province.defender_context.defender_side !=
+            "enemy") {
+      return Fail("contact adjacency enum or attacker/defender orientation drifted");
+    }
+  }
+  for (std::int32_t edge_kind = 4; edge_kind <= 6; ++edge_kind) {
+    Store(g_player_target_adjacency, 0x00, edge_kind);
+    if (xar::ck3_11906::ReadCombatSimulationInputs(
+            bindings, combat_request, combat_inputs) !=
+            xar::ck3_11906::ReadCombatSimulationInputsResult::invalid_encounter ||
+        combat_inputs != xar::ck3_11906::CombatSimulationInputsSnapshot{}) {
+      return Fail("non-contact adjacency encoding was accepted");
+    }
+  }
+  Store(g_player_target_adjacency, 0x00, std::int32_t{2});
+
+  // Reversing the explicit partitions must reverse the semantic defender;
+  // current native positions remain observational only.
+  const xar::game::CombatSimulationInputsRequest reversed_combat_request{
+      second_war_objective_province_id,
+      3,
+      {enemy_army_id},
+      {player_army_id},
+  };
+  Store(g_player_army, 0x20,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  Store(g_enemy_army, 0x20,
+        static_cast<void *>(g_enemy_province.data()));
+  g_last_holding_defender_owner = nullptr;
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, reversed_combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::available ||
+      !combat_inputs.target_province.defender_context.available ||
+      combat_inputs.target_province.defender_context.defender_side !=
+          "player_or_allied" ||
+      g_last_holding_defender_owner != g_played_character.data()) {
+    return Fail("reversed contact side did not preserve side0 attacker mapping");
+  }
+  Store(g_player_army, 0x20,
+        static_cast<void *>(g_player_province.data()));
+  Store(g_enemy_army, 0x20,
+        static_cast<void *>(g_second_war_objective_province.data()));
+
+  g_holding_defender_result = false;
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::available ||
+      !combat_inputs.target_province.defender_context.available ||
+      combat_inputs.target_province.defender_context.holding_defender) {
+    return Fail("valid false holding predicate was confused with unavailable");
+  }
+  g_holding_defender_result = true;
+
+  Store(g_player_map_node, 0x5C, std::int32_t{0});
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::invalid_encounter ||
+      combat_inputs != xar::ck3_11906::CombatSimulationInputsSnapshot{}) {
+    return Fail("missing origin-target edge was accepted as no crossing");
+  }
+  Store(g_player_map_node, 0x5C, std::int32_t{1});
+
+  Store(g_army_slots, 0x38, static_cast<void *>(g_third_army.data()));
+  const xar::game::CombatSimulationInputsRequest three_combat_request{
+      second_war_objective_province_id,
+      2,
+      {player_army_id, third_army_id},
+      {enemy_army_id},
+  };
+  // A selected attacker's actual Province adjacency is irrelevant; only the
+  // explicit final-edge entry Province participates in crossing derivation.
+  Store(g_enemy_target_adjacency, 0x00, std::int32_t{3});
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, three_combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::available ||
+      combat_inputs.armies.size() != 3 ||
+      combat_inputs.target_province.crossing.kind != "river") {
+    return Fail("hypothetical contact depended on an army's actual origin");
+  }
+  Store(g_player_target_adjacency, 0x00, std::int32_t{3});
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, three_combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::available ||
+      combat_inputs.target_province.crossing.kind != "large_river") {
+    return Fail("explicit entry edge did not control crossing kind");
+  }
+  Store(g_player_target_adjacency, 0x00, std::int32_t{2});
+  Store(g_enemy_target_adjacency, 0x00, std::int32_t{2});
+
+  Store(g_player_army, 0x20,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  Store(g_third_army, 0x20,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  Store(g_enemy_army, 0x20,
+        static_cast<void *>(g_enemy_province.data()));
+  Store(g_third_army, 0x174, kFixtureDeadCharacterId);
+  Store(g_third_attacker_participant, 0x08, kFixtureDeadCharacterId);
+  Store(g_attacker_participants, sizeof(void *),
+        static_cast<void *>(g_third_attacker_participant.data()));
+  Store(g_war, 0x34, std::int32_t{2});
+  const xar::game::CombatSimulationInputsRequest mixed_defender_request{
+      second_war_objective_province_id,
+      3,
+      {enemy_army_id},
+      {player_army_id, third_army_id},
+  };
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, mixed_defender_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::available ||
+      combat_inputs.armies.size() != 3 ||
+      !combat_inputs.target_province.defender_context.available ||
+      combat_inputs.target_province.defender_context.defender_side !=
+          "player_or_allied" ||
+      combat_inputs.target_province.defender_context.holding_defender_status !=
+          xar::game::CombatObservationStatus::available ||
+      g_last_holding_defender_owner != g_played_character.data() ||
+      combat_inputs.counter_resolutions.size() != 2 ||
+      !combat_inputs.counter_resolutions[0].available ||
+      !combat_inputs.counter_resolutions[1].available) {
+    return Fail("explicit mixed-owner insertion order was not projected");
+  }
+  Store(g_war, 0x34, std::int32_t{1});
+  Store(g_attacker_participants, sizeof(void *),
+        static_cast<void *>(nullptr));
+  Store(g_third_army, 0x174, played_character_id);
+  Store(g_player_army, 0x20,
+        static_cast<void *>(g_player_province.data()));
+  Store(g_third_army, 0x20,
+        static_cast<void *>(g_enemy_province.data()));
+  Store(g_enemy_army, 0x20,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  Store(g_army_slots, 0x38, static_cast<void *>(g_third_army.data()));
+
+  const xar::game::CombatSimulationInputsRequest no_attacker_request{
+      second_war_objective_province_id, 2, {}, {enemy_army_id}};
+  const xar::game::CombatSimulationInputsRequest duplicate_combat_request{
+      second_war_objective_province_id,
+      2,
+      {player_army_id},
+      {player_army_id},
+  };
+  const xar::game::CombatSimulationInputsRequest same_coalition_request{
+      second_war_objective_province_id,
+      2,
+      {player_army_id},
+      {third_army_id},
+  };
+  const xar::game::CombatSimulationInputsRequest out_of_scope_combat_request{
+      second_war_objective_province_id,
+      2,
+      {player_army_id},
+      {std::int32_t{0x01000004}},
+  };
+  auto missing_target_request = combat_request;
+  missing_target_request.target_province_id = 7;
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, no_attacker_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::invalid_arguments ||
+      xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, duplicate_combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::invalid_arguments ||
+      xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, same_coalition_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::invalid_encounter ||
+      xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, out_of_scope_combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::army_not_in_scope ||
+      xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, missing_target_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::target_province_not_found) {
+    return Fail("combat input target/army admission was not strict");
+  }
+  Store(g_army_slots, 0x38, static_cast<void *>(nullptr));
+  g_knight_effectiveness_context_available = false;
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::unavailable ||
+      combat_inputs != xar::ck3_11906::CombatSimulationInputsSnapshot{}) {
+    return Fail("knight effectiveness context failure was not atomic");
+  }
+  g_knight_effectiveness_context_available = true;
+  g_knight_damage_per_prowess = 51;
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::unavailable ||
+      combat_inputs != xar::ck3_11906::CombatSimulationInputsSnapshot{}) {
+    return Fail("knight contribution define drift was not rejected");
+  }
+  g_knight_damage_per_prowess = 50;
+  Store(g_played_knight_link, 0xF8, enemy_regiment_0_id);
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::unavailable ||
+      combat_inputs != xar::ck3_11906::CombatSimulationInputsSnapshot{}) {
+    return Fail("knight regiment backlink failure was not atomic");
+  }
+  Store(g_played_knight_link, 0xF8, player_regiment_0_id);
+
+  g_effective_stats_failed_regiment = g_player_regiment_1.data();
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::partial ||
+      combat_inputs.armies.size() != 2 ||
+      combat_inputs.armies[0].regiments[1].available ||
+      combat_inputs.armies[0].regiments[1].effective_stats.available ||
+      combat_inputs.armies[0].regiments[1].effective_stats.damage_raw != 0 ||
+      combat_inputs.armies[0].regiments[1].unavailable_reason !=
+          "effective_stats_helper_failed" ||
+      !combat_inputs.armies[0].knights.available ||
+      !combat_inputs.counter_resolutions[0].available) {
+    return Fail("target-effective helper failure was not row-atomic");
+  }
+  g_effective_stats_failed_regiment = nullptr;
+
+  Store(g_bowmen_type, 0x28, std::size_t{0});
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::partial ||
+      combat_inputs.armies[0].regiments[0].available ||
+      combat_inputs.armies[0].regiments[0].maa_type.status !=
+          xar::ck3_11906::CombatObservationStatus::unavailable ||
+      !combat_inputs.armies[0].regiments[0].maa_type.key.empty() ||
+      combat_inputs.armies[0].regiments[0].unavailable_reason !=
+          "maa_type_key_unavailable" ||
+      !combat_inputs.counter_resolutions[0].available) {
+    return Fail("invalid MAA key was guessed or partially published");
+  }
+  Store(g_bowmen_type, 0x28, std::size_t{6});
+
+  Store(g_player_internal_army, 0x120, std::int32_t{0x02000002});
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::partial ||
+      combat_inputs.armies[0].commander.status !=
+          xar::ck3_11906::CombatObservationStatus::unavailable ||
+      combat_inputs.armies[0].commander.character_id != -1 ||
+      combat_inputs.armies[0].commander.generic_advantage_observable) {
+    return Fail("commander generation mismatch was coerced to absent");
+  }
+  Store(g_player_internal_army, 0x120, played_character_id);
+
+  Store(g_hills_terrain, 0x58, std::int64_t{0});
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::available ||
+      !combat_inputs.target_province.terrain.available ||
+      combat_inputs.target_province.terrain.combat_width_multiplier_raw != 0 ||
+      !combat_inputs.target_province.precontact_width.available ||
+      combat_inputs.target_province.precontact_width.final != 100) {
+    return Fail("zero terrain multiplier was confused with unavailable");
+  }
+  Store(g_hills_terrain, 0x58, std::int64_t{80'000});
+  Store(g_hills_terrain, 0x28, std::size_t{4'097});
+  Store(g_hills_terrain, 0x30, std::size_t{4'097});
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::partial ||
+      combat_inputs.target_province.available ||
+      combat_inputs.target_province.terrain.available ||
+      !combat_inputs.target_province.terrain.key.empty() ||
+      combat_inputs.target_province.terrain.combat_width_multiplier_raw != 0 ||
+      combat_inputs.target_province.precontact_width.available) {
+    return Fail("invalid terrain key did not null the complete terrain row");
+  }
+  Store(g_hills_terrain, 0x28, std::size_t{5});
+  Store(g_hills_terrain, 0x30, std::size_t{15});
+
+  Store(g_player_internal_army, 0x128, std::int32_t{-1});
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::available ||
+      !combat_inputs.ongoing_combats.empty()) {
+    return Fail("no live CCombat was confused with a zero-filled row");
+  }
+  Store(g_player_internal_army, 0x128, active_combat_id);
+
+  Store(g_player_internal_army, 0x128, std::int32_t{-2});
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::partial ||
+      combat_inputs.input_observation_ready ||
+      combat_inputs.ongoing_combats.size() != 1 ||
+      combat_inputs.ongoing_combats[0].available ||
+      combat_inputs.ongoing_combats[0].combat_id_observable ||
+      combat_inputs.ongoing_combats[0].combat_id != -1 ||
+      combat_inputs.ongoing_combats[0].unavailable_reason !=
+          "combat_id_invalid") {
+    return Fail("invalid CCombatID was serialized as an observed identity");
+  }
+  Store(g_player_internal_army, 0x128, active_combat_id);
+
+  Store(g_player_regiment_0_inner_type, 0x68, std::int32_t{0});
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::partial ||
+      combat_inputs.armies[0].regiments[0].counter.status !=
+          xar::ck3_11906::CombatObservationStatus::unavailable ||
+      combat_inputs.armies[0].regiments[0].counter.current_chunk_raw != 0 ||
+      combat_inputs.counter_resolutions[0].available) {
+    return Fail("counter chunk sentinel was coerced to zero");
+  }
+  Store(g_player_regiment_0_inner_type, 0x68, std::int32_t{100});
+
+  Store(g_enemy_regiment_0, 0x148, played_character_id);
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::unavailable ||
+      combat_inputs != xar::ck3_11906::CombatSimulationInputsSnapshot{}) {
+    return Fail("duplicate knight CharacterID was not rejected atomically");
+  }
+  Store(g_enemy_regiment_0, 0x148, enemy_character_id);
+  Store(g_enemy_regiment_1, 0x10, std::int32_t{0x02000004});
+  if (xar::ck3_11906::ReadCombatSimulationInputs(
+          bindings, combat_request, combat_inputs) !=
+          xar::ck3_11906::ReadCombatSimulationInputsResult::partial ||
+      combat_inputs.input_observation_ready ||
+      combat_inputs.armies.size() != 2 ||
+      combat_inputs.armies[1].available ||
+      !combat_inputs.armies[1].native_carmy_id_observable ||
+      combat_inputs.armies[1].native_carmy_id != enemy_internal_army_id ||
+      combat_inputs.armies[1].regiments_observable ||
+      !combat_inputs.armies[1].regiments.empty() ||
+      combat_inputs.armies[1].knights.available ||
+      combat_inputs.armies[1].unavailable_reason != "regiment_not_found" ||
+      std::find(combat_inputs.missing_required_domains.begin(),
+                combat_inputs.missing_required_domains.end(),
+                "regiment_composition") ==
+          combat_inputs.missing_required_domains.end()) {
+    return Fail("combat regiment graph failure did not retain a partial row");
+  }
+  Store(g_enemy_regiment_1, 0x10, enemy_regiment_1_id);
+  Store(g_enemy_army, 0x20,
+        static_cast<void *>(g_enemy_province.data()));
+
+  Store(g_enemy_regiment_1, 0x10, std::int32_t{0x02000004});
+  if (xar::ck3_11906::ReadArmyStrengths(bindings, army_strengths) !=
+          xar::ck3_11906::ReadArmyStrengthsResult::partial ||
+      army_strengths.size() != 2 || !army_strengths[0].available ||
+      army_strengths[1].available ||
+      army_strengths[1].native_carmy_id != enemy_internal_army_id ||
+      army_strengths[1].regiment_count != 0 ||
+      army_strengths[1].current_soldiers != 0 ||
+      army_strengths[1].maximum_soldiers != 0 ||
+      army_strengths[1].ai_base_power_raw != 0 ||
+      army_strengths[1].unavailable_reason != "regiment_not_found") {
+    return Fail("regiment generation mismatch did not fail one row closed");
+  }
+  Store(g_enemy_regiment_1, 0x10, enemy_regiment_1_id);
+
+  Store(g_player_internal_army, 0x44, std::int32_t{-1});
+  if (xar::ck3_11906::ReadArmyStrengths(bindings, army_strengths) !=
+          xar::ck3_11906::ReadArmyStrengthsResult::partial ||
+      army_strengths[0].available ||
+      army_strengths[0].unavailable_reason != "regiment_array_invalid" ||
+      !army_strengths[1].available) {
+    return Fail("invalid regiment array was partially aggregated");
+  }
+  Store(g_player_internal_army, 0x44, std::int32_t{2});
+
+  Store(g_player_internal_army, 0x40, std::int32_t{1});
+  if (xar::ck3_11906::ReadArmyStrengths(bindings, army_strengths) !=
+          xar::ck3_11906::ReadArmyStrengthsResult::partial ||
+      army_strengths[0].available ||
+      army_strengths[0].unavailable_reason != "regiment_array_invalid" ||
+      !army_strengths[1].available) {
+    return Fail("regiment count beyond capacity was accepted");
+  }
+  Store(g_player_internal_army, 0x40, std::int32_t{2});
+
+  Store(g_player_regiment_0, 0x08, static_cast<void *>(nullptr));
+  if (xar::ck3_11906::ReadArmyStrengths(bindings, army_strengths) !=
+          xar::ck3_11906::ReadArmyStrengthsResult::partial ||
+      army_strengths[0].available ||
+      army_strengths[0].unavailable_reason !=
+          "identity_predicate_unavailable") {
+    return Fail("missing identity predicate did not fail one row closed");
+  }
+  Store(g_player_regiment_0, 0x08,
+        static_cast<void *>(g_regiment_identity_vtable.data()));
+
+  Store(g_player_internal_army, 0x38, static_cast<void *>(nullptr));
+  Store(g_player_internal_army, 0x40, std::int32_t{0});
+  Store(g_player_internal_army, 0x44, std::int32_t{0});
+  if (xar::ck3_11906::ReadArmyStrengths(bindings, army_strengths) !=
+          xar::ck3_11906::ReadArmyStrengthsResult::available ||
+      army_strengths[0].regiment_count != 0 ||
+      army_strengths[0].current_soldiers != 0 ||
+      army_strengths[0].maximum_soldiers != 0 ||
+      army_strengths[0].ai_base_power_raw != 0) {
+    return Fail("valid empty regiment array was confused with unavailable");
+  }
+  Store(g_player_internal_army, 0x38,
+        static_cast<void *>(g_player_regiment_ids.data()));
+  Store(g_player_internal_army, 0x40, std::int32_t{2});
+  Store(g_player_internal_army, 0x44, std::int32_t{2});
+
   const auto &active_siege_state =
       snapshot.active_wars[0].objective_province_states[0];
   const auto &occupied_state =
@@ -3443,6 +5693,727 @@ int main() {
     return Fail("arrange-marriage did not use native context/queue lifecycle");
   }
 
+  xar::ck3_11906::WarTerminationOptionsSnapshot termination_options{};
+  if (xar::ck3_11906::ReadWarTerminationOptions(
+          bindings, active_war_id, termination_options) !=
+      xar::ck3_11906::ReadWarTerminationOptionsResult::requires_paused) {
+    return Fail("war-termination query ran while the map was not paused");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{1});
+  g_war_resolution_construct_calls = 0;
+  g_white_peace_construct_calls = 0;
+  g_auto_accept_trigger_calls = 0;
+  g_interaction_destroy_calls = 0;
+  g_send_interaction_construct_called = false;
+  g_submit_called = false;
+  if (xar::ck3_11906::ReadWarTerminationOptions(
+          bindings, active_war_id, termination_options) !=
+          xar::ck3_11906::ReadWarTerminationOptionsResult::available ||
+      termination_options.war_id != active_war_id ||
+      termination_options.player_side !=
+          xar::ck3_11906::PlayerWarSide::attacker ||
+      !termination_options.player_is_primary_war_leader ||
+      termination_options.player_relative_war_score != 37 ||
+      !termination_options.war_duration_days_observable ||
+      termination_options.war_duration_days != 10 ||
+      !termination_options.absolute_war_scores_observable ||
+      termination_options.attacker_war_score != 37 ||
+      termination_options.defender_war_score != -37 ||
+      !termination_options.war_score_breakdown.observable ||
+      termination_options.war_score_breakdown.imprisonment != 4 ||
+      termination_options.war_score_breakdown.battles != 11 ||
+      termination_options.war_score_breakdown.occupation != 5 ||
+      termination_options.war_score_breakdown.ticking != 5 ||
+      !termination_options.active_casus_belli_observable ||
+      !termination_options.active_casus_belli_present ||
+      !termination_options.active_casus_belli_identity_observable ||
+      termination_options.active_casus_belli_database_index != 0 ||
+      termination_options.active_casus_belli_key != "claim_cb" ||
+      !termination_options.white_peace_permission_observable ||
+      !termination_options.cb_allows_white_peace ||
+      termination_options.surrender.outcome != "attacker_defeat" ||
+      !termination_options.surrender.context_constructed ||
+      !termination_options.surrender.native_validator_observable ||
+      !termination_options.surrender.native_validator_passed ||
+      !termination_options.surrender.ai_acceptance_observable ||
+      termination_options.surrender.ai_acceptance.raw != 10'000'000 ||
+      termination_options.surrender.ai_acceptance.scale != 100'000 ||
+      !termination_options.surrender.auto_accept_observable ||
+      !termination_options.surrender.auto_accept ||
+      termination_options.white_peace.outcome != "white_peace" ||
+      !termination_options.white_peace.context_constructed ||
+      !termination_options.white_peace.native_validator_passed ||
+      !termination_options.white_peace.ai_acceptance_observable ||
+      termination_options.white_peace.ai_acceptance.raw != -2'500'000 ||
+      !termination_options.white_peace.auto_accept_observable ||
+      termination_options.white_peace.auto_accept ||
+      termination_options.victory.outcome != "attacker_victory" ||
+      !termination_options.victory.context_constructed ||
+      !termination_options.victory.native_validator_passed ||
+      !termination_options.victory.ai_acceptance_observable ||
+      termination_options.victory.ai_acceptance.raw != 3'700'000 ||
+      !termination_options.victory.auto_accept_observable ||
+      !termination_options.victory.auto_accept ||
+      g_war_resolution_construct_calls != 2 ||
+      g_war_resolution_absolute_outcomes[0] ||
+      !g_war_resolution_absolute_outcomes[1] ||
+      g_white_peace_construct_calls != 1 ||
+      g_auto_accept_trigger_calls != 1 ||
+      g_interaction_destroy_calls != 3 ||
+      g_send_interaction_construct_called || g_submit_called) {
+    return Fail("war-termination query lost paused native result contexts");
+  }
+
+  Store(g_casus_belli_type_0, 0x1718, std::uint32_t{0});
+  g_war_resolution_construct_calls = 0;
+  g_white_peace_construct_calls = 0;
+  g_interaction_destroy_calls = 0;
+  if (xar::ck3_11906::ReadWarTerminationOptions(
+          bindings, active_war_id, termination_options) !=
+          xar::ck3_11906::ReadWarTerminationOptionsResult::available ||
+      termination_options.cb_allows_white_peace ||
+      termination_options.white_peace.context_constructed ||
+      termination_options.white_peace.native_validator_observable ||
+      g_war_resolution_construct_calls != 2 ||
+      g_white_peace_construct_calls != 0 ||
+      g_interaction_destroy_calls != 2) {
+    return Fail("war-termination query fabricated forbidden white peace");
+  }
+  Store(g_casus_belli_type_0, 0x1718, std::uint32_t{1U << 7U});
+
+  Store(g_war, 0x288, enemy_character_id);
+  if (xar::ck3_11906::ReadWarTerminationOptions(
+          bindings, active_war_id, termination_options) !=
+          xar::ck3_11906::ReadWarTerminationOptionsResult::available ||
+      termination_options.player_is_primary_war_leader ||
+      termination_options.surrender.context_constructed ||
+      termination_options.white_peace.context_constructed ||
+      termination_options.victory.context_constructed) {
+    return Fail("war-termination query gave a non-leader result contexts");
+  }
+  Store(g_war, 0x288, played_character_id);
+
+  Store(g_attacker_participant, 0x08, enemy_character_id);
+  Store(g_defender_participant, 0x08, played_character_id);
+  Store(g_war, 0x288, enemy_character_id);
+  Store(g_war, 0x28C, played_character_id);
+  g_war_resolution_construct_calls = 0;
+  g_white_peace_construct_calls = 0;
+  if (xar::ck3_11906::ReadWarTerminationOptions(
+          bindings, active_war_id, termination_options) !=
+          xar::ck3_11906::ReadWarTerminationOptionsResult::available ||
+      termination_options.player_side !=
+          xar::ck3_11906::PlayerWarSide::defender ||
+      termination_options.player_relative_war_score != -37 ||
+      termination_options.surrender.outcome != "attacker_victory" ||
+      !termination_options.surrender.context_constructed ||
+      !termination_options.surrender.ai_acceptance_observable ||
+      termination_options.surrender.ai_acceptance.raw != 3'700'000 ||
+      termination_options.victory.outcome != "attacker_defeat" ||
+      !termination_options.victory.context_constructed ||
+      !termination_options.victory.ai_acceptance_observable ||
+      termination_options.victory.ai_acceptance.raw != 10'000'000 ||
+      g_war_resolution_construct_calls != 2 ||
+      !g_war_resolution_absolute_outcomes[0] ||
+      g_war_resolution_absolute_outcomes[1] ||
+      g_white_peace_construct_calls != 1) {
+    return Fail("war-termination query reversed defender outcomes");
+  }
+  Store(g_attacker_participant, 0x08, played_character_id);
+  Store(g_defender_participant, 0x08, enemy_character_id);
+  Store(g_war, 0x288, played_character_id);
+  Store(g_war, 0x28C, enemy_character_id);
+
+  xar::ck3_11906::WarTerminationTermsSnapshot termination_terms{};
+  g_character_claim_read_calls = 0;
+  g_character_claim_destroy_calls = 0;
+  g_character_claim_title_mismatch = false;
+  g_character_claim_malformed_bool = false;
+  if (xar::ck3_11906::ReadWarTerminationTerms(
+          bindings, active_war_id, termination_terms) !=
+          xar::ck3_11906::ReadWarTerminationTermsResult::available ||
+      termination_terms.war_id != active_war_id ||
+      termination_terms.active_casus_belli_database_index != 0 ||
+      termination_terms.active_casus_belli_key != "claim_cb" ||
+      termination_terms.claimant_character_id != played_character_id ||
+      termination_terms.target_title_ids !=
+          std::vector<std::int32_t>{
+              targeted_title_id, targeted_duchy_a_title_id,
+              second_county_title_id, third_capital_barony_title_id} ||
+      termination_terms.claims.size() != 4 ||
+      termination_terms.claims[0].state != "weak_explicit" ||
+      !termination_terms.claims[0].present ||
+      termination_terms.claims[0].strong ||
+      termination_terms.claims[0].implicit ||
+      termination_terms.claims[1].state != "strong_explicit" ||
+      !termination_terms.claims[1].present ||
+      !termination_terms.claims[1].strong ||
+      termination_terms.claims[1].implicit ||
+      termination_terms.claims[2].state != "weak_implicit" ||
+      !termination_terms.claims[2].present ||
+      termination_terms.claims[2].strong ||
+      !termination_terms.claims[2].implicit ||
+      termination_terms.claims[3].state != "absent" ||
+      termination_terms.claims[3].present ||
+      termination_terms.attacker_victory.declared_title_disposition !=
+          "transfer_to_claimant_via_conquest_claim" ||
+      termination_terms.attacker_victory.claim_disposition !=
+          "resolve_with_add_claim_on_loss" ||
+      termination_terms.white_peace.declared_title_disposition !=
+          "unchanged" ||
+      termination_terms.white_peace.claim_disposition !=
+          "retain_and_strengthen_weak" ||
+      termination_terms.attacker_defeat.declared_title_disposition !=
+          "unchanged" ||
+      termination_terms.attacker_defeat.claim_disposition !=
+          "remove_declared_target_claims" ||
+      g_character_claim_read_calls != 4 ||
+      g_character_claim_destroy_calls != 3 || g_submit_called) {
+    return Fail("claim terms lost native claimant/target/claim semantics");
+  }
+
+  const auto claim_calls_before_unsupported = g_character_claim_read_calls;
+  Store(g_war, 0x100,
+        static_cast<void *>(g_casus_belli_type_1.data()));
+  if (xar::ck3_11906::ReadWarTerminationTerms(
+          bindings, active_war_id, termination_terms) !=
+          xar::ck3_11906::ReadWarTerminationTermsResult::
+              unsupported_casus_belli ||
+      termination_terms.war_id != active_war_id ||
+      termination_terms.active_casus_belli_database_index != 1 ||
+      termination_terms.active_casus_belli_key != "county_conquest_cb" ||
+      termination_terms.claimant_character_id != -1 ||
+      !termination_terms.target_title_ids.empty() ||
+      !termination_terms.claims.empty() ||
+      g_character_claim_read_calls != claim_calls_before_unsupported) {
+    return Fail("non-claim CB did not return a narrow typed unsupported row");
+  }
+  Store(g_war, 0x100,
+        static_cast<void *>(g_casus_belli_type_0.data()));
+
+  Store(g_war, 0x290, std::int32_t{0x02000002});
+  if (xar::ck3_11906::ReadWarTerminationTerms(
+          bindings, active_war_id, termination_terms) !=
+      xar::ck3_11906::ReadWarTerminationTermsResult::unavailable) {
+    return Fail("claim terms accepted a stale claimant generation");
+  }
+  Store(g_war, 0x290, played_character_id);
+
+  g_character_claim_title_mismatch = true;
+  const auto destroy_calls_before_mismatch =
+      g_character_claim_destroy_calls;
+  if (xar::ck3_11906::ReadWarTerminationTerms(
+          bindings, active_war_id, termination_terms) !=
+          xar::ck3_11906::ReadWarTerminationTermsResult::unavailable ||
+      g_character_claim_destroy_calls !=
+          destroy_calls_before_mismatch + 1) {
+    return Fail("claim terms accepted a mismatched native claim title");
+  }
+  g_character_claim_title_mismatch = false;
+
+  g_character_claim_malformed_bool = true;
+  const auto destroy_calls_before_malformed =
+      g_character_claim_destroy_calls;
+  if (xar::ck3_11906::ReadWarTerminationTerms(
+          bindings, active_war_id, termination_terms) !=
+          xar::ck3_11906::ReadWarTerminationTermsResult::unavailable ||
+      g_character_claim_destroy_calls !=
+          destroy_calls_before_malformed + 1) {
+    return Fail("claim terms accepted a malformed native claim boolean");
+  }
+  g_character_claim_malformed_bool = false;
+
+  // The production v2 query is available-only: one paused read must dry-run
+  // both loaded result effects, observe finance/PoW/recipient response, and
+  // then prove every borrowed identity and claim getter stable a second time.
+  Store(g_war, 0x278, std::int32_t{4});
+  Store(g_war, 0x27C, std::int32_t{1});
+  g_targeted_title_succession_ids[0] = kFixtureDeadCharacterId;
+  Store(g_targeted_title, 0x278,
+        static_cast<void *>(g_targeted_title_succession_ids.data()));
+  Store(g_targeted_title, 0x280, std::int32_t{1});
+  Store(g_targeted_title, 0x284, std::int32_t{1});
+  Store(g_dead_character, 0x1A8,
+        static_cast<void *>(g_dead_character_extension.data()));
+  Store(g_dead_character_extension, 0x288,
+        static_cast<void *>(g_dead_prison_relation.data()));
+  Store(g_dead_prison_relation, 0x00, enemy_character_id);
+
+  g_exit_terms_fixture_active = true;
+  Store(g_character_storage, 0x2C, std::int32_t{7});
+  g_exit_terms_unknown_node = false;
+  g_exit_terms_malformed_contribution = false;
+  g_exit_terms_duplicate_truce = false;
+  g_exit_terms_income_mismatch = false;
+  g_exit_terms_factor_malformed = false;
+  g_exit_terms_collector_lifecycle_valid = true;
+  g_exit_terms_context_lifecycle_valid = true;
+  g_exit_terms_answer_status_override = 0xFF;
+  g_exit_terms_effect_context_construct_calls = 0;
+  g_exit_terms_effect_context_populate_calls = 0;
+  g_exit_terms_collector_construct_calls = 0;
+  g_exit_terms_collector_destroy_calls = 0;
+  g_exit_terms_traverse_calls = 0;
+  g_exit_terms_forward_calls = 0;
+  g_exit_terms_projected_root_preview_calls = 0;
+  g_exit_terms_projected_callback_counts.fill(0);
+  g_exit_terms_hidden_truce_preview_calls = 0;
+  g_exit_terms_context_teardown_stage = 0;
+  g_exit_terms_truce_duration_calls = 0;
+  g_exit_terms_primary_title_calls = 0;
+  g_exit_terms_monthly_income_calls = 0;
+  g_exit_terms_answer_calls = 0;
+  g_character_claim_read_calls = 0;
+  g_character_claim_destroy_calls = 0;
+  g_interaction_destroy_calls = 0;
+
+  xar::ck3_11906::WarTerminationExitTermsSnapshot exit_terms{};
+  if (xar::ck3_11906::ReadWarTerminationExitTerms(
+          bindings, active_war_id, exit_terms) !=
+          xar::ck3_11906::ReadWarTerminationExitTermsResult::unavailable ||
+      exit_terms != xar::ck3_11906::WarTerminationExitTermsSnapshot{} ||
+      xar::ck3_11906::LastWarTerminationExitTermsUnavailableReason() !=
+          "loaded_effect_preview_disabled_after_live_crash_rva_0x334C668" ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_exit_terms_effect_context_populate_calls != 0 ||
+      g_exit_terms_collector_construct_calls != 0 ||
+      g_exit_terms_traverse_calls != 0 ||
+      g_exit_terms_projected_root_preview_calls != 0 ||
+      g_exit_terms_hidden_truce_preview_calls != 0) {
+    return Fail(
+        "production exit-terms v2 did not fail closed before loaded effects");
+  }
+
+  const auto exit_terms_result =
+      xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
+          bindings, active_war_id, exit_terms);
+  const auto exit_terms_reason = std::string(
+      xar::ck3_11906::LastWarTerminationExitTermsUnavailableReason());
+  if (exit_terms_result !=
+          xar::ck3_11906::ReadWarTerminationExitTermsResult::unavailable ||
+      exit_terms != xar::ck3_11906::WarTerminationExitTermsSnapshot{} ||
+      !exit_terms_reason.starts_with(
+          "dry_preview.hidden_truce.attacker_defeat_shape:") ||
+      exit_terms_reason.find("root_span=14/19") == std::string::npos ||
+      exit_terms_reason.find("root_children=0=") == std::string::npos ||
+      exit_terms_reason.find("/13=") == std::string::npos ||
+      exit_terms_reason.find("child9=") == std::string::npos ||
+      exit_terms_reason.find("selector_count=0") == std::string::npos ||
+      exit_terms_reason.find("template=") == std::string::npos ||
+      exit_terms_reason.find("default_span=5/6") == std::string::npos ||
+      g_exit_terms_effect_context_construct_calls != 1 ||
+      g_exit_terms_effect_context_populate_calls != 1 ||
+      g_exit_terms_collector_construct_calls != 2 ||
+      g_exit_terms_collector_destroy_calls != 2 ||
+      g_exit_terms_traverse_calls != 2 ||
+      g_exit_terms_forward_calls != 7 ||
+      g_exit_terms_projected_root_preview_calls != 1 ||
+      g_exit_terms_projected_callback_counts !=
+          std::array<std::int32_t, 2>{7, 0} ||
+      g_exit_terms_hidden_truce_preview_calls != 1 ||
+      g_exit_terms_context_teardown_stage != 4 ||
+      !g_exit_terms_context_lifecycle_valid ||
+      !g_exit_terms_collector_lifecycle_valid ||
+      g_exit_terms_truce_duration_calls != 1 ||
+      g_exit_terms_primary_title_calls != 2 ||
+      g_exit_terms_monthly_income_calls != 2 ||
+      g_exit_terms_answer_calls != 0 ||
+      g_character_claim_read_calls != 1 ||
+      g_character_claim_destroy_calls != 1 ||
+      g_interaction_destroy_calls != 0 || g_submit_called) {
+    std::cerr << "exit_terms_result="
+              << static_cast<std::int32_t>(exit_terms_result)
+              << " reason=" << exit_terms_reason
+              << " claim_reads=" << g_character_claim_read_calls
+              << " claim_dtors=" << g_character_claim_destroy_calls
+              << " collectors=" << g_exit_terms_collector_construct_calls
+              << '/' << g_exit_terms_collector_destroy_calls
+              << " traverses=" << g_exit_terms_traverse_calls
+              << " forwards=" << g_exit_terms_forward_calls
+              << " projected=" << g_exit_terms_projected_root_preview_calls
+              << " callback_counts="
+              << g_exit_terms_projected_callback_counts[0] << '/'
+              << g_exit_terms_projected_callback_counts[1]
+              << " hidden_truce="
+              << g_exit_terms_hidden_truce_preview_calls
+              << " teardown=" << g_exit_terms_context_teardown_stage
+              << " truce=" << g_exit_terms_truce_duration_calls
+              << " titles=" << g_exit_terms_primary_title_calls
+              << " income_calls=" << g_exit_terms_monthly_income_calls
+              << " answers=" << g_exit_terms_answer_calls << '\n';
+    return Fail(
+        "exit terms v2 did not stop after one WP projection and one "
+        "read-only defeat shape capture");
+  }
+
+  const auto rejects_exit_terms_shape_drift =
+      [&](auto mutate, auto restore, std::string_view expected_reason) {
+        mutate();
+        g_exit_terms_context_lifecycle_valid = true;
+        const auto result =
+            xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
+            bindings, active_war_id, exit_terms);
+        const auto reason =
+            xar::ck3_11906::LastWarTerminationExitTermsUnavailableReason();
+        const bool rejected =
+            result == xar::ck3_11906::ReadWarTerminationExitTermsResult::
+                          unavailable &&
+            exit_terms ==
+                xar::ck3_11906::WarTerminationExitTermsSnapshot{} &&
+            reason == expected_reason &&
+            g_exit_terms_context_teardown_stage == 4 &&
+            g_exit_terms_context_lifecycle_valid;
+        restore();
+        return rejected;
+      };
+  const auto root_child7 = g_exit_root_effect_children[7];
+  const auto root_child8 = g_exit_root_effect_children[8];
+  const auto default_child1 = g_truce_scripted_default_children[1];
+  const auto default_child2 = g_truce_scripted_default_children[2];
+  const auto root_vtable =
+      static_cast<void *>(g_white_peace_loaded_effect_vtable.data());
+  const auto alternate_vtable =
+      static_cast<void *>(g_defeat_loaded_effect_vtable.data());
+  const auto scripted_vtable =
+      static_cast<void *>(g_scripted_effect_vtable.data());
+  const auto template_vtable =
+      static_cast<void *>(g_scripted_effect_template_vtable.data());
+  const auto hidden_vtable =
+      static_cast<void *>(g_hidden_effect_vtable.data());
+  const auto truce_node_vtable = LoadBytes<std::uintptr_t>(
+      g_truce_effect_node.data(), 0x00);
+  const auto unknown_node_vtable = LoadBytes<std::uintptr_t>(
+      g_unknown_effect_node.data(), 0x00);
+  const auto context_slot58 = g_context_effect_vtable[11];
+
+  if (!rejects_exit_terms_shape_drift(
+          [&] { StoreBytes(g_casus_belli_type_0.data(), 0x9C8,
+                           alternate_vtable); },
+          [&] { StoreBytes(g_casus_belli_type_0.data(), 0x9C8,
+                           root_vtable); },
+          "dry_preview.hidden_truce.root_vtable") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { Store(g_casus_belli_type_0, 0x9C8 + 0x4C,
+                       std::int32_t{9}); },
+          [&] { Store(g_casus_belli_type_0, 0x9C8 + 0x4C,
+                       std::int32_t{10}); },
+          "dry_preview.hidden_truce.root_span") ||
+      !rejects_exit_terms_shape_drift(
+          [&] {
+            g_exit_root_effect_children[7] = root_child8;
+            g_exit_root_effect_children[8] = root_child7;
+          },
+          [&] {
+            g_exit_root_effect_children[7] = root_child7;
+            g_exit_root_effect_children[8] = root_child8;
+          },
+          "dry_preview.hidden_truce.root_child8") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { Store(g_truce_scripted_effect, 0x00,
+                       alternate_vtable); },
+          [&] { Store(g_truce_scripted_effect, 0x00,
+                       scripted_vtable); },
+          "dry_preview.hidden_truce.root_child8") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { Store(g_truce_scripted_effect, 0x94,
+                       std::int32_t{1}); },
+          [&] { Store(g_truce_scripted_effect, 0x94,
+                       std::int32_t{0}); },
+          "dry_preview.hidden_truce.selector_count") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { Store(g_truce_scripted_effect_template, 0x00,
+                       hidden_vtable); },
+          [&] { Store(g_truce_scripted_effect_template, 0x00,
+                       template_vtable); },
+          "dry_preview.hidden_truce.template_vtable") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { Store(g_truce_scripted_default_effect, 0x00,
+                       alternate_vtable); },
+          [&] { Store(g_truce_scripted_default_effect, 0x00,
+                       root_vtable); },
+          "dry_preview.hidden_truce.default_vtable") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { Store(g_truce_scripted_default_effect, 0x48,
+                       std::int32_t{5}); },
+          [&] { Store(g_truce_scripted_default_effect, 0x48,
+                       std::int32_t{6}); },
+          "dry_preview.hidden_truce.default_span") ||
+      !rejects_exit_terms_shape_drift(
+          [&] {
+            g_truce_scripted_default_children[1] = default_child2;
+            g_truce_scripted_default_children[2] = default_child1;
+          },
+          [&] {
+            g_truce_scripted_default_children[1] = default_child1;
+            g_truce_scripted_default_children[2] = default_child2;
+          },
+          "dry_preview.hidden_truce.hidden_vtable") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { Store(g_truce_hidden_effect, 0x4C,
+                       std::int32_t{0}); },
+          [&] { Store(g_truce_hidden_effect, 0x4C,
+                       std::int32_t{1}); },
+          "dry_preview.hidden_truce.hidden_span") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { g_truce_hidden_children[0] = g_truce_effect_node.data(); },
+          [&] { g_truce_hidden_children[0] =
+                    g_truce_context_effect.data(); },
+          "dry_preview.hidden_truce.context_vtable") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { Store(g_truce_context_effect, 0x48,
+                       std::int32_t{0}); },
+          [&] { Store(g_truce_context_effect, 0x48,
+                       std::int32_t{1}); },
+          "dry_preview.hidden_truce.context_span") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { Store(g_truce_context_effect, 0x6C,
+                       std::int32_t{0}); },
+          [&] { Store(g_truce_context_effect, 0x6C,
+                       std::int32_t{1}); },
+          "dry_preview.hidden_truce.context_scope") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { StoreBytes(g_truce_effect_node.data(), 0x00,
+                           unknown_node_vtable); },
+          [&] { StoreBytes(g_truce_effect_node.data(), 0x00,
+                           truce_node_vtable); },
+          "dry_preview.hidden_truce.truce_vtable") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { g_context_effect_vtable[11] =
+                    reinterpret_cast<void *>(1); },
+          [&] { g_context_effect_vtable[11] = context_slot58; },
+          "dry_preview.hidden_truce.preview_slot") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { g_exit_root_effect_children[0] = nullptr; },
+          [&] { g_exit_root_effect_children[0] =
+                    g_unknown_effect_node.data(); },
+          "dry_preview.hidden_truce.projection_root_child") ||
+      !rejects_exit_terms_shape_drift(
+          [&] { g_truce_scripted_default_children[0] = nullptr; },
+          [&] { g_truce_scripted_default_children[0] =
+                    g_unknown_effect_node.data(); },
+          "dry_preview.hidden_truce.projection_default_child")) {
+    return Fail("exit terms v2 accepted a compiled hidden-truce shape drift");
+  }
+
+  g_exit_terms_income_mismatch = true;
+  const auto income_calls_before_mismatch =
+      g_exit_terms_monthly_income_calls;
+  if (xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
+          bindings, active_war_id, exit_terms) !=
+          xar::ck3_11906::ReadWarTerminationExitTermsResult::unavailable ||
+      exit_terms != xar::ck3_11906::WarTerminationExitTermsSnapshot{} ||
+      !xar::ck3_11906::LastWarTerminationExitTermsUnavailableReason()
+           .starts_with(
+               "dry_preview.hidden_truce.attacker_defeat_shape:") ||
+      g_exit_terms_monthly_income_calls !=
+          income_calls_before_mismatch + 2) {
+    return Fail(
+        "exit terms v2 did not preserve the authoritative income read "
+        "before its defeat-shape gate");
+  }
+  g_exit_terms_income_mismatch = false;
+
+  g_exit_terms_unknown_node = true;
+  g_exit_terms_context_lifecycle_valid = true;
+  if (xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
+          bindings, active_war_id, exit_terms) !=
+          xar::ck3_11906::ReadWarTerminationExitTermsResult::unavailable ||
+      exit_terms != xar::ck3_11906::WarTerminationExitTermsSnapshot{} ||
+      !xar::ck3_11906::LastWarTerminationExitTermsUnavailableReason()
+           .starts_with(
+               "dry_preview.capture_row_unknown:effect_vtable_rva=0x") ||
+      g_exit_terms_context_teardown_stage != 4 ||
+      !g_exit_terms_context_lifecycle_valid) {
+    return Fail("exit terms v2 accepted an unknown loaded-effect node");
+  }
+  g_exit_terms_unknown_node = false;
+
+  g_exit_terms_malformed_contribution = true;
+  g_exit_terms_context_lifecycle_valid = true;
+  if (xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
+          bindings, active_war_id, exit_terms) !=
+          xar::ck3_11906::ReadWarTerminationExitTermsResult::unavailable ||
+      exit_terms != xar::ck3_11906::WarTerminationExitTermsSnapshot{} ||
+      xar::ck3_11906::LastWarTerminationExitTermsUnavailableReason() !=
+          "dry_preview.attacker_contribution_row" ||
+      g_exit_terms_context_teardown_stage != 4 ||
+      !g_exit_terms_context_lifecycle_valid) {
+    return Fail(
+        "exit terms v2 accepted a malformed contribution-only preview row");
+  }
+  g_exit_terms_malformed_contribution = false;
+
+  g_exit_terms_duplicate_truce = true;
+  g_exit_terms_context_lifecycle_valid = true;
+  if (xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
+          bindings, active_war_id, exit_terms) !=
+          xar::ck3_11906::ReadWarTerminationExitTermsResult::unavailable ||
+      exit_terms != xar::ck3_11906::WarTerminationExitTermsSnapshot{} ||
+      xar::ck3_11906::LastWarTerminationExitTermsUnavailableReason() !=
+          "dry_preview.hidden_truce.projected_preview_count" ||
+      g_exit_terms_context_teardown_stage != 4 ||
+      !g_exit_terms_context_lifecycle_valid) {
+    return Fail("exit terms v2 hidden preview accepted duplicate truce");
+  }
+  g_exit_terms_duplicate_truce = false;
+
+  g_exit_terms_factor_malformed = true;
+  if (xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
+          bindings, active_war_id, exit_terms) !=
+          xar::ck3_11906::ReadWarTerminationExitTermsResult::unavailable ||
+      exit_terms != xar::ck3_11906::WarTerminationExitTermsSnapshot{} ||
+      xar::ck3_11906::LastWarTerminationExitTermsUnavailableReason() !=
+          "dry_preview.factor_row") {
+    return Fail("exit terms v2 accepted a malformed identifier82 payload");
+  }
+  g_exit_terms_factor_malformed = false;
+
+  g_exit_terms_answer_status_override = 3;
+  if (xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
+          bindings, active_war_id, exit_terms) !=
+          xar::ck3_11906::ReadWarTerminationExitTermsResult::unavailable ||
+      exit_terms != xar::ck3_11906::WarTerminationExitTermsSnapshot{}) {
+    return Fail("exit terms v2 published native recipient status 3");
+  }
+  g_exit_terms_answer_status_override = 0xFF;
+
+  Store(g_targeted_title, 0x284, std::int32_t{2});
+  if (xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
+          bindings, active_war_id, exit_terms) !=
+          xar::ck3_11906::ReadWarTerminationExitTermsResult::unavailable ||
+      exit_terms != xar::ck3_11906::WarTerminationExitTermsSnapshot{}) {
+    return Fail("exit terms v2 accepted a malformed succession span");
+  }
+  Store(g_targeted_title, 0x284, std::int32_t{1});
+
+  Store(jomini_state, 0x20, std::uint8_t{0});
+  if (xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
+          bindings, active_war_id, exit_terms) !=
+      xar::ck3_11906::ReadWarTerminationExitTermsResult::requires_paused) {
+    return Fail("exit terms v2 traversed effects while the map was running");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{1});
+
+  g_exit_terms_fixture_active = false;
+  Store(g_character_storage, 0x2C, std::int32_t{6});
+  Store(g_targeted_title, 0x278, static_cast<void *>(nullptr));
+  Store(g_targeted_title, 0x280, std::int32_t{0});
+  Store(g_targeted_title, 0x284, std::int32_t{0});
+  Store(g_dead_character, 0x1A8, static_cast<void *>(nullptr));
+  Store(g_war, 0x27C, std::int32_t{4});
+
+  g_expected_command = ExpectedCommand::offer_white_peace;
+  Store(jomini_state, 0x20, std::uint8_t{0});
+  g_white_peace_construct_calls = 0;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitOfferWhitePeace(bindings, active_war_id) !=
+          xar::ck3_11906::OfferWhitePeaceResult::requires_paused ||
+      g_white_peace_construct_calls != 0 || g_submit_called) {
+    return Fail("offer-white-peace ran while the map was not paused");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{1});
+
+  Store(g_war, 0x288, enemy_character_id);
+  if (xar::ck3_11906::SubmitOfferWhitePeace(bindings, active_war_id) !=
+      xar::ck3_11906::OfferWhitePeaceResult::player_not_war_leader) {
+    return Fail("offer-white-peace accepted a participating non-war-leader");
+  }
+  Store(g_war, 0x288, played_character_id);
+
+  Store(g_casus_belli_type_0, 0x1718, std::uint32_t{0});
+  g_white_peace_construct_calls = 0;
+  if (xar::ck3_11906::SubmitOfferWhitePeace(bindings, active_war_id) !=
+          xar::ck3_11906::OfferWhitePeaceResult::white_peace_not_allowed ||
+      g_white_peace_construct_calls != 0) {
+    return Fail("offer-white-peace ignored the active CB permission bit");
+  }
+  Store(g_casus_belli_type_0, 0x1718, std::uint32_t{1U << 7U});
+
+  g_interaction_validate_result = false;
+  g_interaction_destroy_calls = 0;
+  g_white_peace_construct_calls = 0;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitOfferWhitePeace(bindings, active_war_id) !=
+          xar::ck3_11906::OfferWhitePeaceResult::validation_failed ||
+      g_submit_called || g_white_peace_construct_calls != 1 ||
+      g_interaction_destroy_calls != 1 ||
+      g_last_special_interaction_index != 3 ||
+      g_last_special_actor_character_id != played_character_id ||
+      g_last_special_recipient_character_id != enemy_character_id) {
+    return Fail("offer-white-peace bypassed its native context validator");
+  }
+  g_interaction_validate_result = true;
+
+  g_submit_result = false;
+  g_interaction_destroy_calls = 0;
+  g_send_interaction_construct_called = false;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitOfferWhitePeace(bindings, active_war_id) !=
+          xar::ck3_11906::OfferWhitePeaceResult::submission_failed ||
+      !g_send_interaction_construct_called || !g_submit_called ||
+      g_interaction_destroy_calls != 2) {
+    return Fail("offer-white-peace lost the native queue rejection");
+  }
+  g_submit_result = true;
+
+  g_interaction_destroy_calls = 0;
+  g_white_peace_construct_calls = 0;
+  g_send_interaction_construct_called = false;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitOfferWhitePeace(bindings, active_war_id) !=
+          xar::ck3_11906::OfferWhitePeaceResult::submitted ||
+      g_white_peace_construct_calls != 1 ||
+      !g_send_interaction_construct_called || !g_submit_called ||
+      g_interaction_destroy_calls != 2 ||
+      g_last_special_interaction_index != 3 ||
+      g_last_special_actor_character_id != played_character_id ||
+      g_last_special_recipient_character_id != enemy_character_id) {
+    return Fail("offer-white-peace did not submit the typed native context");
+  }
+
+  g_expected_command = ExpectedCommand::surrender_war;
+  g_interaction_validate_result = false;
+  g_interaction_destroy_calls = 0;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitSurrenderWar(bindings, active_war_id) !=
+          xar::ck3_11906::SurrenderWarResult::validation_failed ||
+      g_submit_called || g_interaction_destroy_calls != 1 ||
+      g_war_resolution_attacker_victory) {
+    return Fail("surrender-war bypassed native validation");
+  }
+  g_interaction_validate_result = true;
+  g_war_resolution_context_available = false;
+  g_interaction_destroy_calls = 0;
+  if (xar::ck3_11906::SubmitSurrenderWar(bindings, active_war_id) !=
+          xar::ck3_11906::SurrenderWarResult::context_unavailable ||
+      g_interaction_destroy_calls != 1) {
+    return Fail("surrender-war accepted an empty native context");
+  }
+  g_war_resolution_context_available = true;
+  g_submit_result = false;
+  g_interaction_destroy_calls = 0;
+  if (xar::ck3_11906::SubmitSurrenderWar(bindings, active_war_id) !=
+          xar::ck3_11906::SurrenderWarResult::submission_failed ||
+      g_interaction_destroy_calls != 2) {
+    return Fail("surrender-war lost the native queue rejection");
+  }
+  g_submit_result = true;
+  g_interaction_default_construct_called = false;
+  g_war_resolution_construct_called = false;
+  g_war_resolution_attacker_victory = true;
+  g_send_interaction_construct_called = false;
+  g_interaction_destroy_calls = 0;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitSurrenderWar(bindings, active_war_id) !=
+          xar::ck3_11906::SurrenderWarResult::submitted ||
+      !g_interaction_default_construct_called ||
+      !g_war_resolution_construct_called ||
+      g_war_resolution_attacker_victory ||
+      !g_send_interaction_construct_called || !g_submit_called ||
+      g_interaction_destroy_calls != 2) {
+    return Fail("surrender-war did not submit absolute attacker defeat");
+  }
+
   if (xar::ck3_11906::SubmitEnforceDemands(bindings, 0x01000009) !=
       xar::ck3_11906::EnforceDemandsResult::war_not_found) {
     return Fail("enforce-demands accepted a missing war component");
@@ -3466,16 +6437,19 @@ int main() {
 
   g_expected_command = ExpectedCommand::enforce_demands;
   g_interaction_validate_result = false;
+  g_war_resolution_attacker_victory = false;
   g_interaction_destroy_calls = 0;
   g_submit_called = false;
   if (xar::ck3_11906::SubmitEnforceDemands(bindings, active_war_id) !=
           xar::ck3_11906::EnforceDemandsResult::validation_failed ||
-      g_submit_called || g_interaction_destroy_calls != 1) {
+      g_submit_called || g_interaction_destroy_calls != 1 ||
+      !g_war_resolution_attacker_victory) {
     return Fail("enforce-demands submitted after native validation failed");
   }
   g_interaction_validate_result = true;
   g_interaction_default_construct_called = false;
   g_war_resolution_construct_called = false;
+  g_war_resolution_attacker_victory = false;
   g_send_interaction_construct_called = false;
   g_interaction_destroy_calls = 0;
   g_submit_called = false;
@@ -3483,6 +6457,7 @@ int main() {
           xar::ck3_11906::EnforceDemandsResult::submitted ||
       !g_interaction_default_construct_called ||
       !g_war_resolution_construct_called ||
+      !g_war_resolution_attacker_victory ||
       !g_send_interaction_construct_called || !g_submit_called ||
       g_interaction_destroy_calls != 2) {
     return Fail("enforce-demands did not use native war-context queue lifecycle");
@@ -3526,8 +6501,10 @@ int main() {
                 "played_character_snapshot=1 alive_dead_projection=1 "
                 "one_life_settlement_snapshot=1 "
                 "dead_source_liveness_resolver_independent=1 "
-                "fixed_point_scale=100000 "
+               "fixed_point_scale=100000 "
                "war_army_snapshot=1 relative_war_score=1 "
+               "army_strength_query=1 army_strength_partial_rows=1 "
+               "combat_simulation_inputs_query=1 "
                "army_storage_pointer_slot=1 "
                "raise_troops_command=1 move_army_preview=1 "
                "move_army_command=1 "
@@ -3539,6 +6516,8 @@ int main() {
                "declare_war_command=1 "
                "arrange_marriage_query=1 "
                "arrange_marriage_command=1 "
+               "war_termination_query=1 surrender_war_command=1 "
+               "offer_white_peace_command=1 "
                "enforce_demands_war_leader_filter=1 "
                "enforce_demands_command=1 "
                "map_ready_gate=1 exact_build_gate=1\n";

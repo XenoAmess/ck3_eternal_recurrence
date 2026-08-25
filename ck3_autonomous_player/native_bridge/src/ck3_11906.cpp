@@ -5,8 +5,10 @@
 #include <algorithm>
 #include <array>
 #include <cstddef>
+#include <cstdio>
 #include <cstring>
 #include <limits>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -14,6 +16,35 @@
 
 namespace xar::ck3_11906 {
 namespace {
+
+thread_local std::string_view
+    g_last_war_termination_exit_terms_unavailable_reason{};
+thread_local std::string_view g_last_war_exit_preview_unavailable_reason{};
+thread_local std::array<char, 4096> g_war_exit_preview_diagnostic_buffer{};
+thread_local std::uintptr_t g_war_exit_loaded_root_vtable_rva = 0;
+thread_local std::int32_t g_war_exit_loaded_root_selector_count = -1;
+thread_local std::uintptr_t g_war_exit_loaded_default_child_vtable_rva = 0;
+thread_local std::int32_t g_war_exit_loaded_root_capacity = -1;
+thread_local std::int32_t g_war_exit_loaded_root_count = -1;
+thread_local std::int32_t g_war_exit_loaded_hidden_count = -1;
+thread_local std::int32_t g_war_exit_loaded_hidden_index = -1;
+thread_local std::int32_t g_war_exit_loaded_hidden_capacity = -1;
+thread_local std::int32_t g_war_exit_loaded_hidden_child_count = -1;
+thread_local std::uintptr_t
+    g_war_exit_loaded_hidden_child0_vtable_rva = 0;
+constexpr std::size_t kMaximumWarExitDiagnosticRootChildren = 16;
+thread_local std::array<std::uintptr_t,
+                        kMaximumWarExitDiagnosticRootChildren>
+    g_war_exit_loaded_root_child_pointers{};
+thread_local std::array<std::uintptr_t,
+                        kMaximumWarExitDiagnosticRootChildren>
+    g_war_exit_loaded_root_child_vtable_rvas{};
+
+void SetWarExitPreviewUnavailableReason(std::string_view reason) noexcept {
+  if (g_last_war_exit_preview_unavailable_reason.empty()) {
+    g_last_war_exit_preview_unavailable_reason = reason;
+  }
+}
 
 constexpr std::uintptr_t kGameStateSlotRva = 0x570E068;
 constexpr std::uintptr_t kJominiStateSlotRva = 0x570F7B8;
@@ -34,6 +65,9 @@ constexpr std::uintptr_t kPendingCharacterInteractionStorageSlotRva =
     0x57BF1C8;
 constexpr std::uintptr_t kCharacterStorageSlotRva = 0x570C130;
 constexpr std::uintptr_t kArmyStorageSlotRva = 0x570CC80;
+constexpr std::uintptr_t kArmyInternalStorageSlotRva = 0x570C730;
+constexpr std::uintptr_t kRegimentStorageSlotRva = 0x57BF4C8;
+constexpr std::uintptr_t kCombatStorageSlotRva = 0x570C758;
 constexpr std::uintptr_t kSiegeStorageSlotRva = 0x57BF1B8;
 constexpr std::uintptr_t kGlobalVariableContainerAccessorSlotRva =
     0x570F750;
@@ -56,6 +90,25 @@ constexpr std::uintptr_t kSendCharacterInteractionPrimaryVtableRva =
 constexpr std::uintptr_t kSendCharacterInteractionSecondaryVtableRva =
     0x40829C8;
 constexpr std::uintptr_t kWarDeclarationVtableRva = 0x411DAA0;
+constexpr std::uintptr_t kCharacterClaimVtableRva = 0x40E3060;
+constexpr std::uintptr_t kEffectPreviewCollectorVtableRva = 0x411CBA8;
+constexpr std::uintptr_t kJominiEffectVtableRva = 0x44CF030;
+constexpr std::uintptr_t kJominiScriptedEffectVtableRva = 0x44CF0F8;
+constexpr std::uintptr_t kJominiScriptedEffectTemplateVtableRva = 0x44DCD38;
+constexpr std::uintptr_t kHiddenEffectVtableRva = 0x44D1C88;
+constexpr std::uintptr_t kJominiContextEffectVtableRva = 0x44D27B8;
+constexpr std::uintptr_t kPrestigeEffectVtableRva = 0x446C7B0;
+constexpr std::uintptr_t kPrestigeExperienceEffectVtableRva = 0x446D368;
+constexpr std::uintptr_t kPietyEffectVtableRva = 0x446CAD0;
+constexpr std::uintptr_t kPietyExperienceEffectVtableRva = 0x446CA08;
+constexpr std::uintptr_t kLegitimacyEffectVtableRva = 0x446E3D8;
+constexpr std::uintptr_t kStressImpactEffectVtableRva = 0x446FE58;
+constexpr std::uintptr_t
+    kAddFromContributionAttackersEffectVtableRva = 0x444AE10;
+constexpr std::uintptr_t
+    kAddFromContributionDefendersEffectVtableRva = 0x444AED8;
+constexpr std::uintptr_t kGoldTransferEffectVtableRva = 0x446E950;
+constexpr std::uintptr_t kTruceEffectVtableRva = 0x4461CA8;
 constexpr std::uintptr_t kValidCasusBelliConfigurationScratchRva =
     0x4FED598;
 constexpr std::uintptr_t kSubmitCommandRva = 0x0973E00;
@@ -66,6 +119,11 @@ constexpr std::uintptr_t kValidateReplyCharacterInteractionCommandRva =
     0x26B3540;
 constexpr std::uintptr_t kContainsWarParticipantRva = 0x2224870;
 constexpr std::uintptr_t kGetWarScoreRva = 0x222A8A0;
+constexpr std::uintptr_t kGetImprisonmentWarScoreRva = 0x29030B0;
+constexpr std::uintptr_t kGetBattleWarScoreBaseRva = 0x2903150;
+constexpr std::uintptr_t kGetBattleWarScoreSideRva = 0x2903DA0;
+constexpr std::uintptr_t kGetOccupationWarScoreSideRva = 0x2904B00;
+constexpr std::uintptr_t kGetTickingWarScoreSideRva = 0x2905BC0;
 constexpr std::uintptr_t kIsNativeComponentAliveRva = 0x10495A0;
 constexpr std::uintptr_t kGetSiegeProgressRva = 0x229B960;
 constexpr std::uintptr_t kGetSiegeTotalWorkRva = 0x229CCA0;
@@ -81,6 +139,28 @@ constexpr std::uintptr_t kGetProvinceGarrisonSizeRva = 0x220E710;
 constexpr std::uintptr_t kGetProvinceBesiegingStrengthRva = 0x220E580;
 constexpr std::uintptr_t kResolveDefaultRaiseProvinceRva = 0x224CC80;
 constexpr std::uintptr_t kGetUnitStateRva = 0x0C7AAB0;
+constexpr std::uintptr_t kGetArmyCurrentSoldiersRva = 0x27BD9E0;
+constexpr std::uintptr_t kGetArmyMaximumSoldiersRva = 0x226F350;
+constexpr std::uintptr_t kGetArmyCommanderRva = 0x2278F70;
+constexpr std::uintptr_t kGetCommanderAdvantageRva = 0x0BC5410;
+constexpr std::uintptr_t kGetProvinceTerrainRva = 0x220D940;
+constexpr std::uintptr_t kEvaluateRegimentStatsAtProvinceRva = 0x239CAE0;
+constexpr std::uintptr_t kIsSpecialCombatRegimentRva = 0x239CEB0;
+constexpr std::uintptr_t kGetCharacterModifierAggregatorRva = 0x26172C0;
+constexpr std::uintptr_t kReadCharacterModifierRva = 0x20AB950;
+constexpr std::uintptr_t kGetCombatRulesRva = 0x82DC40;
+constexpr std::uintptr_t kReadCounterCurrentChunkRva = 0x23D2B90;
+constexpr std::uintptr_t kResolveCounterClassesRva = 0x23CF1B0;
+constexpr std::uintptr_t kGetCounterContextScaleRva = 0x2946B50;
+constexpr std::uintptr_t kGetKnightEffectivenessContextRva = 0x2613480;
+constexpr std::uintptr_t kReadKnightEffectivenessRva = 0x28FD990;
+constexpr std::uintptr_t kIsHoldingDefenderRva = 0x2900BB0;
+constexpr std::uintptr_t kCommanderMinRollRva = 0x570ED7C;
+constexpr std::uintptr_t kCommanderMaxRollRva = 0x570ED80;
+constexpr std::uintptr_t kKnightDamagePerProwessRva = 0x570EDF8;
+constexpr std::uintptr_t kKnightToughnessPerProwessRva = 0x570EDFC;
+constexpr std::uintptr_t kMinimumCombatWidthRva = 0x570ED84;
+constexpr std::uintptr_t kBaseCombatWidthRatioRva = 0x570EDB8;
 constexpr std::uintptr_t kConstructRaiseTroopsCommandRva = 0x26D6FC0;
 constexpr std::uintptr_t kValidateRaiseTroopsCommandRva = 0x26D7150;
 constexpr std::uintptr_t kDestroyRaiseTroopsCommandRva = 0x10E7950;
@@ -118,6 +198,10 @@ constexpr std::uintptr_t kFinalizeCharacterInteractionContextRva =
     0x2C40B20;
 constexpr std::uintptr_t kValidateCharacterInteractionContextRva =
     0x2C43F00;
+constexpr std::uintptr_t kReadCharacterInteractionAnswerScoreRva =
+    0x2C44320;
+constexpr std::uintptr_t kEvaluateCharacterInteractionTriggerRva =
+    0x334C510;
 constexpr std::uintptr_t kConstructSendCharacterInteractionCommandRva =
     0x26B3220;
 constexpr std::uintptr_t kDestroyCharacterInteractionContextRva =
@@ -126,6 +210,21 @@ constexpr std::uintptr_t kDefaultConstructCharacterInteractionContextRva =
     0x2C3F300;
 constexpr std::uintptr_t kConstructWarResolutionInteractionContextRva =
     0x0C569F0;
+constexpr std::uintptr_t kConstructSpecialCharacterInteractionContextRva =
+    0x2225D40;
+constexpr std::uintptr_t kReadCharacterClaimRva = 0x28B1AA0;
+constexpr std::uintptr_t kConstructWarEffectContextRva = 0x081F190;
+constexpr std::uintptr_t kPopulateWarEffectContextRva = 0x27A46F0;
+constexpr std::uintptr_t kConstructEffectPreviewCollectorRva = 0x10803E0;
+constexpr std::uintptr_t kDestroyEffectPreviewCollectorRva = 0x10804E0;
+constexpr std::uintptr_t kTraverseLoadedEffectRva = 0x3380170;
+constexpr std::uintptr_t kDestroyEffectContext118Rva = 0x081E900;
+constexpr std::uintptr_t kDestroyEffectContextArrayRowRva = 0x081E980;
+constexpr std::uintptr_t kEvaluateTruceDurationDaysRva = 0x3373000;
+constexpr std::uintptr_t kGetCharacterPrimaryTitleRva = 0x25F3350;
+constexpr std::uintptr_t kReadMonthlyGoldIncomeRva = 0x28DBE90;
+constexpr std::uintptr_t kEvaluateCharacterInteractionAnswerRva = 0x2C43B40;
+constexpr std::uintptr_t kCbPrestigeFactorIdentifierIdRva = 0x57EB754;
 constexpr std::uintptr_t kGetScriptIdentifierTableRva = 0x3B971A0;
 // Locks the script-identifier table, calls lookup-only RVA 0x3B96D40, then
 // unlocks. Unlike RVA 0x3B96E50 it never inserts a missing name.
@@ -162,6 +261,12 @@ constexpr std::size_t kPlayerCharacterEntryCountOffset = 0x64;
 constexpr std::size_t kPlayerCharacterIdOffset = 0xB0;
 constexpr std::size_t kPlayerCharacterPlayerIdOffset = 0xD8;
 constexpr std::size_t kCharacterIdOffset = 0x18;
+constexpr std::size_t kCharacterValiditySubobjectOffset = 0x10;
+constexpr std::size_t kCharacterEffectiveProwessOffset = 0xE8;
+constexpr std::size_t kCharacterKnightLinkOffset = 0x1B0;
+constexpr std::size_t kCharacterExtensionOffset = 0x1A8;
+constexpr std::size_t kCharacterLegitimacyDataOffset = 0x1C0;
+constexpr std::size_t kCharacterKnightLinkRegimentIdOffset = 0xF8;
 constexpr std::size_t kCharacterFamilyDataOffset = 0x1A0;
 constexpr std::size_t kCharacterDeathDataOffset = 0x1C8;
 constexpr std::size_t kFamilyBetrothedCharacterIdOffset = 0x10;
@@ -171,20 +276,29 @@ constexpr std::size_t kWarStorageOffset = 0x20;
 constexpr std::size_t kWarIdOffset = 0x08;
 constexpr std::size_t kWarAttackersOffset = 0x20;
 constexpr std::size_t kWarDefendersOffset = 0x80;
+constexpr std::size_t kWarActiveCasusBelliTypeOffset = 0x100;
+constexpr std::size_t kWarStartDateRawOffset = 0xE0;
 constexpr std::size_t kWarPrimaryAttackerCharacterIdOffset = 0x288;
 constexpr std::size_t kWarPrimaryDefenderCharacterIdOffset = 0x28C;
 constexpr std::size_t kWarTargetedTitleIdsOffset = 0x270;
+constexpr std::size_t kWarClaimantCharacterIdOffset = 0x290;
 constexpr std::size_t kWarEndedDataOffset = 0x358;
+constexpr std::size_t kWarParticipantPointersOffset = 0x08;
+constexpr std::size_t kWarParticipantPointerCapacityOffset = 0x10;
+constexpr std::size_t kWarParticipantPointerCountOffset = 0x14;
+constexpr std::size_t kWarParticipantCharacterIdOffset = 0x08;
 constexpr std::size_t kLandedTitleStorageOffset = 0x20;
 constexpr std::size_t kLandedTitleIdOffset = 0x10;
 constexpr std::size_t kLandedTitleTemplateOffset = 0x160;
 constexpr std::size_t kLandedTitleDeJureVassalIdsOffset = 0x240;
 constexpr std::size_t kLandedTitleTemplateTierOffset = 0x5C;
 constexpr std::size_t kLandedTitleTemplateProvinceIdOffset = 0x80;
+constexpr std::size_t kLandedTitleSuccessionIdsOffset = 0x278;
 constexpr std::int32_t kBaronyTitleTier = 1;
 constexpr std::int32_t kCountyTitleTier = 2;
 constexpr std::size_t kArmyIdOffset = 0x10;
 constexpr std::size_t kArmyCurrentProvinceOffset = 0x20;
+constexpr std::size_t kArmyTargetProvinceOffset = 0x30;
 constexpr std::size_t kUnitPathProvinceInfosOffset = 0x38;
 constexpr std::size_t kUnitPathProvinceInfoCapacityOffset = 0x40;
 constexpr std::size_t kUnitPathProvinceInfoCountOffset = 0x44;
@@ -192,7 +306,65 @@ constexpr std::size_t kUnitPathProvinceIdOffset = 0x00;
 constexpr std::size_t kUnitRetreatStateOffset = 0x170;
 constexpr std::size_t kArmyOwnerCharacterIdOffset = 0x174;
 constexpr std::size_t kUnitArmyIdOffset = 0x178;
+constexpr std::size_t kInternalArmyIdOffset = 0x10;
+constexpr std::size_t kInternalArmyRegimentIdsOffset = 0x38;
+constexpr std::size_t kInternalArmyRegimentCapacityOffset = 0x40;
+constexpr std::size_t kInternalArmyRegimentCountOffset = 0x44;
+constexpr std::size_t kInternalArmyCommanderCharacterIdOffset = 0x120;
+constexpr std::size_t kInternalArmyUnitIdOffset = 0x124;
+constexpr std::size_t kInternalArmyCombatIdOffset = 0x128;
+constexpr std::size_t kRegimentIdentitySubobjectOffset = 0x08;
+constexpr std::size_t kRegimentIdOffset = 0x10;
+constexpr std::size_t kRegimentCurrentSoldiersOffset = 0x38;
+constexpr std::size_t kRegimentMaximumSoldiersOffset = 0x3C;
+constexpr std::size_t kRegimentAiBasePowerOffset = 0x40;
+constexpr std::size_t kRegimentMaaTypeOffset = 0x118;
+constexpr std::size_t kRegimentInnerTypeOffset = 0x18;
+constexpr std::size_t kRegimentCounterStackSizeOffset = 0x68;
+constexpr std::size_t kRegimentCounterClassOffset = 0x270;
+constexpr std::size_t kRegimentCounterTargetsDataOffset = 0x2B8;
+constexpr std::size_t kRegimentCounterTargetsCountOffset = 0x2C4;
+constexpr std::size_t kRegimentMainPhaseEligibilityOffset = 0xA0A;
+constexpr std::size_t kRegimentCounterTargetStride = 0x10;
+constexpr std::size_t kRegimentCounterTargetClassOffset = 0x00;
+constexpr std::size_t kRegimentCounterTargetEffectivenessOffset = 0x08;
+constexpr std::size_t kRegimentKnightCharacterIdOffset = 0x148;
+constexpr std::size_t kRegimentArmyIdOffset = 0x140;
+constexpr std::size_t kDatabaseObjectKeyOffset = 0x18;
+constexpr std::size_t kTerrainCombatWidthMultiplierOffset = 0x58;
+constexpr std::size_t kTerrainCommanderMinRollModifierIndexOffset = 0x76E;
+constexpr std::size_t kTerrainCommanderMaxRollModifierIndexOffset = 0x770;
+constexpr std::int32_t kCommanderMinRollModifierIndex = 0x108;
+constexpr std::int32_t kCommanderMaxRollModifierIndex = 0x109;
+constexpr std::int32_t kCounterEfficiencyModifierIndex = 0x106;
+constexpr std::int32_t kCounterResistanceModifierIndex = 0x107;
+constexpr std::size_t kCombatRulesCounterClassCountOffset = 0xF14;
+constexpr std::int32_t kMaximumCounterClasses = 4'096;
+constexpr std::int32_t kMaximumCounterTargets = 4'096;
+constexpr std::int32_t kMaximumProvinceAdjacencies = 4'096;
+constexpr std::size_t kCombatIdOffset = 0x08;
+constexpr std::size_t kCombatPhaseOffset = 0x6B0;
+constexpr std::size_t kCombatPhaseDayOffset = 0x6B4;
+constexpr std::size_t kCombatProvinceOffset = 0x6B8;
+constexpr std::size_t kCombatBaseWidthOffset = 0x6C0;
+constexpr std::size_t kCombatFinalWidthOffset = 0x6C4;
+constexpr std::size_t kCombatBaseAdvantageOffset = 0x6C8;
+constexpr std::size_t kCombatSide0RollOffset = 0x6D0;
+constexpr std::size_t kCombatSide1RollOffset = 0x6D4;
+constexpr std::size_t kCombatResolvedAdvantageOffset = 0x710;
+constexpr std::size_t kEncounterMaaStatsMaximumOffset = 0x08;
+constexpr std::size_t kEncounterMaaStatsSiegeOffset = 0x10;
+constexpr std::size_t kEncounterMaaStatsDamageOffset = 0x18;
+constexpr std::size_t kEncounterMaaStatsToughnessOffset = 0x20;
+constexpr std::size_t kEncounterMaaStatsPursuitOffset = 0x28;
+constexpr std::size_t kEncounterMaaStatsScreenOffset = 0x30;
 constexpr std::size_t kProvinceIdOffset = 0x10;
+constexpr std::size_t kProvinceMapNodeOffset = 0x08;
+constexpr std::size_t kMapNodeAdjacencyDataOffset = 0x50;
+constexpr std::size_t kMapNodeAdjacencyCountOffset = 0x5C;
+constexpr std::size_t kMapAdjacencyStride = 0x30;
+constexpr std::size_t kMapAdjacencyKindOffset = 0x00;
+constexpr std::size_t kMapAdjacencyTargetProvinceIdOffset = 0x04;
 constexpr std::size_t kProvinceOccupyingCharacterIdOffset = 0x744;
 constexpr std::size_t kProvinceActiveSiegeIdOffset = 0x790;
 constexpr std::size_t kSiegeIdOffset = 0x08;
@@ -207,10 +379,12 @@ constexpr std::size_t kArrangeMarriageInteractionOffset = 0xF48;
 constexpr std::size_t kDeclareWarInteractionOffset = 0xF78;
 constexpr std::size_t kCasusBelliTypeArrayOffset = 0x68;
 constexpr std::size_t kCasusBelliTypeCountOffset = 0x74;
+constexpr std::size_t kCasusBelliTypeDatabaseIndexOffset = 0x10;
 constexpr std::size_t kCasusBelliTypeKeyOffset = 0x18;
 constexpr std::size_t kCasusBelliTypeRuleOffset = 0x38;
 constexpr std::size_t kCasusBelliRuleDisabledOffset = 0x211;
 constexpr std::size_t kCasusBelliTypeFlagsOffset = 0x1718;
+constexpr std::uint32_t kCasusBelliWhitePeacePossibleFlag = 1U << 7U;
 constexpr std::uint32_t kCasusBelliCombinedConfigurationsFlag = 1U << 20U;
 constexpr std::size_t kValidCasusBelliConfigurationSize = 0x98;
 constexpr std::size_t kValidCasusBelliClaimantOffset = 0x00;
@@ -219,6 +393,22 @@ constexpr std::size_t kNativeArrayDataOffset = 0x00;
 constexpr std::size_t kNativeArrayCapacityOffset = 0x08;
 constexpr std::size_t kNativeArrayCountOffset = 0x0C;
 constexpr std::size_t kCharacterInteractionSpecialDataOffset = 0x330;
+constexpr std::size_t kCharacterInteractionContextScopeOffset = 0x08;
+constexpr std::size_t kCharacterInteractionAutoAcceptTriggerOffset = 0x2580;
+constexpr std::size_t kCharacterInteractionAutoAcceptScalarOffset = 0x2A48;
+constexpr std::size_t kCharacterGoldOffset = 0x100;
+constexpr std::size_t kCharacterPietyOffset = 0x110;
+constexpr std::size_t kCharacterPietyExperienceOffset = 0x118;
+constexpr std::size_t kCharacterPrestigeOffset = 0x130;
+constexpr std::size_t kCharacterPrestigeExperienceOffset = 0x138;
+constexpr std::size_t kCharacterMonthlyGoldIncomeOffset = 0x2B0;
+constexpr std::size_t kCharacterStressPointsOffset = 0x2F8;
+constexpr std::size_t kCharacterLegitimacyOffset = 0x28;
+constexpr std::size_t kCharacterPrisonRelationOffset = 0x288;
+constexpr std::size_t kPrisonRelationJailerCharacterIdOffset = 0x00;
+constexpr std::size_t kWarEffectWhitePeaceOffset = 0x9C8;
+constexpr std::size_t kWarEffectAttackerDefeatOffset = 0xA28;
+constexpr std::size_t kTruceEffectDurationScriptValueOffset = 0x108;
 constexpr std::size_t kGlobalVariableEntriesOffset = 0x10;
 constexpr std::size_t kGlobalVariableEntryCountOffset = 0x1C;
 constexpr std::size_t kGlobalVariableEntrySize = 0x20;
@@ -238,6 +428,7 @@ constexpr std::int32_t kMaximumGlobalVariableEntries = 1'000'000;
 constexpr std::int32_t kMaximumCasusBelliTypes = 10'000;
 constexpr std::int32_t kMaximumCasusBelliConfigurations = 10'000;
 constexpr std::int32_t kMaximumNativeTitleIds = 1'000'000;
+constexpr std::int32_t kMaximumArmyRegiments = 65'536;
 constexpr std::int32_t kMaximumWarObjectiveTitleIds = 4'096;
 constexpr std::int32_t kMaximumUnitRouteProvinceInfos = 4'096;
 constexpr std::size_t kMaximumLandedTitleHierarchyDepth = 8;
@@ -470,6 +661,95 @@ struct alignas(8) CharacterInteractionContextStorage {
   std::array<std::byte, 0x338> bytes{};
 };
 
+struct alignas(8) CharacterClaimStorage {
+  std::array<std::byte, 0x18> bytes{};
+};
+
+struct alignas(16) WarEffectContextStorage {
+  std::array<std::byte, 0x170> bytes{};
+};
+
+struct alignas(8) EffectPreviewCollectorStorage {
+  std::array<std::byte, 0xD8> bytes{};
+};
+
+struct PreviewFixedPayload {
+  std::uint32_t tag = 0;
+  std::uint32_t padding = 0;
+  std::int64_t raw = 0;
+};
+
+enum class WarExitPreviewRowKind {
+  prestige,
+  prestige_experience,
+  piety,
+  piety_experience,
+  legitimacy,
+  stress,
+  gold_transfer,
+  truce,
+};
+
+enum class WarExitPreviewOutcome : std::uint8_t {
+  white_peace,
+  attacker_defeat,
+};
+
+struct WarExitPreviewRow {
+  WarExitPreviewRowKind kind = WarExitPreviewRowKind::prestige;
+  std::int32_t first_character_id = -1;
+  std::int32_t second_character_id = -1;
+  std::int64_t raw = 0;
+  void *effect_node = nullptr;
+};
+
+using EffectPreviewCollectorSlot8 = void (*)(
+    void *collector, const void *first_scope, const void *second_scope,
+    const PreviewFixedPayload *payload, void *effect_node,
+    void *forwarded_argument);
+using LoadedEffectSlot58 = void (*)(void *loaded_effect, void *wrapper,
+                                    std::uint32_t mode, void *collector);
+
+struct WarExitPreviewCapture {
+  const Bindings *bindings = nullptr;
+  EffectPreviewCollectorSlot8 original_slot8 = nullptr;
+  std::int32_t primary_attacker_character_id = -1;
+  std::int32_t primary_defender_character_id = -1;
+  WarExitPreviewOutcome outcome = WarExitPreviewOutcome::white_peace;
+  void *proxy_loaded_effect = nullptr;
+  void *original_loaded_effect = nullptr;
+  LoadedEffectSlot58 original_slot58 = nullptr;
+  std::int32_t factor_identifier_id = -1;
+  std::int64_t factor_raw = 0;
+  bool factor_found = false;
+  std::size_t callback_ordinal = 0;
+  std::vector<WarExitPreviewRow> rows;
+  bool failed = false;
+};
+
+struct WarExitHiddenTrucePath {
+  void *root_effect = nullptr;
+  void *root_children = nullptr;
+  void *scripted_effect = nullptr;
+  void *scripted_template = nullptr;
+  void *default_effect = nullptr;
+  void *default_children = nullptr;
+  void *hidden_effect = nullptr;
+  void *hidden_children = nullptr;
+  void *context_effect = nullptr;
+};
+
+struct alignas(16) WarExitHiddenTruceProjection {
+  std::array<std::byte, 0x50> root_effect{};
+  std::array<void *, 13> root_children{};
+  std::array<std::byte, 0xA0> scripted_effect{};
+  std::array<std::byte, 0x128> scripted_template{};
+  std::array<std::byte, 0x50> default_effect{};
+  std::array<void *, 6> default_children{};
+};
+
+thread_local WarExitPreviewCapture *g_war_exit_preview_capture = nullptr;
+
 struct alignas(8) SendCharacterInteractionCommandStorage {
   std::array<std::byte, 0x368> bytes{};
 };
@@ -536,6 +816,10 @@ static_assert(offsetof(AssaultCommand, command_kind) == 0x20);
 static_assert(offsetof(AssaultCommand, played_character_id) == 0x24);
 static_assert(offsetof(AssaultCommand, siege_id) == 0x28);
 static_assert(sizeof(CharacterInteractionContextStorage) == 0x338);
+static_assert(sizeof(CharacterClaimStorage) == 0x18);
+static_assert(sizeof(WarEffectContextStorage) == 0x170);
+static_assert(sizeof(EffectPreviewCollectorStorage) == 0xD8);
+static_assert(sizeof(PreviewFixedPayload) == 0x10);
 static_assert(sizeof(SendCharacterInteractionCommandStorage) == 0x368);
 
 template <typename Value>
@@ -550,6 +834,62 @@ template <typename Value>
 void StoreAt(void *base, std::size_t offset, Value value) noexcept {
   std::memcpy(static_cast<std::byte *>(base) + offset, &value,
               sizeof(value));
+}
+
+void SetUnknownWarExitPreviewRowReason(
+    const void *effect_node, const void *first_scope,
+    const void *second_scope, const PreviewFixedPayload *payload,
+    const void *forwarded_argument, std::size_t callback_ordinal) noexcept {
+  if (!g_last_war_exit_preview_unavailable_reason.empty()) {
+    return;
+  }
+  const auto module =
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  const auto effect_vtable =
+      effect_node == nullptr ? std::uintptr_t{0}
+                             : LoadAt<std::uintptr_t>(effect_node, 0x00);
+  const auto effect_vtable_rva =
+      module != 0 && effect_vtable >= module ? effect_vtable - module
+                                             : effect_vtable;
+  const auto first_kind = first_scope == nullptr
+                              ? std::uint16_t{0xFFFF}
+                              : LoadAt<std::uint16_t>(first_scope, 0x00);
+  const auto first_id = first_scope == nullptr
+                            ? std::int32_t{-1}
+                            : LoadAt<std::int32_t>(first_scope, 0x08);
+  const auto second_kind = second_scope == nullptr
+                               ? std::uint16_t{0xFFFF}
+                               : LoadAt<std::uint16_t>(second_scope, 0x00);
+  const auto second_id = second_scope == nullptr
+                             ? std::int32_t{-1}
+                             : LoadAt<std::int32_t>(second_scope, 0x08);
+  const auto payload_tag =
+      payload == nullptr ? std::uint32_t{0xFFFFFFFF} : payload->tag;
+  const auto payload_raw =
+      payload == nullptr ? std::int64_t{0} : payload->raw;
+  const int written = std::snprintf(
+      g_war_exit_preview_diagnostic_buffer.data(),
+      g_war_exit_preview_diagnostic_buffer.size(),
+      "dry_preview.capture_row_unknown:effect_vtable_rva=0x%llX,"
+      "first_kind=%u,first_id=%d,second_kind=%u,second_id=%d,"
+      "payload_tag=%u,payload_raw=%lld,forwarded_ptr=0x%llX,"
+      "callback_ordinal=%llu",
+      static_cast<unsigned long long>(effect_vtable_rva),
+      static_cast<unsigned int>(first_kind), first_id,
+      static_cast<unsigned int>(second_kind), second_id, payload_tag,
+      static_cast<long long>(payload_raw),
+      static_cast<unsigned long long>(
+          reinterpret_cast<std::uintptr_t>(forwarded_argument)),
+      static_cast<unsigned long long>(callback_ordinal));
+  if (written <= 0 ||
+      static_cast<std::size_t>(written) >=
+          g_war_exit_preview_diagnostic_buffer.size()) {
+    SetWarExitPreviewUnavailableReason("dry_preview.capture_row_unknown");
+    return;
+  }
+  g_last_war_exit_preview_unavailable_reason = std::string_view(
+      g_war_exit_preview_diagnostic_buffer.data(),
+      static_cast<std::size_t>(written));
 }
 
 void *CurrentEvent(const Bindings &bindings, void *game_state) noexcept {
@@ -1135,11 +1475,14 @@ bool IsEnabledCasusBelliType(const void *casus_belli_type) noexcept {
          LoadAt<std::uint8_t>(rule, kCasusBelliRuleDisabledOffset) == 0;
 }
 
-bool ReadCasusBelliTypeKey(const void *casus_belli_type,
+bool ReadDatabaseObjectKey(const void *database_object,
+                           std::size_t key_offset,
                            std::string &output) noexcept {
+  if (database_object == nullptr) {
+    return false;
+  }
   const auto *const string_storage =
-      static_cast<const std::byte *>(casus_belli_type) +
-      kCasusBelliTypeKeyOffset;
+      static_cast<const std::byte *>(database_object) + key_offset;
   const auto size = LoadAt<std::size_t>(string_storage, 0x10);
   const auto capacity = LoadAt<std::size_t>(string_storage, 0x18);
   if (size > capacity || size > kMaximumDatabaseObjectKeyBytes) {
@@ -1156,6 +1499,12 @@ bool ReadCasusBelliTypeKey(const void *casus_belli_type,
   }
   output.assign(data == nullptr ? "" : data, size);
   return true;
+}
+
+bool ReadCasusBelliTypeKey(const void *casus_belli_type,
+                           std::string &output) noexcept {
+  return ReadDatabaseObjectKey(casus_belli_type,
+                               kCasusBelliTypeKeyOffset, output);
 }
 
 bool MaterializeCasusBelliChoices(
@@ -1526,6 +1875,1644 @@ void *ResolveWar(const Bindings &bindings, void *game_state,
     return nullptr;
   }
   return war;
+}
+
+bool HasWarTerminationQueryBindings(const Bindings &bindings) noexcept {
+  return bindings.enabled && bindings.game_state_slot != nullptr &&
+         bindings.jomini_state_slot != nullptr &&
+         bindings.contains_war_participant != nullptr &&
+         bindings.default_construct_character_interaction_context != nullptr &&
+         bindings.construct_war_resolution_interaction_context != nullptr &&
+         bindings.construct_special_character_interaction_context != nullptr &&
+         bindings.validate_character_interaction_context != nullptr &&
+         bindings.destroy_character_interaction_context != nullptr;
+}
+
+bool HasWarTerminationTermsBindings(const Bindings &bindings) noexcept {
+  return bindings.enabled && bindings.game_state_slot != nullptr &&
+         bindings.jomini_state_slot != nullptr &&
+         bindings.character_storage_slot != nullptr &&
+         bindings.contains_war_participant != nullptr &&
+         bindings.read_character_claim != nullptr &&
+         bindings.character_claim_vtable != 0;
+}
+
+bool HasWarTerminationExitTermsBindings(const Bindings &bindings) noexcept {
+  return HasWarTerminationQueryBindings(bindings) &&
+         HasWarTerminationTermsBindings(bindings) &&
+         bindings.construct_war_effect_context != nullptr &&
+         bindings.populate_war_effect_context != nullptr &&
+         bindings.construct_effect_preview_collector != nullptr &&
+         bindings.destroy_effect_preview_collector != nullptr &&
+         bindings.traverse_loaded_effect != nullptr &&
+         bindings.destroy_effect_context_118 != nullptr &&
+         bindings.destroy_effect_context_array_row != nullptr &&
+         bindings.evaluate_truce_duration_days != nullptr &&
+         bindings.get_character_primary_title != nullptr &&
+         bindings.read_monthly_gold_income != nullptr &&
+         bindings.evaluate_character_interaction_answer != nullptr &&
+         bindings.cb_prestige_factor_identifier_id != nullptr &&
+         bindings.effect_preview_collector_vtable != 0 &&
+         bindings.prestige_effect_vtable != 0 &&
+         bindings.prestige_experience_effect_vtable != 0 &&
+         bindings.piety_effect_vtable != 0 &&
+         bindings.piety_experience_effect_vtable != 0 &&
+         bindings.legitimacy_effect_vtable != 0 &&
+         bindings.stress_impact_effect_vtable != 0 &&
+         bindings.add_from_contribution_attackers_effect_vtable != 0 &&
+         bindings.add_from_contribution_defenders_effect_vtable != 0 &&
+         bindings.gold_transfer_effect_vtable != 0 &&
+         bindings.truce_effect_vtable != 0;
+}
+
+void *ResolveTermsCharacter(const Bindings &bindings,
+                            std::int32_t character_id) noexcept {
+  if (character_id == -1 || bindings.character_storage_slot == nullptr) {
+    return nullptr;
+  }
+  void *const storage = *bindings.character_storage_slot;
+  if (storage == nullptr) {
+    return nullptr;
+  }
+  const auto capacity =
+      LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  if (capacity <= 0 || capacity > kMaximumComponentCapacity) {
+    return nullptr;
+  }
+  return ResolveCharacter(bindings, character_id);
+}
+
+bool ReadWarClaimRow(const Bindings &bindings, void *claimant, void *title,
+                     std::int32_t title_id,
+                     game::WarClaimSnapshot &output) noexcept {
+  output = {};
+  CharacterClaimStorage storage{};
+  void *const claim = storage.bytes.data();
+  void *const returned =
+      bindings.read_character_claim(claim, claimant, title);
+  const auto present_raw = LoadAt<std::uint8_t>(claim, 0x10);
+  if (returned != claim || present_raw > 1) {
+    return false;
+  }
+
+  output.title_id = title_id;
+  output.present = present_raw != 0;
+  if (!output.present) {
+    output.state = "absent";
+    return true;
+  }
+
+  const auto strong_raw = LoadAt<std::uint8_t>(claim, 0x0C);
+  const auto implicit_raw = LoadAt<std::uint8_t>(claim, 0x0D);
+  auto **const vtable = LoadAt<void **>(claim, 0x00);
+  if (reinterpret_cast<std::uintptr_t>(vtable) !=
+          bindings.character_claim_vtable ||
+      vtable == nullptr || vtable[0] == nullptr) {
+    return false;
+  }
+  const bool fields_valid =
+      strong_raw <= 1 && implicit_raw <= 1 &&
+      LoadAt<std::int32_t>(claim, 0x08) == title_id;
+  if (fields_valid) {
+    output.strong = strong_raw != 0;
+    output.implicit = implicit_raw != 0;
+    if (output.strong) {
+      output.state =
+          output.implicit ? "strong_implicit" : "strong_explicit";
+    } else {
+      output.state =
+          output.implicit ? "weak_implicit" : "weak_explicit";
+    }
+  }
+  using DestroyCharacterClaim = void *(*)(void *, std::int32_t);
+  reinterpret_cast<DestroyCharacterClaim>(vtable[0])(claim, 0);
+  return fields_valid;
+}
+
+bool ReadPreviewCharacterScope(const Bindings &bindings, const void *scope,
+                               std::int32_t &character_id) noexcept {
+  if (scope == nullptr || LoadAt<std::uint16_t>(scope, 0x00) != 4) {
+    return false;
+  }
+  const auto candidate = LoadAt<std::int32_t>(scope, 0x08);
+  if (candidate <= 0 || ResolveTermsCharacter(bindings, candidate) == nullptr) {
+    return false;
+  }
+  character_id = candidate;
+  return true;
+}
+
+bool ClassifyWarExitPreviewNode(const Bindings &bindings,
+                                const void *effect_node,
+                                WarExitPreviewRowKind &kind) noexcept {
+  if (effect_node == nullptr) {
+    return false;
+  }
+  const auto vtable = LoadAt<std::uintptr_t>(effect_node, 0x00);
+  if (vtable == bindings.prestige_effect_vtable) {
+    kind = WarExitPreviewRowKind::prestige;
+  } else if (vtable == bindings.prestige_experience_effect_vtable) {
+    kind = WarExitPreviewRowKind::prestige_experience;
+  } else if (vtable == bindings.piety_effect_vtable) {
+    kind = WarExitPreviewRowKind::piety;
+  } else if (vtable == bindings.piety_experience_effect_vtable) {
+    kind = WarExitPreviewRowKind::piety_experience;
+  } else if (vtable == bindings.legitimacy_effect_vtable) {
+    kind = WarExitPreviewRowKind::legitimacy;
+  } else if (vtable == bindings.stress_impact_effect_vtable) {
+    kind = WarExitPreviewRowKind::stress;
+  } else if (vtable == bindings.gold_transfer_effect_vtable) {
+    kind = WarExitPreviewRowKind::gold_transfer;
+  } else if (vtable == bindings.truce_effect_vtable) {
+    kind = WarExitPreviewRowKind::truce;
+  } else {
+    return false;
+  }
+  return true;
+}
+
+bool CaptureWarExitPrestigeFactor(WarExitPreviewCapture &capture,
+                                  const void *wrapper) noexcept {
+  if (wrapper == nullptr || capture.factor_identifier_id < 0 ||
+      capture.factor_found) {
+    SetWarExitPreviewUnavailableReason("dry_preview.factor_preconditions");
+    return false;
+  }
+  void *const variables = LoadAt<void *>(wrapper, 0x18);
+  if (variables == nullptr) {
+    SetWarExitPreviewUnavailableReason("dry_preview.factor_container");
+    return false;
+  }
+  void *const data = LoadAt<void *>(variables, 0x00);
+  const auto capacity = LoadAt<std::int32_t>(variables, 0x08);
+  const auto count = LoadAt<std::int32_t>(variables, 0x0C);
+  if (capacity < 0 || count < 0 || count > capacity ||
+      count > kMaximumComponentCapacity || (count > 0 && data == nullptr)) {
+    SetWarExitPreviewUnavailableReason("dry_preview.factor_span");
+    return false;
+  }
+  bool found = false;
+  std::int64_t raw = 0;
+  for (std::int32_t index = 0; index < count; ++index) {
+    const auto *const row = static_cast<const std::byte *>(data) +
+                            static_cast<std::size_t>(index) * 0x20;
+    if (LoadAt<std::int32_t>(row, 0x00) !=
+        capture.factor_identifier_id) {
+      continue;
+    }
+    if (found || LoadAt<std::uint16_t>(row, 0x08) != 1 ||
+        LoadAt<std::uint16_t>(row, 0x0A) != 0 ||
+        LoadAt<std::uint8_t>(row, 0x18) != 0) {
+      SetWarExitPreviewUnavailableReason("dry_preview.factor_row");
+      return false;
+    }
+    raw = LoadAt<std::int64_t>(row, 0x10);
+    found = true;
+  }
+  if (!found) {
+    SetWarExitPreviewUnavailableReason("dry_preview.factor_missing");
+    return false;
+  }
+  capture.factor_raw = raw;
+  capture.factor_found = true;
+  return true;
+}
+
+bool ReadExactWarExitEffectChildren(
+    void *effect, std::int32_t expected_count,
+    std::int32_t expected_capacity, void *&children,
+    std::string_view reason) noexcept {
+  children = nullptr;
+  if (effect == nullptr) {
+    SetWarExitPreviewUnavailableReason(reason);
+    return false;
+  }
+  void *const data = LoadAt<void *>(effect, 0x40);
+  const auto capacity = LoadAt<std::int32_t>(effect, 0x48);
+  const auto count = LoadAt<std::int32_t>(effect, 0x4C);
+  if (count != expected_count || capacity != expected_capacity ||
+      (expected_count > 0 && data == nullptr)) {
+    SetWarExitPreviewUnavailableReason(reason);
+    return false;
+  }
+  children = data;
+  return true;
+}
+
+bool ResolveWarExitHiddenTrucePath(
+    const Bindings &bindings, void *root_effect,
+    WarExitHiddenTrucePath &path) noexcept {
+  path = {};
+  auto **const root_vtable =
+      root_effect == nullptr ? nullptr : LoadAt<void **>(root_effect, 0x00);
+  if (reinterpret_cast<std::uintptr_t>(root_vtable) !=
+      bindings.jomini_effect_vtable) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.root_vtable");
+    return false;
+  }
+  void *root_children = nullptr;
+  if (!ReadExactWarExitEffectChildren(
+          root_effect, 10, 13, root_children,
+          "dry_preview.hidden_truce.root_span")) {
+    return false;
+  }
+
+  void *const scripted_effect =
+      LoadAt<void *>(root_children, 8 * sizeof(void *));
+  if (scripted_effect == nullptr ||
+      LoadAt<std::uintptr_t>(scripted_effect, 0x00) !=
+          bindings.jomini_scripted_effect_vtable) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.root_child8");
+    return false;
+  }
+  if (LoadAt<std::int32_t>(scripted_effect, 0x94) != 0) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.selector_count");
+    return false;
+  }
+  void *const scripted_template = LoadAt<void *>(scripted_effect, 0x60);
+  if (scripted_template == nullptr ||
+      LoadAt<std::uintptr_t>(scripted_template, 0x00) !=
+          bindings.jomini_scripted_effect_template_vtable) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.template_vtable");
+    return false;
+  }
+  void *const default_effect = LoadAt<void *>(scripted_template, 0x120);
+  if (default_effect == nullptr ||
+      LoadAt<std::uintptr_t>(default_effect, 0x00) !=
+          bindings.jomini_effect_vtable) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.default_vtable");
+    return false;
+  }
+  void *default_children = nullptr;
+  if (!ReadExactWarExitEffectChildren(
+          default_effect, 5, 6, default_children,
+          "dry_preview.hidden_truce.default_span")) {
+    return false;
+  }
+
+  void *const hidden_effect =
+      LoadAt<void *>(default_children, 2 * sizeof(void *));
+  if (hidden_effect == nullptr ||
+      LoadAt<std::uintptr_t>(hidden_effect, 0x00) !=
+          bindings.hidden_effect_vtable) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.hidden_vtable");
+    return false;
+  }
+  void *hidden_children = nullptr;
+  if (!ReadExactWarExitEffectChildren(
+          hidden_effect, 1, 1, hidden_children,
+          "dry_preview.hidden_truce.hidden_span")) {
+    return false;
+  }
+
+  void *const context_effect = LoadAt<void *>(hidden_children, 0x00);
+  if (context_effect == nullptr ||
+      LoadAt<std::uintptr_t>(context_effect, 0x00) !=
+          bindings.jomini_context_effect_vtable) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.context_vtable");
+    return false;
+  }
+  void *context_children = nullptr;
+  if (!ReadExactWarExitEffectChildren(
+          context_effect, 1, 1, context_children,
+          "dry_preview.hidden_truce.context_span")) {
+    return false;
+  }
+  if (LoadAt<void *>(context_effect, 0x60) == nullptr ||
+      LoadAt<std::int32_t>(context_effect, 0x6C) != 1) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.context_scope");
+    return false;
+  }
+
+  void *const truce_effect = LoadAt<void *>(context_children, 0x00);
+  if (truce_effect == nullptr ||
+      LoadAt<std::uintptr_t>(truce_effect, 0x00) !=
+          bindings.truce_effect_vtable) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.truce_vtable");
+    return false;
+  }
+  auto **const context_vtable = LoadAt<void **>(context_effect, 0x00);
+  if (context_vtable[11] == nullptr || root_vtable[11] == nullptr ||
+      context_vtable[11] != root_vtable[11]) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.preview_slot");
+    return false;
+  }
+  path.root_effect = root_effect;
+  path.root_children = root_children;
+  path.scripted_effect = scripted_effect;
+  path.scripted_template = scripted_template;
+  path.default_effect = default_effect;
+  path.default_children = default_children;
+  path.hidden_effect = hidden_effect;
+  path.hidden_children = hidden_children;
+  path.context_effect = context_effect;
+  return true;
+}
+
+bool BuildWarExitHiddenTruceProjection(
+    const Bindings &bindings, const WarExitHiddenTrucePath &path,
+    WarExitHiddenTruceProjection &projection,
+    void *&projected_root_effect) noexcept {
+  projected_root_effect = nullptr;
+  if (path.root_effect == nullptr || path.root_children == nullptr ||
+      path.scripted_effect == nullptr || path.scripted_template == nullptr ||
+      path.default_effect == nullptr || path.default_children == nullptr ||
+      path.hidden_effect == nullptr || path.hidden_children == nullptr ||
+      path.context_effect == nullptr) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.projection_preconditions");
+    return false;
+  }
+
+  std::memcpy(projection.root_effect.data(), path.root_effect,
+              projection.root_effect.size());
+  std::memcpy(projection.scripted_effect.data(), path.scripted_effect,
+              projection.scripted_effect.size());
+  std::memcpy(projection.scripted_template.data(), path.scripted_template,
+              projection.scripted_template.size());
+  std::memcpy(projection.default_effect.data(), path.default_effect,
+              projection.default_effect.size());
+
+  for (std::size_t index = 0; index < 10; ++index) {
+    void *const child =
+        LoadAt<void *>(path.root_children, index * sizeof(void *));
+    if (child == nullptr) {
+      SetWarExitPreviewUnavailableReason(
+          "dry_preview.hidden_truce.projection_root_child");
+      return false;
+    }
+    projection.root_children[index] = child;
+  }
+  for (std::size_t index = 0; index < 5; ++index) {
+    void *const child =
+        LoadAt<void *>(path.default_children, index * sizeof(void *));
+    if (child == nullptr) {
+      SetWarExitPreviewUnavailableReason(
+          "dry_preview.hidden_truce.projection_default_child");
+      return false;
+    }
+    projection.default_children[index] = child;
+  }
+
+  projection.root_children[8] = projection.scripted_effect.data();
+  projection.default_children[2] = path.context_effect;
+  StoreAt(projection.root_effect.data(), 0x40,
+          static_cast<void *>(projection.root_children.data()));
+  StoreAt(projection.scripted_effect.data(), 0x60,
+          static_cast<void *>(projection.scripted_template.data()));
+  StoreAt(projection.scripted_template.data(), 0x120,
+          static_cast<void *>(projection.default_effect.data()));
+  StoreAt(projection.default_effect.data(), 0x40,
+          static_cast<void *>(projection.default_children.data()));
+
+  if (LoadAt<std::uintptr_t>(projection.root_effect.data(), 0x00) !=
+          bindings.jomini_effect_vtable ||
+      LoadAt<std::int32_t>(projection.root_effect.data(), 0x48) != 13 ||
+      LoadAt<std::int32_t>(projection.root_effect.data(), 0x4C) != 10 ||
+      LoadAt<void *>(projection.root_effect.data(), 0x40) !=
+          projection.root_children.data() ||
+      projection.root_children[8] != projection.scripted_effect.data() ||
+      LoadAt<std::uintptr_t>(projection.scripted_effect.data(), 0x00) !=
+          bindings.jomini_scripted_effect_vtable ||
+      LoadAt<void *>(projection.scripted_effect.data(), 0x60) !=
+          projection.scripted_template.data() ||
+      LoadAt<std::int32_t>(projection.scripted_effect.data(), 0x94) != 0 ||
+      LoadAt<std::uintptr_t>(projection.scripted_template.data(), 0x00) !=
+          bindings.jomini_scripted_effect_template_vtable ||
+      LoadAt<void *>(projection.scripted_template.data(), 0x120) !=
+          projection.default_effect.data() ||
+      LoadAt<std::uintptr_t>(projection.default_effect.data(), 0x00) !=
+          bindings.jomini_effect_vtable ||
+      LoadAt<std::int32_t>(projection.default_effect.data(), 0x48) != 6 ||
+      LoadAt<std::int32_t>(projection.default_effect.data(), 0x4C) != 5 ||
+      LoadAt<void *>(projection.default_effect.data(), 0x40) !=
+          projection.default_children.data() ||
+      projection.default_children[2] != path.context_effect ||
+      LoadAt<std::uintptr_t>(projection.default_children[2], 0x00) !=
+          bindings.jomini_context_effect_vtable) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.projection_readback");
+    return false;
+  }
+  for (std::size_t index = 0; index < 10; ++index) {
+    if (index != 8 && projection.root_children[index] !=
+                          LoadAt<void *>(path.root_children,
+                                         index * sizeof(void *))) {
+      SetWarExitPreviewUnavailableReason(
+          "dry_preview.hidden_truce.projection_root_identity");
+      return false;
+    }
+  }
+  for (std::size_t index = 0; index < 5; ++index) {
+    if (index != 2 && projection.default_children[index] !=
+                          LoadAt<void *>(path.default_children,
+                                         index * sizeof(void *))) {
+      SetWarExitPreviewUnavailableReason(
+          "dry_preview.hidden_truce.projection_default_identity");
+      return false;
+    }
+  }
+  projected_root_effect = projection.root_effect.data();
+  return true;
+}
+
+void SetWarExitAttackerDefeatShapeReason(
+    const Bindings &bindings, void *root_effect) noexcept {
+  if (!g_last_war_exit_preview_unavailable_reason.empty()) {
+    return;
+  }
+
+  const auto module = bindings.truce_effect_vtable - kTruceEffectVtableRva;
+  const auto effect_vtable =
+      root_effect == nullptr
+          ? std::uintptr_t{0}
+          : LoadAt<std::uintptr_t>(root_effect, 0x00);
+  bool diagnostic_complete = true;
+  std::size_t used = 0;
+  const auto append = [&](const char *format, const auto... values) noexcept {
+    if (!diagnostic_complete) {
+      return;
+    }
+    const int written = std::snprintf(
+        g_war_exit_preview_diagnostic_buffer.data() + used,
+        g_war_exit_preview_diagnostic_buffer.size() - used, format,
+        values...);
+    if (written <= 0 ||
+        static_cast<std::size_t>(written) >=
+            g_war_exit_preview_diagnostic_buffer.size() - used) {
+      diagnostic_complete = false;
+      return;
+    }
+    used += static_cast<std::size_t>(written);
+  };
+  const auto vtable_rva = [module](const void *effect) noexcept {
+    if (effect == nullptr) {
+      return std::uintptr_t{0};
+    }
+    const auto vtable = LoadAt<std::uintptr_t>(effect, 0x00);
+    return vtable >= module ? vtable - module : std::uintptr_t{0};
+  };
+
+  append("dry_preview.hidden_truce.attacker_defeat_shape:"
+         "root=0x%llX,root_span=%d/%d,root_children=",
+         static_cast<unsigned long long>(
+             g_war_exit_loaded_root_vtable_rva),
+         g_war_exit_loaded_root_count, g_war_exit_loaded_root_capacity);
+  const auto root_child_count =
+      g_war_exit_loaded_root_count > 0
+          ? std::min<std::size_t>(
+                static_cast<std::size_t>(g_war_exit_loaded_root_count),
+                kMaximumWarExitDiagnosticRootChildren)
+          : std::size_t{0};
+  for (std::size_t index = 0; index < root_child_count; ++index) {
+    append("%s%llu=0x%llX@0x%llX", index == 0 ? "" : "/",
+           static_cast<unsigned long long>(index),
+           static_cast<unsigned long long>(
+               g_war_exit_loaded_root_child_pointers[index]),
+           static_cast<unsigned long long>(
+               g_war_exit_loaded_root_child_vtable_rvas[index]));
+  }
+
+  std::int32_t selector_count = -1;
+  void *scripted_template = nullptr;
+  std::uintptr_t scripted_template_vtable_rva = 0;
+  void *default_effect = nullptr;
+  std::uintptr_t default_vtable_rva = 0;
+  void *default_children = nullptr;
+  std::int32_t default_capacity = -1;
+  std::int32_t default_count = -1;
+  std::array<std::uintptr_t, kMaximumWarExitDiagnosticRootChildren>
+      default_child_pointers{};
+  std::array<std::uintptr_t, kMaximumWarExitDiagnosticRootChildren>
+      default_child_vtable_rvas{};
+  std::int32_t hidden_count = -1;
+  std::int32_t hidden_index = -1;
+  std::int32_t hidden_capacity = -1;
+  std::int32_t hidden_child_count = -1;
+  void *hidden_child0 = nullptr;
+  std::uintptr_t hidden_child0_vtable_rva = 0;
+  std::int32_t context_capacity = -1;
+  std::int32_t context_child_count = -1;
+  std::int32_t context_scope_count = -1;
+  void *context_child0 = nullptr;
+  std::uintptr_t context_child0_vtable_rva = 0;
+
+  constexpr std::size_t kAttackerDefeatTruceRootIndex = 9;
+  void *const scripted_effect =
+      root_child_count > kAttackerDefeatTruceRootIndex
+          ? reinterpret_cast<void *>(
+                g_war_exit_loaded_root_child_pointers[
+                    kAttackerDefeatTruceRootIndex])
+          : nullptr;
+  const auto scripted_effect_vtable_rva =
+      root_child_count > kAttackerDefeatTruceRootIndex
+          ? g_war_exit_loaded_root_child_vtable_rvas[
+                kAttackerDefeatTruceRootIndex]
+          : std::uintptr_t{0};
+  if (effect_vtable == bindings.jomini_effect_vtable &&
+      scripted_effect != nullptr &&
+      LoadAt<std::uintptr_t>(scripted_effect, 0x00) ==
+          bindings.jomini_scripted_effect_vtable) {
+    selector_count = LoadAt<std::int32_t>(scripted_effect, 0x94);
+    scripted_template = LoadAt<void *>(scripted_effect, 0x60);
+    scripted_template_vtable_rva = vtable_rva(scripted_template);
+    if (selector_count == 0 && scripted_template != nullptr &&
+        LoadAt<std::uintptr_t>(scripted_template, 0x00) ==
+            bindings.jomini_scripted_effect_template_vtable) {
+      default_effect = LoadAt<void *>(scripted_template, 0x120);
+      default_vtable_rva = vtable_rva(default_effect);
+      if (default_effect != nullptr &&
+          LoadAt<std::uintptr_t>(default_effect, 0x00) ==
+              bindings.jomini_effect_vtable) {
+        default_children = LoadAt<void *>(default_effect, 0x40);
+        default_capacity = LoadAt<std::int32_t>(default_effect, 0x48);
+        default_count = LoadAt<std::int32_t>(default_effect, 0x4C);
+        constexpr std::int32_t kMaximumDiagnosticEffectChildren = 512;
+        if (default_capacity < 0 || default_count < 0 ||
+            default_count > default_capacity ||
+            default_capacity > kMaximumDiagnosticEffectChildren ||
+            (default_count > 0 && default_children == nullptr)) {
+          default_capacity = -2;
+          default_count = -2;
+        } else {
+          hidden_count = 0;
+          const auto captured_default_count = std::min<std::size_t>(
+              static_cast<std::size_t>(default_count),
+              kMaximumWarExitDiagnosticRootChildren);
+          for (std::size_t index = 0; index < captured_default_count;
+               ++index) {
+            void *const child = LoadAt<void *>(
+                default_children, index * sizeof(void *));
+            default_child_pointers[index] =
+                reinterpret_cast<std::uintptr_t>(child);
+            default_child_vtable_rvas[index] = vtable_rva(child);
+            if (child != nullptr &&
+                LoadAt<std::uintptr_t>(child, 0x00) ==
+                    bindings.hidden_effect_vtable) {
+              ++hidden_count;
+              hidden_index = static_cast<std::int32_t>(index);
+            }
+          }
+          if (hidden_count == 1 && hidden_index >= 0) {
+            void *const hidden_effect = LoadAt<void *>(
+                default_children,
+                static_cast<std::size_t>(hidden_index) * sizeof(void *));
+            void *const hidden_children =
+                LoadAt<void *>(hidden_effect, 0x40);
+            hidden_capacity = LoadAt<std::int32_t>(hidden_effect, 0x48);
+            hidden_child_count =
+                LoadAt<std::int32_t>(hidden_effect, 0x4C);
+            if (hidden_capacity == 1 && hidden_child_count == 1 &&
+                hidden_children != nullptr) {
+              hidden_child0 = LoadAt<void *>(hidden_children, 0x00);
+              hidden_child0_vtable_rva = vtable_rva(hidden_child0);
+              if (hidden_child0 != nullptr &&
+                  LoadAt<std::uintptr_t>(hidden_child0, 0x00) ==
+                      bindings.jomini_context_effect_vtable) {
+                void *const context_children =
+                    LoadAt<void *>(hidden_child0, 0x40);
+                context_capacity =
+                    LoadAt<std::int32_t>(hidden_child0, 0x48);
+                context_child_count =
+                    LoadAt<std::int32_t>(hidden_child0, 0x4C);
+                context_scope_count =
+                    LoadAt<std::int32_t>(hidden_child0, 0x6C);
+                if (context_capacity == 1 && context_child_count == 1 &&
+                    context_children != nullptr) {
+                  context_child0 =
+                      LoadAt<void *>(context_children, 0x00);
+                  context_child0_vtable_rva = vtable_rva(context_child0);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  append(",child9=0x%llX@0x%llX,selector_count=%d,template=0x%llX@0x%llX,"
+         "default=0x%llX@0x%llX,default_span=%d/%d,default_children=",
+         static_cast<unsigned long long>(
+             reinterpret_cast<std::uintptr_t>(scripted_effect)),
+         static_cast<unsigned long long>(scripted_effect_vtable_rva),
+         selector_count,
+         static_cast<unsigned long long>(
+             reinterpret_cast<std::uintptr_t>(scripted_template)),
+         static_cast<unsigned long long>(scripted_template_vtable_rva),
+         static_cast<unsigned long long>(
+             reinterpret_cast<std::uintptr_t>(default_effect)),
+         static_cast<unsigned long long>(default_vtable_rva), default_count,
+         default_capacity);
+  if (default_count > 0 && default_count <=
+                               static_cast<std::int32_t>(
+                                   kMaximumWarExitDiagnosticRootChildren)) {
+    for (std::int32_t index = 0; index < default_count; ++index) {
+      append("%s%d=0x%llX@0x%llX", index == 0 ? "" : "/", index,
+             static_cast<unsigned long long>(
+                 default_child_pointers[static_cast<std::size_t>(index)]),
+             static_cast<unsigned long long>(
+                 default_child_vtable_rvas[
+                     static_cast<std::size_t>(index)]));
+    }
+  }
+  append(",hidden=%d@index%d,hidden_span=%d/%d,hidden_child0=0x%llX@0x%llX,"
+         "context_span=%d/%d,context_scope_count=%d,"
+         "context_child0=0x%llX@0x%llX",
+         hidden_count, hidden_index, hidden_child_count, hidden_capacity,
+         static_cast<unsigned long long>(
+             reinterpret_cast<std::uintptr_t>(hidden_child0)),
+         static_cast<unsigned long long>(hidden_child0_vtable_rva),
+         context_child_count, context_capacity, context_scope_count,
+         static_cast<unsigned long long>(
+             reinterpret_cast<std::uintptr_t>(context_child0)),
+         static_cast<unsigned long long>(context_child0_vtable_rva));
+
+  if (!diagnostic_complete || used == 0) {
+    constexpr std::string_view fallback =
+        "dry_preview.hidden_truce.attacker_defeat_shape";
+    std::memcpy(g_war_exit_preview_diagnostic_buffer.data(),
+                fallback.data(), fallback.size());
+    used = fallback.size();
+  }
+  g_last_war_exit_preview_unavailable_reason = std::string_view(
+      g_war_exit_preview_diagnostic_buffer.data(), used);
+}
+
+void CaptureWarExitLoadedEffect(
+    void *proxy_loaded_effect, void *wrapper, std::uint32_t mode,
+    void *collector) noexcept {
+  WarExitPreviewCapture *const capture = g_war_exit_preview_capture;
+  if (capture == nullptr || capture->original_slot58 == nullptr ||
+      proxy_loaded_effect != capture->proxy_loaded_effect ||
+      capture->original_loaded_effect == nullptr || wrapper == nullptr ||
+      collector == nullptr) {
+    if (capture != nullptr) {
+      SetWarExitPreviewUnavailableReason("dry_preview.trampoline_context");
+      capture->failed = true;
+    }
+    return;
+  }
+  if (mode != 0) {
+    SetWarExitPreviewUnavailableReason("dry_preview.trampoline_mode");
+    capture->failed = true;
+    return;
+  }
+  const auto module = capture->bindings->truce_effect_vtable -
+                      kTruceEffectVtableRva;
+  const auto root_vtable =
+      LoadAt<std::uintptr_t>(capture->original_loaded_effect, 0x00);
+  g_war_exit_loaded_root_vtable_rva =
+      root_vtable >= module ? root_vtable - module : 0;
+  g_war_exit_loaded_root_selector_count = -1;
+  g_war_exit_loaded_default_child_vtable_rva = 0;
+  g_war_exit_loaded_root_capacity = -1;
+  g_war_exit_loaded_root_count = -1;
+  g_war_exit_loaded_hidden_count = -1;
+  g_war_exit_loaded_hidden_index = -1;
+  g_war_exit_loaded_hidden_capacity = -1;
+  g_war_exit_loaded_hidden_child_count = -1;
+  g_war_exit_loaded_hidden_child0_vtable_rva = 0;
+  g_war_exit_loaded_root_child_pointers.fill(0);
+  g_war_exit_loaded_root_child_vtable_rvas.fill(0);
+  if (root_vtable == capture->bindings->jomini_effect_vtable) {
+    const auto root_capacity =
+        LoadAt<std::int32_t>(capture->original_loaded_effect, 0x48);
+    const auto root_count =
+        LoadAt<std::int32_t>(capture->original_loaded_effect, 0x4C);
+    void *const root_data =
+        LoadAt<void *>(capture->original_loaded_effect, 0x40);
+    constexpr std::int32_t kMaximumDiagnosticEffectChildren = 512;
+    if (root_capacity < 0 || root_count < 0 ||
+        root_count > root_capacity ||
+        root_capacity > kMaximumDiagnosticEffectChildren ||
+        (root_count > 0 && root_data == nullptr)) {
+      g_war_exit_loaded_root_capacity = -2;
+      g_war_exit_loaded_root_count = -2;
+    } else {
+      g_war_exit_loaded_root_capacity = root_capacity;
+      g_war_exit_loaded_root_count = root_count;
+      g_war_exit_loaded_hidden_count = 0;
+      for (std::int32_t index = 0; index < root_count; ++index) {
+        void *const child = LoadAt<void *>(
+            root_data, static_cast<std::size_t>(index) * sizeof(void *));
+        if (child == nullptr) {
+          g_war_exit_loaded_hidden_count = -2;
+          break;
+        }
+        const auto child_vtable = LoadAt<std::uintptr_t>(child, 0x00);
+        if (static_cast<std::size_t>(index) <
+            kMaximumWarExitDiagnosticRootChildren) {
+          g_war_exit_loaded_root_child_pointers[static_cast<std::size_t>(
+              index)] = reinterpret_cast<std::uintptr_t>(child);
+          g_war_exit_loaded_root_child_vtable_rvas[static_cast<std::size_t>(
+              index)] = child_vtable >= module ? child_vtable - module : 0;
+        }
+        if (child_vtable != module + kHiddenEffectVtableRva) {
+          continue;
+        }
+        ++g_war_exit_loaded_hidden_count;
+        g_war_exit_loaded_hidden_index = index;
+        const auto hidden_capacity = LoadAt<std::int32_t>(child, 0x48);
+        const auto hidden_count = LoadAt<std::int32_t>(child, 0x4C);
+        void *const hidden_data = LoadAt<void *>(child, 0x40);
+        if (hidden_capacity < 0 || hidden_count < 0 ||
+            hidden_count > hidden_capacity ||
+            hidden_capacity > kMaximumDiagnosticEffectChildren ||
+            (hidden_count > 0 && hidden_data == nullptr)) {
+          g_war_exit_loaded_hidden_capacity = -2;
+          g_war_exit_loaded_hidden_child_count = -2;
+          continue;
+        }
+        g_war_exit_loaded_hidden_capacity = hidden_capacity;
+        g_war_exit_loaded_hidden_child_count = hidden_count;
+        if (hidden_count > 0) {
+          void *const hidden_child0 = LoadAt<void *>(hidden_data, 0x00);
+          if (hidden_child0 != nullptr) {
+            const auto hidden_child0_vtable =
+                LoadAt<std::uintptr_t>(hidden_child0, 0x00);
+            g_war_exit_loaded_hidden_child0_vtable_rva =
+                hidden_child0_vtable >= module
+                    ? hidden_child0_vtable - module
+                    : 0;
+          }
+        }
+      }
+    }
+  }
+  if (root_vtable == capture->bindings->jomini_scripted_effect_vtable) {
+    g_war_exit_loaded_root_selector_count =
+        LoadAt<std::int32_t>(capture->original_loaded_effect, 0x94);
+    void *const selector_owner =
+        LoadAt<void *>(capture->original_loaded_effect, 0x60);
+    if (g_war_exit_loaded_root_selector_count == 0 &&
+        selector_owner != nullptr) {
+      void *const default_child = LoadAt<void *>(selector_owner, 0x120);
+      if (default_child != nullptr) {
+        const auto child_vtable =
+            LoadAt<std::uintptr_t>(default_child, 0x00);
+        g_war_exit_loaded_default_child_vtable_rva =
+            child_vtable >= module ? child_vtable - module : 0;
+      }
+    }
+  }
+  if (capture->outcome == WarExitPreviewOutcome::attacker_defeat) {
+    // final19 is deliberately diagnostic-only for this outcome.  The exact
+    // loaded root span is known, but its child array was not present in the
+    // final18 crash dump.  Capture the complete direct list and expand only
+    // statically identified container vtables; do not invoke any effect until
+    // that outcome-specific path has been proven from a paused live object.
+    SetWarExitAttackerDefeatShapeReason(
+        *capture->bindings, capture->original_loaded_effect);
+    capture->failed = true;
+    return;
+  }
+  WarExitHiddenTrucePath hidden_truce_path{};
+  if (!ResolveWarExitHiddenTrucePath(
+          *capture->bindings, capture->original_loaded_effect,
+          hidden_truce_path)) {
+    capture->failed = true;
+    return;
+  }
+  WarExitHiddenTruceProjection projection{};
+  void *projected_root_effect = nullptr;
+  if (!BuildWarExitHiddenTruceProjection(
+          *capture->bindings, hidden_truce_path, projection,
+          projected_root_effect)) {
+    capture->failed = true;
+    return;
+  }
+  capture->original_slot58(projected_root_effect, wrapper, mode, collector);
+  if (capture->failed) {
+    return;
+  }
+  const auto truce_rows = static_cast<std::size_t>(std::count_if(
+      capture->rows.begin(), capture->rows.end(),
+      [](const WarExitPreviewRow &row) {
+        return row.kind == WarExitPreviewRowKind::truce;
+      }));
+  if (truce_rows != 1) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.hidden_truce.projected_preview_count");
+    capture->failed = true;
+    return;
+  }
+  if (!CaptureWarExitPrestigeFactor(*capture, wrapper)) {
+    capture->failed = true;
+  }
+}
+
+void CaptureWarExitPreviewRow(
+    void *collector, const void *first_scope, const void *second_scope,
+    const PreviewFixedPayload *payload, void *effect_node,
+    void *forwarded_argument) noexcept {
+  WarExitPreviewCapture *const capture = g_war_exit_preview_capture;
+  if (capture == nullptr || capture->bindings == nullptr ||
+      capture->original_slot8 == nullptr) {
+    SetWarExitPreviewUnavailableReason("dry_preview.capture_context");
+    return;
+  }
+
+  const auto &bindings = *capture->bindings;
+  const auto callback_ordinal = ++capture->callback_ordinal;
+  std::int32_t first_character_id = -1;
+  const bool first_scope_valid = ReadPreviewCharacterScope(
+      bindings, first_scope, first_character_id);
+  const auto effect_vtable =
+      effect_node == nullptr ? std::uintptr_t{0}
+                             : LoadAt<std::uintptr_t>(effect_node, 0x00);
+  const bool attacker_contribution =
+      effect_vtable ==
+      bindings.add_from_contribution_attackers_effect_vtable;
+  const bool defender_contribution =
+      effect_vtable ==
+      bindings.add_from_contribution_defenders_effect_vtable;
+  if (attacker_contribution || defender_contribution) {
+    // Exact-build registration xrefs bind these two loaded classes to
+    // add_from_contribution_attackers/defenders.  In stock claim_cb both are
+    // reached exclusively through modify_allies_of_participants_fame_values,
+    // whose script contract excludes the primary attacker and defender.  The
+    // collector nevertheless anchors its presentation row on that side's
+    // primary character, so these rows are forwarded but deliberately stay
+    // outside the v2 primary-character resource grid.
+    const auto expected_character_id =
+        attacker_contribution ? capture->primary_attacker_character_id
+                              : capture->primary_defender_character_id;
+    if (!first_scope_valid || first_character_id != expected_character_id ||
+        second_scope != nullptr || payload == nullptr || payload->tag != 1 ||
+        forwarded_argument == nullptr) {
+      SetWarExitPreviewUnavailableReason(
+          attacker_contribution
+              ? "dry_preview.attacker_contribution_row"
+              : "dry_preview.defender_contribution_row");
+      capture->failed = true;
+    }
+    capture->original_slot8(collector, first_scope, second_scope, payload,
+                            effect_node, forwarded_argument);
+    return;
+  }
+  if (first_scope_valid &&
+      first_character_id != capture->primary_attacker_character_id &&
+      first_character_id != capture->primary_defender_character_id) {
+    // Stock claim_cb previews also visit allies/contingents.  Their rows are
+    // outside this deliberately narrow primary-character slice.  Validate
+    // the typed full-generation scope, then forward and ignore the row even
+    // when it uses a contribution-specific node vtable that this slice does
+    // not otherwise consume.  Primary-character unknown nodes still fail
+    // closed below.
+    capture->original_slot8(collector, first_scope, second_scope, payload,
+                            effect_node, forwarded_argument);
+    return;
+  }
+
+  WarExitPreviewRow row{};
+  row.first_character_id = first_character_id;
+  const bool node_known =
+      ClassifyWarExitPreviewNode(bindings, effect_node, row.kind);
+  bool valid = first_scope_valid && node_known;
+  switch (row.kind) {
+  case WarExitPreviewRowKind::prestige:
+  case WarExitPreviewRowKind::prestige_experience:
+  case WarExitPreviewRowKind::piety:
+  case WarExitPreviewRowKind::piety_experience:
+  case WarExitPreviewRowKind::legitimacy:
+  case WarExitPreviewRowKind::stress:
+    valid = valid && second_scope == nullptr && payload != nullptr &&
+            payload->tag == 1;
+    if (valid) {
+      row.raw = payload->raw;
+    }
+    break;
+  case WarExitPreviewRowKind::gold_transfer:
+    valid = valid && payload != nullptr && payload->tag == 1 &&
+            ReadPreviewCharacterScope(bindings, second_scope,
+                                      row.second_character_id) &&
+            forwarded_argument == nullptr;
+    if (valid) {
+      row.raw = payload->raw;
+    }
+    break;
+  case WarExitPreviewRowKind::truce:
+    valid = valid && payload == nullptr &&
+            ReadPreviewCharacterScope(bindings, second_scope,
+                                      row.second_character_id) &&
+            forwarded_argument == nullptr;
+    break;
+  }
+  row.effect_node = effect_node;
+  if (valid) {
+    try {
+      capture->rows.push_back(row);
+    } catch (...) {
+      SetWarExitPreviewUnavailableReason("dry_preview.capture_allocation");
+      capture->failed = true;
+    }
+  } else {
+    if (node_known) {
+      SetWarExitPreviewUnavailableReason("dry_preview.capture_row");
+    } else {
+      SetUnknownWarExitPreviewRowReason(
+          effect_node, first_scope, second_scope, payload,
+          forwarded_argument, callback_ordinal);
+    }
+    capture->failed = true;
+  }
+
+  capture->original_slot8(collector, first_scope, second_scope, payload,
+                          effect_node, forwarded_argument);
+}
+
+using NativeAllocatorFree = void (*)(void *allocator, void *data,
+                                     std::uint64_t alignment);
+
+bool FreeEffectContextArray(void *context, std::size_t data_offset,
+                            std::size_t count_offset,
+                            std::size_t allocator_offset) noexcept {
+  void *const data = LoadAt<void *>(context, data_offset);
+  if (data == nullptr) {
+    return true;
+  }
+  void *const allocator = LoadAt<void *>(context, allocator_offset);
+  auto **const allocator_vtable =
+      allocator == nullptr ? nullptr : LoadAt<void **>(allocator, 0x00);
+  if (allocator_vtable == nullptr || allocator_vtable[2] == nullptr) {
+    return false;
+  }
+  StoreAt(context, count_offset, std::int32_t{0});
+  reinterpret_cast<NativeAllocatorFree>(allocator_vtable[2])(
+      allocator, data, 8);
+  StoreAt(context, data_offset, static_cast<void *>(nullptr));
+  return true;
+}
+
+bool DestroyWarEffectContext(const Bindings &bindings,
+                             void *context) noexcept {
+  if (context == nullptr || bindings.destroy_effect_context_118 == nullptr ||
+      bindings.destroy_effect_context_array_row == nullptr) {
+    return false;
+  }
+  // Mirrors WarOverview 0xF5973E..0xF59793. The +0x118 destructor owns the
+  // +0x128/+0x148 headers; +0x100 and +0x18 are then released in order.
+  bindings.destroy_effect_context_118(
+      static_cast<std::byte *>(context) + 0x118);
+  bool valid = true;
+  if (LoadAt<void *>(context, 0x100) != nullptr) {
+    bindings.destroy_effect_context_array_row(
+        static_cast<std::byte *>(context) + 0x100);
+    valid = FreeEffectContextArray(context, 0x100, 0x108, 0x110) && valid;
+  }
+  valid = FreeEffectContextArray(context, 0x18, 0x24, 0x28) && valid;
+  return valid;
+}
+
+bool DryPreviewWarExitEffect(const Bindings &bindings, void *loaded_effect,
+                             void *effect_context,
+                             WarExitPreviewOutcome outcome,
+                             std::int32_t factor_identifier_id,
+                             std::int32_t primary_attacker_character_id,
+                             std::int32_t primary_defender_character_id,
+                             std::vector<WarExitPreviewRow> &rows,
+                             std::int64_t &factor_raw) noexcept {
+  g_last_war_exit_preview_unavailable_reason = {};
+  g_war_exit_loaded_root_vtable_rva = 0;
+  g_war_exit_loaded_root_selector_count = -1;
+  g_war_exit_loaded_default_child_vtable_rva = 0;
+  g_war_exit_loaded_root_capacity = -1;
+  g_war_exit_loaded_root_count = -1;
+  g_war_exit_loaded_hidden_count = -1;
+  g_war_exit_loaded_hidden_index = -1;
+  g_war_exit_loaded_hidden_capacity = -1;
+  g_war_exit_loaded_hidden_child_count = -1;
+  g_war_exit_loaded_hidden_child0_vtable_rva = 0;
+  rows.clear();
+  factor_raw = 0;
+  if (loaded_effect == nullptr || effect_context == nullptr ||
+      factor_identifier_id < 0 ||
+      primary_attacker_character_id <= 0 ||
+      primary_defender_character_id <= 0 ||
+      primary_attacker_character_id == primary_defender_character_id ||
+      bindings.construct_effect_preview_collector == nullptr ||
+      bindings.destroy_effect_preview_collector == nullptr ||
+      bindings.traverse_loaded_effect == nullptr ||
+      bindings.effect_preview_collector_vtable == 0 ||
+      bindings.jomini_effect_vtable == 0 ||
+      bindings.jomini_scripted_effect_vtable == 0 ||
+      bindings.jomini_scripted_effect_template_vtable == 0 ||
+      bindings.hidden_effect_vtable == 0 ||
+      bindings.jomini_context_effect_vtable == 0 ||
+      bindings.truce_effect_vtable == 0 ||
+      g_war_exit_preview_capture != nullptr) {
+    SetWarExitPreviewUnavailableReason("dry_preview.preconditions");
+    return false;
+  }
+
+  EffectPreviewCollectorStorage collector_storage{};
+  void *const collector = collector_storage.bytes.data();
+  if (bindings.construct_effect_preview_collector(collector) != collector) {
+    SetWarExitPreviewUnavailableReason("dry_preview.collector_construct");
+    return false;
+  }
+  auto **const original_vtable = LoadAt<void **>(collector, 0x00);
+  if (reinterpret_cast<std::uintptr_t>(original_vtable) !=
+      bindings.effect_preview_collector_vtable ||
+      original_vtable == nullptr || original_vtable[1] == nullptr) {
+    SetWarExitPreviewUnavailableReason("dry_preview.collector_vtable");
+    bindings.destroy_effect_preview_collector(collector);
+    return false;
+  }
+
+  // The preview interface is a large shared visitor. Clone a conservative
+  // prefix so every callback used by the loaded traversal remains native;
+  // only slot +0x08 is replaced and the hook forwards to its exact original.
+  constexpr std::size_t kPreviewVtableCloneSlots = 128;
+  std::array<void *, kPreviewVtableCloneSlots> cloned_vtable{};
+  std::copy_n(original_vtable, cloned_vtable.size(), cloned_vtable.begin());
+  auto *const original_slot8 =
+      reinterpret_cast<EffectPreviewCollectorSlot8>(original_vtable[1]);
+  cloned_vtable[1] = reinterpret_cast<void *>(&CaptureWarExitPreviewRow);
+
+  auto **const original_effect_vtable =
+      LoadAt<void **>(loaded_effect, 0x00);
+  if (original_effect_vtable == nullptr ||
+      original_effect_vtable[11] == nullptr) {
+    SetWarExitPreviewUnavailableReason("dry_preview.loaded_effect_slot");
+    bindings.destroy_effect_preview_collector(collector);
+    return false;
+  }
+  constexpr std::size_t kLoadedEffectProxyVtableSlots = 12;
+  std::array<void *, kLoadedEffectProxyVtableSlots>
+      cloned_effect_vtable{};
+  std::copy_n(original_effect_vtable, cloned_effect_vtable.size(),
+              cloned_effect_vtable.begin());
+  auto *const original_slot58 =
+      reinterpret_cast<LoadedEffectSlot58>(original_effect_vtable[11]);
+  cloned_effect_vtable[11] =
+      reinterpret_cast<void *>(&CaptureWarExitLoadedEffect);
+  std::array<std::byte, sizeof(void *)> proxy_loaded_effect{};
+  StoreAt(proxy_loaded_effect.data(), 0x00,
+          cloned_effect_vtable.data());
+
+  WarExitPreviewCapture capture{};
+  capture.bindings = &bindings;
+  capture.original_slot8 = original_slot8;
+  capture.primary_attacker_character_id =
+      primary_attacker_character_id;
+  capture.primary_defender_character_id =
+      primary_defender_character_id;
+  capture.outcome = outcome;
+  capture.proxy_loaded_effect = proxy_loaded_effect.data();
+  capture.original_loaded_effect = loaded_effect;
+  capture.original_slot58 = original_slot58;
+  capture.factor_identifier_id = factor_identifier_id;
+  StoreAt(collector, 0x00, cloned_vtable.data());
+  g_war_exit_preview_capture = &capture;
+  // 0x3380170 owns the exact seed/TLS/variable-container lifecycle.  Its
+  // only loaded-root operation is vtable+0x58, so a stack proxy lets the
+  // trampoline inspect identifier82 after the original root returns but
+  // before that helper destroys its temporary variable container.  Neither
+  // the loaded effect nor any game object is modified.
+  bindings.traverse_loaded_effect(proxy_loaded_effect.data(), effect_context,
+                                  collector);
+  g_war_exit_preview_capture = nullptr;
+  StoreAt(collector, 0x00, original_vtable);
+  bindings.destroy_effect_preview_collector(collector);
+  if (LoadAt<void **>(loaded_effect, 0x00) != original_effect_vtable) {
+    SetWarExitPreviewUnavailableReason(
+        "dry_preview.loaded_effect_vtable_changed");
+    return false;
+  }
+  if (capture.failed) {
+    SetWarExitPreviewUnavailableReason("dry_preview.capture_failed");
+    return false;
+  }
+  if (!capture.factor_found) {
+    SetWarExitPreviewUnavailableReason("dry_preview.factor_not_captured");
+    return false;
+  }
+  rows = std::move(capture.rows);
+  factor_raw = capture.factor_raw;
+  return true;
+}
+
+bool ReadCharacterExitResources(
+    const Bindings &bindings, void *character, std::int32_t character_id,
+    bool attacker_role,
+    std::vector<game::WarExitResourceSnapshot> &balances,
+    game::WarExitCharacterFixedPointSnapshot &monthly_income) noexcept {
+  if (character == nullptr || character_id <= 0 ||
+      bindings.read_monthly_gold_income == nullptr ||
+      ResolveTermsCharacter(bindings, character_id) != character) {
+    g_last_war_termination_exit_terms_unavailable_reason =
+        attacker_role ? "primary_resources.attacker_identity"
+                      : "primary_resources.defender_identity";
+    return false;
+  }
+  void *const extension =
+      LoadAt<void *>(character, kCharacterExtensionOffset);
+  const auto read_extension_fixed = [extension](std::size_t offset) {
+    return extension == nullptr ? std::int64_t{0}
+                                : LoadAt<std::int64_t>(extension, offset);
+  };
+  const auto append = [&balances, character_id](
+                          std::string_view kind, std::int64_t raw) {
+    balances.push_back(
+        {character_id, std::string(kind), {raw, kFixedPointScale}});
+  };
+  try {
+    append("gold", read_extension_fixed(kCharacterGoldOffset));
+    append("prestige", read_extension_fixed(kCharacterPrestigeOffset));
+    append("prestige_experience",
+           read_extension_fixed(kCharacterPrestigeExperienceOffset));
+    append("piety", read_extension_fixed(kCharacterPietyOffset));
+    append("piety_experience",
+           read_extension_fixed(kCharacterPietyExperienceOffset));
+    void *const legitimacy_data =
+        LoadAt<void *>(character, kCharacterLegitimacyDataOffset);
+    const auto legitimacy = legitimacy_data == nullptr
+                                ? std::int64_t{0}
+                                : std::max(
+                                      LoadAt<std::int64_t>(
+                                          legitimacy_data,
+                                          kCharacterLegitimacyOffset),
+                                      std::int64_t{0});
+    append("legitimacy", legitimacy);
+    const auto stress_points =
+        extension == nullptr
+            ? std::int32_t{0}
+            : LoadAt<std::int32_t>(extension, kCharacterStressPointsOffset);
+    if (stress_points < 0) {
+      g_last_war_termination_exit_terms_unavailable_reason =
+          attacker_role ? "primary_resources.attacker_stress"
+                        : "primary_resources.defender_stress";
+      return false;
+    }
+    append("stress", static_cast<std::int64_t>(stress_points) *
+                         kFixedPointScale);
+  } catch (...) {
+    g_last_war_termination_exit_terms_unavailable_reason =
+        attacker_role ? "primary_resources.attacker_balance_append"
+                      : "primary_resources.defender_balance_append";
+    return false;
+  }
+
+  std::int64_t income_raw = 0;
+  if (bindings.read_monthly_gold_income(&income_raw, character, nullptr,
+                                        nullptr) != &income_raw) {
+    g_last_war_termination_exit_terms_unavailable_reason =
+        attacker_role ? "primary_resources.attacker_income_call"
+                      : "primary_resources.defender_income_call";
+    return false;
+  }
+  // extension+0x2B0 is the direct cached monthly-income leaf, never current
+  // gold.  Live paused evidence proves it can lag the complete 0x28DBE90
+  // evaluator (551588 vs 570772), so it is diagnostic evidence only and not
+  // an equality/readiness gate.  The callable result is authoritative.
+  [[maybe_unused]] const auto cached_income =
+      extension == nullptr
+          ? std::int64_t{0}
+          : LoadAt<std::int64_t>(extension,
+                                 kCharacterMonthlyGoldIncomeOffset);
+  if (ResolveTermsCharacter(bindings, character_id) != character) {
+    g_last_war_termination_exit_terms_unavailable_reason =
+        attacker_role ? "primary_resources.attacker_generation_changed"
+                      : "primary_resources.defender_generation_changed";
+    return false;
+  }
+  monthly_income = {character_id, {income_raw, kFixedPointScale}};
+  return true;
+}
+
+bool ReadPrimaryExitResources(
+    const Bindings &bindings, void *attacker, std::int32_t attacker_id,
+    void *defender, std::int32_t defender_id,
+    std::vector<game::WarExitResourceSnapshot> &balances,
+    std::vector<game::WarExitCharacterFixedPointSnapshot> &monthly_income)
+    noexcept {
+  balances.clear();
+  monthly_income.clear();
+  try {
+    balances.reserve(14);
+    monthly_income.resize(2);
+  } catch (...) {
+    return false;
+  }
+  if (!ReadCharacterExitResources(bindings, attacker, attacker_id, true,
+                                  balances, monthly_income[0]) ||
+      !ReadCharacterExitResources(bindings, defender, defender_id, false,
+                                  balances, monthly_income[1])) {
+    balances.clear();
+    monthly_income.clear();
+    return false;
+  }
+  if (balances.size() != 14) {
+    g_last_war_termination_exit_terms_unavailable_reason =
+        "primary_resources.balance_count";
+    balances.clear();
+    monthly_income.clear();
+    return false;
+  }
+  return true;
+}
+
+bool ReadWarParticipantIds(const Bindings &bindings, const void *side,
+                           std::vector<std::int32_t> &ids) noexcept {
+  ids.clear();
+  if (side == nullptr) {
+    return false;
+  }
+  void *const data =
+      LoadAt<void *>(side, kWarParticipantPointersOffset);
+  const auto capacity = LoadAt<std::int32_t>(
+      side, kWarParticipantPointerCapacityOffset);
+  const auto count =
+      LoadAt<std::int32_t>(side, kWarParticipantPointerCountOffset);
+  if (capacity < 0 || count < 0 || count > capacity || count > 4'096 ||
+      (count > 0 && data == nullptr)) {
+    return false;
+  }
+  try {
+    ids.reserve(static_cast<std::size_t>(count));
+  } catch (...) {
+    return false;
+  }
+  for (std::int32_t index = 0; index < count; ++index) {
+    void *const participant = LoadAt<void *>(
+        data, static_cast<std::size_t>(index) * sizeof(void *));
+    if (participant == nullptr) {
+      return false;
+    }
+    const auto character_id = LoadAt<std::int32_t>(
+        participant, kWarParticipantCharacterIdOffset);
+    if (character_id <= 0 ||
+        ResolveTermsCharacter(bindings, character_id) == nullptr ||
+        std::find(ids.begin(), ids.end(), character_id) != ids.end()) {
+      return false;
+    }
+    ids.push_back(character_id);
+  }
+  return true;
+}
+
+bool ReadPrimaryAndSuccessors(const Bindings &bindings, void *game_state,
+                              void *character,
+                              std::int32_t character_id,
+                              std::vector<std::int32_t> &ids) noexcept {
+  ids.clear();
+  if (bindings.get_character_primary_title == nullptr || character == nullptr ||
+      ResolveTermsCharacter(bindings, character_id) != character) {
+    return false;
+  }
+  void *const title = bindings.get_character_primary_title(character);
+  if (title == nullptr) {
+    return false;
+  }
+  const auto title_id = LoadAt<std::int32_t>(title, kLandedTitleIdOffset);
+  if (title_id <= 0 ||
+      ResolveLandedTitle(bindings, game_state, title_id) != title) {
+    return false;
+  }
+  std::vector<std::int32_t> succession;
+  if (!ReadNativeIntArray(
+          static_cast<std::byte *>(title) +
+              kLandedTitleSuccessionIdsOffset,
+          succession, 4'096)) {
+    return false;
+  }
+  try {
+    ids.push_back(character_id);
+    for (std::size_t index = 0;
+         index < succession.size() && index < 3U; ++index) {
+      const auto successor_id = succession[index];
+      if (successor_id <= 0 ||
+          ResolveTermsCharacter(bindings, successor_id) == nullptr ||
+          std::find(ids.begin(), ids.end(), successor_id) != ids.end()) {
+        return false;
+      }
+      ids.push_back(successor_id);
+    }
+  } catch (...) {
+    return false;
+  }
+  return ResolveTermsCharacter(bindings, character_id) == character &&
+         ResolveLandedTitle(bindings, game_state, title_id) == title;
+}
+
+bool AppendPrisonerReleases(
+    const Bindings &bindings, const std::vector<std::int32_t> &candidates,
+    const std::vector<std::int32_t> &opposite_participants,
+    std::vector<game::WarExitPrisonerReleaseSnapshot> &output) noexcept {
+  for (const auto candidate_id : candidates) {
+    void *const candidate = ResolveTermsCharacter(bindings, candidate_id);
+    if (candidate == nullptr) {
+      return false;
+    }
+    void *const extension =
+        LoadAt<void *>(candidate, kCharacterExtensionOffset);
+    void *const prison_relation =
+        extension == nullptr
+            ? nullptr
+            : LoadAt<void *>(extension, kCharacterPrisonRelationOffset);
+    if (prison_relation == nullptr) {
+      continue;
+    }
+    const auto jailer_id = LoadAt<std::int32_t>(
+        prison_relation, kPrisonRelationJailerCharacterIdOffset);
+    if (jailer_id <= 0 ||
+        ResolveTermsCharacter(bindings, jailer_id) == nullptr) {
+      return false;
+    }
+    if (std::find(opposite_participants.begin(),
+                  opposite_participants.end(), jailer_id) ==
+        opposite_participants.end()) {
+      continue;
+    }
+    try {
+      output.push_back({jailer_id, candidate_id,
+                        "opposite_primary_or_first_three_successors"});
+    } catch (...) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool ReadWarExitPrisonerReleases(
+    const Bindings &bindings, void *game_state, void *war,
+    void *attacker_character, std::int32_t attacker_id,
+    void *defender_character, std::int32_t defender_id,
+    std::vector<game::WarExitPrisonerReleaseSnapshot> &output) noexcept {
+  output.clear();
+  std::vector<std::int32_t> attackers;
+  std::vector<std::int32_t> defenders;
+  std::vector<std::int32_t> attacker_candidates;
+  std::vector<std::int32_t> defender_candidates;
+  if (!ReadWarParticipantIds(
+          bindings,
+          static_cast<std::byte *>(war) + kWarAttackersOffset,
+          attackers) ||
+      !ReadWarParticipantIds(
+          bindings,
+          static_cast<std::byte *>(war) + kWarDefendersOffset,
+          defenders) ||
+      std::find(attackers.begin(), attackers.end(), attacker_id) ==
+          attackers.end() ||
+      std::find(defenders.begin(), defenders.end(), defender_id) ==
+          defenders.end() ||
+      !ReadPrimaryAndSuccessors(bindings, game_state, attacker_character,
+                                attacker_id, attacker_candidates) ||
+      !ReadPrimaryAndSuccessors(bindings, game_state, defender_character,
+                                defender_id, defender_candidates) ||
+      !AppendPrisonerReleases(bindings, attacker_candidates, defenders,
+                              output) ||
+      !AppendPrisonerReleases(bindings, defender_candidates, attackers,
+                              output) ||
+      output.size() > 64U) {
+    output.clear();
+    return false;
+  }
+  return true;
+}
+
+void ReadWarTerminationAcceptance(
+    const Bindings &bindings, void *context,
+    game::WarTerminationOptionSnapshot &option) noexcept {
+  if (bindings.read_character_interaction_answer_score != nullptr) {
+    std::int64_t raw = 0;
+    if (bindings.read_character_interaction_answer_score(context, &raw) ==
+        &raw) {
+      option.ai_acceptance_observable = true;
+      option.ai_acceptance.raw = raw;
+      option.ai_acceptance.scale = kFixedPointScale;
+    }
+  }
+  void *const interaction = LoadAt<void *>(context, 0);
+  if (interaction == nullptr) {
+    return;
+  }
+  void *const auto_accept_trigger = LoadAt<void *>(
+      interaction, kCharacterInteractionAutoAcceptTriggerOffset);
+  if (auto_accept_trigger != nullptr) {
+    if (bindings.evaluate_character_interaction_trigger != nullptr) {
+      option.auto_accept_observable = true;
+      option.auto_accept = bindings.evaluate_character_interaction_trigger(
+          auto_accept_trigger,
+          static_cast<const std::byte *>(context) +
+              kCharacterInteractionContextScopeOffset);
+    }
+    return;
+  }
+  const auto scalar = LoadAt<std::uint8_t>(
+      interaction, kCharacterInteractionAutoAcceptScalarOffset);
+  if (scalar <= 1) {
+    option.auto_accept_observable = true;
+    option.auto_accept = scalar != 0;
+  }
+}
+
+bool EvaluateWarResolutionContext(
+    const Bindings &bindings, void *war, bool attacker_victory,
+    game::WarTerminationOptionSnapshot &option) noexcept {
+  CharacterInteractionContextStorage context_storage{};
+  void *const context = context_storage.bytes.data();
+  if (bindings.default_construct_character_interaction_context(context) !=
+      context) {
+    return false;
+  }
+  bindings.construct_war_resolution_interaction_context(
+      context, war, attacker_victory);
+  option.context_constructed =
+      LoadAt<void *>(context, kCharacterInteractionSpecialDataOffset) !=
+      nullptr;
+  if (option.context_constructed) {
+    option.native_validator_observable = true;
+    option.native_validator_passed =
+        bindings.validate_character_interaction_context(context, nullptr);
+    ReadWarTerminationAcceptance(bindings, context, option);
+  }
+  bindings.destroy_character_interaction_context(context);
+  return true;
+}
+
+bool EvaluateWhitePeaceContext(
+    const Bindings &bindings, std::int32_t actor_character_id,
+    std::int32_t recipient_character_id,
+    game::WarTerminationOptionSnapshot &option) noexcept {
+  CharacterInteractionContextStorage context_storage{};
+  void *const context = context_storage.bytes.data();
+  constexpr std::uint8_t kWhitePeaceSpecialInteractionIndex = 3;
+  if (bindings.construct_special_character_interaction_context(
+          context, kWhitePeaceSpecialInteractionIndex, actor_character_id,
+          recipient_character_id) != context) {
+    return false;
+  }
+  option.context_constructed =
+      LoadAt<void *>(context, kCharacterInteractionSpecialDataOffset) !=
+      nullptr;
+  if (option.context_constructed) {
+    option.native_validator_observable = true;
+    option.native_validator_passed =
+        bindings.validate_character_interaction_context(context, nullptr);
+    ReadWarTerminationAcceptance(bindings, context, option);
+  }
+  bindings.destroy_character_interaction_context(context);
+  return true;
+}
+
+bool ReadWarExitRecipientResponse(
+    const Bindings &bindings, void *context,
+    game::WarExitRecipientResponseSnapshot &response) noexcept {
+  response = {};
+  if (context == nullptr ||
+      bindings.evaluate_character_interaction_answer == nullptr ||
+      LoadAt<void *>(context, kCharacterInteractionSpecialDataOffset) ==
+          nullptr) {
+    return false;
+  }
+  response.native_validator_passed =
+      bindings.validate_character_interaction_context(context, nullptr);
+  if (!response.native_validator_passed) {
+    return false;
+  }
+  game::WarTerminationOptionSnapshot diagnostic{};
+  ReadWarTerminationAcceptance(bindings, context, diagnostic);
+  if (!diagnostic.ai_acceptance_observable ||
+      !diagnostic.auto_accept_observable) {
+    return false;
+  }
+  const auto status = bindings.evaluate_character_interaction_answer(
+      context, 1, 0, nullptr, nullptr);
+  if (status >= 3) {
+    return false;
+  }
+  response.acceptance = diagnostic.ai_acceptance;
+  response.decision_status_raw = status;
+  response.would_accept_now = status != 2;
+  response.auto_accept = diagnostic.auto_accept;
+  return true;
+}
+
+bool EvaluateWarExitDefeatRecipient(
+    const Bindings &bindings, void *war,
+    game::WarExitRecipientResponseSnapshot &response) noexcept {
+  CharacterInteractionContextStorage storage{};
+  void *const context = storage.bytes.data();
+  if (bindings.default_construct_character_interaction_context(context) !=
+      context) {
+    return false;
+  }
+  // `false` is the absolute attacker-defeat result in 1.19.0.6.
+  bindings.construct_war_resolution_interaction_context(context, war, false);
+  const bool result =
+      ReadWarExitRecipientResponse(bindings, context, response);
+  bindings.destroy_character_interaction_context(context);
+  return result;
+}
+
+bool EvaluateWarExitWhitePeaceRecipient(
+    const Bindings &bindings, std::int32_t attacker_id,
+    std::int32_t defender_id,
+    game::WarExitRecipientResponseSnapshot &response) noexcept {
+  CharacterInteractionContextStorage storage{};
+  void *const context = storage.bytes.data();
+  constexpr std::uint8_t kWhitePeaceSpecialInteractionIndex = 3;
+  if (bindings.construct_special_character_interaction_context(
+          context, kWhitePeaceSpecialInteractionIndex, attacker_id,
+          defender_id) != context) {
+    return false;
+  }
+  const bool result =
+      ReadWarExitRecipientResponse(bindings, context, response);
+  bindings.destroy_character_interaction_context(context);
+  return result;
+}
+
+bool NarrowWarScore(std::int64_t value, std::int32_t &output) noexcept {
+  if (value < std::numeric_limits<std::int32_t>::min() ||
+      value > std::numeric_limits<std::int32_t>::max()) {
+    return false;
+  }
+  output = static_cast<std::int32_t>(value);
+  return true;
+}
+
+std::int32_t PackedWarScore(std::uint64_t packed) noexcept {
+  const auto raw = static_cast<std::uint32_t>(packed & 0xFFFFFFFFULL);
+  std::int32_t score = 0;
+  std::memcpy(&score, &raw, sizeof(score));
+  return score;
+}
+
+bool ReadWarScoreBreakdown(
+    const Bindings &bindings, void *war,
+    game::WarScoreBreakdownSnapshot &output) noexcept {
+  output = {};
+  if (bindings.get_imprisonment_war_score == nullptr ||
+      bindings.get_battle_war_score_base == nullptr ||
+      bindings.get_battle_war_score_side == nullptr ||
+      bindings.get_occupation_war_score_side == nullptr ||
+      bindings.get_ticking_war_score_side == nullptr) {
+    return false;
+  }
+
+  std::int32_t battles = 0;
+  if (!NarrowWarScore(
+          static_cast<std::int64_t>(
+              bindings.get_battle_war_score_base(war, nullptr)) +
+              bindings.get_battle_war_score_side(war, false, nullptr) -
+              bindings.get_battle_war_score_side(war, true, nullptr),
+          battles)) {
+    return false;
+  }
+
+  const auto first_occupation =
+      bindings.get_occupation_war_score_side(war, false, nullptr);
+  const auto first_score = PackedWarScore(first_occupation);
+  const bool first_authoritative =
+      ((first_occupation >> 32U) & 0xFFU) != 0;
+  std::int32_t occupation = first_score;
+  if (!first_authoritative) {
+    const auto second_occupation =
+        bindings.get_occupation_war_score_side(war, true, nullptr);
+    const auto second_score = PackedWarScore(second_occupation);
+    const bool second_authoritative =
+        ((second_occupation >> 32U) & 0xFFU) != 0;
+    const std::int64_t combined = second_authoritative
+                                      ? -static_cast<std::int64_t>(second_score)
+                                      : static_cast<std::int64_t>(first_score) -
+                                            second_score;
+    if (!NarrowWarScore(combined, occupation)) {
+      return false;
+    }
+  }
+
+  std::int32_t ticking = 0;
+  if (!NarrowWarScore(
+          static_cast<std::int64_t>(
+              bindings.get_ticking_war_score_side(
+                  war, false, nullptr, true)) -
+              bindings.get_ticking_war_score_side(
+                  war, true, nullptr, false),
+          ticking)) {
+    return false;
+  }
+
+  output.observable = true;
+  output.imprisonment =
+      bindings.get_imprisonment_war_score(war, nullptr);
+  output.battles = battles;
+  output.occupation = occupation;
+  output.ticking = ticking;
+  return true;
 }
 
 std::string_view UnitStateName(std::int32_t state_code) noexcept {
@@ -2033,7 +4020,1790 @@ void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
   }
 }
 
+struct ArmyStrengthScopeEntry {
+  std::int32_t army_id = -1;
+  ArmyStrengthScopeRole role = ArmyStrengthScopeRole::active_war_enemy;
+  std::vector<std::int32_t> war_ids;
+};
+
+int ArmyStrengthRolePriority(ArmyStrengthScopeRole role) noexcept {
+  switch (role) {
+  case ArmyStrengthScopeRole::player:
+    return 3;
+  case ArmyStrengthScopeRole::active_war_ally:
+    return 2;
+  case ArmyStrengthScopeRole::active_war_enemy:
+    return 1;
+  }
+  return 0;
+}
+
+void AppendArmyStrengthScope(
+    std::vector<ArmyStrengthScopeEntry> &scope, std::int32_t army_id,
+    ArmyStrengthScopeRole role, std::int32_t war_id) {
+  auto existing = std::find_if(
+      scope.begin(), scope.end(), [army_id](const auto &candidate) {
+        return candidate.army_id == army_id;
+      });
+  if (existing == scope.end()) {
+    scope.push_back({army_id, role, {}});
+    existing = scope.end() - 1;
+  } else if (ArmyStrengthRolePriority(role) >
+             ArmyStrengthRolePriority(existing->role)) {
+    // Upgrade the semantic role without moving the row. This preserves the
+    // first-seen order while keeping player > ally > enemy classification.
+    existing->role = role;
+  }
+  if (war_id != -1 &&
+      std::find(existing->war_ids.begin(), existing->war_ids.end(), war_id) ==
+          existing->war_ids.end()) {
+    existing->war_ids.push_back(war_id);
+  }
+}
+
+std::vector<ArmyStrengthScopeEntry>
+BuildArmyStrengthScope(const Snapshot &snapshot) {
+  std::vector<ArmyStrengthScopeEntry> result;
+  for (const auto &army : snapshot.player_armies) {
+    AppendArmyStrengthScope(result, army.army_id,
+                            ArmyStrengthScopeRole::player, -1);
+  }
+  for (const auto &war : snapshot.active_wars) {
+    for (const auto &army : war.allied_armies) {
+      AppendArmyStrengthScope(result, army.army_id,
+                              ArmyStrengthScopeRole::active_war_ally,
+                              war.war_id);
+    }
+    for (const auto &army : war.enemy_armies) {
+      AppendArmyStrengthScope(result, army.army_id,
+                              ArmyStrengthScopeRole::active_war_enemy,
+                              war.war_id);
+    }
+  }
+  return result;
+}
+
+void *ResolveStoredComponent(void **storage_slot, std::int32_t component_id,
+                             std::size_t component_id_offset) noexcept {
+  if (storage_slot == nullptr || component_id == -1) {
+    return nullptr;
+  }
+  void *const storage = *storage_slot;
+  if (storage == nullptr) {
+    return nullptr;
+  }
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const auto capacity =
+      LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  const auto index =
+      static_cast<std::uint32_t>(component_id) & 0x00FFFFFFU;
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentCapacity ||
+      index >= static_cast<std::uint32_t>(capacity)) {
+    return nullptr;
+  }
+  const auto slot_offset = static_cast<std::size_t>(index) *
+                               kComponentStorageSlotSize +
+                           kComponentStorageSlotObjectOffset;
+  void *const component = LoadAt<void *>(slots, slot_offset);
+  if (component == nullptr ||
+      LoadAt<std::int32_t>(component, component_id_offset) != component_id) {
+    return nullptr;
+  }
+  return component;
+}
+
+bool CheckedAddNonnegative(std::int64_t &sum,
+                           std::int32_t value) noexcept {
+  if (value < 0 ||
+      sum > static_cast<std::int64_t>(
+                std::numeric_limits<std::int32_t>::max()) -
+                value) {
+    return false;
+  }
+  sum += value;
+  return true;
+}
+
+bool CheckedAddSigned(std::int64_t &sum, std::int64_t value) noexcept {
+  if ((value > 0 &&
+       sum > std::numeric_limits<std::int64_t>::max() - value) ||
+      (value < 0 &&
+       sum < std::numeric_limits<std::int64_t>::min() - value)) {
+    return false;
+  }
+  sum += value;
+  return true;
+}
+
+bool CheckedMultiplySigned(std::int64_t left, std::int64_t right,
+                           std::int64_t &output) noexcept {
+  if (left == 0 || right == 0) {
+    output = 0;
+    return true;
+  }
+  if ((left == -1 && right == std::numeric_limits<std::int64_t>::min()) ||
+      (right == -1 && left == std::numeric_limits<std::int64_t>::min())) {
+    return false;
+  }
+  if (left > 0) {
+    if ((right > 0 &&
+         left > std::numeric_limits<std::int64_t>::max() / right) ||
+        (right < 0 &&
+         right < std::numeric_limits<std::int64_t>::min() / left)) {
+      return false;
+    }
+  } else if ((right > 0 &&
+              left < std::numeric_limits<std::int64_t>::min() / right) ||
+             (right < 0 &&
+              left < std::numeric_limits<std::int64_t>::max() / right)) {
+    return false;
+  }
+  output = left * right;
+  return true;
+}
+
+using RegimentIdentityPredicate = bool (*)(void *regiment_subobject);
+
+bool ReadSubobjectPredicate(void *object, std::size_t subobject_offset,
+                            bool &value) noexcept {
+  void *const subobject =
+      static_cast<std::byte *>(object) + subobject_offset;
+  void *const vtable = LoadAt<void *>(subobject, 0);
+  if (vtable == nullptr) {
+    return false;
+  }
+  const auto predicate_address =
+      LoadAt<std::uintptr_t>(vtable, sizeof(void *));
+  if (predicate_address == 0) {
+    return false;
+  }
+  const auto predicate =
+      reinterpret_cast<RegimentIdentityPredicate>(predicate_address);
+  value = predicate(subobject);
+  return true;
+}
+
+bool ReadRegimentIdentity(void *regiment, bool &identity_valid) noexcept {
+  return ReadSubobjectPredicate(regiment, kRegimentIdentitySubobjectOffset,
+                                identity_valid);
+}
+
+ArmyStrengthSnapshot ReadArmyStrengthRow(
+    const Bindings &bindings,
+    const ArmyStrengthScopeEntry &scope_entry) noexcept {
+  ArmyStrengthSnapshot result{};
+  result.army_id = scope_entry.army_id;
+  result.scope_role = scope_entry.role;
+  result.war_ids = scope_entry.war_ids;
+
+  void *const unit = ResolveStoredComponent(
+      bindings.army_storage_slot, scope_entry.army_id, kArmyIdOffset);
+  if (unit == nullptr) {
+    result.unavailable_reason = "public_cunit_not_found";
+    return result;
+  }
+  const auto internal_army_id =
+      LoadAt<std::int32_t>(unit, kUnitArmyIdOffset);
+  void *const internal_army = ResolveStoredComponent(
+      bindings.army_internal_storage_slot, internal_army_id,
+      kInternalArmyIdOffset);
+  if (internal_army == nullptr) {
+    result.unavailable_reason = "native_carmy_not_found";
+    return result;
+  }
+  result.native_carmy_id_observable = true;
+  result.native_carmy_id = internal_army_id;
+
+  void *const regiment_ids = LoadAt<void *>(
+      internal_army, kInternalArmyRegimentIdsOffset);
+  const auto regiment_capacity = LoadAt<std::int32_t>(
+      internal_army, kInternalArmyRegimentCapacityOffset);
+  const auto regiment_count = LoadAt<std::int32_t>(
+      internal_army, kInternalArmyRegimentCountOffset);
+  if (regiment_capacity < 0 ||
+      regiment_capacity > kMaximumArmyRegiments || regiment_count < 0 ||
+      regiment_count > regiment_capacity ||
+      (regiment_count > 0 && regiment_ids == nullptr)) {
+    result.unavailable_reason = "regiment_array_invalid";
+    return result;
+  }
+
+  std::int64_t current_soldiers = 0;
+  std::int64_t maximum_soldiers = 0;
+  std::int64_t ai_base_power_raw = 0;
+  for (std::int32_t index = 0; index < regiment_count; ++index) {
+    const auto regiment_id = LoadAt<std::int32_t>(
+        regiment_ids, static_cast<std::size_t>(index) * sizeof(std::int32_t));
+    void *const regiment = ResolveStoredComponent(
+        bindings.regiment_storage_slot, regiment_id, kRegimentIdOffset);
+    if (regiment == nullptr) {
+      result.unavailable_reason = "regiment_not_found";
+      return result;
+    }
+
+    bool identity_valid = false;
+    if (!ReadRegimentIdentity(regiment, identity_valid)) {
+      result.unavailable_reason = "identity_predicate_unavailable";
+      return result;
+    }
+    if (!identity_valid) {
+      result.unavailable_reason = "regiment_identity_invalid";
+      return result;
+    }
+    const auto maximum = LoadAt<std::int32_t>(
+        regiment, kRegimentMaximumSoldiersOffset);
+    if (!CheckedAddNonnegative(maximum_soldiers, maximum)) {
+      result.unavailable_reason = maximum < 0 ? "soldier_value_invalid"
+                                              : "aggregate_overflow";
+      return result;
+    }
+    const auto current = LoadAt<std::int32_t>(
+        regiment, kRegimentCurrentSoldiersOffset);
+    if (!CheckedAddNonnegative(current_soldiers, current)) {
+      result.unavailable_reason = current < 0 ? "soldier_value_invalid"
+                                              : "aggregate_overflow";
+      return result;
+    }
+    const auto base_power = LoadAt<std::int64_t>(
+        regiment, kRegimentAiBasePowerOffset);
+    if (!CheckedAddSigned(ai_base_power_raw, base_power)) {
+      result.unavailable_reason = "aggregate_overflow";
+      return result;
+    }
+  }
+
+  // The instruction mirror above owns generation/fallback/predicate safety.
+  // Require it to match the same original helpers used by CK3 before
+  // publishing, so an offset or predicate drift cannot silently become data.
+  const auto native_current = bindings.get_army_current_soldiers(
+      static_cast<std::byte *>(internal_army) +
+          kInternalArmyRegimentIdsOffset,
+      0);
+  const auto native_maximum =
+      bindings.get_army_maximum_soldiers(internal_army);
+  if (native_current < 0 || native_maximum < 0 ||
+      native_current != current_soldiers ||
+      native_maximum != maximum_soldiers) {
+    result.unavailable_reason = "native_helper_mismatch";
+    return result;
+  }
+
+  result.available = true;
+  result.regiment_count = regiment_count;
+  result.current_soldiers = native_current;
+  result.maximum_soldiers = native_maximum;
+  result.ai_base_power_raw = ai_base_power_raw;
+  return result;
+}
+
+using DatabaseObjectValidity = bool (*)(void *object);
+
+bool ReadDatabaseObjectValidity(void *object, bool &valid) noexcept {
+  if (object == nullptr) {
+    valid = false;
+    return true;
+  }
+  void *const vtable = LoadAt<void *>(object, 0);
+  if (vtable == nullptr) {
+    return false;
+  }
+  const auto function_address = LoadAt<std::uintptr_t>(vtable, 0);
+  if (function_address == 0) {
+    return false;
+  }
+  valid = reinterpret_cast<DatabaseObjectValidity>(function_address)(object);
+  return true;
+}
+
+bool ReadCombatMaaType(void *regiment,
+                       game::CombatMaaTypeSnapshot &output) noexcept {
+  output = {};
+  void *const maa_type = LoadAt<void *>(regiment, kRegimentMaaTypeOffset);
+  if (maa_type == nullptr) {
+    output.status = CombatObservationStatus::absent;
+    return true;
+  }
+  bool valid = false;
+  if (!ReadDatabaseObjectValidity(maa_type, valid)) {
+    output.unavailable_reason = "maa_type_validity_unavailable";
+    return false;
+  }
+  if (!valid) {
+    output.status = CombatObservationStatus::absent;
+    return true;
+  }
+  if (!ReadDatabaseObjectKey(maa_type, kDatabaseObjectKeyOffset,
+                             output.key) ||
+      output.key.empty()) {
+    output.key.clear();
+    output.unavailable_reason = "maa_type_key_unavailable";
+    return false;
+  }
+  output.status = CombatObservationStatus::available;
+  return true;
+}
+
+bool ReadCombatRegimentKind(
+    const Bindings &bindings, void *regiment, std::int32_t regiment_id,
+    game::CombatRegimentKindSnapshot &output) noexcept {
+  output = {};
+  output.unavailable_reason = "combat_type_unavailable";
+  void *const combat_type =
+      LoadAt<void *>(regiment, kRegimentInnerTypeOffset);
+  if (combat_type == nullptr) {
+    return false;
+  }
+  bool type_valid = false;
+  if (!ReadDatabaseObjectValidity(combat_type, type_valid)) {
+    output.unavailable_reason = "combat_type_validity_unavailable";
+    return false;
+  }
+  const bool special = bindings.is_special_combat_regiment(regiment);
+  if (ResolveStoredComponent(bindings.regiment_storage_slot, regiment_id,
+                             kRegimentIdOffset) != regiment ||
+      LoadAt<void *>(regiment, kRegimentInnerTypeOffset) != combat_type) {
+    output.unavailable_reason = "regiment_generation_changed";
+    return false;
+  }
+  output.status = CombatObservationStatus::available;
+  output.value = !type_valid && !special ? "levy" : "men_at_arms";
+  output.fights_in_main_phase =
+      LoadAt<std::uint8_t>(combat_type,
+                           kRegimentMainPhaseEligibilityOffset) != 0;
+  if (ResolveStoredComponent(bindings.regiment_storage_slot, regiment_id,
+                             kRegimentIdOffset) != regiment ||
+      LoadAt<void *>(regiment, kRegimentInnerTypeOffset) != combat_type) {
+    output = {};
+    output.unavailable_reason = "regiment_generation_changed";
+    return false;
+  }
+  output.unavailable_reason.clear();
+  return true;
+}
+
+CombatCommanderSnapshot ReadCombatCommander(
+    const Bindings &bindings, void *internal_army) noexcept {
+  CombatCommanderSnapshot output{};
+  const auto commander_id = LoadAt<std::int32_t>(
+      internal_army, kInternalArmyCommanderCharacterIdOffset);
+  if (commander_id == -1) {
+    output.status = CombatObservationStatus::absent;
+    return output;
+  }
+  if (commander_id < 0) {
+    output.unavailable_reason = "commander_id_invalid";
+    return output;
+  }
+  void *const commander = ResolveStoredComponent(
+      bindings.character_storage_slot, commander_id, kCharacterIdOffset);
+  if (commander == nullptr) {
+    output.unavailable_reason = "commander_not_found";
+    return output;
+  }
+  bool commander_valid = false;
+  if (!ReadSubobjectPredicate(commander,
+                              kCharacterValiditySubobjectOffset,
+                              commander_valid) ||
+      !commander_valid) {
+    output.unavailable_reason = "commander_not_valid";
+    return output;
+  }
+  if (bindings.get_army_commander(internal_army) != commander) {
+    output.unavailable_reason = "native_commander_helper_mismatch";
+    return output;
+  }
+  output.character_id = commander_id;
+  output.generic_advantage_points =
+      bindings.get_commander_advantage(commander, -1, false);
+  output.generic_advantage_observable = true;
+  output.status = CombatObservationStatus::available;
+  return output;
+}
+
+bool ResolveCombatModifierOwner(const Bindings &bindings,
+                                void *expected_unit,
+                                void *internal_army,
+                                void *&owner) noexcept {
+  owner = nullptr;
+  const auto unit_id =
+      LoadAt<std::int32_t>(internal_army, kInternalArmyUnitIdOffset);
+  void *const linked_unit = ResolveStoredComponent(
+      bindings.army_storage_slot, unit_id, kArmyIdOffset);
+  if (linked_unit == nullptr || linked_unit != expected_unit) {
+    return false;
+  }
+  const auto owner_id =
+      LoadAt<std::int32_t>(linked_unit, kArmyOwnerCharacterIdOffset);
+  owner = ResolveStoredComponent(bindings.character_storage_slot, owner_id,
+                                 kCharacterIdOffset);
+  return owner != nullptr;
+}
+
+bool ReadEncounterEffectiveStats(
+    const Bindings &bindings, void *regiment, void *target_province,
+    std::int32_t regiment_id, std::int32_t target_province_id,
+    game::CombatEffectiveStatsSnapshot &output) noexcept {
+  output = {};
+  if (target_province == nullptr ||
+      ResolveStoredComponent(bindings.regiment_storage_slot, regiment_id,
+                             kRegimentIdOffset) != regiment ||
+      LoadAt<std::int32_t>(target_province, kProvinceIdOffset) !=
+          target_province_id) {
+    output.unavailable_reason = "encounter_province_unavailable";
+    return false;
+  }
+
+  alignas(8) std::array<std::byte, 0x38> native_stats{};
+  if (bindings.evaluate_regiment_stats_at_province(
+          regiment, native_stats.data(), target_province) !=
+          native_stats.data() ||
+      ResolveStoredComponent(bindings.regiment_storage_slot, regiment_id,
+                             kRegimentIdOffset) != regiment ||
+      LoadAt<std::int32_t>(regiment, kRegimentIdOffset) != regiment_id ||
+      LoadAt<std::int32_t>(target_province, kProvinceIdOffset) !=
+          target_province_id) {
+    output.unavailable_reason = "effective_stats_helper_failed";
+    return false;
+  }
+  output.source_target_province_id = target_province_id;
+  output.max_size = LoadAt<std::int32_t>(
+      native_stats.data(), kEncounterMaaStatsMaximumOffset);
+  output.siege_value_raw = LoadAt<std::int64_t>(
+      native_stats.data(), kEncounterMaaStatsSiegeOffset);
+  output.damage_raw = LoadAt<std::int64_t>(
+      native_stats.data(), kEncounterMaaStatsDamageOffset);
+  output.toughness_raw = LoadAt<std::int64_t>(
+      native_stats.data(), kEncounterMaaStatsToughnessOffset);
+  output.pursuit_raw = LoadAt<std::int64_t>(
+      native_stats.data(), kEncounterMaaStatsPursuitOffset);
+  output.screen_raw = LoadAt<std::int64_t>(
+      native_stats.data(), kEncounterMaaStatsScreenOffset);
+  if (output.max_size < 0) {
+    output = {};
+    output.unavailable_reason = "effective_stats_invalid";
+    return false;
+  }
+  output.available = true;
+  output.unavailable_reason.clear();
+  return true;
+}
+
+struct NativeArrayHeader {
+  void *data = nullptr;
+  std::int32_t capacity = 0;
+  std::int32_t count = 0;
+};
+static_assert(sizeof(NativeArrayHeader) == 0x10);
+
+bool ReadCharacterModifierRaw(const Bindings &bindings, void *aggregator,
+                              std::int32_t modifier_index,
+                              std::int64_t &output) noexcept;
+
+bool ReadCounterClassCount(const Bindings &bindings,
+                           std::int32_t &class_count) noexcept {
+  class_count = 0;
+  void *const rules = bindings.get_combat_rules();
+  if (rules == nullptr) {
+    return false;
+  }
+  class_count = LoadAt<std::int32_t>(
+      rules, kCombatRulesCounterClassCountOffset);
+  return class_count > 0 && class_count <= kMaximumCounterClasses;
+}
+
+bool ReadCombatOwner(const Bindings &bindings, void *owner_character,
+                     std::int32_t owner_character_id,
+                     game::CombatOwnerSnapshot &output) noexcept {
+  output = {};
+  output.character_id = owner_character_id;
+  if (owner_character == nullptr || owner_character_id < 0) {
+    output.unavailable_reason = "counter_modifier_owner_unavailable";
+    return false;
+  }
+  void *const aggregator =
+      bindings.get_character_modifier_aggregator(owner_character);
+  if (aggregator == nullptr ||
+      !ReadCharacterModifierRaw(bindings, aggregator,
+                                kCounterEfficiencyModifierIndex,
+                                output.counter_efficiency_raw) ||
+      !ReadCharacterModifierRaw(bindings, aggregator,
+                                kCounterResistanceModifierIndex,
+                                output.counter_resistance_raw)) {
+    output.unavailable_reason = "counter_modifiers_unavailable";
+    return false;
+  }
+  if (ResolveStoredComponent(bindings.character_storage_slot,
+                             owner_character_id,
+                             kCharacterIdOffset) != owner_character) {
+    output = {};
+    output.unavailable_reason = "counter_modifier_owner_generation_changed";
+    return false;
+  }
+  output.status = CombatObservationStatus::available;
+  output.unavailable_reason.clear();
+  return true;
+}
+
+bool ReadCombatCounter(const Bindings &bindings, void *regiment,
+                       std::int32_t regiment_id,
+                       std::int32_t current_soldiers,
+                       std::int32_t class_count,
+                       game::CombatCounterSnapshot &output) noexcept {
+  output = {};
+  void *const inner_type =
+      LoadAt<void *>(regiment, kRegimentInnerTypeOffset);
+  if (inner_type == nullptr) {
+    output.unavailable_reason = "regiment_inner_type_unavailable";
+    return false;
+  }
+  const auto class_index = LoadAt<std::int32_t>(
+      inner_type, kRegimentCounterClassOffset);
+  if (class_index < 0) {
+    output.status = CombatObservationStatus::absent;
+    output.unavailable_reason.clear();
+    return true;
+  }
+  if (class_index >= class_count) {
+    output.unavailable_reason = "counter_class_out_of_range";
+    return false;
+  }
+
+  void *const targets = LoadAt<void *>(
+      inner_type, kRegimentCounterTargetsDataOffset);
+  const auto target_count = LoadAt<std::int32_t>(
+      inner_type, kRegimentCounterTargetsCountOffset);
+  if (target_count < 0 || target_count > kMaximumCounterTargets ||
+      (target_count > 0 && targets == nullptr)) {
+    output.unavailable_reason = "counter_targets_invalid";
+    return false;
+  }
+  output.targets.reserve(static_cast<std::size_t>(target_count));
+  for (std::int32_t index = 0; index < target_count; ++index) {
+    const auto *const target =
+        static_cast<const std::byte *>(targets) +
+        static_cast<std::size_t>(index) * kRegimentCounterTargetStride;
+    game::CombatCounterTargetSnapshot row{};
+    row.class_index = LoadAt<std::int32_t>(
+        target, kRegimentCounterTargetClassOffset);
+    row.effectiveness_raw = LoadAt<std::int64_t>(
+        target, kRegimentCounterTargetEffectivenessOffset);
+    if (row.class_index < 0 || row.class_index >= class_count) {
+      output.targets.clear();
+      output.unavailable_reason = "counter_target_class_out_of_range";
+      return false;
+    }
+    output.targets.push_back(row);
+  }
+
+  alignas(8) std::array<std::byte, 0x60> synthetic_entry{};
+  StoreAt(synthetic_entry.data(), 0x08, regiment_id);
+  StoreAt(synthetic_entry.data(), 0x18,
+          static_cast<std::int64_t>(current_soldiers) * kFixedPointScale);
+  std::int64_t current_chunk_raw = -1;
+  if (bindings.read_counter_current_chunk(
+          synthetic_entry.data(), &current_chunk_raw) !=
+          &current_chunk_raw ||
+      current_chunk_raw < 0 ||
+      ResolveStoredComponent(bindings.regiment_storage_slot, regiment_id,
+                             kRegimentIdOffset) != regiment ||
+      LoadAt<std::int32_t>(regiment, kRegimentIdOffset) != regiment_id) {
+    output.targets.clear();
+    output.unavailable_reason = "counter_current_chunk_unavailable";
+    return false;
+  }
+  output.class_index = class_index;
+  output.current_chunk_raw = current_chunk_raw;
+  output.status = CombatObservationStatus::available;
+  output.unavailable_reason.clear();
+  return true;
+}
+
+bool ReadCombatRegiments(const Bindings &bindings, void *internal_army,
+                         void *target_province,
+                         std::int32_t target_province_id,
+                         std::int32_t counter_class_count,
+                         std::vector<CombatRegimentSnapshot> &output,
+                         bool &has_unavailable_subdomain,
+                         std::string &unavailable_reason) noexcept {
+  output.clear();
+  void *const regiment_ids = LoadAt<void *>(
+      internal_army, kInternalArmyRegimentIdsOffset);
+  const auto regiment_capacity = LoadAt<std::int32_t>(
+      internal_army, kInternalArmyRegimentCapacityOffset);
+  const auto regiment_count = LoadAt<std::int32_t>(
+      internal_army, kInternalArmyRegimentCountOffset);
+  if (regiment_capacity < 0 ||
+      regiment_capacity > kMaximumArmyRegiments || regiment_count < 0 ||
+      regiment_count > regiment_capacity ||
+      (regiment_count > 0 && regiment_ids == nullptr)) {
+    unavailable_reason = "regiment_array_invalid";
+    return false;
+  }
+
+  std::vector<CombatRegimentSnapshot> rows;
+  rows.reserve(static_cast<std::size_t>(regiment_count));
+  for (std::int32_t index = 0; index < regiment_count; ++index) {
+    CombatRegimentSnapshot row{};
+    row.regiment_id = LoadAt<std::int32_t>(
+        regiment_ids, static_cast<std::size_t>(index) * sizeof(std::int32_t));
+    void *const regiment = ResolveStoredComponent(
+        bindings.regiment_storage_slot, row.regiment_id, kRegimentIdOffset);
+    if (regiment == nullptr) {
+      unavailable_reason = "regiment_not_found";
+      return false;
+    }
+    if (!ReadRegimentIdentity(regiment, row.identity_valid)) {
+      unavailable_reason = "identity_predicate_unavailable";
+      return false;
+    }
+    if (!row.identity_valid) {
+      unavailable_reason = "regiment_identity_invalid";
+      return false;
+    }
+    row.current_soldiers = LoadAt<std::int32_t>(
+        regiment, kRegimentCurrentSoldiersOffset);
+    row.maximum_soldiers = LoadAt<std::int32_t>(
+        regiment, kRegimentMaximumSoldiersOffset);
+    if (row.current_soldiers < 0 || row.maximum_soldiers < 0) {
+      unavailable_reason = "soldier_value_invalid";
+      return false;
+    }
+    if (!ReadCombatMaaType(regiment, row.maa_type)) {
+      row.unavailable_reason = row.maa_type.unavailable_reason;
+      has_unavailable_subdomain = true;
+    } else {
+      row.available = true;
+    }
+    if (!ReadCombatRegimentKind(bindings, regiment, row.regiment_id,
+                                row.kind)) {
+      has_unavailable_subdomain = true;
+      row.available = false;
+      row.unavailable_reason = row.kind.unavailable_reason;
+    }
+    if (!ReadEncounterEffectiveStats(bindings, regiment, target_province,
+                                     row.regiment_id, target_province_id,
+                                     row.effective_stats)) {
+      has_unavailable_subdomain = true;
+      row.available = false;
+      row.unavailable_reason = row.effective_stats.unavailable_reason;
+    }
+    if (!ReadCombatCounter(bindings, regiment, row.regiment_id,
+                           row.current_soldiers, counter_class_count,
+                           row.counter)) {
+      has_unavailable_subdomain = true;
+    }
+    rows.push_back(std::move(row));
+  }
+  output = std::move(rows);
+  return true;
+}
+
+bool ReadCombatKnights(
+    const Bindings &bindings, std::int32_t internal_army_id,
+    const std::vector<CombatRegimentSnapshot> &regiments,
+    std::vector<std::int32_t> &seen_knight_character_ids,
+    std::vector<std::int32_t> &seen_knight_regiment_ids,
+    game::CombatKnightsSnapshot &output) noexcept {
+  output = {};
+  for (const auto &regiment_row : regiments) {
+    void *const regiment = ResolveStoredComponent(
+        bindings.regiment_storage_slot, regiment_row.regiment_id,
+        kRegimentIdOffset);
+    if (regiment == nullptr) {
+      output.unavailable_reason = "knight_source_regiment_unavailable";
+      return false;
+    }
+    const auto knight_character_id = LoadAt<std::int32_t>(
+        regiment, kRegimentKnightCharacterIdOffset);
+    if (knight_character_id == -1) {
+      continue;
+    }
+    if (!regiment_row.effective_stats.available) {
+      output.unavailable_reason = "knight_effective_stats_unavailable";
+      return false;
+    }
+    if (knight_character_id < 0 ||
+        LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) !=
+            internal_army_id ||
+        std::find(seen_knight_character_ids.begin(),
+                  seen_knight_character_ids.end(),
+                  knight_character_id) !=
+            seen_knight_character_ids.end() ||
+        std::find(seen_knight_regiment_ids.begin(),
+                  seen_knight_regiment_ids.end(),
+                  regiment_row.regiment_id) !=
+            seen_knight_regiment_ids.end()) {
+      output.unavailable_reason = "knight_identity_or_membership_invalid";
+      return false;
+    }
+    void *const character = ResolveStoredComponent(
+        bindings.character_storage_slot, knight_character_id,
+        kCharacterIdOffset);
+    bool character_valid = false;
+    if (character == nullptr ||
+        !ReadSubobjectPredicate(character,
+                                kCharacterValiditySubobjectOffset,
+                                character_valid) ||
+        !character_valid) {
+      output.unavailable_reason = "knight_character_unavailable";
+      return false;
+    }
+    void *const knight_link =
+        LoadAt<void *>(character, kCharacterKnightLinkOffset);
+    if (knight_link == nullptr ||
+        LoadAt<std::int32_t>(
+            knight_link, kCharacterKnightLinkRegimentIdOffset) !=
+            regiment_row.regiment_id) {
+      output.unavailable_reason = "knight_character_regiment_backlink_invalid";
+      return false;
+    }
+
+    game::CombatKnightSnapshot knight{};
+    knight.character_id = knight_character_id;
+    knight.source_regiment_id = regiment_row.regiment_id;
+    knight.army_id = internal_army_id;
+    knight.prowess = LoadAt<std::int32_t>(
+        character, kCharacterEffectiveProwessOffset);
+    const auto effective_prowess =
+        std::max<std::int64_t>(1, knight.prowess);
+    void *const effectiveness_context =
+        bindings.get_knight_effectiveness_context(character);
+    if (effectiveness_context == nullptr ||
+        bindings.read_knight_effectiveness(
+            &knight.knight_effectiveness_raw, effectiveness_context, 0) !=
+            &knight.knight_effectiveness_raw ||
+        knight.knight_effectiveness_raw < 0) {
+      output.unavailable_reason = "knight_effectiveness_unavailable";
+      return false;
+    }
+    if (ResolveStoredComponent(bindings.regiment_storage_slot,
+                               regiment_row.regiment_id,
+                               kRegimentIdOffset) != regiment ||
+        ResolveStoredComponent(bindings.character_storage_slot,
+                               knight_character_id,
+                               kCharacterIdOffset) != character ||
+        LoadAt<std::int32_t>(regiment,
+                             kRegimentKnightCharacterIdOffset) !=
+            knight_character_id ||
+        LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) !=
+            internal_army_id ||
+        LoadAt<void *>(character, kCharacterKnightLinkOffset) != knight_link ||
+        LoadAt<std::int32_t>(
+            knight_link, kCharacterKnightLinkRegimentIdOffset) !=
+            regiment_row.regiment_id) {
+      output.unavailable_reason = "knight_generation_changed";
+      return false;
+    }
+    const auto damage_raw = regiment_row.effective_stats.damage_raw;
+    const auto toughness_raw = regiment_row.effective_stats.toughness_raw;
+    std::int64_t per_prowess_raw = 0;
+    std::int64_t expected_damage_raw = 0;
+    std::int64_t expected_toughness_raw = 0;
+    if (!CheckedMultiplySigned(knight.knight_effectiveness_raw,
+                               effective_prowess, per_prowess_raw) ||
+        !CheckedMultiplySigned(per_prowess_raw,
+                               *bindings.knight_damage_per_prowess,
+                               expected_damage_raw) ||
+        !CheckedMultiplySigned(per_prowess_raw,
+                               *bindings.knight_toughness_per_prowess,
+                               expected_toughness_raw)) {
+      output.unavailable_reason = "knight_effectiveness_overflow";
+      return false;
+    }
+    if (damage_raw != expected_damage_raw ||
+        toughness_raw != expected_toughness_raw) {
+      output.unavailable_reason = "knight_effectiveness_crosscheck_failed";
+      return false;
+    }
+    knight.effective_damage_raw = damage_raw;
+    knight.effective_toughness_raw = toughness_raw;
+    knight.eligible = true;
+    knight.participant_army_membership_verified = true;
+    seen_knight_character_ids.push_back(knight_character_id);
+    seen_knight_regiment_ids.push_back(regiment_row.regiment_id);
+    output.members.push_back(knight);
+  }
+  std::sort(output.members.begin(), output.members.end(),
+            [](const auto &left, const auto &right) {
+              if (left.army_id != right.army_id) {
+                return left.army_id < right.army_id;
+              }
+              if (left.source_regiment_id != right.source_regiment_id) {
+                return left.source_regiment_id < right.source_regiment_id;
+              }
+              return left.character_id < right.character_id;
+            });
+  output.available = true;
+  output.unavailable_reason.clear();
+  return true;
+}
+
+game::CombatPrecontactWidthSnapshot ReadPrecontactCombatWidth(
+    const Bindings &bindings,
+    const std::vector<CombatArmyInputsSnapshot> &armies,
+    const game::CombatTerrainSnapshot &terrain) noexcept {
+  game::CombatPrecontactWidthSnapshot output{};
+  if (!terrain.available) {
+    output.unavailable_reason = "target_terrain_unavailable";
+    return output;
+  }
+  std::int64_t friendly_total_raw = 0;
+  std::int64_t enemy_total_raw = 0;
+  for (const auto &army : armies) {
+    if (!army.available || !army.regiments_observable) {
+      output.unavailable_reason = "contact_participants_unavailable";
+      return output;
+    }
+    auto &side_total =
+        army.scope_role == ArmyStrengthScopeRole::active_war_enemy
+            ? enemy_total_raw
+            : friendly_total_raw;
+    for (const auto &regiment : army.regiments) {
+      if (!regiment.identity_valid) {
+        output.unavailable_reason = "contact_regiment_identity_invalid";
+        return output;
+      }
+      std::int64_t regiment_current_raw = 0;
+      if (!CheckedMultiplySigned(regiment.current_soldiers,
+                                 kFixedPointScale,
+                                 regiment_current_raw) ||
+          !CheckedAddSigned(side_total, regiment_current_raw)) {
+        output.unavailable_reason = "contact_participant_total_overflow";
+        return output;
+      }
+    }
+  }
+  std::int64_t combined_total_raw = friendly_total_raw;
+  if (!CheckedAddSigned(combined_total_raw, enemy_total_raw)) {
+    output.unavailable_reason = "contact_participant_total_overflow";
+    return output;
+  }
+  const auto average_total_raw = combined_total_raw / 2;
+  std::int64_t ratio_product = 0;
+  if (!CheckedMultiplySigned(average_total_raw,
+                             *bindings.base_combat_width_ratio,
+                             ratio_product)) {
+    output.unavailable_reason = "base_combat_width_overflow";
+    return output;
+  }
+  const auto candidate_raw = ratio_product / kFixedPointScale;
+  const auto candidate_width = candidate_raw / kFixedPointScale;
+  const auto base_width = std::max<std::int64_t>(1, candidate_width);
+  std::int64_t final_product = 0;
+  if (!CheckedMultiplySigned(
+          base_width, terrain.combat_width_multiplier_raw,
+          final_product)) {
+    output.unavailable_reason = "final_combat_width_overflow";
+    return output;
+  }
+  const auto terrain_width = final_product / kFixedPointScale;
+  const auto final_width = std::max<std::int64_t>(
+      *bindings.minimum_combat_width, terrain_width);
+  if (base_width > std::numeric_limits<std::int32_t>::max() ||
+      final_width < std::numeric_limits<std::int32_t>::min() ||
+      final_width > std::numeric_limits<std::int32_t>::max()) {
+    output.unavailable_reason = "combat_width_out_of_range";
+    return output;
+  }
+  output.base = static_cast<std::int32_t>(base_width);
+  output.final = static_cast<std::int32_t>(final_width);
+  output.available = true;
+  output.unavailable_reason.clear();
+  return output;
+}
+
+enum class ReadContactGeographyResult {
+  available,
+  invalid_encounter,
+  unavailable,
+};
+
+enum class ReadAdjacencyKindResult {
+  available,
+  invalid_encounter,
+  unavailable,
+};
+
+ReadAdjacencyKindResult ReadProvinceAdjacencyKind(
+    void *origin_province, std::int32_t target_province_id,
+    std::int32_t &kind) noexcept {
+  kind = -1;
+  if (origin_province == nullptr) {
+    return ReadAdjacencyKindResult::unavailable;
+  }
+  void *const map_node =
+      LoadAt<void *>(origin_province, kProvinceMapNodeOffset);
+  if (map_node == nullptr) {
+    return ReadAdjacencyKindResult::unavailable;
+  }
+  void *const adjacency_data =
+      LoadAt<void *>(map_node, kMapNodeAdjacencyDataOffset);
+  const auto adjacency_count = LoadAt<std::int32_t>(
+      map_node, kMapNodeAdjacencyCountOffset);
+  if (adjacency_count < 0 ||
+      adjacency_count > kMaximumProvinceAdjacencies ||
+      (adjacency_count > 0 && adjacency_data == nullptr)) {
+    return ReadAdjacencyKindResult::unavailable;
+  }
+  bool found = false;
+  for (std::int32_t index = 0; index < adjacency_count; ++index) {
+    const auto *const edge =
+        static_cast<const std::byte *>(adjacency_data) +
+        static_cast<std::size_t>(index) * kMapAdjacencyStride;
+    if (LoadAt<std::int32_t>(
+            edge, kMapAdjacencyTargetProvinceIdOffset) !=
+        target_province_id) {
+      continue;
+    }
+    if (found) {
+      return ReadAdjacencyKindResult::unavailable;
+    }
+    found = true;
+    kind = LoadAt<std::int32_t>(edge, kMapAdjacencyKindOffset);
+  }
+  if (!found) {
+    return ReadAdjacencyKindResult::invalid_encounter;
+  }
+  return ReadAdjacencyKindResult::available;
+}
+
+ReadContactGeographyResult ReadContactGeography(
+    const Bindings &bindings, void *game_state, void *target_province,
+    std::int32_t target_province_id, std::int32_t attacker_entry_province_id,
+    bool attacker_enemy_side,
+    const std::vector<CombatArmyInputsSnapshot> &armies,
+    game::CombatCrossingSnapshot &crossing,
+    game::CombatDefenderContextSnapshot &defender_context) noexcept {
+  crossing = {};
+  defender_context = {};
+  void *const attacker_entry_province =
+      ResolveProvince(game_state, attacker_entry_province_id);
+  if (attacker_entry_province == nullptr) {
+    crossing.unavailable_reason = "attacker_entry_province_unavailable";
+    defender_context.unavailable_reason = crossing.unavailable_reason;
+    return ReadContactGeographyResult::unavailable;
+  }
+  std::int32_t edge_kind = -1;
+  const auto edge_result = ReadProvinceAdjacencyKind(
+      attacker_entry_province, target_province_id, edge_kind);
+  if (edge_result != ReadAdjacencyKindResult::available) {
+    crossing.unavailable_reason =
+        edge_result == ReadAdjacencyKindResult::invalid_encounter
+            ? "entry_target_edge_missing"
+            : "entry_target_adjacency_unavailable";
+    defender_context.unavailable_reason = crossing.unavailable_reason;
+    return edge_result == ReadAdjacencyKindResult::invalid_encounter
+               ? ReadContactGeographyResult::invalid_encounter
+               : ReadContactGeographyResult::unavailable;
+  }
+
+  switch (edge_kind) {
+  case 0:
+    crossing.kind = "none";
+    break;
+  case 1:
+    crossing.kind = "strait";
+    break;
+  case 2:
+    crossing.kind = "river";
+    break;
+  case 3:
+    crossing.kind = "large_river";
+    break;
+  case 4:
+    crossing.unavailable_reason = "impassable_entry_target_edge";
+    defender_context.unavailable_reason = crossing.unavailable_reason;
+    return ReadContactGeographyResult::invalid_encounter;
+  case 5:
+  case 6:
+    crossing.unavailable_reason = "non_contact_adjacency_encoding";
+    defender_context.unavailable_reason = crossing.unavailable_reason;
+    return ReadContactGeographyResult::invalid_encounter;
+  default:
+    crossing.unavailable_reason = "adjacency_kind_out_of_range";
+    defender_context.unavailable_reason = crossing.unavailable_reason;
+    return ReadContactGeographyResult::unavailable;
+  }
+
+  if (ResolveProvince(game_state, attacker_entry_province_id) !=
+          attacker_entry_province ||
+      ResolveProvince(game_state, target_province_id) != target_province) {
+    crossing = {};
+    defender_context = {};
+    crossing.unavailable_reason = "hypothetical_contact_identity_changed";
+    defender_context.unavailable_reason = crossing.unavailable_reason;
+    return ReadContactGeographyResult::unavailable;
+  }
+  crossing.available = true;
+  crossing.unavailable_reason.clear();
+  defender_context.available = true;
+  defender_context.defender_side =
+      attacker_enemy_side ? "player_or_allied" : "enemy";
+  defender_context.unavailable_reason.clear();
+
+  std::int32_t defender_owner_character_id = -1;
+  for (const auto &army : armies) {
+    if (army.encounter_role != "defender") {
+      continue;
+    }
+    if (army.owner.status != CombatObservationStatus::available) {
+      defender_context.holding_unavailable_reason =
+          "defender_owner_unavailable";
+      return ReadContactGeographyResult::available;
+    }
+    // CCombat side population establishes the primary participant from the
+    // first inserted army. A hypothetical side uses explicit request order as
+    // that insertion order; current Province participant order is irrelevant.
+    defender_owner_character_id = army.owner.character_id;
+    break;
+  }
+  if (defender_owner_character_id == -1) {
+    defender_context.holding_unavailable_reason = "defender_side_missing";
+    return ReadContactGeographyResult::available;
+  }
+  void *const defender_owner = ResolveStoredComponent(
+      bindings.character_storage_slot, defender_owner_character_id,
+      kCharacterIdOffset);
+  if (defender_owner == nullptr) {
+    defender_context.holding_unavailable_reason =
+        "defender_owner_generation_changed";
+    return ReadContactGeographyResult::available;
+  }
+  const bool holding_defender =
+      bindings.is_holding_defender(defender_owner, target_province);
+  if (ResolveProvince(game_state, attacker_entry_province_id) !=
+          attacker_entry_province ||
+      ResolveProvince(game_state, target_province_id) != target_province) {
+    crossing = {};
+    defender_context = {};
+    crossing.unavailable_reason = "hypothetical_contact_identity_changed";
+    defender_context.unavailable_reason = crossing.unavailable_reason;
+    return ReadContactGeographyResult::unavailable;
+  }
+  if (ResolveStoredComponent(bindings.character_storage_slot,
+                             defender_owner_character_id,
+                             kCharacterIdOffset) != defender_owner) {
+    defender_context.holding_unavailable_reason =
+        "holding_context_identity_changed";
+    return ReadContactGeographyResult::available;
+  }
+  defender_context.holding_defender_status =
+      CombatObservationStatus::available;
+  defender_context.holding_defender = holding_defender;
+  defender_context.holding_unavailable_reason.clear();
+  return ReadContactGeographyResult::available;
+}
+
+bool AppendOngoingCombat(const Bindings &bindings, void *game_state,
+                         void *internal_army,
+                         std::vector<OngoingCombatInputsSnapshot> &output,
+                         bool &has_unavailable_subdomain) noexcept {
+  const auto combat_id = LoadAt<std::int32_t>(
+      internal_army, kInternalArmyCombatIdOffset);
+  if (combat_id == -1) {
+    return true;
+  }
+  OngoingCombatInputsSnapshot row{};
+  if (combat_id < 0) {
+    row.unavailable_reason = "combat_id_invalid";
+    has_unavailable_subdomain = true;
+    output.push_back(std::move(row));
+    return true;
+  }
+  const auto existing = std::find_if(
+      output.begin(), output.end(), [combat_id](const auto &candidate) {
+        return candidate.combat_id_observable &&
+               candidate.combat_id == combat_id;
+      });
+  if (existing != output.end()) {
+    return true;
+  }
+  row.combat_id_observable = true;
+  row.combat_id = combat_id;
+  void *const combat = ResolveStoredComponent(
+      bindings.combat_storage_slot, combat_id, kCombatIdOffset);
+  if (combat == nullptr) {
+    row.unavailable_reason = "combat_not_found";
+    has_unavailable_subdomain = true;
+    output.push_back(std::move(row));
+    return true;
+  }
+  void *const province = LoadAt<void *>(combat, kCombatProvinceOffset);
+  if (province == nullptr) {
+    row.unavailable_reason = "combat_province_unavailable";
+    has_unavailable_subdomain = true;
+    output.push_back(std::move(row));
+    return true;
+  }
+  row.province_id = LoadAt<std::int32_t>(province, kProvinceIdOffset);
+  if (ResolveProvince(game_state, row.province_id) != province) {
+    row.province_id = -1;
+    row.unavailable_reason = "combat_province_unavailable";
+    has_unavailable_subdomain = true;
+    output.push_back(std::move(row));
+    return true;
+  }
+  row.phase = LoadAt<std::int32_t>(combat, kCombatPhaseOffset);
+  row.phase_day = LoadAt<std::int32_t>(combat, kCombatPhaseDayOffset);
+  row.base_combat_width =
+      LoadAt<std::int32_t>(combat, kCombatBaseWidthOffset);
+  row.final_combat_width =
+      LoadAt<std::int32_t>(combat, kCombatFinalWidthOffset);
+  row.side_0_roll = LoadAt<std::int32_t>(combat, kCombatSide0RollOffset);
+  row.side_1_roll = LoadAt<std::int32_t>(combat, kCombatSide1RollOffset);
+  row.base_advantage =
+      LoadAt<std::int32_t>(combat, kCombatBaseAdvantageOffset);
+  row.resolved_advantage =
+      LoadAt<std::int32_t>(combat, kCombatResolvedAdvantageOffset);
+  if (row.phase < 0 || row.phase > 3 || row.phase_day < 0 ||
+      row.base_combat_width < 0 || row.final_combat_width < 0) {
+    row.province_id = -1;
+    row.unavailable_reason = "combat_state_invalid";
+    has_unavailable_subdomain = true;
+    output.push_back(std::move(row));
+    return true;
+  }
+  if (ResolveStoredComponent(bindings.combat_storage_slot, combat_id,
+                             kCombatIdOffset) != combat) {
+    row.province_id = -1;
+    row.unavailable_reason = "combat_generation_changed";
+    has_unavailable_subdomain = true;
+    output.push_back(std::move(row));
+    return true;
+  }
+  row.available = true;
+  output.push_back(std::move(row));
+  return true;
+}
+
+CombatCandidateProvinceSnapshot ReadCombatCandidateProvince(
+    const Bindings &bindings, void *game_state,
+    std::int32_t province_id) noexcept {
+  CombatCandidateProvinceSnapshot output{};
+  output.province_id = province_id;
+  void *const province = ResolveProvince(game_state, province_id);
+  if (province == nullptr) {
+    output.unavailable_reason = "province_not_found";
+    output.terrain.unavailable_reason = output.unavailable_reason;
+    return output;
+  }
+  void *const terrain = bindings.get_province_terrain(province);
+  if (terrain == nullptr ||
+      !ReadDatabaseObjectKey(terrain, kDatabaseObjectKeyOffset,
+                             output.terrain.key) ||
+      output.terrain.key.empty()) {
+    output.terrain.key.clear();
+    output.unavailable_reason = "terrain_unavailable";
+    output.terrain.unavailable_reason = output.unavailable_reason;
+    return output;
+  }
+  output.terrain.combat_width_multiplier_raw = LoadAt<std::int64_t>(
+      terrain, kTerrainCombatWidthMultiplierOffset);
+  if (ResolveProvince(game_state, province_id) != province ||
+      bindings.get_province_terrain(province) != terrain) {
+    output.terrain = {};
+    output.unavailable_reason = "terrain_generation_changed";
+    output.terrain.unavailable_reason = output.unavailable_reason;
+    return output;
+  }
+  output.terrain.available = true;
+  output.available = true;
+  return output;
+}
+
+bool ReadCharacterModifierRaw(const Bindings &bindings, void *aggregator,
+                              std::int32_t modifier_index,
+                              std::int64_t &output) noexcept {
+  output = 0;
+  return bindings.read_character_modifier(aggregator, &output,
+                                          modifier_index) == &output;
+}
+
+CombatCommanderContextSnapshot ReadCommanderRollContext(
+    const Bindings &bindings, std::int32_t province_id, void *terrain,
+    const CombatCommanderSnapshot &commander) noexcept {
+  CombatCommanderContextSnapshot output{};
+  output.province_id = province_id;
+  if (commander.status == CombatObservationStatus::absent) {
+    output.available = true;
+    output.unavailable_reason.clear();
+    return output;
+  }
+  if (commander.status != CombatObservationStatus::available) {
+    output.unavailable_reason = "commander_unavailable";
+    return output;
+  }
+  void *const character = ResolveStoredComponent(
+      bindings.character_storage_slot, commander.character_id,
+      kCharacterIdOffset);
+  if (character == nullptr || terrain == nullptr) {
+    output.unavailable_reason = "commander_context_object_unavailable";
+    return output;
+  }
+  void *const aggregator =
+      bindings.get_character_modifier_aggregator(character);
+  if (aggregator == nullptr) {
+    output.unavailable_reason = "commander_modifier_aggregator_unavailable";
+    return output;
+  }
+
+  const auto terrain_min_index = static_cast<std::int32_t>(
+      LoadAt<std::uint16_t>(
+          terrain, kTerrainCommanderMinRollModifierIndexOffset));
+  const auto terrain_max_index = static_cast<std::int32_t>(
+      LoadAt<std::uint16_t>(
+          terrain, kTerrainCommanderMaxRollModifierIndexOffset));
+  std::int64_t character_min_raw = 0;
+  std::int64_t character_max_raw = 0;
+  std::int64_t terrain_min_raw = 0;
+  std::int64_t terrain_max_raw = 0;
+  if (!ReadCharacterModifierRaw(bindings, aggregator,
+                                kCommanderMinRollModifierIndex,
+                                character_min_raw) ||
+      !ReadCharacterModifierRaw(bindings, aggregator,
+                                kCommanderMaxRollModifierIndex,
+                                character_max_raw) ||
+      !ReadCharacterModifierRaw(bindings, aggregator, terrain_min_index,
+                                terrain_min_raw) ||
+      !ReadCharacterModifierRaw(bindings, aggregator, terrain_max_index,
+                                terrain_max_raw)) {
+    output.unavailable_reason = "commander_modifier_unavailable";
+    return output;
+  }
+  if (ResolveStoredComponent(bindings.character_storage_slot,
+                             commander.character_id,
+                             kCharacterIdOffset) != character) {
+    output.unavailable_reason = "commander_generation_changed";
+    return output;
+  }
+
+  const auto minimum =
+      static_cast<std::int64_t>(*bindings.commander_min_roll) +
+      character_min_raw / kFixedPointScale +
+      terrain_min_raw / kFixedPointScale;
+  const auto maximum =
+      static_cast<std::int64_t>(*bindings.commander_max_roll) +
+      character_max_raw / kFixedPointScale +
+      terrain_max_raw / kFixedPointScale;
+  if (minimum < std::numeric_limits<std::int32_t>::min() ||
+      minimum > std::numeric_limits<std::int32_t>::max() ||
+      maximum < std::numeric_limits<std::int32_t>::min() ||
+      maximum > std::numeric_limits<std::int32_t>::max()) {
+    output.unavailable_reason = "commander_roll_bounds_overflow";
+    return output;
+  }
+  output.effective_min_roll = static_cast<std::int32_t>(minimum);
+  output.effective_max_roll = static_cast<std::int32_t>(maximum);
+  output.available = true;
+  output.unavailable_reason.clear();
+  return output;
+}
+
+CombatArmyInputsSnapshot ReadCombatArmyInputsRow(
+    const Bindings &bindings, void *game_state, void *target_province,
+    void *target_terrain, std::int32_t target_province_id,
+    std::int32_t counter_class_count,
+    const ArmyStrengthScopeEntry &scope_entry,
+    std::vector<OngoingCombatInputsSnapshot> &ongoing_combats,
+    bool &has_unavailable_subdomain) noexcept {
+  CombatArmyInputsSnapshot output{};
+  output.army_id = scope_entry.army_id;
+  output.scope_role = scope_entry.role;
+  output.war_ids = scope_entry.war_ids;
+
+  void *const unit = ResolveStoredComponent(
+      bindings.army_storage_slot, scope_entry.army_id, kArmyIdOffset);
+  if (unit == nullptr) {
+    output.unavailable_reason = "public_cunit_not_found";
+    return output;
+  }
+  void *const current_province =
+      LoadAt<void *>(unit, kArmyCurrentProvinceOffset);
+  if (current_province != nullptr) {
+    const auto current_province_id =
+        LoadAt<std::int32_t>(current_province, kProvinceIdOffset);
+    if (ResolveProvince(game_state, current_province_id) == current_province) {
+      output.current_province_observable = true;
+      output.current_province_id = current_province_id;
+    }
+  }
+
+  const auto internal_army_id =
+      LoadAt<std::int32_t>(unit, kUnitArmyIdOffset);
+  void *const internal_army = ResolveStoredComponent(
+      bindings.army_internal_storage_slot, internal_army_id,
+      kInternalArmyIdOffset);
+  if (internal_army == nullptr) {
+    output.unavailable_reason = "native_carmy_not_found";
+    return output;
+  }
+  output.native_carmy_id_observable = true;
+  output.native_carmy_id = internal_army_id;
+  void *modifier_owner = nullptr;
+  if (!ResolveCombatModifierOwner(bindings, unit, internal_army,
+                                  modifier_owner)) {
+    output.unavailable_reason = "modifier_owner_not_found";
+    return output;
+  }
+  const auto owner_character_id =
+      LoadAt<std::int32_t>(unit, kArmyOwnerCharacterIdOffset);
+  if (!ReadCombatOwner(bindings, modifier_owner, owner_character_id,
+                       output.owner)) {
+    has_unavailable_subdomain = true;
+  }
+  output.commander = ReadCombatCommander(bindings, internal_army);
+  if (output.commander.status == CombatObservationStatus::unavailable) {
+    has_unavailable_subdomain = true;
+  }
+  output.commander.battle_context = ReadCommanderRollContext(
+      bindings, target_province_id, target_terrain, output.commander);
+  if (!output.commander.battle_context.available) {
+    has_unavailable_subdomain = true;
+  }
+
+  std::string regiment_failure;
+  if (!ReadCombatRegiments(bindings, internal_army, target_province,
+                           target_province_id, counter_class_count,
+                           output.regiments,
+                           has_unavailable_subdomain, regiment_failure)) {
+    output.regiments.clear();
+    output.unavailable_reason = std::move(regiment_failure);
+    return output;
+  }
+  output.regiments_observable = true;
+  if (!AppendOngoingCombat(bindings, game_state, internal_army,
+                           ongoing_combats,
+                           has_unavailable_subdomain)) {
+    output.unavailable_reason = "combat_observation_failed";
+    return output;
+  }
+  output.available = true;
+  return output;
+}
+
+bool BuildCounterSideEntries(
+    const Bindings &bindings,
+    const std::vector<CombatArmyInputsSnapshot> &armies, bool enemy_side,
+    std::vector<std::array<std::byte, 0x60>> &entries,
+    std::int32_t &modifier_owner_character_id,
+    std::string &unavailable_reason) noexcept {
+  entries.clear();
+  modifier_owner_character_id = -1;
+  bool found_side_army = false;
+  for (const auto &army : armies) {
+    const bool is_enemy =
+        army.scope_role == ArmyStrengthScopeRole::active_war_enemy;
+    if (is_enemy != enemy_side) {
+      continue;
+    }
+    found_side_army = true;
+    if (!army.available || !army.regiments_observable ||
+        army.owner.status != CombatObservationStatus::available) {
+      unavailable_reason = "counter_side_army_unavailable";
+      return false;
+    }
+    if (modifier_owner_character_id == -1) {
+      modifier_owner_character_id = army.owner.character_id;
+    }
+    for (const auto &regiment : army.regiments) {
+      if (!regiment.identity_valid) {
+        unavailable_reason = "counter_regiment_identity_invalid";
+        return false;
+      }
+      if (regiment.counter.status == CombatObservationStatus::unavailable) {
+        unavailable_reason = "counter_operand_unavailable";
+        return false;
+      }
+      void *const native_regiment = ResolveStoredComponent(
+          bindings.regiment_storage_slot, regiment.regiment_id,
+          kRegimentIdOffset);
+      if (native_regiment == nullptr) {
+        unavailable_reason = "counter_regiment_generation_mismatch";
+        return false;
+      }
+      entries.emplace_back();
+      auto &entry = entries.back();
+      StoreAt(entry.data(), 0x08, regiment.regiment_id);
+      StoreAt(entry.data(), 0x18,
+              static_cast<std::int64_t>(regiment.current_soldiers) *
+                  kFixedPointScale);
+    }
+  }
+  if (!found_side_army || modifier_owner_character_id < 0) {
+    unavailable_reason = "counter_side_missing";
+    return false;
+  }
+  return true;
+}
+
+game::CombatCounterResolutionSnapshot ReadCounterResolution(
+    const Bindings &bindings,
+    const std::vector<CombatArmyInputsSnapshot> &armies,
+    std::int32_t class_count, bool countered_enemy_side) noexcept {
+  game::CombatCounterResolutionSnapshot output{};
+  output.countered_side =
+      countered_enemy_side ? "enemy" : "player_or_allied";
+  output.countering_side =
+      countered_enemy_side ? "player_or_allied" : "enemy";
+  output.class_count = class_count;
+
+  std::vector<std::array<std::byte, 0x60>> countered_entries;
+  std::vector<std::array<std::byte, 0x60>> countering_entries;
+  if (!BuildCounterSideEntries(
+          bindings, armies, countered_enemy_side, countered_entries,
+          output.countered_modifier_owner_character_id,
+          output.unavailable_reason) ||
+      !BuildCounterSideEntries(
+          bindings, armies, !countered_enemy_side, countering_entries,
+          output.countering_modifier_owner_character_id,
+          output.unavailable_reason)) {
+    return output;
+  }
+
+  void *const countered_owner = ResolveStoredComponent(
+      bindings.character_storage_slot,
+      output.countered_modifier_owner_character_id, kCharacterIdOffset);
+  void *const countering_owner = ResolveStoredComponent(
+      bindings.character_storage_slot,
+      output.countering_modifier_owner_character_id, kCharacterIdOffset);
+  void *const countered_aggregator =
+      countered_owner == nullptr
+          ? nullptr
+          : bindings.get_character_modifier_aggregator(countered_owner);
+  void *const countering_aggregator =
+      countering_owner == nullptr
+          ? nullptr
+          : bindings.get_character_modifier_aggregator(countering_owner);
+  if (countered_aggregator == nullptr || countering_aggregator == nullptr ||
+      bindings.get_counter_context_scale(
+          &output.context_scale_raw, countered_aggregator,
+          countering_aggregator) != &output.context_scale_raw ||
+      output.context_scale_raw < 0) {
+    output.unavailable_reason = "counter_context_scale_unavailable";
+    return output;
+  }
+
+  NativeArrayHeader countered_header{
+      countered_entries.empty() ? nullptr : countered_entries.data(),
+      static_cast<std::int32_t>(countered_entries.size()),
+      static_cast<std::int32_t>(countered_entries.size())};
+  NativeArrayHeader countering_header{
+      countering_entries.empty() ? nullptr : countering_entries.data(),
+      static_cast<std::int32_t>(countering_entries.size()),
+      static_cast<std::int32_t>(countering_entries.size())};
+  output.damage_retention_by_class_raw.assign(
+      static_cast<std::size_t>(class_count), kFixedPointScale);
+  NativeArrayHeader output_header{
+      output.damage_retention_by_class_raw.data(), class_count, class_count};
+  bindings.resolve_counter_classes(
+      &countered_header, &countering_header, &output_header,
+      output.context_scale_raw);
+  if (output_header.data != output.damage_retention_by_class_raw.data() ||
+      output_header.capacity != class_count ||
+      output_header.count != class_count) {
+    output.damage_retention_by_class_raw.clear();
+    output.unavailable_reason = "counter_resolution_output_reallocated";
+    return output;
+  }
+  const auto validate_entries = [&bindings](const auto &entries) {
+    for (const auto &entry : entries) {
+      const auto regiment_id =
+          LoadAt<std::int32_t>(entry.data(), 0x08);
+      if (ResolveStoredComponent(bindings.regiment_storage_slot,
+                                 regiment_id,
+                                 kRegimentIdOffset) == nullptr) {
+        return false;
+      }
+    }
+    return true;
+  };
+  if (!validate_entries(countered_entries) ||
+      !validate_entries(countering_entries)) {
+    output.damage_retention_by_class_raw.clear();
+    output.unavailable_reason = "counter_regiment_generation_changed";
+    return output;
+  }
+  if (ResolveStoredComponent(bindings.character_storage_slot,
+                             output.countered_modifier_owner_character_id,
+                             kCharacterIdOffset) != countered_owner ||
+      ResolveStoredComponent(bindings.character_storage_slot,
+                             output.countering_modifier_owner_character_id,
+                             kCharacterIdOffset) != countering_owner) {
+    output.damage_retention_by_class_raw.clear();
+    output.unavailable_reason = "counter_owner_generation_changed";
+    return output;
+  }
+  output.available = true;
+  output.unavailable_reason.clear();
+  return output;
+}
+
+constexpr std::array<std::string_view, 6> kWarExitDeltaKinds{
+    "prestige", "prestige_experience", "piety", "piety_experience",
+    "legitimacy", "stress"};
+
+std::optional<std::size_t>
+WarExitDeltaKindIndex(WarExitPreviewRowKind kind) noexcept {
+  switch (kind) {
+  case WarExitPreviewRowKind::prestige:
+    return 0;
+  case WarExitPreviewRowKind::prestige_experience:
+    return 1;
+  case WarExitPreviewRowKind::piety:
+    return 2;
+  case WarExitPreviewRowKind::piety_experience:
+    return 3;
+  case WarExitPreviewRowKind::legitimacy:
+    return 4;
+  case WarExitPreviewRowKind::stress:
+    return 5;
+  default:
+    return std::nullopt;
+  }
+}
+
+void SetWarExitMaterializeReason(
+    std::string_view stage, const WarExitPreviewRow *row,
+    std::size_t row_index, std::size_t row_count,
+    std::int32_t truce_count, std::size_t gold_count) noexcept {
+  if (!g_last_war_exit_preview_unavailable_reason.empty()) {
+    return;
+  }
+  const auto kind = row == nullptr
+                        ? std::uint32_t{0xFFFFFFFF}
+                        : static_cast<std::uint32_t>(row->kind);
+  const auto first_id =
+      row == nullptr ? std::int32_t{-1} : row->first_character_id;
+  const auto second_id =
+      row == nullptr ? std::int32_t{-1} : row->second_character_id;
+  const auto raw = row == nullptr ? std::int64_t{0} : row->raw;
+  const int written = std::snprintf(
+      g_war_exit_preview_diagnostic_buffer.data(),
+      g_war_exit_preview_diagnostic_buffer.size(),
+      "dry_preview.materialize_%.*s:row_index=%llu,row_count=%llu,"
+      "kind=%u,first_id=%d,second_id=%d,raw=%lld,truce_count=%d,"
+      "gold_count=%llu,root_vtable_rva=0x%llX,selector_count=%d,"
+      "default_child_vtable_rva=0x%llX,root_span=%d/%d,hidden_count=%d,"
+      "hidden_index=%d,hidden_span=%d/%d,"
+      "hidden_child0_vtable_rva=0x%llX",
+      static_cast<int>(stage.size()), stage.data(),
+      static_cast<unsigned long long>(row_index),
+      static_cast<unsigned long long>(row_count), kind, first_id, second_id,
+      static_cast<long long>(raw), truce_count,
+      static_cast<unsigned long long>(gold_count),
+      static_cast<unsigned long long>(g_war_exit_loaded_root_vtable_rva),
+      g_war_exit_loaded_root_selector_count,
+      static_cast<unsigned long long>(
+          g_war_exit_loaded_default_child_vtable_rva),
+      g_war_exit_loaded_root_count, g_war_exit_loaded_root_capacity,
+      g_war_exit_loaded_hidden_count, g_war_exit_loaded_hidden_index,
+      g_war_exit_loaded_hidden_child_count,
+      g_war_exit_loaded_hidden_capacity,
+      static_cast<unsigned long long>(
+          g_war_exit_loaded_hidden_child0_vtable_rva));
+  if (written <= 0 ||
+      static_cast<std::size_t>(written) >=
+          g_war_exit_preview_diagnostic_buffer.size()) {
+    SetWarExitPreviewUnavailableReason("dry_preview.materialize_unknown");
+    return;
+  }
+  std::size_t used = static_cast<std::size_t>(written);
+  if (g_war_exit_loaded_root_count > 0) {
+    const auto child_count = std::min<std::size_t>(
+        static_cast<std::size_t>(g_war_exit_loaded_root_count),
+        kMaximumWarExitDiagnosticRootChildren);
+    int appended = std::snprintf(
+        g_war_exit_preview_diagnostic_buffer.data() + used,
+        g_war_exit_preview_diagnostic_buffer.size() - used,
+        ",root_children=");
+    if (appended <= 0 || static_cast<std::size_t>(appended) >=
+                             g_war_exit_preview_diagnostic_buffer.size() -
+                                 used) {
+      SetWarExitPreviewUnavailableReason("dry_preview.materialize_unknown");
+      return;
+    }
+    used += static_cast<std::size_t>(appended);
+    for (std::size_t index = 0; index < child_count; ++index) {
+      appended = std::snprintf(
+          g_war_exit_preview_diagnostic_buffer.data() + used,
+          g_war_exit_preview_diagnostic_buffer.size() - used,
+          "%s0x%llX@0x%llX", index == 0 ? "" : "/",
+          static_cast<unsigned long long>(
+              g_war_exit_loaded_root_child_pointers[index]),
+          static_cast<unsigned long long>(
+              g_war_exit_loaded_root_child_vtable_rvas[index]));
+      if (appended <= 0 || static_cast<std::size_t>(appended) >=
+                               g_war_exit_preview_diagnostic_buffer.size() -
+                                   used) {
+        SetWarExitPreviewUnavailableReason("dry_preview.materialize_unknown");
+        return;
+      }
+      used += static_cast<std::size_t>(appended);
+    }
+  }
+  g_last_war_exit_preview_unavailable_reason = std::string_view(
+      g_war_exit_preview_diagnostic_buffer.data(), used);
+}
+
+bool MaterializeWarExitPreview(
+    const Bindings &bindings, const std::vector<WarExitPreviewRow> &rows,
+    void *effect_context, std::int32_t attacker_id,
+    std::int32_t defender_id, std::int32_t date_raw, bool white_peace,
+    game::WarExitOutcomeSnapshot &outcome,
+    std::array<std::int32_t, 12> &resource_callback_counts) noexcept {
+  outcome.primary_gold_transfers.clear();
+  outcome.primary_resource_deltas.clear();
+  outcome.prisoner_releases.clear();
+  resource_callback_counts.fill(0);
+  try {
+    outcome.primary_resource_deltas.reserve(12);
+    for (const auto character_id : {attacker_id, defender_id}) {
+      for (const auto kind : kWarExitDeltaKinds) {
+        outcome.primary_resource_deltas.push_back(
+            {character_id, std::string(kind), {0, kFixedPointScale}});
+      }
+    }
+  } catch (...) {
+    SetWarExitMaterializeReason("allocation", nullptr, 0, rows.size(), 0,
+                                0);
+    return false;
+  }
+
+  std::int32_t truce_count = 0;
+  for (std::size_t row_index = 0; row_index < rows.size(); ++row_index) {
+    const auto &row = rows[row_index];
+    const auto resource_kind = WarExitDeltaKindIndex(row.kind);
+    if (resource_kind.has_value()) {
+      const std::size_t character_offset =
+          row.first_character_id == attacker_id
+              ? 0U
+              : (row.first_character_id == defender_id ? 6U : 12U);
+      if (character_offset == 12U) {
+        SetWarExitMaterializeReason(
+            "resource_character", &row, row_index, rows.size(), truce_count,
+            outcome.primary_gold_transfers.size());
+        return false;
+      }
+      const auto index = character_offset + resource_kind.value();
+      if (!CheckedAddSigned(
+              outcome.primary_resource_deltas[index].value.raw, row.raw) ||
+          resource_callback_counts[index] ==
+              std::numeric_limits<std::int32_t>::max()) {
+        SetWarExitMaterializeReason(
+            "resource_accumulate", &row, row_index, rows.size(), truce_count,
+            outcome.primary_gold_transfers.size());
+        return false;
+      }
+      ++resource_callback_counts[index];
+      continue;
+    }
+    if (row.kind == WarExitPreviewRowKind::gold_transfer) {
+      if (white_peace || row.first_character_id != attacker_id ||
+          row.second_character_id != defender_id || row.raw < 0 ||
+          !outcome.primary_gold_transfers.empty()) {
+        SetWarExitMaterializeReason(
+            "gold_row", &row, row_index, rows.size(), truce_count,
+            outcome.primary_gold_transfers.size());
+        return false;
+      }
+      try {
+        outcome.primary_gold_transfers.push_back(
+            {attacker_id, defender_id, {row.raw, kFixedPointScale}});
+      } catch (...) {
+        SetWarExitMaterializeReason(
+            "gold_allocation", &row, row_index, rows.size(), truce_count,
+            outcome.primary_gold_transfers.size());
+        return false;
+      }
+      continue;
+    }
+    if (row.kind != WarExitPreviewRowKind::truce ||
+        row.first_character_id != attacker_id ||
+        row.second_character_id != defender_id || row.effect_node == nullptr ||
+        ++truce_count != 1) {
+      SetWarExitMaterializeReason(
+          "truce_row", &row, row_index, rows.size(), truce_count,
+          outcome.primary_gold_transfers.size());
+      return false;
+    }
+    const auto days = bindings.evaluate_truce_duration_days(
+        static_cast<std::byte *>(row.effect_node) +
+            kTruceEffectDurationScriptValueOffset,
+        effect_context, static_cast<std::byte *>(effect_context) + 0x28);
+    const auto expiry = static_cast<std::int64_t>(date_raw) +
+                        24LL * static_cast<std::int64_t>(days);
+    if (days < 0 || expiry < std::numeric_limits<std::int32_t>::min() ||
+        expiry > std::numeric_limits<std::int32_t>::max()) {
+      SetWarExitMaterializeReason(
+          "truce_duration", &row, row_index, rows.size(), truce_count,
+          outcome.primary_gold_transfers.size());
+      return false;
+    }
+    outcome.truce = {attacker_id, defender_id, days, date_raw,
+                     static_cast<std::int32_t>(expiry)};
+  }
+  if (truce_count != 1 ||
+      (white_peace && !outcome.primary_gold_transfers.empty()) ||
+      (!white_peace && outcome.primary_gold_transfers.size() != 1U)) {
+    SetWarExitMaterializeReason(
+        "final_shape", nullptr, rows.size(), rows.size(), truce_count,
+        outcome.primary_gold_transfers.size());
+    return false;
+  }
+  outcome.complete = true;
+  return true;
+}
+
+bool FinalizeWarExitPrestigeFactor(
+    game::WarExitOutcomeSnapshot &white_peace,
+    const std::array<std::int32_t, 12> &white_peace_counts,
+    game::WarExitOutcomeSnapshot &attacker_defeat,
+    const std::array<std::int32_t, 12> &attacker_defeat_counts,
+    std::int64_t white_peace_factor_raw,
+    std::int64_t attacker_defeat_factor_raw) noexcept {
+  if (white_peace.primary_resource_deltas.size() != 12U ||
+      attacker_defeat.primary_resource_deltas.size() != 12U ||
+      white_peace_counts[0] != 1 || white_peace_counts[6] != 0 ||
+      attacker_defeat_counts[0] != 1 || attacker_defeat_counts[6] != 1 ||
+      white_peace_factor_raw < 0 ||
+      white_peace_factor_raw != attacker_defeat_factor_raw) {
+    return false;
+  }
+  const auto white_peace_attacker_prestige =
+      white_peace.primary_resource_deltas[0].value.raw;
+  std::int64_t expected_white_peace = 0;
+  if (!CheckedMultiplySigned(white_peace_factor_raw, std::int64_t{-5},
+                             expected_white_peace) ||
+      white_peace_attacker_prestige != expected_white_peace) {
+    return false;
+  }
+  std::int64_t ten_factor = 0;
+  if (!CheckedMultiplySigned(white_peace_factor_raw, std::int64_t{10},
+                             ten_factor)) {
+    return false;
+  }
+  const auto maximum_raw = 1'000LL * kFixedPointScale;
+  const auto expected_attacker = std::max(-ten_factor, -maximum_raw);
+  const auto expected_defender = std::min(ten_factor, maximum_raw);
+  if (attacker_defeat.primary_resource_deltas[0].value.raw !=
+          expected_attacker ||
+      attacker_defeat.primary_resource_deltas[6].value.raw !=
+          expected_defender) {
+    return false;
+  }
+  white_peace.cb_prestige_factor = {white_peace_factor_raw,
+                                    kFixedPointScale};
+  attacker_defeat.cb_prestige_factor = {attacker_defeat_factor_raw,
+                                        kFixedPointScale};
+  return true;
+}
+
 } // namespace
+
+std::string_view LastWarTerminationExitTermsUnavailableReason() noexcept {
+  return g_last_war_termination_exit_terms_unavailable_reason;
+}
 
 Bindings BindCurrentProcess(bool executable_matches) noexcept {
   Bindings result{};
@@ -2097,6 +5867,36 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.send_character_interaction_secondary_vtable =
       module + kSendCharacterInteractionSecondaryVtableRva;
   result.war_declaration_vtable = module + kWarDeclarationVtableRva;
+  result.character_claim_vtable = module + kCharacterClaimVtableRva;
+  result.effect_preview_collector_vtable =
+      module + kEffectPreviewCollectorVtableRva;
+  result.jomini_effect_vtable = module + kJominiEffectVtableRva;
+  result.jomini_scripted_effect_vtable =
+      module + kJominiScriptedEffectVtableRva;
+  result.jomini_scripted_effect_template_vtable =
+      module + kJominiScriptedEffectTemplateVtableRva;
+  result.hidden_effect_vtable = module + kHiddenEffectVtableRva;
+  result.jomini_context_effect_vtable =
+      module + kJominiContextEffectVtableRva;
+  result.prestige_effect_vtable = module + kPrestigeEffectVtableRva;
+  result.prestige_experience_effect_vtable =
+      module + kPrestigeExperienceEffectVtableRva;
+  result.piety_effect_vtable = module + kPietyEffectVtableRva;
+  result.piety_experience_effect_vtable =
+      module + kPietyExperienceEffectVtableRva;
+  result.legitimacy_effect_vtable = module + kLegitimacyEffectVtableRva;
+  result.stress_impact_effect_vtable =
+      module + kStressImpactEffectVtableRva;
+  result.add_from_contribution_attackers_effect_vtable =
+      module + kAddFromContributionAttackersEffectVtableRva;
+  result.add_from_contribution_defenders_effect_vtable =
+      module + kAddFromContributionDefendersEffectVtableRva;
+  result.gold_transfer_effect_vtable =
+      module + kGoldTransferEffectVtableRva;
+  result.truce_effect_vtable = module + kTruceEffectVtableRva;
+  result.cb_prestige_factor_identifier_id =
+      reinterpret_cast<const std::int32_t *>(
+          module + kCbPrestigeFactorIdentifierIdRva);
   result.pending_character_interaction_storage_slot =
       reinterpret_cast<void **>(
           module + kPendingCharacterInteractionStorageSlotRva);
@@ -2104,6 +5904,12 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       reinterpret_cast<void **>(module + kCharacterStorageSlotRva);
   result.army_storage_slot =
       reinterpret_cast<void **>(module + kArmyStorageSlotRva);
+  result.army_internal_storage_slot =
+      reinterpret_cast<void **>(module + kArmyInternalStorageSlotRva);
+  result.regiment_storage_slot =
+      reinterpret_cast<void **>(module + kRegimentStorageSlotRva);
+  result.combat_storage_slot =
+      reinterpret_cast<void **>(module + kCombatStorageSlotRva);
   result.siege_storage_slot =
       reinterpret_cast<void **>(module + kSiegeStorageSlotRva);
   result.global_variable_container_accessor_slot =
@@ -2136,6 +5942,21 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       module + kContainsWarParticipantRva);
   result.get_war_score =
       reinterpret_cast<GetWarScore>(module + kGetWarScoreRva);
+  result.get_imprisonment_war_score =
+      reinterpret_cast<GetWarScoreComponent>(
+          module + kGetImprisonmentWarScoreRva);
+  result.get_battle_war_score_base =
+      reinterpret_cast<GetWarScoreComponent>(
+          module + kGetBattleWarScoreBaseRva);
+  result.get_battle_war_score_side =
+      reinterpret_cast<GetWarScoreSideComponent>(
+          module + kGetBattleWarScoreSideRva);
+  result.get_occupation_war_score_side =
+      reinterpret_cast<GetWarScoreOccupationComponent>(
+          module + kGetOccupationWarScoreSideRva);
+  result.get_ticking_war_score_side =
+      reinterpret_cast<GetWarScoreTickingComponent>(
+          module + kGetTickingWarScoreSideRva);
   result.is_native_component_alive =
       reinterpret_cast<IsNativeComponentAlive>(
           module + kIsNativeComponentAliveRva);
@@ -2174,6 +5995,63 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
           module + kResolveDefaultRaiseProvinceRva);
   result.get_unit_state =
       reinterpret_cast<GetUnitState>(module + kGetUnitStateRva);
+  result.get_army_current_soldiers =
+      reinterpret_cast<GetArmyCurrentSoldiers>(
+          module + kGetArmyCurrentSoldiersRva);
+  result.get_army_maximum_soldiers =
+      reinterpret_cast<GetArmyMaximumSoldiers>(
+          module + kGetArmyMaximumSoldiersRva);
+  result.get_army_commander =
+      reinterpret_cast<GetArmyCommander>(module + kGetArmyCommanderRva);
+  result.get_commander_advantage = reinterpret_cast<GetCommanderAdvantage>(
+      module + kGetCommanderAdvantageRva);
+  result.get_province_terrain = reinterpret_cast<GetProvinceTerrain>(
+      module + kGetProvinceTerrainRva);
+  result.evaluate_regiment_stats_at_province =
+      reinterpret_cast<EvaluateRegimentStatsAtProvince>(
+          module + kEvaluateRegimentStatsAtProvinceRva);
+  result.is_special_combat_regiment =
+      reinterpret_cast<IsSpecialCombatRegiment>(
+          module + kIsSpecialCombatRegimentRva);
+  result.get_character_modifier_aggregator =
+      reinterpret_cast<GetCharacterModifierAggregator>(
+          module + kGetCharacterModifierAggregatorRva);
+  result.read_character_modifier =
+      reinterpret_cast<ReadCharacterModifier>(
+          module + kReadCharacterModifierRva);
+  result.get_combat_rules =
+      reinterpret_cast<GetCombatRules>(module + kGetCombatRulesRva);
+  result.read_counter_current_chunk =
+      reinterpret_cast<ReadCounterCurrentChunk>(
+          module + kReadCounterCurrentChunkRva);
+  result.resolve_counter_classes =
+      reinterpret_cast<ResolveCounterClasses>(
+          module + kResolveCounterClassesRva);
+  result.get_counter_context_scale =
+      reinterpret_cast<GetCounterContextScale>(
+          module + kGetCounterContextScaleRva);
+  result.get_knight_effectiveness_context =
+      reinterpret_cast<GetKnightEffectivenessContext>(
+          module + kGetKnightEffectivenessContextRva);
+  result.read_knight_effectiveness =
+      reinterpret_cast<ReadKnightEffectiveness>(
+          module + kReadKnightEffectivenessRva);
+  result.is_holding_defender = reinterpret_cast<IsHoldingDefender>(
+      module + kIsHoldingDefenderRva);
+  result.commander_min_roll = reinterpret_cast<const std::int32_t *>(
+      module + kCommanderMinRollRva);
+  result.commander_max_roll = reinterpret_cast<const std::int32_t *>(
+      module + kCommanderMaxRollRva);
+  result.knight_damage_per_prowess =
+      reinterpret_cast<const std::int32_t *>(
+          module + kKnightDamagePerProwessRva);
+  result.knight_toughness_per_prowess =
+      reinterpret_cast<const std::int32_t *>(
+          module + kKnightToughnessPerProwessRva);
+  result.minimum_combat_width = reinterpret_cast<const std::int32_t *>(
+      module + kMinimumCombatWidthRva);
+  result.base_combat_width_ratio = reinterpret_cast<const std::int64_t *>(
+      module + kBaseCombatWidthRatioRva);
   result.construct_raise_troops_command =
       reinterpret_cast<ConstructRaiseTroopsCommand>(
           module + kConstructRaiseTroopsCommandRva);
@@ -2257,6 +6135,12 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.validate_character_interaction_context =
       reinterpret_cast<ValidateCharacterInteractionContext>(
           module + kValidateCharacterInteractionContextRva);
+  result.read_character_interaction_answer_score =
+      reinterpret_cast<ReadCharacterInteractionAnswerScore>(
+          module + kReadCharacterInteractionAnswerScoreRva);
+  result.evaluate_character_interaction_trigger =
+      reinterpret_cast<EvaluateCharacterInteractionTrigger>(
+          module + kEvaluateCharacterInteractionTriggerRva);
   result.construct_send_character_interaction_command =
       reinterpret_cast<ConstructSendCharacterInteractionCommand>(
           module + kConstructSendCharacterInteractionCommandRva);
@@ -2269,6 +6153,43 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.construct_war_resolution_interaction_context =
       reinterpret_cast<ConstructWarResolutionInteractionContext>(
           module + kConstructWarResolutionInteractionContextRva);
+  result.construct_special_character_interaction_context =
+      reinterpret_cast<ConstructSpecialCharacterInteractionContext>(
+          module + kConstructSpecialCharacterInteractionContextRva);
+  result.read_character_claim = reinterpret_cast<ReadCharacterClaim>(
+      module + kReadCharacterClaimRva);
+  result.construct_war_effect_context =
+      reinterpret_cast<ConstructWarEffectContext>(
+          module + kConstructWarEffectContextRva);
+  result.populate_war_effect_context =
+      reinterpret_cast<PopulateWarEffectContext>(
+          module + kPopulateWarEffectContextRva);
+  result.construct_effect_preview_collector =
+      reinterpret_cast<ConstructEffectPreviewCollector>(
+          module + kConstructEffectPreviewCollectorRva);
+  result.destroy_effect_preview_collector =
+      reinterpret_cast<DestroyEffectPreviewCollector>(
+          module + kDestroyEffectPreviewCollectorRva);
+  result.traverse_loaded_effect = reinterpret_cast<TraverseLoadedEffect>(
+      module + kTraverseLoadedEffectRva);
+  result.destroy_effect_context_118 =
+      reinterpret_cast<DestroyEffectContextSubobject>(
+          module + kDestroyEffectContext118Rva);
+  result.destroy_effect_context_array_row =
+      reinterpret_cast<DestroyEffectContextSubobject>(
+          module + kDestroyEffectContextArrayRowRva);
+  result.evaluate_truce_duration_days =
+      reinterpret_cast<EvaluateTruceDurationDays>(
+          module + kEvaluateTruceDurationDaysRva);
+  result.get_character_primary_title =
+      reinterpret_cast<GetCharacterPrimaryTitle>(
+          module + kGetCharacterPrimaryTitleRva);
+  result.read_monthly_gold_income =
+      reinterpret_cast<ReadMonthlyGoldIncome>(
+          module + kReadMonthlyGoldIncomeRva);
+  result.evaluate_character_interaction_answer =
+      reinterpret_cast<EvaluateCharacterInteractionAnswer>(
+          module + kEvaluateCharacterInteractionAnswerRva);
   result.get_script_identifier_table =
       reinterpret_cast<GetScriptIdentifierTable>(
           module + kGetScriptIdentifierTableRva);
@@ -2313,8 +6234,25 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
   output.map_ready =
       local_player != nullptr &&
       LoadAt<std::int32_t>(local_player, kPlayerIdOffset) >= 0;
+  if (!output.map_ready) {
+    // During CK3's application-main startup the category registries used by
+    // events, wars, and scripted globals are not yet populated.  Publish the
+    // stable process/game-state prefix only; in particular, do not traverse
+    // any of those registries until the local-player sentinel proves the map
+    // has finished loading.
+    const std::int32_t date_raw = output.date_raw;
+    const std::int32_t speed = output.speed;
+    const bool paused = output.paused;
+    const std::int32_t player_id = output.player_id;
+    output = {};
+    output.date_raw = date_raw;
+    output.speed = speed;
+    output.paused = paused;
+    output.player_id = player_id;
+    output.map_ready = false;
+    return true;
+  }
   output.has_played_character =
-      output.map_ready &&
       ReadPlayedCharacter(bindings, game_state, output.player_id,
                           output.played_character_id,
                           output.played_character_alive);
@@ -2364,6 +6302,320 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
   }
   ReadOneLifeSettlement(bindings, output);
   return true;
+}
+
+ReadArmyStrengthsResult ReadArmyStrengths(
+    const Bindings &bindings,
+    std::vector<ArmyStrengthSnapshot> &output) noexcept {
+  output.clear();
+  if (!bindings.enabled || bindings.army_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      bindings.regiment_storage_slot == nullptr ||
+      bindings.get_army_current_soldiers == nullptr ||
+      bindings.get_army_maximum_soldiers == nullptr) {
+    return ReadArmyStrengthsResult::unavailable;
+  }
+
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return ReadArmyStrengthsResult::unavailable;
+  }
+  if (!current.paused) {
+    return ReadArmyStrengthsResult::requires_paused;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return ReadArmyStrengthsResult::no_played_character;
+  }
+
+  const auto scope = BuildArmyStrengthScope(current);
+  output.reserve(scope.size());
+  bool partial = false;
+  for (const auto &entry : scope) {
+    output.push_back(ReadArmyStrengthRow(bindings, entry));
+    partial = partial || !output.back().available;
+  }
+  return partial ? ReadArmyStrengthsResult::partial
+                 : ReadArmyStrengthsResult::available;
+}
+
+ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
+    const Bindings &bindings, const CombatSimulationInputsRequest &request,
+    CombatSimulationInputsSnapshot &output) noexcept {
+  output = {};
+  const auto total_army_count = request.attacker_army_ids.size() +
+                                request.defender_army_ids.size();
+  if (request.target_province_id <= 0 ||
+      request.attacker_entry_province_id <= 0 ||
+      request.target_province_id == request.attacker_entry_province_id ||
+      request.attacker_army_ids.empty() ||
+      request.defender_army_ids.empty() ||
+      request.attacker_army_ids.size() > 63 ||
+      request.defender_army_ids.size() > 63 || total_army_count > 64) {
+    return ReadCombatSimulationInputsResult::invalid_arguments;
+  }
+  std::vector<std::int32_t> army_ids;
+  army_ids.reserve(total_army_count);
+  army_ids.insert(army_ids.end(), request.attacker_army_ids.begin(),
+                  request.attacker_army_ids.end());
+  army_ids.insert(army_ids.end(), request.defender_army_ids.begin(),
+                  request.defender_army_ids.end());
+  for (std::size_t index = 0; index < army_ids.size(); ++index) {
+    if (army_ids[index] <= 0 ||
+        std::find(army_ids.begin(), army_ids.begin() + index,
+                  army_ids[index]) != army_ids.begin() + index) {
+      return ReadCombatSimulationInputsResult::invalid_arguments;
+    }
+  }
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.army_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      bindings.regiment_storage_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.combat_storage_slot == nullptr ||
+      bindings.get_army_commander == nullptr ||
+      bindings.get_commander_advantage == nullptr ||
+      bindings.get_province_terrain == nullptr ||
+      bindings.evaluate_regiment_stats_at_province == nullptr ||
+      bindings.is_special_combat_regiment == nullptr ||
+      bindings.get_character_modifier_aggregator == nullptr ||
+      bindings.read_character_modifier == nullptr ||
+      bindings.get_combat_rules == nullptr ||
+      bindings.read_counter_current_chunk == nullptr ||
+      bindings.resolve_counter_classes == nullptr ||
+      bindings.get_counter_context_scale == nullptr ||
+      bindings.get_knight_effectiveness_context == nullptr ||
+      bindings.read_knight_effectiveness == nullptr ||
+      bindings.is_holding_defender == nullptr ||
+      bindings.commander_min_roll == nullptr ||
+      bindings.commander_max_roll == nullptr ||
+      bindings.knight_damage_per_prowess == nullptr ||
+      bindings.knight_toughness_per_prowess == nullptr ||
+      bindings.minimum_combat_width == nullptr ||
+      bindings.base_combat_width_ratio == nullptr) {
+    return ReadCombatSimulationInputsResult::unavailable;
+  }
+
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return ReadCombatSimulationInputsResult::unavailable;
+  }
+  if (!current.paused) {
+    return ReadCombatSimulationInputsResult::requires_paused;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return ReadCombatSimulationInputsResult::no_played_character;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  if (game_state == nullptr) {
+    return ReadCombatSimulationInputsResult::unavailable;
+  }
+  void *const target_province =
+      ResolveProvince(game_state, request.target_province_id);
+  if (target_province == nullptr) {
+    return ReadCombatSimulationInputsResult::target_province_not_found;
+  }
+  if (ResolveProvince(game_state, request.attacker_entry_province_id) ==
+      nullptr) {
+    return ReadCombatSimulationInputsResult::invalid_encounter;
+  }
+  std::int32_t counter_class_count = 0;
+  if (!ReadCounterClassCount(bindings, counter_class_count)) {
+    return ReadCombatSimulationInputsResult::unavailable;
+  }
+
+  output.target_province_id = request.target_province_id;
+  output.scenario.attacker_entry_province_id =
+      request.attacker_entry_province_id;
+  output.scenario.attacker_army_ids = request.attacker_army_ids;
+  output.scenario.defender_army_ids = request.defender_army_ids;
+  output.input_observation_ready = false;
+  output.monte_carlo_ready = false;
+  output.missing_required_domains.clear();
+
+  const auto scope = BuildArmyStrengthScope(current);
+  std::vector<const ArmyStrengthScopeEntry *> selected_scope;
+  selected_scope.reserve(army_ids.size());
+  for (const auto army_id : army_ids) {
+    const auto entry = std::find_if(
+        scope.begin(), scope.end(), [army_id](const auto &candidate) {
+          return candidate.army_id == army_id;
+        });
+    if (entry == scope.end()) {
+      output = {};
+      return ReadCombatSimulationInputsResult::army_not_in_scope;
+    }
+    selected_scope.push_back(&*entry);
+  }
+
+  std::vector<std::int32_t> common_wars;
+  if (!selected_scope.empty()) {
+    common_wars = selected_scope.front()->war_ids;
+  }
+  for (const auto *entry : selected_scope) {
+    std::erase_if(common_wars, [entry](std::int32_t war_id) {
+      return std::find(entry->war_ids.begin(), entry->war_ids.end(), war_id) ==
+             entry->war_ids.end();
+    });
+  }
+  const auto is_enemy_scope = [](const ArmyStrengthScopeEntry *entry) {
+    return entry->role == ArmyStrengthScopeRole::active_war_enemy;
+  };
+  const bool attacker_enemy_side = is_enemy_scope(selected_scope.front());
+  const auto attacker_count = request.attacker_army_ids.size();
+  for (std::size_t index = 0; index < selected_scope.size(); ++index) {
+    const bool expected_enemy =
+        index < attacker_count ? attacker_enemy_side : !attacker_enemy_side;
+    if (is_enemy_scope(selected_scope[index]) != expected_enemy) {
+      output = {};
+      return ReadCombatSimulationInputsResult::invalid_encounter;
+    }
+  }
+  if (common_wars.empty()) {
+    output = {};
+    return ReadCombatSimulationInputsResult::invalid_encounter;
+  }
+  output.scenario.attacker_side =
+      attacker_enemy_side ? "enemy" : "player_or_allied";
+  output.scenario.defender_side =
+      attacker_enemy_side ? "player_or_allied" : "enemy";
+
+  output.target_province = ReadCombatCandidateProvince(
+      bindings, game_state, request.target_province_id);
+  void *const target_terrain = bindings.get_province_terrain(target_province);
+  output.armies.reserve(selected_scope.size());
+  bool has_unavailable_subdomain = false;
+  bool partial = !output.target_province.available;
+  for (std::size_t index = 0; index < selected_scope.size(); ++index) {
+    const auto *entry = selected_scope[index];
+    output.armies.push_back(ReadCombatArmyInputsRow(
+        bindings, game_state, target_province, target_terrain,
+        request.target_province_id, counter_class_count, *entry,
+        output.ongoing_combats,
+        has_unavailable_subdomain));
+    output.armies.back().encounter_role =
+        index < attacker_count ? "attacker" : "defender";
+    partial = partial || !output.armies.back().available;
+  }
+  std::vector<std::int32_t> seen_knight_character_ids;
+  std::vector<std::int32_t> seen_knight_regiment_ids;
+  for (auto &army : output.armies) {
+    if (!army.native_carmy_id_observable || !army.regiments_observable) {
+      army.knights = {};
+      army.knights.unavailable_reason =
+          "knight_source_composition_unavailable";
+      has_unavailable_subdomain = true;
+      continue;
+    }
+    void *const internal_army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot, army.native_carmy_id,
+        kInternalArmyIdOffset);
+    if (internal_army == nullptr ||
+        !ReadCombatKnights(bindings, army.native_carmy_id,
+                           army.regiments, seen_knight_character_ids,
+                           seen_knight_regiment_ids, army.knights)) {
+      output = {};
+      return ReadCombatSimulationInputsResult::unavailable;
+    }
+  }
+  const auto geography_result = ReadContactGeography(
+      bindings, game_state, target_province, request.target_province_id,
+      request.attacker_entry_province_id, attacker_enemy_side,
+      output.armies, output.target_province.crossing,
+      output.target_province.defender_context);
+  if (geography_result != ReadContactGeographyResult::available) {
+    if (geography_result == ReadContactGeographyResult::invalid_encounter) {
+      output = {};
+      return ReadCombatSimulationInputsResult::invalid_encounter;
+    }
+    has_unavailable_subdomain = true;
+  }
+  output.target_province.precontact_width = ReadPrecontactCombatWidth(
+      bindings, output.armies, output.target_province.terrain);
+  if (!output.target_province.precontact_width.available) {
+    has_unavailable_subdomain = true;
+  }
+  output.counter_resolutions.push_back(ReadCounterResolution(
+      bindings, output.armies, counter_class_count, false));
+  output.counter_resolutions.push_back(ReadCounterResolution(
+      bindings, output.armies, counter_class_count, true));
+  for (const auto &resolution : output.counter_resolutions) {
+    has_unavailable_subdomain =
+        has_unavailable_subdomain || !resolution.available;
+  }
+  const auto append_missing_domain = [&output](std::string_view domain) {
+    if (std::find(output.missing_required_domains.begin(),
+                  output.missing_required_domains.end(), domain) ==
+        output.missing_required_domains.end()) {
+      output.missing_required_domains.emplace_back(domain);
+    }
+  };
+  if (!output.target_province.available ||
+      !output.target_province.terrain.available) {
+    append_missing_domain("target_terrain");
+  }
+  if (!output.target_province.crossing.available) {
+    append_missing_domain("crossing");
+  }
+  if (!output.target_province.defender_context.available ||
+      output.target_province.defender_context.holding_defender_status !=
+          CombatObservationStatus::available) {
+    append_missing_domain("attacker_defender_holding");
+  }
+  if (!output.target_province.precontact_width.available) {
+    append_missing_domain("contact_combat_width");
+  }
+  for (const auto &army : output.armies) {
+    if (!army.available || !army.native_carmy_id_observable ||
+        army.owner.status != CombatObservationStatus::available) {
+      append_missing_domain("army_identity_and_owner");
+    }
+    if (army.commander.status == CombatObservationStatus::unavailable ||
+        !army.commander.battle_context.available) {
+      append_missing_domain("commander_and_roll_bounds");
+    }
+    if (!army.regiments_observable) {
+      append_missing_domain("regiment_composition");
+    }
+    for (const auto &regiment : army.regiments) {
+      if (!regiment.identity_valid) {
+        append_missing_domain("regiment_identity");
+      }
+      if (regiment.maa_type.status == CombatObservationStatus::unavailable) {
+        append_missing_domain("regiment_maa_type");
+      }
+      if (regiment.kind.status != CombatObservationStatus::available) {
+        append_missing_domain("regiment_kind_and_main_phase_eligibility");
+      }
+      if (!regiment.effective_stats.available) {
+        append_missing_domain("effective_regiment_stats");
+      }
+      if (regiment.counter.status == CombatObservationStatus::unavailable) {
+        append_missing_domain("counter_operands");
+      }
+    }
+    if (!army.knights.available) {
+      append_missing_domain("knights");
+    }
+  }
+  for (const auto &combat : output.ongoing_combats) {
+    if (!combat.available) {
+      append_missing_domain("ongoing_combat_context");
+    }
+  }
+  for (const auto &resolution : output.counter_resolutions) {
+    if (!resolution.available) {
+      append_missing_domain("counter_resolutions");
+    }
+  }
+  output.input_observation_ready = output.missing_required_domains.empty();
+  append_missing_domain("damage_to_casualty_allocation");
+  append_missing_domain("pursuit_transition");
+  append_missing_domain("battle_end_and_retreat_transition");
+  append_missing_domain("phase_event_rng_and_effects");
+  partial = partial || has_unavailable_subdomain ||
+            !output.input_observation_ready;
+  return partial ? ReadCombatSimulationInputsResult::partial
+                 : ReadCombatSimulationInputsResult::available;
 }
 
 PauseSubmitResult SubmitPauseMap(const Bindings &bindings) noexcept {
@@ -3675,6 +7927,772 @@ ArrangeMarriageResult SubmitArrangeMarriage(
   return ArrangeMarriageResult::submitted;
 }
 
+ReadWarTerminationOptionsResult ReadWarTerminationOptions(
+    const Bindings &bindings, std::int32_t war_id,
+    WarTerminationOptionsSnapshot &output) noexcept {
+  output = {};
+  if (!HasWarTerminationQueryBindings(bindings)) {
+    return ReadWarTerminationOptionsResult::unavailable;
+  }
+
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return ReadWarTerminationOptionsResult::unavailable;
+  }
+  if (!current.paused) {
+    return ReadWarTerminationOptionsResult::requires_paused;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return ReadWarTerminationOptionsResult::no_played_character;
+  }
+
+  void *const game_state = *bindings.game_state_slot;
+  void *const war = ResolveWar(bindings, game_state, war_id);
+  if (war == nullptr) {
+    return ReadWarTerminationOptionsResult::war_not_found;
+  }
+  void *const attackers =
+      static_cast<std::byte *>(war) + kWarAttackersOffset;
+  void *const defenders =
+      static_cast<std::byte *>(war) + kWarDefendersOffset;
+  const bool player_is_attacker = bindings.contains_war_participant(
+      attackers, current.played_character_id);
+  const bool player_is_defender = bindings.contains_war_participant(
+      defenders, current.played_character_id);
+  if (!player_is_attacker && !player_is_defender) {
+    return ReadWarTerminationOptionsResult::player_not_participant;
+  }
+  if (player_is_attacker && player_is_defender) {
+    return ReadWarTerminationOptionsResult::unavailable;
+  }
+
+  const auto published_war = std::find_if(
+      current.active_wars.begin(), current.active_wars.end(),
+      [war_id](const ActiveWarSnapshot &candidate) {
+        return candidate.war_id == war_id;
+      });
+  if (published_war == current.active_wars.end() ||
+      (published_war->player_side == PlayerWarSide::attacker) !=
+          player_is_attacker) {
+    return ReadWarTerminationOptionsResult::unavailable;
+  }
+
+  output.war_id = war_id;
+  output.player_side = published_war->player_side;
+  output.player_is_primary_war_leader =
+      published_war->player_is_primary_war_leader;
+  output.player_relative_war_score =
+      published_war->player_relative_war_score;
+  const std::int64_t duration_raw =
+      static_cast<std::int64_t>(current.date_raw) -
+      LoadAt<std::int32_t>(war, kWarStartDateRawOffset);
+  const std::int64_t duration_days = duration_raw / 24;
+  if (duration_raw >= 0 &&
+      duration_days <= std::numeric_limits<std::int32_t>::max()) {
+    output.war_duration_days_observable = true;
+    output.war_duration_days = static_cast<std::int32_t>(duration_days);
+  }
+  const auto attacker_war_score = bindings.get_war_score(war, nullptr);
+  if (attacker_war_score != std::numeric_limits<std::int32_t>::min()) {
+    output.absolute_war_scores_observable = true;
+    output.attacker_war_score = attacker_war_score;
+    output.defender_war_score = -attacker_war_score;
+  }
+  if (!output.absolute_war_scores_observable ||
+      output.player_relative_war_score !=
+          (player_is_attacker ? output.attacker_war_score
+                              : output.defender_war_score)) {
+    output = {};
+    return ReadWarTerminationOptionsResult::unavailable;
+  }
+  ReadWarScoreBreakdown(bindings, war, output.war_score_breakdown);
+  output.surrender.outcome = player_is_attacker ? "attacker_defeat"
+                                                : "attacker_victory";
+  output.white_peace.outcome = "white_peace";
+  output.victory.outcome = player_is_attacker ? "attacker_victory"
+                                              : "attacker_defeat";
+
+  void *const active_casus_belli_type =
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+  output.active_casus_belli_observable = true;
+  output.active_casus_belli_present = active_casus_belli_type != nullptr;
+  if (active_casus_belli_type != nullptr) {
+    const auto database_index = LoadAt<std::int32_t>(
+        active_casus_belli_type, kCasusBelliTypeDatabaseIndexOffset);
+    std::string casus_belli_key;
+    if (database_index >= 0 && database_index < kMaximumCasusBelliTypes &&
+        ReadCasusBelliTypeKey(active_casus_belli_type, casus_belli_key)) {
+      output.active_casus_belli_identity_observable = true;
+      output.active_casus_belli_database_index = database_index;
+      output.active_casus_belli_key = std::move(casus_belli_key);
+    }
+    output.white_peace_permission_observable = true;
+    const auto flags = LoadAt<std::uint32_t>(
+        active_casus_belli_type, kCasusBelliTypeFlagsOffset);
+    output.cb_allows_white_peace =
+        (flags & kCasusBelliWhitePeacePossibleFlag) != 0;
+  }
+
+  if (!output.player_is_primary_war_leader) {
+    return ReadWarTerminationOptionsResult::available;
+  }
+  // 0xC569F0's boolean is an absolute outcome, not "concede own side":
+  // true = attacker victory, false = attacker defeat.
+  if (!EvaluateWarResolutionContext(bindings, war, !player_is_attacker,
+                                    output.surrender) ||
+      !EvaluateWarResolutionContext(bindings, war, player_is_attacker,
+                                    output.victory)) {
+    output = {};
+    return ReadWarTerminationOptionsResult::unavailable;
+  }
+  if (output.white_peace_permission_observable &&
+      output.cb_allows_white_peace &&
+      published_war->primary_opponent_character_id != -1 &&
+      !EvaluateWhitePeaceContext(
+          bindings, current.played_character_id,
+          published_war->primary_opponent_character_id,
+          output.white_peace)) {
+    output = {};
+    return ReadWarTerminationOptionsResult::unavailable;
+  }
+  return ReadWarTerminationOptionsResult::available;
+}
+
+ReadWarTerminationTermsResult ReadWarTerminationTerms(
+    const Bindings &bindings, std::int32_t war_id,
+    WarTerminationTermsSnapshot &output) noexcept {
+  output = {};
+  if (!HasWarTerminationTermsBindings(bindings)) {
+    return ReadWarTerminationTermsResult::unavailable;
+  }
+
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return ReadWarTerminationTermsResult::unavailable;
+  }
+  if (!current.paused) {
+    return ReadWarTerminationTermsResult::requires_paused;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return ReadWarTerminationTermsResult::no_played_character;
+  }
+
+  void *const game_state = *bindings.game_state_slot;
+  void *const war = ResolveWar(bindings, game_state, war_id);
+  if (war == nullptr) {
+    return ReadWarTerminationTermsResult::war_not_found;
+  }
+  void *const attackers =
+      static_cast<std::byte *>(war) + kWarAttackersOffset;
+  void *const defenders =
+      static_cast<std::byte *>(war) + kWarDefendersOffset;
+  const bool player_is_attacker = bindings.contains_war_participant(
+      attackers, current.played_character_id);
+  const bool player_is_defender = bindings.contains_war_participant(
+      defenders, current.played_character_id);
+  if (!player_is_attacker && !player_is_defender) {
+    return ReadWarTerminationTermsResult::player_not_participant;
+  }
+  if (player_is_attacker && player_is_defender) {
+    return ReadWarTerminationTermsResult::unavailable;
+  }
+  const auto published_war = std::find_if(
+      current.active_wars.begin(), current.active_wars.end(),
+      [war_id](const ActiveWarSnapshot &candidate) {
+        return candidate.war_id == war_id;
+      });
+  if (published_war == current.active_wars.end()) {
+    return ReadWarTerminationTermsResult::unavailable;
+  }
+
+  void *const casus_belli_type =
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+  if (casus_belli_type == nullptr) {
+    return ReadWarTerminationTermsResult::unavailable;
+  }
+  const auto casus_belli_database_index = LoadAt<std::int32_t>(
+      casus_belli_type, kCasusBelliTypeDatabaseIndexOffset);
+  std::string casus_belli_key;
+  if (casus_belli_database_index < 0 ||
+      casus_belli_database_index >= kMaximumCasusBelliTypes ||
+      !ReadCasusBelliTypeKey(casus_belli_type, casus_belli_key) ||
+      casus_belli_key.empty()) {
+    return ReadWarTerminationTermsResult::unavailable;
+  }
+  output.war_id = war_id;
+  output.active_casus_belli_database_index = casus_belli_database_index;
+  output.active_casus_belli_key = casus_belli_key;
+  if (casus_belli_key != "claim_cb") {
+    if (ResolveWar(bindings, game_state, war_id) != war ||
+        LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) !=
+            casus_belli_type) {
+      output = {};
+      return ReadWarTerminationTermsResult::unavailable;
+    }
+    return ReadWarTerminationTermsResult::unsupported_casus_belli;
+  }
+
+  const auto claimant_character_id =
+      LoadAt<std::int32_t>(war, kWarClaimantCharacterIdOffset);
+  void *const claimant =
+      ResolveTermsCharacter(bindings, claimant_character_id);
+  if (claimant == nullptr) {
+    output = {};
+    return ReadWarTerminationTermsResult::unavailable;
+  }
+  std::vector<std::int32_t> target_title_ids;
+  if (!ReadNativeIntArray(
+          static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
+          target_title_ids, kMaximumWarObjectiveTitleIds) ||
+      target_title_ids.empty()) {
+    output = {};
+    return ReadWarTerminationTermsResult::unavailable;
+  }
+
+  std::vector<void *> titles;
+  titles.reserve(target_title_ids.size());
+  for (const auto title_id : target_title_ids) {
+    if (std::find(output.target_title_ids.begin(),
+                  output.target_title_ids.end(), title_id) !=
+        output.target_title_ids.end()) {
+      output = {};
+      return ReadWarTerminationTermsResult::unavailable;
+    }
+    void *const title = ResolveLandedTitle(bindings, game_state, title_id);
+    if (title == nullptr) {
+      output = {};
+      return ReadWarTerminationTermsResult::unavailable;
+    }
+    output.target_title_ids.push_back(title_id);
+    titles.push_back(title);
+  }
+
+  output.claimant_character_id = claimant_character_id;
+  output.claims.reserve(output.target_title_ids.size());
+  for (std::size_t index = 0; index < output.target_title_ids.size();
+       ++index) {
+    game::WarClaimSnapshot claim{};
+    if (!ReadWarClaimRow(bindings, claimant, titles[index],
+                         output.target_title_ids[index], claim) ||
+        ResolveTermsCharacter(bindings, claimant_character_id) != claimant ||
+        ResolveLandedTitle(bindings, game_state,
+                           output.target_title_ids[index]) != titles[index]) {
+      output = {};
+      return ReadWarTerminationTermsResult::unavailable;
+    }
+    output.claims.push_back(std::move(claim));
+  }
+
+  std::vector<std::int32_t> target_title_ids_after;
+  std::string casus_belli_key_after;
+  Snapshot after{};
+  if (ResolveWar(bindings, game_state, war_id) != war ||
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) !=
+          casus_belli_type ||
+      LoadAt<std::int32_t>(
+          casus_belli_type, kCasusBelliTypeDatabaseIndexOffset) !=
+          casus_belli_database_index ||
+      !ReadCasusBelliTypeKey(casus_belli_type, casus_belli_key_after) ||
+      casus_belli_key_after != casus_belli_key ||
+      LoadAt<std::int32_t>(war, kWarClaimantCharacterIdOffset) !=
+          claimant_character_id ||
+      ResolveTermsCharacter(bindings, claimant_character_id) != claimant ||
+      !ReadNativeIntArray(
+          static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
+          target_title_ids_after, kMaximumWarObjectiveTitleIds) ||
+      target_title_ids_after != output.target_title_ids ||
+      !ReadSnapshot(bindings, after) || !after.paused ||
+      after.date_raw != current.date_raw ||
+      after.played_character_id != current.played_character_id ||
+      std::none_of(after.active_wars.begin(), after.active_wars.end(),
+                   [war_id](const ActiveWarSnapshot &candidate) {
+                     return candidate.war_id == war_id;
+                   })) {
+    output = {};
+    return ReadWarTerminationTermsResult::unavailable;
+  }
+
+  output.attacker_victory.declared_title_disposition =
+      "transfer_to_claimant_via_conquest_claim";
+  output.attacker_victory.claim_disposition =
+      "resolve_with_add_claim_on_loss";
+  output.white_peace.declared_title_disposition = "unchanged";
+  output.white_peace.claim_disposition = "retain_and_strengthen_weak";
+  output.attacker_defeat.declared_title_disposition = "unchanged";
+  output.attacker_defeat.claim_disposition =
+      "remove_declared_target_claims";
+  return ReadWarTerminationTermsResult::available;
+}
+
+ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(
+    const Bindings &, std::int32_t,
+    WarTerminationExitTermsSnapshot &output) noexcept {
+  output = {};
+  g_last_war_termination_exit_terms_unavailable_reason =
+      "loaded_effect_preview_disabled_after_live_crash_rva_0x334C668";
+  return ReadWarTerminationExitTermsResult::unavailable;
+}
+
+#if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+ReadWarTerminationExitTermsResult
+ReadWarTerminationExitTermsForOfflineReFixture(
+    const Bindings &bindings, std::int32_t war_id,
+    WarTerminationExitTermsSnapshot &output) noexcept {
+  output = {};
+  g_last_war_termination_exit_terms_unavailable_reason = {};
+  const auto unavailable = [&output](std::string_view reason) noexcept {
+    output = {};
+    g_last_war_termination_exit_terms_unavailable_reason = reason;
+    return ReadWarTerminationExitTermsResult::unavailable;
+  };
+  if (!HasWarTerminationExitTermsBindings(bindings)) {
+    return unavailable("bindings");
+  }
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return unavailable("initial_snapshot");
+  }
+  if (!current.paused) {
+    return ReadWarTerminationExitTermsResult::requires_paused;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return ReadWarTerminationExitTermsResult::no_played_character;
+  }
+
+  void *const game_state = *bindings.game_state_slot;
+  void *const war = ResolveWar(bindings, game_state, war_id);
+  if (war == nullptr) {
+    return ReadWarTerminationExitTermsResult::war_not_found;
+  }
+  void *const attackers =
+      static_cast<std::byte *>(war) + kWarAttackersOffset;
+  void *const defenders =
+      static_cast<std::byte *>(war) + kWarDefendersOffset;
+  const bool player_is_attacker = bindings.contains_war_participant(
+      attackers, current.played_character_id);
+  const bool player_is_defender = bindings.contains_war_participant(
+      defenders, current.played_character_id);
+  if (!player_is_attacker && !player_is_defender) {
+    return ReadWarTerminationExitTermsResult::player_not_participant;
+  }
+  if (!player_is_attacker || player_is_defender ||
+      LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) !=
+          current.played_character_id) {
+    return ReadWarTerminationExitTermsResult::player_not_primary_attacker;
+  }
+
+  const auto attacker_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryAttackerCharacterIdOffset);
+  const auto defender_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryDefenderCharacterIdOffset);
+  void *const attacker = ResolveTermsCharacter(bindings, attacker_id);
+  void *const defender = ResolveTermsCharacter(bindings, defender_id);
+  if (attacker == nullptr || defender == nullptr || attacker == defender) {
+    return unavailable("primary_character_resolution");
+  }
+
+  WarTerminationTermsSnapshot claims_before{};
+  const auto claim_result =
+      ReadWarTerminationTerms(bindings, war_id, claims_before);
+  if (claim_result == ReadWarTerminationTermsResult::unsupported_casus_belli) {
+    return ReadWarTerminationExitTermsResult::unsupported_casus_belli;
+  }
+  if (claim_result != ReadWarTerminationTermsResult::available ||
+      claims_before.active_casus_belli_key != "claim_cb" ||
+      claims_before.claims.empty() ||
+      std::any_of(claims_before.claims.begin(), claims_before.claims.end(),
+                  [](const game::WarClaimSnapshot &claim) {
+                    return !claim.present;
+                  })) {
+    return unavailable("claim_disposition_slice");
+  }
+  void *const casus_belli =
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+  const auto factor_identifier_id =
+      *bindings.cb_prestige_factor_identifier_id;
+  if (casus_belli == nullptr || factor_identifier_id < 0) {
+    return unavailable("casus_belli_or_factor_identifier");
+  }
+
+  output.war_id = war_id;
+  output.date_raw = current.date_raw;
+  output.active_casus_belli_database_index =
+      claims_before.active_casus_belli_database_index;
+  output.active_casus_belli_key = claims_before.active_casus_belli_key;
+  output.primary_attacker_character_id = attacker_id;
+  output.primary_defender_character_id = defender_id;
+  output.claimant_character_id = claims_before.claimant_character_id;
+  output.target_title_ids = claims_before.target_title_ids;
+  output.claims = claims_before.claims;
+
+  if (!ReadPrimaryExitResources(
+          bindings, attacker, attacker_id, defender, defender_id,
+          output.primary_resource_balances,
+          output.primary_monthly_gold_income)) {
+    const auto reason =
+        g_last_war_termination_exit_terms_unavailable_reason.empty()
+            ? std::string_view{"primary_resources"}
+            : g_last_war_termination_exit_terms_unavailable_reason;
+    return unavailable(reason);
+  }
+  std::vector<game::WarExitPrisonerReleaseSnapshot> prisoners_before;
+  if (!ReadWarExitPrisonerReleases(
+          bindings, game_state, war, attacker, attacker_id, defender,
+          defender_id, prisoners_before)) {
+    return unavailable("prisoner_releases");
+  }
+
+  WarEffectContextStorage effect_context_storage{};
+  void *const effect_context = effect_context_storage.bytes.data();
+  if (bindings.construct_war_effect_context(effect_context) != effect_context) {
+    return unavailable("effect_context_construct");
+  }
+  bindings.populate_war_effect_context(effect_context, war, false);
+  std::vector<WarExitPreviewRow> white_peace_rows;
+  std::vector<WarExitPreviewRow> attacker_defeat_rows;
+  std::int64_t white_peace_factor_raw = 0;
+  std::int64_t attacker_defeat_factor_raw = 0;
+  std::array<std::int32_t, 12> white_peace_counts{};
+  std::array<std::int32_t, 12> attacker_defeat_counts{};
+  std::string_view preview_failure{};
+  if (!DryPreviewWarExitEffect(
+          bindings,
+          static_cast<std::byte *>(casus_belli) +
+              kWarEffectWhitePeaceOffset,
+          effect_context, WarExitPreviewOutcome::white_peace,
+          factor_identifier_id, attacker_id, defender_id,
+          white_peace_rows, white_peace_factor_raw)) {
+    preview_failure = g_last_war_exit_preview_unavailable_reason.empty()
+                          ? std::string_view{"white_peace_effect_preview"}
+                          : g_last_war_exit_preview_unavailable_reason;
+  } else if (!MaterializeWarExitPreview(
+                 bindings, white_peace_rows, effect_context, attacker_id,
+                 defender_id, current.date_raw, true, output.white_peace,
+                 white_peace_counts)) {
+    preview_failure = g_last_war_exit_preview_unavailable_reason.empty()
+                          ? std::string_view{"white_peace_effect_materialize"}
+                          : g_last_war_exit_preview_unavailable_reason;
+  } else if (!DryPreviewWarExitEffect(
+                 bindings,
+                 static_cast<std::byte *>(casus_belli) +
+                     kWarEffectAttackerDefeatOffset,
+                 effect_context, WarExitPreviewOutcome::attacker_defeat,
+                 factor_identifier_id, attacker_id,
+                 defender_id, attacker_defeat_rows,
+                 attacker_defeat_factor_raw)) {
+    preview_failure = g_last_war_exit_preview_unavailable_reason.empty()
+                          ? std::string_view{"attacker_defeat_effect_preview"}
+                          : g_last_war_exit_preview_unavailable_reason;
+  } else if (!MaterializeWarExitPreview(
+                 bindings, attacker_defeat_rows, effect_context, attacker_id,
+                 defender_id, current.date_raw, false,
+                 output.attacker_defeat, attacker_defeat_counts)) {
+    preview_failure = g_last_war_exit_preview_unavailable_reason.empty()
+                          ? std::string_view{"attacker_defeat_effect_materialize"}
+                          : g_last_war_exit_preview_unavailable_reason;
+  }
+  const bool context_destroyed =
+      DestroyWarEffectContext(bindings, effect_context);
+  if (!context_destroyed) {
+    return unavailable("effect_context_destroy");
+  }
+  if (!preview_failure.empty()) {
+    return unavailable(preview_failure);
+  }
+  if (!FinalizeWarExitPrestigeFactor(
+          output.white_peace, white_peace_counts, output.attacker_defeat,
+          attacker_defeat_counts, white_peace_factor_raw,
+          attacker_defeat_factor_raw)) {
+    return unavailable("prestige_factor_crosscheck");
+  }
+
+  const bool any_weak_claim = std::any_of(
+      output.claims.begin(), output.claims.end(),
+      [](const game::WarClaimSnapshot &claim) { return !claim.strong; });
+  output.white_peace.claim_disposition.declared_title_disposition =
+      "unchanged";
+  output.white_peace.claim_disposition.claim_disposition =
+      any_weak_claim ? "retain_and_strengthen_weak"
+                     : "retain_no_strength_change_already_strong";
+  output.attacker_defeat.claim_disposition.declared_title_disposition =
+      "unchanged";
+  output.attacker_defeat.claim_disposition.claim_disposition =
+      "remove_declared_target_claims";
+  output.white_peace.prisoner_releases = prisoners_before;
+  output.attacker_defeat.prisoner_releases = prisoners_before;
+
+  if (!EvaluateWarExitWhitePeaceRecipient(
+          bindings, attacker_id, defender_id,
+          output.white_peace.recipient_response)) {
+    return unavailable("white_peace_recipient_response");
+  }
+  if (!EvaluateWarExitDefeatRecipient(
+          bindings, war, output.attacker_defeat.recipient_response)) {
+    return unavailable("attacker_defeat_recipient_response");
+  }
+
+  std::vector<game::WarExitResourceSnapshot> balances_after;
+  std::vector<game::WarExitCharacterFixedPointSnapshot> income_after;
+  std::vector<game::WarExitPrisonerReleaseSnapshot> prisoners_after;
+  WarTerminationTermsSnapshot claims_after{};
+  Snapshot after{};
+  if (!ReadPrimaryExitResources(bindings, attacker, attacker_id, defender,
+                                defender_id, balances_after, income_after) ||
+      balances_after != output.primary_resource_balances ||
+      income_after != output.primary_monthly_gold_income ||
+      !ReadWarExitPrisonerReleases(
+          bindings, game_state, war, attacker, attacker_id, defender,
+          defender_id, prisoners_after) ||
+      prisoners_after != prisoners_before ||
+      ReadWarTerminationTerms(bindings, war_id, claims_after) !=
+          ReadWarTerminationTermsResult::available ||
+      claims_after != claims_before || !ReadSnapshot(bindings, after) ||
+      !after.paused || after.date_raw != current.date_raw ||
+      after.played_character_id != current.played_character_id ||
+      ResolveWar(bindings, game_state, war_id) != war ||
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) != casus_belli ||
+      *bindings.cb_prestige_factor_identifier_id != factor_identifier_id ||
+      LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) !=
+          attacker_id ||
+      LoadAt<std::int32_t>(war, kWarPrimaryDefenderCharacterIdOffset) !=
+          defender_id ||
+      ResolveTermsCharacter(bindings, attacker_id) != attacker ||
+      ResolveTermsCharacter(bindings, defender_id) != defender) {
+    return unavailable("same_frame_stability");
+  }
+
+  output.same_frame_stable = true;
+  output.claim_temporary_lifecycle_verified = true;
+  output.exit_terms_ready = true;
+  return ReadWarTerminationExitTermsResult::available;
+}
+#endif
+
+SurrenderWarResult SubmitSurrenderWar(const Bindings &bindings,
+                                      std::int32_t war_id) noexcept {
+  if (!HasWarTerminationQueryBindings(bindings) ||
+      bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.construct_send_character_interaction_command == nullptr ||
+      bindings.send_character_interaction_primary_vtable == 0 ||
+      bindings.send_character_interaction_secondary_vtable == 0) {
+    return SurrenderWarResult::unavailable;
+  }
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return SurrenderWarResult::unavailable;
+  }
+  if (!current.paused) {
+    return SurrenderWarResult::requires_paused;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return SurrenderWarResult::no_played_character;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  void *const war = ResolveWar(bindings, game_state, war_id);
+  if (war == nullptr) {
+    return SurrenderWarResult::war_not_found;
+  }
+  void *const attackers =
+      static_cast<std::byte *>(war) + kWarAttackersOffset;
+  void *const defenders =
+      static_cast<std::byte *>(war) + kWarDefendersOffset;
+  if (!bindings.contains_war_participant(
+          attackers, current.played_character_id) &&
+      !bindings.contains_war_participant(
+          defenders, current.played_character_id)) {
+    return SurrenderWarResult::player_not_participant;
+  }
+  const bool player_is_primary_attacker =
+      LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) ==
+      current.played_character_id;
+  const bool player_is_primary_defender =
+      LoadAt<std::int32_t>(war, kWarPrimaryDefenderCharacterIdOffset) ==
+      current.played_character_id;
+  if (!player_is_primary_attacker && !player_is_primary_defender) {
+    return SurrenderWarResult::player_not_war_leader;
+  }
+  if (player_is_primary_attacker && player_is_primary_defender) {
+    return SurrenderWarResult::unavailable;
+  }
+
+  CharacterInteractionContextStorage context_storage{};
+  void *const context = context_storage.bytes.data();
+  if (bindings.default_construct_character_interaction_context(context) !=
+      context) {
+    return SurrenderWarResult::unavailable;
+  }
+  bindings.construct_war_resolution_interaction_context(
+      context, war, player_is_primary_defender);
+  if (LoadAt<void *>(context, kCharacterInteractionSpecialDataOffset) ==
+      nullptr) {
+    bindings.destroy_character_interaction_context(context);
+    return SurrenderWarResult::context_unavailable;
+  }
+  if (!bindings.validate_character_interaction_context(context, nullptr)) {
+    bindings.destroy_character_interaction_context(context);
+    return SurrenderWarResult::validation_failed;
+  }
+
+  SendCharacterInteractionCommandStorage command_storage{};
+  void *const command = command_storage.bytes.data();
+  if (bindings.construct_send_character_interaction_command(command,
+                                                             context) !=
+          command ||
+      LoadAt<std::uintptr_t>(command, 0) !=
+          bindings.send_character_interaction_primary_vtable ||
+      LoadAt<std::uintptr_t>(command, 0x18) !=
+          bindings.send_character_interaction_secondary_vtable) {
+    if (LoadAt<void *>(command,
+                       kSendCharacterInteractionContextOffset) != nullptr) {
+      bindings.destroy_character_interaction_context(
+          static_cast<std::byte *>(command) +
+          kSendCharacterInteractionContextOffset);
+    }
+    bindings.destroy_character_interaction_context(context);
+    return SurrenderWarResult::unavailable;
+  }
+  const bool submitted =
+      bindings.submit_command(bindings.command_manager, command, 0x0E);
+  bindings.destroy_character_interaction_context(
+      static_cast<std::byte *>(command) +
+      kSendCharacterInteractionContextOffset);
+  bindings.destroy_character_interaction_context(context);
+  return submitted ? SurrenderWarResult::submitted
+                   : SurrenderWarResult::submission_failed;
+}
+
+OfferWhitePeaceResult SubmitOfferWhitePeace(const Bindings &bindings,
+                                            std::int32_t war_id) noexcept {
+  if (!HasWarTerminationQueryBindings(bindings) ||
+      bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.construct_send_character_interaction_command == nullptr ||
+      bindings.send_character_interaction_primary_vtable == 0 ||
+      bindings.send_character_interaction_secondary_vtable == 0) {
+    return OfferWhitePeaceResult::unavailable;
+  }
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return OfferWhitePeaceResult::unavailable;
+  }
+  if (!current.paused) {
+    return OfferWhitePeaceResult::requires_paused;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return OfferWhitePeaceResult::no_played_character;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  void *const war = ResolveWar(bindings, game_state, war_id);
+  if (war == nullptr) {
+    return OfferWhitePeaceResult::war_not_found;
+  }
+  void *const attackers =
+      static_cast<std::byte *>(war) + kWarAttackersOffset;
+  void *const defenders =
+      static_cast<std::byte *>(war) + kWarDefendersOffset;
+  const bool player_is_attacker = bindings.contains_war_participant(
+      attackers, current.played_character_id);
+  const bool player_is_defender = bindings.contains_war_participant(
+      defenders, current.played_character_id);
+  if (!player_is_attacker && !player_is_defender) {
+    return OfferWhitePeaceResult::player_not_participant;
+  }
+  if (player_is_attacker && player_is_defender) {
+    return OfferWhitePeaceResult::unavailable;
+  }
+  const auto primary_attacker_character_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryAttackerCharacterIdOffset);
+  const auto primary_defender_character_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryDefenderCharacterIdOffset);
+  const bool player_is_primary_attacker =
+      primary_attacker_character_id == current.played_character_id;
+  const bool player_is_primary_defender =
+      primary_defender_character_id == current.played_character_id;
+  if (!player_is_primary_attacker && !player_is_primary_defender) {
+    return OfferWhitePeaceResult::player_not_war_leader;
+  }
+  if (player_is_primary_attacker && player_is_primary_defender) {
+    return OfferWhitePeaceResult::unavailable;
+  }
+  const auto recipient_character_id = player_is_primary_attacker
+                                          ? primary_defender_character_id
+                                          : primary_attacker_character_id;
+  if (ResolveTermsCharacter(bindings, recipient_character_id) == nullptr) {
+    return OfferWhitePeaceResult::unavailable;
+  }
+
+  void *const casus_belli_type =
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+  if (casus_belli_type == nullptr) {
+    return OfferWhitePeaceResult::casus_belli_unavailable;
+  }
+  const auto casus_belli_flags = LoadAt<std::uint32_t>(
+      casus_belli_type, kCasusBelliTypeFlagsOffset);
+  if ((casus_belli_flags & kCasusBelliWhitePeacePossibleFlag) == 0) {
+    return OfferWhitePeaceResult::white_peace_not_allowed;
+  }
+
+  CharacterInteractionContextStorage context_storage{};
+  void *const context = context_storage.bytes.data();
+  constexpr std::uint8_t kWhitePeaceSpecialInteractionIndex = 3;
+  if (bindings.construct_special_character_interaction_context(
+          context, kWhitePeaceSpecialInteractionIndex,
+          current.played_character_id, recipient_character_id) != context) {
+    return OfferWhitePeaceResult::unavailable;
+  }
+  if (LoadAt<void *>(context, kCharacterInteractionSpecialDataOffset) ==
+      nullptr) {
+    bindings.destroy_character_interaction_context(context);
+    return OfferWhitePeaceResult::context_unavailable;
+  }
+  if (!bindings.validate_character_interaction_context(context, nullptr)) {
+    bindings.destroy_character_interaction_context(context);
+    return OfferWhitePeaceResult::validation_failed;
+  }
+  if (ResolveWar(bindings, game_state, war_id) != war ||
+      LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) !=
+          primary_attacker_character_id ||
+      LoadAt<std::int32_t>(war, kWarPrimaryDefenderCharacterIdOffset) !=
+          primary_defender_character_id ||
+      ResolveTermsCharacter(bindings, recipient_character_id) == nullptr ||
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) !=
+          casus_belli_type ||
+      LoadAt<std::uint32_t>(casus_belli_type,
+                            kCasusBelliTypeFlagsOffset) !=
+          casus_belli_flags) {
+    bindings.destroy_character_interaction_context(context);
+    return OfferWhitePeaceResult::unavailable;
+  }
+
+  SendCharacterInteractionCommandStorage command_storage{};
+  void *const command = command_storage.bytes.data();
+  if (bindings.construct_send_character_interaction_command(command,
+                                                             context) !=
+          command ||
+      LoadAt<std::uintptr_t>(command, 0) !=
+          bindings.send_character_interaction_primary_vtable ||
+      LoadAt<std::uintptr_t>(command, 0x18) !=
+          bindings.send_character_interaction_secondary_vtable) {
+    if (LoadAt<void *>(command,
+                       kSendCharacterInteractionContextOffset) != nullptr) {
+      bindings.destroy_character_interaction_context(
+          static_cast<std::byte *>(command) +
+          kSendCharacterInteractionContextOffset);
+    }
+    bindings.destroy_character_interaction_context(context);
+    return OfferWhitePeaceResult::unavailable;
+  }
+  const bool submitted =
+      bindings.submit_command(bindings.command_manager, command, 0x0E);
+  bindings.destroy_character_interaction_context(
+      static_cast<std::byte *>(command) +
+      kSendCharacterInteractionContextOffset);
+  bindings.destroy_character_interaction_context(context);
+  return submitted ? OfferWhitePeaceResult::submitted
+                   : OfferWhitePeaceResult::submission_failed;
+}
+
 EnforceDemandsResult SubmitEnforceDemands(const Bindings &bindings,
                                           std::int32_t war_id) noexcept {
   if (!bindings.enabled || bindings.game_state_slot == nullptr ||
@@ -3712,11 +8730,17 @@ EnforceDemandsResult SubmitEnforceDemands(const Bindings &bindings,
           defenders, current.played_character_id)) {
     return EnforceDemandsResult::player_not_participant;
   }
-  if (LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) !=
-          current.played_character_id &&
-      LoadAt<std::int32_t>(war, kWarPrimaryDefenderCharacterIdOffset) !=
-          current.played_character_id) {
+  const bool player_is_primary_attacker =
+      LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) ==
+      current.played_character_id;
+  const bool player_is_primary_defender =
+      LoadAt<std::int32_t>(war, kWarPrimaryDefenderCharacterIdOffset) ==
+      current.played_character_id;
+  if (!player_is_primary_attacker && !player_is_primary_defender) {
     return EnforceDemandsResult::player_not_war_leader;
+  }
+  if (player_is_primary_attacker && player_is_primary_defender) {
+    return EnforceDemandsResult::unavailable;
   }
 
   CharacterInteractionContextStorage context_storage{};
@@ -3726,7 +8750,7 @@ EnforceDemandsResult SubmitEnforceDemands(const Bindings &bindings,
     return EnforceDemandsResult::unavailable;
   }
   bindings.construct_war_resolution_interaction_context(context, war,
-                                                        false);
+                                                        player_is_primary_attacker);
   if (!bindings.validate_character_interaction_context(context, nullptr)) {
     bindings.destroy_character_interaction_context(context);
     return EnforceDemandsResult::validation_failed;

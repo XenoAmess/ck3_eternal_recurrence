@@ -1,0 +1,111 @@
+{
+  "schema": "xar.startup_particle2_consumer_null_guard_v1.abi.v1",
+  "exact_build": {
+    "product": "Crusader Kings III",
+    "version": "1.19.0.6",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base_preferred": "0x140000000"
+  },
+  "function": {
+    "rva": "0x1FCC100",
+    "end_rva": "0x1FCCB1D",
+    "calling_convention": "Windows x64, parameterless void-style routine",
+    "direct_xrefs": [
+      {
+        "call_rva": "0x1FCCCED",
+        "next_rva": "0x1FCCCF2",
+        "return_consumption": "ignored"
+      },
+      {
+        "call_rva": "0x1FCCF66",
+        "next_rva": "0x1FCCF6B",
+        "return_consumption": "ignored; next instruction writes ECX"
+      }
+    ],
+    "startup_dominance": [
+      "0x7E8929 calls the earlier 0x1D8DF60 registration wrapper",
+      "0x7E8933 then calls 0x1FCCB20",
+      "0x1FCCCED in 0x1FCCB20 calls 0x1FCC100"
+    ]
+  },
+  "unwind": {
+    "pdata_row_rva": "0x59A0D4C",
+    "begin_rva": "0x1FCC100",
+    "end_rva": "0x1FCCB1D",
+    "unwind_info_rva": "0x4D4E620",
+    "version": 1,
+    "flags": "UNW_FLAG_UHANDLER",
+    "SizeOfProlog": "0x2A",
+    "unwind_code_count": 11,
+    "handler_rva": "0x3E27DD0"
+  },
+  "particle2_root": {
+    "pointer_global_rva": "0x570F908",
+    "slot_expression": "0xA8 + index * 8",
+    "slot_count": 8,
+    "slot_offsets": [
+      "0xA8",
+      "0xB0",
+      "0xB8",
+      "0xC0",
+      "0xC8",
+      "0xD0",
+      "0xD8",
+      "0xE0"
+    ],
+    "consumer_load_rvas": [
+      "0x1FCC13E",
+      "0x1FCC266",
+      "0x1FCC394",
+      "0x1FCC4C4",
+      "0x1FCC5F4",
+      "0x1FCC724",
+      "0x1FCC854",
+      "0x1FCC984"
+    ],
+    "fault_rva": "0x1FCC14C",
+    "fault_derivation": "null + 0x1F8 + 0x4C = read address 0x244",
+    "relationship_to_0x1DABD89": "same root, same slot family, same null+0x1F8+0x4C dereference in the immediately later startup consumer"
+  },
+  "patch": {
+    "patch_rva": "0x1FCC100",
+    "continue_rva": "0x1FCC10F",
+    "patch_bytes": 15,
+    "patch_encoding": "mov r11, imm64; jmp r11; nop; nop",
+    "patch_position": "function entry, within the 0x2A unwind prologue",
+    "original_instructions": [
+      "mov [rsp+0x08], rbx",
+      "mov [rsp+0x10], rsi",
+      "mov [rsp+0x18], rdi"
+    ],
+    "stub_bytes": 190,
+    "stub_protection": "PAGE_EXECUTE_READ",
+    "healthy_path": "preflight root and all eight slots, replay all 15 bytes, jump 0x1FCC10F",
+    "suppressed_path": "before any original instruction, atomically OR missing mask, atomically increment count, ret",
+    "root_null_mask": "0xFF",
+    "calls_or_allocations_from_stub": false,
+    "stack_writes_from_stub_before_healthy_replay": false
+  },
+  "state": {
+    "installed": "atomic uint32",
+    "failure_flags": "atomic uint32",
+    "suppressed_count": "atomic uint64",
+    "missing_slot_mask": "atomic uint32",
+    "installed_by_default": false
+  },
+  "installation": {
+    "admission": [
+      "exact build admitted",
+      "module base nonzero",
+      "new primary thread proven suspended",
+      "production overrides rejected",
+      "42-byte production prologue anchor exact"
+    ],
+    "transactional_rollback": "target identity, protection, write, flush, and protection restore are verified; failed rollback retains RX stub and ownership"
+  },
+  "semantic_scope": {
+    "observed_live_state": "root nonnull and all eight slots null; earlier guard suppressed 8 with mask 0xFF",
+    "containment": "any missing slot skips this whole homogeneous eight-category registration consumer",
+    "partial_null_tradeoff": "valid categories are also skipped for that invocation, avoiding the first remaining direct null dereference; both direct callers ignore the void-style result"
+  }
+}

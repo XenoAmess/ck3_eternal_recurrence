@@ -1,8 +1,16 @@
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/protocol.hpp"
+#include "xar_bridge/startup_dx11_render_context_draw_guard_v1.hpp"
+#include "xar_bridge/startup_localize_current_root_guard_v1.hpp"
+#include "xar_bridge/startup_particle2_consumer_null_guard_v1.hpp"
+#include "xar_bridge/startup_particle2_null_guard_v1.hpp"
+#include "xar_bridge/startup_particle2_stage_recorder_v1.hpp"
+#include "xar_bridge/war_entry_assessments_v1_mailbox.hpp"
 
 #include <windows.h>
 
+#include <algorithm>
 #include <array>
 #include <atomic>
 #include <charconv>
@@ -10,6 +18,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <utility>
 
 namespace {
 
@@ -18,11 +27,37 @@ static_assert(sizeof(void *) == 8, "the CK3 bridge is x64-only");
 constexpr wchar_t kPipeEnvironment[] = L"XAR_CK3_BRIDGE_PIPE";
 constexpr std::size_t kPipeNameCapacity = 256;
 constexpr DWORD kHeartbeatIntervalMs = 250;
+// The four startup guards remain exact-build diagnostic fixtures, while the
+// production default leaves the original executable bytes untouched.  The
+// separate build-time stage recorder is opt-in and only counts the three
+// particle2 factory null exits without suppressing or redirecting native flow.
+constexpr bool kStartupFailureContainmentEnabledV1 = false;
+#if defined(XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1)
+constexpr bool kStartupParticle2StageRecorderEnabledV1 = true;
+#else
+constexpr bool kStartupParticle2StageRecorderEnabledV1 = false;
+#endif
+static_assert(!(kStartupFailureContainmentEnabledV1 &&
+                kStartupParticle2StageRecorderEnabledV1));
 
 wchar_t g_pipe_name[kPipeNameCapacity]{};
 HANDLE g_stop_event = nullptr;
 HANDLE g_worker_thread = nullptr;
-std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running
+std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running, 2 stopping
+// Process-lifetime storage is mandatory for the IAT hook.  Stop restores the
+// original IAT entry but never permits unloading this DLL before process exit.
+static xar::ck3_11906::MainThreadQueryMailboxV1
+    g_main_thread_query_mailbox_v1{};
+static xar::bridge::StartupParticle2NullGuardV1State
+    g_startup_particle2_null_guard_v1{};
+static xar::bridge::StartupParticle2ConsumerGuardV1State
+    g_startup_particle2_consumer_null_guard_v1{};
+static xar::bridge::StartupParticle2StageRecorderV1State
+    g_startup_particle2_stage_recorder_v1{};
+static xar::bridge::StartupDx11RenderContextDrawGuardV1State
+    g_startup_dx11_render_context_draw_guard_v1{};
+static xar::bridge::StartupLocalizeCurrentRootGuardV1State
+    g_startup_localize_current_root_guard_v1{};
 
 bool IsPipeName(const wchar_t *value, DWORD length) noexcept {
   constexpr wchar_t prefix[] = L"\\\\.\\pipe\\";
@@ -131,14 +166,126 @@ std::string HelloFrame(const xar::game::GameAdapter &game) {
 }
 
 std::string HeartbeatFrame(std::uint64_t sequence) {
+  const auto mailbox =
+      xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(
+          g_main_thread_query_mailbox_v1);
+  const auto startup_guard =
+      xar::bridge::ReadStartupParticle2NullGuardV1Diagnostics(
+          g_startup_particle2_null_guard_v1);
+  const auto startup_consumer_guard =
+      xar::bridge::ReadStartupParticle2ConsumerGuardV1Diagnostics(
+          g_startup_particle2_consumer_null_guard_v1);
+  const auto startup_stage_recorder =
+      xar::bridge::ReadStartupParticle2StageRecorderV1Diagnostics(
+          g_startup_particle2_stage_recorder_v1);
+  const auto startup_dx11_draw_guard =
+      xar::bridge::ReadStartupDx11RenderContextDrawGuardV1Diagnostics(
+          g_startup_dx11_render_context_draw_guard_v1);
+  const auto startup_localize_guard =
+      xar::bridge::ReadStartupLocalizeCurrentRootGuardV1Diagnostics(
+          g_startup_localize_current_root_guard_v1);
   std::string result =
       "{\"type\":\"heartbeat\",\"protocol_version\":1,\"sequence\":";
   result += Number(sequence);
   result += ",\"pid\":";
   result += Number(GetCurrentProcessId());
-  result += "\",\"monotonic_ms\":";
+  result += ",\"monotonic_ms\":";
   result += Number(GetTickCount64());
-  result += "}";
+  result += ",\"startup_failure_containment_enabled\":";
+  result += kStartupFailureContainmentEnabledV1 ? "true" : "false";
+  result += ",\"startup_particle2_stage_recorder_enabled\":";
+  result += kStartupParticle2StageRecorderEnabledV1 ? "true" : "false";
+  result += ",\"main_thread_query_mailbox_v1\":{";
+  result += "\"candidate_id\":";
+  AppendJsonString(result,
+                   xar::ck3_11906::kMainThreadQueryMailboxV1CandidateId);
+  result += ",\"query_scope\":\"war_entry_only\"";
+  result += ",\"installed\":";
+  result += mailbox.iat_installed ? "true" : "false";
+  result += ",\"stop\":";
+  result += mailbox.stop_requested ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(mailbox.failure_flags);
+  result += ",\"pump_epochs\":";
+  result += Number(mailbox.pump_epochs);
+  result += ",\"consecutive_verified\":";
+  result += Number(mailbox.paused_owner_verified_pump_epochs);
+  result += ",\"owner_tid\":";
+  result += Number(mailbox.owner_thread_id);
+  result += ",\"current_tid\":";
+  result += Number(mailbox.observed_current_thread_id);
+  result += ",\"rng_owner_tid\":";
+  result += Number(mailbox.observed_rng_owner_thread_id);
+  result += ",\"tls_global\":";
+  result += Number(mailbox.observed_tls_initialized);
+  result += ",\"tls_context\":";
+  result += Number(mailbox.observed_tls_context);
+  result += ",\"tls_marker\":";
+  result += Number(mailbox.observed_tls_main_thread_marker);
+  result += ",\"jomini_state\":";
+  result += Number(mailbox.observed_jomini_state);
+  result += ",\"game_state\":";
+  result += Number(mailbox.observed_game_state);
+  result += ",\"date_raw\":";
+  result += SignedNumber(mailbox.observed_date_raw);
+  result += ",\"paused\":";
+  result += mailbox.observed_paused ? "true" : "false";
+  result += ",\"stamp_read_success\":";
+  result += mailbox.observed_stamp_read_success ? "true" : "false";
+  result += ",\"executed_requests\":";
+  result += Number(mailbox.executed_requests);
+  result += ",\"executor_submission_enabled\":";
+  result += mailbox.executor_submission_enabled ? "true" : "false";
+  result += ",\"ready\":";
+  result += mailbox.ready ? "true" : "false";
+  result += "},\"startup_particle2_null_guard_v1\":{";
+  result += "\"installed\":";
+  result += startup_guard.installed ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(startup_guard.failure_flags);
+  result += ",\"suppressed_count\":";
+  result += Number(startup_guard.suppressed_count);
+  result += ",\"suppressed_index_mask\":";
+  result += Number(startup_guard.suppressed_index_mask);
+  result += ",\"last_suppressed_index\":";
+  result += Number(startup_guard.last_suppressed_index);
+  result += "},\"startup_particle2_consumer_null_guard_v1\":{";
+  result += "\"installed\":";
+  result += startup_consumer_guard.installed ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(startup_consumer_guard.failure_flags);
+  result += ",\"suppressed_count\":";
+  result += Number(startup_consumer_guard.suppressed_count);
+  result += ",\"missing_slot_mask\":";
+  result += Number(startup_consumer_guard.missing_slot_mask);
+  result += "},\"startup_particle2_stage_recorder_v1\":{";
+  result += "\"installed\":";
+  result += startup_stage_recorder.installed ? "true" : "false";
+  result += ",\"patch_mask\":";
+  result += Number(startup_stage_recorder.patch_mask);
+  result += ",\"failure\":";
+  result += Number(startup_stage_recorder.failure_flags);
+  result += ",\"source_lookup_null_count\":";
+  result += Number(startup_stage_recorder.source_lookup_null_count);
+  result += ",\"variant_lookup_null_count\":";
+  result += Number(startup_stage_recorder.variant_lookup_null_count);
+  result += ",\"backend_creation_null_count\":";
+  result += Number(startup_stage_recorder.backend_creation_null_count);
+  result += "},\"startup_dx11_render_context_draw_guard_v1\":{";
+  result += "\"installed\":";
+  result += startup_dx11_draw_guard.installed ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(startup_dx11_draw_guard.failure_flags);
+  result += ",\"suppressed_count\":";
+  result += Number(startup_dx11_draw_guard.suppressed_count);
+  result += "},\"startup_localize_current_root_guard_v1\":{";
+  result += "\"installed\":";
+  result += startup_localize_guard.installed ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(startup_localize_guard.failure_flags);
+  result += ",\"native_miss_count\":";
+  result += Number(startup_localize_guard.native_miss_count);
+  result += "}}";
   return result;
 }
 
@@ -200,6 +347,620 @@ void AppendArmyArray(
     AppendArmySnapshot(result, armies[index]);
   }
   result += ']';
+}
+
+void AppendArmyStrength(
+    std::string &result,
+    const xar::game::ArmyStrengthSnapshot &strength) {
+  result += "{\"status\":\"";
+  result += strength.available ? "available" : "unavailable";
+  result += "\",\"army_id\":";
+  result += SignedNumber(strength.army_id);
+  result += ",\"native_carmy_id\":";
+  if (strength.native_carmy_id_observable) {
+    result += SignedNumber(strength.native_carmy_id);
+  } else {
+    result += "null";
+  }
+  result += ",\"scope_role\":\"";
+  switch (strength.scope_role) {
+  case xar::game::ArmyStrengthScopeRole::player:
+    result += "player";
+    break;
+  case xar::game::ArmyStrengthScopeRole::active_war_ally:
+    result += "active_war_ally";
+    break;
+  case xar::game::ArmyStrengthScopeRole::active_war_enemy:
+    result += "active_war_enemy";
+    break;
+  }
+  result += "\",\"war_ids\":";
+  AppendInt32Array(result, strength.war_ids);
+  result += ",\"regiment_count\":";
+  if (strength.available) {
+    result += SignedNumber(strength.regiment_count);
+  } else {
+    result += "null";
+  }
+  result += ",\"current_soldiers\":";
+  if (strength.available) {
+    result += SignedNumber(strength.current_soldiers);
+  } else {
+    result += "null";
+  }
+  result += ",\"maximum_soldiers\":";
+  if (strength.available) {
+    result += SignedNumber(strength.maximum_soldiers);
+  } else {
+    result += "null";
+  }
+  result += ",\"ai_base_power_raw\":";
+  if (strength.available) {
+    result += SignedNumber(strength.ai_base_power_raw);
+  } else {
+    result += "null";
+  }
+  result += ",\"ai_base_power_scale\":";
+  result += SignedNumber(strength.ai_base_power_scale);
+  result += ",\"unavailable_reason\":";
+  if (strength.available) {
+    result += "null";
+  } else {
+    AppendJsonString(result, strength.unavailable_reason);
+  }
+  result += '}';
+}
+
+std::string_view CombatStatusName(
+    xar::game::CombatObservationStatus status) noexcept {
+  switch (status) {
+  case xar::game::CombatObservationStatus::available:
+    return "available";
+  case xar::game::CombatObservationStatus::absent:
+    return "absent";
+  case xar::game::CombatObservationStatus::unavailable:
+    return "unavailable";
+  }
+  return "unavailable";
+}
+
+void AppendUnavailableReason(std::string &result, bool unavailable,
+                             std::string_view reason) {
+  if (!unavailable) {
+    result += "null";
+  } else {
+    AppendJsonString(result, reason);
+  }
+}
+
+void AppendCombatMaaType(std::string &result,
+                         const xar::game::CombatMaaTypeSnapshot &maa_type) {
+  result += "{\"status\":";
+  AppendJsonString(result, CombatStatusName(maa_type.status));
+  result += ",\"key\":";
+  if (maa_type.status == xar::game::CombatObservationStatus::available) {
+    AppendJsonString(result, maa_type.key);
+  } else {
+    result += "null";
+  }
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(
+      result,
+      maa_type.status == xar::game::CombatObservationStatus::unavailable,
+      maa_type.unavailable_reason);
+  result += '}';
+}
+
+void AppendCombatEffectiveStats(
+    std::string &result,
+    const xar::game::CombatEffectiveStatsSnapshot &stats) {
+  result += "{\"status\":\"";
+  result += stats.available ? "available" : "unavailable";
+  result += "\",\"source_target_province_id\":";
+  if (stats.available) {
+    result += SignedNumber(stats.source_target_province_id);
+  } else {
+    result += "null";
+  }
+  result += ",\"max_size\":";
+  result += stats.available ? SignedNumber(stats.max_size) : "null";
+  result += ",\"siege_value_raw\":";
+  result += stats.available ? SignedNumber(stats.siege_value_raw) : "null";
+  result += ",\"damage_raw\":";
+  result += stats.available ? SignedNumber(stats.damage_raw) : "null";
+  result += ",\"toughness_raw\":";
+  result += stats.available ? SignedNumber(stats.toughness_raw) : "null";
+  result += ",\"pursuit_raw\":";
+  result += stats.available ? SignedNumber(stats.pursuit_raw) : "null";
+  result += ",\"screen_raw\":";
+  result += stats.available ? SignedNumber(stats.screen_raw) : "null";
+  result += ",\"scale\":";
+  result += SignedNumber(stats.scale);
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, !stats.available, stats.unavailable_reason);
+  result += '}';
+}
+
+void AppendCombatCounter(std::string &result,
+                         const xar::game::CombatCounterSnapshot &counter) {
+  const bool available =
+      counter.status == xar::game::CombatObservationStatus::available;
+  const bool unavailable =
+      counter.status == xar::game::CombatObservationStatus::unavailable;
+  result += "{\"status\":";
+  AppendJsonString(result, CombatStatusName(counter.status));
+  result += ",\"class_index\":";
+  result += available ? SignedNumber(counter.class_index) : "null";
+  result += ",\"current_chunk_raw\":";
+  result += available ? SignedNumber(counter.current_chunk_raw) : "null";
+  result += ",\"targets\":";
+  if (unavailable) {
+    result += "null";
+  } else {
+    result += '[';
+    for (std::size_t index = 0; index < counter.targets.size(); ++index) {
+      if (index != 0) {
+        result += ',';
+      }
+      const auto &target = counter.targets[index];
+      result += "{\"class_index\":";
+      result += SignedNumber(target.class_index);
+      result += ",\"effectiveness_raw\":";
+      result += SignedNumber(target.effectiveness_raw);
+      result += ",\"scale\":";
+      result += SignedNumber(target.scale);
+      result += '}';
+    }
+    result += ']';
+  }
+  result += ",\"scale\":";
+  result += SignedNumber(counter.scale);
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, unavailable, counter.unavailable_reason);
+  result += '}';
+}
+
+void AppendCombatRegiment(
+    std::string &result,
+    const xar::game::CombatRegimentSnapshot &regiment) {
+  result += "{\"status\":\"";
+  result += regiment.available ? "available" : "unavailable";
+  result += "\",\"regiment_id\":";
+  result += SignedNumber(regiment.regiment_id);
+  result += ",\"identity_valid\":";
+  result += regiment.identity_valid ? "true" : "false";
+  result += ",\"current_soldiers\":";
+  result += SignedNumber(regiment.current_soldiers);
+  result += ",\"maximum_soldiers\":";
+  result += SignedNumber(regiment.maximum_soldiers);
+  result += ",\"maa_type\":";
+  AppendCombatMaaType(result, regiment.maa_type);
+  result += ",\"kind\":{\"status\":";
+  AppendJsonString(result, CombatStatusName(regiment.kind.status));
+  result += ",\"value\":";
+  if (regiment.kind.status ==
+      xar::game::CombatObservationStatus::available) {
+    AppendJsonString(result, regiment.kind.value);
+  } else {
+    result += "null";
+  }
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(
+      result,
+      regiment.kind.status ==
+          xar::game::CombatObservationStatus::unavailable,
+      regiment.kind.unavailable_reason);
+  result += "},\"fights_in_main_phase\":";
+  if (regiment.kind.status ==
+      xar::game::CombatObservationStatus::available) {
+    result += regiment.kind.fights_in_main_phase ? "true" : "false";
+  } else {
+    result += "null";
+  }
+  result += ",\"effective_stats\":";
+  AppendCombatEffectiveStats(result, regiment.effective_stats);
+  result += ",\"counter\":";
+  AppendCombatCounter(result, regiment.counter);
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, !regiment.available,
+                          regiment.unavailable_reason);
+  result += '}';
+}
+
+void AppendCombatOwner(std::string &result,
+                       const xar::game::CombatOwnerSnapshot &owner) {
+  const bool available =
+      owner.status == xar::game::CombatObservationStatus::available;
+  result += "{\"status\":";
+  AppendJsonString(result, CombatStatusName(owner.status));
+  result += ",\"character_id\":";
+  result += available ? SignedNumber(owner.character_id) : "null";
+  result += ",\"counter_efficiency_raw\":";
+  result += available ? SignedNumber(owner.counter_efficiency_raw) : "null";
+  result += ",\"counter_resistance_raw\":";
+  result += available ? SignedNumber(owner.counter_resistance_raw) : "null";
+  result += ",\"scale\":";
+  result += SignedNumber(owner.scale);
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(
+      result,
+      owner.status == xar::game::CombatObservationStatus::unavailable,
+      owner.unavailable_reason);
+  result += '}';
+}
+
+void AppendCombatCommander(
+    std::string &result,
+    const xar::game::CombatCommanderSnapshot &commander) {
+  const bool available =
+      commander.status == xar::game::CombatObservationStatus::available;
+  result += "{\"status\":";
+  AppendJsonString(result, CombatStatusName(commander.status));
+  result += ",\"character_id\":";
+  result += available ? SignedNumber(commander.character_id) : "null";
+  result += ",\"generic_advantage_points\":";
+  result += commander.generic_advantage_observable
+                ? SignedNumber(commander.generic_advantage_points)
+                : "null";
+  const auto &context = commander.battle_context;
+  result += ",\"battle_context\":{\"status\":\"";
+  result += context.available ? "available" : "unavailable";
+  result += "\",\"source_target_province_id\":";
+  result += context.available ? SignedNumber(context.province_id) : "null";
+  result += ",\"effective_min_roll\":";
+  result += context.available ? SignedNumber(context.effective_min_roll)
+                              : "null";
+  result += ",\"effective_max_roll\":";
+  result += context.available ? SignedNumber(context.effective_max_roll)
+                              : "null";
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, !context.available,
+                          context.unavailable_reason);
+  result += "},\"unavailable_reason\":";
+  AppendUnavailableReason(
+      result,
+      commander.status == xar::game::CombatObservationStatus::unavailable,
+      commander.unavailable_reason);
+  result += '}';
+}
+
+void AppendCombatKnights(std::string &result,
+                         const xar::game::CombatKnightsSnapshot &knights) {
+  result += "{\"status\":\"";
+  result += knights.available ? "available" : "unavailable";
+  result += "\",\"members\":";
+  if (!knights.available) {
+    result += "null";
+  } else {
+    result += '[';
+    for (std::size_t index = 0; index < knights.members.size(); ++index) {
+      if (index != 0) {
+        result += ',';
+      }
+      const auto &knight = knights.members[index];
+      result += "{\"eligible\":";
+      result += knight.eligible ? "true" : "false";
+      result += ",\"character_id\":";
+      result += SignedNumber(knight.character_id);
+      result += ",\"source_regiment_id\":";
+      result += SignedNumber(knight.source_regiment_id);
+      result += ",\"army_id\":";
+      result += SignedNumber(knight.army_id);
+      result += ",\"participant_army_membership_verified\":";
+      result += knight.participant_army_membership_verified ? "true" : "false";
+      result += ",\"prowess\":";
+      result += SignedNumber(knight.prowess);
+      result += ",\"knight_effectiveness_raw\":";
+      result += SignedNumber(knight.knight_effectiveness_raw);
+      result += ",\"effective_damage_raw\":";
+      result += SignedNumber(knight.effective_damage_raw);
+      result += ",\"effective_toughness_raw\":";
+      result += SignedNumber(knight.effective_toughness_raw);
+      result += ",\"scale\":";
+      result += SignedNumber(knight.scale);
+      result += '}';
+    }
+    result += ']';
+  }
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, !knights.available,
+                          knights.unavailable_reason);
+  result += '}';
+}
+
+void AppendCombatArmy(std::string &result,
+                      const xar::game::CombatArmyInputsSnapshot &army) {
+  result += "{\"status\":\"";
+  result += army.available ? "available" : "unavailable";
+  result += "\",\"army_id\":";
+  result += SignedNumber(army.army_id);
+  result += ",\"native_carmy_id\":";
+  result += army.native_carmy_id_observable ? SignedNumber(army.native_carmy_id)
+                                           : "null";
+  result += ",\"encounter_role\":";
+  AppendJsonString(result, army.encounter_role);
+  result += ",\"scope_role\":\"";
+  switch (army.scope_role) {
+  case xar::game::ArmyStrengthScopeRole::player:
+    result += "player";
+    break;
+  case xar::game::ArmyStrengthScopeRole::active_war_ally:
+    result += "active_war_ally";
+    break;
+  case xar::game::ArmyStrengthScopeRole::active_war_enemy:
+    result += "active_war_enemy";
+    break;
+  }
+  result += "\",\"war_ids\":";
+  AppendInt32Array(result, army.war_ids);
+  result += ",\"current_province_id\":";
+  result += army.current_province_observable
+                ? SignedNumber(army.current_province_id)
+                : "null";
+  result += ",\"owner\":";
+  AppendCombatOwner(result, army.owner);
+  result += ",\"commander\":";
+  AppendCombatCommander(result, army.commander);
+  result += ",\"regiments\":";
+  if (!army.regiments_observable) {
+    result += "null";
+  } else {
+    result += '[';
+    for (std::size_t index = 0; index < army.regiments.size(); ++index) {
+      if (index != 0) {
+        result += ',';
+      }
+      AppendCombatRegiment(result, army.regiments[index]);
+    }
+    result += ']';
+  }
+  result += ",\"knights\":";
+  AppendCombatKnights(result, army.knights);
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, !army.available, army.unavailable_reason);
+  result += '}';
+}
+
+void AppendCombatTargetProvince(
+    std::string &result,
+    const xar::game::CombatCandidateProvinceSnapshot &province) {
+  result += "{\"status\":\"";
+  result += province.available ? "available" : "unavailable";
+  result += "\",\"province_id\":";
+  result += SignedNumber(province.province_id);
+  result += ",\"terrain\":{\"status\":\"";
+  result += province.terrain.available ? "available" : "unavailable";
+  result += "\",\"key\":";
+  if (province.terrain.available) {
+    AppendJsonString(result, province.terrain.key);
+  } else {
+    result += "null";
+  }
+  result += ",\"combat_width_multiplier_raw\":";
+  result += province.terrain.available
+                ? SignedNumber(province.terrain.combat_width_multiplier_raw)
+                : "null";
+  result += ",\"scale\":";
+  result += SignedNumber(province.terrain.scale);
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, !province.terrain.available,
+                          province.terrain.unavailable_reason);
+  result += "},\"crossing\":{\"status\":\"";
+  result += province.crossing.available ? "available" : "unavailable";
+  result += "\",\"kind\":";
+  if (province.crossing.available) {
+    AppendJsonString(result, province.crossing.kind);
+  } else {
+    result += "null";
+  }
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, !province.crossing.available,
+                          province.crossing.unavailable_reason);
+  result += "},\"defender_context\":{\"status\":\"";
+  result += province.defender_context.available ? "available" : "unavailable";
+  result += "\",\"defender_side\":";
+  if (province.defender_context.available) {
+    AppendJsonString(result, province.defender_context.defender_side);
+  } else {
+    result += "null";
+  }
+  result += ",\"holding_defender_status\":";
+  AppendJsonString(
+      result,
+      CombatStatusName(province.defender_context.holding_defender_status));
+  result += ",\"holding_defender\":";
+  result += province.defender_context.holding_defender_status ==
+                    xar::game::CombatObservationStatus::available
+                ? (province.defender_context.holding_defender ? "true"
+                                                              : "false")
+                : "null";
+  result += ",\"holding_unavailable_reason\":";
+  AppendUnavailableReason(
+      result,
+      province.defender_context.holding_defender_status ==
+          xar::game::CombatObservationStatus::unavailable,
+      province.defender_context.holding_unavailable_reason);
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, !province.defender_context.available,
+                          province.defender_context.unavailable_reason);
+  result += "},\"precontact_width\":{\"status\":\"";
+  result += province.precontact_width.available ? "available" : "unavailable";
+  result += "\",\"base\":";
+  result += province.precontact_width.available
+                ? SignedNumber(province.precontact_width.base)
+                : "null";
+  result += ",\"final\":";
+  result += province.precontact_width.available
+                ? SignedNumber(province.precontact_width.final)
+                : "null";
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, !province.precontact_width.available,
+                          province.precontact_width.unavailable_reason);
+  result += "},\"unavailable_reason\":";
+  AppendUnavailableReason(result, !province.available,
+                          province.unavailable_reason);
+  result += '}';
+}
+
+void AppendOngoingCombat(
+    std::string &result,
+    const xar::game::OngoingCombatInputsSnapshot &combat) {
+  result += "{\"status\":\"";
+  result += combat.available ? "available" : "unavailable";
+  result += "\",\"combat_id\":";
+  result += combat.combat_id_observable ? SignedNumber(combat.combat_id)
+                                       : "null";
+  result += ",\"province_id\":";
+  result += combat.available ? SignedNumber(combat.province_id) : "null";
+  result += ",\"phase\":";
+  result += combat.available ? SignedNumber(combat.phase) : "null";
+  result += ",\"phase_day\":";
+  result += combat.available ? SignedNumber(combat.phase_day) : "null";
+  result += ",\"base_combat_width\":";
+  result += combat.available ? SignedNumber(combat.base_combat_width) : "null";
+  result += ",\"final_combat_width\":";
+  result += combat.available ? SignedNumber(combat.final_combat_width) : "null";
+  result += ",\"side_0_roll\":";
+  result += combat.available ? SignedNumber(combat.side_0_roll) : "null";
+  result += ",\"side_1_roll\":";
+  result += combat.available ? SignedNumber(combat.side_1_roll) : "null";
+  result += ",\"base_advantage\":";
+  result += combat.available ? SignedNumber(combat.base_advantage) : "null";
+  result += ",\"resolved_advantage\":";
+  result += combat.available ? SignedNumber(combat.resolved_advantage) : "null";
+  result += ",\"orientation\":";
+  if (combat.available) {
+    AppendJsonString(result, combat.orientation);
+  } else {
+    result += "null";
+  }
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, !combat.available, combat.unavailable_reason);
+  result += '}';
+}
+
+void AppendCounterResolution(
+    std::string &result,
+    const xar::game::CombatCounterResolutionSnapshot &resolution) {
+  result += "{\"status\":\"";
+  result += resolution.available ? "available" : "unavailable";
+  result += "\",\"countered_side\":";
+  AppendJsonString(result, resolution.countered_side);
+  result += ",\"countering_side\":";
+  AppendJsonString(result, resolution.countering_side);
+  result += ",\"countered_modifier_owner_character_id\":";
+  result += resolution.available
+                ? SignedNumber(resolution.countered_modifier_owner_character_id)
+                : "null";
+  result += ",\"countering_modifier_owner_character_id\":";
+  result += resolution.available
+                ? SignedNumber(resolution.countering_modifier_owner_character_id)
+                : "null";
+  result += ",\"context_scale_raw\":";
+  result += resolution.available ? SignedNumber(resolution.context_scale_raw)
+                                 : "null";
+  result += ",\"class_count\":";
+  result += SignedNumber(resolution.class_count);
+  result += ",\"damage_retention_by_class_raw\":";
+  if (!resolution.available) {
+    result += "null";
+  } else {
+    result += '[';
+    for (std::size_t index = 0;
+         index < resolution.damage_retention_by_class_raw.size(); ++index) {
+      if (index != 0) {
+        result += ',';
+      }
+      result += SignedNumber(
+          resolution.damage_retention_by_class_raw[index]);
+    }
+    result += ']';
+  }
+  result += ",\"scale\":";
+  result += SignedNumber(resolution.scale);
+  result += ",\"unavailable_reason\":";
+  AppendUnavailableReason(result, !resolution.available,
+                          resolution.unavailable_reason);
+  result += '}';
+}
+
+void AppendCombatSimulationInputs(
+    std::string &result,
+    const xar::game::CombatSimulationInputsSnapshot &snapshot) {
+  result += "{\"target_province_id\":";
+  result += SignedNumber(snapshot.target_province_id);
+  result += ",\"participant_policy\":"
+            "\"explicit_hypothetical_fixed_at_contact_no_reinforcements\",";
+  result += "\"scenario\":{\"kind\":"
+            "\"explicit_hypothetical_contact\",\"attacker_entry_province_id\":";
+  result += SignedNumber(snapshot.scenario.attacker_entry_province_id);
+  result += ",\"attacker_army_ids\":";
+  AppendInt32Array(result, snapshot.scenario.attacker_army_ids);
+  result += ",\"defender_army_ids\":";
+  AppendInt32Array(result, snapshot.scenario.defender_army_ids);
+  result += ",\"attacker_side\":";
+  AppendJsonString(result, snapshot.scenario.attacker_side);
+  result += ",\"defender_side\":";
+  AppendJsonString(result, snapshot.scenario.defender_side);
+  result += ",\"attacker_position_policy\":"
+            "\"fixed_at_entry_hypothetical\","
+            "\"defender_position_policy\":"
+            "\"fixed_at_target_hypothetical\","
+            "\"defender_insertion_order_policy\":"
+            "\"explicit_request_order_hypothetical\","
+            "\"actual_route_dependency\":false},\"armies\":[";
+  for (std::size_t index = 0; index < snapshot.armies.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    AppendCombatArmy(result, snapshot.armies[index]);
+  }
+  result += "],\"target_province\":";
+  AppendCombatTargetProvince(result, snapshot.target_province);
+  result += ",\"ongoing_combats\":[";
+  for (std::size_t index = 0; index < snapshot.ongoing_combats.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    AppendOngoingCombat(result, snapshot.ongoing_combats[index]);
+  }
+  result += "],\"counter_resolutions\":[";
+  for (std::size_t index = 0; index < snapshot.counter_resolutions.size();
+       ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    AppendCounterResolution(result, snapshot.counter_resolutions[index]);
+  }
+  result += "],\"completeness\":{\"observation_slice\":"
+            "\"precontact-composition-context-v2\",";
+  result += "\"input_observation_ready\":";
+  result += snapshot.input_observation_ready ? "true" : "false";
+  result += ",\"monte_carlo_ready\":";
+  result += snapshot.monte_carlo_ready ? "true" : "false";
+  result += ",\"missing_required_domains\":[";
+  for (std::size_t index = 0;
+       index < snapshot.missing_required_domains.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    AppendJsonString(result, snapshot.missing_required_domains[index]);
+  }
+  result += "]}}";
+}
+
+void AppendCombatSimulationInputsV3(
+    std::string &result,
+    const xar::game::CombatSimulationInputsV3Snapshot &snapshot) {
+  result += "{\"schema_version\":3,\"contract_stage\":"
+            "\"production_exact_132_refs\",\"rules_manifest_sha256\":";
+  AppendJsonString(result, xar::game::kCombatPhaseManifestSha256);
+  result += ",\"base_inputs\":";
+  AppendCombatSimulationInputs(result, snapshot.base_inputs);
+  result += ",\"phase_event_inputs\":";
+  result += xar::ck3_11906::SerializeCombatPhaseInputsV3(
+      snapshot.phase_event_inputs);
+  result += '}';
 }
 
 void AppendFixedPoint(std::string &result,
@@ -404,6 +1165,128 @@ void AppendDeclaration(
   result += "]}";
 }
 
+void AppendWarTerminationOption(
+    std::string &result,
+    const xar::game::WarTerminationOptionSnapshot &option) {
+  result += "{\"outcome\":";
+  AppendJsonString(result, option.outcome);
+  result += ",\"hostage_variant\":\"none\",";
+  result += "\"context_constructed\":";
+  result += option.context_constructed ? "true" : "false";
+  result += ",\"native_validator_passed\":";
+  if (option.native_validator_observable) {
+    result += option.native_validator_passed ? "true" : "false";
+  } else {
+    result += "null";
+  }
+  result += ",\"available\":";
+  result += option.context_constructed &&
+                    option.native_validator_observable &&
+                    option.native_validator_passed
+                ? "true"
+                : "false";
+  result +=
+      ",\"terms_observable\":false,\"terms\":{"
+      "\"status\":\"unavailable\","
+      "\"reason\":\"cb_specific_terms_not_observable\"},";
+  result += "\"ai_acceptance_observable\":";
+  result += option.ai_acceptance_observable ? "true" : "false";
+  result += ",\"ai_acceptance\":";
+  if (option.ai_acceptance_observable) {
+    AppendFixedPoint(result, option.ai_acceptance);
+  } else {
+    result += "null";
+  }
+  result += ",\"auto_accept_observable\":";
+  result += option.auto_accept_observable ? "true" : "false";
+  result += ",\"auto_accept\":";
+  if (option.auto_accept_observable) {
+    result += option.auto_accept ? "true" : "false";
+  } else {
+    result += "null";
+  }
+  result += '}';
+}
+
+void AppendWarTerminationOptions(
+    std::string &result,
+    const xar::game::WarTerminationOptionsSnapshot &options) {
+  result += "{\"war_id\":";
+  result += SignedNumber(options.war_id);
+  result += ",\"player_side\":\"";
+  result += options.player_side == xar::game::PlayerWarSide::attacker
+                ? "attacker"
+                : "defender";
+  result += "\",\"player_is_primary_war_leader\":";
+  result += options.player_is_primary_war_leader ? "true" : "false";
+  result += ",\"player_relative_war_score\":";
+  result += SignedNumber(options.player_relative_war_score);
+  result += ",\"war_duration_days\":";
+  if (options.war_duration_days_observable) {
+    result += SignedNumber(options.war_duration_days);
+  } else {
+    result += "null";
+  }
+  result += ",\"absolute_war_scores_observable\":";
+  result += options.absolute_war_scores_observable ? "true" : "false";
+  result += ",\"attacker_war_score\":";
+  if (options.absolute_war_scores_observable) {
+    result += SignedNumber(options.attacker_war_score);
+  } else {
+    result += "null";
+  }
+  result += ",\"defender_war_score\":";
+  if (options.absolute_war_scores_observable) {
+    result += SignedNumber(options.defender_war_score);
+  } else {
+    result += "null";
+  }
+  result += ",\"war_score_breakdown\":";
+  if (!options.war_score_breakdown.observable) {
+    result += "null";
+  } else {
+    result += "{\"imprisonment\":";
+    result += SignedNumber(options.war_score_breakdown.imprisonment);
+    result += ",\"battles\":";
+    result += SignedNumber(options.war_score_breakdown.battles);
+    result += ",\"occupation\":";
+    result += SignedNumber(options.war_score_breakdown.occupation);
+    result += ",\"ticking\":";
+    result += SignedNumber(options.war_score_breakdown.ticking);
+    result += '}';
+  }
+  result += ",\"active_casus_belli_present\":";
+  if (options.active_casus_belli_observable) {
+    result += options.active_casus_belli_present ? "true" : "false";
+  } else {
+    result += "null";
+  }
+  result += ",\"active_casus_belli_identity\":";
+  if (!options.active_casus_belli_identity_observable) {
+    result += "null";
+  } else {
+    result += "{\"database_index\":";
+    result += SignedNumber(options.active_casus_belli_database_index);
+    result += ",\"canonical_key\":";
+    AppendJsonString(result, options.active_casus_belli_key);
+    result += '}';
+  }
+  result += ",\"cb_allows_white_peace\":";
+  if (options.white_peace_permission_observable) {
+    result += options.cb_allows_white_peace ? "true" : "false";
+  } else {
+    result += "null";
+  }
+  result += ",\"options\":{";
+  result += "\"surrender\":";
+  AppendWarTerminationOption(result, options.surrender);
+  result += ",\"white_peace\":";
+  AppendWarTerminationOption(result, options.white_peace);
+  result += ",\"victory\":";
+  AppendWarTerminationOption(result, options.victory);
+  result += "}}";
+}
+
 std::string MarriageChoiceId(
     const xar::game::ArrangeMarriageChoice &choice) {
   std::string result = SignedNumber(choice.played_character_id);
@@ -426,6 +1309,95 @@ void AppendMarriageChoice(
   result += SignedNumber(choice.played_character_id);
   result += ",\"candidate_character_id\":";
   result += SignedNumber(choice.candidate_character_id);
+  result += '}';
+}
+
+void AppendWarClaimDisposition(
+    std::string &result,
+    const xar::game::WarClaimDispositionSnapshot &disposition) {
+  result += "{\"declared_title_disposition\":";
+  AppendJsonString(result, disposition.declared_title_disposition);
+  result += ",\"claim_disposition\":";
+  AppendJsonString(result, disposition.claim_disposition);
+  result += '}';
+}
+
+void AppendWarTerminationTermsProvenance(std::string &result) {
+  result +=
+      "{\"game_version\":\"1.19.0.6\","
+      "\"executable_sha256\":"
+      "\"2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86\","
+      "\"native_reader\":\"CWar+0x270/+0x290;0x28B1AA0\","
+      "\"present_claim_lifecycle\":"
+      "\"present_only_vtable_slot_0_delete_flags_0\","
+      "\"claim_script_sha256\":"
+      "\"D9AA37BDC45F81B4F6185B2697A3EBD09404084EA0D3CF77BBE3C1D2C962E8B1\"}";
+}
+
+void AppendWarTerminationTerms(
+    std::string &result,
+    const xar::game::WarTerminationTermsSnapshot &terms,
+    bool supported) {
+  result += "{\"schema_version\":1,\"status\":\"";
+  result += supported ? "available" : "unsupported";
+  result += "\",\"war_id\":";
+  result += SignedNumber(terms.war_id);
+  result += ",\"casus_belli\":{\"database_index\":";
+  result += SignedNumber(terms.active_casus_belli_database_index);
+  result += ",\"canonical_key\":";
+  AppendJsonString(result, terms.active_casus_belli_key);
+  result +=
+      "},\"supported_slice\":\"claim_cb_claim_disposition\",";
+  if (!supported) {
+    result +=
+        "\"reason\":\"casus_belli_not_claim_cb\","
+        "\"readiness\":{\"ready\":false},\"provenance\":";
+    AppendWarTerminationTermsProvenance(result);
+    result += '}';
+    return;
+  }
+
+  result += "\"claimant_character_id\":";
+  result += SignedNumber(terms.claimant_character_id);
+  result += ",\"target_title_ids\":[";
+  for (std::size_t index = 0; index < terms.target_title_ids.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    result += SignedNumber(terms.target_title_ids[index]);
+  }
+  result += "],\"claims\":[";
+  for (std::size_t index = 0; index < terms.claims.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    const auto &claim = terms.claims[index];
+    result += "{\"title_id\":";
+    result += SignedNumber(claim.title_id);
+    result += ",\"present\":";
+    result += claim.present ? "true" : "false";
+    if (claim.present) {
+      result += ",\"strong\":";
+      result += claim.strong ? "true" : "false";
+      result += ",\"implicit\":";
+      result += claim.implicit ? "true" : "false";
+    }
+    result += ",\"state\":";
+    AppendJsonString(result, claim.state);
+    result += '}';
+  }
+  result += "],\"outcomes\":{\"attacker_victory\":";
+  AppendWarClaimDisposition(result, terms.attacker_victory);
+  result += ",\"white_peace\":";
+  AppendWarClaimDisposition(result, terms.white_peace);
+  result += ",\"attacker_defeat\":";
+  AppendWarClaimDisposition(result, terms.attacker_defeat);
+  result +=
+      "},\"readiness\":{\"identity_ready\":true,"
+      "\"targets_ready\":true,\"claim_rows_ready\":true,"
+      "\"claim_disposition_ready\":true,\"ready\":true},"
+      "\"provenance\":";
+  AppendWarTerminationTermsProvenance(result);
   result += '}';
 }
 
@@ -711,6 +1683,187 @@ std::string DeclarableWarsResultFrame(
   return result;
 }
 
+struct WarEntryBridgeFrameContext {
+  const xar::game::GameAdapter *game = nullptr;
+  std::uint64_t expected_snapshot_revision = 0;
+  xar::game::Snapshot expected_snapshot;
+  std::vector<std::int32_t> expected_declarable_target_character_ids;
+};
+
+bool CaptureWarEntryBridgeFrame(
+    void *opaque, xar::game::WarEntryAssessmentFrameV1 &output) noexcept {
+  const auto *const context =
+      static_cast<const WarEntryBridgeFrameContext *>(opaque);
+  if (context == nullptr) {
+    return false;
+  }
+  try {
+    if (context->game == nullptr ||
+        context->expected_snapshot_revision == 0) {
+      return false;
+    }
+    xar::game::Snapshot snapshot{};
+    if (!xar::game::ReadSnapshot(*context->game, snapshot) ||
+        snapshot != context->expected_snapshot) {
+      return false;
+    }
+
+    output = {};
+    output.snapshot_revision = context->expected_snapshot_revision;
+    output.date_raw = snapshot.date_raw;
+    output.paused = snapshot.paused;
+    output.map_ready = snapshot.map_ready;
+    output.actor_alive = snapshot.has_played_character &&
+                         snapshot.played_character_alive;
+    output.actor_character_id = snapshot.played_character_id;
+    output.declarable_target_character_ids =
+        context->expected_declarable_target_character_ids;
+    return true;
+  } catch (...) {
+    output = {};
+    return false;
+  }
+}
+
+std::string WarEntryAssessmentsResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const xar::game::WarEntryAssessmentsV1 &assessments) {
+  const auto payload =
+      xar::ck3_11906::SerializeWarEntryAssessmentsV1(assessments);
+  if (payload.empty()) {
+    return {};
+  }
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result +=
+      ",\"accepted\":true,\"status\":\"available\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"war_entry_assessments\":";
+  result += payload;
+  result += "}}";
+  return result;
+}
+
+std::string WarTerminationOptionsResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const xar::game::WarTerminationOptionsSnapshot &options) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result += "\",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result +=
+      ",\"accepted\":true,\"status\":\"available\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"war_termination_options\":";
+  AppendWarTerminationOptions(result, options);
+  result += "}}";
+  return result;
+}
+
+std::string WarTerminationTermsResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const xar::game::WarTerminationTermsSnapshot &terms,
+    bool supported) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result += "\",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":\"";
+  result += supported ? "available" : "unsupported";
+  result += "\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"war_termination_terms\":";
+  AppendWarTerminationTerms(result, terms, supported);
+  result += "}}";
+  return result;
+}
+
+std::string ArmyStrengthsResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    xar::game::ReadArmyStrengthsResult query_result,
+    const std::vector<xar::game::ArmyStrengthSnapshot> &strengths) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result +=
+      "\",\"ok\":true,\"result\":{\"step\":"
+      "\"query-army-strengths-v1\",\"accepted\":true,\"status\":\"";
+  result += query_result == xar::game::ReadArmyStrengthsResult::available
+                ? "available"
+                : "partial";
+  result += "\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"army_strengths\":[";
+  for (std::size_t index = 0; index < strengths.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    AppendArmyStrength(result, strengths[index]);
+  }
+  result += "]}}";
+  return result;
+}
+
+std::string CombatSimulationInputsResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    xar::game::ReadCombatSimulationInputsResult query_result,
+    const xar::game::CombatSimulationInputsSnapshot &snapshot) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":\"";
+  result += query_result ==
+                    xar::game::ReadCombatSimulationInputsResult::available
+                ? "available"
+                : "partial";
+  result += "\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"combat_simulation_inputs\":";
+  AppendCombatSimulationInputs(result, snapshot);
+  result += "}}";
+  return result;
+}
+
+std::string CombatSimulationInputsV3ResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    xar::game::ReadCombatSimulationInputsV3Result query_result,
+    const xar::game::CombatSimulationInputsV3Snapshot &snapshot) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":\"";
+  result += query_result ==
+                    xar::game::ReadCombatSimulationInputsV3Result::available
+                ? "available"
+                : "unavailable";
+  result += "\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"combat_simulation_inputs\":";
+  AppendCombatSimulationInputsV3(result, snapshot);
+  result += "}}";
+  return result;
+}
+
 std::string ArrangeMarriageChoicesResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const std::vector<xar::game::ArrangeMarriageChoice> &choices,
@@ -889,17 +2042,121 @@ std::optional<std::int32_t> EnforceDemandsStep(
   return PositiveNativeId(step.substr(prefix.size()));
 }
 
+std::optional<std::int32_t> WarTerminationQueryStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix =
+      "query-war-termination-options-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
+std::optional<std::int32_t> WarTerminationTermsQueryStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix =
+      "query-war-termination-terms-v1-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
+std::optional<std::int32_t> SurrenderWarStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix = "surrender-war-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
+std::optional<std::int32_t> OfferWhitePeaceStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix = "offer-white-peace-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
+class WarEntryApplicationMainMailboxWorkerLifetime final {
+public:
+  explicit WarEntryApplicationMainMailboxWorkerLifetime(
+      const xar::game::GameAdapter &game) noexcept
+      : game_(&game) {}
+
+  WarEntryApplicationMainMailboxWorkerLifetime(
+      const WarEntryApplicationMainMailboxWorkerLifetime &) = delete;
+  WarEntryApplicationMainMailboxWorkerLifetime &operator=(
+      const WarEntryApplicationMainMailboxWorkerLifetime &) = delete;
+
+  void MaybeInstall(const xar::game::Snapshot &snapshot) noexcept {
+    if (installed_ || attempted_ || game_ == nullptr ||
+        !snapshot.paused || !snapshot.map_ready ||
+        !snapshot.has_played_character || !snapshot.played_character_alive) {
+      return;
+    }
+    attempted_ = true;
+    if (!game_->enabled() ||
+        game_->descriptor().adapter_id !=
+            xar::ck3_11906::kMainThreadQueryMailboxV1AdapterId) {
+      return;
+    }
+    xar::ck3_11906::MainThreadQueryInstallEnvironmentV1 environment{};
+    environment.module_base = reinterpret_cast<std::uintptr_t>(
+        GetModuleHandleW(nullptr));
+    environment.exact_build_admitted = true;
+    environment.offline_fixture = false;
+    environment.executor_submission_enabled = true;
+    environment.permitted_executor =
+        &xar::ck3_11906::ExecuteWarEntryAssessmentMailboxQueryV1;
+    installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
+        g_main_thread_query_mailbox_v1, environment);
+  }
+
+  ~WarEntryApplicationMainMailboxWorkerLifetime() noexcept {
+    if (!installed_) {
+      return;
+    }
+    while (true) {
+      const auto result = xar::ck3_11906::UninstallMainThreadQueryMailboxV1(
+          g_main_thread_query_mailbox_v1, 250);
+      if (result == xar::ck3_11906::MainThreadQueryUninstallResultV1::
+                        uninstalled ||
+          result == xar::ck3_11906::MainThreadQueryUninstallResultV1::
+                        not_installed) {
+        return;
+      }
+      // Fail closed. XarCk3BridgeStop observes the still-running worker and
+      // retains lifecycle=stopping rather than discarding synchronization
+      // objects underneath an incomplete IAT restore/drain.
+      Sleep(1);
+    }
+  }
+
+private:
+  const xar::game::GameAdapter *game_ = nullptr;
+  bool attempted_ = false;
+  bool installed_ = false;
+};
+
 bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
                      std::optional<xar::game::Snapshot> &previous,
                      std::uint64_t &revision,
                      const CheckpointSubmission &checkpoint,
-                     std::uint64_t &published_checkpoint_sequence) {
+                     std::uint64_t &published_checkpoint_sequence,
+                     WarEntryApplicationMainMailboxWorkerLifetime
+                         *mailbox_lifetime = nullptr) {
   if (!bindings.supports_snapshot()) {
     return true;
   }
   xar::game::Snapshot snapshot{};
   if (!xar::game::ReadSnapshot(bindings, snapshot)) {
     return true;
+  }
+  if (mailbox_lifetime != nullptr) {
+    mailbox_lifetime->MaybeInstall(snapshot);
   }
   if (previous.has_value() && previous.value() == snapshot &&
       published_checkpoint_sequence == checkpoint.sequence) {
@@ -976,12 +2233,18 @@ struct WorkerState {
   std::optional<xar::game::Snapshot> previous_snapshot;
   std::uint64_t declaration_query_sequence = 0;
   std::vector<xar::game::DeclarableWarSnapshot> declarable_wars;
+  std::uint64_t war_entry_assessment_query_sequence = 0;
+  std::uint64_t army_strength_query_sequence = 0;
+  std::uint64_t combat_inputs_query_sequence = 0;
+  std::uint64_t war_termination_query_sequence = 0;
+  std::uint64_t war_termination_terms_query_sequence = 0;
   std::uint64_t marriage_query_sequence = 0;
   std::vector<xar::game::ArrangeMarriageChoice> marriage_choices;
 };
 
-void RunConnectedSession(HANDLE pipe, const xar::game::GameAdapter &game,
-                         WorkerState &state) noexcept {
+void RunConnectedSession(
+    HANDLE pipe, const xar::game::GameAdapter &game, WorkerState &state,
+    WarEntryApplicationMainMailboxWorkerLifetime &mailbox_lifetime) noexcept {
   state.checkpoint_submission.save_name =
       game.descriptor().checkpoint_save_name;
   if (!xar::bridge::WriteFrame(pipe, HelloFrame(game))) {
@@ -995,6 +2258,16 @@ void RunConnectedSession(HANDLE pipe, const xar::game::GameAdapter &game,
   auto &previous_snapshot = state.previous_snapshot;
   auto &declaration_query_sequence = state.declaration_query_sequence;
   auto &declarable_wars = state.declarable_wars;
+  auto &war_entry_assessment_query_sequence =
+      state.war_entry_assessment_query_sequence;
+  auto &army_strength_query_sequence =
+      state.army_strength_query_sequence;
+  auto &combat_inputs_query_sequence =
+      state.combat_inputs_query_sequence;
+  auto &war_termination_query_sequence =
+      state.war_termination_query_sequence;
+  auto &war_termination_terms_query_sequence =
+      state.war_termination_terms_query_sequence;
   auto &marriage_query_sequence = state.marriage_query_sequence;
   auto &marriage_choices = state.marriage_choices;
 
@@ -1013,7 +2286,8 @@ void RunConnectedSession(HANDLE pipe, const xar::game::GameAdapter &game,
       if (connected && game.supports_snapshot()) {
         connected = PublishSnapshot(pipe, game, previous_snapshot,
                                     state_revision, checkpoint_submission,
-                                    published_checkpoint_sequence);
+                                    published_checkpoint_sequence,
+                                    &mailbox_lifetime);
       }
       next_heartbeat = now + kHeartbeatIntervalMs;
       if (!connected) {
@@ -1227,6 +2501,294 @@ void RunConnectedSession(HANDLE pipe, const xar::game::GameAdapter &game,
                           request_id, declaration_query_sequence,
                           declarable_wars));
           }
+        } else if (step.starts_with(
+                       xar::ck3_11906::kWarEntryAssessmentsV1StepPrefix)) {
+          std::vector<std::int32_t> target_character_ids;
+          if (!xar::ck3_11906::ParseWarEntryAssessmentsV1Step(
+                  step, target_character_ids)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "war-entry assessment request is malformed"));
+          } else if (target_character_ids.size() !=
+                     static_cast<std::size_t>(xar::ck3_11906::
+                         kWarEntryAssessmentsV1FirstLiveMaximumTargets)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "first-live war-entry query requires one target"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            std::vector<xar::game::DeclarableWarSnapshot>
+                current_declarations;
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value()) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "war-entry snapshot changed; retry after heartbeat"));
+            } else if (!xar::game::ReadDeclarableWars(
+                           game, current_declarations)) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "war-entry declarations are unavailable"));
+            } else {
+              WarEntryBridgeFrameContext frame_context{};
+              frame_context.game = &game;
+              frame_context.expected_snapshot_revision = state_revision;
+              frame_context.expected_snapshot = current_snapshot;
+              for (const auto &declaration : current_declarations) {
+                if (declaration.target_character_id > 0 &&
+                    std::find(frame_context
+                                  .expected_declarable_target_character_ids
+                                  .begin(),
+                              frame_context
+                                  .expected_declarable_target_character_ids
+                                  .end(),
+                              declaration.target_character_id) ==
+                        frame_context
+                            .expected_declarable_target_character_ids.end()) {
+                  frame_context.expected_declarable_target_character_ids
+                      .push_back(declaration.target_character_id);
+                }
+              }
+
+              xar::ck3_11906::WarEntryAssessmentMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.environment =
+                  xar::ck3_11906::BindWarEntryNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)));
+              query.access.context = &frame_context;
+              query.access.capture_frame = &CaptureWarEntryBridgeFrame;
+              query.request.expected_snapshot_revision = state_revision;
+              query.request.target_character_ids = target_character_ids;
+
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecuteWarEntryAssessmentMailboxQueryV1,
+                      &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main war-entry executor is unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error =
+                      "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error = "application-main war-entry executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket, 2000);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  // The stack context is owned by the executing application
+                  // thread. It must remain alive until the synchronous typed
+                  // reader reaches a terminal state.
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket, 2000);
+                }
+
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion == xar::ck3_11906::
+                                            WarEntryAssessmentMailboxCompletionV1::
+                                                available) {
+                  ++war_entry_assessment_query_sequence;
+                  response = WarEntryAssessmentsResultFrame(
+                      request_id, step,
+                      war_entry_assessment_query_sequence, query.result);
+                }
+                if (response.empty()) {
+                  std::string error =
+                      "application-main war-entry query failed";
+                  if (!query.result.unavailable_stage.empty()) {
+                    error += ":";
+                    error += query.result.unavailable_stage;
+                  }
+                  response = CommandResultFrame(request_id, step, false,
+                                                error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::
+                                         reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main war-entry result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (step == "query-army-strengths-v1") {
+          std::vector<xar::game::ArmyStrengthSnapshot> strengths;
+          const auto query_result =
+              xar::game::ReadArmyStrengths(game, strengths);
+          if (query_result ==
+                  xar::game::ReadArmyStrengthsResult::available ||
+              query_result ==
+                  xar::game::ReadArmyStrengthsResult::partial) {
+            ++army_strength_query_sequence;
+            connected = xar::bridge::WriteFrame(
+                pipe, ArmyStrengthsResultFrame(
+                          request_id, army_strength_query_sequence,
+                          query_result, strengths));
+          } else {
+            std::string_view error =
+                "CK3 army-strength query is unavailable";
+            if (query_result ==
+                xar::game::ReadArmyStrengthsResult::requires_paused) {
+              error = "CK3 army-strength query requires a paused map";
+            } else if (query_result ==
+                       xar::game::ReadArmyStrengthsResult::
+                           no_played_character) {
+              error = "no living played CK3 character";
+            }
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false, error));
+          }
+        } else if (step.starts_with(
+                       "query-combat-simulation-inputs-v3-")) {
+          xar::game::CombatSimulationInputsRequest combat_request{};
+          if (!xar::game::ParseCombatSimulationInputsV3Step(
+                  step, combat_request)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "combat-input v3 query step is not canonical"));
+          } else {
+            xar::game::CombatSimulationInputsV3Snapshot snapshot{};
+            const auto query_result =
+                xar::game::ReadCombatSimulationInputsV3(
+                    game, combat_request, snapshot);
+            if (query_result ==
+                    xar::game::ReadCombatSimulationInputsV3Result::available ||
+                query_result == xar::game::ReadCombatSimulationInputsV3Result::
+                                    phase_inputs_unavailable) {
+              ++combat_inputs_query_sequence;
+              connected = xar::bridge::WriteFrame(
+                  pipe, CombatSimulationInputsV3ResultFrame(
+                            request_id, step, combat_inputs_query_sequence,
+                            query_result, snapshot));
+            } else {
+              std::string_view error =
+                  "CK3 combat-input v3 query is unavailable";
+              switch (query_result) {
+              case xar::game::ReadCombatSimulationInputsV3Result::
+                  requires_paused:
+                error = "CK3 combat-input v3 query requires a paused map";
+                break;
+              case xar::game::ReadCombatSimulationInputsV3Result::
+                  no_played_character:
+                error = "no living played CK3 character";
+                break;
+              case xar::game::ReadCombatSimulationInputsV3Result::
+                  invalid_arguments:
+                error = "combat-input v3 query arguments are invalid";
+                break;
+              case xar::game::ReadCombatSimulationInputsV3Result::
+                  target_province_not_found:
+                error = "combat-input v3 target province was not found";
+                break;
+              case xar::game::ReadCombatSimulationInputsV3Result::
+                  army_not_in_scope:
+                error = "combat-input v3 army is outside allowed scope";
+                break;
+              case xar::game::ReadCombatSimulationInputsV3Result::
+                  invalid_encounter:
+                error =
+                    "selected armies do not form a canonical v3 encounter";
+                break;
+              case xar::game::ReadCombatSimulationInputsV3Result::
+                  base_inputs_unavailable:
+                error = "CK3 combat-input v3 base slice is unavailable";
+                break;
+              case xar::game::ReadCombatSimulationInputsV3Result::available:
+              case xar::game::ReadCombatSimulationInputsV3Result::
+                  phase_inputs_unavailable:
+              case xar::game::ReadCombatSimulationInputsV3Result::unavailable:
+                break;
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          }
+        } else if (step.starts_with(
+                       "query-combat-simulation-inputs-v2-")) {
+          xar::game::CombatSimulationInputsRequest combat_request{};
+          if (!xar::game::ParseCombatSimulationInputsStep(step,
+                                                          combat_request)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "combat-input query step is not canonical"));
+          } else {
+            xar::game::CombatSimulationInputsSnapshot snapshot{};
+            const auto query_result =
+                xar::game::ReadCombatSimulationInputs(game, combat_request,
+                                                      snapshot);
+            if (query_result ==
+                    xar::game::ReadCombatSimulationInputsResult::available ||
+                query_result ==
+                    xar::game::ReadCombatSimulationInputsResult::partial) {
+              ++combat_inputs_query_sequence;
+              connected = xar::bridge::WriteFrame(
+                  pipe, CombatSimulationInputsResultFrame(
+                            request_id, step, combat_inputs_query_sequence,
+                            query_result, snapshot));
+            } else {
+              std::string_view error =
+                  "CK3 combat-input query is unavailable";
+              switch (query_result) {
+              case xar::game::ReadCombatSimulationInputsResult::
+                  requires_paused:
+                error = "CK3 combat-input query requires a paused map";
+                break;
+              case xar::game::ReadCombatSimulationInputsResult::
+                  no_played_character:
+                error = "no living played CK3 character";
+                break;
+              case xar::game::ReadCombatSimulationInputsResult::
+                  invalid_arguments:
+                error = "combat-input query arguments are invalid";
+                break;
+              case xar::game::ReadCombatSimulationInputsResult::
+                  target_province_not_found:
+                error = "combat-input target province was not found";
+                break;
+              case xar::game::ReadCombatSimulationInputsResult::
+                  army_not_in_scope:
+                error = "combat-input army is outside allowed scope";
+                break;
+              case xar::game::ReadCombatSimulationInputsResult::
+                  invalid_encounter:
+                error = "selected armies do not form a canonical encounter";
+                break;
+              case xar::game::ReadCombatSimulationInputsResult::available:
+              case xar::game::ReadCombatSimulationInputsResult::partial:
+              case xar::game::ReadCombatSimulationInputsResult::unavailable:
+                break;
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          }
         } else if (step.starts_with("declare-war-")) {
           const xar::game::DeclarableWarSnapshot *selected = nullptr;
           for (const auto &candidate : declarable_wars) {
@@ -1271,6 +2833,228 @@ void RunConnectedSession(HANDLE pipe, const xar::game::GameAdapter &game,
           if (connected) {
             connected = PublishSnapshot(pipe, game, previous_snapshot,
                                         state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step.starts_with(
+                       "query-war-termination-options-")) {
+          const auto war_id = WarTerminationQueryStep(step);
+          if (!war_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid query-war-termination-options-<war_id> "
+                          "step"));
+          } else {
+            xar::game::WarTerminationOptionsSnapshot options{};
+            const auto query_result = xar::game::ReadWarTerminationOptions(
+                game, war_id.value(), options);
+            if (query_result ==
+                xar::game::ReadWarTerminationOptionsResult::available) {
+              ++war_termination_query_sequence;
+              connected = xar::bridge::WriteFrame(
+                  pipe, WarTerminationOptionsResultFrame(
+                            request_id, step,
+                            war_termination_query_sequence, options));
+            } else {
+              std::string_view error =
+                  "CK3 war-termination query is unavailable";
+              if (query_result ==
+                  xar::game::ReadWarTerminationOptionsResult::
+                      requires_paused) {
+                error = "CK3 war-termination query requires a paused map";
+              } else if (query_result ==
+                         xar::game::ReadWarTerminationOptionsResult::
+                             no_played_character) {
+                error = "no living played CK3 character";
+              } else if (query_result ==
+                         xar::game::ReadWarTerminationOptionsResult::
+                             war_not_found) {
+                error = "CK3 war was not found";
+              } else if (query_result ==
+                         xar::game::ReadWarTerminationOptionsResult::
+                             player_not_participant) {
+                error = "played CK3 character is not a war participant";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, false, error));
+            }
+          }
+        } else if (step.starts_with(
+                       "query-war-termination-terms-v1-")) {
+          const auto war_id = WarTerminationTermsQueryStep(step);
+          if (!war_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid query-war-termination-terms-v1-<war_id> "
+                          "step"));
+          } else {
+            xar::game::WarTerminationTermsSnapshot terms{};
+            const auto query_result = xar::game::ReadWarTerminationTerms(
+                game, war_id.value(), terms);
+            if (query_result ==
+                    xar::game::ReadWarTerminationTermsResult::available ||
+                query_result ==
+                    xar::game::ReadWarTerminationTermsResult::
+                        unsupported_casus_belli) {
+              ++war_termination_terms_query_sequence;
+              connected = xar::bridge::WriteFrame(
+                  pipe, WarTerminationTermsResultFrame(
+                            request_id, step,
+                            war_termination_terms_query_sequence, terms,
+                            query_result ==
+                                xar::game::ReadWarTerminationTermsResult::
+                                    available));
+            } else {
+              std::string_view error =
+                  "CK3 war-termination terms query is unavailable";
+              if (query_result ==
+                  xar::game::ReadWarTerminationTermsResult::
+                      requires_paused) {
+                error =
+                    "CK3 war-termination terms query requires a paused map";
+              } else if (query_result ==
+                         xar::game::ReadWarTerminationTermsResult::
+                             no_played_character) {
+                error = "no living played CK3 character";
+              } else if (query_result ==
+                         xar::game::ReadWarTerminationTermsResult::
+                             war_not_found) {
+                error = "CK3 war was not found";
+              } else if (query_result ==
+                         xar::game::ReadWarTerminationTermsResult::
+                             player_not_participant) {
+                error = "played CK3 character is not a war participant";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, false, error));
+            }
+          }
+        } else if (step.starts_with("offer-white-peace-")) {
+          const auto war_id = OfferWhitePeaceStep(step);
+          if (!war_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid offer-white-peace-<war_id> step"));
+          } else {
+            const auto white_peace_result =
+                xar::game::SubmitOfferWhitePeace(game, war_id.value());
+            if (white_peace_result ==
+                xar::game::OfferWhitePeaceResult::submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, true, "submitted"));
+            } else {
+              std::string_view error =
+                  "CK3 offer-white-peace state is unavailable";
+              if (white_peace_result ==
+                  xar::game::OfferWhitePeaceResult::submission_failed) {
+                error = "CK3 rejected offer-white-peace queue submission";
+              } else if (white_peace_result ==
+                         xar::game::OfferWhitePeaceResult::requires_paused) {
+                error = "CK3 offer-white-peace requires a paused map";
+              } else if (white_peace_result ==
+                         xar::game::OfferWhitePeaceResult::
+                             no_played_character) {
+                error = "no living played CK3 character";
+              } else if (white_peace_result ==
+                         xar::game::OfferWhitePeaceResult::war_not_found) {
+                error = "CK3 war was not found";
+              } else if (white_peace_result ==
+                         xar::game::OfferWhitePeaceResult::
+                             player_not_participant) {
+                error = "played CK3 character is not a war participant";
+              } else if (white_peace_result ==
+                         xar::game::OfferWhitePeaceResult::
+                             player_not_war_leader) {
+                error = "played CK3 character is not the war leader";
+              } else if (white_peace_result ==
+                         xar::game::OfferWhitePeaceResult::
+                             casus_belli_unavailable) {
+                error = "CK3 war has no active casus belli";
+              } else if (white_peace_result ==
+                         xar::game::OfferWhitePeaceResult::
+                             white_peace_not_allowed) {
+                error = "active CK3 casus belli forbids white peace";
+              } else if (white_peace_result ==
+                         xar::game::OfferWhitePeaceResult::
+                             context_unavailable) {
+                error = "CK3 offer-white-peace context is unavailable";
+              } else if (white_peace_result ==
+                         xar::game::OfferWhitePeaceResult::
+                             validation_failed) {
+                error = "CK3 rejected offer-white-peace validation";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, false, error));
+            }
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision,
+                                        checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step.starts_with("surrender-war-")) {
+          const auto war_id = SurrenderWarStep(step);
+          if (!war_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid surrender-war-<war_id> step"));
+          } else {
+            const auto surrender_result = xar::game::SubmitSurrenderWar(
+                game, war_id.value());
+            if (surrender_result ==
+                xar::game::SurrenderWarResult::submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, true, "submitted"));
+            } else {
+              std::string_view error =
+                  "CK3 surrender-war state is unavailable";
+              if (surrender_result ==
+                  xar::game::SurrenderWarResult::submission_failed) {
+                error = "CK3 rejected surrender-war queue submission";
+              } else if (surrender_result ==
+                         xar::game::SurrenderWarResult::requires_paused) {
+                error = "CK3 surrender-war requires a paused map";
+              } else if (surrender_result ==
+                         xar::game::SurrenderWarResult::
+                             no_played_character) {
+                error = "no living played CK3 character";
+              } else if (surrender_result ==
+                         xar::game::SurrenderWarResult::war_not_found) {
+                error = "CK3 war was not found";
+              } else if (surrender_result ==
+                         xar::game::SurrenderWarResult::
+                             player_not_participant) {
+                error = "played CK3 character is not a war participant";
+              } else if (surrender_result ==
+                         xar::game::SurrenderWarResult::
+                             player_not_war_leader) {
+                error = "played CK3 character is not the war leader";
+              } else if (surrender_result ==
+                         xar::game::SurrenderWarResult::
+                             context_unavailable) {
+                error = "CK3 surrender-war context is unavailable";
+              } else if (surrender_result ==
+                         xar::game::SurrenderWarResult::validation_failed) {
+                error = "CK3 rejected surrender-war validation";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, false, error));
+            }
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision,
+                                        checkpoint_submission,
                                         published_checkpoint_sequence);
           }
         } else if (step.starts_with("enforce-demands-")) {
@@ -1715,13 +3499,14 @@ DWORD WINAPI WorkerMain(void *) noexcept {
   if (game == nullptr) {
     return 1;
   }
+  WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime(*game);
   WorkerState state{};
   while (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
     HANDLE pipe = ConnectToHost();
     if (pipe == INVALID_HANDLE_VALUE) {
       return WaitForSingleObject(g_stop_event, 0) == WAIT_OBJECT_0 ? 0 : 1;
     }
-    RunConnectedSession(pipe, *game, state);
+    RunConnectedSession(pipe, *game, state, mailbox_lifetime);
     CloseHandle(pipe);
     if (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
       WaitForSingleObject(g_stop_event, 50);
@@ -1734,8 +3519,9 @@ BOOL StartWithPipeName(const wchar_t *pipe_name, DWORD length) noexcept {
   if (!IsPipeName(pipe_name, length)) {
     return FALSE;
   }
-  if (g_lifecycle.exchange(1) != 0) {
-    return TRUE;
+  long expected_lifecycle = 0;
+  if (!g_lifecycle.compare_exchange_strong(expected_lifecycle, 1)) {
+    return expected_lifecycle == 1 ? TRUE : FALSE;
   }
   for (DWORD index = 0; index <= length; ++index) {
     g_pipe_name[index] = pipe_name[index];
@@ -1777,6 +3563,111 @@ XarCk3BridgeIdentity() noexcept {
   return identity.c_str();
 }
 
+// The injector calls this only while a newly-created process's primary thread
+// is still suspended. Unsupported executables remain a successful no-op so the
+// offline bridge target and diagnostic attach surface keep working. Production
+// returns before installing any containment guard; an explicitly instrumented
+// build may install only the no-suppression particle2 stage recorder.
+extern "C" __declspec(dllexport) DWORD WINAPI
+XarCk3BridgePrepareStartup(LPVOID) noexcept {
+  auto game = xar::game::SelectCurrentProcessAdapter();
+  if (game == nullptr) {
+    return FALSE;
+  }
+  if (!game->enabled()) {
+    return TRUE;
+  }
+  if (kStartupParticle2StageRecorderEnabledV1) {
+    xar::bridge::StartupParticle2StageRecorderV1Environment environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    return xar::bridge::InstallStartupParticle2StageRecorderV1(
+               g_startup_particle2_stage_recorder_v1, environment)
+        ? TRUE
+        : FALSE;
+  }
+  if (!kStartupFailureContainmentEnabledV1) {
+    return TRUE;
+  }
+  xar::bridge::StartupParticle2NullGuardV1Environment environment{};
+  environment.exact_build_admitted = true;
+  environment.primary_thread_suspended_proven = true;
+  environment.module_base =
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  if (!xar::bridge::InstallStartupParticle2NullGuardV1(
+          g_startup_particle2_null_guard_v1, environment)) {
+    return FALSE;
+  }
+
+  xar::bridge::StartupParticle2ConsumerGuardV1Environment
+      consumer_environment{};
+  consumer_environment.exact_build_admitted = true;
+  consumer_environment.primary_thread_suspended_proven = true;
+  consumer_environment.module_base = environment.module_base;
+  if (!xar::bridge::InstallStartupParticle2ConsumerGuardV1(
+          g_startup_particle2_consumer_null_guard_v1,
+          consumer_environment)) {
+    // PrepareStartup runs before the primary thread is resumed, so restoring
+    // the first patch here is quiescent.  Any unproven rollback still returns
+    // failure and the managed launcher terminates the suspended target.
+    (void)xar::bridge::UninstallStartupParticle2NullGuardV1(
+        g_startup_particle2_null_guard_v1);
+    return FALSE;
+  }
+
+  xar::bridge::StartupDx11RenderContextDrawGuardV1Environment
+      dx11_draw_environment{};
+  dx11_draw_environment.exact_build_admitted = true;
+  dx11_draw_environment.primary_thread_suspended_proven = true;
+  dx11_draw_environment.module_base = environment.module_base;
+  if (!xar::bridge::InstallStartupDx11RenderContextDrawGuardV1(
+          g_startup_dx11_render_context_draw_guard_v1,
+          dx11_draw_environment)) {
+    // All three patches are installed before the primary thread is resumed.
+    // Failure therefore unwinds the already-installed guards in reverse order;
+    // the managed launcher terminates the suspended target if any rollback is
+    // unproven.
+    const bool consumer_restored =
+        xar::bridge::UninstallStartupParticle2ConsumerGuardV1(
+            g_startup_particle2_consumer_null_guard_v1);
+    const bool producer_restored =
+        xar::bridge::UninstallStartupParticle2NullGuardV1(
+            g_startup_particle2_null_guard_v1);
+    (void)consumer_restored;
+    (void)producer_restored;
+    return FALSE;
+  }
+
+  xar::bridge::StartupLocalizeCurrentRootGuardV1Environment
+      localize_environment{};
+  localize_environment.exact_build_admitted = true;
+  localize_environment.primary_thread_suspended_proven = true;
+  localize_environment.module_base = environment.module_base;
+  if (!xar::bridge::InstallStartupLocalizeCurrentRootGuardV1(
+          g_startup_localize_current_root_guard_v1,
+          localize_environment)) {
+    // The primary thread is still suspended, so the already-installed guards
+    // can be unwound in strict reverse order. Returning FALSE makes the managed
+    // launcher terminate the suspended target if any restore is unproven.
+    const bool draw_restored =
+        xar::bridge::UninstallStartupDx11RenderContextDrawGuardV1(
+            g_startup_dx11_render_context_draw_guard_v1);
+    const bool consumer_restored =
+        xar::bridge::UninstallStartupParticle2ConsumerGuardV1(
+            g_startup_particle2_consumer_null_guard_v1);
+    const bool producer_restored =
+        xar::bridge::UninstallStartupParticle2NullGuardV1(
+            g_startup_particle2_null_guard_v1);
+    (void)draw_restored;
+    (void)consumer_restored;
+    (void)producer_restored;
+    return FALSE;
+  }
+  return TRUE;
+}
+
 extern "C" __declspec(dllexport) BOOL WINAPI XarCk3BridgeStart() noexcept {
   return StartFromEnvironment();
 }
@@ -1798,8 +3689,18 @@ XarCk3BridgeStartWithPipe(const wchar_t *pipe_name) noexcept {
 
 extern "C" __declspec(dllexport) void WINAPI XarCk3BridgeStop() noexcept {
   SignalStop();
+  if (g_lifecycle.load() == 0) {
+    return;
+  }
+  g_lifecycle.store(2);
   if (g_worker_thread != nullptr) {
-    WaitForSingleObject(g_worker_thread, 5000);
+    const DWORD worker_wait = WaitForSingleObject(g_worker_thread, 5000);
+    if (worker_wait != WAIT_OBJECT_0) {
+      // WorkerMain owns mailbox uninstall.  Retain both handles and the
+      // stopping lifecycle so a later Stop call can finish cleanup; never
+      // reset synchronization state after an uninstall timeout.
+      return;
+    }
     CloseHandle(g_worker_thread);
     g_worker_thread = nullptr;
   }
@@ -1821,8 +3722,11 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
       StartFromEnvironment();
     }
   } else if (reason == DLL_PROCESS_DETACH) {
-    // Normal bridge users call XarCk3BridgeStop before FreeLibrary. During
-    // process teardown, only signal: waiting from DllMain would block unload.
+    // V1 is process-lifetime pinned and does not support remote FreeLibrary.
+    // At actual process teardown the loader lock permits signal-only cleanup;
+    // waiting or changing the IAT here would deadlock or race teardown.
+    xar::ck3_11906::SignalMainThreadQueryMailboxProcessDetachV1(
+        g_main_thread_query_mailbox_v1);
     SignalStop();
   }
   return TRUE;

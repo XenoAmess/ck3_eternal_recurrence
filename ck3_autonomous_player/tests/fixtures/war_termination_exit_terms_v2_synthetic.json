@@ -1,0 +1,158 @@
+{
+  "schema_version": 2,
+  "status": "available",
+  "war_id": 16777300,
+  "date_raw": 42424224,
+  "casus_belli": {
+    "database_index": 3,
+    "canonical_key": "claim_cb"
+  },
+  "supported_slice": "claim_cb_exit_terms_v2",
+  "player_side": "attacker",
+  "primary_attacker_character_id": 16777218,
+  "primary_defender_character_id": 16777219,
+  "claimant_character_id": 16777218,
+  "target_title_ids": [16777221],
+  "claims": [
+    {
+      "title_id": 16777221,
+      "present": true,
+      "strong": false,
+      "implicit": false,
+      "state": "weak_explicit"
+    }
+  ],
+  "primary_resource_balances": {
+    "values": [
+      {"character_id": 16777218, "resource_kind": "gold", "raw": 35000000, "scale": 100000},
+      {"character_id": 16777218, "resource_kind": "prestige", "raw": 12000000, "scale": 100000},
+      {"character_id": 16777218, "resource_kind": "prestige_experience", "raw": 100000000, "scale": 100000},
+      {"character_id": 16777218, "resource_kind": "piety", "raw": 5000000, "scale": 100000},
+      {"character_id": 16777218, "resource_kind": "piety_experience", "raw": 30000000, "scale": 100000},
+      {"character_id": 16777218, "resource_kind": "legitimacy", "raw": 8000000, "scale": 100000},
+      {"character_id": 16777218, "resource_kind": "stress", "raw": 4200000, "scale": 100000},
+      {"character_id": 16777219, "resource_kind": "gold", "raw": 80000000, "scale": 100000},
+      {"character_id": 16777219, "resource_kind": "prestige", "raw": 45000000, "scale": 100000},
+      {"character_id": 16777219, "resource_kind": "prestige_experience", "raw": 200000000, "scale": 100000},
+      {"character_id": 16777219, "resource_kind": "piety", "raw": 9000000, "scale": 100000},
+      {"character_id": 16777219, "resource_kind": "piety_experience", "raw": 60000000, "scale": 100000},
+      {"character_id": 16777219, "resource_kind": "legitimacy", "raw": 7000000, "scale": 100000},
+      {"character_id": 16777219, "resource_kind": "stress", "raw": 8700000, "scale": 100000}
+    ]
+  },
+  "primary_monthly_gold_income": {
+    "values": [
+      {"character_id": 16777218, "raw": 500000, "scale": 100000},
+      {"character_id": 16777219, "raw": 800000, "scale": 100000}
+    ]
+  },
+  "outcomes": {
+    "white_peace": {
+      "claim_disposition": {
+        "declared_title_disposition": "unchanged",
+        "claim_disposition": "retain_and_strengthen_weak"
+      },
+      "recipient_response": {
+        "native_validator_passed": true,
+        "acceptance_raw": 1100000,
+        "acceptance_scale": 100000,
+        "decision_status_raw": 0,
+        "would_accept_now": true,
+        "auto_accept": false
+      },
+      "cb_prestige_factor": {"raw": 700000, "scale": 100000},
+      "primary_gold_transfers": {"values": []},
+      "primary_resource_deltas": {
+        "values": [
+          {"character_id": 16777218, "resource_kind": "prestige", "raw": -3500000, "scale": 100000},
+          {"character_id": 16777218, "resource_kind": "prestige_experience", "raw": 0, "scale": 100000},
+          {"character_id": 16777218, "resource_kind": "piety", "raw": 0, "scale": 100000},
+          {"character_id": 16777218, "resource_kind": "piety_experience", "raw": 0, "scale": 100000},
+          {"character_id": 16777218, "resource_kind": "legitimacy", "raw": 0, "scale": 100000},
+          {"character_id": 16777218, "resource_kind": "stress", "raw": 3400000, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "prestige", "raw": 0, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "prestige_experience", "raw": 0, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "piety", "raw": 0, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "piety_experience", "raw": 0, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "legitimacy", "raw": 0, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "stress", "raw": 0, "scale": 100000}
+        ]
+      },
+      "truce": {
+        "owner_character_id": 16777218,
+        "toward_character_id": 16777219,
+        "evaluated_days": 1825,
+        "current_date_raw": 42424224,
+        "expiry_date_raw": 42468024
+      },
+      "prisoner_releases": {"values": []},
+      "complete": true
+    },
+    "attacker_defeat": {
+      "claim_disposition": {
+        "declared_title_disposition": "unchanged",
+        "claim_disposition": "remove_declared_target_claims"
+      },
+      "recipient_response": {
+        "native_validator_passed": true,
+        "acceptance_raw": 86000000,
+        "acceptance_scale": 100000,
+        "decision_status_raw": 1,
+        "would_accept_now": true,
+        "auto_accept": true
+      },
+      "cb_prestige_factor": {"raw": 700000, "scale": 100000},
+      "primary_gold_transfers": {
+        "values": [
+          {
+            "from_character_id": 16777218,
+            "to_character_id": 16777219,
+            "raw": 15000000,
+            "scale": 100000
+          }
+        ]
+      },
+      "primary_resource_deltas": {
+        "values": [
+          {"character_id": 16777218, "resource_kind": "prestige", "raw": -7000000, "scale": 100000},
+          {"character_id": 16777218, "resource_kind": "prestige_experience", "raw": 0, "scale": 100000},
+          {"character_id": 16777218, "resource_kind": "piety", "raw": 0, "scale": 100000},
+          {"character_id": 16777218, "resource_kind": "piety_experience", "raw": 0, "scale": 100000},
+          {"character_id": 16777218, "resource_kind": "legitimacy", "raw": 0, "scale": 100000},
+          {"character_id": 16777218, "resource_kind": "stress", "raw": 0, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "prestige", "raw": 7000000, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "prestige_experience", "raw": 0, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "piety", "raw": 0, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "piety_experience", "raw": 0, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "legitimacy", "raw": 5000000, "scale": 100000},
+          {"character_id": 16777219, "resource_kind": "stress", "raw": 0, "scale": 100000}
+        ]
+      },
+      "truce": {
+        "owner_character_id": 16777218,
+        "toward_character_id": 16777219,
+        "evaluated_days": 1825,
+        "current_date_raw": 42424224,
+        "expiry_date_raw": 42468024
+      },
+      "prisoner_releases": {"values": []},
+      "complete": true
+    }
+  },
+  "readiness": {
+    "same_frame_stable": true,
+    "claim_temporary_lifecycle_verified": true,
+    "white_peace_complete": true,
+    "attacker_defeat_complete": true,
+    "exit_terms_ready": true
+  },
+  "provenance": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "claim_script_sha256": "D9AA37BDC45F81B4F6185B2697A3EBD09404084EA0D3CF77BBE3C1D2C962E8B1",
+    "war_effects_sha256": "A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D",
+    "war_values_sha256": "ED1CDB6E8BC887CF1FFFE010F1E9CA642DFD6DAF241E81F23E6B4736F7AFDF3B",
+    "ep3_effects_sha256": "D2F5FE80E7BC000A749642CD26BDE1626DBEA7409C39314B8583547AE43DB43D",
+    "native_contract_sha256": "6F14AF260C46E1C359DDC8839B0384C8B584B64B0A03BDD2F57139E15B7317C7"
+  }
+}

@@ -45,6 +45,43 @@
 | [unknown] 胜率 | 原版宣战链没有 `p_win` | 无 | 需要版本绑定、输入完备、可校准的 forecast |
 | [unknown] 全程成本 | 原版完整财政账本未闭合 | 无 | gold/manpower/time/opportunity/postwar/exit 全部进入效用 |
 
+## 原生 war-entry assessment 的观测边界
+
+- [static-confirmed] `0x1878A00/0x1879850` 已闭合出一份可独立查询的原生战略军力切片：actor base、双方
+  relationship-network contribution、双方 total、target 行政制 adjustment、native actual ratio、距离、双向
+  AI entry 与 raw flags。字段来源、五指针 filter 配置和 exact ABI 见
+  [war-declaration.md](war-declaration.md#军力聚合的已知与未知)。
+- [policy-design] 该切片的版本化入口固定为 `query-war-entry-assessments-v1`。它回答“原版 AI 此帧怎样估算
+  target/actor 战略军力比”，不是 Monte Carlo 胜率，也不证明关系网中的角色一定接受 call 或按时抵达；planner
+  只能把它作为 `power_assessment.native_baseline`，不能用它替代 participant scenarios 与 combat forecast。
+- [policy-design] 请求只接受当前 `declarable_wars` 中出现的 target full CharacterID；返回值必须绑定同一
+  paused `snapshot_revision/date_raw`、actor identity、effective-target identity 与 exact executable hash。一个 target
+  对应多个 CB/config 时共享战略 baseline，之后仍要逐 declaration 绑定 legality、成本、目标收益与退出代价。
+- [policy-design] native final target total 与 `base+network` 的差必须显式记为 adjustment；ratio 使用 native
+  `out+0x10`。任何 identity、AI context、shape、overflow 或 same-frame gate 失败，都必须整批拒绝，不能用 snapshot
+  soldier totals、Python 除法、部分 row 或 `null` 补洞。
+- [static-confirmed] 当前 named-pipe `execute_step` 在 bridge worker thread 上执行，而 resolver 的
+  `0x2909DF1 -> rdata target 0x290E6F0 -> 0x2909EB0` 链会进入读取 live world state 的原生 C++
+  evaluator/functor；paused 不等于 CK3 main thread。故 reader 已设置 `main_thread_required` world-consistency
+  硬门，production capability 继续关闭，必须先完成并证明主线程 mailbox/marshal，不能把现有 worker 直接接到该只读函数。
+
+```mermaid
+flowchart TD
+    D["[P] 同帧 declarable_wars targets"] --> Q["[P] query-war-entry-assessments-v1"]
+    Q --> N["[S] native base / network / adjustment / total / ratio"]
+    N --> B["[P] power_assessment.native_baseline"]
+    A["[P] 可验证会加入者与到场边界"] --> S["[P] participant scenarios"]
+    U["[U] source container 的完整玩法名称/真实 call acceptance"] -.-> S
+    B --> S
+    S --> F["[P] version-bound combat forecast"]
+    F --> E["[P] war cost + exit + EU lower bound"]
+    E --> X{"[P] 全部硬门通过?"}
+    X -- 否 --> H["[P] NO_DECLARE / REFRESH_EVIDENCE"]
+    X -- 是 --> R["[P] 提交前重验 declaration 与 epoch"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
 ## 最小 fail-closed 输入契约
 
 - [policy-design] `power_assessment` 至少必须包含：snapshot/epoch、actor/target、双方 primary force、确定会加入的
@@ -152,13 +189,25 @@ stateDiagram-v2
 
 ## 已落实的硬门与后续输入边界
 
-- [static-confirmed] 当前生产策略在任何合法声明存在时固定返回 `native_war_entry_evidence_required` 与
-  `selected_step=None`；回归测试同时给出可执行 `declare-war-*`，确认合法 command 也不能绕过该门。
-- [static-confirmed] 返回结果明确要求 `game.command.query-combat-simulation-inputs`、
-  `game.forecast.combat-monte-carlo-v1` 与 `game.command.query-war-entry-assessments`。这些 capability 当前尚未实现，
-  因而主动战争按设计保持关闭。
-- [policy-design] 后续 declaration/assessment schema 必须增加同 epoch 的 `power_assessment`、
-  `combat_forecast`、`war_cost` 与 `exit_assessment`；不能因为 payload 中恰好出现同名 partial 字段就自动解锁。
+- [static-confirmed] 当前生产策略先按既有 CB/title 稳定顺序选出首个诊断 target，再执行严格单目标
+  `query-war-entry-assessments-v1-1-<target>`。available payload 不再只作为 freshness 布尔量：策略从当前 snapshot
+  与 command history 恢复同一 `native_revision/date_raw/actor` 的完整 rows，并拒绝 stale 或 malformed history。
+- [counter-policy] 已有 assessment 的 target 按以下保守风险 tuple 升序比较：
+  `max(target_total-actor_base,0)`、native `actual_power_ratio`、actor 正 network 依赖、target 正 network 支援、
+  target total、distance。这里保留 enemy 全部 native network，却先用 actor 自有 adjusted base 衡量覆盖能力；这是
+  target 风险序，不是胜率。若当前 target 的自有 base 小于 target full total，策略只读查询下一合法 target；不会因此宣战。
+- [static-confirmed] 选中 row 会进入 `war_entry_expected_utility.native_power_component`，发布 native total margin、
+  conservative self-power margin、双向 network 风险和同一 risk key。`eu_lower_raw` 仍为 `null`，因为不同量纲的
+  title/gold/time/character loss 系数尚未校准；该 `null` 明确表示**总 EU 尚未计算**，而不是 power 观测缺失。
+- [static-confirmed] 当前生产策略仍以 `native_war_entry_evidence_required` 与 `selected_step=None` 收口；回归测试同时
+  给出可执行 `declare-war-*`，确认合法 command 不能绕过该门。返回结果要求真实 production v3 capability
+  `game.command.query-combat-simulation-inputs-v3-N`、`game.forecast.combat-monte-carlo-v1` 与 war-entry assessment。
+- [static-confirmed] `query-war-entry-assessments-v1` 的 exact ABI/contract、独立 native reader/serializer、双原生采样
+  fixture、golden payload 与 source-contract 已离线闭合；paused live 验收结论以
+  [war-declaration.md](war-declaration.md) 的最新账本为准。完整 participant/forecast/cost/exit 门仍未 ready，因而主动
+  战争按设计保持关闭。
+- [policy-design] 后续 EU 输入必须与同 epoch 的 `power_assessment` 对齐，并补齐 `combat_forecast`、`war_cost` 与
+  `exit_assessment`；不能因为 power component 已 ready 就自动解锁。
 - [policy-design] 未来解锁时应先按 target/CB/config/participant set 校验这些对象的 freshness，再把通过硬门的候选
   交给 preference 排序；stale、unsupported 或跨版本数据一律返回 `REFRESH_EVIDENCE`。
 - [policy-design] key/title-count 排序最多只能作为**已经全部通过风险门**的候选之间的次级偏好，不能提前运行。
@@ -172,6 +221,9 @@ stateDiagram-v2
 | 场景 | 预期结果 |
 |---|---|
 | [static-confirmed] 有 native declaration，但 payload 无 power/forecast/cost/exit | `native_war_entry_evidence_required`；`selected_step=None` |
+| [static-confirmed] 首选 target 有 power 且 `actor_base < target_total`，另有未评估合法 target | 同帧查询下一 target；不宣战 |
+| [static-confirmed] 多个同帧 target assessments | 按 conservative margin、native ratio 与 network 风险排序；不把 ratio 写成胜率 |
+| [static-confirmed] history assessment 的 native revision/date/actor 不同 | 丢弃该 row，不参与风险序或 EU projection |
 | [policy-design] 有 power，无 combat forecast | `NO_DECLARE` |
 | [policy-design] forecast 与 declaration 来自不同 epoch | `REFRESH_EVIDENCE` |
 | [policy-design] 原生 ratio 过门但 `p_win_lower` 不过门 | `UNSOLVED_TARGET` 或观察，不宣战 |

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
+import ctypes
+import ctypes.wintypes
 import csv
 import hashlib
 import importlib.metadata
@@ -969,6 +971,15 @@ def ck3_process_inventory() -> dict[str, object]:
     except subprocess.TimeoutExpired as error:
         raise UnsafeCleanupError("CK3 tasklist inventory timed out") from error
     if result.returncode != 0 or result.stderr.strip():
+        if _is_access_denied(result.stderr):
+            processes = _toolhelp_ck3_processes()
+            pids = [int(item["pid"]) for item in processes]
+            return {
+                "tasklist_returncode": 0,
+                "tasklist_pids": pids,
+                "wmi_pids": pids,
+                "processes": processes,
+            }
         raise UnsafeCleanupError(
             "CK3 tasklist inventory failed: "
             f"rc={result.returncode}, stderr={result.stderr.strip()!r}"
@@ -1023,6 +1034,21 @@ def ck3_process_inventory() -> dict[str, object]:
     except subprocess.TimeoutExpired as error:
         raise UnsafeCleanupError("CK3 WMI inventory timed out") from error
     if wmi_result.returncode != 0 or wmi_result.stderr.strip():
+        if _is_access_denied(wmi_result.stderr):
+            processes = _toolhelp_ck3_processes()
+            wmi_pids = [int(item["pid"]) for item in processes]
+            if sorted(tasklist_pids) != wmi_pids:
+                raise UnsafeCleanupError(
+                    "CK3 process inventories disagree: "
+                    f"tasklist={sorted(tasklist_pids)!r}, "
+                    f"toolhelp={wmi_pids!r}"
+                )
+            return {
+                "tasklist_returncode": result.returncode,
+                "tasklist_pids": sorted(tasklist_pids),
+                "wmi_pids": wmi_pids,
+                "processes": processes,
+            }
         raise UnsafeCleanupError(
             "CK3 WMI inventory failed: "
             f"rc={wmi_result.returncode}, stderr={wmi_result.stderr.strip()!r}"
@@ -1059,6 +1085,176 @@ def ck3_process_inventory() -> dict[str, object]:
         "tasklist_pids": sorted(tasklist_pids),
         "wmi_pids": wmi_pids,
         "processes": processes,
+    }
+
+
+def _is_access_denied(detail: object) -> bool:
+    return "access denied" in str(detail).casefold()
+
+
+def _toolhelp_ck3_processes() -> list[dict[str, object]]:
+    return sorted(
+        (
+            identity
+            for entry in _toolhelp_process_entries()
+            if str(entry["name"]).casefold() == "ck3.exe"
+            and (identity := _toolhelp_process_identity_from_entry(entry)) is not None
+        ),
+        key=lambda item: int(item["pid"]),
+    )
+
+
+def _toolhelp_process_identity(pid: int) -> dict[str, object] | None:
+    for entry in _toolhelp_process_entries():
+        if int(entry["pid"]) == pid:
+            return _toolhelp_process_identity_from_entry(entry)
+    return None
+
+
+def _toolhelp_process_entries() -> list[dict[str, object]]:
+    if os.name != "nt":
+        return []
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+
+    class ProcessEntry32W(ctypes.Structure):
+        _fields_ = [
+            ("dwSize", ctypes.wintypes.DWORD),
+            ("cntUsage", ctypes.wintypes.DWORD),
+            ("th32ProcessID", ctypes.wintypes.DWORD),
+            ("th32DefaultHeapID", ctypes.c_size_t),
+            ("th32ModuleID", ctypes.wintypes.DWORD),
+            ("cntThreads", ctypes.wintypes.DWORD),
+            ("th32ParentProcessID", ctypes.wintypes.DWORD),
+            ("pcPriClassBase", ctypes.wintypes.LONG),
+            ("dwFlags", ctypes.wintypes.DWORD),
+            ("szExeFile", ctypes.wintypes.WCHAR * 260),
+        ]
+
+    kernel32.CreateToolhelp32Snapshot.argtypes = [
+        ctypes.wintypes.DWORD,
+        ctypes.wintypes.DWORD,
+    ]
+    kernel32.CreateToolhelp32Snapshot.restype = ctypes.wintypes.HANDLE
+    kernel32.Process32FirstW.argtypes = [
+        ctypes.wintypes.HANDLE,
+        ctypes.POINTER(ProcessEntry32W),
+    ]
+    kernel32.Process32FirstW.restype = ctypes.wintypes.BOOL
+    kernel32.Process32NextW.argtypes = [
+        ctypes.wintypes.HANDLE,
+        ctypes.POINTER(ProcessEntry32W),
+    ]
+    kernel32.Process32NextW.restype = ctypes.wintypes.BOOL
+    kernel32.CloseHandle.argtypes = [ctypes.wintypes.HANDLE]
+    kernel32.CloseHandle.restype = ctypes.wintypes.BOOL
+
+    snapshot = kernel32.CreateToolhelp32Snapshot(0x00000002, 0)
+    if snapshot == ctypes.wintypes.HANDLE(-1).value:
+        raise UnsafeCleanupError(
+            f"Toolhelp process snapshot failed: winerror={ctypes.get_last_error()}"
+        )
+    entries: list[dict[str, object]] = []
+    try:
+        entry = ProcessEntry32W()
+        entry.dwSize = ctypes.sizeof(entry)
+        if not kernel32.Process32FirstW(snapshot, ctypes.byref(entry)):
+            raise UnsafeCleanupError(
+                "Toolhelp first process failed: "
+                f"winerror={ctypes.get_last_error()}"
+            )
+        while True:
+            entries.append(
+                {
+                    "pid": int(entry.th32ProcessID),
+                    "parent_pid": int(entry.th32ParentProcessID),
+                    "name": str(entry.szExeFile),
+                }
+            )
+            if not kernel32.Process32NextW(snapshot, ctypes.byref(entry)):
+                error = ctypes.get_last_error()
+                if error != 18:  # ERROR_NO_MORE_FILES
+                    raise UnsafeCleanupError(
+                        f"Toolhelp next process failed: winerror={error}"
+                    )
+                break
+    finally:
+        kernel32.CloseHandle(snapshot)
+    return entries
+
+
+def _toolhelp_process_identity_from_entry(
+    entry: dict[str, object],
+) -> dict[str, object]:
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.OpenProcess.argtypes = [
+        ctypes.wintypes.DWORD,
+        ctypes.wintypes.BOOL,
+        ctypes.wintypes.DWORD,
+    ]
+    kernel32.OpenProcess.restype = ctypes.wintypes.HANDLE
+    kernel32.QueryFullProcessImageNameW.argtypes = [
+        ctypes.wintypes.HANDLE,
+        ctypes.wintypes.DWORD,
+        ctypes.wintypes.LPWSTR,
+        ctypes.POINTER(ctypes.wintypes.DWORD),
+    ]
+    kernel32.QueryFullProcessImageNameW.restype = ctypes.wintypes.BOOL
+    kernel32.GetProcessTimes.argtypes = [
+        ctypes.wintypes.HANDLE,
+        ctypes.POINTER(ctypes.wintypes.FILETIME),
+        ctypes.POINTER(ctypes.wintypes.FILETIME),
+        ctypes.POINTER(ctypes.wintypes.FILETIME),
+        ctypes.POINTER(ctypes.wintypes.FILETIME),
+    ]
+    kernel32.GetProcessTimes.restype = ctypes.wintypes.BOOL
+    kernel32.CloseHandle.argtypes = [ctypes.wintypes.HANDLE]
+    kernel32.CloseHandle.restype = ctypes.wintypes.BOOL
+
+    pid = int(entry["pid"])
+    handle = kernel32.OpenProcess(0x00001000, False, pid)
+    if not handle:
+        raise UnsafeCleanupError(
+            f"Toolhelp process {pid} could not be opened: "
+            f"winerror={ctypes.get_last_error()}"
+        )
+    try:
+        path_buffer = ctypes.create_unicode_buffer(32768)
+        path_length = ctypes.wintypes.DWORD(len(path_buffer))
+        if not kernel32.QueryFullProcessImageNameW(
+            handle, 0, path_buffer, ctypes.byref(path_length)
+        ):
+            raise UnsafeCleanupError(
+                f"Toolhelp process {pid} image query failed: "
+                f"winerror={ctypes.get_last_error()}"
+            )
+        creation = ctypes.wintypes.FILETIME()
+        exit_time = ctypes.wintypes.FILETIME()
+        kernel_time = ctypes.wintypes.FILETIME()
+        user_time = ctypes.wintypes.FILETIME()
+        if not kernel32.GetProcessTimes(
+            handle,
+            ctypes.byref(creation),
+            ctypes.byref(exit_time),
+            ctypes.byref(kernel_time),
+            ctypes.byref(user_time),
+        ):
+            raise UnsafeCleanupError(
+                f"Toolhelp process {pid} time query failed: "
+                f"winerror={ctypes.get_last_error()}"
+            )
+    finally:
+        kernel32.CloseHandle(handle)
+    ticks = (int(creation.dwHighDateTime) << 32) | int(creation.dwLowDateTime)
+    unix_ticks = ticks - 116_444_736_000_000_000
+    seconds, fractional = divmod(unix_ticks, 10_000_000)
+    timestamp = datetime.fromtimestamp(seconds, timezone.utc)
+    return {
+        "pid": pid,
+        "parent_pid": int(entry["parent_pid"]),
+        "name": str(entry["name"]),
+        "executable": path_buffer.value,
+        "creation_date": timestamp.strftime("%Y%m%d%H%M%S")
+        + f".{fractional // 10:06d}+000",
     }
 
 

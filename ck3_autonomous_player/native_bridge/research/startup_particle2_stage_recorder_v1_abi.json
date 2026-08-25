@@ -1,0 +1,147 @@
+{
+  "schema": "xar.ck3.startup_particle2_stage_recorder_v1.abi",
+  "fixture_status": "exact-build static ABI, deterministic offline execution, and bounded live CK3 read-only stage sampling",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "installed_by_default": false,
+  "activation": {
+    "cmake_option": "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1",
+    "default": "OFF",
+    "mode": "explicit exact-build no-suppression diagnostic",
+    "startup_failure_containment_enabled": false,
+    "containment_mutually_exclusive": true
+  },
+  "admission": {
+    "exact_build_admitted": true,
+    "primary_thread_suspended_proven": true,
+    "unsupported_production_overrides_rejected": true
+  },
+  "factory": {
+    "begin_rva": "0x3A866D0",
+    "end_rva": "0x3A86921",
+    "has_calls_in_generated_stubs": false,
+    "preserves_native_return_and_cleanup_paths": true
+  },
+  "source_lookup": {
+    "patch_rva": "0x3A86769",
+    "healthy_rva": "0x3A8677A",
+    "null_rva": "0x3A8690C",
+    "patch_bytes": 17,
+    "stub_bytes": 56,
+    "patch_anchor_hex": "488B4D774885C975084C8937E992010000",
+    "diagnostic": "source_lookup_null_count",
+    "native_flow": "nonnull jumps to 0x3A8677A; null increments then replays output clear and jumps to 0x3A8690C"
+  },
+  "variant_lookup": {
+    "predicate_rva": "0x3A867AB",
+    "patch_rva": "0x3A867B0",
+    "healthy_rva": "0x3A867C0",
+    "null_rva": "0x3A868DD",
+    "patch_bytes": 16,
+    "stub_bytes": 38,
+    "patch_anchor_hex": "4C8937C744243003000000E91D010000",
+    "diagnostic": "variant_lookup_null_count",
+    "native_flow": "native predicate bypasses patch when nonnull; null increments then replays the original block and jumps to 0x3A868DD"
+  },
+  "backend_creation": {
+    "predicate_rva": "0x3A867E5",
+    "patch_rva": "0x3A867EC",
+    "healthy_rva": "0x3A86806",
+    "null_rva": "0x3A867FB",
+    "patch_bytes": 15,
+    "stub_bytes": 42,
+    "patch_anchor_hex": "4C8937C744243003000000488D4DB7",
+    "diagnostic": "backend_creation_null_count",
+    "native_flow": "native predicate bypasses patch when nonnull; null increments then replays the original block and jumps to 0x3A867FB"
+  },
+  "instrumentation": {
+    "combined_stub_bytes": 136,
+    "patch_encoding": "mov r11, imm64; jmp r11; nop fill",
+    "counter_encoding": "lock inc qword ptr [r11]",
+    "dispatch_allocations": 0,
+    "dispatch_logs": 0,
+    "suppresses_native_work": false,
+    "redirects_native_outcome": false
+  },
+  "installation": {
+    "stub_allocation": "one pre-resume RW allocation finalized RX",
+    "target_writes": "three exact-identity checked transactions",
+    "restore_order": ["backend_creation", "variant_lookup", "source_lookup"],
+    "transactional_rollback": "a recoverable failure restores all earlier patches before releasing ownership",
+    "unproven rollback": "the covered installation-time path retains installed state, conservative patch mask, stable counter state, global ownership, and RX stub storage",
+    "quiescent uninstall retry": "after that covered installation-time rollback, re-flushes byte-identical original code and restores the captured original executable protection before releasing retained ownership"
+  },
+  "live_observation": {
+    "date": "2026-08-25",
+    "claim": "bounded exact-build startup diagnostic only",
+    "checkpoint": {
+      "bytes": 66594755,
+      "sha256": "5BA2136911EAD0CAF1F7D2F3DE02EAFBD8039861C46F01F35F698B3B5CFFFC5F"
+    },
+    "enabled_artifacts": {
+      "bridge_dll_bytes": 586240,
+      "bridge_dll_sha256": "DD0833B66F8EADE4564BA83C23A26752D55A1FCF3D2D52BCE56E9A1CC127CB36",
+      "injector_sha256": "17CD90A44BE641AC538F6431AD6FC258376349A06F41EB36974643632E89F824",
+      "host_sha256": "ED68911826C76ECB7055AC71522994B93C45414B323FA463E901CB735F877F77"
+    },
+    "default_off_artifact": {
+      "bridge_dll_bytes": 578048,
+      "bridge_dll_sha256": "D48A45CA043F91A2E0927BC620694EF854B946A8D6A267B68E580F9696C48702",
+      "prepare_export_installer_call": false
+    },
+    "attempts": [
+      {
+        "exit_reason": "timeout",
+        "elapsed_seconds": 91.685,
+        "counter_sample": false
+      },
+      {
+        "exit_reason": "timeout",
+        "elapsed_seconds": 62.287,
+        "counter_sample": false
+      },
+      {
+        "pid": 62888,
+        "exit_reason": "managed_stop",
+        "elapsed_seconds": 72.668,
+        "counter_sample": true
+      }
+    ],
+    "read_process_memory_samples": {
+      "installed": true,
+      "patch_mask": 7,
+      "failure": 0,
+      "module_and_targets_match_frozen_rvas": true,
+      "absolute_jump_bytes_match": true,
+      "first": {
+        "source_lookup_null_count": 0,
+        "variant_lookup_null_count": 20874,
+        "backend_creation_null_count": 0
+      },
+      "last_changed": {
+        "relative_seconds": 13,
+        "source_lookup_null_count": 0,
+        "variant_lookup_null_count": 21071,
+        "backend_creation_null_count": 0
+      },
+      "variant_delta": 197,
+      "counter_unit": "null-branch executions, not unique variants, resources, or errors",
+      "zero_counter_boundary": "no corresponding null outcome observed while active; does not mean the stage was not called"
+    },
+    "postflight": {
+      "new_crash_bundles": 0,
+      "process_and_control_inventory_empty": true,
+      "unsafe_cleanup_marker": false,
+      "checkpoint_and_last_save_unchanged": true,
+      "driver_state_unchanged": true
+    },
+    "evidence_boundary": [
+      "aggregate counters do not identify the earlier ParticleColor request",
+      "the three patches do not cover the earlier graphics-global-null factory exit",
+      "no map-ready or mailbox milestone was observed",
+      "later samples followed shader-cache population by the first attempt",
+      "each null branch adds a locked atomic RMW and therefore nonzero timing and cache-line perturbation",
+      "process survival does not prove the former startup fault resolved"
+    ]
+  }
+}

@@ -382,6 +382,183 @@ def _war(
     }
 
 
+def _termination_options(
+    war_id: int,
+    *,
+    score: int = 41,
+    surrender_available: bool = True,
+    white_peace_available: bool = True,
+    white_peace_acceptance_raw: int = -2_900_000,
+    casus_belli_database_index: int = 17,
+    casus_belli_key: str = "county_conquest_cb",
+) -> dict[str, object]:
+    def option(
+        outcome: str, available: bool, *, acceptance_raw: int = -2_900_000
+    ) -> dict[str, object]:
+        return {
+            "outcome": outcome,
+            "hostage_variant": "none",
+            "context_constructed": True,
+            "native_validator_passed": True if available else False,
+            "available": available,
+            "terms_observable": False,
+            "terms": {
+                "status": "unavailable",
+                "reason": "cb_specific_terms_not_observable",
+            },
+            "ai_acceptance_observable": True,
+            "ai_acceptance": {"raw": acceptance_raw, "scale": 100_000},
+            "auto_accept_observable": True,
+            "auto_accept": outcome == "attacker_defeat",
+        }
+
+    return {
+        "war_id": war_id,
+        "player_side": "attacker",
+        "player_is_primary_war_leader": True,
+        "player_relative_war_score": score,
+        "war_duration_days": 203,
+        "active_casus_belli_present": True,
+        "active_casus_belli_identity": {
+            "database_index": casus_belli_database_index,
+            "canonical_key": casus_belli_key,
+        },
+        "cb_allows_white_peace": True,
+        "absolute_war_scores_observable": True,
+        "attacker_war_score": score,
+        "defender_war_score": -score,
+        "war_score_breakdown": {
+            "imprisonment": 0,
+            "battles": -4,
+            "occupation": 45,
+            "ticking": 0,
+        },
+        "options": {
+            "surrender": option("attacker_defeat", surrender_available),
+            "white_peace": option(
+                "white_peace",
+                white_peace_available,
+                acceptance_raw=white_peace_acceptance_raw,
+            ),
+            "victory": option("attacker_victory", True),
+        },
+    }
+
+
+def _termination_terms(
+    war_id: int,
+    *,
+    status: str = "available",
+) -> dict[str, object]:
+    common: dict[str, object] = {
+        "schema_version": 1,
+        "status": status,
+        "war_id": war_id,
+        "casus_belli": {
+            "database_index": 0 if status == "available" else 4,
+            "canonical_key": (
+                "claim_cb" if status == "available" else "county_conquest_cb"
+            ),
+        },
+        "supported_slice": "claim_cb_claim_disposition",
+        "provenance": {
+            "game_version": "1.19.0.6",
+            "executable_sha256": (
+                "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+            ),
+            "native_reader": "CWar+0x270/+0x290;0x28B1AA0",
+            "present_claim_lifecycle": (
+                "present_only_vtable_slot_0_delete_flags_0"
+            ),
+            "claim_script_sha256": (
+                "D9AA37BDC45F81B4F6185B2697A3EBD09404084EA0D3CF77BBE3C1D2C962E8B1"
+            ),
+        },
+    }
+    if status == "unsupported":
+        return {
+            **common,
+            "reason": "casus_belli_not_claim_cb",
+            "readiness": {"ready": False},
+        }
+    return {
+        **common,
+        "claimant_character_id": 29_829,
+        "target_title_ids": [2_388],
+        "claims": [
+            {
+                "title_id": 2_388,
+                "present": True,
+                "strong": True,
+                "implicit": False,
+                "state": "strong_explicit",
+            }
+        ],
+        "outcomes": {
+            "attacker_victory": {
+                "declared_title_disposition": (
+                    "transfer_to_claimant_via_conquest_claim"
+                ),
+                "claim_disposition": "resolve_with_add_claim_on_loss",
+            },
+            "white_peace": {
+                "declared_title_disposition": "unchanged",
+                "claim_disposition": "retain_and_strengthen_weak",
+            },
+            "attacker_defeat": {
+                "declared_title_disposition": "unchanged",
+                "claim_disposition": "remove_declared_target_claims",
+            },
+        },
+        "readiness": {
+            "identity_ready": True,
+            "targets_ready": True,
+            "claim_rows_ready": True,
+            "claim_disposition_ready": True,
+            "ready": True,
+        },
+    }
+
+
+def _termination_exit_terms_v2() -> dict[str, object]:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "war_termination_exit_terms_v2_synthetic.json"
+    )
+    return json.loads(fixture.read_text(encoding="utf-8"))
+
+
+def _army_strength(
+    army_id: int,
+    role: str,
+    war_ids: list[int],
+    *,
+    status: str = "available",
+    current: int = 1_200,
+    maximum: int = 1_500,
+    regiment_count: int = 3,
+    base_power_raw: int = 180_000_000,
+) -> dict[str, object]:
+    available = status == "available"
+    return {
+        "status": status,
+        "army_id": army_id,
+        "native_carmy_id": army_id + 1_000,
+        "scope_role": role,
+        "war_ids": war_ids,
+        "regiment_count": regiment_count if available else None,
+        "current_soldiers": current if available else None,
+        "maximum_soldiers": maximum if available else None,
+        "ai_base_power_raw": base_power_raw if available else None,
+        "ai_base_power_scale": 100_000,
+        "unavailable_reason": (
+            None if available else "regiment_generation_mismatch"
+        ),
+    }
+
+
 class NativeHeadlessGameplayDriverTests(unittest.TestCase):
     def _run_life_advance_speed_fixture(
         self,
@@ -4783,6 +4960,585 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(declared["war_action"]["status"], "war_started")
         self.assertEqual(declared["war_action"]["target_character_id"], 808)
         self.assertEqual(driver.take_snapshot()["declarable_wars"], [])
+
+    def test_army_strength_query_is_atomic_cached_and_mcp_subset_filtered(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        war_id = 16_777_290
+        player = _army(81, controllable=True)
+        ally = _army(82, controllable=False)
+        enemy = _army(91, controllable=False)
+        war = _war(
+            war_id=war_id,
+            allied_armies=[player, ally],
+            enemy_armies=[enemy],
+        )
+        full_rows = [
+            _army_strength(81, "player", [war_id]),
+            _army_strength(82, "active_war_ally", [war_id]),
+            _army_strength(
+                91,
+                "active_war_enemy",
+                [war_id],
+                status="unavailable",
+            ),
+        ]
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-army-strengths-v1",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[war],
+                player_armies=[player],
+            )
+        )
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            ["query-army-strengths-v1"],
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "partial",
+                        "query_sequence": 7,
+                        "army_strengths": full_rows,
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        starting = driver.take_snapshot()
+        queried = driver.execute_step(
+            "query-army-strengths-v1",
+            expected_revision=int(starting["revision"]),
+        )
+        self.assertEqual(queried["status"], "partial")
+        self.assertEqual(queried["queried_snapshot_id"], "native:40")
+        cached = driver.take_snapshot()
+        self.assertEqual(cached["army_strengths_status"], "partial")
+        self.assertEqual(cached["army_strengths_query_sequence"], 7)
+        self.assertEqual(
+            [row["army_id"] for row in cached["army_strengths"]],
+            [81, 82, 91],
+        )
+
+        service = GameplayBridgeService(driver)
+        subset = service.query_army_strengths(
+            [91, 81], expected_revision=int(cached["revision"])
+        )
+        self.assertEqual(subset["status"], "partial")
+        self.assertEqual(subset["scope_status"], "partial")
+        self.assertEqual(subset["scope_army_ids"], [81, 82, 91])
+        self.assertEqual(
+            [row["army_id"] for row in subset["army_strengths"]],
+            [91, 81],
+        )
+        available_subset = service.query_army_strengths(
+            [81], expected_revision=int(cached["revision"])
+        )
+        self.assertEqual(available_subset["status"], "available")
+        self.assertEqual(available_subset["scope_status"], "partial")
+        self.assertEqual(
+            [row["army_id"] for row in available_subset["army_strengths"]],
+            [81],
+        )
+
+        endpoint.publish(
+            _snapshot(
+                41,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[war],
+                player_armies=[player],
+            )
+        )
+        changed = driver.take_snapshot()
+        self.assertEqual(changed["army_strengths"], [])
+        self.assertIsNone(changed["army_strengths_status"])
+        endpoint.publish(
+            _snapshot(
+                42,
+                paused=False,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[war],
+                player_armies=[player],
+            )
+        )
+        self.assertNotIn(
+            "query-army-strengths-v1",
+            driver.capabilities()["action_steps"],
+        )
+
+    def test_army_strength_service_rejects_empty_duplicate_and_out_of_scope(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        player = _army(81, controllable=True)
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-army-strengths-v1",
+            )
+        )
+        endpoint.publish(_snapshot(1, player_armies=[player], active_wars=[]))
+        service = GameplayBridgeService(driver)
+
+        for army_ids, error_type in (
+            ([], ValueError),
+            ([81, 81], ValueError),
+            ([91], BridgeUnavailableError),
+        ):
+            with self.subTest(army_ids=army_ids):
+                with self.assertRaises(error_type):
+                    service.query_army_strengths(army_ids)
+        self.assertFalse(
+            any(
+                frame.get("type") == "execute_step"
+                for frame in endpoint.frames
+            )
+        )
+
+    def test_war_termination_query_caches_exact_frame_and_gates_actions(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        war_id = 16_777_290
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-options-N",
+                "game.command.query-war-termination-terms-v1-N",
+                "game.command.surrender-war-N",
+                "game.command.offer-white-peace-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[_war(war_id=war_id, score=41)],
+            )
+        )
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            [
+                "query-war-termination-options-16777290",
+                "query-war-termination-terms-v1-16777290",
+            ],
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            is_terms = str(frame["step"]).startswith(
+                "query-war-termination-terms-v1-"
+            )
+            result: dict[str, object] = {
+                "step": frame["step"],
+                "accepted": True,
+                "status": "available",
+                "query_sequence": 12 if is_terms else 9,
+            }
+            if is_terms:
+                result["war_termination_terms"] = _termination_terms(war_id)
+            else:
+                result["war_termination_options"] = _termination_options(
+                    war_id,
+                    white_peace_acceptance_raw=1_100_000,
+                    casus_belli_database_index=0,
+                    casus_belli_key="claim_cb",
+                )
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+
+        endpoint.send_hook = answer
+        queried = driver.execute_step(
+            "query-war-termination-options-16777290",
+            expected_revision=int(driver.take_snapshot()["revision"]),
+        )
+        self.assertEqual(queried["query_sequence"], 9)
+        self.assertFalse(
+            queried["war_termination_options"]["options"]["surrender"][
+                "terms_observable"
+            ]
+        )
+        self.assertEqual(
+            queried["war_termination_options"]["options"]["surrender"][
+                "ai_acceptance"
+            ],
+            {"raw": -2_900_000, "scale": 100_000},
+        )
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            [
+                "query-war-termination-options-16777290",
+                "query-war-termination-terms-v1-16777290",
+            ],
+        )
+        driver.execute_step("query-war-termination-terms-v1-16777290")
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            [
+                "query-war-termination-options-16777290",
+                "query-war-termination-terms-v1-16777290",
+            ],
+        )
+        self.assertFalse(
+            any(
+                step.startswith("offer-white-peace-")
+                for step in driver.capabilities()["action_steps"]
+            )
+        )
+        service = GameplayBridgeService(driver)
+        with self.assertRaisesRegex(
+            BridgeUnavailableError, "structured_terms_v2"
+        ):
+            service.execute_step("offer-white-peace-16777290")
+        with self.assertRaisesRegex(
+            BridgeUnavailableError, "structured_terms_v2"
+        ):
+            service.execute_step("surrender-war-16777290")
+        self.assertFalse(
+            any(
+                frame.get("type") == "execute_step"
+                and frame.get("step")
+                in {
+                    "offer-white-peace-16777290",
+                    "surrender-war-16777290",
+                }
+                for frame in endpoint.frames
+            )
+        )
+        cached = driver.take_snapshot()["war_termination_options"]
+        self.assertEqual(cached[0]["war_id"], war_id)
+        self.assertEqual(cached[0]["query_sequence"], 9)
+
+        # A new generation can reuse the low object slot.  It must not inherit
+        # the old full-generation WarID's context or validator result.
+        replacement_war_id = war_id + (1 << 24)
+        endpoint.publish(
+            _snapshot(
+                41,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[_war(war_id=replacement_war_id, score=41)],
+            )
+        )
+        self.assertEqual(driver.take_snapshot()["war_termination_options"], [])
+        self.assertEqual(driver.take_snapshot()["war_termination_terms"], [])
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            [
+                f"query-war-termination-options-{replacement_war_id}",
+                f"query-war-termination-terms-v1-{replacement_war_id}",
+            ],
+        )
+
+    def test_partial_termination_capabilities_never_advertise_an_action(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.surrender-war-N",
+                "game.command.offer-white-peace-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(40, active_wars=[_war(war_id=16_777_290, score=41)])
+        )
+
+        action_steps = driver.capabilities()["action_steps"]
+
+        self.assertNotIn("surrender-war-N", action_steps)
+        self.assertNotIn("offer-white-peace-N", action_steps)
+        self.assertFalse(
+            any(step.startswith("surrender-war-") for step in action_steps)
+        )
+        self.assertFalse(
+            any(
+                step.startswith("offer-white-peace-")
+                for step in action_steps
+            )
+        )
+
+    def test_claim_terms_query_is_same_frame_cached_and_typed(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        war_id = 16_777_290
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-terms-v1-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[_war(war_id=war_id, targeted_title_ids=[2_388])],
+            )
+        )
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            ["query-war-termination-terms-v1-16777290"],
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "available",
+                        "query_sequence": 12,
+                        "war_termination_terms": _termination_terms(war_id),
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        revision = int(driver.take_snapshot()["revision"])
+        result = GameplayBridgeService(driver).query_war_termination_terms(
+            war_id, expected_revision=revision
+        )
+        self.assertEqual(result["query_sequence"], 12)
+        self.assertEqual(
+            result["war_termination_terms"]["claims"][0]["state"],
+            "strong_explicit",
+        )
+        cached = driver.take_snapshot()["war_termination_terms"]
+        self.assertEqual(len(cached), 1)
+        self.assertEqual(cached[0]["queried_revision"], revision)
+        self.assertEqual(cached[0]["claimant_character_id"], 29_829)
+
+        endpoint.publish(
+            _snapshot(
+                41,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[_war(war_id=war_id, targeted_title_ids=[2_388])],
+            )
+        )
+        self.assertEqual(driver.take_snapshot()["war_termination_terms"], [])
+
+        def answer_unsupported(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "unsupported",
+                        "query_sequence": 13,
+                        "war_termination_terms": _termination_terms(
+                            war_id, status="unsupported"
+                        ),
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer_unsupported
+        unsupported = driver.execute_step(
+            "query-war-termination-terms-v1-16777290"
+        )
+        self.assertEqual(unsupported["status"], "unsupported")
+        self.assertNotIn(
+            "claimant_character_id", unsupported["war_termination_terms"]
+        )
+
+    def test_unsupported_claim_terms_keep_termination_commands_frozen(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        war_id = 16_777_290
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-options-N",
+                "game.command.query-war-termination-terms-v1-N",
+                "game.command.surrender-war-N",
+                "game.command.offer-white-peace-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[_war(war_id=war_id, score=41)],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            is_terms = str(frame["step"]).startswith(
+                "query-war-termination-terms-v1-"
+            )
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "unsupported" if is_terms else "available",
+                        "query_sequence": 8 if is_terms else 7,
+                        **(
+                            {
+                                "war_termination_terms": _termination_terms(
+                                    war_id, status="unsupported"
+                                )
+                            }
+                            if is_terms
+                            else {
+                                "war_termination_options": (
+                                    _termination_options(
+                                        war_id,
+                                        casus_belli_database_index=0,
+                                        casus_belli_key="claim_cb",
+                                    )
+                                )
+                            }
+                        ),
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        driver.execute_step("query-war-termination-options-16777290")
+        driver.execute_step("query-war-termination-terms-v1-16777290")
+        action_steps = driver.capabilities()["action_steps"]
+        self.assertFalse(
+            any(
+                step.startswith(("surrender-war-", "offer-white-peace-"))
+                for step in action_steps
+            )
+        )
+        with self.assertRaisesRegex(
+            BridgeUnavailableError, "structured_terms_v2"
+        ):
+            driver.execute_step("surrender-war-16777290")
+        self.assertFalse(
+            any(
+                frame.get("type") == "execute_step"
+                and frame.get("step") == "surrender-war-16777290"
+                for frame in endpoint.frames
+            )
+        )
+
+    def test_exit_terms_v2_is_suppressed_even_if_stale_dll_advertises_it(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        exit_terms = _termination_exit_terms_v2()
+        war_id = int(exit_terms["war_id"])
+        attacker_id = int(exit_terms["primary_attacker_character_id"])
+        defender_id = int(exit_terms["primary_defender_character_id"])
+        war = _war(
+            war_id=war_id,
+            targeted_title_ids=list(exit_terms["target_title_ids"]),
+        )
+        war["primary_opponent_character_id"] = defender_id
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-exit-terms-v2-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                played_character={"character_id": attacker_id, "alive": True},
+                active_wars=[war],
+            )
+        )
+        query_step = "query-war-termination-exit-terms-v2-" + str(war_id)
+        capabilities = driver.capabilities()
+        self.assertFalse(
+            capabilities["war_termination_exit_terms_query_supported"]
+        )
+        self.assertNotIn(query_step, capabilities["action_steps"])
+        with self.assertRaisesRegex(
+            UnsupportedStepError, "disabled.*RVA 0x334C668"
+        ):
+            driver.execute_step(query_step)
+        with self.assertRaisesRegex(BridgeUnavailableError, "disabled"):
+            GameplayBridgeService(driver).query_war_termination_exit_terms(
+                war_id, expected_revision=40
+            )
+        self.assertFalse(
+            any(frame.get("type") == "execute_step" for frame in endpoint.frames)
+        )
+        self.assertEqual(
+            driver.take_snapshot()["war_termination_exit_terms"], []
+        )
 
     def test_native_marriage_query_expands_and_submits_exact_choice(self) -> None:
         endpoint = FakeEndpoint()

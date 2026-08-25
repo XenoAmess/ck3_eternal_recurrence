@@ -40,6 +40,7 @@ from xar_autoplayer.process_watchdog import (  # noqa: E402
     _fallback_children,
     _matches,
     _parent_matches,
+    _query_process,
     _terminate_authenticated,
     _unlink_if_owned,
 )
@@ -858,15 +859,62 @@ class TrackedShutdownTests(unittest.TestCase):
                 "unknown",
             )
 
-    def test_tasklist_access_denied_is_not_an_empty_inventory(self) -> None:
+    def test_runtime_process_identity_access_denied_uses_toolhelp(self) -> None:
+        service = mock.Mock()
+        service.ExecQuery.side_effect = OSError("Access denied")
+        identity = {
+            "pid": 123,
+            "parent_pid": 456,
+            "name": "ck3.exe",
+            "executable": "C:/game/ck3.exe",
+            "creation_date": "created",
+        }
+        with mock.patch(
+            "win32com.client.GetObject", return_value=service
+        ), mock.patch(
+            "xar_autoplayer.runtime._toolhelp_process_identity",
+            return_value=identity,
+        ):
+            self.assertEqual(
+                _process_identity(123), {**identity, "command_line": ""}
+            )
+
+    def test_tasklist_access_denied_uses_toolhelp_inventory(self) -> None:
         denied = subprocess.CompletedProcess(
             args=["tasklist"],
             returncode=1,
             stdout="",
             stderr="ERROR: Access denied",
         )
+        process = {
+            "pid": 123,
+            "parent_pid": 456,
+            "name": "ck3.exe",
+            "executable": "C:/game/ck3.exe",
+            "creation_date": "created",
+        }
         with mock.patch(
             "xar_autoplayer.environment.subprocess.run", return_value=denied
+        ), mock.patch(
+            "xar_autoplayer.environment._toolhelp_ck3_processes",
+            return_value=[process],
+        ):
+            self.assertEqual(
+                ck3_process_inventory(),
+                {
+                    "tasklist_returncode": 0,
+                    "tasklist_pids": [123],
+                    "wmi_pids": [123],
+                    "processes": [process],
+                },
+            )
+
+    def test_tasklist_non_access_failure_remains_fail_closed(self) -> None:
+        failed = subprocess.CompletedProcess(
+            args=["tasklist"], returncode=1, stdout="", stderr="RPC failure"
+        )
+        with mock.patch(
+            "xar_autoplayer.environment.subprocess.run", return_value=failed
         ):
             with self.assertRaisesRegex(AgentError, "tasklist inventory failed"):
                 ck3_process_inventory()
@@ -888,7 +936,7 @@ class TrackedShutdownTests(unittest.TestCase):
             with self.assertRaisesRegex(AgentError, "inventories disagree"):
                 ck3_process_inventory()
 
-    def test_wmi_failure_is_not_an_empty_inventory(self) -> None:
+    def test_wmi_access_denied_uses_cross_checked_toolhelp_inventory(self) -> None:
         tasklist = subprocess.CompletedProcess(
             args=["tasklist"],
             returncode=0,
@@ -897,6 +945,33 @@ class TrackedShutdownTests(unittest.TestCase):
         )
         wmi = subprocess.CompletedProcess(
             args=["powershell"], returncode=1, stdout="", stderr="Access denied"
+        )
+        with mock.patch(
+            "xar_autoplayer.environment.subprocess.run",
+            side_effect=[tasklist, wmi],
+        ), mock.patch(
+            "xar_autoplayer.environment._toolhelp_ck3_processes",
+            return_value=[],
+        ):
+            self.assertEqual(
+                ck3_process_inventory(),
+                {
+                    "tasklist_returncode": 0,
+                    "tasklist_pids": [],
+                    "wmi_pids": [],
+                    "processes": [],
+                },
+            )
+
+    def test_wmi_non_access_failure_remains_fail_closed(self) -> None:
+        tasklist = subprocess.CompletedProcess(
+            args=["tasklist"],
+            returncode=0,
+            stdout="INFO: No tasks are running which match the specified criteria.\n",
+            stderr="",
+        )
+        wmi = subprocess.CompletedProcess(
+            args=["powershell"], returncode=1, stdout="", stderr="RPC failure"
         )
         with mock.patch(
             "xar_autoplayer.environment.subprocess.run",
@@ -919,6 +994,53 @@ class TrackedShutdownTests(unittest.TestCase):
             _fallback_children(service, 456, "C:/game/ck3.exe"),
             [(123, "created")],
         )
+
+    def test_watchdog_query_access_denied_uses_toolhelp_identity(self) -> None:
+        service = mock.Mock()
+        service.ExecQuery.side_effect = OSError("Access denied")
+        identity = {
+            "pid": 123,
+            "parent_pid": 456,
+            "name": "ck3.exe",
+            "executable": "C:/game/ck3.exe",
+            "creation_date": "created",
+        }
+        with mock.patch(
+            "xar_autoplayer.process_watchdog._toolhelp_process_identity",
+            return_value=identity,
+        ):
+            row = _query_process(service, 123)
+        self.assertEqual(row.ProcessId, 123)
+        self.assertEqual(row.ParentProcessId, 456)
+        self.assertEqual(row.CreationDate, "created")
+
+    def test_watchdog_children_access_denied_use_toolhelp(self) -> None:
+        service = mock.Mock()
+        service.ExecQuery.side_effect = OSError("Access denied")
+        identities = [
+            {
+                "pid": 123,
+                "parent_pid": 456,
+                "name": "ck3.exe",
+                "executable": "C:/game/ck3.exe",
+                "creation_date": "created",
+            },
+            {
+                "pid": 789,
+                "parent_pid": 999,
+                "name": "ck3.exe",
+                "executable": "C:/game/ck3.exe",
+                "creation_date": "other",
+            },
+        ]
+        with mock.patch(
+            "xar_autoplayer.process_watchdog._toolhelp_ck3_processes",
+            return_value=identities,
+        ):
+            self.assertEqual(
+                _fallback_children(service, 456, "C:/game/ck3.exe"),
+                [(123, "created")],
+            )
 
     def test_watchdog_rejects_same_parent_ck3_with_different_path(self) -> None:
         row = SimpleNamespace(

@@ -1,0 +1,556 @@
+{
+  "schema_version": 1,
+  "contract": "prewar-scope-v1-static-research",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "advertised": false,
+  "production_wired": false,
+  "live_validated": false,
+  "execution_boundary": {
+    "research_mode": "static_read_only",
+    "ck3_started_or_controlled": false,
+    "permitted_first_reader": "passive_field_mirror_only",
+    "forbidden_calls": [
+      "0x1088AA0_mutating_declare_preview_refresh",
+      "0x1087C80_mutating_command_materializer",
+      "0xFE5190_and_0x973E00_command_construction_submit",
+      "0x2C3FA20_interaction_executor",
+      "0x9A67B0_subject_contract_database_accessor_can_lazy_initialize",
+      "0x2255360_native_contract_predicate_not_called_by_passive_reader",
+      "0x2253C40_native_term_comparator_not_called_by_passive_reader",
+      "0x25FD2C0_world_writing_primary_collision_path",
+      "0x27A1EC0_mutating_forced_contract_stage",
+      "0x2225FB0_mutating_participant_append_and_dispatch",
+      "0x27A2210_cwar_builder",
+      "0x27FB7C0_contact_combat_constructor"
+    ],
+    "paused_required_for_live_reader": true,
+    "two_complete_samples_must_match": true
+  },
+  "type_boundary": {
+    "preview_cwar_exists": false,
+    "declare_window": {
+      "rtti_type_descriptor_rva": "0x5236048",
+      "primary_vtable_rva": "0x411DE90",
+      "object_size": "0x1418",
+      "constructor_rva": "0x10849A0",
+      "deleting_destructor_rva": "0x10852E0",
+      "core_destructor_rva": "0x1085320"
+    },
+    "war_declaration_payload": {
+      "rtti_type_descriptor_rva": "0x5236020",
+      "complete_object_locator_rva": "0x46A0FD8",
+      "primary_vtable_rva": "0x411DAA0",
+      "object_size": "0x30",
+      "kind": "CWarDeclaration CSpecialInteraction payload; command-bound but not a CWar",
+      "default_factory_rva": "0x10A42E0",
+      "copy_factory_rva": "0x10A4220",
+      "factory_registration_rva": "0x14BFC0",
+      "factory_registry_index": 13
+    },
+    "war_overview_window": {
+      "rtti_type_descriptor_rva": "0x5210C20",
+      "primary_vtable_rva": "0x4108DF0",
+      "selected_existing_war_reader_rva": "0xF54D90",
+      "boundary": "existing-war UI only; its +0x1298 WarID meaning must never be applied to CDeclareWarInteractionWindow"
+    },
+    "declare_plus_0x1298": "unrelated CDeclare-owned field object; not a WarID and not a preview CWar"
+  },
+  "ownership_and_root": {
+    "global_owner_slot_rva": "0x570F7B8",
+    "native_accessor_evidence_rva": "0xAA43C0",
+    "steps": [
+      {
+        "operation": "owner = *(module+0x570F7B8)",
+        "validation": "nonnull"
+      },
+      {
+        "operation": "idler = *(owner+0x10)",
+        "type": "CIdlerGfxBase* adjusted to CIngameInterfaceIdlerGfx*",
+        "validation": "vtable == module+0x40B1D30",
+        "rtti": "CIngameInterfaceIdlerGfx",
+        "pmd_mdisp": 0
+      },
+      {
+        "operation": "handler = *(idler+0x88)",
+        "type": "CIngameInterfaceHandler*",
+        "validation": "vtable == module+0x40AF630"
+      },
+      {
+        "operation": "declare = *(handler+0x120)",
+        "type": "CDeclareWarInteractionWindow*",
+        "validation": "vtable == module+0x411DE90"
+      }
+    ],
+    "construction": {
+      "idler_create_handler_virtual_rva": "0xAA4350",
+      "handler_allocation_size": "0x16CE8",
+      "handler_constructor_rva": "0xA71E00",
+      "handler_initialize_calls_declare_factory": "0xA74EE2 -> 0xA8A5D0",
+      "declare_allocation_rva": "0xA8A5E1",
+      "declare_store_rva": "0xA8A608",
+      "declare_constructor_rva": "0x10849A0",
+      "declare_parent_handler": "CDeclare+0xD0",
+      "current_context_sync_rva": "0x10855F0",
+      "handler_current_context": "CIngameInterfaceHandler+0xF0",
+      "declare_current_context": "CDeclare+0x100"
+    },
+    "active_window_predicate": {
+      "status": "static_gui_state_leaf_located_passive_mirror_and_live_pending",
+      "vtable_slot": "CDeclare primary vtable+0x38",
+      "predicate_rva": "0x1F30970",
+      "gui_instance": "CDeclare+0x78",
+      "related_state_setters": {
+        "request_true_rva": "0x1F30930",
+        "request_false_rva": "0x1F30950"
+      },
+      "predicate_dependencies": {
+        "registration_index_rva": "0x36EBB00(instance, layer=1/0)",
+        "gui_state_table_accessor_rva": "0x3827900",
+        "state_row_stride": "0x308",
+        "state_byte_offset": "0x300",
+        "instance_flag": "instance+0xD0 bit 3 controls the layer-0 condition"
+      },
+      "wire_name_until_live_semantics_close": "gui_state_predicate",
+      "call_boundary": "do not call 0x1F30970 or 0x36EBB00 from the first worker reader; mirror dependencies and live-compare open/closed states",
+      "known_required_fields": [
+        "declare+0xD0 owning handler equals root-chain handler",
+        "declare+0x100 interaction context nonnull",
+        "declare+0x100 interaction context equals handler+0xF0",
+        "declare+0x120 selected CCasusBelliType nonnull",
+        "declare+0x1C0 selected-item backpointer equals declare",
+        "declare+0x1C8 selected validity nonzero",
+        "mirrored 0x1F30970 GUI-state predicate is active"
+      ],
+      "warning": "handler+0x120 is a persistent object slot and is not itself proof that the declare UI is visible"
+    }
+  },
+  "selected_declaration": {
+    "materialization_lifecycle": {
+      "interaction_activation_vtable_slot": "CDeclare primary vtable+0x18",
+      "interaction_activation_rva": "0x10855F0",
+      "selected_row_copier_rva": "0x108A200",
+      "selected_row_copy_layout": "row +0x00/+0x08/+0x10/+0x58/+0xA0/+0xA8 -> CDeclare +0x120/+0x128/+0x130/+0x178/+0x1C0/+0x1C8",
+      "cb_row_change_sequence": "0x1085F44 copier -> 0x1085F4C materializer",
+      "alternate_gui_dispatch_sequence": "0xBD5259 copier -> 0xBD5261 materializer",
+      "title_row_change_materializer_call": "0x108A4B9",
+      "gui_dirty_byte": "CIngameInterfaceHandler+0x16840 set to 1 after selection-derived refresh",
+      "meaning": "selected item, titles and forced rows are one GUI revision; no preview CWar is constructed"
+    },
+    "submit_materialization": {
+      "send_binding_registration_rva": "0x14E300",
+      "send_callback_rva": "0x108D760",
+      "send_core_rva": "0x1087360",
+      "can_send_rva": "0x1087DC0",
+      "command_materializer_rva": "0x1087C80",
+      "direct_send_rva": "0x1087C20",
+      "selected_title_projection_call": "0x1087D02 -> 0x1088780",
+      "actual_interaction_context": "outer_context = *(CDeclare+0x100); actual_interaction = outer_context+0xF8",
+      "war_declaration_pointer": "*(actual_interaction+0x330), equivalently *(outer_context+0x428)",
+      "war_declaration_vtable_gate": "module+0x411DAA0",
+      "war_declaration_layout": {
+        "+0x08": "selected CCasusBelliType*",
+        "+0x10": "authoritative selected native TitleID array",
+        "+0x28": "claimant full CharacterID"
+      },
+      "materializer_writes": "0x1087D15/0x1087D29/0x1087D32",
+      "command_constructor_rva": "0x26B3220",
+      "command_rtti_type_descriptor_rva": "0x513C108",
+      "command_primary_secondary_vtables": "0x40829F8/0x40829C8",
+      "command_submit_wrapper_rva": "0x973E00 flags 0x0E",
+      "interaction_context_copy_rva": "0x2C3ED50",
+      "special_payload_clone_rva": "0x2282A20",
+      "interaction_executor_rva": "0x2C3FA20",
+      "executor_special_virtual_call": "0x2C3FAA2 calls context+0x330 vtable+0x40",
+      "standard_send_executor_tail_rva": "0x2752AB8",
+      "cwar_declaration_execute_rva": "0x24D7690",
+      "passive_boundary": "reader validates and mirrors fields only; never materializes, clones, submits or executes"
+    },
+    "interaction_context": {
+      "pointer_offset": "CDeclare+0x100",
+      "actor_character_id": "context+0x3D0 full CharacterID",
+      "recipient_character_id": "context+0x3D4 full CharacterID",
+      "recipient_semantics": "raw interaction target; do not rename effective target without same-snapshot 0x2909D30/war-entry evidence"
+    },
+    "selected_item": {
+      "casus_belli_type": "CDeclare+0x120",
+      "claimant_character_id": "CDeclare+0x128 signed int32; -1 valid",
+      "embedded_target_title_array": "CDeclare+0x130",
+      "unclassified_secondary_id_array": "CDeclare+0x178; excluded from wire",
+      "window_backpointer": "CDeclare+0x1C0",
+      "native_validity": "CDeclare+0x1C8 uint8"
+    },
+    "casus_belli_type_identity": {
+      "database_ordinal": "CCasusBelliType+0x10 signed int32",
+      "canonical_key_string": "CCasusBelliType+0x18 MSVC string, size +0x28, capacity +0x30",
+      "flags": "CCasusBelliType+0x1718 uint32"
+    },
+    "title_projection": {
+      "native_helper_rva": "0x1088780",
+      "passive_policy": "inline mirror; do not call allocator-backed helper",
+      "branch_if_title_row_count_zero": "read embedded native TitleID array at CDeclare+0x130",
+      "branch_if_title_rows_exist": "scan CDeclare+0x1D0 count +0x1DC, stride 0x40, append row+0x08 when uint8 row+0x38 is nonzero",
+      "order": "native order"
+    },
+    "candidate_binding": {
+      "status": "static_closed_live_pending",
+      "match_fields": [
+        "recipient_character_id == declarable_wars.target_character_id",
+        "selected_cb_type+0x10 == casus_belli_index",
+        "selected_cb_type canonical key == casus_belli_key",
+        "selected claimant == claimant_character_id",
+        "selected TitleID vector == target_title_ids"
+      ],
+      "admission": "exactly one same-revision declarable row must match; inherit declaration_id and configuration_index only after unique match",
+      "ambiguous_result": "candidate_binding_ambiguous"
+    }
+  },
+  "forced_defender_preview": {
+    "gui_source": "DeclareWarInteractionWindow.GetDefenders / forced_defenders",
+    "root": "CDeclare+0x1E8",
+    "count": "CDeclare+0x1F4 signed int32",
+    "row_stride": "0x10",
+    "row_layout": {
+      "+0x00": "full CharacterID",
+      "+0x04": "native reason code int32",
+      "+0x08": "CDeclareWarInteractionWindow* backpointer"
+    },
+    "append_rva": "0x108F360",
+    "materializer_rva": "0x1088AA0",
+    "reason_codes": {
+      "0": {
+        "semantic": "great_holy_war_region_co_defender",
+        "flag": "CCasusBelliType+0x1718 bit 17 is_great_holy_war",
+        "collector_rva": "0x2357AA0"
+      },
+      "1": {
+        "semantic": "defender_faith_can_join",
+        "flag": "CCasusBelliType+0x1718 bit 15 defender_faith_can_join",
+        "collector_rva": "0x2901960",
+        "collector_abi": "RCX actor Character*, RDX primary defender Character*, R8 caller-owned CharacterID vector*",
+        "collector_body_static_findings": [
+          "returns immediately when actor and primary defender faith IDs at Character+0xB4 are equal",
+          "otherwise builds script scope/evaluator temporaries and scans defender-faith candidates",
+          "excludes actor, primary defender and the native exclusion set",
+          "appends accepted CharacterIDs through 0x8154D0",
+          "bounded body has no observed direct RNG call"
+        ],
+        "collector_unresolved_call_boundary": [
+          "application-main/thread affinity",
+          "script-context and lazy-initialization side effects",
+          "allocator and caller-owned output lifetime",
+          "proof of no world write or indirect RNG"
+        ],
+        "actual_war_add_evidence": "0x27A29A6 loop calls 0x2225FB0"
+      }
+    },
+    "read_boundary": "consume only already-materialized rows; never invoke 0x1088AA0 from a paused query",
+    "excluded_domains": [
+      "voluntary attacker allies",
+      "voluntary defender allies",
+      "overlord join acceptance",
+      "DefenderTopLiegeMightJoinLater warning",
+      "GuiAttackerFaithMightJoin warning",
+      "GuiDefenderFaithMightJoin warning",
+      "mid-war reinforcement and third-party contact"
+    ]
+  },
+  "forced_tributary_contract_participants": {
+    "status": "static_closed_live_pending",
+    "pdata_ranges": {
+      "contract_predicate": "0x2255360..0x22553D7",
+      "term_default_comparator": "0x2253C40..0x2253CAA",
+      "participant_mutator": "0x2225FB0..0x222643A",
+      "forced_contract_stage": "0x27A1EC0..0x27A214B"
+    },
+    "stable_source_token": "native_forced_tributary_contract",
+    "stable_inclusion_reason": "nondefault_tributary_war_participation_obligation",
+    "stable_join_certainty": "native_builder_contract_forced_current_snapshot",
+    "primary_contract_ids": {
+      "owner": "Character+0x1B8 extension; the source Character is liege/suzerain",
+      "data": "extension+0x248",
+      "signed_count": "extension+0x254",
+      "row": "4-byte full CSubjectContractID",
+      "order": "native array order; never sort or deduplicate"
+    },
+    "storage": {
+      "slot_rva": "0x570CCA0",
+      "fallback_object_rva": "0x570CC50",
+      "fallback_policy": "native builder may fall back; passive query rejects fallback as an identity-valid participant"
+    },
+    "subject_contract_type": {
+      "deleting_destructor_rva": "0x2251B90",
+      "core_destructor_rva": "0x2251C40",
+      "object_size": "0xD8",
+      "primary_vtable_rva": "0x42F9C40",
+      "secondary_vtable_rva": "0x42F9C08",
+      "type_descriptor_rva": "0x522F770",
+      "rtti_name": ".?AVCSubjectContract@@",
+      "layout": {
+        "+0x08": "full CSubjectContractID identity",
+        "+0x20": "subject/tributary Character*",
+        "+0x28": "liege/suzerain Character*",
+        "+0x38/+0x44": "term-pointer array and signed count",
+        "+0x68": "parallel active-level index array"
+      }
+    },
+    "obligation": {
+      "type_key": "tributary_war_participation_obligation",
+      "database_singleton_slot_rva": "0x570C790",
+      "passive_database_read": "load the singleton directly and fail closed when null; mirror database+0xF18 without calling the accessor",
+      "database_accessor_rva": "0x9A67B0",
+      "database_accessor_boundary": "forbidden in passive query because null may reach 0x3B98000 lazy initialization",
+      "database_term_offset": "+0xF18",
+      "term_default_level_offset": "+0xAB40 uint8",
+      "contract_predicate_rva": "0x2255360",
+      "term_default_comparator_rva": "0x2253C40",
+      "predicate": "term is explicitly present and active_level_index_raw != default_level_index_raw",
+      "stock_source": "game/common/subject_contracts/contracts/special_contracts.txt explicitly says code checks only for non-default"
+    },
+    "war_builder": {
+      "builder_rva": "0x27A2210",
+      "forced_contract_stage_rva": "0x27A1EC0",
+      "builder_callsite_rva": "0x27A2A33",
+      "participant_mutator_rva": "0x2225FB0",
+      "mutator_abi": "CWar*, Character*, bool attacker_side, raw_dispatch_flag, raw_notification_flag",
+      "mutator_boundary": "world-writing allocator/relationship/effect path; forbidden in passive query",
+      "raw_flags": "both rounds pass R9=1 and fifth stack flag=0",
+      "attacker_round": "primary attacker first; qualifying attacker-source contracts in native order; subject equal to primary defender is not appended and instead reaches world-writing 0x25FD2C0",
+      "defender_round": "primary defender and CB bit-15 faith defenders precede qualifying defender-source contracts in native order; no symmetric primary-attacker collision check",
+      "dedupe": "none in 0x27A1EC0 or 0x2225FB0",
+      "war_state_guard": "0x2225FB0 is a no-op when CWar+0x358 != 0; nascent CWar constructor 0x255AB00 initializes the dword to zero"
+    },
+    "dto_fields": [
+      "character_id",
+      "side",
+      "source_primary_character_id",
+      "subject_contract_id",
+      "source_contract_native_order",
+      "obligation_type_key",
+      "active_level_index_raw",
+      "default_level_index_raw",
+      "inclusion_reason",
+      "source",
+      "join_certainty"
+    ],
+    "passive_reader_admission": [
+      "two complete samples match",
+      "contract full ID generation/identity matches",
+      "contract+0x28 equals the source primary Character",
+      "contract+0x20 subject full ID resolves",
+      "term pointer equals the database+0xF18 term identity",
+      "all pointers, counts and indices are bounded",
+      "attacker-side primary-defender collision follows the native exclusion"
+    ],
+    "excluded_domains": [
+      "voluntary allies",
+      "overlord or top-liege acceptance",
+      "suzerain_war_participation_guarantee",
+      "mandala guarantee",
+      "other CB-specific participants",
+      "mid-war joins"
+    ]
+  },
+  "unit_and_army_scope": {
+    "unit_storage_slot_rva": "0x570CC80",
+    "carmy_storage_slot_rva": "0x570C730",
+    "forbidden_carmy_fallback_slot_rva": "0x570C720",
+    "storage_layout": {
+      "slots": "+0x20",
+      "capacity": "+0x2C",
+      "slot_stride": "0x10",
+      "slot_object": "+0x08"
+    },
+    "cunit_layout": {
+      "army_id": "+0x10 full CUnitID; established public bridge ArmyID",
+      "current_province": "+0x20 CProvince*",
+      "move_target_province": "+0x30 CProvince*",
+      "route_data_capacity_count": "+0x38/+0x40/+0x44",
+      "owner_character_id": "+0x174 full CharacterID",
+      "native_carmy_id": "+0x178 full CArmyID"
+    },
+    "carmy_layout": {
+      "native_carmy_id": "+0x10 full CArmyID identity readback",
+      "public_army_id_backlink": "+0x124 full CUnitID; must generation-resolve to the source CUnit"
+    },
+    "province_identity": "CProvince+0x10 full ProvinceID",
+    "route_row": "route data is an array of pointers; pointed row +0x00 is full ProvinceID",
+    "carmy_postcondition": "resolve native_carmy_id through base+0x570C730 CArmy storage and require CArmy+0x124 equals/resolves the public army_id CUnit",
+    "identity_naming": "preserve existing army-strength/combat-v3 naming: army_id is public CUnitID; add native_carmy_id for CUnit+0x178 and never overload army_id with internal CArmyID",
+    "canonical_order": "participant order, then public army_id, then native_carmy_id",
+    "meaning": "current raised deployment and current orders only; not a declaration route or arrival prediction"
+  },
+  "objective_arrival_contact": {
+    "objective_title_ids": {
+      "status": "static_closed_live_pending",
+      "source": "selected declaration title projection"
+    },
+    "objective_province_ids": {
+      "status": "static_closed_live_pending",
+      "identity_chain": {
+        "cwar_declaration_execute_rva": "0x24D7690",
+        "cwar_builder_rva": "0x27A2210",
+        "cwar_cb_type_write": "0x27A246D writes CWar+0x100",
+        "cwar_target_array_copy": "0x27A2474/0x27A247B/0x27A2482 copy the caller TitleID array verbatim to CWar+0x270 targeted_titles",
+        "meaning": "no CB-specific title transform exists between the command-bound selected vector and active-war targeted_titles"
+      },
+      "landed_title_projection": {
+        "manager": "CK3GameData+0x2FC8 embedded CLandedTitleManager",
+        "storage_pointer": "manager+0x20",
+        "storage_layout": "slots +0x20, capacity +0x2C, stride 0x10, object +0x08",
+        "title_identity": "CLandedTitle+0x10 full TitleID",
+        "de_jure_children": "CLandedTitle+0x240 array, count +0x24C",
+        "barony_template": "CLandedTitle+0x160; template+0x80 full ProvinceID",
+        "title_province_evaluator_rva": "0x19D5AB0",
+        "field_dispatcher_rva": "0x20B2C80",
+        "recursive_walker_rva": "0x20B4D50",
+        "semantics": "barony direct; county first de-jure capital barony; duchy/kingdom stable native child-order depth-first county capitals; stable ProvinceID dedupe",
+        "bounds": "4096 resolved titles per declaration projection, maximum depth 8",
+        "existing_live_evidence": "active war 16777290 targeted title 2388 projected through 2389/2390 to province 2585"
+      },
+      "query_boundary": "apply the already-proven passive hierarchy mirror directly to selected TitleIDs; never construct or submit CWar"
+    },
+    "path_builder": {
+      "rva": "0x23C33D0",
+      "abi": "PathCtx*, origin CProvince*, target CProvince*, route_kind=2, caller MovePath*",
+      "route_cost": "MovePath+0x128 int64",
+      "status": "ABI known; application-main callability and cost/speed/date conversion unresolved"
+    },
+    "contact_opponents": {
+      "builder_rva": "0x2209450",
+      "source_order": "target CProvince+0x748 array, count +0x754, full CUnitID stored order",
+      "combat_constructor_rva": "0x27FB7C0 forbidden in query",
+      "status": "objective Provinces are closed; arrival and same-day stored-order projection remain unresolved"
+    }
+  },
+  "proposed_dto": {
+    "candidate_binding_fields": [
+      "declaration_id",
+      "interaction_actor_character_id",
+      "interaction_recipient_character_id",
+      "effective_target_character_id",
+      "casus_belli_index",
+      "casus_belli_key",
+      "configuration_index",
+      "claimant_character_id",
+      "objective_title_ids",
+      "objective_province_ids"
+    ],
+    "forced_defender_fields": [
+      "character_id",
+      "native_reason_code",
+      "reason",
+      "native_order"
+    ],
+    "forced_tributary_contract_fields": [
+      "character_id",
+      "side",
+      "source_primary_character_id",
+      "subject_contract_id",
+      "source_contract_native_order",
+      "obligation_type_key",
+      "active_level_index_raw",
+      "default_level_index_raw",
+      "inclusion_reason",
+      "source",
+      "join_certainty"
+    ],
+    "raised_army_fields": [
+      "army_id",
+      "native_carmy_id",
+      "owner_character_id",
+      "side",
+      "current_province_id",
+      "move_target_province_id",
+      "route_province_ids"
+    ]
+  },
+  "readiness": {
+    "exact_build_ready": true,
+    "primary_scope_static_ready": true,
+    "active_preview_root_static_ready": true,
+    "candidate_binding_static_ready": true,
+    "forced_defender_preview_static_ready": true,
+    "forced_tributary_contract_participants_static_ready": true,
+    "forced_tributary_contract_participants_live_ready": false,
+    "forced_tributary_contract_participants_ready": false,
+    "objective_title_ids_static_ready": true,
+    "objective_provinces_static_ready": true,
+    "active_preview_live_ready": false,
+    "objective_provinces_live_ready": false,
+    "complete_initial_participants_ready": false,
+    "objective_provinces_ready": false,
+    "native_arrival_timeline_ready": false,
+    "actual_contact_scope_ready": false,
+    "combat_v3_prewar_scope_ready": false,
+    "war_entry_forecast_inputs_ready": false,
+    "capability_advertised": false
+  },
+  "next_reverse_engineering": [
+    {
+      "priority": 1,
+      "entry": "passive root and field mirror",
+      "rvas": [
+        "0x570F7B8",
+        "0x40B1D30",
+        "0x40AF630",
+        "0x411DE90",
+        "0x411DAA0",
+        "0x1F30970",
+        "0x36EBB00",
+        "0x3827900",
+        "0x19D5AB0",
+        "0x20B2C80",
+        "0x20B4D50"
+      ]
+    },
+    {
+      "priority": 2,
+      "entry": "no-UI exact defender_faith_can_join collector callability (entry ABI closed; execution boundary unresolved)",
+      "rvas": [
+        "0x2901960",
+        "0x27A29A6",
+        "0x2225FB0"
+      ]
+    },
+    {
+      "priority": 3,
+      "entry": "no-UI great-holy-war regional defender collector callability",
+      "rvas": [
+        "0x2357AA0"
+      ]
+    },
+    {
+      "priority": 4,
+      "entry": "paused active-preview objective Province passive projection live comparison",
+      "rvas": [
+        "0x411DAA0",
+        "0x24D7690",
+        "0x27A2210",
+        "0x20B4D50"
+      ]
+    },
+    {
+      "priority": 5,
+      "entry": "arrival time and actual contact ordering",
+      "rvas": [
+        "0x23C33D0",
+        "0x2209450"
+      ]
+    }
+  ],
+  "shortest_live_acceptance": {
+    "setup": "open a legal declare-war interaction, select CB and title, then pause; do not submit",
+    "assertions": [
+      "two full root/preview samples match",
+      "selected tuple uniquely matches one same-revision declarable_wars row",
+      "context+0x330 special payload is vtable-gated CWarDeclaration and its CBType/claimant/TitleIDs equal the selected window revision",
+      "selected objective TitleIDs resolve through the bounded landed-title hierarchy mirror to stable objective ProvinceIDs",
+      "forced defender CharacterIDs and native order match visible forced_defenders portraits",
+      "forced tributary contract rows match both primaries' native contract order and non-default obligation state",
+      "all IDs generation-resolve",
+      "participant CUnits expose public army_id and distinct native_carmy_id with CArmy+0x124 back-link",
+      "arrival/contact/combat-v3/final forecast gates remain false"
+    ]
+  }
+}

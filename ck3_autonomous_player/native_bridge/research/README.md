@@ -24,6 +24,239 @@ The DLL separately hashes its current process executable and advertises game
 capabilities only for this exact digest. A different CK3 build retains only
 bridge identity/heartbeat/ping.
 
+## Startup particle2 null-slot containment
+
+Three no-DLL controls—including a no-save main-menu launch—reproduced CK3
+`C0000005` at RVA `0x1DABD89` when the synchronously-built particle2 resource
+slots were null. The exact-build startup guard is installed only by the bare
+cold-start injector while the new process primary thread is still suspended.
+It patches 13 bytes at RVA `0x1DABD6D`, after the complete `0x1D`-byte
+UNWIND_INFO prologue. Null root/slot or an out-of-range index follows the
+native normal epilogue; a non-null slot resumes at RVA `0x1DABD82`. It never
+fabricates a graphics resource and is not used by running `--pipe` attach.
+
+Fresh merged candidate
+`ck3_autonomous_player/.build-startup-guard-production8e-msvc/xar_ck3_bridge.dll`
+has SHA-256
+`4614CF951F28FB063BB72ADBE521E6BD7E20FC71305B29819B1944A5BD378CC6`;
+its injector has SHA-256
+`26F09E40F032B1C4B161E5886F3908FB6DBCA4385FE38E3978C698855D02E2FC`.
+Native CTest was 18/18 and the offline scanner was 138 signatures / 23 vtable
+prefixes. The one managed production8e cold start then live-confirmed the guard:
+all eight calls were suppressed (`count=8`, mask `0xFF`, last index `7`) and the
+old `0x1DABD89` fault disappeared. Startup continued to the immediately later
+consumer at RVA `0x1FCC100`, which read the same null slot family and faulted at
+RVA `0x1FCC14C`. No MCP query, input, or gameplay action was issued.
+
+The follow-up exact-build consumer guard is intentionally narrower than
+skipping its caller. It patches the 15-byte entry at `0x1FCC100` while the new
+primary thread is suspended, before the native `0x2A`-byte unwind prologue has
+changed the stack. It preflights the root and all eight slots at `+0xA8..+0xE0`.
+If all are present it replays the three overwritten instructions and resumes at
+`0x1FCC10F`; if any is null it atomically records the missing mask and returns
+before the function creates scratch objects. Both exact callers ignore the
+void-style result, while the surrounding GUI factory registration remains
+untouched. The generated stub is leaf-only and performs no calls, allocation,
+logging, or world-state write.
+
+This second guard is offline-verified by an executable synthetic function,
+exact PE/PData/unwind and two-xref checks, per-slot and root-null vectors, and
+transactional rollback fault injection. A fresh merged MSVC build and all 19
+native CTest cases pass; the scanner remains 138 signatures / 23 vtable
+prefixes. It is still crash containment, not proof that particle rendering is
+healthy.
+
+The subsequent single managed cold start live-confirmed both guards. The first
+reported `count=8`, mask `0xFF`, last index `7`; the later consumer reported
+`count=1`, missing mask `0xFF`; both were installed with `failure=0`. Startup
+therefore passed both known null dereferences, but failed later at new RVA
+`0x3B0AE5F` (read address `0x90C`) before the map/mailbox boundary. No snapshot,
+MCP query, input, or gameplay action occurred, and managed cleanup was proven.
+The bundle is `ck3_20260825_171910`; its minidump SHA-256 is
+`A0430F36B9C291792EF04F831C60EE43FF6E2CBCF1DE441798DA5F054C84D329`
+and its exception report SHA-256 is
+`F81C1BB8D916A255E5F8811D9C7BB6AE05B9B87B62EA82CEB8C19BA9A01061BD`.
+The new fault must be closed independently before another startup attempt.
+
+Static exact-build unwind and RTTI identify that third fault as a
+`CGfxDX11RenderContext` pre-draw binding flush on the Clausewitz graphics worker
+thread. Its constructor legally creates a transition state with dirty mask
+`+0x1938 = 0xFFFFFFFF` and current shader-state pointer `+0x1940 = null`; the
+setter later writes only the pointer, leaving dirty set for the first real
+flush. The live load-screen draw reached the flush during that transition.
+
+The implemented exact-build guard covers only the live-confirmed first draw
+wrapper at RVA `0x3B0B0F0`, not the shared flush helper or its other three draw
+frontends. Before its complete 15-byte prologue, a 62-byte leaf stub tests
+`dirty.bit0 && state == null`. That exact condition records a diagnostic and
+returns from this draw while preserving dirty; every other state replays the
+prologue and resumes at `0x3B0B0FF`. Clearing dirty in the helper would be
+incorrect because it would both continue an unbound backend draw and prevent a
+later valid state from receiving its first flush.
+
+The executable fixture covers the bad transition plus both healthy null/state
+combinations, exact dirty preservation, W^X, and transactional rollback faults.
+The source contract binds the exact EXE SHA, PDATA/unwind row, helper predicate,
+RTTI/COL, and the observed vtable `+0x130` callsite. Startup preparation installs
+the producer, particle2 consumer, then this draw guard while the primary thread
+is suspended and unwinds in reverse order on failure. Independent review found
+no BLOCKER/HIGH. Fresh Release CTest is 20/20 and the scanner remains 138 exact
+signatures / 23 vtable prefixes. The production9 DLL SHA-256 is
+`7F3052C9B37F77AFB90BAA7F9A8D748531BDDF8C7641E8B156E7318EB9CA6DAF`.
+
+The single managed production9 cold start live-confirmed this guard too. Dump
+state showed all three installed with `failure=0`: the first retained
+count/mask `8/0xFF`, the particle2 consumer `1/0xFF`, and this DX11 draw guard
+`suppressed_count=1`. The process then failed at new RVA `0x3A70610` (read
+address `0x40`) before the mailbox was installed; mailbox pump and executed
+request counts were both zero. No MCP query, input, or gameplay action occurred,
+and no restart was attempted. Bundle `ck3_20260825_181347` has minidump SHA-256
+`0408F46AEEDCEA33A3930067254B485FA64A7EE4FBA4D340FDE9976D116DA7E1`.
+
+Exact unwind and producer analysis identifies this fourth fault as a legal
+localization publication window on the application startup thread.
+`LocalizeInit` publishes a zeroed 0x40-byte state at global RVA `0x57DFA28`
+before a later language-select producer writes its active root at `state+0`.
+The `TPdxNullObject<CSiege>` callback consumed that null root while resolving
+`ACCLAIMED_KNIGHTS_IN_ARMY`.
+
+The owner lookup already contains a correct miss/raw-key fallback at
+`0x3A6A51A` / `0x3A6A67F`. The implemented minimum guard is therefore a 13-byte body
+guard at `0x3A6A4D6`: healthy lookup resumes at `0x3A6A4E3`, while a null
+current root jumps to that existing miss path without writing localization
+state. The shared hash leaf at `0x3A70610` has 128 direct callers and remains
+untouched.
+
+The fourth guard is now compiled into suspended startup after the particle2
+producer/consumer guards and the live-directed DX11 draw guard. Its 64-byte
+leaf stub preserves the lookup seed and input view, and only records the
+observed current-root-null window before taking the native raw-key fallback.
+Failure rolls the preceding three guards back in reverse order. A fresh Release
+production10 build passes 21/21 CTest cases; the exact-build scanner remains
+138 signatures / 23 vtable prefixes. Artifacts are DLL
+`EB10D9D9A6C89B5DFB3680179A5B5C9D2CCFF210F1D5C62BCA4F5B4E45B4CE2F`,
+injector `F928C93654085E7C2FC94CBDFAF9E1222A3A6A6C3E2E20CD2BCA51DB9BBA602E`,
+and host `8CE6BCA7214F7C6F0025511C8A7F36D84AFA7DC0A9E36047FA983E609D723450`.
+The single managed production10 cold start then live-confirmed all four guards
+with `failure=0`: suppression counts were `8`, `1`, `1`, and `5` respectively.
+It crossed the localization publication window, then failed later on the
+application main thread at new RVA `0x369CB58` (`RSI=null`, read `+0xD0`). The
+mailbox remained detached with zero pump/executed counts, so declarable and
+war-entry queries, inputs, and actions all remained zero. No restart occurred;
+checkpoint, history, and driver-state bytes were unchanged and managed cleanup
+proved the process tree empty. Bundle `ck3_20260825_190705` has minidump SHA-256
+`26BBE695A818794D221F7B5B4D47B79C2AB30CA937C4D17C093768C8C98A36`.
+This is a live containment advance, not a successful startup/query claim; the
+new main-thread fault is the next exact-build gate.
+
+The operator subsequently identified Kaspersky as a component that had killed
+or interfered with a test artifact. Read-only local state confirmed that `avp`
+was active and the quarantine directory acquired an object belonging to an
+older combat-detour test, while the project CK3 and all three bridge artifacts
+still matched their frozen hashes. This made an antivirus-cleared,
+original-byte control mandatory; it did not prove that the antivirus caused
+each CK3 null-state failure. No fifth guard was developed.
+
+The four guard implementations and executable fixtures remain available for
+forensics, but production defaults to
+`kStartupFailureContainmentEnabledV1=false`. The suspended Prepare export now
+admits the exact adapter and returns without patching CK3; heartbeat exposes
+`startup_failure_containment_enabled=false`. Source-contract tests and Release
+disassembly freeze that behavior. The ensuing managed control waited for a
+verified Kaspersky restore/exclusion and used the original executable bytes.
+
+The fresh production11 no-patch candidate passes 21/21 Release CTest cases and
+the scanner remains 138 signatures / 23 vtable prefixes. Direct export
+disassembly confirms no startup-guard installer call. Artifact SHA-256 values:
+DLL `F3A6634E2C8808462E9A75066E9FE2D1C391F49D6D653DE9AB1941CB6FE36A8C`,
+injector `3CE544C424CCF778853D987B069C5D837A159ECF7C6A433CC466DA6E75677088`,
+host `9B29AEB618795BF9D00E8B1DEC8D5AFED1F441E471F9C09AFD5D2EB129487F8A`.
+After the operator restored/allowed the relevant paths, one managed cold start
+used this production11 build with no containment guard and no gameplay query or
+input. CK3 still failed after 17.633 seconds at exact RVA `0x1DABD89`; there was
+no retry, and managed cleanup proved the process tree empty. Dump
+`ck3_20260825_200506` has SHA-256
+`DE594C85F7E9BDE1463F618156BF6CD21773072B27642D43AC4E91F6FBFADC35`.
+Its application-main exception context reads address `0x244` with `RBP=0`,
+`R14=0x1F8`, and particle2 root `RAX=0x18DD5E37B60`; all root slots
+`+0x68..+0xE0` are null. The dump-retained heartbeat says containment false and
+mailbox uninstalled/zero-pump. Direct reads of all four guard states show
+installed/failure/counters zero and patch/stub pointers null; the captured
+producer patch window remains original.
+
+This closes only causality: Kaspersky was not necessary for this rerun's native
+particle2 fault, though its earlier quarantine event was real. The post-crash
+dump cannot identify whether factory `0x3A866D0` returned null at source/VFS
+`0x3A86772`, variant lookup `0x3A867B0`, or backend creation `0x3A867EC`.
+The next diagnostic is an opt-in recorder at those exits which only increments
+atomics and replays the original instructions; it must not suppress a fault or
+fabricate a resource.
+
+That diagnostic is now implemented as
+`XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1`, default `OFF`. On the
+exact executable it installs three absolute-jump patches at RVAs `0x3A86769`,
+`0x3A867B0`, and `0x3A867EC` while the new primary thread is still suspended.
+The generated leaf stubs only increment preallocated atomics, replay the
+overwritten instructions, and return to the original healthy/null targets;
+they contain no call, allocation, log, resource fabrication, or outcome
+suppression. The recorder and the four containment guards are compile-time
+mutually exclusive. Its executable fixture covers all six healthy/null
+branches, W^X finalization, exact target identity, reverse-order uninstall, and
+recoverable plus an unproven installation-time rollback. For that covered
+retained-install state, a quiescent retry must re-flush the byte-identical
+original code and restore the captured executable protection before retained
+ownership or RX stub storage can be released.
+
+Fresh Release evidence is 22/22 CTest cases plus the unchanged 138-signature /
+23-vtable-prefix exact-build scan. The enabled production12 DLL is 586,240
+bytes, SHA-256
+`DD0833B66F8EADE4564BA83C23A26752D55A1FCF3D2D52BCE56E9A1CC127CB36`;
+injector SHA-256 is
+`17CD90A44BE641AC538F6431AD6FC258376349A06F41EB36974643632E89F824`
+and host SHA-256 is
+`ED68911826C76ECB7055AC71522994B93C45414B323FA463E901CB735F877F77`.
+The separately rebuilt default-OFF DLL is 578,048 bytes, SHA-256
+`D48A45CA043F91A2E0927BC620694EF854B946A8D6A267B68E580F9696C48702`;
+direct Prepare-export disassembly contains no recorder installer call.
+
+[live-confirmed diagnostic only, 2026-08-25] Three managed exact-build launches
+used the same immutable 66,594,755-byte checkpoint (SHA-256
+`5BA2136911EAD0CAF1F7D2F3DE02EAFBD8039861C46F01F35F698B3B5CFFFC5F`)
+without an MCP query, gameplay command, or input. The first and second launches
+remained alive until their 91.685-second and 62.287-second timeouts. During the
+third launch, a read-only `ReadProcessMemory` sample of PID 62888 proved
+`installed=1`, patch mask `7`, `failure=0`, the frozen module/target address
+relationships, and all three installed absolute-jump byte sequences. Across a
+13-second sample interval, source-null stayed `0`, variant-null increased
+exactly from `20874` to `21071` (delta `197`), and backend-null stayed `0`; the
+process remained alive and was then stopped through the managed session after
+72.668 seconds. These are branch executions, not unique variants, resources,
+or errors. The two zero counters mean only that their respective null outcomes
+were not observed while this recorder was active, not that those stages were
+never called. All three
+attempts ended without a new Paradox crash bundle. After the attempts,
+checkpoint, `last_save`, and driver-state bytes were unchanged, cleanup had
+converged to an empty process/control inventory, and no unsafe-cleanup marker
+existed.
+
+This proves that the recorder was active and that the factory's frozen
+variant-null branch was taken repeatedly during this bounded startup interval.
+The original predicate makes that branch mean that source resolution succeeded
+but exact requested-name lookup in that source's variant table returned null;
+whether any particular miss is expected or benign remains unproven. The three
+patches also do not cover the earlier null graphics-global exit. It does not
+associate an aggregate counter increment with the earlier
+`ParticleColor` / `particle2.shader` request, prove that the old fault was
+resolved, or establish map/mailbox/gameplay readiness. The first new launch
+also populated the isolated profile's shader cache, so the later samples are
+not pristine-cache reruns. Each recorded null also performs one locked atomic
+RMW, so control-flow equivalence is not a claim of zero scheduling/cache-line
+perturbation. No production guard or resource substitute follows from this
+result: containment remains disabled and the recorder remains opt-in. Only if
+the original fault recurs, the next bounded diagnostic is a one-shot tuple-
+specific observation for `gfx/FX/cw/particle2.shader` plus `ParticleColor`, not
+another global total.
+
 ## Implemented capability matrix
 
 | Capability | Native-headless state | Evidence | Visual fallback |
@@ -55,7 +288,11 @@ bridge identity/heartbeat/ping.
 | allied/enemy army current province | implemented, minimized read-only live probe passed | war participant helper classifies each observable CUnit owner | never inside native driver |
 | army state / combat / retreating | implemented, minimized read-only live probe passed | exact RVA `0xC7AAB0` state ABI, CUnit→CArmy→CCombat association and `CUnit+0x170` + nine-state fixture | never inside native driver |
 | `game.state.army-routes` / army move target | implemented from minimized-live-validated route ABI; paused full-array/running-tail fixture passed | paused snapshots validate the full `CUnit+0x38/+0x40/+0x44` remaining-route array; running snapshots retain only the legacy last-entry target read | never inside native driver |
-| army soldier count | unsupported | no live-validated soldier aggregate ABI; no value guessed | unsupported |
+| `game.command.query-army-strengths-v1` | implemented; paused revision 4 exact-build live probe passed for three public ArmyIDs | exact CUnit/CArmy/CRegiment storages, original current/max helpers, AI collector power loop, full-generation/fallback/predicate/empty/partial-row offline fixtures + live `83886341`/`33554657`/`357` rows | never inside native driver |
+| `game.command.query-combat-simulation-inputs-v2-N` | explicit hypothetical-contact paused read-only query implemented; exact-build live probe pending | partitioned participants/final-edge entry, exact effective-stat/counter/knight/commander/terrain/crossing/role/holding/width ABIs, strict available/partial fixtures | never inside native driver |
+| `game.command.query-combat-simulation-inputs-v3-N` | production exact-build capability advertised; paused live acceptance pending | v2 base object + 81 exact native leaves + 51 offline derivations = 132/132, original temporary-shell advantage helpers, strict same-frame candidate-source row equality/digest, available/unavailable production goldens and Python normalizer | never inside native driver |
+| `game.command.query-combat-phase-event-trace-v1-N` | production DLL source present but explicitly not advertised or dispatched | real kind-11 scope evaluator probe, fixed-width seven-boundary ring, exact-build transactional detour installer, full-generation capture-plan builder, typed paused begin/finish executors and bounded checkpoint/drain serializer are compiled; shared mailbox union dispatch, recoverable external one-day driver, live sequence and full mutable feedback bundle remain closed | never inside native driver until the managed lifecycle is wired and accepted live |
+| `main_thread_query_mailbox_v1` infrastructure | application-main TLS boundary live-confirmed and production-wired only for the typed war-entry reader; typed executor live result pending | paused SDL pump, TLS global/context/+0x20 marker, date and game identities were stable; the earlier `failure=32` was only a transient scoped RNG-owner mismatch and is now raw provenance, not admission | never call it simulation-main and never admit a generic effect/evaluator; fresh Snapshot before/middle/after plus one pre-submit same-paused-frame declaration set |
 | `game.command.raise-troops-default` | implemented, live probe pending | native default-province/construct/validate/clone/destruct lifecycle + offline fixture | explicit upper-layer policy only |
 | `game.command.preview-move-army-N-to-N` | implemented; paused minimized live probe exposed and closed the mid-edge effective-origin case | canonical plan/apply split + exact origin/PathCtx/MovePath/A* ABIs + current/route-front normalization + success/failure/cleanup/bound/paused fixture; no apply binding or queue call | explicit upper-layer policy only; paused map required |
 | `game.command.move-army-N-to-N` | implemented and minimized-live accepted: player command submitted and army province changed | exact player-UI kind/channel plus native mode/state/can-move/path-init/clone/destruct lifecycle, offline fixture, and live movement | explicit upper-layer policy only |
@@ -65,6 +302,10 @@ bridge identity/heartbeat/ping.
 | `game.command.query-declarable-wars` | native C++ core implemented, bridge route/live probe pending | exact declare-war UI CB registry/evaluator/item rules + offline SSO/heap-key and configuration fixture | explicit upper-layer policy only |
 | `game.command.declare-war-<declaration_id>` | native C++ core implemented, bridge route/live probe pending | generation-bound exact re-enumeration + native context/validation/queue/destruction fixture | explicit upper-layer policy only |
 | `game.command.enforce-demands-<war_id>` | native C++ core implemented, bridge route/live probe pending | exact WarOverview victory context builder + common interaction command lifecycle fixture | explicit upper-layer policy only |
+| `game.command.query-war-termination-options-N` | implemented paused read-only query; exact-build live probe pending | exact WarOverview three-context construction/validation, score/duration/CB/acceptance ABIs + no-submit offline fixture | never inside native driver |
+| `game.command.query-war-termination-terms-v1-N` | implemented narrow paused read-only claim-CB union; exact getter/destructor live probe pending | `CWar+0x270/+0x290`, full-generation Title/Character resolution, `0x28B1AA0`, present-only vtable-slot-0 destruction, strict available/unsupported fixtures | never inside native driver |
+| `game.command.surrender-war-N` | native typed primary-leader command implemented; Python/MCP action frozen pending structured exit terms v2 | exact absolute-outcome WarOverview builder (`true` attacker victory / `false` attacker defeat) + validator/common-send/bool-queue/destruction fixture | unadvertised by upper-layer policy |
+| `game.command.offer-white-peace-N` | native typed primary-leader command implemented; Python/MCP action frozen pending structured exit terms v2 | active-CB permission + full-generation opponent + special index 3 + validator/common-send/bool-queue/two-context destruction fixture | unadvertised by upper-layer policy |
 | `game.command.query-arrange-marriage-choices` | implemented; minimized-live empty result was correctly explained by the played character's existing spouse | exact interaction registry, bounded enumeration diagnostics, generation-validated relationship snapshot, native validation fixture | explicit upper-layer policy only |
 | `game.command.arrange-marriage-<choice_id>` | native direct-player path implemented, minimized-live submit pending | generation-bound CharacterIDs + redirect/all-role/refresh/finalize/validate/common-send fixture; spouse/betrothal outcome is snapshot-observable | explicit upper-layer policy only |
 | event title/option text | unsupported | no repeatable localized text projection yet | unsupported in pure native mode |
@@ -193,6 +434,26 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   resolved opponent, the already verified RVA `0x224CC80(Character*)`
   supplies `enemy_primary_default_raise_province_id`; that value is explicitly
   a fallback location for the opponent, not a decoded war goal or army target.
+- The paused termination query keeps all score values attacker-relative until
+  JSON projection. Total is `0x222A8A0(war, nullptr)`. Its atomic nullable
+  breakdown follows WarOverview exactly: imprisonment is
+  `0x29030B0(war, nullptr)`; battles are `0x2903150(war, nullptr) +
+  0x2903DA0(war, false, nullptr) - 0x2903DA0(war, true, nullptr)`; ticking is
+  `0x2905BC0(war, false, nullptr, true) - 0x2905BC0(war, true, nullptr,
+  false)`. Occupation helper `0x2904B00(war, side, nullptr)` returns a packed
+  `uint64`: low signed dword is score and `(value >> 32) & 0xff` marks a
+  single-side authoritative result. Read side false first; if not authoritative
+  read true and select `-second` when that result is authoritative, otherwise
+  use `first-second`. Checked overflow suppresses the entire breakdown rather
+  than publishing partial zeroes.
+- `CWar +0xE0` is the signed low dword of its start `HistoricalDate`.
+  `CWarDaysTrigger` evaluator RVA `0x2848230` subtracts it from the current
+  `CGameState +0x08` date and divides by 24; negative or overflowing duration is
+  unavailable. `CWar +0x100` is the active `CCasusBelliType*`. Its dense
+  database ordinal is `int32 +0x10`, canonical MSVC string is `+0x18` (size
+  `+0x28`, capacity `+0x30`), and `uint32 +0x1718` bit 7 (`0x80`) is the same
+  `IsWhitePeacePossible` gate consumed by WarOverview. `+0x14` is only the key
+  hash and is never published as identity.
 - `CWar +0xF8` embeds its `CCasusBelli`; the `targeted_titles` native int32
   array is CB `+0x178`, therefore war `+0x270` (data `+0x270`, capacity
   `+0x278`, count `+0x27C`). Serializer RVA `0x23E6B00` pairs that field with
@@ -285,8 +546,8 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   `route_province_ids=[]`, but preserves the old single last-entry read as
   `move_target_province_id`/`move_target_observable`. Therefore an empty route
   means "no complete paused route observation", not necessarily "no route".
-  Soldier count remains
-  unsupported because no soldier aggregate has equivalent live validation.
+  Soldier count stays out of the heartbeat and is exposed only by the explicit
+  paused `query-army-strengths-v1` path described below.
 - `CUnit +0x178` is the generation-bearing ID for the linked `CArmy` in
   `ComponentStorage<CArmy>` at `base +0x570C730`. `CArmy +0x128` is its
   `CCombat` ID, resolved through `ComponentStorage<CCombat>` at
@@ -310,17 +571,38 @@ unavailable unless an upper layer explicitly chooses to restore the window.
   path entries ended at province `2543`, giving an exact observable move
   target even while combat took priority over the moving state. No command
   was issued during this probe. PID `144324` later disappeared before soldier
-  aggregation could be closed, so no soldier field is guessed.
-- Soldier-count RE remains explicitly unsupported. Stock GUI calls
-  `Army.GetSoldierCount` (name string RVA `0x40D8BD0`) and also exposes
-  `ArmyComposition.GetCurrentNumberOfSoldiers` / `GetMaxNumberOfSoldiers`
-  (name strings RVA `0x4138E18` / `0x4138E38`), but their reflection callbacks
-  and receiver types are not yet closed. RVA `0x1164480` is not evidence for
-  `CArmy+0x130`: its only located wrapper belongs to Jomini FastFileTransfer.
-  The next valid anchor is the GUI reflection registration that maps one of
-  those names to a callback, followed by proof that its receiver is the
-  generation-resolved `CUnit`/composition aggregate and that it counts live
-  soldiers at unit scale.
+  aggregation could be closed; the later exact-build static closure below did
+  not retroactively turn that probe into live soldier evidence.
+- `CUnit+0x178` is a full CArmyID. The exact CArmy storage is the pointer slot
+  at `base+0x570C730`; its engine fallback/default is at `base+0x570C720` and is
+  forbidden. `CArmy+0x38` is the full CRegimentID array data, `+0x40` capacity,
+  and `+0x44` signed count. The exact CRegiment storage is
+  `base+0x57BF4C8`; the adjacent fallback at `base+0x57BF4C0` is also forbidden.
+  Every object must repeat the complete ID at `+0x10` after low-24-bit slot
+  selection.
+- RVA `0x27BD9E0(CArmy+0x38, flags=0)` generation-resolves every regiment,
+  calls the `CRegiment+0x08` subobject vtable slot `+0x08` public-ID identity
+  predicate, and sums `CRegiment+0x38` current soldiers. That predicate is RVA
+  `0x10495A0` and proves only `CRegiment+0x10 != -1`; it is not combat activity
+  or participation eligibility. RVA `0x226F350(CArmy*)` resolves every regiment
+  and sums `+0x3C` maximum soldiers. Both original helpers can fall back internally;
+  therefore the bridge first validates the complete exact graph, mirrors the
+  loops, and publishes only when both original helper results equal the mirror.
+- AI collector RVA `0x19179E0` repeats the same CArmy array, exact generation
+  lookup and identity predicate before summing signed qword `CRegiment+0x40`
+  into `SAIPowerAndStrengthEntry+0x10`. That value is published only as
+  `ai_base_power_raw` with independently proven CFixedPoint scale `100000`.
+  It is not named terrain-adjusted strength, ratio, or win probability.
+- The fixed native step reads one paused snapshot and returns the first-seen
+  union of top-level player armies, then every active war's allied and enemy
+  armies. Public CUnit IDs deduplicate without reordering; role priority is
+  player, ally, enemy and WarIDs union in snapshot order. One broken
+  generation, bounded array, identity, checked sum, or helper comparison makes
+  the whole row unavailable and all aggregates null; no bad entry is skipped.
+  Offline fixtures cover identity-valid aggregation, legal empty arrays,
+  generation mismatch, invalid array, missing identity predicate, and typed
+  partial results. Paused revision `4` exact-build live acceptance later passed
+  for the three public ArmyIDs recorded in the dedicated slice section below.
 
 ## Command queue and object layouts
 
@@ -660,7 +942,7 @@ returns.
 snapshot and rejects both a non-participant and a participating ally who is
 not one of the primary war leaders at `+0x288/+0x28C`. It default-constructs
 a 0x338-byte context with RVA `0x2C3F300`, then calls exact
-WarOverview builder `0xC569F0(context, war, false)`. That builder compares the
+WarOverview builder `0xC569F0(context, war, player_is_attacker)`. That builder compares the
 played CharacterID with primary sides at `CWar +0x288/+0x28C`, chooses the
 opponent, and uses the enforce-demands interaction at
 `CCharacterInteractionDatabase +0x1018`.
@@ -668,6 +950,85 @@ WarOverview send RVA `0xF54FA0` proves the remaining native path is validation,
 `CSendCharacterInteractionCommand` construction, submit flags `0x0E`, and
 embedded-context destruction. Its visual confirmation window is only a UI
 wrapper and is not part of the headless gameplay command.
+
+`query-war-termination-options-<war_id>` is the paused, strictly read-only
+counterpart. It accepts one positive full-generation WarID, re-resolves the
+same live `CWar`, verifies participant side and the total against the current
+semantic snapshot, and constructs all contexts only for the played primary war
+leader. Surrender and victory both use RVA
+`0xC569F0(context, war, attacker_victory)`: `true` selects absolute attacker
+victory and `false` selects absolute attacker defeat. WarOverview's Victory tab
+therefore passes `true` for a primary attacker and `false` for a primary
+defender; its Defeat tab passes the inverse. The published labels remain
+attacker-relative (`attacker_defeat` or `attacker_victory`). No context is
+built for a participating ally who is not their side's primary leader.
+
+White peace first requires the active CB type's `+0x1718 & 0x80` gate and a
+primary opponent. Exact helper RVA `0x2225D40(context, uint8 index=3, actor,
+recipient)` reads the interaction from independent
+`CCharacterInteractionDatabase +0x1008 + 3*8 = +0x1020`. It uses the generic
+two-role constructor when the interaction's first virtual predicate passes and
+otherwise returns the default empty context. The bridge therefore does not
+construct this option for a null CB, a false permission bit, a non-primary
+participant or an unresolved opposite primary. A permitted empty context stays
+`context_constructed=false`; it is not converted into a fabricated validator
+rejection.
+
+Every nonempty context is checked with common validator RVA `0x2C43F00`. Answer
+score helper RVA `0x2C44320(context, int64* out_raw)` returns its output pointer
+and writes signed `CFixedPoint` raw units; public scale is 100000 and the bridge
+does not apply the GUI's display clamp. `auto_accept` exactly follows the
+interaction data: optional trigger pointer `+0x2580` is evaluated with RVA
+`0x334C510(trigger, context+0x08 event-target scope)`; when the pointer is null,
+byte `+0x2A48` is the scalar bool. Each temporary 0x338-byte context is then
+destroyed. The query never constructs `CSendCharacterInteractionCommand`, calls
+the queue or publishes a command ACK.
+
+The successful `command_result` wraps one `war_termination_options` object with
+`war_id`, player side/primary status, player-relative score, nullable duration,
+absolute attacker/defender totals, nullable four-part breakdown, active-CB
+presence/identity, nullable white-peace permission and an `options` object.
+Each `surrender`, `white_peace` and `victory` item publishes
+`outcome`, `hostage_variant="none"`, context/validator/availability,
+nullable `{raw,scale:100000}` AI acceptance and nullable exact auto-accept.
+Terms are intentionally fixed to
+`{status:"unavailable",reason:"cb_specific_terms_not_observable"}`. This build
+does not prove CB-specific title, gold, prestige, piety, legitimacy, truce or
+prisoner effects, and no such terms may be inferred from an absolute outcome or
+a valid context.
+
+The separate read-only
+`query-war-termination-terms-v1-<war_id>` resolves `CWar+0x270` ordered
+declared TitleIDs and claimant `+0x290`, then calls
+`0x28B1AA0(out_0x18, claimant, title)` for every target. Present rows require
+vptr `base+0x40E3060`, title-ID readback and canonical booleans, then invoke
+vtable slot 0 with delete flags 0. Absent rows do not inspect or destroy the
+getter's unspecified remaining bytes. Whole-war before/after identity,
+target-array, claimant and active-CB rereads make the union atomic. Only
+`claim_cb_claim_disposition` is available; other CBs return a complete narrow
+unsupported branch. The native fixture closes all four claim states, absent
+no-destructor, present failure cleanup and stale-generation rejection. Real
+getter/destructor live acceptance remains pending.
+
+`surrender-war-<war_id>` requires a
+paused map, the current played Character to participate and to equal one of
+`CWar +0x288/+0x28C`, then rebuilds the player's absolute defeat
+(`attacker_victory = player_is_primary_defender`), requires non-null
+special data and common validator success, constructs the common 0x368-byte
+send command, and submits with flags `0x0E`. It honors the queue's bool result
+and destroys both context copies on every path. Typed success is only
+`submitted`; disappearance of the exact WarID from a later snapshot is the
+war-ended postcondition. `offer-white-peace-<war_id>` follows an independent
+typed path: it also requires the played primary leader, generation-resolves
+the opposite primary, checks the active CB `+0x1718 & 0x80`, constructs
+special context index 3, runs the same validator, and submits with flags
+`0x0E`; queue false stays `submission_failed`, and both constructed context
+copies are destroyed. The exact adapter advertises both mechanical native
+capabilities, but the Python driver advertises neither literal and rejects
+direct MCP submission until structured `claim_cb_exit_terms_v2` and campaign
+decision readiness exist. This implementation slice used only static
+exact-build evidence, offline fixtures and the offline executable scanner; it
+did not access or submit a command to a CK3 process.
 
 The canonical marriage script key is `arrange_marriage_interaction` in the
 1.19.0.6 base-game `00_marriage_interactions.txt`. Registration xref
@@ -753,8 +1114,8 @@ No OCR, screenshot, focus, keyboard, or mouse backend participated. Checkpoint
 restore, incoming character-interaction reply, played-character terminal
 state, and the native war loop now have offline implementations. The bounded
 next war acceptance is a minimized exact-build probe of declaration discovery,
-declare war, raise, movement, enforce demands, and disband; event and save are
-no longer pending live acceptance.
+declare war, raise, movement, paused termination query, surrender/enforce
+demands, and disband; event and save are no longer pending live acceptance.
 
 ## Assault Fort exact native slice
 
@@ -836,3 +1197,349 @@ the same active siege province. The latter snapshot retained siege
 `83886106` and reported combined eligible besieging strength `1501`; this is
 evidence for same-frame siege continuity, not a claim that queue ACK alone
 proves a merge or that arbitrary merge timing is safe.
+
+## War termination exact native slice
+
+This slice is frozen from exact-build static evidence and offline native
+fixtures only. It advertises paused read-only options plus claim-disposition
+v1 discovery and contains typed native surrender/white-peace mechanics for
+CK3 1.19.0.6 SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`;
+Python advertises neither terminating literal until structured exit terms v2
+and campaign readiness. No CK3 process was read, attached, focused or
+commanded while this slice was implemented or verified.
+
+The final Release build used a fresh
+`build-war-termination-msvc-release-2` directory with MSVC. CTest passed all
+four targets: game-access fixture, adapter registry, suspended-injection
+fixture, and running-attach fixture. The two injection tests use repository
+test targets, not CK3. The offline executable scanner matched `121` unique
+signatures and `19` vtable prefixes, including every newly bound termination
+helper. Diagnostic artifact SHA-256 values are:
+
+```text
+xar_ck3_bridge.dll          C388A913CA214DF3EC399F6D330C040C1AA25624C75CCBC21B1A9B36EEB31947
+xar_ck3_bridge_injector.exe 0616F828A8AD4464CAED804F3F19FD718F4F47C075F3A4901768C1D0B891106C
+```
+
+These hashes freeze this offline build evidence only. The build directory is
+not versioned, and this record is not a live gameplay acceptance or release
+channel marker.
+
+## Main-thread mailbox counter-only artifact and application-main disposition
+
+The first production-wired `main_thread_query_mailbox_v1` artifact was built
+from scratch on 2026-08-25 in
+`.build-main-thread-mailbox-counter-fresh-msvc` with MSVC 19.51 and Ninja.
+CTest passed all 14 configured targets, including the mailbox source contract,
+the process-lifetime reinstall and late-hook fixtures, the war-entry typed
+mailbox adapter, both combat-v3 serializers, the phase-event trace ring, and
+the suspended/running bridge-host tests. The exact-build scanner matched all
+`138` unique signatures and `23` vtable prefixes.
+
+This artifact installs the IAT hook only when the selected adapter ID is
+exactly `ck3-1.19.0.6-msvc-x64`. It publishes dynamic counters only in the
+existing heartbeat metadata. `executor_submission_enabled` is hard false,
+`executed_requests` remains zero, and there is no mailbox capability, command
+literal, action step, or MCP projection. It was not injected into CK3 in this
+build pass; paused and minimized pump reachability is therefore still a live
+acceptance gate rather than an offline claim.
+
+The subsequent paused live counter established that this exact return boundary
+is on the application/startup-main HandlePdxEvents TLS path: the TLS global,
+context and `+0x20` marker passed while failure bit `32` reported only that the
+generic scoped RNG owner was not held at that instant. RNG ownership is now
+diagnostic provenance, not a readiness or execution gate. The production
+follow-up is deliberately typed to `query-war-entry-assessments-v1` only: the
+worker freezes one target and one declarable-war set from the same paused
+expected snapshot; reader before/middle/after callbacks each perform a fresh
+`ReadSnapshot` and require exact equality. This evidence does not rename the
+boundary simulation-main and does not authorize generic effects, phase queries
+or evaluators.
+
+```text
+xar_ck3_bridge.dll          529408 C0ADCFD88FABD3F5BF616B331160471D2E9412A20E84FDCB12E67D3823A6016D
+xar_ck3_bridge_injector.exe  38912 F4AC2FE2EF41AF5529157B273595FDE823E2D2E27972D2C6CCAECC32D9BC296B
+xar_ck3_bridge_host.exe      69632 AC06E5E8FB5E19AA30897F9324A7DA964C5E177DB5077C5C2F9893D741EA10F4
+```
+
+These hashes freeze the counter-only offline artifact. They are not a release
+marker and do not raise any query executor, gameplay capability, combat
+fidelity, planner, or attack-decision readiness gate.
+
+### Application-main typed war-entry production artifact
+
+The bounded follow-up was configured and built from scratch on 2026-08-25 in
+`.build-war-entry-app-main-production4-msvc` with MSVC 19.51 and Ninja. All 14
+CTest targets passed. The read-only exact-build scanner matched 138 unique
+signatures and 23 vtable prefixes. It did not start, attach to or inject CK3.
+
+This build advertises only the canonical single-target
+`game.command.query-war-entry-assessments-v1-N` contract. The mailbox admits
+only `ExecuteWarEntryAssessmentMailboxQueryV1`, at most one request per pump.
+The worker performs one fresh same-paused-snapshot declaration scan and freezes
+that scope. Reader before/middle/after callbacks each perform a fresh complete
+snapshot equality check; resolver, network and assessment rows are sampled
+twice. RNG owner TID remains diagnostic only. An available typed live result
+is still pending, and this boundary does not authorize generic effects or
+combat phase evaluators.
+
+Production4 then ran one official-MCP single-target live query while paused.
+The application-main mailbox stayed ready, the typed executor entered the
+reader, and the query returned atomically unavailable at `actor_ai_context`;
+the process/date remained stable and normal Stop cleanup was proven. Static
+review showed the retired manager span excludes human actors before creating
+or refreshing `extension+0x278`, so that source is not a valid player reader.
+The production5 fix binds the authoritative native State16 builder at
+`0x18784D0`: every sample zeroes all 16 caller-owned bytes, requires the
+`module+0x570C638` dependency to remain nonnull and pointer-stable, calls the
+builder once, passes that exact State16 to `0x1878A00`, rejects any assessment
+mutation, and requires the second State16 to match byte-for-byte. Until that
+artifact returns an available live result, `live_executor_observation` remains
+false even though `typed_executor_invoked_live` is true.
+
+```text
+xar_ck3_bridge.dll          572928 D5E5A5433880B33151CA299807ED4F7E45F3CA26EE7B9D196E61CE925472DD63
+xar_ck3_bridge_injector.exe  38912 F165935E691F6210D33466A9288AE2F49E7969BB7DC318D116A18E0B567CC2AF
+xar_ck3_bridge_host.exe      69632 8AC36A81BD5D18AFC6C79D712FF9E4E9E72EF0838401FAFE37D971F33C22EB44
+```
+
+These hashes freeze this offline production candidate only. They are not a
+release marker or a claim that the typed live result has passed.
+
+### Authoritative State16 war-entry production6b artifact
+
+The actor-context failure was rebuilt from scratch on 2026-08-25 in
+`.build-war-entry-state16-production6b-msvc` with MSVC 19.51 and the Visual
+Studio Windows CMake/Ninja toolchain. The DLL timestamp is later than the
+State16 reader source. All 14 CTest targets passed; the exact-build scanner
+matched 138 unique signatures and 23 vtable prefixes. The targeted Python
+war-entry/gameplay suite ran 158 tests successfully with three optional cases
+skipped. No CK3 process was started or attached.
+
+```text
+xar_ck3_bridge.dll          572928 3A0AADEB538C7595DAAE35CF8A722FD06689862FF9F0F1CC32C5838F9BE97499
+xar_ck3_bridge_injector.exe  38912 A6954F3037AAB2201FB59B52A71517B41D300E150431009D406AA7045B7FE8C6
+xar_ck3_bridge_host.exe      69632 E3529C7FA1ACF82ABB68D12C74B21A033CD4DBC51D47C83D9F38CECA226BD864
+```
+
+This artifact replaces the invalid human manager-context lookup with the
+exact `0x18784D0` zeroed State16 builder and dependency stability gates. It is
+the next paused single-target live candidate, not evidence of an available
+live result; `live_executor_observation` remains false until that acceptance.
+
+### Claim-disposition v1 and frozen native white-peace final artifact
+
+The combined final artifact was configured and built from scratch on
+2026-08-25 in `.build-war-terms-wp-final-msvc` with MSVC 19.51. Fresh CTest
+passed all five targets: game-access fixture, adapter registry, combat-v3
+test-only serializer, suspended injection and running attach. The exact-build
+scanner matched `138` unique signatures and `20` vtable prefixes, including
+`read_character_claim` and `CCharacterClaim.present`. The targeted Python
+driver/service/contracts suite passed `253` tests; three optional official-MCP
+SDK cases were explicitly skipped because that SDK is not installed. No CK3
+process was accessed and no termination command was submitted.
+
+```text
+xar_ck3_bridge.dll          size=364032 SHA256=AC8F716B186A1C91A079958A65E627F6B2913EDA68F5702BAC62593192CAA14A
+xar_ck3_bridge_injector.exe size=38912  SHA256=9196F79F242B257CCADE7C69B6EBE436151EF536B8A6E50B7393BEFDB391308E
+```
+
+These hashes are deployment artifacts for the pending paused read-only
+claim-getter/destructor acceptance. They are not evidence that
+`0x28B1AA0` or its vtable destructor has run inside CK3, and they do not unlock
+the Python surrender or white-peace action surface.
+
+## Combat simulation inputs exact native slice
+
+This strictly read-only hypothetical-contact slice is frozen for CK3 1.19.0.6
+SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+Capability `game.command.query-combat-simulation-inputs-v2-N` accepts only
+`query-combat-simulation-inputs-v2-<target>-<entry>-a-<Acount>-<A...>-d-<Dcount>-<D...>`.
+The former v1 literal is superseded and is not advertised or dispatched. Its
+offline implementation required an existing move/current-position contact
+shape; the paused `83886341@2596` versus `357/33554657@2581` scenario could not
+construct one target accepted for all three armies before a move order, making
+that admission rule a reproduced live blocker. Every
+numeric token is a positive canonical ASCII decimal; both exact counts are
+1..63, the combined count is at most 64, target differs from entry, and all
+public full-generation ArmyIDs are distinct across partitions. One paused
+snapshot must place every requested army in player/active-war scope, prove all
+IDs share an active WarID, and prove each partition is one coalition opposite
+the other; player and active-war allies may share the friendly partition. This
+is the conditional
+`explicit_hypothetical_fixed_at_contact_no_reinforcements` participant model.
+Attackers are fixed at the supplied final-edge entry and defenders at target;
+their current positions, move targets, routes, route timing, and later
+reinforcements do not control admission.
+
+The root graph uses exact storages and full-ID readback throughout. Public
+`CUnit` storage is `base+0x570CC80`; its ID is `+0x10`, current and target
+Province pointers are `+0x20/+0x30`, owner CharacterID is `+0x174`, and CArmyID
+is `+0x178`. `CArmy` storage is `base+0x570C730`, never fallback
+`base+0x570C720`; ID is `+0x10`, regiment IDs are the bounded array
+`+0x38/+0x40/+0x44`, commander CharacterID is `+0x120`, backing CUnitID is
+`+0x124`, and CCombatID is `+0x128`. Owner resolution follows that CUnitID back
+through exact CUnit storage, reads `CUnit+0x174`, then resolves Character storage
+`base+0x570C130` with full ID readback at `CCharacter+0x18`. The resulting
+Character modifier owner supplies native counter efficiency/resistance indices
+`0x106/0x107` in Q100000.
+
+Commander helper RVA `0x2278F70` receives `CArmy*` and consumes the full
+CharacterID at `CArmy+0x120`; it is not a CUnit or owner helper. Generic points
+come only from RVA `0xBC5410(CCharacter*,-1,false)`. Paused code never calls
+the RNG-consuming roll helper. It mirrors its inclusive min/max operands from
+signed default globals `base+0x570ED7C/+0x570ED80`, the Character modifier
+aggregator returned by `0x26172C0`, fixed-point reads through
+`0x20AB950`, generic indices `0x108/0x109`, and the two **modifier indices**
+stored as uint16 at terrain `+0x76E/+0x770`. Each Q100000 contribution is
+individually divided with signed truncation toward zero. A proven absent
+commander has exact bounds `[0,0]`; a broken non-null generation is unavailable.
+
+`CRegiment` storage is `base+0x57BF4C8`, never fallback `base+0x57BF4C0`, with
+ID `+0x10`, current/maximum soldiers `+0x38/+0x3C`, and public-ID identity
+subobject `+0x08`. Nullable `CRegiment+0x118` is used only for the stable MAA
+database key at type `+0x18`; absent cannot be inferred to mean levy. Combat
+classification instead follows original side-population RVA `0x23C9100`:
+`combat_type=*(regiment+0x18)`, call its vtable slot 0 validity predicate and
+RVA `0x239CEB0(CRegiment*)`; only `!type_valid && !special` is `levy`, while
+every other case is `men_at_arms`. Main-phase eligibility is exactly byte
+`combat_type+0xA0A != 0`. These two buckets are the only CRegiment combat kinds;
+knights are projected independently as Characters.
+
+Target-specific regiment evaluation calls synchronous wrapper RVA
+`0x239CAE0(CRegiment*, Stats38* caller_owned_out, CProvince* target)`. Its
+0x38-byte output carries max size at `+0x08` and signed Q100000 siege, damage,
+toughness, pursuit, and screen at `+0x10/+0x18/+0x20/+0x28/+0x30`. Counter
+operands use class `combat_type+0x270`, bounded targets at
+`+0x2B8/+0x2C4` with 0x10-byte `{class,effectiveness_q100000}` rows, and RVA
+`0x23D2B90` against a zeroed synthetic 0x60-byte side entry containing only the
+full RegimentID at `+0x08` and checked `current_soldiers*100000` at `+0x18`.
+RVA `0x82DC40()+0xF14` supplies the positive bounded class count. Directional
+resolution calls `0x2946B50` for the owner-derived context scale and
+`0x23CF1B0(countered,countering,out,scale)` into caller-owned class storage.
+The original side primary participant is the first inserted CArmy owner. The
+hypothetical side therefore uses its explicitly frozen ArmyID request order and
+the first owner for the directional context scale, including mixed-owner sides;
+this is not inferred actual arrival order.
+
+Knight identity starts at each generation-valid participant regiment:
+`CRegiment+0x148` is a full CharacterID, `-1` means no knight, and any non-null
+ID must resolve through exact Character storage. Membership is cross-checked in
+both directions: `CRegiment+0x140` must equal the requested CArmyID and
+`CCharacter+0x1B0`, then link `+0xF8`, must repeat the source RegimentID.
+Effective prowess is `CCharacter+0xE8`. Direct effectiveness uses the borrowed
+context from `0x2613480(CCharacter*)` followed synchronously by
+`0x28FD990(int64* out, context, mode=0)`; it is published in Q100000 without
+lossy back-solving. The same `0x239CAE0` result must supply the knight's native
+damage/toughness contribution, cross-checked against the exact signed int32
+defines at `base+0x570EDF8/+0x570EDFC` rather than hard-coded stock values.
+Duplicate CharacterIDs or RegimentIDs, failed
+membership, generation drift, context failure, or contribution inconsistency
+rejects the strict graph rather than skipping a knight.
+
+The requested target and attacker-entry Provinces resolve through
+`game_state+0xA0` game data and its
+`+0x140/+0x14C` positive-ID pointer table with ID readback at `CProvince+0x10`.
+Terrain RVA `0x220D940(CProvince*)` follows the Province terrain chain; key is
+the bounded PdxString at terrain `+0x18` and width multiplier is signed Q100000
+at `+0x58`. The explicit entry `CProvince+0x08` map node exposes bounded
+adjacency rows at `+0x50/+0x5C`, stride `0x30`, with kind `+0x00` and target
+ProvinceID `+0x04`. The target edge must be unique: kind 0 is `none`, 1 is
+`strait` (source encoding sea adjacency), 2 is `river`, and 3 is `large_river`;
+impassable 4 and non-contact 5/6 reject. Missing edges reject and malformed or
+duplicate adjacency storage is unavailable. Native side orientation is side 0
+attacker and side 1 defender.
+
+The original `0x2209450` contact builder scans the target's full CUnitID array
+at `CProvince+0x748/+0x754`, generation-resolves each `CUnit+0x178` CArmyID,
+and passes stored-order `CArmy*` opponents through `0x27FB7C0` to the combat
+constructor. The constructor inserts defenders into side 1 and holding uses
+that side's first CArmy owner. A hypothetical contact
+instead freezes explicit `defender_army_ids` request order as its conditional
+insertion order and uses the first defender owner, even on a mixed-owner side.
+Holding status is the read-only predicate RVA
+`0x2900BB0(CCharacter* defender_owner,CProvince* target)`; no effect or script
+value is applied by this query. Initial width mirrors the native first-contact
+path with previous base zero: sum current soldiers per side, take the
+integer-truncated average, multiply by signed Q100000 `BASE_WIDTH_RATIO` at
+`base+0x570EDB8`, clamp base to at least 1, then multiply by the terrain width
+and clamp final to `MINIMUM_COMBAT_WIDTH` at `base+0x570ED84`. The frozen vector
+`1000` versus `800` with ratio 1.0 and terrain 0.8 gives base `900`, final `720`.
+
+If a selected CArmy already links a generation-valid `CCombat`, the optional
+ongoing row reads ID `+0x08`, Province `+0x6B8`, phase/day `+0x6B0/+0x6B4`,
+base/final width `+0x6C0/+0x6C4`, side rolls `+0x6D0/+0x6D4`, and
+base/resolved advantage `+0x6C8/+0x710`. No combat produces no row, never a
+zero-filled placeholder. Side orientation is explicitly
+`native_side_0_attacker_side_1_defender`.
+
+`completeness.observation_slice` is `precontact-composition-context-v2` and
+`completeness.input_observation_ready` is true only when every advertised
+input subdomain is available; any read failure makes the result `partial` and
+adds its concrete input-domain name. A fully available observation still has
+`monte_carlo_ready=false` and exactly four simulator—not MCP—gaps:
+`damage_to_casualty_allocation`, `pursuit_transition`,
+`battle_end_and_retreat_transition`, and `phase_event_rng_and_effects`.
+The native query submits no command, applies no effect, advances no date, and
+consumes no RNG. Exact available transport shape is frozen in
+`research/fixtures/combat_simulation_inputs_v2_available.json`; malformed
+literal, generation, levy/MAA/special/main-phase-false, absent type/commander,
+counter, knight, crossing 0..6, explicit-side relation, mixed-owner insertion
+order, width, and typed-partial cases are covered by offline fixtures. Exact-build live acceptance
+remains pending and this section must not be read as live gameplay evidence.
+
+The final offline Release build used the fresh
+`.build-combat-context-native-v2-final-msvc` directory with MSVC 19.51. CTest
+passed all four targets: game-access fixture, adapter registry,
+suspended-injection fixture, and running-attach fixture. The latter two use
+repository test targets, not CK3. The executable scanner matched `137` unique
+signatures and `19` vtable prefixes, including all 14 newly bound combat
+helpers. Diagnostic artifact sizes and SHA-256 values are:
+
+```text
+xar_ck3_bridge.dll          336896 305DA2DBBB8F161543A437EB7C77D18C55CDE1A569FF33CCEE333BE45F4F6CAA
+xar_ck3_bridge_injector.exe  38912 5159F2D2740DF31FEDC154E7AB2B6C914D6FB50941BA5145E54DCCB3BC7E561C
+```
+
+These hashes freeze this offline build evidence only. The build directory is
+not versioned and the record is not a live gameplay acceptance or release
+channel marker.
+
+## Army strength exact native slice
+
+This paused, strictly read-only slice is frozen from exact-build static
+evidence and offline native fixtures for CK3 1.19.0.6 SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+It advertises `game.command.query-army-strengths-v1`, does not accept native
+caller-supplied IDs, and never submits to the command queue. One call derives
+its full allowed scope from one snapshot: player armies first, followed by
+each active war's allied armies and then enemy armies, with first-public-ID
+order, stable WarID union and role upgrades. Exact-build live acceptance is
+live-confirmed on paused revision `4`: player ArmyID `83886341` returned
+`1482/2243` current/maximum soldiers, `38` regiments and AI base power
+`5,522,300,000` raw (`55,223` at Q100000); active-war enemy `33554657`
+returned `1011/1011`, `22`, and `3,160,000,000` raw; enemy `357` returned
+`1801/3751`, `23`, and `5,846,800,000` raw. All three rows came from the same
+read-only paused query and revision, not from GUI estimation or command ACKs.
+
+The final Release build used the fresh
+`build-army-strength-msvc-release-2` directory with MSVC 19.51. CTest passed
+all four targets: game-access fixture, adapter registry, suspended-injection
+  fixture and running-attach fixture. The game-access fixture additionally
+  closed identity-valid aggregation, full-generation rejection, strict
+  data/capacity/count array validation, missing identity predicate, atomic
+  partial rows and legal empty armies. The two injection tests use repository test
+targets, not CK3. The offline executable scanner matched `123` unique
+signatures and `19` vtable prefixes, including both soldier helpers. Diagnostic
+artifact sizes and SHA-256 values are:
+
+```text
+xar_ck3_bridge.dll          235008 B92E5542655D115E4BAA419EBE14B73032138E0250655EAEDF5F931A82258197
+xar_ck3_bridge_injector.exe  38912 6CF1758D0733512FE8804302BA590BB56449057421C9578C5A05BEBE308E9A7C
+```
+
+These hashes freeze this offline build evidence only. The build directory is
+not versioned, and this record is not a live gameplay acceptance or release
+channel marker.

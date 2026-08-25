@@ -8,7 +8,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 42> kCapabilities{
+constexpr std::array<std::string_view, 50> kCapabilities{
     "game.state.snapshot",
     "game.state.xar-one-life-settlement",
     "game.state.map-ready",
@@ -45,8 +45,16 @@ constexpr std::array<std::string_view, 42> kCapabilities{
     "game.command.start-assault-N",
     "game.command.stop-assault-N",
     "game.command.query-declarable-wars",
+    "game.command.query-war-entry-assessments-v1-N",
     "game.command.declare-war-N",
     "game.command.enforce-demands-N",
+    "game.command.query-army-strengths-v1",
+    "game.command.query-combat-simulation-inputs-v2-N",
+    "game.command.query-combat-simulation-inputs-v3-N",
+    "game.command.query-war-termination-options-N",
+    "game.command.query-war-termination-terms-v1-N",
+    "game.command.surrender-war-N",
+    "game.command.offer-white-peace-N",
     "game.command.query-arrange-marriage-choices",
     "game.command.arrange-marriage-N",
     "game.adapter.exact-build",
@@ -149,6 +157,47 @@ public:
   EnforceDemandsResult
   submit_enforce_demands(std::int32_t war_id) const noexcept override {
     return ck3_11906::SubmitEnforceDemands(bindings_, war_id);
+  }
+  ReadArmyStrengthsResult read_army_strengths(
+      std::vector<ArmyStrengthSnapshot> &output) const noexcept override {
+    return ck3_11906::ReadArmyStrengths(bindings_, output);
+  }
+  ReadCombatSimulationInputsResult read_combat_simulation_inputs(
+      const CombatSimulationInputsRequest &request,
+      CombatSimulationInputsSnapshot &output) const noexcept override {
+    return ck3_11906::ReadCombatSimulationInputs(bindings_, request, output);
+  }
+  ReadCombatSimulationInputsV3Result read_combat_simulation_inputs_v3(
+      const CombatSimulationInputsRequest &request,
+      CombatSimulationInputsV3Snapshot &output) const noexcept override {
+    return ck3_11906::ReadCombatSimulationInputsV3(bindings_, request, output);
+  }
+  ReadWarTerminationOptionsResult read_war_termination_options(
+      std::int32_t war_id,
+      WarTerminationOptionsSnapshot &output) const noexcept override {
+    return ck3_11906::ReadWarTerminationOptions(bindings_, war_id, output);
+  }
+  ReadWarTerminationTermsResult read_war_termination_terms(
+      std::int32_t war_id,
+      WarTerminationTermsSnapshot &output) const noexcept override {
+    return ck3_11906::ReadWarTerminationTerms(bindings_, war_id, output);
+  }
+  ReadWarTerminationExitTermsResult read_war_termination_exit_terms(
+      std::int32_t war_id,
+      WarTerminationExitTermsSnapshot &output) const noexcept override {
+    return ck3_11906::ReadWarTerminationExitTerms(bindings_, war_id, output);
+  }
+  std::string_view last_war_termination_exit_terms_unavailable_reason()
+      const noexcept override {
+    return ck3_11906::LastWarTerminationExitTermsUnavailableReason();
+  }
+  SurrenderWarResult
+  submit_surrender_war(std::int32_t war_id) const noexcept override {
+    return ck3_11906::SubmitSurrenderWar(bindings_, war_id);
+  }
+  OfferWhitePeaceResult
+  submit_offer_white_peace(std::int32_t war_id) const noexcept override {
+    return ck3_11906::SubmitOfferWhitePeace(bindings_, war_id);
   }
 
 private:

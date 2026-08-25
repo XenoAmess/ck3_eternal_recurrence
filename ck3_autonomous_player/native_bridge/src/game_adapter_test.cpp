@@ -7,6 +7,7 @@
 #include <iostream>
 #include <memory>
 #include <span>
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -130,6 +131,46 @@ public:
   submit_enforce_demands(std::int32_t) const noexcept override {
     return xar::game::EnforceDemandsResult::unavailable;
   }
+  xar::game::ReadArmyStrengthsResult read_army_strengths(
+      std::vector<xar::game::ArmyStrengthSnapshot> &) const noexcept override {
+    return xar::game::ReadArmyStrengthsResult::unavailable;
+  }
+  xar::game::ReadCombatSimulationInputsResult
+  read_combat_simulation_inputs(
+      const xar::game::CombatSimulationInputsRequest &,
+      xar::game::CombatSimulationInputsSnapshot &) const noexcept override {
+    return xar::game::ReadCombatSimulationInputsResult::unavailable;
+  }
+  xar::game::ReadCombatSimulationInputsV3Result
+  read_combat_simulation_inputs_v3(
+      const xar::game::CombatSimulationInputsRequest &,
+      xar::game::CombatSimulationInputsV3Snapshot &) const noexcept override {
+    return xar::game::ReadCombatSimulationInputsV3Result::unavailable;
+  }
+  xar::game::ReadWarTerminationOptionsResult read_war_termination_options(
+      std::int32_t,
+      xar::game::WarTerminationOptionsSnapshot &) const noexcept override {
+    return xar::game::ReadWarTerminationOptionsResult::unavailable;
+  }
+  xar::game::ReadWarTerminationTermsResult read_war_termination_terms(
+      std::int32_t,
+      xar::game::WarTerminationTermsSnapshot &) const noexcept override {
+    return xar::game::ReadWarTerminationTermsResult::unavailable;
+  }
+  xar::game::ReadWarTerminationExitTermsResult
+  read_war_termination_exit_terms(
+      std::int32_t,
+      xar::game::WarTerminationExitTermsSnapshot &) const noexcept override {
+    return xar::game::ReadWarTerminationExitTermsResult::unavailable;
+  }
+  xar::game::SurrenderWarResult
+  submit_surrender_war(std::int32_t) const noexcept override {
+    return xar::game::SurrenderWarResult::unavailable;
+  }
+  xar::game::OfferWhitePeaceResult
+  submit_offer_white_peace(std::int32_t) const noexcept override {
+    return xar::game::OfferWhitePeaceResult::unavailable;
+  }
 
 private:
   const AdapterDescriptor &descriptor_;
@@ -198,15 +239,120 @@ int main() {
       !Contains(known.capabilities, "game.command.stop-assault-N") ||
       !Contains(known.capabilities, "game.command.declare-war-N") ||
       !Contains(known.capabilities,
+                "game.command.query-army-strengths-v1") ||
+      !Contains(known.capabilities,
+                "game.command.query-combat-simulation-inputs-v2-N") ||
+      !Contains(known.capabilities,
+                "game.command.query-combat-simulation-inputs-v3-N") ||
+      !Contains(known.capabilities,
+                "game.command.query-war-termination-options-N") ||
+      !Contains(known.capabilities,
+                "game.command.query-war-termination-terms-v1-N") ||
+      !Contains(known.capabilities, "game.command.surrender-war-N") ||
+      !Contains(known.capabilities,
+                "game.command.offer-white-peace-N") ||
+      !Contains(known.capabilities,
                 "game.command.query-arrange-marriage-choices") ||
       !Contains(known.capabilities, "game.adapter.minimized-headless")) {
     return Fail("known adapter omitted a required semantic capability");
+  }
+  if (Contains(known.capabilities,
+               "game.command.query-war-termination-exit-terms-v2-N")) {
+    return Fail("known adapter advertised the crash-disabled exit-v2 query");
   }
   for (auto left = known.capabilities.begin(); left != known.capabilities.end();
        ++left) {
     if (std::find(left + 1, known.capabilities.end(), *left) !=
         known.capabilities.end()) {
       return Fail("known adapter advertised a duplicate capability");
+    }
+  }
+
+  xar::game::CombatSimulationInputsRequest combat_request{};
+  constexpr std::string_view canonical_combat_step =
+      "query-combat-simulation-inputs-v2-900-899-a-2-22-12-d-1-13";
+  if (!xar::game::ParseCombatSimulationInputsStep(
+          canonical_combat_step, combat_request) ||
+      combat_request.target_province_id != 900 ||
+      combat_request.attacker_entry_province_id != 899 ||
+      combat_request.attacker_army_ids !=
+          std::vector<std::int32_t>{22, 12} ||
+      combat_request.defender_army_ids != std::vector<std::int32_t>{13}) {
+    return Fail("canonical hypothetical-contact combat query did not parse");
+  }
+  constexpr std::string_view canonical_v3_combat_step =
+      "query-combat-simulation-inputs-v3-900-899-a-2-22-12-d-1-13";
+  if (!xar::game::ParseCombatSimulationInputsV3Step(
+          canonical_v3_combat_step, combat_request) ||
+      combat_request.target_province_id != 900 ||
+      combat_request.attacker_entry_province_id != 899 ||
+      combat_request.attacker_army_ids !=
+          std::vector<std::int32_t>{22, 12} ||
+      combat_request.defender_army_ids != std::vector<std::int32_t>{13} ||
+      xar::game::ParseCombatSimulationInputsStep(canonical_v3_combat_step,
+                                                 combat_request)) {
+    return Fail("canonical production v3 combat literal did not parse");
+  }
+  constexpr std::array<std::string_view, 15> invalid_combat_steps{
+      "query-combat-simulation-inputs-v1-900-22-12",
+      "query-combat-simulation-inputs-v2-900",
+      "query-combat-simulation-inputs-v2-0900-899-a-1-22-d-1-13",
+      "query-combat-simulation-inputs-v2-900-900-a-1-22-d-1-13",
+      "query-combat-simulation-inputs-v2-900-899-a-0-d-1-13",
+      "query-combat-simulation-inputs-v2-900-899-a-2-22-d-1-13",
+      "query-combat-simulation-inputs-v2-900-899-a-1-22-x-1-13",
+      "query-combat-simulation-inputs-v2-900-899-a-1-22-d-0",
+      "query-combat-simulation-inputs-v2-900-899-a-1-22-d-1-22",
+      "query-combat-simulation-inputs-v2-900-899-a-64-22-d-1-13",
+      "query-combat-simulation-inputs-v2-900-899-a-1-2147483648-d-1-13",
+      "query-combat-simulation-inputs-v2-900-899-a-1-22-d-1-13-",
+      "query-combat-simulation-inputs-v2-900-899-a-1-22-d-2-13",
+      "game.command.query-combat-simulation-inputs-v2-N",
+      "game.command.query-combat-simulation-inputs-v3-N",
+  };
+  constexpr std::string_view v2_prefix =
+      "query-combat-simulation-inputs-v2-";
+  constexpr std::string_view v3_prefix =
+      "query-combat-simulation-inputs-v3-";
+  for (const auto invalid : invalid_combat_steps) {
+    if (xar::game::ParseCombatSimulationInputsStep(invalid, combat_request) ||
+        xar::game::ParseCombatSimulationInputsV3Step(invalid,
+                                                     combat_request)) {
+      return Fail("noncanonical combat query step was accepted");
+    }
+    if (invalid.starts_with(v2_prefix)) {
+      const std::string invalid_v3 =
+          std::string(v3_prefix) + std::string(invalid.substr(v2_prefix.size()));
+      if (xar::game::ParseCombatSimulationInputsV3Step(invalid_v3,
+                                                       combat_request)) {
+        return Fail("noncanonical production v3 combat query was accepted");
+      }
+    }
+  }
+  auto exact_adapter =
+      xar::game::CreateCk3_11906Adapter(known.executable_sha256);
+  if (exact_adapter == nullptr || !exact_adapter->enabled() ||
+      !exact_adapter->supports_step(canonical_combat_step) ||
+      !exact_adapter->supports_step(canonical_v3_combat_step) ||
+      !exact_adapter->supports_step(
+          "query-war-termination-terms-v1-16777290") ||
+      exact_adapter->supports_step(
+          "query-war-termination-exit-terms-v2-16777290") ||
+      !exact_adapter->supports_step("offer-white-peace-16777290") ||
+      exact_adapter->supports_step(
+          "query-war-termination-terms-v1-016777290") ||
+      exact_adapter->supports_step(
+          "query-war-termination-terms-v1-2147483648") ||
+      exact_adapter->supports_step(
+          "query-war-termination-exit-terms-v2-016777290") ||
+      exact_adapter->supports_step(
+          "query-war-termination-exit-terms-v2-2147483648") ||
+      exact_adapter->supports_step("offer-white-peace-016777290")) {
+    return Fail("exact adapter did not map the strict combat query step");
+  }
+  for (const auto invalid : invalid_combat_steps) {
+    if (exact_adapter->supports_step(invalid)) {
+      return Fail("exact adapter advertised a malformed combat query step");
     }
   }
 
@@ -217,6 +363,14 @@ int main() {
       partial.supports("game.state.war-objectives") ||
       partial.supports("game.state.war-objective-siege-progress") ||
       partial.supports("game.command.declare-war-N") ||
+      partial.supports_step("query-army-strengths-v1") ||
+      partial.supports_step("query-war-termination-options-16777217") ||
+      partial.supports_step(
+          "query-war-termination-terms-v1-16777217") ||
+      partial.supports_step(
+          "query-war-termination-exit-terms-v2-16777217") ||
+      partial.supports_step("surrender-war-16777217") ||
+      partial.supports_step("offer-white-peace-16777217") ||
       !partial.supports_snapshot() || !partial.supports_step("pause-map") ||
       !partial.supports_step("preview-move-army-1-to-2") ||
       !partial.supports_step("split-army-half-1") ||

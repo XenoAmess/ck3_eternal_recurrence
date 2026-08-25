@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "contract": "main_thread_query_mailbox_v1",
+  "contract_stage": "application_main_thread_war_entry_production",
+  "executable_version": "CK3 1.19.0.6",
+  "adapter_id": "ck3-1.19.0.6-msvc-x64",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "advertised": false,
+  "production_wiring": true,
+  "live_observation": true,
+  "live_executor_observation": false,
+  "candidate_id": "application_main_thread_war_entry_v1",
+  "native_abi": {
+    "imports": {
+      "peek_message_w": {
+        "identity": "USER32!PeekMessageW",
+        "iat_rva": "0x3FD2EE8",
+        "pe_section": ".rdata",
+        "expected_runtime_state": "MEM_COMMIT|MEM_IMAGE|PAGE_READONLY"
+      },
+      "get_current_thread_id": {
+        "identity": "KERNEL32!GetCurrentThreadId",
+        "iat_rva": "0x3FD2570",
+        "thunk_rva": "0x3D00000"
+      }
+    },
+    "sdl_pump": {
+      "windows_video_device_pump_install_rva": "0x3CFE7AB",
+      "pump_function_rva": "0x3CE41E0",
+      "peek_call_rva": "0x3CE421C",
+      "peek_exact_return_rva": "0x3CE4222",
+      "sdl_pump_events_rva": "0x3CD3600",
+      "device_slot_call_rva": "0x3CD366C",
+      "known_upper_callers": [
+        "0x3CD3763",
+        "0x3CD3D84",
+        "0x3CD40D6",
+        "0x3CD4727"
+      ],
+      "application_frame_chain": {
+        "runner": "0x351F0D0",
+        "application_vslot_implementation": "0x3555820",
+        "application_event_function": "0x3555190",
+        "handle_pdx_events_wrapper": "0x3A2EC30",
+        "handle_pdx_events_body": "0x3A2EE60",
+        "sdl_event_slot_rva": "0x4FE0A68",
+        "sdl_event_slot_target": "0x3CD3730",
+        "paused_semantics": "no_pause_gate_in_static_chain_but_minimized_and_application_flags_still_require_live_counter"
+      }
+    },
+    "rng_scoped_owner_diagnostic": {
+      "native_check_function_rva": "0x356A0A0",
+      "get_current_thread_id_call_rva": "0x356A0BA",
+      "global_rng_wrapper_slot_rva": "0x4FEB1C8",
+      "wrapper_state_offset": "0x00",
+      "state_owner_thread_id_offset": "0x10",
+      "native_mismatch_behavior_inside_rng_draw": "fatal_path",
+      "rng_owner_limit": "0x356B600_is_generic_owner_acquire_so_rng_owner_alone_is_not_main_thread_proof",
+      "mailbox_policy": "raw_provenance_only_never_readiness_or_executor_admission"
+    },
+    "main_thread_tls_gate": {
+      "initialized_flag_rva": "0x57727ED",
+      "startup_global_store_rva": "0x7E7CDE",
+      "startup_getter_call_rva": "0x7E7CE5",
+      "context_getter_rva": "0x3B86430",
+      "abi": "void* (__fastcall*)() noexcept",
+      "main_thread_marker_offset": "0x20",
+      "handle_pdx_events_rva": "0x3A2EC30",
+      "handle_global_check_rva": "0x3A2EC4D",
+      "handle_getter_and_marker_check_rva": "0x3A2EC58",
+      "inactive_fatal_rva": "0x3A2EC80",
+      "required_stamp": "global_initialized_equals_1_and_tls_pointer_stable_and_tls_plus_0x20_equals_1"
+    },
+    "paused_same_frame_stamp": {
+      "jomini_state_slot_rva": "0x570F7B8",
+      "paused_offset": "0x20",
+      "game_state_slot_rva": "0x570E068",
+      "date_raw_offset": "0x08",
+      "policy": "thread_tls_global_tls_pointer_tls_marker_jomini_game_paused_and_date_double_read_before_and_after_executor_rng_owner_excluded"
+    }
+  },
+  "iat_patch_protocol": {
+    "installation_owner": "WorkerMain_after_adapter_exact_build_admission",
+    "query_api": "VirtualQuery",
+    "required_initial_page": "MEM_COMMIT|MEM_IMAGE|PAGE_READONLY",
+    "protect_api": "VirtualProtect",
+    "minimum_region": "single_pointer_containing_system_page",
+    "temporary_protect": "PAGE_READWRITE",
+    "atomic_operation": "InterlockedCompareExchangePointer",
+    "install_expected": "resolved USER32!PeekMessageW",
+    "install_desired": "XarMainThreadPeekMessageWHookV1",
+    "uninstall_expected": "XarMainThreadPeekMessageWHookV1",
+    "uninstall_desired": "resolved USER32!PeekMessageW",
+    "restore_policy": "restore_original_PAGE_READONLY_after_every_CAS_attempt",
+    "failure_rollback": "if_post_CAS_protection_restore_fails_then_CAS_original_back_before_retrying_page_restore"
+  },
+  "hook_contract": {
+    "original_call_order": "original_PeekMessageW_first",
+    "preserve_return": true,
+    "preserve_LastError": true,
+    "admission_return_rva": "0x3CE4222",
+    "maximum_drain_per_pump": 1,
+    "minimum_consecutive_application_main_paused_pump_epochs_before_submit": 2,
+    "main_thread_admission": "tls_global_and_stable_tls_context_marker_plus_paused_date_jomini_game_required_rng_owner_diagnostic_only",
+    "reentry_guard": "atomic_flag",
+    "single_slot": true,
+    "timeout_cancel": "queued_only",
+    "executing_timeout": "caller_retains_context_until_terminal_reclaim"
+  },
+  "slot_states": [
+    "detached",
+    "idle",
+    "publishing",
+    "queued",
+    "executing",
+    "completed",
+    "executor_failed",
+    "cancelled",
+    "infrastructure_failed",
+    "detaching"
+  ],
+  "uninstall_contract": {
+    "normal_owner": "WorkerMain_unified_cleanup_before_XarCk3BridgeStop_resets_worker_lifecycle",
+    "module_lifetime": "process_lifetime_pinned_no_remote_FreeLibrary",
+    "rundown_limit": "IAT_restore_plus_active_counter_cannot_cover_a_thread_that_fetched_the_hook_target_before_increment",
+    "order": [
+      "set_stop_requested",
+      "reject_or_cancel_nonexecuting_request",
+      "atomically_restore_original_PeekMessageW_under_temporary_PAGE_READWRITE",
+      "restore_PAGE_READONLY",
+      "wait_until_currently_counted_active_hook_calls_equals_zero",
+      "retain_global_mailbox_and_original_function_pointer_until_process_exit",
+      "mark_detached",
+      "permit_same_static_mailbox_reinstall_but_never_dll_unload"
+    ],
+    "timeout_policy": "active_hook_calls_pending_keeps_bridge_lifecycle_stopping_and_allows_retry",
+    "delayed_hook_policy": "stop_requested_skips_drain_but_still_calls_pinned_original_and_preserves_return_and_LastError",
+    "PROCESS_DETACH": "signal_stop_only_never_wait_under_loader_lock"
+  },
+  "application_main_heartbeat_observation": {
+    "transport": "existing_250ms_heartbeat_metadata_not_capability_not_command_not_MCP",
+    "object_key": "main_thread_query_mailbox_v1",
+    "executor_submission_enabled": true,
+    "permitted_executor": "ExecuteWarEntryAssessmentMailboxQueryV1_only",
+    "required_fields": [
+      "installed",
+      "stop",
+      "failure",
+      "pump_epochs",
+      "consecutive_verified",
+      "owner_tid",
+      "current_tid",
+      "rng_owner_tid",
+      "tls_global",
+      "tls_context",
+      "tls_marker",
+      "jomini_state",
+      "game_state",
+      "date_raw",
+      "paused",
+      "stamp_read_success",
+      "executed_requests",
+      "ready"
+    ],
+    "acceptance": "one_target_war_entry_query_returns_complete_available_payload_and_executed_requests_increments_once"
+  },
+  "war_entry_frame_binding": {
+    "worker_pre_submit": "fresh ReadSnapshot equals the last published paused expected snapshot, then one full ReadDeclarableWars freezes the ordered unique target set",
+    "application_main_capture": "before middle and after callbacks each call fresh ReadSnapshot and require exact expected snapshot equality; they return the frozen declaration set without another global scan",
+    "production_target_count": 1,
+    "maximum_requests_per_pump": 1
+  },
+  "readiness": {
+    "static_exact_build_chain": true,
+    "offline_state_machine_fixture": true,
+    "live_paused_application_main_pump_observed": true,
+    "live_typed_executor_observed": false,
+    "query_specific_reader_attached": true,
+    "only_permitted_executor_locked": true,
+    "first_live_target_limit": 1,
+    "capability_ready": true
+  }
+}

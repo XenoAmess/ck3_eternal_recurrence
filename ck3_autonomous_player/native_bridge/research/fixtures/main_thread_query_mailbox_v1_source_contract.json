@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "fixture": "main_thread_query_mailbox_v1_source_contract",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "advertised": false,
+  "production_wiring": true,
+  "live_paused_pump_observed": true,
+  "live_typed_executor_observed": false,
+  "candidate_id": "application_main_thread_war_entry_v1",
+  "offline_fixture_only": true,
+  "frozen_inputs": {
+    "module_base": "0x140000000",
+    "owner_thread_id": 66,
+    "date_raw": 53175816,
+    "paused": true,
+    "tls_global_initialized": 1,
+    "tls_main_thread_marker": 1,
+    "page_size": 4096,
+    "iat_page": {
+      "section": ".rdata",
+      "state": "MEM_COMMIT",
+      "type": "MEM_IMAGE",
+      "initial_protect": "PAGE_READONLY",
+      "temporary_protect": "PAGE_READWRITE"
+    }
+  },
+  "static_native_chain": {
+    "peek_iat": "0x3FD2EE8 USER32!PeekMessageW",
+    "windows_pump": "0x3CE41E0",
+    "peek_call_and_return": "0x3CE421C -> 0x3CE4222",
+    "pump_install": "0x3CFE7AB",
+    "sdl_dispatch": "0x3CD3600 -> 0x3CD366C",
+    "upper_callers": [
+      "0x3CD3763",
+      "0x3CD3D84",
+      "0x3CD40D6",
+      "0x3CD4727"
+    ],
+    "rng_owner_check": "0x356A0A0",
+    "thread_id_thunk_and_iat": "0x3D00000 -> 0x3FD2570 GetCurrentThreadId",
+    "rng_wrapper_slot": "0x4FEB1C8",
+    "tls_startup": "0x7E7CDE global+0x57727ED=1; 0x7E7CE5 -> 0x3B86430; TLS marker +0x20=1",
+    "handle_pdx_events_tls_gate": "0x3A2EC30; 0x3A2EC4D global check; 0x3A2EC58 getter and marker check",
+    "application_frame_chain": "0x351F0D0 -> 0x3555820 -> 0x3555190 -> 0x3A2EC30 -> 0x3A2EE60 -> slot 0x4FE0A68 -> 0x3CD3730"
+  },
+  "vectors": [
+    {
+      "name": "two_epoch_admission_and_single_slot_success",
+      "expected_executor_calls": 1,
+      "expected_state": "completed",
+      "expected_preserved_return": true,
+      "expected_preserved_LastError": "0x5A17"
+    },
+    {
+      "name": "timeout_cancel_while_queued",
+      "expected_executor_calls": 0,
+      "expected_wait_result": "timeout_cancelled_before_execution"
+    },
+    {
+      "name": "consecutive_proof_resets",
+      "valid_identity_drifts_reset_to_one": [
+        "date_raw",
+        "tls_context_identity",
+        "jomini_state_identity",
+        "game_state_identity"
+      ],
+      "invalid_observations_reset_to_zero": [
+        "paused_false",
+        "read_stamp_failure"
+      ],
+      "expected_streak_after_first_new_valid_stamp": 1,
+      "expected_streak_after_second_identical_valid_stamp": 2
+    },
+    {
+      "name": "rng_owner_mismatch_is_diagnostic_only",
+      "current_thread_id": 66,
+      "rng_owner_thread_id": 67,
+      "expected_consecutive_verified": 2,
+      "expected_ready": true,
+      "expected_failure": 0
+    },
+    {
+      "name": "reentry_flag_after_publish_blocks_executor",
+      "injected_before_drain": [
+        "proof_reset_requested",
+        "main_thread_query_failure_reentry"
+      ],
+      "expected_executor_calls": 0,
+      "expected_state": "infrastructure_failed"
+    },
+    {
+      "name": "timeout_while_executor_running_retains_context",
+      "synchronization": "Win32_entered_and_release_events_plus_drain_thread",
+      "expected_wait_result": "timeout_executor_already_running",
+      "expected_early_reclaim": "not_terminal",
+      "expected_early_uninstall": "request_active",
+      "context_destroy_after": "terminal_reclaim_and_thread_join"
+    },
+    {
+      "name": "same_boundary_date_drift",
+      "expected_state": "infrastructure_failed",
+      "expected_failure": "main_thread_query_failure_post_execution_drift"
+    },
+    {
+      "name": "tls_marker_inactive_rejected_even_when_rng_owner_matches",
+      "input_tls_marker": 0,
+      "expected_executor_calls": 0,
+      "expected_failure": "main_thread_query_failure_tls_identity"
+    },
+    {
+      "name": "install_restore_protect_failure_rolls_back_hook",
+      "injected_failure": "first_PAGE_READONLY_restore_after_install_CAS",
+      "expected_iat": "original_USER32_PeekMessageW",
+      "expected_final_protect": "PAGE_READONLY",
+      "expected_install": false
+    },
+    {
+      "name": "uninstall_active_call_drain",
+      "first_active_hook_calls": 1,
+      "first_result": "active_hook_calls_pending",
+      "expected_iat_after_first_result": "original_USER32_PeekMessageW",
+      "second_active_hook_calls": 0,
+      "second_result": "uninstalled",
+      "late_direct_hook": "calls_pinned_original_without_drain",
+      "reinstall": "same_static_mailbox_succeeds"
+    }
+  ],
+  "lifecycle": {
+    "install": "WorkerMain_after_exact_build_adapter_admission",
+    "uninstall": "WorkerMain_all_return_paths_before_XarCk3BridgeStop_resets_worker_lifecycle",
+    "PROCESS_DETACH": "signal_only_no_wait",
+    "module_lifetime": "process_lifetime_pinned_no_FreeLibrary",
+    "late_entry": "static_mailbox_and_original_PeekMessageW_remain_valid_until_process_exit",
+    "reinstall": "same_static_mailbox_only",
+    "bridge_stop_timeout": "retain_worker_handle_stop_event_pipe_name_and_lifecycle_stopping_then_retry",
+    "bridge_start_while_stopping": "CAS_0_to_1_observes_2_and_returns_false_without_writing_1"
+  },
+  "application_main_heartbeat": {
+    "object_key": "main_thread_query_mailbox_v1",
+    "fixed_keys": [
+      "installed",
+      "stop",
+      "failure",
+      "pump_epochs",
+      "consecutive_verified",
+      "owner_tid",
+      "current_tid",
+      "rng_owner_tid",
+      "tls_global",
+      "tls_context",
+      "tls_marker",
+      "jomini_state",
+      "game_state",
+      "date_raw",
+      "paused",
+      "stamp_read_success",
+      "executed_requests",
+      "executor_submission_enabled",
+      "ready"
+    ],
+    "executor_submission_enabled": true,
+    "permitted_executor": "ExecuteWarEntryAssessmentMailboxQueryV1",
+    "first_live_target_limit": 1,
+    "expected_consecutive_verified": 2,
+    "transport": "heartbeat_metadata_plus_typed_war_entry_command"
+  },
+  "unsupported_claims": [
+    "typed war-entry executor has not yet completed live acceptance",
+    "no generic evaluator or effect executor is admitted",
+    "network/session thread is not an executor candidate"
+  ]
+}

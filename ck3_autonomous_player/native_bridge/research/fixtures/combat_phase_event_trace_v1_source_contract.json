@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "fixture_kind": "offline_source_contract_only",
+  "contract": "combat_phase_event_trace_v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "live_observation": false,
+  "contains_fake_combat_id": false,
+  "contains_fake_rng_state": false,
+  "contains_fake_effect_transition": false,
+  "request_literal_rule": "query-combat-phase-event-trace-v1-{positive_full_generation_CombatID}",
+  "capability_advertised": false,
+  "bridge_dispatch_connected": false,
+  "expected_live_probe_status": "evaluator_probe_available",
+  "production_trace_status": "withheld_until_missing_readers_close",
+  "stock_rows": [
+    [0, 0, "commander_none", "commander", true],
+    [1, 1, "commander_wounded", "commander", false],
+    [2, 2, "commander_maimed", "commander", false],
+    [3, 3, "commander_killed", "commander", false],
+    [4, 0, "knight_none", "knight", true],
+    [5, 1, "knight_berserker_attack", "knight", false],
+    [6, 2, "knight_become_berserker", "knight", false],
+    [7, 3, "knight_shieldmaiden_attack", "knight", false],
+    [8, 4, "knight_becomes_incapable", "knight", false],
+    [9, 5, "knight_wounded", "knight", false],
+    [10, 6, "knight_maimed", "knight", false],
+    [11, 7, "knight_killed", "knight", false],
+    [12, 8, "knight_qualify_for_accolade", "knight", false]
+  ],
+  "required_native_scope": {
+    "root_kind": 4,
+    "named_scope_key": "combat_side",
+    "named_scope_kind": 11,
+    "orientation": "0 for CCombat+0x20, 1 for CCombat+0x368",
+    "payload": "sign-extended CCombat+0x08 CombatID"
+  },
+  "forbidden_probe_calls": [
+    "0x23CEB10 lazy database getter",
+    "0x2E1C570 weighted selector",
+    "0x23C8750 schedule builder",
+    "0x23C9900 phase-event dispatcher",
+    "0x3380310 effect executor",
+    "0x356A0A0 global RNG draw entry",
+    "0x356B770 global RNG core"
+  ],
+  "single_snapshot_occurrence_semantics": "retained_schedule_and_generic_battle_event_rows_only",
+  "random_side_knight_order": {
+    "policy": "ccombat_side_knight_source_then_tail_swap_remove_v1",
+    "class_vtable_rva": "0x41DE5C0",
+    "materialize_filter_slot": "vtable+0xD8 -> 0x19F4760",
+    "materializer": "0x19DD670",
+    "source": "actual CCombatSide+0x40/+0x4C stride0x60, RegimentID row+0x08 -> CRegiment+0x148 CharacterID, skip only -1",
+    "materialize_call_schedule": "0x3388410: source predicate effect+0x60 then effect+0x220[0..effect+0x22C), always paired with shared predicate effect+0x140",
+    "predicate_evaluation_order": "shared R8 then source RDX through 0x334C600",
+    "limit_compaction": "rejected index receives current tail, count decrements, same index rechecked",
+    "selection": "0x33E8D40 iterates post-compaction vector order",
+    "weight": "0x337B310 signed Q100000 -> toward-zero quotient plus one only for positive remainder; stored low int32 and signed total int32-wrap; zero/negative rows are not clamped or skipped",
+    "rng": "one context+0x28 draw; total>0 uses modulo-total and signed ordered subtraction (negative rows increase remainder; no hit falls back index0); total<=0/missing weight uses modulo-count",
+    "combat_inputs_v3_source_vector_equivalence_ready": false,
+    "ast_admission_until_equivalence_and_policy_tests": false,
+    "deterministic_vectors": [
+      {
+        "case": "tail_swap_remove_nonstable",
+        "source": [101, 102, 103, 104],
+        "shared_reject": [],
+        "source_reject": [102],
+        "expected_post_compaction": [101, 104, 103],
+        "expected_predicate_log": ["shared:101", "source:101", "shared:102", "source:102", "shared:104", "source:104", "shared:103", "source:103"]
+      },
+      {
+        "case": "shared_short_circuits_source",
+        "source": [201, 202, 203],
+        "shared_reject": [202],
+        "source_reject": [],
+        "expected_post_compaction": [201, 203],
+        "expected_predicate_log": ["shared:201", "source:201", "shared:202", "shared:203", "source:203"]
+      },
+      {
+        "case": "signed_negative_weight_not_clamped",
+        "chance_raw": [100001, -100000, 200000],
+        "expected_int32_weights": [2, -1, 2],
+        "draw31": 2,
+        "expected_selected_index": 2
+      },
+      {
+        "case": "total_nonpositive_uniform_draw",
+        "int32_weights": [0, -1, 1],
+        "signed_total": 0,
+        "draw31": 5,
+        "expected_selected_index": 2
+      }
+    ]
+  },
+  "retained_battle_events": {
+    "reader_ready_in_source": true,
+    "storage": "CCombat+0x708 -> module+0x57C0328 exact generation -> object+0x188",
+    "row": "0x38 bytes; BattleEvent+0x10 key; left/right CharacterID +0x08/+0x0C; type +0x30; side0 +0x34; target_right +0x35",
+    "single_snapshot_semantics": "generic_battle_ledger_not_phase_origin_without_boundary_delta"
+  },
+  "managed_before_after_contract": {
+    "name": "native_daily_phase_event_boundaries_v1",
+    "native_boundary_hook_ready": false,
+    "controlled_daily_before_after_ready": false,
+    "required_sequence": [
+      "native_capture_before_side0_schedule_call_0x27FB58F",
+      "native_capture_after_side1_schedule_return_0x27FB5AC",
+      "native_capture_before_side0_phase_fire_entry_0x23C9900",
+      "native_capture_after_side0_phase_fire_return_0x2309EF7",
+      "native_capture_before_side1_phase_fire_entry_0x23C9900",
+      "native_capture_after_side1_phase_fire_return_0x2309EFF",
+      "paused_next_day_stable_query"
+    ],
+    "same_combat_iteration_evidence": {
+      "schedule": "0x27FB58F side0 call and 0x27FB5A7 side1 call share resolved CCombat in RSI; 0x27FB5AC precedes manager CombatID iterator advance",
+      "side0_fire": "0x2309EF2 calls 0x23CA2F0(side0); 0x23CA2F0 refreshes and tail-calls 0x23C9900; the return site is 0x2309EF7",
+      "side1_fire": "0x2309EFA calls 0x23CA2F0(side1); 0x23CA2F0 refreshes and tail-calls 0x23C9900; the return site is 0x2309EFF before commander rolls",
+      "daily_caller": "0x27FB6C6 increments phase_day and 0x27FB6FD calls 0x2309E80"
+    },
+    "capture_transport": "preallocated_query_owned_ring_buffer_no_pause_no_bridge_reentry",
+    "ui_date_polling_admissible": false,
+    "schedule_local_rng_state_and_counter_required": true,
+    "global_rng_state_and_counter_required": true
+  },
+  "missing_production_readers": [
+    "full_mutable_state_traits_tracks_variables_and_participant_membership",
+    "phase_event_origin_association_for_retained_battle_event_delta",
+    "managed_daily_before_after_transition_driver",
+    "effect_transition_same_day_recompute_trace"
+  ]
+}

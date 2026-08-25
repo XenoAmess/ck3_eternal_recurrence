@@ -1,0 +1,90 @@
+{
+  "schema": "xar.startup_localize_current_root_guard_v1.abi.v1",
+  "exact_build": {
+    "product": "Crusader Kings III",
+    "version": "1.19.0.6",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base_preferred": "0x140000000"
+  },
+  "owner": {
+    "semantic_name": "Localize owner",
+    "function_rva": "0x3A6A410",
+    "end_rva": "0x3A6A6D5",
+    "calling_convention_at_patch": "RCX remains the destination/hash seed context, RDX remains the key source, RAX receives the global container, RBX receives its current root",
+    "generic_lookup": {
+      "call_rva": "0x3A6A506",
+      "target_rva": "0x3A70610",
+      "policy": "the generic lookup is never patched"
+    }
+  },
+  "unwind": {
+    "pdata_row_rva": "0x5AACC04",
+    "begin_rva": "0x3A6A410",
+    "end_rva": "0x3A6A6D5",
+    "unwind_info_rva": "0x4EF30D8",
+    "version": 1,
+    "flags": 2,
+    "SizeOfProlog": "0x2B",
+    "unwind_code_count": 15,
+    "patch_is_after_prologue": true
+  },
+  "localization_state": {
+    "global_container_slot_rva": "0x57DFA28",
+    "container_current_root_offset": "0x0",
+    "live_observed_state": "global container nonnull, current root null",
+    "initialization_producer": {
+      "function_rva": "0x3A6B250",
+      "publish_rva": "0x3A6B3DA"
+    },
+    "active_root_producer": {
+      "function_rva": "0x3A6C070",
+      "publish_current_root_rva": "0x3A6C350"
+    }
+  },
+  "native_fallback": {
+    "native_miss_rva": "0x3A6A51A",
+    "raw_key_fallback_rva": "0x3A6A67F",
+    "relationship": "the native miss constructs an empty result; the owner's existing null-result branch then reaches raw-key fallback"
+  },
+  "patch": {
+    "patch_rva": "0x3A6A4D6",
+    "continue_rva": "0x3A6A4E3",
+    "patch_bytes": 13,
+    "original_bytes": "48 8B 05 4B 55 D7 01 48 8B 18 0F 10 0A",
+    "original_instructions": [
+      "mov rax, qword ptr [0x57DFA28]",
+      "mov rbx, qword ptr [rax]",
+      "movups xmm1, xmmword ptr [rdx]"
+    ],
+    "patch_encoding": "mov r11, imm64; jmp r11",
+    "stub_bytes": 64,
+    "stub_protection": "PAGE_EXECUTE_READ",
+    "healthy_path": "replay both loads and movups xmm1,[rdx], preserve RCX/RDX, jump 0x3A6A4E3",
+    "null_root_path": "after the exact two loads, atomically increment the process-lifetime counter and jump 0x3A6A51A without writing the global container or current root",
+    "global_container_null_policy": "not guarded; the exact producer ordering proves it exists and the live failure is only active-root null",
+    "calls_or_allocations_from_stub": false,
+    "stack_writes_from_stub": false
+  },
+  "state": {
+    "installed": "atomic uint32",
+    "failure_flags": "atomic uint32",
+    "native_miss_count": "atomic uint64",
+    "installed_by_default": false
+  },
+  "installation": {
+    "admission": [
+      "exact build admitted",
+      "module base nonzero",
+      "new primary thread proven suspended",
+      "production overrides rejected",
+      "13-byte owner anchor exact"
+    ],
+    "transactional_rollback": "target identity, protection, write, flush, and protection restore are verified; failed rollback retains the RX stub and ownership",
+    "production_owner": "XarCk3BridgePrepareStartup suspended-startup transaction"
+  },
+  "semantic_scope": {
+    "containment": "only the Localize owner invocation with a published null current root enters its already-existing native miss path",
+    "excluded": "0x3A70610 generic lookup and all producer code remain byte-identical",
+    "heartbeat": "startup_localize_current_root_guard_v1 publishes installed, failure, and native_miss_count"
+  }
+}

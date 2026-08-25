@@ -12,8 +12,11 @@
   也不能拿 UI 士兵数比例、GUI 战斗预测等级或自制 Monte Carlo 结果替代它。
 - [static-confirmed] AI 主预测器位于 RVA `0x19186E0`。EXE 内找到的全部 direct `E8` xref 为
   `0x184B3A4`、`0x1873003`、`0x1919C69`、`0x191A076`、`0x191A4C1`。
-- [static-confirmed] 本轮没有附加、调用或操纵 CK3 进程，所有新结论均来自 pinned EXE 的静态反汇编、RTTI
-  和同一安装包的原版数据；本文没有新增 `[live-confirmed]` 结论。
+- [static-confirmed] 本轮 exact ABI 结论来自 pinned EXE 的静态反汇编、RTTI 和同一安装包原版数据；
+  [live-confirmed] 独立 `army-strength-v1` 只读 MCP 随后在 paused revision `4` 验收了同源 base aggregate。
+- [static-confirmed] `0x19179E0` 的两遍 CArmy regiment 聚合已经进一步闭合：entry `+0x08` 是 active
+  regiment 的 current soldiers 总数，entry `+0x10` 是 active regiment 的 `CRegiment+0x40` power qword
+  总和。它们可以作为第一只读 MCP 的 base aggregate，但仍不是完整 encounter ratio。
 - [unknown] 预测器是否能由 bridge worker 在 paused world 中安全调用、其所有 mode/flag 位的业务命名、
   每个关系 lane 的枚举名以及底层每种部队的完整 power 公式尚未闭合，不得直接发布 native query capability。
 
@@ -28,7 +31,7 @@ flowchart LR
     I["[static-confirmed] CAISubunitStack 指针数组<br/>data +0x00 / count +0x0C"]
     T["[static-confirmed] 目标 CProvince<br/>mode / context / flags"]
     C["[static-confirmed] 0x1917830<br/>读取目标相关的 8-lane power cache"]
-    L["[static-confirmed] 0x19179E0<br/>收集 0x38-byte SAIPowerAndStrengthEntry"]
+    L["[static-confirmed] 0x19179E0<br/>entry +0x08 active soldiers<br/>+0x10 active regiment power sum"]
     E["[static-confirmed] hostile lanes 1..8<br/>乘 1.1 enemy multiplier"]
     M["[static-confirmed] 取主 hostile lane<br/>其余 hostile lane 按 0.5 汇入"]
     X["[static-confirmed] 可选上下文 multiplier<br/>0x191AC70"]
@@ -45,7 +48,7 @@ flowchart LR
     M -->|"[static-confirmed] paired side aggregates"| X
     X -->|"[static-confirmed] integer fixed-point division"| R
     C -. "[unknown] exact lane semantics" .-> U
-    L -. "[unknown] exact component formula" .-> U
+    L -. "[unknown] regiment kind/effective component formula" .-> U
     U -. "[unknown] cannot be replaced by UI soldiers" .-> R
 
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
@@ -98,17 +101,74 @@ CFixedPoint* __fastcall CalcAICombatPredictionRatio(
 - [static-confirmed] RTTI 把输出 allocator 闭合为
   `CPdxTypedNewDeleteAllocator<SAIPowerAndStrengthEntry>`：type descriptor RVA `0x52F97B0`、vtable RVA
   `0x4191BA0`、allocator global RVA `0x4FEF1A0`。记录大小是 `0x38`。
-- [static-confirmed] `SAIPowerAndStrengthEntry` 的机器布局至少包括：`+0x00` 单位指针、`+0x08`
-  count/strength-like dword、`+0x10` 主 power qword、`+0x18/+0x20/+0x28` secondary metrics、
-  `+0x30` side/relation-like byte。预测器在 `0x1918F28..0x1918F38` 把 `+0x10` 加入关系 power lane。
+- [static-confirmed] `0x1917C89..0x1917CD4` 从候选 `CUnit+0x178` generation-resolve `CArmy`；
+  `CArmy+0x38/+0x44` 是 4-byte full CRegimentID array data/count。每个 ID 经 storage
+  `base+0x57BF4C8` 解析并以 `CRegiment+0x10` 回读完整 generation；原程序失配时走
+  `base+0x57BF4C0` fallback，bridge query 不得把 fallback 当成真实数据。
+- [static-confirmed] 第一遍 `0x1917CEB..0x1917D54` 对每个 generation-resolved regiment 调用
+  `CRegiment+0x08` subobject vtable slot `+0x08` 的 active predicate，只在 true 时把
+  `CRegiment+0x38` current soldiers 累加到 dword。第二遍 `0x1917D80..0x1917DCD` 做相同验证与 predicate，
+  把 `CRegiment+0x40` qword 累加为主 power operand。
+- [static-confirmed] `SAIPowerAndStrengthEntry` 的机器布局至少包括：`+0x00` 单位指针、`+0x08` active current
+  soldiers dword、`+0x10` active regiment base-power qword、`+0x18/+0x20/+0x28` secondary metrics、
+  `+0x30` side/relation-like byte。`0x1917F83..0x1917FA5` 写入这些字段；预测器在
+  `0x1918F28..0x1918F38` 把 `+0x10` 加入关系 power lane。
 - [static-confirmed] `00_defines.txt:613-624` 明说 simple base power 用于 AI 评估军事实力，按 regiment 的
   power/toughness 与 troop count 聚合；骑士按默认 `10` prowess、`50` damage/点、`10` toughness/点，
   因而默认每名骑士是 `1100` power。
 - [static-confirmed] `09_mpo_interactions.txt:3201-3202` 也把 military power 描述为按 regiment attack 和
   toughness 缩放。故该指标至少在基础层面是 quality-weighted power，绝不是裸士兵数。
-- [unknown] 当前兵力、最大兵力、补给、反制、将领、骑士实值、地形、优势、登陆、债务等因素中，哪些进入
-  `0x1917830/0x19179E0` 的哪一字段、先后顺序及舍入点尚未逐项闭合。不能因为它们是战斗规则输入，就推定
-  它们全部进入 AI ratio。
+- [unknown] regiment kind、MAA/levy/knight 细项如何生成 `CRegiment+0x40`，以及补给、反制、将领、骑士实值、
+  地形、优势、登陆、债务等因素中哪些进入 `0x1917830/0x19179E0` 的 secondary 字段、先后顺序及舍入点，
+  尚未逐项闭合。不能因为它们是战斗规则输入，就推定它们全部进入 AI ratio。
+
+```mermaid
+flowchart LR
+    U["CUnit+0x178 full CArmyID"] --> A["CArmy+0x38/+0x44<br/>full CRegimentID array"]
+    A --> G{"generation valid<br/>active predicate true?"}
+    G -->|yes| S["sum CRegiment+0x38<br/>entry +0x08 soldiers"]
+    G -->|yes| P["sum CRegiment+0x40<br/>entry +0x10 base power"]
+    P --> L["relation lanes + enemy/context modifiers"]
+    L --> R["0x19186E0 power-share ratio"]
+    A -. "[unknown] kind / archetype / effective formula" .-> X["[unknown] component attribution"]
+    L -. "[unknown] lane names / full mode semantics" .-> X
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class X unknown;
+```
+
+因此可安全拆成两期：第一期 [combat-simulation-inputs.md](combat-simulation-inputs.md) 定义的
+`game.command.query-army-strengths-v1` 已发布并 live-confirmed current/max/base power；完整 predictor 继续 fail closed。后者的输入是
+`CAISubunitStack*` 数组，不是 CUnit/CArmy 指针。当前尚未证明玩家军队必有可复用 AI stack，也尚未闭合从
+当前 war 双方构造 relation lanes、mode/context/flags 以及 worker 临时 allocator 生命周期；禁止为凑 ABI
+伪造 stack 或把两边 base-power 比例冒充原生返回值。
+
+### paused live base-power 诊断（不是 predictor return）
+
+- [live-confirmed] revision `4`：player ArmyID `83886341` 为 `1482/2243` soldiers、base power `55,223`；
+  enemy `33554657` 为 `1011/1011`、`31,600`；enemy `357` 为 `1801/3751`、`58,468`。raw 字段实际为上述
+  显示量乘 `100000`；两敌合计 power `90,068`。
+- [inference] 若只把这几个 base aggregate 代入最简二方 share，player vs `357` 是 `0.48573`；player vs
+  两敌合流是 `0.38009`。只再施加本页已证 enemy multiplier `1.1`，分别得到 `0.46198`、`0.35790`。
+  这仍没有合法 `CAISubunitStack`、relation lane、target/mode/context/flags 与 secondary multiplier，必须命名为
+  `base-power diagnostic share`，不能声称等于 `0x19186E0` 输出。
+- [counter-policy] 两个 participant set 必须生成不同 context/hash。若 `33554657` 可能在 forecast horizon
+  内加入 `357`，单敌 share 不得复用于合流场景；join ETA 未观测时 planner 继续按不安全接战处理。
+
+```mermaid
+flowchart LR
+    Q["[live-confirmed] army-strength-v1<br/>paused revision 4"] --> A["player power 55,223"]
+    Q --> E1["enemy 357 power 58,468"]
+    Q --> E2["enemy 33554657 power 31,600"]
+    A --> S1["single-enemy diagnostic<br/>0.48573 / ×1.1 = 0.46198"]
+    E1 --> S1
+    A --> S2["combined diagnostic<br/>0.38009 / ×1.1 = 0.35790"]
+    E1 --> S2
+    E2 --> S2
+    S1 -. "stack/lane/context ABI absent" .-> U["not 0x19186E0 return<br/>not win probability"]
+    S2 -.-> U
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
 
 ### 对手聚合与闭式公式
 
@@ -303,6 +363,8 @@ flowchart LR
 | `0x19186E0` | [static-confirmed] AI encounter power-share ratio | `0x184B3A4`, `0x1873003`, `0x1919C69`, `0x191A076`, `0x191A4C1` | 战术接战、求援、撤退的 canonical 调用点 |
 | `0x1917830` | [static-confirmed] target/mode keyed cached multi-lane summary | `0x184FAB4`, `0x1918AC2`, `0x1918AE9` | 战术 controller 的共享 power cache；未见宣战/终止 direct reuse |
 | `0x19179E0` | [static-confirmed] province-local `SAIPowerAndStrengthEntry` collection | `0x184FC12`, `0x1872EFD`, `0x1918DDB` | 追踪 unit→power 聚合入口 |
+| `0x27BD9E0` | [static-confirmed] active regiment current-soldier sum | GUI wrapper `0x1244B40` 及其它 callers | `army-strength-v1` current aggregate；canonical flags=`0` |
+| `0x226F350` | [static-confirmed] CArmy maximum-soldier sum | GUI wrapper `0x1244B90` | `army-strength-v1` max aggregate |
 | `0x191AC70` | [static-confirmed] paired aggregate contextual multiplier | `0x184FE16`, `0x1850307`, `0x19197C6` | 追踪 secondary metric；名称仍 unknown |
 | `0x1848570` | [static-confirmed] other-stack help / break-siege gate | `0x184684D` | 求援协调，不是 ratio 本身 |
 | `0x184B170` | [static-confirmed] retreat composite decision | `0x184AFCF` | 追踪撤退与 stand-and-fight 状态 |
@@ -353,6 +415,18 @@ Get-FileHash 'Crusader Kings III\binaries\ck3.exe' -Algorithm SHA256
   0x19186E0 --size 0x13A0
 
 & 'tools\.venv\Scripts\python.exe' `
+  'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
+  0x19179E0 --size 0x720
+
+& 'tools\.venv\Scripts\python.exe' `
+  'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
+  0x27BD9E0 --size 0xD0
+
+& 'tools\.venv\Scripts\python.exe' `
+  'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
+  0x226F350 --size 0x80
+
+& 'tools\.venv\Scripts\python.exe' `
   'ck3_autonomous_player\native_bridge\research\find_rtti.py' `
   'CAISubunitStack|SAIPowerAndStrengthEntry'
 
@@ -365,6 +439,11 @@ rg -a -b -o 'CalcCombatPredictionAndEdgesChangingAdvantage' `
 | 区间 | 应看到的事实 |
 |---|---|
 | `0x1918725..0x1918734` | 空 stack array 返回 raw `0` |
+| `0x1917C89..0x1917D54` | CUnit→CArmy→CRegiment generation chain 与 active current-soldier sum |
+| `0x1917D80..0x1917DCD` | 相同 active filter 后累加 `CRegiment+0x40` power qword |
+| `0x1917F83..0x1917FA5` | entry `+0x08/+0x10/+0x18/+0x20/+0x28/+0x30` 写入 |
+| `0x27BD9F5..0x27BDAA9` | flags=`0` current-soldier helper 的 array/generation/active/sum/return |
+| `0x226F354..0x226F3CC` | max-soldier helper 的 CArmy array/generation/`+0x3C` sum |
 | `0x19196DC..0x1919776` | hostile lane 读取 `1.1` 并做定点乘法 |
 | `0x19197DD..0x1919908` | 选择主 hostile lane，剩余 lane 乘 `0.5` 汇入 |
 | `0x1919917..0x1919A2E` | 无 hostile 返回 `1.0`；正常路径执行占比除法 |
@@ -377,7 +456,8 @@ rg -a -b -o 'CalcCombatPredictionAndEdgesChangingAdvantage' `
 
 - [unknown] `0x19186E0` 的原生函数名、`mode` 枚举、arg 5 业务名及全部 flag bit。
 - [unknown] 八个 cache lane、九个 relation lane、selected lane 和 secondary metric 的正式枚举/字段名。
-- [unknown] `SAIPowerAndStrengthEntry +0x08/+0x18/+0x20/+0x28/+0x30` 的完整业务语义。
+- [unknown] `SAIPowerAndStrengthEntry +0x18/+0x20/+0x28/+0x30` 的完整业务语义；`+0x08` 已闭合为
+  active current soldiers。
 - [unknown] levy、MAA、骑士、将领、补给、terrain、counter、advantage 与各种 modifier 对主 power qword 的
   exact 展开式、clamp 与舍入顺序。
 - [unknown] normal/desperate 的完整上游触发条件，及接战 candidate 通过 ratio 门后的全部排序/否决条件。

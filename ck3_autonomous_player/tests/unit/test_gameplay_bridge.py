@@ -170,11 +170,188 @@ def _war(
             enemy_primary_default_raise_province_id
         ),
         "player_relative_war_score": score,
+        "war_duration_days": 203,
         "allied_armies": allied_armies,
         "enemy_armies": enemy_armies,
         "war_objective_province_ids": war_objective_province_ids or [],
         "objective_province_states": objective_province_states or [],
         "targeted_title_ids": targeted_title_ids or [],
+    }
+
+
+def _termination_options(
+    war_id: int = 88,
+    *,
+    score: int = 17,
+) -> dict[str, object]:
+    return {
+        "war_id": war_id,
+        "player_side": "attacker",
+        "player_is_primary_war_leader": True,
+        "player_relative_war_score": score,
+        "war_duration_days": 203,
+        "active_casus_belli_present": True,
+        "active_casus_belli_identity": {
+            "database_index": 17,
+            "canonical_key": "county_conquest_cb",
+        },
+        "cb_allows_white_peace": True,
+        "absolute_war_scores_observable": True,
+        "attacker_war_score": score,
+        "defender_war_score": -score,
+        "war_score_breakdown": None,
+        "options": {
+            "surrender": {
+                "outcome": "attacker_defeat",
+                "hostage_variant": "none",
+                "context_constructed": True,
+                "native_validator_passed": True,
+                "available": True,
+                "terms_observable": False,
+                "terms": {
+                    "status": "unavailable",
+                    "reason": "cb_specific_terms_not_observable",
+                },
+                "ai_acceptance_observable": True,
+                "ai_acceptance": {
+                    "raw": -2_900_000,
+                    "scale": 100_000,
+                },
+                "auto_accept_observable": True,
+                "auto_accept": True,
+            },
+            "white_peace": {
+                "outcome": "white_peace",
+                "hostage_variant": "none",
+                "context_constructed": True,
+                "native_validator_passed": None,
+                "available": False,
+                "terms_observable": False,
+                "terms": {
+                    "status": "unavailable",
+                    "reason": "cb_specific_terms_not_observable",
+                },
+                "ai_acceptance_observable": True,
+                "ai_acceptance": {
+                    "raw": -1_300_000,
+                    "scale": 100_000,
+                },
+                "auto_accept_observable": True,
+                "auto_accept": False,
+            },
+            "victory": {
+                "outcome": "attacker_victory",
+                "hostage_variant": "none",
+                "context_constructed": True,
+                "native_validator_passed": False,
+                "available": False,
+                "terms_observable": False,
+                "terms": {
+                    "status": "unavailable",
+                    "reason": "cb_specific_terms_not_observable",
+                },
+                "ai_acceptance_observable": True,
+                "ai_acceptance": {
+                    "raw": -8_200_000,
+                    "scale": 100_000,
+                },
+                "auto_accept_observable": True,
+                "auto_accept": False,
+            },
+        },
+        "source": "native",
+    }
+
+
+def _termination_terms(war_id: int = 88) -> dict[str, object]:
+    return {
+        "schema_version": 1,
+        "status": "available",
+        "war_id": war_id,
+        "casus_belli": {"database_index": 0, "canonical_key": "claim_cb"},
+        "supported_slice": "claim_cb_claim_disposition",
+        "claimant_character_id": 29_829,
+        "target_title_ids": [2_388],
+        "claims": [
+            {
+                "title_id": 2_388,
+                "present": True,
+                "strong": True,
+                "implicit": False,
+                "state": "strong_explicit",
+            }
+        ],
+        "outcomes": {
+            "attacker_victory": {
+                "declared_title_disposition": (
+                    "transfer_to_claimant_via_conquest_claim"
+                ),
+                "claim_disposition": "resolve_with_add_claim_on_loss",
+            },
+            "white_peace": {
+                "declared_title_disposition": "unchanged",
+                "claim_disposition": "retain_and_strengthen_weak",
+            },
+            "attacker_defeat": {
+                "declared_title_disposition": "unchanged",
+                "claim_disposition": "remove_declared_target_claims",
+            },
+        },
+        "readiness": {
+            "identity_ready": True,
+            "targets_ready": True,
+            "claim_rows_ready": True,
+            "claim_disposition_ready": True,
+            "ready": True,
+        },
+        "provenance": {
+            "game_version": "1.19.0.6",
+            "executable_sha256": (
+                "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+            ),
+            "native_reader": "CWar+0x270/+0x290;0x28B1AA0",
+            "present_claim_lifecycle": (
+                "present_only_vtable_slot_0_delete_flags_0"
+            ),
+            "claim_script_sha256": (
+                "D9AA37BDC45F81B4F6185B2697A3EBD09404084EA0D3CF77BBE3C1D2C962E8B1"
+            ),
+        },
+    }
+
+
+def _termination_exit_terms_v2() -> dict[str, object]:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "war_termination_exit_terms_v2_synthetic.json"
+    )
+    return json.loads(fixture.read_text(encoding="utf-8"))
+
+
+def _army_strength(
+    army_id: int,
+    role: str,
+    war_ids: list[int],
+    *,
+    current: int = 1_200,
+    maximum: int = 1_500,
+    regiment_count: int = 3,
+    base_power_raw: int = 180_000_000,
+) -> dict[str, object]:
+    return {
+        "status": "available",
+        "army_id": army_id,
+        "native_carmy_id": army_id + 1_000,
+        "scope_role": role,
+        "war_ids": war_ids,
+        "regiment_count": regiment_count,
+        "current_soldiers": current,
+        "maximum_soldiers": maximum,
+        "ai_base_power_raw": base_power_raw,
+        "ai_base_power_scale": 100_000,
+        "unavailable_reason": None,
     }
 
 
@@ -414,6 +591,8 @@ class GameplayBridgeTests(unittest.TestCase):
             "offer-white-peace-88",
             "surrender-war-88",
             "query-war-termination-options-88",
+            "query-combat-simulation-inputs-v2-2596-2597-a-1-357-d-1-83886341",
+            "query-combat-simulation-inputs-v3-2596-2597-a-1-357-d-1-83886341",
             "enforce-demands-88",
         ):
             with self.subTest(step=step):
@@ -2501,7 +2680,7 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertIsNone(plan["selected_step"])
         self.assertEqual(plan["declaration"]["declaration_id"], "808-17-0")
         self.assertIn(
-            "game.command.query-combat-simulation-inputs",
+            "game.command.query-combat-simulation-inputs-v3-N",
             plan["required_capabilities"],
         )
         self.assertIn(
@@ -5749,6 +5928,203 @@ class GameplayBridgeTests(unittest.TestCase):
             plan["required_capabilities"],
         )
 
+    def test_termination_query_is_projected_for_eu_without_auto_surrender(
+        self,
+    ) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
+        termination = _termination_options(score=17)
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(11),
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy],
+                        score=17,
+                    )
+                ],
+                "player_armies": [player],
+                "war_termination_options": [termination],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("surrender-war-88", "life-advance"),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        assessment = plan["active_wars"][0]["war_exit_assessment"]
+
+        self.assertEqual(assessment["status"], "evidence_partial")
+        self.assertEqual(
+            assessment["eu_inputs"]["war_score_breakdown"],
+            termination["war_score_breakdown"],
+        )
+        self.assertTrue(
+            assessment["eu_inputs"]["legal_options"]["surrender"]
+        )
+        self.assertEqual(
+            assessment["eu_inputs"]["option_evidence"]["white_peace"][
+                "ai_acceptance"
+            ],
+            {"raw": -1_300_000, "scale": 100_000},
+        )
+        self.assertNotIn("opponent_acceptance", assessment["unknown_fields"])
+        self.assertIn("termination_terms", assessment["unknown_fields"])
+        self.assertFalse(assessment["automatic_termination_enabled"])
+        self.assertNotEqual(plan.get("selected_step"), "surrender-war-88")
+
+    def test_planner_collects_native_termination_evidence_before_war_action(
+        self,
+    ) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(11),
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy],
+                        score=17,
+                    )
+                ],
+                "player_armies": [player],
+                "war_termination_options": [],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "query-war-termination-options-88",
+                "move-army-11-to-41",
+                "life-advance",
+            ),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_termination_query")
+        self.assertEqual(
+            plan["selected_step"], "query-war-termination-options-88"
+        )
+
+    def test_planner_does_not_select_crash_disabled_exit_terms_v2(
+        self,
+    ) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(11),
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy],
+                        score=17,
+                    )
+                ],
+                "player_armies": [player],
+                "war_termination_options": [_termination_options()],
+                "war_termination_exit_terms": [],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "query-war-termination-exit-terms-v2-88",
+                "move-army-11-to-41",
+                "life-advance",
+            ),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(plan["selected_step"])
+
+    def test_complete_exit_terms_still_require_campaign_forecast(self) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
+        exit_terms = _termination_exit_terms_v2()
+        exit_terms["war_id"] = 88
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(11),
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy],
+                        score=17,
+                    )
+                ],
+                "player_armies": [player],
+                "war_termination_options": [_termination_options()],
+                "war_termination_exit_terms": [exit_terms],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "surrender-war-88",
+                "offer-white-peace-88",
+                "life-advance",
+            ),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        assessment = plan["active_wars"][0]["war_exit_assessment"]
+
+        self.assertNotIn("termination_terms", assessment["unknown_fields"])
+        self.assertNotIn(
+            "primary_resource_balances", assessment["unknown_fields"]
+        )
+        self.assertIn("campaign_outcome_forecast", assessment["unknown_fields"])
+        self.assertFalse(assessment["automatic_termination_enabled"])
+        self.assertNotIn(
+            plan.get("selected_step"),
+            {"surrender-war-88", "offer-white-peace-88"},
+        )
+
+    def test_decorated_query_history_never_recreates_a_termination_cache(
+        self,
+    ) -> None:
+        player = _army(11, soldiers=900, province_id=20, controllable=True)
+        enemy = _army(21, soldiers=1_100, province_id=41, controllable=False)
+        decorated_query = {
+            "command": "auto-turn",
+            "ok": True,
+            "result": {
+                "selected_step": "query-war-termination-options-88",
+                "result": {
+                    "war_termination_options": _termination_options(),
+                    "query_sequence": 7,
+                },
+            },
+        }
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(12),
+                "active_wars": [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy],
+                        score=17,
+                    )
+                ],
+                "player_armies": [player],
+                "native_command_history": [decorated_query],
+                "war_termination_options": [],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("surrender-war-88", "life-advance"),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertNotEqual(plan.get("selected_step"), "surrender-war-88")
+        self.assertNotIn(
+            "war_termination_options", plan["active_wars"][0]
+        )
+
     def test_primary_defender_may_raise_before_exit_evidence_gate(self) -> None:
         driver = CallbackGameplayDriver(
             backend_id="native-headless",
@@ -6122,6 +6498,7 @@ class GameplayBridgeTests(unittest.TestCase):
                     _war(allied_armies=[player], enemy_armies=[enemy])
                 ],
                 "player_armies": [player],
+                "war_termination_options": [_termination_options()],
             },
             execute=lambda step, revision: calls.append((step, revision))
             or {"status": "submitted"},
@@ -6137,6 +6514,9 @@ class GameplayBridgeTests(unittest.TestCase):
         state = service.war_state()
         self.assertEqual(state["status"], "active")
         self.assertEqual(state["active_wars"][0]["war_id"], 88)
+        self.assertEqual(
+            state["war_termination_options"][0]["war_id"], 88
+        )
         service.raise_troops_default(expected_revision=14)
         service.move_army(81, 60, expected_revision=14)
         service.disband_army(81, expected_revision=14)
@@ -6457,10 +6837,108 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
         from mcp import Client
         from xar_autoplayer.bridge.mcp_server import create_server
 
+        def execute_fixture(step: str, revision: int) -> dict[str, object]:
+            result: dict[str, object] = {
+                "step": step,
+                "expected_revision": revision,
+            }
+            if step == "query-war-termination-options-88":
+                result.update(
+                    {
+                        "war_termination_options": _termination_options(),
+                        "query_sequence": 8,
+                    }
+                )
+            elif step == "query-war-termination-terms-v1-88":
+                result.update(
+                    {
+                        "war_termination_terms": _termination_terms(),
+                        "query_sequence": 10,
+                    }
+                )
+            elif step == (
+                "query-war-termination-exit-terms-v2-16777300"
+            ):
+                result.update(
+                    {
+                        "war_termination_exit_terms": (
+                            _termination_exit_terms_v2()
+                        ),
+                        "query_sequence": 11,
+                    }
+                )
+            elif step == "query-army-strengths-v1":
+                result.update(
+                    {
+                        "status": "available",
+                        "query_sequence": 9,
+                        "army_strengths": [
+                            _army_strength(81, "player", [88]),
+                            _army_strength(82, "active_war_ally", [88]),
+                            _army_strength(91, "active_war_enemy", [88]),
+                        ],
+                    }
+                )
+            elif step == "query-arrange-marriage-choices":
+                result.update(
+                    {
+                        "arrange_marriage_choices": [
+                            {
+                                "choice_id": "707-809",
+                                "played_character_id": 707,
+                                "candidate_character_id": 809,
+                            }
+                        ],
+                        "query_sequence": 2,
+                    }
+                )
+            elif step == "query-declarable-wars":
+                result.update(
+                    {
+                        "declarable_wars": [
+                            {
+                                "declaration_id": "808-17-0",
+                                "target_character_id": 808,
+                                "casus_belli_index": 17,
+                                "casus_belli_key": "county_conquest_cb",
+                                "configuration_index": 0,
+                                "claimant_character_id": -1,
+                                "target_title_ids": [91],
+                            }
+                        ],
+                        "query_sequence": 1,
+                    }
+                )
+            elif step == "save-checkpoint":
+                result["checkpoint"] = {
+                    "status": "saved",
+                    "name": "xar_checkpoint.ck3",
+                    "path": "C:/fixture/xar_checkpoint.ck3",
+                    "size": 123,
+                    "sha256": "a" * 64,
+                    "date_raw": 53_171_424,
+                }
+            elif step == "restore-checkpoint":
+                result.update(
+                    {
+                        "checkpoint": {
+                            "status": "restored",
+                            "name": "xar_checkpoint.ck3",
+                            "path": "C:/fixture/xar_checkpoint.ck3",
+                            "size": 123,
+                            "sha256": "a" * 64,
+                            "date_raw": 53_171_424,
+                        },
+                        "restored_date": {"date_raw": 53_171_424},
+                    }
+                )
+            return result
+
         driver = CallbackGameplayDriver(
             backend_id="native-fixture",
             snapshot=lambda: {
                 **_snapshot(4),
+                "paused": True,
                 "active_event": {"instance_id": 44, "option_count": 2},
                 "pending_character_interaction": {
                     "instance_id": 52,
@@ -6475,7 +6953,13 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                                 soldiers=1_300,
                                 province_id=50,
                                 controllable=True,
-                            )
+                            ),
+                            _army(
+                                82,
+                                soldiers=700,
+                                province_id=51,
+                                controllable=False,
+                            ),
                         ],
                         enemy_armies=[
                             _army(
@@ -6514,68 +6998,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     }
                 ],
             },
-            execute=lambda step, revision: {
-                "step": step,
-                "expected_revision": revision,
-                **(
-                    {
-                        "arrange_marriage_choices": [
-                            {
-                                "choice_id": "707-809",
-                                "played_character_id": 707,
-                                "candidate_character_id": 809,
-                            }
-                        ],
-                        "query_sequence": 2,
-                    }
-                    if step == "query-arrange-marriage-choices"
-                    else (
-                    {
-                        "declarable_wars": [
-                            {
-                                "declaration_id": "808-17-0",
-                                "target_character_id": 808,
-                                "casus_belli_index": 17,
-                                "casus_belli_key": "county_conquest_cb",
-                                "configuration_index": 0,
-                                "claimant_character_id": -1,
-                                "target_title_ids": [91],
-                            }
-                        ],
-                        "query_sequence": 1,
-                    }
-                    if step == "query-declarable-wars"
-                    else (
-                    {
-                        "checkpoint": {
-                            "status": "saved",
-                            "name": "xar_checkpoint.ck3",
-                            "path": "C:/fixture/xar_checkpoint.ck3",
-                            "size": 123,
-                            "sha256": "a" * 64,
-                            "date_raw": 53_171_424,
-                        }
-                    }
-                    if step == "save-checkpoint"
-                    else (
-                        {
-                            "checkpoint": {
-                                "status": "restored",
-                                "name": "xar_checkpoint.ck3",
-                                "path": "C:/fixture/xar_checkpoint.ck3",
-                                "size": 123,
-                                "sha256": "a" * 64,
-                                "date_raw": 53_171_424,
-                            },
-                            "restored_date": {"date_raw": 53_171_424},
-                        }
-                        if step == "restore-checkpoint"
-                        else {}
-                    )
-                    )
-                    )
-                ),
-            },
+            execute=execute_fixture,
             action_steps=(
                 "life-advance",
                 "save-checkpoint",
@@ -6589,6 +7012,10 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                 "stop-assault-901",
                 "disband-army-81",
                 "enforce-demands-88",
+                "query-army-strengths-v1",
+                "query-war-termination-options-88",
+                "query-war-termination-terms-v1-88",
+                "query-war-termination-exit-terms-v2-16777300",
                 "query-declarable-wars",
                 "declare-war-808-17-0",
                 "query-arrange-marriage-choices",
@@ -6628,6 +7055,14 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_stop_assault",
                     "ck3_disband_army",
                     "ck3_enforce_demands",
+                    "ck3_query_army_strengths",
+                    "ck3_query_combat_simulation_inputs",
+                    "ck3_query_combat_simulation_inputs_v3",
+                    "ck3_query_war_entry_assessments",
+                    "ck3_query_war_termination_options",
+                    "ck3_query_war_termination_terms",
+                    "ck3_surrender_war",
+                    "ck3_offer_white_peace",
                     "ck3_select_event_option",
                     "ck3_resolve_active_event",
                     "ck3_wait_for_change",
@@ -6778,6 +7213,47 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             )
             self.assertFalse(enforced.is_error)
             self.assertEqual(enforced.structured_content["war_id"], 88)
+            strengths = await client.call_tool(
+                "ck3_query_army_strengths",
+                {"army_ids": [91, 81], "expected_revision": 4},
+            )
+            self.assertFalse(strengths.is_error)
+            self.assertEqual(strengths.structured_content["status"], "available")
+            self.assertEqual(
+                [
+                    row["army_id"]
+                    for row in strengths.structured_content["army_strengths"]
+                ],
+                [91, 81],
+            )
+            self.assertNotIn(
+                "win_probability", strengths.structured_content
+            )
+            termination = await client.call_tool(
+                "ck3_query_war_termination_options",
+                {"war_id": 88, "expected_revision": 4},
+            )
+            self.assertFalse(termination.is_error)
+            self.assertEqual(
+                termination.structured_content["war_termination_options"][
+                    "war_id"
+                ],
+                88,
+            )
+            self.assertEqual(
+                termination.structured_content["query_sequence"], 8
+            )
+            terms = await client.call_tool(
+                "ck3_query_war_termination_terms",
+                {"war_id": 88, "expected_revision": 4},
+            )
+            self.assertFalse(terms.is_error)
+            self.assertEqual(
+                terms.structured_content["war_termination_terms"]["claims"]
+                [0]["state"],
+                "strong_explicit",
+            )
+            self.assertEqual(terms.structured_content["query_sequence"], 10)
             event_action = await client.call_tool(
                 "ck3_select_event_option",
                 {

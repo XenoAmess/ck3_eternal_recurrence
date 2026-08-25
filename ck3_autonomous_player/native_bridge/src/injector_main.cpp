@@ -84,17 +84,23 @@ int wmain(int argc, wchar_t** argv) {
     return 0;
   }
 
-  const auto result = xar::bridge::InjectLibrary(
+  const auto result = xar::bridge::InjectLibraryAndPrepareStartup(
       process, std::filesystem::path(dll_text));
   CloseHandle(process);
   if (!result.succeeded) {
-    std::wcerr << L"FAIL: InjectLibrary error=" << result.windows_error
+    std::wcerr << L"FAIL: InjectLibraryAndPrepareStartup error="
+               << result.windows_error
+               << L" remote_loadlibrary_exit="
+               << result.remote_loadlibrary_exit_code
+               << L" remote_prepare_exit=" << result.remote_prepare_exit_code
                << L'\n';
     return 3;
   }
 
   std::wcout << L"PASS: injected pid=" << pid
-             << L" remote_loadlibrary_exit=" << result.remote_exit_code
+             << L" remote_loadlibrary_exit="
+             << result.remote_loadlibrary_exit_code
+             << L" remote_prepare_exit=" << result.remote_prepare_exit_code
              << L'\n';
   return 0;
 }

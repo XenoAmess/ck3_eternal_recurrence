@@ -31,7 +31,21 @@ Its current first gameplay slice is intentionally small:
   `query-declarable-wars`
   returns current generation-bound choices, `declare-war-<choice>` submits
   one exact revalidated choice, and `enforce-demands-<war_id>` resolves a
-  100% war led by the player; `query-arrange-marriage-choices` returns
+  100% war led by the player; paused
+  `query-war-termination-options-<war_id>` now returns read-only native
+  surrender/white-peace/victory contexts and exact war-score evidence;
+  `query-war-termination-terms-v1-<war_id>` separately returns the narrow
+  claim-CB claimant/targets/claim-disposition slice. Native typed
+  `surrender-war-<war_id>` and `offer-white-peace-<war_id>` both rebuild and
+  revalidate their original contexts, but the Python action surface keeps both
+  frozen until structured exit-terms v2 and campaign-decision readiness;
+  paused read-only
+  `query-army-strengths-v1` atomically publishes generation-checked soldier
+  and AI base-power aggregates for the snapshot's player/allied/enemy armies;
+  `query-combat-simulation-inputs-v2-<target>-<entry>-a-<Acount>-<A...>-d-<Dcount>-<D...>`
+  publishes one exact paused hypothetical-contact composition/context
+  observation without depending on current routes or consuming RNG;
+  `query-arrange-marriage-choices` returns
   natively valid direct matches for the played character and
   `arrange-marriage-<played_id>-<candidate_id>` submits only a cached exact
   generation-bound pair; exact-build snapshots additionally expose the Mod's
@@ -175,9 +189,9 @@ read", not necessarily "no route". It retains the pre-existing single-tail
 read as `move_target_province_id`/`move_target_observable`, so progress tracking
 does not lose its old signal. In a paused snapshot, a valid nonempty full route
 has `route_province_ids.back() == move_target_province_id`.
-Soldier count
-remains absent because its aggregate ABI has not been live-validated and this
-bridge does not publish a guessed value. `played_character` exposes the current played `CharacterID` and
+  Soldier count remains intentionally absent from the 250 ms heartbeat; its
+  heavier exact aggregate is available through the explicit paused query below.
+  `played_character` exposes the current played `CharacterID` and
 the engine's alive/dead projection; the one-generation planner treats dead as
 an episode terminal and never continues as the heir. The pending object exposes the engine component instance ID, the
 sender's 32-bit `CharacterID` handle, and whether CK3 classifies it as an
@@ -253,8 +267,142 @@ when they differ, prepends the effective origin to the untouched native A*
 output. Loops and duplicate Province IDs are deliberately preserved. A target
 equal to the observed current Province returns an empty route only when it is
 also the effective origin; in flight, CK3 must finish the current edge and A*
-may route back. A target equal to a differing effective origin returns the
-one-entry route containing that effective origin and skips A*.
+  may route back. A target equal to a differing effective origin returns the
+  one-entry route containing that effective origin and skips A*.
+
+Exact capability `game.command.query-army-strengths-v1` accepts only the fixed
+no-argument step `query-army-strengths-v1` while paused. It takes one semantic
+snapshot, then returns the stable first-seen union of top-level
+`player_armies` followed by each active war's `allied_armies` and
+`enemy_armies`. Public full-generation CUnit IDs are deduplicated; scope role
+priority is `player > active_war_ally > active_war_enemy`, and `war_ids` are
+unioned in snapshot order. The external MCP tool requires explicit caller
+`army_ids` and filters this atomic native result at the same revision; native
+scope itself never depends on an untrusted list encoded into a step string.
+
+Each `army_strengths` row generation-resolves `CUnit -> CArmy -> every
+CRegiment` through the exact storages and rejects CK3's fallback regiment
+object. It validates the bounded native ID array and each regiment's original
+public-ID identity predicate, then checked-sums current soldiers, maximum
+soldiers, and `CRegiment+0x40` AI base-power raw from every identity-valid
+regiment. The predicate proves only `CRegiment+0x10 != -1`; it is not a combat
+activity or participation test.
+The current/max mirrors must equal CK3's original helpers before publication.
+`ai_base_power_scale` is the proven CFixedPoint scale `100000`; this base metric
+is neither terrain-adjusted combat strength nor a battle probability. A broken
+generation, array, identity, sum, or helper match makes the complete row
+`status="unavailable"` with all numeric aggregates null. Other rows remain
+typed and the top status becomes `partial`; no bad regiment is silently skipped.
+The query constructs no command, advances no date/RNG, and never queues.
+
+Exact capability `game.command.query-combat-simulation-inputs-v2-N` accepts
+only the canonical paused literal
+`query-combat-simulation-inputs-v2-<target>-<attacker_entry>-a-<Acount>-<A...>-d-<Dcount>-<D...>`.
+The former v1 literal is superseded and is not advertised or dispatched. Its
+offline admission required an already observable move/current-position contact
+shape; the paused `83886341@2596` versus `357/33554657@2581` production scenario
+could not construct one target accepted for all three armies before ordering a
+move, so that contract was a live blocker rather than an observation result. Every
+numeric token is a positive canonical ASCII decimal; each count is exact and in
+1..63, the combined count is at most 64, the target differs from the entry, and
+all public full-generation ArmyIDs are distinct across both partitions. In one
+paused snapshot the adapter revalidates every ID against player/active-war
+scope, requires a common active WarID, and proves the two requested partitions
+are opposite coalitions. Player and active-war allies may share one partition.
+
+The participant policy is
+`explicit_hypothetical_fixed_at_contact_no_reinforcements`. The caller fixes
+all attackers at the explicit final-edge entry Province and all defenders at
+the target for this conditional scenario. Current Province remains an optional
+observation, but current position, native move target, and route are not
+admission inputs. Crossing is derived only from the unique generation-valid
+entry-to-target edge; edge kinds 0..3 map to none/strait/river/large-river,
+while 4..6 reject the scenario. Attackers and defenders retain request order;
+that order is the hypothetical CCombat insertion order, so each side's first
+army supplies its native primary-participant owner for holding and side-wide
+counter context. This is explicit conditional ordering, not a claim about
+actual arrival order.
+
+The successful `combat_simulation_inputs` observation carries a typed `scenario`
+block and lists armies as attackers then defenders, with an `encounter_role` on
+every row. It publishes each selected army's nullable current Province, exact
+CArmy ID, owner/counter modifiers, commander and
+target-specific inclusive roll bounds, generation-checked regiments, nullable
+MAA keys, exact levy/men-at-arms classification, main-phase eligibility,
+target-evaluated max/siege/damage/toughness/pursuit/screen values, counter
+operands, and generation-checked knights with direct effectiveness plus native
+damage/toughness contributions. The target row includes terrain, signed Q100000
+width multiplier, crossing, attacker/defender holding context, and mirrored
+initial contact width. Two directional native counter resolutions and any
+generation-validated already-associated CCombat rows are included in the same
+result. No nullable MAA type is inferred to mean levy; combat kind comes from
+CK3's original side-population classifier.
+
+`completeness.observation_slice` is `precontact-composition-context-v2`, and
+`completeness.input_observation_ready=true` only when every advertised input
+subdomain above is available. A failed input read returns typed `partial`, names
+the concrete input domain, and never substitutes zero. An available observation
+still has `monte_carlo_ready=false`; its fixed `missing_required_domains` are
+the simulator transitions `damage_to_casualty_allocation`,
+`pursuit_transition`, `battle_end_and_retreat_transition`, and
+`phase_event_rng_and_effects`, not missing MCP observations. The query only
+reads the paused exact-build graph and invokes synchronous read/evaluation
+helpers: it submits no command, advances no date, and never calls CK3's random
+commander-roll helper.
+
+Production capability `game.command.query-combat-simulation-inputs-v3-N`
+uses the same canonical explicit target/entry/A/D literal as v2 with the
+version token changed to `v3`.  A successful paused same-frame result atomically
+combines the v2 `base_inputs` object with 81 exact native phase-event leaves,
+51 exact offline derivations, and a temporary unregistered `0x718` CCombat
+shell whose stock advantage helpers must agree with the serialized source
+ledger and resolved total.  The raw named objects are fixed and complete; no
+missing field may be represented as a permanently nullable observation.
+
+Each raw side also carries `candidate_source_proof`.  The native reader directly
+re-reads the stock `0x23C9100` local CCombatSide commander-then-knight source
+vector, requires every `role/source_army_id/source_regiment_id/character_id`
+row to equal the expected raw roster, publishes an uppercase SHA-256 digest of
+that exact ordered preimage, and repeats the native read after all advantage
+helpers.  Python independently checks the rows, roster binding and digest; it
+does not trust the digest alone.  Available and unavailable command-result
+goldens pass the same strict production normalizer.  This closes current-frame
+132/132 observation only: phase-effect feedback/original-trace and the combat
+transition simulator remain separate false gates, so v3 does not itself publish
+a win probability or authorize an attack.
+
+`game.command.query-combat-phase-event-trace-v1-N` remains a reserved,
+unadvertised research capability.  Its probe and fixed-width seven-boundary
+capture ring have source/ABI fixtures, but no exact-build detour is installed
+and no bridge dispatch exists.  The ring is fail-closed on sequence, identity,
+capacity or memory faults and never allocates, pauses, resolves a component
+store, draws RNG or re-enters the bridge on CK3's native call stack.  Production
+advertisement remains forbidden until a managed live same-Combat drain and the
+full mutable feedback bundle both pass.
+
+`main_thread_query_mailbox_v1` now exposes one deliberately typed execution
+boundary for `query-war-entry-assessments-v1`; it is not a generic native-call,
+effect, phase-query or simulation-main executor.  The exact SDL Windows pump
+returns from `USER32!PeekMessageW` on the application/startup-main
+HandlePdxEvents TLS path.  Admission requires the initialized TLS global,
+stable TLS context with marker `+0x20 == 1`, current thread, paused/date and
+Jomini/game identities across two consecutive epochs and pre/post samples.
+The global RNG owner's scoped TID is heartbeat provenance only and never a
+readiness gate.  At most one typed request is drained per pump.
+
+The `.rdata` IAT install and uninstall use `VirtualQuery`, a temporary
+single-page `PAGE_READWRITE`, atomic CAS, protection rollback, and a
+counted-call stop/reinstall drain.  V1 is process-lifetime pinned: restoring
+the IAT cannot prove that no thread fetched the old target before incrementing
+the counter, so the static mailbox and original function pointer remain valid
+until process exit and remote `FreeLibrary` is forbidden.  The production
+war-entry literal accepts exactly one target.  The worker freezes one
+declarable-war target set after a fresh same-paused-snapshot read; the reader's
+before/middle/after callbacks each perform a fresh full `ReadSnapshot`, then
+the native resolver, network collector and assessment rows are sampled twice.
+Typed-executor live result acceptance remains pending.  The exact ABI and
+diagram are documented in
+[`main-thread-query-mailbox.md`](../../docs/ck3-native-ai/main-thread-query-mailbox.md).
 
 War declaration discovery is an explicit request rather than part of the
 250 ms snapshot publisher: it evaluates current CBs across live characters
@@ -265,6 +413,57 @@ from that query and re-enumerates the exact target before constructing CK3's
 native character-interaction command. `enforce-demands-*` uses the native war
 resolution context builder and accepts only a war for which the played
 character is the primary war leader.
+
+Exact capability `game.command.query-war-termination-options-N` accepts only
+`query-war-termination-options-<positive full-generation WarID>` while paused.
+It re-resolves the active war, cross-checks the participant side and the total
+score already published in the same semantic snapshot, then returns a typed
+`war_termination_options` object. The object includes player side/primary
+status, player-relative and absolute attacker/defender totals, nullable
+attacker-relative `{imprisonment,battles,occupation,ticking}` breakdown,
+nullable duration in days, active-CB ordinal/key, and the CB's native
+white-peace permission. Its `surrender`, `white_peace`, and `victory` options
+each report the absolute outcome, context/validator result, native AI answer
+score as `{"raw":<signed int64>,"scale":100000}`, and exact `auto_accept`.
+The query only constructs, validates, reads, and destroys temporary contexts;
+it never builds a send command or queues anything. Every unavailable subfield
+is emitted as null/false observability rather than a guessed zero.
+
+Each result option deliberately fixes `hostage_variant="none"` and
+`terms={status:"unavailable",reason:"cb_specific_terms_not_observable"}`.
+Absolute outcome is not a proof of CB-specific title, gold, prestige, piety,
+legitimacy, truce or prisoner effects.
+
+Exact read-only capability
+`game.command.query-war-termination-terms-v1-N` accepts only
+`query-war-termination-terms-v1-<positive full-generation WarID>` while
+paused. It reads ordered target TitleIDs from `CWar+0x270`, claimant
+CharacterID from `+0x290`, generation-resolves both domains, and calls
+`0x28B1AA0` once per title. A present temporary must repeat the requested
+TitleID and is destroyed through its vtable slot 0 with delete flags 0; an
+absent result publishes only `{title_id,present:false,state:"absent"}` and
+does not inspect or destroy uninitialized fields. The strict available union
+is limited to `claim_cb_claim_disposition`; other CBs return typed
+`unsupported`. Python binds the cache to the same paused native revision,
+snapshot, connection generation and episode. Public MCP is
+`ck3_query_war_termination_terms`.
+
+Native capabilities `game.command.surrender-war-N` and
+`game.command.offer-white-peace-N` accept only their canonical WarID literals.
+Surrender rebuilds the
+absolute defeat context (`0xC569F0` takes `true` for attacker victory and
+`false` for attacker defeat), runs CK3's validator, constructs the common
+interaction command and honors the queue's bool result. Thus an attacking
+player's surrender passes `false`, while a defending player's surrender
+passes `true`. White peace independently requires the active-CB permission
+bit, resolves the opposite primary leader, constructs special interaction
+index 3, validates it, and submits the same command family with flags `0x0E`.
+Both destroy the temporary and command-owned context on all constructed paths.
+`submitted` is only a queue ACK; disappearance of that WarID from a later
+snapshot proves that the war actually ended. These are mechanical native
+capabilities, not current planner authorization: Python advertises neither
+literal and rejects direct MCP execution until `claim_cb_exit_terms_v2` plus
+campaign-decision readiness are complete.
 
 Marriage discovery is also an explicit request rather than a heartbeat field.
 Its successful `command_result` contains `query_sequence` and an

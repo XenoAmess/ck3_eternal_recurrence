@@ -1,0 +1,472 @@
+{
+    "status": "partial",
+    "rules_source": "stock-installation-static-manifest",
+    "rules_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+    "required_state_refs": {
+        "count": 132,
+        "sha256": "2B5E8445EFD14DC65D8BA4046242BBC37A0226C2BCD971D805D9A6F0064A1DD0"
+    },
+    "state_ref_coverage": {
+        "manifest_domain_counts": {
+            "character_relation": 79,
+            "army": 13,
+            "side": 10,
+            "global": 3,
+            "derived": 27
+        },
+        "abi_level_counts": {
+            "native_leaf_exact": 47,
+            "offline_derived_exact": 15,
+            "determinable": 62,
+            "remaining_unclosed": 70,
+            "production_live_observed": 0
+        },
+        "path_set_sha256": {
+            "native_leaf_exact": "1BB1CA55C1C7E2388B5FE2A71CB4AFBD76DAD784A9CDB825615E2AACB94D8D5E",
+            "offline_derived_exact": "7F93575CEDFE3CF1DCEBC6265A2BE867FA1BC341CDFE334DE3791B6A9AB48064",
+            "remaining_unclosed": "180FD456E591FF72CF513D5197EB927782EB813001DDAE533482B3985038A60F"
+        },
+        "native_payload_policy": "closed_native_leaves_only_offline_derived_not_serialized"
+    },
+    "scope_mode": "hypothetical_precontact_offline_ast",
+    "characters": [
+        {
+            "character_id": 36108,
+            "source_army_id": 357,
+            "source_regiment_id": null,
+            "encounter_role": "attacker",
+            "phase_roles": [
+                "commander"
+            ],
+            "state_refs": [
+                {
+                    "path": "root.skills.martial_raw",
+                    "value_type": "signed_int32",
+                    "value": 12
+                }
+            ]
+        }
+    ],
+    "armies": [
+        {
+            "army_id": 357,
+            "encounter_role": "attacker",
+            "state_refs": [
+                {
+                    "path": "army.maa_regiment_count_raw",
+                    "value_type": "signed_q100000",
+                    "value": 0
+                }
+            ]
+        }
+    ],
+    "sides": [
+        {
+            "side_index": 0,
+            "encounter_role": "attacker",
+            "ordered_army_ids": [
+                357
+            ],
+            "ordered_character_ids": [
+                36108
+            ],
+            "primary_participant_character_id": 36108,
+            "primary_source_army_id": 357,
+            "primary_selection_policy": "first_inserted_army_owner_with_native_preservation",
+            "side_strength_raw": 0,
+            "side_strength_scale": 100000,
+            "side_army_size_raw": 123400000,
+            "side_army_size_scale": 100000,
+            "state_refs": []
+        },
+        {
+            "side_index": 1,
+            "encounter_role": "defender",
+            "ordered_army_ids": [
+                83886341
+            ],
+            "ordered_character_ids": [],
+            "primary_participant_character_id": 29829,
+            "primary_source_army_id": 83886341,
+            "primary_selection_policy": "first_inserted_army_owner_with_native_preservation",
+            "side_strength_raw": 0,
+            "side_strength_scale": 100000,
+            "side_army_size_raw": 259600000,
+            "side_army_size_scale": 100000,
+            "state_refs": []
+        }
+    ],
+    "global_state_refs": [
+        {
+            "path": "game_rules.easy_difficulty",
+            "value_type": "bool",
+            "value": false
+        }
+    ],
+    "advantage_model": {
+        "status": "available",
+        "scale": 100000,
+        "scenario_policy": "explicit_hypothetical_fixed_at_contact_no_reinforcements",
+        "observation_origin": "independent_synthetic_contract_fixture",
+        "side_inputs": [
+            {
+                "side": "attacker",
+                "primary_army_id": 357,
+                "ordered_army_ids": [
+                    357
+                ],
+                "supply": {
+                    "selected_key": "supply_state_supplied_advantage",
+                    "selected_effect_identity": "fixture:db+F38",
+                    "selected_effect_points": 0,
+                    "eligible_soldiers_total": 0,
+                    "eligible_soldiers_supplied": 0,
+                    "eligible_soldiers_running_low": 0,
+                    "eligible_soldiers_starving": 0
+                },
+                "primary_army_recently_disembarked_raw": 0,
+                "owner_character_id": 36108,
+                "owner_debt_selector_raw": 0,
+                "treasury_debt_selector_raw": null
+            },
+            {
+                "side": "defender",
+                "primary_army_id": 83886341,
+                "ordered_army_ids": [
+                    83886341
+                ],
+                "supply": {
+                    "selected_key": "supply_state_supplied_advantage",
+                    "selected_effect_identity": "fixture:db+F38",
+                    "selected_effect_points": 0,
+                    "eligible_soldiers_total": 0,
+                    "eligible_soldiers_supplied": 0,
+                    "eligible_soldiers_running_low": 0,
+                    "eligible_soldiers_starving": 0
+                },
+                "primary_army_recently_disembarked_raw": 0,
+                "owner_character_id": 29829,
+                "owner_debt_selector_raw": 0,
+                "treasury_debt_selector_raw": null
+            }
+        ],
+        "constructor_call_order": [
+            "width",
+            "attacker_adjacency",
+            "defender_adjacency",
+            "attacker_terrain",
+            "defender_terrain",
+            "side_context_0",
+            "side_context_1",
+            "supply_0",
+            "supply_1",
+            "holding_defender_1",
+            "recently_disembarked_0",
+            "recently_disembarked_1",
+            "debt_0_owner_then_treasury",
+            "debt_1_owner_then_treasury",
+            "unreformed_faith_0",
+            "unreformed_faith_1",
+            "side_finalize_0",
+            "side_finalize_1"
+        ],
+        "constructor_sources": [
+            {
+                "stage_order": 0,
+                "append_order": null,
+                "stage": "attacker_adjacency",
+                "side": "attacker",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 1,
+                "append_order": null,
+                "stage": "defender_adjacency",
+                "side": "defender",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 2,
+                "append_order": null,
+                "stage": "attacker_terrain",
+                "side": "attacker",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 3,
+                "append_order": null,
+                "stage": "defender_terrain",
+                "side": "defender",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 4,
+                "append_order": null,
+                "stage": "supply_0",
+                "side": "attacker",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 5,
+                "append_order": null,
+                "stage": "supply_1",
+                "side": "defender",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 6,
+                "append_order": null,
+                "stage": "holding_defender_1",
+                "side": "defender",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 7,
+                "append_order": null,
+                "stage": "recently_disembarked_0",
+                "side": "attacker",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 8,
+                "append_order": null,
+                "stage": "recently_disembarked_1",
+                "side": "defender",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 9,
+                "append_order": null,
+                "stage": "debt_0_owner",
+                "side": "attacker",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 10,
+                "append_order": null,
+                "stage": "debt_0_treasury",
+                "side": "attacker",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 11,
+                "append_order": null,
+                "stage": "debt_1_owner",
+                "side": "defender",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 12,
+                "append_order": null,
+                "stage": "debt_1_treasury",
+                "side": "defender",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 13,
+                "append_order": null,
+                "stage": "unreformed_faith_0",
+                "side": "attacker",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            },
+            {
+                "stage_order": 14,
+                "append_order": null,
+                "stage": "unreformed_faith_1",
+                "side": "defender",
+                "source_key": null,
+                "effect_advantage_points": null,
+                "scale_raw": 100000,
+                "signed_contribution_raw": 0,
+                "accumulator_before_raw": 0,
+                "accumulator_after_raw": 0,
+                "selected": false,
+                "applied": false,
+                "skip_reason": "not_selected_in_synthetic_fixture"
+            }
+        ],
+        "base_static_accumulator_raw": 0,
+        "resolved_dynamic": {
+            "status": "available",
+            "helper_status": "original_helpers_matched",
+            "context_mode": "temporary_unregistered_local_context",
+            "roll_policy": "zero_in_query_sampled_offline",
+            "sides": [
+                {
+                    "side": "attacker",
+                    "battle_commander_character_id": 36108,
+                    "battle_commander_selected": true,
+                    "battle_commander_selection": "native_0x23C8A60",
+                    "primary_army_gathering_raw": 0,
+                    "gathering": false,
+                    "relation_kind_raw": 0,
+                    "roll_points": 0,
+                    "roll_raw": 0,
+                    "target_conditionals_residual_raw": 0,
+                    "commander_dynamic_raw": 0,
+                    "side_dynamic_raw": 0,
+                    "side_total_raw": 0,
+                    "contribution_to_resolved_raw": 0
+                },
+                {
+                    "side": "defender",
+                    "battle_commander_character_id": null,
+                    "battle_commander_selected": false,
+                    "battle_commander_selection": "native_0x23C8A60",
+                    "primary_army_gathering_raw": 0,
+                    "gathering": false,
+                    "relation_kind_raw": 0,
+                    "roll_points": 0,
+                    "roll_raw": 0,
+                    "target_conditionals_residual_raw": 0,
+                    "commander_dynamic_raw": 0,
+                    "side_dynamic_raw": 0,
+                    "side_total_raw": 0,
+                    "contribution_to_resolved_raw": 0
+                }
+            ],
+            "side_0_dynamic_raw": 0,
+            "side_1_dynamic_raw": 0,
+            "resolved_advantage_at_zero_roll_raw": 0,
+            "original_total_helper_raw": 0,
+            "original_total_helper_match": true
+        },
+        "unavailable_reason": null
+    },
+    "row_evaluations": {
+        "status": "unsupported",
+        "scope": "hypothetical_precontact",
+        "reason": "hypothetical_precontact_has_no_real_combat_side"
+    },
+    "offline_admission": {
+        "raw_state_ref_contract_complete": true,
+        "advantage_model_contract_complete": true,
+        "native_raw_state_refs_ready": false,
+        "native_advantage_model_ready": false,
+        "loaded_playset_verified": false,
+        "ast_evaluator_ready": false,
+        "ready": false,
+        "missing_required_domains": [
+            "native_exact_phase_state_readers",
+            "native_advantage_model_fixture_and_paused_live_acceptance",
+            "loaded_playset_phase_effects_exact",
+            "phase_effect_ast_evaluator_exact",
+            "effect_local_candidate_order_exact",
+            "dynamic_participant_route_exact",
+            "original_participant_recompute_trace_exact"
+        ]
+    },
+    "unavailable_reason": "v3_test_only_contract_not_production_ready"
+}

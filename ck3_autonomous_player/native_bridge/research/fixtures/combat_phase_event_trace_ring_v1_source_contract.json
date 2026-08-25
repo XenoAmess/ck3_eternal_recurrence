@@ -1,0 +1,118 @@
+{
+  "fixture_kind": "exact_build_source_contract_no_live_values",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "capability_advertised": false,
+  "contract": "native_daily_phase_event_boundaries_v1",
+  "hook_targets": {
+    "schedule_function_rva": "0x23C8750",
+    "phase_fire_function_rva": "0x23C9900",
+    "installation_ready": true,
+    "original_trampoline_required": true
+  },
+  "schedule_call_chain": {
+    "manager_function_rva": "0x27FB4D0",
+    "side0_call_rva": "0x27FB58F",
+    "side0_return_rva": "0x27FB594",
+    "side1_call_rva": "0x27FB5A7",
+    "side1_return_rva": "0x27FB5AC",
+    "side_argument": "RCX=actual_CCombatSide",
+    "local_rng_argument": "RDX=address_of_stack_pair_at_caller_rsp_plus_0x30",
+    "target_argument": "R8=CCombat_plus_0x6B8",
+    "capture_policy": "before_side0_then_after_side1",
+    "local_rng_names": "opaque_word0_word1_until_native_type_names_close"
+  },
+  "phase_fire_call_chain": {
+    "daily_dispatch_rva": "0x2309E80",
+    "side0_refresh_call_rva": "0x2309EF2",
+    "side0_return_rva": "0x2309EF7",
+    "side1_refresh_call_rva": "0x2309EFA",
+    "side1_return_rva": "0x2309EFF",
+    "refresh_function_rva": "0x23CA2F0",
+    "refresh_tail_jump_rva": "0x23CA34E",
+    "refresh_tail_target_rva": "0x23C9900",
+    "side_argument": "RCX=actual_CCombatSide",
+    "side_identity": "tail_jump_preserves_0x2309EF7_or_0x2309EFF_return_address",
+    "capture_policy": "entry_and_post_original_for_each_side"
+  },
+  "required_snapshot_sequence": [
+    "native_capture_before_side0_schedule_call_0x27FB58F",
+    "native_capture_after_side1_schedule_return_0x27FB5AC",
+    "native_capture_before_side0_phase_fire_entry_0x23C9900",
+    "native_capture_after_side0_phase_fire_return_0x2309EF7",
+    "native_capture_before_side1_phase_fire_entry_0x23C9900",
+    "native_capture_after_side1_phase_fire_return_0x2309EFF",
+    "paused_next_day_stable_query"
+  ],
+  "capture_transport": {
+    "storage": "managed_query_owned_fixed_width_ring",
+    "record_capacity": 7,
+    "maximum_armies_per_side": 256,
+    "maximum_tracked_armies": 512,
+    "maximum_regiments_per_side": 2048,
+    "maximum_tracked_regiments": 4096,
+    "maximum_characters": 4096,
+    "maximum_accolades": 4096,
+    "maximum_accolade_rank_thresholds": 64,
+    "maximum_battle_events": 4096,
+    "maximum_battle_event_key_bytes": 128,
+    "overflow_policy": "atomic_fail_closed_no_truncation",
+    "capture_path_forbidden": [
+      "heap_allocation",
+      "CK3_allocator",
+      "pause_or_resume",
+      "ReadSnapshot",
+      "bridge_or_service_reentry",
+      "component_store_resolution",
+      "logging",
+      "event_trigger_value_or_effect_execution",
+      "RNG_draw"
+    ]
+  },
+  "prearmed_identity_plan": {
+    "application_main_capture_plan_builder_ready": true,
+    "full_generation_combat_id": true,
+    "actual_combat_and_side_pointers": true,
+    "current_date_slot_and_object": true,
+    "phase_event_database_slot_and_object": true,
+    "global_rng_wrapper_slot_wrapper_and_state": true,
+    "battle_result_full_generation_id_and_object": true,
+    "strictly_sorted_army_regiment_character_id_pointer_maps": true,
+    "strictly_sorted_participant_accolade_id_pointer_map": true,
+    "accolade_rank_threshold_snapshot": "module_plus_0x4F62B98_data_and_module_plus_0x4F62BA4_count_copied_at_arm_and_revalidated_at_every_boundary",
+    "map_semantics": "paused_reader_resolves_before_arm_hook_only_binary_searches_and_revalidates_identity"
+  },
+  "captured_domains": [
+    "combat_id_date_phase_day_winner",
+    "schedule_local_rng_opaque_pair",
+    "global_rng_counter_salt_owner_thread",
+    "side_army_commander_membership",
+    "side_knight_regiment_army_character_membership",
+    "retained_commander_and_knight_schedule",
+    "battle_event_retained_rows_and_bounded_exact_key",
+    "character_identity_death_marker_skills_and_regiment_membership_core",
+    "participant_accolade_identity_owner_acclaimed_knight_glory_and_mirrored_rank",
+    "side_current_fighting_totals",
+    "combat_base_resolved_advantage_and_rolls"
+  ],
+  "readiness": {
+    "bounded_ring_source_ready": true,
+    "detour_installer_ready": true,
+    "bounded_wire_serializer_ready": true,
+    "typed_begin_finish_executor_ready": true,
+    "managed_checkpoint_offline_fixture_ready": true,
+    "mailbox_union_dispatch_ready": false,
+    "recoverable_external_one_day_driver_ready": false,
+    "same_combat_live_fixture_ready": false,
+    "full_mutable_transition_bundle_ready": false,
+    "typed_accolade_glory_rank_reader_ready": true,
+    "accolade_recipient_source_and_rank_change_feedback_ready": false,
+    "production_trace_ready": false,
+    "production_capability_must_remain_closed": true
+  },
+  "not_a_live_fixture": [
+    "no_fake_combat_id",
+    "no_fake_rng_state",
+    "no_fake_effect_transition"
+  ]
+}

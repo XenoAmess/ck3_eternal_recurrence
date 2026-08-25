@@ -1,18 +1,45 @@
 #include "xar_bridge/game_adapter.hpp"
 
+#include "xar_bridge/war_entry_assessments_v1.hpp"
+
 #include "xar_bridge/ck3_11906_adapter.hpp"
 
 #include <windows.h>
 #include <bcrypt.h>
 
 #include <array>
+#include <charconv>
 #include <cstdint>
+#include <limits>
 #include <memory>
 #include <string>
 #include <vector>
 
 namespace xar::game {
 namespace {
+
+constexpr std::string_view kCombatInputsV2StepPrefix =
+    "query-combat-simulation-inputs-v2-";
+constexpr std::string_view kCombatInputsV3StepPrefix =
+    "query-combat-simulation-inputs-v3-";
+constexpr std::size_t kMaximumCombatInputArmyIds = 64;
+
+bool IsCanonicalPositiveIdStep(std::string_view step,
+                               std::string_view prefix) noexcept {
+  if (!step.starts_with(prefix)) {
+    return false;
+  }
+  const auto value_text = step.substr(prefix.size());
+  if (value_text.empty() || value_text.front() == '0') {
+    return false;
+  }
+  std::int32_t value = 0;
+  const auto [end, error] =
+      std::from_chars(value_text.data(), value_text.data() + value_text.size(),
+                      value);
+  return error == std::errc{} && end == value_text.data() + value_text.size() &&
+         value > 0;
+}
 
 std::string CurrentExecutableSha256() noexcept {
   std::array<wchar_t, 32'768> path{};
@@ -92,6 +119,138 @@ std::string CurrentExecutableSha256() noexcept {
 
 } // namespace
 
+namespace {
+
+bool ParseCombatSimulationInputsStepWithPrefix(
+    std::string_view step, std::string_view prefix,
+    CombatSimulationInputsRequest &request) noexcept {
+  request = {};
+  if (!step.starts_with(prefix)) {
+    return false;
+  }
+  auto suffix = step.substr(prefix.size());
+  std::array<std::string_view, kMaximumCombatInputArmyIds + 6> tokens{};
+  std::size_t token_count = 0;
+  while (!suffix.empty()) {
+    if (token_count >= tokens.size()) {
+      return false;
+    }
+    const auto delimiter = suffix.find('-');
+    const auto token = suffix.substr(0, delimiter);
+    if (token.empty()) {
+      return false;
+    }
+    tokens[token_count++] = token;
+    if (delimiter == std::string_view::npos) {
+      suffix = {};
+    } else {
+      suffix.remove_prefix(delimiter + 1);
+      if (suffix.empty()) {
+        return false;
+      }
+    }
+  }
+  if (token_count < 8 || tokens[2] != "a") {
+    return false;
+  }
+
+  const auto parse_positive = [](std::string_view token,
+                                 std::int32_t &value) noexcept {
+    value = -1;
+    if (token.empty() || token.front() < '1' || token.front() > '9') {
+      return false;
+    }
+    for (const char character : token) {
+      if (character < '0' || character > '9') {
+        return false;
+      }
+    }
+    std::int64_t parsed = 0;
+    const auto conversion =
+        std::from_chars(token.data(), token.data() + token.size(), parsed);
+    if (conversion.ec != std::errc{} ||
+        conversion.ptr != token.data() + token.size() || parsed <= 0 ||
+        parsed > std::numeric_limits<std::int32_t>::max()) {
+      return false;
+    }
+    value = static_cast<std::int32_t>(parsed);
+    return true;
+  };
+
+  std::int32_t attacker_count_value = -1;
+  if (!parse_positive(tokens[0], request.target_province_id) ||
+      !parse_positive(tokens[1], request.attacker_entry_province_id) ||
+      request.target_province_id == request.attacker_entry_province_id ||
+      !parse_positive(tokens[3], attacker_count_value) ||
+      attacker_count_value > 63) {
+    request = {};
+    return false;
+  }
+  const auto attacker_count = static_cast<std::size_t>(attacker_count_value);
+  const auto defender_marker_index = 4 + attacker_count;
+  if (defender_marker_index + 2 >= token_count ||
+      tokens[defender_marker_index] != "d") {
+    request = {};
+    return false;
+  }
+  std::int32_t defender_count_value = -1;
+  if (!parse_positive(tokens[defender_marker_index + 1],
+                      defender_count_value) ||
+      defender_count_value > 63 ||
+      attacker_count + static_cast<std::size_t>(defender_count_value) >
+          kMaximumCombatInputArmyIds ||
+      token_count != defender_marker_index + 2 +
+                         static_cast<std::size_t>(defender_count_value)) {
+    request = {};
+    return false;
+  }
+
+  std::array<std::int32_t, kMaximumCombatInputArmyIds> army_ids{};
+  const auto total_army_count =
+      attacker_count + static_cast<std::size_t>(defender_count_value);
+  for (std::size_t index = 0; index < total_army_count; ++index) {
+    const auto token_index = index < attacker_count
+                                 ? 4 + index
+                                 : defender_marker_index + 2 +
+                                       (index - attacker_count);
+    if (!parse_positive(tokens[token_index], army_ids[index])) {
+      request = {};
+      return false;
+    }
+    for (std::size_t previous = 0; previous < index; ++previous) {
+      if (army_ids[index] == army_ids[previous]) {
+        request = {};
+        return false;
+      }
+    }
+  }
+  try {
+    request.attacker_army_ids.assign(army_ids.begin(),
+                                     army_ids.begin() + attacker_count);
+    request.defender_army_ids.assign(
+        army_ids.begin() + attacker_count,
+        army_ids.begin() + total_army_count);
+  } catch (...) {
+    request = {};
+    return false;
+  }
+  return true;
+}
+
+} // namespace
+
+bool ParseCombatSimulationInputsStep(
+    std::string_view step, CombatSimulationInputsRequest &request) noexcept {
+  return ParseCombatSimulationInputsStepWithPrefix(
+      step, kCombatInputsV2StepPrefix, request);
+}
+
+bool ParseCombatSimulationInputsV3Step(
+    std::string_view step, CombatSimulationInputsRequest &request) noexcept {
+  return ParseCombatSimulationInputsStepWithPrefix(
+      step, kCombatInputsV3StepPrefix, request);
+}
+
 bool GameAdapter::supports(std::string_view capability) const noexcept {
   if (!enabled()) {
     return false;
@@ -130,6 +289,34 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = "game.command.declare-war-N";
   } else if (step.starts_with("enforce-demands-")) {
     capability = "game.command.enforce-demands-N";
+  } else if (step == "query-army-strengths-v1") {
+    capability = "game.command.query-army-strengths-v1";
+  } else {
+    std::vector<std::int32_t> war_entry_targets;
+    if (ck3_11906::ParseWarEntryAssessmentsV1Step(step,
+                                                   war_entry_targets)) {
+      capability = ck3_11906::kWarEntryAssessmentsV1Capability;
+    }
+  }
+  if (capability.empty()) {
+    CombatSimulationInputsRequest request{};
+    if (ParseCombatSimulationInputsV3Step(step, request)) {
+      capability = "game.command.query-combat-simulation-inputs-v3-N";
+    } else if (ParseCombatSimulationInputsStep(step, request)) {
+      capability = "game.command.query-combat-simulation-inputs-v2-N";
+    }
+  }
+  if (capability.empty() &&
+      step.starts_with("query-war-termination-options-")) {
+    capability = "game.command.query-war-termination-options-N";
+  } else if (capability.empty() && IsCanonicalPositiveIdStep(
+             step, "query-war-termination-terms-v1-")) {
+    capability = "game.command.query-war-termination-terms-v1-N";
+  } else if (capability.empty() && step.starts_with("surrender-war-")) {
+    capability = "game.command.surrender-war-N";
+  } else if (capability.empty() &&
+             IsCanonicalPositiveIdStep(step, "offer-white-peace-")) {
+    capability = "game.command.offer-white-peace-N";
   } else if (step == "raise-troops-default") {
     capability = "game.command.raise-troops-default";
   } else if (step.starts_with("preview-move-army-")) {

@@ -1,0 +1,65 @@
+{
+  "fixture_kind": "synthetic-v3-test-only-contract-recipe",
+  "base_fixture": "tests/fixtures/combat/live_rev4_vs_combined.json",
+  "rules_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+  "required_state_refs": {
+    "count": 132,
+    "sha256": "2B5E8445EFD14DC65D8BA4046242BBC37A0226C2BCD971D805D9A6F0064A1DD0"
+  },
+  "state_ref_coverage": {
+    "manifest_domain_counts": {
+      "character_relation": 79,
+      "army": 13,
+      "side": 10,
+      "global": 3,
+      "derived": 27
+    },
+    "abi_level_counts": {
+      "native_leaf_exact": 47,
+      "offline_derived_exact": 15,
+      "determinable": 62,
+      "remaining_unclosed": 70,
+      "production_live_observed": 0
+    },
+    "path_set_sha256": {
+      "native_leaf_exact": "1BB1CA55C1C7E2388B5FE2A71CB4AFBD76DAD784A9CDB825615E2AACB94D8D5E",
+      "offline_derived_exact": "7F93575CEDFE3CF1DCEBC6265A2BE867FA1BC341CDFE334DE3791B6A9AB48064",
+      "remaining_unclosed": "180FD456E591FF72CF513D5197EB927782EB813001DDAE533482B3985038A60F"
+    },
+    "native_payload_policy": "closed_native_leaves_only_offline_derived_not_serialized"
+  },
+  "constructor_source_order": [
+    "attacker_adjacency",
+    "defender_adjacency",
+    "attacker_terrain",
+    "defender_terrain",
+    "supply_0",
+    "supply_1",
+    "holding_defender_1",
+    "recently_disembarked_0",
+    "recently_disembarked_1",
+    "debt_0_owner",
+    "debt_0_treasury",
+    "debt_1_owner",
+    "debt_1_treasury",
+    "unreformed_faith_0",
+    "unreformed_faith_1"
+  ],
+  "resolved_dynamic_contract": {
+    "shell_size_bytes": 1816,
+    "shell_alignment_bytes": 16,
+    "context_mode": "temporary_unregistered_local_context",
+    "roll_policy": "zero_in_query_sampled_offline",
+    "required_helper_status": "original_helpers_matched"
+  },
+  "readiness_blockers": [
+    "native_exact_phase_state_readers",
+    "native_advantage_model_fixture_and_paused_live_acceptance",
+    "loaded_playset_phase_effects_exact",
+    "phase_effect_ast_evaluator_exact",
+    "effect_local_candidate_order_exact",
+    "dynamic_participant_route_exact",
+    "original_participant_recompute_trace_exact"
+  ],
+  "provenance_note": "All generated values are explicit synthetic contract sentinels, not CK3 live observations."
+}

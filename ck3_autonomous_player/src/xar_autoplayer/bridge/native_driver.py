@@ -59,17 +59,54 @@ from .settlement_contract import (
     settlement_ready_for_episode,
     tutorial_record_observation,
 )
+from .combat_contract import (
+    QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY,
+    QUERY_COMBAT_SIMULATION_INPUTS_STEP_PREFIX,
+    combat_simulation_encounter_scope,
+    combat_simulation_inputs_status,
+    normalize_combat_simulation_inputs,
+    parse_query_combat_simulation_inputs_step,
+)
+from .combat_phase_contract import (
+    QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
+    QUERY_COMBAT_SIMULATION_INPUTS_V3_STEP_PREFIX,
+    combat_simulation_inputs_v3_status,
+    normalize_combat_simulation_inputs_v3,
+    parse_query_combat_simulation_inputs_v3_step,
+)
+from .war_exit_terms_contract import (
+    QUERY_WAR_TERMINATION_EXIT_TERMS_CAPABILITY,
+    QUERY_WAR_TERMINATION_EXIT_TERMS_STEP_PREFIX,
+    WAR_TERMINATION_EXIT_TERMS_PRODUCTION_ENABLED,
+    normalize_war_termination_exit_terms,
+    parse_query_war_termination_exit_terms_step,
+    query_war_termination_exit_terms_step,
+)
+from .war_entry_contract import (
+    QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY,
+    QUERY_WAR_ENTRY_ASSESSMENTS_STEP_PREFIX,
+    normalize_war_entry_assessments,
+    parse_query_war_entry_assessments_step,
+    query_war_entry_assessments_step,
+    require_declarable_war_targets,
+)
 from .war_contract import (
     ARMY_ROUTES_CAPABILITY,
     DISBAND_ARMY_CAPABILITY,
     ENFORCE_DEMANDS_CAPABILITY,
     MERGE_ARMIES_CAPABILITY,
     MOVE_ARMY_CAPABILITY,
+    OFFER_WHITE_PEACE_CAPABILITY,
     PREVIEW_MOVE_ARMY_CAPABILITY,
+    QUERY_ARMY_STRENGTHS_CAPABILITY,
+    QUERY_ARMY_STRENGTHS_STEP,
+    QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
+    QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
     RAISE_TROOPS_STEP,
     SPLIT_ARMY_HALF_CAPABILITY,
     START_ASSAULT_CAPABILITY,
     STOP_ASSAULT_CAPABILITY,
+    SURRENDER_WAR_CAPABILITY,
     WAR_OBJECTIVES_CAPABILITY,
     WAR_OBJECTIVE_ASSAULT_CAPABILITY,
     WAR_OBJECTIVE_FORT_LEVEL_CAPABILITY,
@@ -77,6 +114,8 @@ from .war_contract import (
     WAR_OBJECTIVE_OCCUPATION_CAPABILITY,
     WAR_OBJECTIVE_SIEGE_PROGRESS_CAPABILITY,
     WAR_PRIMARY_OPPONENT_CAPABILITY,
+    army_strength_query_status,
+    army_strength_scope,
     controllable_armies,
     disband_army_step,
     enemy_primary_default_raise_province_ids,
@@ -86,16 +125,25 @@ from .war_contract import (
     merge_armies_step,
     move_army_step,
     normalize_active_wars,
+    normalize_army_strengths,
+    normalize_war_termination_options,
+    normalize_war_termination_terms,
     parse_disband_army_step,
     parse_enforce_demands_step,
     parse_merge_armies_step,
     parse_move_army_step,
+    parse_offer_white_peace_step,
     parse_preview_move_army_step,
+    parse_query_war_termination_options_step,
+    parse_query_war_termination_terms_step,
     parse_split_army_half_step,
     parse_start_assault_step,
     parse_stop_assault_step,
+    parse_surrender_war_step,
     preview_move_army_step,
     player_armies_from_state,
+    query_war_termination_options_step,
+    query_war_termination_terms_step,
     split_army_half_step,
     start_assault_step,
     stop_assault_step,
@@ -287,6 +335,11 @@ class NativeProtocolState:
                         self._semantic_snapshot.get("player_armies")
                         if self._semantic_snapshot is not None
                         else None,
+                        paused=(
+                            self._semantic_snapshot.get("paused")
+                            if self._semantic_snapshot is not None
+                            else None
+                        ),
                     )
                     if self._connected
                     else []
@@ -604,6 +657,15 @@ class NativeHeadlessGameplayDriver:
         )
         self._declarable_wars: list[dict[str, object]] = []
         self._declaration_query_sequence: int | None = None
+        self._army_strength_query: dict[str, object] | None = None
+        self._combat_simulation_inputs_query: dict[str, object] | None = None
+        self._combat_simulation_inputs_v3_query: dict[str, object] | None = None
+        self._war_entry_assessments_query: dict[str, object] | None = None
+        self._war_termination_options: dict[int, dict[str, object]] = {}
+        self._war_termination_terms: dict[int, dict[str, object]] = {}
+        self._war_termination_exit_terms: dict[
+            int, dict[str, object]
+        ] = {}
         self._arrange_marriage_choices: list[dict[str, object]] = []
         self._arrange_marriage_query_sequence: int | None = None
         self.state = NativeProtocolState(self.pipe_name)
@@ -675,6 +737,27 @@ class NativeHeadlessGameplayDriver:
             if result.get("snapshot") is True
             else None
         )
+        if (
+            QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY in bridge_capabilities
+            and isinstance(current_snapshot, dict)
+            and current_snapshot.get("paused") is True
+        ):
+            distinct_targets = list(
+                dict.fromkeys(
+                    int(row["target_character_id"])
+                    for row in declarations
+                    if isinstance(row.get("target_character_id"), int)
+                    and not isinstance(row.get("target_character_id"), bool)
+                    and 0 < int(row["target_character_id"]) <= 2**31 - 1
+                )
+            )
+            action_steps.update(
+                query_war_entry_assessments_step([target])
+                for target in distinct_targets
+            )
+        # Native surrender and white-peace ABIs are intentionally not Python
+        # actions yet. claim-disposition v1 is necessary but not sufficient:
+        # dynamic exit terms and campaign-decision readiness remain required.
         terminal_reason = (
             current_snapshot.get("one_life_terminal_reason")
             if isinstance(current_snapshot, dict)
@@ -746,6 +829,40 @@ class NativeHeadlessGameplayDriver:
             ),
             "move_route_preview_supported": (
                 PREVIEW_MOVE_ARMY_CAPABILITY in bridge_capabilities
+            ),
+            "army_strength_query_supported": (
+                QUERY_ARMY_STRENGTHS_CAPABILITY in bridge_capabilities
+            ),
+            "combat_simulation_inputs_query_supported": (
+                QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY
+                in bridge_capabilities
+            ),
+            "combat_simulation_inputs_v3_query_supported": (
+                QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY
+                in bridge_capabilities
+            ),
+            "war_entry_assessments_query_supported": (
+                QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY
+                in bridge_capabilities
+            ),
+            "war_termination_query_supported": (
+                QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY
+                in bridge_capabilities
+            ),
+            "war_termination_terms_query_supported": (
+                QUERY_WAR_TERMINATION_TERMS_CAPABILITY
+                in bridge_capabilities
+            ),
+            "war_termination_exit_terms_query_supported": (
+                WAR_TERMINATION_EXIT_TERMS_PRODUCTION_ENABLED
+                and QUERY_WAR_TERMINATION_EXIT_TERMS_CAPABILITY
+                in bridge_capabilities
+            ),
+            "surrender_war_supported": (
+                SURRENDER_WAR_CAPABILITY in bridge_capabilities
+            ),
+            "offer_white_peace_supported": (
+                OFFER_WHITE_PEACE_CAPABILITY in bridge_capabilities
             ),
             **_war_objective_capability_flags(bridge_capabilities),
             "one_life_settlement_status": (
@@ -820,6 +937,44 @@ class NativeHeadlessGameplayDriver:
             arrange_marriage_query_sequence = (
                 self._arrange_marriage_query_sequence
             )
+        war_termination_options = self._war_termination_cache_for_snapshot(
+            snapshot,
+            episode_run_id=episode_run_id,
+        )
+        war_termination_terms = (
+            self._war_termination_terms_cache_for_snapshot(
+                snapshot,
+                episode_run_id=episode_run_id,
+            )
+        )
+        war_termination_exit_terms = (
+            self._war_termination_exit_terms_cache_for_snapshot(
+                snapshot,
+                episode_run_id=episode_run_id,
+            )
+        )
+        army_strength_query = self._army_strength_cache_for_snapshot(
+            snapshot,
+            episode_run_id=episode_run_id,
+        )
+        combat_simulation_inputs_query = (
+            self._combat_simulation_inputs_cache_for_snapshot(
+                snapshot,
+                episode_run_id=episode_run_id,
+            )
+        )
+        combat_simulation_inputs_v3_query = (
+            self._combat_simulation_inputs_v3_cache_for_snapshot(
+                snapshot,
+                episode_run_id=episode_run_id,
+            )
+        )
+        war_entry_assessments_query = (
+            self._war_entry_assessments_cache_for_snapshot(
+                {**snapshot, "declarable_wars": declarable_wars},
+                episode_run_id=episode_run_id,
+            )
+        )
         if identity_changed:
             self._persist_driver_state()
         self._migrate_legacy_rollback_war_failures(snapshot)
@@ -878,12 +1033,714 @@ class NativeHeadlessGameplayDriver:
             "move_route_preview_supported": (
                 PREVIEW_MOVE_ARMY_CAPABILITY in bridge_capabilities
             ),
+            "combat_simulation_inputs_query_supported": (
+                QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY
+                in bridge_capabilities
+            ),
+            "combat_simulation_inputs_v3_query_supported": (
+                QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY
+                in bridge_capabilities
+            ),
+            "war_entry_assessments_query_supported": (
+                QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY
+                in bridge_capabilities
+            ),
             **_war_objective_capability_flags(bridge_capabilities),
             "declarable_wars": declarable_wars,
             "declaration_query_sequence": declaration_query_sequence,
             "arrange_marriage_choices": arrange_marriage_choices,
             "arrange_marriage_query_sequence": arrange_marriage_query_sequence,
+            "army_strengths": (
+                copy.deepcopy(army_strength_query["army_strengths"])
+                if isinstance(army_strength_query, dict)
+                else []
+            ),
+            "army_strengths_status": (
+                army_strength_query.get("status")
+                if isinstance(army_strength_query, dict)
+                else None
+            ),
+            "army_strengths_query_sequence": (
+                army_strength_query.get("query_sequence")
+                if isinstance(army_strength_query, dict)
+                else None
+            ),
+            "army_strengths_queried_snapshot_id": (
+                army_strength_query.get("queried_snapshot_id")
+                if isinstance(army_strength_query, dict)
+                else None
+            ),
+            "army_strengths_queried_revision": (
+                army_strength_query.get("queried_revision")
+                if isinstance(army_strength_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs": (
+                copy.deepcopy(
+                    combat_simulation_inputs_query[
+                        "combat_simulation_inputs"
+                    ]
+                )
+                if isinstance(combat_simulation_inputs_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_status": (
+                combat_simulation_inputs_query.get("status")
+                if isinstance(combat_simulation_inputs_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_query_sequence": (
+                combat_simulation_inputs_query.get("query_sequence")
+                if isinstance(combat_simulation_inputs_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_target_province_id": (
+                combat_simulation_inputs_query.get("target_province_id")
+                if isinstance(combat_simulation_inputs_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_attacker_entry_province_id": (
+                combat_simulation_inputs_query.get(
+                    "attacker_entry_province_id"
+                )
+                if isinstance(combat_simulation_inputs_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_attacker_army_ids": (
+                copy.deepcopy(
+                    combat_simulation_inputs_query.get("attacker_army_ids")
+                )
+                if isinstance(combat_simulation_inputs_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_defender_army_ids": (
+                copy.deepcopy(
+                    combat_simulation_inputs_query.get("defender_army_ids")
+                )
+                if isinstance(combat_simulation_inputs_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_queried_snapshot_id": (
+                combat_simulation_inputs_query.get("queried_snapshot_id")
+                if isinstance(combat_simulation_inputs_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_queried_revision": (
+                combat_simulation_inputs_query.get("queried_revision")
+                if isinstance(combat_simulation_inputs_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_v3": (
+                copy.deepcopy(
+                    combat_simulation_inputs_v3_query[
+                        "combat_simulation_inputs"
+                    ]
+                )
+                if isinstance(combat_simulation_inputs_v3_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_v3_status": (
+                combat_simulation_inputs_v3_query.get("status")
+                if isinstance(combat_simulation_inputs_v3_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_v3_query_sequence": (
+                combat_simulation_inputs_v3_query.get("query_sequence")
+                if isinstance(combat_simulation_inputs_v3_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_v3_target_province_id": (
+                combat_simulation_inputs_v3_query.get("target_province_id")
+                if isinstance(combat_simulation_inputs_v3_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_v3_attacker_entry_province_id": (
+                combat_simulation_inputs_v3_query.get(
+                    "attacker_entry_province_id"
+                )
+                if isinstance(combat_simulation_inputs_v3_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_v3_attacker_army_ids": (
+                copy.deepcopy(
+                    combat_simulation_inputs_v3_query.get("attacker_army_ids")
+                )
+                if isinstance(combat_simulation_inputs_v3_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_v3_defender_army_ids": (
+                copy.deepcopy(
+                    combat_simulation_inputs_v3_query.get("defender_army_ids")
+                )
+                if isinstance(combat_simulation_inputs_v3_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_v3_queried_snapshot_id": (
+                combat_simulation_inputs_v3_query.get("queried_snapshot_id")
+                if isinstance(combat_simulation_inputs_v3_query, dict)
+                else None
+            ),
+            "combat_simulation_inputs_v3_queried_revision": (
+                combat_simulation_inputs_v3_query.get("queried_revision")
+                if isinstance(combat_simulation_inputs_v3_query, dict)
+                else None
+            ),
+            "war_entry_assessments": (
+                copy.deepcopy(
+                    war_entry_assessments_query["war_entry_assessments"]
+                )
+                if isinstance(war_entry_assessments_query, dict)
+                else None
+            ),
+            "war_entry_assessments_status": (
+                war_entry_assessments_query.get("status")
+                if isinstance(war_entry_assessments_query, dict)
+                else None
+            ),
+            "war_entry_assessments_query_sequence": (
+                war_entry_assessments_query.get("query_sequence")
+                if isinstance(war_entry_assessments_query, dict)
+                else None
+            ),
+            "war_entry_assessments_queried_snapshot_id": (
+                war_entry_assessments_query.get("queried_snapshot_id")
+                if isinstance(war_entry_assessments_query, dict)
+                else None
+            ),
+            "war_entry_assessments_queried_revision": (
+                war_entry_assessments_query.get("queried_revision")
+                if isinstance(war_entry_assessments_query, dict)
+                else None
+            ),
+            "war_termination_options": war_termination_options,
+            "war_termination_terms": war_termination_terms,
+            "war_termination_exit_terms": war_termination_exit_terms,
         }
+
+    def _war_entry_assessments_cache_for_snapshot(
+        self,
+        snapshot: dict[str, object],
+        *,
+        episode_run_id: str | None,
+    ) -> dict[str, object] | None:
+        """Project only a complete assessment bound to this paused frame."""
+        if snapshot.get("paused") is not True:
+            return None
+        diagnostics = snapshot.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        played_character = snapshot.get("played_character")
+        actor_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        if (
+            isinstance(actor_id, bool)
+            or not isinstance(actor_id, int)
+            or not 1 <= actor_id <= 2**31 - 1
+        ):
+            return None
+        with self._driver_state_lock:
+            cached = self._war_entry_assessments_query
+            if not isinstance(cached, dict):
+                return None
+            binding = cached.get("cache_binding")
+            query_sequence = cached.get("query_sequence")
+            if not (
+                set(cached)
+                == {
+                    "status",
+                    "war_entry_assessments",
+                    "query_sequence",
+                    "cache_binding",
+                }
+                and isinstance(binding, dict)
+                and set(binding)
+                == {
+                    "native_revision",
+                    "snapshot_id",
+                    "revision",
+                    "connection_generation",
+                    "episode_run_id",
+                    "target_character_ids",
+                }
+                and binding.get("native_revision")
+                == snapshot.get("native_revision")
+                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
+                and binding.get("revision") == snapshot.get("revision")
+                and binding.get("connection_generation")
+                == connection_generation
+                and binding.get("episode_run_id") == episode_run_id
+                and cached.get("status") == "available"
+                and isinstance(query_sequence, int)
+                and not isinstance(query_sequence, bool)
+                and 1 <= query_sequence <= 2**64 - 1
+            ):
+                self._war_entry_assessments_query = None
+                return None
+            targets = binding.get("target_character_ids")
+            try:
+                targets = require_declarable_war_targets(snapshot, targets)
+                normalized = normalize_war_entry_assessments(
+                    cached.get("war_entry_assessments"),
+                    expected_target_character_ids=targets,
+                    expected_actor_character_id=actor_id,
+                    expected_snapshot_revision=snapshot.get("native_revision"),
+                )
+            except ValueError:
+                self._war_entry_assessments_query = None
+                return None
+            return {
+                "status": "available",
+                "war_entry_assessments": copy.deepcopy(normalized),
+                "query_sequence": query_sequence,
+                "queried_snapshot_id": snapshot.get("snapshot_id"),
+                "queried_revision": snapshot.get("revision"),
+                "queried_native_revision": snapshot.get("native_revision"),
+                "episode_run_id": episode_run_id,
+                "target_character_ids": list(targets),
+            }
+
+    def _army_strength_cache_for_snapshot(
+        self,
+        snapshot: dict[str, object],
+        *,
+        episode_run_id: str | None,
+    ) -> dict[str, object] | None:
+        """Project only the complete query bound to this paused native frame."""
+        if snapshot.get("paused") is not True:
+            return None
+        diagnostics = snapshot.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        with self._driver_state_lock:
+            cached = self._army_strength_query
+            if not isinstance(cached, dict):
+                return None
+            binding = cached.get("cache_binding")
+            rows = cached.get("army_strengths")
+            try:
+                expected_scope = army_strength_scope(snapshot)
+                normalized = normalize_army_strengths(
+                    rows, expected_scope=expected_scope
+                )
+            except ValueError:
+                self._army_strength_query = None
+                return None
+            if not (
+                isinstance(binding, dict)
+                and binding.get("native_revision")
+                == snapshot.get("native_revision")
+                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
+                and binding.get("connection_generation")
+                == connection_generation
+                and binding.get("episode_run_id") == episode_run_id
+                and cached.get("status")
+                == army_strength_query_status(normalized)
+            ):
+                self._army_strength_query = None
+                return None
+            return {
+                "status": cached["status"],
+                "army_strengths": copy.deepcopy(normalized),
+                "query_sequence": cached["query_sequence"],
+                "queried_snapshot_id": snapshot.get("snapshot_id"),
+                "queried_revision": snapshot.get("revision"),
+                "queried_native_revision": snapshot.get("native_revision"),
+                "episode_run_id": episode_run_id,
+            }
+
+    def _war_termination_cache_for_snapshot(
+        self,
+        snapshot: dict[str, object],
+        *,
+        episode_run_id: str | None,
+    ) -> list[dict[str, object]]:
+        """Project only queries bound to this exact paused native frame."""
+        if snapshot.get("paused") is not True:
+            return []
+        diagnostics = snapshot.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        native_revision = snapshot.get("native_revision")
+        snapshot_id = snapshot.get("snapshot_id")
+        wars = snapshot.get("active_wars")
+        wars_by_id = {
+            int(war["war_id"]): war
+            for war in (wars if isinstance(wars, list) else [])
+            if isinstance(war, dict)
+            and _positive_native_id(war.get("war_id"))
+        }
+        result: list[dict[str, object]] = []
+        stale_ids: list[int] = []
+        with self._driver_state_lock:
+            for war_id, cached in self._war_termination_options.items():
+                binding = cached.get("cache_binding")
+                options = cached.get("options")
+                war = wars_by_id.get(war_id)
+                if not (
+                    isinstance(binding, dict)
+                    and isinstance(options, dict)
+                    and isinstance(war, dict)
+                    and binding.get("native_revision") == native_revision
+                    and binding.get("snapshot_id") == snapshot_id
+                    and binding.get("connection_generation")
+                    == connection_generation
+                    and binding.get("episode_run_id") == episode_run_id
+                    and options.get("player_side") == war.get("player_side")
+                    and options.get("player_is_primary_war_leader")
+                    == war.get("player_is_primary_war_leader")
+                    and options.get("player_relative_war_score")
+                    == war.get("player_relative_war_score")
+                ):
+                    stale_ids.append(war_id)
+                    continue
+                result.append(
+                    {
+                        **copy.deepcopy(options),
+                        "query_sequence": cached["query_sequence"],
+                        "queried_snapshot_id": snapshot_id,
+                        "queried_revision": snapshot.get("revision"),
+                        "queried_native_revision": native_revision,
+                        "episode_run_id": episode_run_id,
+                    }
+                )
+            for war_id in stale_ids:
+                self._war_termination_options.pop(war_id, None)
+        return sorted(result, key=lambda row: int(row["war_id"]))
+
+    def _war_termination_terms_cache_for_snapshot(
+        self,
+        snapshot: dict[str, object],
+        *,
+        episode_run_id: str | None,
+    ) -> list[dict[str, object]]:
+        """Project claim terms only on their exact paused native frame."""
+        if snapshot.get("paused") is not True:
+            return []
+        diagnostics = snapshot.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        native_revision = snapshot.get("native_revision")
+        snapshot_id = snapshot.get("snapshot_id")
+        wars = snapshot.get("active_wars")
+        active_war_ids = {
+            int(war["war_id"])
+            for war in (wars if isinstance(wars, list) else [])
+            if isinstance(war, dict)
+            and _positive_native_id(war.get("war_id"))
+        }
+        result: list[dict[str, object]] = []
+        stale_ids: list[int] = []
+        with self._driver_state_lock:
+            for war_id, cached in self._war_termination_terms.items():
+                binding = cached.get("cache_binding")
+                terms = cached.get("terms")
+                if not (
+                    isinstance(binding, dict)
+                    and isinstance(terms, dict)
+                    and war_id in active_war_ids
+                    and binding.get("native_revision") == native_revision
+                    and binding.get("snapshot_id") == snapshot_id
+                    and binding.get("connection_generation")
+                    == connection_generation
+                    and binding.get("episode_run_id") == episode_run_id
+                    and terms.get("war_id") == war_id
+                ):
+                    stale_ids.append(war_id)
+                    continue
+                result.append(
+                    {
+                        **copy.deepcopy(terms),
+                        "query_sequence": cached["query_sequence"],
+                        "queried_snapshot_id": snapshot_id,
+                        "queried_revision": snapshot.get("revision"),
+                        "queried_native_revision": native_revision,
+                        "episode_run_id": episode_run_id,
+                    }
+                )
+            for war_id in stale_ids:
+                self._war_termination_terms.pop(war_id, None)
+        return sorted(result, key=lambda row: int(row["war_id"]))
+
+    def _war_termination_exit_terms_cache_for_snapshot(
+        self,
+        snapshot: dict[str, object],
+        *,
+        episode_run_id: str | None,
+    ) -> list[dict[str, object]]:
+        """Project complete v2 exit terms only on their exact paused frame."""
+        if snapshot.get("paused") is not True:
+            return []
+        diagnostics = snapshot.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        binding_values = {
+            "native_revision": snapshot.get("native_revision"),
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": snapshot.get("revision"),
+            "connection_generation": connection_generation,
+            "episode_run_id": episode_run_id,
+        }
+        wars = snapshot.get("active_wars")
+        active_war_ids = {
+            int(war["war_id"])
+            for war in (wars if isinstance(wars, list) else [])
+            if isinstance(war, dict)
+            and _positive_native_id(war.get("war_id"))
+        }
+        result: list[dict[str, object]] = []
+        stale_ids: list[int] = []
+        with self._driver_state_lock:
+            for war_id, cached in self._war_termination_exit_terms.items():
+                binding = cached.get("cache_binding")
+                terms = cached.get("terms")
+                if not (
+                    isinstance(binding, dict)
+                    and binding == binding_values
+                    and isinstance(terms, dict)
+                    and war_id in active_war_ids
+                    and terms.get("war_id") == war_id
+                ):
+                    stale_ids.append(war_id)
+                    continue
+                result.append(
+                    {
+                        **copy.deepcopy(terms),
+                        "query_sequence": cached["query_sequence"],
+                        "queried_snapshot_id": binding_values["snapshot_id"],
+                        "queried_revision": binding_values["revision"],
+                        "queried_native_revision": binding_values[
+                            "native_revision"
+                        ],
+                        "episode_run_id": episode_run_id,
+                    }
+                )
+            for war_id in stale_ids:
+                self._war_termination_exit_terms.pop(war_id, None)
+        return sorted(result, key=lambda row: int(row["war_id"]))
+
+    def _combat_simulation_inputs_cache_for_snapshot(
+        self,
+        snapshot: dict[str, object],
+        *,
+        episode_run_id: str | None,
+    ) -> dict[str, object] | None:
+        """Project one hypothetical-contact query bound to this paused frame."""
+        if snapshot.get("paused") is not True:
+            return None
+        diagnostics = snapshot.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        with self._driver_state_lock:
+            cached = self._combat_simulation_inputs_query
+            if not isinstance(cached, dict):
+                return None
+            binding = cached.get("cache_binding")
+            query_sequence = cached.get("query_sequence")
+            if not (
+                set(cached)
+                == {
+                    "status",
+                    "combat_simulation_inputs",
+                    "query_sequence",
+                    "cache_binding",
+                }
+                and isinstance(binding, dict)
+                and set(binding)
+                == {
+                    "native_revision",
+                    "snapshot_id",
+                    "revision",
+                    "connection_generation",
+                    "episode_run_id",
+                    "target_province_id",
+                    "attacker_entry_province_id",
+                    "attacker_army_ids",
+                    "defender_army_ids",
+                }
+                and isinstance(query_sequence, int)
+                and not isinstance(query_sequence, bool)
+                and 1 <= query_sequence <= 2**64 - 1
+            ):
+                self._combat_simulation_inputs_query = None
+                return None
+            target_province_id = binding.get("target_province_id")
+            attacker_entry_province_id = binding.get(
+                "attacker_entry_province_id"
+            )
+            attacker_army_ids = binding.get("attacker_army_ids")
+            defender_army_ids = binding.get("defender_army_ids")
+            try:
+                encounter_scope = combat_simulation_encounter_scope(
+                    snapshot, attacker_army_ids, defender_army_ids
+                )
+                normalized = normalize_combat_simulation_inputs(
+                    cached.get("combat_simulation_inputs"),
+                    expected_target_province_id=int(target_province_id),
+                    expected_attacker_entry_province_id=int(
+                        attacker_entry_province_id
+                    ),
+                    expected_encounter_scope=encounter_scope,
+                )
+                status = combat_simulation_inputs_status(normalized)
+            except (TypeError, ValueError):
+                self._combat_simulation_inputs_query = None
+                return None
+            if not (
+                binding.get("native_revision")
+                == snapshot.get("native_revision")
+                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
+                and binding.get("revision") == snapshot.get("revision")
+                and binding.get("connection_generation")
+                == connection_generation
+                and binding.get("episode_run_id") == episode_run_id
+                and binding.get("target_province_id")
+                == normalized.get("target_province_id")
+                and binding.get("attacker_army_ids")
+                == encounter_scope.get("attacker_army_ids")
+                and binding.get("defender_army_ids")
+                == encounter_scope.get("defender_army_ids")
+                and cached.get("status") == status
+            ):
+                self._combat_simulation_inputs_query = None
+                return None
+            return {
+                "status": status,
+                "combat_simulation_inputs": copy.deepcopy(normalized),
+                "query_sequence": query_sequence,
+                "target_province_id": target_province_id,
+                "attacker_entry_province_id": (
+                    attacker_entry_province_id
+                ),
+                "attacker_army_ids": copy.deepcopy(attacker_army_ids),
+                "defender_army_ids": copy.deepcopy(defender_army_ids),
+                "queried_snapshot_id": snapshot.get("snapshot_id"),
+                "queried_revision": snapshot.get("revision"),
+                "queried_native_revision": snapshot.get("native_revision"),
+                "episode_run_id": episode_run_id,
+            }
+
+    def _combat_simulation_inputs_v3_cache_for_snapshot(
+        self,
+        snapshot: dict[str, object],
+        *,
+        episode_run_id: str | None,
+    ) -> dict[str, object] | None:
+        """Project only an atomic production-v3 slice from this paused frame."""
+        if snapshot.get("paused") is not True:
+            return None
+        diagnostics = snapshot.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        with self._driver_state_lock:
+            cached = self._combat_simulation_inputs_v3_query
+            if not isinstance(cached, dict):
+                return None
+            binding = cached.get("cache_binding")
+            query_sequence = cached.get("query_sequence")
+            if not (
+                set(cached)
+                == {
+                    "status",
+                    "combat_simulation_inputs",
+                    "query_sequence",
+                    "cache_binding",
+                }
+                and isinstance(binding, dict)
+                and set(binding)
+                == {
+                    "native_revision",
+                    "snapshot_id",
+                    "revision",
+                    "connection_generation",
+                    "episode_run_id",
+                    "target_province_id",
+                    "attacker_entry_province_id",
+                    "attacker_army_ids",
+                    "defender_army_ids",
+                }
+                and isinstance(query_sequence, int)
+                and not isinstance(query_sequence, bool)
+                and 1 <= query_sequence <= 2**64 - 1
+            ):
+                self._combat_simulation_inputs_v3_query = None
+                return None
+            target_province_id = binding.get("target_province_id")
+            attacker_entry_province_id = binding.get(
+                "attacker_entry_province_id"
+            )
+            attacker_army_ids = binding.get("attacker_army_ids")
+            defender_army_ids = binding.get("defender_army_ids")
+            try:
+                encounter_scope = combat_simulation_encounter_scope(
+                    snapshot, attacker_army_ids, defender_army_ids
+                )
+                normalized = normalize_combat_simulation_inputs_v3(
+                    cached.get("combat_simulation_inputs"),
+                    expected_target_province_id=int(target_province_id),
+                    expected_attacker_entry_province_id=int(
+                        attacker_entry_province_id
+                    ),
+                    expected_encounter_scope=encounter_scope,
+                )
+                status = combat_simulation_inputs_v3_status(normalized)
+            except (TypeError, ValueError):
+                self._combat_simulation_inputs_v3_query = None
+                return None
+            if not (
+                binding.get("native_revision")
+                == snapshot.get("native_revision")
+                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
+                and binding.get("revision") == snapshot.get("revision")
+                and binding.get("connection_generation")
+                == connection_generation
+                and binding.get("episode_run_id") == episode_run_id
+                and binding.get("target_province_id")
+                == normalized["base_inputs"].get("target_province_id")
+                and binding.get("attacker_army_ids")
+                == encounter_scope.get("attacker_army_ids")
+                and binding.get("defender_army_ids")
+                == encounter_scope.get("defender_army_ids")
+                and cached.get("status") == status
+            ):
+                self._combat_simulation_inputs_v3_query = None
+                return None
+            return {
+                "status": status,
+                "combat_simulation_inputs": copy.deepcopy(normalized),
+                "query_sequence": query_sequence,
+                "target_province_id": target_province_id,
+                "attacker_entry_province_id": attacker_entry_province_id,
+                "attacker_army_ids": copy.deepcopy(attacker_army_ids),
+                "defender_army_ids": copy.deepcopy(defender_army_ids),
+                "queried_snapshot_id": snapshot.get("snapshot_id"),
+                "queried_revision": snapshot.get("revision"),
+                "queried_native_revision": snapshot.get("native_revision"),
+                "episode_run_id": episode_run_id,
+            }
 
     def _migrate_legacy_rollback_war_failures(
         self, snapshot: dict[str, object]
@@ -931,7 +1788,86 @@ class NativeHeadlessGameplayDriver:
     def _execute_step_unrecorded(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        war_entry_targets = parse_query_war_entry_assessments_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_WAR_ENTRY_ASSESSMENTS_STEP_PREFIX)
+            and war_entry_targets is None
+        ):
+            raise UnsupportedStepError(
+                "malformed or non-production-bounded war-entry assessment "
+                "step"
+            )
         capabilities = self.capabilities()
+        if war_entry_targets is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query strategic war-entry assessments"
+                )
+            return self._execute_war_entry_assessments_query(
+                step,
+                expected_revision=expected_revision,
+            )
+        combat_v3_query = parse_query_combat_simulation_inputs_v3_step(step)
+        if combat_v3_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query production combat phase inputs"
+                )
+            return self._execute_combat_simulation_inputs_v3_query(
+                step,
+                expected_revision=expected_revision,
+            )
+        combat_query = parse_query_combat_simulation_inputs_step(step)
+        if combat_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query combat simulation inputs"
+                )
+            return self._execute_combat_simulation_inputs_query(
+                step,
+                expected_revision=expected_revision,
+            )
+        exit_terms_query_war_id = (
+            parse_query_war_termination_exit_terms_step(step)
+        )
+        if exit_terms_query_war_id is not None:
+            if not WAR_TERMINATION_EXIT_TERMS_PRODUCTION_ENABLED:
+                raise UnsupportedStepError(
+                    "native exit-terms v2 is disabled after the reproducible "
+                    "loaded-effect preview crash at CK3 RVA 0x334C668"
+                )
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_WAR_TERMINATION_EXIT_TERMS_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query structured termination exit terms"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
         if step == "save-checkpoint" and step in capabilities["action_steps"]:
             return self._execute_save_checkpoint(
                 expected_revision=expected_revision
@@ -953,6 +1889,16 @@ class NativeHeadlessGameplayDriver:
         if is_native_marriage_step(step) and step in capabilities["action_steps"]:
             return self._execute_arrange_marriage_step(
                 step, expected_revision=expected_revision
+            )
+        if parse_offer_white_peace_step(step) is not None:
+            raise BridgeUnavailableError(
+                "native white_peace submission requires "
+                "structured_terms_v2 and campaign decision readiness"
+            )
+        if parse_surrender_war_step(step) is not None:
+            raise BridgeUnavailableError(
+                "native surrender submission requires structured_terms_v2 "
+                "and campaign decision readiness"
             )
         if is_native_war_step(step) and step in capabilities["action_steps"]:
             return self._execute_native_war_step(
@@ -1154,6 +2100,13 @@ class NativeHeadlessGameplayDriver:
             self._pending_cold_candidate = None
             self._declarable_wars = []
             self._declaration_query_sequence = None
+            self._army_strength_query = None
+            self._combat_simulation_inputs_query = None
+            self._combat_simulation_inputs_v3_query = None
+            self._war_entry_assessments_query = None
+            self._war_termination_options = {}
+            self._war_termination_terms = {}
+            self._war_termination_exit_terms = {}
             self._arrange_marriage_choices = []
             self._arrange_marriage_query_sequence = None
             completed = {
@@ -1495,6 +2448,13 @@ class NativeHeadlessGameplayDriver:
                     should_persist = True
             self._declarable_wars = []
             self._declaration_query_sequence = None
+            self._army_strength_query = None
+            self._combat_simulation_inputs_query = None
+            self._combat_simulation_inputs_v3_query = None
+            self._war_entry_assessments_query = None
+            self._war_termination_options = {}
+            self._war_termination_terms = {}
+            self._war_termination_exit_terms = {}
             self._arrange_marriage_choices = []
             self._arrange_marriage_query_sequence = None
         if should_persist:
@@ -1889,14 +2849,26 @@ class NativeHeadlessGameplayDriver:
                 )
 
     def _execute_primitive_step(
-        self, step: str, *, expected_revision: int | None = None
+        self,
+        step: str,
+        *,
+        expected_revision: int | None = None,
+        required_capability: str | None = None,
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
         capabilities = self.capabilities()
-        if step not in capabilities["action_steps"]:
+        if required_capability is None:
+            if step not in capabilities["action_steps"]:
+                raise UnsupportedStepError(
+                    f"native DLL does not implement gameplay step {step}"
+                )
+        elif required_capability not in set(
+            _string_list(capabilities.get("bridge_capabilities"))
+        ):
             raise UnsupportedStepError(
-                f"native DLL does not implement gameplay step {step}"
+                "native DLL does not advertise required capability "
+                f"{required_capability}"
             )
         snapshot = self.take_snapshot()
         revision = int(snapshot["revision"])
@@ -2305,6 +3277,53 @@ class NativeHeadlessGameplayDriver:
             if expected_revision is not None
             else starting_revision
         )
+        if step == QUERY_ARMY_STRENGTHS_STEP:
+            return self._execute_army_strength_query(
+                starting=starting,
+                selected_revision=selected_revision,
+            )
+        termination_query_war_id = (
+            parse_query_war_termination_options_step(step)
+        )
+        termination_terms_query_war_id = (
+            parse_query_war_termination_terms_step(step)
+        )
+        exit_terms_query_war_id = (
+            parse_query_war_termination_exit_terms_step(step)
+        )
+        if exit_terms_query_war_id is not None:
+            if not WAR_TERMINATION_EXIT_TERMS_PRODUCTION_ENABLED:
+                raise UnsupportedStepError(
+                    "native exit-terms v2 production dispatch is disabled"
+                )
+            return self._execute_war_termination_exit_terms_query(
+                step,
+                starting=starting,
+                selected_revision=selected_revision,
+                war_id=exit_terms_query_war_id,
+            )
+        if termination_terms_query_war_id is not None:
+            return self._execute_war_termination_terms_query(
+                step,
+                starting=starting,
+                selected_revision=selected_revision,
+                war_id=termination_terms_query_war_id,
+            )
+        surrender_war_id = parse_surrender_war_step(step)
+        white_peace_war_id = parse_offer_white_peace_step(step)
+        if (
+            termination_query_war_id is not None
+            or surrender_war_id is not None
+            or white_peace_war_id is not None
+        ):
+            return self._execute_war_termination_step(
+                step,
+                starting=starting,
+                selected_revision=selected_revision,
+                query_war_id=termination_query_war_id,
+                surrender_war_id=surrender_war_id,
+                white_peace_war_id=white_peace_war_id,
+            )
         if step == RAISE_TROOPS_STEP:
             starting_army_ids = _controllable_army_ids(starting)
             result = self._execute_primitive_step(
@@ -2825,6 +3844,852 @@ class NativeHeadlessGameplayDriver:
             "snapshot_id": changed["snapshot_id"],
             "revision": changed["revision"],
         }
+
+    def _execute_army_strength_query(
+        self,
+        *,
+        starting: dict[str, object],
+        selected_revision: int,
+    ) -> dict[str, object]:
+        """Read the full published army scope without advancing CK3 state."""
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native army-strength query requires a paused snapshot"
+            )
+        try:
+            expected_scope = army_strength_scope(starting)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native army-strength scope is malformed: {error}"
+            ) from error
+        result = self._execute_primitive_step(
+            QUERY_ARMY_STRENGTHS_STEP,
+            expected_revision=selected_revision,
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "army_strengths",
+                "backend_id",
+            }
+            or result.get("step") != QUERY_ARMY_STRENGTHS_STEP
+            or result.get("accepted") is not True
+            or result.get("status") not in {"available", "partial"}
+        ):
+            raise BridgeUnavailableError(
+                "native army-strength query returned a malformed status"
+            )
+        try:
+            rows = normalize_army_strengths(
+                result.get("army_strengths"),
+                expected_scope=expected_scope,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native army-strength query returned malformed rows: {error}"
+            ) from error
+        status = army_strength_query_status(rows)
+        if result.get("status") != status:
+            raise BridgeUnavailableError(
+                "native army-strength query status disagrees with its rows"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or query_sequence < 1
+            or query_sequence > 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native army-strength query lacks query_sequence"
+            )
+        current = self.take_snapshot()
+        if not _same_paused_native_frame(starting, current):
+            raise BridgeUnavailableError(
+                "native army-strength query crossed a snapshot revision"
+            )
+        try:
+            if army_strength_scope(current) != expected_scope:
+                raise BridgeUnavailableError(
+                    "native army-strength scope changed during the query"
+                )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native army-strength scope became malformed: {error}"
+            ) from error
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        cache_binding = {
+            "native_revision": starting.get("native_revision"),
+            "snapshot_id": starting.get("snapshot_id"),
+            "connection_generation": connection_generation,
+            "episode_run_id": starting.get("episode_run_id"),
+        }
+        with self._driver_state_lock:
+            self._army_strength_query = {
+                "status": status,
+                "army_strengths": copy.deepcopy(rows),
+                "query_sequence": query_sequence,
+                "cache_binding": cache_binding,
+            }
+        return {
+            **result,
+            "status": status,
+            "army_strengths": rows,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+        }
+
+    def _execute_combat_simulation_inputs_query(
+        self,
+        step: str,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one explicit encounter without advancing CK3 state."""
+        parsed = parse_query_combat_simulation_inputs_step(step)
+        if parsed is None:
+            raise UnsupportedStepError(
+                f"malformed combat simulation input step {step}"
+            )
+        (
+            target_province_id,
+            attacker_entry_province_id,
+            attacker_army_ids,
+            defender_army_ids,
+        ) = parsed
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native combat simulation input query requires a paused snapshot"
+            )
+        try:
+            encounter_scope = combat_simulation_encounter_scope(
+                starting, attacker_army_ids, defender_army_ids
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native combat encounter scope is malformed: {error}"
+            ) from error
+        starting_revision = int(starting["revision"])
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else starting_revision
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY
+            ),
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "combat_simulation_inputs",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") not in {"available", "partial"}
+        ):
+            raise BridgeUnavailableError(
+                "native combat simulation input query returned a malformed status"
+            )
+        try:
+            normalized = normalize_combat_simulation_inputs(
+                result.get("combat_simulation_inputs"),
+                expected_target_province_id=target_province_id,
+                expected_attacker_entry_province_id=(
+                    attacker_entry_province_id
+                ),
+                expected_encounter_scope=encounter_scope,
+            )
+            status = combat_simulation_inputs_status(normalized)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native combat simulation input query returned malformed "
+                f"inputs: {error}"
+            ) from error
+        if result.get("status") != status:
+            raise BridgeUnavailableError(
+                "native combat simulation input status disagrees with "
+                "input_observation_ready"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native combat simulation input query lacks query_sequence"
+            )
+        current = self.take_snapshot()
+        if not _same_paused_native_frame(starting, current) or (
+            starting.get("revision") != current.get("revision")
+        ):
+            raise BridgeUnavailableError(
+                "native combat simulation input query crossed a snapshot revision"
+            )
+        try:
+            current_scope = combat_simulation_encounter_scope(
+                current, attacker_army_ids, defender_army_ids
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native combat encounter scope became malformed: {error}"
+            ) from error
+        if current_scope != encounter_scope:
+            raise BridgeUnavailableError(
+                "native combat encounter scope changed during the query"
+            )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        cache_binding = {
+            "native_revision": starting.get("native_revision"),
+            "snapshot_id": starting.get("snapshot_id"),
+            "revision": starting.get("revision"),
+            "connection_generation": connection_generation,
+            "episode_run_id": starting.get("episode_run_id"),
+            "target_province_id": target_province_id,
+            "attacker_entry_province_id": attacker_entry_province_id,
+            "attacker_army_ids": list(attacker_army_ids),
+            "defender_army_ids": list(defender_army_ids),
+        }
+        with self._driver_state_lock:
+            self._combat_simulation_inputs_query = {
+                "status": status,
+                "combat_simulation_inputs": copy.deepcopy(normalized),
+                "query_sequence": query_sequence,
+                "cache_binding": cache_binding,
+            }
+        return {
+            **result,
+            "status": status,
+            "combat_simulation_inputs": normalized,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+        }
+
+    def _execute_war_entry_assessments_query(
+        self,
+        step: str,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read exact native strategic-power assessments on one paused frame."""
+        targets = parse_query_war_entry_assessments_step(step)
+        if targets is None:
+            raise UnsupportedStepError(
+                f"malformed war-entry assessment step {step}"
+            )
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native war-entry assessment query requires a paused snapshot"
+            )
+        try:
+            require_declarable_war_targets(starting, targets)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native war-entry target scope is malformed: {error}"
+            ) from error
+        played_character = starting.get("played_character")
+        actor_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        if (
+            isinstance(actor_id, bool)
+            or not isinstance(actor_id, int)
+            or not 1 <= actor_id <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native war-entry assessment lacks a played CharacterID"
+            )
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(starting["revision"])
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY,
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "war_entry_assessments",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") != "available"
+        ):
+            raise BridgeUnavailableError(
+                "native war-entry assessment query returned malformed status"
+            )
+        try:
+            normalized = normalize_war_entry_assessments(
+                result.get("war_entry_assessments"),
+                expected_target_character_ids=targets,
+                expected_actor_character_id=actor_id,
+                expected_snapshot_revision=starting.get("native_revision"),
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native war-entry assessment query is malformed: {error}"
+            ) from error
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native war-entry assessment query lacks query_sequence"
+            )
+        current = self.take_snapshot()
+        if not _same_paused_native_frame(starting, current):
+            raise BridgeUnavailableError(
+                "native war-entry assessment query crossed a snapshot revision"
+            )
+        try:
+            require_declarable_war_targets(current, targets)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native war-entry declarations changed during query: "
+                f"{error}"
+            ) from error
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        cache_binding = {
+            "native_revision": starting.get("native_revision"),
+            "snapshot_id": starting.get("snapshot_id"),
+            "revision": starting.get("revision"),
+            "connection_generation": connection_generation,
+            "episode_run_id": starting.get("episode_run_id"),
+            "target_character_ids": list(targets),
+        }
+        with self._driver_state_lock:
+            self._war_entry_assessments_query = {
+                "status": "available",
+                "war_entry_assessments": copy.deepcopy(normalized),
+                "query_sequence": query_sequence,
+                "cache_binding": cache_binding,
+            }
+        return {
+            **result,
+            "status": "available",
+            "war_entry_assessments": normalized,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+        }
+
+    def _execute_combat_simulation_inputs_v3_query(
+        self,
+        step: str,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one atomic 81-native/51-offline phase slice on one frame."""
+        parsed = parse_query_combat_simulation_inputs_v3_step(step)
+        if parsed is None:
+            raise UnsupportedStepError(
+                f"malformed production combat phase input step {step}"
+            )
+        (
+            target_province_id,
+            attacker_entry_province_id,
+            attacker_army_ids,
+            defender_army_ids,
+        ) = parsed
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native production combat phase query requires a paused snapshot"
+            )
+        try:
+            encounter_scope = combat_simulation_encounter_scope(
+                starting, attacker_army_ids, defender_army_ids
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native production combat encounter scope is malformed: {error}"
+            ) from error
+        starting_revision = int(starting["revision"])
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else starting_revision
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY
+            ),
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "combat_simulation_inputs",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") not in {"available", "unavailable"}
+        ):
+            raise BridgeUnavailableError(
+                "native production combat phase query returned a malformed status"
+            )
+        try:
+            normalized = normalize_combat_simulation_inputs_v3(
+                result.get("combat_simulation_inputs"),
+                expected_target_province_id=target_province_id,
+                expected_attacker_entry_province_id=(
+                    attacker_entry_province_id
+                ),
+                expected_encounter_scope=encounter_scope,
+            )
+            status = combat_simulation_inputs_v3_status(normalized)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native production combat phase query returned malformed "
+                f"inputs: {error}"
+            ) from error
+        if result.get("status") != status:
+            raise BridgeUnavailableError(
+                "native production combat phase status disagrees with "
+                "phase_event_inputs_ready"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native production combat phase query lacks query_sequence"
+            )
+        current = self.take_snapshot()
+        if not _same_paused_native_frame(starting, current) or (
+            starting.get("revision") != current.get("revision")
+        ):
+            raise BridgeUnavailableError(
+                "native production combat phase query crossed a snapshot revision"
+            )
+        try:
+            current_scope = combat_simulation_encounter_scope(
+                current, attacker_army_ids, defender_army_ids
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native production combat scope became malformed: {error}"
+            ) from error
+        if current_scope != encounter_scope:
+            raise BridgeUnavailableError(
+                "native production combat scope changed during the query"
+            )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        cache_binding = {
+            "native_revision": starting.get("native_revision"),
+            "snapshot_id": starting.get("snapshot_id"),
+            "revision": starting.get("revision"),
+            "connection_generation": connection_generation,
+            "episode_run_id": starting.get("episode_run_id"),
+            "target_province_id": target_province_id,
+            "attacker_entry_province_id": attacker_entry_province_id,
+            "attacker_army_ids": list(attacker_army_ids),
+            "defender_army_ids": list(defender_army_ids),
+        }
+        with self._driver_state_lock:
+            self._combat_simulation_inputs_v3_query = {
+                "status": status,
+                "combat_simulation_inputs": copy.deepcopy(normalized),
+                "query_sequence": query_sequence,
+                "cache_binding": cache_binding,
+            }
+        return {
+            **result,
+            "status": status,
+            "combat_simulation_inputs": normalized,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+        }
+
+    def _execute_war_termination_terms_query(
+        self,
+        step: str,
+        *,
+        starting: dict[str, object],
+        selected_revision: int,
+        war_id: int,
+    ) -> dict[str, object]:
+        """Read the narrow claim-CB terms union on one paused frame."""
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native war-termination terms query requires a paused snapshot"
+            )
+        if _war_by_id(starting, war_id) is None:
+            raise BridgeUnavailableError(
+                "native war-termination terms query requires active WarID "
+                f"{war_id}"
+            )
+        result = self._execute_primitive_step(
+            step, expected_revision=selected_revision
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "war_termination_terms",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") not in {"available", "unsupported"}
+        ):
+            raise BridgeUnavailableError(
+                "native war-termination terms query returned malformed status"
+            )
+        terms = normalize_war_termination_terms(
+            result.get("war_termination_terms"),
+            expected_war_id=war_id,
+        )
+        if result.get("status") != terms.get("status"):
+            raise BridgeUnavailableError(
+                "native war-termination terms union status disagrees with frame"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or query_sequence < 1
+            or query_sequence > 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native war-termination terms query lacks query_sequence"
+            )
+        current = self.take_snapshot()
+        if not _same_paused_native_frame(starting, current):
+            raise BridgeUnavailableError(
+                "native war-termination terms query crossed a snapshot revision"
+            )
+        if _war_by_id(current, war_id) is None:
+            raise BridgeUnavailableError(
+                "native war-termination terms query returned after war ended"
+            )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        cache_binding = {
+            "native_revision": starting.get("native_revision"),
+            "snapshot_id": starting.get("snapshot_id"),
+            "connection_generation": connection_generation,
+            "episode_run_id": starting.get("episode_run_id"),
+        }
+        with self._driver_state_lock:
+            self._war_termination_terms[war_id] = {
+                "terms": copy.deepcopy(terms),
+                "query_sequence": query_sequence,
+                "cache_binding": cache_binding,
+            }
+        return {
+            **result,
+            "war_termination_terms": terms,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+        }
+
+    def _execute_war_termination_exit_terms_query(
+        self,
+        step: str,
+        *,
+        starting: dict[str, object],
+        selected_revision: int,
+        war_id: int,
+    ) -> dict[str, object]:
+        """Read one all-or-nothing claim-CB exit preview on a paused frame."""
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native war-termination exit-terms query requires a paused "
+                "snapshot"
+            )
+        if _war_by_id(starting, war_id) is None:
+            raise BridgeUnavailableError(
+                "native war-termination exit-terms query requires active "
+                f"WarID {war_id}"
+            )
+        result = self._execute_primitive_step(
+            step, expected_revision=selected_revision
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "war_termination_exit_terms",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") != "available"
+        ):
+            raise BridgeUnavailableError(
+                "native war-termination exit-terms query returned malformed "
+                "status"
+            )
+        try:
+            terms = normalize_war_termination_exit_terms(
+                result.get("war_termination_exit_terms"),
+                expected_war_id=war_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native war-termination exit-terms query is malformed: {error}"
+            ) from error
+        war = _war_by_id(starting, war_id)
+        played_character = starting.get("played_character")
+        played_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        targeted_title_ids = (
+            war.get("targeted_title_ids")
+            if isinstance(war, dict)
+            else None
+        )
+        if not (
+            isinstance(war, dict)
+            and war.get("player_side") == "attacker"
+            and war.get("player_is_primary_war_leader") is True
+            and terms.get("primary_attacker_character_id")
+            == played_character_id
+            and terms.get("primary_defender_character_id")
+            == war.get("primary_opponent_character_id")
+            and isinstance(targeted_title_ids, list)
+            and terms.get("target_title_ids") == targeted_title_ids
+        ):
+            raise BridgeUnavailableError(
+                "native war-termination exit-terms identity disagrees with "
+                "the paused war snapshot"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native war-termination exit-terms query lacks query_sequence"
+            )
+        current = self.take_snapshot()
+        if not _same_paused_native_frame(starting, current):
+            raise BridgeUnavailableError(
+                "native war-termination exit-terms query crossed a snapshot "
+                "revision"
+            )
+        if _war_by_id(current, war_id) is None:
+            raise BridgeUnavailableError(
+                "native war-termination exit-terms query returned after war "
+                "ended"
+            )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        cache_binding = {
+            "native_revision": starting.get("native_revision"),
+            "snapshot_id": starting.get("snapshot_id"),
+            "revision": starting.get("revision"),
+            "connection_generation": connection_generation,
+            "episode_run_id": starting.get("episode_run_id"),
+        }
+        with self._driver_state_lock:
+            self._war_termination_exit_terms[war_id] = {
+                "terms": copy.deepcopy(terms),
+                "query_sequence": query_sequence,
+                "cache_binding": cache_binding,
+            }
+        return {
+            **result,
+            "war_termination_exit_terms": terms,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+        }
+
+    def _execute_war_termination_step(
+        self,
+        step: str,
+        *,
+        starting: dict[str, object],
+        selected_revision: int,
+        query_war_id: int | None,
+        surrender_war_id: int | None,
+        white_peace_war_id: int | None,
+    ) -> dict[str, object]:
+        """Execute one query or query-proven termination submission."""
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native war-termination steps require a paused snapshot"
+            )
+        war_id = next(
+            war_id
+            for war_id in (
+                query_war_id,
+                surrender_war_id,
+                white_peace_war_id,
+            )
+            if war_id is not None
+        )
+        war = _war_by_id(starting, war_id)
+        if war is None:
+            raise BridgeUnavailableError(
+                f"native war-termination step requires active WarID {war_id}"
+            )
+
+        if query_war_id is not None:
+            result = self._execute_primitive_step(
+                step, expected_revision=selected_revision
+            )
+            if (
+                set(result)
+                != {
+                    "step",
+                    "accepted",
+                    "status",
+                    "query_sequence",
+                    "war_termination_options",
+                    "backend_id",
+                }
+                or result.get("step") != step
+                or result.get("accepted") is not True
+                or result.get("status") != "available"
+            ):
+                raise BridgeUnavailableError(
+                    "native war-termination query returned a malformed status"
+                )
+            options = normalize_war_termination_options(
+                result.get("war_termination_options"),
+                expected_war_id=war_id,
+            )
+            _require_termination_options_match_war(options, war)
+            query_sequence = result.get("query_sequence")
+            if (
+                isinstance(query_sequence, bool)
+                or not isinstance(query_sequence, int)
+                or query_sequence < 1
+                or query_sequence > 2**64 - 1
+            ):
+                raise BridgeUnavailableError(
+                    "native war-termination query lacks query_sequence"
+                )
+            current = self.take_snapshot()
+            if not _same_paused_native_frame(starting, current):
+                raise BridgeUnavailableError(
+                    "native war-termination query crossed a snapshot revision"
+                )
+            current_war = _war_by_id(current, war_id)
+            if current_war is None:
+                raise BridgeUnavailableError(
+                    "native war-termination query returned after the war ended"
+                )
+            _require_termination_options_match_war(options, current_war)
+            diagnostics = starting.get("diagnostics")
+            connection_generation = (
+                diagnostics.get("connection_generation")
+                if isinstance(diagnostics, dict)
+                else None
+            )
+            cache_binding = {
+                "native_revision": starting.get("native_revision"),
+                "snapshot_id": starting.get("snapshot_id"),
+                "connection_generation": connection_generation,
+                "episode_run_id": starting.get("episode_run_id"),
+            }
+            with self._driver_state_lock:
+                self._war_termination_options[war_id] = {
+                    "options": copy.deepcopy(options),
+                    "query_sequence": query_sequence,
+                    "cache_binding": cache_binding,
+                }
+            return {
+                **result,
+                "war_termination_options": options,
+                "query_sequence": query_sequence,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+            }
+
+        option_name = (
+            "surrender" if surrender_war_id is not None else "white_peace"
+        )
+        raise BridgeUnavailableError(
+            f"native {option_name} submission requires structured_terms_v2 "
+            "and campaign decision readiness"
+        )
 
     def _execute_restore_checkpoint(
         self, *, expected_revision: int | None
@@ -3994,6 +5859,178 @@ class ConfiguredHybridFallbackDriver:
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        if isinstance(step, str) and step.startswith(
+            QUERY_WAR_ENTRY_ASSESSMENTS_STEP_PREFIX
+        ):
+            if parse_query_war_entry_assessments_step(step) is None:
+                raise UnsupportedStepError(
+                    "malformed war-entry assessment step"
+                )
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "war-entry assessment queries are pure native and will "
+                    "not use fallback"
+                )
+            starting = self.take_snapshot()
+            native_revision = None
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            ending = self.take_snapshot()
+            if (
+                ending.get("snapshot_id") != starting.get("snapshot_id")
+                or ending.get("revision") != starting.get("revision")
+                or ending.get("native_revision")
+                != starting.get("native_revision")
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid war-entry assessment query crossed a snapshot "
+                    "revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+            }
+        if isinstance(step, str) and step.startswith(
+            QUERY_COMBAT_SIMULATION_INPUTS_V3_STEP_PREFIX
+        ):
+            if parse_query_combat_simulation_inputs_v3_step(step) is None:
+                raise UnsupportedStepError(
+                    "malformed production combat phase input step"
+                )
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "production combat phase queries are pure native and "
+                    "will not use fallback"
+                )
+            starting = self.take_snapshot()
+            native_revision = None
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            ending = self.take_snapshot()
+            if (
+                ending.get("snapshot_id") != starting.get("snapshot_id")
+                or ending.get("revision") != starting.get("revision")
+                or ending.get("native_revision")
+                != starting.get("native_revision")
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid production combat phase query crossed a "
+                    "snapshot revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get(
+                    "native_revision"
+                ),
+            }
+        if isinstance(step, str) and step.startswith(
+            QUERY_COMBAT_SIMULATION_INPUTS_STEP_PREFIX
+        ):
+            if parse_query_combat_simulation_inputs_step(step) is None:
+                raise UnsupportedStepError(
+                    "malformed hypothetical-contact combat input step"
+                )
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "combat simulation input queries are pure native and "
+                    "will not use fallback"
+                )
+            starting = self.take_snapshot()
+            native_revision = None
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            ending = self.take_snapshot()
+            if (
+                ending.get("snapshot_id") != starting.get("snapshot_id")
+                or ending.get("revision") != starting.get("revision")
+                or ending.get("native_revision")
+                != starting.get("native_revision")
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid combat simulation input query crossed a "
+                    "snapshot revision"
+                )
+            # The native driver proves the underlying fast frame.  Rebind its
+            # result metadata to the paired public frame checked by the MCP
+            # service; native_revision remains the exact CK3 frame identity.
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get(
+                    "native_revision"
+                ),
+            }
         if step == _NATIVE_DEATH_TERMINAL_STEP:
             native_bridge_capabilities = set(
                 _string_list(
@@ -4801,6 +6838,7 @@ def _action_steps(
     player_armies: object = None,
     declarable_wars: object = None,
     arrange_marriage_choices: object = None,
+    paused: object = None,
 ) -> list[str]:
     steps: set[str] = set()
     war_primary_opponent_supported = (
@@ -4817,6 +6855,10 @@ def _action_steps(
     expand_start_assaults = False
     expand_stop_assaults = False
     expand_enforce_demands = False
+    advertise_army_strength_query = False
+    expand_termination_queries = False
+    expand_termination_terms_queries = False
+    expand_termination_exit_terms_queries = False
     expand_declare_wars = False
     expand_arrange_marriage = False
     advertise_raise_troops = False
@@ -4862,6 +6904,50 @@ def _action_steps(
             continue
         elif capability == ENFORCE_DEMANDS_CAPABILITY:
             expand_enforce_demands = True
+        elif capability == QUERY_ARMY_STRENGTHS_CAPABILITY:
+            advertise_army_strength_query = True
+        elif capability in {
+            QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY,
+            QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
+        }:
+            # The target, entry edge and ordered side partitions are supplied.
+            # Never leak the N placeholder as an executable action or try to
+            # enumerate candidate Provinces from a snapshot.
+            continue
+        elif capability == QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY:
+            # This query needs the current paused declarable-target set. The
+            # concrete literal is added below from that snapshot; never expose
+            # the adapter's `-N` capability template as an executable action.
+            continue
+        elif capability == QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY:
+            expand_termination_queries = True
+        elif capability == QUERY_WAR_TERMINATION_TERMS_CAPABILITY:
+            expand_termination_terms_queries = True
+        elif (
+            WAR_TERMINATION_EXIT_TERMS_PRODUCTION_ENABLED
+            and capability == QUERY_WAR_TERMINATION_EXIT_TERMS_CAPABILITY
+        ):
+            expand_termination_exit_terms_queries = True
+        elif capability in {
+            SURRENDER_WAR_CAPABILITY,
+            OFFER_WHITE_PEACE_CAPABILITY,
+        }:
+            # Termination commands are generation-bound and irreversible.
+            # The driver advertises literals only from a same-revision native
+            # query cache; never leak an adapter placeholder as an action.
+            continue
+        elif step.startswith(
+            (
+                QUERY_COMBAT_SIMULATION_INPUTS_STEP_PREFIX,
+                QUERY_COMBAT_SIMULATION_INPUTS_V3_STEP_PREFIX,
+                "query-war-termination-options-",
+                "query-war-termination-terms-v1-",
+                QUERY_WAR_TERMINATION_EXIT_TERMS_STEP_PREFIX,
+                "surrender-war-",
+                "offer-white-peace-",
+            )
+        ):
+            continue
         elif capability == DECLARE_WAR_CAPABILITY:
             expand_declare_wars = True
         elif capability == ARRANGE_MARRIAGE_CAPABILITY:
@@ -4915,6 +7001,29 @@ def _action_steps(
                 )
             )
         )
+    if expand_termination_queries and paused is True:
+        steps.update(
+            query_war_termination_options_step(int(war["war_id"]))
+            for war in wars
+            if _positive_native_id(war.get("war_id"))
+            and int(war["war_id"]) <= 2**31 - 1
+        )
+    if expand_termination_terms_queries and paused is True:
+        steps.update(
+            query_war_termination_terms_step(int(war["war_id"]))
+            for war in wars
+            if _positive_native_id(war.get("war_id"))
+            and int(war["war_id"]) <= 2**31 - 1
+        )
+    if expand_termination_exit_terms_queries and paused is True:
+        steps.update(
+            query_war_termination_exit_terms_step(int(war["war_id"]))
+            for war in wars
+            if _positive_native_id(war.get("war_id"))
+            and int(war["war_id"]) <= 2**31 - 1
+        )
+    if advertise_army_strength_query and paused is True:
+        steps.add(QUERY_ARMY_STRENGTHS_STEP)
     if expand_declare_wars and isinstance(declarable_wars, list):
         steps.update(
             declare_war_step(str(row["declaration_id"]))
@@ -5124,6 +7233,39 @@ def _assault_siege_observation(
                 }
             )
     return matches[0] if len(matches) == 1 else None
+
+
+def _require_termination_options_match_war(
+    options: dict[str, object], war: dict[str, object]
+) -> None:
+    fields = (
+        "war_id",
+        "player_side",
+        "player_is_primary_war_leader",
+        "player_relative_war_score",
+    )
+    if any(options.get(field) != war.get(field) for field in fields):
+        raise BridgeUnavailableError(
+            "native war-termination query does not match the active war row"
+        )
+
+
+def _same_paused_native_frame(
+    before: dict[str, object], after: dict[str, object]
+) -> bool:
+    before_diagnostics = before.get("diagnostics")
+    after_diagnostics = after.get("diagnostics")
+    return bool(
+        before.get("paused") is True
+        and after.get("paused") is True
+        and before.get("native_revision") == after.get("native_revision")
+        and before.get("snapshot_id") == after.get("snapshot_id")
+        and isinstance(before_diagnostics, dict)
+        and isinstance(after_diagnostics, dict)
+        and before_diagnostics.get("connection_generation")
+        == after_diagnostics.get("connection_generation")
+        and before.get("episode_run_id") == after.get("episode_run_id")
+    )
 
 
 def _checkpoint_history_index(

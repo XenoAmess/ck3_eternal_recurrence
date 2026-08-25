@@ -1,0 +1,451 @@
+{
+  "active_attack_allowed": false,
+  "advantage_limitations": {
+    "debt_tier_observed_min": -100,
+    "dynamic_helper_unclosed": "0x2307CB0",
+    "known_constructor_order": [
+      "supply_side_0",
+      "supply_side_1",
+      "holding_defender",
+      "recently_disembarked_first_army_side_0",
+      "recently_disembarked_first_army_side_1",
+      "debt_side_0",
+      "debt_side_1",
+      "unreformed_faith_side_0",
+      "unreformed_faith_side_1"
+    ],
+    "modeled_here": [
+      "generic_commander_advantage",
+      "stock_terrain_defender_advantage",
+      "holding_defender_advantage",
+      "crossing_defender_advantage",
+      "commander_rolls"
+    ]
+  },
+  "code_files_sha256": {
+    "run_combat_research_envelope.py": "42b342f4e89aa4dafc1f3e18cdf539e69da515c1e50e1d66e7adb744f8f82b80",
+    "src/xar_autoplayer/simulation/combat_core.py": "c191cf4ab8ce45b0e67368ef420c7b87ce4b92560ce9942f65ae0273cd812048",
+    "src/xar_autoplayer/simulation/combat_input.py": "923bdae4206f466f7e43d9b9ee50750f4c9601f44f4fc0f42f59b4940d8de049",
+    "src/xar_autoplayer/simulation/research_envelope.py": "6614a0369ac073fe8e15509585984ffcb2dbb601ccc8e0423b494c53b2a05398"
+  },
+  "code_sha256": "dcff2d27a4d8e26596b0ae1580020c0de12c1b313b287e047a0b6b4e06d1c0db",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "experiment": {
+    "horizon_days": 120,
+    "sample_count_per_scenario": 100000,
+    "seed_u64": 3224476166,
+    "workers": 24
+  },
+  "experiment_kind": "phase_events_disabled_no_voluntary_retreat_research_envelope",
+  "game_version": "1.19.0.6",
+  "missing_native_inputs": [
+    "supply_state",
+    "debt_tier",
+    "recently_disembarked",
+    "unreformed_faith",
+    "complete_resolved_advantage_sources",
+    "dynamic_advantage_helper_0x2307CB0",
+    "hard_casualty_modifier_0x18C_0x18D_0x19F",
+    "pursuit_modifier_0x105_0x18B"
+  ],
+  "missing_transition_fidelity": [
+    "loaded_phase_event_effect_transition",
+    "exact_build_original_trace_fixture",
+    "mixed_owner_ai_partial_retreat_policy"
+  ],
+  "model_fidelity": "research-only-bounded-core",
+  "omitted_v3_fields": [
+    "supply_state",
+    "debt_tier",
+    "recently_disembarked",
+    "unreformed_faith",
+    "complete_resolved_advantage_sources",
+    "dynamic_advantage_helper_0x2307CB0",
+    "hard_casualty_modifier_0x18C_0x18D_0x19F",
+    "pursuit_modifier_0x105_0x18B"
+  ],
+  "planner_usable": false,
+  "scenarios": [
+    {
+      "assumptions": {
+        "attacker_commander_army_id": 357,
+        "defender_commander_army_id": 83886341,
+        "no_voluntary_retreat": true,
+        "omit_unobserved_hard_casualty_modifiers": true,
+        "omit_unobserved_pursuit_modifiers": true,
+        "phase_events_disabled": true,
+        "unmodeled_advantage_sources": [
+          "supply_state",
+          "debt_tier",
+          "recently_disembarked",
+          "unreformed_faith",
+          "dynamic_combat_effects",
+          "dynamic_advantage_helper_0x2307CB0",
+          "non_generic_commander_or_owner_contributions"
+        ]
+      },
+      "capture": {
+        "date_raw": 53175816,
+        "native_revision": 3,
+        "revision": 4,
+        "snapshot_id": "native:3"
+      },
+      "fixture": "live_rev4_vs_357.json",
+      "fixture_file_sha256": "df385bb8ed4c66c75b29cf9aef9f53cfffd5a85dabf84219526725d2fd2f24eb",
+      "input_sha256": "c072deaa00070eea65eb82cfc45fcaf099de732c8a9c690fc040b211c56bbfff",
+      "scenario": {
+        "attacker_army_ids": [
+          357
+        ],
+        "attacker_entry_province_id": 2597,
+        "attacker_side": "enemy",
+        "base_width": 1641,
+        "crossing_kind": "none",
+        "defender_army_ids": [
+          83886341
+        ],
+        "defender_side": "player_or_allied",
+        "final_width": 1312,
+        "holding_defender": false,
+        "participant_policy": "explicit_hypothetical_fixed_at_contact_no_reinforcements",
+        "target_province_id": 2596,
+        "terrain_key": "hills",
+        "terrain_width_multiplier_raw": 80000
+      },
+      "summary": {
+        "battle_days": {
+          "mean": 28.68254,
+          "p10": 27,
+          "p50": 29,
+          "p90": 30
+        },
+        "commander_or_knight_death_probability": 0.0,
+        "enemy_hard_losses_raw": {
+          "mean": 71641321.95826,
+          "p10": 71277206,
+          "p50": 71652004,
+          "p90": 71991756
+        },
+        "fidelity_gate": false,
+        "input_sha256": "c072deaa00070eea65eb82cfc45fcaf099de732c8a9c690fc040b211c56bbfff",
+        "missing_required_domains": [
+          "loaded_phase_event_effect_transition",
+          "exact_build_original_trace_fixture"
+        ],
+        "model_fidelity": "research-only-bounded-core",
+        "no_resolution": 0,
+        "planner_usable": false,
+        "player_hard_losses_raw": {
+          "mean": 18927186.57769,
+          "p10": 17784511,
+          "p50": 18901640,
+          "p90": 20102278
+        },
+        "player_losses": 0,
+        "player_stack_wipe_probability": 0.0,
+        "player_win_probability_resolved": 1.0,
+        "player_win_wilson95": {
+          "lower": 0.999961586887417,
+          "upper": 1.0
+        },
+        "player_wins": 100000,
+        "sample_count": 100000,
+        "sampler": "splitmix64-derived-independent-draw31-v1",
+        "seed_u64": 3224476166,
+        "simulator_build": "ck3-1.19.0.6-phase-events-disabled-envelope-v2"
+      }
+    },
+    {
+      "assumptions": {
+        "attacker_commander_army_id": 357,
+        "defender_commander_army_id": 83886341,
+        "no_voluntary_retreat": true,
+        "omit_unobserved_hard_casualty_modifiers": true,
+        "omit_unobserved_pursuit_modifiers": true,
+        "phase_events_disabled": true,
+        "unmodeled_advantage_sources": [
+          "supply_state",
+          "debt_tier",
+          "recently_disembarked",
+          "unreformed_faith",
+          "dynamic_combat_effects",
+          "dynamic_advantage_helper_0x2307CB0",
+          "non_generic_commander_or_owner_contributions"
+        ]
+      },
+      "capture": {
+        "date_raw": 53175816,
+        "native_revision": 3,
+        "revision": 4,
+        "snapshot_id": "native:3"
+      },
+      "fixture": "live_rev4_vs_combined.json",
+      "fixture_file_sha256": "90f05661a8b983a209980dacbdf6e286bab3765136989b322fe08c3111eb247f",
+      "input_sha256": "c8ec6946e7b2dc09046780c81f5533c74949bee62ac0c28c38a851357d871185",
+      "scenario": {
+        "attacker_army_ids": [
+          357,
+          33554657
+        ],
+        "attacker_entry_province_id": 2597,
+        "attacker_side": "enemy",
+        "base_width": 2147,
+        "crossing_kind": "none",
+        "defender_army_ids": [
+          83886341
+        ],
+        "defender_side": "player_or_allied",
+        "final_width": 1717,
+        "holding_defender": false,
+        "participant_policy": "explicit_hypothetical_fixed_at_contact_no_reinforcements",
+        "target_province_id": 2596,
+        "terrain_key": "hills",
+        "terrain_width_multiplier_raw": 80000
+      },
+      "summary": {
+        "battle_days": {
+          "mean": 36.30433,
+          "p10": 36,
+          "p50": 36,
+          "p90": 37
+        },
+        "commander_or_knight_death_probability": 0.0,
+        "enemy_hard_losses_raw": {
+          "mean": 52834231.82483,
+          "p10": 50227014,
+          "p50": 52817761,
+          "p90": 55472596
+        },
+        "fidelity_gate": false,
+        "input_sha256": "c8ec6946e7b2dc09046780c81f5533c74949bee62ac0c28c38a851357d871185",
+        "missing_required_domains": [
+          "loaded_phase_event_effect_transition",
+          "exact_build_original_trace_fixture"
+        ],
+        "model_fidelity": "research-only-bounded-core",
+        "no_resolution": 0,
+        "planner_usable": false,
+        "player_hard_losses_raw": {
+          "mean": 45198924.14159,
+          "p10": 45198897,
+          "p50": 45198914,
+          "p90": 45198932
+        },
+        "player_losses": 100000,
+        "player_stack_wipe_probability": 0.0,
+        "player_win_probability_resolved": 0.0,
+        "player_win_wilson95": {
+          "lower": 0.0,
+          "upper": 3.841311258303963e-05
+        },
+        "player_wins": 0,
+        "sample_count": 100000,
+        "sampler": "splitmix64-derived-independent-draw31-v1",
+        "seed_u64": 3224476166,
+        "simulator_build": "ck3-1.19.0.6-phase-events-disabled-envelope-v2"
+      }
+    },
+    {
+      "assumptions": {
+        "attacker_commander_army_id": 83886341,
+        "defender_commander_army_id": 357,
+        "no_voluntary_retreat": true,
+        "omit_unobserved_hard_casualty_modifiers": true,
+        "omit_unobserved_pursuit_modifiers": true,
+        "phase_events_disabled": true,
+        "unmodeled_advantage_sources": [
+          "supply_state",
+          "debt_tier",
+          "recently_disembarked",
+          "unreformed_faith",
+          "dynamic_combat_effects",
+          "dynamic_advantage_helper_0x2307CB0",
+          "non_generic_commander_or_owner_contributions"
+        ]
+      },
+      "capture": {
+        "date_raw": 53175816,
+        "native_revision": 3,
+        "revision": 4,
+        "snapshot_id": "native:3"
+      },
+      "fixture": "live_rev4_player_attacks_357.json",
+      "fixture_file_sha256": "d64f0eb378e10d9132379def4a129d32173e38e8f0348aa9e11c4466f6a385a8",
+      "input_sha256": "fb1c0c72b7a8646f94a5f5b65743b4d3859bcfa117f717f00dabddb38dd99c44",
+      "scenario": {
+        "attacker_army_ids": [
+          83886341
+        ],
+        "attacker_entry_province_id": 2587,
+        "attacker_side": "player_or_allied",
+        "base_width": 1641,
+        "crossing_kind": "none",
+        "defender_army_ids": [
+          357
+        ],
+        "defender_side": "enemy",
+        "final_width": 1312,
+        "holding_defender": true,
+        "participant_policy": "explicit_hypothetical_fixed_at_contact_no_reinforcements",
+        "target_province_id": 2581,
+        "terrain_key": "hills",
+        "terrain_width_multiplier_raw": 80000
+      },
+      "summary": {
+        "battle_days": {
+          "mean": 38.32053,
+          "p10": 36,
+          "p50": 38,
+          "p90": 41
+        },
+        "commander_or_knight_death_probability": 0.0,
+        "enemy_hard_losses_raw": {
+          "mean": 69290590.37543,
+          "p10": 68549526,
+          "p50": 69324396,
+          "p90": 69991234
+        },
+        "fidelity_gate": false,
+        "input_sha256": "fb1c0c72b7a8646f94a5f5b65743b4d3859bcfa117f717f00dabddb38dd99c44",
+        "missing_required_domains": [
+          "loaded_phase_event_effect_transition",
+          "exact_build_original_trace_fixture"
+        ],
+        "model_fidelity": "research-only-bounded-core",
+        "no_resolution": 0,
+        "planner_usable": false,
+        "player_hard_losses_raw": {
+          "mean": 25869312.89006,
+          "p10": 23961250,
+          "p50": 25814489,
+          "p90": 27840514
+        },
+        "player_losses": 0,
+        "player_stack_wipe_probability": 0.0,
+        "player_win_probability_resolved": 1.0,
+        "player_win_wilson95": {
+          "lower": 0.999961586887417,
+          "upper": 1.0
+        },
+        "player_wins": 100000,
+        "sample_count": 100000,
+        "sampler": "splitmix64-derived-independent-draw31-v1",
+        "seed_u64": 3224476166,
+        "simulator_build": "ck3-1.19.0.6-phase-events-disabled-envelope-v2"
+      }
+    },
+    {
+      "assumptions": {
+        "attacker_commander_army_id": 83886341,
+        "defender_commander_army_id": 357,
+        "no_voluntary_retreat": true,
+        "omit_unobserved_hard_casualty_modifiers": true,
+        "omit_unobserved_pursuit_modifiers": true,
+        "phase_events_disabled": true,
+        "unmodeled_advantage_sources": [
+          "supply_state",
+          "debt_tier",
+          "recently_disembarked",
+          "unreformed_faith",
+          "dynamic_combat_effects",
+          "dynamic_advantage_helper_0x2307CB0",
+          "non_generic_commander_or_owner_contributions"
+        ]
+      },
+      "capture": {
+        "date_raw": 53175816,
+        "native_revision": 3,
+        "revision": 4,
+        "snapshot_id": "native:3"
+      },
+      "fixture": "live_rev4_player_attacks_combined.json",
+      "fixture_file_sha256": "5c78d78733a624eb076e91bed98cc15410d331a49e68dc37c2acfe2fb990e624",
+      "input_sha256": "9d65d471dc1ef96efaf98f1a619bca0b18c61b62f1b052542c1654e2835f4a4c",
+      "scenario": {
+        "attacker_army_ids": [
+          83886341
+        ],
+        "attacker_entry_province_id": 2587,
+        "attacker_side": "player_or_allied",
+        "base_width": 2147,
+        "crossing_kind": "none",
+        "defender_army_ids": [
+          357,
+          33554657
+        ],
+        "defender_side": "enemy",
+        "final_width": 1717,
+        "holding_defender": true,
+        "participant_policy": "explicit_hypothetical_fixed_at_contact_no_reinforcements",
+        "target_province_id": 2581,
+        "terrain_key": "hills",
+        "terrain_width_multiplier_raw": 80000
+      },
+      "summary": {
+        "battle_days": {
+          "mean": 34.31447,
+          "p10": 34,
+          "p50": 34,
+          "p90": 35
+        },
+        "commander_or_knight_death_probability": 0.0,
+        "enemy_hard_losses_raw": {
+          "mean": 40144288.97515,
+          "p10": 37825951,
+          "p50": 40124121,
+          "p90": 42493942
+        },
+        "fidelity_gate": false,
+        "input_sha256": "9d65d471dc1ef96efaf98f1a619bca0b18c61b62f1b052542c1654e2835f4a4c",
+        "missing_required_domains": [
+          "loaded_phase_event_effect_transition",
+          "exact_build_original_trace_fixture"
+        ],
+        "model_fidelity": "research-only-bounded-core",
+        "no_resolution": 0,
+        "planner_usable": false,
+        "player_hard_losses_raw": {
+          "mean": 45198953.18796,
+          "p10": 45198930,
+          "p50": 45198943,
+          "p90": 45198958
+        },
+        "player_losses": 100000,
+        "player_stack_wipe_probability": 0.0,
+        "player_win_probability_resolved": 0.0,
+        "player_win_wilson95": {
+          "lower": 0.0,
+          "upper": 3.841311258303963e-05
+        },
+        "player_wins": 0,
+        "sample_count": 100000,
+        "sampler": "splitmix64-derived-independent-draw31-v1",
+        "seed_u64": 3224476166,
+        "simulator_build": "ck3-1.19.0.6-phase-events-disabled-envelope-v2"
+      }
+    }
+  ],
+  "schema_version": 2,
+  "transition_manifest": {
+    "battle_end_exact": true,
+    "closed_numeric_domains": [
+      "signed_q100000_fixed_point",
+      "main_damage_to_soft_hard_casualties",
+      "backing_component_allocation",
+      "three_day_pursuit",
+      "commander_roll_and_phase_rng_scheduler",
+      "battle_end_core_and_result_envelope_order",
+      "retreat_skip_pursuit_and_forced_winner",
+      "per_main_tick_dynamic_counter_retention",
+      "next_main_tick_winner_check_side0_first",
+      "generic_commander_plus_stock_static_advantage_research_assumption",
+      "phase_events_disabled_research_assumption",
+      "no_voluntary_or_partial_retreat_research_assumption"
+    ],
+    "loaded_phase_effects_exact": false,
+    "original_trace_fixture_sha256": null,
+    "retreat_and_forced_result_exact": true,
+    "simulator_build": "ck3-1.19.0.6-phase-events-disabled-envelope-v2"
+  },
+  "transition_manifest_sha256": "3e7ac5a732faa8ccfa3bbef8266a2334b82ea0485afb43263dacf29cb6b771c2"
+}

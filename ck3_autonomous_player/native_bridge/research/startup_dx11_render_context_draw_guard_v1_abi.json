@@ -1,0 +1,92 @@
+{
+  "schema": "xar.startup_dx11_render_context_draw_guard_v1.abi.v1",
+  "exact_build": {
+    "product": "Crusader Kings III",
+    "version": "1.19.0.6",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base_preferred": "0x140000000"
+  },
+  "wrapper": {
+    "class": "CGfxDX11RenderContext",
+    "rva": "0x3B0B0F0",
+    "end_rva": "0x3B0B14F",
+    "calling_convention": "Windows x64 member function; RCX=this, EDX and R8D are draw arguments",
+    "direct_e8_e9_xrefs": [],
+    "observed_virtual_callsite": {
+      "rva": "0x3465FE8",
+      "instruction": "call qword ptr [rax+0x130]",
+      "scope": "the first live-crashing wrapper only; no sibling wrapper is patched"
+    },
+    "helper_call": {
+      "call_rva": "0x3B0B107",
+      "target_rva": "0x3B0AE20",
+      "instruction": "E8 14 FD FF FF"
+    }
+  },
+  "unwind": {
+    "begin_rva": "0x3B0B0F0",
+    "end_rva": "0x3B0B14F",
+    "unwind_info_rva": "0x4C395F0",
+    "version": 1,
+    "flags": 0,
+    "SizeOfProlog": "0x0F",
+    "unwind_code_count": 6
+  },
+  "rtti": {
+    "type_descriptor_rva": "0x56E9DF8",
+    "mangled_name_rva": "0x56E9E08",
+    "mangled_name": ".?AVCGfxDX11RenderContext@@",
+    "complete_object_locator_rva": "0x4BF0948",
+    "complete_object_locator_secondary_rva": "0x4BF0998"
+  },
+  "live_failure_precondition": {
+    "dirty_offset": "0x1938",
+    "dirty_mask": "0x01",
+    "shader_state_pointer_offset": "0x1940",
+    "predicate": "([rcx+0x1938] & 1) != 0 && [rcx+0x1940] == 0",
+    "helper_anchor_rva": "0x3B0AE4B",
+    "helper_behavior": "the helper tests dirty bit 0, then reads CGfxDX11ShaderState* from +0x1940 before dereferencing it"
+  },
+  "patch": {
+    "patch_rva": "0x3B0B0F0",
+    "continue_rva": "0x3B0B0FF",
+    "patch_bytes": 15,
+    "patch_encoding": "mov r11, imm64; jmp r11; nop; nop",
+    "original_instructions": [
+      "mov [rsp+0x08], rbx",
+      "mov [rsp+0x10], rsi",
+      "push rdi",
+      "sub rsp, 0x20"
+    ],
+    "stub_bytes": 62,
+    "stub_protection": "PAGE_EXECUTE_READ",
+    "healthy_path": "replay all 15 prologue bytes and jump 0x3B0B0FF",
+    "suppressed_path": "atomically increment the process-lifetime counter and bare ret before the prologue",
+    "dirty_preservation": "the suppressed path performs no write to RCX or [RCX+0x1938]",
+    "calls_or_allocations_from_stub": false,
+    "stack_writes_from_stub_before_healthy_replay": false
+  },
+  "state": {
+    "installed": "atomic uint32",
+    "failure_flags": "atomic uint32",
+    "suppressed_count": "atomic uint64",
+    "installed_by_default": false
+  },
+  "installation": {
+    "admission": [
+      "exact build admitted",
+      "module base nonzero",
+      "new primary thread proven suspended",
+      "production overrides rejected",
+      "46-byte production wrapper anchor exact"
+    ],
+    "transactional_rollback": "target identity, protection, write, flush, and protection restore are verified; failed rollback retains RX stub and ownership",
+    "production_owner": "XarCk3BridgePrepareStartup installs producer, particle2 consumer, then this draw guard while the new primary thread remains suspended; failure unwinds the earlier guards and aborts launch"
+  },
+  "semantic_scope": {
+    "observed_live_state": "dirty bit 0 set while CGfxDX11ShaderState* is null on the first draw wrapper",
+    "containment": "skip only that wrapper invocation and leave dirty set for a later valid retry",
+    "excluded": "the other three wrappers and the shared helper remain byte-identical",
+    "heartbeat": "startup_dx11_render_context_draw_guard_v1 publishes installed, failure, and suppressed_count"
+  }
+}

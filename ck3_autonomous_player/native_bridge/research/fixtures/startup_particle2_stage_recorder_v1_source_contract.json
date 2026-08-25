@@ -1,0 +1,96 @@
+{
+  "schema": "xar.ck3.startup_particle2_stage_recorder_v1.source_contract",
+  "fixture_kind": "offline executable, generated-stub execution, lifecycle, and source contract",
+  "live_ck3_observation": true,
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "installed_by_default": false,
+  "activation": {
+    "cmake_option": "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1",
+    "default": "OFF",
+    "diagnostic_mode": "explicit no-suppression stage recorder",
+    "startup_failure_containment_enabled": false,
+    "containment_mutually_exclusive": true
+  },
+  "frozen_boundaries": {
+    "factory_begin": "0x3A866D0",
+    "source_patch": "0x3A86769",
+    "source_healthy": "0x3A8677A",
+    "source_null": "0x3A8690C",
+    "variant_predicate": "0x3A867AB",
+    "variant_patch": "0x3A867B0",
+    "variant_null": "0x3A868DD",
+    "backend_predicate": "0x3A867E5",
+    "backend_patch": "0x3A867EC",
+    "backend_null": "0x3A867FB",
+    "source_patch_bytes": 17,
+    "variant_patch_bytes": 16,
+    "backend_patch_bytes": 15,
+    "combined_stub_bytes": 136
+  },
+  "diagnostics": [
+    "source_lookup_null_count",
+    "variant_lookup_null_count",
+    "backend_creation_null_count"
+  ],
+  "offline_cases": [
+    "exact-build rejection",
+    "primary-thread-suspended rejection",
+    "unsupported production override rejection",
+    "one-byte anchor drift rejection",
+    "source healthy and null branches preserve native control flow",
+    "variant healthy and null branches preserve native control flow",
+    "backend healthy and null branches preserve native control flow",
+    "only each null branch increments its corresponding atomic counter",
+    "successful install uses one combined RX stub allocation and three absolute patches",
+    "normal uninstall restores all three anchors in reverse order",
+    "allocation failure leaves all target bytes unchanged",
+    "variant target flush failure performs recoverable transactional_rollback and restores the earlier source patch",
+    "successful reinstall after recoverable rollback proves global ownership release",
+    "unproven rollback in the covered installation-time path retains installed state, conservative patch mask, executable stub, stable state address, and global ownership",
+    "quiescent uninstall retry after that covered installation-time path re-flushes original bytes and restores captured executable protection before releasing retained ownership"
+  ],
+  "executable_fixture": {
+    "uses_virtual_alloc_code": true,
+    "calls_three_patched_synthetic_functions": true,
+    "executes_all_generated_stubs": true,
+    "executes_original_branches_before_install": true,
+    "executes_restored_branches_after_uninstall": true,
+    "stub_dispatch_calls": 0,
+    "stub_dispatch_allocations": 0,
+    "stub_dispatch_logs": 0,
+    "native_outcomes_suppressed": 0
+  },
+  "live_ck3_evidence": {
+    "date": "2026-08-25",
+    "checkpoint_sha256": "5BA2136911EAD0CAF1F7D2F3DE02EAFBD8039861C46F01F35F698B3B5CFFFC5F",
+    "attempt_elapsed_seconds": [91.685, 62.287, 72.668],
+    "sampled_pid": 62888,
+    "read_process_memory": {
+      "installed": true,
+      "patch_mask": 7,
+      "failure": 0,
+      "module_and_targets_match_frozen_rvas": true,
+      "absolute_jump_bytes_match": true,
+      "first_counts": [0, 20874, 0],
+      "last_changed_counts": [0, 21071, 0],
+      "last_change_relative_seconds": 13,
+      "variant_delta": 197,
+      "counter_unit": "null-branch executions, not unique variants, resources, or errors"
+    },
+    "new_crash_bundles": 0,
+    "managed_cleanup_converged": true,
+    "checkpoint_last_save_and_driver_state_unchanged": true,
+    "gameplay_queries_commands_or_input": 0,
+    "map_or_mailbox_readiness_claimed": false
+  },
+  "negative_claims": [
+    "The executable fixture is offline; the separate live evidence is a read-only bounded observation.",
+    "The aggregate counters do not associate any null exit with the earlier ParticleColor request.",
+    "The recorder does not cover the earlier graphics-global-null factory exit.",
+    "A zero counter does not prove that its stage was not called.",
+    "Each recorded null adds a locked atomic RMW and therefore nonzero timing and cache-line perturbation.",
+    "The recorder does not suppress a native exit or advertise gameplay readiness.",
+    "Survival of the instrumented attempts does not prove the former startup fault resolved."
+  ]
+}

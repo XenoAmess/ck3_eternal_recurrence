@@ -81,7 +81,7 @@ class NativeDeclarationContractTests(unittest.TestCase):
             "county_conquest_cb",
         )
         self.assertIn(
-            "game.command.query-combat-simulation-inputs",
+            "game.command.query-combat-simulation-inputs-v3-N",
             declaration["required_capabilities"],
         )
         self.assertIn(

@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "contract": "combat_phase_event_trace_v1",
+  "contract_stage": "research_probe_exact_build",
+  "game": {
+    "product_version": "1.19.0.6",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "command": {
+    "capability": "game.command.query-combat-phase-event-trace-v1-N",
+    "step_prefix": "query-combat-phase-event-trace-v1-",
+    "argument": "positive full-generation CombatID",
+    "advertised": false,
+    "bridge_dispatch_connected": false,
+    "generic_fallback_allowed": false
+  },
+  "read_only_boundary": {
+    "requires_paused": true,
+    "requires_real_combat_id": true,
+    "calls_weighted_selector": false,
+    "calls_schedule_builder": false,
+    "calls_phase_event_dispatcher": false,
+    "calls_effect_executor": false,
+    "calls_global_rng_draw": false,
+    "calls_lazy_phase_event_database_getter": false,
+    "native_calls": [
+      "0x81F190 EventTargetScope constructor on query-owned storage",
+      "0x3358160 named-target insertion into query-owned scope",
+      "0x334C510 compiled trigger evaluator",
+      "0x337B210 compiled value evaluator",
+      "0x81E900 EventTargetScope tail teardown",
+      "0x81E980 0x48-stride query-owned row teardown",
+      "query-owned allocator vtable +0x10 deallocation"
+    ],
+    "atomicity": [
+      "game::ReadSnapshot equality before and after",
+      "CCombat generation, core fields and embedded side back-pointers stable",
+      "side roster and retained schedule stable",
+      "battle-result generation and complete retained BattleEvent rows stable",
+      "loaded 13-row event table pointer, keys, types and empty-effect flags stable",
+      "all character core-state rows stable",
+      "all 13 trigger/chance differential rows stable on a second evaluator pass",
+      "global RNG wrapper/state identity, counter, salt and owner token unchanged"
+    ]
+  },
+  "abi": {
+    "combat": {
+      "storage_slot": "Bindings::combat_storage_slot (module+0x570C758 on the pinned build)",
+      "identity": "CCombat+0x08 CombatID",
+      "side_0": "CCombat+0x20 embedded CCombatSide",
+      "side_1": "CCombat+0x368 embedded CCombatSide",
+      "phase": "CCombat+0x6B0 int32: 0 maneuver, 1 main, 2 pursuit, 3 done",
+      "phase_day": "CCombat+0x6B4 int32",
+      "target_province": "CCombat+0x6B8 CProvince*; CProvince+0x10 ProvinceID",
+      "winner": "CCombat+0x6E0 int32: -1 undecided, 0 side0, 1 side1",
+      "battle_result_id": "CCombat+0x708 full-generation Battle result ID"
+    },
+    "side": {
+      "army_ids": "CCombatSide+0x10 data, +0x1C count, int32 CArmyID rows",
+      "knight_entries": "CCombatSide+0x40 data, +0x4C count, stride 0x60, CRegimentID at row+0x08",
+      "selected_commander": "CCombatSide+0x74 CharacterID",
+      "combat_back_pointer": "CCombatSide+0xB8 CCombat*",
+      "scheduled_knights": "CCombatSide+0xD8 data, +0xE4 count, stride 0x10 {event*, CRegimentID}",
+      "scheduled_commander": "CCombatSide+0xF0 event* or module+0x57C7940 sentinel"
+    },
+    "roster_joins": {
+      "internal_army": "Bindings::army_internal_storage_slot; identity CArmy+0x10; commander CharacterID +0x120; CombatID +0x128",
+      "regiment": "Bindings::regiment_storage_slot; identity CRegiment+0x10; CArmyID +0x140; knight CharacterID +0x148",
+      "character": "Bindings::character_storage_slot; identity CCharacter+0x18; regiment link CCharacter+0x1B0 -> +0xF8"
+    },
+    "phase_event_database": {
+      "initialized_singleton_slot": "module+0x57C7930",
+      "lazy_getter_forbidden": "0x23CEB10",
+      "rows": "database+0x68 event**; database+0x74 int32 count",
+      "stable_key": "event+0x18 MSVC std::string",
+      "compiled_trigger": "event+0x38 inline compiled trigger",
+      "compiled_chance": "event+0x118 inline compiled value",
+      "compiled_effect": "event+0x178 inline compiled effect; never called by probe",
+      "empty_effect": "event+0x1C4 == 0",
+      "type": "event+0x1D8 int32: 0 commander, 1 knight",
+      "null_or_empty_sentinel_slot": "module+0x57C7940"
+    },
+    "event_target_scope": {
+      "storage_size": "0x168 bytes, 16-byte aligned",
+      "constructor": "0x81F190(scope)",
+      "root": "scope+0 kind 4; scope+0x08 zero-extended uint32 CharacterID payload",
+      "named_key_id": "int32 at module+0x57EB630, initialized from exact key combat_side",
+      "named_value": "kind 11; subtype 0 for side0 and 1 for side1; +0x08 sign-extended CombatID",
+      "insert": "0x3358160(scope+0x18, key_id, kind11 token)",
+      "teardown_order": [
+        "0x81E900(scope+0x118); internally tears down its +0x30 0x48-stride rows then +0x10 0x20-stride rows",
+        "if scope+0x100 data exists: 0x81E980(scope+0x100), then allocator at scope+0x110 vtable+0x10(allocator,data,8), then clear data/capacity/count",
+        "if scope+0x18 data exists: no element destructor (selector's exact trivial-row path), allocator at scope+0x28 vtable+0x10(allocator,data,8), then clear data/capacity/count"
+      ]
+    },
+    "native_differential": {
+      "trigger": "0x334C510(event+0x38, scope) -> bool",
+      "chance": "0x337B210(event+0x118, int64_out, scope) -> int64_out*",
+      "chance_scale": 100000,
+      "int_weight": "signed chance_raw / 100000, truncation toward zero",
+      "differential_extension": "probe evaluates chance for every stock row; selector itself evaluates chance only after matching type and true trigger"
+    },
+    "random_side_knight_candidate_order": {
+      "policy": "ccombat_side_knight_source_then_tail_swap_remove_v1",
+      "rtti": "CScriptedListEffect<CRandomInScriptedListEffect,CCombatSideKnightListBuilder>",
+      "vtable": "module+0x41DE5C0",
+      "upper_bound_slot": "vtable+0xD0 -> 0x19F4880; resolved CCombatSide+0x4C",
+      "materialize_filter_slot": "vtable+0xD8 -> 0x19F4760",
+      "effect_slot": "vtable+0xE0 -> 0x33E87E0",
+      "effect_for_context_slot": "vtable+0xE8 -> 0x33E8890",
+      "materializer": "0x19DD670; receiver is the derived scripted-list effect; scope token is resolved by 0x2011090 to the actual CCombatSide",
+      "source_vector": "CCombatSide+0x40/+0x4C stride 0x60; row+0x08 RegimentID; store module+0x57BF4C8, fallback module+0x57BF4C0, CRegiment+0x10 identity, CharacterID CRegiment+0x148; skip only -1; append kind-4 target in source order",
+      "materialize_call_schedule": "0x3388410 calls vtable+0xD8 once with source predicate effect+0x60, then once for each effect+0x220 pointer up to effect+0x22C count; every call receives shared predicate effect+0x140 and the same output vector",
+      "predicate_receiver_order": "0x19F4760 receives source predicate in RDX and shared predicate in R8; if either compiled trigger at +0x5C is non-empty, evaluate shared R8 first then source RDX via 0x334C600; an empty predicate evaluates true",
+      "limit_compaction": "on either predicate failure copy current vector tail over rejected index, decrement count/end, then recheck the same index; deterministic tail_swap_remove, not stable erase",
+      "weighted_selection": "0x33E87E0/0x33E8890 call 0x3388410 then 0x33E8D40 over the post-compaction vector order",
+      "weight": "0x337B310 per candidate; signed Q100000 division toward zero plus +1 only for a positive nonzero remainder; low int32 is stored and signed total accumulates with int32 two's-complement wrap; every row including zero/negative participates with no clamp or skip",
+      "rng": "effect-context state at context+0x28; one draw; positive total uses draw31 % total then signed ordered subtract of every row until negative (negative row increases remainder; no hit falls back index 0); total<=0 or missing weight still draws and uses draw31 % candidate_count",
+      "trace_source_vector_reader": "ordered_knight_character_ids directly mirrors the pre-limit actual CCombatSide source rows",
+      "combat_inputs_v3_equivalence": "production v3 now builds query-owned local CCombatSide objects through stock 0x23C9100, directly re-reads each actual side commander/knight source vector, and requires row-exact role/source_army_id/source_regiment_id/character_id equality plus an uppercase SHA-256 sequence digest before returning available",
+      "combat_inputs_v3_equivalence_ready": true
+    },
+    "retained_battle_events": {
+      "effect": "CBattleEventEffect RTTI vtable module+0x444F498; execute 0x2EB4330",
+      "battle_result": "CCombat+0x708 ID; storage module+0x57C0328, fallback module+0x57C0320, identity object+0x08",
+      "append": "0x2EB4582 calls 0x130A660(battle_result+0x188,row); probe never calls either function",
+      "container": "Battle result+0x188: data +0x00, capacity int32 +0x08, count int32 +0x0C, allocator +0x10",
+      "row": "stride 0x38, BattleEvent vtable module+0x41461A0, left CharacterID +0x08, right CharacterID +0x0C, BattleEvent+0x10 stable key MSVC string, type_raw +0x30, side0 bool +0x34, target_right bool +0x35",
+      "association": "reader requires exact Battle-result generation and resolves every non--1 CharacterID; retained row is a generic battle ledger row until a managed native-boundary delta proves phase-event origin"
+    },
+    "cadence": {
+      "current_date_slot": "module+0x570E068; date raw at object+0x08",
+      "epoch_raw": 43799976,
+      "date_units_per_day": 24,
+      "combat_event_days": "uint32 at module+0x570EF9C; pinned stock value 5",
+      "predicate": "uint32(CharacterID + signed_day_index) % COMBAT_EVENT_DAYS == 0",
+      "schedule_builder": "0x23C8750; never called by probe",
+      "fire": "0x23C9900; never called by probe",
+      "main_tick_side_order": [0, 1],
+      "global_rng_draws_per_side_fire": 1
+    },
+    "global_rng": {
+      "wrapper_slot": "module+0x4FEB1C8",
+      "state": "*(void**)wrapper",
+      "counter": "state+0x08 uint32",
+      "salt": "state+0x0C uint32",
+      "owner_thread_token": "state+0x10 uint32",
+      "draw_entry_forbidden": "0x356A0A0",
+      "core_forbidden": "0x356B770",
+      "next_draw31_preview": "avalanche32(salt - counter*0x4AD685B3) & 0x7FFFFFFF; does not increment counter"
+    },
+    "character_core_state": {
+      "native_valid": "vcall (CCharacter+0x10) vtable+0x08",
+      "death_marker": "CCharacter+0x1C8 != nullptr",
+      "alive": "native_valid && !death_marker",
+      "martial": "CCharacter+0xD8 int32",
+      "learning": "CCharacter+0xE4 int32",
+      "prowess": "CCharacter+0xE8 int32",
+      "current_regiment": "CCharacter+0x1B0 link; CRegimentID at link+0xF8; revalidate CRegiment+0x148 back-reference"
+    },
+    "effect_feedback_static_ledger": {
+      "send_interface_toast": {
+        "registration_key_rva": "module+0x4439F90 ASCII send_interface_toast",
+        "registration_xref": "0x5C3831 constructs CEffectEntry<CSendInterfaceMessageEffect<1>>",
+        "effect_vtable": "module+0x443A420",
+        "payload_vtable": "module+0x443A518",
+        "execute": "vtable+0xB0 -> 0x2E7A4B0",
+        "nested_effect_boundary": "0x2E7A9A1..0x2E7A9EE prepares the message-local scope/RNG, invokes payload vtable+0x58 through 0x3380840 exactly once, then continues message-container handling",
+        "trace_gate": "capture wrapper-before, nested-effect-before/after and wrapper-after; do not assert that toast adds no combat-state write until the native boundary delta proves it"
+      },
+      "add_glory": {
+        "effect": "CAddGloryEffect execute 0x2E5B6F0",
+        "value": "0x9698B0 evaluates signed Q100000",
+        "accolade_scope": "kind 0x24 CAccolade; store module+0x57BF1E0, fallback module+0x57BF198, identity CAccolade+0x08",
+        "write": "tail jump 0x251C2F0(CAccolade*, int64 delta_raw); rank helper 0x251B780 is called before and after",
+        "effective_delta": "positive delta is multiplied by 100000 plus owner modifier enum 0x238 through the native fixed-point overflow branch; CAccolade+0xB0 is updated and a negative result is clamped to zero",
+        "rank": "0x251B780 reads glory CAccolade+0xB0 and threshold vector module+0x4F62B98/count module+0x4F62BA4 descending; below all returns 1, otherwise highest matched index plus 1",
+        "rank_change_feedback": "0x251C724 begins notification/script-effect handling",
+        "trace_gate": "capture generation-validated AccoladeID, glory_raw and rank_native before/after; recipient AccoladeID source and all rank-change feedback remain unresolved, so this does not raise fidelity"
+      }
+    },
+    "managed_before_after_contract": {
+      "name": "native_daily_phase_event_boundaries_v1",
+      "required_sequence": [
+        "native_capture_before_side0_schedule_call_0x27FB58F",
+        "native_capture_after_side1_schedule_return_0x27FB5AC",
+        "native_capture_before_side0_phase_fire_entry_0x23C9900",
+        "native_capture_after_side0_phase_fire_return_0x2309EF7",
+        "native_capture_before_side1_phase_fire_entry_0x23C9900",
+        "native_capture_after_side1_phase_fire_return_0x2309EFF",
+        "paused_next_day_stable_query"
+      ],
+      "exact_tick_chain": {
+        "schedule_pass": "0x27FB4D0 iterates manager+0x20/+0x2C CombatIDs in stored order; 0x27FB58F calls 0x23C8750(side0), 0x27FB5A7 calls 0x23C8750(side1), and 0x27FB5AC is the same-combat post-side1 return site",
+        "daily_dispatch_pass": "0x27FB5D0 separately iterates active Combats; 0x27FB683/0x27FB6A2 refresh sides, 0x27FB6C6 increments phase_day, and 0x27FB6FD calls 0x2309E80",
+        "main_phase": "0x2309E92/0x2309EA1 call 0x23CB840 for side totals; 0x2309EF2/0x2309EFA call 0x23CA2F0; each 0x23CA2F0 calls 0x23CBC20, updates participant rows, then tail-calls 0x23C9900",
+        "phase_fire_boundaries": "capture 0x23C9900 entry with actual CCombatSide and return site 0x2309EF7 for side0 or 0x2309EFF for side1; capture those two return sites before side1 refresh and commander rolls respectively"
+      },
+      "capture_transport": "preallocated query-owned ring buffer; bounded read-only copies only; do not pause CK3, allocate through CK3, invoke ReadSnapshot, or re-enter bridge/service code from a native call stack",
+      "ring_source_implementation": {
+        "header": "include/xar_bridge/combat_phase_event_trace_ring_v1.hpp",
+        "source": "src/combat_phase_event_trace_ring_v1.cpp",
+        "source_contract_fixture": "research/fixtures/combat_phase_event_trace_ring_v1_source_contract.json",
+        "schedule_hook": "wrap 0x23C8750; return 0x27FB594 captures before original side0; return 0x27FB5AC captures after original side1; RDX is copied as an opaque two-uint32 schedule-local RNG pair",
+        "phase_fire_hook": "wrap 0x23C9900 reached by the 0x23CA2F0 tail jump; preserved return 0x2309EF7 or 0x2309EFF selects side; copy before and after the exact original trampoline",
+        "prearmed_plan": "paused managed reader supplies actual Combat/side/date/event-table/RNG/Battle-result identities plus strictly sorted full-generation army/regiment/character pointer maps; hook only binary-searches and revalidates those maps",
+        "fixed_limits": "7 records; 256 armies and 2048 regiments per side; 512 tracked armies, 4096 tracked regiments, 4096 tracked characters, 4096 participant accolades, 4096 retained BattleEvents; exact stable key up to 128 bytes; at most 64 copied accolade-rank thresholds",
+        "typed_accolade_reader": "arm enumerates non-null participant AccoladeIDs, generation-resolves and sorts them, freezes owner ID and acclaimed-knight Character link; copies module+0x4F62B98 int64 threshold data and module+0x4F62BA4 count; every boundary revalidates identities and thresholds, reads CAccolade+0xB0 glory_raw, and mirrors 0x251B780 descending without calling a helper",
+        "failure_policy": "out-of-order boundary, reentry, identity replacement, memory fault, container inconsistency, capacity/key overflow or missing original trampoline atomically fails the entire ring; never truncate",
+        "detour_installation": "production DLL contains exact-build 15-byte entry anchors, 14-byte absolute jumps, RX original trampolines, paused-quiescence admission and transactional install/uninstall rollback; no hook is installed until the managed trace driver explicitly starts a trace",
+        "wire_serializer": "bounded seven-record JSON fragment omits reusable native object/code addresses, labels event pointers as process-local opaque correlation tokens, and fails before the 1 MiB bridge frame limit at 900 KiB",
+        "capture_plan_builder": "application-main paused builder generation-resolves Combat, embedded sides, armies, regiments, all roster/retained-BattleEvent Characters, Battle result and participant Accolades; sorts fixed pointer maps and snapshots date/event-table/RNG/accolade-threshold identities before arm",
+        "typed_managed_executor": "begin and finish are distinct MainThreadQueryExecutorV1 callbacks; begin requires a caller-created recoverable checkpoint and only installs/arms, while finish requires the same token/thread and exactly +24 date units before final capture, drain, serialization and detour uninstall",
+        "managed_checkpoint_wire": "bounded wrapper records paused before/after pump epoch, thread, date, CombatID and daily token plus recoverable-checkpoint/exact-one-day/uninstall gates; neither executor changes speed or advances time",
+        "bounded_source_test": "offline seven-record schedule/RNG/BattleEvent/character-core/accolade-glory-rank/strength/advantage delta replay plus sequence, CombatID and capacity fail-closed cases"
+      },
+      "provenance": "all six intra-tick records require exact native hook provenance; UI date polling is not admissible; only the seventh record is a normal paused query",
+      "identity_gates": [
+        "same full-generation CombatID at every native capture",
+        "same loaded phase-event table",
+        "same native date and managed daily sequence token",
+        "expected phase_day transition is recorded rather than incorrectly required to remain equal"
+      ],
+      "delta_domains": [
+        "retained schedule rows",
+        "retained BattleEvent rows",
+        "schedule-local RNG state/counter",
+        "global RNG state/counter",
+        "full mutable character state",
+        "participant membership",
+        "side strength and advantage"
+      ],
+      "label_rule": "only a native-boundary delta may label occurred, skipped, no-op or pending",
+      "bounded_ring_source_ready": true,
+      "typed_accolade_glory_rank_reader_ready": true,
+      "accolade_recipient_and_rank_change_feedback_ready": false,
+      "original_trampoline_binding_surface_ready": true,
+      "detour_installer_ready": true,
+      "bounded_wire_serializer_ready": true,
+      "capture_plan_builder_ready": true,
+      "typed_begin_finish_executor_ready": true,
+      "managed_checkpoint_offline_fixture_ready": true,
+      "mailbox_union_dispatch_ready": false,
+      "recoverable_external_one_day_driver_ready": false,
+      "same_combat_live_fixture_ready": false,
+      "full_mutable_transition_bundle_ready": false,
+      "ready": false
+    }
+  },
+  "stock_rows": [
+    {"global_load_index": 0, "type_load_index": 0, "key": "commander_none", "type": "commander", "empty_effect": true},
+    {"global_load_index": 1, "type_load_index": 1, "key": "commander_wounded", "type": "commander", "empty_effect": false},
+    {"global_load_index": 2, "type_load_index": 2, "key": "commander_maimed", "type": "commander", "empty_effect": false},
+    {"global_load_index": 3, "type_load_index": 3, "key": "commander_killed", "type": "commander", "empty_effect": false},
+    {"global_load_index": 4, "type_load_index": 0, "key": "knight_none", "type": "knight", "empty_effect": true},
+    {"global_load_index": 5, "type_load_index": 1, "key": "knight_berserker_attack", "type": "knight", "empty_effect": false},
+    {"global_load_index": 6, "type_load_index": 2, "key": "knight_become_berserker", "type": "knight", "empty_effect": false},
+    {"global_load_index": 7, "type_load_index": 3, "key": "knight_shieldmaiden_attack", "type": "knight", "empty_effect": false},
+    {"global_load_index": 8, "type_load_index": 4, "key": "knight_becomes_incapable", "type": "knight", "empty_effect": false},
+    {"global_load_index": 9, "type_load_index": 5, "key": "knight_wounded", "type": "knight", "empty_effect": false},
+    {"global_load_index": 10, "type_load_index": 6, "key": "knight_maimed", "type": "knight", "empty_effect": false},
+    {"global_load_index": 11, "type_load_index": 7, "key": "knight_killed", "type": "knight", "empty_effect": false},
+    {"global_load_index": 12, "type_load_index": 8, "key": "knight_qualify_for_accolade", "type": "knight", "empty_effect": false}
+  ],
+  "observation_semantics": {
+    "pure_read_now": [
+      "combat/date/phase/day/winner",
+      "ordered side commander and knight slots",
+      "real kind-11 combat_side native trigger/chance differential",
+      "five-day cadence predicate",
+      "global RNG counter/salt/owner token and non-consuming next draw preview",
+      "retained non-empty schedule rows",
+      "generic retained BattleEvent ledger with exact Battle-result and CharacterID association",
+      "random_side_knight raw pre-limit source vector and exact static materialize/filter/select policy",
+      "character identity/alive/skills/current-regiment core state"
+    ],
+    "retained_schedule_warning": "0x23C9900 does not clear scheduled rows; one paused snapshot cannot label a retained row pending or occurred",
+    "managed_transition_required": [
+      "seven-record native schedule/fire boundary sequence plus final paused stable query",
+      "actual occurred versus pending/no-op event identity",
+      "phase-event origin association for retained BattleEvent delta",
+      "effect transition and same-day participant/strength/advantage recompute"
+    ]
+  },
+  "readiness": {
+    "evaluator_probe_ready_when_live_gates_pass": true,
+    "production_trace_ready": false,
+    "observation_132_input_readiness_independent": true,
+    "phase_fidelity_gate_must_not_disable_existing_input_observation": true,
+    "missing_readers": [
+      "full_mutable_state_traits_tracks_variables_and_participant_membership",
+      "accolade_recipient_glory_rank_and_rank_change_feedback",
+      "send_interface_toast_nested_effect_wrapper_transition",
+      "phase_event_origin_association_for_retained_battle_event_delta",
+      "mailbox_typed_union_dispatch_and_bridge_capability",
+      "recoverable_external_one_day_driver_and_same_combat_live_fixture",
+      "effect_transition_same_day_recompute_trace"
+    ]
+  }
+}

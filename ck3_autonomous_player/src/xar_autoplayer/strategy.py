@@ -15,6 +15,14 @@ from .bridge.declaration_contract import (
     QUERY_DECLARABLE_WARS_STEP,
     declare_war_step,
 )
+from .bridge.combat_phase_contract import (
+    QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
+)
+from .bridge.war_entry_contract import (
+    FIXED_POINT_SCALE as WAR_ENTRY_FIXED_POINT_SCALE,
+    normalize_war_entry_assessments,
+    query_war_entry_assessments_step,
+)
 from .bridge.marriage_contract import (
     QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
     arrange_marriage_step,
@@ -38,6 +46,7 @@ from .bridge.war_contract import (
     parse_start_assault_step,
     parse_stop_assault_step,
     preview_move_army_step,
+    query_war_termination_options_step,
     start_assault_step,
     stop_assault_step,
     war_objective_province_ids,
@@ -149,6 +158,8 @@ def _latest_prefix_index(
 
 def _preferred_native_declaration(
     declarations: object,
+    *,
+    war_entry_assessments: dict[int, dict[str, object]] | None = None,
 ) -> dict[str, object] | None:
     if not isinstance(declarations, list):
         return None
@@ -172,7 +183,37 @@ def _preferred_native_declaration(
             key_rank = 3
         titles = row.get("target_title_ids")
         title_count = len(titles) if isinstance(titles, list) else 1_000_000
+        assessment = (
+            war_entry_assessments.get(stable_integer("target_character_id"))
+            if isinstance(war_entry_assessments, dict)
+            else None
+        )
+        # This is a target-level native strategic-power ordering, not a win
+        # probability.  Prefer a target that the actor's own adjusted base can
+        # cover even after retaining the target's full native relationship
+        # network.  The native total ratio is the next ordering lane; positive
+        # actor-network reliance and target-network support remain explicit
+        # uncertainty tie-breakers rather than being silently netted away.
+        if isinstance(assessment, dict):
+            actor_base = int(assessment["actor_power_base_raw"])
+            actor_network = int(assessment["actor_network_contribution_raw"])
+            target_network = int(assessment["target_network_contribution_raw"])
+            target_total = int(assessment["target_power_total_raw"])
+            native_power_risk = (
+                max(target_total - actor_base, 0),
+                int(assessment["actual_power_ratio_raw"]),
+                max(actor_network, 0),
+                max(target_network, 0),
+                target_total,
+                int(assessment["distance_raw"]),
+            )
+            evidence_rank = 0
+        else:
+            native_power_risk = (2**63 - 1,) * 6
+            evidence_rank = 1
         return (
+            evidence_rank,
+            *native_power_risk,
             key_rank,
             title_count,
             stable_integer("target_character_id"),
@@ -181,6 +222,142 @@ def _preferred_native_declaration(
         )
 
     return min(rows, key=preference)
+
+
+def _same_frame_war_entry_assessments(
+    rows: list[dict[str, object]],
+    snapshot: dict[str, object] | None,
+) -> dict[int, dict[str, object]]:
+    """Recover complete target rows that belong to the current paused frame.
+
+    A production request is deliberately bounded to one target.  Keeping
+    prior successful query results from the same paused frame allows a caller
+    to compare targets without broadening that native request or treating a
+    stale assessment as current evidence.
+    """
+
+    if not isinstance(snapshot, dict):
+        return {}
+    played_character = snapshot.get("played_character")
+    actor_id = (
+        played_character.get("character_id")
+        if isinstance(played_character, dict)
+        else None
+    )
+    native_revision = snapshot.get("native_revision")
+    date_raw = snapshot.get("date_raw")
+    payloads: list[object] = [snapshot.get("war_entry_assessments")]
+    for command_row in rows:
+        command = _effective_command(command_row)
+        if not (
+            isinstance(command, str)
+            and command.startswith("query-war-entry-assessments-v1-")
+            and command_row.get("ok") is True
+        ):
+            continue
+        result = command_row.get("result")
+        # Native command history stores the primitive result directly.  An
+        # auto-turn envelope stores it one level deeper.
+        if isinstance(result, dict) and isinstance(result.get("result"), dict):
+            result = result["result"]
+        payloads.append(
+            result.get("war_entry_assessments")
+            if isinstance(result, dict)
+            else None
+        )
+
+    recovered: dict[int, dict[str, object]] = {}
+    for payload in payloads:
+        try:
+            normalized = normalize_war_entry_assessments(
+                payload,
+                expected_actor_character_id=(
+                    actor_id
+                    if isinstance(actor_id, int)
+                    and not isinstance(actor_id, bool)
+                    else None
+                ),
+                expected_snapshot_revision=(
+                    native_revision
+                    if isinstance(native_revision, int)
+                    and not isinstance(native_revision, bool)
+                    else None
+                ),
+            )
+        except ValueError:
+            continue
+        if (
+            isinstance(date_raw, int)
+            and not isinstance(date_raw, bool)
+            and normalized["date_raw"] != date_raw
+        ):
+            continue
+        for assessment in normalized["assessments"]:
+            recovered[int(assessment["target_character_id"])] = assessment
+    return recovered
+
+
+def _war_entry_power_eu_projection(
+    assessment: dict[str, object] | None,
+) -> dict[str, object]:
+    """Project exact native power into the incomplete war-entry EU ledger.
+
+    The raw margin is a real consumed input, but it remains in CK3's strategic
+    power domain.  It is not assigned an invented gold/title utility
+    coefficient and therefore cannot unlock declaration by itself.
+    """
+
+    missing = [
+        "participant_arrival_bounds",
+        "combat_forecast",
+        "campaign_cost",
+        "exit_assessment",
+        "calibrated_utility_policy",
+    ]
+    if not isinstance(assessment, dict):
+        return {
+            "status": "power_assessment_required",
+            "native_power_component_ready": False,
+            "eu_lower_raw": None,
+            "missing_components": ["native_power_assessment", *missing],
+            "automatic_declaration_enabled": False,
+        }
+    actor_base = int(assessment["actor_power_base_raw"])
+    actor_total = int(assessment["actor_power_total_raw"])
+    actor_network = int(assessment["actor_network_contribution_raw"])
+    target_total = int(assessment["target_power_total_raw"])
+    target_network = int(assessment["target_network_contribution_raw"])
+    conservative_margin = actor_base - target_total
+    total_margin = actor_total - target_total
+    return {
+        "status": "native_power_component_ready",
+        "native_power_component_ready": True,
+        "native_power_component": {
+            "scale": WAR_ENTRY_FIXED_POINT_SCALE,
+            "actual_power_ratio_raw": int(
+                assessment["actual_power_ratio_raw"]
+            ),
+            "actor_power_base_raw": actor_base,
+            "actor_power_total_raw": actor_total,
+            "target_power_total_raw": target_total,
+            "native_total_power_margin_raw": total_margin,
+            "conservative_self_power_margin_raw": conservative_margin,
+            "actor_network_dependency_raw": max(actor_network, 0),
+            "target_network_support_raw": max(target_network, 0),
+            "distance_raw": int(assessment["distance_raw"]),
+            "risk_order_key": [
+                max(-conservative_margin, 0),
+                int(assessment["actual_power_ratio_raw"]),
+                max(actor_network, 0),
+                max(target_network, 0),
+                target_total,
+                int(assessment["distance_raw"]),
+            ],
+        },
+        "eu_lower_raw": None,
+        "missing_components": missing,
+        "automatic_declaration_enabled": False,
+    }
 
 
 def _cross_run_focus(plan: dict[str, object] | None) -> str | None:
@@ -577,6 +754,39 @@ def choose_one_life_turn(
     )
     controlled_armies = controllable_armies(player_armies)
     if active_wars:
+        raw_termination_options = (
+            snapshot.get("war_termination_options")
+            if isinstance(snapshot, dict)
+            else None
+        )
+        termination_by_war_id = {
+            row["war_id"]: row
+            for row in (
+                raw_termination_options
+                if isinstance(raw_termination_options, list)
+                else []
+            )
+            if isinstance(row, dict)
+            and isinstance(row.get("war_id"), int)
+            and not isinstance(row.get("war_id"), bool)
+        }
+        raw_exit_terms = (
+            snapshot.get("war_termination_exit_terms")
+            if isinstance(snapshot, dict)
+            else None
+        )
+        exit_terms_by_war_id = {
+            row["war_id"]: row
+            for row in (
+                raw_exit_terms if isinstance(raw_exit_terms, list) else []
+            )
+            if isinstance(row, dict)
+            and isinstance(row.get("war_id"), int)
+            and not isinstance(row.get("war_id"), bool)
+            and row.get("status") == "available"
+            and isinstance(row.get("readiness"), dict)
+            and row["readiness"].get("exit_terms_ready") is True
+        }
         war_summary = [
             {
                 "war_id": war.get("war_id"),
@@ -597,7 +807,118 @@ def choose_one_life_turn(
             for war in active_wars
         ]
         for summary in war_summary:
-            if summary.get("player_side") == "defender":
+            termination = termination_by_war_id.get(summary.get("war_id"))
+            exit_terms = exit_terms_by_war_id.get(summary.get("war_id"))
+            if isinstance(termination, dict):
+                options = termination.get("options")
+                legal_options = {
+                    name: option.get("available")
+                    for name, option in (
+                        options.items() if isinstance(options, dict) else []
+                    )
+                    if isinstance(name, str) and isinstance(option, dict)
+                }
+                option_evidence = {
+                    name: {
+                        "outcome": option.get("outcome"),
+                        "available": option.get("available"),
+                        "terms_observable": option.get("terms_observable"),
+                        "terms": option.get("terms"),
+                        "ai_acceptance_observable": option.get(
+                            "ai_acceptance_observable"
+                        ),
+                        "ai_acceptance": option.get("ai_acceptance"),
+                        "auto_accept_observable": option.get(
+                            "auto_accept_observable"
+                        ),
+                        "auto_accept": option.get("auto_accept"),
+                    }
+                    for name, option in (
+                        options.items() if isinstance(options, dict) else []
+                    )
+                    if isinstance(name, str) and isinstance(option, dict)
+                }
+                constructed_options = [
+                    option
+                    for option in (
+                        options.values() if isinstance(options, dict) else []
+                    )
+                    if isinstance(option, dict)
+                    and option.get("context_constructed") is True
+                ]
+                terms_complete = isinstance(exit_terms, dict) or (
+                    bool(constructed_options)
+                    and all(
+                        option.get("terms_observable") is True
+                        for option in constructed_options
+                    )
+                )
+                acceptance_complete = bool(constructed_options) and all(
+                    option.get("ai_acceptance_observable") is True
+                    and option.get("auto_accept_observable") is True
+                    for option in constructed_options
+                )
+                unknown_fields = ["campaign_outcome_forecast"]
+                if not (
+                    isinstance(exit_terms, dict)
+                    and isinstance(
+                        exit_terms.get("primary_resource_balances"), dict
+                    )
+                ):
+                    unknown_fields.append("primary_resource_balances")
+                if not terms_complete:
+                    unknown_fields.append("termination_terms")
+                if not acceptance_complete:
+                    unknown_fields.append("opponent_acceptance")
+                summary["war_termination_options"] = dict(termination)
+                if isinstance(exit_terms, dict):
+                    summary["war_termination_exit_terms"] = dict(exit_terms)
+                summary["war_exit_assessment"] = {
+                    "status": "evidence_partial",
+                    "reason": (
+                        (
+                            "native legality, acceptance, and structured exit "
+                            "terms including current primary resource balances "
+                            "are complete, but automatic termination remains "
+                            "disabled until campaign outcomes are observable"
+                        )
+                        if isinstance(exit_terms, dict)
+                        else (
+                            "native termination legality, score, and per-option "
+                            "acceptance evidence are projected for expected-"
+                            "utility evaluation, but automatic termination "
+                            "remains disabled while CB-specific terms and "
+                            "campaign outcomes are unknown"
+                        )
+                    ),
+                    "eu_inputs": {
+                        "war_duration_days": termination.get(
+                            "war_duration_days"
+                        ),
+                        "attacker_war_score": termination.get(
+                            "attacker_war_score"
+                        ),
+                        "defender_war_score": termination.get(
+                            "defender_war_score"
+                        ),
+                        "war_score_breakdown": termination.get(
+                            "war_score_breakdown"
+                        ),
+                        "active_casus_belli_identity": termination.get(
+                            "active_casus_belli_identity"
+                        ),
+                        "structured_exit_terms": (
+                            dict(exit_terms)
+                            if isinstance(exit_terms, dict)
+                            else None
+                        ),
+                        "legal_options": legal_options,
+                        "option_evidence": option_evidence,
+                    },
+                    "unknown_fields": unknown_fields,
+                    "automatic_termination_enabled": False,
+                }
+            elif summary.get("player_side") == "defender":
                 summary["war_exit_assessment"] = {
                     "status": "unavailable",
                     "reason": (
@@ -696,6 +1017,29 @@ def choose_one_life_turn(
                 "reason": "the active war cannot continue until this backend can raise troops",
                 "active_wars": war_summary,
             }
+
+        for summary in war_summary:
+            if "war_termination_options" in summary:
+                continue
+            war_id = summary.get("war_id")
+            if (
+                isinstance(war_id, int)
+                and not isinstance(war_id, bool)
+                and war_id > 0
+            ):
+                query_step = query_war_termination_options_step(war_id)
+                if query_step in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_termination_query",
+                        "selected_step": query_step,
+                        "reason": (
+                            "read the exact native termination contexts, "
+                            "legality, war-score evidence, and per-option AI "
+                            "acceptance before choosing another war action"
+                        ),
+                        "active_wars": war_summary,
+                    }
 
         primary_defensive_wars = [
             summary
@@ -2566,31 +2910,128 @@ def choose_one_life_turn(
             "reason": "the native declaration was submitted but this backend cannot advance the map",
         }
 
+    war_entry_assessment_rows = _same_frame_war_entry_assessments(
+        rows, snapshot if isinstance(snapshot, dict) else None
+    )
     declaration = _preferred_native_declaration(
-        snapshot.get("declarable_wars") if isinstance(snapshot, dict) else None
+        snapshot.get("declarable_wars") if isinstance(snapshot, dict) else None,
+        war_entry_assessments=war_entry_assessment_rows,
     )
     if isinstance(declaration, dict):
-        # The current native declaration row proves that CK3 considers the
-        # declaration legal.  It does not expose either side's native power,
-        # a battle forecast, campaign costs, or acceptable exit terms.  CB
-        # identity and title count therefore cannot authorize an automatic
-        # war: fail closed until a future, explicitly versioned assessment
-        # contract publishes all four evidence groups.
+        declaration_target = declaration.get("target_character_id")
+        assessment_step = (
+            query_war_entry_assessments_step([declaration_target])
+            if isinstance(declaration_target, int)
+            and not isinstance(declaration_target, bool)
+            and 0 < declaration_target <= 2**31 - 1
+            else None
+        )
+        assessment_row = (
+            war_entry_assessment_rows.get(declaration_target)
+            if isinstance(declaration_target, int)
+            and not isinstance(declaration_target, bool)
+            else None
+        )
+        fresh_assessment = isinstance(assessment_row, dict)
+        if (
+            not fresh_assessment
+            and isinstance(assessment_step, str)
+            and assessment_step in available_steps
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_entry_assessment",
+                "selected_step": assessment_step,
+                "reason": (
+                    "read CK3's exact strategic power lane for the current "
+                    "declaration target before considering time advance or war"
+                ),
+                "declaration": declaration,
+            }
+        power_eu = _war_entry_power_eu_projection(assessment_row)
+        power_component = power_eu.get("native_power_component")
+        conservative_margin = (
+            power_component.get("conservative_self_power_margin_raw")
+            if isinstance(power_component, dict)
+            else None
+        )
+        if (
+            isinstance(conservative_margin, int)
+            and not isinstance(conservative_margin, bool)
+            and conservative_margin < 0
+            and isinstance(snapshot, dict)
+        ):
+            raw_declarations = snapshot.get("declarable_wars")
+            unassessed = [
+                row
+                for row in (
+                    raw_declarations
+                    if isinstance(raw_declarations, list)
+                    else []
+                )
+                if isinstance(row, dict)
+                and isinstance(row.get("target_character_id"), int)
+                and not isinstance(row.get("target_character_id"), bool)
+                and row["target_character_id"]
+                not in war_entry_assessment_rows
+            ]
+            alternative = _preferred_native_declaration(unassessed)
+            alternative_target = (
+                alternative.get("target_character_id")
+                if isinstance(alternative, dict)
+                else None
+            )
+            alternative_step = (
+                query_war_entry_assessments_step([alternative_target])
+                if isinstance(alternative_target, int)
+                and not isinstance(alternative_target, bool)
+                and 0 < alternative_target <= 2**31 - 1
+                else None
+            )
+            if (
+                isinstance(alternative_step, str)
+                and alternative_step in available_steps
+            ):
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_entry_assessment_alternative",
+                    "selected_step": alternative_step,
+                    "reason": (
+                        "the current target depends on more strategic power "
+                        "than the actor's own adjusted base; inspect the next "
+                        "legal target on the same paused frame before choosing "
+                        "a diagnostic war-entry candidate"
+                    ),
+                    "declaration": alternative,
+                    "rejected_power_declaration": declaration,
+                    "rejected_war_entry_assessment": dict(assessment_row),
+                    "rejected_war_entry_expected_utility": power_eu,
+                }
+        # The declaration row proves legality and the war-entry query now
+        # contributes exact native power/network risk to candidate ordering
+        # and the EU ledger.  It is still not a battle forecast, campaign-cost
+        # model, exit assessment, or calibrated utility policy, so this partial
+        # EU record cannot authorize an automatic declaration.
         return {
             "policy": "one-life-turn-v1",
             "phase": "native_war_entry_evidence_required",
             "selected_step": None,
             "reason": (
-                "the native declaration is legally available, but automatic "
-                "war entry requires a fresh power assessment, combat forecast, "
-                "campaign-cost model, and exit assessment"
+                "the native declaration is legally available and exact "
+                "strategic power is consumed when present, but automatic war "
+                "entry still requires participant bounds, a combat forecast, "
+                "campaign costs, exit outcomes, and a calibrated utility policy"
             ),
             "required_capabilities": [
-                "game.command.query-combat-simulation-inputs",
+                QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
                 "game.forecast.combat-monte-carlo-v1",
-                "game.command.query-war-entry-assessments",
+                "game.command.query-war-entry-assessments-v1-N",
             ],
             "declaration": declaration,
+            "war_entry_assessment": (
+                dict(assessment_row) if fresh_assessment else None
+            ),
+            "war_entry_expected_utility": power_eu,
         }
 
     if QUERY_DECLARABLE_WARS_STEP in available_steps:
@@ -2669,9 +3110,9 @@ def choose_one_life_turn(
                     "exit assessment; do not declare through the visual fallback"
                 ),
                 "required_capabilities": [
-                    "game.command.query-combat-simulation-inputs",
+                    QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
                     "game.forecast.combat-monte-carlo-v1",
-                    "game.command.query-war-entry-assessments",
+                    "game.command.query-war-entry-assessments-v1-N",
                 ],
                 "declaration": {
                     "source": "legacy-visual-palermo",

@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "contract": "query-war-entry-assessments-v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "advertised": true,
+  "live_boundary_observation": true,
+  "live_executor_observation": false,
+  "typed_executor_invoked_live": true,
+  "last_live_failure_stage": "actor_ai_context",
+  "live_executor_result": "production4 reached the typed reader for player 29829 and failed deterministically at actor_ai_context because the retired daily AI-manager lookup excludes human actors; process, paused date and cleanup remained stable. production5 replaces that lookup with the authoritative native State16 builder before the next live run",
+  "production_maximum_targets": 1,
+  "assessment": {
+    "rva": "0x1878A00",
+    "abi": "RCX actor CCharacter*, RDX pointer to a complete 0x10 State16 built immediately beforehand by 0x18784D0 (qword power at +0x00 and native flag byte at +0x0E), R8 effective target CCharacter*, R9 caller-owned 0x28 output, stack5 optional int64 distance override, stack6 int32 include-network mode",
+    "production_callsite": "0x18BE0E9 lea RDX,[RSI+8]; 0x18BE0FA R9=&out; 0x18BE101 R8=effective target; 0x18BE104 RCX=actor; 0x18BE107 call 0x1878A00",
+    "output": {
+      "+0x00": "int64 distance_raw Q100000",
+      "+0x08": "int64 target_power_total_raw Q100000",
+      "+0x10": "int64 actual_power_ratio_raw Q100000",
+      "+0x18": "int32 target_ai_context_actor_entry_raw",
+      "+0x1C": "int32 actor_ai_context_target_entry_raw",
+      "+0x20": "uint8 native_flags_raw",
+      "size": "0x28"
+    },
+    "ratio_rule": "native out+0x10 is authoritative; target_total*100000/actor_total is an equality gate only and is never a formula fallback"
+  },
+  "actor_state_builder": {
+    "rva": "0x18784D0",
+    "logical_range": "0x18784D0..0x18789F8 with five chained PDATA/unwind ranges",
+    "abi": "void __fastcall(CCharacter* RCX, caller-owned State16* RDX)",
+    "scratch_contract": "zero all 0x10 bytes before every sample because the builder preserves the old high nibble at +0x0E and leaves +0x0F untouched",
+    "layout": {
+      "+0x00": "int64 authoritative actor power base Q100000; initial CCharacter+0x1B8->+0x308 plus native modifiers, with a native conditional zero branch",
+      "+0x08": "int32 native state raw",
+      "+0x0C": "uint16 native state raw",
+      "+0x0E": "uint8 native flags raw",
+      "+0x0F": "caller-zeroed trailing byte",
+      "size": "0x10"
+    },
+    "direct_callers": "0x18849CE/D2/D6, 0x1885E33/37/3B, 0x20505C9/CD and 0x2791DFC/E00 all pass native AIContext+8, proving exact layout equivalence",
+    "read_only_callgraph": "0x2601F90, 0x26165B0, boolean vtable+8 getters, 0x999AF0 and 0x20B5BE0 contain no RNG, script VM or world-object store on the closed paths; builder stores only to State16/stack",
+    "dependency_gate": "module+0x570C638 singleton must be nonnull and pointer-stable before/after each builder+assessment sample and across both samples, preventing the 0x999AF0 cold lazy-init path"
+  },
+  "effective_target": {
+    "rva": "0x2909D30",
+    "production_callsite": "0x18BE0A5 R9=0; RDX=raw target; RCX=actor; returned pointer becomes 0x1878A00 R8",
+    "read_only_boundary": "synchronous resolver call; full-generation identity and pointer equality are revalidated before and after"
+  },
+  "character_identity": {
+    "storage_slot": "module+0x570C130",
+    "fallback_slot": "module+0x570C138",
+    "resolution": "index=(uint32 full_id)&0x00FFFFFF; storage+0x20 slots, +0x2C count/capacity, stride 0x10, object +0x08; require CCharacter+0x18 exact full_id and reject fallback",
+    "game_state_slot": "module+0x570E068"
+  },
+  "network_collector": {
+    "rva": "0x1879850",
+    "configuration_layout": [
+      ["+0x00", "CCharacter** root"],
+      ["+0x08", "int32* filter_a"],
+      ["+0x10", "int32* filter_b"],
+      ["+0x18", "int32* filter_c"],
+      ["+0x20", "int64* accumulator"]
+    ],
+    "target_configuration": "{target,0,0,0,0} at 0x1878B5C..0x1878B9C",
+    "actor_configuration": "{actor,1,1,1,0} at 0x1878BAD..0x1878BF5",
+    "common_predicate": "0x1B35DF0(root,candidate)",
+    "filter_a": "candidate CCharacter+0x1B8->+0x318 count must be zero",
+    "filter_b": "exclude candidate CharacterID found by 0x28BCEB0 human-player set",
+    "filter_c": "same-realm/liege/government exclusions",
+    "deduplication": "local seen full CharacterID vector",
+    "lifetime": "all five pointees are caller stack locals; local seen vector is freed at 0x187A770..0x187A789"
+  },
+  "power_decomposition": {
+    "actor_base": "int64 State16+0x00 produced by 0x18784D0 for this exact sample",
+    "actor_network": "separate 0x1879850 actor configuration",
+    "actor_total": "checked actor_base + actor_network; native ratio equality cross-check",
+    "target_base": "int64 *(CCharacter+0x1B8+0x308)",
+    "target_network": "separate 0x1879850 target configuration",
+    "target_pre_adjustment": "checked target_base + target_network",
+    "target_adjustment_delta": "checked native out+0x08 - target_pre_adjustment",
+    "target_final": "native out+0x08"
+  },
+  "ai_context_chain": {
+    "canonical_caller": "0x101B125 loads CCharacter+0x1A8 extension; nonnull extension supplies context at +0x278; only a null extension loads the exact fallback pointer from module+0x57C1CA0",
+    "canonical_forwarding": "the enclosing caller at 0x101B141 takes its context+0x20-nonnull path, 0x101B14C loads context+0x18 actor, and 0x101B169 passes the original context to 0x18BDDA0; 0x18BDFFA restores it and 0x18BE0E9 passes context+0x08 to 0x1878A00",
+    "context_layout": "context+0x08 int64 base power Q100000; +0x16 native flags byte; +0x18 CCharacter* actor; +0x20 nullable relation-entry map (0x187910D..0x1879171 writes out+0x1C=0 when null)",
+    "assessment_secondary_reads": "0x1878F99 reads qword [RDX]; 0x187908E, 0x18790B4, 0x18790DC and 0x1879248 read/test byte [RDX+0x0E] bit 0, so a caller-local int64 substitute is invalid",
+    "fallback_initialization": "0x255A080 initializes module+0x57C1CA0; 0x255A10F loads the global fallback CCharacter into context+0x18 and 0x255A124 stores null at context+0x20",
+    "human_exclusion": "0x1885290 calls 0x28BCEB0 on the actor CharacterID and true jumps directly to return before 0x191CD20 context creation or extension+0x278 write; 0x1885330 has the same early exclusion",
+    "rejected_lookup": "the daily manager+0x120/+0x128/+0x12C span is AI-only; production4 player 29829 was absent and failed actor_ai_context, so that scan is retained only as historical reverse-engineering evidence and is not a production reader",
+    "production_selection": "historical/static provenance only. Human actors may have no refreshed manager AIContext or may retain stale/sentinel extension+0x278 state, so production does not admit, reject or copy from this chain. It invokes 0x18784D0 over the full-generation-resolved actor into a zeroed caller-owned State16 instead; 0x1878A00 may still follow its own native context/fallback path for out+0x1C"
+  },
+  "read_only_lifecycle": {
+    "main_thread_required": true,
+    "main_thread_gate": "application_main_thread_war_entry_v1 requires initialized TLS global, stable TLS context with marker +0x20 == 1, stable current thread id, paused Jomini state, stable game state and date; RNG owner is diagnostic provenance only",
+    "worker_dispatch": "named-pipe worker preloads exactly one target and submits only ExecuteWarEntryAssessmentMailboxQueryV1 through the typed application-main mailbox",
+    "declaration_scope": "one full declarable-war enumeration is frozen on the worker from the same paused expected snapshot before submit; application-main frame captures do not repeat the global enumeration",
+    "frame_capture": "reader before, middle and after callbacks each perform a fresh native ReadSnapshot on the application-main thread and require exact equality with the expected snapshot before returning the frozen ordered declaration set",
+    "permitted_executor": "ExecuteWarEntryAssessmentMailboxQueryV1 only; maximum one request per pump and one target per production request",
+    "paused_required": true,
+    "same_revision_required": true,
+    "same_query_double_sample": "for each of two samples, require module+0x570C638 nonnull and stable, zero a caller-owned 0x10 State16, call 0x18784D0 once, then run target+actor 0x1879850 and 0x1878A00 with that exact State16; require the assessment not to modify State16, both State16 byte sequences and dependency pointers to match, exact row equality, and frame/identity/target-power revalidation",
+    "no_game_object_writes": true,
+    "no_pointer_cache_across_frame": true,
+    "atomic_failure": "war_entry_assessment_unavailable:<stage>; no partial rows, null fields, soldier fallback or ratio fallback"
+  }
+}

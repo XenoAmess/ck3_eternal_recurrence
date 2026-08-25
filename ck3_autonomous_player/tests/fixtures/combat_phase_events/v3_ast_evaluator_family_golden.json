@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "game_version": "1.19.0.6",
+  "manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+  "evaluator_version": "ck3-1.19.0.6-stock-phase-event-ast-v3",
+  "evaluator_sha256": "29C1B1B01E23F7CF37266D075D33E6BB5EAB75480FDF0B0E53D7BAAFB41CA62B",
+  "evaluator_proof_sha256": "25DB80D58148F1E25630CC1794C128A90E626C89B14A29D660B9E5DD144F82CE",
+  "scope_contract": {
+    "root": "observed_character",
+    "combat_side": "observed_side_index",
+    "owner_status": "absent"
+  },
+  "arithmetic_contract": {
+    "scale": 100000,
+    "signed": true,
+    "rounding": "truncate_toward_zero_after_each_operation"
+  },
+  "families": [
+    {
+      "key": "commander_none",
+      "type": "commander",
+      "global_load_index": 0,
+      "ast_sha256": ["9DB6ADA023F6D6B9F81B5FAE305CA7CF2FC691D749A77C272DD07258256E3832", "1FDC5FE12DBD4BDE38F3366C98358B6B0E7289A8A4598EB2F2A556AFAAA6B8A0", "C89EFC725BA5AF5AFDF9B822A24216654480185DE9BCD056251A679DB2699E6D"],
+      "node_counts": [1, 34, 1],
+      "draw_count": 0,
+      "expected": {"root_alive": true, "transition": "no_op"}
+    },
+    {
+      "key": "commander_wounded",
+      "type": "commander",
+      "global_load_index": 1,
+      "ast_sha256": ["33F617D21CDF9F7BC076C8654C23272A1EB5F57E2C7824D2F63BBE98AB3A757B", "A7CC9F803CB39F4AF1F2057454EAF5EDB1E701A9591D61E8963518218AEA059A", "F475B2E26780691E87E9B964B8882F92088A85078EE7FD28174A7791810D196D"],
+      "node_counts": [5, 31, 11],
+      "draw_count": 2,
+      "expected": {"wounded_rank_raw": 100000}
+    },
+    {
+      "key": "commander_maimed",
+      "type": "commander",
+      "global_load_index": 2,
+      "ast_sha256": ["A97C3FA39FF1EED3ADF48164383BF3590250857CF17A18B9474873A7F28C72C3", "5BAB3E5FEE9AFB2423EE12DF2A9B22235F87B3304F4B33FC79C53C4456A24AD1", "8A345367B736C7D217E2B0EA1D61E8590BF08340B7B7013BC0A3EAF85835A26E"],
+      "node_counts": [6, 32, 11],
+      "draw_count": 3,
+      "expected": {"trait": "one_legged", "wounded_rank_raw": 100000}
+    },
+    {
+      "key": "commander_killed",
+      "type": "commander",
+      "global_load_index": 3,
+      "ast_sha256": ["23E4F30E463BBA85D44729FEBB8B3B7C4A31D63C0E81D9755284FFFF1CBDEFB4", "4C438CEA2D5BEA0C805205F2B3A0AF13509077EB504975FD01A8F598FBBA0FA5", "5DCF0B29A2EB195400D137D07CBDC1F14418DD5D2443864FB3B9048108A13CD6"],
+      "node_counts": [20, 31, 12],
+      "draw_count": 2,
+      "expected": {"root_alive": false, "commander_detached": true}
+    },
+    {
+      "key": "knight_none",
+      "type": "knight",
+      "global_load_index": 4,
+      "ast_sha256": ["9DB6ADA023F6D6B9F81B5FAE305CA7CF2FC691D749A77C272DD07258256E3832", "B84D5B13BC2F3CCA5852E78BE2B0B1056AA286FEAE660A46F9182651F2A8C74B", "C89EFC725BA5AF5AFDF9B822A24216654480185DE9BCD056251A679DB2699E6D"],
+      "node_counts": [1, 36, 1],
+      "draw_count": 0,
+      "expected": {"root_alive": true, "transition": "no_op"}
+    },
+    {
+      "key": "knight_berserker_attack",
+      "type": "knight",
+      "global_load_index": 5,
+      "ast_sha256": ["F113A24C38349A555EFC82C935F62C7AA66FAD068175795BAAEB9B11AD7B1E2B", "236703E29C9252D9778400B9F896762EBA1A1231D0912DBA392BCD805238E065", "690042E8D40128524539B2F304552A73654F5103D77033E53440D2C8ACB6A5DD"],
+      "node_counts": [3, 31, 25],
+      "draw_count": 3,
+      "expected": {"enemy_alive": false}
+    },
+    {
+      "key": "knight_become_berserker",
+      "type": "knight",
+      "global_load_index": 6,
+      "ast_sha256": ["61B2DCC03560FF0D22289A9D13440B462960A9C9E63B59E46F1ED45631EF097D", "4F6B92E106769EC83C5CAAFEF36B19B0F8C3D639454B08FBD491E219A3568DCD", "4588113DEE1237799F7DCAF99F66EC2D5BF0B05FEF52121F3885C2290CB4059C"],
+      "node_counts": [10, 56, 23],
+      "draw_count": 2,
+      "expected": {"trait": "berserker", "enemy_alive": false}
+    },
+    {
+      "key": "knight_shieldmaiden_attack",
+      "type": "knight",
+      "global_load_index": 7,
+      "ast_sha256": ["FD2566AFD7F57C0305EC69FB37091911A8B97665A474A2410C65D5FBE6FC2EE0", "236703E29C9252D9778400B9F896762EBA1A1231D0912DBA392BCD805238E065", "5F090376D5D675D6B962DB0C520A7B034B4FE8D2BC4433E7186721BE65B5F070"],
+      "node_counts": [3, 31, 14],
+      "draw_count": 3,
+      "expected": {"enemy_alive": false}
+    },
+    {
+      "key": "knight_becomes_incapable",
+      "type": "knight",
+      "global_load_index": 8,
+      "ast_sha256": ["AEC59FCBDFF77D5CDDD6E877344CBA92D5194C7B72A069A921A6ED5D44C2A57C", "7B661745045E5DC6F82BE5AB5CF2872B9C693E2284569B0E21FCE70F84B9886C", "63B2C2B21EFEDFD3B70E3AD063FF7FCD2404366133208391302B09F50DC56066"],
+      "node_counts": [2, 2, 7],
+      "draw_count": 0,
+      "expected": {"trait": "incapable"}
+    },
+    {
+      "key": "knight_wounded",
+      "type": "knight",
+      "global_load_index": 9,
+      "ast_sha256": ["94F2974C59D8DC016BC93F898C7013CE18D22C505466E2FA87B1B41DFD1EA0D9", "9643CB2798AAB612D28500EFF496182856B2F98D9D648F7F6CF59A93D796E0F0", "17269620A13F9C35513296BCC0B7B6C9B939EBCF19EE15A0B8CF9C4E64927844"],
+      "node_counts": [4, 32, 8],
+      "draw_count": 2,
+      "expected": {"wounded_rank_raw": 100000}
+    },
+    {
+      "key": "knight_maimed",
+      "type": "knight",
+      "global_load_index": 10,
+      "ast_sha256": ["A97C3FA39FF1EED3ADF48164383BF3590250857CF17A18B9474873A7F28C72C3", "F9B14CBDF7FE820EFBAB09D4F19333BB2A8F4092D6AA2C4EEA1C630D28969BBF", "706FD5ACC03095A87BB5933A4BA54360CFB30CB5ADBBCCC153E8A2EC62D1ABA7"],
+      "node_counts": [6, 29, 8],
+      "draw_count": 3,
+      "expected": {"trait": "one_legged", "wounded_rank_raw": 100000}
+    },
+    {
+      "key": "knight_killed",
+      "type": "knight",
+      "global_load_index": 11,
+      "ast_sha256": ["9DB6ADA023F6D6B9F81B5FAE305CA7CF2FC691D749A77C272DD07258256E3832", "B48D8513D7D0A077CDC5F04DFB1344CE8D8CC60EE9B5D86E48AE1A1B51C2BC14", "43BFA1C71AD5D23C2C16BAC59896EEEFDBFA3EC656E0C68DEEEF54903B48D76E"],
+      "node_counts": [1, 35, 9],
+      "draw_count": 2,
+      "expected": {"root_alive": false, "participant_detached": true}
+    },
+    {
+      "key": "knight_qualify_for_accolade",
+      "type": "knight",
+      "global_load_index": 12,
+      "ast_sha256": ["216DE36916D820B82F3F25C8A1F83B79EFBEABB497E5FC4D41DF02926ECC654C", "F9BC7B70DCED3BDFAF5912614751A8B08D4DEF6A57237E0315E191A0DC3FE923", "11BBBBFB50F12B2E5688741E8B35BCED67B12CC7179BAFEF895F2B3D6196287F"],
+      "node_counts": [8, 35, 73],
+      "draw_count": 1,
+      "expected": {"liege_accolade_progress_raw": 0, "root_variable": "skirmisher_attribute_unlock"}
+    }
+  ],
+  "fidelity_blockers": {
+    "native_random_side_knight_candidate_payload_requirement": {
+      "policy": "ccombat_side_knight_source_then_tail_swap_remove_v1",
+      "candidate_source_proof_policy": "ccombat_side_commanders_then_knights_native_source_equivalence_v1",
+      "occurrence_count": 9,
+      "algorithm_ready": true,
+      "static_audit_materialization_input_ready": false,
+      "production_fixture_materialization_input_ready": true,
+      "production_fixture_ready": true
+    },
+    "battle_horizon_effect_feedback_closure": {
+      "unmodeled_effects_source_order": [
+        "accolade_eligibility_interface_message",
+        "battle_death_variables",
+        "battle_event",
+        "battle_location_variable",
+        "cranial_trophy",
+        "delayed_epilepsy_risk",
+        "delayed_infection_or_treatment",
+        "glory",
+        "hold_court_delayed_event",
+        "house_relation",
+        "memory",
+        "mongol_beheaded_variables",
+        "prestige",
+        "slain_list",
+        "toast"
+      ],
+      "ready": false
+    }
+  },
+  "readiness_boundary": {
+    "structural_ast_coverage_ready": true,
+    "ast_evaluator_ready": false,
+    "original_trace_ready": false,
+    "planner_usable": false,
+    "active_attack_allowed": false
+  }
+}

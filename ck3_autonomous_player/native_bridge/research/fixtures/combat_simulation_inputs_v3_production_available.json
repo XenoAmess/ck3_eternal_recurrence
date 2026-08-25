@@ -1,0 +1,1343 @@
+{
+    "type": "command_result",
+    "protocol_version": 1,
+    "request_id": "fixture-production-v3-available",
+    "ok": true,
+    "result": {
+        "step": "query-combat-simulation-inputs-v3-5-2-a-1-16777217-d-1-16777218",
+        "accepted": true,
+        "status": "available",
+        "query_sequence": 1,
+        "combat_simulation_inputs": {
+            "schema_version": 3,
+            "contract_stage": "production_exact_132_refs",
+            "rules_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+            "base_inputs": {
+                "target_province_id": 5,
+                "participant_policy": "explicit_hypothetical_fixed_at_contact_no_reinforcements",
+                "scenario": {
+                    "kind": "explicit_hypothetical_contact",
+                    "attacker_entry_province_id": 2,
+                    "attacker_army_ids": [
+                        16777217
+                    ],
+                    "defender_army_ids": [
+                        16777218
+                    ],
+                    "attacker_side": "player_or_allied",
+                    "defender_side": "enemy",
+                    "attacker_position_policy": "fixed_at_entry_hypothetical",
+                    "defender_position_policy": "fixed_at_target_hypothetical",
+                    "defender_insertion_order_policy": "explicit_request_order_hypothetical",
+                    "actual_route_dependency": false
+                },
+                "armies": [
+                    {
+                        "status": "available",
+                        "army_id": 16777217,
+                        "native_carmy_id": 33554449,
+                        "encounter_role": "attacker",
+                        "scope_role": "player",
+                        "war_ids": [
+                            16777217
+                        ],
+                        "current_province_id": 2,
+                        "owner": {
+                            "status": "available",
+                            "character_id": 16777218,
+                            "counter_efficiency_raw": 10000,
+                            "counter_resistance_raw": 20000,
+                            "scale": 100000,
+                            "unavailable_reason": null
+                        },
+                        "commander": {
+                            "status": "available",
+                            "character_id": 16777218,
+                            "generic_advantage_points": 3,
+                            "battle_context": {
+                                "status": "available",
+                                "source_target_province_id": 5,
+                                "effective_min_roll": -2,
+                                "effective_max_roll": 13,
+                                "unavailable_reason": null
+                            },
+                            "unavailable_reason": null
+                        },
+                        "regiments": [
+                            {
+                                "status": "available",
+                                "regiment_id": 16777217,
+                                "identity_valid": true,
+                                "current_soldiers": 600,
+                                "maximum_soldiers": 800,
+                                "maa_type": {
+                                    "status": "available",
+                                    "key": "bowmen",
+                                    "unavailable_reason": null
+                                },
+                                "kind": {
+                                    "status": "available",
+                                    "value": "men_at_arms",
+                                    "unavailable_reason": null
+                                },
+                                "fights_in_main_phase": true,
+                                "effective_stats": {
+                                    "status": "available",
+                                    "source_target_province_id": 5,
+                                    "max_size": 880,
+                                    "siege_value_raw": 100000,
+                                    "damage_raw": 60000000,
+                                    "toughness_raw": 12000000,
+                                    "pursuit_raw": 300000,
+                                    "screen_raw": 500000,
+                                    "scale": 100000,
+                                    "unavailable_reason": null
+                                },
+                                "counter": {
+                                    "status": "available",
+                                    "class_index": 0,
+                                    "current_chunk_raw": 600000,
+                                    "targets": [
+                                        {
+                                            "class_index": 1,
+                                            "effectiveness_raw": 50000,
+                                            "scale": 100000
+                                        }
+                                    ],
+                                    "scale": 100000,
+                                    "unavailable_reason": null
+                                },
+                                "unavailable_reason": null
+                            },
+                            {
+                                "status": "available",
+                                "regiment_id": 16777218,
+                                "identity_valid": true,
+                                "current_soldiers": 400,
+                                "maximum_soldiers": 400,
+                                "maa_type": {
+                                    "status": "absent",
+                                    "key": null,
+                                    "unavailable_reason": null
+                                },
+                                "kind": {
+                                    "status": "available",
+                                    "value": "levy",
+                                    "unavailable_reason": null
+                                },
+                                "fights_in_main_phase": false,
+                                "effective_stats": {
+                                    "status": "available",
+                                    "source_target_province_id": 5,
+                                    "max_size": 420,
+                                    "siege_value_raw": 200000,
+                                    "damage_raw": 600000,
+                                    "toughness_raw": 700000,
+                                    "pursuit_raw": 100000,
+                                    "screen_raw": 200000,
+                                    "scale": 100000,
+                                    "unavailable_reason": null
+                                },
+                                "counter": {
+                                    "status": "absent",
+                                    "class_index": null,
+                                    "current_chunk_raw": null,
+                                    "targets": [],
+                                    "scale": 100000,
+                                    "unavailable_reason": null
+                                },
+                                "unavailable_reason": null
+                            }
+                        ],
+                        "knights": {
+                            "status": "available",
+                            "members": [
+                                {
+                                    "eligible": true,
+                                    "character_id": 16777218,
+                                    "source_regiment_id": 16777217,
+                                    "army_id": 33554449,
+                                    "participant_army_membership_verified": true,
+                                    "prowess": 12,
+                                    "knight_effectiveness_raw": 100000,
+                                    "effective_damage_raw": 60000000,
+                                    "effective_toughness_raw": 12000000,
+                                    "scale": 100000
+                                }
+                            ],
+                            "unavailable_reason": null
+                        },
+                        "unavailable_reason": null
+                    },
+                    {
+                        "status": "available",
+                        "army_id": 16777218,
+                        "native_carmy_id": 33554450,
+                        "encounter_role": "defender",
+                        "scope_role": "active_war_enemy",
+                        "war_ids": [
+                            16777217
+                        ],
+                        "current_province_id": 5,
+                        "owner": {
+                            "status": "available",
+                            "character_id": 16777219,
+                            "counter_efficiency_raw": 30000,
+                            "counter_resistance_raw": 40000,
+                            "scale": 100000,
+                            "unavailable_reason": null
+                        },
+                        "commander": {
+                            "status": "absent",
+                            "character_id": null,
+                            "generic_advantage_points": null,
+                            "battle_context": {
+                                "status": "available",
+                                "source_target_province_id": 5,
+                                "effective_min_roll": 0,
+                                "effective_max_roll": 0,
+                                "unavailable_reason": null
+                            },
+                            "unavailable_reason": null
+                        },
+                        "regiments": [
+                            {
+                                "status": "available",
+                                "regiment_id": 16777219,
+                                "identity_valid": true,
+                                "current_soldiers": 500,
+                                "maximum_soldiers": 1000,
+                                "maa_type": {
+                                    "status": "available",
+                                    "key": "armored_horsemen",
+                                    "unavailable_reason": null
+                                },
+                                "kind": {
+                                    "status": "available",
+                                    "value": "men_at_arms",
+                                    "unavailable_reason": null
+                                },
+                                "fights_in_main_phase": true,
+                                "effective_stats": {
+                                    "status": "available",
+                                    "source_target_province_id": 5,
+                                    "max_size": 1100,
+                                    "siege_value_raw": 300000,
+                                    "damage_raw": 48000000,
+                                    "toughness_raw": 9600000,
+                                    "pursuit_raw": 400000,
+                                    "screen_raw": 600000,
+                                    "scale": 100000,
+                                    "unavailable_reason": null
+                                },
+                                "counter": {
+                                    "status": "available",
+                                    "class_index": 1,
+                                    "current_chunk_raw": 500000,
+                                    "targets": [
+                                        {
+                                            "class_index": 0,
+                                            "effectiveness_raw": 75000,
+                                            "scale": 100000
+                                        }
+                                    ],
+                                    "scale": 100000,
+                                    "unavailable_reason": null
+                                },
+                                "unavailable_reason": null
+                            },
+                            {
+                                "status": "available",
+                                "regiment_id": 16777220,
+                                "identity_valid": true,
+                                "current_soldiers": 300,
+                                "maximum_soldiers": 500,
+                                "maa_type": {
+                                    "status": "absent",
+                                    "key": null,
+                                    "unavailable_reason": null
+                                },
+                                "kind": {
+                                    "status": "available",
+                                    "value": "men_at_arms",
+                                    "unavailable_reason": null
+                                },
+                                "fights_in_main_phase": false,
+                                "effective_stats": {
+                                    "status": "available",
+                                    "source_target_province_id": 5,
+                                    "max_size": 550,
+                                    "siege_value_raw": 400000,
+                                    "damage_raw": 900000,
+                                    "toughness_raw": 1000000,
+                                    "pursuit_raw": 200000,
+                                    "screen_raw": 300000,
+                                    "scale": 100000,
+                                    "unavailable_reason": null
+                                },
+                                "counter": {
+                                    "status": "available",
+                                    "class_index": 2,
+                                    "current_chunk_raw": 300000,
+                                    "targets": [],
+                                    "scale": 100000,
+                                    "unavailable_reason": null
+                                },
+                                "unavailable_reason": null
+                            }
+                        ],
+                        "knights": {
+                            "status": "available",
+                            "members": [
+                                {
+                                    "eligible": true,
+                                    "character_id": 16777219,
+                                    "source_regiment_id": 16777219,
+                                    "army_id": 33554450,
+                                    "participant_army_membership_verified": true,
+                                    "prowess": 8,
+                                    "knight_effectiveness_raw": 120000,
+                                    "effective_damage_raw": 48000000,
+                                    "effective_toughness_raw": 9600000,
+                                    "scale": 100000
+                                }
+                            ],
+                            "unavailable_reason": null
+                        },
+                        "unavailable_reason": null
+                    }
+                ],
+                "target_province": {
+                    "status": "available",
+                    "province_id": 5,
+                    "terrain": {
+                        "status": "available",
+                        "key": "hills",
+                        "combat_width_multiplier_raw": 80000,
+                        "scale": 100000,
+                        "unavailable_reason": null
+                    },
+                    "crossing": {
+                        "status": "available",
+                        "kind": "river",
+                        "unavailable_reason": null
+                    },
+                    "defender_context": {
+                        "status": "available",
+                        "defender_side": "enemy",
+                        "holding_defender_status": "available",
+                        "holding_defender": true,
+                        "holding_unavailable_reason": null,
+                        "unavailable_reason": null
+                    },
+                    "precontact_width": {
+                        "status": "available",
+                        "base": 900,
+                        "final": 720,
+                        "unavailable_reason": null
+                    },
+                    "unavailable_reason": null
+                },
+                "ongoing_combats": [
+                    {
+                        "status": "available",
+                        "combat_id": 16777217,
+                        "province_id": 5,
+                        "phase": 1,
+                        "phase_day": 4,
+                        "base_combat_width": 1200,
+                        "final_combat_width": 960,
+                        "side_0_roll": 7,
+                        "side_1_roll": 3,
+                        "base_advantage": 5,
+                        "resolved_advantage": 9,
+                        "orientation": "native_side_0_attacker_side_1_defender",
+                        "unavailable_reason": null
+                    }
+                ],
+                "counter_resolutions": [
+                    {
+                        "status": "available",
+                        "countered_side": "player_or_allied",
+                        "countering_side": "enemy",
+                        "countered_modifier_owner_character_id": 16777218,
+                        "countering_modifier_owner_character_id": 16777219,
+                        "context_scale_raw": 104000,
+                        "class_count": 3,
+                        "damage_retention_by_class_raw": [
+                            100000,
+                            80000,
+                            60000
+                        ],
+                        "scale": 100000,
+                        "unavailable_reason": null
+                    },
+                    {
+                        "status": "available",
+                        "countered_side": "enemy",
+                        "countering_side": "player_or_allied",
+                        "countered_modifier_owner_character_id": 16777219,
+                        "countering_modifier_owner_character_id": 16777218,
+                        "context_scale_raw": 66000,
+                        "class_count": 3,
+                        "damage_retention_by_class_raw": [
+                            90000,
+                            70000,
+                            50000
+                        ],
+                        "scale": 100000,
+                        "unavailable_reason": null
+                    }
+                ],
+                "completeness": {
+                    "observation_slice": "precontact-composition-context-v2",
+                    "input_observation_ready": true,
+                    "monte_carlo_ready": false,
+                    "missing_required_domains": [
+                        "damage_to_casualty_allocation",
+                        "pursuit_transition",
+                        "battle_end_and_retreat_transition",
+                        "phase_event_rng_and_effects"
+                    ]
+                }
+            },
+            "phase_event_inputs": {
+                "status": "available",
+                "rules_source": "stock-installation-static-manifest",
+                "rules_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+                "required_state_refs": {
+                    "count": 132,
+                    "sha256": "2B5E8445EFD14DC65D8BA4046242BBC37A0226C2BCD971D805D9A6F0064A1DD0"
+                },
+                "state_ref_coverage": {
+                    "manifest_domain_counts": {
+                        "character_relation": 79,
+                        "army": 13,
+                        "side": 10,
+                        "global": 3,
+                        "derived": 27
+                    },
+                    "abi_level_counts": {
+                        "native_leaf_exact": 81,
+                        "offline_exact": 51,
+                        "determinable": 132,
+                        "missing": 0
+                    },
+                    "path_set_sha256": {
+                        "native_leaf_exact": "E18C26667EF5F896564B21766E145A5B63C73ACDB5DD8B21ED25853CA793119E",
+                        "offline_exact": "368924B26875C74EEA9A631CAA528086829851233A48860671140E7842FF5CA6",
+                        "required": "2B5E8445EFD14DC65D8BA4046242BBC37A0226C2BCD971D805D9A6F0064A1DD0"
+                    },
+                    "native_payload_policy": "81_exact_native_leaves_plus_51_offline_exact"
+                },
+                "scope_mode": "hypothetical_precontact_offline_ast",
+                "raw": {
+                    "characters": [
+                        {
+                            "character_id": 16777218,
+                            "source_army_id": 16777217,
+                            "source_regiment_id": 16777217,
+                            "encounter_role": "attacker",
+                            "phase_roles": [
+                                "commander",
+                                "knight"
+                            ],
+                            "alive": true,
+                            "is_ai": true,
+                            "martial": 10,
+                            "learning": 11,
+                            "prowess": 12,
+                            "traits_or_groups": {
+                                "ambitious": false,
+                                "athletic": false,
+                                "berserker": false,
+                                "brave": false,
+                                "calm": false,
+                                "cautious_leader": false,
+                                "compassionate": false,
+                                "content": false,
+                                "craven": false,
+                                "desert_warrior": false,
+                                "disfigured": false,
+                                "education_martial_1": false,
+                                "education_martial_2": false,
+                                "education_martial_3": false,
+                                "education_martial_4": false,
+                                "education_martial_5": false,
+                                "education_martial_prowess_1": false,
+                                "education_martial_prowess_2": false,
+                                "education_martial_prowess_3": false,
+                                "education_martial_prowess_4": false,
+                                "flexible_leader": false,
+                                "forest_fighter": false,
+                                "giant": false,
+                                "holy_warrior": false,
+                                "impatient": false,
+                                "incapable": false,
+                                "intellect_good_1": false,
+                                "intellect_good_2": false,
+                                "intellect_good_3": false,
+                                "jungle_stalker": false,
+                                "lazy": false,
+                                "lifestyle_blademaster": false,
+                                "maimed": false,
+                                "nomadic_philosophy": false,
+                                "one_eyed": false,
+                                "one_legged": false,
+                                "open_terrain_expert": false,
+                                "patient": false,
+                                "physique_good": false,
+                                "reckless": false,
+                                "rough_terrain_expert": false,
+                                "sadistic": false,
+                                "scholar": false,
+                                "shieldmaiden": false,
+                                "shrewd": false,
+                                "strong": false,
+                                "temperate": false,
+                                "winter_soldier": false,
+                                "wrathful": false,
+                                "zealous": false,
+                                "aggressive_attacker": false,
+                                "wounded_1": false,
+                                "wounded_2": false,
+                                "wounded_3": false,
+                                "fragile_bones": false,
+                                "tourney_participant": false
+                            },
+                            "wounded_rank_raw": 0,
+                            "fragile_bones_rank_raw": 0,
+                            "fragile_bones_xp_raw": 0,
+                            "lifestyle_blademaster_xp_raw": 0,
+                            "tourney_bow_xp_raw": 0,
+                            "tourney_foot_xp_raw": 0,
+                            "tourney_horse_xp_raw": 0,
+                            "house": {
+                                "status": "available",
+                                "value": 100
+                            },
+                            "liege": {
+                                "status": "available",
+                                "value": 20000
+                            },
+                            "liege_house": {
+                                "status": "available",
+                                "value": 100
+                            },
+                            "employer": {
+                                "status": "available",
+                                "value": 30000
+                            },
+                            "dynasty": {
+                                "status": "available",
+                                "value": 40000
+                            },
+                            "warfare_legacy_3": false,
+                            "stalwart_leader": false,
+                            "culture": {
+                                "status": "available",
+                                "value": 50000
+                            },
+                            "faith": {
+                                "status": "available",
+                                "value": 60000
+                            },
+                            "religion": {
+                                "status": "available",
+                                "value": 70000
+                            },
+                            "heritage_north_germanic": false,
+                            "knights_slightly_more_prone_to_injury": false,
+                            "death_is_glory": false,
+                            "tenet_warmonger": false,
+                            "germanic_religion": false,
+                            "blademaster_traits_more_common": false,
+                            "innovations": {
+                                "innovation_quilted_armor": false,
+                                "innovation_sarawit": false,
+                                "innovation_legionnaires": false,
+                                "innovation_arched_saddle": false,
+                                "innovation_valets": false,
+                                "innovation_tiefutu": false,
+                                "innovation_advanced_bowmaking": false,
+                                "innovation_repeating_crossbow": false,
+                                "innovation_war_camels": false,
+                                "innovation_elephantry": false,
+                                "innovation_gunpowder": false,
+                                "innovation_fire_medicine": false
+                            },
+                            "traditions": {
+                                "tradition_fp1_coastal_warriors": false,
+                                "tradition_hird": false,
+                                "tradition_futuwaa": false,
+                                "tradition_druzhina": false,
+                                "tradition_khadga_puja": false,
+                                "tradition_garuda_warriors": false,
+                                "tradition_himalayan_settlers": false,
+                                "tradition_mubarizuns": false,
+                                "tradition_burman_royal_army": false,
+                                "tradition_mountaineer_ruralism": false,
+                                "tradition_caucasian_wolves": false,
+                                "tradition_roman_legacy": false,
+                                "tradition_ep3_audacious_cadets": false,
+                                "tradition_ep3_imperial_tagmata": false
+                            },
+                            "culture_parameters": {
+                                "knights_slightly_more_prone_to_injury": false,
+                                "blademaster_traits_more_common": false,
+                                "unlock_zhanmadao": false,
+                                "unlock_burenjia": false,
+                                "unlock_maa_cataphract_archers": false,
+                                "unlock_maa_black_armor_cavalry": false,
+                                "unlock_maa_horse_archers": false,
+                                "unlock_maa_mangudai": false,
+                                "unlock_emishi_horse_archers_units": false,
+                                "unlock_mounted_samurai_units": false
+                            },
+                            "is_acclaimed": false,
+                            "can_be_acclaimed": true,
+                            "accolade": {
+                                "status": "absent",
+                                "value": null
+                            },
+                            "accolade_has_men_at_arms_category": false,
+                            "accolade_parameters": {
+                                "accolade_defends_family_low": false,
+                                "accolade_defends_family_medium": false,
+                                "accolade_defends_family_high": false,
+                                "accolade_increase_hostile_knight_death_low": false,
+                                "accolade_increase_hostile_knight_death_medium": false,
+                                "accolade_increase_hostile_knight_death_high": false
+                            },
+                            "conqueror_variable_present": false,
+                            "attribute_unlock_variables": {
+                                "skirmisher": false,
+                                "archer": false,
+                                "crossbowmen": false,
+                                "pike": false,
+                                "vanguard": false,
+                                "outrider": false,
+                                "lancer": false,
+                                "camelry": false,
+                                "elephantry": false,
+                                "horse_archer": false,
+                                "gunpowder": false,
+                                "fanatic": false,
+                                "valiant": false
+                            },
+                            "hold_court_8050_knight": {
+                                "status": "absent",
+                                "value": null
+                            },
+                            "employer_hold_court_8050_promise": {
+                                "status": "absent",
+                                "value": null
+                            },
+                            "liege_accolade_progress_raw": 0,
+                            "ai_extreme_conqueror_modifier": false,
+                            "garuda_court_position": false,
+                            "government_is_nomadic": false
+                        },
+                        {
+                            "character_id": 16777219,
+                            "source_army_id": 16777218,
+                            "source_regiment_id": 16777219,
+                            "encounter_role": "defender",
+                            "phase_roles": [
+                                "knight"
+                            ],
+                            "alive": true,
+                            "is_ai": true,
+                            "martial": 11,
+                            "learning": 12,
+                            "prowess": 13,
+                            "traits_or_groups": {
+                                "ambitious": false,
+                                "athletic": false,
+                                "berserker": false,
+                                "brave": false,
+                                "calm": false,
+                                "cautious_leader": false,
+                                "compassionate": false,
+                                "content": false,
+                                "craven": false,
+                                "desert_warrior": false,
+                                "disfigured": false,
+                                "education_martial_1": false,
+                                "education_martial_2": false,
+                                "education_martial_3": false,
+                                "education_martial_4": false,
+                                "education_martial_5": false,
+                                "education_martial_prowess_1": false,
+                                "education_martial_prowess_2": false,
+                                "education_martial_prowess_3": false,
+                                "education_martial_prowess_4": false,
+                                "flexible_leader": false,
+                                "forest_fighter": false,
+                                "giant": false,
+                                "holy_warrior": false,
+                                "impatient": false,
+                                "incapable": false,
+                                "intellect_good_1": false,
+                                "intellect_good_2": false,
+                                "intellect_good_3": false,
+                                "jungle_stalker": false,
+                                "lazy": false,
+                                "lifestyle_blademaster": false,
+                                "maimed": false,
+                                "nomadic_philosophy": false,
+                                "one_eyed": false,
+                                "one_legged": false,
+                                "open_terrain_expert": false,
+                                "patient": false,
+                                "physique_good": false,
+                                "reckless": false,
+                                "rough_terrain_expert": false,
+                                "sadistic": false,
+                                "scholar": false,
+                                "shieldmaiden": false,
+                                "shrewd": false,
+                                "strong": false,
+                                "temperate": false,
+                                "winter_soldier": false,
+                                "wrathful": false,
+                                "zealous": false,
+                                "aggressive_attacker": false,
+                                "wounded_1": false,
+                                "wounded_2": false,
+                                "wounded_3": false,
+                                "fragile_bones": false,
+                                "tourney_participant": false
+                            },
+                            "wounded_rank_raw": 0,
+                            "fragile_bones_rank_raw": 0,
+                            "fragile_bones_xp_raw": 0,
+                            "lifestyle_blademaster_xp_raw": 0,
+                            "tourney_bow_xp_raw": 0,
+                            "tourney_foot_xp_raw": 0,
+                            "tourney_horse_xp_raw": 0,
+                            "house": {
+                                "status": "available",
+                                "value": 101
+                            },
+                            "liege": {
+                                "status": "available",
+                                "value": 20001
+                            },
+                            "liege_house": {
+                                "status": "available",
+                                "value": 101
+                            },
+                            "employer": {
+                                "status": "available",
+                                "value": 30001
+                            },
+                            "dynasty": {
+                                "status": "available",
+                                "value": 40001
+                            },
+                            "warfare_legacy_3": false,
+                            "stalwart_leader": false,
+                            "culture": {
+                                "status": "available",
+                                "value": 50001
+                            },
+                            "faith": {
+                                "status": "available",
+                                "value": 60001
+                            },
+                            "religion": {
+                                "status": "available",
+                                "value": 70001
+                            },
+                            "heritage_north_germanic": false,
+                            "knights_slightly_more_prone_to_injury": false,
+                            "death_is_glory": false,
+                            "tenet_warmonger": false,
+                            "germanic_religion": false,
+                            "blademaster_traits_more_common": false,
+                            "innovations": {
+                                "innovation_quilted_armor": false,
+                                "innovation_sarawit": false,
+                                "innovation_legionnaires": false,
+                                "innovation_arched_saddle": false,
+                                "innovation_valets": false,
+                                "innovation_tiefutu": false,
+                                "innovation_advanced_bowmaking": false,
+                                "innovation_repeating_crossbow": false,
+                                "innovation_war_camels": false,
+                                "innovation_elephantry": false,
+                                "innovation_gunpowder": false,
+                                "innovation_fire_medicine": false
+                            },
+                            "traditions": {
+                                "tradition_fp1_coastal_warriors": false,
+                                "tradition_hird": false,
+                                "tradition_futuwaa": false,
+                                "tradition_druzhina": false,
+                                "tradition_khadga_puja": false,
+                                "tradition_garuda_warriors": false,
+                                "tradition_himalayan_settlers": false,
+                                "tradition_mubarizuns": false,
+                                "tradition_burman_royal_army": false,
+                                "tradition_mountaineer_ruralism": false,
+                                "tradition_caucasian_wolves": false,
+                                "tradition_roman_legacy": false,
+                                "tradition_ep3_audacious_cadets": false,
+                                "tradition_ep3_imperial_tagmata": false
+                            },
+                            "culture_parameters": {
+                                "knights_slightly_more_prone_to_injury": false,
+                                "blademaster_traits_more_common": false,
+                                "unlock_zhanmadao": false,
+                                "unlock_burenjia": false,
+                                "unlock_maa_cataphract_archers": false,
+                                "unlock_maa_black_armor_cavalry": false,
+                                "unlock_maa_horse_archers": false,
+                                "unlock_maa_mangudai": false,
+                                "unlock_emishi_horse_archers_units": false,
+                                "unlock_mounted_samurai_units": false
+                            },
+                            "is_acclaimed": false,
+                            "can_be_acclaimed": true,
+                            "accolade": {
+                                "status": "absent",
+                                "value": null
+                            },
+                            "accolade_has_men_at_arms_category": false,
+                            "accolade_parameters": {
+                                "accolade_defends_family_low": false,
+                                "accolade_defends_family_medium": false,
+                                "accolade_defends_family_high": false,
+                                "accolade_increase_hostile_knight_death_low": false,
+                                "accolade_increase_hostile_knight_death_medium": false,
+                                "accolade_increase_hostile_knight_death_high": false
+                            },
+                            "conqueror_variable_present": false,
+                            "attribute_unlock_variables": {
+                                "skirmisher": false,
+                                "archer": false,
+                                "crossbowmen": false,
+                                "pike": false,
+                                "vanguard": false,
+                                "outrider": false,
+                                "lancer": false,
+                                "camelry": false,
+                                "elephantry": false,
+                                "horse_archer": false,
+                                "gunpowder": false,
+                                "fanatic": false,
+                                "valiant": false
+                            },
+                            "hold_court_8050_knight": {
+                                "status": "absent",
+                                "value": null
+                            },
+                            "employer_hold_court_8050_promise": {
+                                "status": "absent",
+                                "value": null
+                            },
+                            "liege_accolade_progress_raw": 0,
+                            "ai_extreme_conqueror_modifier": false,
+                            "garuda_court_position": false,
+                            "government_is_nomadic": false
+                        }
+                    ],
+                    "armies": [
+                        {
+                            "army_id": 16777217,
+                            "native_carmy_id": 33554449,
+                            "encounter_role": "attacker",
+                            "maa_regiment_count_raw": 100000,
+                            "maa_counts_raw": {
+                                "skirmishers_raw": 0,
+                                "pikemen_raw": 0,
+                                "heavy_infantry_raw": 0,
+                                "light_cavalry_raw": 0,
+                                "heavy_cavalry_raw": 0,
+                                "camel_cavalry_raw": 0,
+                                "elephant_cavalry_raw": 0,
+                                "archer_cavalry_raw": 0,
+                                "gunpowder_raw": 0,
+                                "crossbow_family_raw": 0,
+                                "non_crossbow_archers_raw": 100000
+                            }
+                        },
+                        {
+                            "army_id": 16777218,
+                            "native_carmy_id": 33554450,
+                            "encounter_role": "defender",
+                            "maa_regiment_count_raw": 200000,
+                            "maa_counts_raw": {
+                                "skirmishers_raw": 0,
+                                "pikemen_raw": 0,
+                                "heavy_infantry_raw": 0,
+                                "light_cavalry_raw": 0,
+                                "heavy_cavalry_raw": 100000,
+                                "camel_cavalry_raw": 0,
+                                "elephant_cavalry_raw": 0,
+                                "archer_cavalry_raw": 0,
+                                "gunpowder_raw": 0,
+                                "crossbow_family_raw": 0,
+                                "non_crossbow_archers_raw": 0
+                            }
+                        }
+                    ],
+                    "sides": [
+                        {
+                            "side_index": 0,
+                            "encounter_role": "attacker",
+                            "ordered_army_ids": [
+                                16777217
+                            ],
+                            "ordered_character_ids": [
+                                16777218
+                            ],
+                            "ordered_commander_ids": [
+                                16777218
+                            ],
+                            "ordered_knight_ids": [
+                                16777218
+                            ],
+                            "primary_participant_character_id": 16777218,
+                            "primary_source_army_id": 16777217,
+                            "commander_character_id": 16777218,
+                            "side_strength_raw": 432000,
+                            "side_army_size_raw": 100000000,
+                            "participants": [
+                                {
+                                    "source_army_id": 16777217,
+                                    "owner_character_id": 16777218,
+                                    "faith_id": 60000
+                                }
+                            ],
+                            "candidate_source_proof": {
+                                "policy": "ccombat_side_commanders_then_knights_native_source_equivalence_v1",
+                                "source_vector_equivalence": true,
+                                "sequence_sha256": "BED2F60F06753A1E834BAEED9D1926E4B574DD833E74E39B997CFB1EC4CDCF8B",
+                                "ordered_sources": [
+                                    {
+                                        "role": "commander",
+                                        "source_army_id": 16777217,
+                                        "source_regiment_id": null,
+                                        "character_id": 16777218
+                                    },
+                                    {
+                                        "role": "knight",
+                                        "source_army_id": 16777217,
+                                        "source_regiment_id": 16777217,
+                                        "character_id": 16777218
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "side_index": 1,
+                            "encounter_role": "defender",
+                            "ordered_army_ids": [
+                                16777218
+                            ],
+                            "ordered_character_ids": [
+                                16777219
+                            ],
+                            "ordered_commander_ids": [],
+                            "ordered_knight_ids": [
+                                16777219
+                            ],
+                            "primary_participant_character_id": 16777219,
+                            "primary_source_army_id": 16777218,
+                            "commander_character_id": null,
+                            "side_strength_raw": 288000,
+                            "side_army_size_raw": 80000000,
+                            "participants": [
+                                {
+                                    "source_army_id": 16777218,
+                                    "owner_character_id": 16777219,
+                                    "faith_id": 60001
+                                }
+                            ],
+                            "candidate_source_proof": {
+                                "policy": "ccombat_side_commanders_then_knights_native_source_equivalence_v1",
+                                "source_vector_equivalence": true,
+                                "sequence_sha256": "DC94F02BFE75DB393A6E90847C27D39FE980948E4A2BABDE8CAC61E29C9E145F",
+                                "ordered_sources": [
+                                    {
+                                        "role": "knight",
+                                        "source_army_id": 16777218,
+                                        "source_regiment_id": 16777219,
+                                        "character_id": 16777219
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "faith_hostility": [
+                        {
+                            "root_character_id": 16777218,
+                            "enemy_side_index": 1,
+                            "enemy_owner_character_id": 16777219,
+                            "enemy_faith_id": 60001,
+                            "root_faith_id": 60000,
+                            "hostility_level_raw": 3
+                        },
+                        {
+                            "root_character_id": 16777219,
+                            "enemy_side_index": 0,
+                            "enemy_owner_character_id": 16777218,
+                            "enemy_faith_id": 60000,
+                            "root_faith_id": 60001,
+                            "hostility_level_raw": 3
+                        }
+                    ],
+                    "game_rules": {
+                        "easy_difficulty": false,
+                        "very_easy_difficulty": false
+                    }
+                },
+                "advantage_model": {
+                    "status": "available",
+                    "scale": 100000,
+                    "scenario_policy": "explicit_hypothetical_fixed_at_contact_no_reinforcements",
+                    "observation_origin": "native_exact_build_production",
+                    "side_inputs": [
+                        {
+                            "side": "attacker",
+                            "primary_army_id": 16777217,
+                            "ordered_army_ids": [
+                                16777217
+                            ],
+                            "supply": {
+                                "selected_key": "supply_state_supplied_advantage",
+                                "selected_effect_identity": "loaded_combat_rule_database:+0xF38",
+                                "selected_effect_points": 0,
+                                "eligible_soldiers_total": 1000,
+                                "eligible_soldiers_supplied": 1000,
+                                "eligible_soldiers_running_low": 0,
+                                "eligible_soldiers_starving": 0
+                            },
+                            "primary_army_recently_disembarked_raw": 0,
+                            "owner_character_id": 16777218,
+                            "owner_debt_selector_raw": 0,
+                            "treasury_debt_selector_raw": null
+                        },
+                        {
+                            "side": "defender",
+                            "primary_army_id": 16777218,
+                            "ordered_army_ids": [
+                                16777218
+                            ],
+                            "supply": {
+                                "selected_key": "supply_state_running_low_advantage",
+                                "selected_effect_identity": "loaded_combat_rule_database:+0xF48",
+                                "selected_effect_points": -10,
+                                "eligible_soldiers_total": 800,
+                                "eligible_soldiers_supplied": 0,
+                                "eligible_soldiers_running_low": 800,
+                                "eligible_soldiers_starving": 0
+                            },
+                            "primary_army_recently_disembarked_raw": 0,
+                            "owner_character_id": 16777219,
+                            "owner_debt_selector_raw": 1,
+                            "treasury_debt_selector_raw": null
+                        }
+                    ],
+                    "constructor_call_order": [
+                        "width",
+                        "attacker_adjacency",
+                        "defender_adjacency",
+                        "attacker_terrain",
+                        "defender_terrain",
+                        "side_context_0",
+                        "side_context_1",
+                        "supply_0",
+                        "supply_1",
+                        "holding_defender_1",
+                        "recently_disembarked_0",
+                        "recently_disembarked_1",
+                        "debt_0_owner_then_treasury",
+                        "debt_1_owner_then_treasury",
+                        "unreformed_faith_0",
+                        "unreformed_faith_1",
+                        "side_finalize_0",
+                        "side_finalize_1"
+                    ],
+                    "constructor_sources": [
+                        {
+                            "stage_order": 0,
+                            "append_order": 0,
+                            "stage": "attacker_adjacency",
+                            "side": "attacker",
+                            "source_key": "attacker_river",
+                            "effect_advantage_points": -10,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": -1000000,
+                            "accumulator_before_raw": 0,
+                            "accumulator_after_raw": -1000000,
+                            "selected": true,
+                            "applied": true,
+                            "skip_reason": null
+                        },
+                        {
+                            "stage_order": 1,
+                            "append_order": 1,
+                            "stage": "defender_adjacency",
+                            "side": "defender",
+                            "source_key": "defender_river",
+                            "effect_advantage_points": 10,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": -1000000,
+                            "accumulator_before_raw": -1000000,
+                            "accumulator_after_raw": -2000000,
+                            "selected": true,
+                            "applied": true,
+                            "skip_reason": null
+                        },
+                        {
+                            "stage_order": 2,
+                            "append_order": 2,
+                            "stage": "attacker_terrain",
+                            "side": "attacker",
+                            "source_key": "terrain:hills:attacker",
+                            "effect_advantage_points": 2,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": 200000,
+                            "accumulator_before_raw": -2000000,
+                            "accumulator_after_raw": -1800000,
+                            "selected": true,
+                            "applied": true,
+                            "skip_reason": null
+                        },
+                        {
+                            "stage_order": 3,
+                            "append_order": 3,
+                            "stage": "defender_terrain",
+                            "side": "defender",
+                            "source_key": "terrain:hills:defender",
+                            "effect_advantage_points": 3,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": -300000,
+                            "accumulator_before_raw": -1800000,
+                            "accumulator_after_raw": -2100000,
+                            "selected": true,
+                            "applied": true,
+                            "skip_reason": null
+                        },
+                        {
+                            "stage_order": 4,
+                            "append_order": null,
+                            "stage": "supply_0",
+                            "side": "attacker",
+                            "source_key": "supply_state_supplied_advantage",
+                            "effect_advantage_points": 0,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": 0,
+                            "accumulator_before_raw": -2100000,
+                            "accumulator_after_raw": -2100000,
+                            "selected": true,
+                            "applied": false,
+                            "skip_reason": "zero_effect_not_appended"
+                        },
+                        {
+                            "stage_order": 5,
+                            "append_order": 4,
+                            "stage": "supply_1",
+                            "side": "defender",
+                            "source_key": "supply_state_running_low_advantage",
+                            "effect_advantage_points": -10,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": 1000000,
+                            "accumulator_before_raw": -2100000,
+                            "accumulator_after_raw": -1100000,
+                            "selected": true,
+                            "applied": true,
+                            "skip_reason": null
+                        },
+                        {
+                            "stage_order": 6,
+                            "append_order": 5,
+                            "stage": "holding_defender_1",
+                            "side": "defender",
+                            "source_key": "holding_defender_advantage",
+                            "effect_advantage_points": 5,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": -500000,
+                            "accumulator_before_raw": -1100000,
+                            "accumulator_after_raw": -1600000,
+                            "selected": true,
+                            "applied": true,
+                            "skip_reason": null
+                        },
+                        {
+                            "stage_order": 7,
+                            "append_order": null,
+                            "stage": "recently_disembarked_0",
+                            "side": "attacker",
+                            "source_key": null,
+                            "effect_advantage_points": null,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": 0,
+                            "accumulator_before_raw": -1600000,
+                            "accumulator_after_raw": -1600000,
+                            "selected": false,
+                            "applied": false,
+                            "skip_reason": "primary_army_not_recently_disembarked"
+                        },
+                        {
+                            "stage_order": 8,
+                            "append_order": null,
+                            "stage": "recently_disembarked_1",
+                            "side": "defender",
+                            "source_key": null,
+                            "effect_advantage_points": null,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": 0,
+                            "accumulator_before_raw": -1600000,
+                            "accumulator_after_raw": -1600000,
+                            "selected": false,
+                            "applied": false,
+                            "skip_reason": "primary_army_not_recently_disembarked"
+                        },
+                        {
+                            "stage_order": 9,
+                            "append_order": 6,
+                            "stage": "debt_0_owner",
+                            "side": "attacker",
+                            "source_key": "combat_debt_level_0",
+                            "effect_advantage_points": -5,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": -500000,
+                            "accumulator_before_raw": -1600000,
+                            "accumulator_after_raw": -2100000,
+                            "selected": true,
+                            "applied": true,
+                            "skip_reason": null
+                        },
+                        {
+                            "stage_order": 10,
+                            "append_order": null,
+                            "stage": "debt_0_treasury",
+                            "side": "attacker",
+                            "source_key": null,
+                            "effect_advantage_points": null,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": 0,
+                            "accumulator_before_raw": -2100000,
+                            "accumulator_after_raw": -2100000,
+                            "selected": false,
+                            "applied": false,
+                            "skip_reason": "treasury_debt_gate_false"
+                        },
+                        {
+                            "stage_order": 11,
+                            "append_order": 7,
+                            "stage": "debt_1_owner",
+                            "side": "defender",
+                            "source_key": "combat_debt_level_1",
+                            "effect_advantage_points": -10,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": 1000000,
+                            "accumulator_before_raw": -2100000,
+                            "accumulator_after_raw": -1100000,
+                            "selected": true,
+                            "applied": true,
+                            "skip_reason": null
+                        },
+                        {
+                            "stage_order": 12,
+                            "append_order": null,
+                            "stage": "debt_1_treasury",
+                            "side": "defender",
+                            "source_key": null,
+                            "effect_advantage_points": null,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": 0,
+                            "accumulator_before_raw": -1100000,
+                            "accumulator_after_raw": -1100000,
+                            "selected": false,
+                            "applied": false,
+                            "skip_reason": "treasury_debt_gate_false"
+                        },
+                        {
+                            "stage_order": 13,
+                            "append_order": null,
+                            "stage": "unreformed_faith_0",
+                            "side": "attacker",
+                            "source_key": null,
+                            "effect_advantage_points": null,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": 0,
+                            "accumulator_before_raw": -1100000,
+                            "accumulator_after_raw": -1100000,
+                            "selected": false,
+                            "applied": false,
+                            "skip_reason": "target_faith_not_unreformed"
+                        },
+                        {
+                            "stage_order": 14,
+                            "append_order": 8,
+                            "stage": "unreformed_faith_1",
+                            "side": "defender",
+                            "source_key": "unreformed_faith_province",
+                            "effect_advantage_points": 5,
+                            "scale_raw": 100000,
+                            "signed_contribution_raw": -500000,
+                            "accumulator_before_raw": -1100000,
+                            "accumulator_after_raw": -1600000,
+                            "selected": true,
+                            "applied": true,
+                            "skip_reason": null
+                        }
+                    ],
+                    "base_static_accumulator_raw": -1600000,
+                    "resolved_dynamic": {
+                        "status": "available",
+                        "helper_status": "original_helpers_matched",
+                        "context_mode": "temporary_unregistered_local_context",
+                        "roll_policy": "zero_in_query_sampled_offline",
+                        "sides": [
+                            {
+                                "side": "attacker",
+                                "battle_commander_character_id": 16777218,
+                                "battle_commander_selected": true,
+                                "battle_commander_selection": "native_0x23C8A60",
+                                "primary_army_gathering_raw": 0,
+                                "gathering": false,
+                                "relation_kind_raw": 0,
+                                "roll_points": 0,
+                                "roll_raw": 0,
+                                "target_conditionals_residual_raw": 1200000,
+                                "commander_dynamic_raw": 500000,
+                                "side_dynamic_raw": 300000,
+                                "side_total_raw": 2000000,
+                                "contribution_to_resolved_raw": 2000000
+                            },
+                            {
+                                "side": "defender",
+                                "battle_commander_character_id": null,
+                                "battle_commander_selected": false,
+                                "battle_commander_selection": "native_0x23C8A60",
+                                "primary_army_gathering_raw": 0,
+                                "gathering": false,
+                                "relation_kind_raw": 0,
+                                "roll_points": 0,
+                                "roll_raw": 0,
+                                "target_conditionals_residual_raw": 750000,
+                                "commander_dynamic_raw": 0,
+                                "side_dynamic_raw": 250000,
+                                "side_total_raw": 1000000,
+                                "contribution_to_resolved_raw": -1000000
+                            }
+                        ],
+                        "side_0_dynamic_raw": 2000000,
+                        "side_1_dynamic_raw": 1000000,
+                        "resolved_advantage_at_zero_roll_raw": -600000,
+                        "original_total_helper_raw": -600000,
+                        "original_total_helper_match": true
+                    },
+                    "unavailable_reason": null
+                },
+                "unavailable_reason": null
+            }
+        }
+    }
+}

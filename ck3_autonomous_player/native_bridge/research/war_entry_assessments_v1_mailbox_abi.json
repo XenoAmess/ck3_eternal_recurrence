@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "contract": "war_entry_assessments_v1_mailbox_adapter",
+  "contract_stage": "production_application_main_thread_first_live",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "production_wiring": true,
+  "advertised": true,
+  "live_boundary_observation": true,
+  "live_executor_observation": false,
+  "candidate_id": "application_main_thread_war_entry_v1",
+  "typed_executor": {
+    "abi": "MainThreadQueryExecutorV1",
+    "function": "ExecuteWarEntryAssessmentMailboxQueryV1",
+    "context": "caller-owned WarEntryAssessmentMailboxContextV1",
+    "admission": [
+      "mailbox state equals executing",
+      "published sequence equals context ticket",
+      "mailbox executor and executor_context identities equal this callback and context",
+      "current thread id equals execution stamp and mailbox owner",
+      "paused TLS-global TLS-marker Jomini-state game-state date stamp is complete",
+      "two consecutive application-main paused pump epochs satisfy the mailbox minimum",
+      "RNG owner is provenance only and never an admission gate",
+      "production mailbox permitted_executor identity equals this callback"
+    ],
+    "frame_binding": "worker freezes one full declaration set from the same paused expected snapshot before submit; every application-main reader capture performs a fresh native ReadSnapshot and requires exact equality to that expected snapshot before returning the frozen ordered target set",
+    "global_declaration_scan_count": 1,
+    "fresh_snapshot_capture_count": 3,
+    "production_request_target_count": 1,
+    "direct_worker_call": "rejected as infrastructure_rejected even if the worker fabricates a stamp-like value"
+  },
+  "completion_semantics": {
+    "available": "executor returns true and stores the complete all-or-nothing reader result",
+    "query_specific_unavailable": "executor returns true, completion is query_unavailable, and result.unavailable_stage is non-empty",
+    "infrastructure_rejected": "executor returns false only for wrong slot/ticket/thread/stamp/reentry or unrecoverable adapter storage failure"
+  },
+  "context_lifetime": {
+    "owner": "bridge worker",
+    "storage": "stable non-copyable non-movable caller-owned object",
+    "queued": "retain",
+    "timeout_cancelled_before_execution": "terminal then reclaim before destroy",
+    "timeout_executor_already_running": "retain across timeout until a later terminal wait and successful reclaim",
+    "completed_or_query_unavailable": "consume only after acquire-observed terminal state; reclaim before destroy"
+  },
+  "readiness": {
+    "offline_mailbox_fixture": true,
+    "direct_call_rejection_fixture": true,
+    "process_pin_static_mailbox_fixture": true,
+    "executing_timeout_lifetime_fixture": true,
+    "query_unavailable_not_infrastructure_fixture": true,
+    "application_main_live_boundary_acceptance": true,
+    "first_live_target_limit": 1,
+    "production_dispatch": true,
+    "capability_ready": true,
+    "live_query_result_pending": true
+  }
+}

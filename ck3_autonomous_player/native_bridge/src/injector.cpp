@@ -24,6 +24,12 @@ AttachResult AttachFailure(DWORD error, DWORD load_exit = 0,
           start_exit};
 }
 
+StartupInjectionResult StartupFailure(DWORD error, DWORD load_exit = 0,
+                                      DWORD prepare_exit = 0) noexcept {
+  return {false, error == ERROR_SUCCESS ? ERROR_GEN_FAILURE : error, load_exit,
+          prepare_exit};
+}
+
 bool EqualOrdinalIgnoreCase(const wchar_t* left,
                             const wchar_t* right) noexcept {
   return CompareStringOrdinal(left, -1, right, -1, TRUE) == CSTR_EQUAL;
@@ -198,6 +204,72 @@ InjectionResult InjectLibrary(HANDLE process,
     return Failure(ERROR_DLL_INIT_FAILED);
   }
   return thread_result;
+}
+
+StartupInjectionResult InjectLibraryAndPrepareStartup(
+    HANDLE process, const std::filesystem::path& dll_path,
+    DWORD timeout_ms) noexcept {
+  if (process == nullptr || process == INVALID_HANDLE_VALUE) {
+    return StartupFailure(ERROR_INVALID_HANDLE);
+  }
+
+  std::error_code path_error;
+  const auto absolute_path = std::filesystem::absolute(dll_path, path_error);
+  if (path_error ||
+      !std::filesystem::is_regular_file(absolute_path, path_error) ||
+      path_error) {
+    return StartupFailure(ERROR_FILE_NOT_FOUND);
+  }
+
+  const ULONGLONG started_at = GetTickCount64();
+  const InjectionResult load_result =
+      InjectLibrary(process, absolute_path, timeout_ms);
+  if (!load_result.succeeded) {
+    return StartupFailure(load_result.windows_error,
+                          load_result.remote_exit_code);
+  }
+
+  const DWORD pid = GetProcessId(process);
+  if (pid == 0) {
+    return StartupFailure(GetLastError(), load_result.remote_exit_code);
+  }
+  DWORD resolve_error = ERROR_SUCCESS;
+  const std::uintptr_t remote_module =
+      FindRemoteModule(pid, absolute_path.filename().native(), resolve_error);
+  if (remote_module == 0) {
+    return StartupFailure(resolve_error, load_result.remote_exit_code);
+  }
+  const std::uintptr_t prepare_rva = ExportRva(
+      absolute_path, "XarCk3BridgePrepareStartup", resolve_error);
+  if (prepare_rva == 0) {
+    return StartupFailure(resolve_error, load_result.remote_exit_code);
+  }
+
+#pragma warning(push)
+#pragma warning(disable : 4191)
+  const auto prepare_routine = reinterpret_cast<LPTHREAD_START_ROUTINE>(
+      remote_module + prepare_rva);
+#pragma warning(pop)
+  const ULONGLONG elapsed = GetTickCount64() - started_at;
+  if (elapsed >= timeout_ms) {
+    return StartupFailure(WAIT_TIMEOUT, load_result.remote_exit_code);
+  }
+  const DWORD remaining_timeout =
+      timeout_ms - static_cast<DWORD>(elapsed);
+  const InjectionResult prepare_result =
+      RunRemoteThread(process, prepare_routine, nullptr, remaining_timeout);
+  if (!prepare_result.succeeded) {
+    return StartupFailure(prepare_result.windows_error,
+                          load_result.remote_exit_code,
+                          prepare_result.remote_exit_code);
+  }
+  if (prepare_result.remote_exit_code == 0) {
+    return StartupFailure(ERROR_DLL_INIT_FAILED,
+                          load_result.remote_exit_code,
+                          prepare_result.remote_exit_code);
+  }
+  return {true, ERROR_SUCCESS, load_result.remote_exit_code,
+          prepare_result.remote_exit_code};
 }
 
 AttachResult InjectLibraryAndStart(HANDLE process,

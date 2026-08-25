@@ -1,0 +1,67 @@
+{
+  "schema": "xar.startup_dx11_render_context_draw_guard_v1.source_contract.v1",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "anchors": {
+    "function_rva": "0x3B0B0F0",
+    "continue_rva": "0x3B0B0FF",
+    "helper_call_rva": "0x3B0B107",
+    "helper_target_rva": "0x3B0AE20",
+    "dirty_test_rva": "0x3B0AE4B",
+    "virtual_callsite_rva": "0x3465FE8",
+    "virtual_slot": "0x130",
+    "dirty_offset": "0x1938",
+    "shader_state_offset": "0x1940",
+    "patch_bytes": 15,
+    "stub_bytes": 62,
+    "unwind_info_rva": "0x4C395F0",
+    "SizeOfProlog": "0x0F",
+    "type_descriptor_rva": "0x56E9DF8",
+    "mangled_type_name": ".?AVCGfxDX11RenderContext@@"
+  },
+  "required_source_tokens": [
+    "kStartupDx11RenderContextDrawFunctionRvaV1",
+    "kStartupDx11RenderContextDrawContinueRvaV1",
+    "kStartupDx11RenderContextDrawDirtyOffsetV1",
+    "kStartupDx11RenderContextDrawShaderStateOffsetV1",
+    "kStartupDx11RenderContextDrawPatchBytesV1",
+    "kStartupDx11RenderContextDrawStubBytesV1",
+    "PAGE_EXECUTE_READ",
+    "rollback_unproven",
+    "InstallStartupDx11RenderContextDrawGuardV1",
+    "UninstallStartupDx11RenderContextDrawGuardV1",
+    "ReadStartupDx11RenderContextDrawGuardV1Diagnostics",
+    "installed_by_default",
+    "transactional_rollback"
+  ],
+  "offline_cases": [
+    "exact-build rejection",
+    "primary-thread-suspended rejection",
+    "production override rejection",
+    "15-byte anchor drift rejection",
+    "dirty=1 and shader-state=null returns before the continuation marker",
+    "suppression increments the atomic counter and preserves dirty exactly",
+    "dirty=0 and shader-state=null follows the healthy continuation",
+    "dirty=1 and shader-state=nonnull follows the healthy continuation",
+    "healthy execution replays all four original prologue instructions",
+    "stub transitions RW to RX and target returns to RX",
+    "allocation, stub-protection, target-protection, and target-flush failure injection",
+    "transactional_rollback restores the original entry on recoverable failure",
+    "failed rollback keeps installed=1, global ownership, and reachable RX stub",
+    "PE PDATA row fixes 0x3B0B0F0..0x3B0B14F and SizeOfProlog 0x0F",
+    "helper E8 at 0x3B0B107 resolves exactly to 0x3B0AE20",
+    "helper bytes freeze the dirty bit and CGfxDX11ShaderState pointer precondition",
+    "RTTI freezes .?AVCGfxDX11RenderContext@@ and its complete-object locators",
+    "0x3465FE8 remains the exact call qword ptr [rax+0x130] site",
+    "raw executable direct E8/E9 scan finds no direct call or jump to the virtual wrapper",
+    "bridge startup installs this guard after both particle2 guards and unwinds the earlier guards on failure",
+    "heartbeat publishes startup_dx11_render_context_draw_guard_v1 diagnostics"
+  ],
+  "default_policy": {
+    "installed_by_default": false,
+    "production_dll_compiles_component": true,
+    "installation_owner": "XarCk3BridgePrepareStartup suspended-startup transaction"
+  }
+}

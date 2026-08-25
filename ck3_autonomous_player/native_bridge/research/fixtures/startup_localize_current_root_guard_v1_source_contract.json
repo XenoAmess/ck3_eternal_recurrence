@@ -1,0 +1,71 @@
+{
+  "schema": "xar.startup_localize_current_root_guard_v1.source_contract.v1",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "anchors": {
+    "owner_function_rva": "0x3A6A410",
+    "owner_end_rva": "0x3A6A6D5",
+    "patch_rva": "0x3A6A4D6",
+    "continue_rva": "0x3A6A4E3",
+    "global_container_slot_rva": "0x57DFA28",
+    "native_miss_rva": "0x3A6A51A",
+    "raw_key_fallback_rva": "0x3A6A67F",
+    "generic_lookup_call_rva": "0x3A6A506",
+    "generic_lookup_rva": "0x3A70610",
+    "initialization_producer_rva": "0x3A6B250",
+    "initialization_publish_rva": "0x3A6B3DA",
+    "active_root_producer_rva": "0x3A6C070",
+    "active_root_publish_rva": "0x3A6C350",
+    "pdata_row_rva": "0x5AACC04",
+    "unwind_info_rva": "0x4EF30D8",
+    "SizeOfProlog": "0x2B",
+    "patch_bytes": 13,
+    "stub_bytes": 64
+  },
+  "required_source_tokens": [
+    "kStartupLocalizeCurrentRootPatchRvaV1",
+    "kStartupLocalizeCurrentRootContinueRvaV1",
+    "kStartupLocalizeCurrentRootGlobalContainerSlotRvaV1",
+    "kStartupLocalizeCurrentRootNativeMissRvaV1",
+    "kStartupLocalizeCurrentRootRawKeyFallbackRvaV1",
+    "kStartupLocalizeCurrentRootPatchBytesV1",
+    "kStartupLocalizeCurrentRootStubBytesV1",
+    "PAGE_EXECUTE_READ",
+    "rollback_unproven",
+    "InstallStartupLocalizeCurrentRootGuardV1",
+    "UninstallStartupLocalizeCurrentRootGuardV1",
+    "ReadStartupLocalizeCurrentRootGuardV1Diagnostics",
+    "installed_by_default",
+    "transactional_rollback"
+  ],
+  "offline_cases": [
+    "exact-build rejection",
+    "primary-thread-suspended rejection",
+    "production override rejection",
+    "13-byte anchor drift rejection",
+    "nonnull current root replays movups xmm1,[rdx] and reaches the healthy continuation",
+    "healthy path preserves RCX and RDX exactly",
+    "null current root skips movups even when RDX is null",
+    "null current root increments the atomic counter and enters 0x3A6A51A",
+    "synthetic native miss reaches the raw-key fallback marker",
+    "null path does not write the global container or its current root",
+    "stub transitions RW to RX and target returns to RX",
+    "allocation, stub-protection, target-protection, and target-flush failure injection",
+    "transactional_rollback restores the original entry on recoverable failure",
+    "failed rollback keeps installed=1, global ownership, and reachable RX stub",
+    "PE PDATA row at 0x5AACC04 fixes 0x3A6A410..0x3A6A6D5 and SizeOfProlog 0x2B",
+    "RIP-relative patch load resolves exactly to 0x57DFA28",
+    "owner call at 0x3A6A506 resolves exactly to 0x3A70610; the generic lookup is never patched",
+    "native miss block at 0x3A6A51A flows through the null-result edge to raw-key fallback 0x3A6A67F",
+    "initialization producer 0x3A6B250 publishes the container at 0x3A6B3DA",
+    "active producer 0x3A6C070 writes the current root at 0x3A6C350",
+    "production DLL compiles the component without standalone installation"
+  ],
+  "default_policy": {
+    "installed_by_default": false,
+    "production_dll_compiles_component": true,
+    "installation_owner": "XarCk3BridgePrepareStartup suspended-startup transaction"
+  }
+}

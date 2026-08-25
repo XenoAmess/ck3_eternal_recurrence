@@ -4,6 +4,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <span>
 #include <string>
 #include <vector>
 
@@ -23,6 +24,14 @@ using ValidateReplyCharacterInteractionCommand = bool (*)(void *command);
 using ContainsWarParticipant = bool (*)(void *participant_container,
                                         std::int32_t character_id);
 using GetWarScore = std::int32_t (*)(void *war, void *war_score_context);
+using GetWarScoreComponent = std::int32_t (*)(void *war,
+                                              void *war_score_context);
+using GetWarScoreSideComponent = std::int32_t (*)(
+    void *war, bool side, void *war_score_context);
+using GetWarScoreOccupationComponent = std::uint64_t (*)(
+    void *war, bool side, void *war_score_context);
+using GetWarScoreTickingComponent = std::int32_t (*)(
+    void *war, bool side, void *war_score_context, bool mode);
 using IsNativeComponentAlive = bool (*)(void *component);
 using ReadSiegeFixedPoint = std::int64_t *(*)(void *siege,
                                               std::int64_t *output);
@@ -37,6 +46,35 @@ using IsProvinceOccupied = bool (*)(void *province);
 using GetProvinceInt32 = std::int32_t (*)(void *province);
 using ResolveDefaultRaiseProvince = void *(*)(void *character);
 using GetUnitState = std::int32_t (*)(void *unit);
+using GetArmyCurrentSoldiers = std::int32_t (*)(
+    const void *regiment_id_array, std::uint8_t flags);
+using GetArmyMaximumSoldiers = std::int32_t (*)(void *army);
+using GetArmyCommander = void *(*)(void *army);
+using GetCommanderAdvantage = std::int32_t (*)(void *character,
+                                               std::int32_t context,
+                                               bool include_roll);
+using GetProvinceTerrain = void *(*)(void *province);
+using EvaluateRegimentStatsAtProvince = void *(*)(
+    void *regiment, void *output, void *province);
+using IsSpecialCombatRegiment = bool (*)(void *regiment);
+using GetCharacterModifierAggregator = void *(*)(void *character);
+using ReadCharacterModifier = std::int64_t *(*)(
+    void *aggregator, std::int64_t *output, std::int32_t modifier_index);
+using GetCombatRules = void *(*)();
+using ReadCounterCurrentChunk = std::int64_t *(*)(
+    const void *side_maa_entry, std::int64_t *output);
+using ResolveCounterClasses = void (*)(
+    void *countered_entries, void *countering_entries,
+    void *output_by_counter_class, std::int64_t context_scale);
+using GetCounterContextScale = std::int64_t *(*)(
+    std::int64_t *output, void *countered_modifier_aggregator,
+    void *countering_modifier_aggregator);
+using GetKnightEffectivenessContext = void *(*)(void *character);
+using ReadKnightEffectiveness = std::int64_t *(*)(
+    std::int64_t *output, void *effectiveness_context,
+    std::uint64_t mode);
+using IsHoldingDefender = bool (*)(void *defender_owner,
+                                   void *target_province);
 using ConstructRaiseTroopsCommand = void *(*)(void *command,
                                               std::int32_t character_id,
                                               const void *raise_entry);
@@ -103,13 +141,41 @@ using RefreshCharacterInteractionContext = void (*)(void *context,
 using FinalizeCharacterInteractionContext = void (*)(void *context);
 using ValidateCharacterInteractionContext = bool (*)(void *context,
                                                       void *error_output);
+using ReadCharacterInteractionAnswerScore = std::int64_t *(*)(
+    void *context, std::int64_t *output);
+using EvaluateCharacterInteractionTrigger = bool (*)(
+    void *trigger, const void *event_target_scope);
 using ConstructSendCharacterInteractionCommand = void *(*)(
     void *command, const void *context);
 using DestroyCharacterInteractionContext = void (*)(void *context);
 using DefaultConstructCharacterInteractionContext = void *(*)(void *context);
 using ConstructWarResolutionInteractionContext = void (*)(void *context,
                                                            void *war,
-                                                           bool surrender);
+                                                           bool attacker_victory);
+using ConstructSpecialCharacterInteractionContext = void *(*)(
+    void *context, std::uint8_t special_index,
+    std::int32_t actor_character_id,
+    std::int32_t recipient_character_id);
+using ReadCharacterClaim = void *(*)(void *output, void *claimant,
+                                     void *title);
+using ConstructWarEffectContext = void *(*)(void *context);
+using PopulateWarEffectContext = void (*)(void *context, void *war,
+                                          bool unknown_flag);
+using ConstructEffectPreviewCollector = void *(*)(void *collector);
+using DestroyEffectPreviewCollector = void (*)(void *collector);
+using TraverseLoadedEffect = void (*)(void *loaded_effect,
+                                      void *effect_context,
+                                      void *collector);
+using DestroyEffectContextSubobject = void (*)(void *subobject);
+using EvaluateTruceDurationDays = std::int32_t (*)(
+    void *script_value, void *effect_context, void *evaluation_context);
+using GetCharacterPrimaryTitle = void *(*)(void *character);
+using ReadMonthlyGoldIncome = std::int64_t *(*)(
+    std::int64_t *output, void *character, void *optional_breakdown,
+    void *evaluation_context);
+using EvaluateCharacterInteractionAnswer = std::uint8_t (*)(
+    void *context, std::uint8_t answer_mode, std::uint8_t flag,
+    void *error_sink_a, void *error_sink_b);
 using GetGlobalVariableContainer = void *(*)();
 using GetScriptIdentifierTable = void *(*)();
 using LookupScriptIdentifierId = std::int32_t *(*)(
@@ -151,9 +217,30 @@ struct Bindings {
   std::uintptr_t send_character_interaction_primary_vtable = 0;
   std::uintptr_t send_character_interaction_secondary_vtable = 0;
   std::uintptr_t war_declaration_vtable = 0;
+  std::uintptr_t character_claim_vtable = 0;
+  std::uintptr_t effect_preview_collector_vtable = 0;
+  std::uintptr_t jomini_effect_vtable = 0;
+  std::uintptr_t jomini_scripted_effect_vtable = 0;
+  std::uintptr_t jomini_scripted_effect_template_vtable = 0;
+  std::uintptr_t hidden_effect_vtable = 0;
+  std::uintptr_t jomini_context_effect_vtable = 0;
+  std::uintptr_t prestige_effect_vtable = 0;
+  std::uintptr_t prestige_experience_effect_vtable = 0;
+  std::uintptr_t piety_effect_vtable = 0;
+  std::uintptr_t piety_experience_effect_vtable = 0;
+  std::uintptr_t legitimacy_effect_vtable = 0;
+  std::uintptr_t stress_impact_effect_vtable = 0;
+  std::uintptr_t add_from_contribution_attackers_effect_vtable = 0;
+  std::uintptr_t add_from_contribution_defenders_effect_vtable = 0;
+  std::uintptr_t gold_transfer_effect_vtable = 0;
+  std::uintptr_t truce_effect_vtable = 0;
+  const std::int32_t *cb_prestige_factor_identifier_id = nullptr;
   void **pending_character_interaction_storage_slot = nullptr;
   void **character_storage_slot = nullptr;
   void **army_storage_slot = nullptr;
+  void **army_internal_storage_slot = nullptr;
+  void **regiment_storage_slot = nullptr;
+  void **combat_storage_slot = nullptr;
   void **siege_storage_slot = nullptr;
   GetGlobalVariableContainer *global_variable_container_accessor_slot =
       nullptr;
@@ -173,6 +260,11 @@ struct Bindings {
       validate_reply_character_interaction_command = nullptr;
   ContainsWarParticipant contains_war_participant = nullptr;
   GetWarScore get_war_score = nullptr;
+  GetWarScoreComponent get_imprisonment_war_score = nullptr;
+  GetWarScoreComponent get_battle_war_score_base = nullptr;
+  GetWarScoreSideComponent get_battle_war_score_side = nullptr;
+  GetWarScoreOccupationComponent get_occupation_war_score_side = nullptr;
+  GetWarScoreTickingComponent get_ticking_war_score_side = nullptr;
   IsNativeComponentAlive is_native_component_alive = nullptr;
   ReadSiegeFixedPoint get_siege_progress = nullptr;
   ReadSiegeFixedPoint get_siege_total_work = nullptr;
@@ -188,6 +280,29 @@ struct Bindings {
   GetProvinceInt32 get_province_besieging_strength = nullptr;
   ResolveDefaultRaiseProvince resolve_default_raise_province = nullptr;
   GetUnitState get_unit_state = nullptr;
+  GetArmyCurrentSoldiers get_army_current_soldiers = nullptr;
+  GetArmyMaximumSoldiers get_army_maximum_soldiers = nullptr;
+  GetArmyCommander get_army_commander = nullptr;
+  GetCommanderAdvantage get_commander_advantage = nullptr;
+  GetProvinceTerrain get_province_terrain = nullptr;
+  EvaluateRegimentStatsAtProvince evaluate_regiment_stats_at_province =
+      nullptr;
+  IsSpecialCombatRegiment is_special_combat_regiment = nullptr;
+  GetCharacterModifierAggregator get_character_modifier_aggregator = nullptr;
+  ReadCharacterModifier read_character_modifier = nullptr;
+  GetCombatRules get_combat_rules = nullptr;
+  ReadCounterCurrentChunk read_counter_current_chunk = nullptr;
+  ResolveCounterClasses resolve_counter_classes = nullptr;
+  GetCounterContextScale get_counter_context_scale = nullptr;
+  GetKnightEffectivenessContext get_knight_effectiveness_context = nullptr;
+  ReadKnightEffectiveness read_knight_effectiveness = nullptr;
+  IsHoldingDefender is_holding_defender = nullptr;
+  const std::int32_t *commander_min_roll = nullptr;
+  const std::int32_t *commander_max_roll = nullptr;
+  const std::int32_t *knight_damage_per_prowess = nullptr;
+  const std::int32_t *knight_toughness_per_prowess = nullptr;
+  const std::int32_t *minimum_combat_width = nullptr;
+  const std::int64_t *base_combat_width_ratio = nullptr;
   ConstructRaiseTroopsCommand construct_raise_troops_command = nullptr;
   ValidateRaiseTroopsCommand validate_raise_troops_command = nullptr;
   DestroyNativeCommand destroy_raise_troops_command = nullptr;
@@ -226,6 +341,10 @@ struct Bindings {
       finalize_character_interaction_context = nullptr;
   ValidateCharacterInteractionContext
       validate_character_interaction_context = nullptr;
+  ReadCharacterInteractionAnswerScore
+      read_character_interaction_answer_score = nullptr;
+  EvaluateCharacterInteractionTrigger
+      evaluate_character_interaction_trigger = nullptr;
   ConstructSendCharacterInteractionCommand
       construct_send_character_interaction_command = nullptr;
   DestroyCharacterInteractionContext
@@ -234,6 +353,22 @@ struct Bindings {
       default_construct_character_interaction_context = nullptr;
   ConstructWarResolutionInteractionContext
       construct_war_resolution_interaction_context = nullptr;
+  ConstructSpecialCharacterInteractionContext
+      construct_special_character_interaction_context = nullptr;
+  ReadCharacterClaim read_character_claim = nullptr;
+  ConstructWarEffectContext construct_war_effect_context = nullptr;
+  PopulateWarEffectContext populate_war_effect_context = nullptr;
+  ConstructEffectPreviewCollector construct_effect_preview_collector =
+      nullptr;
+  DestroyEffectPreviewCollector destroy_effect_preview_collector = nullptr;
+  TraverseLoadedEffect traverse_loaded_effect = nullptr;
+  DestroyEffectContextSubobject destroy_effect_context_118 = nullptr;
+  DestroyEffectContextSubobject destroy_effect_context_array_row = nullptr;
+  EvaluateTruceDurationDays evaluate_truce_duration_days = nullptr;
+  GetCharacterPrimaryTitle get_character_primary_title = nullptr;
+  ReadMonthlyGoldIncome read_monthly_gold_income = nullptr;
+  EvaluateCharacterInteractionAnswer evaluate_character_interaction_answer =
+      nullptr;
   GetScriptIdentifierTable get_script_identifier_table = nullptr;
   LookupScriptIdentifierId lookup_script_identifier_id = nullptr;
   IsEventTargetValid is_event_target_valid = nullptr;
@@ -245,12 +380,28 @@ using game::ArrangeMarriageChoice;
 using game::ArrangeMarriageQueryDiagnostics;
 using game::ArrangeMarriageValidationSample;
 using game::ArmySnapshot;
+using game::ArmyStrengthSnapshot;
+using game::ArmyStrengthScopeRole;
+using game::CombatArmyInputsSnapshot;
+using game::CombatCandidateProvinceSnapshot;
+using game::CombatCommanderContextSnapshot;
+using game::CombatCommanderSnapshot;
+using game::CombatEffectiveStatsSnapshot;
+using game::CombatMaaTypeSnapshot;
+using game::CombatObservationStatus;
+using game::CombatRegimentSnapshot;
+using game::CombatSimulationInputsRequest;
+using game::CombatSimulationInputsSnapshot;
+using game::OngoingCombatInputsSnapshot;
 using game::DeclarableWarSnapshot;
 using game::FixedPointValue;
 using game::OneLifeSettlementSnapshot;
 using game::PlayerWarSide;
 using game::Snapshot;
 using game::WarObjectiveProvinceState;
+using game::WarTerminationOptionsSnapshot;
+using game::WarTerminationTermsSnapshot;
+using game::WarTerminationExitTermsSnapshot;
 using game::PauseSubmitResult;
 using game::ResumeSubmitResult;
 
@@ -259,6 +410,29 @@ using game::ResumeSubmitResult;
 Bindings BindCurrentProcess(bool executable_matches) noexcept;
 
 bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept;
+
+using game::ReadArmyStrengthsResult;
+
+// Paused, read-only aggregate for every public CUnit currently published by
+// the same snapshot as a player, active-war ally or active-war enemy. The
+// adapter generation-resolves CUnit -> CArmy -> every CRegiment, validates the
+// public-ID identity predicate, checked-sums all fields and never queues a
+// command. That predicate is not combat activity or participation eligibility.
+ReadArmyStrengthsResult ReadArmyStrengths(
+    const Bindings &bindings,
+    std::vector<ArmyStrengthSnapshot> &output) noexcept;
+
+using game::ReadCombatSimulationInputsResult;
+
+// Paused object-graph projection for one explicit hypothetical contact. The
+// request supplies target/final-edge ProvinceIDs and two non-empty ArmyID
+// partitions. The adapter revalidates one active-war coalition split in the
+// same snapshot; it never depends on current routes, exports storage handles,
+// applies combat transitions, advances date, or consumes CK3 RNG.
+ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
+    const Bindings &bindings,
+    const game::CombatSimulationInputsRequest &request,
+    CombatSimulationInputsSnapshot &output) noexcept;
 
 // pause-map is an idempotent action: it reports already_paused without adding
 // a command, otherwise it submits the same 0x28-byte CPauseGameCommand shape
@@ -419,5 +593,63 @@ using game::EnforceDemandsResult;
 // headless mode.
 EnforceDemandsResult SubmitEnforceDemands(const Bindings &bindings,
                                           std::int32_t war_id) noexcept;
+
+using game::ReadWarTerminationOptionsResult;
+
+// Rebuilds all currently proven WarOverview result contexts for one exact
+// WarID while paused, validates them through CK3's common interaction
+// validator, then destroys every temporary context without queuing a command.
+ReadWarTerminationOptionsResult ReadWarTerminationOptions(
+    const Bindings &bindings, std::int32_t war_id,
+    WarTerminationOptionsSnapshot &output) noexcept;
+
+using game::ReadWarTerminationTermsResult;
+
+// Reads the complete claim_cb claimant/target/claim-disposition slice without
+// constructing or submitting a character-interaction command. Non-claim CBs
+// return a typed unsupported result with only CB identity populated.
+ReadWarTerminationTermsResult ReadWarTerminationTerms(
+    const Bindings &bindings, std::int32_t war_id,
+    WarTerminationTermsSnapshot &output) noexcept;
+
+using game::ReadWarTerminationExitTermsResult;
+
+// Complete claim_cb white-peace/attacker-defeat terms from the original
+// loaded-effect dry-preview path. The query never queues a command or applies
+// an effect and publishes only after same-frame before/after identity and
+// resource checks match.
+ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(
+    const Bindings &bindings, std::int32_t war_id,
+    WarTerminationExitTermsSnapshot &output) noexcept;
+
+#if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+// Offline-only entry point for the exact-build loaded-effect fixtures.  The
+// production entry point remains disabled until the native visitor/scope ABI
+// that crashed at CK3 RVA 0x334C668 is closed and revalidated live.
+ReadWarTerminationExitTermsResult
+ReadWarTerminationExitTermsForOfflineReFixture(
+    const Bindings &bindings, std::int32_t war_id,
+    WarTerminationExitTermsSnapshot &output) noexcept;
+#endif
+
+// Error-only stage name from the immediately preceding exit-terms read on the
+// current bridge thread.  Successful reads clear it.
+std::string_view LastWarTerminationExitTermsUnavailableReason() noexcept;
+
+using game::SurrenderWarResult;
+using game::OfferWhitePeaceResult;
+
+// Sends the played war leader's defeat result for one exact WarID. The native
+// boolean is the absolute outcome (`true` attacker victory, `false` attacker
+// defeat), so the submitted value depends on the player's physical war side.
+// Queue submission is a typed ACK, not proof that the war already ended or
+// that any still-unobserved terms were applied.
+SurrenderWarResult SubmitSurrenderWar(const Bindings &bindings,
+                                      std::int32_t war_id) noexcept;
+
+// Builds the native special-interaction index 3 white-peace context for the
+// played primary war leader, validates it, and submits only a typed queue ACK.
+OfferWhitePeaceResult SubmitOfferWhitePeace(const Bindings &bindings,
+                                            std::int32_t war_id) noexcept;
 
 } // namespace xar::ck3_11906

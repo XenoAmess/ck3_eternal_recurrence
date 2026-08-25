@@ -1,0 +1,455 @@
+{
+  "schema_version": 1,
+  "fixture_kind": "synthetic_static_source_contract",
+  "contract": "prewar-scope-v1-static-research",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "not_live_evidence": true,
+  "source_snapshot": {
+    "snapshot_revision": 74,
+    "date_raw": 53175816,
+    "war_entry_effective_target_character_id": 29097,
+    "declarable_wars": [
+      {
+        "declaration_id": "29097-11-0",
+        "target_character_id": 29097,
+        "casus_belli_index": 11,
+        "casus_belli_key": "fixture_holy_war_cb",
+        "configuration_index": 0,
+        "claimant_character_id": 31415,
+        "target_title_ids": [
+          2388,
+          2390
+        ]
+      },
+      {
+        "declaration_id": "29097-12-0",
+        "target_character_id": 29097,
+        "casus_belli_index": 12,
+        "casus_belli_key": "fixture_claim_cb",
+        "configuration_index": 0,
+        "claimant_character_id": 31415,
+        "target_title_ids": [
+          2388
+        ]
+      }
+    ]
+  },
+  "source_root_chain": {
+    "global_owner_slot_rva": "0x570F7B8",
+    "idler_vtable_rva": "0x40B1D30",
+    "handler_vtable_rva": "0x40AF630",
+    "declare_window_vtable_rva": "0x411DE90",
+    "declare_parent_backpointer_matches_handler": true,
+    "declare_context_matches_handler_current_context": true,
+    "gui_instance_nonnull": true,
+    "gui_state_predicate_mirrored_active": true,
+    "all_pointers_nonnull": true,
+    "two_samples_equal": true
+  },
+  "source_active_declare_preview": {
+    "interaction_actor_character_id": 29829,
+    "interaction_recipient_character_id": 29097,
+    "selected_casus_belli": {
+      "database_ordinal": 11,
+      "canonical_key": "fixture_holy_war_cb",
+      "claimant_character_id": 31415,
+      "embedded_target_title_ids": [
+        9999
+      ],
+      "window_backpointer_matches": true,
+      "native_validity": 1
+    },
+    "title_rows": [
+      {
+        "title_id": 2388,
+        "selected": 1
+      },
+      {
+        "title_id": 2389,
+        "selected": 0
+      },
+      {
+        "title_id": 2390,
+        "selected": 1
+      }
+    ],
+    "forced_defender_rows": [
+      {
+        "character_id": 4001,
+        "native_reason_code": 0,
+        "window_backpointer_matches": true
+      },
+      {
+        "character_id": 4002,
+        "native_reason_code": 1,
+        "window_backpointer_matches": true
+      }
+    ]
+  },
+  "source_command_bound_war_declaration": {
+    "rtti": "CWarDeclaration",
+    "vtable_rva": "0x411DAA0",
+    "special_interaction_registry_index": 13,
+    "casus_belli_database_ordinal": 11,
+    "casus_belli_canonical_key": "fixture_holy_war_cb",
+    "claimant_character_id": 31415,
+    "target_title_ids": [
+      2388,
+      2390
+    ],
+    "target_title_source": "selected_title_rows_after_0x1088780_override",
+    "command_clone_preserves_payload": true,
+    "cwar_builder_targeted_titles_identity": true
+  },
+  "source_landed_titles": [
+    {
+      "title_id": 2388,
+      "full_id_matches": true,
+      "tier": 3,
+      "de_jure_child_title_ids": [
+        2389
+      ],
+      "barony_province_id": null
+    },
+    {
+      "title_id": 2389,
+      "full_id_matches": true,
+      "tier": 2,
+      "de_jure_child_title_ids": [
+        2390
+      ],
+      "barony_province_id": null
+    },
+    {
+      "title_id": 2390,
+      "full_id_matches": true,
+      "tier": 1,
+      "de_jure_child_title_ids": [],
+      "barony_province_id": 2585
+    }
+  ],
+  "source_subject_contracts": {
+    "storage_slot_rva": "0x570CCA0",
+    "fallback_object_rva": "0x570CC50",
+    "database_singleton_slot_rva": "0x570C790",
+    "database_singleton_nonnull": true,
+    "obligation_database_offset": "+0xF18",
+    "obligation_type_key": "tributary_war_participation_obligation",
+    "obligation_term_pointer_matches_database_slot": true,
+    "primaries": [
+      {
+        "side": "attacker",
+        "source_primary_character_id": 29829,
+        "opposing_primary_character_id": 29097,
+        "subject_contract_ids_native_order": [
+          150994945,
+          150994946,
+          150994947
+        ]
+      },
+      {
+        "side": "defender",
+        "source_primary_character_id": 29097,
+        "opposing_primary_character_id": 29829,
+        "subject_contract_ids_native_order": [
+          150994949,
+          150994948,
+          150994950
+        ]
+      }
+    ],
+    "resolved_contracts": [
+      {
+        "subject_contract_id": 150994945,
+        "full_id_matches": true,
+        "subject_character_id": 4101,
+        "subject_full_id_matches": true,
+        "suzerain_character_id": 29829,
+        "suzerain_full_id_matches": true,
+        "obligation_term_present": true,
+        "obligation_term_matches_database_slot": true,
+        "active_level_index_raw": 1,
+        "default_level_index_raw": 0
+      },
+      {
+        "subject_contract_id": 150994946,
+        "full_id_matches": true,
+        "subject_character_id": 29097,
+        "subject_full_id_matches": true,
+        "suzerain_character_id": 29829,
+        "suzerain_full_id_matches": true,
+        "obligation_term_present": true,
+        "obligation_term_matches_database_slot": true,
+        "active_level_index_raw": 1,
+        "default_level_index_raw": 0
+      },
+      {
+        "subject_contract_id": 150994947,
+        "full_id_matches": true,
+        "subject_character_id": 4102,
+        "subject_full_id_matches": true,
+        "suzerain_character_id": 29829,
+        "suzerain_full_id_matches": true,
+        "obligation_term_present": true,
+        "obligation_term_matches_database_slot": true,
+        "active_level_index_raw": 0,
+        "default_level_index_raw": 0
+      },
+      {
+        "subject_contract_id": 150994948,
+        "full_id_matches": true,
+        "subject_character_id": 4201,
+        "subject_full_id_matches": true,
+        "suzerain_character_id": 29097,
+        "suzerain_full_id_matches": true,
+        "obligation_term_present": true,
+        "obligation_term_matches_database_slot": true,
+        "active_level_index_raw": 1,
+        "default_level_index_raw": 0
+      },
+      {
+        "subject_contract_id": 150994949,
+        "full_id_matches": true,
+        "subject_character_id": 4202,
+        "subject_full_id_matches": true,
+        "suzerain_character_id": 29097,
+        "suzerain_full_id_matches": true,
+        "obligation_term_present": false,
+        "obligation_term_matches_database_slot": true,
+        "active_level_index_raw": 0,
+        "default_level_index_raw": 0
+      },
+      {
+        "subject_contract_id": 150994950,
+        "full_id_matches": true,
+        "subject_character_id": 29829,
+        "subject_full_id_matches": true,
+        "suzerain_character_id": 29097,
+        "suzerain_full_id_matches": true,
+        "obligation_term_present": true,
+        "obligation_term_matches_database_slot": true,
+        "active_level_index_raw": 1,
+        "default_level_index_raw": 0
+      }
+    ],
+    "negative_vectors": [
+      {
+        "name": "fallback_contract_resolve",
+        "fallback_object_used": true,
+        "expected_failure_stage": "subject_contract_identity"
+      },
+      {
+        "name": "subject_full_id_mismatch",
+        "fallback_object_used": false,
+        "subject_full_id_matches": false,
+        "expected_failure_stage": "subject_character_identity"
+      },
+      {
+        "name": "obligation_term_pointer_mismatch",
+        "fallback_object_used": false,
+        "obligation_term_matches_database_slot": false,
+        "expected_failure_stage": "subject_contract_obligation_term_identity"
+      }
+    ],
+    "two_samples_equal": true
+  },
+  "source_cunits": [
+    {
+      "army_id": 16777217,
+      "native_carmy_id": 33554449,
+      "owner_character_id": 29829,
+      "current_province_id": 100,
+      "move_target_province_id": 101,
+      "route_province_ids": [
+        101,
+        102
+      ],
+      "carmy_backlink_matches": true
+    },
+    {
+      "army_id": 50331650,
+      "native_carmy_id": 67108882,
+      "owner_character_id": 29097,
+      "current_province_id": 200,
+      "move_target_province_id": null,
+      "route_province_ids": [],
+      "carmy_backlink_matches": true
+    },
+    {
+      "army_id": 83886083,
+      "native_carmy_id": 100663315,
+      "owner_character_id": 4002,
+      "current_province_id": 201,
+      "move_target_province_id": 202,
+      "route_province_ids": [
+        202
+      ],
+      "carmy_backlink_matches": true
+    },
+    {
+      "army_id": 117440516,
+      "native_carmy_id": 134217748,
+      "owner_character_id": 4999,
+      "current_province_id": 300,
+      "move_target_province_id": null,
+      "route_province_ids": [],
+      "carmy_backlink_matches": true
+    }
+  ],
+  "expected_projection": {
+    "status": "available_active_preview_partial_scope",
+    "snapshot_revision": 74,
+    "date_raw": 53175816,
+    "candidate_binding": {
+      "match_status": "unique",
+      "declaration_id": "29097-11-0",
+      "interaction_actor_character_id": 29829,
+      "interaction_recipient_character_id": 29097,
+      "effective_target_character_id": 29097,
+      "casus_belli_index": 11,
+      "casus_belli_key": "fixture_holy_war_cb",
+      "configuration_index": 0,
+      "claimant_character_id": 31415,
+      "objective_title_ids": [
+        2388,
+        2390
+      ],
+      "objective_title_source": "selected_title_rows_native_order",
+      "objective_province_ids": [
+        2585
+      ],
+      "objective_province_source": "command_identity_plus_landed_title_hierarchy"
+    },
+    "participants": [
+      {
+        "character_id": 29829,
+        "side": "attacker",
+        "source": "declaration_primary_actor",
+        "join_certainty": "primary_required",
+        "native_order": 0
+      },
+      {
+        "character_id": 29097,
+        "side": "defender",
+        "source": "war_entry_effective_target",
+        "join_certainty": "primary_required",
+        "native_order": 1
+      },
+      {
+        "character_id": 4001,
+        "side": "defender",
+        "source": "native_forced_defender_preview",
+        "join_certainty": "native_preview_forced_current_frame",
+        "native_reason_code": 0,
+        "reason": "great_holy_war_region_co_defender",
+        "native_order": 2
+      },
+      {
+        "character_id": 4002,
+        "side": "defender",
+        "source": "native_forced_defender_preview",
+        "join_certainty": "native_preview_forced_current_frame",
+        "native_reason_code": 1,
+        "reason": "defender_faith_can_join",
+        "native_order": 3
+      }
+    ],
+    "forced_tributary_contract_participants": [
+      {
+        "character_id": 4101,
+        "side": "attacker",
+        "source_primary_character_id": 29829,
+        "subject_contract_id": 150994945,
+        "source_contract_native_order": 0,
+        "obligation_type_key": "tributary_war_participation_obligation",
+        "active_level_index_raw": 1,
+        "default_level_index_raw": 0,
+        "inclusion_reason": "nondefault_tributary_war_participation_obligation",
+        "source": "native_forced_tributary_contract",
+        "join_certainty": "native_builder_contract_forced_current_snapshot"
+      },
+      {
+        "character_id": 4201,
+        "side": "defender",
+        "source_primary_character_id": 29097,
+        "subject_contract_id": 150994948,
+        "source_contract_native_order": 1,
+        "obligation_type_key": "tributary_war_participation_obligation",
+        "active_level_index_raw": 1,
+        "default_level_index_raw": 0,
+        "inclusion_reason": "nondefault_tributary_war_participation_obligation",
+        "source": "native_forced_tributary_contract",
+        "join_certainty": "native_builder_contract_forced_current_snapshot"
+      },
+      {
+        "character_id": 29829,
+        "side": "defender",
+        "source_primary_character_id": 29097,
+        "subject_contract_id": 150994950,
+        "source_contract_native_order": 2,
+        "obligation_type_key": "tributary_war_participation_obligation",
+        "active_level_index_raw": 1,
+        "default_level_index_raw": 0,
+        "inclusion_reason": "nondefault_tributary_war_participation_obligation",
+        "source": "native_forced_tributary_contract",
+        "join_certainty": "native_builder_contract_forced_current_snapshot"
+      }
+    ],
+    "current_raised_armies": [
+      {
+        "army_id": 16777217,
+        "native_carmy_id": 33554449,
+        "owner_character_id": 29829,
+        "side": "attacker",
+        "current_province_id": 100,
+        "move_target_province_id": 101,
+        "route_province_ids": [
+          101,
+          102
+        ]
+      },
+      {
+        "army_id": 50331650,
+        "native_carmy_id": 67108882,
+        "owner_character_id": 29097,
+        "side": "defender",
+        "current_province_id": 200,
+        "move_target_province_id": null,
+        "route_province_ids": []
+      },
+      {
+        "army_id": 83886083,
+        "native_carmy_id": 100663315,
+        "owner_character_id": 4002,
+        "side": "defender",
+        "current_province_id": 201,
+        "move_target_province_id": 202,
+        "route_province_ids": [
+          202
+        ]
+      }
+    ],
+    "readiness": {
+      "exact_build_ready": true,
+      "active_preview_root_ready": true,
+      "candidate_binding_ready": true,
+      "primary_participants_ready": true,
+      "forced_defender_preview_ready": true,
+      "forced_tributary_contract_participants_static_ready": true,
+      "forced_tributary_contract_participants_live_ready": false,
+      "forced_tributary_contract_participants_ready": false,
+      "objective_title_ids_ready": true,
+      "objective_provinces_static_ready": true,
+      "objective_provinces_live_ready": false,
+      "current_raised_armies_ready": true,
+      "complete_initial_participants_ready": false,
+      "objective_provinces_ready": true,
+      "native_arrival_timeline_ready": false,
+      "actual_contact_scope_ready": false,
+      "combat_v3_prewar_scope_ready": false,
+      "war_entry_forecast_inputs_ready": false,
+      "capability_advertised": false
+    }
+  }
+}

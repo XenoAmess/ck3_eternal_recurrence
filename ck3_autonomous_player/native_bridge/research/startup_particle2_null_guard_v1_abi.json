@@ -1,0 +1,51 @@
+{
+  "schema": "xar.ck3.startup_particle2_null_guard_v1.abi",
+  "fixture_status": "exact-build static ABI; live CK3 acceptance remains required",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "installed_by_default": false,
+  "admission": {
+    "exact_build_admitted": true,
+    "primary_thread_suspended_proven": true,
+    "unsupported_production_overrides_rejected": true
+  },
+  "function": {
+    "begin_rva": "0x1DABD50",
+    "end_rva": "0x1DABEBE",
+    "unwind_info_rva": "0x4D2BE84",
+    "unwind_prologue_size": "0x1D",
+    "patch_rva": "0x1DABD6D",
+    "continue_rva": "0x1DABD82",
+    "skip_epilogue_rva": "0x1DABEA0"
+  },
+  "patch": {
+    "size": 13,
+    "encoding": "mov r11, imm64; jmp r11",
+    "anchor_size": 21,
+    "anchor_hex": "0FB6EA488BD9488B058E3B96034C8BB4E8A8000000",
+    "prologue_anchor_hex": "48895C240848896C2410488974241848897C242041564881EC80080000",
+    "epilogue_anchor_hex": "4C8D9C2480080000498B5B10498B6B18498B7320498B7B28498BE3415EC3"
+  },
+  "stub": {
+    "size": 130,
+    "has_calls": false,
+    "allocates_on_dispatch": false,
+    "logs_on_dispatch": false,
+    "replays": ["movzx ebp, dl", "mov rbx, rcx"],
+    "index_bound": "index <= 7",
+    "root_slot_rva": "0x570F908",
+    "particle_slot_formula": "0xA8 + index * 8",
+    "nonnull_branch": "jump 0x1DABD82 after loading r14",
+    "null_or_oob_branch": "jump normal epilogue 0x1DABEA0"
+  },
+  "diagnostics": {
+    "suppressed_count": "uint64 atomic lock-inc",
+    "suppressed_index_mask": "uint32 atomic lock-or for indices 0..7",
+    "last_suppressed_index": "uint32 implicit-lock xchg; 0xFFFFFFFF sentinel"
+  },
+  "installation": {
+    "stub_allocation": "one pre-resume RW allocation, finalized RX",
+    "target_write": "13-byte exact identity checked transaction",
+    "transactional_rollback": "any post-write flush/protection failure restores and verifies the original 13 bytes; unproven rollback retains executable stub storage"
+  }
+}

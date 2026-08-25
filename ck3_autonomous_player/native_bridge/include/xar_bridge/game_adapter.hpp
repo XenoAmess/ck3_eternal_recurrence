@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/combat_v3.hpp"
 
 #include <cstdint>
 #include <memory>
@@ -17,6 +17,18 @@ struct AdapterDescriptor {
   std::string_view checkpoint_save_name;
   std::span<const std::string_view> capabilities;
 };
+
+// Strict v2 hypothetical-contact literal grammar:
+// query-combat-simulation-inputs-v2-<target>-<entry>-a-<Acount>-<A...>
+// -d-<Dcount>-<D...>. Counts are exact, each side is non-empty, and all
+// public full-generation ArmyIDs are distinct across both partitions.
+bool ParseCombatSimulationInputsStep(
+    std::string_view step, CombatSimulationInputsRequest &request) noexcept;
+
+// Strict production v3 grammar. It deliberately shares the canonical request
+// body with v2 while selecting the atomic phase-event observation contract.
+bool ParseCombatSimulationInputsV3Step(
+    std::string_view step, CombatSimulationInputsRequest &request) noexcept;
 
 // Stable semantic API implemented by one exact-build CK3 adapter. ABI details
 // are private to the implementation selected by the registry.
@@ -70,6 +82,36 @@ public:
       noexcept = 0;
   virtual EnforceDemandsResult
   submit_enforce_demands(std::int32_t war_id) const noexcept = 0;
+  virtual ReadArmyStrengthsResult read_army_strengths(
+      std::vector<ArmyStrengthSnapshot> &output) const noexcept = 0;
+  virtual ReadCombatSimulationInputsResult read_combat_simulation_inputs(
+      const CombatSimulationInputsRequest &request,
+      CombatSimulationInputsSnapshot &output) const noexcept = 0;
+  virtual ReadCombatSimulationInputsV3Result
+  read_combat_simulation_inputs_v3(
+      const CombatSimulationInputsRequest &request,
+      CombatSimulationInputsV3Snapshot &output) const noexcept = 0;
+  virtual ReadWarTerminationOptionsResult read_war_termination_options(
+      std::int32_t war_id,
+      WarTerminationOptionsSnapshot &output) const noexcept = 0;
+  virtual ReadWarTerminationTermsResult read_war_termination_terms(
+      std::int32_t war_id,
+      WarTerminationTermsSnapshot &output) const noexcept = 0;
+  virtual ReadWarTerminationExitTermsResult
+  read_war_termination_exit_terms(
+      std::int32_t war_id,
+      WarTerminationExitTermsSnapshot &output) const noexcept = 0;
+  // Error-only diagnostic for the immediately preceding exit-terms read on
+  // this bridge thread.  It never exposes a partial terms payload and is not
+  // part of the versioned wire contract.
+  [[nodiscard]] virtual std::string_view
+  last_war_termination_exit_terms_unavailable_reason() const noexcept {
+    return {};
+  }
+  virtual SurrenderWarResult
+  submit_surrender_war(std::int32_t war_id) const noexcept = 0;
+  virtual OfferWhitePeaceResult
+  submit_offer_white_peace(std::int32_t war_id) const noexcept = 0;
 };
 
 using AdapterFactory = std::unique_ptr<GameAdapter> (*)(
@@ -178,6 +220,48 @@ SubmitArrangeMarriage(const GameAdapter &game,
 inline EnforceDemandsResult
 SubmitEnforceDemands(const GameAdapter &game, std::int32_t war_id) noexcept {
   return game.submit_enforce_demands(war_id);
+}
+inline ReadArmyStrengthsResult ReadArmyStrengths(
+    const GameAdapter &game,
+    std::vector<ArmyStrengthSnapshot> &output) noexcept {
+  return game.read_army_strengths(output);
+}
+inline ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
+    const GameAdapter &game, const CombatSimulationInputsRequest &request,
+    CombatSimulationInputsSnapshot &output) noexcept {
+  return game.read_combat_simulation_inputs(request, output);
+}
+inline ReadCombatSimulationInputsV3Result ReadCombatSimulationInputsV3(
+    const GameAdapter &game, const CombatSimulationInputsRequest &request,
+    CombatSimulationInputsV3Snapshot &output) noexcept {
+  return game.read_combat_simulation_inputs_v3(request, output);
+}
+inline ReadWarTerminationOptionsResult ReadWarTerminationOptions(
+    const GameAdapter &game, std::int32_t war_id,
+    WarTerminationOptionsSnapshot &output) noexcept {
+  return game.read_war_termination_options(war_id, output);
+}
+inline ReadWarTerminationTermsResult ReadWarTerminationTerms(
+    const GameAdapter &game, std::int32_t war_id,
+    WarTerminationTermsSnapshot &output) noexcept {
+  return game.read_war_termination_terms(war_id, output);
+}
+inline ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(
+    const GameAdapter &game, std::int32_t war_id,
+    WarTerminationExitTermsSnapshot &output) noexcept {
+  return game.read_war_termination_exit_terms(war_id, output);
+}
+inline std::string_view LastWarTerminationExitTermsUnavailableReason(
+    const GameAdapter &game) noexcept {
+  return game.last_war_termination_exit_terms_unavailable_reason();
+}
+inline SurrenderWarResult SubmitSurrenderWar(
+    const GameAdapter &game, std::int32_t war_id) noexcept {
+  return game.submit_surrender_war(war_id);
+}
+inline OfferWhitePeaceResult SubmitOfferWhitePeace(
+    const GameAdapter &game, std::int32_t war_id) noexcept {
+  return game.submit_offer_white_peace(war_id);
 }
 
 } // namespace xar::game

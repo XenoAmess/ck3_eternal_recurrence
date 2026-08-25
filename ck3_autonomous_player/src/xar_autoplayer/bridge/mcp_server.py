@@ -20,6 +20,7 @@ from .native_driver import (
 )
 from .session_driver import DevelopmentSessionDriver
 from .service import GameplayBridgeService
+from .war_entry_contract import normalize_war_entry_target_ids
 
 
 def _default_state_dir() -> Path:
@@ -88,6 +89,37 @@ def load_driver(
     if not isinstance(driver, GameplayBridgeDriver):
         raise TypeError("driver factory did not return a GameplayBridgeDriver")
     return driver
+
+
+def _ck3_query_combat_simulation_inputs_v3(
+    service: GameplayBridgeService,
+    target_province_id: int,
+    attacker_entry_province_id: int,
+    attacker_army_ids: list[int],
+    defender_army_ids: list[int],
+    expected_revision: int | None = None,
+) -> dict[str, object]:
+    """Official production-v3 facade shared by MCP and contract tests."""
+    return service.query_combat_simulation_inputs_v3(
+        target_province_id,
+        attacker_entry_province_id,
+        attacker_army_ids,
+        defender_army_ids,
+        expected_revision=expected_revision,
+    )
+
+
+def _ck3_query_war_entry_assessments(
+    service: GameplayBridgeService,
+    target_character_ids: list[int],
+    expected_revision: int | None = None,
+) -> dict[str, object]:
+    """Official one-target exact-build strategic-power facade."""
+    targets = normalize_war_entry_target_ids(target_character_ids)
+    return service.query_war_entry_assessments(
+        targets,
+        expected_revision=expected_revision,
+    )
 
 
 def create_server(driver: GameplayBridgeDriver):
@@ -302,6 +334,108 @@ def create_server(driver: GameplayBridgeDriver):
     ) -> dict[str, object]:
         """Enforce demands in an exact native war that reached 100%."""
         return service.enforce_demands(
+            war_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_army_strengths(
+        army_ids: list[int],
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read soldiers and AI base power; never interpret them as win odds."""
+        return service.query_army_strengths(
+            army_ids,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_combat_simulation_inputs(
+        target_province_id: int,
+        attacker_entry_province_id: int,
+        attacker_army_ids: list[int],
+        defender_army_ids: list[int],
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read one explicit hypothetical contact; does not claim win odds."""
+        return service.query_combat_simulation_inputs(
+            target_province_id,
+            attacker_entry_province_id,
+            attacker_army_ids,
+            defender_army_ids,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_combat_simulation_inputs_v3(
+        target_province_id: int,
+        attacker_entry_province_id: int,
+        attacker_army_ids: list[int],
+        defender_army_ids: list[int],
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read exact phase inputs; readiness does not imply simulated odds."""
+        return _ck3_query_combat_simulation_inputs_v3(
+            service,
+            target_province_id,
+            attacker_entry_province_id,
+            attacker_army_ids,
+            defender_army_ids,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_war_entry_assessments(
+        target_character_ids: list[int],
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read native strategic power for one declarable-war target."""
+        return _ck3_query_war_entry_assessments(
+            service,
+            target_character_ids,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_war_termination_options(
+        war_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read native surrender/white-peace/victory legality for one WarID."""
+        return service.query_war_termination_options(
+            war_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_war_termination_terms(
+        war_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read exact claim-CB claimant, targets, claims and dispositions."""
+        return service.query_war_termination_terms(
+            war_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_surrender_war(
+        war_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Submit surrender only from a same-revision native query result."""
+        return service.surrender_war(
+            war_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_offer_white_peace(
+        war_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Offer white peace only when native support and query prove legality."""
+        return service.offer_white_peace(
             war_id,
             expected_revision=expected_revision,
         )

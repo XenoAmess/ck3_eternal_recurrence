@@ -1,0 +1,509 @@
+{
+  "schema_version": 1,
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "rules_source": "stock-installation-static-manifest",
+  "files": [
+    {
+      "relative_path": "common/combat_phase_events/_combat_phase_events.info",
+      "sha256": "48A25D3567762DD8A44A7C80AB01E59E4307C4FBEB245D2AA3A67330792E64BE",
+      "load_order": 0
+    },
+    {
+      "relative_path": "common/combat_phase_events/00_commander_phase_events.txt",
+      "sha256": "0CC4675971279397F692512E334CE13B9498C2F02C08C29576961CD31080BFF1",
+      "load_order": 1
+    },
+    {
+      "relative_path": "common/combat_phase_events/00_knight_phase_events.txt",
+      "sha256": "E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1",
+      "load_order": 2
+    },
+    {
+      "relative_path": "common/scripted_effects/00_commander_effects.txt",
+      "sha256": "7999F7731F56A63A5E6E615EF1805F6382101D958A5AD4967F9C68CF3E8EE6F6",
+      "load_order": 3
+    },
+    {
+      "relative_path": "common/scripted_effects/00_death_management_effects.txt",
+      "sha256": "921F06A614CA254EEAD3F57B4EB57F569F0B16B90369575A020461CE1877C397",
+      "load_order": 4
+    },
+    {
+      "relative_path": "common/scripted_effects/00_lifestyle_focus_effects.txt",
+      "sha256": "6891063B67F9954B01C54BC6201B9551A722F22437AEC0104746232622034C70",
+      "load_order": 5
+    },
+    {
+      "relative_path": "common/scripted_effects/20_health_effects.txt",
+      "sha256": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12",
+      "load_order": 6
+    },
+    {
+      "relative_path": "common/script_values/00_basic_values.txt",
+      "sha256": "9268A54F0E425D409D9D0F20D884E0A3D0A89DF85A0B6644D56133C0C4CB0096",
+      "load_order": 7
+    },
+    {
+      "relative_path": "common/script_values/00_combat_values.txt",
+      "sha256": "39487E81EECFA5E175D83E91C7D8766E55B891BFB665F50EA2B2C6F7A229C256",
+      "load_order": 8
+    },
+    {
+      "relative_path": "common/script_values/00_court_position_values.txt",
+      "sha256": "5D5D62E0FFD2E4758DAC5F736980105A16CAB0818A35F3BE12DB9DFABD08074A",
+      "load_order": 9
+    },
+    {
+      "relative_path": "common/script_values/04_ep2_accolade_values.txt",
+      "sha256": "62BE56D4FC84E7673A1BB6BA8B2BA60C5E865C92090F2DFE0EA69429A2A83567",
+      "load_order": 10
+    }
+  ],
+  "event_rows": [
+    {
+      "global_load_index": 0,
+      "type_load_index": 0,
+      "key": "commander_none",
+      "type": "commander",
+      "base_weight": 1000,
+      "validity_ast": { "op": "const_bool", "value": true },
+      "chance_ast": {
+        "op": "modifier_sequence",
+        "initial": { "op": "const_fixed", "raw": 100000000, "scale": 100000 },
+        "rounding": "q100000_truncate_toward_zero_after_each_operation",
+        "modifiers": [
+          { "op": "modifier", "mode": "add", "value": { "op": "const_fixed", "raw": 100000000, "scale": 100000 }, "condition": { "op": "all", "args": [{ "op": "state_ref", "path": "root.perks.stalwart_leader", "value_type": "bool" }, { "op": "not", "arg": { "op": "state_ref", "path": "root.is_ai", "value_type": "bool" } }] } },
+          { "op": "modifier", "mode": "add", "value": { "op": "const_fixed", "raw": 30000000, "scale": 100000 }, "condition": { "op": "all", "args": [{ "op": "state_ref", "path": "root.perks.stalwart_leader", "value_type": "bool" }, { "op": "state_ref", "path": "root.is_ai", "value_type": "bool" }] } },
+          { "op": "modifier", "mode": "add", "value": { "op": "const_fixed", "raw": 50000000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.is_acclaimed", "value_type": "bool" } },
+          { "op": "modifier", "mode": "add", "value": { "op": "const_fixed", "raw": 30000000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.dynasty.perks.warfare_legacy_3", "value_type": "bool" } },
+          { "op": "modifier", "mode": "add", "value": { "op": "const_fixed", "raw": 100000000, "scale": 100000 }, "condition": { "op": "all", "args": [{ "op": "not", "arg": { "op": "state_ref", "path": "root.is_ai", "value_type": "bool" } }, { "op": "state_ref", "path": "game_rules.easy_difficulty", "value_type": "bool" }] } },
+          { "op": "modifier", "mode": "add", "value": { "op": "const_fixed", "raw": 200000000, "scale": 100000 }, "condition": { "op": "all", "args": [{ "op": "not", "arg": { "op": "state_ref", "path": "root.is_ai", "value_type": "bool" } }, { "op": "state_ref", "path": "game_rules.very_easy_difficulty", "value_type": "bool" }] } },
+          { "op": "modifier", "mode": "add", "value": { "op": "const_fixed", "raw": 200000000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.ai_should_get_extreme_conqueror_bonuses", "value_type": "bool" } }
+        ],
+        "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+      },
+      "effect_ast": { "op": "call_transition", "key": "no_op", "args": { "empty_effect_maps_to_null_event": true }, "dependencies": [] },
+      "transition_tags": ["none", "empty_effect_maps_to_null_event"],
+      "state_dependencies": ["game_rules.easy_difficulty", "game_rules.very_easy_difficulty", "root.ai_should_get_extreme_conqueror_bonuses", "root.dynasty.perks.warfare_legacy_3", "root.is_acclaimed", "root.is_ai", "root.perks.stalwart_leader"]
+    },
+    {
+      "global_load_index": 1,
+      "type_load_index": 1,
+      "key": "commander_wounded",
+      "type": "commander",
+      "base_weight": 25,
+      "validity_ast": { "op": "all", "args": [{ "op": "state_ref", "path": "root.exists", "value_type": "bool" }, { "op": "compare", "operator": "<=", "left": { "op": "state_ref", "path": "root.traits.wounded.rank_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 300000, "scale": 100000 } }] },
+      "chance_ast": {
+        "op": "modifier_sequence",
+        "initial": { "op": "const_fixed", "raw": 2500000, "scale": 100000 },
+        "rounding": "q100000_truncate_toward_zero_after_each_operation",
+        "modifiers": [
+          { "op": "modifier", "mode": "factor", "value": { "op": "floor", "value": { "op": "divide", "left": { "op": "subtract", "left": { "op": "const_fixed", "raw": 4000000, "scale": 100000 }, "right": { "op": "state_ref", "path": "root.skills.prowess_raw", "value_type": "fixed_q100000" } }, "right": { "op": "const_fixed", "raw": 4000000, "scale": 100000 }, "rounding": "truncate_toward_zero" }, "limit": { "op": "const_fixed", "raw": 10000, "scale": 100000 } }, "condition": { "op": "const_bool", "value": true } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "ceiling", "value": { "op": "multiply", "left": { "op": "divide", "left": { "op": "state_ref", "path": "enemy_side.side_strength_raw", "value_type": "fixed_q100000" }, "right": { "op": "state_ref", "path": "combat_side.side_strength_raw", "value_type": "fixed_q100000" }, "rounding": "truncate_toward_zero" }, "right": { "op": "const_fixed", "raw": 140000, "scale": 100000 }, "rounding": "truncate_toward_zero" }, "limit": { "op": "const_fixed", "raw": 100000, "scale": 100000 } }, "condition": { "op": "compare", "operator": ">", "left": { "op": "state_ref", "path": "combat_side.side_strength_raw", "value_type": "fixed_q100000" }, "right": { "op": "state_ref", "path": "enemy_side.side_strength_raw", "value_type": "fixed_q100000" } } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 110000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.faith.parameters.death_is_glory", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.brave", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 50000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.craven", "value_type": "bool" } }
+        ],
+        "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+      },
+      "effect_ast": {
+        "op": "sequence",
+        "steps": [
+          { "op": "select_side_knight", "side": "enemy", "filter": { "op": "compare", "operator": ">=", "left": { "op": "state_ref", "path": "candidate.skills.prowess_raw", "value_type": "fixed_q100000" }, "right": { "op": "multiply", "left": { "op": "state_ref", "path": "root.skills.prowess_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 80000, "scale": 100000 }, "rounding": "truncate_toward_zero" } }, "weight": { "op": "const_fixed", "raw": 100000, "scale": 100000 }, "order_policy": "native_random_side_knight_candidate_order_unresolved", "on_selected": { "op": "call_transition", "key": "knight_increase_prowess_chance", "args": { "target": "selected_enemy_knight" }, "dependencies": ["selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"] } },
+          { "op": "call_transition", "key": "increase_wound_or_die", "args": { "target": "root", "reason": "fight" }, "dependencies": ["root.alive", "root.traits.wounded.rank_raw", "root.traits.fragile_bones.rank_raw", "root.traits.fragile_bones.xp_raw"] },
+          { "op": "call_transition", "key": "observational_only", "args": { "effects": ["battle_event", "toast", "prestige", "glory"] }, "dependencies": [] }
+        ]
+      },
+      "transition_tags": ["wound", "may_kill_root", "enemy_knight_prowess_or_blademaster", "character_stats_recompute", "same_day_recompute_unverified"],
+      "state_dependencies": ["candidate.skills.prowess_raw", "combat_side.ordered_enemy_knights", "combat_side.side_strength_raw", "enemy_side.side_strength_raw", "game_rules", "root.alive", "root.exists", "root.faith.parameters.death_is_glory", "root.skills.prowess_raw", "root.traits.brave", "root.traits.craven", "root.traits.fragile_bones.rank_raw", "root.traits.fragile_bones.xp_raw", "root.traits.wounded.rank_raw", "selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"]
+    },
+    {
+      "global_load_index": 2,
+      "type_load_index": 2,
+      "key": "commander_maimed",
+      "type": "commander",
+      "base_weight": 10,
+      "validity_ast": { "op": "not", "arg": { "op": "all", "args": [{ "op": "state_ref", "path": "root.traits.one_legged", "value_type": "bool" }, { "op": "state_ref", "path": "root.traits.disfigured", "value_type": "bool" }, { "op": "state_ref", "path": "root.traits.one_eyed", "value_type": "bool" }, { "op": "state_ref", "path": "root.traits.maimed", "value_type": "bool" }] } },
+      "chance_ast": {
+        "op": "modifier_sequence",
+        "initial": { "op": "const_fixed", "raw": 1000000, "scale": 100000 },
+        "rounding": "q100000_truncate_toward_zero_after_each_operation",
+        "modifiers": [
+          { "op": "modifier", "mode": "factor", "value": { "op": "floor", "value": { "op": "divide", "left": { "op": "subtract", "left": { "op": "const_fixed", "raw": 3000000, "scale": 100000 }, "right": { "op": "state_ref", "path": "root.skills.prowess_raw", "value_type": "fixed_q100000" } }, "right": { "op": "const_fixed", "raw": 3000000, "scale": 100000 }, "rounding": "truncate_toward_zero" }, "limit": { "op": "const_fixed", "raw": 10000, "scale": 100000 } }, "condition": { "op": "const_bool", "value": true } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.outnumbering_injury_factor_raw", "value_type": "fixed_q100000" }, "condition": { "op": "compare", "operator": ">", "left": { "op": "state_ref", "path": "combat_side.side_strength_raw", "value_type": "fixed_q100000" }, "right": { "op": "state_ref", "path": "enemy_side.side_strength_raw", "value_type": "fixed_q100000" } } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 0, "scale": 100000 }, "condition": { "op": "compare", "operator": ">", "left": { "op": "state_ref", "path": "combat_side.side_strength_raw", "value_type": "fixed_q100000" }, "right": { "op": "multiply", "left": { "op": "state_ref", "path": "enemy_side.side_strength_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 500000, "scale": 100000 }, "rounding": "truncate_toward_zero" } } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 110000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.faith.parameters.death_is_glory", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.brave", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 50000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.craven", "value_type": "bool" } }
+        ],
+        "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+      },
+      "effect_ast": {
+        "op": "sequence",
+        "steps": [
+          { "op": "select_side_knight", "side": "enemy", "filter": { "op": "compare", "operator": ">=", "left": { "op": "state_ref", "path": "candidate.skills.prowess_raw", "value_type": "fixed_q100000" }, "right": { "op": "multiply", "left": { "op": "state_ref", "path": "root.skills.prowess_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 80000, "scale": 100000 }, "rounding": "truncate_toward_zero" } }, "weight": { "op": "const_fixed", "raw": 100000, "scale": 100000 }, "order_policy": "native_random_side_knight_candidate_order_unresolved", "on_selected": { "op": "call_transition", "key": "knight_increase_prowess_chance", "args": { "target": "selected_enemy_knight" }, "dependencies": ["selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"] } },
+          { "op": "call_transition", "key": "maim_random", "args": { "target": "root", "source_order_weights": [400000, 200000, 400000, 400000], "scale": 100000, "branches": ["one_legged_then_wound", "disfigured_then_wound", "one_eyed_then_wound", "maimed_plus_recently_maimed"] }, "dependencies": ["root.alive", "root.traits.one_legged", "root.traits.disfigured", "root.traits.one_eyed", "root.traits.maimed", "root.traits.wounded.rank_raw", "root.traits.fragile_bones.rank_raw", "root.traits.fragile_bones.xp_raw"] },
+          { "op": "call_transition", "key": "observational_only", "args": { "effects": ["battle_event", "toast", "prestige", "glory", "delayed_epilepsy_risk"] }, "dependencies": [] }
+        ]
+      },
+      "transition_tags": ["maim", "may_wound_or_kill_root", "enemy_knight_prowess_or_blademaster", "character_stats_recompute", "same_day_recompute_unverified"],
+      "state_dependencies": ["candidate.skills.prowess_raw", "combat_side.ordered_enemy_knights", "combat_side.side_strength_raw", "derived.outnumbering_injury_factor_raw", "enemy_side.side_strength_raw", "root.alive", "root.faith.parameters.death_is_glory", "root.skills.prowess_raw", "root.traits.brave", "root.traits.craven", "root.traits.disfigured", "root.traits.fragile_bones.rank_raw", "root.traits.fragile_bones.xp_raw", "root.traits.maimed", "root.traits.one_eyed", "root.traits.one_legged", "root.traits.wounded.rank_raw", "selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"]
+    },
+    {
+      "global_load_index": 3,
+      "type_load_index": 3,
+      "key": "commander_killed",
+      "type": "commander",
+      "base_weight": 5,
+      "validity_ast": {
+        "op": "all",
+        "args": [
+          { "op": "state_ref", "path": "root.exists", "value_type": "bool" },
+          { "op": "any", "args": [{ "op": "compare", "operator": ">=", "left": { "op": "state_ref", "path": "root.traits.wounded.rank_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 100000, "scale": 100000 } }, { "op": "all", "args": [{ "op": "compare", "operator": "<=", "left": { "op": "state_ref", "path": "root.skills.martial_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 500000, "scale": 100000 } }, { "op": "compare", "operator": "<=", "left": { "op": "state_ref", "path": "root.skills.prowess_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 500000, "scale": 100000 } }] }] },
+          { "op": "not", "arg": { "op": "any", "args": [{ "op": "all", "args": [{ "op": "not", "arg": { "op": "state_ref", "path": "root.is_ai", "value_type": "bool" } }, { "op": "state_ref", "path": "game_rules.very_easy_difficulty", "value_type": "bool" }] }, { "op": "state_ref", "path": "root.ai_should_get_extreme_conqueror_bonuses", "value_type": "bool" }] } }
+        ]
+      },
+      "chance_ast": {
+        "op": "modifier_sequence",
+        "initial": { "op": "const_fixed", "raw": 500000, "scale": 100000 },
+        "rounding": "q100000_truncate_toward_zero_after_each_operation",
+        "modifiers": [
+          { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.root_injury_factor_30_raw", "value_type": "fixed_q100000" }, "condition": { "op": "const_bool", "value": true } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.outnumbering_injury_factor_raw", "value_type": "fixed_q100000" }, "condition": { "op": "compare", "operator": ">", "left": { "op": "state_ref", "path": "combat_side.side_strength_raw", "value_type": "fixed_q100000" }, "right": { "op": "state_ref", "path": "enemy_side.side_strength_raw", "value_type": "fixed_q100000" } } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 0, "scale": 100000 }, "condition": { "op": "compare", "operator": ">", "left": { "op": "state_ref", "path": "combat_side.side_strength_raw", "value_type": "fixed_q100000" }, "right": { "op": "multiply", "left": { "op": "state_ref", "path": "enemy_side.side_strength_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 500000, "scale": 100000 }, "rounding": "truncate_toward_zero" } } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 110000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.faith.parameters.death_is_glory", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.brave", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 50000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.craven", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 400000, "scale": 100000 }, "condition": { "op": "compare", "operator": "==", "left": { "op": "state_ref", "path": "root.traits.wounded.rank_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 300000, "scale": 100000 } } }
+        ],
+        "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+      },
+      "effect_ast": {
+        "op": "sequence",
+        "steps": [
+          { "op": "select_side_knight", "side": "enemy", "filter": { "op": "compare", "operator": ">=", "left": { "op": "state_ref", "path": "candidate.skills.prowess_raw", "value_type": "fixed_q100000" }, "right": { "op": "multiply", "left": { "op": "state_ref", "path": "root.skills.prowess_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 80000, "scale": 100000 }, "rounding": "truncate_toward_zero" } }, "weight": { "op": "const_fixed", "raw": 100000, "scale": 100000 }, "order_policy": "native_random_side_knight_candidate_order_unresolved", "on_selected": { "op": "call_transition", "key": "knight_increase_prowess_chance", "args": { "target": "selected_enemy_knight" }, "dependencies": ["selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"] } },
+          { "op": "call_transition", "key": "kill_character", "args": { "target": "root", "reason": "death_battle", "killer": "selected_enemy_knight_or_null" }, "dependencies": ["root.alive"] },
+          { "op": "call_transition", "key": "require_participant_detach_recompute", "args": { "target": "root", "timing": "same_day_unverified" }, "dependencies": ["combat_side.character_membership", "combat_side.commander"] },
+          { "op": "call_transition", "key": "observational_only", "args": { "effects": ["battle_death_variables", "battle_event", "toast", "prestige", "house_relation"] }, "dependencies": [] }
+        ]
+      },
+      "transition_tags": ["death", "commander_removal", "enemy_knight_prowess_or_blademaster", "commander_roll_recompute", "participant_detach_unverified", "same_day_recompute_unverified"],
+      "state_dependencies": ["candidate.skills.prowess_raw", "combat_side.character_membership", "combat_side.commander", "combat_side.ordered_enemy_knights", "combat_side.side_strength_raw", "derived.outnumbering_injury_factor_raw", "derived.root_injury_factor_30_raw", "enemy_side.side_strength_raw", "game_rules.very_easy_difficulty", "root.ai_should_get_extreme_conqueror_bonuses", "root.alive", "root.exists", "root.faith.parameters.death_is_glory", "root.is_ai", "root.skills.martial_raw", "root.skills.prowess_raw", "root.traits.brave", "root.traits.craven", "root.traits.wounded.rank_raw", "selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"]
+    },
+    {
+      "global_load_index": 4,
+      "type_load_index": 0,
+      "key": "knight_none",
+      "type": "knight",
+      "base_weight": 2000,
+      "validity_ast": { "op": "const_bool", "value": true },
+      "chance_ast": {
+        "op": "modifier_sequence",
+        "initial": { "op": "const_fixed", "raw": 200000000, "scale": 100000 },
+        "rounding": "q100000_truncate_toward_zero_after_each_operation",
+        "modifiers": [
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 150000, "scale": 100000 }, "condition": { "op": "all", "args": [{ "op": "state_ref", "path": "root.perks.stalwart_leader", "value_type": "bool" }, { "op": "not", "arg": { "op": "state_ref", "path": "root.is_ai", "value_type": "bool" } }] } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 115000, "scale": 100000 }, "condition": { "op": "all", "args": [{ "op": "state_ref", "path": "root.perks.stalwart_leader", "value_type": "bool" }, { "op": "state_ref", "path": "root.is_ai", "value_type": "bool" }] } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 125000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.is_acclaimed", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 125000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.dynasty.perks.warfare_legacy_3", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 110000, "scale": 100000 }, "condition": { "op": "compare", "operator": "==", "left": { "op": "state_ref", "path": "root.traits.wounded.rank_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 100000, "scale": 100000 } } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 120000, "scale": 100000 }, "condition": { "op": "compare", "operator": "==", "left": { "op": "state_ref", "path": "root.traits.wounded.rank_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 200000, "scale": 100000 } } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 130000, "scale": 100000 }, "condition": { "op": "any", "args": [{ "op": "compare", "operator": "==", "left": { "op": "state_ref", "path": "root.traits.wounded.rank_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 300000, "scale": 100000 } }, { "op": "state_ref", "path": "root.traits.maimed", "value_type": "bool" }] } }
+        ],
+        "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+      },
+      "effect_ast": { "op": "call_transition", "key": "no_op", "args": { "empty_effect_maps_to_null_event": true }, "dependencies": [] },
+      "transition_tags": ["none", "empty_effect_maps_to_null_event"],
+      "state_dependencies": ["root.dynasty.perks.warfare_legacy_3", "root.is_acclaimed", "root.is_ai", "root.perks.stalwart_leader", "root.traits.maimed", "root.traits.wounded.rank_raw"]
+    },
+    {
+      "global_load_index": 5,
+      "type_load_index": 1,
+      "key": "knight_berserker_attack",
+      "type": "knight",
+      "base_weight": 30,
+      "validity_ast": { "op": "all", "args": [{ "op": "state_ref", "path": "root.traits.berserker", "value_type": "bool" }, { "op": "state_ref", "path": "derived.enemy_alive_knight_at_or_below_root_opponent_threshold_exists", "value_type": "bool" }] },
+      "chance_ast": {
+        "op": "modifier_sequence",
+        "initial": { "op": "const_fixed", "raw": 3000000, "scale": 100000 },
+        "rounding": "q100000_truncate_toward_zero_after_each_operation",
+        "modifiers": [
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 150000, "scale": 100000 }, "condition": { "op": "all", "args": [{ "op": "state_ref", "path": "root.perks.stalwart_leader", "value_type": "bool" }, { "op": "not", "arg": { "op": "state_ref", "path": "root.is_ai", "value_type": "bool" } }] } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 115000, "scale": 100000 }, "condition": { "op": "all", "args": [{ "op": "state_ref", "path": "root.perks.stalwart_leader", "value_type": "bool" }, { "op": "state_ref", "path": "root.is_ai", "value_type": "bool" }] } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 125000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.is_acclaimed", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 125000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.dynasty.perks.warfare_legacy_3", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.wrathful", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.giant", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 125000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.root_has_any_wounded_rank_1_2_3", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 25000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.root_has_any_maim_injury", "value_type": "bool" } }
+        ],
+        "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+      },
+      "effect_ast": {
+        "op": "select_side_knight",
+        "side": "enemy",
+        "filter": { "op": "all", "args": [{ "op": "state_ref", "path": "candidate.alive", "value_type": "bool" }, { "op": "state_ref", "path": "derived.candidate_prowess_at_or_below_root_opponent_threshold", "value_type": "bool" }] },
+        "weight": { "op": "modifier_sequence", "initial": { "op": "const_fixed", "raw": 10000000, "scale": 100000 }, "rounding": "q100000_truncate_toward_zero_after_each_operation", "modifiers": [{ "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 75000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "candidate.is_acclaimed", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 75000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "candidate.perks.stalwart_leader", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 75000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "candidate.dynasty.perks.warfare_legacy_3", "value_type": "bool" } }], "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero" },
+        "order_policy": "native_random_side_knight_candidate_order_unresolved",
+        "on_selected": { "op": "sequence", "steps": [{ "op": "if", "condition": { "op": "all", "args": [{ "op": "state_ref", "path": "root.alive", "value_type": "bool" }, { "op": "state_ref", "path": "selected_enemy_knight.alive", "value_type": "bool" }] }, "then": { "op": "sequence", "steps": [{ "op": "call_transition", "key": "knight_increase_prowess_chance", "args": { "target": "root" }, "dependencies": ["root.skills.learning_raw", "root.traits_and_culture_for_blademaster"] }, { "op": "call_transition", "key": "berserker_kill_random_reason", "args": { "target": "selected_enemy_knight", "source_order_base_weights_raw": [1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 100000, 1000000, 1000000], "fear_branch": { "invalid_if_brave": true, "add_raw_if_craven": 9900000, "scale": 100000 } }, "dependencies": ["selected_enemy_knight.alive", "selected_enemy_knight.traits.brave", "selected_enemy_knight.traits.craven"] }, { "op": "call_transition", "key": "require_participant_detach_recompute", "args": { "target": "selected_enemy_knight", "timing": "same_day_unverified" }, "dependencies": ["enemy_side.character_membership"] }] }, "else": { "op": "call_transition", "key": "no_op", "args": {}, "dependencies": [] } }], "dependencies": ["root.alive", "selected_enemy_knight.alive"] }
+      },
+      "transition_tags": ["enemy_knight_death", "root_prowess_or_blademaster", "participant_detach_unverified", "character_stats_recompute", "same_day_recompute_unverified"],
+      "state_dependencies": ["candidate.alive", "candidate.dynasty.perks.warfare_legacy_3", "candidate.is_acclaimed", "candidate.perks.stalwart_leader", "combat_side.ordered_enemy_knights", "derived.candidate_prowess_at_or_below_root_opponent_threshold", "derived.enemy_alive_knight_at_or_below_root_opponent_threshold_exists", "derived.root_has_any_maim_injury", "derived.root_has_any_wounded_rank_1_2_3", "enemy_side.character_membership", "root.alive", "root.dynasty.perks.warfare_legacy_3", "root.is_acclaimed", "root.is_ai", "root.perks.stalwart_leader", "root.skills.learning_raw", "root.skills.prowess_raw", "root.traits.berserker", "root.traits.giant", "root.traits.maim_injuries", "root.traits.wounded.rank_raw", "root.traits.wrathful", "root.traits_and_culture_for_blademaster", "selected_enemy_knight.alive", "selected_enemy_knight.dynasty.perks.warfare_legacy_3", "selected_enemy_knight.is_acclaimed", "selected_enemy_knight.perks.stalwart_leader", "selected_enemy_knight.skills.prowess_raw", "selected_enemy_knight.traits.brave", "selected_enemy_knight.traits.craven"]
+    },
+    {
+      "global_load_index": 6,
+      "type_load_index": 2,
+      "key": "knight_become_berserker",
+      "type": "knight",
+      "base_weight": 30,
+      "validity_ast": { "op": "all", "args": [{ "op": "state_ref", "path": "root.faith.tenets.warmonger", "value_type": "bool" }, { "op": "any", "args": [{ "op": "state_ref", "path": "root.culture.heritage_north_germanic", "value_type": "bool" }, { "op": "state_ref", "path": "root.religion.germanic", "value_type": "bool" }] }, { "op": "not", "arg": { "op": "any", "args": [{ "op": "state_ref", "path": "root.traits.craven", "value_type": "bool" }, { "op": "state_ref", "path": "root.traits.berserker", "value_type": "bool" }, { "op": "state_ref", "path": "root.traits.calm", "value_type": "bool" }] } }] },
+      "chance_ast": {
+        "op": "modifier_sequence",
+        "initial": { "op": "const_fixed", "raw": 3000000, "scale": 100000 },
+        "rounding": "q100000_truncate_toward_zero_after_each_operation",
+        "modifiers": [
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 150000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.root_player_stalwart", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 115000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.root_ai_stalwart", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 125000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.is_acclaimed", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 125000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.dynasty.perks.warfare_legacy_3", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 500000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.wrathful", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 500000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.giant", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 300000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.impatient", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.sadistic", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.brave", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.ambitious", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.culture.heritage_north_germanic", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 50000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.content", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 25000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.compassionate", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 25000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.temperate", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 25000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.lazy", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 25000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.patient", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.become_berserker_wound_factor_raw", "value_type": "fixed_q100000" }, "condition": { "op": "state_ref", "path": "derived.root_is_wounded", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 50000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.root_has_any_maim_injury", "value_type": "bool" } }
+        ],
+        "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+      },
+      "effect_ast": {
+        "op": "sequence",
+        "steps": [
+          { "op": "select_side_knight", "side": "enemy", "filter": { "op": "state_ref", "path": "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "derived.stock_enemy_knight_selection_weight_raw", "value_type": "fixed_q100000" }, "order_policy": "native_random_side_knight_candidate_order_unresolved", "on_selected": { "op": "if", "condition": { "op": "all", "args": [{ "op": "state_ref", "path": "root.alive", "value_type": "bool" }, { "op": "state_ref", "path": "selected_enemy_knight.alive", "value_type": "bool" }] }, "then": { "op": "sequence", "steps": [{ "op": "call_transition", "key": "knight_increase_prowess_chance", "args": { "target": "root" }, "dependencies": ["root.skills.learning_raw", "root.traits_and_culture_for_blademaster"] }, { "op": "call_transition", "key": "add_trait", "args": { "target": "root", "trait": "berserker" }, "dependencies": ["root.alive"] }, { "op": "call_transition", "key": "kill_character", "args": { "target": "selected_enemy_knight", "reason": "death_head_ripped_off", "killer": "root" }, "dependencies": ["selected_enemy_knight.alive"] }, { "op": "call_transition", "key": "require_participant_detach_recompute", "args": { "target": "selected_enemy_knight", "timing": "same_day_unverified" }, "dependencies": ["enemy_side.character_membership"] }] }, "else": { "op": "call_transition", "key": "no_op", "args": {}, "dependencies": [] } } },
+          { "op": "if", "condition": { "op": "all", "args": [{ "op": "not", "arg": { "op": "state_ref", "path": "derived.qualifying_enemy_knight_exists", "value_type": "bool" } }, { "op": "state_ref", "path": "root.alive", "value_type": "bool" }] }, "then": { "op": "call_transition", "key": "add_trait", "args": { "target": "root", "trait": "berserker" }, "dependencies": ["root.alive"] }, "else": { "op": "call_transition", "key": "no_op", "args": {}, "dependencies": [] } },
+          { "op": "call_transition", "key": "require_character_stat_recompute", "args": { "target": "root", "timing": "same_day_unverified" }, "dependencies": ["root.traits.berserker"] },
+          { "op": "call_transition", "key": "observational_only", "args": { "effects": ["battle_event", "prestige", "glory"] }, "dependencies": [] }
+        ]
+      },
+      "transition_tags": ["add_berserker", "conditional_enemy_knight_death", "root_prowess_or_blademaster", "participant_detach_unverified", "character_stats_recompute", "same_day_recompute_unverified"],
+      "state_dependencies": ["combat_side.ordered_enemy_knights", "derived.become_berserker_wound_factor_raw", "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter", "derived.qualifying_enemy_knight_exists", "derived.root_ai_stalwart", "derived.root_has_any_maim_injury", "derived.root_is_wounded", "derived.root_player_stalwart", "derived.stock_enemy_knight_selection_weight_raw", "enemy_side.character_membership", "root.alive", "root.culture.heritage_north_germanic", "root.dynasty.perks.warfare_legacy_3", "root.faith.tenets.warmonger", "root.is_acclaimed", "root.is_ai", "root.perks.stalwart_leader", "root.religion.germanic", "root.skills.learning_raw", "root.skills.prowess_raw", "root.traits.ambitious", "root.traits.berserker", "root.traits.brave", "root.traits.calm", "root.traits.compassionate", "root.traits.content", "root.traits.craven", "root.traits.giant", "root.traits.impatient", "root.traits.lazy", "root.traits.maim_injuries", "root.traits.patient", "root.traits.sadistic", "root.traits.temperate", "root.traits.wounded.rank_raw", "root.traits.wrathful", "root.traits_and_culture_for_blademaster", "selected_enemy_knight.alive", "selected_enemy_knight.skills.prowess_raw"]
+    },
+    {
+      "global_load_index": 7,
+      "type_load_index": 3,
+      "key": "knight_shieldmaiden_attack",
+      "type": "knight",
+      "base_weight": 30,
+      "validity_ast": { "op": "all", "args": [{ "op": "state_ref", "path": "root.traits.shieldmaiden", "value_type": "bool" }, { "op": "state_ref", "path": "derived.enemy_alive_knight_at_or_below_root_opponent_threshold_exists", "value_type": "bool" }] },
+      "chance_ast": {
+        "op": "modifier_sequence",
+        "initial": { "op": "const_fixed", "raw": 3000000, "scale": 100000 },
+        "rounding": "q100000_truncate_toward_zero_after_each_operation",
+        "modifiers": [
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 150000, "scale": 100000 }, "condition": { "op": "all", "args": [{ "op": "state_ref", "path": "root.perks.stalwart_leader", "value_type": "bool" }, { "op": "not", "arg": { "op": "state_ref", "path": "root.is_ai", "value_type": "bool" } }] } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 115000, "scale": 100000 }, "condition": { "op": "all", "args": [{ "op": "state_ref", "path": "root.perks.stalwart_leader", "value_type": "bool" }, { "op": "state_ref", "path": "root.is_ai", "value_type": "bool" }] } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 125000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.is_acclaimed", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 125000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.dynasty.perks.warfare_legacy_3", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.wrathful", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.giant", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 125000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.root_has_any_wounded_rank_1_2_3", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 25000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.root_has_any_maim_injury", "value_type": "bool" } }
+        ],
+        "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+      },
+      "effect_ast": {
+        "op": "select_side_knight",
+        "side": "enemy",
+        "filter": { "op": "all", "args": [{ "op": "state_ref", "path": "candidate.alive", "value_type": "bool" }, { "op": "state_ref", "path": "derived.candidate_prowess_at_or_below_root_opponent_threshold", "value_type": "bool" }] },
+        "weight": { "op": "state_ref", "path": "derived.stock_enemy_knight_selection_weight_raw", "value_type": "fixed_q100000" },
+        "order_policy": "native_random_side_knight_candidate_order_unresolved",
+        "on_selected": { "op": "if", "condition": { "op": "all", "args": [{ "op": "state_ref", "path": "root.alive", "value_type": "bool" }, { "op": "state_ref", "path": "selected_enemy_knight.alive", "value_type": "bool" }] }, "then": { "op": "sequence", "steps": [{ "op": "call_transition", "key": "knight_increase_prowess_chance", "args": { "target": "root" }, "dependencies": ["root.skills.learning_raw", "root.traits_and_culture_for_blademaster"] }, { "op": "call_transition", "key": "shieldmaiden_kill_random_reason", "args": { "target": "selected_enemy_knight", "source_order_weights_raw": [1000000, 1000000, 1000000, 1000000, 1000000], "scale": 100000 }, "dependencies": ["selected_enemy_knight.alive"] }, { "op": "call_transition", "key": "require_participant_detach_recompute", "args": { "target": "selected_enemy_knight", "timing": "same_day_unverified" }, "dependencies": ["enemy_side.character_membership"] }] }, "else": { "op": "call_transition", "key": "no_op", "args": {}, "dependencies": [] } }
+      },
+      "transition_tags": ["enemy_knight_death", "root_prowess_or_blademaster", "participant_detach_unverified", "character_stats_recompute", "same_day_recompute_unverified"],
+      "state_dependencies": ["candidate.alive", "combat_side.ordered_enemy_knights", "derived.candidate_prowess_at_or_below_root_opponent_threshold", "derived.enemy_alive_knight_at_or_below_root_opponent_threshold_exists", "derived.root_has_any_maim_injury", "derived.root_has_any_wounded_rank_1_2_3", "derived.stock_enemy_knight_selection_weight_raw", "enemy_side.character_membership", "root.alive", "root.dynasty.perks.warfare_legacy_3", "root.is_acclaimed", "root.is_ai", "root.perks.stalwart_leader", "root.skills.learning_raw", "root.skills.prowess_raw", "root.traits.giant", "root.traits.maim_injuries", "root.traits.shieldmaiden", "root.traits.wounded.rank_raw", "root.traits.wrathful", "root.traits_and_culture_for_blademaster", "selected_enemy_knight.alive", "selected_enemy_knight.skills.prowess_raw"]
+    },
+    {
+      "global_load_index": 8,
+      "type_load_index": 4,
+      "key": "knight_becomes_incapable",
+      "type": "knight",
+      "base_weight": 1,
+      "validity_ast": { "op": "not", "arg": { "op": "state_ref", "path": "root.is_incapable", "value_type": "bool" } },
+      "chance_ast": { "op": "modifier_sequence", "initial": { "op": "const_fixed", "raw": 100000, "scale": 100000 }, "rounding": "q100000_truncate_toward_zero_after_each_operation", "modifiers": [], "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero" },
+      "effect_ast": { "op": "if", "condition": { "op": "state_ref", "path": "root.alive", "value_type": "bool" }, "then": { "op": "sequence", "steps": [{ "op": "call_transition", "key": "add_trait", "args": { "target": "root", "trait": "incapable" }, "dependencies": ["root.alive"] }, { "op": "call_transition", "key": "require_character_stat_recompute", "args": { "target": "root", "timing": "same_day_unverified" }, "dependencies": ["root.traits.incapable"] }, { "op": "call_transition", "key": "observational_only", "args": { "effects": ["memory", "battle_location_variable"] }, "dependencies": [] }] }, "else": { "op": "call_transition", "key": "no_op", "args": {}, "dependencies": [] } },
+      "transition_tags": ["add_incapable", "character_stats_recompute", "same_day_recompute_unverified"],
+      "state_dependencies": ["root.alive", "root.is_incapable", "root.traits.incapable"]
+    },
+    {
+      "global_load_index": 9,
+      "type_load_index": 5,
+      "key": "knight_wounded",
+      "type": "knight",
+      "base_weight": 100,
+      "validity_ast": { "op": "not", "arg": { "op": "compare", "operator": "==", "left": { "op": "state_ref", "path": "root.traits.wounded.rank_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 300000, "scale": 100000 } } },
+      "chance_ast": {
+        "op": "modifier_sequence",
+        "initial": { "op": "const_fixed", "raw": 10000000, "scale": 100000 },
+        "rounding": "q100000_truncate_toward_zero_after_each_operation",
+        "modifiers": [
+          { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.root_injury_factor_40_with_garuda_raw", "value_type": "fixed_q100000" }, "condition": { "op": "const_bool", "value": true } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.outnumbering_injury_factor_raw", "value_type": "fixed_q100000" }, "condition": { "op": "state_ref", "path": "derived.own_side_stronger", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 105000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.culture.parameters.knights_slightly_more_prone_to_injury", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 110000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.faith.parameters.death_is_glory", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 400000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.court_positions.garuda", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.brave", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 50000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.craven", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 75000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.same_house_defends_family_tier_low_only", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 50000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.same_house_defends_family_tier_medium_only", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 25000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.same_house_defends_family_tier_high", "value_type": "bool" } }
+        ],
+        "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+      },
+      "effect_ast": {
+        "op": "sequence",
+        "steps": [
+          { "op": "select_side_knight", "side": "enemy", "filter": { "op": "state_ref", "path": "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter", "value_type": "bool" }, "weight": { "op": "const_fixed", "raw": 100000, "scale": 100000 }, "order_policy": "native_random_side_knight_candidate_order_unresolved", "on_selected": { "op": "call_transition", "key": "knight_increase_prowess_chance", "args": { "target": "selected_enemy_knight" }, "dependencies": ["selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"] } },
+          { "op": "call_transition", "key": "increase_wound_or_die", "args": { "target": "root", "reason": "fight" }, "dependencies": ["root.alive", "root.traits.wounded.rank_raw", "root.traits.fragile_bones.rank_raw", "root.traits.fragile_bones.xp_raw"] },
+          { "op": "call_transition", "key": "require_character_stat_recompute", "args": { "target": "root", "timing": "same_day_unverified" }, "dependencies": ["root.traits.wounded.rank_raw"] },
+          { "op": "call_transition", "key": "observational_only", "args": { "effects": ["battle_event", "prestige", "glory", "delayed_infection_or_treatment"] }, "dependencies": [] }
+        ]
+      },
+      "transition_tags": ["wound", "may_kill_root", "enemy_knight_prowess_or_blademaster", "character_stats_recompute", "same_day_recompute_unverified"],
+      "state_dependencies": ["combat_side.ordered_commanders_and_knights_with_accolade_parameters", "combat_side.ordered_enemy_knights", "combat_side.side_strength_raw", "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter", "derived.outnumbering_injury_factor_raw", "derived.own_side_stronger", "derived.root_injury_factor_40_with_garuda_raw", "derived.same_house_defends_family_tier_high", "derived.same_house_defends_family_tier_low_only", "derived.same_house_defends_family_tier_medium_only", "enemy_side.side_strength_raw", "root.alive", "root.court_positions.garuda", "root.culture.parameters.knights_slightly_more_prone_to_injury", "root.faith.parameters.death_is_glory", "root.house_id", "root.liege.house_id", "root.skills.prowess_raw", "root.traits.brave", "root.traits.craven", "root.traits.fragile_bones.rank_raw", "root.traits.fragile_bones.xp_raw", "root.traits.wounded.rank_raw", "selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"]
+    },
+    {
+      "global_load_index": 10,
+      "type_load_index": 6,
+      "key": "knight_maimed",
+      "type": "knight",
+      "base_weight": 40,
+      "validity_ast": { "op": "not", "arg": { "op": "all", "args": [{ "op": "state_ref", "path": "root.traits.one_legged", "value_type": "bool" }, { "op": "state_ref", "path": "root.traits.disfigured", "value_type": "bool" }, { "op": "state_ref", "path": "root.traits.one_eyed", "value_type": "bool" }, { "op": "state_ref", "path": "root.traits.maimed", "value_type": "bool" }] } },
+      "chance_ast": { "op": "modifier_sequence", "initial": { "op": "const_fixed", "raw": 4000000, "scale": 100000 }, "rounding": "q100000_truncate_toward_zero_after_each_operation", "modifiers": [{ "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.root_injury_factor_30_with_garuda_raw", "value_type": "fixed_q100000" }, "condition": { "op": "const_bool", "value": true } }, { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.outnumbering_injury_factor_raw", "value_type": "fixed_q100000" }, "condition": { "op": "state_ref", "path": "derived.own_side_stronger", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 0, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.own_side_more_than_five_times_enemy", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 105000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.culture.parameters.knights_slightly_more_prone_to_injury", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 110000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.faith.parameters.death_is_glory", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 300000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.court_positions.garuda", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.brave", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 50000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.craven", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.same_house_defends_family_factor_raw", "value_type": "fixed_q100000" }, "condition": { "op": "state_ref", "path": "derived.same_house_defends_family_any_tier", "value_type": "bool" } }], "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero" },
+      "effect_ast": {
+        "op": "sequence",
+        "steps": [
+          { "op": "select_side_knight", "side": "enemy", "filter": { "op": "state_ref", "path": "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter", "value_type": "bool" }, "weight": { "op": "const_fixed", "raw": 100000, "scale": 100000 }, "order_policy": "native_random_side_knight_candidate_order_unresolved", "on_selected": { "op": "call_transition", "key": "knight_increase_prowess_chance", "args": { "target": "selected_enemy_knight" }, "dependencies": ["selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"] } },
+          { "op": "call_transition", "key": "maim_random", "args": { "target": "root", "source_order_weights": [400000, 200000, 400000, 400000], "scale": 100000, "branches": ["one_legged_then_wound", "disfigured_then_wound", "one_eyed_then_wound", "maimed_plus_recently_maimed"] }, "dependencies": ["root.alive", "root.traits.one_legged", "root.traits.disfigured", "root.traits.one_eyed", "root.traits.maimed", "root.traits.wounded.rank_raw", "root.traits.fragile_bones.rank_raw", "root.traits.fragile_bones.xp_raw"] },
+          { "op": "call_transition", "key": "require_character_stat_recompute", "args": { "target": "root", "timing": "same_day_unverified" }, "dependencies": ["root.traits.maim_injuries", "root.traits.wounded.rank_raw"] },
+          { "op": "call_transition", "key": "observational_only", "args": { "effects": ["battle_event", "prestige", "glory", "delayed_epilepsy_risk"] }, "dependencies": [] }
+        ]
+      },
+      "transition_tags": ["maim", "may_wound_or_kill_root", "enemy_knight_prowess_or_blademaster", "character_stats_recompute", "same_day_recompute_unverified"],
+      "state_dependencies": ["combat_side.ordered_commanders_and_knights_with_accolade_parameters", "combat_side.ordered_enemy_knights", "combat_side.side_strength_raw", "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter", "derived.outnumbering_injury_factor_raw", "derived.own_side_more_than_five_times_enemy", "derived.own_side_stronger", "derived.root_injury_factor_30_with_garuda_raw", "derived.same_house_defends_family_any_tier", "derived.same_house_defends_family_factor_raw", "enemy_side.side_strength_raw", "root.alive", "root.court_positions.garuda", "root.culture.parameters.knights_slightly_more_prone_to_injury", "root.faith.parameters.death_is_glory", "root.house_id", "root.liege.house_id", "root.skills.prowess_raw", "root.traits.brave", "root.traits.craven", "root.traits.disfigured", "root.traits.fragile_bones.rank_raw", "root.traits.fragile_bones.xp_raw", "root.traits.maim_injuries", "root.traits.maimed", "root.traits.one_eyed", "root.traits.one_legged", "root.traits.wounded.rank_raw", "selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"]
+    },
+    {
+      "global_load_index": 11,
+      "type_load_index": 7,
+      "key": "knight_killed",
+      "type": "knight",
+      "base_weight": 30,
+      "validity_ast": { "op": "const_bool", "value": true },
+      "chance_ast": { "op": "modifier_sequence", "initial": { "op": "const_fixed", "raw": 3000000, "scale": 100000 }, "rounding": "q100000_truncate_toward_zero_after_each_operation", "modifiers": [{ "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.root_injury_factor_30_with_garuda_raw", "value_type": "fixed_q100000" }, "condition": { "op": "const_bool", "value": true } }, { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.outnumbering_injury_factor_raw", "value_type": "fixed_q100000" }, "condition": { "op": "state_ref", "path": "derived.own_side_stronger", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 0, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.own_side_more_than_five_times_enemy", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 105000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.culture.parameters.knights_slightly_more_prone_to_injury", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 110000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.faith.parameters.death_is_glory", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 300000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.court_positions.garuda", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.brave", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 50000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.craven", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 400000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.root_wounded_rank_3", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.enemy_hostile_knight_death_accolade_factor_raw", "value_type": "fixed_q100000" }, "condition": { "op": "state_ref", "path": "derived.enemy_hostile_knight_death_accolade_any_tier", "value_type": "bool" } }, { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.same_house_defends_family_factor_raw", "value_type": "fixed_q100000" }, "condition": { "op": "state_ref", "path": "derived.same_house_defends_family_any_tier", "value_type": "bool" } }], "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero" },
+      "effect_ast": {
+        "op": "sequence",
+        "steps": [
+          { "op": "call_transition", "key": "observational_only", "args": { "effects": ["hold_court_delayed_event", "battle_death_variables"] }, "dependencies": ["root.variables", "root.employer.variables"] },
+          { "op": "select_side_knight", "side": "enemy", "filter": { "op": "state_ref", "path": "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter", "value_type": "bool" }, "weight": { "op": "const_fixed", "raw": 100000, "scale": 100000 }, "order_policy": "native_random_side_knight_candidate_order_unresolved", "on_selected": { "op": "call_transition", "key": "knight_increase_prowess_chance", "args": { "target": "selected_enemy_knight" }, "dependencies": ["selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"] } },
+          { "op": "call_transition", "key": "kill_character", "args": { "target": "root", "reason": "death_battle", "killer": "selected_enemy_knight_if_both_alive_else_null" }, "dependencies": ["root.alive", "selected_enemy_knight.alive"] },
+          { "op": "call_transition", "key": "require_participant_detach_recompute", "args": { "target": "root", "timing": "same_day_unverified" }, "dependencies": ["combat_side.character_membership"] },
+          { "op": "call_transition", "key": "observational_only", "args": { "effects": ["battle_event", "slain_list", "prestige", "glory", "house_relation", "cranial_trophy", "mongol_beheaded_variables"] }, "dependencies": ["root.house_and_liege_relations", "root.variables", "selected_enemy_knight.faith"] }
+        ]
+      },
+      "transition_tags": ["death", "knight_removal", "enemy_knight_prowess_or_blademaster", "participant_detach_unverified", "same_day_recompute_unverified", "delayed_and_observational_side_effects"],
+      "state_dependencies": ["combat_side.character_membership", "combat_side.ordered_commanders_and_knights_with_accolade_parameters", "combat_side.ordered_enemy_knights", "combat_side.side_strength_raw", "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter", "derived.enemy_hostile_knight_death_accolade_any_tier", "derived.enemy_hostile_knight_death_accolade_factor_raw", "derived.outnumbering_injury_factor_raw", "derived.own_side_more_than_five_times_enemy", "derived.own_side_stronger", "derived.root_injury_factor_30_with_garuda_raw", "derived.root_wounded_rank_3", "derived.same_house_defends_family_any_tier", "derived.same_house_defends_family_factor_raw", "enemy_side.side_strength_raw", "root.alive", "root.court_positions.garuda", "root.culture.parameters.knights_slightly_more_prone_to_injury", "root.employer.variables", "root.faith.parameters.death_is_glory", "root.house_and_liege_relations", "root.house_id", "root.liege.house_id", "root.skills.prowess_raw", "root.traits.brave", "root.traits.craven", "root.traits.wounded.rank_raw", "root.variables", "selected_enemy_knight.alive", "selected_enemy_knight.faith", "selected_enemy_knight.skills.learning_raw", "selected_enemy_knight.skills.prowess_raw", "selected_enemy_knight.traits_and_culture_for_blademaster"]
+    },
+    {
+      "global_load_index": 12,
+      "type_load_index": 8,
+      "key": "knight_qualify_for_accolade",
+      "type": "knight",
+      "base_weight": 5,
+      "validity_ast": { "op": "all", "args": [{ "op": "compare", "operator": ">", "left": { "op": "state_ref", "path": "root.knight_army.maa_regiment_count_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 0, "scale": 100000 } }, { "op": "state_ref", "path": "root.can_be_acclaimed", "value_type": "bool" }, { "op": "compare", "operator": ">=", "left": { "op": "state_ref", "path": "root.skills.prowess_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 800000, "scale": 100000 } }] },
+      "chance_ast": {
+        "op": "modifier_sequence",
+        "initial": { "op": "const_fixed", "raw": 500000, "scale": 100000 },
+        "rounding": "q100000_truncate_toward_zero_after_each_operation",
+        "modifiers": [
+          { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "root.liege.accolade_progress_raw", "value_type": "fixed_q100000" }, "condition": { "op": "const_bool", "value": true } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 150000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.root_player_stalwart", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 115000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "derived.root_ai_stalwart", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 250000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.is_acclaimed", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 125000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.dynasty.perks.warfare_legacy_3", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 150000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.brave", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 150000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.ambitious", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 75000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.content", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 75000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.lazy", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "state_ref", "path": "derived.accolade_qualification_wound_factor_raw", "value_type": "fixed_q100000" }, "condition": { "op": "state_ref", "path": "derived.root_is_wounded", "value_type": "bool" } },
+          { "op": "modifier", "mode": "factor", "value": { "op": "const_fixed", "raw": 50000, "scale": 100000 }, "condition": { "op": "state_ref", "path": "root.traits.maimed", "value_type": "bool" } }
+        ],
+        "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+      },
+      "effect_ast": {
+        "op": "sequence",
+        "steps": [
+          { "op": "call_transition", "key": "set_variable", "args": { "target": "root.liege", "name": "accolade_progress", "value_raw": 0, "scale": 100000 }, "dependencies": ["root.liege"] },
+          { "op": "random_list", "order_policy": "source_order", "branches": [
+            { "op": "random_branch", "key": "skirmisher", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.skirmisher.valid", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "root.knight_army.maa_counts.skirmishers_raw", "value_type": "fixed_q100000" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "skirmisher_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "archer", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.archer.valid", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "root.knight_army.maa_counts.non_crossbow_archers_raw", "value_type": "fixed_q100000" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "archer_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "crossbowmen", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.crossbowmen.valid", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "root.knight_army.maa_counts.crossbow_family_raw", "value_type": "fixed_q100000" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "crossbowmen_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "pike", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.pike.valid", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "root.knight_army.maa_counts.pikemen_raw", "value_type": "fixed_q100000" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "pike_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "vanguard", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.vanguard.valid", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "root.knight_army.maa_counts.heavy_infantry_raw", "value_type": "fixed_q100000" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "vanguard_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "outrider", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.outrider.valid", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "root.knight_army.maa_counts.light_cavalry_raw", "value_type": "fixed_q100000" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "outrider_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "lancer", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.lancer.valid", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "root.knight_army.maa_counts.heavy_cavalry_raw", "value_type": "fixed_q100000" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "lancer_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "camelry", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.camelry.valid", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "root.knight_army.maa_counts.camel_cavalry_raw", "value_type": "fixed_q100000" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "camelry_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "elephantry", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.elephantry.valid", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "root.knight_army.maa_counts.elephant_cavalry_raw", "value_type": "fixed_q100000" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "elephantry_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "horse_archer", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.horse_archer.valid", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "root.knight_army.maa_counts.archer_cavalry_raw", "value_type": "fixed_q100000" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "horse_archer_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "gunpowder", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.gunpowder.valid", "value_type": "bool" }, "weight": { "op": "state_ref", "path": "root.knight_army.maa_counts.gunpowder_raw", "value_type": "fixed_q100000" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "gunpowder_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "fanatic", "base_weight": { "op": "const_fixed", "raw": 1000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.fanatic.valid", "value_type": "bool" }, "weight": { "op": "divide", "left": { "op": "state_ref", "path": "root.knight_army.maa_regiment_count_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "rounding": "truncate_toward_zero" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "fanatic_attribute_unlock", "value": true }, "dependencies": [] } },
+            { "op": "random_branch", "key": "valiant", "base_weight": { "op": "const_fixed", "raw": 5000000, "scale": 100000 }, "validity": { "op": "state_ref", "path": "root.accolade_unlocks.valiant.valid", "value_type": "bool" }, "weight": { "op": "divide", "left": { "op": "state_ref", "path": "root.knight_army.maa_regiment_count_raw", "value_type": "fixed_q100000" }, "right": { "op": "const_fixed", "raw": 200000, "scale": 100000 }, "rounding": "truncate_toward_zero" }, "effect": { "op": "call_transition", "key": "set_variable", "args": { "target": "root", "name": "valiant_attribute_unlock", "value": true }, "dependencies": [] } }
+          ] },
+          { "op": "call_transition", "key": "observational_only", "args": { "effects": ["accolade_eligibility_interface_message"] }, "dependencies": [] }
+        ]
+      },
+      "transition_tags": ["accolade_progress_reset", "attribute_unlock_random", "no_direct_advantage_or_casualty_write", "future_eligibility_feedback"],
+      "state_dependencies": ["combat_side.enemy_faiths", "combat_side.side_army_size_raw", "derived.accolade_qualification_wound_factor_raw", "derived.root_ai_stalwart", "derived.root_is_wounded", "derived.root_player_stalwart", "enemy_side.side_army_size_raw", "root.accolade_unlocks", "root.accolade_unlocks.archer.valid", "root.accolade_unlocks.camelry.valid", "root.accolade_unlocks.crossbowmen.valid", "root.accolade_unlocks.elephantry.valid", "root.accolade_unlocks.fanatic.valid", "root.accolade_unlocks.gunpowder.valid", "root.accolade_unlocks.horse_archer.valid", "root.accolade_unlocks.lancer.valid", "root.accolade_unlocks.outrider.valid", "root.accolade_unlocks.pike.valid", "root.accolade_unlocks.skirmisher.valid", "root.accolade_unlocks.valiant.valid", "root.accolade_unlocks.vanguard.valid", "root.can_be_acclaimed", "root.dynasty.perks.warfare_legacy_3", "root.is_acclaimed", "root.is_ai", "root.knight_army.maa_counts", "root.knight_army.maa_counts.archer_cavalry_raw", "root.knight_army.maa_counts.camel_cavalry_raw", "root.knight_army.maa_counts.crossbow_family_raw", "root.knight_army.maa_counts.elephant_cavalry_raw", "root.knight_army.maa_counts.gunpowder_raw", "root.knight_army.maa_counts.heavy_cavalry_raw", "root.knight_army.maa_counts.heavy_infantry_raw", "root.knight_army.maa_counts.light_cavalry_raw", "root.knight_army.maa_counts.non_crossbow_archers_raw", "root.knight_army.maa_counts.pikemen_raw", "root.knight_army.maa_counts.skirmishers_raw", "root.knight_army.maa_regiment_count_raw", "root.liege", "root.liege.accolade_progress_raw", "root.perks.stalwart_leader", "root.skills.prowess_raw", "root.traits.ambitious", "root.traits.brave", "root.traits.content", "root.traits.lazy", "root.traits.maimed", "root.traits.wounded.rank_raw"]
+    }
+  ],
+  "supported_transition_opcodes": [
+    "no_op",
+    "increase_wound_or_die",
+    "maim_random",
+    "kill_character",
+    "knight_increase_prowess_chance",
+    "berserker_kill_random_reason",
+    "shieldmaiden_kill_random_reason",
+    "add_trait",
+    "add_prowess",
+    "rank_blademaster",
+    "set_variable",
+    "schedule_delayed_event",
+    "observational_only",
+    "require_character_stat_recompute",
+    "require_participant_detach_recompute"
+  ],
+  "completeness": {
+    "loaded_playset_verified": false,
+    "ast_evaluator_ready": false,
+    "original_trace_ready": false,
+    "unsupported_opcodes": [
+      "loaded_playset_override_resolution",
+      "native_compiled_trigger_and_chance_differential",
+      "native_random_side_knight_candidate_order",
+      "scripted_delayed_event_scheduler",
+      "character_death_participant_detach_timing",
+      "same_day_character_stat_and_combat_side_recompute",
+      "commander_replacement_and_roll_recompute",
+      "accolade_unlock_feedback_into_future_eligibility",
+      "noncombat_observational_side_effects"
+    ]
+  },
+  "canonical_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC"
+}

@@ -663,6 +663,21 @@ def _validate_cold_start_checkpoint(
     spec: EnvironmentSpec, config: NativeBridgeLaunchConfig
 ) -> dict[str, object]:
     """Resolve the exact v2 checkpoint selected by an explicit cold start."""
+    return validate_cold_start_checkpoint_for_pipe(spec, config.pipe_name)
+
+
+def validate_cold_start_checkpoint_for_pipe(
+    spec: EnvironmentSpec, pipe_name: str
+) -> dict[str, object]:
+    """Resolve a v2 checkpoint without requiring a bridge binary.
+
+    The driver-state pipe remains part of the immutable checkpoint anchor.  A
+    no-injection startup control therefore supplies the pipe whose prior
+    native session created the checkpoint, but never constructs or injects a
+    native bridge configuration.
+    """
+    if not isinstance(pipe_name, str) or not pipe_name:
+        raise AgentError("cold checkpoint pipe name must be nonempty")
     state_path = (
         spec.state_dir / NATIVE_SESSION_QUEUE_DIRNAME / NATIVE_DRIVER_STATE_FILENAME
     )
@@ -676,7 +691,7 @@ def _validate_cold_start_checkpoint(
     if (
         not isinstance(payload, dict)
         or payload.get("format_version") != 2
-        or payload.get("pipe_name") != config.pipe_name
+        or payload.get("pipe_name") != pipe_name
         or not isinstance(checkpoint, dict)
         or checkpoint.get("name") != NATIVE_SESSION_CHECKPOINT_FILENAME
     ):

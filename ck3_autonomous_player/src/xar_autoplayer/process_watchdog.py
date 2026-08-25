@@ -7,12 +7,27 @@ import os
 from pathlib import Path
 import sys
 import time
+from types import SimpleNamespace
 
 import win32api
 import win32com.client
 import win32con
 import win32event
 import win32process
+
+try:
+    from .environment import (
+        _is_access_denied,
+        _toolhelp_ck3_processes,
+        _toolhelp_process_identity,
+    )
+except ImportError:  # Direct execution by the detached watchdog launcher.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from xar_autoplayer.environment import (  # type: ignore[no-redef]
+        _is_access_denied,
+        _toolhelp_ck3_processes,
+        _toolhelp_process_identity,
+    )
 
 
 EXACT_PROCESS_DRAIN_MS = 20_000
@@ -34,11 +49,27 @@ def _normalized(path: object) -> str:
 
 
 def _query_process(service: object, pid: int) -> object | None:
-    rows = service.ExecQuery(
-        "SELECT ProcessId,ParentProcessId,Name,ExecutablePath,CreationDate "
-        f"FROM Win32_Process WHERE ProcessId={pid}"
-    )
+    try:
+        rows = service.ExecQuery(
+            "SELECT ProcessId,ParentProcessId,Name,ExecutablePath,CreationDate "
+            f"FROM Win32_Process WHERE ProcessId={pid}"
+        )
+    except Exception as error:
+        if not _is_access_denied(error):
+            raise
+        identity = _toolhelp_process_identity(pid)
+        return _identity_namespace(identity) if identity is not None else None
     return next(iter(rows), None)
+
+
+def _identity_namespace(identity: dict[str, object]) -> object:
+    return SimpleNamespace(
+        ProcessId=int(identity["pid"]),
+        ParentProcessId=int(identity["parent_pid"]),
+        Name=str(identity["name"]),
+        ExecutablePath=str(identity["executable"]),
+        CreationDate=str(identity["creation_date"]),
+    )
 
 
 def _matches(
@@ -76,11 +107,20 @@ def _parent_matches(
 def _fallback_children(
     service: object, parent_pid: int, executable: str
 ) -> list[tuple[int, str]]:
-    rows = service.ExecQuery(
-        "SELECT ProcessId,ParentProcessId,Name,ExecutablePath,CreationDate "
-        "FROM Win32_Process "
-        f"WHERE ParentProcessId={parent_pid} AND Name='ck3.exe'"
-    )
+    try:
+        rows = service.ExecQuery(
+            "SELECT ProcessId,ParentProcessId,Name,ExecutablePath,CreationDate "
+            "FROM Win32_Process "
+            f"WHERE ParentProcessId={parent_pid} AND Name='ck3.exe'"
+        )
+    except Exception as error:
+        if not _is_access_denied(error):
+            raise
+        rows = [
+            _identity_namespace(identity)
+            for identity in _toolhelp_ck3_processes()
+            if int(identity["parent_pid"]) == parent_pid
+        ]
     children: list[tuple[int, str]] = []
     ambiguous: list[tuple[int, str]] = []
     for row in rows:

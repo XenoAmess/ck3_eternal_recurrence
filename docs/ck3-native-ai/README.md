@@ -29,6 +29,14 @@
 - [static-confirmed] [battle-simulation.md](battle-simulation.md) 记录真实 `CCombat` phase/day tick、战宽、
   commander roll、advantage、MAA counter、主阶段 damage、casualty/pursuit 与 PRNG 边界；同时冻结
   exact-native-parity Monte Carlo 的完整输入门，并明确当前局胜率为 unavailable，而不是近似人数比。
+- [implementation-confirmed] [combat-phase-events.md](combat-phase-events.md) 冻结 stock commander/knight
+  phase-event 的 13 个顶层 row、canonical machine manifest、独立 golden、伤残死亡与 prowess 状态转移、同日刷新
+  顺序；同时给出 v3 character/side/army/accolade/advantage required-field matrix、precontact 不伪造 CombatID 的边界，
+  以及 actual playset、effect-local 抽样与 original trace 的剩余门。
+- [implementation-confirmed] [combat-simulator-core.md](combat-simulator-core.md) 记录已落地的纯 Python
+  Q100000、main casualty、逐 tick counter、component、三日 pursuit、RNG scheduler、battle-end/retreat 与四场
+  `N=100000` research envelope，以及不可绕过的 transition manifest；当前由 loaded-playset/effect evaluator、
+  same-day character feedback 与 exact original trace 阻断，始终不接 planner/MCP。
 - [static-confirmed] [combat-simulation-inputs.md](combat-simulation-inputs.md) 盘点当前 bridge 可观测性、原版
   数据参数与尚缺的 live regiment/terrain/commander/combat-side/RNG 输入，并定义只读查询与模拟输出的
   fail-closed schema 草案。
@@ -58,3 +66,29 @@
    失败回退和观察窗口，不能调用尚未证实的 native 分支。
 6. [static-confirmed] CK3 升级后按“新 SHA → 重新静态定位 → 只读互证 → 更新树 → 再改策略”的顺序执行，
    先改我方策略再补逆向文档不构成完成。
+
+## 可观测性优先：缺数据就补 MCP
+
+[counter-policy] `unknown` 只描述当前证据边界，不是自动玩家可以无限停留的运行状态。只要缺失字段已经阻断
+真实游戏里程碑，下一项工作默认是补 exact-build 只读观测链，而不是继续用相同快照重复规划。实施顺序固定为：
+
+```mermaid
+flowchart TD
+    D["[live-confirmed] 决策被缺失数据阻断"] --> N["[static-confirmed] 定位原版数据、RTTI 与 exact-build 调用链"]
+    N --> A{"[static-confirmed] ABI 与生命周期已闭合？"}
+    A -->|否| U["[unknown] 记录缺口、RVA/xref 与下一项施工入口；保持暂停"]
+    A -->|是| B["[counter-policy] 新增只读 bridge capability 与严格版本绑定 fixture"]
+    B --> M["[counter-policy] 暴露 typed MCP query；null 与 0、unknown 与 false 分离"]
+    M --> V["[live-confirmed] paused snapshot 实机验收 generation / identity / value"]
+    V --> P["[counter-policy] planner 消费观测值并恢复动作"]
+    U -. "[unknown] 继续逆向，不把缺口伪装成数据" .-> N
+```
+
+- [counter-policy] 优先发布只读状态或查询；只有查询结果、validator 与后置条件都闭合后才新增改变游戏状态的命令。
+- [counter-policy] MCP 查询必须给出 typed `available / unavailable / invalid` 结果及缺失 capability，禁止返回猜测值。
+- [counter-policy] 原生命令的 queue ACK 只证明提交；决策所需事实仍必须由下一份一致 paused snapshot 或专用只读查询确认。
+- [counter-policy] 若某字段影响战斗、宣战、战争退出、围城或路线安全，缺字段即触发观测口施工优先级；不得用 UI 人数、
+  字段默认值或旧版本偏移代填。
+- [counter-policy] `null` 是 transport 的三态语义，不是完成标志。若 damage/toughness、骑士、渡河等字段仍让
+  `monte_carlo_ready=false`，就必须继续补对应原生读取口；只有已独立解锁真实决策价值的 partial query 才能单独发布，
+  不得把“已经定义字段名”写成“已经观测到数据”。

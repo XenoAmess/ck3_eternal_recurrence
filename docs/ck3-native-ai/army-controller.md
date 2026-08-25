@@ -132,6 +132,23 @@ flowchart TD
   `RAIDER_UNIT_PRIORITY_MULTIPLIER=0.9` 另管 raider。
 - [unknown] `OurPower`/`EnemyPower` 的完整质量、补给、盟军聚合公式尚未从 EXE 闭合；不能把 UI 兵数
   直接当成曲线输入。
+- [static-confirmed] [combat-prediction.md](combat-prediction.md) 已闭合另一条同 controller 邻域的底层入口：
+  `0x19179E0` 从 `CUnit+0x178 → CArmy+0x38/+0x44 → CRegiment`，对 active regiment 分别累加
+  `+0x38` current soldiers 和 `+0x40` base-power qword。它足以施工
+  [combat-simulation-inputs.md](combat-simulation-inputs.md) 的 `army-strength-v1` 只读 MCP；该 MCP 已在 paused
+  revision `4` live-confirmed，但尚无证据证明
+  这里的 target-score `OurPower/EnemyPower` 逐项等于该 qword，故不改写上面的曲线输入名。
+
+```mermaid
+flowchart LR
+    R["[static-confirmed] active CRegiments"] --> B["[live-confirmed] +0x40 base-power sum<br/>army-strength-v1 可观测"]
+    B -. "[unknown] coordinator/ally/supply mapping" .-> O["[unknown] target-score OurPower / EnemyPower"]
+    O --> C["[static-confirmed] ideal enemy = 0.5 × OurPower<br/>clamp target curve"]
+    B --> P["[static-confirmed] relation-lane prediction chain"]
+    P --> Q["[static-confirmed] encounter power-share ratio"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class O unknown;
+```
 
 | 证据 | 示例（以 `OurPower=A`） | power multiplier |
 |---|---|---|
@@ -332,9 +349,10 @@ flowchart LR
   route 为 `[2560,2565,2568,2572,2574,2579,2589,2591,2602,8759,2604]`。
 - [live-confirmed] 此 endpoint 持续到 `53174640`；日期 `53174664` 的下一 paused frame 中，target 改回
   `2543`，route 变为 `[2560,2559,2543]`。两次端点观察相差 raw `336`，即恰好 14 游戏日。
-- [static-confirmed] 原版 lopsided target cadence 是 14 日；[unknown] 当前没有 exact native power、timer phase
-  或 assignment score，因此这次恰好 14 日的变化只能视为与该 cadence 一致，不能证明本战争走了 lopsided
-  timer 分支，也不能推广成每次第 14 日必改令。
+- [static-confirmed] 原版 lopsided target cadence 是 14 日；[live-confirmed] 当前 production bridge 已发布
+  per-army base power，但仍没有 target-time timer phase、assignment score 或 coordinator aggregate，因此这次
+  恰好 14 日的变化只能视为与该 cadence
+  一致，不能证明本战争走了 lopsided timer 分支，也不能推广成每次第 14 日必改令。
 
 ```mermaid
 flowchart LR
@@ -380,11 +398,23 @@ flowchart LR
   后者 objective kind 前，不应把 `357` 离开 `2581` 解读为该方向已经安全。
 - [inference] 我方策略实现只消费稳定的 snapshot 字段（current province、route、target、combat、
   retreat、siege），不应依赖本文仍为 unknown 的内存指针或 helper 地址。
+- [live-confirmed] paused revision `4` 的 player `83886341` 是 `1482` current soldiers / base power `55,223`；
+  `357` 是 `1801 / 58,468`，`33554657` 是 `1011 / 31,600`。玩家对 `357` 的 base-power diagnostic share
+  为 `0.48573`（只施加已证 enemy `×1.1` 后 `0.46198`）；对两敌合流为 `0.38009` / `0.35790`。
+- [counter-policy] planner 必须把 `[player,357]` 与 `[player,33554657,357]` 建成两个显式 pre-contact context；
+  不得拿单敌结果覆盖两敌合流。若第二敌军可能在 forecast horizon 内会师而 ETA/join policy 未闭合，单敌情景
+  也不能授权攻击。上述 share 是 base-power 风险诊断，不是原生 predictor return 或 Monte Carlo 胜率。
+- [counter-policy] 下一版策略在按兵力决定拦截、拆军、接战或撤退前，必须先调用
+  `ck3_query_army_strengths(army_ids, expected_revision)` 显式请求同一 paused revision 的相关双方军队；native
+  无参 step 会先冻结 player + active-war allied/enemy 完整允许 scope，MCP 只在该 scope 内过滤。capability
+  已 live-confirmed；请求域外或任一请求 army unavailable 时继续 hold/避战，并把 terrain/commander/MAA 等缺字段
+  送入下一只读 MCP 施工队列，不得把 `unknown` 解释成可安全攻击。
 
 ## 未闭合清单
 
 - [unknown] stance 同分时 tie-break、随机性和 hard-coded 特例的完整优先顺序。
-- [unknown] relative power 的 exact 质量、补给、盟军和损耗聚合公式。
+- [unknown] target-score relative power 对已闭合 per-army base-power qword 的 coordinator/盟军/补给/损耗映射；
+  CArmy/CRegiment current/max/base aggregate 本身已由 production MCP paused live-confirmed。
 - [unknown] objective block 内的候选去重、modifier 算术顺序、final path cost 与同分规则。
 - [unknown] 7/14/30 日定时器与 `CAIWarCoordinator+0x94/+0x98/+0x9C` 的逐字段映射及 jitter。
 - [unknown] 目标死亡、离开视野、进入战斗、占领变化等事件触发的即时 assignment invalidation 表。

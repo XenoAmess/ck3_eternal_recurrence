@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "proof_scope": "managed-session-single-mod-stock-phase-event-sources",
+  "phase_event_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+  "enabled_mods_exact": [
+    "mod/xar_autoplayer.mod"
+  ],
+  "source_count": 11,
+  "source_paths_in_load_order": [
+    "common/combat_phase_events/_combat_phase_events.info",
+    "common/combat_phase_events/00_commander_phase_events.txt",
+    "common/combat_phase_events/00_knight_phase_events.txt",
+    "common/scripted_effects/00_commander_effects.txt",
+    "common/scripted_effects/00_death_management_effects.txt",
+    "common/scripted_effects/00_lifestyle_focus_effects.txt",
+    "common/scripted_effects/20_health_effects.txt",
+    "common/script_values/00_basic_values.txt",
+    "common/script_values/00_combat_values.txt",
+    "common/script_values/00_court_position_values.txt",
+    "common/script_values/04_ep2_accolade_values.txt"
+  ],
+  "required_bindings": [
+    "episode_run_id",
+    "snapshot_id",
+    "revision",
+    "native_revision",
+    "environment_sha256",
+    "environment_manifest_bytes_sha256",
+    "native_bridge_pid",
+    "native_session_generation",
+    "managed_launch_nonce",
+    "managed_launch_creation_date",
+    "dlc_load_sha256",
+    "outer_descriptor_sha256",
+    "production_tree_sha256",
+    "stock_source_sha256_per_file"
+  ],
+  "production_override_rejection": [
+    "case_insensitive_exact_relative_path",
+    "descriptor_replace_path_equal_or_ancestor"
+  ],
+  "proof_hash": {
+    "algorithm": "sha256",
+    "encoding": "utf-8",
+    "canonical_json": "ensure_ascii_false_sort_keys_true_compact_separators",
+    "excluded_field": "proof_sha256",
+    "hex_case": "upper"
+  },
+  "independent_fidelity_gates": {
+    "loaded_playset_verified": "may_be_true_only_for_a_verified_episode_bound_proof",
+    "ast_evaluator_ready": false,
+    "original_trace_ready": false,
+    "transition_fidelity_gate": false,
+    "planner_usable": false,
+    "active_attack_allowed": false
+  }
+}
