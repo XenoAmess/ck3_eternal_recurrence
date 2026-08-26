@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "fixture_id": "ck3_11906_active_combat_retreat_owner_subset_v1",
+  "kind": "managed_production_live_fixture",
+  "reviewed_at": "2026-08-26",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_relative_path": "Crusader Kings III/binaries/ck3.exe",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "run_boundary": {
+    "ck3_started_during_recipe_research": true,
+    "static_and_artifact_reads_only": false,
+    "production_mutation_performed": true,
+    "commit_performed": false
+  },
+  "source_save": {
+    "path": "%LOCALAPPDATA%/Temp/xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3/profile/last_save.ck3",
+    "size": 67287758,
+    "sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "date_raw": 53178264,
+    "played_character_id": 29829,
+    "retreat_elapsed_whole_days": 0,
+    "day15_checkpoint_materialized_in_v13": {
+      "size": 67369236,
+      "sha256": "952FFCB2486084FC85B63F9B0F930FAA694CCC58251D329A91A44B53DCEBBD2D"
+    }
+  },
+  "source_artifacts": [
+    {
+      "path": "%LOCALAPPDATA%/Temp/xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3/logs/active-retreat-query-initial-live.json",
+      "size": 187788,
+      "sha256": "97D5C5D0FC1AABCBDA3B8A6F47B146F3A81EF626E70F2772E60F73F3E1EB049B",
+      "evidence": "production paused battle-control frame at elapsed day 0"
+    },
+    {
+      "path": "%LOCALAPPDATA%/Temp/xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3/logs/active-retreat-query-days-live.json",
+      "size": 3710489,
+      "sha256": "FB521B39AD5529434596212DB9ADC1EA27D4C270D28D13575B9A2D80913BCF40",
+      "evidence": "production paused frames through elapsed day 16; roster stable; day 15 legal"
+    },
+    {
+      "path": "%LOCALAPPDATA%/Temp/xar-owner-subset-retreat-live-v13.json",
+      "size": 790823,
+      "sha256": "7780B619B2E7B90B8D5D5030D779F58F266585A6246A79B6C2FE20EF0F2701F9",
+      "evidence": "managed non-debug seed, fresh production adoption, exact owner-subset preview/order, same-date semantic and CombatID membership postconditions, source hash and cleanup"
+    }
+  ],
+  "battle_identity": {
+    "war_id": 16777290,
+    "combat_id": 335544325,
+    "combat_province_id": 2586,
+    "retreat_elapsed_baseline_date_raw": 53178264,
+    "attacker": {
+      "side_index": 0,
+      "ordered_armies": [
+        {
+          "public_cunit_id": 83886341,
+          "native_carmy_id": 50331733,
+          "owner_character_id": 29829
+        }
+      ]
+    },
+    "defender": {
+      "side_index": 1,
+      "ordered_armies": [
+        {
+          "public_cunit_id": 357,
+          "native_carmy_id": 344,
+          "owner_character_id": 36108
+        },
+        {
+          "public_cunit_id": 33554657,
+          "native_carmy_id": 50331769,
+          "owner_character_id": 28180
+        }
+      ]
+    }
+  },
+  "day15_pre_switch": {
+    "date_raw": 53178624,
+    "retreat_elapsed_whole_days": 15,
+    "phase": "main",
+    "phase_raw": 1,
+    "phase_day": 12,
+    "winner_side": "none",
+    "legality": {
+      "status": "available",
+      "native_boolean": true,
+      "minimum_elapsed_whole_days_exclusive": 14,
+      "earliest_day_gate_date_raw": 53178624,
+      "legal_now": true,
+      "reason_codes_in_native_order": [],
+      "native_reason_keys_in_native_order": []
+    },
+    "side_flags": {
+      "disallow_retreat": false,
+      "allow_early_retreat": false,
+      "skip_pursuit": false
+    },
+    "defender_owner_entry_anchors": [
+      {
+        "owner_character_id": 36108,
+        "entry_count": 22,
+        "starting_raw": 224000000,
+        "current_fighting_raw": 182943495,
+        "soft_casualties_raw": 25582136,
+        "derived_hard_casualties_raw": 13474369,
+        "entry_strength_raw": 77637
+      },
+      {
+        "owner_character_id": 28180,
+        "entry_count": 22,
+        "starting_raw": 101100000,
+        "current_fighting_raw": 80924517,
+        "soft_casualties_raw": 12560066,
+        "derived_hard_casualties_raw": 6615417,
+        "entry_strength_raw": 35180
+      }
+    ],
+    "defender_side_anchors": {
+      "derived_current_fighting_raw": 263868012,
+      "derived_soft_casualties_raw": 38142202,
+      "participant_hard_total_raw": 20089786,
+      "participant_hard_ledger_in_stored_order": [
+        {
+          "participant_character_id": 36108,
+          "hard_casualties_raw": 13474369
+        },
+        {
+          "participant_character_id": 28180,
+          "hard_casualties_raw": 6615417
+        }
+      ],
+      "side_strength_raw": 112817,
+      "side_strength_scale": 100000
+    }
+  },
+  "seed_player_switch": {
+    "source_played_character_id": 29829,
+    "target_played_character_id": 36108,
+    "mechanism": "temporary mod_bridge GUI poll executes a guarded run inbox effect while paused",
+    "dynamic_target_anchor": "province:2543.province_owner",
+    "vanilla_effect": "set_player_character = scope:xar_fixture_owner_subset_target",
+    "poll_interval_seconds": 0.4,
+    "requires_temporary_nonproduction_playset": true,
+    "must_not_advance_date": true,
+    "must_reset_inbox_to_noop_before_save": true,
+    "must_remove_guard_global_before_save": true,
+    "must_copy_only_save_bytes_to_final_state": true,
+    "reuse_seed_driver_state": false,
+    "reuse_seed_episode_metadata": false,
+    "reuse_seed_checkpoint_metadata": false,
+    "post_switch_poll_frames": 2,
+    "post_guard_clear_poll_frames": 2,
+    "seed_checkpoint": {
+      "size": 67354079,
+      "sha256": "F8AE14EB3BAC5A8CE673A709B25F01467FE608F440003094F28B931AC897BF78"
+    },
+    "live_proven": true
+  },
+  "owner_subset_action": {
+    "selected_public_cunit_id": 357,
+    "selected_native_carmy_id": 344,
+    "selected_owner_character_id": 36108,
+    "expected_side_index": 1,
+    "expected_scope": "owner_subset",
+    "affected_public_cunit_ids_in_stored_order": [
+      357
+    ],
+    "unaffected_same_side_public_cunit_ids_in_stored_order": [
+      33554657
+    ],
+    "target_province_id": 2581,
+    "existing_route_observation": {
+      "current_province_id": 2586,
+      "move_target_province_id": 2581,
+      "route_province_ids": [
+        2581
+      ],
+      "does_not_prove_fresh_exact_preview": true
+    },
+    "preview_hard_gate": {
+      "status": "available",
+      "action_ready": true,
+      "route_province_ids": [
+        2581
+      ],
+      "candidate_token_required": true,
+      "live_proven": true
+    }
+  },
+  "managed_stages": [
+    {
+      "stage": "materialize_day15",
+      "playset": "production_singleton",
+      "debug_mode": false,
+      "steps": [
+        "load source save by exact hash",
+        "prove baseline battle identity",
+        "advance exactly fifteen one-day life-advance steps",
+        "prove date 53178624 and stable battle frame",
+        "save checkpoint after the fifteenth advance",
+        "record checkpoint size and sha256",
+        "prove managed cleanup"
+      ],
+      "completed": true
+    },
+    {
+      "stage": "switch_player_and_save_seed",
+      "playset": "temporary_production_plus_mod_bridge",
+      "debug_mode": false,
+      "steps": [
+        "load materialized day15 save with inbox initially no-op",
+        "prove paused date and played character 29829",
+        "atomically publish guarded switch effect",
+        "observe current-launch debug marker",
+        "reset inbox to no-op and wait two poll intervals",
+        "prove native played character 36108 at unchanged date",
+        "remove temporary guard global and restore no-op",
+        "prove owner_subset battle-control projection for CUnit 357",
+        "save seed without advancing date",
+        "record seed size and sha256",
+        "prove managed cleanup"
+      ],
+      "completed": true
+    },
+    {
+      "stage": "adopt_production_checkpoint",
+      "playset": "fresh_verified_production_singleton",
+      "debug_mode": false,
+      "steps": [
+        "prepare and verify a fresh production profile",
+        "copy only switched .ck3 bytes",
+        "continue last save without stale cold-start metadata",
+        "bind a new episode to CharacterID 36108",
+        "reprove exact battle and owner_subset frame",
+        "save a canonical checkpoint with new metadata",
+        "cold restore from a second fresh PID and prove frame equality",
+        "prove managed cleanup"
+      ],
+      "canonical_checkpoint": {
+        "size": 67354053,
+        "sha256": "54E059141FFC53BD02D09A2CF3F2FCD418A8F53A257DF489605ABEFBDE17C3A9"
+      },
+      "completed": true
+    },
+    {
+      "stage": "execute_owner_subset_retreat",
+      "playset": "verified_production_singleton",
+      "debug_mode": false,
+      "steps": [
+        "query the battle-control frame twice",
+        "query army strengths for 357, 33554657, and 83886341 as diagnostics",
+        "preview exact route 357 to 2581",
+        "consume one same-frame owner_subset token",
+        "prove CUnit 357 retreat semantics at the same date",
+        "query full CombatID 335544325 and prove defender membership is only 33554657",
+        "prove managed cleanup"
+      ],
+      "completed": true
+    }
+  ],
+  "immediate_postcondition": {
+    "observed_date_raw": 53178624,
+    "subject": {
+      "public_cunit_id": 357,
+      "retreating": true,
+      "move_target_province_id": 2581,
+      "route_last_province_id": 2581,
+      "must_not_be_in_prior_combat": true
+    },
+    "prior_combat": {
+      "combat_id": 335544325,
+      "status": "available",
+      "province_id": 2586,
+      "phase": "main",
+      "winner_side": "none",
+      "attacker_public_cunit_ids_in_stored_order": [
+        83886341
+      ],
+      "defender_public_cunit_ids_in_stored_order": [
+        33554657
+      ]
+    }
+  },
+  "one_day_postcondition": {
+    "live_proven": false,
+    "observed_date_raw": 53178648,
+    "combat_id": 335544325,
+    "retreating_public_cunit_id_must_remain_absent": 357,
+    "unaffected_public_cunit_id_must_remain_on_defender_side": 33554657,
+    "phase_day_winner_to_freeze_after_first_live_run": true,
+    "not_required_for_same_date_action_readiness": true
+  },
+  "observation_boundary": {
+    "membership_observable_by_full_combat_id": true,
+    "retreating_target_route_observable_for_selected_cunit": true,
+    "army_strength_aggregates_available_as_diagnostics": true,
+    "post_retreat_full_combat_entries_observable": false,
+    "post_retreat_carmy_backlinks_observable": false,
+    "post_retreat_unaffected_entry_totals_observable": false,
+    "post_retreat_subset_pursuit_participant_ledger_delta_observable": false,
+    "next_read_only_requirement": "full-CombatID detailed battle frame or an equivalent expansion of query-battle-transition-v1"
+  },
+  "readiness": {
+    "exact_build_ready": true,
+    "mixed_owner_source_live_ready": true,
+    "day15_runtime_frame_live_ready": true,
+    "day15_checkpoint_materialized": true,
+    "mod_bridge_paused_poll_live_ready": true,
+    "seed_player_switch_executor_ready": true,
+    "owner_subset_seed_ready": true,
+    "production_replay_recipe_ready": true,
+    "target_preview_live_ready": true,
+    "owner_subset_membership_postcondition_observable": true,
+    "owner_subset_detailed_ledger_postcondition_observable": false,
+    "owner_subset_live_ready": true
+  },
+  "forbidden_shortcuts": [
+    "do not call the combat constructor",
+    "do not use the full-side live harness unchanged for owner-subset mutation",
+    "do not treat the day-15 JSON artifact as a save checkpoint",
+    "do not treat the stored route to ProvinceID 2581 as a fresh PreviewMoveArmy proof",
+    "do not carry temporary seed profile metadata into the production profile",
+    "do not use character:<runtime-id> links for dynamic save characters; resolve a live scope from a stable province/title/army anchor",
+    "do not treat command ACK as retreat completion",
+    "do not claim detailed entry or participant-ledger live proof from side membership alone"
+  ]
+}

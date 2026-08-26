@@ -201,6 +201,24 @@ bool ExecuteQuaternary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteQuinary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
+bool ExecuteSenary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
+bool ExecuteSeptenary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 struct BlockingExecutorContext {
   HANDLE entered = nullptr;
   HANDLE release = nullptr;
@@ -996,8 +1014,8 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
-  // Production exposes four exact typed reader identities, never a generic
-  // callback slot.  Every admitted identity executes normally; a fifth
+  // Production exposes seven exact typed reader identities, never a generic
+  // callback slot. Every admitted identity executes normally; an eighth
   // callback is rejected before it can enter the queue.
   auto typed_environment =
       runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
@@ -1005,6 +1023,9 @@ bool TestMailboxStateMachine() {
   typed_environment.permitted_executor_secondary = &ExecuteSecondary;
   typed_environment.permitted_executor_tertiary = &ExecuteTertiary;
   typed_environment.permitted_executor_quaternary = &ExecuteQuaternary;
+  typed_environment.permitted_executor_quinary = &ExecuteQuinary;
+  typed_environment.permitted_executor_senary = &ExecuteSenary;
+  typed_environment.permitted_executor_septenary = &ExecuteSeptenary;
   g_failure_stage = "typed_executor_registry";
   if (!InstallMainThreadQueryMailboxV1(mailbox, typed_environment) ||
       ObserveMainThreadPumpAndDrainV1(
@@ -1022,8 +1043,9 @@ bool TestMailboxStateMachine() {
           MainThreadQuerySubmitResultV1::invalid_request) {
     return false;
   }
-  constexpr std::array<MainThreadQueryExecutorV1, 4> typed_executors{
-      &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary};
+  constexpr std::array<MainThreadQueryExecutorV1, 7> typed_executors{
+      &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary,
+      &ExecuteQuinary, &ExecuteSenary, &ExecuteSeptenary};
   for (const auto executor : typed_executors) {
     MainThreadQueryTicketV1 typed_ticket{};
     if (TrySubmitMainThreadQueryV1(mailbox, executor, &typed_context,
@@ -1082,7 +1104,7 @@ bool TestSourceContract(int argc, char **argv) {
       kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs != 2) {
     return false;
   }
-  constexpr std::array<std::string_view, 44> source_tokens{
+  constexpr std::array<std::string_view, 47> source_tokens{
       "InterlockedCompareExchangePointer",
       "kPeekMessageWIatSlotRva",
       "kSdlWindowsPumpFirstPeekReturnRva",
@@ -1125,6 +1147,9 @@ bool TestSourceContract(int argc, char **argv) {
       "mailbox.permitted_executor_secondary",
       "mailbox.permitted_executor_tertiary",
       "mailbox.permitted_executor_quaternary",
+      "mailbox.permitted_executor_quinary",
+      "mailbox.permitted_executor_senary",
+      "mailbox.permitted_executor_septenary",
       "Process-lifetime pin",
       "mailbox.failure_flags.load(std::memory_order_acquire) != 0",
   };
@@ -1172,7 +1197,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 44> bridge_tokens{
+  constexpr std::array<std::string_view, 50> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1198,16 +1223,22 @@ bool TestSourceContract(int argc, char **argv) {
       "expected_lifecycle == 1 ? TRUE : FALSE",
       "kMainThreadQueryMailboxV1AdapterId",
       "kMainThreadQueryMailboxV1CandidateId",
-      "typed_war_entry_route_actual_contact_combat_v3",
+      "typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment",
       "ExecuteWarEntryAssessmentMailboxQueryV1",
       "ExecuteRouteContactHorizonMailboxQueryV1",
       "ExecuteActualContactScopeMailboxQueryV1",
       "ExecuteCombatSimulationInputsV3MailboxQuery",
+      "ExecuteBattleControlSnapshotMailboxQueryV1",
+      "ExecuteBattleTransitionMailboxQueryV1",
+      "ExecuteBattleReinforcementAssignmentMailboxQueryV1",
       "TrySubmitMainThreadQueryV1",
       "permitted_executor",
       "permitted_executor_secondary",
       "permitted_executor_tertiary",
       "permitted_executor_quaternary",
+      "permitted_executor_quinary",
+      "permitted_executor_senary",
+      "permitted_executor_septenary",
       "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
       "CaptureWarEntryBridgeFrame",
       "ReadSnapshot(*context->game",

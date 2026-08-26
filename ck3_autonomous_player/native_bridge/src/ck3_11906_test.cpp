@@ -10,6 +10,7 @@
 #include <iostream>
 #include <limits>
 #include <new>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -31,6 +32,8 @@ std::array<std::byte, 0x1D0> g_target_character{};
 std::array<std::byte, 0x1D0> g_dead_character{};
 std::array<std::byte, 0x1D0> g_generation_mismatch_character{};
 std::array<std::byte, 0x1D0> g_ally_character{};
+std::array<std::byte, 0x200> g_played_land_status{};
+std::array<std::byte, 0x40> g_combat_retreat_rule_state{};
 std::array<std::byte, 0x300> g_played_character_extension{};
 std::array<std::byte, 0x300> g_target_character_extension{};
 std::array<std::byte, 0x290> g_dead_character_extension{};
@@ -129,12 +132,25 @@ std::array<std::int32_t, 1> g_contact_combat_0_attacker_armies{};
 std::array<std::int32_t, 1> g_contact_combat_0_defender_armies{};
 std::array<std::int32_t, 2> g_contact_combat_1_attacker_armies{};
 std::array<std::int32_t, 1> g_contact_combat_1_defender_armies{};
+std::array<std::byte, 0x60> g_battle_attacker_levy_entry{};
+std::array<std::byte, 0x60> g_battle_attacker_maa_entry{};
+std::array<std::byte, 0x60> g_battle_defender_levy_entry{};
+std::array<std::byte, 0x60> g_battle_defender_maa_entry{};
+std::array<std::byte, 0x18> g_battle_attacker_hard_row{};
+std::array<std::byte, 0x18> g_battle_defender_hard_row{};
 std::array<std::byte, 0x40> g_contact_battle_result_storage{};
 std::array<std::byte, 0x20> g_contact_battle_result_slots{};
 std::array<std::byte, 0x30> g_contact_battle_result{};
 std::array<std::uintptr_t, 2> g_contact_battle_result_vtable{};
 std::array<std::uintptr_t, 7> g_contact_province_vtable{};
 bool g_contact_prior_province_valid = true;
+bool g_battle_mutate_on_side_strength = false;
+std::int32_t g_battle_side_strength_calls = 0;
+std::int32_t g_battle_regiment_strength_calls = 0;
+bool g_can_order_combat_retreat_result = true;
+bool g_can_order_combat_retreat_arguments_valid = true;
+std::int32_t g_can_order_combat_retreat_calls = 0;
+std::int32_t g_minimum_days_before_manual_retreat = 14;
 std::array<std::byte, 0x10> g_player_move_route_info_0{};
 std::array<std::byte, 0x10> g_player_move_route_info_1{};
 std::array<std::byte, 0x10> g_player_move_route_info_2{};
@@ -145,6 +161,23 @@ std::array<std::byte, 0x10> g_preview_move_route_info_2{};
 std::array<std::byte, 0x10> g_enemy_move_route_info_0{};
 std::array<void *, 1> g_enemy_move_path{};
 std::array<void *, 3> g_preview_move_path{};
+std::array<std::byte, 0x40> g_ai_coordinator_storage{};
+std::array<std::byte, 0x20> g_ai_coordinator_slots{};
+std::array<std::byte, 0x70> g_ai_coordinator{};
+std::array<std::byte, 0x08> g_ai_coordinator_fallback{};
+std::array<std::byte, 0x98> g_ai_unit_stack{};
+std::array<std::byte, 0x58> g_ai_selected_subunit{};
+std::array<std::byte, 0x58> g_ai_sibling_subunit{};
+std::array<void *, 1> g_ai_coordinator_unit_stacks{};
+std::array<void *, 3> g_ai_support_provinces{};
+std::array<std::int32_t, 2> g_ai_parent_cunit_ids{};
+std::array<void *, 2> g_ai_parent_subunits{};
+std::array<std::int32_t, 1> g_ai_selected_cunit_ids{};
+std::array<std::int32_t, 1> g_ai_sibling_cunit_ids{};
+void *g_ai_coordinator_storage_pointer = nullptr;
+void *g_ai_coordinator_fallback_pointer = nullptr;
+std::int32_t g_route_edge_duration_calls = 0;
+bool g_route_edge_duration_drift = false;
 std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
 std::array<std::byte, 0x20> g_enemy_default_raise_province{};
@@ -241,6 +274,7 @@ void *g_regiment_storage_pointer = nullptr;
 void *g_combat_storage_pointer = nullptr;
 void *g_contact_combat_storage_pointer = nullptr;
 void *g_contact_battle_result_storage_pointer = nullptr;
+void *g_contact_battle_result_fallback_pointer = nullptr;
 void *g_contact_game_mode_pointer = nullptr;
 void *g_siege_storage_pointer = nullptr;
 void *g_expected_event_manager = nullptr;
@@ -816,7 +850,8 @@ bool FixtureRegimentIdentityValid(void *subobject) {
 
 bool FixtureCharacterValid(void *subobject) {
   return subobject == g_played_character.data() + 0x10 ||
-         subobject == g_target_character.data() + 0x10;
+         subobject == g_target_character.data() + 0x10 ||
+         subobject == g_ally_character.data() + 0x10;
 }
 
 bool FixtureBattleResultValid(void *object) {
@@ -1042,6 +1077,55 @@ std::int64_t *FixtureReadCharacterModifier(void *aggregator,
 }
 
 void *FixtureGetCombatRules() { return g_combat_rules.data(); }
+
+std::int32_t FixtureGetCombatSideStrength(void *combat_side) {
+  ++g_battle_side_strength_calls;
+  if (g_battle_mutate_on_side_strength &&
+      combat_side == g_contact_combat_1.data() + 0x20) {
+    g_battle_mutate_on_side_strength = false;
+    const auto phase_day =
+        LoadBytes<std::int32_t>(g_contact_combat_1.data(), 0x6B4);
+    Store(g_contact_combat_1, 0x6B4, phase_day + 1);
+  }
+  if (combat_side == g_contact_combat_1.data() + 0x20) {
+    return 123'456;
+  }
+  if (combat_side == g_contact_combat_1.data() + 0x368) {
+    return 654'321;
+  }
+  return -1;
+}
+
+bool FixtureCanOrderCombatRetreat(void *combat, void *selected_army,
+                                  void *error_sink) {
+  ++g_can_order_combat_retreat_calls;
+  g_can_order_combat_retreat_arguments_valid &=
+      combat == g_contact_combat_1.data() &&
+      selected_army == g_player_internal_army.data() &&
+      error_sink == nullptr;
+  return g_can_order_combat_retreat_result;
+}
+
+void *FixtureGetCombatRetreatRuleState() {
+  return g_combat_retreat_rule_state.data();
+}
+
+std::int32_t FixtureGetCombatRegimentStrength(void *combat_regiment) {
+  ++g_battle_regiment_strength_calls;
+  if (combat_regiment == g_battle_attacker_levy_entry.data()) {
+    return 11'111;
+  }
+  if (combat_regiment == g_battle_attacker_maa_entry.data()) {
+    return 22'222;
+  }
+  if (combat_regiment == g_battle_defender_levy_entry.data()) {
+    return 33'333;
+  }
+  if (combat_regiment == g_battle_defender_maa_entry.data()) {
+    return 44'444;
+  }
+  return -1;
+}
 
 std::int64_t *FixtureReadCounterCurrentChunk(const void *opaque_entry,
                                              std::int64_t *output) {
@@ -1396,6 +1480,19 @@ std::int64_t *FixtureReadRouteTravelDuration(
   } else {
     *output = static_cast<std::int64_t>(count) * 100'000;
   }
+  return output;
+}
+
+std::int64_t *FixtureReadRouteEdgeDuration(
+    void *unit, std::int64_t *output, std::int32_t route_index) {
+  ++g_route_edge_duration_calls;
+  if (unit != g_player_army.data() || output == nullptr || route_index != 0) {
+    return nullptr;
+  }
+  *output = 150'000 +
+            (g_route_edge_duration_drift
+                 ? static_cast<std::int64_t>(g_route_edge_duration_calls)
+                 : 0);
   return output;
 }
 
@@ -2815,6 +2912,8 @@ int main() {
         static_cast<void *>(g_character_validity_vtable.data()));
   Store(g_target_character, 0x10,
         static_cast<void *>(g_character_validity_vtable.data()));
+  Store(g_ally_character, 0x10,
+        static_cast<void *>(g_character_validity_vtable.data()));
   Store(g_played_character, 0xE8, std::int32_t{12});
   Store(g_target_character, 0xE8, std::int32_t{8});
   Store(g_played_character, 0x1B0,
@@ -2987,6 +3086,10 @@ int main() {
   constexpr std::int32_t player_internal_army_id = 0x02000011;
   constexpr std::int32_t enemy_internal_army_id = 0x02000012;
   constexpr std::int32_t third_internal_army_id = 0x02000013;
+  constexpr std::int32_t ai_coordinator_id = 0x07000001;
+  constexpr std::uintptr_t ai_coordinator_vtable = 0x71000010;
+  constexpr std::uintptr_t ai_unit_stack_vtable = 0x71000020;
+  constexpr std::uintptr_t ai_subunit_stack_vtable = 0x71000030;
   constexpr std::int32_t player_regiment_0_id = 0x01000001;
   constexpr std::int32_t player_regiment_1_id = 0x01000002;
   constexpr std::int32_t enemy_regiment_0_id = 0x01000003;
@@ -3142,6 +3245,76 @@ int main() {
   Store(g_internal_army_storage, 0x2C, std::int32_t{20});
   g_internal_army_storage_pointer = g_internal_army_storage.data();
 
+  g_ai_coordinator_unit_stacks = {g_ai_unit_stack.data()};
+  g_ai_support_provinces = {
+      g_second_war_objective_province.data(),
+      g_second_war_objective_province.data(),
+      g_third_war_objective_province.data()};
+  g_ai_parent_cunit_ids = {player_army_id, enemy_army_id};
+  g_ai_parent_subunits = {
+      g_ai_selected_subunit.data(), g_ai_sibling_subunit.data()};
+  g_ai_selected_cunit_ids = {player_army_id};
+  g_ai_sibling_cunit_ids = {enemy_army_id};
+  Store(g_ai_coordinator, 0x00, ai_coordinator_vtable);
+  Store(g_ai_coordinator, 0x10, ai_coordinator_id);
+  Store(g_ai_coordinator, 0x50,
+        static_cast<void *>(g_ai_coordinator_unit_stacks.data()));
+  Store(g_ai_coordinator, 0x58, std::int32_t{1});
+  Store(g_ai_coordinator, 0x5C, std::int32_t{1});
+  Store(g_ai_coordinator_slots, 0x18,
+        static_cast<void *>(g_ai_coordinator.data()));
+  Store(g_ai_coordinator_storage, 0x20,
+        static_cast<void *>(g_ai_coordinator_slots.data()));
+  Store(g_ai_coordinator_storage, 0x2C, std::int32_t{2});
+  g_ai_coordinator_storage_pointer = g_ai_coordinator_storage.data();
+  g_ai_coordinator_fallback_pointer = g_ai_coordinator_fallback.data();
+
+  Store(g_ai_unit_stack, 0x00, ai_unit_stack_vtable);
+  Store(g_ai_unit_stack, 0x08,
+        static_cast<void *>(g_ai_support_provinces.data()));
+  Store(g_ai_unit_stack, 0x10, std::int32_t{3});
+  Store(g_ai_unit_stack, 0x14, std::int32_t{3});
+  Store(g_ai_unit_stack, 0x28,
+        static_cast<void *>(g_ai_parent_cunit_ids.data()));
+  Store(g_ai_unit_stack, 0x30, std::int32_t{2});
+  Store(g_ai_unit_stack, 0x34, std::int32_t{2});
+  Store(g_ai_unit_stack, 0x40,
+        static_cast<void *>(g_ai_parent_subunits.data()));
+  Store(g_ai_unit_stack, 0x48, std::int32_t{2});
+  Store(g_ai_unit_stack, 0x4C, std::int32_t{2});
+  Store(g_ai_unit_stack, 0x58, static_cast<void *>(g_ai_coordinator.data()));
+
+  Store(g_ai_selected_subunit, 0x00, ai_subunit_stack_vtable);
+  Store(g_ai_selected_subunit, 0x10,
+        static_cast<void *>(g_ai_selected_cunit_ids.data()));
+  Store(g_ai_selected_subunit, 0x18, std::int32_t{1});
+  Store(g_ai_selected_subunit, 0x1C, std::int32_t{1});
+  Store(g_ai_selected_subunit, 0x28, std::int64_t{9'999'999});
+  Store(g_ai_selected_subunit, 0x34, std::uint8_t{1});
+  Store(g_ai_selected_subunit, 0x38, std::int64_t{2'300'000});
+  Store(g_ai_selected_subunit, 0x40,
+        static_cast<void *>(g_ai_unit_stack.data()));
+  Store(g_ai_selected_subunit, 0x48,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  Store(g_ai_selected_subunit, 0x50, std::uint8_t{0x12});
+
+  Store(g_ai_sibling_subunit, 0x00, ai_subunit_stack_vtable);
+  Store(g_ai_sibling_subunit, 0x10,
+        static_cast<void *>(g_ai_sibling_cunit_ids.data()));
+  Store(g_ai_sibling_subunit, 0x18, std::int32_t{1});
+  Store(g_ai_sibling_subunit, 0x1C, std::int32_t{1});
+  Store(g_ai_sibling_subunit, 0x28, std::int64_t{3'100'000});
+  Store(g_ai_sibling_subunit, 0x40,
+        static_cast<void *>(g_ai_unit_stack.data()));
+  Store(g_ai_sibling_subunit, 0x48,
+        static_cast<void *>(g_third_war_objective_province.data()));
+  Store(g_ai_sibling_subunit, 0x50, std::uint8_t{0x01});
+  Store(g_player_army, 0x1C4, ai_coordinator_id);
+  Store(g_player_army, 0x1D0,
+        static_cast<void *>(g_ai_selected_subunit.data()));
+  Store(g_enemy_army, 0x1D0,
+        static_cast<void *>(g_ai_sibling_subunit.data()));
+
   g_regiment_identity_vtable[1] =
       reinterpret_cast<std::uintptr_t>(&FixtureRegimentIdentityValid);
   const auto initialize_regiment = [](auto &regiment, std::int32_t id,
@@ -3269,10 +3442,10 @@ int main() {
         static_cast<void *>(g_second_war_objective_province.data()));
   Store(g_player_combat, 0x6C0, std::int32_t{1'200});
   Store(g_player_combat, 0x6C4, std::int32_t{960});
-  Store(g_player_combat, 0x6C8, std::int32_t{5});
+  Store(g_player_combat, 0x6C8, std::int64_t{-5'000'000'000});
   Store(g_player_combat, 0x6D0, std::int32_t{7});
   Store(g_player_combat, 0x6D4, std::int32_t{3});
-  Store(g_player_combat, 0x710, std::int32_t{9});
+  Store(g_player_combat, 0x710, std::int64_t{6'000'000'000});
   Store(g_combat_slots, 0x18,
         static_cast<void *>(g_player_combat.data()));
   Store(g_combat_storage, 0x20,
@@ -3295,11 +3468,15 @@ int main() {
         Store(combat, 0x20 + 0x18, std::int32_t{1});
         Store(combat, 0x20 + 0x1C, std::int32_t{1});
         Store(combat, 0x20 + 0x70, attacker_primary_character_id);
+        Store(combat, 0x20 + 0xB8,
+              static_cast<void *>(combat.data()));
         Store(combat, 0x368 + 0x10,
               static_cast<void *>(defender_army_ids.data()));
         Store(combat, 0x368 + 0x18, std::int32_t{1});
         Store(combat, 0x368 + 0x1C, std::int32_t{1});
         Store(combat, 0x368 + 0x70, defender_primary_character_id);
+        Store(combat, 0x368 + 0xB8,
+              static_cast<void *>(combat.data()));
         Store(combat, 0x6B8,
               static_cast<void *>(g_war_objective_province.data()));
         Store(combat, 0x6E0, std::int32_t{-1});
@@ -3328,6 +3505,7 @@ int main() {
         static_cast<void *>(g_contact_battle_result_vtable.data()));
   Store(g_contact_battle_result, 0x08, contact_battle_result_id);
   Store(g_contact_battle_result, 0x28, std::uint8_t{1});
+  Store(g_contact_battle_result, 0x2C, std::int32_t{43'822'744});
   Store(g_contact_battle_result_slots, 0x18,
         static_cast<void *>(g_contact_battle_result.data()));
   Store(g_contact_battle_result_storage, 0x20,
@@ -3335,6 +3513,8 @@ int main() {
   Store(g_contact_battle_result_storage, 0x2C, std::int32_t{2});
   g_contact_battle_result_storage_pointer =
       g_contact_battle_result_storage.data();
+  g_contact_battle_result_fallback_pointer =
+      g_contact_battle_result.data();
   Store(g_contact_game_mode_root, 0x1C0,
         static_cast<void *>(g_contact_game_mode.data()));
   g_contact_game_mode_pointer = g_contact_game_mode_root.data();
@@ -3608,8 +3788,17 @@ int main() {
       &g_internal_army_storage_pointer;
   bindings.regiment_storage_slot = &g_regiment_storage_pointer;
   bindings.combat_storage_slot = &g_combat_storage_pointer;
+  bindings.ai_war_coordinator_storage_slot =
+      &g_ai_coordinator_storage_pointer;
+  bindings.ai_war_coordinator_fallback_slot =
+      &g_ai_coordinator_fallback_pointer;
+  bindings.ai_war_coordinator_vtable = ai_coordinator_vtable;
+  bindings.ai_unit_stack_vtable = ai_unit_stack_vtable;
+  bindings.ai_subunit_stack_vtable = ai_subunit_stack_vtable;
   bindings.battle_result_storage_slot =
       &g_contact_battle_result_storage_pointer;
+  bindings.battle_result_fallback_slot =
+      &g_contact_battle_result_fallback_pointer;
   bindings.siege_storage_slot = &g_siege_storage_pointer;
   bindings.contact_game_mode_slot = &g_contact_game_mode_pointer;
   bindings.global_variable_container_accessor_slot =
@@ -3672,6 +3861,9 @@ int main() {
       FixtureGetCharacterModifierAggregator;
   bindings.read_character_modifier = FixtureReadCharacterModifier;
   bindings.get_combat_rules = FixtureGetCombatRules;
+  bindings.get_combat_side_strength = FixtureGetCombatSideStrength;
+  bindings.get_combat_regiment_strength =
+      FixtureGetCombatRegimentStrength;
   bindings.read_counter_current_chunk = FixtureReadCounterCurrentChunk;
   bindings.resolve_counter_classes = FixtureResolveCounterClasses;
   bindings.get_counter_context_scale = FixtureGetCounterContextScale;
@@ -3697,6 +3889,11 @@ int main() {
       FixtureCanCharacterUseCommandKind;
   bindings.can_army_use_move_mode = FixtureCanArmyUseMoveMode;
   bindings.can_move_army = FixtureCanMoveArmy;
+  bindings.can_order_combat_retreat = FixtureCanOrderCombatRetreat;
+  bindings.get_combat_retreat_rule_state =
+      FixtureGetCombatRetreatRuleState;
+  bindings.minimum_days_before_manual_retreat =
+      &g_minimum_days_before_manual_retreat;
   bindings.resolve_move_origin = FixtureResolveMoveOrigin;
   bindings.construct_move_path_context = FixtureConstructMovePathContext;
   bindings.construct_army_move_path = FixtureConstructArmyMovePath;
@@ -3709,6 +3906,7 @@ int main() {
       FixtureReadUnitCurrentEdgeSpeed;
   bindings.read_route_travel_duration =
       FixtureReadRouteTravelDuration;
+  bindings.read_route_edge_duration = FixtureReadRouteEdgeDuration;
   bindings.destroy_move_army_command = FixtureDestroyMoveArmyCommand;
   bindings.validate_disband_army_command =
       FixtureValidateDisbandArmyCommand;
@@ -4124,6 +4322,151 @@ int main() {
         "actual-contact join mirror did not select the last compatible combat");
   }
 
+  // The read-only reinforcement capability follows the exact AI coordinator
+  // graph and only calls the two frozen route-duration leaves. Stored order
+  // and route duplicates are semantic; no future CombatID is synthesized.
+  Store(g_player_map_node, 0xB0,
+        static_cast<void *>(g_route_origin_info_2.data()));
+  Store(g_route_origin_info_2, 0x09, std::uint8_t{1});
+  Store(g_route_origin_info_2, 0x0B, std::uint8_t{0});
+  Store(g_player_move_route_info_0, 0x00,
+        second_war_objective_province_id);
+  Store(g_player_move_route_info_0, 0x09, std::uint8_t{1});
+  Store(g_player_move_route_info_0, 0x0B, std::uint8_t{0});
+  Store(g_player_army, 0x40, std::int32_t{1});
+  Store(g_player_army, 0x44, std::int32_t{1});
+  Store(g_player_army, 0x30,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  Store(g_second_war_objective_province, 0x760,
+        static_cast<void *>(g_contact_province_combat_ids.data()));
+  Store(g_second_war_objective_province, 0x768, std::int32_t{2});
+  Store(g_second_war_objective_province, 0x76C, std::int32_t{2});
+  Store(g_contact_combat_0, 0x6B8,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  Store(g_contact_combat_1, 0x6B8,
+        static_cast<void *>(g_second_war_objective_province.data()));
+  xar::game::Snapshot reinforcement_world{};
+  reinforcement_world.paused = true;
+  reinforcement_world.date_raw = 43'823'104;
+  const xar::game::BattleReinforcementAssignmentRequest
+      reinforcement_request{player_army_id};
+  xar::game::BattleReinforcementAssignmentSnapshot reinforcement{};
+  g_route_edge_duration_calls = 0;
+  if (xar::ck3_11906::ReadBattleReinforcementAssignmentV1(
+          bindings, reinforcement_world, reinforcement_request,
+          reinforcement) !=
+          xar::game::BattleReinforcementAssignmentStatus::available ||
+      !reinforcement.battle_reinforcement_assignment_ready ||
+      !reinforcement.unavailable_reason.empty() ||
+      reinforcement.selected_public_cunit_id != player_army_id ||
+      reinforcement.selected_native_carmy_id != player_internal_army_id ||
+      reinforcement.coordinator_id != ai_coordinator_id ||
+      reinforcement.unit_stack_stored_index != 0 ||
+      reinforcement.subunit_stored_index != 0 ||
+      !reinforcement.signal.has_value() ||
+      reinforcement.signal->asking_for_help ||
+      !reinforcement.signal->assigned_to_help ||
+      !reinforcement.signal->asking_changed_last_evaluation ||
+      reinforcement.signal->request_power_basis_raw.has_value() ||
+      reinforcement.signal->cross_coordinator_request_valid_raw != 1 ||
+      reinforcement.signal->cross_coordinator_request_power_raw !=
+          std::optional<std::int64_t>{2'300'000} ||
+      reinforcement.signal->first_route_edge_remaining_duration_q100000 !=
+          std::optional<std::int64_t>{150'000} ||
+      !reinforcement.assignment.has_value() ||
+      reinforcement.assignment->assignment_target_province_id !=
+          second_war_objective_province_id ||
+      reinforcement.assignment->target_provenance !=
+          "native_help_override" ||
+      reinforcement.assignment->combat_binding_status !=
+          "unbound_until_contact" ||
+      reinforcement.assignment->active_combat_id.has_value() ||
+      !reinforcement.route.has_value() ||
+      reinforcement.route->route_province_ids !=
+          std::vector<std::int32_t>{second_war_objective_province_id} ||
+      reinforcement.route->route_alignment != "aligned_to_assignment" ||
+      reinforcement.route->arrival_date_raws !=
+          std::optional<std::vector<std::int32_t>>{{43'823'128}} ||
+      reinforcement.route->assignment_eta_date_raw !=
+          std::optional<std::int32_t>{43'823'128} ||
+      !reinforcement.native_order.has_value() ||
+      reinforcement.native_order
+              ->support_search_province_ids_in_stored_order !=
+          std::vector<std::int32_t>{
+              second_war_objective_province_id,
+              second_war_objective_province_id,
+              third_war_objective_province_id} ||
+      reinforcement.native_order->parent_subunits_in_stored_order.size() != 2 ||
+      reinforcement.native_order->parent_subunits_in_stored_order[0]
+              .public_cunit_ids_in_stored_order !=
+          std::vector<std::int32_t>{player_army_id} ||
+      reinforcement.native_order->parent_subunits_in_stored_order[1]
+              .public_cunit_ids_in_stored_order !=
+          std::vector<std::int32_t>{enemy_army_id} ||
+      !reinforcement.contact_projection.has_value() ||
+      reinforcement.contact_projection->status != "available" ||
+      reinforcement.contact_projection
+              ->current_target_compatible_combat_ids_in_stored_order !=
+          std::vector<std::int32_t>{
+              contact_combat_0_id, contact_combat_1_id} ||
+      reinforcement.contact_projection->contact_if_now_selected_combat_id !=
+          contact_combat_1_id ||
+      g_route_edge_duration_calls != 2) {
+    return Fail(
+        "battle-reinforcement lost AI assignment, route, or contact order");
+  }
+
+  Store(g_player_army, 0x30,
+        static_cast<void *>(g_third_war_objective_province.data()));
+  if (xar::ck3_11906::ReadBattleReinforcementAssignmentV1(
+          bindings, reinforcement_world, reinforcement_request,
+          reinforcement) !=
+          xar::game::BattleReinforcementAssignmentStatus::available ||
+      reinforcement.route->route_alignment != "not_aligned" ||
+      reinforcement.route->assignment_eta_date_raw.has_value()) {
+    return Fail("battle-reinforcement fabricated ETA for a mismatched route");
+  }
+  Store(g_player_army, 0x30,
+        static_cast<void *>(g_second_war_objective_province.data()));
+
+  Store(g_ai_selected_subunit, 0x48, static_cast<void *>(nullptr));
+  if (xar::ck3_11906::ReadBattleReinforcementAssignmentV1(
+          bindings, reinforcement_world, reinforcement_request,
+          reinforcement) !=
+          xar::game::BattleReinforcementAssignmentStatus::unavailable ||
+      reinforcement.unavailable_reason != "parent_membership_mismatch" ||
+      reinforcement.battle_reinforcement_assignment_ready ||
+      reinforcement.signal.has_value() || reinforcement.route.has_value()) {
+    return Fail("battle-reinforcement accepted assigned flag without target");
+  }
+  Store(g_ai_selected_subunit, 0x48,
+        static_cast<void *>(g_second_war_objective_province.data()));
+
+  g_route_edge_duration_calls = 0;
+  g_route_edge_duration_drift = true;
+  if (xar::ck3_11906::ReadBattleReinforcementAssignmentV1(
+          bindings, reinforcement_world, reinforcement_request,
+          reinforcement) !=
+          xar::game::BattleReinforcementAssignmentStatus::unavailable ||
+      reinforcement.unavailable_reason != "state_changed" ||
+      reinforcement.battle_reinforcement_assignment_ready) {
+    return Fail("battle-reinforcement accepted route input drift");
+  }
+  g_route_edge_duration_drift = false;
+  g_route_edge_duration_calls = 0;
+
+  Store(g_contact_combat_0, 0x6B8,
+        static_cast<void *>(g_war_objective_province.data()));
+  Store(g_contact_combat_1, 0x6B8,
+        static_cast<void *>(g_war_objective_province.data()));
+  Store(g_second_war_objective_province, 0x760,
+        static_cast<void *>(nullptr));
+  Store(g_second_war_objective_province, 0x768, std::int32_t{0});
+  Store(g_second_war_objective_province, 0x76C, std::int32_t{0});
+  Store(g_player_move_route_info_0, 0x00, std::int32_t{4});
+  Store(g_player_army, 0x40, std::int32_t{3});
+  Store(g_player_army, 0x44, std::int32_t{3});
+
   // Materialize the predicted join exactly as the native mutator would: the
   // incoming CArmy is tail-appended to attacker, every participant links the
   // same positive CombatID, and the Combat remains in the Province's sorted
@@ -4154,6 +4497,574 @@ int main() {
     return Fail(
         "actual-contact post-contact observation lost CombatID or side order");
   }
+
+  // Materialize a complete paused live-battle graph on the same exact
+  // CCombat identity spine.  Each retained-entry bucket has one row so the
+  // fixture freezes native order, conditional per-entry hard casualties,
+  // participant-owner history, and both read-only strength leaves.
+  const auto initialize_battle_entry =
+      [](auto &entry, std::int32_t regiment_id,
+         std::int64_t starting_raw, std::int64_t current_raw,
+         std::int64_t soft_raw, std::int32_t maximum,
+         std::int64_t siege_raw, std::int64_t damage_raw,
+         std::int64_t toughness_raw, std::int64_t pursuit_raw,
+         std::int64_t screen_raw) {
+        entry.fill(std::byte{0});
+        Store(entry, 0x08, regiment_id);
+        Store(entry, 0x10, starting_raw);
+        Store(entry, 0x18, current_raw);
+        Store(entry, 0x20, soft_raw);
+        Store(entry, 0x30, maximum);
+        Store(entry, 0x38, siege_raw);
+        Store(entry, 0x40, damage_raw);
+        Store(entry, 0x48, toughness_raw);
+        Store(entry, 0x50, pursuit_raw);
+        Store(entry, 0x58, screen_raw);
+      };
+  initialize_battle_entry(
+      g_battle_attacker_levy_entry, player_regiment_0_id,
+      60'000'000, 50'000'000, 4'000'000, 600, 100'000,
+      60'000'000, 12'000'000, 300'000, 500'000);
+  initialize_battle_entry(
+      g_battle_attacker_maa_entry, player_regiment_1_id,
+      40'000'000, 0, 5'000'000, 400, 200'000, 600'000,
+      700'000, 100'000, 200'000);
+  initialize_battle_entry(
+      g_battle_defender_levy_entry, enemy_regiment_0_id,
+      50'000'000, 40'000'000, 3'000'000, 500, 300'000,
+      48'000'000, 9'600'000, 400'000, 600'000);
+  initialize_battle_entry(
+      g_battle_defender_maa_entry, enemy_regiment_1_id,
+      30'000'000, 0, 2'000'000, 300, 400'000, 900'000,
+      1'000'000, 200'000, 300'000);
+  g_battle_attacker_hard_row.fill(std::byte{0});
+  Store(g_battle_attacker_hard_row, 0x08, played_character_id);
+  Store(g_battle_attacker_hard_row, 0x10, std::int64_t{7'000'000});
+  g_battle_defender_hard_row.fill(std::byte{0});
+  Store(g_battle_defender_hard_row, 0x08, enemy_character_id);
+  Store(g_battle_defender_hard_row, 0x10, std::int64_t{9'000'000});
+
+  g_contact_combat_1_attacker_armies = {player_internal_army_id, 0};
+  g_contact_combat_1_defender_armies = {enemy_internal_army_id};
+  const auto initialize_battle_side =
+      [&](std::size_t side_offset, void *army_ids,
+          std::int32_t army_capacity, std::int32_t primary_character_id,
+          std::int32_t selected_commander_id, void *levy_entry,
+          void *maa_entry, void *hard_row,
+          std::int64_t stored_current_raw,
+          std::int64_t stored_levy_current_raw) {
+        Store(g_contact_combat_1, side_offset + 0x10, army_ids);
+        Store(g_contact_combat_1, side_offset + 0x18, army_capacity);
+        Store(g_contact_combat_1, side_offset + 0x1C,
+              std::int32_t{1});
+        Store(g_contact_combat_1, side_offset + 0x28, levy_entry);
+        Store(g_contact_combat_1, side_offset + 0x30,
+              std::int32_t{1});
+        Store(g_contact_combat_1, side_offset + 0x34,
+              std::int32_t{1});
+        Store(g_contact_combat_1, side_offset + 0x40, maa_entry);
+        Store(g_contact_combat_1, side_offset + 0x48,
+              std::int32_t{1});
+        Store(g_contact_combat_1, side_offset + 0x4C,
+              std::int32_t{1});
+        Store(g_contact_combat_1, side_offset + 0x58, hard_row);
+        Store(g_contact_combat_1, side_offset + 0x60,
+              std::int32_t{1});
+        Store(g_contact_combat_1, side_offset + 0x64,
+              std::int32_t{1});
+        Store(g_contact_combat_1, side_offset + 0x70,
+              primary_character_id);
+        Store(g_contact_combat_1, side_offset + 0x74,
+              selected_commander_id);
+        Store(g_contact_combat_1, side_offset + 0x98,
+              stored_current_raw);
+        Store(g_contact_combat_1, side_offset + 0xA0,
+              stored_levy_current_raw);
+        Store(g_contact_combat_1, side_offset + 0xB8,
+              static_cast<void *>(g_contact_combat_1.data()));
+        Store(g_contact_combat_1, side_offset + 0xC0,
+              std::uint8_t{0});
+        Store(g_contact_combat_1, side_offset + 0xC1,
+              std::uint8_t{0});
+        Store(g_contact_combat_1, side_offset + 0xC2,
+              std::uint8_t{0});
+      };
+  initialize_battle_side(
+      0x20, g_contact_combat_1_attacker_armies.data(), 2,
+      played_character_id, played_character_id,
+      g_battle_attacker_levy_entry.data(),
+      g_battle_attacker_maa_entry.data(),
+      g_battle_attacker_hard_row.data(), 50'000'000, 50'000'000);
+  initialize_battle_side(
+      0x368, g_contact_combat_1_defender_armies.data(), 1,
+      enemy_character_id, -1, g_battle_defender_levy_entry.data(),
+      g_battle_defender_maa_entry.data(),
+      g_battle_defender_hard_row.data(), 40'000'000, 40'000'000);
+  Store(g_contact_combat_1, 0x6B0, std::int32_t{1});
+  Store(g_contact_combat_1, 0x6B4, std::int32_t{4});
+  Store(g_contact_combat_1, 0x6B8,
+        static_cast<void *>(g_war_objective_province.data()));
+  Store(g_contact_combat_1, 0x6C0, std::int32_t{1'200});
+  Store(g_contact_combat_1, 0x6C4, std::int32_t{960});
+  Store(g_contact_combat_1, 0x6C8, std::int64_t{5'000'000'000});
+  Store(g_contact_combat_1, 0x6D0, std::int32_t{7});
+  Store(g_contact_combat_1, 0x6D4, std::int32_t{3});
+  Store(g_contact_combat_1, 0x6E0, std::int32_t{0});
+  Store(g_contact_combat_1, 0x6E4, std::int32_t{2});
+  Store(g_contact_combat_1, 0x700, std::int32_t{-1});
+  Store(g_contact_combat_1, 0x704, std::uint8_t{1});
+  Store(g_contact_combat_1, 0x705, std::uint8_t{0});
+  Store(g_contact_combat_1, 0x708, contact_battle_result_id);
+  Store(g_contact_combat_1, 0x710, std::int64_t{-6'000'000'000});
+  Store(g_player_internal_army, 0x128, contact_combat_1_id);
+  Store(g_enemy_internal_army, 0x128, contact_combat_1_id);
+  Store(g_played_character, 0x1B8, static_cast<void *>(nullptr));
+  g_battle_side_strength_calls = 0;
+  g_battle_regiment_strength_calls = 0;
+  g_can_order_combat_retreat_calls = 0;
+  g_can_order_combat_retreat_arguments_valid = true;
+  g_can_order_combat_retreat_result = true;
+
+  const xar::game::BattleControlRequest battle_request{player_army_id};
+  xar::game::BattleControlSnapshot battle{};
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      battle.status !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      battle.observed_date_raw != 43'823'104 ||
+      battle.subject_public_cunit_id != player_army_id ||
+      battle.subject_native_carmy_id != player_internal_army_id ||
+      battle.combat_id != contact_combat_1_id ||
+      battle.province_id != war_objective_province_id ||
+      battle.selected_public_cunit_id != player_army_id ||
+      battle.selected_native_carmy_id != player_internal_army_id ||
+      battle.selected_owner_character_id != played_character_id ||
+      battle.combat_province_id != war_objective_province_id ||
+      battle.side_index != 0 || battle.side_scope != "full_side" ||
+      battle.affected_public_cunit_ids_in_stored_order !=
+          std::vector<std::int32_t>{player_army_id} ||
+      !battle.unaffected_same_side_public_cunit_ids_in_stored_order.empty() ||
+      battle.side_flags.disallow_retreat ||
+      battle.side_flags.allow_early_retreat ||
+      battle.side_flags.skip_pursuit ||
+      battle.legality.status != "available" ||
+      !battle.legality.native_boolean ||
+      battle.legality.phase_raw != 1 || battle.legality.phase != "main" ||
+      battle.legality.retreat_elapsed_baseline_date_raw != 43'822'744 ||
+      battle.legality.elapsed_whole_days != 15 ||
+      battle.legality.minimum_elapsed_whole_days_exclusive != 14 ||
+      !battle.legality.landless_gate_allows_retreat ||
+      !battle.legality.legal_now ||
+      !battle.legality.reason_codes_in_native_order.empty() ||
+      !battle.legality.native_reason_keys_in_native_order.empty() ||
+      battle.legality.earliest_day_gate_date_raw !=
+          std::optional<std::int64_t>{43'823'088} ||
+      battle.phase != "main" || battle.phase_raw != 1 ||
+      battle.phase_day != 4 || battle.winner_side != "attacker" ||
+      battle.winner_raw != 0 || battle.forced_winner_side != "none" ||
+      battle.forced_winner_raw != -1 || !battle.finalized ||
+      battle.battle_result_id != contact_battle_result_id ||
+      battle.base_combat_width != 1'200 ||
+      battle.final_combat_width != 960 ||
+      battle.roll_cadence_counter != 2 ||
+      battle.base_advantage_raw != 5'000'000'000 ||
+      battle.resolved_advantage_raw != -6'000'000'000 ||
+      !battle.battle_control_ready ||
+      g_battle_side_strength_calls != 4 ||
+      g_battle_regiment_strength_calls != 8 ||
+      g_can_order_combat_retreat_calls != 2 ||
+      !g_can_order_combat_retreat_arguments_valid) {
+    return Fail("battle-control paused frame lost exact CCombat fields");
+  }
+  if (battle.attacker.side_index != 0 ||
+      battle.attacker.role != "attacker" ||
+      battle.attacker.primary_participant_character_id !=
+          played_character_id ||
+      battle.attacker.selected_commander_character_id !=
+          played_character_id ||
+      battle.attacker.current_roll_points != 7 ||
+      battle.attacker.ordered_armies !=
+          std::vector<xar::game::BattleControlArmyIdentitySnapshot>{
+              {player_internal_army_id, player_army_id,
+               played_character_id, contact_combat_1_id}} ||
+      battle.attacker.levy_entries.size() != 1 ||
+      battle.attacker.men_at_arms_entries.size() != 1 ||
+      battle.attacker.stored_current_fighting_raw != 50'000'000 ||
+      battle.attacker.stored_levy_current_fighting_raw != 50'000'000 ||
+      !battle.attacker.stored_current_matches_derived ||
+      !battle.attacker.stored_levy_current_matches_derived ||
+      battle.attacker.derived_current_fighting_raw != 50'000'000 ||
+      battle.attacker.derived_soft_casualties_raw != 9'000'000 ||
+      battle.attacker.derived_main_fighting_entry_hard_casualties_raw !=
+          6'000'000 ||
+      battle.attacker.non_main_start_minus_current_minus_soft_raw !=
+          35'000'000 ||
+      battle.attacker.participant_hard_ledger !=
+          std::vector<xar::game::BattleControlParticipantHardSnapshot>{
+              {0, played_character_id, 7'000'000}} ||
+      battle.attacker.participant_hard_total_raw != 7'000'000 ||
+      battle.attacker.side_strength_raw != 123'456 ||
+      battle.attacker.side_strength_scale != 100'000) {
+    return Fail("battle-control attacker side lost native order or totals");
+  }
+  const auto &attacker_main = battle.attacker.levy_entries[0];
+  const auto &attacker_reserve = battle.attacker.men_at_arms_entries[0];
+  if (attacker_main.bucket != "levy" || attacker_main.bucket_index != 0 ||
+      attacker_main.regiment_id != player_regiment_0_id ||
+      attacker_main.native_carmy_id != player_internal_army_id ||
+      attacker_main.public_cunit_id != player_army_id ||
+      attacker_main.owner_character_id != played_character_id ||
+      attacker_main.starting_raw != 60'000'000 ||
+      attacker_main.current_fighting_raw != 50'000'000 ||
+      attacker_main.soft_casualties_raw != 4'000'000 ||
+      !attacker_main.fights_in_main_phase ||
+      !attacker_main.hard_casualties_available ||
+      attacker_main.hard_casualties_raw != 6'000'000 ||
+      attacker_main.effective_max_size != 600 ||
+      attacker_main.effective_siege_raw != 100'000 ||
+      attacker_main.effective_damage_raw != 60'000'000 ||
+      attacker_main.effective_toughness_raw != 12'000'000 ||
+      attacker_main.effective_pursuit_raw != 300'000 ||
+      attacker_main.effective_screen_raw != 500'000 ||
+      attacker_main.entry_strength_raw != 11'111 ||
+      attacker_reserve.bucket != "men_at_arms" ||
+      attacker_reserve.bucket_index != 0 ||
+      attacker_reserve.regiment_id != player_regiment_1_id ||
+      attacker_reserve.fights_in_main_phase ||
+      attacker_reserve.hard_casualties_available ||
+      attacker_reserve.hard_casualties_raw != 0 ||
+      attacker_reserve.entry_strength_raw != 22'222) {
+    return Fail(
+        "battle-control fabricated per-entry hard casualties for reserve");
+  }
+  if (battle.defender.side_index != 1 ||
+      battle.defender.role != "defender" ||
+      battle.defender.primary_participant_character_id !=
+          enemy_character_id ||
+      battle.defender.selected_commander_character_id != -1 ||
+      battle.defender.current_roll_points != 3 ||
+      battle.defender.ordered_armies !=
+          std::vector<xar::game::BattleControlArmyIdentitySnapshot>{
+              {enemy_internal_army_id, enemy_army_id,
+               enemy_character_id, contact_combat_1_id}} ||
+      battle.defender.levy_entries.size() != 1 ||
+      battle.defender.men_at_arms_entries.size() != 1 ||
+      !battle.defender.levy_entries[0].hard_casualties_available ||
+      battle.defender.levy_entries[0].hard_casualties_raw != 7'000'000 ||
+      battle.defender.men_at_arms_entries[0].hard_casualties_available ||
+      !battle.defender.stored_current_matches_derived ||
+      !battle.defender.stored_levy_current_matches_derived ||
+      battle.defender.derived_current_fighting_raw != 40'000'000 ||
+      battle.defender.derived_soft_casualties_raw != 5'000'000 ||
+      battle.defender.derived_main_fighting_entry_hard_casualties_raw !=
+          7'000'000 ||
+      battle.defender.non_main_start_minus_current_minus_soft_raw !=
+          28'000'000 ||
+      battle.defender.participant_hard_ledger !=
+          std::vector<xar::game::BattleControlParticipantHardSnapshot>{
+              {0, enemy_character_id, 9'000'000}} ||
+      battle.defender.participant_hard_total_raw != 9'000'000 ||
+      battle.defender.side_strength_raw != 654'321) {
+    return Fail("battle-control defender projection drifted from ABI");
+  }
+
+  // The exact day gate is strict: elapsed day 14 fails, while the selected
+  // side's early override bypasses only that gate.
+  Store(g_contact_battle_result, 0x2C, std::int32_t{43'822'768});
+  g_can_order_combat_retreat_result = false;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      battle.legality.elapsed_whole_days != 14 ||
+      battle.legality.legal_now || battle.legality.native_boolean ||
+      battle.legality.reason_codes_in_native_order !=
+          std::vector<std::string>{"too_early"} ||
+      battle.legality.native_reason_keys_in_native_order !=
+          std::vector<std::string>{
+              "COMBAT_NO_RETREAT_TOO_EARLY"} ||
+      battle.legality.earliest_day_gate_date_raw !=
+          std::optional<std::int64_t>{43'823'112}) {
+    return Fail("battle-control lost the strict retreat day-14 boundary");
+  }
+  Store(g_contact_combat_1, 0x20 + 0xC1, std::uint8_t{1});
+  g_can_order_combat_retreat_result = true;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      !battle.side_flags.allow_early_retreat ||
+      !battle.legality.legal_now || !battle.legality.native_boolean ||
+      !battle.legality.reason_codes_in_native_order.empty()) {
+    return Fail("battle-control did not apply the selected-side early gate");
+  }
+
+  // All four failures are projected from one frame in native order even
+  // though the required null-sink native call returns at its first failure.
+  Store(g_contact_combat_1, 0x20 + 0xC0, std::uint8_t{1});
+  Store(g_contact_combat_1, 0x20 + 0xC1, std::uint8_t{0});
+  Store(g_contact_combat_1, 0x20 + 0xC2, std::uint8_t{1});
+  Store(g_contact_combat_1, 0x6B0, std::int32_t{2});
+  Store(g_played_character, 0x1B8,
+        static_cast<void *>(g_played_land_status.data()));
+  Store(g_played_land_status, 0x1F8, std::int32_t{-1});
+  Store(g_combat_retreat_rule_state, 0x38, std::uint32_t{0});
+  g_can_order_combat_retreat_result = false;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      !battle.side_flags.disallow_retreat ||
+      battle.side_flags.allow_early_retreat ||
+      !battle.side_flags.skip_pursuit ||
+      battle.legality.phase_raw != 2 ||
+      battle.legality.phase != "pursuit" ||
+      battle.legality.landless_gate_allows_retreat ||
+      battle.legality.legal_now || battle.legality.native_boolean ||
+      battle.legality.reason_codes_in_native_order !=
+          std::vector<std::string>{
+              "disallowed", "too_early", "pursuit_or_done", "landless"} ||
+      battle.legality.native_reason_keys_in_native_order !=
+          std::vector<std::string>{
+              "COMBAT_NO_RETREAT_DISALLOWED",
+              "COMBAT_NO_RETREAT_TOO_EARLY",
+              "COMBAT_NO_RETREAT_PURSUIT",
+              "COMBAT_NO_RETREAT_LANDLESS"}) {
+    return Fail("battle-control retreat reasons drifted from native order");
+  }
+  Store(g_contact_combat_1, 0x20 + 0xC0, std::uint8_t{0});
+  Store(g_contact_combat_1, 0x20 + 0xC2, std::uint8_t{0});
+  Store(g_contact_combat_1, 0x6B0, std::int32_t{1});
+  Store(g_played_character, 0x1B8, static_cast<void *>(nullptr));
+  Store(g_contact_battle_result, 0x2C, std::int32_t{43'822'744});
+  g_can_order_combat_retreat_result = true;
+
+  // A legal missing BattleResultID follows the native fallback baseline. A
+  // stale positive generation remains a stronger BattleControl identity
+  // failure and is tested below.
+  Store(g_contact_combat_1, 0x708, std::int32_t{-1});
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      battle.battle_result_id != -1 ||
+      battle.legality.retreat_elapsed_baseline_date_raw != 43'822'744 ||
+      !battle.legality.legal_now) {
+    return Fail("battle-control did not use the legal BattleResult fallback");
+  }
+  Store(g_contact_combat_1, 0x708, contact_battle_result_id);
+
+  // Mirror 0x2308850's owner scan without calling it. The selected Army need
+  // not be first; public IDs remain in the native side's stored order.
+  Store(g_character_storage, 0x2C, std::int32_t{7});
+  Store(g_third_army, 0x174, kFixtureAllyCharacterId);
+  Store(g_third_internal_army, 0x128, contact_combat_1_id);
+  g_contact_combat_1_attacker_armies = {
+      third_internal_army_id, player_internal_army_id};
+  Store(g_contact_combat_1, 0x20 + 0x1C, std::int32_t{2});
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      battle.side_index != 0 || battle.side_scope != "owner_subset" ||
+      battle.affected_public_cunit_ids_in_stored_order !=
+          std::vector<std::int32_t>{player_army_id} ||
+      battle.unaffected_same_side_public_cunit_ids_in_stored_order !=
+          std::vector<std::int32_t>{third_army_id}) {
+    return Fail("battle-control owner-subset projection lost stored order");
+  }
+  g_contact_combat_1_attacker_armies = {player_internal_army_id, 0};
+  Store(g_contact_combat_1, 0x20 + 0x1C, std::int32_t{1});
+  Store(g_third_internal_army, 0x128, std::int32_t{-1});
+  Store(g_third_army, 0x174, played_character_id);
+  Store(g_character_storage, 0x2C, std::int32_t{6});
+
+  // The native dates are signed dwords, but the derived calendar lower bound
+  // is intentionally int64 and may exceed INT32_MAX without narrowing.
+  Store(game_state, 0x08, std::numeric_limits<std::int32_t>::max());
+  Store(g_contact_battle_result, 0x2C,
+        std::numeric_limits<std::int32_t>::max());
+  g_can_order_combat_retreat_result = false;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      battle.legality.elapsed_whole_days != 0 ||
+      battle.legality.earliest_day_gate_date_raw !=
+          std::optional<std::int64_t>{2'147'484'000LL} ||
+      *battle.legality.earliest_day_gate_date_raw <=
+          std::numeric_limits<std::int32_t>::max() ||
+      battle.legality.reason_codes_in_native_order !=
+          std::vector<std::string>{"too_early"}) {
+    return Fail("battle-control narrowed the retreat date boundary");
+  }
+  Store(game_state, 0x08, std::int32_t{43'823'104});
+  Store(g_contact_battle_result, 0x2C, std::int32_t{43'822'744});
+  g_can_order_combat_retreat_result = true;
+
+  // The computed raw gates must agree with the exact null-sink native result.
+  g_can_order_combat_retreat_result = false;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::state_changed ||
+      battle.battle_control_ready) {
+    return Fail("battle-control accepted a native retreat legality mismatch");
+  }
+  g_can_order_combat_retreat_result = true;
+
+  Bindings missing_retreat_binding = bindings;
+  missing_retreat_binding.can_order_combat_retreat = nullptr;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          missing_retreat_binding, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::unavailable ||
+      battle.battle_control_ready) {
+    return Fail("battle-control fabricated unavailable retreat legality");
+  }
+
+  // The native strength leaf mutates phase-day after sample A.  A reader
+  // that does not compare the two complete frames would incorrectly publish
+  // a hybrid snapshot.
+  g_battle_mutate_on_side_strength = true;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::state_changed ||
+      battle.battle_control_ready) {
+    return Fail("battle-control accepted a changing double sample");
+  }
+  Store(g_contact_combat_1, 0x6B4, std::int32_t{4});
+
+  Store(g_contact_battle_result, 0x08,
+        std::int32_t{0x02000001});
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::state_changed ||
+      battle.battle_control_ready) {
+    return Fail("battle-control accepted stale BattleResult generation");
+  }
+  Store(g_contact_battle_result, 0x08, contact_battle_result_id);
+
+  Store(g_contact_combat_1, 0x705, std::uint8_t{1});
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::state_changed ||
+      battle.battle_control_ready) {
+    return Fail("battle-control sampled inside daily dispatch");
+  }
+  Store(g_contact_combat_1, 0x705, std::uint8_t{0});
+
+  Store(g_contact_combat_1, 0x20 + 0xB8,
+        static_cast<void *>(nullptr));
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::state_changed ||
+      battle.battle_control_ready) {
+    return Fail("battle-control accepted a stale CCombatSide back-pointer");
+  }
+  Store(g_contact_combat_1, 0x20 + 0xB8,
+        static_cast<void *>(g_contact_combat_1.data()));
+
+  Store(g_contact_combat_1, 0x20 + 0x98,
+        std::int64_t{49'999'999});
+  Store(g_contact_combat_1, 0x20 + 0xA0,
+        std::int64_t{49'999'998});
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      !battle.battle_control_ready ||
+      battle.attacker.stored_current_fighting_raw != 49'999'999 ||
+      battle.attacker.stored_levy_current_fighting_raw != 49'999'998 ||
+      battle.attacker.derived_current_fighting_raw != 50'000'000 ||
+      battle.attacker.stored_current_matches_derived ||
+      battle.attacker.stored_levy_current_matches_derived) {
+    return Fail("battle-control lost stable stale-cache discriminants");
+  }
+  Store(g_contact_combat_1, 0x20 + 0x98,
+        std::int64_t{50'000'000});
+  Store(g_contact_combat_1, 0x20 + 0xA0,
+        std::int64_t{50'000'000});
+
+  Store(jomini_state, 0x20, std::uint8_t{0});
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::requires_paused ||
+      battle.battle_control_ready) {
+    return Fail("running map exposed mutable battle-control state");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{1});
+
+  Store(g_player_internal_army, 0x128, std::int32_t{-1});
+  g_player_army_state_code = 1;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::subject_not_in_combat ||
+      battle.battle_control_ready) {
+    return Fail("battle-control did not distinguish an idle subject");
+  }
+  Store(g_player_internal_army, 0x128, contact_combat_1_id);
+  Store(g_player_army, 0x170, std::int32_t{1});
+  g_player_army_state_code = 6;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::subject_retreating ||
+      battle.battle_control_ready) {
+    return Fail("battle-control did not reject a retreating subject");
+  }
+
+  // The direct full-CombatID lifecycle reader deliberately has no selected
+  // Army or retreat-legality gate. This is the production postcondition path
+  // for the stable frame above, where CK3 still reports both in_combat and
+  // retreating on the public CUnit.
+  const xar::game::BattleTransitionRequest transition_request{
+      contact_combat_1_id};
+  xar::game::BattleTransitionSnapshot transition{};
+  if (xar::ck3_11906::ReadBattleTransitionSnapshot(
+          bindings, transition_request, transition) !=
+          xar::game::BattleTransitionSnapshotStatus::available ||
+      transition.status !=
+          xar::game::BattleTransitionSnapshotStatus::available ||
+      !transition.battle_transition_ready ||
+      transition.observed_date_raw != 43'823'104 ||
+      transition.combat_id != contact_combat_1_id ||
+      transition.province_id != war_objective_province_id ||
+      transition.phase != "main" || transition.phase_raw != 1 ||
+      transition.phase_day != 4 ||
+      transition.winner_side != "attacker" || transition.winner_raw != 0 ||
+      transition.forced_winner_side != "none" ||
+      transition.forced_winner_raw != -1 || !transition.finalized ||
+      transition.battle_result_id != contact_battle_result_id ||
+      transition.attacker_public_cunit_ids_in_stored_order !=
+          std::vector<std::int32_t>{player_army_id} ||
+      transition.defender_public_cunit_ids_in_stored_order !=
+          std::vector<std::int32_t>{enemy_army_id}) {
+    return Fail("battle-transition lost the retreating CombatID lifecycle");
+  }
+  const xar::game::BattleTransitionRequest missing_transition_request{
+      0x02000003};
+  if (xar::ck3_11906::ReadBattleTransitionSnapshot(
+          bindings, missing_transition_request, transition) !=
+          xar::game::BattleTransitionSnapshotStatus::combat_not_found ||
+      transition.status !=
+          xar::game::BattleTransitionSnapshotStatus::combat_not_found ||
+      !transition.battle_transition_ready ||
+      transition.combat_id != missing_transition_request.combat_id ||
+      transition.province_id != -1 || !transition.phase.empty() ||
+      !transition.attacker_public_cunit_ids_in_stored_order.empty() ||
+      !transition.defender_public_cunit_ids_in_stored_order.empty()) {
+    return Fail("battle-transition lost the full-generation not-found state");
+  }
+  Store(g_contact_combat_1, 0x705, std::uint8_t{1});
+  if (xar::ck3_11906::ReadBattleTransitionSnapshot(
+          bindings, transition_request, transition) !=
+          xar::game::BattleTransitionSnapshotStatus::state_changed ||
+      transition.battle_transition_ready) {
+    return Fail("battle-transition sampled inside daily dispatch");
+  }
+  Store(g_contact_combat_1, 0x705, std::uint8_t{0});
+  Bindings missing_transition_binding = bindings;
+  missing_transition_binding.combat_storage_slot = nullptr;
+  if (xar::ck3_11906::ReadBattleTransitionSnapshot(
+          missing_transition_binding, transition_request, transition) !=
+          xar::game::BattleTransitionSnapshotStatus::unavailable ||
+      transition.battle_transition_ready) {
+    return Fail("battle-transition fabricated unavailable lifecycle state");
+  }
+  Store(g_player_army, 0x170, std::int32_t{0});
+  g_player_army_state_code = 2;
 
   Store(g_enemy_internal_army, 0x128, std::int32_t{-1});
   if (xar::ck3_11906::ReadActualContactScope(
@@ -4398,7 +5309,8 @@ int main() {
       combat_inputs.ongoing_combats[0].final_combat_width != 960 ||
       combat_inputs.ongoing_combats[0].orientation !=
           "native_side_0_attacker_side_1_defender" ||
-      combat_inputs.ongoing_combats[0].resolved_advantage != 9 ||
+      combat_inputs.ongoing_combats[0].base_advantage != -5'000'000'000 ||
+      combat_inputs.ongoing_combats[0].resolved_advantage != 6'000'000'000 ||
       g_effective_stats_calls != 4 ||
       g_counter_current_chunk_calls != 3 ||
       g_counter_resolution_calls != 2) {

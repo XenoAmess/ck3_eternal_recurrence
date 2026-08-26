@@ -353,6 +353,65 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   并完成周期及最终 checkpoint；全程没有 recovery，每轮 cleanup 均 proven。当前 checkpoint SHA-256 为
   `12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D`。这是持续自治进展实证，不代表整局已经
   完成，也不改变 `actual_contact_scope_ready=false`。
+- 2026-08-26 `query-battle-control-snapshot-v1` 用 fresh production bridge 从 checkpoint
+  `9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63` 托管冷恢复，PID `80196` 连续推进
+  maneuver day 1/2/3、main day 0/1/2。main day 1 与 2 均读到真实 current/soft/hard ledger delta；双方
+  `CCombatSide+0x98/+0xA0` tick-start cache 在 damage 后稳定落后于 retained-entry derived sum，两个 match flag
+  如实为 false，而每帧 immediate query pair 仍 canonical-equal、sequence 严格增加。artifact size `1253493`，
+  SHA-256 `A0FC6BB7268E38026CC8EED6D6388BFD675AD5DCFB60A1A65FE1C1B64E816AC6`；DLL SHA-256
+  `2F50F14699B8E6D9DF468DCFBEDD145814E50CAC0204D70A32E8CBFD36C34E8F`，injector SHA-256
+  `B22548AEC9EE2B60EBA14CCDE2290AA1CED47EE5D2D277D5031742D683E0F1A3`。session/shutdown、`tree_gone`、
+  `cleanup_proven` 与 driver close 全部通过；该 GREEN 关闭 battle identity/hold observation，不关闭 retreat command。
+- 同一 checkpoint 与 fresh DLL SHA `490E90B41AF43747E43CAE104D11DEFA20D3E27353577114DB7874E1ED09A190`
+  又完成 active-retreat expanded projection 的 17 帧 progression：elapsed day 0–14 均为 native/legal false + `too_early`，
+  day 15/16 在 main phase 变为 true；artifact SHA
+  `FB521B39AD5529434596212DB9ADC1EA27D4C270D28D13575B9A2D80913BCF40`。随后 full-side action harness 在 day15
+  对 target `2579` 完成 exact preview/token/order，并在更新 paused snapshot 实见 CUnit `83886341` 为 retreating、target/route
+  均为 `2579`；artifact size `627856`、SHA
+  `A57FF20DCAD39DF79DAB6A9418054C36B0F5489C5D8B5E9E880CE899AE89DF9C`，cleanup proven。旧 battle query 因
+  retreating subject 拒绝，故该 GREEN 只关闭 semantic action，不关闭 prior-CombatID winner/phase 完整 postcondition。
+- 随后的 full-CombatID lifecycle query 不再依赖 retreating subject eligibility。同一 immutable save 的 managed v6 run 在
+  full-side 命令后直接读取 prior `CombatID=335544325`，实见 `main/12 → pursuit/0`、winner=`defender`，attacker
+  `[83886341]`、defender `[357,33554657]`，并保持 source save SHA
+  `9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63` 不变。artifact size `629571`、SHA
+  `21D58737126CA4ED8B0B49DB7749EA4701F3BA6F94A8B8493698F8737E5784FA`；DLL SHA
+  `BD7C309E27EE2A8C1432A501CB45ADC0C2E0A33FC2D83D23B78E311CB63009AB`，injector SHA
+  `7AB872D0F364527EFB1581D7B2E3025B14441CE0426900A7894F38794121FDD3`，managed cleanup 成立。该证据关闭
+  homogeneous-owner full-side postcondition。
+- 2026-08-26 owner-subset v13 随后从同一 immutable source save 完成完整 managed GREEN。production-only
+  session 先推进到 date `53178624`；non-debug 临时 `production + mod_bridge` seed session 用
+  `province:2543.province_owner` 解析动态 Character `36108`，换人/清 guard 后各取得两个不同 request ID 的完整
+  paused poll frame。只迁移 seed save bytes 后，fresh production-only PID 重新绑定 Character `36108`，exact preview/token/order
+  只撤 CUnit `357`；同日 native state 为 retreating、target/route `2581`，旧 CombatID defender 从
+  `[357,33554657]` 变为 `[33554657]`，attacker 仍为 `[83886341]`、phase `main/12`、winner `none`。artifact size
+  `790823`、SHA `7780B619B2E7B90B8D5D5030D779F58F266585A6246A79B6C2FE20EF0F2701F9`；source hash 未变，所有
+  session、tree 与 driver cleanup 均通过。`character:<number>` 只能解析历史数据库 key，不能拿动态 save CharacterID
+  当链接；动态对象必须先从已冻结的 province/title/army 等 live scope 锚点解析。
+- 同一实机还确认 `-continuelastsave` 在 fresh copied profile 中解析 `save games/autosave.ck3`；只复制根目录
+  `last_save.ck3` 或另存为 `save games/last_save.ck3` 会在 `error.log` 写
+  `Could not load save game [autosave]` 并回到主菜单。所有 fresh acceptance stage 必须把目标 bytes 物化到精确
+  `autosave.ck3` 槽，同时保留 source SHA 校验；ACK 或根指针不能替代 map-ready snapshot。
+- 2026-08-26 `BattleReinforcementAssignmentV1` 在 disposable production profile 上完成 paused、只读 managed GREEN：
+  subject CUnit `357` 连续两次返回相同 frame（frame SHA
+  `F410E1A5F19BF16F5C8AE34B62E69A10DAA0B7C55E178E16749EE27003DE5023`），exact build、capability、main-thread
+  generation、CombatID `335544325` membership、完整 route 与 cleanup 全通过。artifact size `36470`、SHA
+  `F0A6F3C73D49AE93CC20680E23E787F28B54CA086DAD80392E27651DAB1DB9C6`；source/clone save SHA 仍为
+  `9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`。本帧 `asking=true`、`assigned=false`，
+  因而只关闭 query production-live，不关闭 assigned+aligned ETA/join gate。实机同时证明 active combat 中 direct
+  `CUnit+0x30=2579` 可与 ArmySnapshot 的 remaining-route endpoint `2581` 不同，验收器必须分别校验这两个契约。
+- `run_planner_battle_control_live_acceptance.py` 随后在自动创建并删除的隔离 profile clone 中，直接调用 production
+  `choose_one_life_turn` 完成两轮 battle query→one-day advance→requery：`CombatID=335544325` 不变，日期
+  `53178264→53178288→53178312`，maneuver day `1→2→3`，两轮均返回 `same_combat_advanced`；retreat action 数为 0，
+  source autosave SHA `9104CCB8...CC63` 前后不变，cleanup 与 clone removal 均成立。artifact size `432082`、SHA
+  `96CE25384517F0060A58623958DE071F43C3C2F7B68AEB6E668473E986C1DD57`；这关闭
+  `planner_battle_hold_live_ready`，不关闭 forecast/retreat strategy。
+- 同轮旧增量 MSVC build directory 曾产出注入后 `C0000005` 的 RED。原因不是 CK3 ABI 漂移，而是中文编译器
+  `/showIncludes` 输出未被依赖跟踪解析，`game_contract.hpp` 已变更却仍链接旧对象。`native_bridge/CMakeLists.txt`
+  现只针对已实测的乱码探测值，把 Ninja 的依赖前缀修正为编译器实际输出的 `注意: 包含文件:`；fresh `v1h`
+  构建中 `bridge.cpp.obj` 已记录 18 个 header dependency（含 `game_contract.hpp`），`ck3_11906.cpp.obj` 也包含该公共
+  header，full CTest `23/23` GREEN。exact bridge 改公共 header 后若出现只在旧目录复现的入口崩溃，仍须先用全新
+  构建目录复核，并记录候选 DLL/injector SHA；不能把“build 命令返回成功”当作所有 translation units 已按新 header
+  重编译的证据，也不能为消除 RED 去调用任何会写真实 combat 的 refresh helper。
 - 2026-08-21 同一发布候选的第一次矩阵在第二格到达主菜单前发生 CK3 原生 `C0000005`，crash bundle 停在数据库图标初始化，无 fixture marker、无 blocking project diagnostic，运行树、EXE 与受保护存储未变。该 RED 必须原样保留；只有全新 userdir 的同格重试完整 GREEN，且随后另一全新目录的正式三格矩阵 3/3 GREEN，才能把它判为一次性引擎冷启动崩溃，禁止直接重标原报告。
 - Windows Python Launcher 的 `py <script.py>` 会解释脚本首行的 `/usr/bin/env python3`，可能选中 `PATH` 里的另一套 Python，而不是刚由 `py -m pip` 安装依赖的默认解释器。2026-08-21 实测该分裂让非固定 Pillow 重建的三张 DXT1 DDS 与仓库字节不同，产生假 stale；项目 `.venv` 的 `Pillow==12.3.0` 与官方 CI 均 GREEN。遇到素材 parity 全红时先打印实际解释器和 Pillow 版本，本机 L0 优先直接调用 `tools\.venv\Scripts\python.exe`，禁止为消除环境假红而重写已发布素材。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。

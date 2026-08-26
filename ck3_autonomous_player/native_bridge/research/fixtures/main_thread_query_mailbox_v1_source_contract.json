@@ -163,8 +163,12 @@
       "ExecuteWarEntryAssessmentMailboxQueryV1",
       "ExecuteRouteContactHorizonMailboxQueryV1",
       "ExecuteActualContactScopeMailboxQueryV1",
-      "ExecuteCombatSimulationInputsV3MailboxQuery"
+      "ExecuteCombatSimulationInputsV3MailboxQuery",
+      "ExecuteBattleControlSnapshotMailboxQueryV1",
+      "ExecuteBattleTransitionMailboxQueryV1",
+      "ExecuteBattleReinforcementAssignmentMailboxQueryV1"
     ],
+    "query_scope": "typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment",
     "first_live_target_limit": 1,
     "expected_consecutive_verified": 2,
     "transport": "heartbeat_metadata_plus_typed_war_entry_command"

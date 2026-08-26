@@ -20,6 +20,7 @@ try:
         _is_access_denied,
         _toolhelp_ck3_processes,
         _toolhelp_process_identity,
+        same_process_creation_time,
     )
 except ImportError:  # Direct execution by the detached watchdog launcher.
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -27,6 +28,7 @@ except ImportError:  # Direct execution by the detached watchdog launcher.
         _is_access_denied,
         _toolhelp_ck3_processes,
         _toolhelp_process_identity,
+        same_process_creation_time,
     )
 
 
@@ -87,7 +89,10 @@ def _matches(
             not str(process.ExecutablePath or "")
             or _normalized(process.ExecutablePath) == _normalized(executable)
         )
-        and str(process.CreationDate) == creation_date
+        and (
+            str(process.CreationDate) == creation_date
+            or same_process_creation_time(process.CreationDate, creation_date)
+        )
     )
 
 
@@ -100,7 +105,10 @@ def _parent_matches(
     return (
         int(process.ProcessId) == expected_pid
         and _normalized(process.ExecutablePath) == _normalized(executable)
-        and str(process.CreationDate) == creation_date
+        and (
+            str(process.CreationDate) == creation_date
+            or same_process_creation_time(process.CreationDate, creation_date)
+        )
     )
 
 

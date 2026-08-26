@@ -136,6 +136,78 @@ def _ck3_query_actual_contact_scope(
     )
 
 
+def _ck3_query_battle_control_snapshot_v1(
+    service: GameplayBridgeService,
+    subject_army_id: int,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Observe retreat gates for one full public CUnitID without mutation."""
+    return service.query_battle_control_snapshot_v1(
+        subject_army_id,
+        expected_revision=expected_revision,
+    )
+
+
+def _ck3_query_battle_transition_v1(
+    service: GameplayBridgeService,
+    combat_id: int,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Observe one positive full CombatID without an army-state gate."""
+    return service.query_battle_transition_v1(
+        combat_id,
+        expected_revision=expected_revision,
+    )
+
+
+def _ck3_query_battle_reinforcement_assignment_v1(
+    service: GameplayBridgeService,
+    selected_public_cunit_id: int,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Observe one CUnit's native AI help assignment without mutation."""
+    return service.query_battle_reinforcement_assignment_v1(
+        selected_public_cunit_id,
+        expected_revision=expected_revision,
+    )
+
+
+def _ck3_preview_active_combat_retreat_v1(
+    service: GameplayBridgeService,
+    selected_public_cunit_id: int,
+    target_province_id: int,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Issue a token only for a legal same-frame exact native route."""
+    return service.preview_active_combat_retreat_v1(
+        selected_public_cunit_id,
+        target_province_id,
+        expected_revision=expected_revision,
+    )
+
+
+def _ck3_order_active_combat_retreat_v1(
+    service: GameplayBridgeService,
+    selected_public_cunit_id: int,
+    expected_revision: int,
+    expected_combat_id: int,
+    expected_side_index: int,
+    expected_scope: str,
+    target_province_id: int,
+    candidate_token: str,
+) -> dict[str, object]:
+    """Re-prove and consume one active-retreat token before player movement."""
+    return service.order_active_combat_retreat_v1(
+        selected_public_cunit_id,
+        expected_revision=expected_revision,
+        expected_combat_id=expected_combat_id,
+        expected_side_index=expected_side_index,
+        expected_scope=expected_scope,
+        target_province_id=target_province_id,
+        candidate_token=candidate_token,
+    )
+
+
 def create_server(driver: GameplayBridgeDriver):
     """Build the MCP server lazily so baseline vision installs need no SDK."""
     try:
@@ -375,6 +447,78 @@ def create_server(driver: GameplayBridgeDriver):
             subject_army_id,
             target_province_id,
             expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_battle_control_snapshot_v1(
+        subject_army_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one full public CUnitID's battle and retreat gates while paused."""
+        return _ck3_query_battle_control_snapshot_v1(
+            service,
+            subject_army_id,
+            expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_battle_transition_v1(
+        combat_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read phase, winner and ordered sides for one full CombatID."""
+        return _ck3_query_battle_transition_v1(
+            service,
+            combat_id,
+            expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_battle_reinforcement_assignment_v1(
+        selected_public_cunit_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read native help flags, target, exact route/ETA and contact candidates."""
+        return _ck3_query_battle_reinforcement_assignment_v1(
+            service,
+            selected_public_cunit_id,
+            expected_revision,
+        )
+
+    @server.tool()
+    def ck3_preview_active_combat_retreat_v1(
+        selected_public_cunit_id: int,
+        target_province_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Preview one legal active-combat withdrawal and return a short token."""
+        return _ck3_preview_active_combat_retreat_v1(
+            service,
+            selected_public_cunit_id,
+            target_province_id,
+            expected_revision,
+        )
+
+    @server.tool()
+    def ck3_order_active_combat_retreat_v1(
+        selected_public_cunit_id: int,
+        expected_revision: int,
+        expected_combat_id: int,
+        expected_side_index: int,
+        expected_scope: str,
+        target_province_id: int,
+        candidate_token: str,
+    ) -> dict[str, object]:
+        """Consume a fresh retreat token; ACK remains verification-pending."""
+        return _ck3_order_active_combat_retreat_v1(
+            service,
+            selected_public_cunit_id,
+            expected_revision,
+            expected_combat_id,
+            expected_side_index,
+            expected_scope,
+            target_province_id,
+            candidate_token,
         )
 
     @server.tool()

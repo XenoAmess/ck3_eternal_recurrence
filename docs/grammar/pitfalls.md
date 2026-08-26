@@ -23,6 +23,7 @@
 | 动态 Faith 行可见且 tooltip 正常，但点击后 scripted GUI 完全没有执行 | 把原版 `Button_Select_Faith` 模板直接搬到非 ruler-designer 窗口会携带不适用的交互状态；此外，GUI saved scope 的目录成员判断不适合作为行按钮的前置门禁，内容子层还可能吞掉自动化点击 | 外层使用普通 `button_standard_hover`，在父层以 `Scope.Faith` 切换上下文，内容 `hbox` 设 `alwaystransparent = yes`；选择 effect 只校验玩家访问和 `scope:faith` 存在，最终配置/购买仍负责目录成员校验。自动化先用 OCR 定位行，再点击实测有效的行内空白并等待 effect marker，不把“发出点击”当成功。2026-08-20 CK3 1.19.0.6 `xar_courtier_creator_postreview22_20260820` 实测 |
 | `gfx/interface/icons/traits/_stars_N.dds: failed to read trait level star texture` | trait 的 `track` 有 N 个 entry 时，引擎按 `TRAIT_OVERLAY_LEVEL_STARS` 自动请求 `_stars_N.dds`；CK3 1.19.0.6 原版只提供 0–5，十级 trait hover 会每帧刷缺图错误 | mod 必须补同路径的 `_stars_10.dds`。本项目由 `tools/compose_trait_stars.py` 程序化生成并做逐字节静态 parity；验收把 `failed to read trait level star texture` 视为项目错误，即使该日志行不含 `xar`。2026-08-21 【琉焰之视】hover 实测。 |
 | `gui/xxx.gui: 文件 should be in utf8-bom`（scripted_widgets 等） | 同上 BOM | 加 BOM |
+| `Referencing non-existent character in script link character:<运行时ID>` | `character:<number>` 解析的是历史数据库 key，不是 native snapshot/save 中的动态 CharacterID；即使数字与 `GetID` 一致也不会变成可用 scope | 从已冻结且可静态链接的对象进入 live scope，例如 `province:2543 = { province_owner = { save_temporary_scope_as = target } }`，再使用 `set_player_character = scope:target`；动作前后仍用 native CharacterID 验证。2026-08-26 CK3 1.19.0.6 non-debug paused inbox 实测 |
 
 ## on_action / 事件流程
 

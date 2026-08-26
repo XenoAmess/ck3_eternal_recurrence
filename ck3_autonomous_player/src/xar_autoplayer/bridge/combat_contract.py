@@ -2982,10 +2982,19 @@ def _normalize_ongoing_combats(
             for field in (
                 "side_0_roll",
                 "side_1_roll",
-                "base_advantage",
-                "resolved_advantage",
             )
         }
+        signed_fields.update(
+            {
+                field: _conditional_signed_int64(
+                    row.get(field), available, f"{name}.{field}"
+                )
+                for field in (
+                    "base_advantage",
+                    "resolved_advantage",
+                )
+            }
+        )
         orientation = row.get("orientation")
         if available:
             if orientation != "native_side_0_attacker_side_1_defender":

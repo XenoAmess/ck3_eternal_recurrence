@@ -67,6 +67,7 @@ from xar_autoplayer.runtime import (  # noqa: E402
     wait_for_runtime_attestation,
 )
 from xar_autoplayer.integrity import steam_userdata_snapshot  # noqa: E402
+import xar_autoplayer.runtime as runtime_module  # noqa: E402
 
 
 GAME_DIR = REPO_ROOT / "Crusader Kings III"
@@ -701,6 +702,61 @@ class TrackedShutdownTests(unittest.TestCase):
                         nonce,
                     )
 
+    def test_watchdog_wmi_create_retains_command_for_toolhelp_authentication(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-watchdog-command-") as temporary:
+            root = Path(temporary)
+            ready = root / "watchdog.ready.json"
+            record = root / "ck3.json"
+            marker = root / "unsafe-cleanup.json"
+            ready.write_text(
+                json.dumps(
+                    {
+                        "nonce": "worker-thread-nonce",
+                        "parent_pid": 456,
+                        "parent_executable": str(Path(sys.executable)),
+                        "parent_creation_date": "created",
+                        "watchdog_pid": 123,
+                    }
+                ),
+                encoding="ascii",
+            )
+            identity = {
+                "pid": 123,
+                "parent_pid": 456,
+                "name": "pythonw.exe",
+                "executable": str(Path(sys.executable).with_name("pythonw.exe")),
+                "creation_date": "watchdog-created",
+                "command_line": "",
+            }
+            try:
+                with mock.patch(
+                    "xar_autoplayer.runtime.subprocess.run",
+                    return_value=subprocess.CompletedProcess(
+                        args=["powershell.exe"], returncode=0, stdout="123\n", stderr=""
+                    ),
+                ), mock.patch(
+                    "xar_autoplayer.runtime._process_identity", return_value=identity
+                ), mock.patch(
+                    "xar_autoplayer.runtime._authenticated_watchdog_running",
+                    return_value=True,
+                ):
+                    watchdog_pid, _ = _start_process_watchdog(
+                        456,
+                        Path(sys.executable),
+                        "created",
+                        "worker-thread-nonce",
+                        ready,
+                        record,
+                        marker,
+                        GAME_DIR / "binaries" / "ck3.exe",
+                    )
+                self.assertEqual(watchdog_pid, 123)
+                command = runtime_module._FALLBACK_WATCHDOG_COMMAND_LINES[123]
+                self.assertIn("process_watchdog.py", command)
+                self.assertIn("worker-thread-nonce", command)
+            finally:
+                runtime_module._FALLBACK_WATCHDOG_COMMAND_LINES.pop(123, None)
+
     @unittest.skipUnless(os.name == "nt", "Windows Job Object contract")
     def test_suspended_process_is_assigned_before_resume(self) -> None:
         executable = Path(os.environ.get("ComSpec", "C:/Windows/System32/cmd.exe"))
@@ -840,6 +896,37 @@ class TrackedShutdownTests(unittest.TestCase):
             )
         )
 
+    def test_watchdog_identity_accepts_same_creation_from_wmi_and_toolhelp(self) -> None:
+        parent = SimpleNamespace(
+            ProcessId=456,
+            ExecutablePath="C:/Python/python.exe",
+            CreationDate="20260822090033.870978+480",
+        )
+        self.assertTrue(
+            _parent_matches(
+                parent,
+                expected_pid=456,
+                executable="C:/Python/python.exe",
+                creation_date="2026-08-22T01:00:33.8709780Z",
+            )
+        )
+        child = SimpleNamespace(
+            ProcessId=123,
+            ParentProcessId=456,
+            Name="ck3.exe",
+            ExecutablePath="C:/game/ck3.exe",
+            CreationDate="20260822090033.870978+480",
+        )
+        self.assertTrue(
+            _matches(
+                child,
+                expected_pid=123,
+                parent_pid=456,
+                executable="C:/game/ck3.exe",
+                creation_date="2026-08-22T01:00:33.8709780Z",
+            )
+        )
+
     def test_watchdog_same_object_with_unverifiable_command_is_unknown(self) -> None:
         identity = {
             "pid": 123,
@@ -871,6 +958,25 @@ class TrackedShutdownTests(unittest.TestCase):
         }
         with mock.patch(
             "win32com.client.GetObject", return_value=service
+        ), mock.patch(
+            "xar_autoplayer.runtime._toolhelp_process_identity",
+            return_value=identity,
+        ):
+            self.assertEqual(
+                _process_identity(123), {**identity, "command_line": ""}
+            )
+
+    def test_runtime_worker_wmi_moniker_failure_uses_toolhelp(self) -> None:
+        identity = {
+            "pid": 123,
+            "parent_pid": 456,
+            "name": "python.exe",
+            "executable": "C:/Python/python.exe",
+            "creation_date": "created",
+        }
+        moniker_error = OSError(-2147221020, "Invalid syntax")
+        with mock.patch(
+            "win32com.client.GetObject", side_effect=moniker_error
         ), mock.patch(
             "xar_autoplayer.runtime._toolhelp_process_identity",
             return_value=identity,

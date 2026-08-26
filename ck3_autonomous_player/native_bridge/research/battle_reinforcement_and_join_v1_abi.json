@@ -1,0 +1,439 @@
+{
+  "schema_version": "xar.ck3.battle-reinforcement-and-join.research.v1",
+  "contract_stage": "research_static_plus_production_live",
+  "production_live": true,
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "ai_defines_path": "Crusader Kings III/game/common/defines/ai/00_ai.txt",
+    "ai_defines_sha256": "C78F9CD8DF9938CC9F38E817BCB6E32CD13720B5BD9DE077B85E3E1C6F030293"
+  },
+  "evidence_boundary": {
+    "static_disassembly_ready": true,
+    "original_data_ready": true,
+    "implementation_ready": true,
+    "query_capability_advertised": true,
+    "production_live_ready": true,
+    "command_ready": false,
+    "game_started_for_this_research": false,
+    "mutation_executed_for_this_research": false
+  },
+  "native_types": {
+    "CAIUnitStack": {
+      "rtti_rva": "0x52F9638",
+      "vtable_rva": "0x4191870",
+      "deleting_destructor_rva": "0x18452C0",
+      "exact_size": 152,
+      "fields": {
+        "+0x08/+0x14": "Province* support-search candidate data/count in native stored order",
+        "+0x28/+0x34": "full CUnitID data/count",
+        "+0x40/+0x4C": "CAISubunitStack* data/count in native stored order",
+        "+0x58": "CAIWarCoordinator*",
+        "+0x60": "opaque campaign/assignment target-like pointer",
+        "+0x6C": "countdown raw",
+        "+0x74/+0x78/+0x79": "assignment/state raw",
+        "+0x7C/+0x80": "cooldown raw",
+        "+0x90": "flags raw"
+      }
+    },
+    "CAISubunitStack": {
+      "rtti_rva": "0x52FC278",
+      "vtable_rva": "0x4192778",
+      "deleting_destructor_rva": "0x186F180",
+      "destructor_rva": "0x186F1C0",
+      "exact_size": 88,
+      "fields": {
+        "+0x10/+0x1C": "full CUnitID data/count",
+        "+0x28": "same-coordinator request_power_basis_raw; current only while flags bit0 is set",
+        "+0x34": "cross-coordinator request-valid raw byte; producer unknown",
+        "+0x38": "cross-coordinator request power raw; consumed only when +0x34 is nonzero",
+        "+0x40": "parent CAIUnitStack*",
+        "+0x48": "support-target override Province* captured from requester current Province",
+        "+0x50 bit0": "asking_for_help",
+        "+0x50 bit1": "assigned_to_help",
+        "+0x50 bit4": "prior asking bit XOR new asking bit on most recent 0x1872BF0 evaluation"
+      },
+      "ownership_correction": "asking and assignment flags are owned by CAISubunitStack+0x50, not CAIUnitStack+0x50"
+    },
+    "CAIWarCoordinator": {
+      "rtti_rva": "0x52FB408",
+      "vtable_rva": "0x41923B0",
+      "identity_offset": "+0x10",
+      "stack_array": "+0x50/+0x5C"
+    },
+    "CAIManager": {
+      "rtti_rva": "0x52FEBE8",
+      "secondary_vtable_rva": "0x4193898",
+      "update_slot_offset": "+0x30",
+      "update_rva": "0x18876D0"
+    },
+    "CUnit": {
+      "+0x20": "current Province*",
+      "+0x30": "direct native movement-target Province* slot; independent from the remaining-route final semantic target",
+      "+0x38/+0x44": "active route row data/count",
+      "+0x168": "current-edge movement progress raw",
+      "+0x170": "movement/retreat state raw",
+      "+0x178": "full internal CArmyID",
+      "+0x190": "cached movement speed raw",
+      "+0x1C4": "full CAIWarCoordinator component ID",
+      "+0x1D0": "live CAISubunitStack* backlink"
+    },
+    "CArmy": {
+      "+0x124": "full backing public CUnitID",
+      "+0x128": "full active CCombatID; no future reinforcement binding before contact",
+      "+0x38/+0x44": "full CRegimentID data/count in native stored order"
+    }
+  },
+  "resolution_root": {
+    "subject": "positive int32 full public CUnitID",
+    "coordinator_id_source": "CUnit+0x1C4",
+    "coordinator_storage_root": "module+0x57C07A8",
+    "coordinator_fallback": "module+0x57C0798; never publish as real",
+    "coordinator_identity_check": "CAIWarCoordinator+0x10 equals full ID",
+    "subunit_source": "CUnit+0x1D0",
+    "required_membership_checks": [
+      "exact CAISubunitStack vtable",
+      "subunit full CUnitID array contains subject",
+      "parent exact CAIUnitStack vtable",
+      "parent subunit pointer array contains subunit",
+      "parent coordinator pointer equals generation-valid resolved coordinator",
+      "two samples in the same paused revision have identical IDs, counts, memberships, flags, assignment target and route"
+    ]
+  },
+  "native_ask_decision": {
+    "recalculate_rva": "0x1872BF0",
+    "caller_rva": "0x1848310",
+    "representative_unit_resolver_rva": "0x1871D20",
+    "invalid_or_state3_effect": "clear asking bit and update transition bit",
+    "combat_source": "first full CCombatID in current Province+0x760/+0x76C, generation-resolved and active-checked",
+    "side_power_sum_rva": "0x23CDE50",
+    "local_collector_rva": "0x19179E0",
+    "predictor_rva": "0x19186E0",
+    "predictor_call_raw": {
+      "mode": 0,
+      "flags": 3,
+      "target": "subject current Province",
+      "arg5_business_name": "unknown"
+    },
+    "hysteresis": {
+      "start_define": "ASK_FOR_HELP_COMBAT_PREDICTION_RATIO",
+      "start_raw_q100000": 66000,
+      "start_predicate": "prior asking false and native_ai_prediction_ratio < 0.66",
+      "stop_define": "STOP_ASKING_FOR_HELP_COMBAT_PREDICTION_RATIO",
+      "continue_raw_q100000": 75000,
+      "continue_predicate": "prior asking true and native_ai_prediction_ratio < 0.75",
+      "comparison": "signed strict less-than; equality does not start and equality stops"
+    },
+    "route_timing_input": {
+      "rva": "0x22475E0",
+      "abi": "int64_t* __fastcall(CUnit*, int64_t* out_q100000_days, int32_t route_index)",
+      "caller_route_index": 0,
+      "meaning": "remaining duration of the current route first edge after progress correction",
+      "comparison": "0x1872F64..0x1872F72 compares it with SAIPowerAndStrengthEntry+0x28",
+      "entry_field_business_name": "unknown",
+      "not_full_assignment_eta": true
+    },
+    "request_power_write": {
+      "field": "CAISubunitStack+0x28",
+      "name": "request_power_basis_raw",
+      "quantization": "truncate accumulated basis toward zero to a multiple of 100000",
+      "validity": "publish only while asking_for_help is true; false may retain stale bytes"
+    }
+  },
+  "cadence_and_order": {
+    "chain": [
+      "CAIManager vtable slot +0x30 -> 0x18876D0",
+      "0x18878F1 -> 0x18550D0 for each active coordinator",
+      "0x1855343 -> 0x1846730 for each CAIUnitStack in stored order",
+      "0x184681F -> 0x184AF50; help path only when raw result equals 1",
+      "0x1846845 -> 0x1848310",
+      "0x184684D -> 0x1848570",
+      "after the all-stack decision pass, 0x18553A0 -> 0x18721B0 per subunit in stored order"
+    ],
+    "target_tick_gate_absent": true,
+    "update_targets_tick_values_not_used_here": [7, 14],
+    "exact_statement": "recalculated on each invocation of update slot 0x18876D0 for each active coordinator stack whose 0x184AF50 result is raw 1",
+    "formal_daily_interface_name": "unknown",
+    "cross_stack_asymmetry": "an earlier stack can observe a later stack's saved asking state, while a later stack can observe the earlier stack's just-recomputed state in the same invocation"
+  },
+  "assignment": {
+    "same_stack": {
+      "rva": "0x1848310",
+      "requester_order": "first CAISubunitStack in parent stored order with bit0 set and bit1 clear",
+      "power_inputs": [
+        "requester CAISubunitStack+0x28 request_power_basis_raw",
+        "0x1847D40 parent available-power raw",
+        "0x18742C0 first-subunit contribution for native reserve branch"
+      ],
+      "comparison": "strict greater-than",
+      "helper_filters": [
+        "not requester",
+        "0x1871F80 busy/unavailable is false",
+        "helper asking bit is false",
+        "native reserve branch does not retain the helper"
+      ],
+      "no_requester_effect": "clear assigned_to_help and support-target override"
+    },
+    "other_stack": {
+      "rva": "0x1848570",
+      "unique_direct_caller": "0x184684D",
+      "scan_order": [
+        "helper CAIUnitStack+0x08/+0x14 Province* native stored order",
+        "each Province+0x748/+0x754 unsigned full CUnitID numeric order"
+      ],
+      "same_coordinator_request": "CAISubunitStack bit0 and +0x28",
+      "cross_coordinator_request": "CAISubunitStack+0x34 nonzero and +0x38; producer unknown",
+      "ordinary_ratio_raw_q100000": 150000,
+      "break_siege_ratio_raw_q100000": 170000,
+      "break_siege_progress_raw_q100000": 60000,
+      "accept_predicate": "0x1847F70 requester-parent available_power_raw is strictly greater than native q100000-quantized request_power_raw times selected ratio",
+      "tie_break": "first qualifying requester in the two-level scan order",
+      "inputs_not_read_by_this_helper": [
+        "route ETA",
+        "route distance",
+        "future CombatID",
+        "objective score",
+        "request timestamp",
+        "random tie-break"
+      ]
+    },
+    "stored_result": {
+      "assigned_flag": "CAISubunitStack+0x50 bit1",
+      "target": "CAISubunitStack+0x48 Province*",
+      "target_value": "requester representative CUnit current Province captured at assignment time",
+      "requester_pointer_stored": false,
+      "future_combat_id_stored": false
+    },
+    "candidate_vector_producer": "unknown"
+  },
+  "route_and_eta": {
+    "target_override_rva": "0x1873AC0",
+    "dispatcher_rva": "0x18721B0",
+    "native_move_builder_rva": "0x186B190",
+    "move_mode_rva": "0x26B51B0",
+    "complete_can_move_rva": "0x26B4610",
+    "command_submit_rva": "0x973E00",
+    "command_shape": {
+      "command_kind": 2,
+      "route_kind": 2,
+      "direct_target": 1,
+      "submit_flags": 7
+    },
+    "full_route_duration_rva": "0x2247320",
+    "full_route_duration_abi": "int64_t* __fastcall(CUnit*, int64_t* out_q100000_days, const MovePath*, const CProvince* origin)",
+    "duration_to_date": "days=trunc_toward_zero((q>=0?q+50000:q-50000)/100000); arrival_date_raw=base_date_raw+days*24",
+    "move_target_field_boundary": {
+      "battle_reinforcement_route_field": "move_target_province_id is the direct generation-validated CUnit+0x30 slot",
+      "semantic_army_field": "ArmySnapshot.move_target_province_id is the final ProvinceID in CUnit+0x38/+0x44 remaining-route rows",
+      "cross_contract_rule": "never require these fields to be equal; active-combat frames may legitimately differ",
+      "assignment_rule": "when an assignment exists, CUnit+0x30 and the remaining-route final ProvinceID are independent gates that must each equal the assignment target"
+    },
+    "active_combat_live_counterexample": {
+      "date": "2026-08-26",
+      "acceptance": "managed_paused_v2_green",
+      "public_cunit_id": 357,
+      "active_combat_id": 335544325,
+      "asking_for_help": true,
+      "assigned_to_help": false,
+      "direct_cunit_0x30_province_id": 2579,
+      "remaining_route_province_ids": [
+        2581
+      ],
+      "semantic_army_move_target_province_id": 2581,
+      "immediate_reinforcement_frames_equal": true,
+      "query_sequences": [
+        1,
+        2
+      ],
+      "frame_sha256": "F410E1A5F19BF16F5C8AE34B62E69A10DAA0B7C55E178E16749EE27003DE5023",
+      "artifact_name": "xar-battle-reinforcement-assignment-live-v2.json",
+      "artifact_size": 36470,
+      "artifact_sha256": "F0A6F3C73D49AE93CC20680E23E787F28B54CA086DAD80392E27651DAB1DB9C6",
+      "bridge_dll_sha256": "E11AA8E91F055ECEB6FCF1F44770D33D48C9073115C923F84573F7F69DD70B40",
+      "injector_sha256": "9AAD6499FE012F8692D9F570DE39027714AC86496C1EB909559A055E7283EAED",
+      "acceptance_gates": {
+        "exact_build": true,
+        "capability": true,
+        "paused_main_thread_generation": true,
+        "immediate_pair": true,
+        "semantic_route_consistency": true,
+        "read_only": true,
+        "managed_cleanup": true
+      },
+      "boundary": "proves legitimate divergence in active combat; does not establish a universal business lifecycle name for CUnit+0x30"
+    },
+    "route_alignment_required": [
+      "assigned_to_help true and assignment target Province generation-valid",
+      "direct CUnit+0x30 movement-target Province equals assignment target",
+      "route final ProvinceID equals assignment target when route is nonempty",
+      "every row ProvinceID and adjacency generation-valid",
+      "land/naval speed positive for applicable edges",
+      "duration nonnegative and timeline monotonic nondecreasing",
+      "same-revision double sample equal"
+    ],
+    "combat_binding_before_contact": "unbound_until_contact"
+  },
+  "join_existing_combat": {
+    "resolver_rva": "0x2208320",
+    "query_policy": "never call resolver; it may mutate by joining or constructing combat",
+    "candidate_source": "target Province+0x760/+0x76C full CCombatID array",
+    "compatibility": "exactly one of forward 0x2900470(incoming_owner, side0 representative, false) and side1 is true",
+    "selection": "last compatible active combat in Province native stored order",
+    "normal_maintenance_implication": "Province combat IDs are unsigned-full-ID lower-bound sorted, so the selected row is the greatest compatible full CombatID under that maintenance path",
+    "side_classification": {
+      "incoming_defender": "reverse 0x2900470(side0 representative, incoming owner, false) true -> 0x23044F0 -> CCombat+0x368",
+      "incoming_attacker": "otherwise reverse 0x2900470(side1 representative, incoming owner, false) true -> 0x23043F0 -> CCombat+0x20"
+    },
+    "army_order": "0x23C9100 unique tail append in first-seen join order",
+    "regiment_order": "incoming CArmy+0x38/+0x44 native stored order",
+    "explicit_future_coalition_id": false,
+    "contact_inputs_not_read": [
+      "ask ratio",
+      "request power",
+      "ETA",
+      "distance",
+      "campaign objective score"
+    ]
+  },
+  "same_tick_feedback": {
+    "join_rva": "0x23040A0",
+    "attacker_wrapper_rva": "0x23043F0",
+    "defender_wrapper_rva": "0x23044F0",
+    "side_append_rva": "0x23C9100",
+    "immediate_writes": [
+      "clear incoming backing CUnit+0x168 qword before side append",
+      "tail-append unique incoming CArmyID and append regiment rows",
+      "write incoming CArmy+0x128 to full CCombatID",
+      "if phase is pursuit, qword-write phase=main and phase_day=0, then winner=-1",
+      "refresh side0 and side1 through 0x23CB840",
+      "if base width is positive, update width state through 0x2305580"
+    ],
+    "new_entry_pools": {
+      "starting_offset": "+0x10",
+      "current_offset": "+0x18",
+      "soft_loss_offset": "+0x20",
+      "soft_loss_initial_raw": 0,
+      "base_soldiers_raw": "CRegiment+0x38 multiplied by 100000",
+      "main_participant_current": "starting raw",
+      "reserve_current": 0
+    },
+    "existing_rows_reset": false,
+    "existing_hard_casualty_ledger_reset": false,
+    "daily_damage_called_by_join": false,
+    "combat_daily_dispatcher_rva": "0x27FB5D0",
+    "same_calendar_day_damage_order": "unknown"
+  },
+  "implementation_target": {
+    "cpp_entry": "ReadBattleReinforcementAssignmentV1(const Bindings&, const Snapshot&, int32_t selected_public_cunit_id, BattleReinforcementAssignmentSnapshot&) noexcept",
+    "thread": "paused application-main mailbox",
+    "request": {
+      "expected_snapshot_revision": "uint64",
+      "selected_public_cunit_id": "positive int32 full CUnitID"
+    },
+    "response": {
+      "status": "available | unavailable",
+      "unavailable_reason": "optional unsupported_build | requires_paused | subject_cunit_not_found | subject_not_ai_managed | coordinator_generation_mismatch | subunit_backlink_mismatch | parent_membership_mismatch | route_timeline_unavailable | state_changed",
+      "selected_public_cunit_id": "positive int32 full CUnitID",
+      "selected_native_carmy_id": "optional positive int32 full CArmyID",
+      "coordinator_id": "positive int32 full CAIWarCoordinator component ID",
+      "unit_stack_stored_index": "nonnegative int32",
+      "subunit_stored_index": "nonnegative int32",
+      "signal": {
+        "asking_for_help": "bool",
+        "assigned_to_help": "bool",
+        "asking_changed_last_evaluation": "bool",
+        "request_power_basis_raw": "optional int64; null unless asking_for_help",
+        "cross_coordinator_request_valid_raw": "uint8",
+        "cross_coordinator_request_power_raw": "optional int64; null unless valid raw is nonzero",
+        "first_route_edge_remaining_duration_q100000": "optional int64; strict-gated observation of the arrival-like input"
+      },
+      "assignment": {
+        "assignment_target_province_id": "optional positive int32 full ProvinceID",
+        "target_provenance": "native_help_override | none",
+        "combat_binding_status": "already_in_active_combat | unbound_until_contact",
+        "active_combat_id": "optional positive int32 full CombatID; only from generation-valid CArmy+0x128"
+      },
+      "route": {
+        "current_province_id": "positive int32 full ProvinceID",
+        "move_target_province_id": "optional positive int32 full ProvinceID read directly from CUnit+0x30; not the ArmySnapshot remaining-route-final semantic target and not required to equal it",
+        "route_province_ids": "positive int32 full ProvinceID[] in exact native order with duplicates preserved",
+        "route_alignment": "aligned_to_assignment | not_aligned | no_assignment | timeline_unavailable",
+        "arrival_date_raws": "optional int32[] parallel to route_province_ids",
+        "assignment_eta_date_raw": "optional int32; only when aligned and strict timeline is available"
+      },
+      "native_order": {
+        "support_search_province_ids_in_stored_order": "positive int32 full ProvinceID[]",
+        "parent_subunits_in_stored_order": "array of { public_cunit_ids_in_stored_order, asking_for_help, assigned_to_help, assignment_target_province_id }"
+      },
+      "contact_projection": {
+        "status": "available | unavailable | not_applicable",
+        "temporal_semantics": "present_time_only_not_future_binding",
+        "current_target_compatible_combat_ids_in_stored_order": "positive int32 full CombatID[]",
+        "contact_if_now_selected_combat_id": "optional final array element"
+      }
+    },
+    "new_native_binding": {
+      "name": "read_route_edge_duration",
+      "rva": "0x22475E0",
+      "abi": "int64_t* __fastcall(void* cunit, int64_t* out_q100000_days, int32_t route_index)"
+    },
+    "existing_native_binding_to_reuse": {
+      "name": "read_route_travel_duration",
+      "rva": "0x2247320"
+    },
+    "fixture_boundaries": [
+      "full IDs with nonzero high 8-bit generation",
+      "pointer and count upper bounds",
+      "stale +0x28 becomes null when asking_for_help is false",
+      "assigned flag with invalid target is unavailable",
+      "route final target mismatch is not_aligned and has no ETA",
+      "active-combat direct CUnit+0x30 may differ from the remaining-route final semantic target when no assignment exists",
+      "multiple compatible combats preserve stored order and select final row",
+      "coordinator, subunit membership, flags, target or route drift between same-revision samples returns state_changed"
+    ]
+  },
+  "forbidden_native_calls": [
+    "0x1872BF0 asking-state mutator",
+    "0x1848310 same-stack assignment mutator",
+    "0x1848570 mutable-pass requester selector",
+    "0x18721B0 subunit action dispatcher",
+    "0x186B190 AI move-command builder",
+    "0x973E00 command submission",
+    "0x2208320 contact resolver that can join or construct combat",
+    "0x23040A0 combat join mutator",
+    "0x23043F0 attacker-side join wrapper",
+    "0x23044F0 defender-side join wrapper",
+    "0x23C9100 combat-side append mutator",
+    "0x23CB840 combat-side refresh mutator",
+    "0x2305580 combat width updater",
+    "0x27FB7C0 combat allocation/constructor path"
+  ],
+  "unknowns": [
+    "producer and cadence for CAISubunitStack+0x34/+0x38 cross-coordinator request signal",
+    "producer and ordering semantics of CAIUnitStack+0x08/+0x14 support-search Province vector",
+    "formal business name of SAIPowerAndStrengthEntry+0x28 and the exact first-edge-duration comparison meaning",
+    "executable consumers for PLAYER_SUPPORT_* defines",
+    "formal lifecycle name and all trigger sources for CAIManager update slot 0x18876D0",
+    "global same-day ordering between CUnit movement/contact and CCombat daily dispatcher",
+    "formal relationship/coalition enum names and complex third-party-war semantics"
+  ],
+  "readiness": {
+    "exact_build_frozen": true,
+    "ordinary_ask_hysteresis_static_ready": true,
+    "same_stack_assignment_static_ready": true,
+    "other_stack_assignment_static_ready": true,
+    "assignment_storage_static_ready": true,
+    "route_eta_static_ready": true,
+    "join_existing_selection_static_ready": true,
+    "same_tick_feedback_static_ready": true,
+    "player_support_policy_static_ready": false,
+    "cross_coordinator_signal_producer_static_ready": false,
+    "support_candidate_vector_producer_static_ready": false,
+    "same_day_cross_manager_order_static_ready": false,
+    "query_implementation_ready": true,
+    "query_production_live_ready": true,
+    "native_assignment_live_ready": false,
+    "aligned_assignment_eta_live_ready": false,
+    "ready": false
+  }
+}

@@ -7,10 +7,9 @@
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - [static-confirmed] `static-confirmed` 表示结论由该 EXE 的 RTTI、反汇编调用链，或同一安装包随附的
   `game/common` 原版数据/说明直接支持；RVA 均以该 EXE 模块基址为零点。
-- [live-confirmed] `live-confirmed` 表示结论在完全只读的实机快照中互证；当前样本是
-  2026-08-24 的 PID `100912`，只使用
-  `OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ)` 与
-  `ReadProcessMemory`，没有注入、函数调用、游戏命令、暂停/恢复或进程控制。
+- [live-confirmed] `live-confirmed` 表示结论已在该 exact build 的真实 paused frame 中互证；具体专题必须记录其
+  artifact/checkpoint 与生产会话边界。纯研究采样保持只读；production query/command 的验收则必须走正式 bridge/session，
+  并以观测到的后置状态和 managed cleanup 为准，不能只凭 ACK。
 - [inference] `inference` 表示由多个已证事实推出、但尚未找到执行分支或独立实机对照的解释，不能当成
   exact ABI 或确定策略。
 - [unknown] `unknown` 表示尚未闭合；图中的虚线边和虚线节点也一律表示 unknown，不能据此实现原生动作。
@@ -37,9 +36,36 @@
 - [static-confirmed] [battle-simulation.md](battle-simulation.md) 记录真实 `CCombat` phase/day tick、战宽、
   commander roll、advantage、MAA counter、主阶段 damage、casualty/pursuit 与 PRNG 边界；同时冻结
   exact-native-parity Monte Carlo 的完整输入门，并明确当前局胜率为 unavailable，而不是近似人数比。
-- [static-confirmed] [battle-controller.md](battle-controller.md) 把接触/参战、求援/增援、主动撤退、
-  溃退、追击与战斗终结串成原生控制树；吸收 P0 实机 CombatID/ordered-sides/cold-restore 基线，并按
-  ongoing frame → retreat → reinforcement → forecast/terminal 排定我方 P1 typed observation/action 门。
+- [static-confirmed + live-confirmed] [battle-controller.md](battle-controller.md) 把接触/参战、求援/增援、主动撤退、
+  溃退、追击与战斗终结串成原生控制树；P1 ongoing identity/ledger 与 bounded hold 已 production-live，
+  `battle_identity_live_ready=true`、`battle_hold_ready=true`、`battle_retreat_ready=true`；full-side 与 owner-subset
+  retreat postcondition 均已 live，增援 assignment 只读查询也已 production-live，但 assigned+ETA/join、forecast、terminal
+  与总 controller 仍未完成。
+- [live-confirmed expanded frame] [ongoing-battle-frame.md](ongoing-battle-frame.md)
+  冻结 `query-battle-control-snapshot-v1` 的 exact ABI、
+  retained entry/current-soft-hard ledger 与 bounded hold 后置验证；cold checkpoint `9104CCB8...CC63` 的 maneuver 1 到
+  main 2 原 frame artifact SHA 为 `A0FC6BB7268E38026CC8EED6D6388BFD675AD5DCFB60A1A65FE1C1B64E816AC6`；新增
+  selected identity/scope/flags/four-gate legality 又通过 day 0–16 production progression，artifact SHA 为
+  `FB521B39AD5529434596212DB9ADC1EA27D4C270D28D13575B9A2D80913BCF40`；production planner 两轮
+  query→one-day advance→same-CombatID requery 也已 GREEN，artifact SHA
+  `96CE25384517F0060A58623958DE071F43C3C2F7B68AEB6E668473E986C1DD57`；full-side 完整撤退 transition artifact SHA 为
+  `21D58737126CA4ED8B0B49DB7749EA4701F3BA6F94A8B8493698F8737E5784FA`。
+- [static-confirmed + full-side/owner-subset live-confirmed] [active-combat-retreat.md](active-combat-retreat.md) 冻结 active battle movement
+  candidate、共同 legality、full-side/owner-subset apply 与 pursuit 边界；同帧只读 retreat projection 已证明 day 14 false、
+  day 15 true；planner-selected target 的 exact route preview/token/order 又在 full-side 实机中令军队真实进入 retreat 并写入
+  target/route；按完整旧 CombatID 的独立查询同时证明 full-side `main/12 → pursuit/0`，owner-subset 则只移除 owner
+  `36108` 的 CUnit `357`、保留盟军 `33554657` 与原战斗。owner-subset artifact SHA 为
+  `7780B619B2E7B90B8D5D5030D779F58F266585A6246A79B6C2FE20EF0F2701F9`。AI cadence 与 native destination
+  候选/评分继续作为 opponent-model `unknown`，不阻塞我方动作。
+- [static-confirmed + assignment-query live-confirmed] [battle-reinforcement-and-join.md](battle-reinforcement-and-join.md)
+  闭合原生求援滞回、helper stored-order 分配、普通行军、抵达时选择既有 CombatID、tail append 与 pursuit→main 反馈；
+  paused `ReadBattleReinforcementAssignmentV1` 已在 CUnit `357` 上实见 asking、parent stored order、route、active CombatID
+  与稳定双查询，artifact SHA 为 `F0A6F3C73D49AE93CC20680E23E787F28B54CA086DAD80392E27651DAB1DB9C6`。
+  当前样本未 assigned；assigned+aligned ETA、真实 join/reopen 与改派动作仍待闭合。
+- [static-confirmed] [battle-terminal-and-reentry.md](battle-terminal-and-reentry.md) 区分 daily phase-done 的 normal result 与
+  invalidation sweep 的 no-normal-result，冻结共同 army backlink 清理、Province residual rescan、旧 CombatID 删除和幸存
+  AI assignment 重入顺序。下一施工口是在 `0x230A590` 入口被动记录第二参数，再按旧 CombatID 做 paused transition query；
+  ResultID 缺失不得反推 terminal kind，当前尚未声称 production live。
 - [implementation-confirmed] [combat-phase-events.md](combat-phase-events.md) 冻结 stock commander/knight
   phase-event 的 13 个顶层 row、canonical machine manifest、独立 golden、伤残死亡与 prowess 状态转移、同日刷新
   顺序；同时给出 v3 character/side/army/accolade/advantage required-field matrix、precontact 不伪造 CombatID 的边界，

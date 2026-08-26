@@ -1,0 +1,666 @@
+{
+  "schema_version": 1,
+  "contract": "query_battle_control_snapshot_v1",
+  "contract_stage": "production_exact_build_expanded_frame_active_retreat_projection_live_confirmed_action_pending",
+  "component_stages": {
+    "original_battle_frame": "production_exact_build_live_confirmed",
+    "active_combat_retreat_projection": "production_exact_build_live_confirmed",
+    "standalone_active_combat_retreat_query": "not_implemented",
+    "active_combat_retreat_action": "not_implemented"
+  },
+  "game": {
+    "product_version": "1.19.0.6",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "preferred_image_base": "0x140000000",
+    "addresses_are": "RVA"
+  },
+  "command": {
+    "capability": "game.command.query-battle-control-snapshot-v1-N",
+    "step_prefix": "query-battle-control-snapshot-v1-",
+    "argument": "positive full-generation public CUnitID",
+    "expected_revision_required_at_mcp": true,
+    "advertised": true,
+    "bridge_dispatch_connected": true,
+    "generic_fallback_allowed": false
+  },
+  "execution": {
+    "read_only": true,
+    "requires_paused": true,
+    "thread": "application-main mailbox only",
+    "samples": 2,
+    "outer_gate": "game::ReadSnapshot before and after must remain paused with identical revision/date/played-character identity",
+    "inner_gate": "two complete native samples, including every ordered array and derived value, must be byte-for-byte equal",
+    "daily_dispatch_gate": "CCombat+0x705 must be zero in both samples",
+    "native_calls_allowed": [
+      "0x22771F0(CArmy*) active-combat predicate",
+      "0x23CC340(CCombatSide*) read-only side-strength leaf",
+      "0x23D2D70(CCombatRegiment*) read-only per-entry strength leaf",
+      "0x2308250(CCombat*, CArmy*, nullptr) read-only active-retreat legality helper with a null ErrorSink",
+      "0x26165B0() read-only retreat rule-state accessor; returned object+0x38 bit 10 participates in the landless gate"
+    ],
+    "active_retreat_read_only_bindings": {
+      "can_order_combat_retreat": {
+        "rva": "0x2308250",
+        "abi": "bool(CCombat* combat RCX, CArmy* selected_army RDX, ErrorSink* errors R8)",
+        "query_call": "0x2308250(combat, selected_army, nullptr)",
+        "mutation_observed_on_null_sink_path": false
+      },
+      "get_combat_retreat_rule_state": {
+        "rva": "0x26165B0",
+        "abi": "void*()",
+        "query_use": "read uint32 returned_object+0x38 bit 10 only",
+        "mutation_observed": false
+      }
+    },
+    "native_calls_forbidden": [
+      "0x27FB7C0 combat allocation/constructor",
+      "0x23040A0 live combat join",
+      "0x23C9100 side population",
+      "0x23CB840 side-total refresh because it writes CCombatSide+0x98/+0xA0",
+      "0x2308D50 combat finalize/materialize because it writes the real CCombat",
+      "0x2308850 active-retreat mutator",
+      "0x26B49E0 AI-only movement validation wrapper",
+      "all RNG, retreat mutation, damage, pursuit and finalization helpers"
+    ]
+  },
+  "exact_layout": {
+    "global": {
+      "current_date": "module+0x570E068 pointer; object+0x08 date_raw",
+      "cunit_storage": "module+0x570CC80",
+      "carmy_storage": "module+0x570C730; no fallback",
+      "ccombat_storage": "module+0x570C758",
+      "cregiment_storage": "module+0x57BF4C8; no fallback",
+      "character_storage": "module+0x570C130",
+      "battle_result_storage": "module+0x57C0328; object+0x08 full BattleResultID; a positive stale generation is a BattleControl state_changed boundary",
+      "battle_result_fallback": "module+0x57C0320; BattleControl reads it only for the legal CCombat BattleResultID sentinel -1",
+      "minimum_days_before_manual_retreat": "signed int32 at module+0x570EE04; exact-build runtime value 14"
+    },
+    "CUnit": {
+      "+0x10": "full CUnitID identity",
+      "+0x20": "current CProvince*",
+      "+0x174": "full owner CharacterID",
+      "+0x178": "full internal CArmyID"
+    },
+    "CArmy": {
+      "+0x10": "full CArmyID identity",
+      "+0x38/+0x44": "full CRegimentID data/count",
+      "+0x120": "raised-army commander CharacterID; not necessarily battle-side commander",
+      "+0x124": "full backing public CUnitID",
+      "+0x128": "full active CCombatID"
+    },
+    "CCombat": {
+      "+0x08": "full CCombatID identity",
+      "+0x20": "embedded attacker side0 CCombatSide",
+      "+0x368": "embedded defender side1 CCombatSide",
+      "+0x6B0": "int32 phase: 0 maneuver, 1 main, 2 pursuit, 3 done",
+      "+0x6B4": "int32 phase-day counter",
+      "+0x6B8": "CProvince* encounter province; CProvince+0x10 full ProvinceID",
+      "+0x6C0/+0x6C4": "int32 current base/final combat width",
+      "+0x6C8": "int64 base/static signed advantage raw, scale 100000",
+      "+0x6D0/+0x6D4": "int32 current side0/side1 commander roll points",
+      "+0x6E0": "int32 winner: -1 undecided, 0 attacker side0, 1 defender side1",
+      "+0x6E4": "int32 commander-roll cadence counter",
+      "+0x700": "int32 forced-winner override: -1 absent, 0 side0, 1 side1",
+      "+0x704": "uint8 finalizer-entered flag",
+      "+0x705": "uint8 daily-dispatch-in-progress flag; query requires zero",
+      "+0x708": "full BattleResultID; -1 means absent",
+      "+0x710": "int64 current resolved signed advantage raw, scale 100000"
+    },
+    "CCombatSide": {
+      "+0x10/+0x1C": "full CArmyID data/count in native stored order",
+      "+0x28/+0x34": "levy CCombatRegiment data/count, stride 0x60",
+      "+0x40/+0x4C": "men-at-arms CCombatRegiment data/count, stride 0x60",
+      "+0x58/+0x64": "participant hard-casualty ledger data/count, stride 0x18",
+      "+0x70": "full primary-participant owner CharacterID",
+      "+0x74": "full selected battle-commander CharacterID; -1 means absent",
+      "+0x98": "int64 tick-start cached total current fighting raw, scale 100000; can legally lag retained entry rows during a stable paused main-phase frame",
+      "+0xA0": "int64 tick-start cached levy current fighting subtotal raw, scale 100000; can legally lag retained entry rows during a stable paused main-phase frame",
+      "+0xB8": "CCombat* parent back-pointer",
+      "+0xC0": "uint8 disallow_retreat",
+      "+0xC1": "uint8 allow_early_retreat",
+      "+0xC2": "uint8 skip_pursuit; observed side state, not a retreat-legality gate"
+    },
+    "CCombatRegiment": {
+      "stride": "0x60",
+      "+0x08": "full CRegimentID",
+      "+0x10": "int64 starting strength raw, scale 100000",
+      "+0x18": "int64 current fighting raw, scale 100000",
+      "+0x20": "int64 soft casualties raw, scale 100000",
+      "+0x30": "int32 encounter-effective max size",
+      "+0x38": "int64 encounter-effective siege raw, scale 100000",
+      "+0x40": "int64 encounter-effective damage raw, scale 100000",
+      "+0x48": "int64 encounter-effective toughness raw, scale 100000",
+      "+0x50": "int64 encounter-effective pursuit raw, scale 100000",
+      "+0x58": "int64 encounter-effective screen raw, scale 100000"
+    },
+    "participant_hard_row": {
+      "stride": "0x18",
+      "+0x08": "full participant owner CharacterID",
+      "+0x10": "int64 accumulated hard casualties raw, scale 100000"
+    },
+    "CRegiment": {
+      "+0x10": "full CRegimentID identity",
+      "+0x18 then type+0xA0A": "resolved type object and uint8 fights-in-main-phase flag",
+      "+0x140": "full owning CArmyID"
+    },
+    "CCharacter": {
+      "+0x18": "full CharacterID identity",
+      "+0x1B8": "opaque land/title-status object used by the exact active-retreat landless gate"
+    },
+    "BattleResult": {
+      "+0x08": "full BattleResultID identity for positive store resolution",
+      "+0x2C": "signed int32 retreat_elapsed_baseline_date_raw; independent native business name remains unknown"
+    },
+    "retreat_land_status_object": {
+      "+0x1F8": "signed int32 sentinel; -1 participates in the exact landless reject predicate"
+    },
+    "combat_retreat_rule_state": {
+      "+0x38 bit 10": "when set, bypasses the raw landless reject predicate"
+    }
+  },
+  "hard_casualty_derivation": {
+    "formula_when_fights_in_main_phase": "entry_hard_casualties_raw = starting_raw - current_fighting_raw - soft_casualties_raw",
+    "stored_per_entry_field_exists": false,
+    "deterministic_for_every_retained_entry": false,
+    "deterministic_when_fights_in_main_phase": true,
+    "proof": [
+      "0x23D0520 initializes starting from CRegiment+0x38*100000, soft to zero, and current to starting when the type fights in main",
+      "0x23D05E4..0x23D05FA leaves current at zero when type+0xA0A says the type does not fight in main, so starting-current-soft initially contains uncommitted reserve rather than hard loss",
+      "0x23091DB..0x230926B moves starting for a non-main row or current for a main row into soft and zeroes current when routing",
+      "0x23CDFC3 adds the soft delta to entry+0x20 and 0x23CDFCB subtracts soft+hard from entry+0x18",
+      "for a main-fighting retained row, pursuit reduction of soft becomes permanent hard and preserves starting=current+soft+hard"
+    ],
+    "non_main_policy": "publish per_entry_hard status unavailable with raw null and reason non_main_reserve_not_distinguishable_from_hard; never treat starting-current-soft as hard",
+    "scope_limit": "even for main-fighting rows this covers only entries still retained in the two live side arrays; removed partial-retreat rows cannot be reconstructed per regiment",
+    "historical_owner_ledger": "CCombatSide+0x58/+0x64 rows preserve accumulated hard casualties by participant owner and are published separately"
+  },
+  "tick_start_cache_semantics": {
+    "authoritative_current_values": "retained entry+0x18 rows after the current tick's damage writes",
+    "cached_values": "CCombatSide+0x98 total and +0xA0 levy subtotal as refreshed at the start of the tick",
+    "exact_order": [
+      "0x2309E80 calls 0x23CB840 for both sides at 0x2309E8F/0x2309EA1 before calculating damage",
+      "0x2309FE8 and the 0x230A002 tail call 0x23CE080 after the refresh",
+      "0x23CE080 reaches 0x23CDF70, whose 0x23CDFC3 write increments entry+0x20 soft and whose 0x23CDFCB write decrements entry+0x18 current",
+      "the tick does not call 0x23CB840 a second time after those entry writes, so a stable paused main-phase frame can contain stale +0x98/+0xA0 caches"
+    ],
+    "query_policy": "never call 0x23CB840; preserve both caches, derive current totals from retained entries, and publish truthful stored_*_matches_derived booleans",
+    "availability_policy": "a false match boolean is legal and does not make the frame unavailable; two complete samples must still match"
+  },
+  "wire": {
+    "success_status": "available",
+    "failure_transport": "command_result ok=false with a stable error string; unavailable and invalid are not serialized as BattleControlSnapshotV1 frames",
+    "maximum_snapshot_payload_bytes": 921600,
+    "oversize_policy": "SerializeBattleControlSnapshotV1 returns empty before WriteFrame so the bridge returns a bounded command error instead of disconnecting at the protocol 1 MiB limit",
+    "frame": {
+      "schema_version": 1,
+      "contract_stage": "production_exact_ongoing_combat",
+      "status": "available",
+      "snapshot_revision": "uint64",
+      "observed_date_raw": "int64",
+      "subject_public_cunit_id": "int32 full ID",
+      "subject_native_carmy_id": "int32 full ID",
+      "combat_id": "positive int32 full ID",
+      "province_id": "positive int32 full ID",
+      "selected_public_cunit_id": "positive int32 full CUnitID; equals subject_public_cunit_id",
+      "selected_native_carmy_id": "positive int32 full CArmyID; equals subject_native_carmy_id",
+      "selected_owner_character_id": "positive int32 full CharacterID",
+      "combat_province_id": "positive int32 full ProvinceID; equals province_id",
+      "side_index": "0 | 1",
+      "side_scope": "full_side | owner_subset",
+      "affected_public_cunit_ids_in_stored_order": "positive int32 full CUnitID[]",
+      "unaffected_same_side_public_cunit_ids_in_stored_order": "positive int32 full CUnitID[]",
+      "side_flags": "ActiveCombatRetreatSideFlagsV1",
+      "legality": "ActiveCombatRetreatLegalityV1",
+      "phase": "maneuver | main | pursuit | done",
+      "phase_raw": "int32 0..3",
+      "phase_day": "int32",
+      "winner_side": "none | attacker | defender",
+      "winner_raw": "int32 -1..1",
+      "forced_winner_side": "none | attacker | defender",
+      "forced_winner_raw": "int32 -1..1",
+      "finalized": "bool from CCombat+0x704; independent of phase",
+      "battle_result_id": "nullable positive full ID; null only when native value is -1",
+      "base_combat_width": "int32",
+      "final_combat_width": "int32",
+      "roll_cadence_counter": "int32",
+      "base_advantage_raw": "int64 Q100000",
+      "resolved_advantage_raw": "int64 Q100000",
+      "attacker": "BattleControlSideV1",
+      "defender": "BattleControlSideV1",
+      "battle_control_ready": true
+    },
+    "ActiveCombatRetreatSideFlagsV1": {
+      "disallow_retreat": "bool from selected CCombatSide+0xC0",
+      "allow_early_retreat": "bool from selected CCombatSide+0xC1",
+      "skip_pursuit": "bool from selected CCombatSide+0xC2; not a legality gate"
+    },
+    "ActiveCombatRetreatLegalityV1": {
+      "status": "available",
+      "native_boolean": "bool from 0x2308250(combat, selected_army, nullptr)",
+      "phase_raw": "int32 0..3; equals frame phase_raw",
+      "phase": "maneuver | main | pursuit | done; equals frame phase",
+      "retreat_elapsed_baseline_date_raw": "signed int32 from generation-valid BattleResult+0x2C or the legal -1 fallback object",
+      "elapsed_whole_days": "signed int64 current day index minus baseline day index",
+      "minimum_elapsed_whole_days_exclusive": "int32 exact runtime value 14",
+      "landless_gate_allows_retreat": "bool from the exact owner land-status/rule-state predicate",
+      "legal_now": "bool conjunction of disallow/day/phase/landless gates; must equal native_boolean",
+      "reason_codes_in_native_order": "zero or more of disallowed | too_early | pursuit_or_done | landless in exact native gate order",
+      "native_reason_keys_in_native_order": "corresponding COMBAT_NO_RETREAT_* string[] in exact native gate order",
+      "earliest_day_gate_date_raw": "int64 calendar lower bound; may exceed int32 and is not a future legality guarantee"
+    },
+    "BattleControlSideV1": {
+      "side_index": "0 | 1",
+      "role": "attacker | defender",
+      "primary_participant_character_id": "int32 full ID",
+      "selected_commander_character_id": "nullable int32 full ID",
+      "current_roll_points": "int32",
+      "ordered_armies": "BattleControlArmyIdentityV1[]",
+      "levy_entries": "BattleControlRegimentEntryV1[] in native bucket order",
+      "men_at_arms_entries": "BattleControlRegimentEntryV1[] in native bucket order",
+      "stored_current_fighting_raw": "int64 Q100000 from side+0x98",
+      "stored_levy_current_fighting_raw": "int64 Q100000 from side+0xA0",
+      "stored_current_matches_derived": "bool comparing the stable +0x98 tick-start cache with the checked retained-entry current sum; false is a valid observable frame",
+      "stored_levy_current_matches_derived": "bool comparing the stable +0xA0 tick-start cache with the checked levy-entry current subtotal; false is a valid observable frame",
+      "derived_current_fighting_raw": "checked sum of both entry buckets' current_fighting_raw",
+      "derived_soft_casualties_raw": "checked sum of both entry buckets' soft_casualties_raw",
+      "derived_main_fighting_entry_hard_casualties_raw": "checked sum of available per-entry hard for fights_in_main_phase rows only",
+      "non_main_start_minus_current_minus_soft_raw": "diagnostic checked sum only; explicitly not hard casualties",
+      "participant_hard_ledger": "ParticipantHardCasualtyV1[] in native row order",
+      "participant_hard_total_raw": "checked sum of stored participant rows",
+      "side_strength_raw": "int32 exact 0x23CC340 result",
+      "side_strength_scale": 100000
+    },
+    "BattleControlArmyIdentityV1": {
+      "native_carmy_id": "int32 full ID",
+      "public_cunit_id": "int32 full ID",
+      "owner_character_id": "int32 full ID",
+      "combat_backlink_id": "same full CombatID"
+    },
+    "BattleControlRegimentEntryV1": {
+      "bucket": "levy | men_at_arms",
+      "bucket_index": "zero-based native stored index",
+      "regiment_id": "int32 full ID",
+      "native_carmy_id": "int32 full ID",
+      "public_cunit_id": "int32 full ID",
+      "owner_character_id": "int32 full ID",
+      "starting_raw": "int64 Q100000",
+      "current_fighting_raw": "int64 Q100000",
+      "soft_casualties_raw": "int64 Q100000",
+      "fights_in_main_phase": "bool from resolved regiment type+0xA0A",
+      "hard_casualties_status": "available | unavailable",
+      "hard_casualties_raw": "checked starting-current-soft int64 Q100000 only when fights_in_main_phase; otherwise null",
+      "hard_casualties_source": "derived_starting_minus_current_minus_soft | null",
+      "hard_casualties_unavailable_reason": "null | non_main_reserve_not_distinguishable_from_hard",
+      "effective_max_size": "int32",
+      "effective_siege_raw": "int64 Q100000",
+      "effective_damage_raw": "int64 Q100000",
+      "effective_toughness_raw": "int64 Q100000",
+      "effective_pursuit_raw": "int64 Q100000",
+      "effective_screen_raw": "int64 Q100000",
+      "entry_strength_raw": "int32 exact 0x23D2D70 result"
+    },
+    "ParticipantHardCasualtyV1": {
+      "row_index": "zero-based native stored index",
+      "participant_character_id": "int32 full ID",
+      "hard_casualties_raw": "int64 Q100000"
+    }
+  },
+  "generation_and_consistency_gates": [
+    "subject CUnit full ID resolves and CUnit+0x178 resolves an identity-matching CArmy whose +0x124 returns to the same CUnit",
+    "0x22771F0(subject CArmy) is true and CArmy+0x128 resolves an identity-matching CCombat",
+    "CCombat+0x6B8 resolves a positive ProvinceID and subject current Province equals the encounter Province",
+    "both embedded side+0xB8 back-pointers equal the same CCombat",
+    "both ordered ArmyID arrays are nonempty, disjoint, preserve native order, and the subject occurs in exactly one side",
+    "every side CArmy resolves by full ID, links back to the same CombatID, maps through CArmy+0x124 to a strict public CUnitID, and that CUnit+0x178 links back",
+    "every entry CRegimentID resolves by full ID; CRegiment+0x140 identifies an army in the same side; that army's CRegimentID container contains the same full ID",
+    "primary participant, selected commander when non--1, entry owners, and participant-hard CharacterIDs pass full-generation Character readback",
+    "phase is 0..3; winner and forced winner are -1..1; finalized is read independently",
+    "side+0x98 and side+0xA0 remain stable across both samples; they are tick-start caches and publish explicit equality booleans against the checked retained-entry current sums rather than gating availability",
+    "the selected CArmy occurs in exactly one side; selected IDs/owner/combat Province are same-frame duplicates that must equal the existing subject/combat identity",
+    "scope is recomputed from every same-side Army owner in native stored order; affected contains selected-owner public CUnits and unaffected contains all other owners",
+    "selected-side +0xC0/+0xC1/+0xC2, current date, BattleResult baseline, runtime minimum, land-status pointer/sentinel and rule-state bit remain stable around the null-sink 0x2308250 call",
+    "only BattleResultID -1 may use module+0x57C0320; a positive generation mismatch remains state_changed and is not silently replaced by the fallback",
+    "projected four-gate reasons preserve native order and computed legal_now must equal the null-sink native boolean",
+    "all counts are nonnegative and bounded; every checked sum/subtraction fits its declared type",
+    "two complete samples and the outer paused snapshot revision/date are identical"
+  ],
+  "bounds": {
+    "side_armies": 4096,
+    "entries_per_bucket": 16384,
+    "participant_hard_rows": 4096,
+    "regiments_per_army": 4096,
+    "serialized_snapshot_bytes": 921600
+  },
+  "closed_observation_domains": {
+    "combat_identity_province_phase_day_winner_finalized": "static-confirmed and production live-confirmed from maneuver day 1 through main day 2",
+    "ordered_side_carmy_to_public_cunit_mapping": "static-confirmed and production live-confirmed",
+    "retained_entry_starting_current_soft_and_conditional_hard": "static-confirmed and production live-confirmed through two main-phase casualty deltas; hard remains exact only for fights_in_main_phase retained rows",
+    "participant_owner_hard_ledger": "static-confirmed and production live-confirmed through two main-phase casualty deltas",
+    "selected_battle_commander": "static-confirmed at CCombatSide+0x74 and production live-confirmed; not the same field as CArmy+0x120",
+    "current_rolls_and_roll_cadence": "static-confirmed direct fields and production live-confirmed",
+    "base_and_resolved_advantage_totals": "static-confirmed int64 Q100000 direct fields and production live-confirmed",
+    "side_and_entry_strength": "static-confirmed read-only helpers 0x23CC340/0x23D2D70 and real-side production live-confirmed",
+    "tick_start_cache_and_derived_match_flags": "static-confirmed exact update order and production live-confirmed with stable false values on main days 1 and 2"
+  },
+  "newly_production_live_observation_domains": {
+    "active_retreat_selected_identity_side_and_scope": "production paused query confirmed selected public/native identity, owner, full-side scope and native stored-order affected/unaffected rows",
+    "active_retreat_side_flags_and_four_gate_legality": "production paused query confirmed flags, native null-sink boolean, strict too_early through elapsed day 14, legal_now at day 15, phase/landless gates, exact date derivation and immediate-pair stability"
+  },
+  "unknown_or_out_of_scope": [
+    "native active-battle AI retreat choice cadence and destination enumeration",
+    "future reinforcement assignment, ETA and same-day arrival ordering",
+    "per-regiment historical hard casualties after an entry has been removed from the live side",
+    "complete ongoing dynamic advantage/effect source identity and original transition trace parity",
+    "loaded result effects, manager teardown predicate, war-score delta and post-battle assignment re-entry",
+    "an exact calibrated win probability; this frame is observation, not Monte Carlo readiness"
+  ],
+  "minimum_live_acceptance": {
+    "scope": "original_battle_frame_before_active_combat_retreat_fields",
+    "source_battle_checkpoint_sha256": "40D4E73D2B45BEF7F8F94F9FC8007A5A039031840C24D72758E5D6452E1A2C6C",
+    "materialized_cold_checkpoint_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "checkpoint_lineage": "the 40D4 source battle save was resumed and materialized as the 9104 managed cold checkpoint used by the fresh production acceptance",
+    "subject_public_cunit_id": 83886341,
+    "expected_combat_id": 335544325,
+    "expected_province_id": 2586,
+    "expected_attacker_public_cunit_ids": [
+      83886341
+    ],
+    "expected_defender_public_cunit_ids": [
+      357,
+      33554657
+    ],
+    "required_checks": [
+      "paused application-main query returns available and preserves the exact P0 CombatID/Province/side order",
+      "both entry buckets preserve native order and every row closes Regiment->Army->public CUnit->same Combat",
+      "every main-fighting retained row satisfies hard=starting-current-soft without clamping; every non-main row returns typed hard unavailable rather than a fabricated value",
+      "side+0x98 and +0xA0 raw caches and their derived-match booleans are stable across both native samples; either match boolean may legally be false; strength helpers return the same value on both samples",
+      "immediate repeated query is byte-identical except request/query sequence metadata",
+      "managed cold restore of the same checkpoint returns the same identity, phase/day, ledgers, commanders, rolls, advantage totals and strength values",
+      "one bounded day either yields the same CombatID with a valid phase/day or ledger transition, or an explicit terminal/removal discriminant; an advance ACK alone is not acceptance",
+      "managed cleanup leaves zero CK3 processes and restores the baseline checkpoint"
+    ],
+    "live_ready": true,
+    "active_combat_retreat_projection_live_ready": true
+  },
+  "live_acceptance": {
+    "scope": "original_battle_frame_before_active_combat_retreat_fields",
+    "active_combat_retreat_fields_present": false,
+    "date": "2026-08-26",
+    "artifact_path": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-war-entry-production6b-state\\logs\\battle-control-v1-cold-main-cache-fix-fresh-live.json",
+    "artifact_size": 1253493,
+    "artifact_sha256": "A0FC6BB7268E38026CC8EED6D6388BFD675AD5DCFB60A1A65FE1C1B64E816AC6",
+    "bridge_dll_sha256": "2F50F14699B8E6D9DF468DCFBEDD145814E50CAC0204D70A32E8CBFD36C34E8F",
+    "bridge_injector_sha256": "B22548AEC9EE2B60EBA14CCDE2290AA1CED47EE5D2D277D5031742D683E0F1A3",
+    "managed_ck3_pid": 80196,
+    "cold_checkpoint_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "identity": {
+      "combat_id": 335544325,
+      "province_id": 2586,
+      "attacker_public_cunit_ids": [
+        83886341
+      ],
+      "defender_public_cunit_ids": [
+        357,
+        33554657
+      ]
+    },
+    "frames": [
+      {
+        "observed_date_raw": 53178264,
+        "phase": "maneuver",
+        "phase_day": 1,
+        "canonical_frame_sha256": "C110C9F4EE97056E452B02009D86D7A9DAF4C38EA9ED5B415AF5EEE5E15CB992"
+      },
+      {
+        "observed_date_raw": 53178288,
+        "phase": "maneuver",
+        "phase_day": 2,
+        "canonical_frame_sha256": "6F365F256736DA492A92F51441EF5137DBF5B8273B2180FECC007B606A26AB3D"
+      },
+      {
+        "observed_date_raw": 53178312,
+        "phase": "maneuver",
+        "phase_day": 3,
+        "canonical_frame_sha256": "F5F00242F6E5466B0044170626EA0116DAE5CFFA58F3D1863F18B8A4A78E6D29"
+      },
+      {
+        "observed_date_raw": 53178336,
+        "phase": "main",
+        "phase_day": 0,
+        "canonical_frame_sha256": "335FCF0B8BC50A5C899CDA8FB4269FB4F694BF2EB36445DAA267A26D27736D17"
+      },
+      {
+        "observed_date_raw": 53178360,
+        "phase": "main",
+        "phase_day": 1,
+        "canonical_frame_sha256": "F958D0321EDFE91EEA11A25C4A5A7E1245450497ED6314B00F5B355054C4D6D0",
+        "attacker": {
+          "stored_current_fighting_raw": 140300000,
+          "derived_current_fighting_raw": 132798475,
+          "stored_current_matches_derived": false,
+          "stored_levy_current_fighting_raw": 84300000,
+          "derived_levy_current_fighting_raw": 78321731,
+          "stored_levy_current_matches_derived": false,
+          "derived_soft_casualties_raw": 4800997,
+          "derived_main_fighting_entry_hard_casualties_raw": 2700528,
+          "participant_hard_total_raw": 2700528
+        },
+        "defender": {
+          "stored_current_fighting_raw": 322100000,
+          "derived_current_fighting_raw": 314910073,
+          "stored_current_matches_derived": false,
+          "stored_levy_current_fighting_raw": 201300000,
+          "derived_levy_current_fighting_raw": 195382026,
+          "stored_levy_current_matches_derived": false,
+          "derived_soft_casualties_raw": 4709424,
+          "derived_main_fighting_entry_hard_casualties_raw": 2480503,
+          "participant_hard_total_raw": 2480503
+        }
+      },
+      {
+        "observed_date_raw": 53178384,
+        "phase": "main",
+        "phase_day": 2,
+        "canonical_frame_sha256": "A6683FE0DEF812E608B3E2A8A87D6191DB3082832EAB5CDD4C14727B91C2CEED",
+        "attacker": {
+          "stored_current_fighting_raw": 132798475,
+          "derived_current_fighting_raw": 124946803,
+          "stored_current_matches_derived": false,
+          "stored_levy_current_fighting_raw": 78321731,
+          "derived_levy_current_fighting_raw": 72118421,
+          "stored_levy_current_matches_derived": false,
+          "derived_soft_casualties_raw": 9826086,
+          "derived_main_fighting_entry_hard_casualties_raw": 5527111,
+          "participant_hard_total_raw": 5527111
+        },
+        "defender": {
+          "stored_current_fighting_raw": 314910073,
+          "derived_current_fighting_raw": 309820894,
+          "stored_current_matches_derived": false,
+          "stored_levy_current_fighting_raw": 195382026,
+          "derived_levy_current_fighting_raw": 191206818,
+          "stored_levy_current_matches_derived": false,
+          "derived_soft_casualties_raw": 8042853,
+          "derived_main_fighting_entry_hard_casualties_raw": 4236253,
+          "participant_hard_total_raw": 4236253
+        }
+      }
+    ],
+    "every_immediate_pair_equal": true,
+    "every_query_sequence_increased": true,
+    "managed_cleanup_proven": true,
+    "full_ctest": "23/23 passed from a fresh MSVC build directory"
+  },
+  "active_combat_retreat_projection_live_acceptance": {
+    "date": "2026-08-26",
+    "source_last_save_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "state_isolation": "a separately prepared temporary profile loaded the immutable battle save; the baseline state and real CK3 profile were not mutated",
+    "initial_artifact_path": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3\\logs\\active-retreat-query-initial-live.json",
+    "initial_artifact_size": 187788,
+    "initial_artifact_sha256": "97D5C5D0FC1AABCBDA3B8A6F47B146F3A81EF626E70F2772E60F73F3E1EB049B",
+    "progression_artifact_path": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3\\logs\\active-retreat-query-days-live.json",
+    "progression_artifact_size": 3710489,
+    "progression_artifact_sha256": "FB521B39AD5529434596212DB9ADC1EA27D4C270D28D13575B9A2D80913BCF40",
+    "bridge_dll_sha256": "490E90B41AF43747E43CAE104D11DEFA20D3E27353577114DB7874E1ED09A190",
+    "bridge_injector_sha256": "2154B59B71B081E39E0E3CB29FB05263FFDAA73F63BAD55CF3B6FBF3F834A4FA",
+    "managed_ck3_pids": [8104, 88912],
+    "identity": {
+      "combat_id": 335544325,
+      "combat_province_id": 2586,
+      "selected_public_cunit_id": 83886341,
+      "selected_native_carmy_id": 50331733,
+      "selected_owner_character_id": 29829,
+      "side_index": 0,
+      "side_scope": "full_side",
+      "affected_public_cunit_ids_in_stored_order": [83886341],
+      "unaffected_same_side_public_cunit_ids_in_stored_order": []
+    },
+    "initial_gate": {
+      "observed_date_raw": 53178264,
+      "phase": "maneuver",
+      "phase_day": 1,
+      "retreat_elapsed_baseline_date_raw": 53178264,
+      "elapsed_whole_days": 0,
+      "earliest_day_gate_date_raw": 53178624,
+      "side_flags": {
+        "disallow_retreat": false,
+        "allow_early_retreat": false,
+        "skip_pursuit": false
+      },
+      "landless_gate_allows_retreat": true,
+      "native_boolean": false,
+      "legal_now": false,
+      "reason_codes_in_native_order": ["too_early"],
+      "native_reason_keys_in_native_order": ["COMBAT_NO_RETREAT_TOO_EARLY"],
+      "canonical_frame_sha256": "C36CA603F28072E89C52A464A8BFADE8B20F1A052D62CEDBA0F3AEAAFE4137FC"
+    },
+    "day_gate_transition": {
+      "elapsed_day_14": {
+        "observed_date_raw": 53178600,
+        "phase": "main",
+        "phase_day": 11,
+        "native_boolean": false,
+        "legal_now": false,
+        "reason_codes_in_native_order": ["too_early"]
+      },
+      "elapsed_day_15": {
+        "observed_date_raw": 53178624,
+        "phase": "main",
+        "phase_day": 12,
+        "native_boolean": true,
+        "legal_now": true,
+        "reason_codes_in_native_order": []
+      },
+      "elapsed_day_16": {
+        "observed_date_raw": 53178648,
+        "phase": "main",
+        "phase_day": 13,
+        "native_boolean": true,
+        "legal_now": true,
+        "reason_codes_in_native_order": []
+      }
+    },
+    "frame_count": 17,
+    "every_immediate_pair_equal": true,
+    "every_query_sequence_increased": true,
+    "every_bounded_frame_changed_or_terminal": true,
+    "managed_cleanup_proven": true,
+    "action_executed": false
+  },
+  "planner_integrated_hold_live_acceptance": {
+    "surface": "choose_one_life_turn through GameplayBridgeService.plan_turn with a strict live-step allowlist",
+    "date": "2026-08-26",
+    "artifact_path": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-planner-battle-control-live-20260826-0910.json",
+    "artifact_size": 432082,
+    "artifact_sha256": "96CE25384517F0060A58623958DE071F43C3C2F7B68AEB6E668473E986C1DD57",
+    "source_save_path": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3\\profile\\save games\\autosave.ck3",
+    "source_save_sha256_before": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "source_save_sha256_after": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "source_save_unchanged": true,
+    "bridge_dll_sha256": "490E90B41AF43747E43CAE104D11DEFA20D3E27353577114DB7874E1ED09A190",
+    "bridge_injector_sha256": "2154B59B71B081E39E0E3CB29FB05263FFDAA73F63BAD55CF3B6FBF3F834A4FA",
+    "managed_ck3_pid": 82964,
+    "subject_public_cunit_id": 83886341,
+    "combat_id": 335544325,
+    "cycles": [
+      {
+        "date_raw_before": 53178264,
+        "date_raw_after": 53178288,
+        "raw_delta": 24,
+        "phase_before": "maneuver",
+        "phase_day_before": 1,
+        "phase_after": "maneuver",
+        "phase_day_after": 2,
+        "transition": "same_combat_advanced"
+      },
+      {
+        "date_raw_before": 53178288,
+        "date_raw_after": 53178312,
+        "raw_delta": 24,
+        "phase_before": "maneuver",
+        "phase_day_before": 2,
+        "phase_after": "maneuver",
+        "phase_day_after": 3,
+        "transition": "same_combat_advanced"
+      }
+    ],
+    "planner_phases": [
+      "native_war_battle_control_query",
+      "native_war_global_battle_control_progress"
+    ],
+    "allowed_mutation": "life-advance only",
+    "retreat_actions_executed": 0,
+    "managed_cleanup_proven": true,
+    "temporary_profile_clone_removed": true,
+    "planner_battle_hold_live_ready": true
+  },
+  "readiness": {
+    "battle_control_snapshot_v1_original_frame_production_live_ready": true,
+    "battle_control_snapshot_v1_expanded_frame_production_live_ready": true,
+    "battle_identity_live_ready": true,
+    "battle_hold_ready": true,
+    "planner_battle_hold_live_ready": true,
+    "active_combat_retreat_projection_cpp_implementation_ready": true,
+    "active_combat_retreat_projection_cpp_unit_ready": true,
+    "active_combat_retreat_projection_production_query_ready": true,
+    "active_combat_retreat_projection_production_live_ready": true,
+    "standalone_active_combat_retreat_query_ready": false,
+    "prior_combat_transition_query_ready": true,
+    "full_side_active_combat_retreat_live_ready": true,
+    "active_combat_retreat_action_ready": false,
+    "retreat_command_ready": false,
+    "reinforcement_timeline_ready": false
+  },
+  "implementation_priority": [
+    "[complete] P1.1 reused the existing actual-contact full-ID resolver and application-main mailbox without creating a second identity spine",
+    "[complete] P1.2 projected ordered armies, two retained Entry60 buckets and participant-hard rows with the exact offsets above",
+    "[complete] P1.3 derived per-entry hard with checked starting-current-soft only for main-fighting rows, typed non-main hard unavailable and published the historical owner ledger separately",
+    "[complete] P1.4 added read-only 0x23D2D70/0x23CC340 values and direct int64 advantage totals without calling refresh/finalize helpers on the real combat",
+    "[complete] P1.5 added strict Python normalization, service/MCP facade and deterministic generation/order/ledger tests",
+    "[complete] P1.6 passed managed cold-restore and bounded progression through two real main-phase casualty deltas before setting battle_identity_live_ready and battle_hold_ready",
+    "[complete] P1.7 appended selected retreat identity, native stored-order owner scope, side flags and exact four-gate legality using only 0x2308250 null-sink and 0x26165B0 read-only bindings; production paused live proved too_early through day 14 and legal_now from day 15 without ending the combat",
+    "[complete] P1.8 bound the exact target preview to a one-use CombatID/side/scope token and submitted the existing player move command; full-side semantic live observed retreating, target and route",
+    "[complete] P1.9 ran choose_one_life_turn in a managed production session for two exact query -> one-day advance -> same-CombatID requery cycles; dates advanced by exactly 24 raw units and both transitions were same_combat_advanced",
+    "[complete] P1.10 added a full-CombatID lifecycle query independent of retreating CUnit eligibility; managed full-side live observed main/12 -> pursuit/0, opposite winner and both stored-order sides",
+    "[current] P1.11 must close mixed-owner owner-subset production postconditions before active_combat_retreat_action_ready can become true"
+  ],
+  "reproduction": {
+    "disassembler": "tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py <RVA> --size <bounded-size>",
+    "required_ranges": [
+      "0x23C9100 size 0x300",
+      "0x23D0520 size 0xE0",
+      "0x23CB840 size 0x90",
+      "0x23CC340 size 0x90",
+      "0x23D2D70 size 0xC0",
+      "0x23CDF70 size 0x110",
+      "0x23090C0 size 0x1C0",
+      "0x2308D50 size 0xA0",
+      "0x27FB617 size 0x160",
+      "0x230A010 size 0x100",
+      "0x230A590 size 0x80",
+      "0x2308250 size 0x600",
+      "0x26165B0 size 0x80",
+      "0x2308850 size 0x280 read-only scope-reference disassembly only; never call from the query"
+    ]
+  }
+}

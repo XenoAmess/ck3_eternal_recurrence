@@ -239,6 +239,12 @@ int main() {
                 "game.command.query-route-contact-horizon-v1-N") ||
       !Contains(known.capabilities,
                 "game.command.query-actual-contact-scope-v1-N") ||
+      !Contains(known.capabilities,
+                "game.command.query-battle-control-snapshot-v1-N") ||
+      !Contains(known.capabilities,
+                "game.command.query-battle-transition-v1-N") ||
+      !Contains(known.capabilities,
+                "game.command.query-battle-reinforcement-assignment-v1-N") ||
       !Contains(known.capabilities, "game.command.split-army-half-N") ||
       !Contains(known.capabilities,
                 "game.command.merge-armies-N-with-N") ||
@@ -429,6 +435,30 @@ int main() {
           "query-actual-contact-scope-v1-016777217-at-3") ||
       exact_adapter->supports_step(
           "query-actual-contact-scope-v1-16777217-at-0") ||
+      !exact_adapter->supports_step(
+          "query-battle-control-snapshot-v1-16777217") ||
+      exact_adapter->supports_step(
+          "query-battle-control-snapshot-v1-016777217") ||
+      exact_adapter->supports_step(
+          "query-battle-control-snapshot-v1-0") ||
+      exact_adapter->supports_step(
+          "query-battle-control-snapshot-v1-2147483648") ||
+      !exact_adapter->supports_step(
+          "query-battle-transition-v1-335544325") ||
+      exact_adapter->supports_step(
+          "query-battle-transition-v1-0335544325") ||
+      exact_adapter->supports_step(
+          "query-battle-transition-v1-0") ||
+      exact_adapter->supports_step(
+          "query-battle-transition-v1-2147483648") ||
+      !exact_adapter->supports_step(
+          "query-battle-reinforcement-assignment-v1-83886341") ||
+      exact_adapter->supports_step(
+          "query-battle-reinforcement-assignment-v1-083886341") ||
+      exact_adapter->supports_step(
+          "query-battle-reinforcement-assignment-v1-0") ||
+      exact_adapter->supports_step(
+          "query-battle-reinforcement-assignment-v1-2147483648") ||
       !exact_adapter->supports_step(
           "query-war-termination-terms-v1-16777290") ||
       exact_adapter->supports_step(

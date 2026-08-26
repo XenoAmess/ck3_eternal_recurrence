@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -360,8 +361,9 @@ struct OngoingCombatInputsSnapshot {
   std::int32_t final_combat_width = 0;
   std::int32_t side_0_roll = 0;
   std::int32_t side_1_roll = 0;
-  std::int32_t base_advantage = 0;
-  std::int32_t resolved_advantage = 0;
+  // CCombat stores both signed advantage values as Q100000 int64 fields.
+  std::int64_t base_advantage = 0;
+  std::int64_t resolved_advantage = 0;
   std::string orientation =
       "native_side_0_attacker_side_1_defender";
   std::string unavailable_reason;
@@ -942,6 +944,324 @@ struct ActualContactScopeSnapshot {
 
   friend bool operator==(const ActualContactScopeSnapshot &,
                          const ActualContactScopeSnapshot &) = default;
+};
+
+// Exact, read-only projection of one live CCombat reached through a
+// controllable public CUnit.  All arrays preserve CK3's native stored order;
+// no native pointer crosses this version-neutral boundary.
+struct BattleControlRequest {
+  std::int32_t subject_public_cunit_id = -1;
+
+  friend bool operator==(const BattleControlRequest &,
+                         const BattleControlRequest &) = default;
+};
+
+enum class BattleControlSnapshotStatus {
+  available,
+  requires_paused,
+  subject_cunit_not_found,
+  subject_not_controllable,
+  subject_not_in_combat,
+  subject_retreating,
+  state_changed,
+  unavailable,
+};
+
+struct BattleControlArmyIdentitySnapshot {
+  std::int32_t native_carmy_id = -1;
+  std::int32_t public_cunit_id = -1;
+  std::int32_t owner_character_id = -1;
+  std::int32_t combat_backlink_id = -1;
+
+  friend bool operator==(const BattleControlArmyIdentitySnapshot &,
+                         const BattleControlArmyIdentitySnapshot &) = default;
+};
+
+struct BattleControlRegimentEntrySnapshot {
+  std::string bucket;
+  std::int32_t bucket_index = -1;
+  std::int32_t regiment_id = -1;
+  std::int32_t native_carmy_id = -1;
+  std::int32_t public_cunit_id = -1;
+  std::int32_t owner_character_id = -1;
+  std::int64_t starting_raw = 0;
+  std::int64_t current_fighting_raw = 0;
+  std::int64_t soft_casualties_raw = 0;
+  bool fights_in_main_phase = false;
+  bool hard_casualties_available = false;
+  std::int64_t hard_casualties_raw = 0;
+  std::int32_t effective_max_size = 0;
+  std::int64_t effective_siege_raw = 0;
+  std::int64_t effective_damage_raw = 0;
+  std::int64_t effective_toughness_raw = 0;
+  std::int64_t effective_pursuit_raw = 0;
+  std::int64_t effective_screen_raw = 0;
+  std::int32_t entry_strength_raw = 0;
+
+  friend bool operator==(const BattleControlRegimentEntrySnapshot &,
+                         const BattleControlRegimentEntrySnapshot &) = default;
+};
+
+struct BattleControlParticipantHardSnapshot {
+  std::int32_t row_index = -1;
+  std::int32_t participant_character_id = -1;
+  std::int64_t hard_casualties_raw = 0;
+
+  friend bool operator==(const BattleControlParticipantHardSnapshot &,
+                         const BattleControlParticipantHardSnapshot &) = default;
+};
+
+struct BattleControlSideSnapshot {
+  std::int32_t side_index = -1;
+  std::string role;
+  std::int32_t primary_participant_character_id = -1;
+  std::int32_t selected_commander_character_id = -1;
+  std::int32_t current_roll_points = 0;
+  std::vector<BattleControlArmyIdentitySnapshot> ordered_armies;
+  std::vector<BattleControlRegimentEntrySnapshot> levy_entries;
+  std::vector<BattleControlRegimentEntrySnapshot> men_at_arms_entries;
+  std::int64_t stored_current_fighting_raw = 0;
+  std::int64_t stored_levy_current_fighting_raw = 0;
+  bool stored_current_matches_derived = false;
+  bool stored_levy_current_matches_derived = false;
+  std::int64_t derived_current_fighting_raw = 0;
+  std::int64_t derived_soft_casualties_raw = 0;
+  std::int64_t derived_main_fighting_entry_hard_casualties_raw = 0;
+  std::int64_t non_main_start_minus_current_minus_soft_raw = 0;
+  std::vector<BattleControlParticipantHardSnapshot> participant_hard_ledger;
+  std::int64_t participant_hard_total_raw = 0;
+  std::int32_t side_strength_raw = 0;
+  std::int32_t side_strength_scale = 100'000;
+
+  friend bool operator==(const BattleControlSideSnapshot &,
+                         const BattleControlSideSnapshot &) = default;
+};
+
+struct ActiveCombatRetreatSideFlagsSnapshot {
+  bool disallow_retreat = false;
+  bool allow_early_retreat = false;
+  bool skip_pursuit = false;
+
+  friend bool operator==(const ActiveCombatRetreatSideFlagsSnapshot &,
+                         const ActiveCombatRetreatSideFlagsSnapshot &) =
+      default;
+};
+
+struct ActiveCombatRetreatLegalitySnapshot {
+  std::string status = "unavailable";
+  bool native_boolean = false;
+  std::int32_t phase_raw = -1;
+  std::string phase;
+  std::int32_t retreat_elapsed_baseline_date_raw = 0;
+  std::int64_t elapsed_whole_days = 0;
+  std::int32_t minimum_elapsed_whole_days_exclusive = 0;
+  bool landless_gate_allows_retreat = false;
+  bool legal_now = false;
+  std::vector<std::string> reason_codes_in_native_order;
+  std::vector<std::string> native_reason_keys_in_native_order;
+  std::optional<std::int64_t> earliest_day_gate_date_raw;
+
+  friend bool operator==(const ActiveCombatRetreatLegalitySnapshot &,
+                         const ActiveCombatRetreatLegalitySnapshot &) =
+      default;
+};
+
+struct BattleControlSnapshot {
+  BattleControlSnapshotStatus status =
+      BattleControlSnapshotStatus::unavailable;
+  std::uint64_t snapshot_revision = 0;
+  std::int64_t observed_date_raw = 0;
+  std::int32_t subject_public_cunit_id = -1;
+  std::int32_t subject_native_carmy_id = -1;
+  std::int32_t combat_id = -1;
+  std::int32_t province_id = -1;
+  std::int32_t selected_public_cunit_id = -1;
+  std::int32_t selected_native_carmy_id = -1;
+  std::int32_t selected_owner_character_id = -1;
+  std::int32_t combat_province_id = -1;
+  std::int32_t side_index = -1;
+  std::string side_scope;
+  std::vector<std::int32_t> affected_public_cunit_ids_in_stored_order;
+  std::vector<std::int32_t>
+      unaffected_same_side_public_cunit_ids_in_stored_order;
+  ActiveCombatRetreatSideFlagsSnapshot side_flags;
+  ActiveCombatRetreatLegalitySnapshot legality;
+  std::string phase;
+  std::int32_t phase_raw = -1;
+  std::int32_t phase_day = -1;
+  std::string winner_side;
+  std::int32_t winner_raw = -1;
+  std::string forced_winner_side;
+  std::int32_t forced_winner_raw = -1;
+  bool finalized = false;
+  std::int32_t battle_result_id = -1;
+  std::int32_t base_combat_width = 0;
+  std::int32_t final_combat_width = 0;
+  std::int32_t roll_cadence_counter = 0;
+  std::int64_t base_advantage_raw = 0;
+  std::int64_t resolved_advantage_raw = 0;
+  BattleControlSideSnapshot attacker;
+  BattleControlSideSnapshot defender;
+  bool battle_control_ready = false;
+
+  friend bool operator==(const BattleControlSnapshot &,
+                         const BattleControlSnapshot &) = default;
+};
+
+// Read-only lifecycle projection addressed by a full-generation CombatID.
+// Unlike BattleControlSnapshot this query has no CUnit eligibility dependency,
+// so it remains usable after a player movement command marks the selected unit
+// as retreating. Arrays preserve the CCombatSide native stored order.
+struct BattleTransitionRequest {
+  std::int32_t combat_id = -1;
+
+  friend bool operator==(const BattleTransitionRequest &,
+                         const BattleTransitionRequest &) = default;
+};
+
+enum class BattleTransitionSnapshotStatus {
+  available,
+  combat_not_found,
+  state_changed,
+  unavailable,
+};
+
+struct BattleTransitionSnapshot {
+  BattleTransitionSnapshotStatus status =
+      BattleTransitionSnapshotStatus::unavailable;
+  std::uint64_t snapshot_revision = 0;
+  std::int64_t observed_date_raw = 0;
+  std::int32_t combat_id = -1;
+  std::int32_t province_id = -1;
+  std::string phase;
+  std::int32_t phase_raw = -1;
+  std::int32_t phase_day = -1;
+  std::string winner_side;
+  std::int32_t winner_raw = -1;
+  std::string forced_winner_side;
+  std::int32_t forced_winner_raw = -1;
+  bool finalized = false;
+  std::int32_t battle_result_id = -1;
+  std::vector<std::int32_t> attacker_public_cunit_ids_in_stored_order;
+  std::vector<std::int32_t> defender_public_cunit_ids_in_stored_order;
+  bool battle_transition_ready = false;
+
+  friend bool operator==(const BattleTransitionSnapshot &,
+                         const BattleTransitionSnapshot &) = default;
+};
+
+// Exact, read-only projection of one native AI-managed CUnit's saved
+// reinforcement request/assignment and its already committed route. Native
+// arrays retain stored order; no future CombatID is inferred before contact.
+struct BattleReinforcementAssignmentRequest {
+  std::int32_t selected_public_cunit_id = -1;
+
+  friend bool operator==(const BattleReinforcementAssignmentRequest &,
+                         const BattleReinforcementAssignmentRequest &) =
+      default;
+};
+
+enum class BattleReinforcementAssignmentStatus {
+  available,
+  unavailable,
+};
+
+struct BattleReinforcementSignalSnapshot {
+  bool asking_for_help = false;
+  bool assigned_to_help = false;
+  bool asking_changed_last_evaluation = false;
+  std::optional<std::int64_t> request_power_basis_raw;
+  std::uint8_t cross_coordinator_request_valid_raw = 0;
+  std::optional<std::int64_t> cross_coordinator_request_power_raw;
+  std::optional<std::int64_t>
+      first_route_edge_remaining_duration_q100000;
+
+  friend bool operator==(const BattleReinforcementSignalSnapshot &,
+                         const BattleReinforcementSignalSnapshot &) =
+      default;
+};
+
+struct BattleReinforcementAssignmentStateSnapshot {
+  std::optional<std::int32_t> assignment_target_province_id;
+  std::string target_provenance = "none";
+  std::string combat_binding_status = "unbound_until_contact";
+  std::optional<std::int32_t> active_combat_id;
+
+  friend bool operator==(
+      const BattleReinforcementAssignmentStateSnapshot &,
+      const BattleReinforcementAssignmentStateSnapshot &) = default;
+};
+
+struct BattleReinforcementRouteSnapshot {
+  std::int32_t current_province_id = -1;
+  std::optional<std::int32_t> move_target_province_id;
+  std::vector<std::int32_t> route_province_ids;
+  std::string route_alignment;
+  std::optional<std::vector<std::int32_t>> arrival_date_raws;
+  std::optional<std::int32_t> assignment_eta_date_raw;
+
+  friend bool operator==(const BattleReinforcementRouteSnapshot &,
+                         const BattleReinforcementRouteSnapshot &) =
+      default;
+};
+
+struct BattleReinforcementParentSubunitSnapshot {
+  std::vector<std::int32_t> public_cunit_ids_in_stored_order;
+  bool asking_for_help = false;
+  bool assigned_to_help = false;
+  std::optional<std::int32_t> assignment_target_province_id;
+
+  friend bool operator==(
+      const BattleReinforcementParentSubunitSnapshot &,
+      const BattleReinforcementParentSubunitSnapshot &) = default;
+};
+
+struct BattleReinforcementNativeOrderSnapshot {
+  std::vector<std::int32_t>
+      support_search_province_ids_in_stored_order;
+  std::vector<BattleReinforcementParentSubunitSnapshot>
+      parent_subunits_in_stored_order;
+
+  friend bool operator==(const BattleReinforcementNativeOrderSnapshot &,
+                         const BattleReinforcementNativeOrderSnapshot &) =
+      default;
+};
+
+struct BattleReinforcementContactProjectionSnapshot {
+  std::string status = "not_applicable";
+  std::string temporal_semantics =
+      "present_time_only_not_future_binding";
+  std::vector<std::int32_t>
+      current_target_compatible_combat_ids_in_stored_order;
+  std::optional<std::int32_t> contact_if_now_selected_combat_id;
+
+  friend bool operator==(
+      const BattleReinforcementContactProjectionSnapshot &,
+      const BattleReinforcementContactProjectionSnapshot &) = default;
+};
+
+struct BattleReinforcementAssignmentSnapshot {
+  BattleReinforcementAssignmentStatus status =
+      BattleReinforcementAssignmentStatus::unavailable;
+  std::string unavailable_reason;
+  std::uint64_t snapshot_revision = 0;
+  std::int64_t observed_date_raw = 0;
+  std::int32_t selected_public_cunit_id = -1;
+  std::optional<std::int32_t> selected_native_carmy_id;
+  std::optional<std::int32_t> coordinator_id;
+  std::optional<std::int32_t> unit_stack_stored_index;
+  std::optional<std::int32_t> subunit_stored_index;
+  std::optional<BattleReinforcementSignalSnapshot> signal;
+  std::optional<BattleReinforcementAssignmentStateSnapshot> assignment;
+  std::optional<BattleReinforcementRouteSnapshot> route;
+  std::optional<BattleReinforcementNativeOrderSnapshot> native_order;
+  std::optional<BattleReinforcementContactProjectionSnapshot>
+      contact_projection;
+  bool battle_reinforcement_assignment_ready = false;
+
+  friend bool operator==(const BattleReinforcementAssignmentSnapshot &,
+                         const BattleReinforcementAssignmentSnapshot &) =
+      default;
 };
 enum class DisbandArmyResult {
   submitted,

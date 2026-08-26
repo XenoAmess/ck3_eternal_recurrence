@@ -1,0 +1,798 @@
+{
+  "schema_version": "xar.ck3.battle-terminal-and-reentry.research.v1",
+  "contract_stage": "research_static_only",
+  "production_live": false,
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "combat_on_actions_path": "Crusader Kings III/game/common/on_action/combat_on_actions.txt",
+    "combat_on_actions_sha256": "B35D696F472E801BB332D7204AA46008349E8AFBFDB38985C781EB099BBFB233",
+    "knight_on_actions_path": "Crusader Kings III/game/common/on_action/knight_on_actions.txt",
+    "knight_on_actions_sha256": "F7C179D93F24762E3C7FC6002CD988ED0B94ACD5202FB421D34D646454AB48EB",
+    "army_on_actions_path": "Crusader Kings III/game/common/on_action/army_on_actions.txt",
+    "army_on_actions_sha256": "61D70DE16951700F961624DF56FFBA4576B887A669CE2F592BF023F541EC54B0",
+    "barter_on_actions_path": "Crusader Kings III/game/common/on_action/barter_on_actions.txt",
+    "barter_on_actions_sha256": "9FC63FDB284F2E41274BD1384B7394D23FC42907254F91A51845097B45DBC6AB",
+    "defines_path": "Crusader Kings III/game/common/defines/00_defines.txt",
+    "defines_sha256": "C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807",
+    "casus_belli_info_path": "Crusader Kings III/game/common/casus_belli_types/_casus_belli.info",
+    "casus_belli_info_sha256": "E3BACD9F3360837F6ED7D5F22B937AB7E79CB675AD804819A627CB73970CE699"
+  },
+  "evidence_boundary": {
+    "static_disassembly_ready": true,
+    "rtti_ready": true,
+    "original_data_ready": true,
+    "game_started_for_this_research": false,
+    "mutation_executed_for_this_research": false,
+    "forbidden_constructor_called": false,
+    "implementation_ready": false,
+    "query_capability_advertised": false,
+    "production_live_ready": false
+  },
+  "anchors": {
+    "combat_daily_manager_rva": "0x27FB5D0",
+    "combat_invalidation_sweep_rva": "0x27FBE50",
+    "war_terminal_routine_range": "0x27A31E0..0x27A4036",
+    "war_terminal_sweep_callsite_rva": "0x27A3D56",
+    "combat_finalizer_rva": "0x230A590",
+    "normal_finalizer_callsite_rva": "0x27FB73E",
+    "no_normal_finalizer_callsite_rva": "0x27FBF85",
+    "combat_global_remove_call_rvas": [
+      "0x27FB74A",
+      "0x27FBF91"
+    ],
+    "combat_global_remove_rva": "0x27FDC50",
+    "result_global_remove_rva": "0x27FDD70",
+    "normal_result_envelope_dispatch_rva": "0x230AF10",
+    "embedded_battle_result_builder_rva": "0x23097B0",
+    "war_battle_score_apply_rva": "0x222A5A0",
+    "war_battle_score_apply_callsite_rva": "0x230A7C6",
+    "war_battle_row_constructor_rva": "0x25BB9A0",
+    "single_battle_score_formula_rva": "0x25BBE70",
+    "combat_side_hard_loss_rva": "0x23CDD90",
+    "participant_eight_bucket_strength_rva": "0x292FC40",
+    "cumulative_base_battle_score_rva": "0x2903150",
+    "total_war_score_rva": "0x222A8A0",
+    "combat_warscore_trigger_accessor_rva": "0x284C7A0",
+    "ai_war_projection_builder_range": "0x184D960..0x184DFD6",
+    "combat_side_result_copy_rva": "0x23DB050",
+    "combat_side_reset_rva": "0x23C9770",
+    "army_combat_backlink_clear_rva": "0x226FFE0",
+    "normal_loser_route_rva": "0x23C9F00",
+    "combat_side_army_remove_rva": "0x23C9400",
+    "army_destroy_manager_rva": "0x27BF9C0",
+    "province_id_remove_rva": "0x21116E0",
+    "province_post_remove_helper_rva": "0x2208C10",
+    "province_residual_rescan_rva": "0x220D2A0",
+    "province_contact_resolver_rva": "0x2208320",
+    "province_contact_fallback_rva": "0x2208AA0",
+    "active_combat_predicate_rva": "0x2248A80",
+    "ai_subunit_dispatcher_rva": "0x18721B0",
+    "ai_coordinator_lifecycle_rva": "0x18550D0",
+    "ai_manager_update_rva": "0x18876D0",
+    "fight_compatibility_relation_rva": "0x2900470",
+    "loaded_script_dispatch_rva": "0x33F8350",
+    "defeat_loot_dispatch_rvas": [
+      "0x23A2360",
+      "0x2934FE0"
+    ]
+  },
+  "native_types": {
+    "CCombat": {
+      "+0x08": "full CombatID identity",
+      "+0x20": "attacker-side embedded CCombatSide",
+      "+0x90": "attacker primary participant full CharacterID",
+      "+0x368": "defender-side embedded CCombatSide",
+      "+0x3D8": "defender primary participant full CharacterID",
+      "+0x6B0": "phase raw; ordinary terminal phase is 3",
+      "+0x6B4": "phase-day or cadence raw incremented by daily manager",
+      "+0x6B8": "Province*",
+      "+0x6E0": "winner-side raw; -1, 0 or 1",
+      "+0x704": "finalized byte written to 1 at combat finalizer entry",
+      "+0x705": "daily tick/finalization guard byte",
+      "+0x708": "full CCombatResultData ID; -1 is legal absent sentinel"
+    },
+    "CCombatResultData": {
+      "rtti_type_descriptor_rva": "0x54A4888",
+      "primary_vtable_rva": "0x43084B8",
+      "component_storage_stride_bytes": 416,
+      "storage_root": "module+0x57C0328",
+      "fallback_object": "module+0x57C0320; typed query may use only when CCombat+0x708 is -1",
+      "fields": {
+        "+0x08": "full result ID identity",
+        "+0x28": "wipe_raw boolean",
+        "+0x2C": "signed retreat-elapsed baseline date/raw; formal field name unknown",
+        "+0x34": "normal-finalizer current global raw value; likely terminal timestamp/date but formal name unknown",
+        "+0x40": "canonical nonnegative per-battle warscore magnitude, signed qword Q100000; copied from newest CWar battle row+0x40 and returned by warscore_value",
+        "+0x48..+0x97": "embedded 0x50-byte CBattleResult",
+        "+0xA0/+0xAC": "stride-0x18 side-associated row vector data/count; row business name unknown",
+        "+0xB8/+0xC4": "relevant current-player CharacterID vector data/count",
+        "+0xD0": "parallel vector receiving zero per relevant current player; business name unknown",
+        "+0xE8": "first embedded CBattleResultSide",
+        "+0x138": "second embedded CBattleResultSide",
+        "+0x188": "retained battle-event trace row container"
+      }
+    },
+    "CBattleResult": {
+      "rtti_type_descriptor_rva": "0x54BE540",
+      "vtable_rva": "0x431F848",
+      "embedded_size_bytes": 80,
+      "builder_rva": "0x23097B0"
+    },
+    "CBattleResultSide": {
+      "rtti_type_descriptor_rva": "0x54BE568",
+      "vtable_rva": "0x431F810",
+      "copy_builder_rva": "0x23DB050"
+    },
+    "CArmy": {
+      "+0x38/+0x44": "full CRegimentID array data/count in native stored order",
+      "+0x124": "full backing public CUnitID",
+      "+0x128": "full active CCombatID backlink; finalizer writes -1",
+      "+0x1D4/+0x1E0": "raid-state gate and raid-loot raw used by on_defeat_raid_army wrapper",
+      "+0x1EC/+0x1F0": "barter-state gate and barter-loot raw used by on_defeat_barter_army wrapper"
+    },
+    "CUnit": {
+      "+0x18": "raw eligibility gate used by rescan and active-combat predicate",
+      "+0x20": "current Province*",
+      "+0x30": "move-target Province*",
+      "+0x38/+0x44": "route row data/count",
+      "+0x170": "movement or retreat state raw",
+      "+0x178": "full internal CArmyID",
+      "+0x1C4": "full CAIWarCoordinator component ID",
+      "+0x1D0": "CAISubunitStack* backlink"
+    },
+    "Province": {
+      "+0x748/+0x754": "full public CUnitID data/count; normal maintenance is unsigned full-ID ascending",
+      "+0x760/+0x76C": "full CombatID data/count; normal maintenance is unsigned full-ID ascending"
+    },
+    "CWar": {
+      "+0x08": "full WarID identity",
+      "+0x28": "war-attacker participant pointer array used as losing-war side when defender wins",
+      "+0x88": "war-defender participant pointer array used as losing-war side when attacker wins",
+      "+0x100": "loaded casus-belli type/config pointer",
+      "+0x298/+0x2A4": "heap 0x58-byte battle-score row pointer vector data/count"
+    },
+    "CWarBattleScoreRow": {
+      "allocation_size_bytes": 88,
+      "constructor_rva": "0x25BB9A0",
+      "+0x40": "nonnegative per-battle warscore magnitude, signed qword Q100000; serializer field ID 0x2B32",
+      "+0x50": "winner_is_war_attacker bool; serializer field ID 0x2B33",
+      "+0x51": "combat_side0_is_war_attacker bool; serializer field ID 0x2B34"
+    }
+  },
+  "daily_terminal_dispatch": {
+    "manager_combat_array": "+0x20/+0x2C",
+    "per_active_combat_order": [
+      "write CCombat+0x705=1 at 0x27FB67C",
+      "snapshot current commanders to CCombat+0x94/+0x3DC",
+      "increment CCombat+0x6B4 and dispatch phase helper by CCombat+0x6B0",
+      "write CCombat+0x705=0 at 0x27FB717",
+      "if manager+0x58 is nonzero, call 0x27FBE50 before ordinary phase-done testing and skip the ordinary branch",
+      "otherwise, if phase raw equals 3, call 0x230A590(combat,false), then 0x27FDC50"
+    ],
+    "end_of_loop_sweep": "if manager+0x58 remains nonzero, 0x27FB780 calls 0x27FBE50",
+    "important_non_inference": "prior phase raw 3 does not prove normal_result because an invalidation sweep can preempt the ordinary finalizer"
+  },
+  "no_normal_result_predicate": {
+    "sweep_combat_array": "manager+0x28/+0x34",
+    "sweep_entry_effect": "write manager+0x60=0",
+    "combat_gate": "generation-resolve full CombatID and require CCombat vtable slot +0x08 active predicate",
+    "participant_resolution": [
+      "CCombat+0x90 attacker primary full CharacterID -> Character store -> require CCharacter+0x18 full-ID readback",
+      "CCombat+0x3D8 defender primary full CharacterID -> same validation"
+    ],
+    "relation_call": "0x27FBF61 calls 0x2900470(side0_primary,side1_primary,0)",
+    "relation_true": "keep combat",
+    "relation_false": {
+      "already_finalized": "if CCombat+0x704 is nonzero, keep/skip",
+      "currently_ticking": "if CCombat+0x704 is zero and +0x705 is nonzero, write manager+0x60=1 and defer",
+      "safe_to_finalize": "if CCombat+0x704 is zero and +0x705 is zero, call 0x230A590(combat,true), then 0x27FDC50"
+    },
+    "formal_relation_name": "unknown; conservatively fight-compatibility relation predicate",
+    "direct_xrefs_to_sweep": [
+      "0x27A3D56",
+      "0x27FB729",
+      "0x27FB780"
+    ],
+    "war_teardown_evidence": "0x27A3D56 lies in 0x27A31E0..0x27A4036, a war-object terminal/teardown routine guarded by object+0x358 and using game-data+0x29A10 combat manager",
+    "other_invalidator_producers": "unknown"
+  },
+  "finalizer_branch": {
+    "abi": "void __fastcall(CCombat* combat, bool suppress_normal_result_envelopes)",
+    "entry_common_write": "0x230A5C4 writes CCombat+0x704=1",
+    "branch_rva": "0x230A654",
+    "normal_false_path": [
+      "construct/fill CCombatResultData normal fields",
+      "collect relevant current players",
+      "0x230A780 resolve common WarID through 0x2610840; if generation-valid CWar is active, 0x230A7C6 calls 0x222A5A0",
+      "0x222A5A0 appends one CWar+0x298 battle row and copies newest row+0x40 to CCombatResultData+0x40",
+      "build embedded CBattleResult through 0x23097B0",
+      "copy side-associated rows and embedded CBattleResultSide values",
+      "call 0x230AF10 winner/loser result envelopes",
+      "call 0x23C9770 for both combat sides",
+      "enter common cleanup"
+    ],
+    "suppress_true_path": [
+      "jump from 0x230A657 to 0x230A9BD",
+      "skip normal result construction",
+      "skip 0x230AF10",
+      "skip both 0x23C9770 calls",
+      "enter common cleanup"
+    ],
+    "safe_business_name": "suppress_normal_result_envelopes",
+    "unsafe_unproven_names": [
+      "aborted",
+      "war_ended",
+      "no_winner"
+    ]
+  },
+  "normal_result_envelopes": {
+    "dispatcher_rva": "0x230AF10",
+    "winner_selection": "CCombat+0x6E0",
+    "order": [
+      "winner RNG draw at 0x230AFBD",
+      "winner loaded envelope through runtime database+0x258",
+      "opposite loser RNG draw at 0x230B07C",
+      "loser loaded envelope through runtime database+0x260"
+    ],
+    "scope_wipe_source": "CCombatResultData+0x28",
+    "stock_on_actions": {
+      "winner": {
+        "name": "on_combat_end_winner",
+        "ascii_string_rva": "0x4311D28",
+        "registration_callsite_rva": "0x2505294",
+        "registration_table_block_offset": "+0x960",
+        "root": "winning CCombatSide",
+        "notable_effect_classes": [
+          "commander and knight imprisonment",
+          "artifact and historical artifact events",
+          "harm events",
+          "legend and glory effects"
+        ]
+      },
+      "loser": {
+        "name": "on_combat_end_loser",
+        "ascii_string_rva": "0x4311D10",
+        "registration_callsite_rva": "0x25052B1",
+        "registration_table_block_offset": "+0x980",
+        "root": "losing CCombatSide",
+        "notable_effect_classes": [
+          "harm events",
+          "memory and scripted effects",
+          "legitimacy loss branch using combat warscore_value >= 15"
+        ]
+      }
+    },
+    "registration_vs_runtime_projection": "registration +0x960/+0x980 and runtime dispatch +0x258/+0x260 are distinct loaded-data layers",
+    "loaded_playset_exact_contents": "unknown without actual loaded-playset manifest or passive trace"
+  },
+  "result_retention": {
+    "branch_range": "0x230ADDF..0x230AE2C",
+    "remove_predicate": "result object active AND (suppress_normal_result_envelopes OR CCombatResultData+0xC4 relevant_player_count == 0)",
+    "remove_storage": "game-data+0x29A50 through 0x27FDD70",
+    "cases": {
+      "no_normal_result": "ResultID is removed",
+      "normal_result_without_relevant_current_player": "ResultID is removed",
+      "normal_result_with_relevant_current_player": "ResultID is retained"
+    },
+    "identifiability": {
+      "retained_result": "strong evidence for normal_result",
+      "missing_result": "ambiguous between normal_result and no_normal_result",
+      "current_state_only_exact_terminal_kind": false
+    }
+  },
+  "character_and_warscore_effect_boundaries": {
+    "phase_character_casualty_chain": [
+      "0x27FB4D0 schedule",
+      "0x23C8750 phase-event preparation",
+      "0x2E1C570 row selection",
+      "0x23C9900 loaded-script execution"
+    ],
+    "terminal_character_effects": "normal winner/loser envelopes can additionally wound, harm or imprison characters; regiment casualty ledgers are not a complete terminal character delta",
+    "defeat_loot_dispatches": [
+      {
+        "callsite_rva": "0x230AC7A",
+        "callee_rva": "0x23A2360",
+        "inputs": "side ArmyID vector and primary participant Character*",
+        "exact_on_action_name": "on_defeat_raid_army",
+        "ascii_string_rva": "0x43120B8",
+        "registration_xref_rva": "0x2504F4B",
+        "registration_call_chain": "0x2504F3A load [rbx+0x50], 0x2504F3E add +0x5C0, 0x2504F45 length 0x13, 0x2504F4B name, 0x2504F52 call 0x7E9530",
+        "registration_block_offset": "+0x5C0",
+        "runtime_loaded_slot": "+0x170",
+        "runtime_projection_chain": "0x23A25D9 module+0x57C0F10 -> 0x23A2620 singleton+0x38 -> 0x23A2624 +0x170 -> 0x23A274B call 0x33F8350",
+        "ordinal": 46,
+        "source_identity": "raid.cpp::HandleRaidArmyDefeat",
+        "source_literal_rvas": {
+          "path": "0x4306160",
+          "function": "0x4306300"
+        },
+        "gate_and_loot": "CArmy+0x1D4 gate, CArmy+0x1E0 loot accumulated then cleared",
+        "root_and_named_scopes": "Army root; raider and recipient",
+        "only_direct_caller": "0x230AC7A"
+      },
+      {
+        "callsite_rva": "0x230AD13",
+        "callee_rva": "0x2934FE0",
+        "inputs": "side ArmyID vector, first CArmy* and primary participant Character*",
+        "exact_on_action_name": "on_defeat_barter_army",
+        "ascii_string_rva": "0x43125F0",
+        "registration_xref_rva": "0x250600F",
+        "registration_call_chain": "0x2505FFE load [rbx+0x50], 0x2506002 add +0x1840, length 0x15, 0x250600F name, 0x2506016 call 0x7E9530",
+        "registration_block_offset": "+0x1840",
+        "runtime_loaded_slot": "+0x610",
+        "runtime_projection_chain": "0x2935216 module+0x57C0F10 -> 0x2935263 singleton+0x38 -> 0x2935267 +0x610 -> 0x2935389 call 0x33F8350",
+        "ordinal": 194,
+        "source_identity": "barter_utilities.cpp::HandleBarterArmyDefeat",
+        "source_literal_rvas": {
+          "path": "0x43BF508",
+          "function": "0x43BF4F0"
+        },
+        "gate_and_loot": "CArmy+0x1EC gate, CArmy+0x1F0 loot accumulated then cleared",
+        "root_and_named_scopes": "Army root; barterer, barony, county, recipient and barter_loot",
+        "only_direct_caller": "0x230AD13"
+      }
+    ],
+    "defeat_loot_identity_cross_checks": {
+      "raid_delivery": "0x23A2090..0x23A2352 dispatches runtime+0x160 at 0x23A22C8 with raider/raid_loot scopes, matching on_raid_loot_delivered",
+      "barter_delivery": "0x2934DA0..0x2934FD8 dispatches runtime+0x608 at 0x2934F4F, matching on_barter_loot_delivered",
+      "ordinal_rule": "registration_block_offset/0x20 equals runtime_loaded_slot/8; winner/loser controls independently confirm the same rule",
+      "not_finished_hooks": "0x23A2360 and 0x2934FE0 are not on_commander_combat_finished or on_army_combat_finished",
+      "barter_scope_mismatch": "stock on_defeat_barter_army body reads receiver while native explicitly publishes recipient at StringID global module+0x57EB618; alias/inheritance is unknown"
+    },
+    "finished_on_actions_boundary": {
+      "stock_names": [
+        "on_commander_combat_finished",
+        "on_army_combat_finished"
+      ],
+      "stock_body_state": "commander event is commented/disabled and army hook is empty in knight_on_actions.txt",
+      "exe_ascii_presence": false,
+      "actual_native_hash_or_dynamic_invocation": "unknown"
+    },
+    "warscore_trigger": {
+      "script_observable": "warscore_value",
+      "ascii_string_rva": "0x437A068",
+      "registration_code_rva": "0x53C360",
+      "entry_type": "CTriggerEntry<CCombatWarscoreTrigger>",
+      "entry_type_descriptor_rva": "0x55028E0",
+      "entry_col_rva": "0x49C0968",
+      "entry_vtable_rva": "0x437B6A8",
+      "trigger_type": "CCombatWarscoreTrigger",
+      "trigger_type_descriptor_rva": "0x5502118",
+      "trigger_col_rva": "0x49C0030",
+      "trigger_vtable_rva": "0x437D490",
+      "constructor_factory_rva": "0x284F5F0",
+      "accessor_vtable_slot": "+0x100",
+      "accessor_rva": "0x284C7A0",
+      "scope_tag": "0xA Combat",
+      "accessor_chain": "strict Combat scope -> CCombat+0x708 -> strict CCombatResultData -> return qword +0x40",
+      "result_constructor_zero_write": "0x23DB840 constructor writes +0x40=0 at 0x23DB891"
+    },
+    "battle_warscore_writer": {
+      "finalizer_callsite": "0x230A7C6",
+      "writer_rva": "0x222A5A0",
+      "war_resolver_call": "0x230A780 -> 0x2610840; returned object+0x20 is WarID",
+      "preconditions": [
+        "CCombat+0x6E0 winner is not -1",
+        "CWar+0x34 is nonzero/active",
+        "finalizer's resolved CWar active vfunc is true before the writer call"
+      ],
+      "side_tests": [
+        "0x222A5EA -> 0x2224870(CWar+0x20,winner_side+0x70) yields winner_is_war_attacker",
+        "0x222A5FF -> 0x2224870(CWar+0x20,combat_side0+0x90) yields combat_side0_is_war_attacker"
+      ],
+      "append": "allocate 0x58, call 0x25BB9A0 at 0x222A62F, append pointer to CWar+0x298 at 0x222A642",
+      "result_copy": "0x222A687..0x222A697 copies newest row+0x40 exactly to strict CCombatResultData+0x40",
+      "proven_local_order": [
+        "0x230A7C6 append CWar battle row and copy ResultData+0x40",
+        "0x230A7DA build embedded UI/reward CBattleResult through 0x23097B0",
+        "0x230A9A3 execute winner/loser result envelopes",
+        "0x230AC7A/0x230AD13 execute raid/barter defeat-loot wrappers where gated",
+        "Province unlink/residual rescan/common cleanup"
+      ],
+      "negative_correction": "0x23097B0 and its 0x2309C78 -> 0x2CDC410 generic reward dispatch do not write CWar battle score or CCombatResultData+0x40"
+    },
+    "single_battle_formula": {
+      "formula_rva": "0x25BBE70",
+      "constructor_callsite": "0x25BBA09",
+      "losing_side_selection": "winner 0 selects side1 CCombat+0x368; winner 1 selects side0 CCombat+0x20",
+      "losing_side_raw": "0x23CDD90 = max(0, side+0xA8 - side+0x98 - sum(side+0x28/+0x34 stride-0x60 row+0x20) - sum(side+0x40/+0x4C stride-0x60 row+0x20))",
+      "losing_war_participant_side": "winner attacker selects CWar+0x88 defenders; winner defender selects CWar+0x28 attackers",
+      "denominator": "for each losing-war participant call 0x292FC40(character,mode=2), sum eight int32 buckets at output+0x00,+0x20,+0x40,+0x60,+0x80,+0xA0,+0xC0,+0xE0; clamp aggregate whole units to at least 1; multiply by 100000",
+      "ratio": "min(100000, fixed_div(losing_side_raw, denominator_raw))",
+      "scale": "winner attacker reads CBType+0x1768 attacker_score_from_battles_scale; winner defender reads CBType+0x1770 defender_score_from_battles_scale",
+      "uncapped": "fixed_mul(ratio_raw, scale_raw)",
+      "per_battle_cap": "clamp nonnegative; winner attacker cap module+0x570EFA0 WAR_ATTACKER_COMBAT_MAX_SCORE, winner defender cap module+0x570EFA8 WAR_DEFENDER_COMBAT_MAX_SCORE",
+      "stock_ncombat_values": {
+        "WAR_ATTACKER_COMBAT_SCORE_SCALE": 50,
+        "WAR_DEFENDER_COMBAT_SCORE_SCALE": 50,
+        "WAR_ATTACKER_COMBAT_MAX_SCORE": 50,
+        "WAR_DEFENDER_COMBAT_MAX_SCORE": 50
+      },
+      "denominator_formal_business_identity": "unknown"
+    },
+    "cumulative_battle_score": {
+      "rva": "0x2903150",
+      "row_vector": "CWar+0x298/+0x2A4",
+      "partition": "row+0x50 true adds row+0x40 to attacker-win magnitude; false adds to defender-win magnitude",
+      "raw_to_whole": "signed division/truncation by 100000 is applied to each side aggregate",
+      "return": "attacker_win_whole - defender_win_whole",
+      "cumulative_caps": "clamp to [-(CBType+0x1754 max_defender_score_from_battles), CBType+0x1750 max_attacker_score_from_battles]",
+      "per_battle_attacker_relative_delta": "row+0x50 ? +row+0x40 : -row+0x40",
+      "important_non_inference": "CCombatResultData+0x40 and script warscore_value are positive magnitude and do not carry attacker/defender sign"
+    },
+    "ai_and_termination_consumption": {
+      "total_war_score_rva": "0x222A8A0",
+      "battle_breakdown": "0x2903150(war,null) + 0x2903DA0(war,false,null) - 0x2903DA0(war,true,null)",
+      "ai_projection_builder_range": "0x184D960..0x184DFD6",
+      "ai_projection_callers": [
+        "0x188568E coordinator initialization",
+        "0x185520E inside 0x18550D0 coordinator lifecycle"
+      ],
+      "ai_calls": [
+        "0x184DE24 -> 0x222A8A0 total score",
+        "0x184DE63 -> 0x2903150 cumulative base battle score",
+        "0x184DE7D -> 0x2903DA0 special battle term"
+      ],
+      "remaining_battle_score": "0x184DEFF..0x184DF17 selects CBType+0x1750/+0x1754 for coordinator side; 0x184DF35..0x184DF41 subtracts current signed battle component and writes AI snapshot+0x1018",
+      "known_policy_consumer": "army controller close-to-victory enemy-unit priority doubles when remaining battle warscore is at least 20",
+      "termination_order": "later acceptance/termination consumers call 0x222A8A0; actual 0x27A31E0 war teardown later calls 0x27FBE50 combat invalidation sweep",
+      "direct_writer_to_termination_or_ai_call": false,
+      "global_same_day_order_and_ai_cadence": "unknown"
+    }
+  },
+  "common_cleanup": {
+    "side_order": "winner-selected side first, then opposite side; when winner raw is -1 native setup falls back to side 0 then side 1",
+    "per_army_order": [
+      "generation-resolve ArmyID in combat-side stored order",
+      "call 0x226FFE0(CArmy)",
+      "sum generation-valid CRegiment+0x38 values from CArmy+0x38/+0x44",
+      "if no remainder, call 0x226FFE0 again and 0x27BF9C0 to destroy/remove army"
+    ],
+    "backlink_clear": {
+      "rva": "0x226FFE0",
+      "writes": [
+        "CArmy+0x128=-1",
+        "if generation-valid backing CUnit+0x170 raw equals 1, call 0x2247A60(CUnit,2)"
+      ],
+      "raw_state_enum_names": "unknown"
+    },
+    "normal_loser_disposition": {
+      "executed_when": "suppress_normal_result_envelopes is false",
+      "wipe_true": "0x23C9400 side removal and ledger update, then 0x226FFE0 plus 0x27BF9C0 destruction for each loser army",
+      "wipe_false": "0x23C9F00 builds/applies post-battle CUnit route/state, may call 0x2247A60(CUnit,2 or 3), and can destroy an army with no valid destination",
+      "suppressed_path": "skips this normal loser disposition"
+    },
+    "province_then_global_order": [
+      "require Province vtable slot +0x30 gate",
+      "0x21116E0 removes old CombatID from Province+0x760",
+      "0x2208C10 updates Province state; formal name unknown",
+      "0x220D2A0 rescans residual CUnits",
+      "combat finalizer returns",
+      "manager calls 0x27FDC50 to remove old CombatID from global combat storage"
+    ],
+    "concurrency_fact": "a newly created same-Province combat may coexist in global storage with the old finalized combat until the manager remove call"
+  },
+  "residual_rescan": {
+    "rva": "0x220D2A0",
+    "entry_count_snapshot": "signed Province+0x754 count copied once and used as the loop upper bound",
+    "data_pointer_reload": "Province+0x748 is reloaded on every iteration",
+    "scan_order": "index 0..entry_count-1; normal table order is unsigned full-CUnitID ascending",
+    "per_cunit_gates": [
+      "generation-valid full CUnitID",
+      "CUnit+0x18 == 0",
+      "CUnit+0x170 <= 0",
+      "generation-valid CUnit+0x178 -> CArmy",
+      "CArmy+0x128 does not resolve to an active CCombat"
+    ],
+    "action": "call 0x2208320(Province,CUnit); if false call 0x2208AA0(Province,CUnit)",
+    "mutation_warning": "both action helpers are forbidden to query code",
+    "same_rescan_feedback": "a combat joined or created by an earlier CUnit is visible to later CUnits in the same rescan",
+    "contact_order_implications": {
+      "new_combat_seed": "first eligible unsigned-sorted CUnit when no compatible combat exists",
+      "existing_combat_choice": "last compatible CombatID in the unsigned-sorted Province combat table",
+      "join_order": "unique tail append in first-seen order",
+      "pursuit_join": "can reopen phase to main/day 0 and winner raw -1"
+    }
+  },
+  "ai_assignment_reentry": {
+    "active_combat_blocker": {
+      "dispatcher_callsite": "0x1872208 calls 0x2248A80 on representative CUnit resolved by 0x1871D20",
+      "true_effect": "0x187220F returns from 0x18721B0 before assignment/action dispatch",
+      "predicate": [
+        "CUnit+0x18 == 0",
+        "generation-valid CUnit+0x178 -> CArmy",
+        "generation-valid CArmy+0x128 -> CCombat",
+        "CCombat vtable slot +0x08 returns active"
+      ]
+    },
+    "gate_reopen": "0x226FFE0 clears CArmy+0x128, so 0x2248A80 becomes false unless residual rescan rebinds the unit to a new active combat",
+    "finalizer_directly_calls_ai_recompute": false,
+    "coordinator_chain": [
+      "CAIManager secondary vtable 0x4193898 slot +0x30 -> 0x18876D0",
+      "0x18878F1 iterates active coordinators in stored order and calls 0x18550D0",
+      "0x18550D0 performs timers/stack decisions/conditional recompute in a first pass",
+      "0x1855380..0x18553B4 performs a second pass in CAIUnitStack then CAISubunitStack stored order",
+      "second pass calls 0x18721B0 then 0x18726C0"
+    ],
+    "target_timer_values": [
+      7,
+      14
+    ],
+    "timer_scope": "target recomputation; the second assignment/action dispatch pass itself is not gated by these two timer values",
+    "post_terminal_cases": {
+      "residual_recontact": "new active CombatID restores blocker before an AI lifecycle pass",
+      "preserved_assignment": "next lifecycle pass may execute current assignment without waiting for target recomputation",
+      "invalid_target": "execution gate is open but exact rescoring may wait for timer or another invalidator",
+      "post_battle_retreat": "dispatcher route/retreat branches precede ordinary target movement; exact raw-state return condition unknown"
+    },
+    "formal_manager_update_cadence": "unknown; do not label daily",
+    "event_driven_target_invalidators": "unknown"
+  },
+  "query_battle_transition_v1": {
+    "design_rule": "terminal historical identity and current post-state are separate layers",
+    "minimum_components": [
+      "passive process-local terminal journal observing 0x230A590 entry",
+      "passive process-local battle-warscore journal observing completed 0x222A5A0 row/result copy",
+      "paused application-main current-state query with same-revision double sampling"
+    ],
+    "terminal_journal": {
+      "canonical_entry_rva": "0x230A590",
+      "abi_registers": "RCX=CCombat*, DL=suppress_normal_result_envelopes",
+      "allowed_behavior": "copy exact IDs/raw fields to bridge-owned bounded ring only; do not alter arguments, return value or CK3 state",
+      "event": {
+        "sequence": "uint64 monotonic bridge-local sequence",
+        "observed_date_raw": "signed int32",
+        "combat_id": "positive full int32 CombatID",
+        "battle_result_id": "optional full int32 ResultID",
+        "province_id": "positive full int32 ProvinceID",
+        "suppress_normal_result_envelopes": "bool copied from DL",
+        "phase_raw": "int32",
+        "winner_raw": "int32 in -1..1",
+        "finalized_before": "bool sampled before 0x230A5C4 write",
+        "daily_guard_raw": "uint8 from CCombat+0x705",
+        "wipe_raw": "optional bool from generation-valid CCombatResultData+0x28",
+        "attacker_primary_participant_character_id": "full int32 CharacterID",
+        "defender_primary_participant_character_id": "full int32 CharacterID",
+        "attacker_public_cunit_ids_in_stored_order": "positive full int32 CUnitID[]",
+        "defender_public_cunit_ids_in_stored_order": "positive full int32 CUnitID[]"
+      },
+      "terminal_kind_mapping": {
+        "false": "normal_result",
+        "true": "no_normal_result",
+        "missing_or_overflowed_event": "unavailable_after_removal"
+      }
+    },
+    "battle_warscore_journal": {
+      "canonical_writer_rva": "0x222A5A0",
+      "result_copy_instruction_rva": "0x222A697",
+      "post_copy_continuation_rva": "0x222A69B",
+      "writer_abi": "RCX=CWar*, RDX=CCombat*",
+      "post_copy_live_registers": "RSI=CWar*, RDI=CCombat* at 0x222A69B",
+      "allowed_behavior": "after native append/copy completes, copy exact IDs/new-row index/raw fields to bridge-owned bounded ring only; never invoke the writer",
+      "event": {
+        "sequence": "uint64 monotonic bridge-local sequence",
+        "observed_date_raw": "signed int32",
+        "combat_id": "positive full int32 CombatID",
+        "war_id": "positive full int32 WarID",
+        "war_battle_row_index": "nonnegative int32 index equal to CWar+0x2A4-1 at observation",
+        "battle_warscore_value_raw": "signed int64 Q100000 copied from newest row+0x40 and ResultData+0x40",
+        "winner_is_war_attacker": "bool from newest row+0x50",
+        "combat_side0_is_war_attacker": "bool from newest row+0x51"
+      },
+      "join_rule": "join to terminal event by exact full CombatID and a gap-free journal interval",
+      "zero_vs_absent": "recorded raw zero is distinct from no native row and from journal unavailable"
+    },
+    "request": {
+      "prior_combat_id": "positive full int32 CombatID",
+      "subject_public_cunit_id": "positive full int32 CUnitID",
+      "expected_snapshot_revision": "uint64",
+      "after_terminal_sequence": "optional uint64 journal cursor"
+    },
+    "response": {
+      "status": "available | unavailable",
+      "unavailable_reason": "optional unsupported_build | requires_paused | invalid_request | journal_gap | identity_unavailable | state_changed | bounds_exceeded",
+      "snapshot_revision": "uint64",
+      "observed_date_raw": "signed int32",
+      "prior": {
+        "combat_id": "positive full int32 CombatID",
+        "terminal_kind": "normal_result | no_normal_result | unavailable_after_removal",
+        "suppress_normal_result_envelopes": "optional bool; only from a gap-free journal event",
+        "phase_raw": "optional int32",
+        "winner_raw": "optional int32",
+        "finalized_before": "optional bool",
+        "daily_guard_raw": "optional uint8",
+        "province_id": "optional positive full int32 ProvinceID",
+        "battle_result_id": "optional full int32 ResultID",
+        "wipe_raw": "optional bool",
+        "primary_participant_character_ids": "optional ordered pair of full int32 CharacterIDs",
+        "side_public_cunit_ids_in_stored_order": "optional ordered pair of positive full int32 CUnitID arrays",
+        "battle_warscore": {
+          "status": "recorded | not_recorded_by_native | unavailable",
+          "war_id": "optional positive full int32 WarID",
+          "war_battle_row_index": "optional nonnegative int32",
+          "value_raw_q100000": "optional signed int64; canonical native row/result magnitude",
+          "winner_is_war_attacker": "optional bool",
+          "combat_side0_is_war_attacker": "optional bool",
+          "attacker_relative_delta_raw_q100000": "optional signed int64 computed only as winner_is_war_attacker ? +value : -value"
+        }
+      },
+      "removal": {
+        "prior_combat_strictly_resolves": "bool",
+        "prior_province_strictly_resolves": "optional bool",
+        "prior_province_contains_prior_combat_id": "optional bool",
+        "result_strictly_resolves": "optional bool",
+        "result_relevant_player_count": "optional nonnegative int32"
+      },
+      "subject": {
+        "exists": "bool",
+        "current_province_id": "optional positive full int32 ProvinceID",
+        "native_carmy_id": "optional positive full int32 CArmyID",
+        "combat_backlink_id": "optional full int32 CombatID",
+        "active_combat_id": "optional positive full int32 CombatID",
+        "movement_or_retreat_state_raw": "optional int32",
+        "move_target_province_id": "optional positive full int32 ProvinceID",
+        "route_province_ids_in_stored_order": "optional positive full int32 ProvinceID[]",
+        "coordinator_id": "optional positive full int32 component ID",
+        "unit_stack_stored_index": "optional nonnegative int32",
+        "subunit_stored_index": "optional nonnegative int32",
+        "blocked_by_active_combat": "optional bool mirroring 0x2248A80"
+      },
+      "successor": {
+        "state": "no_successor | residual_new_combat | subject_missing | subject_retreating | subject_assignment_reopened | unavailable",
+        "matching_combat_ids_in_native_order": "positive full int32 CombatID[]",
+        "selected_successor_combat_id": "optional positive full int32 CombatID",
+        "participant_overlap_public_cunit_ids_in_prior_order": "positive full int32 CUnitID[]"
+      }
+    },
+    "convenience_discriminants": {
+      "present_same_combat": "prior CombatID still strictly resolves and active predicate is true",
+      "removed_normal_result": "prior CombatID no longer strictly resolves and gap-free journal records suppress=false",
+      "removed_no_normal_result": "prior CombatID no longer strictly resolves and gap-free journal records suppress=true",
+      "removed_terminal_kind_unavailable": "prior CombatID no longer strictly resolves and no gap-free journal event exists"
+    },
+    "impossibility_proof": [
+      "no_normal_result always removes ResultID",
+      "normal_result also removes ResultID when CCombatResultData+0xC4 relevant_player_count is zero",
+      "both paths remove old CombatID from Province and global storage",
+      "phase raw 3 and winner raw are insufficient because the invalidation sweep can preempt the ordinary finalizer",
+      "therefore current state alone cannot always distinguish normal_result from no_normal_result"
+    ],
+    "strict_consistency": [
+      "all positive full IDs require low-24-bit indexing plus complete generation readback",
+      "positive stale ResultID never falls back to module+0x57C0320",
+      "a recorded battle-warscore observation requires exact full CombatID and WarID identity plus newest-row index/count agreement",
+      "never infer a per-battle value by differencing total war score; zero, native-not-recorded and journal-unavailable are separate states",
+      "report global old-combat resolution separately from prior-Province membership",
+      "bind successors by exact new CombatID and prior ordered participant overlap, never by an assumed single combat per Province",
+      "sample revision/date/journal cursor/IDs/counts/memberships/routes/backlinks twice inside one paused application-main callback",
+      "any drift returns state_changed"
+    ],
+    "implementation_sequence": [
+      "terminal journal detour and bounded typed ring",
+      "post-writer battle-warscore observation and CombatID join",
+      "source-contract fixtures for both DL values and ring gap/overflow",
+      "paused query current-state resolver and strict generation gates",
+      "normal phase-done live fixture",
+      "war-teardown no-normal live fixture",
+      "same-Province residual-new-combat live fixture",
+      "surviving AI assignment-reopened live fixture"
+    ]
+  },
+  "bridge_entry_points": [
+    {
+      "purpose": "canonical terminal-kind observation",
+      "rva": "0x230A590",
+      "abi": "RCX=CCombat*, DL=suppress_normal_result_envelopes",
+      "mode": "passive observation only"
+    },
+    {
+      "purpose": "normal caller tag",
+      "rva": "0x27FB73E",
+      "abi": "EDX=0 before call",
+      "mode": "optional passive callsite tag"
+    },
+    {
+      "purpose": "no-normal caller tag",
+      "rva": "0x27FBF85",
+      "abi": "DL=1 before call",
+      "mode": "optional passive callsite tag"
+    },
+    {
+      "purpose": "current result strict resolution",
+      "rva": "module+0x57C0328",
+      "abi": "CCombat+0x708 low-24-bit index, then CCombatResultData+0x08 full-ID readback",
+      "mode": "direct read only"
+    },
+    {
+      "purpose": "script warscore_value direct-field mirror",
+      "rva": "field chain proven by 0x284C7A0",
+      "abi": "strict CCombat+0x708 -> strict CCombatResultData+0x40 signed qword Q100000",
+      "mode": "direct read only; do not call trigger evaluator"
+    },
+    {
+      "purpose": "canonical per-battle score observation",
+      "rva": "0x222A5A0; copy instruction 0x222A697; post-copy continuation 0x222A69B",
+      "abi": "RCX=CWar*, RDX=CCombat* at writer entry; RSI=CWar*, RDI=CCombat* at 0x222A69B; after copy read newest CWar+0x298 row index and row+0x40/+0x50/+0x51",
+      "mode": "passive observation only; never invoke writer"
+    },
+    {
+      "purpose": "cumulative base battle score mirror",
+      "rva": "field chain proven by 0x2903150",
+      "abi": "CWar+0x298/+0x2A4 row pointers, row+0x40 magnitude and +0x50 side, CBType+0x1750/+0x1754 caps",
+      "mode": "direct read only with bounded count and stable double sample"
+    },
+    {
+      "purpose": "current subject combat binding",
+      "rva": "field chain",
+      "abi": "CUnit+0x178 -> CArmy+0x128 -> CCombat+0x08 and active vfunc mirror",
+      "mode": "direct read only"
+    },
+    {
+      "purpose": "AI assignment membership",
+      "rva": "field chain",
+      "abi": "CUnit+0x1C4 coordinator component ID and CUnit+0x1D0 CAISubunitStack backlink",
+      "mode": "direct read only"
+    }
+  ],
+  "forbidden_native_calls": [
+    "0x230A590 combat finalizer",
+    "0x222A5A0 CWar battle-score row writer",
+    "0x25BB9A0 mutable battle-row constructor",
+    "0x25BBE70 formula helper whose direct-call ABI is not a query contract",
+    "0x230AF10 normal result envelope dispatcher",
+    "0x27FDC50 combat storage remover",
+    "0x27FDD70 result storage remover",
+    "0x226FFE0 Army combat-backlink/state mutator",
+    "0x23C9F00 loser post-battle route/state mutator",
+    "0x23C9400 combat-side army removal/ledger mutator",
+    "0x21116E0 Province ID-vector mutator",
+    "0x2208C10 Province post-remove helper",
+    "0x220D2A0 residual rescan dispatcher",
+    "0x2208320 contact resolver that can join or create combat",
+    "0x2208AA0 contact fallback mutator",
+    "0x18721B0 AI subunit action dispatcher",
+    "0x184D960 AI projection builder with mutable snapshot output",
+    "0x18550D0 AI coordinator mutable lifecycle",
+    "0x18876D0 AI manager mutable update",
+    "0x222A8A0 total-war-score native call; mirror proven fields in query instead",
+    "0x2903150 cumulative-battle-score native call; mirror proven fields in query instead",
+    "0x284C7A0 trigger evaluator; mirror ResultData+0x40 directly instead",
+    "0x2247A60 CUnit state mutator",
+    "0x27BF9C0 Army destruction manager",
+    "0x27FB7C0 combat allocation/constructor path"
+  ],
+  "unknowns": [
+    "formal relation enum/business name of 0x2900470 and the full producer set for combat-manager+0x58 invalidation",
+    "formal maintenance semantics of manager+0x61 and sweep-tail 0x27FE5B0/0x27FE720",
+    "formal field names for CCombatResultData+0x2C/+0x34/+0xA0/+0xD0",
+    "whether on_commander_combat_finished and on_army_combat_finished have any hash-only or dynamic native invocation in this exact build; 0x23A2360/0x2934FE0 are proven not to be those hooks",
+    "whether stock on_defeat_barter_army receiver is aliased or inherited from native recipient scope",
+    "formal business identity, bucket names and complete membership semantics of the eight-bucket 0x292FC40(character,mode=2) denominator",
+    "formal business names of 0x2208C10 and 0x2208AA0",
+    "formal enum names for loser post-battle raw states 2/3 and the complete return-to-normal-assignment state machine",
+    "formal cadence and all event-driven invalidators of CAIManager update 0x18876D0",
+    "global same-day ordering among combat finalizer, residual rescan and AI manager lifecycle outside the proven local call order",
+    "actual loaded-playset merge result for stock combat and knight on_actions"
+  ],
+  "readiness": {
+    "exact_build_frozen": true,
+    "normal_vs_no_normal_predicate_static_ready": true,
+    "result_envelope_static_ready": true,
+    "result_retention_ambiguity_static_ready": true,
+    "province_then_global_remove_order_static_ready": true,
+    "residual_rescan_order_static_ready": true,
+    "ai_assignment_gate_reentry_static_ready": true,
+    "warscore_trigger_storage_static_ready": true,
+    "warscore_apply_static_ready": true,
+    "single_battle_formula_static_ready": true,
+    "cumulative_battle_sign_and_caps_static_ready": true,
+    "ai_battle_score_consumption_static_ready": true,
+    "defeat_loot_on_action_identity_static_ready": true,
+    "ai_manager_formal_cadence_static_ready": false,
+    "terminal_journal_implemented": false,
+    "transition_query_implemented": false,
+    "production_live_ready": false,
+    "ready": false
+  }
+}

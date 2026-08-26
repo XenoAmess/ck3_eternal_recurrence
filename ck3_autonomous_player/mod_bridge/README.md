@@ -28,7 +28,11 @@ XAR_MCP:END|schema=1|request_id=xar_req_000001
 
 `gui/scripted_widgets/xar_mcp_bridge_widgets.txt` 让 CK3 启动时创建不可见顶层窗口。其 counter widget 复用了 Voices of the Court 的已公开模式：一个 state 调 `ExecuteConsoleCommand('run xar_mcp_inbox.txt')`，另一个 state 等待 0.4 秒后用 `gui.createwidget` 重建 counter。原版 `gui/console.gui` 也直接使用 `ExecuteConsoleCommand('run run.txt')`，而 `GetPlayer.GetID`、`GetCurrentDate.GetStringShort`、`GetCurrentDate.GetDateAsTotalDays` 的日志插值来自 VOTC 公开 effect。
 
-上述均是源码语法证据；本原型尚未启动 CK3 实测。尤其是 1.19.0.6 non-debug 模式、暂停/模态窗/读档期间轮询是否持续，以及 `run` 是否每次重新读取原子替换后的文件，仍是下一步实机验收项。
+2026-08-26 的 owner-subset retreat v13 managed artifact 已在 CK3 1.19.0.6 实证这条链：non-debug、暂停、
+读档完成后，counter 每 `0.4s` 持续执行 `run`，并会重新读取原子替换后的文件。换人后与清理 guard 后各连续取得
+两个不同 request ID 的完整 snapshot frame，四帧均为同一玩家与日期；artifact SHA-256 为
+`7780B619B2E7B90B8D5D5030D779F58F266585A6246A79B6C2FE20EF0F2701F9`。这证明 paused poll transport，
+不把临时 data Mod 当成 production gameplay action。
 
 ## 安装到一次性 autoplayer profile
 
@@ -45,4 +49,4 @@ XAR_MCP:END|schema=1|request_id=xar_req_000001
 py -m unittest discover -s ck3_autonomous_player/mod_bridge/tests -p "test_*.py"
 ```
 
-测试覆盖 BOM、widget 注册与 0.4 秒循环、typed effect 字段、no-op inbox、旧四行 frame 兼容，以及完整/未发布/损坏结算投影的解析。静态通过不等于游戏内链路已经通过。
+测试覆盖 BOM、widget 注册与 0.4 秒循环、typed effect 字段、no-op inbox、旧四行 frame 兼容，以及完整/未发布/损坏结算投影的解析。静态通过仍不能替代上述 exact-build managed artifact。

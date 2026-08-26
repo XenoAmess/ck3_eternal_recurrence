@@ -440,6 +440,32 @@ class CombatSimulationInputsContractTests(unittest.TestCase):
         )
         self.assertFalse(normalized["completeness"]["monte_carlo_ready"])
 
+    def test_ongoing_advantage_preserves_exact_signed_int64_width(self) -> None:
+        value = _combat_inputs()
+        value["ongoing_combats"] = [
+            {
+                "status": "available",
+                "combat_id": 335_544_325,
+                "province_id": 900,
+                "phase": 1,
+                "phase_day": 2,
+                "base_combat_width": 400,
+                "final_combat_width": 320,
+                "side_0_roll": 11,
+                "side_1_roll": 7,
+                "base_advantage": -5_000_000_000,
+                "resolved_advantage": 6_000_000_000,
+                "orientation": (
+                    "native_side_0_attacker_side_1_defender"
+                ),
+                "unavailable_reason": None,
+            }
+        ]
+        normalized = self._normalize(value)
+        ongoing = normalized["ongoing_combats"][0]
+        self.assertEqual(ongoing["base_advantage"], -5_000_000_000)
+        self.assertEqual(ongoing["resolved_advantage"], 6_000_000_000)
+
     def test_unavailable_holding_does_not_erase_observed_armies(self) -> None:
         value = _combat_inputs()
         defender = value["target_province"]["defender_context"]

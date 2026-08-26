@@ -13,7 +13,7 @@ gameplay 能力，
 - `Crusader Kings III/binaries/ck3.exe` SHA-256：
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；
 - 盘点日期：2026-08-26；
-- 当前代码基线：`e608afc`；
+- 本轮 P1 施工起始代码基线：`2d93a54`；
 - 当前持续实机 checkpoint：日期 `53177976`，SHA-256
   `12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D`。
 
@@ -24,10 +24,16 @@ gameplay 能力，
 2. planner 已经能在一个既有战争 checkpoint 中持续做路线预览、敌军路线审计、一日接触窗口、行军、围城观察、
    定期存档与冷恢复；
 3. 2026-08-26 累计 `210/210` 回合成功、78 个可见 gameplay 回合、推进 75 游戏日且每轮清理成立；
-4. 2026-08-26 已完成 actual-contact prediction → CombatID/真实双方顺序 → actual-side combat-v3 → 战中存档/冷恢复；
-   combat v3 combined-defensive observation 也已 paused live accepted，但 `join_existing`/multiple-compatible 矩阵、
-   Monte Carlo、retreat/reinforce 动作与主动接战策略仍不可用；
-5. 战争以外的大部分 CK3 决策域尚无原生 AI 树、原生观测或通用动作，视觉实现也主要是固定 1066 罗贝尔路线。
+4. 2026-08-26 已完成 actual-contact prediction → CombatID/真实双方顺序 → actual-side combat-v3 → 战中存档/冷恢复，
+   并从 checkpoint `9104CCB8...CC63` 完成 ongoing battle-control 的 maneuver 1 → main 0/1/2 与真实
+   current/soft/hard ledger delta；主动撤退只读投影又从 elapsed day 0/14 的 `too_early` 推进到 day 15/16 的
+   native/legal true；`battle_identity_live_ready=true`、`battle_hold_ready=true`、
+   `planner_battle_hold_live_ready=true`、`retreat_legality_scope_live_ready=true`、`battle_retreat_ready=true`；full-side
+   与 owner-subset retreat 均已实见真实后置状态，paused reinforcement assignment query 也已 production-live；
+5. P1 整体仍在进行中：`join_existing`/multiple-compatible、assigned reinforcement timeline/join、
+   Monte Carlo、terminal journal/live 与主动接战策略仍不可用；terminal 的 normal/no-normal、cleanup、rescan 和 AI re-entry
+   exact-build 静态树已闭合，不能再用 ResultID 缺失猜 terminal kind；
+6. 战争以外的大部分 CK3 决策域尚无原生 AI 树、原生观测或通用动作，视觉实现也主要是固定 1066 罗贝尔路线。
 
 安全工作不单列为路线图。只有已经在生产路径产生可复现玩法故障的问题才进入相应能力包，并只修到恢复实际使用；
 理论安全、取证扩张和与玩法无关的协议加固不得挤占下列功能施工。
@@ -113,12 +119,15 @@ flowchart LR
 | 假设接战 v2 | regiment effective stats/counter、knights、commander、terrain、crossing、holding、width | native query 已实现，paused live acceptance pending。 |
 | 实际接触 | current/ongoing CombatID、actual Province、两侧原生 stored-order ArmyIDs | create-new contact 与战中 cold restore production live accepted；join-existing/multiple-compatible 分支矩阵仍待实机。 |
 | 战斗 v3 | v2 base + 132/132 phase input refs/derivations | combined-defensive production paused live accepted，actual sides 与 cold restore 后均可复查；phase transition/original trace 未闭合，`monte_carlo_ready=false`。 |
+| 战中控制 v1 | ongoing CombatID/Province/phase/day/winner/finalized、ordered sides/armies、retained levy/MAA entries、current/soft/hard 与 owner hard ledger、commander/roll/width/advantage/strength | [live-confirmed] checkpoint `9104CCB8...CC63` 冷恢复后从 maneuver 1 推到 main 2；稳定 double query，main 1/2 有真实 ledger delta，artifact SHA `A0FC6BB7268E38026CC8EED6D6388BFD675AD5DCFB60A1A65FE1C1B64E816AC6`。side tick-start cache 合法 stale，由 match booleans 区分，不再导致 unavailable。动态 join/leave、撤退、增援与 terminal 未闭合。 |
+| 主动撤退控制 | selected identity、CombatID/Province/side、full-side/owner-subset affected order、三项 flag、native legality/四类 reason；planner-selected target 的 exact route preview、一次性 battle-bound token、player move command 与按完整旧 CombatID 的 lifecycle query | legality progression [live-confirmed] day 0/14 false→day 15/16 true，SHA `FB521B39...BCF40`；full-side route/state 与 `main/12 → pursuit/0` 已 live，SHA `21D58737...784FA`；owner-subset 又只移除 CUnit `357`、保留 `33554657` 与原 CombatID，SHA `7780B619...01F9`。`battle_retreat_ready=true`；generic war AI policy/cadence/destination score 保持 `unknown`。 |
+| 增援分配 v1 | AI CUnit→coordinator→subunit→parent identity、asking/assigned、request power、assignment Province、native stored order、route/ETA 与 present-time CombatID projection | [live-confirmed partial] CUnit `357` 的 paused stable double query 实见 `asking=true`、`assigned=false`、active CombatID `335544325`、parent order `[357],[33554657]`，artifact SHA `F0A6F3C7...B1DB9C6`。query production-live；assigned+aligned ETA、join/reopen 和玩家改派动作仍缺，故 `battle_reinforcement_ready=false`。 |
 | 战争终止 | 三种 outcome 的 legality/AI acceptance、score/duration/CB；claim-CB disposition | termination options 已 live；claim terms getter/destructor live pending；完整 exit terms v2 因已复现的 loaded-effect preview 崩溃而 production disabled。 |
 | 一代结算 | final score、record、blessing/refusal、contract progress、commit serial | 最小化窗口死亡 snapshot 已 live-confirmed；自然死亡完整 episode 终验仍待完成。 |
 
 ### Native 动作与 MCP surface
 
-exact adapter 当前声明 51 个状态/命令 capability。Python 层会按当前 snapshot 展开 generation-bound literal，不能把
+exact adapter 当前声明 55 个状态/命令 capability。Python 层会按当前 snapshot 展开 generation-bound literal，不能把
 DLL template 本身当成随时可执行动作。
 
 已存在的动作族：
@@ -130,7 +139,7 @@ DLL template 本身当成随时可执行动作。
 - 查询宣战候选与战力，提交宣战；
 - 默认集结、路线 preview、移动、半分军、合并、解散；
 - Start/Stop Assault、enforce demands；
-- 查询 route contact、army strength、combat v2/v3、termination options/claim terms。
+- 查询 route contact、army strength、combat v2/v3、ongoing battle-control snapshot、termination options/claim terms。
 
 重要限制：
 
@@ -153,7 +162,12 @@ DLL template 本身当成随时可执行动作。
   校准效用缺失，正确地停在 `native_war_entry_evidence_required`；
 - 对已经存在的战争可集结、比较 objectives/enemy endpoints、preview 路线、审计所有军队 route、执行 route-contact
   horizon、移动、追击、围城、按一日预算 Start/Stop Assault，并处理 split/merge 恢复；
-- 当前军队已 in-combat/retreat 时只能一日推进后重观测，没有真实 battle forecast、reinforcement assignment 或主动撤退决策；
+- 当前 planner 的 in-combat continuing branch 已实现并由单元测试证明 query battle-control→bounded one-day advance→同一
+  CombatID/revision-aware requery；它会拒绝只靠 ACK/日期推进冒充战斗变化，也能区分离场、CombatID 替换和 pursuit 后 join 重开。
+  ongoing ledger 的生产查询与这条 planner-integrated 状态机都已 live：两轮日期 `53178264→53178288→53178312`、
+  maneuver day `1→2→3`，transition 均为 `same_combat_advanced`，`planner_battle_hold_live_ready=true`。
+  planner 尚未能比较真实 battle forecast、reinforcement
+  assignment、主动撤退目的地/命令或 terminal transition；
 - 防御战会查询 termination evidence，但 surrender/white peace 尚不进入生产 planner；
 - 视觉 fallback 的经济、内阁、婚姻、继承和巴勒莫战争是 1066 罗贝尔固定场景，不是通用 CK3 policy；
 - 跨局记忆目前只有巴勒莫胜利、军队解散、丹麦婚约、partition risk 等少量布尔结果，尚无可学习的世界模型或策略校准。
@@ -166,6 +180,20 @@ DLL template 本身当成随时可执行动作。
 - checkpoint 冷恢复的日期、角色与 history anchor；
 - 已有战争中的军队位置/路线、route preview、move、split/merge、围城进度与部分 termination query；
 - route-contact 修复后累计 `210/210` 成功回合、75 游戏日、无 recovery，定期与最终 checkpoint 均物化且每轮 cleanup proven。
+- ongoing battle-control 从 cold checkpoint `9104CCB8...CC63` 复现初始 maneuver 1，并经 bounded advance 观测
+  main 0/1/2；main 1/2 的 current/soft/hard ledger 实际变化、每帧 stable double query 与 managed cleanup 均成立，
+  artifact SHA `A0FC6BB7268E38026CC8EED6D6388BFD675AD5DCFB60A1A65FE1C1B64E816AC6`。
+- 同一 checkpoint 的 active-retreat 只读投影经 16 次 bounded advance 复现 elapsed day 0–14 `too_early`、day 15/16
+  native/legal true；full-side scope、flags、identity、每帧 double query 与 managed cleanup 均成立，progression artifact SHA
+  `FB521B39AD5529434596212DB9ADC1EA27D4C270D28D13575B9A2D80913BCF40`。这不是撤退动作证据。
+- production planner 在隔离 clone 中连续两轮执行 battle query→one-day advance→same-CombatID requery，日期和 maneuver day
+  各严格增加一日；source save 前后 SHA 不变、cleanup/clone removal 成立，artifact SHA
+  `96CE25384517F0060A58623958DE071F43C3C2F7B68AEB6E668473E986C1DD57`。
+- full-side retreat 在 day15 对 target `2579` 完成 exact preview/token/order；更新 paused snapshot 中 CUnit `83886341`
+  为 `retreating=true` 且 target/route=`2579`，artifact SHA
+  `A57FF20DCAD39DF79DAB6A9418054C36B0F5489C5D8B5E9E880CE899AE89DF9C`。新增 full-CombatID query 的完整动作重跑又读到
+  `CombatID=335544325` 从 main/12 进入 pursuit/0、winner=defender，双方 stored-order IDs 不变；artifact SHA
+  `21D58737126CA4ED8B0B49DB7749EA4701F3BA6F94A8B8493698F8737E5784FA`，source save SHA 不变且 cleanup proven。
 
 尚未闭合：
 
@@ -247,20 +275,33 @@ defender stored order `[357,33554657]`，战中 checkpoint 冷恢复后六项 id
 这些属于紧随其后的 P1 reinforcement/controller 扩展矩阵，不再阻塞 P0 identity milestone。本次还实证发现动作枚举包含敌军
 当前位置但不包含敌军 `move_target_province_id`；固定这一候选缺口并纳入 tactical target enumeration 是 P1 的直接施工项。
 
-### P1：可行动的真实战斗预测与 battle controller
+### P1：可行动的真实战斗预测与 battle controller（进行中；ongoing frame/hold 与 retreat legality/scope 已完成）
 
-- 原生 AI 树：以 [battle-controller.md](battle-controller.md) 为当前入口，在现有 combat prediction/simulation/phase-event
-  树上补齐 actual CCombat side entry、加入/离开、撤退触发、reinforcement 与同日 feedback；同步更新 Mermaid。
-- 观测：combat v3 combined-defensive paused live acceptance 已完成；继续发布 ongoing CombatID 的实际 phase/day、完整 sides/regiments/knights/commander/terrain/
-  advantage/counter、实际 phase/day、补给/损耗和即将加入者 ETA；闭合 phase-event loaded playset、effect feedback 与 original trace。
-- 动作：补 exact retreat、改派增援、保持接战/脱离所需动作与后置条件；move 命令不能冒充已经撤退。
+- 原生 AI 树：以 [battle-controller.md](battle-controller.md) 为入口；actual CCombat 稳定 side/entry/current-soft-hard 帧已闭合，
+  [active-combat-retreat.md](active-combat-retreat.md) 已闭合四项 legality、full-side/owner-subset apply 与三条 mission-owned
+  movement caller，并证明它们不能冒充通用败退 policy；generic war AI 的 odds→choice caller、cadence 和 destination scorer 仍以
+  虚线 `unknown` 保留。当前功能施工不等待未知 scorer，而以 exact single-target move preview 实现我方目标选择与动作。
+- 观测：[ongoing-battle-frame.md](ongoing-battle-frame.md) 已 production-live：checkpoint `9104CCB8...CC63` 冷恢复，
+  maneuver 1、main 0/1/2、stable double query、main 1/2 ledger delta 与 managed cleanup 全部成立；artifact SHA
+  `A0FC6BB7268E38026CC8EED6D6388BFD675AD5DCFB60A1A65FE1C1B64E816AC6`。tick-start cache stale 是合法观测，
+  不再是 unavailable。主动撤退 scope/legality 又在 17 帧实机 progression 中通过 day 14→15 严格边界；full-CombatID
+  transition query 已实机闭合 full-side 与 owner-subset；reinforcement assignment query 也已实见 asking 状态、AI parent
+  stored order、route 与 active CombatID。当前缺 assigned+aligned ETA、动态 join/leave、phase-event loaded
+  playset/effect feedback/original trace。
+- 动作：现有 exact `PreviewMoveArmy` 已同 CombatID/revision/side/scope/route 绑定为短命 token，并以 player
+  `SubmitMoveArmy(kind=1)` 完成 full-side 军队语义实机；禁止直接调用 retreat mutation helper，也不能用 move ACK 冒充完整成功。
+  full-side winner/phase/side order 与 owner-subset 留战语义均已由旧 CombatID 查询闭合；下一步补改派增援、保持接战/脱离所需动作与后置条件。
 - 策略：输出有校准边界的胜率/损失分布；比较接战、绕行、等待增援、撤退和牺牲阻滞，考虑 commander/knight 风险、
   stack wipe 与战争目标价值。
 - 验证：至少覆盖优势接战、劣势绕行、战中增援、主动撤退四类 production 场景；预测、动作和真实 battle result 对账，
   并从 battle 中间 checkpoint 恢复继续。
 
-施工优先顺序固定为：ongoing battle frame → retreat reasons/native destinations/exact action → reinforcement ETA/join →
-forecast/terminal。不得因为 combat-v3 或 P0 identity 已 live 就跳过前两项直接编写概率策略。
+施工优先顺序固定为：ongoing battle frame/planner hold（**已完成**）→ active-retreat legality/scope + single-target token/command +
+full-side/owner-subset postcondition（**已完成**）→ reinforcement assignment query（**已完成，只读 unassigned 分支**）→
+assigned ETA/join → terminal entry journal/cleanup/re-entry live → forecast。terminal 原生树已落入
+[battle-terminal-and-reentry.md](battle-terminal-and-reentry.md)，但静态闭合不等于 production readiness。不得因为只读投影已 live
+就跳过撤退/增援直接编写概率策略；
+`battle_retreat_ready=true`，但 `battle_reinforcement_ready=false`、`battle_terminal_ready=false`，所以 P1 整体仍在进行中。
 
 ### P2：把当前战争打到合法终局
 
@@ -379,7 +420,7 @@ forecast/terminal。不得因为 combat-v3 或 P0 identity 已 live 就跳过前
 | 顺序 | 能力域 | 当前 | 本域最终完成场景 |
 |---:|---|---|---|
 | 0 | actual contact / route timing | create-new + cold restore `live-loop`；join/multi 分支与策略接线 pending | 预测 ordered participants 与真实接战帧一致。 |
-| 1 | combat / reinforcement / retreat | combat-v3 observation `live-primitive`；controller/action pending | 四类战斗策略与真实结果闭环。 |
+| 1 | combat / reinforcement / retreat | ongoing identity/ledger + planner hold + full-side/owner-subset retreat complete transition `live-loop`；reinforcement assignment query live，assigned+ETA/join、forecast、terminal 与总 controller pending，P1 进行中 | 四类战斗策略与真实结果闭环。 |
 | 2 | active war / siege / termination | `live-loop` 部分 | 任意 checkpoint 自主打到合法终局并处理战后。 |
 | 3 | events / notifications / interactions | numeric `live-primitive` | 50-key 长跑中语义选择且无漏答。 |
 | 4 | economy / domain / buildings | `visual-narrow` | 十年通用财政与建设循环。 |

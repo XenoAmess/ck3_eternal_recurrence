@@ -2,6 +2,20 @@ cmake_minimum_required(VERSION 3.25)
 
 project(xar_ck3_native_bridge VERSION 0.1.0 LANGUAGES CXX)
 
+# Ninja discovers MSVC header dependencies by matching /showIncludes output.
+# CMake 4.3 can misdecode the Simplified-Chinese prefix as mojibake while
+# cl.exe and Ninja exchange UTF-8, leaving every object with zero header deps.
+# Repair only that observed detection result; other compiler UI languages keep
+# their own prefix.
+if(
+  MSVC AND
+  CMAKE_CXX_CL_SHOWINCLUDES_PREFIX STREQUAL
+    "娉ㄦ剰: 鍖呭惈鏂囦欢:  "
+)
+  set(CMAKE_CXX_CL_SHOWINCLUDES_PREFIX "注意: 包含文件:  ")
+  set(CMAKE_CL_SHOWINCLUDES_PREFIX "${CMAKE_CXX_CL_SHOWINCLUDES_PREFIX}")
+endif()
+
 if(NOT WIN32)
   message(FATAL_ERROR "xar_ck3_native_bridge currently targets Windows only")
 endif()
@@ -44,6 +58,9 @@ target_compile_definitions(xar_bridge_injector PUBLIC
 
 add_library(xar_ck3_bridge SHARED
   src/actual_contact_scope_v1_mailbox.cpp
+  src/battle_control_snapshot_v1_mailbox.cpp
+  src/battle_reinforcement_assignment_v1_mailbox.cpp
+  src/battle_transition_v1_mailbox.cpp
   src/bridge.cpp
   src/ck3_11906.cpp
   src/ck3_11906_adapter.cpp
@@ -116,6 +133,9 @@ include(CTest)
 if(BUILD_TESTING)
   add_executable(xar_ck3_game_access_test
     src/actual_contact_scope_v1_mailbox.cpp
+    src/battle_control_snapshot_v1_mailbox.cpp
+    src/battle_reinforcement_assignment_v1_mailbox.cpp
+    src/battle_transition_v1_mailbox.cpp
     src/ck3_11906.cpp
     src/ck3_11906_test.cpp
     src/route_contact_horizon_v1_mailbox.cpp
@@ -140,6 +160,9 @@ if(BUILD_TESTING)
 
   add_executable(xar_ck3_adapter_registry_test
     src/actual_contact_scope_v1_mailbox.cpp
+    src/battle_control_snapshot_v1_mailbox.cpp
+    src/battle_reinforcement_assignment_v1_mailbox.cpp
+    src/battle_transition_v1_mailbox.cpp
     src/combat_simulation_inputs_v3_mailbox.cpp
     src/game_adapter.cpp
     src/ck3_11906_adapter.cpp
@@ -164,6 +187,75 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_adapter_registry
     COMMAND xar_ck3_adapter_registry_test
+  )
+
+  add_executable(xar_ck3_battle_control_snapshot_v1_mailbox_test
+    src/battle_control_snapshot_v1_mailbox.cpp
+    src/battle_control_snapshot_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_battle_control_snapshot_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_battle_control_snapshot_v1_mailbox_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_battle_control_snapshot_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_battle_control_snapshot_v1_mailbox
+    COMMAND xar_ck3_battle_control_snapshot_v1_mailbox_test
+  )
+
+  add_executable(xar_ck3_battle_transition_v1_mailbox_test
+    src/battle_transition_v1_mailbox.cpp
+    src/battle_transition_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_battle_transition_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_battle_transition_v1_mailbox_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_battle_transition_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_battle_transition_v1_mailbox
+    COMMAND xar_ck3_battle_transition_v1_mailbox_test
+  )
+
+  add_executable(xar_ck3_battle_reinforcement_assignment_v1_mailbox_test
+    src/battle_reinforcement_assignment_v1_mailbox.cpp
+    src/battle_reinforcement_assignment_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_battle_reinforcement_assignment_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_battle_reinforcement_assignment_v1_mailbox_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_battle_reinforcement_assignment_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_battle_reinforcement_assignment_v1_mailbox
+    COMMAND xar_ck3_battle_reinforcement_assignment_v1_mailbox_test
   )
 
   add_executable(xar_ck3_combat_v3_test_only_serializer_test

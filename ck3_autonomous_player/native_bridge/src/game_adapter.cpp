@@ -3,6 +3,9 @@
 #include "xar_bridge/war_entry_assessments_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
+#include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
+#include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
+#include "xar_bridge/battle_transition_v1_mailbox.hpp"
 
 #include "xar_bridge/ck3_11906_adapter.hpp"
 
@@ -298,6 +301,27 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     if (ck3_11906::ParseWarEntryAssessmentsV1Step(step,
                                                    war_entry_targets)) {
       capability = ck3_11906::kWarEntryAssessmentsV1Capability;
+    }
+  }
+  if (capability.empty()) {
+    BattleControlRequest battle_request{};
+    if (ck3_11906::ParseBattleControlSnapshotV1Step(step,
+                                                    battle_request)) {
+      capability = ck3_11906::kBattleControlSnapshotV1Capability;
+    }
+  }
+  if (capability.empty()) {
+    BattleReinforcementAssignmentRequest reinforcement_request{};
+    if (ck3_11906::ParseBattleReinforcementAssignmentV1Step(
+            step, reinforcement_request)) {
+      capability = ck3_11906::kBattleReinforcementAssignmentV1Capability;
+    }
+  }
+  if (capability.empty()) {
+    BattleTransitionRequest transition_request{};
+    if (ck3_11906::ParseBattleTransitionV1Step(
+            step, transition_request)) {
+      capability = ck3_11906::kBattleTransitionV1Capability;
     }
   }
   if (capability.empty()) {

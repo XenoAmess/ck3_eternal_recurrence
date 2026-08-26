@@ -68,7 +68,10 @@ constexpr std::uintptr_t kArmyStorageSlotRva = 0x570CC80;
 constexpr std::uintptr_t kArmyInternalStorageSlotRva = 0x570C730;
 constexpr std::uintptr_t kRegimentStorageSlotRva = 0x57BF4C8;
 constexpr std::uintptr_t kCombatStorageSlotRva = 0x570C758;
+constexpr std::uintptr_t kBattleResultFallbackSlotRva = 0x57C0320;
 constexpr std::uintptr_t kBattleResultStorageSlotRva = 0x57C0328;
+constexpr std::uintptr_t kAiWarCoordinatorFallbackSlotRva = 0x57C0798;
+constexpr std::uintptr_t kAiWarCoordinatorStorageSlotRva = 0x57C07A8;
 constexpr std::uintptr_t kSiegeStorageSlotRva = 0x57BF1B8;
 constexpr std::uintptr_t kContactGameModeSlotRva = 0x576CC68;
 constexpr std::uintptr_t kGlobalVariableContainerAccessorSlotRva =
@@ -111,6 +114,9 @@ constexpr std::uintptr_t
     kAddFromContributionDefendersEffectVtableRva = 0x444AED8;
 constexpr std::uintptr_t kGoldTransferEffectVtableRva = 0x446E950;
 constexpr std::uintptr_t kTruceEffectVtableRva = 0x4461CA8;
+constexpr std::uintptr_t kAiUnitStackVtableRva = 0x4191870;
+constexpr std::uintptr_t kAiSubunitStackVtableRva = 0x4192778;
+constexpr std::uintptr_t kAiWarCoordinatorVtableRva = 0x41923B0;
 constexpr std::uintptr_t kValidCasusBelliConfigurationScratchRva =
     0x4FED598;
 constexpr std::uintptr_t kSubmitCommandRva = 0x0973E00;
@@ -151,6 +157,8 @@ constexpr std::uintptr_t kIsSpecialCombatRegimentRva = 0x239CEB0;
 constexpr std::uintptr_t kGetCharacterModifierAggregatorRva = 0x26172C0;
 constexpr std::uintptr_t kReadCharacterModifierRva = 0x20AB950;
 constexpr std::uintptr_t kGetCombatRulesRva = 0x82DC40;
+constexpr std::uintptr_t kGetCombatSideStrengthRva = 0x23CC340;
+constexpr std::uintptr_t kGetCombatRegimentStrengthRva = 0x23D2D70;
 constexpr std::uintptr_t kReadCounterCurrentChunkRva = 0x23D2B90;
 constexpr std::uintptr_t kResolveCounterClassesRva = 0x23CF1B0;
 constexpr std::uintptr_t kGetCounterContextScaleRva = 0x2946B50;
@@ -170,6 +178,9 @@ constexpr std::uintptr_t kGetArmyMoveModeRva = 0x26B51B0;
 constexpr std::uintptr_t kCanCharacterUseCommandKindRva = 0x26B26A0;
 constexpr std::uintptr_t kCanArmyUseMoveModeRva = 0x2248860;
 constexpr std::uintptr_t kCanMoveArmyRva = 0x26B4610;
+constexpr std::uintptr_t kCanOrderCombatRetreatRva = 0x2308250;
+constexpr std::uintptr_t kGetCombatRetreatRuleStateRva = 0x26165B0;
+constexpr std::uintptr_t kMinimumDaysBeforeManualRetreatRva = 0x570EE04;
 constexpr std::uintptr_t kResolveMoveOriginRva = 0x2248260;
 constexpr std::uintptr_t kConstructMovePathContextRva = 0x23C32F0;
 constexpr std::uintptr_t kConstructArmyMovePathRva = 0x0C7BA70;
@@ -177,6 +188,7 @@ constexpr std::uintptr_t kBuildArmyMoveRouteRva = 0x23C33D0;
 constexpr std::uintptr_t kReadUnitLandRouteSpeedRva = 0x2246EC0;
 constexpr std::uintptr_t kReadUnitNavalRouteSpeedRva = 0x2247180;
 constexpr std::uintptr_t kReadRouteTravelDurationRva = 0x2247320;
+constexpr std::uintptr_t kReadRouteEdgeDurationRva = 0x22475E0;
 constexpr std::uintptr_t kReadUnitCurrentEdgeSpeedRva = 0x2247B40;
 constexpr std::uintptr_t kDestroyMoveArmyCommandRva = 0x26B46D0;
 constexpr std::uintptr_t kValidateDisbandArmyCommandRva = 0x26B5710;
@@ -280,6 +292,7 @@ constexpr std::size_t kCharacterExtensionOffset = 0x1A8;
 constexpr std::size_t kCharacterLegitimacyDataOffset = 0x1C0;
 constexpr std::size_t kCharacterKnightLinkRegimentIdOffset = 0xF8;
 constexpr std::size_t kCharacterFamilyDataOffset = 0x1A0;
+constexpr std::size_t kCharacterLandStatusObjectOffset = 0x1B8;
 constexpr std::size_t kCharacterDeathDataOffset = 0x1C8;
 constexpr std::size_t kFamilyBetrothedCharacterIdOffset = 0x10;
 constexpr std::size_t kFamilyPrimarySpouseCharacterIdOffset = 0x14;
@@ -319,6 +332,31 @@ constexpr std::size_t kUnitRetreatStateOffset = 0x170;
 constexpr std::size_t kUnitCachedCurrentEdgeSpeedOffset = 0x190;
 constexpr std::size_t kArmyOwnerCharacterIdOffset = 0x174;
 constexpr std::size_t kUnitArmyIdOffset = 0x178;
+constexpr std::size_t kUnitAiWarCoordinatorIdOffset = 0x1C4;
+constexpr std::size_t kUnitAiSubunitStackOffset = 0x1D0;
+constexpr std::size_t kAiWarCoordinatorIdOffset = 0x10;
+constexpr std::size_t kAiWarCoordinatorUnitStacksOffset = 0x50;
+constexpr std::size_t kAiWarCoordinatorUnitStacksCapacityOffset = 0x58;
+constexpr std::size_t kAiWarCoordinatorUnitStacksCountOffset = 0x5C;
+constexpr std::size_t kAiUnitStackSupportProvincesOffset = 0x08;
+constexpr std::size_t kAiUnitStackSupportProvincesCapacityOffset = 0x10;
+constexpr std::size_t kAiUnitStackSupportProvincesCountOffset = 0x14;
+constexpr std::size_t kAiUnitStackPublicCunitIdsOffset = 0x28;
+constexpr std::size_t kAiUnitStackPublicCunitIdsCapacityOffset = 0x30;
+constexpr std::size_t kAiUnitStackPublicCunitIdsCountOffset = 0x34;
+constexpr std::size_t kAiUnitStackSubunitsOffset = 0x40;
+constexpr std::size_t kAiUnitStackSubunitsCapacityOffset = 0x48;
+constexpr std::size_t kAiUnitStackSubunitsCountOffset = 0x4C;
+constexpr std::size_t kAiUnitStackCoordinatorOffset = 0x58;
+constexpr std::size_t kAiSubunitPublicCunitIdsOffset = 0x10;
+constexpr std::size_t kAiSubunitPublicCunitIdsCapacityOffset = 0x18;
+constexpr std::size_t kAiSubunitPublicCunitIdsCountOffset = 0x1C;
+constexpr std::size_t kAiSubunitRequestPowerBasisOffset = 0x28;
+constexpr std::size_t kAiSubunitCrossCoordinatorValidOffset = 0x34;
+constexpr std::size_t kAiSubunitCrossCoordinatorPowerOffset = 0x38;
+constexpr std::size_t kAiSubunitParentOffset = 0x40;
+constexpr std::size_t kAiSubunitAssignmentTargetOffset = 0x48;
+constexpr std::size_t kAiSubunitFlagsOffset = 0x50;
 constexpr std::size_t kInternalArmyIdOffset = 0x10;
 constexpr std::size_t kInternalArmyRegimentIdsOffset = 0x38;
 constexpr std::size_t kInternalArmyRegimentCapacityOffset = 0x40;
@@ -369,13 +407,53 @@ constexpr std::size_t kCombatResolvedAdvantageOffset = 0x710;
 constexpr std::size_t kCombatAttackerSideOffset = 0x20;
 constexpr std::size_t kCombatDefenderSideOffset = 0x368;
 constexpr std::size_t kCombatWinnerOffset = 0x6E0;
+constexpr std::size_t kCombatRollCadenceCounterOffset = 0x6E4;
+constexpr std::size_t kCombatForcedWinnerOffset = 0x700;
 constexpr std::size_t kCombatFinalizedOffset = 0x704;
+constexpr std::size_t kCombatDailyDispatchInProgressOffset = 0x705;
 constexpr std::size_t kCombatBattleResultIdOffset = 0x708;
 constexpr std::size_t kCombatSideArmyIdsOffset = 0x10;
+constexpr std::size_t kCombatSideArmyCapacityOffset = 0x18;
 constexpr std::size_t kCombatSideArmyCountOffset = 0x1C;
+constexpr std::size_t kCombatSideLevyEntriesOffset = 0x28;
+constexpr std::size_t kCombatSideLevyEntryCapacityOffset = 0x30;
+constexpr std::size_t kCombatSideLevyEntryCountOffset = 0x34;
+constexpr std::size_t kCombatSideMaaEntriesOffset = 0x40;
+constexpr std::size_t kCombatSideMaaEntryCapacityOffset = 0x48;
+constexpr std::size_t kCombatSideMaaEntryCountOffset = 0x4C;
+constexpr std::size_t kCombatSideParticipantHardRowsOffset = 0x58;
+constexpr std::size_t kCombatSideParticipantHardCapacityOffset = 0x60;
+constexpr std::size_t kCombatSideParticipantHardCountOffset = 0x64;
 constexpr std::size_t kCombatSidePrimaryCharacterIdOffset = 0x70;
+constexpr std::size_t kCombatSideSelectedCommanderCharacterIdOffset = 0x74;
+constexpr std::size_t kCombatSideStoredCurrentFightingOffset = 0x98;
+constexpr std::size_t kCombatSideStoredLevyCurrentFightingOffset = 0xA0;
+constexpr std::size_t kCombatSideCombatBackPointerOffset = 0xB8;
+constexpr std::size_t kCombatSideDisallowRetreatOffset = 0xC0;
+constexpr std::size_t kCombatSideAllowEarlyRetreatOffset = 0xC1;
+constexpr std::size_t kCombatSideSkipPursuitOffset = 0xC2;
+constexpr std::size_t kCombatRegimentEntryStride = 0x60;
+constexpr std::size_t kCombatRegimentIdOffset = 0x08;
+constexpr std::size_t kCombatRegimentStartingOffset = 0x10;
+constexpr std::size_t kCombatRegimentCurrentFightingOffset = 0x18;
+constexpr std::size_t kCombatRegimentSoftCasualtiesOffset = 0x20;
+constexpr std::size_t kCombatRegimentEffectiveMaxSizeOffset = 0x30;
+constexpr std::size_t kCombatRegimentEffectiveSiegeOffset = 0x38;
+constexpr std::size_t kCombatRegimentEffectiveDamageOffset = 0x40;
+constexpr std::size_t kCombatRegimentEffectiveToughnessOffset = 0x48;
+constexpr std::size_t kCombatRegimentEffectivePursuitOffset = 0x50;
+constexpr std::size_t kCombatRegimentEffectiveScreenOffset = 0x58;
+constexpr std::size_t kCombatParticipantHardRowStride = 0x18;
+constexpr std::size_t kCombatParticipantHardCharacterIdOffset = 0x08;
+constexpr std::size_t kCombatParticipantHardCasualtiesOffset = 0x10;
 constexpr std::size_t kBattleResultIdOffset = 0x08;
 constexpr std::size_t kBattleResultReadyOffset = 0x28;
+constexpr std::size_t kBattleResultRetreatElapsedBaselineDateOffset = 0x2C;
+constexpr std::size_t kCharacterLandStatusSentinelOffset = 0x1F8;
+constexpr std::size_t kCombatRetreatRuleFlagsOffset = 0x38;
+constexpr std::uint32_t kCombatRetreatLandlessOverrideBit = 1U << 10U;
+constexpr std::int64_t kCk3DateEpochRaw = 0x029C55C0;
+constexpr std::int64_t kCk3DateRawPerWholeDay = 24;
 constexpr std::size_t kEncounterMaaStatsMaximumOffset = 0x08;
 constexpr std::size_t kEncounterMaaStatsSiegeOffset = 0x10;
 constexpr std::size_t kEncounterMaaStatsDamageOffset = 0x18;
@@ -468,6 +546,12 @@ constexpr std::int32_t kMaximumActualContactProvinceUnits = 4'096;
 constexpr std::int32_t kMaximumActualContactProvinceCombats = 1'024;
 constexpr std::int32_t kMaximumActualContactSideArmies = 4'096;
 constexpr std::int32_t kMaximumActualContactRegiments = 4'096;
+constexpr std::int32_t kMaximumBattleControlEntriesPerBucket = 16'384;
+constexpr std::int32_t kMaximumBattleControlParticipantHardRows = 4'096;
+constexpr std::int32_t kMaximumAiCoordinatorUnitStacks = 4'096;
+constexpr std::int32_t kMaximumAiUnitStackSubunits = 4'096;
+constexpr std::int32_t kMaximumAiSubunitPublicCunitIds = 4'096;
+constexpr std::int32_t kMaximumAiSupportSearchProvinces = 4'096;
 constexpr std::size_t kMaximumLandedTitleHierarchyDepth = 8;
 constexpr std::size_t kMaximumWarObjectiveProvinceIds = 4'096;
 constexpr std::size_t kMaximumWarObjectiveProvinceStateCount = 256;
@@ -5207,9 +5291,9 @@ bool AppendOngoingCombat(const Bindings &bindings, void *game_state,
   row.side_0_roll = LoadAt<std::int32_t>(combat, kCombatSide0RollOffset);
   row.side_1_roll = LoadAt<std::int32_t>(combat, kCombatSide1RollOffset);
   row.base_advantage =
-      LoadAt<std::int32_t>(combat, kCombatBaseAdvantageOffset);
+      LoadAt<std::int64_t>(combat, kCombatBaseAdvantageOffset);
   row.resolved_advantage =
-      LoadAt<std::int32_t>(combat, kCombatResolvedAdvantageOffset);
+      LoadAt<std::int64_t>(combat, kCombatResolvedAdvantageOffset);
   if (row.phase < 0 || row.phase > 3 || row.phase_day < 0 ||
       row.base_combat_width < 0 || row.final_combat_width < 0) {
     row.province_id = -1;
@@ -5948,6 +6032,10 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.gold_transfer_effect_vtable =
       module + kGoldTransferEffectVtableRva;
   result.truce_effect_vtable = module + kTruceEffectVtableRva;
+  result.ai_unit_stack_vtable = module + kAiUnitStackVtableRva;
+  result.ai_subunit_stack_vtable = module + kAiSubunitStackVtableRva;
+  result.ai_war_coordinator_vtable =
+      module + kAiWarCoordinatorVtableRva;
   result.cb_prestige_factor_identifier_id =
       reinterpret_cast<const std::int32_t *>(
           module + kCbPrestigeFactorIdentifierIdRva);
@@ -5964,8 +6052,14 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       reinterpret_cast<void **>(module + kRegimentStorageSlotRva);
   result.combat_storage_slot =
       reinterpret_cast<void **>(module + kCombatStorageSlotRva);
+  result.battle_result_fallback_slot =
+      reinterpret_cast<void **>(module + kBattleResultFallbackSlotRva);
   result.battle_result_storage_slot =
       reinterpret_cast<void **>(module + kBattleResultStorageSlotRva);
+  result.ai_war_coordinator_fallback_slot = reinterpret_cast<void **>(
+      module + kAiWarCoordinatorFallbackSlotRva);
+  result.ai_war_coordinator_storage_slot = reinterpret_cast<void **>(
+      module + kAiWarCoordinatorStorageSlotRva);
   result.siege_storage_slot =
       reinterpret_cast<void **>(module + kSiegeStorageSlotRva);
   result.contact_game_mode_slot =
@@ -6079,6 +6173,12 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
           module + kReadCharacterModifierRva);
   result.get_combat_rules =
       reinterpret_cast<GetCombatRules>(module + kGetCombatRulesRva);
+  result.get_combat_side_strength =
+      reinterpret_cast<GetCombatSideStrength>(
+          module + kGetCombatSideStrengthRva);
+  result.get_combat_regiment_strength =
+      reinterpret_cast<GetCombatRegimentStrength>(
+          module + kGetCombatRegimentStrengthRva);
   result.read_counter_current_chunk =
       reinterpret_cast<ReadCounterCurrentChunk>(
           module + kReadCounterCurrentChunkRva);
@@ -6128,6 +6228,15 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       module + kCanArmyUseMoveModeRva);
   result.can_move_army =
       reinterpret_cast<CanMoveArmy>(module + kCanMoveArmyRva);
+  result.can_order_combat_retreat =
+      reinterpret_cast<CanOrderCombatRetreat>(
+          module + kCanOrderCombatRetreatRva);
+  result.get_combat_retreat_rule_state =
+      reinterpret_cast<GetCombatRetreatRuleState>(
+          module + kGetCombatRetreatRuleStateRva);
+  result.minimum_days_before_manual_retreat =
+      reinterpret_cast<const std::int32_t *>(
+          module + kMinimumDaysBeforeManualRetreatRva);
   result.resolve_move_origin = reinterpret_cast<ResolveMoveOrigin>(
       module + kResolveMoveOriginRva);
   result.construct_move_path_context =
@@ -6287,6 +6396,9 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.read_route_travel_duration =
       reinterpret_cast<ReadRouteTravelDuration>(
           module + kReadRouteTravelDurationRva);
+  result.read_route_edge_duration =
+      reinterpret_cast<ReadRouteEdgeDuration>(
+          module + kReadRouteEdgeDurationRva);
   return result;
 }
 
@@ -8137,20 +8249,22 @@ bool ReadCombatSidePublicUnitIds(
          NativeArmyIdsToPublicUnitIds(bindings, native_ids, output);
 }
 
-bool ReadActiveCombatSidePublicUnitIds(
+bool ReadActiveCombatSideIds(
     const Bindings &bindings, const void *combat,
     std::size_t side_offset, std::int32_t expected_combat_id,
-    std::vector<std::int32_t> &output) noexcept {
-  output.clear();
-  std::vector<std::int32_t> native_ids;
+    std::vector<std::int32_t> &native_ids,
+    std::vector<std::int32_t> &public_unit_ids) noexcept {
+  native_ids.clear();
+  public_unit_ids.clear();
   const auto *const side = static_cast<const std::byte *>(combat) + side_offset;
-  if (!ReadContactIdArray(
+  if (LoadAt<const void *>(side, kCombatSideCombatBackPointerOffset) != combat ||
+      !ReadContactIdArray(
           side, kCombatSideArmyIdsOffset, kCombatSideArmyCountOffset,
           kMaximumActualContactSideArmies, native_ids, false) ||
       native_ids.empty()) {
     return false;
   }
-  output.reserve(native_ids.size());
+  public_unit_ids.reserve(native_ids.size());
   for (const auto native_id : native_ids) {
     void *const army = ResolveStoredComponent(
         bindings.army_internal_storage_slot, native_id,
@@ -8158,7 +8272,8 @@ bool ReadActiveCombatSidePublicUnitIds(
     if (army == nullptr ||
         LoadAt<std::int32_t>(army, kInternalArmyCombatIdOffset) !=
             expected_combat_id) {
-      output.clear();
+      native_ids.clear();
+      public_unit_ids.clear();
       return false;
     }
     const auto unit_id =
@@ -8167,12 +8282,125 @@ bool ReadActiveCombatSidePublicUnitIds(
         bindings.army_storage_slot, unit_id, kArmyIdOffset);
     if (unit == nullptr ||
         LoadAt<std::int32_t>(unit, kUnitArmyIdOffset) != native_id ||
-        std::find(output.begin(), output.end(), unit_id) != output.end()) {
-      output.clear();
+        std::find(public_unit_ids.begin(), public_unit_ids.end(), unit_id) !=
+            public_unit_ids.end()) {
+      native_ids.clear();
+      public_unit_ids.clear();
       return false;
     }
-    output.push_back(unit_id);
+    public_unit_ids.push_back(unit_id);
   }
+  return true;
+}
+
+struct ActiveCombatIdentityV1 {
+  std::int32_t combat_id = -1;
+  std::int32_t province_id = -1;
+  std::int32_t selected_combat_array_index = -1;
+  bool finalized = false;
+  std::vector<std::int32_t> province_public_cunit_ids;
+  std::vector<std::int32_t> province_combat_ids;
+  std::vector<std::int32_t> attacker_native_carmy_ids;
+  std::vector<std::int32_t> attacker_public_cunit_ids;
+  std::vector<std::int32_t> defender_native_carmy_ids;
+  std::vector<std::int32_t> defender_public_cunit_ids;
+
+  friend bool operator==(const ActiveCombatIdentityV1 &,
+                         const ActiveCombatIdentityV1 &) = default;
+};
+
+bool ReadActiveCombatIdentityV1(
+    const Bindings &bindings, void *game_state, void *subject_unit,
+    void *subject_native_army, void *expected_province,
+    std::int32_t expected_subject_public_cunit_id, bool require_not_finalized,
+    ActiveCombatIdentityV1 &output) noexcept {
+  output = {};
+  const auto combat_id = LoadAt<std::int32_t>(
+      subject_native_army, kInternalArmyCombatIdOffset);
+  if (combat_id <= 0) {
+    return false;
+  }
+  void *const combat = ResolveStoredComponent(
+      bindings.combat_storage_slot, combat_id, kCombatIdOffset);
+  if (combat == nullptr) {
+    return false;
+  }
+  const bool finalized =
+      LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset) != 0;
+  if (require_not_finalized && finalized) {
+    return false;
+  }
+  void *const actual_province =
+      LoadAt<void *>(combat, kCombatProvinceOffset);
+  if (actual_province == nullptr || actual_province != expected_province ||
+      LoadAt<void *>(subject_unit, kArmyCurrentProvinceOffset) !=
+          actual_province) {
+    return false;
+  }
+  const auto province_id =
+      LoadAt<std::int32_t>(actual_province, kProvinceIdOffset);
+  if (province_id <= 0 ||
+      ResolveProvince(game_state, province_id) != actual_province) {
+    return false;
+  }
+  if (!ReadContactIdArray(
+          actual_province, kProvinceUnitIdsOffset,
+          kProvinceUnitIdCountOffset, kMaximumActualContactProvinceUnits,
+          output.province_public_cunit_ids, true) ||
+      !ReadContactIdArray(
+          actual_province, kProvinceCombatIdsOffset,
+          kProvinceCombatIdCountOffset,
+          kMaximumActualContactProvinceCombats,
+          output.province_combat_ids, true) ||
+      !std::binary_search(output.province_public_cunit_ids.begin(),
+                          output.province_public_cunit_ids.end(),
+                          expected_subject_public_cunit_id)) {
+    return false;
+  }
+  const auto selected = std::lower_bound(output.province_combat_ids.begin(),
+                                         output.province_combat_ids.end(),
+                                         combat_id);
+  if (selected == output.province_combat_ids.end() ||
+      *selected != combat_id ||
+      !ReadActiveCombatSideIds(
+          bindings, combat, kCombatAttackerSideOffset, combat_id,
+          output.attacker_native_carmy_ids,
+          output.attacker_public_cunit_ids) ||
+      !ReadActiveCombatSideIds(
+          bindings, combat, kCombatDefenderSideOffset, combat_id,
+          output.defender_native_carmy_ids,
+          output.defender_public_cunit_ids)) {
+    return false;
+  }
+  const auto attacker_subject_count = static_cast<std::size_t>(std::count(
+      output.attacker_public_cunit_ids.begin(),
+      output.attacker_public_cunit_ids.end(),
+      expected_subject_public_cunit_id));
+  const auto defender_subject_count = static_cast<std::size_t>(std::count(
+      output.defender_public_cunit_ids.begin(),
+      output.defender_public_cunit_ids.end(),
+      expected_subject_public_cunit_id));
+  if (attacker_subject_count + defender_subject_count != 1) {
+    return false;
+  }
+  for (const auto attacker_id : output.attacker_public_cunit_ids) {
+    if (std::find(output.defender_public_cunit_ids.begin(),
+                  output.defender_public_cunit_ids.end(), attacker_id) !=
+        output.defender_public_cunit_ids.end()) {
+      return false;
+    }
+  }
+  if (ResolveStoredComponent(bindings.combat_storage_slot, combat_id,
+                             kCombatIdOffset) != combat ||
+      LoadAt<std::int32_t>(subject_native_army,
+                           kInternalArmyCombatIdOffset) != combat_id) {
+    return false;
+  }
+  output.combat_id = combat_id;
+  output.province_id = province_id;
+  output.selected_combat_array_index = static_cast<std::int32_t>(
+      std::distance(output.province_combat_ids.begin(), selected));
+  output.finalized = finalized;
   return true;
 }
 
@@ -8181,86 +8409,26 @@ ActualContactScopeStatus ReadExistingActualContact(
     void *native_army, void *requested_province,
     const game::ActualContactScopeRequest &request,
     game::ActualContactScopeSnapshot &output) noexcept {
-  const auto combat_id = LoadAt<std::int32_t>(
-      native_army, kInternalArmyCombatIdOffset);
-  if (combat_id <= 0) {
+  ActiveCombatIdentityV1 identity{};
+  if (!ReadActiveCombatIdentityV1(
+          bindings, game_state, unit, native_army, requested_province,
+          request.subject_army_id, true, identity) ||
+      identity.province_id != request.target_province_id) {
     return ActualContactScopeStatus::state_changed;
   }
-  void *const combat = ResolveStoredComponent(
-      bindings.combat_storage_slot, combat_id, kCombatIdOffset);
-  if (combat == nullptr ||
-      LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset) != 0) {
-    return ActualContactScopeStatus::state_changed;
-  }
-  void *const actual_province =
-      LoadAt<void *>(combat, kCombatProvinceOffset);
-  if (actual_province == nullptr) {
-    return ActualContactScopeStatus::state_changed;
-  }
-  const auto actual_province_id =
-      LoadAt<std::int32_t>(actual_province, kProvinceIdOffset);
-  if (actual_province_id <= 0 ||
-      actual_province_id != request.target_province_id ||
-      actual_province != requested_province ||
-      LoadAt<void *>(unit, kArmyCurrentProvinceOffset) != actual_province ||
-      ResolveProvince(game_state, actual_province_id) != actual_province) {
-    return ActualContactScopeStatus::state_changed;
-  }
-  output.target_province_id = actual_province_id;
-  if (!ReadContactIdArray(
-          actual_province, kProvinceUnitIdsOffset,
-          kProvinceUnitIdCountOffset, kMaximumActualContactProvinceUnits,
-          output.province_unit_army_ids, true) ||
-      !ReadContactIdArray(
-          actual_province, kProvinceCombatIdsOffset,
-          kProvinceCombatIdCountOffset,
-          kMaximumActualContactProvinceCombats,
-          output.province_combat_ids, true) ||
-      !std::binary_search(output.province_unit_army_ids.begin(),
-                          output.province_unit_army_ids.end(),
-                          request.subject_army_id)) {
-    return ActualContactScopeStatus::state_changed;
-  }
-  const auto selected = std::lower_bound(output.province_combat_ids.begin(),
-                                         output.province_combat_ids.end(),
-                                         combat_id);
-  if (selected == output.province_combat_ids.end() ||
-      *selected != combat_id ||
-      !ReadActiveCombatSidePublicUnitIds(
-          bindings, combat, kCombatAttackerSideOffset, combat_id,
-          output.attacker_army_ids) ||
-      !ReadActiveCombatSidePublicUnitIds(
-          bindings, combat, kCombatDefenderSideOffset, combat_id,
-          output.defender_army_ids)) {
-    return ActualContactScopeStatus::state_changed;
-  }
-  const auto attacker_subject_count = static_cast<std::size_t>(std::count(
-      output.attacker_army_ids.begin(), output.attacker_army_ids.end(),
-      request.subject_army_id));
-  const auto defender_subject_count = static_cast<std::size_t>(std::count(
-      output.defender_army_ids.begin(), output.defender_army_ids.end(),
-      request.subject_army_id));
-  if (attacker_subject_count + defender_subject_count != 1) {
-    return ActualContactScopeStatus::state_changed;
-  }
-  for (const auto attacker_id : output.attacker_army_ids) {
-    if (std::find(output.defender_army_ids.begin(),
-                  output.defender_army_ids.end(), attacker_id) !=
-        output.defender_army_ids.end()) {
-      return ActualContactScopeStatus::state_changed;
-    }
-  }
-  if (ResolveStoredComponent(bindings.combat_storage_slot, combat_id,
-                             kCombatIdOffset) != combat ||
-      LoadAt<std::int32_t>(native_army, kInternalArmyCombatIdOffset) !=
-          combat_id) {
-    return ActualContactScopeStatus::state_changed;
-  }
+  output.target_province_id = identity.province_id;
+  output.province_unit_army_ids =
+      std::move(identity.province_public_cunit_ids);
+  output.province_combat_ids = std::move(identity.province_combat_ids);
+  output.attacker_army_ids =
+      std::move(identity.attacker_public_cunit_ids);
+  output.defender_army_ids =
+      std::move(identity.defender_public_cunit_ids);
   output.scope_kind = "post_contact_observation";
   output.transition_kind = "in_combat";
-  output.selected_combat_id = combat_id;
-  output.selected_combat_array_index = static_cast<std::int32_t>(
-      std::distance(output.province_combat_ids.begin(), selected));
+  output.selected_combat_id = identity.combat_id;
+  output.selected_combat_array_index =
+      identity.selected_combat_array_index;
   output.actual_contact_scope_ready = true;
   output.combat_v3_participant_scope_ready = true;
   return ActualContactScopeStatus::available;
@@ -8697,6 +8865,1524 @@ ActualContactScopeStatus ReadActualContactScopeSample(
   return ActualContactScopeStatus::available;
 }
 
+struct BattleControlArrayHeaderV1 {
+  void *data = nullptr;
+  std::int32_t capacity = 0;
+  std::int32_t count = 0;
+};
+
+bool ReadBattleControlArrayHeader(
+    const void *owner, std::size_t data_offset, std::size_t capacity_offset,
+    std::size_t count_offset, std::int32_t maximum,
+    BattleControlArrayHeaderV1 &output) noexcept {
+  output.data = LoadAt<void *>(owner, data_offset);
+  output.capacity = LoadAt<std::int32_t>(owner, capacity_offset);
+  output.count = LoadAt<std::int32_t>(owner, count_offset);
+  return output.capacity >= 0 && output.capacity <= maximum &&
+         output.count >= 0 && output.count <= output.capacity &&
+         (output.count == 0 || output.data != nullptr);
+}
+
+bool BattleControlArrayHeaderUnchanged(
+    const void *owner, std::size_t data_offset, std::size_t capacity_offset,
+    std::size_t count_offset,
+    const BattleControlArrayHeaderV1 &expected) noexcept {
+  return LoadAt<void *>(owner, data_offset) == expected.data &&
+         LoadAt<std::int32_t>(owner, capacity_offset) == expected.capacity &&
+         LoadAt<std::int32_t>(owner, count_offset) == expected.count;
+}
+
+struct BattleReinforcementAssignmentSampleV1 {
+  game::BattleReinforcementAssignmentSnapshot value;
+  std::vector<std::uintptr_t> structural_proof;
+
+  friend bool operator==(
+      const BattleReinforcementAssignmentSampleV1 &,
+      const BattleReinforcementAssignmentSampleV1 &) = default;
+};
+
+void AppendBattleReinforcementProof(
+    BattleReinforcementAssignmentSampleV1 &sample,
+    const void *pointer) {
+  sample.structural_proof.push_back(
+      reinterpret_cast<std::uintptr_t>(pointer));
+}
+
+void AppendBattleReinforcementProof(
+    BattleReinforcementAssignmentSampleV1 &sample,
+    const BattleControlArrayHeaderV1 &header) {
+  AppendBattleReinforcementProof(sample, header.data);
+  sample.structural_proof.push_back(
+      static_cast<std::uintptr_t>(
+          static_cast<std::uint32_t>(header.capacity)));
+  sample.structural_proof.push_back(
+      static_cast<std::uintptr_t>(
+          static_cast<std::uint32_t>(header.count)));
+}
+
+bool ReadBattleReinforcementPublicIds(
+    const Bindings &bindings, const void *subunit,
+    BattleReinforcementAssignmentSampleV1 &sample,
+    std::vector<std::int32_t> &output) noexcept {
+  output.clear();
+  BattleControlArrayHeaderV1 header{};
+  if (!ReadBattleControlArrayHeader(
+          subunit, kAiSubunitPublicCunitIdsOffset,
+          kAiSubunitPublicCunitIdsCapacityOffset,
+          kAiSubunitPublicCunitIdsCountOffset,
+          kMaximumAiSubunitPublicCunitIds, header)) {
+    return false;
+  }
+  AppendBattleReinforcementProof(sample, header);
+  output.reserve(static_cast<std::size_t>(header.count));
+  for (std::int32_t index = 0; index < header.count; ++index) {
+    const auto public_cunit_id = LoadAt<std::int32_t>(
+        header.data,
+        static_cast<std::size_t>(index) * sizeof(std::int32_t));
+    void *const unit = ResolveStoredComponent(
+        bindings.army_storage_slot, public_cunit_id, kArmyIdOffset);
+    if (public_cunit_id <= 0 || unit == nullptr ||
+        LoadAt<void *>(unit, kUnitAiSubunitStackOffset) != subunit ||
+        std::find(output.begin(), output.end(), public_cunit_id) !=
+            output.end()) {
+      output.clear();
+      return false;
+    }
+    output.push_back(public_cunit_id);
+  }
+  return BattleControlArrayHeaderUnchanged(
+      subunit, kAiSubunitPublicCunitIdsOffset,
+      kAiSubunitPublicCunitIdsCapacityOffset,
+      kAiSubunitPublicCunitIdsCountOffset, header);
+}
+
+bool ReadBattleReinforcementAssignmentTarget(
+    void *game_state, const void *subunit, bool assigned,
+    std::optional<std::int32_t> &output,
+    BattleReinforcementAssignmentSampleV1 &sample) noexcept {
+  output.reset();
+  void *const target =
+      LoadAt<void *>(subunit, kAiSubunitAssignmentTargetOffset);
+  AppendBattleReinforcementProof(sample, target);
+  if (!assigned) {
+    return true;
+  }
+  if (target == nullptr) {
+    return false;
+  }
+  const auto target_id =
+      LoadAt<std::int32_t>(target, kProvinceIdOffset);
+  if (target_id <= 0 || ResolveProvince(game_state, target_id) != target) {
+    return false;
+  }
+  output = target_id;
+  return true;
+}
+
+bool ReadBattleReinforcementParentOrder(
+    const Bindings &bindings, void *game_state, void *parent,
+    void *selected_subunit,
+    BattleReinforcementAssignmentSampleV1 &sample,
+    std::int32_t &selected_subunit_index) noexcept {
+  auto &native_order = *sample.value.native_order;
+  selected_subunit_index = -1;
+
+  BattleControlArrayHeaderV1 support_header{};
+  if (!ReadBattleControlArrayHeader(
+          parent, kAiUnitStackSupportProvincesOffset,
+          kAiUnitStackSupportProvincesCapacityOffset,
+          kAiUnitStackSupportProvincesCountOffset,
+          kMaximumAiSupportSearchProvinces, support_header)) {
+    return false;
+  }
+  AppendBattleReinforcementProof(sample, support_header);
+  native_order.support_search_province_ids_in_stored_order.reserve(
+      static_cast<std::size_t>(support_header.count));
+  for (std::int32_t index = 0; index < support_header.count; ++index) {
+    void *const province = LoadAt<void *>(
+        support_header.data,
+        static_cast<std::size_t>(index) * sizeof(void *));
+    if (province == nullptr) {
+      return false;
+    }
+    const auto province_id =
+        LoadAt<std::int32_t>(province, kProvinceIdOffset);
+    if (province_id <= 0 ||
+        ResolveProvince(game_state, province_id) != province) {
+      return false;
+    }
+    AppendBattleReinforcementProof(sample, province);
+    native_order.support_search_province_ids_in_stored_order.push_back(
+        province_id);
+  }
+  if (!BattleControlArrayHeaderUnchanged(
+          parent, kAiUnitStackSupportProvincesOffset,
+          kAiUnitStackSupportProvincesCapacityOffset,
+          kAiUnitStackSupportProvincesCountOffset, support_header)) {
+    return false;
+  }
+
+  BattleControlArrayHeaderV1 parent_cunit_header{};
+  if (!ReadBattleControlArrayHeader(
+          parent, kAiUnitStackPublicCunitIdsOffset,
+          kAiUnitStackPublicCunitIdsCapacityOffset,
+          kAiUnitStackPublicCunitIdsCountOffset,
+          kMaximumAiSubunitPublicCunitIds, parent_cunit_header)) {
+    return false;
+  }
+  AppendBattleReinforcementProof(sample, parent_cunit_header);
+  for (std::int32_t index = 0; index < parent_cunit_header.count; ++index) {
+    const auto public_cunit_id = LoadAt<std::int32_t>(
+        parent_cunit_header.data,
+        static_cast<std::size_t>(index) * sizeof(std::int32_t));
+    if (public_cunit_id <= 0 ||
+        ResolveStoredComponent(bindings.army_storage_slot,
+                               public_cunit_id,
+                               kArmyIdOffset) == nullptr) {
+      return false;
+    }
+    sample.structural_proof.push_back(
+        static_cast<std::uintptr_t>(
+            static_cast<std::uint32_t>(public_cunit_id)));
+  }
+  if (!BattleControlArrayHeaderUnchanged(
+          parent, kAiUnitStackPublicCunitIdsOffset,
+          kAiUnitStackPublicCunitIdsCapacityOffset,
+          kAiUnitStackPublicCunitIdsCountOffset, parent_cunit_header)) {
+    return false;
+  }
+
+  BattleControlArrayHeaderV1 subunit_header{};
+  if (!ReadBattleControlArrayHeader(
+          parent, kAiUnitStackSubunitsOffset,
+          kAiUnitStackSubunitsCapacityOffset,
+          kAiUnitStackSubunitsCountOffset,
+          kMaximumAiUnitStackSubunits, subunit_header)) {
+    return false;
+  }
+  AppendBattleReinforcementProof(sample, subunit_header);
+  native_order.parent_subunits_in_stored_order.reserve(
+      static_cast<std::size_t>(subunit_header.count));
+  for (std::int32_t index = 0; index < subunit_header.count; ++index) {
+    void *const subunit = LoadAt<void *>(
+        subunit_header.data,
+        static_cast<std::size_t>(index) * sizeof(void *));
+    if (subunit == nullptr ||
+        LoadAt<std::uintptr_t>(subunit, 0) !=
+            bindings.ai_subunit_stack_vtable ||
+        LoadAt<void *>(subunit, kAiSubunitParentOffset) != parent) {
+      return false;
+    }
+    AppendBattleReinforcementProof(sample, subunit);
+    if (subunit == selected_subunit) {
+      if (selected_subunit_index != -1) {
+        return false;
+      }
+      selected_subunit_index = index;
+    }
+    game::BattleReinforcementParentSubunitSnapshot row{};
+    if (!ReadBattleReinforcementPublicIds(bindings, subunit, sample,
+                                           row.public_cunit_ids_in_stored_order)) {
+      return false;
+    }
+    const auto flags =
+        LoadAt<std::uint8_t>(subunit, kAiSubunitFlagsOffset);
+    sample.structural_proof.push_back(flags);
+    row.asking_for_help = (flags & 0x01U) != 0;
+    row.assigned_to_help = (flags & 0x02U) != 0;
+    if (!ReadBattleReinforcementAssignmentTarget(
+            game_state, subunit, row.assigned_to_help,
+            row.assignment_target_province_id, sample)) {
+      return false;
+    }
+    native_order.parent_subunits_in_stored_order.push_back(
+        std::move(row));
+  }
+  return selected_subunit_index >= 0 &&
+         BattleControlArrayHeaderUnchanged(
+             parent, kAiUnitStackSubunitsOffset,
+             kAiUnitStackSubunitsCapacityOffset,
+             kAiUnitStackSubunitsCountOffset, subunit_header);
+}
+
+bool ReadBattleReinforcementRoute(
+    const Bindings &bindings, void *game_state, void *unit,
+    std::int32_t observed_date_raw,
+    const std::optional<std::int32_t> &assignment_target,
+    game::BattleReinforcementSignalSnapshot &signal,
+    game::BattleReinforcementRouteSnapshot &route,
+    BattleReinforcementAssignmentSampleV1 &sample) noexcept {
+  void *const current_province =
+      LoadAt<void *>(unit, kArmyCurrentProvinceOffset);
+  if (current_province == nullptr) {
+    return false;
+  }
+  route.current_province_id =
+      LoadAt<std::int32_t>(current_province, kProvinceIdOffset);
+  if (route.current_province_id <= 0 ||
+      ResolveProvince(game_state, route.current_province_id) !=
+          current_province) {
+    return false;
+  }
+  AppendBattleReinforcementProof(sample, current_province);
+
+  void *const move_target =
+      LoadAt<void *>(unit, kArmyTargetProvinceOffset);
+  AppendBattleReinforcementProof(sample, move_target);
+  if (move_target != nullptr) {
+    const auto move_target_id =
+        LoadAt<std::int32_t>(move_target, kProvinceIdOffset);
+    if (move_target_id <= 0 ||
+        ResolveProvince(game_state, move_target_id) != move_target) {
+      return false;
+    }
+    route.move_target_province_id = move_target_id;
+  }
+
+  const auto *const path_storage =
+      static_cast<const std::byte *>(unit) +
+      kUnitPathProvinceInfosOffset;
+  NativeMovePathPrefix path{};
+  if (!ReadPathHeader(path_storage, path)) {
+    return false;
+  }
+  BattleControlArrayHeaderV1 proof_header{
+      path.province_infos, path.capacity, path.count};
+  AppendBattleReinforcementProof(sample, proof_header);
+  route.route_province_ids.reserve(static_cast<std::size_t>(path.count));
+  for (std::int32_t index = 0; index < path.count; ++index) {
+    void *const province_info = LoadAt<void *>(
+        path.province_infos,
+        static_cast<std::size_t>(index) * sizeof(void *));
+    if (province_info == nullptr) {
+      return false;
+    }
+    AppendBattleReinforcementProof(sample, province_info);
+    const auto province_id = LoadAt<std::int32_t>(
+        province_info, kUnitPathProvinceIdOffset);
+    if (province_id <= 0 ||
+        ResolveProvince(game_state, province_id) == nullptr) {
+      return false;
+    }
+    route.route_province_ids.push_back(province_id);
+  }
+
+  std::vector<std::int32_t> projected_ids;
+  std::vector<std::int32_t> arrivals;
+  const bool timeline_available = ProjectPathTimeline(
+      bindings, game_state, unit, path_storage, current_province,
+      observed_date_raw, 0, projected_ids, arrivals) &&
+      projected_ids == route.route_province_ids;
+  if (timeline_available) {
+    route.arrival_date_raws = arrivals;
+  }
+
+  const auto movement_state =
+      LoadAt<std::int32_t>(unit, kUnitRetreatStateOffset);
+  sample.structural_proof.push_back(
+      static_cast<std::uintptr_t>(
+          static_cast<std::uint32_t>(movement_state)));
+  if (path.count > 0 && movement_state != 1 &&
+      bindings.read_route_edge_duration != nullptr &&
+      ValidateRouteTimingInputs(bindings, game_state, unit, path_storage,
+                                current_province)) {
+    std::int64_t first_edge_duration = -1;
+    if (bindings.read_route_edge_duration(
+            unit, &first_edge_duration, 0) == &first_edge_duration &&
+        first_edge_duration >= 0 &&
+        first_edge_duration != kRouteDurationFailureSentinel &&
+        first_edge_duration <= kMaximumProjectedRouteDurationRaw) {
+      signal.first_route_edge_remaining_duration_q100000 =
+          first_edge_duration;
+    }
+  }
+
+  if (!assignment_target.has_value()) {
+    route.route_alignment = "no_assignment";
+  } else {
+    const bool aligned =
+        route.move_target_province_id == assignment_target &&
+        ((!route.route_province_ids.empty() &&
+          route.route_province_ids.back() == *assignment_target) ||
+         (route.route_province_ids.empty() &&
+          route.current_province_id == *assignment_target));
+    if (!aligned) {
+      route.route_alignment = "not_aligned";
+    } else if (!timeline_available) {
+      route.route_alignment = "timeline_unavailable";
+    } else {
+      route.route_alignment = "aligned_to_assignment";
+      route.assignment_eta_date_raw =
+          arrivals.empty() ? observed_date_raw : arrivals.back();
+    }
+  }
+  return ReadPathHeader(path_storage, path) &&
+         path.province_infos == proof_header.data &&
+         path.capacity == proof_header.capacity &&
+         path.count == proof_header.count;
+}
+
+void ReadBattleReinforcementContactProjection(
+    const Bindings &bindings, void *game_state, void *unit,
+    const std::optional<std::int32_t> &assignment_target,
+    game::BattleReinforcementContactProjectionSnapshot &output,
+    BattleReinforcementAssignmentSampleV1 &sample) noexcept {
+  output = {};
+  if (!assignment_target.has_value()) {
+    output.status = "not_applicable";
+    return;
+  }
+  if (bindings.is_character_hostile == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.combat_storage_slot == nullptr) {
+    output.status = "unavailable";
+    return;
+  }
+  void *const province =
+      ResolveProvince(game_state, *assignment_target);
+  const auto owner_id =
+      LoadAt<std::int32_t>(unit, kArmyOwnerCharacterIdOffset);
+  void *owner = nullptr;
+  if (province == nullptr ||
+      !ResolveContactCharacter(bindings, owner_id, owner)) {
+    output.status = "unavailable";
+    return;
+  }
+  void *const combat_ids_data =
+      LoadAt<void *>(province, kProvinceCombatIdsOffset);
+  const auto combat_id_count =
+      LoadAt<std::int32_t>(province, kProvinceCombatIdCountOffset);
+  AppendBattleReinforcementProof(sample, combat_ids_data);
+  sample.structural_proof.push_back(
+      static_cast<std::uintptr_t>(
+          static_cast<std::uint32_t>(combat_id_count)));
+  std::vector<std::int32_t> combat_ids;
+  if (!ReadContactIdArray(
+          province, kProvinceCombatIdsOffset,
+          kProvinceCombatIdCountOffset,
+          kMaximumActualContactProvinceCombats, combat_ids, false)) {
+    output.status = "unavailable";
+    return;
+  }
+  for (const auto combat_id : combat_ids) {
+    void *const combat = ResolveStoredComponent(
+        bindings.combat_storage_slot, combat_id, kCombatIdOffset);
+    if (combat == nullptr ||
+        LoadAt<void *>(combat, kCombatProvinceOffset) != province) {
+      output.status = "unavailable";
+      output.current_target_compatible_combat_ids_in_stored_order.clear();
+      output.contact_if_now_selected_combat_id.reset();
+      return;
+    }
+    AppendBattleReinforcementProof(sample, combat);
+    if (LoadAt<std::uint8_t>(combat,
+                             kCombatFinalizedOffset) != 0) {
+      continue;
+    }
+    const auto attacker_primary_id = LoadAt<std::int32_t>(
+        combat, kCombatAttackerSideOffset +
+                    kCombatSidePrimaryCharacterIdOffset);
+    const auto defender_primary_id = LoadAt<std::int32_t>(
+        combat, kCombatDefenderSideOffset +
+                    kCombatSidePrimaryCharacterIdOffset);
+    void *attacker_primary = nullptr;
+    void *defender_primary = nullptr;
+    if (!ResolveContactCharacter(bindings, attacker_primary_id,
+                                 attacker_primary) ||
+        !ResolveContactCharacter(bindings, defender_primary_id,
+                                 defender_primary)) {
+      output.status = "unavailable";
+      output.current_target_compatible_combat_ids_in_stored_order.clear();
+      output.contact_if_now_selected_combat_id.reset();
+      return;
+    }
+    const bool hostile_to_attacker =
+        bindings.is_character_hostile(owner, attacker_primary, false);
+    const bool hostile_to_defender =
+        bindings.is_character_hostile(owner, defender_primary, false);
+    if (hostile_to_attacker != hostile_to_defender) {
+      output.current_target_compatible_combat_ids_in_stored_order.push_back(
+          combat_id);
+    }
+  }
+  if (!output.current_target_compatible_combat_ids_in_stored_order.empty()) {
+    output.contact_if_now_selected_combat_id =
+        output.current_target_compatible_combat_ids_in_stored_order.back();
+  }
+  output.status = "available";
+}
+
+bool ReadBattleReinforcementAssignmentSampleV1(
+    const Bindings &bindings, const game::Snapshot &same_frame_world,
+    const game::BattleReinforcementAssignmentRequest &request,
+    BattleReinforcementAssignmentSampleV1 &sample,
+    std::string_view &failure_reason) noexcept {
+  sample = {};
+  failure_reason = "state_changed";
+  auto &output = sample.value;
+  output.selected_public_cunit_id = request.selected_public_cunit_id;
+  output.observed_date_raw = same_frame_world.date_raw;
+  void *const game_state = *bindings.game_state_slot;
+  void *const unit = ResolveStoredComponent(
+      bindings.army_storage_slot, request.selected_public_cunit_id,
+      kArmyIdOffset);
+  if (unit == nullptr) {
+    failure_reason = "subject_cunit_not_found";
+    return false;
+  }
+  AppendBattleReinforcementProof(sample, unit);
+
+  void *const selected_subunit =
+      LoadAt<void *>(unit, kUnitAiSubunitStackOffset);
+  if (selected_subunit == nullptr) {
+    failure_reason = "subject_not_ai_managed";
+    return false;
+  }
+  if (LoadAt<std::uintptr_t>(selected_subunit, 0) !=
+      bindings.ai_subunit_stack_vtable) {
+    failure_reason = "subunit_backlink_mismatch";
+    return false;
+  }
+  AppendBattleReinforcementProof(sample, selected_subunit);
+
+  const auto coordinator_id =
+      LoadAt<std::int32_t>(unit, kUnitAiWarCoordinatorIdOffset);
+  void *const coordinator = ResolveStoredComponent(
+      bindings.ai_war_coordinator_storage_slot, coordinator_id,
+      kAiWarCoordinatorIdOffset);
+  void *const fallback =
+      *bindings.ai_war_coordinator_fallback_slot;
+  if (coordinator_id <= 0 || coordinator == nullptr ||
+      coordinator == fallback ||
+      LoadAt<std::uintptr_t>(coordinator, 0) !=
+          bindings.ai_war_coordinator_vtable) {
+    failure_reason = "coordinator_generation_mismatch";
+    return false;
+  }
+  AppendBattleReinforcementProof(sample, coordinator);
+  output.coordinator_id = coordinator_id;
+
+  void *const parent =
+      LoadAt<void *>(selected_subunit, kAiSubunitParentOffset);
+  if (parent == nullptr ||
+      LoadAt<std::uintptr_t>(parent, 0) !=
+          bindings.ai_unit_stack_vtable ||
+      LoadAt<void *>(parent, kAiUnitStackCoordinatorOffset) !=
+          coordinator) {
+    failure_reason = "parent_membership_mismatch";
+    return false;
+  }
+  AppendBattleReinforcementProof(sample, parent);
+
+  BattleControlArrayHeaderV1 unit_stack_header{};
+  if (!ReadBattleControlArrayHeader(
+          coordinator, kAiWarCoordinatorUnitStacksOffset,
+          kAiWarCoordinatorUnitStacksCapacityOffset,
+          kAiWarCoordinatorUnitStacksCountOffset,
+          kMaximumAiCoordinatorUnitStacks, unit_stack_header)) {
+    failure_reason = "parent_membership_mismatch";
+    return false;
+  }
+  AppendBattleReinforcementProof(sample, unit_stack_header);
+  std::int32_t unit_stack_index = -1;
+  for (std::int32_t index = 0; index < unit_stack_header.count; ++index) {
+    void *const candidate = LoadAt<void *>(
+        unit_stack_header.data,
+        static_cast<std::size_t>(index) * sizeof(void *));
+    if (candidate == parent) {
+      if (unit_stack_index != -1) {
+        failure_reason = "parent_membership_mismatch";
+        return false;
+      }
+      unit_stack_index = index;
+    }
+  }
+  if (unit_stack_index < 0 ||
+      !BattleControlArrayHeaderUnchanged(
+          coordinator, kAiWarCoordinatorUnitStacksOffset,
+          kAiWarCoordinatorUnitStacksCapacityOffset,
+          kAiWarCoordinatorUnitStacksCountOffset, unit_stack_header)) {
+    failure_reason = "parent_membership_mismatch";
+    return false;
+  }
+  output.unit_stack_stored_index = unit_stack_index;
+  output.native_order.emplace();
+  std::int32_t selected_subunit_index = -1;
+  if (!ReadBattleReinforcementParentOrder(
+          bindings, game_state, parent, selected_subunit, sample,
+          selected_subunit_index)) {
+    failure_reason = "parent_membership_mismatch";
+    return false;
+  }
+  output.subunit_stored_index = selected_subunit_index;
+  const auto &selected_ids =
+      output.native_order
+          ->parent_subunits_in_stored_order[
+              static_cast<std::size_t>(selected_subunit_index)]
+          .public_cunit_ids_in_stored_order;
+  if (std::count(selected_ids.begin(), selected_ids.end(),
+                 request.selected_public_cunit_id) != 1) {
+    failure_reason = "subunit_backlink_mismatch";
+    return false;
+  }
+
+  output.signal.emplace();
+  auto &signal = *output.signal;
+  const auto flags =
+      LoadAt<std::uint8_t>(selected_subunit, kAiSubunitFlagsOffset);
+  sample.structural_proof.push_back(flags);
+  signal.asking_for_help = (flags & 0x01U) != 0;
+  signal.assigned_to_help = (flags & 0x02U) != 0;
+  signal.asking_changed_last_evaluation = (flags & 0x10U) != 0;
+  if (signal.asking_for_help) {
+    signal.request_power_basis_raw = LoadAt<std::int64_t>(
+        selected_subunit, kAiSubunitRequestPowerBasisOffset);
+  }
+  signal.cross_coordinator_request_valid_raw = LoadAt<std::uint8_t>(
+      selected_subunit, kAiSubunitCrossCoordinatorValidOffset);
+  if (signal.cross_coordinator_request_valid_raw != 0) {
+    signal.cross_coordinator_request_power_raw = LoadAt<std::int64_t>(
+        selected_subunit, kAiSubunitCrossCoordinatorPowerOffset);
+  }
+
+  output.assignment.emplace();
+  auto &assignment = *output.assignment;
+  if (!ReadBattleReinforcementAssignmentTarget(
+          game_state, selected_subunit, signal.assigned_to_help,
+          assignment.assignment_target_province_id, sample)) {
+    failure_reason = "subunit_backlink_mismatch";
+    return false;
+  }
+  assignment.target_provenance =
+      assignment.assignment_target_province_id.has_value()
+          ? "native_help_override"
+          : "none";
+
+  const auto native_carmy_id =
+      LoadAt<std::int32_t>(unit, kUnitArmyIdOffset);
+  void *native_army = nullptr;
+  if (native_carmy_id > 0) {
+    native_army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot, native_carmy_id,
+        kInternalArmyIdOffset);
+    if (native_army == nullptr ||
+        LoadAt<std::int32_t>(native_army,
+                             kInternalArmyUnitIdOffset) !=
+            request.selected_public_cunit_id) {
+      return false;
+    }
+    output.selected_native_carmy_id = native_carmy_id;
+    AppendBattleReinforcementProof(sample, native_army);
+    const auto active_combat_id = LoadAt<std::int32_t>(
+        native_army, kInternalArmyCombatIdOffset);
+    if (active_combat_id > 0) {
+      void *const active_combat = ResolveStoredComponent(
+          bindings.combat_storage_slot, active_combat_id,
+          kCombatIdOffset);
+      if (active_combat == nullptr ||
+          LoadAt<std::uint8_t>(active_combat,
+                               kCombatFinalizedOffset) != 0) {
+        return false;
+      }
+      assignment.active_combat_id = active_combat_id;
+      assignment.combat_binding_status = "already_in_active_combat";
+      AppendBattleReinforcementProof(sample, active_combat);
+    } else if (active_combat_id != -1) {
+      return false;
+    }
+  } else if (native_carmy_id != -1) {
+    return false;
+  }
+
+  output.route.emplace();
+  if (!ReadBattleReinforcementRoute(
+          bindings, game_state, unit, same_frame_world.date_raw,
+          assignment.assignment_target_province_id, signal,
+          *output.route, sample)) {
+    failure_reason = "route_timeline_unavailable";
+    return false;
+  }
+
+  output.contact_projection.emplace();
+  ReadBattleReinforcementContactProjection(
+      bindings, game_state, unit,
+      assignment.assignment_target_province_id,
+      *output.contact_projection, sample);
+  output.status =
+      game::BattleReinforcementAssignmentStatus::available;
+  output.battle_reinforcement_assignment_ready = true;
+  failure_reason = {};
+  return true;
+}
+
+bool BattleControlArmyContainsRegiment(void *army,
+                                       std::int32_t regiment_id) noexcept {
+  BattleControlArrayHeaderV1 header{};
+  if (!ReadBattleControlArrayHeader(
+          army, kInternalArmyRegimentIdsOffset,
+          kInternalArmyRegimentCapacityOffset,
+          kInternalArmyRegimentCountOffset,
+          kMaximumActualContactRegiments, header)) {
+    return false;
+  }
+  std::int32_t matches = 0;
+  std::vector<std::int32_t> observed;
+  observed.reserve(static_cast<std::size_t>(header.count));
+  for (std::int32_t index = 0; index < header.count; ++index) {
+    const auto candidate = LoadAt<std::int32_t>(
+        header.data, static_cast<std::size_t>(index) * sizeof(std::int32_t));
+    if (candidate <= 0 ||
+        std::find(observed.begin(), observed.end(), candidate) !=
+            observed.end()) {
+      return false;
+    }
+    observed.push_back(candidate);
+    if (candidate == regiment_id) {
+      ++matches;
+    }
+  }
+  return matches == 1 &&
+         BattleControlArrayHeaderUnchanged(
+             army, kInternalArmyRegimentIdsOffset,
+             kInternalArmyRegimentCapacityOffset,
+             kInternalArmyRegimentCountOffset, header);
+}
+
+const game::BattleControlArmyIdentitySnapshot *FindBattleControlArmy(
+    const std::vector<game::BattleControlArmyIdentitySnapshot> &armies,
+    std::int32_t native_carmy_id) noexcept {
+  const auto found = std::find_if(
+      armies.begin(), armies.end(), [native_carmy_id](const auto &row) {
+        return row.native_carmy_id == native_carmy_id;
+      });
+  return found == armies.end() ? nullptr : &*found;
+}
+
+bool ReadBattleControlArmyIdentities(
+    const Bindings &bindings, const void *combat, const void *side,
+    std::int32_t expected_combat_id,
+    const std::vector<std::int32_t> &native_carmy_ids,
+    const std::vector<std::int32_t> &public_cunit_ids,
+    std::vector<game::BattleControlArmyIdentitySnapshot> &output) noexcept {
+  output.clear();
+  BattleControlArrayHeaderV1 header{};
+  if (!ReadBattleControlArrayHeader(
+          side, kCombatSideArmyIdsOffset, kCombatSideArmyCapacityOffset,
+          kCombatSideArmyCountOffset, kMaximumActualContactSideArmies,
+          header) ||
+      header.count != static_cast<std::int32_t>(native_carmy_ids.size()) ||
+      native_carmy_ids.size() != public_cunit_ids.size() ||
+      LoadAt<const void *>(side, kCombatSideCombatBackPointerOffset) != combat) {
+    return false;
+  }
+  output.reserve(native_carmy_ids.size());
+  for (std::size_t index = 0; index < native_carmy_ids.size(); ++index) {
+    if (LoadAt<std::int32_t>(
+            header.data, index * sizeof(std::int32_t)) !=
+        native_carmy_ids[index]) {
+      output.clear();
+      return false;
+    }
+    void *const army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot, native_carmy_ids[index],
+        kInternalArmyIdOffset);
+    void *const unit = ResolveStoredComponent(
+        bindings.army_storage_slot, public_cunit_ids[index], kArmyIdOffset);
+    if (army == nullptr || unit == nullptr ||
+        LoadAt<std::int32_t>(army, kInternalArmyUnitIdOffset) !=
+            public_cunit_ids[index] ||
+        LoadAt<std::int32_t>(army, kInternalArmyCombatIdOffset) !=
+            expected_combat_id ||
+        LoadAt<std::int32_t>(unit, kUnitArmyIdOffset) !=
+            native_carmy_ids[index]) {
+      output.clear();
+      return false;
+    }
+    const auto owner_id =
+        LoadAt<std::int32_t>(unit, kArmyOwnerCharacterIdOffset);
+    void *owner = nullptr;
+    if (!ResolveContactCharacter(bindings, owner_id, owner)) {
+      output.clear();
+      return false;
+    }
+    game::BattleControlArmyIdentitySnapshot row{};
+    row.native_carmy_id = native_carmy_ids[index];
+    row.public_cunit_id = public_cunit_ids[index];
+    row.owner_character_id = owner_id;
+    row.combat_backlink_id = expected_combat_id;
+    output.push_back(row);
+  }
+  return BattleControlArrayHeaderUnchanged(
+             side, kCombatSideArmyIdsOffset, kCombatSideArmyCapacityOffset,
+             kCombatSideArmyCountOffset, header) &&
+         LoadAt<const void *>(side, kCombatSideCombatBackPointerOffset) ==
+             combat;
+}
+
+bool ReadBattleControlEntryBucket(
+    const Bindings &bindings, const void *side, std::string_view bucket,
+    std::size_t data_offset, std::size_t capacity_offset,
+    std::size_t count_offset,
+    const std::vector<game::BattleControlArmyIdentitySnapshot> &armies,
+    std::vector<game::BattleControlRegimentEntrySnapshot> &output,
+    game::BattleControlSideSnapshot &side_output,
+    std::int64_t &bucket_current_fighting_raw) noexcept {
+  output.clear();
+  bucket_current_fighting_raw = 0;
+  BattleControlArrayHeaderV1 header{};
+  if (!ReadBattleControlArrayHeader(
+          side, data_offset, capacity_offset, count_offset,
+          kMaximumBattleControlEntriesPerBucket, header)) {
+    return false;
+  }
+  output.reserve(static_cast<std::size_t>(header.count));
+  for (std::int32_t index = 0; index < header.count; ++index) {
+    auto *const entry = static_cast<std::byte *>(header.data) +
+                        static_cast<std::size_t>(index) *
+                            kCombatRegimentEntryStride;
+    game::BattleControlRegimentEntrySnapshot row{};
+    row.bucket = std::string(bucket);
+    row.bucket_index = index;
+    row.regiment_id =
+        LoadAt<std::int32_t>(entry, kCombatRegimentIdOffset);
+    void *const regiment = ResolveStoredComponent(
+        bindings.regiment_storage_slot, row.regiment_id, kRegimentIdOffset);
+    bool identity_valid = false;
+    if (regiment == nullptr ||
+        !ReadRegimentIdentity(regiment, identity_valid) || !identity_valid) {
+      output.clear();
+      return false;
+    }
+    row.native_carmy_id =
+        LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset);
+    const auto *const army_identity =
+        FindBattleControlArmy(armies, row.native_carmy_id);
+    void *const army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot, row.native_carmy_id,
+        kInternalArmyIdOffset);
+    if (army_identity == nullptr || army == nullptr ||
+        !BattleControlArmyContainsRegiment(army, row.regiment_id)) {
+      output.clear();
+      return false;
+    }
+    row.public_cunit_id = army_identity->public_cunit_id;
+    row.owner_character_id = army_identity->owner_character_id;
+    void *const combat_type =
+        LoadAt<void *>(regiment, kRegimentInnerTypeOffset);
+    if (combat_type == nullptr) {
+      output.clear();
+      return false;
+    }
+    row.starting_raw =
+        LoadAt<std::int64_t>(entry, kCombatRegimentStartingOffset);
+    row.current_fighting_raw =
+        LoadAt<std::int64_t>(entry, kCombatRegimentCurrentFightingOffset);
+    row.soft_casualties_raw =
+        LoadAt<std::int64_t>(entry, kCombatRegimentSoftCasualtiesOffset);
+    row.effective_max_size =
+        LoadAt<std::int32_t>(entry, kCombatRegimentEffectiveMaxSizeOffset);
+    row.effective_siege_raw =
+        LoadAt<std::int64_t>(entry, kCombatRegimentEffectiveSiegeOffset);
+    row.effective_damage_raw =
+        LoadAt<std::int64_t>(entry, kCombatRegimentEffectiveDamageOffset);
+    row.effective_toughness_raw =
+        LoadAt<std::int64_t>(entry, kCombatRegimentEffectiveToughnessOffset);
+    row.effective_pursuit_raw =
+        LoadAt<std::int64_t>(entry, kCombatRegimentEffectivePursuitOffset);
+    row.effective_screen_raw =
+        LoadAt<std::int64_t>(entry, kCombatRegimentEffectiveScreenOffset);
+    if (row.starting_raw < 0 || row.current_fighting_raw < 0 ||
+        row.soft_casualties_raw < 0 || row.effective_max_size < 0) {
+      output.clear();
+      return false;
+    }
+    row.fights_in_main_phase =
+        LoadAt<std::uint8_t>(combat_type,
+                             kRegimentMainPhaseEligibilityOffset) != 0;
+    std::int64_t accounted_raw = row.current_fighting_raw;
+    if (!CheckedAddSigned(accounted_raw, row.soft_casualties_raw) ||
+        accounted_raw > row.starting_raw) {
+      output.clear();
+      return false;
+    }
+    const auto starting_minus_current_minus_soft =
+        row.starting_raw - accounted_raw;
+    if (row.fights_in_main_phase) {
+      row.hard_casualties_available = true;
+      row.hard_casualties_raw = starting_minus_current_minus_soft;
+      if (!CheckedAddSigned(
+              side_output.derived_main_fighting_entry_hard_casualties_raw,
+              row.hard_casualties_raw)) {
+        output.clear();
+        return false;
+      }
+    } else if (!CheckedAddSigned(
+                   side_output.non_main_start_minus_current_minus_soft_raw,
+                   starting_minus_current_minus_soft)) {
+      output.clear();
+      return false;
+    }
+    if (!CheckedAddSigned(side_output.derived_current_fighting_raw,
+                          row.current_fighting_raw) ||
+        !CheckedAddSigned(side_output.derived_soft_casualties_raw,
+                          row.soft_casualties_raw) ||
+        !CheckedAddSigned(bucket_current_fighting_raw,
+                          row.current_fighting_raw)) {
+      output.clear();
+      return false;
+    }
+    row.entry_strength_raw =
+        bindings.get_combat_regiment_strength(entry);
+    if (ResolveStoredComponent(bindings.regiment_storage_slot,
+                               row.regiment_id,
+                               kRegimentIdOffset) != regiment ||
+        LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) !=
+            row.native_carmy_id ||
+        LoadAt<void *>(regiment, kRegimentInnerTypeOffset) != combat_type) {
+      output.clear();
+      return false;
+    }
+    output.push_back(std::move(row));
+  }
+  return BattleControlArrayHeaderUnchanged(
+      side, data_offset, capacity_offset, count_offset, header);
+}
+
+bool ReadBattleControlParticipantHardLedger(
+    const Bindings &bindings, const void *side,
+    game::BattleControlSideSnapshot &output) noexcept {
+  output.participant_hard_ledger.clear();
+  output.participant_hard_total_raw = 0;
+  BattleControlArrayHeaderV1 header{};
+  if (!ReadBattleControlArrayHeader(
+          side, kCombatSideParticipantHardRowsOffset,
+          kCombatSideParticipantHardCapacityOffset,
+          kCombatSideParticipantHardCountOffset,
+          kMaximumBattleControlParticipantHardRows, header)) {
+    return false;
+  }
+  output.participant_hard_ledger.reserve(
+      static_cast<std::size_t>(header.count));
+  for (std::int32_t index = 0; index < header.count; ++index) {
+    const auto *const row_data =
+        static_cast<const std::byte *>(header.data) +
+        static_cast<std::size_t>(index) *
+            kCombatParticipantHardRowStride;
+    game::BattleControlParticipantHardSnapshot row{};
+    row.row_index = index;
+    row.participant_character_id = LoadAt<std::int32_t>(
+        row_data, kCombatParticipantHardCharacterIdOffset);
+    row.hard_casualties_raw = LoadAt<std::int64_t>(
+        row_data, kCombatParticipantHardCasualtiesOffset);
+    void *participant = nullptr;
+    if (row.hard_casualties_raw < 0 ||
+        !ResolveContactCharacter(bindings, row.participant_character_id,
+                                 participant) ||
+        !CheckedAddSigned(output.participant_hard_total_raw,
+                          row.hard_casualties_raw)) {
+      output.participant_hard_ledger.clear();
+      output.participant_hard_total_raw = 0;
+      return false;
+    }
+    output.participant_hard_ledger.push_back(row);
+  }
+  return BattleControlArrayHeaderUnchanged(
+      side, kCombatSideParticipantHardRowsOffset,
+      kCombatSideParticipantHardCapacityOffset,
+      kCombatSideParticipantHardCountOffset, header);
+}
+
+bool ReadBattleControlSide(
+    const Bindings &bindings, void *combat, std::size_t side_offset,
+    std::int32_t side_index, std::string_view role,
+    std::int32_t expected_combat_id,
+    const std::vector<std::int32_t> &native_carmy_ids,
+    const std::vector<std::int32_t> &public_cunit_ids,
+    std::int32_t current_roll_points,
+    game::BattleControlSideSnapshot &output) noexcept {
+  output = {};
+  output.side_index = side_index;
+  output.role = std::string(role);
+  output.current_roll_points = current_roll_points;
+  const auto *const side = static_cast<const std::byte *>(combat) + side_offset;
+  if (LoadAt<const void *>(side, kCombatSideCombatBackPointerOffset) != combat ||
+      !ReadBattleControlArmyIdentities(
+          bindings, combat, side, expected_combat_id, native_carmy_ids,
+          public_cunit_ids, output.ordered_armies)) {
+    return false;
+  }
+  output.primary_participant_character_id = LoadAt<std::int32_t>(
+      side, kCombatSidePrimaryCharacterIdOffset);
+  void *primary = nullptr;
+  if (!ResolveContactCharacter(
+          bindings, output.primary_participant_character_id, primary)) {
+    return false;
+  }
+  output.selected_commander_character_id = LoadAt<std::int32_t>(
+      side, kCombatSideSelectedCommanderCharacterIdOffset);
+  if (output.selected_commander_character_id != -1) {
+    void *commander = nullptr;
+    if (!ResolveContactCharacter(
+            bindings, output.selected_commander_character_id, commander)) {
+      return false;
+    }
+  }
+  std::int64_t levy_current_fighting_raw = 0;
+  std::int64_t maa_current_fighting_raw = 0;
+  if (!ReadBattleControlEntryBucket(
+          bindings, side, "levy", kCombatSideLevyEntriesOffset,
+          kCombatSideLevyEntryCapacityOffset,
+          kCombatSideLevyEntryCountOffset, output.ordered_armies,
+          output.levy_entries, output, levy_current_fighting_raw) ||
+      !ReadBattleControlEntryBucket(
+          bindings, side, "men_at_arms", kCombatSideMaaEntriesOffset,
+          kCombatSideMaaEntryCapacityOffset,
+          kCombatSideMaaEntryCountOffset, output.ordered_armies,
+          output.men_at_arms_entries, output, maa_current_fighting_raw) ||
+      !ReadBattleControlParticipantHardLedger(bindings, side, output)) {
+    return false;
+  }
+  output.stored_current_fighting_raw = LoadAt<std::int64_t>(
+      side, kCombatSideStoredCurrentFightingOffset);
+  output.stored_levy_current_fighting_raw = LoadAt<std::int64_t>(
+      side, kCombatSideStoredLevyCurrentFightingOffset);
+  std::int64_t bucket_total_raw = levy_current_fighting_raw;
+  if (!CheckedAddSigned(bucket_total_raw, maa_current_fighting_raw) ||
+      bucket_total_raw != output.derived_current_fighting_raw) {
+    return false;
+  }
+  // +0x98/+0xA0 are tick-start caches. A stable paused main-phase frame can
+  // legitimately retain the prior totals after entry rows have advanced.
+  // Publish both raw observations and their equality discriminants; never
+  // invoke the mutating 0x23CB840 refresh helper from this read-only query.
+  output.stored_current_matches_derived =
+      output.stored_current_fighting_raw ==
+      output.derived_current_fighting_raw;
+  output.stored_levy_current_matches_derived =
+      output.stored_levy_current_fighting_raw == levy_current_fighting_raw;
+  output.side_strength_raw =
+      bindings.get_combat_side_strength(const_cast<std::byte *>(side));
+  return LoadAt<const void *>(side, kCombatSideCombatBackPointerOffset) ==
+             combat &&
+         LoadAt<std::int32_t>(side, kCombatSidePrimaryCharacterIdOffset) ==
+             output.primary_participant_character_id &&
+         LoadAt<std::int32_t>(
+             side, kCombatSideSelectedCommanderCharacterIdOffset) ==
+             output.selected_commander_character_id &&
+         LoadAt<std::int64_t>(side,
+                              kCombatSideStoredCurrentFightingOffset) ==
+             output.stored_current_fighting_raw &&
+         LoadAt<std::int64_t>(
+             side, kCombatSideStoredLevyCurrentFightingOffset) ==
+             output.stored_levy_current_fighting_raw;
+}
+
+std::string_view BattleControlPhaseName(std::int32_t phase) noexcept {
+  constexpr std::array<std::string_view, 4> names{
+      "maneuver", "main", "pursuit", "done"};
+  return phase >= 0 && phase < static_cast<std::int32_t>(names.size())
+             ? names[static_cast<std::size_t>(phase)]
+             : std::string_view{};
+}
+
+std::string_view BattleControlWinnerName(std::int32_t winner) noexcept {
+  switch (winner) {
+  case -1:
+    return "none";
+  case 0:
+    return "attacker";
+  case 1:
+    return "defender";
+  default:
+    return {};
+  }
+}
+
+std::int64_t CombatRetreatDayIndex(std::int32_t date_raw) noexcept {
+  return (static_cast<std::int64_t>(date_raw) - kCk3DateEpochRaw) /
+         kCk3DateRawPerWholeDay;
+}
+
+void AppendCombatRetreatReason(
+    game::ActiveCombatRetreatLegalitySnapshot &output,
+    std::string_view reason_code, std::string_view native_reason_key) {
+  output.reason_codes_in_native_order.emplace_back(reason_code);
+  output.native_reason_keys_in_native_order.emplace_back(native_reason_key);
+}
+
+bool ReadActiveCombatRetreatProjection(
+    const Bindings &bindings, void *game_state, void *combat,
+    void *subject_unit, void *subject_native_army,
+    const game::BattleControlSnapshot &battle,
+    game::BattleControlSnapshot &output) noexcept {
+  const auto *const attacker_selected = FindBattleControlArmy(
+      battle.attacker.ordered_armies, battle.subject_native_carmy_id);
+  const auto *const defender_selected = FindBattleControlArmy(
+      battle.defender.ordered_armies, battle.subject_native_carmy_id);
+  if ((attacker_selected == nullptr) == (defender_selected == nullptr)) {
+    return false;
+  }
+  const bool selected_is_attacker = attacker_selected != nullptr;
+  const auto &selected_identity =
+      selected_is_attacker ? *attacker_selected : *defender_selected;
+  const auto &selected_side =
+      selected_is_attacker ? battle.attacker : battle.defender;
+  const auto selected_side_offset = selected_is_attacker
+                                        ? kCombatAttackerSideOffset
+                                        : kCombatDefenderSideOffset;
+  const auto *const selected_side_native =
+      static_cast<const std::byte *>(combat) + selected_side_offset;
+  if (selected_identity.public_cunit_id != battle.subject_public_cunit_id ||
+      LoadAt<std::int32_t>(subject_unit, kArmyOwnerCharacterIdOffset) !=
+          selected_identity.owner_character_id) {
+    return false;
+  }
+
+  output.selected_public_cunit_id = battle.subject_public_cunit_id;
+  output.selected_native_carmy_id = battle.subject_native_carmy_id;
+  output.selected_owner_character_id = selected_identity.owner_character_id;
+  output.combat_province_id = battle.province_id;
+  output.side_index = selected_is_attacker ? 0 : 1;
+  output.affected_public_cunit_ids_in_stored_order.clear();
+  output.unaffected_same_side_public_cunit_ids_in_stored_order.clear();
+  for (const auto &army : selected_side.ordered_armies) {
+    auto &destination = army.owner_character_id ==
+                                output.selected_owner_character_id
+                            ? output.affected_public_cunit_ids_in_stored_order
+                            : output
+                                  .unaffected_same_side_public_cunit_ids_in_stored_order;
+    destination.push_back(army.public_cunit_id);
+  }
+  if (output.affected_public_cunit_ids_in_stored_order.empty() ||
+      std::find(output.affected_public_cunit_ids_in_stored_order.begin(),
+                output.affected_public_cunit_ids_in_stored_order.end(),
+                output.selected_public_cunit_id) ==
+          output.affected_public_cunit_ids_in_stored_order.end()) {
+    return false;
+  }
+  output.side_scope =
+      output.unaffected_same_side_public_cunit_ids_in_stored_order.empty()
+          ? "full_side"
+          : "owner_subset";
+
+  output.side_flags.disallow_retreat =
+      LoadAt<std::uint8_t>(selected_side_native,
+                           kCombatSideDisallowRetreatOffset) != 0;
+  output.side_flags.allow_early_retreat =
+      LoadAt<std::uint8_t>(selected_side_native,
+                           kCombatSideAllowEarlyRetreatOffset) != 0;
+  output.side_flags.skip_pursuit =
+      LoadAt<std::uint8_t>(selected_side_native,
+                           kCombatSideSkipPursuitOffset) != 0;
+
+  // The exact native helper falls back for any BattleResult resolution
+  // failure.  BattleControl deliberately keeps its stronger full-generation
+  // identity gate for a positive ID; only the native legal missing sentinel
+  // (-1) reaches the fallback object in this same-frame projection.
+  void *baseline_battle_result = nullptr;
+  if (battle.battle_result_id > 0) {
+    baseline_battle_result = ResolveStoredComponent(
+        bindings.battle_result_storage_slot, battle.battle_result_id,
+        kBattleResultIdOffset);
+  } else if (battle.battle_result_id == -1 &&
+             bindings.battle_result_fallback_slot != nullptr) {
+    baseline_battle_result = *bindings.battle_result_fallback_slot;
+  }
+  if (baseline_battle_result == nullptr ||
+      bindings.minimum_days_before_manual_retreat == nullptr) {
+    return false;
+  }
+
+  auto &legality = output.legality;
+  legality.status = "available";
+  legality.phase_raw = battle.phase_raw;
+  legality.phase = battle.phase;
+  legality.retreat_elapsed_baseline_date_raw = LoadAt<std::int32_t>(
+      baseline_battle_result,
+      kBattleResultRetreatElapsedBaselineDateOffset);
+  legality.minimum_elapsed_whole_days_exclusive =
+      *bindings.minimum_days_before_manual_retreat;
+  const auto observed_date_raw =
+      LoadAt<std::int32_t>(game_state, kGameStateDateOffset);
+  legality.elapsed_whole_days =
+      CombatRetreatDayIndex(observed_date_raw) -
+      CombatRetreatDayIndex(legality.retreat_elapsed_baseline_date_raw);
+  const auto earliest_day_index =
+      CombatRetreatDayIndex(legality.retreat_elapsed_baseline_date_raw) +
+      static_cast<std::int64_t>(
+          legality.minimum_elapsed_whole_days_exclusive) +
+      1;
+  legality.earliest_day_gate_date_raw =
+      kCk3DateEpochRaw + earliest_day_index * kCk3DateRawPerWholeDay;
+
+  void *owner_character = nullptr;
+  if (!ResolveContactCharacter(bindings,
+                               output.selected_owner_character_id,
+                               owner_character)) {
+    return false;
+  }
+  void *const land_status =
+      LoadAt<void *>(owner_character, kCharacterLandStatusObjectOffset);
+  const auto land_status_sentinel =
+      land_status == nullptr
+          ? 0
+          : LoadAt<std::int32_t>(
+                land_status, kCharacterLandStatusSentinelOffset);
+  void *retreat_rule_state = nullptr;
+  std::uint32_t retreat_rule_flags = 0;
+  bool landless_rejected = false;
+  if (land_status != nullptr && land_status_sentinel == -1) {
+    retreat_rule_state = bindings.get_combat_retreat_rule_state();
+    if (retreat_rule_state == nullptr) {
+      return false;
+    }
+    retreat_rule_flags = LoadAt<std::uint32_t>(
+        retreat_rule_state, kCombatRetreatRuleFlagsOffset);
+    landless_rejected =
+        (retreat_rule_flags & kCombatRetreatLandlessOverrideBit) == 0;
+  }
+  legality.landless_gate_allows_retreat = !landless_rejected;
+
+  const bool disallowed = output.side_flags.disallow_retreat;
+  const bool too_early =
+      !output.side_flags.allow_early_retreat &&
+      legality.elapsed_whole_days <=
+          legality.minimum_elapsed_whole_days_exclusive;
+  const bool pursuit_or_done = legality.phase_raw >= 2;
+  if (disallowed) {
+    AppendCombatRetreatReason(legality, "disallowed",
+                              "COMBAT_NO_RETREAT_DISALLOWED");
+  }
+  if (too_early) {
+    AppendCombatRetreatReason(legality, "too_early",
+                              "COMBAT_NO_RETREAT_TOO_EARLY");
+  }
+  if (pursuit_or_done) {
+    AppendCombatRetreatReason(legality, "pursuit_or_done",
+                              "COMBAT_NO_RETREAT_PURSUIT");
+  }
+  if (landless_rejected) {
+    AppendCombatRetreatReason(legality, "landless",
+                              "COMBAT_NO_RETREAT_LANDLESS");
+  }
+  legality.legal_now =
+      !disallowed && !too_early && !pursuit_or_done && !landless_rejected;
+  legality.native_boolean =
+      bindings.can_order_combat_retreat(combat, subject_native_army, nullptr);
+  if (legality.native_boolean != legality.legal_now) {
+    return false;
+  }
+
+  return LoadAt<std::int32_t>(game_state, kGameStateDateOffset) ==
+             observed_date_raw &&
+         LoadAt<std::int32_t>(
+             baseline_battle_result,
+             kBattleResultRetreatElapsedBaselineDateOffset) ==
+             legality.retreat_elapsed_baseline_date_raw &&
+         *bindings.minimum_days_before_manual_retreat ==
+             legality.minimum_elapsed_whole_days_exclusive &&
+         (LoadAt<std::uint8_t>(selected_side_native,
+                               kCombatSideDisallowRetreatOffset) != 0) ==
+             output.side_flags.disallow_retreat &&
+         (LoadAt<std::uint8_t>(selected_side_native,
+                               kCombatSideAllowEarlyRetreatOffset) != 0) ==
+             output.side_flags.allow_early_retreat &&
+         (LoadAt<std::uint8_t>(selected_side_native,
+                               kCombatSideSkipPursuitOffset) != 0) ==
+             output.side_flags.skip_pursuit &&
+         LoadAt<void *>(owner_character, kCharacterLandStatusObjectOffset) ==
+             land_status &&
+         (land_status == nullptr ||
+          LoadAt<std::int32_t>(
+              land_status, kCharacterLandStatusSentinelOffset) ==
+              land_status_sentinel) &&
+         (retreat_rule_state == nullptr ||
+          LoadAt<std::uint32_t>(
+              retreat_rule_state, kCombatRetreatRuleFlagsOffset) ==
+              retreat_rule_flags);
+}
+
+bool ReadBattleControlSnapshotSample(
+    const Bindings &bindings, const game::BattleControlRequest &request,
+    game::BattleControlSnapshot &output) noexcept {
+  output = {};
+  output.subject_public_cunit_id = request.subject_public_cunit_id;
+  void *const game_state = *bindings.game_state_slot;
+  output.observed_date_raw =
+      LoadAt<std::int32_t>(game_state, kGameStateDateOffset);
+  void *const subject_unit = ResolveStoredComponent(
+      bindings.army_storage_slot, request.subject_public_cunit_id,
+      kArmyIdOffset);
+  if (subject_unit == nullptr) {
+    return false;
+  }
+  output.subject_native_carmy_id =
+      LoadAt<std::int32_t>(subject_unit, kUnitArmyIdOffset);
+  void *const subject_native_army = ResolveStoredComponent(
+      bindings.army_internal_storage_slot,
+      output.subject_native_carmy_id, kInternalArmyIdOffset);
+  void *const province =
+      LoadAt<void *>(subject_unit, kArmyCurrentProvinceOffset);
+  if (subject_native_army == nullptr || province == nullptr ||
+      LoadAt<std::int32_t>(subject_native_army,
+                           kInternalArmyUnitIdOffset) !=
+          request.subject_public_cunit_id ||
+      !bindings.is_army_in_combat(subject_native_army)) {
+    return false;
+  }
+  ActiveCombatIdentityV1 identity{};
+  if (!ReadActiveCombatIdentityV1(
+          bindings, game_state, subject_unit, subject_native_army, province,
+          request.subject_public_cunit_id, false, identity)) {
+    return false;
+  }
+  output.combat_id = identity.combat_id;
+  output.province_id = identity.province_id;
+  output.finalized = identity.finalized;
+  void *const combat = ResolveStoredComponent(
+      bindings.combat_storage_slot, output.combat_id, kCombatIdOffset);
+  if (combat == nullptr ||
+      LoadAt<std::uint8_t>(combat,
+                           kCombatDailyDispatchInProgressOffset) != 0) {
+    return false;
+  }
+  output.phase_raw =
+      LoadAt<std::int32_t>(combat, kCombatPhaseOffset);
+  output.phase_day =
+      LoadAt<std::int32_t>(combat, kCombatPhaseDayOffset);
+  output.winner_raw =
+      LoadAt<std::int32_t>(combat, kCombatWinnerOffset);
+  output.forced_winner_raw =
+      LoadAt<std::int32_t>(combat, kCombatForcedWinnerOffset);
+  const auto phase = BattleControlPhaseName(output.phase_raw);
+  const auto winner = BattleControlWinnerName(output.winner_raw);
+  const auto forced_winner =
+      BattleControlWinnerName(output.forced_winner_raw);
+  const auto finalized_raw =
+      LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset);
+  if (phase.empty() || winner.empty() || forced_winner.empty() ||
+      output.phase_day < 0 || finalized_raw > 1 ||
+      (finalized_raw != 0) != output.finalized) {
+    return false;
+  }
+  output.phase = std::string(phase);
+  output.winner_side = std::string(winner);
+  output.forced_winner_side = std::string(forced_winner);
+  output.battle_result_id =
+      LoadAt<std::int32_t>(combat, kCombatBattleResultIdOffset);
+  if (output.battle_result_id != -1 &&
+      (output.battle_result_id <= 0 ||
+       ResolveStoredComponent(bindings.battle_result_storage_slot,
+                              output.battle_result_id,
+                              kBattleResultIdOffset) == nullptr)) {
+    return false;
+  }
+  output.base_combat_width =
+      LoadAt<std::int32_t>(combat, kCombatBaseWidthOffset);
+  output.final_combat_width =
+      LoadAt<std::int32_t>(combat, kCombatFinalWidthOffset);
+  output.roll_cadence_counter = LoadAt<std::int32_t>(
+      combat, kCombatRollCadenceCounterOffset);
+  output.base_advantage_raw =
+      LoadAt<std::int64_t>(combat, kCombatBaseAdvantageOffset);
+  output.resolved_advantage_raw =
+      LoadAt<std::int64_t>(combat, kCombatResolvedAdvantageOffset);
+  if (output.base_combat_width < 0 || output.final_combat_width < 0 ||
+      !ReadBattleControlSide(
+          bindings, combat, kCombatAttackerSideOffset, 0, "attacker",
+          output.combat_id, identity.attacker_native_carmy_ids,
+          identity.attacker_public_cunit_ids,
+          LoadAt<std::int32_t>(combat, kCombatSide0RollOffset),
+          output.attacker) ||
+      !ReadBattleControlSide(
+          bindings, combat, kCombatDefenderSideOffset, 1, "defender",
+          output.combat_id, identity.defender_native_carmy_ids,
+          identity.defender_public_cunit_ids,
+          LoadAt<std::int32_t>(combat, kCombatSide1RollOffset),
+          output.defender) ||
+      !ReadActiveCombatRetreatProjection(
+          bindings, game_state, combat, subject_unit, subject_native_army,
+          output, output)) {
+    return false;
+  }
+  ActiveCombatIdentityV1 identity_after{};
+  if (LoadAt<std::uint8_t>(combat,
+                           kCombatDailyDispatchInProgressOffset) != 0 ||
+      ResolveStoredComponent(bindings.combat_storage_slot,
+                             output.combat_id, kCombatIdOffset) != combat ||
+      !ReadActiveCombatIdentityV1(
+          bindings, game_state, subject_unit, subject_native_army, province,
+          request.subject_public_cunit_id, false, identity_after) ||
+      identity_after != identity) {
+    return false;
+  }
+  output.status = game::BattleControlSnapshotStatus::available;
+  output.battle_control_ready = true;
+  return true;
+}
+
+bool ReadBattleTransitionSidePublicIds(
+    const Bindings &bindings, const void *combat, std::size_t side_offset,
+    std::int32_t expected_combat_id,
+    std::vector<std::int32_t> &output) noexcept {
+  output.clear();
+  const auto *const side =
+      static_cast<const std::byte *>(combat) + side_offset;
+  BattleControlArrayHeaderV1 header{};
+  if (LoadAt<const void *>(side, kCombatSideCombatBackPointerOffset) !=
+          combat ||
+      !ReadBattleControlArrayHeader(
+          side, kCombatSideArmyIdsOffset, kCombatSideArmyCapacityOffset,
+          kCombatSideArmyCountOffset, kMaximumActualContactSideArmies,
+          header)) {
+    return false;
+  }
+  output.reserve(static_cast<std::size_t>(header.count));
+  for (std::int32_t index = 0; index < header.count; ++index) {
+    const auto native_carmy_id = LoadAt<std::int32_t>(
+        header.data,
+        static_cast<std::size_t>(index) * sizeof(std::int32_t));
+    if (native_carmy_id <= 0) {
+      output.clear();
+      return false;
+    }
+    void *const native_army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot, native_carmy_id,
+        kInternalArmyIdOffset);
+    if (native_army == nullptr ||
+        LoadAt<std::int32_t>(native_army,
+                             kInternalArmyCombatIdOffset) !=
+            expected_combat_id) {
+      output.clear();
+      return false;
+    }
+    const auto public_cunit_id = LoadAt<std::int32_t>(
+        native_army, kInternalArmyUnitIdOffset);
+    void *const public_unit = ResolveStoredComponent(
+        bindings.army_storage_slot, public_cunit_id, kArmyIdOffset);
+    if (public_cunit_id <= 0 || public_unit == nullptr ||
+        LoadAt<std::int32_t>(public_unit, kUnitArmyIdOffset) !=
+            native_carmy_id ||
+        std::find(output.begin(), output.end(), public_cunit_id) !=
+            output.end()) {
+      output.clear();
+      return false;
+    }
+    output.push_back(public_cunit_id);
+  }
+  return BattleControlArrayHeaderUnchanged(
+             side, kCombatSideArmyIdsOffset,
+             kCombatSideArmyCapacityOffset, kCombatSideArmyCountOffset,
+             header) &&
+         LoadAt<const void *>(side, kCombatSideCombatBackPointerOffset) ==
+             combat;
+}
+
+game::BattleTransitionSnapshotStatus ReadBattleTransitionSnapshotSample(
+    const Bindings &bindings,
+    const game::BattleTransitionRequest &request,
+    game::BattleTransitionSnapshot &output) noexcept {
+  output = {};
+  output.combat_id = request.combat_id;
+  void *const game_state = *bindings.game_state_slot;
+  if (game_state == nullptr) {
+    output.status = game::BattleTransitionSnapshotStatus::state_changed;
+    return output.status;
+  }
+  output.observed_date_raw =
+      LoadAt<std::int32_t>(game_state, kGameStateDateOffset);
+  void *const combat = ResolveStoredComponent(
+      bindings.combat_storage_slot, request.combat_id, kCombatIdOffset);
+  if (combat == nullptr) {
+    output.status =
+        game::BattleTransitionSnapshotStatus::combat_not_found;
+    output.battle_transition_ready = true;
+    return output.status;
+  }
+  if (LoadAt<std::uint8_t>(combat,
+                           kCombatDailyDispatchInProgressOffset) != 0) {
+    output.status = game::BattleTransitionSnapshotStatus::state_changed;
+    return output.status;
+  }
+
+  void *const province = LoadAt<void *>(combat, kCombatProvinceOffset);
+  output.province_id =
+      province == nullptr ? -1
+                          : LoadAt<std::int32_t>(province,
+                                                 kProvinceIdOffset);
+  output.phase_raw = LoadAt<std::int32_t>(combat, kCombatPhaseOffset);
+  output.phase_day = LoadAt<std::int32_t>(combat, kCombatPhaseDayOffset);
+  output.winner_raw = LoadAt<std::int32_t>(combat, kCombatWinnerOffset);
+  output.forced_winner_raw =
+      LoadAt<std::int32_t>(combat, kCombatForcedWinnerOffset);
+  const auto finalized_raw =
+      LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset);
+  output.finalized = finalized_raw != 0;
+  output.battle_result_id =
+      LoadAt<std::int32_t>(combat, kCombatBattleResultIdOffset);
+  const auto phase = BattleControlPhaseName(output.phase_raw);
+  const auto winner = BattleControlWinnerName(output.winner_raw);
+  const auto forced_winner =
+      BattleControlWinnerName(output.forced_winner_raw);
+  if (province == nullptr || output.province_id <= 0 ||
+      ResolveProvince(game_state, output.province_id) != province ||
+      phase.empty() || winner.empty() || forced_winner.empty() ||
+      output.phase_day < 0 || finalized_raw > 1 ||
+      (output.battle_result_id != -1 &&
+       (output.battle_result_id <= 0 ||
+        ResolveStoredComponent(bindings.battle_result_storage_slot,
+                               output.battle_result_id,
+                               kBattleResultIdOffset) == nullptr)) ||
+      !ReadBattleTransitionSidePublicIds(
+          bindings, combat, kCombatAttackerSideOffset,
+          request.combat_id,
+          output.attacker_public_cunit_ids_in_stored_order) ||
+      !ReadBattleTransitionSidePublicIds(
+          bindings, combat, kCombatDefenderSideOffset,
+          request.combat_id,
+          output.defender_public_cunit_ids_in_stored_order)) {
+    output = {};
+    output.combat_id = request.combat_id;
+    output.observed_date_raw =
+        LoadAt<std::int32_t>(game_state, kGameStateDateOffset);
+    output.status = game::BattleTransitionSnapshotStatus::state_changed;
+    return output.status;
+  }
+  for (const auto attacker_id :
+       output.attacker_public_cunit_ids_in_stored_order) {
+    if (std::find(
+            output.defender_public_cunit_ids_in_stored_order.begin(),
+            output.defender_public_cunit_ids_in_stored_order.end(),
+            attacker_id) !=
+        output.defender_public_cunit_ids_in_stored_order.end()) {
+      output = {};
+      output.combat_id = request.combat_id;
+      output.observed_date_raw =
+          LoadAt<std::int32_t>(game_state, kGameStateDateOffset);
+      output.status = game::BattleTransitionSnapshotStatus::state_changed;
+      return output.status;
+    }
+  }
+  if (ResolveStoredComponent(bindings.combat_storage_slot,
+                             request.combat_id,
+                             kCombatIdOffset) != combat ||
+      LoadAt<std::uint8_t>(combat,
+                           kCombatDailyDispatchInProgressOffset) != 0) {
+    output = {};
+    output.combat_id = request.combat_id;
+    output.observed_date_raw =
+        LoadAt<std::int32_t>(game_state, kGameStateDateOffset);
+    output.status = game::BattleTransitionSnapshotStatus::state_changed;
+    return output.status;
+  }
+  output.phase = std::string(phase);
+  output.winner_side = std::string(winner);
+  output.forced_winner_side = std::string(forced_winner);
+  output.status = game::BattleTransitionSnapshotStatus::available;
+  output.battle_transition_ready = true;
+  return output.status;
+}
+
 } // namespace
 
 ActualContactScopeStatus ReadActualContactScope(
@@ -8764,6 +10450,196 @@ ActualContactScopeStatus ReadActualContactScope(
   output = std::move(second);
   output.date_raw = before.date_raw;
   output.status = second_status;
+  return output.status;
+}
+
+BattleControlSnapshotStatus ReadBattleControlSnapshot(
+    const Bindings &bindings, const BattleControlRequest &request,
+    BattleControlSnapshot &output) noexcept {
+  output = {};
+  output.subject_public_cunit_id = request.subject_public_cunit_id;
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.jomini_state_slot == nullptr ||
+      bindings.army_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      bindings.regiment_storage_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.combat_storage_slot == nullptr ||
+      bindings.battle_result_storage_slot == nullptr ||
+      bindings.battle_result_fallback_slot == nullptr ||
+      bindings.is_army_in_combat == nullptr ||
+      bindings.get_combat_side_strength == nullptr ||
+      bindings.get_combat_regiment_strength == nullptr ||
+      bindings.can_order_combat_retreat == nullptr ||
+      bindings.get_combat_retreat_rule_state == nullptr ||
+      bindings.minimum_days_before_manual_retreat == nullptr ||
+      request.subject_public_cunit_id <= 0) {
+    output.status = BattleControlSnapshotStatus::unavailable;
+    return output.status;
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before)) {
+    output.status = BattleControlSnapshotStatus::unavailable;
+    return output.status;
+  }
+  if (!before.paused) {
+    output.status = BattleControlSnapshotStatus::requires_paused;
+    return output.status;
+  }
+  const auto *const subject =
+      FindArmySnapshot(before, request.subject_public_cunit_id);
+  if (subject == nullptr) {
+    output.status = BattleControlSnapshotStatus::subject_cunit_not_found;
+    return output.status;
+  }
+  if (!subject->controllable) {
+    output.status = BattleControlSnapshotStatus::subject_not_controllable;
+    return output.status;
+  }
+  if (subject->retreating) {
+    output.status = BattleControlSnapshotStatus::subject_retreating;
+    return output.status;
+  }
+  if (!subject->in_combat) {
+    output.status = BattleControlSnapshotStatus::subject_not_in_combat;
+    return output.status;
+  }
+  game::BattleControlSnapshot first{};
+  game::BattleControlSnapshot second{};
+  Snapshot after{};
+  if (!ReadBattleControlSnapshotSample(bindings, request, first) ||
+      !ReadBattleControlSnapshotSample(bindings, request, second) ||
+      first != second || !ReadSnapshot(bindings, after) || before != after) {
+    output.status = BattleControlSnapshotStatus::state_changed;
+    return output.status;
+  }
+  output = std::move(second);
+  output.observed_date_raw = before.date_raw;
+  output.status = BattleControlSnapshotStatus::available;
+  output.battle_control_ready = true;
+  return output.status;
+}
+
+BattleTransitionSnapshotStatus ReadBattleTransitionSnapshot(
+    const Bindings &bindings, const BattleTransitionRequest &request,
+    BattleTransitionSnapshot &output) noexcept {
+  output = {};
+  output.combat_id = request.combat_id;
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.jomini_state_slot == nullptr ||
+      bindings.combat_storage_slot == nullptr ||
+      bindings.army_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      bindings.battle_result_storage_slot == nullptr ||
+      request.combat_id <= 0) {
+    output.status = BattleTransitionSnapshotStatus::unavailable;
+    return output.status;
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before)) {
+    output.status = BattleTransitionSnapshotStatus::unavailable;
+    return output.status;
+  }
+  output.observed_date_raw = before.date_raw;
+  if (!before.paused) {
+    output.status = BattleTransitionSnapshotStatus::unavailable;
+    return output.status;
+  }
+
+  BattleTransitionSnapshot first{};
+  BattleTransitionSnapshot second{};
+  const auto first_status =
+      ReadBattleTransitionSnapshotSample(bindings, request, first);
+  const auto second_status =
+      ReadBattleTransitionSnapshotSample(bindings, request, second);
+  Snapshot after{};
+  if (first_status != second_status || first != second ||
+      !ReadSnapshot(bindings, after) || before != after) {
+    output = {};
+    output.combat_id = request.combat_id;
+    output.observed_date_raw = before.date_raw;
+    output.status = BattleTransitionSnapshotStatus::state_changed;
+    return output.status;
+  }
+  output = std::move(second);
+  output.observed_date_raw = before.date_raw;
+  output.status = second_status;
+  output.battle_transition_ready =
+      second_status == BattleTransitionSnapshotStatus::available ||
+      second_status == BattleTransitionSnapshotStatus::combat_not_found;
+  return output.status;
+}
+
+BattleReinforcementAssignmentStatus ReadBattleReinforcementAssignmentV1(
+    const Bindings &bindings, const Snapshot &same_frame_world,
+    const BattleReinforcementAssignmentRequest &request,
+    BattleReinforcementAssignmentSnapshot &output) noexcept {
+  const auto unavailable =
+      [&](std::string_view reason) noexcept {
+        output = {};
+        output.status = BattleReinforcementAssignmentStatus::unavailable;
+        output.unavailable_reason = reason;
+        output.observed_date_raw = same_frame_world.date_raw;
+        output.selected_public_cunit_id =
+            request.selected_public_cunit_id;
+        return output.status;
+      };
+
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.army_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      bindings.combat_storage_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.ai_war_coordinator_storage_slot == nullptr ||
+      bindings.ai_war_coordinator_fallback_slot == nullptr ||
+      bindings.ai_unit_stack_vtable == 0 ||
+      bindings.ai_subunit_stack_vtable == 0 ||
+      bindings.ai_war_coordinator_vtable == 0 ||
+      bindings.read_unit_land_route_speed == nullptr ||
+      bindings.read_unit_naval_route_speed == nullptr ||
+      bindings.read_unit_current_edge_speed == nullptr ||
+      bindings.read_route_travel_duration == nullptr ||
+      bindings.read_route_edge_duration == nullptr ||
+      bindings.is_character_hostile == nullptr ||
+      request.selected_public_cunit_id <= 0) {
+    return unavailable("unsupported_build");
+  }
+  if (!same_frame_world.paused) {
+    return unavailable("requires_paused");
+  }
+  void *const game_state = *bindings.game_state_slot;
+  if (game_state == nullptr ||
+      LoadAt<std::int32_t>(game_state, kGameStateDateOffset) !=
+          same_frame_world.date_raw) {
+    return unavailable("state_changed");
+  }
+
+  BattleReinforcementAssignmentSampleV1 first{};
+  BattleReinforcementAssignmentSampleV1 second{};
+  std::string_view first_failure;
+  std::string_view second_failure;
+  const bool first_available =
+      ReadBattleReinforcementAssignmentSampleV1(
+          bindings, same_frame_world, request, first, first_failure);
+  const bool second_available =
+      ReadBattleReinforcementAssignmentSampleV1(
+          bindings, same_frame_world, request, second, second_failure);
+  if (first_available != second_available || first_failure != second_failure ||
+      first != second ||
+      LoadAt<std::int32_t>(game_state, kGameStateDateOffset) !=
+          same_frame_world.date_raw) {
+    return unavailable("state_changed");
+  }
+  if (!second_available) {
+    return unavailable(second_failure.empty() ? "state_changed"
+                                               : second_failure);
+  }
+  output = std::move(second.value);
+  output.unavailable_reason.clear();
+  output.observed_date_raw = same_frame_world.date_raw;
+  output.selected_public_cunit_id = request.selected_public_cunit_id;
+  output.status = BattleReinforcementAssignmentStatus::available;
+  output.battle_reinforcement_assignment_ready = true;
   return output.status;
 }
 

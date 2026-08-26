@@ -1818,6 +1818,14 @@ def _pid_running(pid: int) -> bool:
     return any(f'"{pid}"' in line for line in result.stdout.splitlines())
 
 
+def _is_wmi_moniker_syntax_error(error: BaseException) -> bool:
+    """Recognize pywin32's uninitialized worker-thread WMI moniker failure."""
+    hresult = getattr(error, "hresult", None)
+    if hresult == -2147221020:  # MK_E_SYNTAX
+        return True
+    return bool(error.args and error.args[0] == -2147221020)
+
+
 def _process_identity(pid: int) -> dict[str, object] | None:
     if os.name != "nt":
         return None
@@ -1830,7 +1838,10 @@ def _process_identity(pid: int) -> dict[str, object] | None:
             f"FROM Win32_Process WHERE ProcessId={pid}"
         )
     except Exception as error:
-        if not _is_access_denied(error):
+        if not (
+            _is_access_denied(error)
+            or _is_wmi_moniker_syntax_error(error)
+        ):
             raise
         identity = _toolhelp_process_identity(pid)
         if identity is None:
@@ -2050,6 +2061,11 @@ def _start_process_watchdog(
                 raise AgentError(
                     f"process watchdog returned no PID: {result.stdout!r}"
                 ) from error
+            # Worker-thread WMI access can fail and force _process_identity()
+            # onto Toolhelp, which has no command-line field.  We created this
+            # exact process and command, so retain that nonce-bound command for
+            # the same fallback authentication used by detached launches.
+            _FALLBACK_WATCHDOG_COMMAND_LINES[bootstrap_pid] = command
         else:
             # In the managed sandbox Win32_Process.Create succeeds but its
             # ProcessId projection is suppressed.  The child still proves its

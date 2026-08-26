@@ -1,0 +1,513 @@
+{
+  "schema_version": 1,
+  "contract": "active_combat_retreat_v1",
+  "contract_stage": "exact_build_static_closed_projection_and_full_side_semantic_action_live_prior_combat_transition_pending",
+  "source_document": "docs/ck3-native-ai/active-combat-retreat.md",
+  "game": {
+    "product_version": "1.19.0.6",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "preferred_image_base": "0x140000000",
+    "addresses_are": "RVA",
+    "research_date": "2026-08-26"
+  },
+  "query": {
+    "name": "preview_active_combat_retreat_v1",
+    "capability": "Python production composition gated by game.command.query-battle-control-snapshot-v1-N + game.command.preview-move-army-N-to-N + game.command.move-army-N-to-N",
+    "arguments": {
+      "selected_public_cunit_id": "positive full-generation public CUnitID",
+      "target_province_id": "positive full-generation planner-selected ProvinceID",
+      "expected_revision": "nonnegative public snapshot revision"
+    },
+    "advertised": true,
+    "bridge_dispatch_connected": true,
+    "implementation": "GameplayBridgeService/MCP composition; legality/scope are the embedded BattleControl frame and route proof is the exact native PreviewMoveArmy result",
+    "read_only": true,
+    "requires_paused": true,
+    "thread": "application-main mailbox only",
+    "native_legality_call": {
+      "research_alias": "CanOrderCombatRetreat",
+      "rva": "0x2308250",
+      "abi": "bool(CCombat* combat RCX, CArmy* selected_army RDX, ErrorSink* errors R8)",
+      "query_call": "0x2308250(combat, selected_army, nullptr)",
+      "error_sink_policy": "always nullptr; reason codes are projected from the same raw frame in native gate order",
+      "read_only_evidence": "the exact null-error-sink path has no observed world write",
+      "precondition": "the full-generation selected CUnit->CArmy identity and membership in exactly one side of the exact CCombat are already proven"
+    },
+    "native_rule_state_call": {
+      "research_alias": "GetCombatRetreatRuleState",
+      "rva": "0x26165B0",
+      "abi": "void*()",
+      "query_call": "0x26165B0(), followed only by a read of uint32(result+0x38) bit 10 when the raw land-status sentinel is -1",
+      "read_only_evidence": "the exact accessor/read path has no observed world write",
+      "purpose": "reproduce the landless legality gate; it does not mutate or override the rule"
+    },
+    "consistency_gates": [
+      "the outer game snapshot remains paused with the same revision, observed date and played-character identity",
+      "selected public CUnitID resolves by full generation; CUnit+0x178 resolves an identity-matching CArmy and CArmy+0x124 returns to the same public CUnitID",
+      "CArmy+0x128 resolves an identity-matching CCombat and the selected CArmy occurs in exactly one native stored side ArmyID array",
+      "every side ArmyID used for scope projection generation-resolves and links back to the same CombatID",
+      "all identity, side, flag, day, phase, landless rule-state, scope and target-preview inputs belong to the same paused revision",
+      "a legal zero value and a failed native read are serialized as distinct states"
+    ],
+    "wire": {
+      "status": "available | unavailable",
+      "unavailable_reason": "optional stable structural reason; absent when available",
+      "snapshot_revision": "uint64",
+      "observed_date_raw": "int64",
+      "selected_public_cunit_id": "positive int32 full CUnitID",
+      "selected_native_carmy_id": "positive int32 full CArmyID",
+      "selected_owner_character_id": "positive int32 full CharacterID",
+      "combat_id": "positive int32 full CombatID",
+      "combat_province_id": "positive int32 full ProvinceID",
+      "side_index": "0 | 1",
+      "side_scope": "full_side | owner_subset",
+      "affected_public_cunit_ids_in_stored_order": "positive int32 full CUnitID[]",
+      "unaffected_same_side_public_cunit_ids_in_stored_order": "positive int32 full CUnitID[]",
+      "side_flags": {
+        "disallow_retreat": "bool from selected CCombatSide+0xC0",
+        "allow_early_retreat": "bool from selected CCombatSide+0xC1",
+        "skip_pursuit": "bool from selected CCombatSide+0xC2; post-winner transition input, not a retreat-legality gate"
+      },
+      "legality": {
+        "status": "available | unavailable",
+        "native_boolean": "bool returned by 0x2308250 with a null ErrorSink",
+        "phase_raw": "int32 0..3",
+        "phase": "maneuver | main | pursuit | done",
+        "retreat_elapsed_baseline_date_raw": "signed int32 from the generation-validated BattleResult+0x2C, or the native fallback object; the independent business name is unknown",
+        "elapsed_whole_days": "signed integer from the exact native day-index subtraction",
+        "minimum_elapsed_whole_days_exclusive": 14,
+        "landless_gate_allows_retreat": "bool projected from the exact raw owner/land-state predicate",
+        "legal_now": "bool conjunction of the four native gates and equal to native_boolean",
+        "reason_codes_in_native_order": "zero or more of disallowed | too_early | pursuit_or_done | landless",
+        "native_reason_keys_in_native_order": "corresponding COMBAT_NO_RETREAT_* string keys in native gate order",
+        "earliest_day_gate_date_raw": "optional calendar lower bound derived from the exact day-index rule; never a future legality guarantee"
+      },
+      "native_ai_policy": {
+        "status": "mission_scoped_only | unavailable",
+        "unavailable_reason": "optional; required for an ordinary war combat with no exact-proven mission controller assignment",
+        "known_assignment_kind": "optional raid | barter | counter_raid",
+        "assignment_target_province_id": "optional positive int32 full ProvinceID",
+        "assignment_target_provenance": "optional mission_controller",
+        "generic_war_retreat_choice_available": false
+      },
+      "target_preview": {
+        "status": "not_requested | available | unavailable",
+        "unavailable_reason": "optional stable preview reason",
+        "provenance": "planner_selected_exact_native_route_preview",
+        "candidate_token": "optional short-lived opaque token",
+        "target_province_id": "optional positive int32 full ProvinceID",
+        "move_mode": "optional int32 exact PreviewMoveArmy result",
+        "route_province_ids": "optional positive int32 full ProvinceID[] in native route order",
+        "eta_date_raw": "optional int64",
+        "movement_days": "optional nonnegative integer"
+      },
+      "action_ready": "bool; false without identity readiness, available legal_now, an available target preview and a fresh candidate token"
+    },
+    "no_target_semantics": "legality and scope remain fully observable through query_battle_control_snapshot_v1; the action-preview surface requires one target",
+    "target_semantics": "an available preview proves only that the caller-selected single Province passed the exact native movement validator/path builder; it does not attribute the target to native AI scoring or enumerate all destinations",
+    "same_origin_policy": "reject a target equal to the combat/effective origin as target_does_not_leave_combat_province even when the generic movement preview represents that case with an empty route"
+  },
+  "exact_layout_and_gates": {
+    "CUnit": {
+      "+0x174": "full owner CharacterID",
+      "+0x178": "full internal CArmyID"
+    },
+    "CArmy": {
+      "+0x124": "full backing public CUnitID",
+      "+0x128": "full active CCombatID"
+    },
+    "CCombat": {
+      "+0x20": "embedded side0 CCombatSide",
+      "+0x368": "embedded side1 CCombatSide; side stride 0x348",
+      "+0x6B0": "int32 phase: 0 maneuver, 1 main, 2 pursuit, 3 done",
+      "+0x6B8": "encounter CProvince*; CProvince+0x10 is full ProvinceID",
+      "+0x6E0": "int32 winner: -1 undecided, 0 side0, 1 side1",
+      "+0x708": "full BattleResultID; not a date"
+    },
+    "CCombatSide": {
+      "+0x10/+0x1C": "full CArmyID data/count in native stored order",
+      "+0xC0": "uint8 disallow_retreat",
+      "+0xC1": "uint8 allow_early_retreat",
+      "+0xC2": "uint8 skip_pursuit; not a retreat-legality gate"
+    },
+    "day_gate": {
+      "battle_result_resolution": "use the low 24-bit index from CCombat+0x708 in module+0x57C0328, then require BattleResult+0x08 to equal the full BattleResultID",
+      "resolution_fallback": "inside native 0x2308250, any BattleResult resolution failure uses module+0x57C0320",
+      "typed_query_resolution_boundary": "the BattleControl query uses module+0x57C0320 only for the legal missing sentinel BattleResultID=-1; a positive stale-generation ID fails the stronger same-frame identity gate as state_changed. This is a query consistency boundary and does not claim that native 0x2308250 rejects the same stale-positive input",
+      "baseline_raw": "signed dword BattleResult+0x2C, conservatively named retreat_elapsed_baseline_date_raw",
+      "current_raw": "signed low dword at (*(module+0x570E068) CGameState)+0x08",
+      "day_index_formula": "trunc_signed((date_raw - 0x029C55C0) / 24)",
+      "elapsed_formula": "current_day_index - baseline_day_index",
+      "minimum_days_runtime_value": 14,
+      "pass_branch": "signed jg; legal only when elapsed_whole_days > 14 unless allow_early_retreat is true",
+      "allow_early_scope": "bypasses only the day gate; it does not bypass disallow, phase or landless"
+    },
+    "phase_gate": {
+      "predicate": "CCombat+0x6B0 < 2",
+      "accepted": [
+        "maneuver",
+        "main"
+      ],
+      "rejected": [
+        "pursuit",
+        "done"
+      ]
+    },
+    "landless_gate": {
+      "owner_chain": "selected CArmy+0x124 -> CUnit; CUnit+0x174 -> owner CharacterID; Character+0x1B8 -> opaque land/title-state object",
+      "reject_predicate": "object != null && int32(object+0x1F8) == -1 && bit 10 of uint32((0x26165B0())+0x38) == 0",
+      "wire_boundary": "publish only landless_gate_allows_retreat and the native reason; do not expose the object pointer or invent a stronger title-ownership meaning"
+    },
+    "ordered_legality_gates": [
+      {
+        "order": 1,
+        "predicate_for_failure": "selected side disallow_retreat != 0",
+        "reason_code": "disallowed",
+        "native_reason_key": "COMBAT_NO_RETREAT_DISALLOWED"
+      },
+      {
+        "order": 2,
+        "predicate_for_failure": "allow_early_retreat == 0 && elapsed_whole_days <= 14",
+        "reason_code": "too_early",
+        "native_reason_key": "COMBAT_NO_RETREAT_TOO_EARLY"
+      },
+      {
+        "order": 3,
+        "predicate_for_failure": "phase_raw >= 2",
+        "reason_code": "pursuit_or_done",
+        "native_reason_key": "COMBAT_NO_RETREAT_PURSUIT"
+      },
+      {
+        "order": 4,
+        "predicate_for_failure": "the exact raw landless reject predicate is true",
+        "reason_code": "landless",
+        "native_reason_key": "COMBAT_NO_RETREAT_LANDLESS"
+      }
+    ],
+    "reason_collection": "with errors=nullptr the native function returns at the first failed gate; the typed query projects every failed gate from the same raw frame while preserving native order"
+  },
+  "scope_projection": {
+    "reference_mutator_rva": "0x2308850",
+    "reference_mutator_research_alias": "ApplyCombatRetreat",
+    "query_policy": "mirror its owner scan read-only; never call the mutator from the query",
+    "algorithm": [
+      "generation-resolve selected public CUnitID and its full internal CArmyID",
+      "locate the selected CArmyID in exactly one side ArmyID array",
+      "read the selected owner CharacterID from CUnit+0x174",
+      "scan every ArmyID on that side in native stored order and generation-resolve its backing CUnit owner",
+      "select full_side only when every owner equals selected owner; otherwise select owner_subset",
+      "affected is every same-side public CUnit with selected owner in stored order",
+      "unaffected is every same-side public CUnit with a different owner in stored order"
+    ],
+    "full_side": "all current Army rows on the selected side belong to the selected owner",
+    "owner_subset": "only the selected owner's matching armies and combat entries withdraw; other owners on the same side remain in the CombatID",
+    "forbidden_interpretations": [
+      "full_side does not mean war leader",
+      "full_side does not depend on the selected Army being first",
+      "mixed-owner retreat does not withdraw allied owners"
+    ]
+  },
+  "native_ai_boundary": {
+    "known_mission_scoped_paths": {
+      "raid": "0x18CE240 -> 0x18CE530; direct legality call at 0x18CE3A5; destination comes from the raid mission controller",
+      "barter": "0x18CFC20 -> 0x18D0DA0; direct legality call at 0x18CFD85; destination comes from the barter mission controller",
+      "counter_raid": "0x18CB790; legality is reached indirectly through 0x18CBACC -> 0x2248860 -> 0x2308250; destination is the assigned raid target's Province"
+    },
+    "attribution_rule": "publish raid, barter or counter_raid only when the exact mission-controller assignment is proven for the same subject and revision",
+    "not_generic_war_retreat": "all three known paths continue mission-owned movement; active combat reinterprets that move as retreat, so they do not prove a general war defeat/odds retreat decision",
+    "generic_war_retreat_policy": "unknown",
+    "generic_war_retreat_cadence": "unknown",
+    "generic_war_retreat_destination_enumeration_scoring_and_tie_break": "unknown",
+    "generic_war_retreat_choice_available": false,
+    "destination_non_evidence": [
+      "mission-controller targets are not general safe-retreat destinations",
+      "SHATTERED_RETREAT_* defines have no closed direct xref to a generic voluntary-retreat scorer",
+      "UPDATE_TARGETS_TICK and UPDATE_TARGETS_TICK_LOPSIDED are not proven active-combat retreat cadence"
+    ]
+  },
+  "command_spine": {
+    "target_preview": {
+      "existing_entry": "ck3_11906.cpp::PreviewMoveArmy",
+      "native_bindings": [
+        "0x26B51B0(CUnit, target, 1) move mode",
+        "0x2248860 active-combat movement legality",
+        "0x2248260 effective origin",
+        "0x23C32F0 path context",
+        "0x23C33D0(..., route_kind=2, ...) native route",
+        "0x0C7BA70 existing route finalization/preview leaf"
+      ],
+      "token_status": "not_implemented",
+      "required_token_binding": [
+        "snapshot_revision",
+        "combat_id",
+        "side_index",
+        "side_scope",
+        "affected and unaffected stored-order identities",
+        "target_province_id",
+        "move_mode",
+        "route_province_ids"
+      ],
+      "token_lifetime": "short-lived and invalid after any bound revision or identity changes"
+    },
+    "submit": {
+      "existing_entry": "ck3_11906.cpp::SubmitMoveArmy",
+      "command_type": "player CMoveArmyCommand",
+      "command_layout": {
+        "+0x20": "command_kind = 1",
+        "+0x24": "full public CUnitID",
+        "+0x28": "full target ProvinceID",
+        "+0x2C": "move_mode",
+        "+0x30": "route_kind = 2",
+        "+0x34": "direct_target = 1"
+      },
+      "transport": "existing command-manager clone and submit path",
+      "apply_vfunc": "0x26B4710 re-resolves CUnit->CArmy; when the Army still has active CCombat it reaches 0x2308850 at 0x26B48C5 or 0x26B48DC, otherwise it performs normal movement",
+      "submission_policy": "revalidate expected revision, CombatID, membership, side, scope, all four legality gates and the target-preview token before using the existing player command",
+      "ai_validation_wrapper_policy": "do not call the AI-only 0x26B49E0 wrapper",
+      "direct_mutator_policy": "do not call 0x2308850 directly; it is reached only through the existing command apply semantics"
+    },
+    "action_wire": {
+      "implementation": "Python production composition over the exact battle-control query, PreviewMoveArmy and SubmitMoveArmy; no new native mutator entry",
+      "request": {
+        "expected_snapshot_revision": "uint64",
+        "expected_combat_id": "positive int32 full CombatID",
+        "selected_public_cunit_id": "positive int32 full CUnitID",
+        "expected_side_index": "0 | 1",
+        "expected_scope": "full_side | owner_subset",
+        "candidate_token": "fresh opaque single-use token",
+        "target_province_id": "positive int32 full ProvinceID"
+      },
+      "ack": {
+        "accepted": "bool",
+        "status": "accepted_verification_pending | rejected",
+        "rejection_reason": "optional stable business reason",
+        "token_consumed": "always true after an order attempt",
+        "verification_pending": "bool; true after acceptance until a newer observation proves the scoped postcondition",
+        "semantic_postcondition": "immediate affected-army retreat/target/route observation only; CombatID/winner/phase/full completion remain explicit false until the transition query closes"
+      },
+      "public_surfaces": [
+        "GameplayBridgeService.preview_active_combat_retreat_v1",
+        "GameplayBridgeService.order_active_combat_retreat_v1",
+        "ck3_preview_active_combat_retreat_v1",
+        "ck3_order_active_combat_retreat_v1"
+      ],
+      "token_binding": [
+        "snapshot_id/public revision/native revision/date",
+        "episode_run_id/connection generation",
+        "CombatID and selected public/native/owner identity",
+        "side index/full_side-or-owner_subset and affected/unaffected stored order",
+        "planner target and exact native route preview"
+      ]
+    },
+    "ack_boundary": "a move-command ACK, date advance or a single route-field change is not retreat completion evidence"
+  },
+  "forbidden_native_calls": [
+    "0x27FB7C0 combat allocation/constructor",
+    "0x2308850 ApplyCombatRetreat from any query or as a direct action entry",
+    "0x2EB46F0 disallow-retreat effect writer from the query",
+    "0x2EB4740 allow-early-retreat effect writer from the query",
+    "0x2EB4790 skip-pursuit effect writer from the query"
+  ],
+  "postcondition_matrix": {
+    "observation_requirement": "read a newer paused snapshot after command application; preserve native stored order and full-generation identity throughout verification",
+    "full_side": {
+      "required": [
+        "every affected CUnit enters native retreat state",
+        "every affected target and route points to the planner-selected target",
+        "the selected side current totals are cleaned",
+        "the opposing side is recorded as winner",
+        "phase is pursuit or done, or a later same-day join is explicitly observed reopening pursuit to main with winner reset"
+      ],
+      "transition_details": [
+        "0x2309070 writes affected route/state before 0x230A010 records the winner",
+        "when pursuit is entered the loser initial soft pools are frozen",
+        "skip_pursuit may move directly to done",
+        "a valid new participant through 0x23040A0 may reopen phase 2 to main phase 1 and reset winner to -1"
+      ]
+    },
+    "owner_subset": {
+      "required": [
+        "only the selected owner's ArmyIDs and combat entries are removed from the side",
+        "every affected CArmy+0x128 CombatID backlink is cleared and its backing CUnit receives native retreat route/state",
+        "unaffected owners remain on the same side and bound to the original CombatID",
+        "CCombat+0x6E0 is not written merely because this subset withdraws",
+        "the synchronous subset pursuit transition is reflected in departed entries or the loss ledger",
+        "the remaining battle subsequently evolves from the updated remaining roster"
+      ],
+      "transition_details": [
+        "0x23CA360 removes matching-owner rows and armies in reverse scan order while the query preserves public affected/unaffected output in original side order",
+        "0x23CD2E0 applies pursuit only to the extracted temporary subset; it does not set the whole CCombat phase to pursuit"
+      ]
+    },
+    "reobserve_instead_of_claiming_success": [
+      "the combat ended before command apply",
+      "reinforcement changed side membership or scope",
+      "phase advanced to pursuit or done",
+      "the target-preview token or route became stale"
+    ]
+  },
+  "embedded_projection_live_acceptance": {
+    "surface": "game.command.query-battle-control-snapshot-v1-N expanded frame; the standalone target-scoped query remains pending",
+    "date": "2026-08-26",
+    "source_last_save_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "initial_artifact_path": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3\\logs\\active-retreat-query-initial-live.json",
+    "initial_artifact_sha256": "97D5C5D0FC1AABCBDA3B8A6F47B146F3A81EF626E70F2772E60F73F3E1EB049B",
+    "progression_artifact_path": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3\\logs\\active-retreat-query-days-live.json",
+    "progression_artifact_sha256": "FB521B39AD5529434596212DB9ADC1EA27D4C270D28D13575B9A2D80913BCF40",
+    "bridge_dll_sha256": "490E90B41AF43747E43CAE104D11DEFA20D3E27353577114DB7874E1ED09A190",
+    "bridge_injector_sha256": "2154B59B71B081E39E0E3CB29FB05263FFDAA73F63BAD55CF3B6FBF3F834A4FA",
+    "identity": {
+      "combat_id": 335544325,
+      "combat_province_id": 2586,
+      "selected_public_cunit_id": 83886341,
+      "selected_native_carmy_id": 50331733,
+      "selected_owner_character_id": 29829,
+      "side_index": 0,
+      "side_scope": "full_side",
+      "affected_public_cunit_ids_in_stored_order": [83886341],
+      "unaffected_same_side_public_cunit_ids_in_stored_order": []
+    },
+    "strict_day_gate": {
+      "elapsed_day_0": {
+        "observed_date_raw": 53178264,
+        "phase": "maneuver",
+        "native_boolean": false,
+        "legal_now": false,
+        "reason_codes_in_native_order": ["too_early"]
+      },
+      "elapsed_day_14": {
+        "observed_date_raw": 53178600,
+        "phase": "main",
+        "native_boolean": false,
+        "legal_now": false,
+        "reason_codes_in_native_order": ["too_early"]
+      },
+      "elapsed_day_15": {
+        "observed_date_raw": 53178624,
+        "phase": "main",
+        "native_boolean": true,
+        "legal_now": true,
+        "reason_codes_in_native_order": []
+      }
+    },
+    "immediate_pairs_equal": true,
+    "query_sequence_increased": true,
+    "managed_cleanup_proven": true,
+    "target_preview_executed": false,
+    "action_executed": false
+  },
+  "full_side_semantic_action_live_acceptance": {
+    "surface": "Python production composition: preview-active-combat-retreat-v1 -> single-use order-active-combat-retreat-v1 -> existing player SubmitMoveArmy",
+    "date": "2026-08-26",
+    "source_last_save_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "artifact_path": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3\\logs\\active-retreat-action-full-side-live-v4.json",
+    "artifact_size": 627856,
+    "artifact_sha256": "A57FF20DCAD39DF79DAB6A9418054C36B0F5489C5D8B5E9E880CE899AE89DF9C",
+    "bridge_dll_sha256": "490E90B41AF43747E43CAE104D11DEFA20D3E27353577114DB7874E1ED09A190",
+    "bridge_injector_sha256": "2154B59B71B081E39E0E3CB29FB05263FFDAA73F63BAD55CF3B6FBF3F834A4FA",
+    "pre_action": {
+      "observed_date_raw": 53178624,
+      "combat_id": 335544325,
+      "combat_province_id": 2586,
+      "phase": "main",
+      "phase_day": 12,
+      "winner_side": "none",
+      "selected_public_cunit_id": 83886341,
+      "side_scope": "full_side",
+      "affected_public_cunit_ids_in_stored_order": [83886341],
+      "native_boolean": true,
+      "legal_now": true,
+      "target_province_id": 2579,
+      "route_province_ids": [2579]
+    },
+    "command": {
+      "preview_status": "available",
+      "action_ready": true,
+      "token_consumed": true,
+      "order_accepted": true,
+      "order_status": "accepted_verification_pending"
+    },
+    "newer_paused_semantic_observation": {
+      "subject_public_cunit_id": 83886341,
+      "in_combat": true,
+      "retreating": true,
+      "current_province_id": 2586,
+      "move_target_province_id": 2579,
+      "route_province_ids": [2579]
+    },
+    "managed_cleanup_proven": true,
+    "retreat_semantic_action_live_ready": true,
+    "prior_combat_transition_observed": false,
+    "full_side_postcondition_live_ready": false,
+    "remaining_observation_gap": "superseded by full_side_transition_live_acceptance; this earlier artifact intentionally records the subject-bound query boundary"
+  },
+  "full_side_transition_live_acceptance": {
+    "surface": "production preview/order plus game.command.query-battle-transition-v1-N addressed by the prior full-generation CombatID",
+    "date": "2026-08-26",
+    "source_last_save_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "artifact_path": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3\\logs\\active-retreat-action-full-side-transition-live-v6.json",
+    "artifact_size": 629571,
+    "artifact_sha256": "21D58737126CA4ED8B0B49DB7749EA4701F3BA6F94A8B8493698F8737E5784FA",
+    "bridge_dll_sha256": "BD7C309E27EE2A8C1432A501CB45ADC0C2E0A33FC2D83D23B78E311CB63009AB",
+    "bridge_injector_sha256": "7AB872D0F364527EFB1581D7B2E3025B14441CE0426900A7894F38794121FDD3",
+    "pre_action": {
+      "observed_date_raw": 53178624,
+      "combat_id": 335544325,
+      "phase": "main",
+      "phase_day": 12,
+      "selected_side_index": 0,
+      "side_scope": "full_side",
+      "affected_public_cunit_ids_in_stored_order": [83886341],
+      "target_province_id": 2579,
+      "route_province_ids": [2579]
+    },
+    "newer_paused_semantic_observation": {
+      "subject_public_cunit_id": 83886341,
+      "in_combat": true,
+      "retreating": true,
+      "move_target_province_id": 2579,
+      "route_province_ids": [2579]
+    },
+    "prior_combat_transition": {
+      "status": "available",
+      "combat_id": 335544325,
+      "phase": "pursuit",
+      "phase_day": 0,
+      "winner_side": "defender",
+      "forced_winner_side": "none",
+      "finalized": false,
+      "attacker_public_cunit_ids_in_stored_order": [83886341],
+      "defender_public_cunit_ids_in_stored_order": [357, 33554657]
+    },
+    "retreat_semantic_action_live_ready": true,
+    "prior_combat_transition_observed": true,
+    "full_side_postcondition_live_ready": true,
+    "managed_cleanup_proven": true,
+    "source_save_unchanged": true,
+    "ck3_process_count_after_cleanup": 0
+  },
+  "readiness": {
+    "exact_build_ready": true,
+    "retreat_legality_static_ready": true,
+    "retreat_apply_static_ready": true,
+    "retreat_mission_ai_attribution_ready": true,
+    "retreat_generic_war_ai_policy_static_ready": false,
+    "retreat_generic_war_destination_static_ready": false,
+    "retreat_target_preview_native_ready": true,
+    "retreat_target_preview_token_ready": true,
+    "retreat_native_command_spine_ready": true,
+    "embedded_battle_control_projection_implementation_ready": true,
+    "embedded_battle_control_projection_production_live_ready": true,
+    "retreat_legality_scope_live_ready": true,
+    "query_implementation_ready": true,
+    "query_capability_advertised": true,
+    "active_combat_retreat_command_submission_live_ready": true,
+    "retreat_semantic_action_live_ready": true,
+    "prior_combat_transition_query_ready": true,
+    "active_combat_retreat_action_ready": false,
+    "full_side_live_acceptance_ready": true,
+    "owner_subset_live_acceptance_ready": false,
+    "active_combat_retreat_live_ready": false,
+    "ready": false
+  }
+}

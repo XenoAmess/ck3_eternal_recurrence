@@ -18,6 +18,11 @@ from .bridge.declaration_contract import (
 from .bridge.combat_phase_contract import (
     QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
 )
+from .bridge.battle_control_contract import (
+    normalize_battle_control_snapshot_v1,
+    parse_query_battle_control_snapshot_v1_step,
+    query_battle_control_snapshot_v1_step,
+)
 from .bridge.war_entry_contract import (
     FIXED_POINT_SCALE as WAR_ENTRY_FIXED_POINT_SCALE,
     normalize_war_entry_assessments,
@@ -313,6 +318,603 @@ def _same_frame_war_entry_assessments(
         for assessment in normalized["assessments"]:
             recovered[int(assessment["target_character_id"])] = assessment
     return recovered
+
+
+def _battle_control_query_records(
+    rows: list[dict[str, object]],
+    *,
+    position_offset: int = 0,
+) -> list[dict[str, object]]:
+    """Recover strict battle frames and their factual history bindings."""
+    records: list[dict[str, object]] = []
+    for position, row in enumerate(rows, start=position_offset + 1):
+        subject = parse_query_battle_control_snapshot_v1_step(
+            _effective_command(row)
+        )
+        if subject is None or row.get("ok") is not True:
+            continue
+        result = _effective_command_result(row)
+        if not isinstance(result, dict):
+            continue
+        queried_revision = _native_int(result.get("queried_revision"))
+        queried_native_revision = _native_int(
+            result.get("queried_native_revision")
+        )
+        queried_snapshot_id = result.get("queried_snapshot_id")
+        query_sequence = result.get("query_sequence")
+        frame = result.get("battle_control_snapshot")
+        if not (
+            result.get("step") == _effective_command(row)
+            and result.get("accepted") is True
+            and result.get("status") == "available"
+            and queried_revision is not None
+            and queried_revision >= 0
+            and queried_native_revision is not None
+            and queried_native_revision > 0
+            and isinstance(queried_snapshot_id, str)
+            and bool(queried_snapshot_id)
+            and isinstance(query_sequence, int)
+            and not isinstance(query_sequence, bool)
+            and query_sequence > 0
+            and isinstance(frame, dict)
+            and result.get("snapshot_revision")
+            == queried_native_revision
+        ):
+            continue
+        observed_date_raw = frame.get("observed_date_raw")
+        if (
+            isinstance(observed_date_raw, bool)
+            or not isinstance(observed_date_raw, int)
+        ):
+            continue
+        try:
+            normalized = normalize_battle_control_snapshot_v1(
+                frame,
+                expected_subject_public_cunit_id=subject,
+                expected_observed_date_raw=observed_date_raw,
+                expected_snapshot_revision=queried_native_revision,
+            )
+        except ValueError:
+            continue
+        records.append(
+            {
+                "position": position,
+                "subject_army_id": subject,
+                "queried_snapshot_id": queried_snapshot_id,
+                "queried_revision": queried_revision,
+                "queried_native_revision": queried_native_revision,
+                "query_sequence": query_sequence,
+                "frame": normalized,
+            }
+        )
+    return records
+
+
+def _current_battle_control_frames(
+    rows: list[dict[str, object]],
+    snapshot: dict[str, object] | None,
+    *,
+    position_offset: int = 0,
+) -> tuple[dict[int, dict[str, object]], list[dict[str, object]]]:
+    """Return only available frames bound to the current paused revision."""
+    if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
+        return {}, _battle_control_query_records(
+            rows, position_offset=position_offset
+        )
+    snapshot_id = snapshot.get("snapshot_id")
+    revision = _native_int(snapshot.get("revision"))
+    native_revision = _native_int(snapshot.get("native_revision"))
+    date_raw = snapshot.get("date_raw")
+    if not (
+        isinstance(snapshot_id, str)
+        and bool(snapshot_id)
+        and revision is not None
+        and revision >= 0
+        and native_revision is not None
+        and native_revision > 0
+        and isinstance(date_raw, int)
+        and not isinstance(date_raw, bool)
+    ):
+        return {}, _battle_control_query_records(
+            rows, position_offset=position_offset
+        )
+
+    records = _battle_control_query_records(
+        rows, position_offset=position_offset
+    )
+    current: dict[int, dict[str, object]] = {}
+    for record in records:
+        frame = record["frame"]
+        if (
+            record.get("queried_snapshot_id") == snapshot_id
+            and record.get("queried_revision") == revision
+            and record.get("queried_native_revision") == native_revision
+            and isinstance(frame, dict)
+            and frame.get("observed_date_raw") == date_raw
+        ):
+            current[int(record["subject_army_id"])] = record
+
+    direct_frame = snapshot.get("battle_control_snapshot_v1")
+    direct_subject = _native_int(
+        snapshot.get("battle_control_snapshot_v1_subject_army_id")
+    )
+    direct_sequence = snapshot.get(
+        "battle_control_snapshot_v1_query_sequence"
+    )
+    if (
+        snapshot.get("battle_control_snapshot_v1_status") == "available"
+        and direct_subject is not None
+        and direct_subject > 0
+        and snapshot.get("battle_control_snapshot_v1_queried_snapshot_id")
+        == snapshot_id
+        and snapshot.get("battle_control_snapshot_v1_queried_revision")
+        == revision
+        and isinstance(direct_sequence, int)
+        and not isinstance(direct_sequence, bool)
+        and direct_sequence > 0
+        and isinstance(direct_frame, dict)
+    ):
+        try:
+            normalized = normalize_battle_control_snapshot_v1(
+                direct_frame,
+                expected_subject_public_cunit_id=direct_subject,
+                expected_observed_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError:
+            pass
+        else:
+            matching_positions = [
+                int(record["position"])
+                for record in records
+                if record.get("subject_army_id") == direct_subject
+                and record.get("queried_snapshot_id") == snapshot_id
+                and record.get("queried_revision") == revision
+                and record.get("queried_native_revision") == native_revision
+                and record.get("query_sequence") == direct_sequence
+            ]
+            current[direct_subject] = {
+                "position": max(matching_positions, default=0),
+                "subject_army_id": direct_subject,
+                "queried_snapshot_id": snapshot_id,
+                "queried_revision": revision,
+                "queried_native_revision": native_revision,
+                "query_sequence": direct_sequence,
+                "frame": normalized,
+            }
+    return current, records
+
+
+def _battle_control_ledger_fingerprint(
+    frame: dict[str, object],
+) -> tuple[object, ...]:
+    """Project the exact retained-entry and participant-hard ledgers."""
+    sides: list[object] = []
+    for role in ("attacker", "defender"):
+        side = frame.get(role)
+        if not isinstance(side, dict):
+            return ()
+        ordered_armies = side.get("ordered_armies")
+        army_rows = tuple(
+            (
+                row.get("native_carmy_id"),
+                row.get("public_cunit_id"),
+                row.get("owner_character_id"),
+                row.get("combat_backlink_id"),
+            )
+            for row in (
+                ordered_armies if isinstance(ordered_armies, list) else []
+            )
+            if isinstance(row, dict)
+        )
+        entries: list[object] = []
+        for bucket in ("levy_entries", "men_at_arms_entries"):
+            raw_entries = side.get(bucket)
+            entries.extend(
+                (
+                    row.get("bucket"),
+                    row.get("bucket_index"),
+                    row.get("regiment_id"),
+                    row.get("native_carmy_id"),
+                    row.get("public_cunit_id"),
+                    row.get("owner_character_id"),
+                    row.get("starting_raw"),
+                    row.get("current_fighting_raw"),
+                    row.get("soft_casualties_raw"),
+                    row.get("fights_in_main_phase"),
+                    row.get("hard_casualties_status"),
+                    row.get("hard_casualties_raw"),
+                )
+                for row in (
+                    raw_entries if isinstance(raw_entries, list) else []
+                )
+                if isinstance(row, dict)
+            )
+        raw_participants = side.get("participant_hard_ledger")
+        participants = tuple(
+            (
+                row.get("row_index"),
+                row.get("participant_character_id"),
+                row.get("hard_casualties_raw"),
+            )
+            for row in (
+                raw_participants
+                if isinstance(raw_participants, list)
+                else []
+            )
+            if isinstance(row, dict)
+        )
+        sides.append(
+            (
+                role,
+                army_rows,
+                tuple(entries),
+                participants,
+                side.get("derived_current_fighting_raw"),
+                side.get("derived_soft_casualties_raw"),
+                side.get(
+                    "derived_main_fighting_entry_hard_casualties_raw"
+                ),
+                side.get("non_main_start_minus_current_minus_soft_raw"),
+                side.get("participant_hard_total_raw"),
+            )
+        )
+    return tuple(sides)
+
+
+def _battle_control_transition(
+    before: dict[str, object], after: dict[str, object]
+) -> dict[str, object]:
+    """Classify one bounded post-advance battle observation."""
+    subject = int(after["subject_public_cunit_id"])
+    before_combat_id = int(before["combat_id"])
+    after_combat_id = int(after["combat_id"])
+    common = {
+        "subject_army_id": subject,
+        "before_combat_id": before_combat_id,
+        "after_combat_id": after_combat_id,
+        "before_snapshot_revision": int(before["snapshot_revision"]),
+        "after_snapshot_revision": int(after["snapshot_revision"]),
+        "before_date_raw": int(before["observed_date_raw"]),
+        "after_date_raw": int(after["observed_date_raw"]),
+        "before_phase": before["phase"],
+        "before_phase_day": int(before["phase_day"]),
+        "after_phase": after["phase"],
+        "after_phase_day": int(after["phase_day"]),
+    }
+    if before_combat_id != after_combat_id:
+        return {
+            **common,
+            "status": "combat_replaced",
+            "reason": (
+                "the prior CombatID left the subject and a different active "
+                "CombatID is now bound to it"
+            ),
+        }
+    if (
+        before.get("subject_native_carmy_id")
+        != after.get("subject_native_carmy_id")
+        or before.get("province_id") != after.get("province_id")
+    ):
+        return {
+            **common,
+            "status": "invalid",
+            "reason": "same-CombatID subject identity or province changed",
+        }
+
+    before_revision = int(before["snapshot_revision"])
+    after_revision = int(after["snapshot_revision"])
+    before_date = int(before["observed_date_raw"])
+    after_date = int(after["observed_date_raw"])
+    if after_revision <= before_revision:
+        return {
+            **common,
+            "status": "invalid",
+            "reason": "the post-advance native revision did not increase",
+        }
+    if not before_date <= after_date <= before_date + 24:
+        return {
+            **common,
+            "status": "invalid",
+            "reason": "the battle observation exceeded the one-day bound",
+        }
+
+    before_phase = int(before["phase_raw"])
+    after_phase = int(after["phase_raw"])
+    before_day = int(before["phase_day"])
+    after_day = int(after["phase_day"])
+    phase_path_legal = False
+    pursuit_reopened_to_main = False
+    if after_phase == before_phase:
+        phase_path_legal = before_day <= after_day <= before_day + 1
+    elif after_phase == before_phase + 1:
+        phase_path_legal = 0 <= after_day <= 1
+    elif (
+        before_phase == 2
+        and after_phase == 1
+        and after.get("winner_side") == "none"
+        and after.get("forced_winner_side") == "none"
+    ):
+        # CK3 can reopen the same CombatID from pursuit into main when a new
+        # participant joins.  The live/native tree proves the winner reset;
+        # treating this as an ordinary phase regression would freeze a real
+        # ongoing battle.
+        phase_path_legal = 0 <= after_day <= before_day + 1
+        pursuit_reopened_to_main = True
+    if not phase_path_legal:
+        return {
+            **common,
+            "status": "invalid",
+            "reason": "the phase/day path regressed or skipped a phase/day",
+        }
+
+    phase_day_changed = (before_phase, before_day) != (
+        after_phase,
+        after_day,
+    )
+    ledger_changed = _battle_control_ledger_fingerprint(
+        before
+    ) != _battle_control_ledger_fingerprint(after)
+    if not (phase_day_changed or ledger_changed):
+        return {
+            **common,
+            "status": "invalid",
+            "reason": (
+                "ACK/date/revision changed without a phase/day or exact "
+                "casualty-ledger transition"
+            ),
+            "phase_day_changed": False,
+            "ledger_changed": False,
+        }
+    return {
+        **common,
+        "status": (
+            "same_combat_reopened"
+            if pursuit_reopened_to_main
+            else "same_combat_advanced"
+        ),
+        "reason": (
+            "the same CombatID legally reopened from pursuit into main with "
+            "its winner reset"
+            if pursuit_reopened_to_main
+            else "the same CombatID has a legal bounded phase/day or exact "
+            "casualty-ledger transition"
+        ),
+        "phase_day_changed": phase_day_changed,
+        "ledger_changed": ledger_changed,
+    }
+
+
+def _battle_control_frame_summary(
+    frame: dict[str, object],
+) -> dict[str, object]:
+    return {
+        "subject_army_id": frame.get("subject_public_cunit_id"),
+        "combat_id": frame.get("combat_id"),
+        "snapshot_revision": frame.get("snapshot_revision"),
+        "observed_date_raw": frame.get("observed_date_raw"),
+        "phase": frame.get("phase"),
+        "phase_day": frame.get("phase_day"),
+        "winner_side": frame.get("winner_side"),
+        "finalized": frame.get("finalized"),
+        "attacker_current_raw": (
+            frame["attacker"].get("derived_current_fighting_raw")
+            if isinstance(frame.get("attacker"), dict)
+            else None
+        ),
+        "attacker_soft_raw": (
+            frame["attacker"].get("derived_soft_casualties_raw")
+            if isinstance(frame.get("attacker"), dict)
+            else None
+        ),
+        "attacker_hard_raw": (
+            frame["attacker"].get("participant_hard_total_raw")
+            if isinstance(frame.get("attacker"), dict)
+            else None
+        ),
+        "defender_current_raw": (
+            frame["defender"].get("derived_current_fighting_raw")
+            if isinstance(frame.get("defender"), dict)
+            else None
+        ),
+        "defender_soft_raw": (
+            frame["defender"].get("derived_soft_casualties_raw")
+            if isinstance(frame.get("defender"), dict)
+            else None
+        ),
+        "defender_hard_raw": (
+            frame["defender"].get("participant_hard_total_raw")
+            if isinstance(frame.get("defender"), dict)
+            else None
+        ),
+    }
+
+
+def _battle_control_turn_state(
+    rows: list[dict[str, object]],
+    snapshot: dict[str, object] | None,
+    controlled_armies: list[dict[str, object]],
+) -> dict[str, object]:
+    """Gate combat time advancement on exact pre/post battle frames."""
+    scoped = _history_after_latest_restore(rows)
+    advance_positions = [
+        position
+        for position, row in enumerate(scoped, start=1)
+        if row.get("ok") is True
+        and is_life_advance_step(_effective_command(row))
+    ]
+    latest_advance = advance_positions[-1] if advance_positions else 0
+    previous_advance = advance_positions[-2] if len(advance_positions) > 1 else 0
+    relevant_rows = scoped[previous_advance:]
+    current_frames, records = _current_battle_control_frames(
+        relevant_rows,
+        snapshot,
+        position_offset=previous_advance,
+    )
+    pre_advance: dict[int, dict[str, object]] = {}
+    if latest_advance:
+        for record in records:
+            position = int(record["position"])
+            subject = int(record["subject_army_id"])
+            if previous_advance < position < latest_advance:
+                pre_advance[subject] = record
+
+    army_by_id = {
+        army_id: army
+        for army in controlled_armies
+        if (army_id := _native_int(army.get("army_id"))) is not None
+    }
+    all_armies = (
+        snapshot.get("player_armies")
+        if isinstance(snapshot, dict)
+        and isinstance(snapshot.get("player_armies"), list)
+        else []
+    )
+    all_army_by_id = {
+        army_id: army
+        for army in all_armies
+        if isinstance(army, dict)
+        and (army_id := _native_int(army.get("army_id"))) is not None
+    }
+    active_subjects = sorted(
+        army_id
+        for army_id, army in army_by_id.items()
+        if _army_tactical_state(army) == "combat"
+    )
+
+    recognized: list[dict[str, object]] = []
+    recognized_subjects: set[int] = set()
+    for subject, record in sorted(pre_advance.items()):
+        if subject in active_subjects:
+            continue
+        observed_army = all_army_by_id.get(subject)
+        observed_state = (
+            _army_tactical_state(observed_army)
+            if isinstance(observed_army, dict)
+            else None
+        )
+        before = record["frame"]
+        recognized.append(
+            {
+                "status": "left_combat",
+                "subject_army_id": subject,
+                "before_combat_id": before.get("combat_id"),
+                "before_snapshot_revision": before.get(
+                    "snapshot_revision"
+                ),
+                "before_phase": before.get("phase"),
+                "before_phase_day": before.get("phase_day"),
+                "observed_army_state": observed_state or "absent",
+                "reason": (
+                    "the post-advance semantic army state explicitly shows "
+                    "that the queried subject left active combat; this is a "
+                    "terminal/removal discriminant and does not infer a winner"
+                ),
+            }
+        )
+        recognized_subjects.add(subject)
+    if recognized:
+        remove_positions = {
+            position
+            for position, row in enumerate(scoped, start=1)
+            if previous_advance < position < latest_advance
+            and parse_query_battle_control_snapshot_v1_step(
+                _effective_command(row)
+            )
+            in recognized_subjects
+        }
+        return {
+            "status": "transition_recognized",
+            "transitions": recognized,
+            "remaining_rows": [
+                row
+                for position, row in enumerate(scoped, start=1)
+                if position not in remove_positions
+            ],
+        }
+
+    if not active_subjects:
+        return {"status": "not_in_combat", "evidence": []}
+    if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
+        return {
+            "status": "wait_for_pause",
+            "subject_army_ids": active_subjects,
+        }
+
+    for subject in active_subjects:
+        if subject not in current_frames:
+            try:
+                step = query_battle_control_snapshot_v1_step(subject)
+            except ValueError:
+                return {
+                    "status": "invalid_subject",
+                    "subject_army_id": subject,
+                }
+            return {
+                "status": "query_required",
+                "subject_army_id": subject,
+                "step": step,
+            }
+
+    transitions: list[dict[str, object]] = []
+    replaced_subjects: set[int] = set()
+    for subject in active_subjects:
+        frame = current_frames[subject]["frame"]
+        if (
+            frame.get("finalized") is True
+            or frame.get("phase") == "done"
+        ):
+            return {
+                "status": "terminal_observed",
+                "subject_army_id": subject,
+                "frame": _battle_control_frame_summary(frame),
+            }
+        before_record = pre_advance.get(subject)
+        if not isinstance(before_record, dict):
+            continue
+        transition = _battle_control_transition(
+            before_record["frame"], frame
+        )
+        if transition.get("status") == "invalid":
+            return {
+                "status": "transition_invalid",
+                "transition": transition,
+                "frame": _battle_control_frame_summary(frame),
+            }
+        if transition.get("status") == "combat_replaced":
+            recognized.append(transition)
+            replaced_subjects.add(subject)
+        else:
+            transitions.append(transition)
+
+    if recognized:
+        remove_positions = {
+            position
+            for position, row in enumerate(scoped, start=1)
+            if previous_advance < position < latest_advance
+            and parse_query_battle_control_snapshot_v1_step(
+                _effective_command(row)
+            )
+            in replaced_subjects
+        }
+        return {
+            "status": "transition_recognized",
+            "transitions": recognized,
+            "remaining_rows": [
+                row
+                for position, row in enumerate(scoped, start=1)
+                if position not in remove_positions
+            ],
+        }
+
+    return {
+        "status": "ready",
+        "evidence": [
+            _battle_control_frame_summary(current_frames[subject]["frame"])
+            for subject in active_subjects
+        ],
+        "transitions": transitions,
+    }
 
 
 def _war_entry_power_eu_projection(
@@ -771,6 +1373,170 @@ def choose_one_life_turn(
         else []
     )
     controlled_armies = controllable_armies(player_armies)
+    battle_control_state = _battle_control_turn_state(
+        rows,
+        snapshot if isinstance(snapshot, dict) else None,
+        controlled_armies,
+    )
+    battle_control_status = battle_control_state.get("status")
+    if battle_control_status == "transition_recognized":
+        remaining_rows = battle_control_state.get("remaining_rows")
+        if not isinstance(remaining_rows, list) or len(remaining_rows) >= len(
+            rows
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_battle_transition_invalid",
+                "selected_step": None,
+                "required_step": "fresh-paused-battle-control-frame",
+                "reason": (
+                    "the recognized battle transition could not be separated "
+                    "from its pre-advance evidence epoch"
+                ),
+                "battle_transitions": battle_control_state.get(
+                    "transitions", []
+                ),
+            }
+        continued = choose_one_life_turn(
+            [row for row in remaining_rows if isinstance(row, dict)],
+            snapshot=snapshot,
+            action_steps=available_steps,
+            next_run_plan=next_run_plan,
+        )
+        nested_transitions = continued.get("battle_transitions")
+        return {
+            **continued,
+            "battle_transitions": [
+                *(
+                    battle_control_state.get("transitions", [])
+                    if isinstance(
+                        battle_control_state.get("transitions"), list
+                    )
+                    else []
+                ),
+                *(
+                    nested_transitions
+                    if isinstance(nested_transitions, list)
+                    else []
+                ),
+            ],
+        }
+    if battle_control_status == "wait_for_pause":
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_battle_wait_for_pause",
+            "selected_step": (
+                "pause-map" if "pause-map" in available_steps else None
+            ),
+            "required_step": "pause-map",
+            "reason": (
+                "pause the map before reading any active subject's exact "
+                "battle-control frame"
+            ),
+            "battle_subject_army_ids": battle_control_state.get(
+                "subject_army_ids", []
+            ),
+        }
+    if battle_control_status == "query_required":
+        battle_query_step = battle_control_state.get("step")
+        if (
+            isinstance(battle_query_step, str)
+            and battle_query_step in available_steps
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_battle_control_query",
+                "selected_step": battle_query_step,
+                "reason": (
+                    "read an available exact battle-control frame bound to "
+                    "the current paused revision before any combat time slice"
+                ),
+                "battle_subject_army_id": battle_control_state.get(
+                    "subject_army_id"
+                ),
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_battle_control_query_unsupported",
+            "selected_step": None,
+            "required_step": battle_query_step,
+            "reason": (
+                "the active combat cannot advance without a current-revision "
+                "available battle-control frame"
+            ),
+            "battle_subject_army_id": battle_control_state.get(
+                "subject_army_id"
+            ),
+        }
+    if battle_control_status == "invalid_subject":
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_battle_control_query_unsupported",
+            "selected_step": None,
+            "required_capability": (
+                "game.command.query-battle-control-snapshot-v1-N"
+            ),
+            "reason": (
+                "the active controllable combat subject lacks a queryable "
+                "positive public CUnitID"
+            ),
+            "battle_subject_army_id": battle_control_state.get(
+                "subject_army_id"
+            ),
+        }
+    if battle_control_status == "transition_invalid":
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_battle_transition_invalid",
+            "selected_step": None,
+            "required_step": "fresh-paused-battle-control-frame",
+            "reason": (
+                "the post-advance exact frame did not prove a legal same-"
+                "CombatID phase/day or casualty-ledger transition"
+            ),
+            "battle_transition": battle_control_state.get("transition"),
+            "battle_control_frame": battle_control_state.get("frame"),
+        }
+    if battle_control_status == "terminal_observed":
+        if "life-advance" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_battle_terminal_cleanup",
+                "selected_step": "life-advance",
+                "reason": (
+                    "the exact frame explicitly reached finalized/done while "
+                    "the semantic subject remains in combat; advance at most "
+                    "one day so CK3 can remove the completed combat, then "
+                    "observe the subject again"
+                ),
+                "battle_transition": {
+                    "status": "terminal_observed",
+                    "subject_army_id": battle_control_state.get(
+                        "subject_army_id"
+                    ),
+                    "outcome": None,
+                },
+                "battle_control_frame": battle_control_state.get("frame"),
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_battle_terminal_cleanup_unsupported",
+            "selected_step": None,
+            "required_step": "life-advance",
+            "reason": (
+                "the exact frame explicitly reached finalized/done while the "
+                "semantic subject remains in combat, but the backend cannot "
+                "perform the bounded cleanup slice"
+            ),
+            "battle_transition": {
+                "status": "terminal_observed",
+                "subject_army_id": battle_control_state.get(
+                    "subject_army_id"
+                ),
+                "outcome": None,
+            },
+            "battle_control_frame": battle_control_state.get("frame"),
+        }
     if active_wars:
         raw_termination_options = (
             snapshot.get("war_termination_options")
@@ -1183,6 +1949,16 @@ def choose_one_life_turn(
                 "route_evidence_issues": route_evidence_issues,
                 "active_wars": war_summary,
             }
+        combat_armies = [
+            army
+            for army in controlled_armies
+            if _army_tactical_state(army) == "combat"
+        ]
+        retreating_armies = [
+            army
+            for army in controlled_armies
+            if _army_tactical_state(army) == "retreating"
+        ]
         combat_retreat_armies = [
             army
             for army in controlled_armies
@@ -1454,8 +2230,46 @@ def choose_one_life_turn(
                 "assault_states": active_assaults,
                 "active_wars": war_summary,
             }
+        if combat_armies and not unsafe_armies and not threatened_stationary_armies:
+            tactical_states = [
+                {
+                    "army_id": _native_int(army.get("army_id")),
+                    "army_state": _army_tactical_state(army),
+                }
+                for army in combat_armies
+            ]
+            if "life-advance" in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_global_battle_control_progress",
+                    "selected_step": "life-advance",
+                    "reason": "every active subject has an available exact battle-control frame bound to this paused revision; all other routes and stationary positions passed the global audit, so advance at most one day and query every continuing battle again",
+                    "combat_retreat_armies": tactical_states,
+                    "battle_control_frames": battle_control_state.get(
+                        "evidence", []
+                    ),
+                    "battle_transitions": battle_control_state.get(
+                        "transitions", []
+                    ),
+                    "active_wars": war_summary,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_global_battle_control_progress_unsupported",
+                "selected_step": None,
+                "required_step": "life-advance",
+                "reason": "the current exact battle-control frames are available, but the backend cannot perform their required one-day observation slice",
+                "combat_retreat_armies": tactical_states,
+                "battle_control_frames": battle_control_state.get(
+                    "evidence", []
+                ),
+                "battle_transitions": battle_control_state.get(
+                    "transitions", []
+                ),
+                "active_wars": war_summary,
+            }
         if (
-            combat_retreat_armies
+            retreating_armies
             and not unsafe_armies
             and not threatened_stationary_armies
         ):
@@ -1464,14 +2278,14 @@ def choose_one_life_turn(
                     "army_id": _native_int(army.get("army_id")),
                     "army_state": _army_tactical_state(army),
                 }
-                for army in combat_retreat_armies
+                for army in retreating_armies
             ]
             if "life-advance" in available_steps:
                 return {
                     "policy": "one-life-turn-v1",
                     "phase": "native_war_global_combat_retreat_progress",
                     "selected_step": "life-advance",
-                    "reason": "at least one controllable army is in combat or retreat; all other routes and stationary positions passed the global audit, so advance at most one day and re-observe every army",
+                    "reason": "at least one controllable army is retreating; all other routes and stationary positions passed the global audit, so advance at most one day and re-observe every army",
                     "combat_retreat_armies": tactical_states,
                     "active_wars": war_summary,
                 }
@@ -1480,7 +2294,7 @@ def choose_one_life_turn(
                 "phase": "native_war_global_combat_retreat_progress_unsupported",
                 "selected_step": None,
                 "required_step": "life-advance",
-                "reason": "a controllable army is in combat or retreat, but the backend cannot perform its required one-day observation slice",
+                "reason": "a controllable army is retreating, but the backend cannot perform its required one-day observation slice",
                 "combat_retreat_armies": tactical_states,
                 "active_wars": war_summary,
             }
@@ -1996,17 +2810,29 @@ def choose_one_life_turn(
             if "life-advance" in available_steps:
                 return {
                     "policy": "one-life-turn-v1",
-                    "phase": "native_war_combat_progress",
+                    "phase": "native_war_battle_control_progress",
                     "selected_step": "life-advance",
-                    "reason": "the exact native army state is still combat; advance one bounded interval instead of issuing a move that CK3 cannot accept",
+                    "reason": "the active subject has an available exact battle-control frame bound to this paused revision; advance at most one day, then query and verify the same CombatID again",
+                    "battle_control_frames": battle_control_state.get(
+                        "evidence", []
+                    ),
+                    "battle_transitions": battle_control_state.get(
+                        "transitions", []
+                    ),
                     "active_wars": war_summary,
                 }
             return {
                 "policy": "one-life-turn-v1",
-                "phase": "native_war_combat_progress_unsupported",
+                "phase": "native_war_battle_control_progress_unsupported",
                 "selected_step": None,
                 "required_step": "life-advance",
-                "reason": "the exact native army state is combat but this backend cannot advance time",
+                "reason": "the exact battle-control frame is current, but this backend cannot advance its required bounded time slice",
+                "battle_control_frames": battle_control_state.get(
+                    "evidence", []
+                ),
+                "battle_transitions": battle_control_state.get(
+                    "transitions", []
+                ),
                 "active_wars": war_summary,
             }
 

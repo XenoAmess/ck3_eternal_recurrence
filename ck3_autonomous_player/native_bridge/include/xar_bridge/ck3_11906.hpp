@@ -61,6 +61,8 @@ using GetCharacterModifierAggregator = void *(*)(void *character);
 using ReadCharacterModifier = std::int64_t *(*)(
     void *aggregator, std::int64_t *output, std::int32_t modifier_index);
 using GetCombatRules = void *(*)();
+using GetCombatSideStrength = std::int32_t (*)(void *combat_side);
+using GetCombatRegimentStrength = std::int32_t (*)(void *combat_regiment);
 using ReadCounterCurrentChunk = std::int64_t *(*)(
     const void *side_maa_entry, std::int64_t *output);
 using ResolveCounterClasses = void (*)(
@@ -88,7 +90,10 @@ using CanCharacterUseCommandKind = bool (*)(void *character,
                                             std::int32_t command_kind);
 using CanArmyUseMoveMode = bool (*)(void *army, std::int32_t move_mode);
 using CanMoveArmy = bool (*)(std::int32_t command_kind, void *army,
-                            std::int32_t move_mode);
+                             std::int32_t move_mode);
+using CanOrderCombatRetreat = bool (*)(void *combat, void *selected_army,
+                                       void *error_sink);
+using GetCombatRetreatRuleState = void *(*)();
 using ResolveMoveOrigin = void *(*)(void *origin_context);
 using ConstructMovePathContext = void *(*)(void *path_context, void *army);
 using ConstructArmyMovePath = void *(*)(void *path_storage);
@@ -99,6 +104,8 @@ using BuildArmyMoveRoute = bool (*)(void *path_context, void *origin_province,
 using ReadRouteTravelDuration = std::int64_t *(*)(
     void *unit, std::int64_t *output, const void *path_storage,
     void *origin_province);
+using ReadRouteEdgeDuration = std::int64_t *(*)(
+    void *unit, std::int64_t *output, std::int32_t route_index);
 using ReadUnitRouteSpeed = std::int64_t *(*)(void *unit,
                                              std::int64_t *output);
 using ValidateDisbandArmyCommand = bool (*)(
@@ -248,6 +255,9 @@ struct Bindings {
   std::uintptr_t add_from_contribution_defenders_effect_vtable = 0;
   std::uintptr_t gold_transfer_effect_vtable = 0;
   std::uintptr_t truce_effect_vtable = 0;
+  std::uintptr_t ai_unit_stack_vtable = 0;
+  std::uintptr_t ai_subunit_stack_vtable = 0;
+  std::uintptr_t ai_war_coordinator_vtable = 0;
   const std::int32_t *cb_prestige_factor_identifier_id = nullptr;
   void **pending_character_interaction_storage_slot = nullptr;
   void **character_storage_slot = nullptr;
@@ -256,6 +266,9 @@ struct Bindings {
   void **regiment_storage_slot = nullptr;
   void **combat_storage_slot = nullptr;
   void **battle_result_storage_slot = nullptr;
+  void **battle_result_fallback_slot = nullptr;
+  void **ai_war_coordinator_storage_slot = nullptr;
+  void **ai_war_coordinator_fallback_slot = nullptr;
   void **siege_storage_slot = nullptr;
   void **contact_game_mode_slot = nullptr;
   GetGlobalVariableContainer *global_variable_container_accessor_slot =
@@ -307,6 +320,8 @@ struct Bindings {
   GetCharacterModifierAggregator get_character_modifier_aggregator = nullptr;
   ReadCharacterModifier read_character_modifier = nullptr;
   GetCombatRules get_combat_rules = nullptr;
+  GetCombatSideStrength get_combat_side_strength = nullptr;
+  GetCombatRegimentStrength get_combat_regiment_strength = nullptr;
   ReadCounterCurrentChunk read_counter_current_chunk = nullptr;
   ResolveCounterClasses resolve_counter_classes = nullptr;
   GetCounterContextScale get_counter_context_scale = nullptr;
@@ -326,6 +341,9 @@ struct Bindings {
   CanCharacterUseCommandKind can_character_use_command_kind = nullptr;
   CanArmyUseMoveMode can_army_use_move_mode = nullptr;
   CanMoveArmy can_move_army = nullptr;
+  CanOrderCombatRetreat can_order_combat_retreat = nullptr;
+  GetCombatRetreatRuleState get_combat_retreat_rule_state = nullptr;
+  const std::int32_t *minimum_days_before_manual_retreat = nullptr;
   ResolveMoveOrigin resolve_move_origin = nullptr;
   ConstructMovePathContext construct_move_path_context = nullptr;
   ConstructArmyMovePath construct_army_move_path = nullptr;
@@ -334,6 +352,7 @@ struct Bindings {
   ReadUnitRouteSpeed read_unit_naval_route_speed = nullptr;
   ReadUnitRouteSpeed read_unit_current_edge_speed = nullptr;
   ReadRouteTravelDuration read_route_travel_duration = nullptr;
+  ReadRouteEdgeDuration read_route_edge_duration = nullptr;
   DestroyNativeCommand destroy_move_army_command = nullptr;
   ValidateDisbandArmyCommand validate_disband_army_command = nullptr;
   ValidateSplitArmyHalfCommand validate_split_army_half_command = nullptr;
@@ -525,6 +544,15 @@ using game::RouteContactHorizonStatus;
 using game::ActualContactScopeRequest;
 using game::ActualContactScopeSnapshot;
 using game::ActualContactScopeStatus;
+using game::BattleControlRequest;
+using game::BattleControlSnapshot;
+using game::BattleControlSnapshotStatus;
+using game::BattleTransitionRequest;
+using game::BattleTransitionSnapshot;
+using game::BattleTransitionSnapshotStatus;
+using game::BattleReinforcementAssignmentRequest;
+using game::BattleReinforcementAssignmentSnapshot;
+using game::BattleReinforcementAssignmentStatus;
 
 // Runs CK3's own route planner into a temporary MovePath and copies its
 // resolved ProvinceIDs before destroying that path. This never applies the
@@ -546,6 +574,30 @@ RouteContactHorizonStatus ReadRouteContactHorizon(
 ActualContactScopeStatus ReadActualContactScope(
     const Bindings &bindings, const ActualContactScopeRequest &request,
     ActualContactScopeSnapshot &output) noexcept;
+
+// Main-thread-only, paused exact-build projection of the live CCombat reached
+// through one controllable public CUnit.  The implementation samples the
+// complete retained-entry graph twice and calls only the two read-only native
+// strength leaves; it never refreshes, advances, finalizes or mutates combat.
+BattleControlSnapshotStatus ReadBattleControlSnapshot(
+    const Bindings &bindings, const BattleControlRequest &request,
+    BattleControlSnapshot &output) noexcept;
+
+// Main-thread-only, paused lifecycle query addressed directly by one positive
+// full-generation CombatID. It samples the retained CCombat projection twice,
+// calls no native function, and has no selected-Army or retreat-legality gate.
+BattleTransitionSnapshotStatus ReadBattleTransitionSnapshot(
+    const Bindings &bindings, const BattleTransitionRequest &request,
+    BattleTransitionSnapshot &output) noexcept;
+
+// Main-thread-only, paused exact-build projection of one AI-managed CUnit's
+// stored help signal, assignment target, committed route/ETA and present-time
+// compatible combats. It never runs an AI update, contact resolver or combat
+// mutator.
+BattleReinforcementAssignmentStatus ReadBattleReinforcementAssignmentV1(
+    const Bindings &bindings, const Snapshot &same_frame_world,
+    const BattleReinforcementAssignmentRequest &request,
+    BattleReinforcementAssignmentSnapshot &output) noexcept;
 
 using game::DisbandArmyResult;
 

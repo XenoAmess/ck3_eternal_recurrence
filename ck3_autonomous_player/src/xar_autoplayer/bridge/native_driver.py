@@ -16,6 +16,7 @@ import json
 import math
 import os
 from pathlib import Path
+import secrets
 import shutil
 import struct
 import threading
@@ -96,6 +97,37 @@ from .actual_contact_contract import (
     normalize_actual_contact_scope,
     parse_query_actual_contact_scope_step,
     query_actual_contact_scope_step,
+)
+from .battle_control_contract import (
+    QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY,
+    QUERY_BATTLE_CONTROL_SNAPSHOT_V1_STEP_PREFIX,
+    normalize_battle_control_snapshot_v1,
+    parse_query_battle_control_snapshot_v1_step,
+    query_battle_control_snapshot_v1_step,
+)
+from .battle_transition_contract import (
+    QUERY_BATTLE_TRANSITION_V1_CAPABILITY,
+    QUERY_BATTLE_TRANSITION_V1_STEP_PREFIX,
+    normalize_battle_transition_v1,
+    parse_query_battle_transition_v1_step,
+)
+from .battle_reinforcement_assignment_contract import (
+    QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY,
+    QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX,
+    normalize_battle_reinforcement_assignment_v1,
+    parse_query_battle_reinforcement_assignment_v1_step,
+    query_battle_reinforcement_assignment_v1_step,
+)
+from .active_combat_retreat_contract import (
+    ACTIVE_COMBAT_RETREAT_V1_CONTRACT_STAGE,
+    ORDER_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX,
+    PREVIEW_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX,
+    normalize_active_combat_retreat_v1_order_ack,
+    normalize_active_combat_retreat_v1_preview,
+    order_active_combat_retreat_v1_step,
+    parse_order_active_combat_retreat_v1_step,
+    parse_preview_active_combat_retreat_v1_step,
+    preview_active_combat_retreat_v1_step,
 )
 from .war_contract import (
     ARMY_ROUTES_CAPABILITY,
@@ -196,6 +228,17 @@ _NATIVE_SIEGE_ADVANCE_MAX_DAYS = 7
 _NATIVE_ASSAULT_ADVANCE_MAX_DAYS = 1
 _NATIVE_ACTIVE_ROUTE_ADVANCE_MAX_DAYS = 1
 _NATIVE_COMBAT_RETREAT_ADVANCE_MAX_DAYS = 1
+_BATTLE_CONTROL_TRANSIENT_QUERY_ERROR = (
+    "CK3 battle-control state changed during query"
+)
+_BATTLE_CONTROL_QUERY_MAX_ATTEMPTS = 3
+_ACTIVE_COMBAT_RETREAT_V1_REQUIRED_CAPABILITIES = frozenset(
+    {
+        QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY,
+        PREVIEW_MOVE_ARMY_CAPABILITY,
+        MOVE_ARMY_CAPABILITY,
+    }
+)
 _ARMY_MOVE_DEFERRED_ERRORS = frozenset(
     {
         # Kept for protocol-v1 bridges built before the native rejection
@@ -678,6 +721,8 @@ class NativeHeadlessGameplayDriver:
         self._army_strength_query: dict[str, object] | None = None
         self._combat_simulation_inputs_query: dict[str, object] | None = None
         self._combat_simulation_inputs_v3_query: dict[str, object] | None = None
+        self._battle_control_snapshot_v1_query: dict[str, object] | None = None
+        self._active_combat_retreat_v1_token: dict[str, object] | None = None
         self._war_entry_assessments_query: dict[str, object] | None = None
         self._war_termination_options: dict[int, dict[str, object]] = {}
         self._war_termination_terms: dict[int, dict[str, object]] = {}
@@ -722,6 +767,9 @@ class NativeHeadlessGameplayDriver:
         with self._driver_state_lock:
             declarations = copy.deepcopy(self._declarable_wars)
             marriage_choices = copy.deepcopy(self._arrange_marriage_choices)
+            active_retreat_token = copy.deepcopy(
+                self._active_combat_retreat_v1_token
+            )
         if DECLARE_WAR_CAPABILITY in bridge_capabilities:
             action_steps.update(
                 declare_war_step(str(row["declaration_id"]))
@@ -755,6 +803,34 @@ class NativeHeadlessGameplayDriver:
             if result.get("snapshot") is True
             else None
         )
+        active_retreat_composition_supported = bool(
+            _ACTIVE_COMBAT_RETREAT_V1_REQUIRED_CAPABILITIES
+            <= bridge_capabilities
+        )
+        active_retreat_token_ready = False
+        if (
+            active_retreat_composition_supported
+            and isinstance(current_snapshot, dict)
+            and current_snapshot.get("paused") is True
+        ):
+            preview_steps = _active_combat_retreat_preview_steps(
+                current_snapshot, action_steps
+            )
+            action_steps.update(preview_steps)
+            composite_action_steps.extend(sorted(preview_steps))
+            if _active_combat_retreat_token_matches_snapshot(
+                active_retreat_token, current_snapshot
+            ):
+                with self._driver_state_lock:
+                    token_still_current = (
+                        self._active_combat_retreat_v1_token
+                        == active_retreat_token
+                    )
+                order_step = active_retreat_token.get("order_step")
+                if token_still_current and isinstance(order_step, str):
+                    action_steps.add(order_step)
+                    composite_action_steps.append(order_step)
+                    active_retreat_token_ready = True
         if (
             QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY in bridge_capabilities
             and _NATIVE_EXACT_DAY_ADVANCE_PRIMITIVES <= action_steps
@@ -865,6 +941,24 @@ class NativeHeadlessGameplayDriver:
             "actual_contact_scope_query_supported": (
                 QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY
                 in bridge_capabilities
+            ),
+            "battle_control_snapshot_v1_query_supported": (
+                QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "battle_transition_v1_query_supported": (
+                QUERY_BATTLE_TRANSITION_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "battle_reinforcement_assignment_v1_query_supported": (
+                QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "active_combat_retreat_v1_composition_supported": (
+                active_retreat_composition_supported
+            ),
+            "active_combat_retreat_v1_token_ready": (
+                active_retreat_token_ready
             ),
             "army_strength_query_supported": (
                 QUERY_ARMY_STRENGTHS_CAPABILITY in bridge_capabilities
@@ -1005,6 +1099,12 @@ class NativeHeadlessGameplayDriver:
                 episode_run_id=episode_run_id,
             )
         )
+        battle_control_snapshot_v1_query = (
+            self._battle_control_snapshot_v1_cache_for_snapshot(
+                snapshot,
+                episode_run_id=episode_run_id,
+            )
+        )
         war_entry_assessments_query = (
             self._war_entry_assessments_cache_for_snapshot(
                 {**snapshot, "declarable_wars": declarable_wars},
@@ -1075,6 +1175,18 @@ class NativeHeadlessGameplayDriver:
             ),
             "actual_contact_scope_query_supported": (
                 QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY
+                in bridge_capabilities
+            ),
+            "battle_control_snapshot_v1_query_supported": (
+                QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "battle_transition_v1_query_supported": (
+                QUERY_BATTLE_TRANSITION_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "battle_reinforcement_assignment_v1_query_supported": (
+                QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "combat_simulation_inputs_query_supported": (
@@ -1227,6 +1339,42 @@ class NativeHeadlessGameplayDriver:
             "combat_simulation_inputs_v3_queried_revision": (
                 combat_simulation_inputs_v3_query.get("queried_revision")
                 if isinstance(combat_simulation_inputs_v3_query, dict)
+                else None
+            ),
+            "battle_control_snapshot_v1": (
+                copy.deepcopy(
+                    battle_control_snapshot_v1_query[
+                        "battle_control_snapshot"
+                    ]
+                )
+                if isinstance(battle_control_snapshot_v1_query, dict)
+                else None
+            ),
+            "battle_control_snapshot_v1_status": (
+                battle_control_snapshot_v1_query.get("status")
+                if isinstance(battle_control_snapshot_v1_query, dict)
+                else None
+            ),
+            "battle_control_snapshot_v1_query_sequence": (
+                battle_control_snapshot_v1_query.get("query_sequence")
+                if isinstance(battle_control_snapshot_v1_query, dict)
+                else None
+            ),
+            "battle_control_snapshot_v1_subject_army_id": (
+                battle_control_snapshot_v1_query.get(
+                    "subject_public_cunit_id"
+                )
+                if isinstance(battle_control_snapshot_v1_query, dict)
+                else None
+            ),
+            "battle_control_snapshot_v1_queried_snapshot_id": (
+                battle_control_snapshot_v1_query.get("queried_snapshot_id")
+                if isinstance(battle_control_snapshot_v1_query, dict)
+                else None
+            ),
+            "battle_control_snapshot_v1_queried_revision": (
+                battle_control_snapshot_v1_query.get("queried_revision")
+                if isinstance(battle_control_snapshot_v1_query, dict)
                 else None
             ),
             "war_entry_assessments": (
@@ -1786,6 +1934,90 @@ class NativeHeadlessGameplayDriver:
                 "episode_run_id": episode_run_id,
             }
 
+    def _battle_control_snapshot_v1_cache_for_snapshot(
+        self,
+        snapshot: dict[str, object],
+        *,
+        episode_run_id: str | None,
+    ) -> dict[str, object] | None:
+        """Project only a complete battle frame bound to this paused revision."""
+        if snapshot.get("paused") is not True:
+            return None
+        diagnostics = snapshot.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        with self._driver_state_lock:
+            cached = self._battle_control_snapshot_v1_query
+            if not isinstance(cached, dict):
+                return None
+            binding = cached.get("cache_binding")
+            query_sequence = cached.get("query_sequence")
+            if not (
+                set(cached)
+                == {
+                    "status",
+                    "battle_control_snapshot",
+                    "query_sequence",
+                    "cache_binding",
+                }
+                and isinstance(binding, dict)
+                and set(binding)
+                == {
+                    "native_revision",
+                    "snapshot_id",
+                    "revision",
+                    "date_raw",
+                    "connection_generation",
+                    "episode_run_id",
+                    "subject_public_cunit_id",
+                }
+                and isinstance(query_sequence, int)
+                and not isinstance(query_sequence, bool)
+                and 1 <= query_sequence <= 2**64 - 1
+            ):
+                self._battle_control_snapshot_v1_query = None
+                return None
+            try:
+                subject = int(binding["subject_public_cunit_id"])
+                date_raw = int(binding["date_raw"])
+                native_revision = int(binding["native_revision"])
+                normalized = normalize_battle_control_snapshot_v1(
+                    cached.get("battle_control_snapshot"),
+                    expected_subject_public_cunit_id=subject,
+                    expected_observed_date_raw=date_raw,
+                    expected_snapshot_revision=native_revision,
+                )
+            except (KeyError, TypeError, ValueError):
+                self._battle_control_snapshot_v1_query = None
+                return None
+            if not (
+                binding.get("native_revision")
+                == snapshot.get("native_revision")
+                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
+                and binding.get("revision") == snapshot.get("revision")
+                and binding.get("date_raw") == snapshot.get("date_raw")
+                and binding.get("connection_generation")
+                == connection_generation
+                and binding.get("episode_run_id") == episode_run_id
+                and normalized.get("subject_public_cunit_id") == subject
+                and cached.get("status") == "available"
+            ):
+                self._battle_control_snapshot_v1_query = None
+                return None
+            return {
+                "status": "available",
+                "battle_control_snapshot": copy.deepcopy(normalized),
+                "query_sequence": query_sequence,
+                "subject_public_cunit_id": subject,
+                "queried_snapshot_id": snapshot.get("snapshot_id"),
+                "queried_revision": snapshot.get("revision"),
+                "queried_native_revision": snapshot.get("native_revision"),
+                "episode_run_id": episode_run_id,
+            }
+
     def _migrate_legacy_rollback_war_failures(
         self, snapshot: dict[str, object]
     ) -> None:
@@ -1865,6 +2097,61 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed actual-contact scope query step"
             )
+        battle_control_subject = (
+            parse_query_battle_control_snapshot_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_BATTLE_CONTROL_SNAPSHOT_V1_STEP_PREFIX)
+            and battle_control_subject is None
+        ):
+            raise UnsupportedStepError(
+                "malformed battle-control snapshot v1 query step"
+            )
+        battle_transition_combat_id = parse_query_battle_transition_v1_step(
+            step
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_BATTLE_TRANSITION_V1_STEP_PREFIX)
+            and battle_transition_combat_id is None
+        ):
+            raise UnsupportedStepError(
+                "malformed battle-transition v1 query step"
+            )
+        reinforcement_subject = (
+            parse_query_battle_reinforcement_assignment_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX
+            )
+            and reinforcement_subject is None
+        ):
+            raise UnsupportedStepError(
+                "malformed battle-reinforcement assignment v1 query step"
+            )
+        active_retreat_preview = (
+            parse_preview_active_combat_retreat_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(PREVIEW_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX)
+            and active_retreat_preview is None
+        ):
+            raise UnsupportedStepError(
+                "malformed active-combat retreat preview step"
+            )
+        active_retreat_order = parse_order_active_combat_retreat_v1_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith(ORDER_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX)
+            and active_retreat_order is None
+        ):
+            raise UnsupportedStepError(
+                "malformed active-combat retreat order step"
+            )
         route_contact_query = parse_query_route_contact_horizon_step(step)
         route_contact_advance = parse_advance_route_contact_horizon_step(step)
         if (
@@ -1894,6 +2181,36 @@ class NativeHeadlessGameplayDriver:
                 "step"
             )
         capabilities = self.capabilities()
+        if active_retreat_preview is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if not (
+                _ACTIVE_COMBAT_RETREAT_V1_REQUIRED_CAPABILITIES
+                <= bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL lacks the battle query, exact move preview, "
+                    "or player move capability required for active retreat"
+                )
+            return self._execute_active_combat_retreat_v1_preview(
+                step, expected_revision=expected_revision
+            )
+        if active_retreat_order is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if not (
+                _ACTIVE_COMBAT_RETREAT_V1_REQUIRED_CAPABILITIES
+                <= bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL lacks the battle query, exact move preview, "
+                    "or player move capability required for active retreat"
+                )
+            return self._execute_active_combat_retreat_v1_order(
+                step, expected_revision=expected_revision
+            )
         if actual_contact_query is not None:
             bridge_capabilities = set(
                 _string_list(capabilities.get("bridge_capabilities"))
@@ -1907,6 +2224,51 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
+            )
+        if battle_control_subject is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query an ongoing battle control frame"
+                )
+            return self._execute_battle_control_snapshot_v1_query(
+                step,
+                expected_revision=expected_revision,
+            )
+        if battle_transition_combat_id is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_BATTLE_TRANSITION_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query a full-CombatID battle transition"
+                )
+            return self._execute_battle_transition_v1_query(
+                step,
+                expected_revision=expected_revision,
+            )
+        if reinforcement_subject is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query AI reinforcement assignment state"
+                )
+            return self._execute_battle_reinforcement_assignment_v1_query(
+                step,
+                expected_revision=expected_revision,
             )
         if war_entry_targets is not None:
             bridge_capabilities = set(
@@ -2221,6 +2583,8 @@ class NativeHeadlessGameplayDriver:
             self._army_strength_query = None
             self._combat_simulation_inputs_query = None
             self._combat_simulation_inputs_v3_query = None
+            self._battle_control_snapshot_v1_query = None
+            self._active_combat_retreat_v1_token = None
             self._war_entry_assessments_query = None
             self._war_termination_options = {}
             self._war_termination_terms = {}
@@ -2569,6 +2933,8 @@ class NativeHeadlessGameplayDriver:
             self._army_strength_query = None
             self._combat_simulation_inputs_query = None
             self._combat_simulation_inputs_v3_query = None
+            self._battle_control_snapshot_v1_query = None
+            self._active_combat_retreat_v1_token = None
             self._war_entry_assessments_query = None
             self._war_termination_options = {}
             self._war_termination_terms = {}
@@ -3384,6 +3750,553 @@ class NativeHeadlessGameplayDriver:
                 "submitted_date_raw": submitted_date_raw,
             },
         }
+
+    def _execute_active_combat_retreat_v1_preview(
+        self,
+        step: str,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Compose battle legality and exact routing without mutating CK3."""
+        parsed = parse_preview_active_combat_retreat_v1_step(step)
+        if parsed is None:
+            raise UnsupportedStepError(
+                f"malformed active-combat retreat preview step {step}"
+            )
+        selected_public_cunit_id, target_province_id = parsed
+        with self._driver_state_lock:
+            self._active_combat_retreat_v1_token = None
+
+        starting = self.take_snapshot()
+        source_binding = _require_active_combat_retreat_source_binding(starting)
+        selected_revision = int(source_binding["revision"])
+        if expected_revision is None:
+            raise BridgeUnavailableError(
+                "active-combat retreat preview requires expected_revision"
+            )
+        _validate_revision(expected_revision, "expected_revision")
+        if expected_revision != selected_revision:
+            raise BridgeUnavailableError(
+                "active-combat retreat preview revision mismatch: expected "
+                f"{expected_revision}, current {selected_revision}"
+            )
+        selected_army = _army_by_id(starting, selected_public_cunit_id)
+        if not (
+            isinstance(selected_army, dict)
+            and selected_army.get("controllable") is True
+            and _army_in_active_combat(selected_army)
+        ):
+            raise BridgeUnavailableError(
+                "active-combat retreat preview requires a controllable "
+                "selected CUnit in active combat"
+            )
+
+        battle_result = self._execute_battle_control_snapshot_v1_query(
+            query_battle_control_snapshot_v1_step(selected_public_cunit_id),
+            expected_revision=selected_revision,
+        )
+        battle = battle_result.get("battle_control_snapshot")
+        if not isinstance(battle, dict):
+            raise BridgeUnavailableError(
+                "active-combat retreat preview lacks a battle-control frame"
+            )
+        origin_province_id = selected_army.get("current_province_id")
+        if not _positive_native_id(origin_province_id):
+            raise BridgeUnavailableError(
+                "active-combat retreat preview lacks the semantic origin"
+            )
+        combat_province_id = int(battle["combat_province_id"])
+        if int(origin_province_id) != combat_province_id:
+            raise BridgeUnavailableError(
+                "active-combat retreat semantic origin disagrees with CombatID"
+            )
+        legality = battle.get("legality")
+        if not (
+            isinstance(legality, dict)
+            and legality.get("status") == "available"
+            and legality.get("legal_now") is True
+        ):
+            reason_codes = (
+                legality.get("reason_codes_in_native_order")
+                if isinstance(legality, dict)
+                else None
+            )
+            first_reason = (
+                reason_codes[0]
+                if isinstance(reason_codes, list)
+                and reason_codes
+                and isinstance(reason_codes[0], str)
+                else "native_legality_unavailable"
+            )
+            return self._active_combat_retreat_v1_unavailable_preview(
+                step=step,
+                source_binding=source_binding,
+                battle=battle,
+                target_province_id=target_province_id,
+                origin_province_id=int(origin_province_id),
+                reason=f"retreat_not_legal:{first_reason}",
+            )
+        if target_province_id == combat_province_id:
+            return self._active_combat_retreat_v1_unavailable_preview(
+                step=step,
+                source_binding=source_binding,
+                battle=battle,
+                target_province_id=target_province_id,
+                origin_province_id=int(origin_province_id),
+                reason="target_does_not_leave_combat_province",
+            )
+
+        route_result = self._execute_native_war_step(
+            preview_move_army_step(
+                selected_public_cunit_id, target_province_id
+            ),
+            expected_revision=selected_revision,
+        )
+        route_preview = _canonical_active_combat_retreat_route_preview(
+            route_result,
+            selected_public_cunit_id=selected_public_cunit_id,
+            combat_province_id=combat_province_id,
+            target_province_id=target_province_id,
+            expected_date_raw=int(source_binding["date_raw"]),
+        )
+        if route_preview is None:
+            return self._active_combat_retreat_v1_unavailable_preview(
+                step=step,
+                source_binding=source_binding,
+                battle=battle,
+                target_province_id=target_province_id,
+                origin_province_id=int(origin_province_id),
+                reason="exact_route_preview_unavailable",
+            )
+        ending = self.take_snapshot()
+        if _active_combat_retreat_source_binding(ending) != source_binding:
+            return self._active_combat_retreat_v1_unavailable_preview(
+                step=step,
+                source_binding=source_binding,
+                battle=battle,
+                target_province_id=target_province_id,
+                origin_province_id=int(origin_province_id),
+                reason="snapshot_changed_during_preview",
+            )
+
+        candidate_token = secrets.token_urlsafe(24)
+        order_step = order_active_combat_retreat_v1_step(
+            selected_public_cunit_id,
+            expected_snapshot_revision=selected_revision,
+            expected_combat_id=int(battle["combat_id"]),
+            expected_side_index=int(battle["side_index"]),
+            expected_scope=str(battle["side_scope"]),
+            target_province_id=target_province_id,
+            candidate_token=candidate_token,
+        )
+        token_binding = {
+            "candidate_token": candidate_token,
+            "order_step": order_step,
+            "source_binding": copy.deepcopy(source_binding),
+            "battle_control_snapshot": copy.deepcopy(battle),
+            "battle_binding": _active_combat_retreat_battle_binding(battle),
+            "target_province_id": target_province_id,
+            "route_preview": copy.deepcopy(route_preview),
+        }
+        with self._driver_state_lock:
+            self._active_combat_retreat_v1_token = token_binding
+        payload = _active_combat_retreat_preview_payload(
+            step=step,
+            source_binding=source_binding,
+            battle=battle,
+            target_province_id=target_province_id,
+            target_preview={
+                **route_preview,
+                "status": "available",
+                "unavailable_reason": None,
+                "provenance": (
+                    "planner_selected_exact_native_route_preview"
+                ),
+                "candidate_token": candidate_token,
+                "order_step": order_step,
+            },
+            status="available",
+            unavailable_reason=None,
+            action_ready=True,
+        )
+        try:
+            return normalize_active_combat_retreat_v1_preview(
+                payload,
+                expected_selected_public_cunit_id=(
+                    selected_public_cunit_id
+                ),
+                expected_target_province_id=target_province_id,
+                expected_snapshot_revision=selected_revision,
+            )
+        except ValueError as error:
+            with self._driver_state_lock:
+                if (
+                    isinstance(self._active_combat_retreat_v1_token, dict)
+                    and self._active_combat_retreat_v1_token.get(
+                        "candidate_token"
+                    )
+                    == candidate_token
+                ):
+                    self._active_combat_retreat_v1_token = None
+            raise BridgeUnavailableError(
+                f"active-combat retreat preview composition failed: {error}"
+            ) from error
+
+    def _active_combat_retreat_v1_unavailable_preview(
+        self,
+        *,
+        step: str,
+        source_binding: dict[str, object],
+        battle: dict[str, object],
+        target_province_id: int,
+        origin_province_id: int,
+        reason: str,
+    ) -> dict[str, object]:
+        payload = _active_combat_retreat_preview_payload(
+            step=step,
+            source_binding=source_binding,
+            battle=battle,
+            target_province_id=target_province_id,
+            target_preview={
+                "status": "unavailable",
+                "unavailable_reason": reason,
+                "provenance": (
+                    "planner_selected_exact_native_route_preview"
+                ),
+                "army_id": battle["selected_public_cunit_id"],
+                "origin_province_id": origin_province_id,
+                "target_province_id": target_province_id,
+                "route_province_ids": [],
+                "previewed_date_raw": None,
+                "move_mode": None,
+                "eta_date_raw": None,
+                "movement_days": None,
+                "candidate_token": None,
+                "order_step": None,
+            },
+            status="unavailable",
+            unavailable_reason=reason,
+            action_ready=False,
+        )
+        try:
+            return normalize_active_combat_retreat_v1_preview(
+                payload,
+                expected_selected_public_cunit_id=int(
+                    battle["selected_public_cunit_id"]
+                ),
+                expected_target_province_id=target_province_id,
+                expected_snapshot_revision=int(source_binding["revision"]),
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "active-combat retreat unavailable preview composition "
+                f"failed: {error}"
+            ) from error
+
+    def _execute_active_combat_retreat_v1_order(
+        self,
+        step: str,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Consume a preview token, re-prove it, and submit player movement."""
+        request = parse_order_active_combat_retreat_v1_step(step)
+        if request is None:
+            raise UnsupportedStepError(
+                f"malformed active-combat retreat order step {step}"
+            )
+        with self._driver_state_lock:
+            token_binding = copy.deepcopy(
+                self._active_combat_retreat_v1_token
+            )
+            self._active_combat_retreat_v1_token = None
+
+        def reject(reason: str) -> dict[str, object]:
+            return self._active_combat_retreat_v1_rejection(
+                step=step,
+                request=request,
+                token_binding=token_binding,
+                reason=reason,
+            )
+
+        if expected_revision is None:
+            return reject("expected_revision_required")
+        try:
+            _validate_revision(expected_revision, "expected_revision")
+        except ValueError:
+            return reject("invalid_expected_revision")
+        if expected_revision != request["expected_snapshot_revision"]:
+            return reject("revision_argument_mismatch")
+        if not isinstance(token_binding, dict) or (
+            token_binding.get("candidate_token")
+            != request["candidate_token"]
+        ):
+            return reject("stale_or_unknown_token")
+
+        cached_source = token_binding.get("source_binding")
+        cached_battle = token_binding.get("battle_binding")
+        field_rejections = (
+            (
+                "selected_public_cunit_id",
+                "selected_public_cunit_id",
+                "selected_identity_changed",
+            ),
+            (
+                "expected_snapshot_revision",
+                "revision",
+                "revision_changed",
+            ),
+            ("expected_combat_id", "combat_id", "combat_changed"),
+            ("expected_side_index", "side_index", "side_changed"),
+            ("expected_scope", "side_scope", "scope_changed"),
+        )
+        if not isinstance(cached_source, dict) or not isinstance(
+            cached_battle, dict
+        ):
+            return reject("stale_or_unknown_token")
+        for request_key, binding_key, reason in field_rejections:
+            binding = (
+                cached_source if binding_key == "revision" else cached_battle
+            )
+            if request.get(request_key) != binding.get(binding_key):
+                return reject(reason)
+        if request["target_province_id"] != token_binding.get(
+            "target_province_id"
+        ):
+            return reject("target_changed")
+
+        try:
+            current = self.take_snapshot()
+        except (BridgeUnavailableError, UnsupportedStepError):
+            return reject("snapshot_binding_unavailable")
+        mismatch = _active_combat_retreat_source_mismatch_reason(
+            cached_source, current
+        )
+        if mismatch is not None:
+            return reject(mismatch)
+        selected_public_cunit_id = int(
+            request["selected_public_cunit_id"]
+        )
+        current_army = _army_by_id(current, selected_public_cunit_id)
+        if not (
+            isinstance(current_army, dict)
+            and current_army.get("controllable") is True
+            and _army_in_active_combat(current_army)
+            and current_army.get("current_province_id")
+            == cached_battle.get("combat_province_id")
+        ):
+            return reject("selected_army_left_active_combat")
+
+        try:
+            battle_result = self._execute_battle_control_snapshot_v1_query(
+                query_battle_control_snapshot_v1_step(
+                    selected_public_cunit_id
+                ),
+                expected_revision=int(request["expected_snapshot_revision"]),
+            )
+        except (BridgeUnavailableError, UnsupportedStepError):
+            return reject("battle_requery_unavailable")
+        battle = battle_result.get("battle_control_snapshot")
+        if not isinstance(battle, dict):
+            return reject("battle_requery_unavailable")
+        current_battle_binding = _active_combat_retreat_battle_binding(battle)
+        for key, reason in (
+            ("combat_id", "combat_changed"),
+            ("selected_public_cunit_id", "selected_identity_changed"),
+            ("selected_native_carmy_id", "selected_identity_changed"),
+            ("selected_owner_character_id", "selected_identity_changed"),
+            ("side_index", "side_changed"),
+            ("side_scope", "scope_changed"),
+            (
+                "affected_public_cunit_ids_in_stored_order",
+                "scope_membership_changed",
+            ),
+            (
+                "unaffected_same_side_public_cunit_ids_in_stored_order",
+                "scope_membership_changed",
+            ),
+        ):
+            if current_battle_binding.get(key) != cached_battle.get(key):
+                return reject(reason)
+        legality = battle.get("legality")
+        if not (
+            isinstance(legality, dict)
+            and legality.get("status") == "available"
+            and legality.get("legal_now") is True
+        ):
+            return reject("retreat_no_longer_legal")
+        if battle != token_binding.get("battle_control_snapshot"):
+            return reject("battle_frame_changed")
+
+        target_province_id = int(request["target_province_id"])
+        try:
+            route_result = self._execute_native_war_step(
+                preview_move_army_step(
+                    selected_public_cunit_id, target_province_id
+                ),
+                expected_revision=int(request["expected_snapshot_revision"]),
+            )
+        except (BridgeUnavailableError, UnsupportedStepError):
+            return reject("exact_route_preview_unavailable")
+        route_preview = _canonical_active_combat_retreat_route_preview(
+            route_result,
+            selected_public_cunit_id=selected_public_cunit_id,
+            combat_province_id=int(cached_battle["combat_province_id"]),
+            target_province_id=target_province_id,
+            expected_date_raw=int(cached_source["date_raw"]),
+        )
+        if route_preview is None:
+            return reject("exact_route_preview_unavailable")
+        if route_preview != token_binding.get("route_preview"):
+            return reject("route_changed")
+        try:
+            rechecked = self.take_snapshot()
+        except (BridgeUnavailableError, UnsupportedStepError):
+            return reject("snapshot_binding_unavailable")
+        mismatch = _active_combat_retreat_source_mismatch_reason(
+            cached_source, rechecked
+        )
+        if mismatch is not None:
+            return reject(mismatch)
+
+        move_step = move_army_step(
+            selected_public_cunit_id, target_province_id
+        )
+        try:
+            move_result = self._execute_primitive_step(
+                move_step,
+                expected_revision=int(request["expected_snapshot_revision"]),
+                required_capability=MOVE_ARMY_CAPABILITY,
+            )
+        except _NativeCommandRejectedError:
+            return reject("move_command_rejected")
+        if not (
+            move_result.get("step") == move_step
+            and move_result.get("accepted") is True
+            and move_result.get("status") == "submitted"
+        ):
+            raise BridgeUnavailableError(
+                "active-combat retreat move command returned a malformed ACK"
+            )
+        try:
+            observed = self.take_snapshot()
+        except (BridgeUnavailableError, UnsupportedStepError):
+            semantic_postcondition = (
+                _active_combat_retreat_pending_postcondition()
+            )
+        else:
+            semantic_postcondition = (
+                _active_combat_retreat_semantic_postcondition(
+                    observed,
+                    affected_public_cunit_ids=list(
+                        cached_battle[
+                            "affected_public_cunit_ids_in_stored_order"
+                        ]
+                    ),
+                    target_province_id=target_province_id,
+                )
+            )
+        payload = {
+            "schema_version": 1,
+            "contract_stage": ACTIVE_COMBAT_RETREAT_V1_CONTRACT_STAGE,
+            "step": step,
+            "accepted": True,
+            "status": "accepted_verification_pending",
+            "rejection_reason": None,
+            "verification_pending": True,
+            "token_consumed": True,
+            "selected_public_cunit_id": selected_public_cunit_id,
+            "expected_snapshot_revision": request[
+                "expected_snapshot_revision"
+            ],
+            "expected_combat_id": request["expected_combat_id"],
+            "expected_side_index": request["expected_side_index"],
+            "expected_scope": request["expected_scope"],
+            "target_province_id": target_province_id,
+            "affected_public_cunit_ids_in_stored_order": copy.deepcopy(
+                cached_battle[
+                    "affected_public_cunit_ids_in_stored_order"
+                ]
+            ),
+            "unaffected_same_side_public_cunit_ids_in_stored_order": (
+                copy.deepcopy(
+                    cached_battle[
+                        "unaffected_same_side_public_cunit_ids_in_stored_order"
+                    ]
+                )
+            ),
+            "underlying_move_result": copy.deepcopy(move_result),
+            "semantic_postcondition": semantic_postcondition,
+            "backend_id": "native-headless",
+        }
+        return _normalize_active_combat_retreat_order_payload(
+            payload, request=request
+        )
+
+    def _active_combat_retreat_v1_rejection(
+        self,
+        *,
+        step: str,
+        request: dict[str, object],
+        token_binding: dict[str, object] | None,
+        reason: str,
+    ) -> dict[str, object]:
+        battle_binding = (
+            token_binding.get("battle_binding")
+            if isinstance(token_binding, dict)
+            else None
+        )
+        affected = (
+            copy.deepcopy(
+                battle_binding.get(
+                    "affected_public_cunit_ids_in_stored_order", []
+                )
+            )
+            if isinstance(battle_binding, dict)
+            else []
+        )
+        unaffected = (
+            copy.deepcopy(
+                battle_binding.get(
+                    "unaffected_same_side_public_cunit_ids_in_stored_order",
+                    [],
+                )
+            )
+            if isinstance(battle_binding, dict)
+            else []
+        )
+        payload = {
+            "schema_version": 1,
+            "contract_stage": ACTIVE_COMBAT_RETREAT_V1_CONTRACT_STAGE,
+            "step": step,
+            "accepted": False,
+            "status": "rejected",
+            "rejection_reason": reason,
+            "verification_pending": False,
+            "token_consumed": True,
+            "selected_public_cunit_id": request[
+                "selected_public_cunit_id"
+            ],
+            "expected_snapshot_revision": request[
+                "expected_snapshot_revision"
+            ],
+            "expected_combat_id": request["expected_combat_id"],
+            "expected_side_index": request["expected_side_index"],
+            "expected_scope": request["expected_scope"],
+            "target_province_id": request["target_province_id"],
+            "affected_public_cunit_ids_in_stored_order": affected,
+            "unaffected_same_side_public_cunit_ids_in_stored_order": (
+                unaffected
+            ),
+            "underlying_move_result": None,
+            "semantic_postcondition": (
+                _active_combat_retreat_not_observed_postcondition()
+            ),
+            "backend_id": "native-headless",
+        }
+        return _normalize_active_combat_retreat_order_payload(
+            payload, request=request
+        )
 
     def _execute_native_war_step(
         self, step: str, *, expected_revision: int | None
@@ -4662,6 +5575,450 @@ class NativeHeadlessGameplayDriver:
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
             "queried_native_revision": starting.get("native_revision"),
+        }
+
+    def _execute_battle_control_snapshot_v1_query(
+        self,
+        step: str,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one atomic exact-build ongoing-battle control frame."""
+        subject_public_cunit_id = (
+            parse_query_battle_control_snapshot_v1_step(step)
+        )
+        if subject_public_cunit_id is None:
+            raise UnsupportedStepError(
+                f"malformed battle-control snapshot v1 step {step}"
+            )
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native battle-control snapshot requires a paused snapshot"
+            )
+        subject = _army_by_id(starting, subject_public_cunit_id)
+        if not (
+            isinstance(subject, dict)
+            and subject.get("controllable") is True
+            and _army_in_active_combat(subject)
+        ):
+            raise BridgeUnavailableError(
+                "native battle-control subject is not a controllable army "
+                "in active combat"
+            )
+        date_raw = _date_raw(starting, "battle-control starting snapshot")
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native battle-control query lacks a native revision"
+            )
+        starting_revision = int(starting["revision"])
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else starting_revision
+        )
+        for attempt in range(_BATTLE_CONTROL_QUERY_MAX_ATTEMPTS):
+            try:
+                result = self._execute_primitive_step(
+                    step,
+                    expected_revision=selected_revision,
+                    required_capability=(
+                        QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY
+                    ),
+                )
+                break
+            except _NativeCommandRejectedError as error:
+                if (
+                    error.native_error
+                    != _BATTLE_CONTROL_TRANSIENT_QUERY_ERROR
+                    or attempt + 1 >= _BATTLE_CONTROL_QUERY_MAX_ATTEMPTS
+                ):
+                    raise
+                retry_snapshot = self.take_snapshot()
+                retry_subject = _army_by_id(
+                    retry_snapshot, subject_public_cunit_id
+                )
+                if not (
+                    _same_paused_native_frame(starting, retry_snapshot)
+                    and starting.get("revision")
+                    == retry_snapshot.get("revision")
+                    and starting.get("date_raw")
+                    == retry_snapshot.get("date_raw")
+                    and isinstance(retry_subject, dict)
+                    and retry_subject.get("controllable") is True
+                    and _army_in_active_combat(retry_subject)
+                ):
+                    raise
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "snapshot_revision",
+                "battle_control_snapshot",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") != "available"
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native battle-control query returned a malformed status"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native battle-control query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_battle_control_snapshot_v1(
+                result.get("battle_control_snapshot"),
+                expected_subject_public_cunit_id=(
+                    subject_public_cunit_id
+                ),
+                expected_observed_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native battle-control query returned a malformed frame: {error}"
+            ) from error
+        current = self.take_snapshot()
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+        ):
+            raise BridgeUnavailableError(
+                "native battle-control query crossed a snapshot revision"
+            )
+        current_subject = _army_by_id(current, subject_public_cunit_id)
+        if not (
+            isinstance(current_subject, dict)
+            and current_subject.get("controllable") is True
+            and _army_in_active_combat(current_subject)
+        ):
+            raise BridgeUnavailableError(
+                "native battle-control subject changed during the query"
+            )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        cache_binding = {
+            "native_revision": native_revision,
+            "snapshot_id": starting.get("snapshot_id"),
+            "revision": starting.get("revision"),
+            "date_raw": date_raw,
+            "connection_generation": connection_generation,
+            "episode_run_id": starting.get("episode_run_id"),
+            "subject_public_cunit_id": subject_public_cunit_id,
+        }
+        with self._driver_state_lock:
+            self._battle_control_snapshot_v1_query = {
+                "status": "available",
+                "battle_control_snapshot": copy.deepcopy(normalized),
+                "query_sequence": query_sequence,
+                "cache_binding": cache_binding,
+            }
+        return {
+            **result,
+            "status": "available",
+            "battle_control_snapshot": normalized,
+            "query_sequence": query_sequence,
+            "selected_public_cunit_id": normalized[
+                "selected_public_cunit_id"
+            ],
+            "selected_native_carmy_id": normalized[
+                "selected_native_carmy_id"
+            ],
+            "selected_owner_character_id": normalized[
+                "selected_owner_character_id"
+            ],
+            "combat_province_id": normalized["combat_province_id"],
+            "side_index": normalized["side_index"],
+            "side_scope": normalized["side_scope"],
+            "affected_public_cunit_ids_in_stored_order": copy.deepcopy(
+                normalized["affected_public_cunit_ids_in_stored_order"]
+            ),
+            "unaffected_same_side_public_cunit_ids_in_stored_order": (
+                copy.deepcopy(
+                    normalized[
+                        "unaffected_same_side_public_cunit_ids_in_stored_order"
+                    ]
+                )
+            ),
+            "side_flags": copy.deepcopy(normalized["side_flags"]),
+            "legality": copy.deepcopy(normalized["legality"]),
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+        }
+
+    def _execute_battle_transition_v1_query(
+        self,
+        step: str,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one atomic lifecycle projection by full CombatID."""
+        combat_id = parse_query_battle_transition_v1_step(step)
+        if combat_id is None:
+            raise UnsupportedStepError(
+                f"malformed battle-transition v1 step {step}"
+            )
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native battle-transition query requires a paused snapshot"
+            )
+        date_raw = _date_raw(starting, "battle-transition starting snapshot")
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native battle-transition query lacks a native revision"
+            )
+        starting_revision = int(starting["revision"])
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else starting_revision
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=QUERY_BATTLE_TRANSITION_V1_CAPABILITY,
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "snapshot_revision",
+                "battle_transition_snapshot",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native battle-transition query returned a malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native battle-transition query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_battle_transition_v1(
+                result.get("battle_transition_snapshot"),
+                expected_combat_id=combat_id,
+                expected_observed_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native battle-transition query returned a malformed frame: "
+                f"{error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native battle-transition envelope status disagrees with frame"
+            )
+        current = self.take_snapshot()
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+        ):
+            raise BridgeUnavailableError(
+                "native battle-transition query crossed a snapshot revision"
+            )
+        return {
+            **result,
+            "status": normalized["status"],
+            "battle_transition_snapshot": normalized,
+            "query_sequence": query_sequence,
+            "combat_id": normalized["combat_id"],
+            "province_id": normalized["province_id"],
+            "phase": normalized["phase"],
+            "phase_raw": normalized["phase_raw"],
+            "phase_day": normalized["phase_day"],
+            "winner_side": normalized["winner_side"],
+            "winner_raw": normalized["winner_raw"],
+            "forced_winner_side": normalized["forced_winner_side"],
+            "forced_winner_raw": normalized["forced_winner_raw"],
+            "finalized": normalized["finalized"],
+            "battle_result_id": normalized["battle_result_id"],
+            "attacker_public_cunit_ids_in_stored_order": copy.deepcopy(
+                normalized[
+                    "attacker_public_cunit_ids_in_stored_order"
+                ]
+            ),
+            "defender_public_cunit_ids_in_stored_order": copy.deepcopy(
+                normalized[
+                    "defender_public_cunit_ids_in_stored_order"
+                ]
+            ),
+            "battle_transition_ready": normalized[
+                "battle_transition_ready"
+            ],
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+        }
+
+    def _execute_battle_reinforcement_assignment_v1_query(
+        self,
+        step: str,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one paused exact-build native AI help assignment frame."""
+        selected_public_cunit_id = (
+            parse_query_battle_reinforcement_assignment_v1_step(step)
+        )
+        if selected_public_cunit_id is None:
+            raise UnsupportedStepError(
+                f"malformed battle-reinforcement assignment v1 step {step}"
+            )
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native battle-reinforcement query requires a paused snapshot"
+            )
+        date_raw = _date_raw(
+            starting, "battle-reinforcement starting snapshot"
+        )
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native battle-reinforcement query lacks a native revision"
+            )
+        starting_revision = int(starting["revision"])
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else starting_revision
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
+            ),
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "snapshot_revision",
+                "battle_reinforcement_assignment",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native battle-reinforcement query returned a malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native battle-reinforcement query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_battle_reinforcement_assignment_v1(
+                result.get("battle_reinforcement_assignment"),
+                expected_selected_public_cunit_id=selected_public_cunit_id,
+                expected_observed_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native battle-reinforcement query returned a malformed frame: "
+                f"{error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native battle-reinforcement envelope status disagrees with frame"
+            )
+        current = self.take_snapshot()
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+        ):
+            raise BridgeUnavailableError(
+                "native battle-reinforcement query crossed a snapshot revision"
+            )
+        return {
+            **result,
+            "status": normalized["status"],
+            "battle_reinforcement_assignment": normalized,
+            "query_sequence": query_sequence,
+            "selected_public_cunit_id": normalized[
+                "selected_public_cunit_id"
+            ],
+            "selected_native_carmy_id": normalized[
+                "selected_native_carmy_id"
+            ],
+            "coordinator_id": normalized["coordinator_id"],
+            "unit_stack_stored_index": normalized[
+                "unit_stack_stored_index"
+            ],
+            "subunit_stored_index": normalized["subunit_stored_index"],
+            "signal": copy.deepcopy(normalized["signal"]),
+            "assignment": copy.deepcopy(normalized["assignment"]),
+            "route": copy.deepcopy(normalized["route"]),
+            "native_order": copy.deepcopy(normalized["native_order"]),
+            "contact_projection": copy.deepcopy(
+                normalized["contact_projection"]
+            ),
+            "battle_reinforcement_assignment_ready": normalized[
+                "battle_reinforcement_assignment_ready"
+            ],
+            "unavailable_reason": normalized["unavailable_reason"],
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
         }
 
     def _execute_war_termination_terms_query(
@@ -6222,6 +7579,175 @@ class ConfiguredHybridFallbackDriver:
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
         if isinstance(step, str) and step.startswith(
+            QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX
+        ):
+            if (
+                parse_query_battle_reinforcement_assignment_v1_step(step)
+                is None
+            ):
+                raise UnsupportedStepError(
+                    "malformed battle-reinforcement assignment v1 step"
+                )
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "battle-reinforcement queries are pure native and will "
+                    "not use fallback"
+                )
+            starting = self.take_snapshot()
+            native_revision = None
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            ending = self.take_snapshot()
+            if (
+                ending.get("snapshot_id") != starting.get("snapshot_id")
+                or ending.get("revision") != starting.get("revision")
+                or ending.get("native_revision")
+                != starting.get("native_revision")
+                or ending.get("date_raw") != starting.get("date_raw")
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid battle-reinforcement query crossed a snapshot "
+                    "revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+            }
+        if isinstance(step, str) and step.startswith(
+            QUERY_BATTLE_TRANSITION_V1_STEP_PREFIX
+        ):
+            if parse_query_battle_transition_v1_step(step) is None:
+                raise UnsupportedStepError(
+                    "malformed battle-transition v1 step"
+                )
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_BATTLE_TRANSITION_V1_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "battle-transition queries are pure native and will not "
+                    "use fallback"
+                )
+            starting = self.take_snapshot()
+            native_revision = None
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            ending = self.take_snapshot()
+            if (
+                ending.get("snapshot_id") != starting.get("snapshot_id")
+                or ending.get("revision") != starting.get("revision")
+                or ending.get("native_revision")
+                != starting.get("native_revision")
+                or ending.get("date_raw") != starting.get("date_raw")
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid battle-transition query crossed a snapshot revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+            }
+        if isinstance(step, str) and step.startswith(
+            QUERY_BATTLE_CONTROL_SNAPSHOT_V1_STEP_PREFIX
+        ):
+            if parse_query_battle_control_snapshot_v1_step(step) is None:
+                raise UnsupportedStepError(
+                    "malformed battle-control snapshot v1 step"
+                )
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "battle-control snapshot queries are pure native and "
+                    "will not use fallback"
+                )
+            starting = self.take_snapshot()
+            native_revision = None
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            ending = self.take_snapshot()
+            if (
+                ending.get("snapshot_id") != starting.get("snapshot_id")
+                or ending.get("revision") != starting.get("revision")
+                or ending.get("native_revision")
+                != starting.get("native_revision")
+                or ending.get("date_raw") != starting.get("date_raw")
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid battle-control query crossed a snapshot revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+            }
+        if isinstance(step, str) and step.startswith(
             QUERY_WAR_ENTRY_ASSESSMENTS_STEP_PREFIX
         ):
             if parse_query_war_entry_assessments_step(step) is None:
@@ -7176,6 +8702,446 @@ def _war_objective_capability_flags(
     }
 
 
+def _active_combat_retreat_source_binding(
+    snapshot: object,
+) -> dict[str, object] | None:
+    if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
+        return None
+    snapshot_id = snapshot.get("snapshot_id")
+    revision = snapshot.get("revision")
+    native_revision = snapshot.get("native_revision")
+    date_raw = snapshot.get("date_raw")
+    episode_run_id = snapshot.get("episode_run_id")
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    if not (
+        isinstance(snapshot_id, str)
+        and snapshot_id
+        and isinstance(revision, int)
+        and not isinstance(revision, bool)
+        and 0 <= revision <= 2**64 - 1
+        and isinstance(native_revision, int)
+        and not isinstance(native_revision, bool)
+        and 1 <= native_revision <= 2**64 - 1
+        and isinstance(date_raw, int)
+        and not isinstance(date_raw, bool)
+        and -(2**63) <= date_raw <= 2**63 - 1
+        and isinstance(episode_run_id, str)
+        and episode_run_id
+        and isinstance(connection_generation, int)
+        and not isinstance(connection_generation, bool)
+        and 1 <= connection_generation <= 2**64 - 1
+    ):
+        return None
+    return {
+        "snapshot_id": snapshot_id,
+        "revision": revision,
+        "native_revision": native_revision,
+        "date_raw": date_raw,
+        "episode_run_id": episode_run_id,
+        "connection_generation": connection_generation,
+    }
+
+
+def _require_active_combat_retreat_source_binding(
+    snapshot: object,
+) -> dict[str, object]:
+    binding = _active_combat_retreat_source_binding(snapshot)
+    if binding is None:
+        raise BridgeUnavailableError(
+            "active-combat retreat requires one complete paused episode frame"
+        )
+    return binding
+
+
+def _active_combat_retreat_source_mismatch_reason(
+    expected: object,
+    snapshot: object,
+) -> str | None:
+    current = _active_combat_retreat_source_binding(snapshot)
+    if current is None:
+        return "snapshot_binding_unavailable"
+    if not isinstance(expected, dict):
+        return "stale_or_unknown_token"
+    for key, reason in (
+        ("revision", "revision_changed"),
+        ("native_revision", "native_revision_changed"),
+        ("date_raw", "date_changed"),
+        ("episode_run_id", "episode_changed"),
+        ("connection_generation", "connection_changed"),
+        ("snapshot_id", "snapshot_changed"),
+    ):
+        if expected.get(key) != current.get(key):
+            return reason
+    return None
+
+
+def _active_combat_retreat_battle_binding(
+    battle: dict[str, object],
+) -> dict[str, object]:
+    return {
+        "combat_id": battle.get("combat_id"),
+        "combat_province_id": battle.get("combat_province_id"),
+        "selected_public_cunit_id": battle.get(
+            "selected_public_cunit_id"
+        ),
+        "selected_native_carmy_id": battle.get("selected_native_carmy_id"),
+        "selected_owner_character_id": battle.get(
+            "selected_owner_character_id"
+        ),
+        "side_index": battle.get("side_index"),
+        "side_scope": battle.get("side_scope"),
+        "affected_public_cunit_ids_in_stored_order": copy.deepcopy(
+            battle.get("affected_public_cunit_ids_in_stored_order")
+        ),
+        "unaffected_same_side_public_cunit_ids_in_stored_order": (
+            copy.deepcopy(
+                battle.get(
+                    "unaffected_same_side_public_cunit_ids_in_stored_order"
+                )
+            )
+        ),
+    }
+
+
+def _active_combat_retreat_token_matches_snapshot(
+    token_binding: object,
+    snapshot: object,
+) -> bool:
+    if not isinstance(token_binding, dict) or set(token_binding) != {
+        "candidate_token",
+        "order_step",
+        "source_binding",
+        "battle_control_snapshot",
+        "battle_binding",
+        "target_province_id",
+        "route_preview",
+    }:
+        return False
+    if token_binding.get("source_binding") != (
+        _active_combat_retreat_source_binding(snapshot)
+    ):
+        return False
+    battle = token_binding.get("battle_binding")
+    order = parse_order_active_combat_retreat_v1_step(
+        token_binding.get("order_step")
+    )
+    if not isinstance(battle, dict) or order is None:
+        return False
+    if not (
+        order.get("candidate_token") == token_binding.get("candidate_token")
+        and order.get("expected_snapshot_revision")
+        == token_binding["source_binding"].get("revision")
+        and order.get("expected_combat_id") == battle.get("combat_id")
+        and order.get("selected_public_cunit_id")
+        == battle.get("selected_public_cunit_id")
+        and order.get("expected_side_index") == battle.get("side_index")
+        and order.get("expected_scope") == battle.get("side_scope")
+        and order.get("target_province_id")
+        == token_binding.get("target_province_id")
+    ):
+        return False
+    selected = _army_by_id(
+        snapshot, int(order["selected_public_cunit_id"])
+    )
+    return bool(
+        isinstance(selected, dict)
+        and selected.get("controllable") is True
+        and _army_in_active_combat(selected)
+        and selected.get("current_province_id")
+        == battle.get("combat_province_id")
+    )
+
+
+def _active_combat_retreat_preview_steps(
+    snapshot: dict[str, object],
+    action_steps: set[str],
+) -> set[str]:
+    result: set[str] = set()
+    if snapshot.get("paused") is not True:
+        return result
+    for step in tuple(action_steps):
+        parsed = parse_preview_move_army_step(step)
+        if parsed is None:
+            continue
+        selected_public_cunit_id, target_province_id = parsed
+        army = _army_by_id(snapshot, selected_public_cunit_id)
+        if not (
+            isinstance(army, dict)
+            and army.get("controllable") is True
+            and _army_in_active_combat(army)
+            and target_province_id != army.get("current_province_id")
+        ):
+            continue
+        result.add(
+            preview_active_combat_retreat_v1_step(
+                selected_public_cunit_id, target_province_id
+            )
+        )
+    return result
+
+
+def _canonical_active_combat_retreat_route_preview(
+    result: object,
+    *,
+    selected_public_cunit_id: int,
+    combat_province_id: int,
+    target_province_id: int,
+    expected_date_raw: int,
+) -> dict[str, object] | None:
+    if not isinstance(result, dict) or result.get("status") != "available":
+        return None
+    route_preview = result.get("route_preview")
+    if not isinstance(route_preview, dict):
+        return None
+    route = route_preview.get("route_province_ids")
+    if not (
+        route_preview.get("status") == "available"
+        and route_preview.get("army_id") == selected_public_cunit_id
+        and route_preview.get("origin_province_id") == combat_province_id
+        and route_preview.get("target_province_id") == target_province_id
+        and target_province_id != combat_province_id
+        and isinstance(route, list)
+        and bool(route)
+        and all(_positive_native_id(province_id) for province_id in route)
+        and route[-1] == target_province_id
+        and route_preview.get("previewed_date_raw") == expected_date_raw
+    ):
+        return None
+    move_mode = route_preview.get("move_mode")
+    eta_date_raw = route_preview.get("eta_date_raw")
+    movement_days = route_preview.get("movement_days")
+    if not (
+        (
+            move_mode is None
+            or (
+                isinstance(move_mode, int)
+                and not isinstance(move_mode, bool)
+                and -(2**31) <= move_mode <= 2**31 - 1
+            )
+        )
+        and (
+            eta_date_raw is None
+            or (
+                isinstance(eta_date_raw, int)
+                and not isinstance(eta_date_raw, bool)
+                and -(2**63) <= eta_date_raw <= 2**63 - 1
+            )
+        )
+        and (
+            movement_days is None
+            or (
+                isinstance(movement_days, int)
+                and not isinstance(movement_days, bool)
+                and 0 <= movement_days <= 2**31 - 1
+            )
+        )
+    ):
+        return None
+    return {
+        "army_id": selected_public_cunit_id,
+        "origin_province_id": combat_province_id,
+        "target_province_id": target_province_id,
+        "route_province_ids": list(route),
+        "previewed_date_raw": expected_date_raw,
+        "move_mode": move_mode,
+        "eta_date_raw": eta_date_raw,
+        "movement_days": movement_days,
+    }
+
+
+def _active_combat_retreat_preview_payload(
+    *,
+    step: str,
+    source_binding: dict[str, object],
+    battle: dict[str, object],
+    target_province_id: int,
+    target_preview: dict[str, object],
+    status: str,
+    unavailable_reason: str | None,
+    action_ready: bool,
+) -> dict[str, object]:
+    return {
+        "schema_version": 1,
+        "contract_stage": ACTIVE_COMBAT_RETREAT_V1_CONTRACT_STAGE,
+        "step": step,
+        "status": status,
+        "unavailable_reason": unavailable_reason,
+        "action_ready": action_ready,
+        "source_binding": copy.deepcopy(source_binding),
+        "battle_control_snapshot": copy.deepcopy(battle),
+        "selected_public_cunit_id": battle["selected_public_cunit_id"],
+        "selected_native_carmy_id": battle["selected_native_carmy_id"],
+        "selected_owner_character_id": battle[
+            "selected_owner_character_id"
+        ],
+        "combat_id": battle["combat_id"],
+        "combat_province_id": battle["combat_province_id"],
+        "side_index": battle["side_index"],
+        "side_scope": battle["side_scope"],
+        "affected_public_cunit_ids_in_stored_order": copy.deepcopy(
+            battle["affected_public_cunit_ids_in_stored_order"]
+        ),
+        "unaffected_same_side_public_cunit_ids_in_stored_order": (
+            copy.deepcopy(
+                battle[
+                    "unaffected_same_side_public_cunit_ids_in_stored_order"
+                ]
+            )
+        ),
+        "target_province_id": target_province_id,
+        "target_preview": copy.deepcopy(target_preview),
+        "backend_id": "native-headless",
+    }
+
+
+def _active_combat_retreat_not_observed_postcondition() -> dict[str, object]:
+    return {
+        "status": "not_observed",
+        "observation_snapshot_id": None,
+        "observation_revision": None,
+        "observation_native_revision": None,
+        "observation_date_raw": None,
+        "affected_armies_in_stored_order": [],
+        "all_affected_retreating_observed": None,
+        "all_affected_target_observed": None,
+        "all_affected_route_observed": None,
+        "combat_id_post_query_performed": False,
+        "winner_verified": False,
+        "phase_verified": False,
+        "full_postcondition_verified": False,
+    }
+
+
+def _active_combat_retreat_pending_postcondition() -> dict[str, object]:
+    return {
+        **_active_combat_retreat_not_observed_postcondition(),
+        "status": "observation_pending",
+    }
+
+
+def _active_combat_retreat_semantic_postcondition(
+    snapshot: dict[str, object],
+    *,
+    affected_public_cunit_ids: list[int],
+    target_province_id: int,
+) -> dict[str, object]:
+    source = _active_combat_retreat_source_binding(snapshot)
+    if source is None:
+        return _active_combat_retreat_pending_postcondition()
+    observations: list[dict[str, object]] = []
+    for public_cunit_id in affected_public_cunit_ids:
+        army = _army_by_id(snapshot, public_cunit_id)
+        if not isinstance(army, dict):
+            observations.append(
+                {
+                    "public_cunit_id": public_cunit_id,
+                    "present": False,
+                    "retreating": None,
+                    "move_target_province_id": None,
+                    "target_matches": None,
+                    "route_province_ids": None,
+                    "route_reaches_target": None,
+                }
+            )
+            continue
+        move_target = army.get("move_target_province_id")
+        move_target = (
+            int(move_target) if _positive_native_id(move_target) else None
+        )
+        route = _canonical_remaining_route(army)
+        move_target_observable = army.get("move_target_observable") is not False
+        retreat_state_observable = any(
+            key in army
+            for key in (
+                "retreating",
+                "in_combat",
+                "army_state",
+                "army_state_code",
+            )
+        )
+        observations.append(
+            {
+                "public_cunit_id": public_cunit_id,
+                "present": True,
+                "retreating": (
+                    _army_retreating(army)
+                    if retreat_state_observable
+                    else None
+                ),
+                "move_target_province_id": (
+                    move_target if move_target_observable else None
+                ),
+                "target_matches": (
+                    move_target == target_province_id
+                    if move_target_observable
+                    else None
+                ),
+                "route_province_ids": route,
+                "route_reaches_target": (
+                    bool(route and route[-1] == target_province_id)
+                    if isinstance(route, list)
+                    else None
+                ),
+            }
+        )
+    return {
+        "status": "observed_partial",
+        "observation_snapshot_id": source["snapshot_id"],
+        "observation_revision": source["revision"],
+        "observation_native_revision": source["native_revision"],
+        "observation_date_raw": source["date_raw"],
+        "affected_armies_in_stored_order": observations,
+        "all_affected_retreating_observed": bool(observations) and all(
+            row["present"] is True and row["retreating"] is True
+            for row in observations
+        ),
+        "all_affected_target_observed": bool(observations) and all(
+            row["present"] is True and row["target_matches"] is True
+            for row in observations
+        ),
+        "all_affected_route_observed": bool(observations) and all(
+            row["present"] is True
+            and row["route_reaches_target"] is True
+            for row in observations
+        ),
+        "combat_id_post_query_performed": False,
+        "winner_verified": False,
+        "phase_verified": False,
+        "full_postcondition_verified": False,
+    }
+
+
+def _normalize_active_combat_retreat_order_payload(
+    payload: dict[str, object],
+    *,
+    request: dict[str, object],
+) -> dict[str, object]:
+    try:
+        return normalize_active_combat_retreat_v1_order_ack(
+            payload,
+            expected_selected_public_cunit_id=int(
+                request["selected_public_cunit_id"]
+            ),
+            expected_snapshot_revision=int(
+                request["expected_snapshot_revision"]
+            ),
+            expected_combat_id=int(request["expected_combat_id"]),
+            expected_side_index=int(request["expected_side_index"]),
+            expected_scope=str(request["expected_scope"]),
+            expected_target_province_id=int(request["target_province_id"]),
+            expected_candidate_token=str(request["candidate_token"]),
+        )
+    except ValueError as error:
+        raise BridgeUnavailableError(
+            f"active-combat retreat order composition failed: {error}"
+        ) from error
+
+
 def _army_in_combat_or_retreat(army: dict[str, object]) -> bool:
     state = army.get("army_state")
     state_code = army.get("army_state_code")
@@ -7190,6 +9156,23 @@ def _army_in_combat_or_retreat(army: dict[str, object]) -> bool:
             isinstance(state_code, int)
             and not isinstance(state_code, bool)
             and state_code in {2, 6}
+        )
+    )
+
+
+def _army_in_active_combat(army: dict[str, object]) -> bool:
+    state = army.get("army_state")
+    state_code = army.get("army_state_code")
+    return bool(
+        army.get("in_combat") is True
+        or (
+            isinstance(state, str)
+            and state.casefold() == "combat"
+        )
+        or (
+            isinstance(state_code, int)
+            and not isinstance(state_code, bool)
+            and state_code == 2
         )
     )
 
@@ -7236,6 +9219,8 @@ def _action_steps(
     expand_preview_move_armies = False
     expand_route_contact_horizons = False
     expand_actual_contact_scopes = False
+    expand_battle_control_snapshots = False
+    expand_battle_reinforcement_assignments = False
     expand_disband_armies = False
     expand_split_armies = False
     expand_merge_armies = False
@@ -7268,6 +9253,17 @@ def _action_steps(
             expand_route_contact_horizons = True
         elif capability == QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY:
             expand_actual_contact_scopes = True
+        elif capability == QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY:
+            expand_battle_control_snapshots = True
+        elif capability == QUERY_BATTLE_TRANSITION_V1_CAPABILITY:
+            # CombatIDs are supplied explicitly (normally from a prior battle
+            # frame/token); never advertise the adapter's N placeholder.
+            continue
+        elif (
+            capability
+            == QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
+        ):
+            expand_battle_reinforcement_assignments = True
         elif capability == DISBAND_ARMY_CAPABILITY:
             expand_disband_armies = True
         elif capability == SPLIT_ARMY_HALF_CAPABILITY:
@@ -7331,6 +9327,9 @@ def _action_steps(
             (
                 QUERY_COMBAT_SIMULATION_INPUTS_STEP_PREFIX,
                 QUERY_COMBAT_SIMULATION_INPUTS_V3_STEP_PREFIX,
+                QUERY_BATTLE_CONTROL_SNAPSHOT_V1_STEP_PREFIX,
+                QUERY_BATTLE_TRANSITION_V1_STEP_PREFIX,
+                QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX,
                 "query-war-termination-options-",
                 "query-war-termination-terms-v1-",
                 QUERY_WAR_TERMINATION_EXIT_TERMS_STEP_PREFIX,
@@ -7424,6 +9423,23 @@ def _action_steps(
             if _positive_native_id(army.get("army_id"))
             and _positive_native_id(army.get("current_province_id"))
             and not _army_retreating(army)
+        )
+    if expand_battle_control_snapshots and paused is True:
+        steps.update(
+            query_battle_control_snapshot_v1_step(int(army["army_id"]))
+            for army in controllable
+            if _positive_native_id(army.get("army_id"))
+            and int(army["army_id"]) <= 2**31 - 1
+            and _army_in_active_combat(army)
+        )
+    if expand_battle_reinforcement_assignments and paused is True:
+        steps.update(
+            query_battle_reinforcement_assignment_v1_step(
+                int(army["army_id"])
+            )
+            for army in armies
+            if _positive_native_id(army.get("army_id"))
+            and int(army["army_id"]) <= 2**31 - 1
         )
     if expand_declare_wars and isinstance(declarable_wars, list):
         steps.update(

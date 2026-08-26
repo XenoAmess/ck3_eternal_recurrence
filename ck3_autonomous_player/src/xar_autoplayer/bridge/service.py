@@ -49,6 +49,27 @@ from .war_entry_contract import (
     require_declarable_war_targets,
 )
 from .actual_contact_contract import query_actual_contact_scope_step
+from .battle_control_contract import (
+    QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY,
+    normalize_battle_control_snapshot_v1,
+    query_battle_control_snapshot_v1_step,
+)
+from .battle_transition_contract import (
+    QUERY_BATTLE_TRANSITION_V1_CAPABILITY,
+    normalize_battle_transition_v1,
+    query_battle_transition_v1_step,
+)
+from .battle_reinforcement_assignment_contract import (
+    QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY,
+    normalize_battle_reinforcement_assignment_v1,
+    query_battle_reinforcement_assignment_v1_step,
+)
+from .active_combat_retreat_contract import (
+    normalize_active_combat_retreat_v1_order_ack,
+    normalize_active_combat_retreat_v1_preview,
+    order_active_combat_retreat_v1_step,
+    preview_active_combat_retreat_v1_step,
+)
 from ..simulation.loaded_playset_proof import (
     LoadedPlaysetProofError,
     build_loaded_playset_proof,
@@ -963,6 +984,728 @@ class GameplayBridgeService:
                 "native actual-contact query lacks its exact ordered scope"
             )
         return result
+
+    def query_battle_control_snapshot_v1(
+        self,
+        subject_public_cunit_id: int,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one selected full public CUnitID's battle frame while paused."""
+        step = query_battle_control_snapshot_v1_step(
+            subject_public_cunit_id
+        )
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "battle-control queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 0
+        ):
+            raise BridgeUnavailableError(
+                "battle-control query lacks a valid snapshot revision"
+            )
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+        ):
+            raise ValueError(
+                "expected_revision must be a non-negative integer"
+            )
+        if expected_revision != revision:
+            raise BridgeUnavailableError(
+                "battle-control revision mismatch: expected "
+                f"{expected_revision}, current {revision}"
+            )
+        native_revision = snapshot.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-control query lacks a positive native revision"
+            )
+        date_raw = snapshot.get("date_raw")
+        if (
+            isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**63) <= date_raw <= 2**63 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-control query lacks a signed int64 date"
+            )
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query ongoing battle control frames"
+            )
+        result = self.execute_step(
+            step,
+            expected_revision=expected_revision,
+        )
+        if not isinstance(result, dict):
+            raise BridgeUnavailableError(
+                "battle-control backend returned a non-object result"
+            )
+        required_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "battle_control_snapshot",
+            "selected_public_cunit_id",
+            "selected_native_carmy_id",
+            "selected_owner_character_id",
+            "combat_province_id",
+            "side_index",
+            "side_scope",
+            "affected_public_cunit_ids_in_stored_order",
+            "unaffected_same_side_public_cunit_ids_in_stored_order",
+            "side_flags",
+            "legality",
+            "backend_id",
+        }
+        optional_result_keys = {
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+        }
+        if (
+            not required_result_keys <= set(result)
+            or set(result) - required_result_keys - optional_result_keys
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") != "available"
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "battle-control backend returned a malformed result"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-control result lacks query_sequence"
+            )
+        try:
+            normalized = normalize_battle_control_snapshot_v1(
+                result.get("battle_control_snapshot"),
+                expected_subject_public_cunit_id=(
+                    subject_public_cunit_id
+                ),
+                expected_observed_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"battle-control result is malformed: {error}"
+            ) from error
+        retreat_mirrors = {
+            "selected_public_cunit_id": normalized[
+                "selected_public_cunit_id"
+            ],
+            "selected_native_carmy_id": normalized[
+                "selected_native_carmy_id"
+            ],
+            "selected_owner_character_id": normalized[
+                "selected_owner_character_id"
+            ],
+            "combat_province_id": normalized["combat_province_id"],
+            "side_index": normalized["side_index"],
+            "side_scope": normalized["side_scope"],
+            "affected_public_cunit_ids_in_stored_order": normalized[
+                "affected_public_cunit_ids_in_stored_order"
+            ],
+            "unaffected_same_side_public_cunit_ids_in_stored_order": (
+                normalized[
+                    "unaffected_same_side_public_cunit_ids_in_stored_order"
+                ]
+            ),
+            "side_flags": normalized["side_flags"],
+            "legality": normalized["legality"],
+        }
+        if any(
+            result.get(key) != expected
+            for key, expected in retreat_mirrors.items()
+        ):
+            raise BridgeUnavailableError(
+                "battle-control active-retreat mirror disagrees with its frame"
+            )
+        if (
+            "queried_snapshot_id" in result
+            and result.get("queried_snapshot_id")
+            != snapshot.get("snapshot_id")
+        ) or (
+            "queried_revision" in result
+            and result.get("queried_revision") != revision
+        ) or (
+            "queried_native_revision" in result
+            and result.get("queried_native_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "battle-control result is bound to another snapshot"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot.get("snapshot_id")
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("episode_run_id")
+            == snapshot.get("episode_run_id")
+        ):
+            raise BridgeUnavailableError(
+                "battle-control query crossed a snapshot revision"
+            )
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        return {
+            **result,
+            "schema_version": 1,
+            "status": "available",
+            "scope": "exact-ongoing-battle",
+            "source": {
+                "game_version": (
+                    hello.get("game_version")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "executable_sha256": (
+                    hello.get("executable_sha256")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "backend_id": snapshot.get("backend_id"),
+            },
+            "subject_army_id": subject_public_cunit_id,
+            **copy.deepcopy(retreat_mirrors),
+            "battle_control_ready": True,
+            "battle_control_snapshot": normalized,
+        }
+
+    def query_battle_transition_v1(
+        self,
+        combat_id: int,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one full CombatID's lifecycle without an army-state gate."""
+        step = query_battle_transition_v1_step(combat_id)
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "battle-transition queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 0
+        ):
+            raise BridgeUnavailableError(
+                "battle-transition query lacks a valid snapshot revision"
+            )
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+        ):
+            raise ValueError(
+                "expected_revision must be a non-negative integer"
+            )
+        if expected_revision != revision:
+            raise BridgeUnavailableError(
+                "battle-transition revision mismatch: expected "
+                f"{expected_revision}, current {revision}"
+            )
+        native_revision = snapshot.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-transition query lacks a positive native revision"
+            )
+        date_raw = snapshot.get("date_raw")
+        if (
+            isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**63) <= date_raw <= 2**63 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-transition query lacks a signed int64 date"
+            )
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_BATTLE_TRANSITION_V1_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query exact combat lifecycle"
+            )
+        result = self.execute_step(
+            step,
+            expected_revision=expected_revision,
+        )
+        if not isinstance(result, dict):
+            raise BridgeUnavailableError(
+                "battle-transition backend returned a non-object result"
+            )
+        mirror_keys = {
+            "combat_id",
+            "province_id",
+            "phase",
+            "phase_raw",
+            "phase_day",
+            "winner_side",
+            "winner_raw",
+            "forced_winner_side",
+            "forced_winner_raw",
+            "finalized",
+            "battle_result_id",
+            "attacker_public_cunit_ids_in_stored_order",
+            "defender_public_cunit_ids_in_stored_order",
+            "battle_transition_ready",
+        }
+        required_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "battle_transition_snapshot",
+            "backend_id",
+            *mirror_keys,
+        }
+        optional_result_keys = {
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+        }
+        if (
+            not required_result_keys <= set(result)
+            or set(result) - required_result_keys - optional_result_keys
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "battle-transition backend returned a malformed result"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-transition result lacks query_sequence"
+            )
+        try:
+            normalized = normalize_battle_transition_v1(
+                result.get("battle_transition_snapshot"),
+                expected_combat_id=combat_id,
+                expected_observed_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"battle-transition result is malformed: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "battle-transition envelope status disagrees with its frame"
+            )
+        lifecycle_mirrors = {
+            key: copy.deepcopy(normalized[key]) for key in mirror_keys
+        }
+        if any(
+            result.get(key) != expected
+            for key, expected in lifecycle_mirrors.items()
+        ):
+            raise BridgeUnavailableError(
+                "battle-transition lifecycle mirror disagrees with its frame"
+            )
+        if (
+            "queried_snapshot_id" in result
+            and result.get("queried_snapshot_id")
+            != snapshot.get("snapshot_id")
+        ) or (
+            "queried_revision" in result
+            and result.get("queried_revision") != revision
+        ) or (
+            "queried_native_revision" in result
+            and result.get("queried_native_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "battle-transition result is bound to another snapshot"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot.get("snapshot_id")
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("episode_run_id")
+            == snapshot.get("episode_run_id")
+        ):
+            raise BridgeUnavailableError(
+                "battle-transition query crossed a snapshot revision"
+            )
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        return {
+            **result,
+            "schema_version": 1,
+            "status": normalized["status"],
+            "scope": "exact-combat-lifecycle",
+            "source": {
+                "game_version": (
+                    hello.get("game_version")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "executable_sha256": (
+                    hello.get("executable_sha256")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "backend_id": snapshot.get("backend_id"),
+            },
+            **lifecycle_mirrors,
+            "battle_transition_snapshot": normalized,
+        }
+
+    def query_battle_reinforcement_assignment_v1(
+        self,
+        selected_public_cunit_id: int,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one native AI help signal, assignment, route and contact view."""
+        step = query_battle_reinforcement_assignment_v1_step(
+            selected_public_cunit_id
+        )
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "battle-reinforcement queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 0
+        ):
+            raise BridgeUnavailableError(
+                "battle-reinforcement query lacks a valid snapshot revision"
+            )
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+        ):
+            raise ValueError(
+                "expected_revision must be a non-negative integer"
+            )
+        if expected_revision != revision:
+            raise BridgeUnavailableError(
+                "battle-reinforcement revision mismatch: expected "
+                f"{expected_revision}, current {revision}"
+            )
+        native_revision = snapshot.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-reinforcement query lacks a positive native revision"
+            )
+        date_raw = snapshot.get("date_raw")
+        if (
+            isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**63) <= date_raw <= 2**63 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-reinforcement query lacks a signed int64 date"
+            )
+        bridge_capabilities = self.capabilities().get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query native AI reinforcement state"
+            )
+        result = self.execute_step(
+            step,
+            expected_revision=expected_revision,
+        )
+        if not isinstance(result, dict):
+            raise BridgeUnavailableError(
+                "battle-reinforcement backend returned a non-object result"
+            )
+        mirror_keys = {
+            "selected_public_cunit_id",
+            "selected_native_carmy_id",
+            "coordinator_id",
+            "unit_stack_stored_index",
+            "subunit_stored_index",
+            "signal",
+            "assignment",
+            "route",
+            "native_order",
+            "contact_projection",
+            "battle_reinforcement_assignment_ready",
+            "unavailable_reason",
+        }
+        required_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "battle_reinforcement_assignment",
+            "backend_id",
+            *mirror_keys,
+        }
+        optional_result_keys = {
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+        }
+        if (
+            not required_result_keys <= set(result)
+            or set(result) - required_result_keys - optional_result_keys
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "battle-reinforcement backend returned a malformed result"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-reinforcement result lacks query_sequence"
+            )
+        try:
+            normalized = normalize_battle_reinforcement_assignment_v1(
+                result.get("battle_reinforcement_assignment"),
+                expected_selected_public_cunit_id=selected_public_cunit_id,
+                expected_observed_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"battle-reinforcement result is malformed: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "battle-reinforcement envelope status disagrees with frame"
+            )
+        mirrors = {
+            key: copy.deepcopy(normalized[key]) for key in mirror_keys
+        }
+        if any(
+            result.get(key) != expected
+            for key, expected in mirrors.items()
+        ):
+            raise BridgeUnavailableError(
+                "battle-reinforcement mirror disagrees with its frame"
+            )
+        if (
+            "queried_snapshot_id" in result
+            and result.get("queried_snapshot_id")
+            != snapshot.get("snapshot_id")
+        ) or (
+            "queried_revision" in result
+            and result.get("queried_revision") != revision
+        ) or (
+            "queried_native_revision" in result
+            and result.get("queried_native_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "battle-reinforcement result is bound to another snapshot"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot.get("snapshot_id")
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("episode_run_id")
+            == snapshot.get("episode_run_id")
+        ):
+            raise BridgeUnavailableError(
+                "battle-reinforcement query crossed a snapshot revision"
+            )
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        return {
+            **result,
+            "schema_version": 1,
+            "status": normalized["status"],
+            "scope": "native-ai-reinforcement-assignment",
+            "source": {
+                "game_version": (
+                    hello.get("game_version")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "executable_sha256": (
+                    hello.get("executable_sha256")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "backend_id": snapshot.get("backend_id"),
+            },
+            **mirrors,
+            "battle_reinforcement_assignment": normalized,
+        }
+
+    def preview_active_combat_retreat_v1(
+        self,
+        selected_public_cunit_id: int,
+        target_province_id: int,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Prove one legal same-frame retreat route and issue a short token."""
+        step = preview_active_combat_retreat_v1_step(
+            selected_public_cunit_id, target_province_id
+        )
+        capabilities = self.capabilities()
+        if not (
+            capabilities.get(
+                "active_combat_retreat_v1_composition_supported"
+            )
+            is True
+            or step in action_step_set(capabilities)
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot compose active-combat retreat"
+            )
+        result = self.execute_step(
+            step, expected_revision=expected_revision
+        )
+        try:
+            return normalize_active_combat_retreat_v1_preview(
+                result,
+                expected_selected_public_cunit_id=(
+                    selected_public_cunit_id
+                ),
+                expected_target_province_id=target_province_id,
+                expected_snapshot_revision=expected_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"active-combat retreat preview is malformed: {error}"
+            ) from error
+
+    def order_active_combat_retreat_v1(
+        self,
+        selected_public_cunit_id: int,
+        *,
+        expected_revision: int,
+        expected_combat_id: int,
+        expected_side_index: int,
+        expected_scope: str,
+        target_province_id: int,
+        candidate_token: str,
+    ) -> dict[str, object]:
+        """Consume one preview token and submit the existing player move."""
+        step = order_active_combat_retreat_v1_step(
+            selected_public_cunit_id,
+            expected_snapshot_revision=expected_revision,
+            expected_combat_id=expected_combat_id,
+            expected_side_index=expected_side_index,
+            expected_scope=expected_scope,
+            target_province_id=target_province_id,
+            candidate_token=candidate_token,
+        )
+        capabilities = self.capabilities()
+        if capabilities.get(
+            "active_combat_retreat_v1_composition_supported"
+        ) is not True:
+            raise UnsupportedStepError(
+                "selected backend cannot compose active-combat retreat"
+            )
+        result = self.execute_step(
+            step, expected_revision=expected_revision
+        )
+        try:
+            return normalize_active_combat_retreat_v1_order_ack(
+                result,
+                expected_selected_public_cunit_id=(
+                    selected_public_cunit_id
+                ),
+                expected_snapshot_revision=expected_revision,
+                expected_combat_id=expected_combat_id,
+                expected_side_index=expected_side_index,
+                expected_scope=expected_scope,
+                expected_target_province_id=target_province_id,
+                expected_candidate_token=candidate_token,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"active-combat retreat order ACK is malformed: {error}"
+            ) from error
 
     def query_combat_simulation_inputs(
         self,

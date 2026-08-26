@@ -3785,7 +3785,7 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["phase"], "native_war_pursuit")
         self.assertEqual(plan["selected_step"], "move-army-101-to-77")
 
-    def test_all_army_combat_gate_precedes_stronger_safe_route(self) -> None:
+    def test_all_army_battle_query_precedes_stronger_safe_route(self) -> None:
         stronger = _army(
             101,
             soldiers=2_000,
@@ -3812,16 +3812,23 @@ class GameplayBridgeTests(unittest.TestCase):
             score=12,
             date_raw=24_000,
             objective=77,
-            steps=("move-army-101-to-77", "life-advance"),
+            steps=(
+                "move-army-101-to-77",
+                "query-battle-control-snapshot-v1-202",
+                "life-advance",
+            ),
         )
 
         self.assertEqual(
-            plan["phase"], "native_war_global_combat_retreat_progress"
+            plan["phase"], "native_war_battle_control_query"
         )
-        self.assertEqual(plan["selected_step"], "life-advance")
-        self.assertEqual(plan["combat_retreat_armies"][0]["army_id"], 202)
+        self.assertEqual(
+            plan["selected_step"],
+            "query-battle-control-snapshot-v1-202",
+        )
+        self.assertEqual(plan["battle_subject_army_id"], 202)
 
-    def test_combat_army_does_not_hide_other_armys_urgent_reroute(self) -> None:
+    def test_battle_query_precedes_other_armys_urgent_reroute(self) -> None:
         stronger = _army(
             101,
             soldiers=2_000,
@@ -3851,12 +3858,17 @@ class GameplayBridgeTests(unittest.TestCase):
             score=12,
             date_raw=24_000,
             objectives=[77, 88],
-            steps=("preview-move-army-101-to-88", "life-advance"),
+            steps=(
+                "preview-move-army-101-to-88",
+                "query-battle-control-snapshot-v1-202",
+                "life-advance",
+            ),
         )
 
-        self.assertEqual(plan["phase"], "native_war_route_preview")
+        self.assertEqual(plan["phase"], "native_war_battle_control_query")
         self.assertEqual(
-            plan["selected_step"], "preview-move-army-101-to-88"
+            plan["selected_step"],
+            "query-battle-control-snapshot-v1-202",
         )
         self.assertNotEqual(plan["selected_step"], "life-advance")
 
@@ -6125,7 +6137,7 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(cleared["selected_step"], "move-army-11-to-77")
 
-    def test_exact_army_states_override_heuristics_but_combat_has_deadline(self) -> None:
+    def test_exact_army_states_require_battle_frame_before_combat_advance(self) -> None:
         combat = _army(
             11,
             soldiers=900,
@@ -6141,9 +6153,15 @@ class GameplayBridgeTests(unittest.TestCase):
             score=15,
             date_raw=24_000,
             objective=41,
-            steps=("life-advance",),
+            steps=(
+                "query-battle-control-snapshot-v1-11",
+                "life-advance",
+            ),
         )
-        self.assertEqual(first["selected_step"], "life-advance")
+        self.assertEqual(
+            first["selected_step"],
+            "query-battle-control-snapshot-v1-11",
+        )
 
         bounded = _native_war_plan(
             player=combat,
@@ -6158,12 +6176,19 @@ class GameplayBridgeTests(unittest.TestCase):
                 )
             ],
             objective=77,
-            steps=("life-advance", "move-army-11-to-77"),
+            steps=(
+                "query-battle-control-snapshot-v1-11",
+                "life-advance",
+                "move-army-11-to-77",
+            ),
         )
         self.assertEqual(
-            bounded["phase"], "native_war_global_combat_retreat_progress"
+            bounded["phase"], "native_war_battle_control_query"
         )
-        self.assertEqual(bounded["selected_step"], "life-advance")
+        self.assertEqual(
+            bounded["selected_step"],
+            "query-battle-control-snapshot-v1-11",
+        )
 
         unsupported = _native_war_plan(
             player=combat,
@@ -6182,10 +6207,13 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(
             unsupported["phase"],
-            "native_war_global_combat_retreat_progress_unsupported",
+            "native_war_battle_control_query_unsupported",
         )
         self.assertIsNone(unsupported["selected_step"])
-        self.assertEqual(unsupported["required_step"], "life-advance")
+        self.assertEqual(
+            unsupported["required_step"],
+            "query-battle-control-snapshot-v1-11",
+        )
 
         retreating = {**combat, "army_state": "retreating", "army_state_code": 6}
         retreat = _native_war_plan(
@@ -7419,6 +7447,11 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_enforce_demands",
                     "ck3_query_army_strengths",
                     "ck3_query_actual_contact_scope",
+                    "ck3_query_battle_control_snapshot_v1",
+                    "ck3_query_battle_transition_v1",
+                    "ck3_query_battle_reinforcement_assignment_v1",
+                    "ck3_preview_active_combat_retreat_v1",
+                    "ck3_order_active_combat_retreat_v1",
                     "ck3_query_combat_simulation_inputs",
                     "ck3_query_combat_simulation_inputs_v3",
                     "ck3_query_war_entry_assessments",
