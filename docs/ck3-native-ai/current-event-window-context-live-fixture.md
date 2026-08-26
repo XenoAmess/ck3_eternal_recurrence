@@ -8,9 +8,9 @@
   `CEventOption+0x478 timeout_option` 错当成 cancel 来源，使 authored native index `3` 的
   `is_cancel_option=yes` 发布为 `cancel=false`。因此 `current_event_window_context_live_ready` 仍不得标为 `true`，
   fixture 预期也不得降成 false 来掩盖故障。
-- **[static-confirmed；not-live-evidence]** exact parser/token/consumer 已把 cancel 更正到 authored
-  `CEventOption+0x47A`；combined cancel + indicator source、runner 与 focused unit 静态更新后，仍须由主代理冻结新
-  commit/DLL 再进行全新 live candidate。本轮文档与 runner 修订没有启动或 attach CK3。
+- **[static-confirmed；Attempt3 frozen，live pending]** exact parser/token/consumer 已把 cancel 更正到 authored
+  `CEventOption+0x47A`；combined cancel + indicator source 已冻结为 `cea30a0...`，fresh DLL/injector 与 runner 常量见下表。
+  本轮截至该冻结点仍没有启动或 attach CK3，必须由 Attempt3 artifact 决定 live readiness。
 - [static-confirmed] runner：
   [`run_current_event_window_context_live_acceptance.py`](../../ck3_autonomous_player/native_bridge/research/run_current_event_window_context_live_acceptance.py)。
 - [static-confirmed] focused unit：
@@ -38,6 +38,19 @@
 | fixture event key | `xar_event_window_live_fixture.1` |
 | event definition SHA-256 | `CE5416E0BB2D508F5A3445B73EAEEA7D1383727FC465D18486467B4CD58D972E` |
 | definition + 9 loc files manifest SHA-256 | `D2B6AC3D39D6362BA905299912BBF91EACF2C90A58DA00D0423E10F237BF3C7A` |
+
+## Attempt3 candidate 冻结输入
+
+| 项 | 冻结值 |
+|---|---|
+| consumer/source commit | `cea30a067b1e112596d70532b98fa068b2102ebf` |
+| fresh MSVC build | `.build-event-window-cea30a0-msvc2` |
+| DLL size / SHA-256 | `3,892,224` / `52398435F8AA5177D6D507BFAA38CD2578EB988F0629F1C5E13360CC91FB3BB0` |
+| injector size / SHA-256 | `823,808` / `1618840EC108F688B3EBECC6D7F8963038BA64C8D4A3E10DDE2E29E3F443B4DF` |
+| fresh native CTest | `37/37` passed |
+
+该 build 从已推送、tracked-clean 的 `cea30a0...` 配置到全新 MSVC/Ninja 目录；不复用 Attempt1/2 DLL。runner、focused
+unit 与本页只在上述 commit 与两个 binary hash 一致时允许进入 launch seam。
 
 ## Attempt1 immutable RED：PhysFS 路径超过 250 字符
 
@@ -188,10 +201,22 @@ py -m unittest ck3_autonomous_player.tests.unit.test_current_event_window_contex
 immutable capability RED；旧
 `aab1daf...` source tree、DLL SHA 与 injector 只能复核历史 artifact，绝不能再次作为 live candidate。
 
-下一次 live 命令暂不冻结在文档中。主代理必须先审阅并提交 combined cancel + indicator source，fresh MSVC build，
-再把新的完整 source commit、DLL SHA-256、injector SHA-256 同步写入 runner 常量、focused unit 与本页；之后另用新的
-pipe/output 名运行唯一 candidate。未获得主代理明确批准前不得启动 CK3。新 candidate 仍使用默认
-`%TEMP%\xew-<32-hex>` root 来复验 path gate，且 artifact 必须明确引用新的 commit/DLL，不能覆盖 Attempt2。
+Attempt3 使用 detached clean source tree 与独立 pipe/output；不传 `--state-dir`，继续用默认
+`%TEMP%\xew-<32-hex>` root 复验 path gate：
+
+```powershell
+$env:XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT = 'C:\Users\xenoa\AppData\Local\Temp\xar-event-window-cea30a0-source'
+& 'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\run_current_event_window_context_live_acceptance.py' `
+  --game-dir 'Crusader Kings III' `
+  --bridge-pipe '\\.\pipe\xar-event-window-context-cea30a0-attempt3' `
+  --bridge-dll 'ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge.dll' `
+  --expected-bridge-dll-sha256 '52398435F8AA5177D6D507BFAA38CD2578EB988F0629F1C5E13360CC91FB3BB0' `
+  --bridge-injector 'ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge_injector.exe' `
+  --output 'C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-cea30a0-live-attempt3.json'
+```
+
+该 output 名不得已存在，也不得覆盖 Attempt1/2。只有 preflight 重新验证 commit、EXE/save/fixture/DLL/injector、source
+cleanliness 与最长路径后，runner 才能启动 CK3。
 
 只有 artifact 自身 `ok=true`、全部 harness check 为 true、readiness 精确保持
 identity/presentation/indicator true 与 preview/semantic false、managed process cleanup 与 nonce-root removal 都为 true 后，

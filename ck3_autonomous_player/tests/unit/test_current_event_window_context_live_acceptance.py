@@ -245,15 +245,15 @@ class CurrentEventWindowContextLiveAcceptanceTests(unittest.TestCase):
     def test_frozen_commit_binary_and_immutable_checkpoint(self) -> None:
         self.assertEqual(
             HARNESS.FROZEN_SOURCE_COMMIT,
-            "aab1daf0a8fd93ec43f29a9f5e9e8a9a6a224335",
+            "cea30a067b1e112596d70532b98fa068b2102ebf",
         )
         self.assertEqual(
             HARNESS.FROZEN_BRIDGE_DLL_SHA256,
-            "A6CB88C8F02866A8F5052FE74BCA098A961459079FC1FC9B4F0DC017F915D1C4",
+            "52398435F8AA5177D6D507BFAA38CD2578EB988F0629F1C5E13360CC91FB3BB0",
         )
         self.assertEqual(
             HARNESS.FROZEN_BRIDGE_INJECTOR_SHA256,
-            "8C972446BF234C15FE5FEB5FC11F0900FE41E3E970242A9F6795E477D26B3FCB",
+            "1618840EC108F688B3EBECC6D7F8963038BA64C8D4A3E10DDE2E29E3F443B4DF",
         )
         self.assertEqual(
             HARNESS.EXPECTED_SOURCE_SAVE_SHA256,
