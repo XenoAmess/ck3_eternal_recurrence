@@ -47,7 +47,8 @@
 - [static-confirmed] 玩家不是 primary attacker / defender 时，原生战争面板不为其构造投降或执行胜利 context；不能把
   `player_side=attacker` 单独当成提交权限。
 - [counter-policy] 我方只能对指定 full-generation `WarID`、确定 outcome、完整 terms 和 validator 的 typed 选项计算效用。
-  只有 instance/sender 的通用 pending interaction 必须保持 unclassified，绝不猜成白和或敌方投降。
+  通用 pending query 现可读 stable interaction key、roles、routing 与 legality，但尚不发布关联 WarID/outcome 或 structured
+  terms；在这些字段闭合前仍必须保持 semantic-unclassified，不能仅凭 `end_war_*` key 猜成值得接受的白和或敌方投降。
 - [static-confirmed] `offer-white-peace-<WarID>` 的原生 context/validator/queue ABI 已独立闭合，但当前
   施工目标是只读 structured terms，不是发送。decision-critical terms 未在同 paused revision 真实 live-read
   前，white-peace 与 surrender capability/literal step 都不得对 planner 广告。
@@ -350,8 +351,8 @@ flowchart LR
 
 在实现自动白和或投降前，至少需要：
 
-0. [static-confirmed] 当前已实施的临时安全门：active war 中的 pending interaction 若没有精确 interaction kind、
-   WarID、outcome 与条款，则 `selected_step=None`，不得盲目 accept/reject；100% enforce-demands 保持更高优先级。
+0. [static-confirmed] 当前已实施的临时安全门：active war 中的 pending interaction 即使已有 stable interaction key，若没有
+   精确关联 WarID、outcome 与条款，仍令 `selected_step=None`，不得盲目 accept/reject；100% enforce-demands 保持更高优先级。
 1. [live-confirmed] `game.command.query-war-termination-options-N` / `query-war-termination-options-<WarID>` 已完成 paused、
    generation-safe 实机验收：CB、白和位、总分/四分项、战争日数、三 context validator、无人物交换 `ai_accept` /
    `auto_accept` 均返回 typed 值。极性修正后的 paused rev4 golden 是 surrender=true/auto=true、

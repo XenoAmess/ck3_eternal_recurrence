@@ -7,7 +7,7 @@
   "synthetic": true,
   "not_live_evidence": true,
   "game_process_started": false,
-  "purpose": "deterministic source vectors for the future read-only projection; interaction keys and IDs are deliberately synthetic and assert no gameplay-specific semantics",
+  "purpose": "deterministic source vectors for the implemented production read-only projection; interaction keys and IDs are deliberately synthetic and assert no gameplay-specific semantics or live evidence",
   "override_application": "recursively merge each vector's overrides into defaults; arrays and scalar leaves replace the default value, and the key/hash pair is read evidence rather than a request to recompute the engine hash",
   "source_hashes": {
     "Crusader Kings III/game/common/character_interactions/_character_interactions.info": "F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10",
@@ -18,8 +18,9 @@
     "component_identity": "slot lookup by low 24 bits followed by complete ID equality and liveness",
     "normal_channel": "accept/reject/block additionally require exact local route and auto_accept_notification=false",
     "acknowledge_channel": "acknowledge requires exact local route and auto_accept_notification=true; raw validator enum 4 is ignored",
+    "acknowledge_reachability": "the standalone vector proves projection semantics only; production Snapshot currently filters +0x5C6 notifications before the mailbox capture gate, so ACK query/live readiness remain false",
     "malformed_observation": "publish status invalid and all action booleans false",
-    "target_boundary": "a nonzero raw scope type is not a typed target until an exact-build decoder for that type exists",
+    "target_boundary": "a nonzero raw scope type has a stable registry type key but is not a typed payload identity until an exact-build decoder for that type exists",
     "semantic_readiness": "legal reply availability alone never makes interaction_semantic_decision_ready true"
   },
   "defaults": {
@@ -49,6 +50,8 @@
     "target": {
       "raw_scope_type_index": 0,
       "raw_16_bytes_hex": "00000000000000000000000000000000",
+      "type_key_status": "absent",
+      "type_key": null,
       "decoder_available": true,
       "typed_status": "absent"
     },
@@ -276,6 +279,8 @@
         "target": {
           "raw_scope_type_index": 7,
           "raw_16_bytes_hex": "07000100785634120000000000000000",
+          "type_key_status": "available",
+          "type_key": "fixture_generic_target_type",
           "decoder_available": false,
           "typed_status": "unavailable",
           "unavailable_reason": "generic_scope_payload_identity_not_closed"
@@ -287,6 +292,8 @@
       "expected": {
         "status": "available",
         "target_present": true,
+        "target_type_key_status": "available",
+        "target_type_key": "fixture_generic_target_type",
         "target_typed_status": "unavailable",
         "can_accept": true,
         "can_reject": true,
@@ -336,11 +343,15 @@
     "send_option_selection_static_ready": true,
     "deadline_static_ready": true,
     "reply_legality_static_ready": true,
+    "generic_target_type_key_static_ready": true,
     "generic_target_typed_identity_ready": false,
     "structured_terms_ready": false,
-    "bridge_query_ready": false,
+    "bridge_query_ready": true,
+    "ordinary_pending_query_ready": true,
+    "notification_ack_static_ready": true,
+    "notification_ack_query_ready": false,
     "production_live_ready": false,
     "interaction_semantic_decision_ready": false,
-    "capability_advertised": false
+    "capability_advertised": true
   }
 }

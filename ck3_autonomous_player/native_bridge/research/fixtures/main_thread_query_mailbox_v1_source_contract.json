@@ -159,7 +159,7 @@
       "ready"
     ],
     "executor_submission_enabled": true,
-    "fixed_executor_slots": 10,
+    "fixed_executor_slots": 11,
     "permitted_executors": [
       "ExecuteWarEntryAssessmentMailboxQueryV1",
       "ExecuteRouteContactHorizonMailboxQueryV1",
@@ -170,9 +170,10 @@
       "ExecuteBattleReinforcementAssignmentMailboxQueryV1",
       "ExecuteBattleTerminalTransitionMailboxQueryV1",
       "ExecuteCampaignRootContextMailboxQueryV1",
-      "ExecuteLoadedFeatureManifestMailboxQueryV1"
+      "ExecuteLoadedFeatureManifestMailboxQueryV1",
+      "ExecutePendingCharacterInteractionContextMailboxQueryV1"
     ],
-    "query_scope": "typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest",
+    "query_scope": "typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context",
     "first_live_target_limit": 1,
     "expected_consecutive_verified": 2,
     "transport": "heartbeat_metadata_plus_typed_war_entry_command"

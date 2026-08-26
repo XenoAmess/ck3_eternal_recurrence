@@ -208,6 +208,18 @@ def _ck3_query_loaded_feature_manifest_v1(
     )
 
 
+def _ck3_query_pending_character_interaction_context_v1(
+    service: GameplayBridgeService,
+    pending_interaction_id: int,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Observe one full-generation pending request without terms inference."""
+    return service.query_pending_character_interaction_context_v1(
+        pending_interaction_id,
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_preview_active_combat_retreat_v1(
     service: GameplayBridgeService,
     selected_public_cunit_id: int,
@@ -554,6 +566,18 @@ def create_server(driver: GameplayBridgeDriver):
         """Read effective build flags and script DLC keys; ownership stays unknown."""
         return _ck3_query_loaded_feature_manifest_v1(
             service,
+            expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_pending_character_interaction_context_v1(
+        pending_interaction_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read identity, routing, options, deadline and reply legality."""
+        return _ck3_query_pending_character_interaction_context_v1(
+            service,
+            pending_interaction_id,
             expected_revision,
         )
 

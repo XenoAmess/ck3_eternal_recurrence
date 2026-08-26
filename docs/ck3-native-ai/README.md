@@ -30,10 +30,11 @@
   exact-build registry/service RVA与 typed wire。bridge/MCP 已在真实 paused frame 双查询完成 44 rows/29 runtime keys，artifact
   SHA `2B1C8CA4...C2F2D`；原生 AI 决策树为 N/A，entitlement provenance 仍 typed unavailable，磁盘 descriptor、government
   与 selected rules 明确不能作为 runtime truth。
-- [static-confirmed research] [events-and-interactions.md](events-and-interactions.md) 冻结通用事件 option 的
+- [static-confirmed + production-live] [events-and-interactions.md](events-and-interactions.md) 冻结通用事件 option 的
   `SetupOptions` shown/enabled/fallback/exclusive/cancel/name/reason/effect-preview 静态 ABI、原生 AI exact weighted selector，
-  以及人物互动的候选/接受树；current GUI data locator、preview collector output 与 typed MCP 仍待施工。宗教/信仰内容按 owner
-  指示保持 opaque compatibility，不计入完成。
+  以及人物互动的候选/接受树；人物互动 typed bridge/MCP 已对普通 white-peace recipient pending 完成跨存档冷恢复双查询，
+  artifact SHA `D20E339D...B8BC89`。事件 current GUI data locator、preview collector output，以及互动 structured terms、
+  intermediary/ACK discovery 仍待施工。宗教/信仰内容按 owner 指示保持 opaque compatibility，不计入完成。
 - [static-confirmed] [army-controller.md](army-controller.md) 记录战争 stance、目标候选和评分、重算节拍、
   `CAISubunitStack` 分派状态机、围城/追击/战斗/撤退切换边界，以及战争 `16777290` 的双敌军实例。
 - [static-confirmed] [army-contact-resolution.md](army-contact-resolution.md) 把原生 AI 的目标/避战门连接到

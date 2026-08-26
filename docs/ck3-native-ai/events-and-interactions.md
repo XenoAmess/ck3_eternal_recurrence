@@ -320,9 +320,17 @@ flowchart TD
   value：首个 `uint16` 是类型注册表索引，零表示没有该 scope；其余 payload 按类型解释。serializer `0x2C3F400`
   用 tag `0x6B` 写出该值，refresh `0x2C40950` 把它加入 event-target scope，validator `0x2C42610` 通过
   `0x3329B00` 检查它。definition `+0x2A2A` 参与 target-type 分支。
-- [unknown] `title/artifact/men_at_arms/court_position_type/count` 等 target 类型的 registry-index → 稳定业务 ID
-  映射尚未逐类闭合。只读合同可保留 raw type index/16 bytes 作为 source evidence，但在该类型被 exact-build
-  decoder 支持前，`target.status` 必须为 `unavailable`，不得把 payload 的某个 dword 猜成 CharacterID/TitleID。
+- [static-confirmed] 类型索引本身已有稳定名称：`0x33C52B0` 返回 `module+0x4FFE290` 的 generic value-type registry，
+  data/count 位于 `+0x00/+0x0C`，entry stride 为 `0x50`。serializer `0x81D8C4..0x81D8E2` 以首个
+  `uint16` 做同一 bounds/stride 解析；CK3 consumer `0x201143B..0x2011464` 随后读取 entry `+0x00` 的
+  identifier，并调用 `0x3B58970` 得到 stable type key。三个完整 `.pdata` 区间分别为
+  `0x33C52B0..0x33C535B`（SHA `8B7E4C67...97507`）、`0x81D880..0x81DA06`
+  （SHA `B267CA32...D1E6D`）和 `0x2011400..0x2011623`（SHA `55AC1793...B02B`）。因此 wire 必须发布
+  `raw_type_index + type_key`；type `0` 明确表示 absent，越界不得使用 `module+0x5000AB0` fallback 冒充有效类型。
+- [unknown] `title/artifact/men_at_arms/court_position_type/count` 等 type key 对应的 payload → 稳定业务 ID decoder
+  尚未逐类闭合。只读合同可保留 type key、raw index/16 bytes 作为 source evidence，但在该类型被 exact-build
+  decoder 支持前，`target.typed_identity_status` 必须为 `unavailable`，不得把 payload 的某个 dword 猜成
+  CharacterID/TitleID。
 - [static-confirmed] definition `+0x2548/+0x2554` 是 inline send-option rows pointer/count，row stride `0x7D0`；
   row `+0x00/+0xE0` 分别是 `is_shown/is_valid` triggers，row `+0x3A8` 是 numeric script flag identifier。
   context `+0x300` 的 byte vector 必须与 definition count 相等，byte `1` 表示 selected、`0` 表示未选；
@@ -393,12 +401,25 @@ flowchart TD
 |---|---|---|---|
 | active event identity/action | instance ID、raw option count、`1..N` numeric indexes；select command + instance-change postcondition；static ABI 已闭合 GUI item 的 shown/enabled/native-index/name/reason/cancel/fallback 与原生 AI selector | engine-owned current `CEventWindowData` locator/lifetime、stable event key、scope identity、effect-preview output ABI、正式 typed query | `event_action_primitive_ready=true`，`event_static_observation_seam_ready=true`，`event_semantic_decision_ready=false` |
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
-| pending interaction identity/action | production 仍只发布 instance ID、sender、accept/reject command + disappearance/change postcondition；static ABI 已闭合 stable key/hash、五 roles、send options、routing、deadline 和四路 legality | generic target subtype identity、structured terms/cost/effect preview、正式 typed query 与 paused live fixture | `interaction_reply_primitive_ready=true`，`interaction_static_context_ready=true`，`interaction_semantic_decision_ready=false` |
+| pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；普通 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `interaction_typed_query_wired=true`，`ordinary_interaction_live_ready=true`，`interaction_semantic_decision_ready=false` |
 | auto-accept notification | native object已有 flag；static ACK channel/gates 已闭合 | production reader 仍整项跳过，public action 也没有 acknowledge enum 4 | `notification_ack_static_ready=true`，`notification_ack_ready=false` |
-| current planner | 无 active war 时会接受普通 pending；active war 未分类时 fail closed | 非战争 pending 同样可能有严重代价，不能继续把“sender 存在”解释成“值得接受” | semantic query 发布前不得称为高智商闭环 |
+| current planner | 无 active war 时会接受普通 pending；active war 未分类时 fail closed | 尚未消费 typed context；非战争 pending 同样可能有严重代价，不能继续把“sender 存在”解释成“值得接受” | typed query 已发布不等于 semantic policy ready；不得称为高智商闭环 |
 
 这里的缺口已经直接阻断通用 OODA：事件一弹出，agent 虽能提交某个 numeric option，却不知道该项是否可点、会做什么；
-互动一到，agent 虽能回复，却不知道请求类型和条款。下一施工项必须补观测，而不是继续重复返回 `unknown` 或默认第一项/接受。
+互动 typed query 现已能识别请求类型、角色、routing、options 与合法回复，但 target payload 和结构化条款仍不足以做高质量取舍。
+普通 recipient pending 的 paused live 双查询已经闭合；下一步补 intermediary/notification discovery 与结构化条款观测，
+再接入策略。不得退回默认第一项或默认接受。
+
+[live-confirmed] 2026-08-26 的非宗教 `claim_cb` white-peace fixture 在 seed PID `93972` 中生成普通 pending，
+保存 66,579,686-byte checkpoint（SHA
+`3ABF8B9750911910D95B6AE2108B71BAA040613B3E4410578F1C4F76F16019DF`），再由独立 production-only PID
+`39180` 冷恢复。
+完整 pending ID `738197506`、date `53175816` 与两次相邻 query frame 完全一致；stable key 为
+`end_war_attacker_white_peace_interaction`（hash `3450334569`，runtime ordinal `294`），roles 为
+`29829 → 36108`，route kind `0`，target absent，send-option count `0`，deadline `0/60/60`，
+accept/reject/block 均 true、acknowledge false。结构化 costs/exchanges/effect preview 仍明确 unavailable，
+`interaction_semantic_decision_ready=false`，且 runner 没有提交任何 reply。artifact SHA 为
+`D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89`；源存档 SHA 前后不变，两个进程树和 disposable root 均清理。
 
 ## 下一版只读观测合同
 
@@ -429,7 +450,8 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
 
 - instance ID、stable interaction key、actor/recipient/intermediary/secondary actors 与 target identity；
 - stable key 必须来自 definition canonical string/hash；同时可给 runtime ordinal，但明确它不稳定；
-- target 发布 `present/type/status/typed_identity`；未支持的 generic scope type 返回 typed unavailable，而不是空 ID；
+- target 发布 `present/raw_type_index/type_key/typed_identity_status/typed_identity`；未支持的 generic scope payload
+  返回 typed unavailable，而不是把已经闭合的 type key 也降级成 unknown 或填入空 ID；
 - 每个 send option 发布 native index、numeric flag identifier、selected、shown/valid evaluation status 与 exclusive；
 - routing kind、当前 responder role、auto-accept notification、age/expiration/remaining days；
 - `can_accept/can_reject/can_block/can_acknowledge` 四个独立 legality/status；ACK 不读取 validator enum 4 的
@@ -463,9 +485,13 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   sentinel 区别；stable event definition key 与保存 scopes 的 engine identity。
 - [static-confirmed] AI selector、默认权重、全非正权重时的 uniform 分支、normalization、同权重区间和该调用点 RNG draw 已闭合；
   后续不再重复逆向这些分支，直接作为 opponent-model fixture 输入。
-- [static-confirmed] pending object 的 stable definition key/hash、五 roles、send-option selection、route、deadline 与四路
-  reply legality 已闭合并冻结在 `pending_character_interaction_context_v1_abi.json`；下一步不再重复这些分支，而是实现
-  application-main paused read-only query，并给普通/中间人/auto-accept notification 做非宗教 live fixtures。
-- [unknown] generic target scope 的 type-registry identity 与各 payload decoder，以及 `special_data`/materialized description
-  bundle 的 engine-generic structured terms/effect ABI。它们是 `interaction_semantic_decision_ready` 的最高优先级观测依赖；
+- [live-confirmed] pending object 的 stable definition key/hash、五 roles、send-option selection、route、deadline 与四路
+  reply legality 已冻结在 `pending_character_interaction_context_v1_abi.json`，并通过 application-main paused read-only
+  query 接入 native driver/service/MCP；普通 recipient fixture 已完成跨 checkpoint 冷恢复的非宗教 live 双查询，
+  下一步补 intermediary fixture。
+- [static-confirmed] auto-accept notification 的 ACK legality 已闭合，但旧 snapshot discovery 会在 mailbox 前过滤 `+0x5C6 != 0`
+  的对象，因此 ACK 查询与动作目前不可达；必须先新增 notification discovery/query 入口，再进入 ACK live fixture。
+- [static-confirmed] generic target scope 的 registry type key 已由 `0x33C52B0` registry 与 `0x3B58970` resolver
+  闭合；[unknown] 仍是各 type-key payload decoder，以及 `special_data`/materialized description bundle 的
+  engine-generic structured terms/effect ABI。后两者是 `interaction_semantic_decision_ready` 的最高优先级观测依赖；
   在闭合前继续 typed unavailable，不允许默认接受。

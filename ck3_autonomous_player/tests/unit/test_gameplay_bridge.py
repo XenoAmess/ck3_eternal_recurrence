@@ -7453,6 +7453,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_query_battle_reinforcement_assignment_v1",
                     "ck3_query_campaign_root_context_v1",
                     "ck3_query_loaded_feature_manifest_v1",
+                    "ck3_query_pending_character_interaction_context_v1",
                     "ck3_preview_active_combat_retreat_v1",
                     "ck3_order_active_combat_retreat_v1",
                     "ck3_query_combat_simulation_inputs",

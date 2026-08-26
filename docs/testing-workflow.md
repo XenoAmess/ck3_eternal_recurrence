@@ -480,6 +480,30 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   `C:\Users\xenoa\AppData\Local\Temp\xar-loaded-feature-manifest-live-v1.json`，SHA
   `2B1C8CA495A3A03F39C8C27351411B5AED2285D732946AACF5AFE89D8B3C2F2D`。runner 只允许两条只读 query；不得把
   全 true 或 29 keys 写成 hard-coded fixture，更不得将 runtime key 推断成 ownership、entitlement 或宗教语义。
+- `pending-character-interaction-context-v1` 的非宗教实机验收由
+  `native_bridge/research/run_pending_character_interaction_context_live_acceptance.py` 执行。它只读复制 immutable source
+  `xar_checkpoint_pre_white_peace_53175816.ck3`（SHA
+  `5BA2136911EAD0CAF1F7D2F3DE02EAFBD8039861C46F01F35F698B3B5CFFFC5F`）：seed PID 在暂停态证明 WarID
+  `16777290` 为普通 `claim_cb`，以 raw production bridge 发出 white-peace offer，再由 repository `mod_bridge` 同日切换至
+  recipient CharacterID `36108` 并保存 pending checkpoint。只有 checkpoint bytes 进入第二个 fresh production-only
+  userdir；新的 PID cold reload 后必须在同一 revision 连续执行两次 typed query，证明完整 pending ID、canonical key
+  `end_war_attacker_white_peace_interaction`、角色/路由/选项/期限/合法性与只读 query sequence。runner 不会默认 accept、
+  reject、block 或 acknowledge，并检查原 source 字节与元数据不变及受管清理。当前 snapshot discovery 会先过滤
+  `+0x5C6` auto-accept notification，故本验收只覆盖 ordinary pending interaction；ACK 分支仍是明确未闭合的 discovery
+  依赖。宗教专用语义继续 owner-deferred，不得借此夹具探索。
+- 2026-08-26 上述 runner 用 fresh Release DLL SHA
+  `152FB65A9F302B67423F5AE604AEE0DD9A791498E74C9CA924E47DCAF14F568C` 完成 GREEN。seed PID `93972` 创建并保存
+  pending checkpoint（66,579,686 bytes，SHA `3ABF8B9750911910D95B6AE2108B71BAA040613B3E4410578F1C4F76F16019DF`），
+  production-only PID `39180` 冷恢复后，两次同 revision query 都返回 full pending ID `738197506`、date `53175816`、
+  stable key `end_war_attacker_white_peace_interaction`（hash `3450334569`）、roles `29829 -> 36108`、route kind `0`、
+  target absent、exclusive/zero send options、deadline `0/60/60`、accept/reject/block true 与 acknowledge false。
+  structured costs/exchanges/effect preview 保持 typed unavailable，semantic readiness 为 false，runner 未执行 reply。
+  139.363 秒后两个进程树与 nonce root 均清理；source SHA 前后仍为 `5BA21369...CFFFC5F`。artifact 位于
+  `C:\Users\xenoa\AppData\Local\Temp\xar-pending-interaction-context-v1-live-20260826-04.json`，SHA
+  `D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89`。
+- 同一轮首个诊断暴露两项 runner/normalizer 约束：typed query action 必须由当前 snapshot 的真实 pending ID 动态展开，
+  seed 前只能检查 hello capability；Python 对 JSON 解码后的 status 字符串必须做值比较，不能用对象 identity 比较。
+  两项均有单元回归。失败报告的所有嵌套 stage 字段也必须按 nullable object 处理，否则会遮住真正的 seed/live 错误。
 - 同轮旧增量 MSVC build directory 曾产出注入后 `C0000005` 的 RED。原因不是 CK3 ABI 漂移，而是中文编译器
   `/showIncludes` 输出未被依赖跟踪解析，`game_contract.hpp` 已变更却仍链接旧对象。`native_bridge/CMakeLists.txt`
   现只针对已实测的乱码探测值，把 Ninja 的依赖前缀修正为编译器实际输出的 `注意: 包含文件:`；fresh `v1h`

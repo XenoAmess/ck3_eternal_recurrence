@@ -82,6 +82,9 @@ add_library(xar_ck3_bridge SHARED
   src/loaded_feature_manifest_v1_mailbox.cpp
   src/loaded_feature_manifest_v1_serializer.cpp
   src/main_thread_query_mailbox_v1.cpp
+  src/pending_character_interaction_context_v1.cpp
+  src/pending_character_interaction_context_v1_mailbox.cpp
+  src/pending_character_interaction_context_v1_serializer.cpp
   src/route_contact_horizon_v1_mailbox.cpp
   src/startup_dx11_render_context_draw_guard_v1.cpp
   src/startup_localize_current_root_guard_v1.cpp
@@ -181,6 +184,8 @@ if(BUILD_TESTING)
     src/game_adapter.cpp
     src/loaded_feature_manifest_v1.cpp
     src/loaded_feature_manifest_v1_mailbox.cpp
+    src/pending_character_interaction_context_v1.cpp
+    src/pending_character_interaction_context_v1_mailbox.cpp
     src/ck3_11906_adapter.cpp
     src/ck3_11906.cpp
     src/combat_v3.cpp
@@ -639,6 +644,81 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/loaded_feature_manifest_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/loaded_feature_manifest_v1_source_contract.json
+  )
+
+  add_executable(xar_ck3_pending_character_interaction_context_v1_test
+    src/pending_character_interaction_context_v1.cpp
+    src/pending_character_interaction_context_v1_serializer.cpp
+    src/pending_character_interaction_context_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_pending_character_interaction_context_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_pending_character_interaction_context_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_pending_character_interaction_context_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_pending_character_interaction_context_v1
+    COMMAND xar_ck3_pending_character_interaction_context_v1_test
+  )
+
+  add_executable(xar_ck3_pending_character_interaction_context_v1_mailbox_test
+    src/pending_character_interaction_context_v1_mailbox.cpp
+    src/pending_character_interaction_context_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_pending_character_interaction_context_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_pending_character_interaction_context_v1_mailbox_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_pending_character_interaction_context_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_pending_character_interaction_context_v1_mailbox
+    COMMAND xar_ck3_pending_character_interaction_context_v1_mailbox_test
+  )
+
+  add_executable(xar_ck3_pending_interaction_v1_source_contract_test
+    src/pending_character_interaction_context_v1_source_contract_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_pending_interaction_v1_source_contract_test
+    PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_pending_interaction_v1_source_contract_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_pending_interaction_v1_source_contract_test
+      PRIVATE /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_pending_character_interaction_context_v1_source_contract
+    COMMAND xar_ck3_pending_interaction_v1_source_contract_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/pending_character_interaction_context_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/pending_character_interaction_context_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/pending_character_interaction_context_v1_serializer.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/pending_character_interaction_context_v1_abi.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/pending_character_interaction_context_v1_source_contract.json
   )
 
   add_executable(xar_ck3_main_thread_query_mailbox_v1_test

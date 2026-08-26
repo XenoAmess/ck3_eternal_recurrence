@@ -134,6 +134,11 @@ from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
     normalize_loaded_feature_manifest_v1,
 )
+from .pending_character_interaction_context_contract import (
+    QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
+    QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
+    normalize_pending_character_interaction_context_v1,
+)
 from .active_combat_retreat_contract import (
     ACTIVE_COMBAT_RETREAT_V1_CONTRACT_STAGE,
     ORDER_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX,
@@ -982,6 +987,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "pending_character_interaction_context_v1_query_supported": (
+                QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "active_combat_retreat_v1_composition_supported": (
                 active_retreat_composition_supported
             ),
@@ -1227,6 +1236,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "loaded_feature_manifest_v1_query_supported": (
                 QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "pending_character_interaction_context_v1_query_supported": (
+                QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "combat_simulation_inputs_query_supported": (
@@ -2367,6 +2380,37 @@ class NativeHeadlessGameplayDriver:
             return self._execute_loaded_feature_manifest_v1_query(
                 expected_revision=expected_revision,
             )
+        if step == QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query a pending interaction context"
+                )
+            pending = self.take_snapshot().get(
+                "pending_character_interaction"
+            )
+            pending_id = (
+                pending.get("instance_id")
+                if isinstance(pending, dict)
+                else None
+            )
+            if (
+                isinstance(pending_id, bool)
+                or not isinstance(pending_id, int)
+                or not 1 <= pending_id <= 2**31 - 1
+            ):
+                raise BridgeUnavailableError(
+                    "CK3 has no positive full pending interaction ID"
+                )
+            return self.query_pending_character_interaction_context_v1(
+                pending_id,
+                expected_revision=expected_revision,
+            )
         if war_entry_targets is not None:
             bridge_capabilities = set(
                 _string_list(capabilities.get("bridge_capabilities"))
@@ -3435,6 +3479,7 @@ class NativeHeadlessGameplayDriver:
         *,
         expected_revision: int | None = None,
         required_capability: str | None = None,
+        request_fields: dict[str, object] | None = None,
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
@@ -3462,15 +3507,26 @@ class NativeHeadlessGameplayDriver:
                 )
         self._request_sequence += 1
         request_id = f"step-{self._request_sequence}-{uuid.uuid4().hex[:12]}"
-        self.endpoint.send(
-            {
-                "type": "execute_step",
-                "protocol_version": PROTOCOL_VERSION,
-                "request_id": request_id,
-                "step": step,
-                "expected_revision": snapshot["native_revision"],
-            }
-        )
+        request = {
+            "type": "execute_step",
+            "protocol_version": PROTOCOL_VERSION,
+            "request_id": request_id,
+            "step": step,
+            "expected_revision": snapshot["native_revision"],
+        }
+        if request_fields is not None:
+            if not isinstance(request_fields, dict) or any(
+                not isinstance(key, str) or not key
+                for key in request_fields
+            ):
+                raise ValueError("native request_fields must use string keys")
+            reserved = set(request) & set(request_fields)
+            if reserved:
+                raise ValueError(
+                    "native request_fields attempted to replace protocol fields"
+                )
+            request.update(request_fields)
+        self.endpoint.send(request)
         frame = self.state.wait_for_command_result(
             request_id, self.command_timeout_seconds
         )
@@ -6477,6 +6533,169 @@ class NativeHeadlessGameplayDriver:
             "queried_native_revision": native_revision,
         }
 
+    def query_pending_character_interaction_context_v1(
+        self,
+        pending_interaction_id: int,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one exact full-generation pending interaction while paused."""
+        if (
+            isinstance(pending_interaction_id, bool)
+            or not isinstance(pending_interaction_id, int)
+            or not 1 <= pending_interaction_id <= 2**31 - 1
+        ):
+            raise ValueError(
+                "pending_interaction_id must be a positive full int32"
+            )
+        step = QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native pending-interaction query requires a paused snapshot"
+            )
+        pending = starting.get("pending_character_interaction")
+        if (
+            not isinstance(pending, dict)
+            or pending.get("instance_id") != pending_interaction_id
+        ):
+            raise BridgeUnavailableError(
+                "pending interaction ID does not match the current snapshot"
+            )
+        date_raw = _date_raw(starting, "pending-interaction starting snapshot")
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native pending-interaction query lacks a native revision"
+            )
+        starting_revision = int(starting["revision"])
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else starting_revision
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY
+            ),
+            request_fields={
+                "pending_interaction_id": pending_interaction_id,
+            },
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "snapshot_revision",
+                "pending_character_interaction_context",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native pending-interaction query returned a malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native pending-interaction query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_pending_character_interaction_context_v1(
+                result.get("pending_character_interaction_context"),
+                expected_pending_interaction_id=pending_interaction_id,
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native pending-interaction query returned a malformed frame: "
+                f"{error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native pending-interaction envelope status disagrees with frame"
+            )
+        if normalized["status"] == "available":
+            routing = normalized["routing"]
+            roles = normalized["roles"]
+            assert isinstance(routing, dict)
+            assert isinstance(roles, dict)
+            if (
+                routing.get("auto_accept_notification")
+                is not pending.get("auto_accept_notification")
+                or roles.get("actor_character_id")
+                != pending.get("sender_character_id")
+            ):
+                raise BridgeUnavailableError(
+                    "native pending-interaction frame disagrees with snapshot mirror"
+                )
+        current = self.take_snapshot()
+        current_pending = current.get("pending_character_interaction")
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+            and isinstance(current_pending, dict)
+            and current_pending.get("instance_id") == pending_interaction_id
+            and current_pending == pending
+        ):
+            raise BridgeUnavailableError(
+                "native pending-interaction query crossed a snapshot revision"
+            )
+        mirror_keys = (
+            "schema",
+            "schema_version",
+            "date_raw",
+            "pending_interaction_id",
+            "reason",
+            "build",
+            "definition",
+            "roles",
+            "target",
+            "send_options",
+            "routing",
+            "deadline",
+            "auto_accept",
+            "legality",
+            "terms",
+            "readiness",
+            "provenance",
+        )
+        readiness = normalized["readiness"]
+        assert isinstance(readiness, dict)
+        return {
+            **result,
+            "status": normalized["status"],
+            "pending_character_interaction_context": normalized,
+            "query_sequence": query_sequence,
+            **{
+                key: copy.deepcopy(normalized[key])
+                for key in mirror_keys
+            },
+            "pending_character_interaction_context_ready": readiness[
+                "interaction_semantic_decision_ready"
+            ],
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+        }
+
     def _execute_war_termination_terms_query(
         self,
         step: str,
@@ -8031,9 +8250,102 @@ class ConfiguredHybridFallbackDriver:
             "backend_id": "hybrid-fallback",
         }
 
+    def query_pending_character_interaction_context_v1(
+        self,
+        pending_interaction_id: int,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Keep the parameterized pending query on the native backend."""
+        if (
+            isinstance(pending_interaction_id, bool)
+            or not isinstance(pending_interaction_id, int)
+            or not 1 <= pending_interaction_id <= 2**31 - 1
+        ):
+            raise ValueError(
+                "pending_interaction_id must be a positive full int32"
+            )
+        native_bridge_capabilities = set(
+            _string_list(
+                self.native.capabilities().get("bridge_capabilities")
+            )
+        )
+        if (
+            QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY
+            not in native_bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "pending-interaction queries are pure native and will not use "
+                "fallback"
+            )
+        starting = self.take_snapshot()
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision != starting.get("revision"):
+                raise BridgeUnavailableError(
+                    "hybrid gameplay revision mismatch: expected "
+                    f"{expected_revision}, current {starting.get('revision')}"
+                )
+        pending = starting.get("pending_character_interaction")
+        if (
+            not isinstance(pending, dict)
+            or pending.get("instance_id") != pending_interaction_id
+        ):
+            raise BridgeUnavailableError(
+                "pending interaction ID does not match the hybrid snapshot"
+            )
+        native_revision = None
+        backend_revisions = starting.get("backend_revisions")
+        if isinstance(backend_revisions, dict) and isinstance(
+            backend_revisions.get("fast"), int
+        ):
+            native_revision = int(backend_revisions["fast"])
+        result = self.native.query_pending_character_interaction_context_v1(
+            pending_interaction_id,
+            expected_revision=native_revision,
+        )
+        ending = self.take_snapshot()
+        if (
+            ending.get("snapshot_id") != starting.get("snapshot_id")
+            or ending.get("revision") != starting.get("revision")
+            or ending.get("native_revision") != starting.get("native_revision")
+            or ending.get("date_raw") != starting.get("date_raw")
+            or ending.get("pending_character_interaction") != pending
+        ):
+            raise BridgeUnavailableError(
+                "hybrid pending-interaction query crossed a snapshot revision"
+            )
+        return {
+            **result,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+        }
+
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        if step == QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP:
+            pending = self.take_snapshot().get(
+                "pending_character_interaction"
+            )
+            pending_id = (
+                pending.get("instance_id")
+                if isinstance(pending, dict)
+                else None
+            )
+            if (
+                isinstance(pending_id, bool)
+                or not isinstance(pending_id, int)
+                or not 1 <= pending_id <= 2**31 - 1
+            ):
+                raise BridgeUnavailableError(
+                    "CK3 has no positive full pending interaction ID"
+                )
+            return self.query_pending_character_interaction_context_v1(
+                pending_id,
+                expected_revision=expected_revision,
+            )
         if step == QUERY_LOADED_FEATURE_MANIFEST_V1_STEP:
             native_bridge_capabilities = set(
                 _string_list(
@@ -9833,6 +10145,7 @@ def _action_steps(
     expand_battle_reinforcement_assignments = False
     advertise_campaign_root_context = False
     advertise_loaded_feature_manifest = False
+    advertise_pending_interaction_context = False
     expand_disband_armies = False
     expand_split_armies = False
     expand_merge_armies = False
@@ -9884,6 +10197,11 @@ def _action_steps(
             advertise_campaign_root_context = True
         elif capability == QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY:
             advertise_loaded_feature_manifest = True
+        elif (
+            capability
+            == QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY
+        ):
+            advertise_pending_interaction_context = True
         elif capability == DISBAND_ARMY_CAPABILITY:
             expand_disband_armies = True
         elif capability == SPLIT_ARMY_HALF_CAPABILITY:
@@ -9953,6 +10271,7 @@ def _action_steps(
                 QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX,
                 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
                 QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
+                QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
                 "query-war-termination-options-",
                 "query-war-termination-terms-v1-",
                 QUERY_WAR_TERMINATION_EXIT_TERMS_STEP_PREFIX,
@@ -10041,6 +10360,16 @@ def _action_steps(
         steps.add(QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP)
     if advertise_loaded_feature_manifest and paused is True:
         steps.add(QUERY_LOADED_FEATURE_MANIFEST_V1_STEP)
+    if (
+        advertise_pending_interaction_context
+        and paused is True
+        and isinstance(pending_character_interaction, dict)
+        and _positive_native_id(
+            pending_character_interaction.get("instance_id")
+        )
+        and int(pending_character_interaction["instance_id"]) <= 2**31 - 1
+    ):
+        steps.add(QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP)
     if expand_actual_contact_scopes and paused is True:
         steps.update(
             query_actual_contact_scope_step(

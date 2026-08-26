@@ -79,6 +79,11 @@ from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
     normalize_loaded_feature_manifest_v1,
 )
+from .pending_character_interaction_context_contract import (
+    QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
+    QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
+    normalize_pending_character_interaction_context_v1,
+)
 from .active_combat_retreat_contract import (
     normalize_active_combat_retreat_v1_order_ack,
     normalize_active_combat_retreat_v1_preview,
@@ -1449,6 +1454,293 @@ class GameplayBridgeService:
                 "actionable_ready"
             ],
             "loaded_feature_manifest": normalized,
+        }
+
+    def query_pending_character_interaction_context_v1(
+        self,
+        pending_interaction_id: int,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one exact pending interaction without guessing its terms."""
+        if (
+            isinstance(pending_interaction_id, bool)
+            or not isinstance(pending_interaction_id, int)
+            or not 1 <= pending_interaction_id <= 2**31 - 1
+        ):
+            raise ValueError(
+                "pending_interaction_id must be a positive full int32"
+            )
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "pending-interaction queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 0
+        ):
+            raise BridgeUnavailableError(
+                "pending-interaction query lacks a valid snapshot revision"
+            )
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+        ):
+            raise ValueError(
+                "expected_revision must be a non-negative integer"
+            )
+        if expected_revision != revision:
+            raise BridgeUnavailableError(
+                "pending-interaction revision mismatch: expected "
+                f"{expected_revision}, current {revision}"
+            )
+        pending = snapshot.get("pending_character_interaction")
+        if (
+            not isinstance(pending, dict)
+            or pending.get("instance_id") != pending_interaction_id
+        ):
+            raise BridgeUnavailableError(
+                "pending interaction ID does not match the current snapshot"
+            )
+        native_revision = snapshot.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "pending-interaction query lacks a positive native revision"
+            )
+        date_raw = snapshot.get("date_raw")
+        if (
+            isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**31) <= date_raw <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "pending-interaction query lacks a signed int32 date"
+            )
+        snapshot_id = snapshot.get("snapshot_id")
+        if not isinstance(snapshot_id, str) or not snapshot_id:
+            raise BridgeUnavailableError(
+                "pending-interaction query lacks a snapshot identity"
+            )
+        snapshot_backend_id = snapshot.get("backend_id")
+        if not isinstance(snapshot_backend_id, str) or not snapshot_backend_id:
+            raise BridgeUnavailableError(
+                "pending-interaction query lacks a source backend identity"
+            )
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY
+            in bridge_capabilities
+            and QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+            in action_step_set(capabilities)
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query pending interaction context"
+            )
+        typed_query = getattr(
+            self.driver,
+            "query_pending_character_interaction_context_v1",
+            None,
+        )
+        if not callable(typed_query):
+            raise UnsupportedStepError(
+                "selected backend lacks the parameterized pending query"
+            )
+        result = typed_query(
+            pending_interaction_id,
+            expected_revision=expected_revision,
+        )
+        mirror_keys = {
+            "schema",
+            "schema_version",
+            "date_raw",
+            "pending_interaction_id",
+            "reason",
+            "build",
+            "definition",
+            "roles",
+            "target",
+            "send_options",
+            "routing",
+            "deadline",
+            "auto_accept",
+            "legality",
+            "terms",
+            "readiness",
+            "provenance",
+        }
+        required_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "pending_character_interaction_context",
+            "backend_id",
+            "pending_character_interaction_context_ready",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+            *mirror_keys,
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != required_result_keys
+            or result.get("step")
+            != QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "pending-interaction backend returned a malformed result"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "pending-interaction result lacks query_sequence"
+            )
+        backend_id = result.get("backend_id")
+        if not isinstance(backend_id, str) or not backend_id:
+            raise BridgeUnavailableError(
+                "pending-interaction result lacks backend_id"
+            )
+        try:
+            normalized = normalize_pending_character_interaction_context_v1(
+                result.get("pending_character_interaction_context"),
+                expected_pending_interaction_id=pending_interaction_id,
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"pending-interaction result is malformed: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "pending-interaction envelope status disagrees with its frame"
+            )
+        expected_mirrors = {
+            key: copy.deepcopy(normalized[key]) for key in mirror_keys
+        }
+        readiness = normalized["readiness"]
+        assert isinstance(readiness, dict)
+        if any(
+            result.get(key) != expected
+            for key, expected in expected_mirrors.items()
+        ) or result.get(
+            "pending_character_interaction_context_ready"
+        ) is not readiness["interaction_semantic_decision_ready"]:
+            raise BridgeUnavailableError(
+                "pending-interaction result mirrors disagree with its frame"
+            )
+        if (
+            result.get("queried_snapshot_id") != snapshot_id
+            or result.get("queried_revision") != revision
+            or result.get("queried_native_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "pending-interaction result is bound to another snapshot"
+            )
+        if normalized["status"] == "available":
+            routing = normalized["routing"]
+            roles = normalized["roles"]
+            assert isinstance(routing, dict)
+            assert isinstance(roles, dict)
+            if (
+                routing.get("auto_accept_notification")
+                is not pending.get("auto_accept_notification")
+                or roles.get("actor_character_id")
+                != pending.get("sender_character_id")
+            ):
+                raise BridgeUnavailableError(
+                    "pending-interaction frame disagrees with snapshot mirror"
+                )
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        build = normalized["build"]
+        assert isinstance(build, dict)
+        observed_version = (
+            hello.get("expected_ck3_version", hello.get("game_version"))
+            if isinstance(hello, dict)
+            else None
+        )
+        observed_sha256 = (
+            hello.get(
+                "expected_ck3_sha256", hello.get("executable_sha256")
+            )
+            if isinstance(hello, dict)
+            else None
+        )
+        if (
+            observed_version != build["version"]
+            or not isinstance(observed_sha256, str)
+            or observed_sha256.upper()
+            != str(build["exe_sha256"]).upper()
+        ):
+            raise BridgeUnavailableError(
+                "pending-interaction build mirror disagrees with bridge hello"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("episode_run_id")
+            == snapshot.get("episode_run_id")
+            and current.get("pending_character_interaction") == pending
+        ):
+            raise BridgeUnavailableError(
+                "pending-interaction query crossed a snapshot revision"
+            )
+        source = {
+            "game_version": observed_version,
+            "executable_sha256": observed_sha256.upper(),
+            "snapshot_id": snapshot_id,
+            "revision": revision,
+            "native_revision": native_revision,
+            "date_raw": date_raw,
+            "paused": True,
+            "backend_id": snapshot_backend_id,
+        }
+        binding = {
+            "snapshot_id": snapshot_id,
+            "revision": revision,
+            "native_revision": native_revision,
+            "date_raw": date_raw,
+            "pending_interaction_id": pending_interaction_id,
+            "expected_revision": expected_revision,
+        }
+        return {
+            **result,
+            "schema_version": 1,
+            "status": normalized["status"],
+            "scope": "exact-pending-character-interaction-context",
+            "source": source,
+            "binding": binding,
+            **expected_mirrors,
+            "pending_character_interaction_context_ready": readiness[
+                "interaction_semantic_decision_ready"
+            ],
+            "pending_character_interaction_context": normalized,
         }
 
     def query_actual_contact_scope(

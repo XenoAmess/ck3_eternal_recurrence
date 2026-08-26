@@ -339,8 +339,9 @@ sides/order, so the same-day stored-order gate remains closed.
 | `game.command.save-checkpoint` | implemented, minimized live file creation passed | high static `CAutoSaveCommand` layout + offline queue fixture + 63,367,813-byte live save | explicit upper-layer policy only |
 | `game.state.snapshot.played_character` | implemented, live probe pending | player-character manager + Character storage alive projection + offline layout fixture | never inside native driver |
 | `game.state.xar-one-life-settlement` | implemented, third minimized death snapshot passed while CK3 was minimized | exact live 12-global read + correct script-identifier registry + character EventTarget kind/ID ABI + independently proven CFixedPoint scale + dead-source fixture | never inside native driver |
-| `game.state.snapshot.pending_character_interaction` | implemented; four live requests advanced before a reproducible global-storage false positive exposed the missing recipient filter; filtered build awaits bounded live replay | exact notification-recipient predicate + native reply validator + offline multi-player fixture | never inside native driver |
+| `game.state.snapshot.pending_character_interaction` | implemented; recipient-filtered ordinary request discovery is live-confirmed, while auto-accept notifications remain deliberately filtered | exact notification-recipient predicate + native reply validator + offline multi-player fixture + ordinary white-peace cold replay | never inside native driver |
 | `game.command.accept/reject-pending-character-interaction` | implemented; live accept advanced four locally addressed requests | high static UI enum/command/queue path + native actionability validation + offline command fixture | explicit upper-layer policy only |
+| `game.command.query-pending-character-interaction-context-v1` | implemented; ordinary recipient white-peace pending completed production-only cold-reload same-revision double query | exact stable definition/roles/target/options/routing/deadline/legality ABI + application-main mailbox + live artifact `D20E339D...B8BC89` | explicit typed service/MCP query; semantic reply policy remains blocked by structured terms |
 | `game.state.snapshot.active_wars` | implemented, minimized live declaration projected a new war | exact WarManager/storage/participant/score helpers + offline attacker/defender fixture | never inside native driver |
 | `game.state.war-primary-opponent` | implemented, live probe pending | exact primary-side fields + generation-safe opponent resolution + reused default-raise resolver + offline attacker/defender/non-primary fixture | never inside native driver |
 | `game.state.war-objectives` | implemented; live war 16777290 exposed target title 2388 and province 2585; multi-county hierarchy projection passed offline fixture | exact CB targeted-title serializer, generation-safe title storage, engine recursive de-jure walker + `title_province` capital-barony path + hierarchy/generation/bound fixtures | never inside native driver |
@@ -733,6 +734,40 @@ played Character. The corrected offline fixture places another character's
 valid component in the lower storage slot, asserts that it is skipped, and
 publishes only the later locally routed component after the exact CK3
 visibility predicate and accept-command validator both pass.
+
+## Typed pending-interaction context live replay
+
+The production-only cold-reload acceptance on 2026-08-26 used immutable save
+`xar_checkpoint_pre_white_peace_53175816.ck3` (SHA-256
+`5BA2136911EAD0CAF1F7D2F3DE02EAFBD8039861C46F01F35F698B3B5CFFFC5F`).
+A seed process sent an ordinary, non-religious white-peace interaction for war
+`16777290`, switched from actor `29829` to recipient `36108` on the same day,
+and saved a pending checkpoint (SHA-256
+`3ABF8B9750911910D95B6AE2108B71BAA040613B3E4410578F1C4F76F16019DF`).
+A fresh production-only process then cold-loaded that checkpoint and issued two
+adjacent read-only typed queries against the same paused snapshot.
+
+Both observations returned full pending component ID `738197506`, date raw
+`53175816`, canonical interaction
+`end_war_attacker_white_peace_interaction`, stable name hash `3450334569`,
+runtime ordinal `294`, actor `29829`, recipient `36108`, no typed target,
+exclusive empty send-options, local recipient routing, expiration age `0/60`,
+and `accept/reject/block=true`, `acknowledge=false`. Only the query sequence
+advanced; no reply action was submitted. Source metadata and hash remained
+unchanged, and both managed user trees were removed after the run. The
+acceptance report is
+`C:\Users\xenoa\AppData\Local\Temp\xar-pending-interaction-context-v1-live-20260826-04.json`
+(SHA-256
+`D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89`).
+
+This closes the ordinary-recipient observation path only. Structured costs,
+exchanges, effect preview, and native AI acceptance terms remain explicitly
+unavailable, so `interaction_semantic_decision_ready` remains false. The
+intermediary route still needs a production live fixture. Acknowledgement is
+also not production-reachable yet because the current snapshot discovery
+filters `+0x5C6` auto-accept notifications before the typed query can bind their
+full component IDs. Religion-specific interaction semantics remain
+owner-deferred and were not explored by this replay.
 
 `CRaiseTroopsCommand` is `0x50` bytes. RVA `0x224CC80(Character*)` resolves
 the game's default rally province. Constructor RVA `0x26D6FC0` receives the

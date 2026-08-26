@@ -8,6 +8,7 @@
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -212,7 +213,7 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   AppendJsonString(result,
                    xar::ck3_11906::kMainThreadQueryMailboxV1CandidateId);
   result +=
-      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest\"";
+      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context\"";
   result += ",\"installed\":";
   result += mailbox.iat_installed ? "true" : "false";
   result += ",\"stop\":";
@@ -2014,6 +2015,42 @@ std::string LoadedFeatureManifestResultFrame(
   return result;
 }
 
+std::string PendingCharacterInteractionContextResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::PendingCharacterInteractionContextV1 &context) {
+  const auto payload =
+      xar::ck3_11906::SerializePendingCharacterInteractionContextV1(context);
+  if (payload.empty()) {
+    return {};
+  }
+  std::string_view status = "unavailable";
+  if (context.status ==
+      xar::game::PendingCharacterInteractionContextStatusV1::available) {
+    status = "available";
+  } else if (
+      context.status ==
+      xar::game::PendingCharacterInteractionContextStatusV1::invalid) {
+    status = "invalid";
+  }
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{\"step\":\"query-pending-character-"
+      "interaction-context-v1\",";
+  result += "\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(context.snapshot_revision);
+  result += ",\"pending_character_interaction_context\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string SaveCheckpointResultFrame(std::string_view request_id,
                                       const CheckpointSubmission &checkpoint) {
   std::string result =
@@ -2501,6 +2538,9 @@ public:
         &xar::ck3_11906::ExecuteCampaignRootContextMailboxQueryV1;
     environment.permitted_executor_denary =
         &xar::ck3_11906::ExecuteLoadedFeatureManifestMailboxQueryV1;
+    environment.permitted_executor_undenary =
+        &xar::ck3_11906::
+            ExecutePendingCharacterInteractionContextMailboxQueryV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -2639,6 +2679,7 @@ struct WorkerState {
   std::uint64_t battle_terminal_transition_query_sequence = 0;
   std::uint64_t campaign_root_context_query_sequence = 0;
   std::uint64_t loaded_feature_manifest_query_sequence = 0;
+  std::uint64_t pending_character_interaction_context_query_sequence = 0;
   std::uint64_t army_strength_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t war_termination_query_sequence = 0;
@@ -2681,6 +2722,8 @@ void RunConnectedSession(
       state.campaign_root_context_query_sequence;
   auto &loaded_feature_manifest_query_sequence =
       state.loaded_feature_manifest_query_sequence;
+  auto &pending_character_interaction_context_query_sequence =
+      state.pending_character_interaction_context_query_sequence;
   auto &army_strength_query_sequence =
       state.army_strength_query_sequence;
   auto &combat_inputs_query_sequence =
@@ -3133,6 +3176,156 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main loaded-feature result was not "
                       "reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (
+            step == xar::ck3_11906::
+                        kPendingCharacterInteractionContextV1Step) {
+          std::uint64_t expected_revision = 0;
+          std::int32_t pending_interaction_id = -1;
+          if (!xar::ck3_11906::
+                  ParsePendingCharacterInteractionContextRequestV1(
+                      incoming.payload, expected_revision,
+                      pending_interaction_id)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "pending-interaction context request is malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "pending-interaction context snapshot revision is "
+                          "stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive ||
+                !current_snapshot.has_pending_character_interaction ||
+                current_snapshot.pending_character_interaction_id !=
+                    pending_interaction_id) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "pending-interaction context snapshot changed or "
+                            "is not ready"));
+            } else {
+              xar::ck3_11906::
+                  PendingCharacterInteractionContextMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.environment = xar::ck3_11906::
+                  BindPendingCharacterInteractionNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              query.access.invoke_local_routing =
+                  &xar::ck3_11906::
+                      InvokePendingCharacterInteractionLocalRoutingDirectV1;
+              query.access.invoke_reply_validator =
+                  &xar::ck3_11906::
+                      InvokePendingCharacterInteractionReplyValidatorDirectV1;
+              query.access.invoke_trigger_evaluator =
+                  &xar::ck3_11906::
+                      InvokePendingCharacterInteractionTriggerEvaluatorDirectV1;
+              query.access.invoke_target_type_registry =
+                  &xar::ck3_11906::
+                      InvokePendingCharacterInteractionTargetTypeRegistryDirectV1;
+              query.access.invoke_script_identifier_name =
+                  &xar::ck3_11906::
+                      InvokePendingCharacterInteractionScriptIdentifierNameDirectV1;
+              query.request.expected_snapshot_revision = expected_revision;
+              query.request.pending_interaction_id = pending_interaction_id;
+              query.request.played_character_id =
+                  current_snapshot.played_character_id;
+              query.expected_snapshot = current_snapshot;
+
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecutePendingCharacterInteractionContextMailboxQueryV1,
+                      &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main pending-interaction context executor "
+                    "is unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error =
+                      "application-main pending-interaction context executor "
+                      "is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kPendingCharacterInteractionContextV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kPendingCharacterInteractionContextV1ExecutingWaitSliceMilliseconds);
+                }
+
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion ==
+                        xar::ck3_11906::
+                            PendingCharacterInteractionContextMailboxCompletionV1::
+                                completed &&
+                    completion_snapshot_stable) {
+                  response = PendingCharacterInteractionContextResultFrame(
+                      request_id,
+                      pending_character_interaction_context_query_sequence +
+                          1,
+                      query.result);
+                  if (!response.empty()) {
+                    ++pending_character_interaction_context_query_sequence;
+                  }
+                }
+                if (response.empty()) {
+                  const auto error = xar::ck3_11906::
+                      PendingCharacterInteractionContextFailureMessageV1(
+                          wait, query.completion,
+                          completion_snapshot_stable);
+                  response = CommandResultFrame(request_id, step, false,
+                                                error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::
+                                         reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main pending-interaction context result "
+                      "was not reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }

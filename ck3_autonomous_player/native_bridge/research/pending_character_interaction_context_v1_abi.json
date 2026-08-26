@@ -4,12 +4,12 @@
   "game_version": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "architecture": "msvc-x64",
-  "evidence_kind": "offline_exact_build_static_analysis",
+  "evidence_kind": "offline_exact_build_static_analysis_plus_production_paused_live_validation",
   "read_only": true,
-  "advertised": false,
-  "production_wired": false,
-  "live_validated": false,
-  "game_process_started": false,
+  "advertised": true,
+  "production_wired": true,
+  "live_validated": true,
+  "game_process_started": true,
   "scope": "engine-generic pending character-interaction identity, roles, target envelope, selected send options, routing, deadline and reply legality",
   "owner_deferred_domains": [
     "religion",
@@ -22,17 +22,19 @@
     "holy_war"
   ],
   "execution_boundary": {
-    "research_mode": "offline_exact_build_static_only",
-    "ck3_started_or_controlled": false,
-    "cpp_implementation_changed": false,
-    "future_query_thread": "paused application-main mailbox",
-    "future_snapshot_rule": "resolve the full generation-bearing pending ID, require exact local routing, sample all fields atomically, and publish only if the outer paused revision is unchanged",
+    "research_mode": "production_read_only_query_live_validated_for_one_ordinary_nonreligious_recipient_fixture",
+    "ck3_started_or_controlled": true,
+    "cpp_implementation_changed": true,
+    "query_thread": "paused application-main mailbox",
+    "snapshot_rule": "resolve the full generation-bearing pending ID, require exact local routing, double-sample all fields atomically, and publish only if the outer paused revision and date are unchanged",
     "read_only_helpers_after_thread_proof": [
       "0x1266BA0 pending local-routing predicate",
       "0x26B3540 reply validator for enums 0, 1 and 2",
       "0x2C42610 context identity validator",
       "0x2C42A30 reply-state predicate",
-      "0x334C510 generic trigger evaluator for proven trigger fields"
+      "0x334C510 generic trigger evaluator for proven trigger fields",
+      "0x33C52B0 generic script-scope type registry getter",
+      "0x3B58970 script identifier name resolver"
     ],
     "forbidden_query_calls": [
       "0x26B3480 reply command executor",
@@ -44,11 +46,12 @@
   },
   "source_contract": {
     "range_convention": "start inclusive, end exclusive",
+    "span_semantics": "exact_byte_spans are immutable hashed provenance ranges, not an assertion that every range is one .pdata function; entries that cross runtime-function regions or have no .pdata row declare span_kind explicitly",
     "source_files": {
       "Crusader Kings III/game/common/character_interactions/_character_interactions.info": "F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10",
       "Crusader Kings III/game/common/defines/00_defines.txt": "C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807"
     },
-    "exact_function_spans": [
+    "exact_byte_spans": [
       {
         "name": "pending_constructor",
         "start_rva": "0x27541F0",
@@ -89,7 +92,13 @@
         "start_rva": "0x27516F0",
         "end_rva": "0x275180C",
         "byte_length": "0x11C",
-        "sha256": "B5923424AA953D30C991994FE74A5C48138D1E8E49DB061151229C7821F24D14"
+        "sha256": "B5923424AA953D30C991994FE74A5C48138D1E8E49DB061151229C7821F24D14",
+        "span_kind": "contiguous_logic_span_across_three_pdata_runtime_functions",
+        "runtime_function_regions": [
+          "0x27516F0..0x2751720",
+          "0x2751720..0x27517FB",
+          "0x27517FB..0x275180C"
+        ]
       },
       {
         "name": "game_database_object_key_constructor",
@@ -110,7 +119,13 @@
         "start_rva": "0x2C40950",
         "end_rva": "0x2C40B1A",
         "byte_length": "0x1CA",
-        "sha256": "0EE2C4AE8FDC72029333637814581FAD5E325D87627A1589FAC0D23A05018CF2"
+        "sha256": "0EE2C4AE8FDC72029333637814581FAD5E325D87627A1589FAC0D23A05018CF2",
+        "span_kind": "contiguous_logic_span_across_three_pdata_runtime_functions",
+        "runtime_function_regions": [
+          "0x2C40950..0x2C40A95",
+          "0x2C40A95..0x2C40B03",
+          "0x2C40B03..0x2C40B1A"
+        ]
       },
       {
         "name": "character_interaction_context_identity_validator",
@@ -124,7 +139,29 @@
         "start_rva": "0x211D250",
         "end_rva": "0x211D26D",
         "byte_length": "0x1D",
-        "sha256": "8D4A73D179C35B453EA2A9942330E76BC40D7F5EACE7D515EE71FA174E0FECA0"
+        "sha256": "8D4A73D179C35B453EA2A9942330E76BC40D7F5EACE7D515EE71FA174E0FECA0",
+        "span_kind": "leaf_thunk_without_pdata_runtime_function_row"
+      },
+      {
+        "name": "generic_script_scope_type_registry_getter",
+        "start_rva": "0x33C52B0",
+        "end_rva": "0x33C535B",
+        "byte_length": "0xAB",
+        "sha256": "8B7E4C67B9E772BBB75F303D7EE2444DBBF261D412FD0DCC97C99FC0C7297507"
+      },
+      {
+        "name": "generic_script_scope_serializer",
+        "start_rva": "0x81D880",
+        "end_rva": "0x81DA06",
+        "byte_length": "0x186",
+        "sha256": "B267CA32133ED15FE47468572C4B561E2A121B280BBEF8D653F56E4158CD1E6D"
+      },
+      {
+        "name": "generic_script_scope_type_name_consumer",
+        "start_rva": "0x2011400",
+        "end_rva": "0x2011623",
+        "byte_length": "0x223",
+        "sha256": "55AC17937B11658E17C4884A9FD027FFA32BCD3B04EBC16B9D98F24BD9ECB02B"
       }
     ],
     "entry_only_anchors": {
@@ -140,6 +177,11 @@
       "auto_accept_notification_getter": "0x12680E0",
       "ui_reply_legality_mirror": "0x1268140",
       "notification_auto_reply": "0xF06B50"
+    },
+    "direct_data_anchors": {
+      "generic_script_scope_type_registry": "0x4FFE290",
+      "generic_script_scope_out_of_range_fallback_entry": "0x5000AB0",
+      "character_interaction_expiration_days": "0x570F528"
     }
   },
   "rtti": {
@@ -219,7 +261,9 @@
       "presence_and_type": "+0x00 uint16 registry index; zero is absent",
       "remaining_payload": "type-specific bytes, not a universal component ID",
       "serialization_tag": "0x6B",
-      "semantic_boundary": "publish the raw envelope only as source evidence; typed target identity remains unavailable until that registry type has an exact-build decoder"
+      "type_registry": "RVA 0x33C52B0 returns the exact-build registry at 0x4FFE290; data +0x00, signed count +0x0C, entry stride 0x50, entry +0x00 int32 script identifier",
+      "stable_type_key": "for a nonzero in-range uint16 type index, resolve entry+0x00 through RVA 0x3B58970; reject the out-of-range fallback entry at 0x5000AB0",
+      "semantic_boundary": "publish the stable type key and raw envelope only as source evidence; typed target payload identity remains unavailable until that type has an exact-build decoder"
     },
     "CReplyCharacterInteractionCommand": {
       "size": "0x28",
@@ -260,7 +304,7 @@
   "send_options": {
     "count_invariant": "context+0x30C must equal definition+0x2554 and remain within an implementation bound",
     "selection_encoding": "one byte per native row; selected iff byte equals 1",
-    "visibility_and_validity": "RVA 0x2C408B0 evaluates row+0xE0 is_valid, then row+0x00 is_shown, against context+0x08",
+    "visibility_and_validity": "RVA 0x2C408B0 evaluates row+0xE0 is_valid first; when false it short-circuits and effective is_shown remains false, otherwise it evaluates row+0x00 is_shown against context+0x08",
     "finalization": "RVA 0x2C40B20 resizes the vector to the definition count, validates selected rows and enforces definition+0x2A4E exclusive behavior",
     "scope_projection": "RVA 0x2C40950 writes every selected boolean to the primary scope using row+0x3A8",
     "string_identity_status": "unavailable: numeric script identifier to canonical flag string mapping is not closed"
@@ -291,6 +335,14 @@
     "can_acknowledge": "adapter_common_gate && pending+0x5C6 != 0; submit only enum 4",
     "unknown_or_malformed": "publish all actions false with a typed observation error; never fall back to accept"
   },
+  "production_reachability": {
+    "ordinary_pending_query_wired": true,
+    "acknowledge_legality_implemented": true,
+    "auto_accept_notification_discovery_ready": false,
+    "auto_accept_notification_query_reachable": false,
+    "current_blocker": "legacy Snapshot pending discovery skips CPendingCharacterInteraction+0x5C6 notifications, while the mailbox capture gate still requires that Snapshot to publish the requested full pending ID",
+    "claim_boundary": "the standalone ACK projection is deterministic static/native-unit coverage only; do not claim production ACK reachability or live readiness until discovery/capture is widened and a real notification fixture advances"
+  },
   "safe_semantic_terms": {
     "available_from_generic_exact_build_contract": [
       "stable interaction canonical key and deterministic hash",
@@ -298,7 +350,7 @@
       "current responder role and routing kind",
       "auto_accept result and auto-accept-notification channel",
       "selected send-option native indexes and numeric flag identifiers",
-      "target presence and raw type envelope",
+      "target presence, stable generic-scope type key and raw type envelope",
       "age, expiration and remaining days",
       "independent accept, reject, block and acknowledge legality"
     ],
@@ -319,7 +371,7 @@
     "pending_identity": "full component ID",
     "definition": "canonical key, deterministic hash and optional runtime ordinal",
     "roles": "five full CharacterIDs plus current responder role",
-    "target": "present, raw type index, raw envelope evidence, typed status and typed identity when supported",
+    "target": "present, raw type index, stable type key, raw envelope evidence, typed payload status and typed identity when supported",
     "send_options": "native index, numeric flag identifier, selected and evaluation status",
     "routing": "raw kind and auto_accept_notification",
     "deadline": "age_days, expiration_days, remaining_days and expiry_boundary_status",
@@ -336,16 +388,73 @@
     "deadline_static_ready": true,
     "reply_legality_static_ready": true,
     "generic_target_envelope_static_ready": true,
+    "generic_target_type_key_static_ready": true,
     "generic_target_typed_identity_ready": false,
     "structured_terms_ready": false,
-    "bridge_query_ready": false,
-    "production_live_ready": false,
+    "bridge_query_ready": true,
+    "ordinary_pending_query_ready": true,
+    "ordinary_pending_query_live_ready": true,
+    "notification_ack_static_ready": true,
+    "notification_ack_query_ready": false,
+    "production_live_ready": true,
+    "production_live_scope": "ordinary recipient pending only; intermediary and auto-accept notification remain outside live coverage",
     "interaction_semantic_decision_ready": false,
-    "capability_advertised": false
+    "capability_advertised": true
+  },
+  "live_validation": {
+    "date": "2026-08-26",
+    "runner": "native_bridge/research/run_pending_character_interaction_context_live_acceptance.py",
+    "artifact_path": "C:/Users/xenoa/AppData/Local/Temp/xar-pending-interaction-context-v1-live-20260826-04.json",
+    "artifact_sha256": "D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89",
+    "elapsed_seconds": 139.363,
+    "source_save_sha256_before_and_after": "5BA2136911EAD0CAF1F7D2F3DE02EAFBD8039861C46F01F35F698B3B5CFFFC5F",
+    "pending_checkpoint_sha256": "3ABF8B9750911910D95B6AE2108B71BAA040613B3E4410578F1C4F76F16019DF",
+    "pending_checkpoint_size": 66579686,
+    "production_bridge_dll_sha256": "152FB65A9F302B67423F5AE604AEE0DD9A791498E74C9CA924E47DCAF14F568C",
+    "injector_sha256": "1F418FFD2D765278C4EF749D3C389447FC0141FD52BDEBF79D536F1DEBAACD5C",
+    "seed_bridge_pid": 93972,
+    "cold_query_bridge_pid": 39180,
+    "date_raw": 53175816,
+    "full_pending_interaction_id": 738197506,
+    "definition": {
+      "canonical_key": "end_war_attacker_white_peace_interaction",
+      "deterministic_key_hash": 3450334569,
+      "runtime_ordinal": 294
+    },
+    "roles": {
+      "actor_character_id": 29829,
+      "recipient_character_id": 36108,
+      "secondary_actor_character_id": -1,
+      "secondary_recipient_character_id": -1,
+      "intermediary_character_id": -1
+    },
+    "observed_projection": {
+      "target_present": false,
+      "send_options_exclusive": true,
+      "send_option_count": 0,
+      "routing_kind": 0,
+      "auto_accept_notification": false,
+      "age_days": 0,
+      "expiration_days": 60,
+      "remaining_days": 60,
+      "can_accept": true,
+      "can_reject": true,
+      "can_block": true,
+      "can_acknowledge": false,
+      "structured_terms_ready": false,
+      "interaction_semantic_decision_ready": false
+    },
+    "same_revision_double_query": true,
+    "cold_checkpoint_full_id_stable": true,
+    "reply_action_invoked": false,
+    "managed_process_cleanup": true,
+    "disposable_root_cleanup": true,
+    "scope_boundary": "This validates one ordinary nonreligious recipient request. It does not validate intermediary routing, notification discovery/ACK, structured white-peace terms, target payload decoders, or a semantic reply policy."
   },
   "next_reverse_engineering": [
     "map the generic target scope registry indexes used by supported non-deferred interaction target types to stable typed payload decoders",
     "close an engine-generic read-only structured terms/effect-description seam without calling subtype mutators or effect executors",
-    "implement the paused application-main query and validate ordinary recipient, intermediary and auto-accept-notification fixtures in game"
+    "validate the production paused application-main query against an intermediary fixture; the ordinary recipient fixture is live-confirmed",
+    "widen full-generation pending discovery/capture to include +0x5C6 notifications before attempting the auto-accept acknowledge live fixture"
   ]
 }
