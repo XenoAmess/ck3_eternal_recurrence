@@ -20,6 +20,10 @@ constexpr std::size_t kActiveEventInstanceIdOffset = 0x1BC;
 constexpr std::size_t kEventDataCalculatedIdOffset = 0x08;
 constexpr std::size_t kEventDataRuntimeStatsOrdinalOffset = 0x0C;
 constexpr std::size_t kEventDataDefinitionKeyOffset = 0x10;
+constexpr std::size_t kEventDataAuthoredOptionDataOffset = 0x1B0;
+constexpr std::size_t kEventDataAuthoredOptionCapacityOffset = 0x1B8;
+constexpr std::size_t kEventDataAuthoredOptionCountOffset = 0x1BC;
+constexpr std::size_t kEventOptionDefinitionIsCancelOffset = 0x47A;
 constexpr std::size_t kManagerFromIdlerOffset = 0x28;
 constexpr std::size_t kManagerWindowDataOffset = 0x10;
 constexpr std::size_t kManagerWindowCountOffset = 0x1C;
@@ -28,16 +32,32 @@ constexpr std::size_t kDataInstanceIdOffset = 0x00;
 constexpr std::size_t kDataOptionDataOffset = 0x10;
 constexpr std::size_t kDataOptionCapacityOffset = 0x18;
 constexpr std::size_t kDataOptionCountOffset = 0x1C;
-constexpr std::size_t kDataCancelOptionIndexOffset = 0x2C;
 constexpr std::size_t kOptionStride = 0x1B8;
+constexpr std::size_t kOptionEffectDataOffset = 0x88;
+constexpr std::size_t kOptionEffectCapacityOffset = 0x90;
+constexpr std::size_t kOptionEffectCountOffset = 0x94;
 constexpr std::size_t kOptionOwnerOffset = 0x160;
 constexpr std::size_t kOptionNameOffset = 0x170;
 constexpr std::size_t kOptionReasonOffset = 0x190;
 constexpr std::size_t kOptionNativeIndexOffset = 0x1B0;
 constexpr std::size_t kOptionEnabledOffset = 0x1B4;
 constexpr std::size_t kOptionFallbackOffset = 0x1B5;
+constexpr std::size_t kEffectIndicatorStride = 0x18;
+constexpr std::size_t kEffectIndicatorPayload0Offset = 0x00;
+constexpr std::size_t kEffectIndicatorPayload1Offset = 0x08;
+constexpr std::size_t kEffectIndicatorKindOffset = 0x10;
+constexpr std::size_t kEffectIndicatorGainOffset = 0x14;
+constexpr std::size_t kEffectIndicatorAffectedByTraitOffset = 0x15;
+constexpr std::size_t kEffectIndicatorCriticalOffset = 0x16;
+constexpr std::size_t kTraitDatabaseDataOffset = 0x68;
+constexpr std::size_t kTraitDatabaseCountOffset = 0x74;
+constexpr std::size_t kTraitNativeIdOffset = 0x10;
+constexpr std::size_t kTraitStableKeyOffset = 0x18;
+constexpr std::size_t kSchemeTypeStableKeyOffset = 0x18;
 constexpr std::size_t kMaximumWindows = 32;
 constexpr std::size_t kMaximumOptions = 64;
+constexpr std::size_t kMaximumEffectIndicators = 128;
+constexpr std::size_t kMaximumTraitDefinitions = 4'096;
 constexpr std::size_t kMaximumStringBytes = 16'384;
 
 template <typename T>
@@ -154,10 +174,174 @@ bool ValidVector(std::int32_t count, std::int32_t capacity,
          (count == 0 || data != nullptr);
 }
 
-bool ReadMatchingWindow(const Bindings &bindings, void *window,
+void ReadTraitIndicatorIdentity(const Bindings &bindings, const void *payload,
+                                game::EventEffectIndicatorRowV1 &row) {
+  row.identity_available = false;
+  row.native_id.reset();
+  row.stable_key.clear();
+  if (payload == nullptr || bindings.trait_database_slot == nullptr) {
+    return;
+  }
+  void *const database = *bindings.trait_database_slot;
+  if (database == nullptr) {
+    return;
+  }
+  void *const definitions = LoadAt<void *>(database, kTraitDatabaseDataOffset);
+  const auto count = LoadAt<std::int32_t>(database, kTraitDatabaseCountOffset);
+  if (count <= 0 ||
+      count > static_cast<std::int32_t>(kMaximumTraitDefinitions) ||
+      definitions == nullptr) {
+    return;
+  }
+  std::int32_t pointer_matches = 0;
+  for (std::int32_t index = 0; index < count; ++index) {
+    void *const definition = LoadAt<void *>(
+        definitions, static_cast<std::size_t>(index) * sizeof(void *));
+    if (definition == payload) {
+      ++pointer_matches;
+    }
+  }
+  if (pointer_matches != 1) {
+    return;
+  }
+  const auto native_id = LoadAt<std::int32_t>(payload, kTraitNativeIdOffset);
+  std::string stable_key;
+  if (native_id < 0 ||
+      !ReadNativeString(static_cast<const std::byte *>(payload) +
+                            kTraitStableKeyOffset,
+                        stable_key, true, true)) {
+    return;
+  }
+  for (std::int32_t index = 0; index < count; ++index) {
+    void *const definition = LoadAt<void *>(
+        definitions, static_cast<std::size_t>(index) * sizeof(void *));
+    if (definition == nullptr) {
+      return;
+    }
+    if (definition == payload) {
+      continue;
+    }
+    if (LoadAt<std::int32_t>(definition, kTraitNativeIdOffset) == native_id) {
+      return;
+    }
+    std::string other_key;
+    if (!ReadNativeString(static_cast<std::byte *>(definition) +
+                              kTraitStableKeyOffset,
+                          other_key, true, true) ||
+        other_key == stable_key) {
+      return;
+    }
+  }
+  row.identity_available = true;
+  row.native_id = native_id;
+  row.stable_key = std::move(stable_key);
+}
+
+void ReadSchemeIndicatorIdentity(const Bindings &bindings, const void *payload,
+                                 game::EventEffectIndicatorRowV1 &row) {
+  row.identity_available = false;
+  row.native_id.reset();
+  row.stable_key.clear();
+  if (payload == nullptr || bindings.scheme_type_database_slot == nullptr ||
+      bindings.scheme_type_fallback_slot == nullptr ||
+      bindings.scheme_type_primary_vtable == 0 ||
+      bindings.hash_stable_key == nullptr ||
+      bindings.lookup_scheme_type == nullptr) {
+    return;
+  }
+  void *const database = *bindings.scheme_type_database_slot;
+  void *const fallback = *bindings.scheme_type_fallback_slot;
+  if (database == nullptr || fallback == nullptr || payload == fallback ||
+      LoadAt<std::uintptr_t>(payload, 0) !=
+          bindings.scheme_type_primary_vtable) {
+    return;
+  }
+  std::string stable_key;
+  if (!ReadNativeString(static_cast<const std::byte *>(payload) +
+                            kSchemeTypeStableKeyOffset,
+                        stable_key, true, true) ||
+      stable_key.size() >
+          static_cast<std::size_t>(std::numeric_limits<std::uint32_t>::max())) {
+    return;
+  }
+  // Mirror the engine caller's ABI even though 1.19.0.6's hash body does not
+  // currently consume its first argument.
+  const auto hash = bindings.hash_stable_key(
+      database, stable_key.data(),
+      static_cast<std::uint32_t>(stable_key.size()));
+  if (bindings.lookup_scheme_type(database, hash) != payload) {
+    return;
+  }
+  row.identity_available = true;
+  row.stable_key = std::move(stable_key);
+}
+
+bool ReadEffectIndicators(
+    const Bindings &bindings, const void *item,
+    std::vector<game::EventEffectIndicatorRowV1> &output) {
+  output.clear();
+  void *const rows = LoadAt<void *>(item, kOptionEffectDataOffset);
+  const auto count = LoadAt<std::int32_t>(item, kOptionEffectCountOffset);
+  const auto capacity = LoadAt<std::int32_t>(item, kOptionEffectCapacityOffset);
+  if (!ValidVector(count, capacity, kMaximumEffectIndicators, rows)) {
+    return false;
+  }
+  try {
+    output.reserve(static_cast<std::size_t>(count));
+  } catch (...) {
+    return false;
+  }
+  for (std::int32_t index = 0; index < count; ++index) {
+    const auto *const source =
+        static_cast<const std::byte *>(rows) +
+        static_cast<std::size_t>(index) * kEffectIndicatorStride;
+    game::EventEffectIndicatorRowV1 row{};
+    row.raw_kind = LoadAt<std::int32_t>(source, kEffectIndicatorKindOffset);
+    switch (row.raw_kind) {
+    case 0:
+      row.kind = game::EventEffectIndicatorKindV1::trait;
+      row.gain = LoadAt<std::uint8_t>(source, kEffectIndicatorGainOffset) != 0;
+      ReadTraitIndicatorIdentity(
+          bindings, LoadAt<void *>(source, kEffectIndicatorPayload0Offset),
+          row);
+      break;
+    case 1:
+      row.kind = game::EventEffectIndicatorKindV1::stress;
+      row.gain = LoadAt<std::uint8_t>(source, kEffectIndicatorGainOffset) != 0;
+      row.affected_by_trait =
+          LoadAt<std::uint8_t>(source, kEffectIndicatorAffectedByTraitOffset) !=
+          0;
+      row.critical =
+          LoadAt<std::uint8_t>(source, kEffectIndicatorCriticalOffset) != 0;
+      break;
+    case 2:
+      row.kind = game::EventEffectIndicatorKindV1::death;
+      break;
+    case 3:
+      row.kind = game::EventEffectIndicatorKindV1::scheme;
+      ReadSchemeIndicatorIdentity(
+          bindings, LoadAt<void *>(source, kEffectIndicatorPayload1Offset),
+          row);
+      break;
+    default:
+      row.kind = game::EventEffectIndicatorKindV1::unknown;
+      break;
+    }
+    try {
+      output.push_back(std::move(row));
+    } catch (...) {
+      output.clear();
+      return false;
+    }
+  }
+  return true;
+}
+
+bool ReadMatchingWindow(const Bindings &bindings, const void *event_data,
+                        void *window,
                         std::int32_t expected_event_id,
                         game::EventWindowContextV1 &candidate) {
-  if (window == nullptr ||
+  if (event_data == nullptr || window == nullptr ||
       LoadAt<std::uintptr_t>(window, 0) !=
           bindings.event_window_primary_vtable) {
     return false;
@@ -178,8 +362,16 @@ bool ReadMatchingWindow(const Bindings &bindings, void *window,
   if (!ValidVector(count, capacity, kMaximumOptions, items)) {
     return false;
   }
-  const auto cancel_index =
-      LoadAt<std::int32_t>(data, kDataCancelOptionIndexOffset);
+  void *const authored_options =
+      LoadAt<void *>(event_data, kEventDataAuthoredOptionDataOffset);
+  const auto authored_count =
+      LoadAt<std::int32_t>(event_data, kEventDataAuthoredOptionCountOffset);
+  const auto authored_capacity = LoadAt<std::int32_t>(
+      event_data, kEventDataAuthoredOptionCapacityOffset);
+  if (!ValidVector(authored_count, authored_capacity, kMaximumOptions,
+                   authored_options)) {
+    return false;
+  }
   try {
     candidate.options.clear();
     candidate.options.reserve(static_cast<std::size_t>(count));
@@ -201,20 +393,36 @@ bool ReadMatchingWindow(const Bindings &bindings, void *window,
     option.rendered_index = rendered;
     option.native_option_index =
         LoadAt<std::int32_t>(item, kOptionNativeIndexOffset);
+    if (option.native_option_index < 0 ||
+        option.native_option_index >= authored_count) {
+      return false;
+    }
+    void *const authored_option = LoadAt<void *>(
+        authored_options,
+        static_cast<std::size_t>(option.native_option_index) * sizeof(void *));
+    if (authored_option == nullptr) {
+      return false;
+    }
+    const auto is_cancel = LoadAt<std::uint8_t>(
+        authored_option, kEventOptionDefinitionIsCancelOffset);
+    if (is_cancel > 1) {
+      return false;
+    }
     option.shown = true;
     option.enabled = enabled != 0;
     option.fallback = fallback != 0;
-    option.cancel = option.native_option_index == cancel_index;
+    option.cancel = is_cancel != 0;
     const bool duplicate_native_index = std::any_of(
         candidate.options.begin(), candidate.options.end(),
         [&option](const game::EventWindowOptionV1 &existing) {
           return existing.native_option_index == option.native_option_index;
         });
-    if (option.native_option_index < 0 || duplicate_native_index ||
+    if (duplicate_native_index ||
         !ReadNativeString(item + kOptionNameOffset,
                           option.resolved_name) ||
         !ReadNativeString(item + kOptionReasonOffset,
-                          option.unavailable_reason)) {
+                          option.unavailable_reason) ||
+        !ReadEffectIndicators(bindings, item, option.effect_indicators)) {
       return false;
     }
     try {
@@ -273,7 +481,13 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
         bindings.get_current_event == nullptr ||
         bindings.event_manager_offset == 0 ||
         bindings.ingame_interface_idler_vtable == 0 ||
-        bindings.event_window_primary_vtable == 0) {
+        bindings.event_window_primary_vtable == 0 ||
+        bindings.scheme_type_primary_vtable == 0 ||
+        bindings.trait_database_slot == nullptr ||
+        bindings.scheme_type_database_slot == nullptr ||
+        bindings.scheme_type_fallback_slot == nullptr ||
+        bindings.hash_stable_key == nullptr ||
+        bindings.lookup_scheme_type == nullptr) {
       SetUnavailable(output, "unsupported_build");
       return game::ReadEventWindowContextResultV1::unavailable;
     }
@@ -320,7 +534,7 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
     for (std::int32_t index = 0; index < count; ++index) {
       void *const window = LoadAt<void *>(
           windows, static_cast<std::size_t>(index) * sizeof(void *));
-      if (!ReadMatchingWindow(bindings, window,
+      if (!ReadMatchingWindow(bindings, identity_before.event_data, window,
                               expected_event_instance_id, candidate)) {
         SetUnavailable(output, "event_window_layout_invalid");
         return game::ReadEventWindowContextResultV1::unavailable;
@@ -353,6 +567,7 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
     candidate.runtime_stats_ordinal = identity_before.runtime_stats_ordinal;
     candidate.event_definition_identity_ready = true;
     candidate.option_presentation_ready = true;
+    candidate.effect_indicators_ready = true;
     candidate.effect_preview_ready = false;
     candidate.semantic_decision_ready = false;
     output = std::move(candidate);

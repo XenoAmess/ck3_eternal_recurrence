@@ -119,6 +119,10 @@ using ValidateMergeArmiesCommand = bool (*)(void *command,
                                              void *error_output);
 using GetCasusBelliTypeDatabase = void *(*)();
 using GetCharacterInteractionDatabase = void *(*)();
+using HashStableKey = std::int32_t (*)(void *context,
+                                      const char *data,
+                                      std::uint32_t size);
+using LookupSchemeType = void *(*)(void *database, std::int32_t key_hash);
 using EvaluateCasusBelli = bool (*)(void *casus_belli_type,
                                     void *attacker_character,
                                     void *defender_character,
@@ -219,6 +223,7 @@ struct Bindings {
   std::uintptr_t select_event_option_secondary_vtable = 0;
   std::uintptr_t ingame_interface_idler_vtable = 0;
   std::uintptr_t event_window_primary_vtable = 0;
+  std::uintptr_t scheme_type_primary_vtable = 0;
   std::uintptr_t auto_save_primary_vtable = 0;
   std::uintptr_t auto_save_secondary_vtable = 0;
   std::uintptr_t reply_character_interaction_primary_vtable = 0;
@@ -273,6 +278,9 @@ struct Bindings {
   void **ai_war_coordinator_fallback_slot = nullptr;
   void **siege_storage_slot = nullptr;
   void **contact_game_mode_slot = nullptr;
+  void **trait_database_slot = nullptr;
+  void **scheme_type_database_slot = nullptr;
+  void **scheme_type_fallback_slot = nullptr;
   GetGlobalVariableContainer *global_variable_container_accessor_slot =
       nullptr;
   void *valid_casus_belli_configuration_scratch = nullptr;
@@ -365,6 +373,8 @@ struct Bindings {
   GetCasusBelliTypeDatabase get_casus_belli_type_database = nullptr;
   GetCharacterInteractionDatabase get_character_interaction_database =
       nullptr;
+  HashStableKey hash_stable_key = nullptr;
+  LookupSchemeType lookup_scheme_type = nullptr;
   EvaluateCasusBelli evaluate_casus_belli = nullptr;
   DestroyValidCasusBelliConfiguration
       destroy_valid_casus_belli_configuration = nullptr;

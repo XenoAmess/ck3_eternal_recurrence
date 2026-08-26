@@ -15,6 +15,28 @@ enum class EventWindowContextStatusV1 {
   unavailable,
 };
 
+enum class EventEffectIndicatorKindV1 {
+  trait,
+  stress,
+  death,
+  scheme,
+  unknown,
+};
+
+struct EventEffectIndicatorRowV1 {
+  EventEffectIndicatorKindV1 kind = EventEffectIndicatorKindV1::unknown;
+  std::int32_t raw_kind = -1;
+  bool gain = false;
+  bool affected_by_trait = false;
+  bool critical = false;
+  bool identity_available = false;
+  std::optional<std::int32_t> native_id;
+  std::string stable_key;
+
+  friend bool operator==(const EventEffectIndicatorRowV1 &,
+                         const EventEffectIndicatorRowV1 &) = default;
+};
+
 struct EventWindowOptionV1 {
   std::int32_t rendered_index = -1;
   std::int32_t native_option_index = -1;
@@ -24,6 +46,7 @@ struct EventWindowOptionV1 {
   bool cancel = false;
   std::string resolved_name;
   std::string unavailable_reason;
+  std::vector<EventEffectIndicatorRowV1> effect_indicators;
 
   friend bool operator==(const EventWindowOptionV1 &,
                          const EventWindowOptionV1 &) = default;
@@ -43,6 +66,7 @@ struct EventWindowContextV1 {
   std::vector<EventWindowOptionV1> options;
   bool event_definition_identity_ready = false;
   bool option_presentation_ready = false;
+  bool effect_indicators_ready = false;
   bool effect_preview_ready = false;
   bool semantic_decision_ready = false;
 

@@ -93,6 +93,7 @@ bool ExecuteEventWindowContextMailboxQueryV1(
         query->result.calculated_event_id.has_value() &&
         query->result.runtime_stats_ordinal.has_value() &&
         query->result.option_presentation_ready &&
+        query->result.effect_indicators_ready &&
         !query->result.effect_preview_ready &&
         !query->result.semantic_decision_ready;
     const bool typed_unavailable =
@@ -106,6 +107,7 @@ bool ExecuteEventWindowContextMailboxQueryV1(
         !query->result.calculated_event_id.has_value() &&
         !query->result.runtime_stats_ordinal.has_value() &&
         !query->result.option_presentation_ready &&
+        !query->result.effect_indicators_ready &&
         !query->result.effect_preview_ready &&
         !query->result.semantic_decision_ready;
     if ((typed_available || typed_unavailable) &&

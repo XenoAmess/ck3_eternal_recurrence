@@ -70,6 +70,43 @@ def main() -> int:
         )
 
     source_contract = contract["source_contract"]
+
+    expected_entry_anchors = {
+        "timeout_option_regular_test": 0x16CCAF7,
+        "timeout_option_fallback_test": 0x16CCC64,
+        "timeout_option_parser_branch": 0x2537CFF,
+        "show_unlock_reason_parser_branch": 0x2537CDE,
+        "is_cancel_option_parser_branch": 0x2537CBD,
+        "is_cancel_option_name_character_controller_consumer": 0x182C3F0,
+    }
+    entry_anchors = source_contract["entry_only_anchors"]
+    for name, expected in expected_entry_anchors.items():
+        actual = integer(entry_anchors.get(name)) if name in entry_anchors else None
+        if actual != expected:
+            failures.append(
+                f"entry anchor {name}: expected 0x{expected:X}, found {actual!r}"
+            )
+    for stale_name in ("cancel_option_regular_test", "cancel_option_fallback_test"):
+        if stale_name in entry_anchors:
+            failures.append(f"stale mislabeled entry anchor remains: {stale_name}")
+
+    option_fields = contract["CEventOption"]["fields"]
+    for required_name in ("timeout_option", "show_unlock_reason", "is_cancel_option"):
+        if required_name not in option_fields:
+            failures.append(f"CEventOption field missing: {required_name}")
+    if "unclassified_tail_flag" in option_fields:
+        failures.append("stale CEventOption field remains: unclassified_tail_flag")
+    if not option_fields.get("timeout_option", "").startswith("+0x478 uint8"):
+        failures.append("CEventOption.timeout_option is not pinned to +0x478 uint8")
+    if not option_fields.get("is_cancel_option", "").startswith("+0x47A uint8"):
+        failures.append("CEventOption.is_cancel_option is not pinned to +0x47A uint8")
+
+    window_fields = contract["CEventWindowData"]
+    if "timeout_option_index" not in window_fields:
+        failures.append("CEventWindowData.timeout_option_index is missing")
+    if "cancel_option_index" in window_fields:
+        failures.append("stale CEventWindowData.cancel_option_index remains")
+
     pdata_ranges = runtime_function_ranges(data, image)
     for span in source_contract["exact_function_spans"]:
         declared_regions = span.get("runtime_function_regions")

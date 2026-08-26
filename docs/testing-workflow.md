@@ -166,6 +166,12 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   默认 root，`error.log` 对四个 fixture localization 路径报告 `path is over 250 characters long`，CK3 在事件出现前
   以 code 1 退出。live runner 的默认 root/stage 必须为最长 localization 文件预留到完整路径严格小于 250 字符，并在
   启动前按实际 root 枚举校验；默认前缀应保持短小。调用者指定的目录超限时，改用显式短 `--state-dir`，不要继续启动。
+- **事件脚本 flag 必须按 exact parser token 映射，不能用邻近 GUI 字段猜名**：同日 Attempt2 的 path gate 以最长
+  243 字符通过，generic event 真实加载且日志没有 unknown/`is_cancel_option` parser error，但旧 bridge 把
+  `CEventOption+0x478` / `CEventWindowData+0x2C` 的 `timeout_option` index 错标为 cancel，导致 authored
+  `is_cancel_option=yes` 的 row 发布 `cancel=false` 并使验收 RED。exact parser 证明
+  `timeout_option/show_unlock_reason/is_cancel_option` 分别位于 `+0x478/+0x479/+0x47A`；修法是按 materialized
+  authored native index 找回 `EventData` 的 `CEventOption*` 并读 `+0x47A`，不能把夹具预期降为 false。
 - **大厅规则选择持久化在 `player\game_rules\presets.txt` 的 `LastAppliedRules` 块**，新开局重放它；
   改规则文件的 `default` 不影响已有档案。runner 会先移除该块内全部 `xar_on/xar_off/xar_selftest`，再写入场景目标值并验证同时只剩一个（事后恢复）。
 - **pyautogui 合成键盘事件进不了 CK3**（esc/space/+ 实测全部无效），鼠标点击有效。

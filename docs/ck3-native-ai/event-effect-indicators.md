@@ -10,7 +10,7 @@
 | `game/gui/shared/event_windows.gui` | `8668174191A58AECE3FBA57A0E65C7E7DC1384F1B3A7BA281EA6E801D76811F4` |
 | `game/gui/event_windows/letter_event.gui` | `D93677E603C04827AE23DFFA6566E47984A8923FE77E89F02AC9291082A9CA88` |
 | `game/gui/event_windows/scheme_preparations_event.gui` | `6B14FDAEC5FDEDB50442B4D141F7F2CC3E5EC724453E45C1960653163EC3E691` |
-| 本文配套 `event_option_1_19_0_6_abi.json` | `2087F06AF1CF29E2CB6AAAE8870D31B79A538D637774E2FF44FD4ABFFD97AC75` |
+| 本文配套 `event_option_1_19_0_6_abi.json` | `961E8B11B8985C23452587EC3D4BBD3B4537029DF3C0170F5F0E54291D22280B` |
 
 [static-confirmed] `CEventOptionItem+0x88` 的 `OptionEffectItem` vector 不是完整 effect preview。它是引擎专门为事件按钮绘制少量图标而生成的、面向当前玩家角色的有损 **effect indicator**：
 
@@ -18,7 +18,7 @@
 - stress 数值、death 次数、重复效果次数和原始执行顺序已经在物化时丢失；
 - 金钱、威望、虔诚、关系等 resource/relation delta 不会生成这种 row；其它角色身上的同类效果也会被过滤；
 - 因此空 indicator vector **不表示没有效果**，非空 vector 也**不表示已经获得完整效果集合**；
-- 这项 capability 可以给 planner 新增真实语义，但不能单独把多选事件的 `event_semantic_decision_ready` 变为 `true`。
+- 这项 capability 可以给 planner 新增真实语义，但不能单独把多选事件的 `readiness.semantic_decision_ready` 变为 `true`。
 
 本文没有启动或 attach CK3，只读取冻结 EXE 与原版 GUI。`faith/doctrine/tenet/fervor`、改宗、宗教改革、圣战、holy order 与 great holy war 均维持 owner-deferred opaque 边界，没有展开专用树、字段或 fixture。
 
@@ -180,6 +180,10 @@ visitor 的 `start_scheme` 分支逐字复制该 `effect+0x80` 到 row `+0x08`�
 | scheme type lookup / fallback slot | `0xA48C70..0xA48DAA` / `module+0x570CB58` | `28D245F7B466840B3317DA2DE3751C0AEF7617D3D0DD3325A006AA91A7359D65` |
 | pure stable-key hash | `0x3B8B000..0x3B8B087` | `E42410BF40CBE818FED8B771988E102AE129BCE08CD7F975EB7A1EB2E5CD70DD` |
 
+`0x3B8B000(void *context, const char *bytes, uint32 size)` 在当前 exact build 的函数体中不读取首参；原调用点也没有为
+hash 单独重装 `RCX`。production binding 仍按仓库内同 RVA 的既有 ABI 表达传入 loaded scheme DB，避免同一原生函数出现
+两套不一致的签名，并由 source-contract test 固定该调用形状。
+
 production reader 应要求 DB slot 已加载、payload 不是 fallback、primary vtable exact、`+0x18` canonical string 合法，并用相同 hash/table 规则做 pointer 与 exact key round-trip；不得调用会 lazy-init DB 的 getter。通过后只发布稳定 `scheme_type_key`，不发布 pointer：
 
 ```json
@@ -230,50 +234,56 @@ flowchart LR
 
 ```json
 {
-  "effect_indicators": {
-    "status": "available",
-    "coverage": "played-character-event-icon-indicators-1.19.0.6-v1",
-    "complete_effect_set": false,
-    "rows": [
-      {
-        "kind": "trait",
-        "operation": "add",
-        "trait": {"status": "available", "native_id": 123, "key": "brave"}
-      },
-      {
-        "kind": "stress",
-        "direction": "increase",
-        "magnitude": {"status": "unavailable"},
-        "affected_by_trait": true,
-        "critical": false
-      },
-      {
-        "kind": "death",
-        "subject": "played_character",
-        "direction": "not_applicable"
-      },
-      {
-        "kind": "scheme",
-        "subject": "played_character",
-        "operation": "start",
-        "direction": "not_applicable",
-        "scheme": {"status": "available", "scheme_type_key": "murder"}
-      }
-    ]
+  "option": {
+    "effect_indicators": {
+      "status": "available",
+      "coverage": "played-character-event-icon-indicators-1.19.0.6-v1",
+      "complete_effect_set": false,
+      "rows": [
+        {
+          "kind": "trait",
+          "operation": "add",
+          "trait": {"status": "available", "native_id": 123, "key": "brave"}
+        },
+        {
+          "kind": "stress",
+          "direction": "increase",
+          "magnitude": {"status": "unavailable"},
+          "affected_by_trait": true,
+          "critical": false
+        },
+        {
+          "kind": "death",
+          "subject": "played_character",
+          "direction": "not_applicable"
+        },
+        {
+          "kind": "scheme",
+          "subject": "played_character",
+          "operation": "start",
+          "direction": "not_applicable",
+          "scheme": {"status": "available", "scheme_type_key": "murder"}
+        }
+      ]
+    },
+    "effect_preview": {
+      "status": "unavailable",
+      "reason": "indicator_subset_has_no_completeness_signal"
+    },
+    "resource_deltas": {"status": "unavailable"},
+    "relationship_deltas": {"status": "unavailable"}
   },
-  "effect_preview": {
-    "status": "unavailable",
-    "reason": "indicator_subset_has_no_completeness_signal"
-  },
-  "resource_deltas": {"status": "unavailable"},
-  "relationship_deltas": {"status": "unavailable"},
-  "event_semantic_decision_ready": false
+  "readiness": {
+    "effect_indicators_ready": true,
+    "effect_preview_ready": false,
+    "semantic_decision_ready": false
+  }
 }
 ```
 
-## 最小 production implementation gate
+## 最小 production implementation / readiness gate
 
-本文只冻结研究结果，不修改 shared event/pending implementation。后续实现必须同时满足：
+`current-event-window-context-v1` 现已把本节的最小 typed indicator 子集接入 production bridge；下列第 1–8 项已由 exact-build binding、owning-thread reader、strict wire contract 与 synthetic fixture 静态闭合。第 9 项 paused production live 尚未执行，因此不能把 static-ready 写成 live-validated：
 
 1. **exact build**：启动时验证 EXE SHA-256；静态 verifier 复验下表所有代码 span、RTTI/vtable anchor 与 effect registry row/string。
 2. **只读现有物化物**：复用 `current-event-window-context-v1` 的 application/UI owning-thread mailbox、完整 event instance ID、window vtable、owner backpointer 与 snapshot revision gate；只复制 item `+0x88` vector，不调用 `0x3380170`、trigger/name resolver、effect executor 或 option executor。
@@ -281,7 +291,7 @@ flowchart LR
 4. **kind-specific decode**：只解释活动 payload；`kind 0..3` 按本文映射。出现其它 kind 时保留 `kind=unknown/raw_kind` 且不读取 payload，不把它静默丢掉，也不升级成完整 preview。
 5. **稳定 identity**：trait 做完整 Trait DB pointer/ID/key gate；scheme 做 loaded DB、fallback、vtable、stable-key 与 lookup round-trip gate。任何 engine pointer 都在 callback 返回前丢弃。
 6. **语义字段**：trait 只发布 add/remove；stress 只发布 increase/decrease、affected/critical，并明确 magnitude unavailable；death/scheme 忽略 raw gain。保留 engine row order仅用于确定性，不赋予执行顺序语义。
-7. **独立 readiness**：新增 `effect_indicators_ready`，但不得改写 `effect_preview_ready=false` 或 generic `event_semantic_decision_ready=false`；resource/relation 仍是最高优先级 observation dependency。
+7. **独立 readiness**：新增 `effect_indicators_ready`，但不得改写 `effect_preview_ready=false` 或 generic `semantic_decision_ready=false`；resource/relation 仍是最高优先级 observation dependency。
 8. **静态与 fixture**：source-contract test 覆盖每个 span/hash；synthetic reader fixture 覆盖四 kind、trait add/remove、stress increase/decrease/critical/affected、unknown kind、fallback identity、malformed span 与 revision drift。
 9. **paused production live**：在允许启动 CK3 后，用非宗教事件做同帧双查询，至少分别命中 trait、stress 与 scheme/death 中可稳定构造的类型；核对 GUI 图标与 typed row、选择后旧 instance 推进及真实后置状态。实机前 `live_validated` 必须保持 false。
 
@@ -309,7 +319,7 @@ flowchart LR
 | relationship delta | unavailable | 八个识别 identifier 中没有 relation row；不能用空数组表示 none |
 | indicator subset completeness | unavailable | 临时 callback count 未持久化，ignored identifiers 无 row |
 | full structured effect preview | unknown / next observation dependency | 需寻找另一 engine-owned structured visitor/output；不得扩义本 vector 或解析 tooltip/OCR |
-| bridge indicator query | research static-ready，未在本文实现 | 在 shared current-event query owner 合并后施工 |
+| bridge indicator query | implemented / static-ready | 已并入 `current-event-window-context-v1` 的 production bridge/contract/service/MCP；仅发布本文 typed indicator 子集，full preview/completeness/resource/relation/semantic readiness 均保持 false |
 | production paused live | not run | 本轮明确禁止启动 CK3 |
 | owner-deferred religious domain | deferred, not complete | 只保持 opaque 兼容边界，等待项目所有者解除暂缓 |
 

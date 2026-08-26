@@ -1538,7 +1538,7 @@ class GameplayBridgeService:
         *,
         expected_revision: int,
     ) -> dict[str, object]:
-        """Read exact definition identity and presentation for one active event."""
+        """Read exact identity, presentation, and lossy effect indicators."""
         if (
             isinstance(event_instance_id, bool)
             or not isinstance(event_instance_id, int)
@@ -1630,6 +1630,7 @@ class GameplayBridgeService:
             "current_event_window_context",
             "backend_id",
             "current_event_window_context_ready",
+            "current_event_effect_indicators_ready",
             "queried_snapshot_id",
             "queried_revision",
             "queried_native_revision",
@@ -1668,6 +1669,8 @@ class GameplayBridgeService:
             )
             or result.get("current_event_window_context_ready")
             is not normalized["readiness"]["option_presentation_ready"]
+            or result.get("current_event_effect_indicators_ready")
+            is not normalized["readiness"]["effect_indicators_ready"]
             or result.get("queried_snapshot_id") != snapshot_id
             or result.get("queried_revision") != revision
             or result.get("queried_native_revision") != native_revision
@@ -1713,6 +1716,9 @@ class GameplayBridgeService:
             **expected_mirrors,
             "current_event_window_context_ready": normalized["readiness"][
                 "option_presentation_ready"
+            ],
+            "current_event_effect_indicators_ready": normalized["readiness"][
+                "effect_indicators_ready"
             ],
             "current_event_window_context": normalized,
         }

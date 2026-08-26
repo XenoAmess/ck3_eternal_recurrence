@@ -225,7 +225,7 @@ def _ck3_query_current_event_window_context_v1(
     event_instance_id: int,
     expected_revision: int,
 ) -> dict[str, object]:
-    """Observe one full-generation active event's materialized UI options."""
+    """Observe one active event's options and lossy typed effect indicators."""
     return service.query_current_event_window_context_v1(
         event_instance_id,
         expected_revision=expected_revision,
@@ -609,7 +609,7 @@ def create_server(driver: GameplayBridgeDriver):
         event_instance_id: int,
         expected_revision: int,
     ) -> dict[str, object]:
-        """Read shown/enabled event options; full effect preview stays unavailable."""
+        """Read shown options and typed indicators; full preview stays unavailable."""
         return _ck3_query_current_event_window_context_v1(
             service,
             event_instance_id,

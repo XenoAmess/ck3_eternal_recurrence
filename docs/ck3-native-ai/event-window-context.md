@@ -127,7 +127,7 @@ flowchart TD
 | `+0x10` | `CEventOptionItem*` vector data | 静态确认 |
 | `+0x18` | vector capacity | 静态确认 |
 | `+0x1C` | `int32` vector count | 静态确认 |
-| `+0x2C` | `int32` cancel native option index；负 sentinel 的 `-1/-2` 子语义未查明 | 部分静态确认 |
+| `+0x2C` | `int32` timeout native option index；由 authored `CEventOption+0x478 timeout_option` 写入；负 sentinel 的 `-1/-2` 子语义未查明 | 部分静态确认 |
 
 ### `CEventOptionItem`（stride `0x1B8`）
 
@@ -143,8 +143,18 @@ flowchart TD
 | `+0x1B5` | fallback-materialized byte | 静态确认 |
 | vector membership | shown | 静态确认 |
 
-`cancel` 应由 `item.native_option_index == data.cancel_option_index` 派生；不要把 rendered index 当成 native index。
-物化 vector 中 `native_option_index` 仍是 authored identity，production v1 要求其非负且唯一；因此上述派生也保证最多一个 `cancel=true`。重复 native index 视为 layout invalid，不发布模棱两可的操作映射。
+`cancel` 不能从 `CEventWindowData+0x2C` 派生：该字段是 `timeout_option` index。正确链为用 item
+`+0x1B0` 的 authored native index，在已做 count/bounds 与 owner 验证的 `EventData+0x1B0/+0x1BC`
+`CEventOption*` 数组中定位定义，再读取 `CEventOption+0x47A is_cancel_option`。rendered index 只描述 GUI
+顺序，不能拿来索引 authored 定义。
+
+exact-build parser `0x25378D0..0x2537D4A` 把 token `timeout_option` (`0x3323`) 写到 `+0x478`、
+`show_unlock_reason` (`0x3655`) 写到 `+0x479`、`is_cancel_option` (`0x36EA`) 写到 `+0x47A`；
+constructor 默认分别为 `false/true/false`。`+0x47A` 的已知原版 consumer 是
+`CEventWindowCustomWidgetNameCharacterController` 的 `0x182C3F0`，但 parser assignment 本身没有 widget gate。
+多个 authored option 都可带 `is_cancel_option=yes`，reader 应逐项原样保留；不得再施加“最多一个 cancel”假设。
+物化 vector 中 `native_option_index` 仍是 authored identity，production v1 要求其非负且唯一；重复 native
+index 视为 layout invalid，不发布模棱两可的操作映射。
 
 ## effect indicator seam，而非完整 effect preview
 
@@ -251,13 +261,24 @@ options[]:
   cancel
   resolved_name
   unavailable_reason
+  effect_indicators:
+    status: available
+    coverage: played-character-event-icon-indicators-1.19.0.6-v1
+    complete_effect_set: false
+    rows: []                  # 可含 typed trait/stress/death/scheme/unknown rows
   effect_preview:
-    status: unavailable       # full effect preview 尚未闭合
+    status: unavailable
+    reason: indicator_subset_has_no_completeness_signal
+  resource_deltas:
+    status: unavailable
+  relationship_deltas:
+    status: unavailable
 ```
 
-`readiness.event_definition_identity_ready` 与 `option_presentation_ready` 在 available 帧必须同时为 `true`；unavailable 帧中
-key、两个数值字段必须全部为 `null`，两项 readiness 也必须为 `false`。root/saved scopes 与完整 effect preview 继续保持
-各自的 null/unavailable 边界，不能因 definition identity 已就绪而扩义。
+`readiness.event_definition_identity_ready`、`option_presentation_ready` 与 `effect_indicators_ready` 在 available 帧必须同时为
+`true`；`effect_preview_ready` 与 `semantic_decision_ready` 必须为 `false`。unavailable 帧中 key、两个数值字段必须全部为
+`null`，五项 readiness 也必须全部为 `false`。root/saved scopes、resource/relationship deltas 与完整 effect preview
+继续保持各自的 null/unavailable 边界，不能因 definition identity 或有损 indicator 已就绪而扩义。
 
 读取必须满足：完整 instance ID 相等、恰好一个匹配窗口、vector/string bounds 合法、所有值在同一 owning-thread revision 内复制完成。零匹配、多匹配、销毁中或布局不合法均返回 unavailable；不得退回 authored options 假装展示状态。
 
@@ -267,9 +288,9 @@ key、两个数值字段必须全部为 `null`，两项 readiness 也必须为 `
 2. 查询经 fixed typed main-thread mailbox 投递到 application/UI owning thread；callback 内再次读取 snapshot，沿上述 stable root 定位 manager，并一次性复制 option vector 与 MSVC strings。
 3. 每个窗口要求 exact `CEventWindow` primary vtable，每个 option 要求 owner backpointer 等于匹配的 inline data；vector/count/string 均有硬上限。零匹配、多匹配、布局漂移或前后 snapshot 不同都返回 typed unavailable。
 4. 当前 v1 同时发布 stable event definition key、calculated ID、runtime stats ordinal，以及 rendered/native index、shown、
-   enabled、fallback、cancel、resolved name 与 unavailable reason。root/saved scopes 与完整 effect preview 仍显式
-   unavailable。不得用 GUI
-   indicator 冒充完整 effect preview。
+   enabled、fallback、authored `+0x47A` cancel、resolved name、unavailable reason 与有损 GUI effect indicator 子集。
+   root/saved scopes、resource/relationship deltas 与完整 effect preview 仍显式 unavailable。不得用 GUI indicator
+   冒充完整 effect preview。
 5. reader 不调用 trigger、name resolver、preview collector、loaded-effect executor 或事件选项 executor；它只复制已经物化的 UI 数据。
 
 ## planner typed-first 消费规则
@@ -290,10 +311,14 @@ available context 只把实际物化且 `shown=true && enabled=true` 的 rows �
   & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\native_bridge\research\verify_event_window_context_abi.py"
   ```
 
-- C++ fixture / source contract 必须覆盖 stable accessor root、非零 EventManager offset、idler/window vtable、完整 event ID、零/一/多匹配、manager 与 option vector 的非法 count/capacity、owner backpointer、MSVC string size/capacity、非法 bool byte、rendered/native index 不同、cancel/non-cancel 派生、disabled reason 与 fallback；definition identity 还须覆盖空/越界/畸形 key、ActiveEvent/EventData pointer 漂移、calculated ID/runtime ordinal/key 漂移与 stale instance，并断言 owning-thread fixed mailbox 之外不解引用 engine pointer。
-- 获准启动 CK3 后，paused generic nonreligious event 做两次相邻 same-revision typed query：完整 instance ID、option 顺序、enabled/name/reason 一致；关闭窗口后同一 ID 必须变为 unavailable。报告固定 EXE/DLL hash，且不执行默认 accept/reject/action。
+- C++ fixture / source contract 必须覆盖 stable accessor root、非零 EventManager offset、idler/window vtable、完整 event ID、零/一/多匹配、manager 与 option vector 的非法 count/capacity、owner backpointer、MSVC string size/capacity、非法 bool byte、rendered/native index 不同、由 authored `CEventOption+0x47A` 读取的单/多 cancel、disabled reason 与 fallback；definition identity 还须覆盖空/越界/畸形 key、ActiveEvent/EventData pointer 漂移、calculated ID/runtime ordinal/key 漂移与 stale instance，并断言 owning-thread fixed mailbox 之外不解引用 engine pointer。
+- 获准启动 CK3 后，paused generic nonreligious event 做两次相邻 same-revision typed query：完整 instance ID、definition identity、option 顺序、enabled/name/reason/cancel/fallback、空 indicator rows 与完整 frame 一致。报告固定 EXE/DLL hash，且不执行默认 accept/reject/action。
 
-本轮闭合并实现了含 stable definition identity 的最小只读 production query，但尚未启动 CK3 做 live acceptance，也没有进行宗教专用事件探索。因此 `event_definition_identity_wire_ready=true`、`bridge_query_static_ready=true`，而 `bridge_query_ready/live_validated=false`；实机门槛不得被静态构建冒充。
+Attempt2 已在 generic nonreligious fixture 中真实物化并读取 definition key、calculated ID、runtime ordinal 与完整
+instance ID，但因旧 DLL 把 timeout index 错当 cancel 而成为 immutable RED；详见 fixture 专题。当前 combined
+cancel + indicator reader 只有静态证据。因此 `event_definition_identity_wire_ready=true`、
+`bridge_query_static_ready=true`，而整体 `bridge_query_ready/live_validated=false`；部分成功字段不能把失败 candidate
+升级成 live GREEN，也没有进行宗教专用事件探索。
 
 ## Evidence / unknown 账本
 
@@ -310,7 +335,7 @@ available context 只把实际物化且 `shown=true && enabled=true` 的 rows �
 | stable global root → idler | 静态确认 | native accessor `0xAA43C0..0xAA440A`；`module+0x570F7B8 → owner+0x10` dynamic-cast；ctor vtable write |
 | frontend collision exclusion | 静态确认、实机待验 | in-game accessor + exact idler/window vtable + complete current event ID；不读取 `0xE30E78` root |
 | per-frame/callsite capture | 非 production 依赖 | `0xAA72B0` / `0xAA8233` / `0xAA4070` 只保留诊断用途 |
-| stable event definition identity | 静态确认、wire 已接入、实机待验 | getter `0x2706AD0..0x2706C2D` + duplicate validator `0x33D4DA0..0x33D5082`；同 callback 双观察 pointer/key/两个 int32 |
+| stable event definition identity | 静态确认、wire 已接入；Attempt2 RED 中字段实读稳定，combined revalidation 待验 | getter `0x2706AD0..0x2706C2D` + duplicate validator `0x33D4DA0..0x33D5082`；同 callback 双观察 pointer/key/两个 int32 |
 | stable root/saved scopes | unknown | 从 ActiveEvent scope serialization/GUI binding 继续追，而非暴露指针 |
 | full structured effect preview | unknown | indicator payload 已闭合，但 resource/relation 与 completeness output 未闭合 |
-| production bridge query | 静态实现、实机待验 | `current-event-window-context-v1` fixed mailbox；[generic fixture runner](current-event-window-context-live-fixture.md) 已静态冻结但未启动 CK3；完整 effect preview 仍 unavailable |
+| production bridge query | 静态实现；Attempt2 capability RED，combined revalidation 待验 | `current-event-window-context-v1` fixed mailbox；[generic fixture runner](current-event-window-context-live-fixture.md) 记录 immutable cancel mismatch；完整 effect preview 仍 unavailable |

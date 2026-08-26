@@ -10,6 +10,7 @@ namespace xar::ck3_11906 {
 namespace {
 
 constexpr std::size_t kMaximumEventDefinitionKeyBytes = 16'384;
+constexpr std::size_t kMaximumEffectIndicators = 128;
 
 template <typename T> std::string Number(T value) {
   std::array<char, 32> buffer{};
@@ -37,6 +38,87 @@ void AppendString(std::string &output, std::string_view value) {
   output.push_back('"');
 }
 
+bool ValidEffectIndicator(const game::EventEffectIndicatorRowV1 &row) {
+  const bool no_identity = !row.identity_available &&
+                           !row.native_id.has_value() && row.stable_key.empty();
+  switch (row.kind) {
+  case game::EventEffectIndicatorKindV1::trait:
+    return row.raw_kind == 0 && !row.affected_by_trait && !row.critical &&
+           ((row.identity_available && row.native_id.has_value() &&
+             *row.native_id >= 0 && !row.stable_key.empty() &&
+             row.stable_key.size() <= kMaximumEventDefinitionKeyBytes) ||
+            no_identity);
+  case game::EventEffectIndicatorKindV1::stress:
+    return row.raw_kind == 1 && no_identity;
+  case game::EventEffectIndicatorKindV1::death:
+    return row.raw_kind == 2 && !row.gain && !row.affected_by_trait &&
+           !row.critical && no_identity;
+  case game::EventEffectIndicatorKindV1::scheme:
+    return row.raw_kind == 3 && !row.gain && !row.affected_by_trait &&
+           !row.critical &&
+           ((row.identity_available && !row.native_id.has_value() &&
+             !row.stable_key.empty() &&
+             row.stable_key.size() <= kMaximumEventDefinitionKeyBytes) ||
+            no_identity);
+  case game::EventEffectIndicatorKindV1::unknown:
+    return (row.raw_kind < 0 || row.raw_kind > 3) && !row.gain &&
+           !row.affected_by_trait && !row.critical && no_identity;
+  }
+  return false;
+}
+
+void AppendEffectIndicator(std::string &output,
+                           const game::EventEffectIndicatorRowV1 &row) {
+  switch (row.kind) {
+  case game::EventEffectIndicatorKindV1::trait:
+    output += "{\"kind\":\"trait\",\"operation\":\"";
+    output += row.gain ? "add" : "remove";
+    output += "\",\"trait\":{";
+    if (row.identity_available) {
+      output +=
+          "\"status\":\"available\",\"native_id\":" + Number(*row.native_id) +
+          ",\"key\":";
+      AppendString(output, row.stable_key);
+    } else {
+      output += "\"status\":\"unavailable\",\"reason\":"
+                "\"trait_identity_unavailable\"";
+    }
+    output += "}}";
+    return;
+  case game::EventEffectIndicatorKindV1::stress:
+    output += "{\"kind\":\"stress\",\"direction\":\"";
+    output += row.gain ? "increase" : "decrease";
+    output += "\",\"magnitude\":{\"status\":\"unavailable\"},"
+              "\"affected_by_trait\":";
+    output += row.affected_by_trait ? "true" : "false";
+    output += ",\"critical\":";
+    output += row.critical ? "true" : "false";
+    output.push_back('}');
+    return;
+  case game::EventEffectIndicatorKindV1::death:
+    output += "{\"kind\":\"death\",\"subject\":\"played_character\","
+              "\"direction\":\"not_applicable\"}";
+    return;
+  case game::EventEffectIndicatorKindV1::scheme:
+    output += "{\"kind\":\"scheme\",\"subject\":\"played_character\","
+              "\"operation\":\"start\",\"direction\":"
+              "\"not_applicable\",\"scheme\":{";
+    if (row.identity_available) {
+      output += "\"status\":\"available\",\"scheme_type_key\":";
+      AppendString(output, row.stable_key);
+    } else {
+      output += "\"status\":\"unavailable\",\"reason\":"
+                "\"scheme_type_identity_unavailable\"";
+    }
+    output += "}}";
+    return;
+  case game::EventEffectIndicatorKindV1::unknown:
+    output +=
+        "{\"kind\":\"unknown\",\"raw_kind\":" + Number(row.raw_kind) + "}";
+    return;
+  }
+}
+
 } // namespace
 
 std::string SerializeEventWindowContextV1(
@@ -56,6 +138,7 @@ std::string SerializeEventWindowContextV1(
                      !context.calculated_event_id.has_value() ||
                      !context.runtime_stats_ordinal.has_value() ||
                      !context.option_presentation_ready ||
+                     !context.effect_indicators_ready ||
                      context.effect_preview_ready ||
                      context.semantic_decision_ready)) ||
       (!available && (context.unavailable_reason.empty() ||
@@ -65,6 +148,7 @@ std::string SerializeEventWindowContextV1(
                       context.runtime_stats_ordinal.has_value() ||
                       !context.options.empty() ||
                       context.option_presentation_ready ||
+                      context.effect_indicators_ready ||
                       context.effect_preview_ready ||
                       context.semantic_decision_ready))) {
     return {};
@@ -102,7 +186,10 @@ std::string SerializeEventWindowContextV1(
           });
       if (option.rendered_index != static_cast<std::int32_t>(index) ||
           option.native_option_index < 0 || duplicate_native_index ||
-          !option.shown) {
+          !option.shown ||
+          option.effect_indicators.size() > kMaximumEffectIndicators ||
+          !std::all_of(option.effect_indicators.begin(),
+                       option.effect_indicators.end(), ValidEffectIndicator)) {
         return {};
       }
       output += "{\"rendered_index\":" + Number(option.rendered_index);
@@ -118,8 +205,23 @@ std::string SerializeEventWindowContextV1(
       AppendString(output, option.resolved_name);
       output += ",\"unavailable_reason\":";
       AppendString(output, option.unavailable_reason);
-      output += ",\"effect_preview\":{\"status\":\"unavailable\","
-                "\"reason\":\"full_effect_preview_unavailable\"}}";
+      output += ",\"effect_indicators\":{\"status\":\"available\","
+                "\"coverage\":"
+                "\"played-character-event-icon-indicators-1.19.0.6-v1\","
+                "\"complete_effect_set\":false,\"rows\":[";
+      for (std::size_t row_index = 0;
+           row_index < option.effect_indicators.size(); ++row_index) {
+        if (row_index != 0) {
+          output.push_back(',');
+        }
+        AppendEffectIndicator(output, option.effect_indicators[row_index]);
+      }
+      output += "]},\"effect_preview\":{\"status\":\"unavailable\","
+                "\"reason\":"
+                "\"indicator_subset_has_no_completeness_signal\"},"
+                "\"resource_deltas\":{\"status\":\"unavailable\"},"
+                "\"relationship_deltas\":{\"status\":"
+                "\"unavailable\"}}";
     }
     output.push_back(']');
   } else {
@@ -134,6 +236,8 @@ std::string SerializeEventWindowContextV1(
   output += context.event_definition_identity_ready ? "true" : "false";
   output += ",\"option_presentation_ready\":";
   output += context.option_presentation_ready ? "true" : "false";
+  output += ",\"effect_indicators_ready\":";
+  output += context.effect_indicators_ready ? "true" : "false";
   output += ",\"effect_preview_ready\":";
   output += context.effect_preview_ready ? "true" : "false";
   output += ",\"semantic_decision_ready\":";

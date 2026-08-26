@@ -125,6 +125,18 @@
         "sha256": "95CCAFC60E3AF959C3EB664890FDB01E6EC6368A20B8CAA34DC04ECA4989CD79"
       },
       {
+        "name": "CEventOption_script_field_parser",
+        "start_rva": "0x25378D0",
+        "end_rva": "0x2537D4A",
+        "byte_length": "0x47A",
+        "sha256": "DAD4CD4E23999ADF4E7FA7E7F31EE0F17B90CD28477EE21543A85BB44603823D",
+        "runtime_function_regions": [
+          "0x25378D0..0x2537B3F",
+          "0x2537B3F..0x2537BFD",
+          "0x2537BFD..0x2537D4A"
+        ]
+      },
+      {
         "name": "EventManager_current_local_event_getter",
         "start_rva": "0x2706AD0",
         "end_rva": "0x2706C2D",
@@ -214,6 +226,13 @@
         "end_rva": "0x33D505A",
         "byte_length": "0x2BA",
         "sha256": "6466EE00D394D6A79F87BB48EEA00AF1257393A538FA5EE45EE4CF42D4548028"
+      },
+      {
+        "name": "CEventOption_script_field_parser_boolean_dispatch",
+        "start_rva": "0x2537C8F",
+        "end_rva": "0x2537D20",
+        "byte_length": "0x91",
+        "sha256": "9F0095774760B25F179CF08121889111DF433F685862E527778EF1BB9F88562F"
       }
     ],
     "exact_data_spans": [
@@ -224,6 +243,27 @@
         "byte_length": "0x4C",
         "sha256": "85135404DB9CD9414603326956E1E12A82453B31676C95DB5ECCC87F96E93A42",
         "bytes_utf8_nul": "Duplicated event ID '%s' found. New Location: '%s', Previous Location: '%s'\\0"
+      },
+      {
+        "name": "timeout_option_script_token_row",
+        "start_rva": "0x42C58A0",
+        "end_rva": "0x42C58B0",
+        "byte_length": "0x10",
+        "sha256": "B00568A6E659CD53624CEDFBD43B9B1539BE2E34A5E0FD81DC5D2534057D008F"
+      },
+      {
+        "name": "show_unlock_reason_script_token_row",
+        "start_rva": "0x42C8AC0",
+        "end_rva": "0x42C8AD0",
+        "byte_length": "0x10",
+        "sha256": "1E9298A57E10E23A734A8436691BC0912D6440F10455BCA277F8D066B8FE5FED"
+      },
+      {
+        "name": "is_cancel_option_script_token_row",
+        "start_rva": "0x42C9400",
+        "end_rva": "0x42C9410",
+        "byte_length": "0x10",
+        "sha256": "76A0A8E409830714F0CEA0FF0041A3801D950DF5B2E41012408771240BAB9135"
       }
     ],
     "entry_only_anchors": {
@@ -295,6 +335,7 @@
     "EventData_calculated_event_id": "+0x08 int32; duplicate validator compares this field across EventData* rows",
     "EventData_runtime_stats_ordinal": "+0x0C int32; separately observed runtime statistics ordinal, not the stable definition identity",
     "stable_event_definition_key": "EventData+0x10 canonical namespaced MSVC string; duplicate validator passes it as the first formatter argument for duplicate +0x08 calculated IDs",
+    "EventData_authored_option_vector": "+0x1B0 data, +0x1B8 capacity, +0x1BC int32 count; entries are CEventOption* in authored zero-based order",
     "EventData_source_location": "+0x240 object; duplicate validator resolves the new and previous source-location strings for the second and third formatter arguments",
     "identity_query_rule": "Copy +0x08/+0x0C/+0x10 only after the complete ActiveEvent instance ID is matched; validate MSVC string bounds and repeat the ActiveEvent/EventData pointer plus numeric/string observation before returning. Never publish the EventData pointer.",
     "root_scope_stable_identity": "unknown",
@@ -304,9 +345,15 @@
   "CEventWindowData": {
     "active_event_instance_id": "+0x00 uint32",
     "option_item_vector": "+0x10 data, +0x18 capacity, +0x1C int32 count",
-    "cancel_option_index": "+0x2C int32",
+    "timeout_option_native_index": "+0x2C int32, derived by SetupOptions from authored CEventOption+0x478 timeout_option; not cancel and not published by v1",
     "setup_options_rva": "0x16CC780",
     "setup_options_caller_rva": "0x16CB782"
+  },
+  "CEventOption": {
+    "timeout_option": "+0x478 uint8 boolean parsed from token 0x3323 timeout_option",
+    "show_unlock_reason": "+0x479 uint8 boolean parsed from token 0x3655 show_unlock_reason",
+    "is_cancel_option": "+0x47A uint8 boolean parsed from token 0x36EA is_cancel_option",
+    "cancel_query_rule": "Map each materialized CEventOptionItem+0x1B0 authored native index through EventData+0x1B0; require a bounded authored vector, in-range index, non-null CEventOption pointer and canonical 0/1 byte at +0x47A. Never derive cancel from CEventWindowData+0x2C."
   },
   "CEventOptionItem": {
     "size_and_stride": "0x1B8",
@@ -319,7 +366,7 @@
     "enabled": "+0x1B4 uint8",
     "fallback_materialized": "+0x1B5 uint8",
     "shown": "membership in the materialized option-item vector",
-    "native_index_identity": "native_option_index is authored identity; production v1 requires it nonnegative and unique across the materialized vector. cancel is derived only by equality with data+0x2C, so uniqueness also bounds cancel=true to at most one row."
+    "native_index_identity": "native_option_index is authored identity; production v1 requires it nonnegative, unique across the materialized vector and in range for EventData's authored CEventOption* vector. cancel is copied from that exact authored option's canonical +0x47A is_cancel_option byte; data+0x2C is timeout and is never used for cancel."
   },
   "OptionEffectItem": {
     "size_and_stride": "0x18",
@@ -345,7 +392,7 @@
     "raw_context_mode_business_semantics": "unknown"
   },
   "typed_context_proposal": {
-    "status": "definition_identity_and_presentation_implemented_live_pending",
+    "status": "definition_identity_presentation_and_effect_indicators_implemented_live_pending",
     "top_level": [
       "revision",
       "availability",
@@ -367,7 +414,10 @@
       "cancel",
       "resolved_name",
       "unavailable_reason",
-      "effect_preview_unavailable"
+      "effect_indicators",
+      "effect_preview_unavailable",
+      "resource_deltas_unavailable",
+      "relationship_deltas_unavailable"
     ],
     "nullable_until_reverse_closed": [
       "root_scope",
@@ -384,6 +434,7 @@
     "window_lifetime_static_ready": true,
     "materialized_option_context_static_ready": true,
     "effect_indicator_abi_static_ready": true,
+    "effect_indicator_wire_ready": true,
     "native_ai_selector_static_ready": true,
     "stable_root_to_idler_ready": true,
     "stable_event_definition_key_static_ready": true,
@@ -410,7 +461,7 @@
       "event_instance_id": "positive complete generation-bearing ActiveEvent instance ID; must equal the same-revision snapshot"
     },
     "thread_boundary": "fixed typed main_thread_query_mailbox_v1 application/UI owner callback while paused",
-    "single_copy": "current ActiveEvent/EventData identity, root, manager, window vector, inline data, option vector and MSVC strings are dereferenced and copied only inside one mailbox callback; no engine pointer crosses back to the worker",
+    "single_copy": "current ActiveEvent/EventData identity, authored CEventOption vector, root, manager, window vector, inline data, option vector, OptionEffectItem vectors, stable trait/scheme identities and MSVC strings are dereferenced and copied only inside one mailbox callback; no engine pointer crosses back to the worker",
     "admission": [
       "exact executable binding",
       "paused map-ready played-character snapshot",
@@ -419,7 +470,10 @@
       "ActiveEvent pointer, EventData pointer, complete instance ID, calculated int32 ID, runtime int32 ordinal and bounded nonempty canonical key all match across two observations bracketing the window copy",
       "native in-game idler accessor root and exact CIngameInterfaceIdlerGfx vtable",
       "exactly one exact CEventWindow primary-vtable entry with complete event instance ID match",
-      "bounded vectors and strings; every option owner backpointer equals the matched inline data"
+      "bounded vectors and strings; every option owner backpointer equals the matched inline data",
+      "every materialized native option index maps in range through the bounded EventData+0x1B0 authored vector to a non-null CEventOption whose +0x47A is_cancel_option byte is canonical 0/1; CEventWindowData+0x2C timeout is ignored for cancel",
+      "each OptionEffectItem vector has bounded count/capacity and 0x18 stride; only its active kind payload is interpreted",
+      "trait payload round-trips through unique loaded Trait DB pointer/native-ID/key identity; scheme payload round-trips through the already-loaded scheme DB hash lookup, exact vtable and non-fallback identity"
     ],
     "published_option_fields": [
       "rendered_index",
@@ -429,7 +483,11 @@
       "fallback",
       "cancel",
       "resolved_name",
-      "unavailable_reason"
+      "unavailable_reason",
+      "effect_indicators",
+      "effect_preview_unavailable",
+      "resource_deltas_unavailable",
+      "relationship_deltas_unavailable"
     ],
     "published_event_definition_fields": [
       "event_definition_key",

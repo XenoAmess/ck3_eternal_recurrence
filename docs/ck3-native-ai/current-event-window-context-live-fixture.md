@@ -2,11 +2,15 @@
 
 ## 当前证据状态
 
-- **[live-confirmed harness RED；not capability evidence]** 主代理执行的 Attempt1 在事件物化前因 CK3 PhysFS
-  路径超长而退出；该 RED 只证明 runner 路径故障，不证明事件观测能力。`current_event_window_context_live_ready`
-  仍不得标为 `true`。
-- **[not-live-evidence]** Attempt1 后的短根目录与路径长度 preflight 修复只完成了静态验证；本次修复没有启动或
-  attach CK3，必须由全新 Attempt2 实机复验。
+- **[live-confirmed harness RED；not capability evidence]** Attempt1 在事件物化前因 CK3 PhysFS 路径超长退出；
+  它只证明 runner 路径故障。
+- **[live-confirmed capability RED]** Attempt2 已通过短路径 gate 并真实物化目标事件，但旧冻结 DLL 把
+  `CEventOption+0x478 timeout_option` 错当成 cancel 来源，使 authored native index `3` 的
+  `is_cancel_option=yes` 发布为 `cancel=false`。因此 `current_event_window_context_live_ready` 仍不得标为 `true`，
+  fixture 预期也不得降成 false 来掩盖故障。
+- **[static-confirmed；not-live-evidence]** exact parser/token/consumer 已把 cancel 更正到 authored
+  `CEventOption+0x47A`；combined cancel + indicator source、runner 与 focused unit 静态更新后，仍须由主代理冻结新
+  commit/DLL 再进行全新 live candidate。本轮文档与 runner 修订没有启动或 attach CK3。
 - [static-confirmed] runner：
   [`run_current_event_window_context_live_acceptance.py`](../../ck3_autonomous_player/native_bridge/research/run_current_event_window_context_live_acceptance.py)。
 - [static-confirmed] focused unit：
@@ -18,7 +22,7 @@
 项目所有者只放行了两项与其他 OODA 域绑定的最小例外：战争闭环不得不使用的 holy-war 观测/动作，以及婚姻合法性或
 接受度不得不使用的最小 faith 原生调用；这两项均与本夹具无关，也不得扩成通用宗教研究。
 
-## 冻结输入
+## Attempt1/Attempt2 已用冻结输入（历史；不得复用为下一 candidate）
 
 | 项 | 冻结值 |
 |---|---|
@@ -58,6 +62,32 @@ runner 要求 `XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT` 指向上述 commit 的独
 文件和最终 artifact 位于工作树外侧也可以。这样不会让验收悄悄消费共享 dirty worktree。生产 singleton verifier
 保持原样；fixture 两阶段只复用既有 supervised fixture launch seam，并且只有在 stage-specific playset 的逐字节证明
 先通过后才允许进入该 seam。
+
+## Attempt2 immutable RED：cancel ABI 标签错误
+
+2026-08-26 的 Attempt2 artifact 固定在
+`C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-aab1daf-live-attempt2.json`，SHA-256 为
+`E029135A8B23AA49850F04364864401CD088B60C9F1EFC5E7F9340B2D68F00F1`。路径 preflight 通过，实际最长生成路径
+为 243；事件窗口真实物化为 instance ID `17`、canonical key `xar_event_window_live_fixture.1`、calculated ID
+`4390001`、runtime ordinal `6831`，materialized authored native indices 精确为 `[0,1,3]`。shown/enabled/name/
+reason/fallback 与 rendered/native mapping 全部符合夹具，唯一失败是 native index `3` 的 authored
+`is_cancel_option=yes` 被旧 DLL 发布为 `cancel=false`，所以 `_context_proof.materialized_option_shape=false`。
+本次没有选择 option；seed managed cleanup、disposable root cleanup 与 `no_ck3_processes_after` 均为 true。
+
+纯静态根因闭合如下：derived parser logical extent `0x25378D0..0x2537D4A` 的三个 token branch 把
+`timeout_option/show_unlock_reason/is_cancel_option` 分别写到 `CEventOption+0x478/+0x479/+0x47A`。
+`SetupOptions` 在 `0x16CCAF7/0x16CCC64` 测试的是 `+0x478 timeout_option`，因此
+`CEventWindowData+0x2C` 是 timeout authored index；真正 cancel 必须经 materialized item 的 authored native index
+定位 `EventData` option pointer array，再读 `CEventOption+0x47A`。`+0x47A` 在 name-character custom widget
+controller `0x182C3F0` 也有直接 consumer；parser assignment 自身没有 widget gate。
+
+补充 retained-state diagnostic2 使用同一 frozen DLL，再现相同 mismatch，且完整日志证明事件已加载、没有
+unknown/`is_cancel_option` parser error；artifact size `61905`，SHA-256
+`A0C7CB19D049A44642BF0EBAF2A91BE46A90B67205ED4D96FB69A490899F0360`。它因 retain-state 故意为 RED，只作
+辅助证据；主证据仍是 Attempt2 与 exact parser/disassembly。diagnostic1 使用错误 Python、没有启动 CK3，不能作为
+能力证据（size `24065`，SHA-256 `27A195A508FB4FAB4225797F3C4D69FC2937D1803EF66427683BF543AF2D892B`）。
+两个 diagnostic root、Attempt1 旧 root 后续均经 marker 验证并由 runner `_cleanup_root` 删除；该后续清理不改写
+Attempt1 artifact 当时的 `root cleanup unproven` 事实。
 
 ## 确定性事件物化
 
@@ -129,10 +159,14 @@ cold clone 必须继续加载相同 definition/localization bytes，否则 save 
    不推断其正负值业务语义，也不把 ordinal 当 canonical identity；
 4. rendered/native indices 恰为 `(0,0) (1,1) (2,3)`，并按上表逐项验证 shown、enabled、resolved name、
    unavailable reason、cancel 和 fallback；
-5. native indices `2` 与 `4` 不在物化 vector；每项 `effect_preview` 必须继续是
-   `unavailable/full_effect_preview_unavailable`；
-6. `root_scope=null`、`saved_scopes=null`；readiness 必须精确为 identity/presentation true，effect preview/semantic
-   decision false；
+5. native indices `2` 与 `4` 不在物化 vector；本夹具没有 gameplay effect，每项 `effect_indicators` 必须精确为
+   `status=available`、coverage `played-character-event-icon-indicators-1.19.0.6-v1`、
+   `complete_effect_set=false`、`rows=[]`；这验证的是空 indicator 子集，不是完整 effect 集为空；
+6. 每项 `effect_preview` 必须继续是
+   `unavailable/indicator_subset_has_no_completeness_signal`，`resource_deltas` 与 `relationship_deltas` 也必须各自
+   `status=unavailable`；`root_scope=null`、`saved_scopes=null`；readiness 必须精确为
+   identity/presentation/effect-indicators true，effect preview/semantic decision false，且 service 顶层
+   `current_event_effect_indicators_ready=true`；
 7. cold command transcript 必须恰好为 query/query。seed native transcript 只允许 query/save；两阶段均禁止
    `select-event-option-*` 与 `auto-turn`。
 
@@ -149,22 +183,17 @@ preflight 不得 launch：
 py -m unittest ck3_autonomous_player.tests.unit.test_current_event_window_context_live_acceptance -v
 ```
 
-Attempt1 修复后的当前结果为 `13/13`，`py_compile` 通过，CK3 进程仍为 0；此前 detached `aab1daf...` runtime
-dependency tree 的 `_dependency_source_contract.ok=true`，该 tree 当前保留给 Attempt2。以下是新的 Attempt2 命令模板，
-**本次修复没有执行**；必须等主代理明确批准启动 CK3。它不传 `--state-dir`，从而直接验收新的默认
-`%TEMP%\xew-<32-hex>` root：
+本轮 combined cancel/indicator 合同更新的 focused suite 为 `13/13`，shared event-window Python suite 为
+`17/17`，`py_compile` 与两个 ABI verifier 均通过；收口检查 CK3/Python 进程数均为 0。Attempt2 已执行且是上述
+immutable capability RED；旧
+`aab1daf...` source tree、DLL SHA 与 injector 只能复核历史 artifact，绝不能再次作为 live candidate。
 
-```powershell
-$env:XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT = 'C:\Users\xenoa\AppData\Local\Temp\xar-event-window-aab1daf-source'
-py ck3_autonomous_player/native_bridge/research/run_current_event_window_context_live_acceptance.py `
-  --game-dir 'Crusader Kings III' `
-  --bridge-pipe '\\.\pipe\xar-event-window-context-aab1daf-attempt2' `
-  --bridge-dll 'ck3_autonomous_player/native_bridge/.build-event-definition-identity-v1-msvc/xar_ck3_bridge.dll' `
-  --expected-bridge-dll-sha256 'A6CB88C8F02866A8F5052FE74BCA098A961459079FC1FC9B4F0DC017F915D1C4' `
-  --bridge-injector 'ck3_autonomous_player/native_bridge/.build-event-definition-identity-v1-msvc/xar_ck3_bridge_injector.exe' `
-  --output 'C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-aab1daf-live-attempt2.json'
-```
+下一次 live 命令暂不冻结在文档中。主代理必须先审阅并提交 combined cancel + indicator source，fresh MSVC build，
+再把新的完整 source commit、DLL SHA-256、injector SHA-256 同步写入 runner 常量、focused unit 与本页；之后另用新的
+pipe/output 名运行唯一 candidate。未获得主代理明确批准前不得启动 CK3。新 candidate 仍使用默认
+`%TEMP%\xew-<32-hex>` root 来复验 path gate，且 artifact 必须明确引用新的 commit/DLL，不能覆盖 Attempt2。
 
-只有 artifact 自身 `ok=true`、全部 readiness gate 为 true、managed process cleanup 与 nonce-root removal 都为 true 后，
+只有 artifact 自身 `ok=true`、全部 harness check 为 true、readiness 精确保持
+identity/presentation/indicator true 与 preview/semantic false、managed process cleanup 与 nonce-root removal 都为 true 后，
 才能把本专题从 [not-live-evidence] 更新为 `[live-confirmed fixture-scoped]`。即使该次通过，stable root/saved scopes、
 完整 structured effect preview 与 semantic event decision 仍然没有完成。

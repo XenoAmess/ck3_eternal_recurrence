@@ -1444,9 +1444,9 @@
       "clicksound": "+0x438 MSVC string resolved to the GUI audio resource at CEventOptionItem+0x168",
       "probable_highlight_portrait": "+0x458 native dynamic-scope entries, +0x464 int32 count; consumed by GUI preview/highlight presentation at RVA 0x16D2CF0 and consistent with the authored highlight_portrait contract, but the exact parser-field correlation remains medium-static",
       "unclassified_pointer": "+0x470 polymorphic pointer; business name unknown",
-      "is_cancel_option": "+0x478 uint8; SetupOptions saves the first matching native index at CEventWindowData+0x2C",
+      "timeout_option": "+0x478 uint8, constructor default 0; parsed from token timeout_option (0x3323), and SetupOptions saves the first matching authored native index at CEventWindowData+0x2C",
       "show_unlock_reason": "+0x479 uint8, constructor default 1; gates RVA 0x2537490 and its reason/skill/trait plus trigger-failure presentation",
-      "unclassified_tail_flag": "+0x47A uint8, constructor default 0; parser and one downstream consumer are observed but semantic name is unknown"
+      "is_cancel_option": "+0x47A uint8, constructor default 0; parsed from token is_cancel_option (0x36EA) and consumed by CEventWindowCustomWidgetNameCharacterController RVA 0x182C3F0"
     },
     "SOptionStatus": {
       "size": "0x02 temporary bytes per authored option allocated by RVA 0x16CC780",
@@ -1455,7 +1455,7 @@
     },
     "CEventWindowData": {
       "option_items": "+0x10 inline CEventOptionItem vector; +0x18 capacity and +0x1C int32 count; SetupOptions clears and rebuilds it",
-      "cancel_option_index": "+0x2C int32 first authored native index whose CEventOption+0x478 is nonzero; negative sentinel when absent, with exact -1/-2 subtype meaning not closed"
+      "timeout_option_index": "+0x2C int32 first authored native index whose CEventOption+0x478 timeout_option byte is nonzero; negative sentinel when absent, with exact -1/-2 subtype meaning not closed"
     },
     "CEventOptionItem": {
       "size": "0x1B8 inline stride allocated and copied by RVA 0x16D6B10",

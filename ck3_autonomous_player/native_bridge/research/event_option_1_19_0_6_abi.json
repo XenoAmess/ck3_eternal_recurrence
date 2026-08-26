@@ -127,6 +127,25 @@
         "sha256": "7B780AE05040D6288957E3AEFF2714A6BFDAFA6799CB5B51E83D335DCB3B65BF"
       },
       {
+        "name": "CEventOption_script_field_parser_logical_extent",
+        "start_rva": "0x25378D0",
+        "end_rva": "0x2537D4A",
+        "byte_length": "0x47A",
+        "sha256": "DAD4CD4E23999ADF4E7FA7E7F31EE0F17B90CD28477EE21543A85BB44603823D",
+        "runtime_function_regions": [
+          "0x25378D0..0x2537B3F",
+          "0x2537B3F..0x2537BFD",
+          "0x2537BFD..0x2537D4A"
+        ]
+      },
+      {
+        "name": "CEventWindowCustomWidgetNameCharacterController_option_filter",
+        "start_rva": "0x182C330",
+        "end_rva": "0x182C58E",
+        "byte_length": "0x25E",
+        "sha256": "88608A28E3D517440F94ABA06535BF47293051516D184CD658E48247113EE133"
+      },
+      {
         "name": "CEventOption_deleting_destructor",
         "start_rva": "0x21F1450",
         "end_rva": "0x21F1590",
@@ -255,6 +274,20 @@
     ],
     "exact_semantic_spans": [
       {
+        "name": "event_option_tail_flag_parser_dispatch",
+        "start_rva": "0x2537C8F",
+        "end_rva": "0x2537D20",
+        "byte_length": "0x91",
+        "sha256": "9F0095774760B25F179CF08121889111DF433F685862E527778EF1BB9F88562F"
+      },
+      {
+        "name": "is_cancel_option_name_character_controller_consumer",
+        "start_rva": "0x182C3E5",
+        "end_rva": "0x182C3FD",
+        "byte_length": "0x18",
+        "sha256": "01229B9BBD1DF4D0897807CFF67B2E0A0EC28BA8A2C3FD7E9F2348C09D37D69F"
+      },
+      {
         "name": "EventData_duplicate_calculated_id_validator_semantic_body",
         "start_rva": "0x33D4DA0",
         "end_rva": "0x33D505A",
@@ -263,6 +296,51 @@
       }
     ],
     "exact_data_spans": [
+      {
+        "name": "script_token_row_timeout_option_0x3323",
+        "start_rva": "0x42C58A0",
+        "end_rva": "0x42C58B0",
+        "byte_length": "0x10",
+        "sha256": "B00568A6E659CD53624CEDFBD43B9B1539BE2E34A5E0FD81DC5D2534057D008F"
+      },
+      {
+        "name": "script_token_string_timeout_option",
+        "start_rva": "0x42A0A70",
+        "end_rva": "0x42A0A7F",
+        "byte_length": "0xF",
+        "sha256": "673C0E7F6A0E17CFAE4B1A8239B4D41F47F5A036D0CC18342253A31A7E11774C",
+        "bytes_utf8_nul": "timeout_option\\0"
+      },
+      {
+        "name": "script_token_row_show_unlock_reason_0x3655",
+        "start_rva": "0x42C8AC0",
+        "end_rva": "0x42C8AD0",
+        "byte_length": "0x10",
+        "sha256": "1E9298A57E10E23A734A8436691BC0912D6440F10455BCA277F8D066B8FE5FED"
+      },
+      {
+        "name": "script_token_string_show_unlock_reason",
+        "start_rva": "0x42A5290",
+        "end_rva": "0x42A52A3",
+        "byte_length": "0x13",
+        "sha256": "1BC3F27077F6C7D0BD4F9D546EA113EBCA85D8B5F03EDD29F0797DC8487A4DF9",
+        "bytes_utf8_nul": "show_unlock_reason\\0"
+      },
+      {
+        "name": "script_token_row_is_cancel_option_0x36EA",
+        "start_rva": "0x42C9400",
+        "end_rva": "0x42C9410",
+        "byte_length": "0x10",
+        "sha256": "76A0A8E409830714F0CEA0FF0041A3801D950DF5B2E41012408771240BAB9135"
+      },
+      {
+        "name": "script_token_string_is_cancel_option",
+        "start_rva": "0x42A5C50",
+        "end_rva": "0x42A5C61",
+        "byte_length": "0x11",
+        "sha256": "368E5BCBBCB1EF9DB9FA656337565457C4575753DBE0F3B02C0F9C08A01AAC6B",
+        "bytes_utf8_nul": "is_cancel_option\\0"
+      },
       {
         "name": "duplicate_event_id_error_literal",
         "start_rva": "0x44D9E50",
@@ -388,8 +466,12 @@
       "setup_options_caller": "0x16CB782",
       "required_trigger_callsite": "0x16CC94E",
       "show_as_unavailable_trigger_callsite": "0x16CCA37",
-      "cancel_option_regular_test": "0x16CCAF7",
-      "cancel_option_fallback_test": "0x16CCC64",
+      "timeout_option_regular_test": "0x16CCAF7",
+      "timeout_option_fallback_test": "0x16CCC64",
+      "timeout_option_parser_branch": "0x2537CFF",
+      "show_unlock_reason_parser_branch": "0x2537CDE",
+      "is_cancel_option_parser_branch": "0x2537CBD",
+      "is_cancel_option_name_character_controller_consumer": "0x182C3F0",
       "show_unlock_reason_gate": "0x16D26B7",
       "unlock_reason_materializer_callsite": "0x16D273A",
       "preview_effect_pointer_setup": "0x16D2D49",
@@ -430,9 +512,9 @@
       "clicksound": "+0x438 MSVC string",
       "probable_highlight_portrait": "+0x458 native dynamic-scope vector, +0x464 int32 count; preview consumer and script contract agree, but exact parser-field correlation remains medium-static",
       "unclassified_pointer": "+0x470",
-      "is_cancel_option": "+0x478 uint8",
+      "timeout_option": "+0x478 uint8; constructor default 0; SetupOptions writes the first matching authored native index to CEventWindowData+0x2C",
       "show_unlock_reason": "+0x479 uint8; constructor default 1; gate RVA 0x16D26B7 calls reason materializer RVA 0x2537490 at 0x16D273A",
-      "unclassified_tail_flag": "+0x47A uint8; constructor default 0"
+      "is_cancel_option": "+0x47A uint8; constructor default 0; parsed directly from script token 0x36EA and consumed by the name-character custom widget controller"
     }
   },
   "SOptionStatus": {
@@ -442,7 +524,7 @@
   },
   "CEventWindowData": {
     "option_item_vector": "+0x10 data, +0x18 capacity, +0x1C int32 count",
-    "cancel_option_index": "+0x2C int32; first authored option with +0x478, otherwise a negative sentinel whose -1/-2 subtype distinction is unknown"
+    "timeout_option_index": "+0x2C int32; first authored option with timeout_option at +0x478, otherwise a negative sentinel whose -1/-2 subtype distinction is unknown"
   },
   "CEventOptionItem": {
     "size_and_stride": "0x1B8",

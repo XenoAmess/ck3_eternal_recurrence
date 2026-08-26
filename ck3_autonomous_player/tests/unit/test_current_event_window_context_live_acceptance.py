@@ -35,6 +35,23 @@ CALCULATED_EVENT_ID = -712_345
 RUNTIME_STATS_ORDINAL = 37
 
 
+def _no_effect_payload() -> dict[str, object]:
+    return {
+        "effect_indicators": {
+            "status": "available",
+            "coverage": HARNESS.EXPECTED_EFFECT_INDICATOR_COVERAGE,
+            "complete_effect_set": False,
+            "rows": [],
+        },
+        "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal",
+        },
+        "resource_deltas": {"status": "unavailable"},
+        "relationship_deltas": {"status": "unavailable"},
+    }
+
+
 def _snapshot() -> dict[str, object]:
     return {
         "snapshot_id": f"native:{NATIVE_REVISION}",
@@ -64,10 +81,7 @@ def _options() -> list[dict[str, object]]:
             "cancel": False,
             "resolved_name": HARNESS.EXPECTED_OPTION_NAMES[0],
             "unavailable_reason": "",
-            "effect_preview": {
-                "status": "unavailable",
-                "reason": "full_effect_preview_unavailable",
-            },
+            **_no_effect_payload(),
         },
         {
             "rendered_index": 1,
@@ -78,10 +92,7 @@ def _options() -> list[dict[str, object]]:
             "cancel": False,
             "resolved_name": HARNESS.EXPECTED_OPTION_NAMES[1],
             "unavailable_reason": "Is controlled by the AI",
-            "effect_preview": {
-                "status": "unavailable",
-                "reason": "full_effect_preview_unavailable",
-            },
+            **_no_effect_payload(),
         },
         {
             "rendered_index": 2,
@@ -92,10 +103,7 @@ def _options() -> list[dict[str, object]]:
             "cancel": True,
             "resolved_name": HARNESS.EXPECTED_OPTION_NAMES[2],
             "unavailable_reason": "",
-            "effect_preview": {
-                "status": "unavailable",
-                "reason": "full_effect_preview_unavailable",
-            },
+            **_no_effect_payload(),
         },
     ]
 
@@ -119,6 +127,7 @@ def _frame() -> dict[str, object]:
         "readiness": {
             "event_definition_identity_ready": True,
             "option_presentation_ready": True,
+            "effect_indicators_ready": True,
             "effect_preview_ready": False,
             "semantic_decision_ready": False,
         },
@@ -142,6 +151,7 @@ def _query_result(sequence: int, frame: object | None = None) -> dict[str, objec
         "current_event_window_context": selected,
         "backend_id": "native-headless",
         "current_event_window_context_ready": True,
+        "current_event_effect_indicators_ready": True,
         "queried_snapshot_id": f"native:{NATIVE_REVISION}",
         "queried_revision": PUBLIC_REVISION,
         "queried_native_revision": NATIVE_REVISION,
@@ -433,6 +443,15 @@ class CurrentEventWindowContextLiveAcceptanceTests(unittest.TestCase):
             "effect_preview_forged": lambda frame: frame["options"][0].__setitem__(
                 "effect_preview", {"status": "available", "reason": None}
             ),
+            "effect_indicator_row_forged": lambda frame: frame["options"][0][
+                "effect_indicators"
+            ].__setitem__("rows", [{"kind": "stress"}]),
+            "effect_indicator_readiness_forged": lambda frame: frame[
+                "readiness"
+            ].__setitem__("effect_indicators_ready", False),
+            "resource_delta_forged": lambda frame: frame["options"][0].__setitem__(
+                "resource_deltas", {"status": "available"}
+            ),
         }
         for name, mutate in mutations.items():
             with self.subTest(name=name):
@@ -517,6 +536,15 @@ class CurrentEventWindowContextLiveAcceptanceTests(unittest.TestCase):
 
         proof = HARNESS._cross_stage_proof(seed, cold, {"ok": True})
         self.assertTrue(proof["ok"])
+        indicator_drift = copy.deepcopy(cold)
+        indicator_drift["sequence"]["first_query"][
+            "current_event_effect_indicators_ready"
+        ] = False
+        self.assertFalse(
+            HARNESS._cross_stage_proof(
+                seed, indicator_drift, {"ok": True}
+            )["ok"]
+        )
         cold["same_process_proof"]["bridge_pid"] = 101
         self.assertFalse(
             HARNESS._cross_stage_proof(seed, cold, {"ok": True})["ok"]

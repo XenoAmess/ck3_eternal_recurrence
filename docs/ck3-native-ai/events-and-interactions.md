@@ -70,9 +70,9 @@ callsite；真正的 required-trigger callsite 是 `0x16CC94E -> 0x334C510`。�
 | `CEventOption+0x3EB` | exclusive marker；第一个有效 exclusive 会清掉之前累计的常规状态，之后跳过非 exclusive |
 | `CEventOption+0x3F0/+0x408/+0x420` | unlock-reason metadata arrays；逐数组业务名仍 unknown |
 | `CEventOption+0x438` | `clicksound` 字符串 |
-| `CEventOption+0x478` | `is_cancel_option`；regular/fallback 分别在 `0x16CCAF7/0x16CCC64` 测试，首个匹配 native index 写入 `CEventWindowData+0x2C` |
+| `CEventOption+0x478` | `timeout_option`；regular/fallback 分别在 `0x16CCAF7/0x16CCC64` 测试，首个匹配 authored native index 写入 `CEventWindowData+0x2C` |
 | `CEventOption+0x479` | `show_unlock_reason`，constructor 默认 `1`；`0x16D26B7` gate 控制 unlock/trigger failure reason materialization |
-| `CEventOption+0x47A` | constructor 默认 `0`；已见 parser 与 consumer，但业务名仍 unknown |
+| `CEventOption+0x47A` | `is_cancel_option`，constructor 默认 `0`；按 authored option 逐项保留，不能由 `CEventWindowData+0x2C` 代替 |
 | 临时 status byte `+0` | enabled/eligible；有效项写 `1`，show-as-unavailable 项写 `0` |
 | 临时 status byte `+1` | included/shown；有效项和允许显示的 disabled 项写 `1` |
 | `0x16D6B10` | 把 option + native index + 两个状态字节 materialize 成一个 `CEventOptionItem` |
@@ -81,6 +81,14 @@ callsite；真正的 required-trigger callsite 是 `0x16CC94E -> 0x334C510`。�
   deleting destructor `0x21F1450` 以 `0x480` 释放对象，因此当前字段界限不依赖猜测的对象大小。
 - [static-confirmed] constructor `0x21F1220` 初始化 required trigger at `+0x90`、show-as-unavailable trigger
   at `+0x170`，并在 `0x21F1372` 清零 `+0x3E8..+0x3EB` 四个 flags。
+- [static-confirmed] derived parser logical extent `0x25378D0..0x2537D4A`（三段连续 `.pdata` region）在尾部
+  dispatch 中把 token `timeout_option` (`0x3323`) / `show_unlock_reason` (`0x3655`) /
+  `is_cancel_option` (`0x36EA`) 分别赋给 `+0x478/+0x479/+0x47A`；parser span、token registry row、字符串
+  及逐段 SHA-256 均固定在 ABI JSON。assignment 没有 widget 条件。
+- [static-confirmed] `+0x47A` 的已知原版 consumer 是
+  `CEventWindowCustomWidgetNameCharacterController` 方法内的 `0x182C3F0`：它按 materialized item 的 authored
+  index 找回 `CEventOption` 并过滤 cancel 标记。原版唯一脚本用例 `birth.9004` 同时使用 `name_character`
+  widget，这只能说明该 controller 的消费场景，不能反推 parser 仅在 widget 存在时才赋值。
 - [static-confirmed] `SetupOptions` 还有一条由 `CEventOption+0x3E8/+0x3E9` 与
   `SPlayerEventData+0x1C0` 共同控制的预筛。它已证明会影响候选是否继续求值，但字段名称和适用 event subtype 尚未闭合，
   因而不能把它删掉或随意命名。
@@ -123,8 +131,9 @@ flowchart TD
 - [static-confirmed] item 的 `+0x160` 为 owner `CEventWindowData*`，`+0x168` 为解析后的 clicksound resource，
   `+0x170` 为 resolved-name MSVC string，`+0x190` 为 disabled/unavailable reason string，`+0x1B0` 为
   authored zero-based native option index，`+0x1B4` 为 enabled byte，`+0x1B5` 为 fallback-materialized byte。
-  `CEventWindowData+0x2C` 保存首个 cancel option native index；没有 cancel 时使用负 sentinel，但 `-1/-2` 的
-  subtype 区别仍 unknown。
+  `CEventWindowData+0x2C` 保存首个 `timeout_option` authored native index；没有 timeout option 时使用负 sentinel，
+  但 `-1/-2` 的 subtype 区别仍 unknown。`cancel` 必须用 item authored index 经已验证的
+  `EventData+0x1B0/+0x1BC` 数组定位 `CEventOption*`，再读 `+0x47A`；多个 authored cancel flag 都可合法保留。
 - [static-confirmed] name resolver `0x33E7FF0(CEventOption*, string*out, SPlayerEventData*)` 在零个名称时返回空，
   一个名称时解析第一项；多个名称时逐项用 candidate `+0x30` trigger 和 `0x334C510` 过滤。没有 trigger 通过时
   回退 authored 第一项；有通过项时使用 context-derived deterministic hash 选择，不消耗 mutable RNG。
@@ -410,7 +419,7 @@ flowchart TD
 
 | 子域 | 当前已发布 | 仍缺的决策事实 | readiness |
 |---|---|---|---|
-| active event identity/action | `current-event-window-context-v1` 已发布完整 instance ID、bounded nonempty canonical event key、calculated event ID、runtime stats ordinal，以及 GUI 实际物化的 shown/enabled/native-index/name/reason/cancel/fallback；select command 仍用 native index + instance-change postcondition | stable root/saved scope identity、完整 effect-preview output ABI、production paused live | available 时 `event_definition_identity_ready=true`、`option_presentation_ready=true`；`event_semantic_decision_ready=false` |
+| active event identity/action | `current-event-window-context-v1` 已发布完整 instance ID、bounded nonempty canonical event key、calculated event ID、runtime stats ordinal，以及 GUI 实际物化的 shown/enabled/native-index/name/reason/cancel/fallback 和有损 typed trait/stress/death/scheme/unknown indicator 子集；select command 仍用 native index + instance-change postcondition | stable root/saved scope identity、resource/relationship delta、完整 effect-preview output ABI、production paused live | available 时 `readiness.event_definition_identity_ready=true`、`readiness.option_presentation_ready=true`、`readiness.effect_indicators_ready=true`；`readiness.effect_preview_ready=false`、`readiness.semantic_decision_ready=false` |
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
 | pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；普通 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `interaction_typed_query_wired=true`，`ordinary_interaction_live_ready=true`，`interaction_semantic_decision_ready=false` |
 | auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进；非宗教 definition-only fixture 已跨 fresh cold process 完成 query/query/ACK/旧 ID 消失 | 自然 stock notification 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality；fixture authored definition/terms 不是 stock 语义 | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_fixture_live_ready=true` |
@@ -476,7 +485,7 @@ engine-generic intermediary routing/full-ID/mailbox；不能拿 test interaction
   结构化资源/关系/角色/战争/头衔 delta、completeness 与 `preview_status`。遇到不能保证只读的 loaded effect
   一律标 unavailable，不得调用已证明会使 production 路径崩溃的 preview helper；
 - 原生 `ai_will_select`/`ai_chance` 的 raw fixed-point weight、选择器类型与求值状态，作为策略先验而非最终效用；
-- `event_semantic_decision_ready` 只在至少一个 shown+enabled option 拥有足够的文本/效果语义时为 true。
+- `readiness.semantic_decision_ready` 只在至少一个 shown+enabled option 拥有足够的文本/效果语义时为 true。
 
 首选实施路径是先定位当前 engine-owned `CEventWindowData` 及生命周期，再在 application-main paused query 中读取其
 已 materialize 的 `CEventOptionItem` vector；这条路径已经能给出 shown/enabled/native-index/resolved-name/reason，且不需在
@@ -522,9 +531,10 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
 - [static-confirmed] `0x16D2CF0 -> 0x3380170` 的 indicator output 子集已闭合；下一入口是其它
   `CEffectDescriptionVisitorInterface` derived visitor 或 engine-owned structured tooltip model 中会保留
   resource/relationship delta、target identity 与 completeness 的输出，不能扩义 `OptionEffectItem`。
-- [unknown] `CEventOption+0x3E8/+0x3E9` 的业务字段名/subtype；`+0x47A` 业务名；cancel-index `-1/-2`
+- [unknown] `CEventOption+0x3E8/+0x3E9` 的业务字段名/subtype；timeout-index `-1/-2`
   sentinel 区别；保存 scopes 的 engine identity。stable event definition identity 已由 current-local-event getter、duplicate
-  validator 与 application-main 双观察接入 wire；尚未进行 production paused live。
+  validator 与 application-main 双观察接入 wire；generic Attempt2 已实读 identity，但因旧 cancel ABI mismatch 为 RED，
+  combined cancel + indicator build 仍待新的 production paused live。
 - [static-confirmed] AI selector、默认权重、全非正权重时的 uniform 分支、normalization、同权重区间和该调用点 RNG draw 已闭合；
   后续不再重复逆向这些分支，直接作为 opponent-model fixture 输入。
 - [live-confirmed] pending object 的 stable definition key/hash、五 roles、send-option selection、route、deadline 与四路

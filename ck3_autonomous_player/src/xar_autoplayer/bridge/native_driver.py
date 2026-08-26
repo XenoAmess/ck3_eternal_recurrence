@@ -6613,7 +6613,7 @@ class NativeHeadlessGameplayDriver:
         *,
         expected_revision: int | None,
     ) -> dict[str, object]:
-        """Copy stable event identity and materialized options while paused."""
+        """Copy event identity, options, and lossy indicators while paused."""
         if (
             isinstance(event_instance_id, bool)
             or not isinstance(event_instance_id, int)
@@ -6739,6 +6739,9 @@ class NativeHeadlessGameplayDriver:
             },
             "current_event_window_context_ready": normalized["readiness"][
                 "option_presentation_ready"
+            ],
+            "current_event_effect_indicators_ready": normalized["readiness"][
+                "effect_indicators_ready"
             ],
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),

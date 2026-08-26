@@ -180,6 +180,9 @@ EXPECTED_OPTION_NAMES = (
     "XAR disabled fixture option",
     "XAR cancel fixture option",
 )
+EXPECTED_EFFECT_INDICATOR_COVERAGE = (
+    "played-character-event-icon-indicators-1.19.0.6-v1"
+)
 _LOCALIZATION_ROWS = (
     ("XAR_EVENT_WINDOW_LIVE_FIXTURE_TITLE", "XAR event-window fixture"),
     (
@@ -933,11 +936,20 @@ def _expected_option_shape(options: object) -> bool:
             and row.get("cancel") is cancel
             and row.get("resolved_name") == name
             and isinstance(row.get("unavailable_reason"), str)
+            and row.get("effect_indicators")
+            == {
+                "status": "available",
+                "coverage": EXPECTED_EFFECT_INDICATOR_COVERAGE,
+                "complete_effect_set": False,
+                "rows": [],
+            }
             and row.get("effect_preview")
             == {
                 "status": "unavailable",
-                "reason": "full_effect_preview_unavailable",
+                "reason": "indicator_subset_has_no_completeness_signal",
             }
+            and row.get("resource_deltas") == {"status": "unavailable"}
+            and row.get("relationship_deltas") == {"status": "unavailable"}
         ):
             return False
     return bool(
@@ -1026,10 +1038,12 @@ def _context_proof(
         == {
             "event_definition_identity_ready": True,
             "option_presentation_ready": True,
+            "effect_indicators_ready": True,
             "effect_preview_ready": False,
             "semantic_decision_ready": False,
         }
-        and envelope.get("current_event_window_context_ready") is True,
+        and envelope.get("current_event_window_context_ready") is True
+        and envelope.get("current_event_effect_indicators_ready") is True,
         "exact_provenance": frame.get("provenance")
         == {
             "root": "module+0x570F7B8->+0x10",
@@ -1880,15 +1894,17 @@ def _cross_stage_proof(
         )
         is True
         and _mapping(sequence.get("mutation_boundary")).get("ok") is True,
-        "unclosed_semantics_stay_false": _mapping(
-            cold_frame.get("readiness")
-        )
+        "unclosed_semantics_stay_false": _mapping(seed_frame.get("readiness"))
+        == _mapping(cold_frame.get("readiness"))
         == {
             "event_definition_identity_ready": True,
             "option_presentation_ready": True,
+            "effect_indicators_ready": True,
             "effect_preview_ready": False,
             "semantic_decision_ready": False,
         }
+        and seed_query.get("current_event_effect_indicators_ready") is True
+        and first.get("current_event_effect_indicators_ready") is True
         and cold_frame.get("root_scope") is None
         and cold_frame.get("saved_scopes") is None,
     }

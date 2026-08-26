@@ -17,6 +17,8 @@ DEFAULT_CONTRACT = HERE / "event_window_context_1_19_0_6_abi.json"
 DEFAULT_EXE = HERE.parents[2] / "Crusader Kings III" / "binaries" / "ck3.exe"
 DEFAULT_READER = HERE.parent / "src" / "event_window_context_v1.cpp"
 DEFAULT_MAILBOX = HERE.parent / "src" / "event_window_context_v1_mailbox.cpp"
+DEFAULT_SERIALIZER = HERE.parent / "src" / "event_window_context_v1_serializer.cpp"
+DEFAULT_BINDINGS = HERE.parent / "src" / "ck3_11906.cpp"
 DEFAULT_BRIDGE = HERE.parent / "src" / "bridge.cpp"
 
 
@@ -51,6 +53,8 @@ def main() -> int:
     parser.add_argument("--contract", type=Path, default=DEFAULT_CONTRACT)
     parser.add_argument("--reader", type=Path, default=DEFAULT_READER)
     parser.add_argument("--mailbox", type=Path, default=DEFAULT_MAILBOX)
+    parser.add_argument("--serializer", type=Path, default=DEFAULT_SERIALIZER)
+    parser.add_argument("--bindings", type=Path, default=DEFAULT_BINDINGS)
     parser.add_argument("--bridge", type=Path, default=DEFAULT_BRIDGE)
     arguments = parser.parse_args()
 
@@ -159,6 +163,10 @@ def main() -> int:
                 "kEventDataCalculatedIdOffset",
                 "kEventDataRuntimeStatsOrdinalOffset",
                 "kEventDataDefinitionKeyOffset",
+                "kEventDataAuthoredOptionDataOffset",
+                "kEventDataAuthoredOptionCapacityOffset",
+                "kEventDataAuthoredOptionCountOffset",
+                "kEventOptionDefinitionIsCancelOffset",
                 "kIdlerFromOwnerOffset",
                 "bindings.ingame_interface_idler_vtable",
                 "kManagerFromIdlerOffset",
@@ -167,10 +175,28 @@ def main() -> int:
                 "before.active_event_instance_id",
                 "after != before",
                 "kOptionOwnerOffset",
-                "option.native_option_index == cancel_index",
+                "kOptionEffectDataOffset",
+                "kOptionEffectCapacityOffset",
+                "kOptionEffectCountOffset",
+                "kEffectIndicatorStride",
+                "bindings.trait_database_slot",
+                "kTraitNativeIdOffset",
+                "kTraitStableKeyOffset",
+                "bindings.scheme_type_database_slot",
+                "bindings.scheme_type_fallback_slot",
+                "bindings.scheme_type_primary_vtable",
+                "bindings.hash_stable_key",
+                "bindings.hash_stable_key(\n      database",
+                "bindings.lookup_scheme_type",
+                "kSchemeTypeStableKeyOffset",
+                "option.native_option_index >= authored_count",
+                "is_cancel > 1",
+                "option.cancel = is_cancel != 0",
+                "ReadMatchingWindow(bindings, identity_before.event_data",
                 "ReadNativeString",
                 "identity_after != identity_before",
                 "candidate.event_definition_identity_ready = true",
+                "candidate.effect_indicators_ready = true",
             ),
         ),
         "mailbox": (
@@ -182,6 +208,35 @@ def main() -> int:
                 "snapshot.active_event_instance_id",
                 "ReadEventWindowContextV1(",
                 "event_definition_identity_ready",
+                "effect_indicators_ready",
+            ),
+        ),
+        "serializer": (
+            arguments.serializer,
+            (
+                "played-character-event-icon-indicators-1.19.0.6-v1",
+                "indicator_subset_has_no_completeness_signal",
+                "resource_deltas",
+                "relationship_deltas",
+                "effect_indicators_ready",
+                "semantic_decision_ready",
+            ),
+        ),
+        "bindings": (
+            arguments.bindings,
+            (
+                "kSchemeTypePrimaryVtableRva = 0x44081E8",
+                "kTraitDatabaseSlotRva = 0x570C0F8",
+                "kSchemeTypeDatabaseSlotRva = 0x570BD98",
+                "kSchemeTypeFallbackSlotRva = 0x570CB58",
+                "kHashStableKeyRva = 0x3B8B000",
+                "kLookupSchemeTypeRva = 0x0A48C70",
+                "result.scheme_type_primary_vtable",
+                "result.trait_database_slot",
+                "result.scheme_type_database_slot",
+                "result.scheme_type_fallback_slot",
+                "result.hash_stable_key",
+                "result.lookup_scheme_type",
             ),
         ),
         "bridge": (
@@ -211,6 +266,10 @@ def main() -> int:
         "select_event_option",
         "loaded_effect_executor",
         "0x3380410",
+        "construct_effect_preview_collector",
+        "traverse_loaded_effect",
+        "kDataCancelOptionIndexOffset",
+        "option.native_option_index == cancel_index",
     ):
         if forbidden in reader_source:
             failures.append(f"reader: forbidden executor token {forbidden!r}")
@@ -227,6 +286,8 @@ def main() -> int:
         failures.append("contract: stable event definition key is not published")
     if not contract["readiness"]["event_definition_identity_wire_ready"]:
         failures.append("contract: event definition identity wire is not ready")
+    if not contract["readiness"]["effect_indicator_wire_ready"]:
+        failures.append("contract: effect indicator wire is not ready")
     published_identity = set(
         query_contract.get("published_event_definition_fields", [])
     )
@@ -238,6 +299,15 @@ def main() -> int:
         failures.append("contract: published event definition fields drifted")
     if published_identity & set(query_contract["explicitly_unavailable"]):
         failures.append("contract: published event identity remains unavailable")
+    published_options = set(query_contract["published_option_fields"])
+    required_indicator_fields = {
+        "effect_indicators",
+        "effect_preview_unavailable",
+        "resource_deltas_unavailable",
+        "relationship_deltas_unavailable",
+    }
+    if not required_indicator_fields <= published_options:
+        failures.append("contract: effect indicator wire fields are incomplete")
     if contract["readiness"]["live_validated"]:
         failures.append("contract: offline verifier cannot admit live validation")
 

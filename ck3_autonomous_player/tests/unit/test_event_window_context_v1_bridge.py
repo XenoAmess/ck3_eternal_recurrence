@@ -25,6 +25,36 @@ CALCULATED_EVENT_ID = -712_345
 RUNTIME_STATS_ORDINAL = 37
 
 
+def _indicator_rows() -> list[dict[str, object]]:
+    return [
+        {
+            "kind": "trait",
+            "operation": "add",
+            "trait": {"status": "available", "native_id": 123, "key": "brave"},
+        },
+        {
+            "kind": "stress",
+            "direction": "decrease",
+            "magnitude": {"status": "unavailable"},
+            "affected_by_trait": True,
+            "critical": False,
+        },
+        {
+            "kind": "death",
+            "subject": "played_character",
+            "direction": "not_applicable",
+        },
+        {
+            "kind": "scheme",
+            "subject": "played_character",
+            "operation": "start",
+            "direction": "not_applicable",
+            "scheme": {"status": "available", "scheme_type_key": "murder"},
+        },
+        {"kind": "unknown", "raw_kind": 17},
+    ]
+
+
 def _frame(status: str = "available") -> dict[str, object]:
     available = status == "available"
     return {
@@ -53,15 +83,26 @@ def _frame(status: str = "available") -> dict[str, object]:
                 "cancel": True,
                 "resolved_name": "Wait.",
                 "unavailable_reason": "Not today",
+                "effect_indicators": {
+                    "status": "available",
+                    "coverage": (
+                        "played-character-event-icon-indicators-1.19.0.6-v1"
+                    ),
+                    "complete_effect_set": False,
+                    "rows": _indicator_rows(),
+                },
                 "effect_preview": {
                     "status": "unavailable",
-                    "reason": "full_effect_preview_unavailable",
+                    "reason": "indicator_subset_has_no_completeness_signal",
                 },
+                "resource_deltas": {"status": "unavailable"},
+                "relationship_deltas": {"status": "unavailable"},
             }
         ] if available else None,
         "readiness": {
             "event_definition_identity_ready": available,
             "option_presentation_ready": available,
+            "effect_indicators_ready": available,
             "effect_preview_ready": False,
             "semantic_decision_ready": False,
         },
@@ -119,6 +160,9 @@ def _query_result(
         "backend_id": "native-headless",
         "current_event_window_context_ready": materialized["readiness"][
             "option_presentation_ready"
+        ],
+        "current_event_effect_indicators_ready": materialized["readiness"][
+            "effect_indicators_ready"
         ],
         "queried_snapshot_id": "snapshot-9",
         "queried_revision": 9,
@@ -178,6 +222,30 @@ class EventWindowContractTests(unittest.TestCase):
             normalized["runtime_stats_ordinal"], RUNTIME_STATS_ORDINAL
         )
 
+    def test_multiple_authored_cancel_flags_are_preserved(self) -> None:
+        original = _frame()
+        second = copy.deepcopy(original["options"][0])
+        second.update(
+            {
+                "rendered_index": 1,
+                "native_option_index": 7,
+                "cancel": True,
+            }
+        )
+        original["options"].append(second)
+
+        normalized = normalize_current_event_window_context_v1(
+            original,
+            expected_event_instance_id=EVENT_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+
+        self.assertEqual(
+            [option["cancel"] for option in normalized["options"]],
+            [True, True],
+        )
+
     def test_rejects_full_id_revision_locator_and_effect_drift(self) -> None:
         mutations = []
         wrong_id = _frame()
@@ -204,6 +272,104 @@ class EventWindowContractTests(unittest.TestCase):
                         expected_date_raw=DATE_RAW,
                         expected_snapshot_revision=NATIVE_REVISION,
                     )
+
+    def test_effect_indicator_subset_is_strict_but_not_a_full_preview(self) -> None:
+        normalized = normalize_current_event_window_context_v1(
+            _frame(),
+            expected_event_instance_id=EVENT_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        option = normalized["options"][0]
+        self.assertEqual(
+            option["effect_indicators"]["rows"], _indicator_rows()
+        )
+        self.assertFalse(option["effect_indicators"]["complete_effect_set"])
+        self.assertEqual(option["resource_deltas"], {"status": "unavailable"})
+        self.assertEqual(
+            option["relationship_deltas"], {"status": "unavailable"}
+        )
+        self.assertFalse(normalized["readiness"]["effect_preview_ready"])
+        self.assertFalse(normalized["readiness"]["semantic_decision_ready"])
+
+        mutations: list[dict[str, object]] = []
+        unready = _frame()
+        unready["readiness"]["effect_indicators_ready"] = False
+        mutations.append(unready)
+        wrong_coverage = _frame()
+        wrong_coverage["options"][0]["effect_indicators"]["coverage"] = "full"
+        mutations.append(wrong_coverage)
+        claims_complete = _frame()
+        claims_complete["options"][0]["effect_indicators"][
+            "complete_effect_set"
+        ] = True
+        mutations.append(claims_complete)
+        bad_trait = _frame()
+        bad_trait["options"][0]["effect_indicators"]["rows"][0][
+            "operation"
+        ] = "benefit"
+        mutations.append(bad_trait)
+        bad_stress = _frame()
+        bad_stress["options"][0]["effect_indicators"]["rows"][1][
+            "magnitude"
+        ] = {"status": "available", "value": 10}
+        mutations.append(bad_stress)
+        bad_death = _frame()
+        bad_death["options"][0]["effect_indicators"]["rows"][2][
+            "direction"
+        ] = "gain"
+        mutations.append(bad_death)
+        bad_scheme = _frame()
+        bad_scheme["options"][0]["effect_indicators"]["rows"][3][
+            "scheme"
+        ]["scheme_type_key"] = ""
+        mutations.append(bad_scheme)
+        known_unknown = _frame()
+        known_unknown["options"][0]["effect_indicators"]["rows"][4][
+            "raw_kind"
+        ] = 2
+        mutations.append(known_unknown)
+        fabricated_resource = _frame()
+        fabricated_resource["options"][0]["resource_deltas"] = {
+            "status": "available",
+            "rows": [],
+        }
+        mutations.append(fabricated_resource)
+
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                with self.assertRaises(ValueError):
+                    normalize_current_event_window_context_v1(
+                        mutation,
+                        expected_event_instance_id=EVENT_ID,
+                        expected_date_raw=DATE_RAW,
+                        expected_snapshot_revision=NATIVE_REVISION,
+                    )
+
+    def test_unavailable_trait_and_scheme_identities_remain_typed(self) -> None:
+        frame = _frame()
+        rows = frame["options"][0]["effect_indicators"]["rows"]
+        rows[0]["trait"] = {
+            "status": "unavailable",
+            "reason": "trait_identity_unavailable",
+        }
+        rows[3]["scheme"] = {
+            "status": "unavailable",
+            "reason": "scheme_type_identity_unavailable",
+        }
+        normalized = normalize_current_event_window_context_v1(
+            frame,
+            expected_event_instance_id=EVENT_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertEqual(
+            normalized["options"][0]["effect_indicators"]["rows"][0][
+                "operation"
+            ],
+            "add",
+        )
+        self.assertTrue(normalized["readiness"]["effect_indicators_ready"])
 
     def test_event_definition_identity_cross_fields_are_strict(self) -> None:
         mutations: list[dict[str, object]] = []
@@ -280,6 +446,7 @@ class EventWindowContractTests(unittest.TestCase):
             EVENT_ID, expected_revision=9
         )
         self.assertTrue(result["current_event_window_context_ready"])
+        self.assertTrue(result["current_event_effect_indicators_ready"])
         self.assertEqual(result["binding"]["event_instance_id"], EVENT_ID)
         self.assertEqual(result["event_definition_key"], EVENT_DEFINITION_KEY)
         self.assertEqual(result["calculated_event_id"], CALCULATED_EVENT_ID)
@@ -289,7 +456,9 @@ class EventWindowContractTests(unittest.TestCase):
         self.assertTrue(
             result["readiness"]["event_definition_identity_ready"]
         )
+        self.assertTrue(result["readiness"]["effect_indicators_ready"])
         self.assertFalse(result["readiness"]["effect_preview_ready"])
+        self.assertFalse(result["readiness"]["semantic_decision_ready"])
         via_mcp = _ck3_query_current_event_window_context_v1(
             service, EVENT_ID, 9
         )

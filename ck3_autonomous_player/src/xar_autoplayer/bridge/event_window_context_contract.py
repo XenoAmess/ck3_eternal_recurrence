@@ -40,14 +40,22 @@ _OPTION_FIELDS = {
     "cancel",
     "resolved_name",
     "unavailable_reason",
+    "effect_indicators",
     "effect_preview",
+    "resource_deltas",
+    "relationship_deltas",
 }
 _READINESS_FIELDS = {
     "event_definition_identity_ready",
     "option_presentation_ready",
+    "effect_indicators_ready",
     "effect_preview_ready",
     "semantic_decision_ready",
 }
+
+_EFFECT_INDICATOR_COVERAGE = (
+    "played-character-event-icon-indicators-1.19.0.6-v1"
+)
 _PROVENANCE_FIELDS = {
     "root",
     "idler_vtable_rva",
@@ -74,6 +82,119 @@ def _string(value: Any, label: str, *, nonempty: bool = False) -> str:
     if not isinstance(value, str) or (nonempty and not value):
         raise ValueError(f"{label} must be a{' non-empty' if nonempty else ''} string")
     return value
+
+
+def _stable_key(value: Any, label: str) -> str:
+    key = _string(value, label, nonempty=True)
+    try:
+        encoded = key.encode("utf-8")
+    except UnicodeEncodeError as error:
+        raise ValueError(f"{label} is not UTF-8") from error
+    if len(encoded) > 16_384:
+        raise ValueError(f"{label} is too long")
+    return key
+
+
+def _effect_indicator(value: Any, label: str) -> None:
+    if not isinstance(value, dict):
+        raise ValueError(f"{label} must be an object")
+    kind = value.get("kind")
+    if kind == "trait":
+        row = _exact_object(value, {"kind", "operation", "trait"}, label)
+        if row["operation"] not in {"add", "remove"}:
+            raise ValueError(f"{label}.operation is invalid")
+        trait = row["trait"]
+        if not isinstance(trait, dict):
+            raise ValueError(f"{label}.trait must be an object")
+        if trait.get("status") == "available":
+            trait = _exact_object(
+                trait, {"status", "native_id", "key"}, f"{label}.trait"
+            )
+            _int(trait["native_id"], f"{label}.trait.native_id", 0, 2**31 - 1)
+            _stable_key(trait["key"], f"{label}.trait.key")
+        elif trait.get("status") == "unavailable":
+            trait = _exact_object(
+                trait, {"status", "reason"}, f"{label}.trait"
+            )
+            if trait["reason"] != "trait_identity_unavailable":
+                raise ValueError(f"{label}.trait reason is invalid")
+        else:
+            raise ValueError(f"{label}.trait status is invalid")
+        return
+    if kind == "stress":
+        row = _exact_object(
+            value,
+            {
+                "kind",
+                "direction",
+                "magnitude",
+                "affected_by_trait",
+                "critical",
+            },
+            label,
+        )
+        if row["direction"] not in {"increase", "decrease"}:
+            raise ValueError(f"{label}.direction is invalid")
+        if row["magnitude"] != {"status": "unavailable"}:
+            raise ValueError(f"{label}.magnitude must remain unavailable")
+        if not isinstance(row["affected_by_trait"], bool) or not isinstance(
+            row["critical"], bool
+        ):
+            raise ValueError(f"{label} stress flags must be booleans")
+        return
+    if kind == "death":
+        row = _exact_object(
+            value, {"kind", "subject", "direction"}, label
+        )
+        if (
+            row["subject"] != "played_character"
+            or row["direction"] != "not_applicable"
+        ):
+            raise ValueError(f"{label} death semantics are invalid")
+        return
+    if kind == "scheme":
+        row = _exact_object(
+            value,
+            {"kind", "subject", "operation", "direction", "scheme"},
+            label,
+        )
+        if (
+            row["subject"] != "played_character"
+            or row["operation"] != "start"
+            or row["direction"] != "not_applicable"
+        ):
+            raise ValueError(f"{label} scheme semantics are invalid")
+        scheme = row["scheme"]
+        if not isinstance(scheme, dict):
+            raise ValueError(f"{label}.scheme must be an object")
+        if scheme.get("status") == "available":
+            scheme = _exact_object(
+                scheme,
+                {"status", "scheme_type_key"},
+                f"{label}.scheme",
+            )
+            _stable_key(
+                scheme["scheme_type_key"],
+                f"{label}.scheme.scheme_type_key",
+            )
+        elif scheme.get("status") == "unavailable":
+            scheme = _exact_object(
+                scheme, {"status", "reason"}, f"{label}.scheme"
+            )
+            if scheme["reason"] != "scheme_type_identity_unavailable":
+                raise ValueError(f"{label}.scheme reason is invalid")
+        else:
+            raise ValueError(f"{label}.scheme status is invalid")
+        return
+    if kind == "unknown":
+        row = _exact_object(value, {"kind", "raw_kind"}, label)
+        raw_kind = _int(
+            row["raw_kind"], f"{label}.raw_kind", -(2**31), 2**31 - 1
+        )
+        if raw_kind in {0, 1, 2, 3}:
+            raise ValueError(f"{label}.raw_kind aliases a known kind")
+        return
+    raise ValueError(f"{label}.kind is invalid")
 
 
 def normalize_current_event_window_context_v1(
@@ -190,6 +311,7 @@ def normalize_current_event_window_context_v1(
     if readiness != {
         "event_definition_identity_ready": True,
         "option_presentation_ready": True,
+        "effect_indicators_ready": True,
         "effect_preview_ready": False,
         "semantic_decision_ready": False,
     }:
@@ -198,7 +320,6 @@ def normalize_current_event_window_context_v1(
     if not isinstance(options, list) or len(options) > 64:
         raise ValueError("event options must be a bounded list")
     native_indices: set[int] = set()
-    cancel_count = 0
     for rendered_index, raw_option in enumerate(options):
         option = _exact_object(
             raw_option, _OPTION_FIELDS, f"event option {rendered_index}"
@@ -224,6 +345,24 @@ def normalize_current_event_window_context_v1(
             option["unavailable_reason"],
             "event option unavailable_reason",
         )
+        indicators = _exact_object(
+            option["effect_indicators"],
+            {"status", "coverage", "complete_effect_set", "rows"},
+            "event option effect_indicators",
+        )
+        if (
+            indicators["status"] != "available"
+            or indicators["coverage"] != _EFFECT_INDICATOR_COVERAGE
+            or indicators["complete_effect_set"] is not False
+            or not isinstance(indicators["rows"], list)
+            or len(indicators["rows"]) > 128
+        ):
+            raise ValueError("event effect indicators are invalid")
+        for row_index, indicator in enumerate(indicators["rows"]):
+            _effect_indicator(
+                indicator,
+                f"event option effect indicator {row_index}",
+            )
         effect = _exact_object(
             option["effect_preview"],
             {"status", "reason"},
@@ -231,10 +370,13 @@ def normalize_current_event_window_context_v1(
         )
         if effect != {
             "status": "unavailable",
-            "reason": "full_effect_preview_unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal",
         }:
             raise ValueError("full event effect preview must remain unavailable")
-        cancel_count += int(option["cancel"])
-    if cancel_count > 1:
-        raise ValueError("multiple event options claim the cancel index")
+        for field in ("resource_deltas", "relationship_deltas"):
+            unavailable = _exact_object(
+                option[field], {"status"}, f"event option {field}"
+            )
+            if unavailable != {"status": "unavailable"}:
+                raise ValueError(f"event option {field} must remain unavailable")
     return copy.deepcopy(frame)

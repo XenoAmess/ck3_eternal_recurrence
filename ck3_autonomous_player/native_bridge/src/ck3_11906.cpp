@@ -58,6 +58,7 @@ constexpr std::uintptr_t kSelectEventOptionPrimaryVtableRva = 0x4335240;
 constexpr std::uintptr_t kSelectEventOptionSecondaryVtableRva = 0x4335210;
 constexpr std::uintptr_t kIngameInterfaceIdlerVtableRva = 0x40B1D30;
 constexpr std::uintptr_t kEventWindowPrimaryVtableRva = 0x417F758;
+constexpr std::uintptr_t kSchemeTypePrimaryVtableRva = 0x44081E8;
 constexpr std::uintptr_t kAutoSavePrimaryVtableRva = 0x40AABE8;
 constexpr std::uintptr_t kAutoSaveSecondaryVtableRva = 0x40AAC80;
 constexpr std::uintptr_t kReplyCharacterInteractionPrimaryVtableRva =
@@ -77,6 +78,9 @@ constexpr std::uintptr_t kAiWarCoordinatorFallbackSlotRva = 0x57C0798;
 constexpr std::uintptr_t kAiWarCoordinatorStorageSlotRva = 0x57C07A8;
 constexpr std::uintptr_t kSiegeStorageSlotRva = 0x57BF1B8;
 constexpr std::uintptr_t kContactGameModeSlotRva = 0x576CC68;
+constexpr std::uintptr_t kTraitDatabaseSlotRva = 0x570C0F8;
+constexpr std::uintptr_t kSchemeTypeDatabaseSlotRva = 0x570BD98;
+constexpr std::uintptr_t kSchemeTypeFallbackSlotRva = 0x570CB58;
 constexpr std::uintptr_t kGlobalVariableContainerAccessorSlotRva =
     0x570F750;
 constexpr std::uintptr_t kRaiseTroopsPrimaryVtableRva = 0x41226D8;
@@ -202,6 +206,8 @@ constexpr std::uintptr_t kValidateMergeArmiesCommandRva = 0x26BA050;
 constexpr std::uintptr_t kDestroyMergeArmiesCommandRva = 0x26B5330;
 constexpr std::uintptr_t kGetCasusBelliTypeDatabaseRva = 0x088E260;
 constexpr std::uintptr_t kGetCharacterInteractionDatabaseRva = 0x0831890;
+constexpr std::uintptr_t kHashStableKeyRva = 0x3B8B000;
+constexpr std::uintptr_t kLookupSchemeTypeRva = 0x0A48C70;
 constexpr std::uintptr_t kEvaluateCasusBelliRva = 0x2D95D00;
 constexpr std::uintptr_t kDestroyValidCasusBelliConfigurationRva =
     0x101B3C0;
@@ -5984,6 +5990,8 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       module + kIngameInterfaceIdlerVtableRva;
   result.event_window_primary_vtable =
       module + kEventWindowPrimaryVtableRva;
+  result.scheme_type_primary_vtable =
+      module + kSchemeTypePrimaryVtableRva;
   result.auto_save_primary_vtable = module + kAutoSavePrimaryVtableRva;
   result.auto_save_secondary_vtable = module + kAutoSaveSecondaryVtableRva;
   result.reply_character_interaction_primary_vtable =
@@ -6080,6 +6088,12 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       reinterpret_cast<void **>(module + kSiegeStorageSlotRva);
   result.contact_game_mode_slot =
       reinterpret_cast<void **>(module + kContactGameModeSlotRva);
+  result.trait_database_slot =
+      reinterpret_cast<void **>(module + kTraitDatabaseSlotRva);
+  result.scheme_type_database_slot =
+      reinterpret_cast<void **>(module + kSchemeTypeDatabaseSlotRva);
+  result.scheme_type_fallback_slot =
+      reinterpret_cast<void **>(module + kSchemeTypeFallbackSlotRva);
   result.global_variable_container_accessor_slot =
       reinterpret_cast<GetGlobalVariableContainer *>(
           module + kGlobalVariableContainerAccessorSlotRva);
@@ -6290,6 +6304,10 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.get_character_interaction_database =
       reinterpret_cast<GetCharacterInteractionDatabase>(
           module + kGetCharacterInteractionDatabaseRva);
+  result.hash_stable_key =
+      reinterpret_cast<HashStableKey>(module + kHashStableKeyRva);
+  result.lookup_scheme_type =
+      reinterpret_cast<LookupSchemeType>(module + kLookupSchemeTypeRva);
   result.evaluate_casus_belli = reinterpret_cast<EvaluateCasusBelli>(
       module + kEvaluateCasusBelliRva);
   result.destroy_valid_casus_belli_configuration =
