@@ -14,6 +14,12 @@ namespace xar::ck3_11906 {
 namespace {
 
 constexpr std::size_t kIdlerFromOwnerOffset = 0x10;
+constexpr std::size_t kGameStateGameDataOffset = 0xA0;
+constexpr std::size_t kActiveEventDataOffset = 0x1B0;
+constexpr std::size_t kActiveEventInstanceIdOffset = 0x1BC;
+constexpr std::size_t kEventDataCalculatedIdOffset = 0x08;
+constexpr std::size_t kEventDataRuntimeStatsOrdinalOffset = 0x0C;
+constexpr std::size_t kEventDataDefinitionKeyOffset = 0x10;
 constexpr std::size_t kManagerFromIdlerOffset = 0x28;
 constexpr std::size_t kManagerWindowDataOffset = 0x10;
 constexpr std::size_t kManagerWindowCountOffset = 0x1C;
@@ -56,14 +62,18 @@ void SetUnavailable(game::EventWindowContextV1 &output,
   output.unavailable_reason.assign(reason);
 }
 
-bool ReadNativeString(const void *object, std::string &output) {
+bool ReadNativeString(const void *object, std::string &output,
+                      bool require_nonempty = false,
+                      bool require_bounded_capacity = false) {
   output.clear();
   if (object == nullptr) {
     return false;
   }
   const auto size = LoadAt<std::uint64_t>(object, 0x10);
   const auto capacity = LoadAt<std::uint64_t>(object, 0x18);
-  if (size > kMaximumStringBytes || capacity < size) {
+  if (size > kMaximumStringBytes || capacity < size ||
+      (require_bounded_capacity && capacity > kMaximumStringBytes) ||
+      (require_nonempty && size == 0)) {
     return false;
   }
   const void *data = object;
@@ -81,6 +91,60 @@ bool ReadNativeString(const void *object, std::string &output) {
     return false;
   }
   return true;
+}
+
+struct EventDefinitionIdentityObservationV1 {
+  void *active_event = nullptr;
+  void *event_data = nullptr;
+  std::int32_t event_instance_id = -1;
+  std::int32_t calculated_event_id = 0;
+  std::int32_t runtime_stats_ordinal = 0;
+  std::string event_definition_key;
+
+  friend bool operator==(const EventDefinitionIdentityObservationV1 &,
+                         const EventDefinitionIdentityObservationV1 &) =
+      default;
+};
+
+bool ReadEventDefinitionIdentity(
+    const Bindings &bindings, std::int32_t expected_event_instance_id,
+    EventDefinitionIdentityObservationV1 &output) {
+  output = {};
+  if (bindings.game_state_slot == nullptr ||
+      bindings.get_current_event == nullptr ||
+      bindings.event_manager_offset == 0) {
+    return false;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  void *const game_data =
+      game_state != nullptr
+          ? LoadAt<void *>(game_state, kGameStateGameDataOffset)
+          : nullptr;
+  if (game_data == nullptr) {
+    return false;
+  }
+  void *const event_manager = static_cast<std::byte *>(game_data) +
+                              bindings.event_manager_offset;
+  output.active_event = bindings.get_current_event(event_manager);
+  if (output.active_event == nullptr) {
+    return false;
+  }
+  output.event_data =
+      LoadAt<void *>(output.active_event, kActiveEventDataOffset);
+  output.event_instance_id = LoadAt<std::int32_t>(
+      output.active_event, kActiveEventInstanceIdOffset);
+  if (output.event_data == nullptr ||
+      output.event_instance_id != expected_event_instance_id) {
+    return false;
+  }
+  output.calculated_event_id = LoadAt<std::int32_t>(
+      output.event_data, kEventDataCalculatedIdOffset);
+  output.runtime_stats_ordinal = LoadAt<std::int32_t>(
+      output.event_data, kEventDataRuntimeStatsOrdinalOffset);
+  return ReadNativeString(
+      static_cast<std::byte *>(output.event_data) +
+          kEventDataDefinitionKeyOffset,
+      output.event_definition_key, true, true);
 }
 
 bool ValidVector(std::int32_t count, std::int32_t capacity,
@@ -204,7 +268,10 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
   try {
     if (!bindings.enabled || expected_snapshot_revision == 0 ||
         expected_event_instance_id <= 0 ||
+        bindings.game_state_slot == nullptr ||
         bindings.jomini_state_slot == nullptr ||
+        bindings.get_current_event == nullptr ||
+        bindings.event_manager_offset == 0 ||
         bindings.ingame_interface_idler_vtable == 0 ||
         bindings.event_window_primary_vtable == 0) {
       SetUnavailable(output, "unsupported_build");
@@ -218,6 +285,12 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
       return game::ReadEventWindowContextResultV1::unavailable;
     }
     output.date_raw = before.date_raw;
+    EventDefinitionIdentityObservationV1 identity_before{};
+    if (!ReadEventDefinitionIdentity(bindings, expected_event_instance_id,
+                                     identity_before)) {
+      SetUnavailable(output, "event_definition_identity_unavailable");
+      return game::ReadEventWindowContextResultV1::unavailable;
+    }
     void *const owner = *bindings.jomini_state_slot;
     void *const idler = owner != nullptr
                             ? LoadAt<void *>(owner, kIdlerFromOwnerOffset)
@@ -260,6 +333,13 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
                                  : "event_window_ambiguous");
       return game::ReadEventWindowContextResultV1::unavailable;
     }
+    EventDefinitionIdentityObservationV1 identity_after{};
+    if (!ReadEventDefinitionIdentity(bindings, expected_event_instance_id,
+                                     identity_after) ||
+        identity_after != identity_before) {
+      SetUnavailable(output, "event_definition_identity_changed");
+      return game::ReadEventWindowContextResultV1::unavailable;
+    }
     game::Snapshot after{};
     if (!ReadSnapshot(bindings, after) || after != before) {
       SetUnavailable(output, "state_changed");
@@ -267,6 +347,11 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
     }
     candidate.status = game::EventWindowContextStatusV1::available;
     candidate.unavailable_reason.clear();
+    candidate.event_definition_key =
+        std::move(identity_before.event_definition_key);
+    candidate.calculated_event_id = identity_before.calculated_event_id;
+    candidate.runtime_stats_ordinal = identity_before.runtime_stats_ordinal;
+    candidate.event_definition_identity_ready = true;
     candidate.option_presentation_ready = true;
     candidate.effect_preview_ready = false;
     candidate.semantic_decision_ready = false;

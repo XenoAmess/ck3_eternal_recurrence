@@ -23,6 +23,8 @@ _FIELDS = {
     "window_match_count",
     "unavailable_reason",
     "event_definition_key",
+    "calculated_event_id",
+    "runtime_stats_ordinal",
     "root_scope",
     "saved_scopes",
     "options",
@@ -41,6 +43,7 @@ _OPTION_FIELDS = {
     "effect_preview",
 }
 _READINESS_FIELDS = {
+    "event_definition_identity_ready",
     "option_presentation_ready",
     "effect_preview_ready",
     "semantic_decision_ready",
@@ -118,11 +121,8 @@ def normalize_current_event_window_context_v1(
         0,
         32,
     )
-    if any(
-        frame[key] is not None
-        for key in ("event_definition_key", "root_scope", "saved_scopes")
-    ):
-        raise ValueError("unclosed event identities must remain null")
+    if frame["root_scope"] is not None or frame["saved_scopes"] is not None:
+        raise ValueError("unclosed event scopes must remain null")
     readiness = _exact_object(
         frame["readiness"], _READINESS_FIELDS, "event readiness"
     )
@@ -148,13 +148,47 @@ def normalize_current_event_window_context_v1(
             "current_event_window_context.unavailable_reason",
             nonempty=True,
         )
-        if frame["options"] is not None or any(readiness.values()):
+        if (
+            frame["event_definition_key"] is not None
+            or frame["calculated_event_id"] is not None
+            or frame["runtime_stats_ordinal"] is not None
+            or frame["options"] is not None
+            or any(readiness.values())
+        ):
             raise ValueError("unavailable event-window frame is actionable")
         return copy.deepcopy(frame)
 
     if frame["unavailable_reason"] is not None or match_count != 1:
         raise ValueError("available event-window frame lacks one exact match")
+    definition_key = _string(
+        frame["event_definition_key"],
+        "current_event_window_context.event_definition_key",
+        nonempty=True,
+    )
+    try:
+        definition_key_bytes = definition_key.encode("utf-8")
+    except UnicodeEncodeError as error:
+        raise ValueError(
+            "current_event_window_context.event_definition_key is not UTF-8"
+        ) from error
+    if len(definition_key_bytes) > 16_384:
+        raise ValueError(
+            "current_event_window_context.event_definition_key is too long"
+        )
+    _int(
+        frame["calculated_event_id"],
+        "current_event_window_context.calculated_event_id",
+        -(2**31),
+        2**31 - 1,
+    )
+    _int(
+        frame["runtime_stats_ordinal"],
+        "current_event_window_context.runtime_stats_ordinal",
+        -(2**31),
+        2**31 - 1,
+    )
     if readiness != {
+        "event_definition_identity_ready": True,
         "option_presentation_ready": True,
         "effect_preview_ready": False,
         "semantic_decision_ready": False,

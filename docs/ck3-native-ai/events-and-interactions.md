@@ -410,13 +410,14 @@ flowchart TD
 
 | 子域 | 当前已发布 | 仍缺的决策事实 | readiness |
 |---|---|---|---|
-| active event identity/action | instance ID、raw option count、`1..N` numeric indexes；select command + instance-change postcondition；static ABI 已闭合 GUI item 的 shown/enabled/native-index/name/reason/cancel/fallback、下半 window/data locator/lifetime 与原生 AI selector | stable global root/capture seam、stable event key、scope identity、完整 effect-preview output ABI、正式 typed query | `event_action_primitive_ready=true`，`event_static_observation_seam_ready=true`，`event_semantic_decision_ready=false` |
+| active event identity/action | `current-event-window-context-v1` 已发布完整 instance ID、bounded nonempty canonical event key、calculated event ID、runtime stats ordinal，以及 GUI 实际物化的 shown/enabled/native-index/name/reason/cancel/fallback；select command 仍用 native index + instance-change postcondition | stable root/saved scope identity、完整 effect-preview output ABI、production paused live | available 时 `event_definition_identity_ready=true`、`option_presentation_ready=true`；`event_semantic_decision_ready=false` |
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
 | pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；普通 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `interaction_typed_query_wired=true`，`ordinary_interaction_live_ready=true`，`interaction_semantic_decision_ready=false` |
 | auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进；非宗教 definition-only fixture 已跨 fresh cold process 完成 query/query/ACK/旧 ID 消失 | 自然 stock notification 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality；fixture authored definition/terms 不是 stock 语义 | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_fixture_live_ready=true` |
 | current planner | 对普通 pending 先查同 snapshot/revision/full ID 的 typed context；active war 中仍先执行 100% enforce-demands 优先级，再查询互动；auto-accept notification 只走固定 ACK，generic recipient notification channel 已 fixture-scoped live | v1 structured terms 与 semantic policy 未 ready 时不再默认 accept/reject；stale query 不复用；自然 stock/intermediary notification 仍待 live | 机械 notification 清理已有 production native bridge 实机闭环，但语义回复策略仍未完成，不得称为高智商闭环 |
 
-这里的缺口已经直接阻断通用 OODA：事件一弹出，agent 虽能提交某个 numeric option，却不知道该项是否可点、会做什么；
+这里的缺口已经直接阻断通用 OODA：事件一弹出，agent 已能确认 definition identity、实际显示项与 enabled 状态，但仍不知道
+每项的完整结构化效果与长期效用；
 互动 typed query 现已能识别请求类型、角色、routing、options 与合法回复，但 target payload 和结构化条款仍不足以做高质量取舍。
 普通 recipient pending 的 paused live 双查询已经闭合，planner 也已改为先查询同帧 typed context，并在
 `interaction_semantic_decision_ready=false` 时停在明确的 observation dependency。generic recipient notification 的
@@ -457,15 +458,16 @@ production-only playset；live consumer/DLL 冻结在 commit `70bf8e6b689780b459
 最小 interaction，用 stock `run_interaction` 生成 route kind `1`，保存后再由 fresh production-only userdir 冷查询。该夹具只证明
 engine-generic intermediary routing/full-ID/mailbox；不能拿 test interaction 冒充任一 stock diarch interaction 的条款或 AI 决策。
 
-## 下一版只读观测合同
+## 只读观测合同（分阶段实现）
 
 ### `event-decision-context-v1`
 
 每次查询必须绑定 fresh paused snapshot 的 date/revision、active event instance 和 exact build，并至少发布：
 
 - `status = available | unavailable | invalid` 与 typed `unavailable_reason`；
-- stable event definition identity：`EventData+0x10` canonical namespaced key、`+0x08` calculated ID 与 `+0x0C`
-  runtime statistics ordinal 分栏发布；必须做 string bounds 与同帧双重观察，不能只发 numeric ordinal；
+- [implementation-confirmed] stable event definition identity：`EventData+0x10` canonical namespaced key、`+0x08`
+  calculated ID 与 `+0x0C` runtime statistics ordinal 已由 `current-event-window-context-v1` 分栏发布；application-main
+  callback 对 ActiveEvent/EventData pointer、完整 instance、key 与两个 signed int32 做前后双观察，不能只发 numeric ordinal；
 - event root 与已保存 named scopes 的类型化 identity；
 - authored/native option index，以及真正 rendered option number；
 - 每项 `shown`、`enabled`、`fallback`、`exclusive`、`is_cancel_option`，未知字段不得用 false 代填；
@@ -521,7 +523,8 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   `CEffectDescriptionVisitorInterface` derived visitor 或 engine-owned structured tooltip model 中会保留
   resource/relationship delta、target identity 与 completeness 的输出，不能扩义 `OptionEffectItem`。
 - [unknown] `CEventOption+0x3E8/+0x3E9` 的业务字段名/subtype；`+0x47A` 业务名；cancel-index `-1/-2`
-  sentinel 区别；保存 scopes 的 engine identity。stable event definition key 已由 duplicate validator 闭合。
+  sentinel 区别；保存 scopes 的 engine identity。stable event definition identity 已由 current-local-event getter、duplicate
+  validator 与 application-main 双观察接入 wire；尚未进行 production paused live。
 - [static-confirmed] AI selector、默认权重、全非正权重时的 uniform 分支、normalization、同权重区间和该调用点 RNG draw 已闭合；
   后续不再重复逆向这些分支，直接作为 opponent-model fixture 输入。
 - [live-confirmed] pending object 的 stable definition key/hash、五 roles、send-option selection、route、deadline 与四路

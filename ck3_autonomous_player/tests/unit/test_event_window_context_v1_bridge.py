@@ -20,6 +20,9 @@ from xar_autoplayer.strategy import choose_one_life_turn
 EVENT_ID = 0x01000029
 NATIVE_REVISION = 17
 DATE_RAW = 741_221
+EVENT_DEFINITION_KEY = "xar_test.0001"
+CALCULATED_EVENT_ID = -712_345
+RUNTIME_STATS_ORDINAL = 37
 
 
 def _frame(status: str = "available") -> dict[str, object]:
@@ -33,7 +36,11 @@ def _frame(status: str = "available") -> dict[str, object]:
         "current_event_instance_id": EVENT_ID,
         "window_match_count": 1 if available else 0,
         "unavailable_reason": None if available else "event_window_not_materialized",
-        "event_definition_key": None,
+        "event_definition_key": EVENT_DEFINITION_KEY if available else None,
+        "calculated_event_id": CALCULATED_EVENT_ID if available else None,
+        "runtime_stats_ordinal": (
+            RUNTIME_STATS_ORDINAL if available else None
+        ),
         "root_scope": None,
         "saved_scopes": None,
         "options": [
@@ -53,6 +60,7 @@ def _frame(status: str = "available") -> dict[str, object]:
             }
         ] if available else None,
         "readiness": {
+            "event_definition_identity_ready": available,
             "option_presentation_ready": available,
             "effect_preview_ready": False,
             "semantic_decision_ready": False,
@@ -92,6 +100,8 @@ def _query_result(
             "window_match_count",
             "unavailable_reason",
             "event_definition_key",
+            "calculated_event_id",
+            "runtime_stats_ordinal",
             "root_scope",
             "saved_scopes",
             "options",
@@ -162,6 +172,11 @@ class EventWindowContractTests(unittest.TestCase):
         self.assertEqual(normalized, original)
         normalized["options"][0]["resolved_name"] = "changed"
         self.assertEqual(original["options"][0]["resolved_name"], "Wait.")
+        self.assertEqual(normalized["event_definition_key"], EVENT_DEFINITION_KEY)
+        self.assertEqual(normalized["calculated_event_id"], CALCULATED_EVENT_ID)
+        self.assertEqual(
+            normalized["runtime_stats_ordinal"], RUNTIME_STATS_ORDINAL
+        )
 
     def test_rejects_full_id_revision_locator_and_effect_drift(self) -> None:
         mutations = []
@@ -180,6 +195,48 @@ class EventWindowContractTests(unittest.TestCase):
         duplicate = _frame()
         duplicate["extra"] = None
         mutations.append(duplicate)
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                with self.assertRaises(ValueError):
+                    normalize_current_event_window_context_v1(
+                        mutation,
+                        expected_event_instance_id=EVENT_ID,
+                        expected_date_raw=DATE_RAW,
+                        expected_snapshot_revision=NATIVE_REVISION,
+                    )
+
+    def test_event_definition_identity_cross_fields_are_strict(self) -> None:
+        mutations: list[dict[str, object]] = []
+        for field, value in (
+            ("event_definition_key", None),
+            ("event_definition_key", ""),
+            ("calculated_event_id", None),
+            ("calculated_event_id", True),
+            ("calculated_event_id", 2**31),
+            ("runtime_stats_ordinal", None),
+            ("runtime_stats_ordinal", -(2**31) - 1),
+        ):
+            mutation = _frame()
+            mutation[field] = value
+            mutations.append(mutation)
+        unready = _frame()
+        unready["readiness"]["event_definition_identity_ready"] = False
+        mutations.append(unready)
+        unavailable_with_identity = _frame("unavailable")
+        unavailable_with_identity["event_definition_key"] = "leaked.key"
+        mutations.append(unavailable_with_identity)
+        unavailable_with_id = _frame("unavailable")
+        unavailable_with_id["calculated_event_id"] = 0
+        mutations.append(unavailable_with_id)
+        unavailable_with_ordinal = _frame("unavailable")
+        unavailable_with_ordinal["runtime_stats_ordinal"] = 0
+        mutations.append(unavailable_with_ordinal)
+        unavailable_ready = _frame("unavailable")
+        unavailable_ready["readiness"][
+            "event_definition_identity_ready"
+        ] = True
+        mutations.append(unavailable_ready)
+
         for mutation in mutations:
             with self.subTest(mutation=mutation):
                 with self.assertRaises(ValueError):
@@ -224,6 +281,14 @@ class EventWindowContractTests(unittest.TestCase):
         )
         self.assertTrue(result["current_event_window_context_ready"])
         self.assertEqual(result["binding"]["event_instance_id"], EVENT_ID)
+        self.assertEqual(result["event_definition_key"], EVENT_DEFINITION_KEY)
+        self.assertEqual(result["calculated_event_id"], CALCULATED_EVENT_ID)
+        self.assertEqual(
+            result["runtime_stats_ordinal"], RUNTIME_STATS_ORDINAL
+        )
+        self.assertTrue(
+            result["readiness"]["event_definition_identity_ready"]
+        )
         self.assertFalse(result["readiness"]["effect_preview_ready"])
         via_mcp = _ck3_query_current_event_window_context_v1(
             service, EVENT_ID, 9

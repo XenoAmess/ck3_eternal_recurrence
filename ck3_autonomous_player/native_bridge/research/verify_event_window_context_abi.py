@@ -152,6 +152,13 @@ def main() -> int:
             arguments.reader,
             (
                 "bindings.jomini_state_slot",
+                "bindings.game_state_slot",
+                "bindings.event_manager_offset == 0",
+                "bindings.get_current_event",
+                "kActiveEventDataOffset",
+                "kEventDataCalculatedIdOffset",
+                "kEventDataRuntimeStatsOrdinalOffset",
+                "kEventDataDefinitionKeyOffset",
                 "kIdlerFromOwnerOffset",
                 "bindings.ingame_interface_idler_vtable",
                 "kManagerFromIdlerOffset",
@@ -162,6 +169,8 @@ def main() -> int:
                 "kOptionOwnerOffset",
                 "option.native_option_index == cancel_index",
                 "ReadNativeString",
+                "identity_after != identity_before",
+                "candidate.event_definition_identity_ready = true",
             ),
         ),
         "mailbox": (
@@ -172,6 +181,7 @@ def main() -> int:
                 "snapshot != query->expected_snapshot",
                 "snapshot.active_event_instance_id",
                 "ReadEventWindowContextV1(",
+                "event_definition_identity_ready",
             ),
         ),
         "bridge": (
@@ -213,6 +223,21 @@ def main() -> int:
         "game.command.query-current-event-window-context-v1"
     ):
         failures.append("contract: production capability drifted")
+    if not contract["readiness"]["stable_event_definition_key_published"]:
+        failures.append("contract: stable event definition key is not published")
+    if not contract["readiness"]["event_definition_identity_wire_ready"]:
+        failures.append("contract: event definition identity wire is not ready")
+    published_identity = set(
+        query_contract.get("published_event_definition_fields", [])
+    )
+    if published_identity != {
+        "event_definition_key",
+        "calculated_event_id",
+        "runtime_stats_ordinal",
+    }:
+        failures.append("contract: published event definition fields drifted")
+    if published_identity & set(query_contract["explicitly_unavailable"]):
+        failures.append("contract: published event identity remains unavailable")
     if contract["readiness"]["live_validated"]:
         failures.append("contract: offline verifier cannot admit live validation")
 

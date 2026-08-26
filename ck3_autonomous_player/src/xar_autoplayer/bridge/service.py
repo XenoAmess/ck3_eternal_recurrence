@@ -1538,7 +1538,7 @@ class GameplayBridgeService:
         *,
         expected_revision: int,
     ) -> dict[str, object]:
-        """Read the exact materialized option presentation for one active event."""
+        """Read exact definition identity and presentation for one active event."""
         if (
             isinstance(event_instance_id, bool)
             or not isinstance(event_instance_id, int)
@@ -1613,6 +1613,8 @@ class GameplayBridgeService:
             "window_match_count",
             "unavailable_reason",
             "event_definition_key",
+            "calculated_event_id",
+            "runtime_stats_ordinal",
             "root_scope",
             "saved_scopes",
             "options",

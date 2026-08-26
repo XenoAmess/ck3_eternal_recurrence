@@ -3,10 +3,13 @@
 #include <algorithm>
 #include <array>
 #include <charconv>
+#include <cstddef>
 #include <string>
 
 namespace xar::ck3_11906 {
 namespace {
+
+constexpr std::size_t kMaximumEventDefinitionKeyBytes = 16'384;
 
 template <typename T> std::string Number(T value) {
   std::array<char, 32> buffer{};
@@ -46,10 +49,20 @@ std::string SerializeEventWindowContextV1(
       context.status == game::EventWindowContextStatusV1::available;
   if ((available && (!context.unavailable_reason.empty() ||
                      context.window_match_count != 1 ||
+                     !context.event_definition_identity_ready ||
+                     context.event_definition_key.empty() ||
+                     context.event_definition_key.size() >
+                         kMaximumEventDefinitionKeyBytes ||
+                     !context.calculated_event_id.has_value() ||
+                     !context.runtime_stats_ordinal.has_value() ||
                      !context.option_presentation_ready ||
                      context.effect_preview_ready ||
                      context.semantic_decision_ready)) ||
       (!available && (context.unavailable_reason.empty() ||
+                      context.event_definition_identity_ready ||
+                      !context.event_definition_key.empty() ||
+                      context.calculated_event_id.has_value() ||
+                      context.runtime_stats_ordinal.has_value() ||
                       !context.options.empty() ||
                       context.option_presentation_ready ||
                       context.effect_preview_ready ||
@@ -69,8 +82,13 @@ std::string SerializeEventWindowContextV1(
             Number(context.window_match_count);
   output += ",\"unavailable_reason\":";
   if (available) {
-    output += "null,\"event_definition_key\":null,\"root_scope\":null,"
-              "\"saved_scopes\":null,\"options\":[";
+    output += "null,\"event_definition_key\":";
+    AppendString(output, context.event_definition_key);
+    output += ",\"calculated_event_id\":" +
+              Number(*context.calculated_event_id);
+    output += ",\"runtime_stats_ordinal\":" +
+              Number(*context.runtime_stats_ordinal);
+    output += ",\"root_scope\":null,\"saved_scopes\":null,\"options\":[";
     for (std::size_t index = 0; index < context.options.size(); ++index) {
       if (index != 0) {
         output.push_back(',');
@@ -106,10 +124,15 @@ std::string SerializeEventWindowContextV1(
     output.push_back(']');
   } else {
     AppendString(output, context.unavailable_reason);
-    output += ",\"event_definition_key\":null,\"root_scope\":null,"
+    output += ",\"event_definition_key\":null,"
+              "\"calculated_event_id\":null,"
+              "\"runtime_stats_ordinal\":null,\"root_scope\":null,"
               "\"saved_scopes\":null,\"options\":null";
   }
-  output += ",\"readiness\":{\"option_presentation_ready\":";
+  output +=
+      ",\"readiness\":{\"event_definition_identity_ready\":";
+  output += context.event_definition_identity_ready ? "true" : "false";
+  output += ",\"option_presentation_ready\":";
   output += context.option_presentation_ready ? "true" : "false";
   output += ",\"effect_preview_ready\":";
   output += context.effect_preview_ready ? "true" : "false";

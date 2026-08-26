@@ -6613,7 +6613,7 @@ class NativeHeadlessGameplayDriver:
         *,
         expected_revision: int | None,
     ) -> dict[str, object]:
-        """Copy the currently materialized event-window options while paused."""
+        """Copy stable event identity and materialized options while paused."""
         if (
             isinstance(event_instance_id, bool)
             or not isinstance(event_instance_id, int)
@@ -6720,6 +6720,8 @@ class NativeHeadlessGameplayDriver:
             "window_match_count",
             "unavailable_reason",
             "event_definition_key",
+            "calculated_event_id",
+            "runtime_stats_ordinal",
             "root_scope",
             "saved_scopes",
             "options",

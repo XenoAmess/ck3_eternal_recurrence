@@ -3,6 +3,7 @@
 #include "xar_bridge/game_contract.hpp"
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -36,7 +37,11 @@ struct EventWindowContextV1 {
   std::int32_t current_event_instance_id = -1;
   std::int32_t window_match_count = 0;
   std::string unavailable_reason;
+  std::string event_definition_key;
+  std::optional<std::int32_t> calculated_event_id;
+  std::optional<std::int32_t> runtime_stats_ordinal;
   std::vector<EventWindowOptionV1> options;
+  bool event_definition_identity_ready = false;
   bool option_presentation_ready = false;
   bool effect_preview_ready = false;
   bool semantic_decision_ready = false;

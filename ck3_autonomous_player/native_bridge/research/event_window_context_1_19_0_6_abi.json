@@ -125,6 +125,13 @@
         "sha256": "95CCAFC60E3AF959C3EB664890FDB01E6EC6368A20B8CAA34DC04ECA4989CD79"
       },
       {
+        "name": "EventManager_current_local_event_getter",
+        "start_rva": "0x2706AD0",
+        "end_rva": "0x2706C2D",
+        "byte_length": "0x15D",
+        "sha256": "4AAF5D5EE7438AFD1786185DD49F9D669957EB4268607261ECB272CCC3C9D71A"
+      },
+      {
         "name": "EventData_duplicate_calculated_id_validator",
         "start_rva": "0x33D4DA0",
         "end_rva": "0x33D5082",
@@ -338,7 +345,7 @@
     "raw_context_mode_business_semantics": "unknown"
   },
   "typed_context_proposal": {
-    "status": "minimal_read_only_implemented_live_pending",
+    "status": "definition_identity_and_presentation_implemented_live_pending",
     "top_level": [
       "revision",
       "availability",
@@ -366,7 +373,7 @@
       "root_scope",
       "saved_scopes"
     ],
-    "static_closed_not_yet_published_by_v1": [
+    "published_definition_identity": [
       "event_definition_key",
       "calculated_event_id",
       "runtime_stats_ordinal"
@@ -380,7 +387,8 @@
     "native_ai_selector_static_ready": true,
     "stable_root_to_idler_ready": true,
     "stable_event_definition_key_static_ready": true,
-    "stable_event_definition_key_published": false,
+    "stable_event_definition_key_published": true,
+    "event_definition_identity_wire_ready": true,
     "stable_scopes_ready": false,
     "full_effect_preview_ready": false,
     "bridge_query_static_ready": true,
@@ -391,7 +399,7 @@
     "Do not call trigger, name, preview or effect functions from a worker thread.",
     "Do not call loaded-effect executor RVA 0x3380410 for preview.",
     "Do not retain engine-owned pointers after the owning-thread snapshot.",
-    "Do not infer a stable event key from an ActiveEvent pointer: when implemented, copy and validate EventData+0x10 through the exact +0x1B0 definition path. Stable scope IDs remain unknown.",
+    "Do not infer a stable event key from an ActiveEvent pointer: copy and validate EventData+0x10 through the exact +0x1B0 definition path and publish no pointer. Stable scope IDs remain unknown.",
     "Do not call an event option executor from current-event-window-context-v1; it is a read-only application-main copy only."
   ],
   "production_query": {
@@ -402,11 +410,13 @@
       "event_instance_id": "positive complete generation-bearing ActiveEvent instance ID; must equal the same-revision snapshot"
     },
     "thread_boundary": "fixed typed main_thread_query_mailbox_v1 application/UI owner callback while paused",
-    "single_copy": "root, manager, window vector, inline data, option vector and MSVC strings are dereferenced and copied only inside one mailbox callback; no engine pointer crosses back to the worker",
+    "single_copy": "current ActiveEvent/EventData identity, root, manager, window vector, inline data, option vector and MSVC strings are dereferenced and copied only inside one mailbox callback; no engine pointer crosses back to the worker",
     "admission": [
       "exact executable binding",
       "paused map-ready played-character snapshot",
       "before and after Snapshot values identical",
+      "nonzero EventManager offset plus exact current-local-event getter binding",
+      "ActiveEvent pointer, EventData pointer, complete instance ID, calculated int32 ID, runtime int32 ordinal and bounded nonempty canonical key all match across two observations bracketing the window copy",
       "native in-game idler accessor root and exact CIngameInterfaceIdlerGfx vtable",
       "exactly one exact CEventWindow primary-vtable entry with complete event instance ID match",
       "bounded vectors and strings; every option owner backpointer equals the matched inline data"
@@ -421,14 +431,16 @@
       "resolved_name",
       "unavailable_reason"
     ],
-    "explicitly_unavailable": [
+    "published_event_definition_fields": [
       "event_definition_key",
       "calculated_event_id",
-      "runtime_stats_ordinal",
+      "runtime_stats_ordinal"
+    ],
+    "explicitly_unavailable": [
       "root_scope",
       "saved_scopes",
       "full_effect_preview"
     ],
-    "live_acceptance": "pending: two adjacent paused generic nonreligious event-window queries must match the visible UI and closing the window must remove the match without invoking select-event-option"
+    "live_acceptance": "pending: two adjacent paused generic nonreligious event-window queries must match definition key, calculated ID, runtime ordinal and visible UI; closing the window must remove the match without invoking select-event-option"
   }
 }

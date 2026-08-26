@@ -12,16 +12,38 @@
 namespace {
 
 constexpr std::int32_t kEventId = 0x01000029;
+constexpr std::int32_t kCalculatedEventId = 812'449;
+constexpr std::int32_t kRuntimeStatsOrdinal = 37;
 constexpr std::uint64_t kRevision = 17;
 void *g_local_player = nullptr;
 void *g_active_event = nullptr;
+void *g_secondary_active_event = nullptr;
+void *g_secondary_event_definition = nullptr;
 
-void *GetLocalPlayer(void *) { return g_local_player; }
-void *GetCurrentEvent(void *) { return g_active_event; }
+enum class EventIdentityDrift {
+  none,
+  active_event_pointer,
+  event_data_pointer,
+  calculated_id,
+  runtime_stats_ordinal,
+  definition_key,
+  instance_id,
+};
+
+EventIdentityDrift g_event_identity_drift = EventIdentityDrift::none;
+std::uint32_t g_current_event_calls = 0;
 
 template <typename T>
 void Store(void *base, std::size_t offset, T value) {
   std::memcpy(static_cast<std::byte *>(base) + offset, &value, sizeof(value));
+}
+
+template <typename T>
+T Load(const void *base, std::size_t offset) {
+  T value{};
+  std::memcpy(&value, static_cast<const std::byte *>(base) + offset,
+              sizeof(value));
+  return value;
 }
 
 void StoreInlineString(void *object, const char *value) {
@@ -31,6 +53,42 @@ void StoreInlineString(void *object, const char *value) {
   Store<std::uint64_t>(object, 0x18, 15);
 }
 
+void *GetLocalPlayer(void *) { return g_local_player; }
+void *GetCurrentEvent(void *) {
+  ++g_current_event_calls;
+  if (g_current_event_calls >= 3) {
+    switch (g_event_identity_drift) {
+    case EventIdentityDrift::active_event_pointer:
+      return g_secondary_active_event;
+    case EventIdentityDrift::event_data_pointer:
+      Store<void *>(g_active_event, 0x1B0, g_secondary_event_definition);
+      break;
+    case EventIdentityDrift::calculated_id: {
+      void *const definition = Load<void *>(g_active_event, 0x1B0);
+      Store<std::int32_t>(definition, 0x08, kCalculatedEventId + 1);
+      break;
+    }
+    case EventIdentityDrift::runtime_stats_ordinal: {
+      void *const definition = Load<void *>(g_active_event, 0x1B0);
+      Store<std::int32_t>(definition, 0x0C, kRuntimeStatsOrdinal + 1);
+      break;
+    }
+    case EventIdentityDrift::definition_key: {
+      void *const definition = Load<void *>(g_active_event, 0x1B0);
+      StoreInlineString(static_cast<std::byte *>(definition) + 0x10,
+                        "xar_test.0002");
+      break;
+    }
+    case EventIdentityDrift::instance_id:
+      Store<std::int32_t>(g_active_event, 0x1BC, kEventId + 1);
+      break;
+    case EventIdentityDrift::none:
+      break;
+    }
+  }
+  return g_active_event;
+}
+
 struct Fixture {
   std::array<std::byte, 0xB0> game_state{};
   std::array<std::byte, 0x30> jomini{};
@@ -38,7 +96,9 @@ struct Fixture {
   std::array<std::byte, 0x80> local_player{};
   std::array<std::byte, 0x20> game_data{};
   std::array<std::byte, 0x1C0> active_event{};
+  std::array<std::byte, 0x1C0> secondary_active_event{};
   std::array<std::byte, 0x1C0> event_definition{};
+  std::array<std::byte, 0x1C0> secondary_event_definition{};
   std::array<std::byte, 0x98> idler{};
   std::array<std::byte, 0x30> manager{};
   std::array<void *, 2> windows{};
@@ -52,6 +112,10 @@ struct Fixture {
   Fixture() {
     g_local_player = local_player.data();
     g_active_event = active_event.data();
+    g_secondary_active_event = secondary_active_event.data();
+    g_secondary_event_definition = secondary_event_definition.data();
+    g_event_identity_drift = EventIdentityDrift::none;
+    g_current_event_calls = 0;
     Store<std::int32_t>(game_state.data(), 0x08, 741221);
     Store<std::int32_t>(game_state.data(), 0x70, 0);
     Store<void *>(game_state.data(), 0xA0, game_data.data());
@@ -62,14 +126,29 @@ struct Fixture {
     Store<std::int32_t>(local_player.data(), 0x70, 0);
     Store<void *>(active_event.data(), 0x1B0, event_definition.data());
     Store<std::int32_t>(active_event.data(), 0x1BC, kEventId);
+    Store<void *>(secondary_active_event.data(), 0x1B0,
+                  event_definition.data());
+    Store<std::int32_t>(secondary_active_event.data(), 0x1BC, kEventId);
+    Store<std::int32_t>(event_definition.data(), 0x08,
+                        kCalculatedEventId);
+    Store<std::int32_t>(event_definition.data(), 0x0C,
+                        kRuntimeStatsOrdinal);
+    StoreInlineString(event_definition.data() + 0x10, "xar_test.0001");
     Store<std::int32_t>(event_definition.data(), 0x1BC, 4);
+    Store<std::int32_t>(secondary_event_definition.data(), 0x08,
+                        kCalculatedEventId);
+    Store<std::int32_t>(secondary_event_definition.data(), 0x0C,
+                        kRuntimeStatsOrdinal);
+    StoreInlineString(secondary_event_definition.data() + 0x10,
+                      "xar_test.0001");
+    Store<std::int32_t>(secondary_event_definition.data(), 0x1BC, 4);
 
     bindings.enabled = true;
     bindings.game_state_slot = &game_state_pointer;
     bindings.jomini_state_slot = &jomini_pointer;
     bindings.get_local_player = &GetLocalPlayer;
     bindings.get_current_event = &GetCurrentEvent;
-    bindings.event_manager_offset = 0;
+    bindings.event_manager_offset = 0x10;
     bindings.ingame_interface_idler_vtable = 0x140B1D30;
     bindings.event_window_primary_vtable = 0x1417F758;
     Store<std::uintptr_t>(idler.data(), 0,
@@ -117,6 +196,10 @@ bool TestReader() {
           fixture.bindings, kRevision, kEventId, output) !=
           xar::game::ReadEventWindowContextResultV1::available ||
       output.status != xar::game::EventWindowContextStatusV1::available ||
+      !output.event_definition_identity_ready ||
+      output.event_definition_key != "xar_test.0001" ||
+      output.calculated_event_id != kCalculatedEventId ||
+      output.runtime_stats_ordinal != kRuntimeStatsOrdinal ||
       output.options.size() != 1 || output.options[0].rendered_index != 0 ||
       output.options[0].native_option_index != 3 ||
       output.options[0].shown != true || output.options[0].enabled != false ||
@@ -218,6 +301,72 @@ bool TestReaderProductionGates() {
     Store<std::uint64_t>(fixture.option_items.data() + 0x170, 0x10, 10);
     Store<std::uint64_t>(fixture.option_items.data() + 0x170, 0x18, 9);
     if (!ExpectUnavailable(fixture, "event_window_layout_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::uint64_t>(fixture.event_definition.data() + 0x10, 0x10, 0);
+    if (!ExpectUnavailable(fixture,
+                           "event_definition_identity_unavailable")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::uint64_t>(fixture.event_definition.data() + 0x10, 0x10,
+                         16'385);
+    if (!ExpectUnavailable(fixture,
+                           "event_definition_identity_unavailable")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::uint64_t>(fixture.event_definition.data() + 0x10, 0x10, 8);
+    Store<std::uint64_t>(fixture.event_definition.data() + 0x10, 0x18, 7);
+    if (!ExpectUnavailable(fixture,
+                           "event_definition_identity_unavailable")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::uint64_t>(fixture.event_definition.data() + 0x10, 0x18,
+                         16'385);
+    if (!ExpectUnavailable(fixture,
+                           "event_definition_identity_unavailable")) {
+      return false;
+    }
+  }
+  for (const auto drift :
+       std::array<EventIdentityDrift, 6>{
+           EventIdentityDrift::active_event_pointer,
+           EventIdentityDrift::event_data_pointer,
+           EventIdentityDrift::calculated_id,
+           EventIdentityDrift::runtime_stats_ordinal,
+           EventIdentityDrift::definition_key,
+           EventIdentityDrift::instance_id}) {
+    Fixture fixture;
+    g_event_identity_drift = drift;
+    if (!ExpectUnavailable(fixture, "event_definition_identity_changed")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    xar::game::EventWindowContextV1 output{};
+    if (xar::ck3_11906::ReadEventWindowContextV1(
+            fixture.bindings, kRevision, kEventId + 1, output) !=
+            xar::game::ReadEventWindowContextResultV1::unavailable ||
+        output.unavailable_reason != "state_changed") {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    fixture.bindings.event_manager_offset = 0;
+    if (!ExpectUnavailable(fixture, "unsupported_build")) {
       return false;
     }
   }

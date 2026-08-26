@@ -10,7 +10,7 @@
 | `game/gui/shared/event_windows.gui` | `8668174191A58AECE3FBA57A0E65C7E7DC1384F1B3A7BA281EA6E801D76811F4` |
 | `game/gui/event_windows/letter_event.gui` | `D93677E603C04827AE23DFFA6566E47984A8923FE77E89F02AC9291082A9CA88` |
 | `game/gui/event_windows/scheme_preparations_event.gui` | `6B14FDAEC5FDEDB50442B4D141F7F2CC3E5EC724453E45C1960653163EC3E691` |
-| 本文配套 `event_option_1_19_0_6_abi.json` | `7D2688FEBBA8959290571D2D3D1F438C7DE6AF0337EE01286EC591A2C90273D7` |
+| 本文配套 `event_option_1_19_0_6_abi.json` | `2087F06AF1CF29E2CB6AAAE8870D31B79A538D637774E2FF44FD4ABFFD97AC75` |
 
 [static-confirmed] `CEventOptionItem+0x88` 的 `OptionEffectItem` vector 不是完整 effect preview。它是引擎专门为事件按钮绘制少量图标而生成的、面向当前玩家角色的有损 **effect indicator**：
 
@@ -37,9 +37,11 @@ error 的第一个 formatter 参数，并从新旧两项 `+0x240` 解析 source-
 literal 为 `Duplicated event ID '%s' found. New Location: '%s', Previous Location: '%s'`，SHA-256
 `85135404DB9CD9414603326956E1E12A82453B31676C95DB5ECCC87F96E93A42`。
 
-这闭合了 event definition identity 的静态 ABI，不表示当前 v1 wire 已经发布它。接入时必须先匹配完整 event instance
-ID，再校验 `+0x10` MSVC bounds，并在同一 owning-thread query 内双重观察 EventData pointer、`+0x08/+0x0C/+0x10`；
-任何 pointer 都不得出进程。完整函数、语义 body 与 literal 已分别加入两个 event ABI 的 machine verifier。
+这套 event definition identity 现已由 `current-event-window-context-v1` 发布。接入先匹配完整 event instance ID，再校验
+`+0x10` MSVC bounds，并在同一 owning-thread query 内双重观察 ActiveEvent/EventData pointer、`+0x08/+0x0C/+0x10`；
+任何 pointer 都不得出进程。available 帧要求 bounded nonempty key、两个 signed int32 与独立 identity readiness 同时存在；
+unavailable 帧三者全部为 null。完整 getter、validator、语义 body 与 literal 已加入两个 event ABI 的 machine verifier；
+production paused live 仍待执行。
 
 ## 原生物化链
 

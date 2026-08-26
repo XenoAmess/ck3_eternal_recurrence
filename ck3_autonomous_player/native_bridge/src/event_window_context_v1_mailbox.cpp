@@ -88,6 +88,10 @@ bool ExecuteEventWindowContextMailboxQueryV1(
         query->read_result == game::ReadEventWindowContextResultV1::available &&
         query->result.status == game::EventWindowContextStatusV1::available &&
         query->result.window_match_count == 1 &&
+        query->result.event_definition_identity_ready &&
+        !query->result.event_definition_key.empty() &&
+        query->result.calculated_event_id.has_value() &&
+        query->result.runtime_stats_ordinal.has_value() &&
         query->result.option_presentation_ready &&
         !query->result.effect_preview_ready &&
         !query->result.semantic_decision_ready;
@@ -97,6 +101,10 @@ bool ExecuteEventWindowContextMailboxQueryV1(
         query->result.status ==
             game::EventWindowContextStatusV1::unavailable &&
         !query->result.unavailable_reason.empty() &&
+        !query->result.event_definition_identity_ready &&
+        query->result.event_definition_key.empty() &&
+        !query->result.calculated_event_id.has_value() &&
+        !query->result.runtime_stats_ordinal.has_value() &&
         !query->result.option_presentation_ready &&
         !query->result.effect_preview_ready &&
         !query->result.semantic_decision_ready;

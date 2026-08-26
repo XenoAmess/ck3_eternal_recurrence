@@ -134,6 +134,13 @@
         "sha256": "E5B2460607EA8233198327B644FE590977C69EB02DE25EC50E4BEC9275005C02"
       },
       {
+        "name": "EventManager_current_local_event_getter",
+        "start_rva": "0x2706AD0",
+        "end_rva": "0x2706C2D",
+        "byte_length": "0x15D",
+        "sha256": "4AAF5D5EE7438AFD1786185DD49F9D669957EB4268607261ECB272CCC3C9D71A"
+      },
+      {
         "name": "EventData_duplicate_calculated_id_validator",
         "start_rva": "0x33D4DA0",
         "end_rva": "0x33D5082",
@@ -527,7 +534,8 @@
     "static_ai_selector_ready": true,
     "static_name_resolver_ready": true,
     "stable_event_definition_key_static_ready": true,
-    "stable_event_definition_key_published": false,
+    "stable_event_definition_key_published": true,
+    "event_definition_identity_wire_ready": true,
     "preview_entry_static_ready": true,
     "effect_indicator_output_abi_ready": true,
     "full_structured_effect_preview_ready": false,

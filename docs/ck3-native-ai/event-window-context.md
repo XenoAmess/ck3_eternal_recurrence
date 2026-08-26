@@ -190,6 +190,13 @@ DB `+0x40/+0x4C` 的 `EventData*`，比较每项 `+0x08`；重复时把 `+0x10` 
 `85135404DB9CD9414603326956E1E12A82453B31676C95DB5ECCC87F96E93A42`）。production 扩展只能在完整 instance ID
 匹配后校验 `+0x10` string bounds，并双重观察 EventData pointer、`+0x08/+0x0C/+0x10`；不得发布 pointer。
 
+该扩展现已接入 production read-only query。current-local-event getter 的完整 `.pdata` 为
+`0x2706AD0..0x2706C2D`（SHA-256
+`4AAF5D5EE7438AFD1786185DD49F9D669957EB4268607261ECB272CCC3C9D71A`）。application-main callback 在复制窗口前后
+各读取一次完整 `ActiveEvent*`、`EventData*`、instance ID、两个原生 `int32` 与 bounded nonempty key；任一 pointer、值或
+字符串漂移都让整帧 unavailable，pointer 不进入 DTO、JSON 或 worker。两个数值字段只按完整 signed `int32` 发布，不推断
+正负数的额外业务语义。
+
 root/saved scopes 与 deadline 仍可在 schema 中显式 `null/unavailable`，但不能以长期 `null` 宣称完成依赖它们的策略。
 
 ## 原生 AI selector 冻结
@@ -230,9 +237,9 @@ flowchart TD
 status / revision / availability
 current_event_instance_id
 window_match_count
-event_definition_key          # static ABI 已闭合；当前 v1 尚未发布时仍为 unavailable
-calculated_event_id            # static ABI 已闭合；当前 v1 尚未发布
-runtime_stats_ordinal          # 运行时统计序号，不是稳定定义 identity；当前 v1 尚未发布
+event_definition_key          # available 帧必为 bounded nonempty canonical namespaced key
+calculated_event_id            # signed int32；定义计算 ID，不推断符号语义
+runtime_stats_ordinal          # signed int32；运行时统计序号，不是稳定定义 identity
 root_scope                    # null/unavailable until reverse-closed
 saved_scopes                  # null/unavailable until reverse-closed
 options[]:
@@ -248,6 +255,10 @@ options[]:
     status: unavailable       # full effect preview 尚未闭合
 ```
 
+`readiness.event_definition_identity_ready` 与 `option_presentation_ready` 在 available 帧必须同时为 `true`；unavailable 帧中
+key、两个数值字段必须全部为 `null`，两项 readiness 也必须为 `false`。root/saved scopes 与完整 effect preview 继续保持
+各自的 null/unavailable 边界，不能因 definition identity 已就绪而扩义。
+
 读取必须满足：完整 instance ID 相等、恰好一个匹配窗口、vector/string bounds 合法、所有值在同一 owning-thread revision 内复制完成。零匹配、多匹配、销毁中或布局不合法均返回 unavailable；不得退回 authored options 假装展示状态。
 
 ## 最小 production read-only slice
@@ -255,9 +266,9 @@ options[]:
 1. bridge 只在客户端提交的 `expected_revision` 等于当前发布 revision，且该 revision 的 snapshot 为 paused、map-ready、有存活 played character 与相同完整 `event_instance_id` 时接受查询。
 2. 查询经 fixed typed main-thread mailbox 投递到 application/UI owning thread；callback 内再次读取 snapshot，沿上述 stable root 定位 manager，并一次性复制 option vector 与 MSVC strings。
 3. 每个窗口要求 exact `CEventWindow` primary vtable，每个 option 要求 owner backpointer 等于匹配的 inline data；vector/count/string 均有硬上限。零匹配、多匹配、布局漂移或前后 snapshot 不同都返回 typed unavailable。
-4. 当前 v1 只发布 rendered/native index、shown、enabled、fallback、cancel、resolved name 与 unavailable reason。event
-   definition key、calculated ID 与 runtime stats ordinal 的静态 ABI 已闭合但尚未接入当前 wire；root/saved scopes 与完整
-   effect preview 仍显式 unavailable。不得用 GUI
+4. 当前 v1 同时发布 stable event definition key、calculated ID、runtime stats ordinal，以及 rendered/native index、shown、
+   enabled、fallback、cancel、resolved name 与 unavailable reason。root/saved scopes 与完整 effect preview 仍显式
+   unavailable。不得用 GUI
    indicator 冒充完整 effect preview。
 5. reader 不调用 trigger、name resolver、preview collector、loaded-effect executor 或事件选项 executor；它只复制已经物化的 UI 数据。
 
@@ -279,10 +290,10 @@ available context 只把实际物化且 `shown=true && enabled=true` 的 rows �
   & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\native_bridge\research\verify_event_window_context_abi.py"
   ```
 
-- C++ fixture / source contract 必须覆盖 stable accessor root、idler/window vtable、完整 event ID、零/一/多匹配、manager 与 option vector 的非法 count/capacity、owner backpointer、MSVC string size/capacity、非法 bool byte、rendered/native index 不同、cancel/non-cancel 派生、disabled reason 与 fallback；并断言 owning-thread fixed mailbox 之外不解引用 engine pointer。
+- C++ fixture / source contract 必须覆盖 stable accessor root、非零 EventManager offset、idler/window vtable、完整 event ID、零/一/多匹配、manager 与 option vector 的非法 count/capacity、owner backpointer、MSVC string size/capacity、非法 bool byte、rendered/native index 不同、cancel/non-cancel 派生、disabled reason 与 fallback；definition identity 还须覆盖空/越界/畸形 key、ActiveEvent/EventData pointer 漂移、calculated ID/runtime ordinal/key 漂移与 stale instance，并断言 owning-thread fixed mailbox 之外不解引用 engine pointer。
 - 获准启动 CK3 后，paused generic nonreligious event 做两次相邻 same-revision typed query：完整 instance ID、option 顺序、enabled/name/reason 一致；关闭窗口后同一 ID 必须变为 unavailable。报告固定 EXE/DLL hash，且不执行默认 accept/reject/action。
 
-本轮闭合并实现了最小只读 production query，但尚未启动 CK3 做 live acceptance，也没有进行宗教专用事件探索。因此 `bridge_query_static_ready=true`，`bridge_query_ready/live_validated=false`；实机门槛不得被静态构建冒充。
+本轮闭合并实现了含 stable definition identity 的最小只读 production query，但尚未启动 CK3 做 live acceptance，也没有进行宗教专用事件探索。因此 `event_definition_identity_wire_ready=true`、`bridge_query_static_ready=true`，而 `bridge_query_ready/live_validated=false`；实机门槛不得被静态构建冒充。
 
 ## Evidence / unknown 账本
 
@@ -299,7 +310,7 @@ available context 只把实际物化且 `shown=true && enabled=true` 的 rows �
 | stable global root → idler | 静态确认 | native accessor `0xAA43C0..0xAA440A`；`module+0x570F7B8 → owner+0x10` dynamic-cast；ctor vtable write |
 | frontend collision exclusion | 静态确认、实机待验 | in-game accessor + exact idler/window vtable + complete current event ID；不读取 `0xE30E78` root |
 | per-frame/callsite capture | 非 production 依赖 | `0xAA72B0` / `0xAA8233` / `0xAA4070` 只保留诊断用途 |
-| stable event definition key | 静态确认、wire 待接入 | duplicate validator `0x33D4DA0..0x33D5082`：`EventData+0x08/+0x10/+0x240` |
+| stable event definition identity | 静态确认、wire 已接入、实机待验 | getter `0x2706AD0..0x2706C2D` + duplicate validator `0x33D4DA0..0x33D5082`；同 callback 双观察 pointer/key/两个 int32 |
 | stable root/saved scopes | unknown | 从 ActiveEvent scope serialization/GUI binding 继续追，而非暴露指针 |
 | full structured effect preview | unknown | indicator payload 已闭合，但 resource/relation 与 completeness output 未闭合 |
 | production bridge query | 静态实现、实机待验 | `current-event-window-context-v1` fixed mailbox；完整 effect preview 仍 unavailable |
