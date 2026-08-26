@@ -115,7 +115,7 @@ flowchart LR
 | 会话与时间 | `date_raw`、速度、暂停、local player、`map_ready` | exact-build live-confirmed；可在最小化窗口推进和重新暂停。 |
 | 玩家角色 | CharacterID、存活、配偶/婚约 CharacterID 列表 | native 实现；只覆盖身份与关系结果，不含属性、资源、头衔、继承、健康、压力、教育、生活方式或意见。 |
 | 事件 | 当前 instance/ authored 数量；exact current-window query 发布 materialized shown/enabled、rendered/native index、name/reason、fallback/cancel | instance/数量/提交 live-confirmed；window query 与 typed-first planner 已静态实现、实机待验。planner 有 query 时不再由 authored 数量合成 enabled 选项；effect preview/key/scopes 未闭合，多个合法选项时明确停住而非默认第一项。 |
-| 角色互动 | instance、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality | 普通 white-peace recipient pending 已跨 checkpoint production live 双查询；planner 已先查同帧 typed context 并停止默认接受。notification discovery/固定 ACK 已接线但未 live；structured terms/effect、typed target payload 与 intermediary live 仍缺，故 semantic decision 仍为 false。 |
+| 角色互动 | instance、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality | 普通 white-peace recipient pending 已跨 checkpoint production live 双查询；planner 已先查同帧 typed context 并停止默认接受。generic recipient notification 的 discovery/双 typed query/固定 ACK/旧 full ID 消失已用非宗教 definition-only fixture 完成 fresh-cold live，`notification_ack_fixture_live_ready=true`；该 playset 不是 stock/production-only。structured terms/effect、typed target payload、自然 stock 与 intermediary live 仍缺，故 semantic decision 仍为 false。 |
 | 婚姻 | 当前配偶/婚约；合法 arrange-marriage CharacterID 候选 | 只知道“可提交”，不知道年龄、属性、继承、联盟、声望、遗传、接受度或近亲风险；策略选择最小/首个候选。 |
 | 宣战候选 | target、CB key/index、configuration、claimant、target titles | C++ core 与 typed contract 已有；完整 bridge/live 宣战闭环仍未收口。 |
 | 战争入口评估 | actor/target 原生 strategic power、network contribution、ratio、distance | exact native reader/策略接线已有；application-main typed result 仍需实机闭合，且它不是战斗胜率或战争效用。 |
@@ -142,7 +142,7 @@ DLL template 本身当成随时可执行动作。
 已存在的动作族：
 
 - 暂停、恢复、速度 1–5、有限时间 `life-advance`；
-- 选择事件选项、接受/拒绝当前角色互动；
+- 选择事件选项、接受/拒绝当前角色互动；对 `auto_accept_notification` 仅允许 generation-bound fixed ACK；
 - 保存 checkpoint、冷恢复 checkpoint、结束一代、从 immutable seed 开下一代 episode；
 - 查询/提交婚姻；
 - 查询宣战候选与战力，提交宣战；
@@ -187,6 +187,13 @@ DLL template 本身当成随时可执行动作。
 
 - production/non-debug/single-mod 的启动、最小化 native 会话、暂停/时间推进、numeric event、选项提交、存档物化；
 - checkpoint 冷恢复的日期、角色与 history anchor；
+- [fixture-scoped] 非宗教 notification ACK：seed/cold PID `85336/30592`，full ID `738197506`（slot `2`、generation
+  `44`）在 date `53175816` 跨 checkpoint；cold public/native revision `4/3` 的 query sequence `1/2` 共享 context
+  SHA `951C01496BF832CFDDC620A44AC7BCB81C550FFD7E3352DDD77292D9C1154175`，严格
+  query/query/ack 后 revision `5`/native `4` 的 pending 为 null。source unchanged、managed/nonce cleanup 全绿；artifact
+  SHA `E696C54F4A761C5BE29D00E7AA62C5529185F7D35F8F2D790BB2830CDBCB1308`。这是 fixture-definition playset +
+  production native bridge，不是 stock/production-only；consumer/DLL 冻结在 `70bf8e6`，不证明 current HEAD 的
+  structured costs 或 special-war query 已 live。
 - 已有战争中的军队位置/路线、route preview、move、split/merge、围城进度与部分 termination query；
 - route-contact 修复后累计 `210/210` 成功回合、75 游戏日、无 recovery，定期与最终 checkpoint 均物化且每轮 cleanup proven。
 - ongoing battle-control 从 cold checkpoint `9104CCB8...CC63` 复现初始 maneuver 1，并经 bounded advance 观测

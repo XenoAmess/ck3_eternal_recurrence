@@ -14,6 +14,9 @@
   阶段。seed 另加载 disposable `mod_bridge` 发出互动；cold 阶段没有 `mod_bridge`/inbox，只由 production native bridge
   执行 typed query 与 fixed ACK。因此准确口径是 **fixture-definition playset + production native bridge**，不是 stock，
   也不是 production-only playset。
+- [live-confirmed fixture-scoped] Attempt 8 已完成 paused seed → checkpoint → distinct cold process → adjacent typed
+  query/query → fixed ACK → old full ID 消失的完整闭环；artifact SHA-256
+  `E696C54F4A761C5BE29D00E7AA62C5529185F7D35F8F2D790BB2830CDBCB1308`。
 - [owner-deferred] 不读取或实现 faith、doctrine、tenet、fervor、conversion、reformation、holy-war 等宗教专用语义。
 
 ## 原生生成、持久化与清理树
@@ -83,9 +86,7 @@ flowchart TD
     S --> L["fresh process load 恢复 +0x5C6"]
     L --> Q["两次 adjacent same-revision typed query"]
     Q --> K["fixed enum-4 ACK"]
-    K -. "[live-pending] reviewed retry" .-> D["旧 full ID 消失/推进"]
-    classDef pending stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
-    class D pending;
+    K --> D["[live-confirmed fixture-scoped] 旧 full ID 消失"]
 ```
 
 ## exact-build 证据
@@ -124,9 +125,10 @@ subtype 或 contract payload，不能用当前无 options/target 的最小 dispo
 | 5 | `C8EE5E2C1F354DA38D137260FB28DF2C895D3A872E0F8ADDDF3EEBA46FA39E74` | validity 全 true、actor-scope send 仍被 stock `ai_will_do base=0` 阻断。 | managed GREEN |
 | 6 | `726F468A46C39462370A8422B7CBC15093310A7F34E769AE7D78C01E1E9DC607` | stock `remove_guardian_interaction` gates 全 true 且 `on_accept` 移除关系；发送时玩家是 actor、ward 是 NPC recipient，因此命中 native non-human-recipient immediate settlement，正确地没有 `+0x5C6`。 | managed GREEN |
 | 7 | `F2B93511495648FA43AACD04EE6C25A77329C8B00C647B93ED7897B8EA98EC72` | definition-only fixture 的 seed GREEN：full ID `738197506`、sender `29829`、`+0x5C6=true`、date `53175816`、public/native revision `6/5`；cold CK3 启动前被通用 singleton profile verifier 拒绝双 mod playset，未执行 query/ACK。 | seed managed GREEN；cold 未拉起；见下方外部精确 cleanup |
+| 8 | `E696C54F4A761C5BE29D00E7AA62C5529185F7D35F8F2D790BB2830CDBCB1308` | 同一 fixture definition 跨 distinct cold process 保留 full ID；相邻双 query 后 fixed ACK 返回 acknowledged，下一 native snapshot 删除旧 ID。 | seed/cold/nonce cleanup 全 GREEN |
 
-结论：不再逐个盲跑 stock candidate。Attempt 7 使用 truthfully labeled definition-only fixture，NPC actor `29829` 发给已切为
-local human 的 recipient `36108`；同一定义跨 seed/cold，直接覆盖 native audit 证明的缺口。
+结论：不再逐个盲跑 stock candidate。Attempt 7/8 共用 truthfully labeled definition-only fixture，NPC actor `29829`
+发给已切为 local human 的 recipient `36108`；同一定义跨 seed/cold，直接覆盖 native audit 证明的缺口。
 
 ### Attempt 7 RED 的冻结证据与 cleanup
 
@@ -148,7 +150,29 @@ local human 的 recipient `36108`；同一定义跨 seed/cold，直接覆盖 nat
   `_fixture_projection_proof`，仅在 exact production+fixture playset、byte-identical definition、cold 无 mod_bridge/inbox
   时，才委托现有 fixture-aware supervised launch seam。通用 production singleton verifier 未修改、未放宽。
 
-## 确定性两阶段 fixture（Attempt 7 seed 已证，cold 待 reviewed retry）
+### Attempt 8 GREEN 的精确证据
+
+- artifact：`artifacts/pending-notification-ack-70bf8e6-live-attempt8-fixture-definition.json`，93767 bytes，
+  SHA-256 `E696C54F4A761C5BE29D00E7AA62C5529185F7D35F8F2D790BB2830CDBCB1308`。
+- seed PID `85336`，cold PID `30592`；二者不同且均由 managed shutdown 回收。
+- notification full ID `738197506`，low-24-bit slot `2`、generation `44`；sender `29829`、recipient/local player
+  `36108`、date `53175816`，跨 checkpoint/cold load 不变。
+- cold query binding 为 public revision `4`、native revision `3`、同一 full ID/date；两次 query sequence 为 `1/2`，
+  去除 sequence 后 frame 严格相等，canonical context SHA-256
+  `951C01496BF832CFDDC620A44AC7BCB81C550FFD7E3352DDD77292D9C1154175`。
+- mutation boundary 恰为
+  `query-pending-character-interaction-context-v1` →
+  `query-pending-character-interaction-context-v1` →
+  `acknowledge-pending-character-interaction`；没有 accept/reject/block/auto-turn。
+- ACK 返回 `interaction_result.status=acknowledged`、instance `738197506`、sender `29829`；随后 snapshot 为 public
+  revision `5`、native revision `4`、同日 paused、player `36108`，`pending_character_interaction=null`。
+- immutable source 的 SHA/size/mtime 前后完全相同；seed cleanup、cold cleanup 与 nonce root removal 均为 true，终态
+  CK3 count `0`、disposable root 不存在。
+- 本次 live 的 consumer 与 DLL 冻结在 commit `70bf8e6b689780b459b361af5edf57c0f7521fca`。它只把 generic
+  notification discovery/query/fixed ACK 标为 fixture-scoped live-ready；不验证 current HEAD 后续扩展的 structured costs、
+  special-war binding/query，也不把 fixture authored definition/terms 冒充 stock 语义。
+
+## 确定性两阶段 fixture（Attempt 8 已闭合）
 
 冻结输入：
 
@@ -237,8 +261,9 @@ source commit、fixture key/角色/definition hash、日志摘录及 cleanup inv
 
 ## 尚待闭合
 
-- [live-confirmed] Attempt 7 seed 已真实生成 `+0x5C6=true` 与 full ID `738197506`。
-- [live-pending] reviewed retry 是否以相同 full ID 跨 byte-identical fixture cold reload，并在两次 adjacent
-  same-revision typed query 后用 fixed ACK 让旧 ID 消失/推进，同时保持 date/pause/player。
+- [live-confirmed fixture-scoped] Attempt 8 已以相同 full ID 跨 byte-identical fixture cold reload，并在两次 adjacent
+  same-revision typed query 后用 fixed ACK 让旧 ID 消失，同时保持 date/pause/player。
+- [live-pending] 自然 stock 非宗教 notification 的 campaign 出现矩阵仍缺；fixture 证明 generic native channel，不能冒充
+  某个 stock interaction 的玩法条款或原生 AI 选择。
 - [unknown] route kind `1` intermediary notification 不由本 fixture 代替，需独立 fixture。
 - [owner-deferred] 宗教专用 interaction 不进入本矩阵。

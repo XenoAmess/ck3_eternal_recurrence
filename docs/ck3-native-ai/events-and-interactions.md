@@ -413,14 +413,15 @@ flowchart TD
 | active event identity/action | instance ID、raw option count、`1..N` numeric indexes；select command + instance-change postcondition；static ABI 已闭合 GUI item 的 shown/enabled/native-index/name/reason/cancel/fallback、下半 window/data locator/lifetime 与原生 AI selector | stable global root/capture seam、stable event key、scope identity、完整 effect-preview output ABI、正式 typed query | `event_action_primitive_ready=true`，`event_static_observation_seam_ready=true`，`event_semantic_decision_ready=false` |
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
 | pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；普通 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `interaction_typed_query_wired=true`，`ordinary_interaction_live_ready=true`，`interaction_semantic_decision_ready=false` |
-| auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进 | 非宗教 production live fixture 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_live_ready=false` |
-| current planner | 对普通 pending 先查同 snapshot/revision/full ID 的 typed context；active war 中仍先执行 100% enforce-demands 优先级，再查询互动；auto-accept notification 只走固定 ACK | v1 structured terms 与 semantic policy 未 ready 时不再默认 accept/reject；stale query 不复用；ACK 仍待 live | observation/机械通知清理已接入，但语义回复策略仍未完成，不得称为高智商闭环 |
+| auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进；非宗教 definition-only fixture 已跨 fresh cold process 完成 query/query/ACK/旧 ID 消失 | 自然 stock notification 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality；fixture authored definition/terms 不是 stock 语义 | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_fixture_live_ready=true` |
+| current planner | 对普通 pending 先查同 snapshot/revision/full ID 的 typed context；active war 中仍先执行 100% enforce-demands 优先级，再查询互动；auto-accept notification 只走固定 ACK，generic recipient notification channel 已 fixture-scoped live | v1 structured terms 与 semantic policy 未 ready 时不再默认 accept/reject；stale query 不复用；自然 stock/intermediary notification 仍待 live | 机械 notification 清理已有 production native bridge 实机闭环，但语义回复策略仍未完成，不得称为高智商闭环 |
 
 这里的缺口已经直接阻断通用 OODA：事件一弹出，agent 虽能提交某个 numeric option，却不知道该项是否可点、会做什么；
 互动 typed query 现已能识别请求类型、角色、routing、options 与合法回复，但 target payload 和结构化条款仍不足以做高质量取舍。
 普通 recipient pending 的 paused live 双查询已经闭合，planner 也已改为先查询同帧 typed context，并在
-`interaction_semantic_decision_ready=false` 时停在明确的 observation dependency；下一步补
-intermediary live、notification query→ACK live fixture 与结构化条款观测，再实现真实效用选择。不得退回默认第一项或默认接受。
+`interaction_semantic_decision_ready=false` 时停在明确的 observation dependency。generic recipient notification 的
+fixture-scoped query→ACK 已闭合；下一步补 intermediary/自然 stock notification live 与结构化条款观测，再实现真实效用选择。
+不得退回默认第一项或默认接受。
 
 [live-confirmed] 2026-08-26 的非宗教 `claim_cb` white-peace fixture 在 seed PID `93972` 中生成普通 pending，
 保存 66,579,686-byte checkpoint（SHA
@@ -432,6 +433,20 @@ intermediary live、notification query→ACK live fixture 与结构化条款观�
 accept/reject/block 均 true、acknowledge false。结构化 costs/exchanges/effect preview 仍明确 unavailable，
 `interaction_semantic_decision_ready=false`，且 runner 没有提交任何 reply。artifact SHA 为
 `D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89`；源存档 SHA 前后不变，两个进程树和 disposable root 均清理。
+
+[live-confirmed fixture-scoped] 2026-08-26 的非宗教
+`xar_notification_ack_fixture_interaction` 使用 fixture-definition playset + production native bridge：seed PID `85336`
+从 NPC `29829` 向已是 local human 的 `36108` 生成 notification，fresh cold PID `30592` 以相同 date `53175816`
+恢复 full ID `738197506`（slot `2`、generation `44`）。cold binding 为 public/native revision `4/3`；两次相邻 typed
+query sequence 为 `1/2`，context SHA-256
+`951C01496BF832CFDDC620A44AC7BCB81C550FFD7E3352DDD77292D9C1154175`。命令边界严格为两次
+`query-pending-character-interaction-context-v1` 后一次 `acknowledge-pending-character-interaction`，没有
+accept/reject/block；ACK 返回 acknowledged，后置 snapshot 为 public/native revision `5/4`、同日 paused、旧 full ID
+消失。immutable source SHA/size/mtime 不变，seed/cold managed cleanup 与 nonce root removal 全部成立。artifact SHA-256
+`E696C54F4A761C5BE29D00E7AA62C5529185F7D35F8F2D790BB2830CDBCB1308`，详见
+[interaction-notification-ack-live-fixture.md](interaction-notification-ack-live-fixture.md)。这不是 stock 或
+production-only playset；live consumer/DLL 冻结在 commit `70bf8e6b689780b459b361af5edf57c0f7521fca`，所以该 artifact
+不验证 current HEAD 后加的 structured costs 或 special-war query，也不赋予 fixture definition/terms 任何 stock 语义。
 
 [static-confirmed fixture入口] exact-build stock `00_culture_effects.txt`（SHA
 `B70E2DD0711D479619F1B856A690346E5B78D75445E071393830014C5D79BF0C`）在 `run_interaction` 中显式传
@@ -513,9 +528,12 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   reply legality 已冻结在 `pending_character_interaction_context_v1_abi.json`，并通过 application-main paused read-only
   query 接入 native driver/service/MCP；普通 recipient fixture 已完成跨 checkpoint 冷恢复的非宗教 live 双查询，
   下一步补 intermediary fixture。
-- [implementation-confirmed] auto-accept notification discovery 已移除旧 `+0x5C6 != 0` 过滤，typed query 与固定 enum-4
-  ACK action 已可达；action 自行重验 full ID/paused/local route/flag，且必须等旧 ID 推进才报告成功。下一步是非宗教
-  notification 的 production paused query→ACK→后置状态 live fixture，不能把 unit/queue submission 当作 live。
+- [live-confirmed fixture-scoped] auto-accept notification discovery 已移除旧 `+0x5C6 != 0` 过滤，typed query 与固定
+  enum-4 ACK action 已在 definition-only 非宗教 fixture 中跨 fresh cold process 完成双 query→ACK→旧 full ID 消失；
+  action 重验 full ID/paused/local route/flag。artifact SHA-256
+  `E696C54F4A761C5BE29D00E7AA62C5529185F7D35F8F2D790BB2830CDBCB1308`。下一步只补自然 stock 与 intermediary
+  notification live；不得把 fixture 称为 stock/production-only，也不得用冻结 `70bf8e6` artifact 宣称 current HEAD
+  structured costs/special-war query 已 live。
 - [static-confirmed] generic target scope 的 registry type key 已由 `0x33C52B0` registry 与 `0x3B58970` resolver
   闭合；[unknown] 仍是各 type-key payload decoder，以及 `special_data`/materialized description bundle 的
   engine-generic structured terms/effect ABI。后两者是 `interaction_semantic_decision_ready` 的最高优先级观测依赖；
