@@ -31,6 +31,10 @@ jobs:
         run: python tools/test_build_release.py
       - name: Test Vivhite release tooling
         run: python tools/test_build_vivhite_release.py
+      - name: Test Ox Here release tooling
+        run: python tools/test_build_ox_here_release.py
+      - name: Test MiniMax localization caller
+        run: python tools/test_translate_localization_minimax.py
       - name: Validate generated and static content
         run: python tools/validate_static.py
       - name: Validate Vivhite standalone content
@@ -41,20 +45,28 @@ jobs:
         run: python tools/build_release.py --check
       - name: Verify reproducible Vivhite release
         run: python tools/build_vivhite_release.py --check
+      - name: Verify reproducible Ox Here release
+        run: python tools/build_ox_here_release.py --check
       - name: Build manual release candidate
         if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
         run: python tools/build_release.py
       - name: Build manual Vivhite release candidate
         if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
         run: python tools/build_vivhite_release.py
+      - name: Build manual Ox Here release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_ox_here_release.py
       - name: Build tagged release candidate
         if: startsWith(github.ref, 'refs/tags/v') && !startsWith(github.ref, 'refs/tags/vivhite-v')
         run: python tools/build_release.py --release
       - name: Build tagged Vivhite release candidate
         if: startsWith(github.ref, 'refs/tags/vivhite-v')
         run: python tools/build_vivhite_release.py --release
+      - name: Build tagged Ox Here release candidate
+        if: startsWith(github.ref, 'refs/tags/ox-here-v')
+        run: python tools/build_ox_here_release.py --release
       - name: Upload release candidate
-        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/ox-here-v')
         uses: actions/upload-artifact@v4
         with:
           name: release-candidate-${{ github.ref_name }}-${{ github.run_id }}

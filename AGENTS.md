@@ -100,7 +100,8 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 `-userdir`，不得读写真实工坊缓存。正式矩阵不加 `--keep-userdirs`。
 
 **CI 边界**：`.github/workflows/static-ci.yml` 使用 GitHub 官方 `windows-latest`，在 push/PR
-执行 L0，手动触发或 `v*` tag 时额外生成 ZIP/manifest。官方 runner 没有 CK3、Steam 授权和
+执行三套产品 L0，并离线测试 MiniMax 候选调用器；手动触发时生成三套 ZIP/manifest，`v*`、
+`vivhite-v*`、`ox-here-v*` 分别生成对应正式产物。官方 runner 没有 CK3、Steam 授权和
 可靠交互桌面，禁止调用 `run_acceptance.py` / `run_vivhite_acceptance.py` 或声称完成 L1-L3；真实游戏验收必须在本机运行并保存报告。
 
 **⚠️ 改完代码游戏里看不到，先怀疑这个**：启动器把 dev .mod（带 remote_file_id）和工坊订阅合并，
