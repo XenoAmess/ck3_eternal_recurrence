@@ -11,6 +11,7 @@
 - [2026-08-27 日报](daily/2026-08-27.md)
 - [2026-W35 周报](weekly/2026-W35.md)
 - [2026-08-27 阶段成果演示手册](demos/2026-08-27-event-window.md)
+- [Show-off 视频规范与索引](demos/README.md)
 - [日报模板](daily/TEMPLATE.md)
 - [周报模板](weekly/TEMPLATE.md)
 
@@ -44,6 +45,8 @@
 
 - 每个工作日更新 `daily/YYYY-MM-DD.md`；同日有多个里程碑时持续更新同一文件。
 - 每个有项目工作的 ISO 周更新 `weekly/YYYY-Www.md`，作为滚动周报；最后一个工作日补齐本周结果与下周入口。
+- 每份日报配套当日 show-off 视频，每份收口周报配套当周汇总视频。英语是主叙事，简体中文是画面内副标题/字幕；
+  缺视频或抽检未通过时，报告保持“未完成/滚动中”。详细规范见 [`demos/README.md`](demos/README.md)。
 - 报告必须区分“已完成”“正在进行”“为什么做”“证据/测试”“未闭合”“下一步”。
 - live attempt 无论 GREEN 或 RED 都保留真实结论；不得通过修改预期、删去失败或把 harness 成功写成 capability 成功来美化状态。
 - 宗教域继续遵守所有者暂缓：只允许战争中的圣战 OODA 和婚姻确实需要时的最小 faith 判定两项窄例外。

@@ -28,6 +28,22 @@
 
 - `<关键测试、live artifact、checkpoint、hash、cleanup、长跑指标>`
 
+## 本周 Show-off 视频（收口必填）
+
+状态：**滚动中待周结 / 已通过抽检 / 未完成**
+
+| 项 | 值 |
+|---|---|
+| 成片 | `<path>` |
+| 覆盖主线 | `<本周最重要的 OODA/能力演进>` |
+| 时长 / 分辨率 / 帧率 | `<seconds> / <WxH> / <fps>` |
+| 编码与语言 | `<video/audio>; English primary + Simplified Chinese subtitles` |
+| size / SHA-256 | `<bytes> / <sha256>` |
+| evidence 索引 | `<关键 live artifacts / hashes>` |
+| 诚实边界 | `<未覆盖能力与状态等级>` |
+
+- 周报收口前必须抽检可解码、中文渲染、关键实机场景和最终证据卡；无视频不得标记“已收口”。
+
 ## RED、阻点与未闭合
 
 - `<失败事实、根因/未知和下一施工入口；不得删除历史 RED>`

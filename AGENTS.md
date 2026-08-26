@@ -147,6 +147,15 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 - 日报和周报至少写明：完成了什么、正在做什么、为什么做、能力/readiness 变化、测试与 live artifact、RED/阻点、
   下一步、相关 commit/push。报告模板分别位于 `docs/autonomous-agent-progress/daily/TEMPLATE.md` 与
   `docs/autonomous-agent-progress/weekly/TEMPLATE.md`。
+- **每份日报必须配套当天的 show-off 视频；每份周报必须配套当周的汇总 show-off 视频。** 视频未产出或未通过媒体与
+  内容抽检时，对应报告只能标记为“未完成/滚动中”，不能算交付。周报视频最迟在该周收口时生成；滚动周报应明确写出
+  当前视频状态。
+- show-off 视频统一采用**英语为主叙事，简体中文作为副标题/字幕**：开场、阶段卡、游戏过程 lower-third 与最终证据卡都必须
+  中英双语；英文保持主要视觉层级，中文不得只是报告外的另附文本。日报/周报必须记录成片路径、时长、分辨率、编码、
+  SHA-256、对应 live artifact 及诚实能力边界。视频是展示层，不替代 artifact/ABI/live evidence。
+- 视频与 sidecar 默认输出到 `artifacts/demos/YYYY-MM-DD/`，录制规范与索引见
+  `docs/autonomous-agent-progress/demos/README.md`。可复用录制器应提交进仓库；大体积成片不进 Git，但必须在报告中留下
+  可核验路径和哈希。
 - 状态必须严格区分 `research`、`static-ready`、`fixture-live`、`production-live primitive`、
   `production-live loop` 和 `complete`。没有真实 paused artifact 时不得写 live；ACK、schema 字段、单元测试或单场 fixture
   不得冒充完整 OODA。失败 attempt 必须保留，并区分 harness RED 与 capability RED。
