@@ -6,14 +6,15 @@
   它只证明 runner 路径故障。
 - **[live-confirmed capability RED]** Attempt2 已通过短路径 gate 并真实物化目标事件，但旧冻结 DLL 把
   `CEventOption+0x478 timeout_option` 错当成 cancel 来源，使 authored native index `3` 的
-  `is_cancel_option=yes` 发布为 `cancel=false`。因此 `current_event_window_context_live_ready` 仍不得标为 `true`，
-  fixture 预期也不得降成 false 来掩盖故障。
+  `is_cancel_option=yes` 发布为 `cancel=false`。因此 Attempt2 当时不得标为 live-ready，fixture 预期也没有降成 false
+  来掩盖故障。
 - **[live-confirmed harness RED；capability fields passed]** Attempt3 的 seed 与 cold 都精确读到 native index `3`
   `cancel=true`、三个空 typed indicator 子集及 truthful readiness；失败只来自 runner 错把 process/playset-local
   calculated ID/runtime ordinal 当作跨进程稳定 identity。该 RED 不得改写，但它已给出修正验收合同的直接实证。
-- **[static-confirmed；Attempt4 pending]** combined cancel + indicator source 仍冻结为 `cea30a0...`，fresh DLL/injector
-  不变；runner 已改为跨进程绑定 canonical key/fixture bytes/完整 instance，只要求两个数值字段在各自进程内为 signed
-  int32 且同帧稳定。必须由全新 Attempt4 artifact 决定整体 live readiness。
+- **[live-confirmed fixture-scoped GREEN]** Attempt4 复用同一 `cea30a0...` production source 与 fresh DLL/injector，
+  在 seed/checkpoint/fresh-cold 两个独立 CK3 进程中通过全部 gate。它闭合 current-window query 的完整 instance、canonical
+  key、进程局部数值、物化 presentation/cancel 与**空 typed-indicator surface**；没有闭合 stock event、非空 indicator kind、
+  lifecycle、scope、完整 effect preview 或 semantic choice。
 - [static-confirmed] runner：
   [`run_current_event_window_context_live_acceptance.py`](../../ck3_autonomous_player/native_bridge/research/run_current_event_window_context_live_acceptance.py)。
 - [static-confirmed] focused unit：
@@ -126,6 +127,35 @@ Attempt3 没有选择 option；两个 managed process、nonce root 均清理成�
 `no_ck3_processes_after=true`、`disposable_cleanup.ok=true`。它不能升级整体 readiness，但不能被描述成 cancel/indicator
 再次失败。
 
+## Attempt4 fixture-scoped GREEN：current window query 冷恢复闭合
+
+2026-08-27 的 immutable artifact 位于
+`C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-cea30a0-live-attempt4.json`，size `130779`，
+SHA-256 `690EB5EA188B0903281E5F5DFDA343DA795117EE0FB1C83C3FCDC7F572170B7B`，总耗时 `145.062s`，自身分类为
+`fixture-scoped-live-confirmed`。全部顶层 readiness gate 与 cross-stage check 均为 true：
+
+- seed PID `22976`、cold PID `43140`；二者不同且均由 managed session 回收；
+- date `53175816`、完整 event instance ID `17` 与 canonical key `xar_event_window_live_fixture.1` 跨 checkpoint 一致；
+- seed 的 calculated ID/runtime ordinal 为 `3930001/5847`，cold 为 `3940001/5881`；四值均为 signed int32，cold
+  相邻两次 query 内完全稳定。这是进程局部 registration metadata 的预期表现，不是 identity 漂移；
+- 三条物化 row 的 rendered/native index 为 `(0,0) (1,1) (2,3)`；shown 均为 true，enabled 为
+  `true/false/true`，第二条有非空原生 unavailable reason，第三条精确为 `cancel=true`，三条均非 fallback；
+- 三条 `effect_indicators` 均为 available，coverage 精确为
+  `played-character-event-icon-indicators-1.19.0.6-v1`，`complete_effect_set=false` 且 `rows=[]`；这只闭合空 surface，
+  不证明 trait/stress/death/scheme 的非空 row 已实机命中；
+- seed transcript 仅为 query/save；cold 仅为 query/query，cold context SHA-256 为
+  `6975511D543E3B11953E376AC0CBF256325C3E907123D7F40D42A04BC5FB880A`，两帧除 query sequence 外严格相等；
+- checkpoint、cold `autosave.ck3` 与 `last_save.ck3` 均为 `66,594,168` bytes，SHA-256
+  `2098104E89BA64845BC49B0E4544C4E933EE3AF5DF5CF1D35CD1EBE9F7A01B45`；immutable source save 的 size/SHA/mtime
+  前后不变；
+- 没有调用任何 `select-event-option-*` 或 `auto-turn`；seed/cold cleanup、nonce-root removal 与
+  `no_ck3_processes_after=true` 全部通过。
+
+因此可以把 **fixture-definition/localization playset + production native bridge** 的 current-window read-only query 标为
+`fixture-live`。`readiness.event_definition_identity_ready`、`option_presentation_ready`、`effect_indicators_ready` 在该范围内真实为
+true；`effect_preview_ready=false`、`semantic_decision_ready=false`、`root_scope=null` 与 `saved_scopes=null` 仍是必须保留的
+未闭合边界。它不是 stock/production-only event 证据，也不是完整事件 OODA。
+
 ## 确定性事件物化
 
 immutable checkpoint 本身没有可供本合同消费的 current event。seed clone 因而加载三项：production autoplayer、
@@ -211,7 +241,7 @@ cold clone 必须继续加载相同 definition/localization bytes，否则 save 
 任一 key、int32、pointer-derived identity、instance ID、revision、option row、reason、readiness 或 fixture byte 漂移都使
 artifact RED。runner 不因 unavailable 而选择 fallback，也不提交任何游戏选项。
 
-## 静态测试结果与待批准命令
+## 静态测试结果与已执行命令
 
 [static-confirmed] focused unit 覆盖 exact fixture bytes、seed/cold projection、现有 fixture session seam、双查询
 frame equality、full-ID/revision drift、key/两 int32/option/readiness/effect/scopes malformed、跨 PID/checkpoint 绑定以及
@@ -221,8 +251,8 @@ preflight 不得 launch：
 py -m unittest ck3_autonomous_player.tests.unit.test_current_event_window_context_live_acceptance -v
 ```
 
-本轮 combined cancel/indicator 合同更新的 focused suite 为 `13/13`，shared event-window Python suite 为
-`17/17`，`py_compile` 与两个 ABI verifier 均通过；收口检查 CK3/Python 进程数均为 0。Attempt2 已执行且是上述
+本轮 runner 合同修正后的 focused suite 为 `17/17`，shared event-window Python suite 为 `17/17`，fresh native CTest 为
+`37/37`，`py_compile` 与两个 ABI verifier 均通过；收口检查 CK3 进程数为 0。Attempt2 已执行且是上述
 immutable capability RED；旧
 `aab1daf...` source tree、DLL SHA 与 injector 只能复核历史 artifact，绝不能再次作为 live candidate。
 
@@ -240,10 +270,9 @@ $env:XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT = 'C:\Users\xenoa\AppData\Local\Temp\
   --output 'C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-cea30a0-live-attempt4.json'
 ```
 
-该 output 名不得已存在，也不得覆盖 Attempt1/2/3。只有 preflight 重新验证 commit、EXE/save/fixture/DLL/injector、source
-cleanliness 与最长路径后，runner 才能启动 CK3。
+上述命令已经成功执行，output 现为 immutable Attempt4 证据，不得覆盖或复用同名 pipe。重跑演示必须使用新的 pipe/output 名；
+runner 仍会先验证 commit、EXE/save/fixture/DLL/injector、source cleanliness 与最长路径，任一漂移都在启动 CK3 前 RED。
 
-只有 artifact 自身 `ok=true`、全部 harness check 为 true、readiness 精确保持
-identity/presentation/indicator true 与 preview/semantic false、managed process cleanup 与 nonce-root removal 都为 true 后，
-才能把本专题从 [not-live-evidence] 更新为 `[live-confirmed fixture-scoped]`。即使该次通过，stable root/saved scopes、
-完整 structured effect preview 与 semantic event decision 仍然没有完成。
+Attempt4 已满足 artifact `ok=true`、全部 harness check、truthful readiness、managed process cleanup 与 nonce-root removal，故本专题
+更新为 `[live-confirmed fixture-scoped]`。stable root/saved scopes、非空 indicator kinds、完整 structured effect preview、
+event-window lifecycle 与 semantic event decision 仍然没有完成。

@@ -6,6 +6,7 @@
 - `Eternal_Recurrence_Vivhite_Courtier/` — 白绮特供独立版源目录；正式发布只使用 `build_vivhite_release.py` 生成的 27 文件 staging
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
+- `docs/autonomous-agent-progress/` — 自动游玩智能体的统一目标/路线图与日报、周报入口；能力状态必须回链原生专题与实机证据
 - mod 通过用户目录的 `mod/XenoAmess_s_Eternal_Recurrence.mod`（path 指向本仓库）注册
 - 原版 Steam 创意工坊物品 id：**3784706360**；白绮独立版 id：**3787304042**。
   `remote_file_id` 的 canonical 副本**只能留在各自用户目录外层 .mod，不能同步进仓库内层 descriptor.mod**。
@@ -133,6 +134,24 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 
 - **每次任务执行完成后，默认 `git commit` + `git push`**（无需另行确认，也不要等人工验证，直接提交推送）
 - 提交信息用英文，简明描述改动
+
+## 自动游玩 Agent 进度报告
+
+- 统一入口为 `docs/autonomous-agent-progress/README.md`；终极目标、真实能力边界与完整后续工作维护在
+  `docs/autonomous-agent-progress/goal-and-roadmap.md`。它们是进度索引，不替代 `docs/ck3-native-ai/` 的原生 AI
+  专题、ABI 合同、`docs/testing-workflow.md` 或冻结 live artifact。
+- **每个工作日必须创建或更新** `docs/autonomous-agent-progress/daily/YYYY-MM-DD.md`。如果周末也开展项目工作，
+  同样创建当天日报。同一天有多个里程碑时持续更新同一文件，并在当天最后一次任务提交/推送前再核对一次。
+- **每个有项目工作的 ISO 周必须创建或更新** `docs/autonomous-agent-progress/weekly/YYYY-Www.md`。当前周报作为滚动报告，
+  每个工作日随日报同步更新；最迟在该周最后一个工作日补齐本周结果、未闭合项和下周入口。
+- 日报和周报至少写明：完成了什么、正在做什么、为什么做、能力/readiness 变化、测试与 live artifact、RED/阻点、
+  下一步、相关 commit/push。报告模板分别位于 `docs/autonomous-agent-progress/daily/TEMPLATE.md` 与
+  `docs/autonomous-agent-progress/weekly/TEMPLATE.md`。
+- 状态必须严格区分 `research`、`static-ready`、`fixture-live`、`production-live primitive`、
+  `production-live loop` 和 `complete`。没有真实 paused artifact 时不得写 live；ACK、schema 字段、单元测试或单场 fixture
+  不得冒充完整 OODA。失败 attempt 必须保留，并区分 harness RED 与 capability RED。
+- 多代理并行时，负责实际工作包的代理必须把可核验的结果、测试、artifact/commit 和遗留项写入当天/当周报告；若协调者
+  正在编辑同一文件，则先发送这些字段，由协调者合并，不能因避免冲突而漏报。
 
 ## 自动游玩 Agent：价值优先与安全边界
 

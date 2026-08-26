@@ -3,10 +3,12 @@
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "architecture": "msvc-x64",
-  "evidence_kind": "offline_exact_build_static_analysis",
+  "evidence_kind": "offline_exact_build_static_analysis_plus_fixture_scoped_paused_live_validation",
   "read_only": true,
-  "live_validated": false,
-  "game_process_started": false,
+  "live_validated": true,
+  "live_validated_scope": "generic nonreligious definition/localization fixture with the production native bridge: current full instance and canonical definition identity, process-local numeric metadata, materialized presentation/cancel, and empty typed-indicator subsets across seed checkpoint and fresh cold reload",
+  "not_live_validated_scope": "stock event coverage, nonempty trait/stress/death/scheme/unknown indicator rows, event-window lifecycle removal after selection, stable root/saved scopes, complete structured effect preview, resource/relationship deltas and semantic option choice",
+  "game_process_started": true,
   "scope": "generic nonreligious current event-window presentation context",
   "owner_deferred_domains": [
     "religion",
@@ -392,7 +394,9 @@
     "raw_context_mode_business_semantics": "unknown"
   },
   "typed_context_proposal": {
-    "status": "definition_identity_presentation_and_effect_indicators_implemented_live_pending",
+    "status": "definition_identity_presentation_and_empty_effect_indicator_surface_fixture_live",
+    "live_scope": "Attempt4 generic nonreligious fixture: full instance and canonical key, process-local numeric metadata, materialized presentation/cancel and empty typed-indicator rows",
+    "remaining_live_scope": "stock events, nonempty indicator kinds, fallback-positive path, selection lifecycle, stable scopes, complete effects and semantic choice",
     "top_level": [
       "revision",
       "availability",
@@ -443,8 +447,66 @@
     "stable_scopes_ready": false,
     "full_effect_preview_ready": false,
     "bridge_query_static_ready": true,
-    "bridge_query_ready": false,
-    "live_validated": false
+    "bridge_query_ready": true,
+    "current_event_window_context_fixture_live_ready": true,
+    "empty_effect_indicator_surface_live_ready": true,
+    "nonempty_effect_indicator_kinds_live_ready": false,
+    "event_window_lifecycle_live_ready": false,
+    "semantic_decision_ready": false,
+    "live_validated": true
+  },
+  "live_validation": {
+    "date": "2026-08-27",
+    "evidence_classification": "fixture-scoped-live-confirmed",
+    "runner": "native_bridge/research/run_current_event_window_context_live_acceptance.py",
+    "artifact_path": "C:/Users/xenoa/AppData/Local/Temp/xar-current-event-window-context-cea30a0-live-attempt4.json",
+    "artifact_size": 130779,
+    "artifact_sha256": "690EB5EA188B0903281E5F5DFDA343DA795117EE0FB1C83C3FCDC7F572170B7B",
+    "elapsed_seconds": 145.062,
+    "frozen_source_commit": "cea30a067b1e112596d70532b98fa068b2102ebf",
+    "production_bridge_dll_sha256": "52398435F8AA5177D6D507BFAA38CD2578EB988F0629F1C5E13360CC91FB3BB0",
+    "injector_sha256": "1618840EC108F688B3EBECC6D7F8963038BA64C8D4A3E10DDE2E29E3F443B4DF",
+    "source_save_sha256_before_and_after": "5BA2136911EAD0CAF1F7D2F3DE02EAFBD8039861C46F01F35F698B3B5CFFFC5F",
+    "checkpoint_sha256": "2098104E89BA64845BC49B0E4544C4E933EE3AF5DF5CF1D35CD1EBE9F7A01B45",
+    "checkpoint_size": 66594168,
+    "seed_bridge_pid": 22976,
+    "cold_bridge_pid": 43140,
+    "date_raw": 53175816,
+    "full_event_instance_id": 17,
+    "canonical_event_definition_key": "xar_event_window_live_fixture.1",
+    "seed_calculated_event_id": 3930001,
+    "cold_calculated_event_id": 3940001,
+    "seed_runtime_stats_ordinal": 5847,
+    "cold_runtime_stats_ordinal": 5881,
+    "materialized_native_option_indices": [
+      0,
+      1,
+      3
+    ],
+    "cancel_native_option_indices": [
+      3
+    ],
+    "effect_indicator_coverage": "played-character-event-icon-indicators-1.19.0.6-v1",
+    "effect_indicator_rows_per_option": [
+      0,
+      0,
+      0
+    ],
+    "seed_commands": [
+      "query-current-event-window-context-v1",
+      "save-checkpoint"
+    ],
+    "cold_commands": [
+      "query-current-event-window-context-v1",
+      "query-current-event-window-context-v1"
+    ],
+    "cold_context_sha256": "6975511D543E3B11953E376AC0CBF256325C3E907123D7F40D42A04BC5FB880A",
+    "adjacent_cold_frames_equal": true,
+    "fixture_bytes_equal_across_stages": true,
+    "no_event_option_selected": true,
+    "managed_process_cleanup": true,
+    "nonce_root_removed": true,
+    "no_ck3_processes_after": true
   },
   "do_not_call_yet": [
     "Do not call trigger, name, preview or effect functions from a worker thread.",
@@ -499,6 +561,9 @@
       "saved_scopes",
       "full_effect_preview"
     ],
-    "live_acceptance": "pending: two adjacent paused generic nonreligious event-window queries must match definition key, calculated ID, runtime ordinal and visible UI; closing the window must remove the match without invoking select-event-option"
+    "live_acceptance": {
+      "completed": "Attempt4 fixture-scoped seed/checkpoint/fresh-cold validation binds the full instance, canonical key, per-process numeric metadata, materialized visible UI and empty typed-indicator surface; adjacent cold queries are identical except query_sequence and no option is selected",
+      "remaining": "validate nonempty indicator kinds and a separately authorized selection/lifecycle fixture whose old full instance disappears and whose gameplay postcondition is observed"
+    }
   }
 }

@@ -9,13 +9,16 @@
 - 游戏版本：`1.19.0.6`
 - `ck3.exe` SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`
 - 架构：MSVC x64
-- 证据来源：离线 exact-build 静态逆向；本轮未启动或附加 CK3
+- 证据来源：离线 exact-build 静态逆向；2026-08-27 Attempt4 generic 非宗教 fixture 的 production bridge paused
+  seed/checkpoint/fresh-cold 实机验收
 - 机器可复核契约：[`event_window_context_1_19_0_6_abi.json`](../../ck3_autonomous_player/native_bridge/research/event_window_context_1_19_0_6_abi.json)
 - 既有 option/AI 契约：[`event_option_1_19_0_6_abi.json`](../../ck3_autonomous_player/native_bridge/research/event_option_1_19_0_6_abi.json)
 
 本文采用三种标签：
 
 - **静态确认**：exact-build 指令、`.pdata` 函数边界、构造/析构或 GUI accessor 能直接证明。
+- **实机确认（fixture-scoped）**：生产 bridge 在本文明确的外部 definition/localization fixture 中完成 paused live；
+  不能外推为 stock event 或完整 effect/decision 覆盖。
 - **候选**：有精确 hook/callsite，但尚未用 production install/teardown 与实机 snapshot 验证。
 - **unknown**：目前证据不足；不以字段名、邻接布局或 GUI 名称补猜。
 
@@ -314,13 +317,17 @@ available context 只把实际物化且 `shown=true && enabled=true` 的 rows �
   ```
 
 - C++ fixture / source contract 必须覆盖 stable accessor root、非零 EventManager offset、idler/window vtable、完整 event ID、零/一/多匹配、manager 与 option vector 的非法 count/capacity、owner backpointer、MSVC string size/capacity、非法 bool byte、rendered/native index 不同、由 authored `CEventOption+0x47A` 读取的单/多 cancel、disabled reason 与 fallback；definition identity 还须覆盖空/越界/畸形 key、ActiveEvent/EventData pointer 漂移、calculated ID/runtime ordinal/key 漂移与 stale instance，并断言 owning-thread fixed mailbox 之外不解引用 engine pointer。
-- 获准启动 CK3 后，paused generic nonreligious event 做两次相邻 same-revision typed query：完整 instance ID、definition identity、option 顺序、enabled/name/reason/cancel/fallback、空 indicator rows 与完整 frame 一致。报告固定 EXE/DLL hash，且不执行默认 accept/reject/action。
+- Attempt4 已在 paused generic nonreligious fixture 中完成两次相邻 same-revision typed query：完整 instance ID、definition
+  identity、option 顺序、enabled/name/reason/cancel/fallback、空 indicator rows 与完整 frame 一致；EXE/DLL/injector bytes
+  固定且没有执行 option action。下一 live gate 是非空 indicator kinds 与另行授权的 selection/lifecycle 后置状态。
 
-Attempt2 已在 generic nonreligious fixture 中真实物化并读取 definition key、calculated ID、runtime ordinal 与完整
-instance ID，但因旧 DLL 把 timeout index 错当 cancel 而成为 immutable RED；详见 fixture 专题。当前 combined
-cancel + indicator reader 只有静态证据。因此 `event_definition_identity_wire_ready=true`、
-`bridge_query_static_ready=true`，而整体 `bridge_query_ready/live_validated=false`；部分成功字段不能把失败 candidate
-升级成 live GREEN，也没有进行宗教专用事件探索。
+Attempt2 因旧 DLL 把 timeout index 错当 cancel 而成为 immutable capability RED；Attempt3 又因 runner 错把
+process/playset-local calculated ID/runtime ordinal 当跨进程 identity 而成为 immutable harness RED。2026-08-27 Attempt4
+已使用修正合同整体 GREEN：artifact SHA-256
+`690EB5EA188B0903281E5F5DFDA343DA795117EE0FB1C83C3FCDC7F572170B7B`。因此
+`event_definition_identity_wire_ready=true`、`bridge_query_static_ready=true`、`bridge_query_ready=true`，并在明确的
+fixture 范围内 `live_validated=true`。非空 indicator kinds、stock event、lifecycle、scope identity、完整 preview 与
+semantic decision 不在该 live 范围内；本轮也没有进行宗教专用事件探索。
 
 ## Evidence / unknown 账本
 
@@ -332,12 +339,12 @@ cancel + indicator reader 只有静态证据。因此 `event_definition_identity
 | data lifetime | 静态确认 | manager same-tick keep-alive/remove/compact |
 | data instance ID | 静态确认 | data ctor `0x16CA380`；setup `0x16CADC0` |
 | shown/enabled/name/reason/native index/fallback | 静态确认 | `SetupOptions` 与 `CEventOptionItem` ABI |
-| effect indicator kind/flags/payload | 静态确认 | visitor/append、GUI getters/accessors 与 [`event-effect-indicators.md`](event-effect-indicators.md) |
+| effect indicator kind/flags/payload | 静态确认；空 surface fixture-live | visitor/append、GUI getters/accessors 与 [`event-effect-indicators.md`](event-effect-indicators.md)；Attempt4 三条 option 均实读 available/精确 coverage/empty rows，非空 kinds 待 live |
 | native `SetupOptions` / AI selector 树 | 静态确认 | existing event-option exact-build contract |
 | stable global root → idler | 静态确认 | native accessor `0xAA43C0..0xAA440A`；`module+0x570F7B8 → owner+0x10` dynamic-cast；ctor vtable write |
-| frontend collision exclusion | 静态确认、实机待验 | in-game accessor + exact idler/window vtable + complete current event ID；不读取 `0xE30E78` root |
+| frontend collision exclusion | fixture-scoped 实机确认 | Attempt4 通过 in-game accessor + exact idler/window vtable + complete current event ID 唯一命中；不读取 `0xE30E78` root |
 | per-frame/callsite capture | 非 production 依赖 | `0xAA72B0` / `0xAA8233` / `0xAA4070` 只保留诊断用途 |
-| stable event definition identity | 静态确认、wire 已接入；Attempt2 RED 中字段实读稳定，combined revalidation 待验 | getter `0x2706AD0..0x2706C2D` + duplicate validator `0x33D4DA0..0x33D5082`；同 callback 双观察 pointer/key/两个 int32 |
+| stable event definition identity | fixture-scoped 实机确认 | getter `0x2706AD0..0x2706C2D` + duplicate validator `0x33D4DA0..0x33D5082`；Attempt4 跨进程绑定 canonical key，两个 process-local int32 各自在同进程双观察内稳定 |
 | stable root/saved scopes | unknown | 从 ActiveEvent scope serialization/GUI binding 继续追，而非暴露指针 |
 | full structured effect preview | unknown | indicator payload 已闭合，但 resource/relation 与 completeness output 未闭合 |
-| production bridge query | 静态实现；Attempt2 capability RED，combined revalidation 待验 | `current-event-window-context-v1` fixed mailbox；[generic fixture runner](current-event-window-context-live-fixture.md) 记录 immutable cancel mismatch；完整 effect preview 仍 unavailable |
+| production bridge query | fixture-scoped live | `current-event-window-context-v1` fixed mailbox；[generic fixture runner](current-event-window-context-live-fixture.md) Attempt4 seed/checkpoint/fresh-cold GREEN；完整 effect preview 与 semantic choice 仍 unavailable |

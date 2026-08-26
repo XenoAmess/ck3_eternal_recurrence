@@ -30,6 +30,14 @@ def integer(value: object) -> int:
     raise TypeError(f"expected integer or integer string, found {value!r}")
 
 
+def signed_int32(value: object) -> bool:
+    return (
+        isinstance(value, int)
+        and not isinstance(value, bool)
+        and -(2**31) <= value < 2**31
+    )
+
+
 def runtime_function_ranges(data: bytes, image: PeImage) -> set[tuple[int, int]]:
     pe_offset = struct.unpack_from("<I", data, 0x3C)[0]
     optional = pe_offset + 24
@@ -282,11 +290,12 @@ def main() -> int:
         "game.command.query-current-event-window-context-v1"
     ):
         failures.append("contract: production capability drifted")
-    if not contract["readiness"]["stable_event_definition_key_published"]:
+    readiness = contract["readiness"]
+    if not readiness["stable_event_definition_key_published"]:
         failures.append("contract: stable event definition key is not published")
-    if not contract["readiness"]["event_definition_identity_wire_ready"]:
+    if not readiness["event_definition_identity_wire_ready"]:
         failures.append("contract: event definition identity wire is not ready")
-    if not contract["readiness"]["effect_indicator_wire_ready"]:
+    if not readiness["effect_indicator_wire_ready"]:
         failures.append("contract: effect indicator wire is not ready")
     published_identity = set(
         query_contract.get("published_event_definition_fields", [])
@@ -308,8 +317,68 @@ def main() -> int:
     }
     if not required_indicator_fields <= published_options:
         failures.append("contract: effect indicator wire fields are incomplete")
-    if contract["readiness"]["live_validated"]:
-        failures.append("contract: offline verifier cannot admit live validation")
+    live = contract.get("live_validation", {})
+    if not (
+        contract.get("live_validated") is True
+        and contract.get("game_process_started") is True
+        and readiness.get("bridge_query_ready") is True
+        and readiness.get("current_event_window_context_fixture_live_ready")
+        is True
+        and readiness.get("empty_effect_indicator_surface_live_ready") is True
+        and readiness.get("nonempty_effect_indicator_kinds_live_ready") is False
+        and readiness.get("event_window_lifecycle_live_ready") is False
+        and readiness.get("semantic_decision_ready") is False
+        and readiness.get("live_validated") is True
+    ):
+        failures.append("contract: scoped live readiness drifted")
+    if not (
+        live.get("evidence_classification") == "fixture-scoped-live-confirmed"
+        and live.get("artifact_size") == 130779
+        and live.get("artifact_sha256")
+        == "690EB5EA188B0903281E5F5DFDA343DA795117EE0FB1C83C3FCDC7F572170B7B"
+        and live.get("frozen_source_commit")
+        == "cea30a067b1e112596d70532b98fa068b2102ebf"
+        and live.get("full_event_instance_id") == 17
+        and live.get("canonical_event_definition_key")
+        == "xar_event_window_live_fixture.1"
+        and signed_int32(live.get("seed_calculated_event_id"))
+        and signed_int32(live.get("cold_calculated_event_id"))
+        and signed_int32(live.get("seed_runtime_stats_ordinal"))
+        and signed_int32(live.get("cold_runtime_stats_ordinal"))
+        and live.get("materialized_native_option_indices") == [0, 1, 3]
+        and live.get("cancel_native_option_indices") == [3]
+        and live.get("effect_indicator_rows_per_option") == [0, 0, 0]
+        and live.get("adjacent_cold_frames_equal") is True
+        and live.get("fixture_bytes_equal_across_stages") is True
+        and live.get("no_event_option_selected") is True
+        and live.get("managed_process_cleanup") is True
+        and live.get("nonce_root_removed") is True
+        and live.get("no_ck3_processes_after") is True
+    ):
+        failures.append("contract: Attempt4 fixture-live evidence drifted")
+    live_acceptance = query_contract.get("live_acceptance", {})
+    if not (
+        isinstance(live_acceptance, dict)
+        and "Attempt4" in live_acceptance.get("completed", "")
+        and "nonempty indicator" in live_acceptance.get("remaining", "")
+    ):
+        failures.append("contract: live acceptance boundary drifted")
+    typed_context = contract.get("typed_context_proposal", {})
+    if not (
+        typed_context.get("status")
+        == (
+            "definition_identity_presentation_and_empty_effect_indicator_"
+            "surface_fixture_live"
+        )
+        and "Attempt4" in typed_context.get("live_scope", "")
+        and "nonempty indicator" in typed_context.get(
+            "remaining_live_scope", ""
+        )
+        and "semantic choice" in typed_context.get(
+            "remaining_live_scope", ""
+        )
+    ):
+        failures.append("contract: typed context live scope drifted")
 
     if failures:
         for failure in failures:
@@ -318,7 +387,7 @@ def main() -> int:
     print(
         f"PASS spans={len(function_spans) + len(additional_spans)} "
         "pdata=1 exact_build=1 read_only=1 "
-        "source_contract=1 live_pending=1"
+        "source_contract=1 fixture_live=1"
     )
     return 0
 

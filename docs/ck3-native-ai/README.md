@@ -57,16 +57,18 @@
   `3140B47AD855DF50BE182CB41E5957D1041E2221496A7256C7FF903E660810EE`。Attempt 1 仍为 RED；victory/defeat、
   special outcome terms、structured terms 与 semantic decision readiness 仍为 false。其它 subtype 保持 opaque；圣战只能
   在独立战争切片中取完整 war OODA 所需最小输入，其余宗教专用语义继续暂缓。
-- [static-confirmed + implementation-confirmed, live pending] [event-window-context.md](event-window-context.md) 复用原生
+- [static-confirmed + implementation-confirmed + fixture-scoped live] [event-window-context.md](event-window-context.md) 复用原生
   `0xAA43C0` accessor 闭合 `module+0x570F7B8 → owner+0x10 → CIngameInterfaceIdlerGfx` stable root，继续冻结
   manager/window/data 生命周期与最终 shown/enabled option context；production 已发布 owning-thread 最小只读 query，
   frontend 由 in-game idler/window vtable 与完整 current event instance ID 排除。generic 非宗教 seed/checkpoint/cold
-  双查询 runner 与精确 fixture bytes 已在
-  [current-event-window-context-live-fixture.md](current-event-window-context-live-fixture.md) 静态冻结，但尚未获准启动 CK3，
-  因此仍是 `[not-live-evidence]`；完整 effect preview、scope identity 与 semantic decision 也仍未完成。
-- [static-confirmed] [event-effect-indicators.md](event-effect-indicators.md) 闭合 `CEventOptionItem+0x88` 的 engine-owned
+  Attempt4 已整体 GREEN，artifact SHA-256 `690EB5EA188B0903281E5F5DFDA343DA795117EE0FB1C83C3FCDC7F572170B7B`；
+  它闭合 canonical identity、process-local 数值、实际 presentation/cancel 与空 indicator surface。详见
+  [current-event-window-context-live-fixture.md](current-event-window-context-live-fixture.md)。stock event、非空 indicator、
+  selection lifecycle、完整 effect preview、scope identity 与 semantic decision 仍未完成。
+- [static-confirmed + empty-surface fixture-live] [event-effect-indicators.md](event-effect-indicators.md) 闭合 `CEventOptionItem+0x88` 的 engine-owned
   `OptionEffectItem` vector：玩家角色的 trait add/remove、stress direction/critical、death 与 scheme start 可发布为
-  typed indicators；该 vector 不含资源/关系 delta、完整性信号或 effect execution order，不得冒充 full preview。
+  typed indicators；Attempt4 已实读三条 available/empty rows，但非空 kinds 仍待 live。该 vector 不含资源/关系 delta、
+  完整性信号或 effect execution order，不得冒充 full preview。
 - [static-confirmed] [army-controller.md](army-controller.md) 记录战争 stance、目标候选和评分、重算节拍、
   `CAISubunitStack` 分派状态机、围城/追击/战斗/撤退切换边界，以及战争 `16777290` 的双敌军实例。
 - [static-confirmed] [army-contact-resolution.md](army-contact-resolution.md) 把原生 AI 的目标/避战门连接到

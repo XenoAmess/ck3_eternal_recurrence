@@ -116,7 +116,7 @@ flowchart LR
 |---|---|---|
 | 会话与时间 | `date_raw`、速度、暂停、local player、`map_ready` | exact-build live-confirmed；可在最小化窗口推进和重新暂停。 |
 | 玩家角色 | CharacterID、存活、配偶/婚约 CharacterID 列表 | native 实现；只覆盖身份与关系结果，不含属性、资源、头衔、继承、健康、压力、教育、生活方式或意见。 |
-| 事件 | 当前 instance/ authored 数量；exact current-window query 发布 materialized shown/enabled、rendered/native index、name/reason、fallback/cancel | instance/数量/提交 live-confirmed；window query 与 typed-first planner 已静态实现、实机待验。planner 有 query 时不再由 authored 数量合成 enabled 选项；effect preview/key/scopes 未闭合，多个合法选项时明确停住而非默认第一项。 |
+| 事件 | 当前 instance/ authored 数量；exact current-window query 发布 materialized shown/enabled、rendered/native index、name/reason、fallback/cancel 与有损 typed indicators | instance/数量/提交已有 live；Attempt4 又以 generic 非宗教 fixture 闭合 seed/checkpoint/fresh-cold current-window query、canonical key、presentation/cancel 与 empty-indicator surface。planner 有 query 时不再由 authored 数量合成 enabled 选项；stock/非空 indicators、selection lifecycle、full effect/scopes 未闭合，多个合法选项时明确停住而非默认第一项。 |
 | 角色互动 | instance、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality | 普通 white-peace recipient pending 已跨 checkpoint production live 双查询；同 revision 的 subtype + WarID + primary-side 绑定也已 production-live，`ordinary_white_peace_binding_live_ready=true`。planner 已先查同帧 typed context 并停止默认接受。generic recipient notification 的 discovery/双 typed query/固定 ACK/旧 full ID 消失已用非宗教 definition-only fixture 完成 fresh-cold live，`notification_ack_fixture_live_ready=true`；该 playset 不是 stock/production-only。victory/defeat、special outcome terms、structured terms/effect、typed target payload、自然 stock 与 intermediary live 仍缺，故 semantic decision 仍为 false。 |
 | 婚姻 | 当前配偶/婚约；合法 arrange-marriage CharacterID 候选 | 只知道“可提交”，不知道年龄、属性、继承、联盟、声望、遗传、接受度或近亲风险；策略选择最小/首个候选。 |
 | 宣战候选 | target、CB key/index、configuration、claimant、target titles | C++ core 与 typed contract 已有；完整 bridge/live 宣战闭环仍未收口。 |
@@ -352,11 +352,14 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 
 ### P3：事件、通知与角色互动语义
 
-- 原生 AI 树：新建 `events-and-interactions.md`，研究 stock `ai_chance`/`ai_will_do`、interaction acceptance、event option
-  trigger/effect 与优先级；区分 AI 权重与玩家效用。
-- 观测：current-window v1 已静态发布每项 materialized shown/enabled、rendered/native index、resolved name/reason 与 fallback/cancel，
-  production live acceptance 仍待完成；继续补 event key/chain、scope actors、主要效果 preview 与资源/关系/健康风险。互动发布 type、条款、
-  sender/recipient、acceptance 和 deadline。不能只返回 option count，也不能把当前 unavailable effect preview 当作完成。
+- 原生 AI 树：`events-and-interactions.md` 已闭合 stock option selector、`ai_chance`/`ai_will_select` 优先级与人物互动
+  通用路由/legality 主干；继续扩充 stock event chain、interaction acceptance/terms/effects 的未闭合分支，并始终区分 AI
+  权重与玩家效用。
+- 观测：current-window v1 已发布每项 materialized shown/enabled、rendered/native index、resolved name/reason 与
+  fallback/cancel；Attempt4 已对 generic 非宗教 fixture 闭合 canonical identity、presentation/cancel 与 empty-indicator
+  surface 的 seed/checkpoint/fresh-cold live。继续补 stock/nonempty indicator/selection lifecycle、event chain、scope actors、主要
+  效果 preview 与资源/关系/健康风险。互动发布 type、条款、sender/recipient、acceptance 和 deadline。不能只返回 option
+  count，也不能把当前 unavailable effect preview 当作完成。
 - 动作：保留 index submit，但绑定同一 event/interaction identity；覆盖多页事件、letter、toast、自动接受与需答复请求。
 - 策略：依据当前长期计划为每个选项评分，处理不确定效果、角色关系与后续链；禁止默认第一项或一律接受互动。
 - 验证：production 长跑中连续处理至少 50 个不同 key、包含链式事件与外交 deadline，零漏答、零固定首项，并核对关键资源/关系后置状态。
@@ -461,7 +464,7 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 0 | actual contact / route timing | create-new + cold restore `live-loop`；join/multi 分支与策略接线 pending | 预测 ordered participants 与真实接战帧一致。 |
 | 1 | combat / reinforcement / retreat | ongoing identity/ledger + planner hold + full-side/owner-subset retreat + normal terminal `live-loop`；reinforcement assignment query live，assigned+ETA/join、forecast、terminal 余下三分支与总 controller pending，P1 进行中 | 四类战斗策略与真实结果闭环。 |
 | 2 | active war / siege / termination | `live-loop` 部分；ordinary white-peace special binding production-live，victory/defeat 与 outcome terms 未闭合 | 任意 checkpoint 自主打到合法终局并处理战后。 |
-| 3 | events / notifications / interactions | typed pending/ACK/ordinary white-peace binding `live-primitive`；semantic decision 未闭合 | 50-key 长跑中语义选择且无漏答。 |
+| 3 | events / notifications / interactions | typed pending/ACK/ordinary white-peace binding `live-primitive`；current-window identity/presentation/cancel/empty-indicator `fixture-live`；semantic decision 未闭合 | 50-key 长跑中语义选择且无漏答。 |
 | 4 | economy / domain / buildings | `visual-narrow` | 十年通用财政与建设循环。 |
 | 5 | council / lifestyle / development / control | `visual-narrow` | 多 council task 与 perk 路线按 realm 目标动态调整。 |
 | 6 | army composition / supply / mercenary；holy order 暂缓 | 常规军备 `research`/partial input；holy order `owner-deferred` | 先完成非宗教和平备战、动员、补给、战争、复员闭环。 |

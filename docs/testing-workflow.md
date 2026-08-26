@@ -177,6 +177,11 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   production+fixture 观测到 `3940001/5881`；两次 cold 同帧查询各自稳定。两字段是当前 loaded definition table 的
   process/playset-local 数值。跨进程 fixture identity 应绑定 canonical key、definition bytes、完整 active instance 与
   save/date；数值字段只要求各进程内是 signed int32 且同帧不漂移。
+- **事件 Attempt4 已证明修正合同**：2026-08-27 的 seed/cold PID `22976/43140` 在同一 instance `17` 与 key
+  `xar_event_window_live_fixture.1` 下分别观测到 `3930001/5847` 与 `3940001/5881`，三条 materialized native indices
+  `[0,1,3]`、index `3 cancel=true`、空 indicator surface 与 cold 双查询全部一致；artifact SHA-256
+  `690EB5EA188B0903281E5F5DFDA343DA795117EE0FB1C83C3FCDC7F572170B7B`。该 GREEN 只升级 fixture-scoped
+  current-window query，不升级非空 effect kinds、selection lifecycle 或 semantic decision。
 - **大厅规则选择持久化在 `player\game_rules\presets.txt` 的 `LastAppliedRules` 块**，新开局重放它；
   改规则文件的 `default` 不影响已有档案。runner 会先移除该块内全部 `xar_on/xar_off/xar_selftest`，再写入场景目标值并验证同时只剩一个（事后恢复）。
 - **pyautogui 合成键盘事件进不了 CK3**（esc/space/+ 实测全部无效），鼠标点击有效。
