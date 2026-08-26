@@ -2,17 +2,19 @@
 
 ## 状态
 
-- [live-attempt RED] Attempt 1 已实际运行；所有 production readiness gates、两次 typed query、同 revision
-  `war_state` 互证、source invariant 与 cleanup 都为 true，但 shared cross-stage helper 读取了旧字段名，令总体 artifact
-  保持 RED。该次不能升级 production-live readiness。
+- [live-confirmed ordinary white peace] Attempt 2 已在 fresh production-only cold PID 中完成 paused 双查询与同 revision
+  `war_state` 互证；`ordinary_white_peace_binding_live_ready=true`。
+- [live-attempt RED] Attempt 1 仍永久保持 RED：它的 production 业务门都通过，但 shared cross-stage helper 读取了旧字段名。
+  Attempt 2 是修复后独立新运行，不重写、不升级 Attempt 1。
 - [static-confirmed] 目标合同是 `pending-character-interaction-special-war-binding-v1`，只覆盖普通、非宗教
   `claim_cb` 的 `end_war_attacker_white_peace_interaction`。
 - [static-confirmed] runner 位于
   `ck3_autonomous_player/native_bridge/research/run_pending_character_interaction_special_war_binding_live_acceptance.py`；
   focused unit 位于
   `ck3_autonomous_player/tests/unit/test_pending_character_interaction_special_war_binding_live_acceptance.py`。
-- 宗教专用域继续 owner-deferred。十槽成本中的 `piety` 只作为 engine-generic raw resource key 透传，
-  不进入 faith、doctrine、tenet、fervor、改宗、宗教改革、圣战或教团语义。
+- 本 fixture 是普通 `claim_cb`，不使用宗教暂缓的两项窄例外（战争中的圣战、婚姻中不得不考虑信仰时的最小调用）。
+  十槽成本中的 `piety` 只作为 engine-generic raw resource key 透传，不进入 faith、doctrine、tenet、fervor、改宗、
+  宗教改革、圣战或教团语义。
 
 本计划是 [pending-interaction-special-war-binding.md](pending-interaction-special-war-binding.md) 的 paused-live
 执行合同，并复用
@@ -126,6 +128,15 @@ GREEN 只允许关闭普通 white-peace 的 binding live gate，不允许升级�
 
 本轮只覆盖 white peace。victory 与 defeat 的 definition/vptr/outcome/side 组合仍各需独立 paused fixture。
 
+当前 readiness 边界因此是：
+
+- `ordinary_white_peace_binding_live_ready=true`；
+- `attacker_victory_binding_live_ready=false`；
+- `attacker_defeat_binding_live_ready=false`；
+- `special_outcome_terms_ready=false`；
+- `structured_terms_ready=false`；
+- `interaction_semantic_decision_ready=false`。
+
 ## 禁止动作与失败条件
 
 production command list 只能是两条
@@ -167,9 +178,38 @@ Attempt 1 原报告永久保持 RED。最小修复只在本 runner 增加 cross-
 `no_reply_action`，production 明确读取 `no_reply_or_ack`，并由二者共同生成兼容的 `no_default_reply` cross-stage check；
 不放宽 mutation boundary，不改 production bridge，也不重写 Attempt 1 artifact。
 
-## Attempt 2 待执行命令
+## Attempt 2 production GREEN
 
-[not-live-evidence] 以下命令只记录修复后的新候选；本次文档更新没有运行 Attempt 2：
+Attempt 2 使用修复后的 cross-stage adapter 重新运行，artifact：
+
+- 路径：`C:\Users\xenoa\AppData\Local\Temp\xar-pending-special-war-binding-v1-live-attempt2.json`；
+- size：`112,249` bytes；
+- SHA-256：`3140B47AD855DF50BE182CB41E5957D1041E2221496A7256C7FF903E660810EE`；
+- seed / production PID：`128724` / `18244`；总时长 `151.98` 秒；
+- frozen source commit `542228a3c1221c189e4c9e84c35d8728aad4d1a1`；DLL / injector SHA 与本文冻结表完全相同；
+- pending ID `738197506`，date `53175816`，public/native revision `4/3`，query sequence `1 -> 2`；
+- normalized context SHA-256：`75EBDD9649DC2405E8F72701D97247715BAF6438303E74DF93149F4532A96763`；
+- checkpoint `66,579,686` bytes，SHA-256
+  `9359BCAA270AE8D3F5CBDF6083147B79F2F132DFE763BDA443329FEA5A823475`；三份迁移位置字节相同；
+- source save bytes、size、mtime 前后相同；seed、production 和 nonce root cleanup 都为 true，退出后无 CK3 process；
+- 15/15 顶层 readiness gates、11/11 same-revision sequence checks、10/10 cross-stage checks 全部为 true。
+
+production command list 精确为两条
+`query-pending-character-interaction-context-v1`，`forbidden_reply_steps_observed=[]`；没有 accept、reject、block、ACK、
+auto-turn、战争结算或时间推进。cross-stage adapter 实见 seed `no_reply_action=true`、production
+`no_reply_or_ack=true`。
+
+两份 normalized frame 都发布 exact definition `end_war_attacker_white_peace_interaction`、
+`special_interaction_kind=end_war_white_peace_interaction`、`absolute_outcome=white_peace`、WarID `16777290`，
+actor `29829=primary_attacker`、recipient `36108=primary_defender`。同 revision native war row 独立返回 recipient
+`player_side=defender`、`player_is_primary_war_leader=true`、primary opponent `29829`、target title `2388`，完成 role/WarID
+互证。
+
+十槽 generic cost 都是 raw `0`，只关闭 white-peace zero-cost baseline；下列字段在真实 frame 中仍明确为 false：
+`special_outcome_terms_ready`、`structured_terms_ready`、`interaction_semantic_decision_ready`。exchanges、effect preview、
+recipient AI score/final decision 仍 typed unavailable。victory 与 defeat 没有由本 artifact 覆盖。
+
+本次实际使用的命令为：
 
 ```powershell
 & "tools\.venv\Scripts\python.exe" `
@@ -177,7 +217,4 @@ Attempt 1 原报告永久保持 RED。最小修复只在本 runner 增加 cross-
   --output "C:\Users\xenoa\AppData\Local\Temp\xar-pending-special-war-binding-v1-live-attempt2.json"
 ```
 
-运行前应确认没有其它 CK3 live harness；一个输出路径只允许写一次。取得 GREEN 后再记录 artifact size/SHA、两个 PID、
-pending ID、revision/date、context frame SHA 和 checkpoint SHA，并只把
-`pending-character-interaction-special-war-binding-v1` 的 ordinary white-peace production-live readiness 改为 true。
-RED artifact 保持 RED，不靠重写报告升级。
+该 GREEN 只升级 ordinary white-peace binding live readiness。Attempt 1 继续是 RED；同一路径不得覆盖重跑。

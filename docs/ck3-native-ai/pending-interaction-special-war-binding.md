@@ -19,14 +19,18 @@
   mailbox、serializer、Python native driver/service/MCP strict normalizer 与 synthetic fixtures。它只发布三种
   已闭合的普通、非宗教 war-exit subtype、absolute outcome、同一 active WarID 与双方 primary war role；
   其它 subtype 保持 opaque/unavailable。
-- [not-live-evidence] 本轮没有启动 CK3、没有调用 effect executor、没有提交 interaction reply 或战争 mutator。
-  static/query readiness 已为 `true`，production live readiness 仍为 `false`。
+- [live-confirmed ordinary white peace] fresh production-only cold PID 已对普通
+  `end_war_attacker_white_peace_interaction` 完成同 revision 双查询与 active-war 互证；
+  `ordinary_white_peace_binding_live_ready=true`。production 阶段没有 effect executor、reply/ACK 或战争 mutator。
+- [not-live-evidence] victory 与 defeat 尚无各自 paused fixture；`special_outcome_terms_ready`、
+  `structured_terms_ready`、`interaction_semantic_decision_ready` 继续为 false。
 
 本文是 [interaction-structured-terms.md](interaction-structured-terms.md) 的独立 exact-build
 侦察记录，并复用 [battle-terminal-and-reentry.md](battle-terminal-and-reentry.md) 已闭合的
 `0x2610840 -> relation+0x20 WarID` 交叉证据。战争结果脚本与既有发送路径见
-[war-termination.md](war-termination.md)。本文不展开任何宗教专用 subtype、圣战、教团、改宗、
-faith、doctrine、tenet、fervor 或宗教改革语义；它们全部维持 owner-deferred opaque 边界。
+[war-termination.md](war-termination.md)。本文的普通 `claim_cb` fixture 不使用宗教暂缓的两项窄例外：战争域允许的
+圣战/大圣战最小语义，以及婚姻域不得不考虑信仰时的最小原生调用。本文不展开 faith、doctrine、tenet、fervor、
+改宗、宗教改革或教团；若后续研究圣战，必须在独立战争切片中只取完整 war OODA 所需最小输入。
 
 ## 冻结输入
 
@@ -181,7 +185,7 @@ special_outcome_terms_ready = true/false
 新字段作为现有 `pending-character-interaction-context-v1` 的 additive typed term 发布，没有另开
 一条扫描 pending manager 的竞态路径。ABI 子合同名称是
 `pending-character-interaction-special-war-binding-v1`；它的 static/query readiness 与 live readiness
-分开记录，未做实机前不得把后者设为 true。
+分开记录，并按 outcome 独立升级。当前 ordinary white-peace 为 live-confirmed，victory/defeat 仍不得借用该证据。
 
 示例形状：
 
@@ -255,30 +259,39 @@ synthetic 覆盖包括：无 special 的普通互动仍保持 query available、
 subtype 不调用 relation、known definition/vptr 或 null-special mismatch、actor/recipient/WarID generation
 失配、ended war、primary role 失配、inner pointer 漂移，以及 serializer 对 outcome/kind/role/source/presence
 伪造的拒绝。ABI verifier 对 exact EXE 的 34 个累计 spans 逐字节校验，其中本切片新增的七个 span
-与下文 hash 一致。以上都是 static/synthetic 证据，不是 paused CK3 live fixture。
+与下文 hash 一致。以上是 static/synthetic 证据；普通 white-peace 的独立 paused live 证据见下一节，不能反推其它 outcome。
 
-## Paused live fixture 计划
+## Paused live fixture 结果
 
-[not-live-evidence] 下列步骤是下一轮验收合同，不是本轮已经取得的实机证据：
+[live-confirmed ordinary white peace] 独立 runner、冻结二进制、checkpoint 生成接缝、Attempt 1 immutable RED 与
+Attempt 2 GREEN 的完整记录见
+[pending-special-war-binding-live-fixture.md](pending-special-war-binding-live-fixture.md)。
 
-独立 runner、冻结二进制、checkpoint 生成接缝、同 revision `war_state` 互证与严格 readiness 边界见
-[pending-special-war-binding-live-fixture.md](pending-special-war-binding-live-fixture.md)。Attempt 1 的全部 production
-业务门均通过，但因 cross-stage helper 的 `no_reply_action` / `no_reply_or_ack` 字段名错配保持 immutable RED；最小 adapter
-已静态回归，尚未取得修复后的 GREEN，故 live readiness 仍为 false。
+Attempt 2 artifact SHA-256 为
+`3140B47AD855DF50BE182CB41E5957D1041E2221496A7256C7FF903E660810EE`。fresh production-only PID `18244`
+在 date `53175816`、public/native revision `4/3` 对 full pending ID `738197506` 执行 query sequence `1 -> 2`；
+两份 normalized context 的 SHA-256 均为
+`75EBDD9649DC2405E8F72701D97247715BAF6438303E74DF93149F4532A96763`，并严格相等。
 
-1. 使用现有普通 `end_war_attacker_white_peace_interaction` pending fixture；不创建宗教或 holy-war
-   fixture，不提交 reply；
-2. 保存 fresh DLL SHA、CK3 EXE SHA、pending full ID、snapshot revision、date 与 played CharacterID；
-3. 在同一 paused revision 连续查询两次，要求 concrete vptr=`module+0x428EF88`、outcome=`white_peace`；
-4. 要求两次 `war_id` 相同，并与同 revision 的 existing war-context query 中 active WarID、primary
-   leaders、CB identity 一致；
-5. 查询后再次证明 pending 仍存在、日期/paused revision 未变化、没有 reply command/ACK；
-6. 只有上述两次稳定回读和 fresh artifact contract 都通过，才把
-   `pending-character-interaction-special-war-binding-v1` 的 live readiness 改为 true。
+两次均实见 vptr 对应的 `end_war_white_peace_interaction`、absolute outcome `white_peace`、WarID `16777290`、
+actor `29829=primary_attacker`、recipient `36108=primary_defender`。同 revision native war row 独立返回 recipient
+为 primary defender、primary opponent `29829`、target title `2388`，完成 WarID/roles 互证。command list 只有两条
+pending query，未提交 accept/reject/block/ACK；source、checkpoint transfer、两个 session cleanup 与 nonce root cleanup
+全部通过。
+
+因此只设置：
+
+```text
+ordinary_white_peace_binding_live_ready = true
+attacker_victory_binding_live_ready = false
+attacker_defeat_binding_live_ready = false
+special_outcome_terms_ready = false
+structured_terms_ready = false
+interaction_semantic_decision_ready = false
+```
 
 victory 与 defeat 仍各需独立 fixture；white-peace live 不能替代另外两个 outcome 的 vptr/key/side
-组合验证。religious/holy-war subtype 即使恰好复用某个 generic container，也不得纳入这份 live
-矩阵。
+组合验证。圣战属于允许的战争域窄例外，但不得混入这份普通 `claim_cb` live 矩阵；它需要自己的最小战争切片与证据。
 
 ## Unknown 与停止边界
 
@@ -288,8 +301,8 @@ victory 与 defeat 仍各需独立 fixture；white-peace live 不能替代另外
 | `0x78` view 的 typed row key/value/polarity | `0x24B11D0` typed consumers/GUI registration | 不发布 row 或文本解析结果 |
 | 三 outcome 的完整 dynamic resource/claim/truce/prisoner/hostage rows | 已闭合 WarID join 后逐类 typed reader | `special_outcome_terms_ready=false` |
 | 其它普通 special subtype 的 concrete layouts | 各 subtype 自己的 RTTI/factory/accessor | `opaque_other`，不按相邻 vtable 猜 |
-| 任何宗教专用 subtype/语义 | owner 明确解除暂缓后再排期 | owner-deferred，不研究、不实现 |
+| 宗教专用 subtype/语义 | 圣战走独立 war-OODA 最小切片；婚姻走独立最小原生判定；其余等待 owner 解禁 | 本普通切片不读取、不推断 |
 
 本切片已经消除旧账本中“从 `special_data` payload 直接读 white-peace WarID”的错误施工方向，并已完成
-type + active-War binding 的最小 production query。下一步是用 fresh DLL 做 paused white-peace live fixture，
-随后才研究普通非宗教 dynamic outcome rows；不要为了顺手填充 generic effects、tooltip 或宗教分支而扩大 wire。
+type + active-War binding 的最小 production query；普通 white-peace paused live 也已闭合。下一步是分别补 victory/defeat
+binding fixture，并研究普通非宗教 dynamic outcome rows；不要把本次 GREEN 扩写成 effect、完整条款或整体互动决策已完成。
