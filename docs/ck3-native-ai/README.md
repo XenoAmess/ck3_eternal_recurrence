@@ -52,6 +52,9 @@
   `special_data` 都只是八字节 exact subtype tag，并闭合 actor/recipient common-war relation → full WarID → active
   `CWar` 的原生只读链；generic effect materializer 不读取该 special object。type + WarID + primary-side 绑定已接入现有
   pending query，paused white-peace fixture 尚待完成；其它 subtype 保持 opaque，宗教 subtype 保持 owner-deferred。
+  [pending-special-war-binding-live-fixture.md](pending-special-war-binding-live-fixture.md) 已冻结可复用的 ordinary
+  `claim_cb` seed/cold-checkpoint runner、542228a DLL、同 revision `war_state` 互证与不升级整体 semantic readiness 的
+  验收条件；当前仍为 [not-live-evidence]，未启动 CK3。
 - [static-confirmed + implementation-confirmed, live pending] [event-window-context.md](event-window-context.md) 复用原生
   `0xAA43C0` accessor 闭合 `module+0x570F7B8 → owner+0x10 → CIngameInterfaceIdlerGfx` stable root，继续冻结
   manager/window/data 生命周期与最终 shown/enabled option context；production 已发布 owning-thread 最小只读 query，
