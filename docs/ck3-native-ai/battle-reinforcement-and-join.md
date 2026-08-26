@@ -54,6 +54,7 @@ flowchart TD
     G -->|yes| A["[static-confirmed] 0x1872BF0 per subunit<br/>recompute asking hysteresis"]
     A --> I["[static-confirmed] 0x1848310<br/>same-stack first requester"]
     I --> E["[static-confirmed] 0x1848570<br/>other-stack first qualifying requester"]
+    L["[live-confirmed] post-retreat membership reopen<br/>357 and 33554657 are separate CArmy stacks"] --> E
     E --> P["[static-confirmed] copy requester current Province<br/>to helper subunit +0x48"]
     P --> D["[static-confirmed] second pass 0x18721B0<br/>0x1873AC0 chooses override"]
     D --> O["[static-confirmed] 0x186B190<br/>ordinary kind-2 move command"]
@@ -532,8 +533,131 @@ BattleReinforcementAssignmentStatus ReadBattleReinforcementAssignmentV1(
   `9AAD6499FE012F8692D9F570DE39027714AC86496C1EB909559A055E7283EAED`。
 - [live-confirmed] subject `357` 为 `asking_for_help=true`、`assigned_to_help=false`，所以 query implementation 与
   production-live 已 ready；该帧没有 native assignment，也没有 aligned `assignment_eta_date_raw`。
-- [readiness] `query_implementation_ready=true`、`query_production_live_ready=true`；
-  `native_assignment_live_ready=false`、`aligned_assignment_eta_live_ready=false`，因此本专题总 `ready=false`。
+- [readiness] `query_implementation_ready=true`、`query_production_live_ready=true`、
+  `post_retreat_membership_reopen_live_ready=true`；`native_assignment_live_ready=false`、
+  `aligned_assignment_eta_live_ready=false`，因此本专题总 `ready=false`。
+
+### [live-confirmed negative] 预战路线不能假定为分离增援夹具
+
+2026-08-26 从 immutable save
+`5BA2136911EAD0CAF1F7D2F3DE02EAFBD8039861C46F01F35F698B3B5CFFFC5F`
+开始的 managed production v4/v6 关闭了一个错误夹具假设：玩家 CUnit `83886341` 在 Province `2596`
+成功用同省原生命令清空旧 route 后，AI CUnit `357` 与 `33554657` 的 parent 并不是固定的两个
+subunit row。首个 paused query 的真实 parent 是一个 row：
+
+```text
+parent_subunits_in_stored_order = [[357, 33554657]]
+selected subunit index          = 0 / 0
+flattened native order          = [357, 33554657]
+```
+
+两次 subject query 的 coordinator、unit-stack、parent payload、revision 与顺序一致。验收器因此必须按每个
+CUnit 在 parent rows 中的真实 occurrence/index 校验，不能硬编码 `357 -> row 0`、`33554657 -> row 1`。
+v4 artifact SHA-256 为
+`0D222C1A4C0676E63B0A775FCF3CE899D5483BBB96BD07125B421AD42736575E`；它是保留诊断的 RED，
+不是 assignment readiness。
+
+继续逐日推进后，v6 在 date raw `53177040` 观察到真实新战斗 `CombatID=436207632`、Province `2596`、
+`maneuver/2`、winner `none`，但创建帧双方已经是 attacker `[83886341]`、defender
+`[33554657,357]`。也就是说两个 AI CUnit 联合进入新战斗；`33554657` 没有经过可观测的
+`assigned_to_help -> aligned ETA -> join` 中间态。该 active frame 的 positive `battle_result_id=436207632`
+也证明 active lifecycle 验收不能要求 ResultID 为 null；active/terminal 应由 `finalized`、phase、winner 与
+terminal journal 共同区分。v6 artifact SHA-256 为
+`A87D2272095FE5BE931DF2FF9B3E1EC117A7A4860D51CB7FEF75C21335EAF757`；source hash、managed cleanup 与
+disposable clone removal 均 GREEN，但业务结果明确 RED。
+
+下一条可施工夹具改为复用已证明的 mixed-owner active combat：先通过 production owner-subset retreat 令一支
+CUnit 离开、另一支留在同一 CombatID，再逐日观察离场单位是否由原生 AI 重开 help assignment、获得 aligned
+ETA 并尾插回同一 roster。不得把上述联合创建帧改写成“增援加入”。
+
+### [live-confirmed negative] 玩家控制的撤离单位不会重建 AI assignment
+
+2026-08-26 的 owner-subset rejoin v1-v3 又关闭了一项夹具错误。immutable production canonical save
+`81034D76C687F99A31BF887BD27B4B896445724517CDAD93A886E2C968CDF2DB` 在 date raw `53178624` 由
+Character `36108` 控制 CUnit `357`；production retreat 只把 `357` 从 `CombatID=335544325` 的 defender stored
+roster 移除，CUnit `33554657` 继续留战。v1 首次碰到 native 明确要求 “retry after heartbeat” 的只读 revision
+窗口；runner 随后只对该精确 transient 做 bounded paused 重采样，并严格禁止跨 date、episode 或 unpaused 拼帧。
+v1/v2 artifact SHA-256 分别是
+`33D2A136ADB2909F2F19043234C073E831184061344BEE7F5A3EEA5994595107` 与
+`F15EA207F3024FC60786A02BECB4B5CD321888E8F73A2C4AE9C46086F875629D`，均为保留的 RED。
+
+带完整诊断帧的 v3 在 27 次严格一日推进中，从 `53178624` 走到 `53179272`。每一日 CUnit `357` 的
+reinforcement query 都是 typed `unavailable/subunit_backlink_mismatch`；它在 Province `2581` 结束撤退后仍是
+`controllable=true` 的玩家军，没有重新进入 AI coordinator/subunit membership，因而不可能产生原生 AI 的
+`asking -> assigned -> ETA`。旧 CombatID 同期一直保留 `[83886341]` 对 `[33554657]`，最后进入
+`pursuit/0`、winner=`attacker`；terminal journal 仍正确区分为 `active_not_terminal`。v3 artifact SHA-256 为
+`33C65F95085718A120FFC2EB1BD766F3C37CC4C728B9BC77BBFCAC4D327F0F57`；source 不变、managed process tree 与
+disposable clone cleanup 均 GREEN，但 assignment/rejoin readiness 保持 false。
+
+因此下一夹具不能在撤退后继续让待观察 CUnit 属于玩家。固定施工路径改为：production 控制 `357` 完成撤离并同日
+存档 -> 临时 seed bridge 同日把玩家切回 Character `29829` -> production-only cold reload 证明 `357` 已恢复 AI
+控制且旧 CombatID 尚存 -> 才逐日观察 assignment、aligned ETA 与同 CombatID tail join。玩家切换只用于构造可重放
+fixture，不是自动玩家的生产动作；最终观察阶段仍必须是无 debug/mod bridge 的 production native session。
+
+### [live-confirmed negative] AI 接管与重新挂回 coordinator 不是同一帧
+
+2026-08-26 的四阶段 v4 已经实证上述路径的前三段，但同时关闭了另一项过强门槛。artifact SHA-256 为
+`E64CB22B4C4129C0DEF43CB463F1F9DA90BC38095E0706236CA35AC3796831A2`。production 撤退存档与 seed-only
+同日切回 Character `29829` 均成立；随后 fresh production-only cold reload 的 date raw 仍为 `53178624`，CUnit
+`357` 已经是 `controllable=false`，因此原玩家确实重新取得角色、AI 也已接管该军队。旧
+`CombatID=335544325` 同时仍为 active `main/12`、winner=`none`、finalized=false，stored sides 保持
+attacker `[83886341]`、defender `[33554657]`，terminal query 为 `active_not_terminal`。
+
+这一 exact frame 上的 `357` 仍处于 native `retreating` state `6`，Province `2586`、remaining route `[2581]`、
+`in_combat=false`；它尚未重新挂回 `CAIUnitStack -> CAISubunitStack`，所以 subject query 正确返回 typed
+`unavailable/subunit_backlink_mismatch`，而仍留战的 anchor `33554657` 同帧为 `available`。这不是“AI 接管失败”，
+而是两个真实生命周期阶段：**控制权先切换，AI coordinator membership 后重建**。v4 的 source hash、三个 managed
+session cleanup 与 disposable root removal 都成立，但 runner 因错误要求 cold-reload 首帧 `pair.available_order_ready=true`
+而保留为业务 RED。
+
+固定验收门槛因此改为：stage 3 只要求同日 player return、`357.controllable=false`、typed retreat/backlink transient、
+旧 Combat active；stage 4 才在单一 production PID 内逐日捕获 `subunit_backlink_mismatch -> native pair available ->
+assigned target -> aligned ETA -> same-Combat rejoin`，或记录严格 typed terminal/drift 边界。不得把第一阶段的控制权切换
+冒充 assignment readiness，也不得为了消除 transient 调用任何 AI mutator。
+
+### [live-confirmed] 撤退单位会先重挂到独立 CArmy stack
+
+四阶段 v5 在保持前三段 GREEN 后，又给出了比 runner 原假设更具体的原生所有权转换。artifact SHA-256 为
+`88BF6AB94C1658B915F06C625CBAD6CAC46ADFD325F57BF978D4D902B217CA57`。最终 production PID 的初帧仍是
+上述 `subunit_backlink_mismatch`；精确推进一天到 date raw `53178648` 后，CUnit `357` 的 query 已从 unavailable
+转为完整 `available`：`selected_native_carmy_id=344`、`coordinator_id=33554513`、unit-stack index `1`、subunit index
+`0`、parent stored rows `[[357]]`。同一暂停 binding 上，留战 anchor `33554657` 仍为 available，但属于另一
+`CArmy=50331769`、同一 coordinator 的 unit-stack index `0`、parent rows `[[33554657]]`。两边还发布了相同的完整
+support-search Province vector。
+
+因此实际转换是 `no backlink -> own AI CArmy/stack -> other-stack matching`，不是直接并入 anchor 的 parent。v5 当天
+`357` 仍为 retreating state `6`，其 asking/assigned 均为 false；旧 Combat 与 terminal 仍 active。runner 因把
+“membership reopened”错误等同于“两个 subject 同 parent/order”而保留 typed
+`ai_membership_transition_drift` RED；source、四个 managed sessions 与 disposable cleanup 均成立。
+
+这条 live 证据直接互证上文 `0x1848570` 的 other-stack 分支。后续 gate 固定为：只要 `357` 自身具有完整、同帧、
+generation-valid 的 CArmy/coordinator/subunit/parent membership，就算 membership reopen；anchor 只需独立保持 available
+并绑定旧 Combat。assignment 阶段应观察 `357` 自身跨 stack 得到的 asking/assigned/target/route/ETA，不能要求两军先合并
+到同一 parent；最终 rejoin 仍严格要求旧 CombatID roster tail append，绝不因 membership 可读而提前 GREEN。
+
+### [live-confirmed negative] 两支同侧军的分离夹具无法产生 singleton requester assignment
+
+修正 cross-stack gate 后的 v6 artifact SHA-256 为
+`4AFE99B8F239871D3869D24E940AF4725E093352B715224DBECEFBB2D90EE248`。它首次关闭
+`native_pair_reopened_after_retreat_live_ready=true`：初帧 mismatch，精确一天后 `357` 以独立 CArmy/stack 完整重挂；
+source、四阶段 managed cleanup 与 disposable root removal 全 GREEN。
+
+随后单一 production PID 连续观察 31 个 paused frame、执行 30 次严格一日 advance（date raw
+`53178624 -> 53179344`）。`357` 在第 9 个观察日到达 Province `2581` 并由 retreating state `6` 转为 regular，
+但从 membership reopen 到边界结束始终 `asking_for_help=false`、`assigned_to_help=false`、target `null`、
+route alignment=`no_assignment`。旧 Combat 同期从 `main/12` 推到 `main/39`，随后为 `pursuit/0..2`、winner attacker；
+每个 terminal boundary 都仍是 `active_not_terminal`。
+
+这不是等待时长不足，而是当前两军 fixture 的结构性限制。`357` 分离后，留战 anchor `33554657` 的 parent 变成唯一 row
+`[[33554657]]`；上文已由 `0x1848310` 静态证明 parent subunit count `<=1` 时清 asking/assigned state。live 帧恰好互证：
+membership reopen 前 anchor 还在含空旧 row 的 parent 中并可 asking；重建完成后 singleton anchor asking 立即为 false，
+同 coordinator 的 `other-stack` helper 因而没有 requester 可以匹配。v6 正确以
+`assignment_not_observed_within_bound` 保留 RED，不能靠延长天数或放宽 target/ETA gate解决。
+
+下一可施工夹具必须至少有三支同侧 CUnit：撤离一支后，旧 Combat 中仍保留两个有效 subunit，使 requester parent 的
+count gate 保持 `>1`；再让撤离者以独立 stack 重挂，才有机会真实经过 other-stack asking -> assigned -> target -> aligned ETA
+-> 同 Combat tail join。可用 seed-only/player-owned split 构造可重放源，但最终 matching/行军/rejoin 必须全部在无 fixture
+mod 的 production AI session 中发生。
 
 这个 reader 解锁的是“原生盟友正在救谁、目的省与预计何时到达”的真实观察。它不声称预测未来世界状态，也不需要
 构造 hypothetical CCombat。

@@ -69,6 +69,16 @@ from .battle_reinforcement_assignment_contract import (
     normalize_battle_reinforcement_assignment_v1,
     query_battle_reinforcement_assignment_v1_step,
 )
+from .campaign_root_context_contract import (
+    QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
+    QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+    normalize_campaign_root_context_v1,
+)
+from .loaded_feature_manifest_contract import (
+    QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
+    QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
+    normalize_loaded_feature_manifest_v1,
+)
 from .active_combat_retreat_contract import (
     normalize_active_combat_retreat_v1_order_ack,
     normalize_active_combat_retreat_v1_preview,
@@ -960,6 +970,485 @@ class GameplayBridgeService:
             "army_ids": requested_ids,
             "scope_army_ids": scope_ids,
             "army_strengths": selected_rows,
+        }
+
+    def query_campaign_root_context_v1(
+        self,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the exact-build local-player campaign root while paused."""
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "campaign-root queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 0
+        ):
+            raise BridgeUnavailableError(
+                "campaign-root query lacks a valid snapshot revision"
+            )
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+        ):
+            raise ValueError(
+                "expected_revision must be a non-negative integer"
+            )
+        if expected_revision != revision:
+            raise BridgeUnavailableError(
+                "campaign-root revision mismatch: expected "
+                f"{expected_revision}, current {revision}"
+            )
+        native_revision = snapshot.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "campaign-root query lacks a positive native revision"
+            )
+        date_raw = snapshot.get("date_raw")
+        if (
+            isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**31) <= date_raw <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "campaign-root query lacks a signed int32 date"
+            )
+        snapshot_id = snapshot.get("snapshot_id")
+        if not isinstance(snapshot_id, str) or not snapshot_id:
+            raise BridgeUnavailableError(
+                "campaign-root query lacks a snapshot identity"
+            )
+        snapshot_backend_id = snapshot.get("backend_id")
+        if not isinstance(snapshot_backend_id, str) or not snapshot_backend_id:
+            raise BridgeUnavailableError(
+                "campaign-root query lacks a source backend identity"
+            )
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY
+            in bridge_capabilities
+            and QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+            in action_step_set(capabilities)
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query the campaign root context"
+            )
+        result = self.execute_step(
+            QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+            expected_revision=expected_revision,
+        )
+        mirror_keys = {
+            "schema_version",
+            "date_raw",
+            "local_player_id",
+            "player_character_id",
+            "player_character_alive",
+            "primary_title",
+            "capital_province_id",
+            "immediate_liege_character_id",
+            "top_liege_character_id",
+            "independent",
+            "government",
+            "selected_game_rule_tokens",
+            "native_selected_game_rule_token_count",
+            "readiness",
+            "unavailable_reason",
+            "provenance",
+        }
+        required_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "campaign_root_context",
+            "backend_id",
+            "campaign_root_context_ready",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+            *mirror_keys,
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != required_result_keys
+            or result.get("step") != QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "campaign-root backend returned a malformed result"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "campaign-root result lacks query_sequence"
+            )
+        backend_id = result.get("backend_id")
+        if not isinstance(backend_id, str) or not backend_id:
+            raise BridgeUnavailableError(
+                "campaign-root result lacks backend_id"
+            )
+        try:
+            normalized = normalize_campaign_root_context_v1(
+                result.get("campaign_root_context"),
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"campaign-root result is malformed: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "campaign-root envelope status disagrees with its frame"
+            )
+        expected_mirrors = {
+            key: copy.deepcopy(normalized[key]) for key in mirror_keys
+        }
+        if any(
+            result.get(key) != expected
+            for key, expected in expected_mirrors.items()
+        ) or result.get("campaign_root_context_ready") is not normalized[
+            "readiness"
+        ]["ready"]:
+            raise BridgeUnavailableError(
+                "campaign-root result mirrors disagree with its frame"
+            )
+        if (
+            result.get("queried_snapshot_id") != snapshot_id
+            or result.get("queried_revision") != revision
+            or result.get("queried_native_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "campaign-root result is bound to another snapshot"
+            )
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        provenance = normalized["provenance"]
+        assert isinstance(provenance, dict)
+        observed_version = (
+            hello.get("expected_ck3_version", hello.get("game_version"))
+            if isinstance(hello, dict)
+            else None
+        )
+        observed_sha256 = (
+            hello.get(
+                "expected_ck3_sha256", hello.get("executable_sha256")
+            )
+            if isinstance(hello, dict)
+            else None
+        )
+        if (
+            observed_version != provenance["game_version"]
+            or not isinstance(observed_sha256, str)
+            or observed_sha256.upper()
+            != str(provenance["executable_sha256"]).upper()
+        ):
+            raise BridgeUnavailableError(
+                "campaign-root build mirror disagrees with bridge hello"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("episode_run_id")
+            == snapshot.get("episode_run_id")
+        ):
+            raise BridgeUnavailableError(
+                "campaign-root query crossed a snapshot revision"
+            )
+        build = {
+            "version": provenance["game_version"],
+            "exe_sha256": provenance["executable_sha256"],
+        }
+        source = {
+            "game_version": observed_version,
+            "executable_sha256": observed_sha256.upper(),
+            "snapshot_id": snapshot_id,
+            "revision": revision,
+            "native_revision": native_revision,
+            "date_raw": date_raw,
+            "paused": True,
+            "backend_id": snapshot_backend_id,
+        }
+        binding = {
+            "snapshot_id": snapshot_id,
+            "revision": revision,
+            "native_revision": native_revision,
+            "date_raw": date_raw,
+            "expected_revision": expected_revision,
+        }
+        return {
+            **result,
+            "schema_version": 1,
+            "status": normalized["status"],
+            "scope": "exact-campaign-root-context",
+            "build": build,
+            "source": source,
+            "binding": binding,
+            **expected_mirrors,
+            "campaign_root_context_ready": normalized["readiness"][
+                "ready"
+            ],
+            "campaign_root_context": normalized,
+        }
+
+    def query_loaded_feature_manifest_v1(
+        self,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read exact-build effective flags and script DLC keys while paused."""
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "loaded-feature queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 0
+        ):
+            raise BridgeUnavailableError(
+                "loaded-feature query lacks a valid snapshot revision"
+            )
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+        ):
+            raise ValueError(
+                "expected_revision must be a non-negative integer"
+            )
+        if expected_revision != revision:
+            raise BridgeUnavailableError(
+                "loaded-feature revision mismatch: expected "
+                f"{expected_revision}, current {revision}"
+            )
+        native_revision = snapshot.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "loaded-feature query lacks a positive native revision"
+            )
+        date_raw = snapshot.get("date_raw")
+        if (
+            isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**31) <= date_raw <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "loaded-feature query lacks a signed int32 date"
+            )
+        snapshot_id = snapshot.get("snapshot_id")
+        if not isinstance(snapshot_id, str) or not snapshot_id:
+            raise BridgeUnavailableError(
+                "loaded-feature query lacks a snapshot identity"
+            )
+        snapshot_backend_id = snapshot.get("backend_id")
+        if not isinstance(snapshot_backend_id, str) or not snapshot_backend_id:
+            raise BridgeUnavailableError(
+                "loaded-feature query lacks a source backend identity"
+            )
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY
+            in bridge_capabilities
+            and QUERY_LOADED_FEATURE_MANIFEST_V1_STEP
+            in action_step_set(capabilities)
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query the loaded feature manifest"
+            )
+        result = self.execute_step(
+            QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
+            expected_revision=expected_revision,
+        )
+        mirror_keys = {
+            "schema",
+            "schema_version",
+            "date_raw",
+            "unavailable_reason",
+            "build",
+            "effective_feature_flags",
+            "script_dlc_keys",
+            "entitlements",
+            "readiness",
+            "provenance",
+        }
+        required_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "loaded_feature_manifest",
+            "backend_id",
+            "loaded_feature_manifest_ready",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+            *mirror_keys,
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != required_result_keys
+            or result.get("step") != QUERY_LOADED_FEATURE_MANIFEST_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "loaded-feature backend returned a malformed result"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "loaded-feature result lacks query_sequence"
+            )
+        backend_id = result.get("backend_id")
+        if not isinstance(backend_id, str) or not backend_id:
+            raise BridgeUnavailableError(
+                "loaded-feature result lacks backend_id"
+            )
+        try:
+            normalized = normalize_loaded_feature_manifest_v1(
+                result.get("loaded_feature_manifest"),
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"loaded-feature result is malformed: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "loaded-feature envelope status disagrees with its frame"
+            )
+        expected_mirrors = {
+            key: copy.deepcopy(normalized[key]) for key in mirror_keys
+        }
+        if any(
+            result.get(key) != expected
+            for key, expected in expected_mirrors.items()
+        ) or result.get("loaded_feature_manifest_ready") is not normalized[
+            "readiness"
+        ]["actionable_ready"]:
+            raise BridgeUnavailableError(
+                "loaded-feature result mirrors disagree with its frame"
+            )
+        if (
+            result.get("queried_snapshot_id") != snapshot_id
+            or result.get("queried_revision") != revision
+            or result.get("queried_native_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "loaded-feature result is bound to another snapshot"
+            )
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        build = normalized["build"]
+        assert isinstance(build, dict)
+        observed_version = (
+            hello.get("expected_ck3_version", hello.get("game_version"))
+            if isinstance(hello, dict)
+            else None
+        )
+        observed_sha256 = (
+            hello.get(
+                "expected_ck3_sha256", hello.get("executable_sha256")
+            )
+            if isinstance(hello, dict)
+            else None
+        )
+        if (
+            observed_version != build["version"]
+            or not isinstance(observed_sha256, str)
+            or observed_sha256.upper()
+            != str(build["exe_sha256"]).upper()
+        ):
+            raise BridgeUnavailableError(
+                "loaded-feature build mirror disagrees with bridge hello"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("episode_run_id")
+            == snapshot.get("episode_run_id")
+        ):
+            raise BridgeUnavailableError(
+                "loaded-feature query crossed a snapshot revision"
+            )
+        source = {
+            "game_version": observed_version,
+            "executable_sha256": observed_sha256.upper(),
+            "snapshot_id": snapshot_id,
+            "revision": revision,
+            "native_revision": native_revision,
+            "date_raw": date_raw,
+            "paused": True,
+            "backend_id": snapshot_backend_id,
+        }
+        binding = {
+            "snapshot_id": snapshot_id,
+            "revision": revision,
+            "native_revision": native_revision,
+            "date_raw": date_raw,
+            "expected_revision": expected_revision,
+        }
+        return {
+            **result,
+            "schema_version": 1,
+            "status": normalized["status"],
+            "scope": "exact-loaded-feature-manifest",
+            "source": source,
+            "binding": binding,
+            **expected_mirrors,
+            "loaded_feature_manifest_ready": normalized["readiness"][
+                "actionable_ready"
+            ],
+            "loaded_feature_manifest": normalized,
         }
 
     def query_actual_contact_scope(

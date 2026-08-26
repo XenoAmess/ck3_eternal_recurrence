@@ -40,6 +40,12 @@ gameplay 能力，
 安全工作不单列为路线图。只有已经在生产路径产生可复现玩法故障的问题才进入相应能力包，并只修到恢复实际使用；
 理论安全、取证扩张和与玩法无关的协议加固不得挤占下列功能施工。
 
+宗教/信仰域自 2026-08-26 起由项目所有者明确暂缓，原因是 CK3 近期版本将对该系统做大规模重构。在项目所有者明确通知
+“可以开始宗教相关内容”以前：只允许 feature manifest、通用事件/互动/资源接口保留足以不破坏其他玩法的 opaque
+identity 与兼容边界；不得深入逆向 faith/doctrine/tenet/fervor、宗教改组/皈依/圣战原生 AI 树，不得新增宗教专用
+bridge、策略或实机矩阵。文化、创新、法律、政府和非宗教决议仍按原路线施工；暂缓不是将宗教域冒充完成，最终总验收仍须在
+解除暂缓后补齐。
+
 本次盘点以这些实现入口为准，后续 capability 变化必须同步更新本页：
 
 - exact adapter capability descriptor：
@@ -123,7 +129,7 @@ flowchart LR
 | 战斗 v3 | v2 base + 132/132 phase input refs/derivations | combined-defensive production paused live accepted，actual sides 与 cold restore 后均可复查；phase transition/original trace 未闭合，`monte_carlo_ready=false`。 |
 | 战中控制 v1 | ongoing CombatID/Province/phase/day/winner/finalized、ordered sides/armies、retained levy/MAA entries、current/soft/hard 与 owner hard ledger、commander/roll/width/advantage/strength | [live-confirmed] checkpoint `9104CCB8...CC63` 冷恢复后从 maneuver 1 推到 main 2；稳定 double query，main 1/2 有真实 ledger delta，artifact SHA `A0FC6BB7268E38026CC8EED6D6388BFD675AD5DCFB60A1A65FE1C1B64E816AC6`。side tick-start cache 合法 stale，由 match booleans 区分，不再导致 unavailable。动态 join/leave 与增援同日顺序仍缺；normal terminal 另由 dedicated query 闭合。 |
 | 主动撤退控制 | selected identity、CombatID/Province/side、full-side/owner-subset affected order、三项 flag、native legality/四类 reason；planner-selected target 的 exact route preview、一次性 battle-bound token、player move command 与按完整旧 CombatID 的 lifecycle query | legality progression [live-confirmed] day 0/14 false→day 15/16 true，SHA `FB521B39...BCF40`；full-side route/state 与 `main/12 → pursuit/0` 已 live，SHA `21D58737...784FA`；owner-subset 又只移除 CUnit `357`、保留 `33554657` 与原 CombatID，SHA `7780B619...01F9`。`battle_retreat_ready=true`；generic war AI policy/cadence/destination score 保持 `unknown`。 |
-| 增援分配 v1 | AI CUnit→coordinator→subunit→parent identity、asking/assigned、request power、assignment Province、native stored order、route/ETA 与 present-time CombatID projection | [live-confirmed partial] CUnit `357` 的 paused stable double query 实见 `asking=true`、`assigned=false`、active CombatID `335544325`、parent order `[357],[33554657]`，artifact SHA `F0A6F3C7...B1DB9C6`。query production-live；assigned+aligned ETA、join/reopen 和玩家改派动作仍缺，故 `battle_reinforcement_ready=false`。 |
+| 增援分配 v1 | AI CUnit→coordinator→subunit→parent identity、asking/assigned、request power、assignment Province、native stored order、route/ETA 与 present-time CombatID projection | [live-confirmed partial] CUnit `357` 的 paused stable query 已 live；owner-subset retreat 后又实见 mismatch→独立 CArmy/stack membership reopen（SHA `4AFE99B8...EE248`）。当前两军夹具令留战 parent 退化为 singleton，原生连续 30 日清 asking，故 assigned+aligned ETA/rejoin 需三同侧 CUnit 夹具，`battle_reinforcement_ready=false`。 |
 | 战斗终局 v1 | passive terminal/warscore journals；prior CombatID、old Province/result removal、typed current subject 与 residual/retreat/assignment successor | [live-confirmed normal] `CombatID=335544325` 第 33 日 `normal_result`，old ID 全局/Province 双删除、battle row `2135850` Q100000、玩家 `subject_retreating`；artifact SHA `61D0D912...56FDB1`。query/service/MCP production-live；no-normal/residual/assignment-reopened 尚缺，故 aggregate `battle_terminal_ready=false`。 |
 | 战争终止 | 三种 outcome 的 legality/AI acceptance、score/duration/CB；claim-CB disposition | termination options 已 live；claim terms getter/destructor live pending；完整 exit terms v2 因已复现的 loaded-effect preview 崩溃而 production disabled。 |
 | 一代结算 | final score、record、blessing/refusal、contract progress、commit serial | 最小化窗口死亡 snapshot 已 live-confirmed；自然死亡完整 episode 终验仍待完成。 |
@@ -252,7 +258,14 @@ DLL template 本身当成随时可执行动作。
 
 - 原生 AI 树：从当前 playset 的 `game/common` 数据库、GUI reflection 与 RTTI 建立机器可读 capability ledger；对原生 AI
   没有对应决策的 bookmark/game-rule/player-ruler 选择，明确标为 `not-applicable` 并给出证据，不能伪造一棵 AI 树。
-- 观测：发布 enabled feature/DLC/government manifest，以及通用 character/title/province/realm 搜索与关系图；上层策略不应
+- 观测：[campaign-root-context.md](campaign-root-context.md) 已发布地图内 actual player、主头衔/tier、capital、liege chain、
+  effective government 与完整 selected setting-token vector 的只读 bridge/MCP，并在 independent/vassal 两个角色 checkpoint 上
+  完成 production 双查询与冷恢复（SHA `DA5EB7F0...02CDDC`、`677C4FF9...B279F9`）；下一步补非-duchy、非-feudal、landless/
+  legal-absent live 矩阵。[loaded-feature-manifest.md](loaded-feature-manifest.md) 已发布 read-only bridge/MCP：闭合当前进程
+  44-bit effective gameplay feature registry、script-visible `has_dlc` set 与独立 `CDLCManager`/store entitlement service，并在
+  production paused 同帧双查询得到完整 44 rows/29 runtime keys（artifact SHA `2B1C8CA4...C2F2D`）。entitlement
+  readiness/provenance 未闭合前继续 typed unavailable，不能把 installed DLC descriptor 当成当前进程 truth；仍待
+  installed-but-disabled/offline-store/cold-restore 反例矩阵。随后补通用 character/title/province/realm 搜索与关系图；上层策略不应
   为每个剧本重复发明世界发现逻辑。
 - 动作：枚举并选择 bookmark/ruler/game rules，进入地图后以 native state 验证实际 player、日期、rules 与 enabled features。
 - 策略：依据测试目标或长期 policy 选择开局；固定罗贝尔只保留为 regression fixture，不再等同默认智能决策。
@@ -378,15 +391,18 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 - 策略：把谋略收益与暴露、关系、继承、战争和角色风险联合计算；健康策略服务于继承与当前目标，不盲目延寿或减压。
 - 验证：至少一条 hostile/personal scheme、一轮囚犯处置、一段疾病/高压力场景均由 native state 驱动并核对结果。
 
-### P9：法律、政府、信仰、文化、创新与决议
+### P9：法律、政府、文化、创新与决议；信仰暂缓
 
-- 原生 AI 树：按系统建立 `laws-and-government.md`、`faith-and-culture.md`、`decisions.md`，覆盖 authority/law、convert/reform、
-  culture fascination/tradition/hybrid/diverge 和 major decision 触发/权重。
-- 观测：government、laws、authority、succession law、faith/culture/doctrines/tenets/traditions、fervor/acceptance、innovations、所有 decision
-  eligibility/cost/effect。
-- 动作：change law/authority、convert/reform、promote/convert county、culture action、fascination、take decision。
+- 原生 AI 树：当前建立 `laws-and-government.md`、`culture-and-innovations.md`、`decisions.md`，覆盖 authority/law、
+  culture fascination/tradition/hybrid/diverge 和 major decision 触发/权重；`faith-and-religion.md` 及 convert/reform 树等所有
+  宗教专用深入研究等待项目所有者明确解除暂缓。
+- 观测：当前覆盖 government、laws、authority、succession law、culture/traditions/acceptance、innovations、所有非宗教 decision
+  eligibility/cost/effect；faith 仅保留通用兼容所需 opaque identity，不展开 doctrines/tenets/fervor。
+- 动作：当前覆盖 change law/authority、culture action、fascination、take non-religious decision；convert/reform/convert county 等
+  宗教专用动作等待解除暂缓。
 - 策略：把合法性、封臣反应、财政、军事与长期目标纳入制度选择；决议按时间窗口与机会成本排序。
-- 验证：至少覆盖一次 law/authority 变更、faith 或 culture 项目与一个 major decision；跨年观察预期长期效果。
+- 验证：暂缓期间至少覆盖一次 law/authority 变更、culture 项目与一个非宗教 major decision；宗教场景不运行，也不计完成。
+  解除暂缓后再补 faith 项目并跨年观察预期长期效果。
 
 ### P10：活动、旅行、宫廷、宝物、勋号与 DLC feature packs
 
@@ -439,7 +455,7 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 13 | schemes / hooks / secrets | `absent` | hostile/personal scheme 与风险反馈闭环。 |
 | 14 | prisoners / crime / tyranny | `absent` | 囚犯与犯罪处置符合稳定/财政目标。 |
 | 15 | health / stress / fertility | `absent` | 疾病、高压和继承风险联合管理。 |
-| 16 | faith / culture / innovations | `absent` | 至少一个长期制度项目闭环。 |
+| 16 | culture / innovations；faith 暂缓 | culture/innovations `absent`；faith `owner-deferred` | 先闭合文化/创新长期项目；收到明确许可后再做宗教完整 OODA。 |
 | 17 | decisions / laws / government | decision OCR read-only `visual-narrow` | 动态选择并执行 major decision/法律。 |
 | 18 | activities / travel | `absent` | 规划、旅行、事件与返程完整闭环。 |
 | 19 | royal court / positions / artifacts / accolades | combat accolade input only `research` | enabled feature 各一条 OODA。 |
@@ -447,7 +463,7 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 21 | save / restore / process ownership | `live-loop` | 长跑和域场景持续复用；只修实际故障。 |
 | 22 | death settlement / next episode | primitive `live` | 自然死亡完整结算、下一 episode；另有跨继承 campaign。 |
 | 23 | long-horizon goals / learning / memory | minimal booleans `implemented` | 多域层次规划与 outcome 校准通过整局矩阵。 |
-| 24 | campaign setup / bookmark / ruler / game rules | fixed Robert `visual-narrow` | 从候选开局中按目标选择并验证地图初始状态。 |
+| 24 | campaign setup / bookmark / ruler / game rules | fixed Robert `visual-narrow`；地图内 root context independent/vassal `live-primitive` | 从候选开局中按目标选择并验证地图初始状态。 |
 | 25 | map/world search / title and character discovery | war-scoped partial | 通用查找角色、头衔、领地和战略邻域，供所有上层 planner 复用。 |
 
 ## 施工节奏与提交门

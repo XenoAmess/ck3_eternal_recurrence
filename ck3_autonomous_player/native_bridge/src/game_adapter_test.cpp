@@ -256,6 +256,10 @@ int main() {
       !Contains(known.capabilities,
                 "game.command.query-army-strengths-v1") ||
       !Contains(known.capabilities,
+                "game.command.query-campaign-root-context-v1") ||
+      !Contains(known.capabilities,
+                "game.command.query-loaded-feature-manifest-v1") ||
+      !Contains(known.capabilities,
                 "game.command.query-combat-simulation-inputs-v2-N") ||
       !Contains(known.capabilities,
                 "game.command.query-combat-simulation-inputs-v3-N") ||
@@ -427,6 +431,8 @@ int main() {
   if (exact_adapter == nullptr || !exact_adapter->enabled() ||
       !exact_adapter->supports_step(canonical_combat_step) ||
       !exact_adapter->supports_step(canonical_v3_combat_step) ||
+      !exact_adapter->supports_step("query-campaign-root-context-v1") ||
+      !exact_adapter->supports_step("query-loaded-feature-manifest-v1") ||
       !exact_adapter->supports_step(
           "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218-33554433") ||
       exact_adapter->supports_step(

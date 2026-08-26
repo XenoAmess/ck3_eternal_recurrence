@@ -416,6 +416,70 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   `61D0D912206A90D9B34DDE3555AEC941EC3538C253DBC4DCEB9D177D7456FDB1`。source save SHA 前后仍为
   `9104CCB8...CC63`，same bridge PID/generation、shutdown、tree gone、driver close 与 disposable clone removal 全部成立。
   该 GREEN 关闭 production normal-terminal query，不替代 no-normal、residual 与 assignment-reopened fixtures。
+- 2026-08-26 reinforcement join 预夹具 v4/v6 保留为可重放 RED。v4 证明 contact 前 AI parent 的真实布局为单行
+  `[357,33554657]`，不能硬编码两个 subunit row；artifact SHA
+  `0D222C1A4C0676E63B0A775FCF3CE899D5483BBB96BD07125B421AD42736575E`。v6 在 date `53177040`
+  得到 `CombatID=436207632`、Province `2596`、attacker `[83886341]`、defender
+  `[33554657,357]`：helper 已在创建帧中，不存在 assignment/ETA/join 中间态；artifact SHA
+  `A87D2272095FE5BE931DF2FF9B3E1EC117A7A4860D51CB7FEF75C21335EAF757`。两轮 source hash、managed
+  cleanup 与 disposable clone removal 都通过，但不得升级业务 readiness。后续固定改用 owner-subset retreat 后的
+  assignment-reopened 路径。
+- 2026-08-26 owner-subset rejoin v1-v3 进一步证明“撤退后仍由玩家控制”不是合法的 AI assignment-reopened
+  夹具。v1 artifact SHA `33D2A136ADB2909F2F19043234C073E831184061344BEE7F5A3EEA5994595107` 首次实见
+  `battle-reinforcement snapshot changed; retry after heartbeat`；runner 只为这条明确只读 transient 加入最多 6 次/8 秒、
+  且禁止跨日/跨 episode/unpaused 的整束重采样。v2 SHA
+  `F15EA207F3024FC60786A02BECB4B5CD321888E8F73A2C4AE9C46086F875629D` 越过 transient 后发现 lifecycle drift；
+  v3 SHA `33C65F95085718A120FFC2EB1BD766F3C37CC4C728B9BC77BBFCAC4D327F0F57` 完整保留诊断：从
+  `53178624` 到 `53179272` 的 27 个一日 advance 中，CUnit `357` 每帧都是
+  `unavailable/subunit_backlink_mismatch`，结束撤退后仍 `controllable=true`；旧 `CombatID=335544325` 最终进入
+  `pursuit/0`、winner attacker，stored roster 仍为 `[83886341]` 对 `[33554657]`。三轮 source 不变、托管回收与
+  disposable cleanup 均 GREEN，但业务 readiness 均为 RED。下一夹具必须在 production 撤离存档后同日 seed-switch
+  回原玩家，再 production-only reload 观察已恢复 AI 控制的 `357`；不得继续等待玩家军生成 AI assignment。
+- 2026-08-26 四阶段 AI reassignment v4 又证明“恢复 AI 控制”与“重新挂回 AI coordinator”不是同一帧。artifact SHA
+  `E64CB22B4C4129C0DEF43CB463F1F9DA90BC38095E0706236CA35AC3796831A2`：同日切回原玩家后，fresh
+  production-only reload 上 CUnit `357` 已 `controllable=false`，但仍为 native retreating state `6`、Province `2586`、
+  route `[2581]`、`in_combat=false`，所以其 reinforcement query 合法返回
+  `unavailable/subunit_backlink_mismatch`；anchor `33554657` 同帧仍 available。旧 `CombatID=335544325` 保持
+  `main/12`、winner none、`[83886341]` 对 `[33554657]`，terminal=`active_not_terminal`。source 不变、三个 managed
+  session 与 disposable cleanup 均通过，业务 RED 只来自 stage 3 错把 immediate pair availability 当作 AI-control proof。
+  后续 runner 必须先独立证明 `controllable=false`，再在最终单一 production PID 内逐日等待 backlink/member 重建；只有随后
+  捕获 assignment、aligned ETA 与同 Combat rejoin 才能关闭 readiness。
+- 四阶段 v5（artifact SHA
+  `88BF6AB94C1658B915F06C625CBAD6CAC46ADFD325F57BF978D4D902B217CA57`）进一步关闭了“重挂接时两军必须同
+  parent”的夹具错误。最终 production PID 精确推进一天到 `53178648` 后，`357` 已由 mismatch 变为 available，但属于
+  `CArmy=344`、coordinator `33554513`、unit-stack index `1`、parent `[[357]]`；anchor `33554657` 同帧属于
+  `CArmy=50331769`、同一 coordinator、unit-stack index `0`、parent `[[33554657]]`。这是原生 other-stack matching 的
+  真实前置形态，不是 drift。该帧 `357` 尚在 retreating state `6` 且 asking/assigned=false，旧 Combat/terminal 仍 active，
+  因此 v5 仍不关闭 assignment/ETA/rejoin；runner 应只把 subject 自身完整 membership 作为 reopen gate，再等待跨 stack
+  assignment，不能要求先与 anchor 合并 parent。
+- 四阶段 v6（artifact SHA `4AFE99B8F239871D3869D24E940AF4725E093352B715224DBECEFBB2D90EE248`）已把
+  `native_pair_reopened_after_retreat_live_ready` 关闭为 GREEN，但也证明当前两军夹具不可能产生所需 assignment。31 个 paused
+  frame/30 个严格一日 advance 中，`357` 第一天以独立 CArmy `344` 重挂，第 9 天到达 `2581` 并结束 retreat；全程仍
+  asking=false、assigned=false、target null、no_assignment。旧 Combat 从 `main/12` 走到 `main/39` 再进入
+  `pursuit/0..2`，terminal 一直 active。原因与 `0x1848310` 静态树一致：分离后 anchor parent 只剩
+  `[[33554657]]`，singleton parent 会清 asking，other-stack helper 无 requester 可匹配。延长 bound 没有价值；下一 fixture
+  必须有至少三支同侧 CUnit，使撤一支后 requester parent 仍有两个 subunit。source、四 managed stages 与 disposable cleanup
+  均 GREEN，但 assignment/ETA/rejoin readiness 仍保持 false。
+- 2026-08-26 `campaign-root-context-v1` 用 fresh DLL SHA
+  `F070E5E0C9AE248F25E12F9FEAF948E5C96E1E3BD3B6B59B08538A5BEF6F2F5E` 完成两个 immutable checkpoint 的
+  production `query/query/save -> 新 PID cold query/query`。独立 Character `29829` 场景 artifact SHA
+  `DA5EB7F01A48A2869B8C9B6B2F6607825FA5319715F66D2C0D04AFFCF802CDDC`，实值为 duchy `2141`、capital
+  `2619`、top=self；附庸 Character `36108` 场景 SHA
+  `677C4FF9727A479B40D068EC7E62A7AC54EF2E21A3EF57649D624C7648B279F9`，实值为 duchy `2296`、capital
+  `2543`、immediate/top `37011`。两场均发布 `feudal_government` 的完整 5 flags 与当前 playset 的 84 个 selected
+  setting tokens；各自两 PID、相邻双查询、cold business equality、source SHA、managed cleanup 与 nonce cleanup 全 GREEN。
+  首轮 RED 证明 save 会合法推动 snapshot/public/native revision；查询稳定 gate 必须保持 save 前严格同帧，save 后改验同
+  date/episode/paused 与 revision 单调前进。当前尚未覆盖另一 rank/government 或 landless 合法 absent，不得把“两角色”写成
+  “两 rank 已完成”。
+- 2026-08-26 `loaded-feature-manifest-v1` 用 fresh Release DLL SHA
+  `F05C7DACB657114B1F85CB1C93925409906E1606F5847E16A6F9D98C5452D60D` 在单一受管 PID `13232` 完成 paused/map-ready
+  同帧 query sequence `1 -> 2`。`date_raw=53178264`、public/native revision `4/3`；两次完整 normalized frame 严格相等，
+  发布 44/44 index/CStringId/key rows、当次 playset 44 个 true flag 与 29 个 unsigned-UTF-8-bytewise 排序 runtime
+  `has_dlc` key，entitlement 明确保持 `unavailable/store_verdict_provenance_unclosed`。源存档 67,287,758 bytes、SHA
+  `9104CCB8...12CC63` 前后不变；155.073 秒受管 session、进程树与 nonce disposable root 均 GREEN。artifact 位于
+  `C:\Users\xenoa\AppData\Local\Temp\xar-loaded-feature-manifest-live-v1.json`，SHA
+  `2B1C8CA495A3A03F39C8C27351411B5AED2285D732946AACF5AFE89D8B3C2F2D`。runner 只允许两条只读 query；不得把
+  全 true 或 29 keys 写成 hard-coded fixture，更不得将 runtime key 推断成 ownership、entitlement 或宗教语义。
 - 同轮旧增量 MSVC build directory 曾产出注入后 `C0000005` 的 RED。原因不是 CK3 ABI 漂移，而是中文编译器
   `/showIncludes` 输出未被依赖跟踪解析，`game_contract.hpp` 已变更却仍链接旧对象。`native_bridge/CMakeLists.txt`
   现只针对已实测的乱码探测值，把 Ninja 的依赖前缀修正为编译器实际输出的 `注意: 包含文件:`；fresh `v1h`

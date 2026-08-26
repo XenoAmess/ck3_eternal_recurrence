@@ -124,6 +124,16 @@ from .battle_reinforcement_assignment_contract import (
     parse_query_battle_reinforcement_assignment_v1_step,
     query_battle_reinforcement_assignment_v1_step,
 )
+from .campaign_root_context_contract import (
+    QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
+    QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+    normalize_campaign_root_context_v1,
+)
+from .loaded_feature_manifest_contract import (
+    QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
+    QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
+    normalize_loaded_feature_manifest_v1,
+)
 from .active_combat_retreat_contract import (
     ACTIVE_COMBAT_RETREAT_V1_CONTRACT_STAGE,
     ORDER_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX,
@@ -964,6 +974,14 @@ class NativeHeadlessGameplayDriver:
                 QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "campaign_root_context_v1_query_supported": (
+                QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "loaded_feature_manifest_v1_query_supported": (
+                QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "active_combat_retreat_v1_composition_supported": (
                 active_retreat_composition_supported
             ),
@@ -1201,6 +1219,14 @@ class NativeHeadlessGameplayDriver:
             ),
             "battle_reinforcement_assignment_v1_query_supported": (
                 QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "campaign_root_context_v1_query_supported": (
+                QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "loaded_feature_manifest_v1_query_supported": (
+                QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "combat_simulation_inputs_query_supported": (
@@ -2311,6 +2337,34 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_battle_reinforcement_assignment_v1_query(
                 step,
+                expected_revision=expected_revision,
+            )
+        if step == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query the campaign root context"
+                )
+            return self._execute_campaign_root_context_v1_query(
+                expected_revision=expected_revision,
+            )
+        if step == QUERY_LOADED_FEATURE_MANIFEST_V1_STEP:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query the loaded feature manifest"
+                )
+            return self._execute_loaded_feature_manifest_v1_query(
                 expected_revision=expected_revision,
             )
         if war_entry_targets is not None:
@@ -6191,6 +6245,238 @@ class NativeHeadlessGameplayDriver:
             "queried_native_revision": native_revision,
         }
 
+    def _execute_campaign_root_context_v1_query(
+        self,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read the atomic local-player campaign root while paused."""
+        step = QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native campaign-root query requires a paused snapshot"
+            )
+        date_raw = _date_raw(starting, "campaign-root starting snapshot")
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native campaign-root query lacks a native revision"
+            )
+        starting_revision = int(starting["revision"])
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else starting_revision
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "snapshot_revision",
+                "campaign_root_context",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native campaign-root query returned a malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native campaign-root query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_campaign_root_context_v1(
+                result.get("campaign_root_context"),
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native campaign-root query returned a malformed frame: "
+                f"{error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native campaign-root envelope status disagrees with frame"
+            )
+        current = self.take_snapshot()
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+        ):
+            raise BridgeUnavailableError(
+                "native campaign-root query crossed a snapshot revision"
+            )
+        mirror_keys = (
+            "schema_version",
+            "date_raw",
+            "local_player_id",
+            "player_character_id",
+            "player_character_alive",
+            "primary_title",
+            "capital_province_id",
+            "immediate_liege_character_id",
+            "top_liege_character_id",
+            "independent",
+            "government",
+            "selected_game_rule_tokens",
+            "native_selected_game_rule_token_count",
+            "readiness",
+            "unavailable_reason",
+            "provenance",
+        )
+        return {
+            **result,
+            "status": normalized["status"],
+            "campaign_root_context": normalized,
+            "query_sequence": query_sequence,
+            **{
+                key: copy.deepcopy(normalized[key])
+                for key in mirror_keys
+            },
+            "campaign_root_context_ready": normalized["readiness"][
+                "ready"
+            ],
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+        }
+
+    def _execute_loaded_feature_manifest_v1_query(
+        self,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read effective build flags and script DLC keys while paused."""
+        step = QUERY_LOADED_FEATURE_MANIFEST_V1_STEP
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native loaded-feature query requires a paused snapshot"
+            )
+        date_raw = _date_raw(starting, "loaded-feature starting snapshot")
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native loaded-feature query lacks a native revision"
+            )
+        starting_revision = int(starting["revision"])
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else starting_revision
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "snapshot_revision",
+                "loaded_feature_manifest",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native loaded-feature query returned a malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native loaded-feature query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_loaded_feature_manifest_v1(
+                result.get("loaded_feature_manifest"),
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native loaded-feature query returned a malformed frame: "
+                f"{error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native loaded-feature envelope status disagrees with frame"
+            )
+        current = self.take_snapshot()
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+        ):
+            raise BridgeUnavailableError(
+                "native loaded-feature query crossed a snapshot revision"
+            )
+        mirror_keys = (
+            "schema",
+            "schema_version",
+            "date_raw",
+            "unavailable_reason",
+            "build",
+            "effective_feature_flags",
+            "script_dlc_keys",
+            "entitlements",
+            "readiness",
+            "provenance",
+        )
+        return {
+            **result,
+            "status": normalized["status"],
+            "loaded_feature_manifest": normalized,
+            "query_sequence": query_sequence,
+            **{
+                key: copy.deepcopy(normalized[key])
+                for key in mirror_keys
+            },
+            "loaded_feature_manifest_ready": normalized["readiness"][
+                "actionable_ready"
+            ],
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+        }
+
     def _execute_war_termination_terms_query(
         self,
         step: str,
@@ -7748,6 +8034,104 @@ class ConfiguredHybridFallbackDriver:
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        if step == QUERY_LOADED_FEATURE_MANIFEST_V1_STEP:
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "loaded-feature queries are pure native and will not use "
+                    "fallback"
+                )
+            starting = self.take_snapshot()
+            native_revision = None
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            ending = self.take_snapshot()
+            if (
+                ending.get("snapshot_id") != starting.get("snapshot_id")
+                or ending.get("revision") != starting.get("revision")
+                or ending.get("native_revision")
+                != starting.get("native_revision")
+                or ending.get("date_raw") != starting.get("date_raw")
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid loaded-feature query crossed a snapshot revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+            }
+        if step == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP:
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "campaign-root queries are pure native and will not use "
+                    "fallback"
+                )
+            starting = self.take_snapshot()
+            native_revision = None
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            ending = self.take_snapshot()
+            if (
+                ending.get("snapshot_id") != starting.get("snapshot_id")
+                or ending.get("revision") != starting.get("revision")
+                or ending.get("native_revision")
+                != starting.get("native_revision")
+                or ending.get("date_raw") != starting.get("date_raw")
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid campaign-root query crossed a snapshot revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+            }
         if isinstance(step, str) and step.startswith(
             QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX
         ):
@@ -9447,6 +9831,8 @@ def _action_steps(
     expand_actual_contact_scopes = False
     expand_battle_control_snapshots = False
     expand_battle_reinforcement_assignments = False
+    advertise_campaign_root_context = False
+    advertise_loaded_feature_manifest = False
     expand_disband_armies = False
     expand_split_armies = False
     expand_merge_armies = False
@@ -9494,6 +9880,10 @@ def _action_steps(
             == QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
         ):
             expand_battle_reinforcement_assignments = True
+        elif capability == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY:
+            advertise_campaign_root_context = True
+        elif capability == QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY:
+            advertise_loaded_feature_manifest = True
         elif capability == DISBAND_ARMY_CAPABILITY:
             expand_disband_armies = True
         elif capability == SPLIT_ARMY_HALF_CAPABILITY:
@@ -9561,6 +9951,8 @@ def _action_steps(
                 QUERY_BATTLE_TRANSITION_V1_STEP_PREFIX,
                 QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX,
                 QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX,
+                QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+                QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
                 "query-war-termination-options-",
                 "query-war-termination-terms-v1-",
                 QUERY_WAR_TERMINATION_EXIT_TERMS_STEP_PREFIX,
@@ -9645,6 +10037,10 @@ def _action_steps(
         )
     if advertise_army_strength_query and paused is True:
         steps.add(QUERY_ARMY_STRENGTHS_STEP)
+    if advertise_campaign_root_context and paused is True:
+        steps.add(QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP)
+    if advertise_loaded_feature_manifest and paused is True:
+        steps.add(QUERY_LOADED_FEATURE_MANIFEST_V1_STEP)
     if expand_actual_contact_scopes and paused is True:
         steps.update(
             query_actual_contact_scope_step(
@@ -9793,12 +10189,32 @@ def _action_steps(
             army_id = army.get("army_id")
             if not isinstance(army_id, int):
                 continue
-            for province_id in target_provinces:
-                if province_id == army.get("current_province_id"):
+            army_target_provinces = set(target_provinces)
+            current_province_id = army.get("current_province_id")
+            current_route = army.get("route_province_ids")
+            same_province_route_clear_ready = bool(
+                _positive_native_id(current_province_id)
+                and isinstance(current_route, list)
+                and current_route
+            )
+            if same_province_route_clear_ready:
+                army_target_provinces.add(int(current_province_id))
+            for province_id in army_target_provinces:
+                same_province_route_clear = bool(
+                    province_id == current_province_id
+                    and same_province_route_clear_ready
+                )
+                if (
+                    province_id == current_province_id
+                    and not same_province_route_clear
+                ):
                     continue
                 if (
                     expand_move_armies
-                    and province_id != army.get("move_target_province_id")
+                    and (
+                        same_province_route_clear
+                        or province_id != army.get("move_target_province_id")
+                    )
                 ):
                     steps.add(move_army_step(army_id, province_id))
                 if expand_preview_move_armies:

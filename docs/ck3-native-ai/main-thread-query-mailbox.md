@@ -2,14 +2,16 @@
 
 ## Result and scope
 
-`main_thread_query_mailbox_v1` now has six bounded production uses:
+`main_thread_query_mailbox_v1` now has ten bounded production uses:
 `query-war-entry-assessments-v1`, `query-route-contact-horizon-v1-N`,
-`query-actual-contact-scope-v1-N` and
-`query-combat-simulation-inputs-v3-N`, plus
-`query-battle-control-snapshot-v1-N` and
-`query-battle-transition-v1-N`. The candidate identity remains
+`query-actual-contact-scope-v1-N`, `query-combat-simulation-inputs-v3-N`,
+`query-battle-control-snapshot-v1-N`, `query-battle-transition-v1-N`,
+`query-battle-reinforcement-assignment-v1-N`,
+`query-battle-terminal-transition-v1`,
+`query-campaign-root-context-v1` and
+`query-loaded-feature-manifest-v1`. The candidate identity remains
 `application_main_thread_war_entry_v1`; the heartbeat query scope is
-`typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition`.
+`typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest`.
 It is not a general native-call, effect, or scripted-VM executor.
 
 The first paused live counter run reached SDL `PeekMessageW` return
@@ -23,13 +25,17 @@ live-confirmed; RNG owner remains raw provenance only.
 The route-contact, actual-contact, combat-v3 and ongoing battle-control typed
 executors have exact-build live results; war-entry and the new by-CombatID
 lifecycle query still require their own paused live acceptance. Production
-admits at most one request per pump and only six named callbacks:
+admits at most one request per pump and only ten named callbacks:
 `ExecuteWarEntryAssessmentMailboxQueryV1`,
 `ExecuteRouteContactHorizonMailboxQueryV1`,
-`ExecuteActualContactScopeMailboxQueryV1`, and
-`ExecuteCombatSimulationInputsV3MailboxQuery`, and
-`ExecuteBattleControlSnapshotMailboxQueryV1`, and
-`ExecuteBattleTransitionMailboxQueryV1`. War-entry remains limited to
+`ExecuteActualContactScopeMailboxQueryV1`,
+`ExecuteCombatSimulationInputsV3MailboxQuery`,
+`ExecuteBattleControlSnapshotMailboxQueryV1`,
+`ExecuteBattleTransitionMailboxQueryV1`,
+`ExecuteBattleReinforcementAssignmentMailboxQueryV1`,
+`ExecuteBattleTerminalTransitionMailboxQueryV1`,
+`ExecuteCampaignRootContextMailboxQueryV1` and
+`ExecuteLoadedFeatureManifestMailboxQueryV1`. War-entry remains limited to
 one target per request; route-contact is limited to one controllable subject
 and the exact complete hostile scope, at most 64 ArmyIDs.
 
@@ -88,7 +94,7 @@ flowchart TD
     E --> F[Observe exact return 0x3CE4222]
     F --> G{TLS + paused + date + identity stable twice?}
     G -- no --> F
-    G -- yes --> H[Six typed read-only executors ready]
+    G -- yes --> H[Ten typed read-only executors ready]
     H --> I[Stop]
     I --> J[Restore original IAT and drain counted hooks]
     J --> K[Detached; process-pinned storage retained]
@@ -108,7 +114,11 @@ to `ExecuteRouteContactHorizonMailboxQueryV1`; the tertiary and quaternary
 slots are fixed to `ExecuteActualContactScopeMailboxQueryV1` and
 `ExecuteCombatSimulationInputsV3MailboxQuery`; the quinary slot is fixed to
 `ExecuteBattleControlSnapshotMailboxQueryV1`; the senary slot is fixed to
-`ExecuteBattleTransitionMailboxQueryV1`.
+`ExecuteBattleTransitionMailboxQueryV1`; the septenary and octonary slots are
+fixed to `ExecuteBattleReinforcementAssignmentMailboxQueryV1` and
+`ExecuteBattleTerminalTransitionMailboxQueryV1`; the nonary and denary slots
+are fixed to `ExecuteCampaignRootContextMailboxQueryV1` and
+`ExecuteLoadedFeatureManifestMailboxQueryV1`.
 `TrySubmitMainThreadQueryV1` rejects every other callback. The war-entry bridge
 additionally requires exactly one target. Timeout can cancel a queued request
 only. Once state is `executing`, the worker retains the caller-owned context
@@ -786,9 +796,11 @@ unobserved.
 | Application-main paused boundary | true | live pump plus TLS gate; RNG mismatch recorded as provenance |
 | War-entry direct-call graph excludes RNG/effect VM | true | independent depth-12 review |
 | Fresh before/middle/after frame capture | true in build | deterministic source/fixture checks |
-| Only permitted executors | true in build | six fixed production slots plus submit identity gate |
+| Only permitted executors | true in build | ten fixed production slots plus submit identity gate |
 | Ongoing battle-control executor | true | fifth typed slot; cold checkpoint maneuver→main ledger acceptance and managed cleanup are live-confirmed in [ongoing-battle-frame.md](ongoing-battle-frame.md) |
 | By-CombatID lifecycle executor | true in build | sixth typed slot; direct full-ID combat resolution, stable double sample, phase/winner/result and ordered sides; live acceptance pending |
+| Campaign-root executor | true | ninth typed slot; exact-build player/title/capital/liege/government/rules query is production-live confirmed in [campaign-root-context.md](campaign-root-context.md) |
+| Loaded-feature executor | true | tenth typed slot; production-live double query returned all 44 effective feature gates and 29 runtime `has_dlc` keys, while entitlement stayed typed unavailable; artifact `2B1C8CA4...C2F2D` |
 | First-live one-target result | pending | deploy this artifact and query one declarable target while paused |
 | First-live route-contact result | true | 2.466 s available result; `executed_requests 0 -> 1`; one-day advance completed |
 | Actual contact sides/order | true | P0 live frame and cold restore preserve CombatID, Province and native side order |

@@ -102,6 +102,102 @@
       "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 54 41 56 41 57 48 83 EC 50 44 8B E2 4C 8B F1"
     },
     {
+      "name": "event_window_setup_options",
+      "rva": "0x16CC780",
+      "confidence": "high-static",
+      "pattern": "44 89 4C 24 20 4C 89 44 24 18 48 89 54 24 10 48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 81 EC A8 00 00 00"
+    },
+    {
+      "name": "event_option_item_materialize",
+      "rva": "0x16D6B10",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 41 54 41 55 41 56 41 57 48 83 EC 50 49 8B D9 49 8B F0 4C 8B F2 48 8B F9"
+    },
+    {
+      "name": "event_option_item_construct",
+      "rva": "0x16D23B0",
+      "confidence": "high-static",
+      "pattern": "48 8B C4 48 89 58 18 4C 89 48 20 48 89 48 08 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 B0 48 81 EC 50 01 00 00"
+    },
+    {
+      "name": "event_option_effect_preview_materialize",
+      "rva": "0x16D2CF0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D AC 24 80 FC FF FF 48 81 EC 80 04 00 00 4D 8B F0 48 8B FA 4C 8B F9 C6 44 24 50 00 48 8D 05 CC EF AA 02 48 89 44 24 48 45 33 E4 44 89 64 24 58 48 89 4C 24 60 44 89 64 24 68 66 44 89 64 24 6C 48 8D 8A 58 03 00 00 4C 8D 44 24 48 49 8B D6 E8 13 D4 CA 01"
+    },
+    {
+      "name": "event_option_constructor",
+      "rva": "0x21F1220",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 48 89 4C 24 08 57 41 56 41 57 48 83 EC 20 49 8B F8 48 8B F1"
+    },
+    {
+      "name": "event_option_deleting_destructor",
+      "rva": "0x21F1450",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B D9 8B FA 48 8B 89 70 04 00 00 48 85 C9 74 0A 48 8B 01 BA 01 00 00 00 FF 10"
+    },
+    {
+      "name": "event_option_unlock_reason_materialize",
+      "rva": "0x2537490",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 20 4C 89 44 24 18 48 89 54 24 10 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 70 FF FF FF 48 81 EC 90 01 00 00 4D 8B E8 48 8B F2 4C 8B F9 4C 8B 81 F0 03 00 00 48 63 81 FC 03 00 00 4D 8D 0C 80"
+    },
+    {
+      "name": "event_option_ai_selector",
+      "rva": "0x33E71B0",
+      "confidence": "high-static",
+      "pattern": "44 88 4C 24 20 44 89 44 24 18 48 89 54 24 10 55 53 56 57 41 54 41 55 41 56 41 57 48 81 EC 28 01 00 00"
+    },
+    {
+      "name": "event_option_ai_weight_evaluator",
+      "rva": "0x33E7E60",
+      "confidence": "high-static",
+      "pattern": "48 89 74 24 18 57 48 83 EC 60 33 FF 48 8B F2 48 89 3A 48 8D 54 24 70 39 B9 18 03 00 00 74 5D"
+    },
+    {
+      "name": "event_option_name_resolver",
+      "rva": "0x33E7FF0",
+      "confidence": "high-static",
+      "pattern": "40 55 41 54 41 55 41 56 41 57 48 83 EC 50 48 8D 6C 24 20 48 89 5D 60 48 89 75 68 48 89 7D 70 4D 8B E0"
+    },
+    {
+      "name": "event_option_ai_rng_draw_wrapper",
+      "rva": "0x356A0A0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 30 48 8B 1D 17 11 A8 01 48 8B FA 90 48 85 DB 74 11 E8 41 5F 79 00 48 8B 0B"
+    },
+    {
+      "name": "event_option_ai_rng_u31_core",
+      "rva": "0x356B770",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 4C 8B 19 48 8B F9 45 8B 53 08 45 8B 43 0C 41 69 C2 B3 85 D6 4A 44 2B C0"
+    },
+    {
+      "name": "event_option_positive_weight_picker",
+      "rva": "0x3BB6DD0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 45 33 DB 41 8B F1 41 8B F8 48 8B DA 45 8B D3 41 8B C3 85 C9 0F 8E 9C 00 00 00 83 F9 04 0F 82 93 00 00 00"
+    },
+    {
+      "name": "event_option_effect_execute",
+      "rva": "0x33E68C0",
+      "confidence": "high-static",
+      "pattern": "48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 55 48 8D 68 E8 48 81 EC 10 01 00 00 0F 29 70 E8 44 0F 29 40 D8"
+    },
+    {
+      "name": "loaded_effect_preview_collect",
+      "rva": "0x3380170",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 18 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 D0 FC FF FF 48 81 EC 30 04 00 00 4D 8B F8"
+    },
+    {
+      "name": "loaded_effect_execute",
+      "rva": "0x3380410",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 57 48 81 EC 30 04 00 00 48 8B FA 48 8B D9 4C 8B C1 48 8D 8C 24 40 04 00 00"
+    },
+    {
       "name": "auto_save_command_construct_and_submit",
       "rva": "0x2051031",
       "confidence": "high-static",
@@ -136,6 +232,60 @@
       "rva": "0x26B3540",
       "confidence": "high-static",
       "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B F9 83 79 24 04 0F 84 D6 00 00 00 48 8B 05 65 BC 10 03"
+    },
+    {
+      "name": "reply_character_interaction_execute",
+      "rva": "0x26B3480",
+      "confidence": "high-static",
+      "pattern": "40 53 4C 8B 05 3F BD 10 03 4C 8B D1 48 8B 15 15 BD 10 03 4D 85 C0 74 2B 44 8B 49 08 41 8B C1 25 FF FF FF 00"
+    },
+    {
+      "name": "pending_character_interaction_construct",
+      "rva": "0x27541F0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 4C 89 44 24 18 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 20 4D 8B E9 4C 8B E2 48 8D 59 08"
+    },
+    {
+      "name": "character_interaction_context_copy_construct",
+      "rva": "0x2C3ED50",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 4C 24 08 57 41 56 41 57 48 83 EC 20 4C 8B F2 4C 8B F9 48 8B 02 48 89 01"
+    },
+    {
+      "name": "pending_character_interaction_daily_age_and_expiry",
+      "rva": "0x27516F0",
+      "confidence": "high-static",
+      "pattern": "48 89 6C 24 18 48 89 7C 24 20 41 56 48 83 EC 20 33 C0 48 8B E9 89 41 24 89 41 3C 48 8B 79 50 48 63 41 5C"
+    },
+    {
+      "name": "character_interaction_context_identity_validate",
+      "rva": "0x2C42610",
+      "confidence": "high-static",
+      "pattern": "40 53 48 83 EC 20 48 8B D9 48 8B 09 48 8B 01 FF 10 84 C0 0F 84 D1 00 00 00 8B 8B DC 02 00 00 E8 EC ED FF FF"
+    },
+    {
+      "name": "character_interaction_reply_state_predicate",
+      "rva": "0x2C42A30",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 44 88 44 24 18 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 90 FE FF FF 48 81 EC 70 02 00 00"
+    },
+    {
+      "name": "character_interaction_send_option_gate",
+      "rva": "0x2C408B0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 48 63 DA 48 8B F9 85 D2 78 64 48 8B 01 3B 98 54 25 00 00"
+    },
+    {
+      "name": "character_interaction_definition_construct",
+      "rva": "0x2C385F0",
+      "confidence": "high-static",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 4C 24 08 56 57 41 56 48 83 EC 30 48 8B F1 45 85 C9 74 0B 48 8D 05 82 D3 7B 01"
+    },
+    {
+      "name": "character_interaction_expiration_define_registration",
+      "rva": "0x211D250",
+      "confidence": "high-static",
+      "pattern": "48 8B CA 4C 8D 0D CE 22 5F 03 48 8D 15 97 FF 1B 02 4C 8D 05 A8 FF 1B 02 E9 43 3C 9D FE"
     },
     {
       "name": "war_participant_container_contains_character",
@@ -851,13 +1001,51 @@
     "select_event_option_primary_vtable": "0x4335240",
     "select_event_option_secondary_vtable": "0x4335210",
     "get_current_event_for_local_player": "0x2706AD0",
+    "event_window_setup_options": "0x16CC780",
+    "event_option_vtable": "0x42F55E8",
+    "event_option_rtti_type_descriptor": "0x54925B0",
+    "event_option_constructor": "0x21F1220",
+    "event_option_deleting_destructor": "0x21F1450",
+    "event_option_unlock_reason_materialize": "0x2537490",
+    "event_option_item_materialize": "0x16D6B10",
+    "event_option_item_construct": "0x16D23B0",
+    "event_option_effect_preview_materialize": "0x16D2CF0",
+    "event_option_name_resolver": "0x33E7FF0",
+    "event_option_ai_selector": "0x33E71B0",
+    "event_option_ai_weight_evaluator": "0x33E7E60",
+    "event_option_ai_rng_draw_wrapper": "0x356A0A0",
+    "event_option_weighted_picker": "0x3BB6DD0",
+    "event_option_effect_execute": "0x33E68C0",
+    "loaded_effect_preview_collect": "0x3380170",
+    "loaded_effect_execute": "0x3380410",
     "auto_save_primary_vtable": "0x40AABE8",
     "auto_save_secondary_vtable": "0x40AAC80",
     "reply_character_interaction_primary_vtable": "0x4082930",
     "reply_character_interaction_secondary_vtable": "0x4082900",
     "pending_character_interaction_storage_slot": "0x57BF1C8",
+    "pending_character_interaction_type_descriptor": "0x54BB780",
+    "pending_character_interaction_primary_vtable": "0x431C550",
+    "pending_character_interaction_secondary_vtable": "0x431C538",
+    "pending_character_interaction_construct": "0x27541F0",
+    "pending_character_interaction_context_copy_construct": "0x2C3ED50",
     "pending_character_interaction_is_for_character": "0x1266BA0",
+    "pending_character_interaction_daily_age_and_expiry": "0x27516F0",
+    "pending_character_interaction_manager_response_transition": "0x2751410",
+    "pending_character_interaction_serializer": "0x2750CF0",
+    "reply_character_interaction_execute": "0x26B3480",
     "validate_reply_character_interaction_command": "0x26B3540",
+    "character_interaction_context_identity_validate": "0x2C42610",
+    "character_interaction_reply_state_predicate": "0x2C42A30",
+    "character_interaction_send_option_gate": "0x2C408B0",
+    "character_interaction_context_serializer": "0x2C3F400",
+    "generic_script_scope_serializer_dispatch": "0x81D880",
+    "character_interaction_definition_construct": "0x2C385F0",
+    "character_interaction_definition_type_descriptor": "0x50401B0",
+    "character_interaction_definition_primary_vtable": "0x4403CE0",
+    "character_interaction_definition_secondary_vtable": "0x4403CA8",
+    "character_interaction_expiration_days_global": "0x570F528",
+    "character_interaction_expiration_define_name": "0x42DD210",
+    "character_interaction_expiration_define_registration": "0x211D250",
     "army_storage_slot": "0x570CC80",
     "unit_state_code": "0xC7AAB0",
     "army_internal_storage_slot": "0x570C730",
@@ -1032,6 +1220,11 @@
       "name": "CSelectEventOptionCommand.primary",
       "rva": "0x4335240",
       "function_rvas": ["0x801FD0", "0x3B8B090", "0x34184C0", "0x3B8B110", "0x34186D0", "0x7E6490", "0x26FF410", "0x803620", "0x26FF700"]
+    },
+    {
+      "name": "CEventOption.main",
+      "rva": "0x42F55E8",
+      "function_rvas": ["0x21F1450", "0x3B8B090", "0x7E6490", "0x33E7A60", "0x25378D0", "0x33E7E20", "0x2537D50", "0x2537270"]
     },
     {
       "name": "CAutoSaveCommand.primary",
@@ -1235,6 +1428,80 @@
       "options": "+0x1B0 pointer to option pointer array",
       "option_count": "+0x1BC int32; executor RVA 0x33E68C0 bounds-checks the native zero-based index against it"
     },
+    "CEventOption": {
+      "size": "0x480 from deleting destructor RVA 0x21F1450",
+      "vtable": "+0x00 = RVA 0x42F55E8; RTTI TypeDescriptor RVA 0x54925B0",
+      "dynamic_name": "+0x10 pointer, +0x18 capacity, +0x1C int32 count; resolver RVA 0x33E7FF0 returns an MSVC string, filters multiple candidates through their +0x30 trigger and uses a context-derived deterministic choice, falling back to the first authored name when no candidate trigger passes",
+      "ai_chance": "+0x28 scripted-modifier subobject; constructor initializes its base at absolute +0x88 to CFixedPoint raw 100000 (semantic 1); used only when ai_will_select is absent",
+      "required_trigger": "+0x90 embedded trigger; generic evaluator RVA 0x334C510 consumes SPlayerEventData context",
+      "show_as_unavailable_trigger": "+0x170 embedded trigger; absolute +0x1CC int32 nonzero/count gate precedes evaluator RVA 0x334C510",
+      "ai_will_select": "+0x250 dynamic script-value subobject; absolute +0x318 int32 nonzero/count gate selects it over ai_chance and evaluator RVA 0x1409696C0 returns CFixedPoint raw",
+      "effect": "+0x358 loaded effect; execution RVA 0x33E68C0 calls 0x3380410, while GUI preview materializer RVA 0x16D2CF0 calls read/presentation collector RVA 0x3380170",
+      "raw_context_mode": "+0x3E8 uint8 discriminator and +0x3E9 uint8 presence; both GUI and AI compare them with SPlayerEventData+0x1C0, but the authored business name remains unknown",
+      "fallback": "+0x3EA uint8; only scanned after the regular materialized/candidate count is zero; neither GUI nor AI fallback loop re-evaluates +0x90",
+      "exclusive": "+0x3EB uint8; first trigger-valid exclusive clears earlier regular candidates and suppresses later non-exclusive options",
+      "unlock_reason_metadata": "+0x3F0, +0x408 and +0x420 native arrays consumed by RVA 0x2537490; their exact reason/skill/trait per-array naming remains unknown",
+      "clicksound": "+0x438 MSVC string resolved to the GUI audio resource at CEventOptionItem+0x168",
+      "probable_highlight_portrait": "+0x458 native dynamic-scope entries, +0x464 int32 count; consumed by GUI preview/highlight presentation at RVA 0x16D2CF0 and consistent with the authored highlight_portrait contract, but the exact parser-field correlation remains medium-static",
+      "unclassified_pointer": "+0x470 polymorphic pointer; business name unknown",
+      "is_cancel_option": "+0x478 uint8; SetupOptions saves the first matching native index at CEventWindowData+0x2C",
+      "show_unlock_reason": "+0x479 uint8, constructor default 1; gates RVA 0x2537490 and its reason/skill/trait plus trigger-failure presentation",
+      "unclassified_tail_flag": "+0x47A uint8, constructor default 0; parser and one downstream consumer are observed but semantic name is unknown"
+    },
+    "SOptionStatus": {
+      "size": "0x02 temporary bytes per authored option allocated by RVA 0x16CC780",
+      "enabled": "+0x00 uint8; one only after the regular required-trigger path succeeds, or forced one for fallback materialization",
+      "shown": "+0x01 uint8; one for enabled regular options and trigger-valid show_as_unavailable options; hidden rows never enter the materialized vector"
+    },
+    "CEventWindowData": {
+      "option_items": "+0x10 inline CEventOptionItem vector; +0x18 capacity and +0x1C int32 count; SetupOptions clears and rebuilds it",
+      "cancel_option_index": "+0x2C int32 first authored native index whose CEventOption+0x478 is nonzero; negative sentinel when absent, with exact -1/-2 subtype meaning not closed"
+    },
+    "CEventOptionItem": {
+      "size": "0x1B8 inline stride allocated and copied by RVA 0x16D6B10",
+      "owner": "+0x160 CEventWindowData pointer",
+      "clicksound_resource": "+0x168 resolved resource pointer or event-level fallback",
+      "resolved_name": "+0x170 MSVC string written by RVA 0x33E7FF0",
+      "unavailable_reason": "+0x190 MSVC string populated by the +0x479-gated reason materializer from +0x3F0/+0x408/+0x420 metadata and, when applicable, CEventOption+0x90 trigger-failure presentation; exact per-source naming remains unknown",
+      "native_option_index": "+0x1B0 int32 authored zero-based index copied from SetupOptions",
+      "enabled": "+0x1B4 uint8 copied from SOptionStatus+0x00",
+      "fallback_materialized": "+0x1B5 uint8; zero in constructor, set to one by SetupOptions only for its fallback loop",
+      "shown_semantics": "vector membership itself is shown=true; hidden authored options have no CEventOptionItem"
+    },
+    "EventOptionAISelection": {
+      "selector": "RVA 0x33E71B0(EventData*, SPlayerEventData*, int32 decision_value, uint8 context_mode) returns native zero-based index or -1",
+      "regular_candidates": "authored order; apply +0x3E8/+0x3E9 context gate, +0x90 trigger and +0x3EB exclusive semantics",
+      "fallback_candidates": "scan +0x3EA only when regular candidate count is zero; do not re-run mode or required trigger and do not apply exclusive logic",
+      "weight_precedence": "absolute +0x318 nonzero selects ai_will_select +0x250, otherwise ai_chance +0x28; final signed integer weight is ceil(CFixedPoint raw / 100000)",
+      "positive_weight_draw": "ignore zero/negative weights; RVA 0x3BB6DD0 selects the first authored cumulative positive interval greater than floor(decision_value * positive_sum / 2^31)",
+      "all_nonpositive_draw": "when candidate count is positive but positive_sum <= 0, choose decision_value modulo candidate_count among marked candidates in authored order; fallback is not reopened",
+      "decision_value": "caller RVA 0x278DE1E obtains it from RVA 0x356A0A0 -> 0x356B770, whose final BTR bit31 produces 0..0x7FFFFFFF",
+      "empty_result": "return -1 only when both regular and fallback candidate counts are zero"
+    },
+    "EventOptionSourceContract": {
+      "range_convention": "start inclusive, end exclusive",
+      "setup_options": "0x16CC780..0x16CCE4C (0x6CC bytes), SHA256 FF2DF0C06EAD003EB858D6C079FC3B07586B93C157AFFFA866BE8BA721E27E0F",
+      "setup_options_regular_status_scan": "0x16CC900..0x16CCA6A (0x16A bytes), SHA256 462DB24455B8D800D2C9DAD2BA296730EDD3C26E9887FEAD2D175B9A8C7B845D",
+      "setup_options_regular_materialization": "0x16CCA90..0x16CCBF0 (0x160 bytes), SHA256 D5766B4427B87C04FB7474A7C5A47331657D935A89CAC6D4E2B713C3FB74CDC1",
+      "setup_options_fallback_entry_gate": "0x16CCBF0..0x16CCC03 (0x13 bytes), SHA256 FEC6359D66EFFFECD7099767749304695C2CDB516F8B46BA1887835340AE1749",
+      "setup_options_fallback_only_scan": "0x16CCC03..0x16CCD43 (0x140 bytes), SHA256 EFEB6F509AAC0B0EB1A5B18A864D58E1D0A335068A934AE56614B63E2B70CDB5",
+      "event_option_item_constructor": "0x16D23B0..0x16D2C5C (0x8AC bytes), SHA256 D3632FE7513B72E3B6A68BD93F37D0703AC5631D906B073AC536FA62FB686E1A",
+      "event_option_preview_materializer": "0x16D2CF0..0x16D3076 (0x386 bytes), SHA256 A38D1C098C6B7CCE65F47A4D4C7D5C4C65D9F2E846CF2BCB5BB77BE4236B45CE",
+      "event_option_item_materializer": "0x16D6B10..0x16D6DF7 (0x2E7 bytes), SHA256 378A1C03360B793EFA234CF7A28E1BEF957FF4826132D6F590DC6EF85440A059",
+      "event_option_constructor": "0x21F1220..0x21F1446 (0x226 bytes), SHA256 7B780AE05040D6288957E3AEFF2714A6BFDAFA6799CB5B51E83D335DCB3B65BF",
+      "event_option_deleting_destructor": "0x21F1450..0x21F1590 (0x140 bytes), SHA256 E5B2460607EA8233198327B644FE590977C69EB02DE25EC50E4BEC9275005C02",
+      "event_option_unlock_reason_materialize": "0x2537490..0x25378CD (0x43D bytes), SHA256 5C787D84BA1CFBF1CD5FE06EC37FBCF35E1FD5D0EA7AEB70C4469B2360B29733",
+      "loaded_effect_preview_collector": "0x3380170..0x338030C (0x19C bytes), SHA256 8B50D40D412B827D7FAC2EE58B5446BE9B8F44A219EA60826C87E878D23D29AA",
+      "loaded_effect_executor": "0x3380410..0x3380519 (0x109 bytes), SHA256 8A7A94AA350B462921BE9C8ADB4DD6B571FB884580C3FBAF84854A69834E32A5",
+      "event_option_effect_execute": "0x33E68C0..0x33E6BBC (0x2FC bytes), SHA256 2C05250C6AEA9CE1FF25C750441F8082B9EE7FF490DE8E80C9BADAED87FC1176",
+      "ai_selector": "0x33E71B0..0x33E784E (0x69E bytes), SHA256 0B2C3AD3DC5E848990CDCAE1A68575C790EFE58FC1BD7F0510714AE8C5D29688",
+      "ai_weight_evaluator_logical_extent": "0x33E7E60..0x33E7FE4 (0x184 bytes over .pdata regions 0x33E7E60..0x33E7EDC, 0x33E7EDC..0x33E7F11 and 0x33E7F11..0x33E7FE4), SHA256 2AB07CE41E491E92FFAC49C1444D5F8CFB1D212D9D40706DFBF6D078E56C7817",
+      "name_resolver": "0x33E7FF0..0x33E827C (0x28C bytes), SHA256 14FB2C99950D26BBDA0283FF397B52E0B8EA6B7D4A9AE742B94F8EEF7E342D29",
+      "rng_draw_wrapper": "0x356A0A0..0x356A100 (0x60 bytes), SHA256 470658755643EAAB6243DBD11D0D37E5DD47663D583CF0D481E36BF8CE513D44",
+      "rng_u31_core": "0x356B770..0x356B7F3 (0x83 bytes), SHA256 C052FC8B6F63FA36FC99CE436A6AD11ECFF5BD16487068652499963E80A92986",
+      "positive_weight_picker": "0x3BB6DD0..0x3BB6F8F (0x1BF bytes), SHA256 D4B0FBAF4B2ACC260BF0442921982F64803C030CF8049A93AB1A32233603D14E",
+      "entry_only_not_full_span": "SetupOptions caller 0x16CB782; required-trigger callsite 0x16CC94E; show-as-unavailable callsite 0x16CCA37; cancel-option regular/fallback tests 0x16CCAF7/0x16CCC64; show-unlock-reason gate/call 0x16D26B7/0x16D273A; preview effect-pointer setup 0x16D2D49 and collector call 0x16D2D58; loaded-effect executor call 0x33E6B06; generic trigger evaluator 0x334C510; selector caller 0x278DE1E; ai_will_select evaluator 0x1409696C0; ai_chance evaluator 0x337B210"
+    },
     "CPauseGameCommand": {
       "size": "0x28",
       "primary_vtable": "+0x00",
@@ -1268,14 +1535,29 @@
     "PendingCharacterInteractionStorage": {
       "global_slot": "base + 0x57BF1C8",
       "slots": "+0x20 pointer; each slot is 0x10 bytes and its object pointer is +0x08",
-      "capacity": "+0x2C int32"
+      "capacity": "+0x2C int32",
+      "identity": "mask only the low 24-bit slot index, then require the complete generation-bearing ID to match object+0x10 and require the component liveness virtual predicate"
     },
     "CPendingCharacterInteraction": {
-      "component_instance_id": "+0x10 int32; low 24 bits select the component-storage slot",
-      "sender_character_id": "+0x2F0 int32 CharacterID handle returned by CharacterInteractionNotificationWindow.GetSender",
-      "recipient_routing": "+0x5C0 int32 kind; kinds 0 and 2 route to CharacterID +0x2F4, kind 1 routes to CharacterID +0x300, other kinds are not local reply notifications; exact predicate RVA 0x1266BA0 additionally checks object/context state for the played Character",
-      "auto_accept_notification": "+0x5C6 uint8; normal accept/reject commands must not answer acknowledgement-only notifications",
-      "actionable_accept": "after local-recipient and non-auto-accept filtering, RVA 0x26B3540 validates a constructed reply enum 0 command before the snapshot publishes the component"
+      "size_and_stride": "0x5C8 proven by allocator/constructor RVA 0x27541F0; RTTI TypeDescriptor RVA 0x54BB780, primary/secondary vtables RVA 0x431C550/0x431C538",
+      "component_instance_id": "+0x10 full generation-bearing int32; low 24 bits only select the component-storage slot",
+      "embedded_context": "+0x18 is an owned 0x338-byte CCharacterInteractionContext, copied by RVA 0x2C3ED50; it is not an opaque pointer",
+      "interaction_definition": "load pointer at +0x18, i.e. embedded context +0x00",
+      "actor_character_id": "+0x2F0 int32 CharacterID; legacy bridge names this sender_character_id",
+      "recipient_character_id": "+0x2F4 int32 CharacterID",
+      "secondary_actor_character_id": "+0x2F8 int32 CharacterID",
+      "secondary_recipient_character_id": "+0x2FC int32 CharacterID",
+      "intermediary_character_id": "+0x300 int32 CharacterID",
+      "target_script_scope_value": "+0x308 16-byte type-discriminated generic scope value; first uint16 zero means absent, but nonzero payload identity requires a per-type decoder",
+      "selected_send_options": "+0x318 data pointer, +0x320 capacity, +0x324 signed count, +0x328 allocator; one byte per definition row and exactly 1 means selected",
+      "special_data": "+0x348 polymorphic cloned pointer; presence is generic, payload terms are subtype-specific and unavailable",
+      "materialized_description_bundle": "+0x350; presentation existence is not a structured terms/effect-preview proof",
+      "age_days": "+0x5B8 int32, initialized zero and incremented daily by RVA 0x27516F0",
+      "ai_reply_cutoff_days": "+0x5BC int32 used for a non-human current responder; not the player deadline",
+      "recipient_routing": "+0x5C0 int32 kind; 0 and 2 route to recipient +0x2F4, 1 routes to intermediary +0x300, 3 is terminal/non-local. RVA 0x1266BA0 additionally checks liveness, played CharacterID and context state",
+      "auto_accept_notification": "+0x5C6 uint8; normal accept/reject/block commands must not answer acknowledgement-only notifications",
+      "player_deadline": "RVA 0x27516F0 compares +0x5B8 with int32 base+0x570F528 for human responders; RVA 0x211D250 binds that global to CHARACTER_INTERACTION_EXPIRATION_DAYS (stock 60)",
+      "reply_legality": "normal channel requires exact local route, +0x5C6 zero and RVA 0x26B3540 for enum 0/1/2; ACK requires exact generation/liveness/route and +0x5C6 nonzero because validator enum 4 returns true before object resolution"
     },
     "CReplyCharacterInteractionCommand": {
       "size": "0x28",
@@ -1283,7 +1565,9 @@
       "flags": "+0x08 uint8 = 0",
       "secondary_vtable": "+0x18 = 0x4082900",
       "pending_interaction_id": "+0x20 int32 CPendingCharacterInteraction component instance ID",
-      "reply": "+0x24 int32; 0 accept, 1 reject, 2 block, 4 acknowledge; UI submits with channel flags 0x0E"
+      "reply": "+0x24 int32; 0 accept, 1 reject, 2 block, 4 acknowledge; UI submits with channel flags 0x0E",
+      "validator": "RVA 0x26B3540; enum 0/1/2 generation-resolve and apply context gates, while enum 4 is an unconditional early true and is not ACK legality",
+      "executor_channel": "RVA 0x26B3480 sends reply through the intermediary parameter only for pending route kind 1, otherwise through the recipient parameter"
     },
     "CWarManager": {
       "war_storage": "+0x20 ComponentStorage<CWar> pointer"
@@ -1464,19 +1748,65 @@
     },
     "CCharacterInteractionContext": {
       "size": "0x338",
-      "interaction": "+0x00 pointer",
-      "event_target_scope": "+0x08 initialized scope passed to auto_accept trigger evaluator RVA 0x334C510",
+      "interaction": "+0x00 CCharacterInteraction definition pointer",
+      "event_target_scope": "+0x08 first 0x168-byte initialized scope passed to auto_accept trigger evaluator RVA 0x334C510",
+      "secondary_scope_unknown": "+0x170 second 0x168-byte scope copied by RVA 0x2C3ED50; business name remains unknown",
       "actor_character_id": "+0x2D8 int32",
       "recipient_character_id": "+0x2DC int32",
       "secondary_actor_character_id": "+0x2E0 int32; actor-side spouse for arrange_marriage_interaction",
       "secondary_recipient_character_id": "+0x2E4 int32; recipient-side spouse for arrange_marriage_interaction",
-      "optional_third_character_id": "+0x2E8 int32; marriage UI and AI paths keep -1 for direct matchmaking",
+      "intermediary_character_id": "+0x2E8 int32; pending constructor uses != -1 to choose routing kind 1",
+      "target_script_scope_value": "+0x2F0 16-byte generic type-discriminated value; first uint16 is the scope type registry index, zero means absent, and serializer RVA 0x2C3F400 emits tag 0x6B",
+      "selected_send_options": "+0x300 native byte vector: data +0x300, capacity +0x308, signed count +0x30C, allocator +0x310; selected iff byte equals 1",
       "special_data": "+0x330 polymorphic pointer; declare_war_interaction constructs CWarDeclaration",
-      "lifecycle": "generic two-role construct RVA 0x2C3EE50, or redirect five CharacterID pointers with RVA 0x2C3C4C0 then all-role construct RVA 0x2C3F000, or default construct RVA 0x2C3F300; refresh RVA 0x2C40950, finalize RVA 0x2C40B20, validate RVA 0x2C43F00, answer-score RVA 0x2C44320, destroy RVA 0x2C3F380"
+      "pending_copy": "RVA 0x2C3ED50 copies the definition, both scope blocks, five CharacterIDs and target value, deep-copies the selected-option vector, and clones special_data",
+      "identity_validation": "RVA 0x2C42610 validates definition, actor/recipient, required secondary roles, generic target scope and primary scope",
+      "reply_state_validation": "RVA 0x2C42A30(context,false,false,false) is shared by local routing and reply command validation",
+      "lifecycle": "generic two-role construct RVA 0x2C3EE50, or redirect five CharacterID pointers with RVA 0x2C3C4C0 then all-role construct RVA 0x2C3F000, or default construct RVA 0x2C3F300; refresh RVA 0x2C40950, finalize RVA 0x2C40B20, validate-send RVA 0x2C43F00, answer-score RVA 0x2C44320, destroy RVA 0x2C3F380"
     },
     "CCharacterInteraction": {
+      "rtti": "TypeDescriptor RVA 0x50401B0; primary vtable RVA 0x4403CE0, secondary subobject +0x2A80 vtable RVA 0x4403CA8; constructor RVA 0x2C385F0",
+      "runtime_ordinal": "+0x10 int32 inherited CGameDatabaseObject identity; process-local evidence only",
+      "deterministic_key_hash": "+0x14 uint32 inherited CGameDatabaseObject identity",
+      "canonical_key": "+0x18 MSVC string inherited CGameDatabaseObject identity; size +0x28 and capacity +0x30",
+      "can_be_blocked_trigger": "+0x11F8 embedded trigger evaluated only for reply enum 2",
+      "send_option_rows": "+0x2548 pointer, +0x2554 signed count; rows have stride 0x7D0",
       "auto_accept_trigger": "+0x2580 optional trigger pointer; if non-null call RVA 0x334C510(trigger, context+0x08)",
-      "auto_accept_scalar": "+0x2A48 uint8 bool fallback only when the trigger pointer is null"
+      "auto_accept_scalar": "+0x2A48 uint8 bool fallback only when the trigger pointer is null",
+      "target_type_raw": "+0x2A2A uint8 used by context target validation; authored enum mapping remains unknown",
+      "send_options_exclusive": "+0x2A4E uint8"
+    },
+    "CharacterInteractionSendOptionRow": {
+      "stride": "0x7D0",
+      "is_shown_trigger": "+0x00 embedded trigger",
+      "is_valid_trigger": "+0xE0 embedded trigger",
+      "numeric_flag_identifier": "+0x3A8 int32; RVA 0x2C40770 searches it and RVA 0x2C40950 projects selected bool under it",
+      "selection_gate": "RVA 0x2C408B0 evaluates +0xE0 then +0x00 against context+0x08",
+      "stable_identity": "native row index plus numeric flag identifier; identifier string resolution remains unavailable"
+    },
+    "PendingCharacterInteractionSourceContract": {
+      "abi": "pending_character_interaction_context_v1_abi.json",
+      "fixture": "fixtures/pending_character_interaction_context_v1_source_contract.json",
+      "source_hashes": "EXE 2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86; _character_interactions.info F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10; 00_defines.txt C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807",
+      "safe_generic_terms": "stable definition key/hash, five roles, route/responder, target presence/raw envelope, selected option index+numeric flag, auto_accept, deadline and independent reply legality",
+      "unavailable_terms": "typed identity for unregistered target payloads, option flag string, structured costs/exchanges/effect preview, special_data subtype fields and recipient AI final decision",
+      "readiness": "static layout/routing/deadline/reply legality ready; typed target, structured terms, C++ query and paused live fixtures not ready; capability is not advertised"
+    },
+    "PendingCharacterInteractionReplyLegality": {
+      "adapter_common": "full pending generation/liveness plus RVA 0x1266BA0 exact route to played Character",
+      "native_common": "RVA 0x26B3540 for enum 0/1/2 re-resolves full pending ID, checks liveness, RVA 0x2C42610 context identity and RVA 0x2C42A30 reply state",
+      "accept": "adapter_common, pending+0x5C6 zero and native validator enum 0",
+      "reject": "adapter_common, pending+0x5C6 zero and native validator enum 1; internally actor != recipient and auto_accept false",
+      "block": "adapter_common, pending+0x5C6 zero and native validator enum 2; internally definition+0x11F8 can_be_blocked true, actor != recipient and auto_accept false",
+      "auto_accept": "definition+0x2580 trigger evaluated by RVA 0x334C510 against pending+0x20, or definition+0x2A48 bool when pointer null; true rejects native enum 1/2",
+      "acknowledge": "adapter_common and pending+0x5C6 nonzero; submit only enum 4. Validator enum 4 is an unconditional early true before object resolution and must be ignored",
+      "malformed": "all actions false with typed error; no accept fallback"
+    },
+    "CharacterInteractionExpiration": {
+      "age": "pending+0x5B8 increments once per manager daily loop RVA 0x27516F0",
+      "human_total": "int32 base+0x570F528 registered by RVA 0x211D250 as CHARACTER_INTERACTION_EXPIRATION_DAYS; stock define 60",
+      "remaining": "max(0, human_total-age); age >= total is queued for expiry during that daily pass",
+      "nonhuman_cutoff": "pending+0x5BC is compared only for a non-human current responder; exact random construction from AI min/max reply days remains unknown"
     },
     "CWarDeclaration": {
       "size": "0x30",

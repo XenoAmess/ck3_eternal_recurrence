@@ -7,6 +7,8 @@
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
+#include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
+#include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 
 #include "xar_bridge/ck3_11906_adapter.hpp"
 
@@ -297,6 +299,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = "game.command.enforce-demands-N";
   } else if (step == "query-army-strengths-v1") {
     capability = "game.command.query-army-strengths-v1";
+  } else if (ck3_11906::ParseCampaignRootContextV1Step(step)) {
+    capability = ck3_11906::kCampaignRootContextV1Capability;
+  } else if (ck3_11906::ParseLoadedFeatureManifestV1Step(step)) {
+    capability = ck3_11906::kLoadedFeatureManifestV1Capability;
   } else {
     std::vector<std::int32_t> war_entry_targets;
     if (ck3_11906::ParseWarEntryAssessmentsV1Step(step,

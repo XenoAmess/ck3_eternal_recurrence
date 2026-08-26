@@ -188,6 +188,26 @@ def _ck3_query_battle_reinforcement_assignment_v1(
     )
 
 
+def _ck3_query_campaign_root_context_v1(
+    service: GameplayBridgeService,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Observe the exact local-player root and loaded rule selection."""
+    return service.query_campaign_root_context_v1(
+        expected_revision=expected_revision,
+    )
+
+
+def _ck3_query_loaded_feature_manifest_v1(
+    service: GameplayBridgeService,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Observe effective feature flags and script DLC keys without ownership inference."""
+    return service.query_loaded_feature_manifest_v1(
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_preview_active_combat_retreat_v1(
     service: GameplayBridgeService,
     selected_public_cunit_id: int,
@@ -514,6 +534,26 @@ def create_server(driver: GameplayBridgeDriver):
         return _ck3_query_battle_reinforcement_assignment_v1(
             service,
             selected_public_cunit_id,
+            expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_campaign_root_context_v1(
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read player, title, capital, lieges, government and rule tokens."""
+        return _ck3_query_campaign_root_context_v1(
+            service,
+            expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_loaded_feature_manifest_v1(
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read effective build flags and script DLC keys; ownership stays unknown."""
+        return _ck3_query_loaded_feature_manifest_v1(
+            service,
             expected_revision,
         )
 

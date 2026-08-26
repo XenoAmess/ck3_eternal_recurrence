@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "contract": "loaded-feature-manifest-v1-source-contract",
+  "capability": "game.command.query-loaded-feature-manifest-v1",
+  "step": "query-loaded-feature-manifest-v1",
+  "command_result_key": "loaded_feature_manifest",
+  "command_result_backend_id": "native-headless",
+  "payload_provenance_backend_id": "ck3-1.19.0.6-native-loaded-feature-manifest-v1",
+  "mailbox_executor_slot": "permitted_executor_denary",
+  "mailbox_executor": "ExecuteLoadedFeatureManifestMailboxQueryV1",
+  "status": ["available", "unavailable"],
+  "actionable_components": [
+    "effective_feature_flags",
+    "script_dlc_keys"
+  ],
+  "entitlements_status": "unavailable",
+  "entitlements_unavailable_reason": "store_verdict_provenance_unclosed",
+  "feature_item_count": 44,
+  "feature_items_publish_false_values": true,
+  "script_dlc_empty_set_is_valid": true,
+  "canonical_order": "unsigned_utf8_bytewise_lexicographical",
+  "unavailable_reasons": [
+    "unsupported_build",
+    "requires_application_main",
+    "requires_paused",
+    "map_not_ready",
+    "feature_root_unavailable",
+    "feature_counter_mismatch",
+    "feature_registry_drift",
+    "script_dlc_set_unavailable",
+    "script_dlc_key_invalid",
+    "state_changed",
+    "internal_error"
+  ]
+}

@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "contract": "pending-character-interaction-context-v1-source-contract",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "abi": "../pending_character_interaction_context_v1_abi.json",
+  "synthetic": true,
+  "not_live_evidence": true,
+  "game_process_started": false,
+  "purpose": "deterministic source vectors for the future read-only projection; interaction keys and IDs are deliberately synthetic and assert no gameplay-specific semantics",
+  "override_application": "recursively merge each vector's overrides into defaults; arrays and scalar leaves replace the default value, and the key/hash pair is read evidence rather than a request to recompute the engine hash",
+  "source_hashes": {
+    "Crusader Kings III/game/common/character_interactions/_character_interactions.info": "F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10",
+    "Crusader Kings III/game/common/defines/00_defines.txt": "C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807"
+  },
+  "projection_invariants": {
+    "exact_build": "reject before dereference unless the executable SHA-256 matches",
+    "component_identity": "slot lookup by low 24 bits followed by complete ID equality and liveness",
+    "normal_channel": "accept/reject/block additionally require exact local route and auto_accept_notification=false",
+    "acknowledge_channel": "acknowledge requires exact local route and auto_accept_notification=true; raw validator enum 4 is ignored",
+    "malformed_observation": "publish status invalid and all action booleans false",
+    "target_boundary": "a nonzero raw scope type is not a typed target until an exact-build decoder for that type exists",
+    "semantic_readiness": "legal reply availability alone never makes interaction_semantic_decision_ready true"
+  },
+  "defaults": {
+    "component": {
+      "requested_id": 16777249,
+      "resolved_object_id": 16777249,
+      "liveness": true
+    },
+    "definition": {
+      "canonical_key": "fixture_request_support_interaction",
+      "deterministic_key_hash": 305419896,
+      "runtime_ordinal": 42,
+      "send_options_exclusive": false
+    },
+    "roles": {
+      "actor_character_id": 1001,
+      "recipient_character_id": 2001,
+      "secondary_actor_character_id": -1,
+      "secondary_recipient_character_id": -1,
+      "intermediary_character_id": -1
+    },
+    "routing": {
+      "kind": 0,
+      "played_character_id": 2001,
+      "auto_accept_notification": false
+    },
+    "target": {
+      "raw_scope_type_index": 0,
+      "raw_16_bytes_hex": "00000000000000000000000000000000",
+      "decoder_available": true,
+      "typed_status": "absent"
+    },
+    "send_options": {
+      "definition_count": 2,
+      "context_count": 2,
+      "selected_bytes": [
+        1,
+        0
+      ],
+      "rows": [
+        {
+          "native_index": 0,
+          "numeric_flag_identifier": 31001,
+          "is_shown": true,
+          "is_valid": true
+        },
+        {
+          "native_index": 1,
+          "numeric_flag_identifier": 31002,
+          "is_shown": true,
+          "is_valid": true
+        }
+      ]
+    },
+    "deadline": {
+      "age_days": 17,
+      "expiration_days": 60
+    },
+    "native_predicates": {
+      "context_identity_valid": true,
+      "reply_state_valid": true,
+      "can_be_blocked_trigger": true,
+      "auto_accept": false
+    },
+    "semantic_domains": {
+      "stable_definition": "available",
+      "roles": "available",
+      "target": "available",
+      "selected_send_options": "available",
+      "structured_costs": "unavailable",
+      "structured_exchanges": "unavailable",
+      "structured_effect_preview": "unavailable"
+    }
+  },
+  "vectors": [
+    {
+      "name": "ordinary_recipient_request",
+      "overrides": {},
+      "expected": {
+        "status": "available",
+        "current_responder_role": "recipient",
+        "local_route": true,
+        "remaining_days": 43,
+        "selected_native_indexes": [
+          0
+        ],
+        "can_accept": true,
+        "can_reject": true,
+        "can_block": true,
+        "can_acknowledge": false,
+        "interaction_semantic_decision_ready": false,
+        "not_ready_reasons": [
+          "structured_costs_unavailable",
+          "structured_exchanges_unavailable",
+          "structured_effect_preview_unavailable"
+        ]
+      }
+    },
+    {
+      "name": "intermediary_request_uses_intermediary_route",
+      "overrides": {
+        "roles": {
+          "intermediary_character_id": 3001
+        },
+        "routing": {
+          "kind": 1,
+          "played_character_id": 3001
+        },
+        "native_predicates": {
+          "can_be_blocked_trigger": false
+        }
+      },
+      "expected": {
+        "status": "available",
+        "current_responder_role": "intermediary",
+        "local_route": true,
+        "reply_execution_channel": "intermediary",
+        "can_accept": true,
+        "can_reject": true,
+        "can_block": false,
+        "can_acknowledge": false,
+        "interaction_semantic_decision_ready": false
+      }
+    },
+    {
+      "name": "auto_accept_notification_is_ack_only",
+      "overrides": {
+        "routing": {
+          "kind": 2,
+          "played_character_id": 2001,
+          "auto_accept_notification": true
+        },
+        "native_predicates": {
+          "auto_accept": true
+        },
+        "native_validator_raw_results": {
+          "enum_0": true,
+          "enum_1": false,
+          "enum_2": false,
+          "enum_4": true
+        }
+      },
+      "expected": {
+        "status": "available",
+        "current_responder_role": "recipient",
+        "local_route": true,
+        "can_accept": false,
+        "can_reject": false,
+        "can_block": false,
+        "can_acknowledge": true,
+        "ack_legality_source": "generation_liveness_route_and_auto_accept_notification_not_enum4_validator",
+        "interaction_semantic_decision_ready": false
+      }
+    },
+    {
+      "name": "stale_generation_is_not_actionable",
+      "overrides": {
+        "component": {
+          "requested_id": 16777249,
+          "resolved_object_id": 33554465,
+          "liveness": true
+        }
+      },
+      "expected": {
+        "status": "unavailable",
+        "reason": "pending_generation_mismatch",
+        "local_route": false,
+        "can_accept": false,
+        "can_reject": false,
+        "can_block": false,
+        "can_acknowledge": false,
+        "interaction_semantic_decision_ready": false
+      }
+    },
+    {
+      "name": "valid_pending_for_another_responder_is_not_actionable",
+      "overrides": {
+        "routing": {
+          "kind": 0,
+          "played_character_id": 9001,
+          "auto_accept_notification": false
+        }
+      },
+      "expected": {
+        "status": "unavailable",
+        "reason": "pending_not_routed_to_played_character",
+        "local_route": false,
+        "can_accept": false,
+        "can_reject": false,
+        "can_block": false,
+        "can_acknowledge": false,
+        "interaction_semantic_decision_ready": false
+      }
+    },
+    {
+      "name": "native_auto_accept_blocks_reject_and_block_not_accept",
+      "overrides": {
+        "native_predicates": {
+          "auto_accept": true
+        }
+      },
+      "expected": {
+        "status": "available",
+        "local_route": true,
+        "can_accept": true,
+        "can_reject": false,
+        "can_block": false,
+        "can_acknowledge": false,
+        "interaction_semantic_decision_ready": false
+      }
+    },
+    {
+      "name": "self_interaction_blocks_reject_and_block",
+      "overrides": {
+        "roles": {
+          "actor_character_id": 2001,
+          "recipient_character_id": 2001
+        }
+      },
+      "expected": {
+        "status": "available",
+        "local_route": true,
+        "can_accept": true,
+        "can_reject": false,
+        "can_block": false,
+        "can_acknowledge": false,
+        "interaction_semantic_decision_ready": false
+      }
+    },
+    {
+      "name": "malformed_selected_option_count_fails_closed",
+      "overrides": {
+        "send_options": {
+          "definition_count": 2,
+          "context_count": 1,
+          "selected_bytes": [
+            1
+          ]
+        }
+      },
+      "expected": {
+        "status": "invalid",
+        "reason": "send_option_count_mismatch",
+        "can_accept": false,
+        "can_reject": false,
+        "can_block": false,
+        "can_acknowledge": false,
+        "interaction_semantic_decision_ready": false
+      }
+    },
+    {
+      "name": "opaque_generic_target_preserves_legality_but_blocks_semantic_readiness",
+      "overrides": {
+        "target": {
+          "raw_scope_type_index": 7,
+          "raw_16_bytes_hex": "07000100785634120000000000000000",
+          "decoder_available": false,
+          "typed_status": "unavailable",
+          "unavailable_reason": "generic_scope_payload_identity_not_closed"
+        },
+        "semantic_domains": {
+          "target": "unavailable"
+        }
+      },
+      "expected": {
+        "status": "available",
+        "target_present": true,
+        "target_typed_status": "unavailable",
+        "can_accept": true,
+        "can_reject": true,
+        "can_block": true,
+        "can_acknowledge": false,
+        "interaction_semantic_decision_ready": false,
+        "not_ready_reasons": [
+          "target_generic_scope_payload_identity_not_closed",
+          "structured_costs_unavailable",
+          "structured_exchanges_unavailable",
+          "structured_effect_preview_unavailable"
+        ]
+      }
+    }
+  ],
+  "deadline_vectors": [
+    {
+      "age_days": 0,
+      "expiration_days": 60,
+      "expected_remaining_days": 60,
+      "expiry_boundary_status": "not_reached"
+    },
+    {
+      "age_days": 17,
+      "expiration_days": 60,
+      "expected_remaining_days": 43,
+      "expiry_boundary_status": "not_reached"
+    },
+    {
+      "age_days": 60,
+      "expiration_days": 60,
+      "expected_remaining_days": 0,
+      "expiry_boundary_status": "at_or_past_daily_expiry_queue_threshold"
+    },
+    {
+      "age_days": 61,
+      "expiration_days": 60,
+      "expected_remaining_days": 0,
+      "expiry_boundary_status": "at_or_past_daily_expiry_queue_threshold"
+    }
+  ],
+  "expected_readiness": {
+    "exact_build_ready": true,
+    "pending_layout_static_ready": true,
+    "stable_definition_identity_static_ready": true,
+    "roles_and_routing_static_ready": true,
+    "send_option_selection_static_ready": true,
+    "deadline_static_ready": true,
+    "reply_legality_static_ready": true,
+    "generic_target_typed_identity_ready": false,
+    "structured_terms_ready": false,
+    "bridge_query_ready": false,
+    "production_live_ready": false,
+    "interaction_semantic_decision_ready": false,
+    "capability_advertised": false
+  }
+}

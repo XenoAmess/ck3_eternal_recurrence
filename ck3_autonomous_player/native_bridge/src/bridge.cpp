@@ -4,7 +4,9 @@
 #include "xar_bridge/battle_terminal_journal_v1.hpp"
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
+#include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
+#include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
@@ -210,7 +212,7 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   AppendJsonString(result,
                    xar::ck3_11906::kMainThreadQueryMailboxV1CandidateId);
   result +=
-      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment\"";
+      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest\"";
   result += ",\"installed\":";
   result += mailbox.iat_installed ? "true" : "false";
   result += ",\"stop\":";
@@ -1952,6 +1954,66 @@ std::string BattleReinforcementAssignmentResultFrame(
   return result;
 }
 
+std::string CampaignRootContextResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::CampaignRootContextV1 &context) {
+  const auto payload =
+      xar::ck3_11906::SerializeCampaignRootContextV1(context);
+  if (payload.empty()) {
+    return {};
+  }
+  const std::string_view status =
+      context.status == xar::game::CampaignRootContextStatusV1::available
+          ? "available"
+          : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{\"step\":\"query-campaign-root-context-v1\",";
+  result += "\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(context.snapshot_revision);
+  result += ",\"campaign_root_context\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
+std::string LoadedFeatureManifestResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::LoadedFeatureManifestV1 &manifest) {
+  const auto payload =
+      xar::ck3_11906::SerializeLoadedFeatureManifestV1(manifest);
+  if (payload.empty()) {
+    return {};
+  }
+  const std::string_view status =
+      manifest.status == xar::game::LoadedFeatureManifestStatusV1::available
+          ? "available"
+          : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{\"step\":\"query-loaded-feature-manifest-v1\",";
+  result += "\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(manifest.snapshot_revision);
+  result += ",\"loaded_feature_manifest\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string SaveCheckpointResultFrame(std::string_view request_id,
                                       const CheckpointSubmission &checkpoint) {
   std::string result =
@@ -2435,6 +2497,10 @@ public:
             ExecuteBattleReinforcementAssignmentMailboxQueryV1;
     environment.permitted_executor_octonary =
         &xar::ck3_11906::ExecuteBattleTerminalTransitionMailboxQueryV1;
+    environment.permitted_executor_nonary =
+        &xar::ck3_11906::ExecuteCampaignRootContextMailboxQueryV1;
+    environment.permitted_executor_denary =
+        &xar::ck3_11906::ExecuteLoadedFeatureManifestMailboxQueryV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -2571,6 +2637,8 @@ struct WorkerState {
   std::uint64_t battle_transition_query_sequence = 0;
   std::uint64_t battle_reinforcement_assignment_query_sequence = 0;
   std::uint64_t battle_terminal_transition_query_sequence = 0;
+  std::uint64_t campaign_root_context_query_sequence = 0;
+  std::uint64_t loaded_feature_manifest_query_sequence = 0;
   std::uint64_t army_strength_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t war_termination_query_sequence = 0;
@@ -2609,6 +2677,10 @@ void RunConnectedSession(
       state.battle_reinforcement_assignment_query_sequence;
   auto &battle_terminal_transition_query_sequence =
       state.battle_terminal_transition_query_sequence;
+  auto &campaign_root_context_query_sequence =
+      state.campaign_root_context_query_sequence;
+  auto &loaded_feature_manifest_query_sequence =
+      state.loaded_feature_manifest_query_sequence;
   auto &army_strength_query_sequence =
       state.army_strength_query_sequence;
   auto &combat_inputs_query_sequence =
@@ -2835,6 +2907,236 @@ void RunConnectedSession(
             connected = PublishSnapshot(pipe, game, previous_snapshot,
                                         state_revision, checkpoint_submission,
                                         published_checkpoint_sequence);
+          }
+        } else if (step == xar::ck3_11906::kCampaignRootContextV1Step) {
+          std::uint64_t expected_revision = 0;
+          if (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+                  incoming.payload, expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "campaign-root expected revision is malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "campaign-root snapshot revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "campaign-root snapshot changed or is not ready"));
+            } else {
+              xar::ck3_11906::CampaignRootContextMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.environment =
+                  xar::ck3_11906::BindCampaignRootNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              query.request.expected_snapshot_revision = expected_revision;
+              query.expected_snapshot = current_snapshot;
+
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecuteCampaignRootContextMailboxQueryV1,
+                      &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main campaign-root executor is unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error = "application-main campaign-root executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kCampaignRootContextV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kCampaignRootContextV1ExecutingWaitSliceMilliseconds);
+                }
+
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion == xar::ck3_11906::
+                                            CampaignRootContextMailboxCompletionV1::
+                                                completed &&
+                    completion_snapshot_stable) {
+                  response = CampaignRootContextResultFrame(
+                      request_id,
+                      campaign_root_context_query_sequence + 1,
+                      query.result);
+                  if (!response.empty()) {
+                    ++campaign_root_context_query_sequence;
+                  }
+                }
+                if (response.empty()) {
+                  const auto error =
+                      xar::ck3_11906::CampaignRootContextFailureMessageV1(
+                          wait, query.completion,
+                          completion_snapshot_stable);
+                  response = CommandResultFrame(request_id, step, false,
+                                                error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::
+                                         reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main campaign-root result was not "
+                      "reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (step == xar::ck3_11906::kLoadedFeatureManifestV1Step) {
+          std::uint64_t expected_revision = 0;
+          if (!xar::ck3_11906::ParseLoadedFeatureManifestExpectedRevisionV1(
+                  incoming.payload, expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "loaded-feature expected revision is malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "loaded-feature snapshot revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "loaded-feature snapshot changed or is not ready"));
+            } else {
+              xar::ck3_11906::LoadedFeatureManifestMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.environment =
+                  xar::ck3_11906::BindLoadedFeatureManifestNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              query.request.expected_snapshot_revision = expected_revision;
+              query.expected_snapshot = current_snapshot;
+
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecuteLoadedFeatureManifestMailboxQueryV1,
+                      &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main loaded-feature executor is unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error = "application-main loaded-feature executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kLoadedFeatureManifestV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kLoadedFeatureManifestV1ExecutingWaitSliceMilliseconds);
+                }
+
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion == xar::ck3_11906::
+                                            LoadedFeatureManifestMailboxCompletionV1::
+                                                completed &&
+                    completion_snapshot_stable) {
+                  response = LoadedFeatureManifestResultFrame(
+                      request_id,
+                      loaded_feature_manifest_query_sequence + 1,
+                      query.result);
+                  if (!response.empty()) {
+                    ++loaded_feature_manifest_query_sequence;
+                  }
+                }
+                if (response.empty()) {
+                  const auto error =
+                      xar::ck3_11906::LoadedFeatureManifestFailureMessageV1(
+                          wait, query.completion,
+                          completion_snapshot_stable);
+                  response = CommandResultFrame(request_id, step, false,
+                                                error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::
+                                         reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main loaded-feature result was not "
+                      "reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
           }
         } else if (step == "query-declarable-wars") {
           declarable_wars.clear();

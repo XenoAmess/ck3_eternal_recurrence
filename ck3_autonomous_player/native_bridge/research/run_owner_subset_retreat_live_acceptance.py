@@ -26,7 +26,7 @@ import sys
 import tempfile
 import threading
 import time
-from typing import Any
+from typing import Any, Callable
 import uuid
 
 
@@ -1206,7 +1206,15 @@ def _cleanup_root(
         }
 
 
-def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
+def _run(
+    args: argparse.Namespace,
+    *,
+    action_runner: Callable[
+        [Any, NativeBridgeLaunchConfig, float, float, float],
+        dict[str, object],
+    ]
+    | None = None,
+) -> tuple[dict[str, object], int]:
     started_at = utc_now()
     started = time.monotonic()
     timeout = _positive_seconds(args.timeout, "timeout")
@@ -1359,23 +1367,32 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             save_name=CONTINUE_SAVE_NAME,
         )
         stages["action"] = action_stage
-        action_args = argparse.Namespace(
-            state_dir=action_spec.state_dir,
-            game_dir=game_dir,
-            bridge_pipe=config.pipe_name,
-            bridge_dll=dll,
-            bridge_injector=injector,
-            output=output,
-            subject_army_id=OWNER_SUBSET_CUNIT_ID,
-            target_province_id=TARGET_PROVINCE_ID,
-            expected_scope="owner_subset",
-            advance_days_before_preview=0,
-            postcondition_timeout=postcondition_timeout,
-            timeout=timeout,
-            readiness_timeout=readiness_timeout,
-            cold_start_checkpoint=False,
-        )
-        action, _unused_exit = retreat_live._run(action_args)
+        if action_runner is None:
+            action_args = argparse.Namespace(
+                state_dir=action_spec.state_dir,
+                game_dir=game_dir,
+                bridge_pipe=config.pipe_name,
+                bridge_dll=dll,
+                bridge_injector=injector,
+                output=output,
+                subject_army_id=OWNER_SUBSET_CUNIT_ID,
+                target_province_id=TARGET_PROVINCE_ID,
+                expected_scope="owner_subset",
+                advance_days_before_preview=0,
+                postcondition_timeout=postcondition_timeout,
+                timeout=timeout,
+                readiness_timeout=readiness_timeout,
+                cold_start_checkpoint=False,
+            )
+            action, _unused_exit = retreat_live._run(action_args)
+        else:
+            action = action_runner(
+                action_spec,
+                config,
+                timeout,
+                readiness_timeout,
+                postcondition_timeout,
+            )
         action_cleanup = action.get("cleanup")
         session_cleanup_flags.append(
             isinstance(action_cleanup, dict)

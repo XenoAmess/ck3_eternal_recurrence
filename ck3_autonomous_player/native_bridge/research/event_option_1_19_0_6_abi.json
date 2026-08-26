@@ -1,0 +1,301 @@
+{
+  "contract": "event-option-static-abi-v1",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "architecture": "msvc-x64",
+  "evidence_kind": "offline_exact_build_static_analysis",
+  "read_only": true,
+  "live_validated": false,
+  "game_process_started": false,
+  "scope": "engine-generic event option visibility, naming, preview presentation and native AI selection",
+  "owner_deferred_domains": [
+    "religion",
+    "faith",
+    "conversion",
+    "reformation",
+    "doctrine",
+    "tenet",
+    "fervor",
+    "holy_war"
+  ],
+  "corrected_false_leads": [
+    {
+      "rva": "0x167C220",
+      "status": "unrelated_event_presentation_routine",
+      "note": "Not CEventWindowData::SetupOptions."
+    },
+    {
+      "rva": "0x167C0D7",
+      "callee_rva": "0x334C510",
+      "status": "unrelated_trigger_callsite",
+      "note": "Not the CEventOption required-trigger callsite."
+    }
+  ],
+  "source_contract": {
+    "range_convention": "start inclusive, end exclusive",
+    "span_provenance": "MSVC x64 .pdata runtime-function extents, except the explicitly listed three-region logical ai-weight extent and semantic subspans",
+    "exact_function_spans": [
+      {
+        "name": "CEventWindowData::SetupOptions",
+        "start_rva": "0x16CC780",
+        "end_rva": "0x16CCE4C",
+        "byte_length": "0x6CC",
+        "sha256": "FF2DF0C06EAD003EB858D6C079FC3B07586B93C157AFFFA866BE8BA721E27E0F"
+      },
+      {
+        "name": "CEventOptionItem_constructor",
+        "start_rva": "0x16D23B0",
+        "end_rva": "0x16D2C5C",
+        "byte_length": "0x8AC",
+        "sha256": "D3632FE7513B72E3B6A68BD93F37D0703AC5631D906B073AC536FA62FB686E1A"
+      },
+      {
+        "name": "event_option_preview_materializer",
+        "start_rva": "0x16D2CF0",
+        "end_rva": "0x16D3076",
+        "byte_length": "0x386",
+        "sha256": "A38D1C098C6B7CCE65F47A4D4C7D5C4C65D9F2E846CF2BCB5BB77BE4236B45CE"
+      },
+      {
+        "name": "CEventOptionItem_vector_materializer",
+        "start_rva": "0x16D6B10",
+        "end_rva": "0x16D6DF7",
+        "byte_length": "0x2E7",
+        "sha256": "378A1C03360B793EFA234CF7A28E1BEF957FF4826132D6F590DC6EF85440A059"
+      },
+      {
+        "name": "CEventOption_constructor",
+        "start_rva": "0x21F1220",
+        "end_rva": "0x21F1446",
+        "byte_length": "0x226",
+        "sha256": "7B780AE05040D6288957E3AEFF2714A6BFDAFA6799CB5B51E83D335DCB3B65BF"
+      },
+      {
+        "name": "CEventOption_deleting_destructor",
+        "start_rva": "0x21F1450",
+        "end_rva": "0x21F1590",
+        "byte_length": "0x140",
+        "sha256": "E5B2460607EA8233198327B644FE590977C69EB02DE25EC50E4BEC9275005C02"
+      },
+      {
+        "name": "event_option_unlock_reason_materializer",
+        "start_rva": "0x2537490",
+        "end_rva": "0x25378CD",
+        "byte_length": "0x43D",
+        "sha256": "5C787D84BA1CFBF1CD5FE06EC37FBCF35E1FD5D0EA7AEB70C4469B2360B29733"
+      },
+      {
+        "name": "loaded_effect_preview_collector",
+        "start_rva": "0x3380170",
+        "end_rva": "0x338030C",
+        "byte_length": "0x19C",
+        "sha256": "8B50D40D412B827D7FAC2EE58B5446BE9B8F44A219EA60826C87E878D23D29AA"
+      },
+      {
+        "name": "loaded_effect_executor",
+        "start_rva": "0x3380410",
+        "end_rva": "0x3380519",
+        "byte_length": "0x109",
+        "sha256": "8A7A94AA350B462921BE9C8ADB4DD6B571FB884580C3FBAF84854A69834E32A5"
+      },
+      {
+        "name": "event_option_effect_execute",
+        "start_rva": "0x33E68C0",
+        "end_rva": "0x33E6BBC",
+        "byte_length": "0x2FC",
+        "sha256": "2C05250C6AEA9CE1FF25C750441F8082B9EE7FF490DE8E80C9BADAED87FC1176"
+      },
+      {
+        "name": "event_option_ai_selector",
+        "start_rva": "0x33E71B0",
+        "end_rva": "0x33E784E",
+        "byte_length": "0x69E",
+        "sha256": "0B2C3AD3DC5E848990CDCAE1A68575C790EFE58FC1BD7F0510714AE8C5D29688"
+      },
+      {
+        "name": "event_option_ai_weight_evaluator_logical_extent",
+        "start_rva": "0x33E7E60",
+        "end_rva": "0x33E7FE4",
+        "byte_length": "0x184",
+        "sha256": "2AB07CE41E491E92FFAC49C1444D5F8CFB1D212D9D40706DFBF6D078E56C7817",
+        "runtime_function_regions": [
+          "0x33E7E60..0x33E7EDC",
+          "0x33E7EDC..0x33E7F11",
+          "0x33E7F11..0x33E7FE4"
+        ]
+      },
+      {
+        "name": "event_option_name_resolver",
+        "start_rva": "0x33E7FF0",
+        "end_rva": "0x33E827C",
+        "byte_length": "0x28C",
+        "sha256": "14FB2C99950D26BBDA0283FF397B52E0B8EA6B7D4A9AE742B94F8EEF7E342D29"
+      },
+      {
+        "name": "event_option_rng_draw_wrapper",
+        "start_rva": "0x356A0A0",
+        "end_rva": "0x356A100",
+        "byte_length": "0x60",
+        "sha256": "470658755643EAAB6243DBD11D0D37E5DD47663D583CF0D481E36BF8CE513D44"
+      },
+      {
+        "name": "event_option_rng_u31_core",
+        "start_rva": "0x356B770",
+        "end_rva": "0x356B7F3",
+        "byte_length": "0x83",
+        "sha256": "C052FC8B6F63FA36FC99CE436A6AD11ECFF5BD16487068652499963E80A92986"
+      },
+      {
+        "name": "positive_weight_picker",
+        "start_rva": "0x3BB6DD0",
+        "end_rva": "0x3BB6F8F",
+        "byte_length": "0x1BF",
+        "sha256": "D4B0FBAF4B2ACC260BF0442921982F64803C030CF8049A93AB1A32233603D14E"
+      }
+    ],
+    "setup_options_semantic_spans": [
+      {
+        "name": "regular_status_scan_and_trigger_calls",
+        "start_rva": "0x16CC900",
+        "end_rva": "0x16CCA6A",
+        "byte_length": "0x16A",
+        "sha256": "462DB24455B8D800D2C9DAD2BA296730EDD3C26E9887FEAD2D175B9A8C7B845D"
+      },
+      {
+        "name": "regular_item_materialization_loop",
+        "start_rva": "0x16CCA90",
+        "end_rva": "0x16CCBF0",
+        "byte_length": "0x160",
+        "sha256": "D5766B4427B87C04FB7474A7C5A47331657D935A89CAC6D4E2B713C3FB74CDC1"
+      },
+      {
+        "name": "fallback_entry_materialized_count_gate",
+        "start_rva": "0x16CCBF0",
+        "end_rva": "0x16CCC03",
+        "byte_length": "0x13",
+        "sha256": "FEC6359D66EFFFECD7099767749304695C2CDB516F8B46BA1887835340AE1749"
+      },
+      {
+        "name": "fallback_only_scan_and_materialization",
+        "start_rva": "0x16CCC03",
+        "end_rva": "0x16CCD43",
+        "byte_length": "0x140",
+        "sha256": "EFEB6F509AAC0B0EB1A5B18A864D58E1D0A335068A934AE56614B63E2B70CDB5"
+      }
+    ],
+    "entry_only_anchors": {
+      "setup_options_caller": "0x16CB782",
+      "required_trigger_callsite": "0x16CC94E",
+      "show_as_unavailable_trigger_callsite": "0x16CCA37",
+      "cancel_option_regular_test": "0x16CCAF7",
+      "cancel_option_fallback_test": "0x16CCC64",
+      "show_unlock_reason_gate": "0x16D26B7",
+      "unlock_reason_materializer_callsite": "0x16D273A",
+      "preview_effect_pointer_setup": "0x16D2D49",
+      "preview_collector_callsite": "0x16D2D58",
+      "loaded_effect_executor_callsite": "0x33E6B06",
+      "generic_trigger_evaluator": "0x334C510",
+      "ai_selector_caller": "0x278DE1E",
+      "ai_will_select_evaluator": "0x1409696C0",
+      "ai_chance_evaluator": "0x337B210"
+    }
+  },
+  "CEventOption": {
+    "size": "0x480",
+    "constructor_rva": "0x21F1220",
+    "deleting_destructor_rva": "0x21F1450",
+    "vtable_rva": "0x42F55E8",
+    "rtti_type_descriptor_rva": "0x54925B0",
+    "fields": {
+      "dynamic_name_vector": "+0x10 data, +0x18 capacity, +0x1C int32 count",
+      "ai_chance": "+0x28 scripted-modifier subobject; base at absolute +0x88 defaults to CFixedPoint raw 100000",
+      "required_trigger": "+0x90 embedded trigger",
+      "show_as_unavailable_trigger": "+0x170 embedded trigger; absolute +0x1CC int32 presence/count gate",
+      "ai_will_select": "+0x250 script-value subobject; absolute +0x318 int32 presence/count gate",
+      "loaded_effect": "+0x358",
+      "context_mode": "+0x3E8 uint8 discriminator, +0x3E9 uint8 presence; business name unknown",
+      "fallback": "+0x3EA uint8",
+      "exclusive": "+0x3EB uint8",
+      "unlock_reason_metadata": "+0x3F0, +0x408 and +0x420 native arrays; exact per-array names unknown",
+      "clicksound": "+0x438 MSVC string",
+      "probable_highlight_portrait": "+0x458 native dynamic-scope vector, +0x464 int32 count; preview consumer and script contract agree, but exact parser-field correlation remains medium-static",
+      "unclassified_pointer": "+0x470",
+      "is_cancel_option": "+0x478 uint8",
+      "show_unlock_reason": "+0x479 uint8; constructor default 1; gate RVA 0x16D26B7 calls reason materializer RVA 0x2537490 at 0x16D273A",
+      "unclassified_tail_flag": "+0x47A uint8; constructor default 0"
+    }
+  },
+  "SOptionStatus": {
+    "size": "0x02",
+    "enabled": "+0x00 uint8",
+    "shown": "+0x01 uint8"
+  },
+  "CEventWindowData": {
+    "option_item_vector": "+0x10 data, +0x18 capacity, +0x1C int32 count",
+    "cancel_option_index": "+0x2C int32; first authored option with +0x478, otherwise a negative sentinel whose -1/-2 subtype distinction is unknown"
+  },
+  "CEventOptionItem": {
+    "size_and_stride": "0x1B8",
+    "owner": "+0x160 CEventWindowData*",
+    "clicksound_resource": "+0x168",
+    "resolved_name": "+0x170 MSVC string",
+    "unavailable_reason": "+0x190 MSVC string",
+    "native_option_index": "+0x1B0 int32 authored zero-based index",
+    "enabled": "+0x1B4 uint8",
+    "fallback_materialized": "+0x1B5 uint8",
+    "shown": "vector membership; hidden authored options have no item"
+  },
+  "SetupOptions": {
+    "abi": "rcx=CEventWindowData*, rdx=SPlayerEventData const*, r8=GuiContextGUI*, r9d=disabled-item limit",
+    "option_source": "SPlayerEventData+0x1B0 -> EventData; EventData+0x1B0 option pointer array and +0x1BC int32 count",
+    "regular_true_status": "enabled=1, shown=1",
+    "regular_false_unavailable_true_status": "enabled=0, shown=1",
+    "regular_hidden_status": "enabled=0, shown=0",
+    "exclusive": "first trigger-valid exclusive clears prior regular statuses; later nonexclusive options are skipped",
+    "materialization_order": "authored order; enabled rows bypass the disabled-item limit",
+    "fallback_entry_condition": "regular materialized item count equals zero",
+    "fallback_semantics": "scan +0x3EA only, force enabled=1, materialize, then set item+0x1B5=1; do not re-run +0x90, context mode, show_as_unavailable or exclusive"
+  },
+  "dynamic_name_resolution": {
+    "zero_candidates": "empty string",
+    "one_candidate": "resolve first",
+    "multiple_candidates": "evaluate candidate+0x30 triggers with RVA 0x334C510; if none pass resolve first; otherwise use context-derived deterministic hashed selection among passing candidates",
+    "rng_boundary": "does not consume the mutable event-option AI draw"
+  },
+  "effect_paths": {
+    "execution": "RVA 0x33E68C0 bounds-checks native index, reads option+0x358 and calls 0x3380410; it does not re-run trigger/exclusive/fallback/enabled",
+    "preview_presentation": "RVA 0x16D2CF0 passes option+0x358, SPlayerEventData and a presentation collector to RVA 0x3380170; collector invokes loaded-effect vtable +0x58 with r8d=0",
+    "preview_output_abi": "unknown",
+    "worker_thread_callability": "not proven"
+  },
+  "native_ai_selector": {
+    "abi": "rcx=EventData*, rdx=SPlayerEventData*, r8d=decision_value, r9b=context_mode",
+    "return": "authored zero-based native option index or -1",
+    "regular_scan": "authored order; context-mode gate, +0x90 trigger and exclusive semantics",
+    "fallback_scan": "only when regular candidate count is zero; +0x3EA only, without context-mode, required trigger or exclusive",
+    "weight_precedence": "+0x318 nonzero selects ai_will_select +0x250; otherwise ai_chance +0x28",
+    "integer_weight": "ceil(CFixedPoint raw / 100000)",
+    "default_weight": "ai_chance base raw 100000, semantic integer 1",
+    "positive_draw": "positive weights only; threshold=floor(decision_value*positive_sum/2^31); first authored cumulative interval strictly greater than threshold",
+    "all_nonpositive_draw": "decision_value modulo candidate_count over the candidate mask in authored order; fallback is not reopened",
+    "equal_weight_tie": "equal-width probability intervals; no secondary tie-break",
+    "empty": "return -1",
+    "decision_value": "RVA 0x356A0A0 -> 0x356B770; final btr eax,31 produces 0..0x7FFFFFFF",
+    "sum_overflow_boundary": "positive sum is signed int32 and no guard was observed"
+  },
+  "readiness": {
+    "static_option_visibility_ready": true,
+    "static_ai_selector_ready": true,
+    "static_name_resolver_ready": true,
+    "preview_entry_static_ready": true,
+    "preview_output_abi_ready": false,
+    "engine_owned_window_locator_ready": false,
+    "bridge_query_ready": false,
+    "live_validated": false
+  },
+  "do_not_call_yet": [
+    "RVA 0x3380410 is the gameplay effect executor, not a preview helper.",
+    "Do not call trigger, name or preview evaluators from the bridge worker until main-thread ownership and context lifetime are proven.",
+    "Do not fabricate GuiContextGUI or SPlayerEventData."
+  ]
+}

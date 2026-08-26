@@ -1,0 +1,48 @@
+{
+  "contract": "loaded-feature-manifest-v1",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "architecture": "msvc-x64",
+  "capability": "game.command.query-loaded-feature-manifest-v1",
+  "step": "query-loaded-feature-manifest-v1",
+  "backend_id": "ck3-1.19.0.6-native-loaded-feature-manifest-v1",
+  "application_main_only": true,
+  "read_only": true,
+  "effective_feature_flags": {
+    "root_pointer_slot_rva": "0x576CC68",
+    "manager_offset": "0x290",
+    "bitset_offset_from_root": "0x2B0",
+    "enabled_count_offset_from_root": "0x2B8",
+    "enum_table_begin_rva": "0x42F7850",
+    "enum_table_end_rva": "0x42F7900",
+    "native_count": 44,
+    "script_identifier_name_rva": "0x3B58970",
+    "full_vocabulary_required": true,
+    "popcount_must_equal_enabled_count": true
+  },
+  "script_dlc_set": {
+    "object_rva": "0x5762590",
+    "kind": "direct_object",
+    "bucket_base_offset": "0x08",
+    "bucket_mask_offset": "0x14",
+    "maximum_spill_offset": "0x18",
+    "bucket_stride": "0x28",
+    "bucket_control_offset": "0x04",
+    "bucket_key_offset": "0x08",
+    "enumeration_bound": "mask_plus_one_plus_spill",
+    "canonical_order": "unsigned_utf8_bytewise_lexicographical",
+    "duplicate_keys_rejected": true
+  },
+  "entitlements": {
+    "manager_pointer_slot_rva": "0x570F868",
+    "status": "unavailable",
+    "reason": "store_verdict_provenance_unclosed",
+    "false_cache_byte_must_not_be_reported_as_not_entitled": true
+  },
+  "same_frame_contract": {
+    "double_observation": true,
+    "frame_before_after_equal": true,
+    "root_identity_equal": true,
+    "set_layout_equal": true
+  }
+}

@@ -64,6 +64,9 @@ add_library(xar_ck3_bridge SHARED
   src/battle_terminal_transition_v1_mailbox.cpp
   src/battle_transition_v1_mailbox.cpp
   src/bridge.cpp
+  src/campaign_root_context_v1.cpp
+  src/campaign_root_context_v1_mailbox.cpp
+  src/campaign_root_context_v1_serializer.cpp
   src/ck3_11906.cpp
   src/ck3_11906_adapter.cpp
   src/combat_phase_event_trace_detour_v1.cpp
@@ -75,6 +78,9 @@ add_library(xar_ck3_bridge SHARED
   src/combat_v3_serializer.cpp
   src/combat_v3_test_only.cpp
   src/game_adapter.cpp
+  src/loaded_feature_manifest_v1.cpp
+  src/loaded_feature_manifest_v1_mailbox.cpp
+  src/loaded_feature_manifest_v1_serializer.cpp
   src/main_thread_query_mailbox_v1.cpp
   src/route_contact_horizon_v1_mailbox.cpp
   src/startup_dx11_render_context_draw_guard_v1.cpp
@@ -169,8 +175,12 @@ if(BUILD_TESTING)
     src/battle_terminal_journal_v1.cpp
     src/battle_terminal_transition_v1_mailbox.cpp
     src/battle_transition_v1_mailbox.cpp
+    src/campaign_root_context_v1.cpp
+    src/campaign_root_context_v1_mailbox.cpp
     src/combat_simulation_inputs_v3_mailbox.cpp
     src/game_adapter.cpp
+    src/loaded_feature_manifest_v1.cpp
+    src/loaded_feature_manifest_v1_mailbox.cpp
     src/ck3_11906_adapter.cpp
     src/ck3_11906.cpp
     src/combat_v3.cpp
@@ -469,6 +479,166 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_combat_phase_event_trace_managed_v1
     COMMAND xar_ck3_combat_phase_event_trace_managed_v1_test
+  )
+
+  add_executable(xar_ck3_campaign_root_context_v1_test
+    src/campaign_root_context_v1.cpp
+    src/campaign_root_context_v1_serializer.cpp
+    src/campaign_root_context_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_campaign_root_context_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_campaign_root_context_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_campaign_root_context_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_campaign_root_context_v1
+    COMMAND xar_ck3_campaign_root_context_v1_test
+  )
+
+  add_executable(xar_ck3_campaign_root_context_v1_mailbox_test
+    src/campaign_root_context_v1_mailbox.cpp
+    src/campaign_root_context_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_campaign_root_context_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_campaign_root_context_v1_mailbox_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_campaign_root_context_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_campaign_root_context_v1_mailbox
+    COMMAND xar_ck3_campaign_root_context_v1_mailbox_test
+  )
+
+  add_executable(xar_ck3_campaign_root_context_v1_source_contract_test
+    src/campaign_root_context_v1_source_contract_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_campaign_root_context_v1_source_contract_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_campaign_root_context_v1_source_contract_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_campaign_root_context_v1_source_contract_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_campaign_root_context_v1_source_contract
+    COMMAND xar_ck3_campaign_root_context_v1_source_contract_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/campaign_root_context_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/campaign_root_context_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/campaign_root_context_v1_serializer.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/campaign_root_context_v1_mailbox.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/main_thread_query_mailbox_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/main_thread_query_mailbox_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_11906_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/game_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/campaign_root_context_v1_abi.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/campaign_root_context_v1_source_contract.json
+  )
+
+  add_executable(xar_ck3_loaded_feature_manifest_v1_test
+    src/loaded_feature_manifest_v1.cpp
+    src/loaded_feature_manifest_v1_serializer.cpp
+    src/loaded_feature_manifest_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_loaded_feature_manifest_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_loaded_feature_manifest_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_loaded_feature_manifest_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_loaded_feature_manifest_v1
+    COMMAND xar_ck3_loaded_feature_manifest_v1_test
+  )
+
+  add_executable(xar_ck3_loaded_feature_manifest_v1_mailbox_test
+    src/loaded_feature_manifest_v1_mailbox.cpp
+    src/loaded_feature_manifest_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_loaded_feature_manifest_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_loaded_feature_manifest_v1_mailbox_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_loaded_feature_manifest_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_loaded_feature_manifest_v1_mailbox
+    COMMAND xar_ck3_loaded_feature_manifest_v1_mailbox_test
+  )
+
+  add_executable(xar_ck3_loaded_feature_manifest_v1_source_contract_test
+    src/loaded_feature_manifest_v1_source_contract_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_loaded_feature_manifest_v1_source_contract_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_loaded_feature_manifest_v1_source_contract_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_loaded_feature_manifest_v1_source_contract_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_loaded_feature_manifest_v1_source_contract
+    COMMAND xar_ck3_loaded_feature_manifest_v1_source_contract_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/loaded_feature_manifest_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/loaded_feature_manifest_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/loaded_feature_manifest_v1_serializer.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/loaded_feature_manifest_v1_mailbox.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/main_thread_query_mailbox_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/main_thread_query_mailbox_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_11906_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/game_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/loaded_feature_manifest_v1_abi.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/loaded_feature_manifest_v1_source_contract.json
   )
 
   add_executable(xar_ck3_main_thread_query_mailbox_v1_test

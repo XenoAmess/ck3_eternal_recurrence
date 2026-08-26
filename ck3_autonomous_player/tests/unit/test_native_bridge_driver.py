@@ -4421,6 +4421,74 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             [11, 31, 31, 2585],
         )
 
+    def test_routed_controllable_army_projects_same_province_route_clear(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-wars",
+                "game.state.army-routes",
+                "game.command.move-army-N-to-N",
+                "game.command.preview-move-army-N-to-N",
+            )
+        )
+        routed = _army(
+            83_886_341,
+            province_id=2596,
+            move_target_province_id=2604,
+            route_province_ids=[2595, 2603, 2604],
+        )
+        enemy = _army(
+            357,
+            province_id=2564,
+            move_target_province_id=2596,
+            route_province_ids=[2582, 2587, 2597, 2596],
+            controllable=False,
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                active_wars=[
+                    _war(allied_armies=[routed], enemy_armies=[enemy])
+                ],
+                player_armies=[routed],
+            )
+        )
+
+        routed_steps = driver.capabilities()["action_steps"]
+        self.assertIn(
+            "preview-move-army-83886341-to-2596", routed_steps
+        )
+        self.assertIn("move-army-83886341-to-2596", routed_steps)
+        self.assertNotIn("move-army-357-to-2564", routed_steps)
+
+        cleared = _army(
+            83_886_341,
+            province_id=2596,
+            move_target_province_id=None,
+            route_province_ids=[],
+        )
+        endpoint.publish(
+            _snapshot(
+                41,
+                active_wars=[
+                    _war(allied_armies=[cleared], enemy_armies=[enemy])
+                ],
+                player_armies=[cleared],
+            )
+        )
+
+        cleared_steps = driver.capabilities()["action_steps"]
+        self.assertNotIn(
+            "preview-move-army-83886341-to-2596", cleared_steps
+        )
+        self.assertNotIn("move-army-83886341-to-2596", cleared_steps)
+
     def test_actual_contact_scope_is_atomic_and_combat_v3_ready(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(

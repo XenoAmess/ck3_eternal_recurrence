@@ -1,0 +1,351 @@
+{
+  "schema_version": 1,
+  "contract": "pending-character-interaction-context-v1-static-research",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "architecture": "msvc-x64",
+  "evidence_kind": "offline_exact_build_static_analysis",
+  "read_only": true,
+  "advertised": false,
+  "production_wired": false,
+  "live_validated": false,
+  "game_process_started": false,
+  "scope": "engine-generic pending character-interaction identity, roles, target envelope, selected send options, routing, deadline and reply legality",
+  "owner_deferred_domains": [
+    "religion",
+    "faith",
+    "conversion",
+    "reformation",
+    "doctrine",
+    "tenet",
+    "fervor",
+    "holy_war"
+  ],
+  "execution_boundary": {
+    "research_mode": "offline_exact_build_static_only",
+    "ck3_started_or_controlled": false,
+    "cpp_implementation_changed": false,
+    "future_query_thread": "paused application-main mailbox",
+    "future_snapshot_rule": "resolve the full generation-bearing pending ID, require exact local routing, sample all fields atomically, and publish only if the outer paused revision is unchanged",
+    "read_only_helpers_after_thread_proof": [
+      "0x1266BA0 pending local-routing predicate",
+      "0x26B3540 reply validator for enums 0, 1 and 2",
+      "0x2C42610 context identity validator",
+      "0x2C42A30 reply-state predicate",
+      "0x334C510 generic trigger evaluator for proven trigger fields"
+    ],
+    "forbidden_query_calls": [
+      "0x26B3480 reply command executor",
+      "0x2751410 pending manager response transition",
+      "unknown special_interaction virtual methods",
+      "notification-description effect execution or text-to-terms inference"
+    ],
+    "acknowledge_warning": "RVA 0x26B3540 returns true for enum 4 before resolving the pending ID; it must never be used as acknowledge legality."
+  },
+  "source_contract": {
+    "range_convention": "start inclusive, end exclusive",
+    "source_files": {
+      "Crusader Kings III/game/common/character_interactions/_character_interactions.info": "F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10",
+      "Crusader Kings III/game/common/defines/00_defines.txt": "C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807"
+    },
+    "exact_function_spans": [
+      {
+        "name": "pending_constructor",
+        "start_rva": "0x27541F0",
+        "end_rva": "0x27543BE",
+        "byte_length": "0x1CE",
+        "sha256": "5F7FCA209ECE701F45E6E578C794A163E1C0E0E22C5F7F3CC19788C91D903C20"
+      },
+      {
+        "name": "character_interaction_context_copy_constructor",
+        "start_rva": "0x2C3ED50",
+        "end_rva": "0x2C3EE48",
+        "byte_length": "0xF8",
+        "sha256": "FF03F353F712C474BAB8A0F8E16818B7646CBFC62DB689A61B2E07BA64EB7B58"
+      },
+      {
+        "name": "pending_local_routing_predicate",
+        "start_rva": "0x1266BA0",
+        "end_rva": "0x1266C1E",
+        "byte_length": "0x7E",
+        "sha256": "8E3F7AB44E69130FBAA0C848C086C98F3798D59D7347012FA0252FA73600C2D1"
+      },
+      {
+        "name": "reply_character_interaction_validator",
+        "start_rva": "0x26B3540",
+        "end_rva": "0x26B3644",
+        "byte_length": "0x104",
+        "sha256": "8A4FD3CD51CF0079A6AB0785DD0E43EAD46647E8D57C9FBA66331277D38CA5AC"
+      },
+      {
+        "name": "reply_character_interaction_executor",
+        "start_rva": "0x26B3480",
+        "end_rva": "0x26B353F",
+        "byte_length": "0xBF",
+        "sha256": "C89C990578A570B3467F8E33A88380C790767D2AD1B0FBB101AE0B9D530EFE2D"
+      },
+      {
+        "name": "pending_daily_age_and_expiry",
+        "start_rva": "0x27516F0",
+        "end_rva": "0x275180C",
+        "byte_length": "0x11C",
+        "sha256": "B5923424AA953D30C991994FE74A5C48138D1E8E49DB061151229C7821F24D14"
+      },
+      {
+        "name": "game_database_object_key_constructor",
+        "start_rva": "0x345E620",
+        "end_rva": "0x345E684",
+        "byte_length": "0x64",
+        "sha256": "14DCA9C293CC17FE35B18781D0ACFC861CC3487CDF4E55E2E030C3A8D2B79F61"
+      },
+      {
+        "name": "send_option_shown_and_valid_gate",
+        "start_rva": "0x2C408B0",
+        "end_rva": "0x2C40949",
+        "byte_length": "0x99",
+        "sha256": "5DAE0CF2AF678F5738AED4EE050CC42F18AE176099EFDC4381A7D0B1B660846E"
+      },
+      {
+        "name": "character_interaction_context_refresh",
+        "start_rva": "0x2C40950",
+        "end_rva": "0x2C40B1A",
+        "byte_length": "0x1CA",
+        "sha256": "0EE2C4AE8FDC72029333637814581FAD5E325D87627A1589FAC0D23A05018CF2"
+      },
+      {
+        "name": "character_interaction_context_identity_validator",
+        "start_rva": "0x2C42610",
+        "end_rva": "0x2C42702",
+        "byte_length": "0xF2",
+        "sha256": "345DB4BA32382F69DC0D4B8B9DC993EA1100110D0027D1318534CBCEBF4011F7"
+      },
+      {
+        "name": "character_interaction_expiration_define_registration",
+        "start_rva": "0x211D250",
+        "end_rva": "0x211D26D",
+        "byte_length": "0x1D",
+        "sha256": "8D4A73D179C35B453EA2A9942330E76BC40D7F5EACE7D515EE71FA174E0FECA0"
+      }
+    ],
+    "entry_only_anchors": {
+      "character_interaction_constructor": "0x2C385F0",
+      "context_serializer": "0x2C3F400",
+      "context_send_option_finalize": "0x2C40B20",
+      "reply_state_predicate": "0x2C42A30",
+      "generic_script_scope_validity": "0x3329B00",
+      "generic_script_scope_serializer_dispatch": "0x81D880",
+      "human_player_character_id_membership": "0x28BCEB0",
+      "generic_trigger_evaluator": "0x334C510",
+      "pending_manager_response_transition": "0x2751410",
+      "auto_accept_notification_getter": "0x12680E0",
+      "ui_reply_legality_mirror": "0x1268140",
+      "notification_auto_reply": "0xF06B50"
+    }
+  },
+  "rtti": {
+    "CPendingCharacterInteraction": {
+      "type_descriptor_rva": "0x54BB780",
+      "primary_complete_object_locator_rva": "0x495ABC0",
+      "primary_vtable_rva": "0x431C550",
+      "secondary_complete_object_locator_rva": "0x495AB98",
+      "secondary_subobject_offset": "0x08",
+      "secondary_vtable_rva": "0x431C538"
+    },
+    "CCharacterInteraction": {
+      "type_descriptor_rva": "0x50401B0",
+      "primary_complete_object_locator_rva": "0x4A7B478",
+      "primary_vtable_rva": "0x4403CE0",
+      "secondary_complete_object_locator_rva": "0x4A7B450",
+      "secondary_subobject_offset": "0x2A80",
+      "secondary_vtable_rva": "0x4403CA8"
+    }
+  },
+  "storage": {
+    "global_slot_rva": "0x57BF1C8",
+    "slots": "+0x20 pointer",
+    "capacity": "+0x2C signed int32",
+    "slot_stride": "0x10",
+    "slot_object": "+0x08",
+    "identity_rule": "use low 24 bits only to choose the slot, then require object+0x10 to equal the complete requested component ID and require the component liveness virtual predicate"
+  },
+  "layouts": {
+    "CPendingCharacterInteraction": {
+      "size_and_stride": "0x5C8",
+      "component_instance_id": "+0x10 full generation-bearing int32",
+      "embedded_context": "+0x18, size 0x338",
+      "materialized_notification_description_bundle": "+0x350 through the tail before +0x5B8; internal structured ABI not closed",
+      "age_days": "+0x5B8 signed int32, initialized zero and incremented once per manager daily pass",
+      "ai_reply_cutoff_days": "+0x5BC signed int32, used only when the current responder is not a human player",
+      "routing_kind": "+0x5C0 signed int32",
+      "unclassified_flags": "+0x5C4 and +0x5C5 uint8; retained as raw internal evidence and not exposed semantically",
+      "auto_accept_notification": "+0x5C6 uint8"
+    },
+    "CCharacterInteractionContext": {
+      "size": "0x338",
+      "interaction_definition": "+0x00 CCharacterInteraction*",
+      "primary_event_target_scope": "+0x08, 0x168-byte generic scope block",
+      "secondary_scope_unknown": "+0x170, 0x168-byte generic scope block",
+      "actor_character_id": "+0x2D8 int32",
+      "recipient_character_id": "+0x2DC int32",
+      "secondary_actor_character_id": "+0x2E0 int32",
+      "secondary_recipient_character_id": "+0x2E4 int32",
+      "intermediary_character_id": "+0x2E8 int32",
+      "target_script_scope_value": "+0x2F0, 16 bytes",
+      "selected_send_options": "+0x300 data pointer, +0x308 capacity, +0x30C signed count, +0x310 allocator",
+      "special_data": "+0x330 polymorphic cloned payload pointer"
+    },
+    "CCharacterInteraction": {
+      "runtime_ordinal": "+0x10 int32 inherited from CGameDatabaseObject",
+      "deterministic_key_hash": "+0x14 uint32 inherited from CGameDatabaseObject",
+      "canonical_key": "+0x18 MSVC string, size +0x28 and capacity +0x30",
+      "can_be_blocked_trigger": "+0x11F8 embedded trigger",
+      "send_option_rows": "+0x2548 pointer",
+      "send_option_count": "+0x2554 signed int32",
+      "auto_accept_trigger": "+0x2580 optional trigger pointer",
+      "target_type_raw": "+0x2A2A uint8; enum-to-authored-type mapping not closed",
+      "auto_accept_scalar": "+0x2A48 uint8 fallback only when +0x2580 is null",
+      "send_options_exclusive": "+0x2A4E uint8"
+    },
+    "CharacterInteractionSendOptionRow": {
+      "stride": "0x7D0",
+      "is_shown_trigger": "+0x00 embedded trigger",
+      "is_valid_trigger": "+0xE0 embedded trigger",
+      "numeric_flag_identifier": "+0x3A8 int32",
+      "selected_state": "context byte at the same native index; exactly 1 is selected and 0 is unselected",
+      "stable_identity": "native index plus numeric flag identifier; identifier-to-string resolution is not closed"
+    },
+    "GenericTargetScriptScopeValue": {
+      "size": "0x10",
+      "presence_and_type": "+0x00 uint16 registry index; zero is absent",
+      "remaining_payload": "type-specific bytes, not a universal component ID",
+      "serialization_tag": "0x6B",
+      "semantic_boundary": "publish the raw envelope only as source evidence; typed target identity remains unavailable until that registry type has an exact-build decoder"
+    },
+    "CReplyCharacterInteractionCommand": {
+      "size": "0x28",
+      "primary_vtable_rva": "0x4082930",
+      "secondary_vtable_rva": "0x4082900",
+      "pending_interaction_id": "+0x20 int32",
+      "reply": "+0x24 int32; 0 accept, 1 reject, 2 block, 4 acknowledge",
+      "submission_flags": "0x0E"
+    }
+  },
+  "stable_definition_identity": {
+    "definition_pointer": "load the pointer at CPendingCharacterInteraction+0x18, which is embedded_context+0x00",
+    "constructor_chain": "0x2C385F0 calls 0x345E620",
+    "public_key": "canonical MSVC string at definition+0x18",
+    "public_hash": "uint32 at definition+0x14",
+    "runtime_evidence_only": "int32 ordinal at definition+0x10",
+    "exact_build_rule": "reject unsupported executable hashes before dereferencing this layout"
+  },
+  "roles_and_routing": {
+    "roles": [
+      "actor",
+      "recipient",
+      "secondary_actor",
+      "secondary_recipient",
+      "intermediary"
+    ],
+    "routing_kinds": {
+      "0": "recipient is current responder",
+      "1": "intermediary is current responder",
+      "2": "recipient is current responder after intermediary acceptance",
+      "3": "terminal or non-local; not actionable"
+    },
+    "constructor_initial_kind": "1 when intermediary != -1, otherwise 0",
+    "manager_transitions": "RVA 0x2751410 writes kind 2 after intermediary acceptance and kind 3 on terminal paths",
+    "local_route": "RVA 0x1266BA0 requires pending liveness, chooses the responder by kind, compares it with played Character+0x18, then requires 0x2C42A30(context,false,false,false)",
+    "execution_channel": "RVA 0x26B3480 passes reply through the intermediary argument when kind is 1 and through the recipient argument otherwise"
+  },
+  "send_options": {
+    "count_invariant": "context+0x30C must equal definition+0x2554 and remain within an implementation bound",
+    "selection_encoding": "one byte per native row; selected iff byte equals 1",
+    "visibility_and_validity": "RVA 0x2C408B0 evaluates row+0xE0 is_valid, then row+0x00 is_shown, against context+0x08",
+    "finalization": "RVA 0x2C40B20 resizes the vector to the definition count, validates selected rows and enforces definition+0x2A4E exclusive behavior",
+    "scope_projection": "RVA 0x2C40950 writes every selected boolean to the primary scope using row+0x3A8",
+    "string_identity_status": "unavailable: numeric script identifier to canonical flag string mapping is not closed"
+  },
+  "deadline": {
+    "age_days": "pending+0x5B8",
+    "daily_update_rva": "0x27516F0",
+    "human_responder_predicate_rva": "0x28BCEB0",
+    "expiration_days_global_rva": "0x570F528",
+    "define_name_string_rva": "0x42DD210",
+    "define_registration_rva": "0x211D250",
+    "source_define": "NCharacterInteraction.CHARACTER_INTERACTION_EXPIRATION_DAYS = 60",
+    "remaining_days": "max(0, int32(module+0x570F528) - pending_age_days)",
+    "boundary_at_zero": "age >= expiration queues a human-owned request for expiry during that daily pass; zero is not a promise of one more full day",
+    "ai_cutoff_boundary": "pending+0x5BC is used for a non-human current responder; its exact min/max random-draw construction is not closed and it is not the player's deadline"
+  },
+  "reply_legality": {
+    "native_common_gate": "for enums other than 4, RVA 0x26B3540 generation-resolves the pending object, requires component liveness, 0x2C42610(context), then 0x2C42A30(context,false,false,false)",
+    "native_accept": "enum 0 returns true after the common gate",
+    "native_reject": "enum 1 additionally requires actor != recipient and exact auto_accept false",
+    "native_block": "enum 2 additionally requires definition+0x11F8 can_be_blocked trigger true, actor != recipient and exact auto_accept false",
+    "exact_auto_accept": "if definition+0x2580 is non-null, evaluate it with RVA 0x334C510 against pending+0x20; otherwise read definition+0x2A48. A true result makes reject/block invalid.",
+    "native_acknowledge_false_seam": "enum 4 returns true before pending storage resolution and cannot establish legality",
+    "adapter_common_gate": "full-generation pending resolution, component liveness and RVA 0x1266BA0 local routing for the played Character",
+    "can_accept": "adapter_common_gate && pending+0x5C6 == 0 && validate(enum 0)",
+    "can_reject": "adapter_common_gate && pending+0x5C6 == 0 && validate(enum 1)",
+    "can_block": "adapter_common_gate && pending+0x5C6 == 0 && validate(enum 2)",
+    "can_acknowledge": "adapter_common_gate && pending+0x5C6 != 0; submit only enum 4",
+    "unknown_or_malformed": "publish all actions false with a typed observation error; never fall back to accept"
+  },
+  "safe_semantic_terms": {
+    "available_from_generic_exact_build_contract": [
+      "stable interaction canonical key and deterministic hash",
+      "actor, recipient, secondary actor, secondary recipient and intermediary CharacterIDs",
+      "current responder role and routing kind",
+      "auto_accept result and auto-accept-notification channel",
+      "selected send-option native indexes and numeric flag identifiers",
+      "target presence and raw type envelope",
+      "age, expiration and remaining days",
+      "independent accept, reject, block and acknowledge legality"
+    ],
+    "unavailable_without_subtype_decoder": [
+      "typed identity for every generic target kind",
+      "numeric option flag identifier to canonical string",
+      "structured costs and resource transfers",
+      "structured relationship or title exchanges",
+      "special_interaction payload fields",
+      "structured hard-coded and scripted effect preview",
+      "recipient AI acceptance score and final random decision"
+    ],
+    "notification_text_boundary": "materialized text or a present description bundle is presentation evidence, not a structured-terms proof"
+  },
+  "proposed_observation": {
+    "status": "available | unavailable | invalid",
+    "snapshot_identity": "exact build hash, paused date and revision",
+    "pending_identity": "full component ID",
+    "definition": "canonical key, deterministic hash and optional runtime ordinal",
+    "roles": "five full CharacterIDs plus current responder role",
+    "target": "present, raw type index, raw envelope evidence, typed status and typed identity when supported",
+    "send_options": "native index, numeric flag identifier, selected and evaluation status",
+    "routing": "raw kind and auto_accept_notification",
+    "deadline": "age_days, expiration_days, remaining_days and expiry_boundary_status",
+    "legality": "four independent status/bool/reason objects",
+    "terms": "per-domain status objects; no null-filled claims",
+    "interaction_semantic_decision_ready": "true only when definition, responder, required target, all decision-relevant terms and at least one legal reply are semantically available"
+  },
+  "readiness": {
+    "exact_build_ready": true,
+    "pending_layout_static_ready": true,
+    "stable_definition_identity_static_ready": true,
+    "roles_and_routing_static_ready": true,
+    "send_option_selection_static_ready": true,
+    "deadline_static_ready": true,
+    "reply_legality_static_ready": true,
+    "generic_target_envelope_static_ready": true,
+    "generic_target_typed_identity_ready": false,
+    "structured_terms_ready": false,
+    "bridge_query_ready": false,
+    "production_live_ready": false,
+    "interaction_semantic_decision_ready": false,
+    "capability_advertised": false
+  },
+  "next_reverse_engineering": [
+    "map the generic target scope registry indexes used by supported non-deferred interaction target types to stable typed payload decoders",
+    "close an engine-generic read-only structured terms/effect-description seam without calling subtype mutators or effect executors",
+    "implement the paused application-main query and validate ordinary recipient, intermediary and auto-accept-notification fixtures in game"
+  ]
+}

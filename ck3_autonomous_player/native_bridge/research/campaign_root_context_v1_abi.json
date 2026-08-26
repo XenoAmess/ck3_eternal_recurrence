@@ -1,0 +1,51 @@
+{
+  "contract": "campaign-root-context-v1",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "architecture": "msvc-x64",
+  "capability": "game.command.query-campaign-root-context-v1",
+  "step": "query-campaign-root-context-v1",
+  "backend_id": "ck3-1.19.0.6-native-campaign-root-context-v1",
+  "application_main_only": true,
+  "read_only": true,
+  "globals": {
+    "game_state_slot_rva": "0x570E068",
+    "jomini_state_slot_rva": "0x570F7B8",
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "landed_title_storage_slot_rva": "0x570C410",
+    "landed_title_fallback_slot_rva": "0x570C3F8",
+    "government_fallback_slot_rva": "0x570CB50",
+    "game_rule_selection_service_slot_rva": "0x5754B48",
+    "game_rule_token_fallback_slot_rva": "0x57D7430"
+  },
+  "functions": {
+    "primary_title_rva": "0x25F3350",
+    "capital_province_rva": "0x2606760",
+    "immediate_liege_rva": "0x2613480",
+    "top_liege_rva": "0x2613600",
+    "government_rva": "0x26165B0",
+    "script_identifier_name_rva": "0x3B58970"
+  },
+  "government_fallback_binding": {
+    "kind": "pointer_slot",
+    "consumer_function_rva": "0x26165B0",
+    "instruction_rva": "0x2616664",
+    "next_instruction_rva": "0x261666B",
+    "instruction": "mov rax, qword ptr [rip+0x30F64E5]",
+    "resolved_rva": "0x570CB50",
+    "source_model": "void **",
+    "reader_operation": "ReadSlot"
+  },
+  "component_identity": {
+    "index_mask": "0x00FFFFFF",
+    "slot_stride": "0x10",
+    "slot_object_offset": "0x08",
+    "full_generation_equality_required": true
+  },
+  "canonicalization": {
+    "comparator": "unsigned_utf8_bytewise_lexicographical",
+    "preserve_multiplicity": true,
+    "selected_setting_tokens_do_not_infer_parent_rule": true
+  }
+}
