@@ -34,7 +34,19 @@
   `SetupOptions` shown/enabled/fallback/exclusive/cancel/name/reason/effect-preview 静态 ABI、原生 AI exact weighted selector，
   以及人物互动的候选/接受树；人物互动 typed bridge/MCP 已对普通 white-peace recipient pending 完成跨存档冷恢复双查询，
   artifact SHA `D20E339D...B8BC89`。事件 current GUI data locator、preview collector output，以及互动 structured terms、
-  intermediary/ACK discovery 仍待施工。宗教/信仰内容按 owner 指示保持 opaque compatibility，不计入完成。
+  intermediary live fixture 仍待施工；notification discovery/ACK 另见下一专题。宗教/信仰内容按 owner 指示保持 opaque
+  compatibility，不计入完成。
+- [static-confirmed + implementation-confirmed] [interaction-notification-ack.md](interaction-notification-ack.md)
+  单独冻结人物互动 notification 的 full-generation 枚举、`+0x5C6` channel、enum-4 false validator seam、原生 UI
+  construct/submit 与 manager transition；production bridge 已扩展为 notification 可见、paused typed query 可达和严格
+  full-ID ACK step，queue 后仍以旧 pending ID 推进作为成功条件。非宗教 production live fixture 尚未完成。
+- [static-confirmed] [interaction-structured-terms.md](interaction-structured-terms.md) 分开冻结普通人物互动的
+  十槽 compiled-cost evaluator、engine-owned `InteractionEffectsDescription` 物化链，以及 intermediary/recipient/outer
+  原生 AI 接受链；资源槽 stable key、effect typed row/root、white-peace `special_data`/WarID 仍是明确的 production
+  观测依赖，当前不得把 legality 冒充 semantic decision readiness。
+- [static-confirmed locator lower chain] [event-window-context.md](event-window-context.md) 冻结
+  `CIngameInterfaceIdlerGfx → manager → CEventWindow → CEventWindowData` 下半定位链、窗口生命周期、最终 shown/enabled
+  option context 与四类有限 effect indicator；稳定 global root/capture seam 尚未 live 闭合，因此当前没有发布 production reader。
 - [static-confirmed] [army-controller.md](army-controller.md) 记录战争 stance、目标候选和评分、重算节拍、
   `CAISubunitStack` 分派状态机、围城/追击/战斗/撤退切换边界，以及战争 `16777290` 的双敌军实例。
 - [static-confirmed] [army-contact-resolution.md](army-contact-resolution.md) 把原生 AI 的目标/避战门连接到

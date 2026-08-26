@@ -34,6 +34,10 @@ from .bridge.marriage_contract import (
     observed_marriage_status,
     parse_arrange_marriage_step,
 )
+from .bridge.pending_character_interaction_context_contract import (
+    ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
+    QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
+)
 from .bridge.settlement_contract import ONE_LIFE_SETTLEMENT_CAPABILITY
 from .bridge.war_contract import (
     MAX_ROUTE_CONTACT_HOSTILE_IDS,
@@ -318,6 +322,78 @@ def _same_frame_war_entry_assessments(
         for assessment in normalized["assessments"]:
             recovered[int(assessment["target_character_id"])] = assessment
     return recovered
+
+
+def _same_frame_pending_interaction_context(
+    rows: list[dict[str, object]],
+    snapshot: dict[str, object] | None,
+) -> dict[str, object] | None:
+    """Recover the latest typed interaction observation for this exact frame."""
+
+    if not isinstance(snapshot, dict):
+        return None
+    pending = snapshot.get("pending_character_interaction")
+    if not isinstance(pending, dict):
+        return None
+    pending_id = pending.get("instance_id")
+    revision = snapshot.get("revision")
+    snapshot_id = snapshot.get("snapshot_id")
+    if (
+        isinstance(pending_id, bool)
+        or not isinstance(pending_id, int)
+        or pending_id <= 0
+        or isinstance(revision, bool)
+        or not isinstance(revision, int)
+        or not isinstance(snapshot_id, str)
+        or not snapshot_id
+    ):
+        return None
+
+    native_revision = snapshot.get("native_revision")
+    date_raw = snapshot.get("date_raw")
+    for row in reversed(rows):
+        if (
+            _effective_command(row)
+            != QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+            or row.get("ok") is not True
+        ):
+            continue
+        result = _effective_command_result(row)
+        context = (
+            result.get("pending_character_interaction_context")
+            if isinstance(result, dict)
+            else None
+        )
+        if not (
+            isinstance(result, dict)
+            and isinstance(context, dict)
+            and result.get("step")
+            == QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+            and result.get("accepted") is True
+            and result.get("status") == context.get("status")
+            and result.get("queried_snapshot_id") == snapshot_id
+            and result.get("queried_revision") == revision
+            and context.get("pending_interaction_id") == pending_id
+        ):
+            continue
+        if (
+            isinstance(native_revision, int)
+            and not isinstance(native_revision, bool)
+            and (
+                result.get("queried_native_revision") != native_revision
+                or result.get("snapshot_revision") != native_revision
+                or context.get("snapshot_revision") != native_revision
+            )
+        ):
+            continue
+        if (
+            isinstance(date_raw, int)
+            and not isinstance(date_raw, bool)
+            and context.get("date_raw") != date_raw
+        ):
+            continue
+        return context
+    return None
 
 
 def _battle_control_query_records(
@@ -1332,38 +1408,134 @@ def choose_one_life_turn(
         if isinstance(snapshot, dict)
         else None
     )
+    if (
+        isinstance(pending_interaction, dict)
+        and pending_interaction.get("auto_accept_notification") is True
+    ):
+        notification_summary = {
+            "instance_id": pending_interaction.get("instance_id"),
+            "sender_character_id": pending_interaction.get(
+                "sender_character_id"
+            ),
+            "auto_accept_notification": True,
+        }
+        if ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "pending_character_interaction_acknowledge",
+                "selected_step": (
+                    ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP
+                ),
+                "reason": (
+                    "acknowledge the already resolved native interaction "
+                    "notification so the pending queue can advance"
+                ),
+                "pending_character_interaction": notification_summary,
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "pending_character_interaction_acknowledge_unsupported",
+            "selected_step": None,
+            "required_step": ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
+            "reason": (
+                "the current pending item is an auto-accept notification, "
+                "but the backend cannot acknowledge its exact full ID"
+            ),
+            "pending_character_interaction": notification_summary,
+        }
     pending_war_interaction: dict[str, object] | None = None
     if (
         isinstance(pending_interaction, dict)
         and pending_interaction.get("auto_accept_notification") is False
     ):
-        step = "accept-pending-character-interaction"
+        typed_context = _same_frame_pending_interaction_context(
+            rows,
+            snapshot if isinstance(snapshot, dict) else None,
+        )
         summary = {
             "instance_id": pending_interaction.get("instance_id"),
             "sender_character_id": pending_interaction.get(
                 "sender_character_id"
             ),
         }
+        if isinstance(typed_context, dict):
+            definition = typed_context.get("definition")
+            routing = typed_context.get("routing")
+            readiness = typed_context.get("readiness")
+            summary.update(
+                {
+                    "context_status": typed_context.get("status"),
+                    "context_reason": typed_context.get("reason"),
+                    "interaction_key": (
+                        definition.get("canonical_key")
+                        if isinstance(definition, dict)
+                        else None
+                    ),
+                    "current_responder_role": (
+                        routing.get("current_responder_role")
+                        if isinstance(routing, dict)
+                        else None
+                    ),
+                    "reply_legality": typed_context.get("legality"),
+                    "semantic_decision_ready": (
+                        readiness.get("interaction_semantic_decision_ready")
+                        if isinstance(readiness, dict)
+                        else False
+                    ),
+                    "not_ready_reasons": (
+                        readiness.get("not_ready_reasons")
+                        if isinstance(readiness, dict)
+                        else []
+                    ),
+                }
+            )
         if active_wars:
-            # The current snapshot does not identify the interaction type,
-            # related WarID, outcome, or terms.  Defer the response until
-            # after the enforce-demands priority check, then fail closed.
+            # Defer the query/response until after the enforce-demands
+            # priority check.  The typed v1 context still lacks the related
+            # WarID, outcome and structured terms.
             pending_war_interaction = summary
-        elif step in available_steps:
+        elif typed_context is None and (
+            QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+            in available_steps
+        ):
             return {
                 "policy": "one-life-turn-v1",
-                "phase": "pending_character_interaction",
-                "selected_step": step,
-                "reason": "accept the current native character interaction",
+                "phase": "pending_character_interaction_query",
+                "selected_step": (
+                    QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+                ),
+                "reason": (
+                    "observe the pending interaction's exact type, roles, "
+                    "routing, deadline and reply legality before deciding"
+                ),
                 "pending_character_interaction": summary,
             }
         else:
             return {
                 "policy": "one-life-turn-v1",
-                "phase": "pending_character_interaction_unsupported",
+                "phase": "pending_character_interaction_evidence_required",
                 "selected_step": None,
-                "required_step": step,
-                "reason": "the backend cannot reply to the pending character interaction",
+                **(
+                    {
+                        "required_step": (
+                            QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+                        )
+                    }
+                    if typed_context is None
+                    else {}
+                ),
+                "required_capabilities": [
+                    "game.state.pending-character-interaction-structured-terms",
+                    "game.policy.pending-character-interaction-semantic-decision",
+                ],
+                "reason": (
+                    "the pending interaction has no same-frame typed context"
+                    if typed_context is None
+                    else (
+                        "the typed interaction context is observational only; "
+                        "structured terms and a semantic reply policy are not ready"
+                    )
+                ),
                 "pending_character_interaction": summary,
             }
     player_armies = (
@@ -1768,18 +1940,35 @@ def choose_one_life_turn(
                     "active_wars": war_summary,
                 }
         if pending_war_interaction is not None:
+            if (
+                "context_status" not in pending_war_interaction
+                and QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+                in available_steps
+            ):
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "pending_war_interaction_query",
+                    "selected_step": (
+                        QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+                    ),
+                    "reason": (
+                        "observe the pending interaction after the enforce-demands "
+                        "priority check and before any war reply"
+                    ),
+                    "pending_character_interaction": pending_war_interaction,
+                    "active_wars": war_summary,
+                }
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "pending_war_interaction_evidence_required",
                 "selected_step": None,
                 "required_capabilities": [
-                    "game.state.pending-character-interaction-semantics",
+                    "game.state.pending-character-interaction-structured-terms",
                     "game.command.query-war-termination-options-N",
                 ],
                 "reason": (
-                    "an active war has an unclassified pending interaction; "
-                    "do not accept or reject it without the related WarID, "
-                    "outcome, and complete terms"
+                    "an active war has a pending interaction without a semantic "
+                    "WarID/outcome/terms binding; do not accept or reject it"
                 ),
                 "pending_character_interaction": pending_war_interaction,
                 "active_wars": war_summary,

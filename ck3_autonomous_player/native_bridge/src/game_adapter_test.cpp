@@ -438,6 +438,8 @@ int main() {
       !exact_adapter->supports_step(
           "query-pending-character-interaction-context-v1") ||
       !exact_adapter->supports_step(
+          "acknowledge-pending-character-interaction") ||
+      !exact_adapter->supports_step(
           "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218-33554433") ||
       exact_adapter->supports_step(
           "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218-16777218") ||

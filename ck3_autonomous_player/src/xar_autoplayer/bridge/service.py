@@ -80,6 +80,7 @@ from .loaded_feature_manifest_contract import (
     normalize_loaded_feature_manifest_v1,
 )
 from .pending_character_interaction_context_contract import (
+    ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
     normalize_pending_character_interaction_context_v1,
@@ -591,6 +592,71 @@ class GameplayBridgeService:
             "interaction_instance_id": actual_instance_id,
             "sender_character_id": pending.get("sender_character_id"),
             "accepted": accept,
+        }
+
+    def acknowledge_pending_character_interaction(
+        self,
+        *,
+        interaction_instance_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Acknowledge one exact generation-bearing auto-accept notification."""
+        if (
+            isinstance(interaction_instance_id, bool)
+            or not isinstance(interaction_instance_id, int)
+            or not 1 <= interaction_instance_id <= 2**31 - 1
+        ):
+            raise ValueError(
+                "interaction_instance_id must be a positive full int32"
+            )
+        snapshot = self.snapshot()
+        pending = snapshot.get("pending_character_interaction")
+        if not isinstance(pending, dict):
+            raise BridgeUnavailableError(
+                "CK3 has no pending character interaction"
+            )
+        actual_instance_id = pending.get("instance_id")
+        if actual_instance_id != interaction_instance_id:
+            raise BridgeUnavailableError(
+                "pending character interaction instance mismatch: "
+                f"expected {interaction_instance_id}, current "
+                f"{actual_instance_id}"
+            )
+        if pending.get("auto_accept_notification") is not True:
+            raise BridgeUnavailableError(
+                "pending character interaction is not an ACK notification"
+            )
+        if (
+            ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP
+            not in action_step_set(self.capabilities())
+        ):
+            raise UnsupportedStepError(
+                "selected backend does not implement gameplay step "
+                f"{ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP}"
+            )
+        result = self.execute_step(
+            ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else int(snapshot["revision"])
+            ),
+        )
+        interaction_result = result.get("interaction_result")
+        if (
+            not isinstance(interaction_result, dict)
+            or interaction_result.get("status") != "acknowledged"
+            or interaction_result.get("instance_id")
+            != interaction_instance_id
+        ):
+            raise BridgeUnavailableError(
+                "native ACK did not prove pending interaction advancement"
+            )
+        return {
+            **result,
+            "interaction_instance_id": interaction_instance_id,
+            "sender_character_id": pending.get("sender_character_id"),
+            "acknowledged": True,
         }
 
     def war_state(self) -> dict[str, object]:

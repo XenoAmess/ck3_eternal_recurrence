@@ -119,6 +119,7 @@ int main(int argc, char **argv) {
       !ContainsAll(
           abi,
           {"\"exact_byte_spans\"",
+           "the pending-character-interaction-context-v1 query only",
            "contiguous_logic_span_across_three_pdata_runtime_functions",
            "leaf_thunk_without_pdata_runtime_function_row",
            "\"size_and_stride\": \"0x5C8\"",
@@ -127,14 +128,28 @@ int main(int argc, char **argv) {
            "8B7E4C67B9E772BBB75F303D7EE2444DBBF261D412FD0DCC97C99FC0C7297507",
            "B267CA32133ED15FE47468572C4B561E2A121B280BBEF8D653F56E4158CD1E6D",
            "55AC17937B11658E17C4884A9FD027FFA32BCD3B04EBC16B9D98F24BD9ECB02B",
+           "\"pending_notification_enumerator\"",
+           "3E228EBAAB9ED7D46F39DFC914F1EDC0501FC1FB48A6E22E54220905C7105E1C",
+           "\"pending_notification_materializer\"",
+           "E95D2BDF76BF16B0DA30C665E39DD5CB252AE7A3E7784471EF84259DA96F8BC8",
+           "\"auto_accept_notification_getter\"",
+           "1FAC7C0F4CFF6DDA4EDD1070BD951A92A438E6593878A7BDCA9FE2910865A978",
+           "8B92815F0DE6162D03F5CD9BF12E51643C9385739A59DDB42FC2810D932392EC",
+           "3C549F1D03F69B34A0E84281A6369117E86DBB1F53AC4016968618105EBB057F",
+           "818022CC31DF365C9D6A72C4029851A464EA443A26763D15F4DDEB89FA381848",
+           "E4B3EC7A721B3CE61565C027228D30B23623B7C216918905B2B65DACB3CF7F83",
            "\"generic_script_scope_type_registry\": \"0x4FFE290\"",
            "\"generic_script_scope_out_of_range_fallback_entry\": \"0x5000AB0\"",
            "\"generic_target_type_key_static_ready\": true",
            "\"ordinary_pending_query_live_ready\": true",
            "D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89",
            "enum 4 returns true before pending storage resolution",
-           "\"auto_accept_notification_query_reachable\": false",
-           "do not claim production ACK reachability"}) ||
+           "\"auto_accept_notification_query_reachable\": true",
+           "\"acknowledge_action_wired\": true",
+           "\"notification_ack_action_ready\": true",
+           "\"notification_ack_live_ready\": false",
+           "CReplyCharacterInteractionCommand(reply=4, flags=0x0E)",
+           "a later snapshot must no longer expose the same full generation-bearing pending ID"}) ||
       !ContainsAll(
           fixture,
           {"ordinary_recipient_request",
@@ -143,9 +158,20 @@ int main(int argc, char **argv) {
            "stale_generation_is_not_actionable",
            "malformed_selected_option_count_fails_closed",
            "opaque_generic_target_preserves_legality_but_blocks_semantic_readiness",
+           "notification_full_id_queues_fixed_ack",
+           "stale_generation_rejected_before_queue",
+           "snapshot_revision_mismatch_rejected_before_adapter",
+           "unpaused_notification_rejected_before_queue",
+           "ordinary_pending_cannot_use_ack_channel",
+           "route_drift_rejected_before_queue",
+           "notification_channel_drift_rejected_before_queue",
+           "queue_rejection_is_not_ack_success",
+           "\"enum4_validator_invoked\": false",
            "\"type_key\": \"fixture_generic_target_type\"",
            "\"generic_target_type_key_static_ready\": true",
-           "\"notification_ack_query_ready\": false"})) {
+           "\"notification_ack_query_ready\": true",
+           "\"notification_ack_action_ready\": true",
+           "\"notification_ack_live_ready\": false"})) {
     return 1;
   }
 

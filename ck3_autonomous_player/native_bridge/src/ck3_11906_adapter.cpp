@@ -8,7 +8,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 59> kCapabilities{
+constexpr std::array<std::string_view, 60> kCapabilities{
     "game.state.snapshot",
     "game.state.xar-one-life-settlement",
     "game.state.map-ready",
@@ -36,6 +36,7 @@ constexpr std::array<std::string_view, 59> kCapabilities{
     "game.command.save-checkpoint",
     "game.command.accept-pending-character-interaction",
     "game.command.reject-pending-character-interaction",
+    "game.command.acknowledge-pending-character-interaction",
     "game.command.raise-troops-default",
     "game.command.preview-move-army-N-to-N",
     "game.command.query-route-contact-horizon-v1-N",
@@ -109,6 +110,12 @@ public:
   ReplyPendingInteractionResult submit_reply_to_pending_interaction(
       PendingInteractionReply reply) const noexcept override {
     return ck3_11906::SubmitReplyToPendingInteraction(bindings_, reply);
+  }
+  AcknowledgePendingInteractionResult
+  submit_acknowledge_pending_interaction(
+      std::int32_t pending_interaction_id) const noexcept override {
+    return ck3_11906::SubmitAcknowledgePendingInteraction(
+        bindings_, pending_interaction_id);
   }
   RaiseTroopsResult submit_raise_troops_default() const noexcept override {
     return ck3_11906::SubmitRaiseTroopsDefault(bindings_);

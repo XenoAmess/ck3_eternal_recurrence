@@ -3128,6 +3128,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.pending-character-interaction",
                 "game.command.accept-pending-character-interaction",
                 "game.command.reject-pending-character-interaction",
+                "game.command.acknowledge-pending-character-interaction",
             )
         )
         endpoint.publish(
@@ -3190,7 +3191,138 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 },
             )
         )
-        self.assertEqual(driver.capabilities()["action_steps"], [])
+        notification_snapshot = driver.take_snapshot()
+        self.assertEqual(
+            driver.capabilities()["action_steps"],
+            ["acknowledge-pending-character-interaction"],
+        )
+
+        def answer_ack(frame: dict[str, object]) -> None:
+            if frame.get("type") == "execute_step":
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": True,
+                        "result": {
+                            "step": frame["step"],
+                            "status": "submitted",
+                        },
+                    }
+                )
+                endpoint.publish(_snapshot(30))
+
+        endpoint.send_hook = answer_ack
+        acknowledged = driver.execute_step(
+            "acknowledge-pending-character-interaction",
+            expected_revision=int(notification_snapshot["revision"]),
+        )
+        self.assertEqual(
+            acknowledged["interaction_result"]["status"], "acknowledged"
+        )
+        self.assertIsNone(
+            acknowledged["remaining_pending_character_interaction"]
+        )
+        ack_command = next(
+            frame
+            for frame in reversed(endpoint.frames)
+            if frame.get("type") == "execute_step"
+        )
+        self.assertEqual(
+            ack_command["step"],
+            "acknowledge-pending-character-interaction",
+        )
+        self.assertEqual(ack_command["expected_revision"], 29)
+        self.assertEqual(ack_command["pending_interaction_id"], 92)
+
+        endpoint.publish(
+            _snapshot(
+                31,
+                pending_character_interaction={
+                    "instance_id": 93,
+                    "sender_character_id": 13,
+                    "auto_accept_notification": True,
+                },
+            )
+        )
+
+        def answer_service_ack(frame: dict[str, object]) -> None:
+            if frame.get("type") == "execute_step":
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": True,
+                        "result": {
+                            "step": frame["step"],
+                            "status": "submitted",
+                        },
+                    }
+                )
+                endpoint.publish(_snapshot(32))
+
+        endpoint.send_hook = answer_service_ack
+        service = GameplayBridgeService(driver)
+        service_ack = service.acknowledge_pending_character_interaction(
+            interaction_instance_id=93
+        )
+        self.assertTrue(service_ack["acknowledged"])
+        self.assertEqual(service_ack["interaction_instance_id"], 93)
+        service_ack_command = next(
+            frame
+            for frame in reversed(endpoint.frames)
+            if frame.get("type") == "execute_step"
+        )
+        self.assertEqual(service_ack_command["pending_interaction_id"], 93)
+
+    def test_pending_notification_queue_ack_is_not_postcondition(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.01,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.pending-character-interaction",
+                "game.command.acknowledge-pending-character-interaction",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                33,
+                pending_character_interaction={
+                    "instance_id": 0x01000031,
+                    "sender_character_id": 81,
+                    "auto_accept_notification": True,
+                },
+            )
+        )
+
+        def answer_queue_only(frame: dict[str, object]) -> None:
+            if frame.get("type") == "execute_step":
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": True,
+                        "result": {
+                            "step": frame["step"],
+                            "status": "submitted",
+                        },
+                    }
+                )
+
+        endpoint.send_hook = answer_queue_only
+        with self.assertRaisesRegex(
+            BridgeUnavailableError,
+            "did not advance the pending request",
+        ):
+            driver.execute_step("acknowledge-pending-character-interaction")
 
     def test_episode_identity_locks_on_first_ready_character_and_keeps_heir_info(
         self,

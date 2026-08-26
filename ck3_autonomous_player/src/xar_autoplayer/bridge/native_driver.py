@@ -135,6 +135,7 @@ from .loaded_feature_manifest_contract import (
     normalize_loaded_feature_manifest_v1,
 )
 from .pending_character_interaction_context_contract import (
+    ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
     normalize_pending_character_interaction_context_v1,
@@ -2487,6 +2488,7 @@ class NativeHeadlessGameplayDriver:
         if step in {
             "accept-pending-character-interaction",
             "reject-pending-character-interaction",
+            ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
         } and step in capabilities["action_steps"]:
             return self._execute_pending_character_interaction_reply(
                 step, expected_revision=expected_revision
@@ -3702,12 +3704,33 @@ class NativeHeadlessGameplayDriver:
                 "CK3 has no pending character interaction"
             )
         instance_id = pending.get("instance_id")
+        if not _positive_native_id(instance_id) or int(instance_id) > 2**31 - 1:
+            raise BridgeUnavailableError(
+                "CK3 pending character interaction lacks a positive full ID"
+            )
+        notification = pending.get("auto_accept_notification")
+        acknowledging = (
+            step == ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP
+        )
+        if acknowledging and notification is not True:
+            raise BridgeUnavailableError(
+                "CK3 pending character interaction is not an ACK notification"
+            )
+        if not acknowledging and notification is not False:
+            raise BridgeUnavailableError(
+                "CK3 pending character interaction requires acknowledgement"
+            )
         result = self._execute_primitive_step(
             step,
             expected_revision=(
                 expected_revision
                 if expected_revision is not None
                 else int(starting["revision"])
+            ),
+            request_fields=(
+                {"pending_interaction_id": int(instance_id)}
+                if acknowledging
+                else None
             ),
         )
         changed = self._wait_for_snapshot(
@@ -3722,14 +3745,23 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
         remaining = changed.get("pending_character_interaction")
-        if isinstance(remaining, dict) and remaining.get("instance_id") == instance_id:
+        if (
+            isinstance(remaining, dict)
+            and remaining.get("instance_id") == instance_id
+        ):
             raise BridgeUnavailableError(
                 "native character interaction reply did not advance the pending request"
             )
+        if acknowledging:
+            interaction_status = "acknowledged"
+        elif step.startswith("accept-"):
+            interaction_status = "accepted"
+        else:
+            interaction_status = "rejected"
         return {
             **result,
             "interaction_result": {
-                "status": "accepted" if step.startswith("accept-") else "rejected",
+                "status": interaction_status,
                 "instance_id": instance_id,
                 "sender_character_id": pending.get("sender_character_id"),
             },
@@ -10168,6 +10200,7 @@ def _action_steps(
         elif step in {
             "accept-pending-character-interaction",
             "reject-pending-character-interaction",
+            ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
         }:
             pending_interaction_steps.add(step)
         elif capability == MOVE_ARMY_CAPABILITY:
@@ -10299,11 +10332,26 @@ def _action_steps(
                 f"select-event-option-{option_number}"
                 for option_number in range(1, option_count + 1)
             )
-    if (
-        isinstance(pending_character_interaction, dict)
-        and pending_character_interaction.get("auto_accept_notification") is False
-    ):
-        steps.update(pending_interaction_steps)
+    if isinstance(pending_character_interaction, dict):
+        if (
+            pending_character_interaction.get("auto_accept_notification")
+            is False
+        ):
+            steps.update(
+                step
+                for step in pending_interaction_steps
+                if step != ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP
+            )
+        elif (
+            paused is True
+            and pending_character_interaction.get(
+                "auto_accept_notification"
+            )
+            is True
+            and ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP
+            in pending_interaction_steps
+        ):
+            steps.add(ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP)
     wars = (
         [war for war in active_wars if isinstance(war, dict)]
         if isinstance(active_wars, list)

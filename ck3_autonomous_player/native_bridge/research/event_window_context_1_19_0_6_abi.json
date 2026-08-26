@@ -1,0 +1,337 @@
+{
+  "contract": "event-window-context-static-abi-v1",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "architecture": "msvc-x64",
+  "evidence_kind": "offline_exact_build_static_analysis",
+  "read_only": true,
+  "live_validated": false,
+  "game_process_started": false,
+  "scope": "generic nonreligious current event-window presentation context",
+  "owner_deferred_domains": [
+    "religion",
+    "faith",
+    "conversion",
+    "reformation",
+    "doctrine",
+    "tenet",
+    "fervor",
+    "holy_war"
+  ],
+  "source_contract": {
+    "range_convention": "start inclusive, end exclusive",
+    "span_provenance": "MSVC x64 .pdata runtime-function extents; the effect-item append routine is one logical function split across three adjacent .pdata regions",
+    "exact_function_spans": [
+      {
+        "name": "CIngameInterfaceIdlerGfx_constructor",
+        "start_rva": "0xAA3ED0",
+        "end_rva": "0xAA4065",
+        "byte_length": "0x195",
+        "sha256": "3B721F3A6E9E53860B1C127D65320E6B219ED11B24801981FB2EE964FD54FC0A"
+      },
+      {
+        "name": "CIngameInterfaceIdlerGfx_destructor",
+        "start_rva": "0xAA4070",
+        "end_rva": "0xAA41DA",
+        "byte_length": "0x16A",
+        "sha256": "4C122FCEF51D1B5ABBA30229270E5A2ED4C846D835630731C7C15521693F5861"
+      },
+      {
+        "name": "CIngameInterfaceIdlerGfx_per_frame",
+        "start_rva": "0xAA72B0",
+        "end_rva": "0xAA7B0D",
+        "byte_length": "0x85D",
+        "sha256": "A7FA56272C148C46779F836B9DD942C60BC1A93C3921D395F780AEEA7DB26A45"
+      },
+      {
+        "name": "CIngameInterfaceIdlerGfx_event_window_tick_helper",
+        "start_rva": "0xAA80B0",
+        "end_rva": "0xAA855A",
+        "byte_length": "0x4AA",
+        "sha256": "15A0C034C19AD6876C5A4FB545BBAC872700D81677446A3B25A08BE075FEC5BB"
+      },
+      {
+        "name": "event_window_manager_constructor",
+        "start_rva": "0xBAB6C0",
+        "end_rva": "0xBAB77A",
+        "byte_length": "0xBA",
+        "sha256": "CFCF49C42613ED03D24B6DA73C80AFE3E8B49788461E21CF541829C1F433DD6D"
+      },
+      {
+        "name": "event_window_manager_tick",
+        "start_rva": "0xBAB780",
+        "end_rva": "0xBABB75",
+        "byte_length": "0x3F5",
+        "sha256": "28448CE150F9963DEA38FBD8DC3ACB16523217A41633A4A54132C205A9D28452"
+      },
+      {
+        "name": "event_window_manager_vector_insert",
+        "start_rva": "0xBABE70",
+        "end_rva": "0xBABEA6",
+        "byte_length": "0x36",
+        "sha256": "FFA43F97224888960A68C6F8174A501D749DDA0239366B7520DC8A013E32E674"
+      },
+      {
+        "name": "CEventWindow_constructor",
+        "start_rva": "0x16A1700",
+        "end_rva": "0x16A1A9E",
+        "byte_length": "0x39E",
+        "sha256": "9349A5FADACBAF82A84153AA504A535D8DEA4FC232C63FD3C431ADDFCB3E9EBC"
+      },
+      {
+        "name": "CEventWindow_destructor",
+        "start_rva": "0x16A1AA0",
+        "end_rva": "0x16A1B4D",
+        "byte_length": "0xAD",
+        "sha256": "5E719A407C2A1555A319E1FF679719E786A4D9ABE87731CBBBD1228F4D881862"
+      },
+      {
+        "name": "CEventWindowData_constructor",
+        "start_rva": "0x16CA380",
+        "end_rva": "0x16CA900",
+        "byte_length": "0x580",
+        "sha256": "F6DBD5BCAC78915E36808ED1258163ADA49EA769B45924F88A8C969ADD55509D"
+      },
+      {
+        "name": "CEventWindowData_destructor",
+        "start_rva": "0x16CA980",
+        "end_rva": "0x16CADB2",
+        "byte_length": "0x432",
+        "sha256": "45F08F88657F9B84200CB1BFCE6E20FDF985A3209E7F3CDF99199253A38AFE3A"
+      },
+      {
+        "name": "CEventWindowData_setup",
+        "start_rva": "0x16CADC0",
+        "end_rva": "0x16CB8C3",
+        "byte_length": "0xB03",
+        "sha256": "87687BBCC77B7BC5A36B5000ECDC39023E46E71506B2E181A6BE2AB1DE613256"
+      },
+      {
+        "name": "CEventWindowData_GetScope_resolver",
+        "start_rva": "0x16D0990",
+        "end_rva": "0x16D0A36",
+        "byte_length": "0xA6",
+        "sha256": "95CCAFC60E3AF959C3EB664890FDB01E6EC6368A20B8CAA34DC04ECA4989CD79"
+      },
+      {
+        "name": "event_option_effect_item_append_logical_extent",
+        "start_rva": "0x16D3A40",
+        "end_rva": "0x16D3BF1",
+        "byte_length": "0x1B1",
+        "sha256": "83CB8AAA50E164BE53B64F4C5AA8DC68D253F6B30EB54230E60211BED125A3C5",
+        "runtime_function_regions": [
+          "0x16D3A40..0x16D3AE8",
+          "0x16D3AE8..0x16D3BCA",
+          "0x16D3BCA..0x16D3BF1"
+        ]
+      },
+      {
+        "name": "OptionEffectItem_IsTrait",
+        "start_rva": "0xE88760",
+        "end_rva": "0xE88795",
+        "byte_length": "0x35",
+        "sha256": "6AC59B5D851033D8488628073F67D06E3111BBF8799FC497DCA69C6E127F998F"
+      },
+      {
+        "name": "OptionEffectItem_IsStress",
+        "start_rva": "0xE887A0",
+        "end_rva": "0xE887D5",
+        "byte_length": "0x35",
+        "sha256": "24F61CEF118ED3AC90BC5FA79AD18DA19360950EE66A7F4D8ECAE20D54423177"
+      },
+      {
+        "name": "OptionEffectItem_IsDeath",
+        "start_rva": "0xE887E0",
+        "end_rva": "0xE88815",
+        "byte_length": "0x35",
+        "sha256": "81FB6574087A13C047ECAA0CF26D734406ADCFE8AC9337816D59006C8CD12D0F"
+      },
+      {
+        "name": "OptionEffectItem_IsScheme",
+        "start_rva": "0xE88820",
+        "end_rva": "0xE88855",
+        "byte_length": "0x35",
+        "sha256": "468FEE030E28C340DB7012399611EBE80B5F9C1CFAD197B1BDF4FB4C1717003A"
+      },
+      {
+        "name": "OptionEffectItem_IsGain",
+        "start_rva": "0xD494D0",
+        "end_rva": "0xD49504",
+        "byte_length": "0x34",
+        "sha256": "AFE80C8B06E5DCA7AF8B293223D62B95F448762EEE4EE1ED6704046237F61612"
+      },
+      {
+        "name": "OptionEffectItem_IsLoss",
+        "start_rva": "0x16A2600",
+        "end_rva": "0x16A2635",
+        "byte_length": "0x35",
+        "sha256": "A9F0844D1F68129031690532CF29F6B8AA9207910CA0F5B6E9BA31EBB202D6ED"
+      },
+      {
+        "name": "OptionEffectItem_IsAffectedByTrait",
+        "start_rva": "0xD9E8C0",
+        "end_rva": "0xD9E8F4",
+        "byte_length": "0x34",
+        "sha256": "3A3C3A6668E9FD8A2C8C5F1DDA582502D7CD42133E8E6B8F2ABDBD48D7624E0F"
+      },
+      {
+        "name": "OptionEffectItem_IsCritical",
+        "start_rva": "0xD9E900",
+        "end_rva": "0xD9E934",
+        "byte_length": "0x34",
+        "sha256": "5C996710D6155015E305D69F792B9BDC845B2390D4E79CA13CAE8D936C4E5255"
+      }
+    ],
+    "entry_only_anchors": {
+      "idler_creation_callsite": "0x82813C",
+      "idler_manager_tick_callsite": "0xAA8233",
+      "window_allocation_callsite": "0xBAB9D4",
+      "window_constructor_callsite": "0xBAB9F5",
+      "setup_options_callsite": "0x16CB782",
+      "get_scope_gui_property_registration": "0x2B8010",
+      "get_scope_gui_callback_trampoline": "0x16D6890"
+    }
+  },
+  "rtti": {
+    "CIngameInterfaceIdlerGfx": {
+      "type_descriptor_rva": "0x501EF50",
+      "complete_object_locator_rva": "0x45F5BC0",
+      "vtable_rva": "0x40B1D30"
+    },
+    "CEventWindow": {
+      "type_descriptor_rva": "0x50242C8",
+      "primary_complete_object_locator_rva": "0x474D4F8",
+      "primary_vtable_rva": "0x417F758",
+      "additional_mi_vtable_rvas": [
+        "0x417F738",
+        "0x417F710"
+      ]
+    },
+    "CEventWindowData": {
+      "native_rtti_found": false,
+      "note": "The type appears in reflection/template metadata, but this non-polymorphic inline object has no confirmed native RTTI descriptor."
+    }
+  },
+  "locator_chain": {
+    "lower_chain_static_ready": true,
+    "CIngameInterfaceIdlerGfx_object_size": "0x98",
+    "event_window_manager_allocation_size": "0xA8",
+    "chain": "CIngameInterfaceIdlerGfx* +0x28 -> event-window manager; manager +0x10 data/+0x1C int32 count -> CEventWindow* entries of stride 8; CEventWindow +0xE8 -> inline CEventWindowData",
+    "root_to_idler_static_ready": false,
+    "candidate_capture": "Capture the in-game idler this pointer at RVA 0xAA72B0 or the manager rcx at callsite 0xAA8233, and clear it at the idler destructor RVA 0xAA4070. This is a proposed production seam, not a validated locator.",
+    "frontend_collision": "RVA 0xE30E78 also invokes the generic manager tick. Any capture must validate the in-game dynamic type/vtable and current event instance rather than accepting an arbitrary manager."
+  },
+  "lifetime": {
+    "CEventWindow_allocation_size": "0x838",
+    "CEventWindowData_embedding": "CEventWindow+0xE8",
+    "construction": "The manager tick allocates CEventWindow and passes ActiveEvent* at RVA 0xBAB9F5; the CEventWindow constructor invokes the CEventWindowData constructor on this+0xE8.",
+    "destruction": "The CEventWindow destructor invokes the CEventWindowData destructor on this+0xE8.",
+    "ownership_rule": "CEventWindowData is valid only while its owning CEventWindow remains in the manager vector and alive on the UI/application thread.",
+    "query_rule": "Copy values during one owning-thread snapshot; never retain window, data, string or vector pointers after the call."
+  },
+  "event_window_manager": {
+    "window_vector": "+0x10 data, +0x1C int32 count, stride 0x08",
+    "active_event_source": "game/UI data +0x313D8 data, +0x313E4 int32 count",
+    "known_instance_ids": "+0x58 data, +0x64 int32 count",
+    "scan_and_create_rvas": "0xBAB920..0xBABA36",
+    "keep_alive_remove_compact_rvas": "0xBABA53..0xBABB58",
+    "same_tick_destruction_possible": true
+  },
+  "event_identity": {
+    "CEventWindowData_instance_id": "+0x00 uint32 copied from ActiveEvent+0x1BC",
+    "current_active_event": "Existing EventManager current-event getter RVA 0x2706AD0 resolves the live ActiveEvent; matching by the full +0x1BC instance ID is required.",
+    "stable_event_definition_key": "unknown",
+    "root_scope_stable_identity": "unknown",
+    "saved_scope_stable_identities": "unknown",
+    "GetScope": "GUI callback RVA 0x16D0990 resolves data+0x00 through EventManager and returns the live ActiveEvent pointer; it does not publish a stable cross-process scope identity."
+  },
+  "CEventWindowData": {
+    "active_event_instance_id": "+0x00 uint32",
+    "option_item_vector": "+0x10 data, +0x18 capacity, +0x1C int32 count",
+    "cancel_option_index": "+0x2C int32",
+    "setup_options_rva": "0x16CC780",
+    "setup_options_caller_rva": "0x16CB782"
+  },
+  "CEventOptionItem": {
+    "size_and_stride": "0x1B8",
+    "effect_item_vector": "+0x88 data, +0x90 capacity, +0x94 int32 count",
+    "owner": "+0x160 CEventWindowData*",
+    "clicksound_resource": "+0x168",
+    "resolved_name": "+0x170 MSVC string",
+    "unavailable_reason": "+0x190 MSVC string",
+    "native_option_index": "+0x1B0 int32 authored zero-based index",
+    "enabled": "+0x1B4 uint8",
+    "fallback_materialized": "+0x1B5 uint8",
+    "shown": "membership in the materialized option-item vector"
+  },
+  "OptionEffectItem": {
+    "size_and_stride": "0x18",
+    "opaque_payload_0": "+0x00 uint64; semantic type unknown, do not publish",
+    "opaque_payload_1": "+0x08 uint64; semantic type unknown, do not publish",
+    "kind": "+0x10 int32; 0=trait, 1=stress, 2=death, 3=scheme; other values unknown",
+    "gain": "+0x14 uint8; zero is loss",
+    "affected_by_trait": "+0x15 uint8",
+    "critical": "+0x16 uint8",
+    "semantic_boundary": "These are engine-materialized GUI effect indicators, not a complete or executable effect preview."
+  },
+  "native_ai_selector": {
+    "source_contract": "event_option_1_19_0_6_abi.json",
+    "selector_rva": "0x33E71B0",
+    "regular_scan": "authored order; raw context-mode gate, required trigger and first-valid-exclusive semantics",
+    "fallback_scan": "only when regular candidate count is zero; fallback flag only",
+    "weight_precedence": "ai_will_select when its presence field is nonzero, otherwise ai_chance",
+    "positive_draw": "weighted draw across positive weights",
+    "all_nonpositive_draw": "decision_value modulo candidate count in authored order",
+    "empty": "return -1",
+    "raw_context_mode_business_semantics": "unknown"
+  },
+  "typed_context_proposal": {
+    "status": "not_implemented",
+    "top_level": [
+      "revision",
+      "availability",
+      "current_event_instance_id",
+      "window_match_count",
+      "event_definition_key",
+      "root_scope",
+      "saved_scopes",
+      "options"
+    ],
+    "option": [
+      "rendered_index",
+      "native_option_index",
+      "shown",
+      "enabled",
+      "fallback",
+      "cancel",
+      "resolved_name",
+      "unavailable_reason",
+      "effect_indicators"
+    ],
+    "nullable_until_reverse_closed": [
+      "event_definition_key",
+      "root_scope",
+      "saved_scopes"
+    ]
+  },
+  "readiness": {
+    "lower_locator_chain_static_ready": true,
+    "window_lifetime_static_ready": true,
+    "materialized_option_context_static_ready": true,
+    "effect_indicator_abi_static_ready": true,
+    "native_ai_selector_static_ready": true,
+    "stable_root_to_idler_ready": false,
+    "stable_event_definition_key_ready": false,
+    "stable_scopes_ready": false,
+    "full_effect_preview_ready": false,
+    "bridge_query_ready": false,
+    "live_validated": false
+  },
+  "do_not_call_yet": [
+    "Do not write a production reader until an in-game idler/manager capture has deterministic install, teardown and collision validation.",
+    "Do not call trigger, name, preview or effect functions from a worker thread.",
+    "Do not call loaded-effect executor RVA 0x3380410 for preview.",
+    "Do not retain engine-owned pointers after the owning-thread snapshot.",
+    "Do not infer a stable event key or stable scope IDs from an ActiveEvent pointer."
+  ]
+}

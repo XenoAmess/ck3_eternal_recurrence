@@ -288,6 +288,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = "game.command.accept-pending-character-interaction";
   } else if (step == "reject-pending-character-interaction") {
     capability = "game.command.reject-pending-character-interaction";
+  } else if (step == "acknowledge-pending-character-interaction") {
+    capability = "game.command.acknowledge-pending-character-interaction";
   } else if (step == "query-arrange-marriage-choices") {
     capability = "game.command.query-arrange-marriage-choices";
   } else if (step.starts_with("arrange-marriage-")) {

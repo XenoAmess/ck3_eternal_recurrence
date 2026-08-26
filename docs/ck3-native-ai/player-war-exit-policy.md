@@ -353,6 +353,9 @@ flowchart LR
 
 0. [static-confirmed] 当前已实施的临时安全门：active war 中的 pending interaction 即使已有 stable interaction key，若没有
    精确关联 WarID、outcome 与条款，仍令 `selected_step=None`，不得盲目 accept/reject；100% enforce-demands 保持更高优先级。
+   planner 会在该优先级检查之后先发出 `query-pending-character-interaction-context-v1`；query 必须绑定当前
+   snapshot/revision/native revision/date/full pending ID，stale 结果不得复用。无 active war 的普通 pending 也遵守同一
+   typed-first 门，不再因 sender 存在而默认接受。
 1. [live-confirmed] `game.command.query-war-termination-options-N` / `query-war-termination-options-<WarID>` 已完成 paused、
    generation-safe 实机验收：CB、白和位、总分/四分项、战争日数、三 context validator、无人物交换 `ai_accept` /
    `auto_accept` 均返回 typed 值。极性修正后的 paused rev4 golden 是 surrender=true/auto=true、

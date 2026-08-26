@@ -2032,10 +2032,12 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             "white_peace_action_is_raw_seed_only": True,
             "production_stage_is_read_only": True,
             "ordinary_pending_interaction_only": True,
-            "auto_accept_notification_discovery_unclosed": True,
-            "acknowledge_path_unclosed_dependency": (
-                "snapshot discovery currently filters +0x5C6 auto-accept "
-                "notifications before typed query routing"
+            "auto_accept_notification_discovery_unclosed": False,
+            "acknowledge_live_fixture_gap": (
+                "production notification discovery/query and the strict ACK "
+                "action are wired, but this ordinary read-only fixture does "
+                "not exercise an auto-accept notification or its full-ID "
+                "advancement postcondition"
             ),
             "forbidden_reply_steps": sorted(_FORBIDDEN_REPLY_STEPS),
             "forbidden_reply_steps_invoked": [],

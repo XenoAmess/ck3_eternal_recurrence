@@ -2880,6 +2880,74 @@ void RunConnectedSession(
                                         state_revision, checkpoint_submission,
                                         published_checkpoint_sequence);
           }
+        } else if (step ==
+                   "acknowledge-pending-character-interaction") {
+          std::uint64_t expected_revision = 0;
+          std::int32_t pending_interaction_id = -1;
+          if (!xar::ck3_11906::
+                  ParsePendingCharacterInteractionContextRequestV1(
+                      incoming.payload, expected_revision,
+                      pending_interaction_id)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ACK requires expected_revision and a positive "
+                          "full pending_interaction_id"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "pending interaction ACK snapshot revision mismatch"));
+          } else {
+            const auto result =
+                xar::game::SubmitAcknowledgePendingInteraction(
+                    game, pending_interaction_id);
+            if (result == xar::game::AcknowledgePendingInteractionResult::
+                              submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe,
+                  CommandResultFrame(request_id, step, true, "submitted"));
+            } else {
+              std::string_view error =
+                  "CK3 pending interaction ACK state is unavailable";
+              if (result == xar::game::AcknowledgePendingInteractionResult::
+                                no_pending_interaction) {
+                error = "no pending CK3 character interaction";
+              } else if (
+                  result == xar::game::AcknowledgePendingInteractionResult::
+                                pending_interaction_mismatch) {
+                error = "pending CK3 interaction full ID mismatch";
+              } else if (
+                  result == xar::game::AcknowledgePendingInteractionResult::
+                                acknowledgement_not_required) {
+                error = "pending CK3 interaction is not an ACK notification";
+              } else if (
+                  result == xar::game::AcknowledgePendingInteractionResult::
+                                requires_paused) {
+                error = "pending CK3 interaction ACK requires a paused map";
+              } else if (
+                  result == xar::game::AcknowledgePendingInteractionResult::
+                                not_for_played_character) {
+                error = "pending CK3 interaction is not routed to the played "
+                        "character";
+              } else if (
+                  result == xar::game::AcknowledgePendingInteractionResult::
+                                state_changed) {
+                error = "pending CK3 interaction changed before ACK submit";
+              } else if (
+                  result == xar::game::AcknowledgePendingInteractionResult::
+                                queue_rejected) {
+                error = "CK3 rejected the pending interaction ACK queue entry";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
         } else if (step == "query-arrange-marriage-choices") {
           marriage_choices.clear();
           xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};

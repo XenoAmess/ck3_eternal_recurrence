@@ -115,7 +115,7 @@ flowchart LR
 | 会话与时间 | `date_raw`、速度、暂停、local player、`map_ready` | exact-build live-confirmed；可在最小化窗口推进和重新暂停。 |
 | 玩家角色 | CharacterID、存活、配偶/婚约 CharacterID 列表 | native 实现；只覆盖身份与关系结果，不含属性、资源、头衔、继承、健康、压力、教育、生活方式或意见。 |
 | 事件 | 当前 instance、选项数量与 1-based index | instance/数量/提交 live-confirmed；没有事件 key、标题、选项文本、enabled trigger、AI weight 或效果。native planner 因而通常选第一项。 |
-| 角色互动 | instance、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality | 普通 white-peace recipient pending 已跨 checkpoint production live 双查询；structured terms/effect、typed target payload、intermediary live 与 notification discovery/ACK 仍缺，故 semantic decision 仍为 false。 |
+| 角色互动 | instance、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality | 普通 white-peace recipient pending 已跨 checkpoint production live 双查询；planner 已先查同帧 typed context 并停止默认接受。notification discovery/固定 ACK 已接线但未 live；structured terms/effect、typed target payload 与 intermediary live 仍缺，故 semantic decision 仍为 false。 |
 | 婚姻 | 当前配偶/婚约；合法 arrange-marriage CharacterID 候选 | 只知道“可提交”，不知道年龄、属性、继承、联盟、声望、遗传、接受度或近亲风险；策略选择最小/首个候选。 |
 | 宣战候选 | target、CB key/index、configuration、claimant、target titles | C++ core 与 typed contract 已有；完整 bridge/live 宣战闭环仍未收口。 |
 | 战争入口评估 | actor/target 原生 strategic power、network contribution、ratio、distance | exact native reader/策略接线已有；application-main typed result 仍需实机闭合，且它不是战斗胜率或战争效用。 |

@@ -289,6 +289,9 @@ bool g_submit_result = true;
 bool g_pending_visibility_result = true;
 bool g_pending_accept_validation_result = true;
 std::int32_t g_pending_visibility_calls = 0;
+std::int32_t g_pending_visibility_fail_on_call = -1;
+std::int32_t g_pending_mutate_generation_on_call = -1;
+std::int32_t g_pending_clear_notification_on_call = -1;
 std::int32_t g_pending_accept_validation_calls = 0;
 bool g_raise_construct_called = false;
 bool g_raise_validate_called = false;
@@ -447,6 +450,7 @@ enum class ExpectedCommand {
   auto_save,
   reply_accept,
   reply_reject,
+  reply_acknowledge,
   raise_troops,
   move_army,
   disband_army,
@@ -587,7 +591,16 @@ void *FixtureGetCurrentEvent(void *event_manager) {
 bool FixtureIsPendingCharacterInteractionForCharacter(
     void *pending_interaction, void *character) {
   ++g_pending_visibility_calls;
+  if (g_pending_visibility_calls ==
+      g_pending_mutate_generation_on_call) {
+    Store(g_pending_interaction, 0x10, std::int32_t{0x02000001});
+  }
+  if (g_pending_visibility_calls ==
+      g_pending_clear_notification_on_call) {
+    Store(g_pending_interaction, 0x5C6, std::uint8_t{0});
+  }
   return g_pending_visibility_result &&
+         g_pending_visibility_calls != g_pending_visibility_fail_on_call &&
          pending_interaction == g_pending_interaction.data() &&
          character == g_played_character.data();
 }
@@ -2472,14 +2485,19 @@ bool FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
                       save_name == xar::ck3_11906::kCheckpointSaveName &&
                       save_name_capacity == 15;
   } else if (g_expected_command == ExpectedCommand::reply_accept ||
-             g_expected_command == ExpectedCommand::reply_reject) {
+             g_expected_command == ExpectedCommand::reply_reject ||
+             g_expected_command == ExpectedCommand::reply_acknowledge) {
     std::int32_t reply = -1;
     std::memcpy(&reply, command + 0x24, sizeof(reply));
     g_submit_called =
         manager == reinterpret_cast<void *>(0x1234) && flags == 0x0E &&
         primary == 0x99999999 && secondary == 0xAAAAAAAA &&
         command_flags == 0 && player_id == 0x01000001 &&
-        reply == (g_expected_command == ExpectedCommand::reply_accept ? 0 : 1);
+        reply == (g_expected_command == ExpectedCommand::reply_accept
+                      ? 0
+                      : g_expected_command == ExpectedCommand::reply_reject
+                            ? 1
+                            : 4);
   } else if (g_expected_command == ExpectedCommand::raise_troops) {
     std::int32_t all_regiments = 0;
     std::int32_t entry_count = 0;
@@ -6608,16 +6626,100 @@ int main() {
   }
   g_pending_accept_validation_result = true;
   Store(g_pending_interaction, 0x5C6, std::uint8_t{1});
+  g_pending_visibility_calls = 0;
+  g_pending_accept_validation_calls = 0;
   g_submit_called = false;
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
-      snapshot.has_pending_character_interaction ||
+      !snapshot.has_pending_character_interaction ||
+      snapshot.pending_character_interaction_id != 0x01000001 ||
+      !snapshot.pending_auto_accept_notification ||
+      g_pending_visibility_calls != 1 ||
+      g_pending_accept_validation_calls != 0 ||
       xar::ck3_11906::SubmitReplyToPendingInteraction(
           bindings, xar::ck3_11906::PendingInteractionReply::accept) !=
           xar::ck3_11906::ReplyPendingInteractionResult::
-              no_pending_interaction ||
+              acknowledgement_required ||
       g_submit_called) {
-    return Fail("acknowledgement-only notification remained actionable");
+    return Fail("notification discovery did not preserve the ACK-only channel");
   }
+  if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
+          bindings, 0x01000001) !=
+          xar::ck3_11906::AcknowledgePendingInteractionResult::
+              requires_paused ||
+      g_submit_called) {
+    return Fail("notification ACK did not require a paused snapshot");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{1});
+  if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
+          bindings, 0x02000001) !=
+          xar::ck3_11906::AcknowledgePendingInteractionResult::
+              pending_interaction_mismatch ||
+      g_submit_called) {
+    return Fail("notification ACK accepted a stale generation");
+  }
+  g_pending_visibility_calls = 0;
+  g_pending_mutate_generation_on_call = 1;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
+          bindings, 0x01000001) !=
+          xar::ck3_11906::AcknowledgePendingInteractionResult::state_changed ||
+      g_submit_called) {
+    return Fail("notification ACK missed same-frame generation drift");
+  }
+  g_pending_mutate_generation_on_call = -1;
+  Store(g_pending_interaction, 0x10, std::int32_t{0x01000001});
+  g_pending_visibility_calls = 0;
+  g_pending_visibility_fail_on_call = 2;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
+          bindings, 0x01000001) !=
+          xar::ck3_11906::AcknowledgePendingInteractionResult::
+              not_for_played_character ||
+      g_pending_visibility_calls != 2 || g_submit_called) {
+    return Fail("notification ACK missed same-frame local-route drift");
+  }
+  g_pending_visibility_fail_on_call = -1;
+  g_pending_visibility_calls = 0;
+  g_pending_clear_notification_on_call = 2;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
+          bindings, 0x01000001) !=
+          xar::ck3_11906::AcknowledgePendingInteractionResult::state_changed ||
+      g_pending_visibility_calls != 2 || g_submit_called) {
+    return Fail("notification ACK missed same-frame channel drift");
+  }
+  g_pending_clear_notification_on_call = -1;
+  Store(g_pending_interaction, 0x5C6, std::uint8_t{1});
+  g_expected_command = ExpectedCommand::reply_acknowledge;
+  g_pending_visibility_calls = 0;
+  g_pending_accept_validation_calls = 0;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
+          bindings, 0x01000001) !=
+          xar::ck3_11906::AcknowledgePendingInteractionResult::submitted ||
+      !g_submit_called || g_pending_accept_validation_calls != 0) {
+    return Fail("notification ACK did not submit fixed enum 4 by full ID");
+  }
+  g_submit_result = false;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
+          bindings, 0x01000001) !=
+          xar::ck3_11906::AcknowledgePendingInteractionResult::
+              queue_rejected ||
+      !g_submit_called) {
+    return Fail("notification ACK hid native queue rejection");
+  }
+  g_submit_result = true;
+  Store(g_pending_interaction, 0x5C6, std::uint8_t{0});
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
+          bindings, 0x01000001) !=
+          xar::ck3_11906::AcknowledgePendingInteractionResult::
+              acknowledgement_not_required ||
+      g_submit_called) {
+    return Fail("ordinary pending request entered the ACK channel");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{0});
   g_pending_storage_pointer = nullptr;
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.has_pending_character_interaction ||

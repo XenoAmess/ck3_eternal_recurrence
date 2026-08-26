@@ -362,6 +362,17 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_acknowledge_pending_character_interaction(
+        interaction_instance_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Acknowledge one exact native auto-accept interaction notification."""
+        return service.acknowledge_pending_character_interaction(
+            interaction_instance_id=interaction_instance_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
     def ck3_get_war_state() -> dict[str, object]:
         """Return active native wars and the player's currently raised armies."""
         return service.war_state()

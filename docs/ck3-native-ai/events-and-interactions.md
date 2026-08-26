@@ -134,7 +134,9 @@ flowchart TD
   是两个不同入口。
 - [static-confirmed] `show_unlock_reason` at `+0x479` 由 `0x16D26B7` 测试，`0x16D273A` 调用 `0x2537490`。该函数消费
   `+0x3F0/+0x408/+0x420` metadata；没有专门 metadata 时可从 `+0x90` trigger failure 构造 reason。
-- [unknown] `0x3380170` 的 collector/output ABI、engine-owned `CEventWindowData` 的当前实例 locator 和生命周期尚未闭合。
+- [static-confirmed] `CIngameInterfaceIdlerGfx+0x28 → event-window manager → CEventWindow+0xE8 →
+  CEventWindowData` 的下半 locator、构造/析构与 manager 同 tick 压缩生命周期已经闭合，详见
+  `event-window-context.md`；[unknown] 稳定 global root/capture seam 与 `0x3380170` collector/output ABI 仍未闭合。
   因而现阶段不得从 bridge worker 直接调用 trigger/name/preview evaluator，也不得调用 effect executor 来“预览”。
 
 ### 玩家选择命令与后置条件
@@ -399,16 +401,17 @@ flowchart TD
 
 | 子域 | 当前已发布 | 仍缺的决策事实 | readiness |
 |---|---|---|---|
-| active event identity/action | instance ID、raw option count、`1..N` numeric indexes；select command + instance-change postcondition；static ABI 已闭合 GUI item 的 shown/enabled/native-index/name/reason/cancel/fallback 与原生 AI selector | engine-owned current `CEventWindowData` locator/lifetime、stable event key、scope identity、effect-preview output ABI、正式 typed query | `event_action_primitive_ready=true`，`event_static_observation_seam_ready=true`，`event_semantic_decision_ready=false` |
+| active event identity/action | instance ID、raw option count、`1..N` numeric indexes；select command + instance-change postcondition；static ABI 已闭合 GUI item 的 shown/enabled/native-index/name/reason/cancel/fallback、下半 window/data locator/lifetime 与原生 AI selector | stable global root/capture seam、stable event key、scope identity、完整 effect-preview output ABI、正式 typed query | `event_action_primitive_ready=true`，`event_static_observation_seam_ready=true`，`event_semantic_decision_ready=false` |
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
 | pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；普通 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `interaction_typed_query_wired=true`，`ordinary_interaction_live_ready=true`，`interaction_semantic_decision_ready=false` |
-| auto-accept notification | native object已有 flag；static ACK channel/gates 已闭合 | production reader 仍整项跳过，public action 也没有 acknowledge enum 4 | `notification_ack_static_ready=true`，`notification_ack_ready=false` |
-| current planner | 无 active war 时会接受普通 pending；active war 未分类时 fail closed | 尚未消费 typed context；非战争 pending 同样可能有严重代价，不能继续把“sender 存在”解释成“值得接受” | typed query 已发布不等于 semantic policy ready；不得称为高智商闭环 |
+| auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进 | 非宗教 production live fixture 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_live_ready=false` |
+| current planner | 对普通 pending 先查同 snapshot/revision/full ID 的 typed context；active war 中仍先执行 100% enforce-demands 优先级，再查询互动；auto-accept notification 只走固定 ACK | v1 structured terms 与 semantic policy 未 ready 时不再默认 accept/reject；stale query 不复用；ACK 仍待 live | observation/机械通知清理已接入，但语义回复策略仍未完成，不得称为高智商闭环 |
 
 这里的缺口已经直接阻断通用 OODA：事件一弹出，agent 虽能提交某个 numeric option，却不知道该项是否可点、会做什么；
 互动 typed query 现已能识别请求类型、角色、routing、options 与合法回复，但 target payload 和结构化条款仍不足以做高质量取舍。
-普通 recipient pending 的 paused live 双查询已经闭合；下一步补 intermediary/notification discovery 与结构化条款观测，
-再接入策略。不得退回默认第一项或默认接受。
+普通 recipient pending 的 paused live 双查询已经闭合，planner 也已改为先查询同帧 typed context，并在
+`interaction_semantic_decision_ready=false` 时停在明确的 observation dependency；下一步补
+intermediary live、notification query→ACK live fixture 与结构化条款观测，再实现真实效用选择。不得退回默认第一项或默认接受。
 
 [live-confirmed] 2026-08-26 的非宗教 `claim_cb` white-peace fixture 在 seed PID `93972` 中生成普通 pending，
 保存 66,579,686-byte checkpoint（SHA
@@ -420,6 +423,15 @@ flowchart TD
 accept/reject/block 均 true、acknowledge false。结构化 costs/exchanges/effect preview 仍明确 unavailable，
 `interaction_semantic_decision_ready=false`，且 runner 没有提交任何 reply。artifact SHA 为
 `D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89`；源存档 SHA 前后不变，两个进程树和 disposable root 均清理。
+
+[static-confirmed fixture入口] exact-build stock `00_culture_effects.txt`（SHA
+`B70E2DD0711D479619F1B856A690346E5B78D75445E071393830014C5D79BF0C`）在 `run_interaction` 中显式传
+`interaction/actor/recipient/execute_threshold`；其它 stock 调用也使用 `send_threshold`。`00_diarch_interactions.txt`
+（SHA `48216AA6BEAE44771F5EEEF82C39B3DE6CA3BA0A4A9C0D4D5F9187C538FE8C0D`）则在 definition 的 `redirect`
+里把 `scope:actor.liege` 保存为 `intermediary`，并提供 `ai_intermediary_accept` 与 intermediary 专用文案/回复键。
+因此 intermediary live fixture 不必依赖 OCR：可在 disposable seed-only 外部夹具中定义一个无宗教、无 gameplay effect 的
+最小 interaction，用 stock `run_interaction` 生成 route kind `1`，保存后再由 fresh production-only userdir 冷查询。该夹具只证明
+engine-generic intermediary routing/full-ID/mailbox；不能拿 test interaction 冒充任一 stock diarch interaction 的条款或 AI 决策。
 
 ## 下一版只读观测合同
 
@@ -477,8 +489,9 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
 
 ## 当前 exact 下一入口
 
-- [static-confirmed] `CEventWindowData`/`CEventWindow` RTTI、caller `0x16CB782` 与 inline item vector `+0x10`：定位
-  engine-owned current window/data pointer、线程归属、销毁/重建生命周期，优先完成只读 snapshot。
+- [candidate] 在 in-game idler per-frame `0xAA72B0` 或精确 callsite `0xAA8233` 捕获 idler/manager，并在
+  idler destructor `0xAA4070` 清除；用 RTTI、vector bounds 与 `CEventWindowData+0x00 == ActiveEvent+0x1BC`
+  排除 frontend collision。只有该 stable capture/lifetime 经 production live 闭合后才实现只读 snapshot。
 - [static-confirmed] `0x16D2CF0 -> 0x3380170`：继续闭合 presentation collector 的输出布局与只读边界；在输出 ABI、
   线程和上下文生命周期闭合前只作为静态 seam，不直接调用。
 - [unknown] `CEventOption+0x3E8/+0x3E9` 的业务字段名/subtype；`+0x47A` 业务名；cancel-index `-1/-2`
@@ -489,8 +502,9 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   reply legality 已冻结在 `pending_character_interaction_context_v1_abi.json`，并通过 application-main paused read-only
   query 接入 native driver/service/MCP；普通 recipient fixture 已完成跨 checkpoint 冷恢复的非宗教 live 双查询，
   下一步补 intermediary fixture。
-- [static-confirmed] auto-accept notification 的 ACK legality 已闭合，但旧 snapshot discovery 会在 mailbox 前过滤 `+0x5C6 != 0`
-  的对象，因此 ACK 查询与动作目前不可达；必须先新增 notification discovery/query 入口，再进入 ACK live fixture。
+- [implementation-confirmed] auto-accept notification discovery 已移除旧 `+0x5C6 != 0` 过滤，typed query 与固定 enum-4
+  ACK action 已可达；action 自行重验 full ID/paused/local route/flag，且必须等旧 ID 推进才报告成功。下一步是非宗教
+  notification 的 production paused query→ACK→后置状态 live fixture，不能把 unit/queue submission 当作 live。
 - [static-confirmed] generic target scope 的 registry type key 已由 `0x33C52B0` registry 与 `0x3B58970` resolver
   闭合；[unknown] 仍是各 type-key payload decoder，以及 `special_data`/materialized description bundle 的
   engine-generic structured terms/effect ABI。后两者是 `interaction_semantic_decision_ready` 的最高优先级观测依赖；

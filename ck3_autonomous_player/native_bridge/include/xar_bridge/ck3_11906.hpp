@@ -514,6 +514,7 @@ SaveCheckpointResult SubmitSaveCheckpoint(const Bindings &bindings) noexcept;
 
 using game::PendingInteractionReply;
 using game::ReplyPendingInteractionResult;
+using game::AcknowledgePendingInteractionResult;
 
 // Replies to the first locally addressed and natively actionable CK3 character
 // interaction exposed by Snapshot. CPendingCharacterInteraction's component ID
@@ -521,6 +522,14 @@ using game::ReplyPendingInteractionResult;
 // accept/reject are native enum values 0/1.
 ReplyPendingInteractionResult SubmitReplyToPendingInteraction(
     const Bindings &bindings, PendingInteractionReply reply) noexcept;
+
+// Acknowledges one exact generation-bearing auto-accept notification. This is
+// deliberately a fixed enum-4 action rather than a generic reply surface. It
+// fresh-reads the paused snapshot, re-resolves the complete pending ID and
+// played Character, re-runs the exact local-route predicate, revalidates
+// +0x5C6, and never treats the enum-4 validator's early true as legality.
+AcknowledgePendingInteractionResult SubmitAcknowledgePendingInteraction(
+    const Bindings &bindings, std::int32_t pending_interaction_id) noexcept;
 
 using game::RaiseTroopsResult;
 

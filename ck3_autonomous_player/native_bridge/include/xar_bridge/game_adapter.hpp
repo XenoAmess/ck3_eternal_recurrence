@@ -51,6 +51,12 @@ public:
   virtual SaveCheckpointResult submit_save_checkpoint() const noexcept = 0;
   virtual ReplyPendingInteractionResult submit_reply_to_pending_interaction(
       PendingInteractionReply reply) const noexcept = 0;
+  virtual AcknowledgePendingInteractionResult
+  submit_acknowledge_pending_interaction(
+      std::int32_t pending_interaction_id) const noexcept {
+    static_cast<void>(pending_interaction_id);
+    return AcknowledgePendingInteractionResult::unavailable;
+  }
   virtual RaiseTroopsResult submit_raise_troops_default() const noexcept = 0;
   virtual MoveArmyResult submit_move_army(std::int32_t army_id,
                                           std::int32_t province_id) const
@@ -160,6 +166,11 @@ SubmitSaveCheckpoint(const GameAdapter &game) noexcept {
 inline ReplyPendingInteractionResult SubmitReplyToPendingInteraction(
     const GameAdapter &game, PendingInteractionReply reply) noexcept {
   return game.submit_reply_to_pending_interaction(reply);
+}
+inline AcknowledgePendingInteractionResult
+SubmitAcknowledgePendingInteraction(
+    const GameAdapter &game, std::int32_t pending_interaction_id) noexcept {
+  return game.submit_acknowledge_pending_interaction(pending_interaction_id);
 }
 inline RaiseTroopsResult
 SubmitRaiseTroopsDefault(const GameAdapter &game) noexcept {

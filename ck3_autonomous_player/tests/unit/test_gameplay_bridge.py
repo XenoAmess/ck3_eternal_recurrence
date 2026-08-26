@@ -50,6 +50,51 @@ def _snapshot(revision: int = 0, history: list[dict[str, object]] | None = None)
     }
 
 
+def _pending_context_result(
+    *,
+    pending_id: int,
+    revision: int,
+    native_revision: int,
+    date_raw: int,
+) -> dict[str, object]:
+    return {
+        "step": "query-pending-character-interaction-context-v1",
+        "accepted": True,
+        "status": "available",
+        "snapshot_revision": native_revision,
+        "queried_snapshot_id": f"session:{revision}",
+        "queried_revision": revision,
+        "queried_native_revision": native_revision,
+        "pending_character_interaction_context": {
+            "status": "available",
+            "reason": None,
+            "snapshot_revision": native_revision,
+            "date_raw": date_raw,
+            "pending_interaction_id": pending_id,
+            "definition": {
+                "canonical_key": "fixture_nonreligious_interaction",
+            },
+            "routing": {
+                "current_responder_role": "recipient",
+            },
+            "legality": {
+                "accept": {"status": "available", "allowed": True},
+                "reject": {"status": "available", "allowed": True},
+                "block": {"status": "available", "allowed": False},
+                "acknowledge": {"status": "available", "allowed": False},
+            },
+            "readiness": {
+                "interaction_semantic_decision_ready": False,
+                "not_ready_reasons": [
+                    "structured_costs_unavailable",
+                    "structured_exchanges_unavailable",
+                    "structured_effect_preview_unavailable",
+                ],
+            },
+        },
+    }
+
+
 def _army(
     army_id: int,
     *,
@@ -3200,7 +3245,9 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["required_step"], "dynasty-review")
         self.assertEqual(plan["deferred_phase"], "current_life_family")
 
-    def test_planner_prioritizes_pending_native_character_interaction(self) -> None:
+    def test_planner_queries_pending_native_character_interaction_before_reply(
+        self,
+    ) -> None:
         driver = CallbackGameplayDriver(
             backend_id="native-headless",
             snapshot=lambda: {
@@ -3212,15 +3259,210 @@ class GameplayBridgeTests(unittest.TestCase):
                 },
             },
             execute=lambda _step, _revision: {},
-            action_steps=("accept-pending-character-interaction",),
+            action_steps=(
+                "query-pending-character-interaction-context-v1",
+                "accept-pending-character-interaction",
+            ),
         )
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
         self.assertEqual(
-            plan["selected_step"], "accept-pending-character-interaction"
+            plan["selected_step"],
+            "query-pending-character-interaction-context-v1",
         )
+        self.assertEqual(plan["phase"], "pending_character_interaction_query")
         self.assertEqual(plan["pending_character_interaction"]["instance_id"], 72)
+
+    def test_planner_acknowledges_auto_accept_notification(self) -> None:
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(6),
+                "pending_character_interaction": {
+                    "instance_id": 73,
+                    "sender_character_id": 501,
+                    "auto_accept_notification": True,
+                },
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=("acknowledge-pending-character-interaction",),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(
+            plan["phase"], "pending_character_interaction_acknowledge"
+        )
+        self.assertEqual(
+            plan["selected_step"],
+            "acknowledge-pending-character-interaction",
+        )
+        self.assertTrue(
+            plan["pending_character_interaction"][
+                "auto_accept_notification"
+            ]
+        )
+
+    def test_planner_does_not_treat_notification_as_ordinary_reply(self) -> None:
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(6),
+                "pending_character_interaction": {
+                    "instance_id": 73,
+                    "sender_character_id": 501,
+                    "auto_accept_notification": True,
+                },
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(
+            plan["phase"],
+            "pending_character_interaction_acknowledge_unsupported",
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["required_step"],
+            "acknowledge-pending-character-interaction",
+        )
+
+    def test_planner_does_not_default_accept_after_typed_observation(self) -> None:
+        history = [
+            {
+                "command": "query-pending-character-interaction-context-v1",
+                "ok": True,
+                "result": _pending_context_result(
+                    pending_id=72,
+                    revision=6,
+                    native_revision=41,
+                    date_raw=53_175_816,
+                ),
+            }
+        ]
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(6, history),
+                "paused": True,
+                "native_revision": 41,
+                "date_raw": 53_175_816,
+                "pending_character_interaction": {
+                    "instance_id": 72,
+                    "sender_character_id": 501,
+                    "auto_accept_notification": False,
+                },
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "query-pending-character-interaction-context-v1",
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(
+            plan["phase"], "pending_character_interaction_evidence_required"
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertNotIn("required_step", plan)
+        self.assertEqual(
+            plan["pending_character_interaction"]["interaction_key"],
+            "fixture_nonreligious_interaction",
+        )
+        self.assertFalse(
+            plan["pending_character_interaction"]["semantic_decision_ready"]
+        )
+
+    def test_planner_requeries_stale_pending_context_identity(self) -> None:
+        history = [
+            {
+                "command": "query-pending-character-interaction-context-v1",
+                "ok": True,
+                "result": _pending_context_result(
+                    pending_id=71,
+                    revision=6,
+                    native_revision=41,
+                    date_raw=53_175_816,
+                ),
+            }
+        ]
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(6, history),
+                "paused": True,
+                "native_revision": 41,
+                "date_raw": 53_175_816,
+                "pending_character_interaction": {
+                    "instance_id": 72,
+                    "sender_character_id": 501,
+                    "auto_accept_notification": False,
+                },
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "query-pending-character-interaction-context-v1",
+                "accept-pending-character-interaction",
+            ),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "pending_character_interaction_query")
+        self.assertEqual(
+            plan["selected_step"],
+            "query-pending-character-interaction-context-v1",
+        )
+
+    def test_active_war_queries_pending_context_after_enforce_priority(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=20,
+            controllable=True,
+            army_state="regular",
+        )
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: {
+                **_snapshot(7),
+                "pending_character_interaction": {
+                    "instance_id": 72,
+                    "sender_character_id": 501,
+                    "auto_accept_notification": False,
+                },
+                "active_wars": [
+                    _war(allied_armies=[player], enemy_armies=[])
+                ],
+                "player_armies": [player],
+            },
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "query-pending-character-interaction-context-v1",
+                "accept-pending-character-interaction",
+                "life-advance",
+            ),
+        )
+
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+
+        self.assertEqual(plan["phase"], "pending_war_interaction_query")
+        self.assertEqual(
+            plan["selected_step"],
+            "query-pending-character-interaction-context-v1",
+        )
 
     def test_active_war_does_not_accept_unclassified_pending_interaction(self) -> None:
         player = _army(
@@ -7434,6 +7676,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_restore_checkpoint",
                     "ck3_start_next_episode",
                     "ck3_reply_pending_character_interaction",
+                    "ck3_acknowledge_pending_character_interaction",
                     "ck3_get_war_state",
                     "ck3_query_arrange_marriage_choices",
                     "ck3_arrange_marriage",

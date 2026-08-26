@@ -6,6 +6,7 @@
   "architecture": "msvc-x64",
   "evidence_kind": "offline_exact_build_static_analysis_plus_production_paused_live_validation",
   "read_only": true,
+  "read_only_scope": "the pending-character-interaction-context-v1 query only; companion_acknowledge_action is a separately advertised fixed mutating command",
   "advertised": true,
   "production_wired": true,
   "live_validated": true,
@@ -86,6 +87,56 @@
         "end_rva": "0x26B353F",
         "byte_length": "0xBF",
         "sha256": "C89C990578A570B3467F8E33A88380C790767D2AD1B0FBB101AE0B9D530EFE2D"
+      },
+      {
+        "name": "pending_notification_enumerator",
+        "start_rva": "0xD9DAE0",
+        "end_rva": "0xD9DD92",
+        "byte_length": "0x2B2",
+        "sha256": "3E228EBAAB9ED7D46F39DFC914F1EDC0501FC1FB48A6E22E54220905C7105E1C"
+      },
+      {
+        "name": "pending_notification_materializer",
+        "start_rva": "0xF06030",
+        "end_rva": "0xF061DF",
+        "byte_length": "0x1AF",
+        "sha256": "E95D2BDF76BF16B0DA30C665E39DD5CB252AE7A3E7784471EF84259DA96F8BC8"
+      },
+      {
+        "name": "auto_accept_notification_getter",
+        "start_rva": "0x12680E0",
+        "end_rva": "0x1268136",
+        "byte_length": "0x56",
+        "sha256": "1FAC7C0F4CFF6DDA4EDD1070BD951A92A438E6593878A7BDCA9FE2910865A978",
+        "span_kind": "leaf_thunk_without_pdata_runtime_function_row"
+      },
+      {
+        "name": "ui_reply_legality_mirror",
+        "start_rva": "0x1268140",
+        "end_rva": "0x1268266",
+        "byte_length": "0x126",
+        "sha256": "8B92815F0DE6162D03F5CD9BF12E51643C9385739A59DDB42FC2810D932392EC"
+      },
+      {
+        "name": "ui_reply_construct_and_submit",
+        "start_rva": "0x1268270",
+        "end_rva": "0x12682D6",
+        "byte_length": "0x66",
+        "sha256": "3C549F1D03F69B34A0E84281A6369117E86DBB1F53AC4016968618105EBB057F"
+      },
+      {
+        "name": "pending_notification_close_auto_reply",
+        "start_rva": "0xF06B50",
+        "end_rva": "0xF06C3A",
+        "byte_length": "0xEA",
+        "sha256": "818022CC31DF365C9D6A72C4029851A464EA443A26763D15F4DDEB89FA381848"
+      },
+      {
+        "name": "pending_manager_response_transition",
+        "start_rva": "0x2751410",
+        "end_rva": "0x27514F4",
+        "byte_length": "0xE4",
+        "sha256": "E4B3EC7A721B3CE61565C027228D30B23623B7C216918905B2B65DACB3CF7F83"
       },
       {
         "name": "pending_daily_age_and_expiry",
@@ -174,8 +225,11 @@
       "human_player_character_id_membership": "0x28BCEB0",
       "generic_trigger_evaluator": "0x334C510",
       "pending_manager_response_transition": "0x2751410",
+      "pending_notification_enumerator": "0xD9DAE0",
+      "pending_notification_materializer": "0xF06030",
       "auto_accept_notification_getter": "0x12680E0",
       "ui_reply_legality_mirror": "0x1268140",
+      "ui_reply_construct_and_submit": "0x1268270",
       "notification_auto_reply": "0xF06B50"
     },
     "direct_data_anchors": {
@@ -338,10 +392,34 @@
   "production_reachability": {
     "ordinary_pending_query_wired": true,
     "acknowledge_legality_implemented": true,
-    "auto_accept_notification_discovery_ready": false,
-    "auto_accept_notification_query_reachable": false,
-    "current_blocker": "legacy Snapshot pending discovery skips CPendingCharacterInteraction+0x5C6 notifications, while the mailbox capture gate still requires that Snapshot to publish the requested full pending ID",
-    "claim_boundary": "the standalone ACK projection is deterministic static/native-unit coverage only; do not claim production ACK reachability or live readiness until discovery/capture is widened and a real notification fixture advances"
+    "auto_accept_notification_discovery_ready": true,
+    "auto_accept_notification_query_reachable": true,
+    "acknowledge_action_wired": true,
+    "acknowledge_action_static_unit_ready": true,
+    "notification_ack_live_ready": false,
+    "current_blocker": "no deterministic nonreligious auto-accept notification paused checkpoint has yet exercised the production query, fixed enum-4 command and generation-safe postcondition",
+    "claim_boundary": "production notification discovery, typed query and strict ACK action are wired and covered by static/native/Python fixtures; live ACK readiness remains false until a real nonreligious notification fixture proves old-full-ID advancement"
+  },
+  "companion_acknowledge_action": {
+    "capability": "game.command.acknowledge-pending-character-interaction",
+    "step": "acknowledge-pending-character-interaction",
+    "request": {
+      "expected_revision": "positive uint64 matching the current published native snapshot revision",
+      "pending_interaction_id": "positive full generation-bearing int32; never a low-24-bit slot"
+    },
+    "preconditions": [
+      "fresh exact-build Snapshot is paused and still exposes the same full pending ID",
+      "pending+0x5C6 is nonzero",
+      "full-ID storage resolution and liveness succeed",
+      "RVA 0x1266BA0 still routes the pending interaction to the played Character",
+      "full pending ID and +0x5C6 are revalidated immediately before queue submission"
+    ],
+    "fixed_command": "CReplyCharacterInteractionCommand(reply=4, flags=0x0E); callers cannot select another reply enum",
+    "forbidden_legality_shortcut": "RVA 0x26B3540 enum-4 early true is never called",
+    "queue_result_semantics": "submitted proves only queue acceptance",
+    "success_postcondition": "a later snapshot must no longer expose the same full generation-bearing pending ID",
+    "scope_boundary": "not a generic reply or pending-manager mutator",
+    "live_validated": false
   },
   "safe_semantic_terms": {
     "available_from_generic_exact_build_contract": [
@@ -395,9 +473,11 @@
     "ordinary_pending_query_ready": true,
     "ordinary_pending_query_live_ready": true,
     "notification_ack_static_ready": true,
-    "notification_ack_query_ready": false,
+    "notification_ack_query_ready": true,
+    "notification_ack_action_ready": true,
+    "notification_ack_live_ready": false,
     "production_live_ready": true,
-    "production_live_scope": "ordinary recipient pending only; intermediary and auto-accept notification remain outside live coverage",
+    "production_live_scope": "ordinary recipient pending query only; notification discovery/query/action are production-wired but ACK and intermediary routing remain outside live coverage",
     "interaction_semantic_decision_ready": false,
     "capability_advertised": true
   },
@@ -455,6 +535,6 @@
     "map the generic target scope registry indexes used by supported non-deferred interaction target types to stable typed payload decoders",
     "close an engine-generic read-only structured terms/effect-description seam without calling subtype mutators or effect executors",
     "validate the production paused application-main query against an intermediary fixture; the ordinary recipient fixture is live-confirmed",
-    "widen full-generation pending discovery/capture to include +0x5C6 notifications before attempting the auto-accept acknowledge live fixture"
+    "run a nonreligious auto-accept notification paused fixture through typed query and one strict ACK, then prove the old full generation-bearing pending ID no longer resolves; queue submission alone is insufficient"
   ]
 }

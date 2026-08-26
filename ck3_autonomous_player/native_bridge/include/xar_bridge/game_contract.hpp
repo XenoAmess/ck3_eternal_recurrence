@@ -776,6 +776,17 @@ enum class ReplyPendingInteractionResult {
   acknowledgement_required,
   unavailable,
 };
+enum class AcknowledgePendingInteractionResult {
+  submitted,
+  no_pending_interaction,
+  pending_interaction_mismatch,
+  acknowledgement_not_required,
+  requires_paused,
+  not_for_played_character,
+  state_changed,
+  queue_rejected,
+  unavailable,
+};
 enum class RaiseTroopsResult {
   submitted,
   no_played_character,

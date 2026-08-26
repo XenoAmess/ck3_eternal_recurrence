@@ -18,7 +18,8 @@
     "component_identity": "slot lookup by low 24 bits followed by complete ID equality and liveness",
     "normal_channel": "accept/reject/block additionally require exact local route and auto_accept_notification=false",
     "acknowledge_channel": "acknowledge requires exact local route and auto_accept_notification=true; raw validator enum 4 is ignored",
-    "acknowledge_reachability": "the standalone vector proves projection semantics only; production Snapshot currently filters +0x5C6 notifications before the mailbox capture gate, so ACK query/live readiness remain false",
+    "acknowledge_reachability": "production Snapshot preserves generation-valid locally routed +0x5C6 notifications, the paused mailbox can query them, and the strict fixed enum-4 action is unit-covered; live readiness remains false until a real nonreligious notification advances",
+    "acknowledge_postcondition": "queue acceptance alone is not success; the native driver must observe a later snapshot in which the old full generation-bearing pending ID is absent or replaced",
     "malformed_observation": "publish status invalid and all action booleans false",
     "target_boundary": "a nonzero raw scope type has a stable registry type key but is not a typed payload identity until an exact-build decoder for that type exists",
     "semantic_readiness": "legal reply availability alone never makes interaction_semantic_decision_ready true"
@@ -335,6 +336,149 @@
       "expiry_boundary_status": "at_or_past_daily_expiry_queue_threshold"
     }
   ],
+  "acknowledge_action_vectors": [
+    {
+      "name": "notification_full_id_queues_fixed_ack",
+      "input": {
+        "expected_revision": 41,
+        "current_revision": 41,
+        "paused": true,
+        "requested_full_id": 16777249,
+        "snapshot_full_id": 16777249,
+        "resolved_object_id": 16777249,
+        "auto_accept_notification": true,
+        "local_route": true,
+        "queue_accepts": true
+      },
+      "expected": {
+        "native_reply_enum": 4,
+        "native_queue_flags": 14,
+        "enum4_validator_invoked": false,
+        "result": "submitted",
+        "success_requires_old_full_id_advancement": true
+      }
+    },
+    {
+      "name": "stale_generation_rejected_before_queue",
+      "input": {
+        "expected_revision": 41,
+        "current_revision": 41,
+        "paused": true,
+        "requested_full_id": 16777249,
+        "snapshot_full_id": 16777249,
+        "resolved_object_id": 33554465,
+        "auto_accept_notification": true,
+        "local_route": true
+      },
+      "expected": {
+        "result": "state_changed",
+        "queue_invoked": false
+      }
+    },
+    {
+      "name": "snapshot_revision_mismatch_rejected_before_adapter",
+      "input": {
+        "expected_revision": 41,
+        "current_revision": 42,
+        "paused": true,
+        "requested_full_id": 16777249,
+        "snapshot_full_id": 16777249,
+        "auto_accept_notification": true
+      },
+      "expected": {
+        "result": "snapshot_revision_mismatch",
+        "adapter_invoked": false,
+        "queue_invoked": false
+      }
+    },
+    {
+      "name": "unpaused_notification_rejected_before_queue",
+      "input": {
+        "expected_revision": 41,
+        "current_revision": 41,
+        "paused": false,
+        "requested_full_id": 16777249,
+        "snapshot_full_id": 16777249,
+        "resolved_object_id": 16777249,
+        "auto_accept_notification": true,
+        "local_route": true
+      },
+      "expected": {
+        "result": "requires_paused",
+        "queue_invoked": false
+      }
+    },
+    {
+      "name": "ordinary_pending_cannot_use_ack_channel",
+      "input": {
+        "expected_revision": 41,
+        "current_revision": 41,
+        "paused": true,
+        "requested_full_id": 16777249,
+        "snapshot_full_id": 16777249,
+        "resolved_object_id": 16777249,
+        "auto_accept_notification": false,
+        "local_route": true
+      },
+      "expected": {
+        "result": "acknowledgement_not_required",
+        "queue_invoked": false
+      }
+    },
+    {
+      "name": "route_drift_rejected_before_queue",
+      "input": {
+        "expected_revision": 41,
+        "current_revision": 41,
+        "paused": true,
+        "requested_full_id": 16777249,
+        "snapshot_full_id": 16777249,
+        "resolved_object_id": 16777249,
+        "auto_accept_notification": true,
+        "local_route": false
+      },
+      "expected": {
+        "result": "not_for_played_character",
+        "queue_invoked": false
+      }
+    },
+    {
+      "name": "notification_channel_drift_rejected_before_queue",
+      "input": {
+        "expected_revision": 41,
+        "current_revision": 41,
+        "paused": true,
+        "requested_full_id": 16777249,
+        "snapshot_full_id": 16777249,
+        "resolved_object_id": 16777249,
+        "initial_auto_accept_notification": true,
+        "revalidated_auto_accept_notification": false,
+        "local_route": true
+      },
+      "expected": {
+        "result": "state_changed",
+        "queue_invoked": false
+      }
+    },
+    {
+      "name": "queue_rejection_is_not_ack_success",
+      "input": {
+        "expected_revision": 41,
+        "current_revision": 41,
+        "paused": true,
+        "requested_full_id": 16777249,
+        "snapshot_full_id": 16777249,
+        "resolved_object_id": 16777249,
+        "auto_accept_notification": true,
+        "local_route": true,
+        "queue_accepts": false
+      },
+      "expected": {
+        "result": "queue_rejected",
+        "success": false
+      }
+    }
+  ],
   "expected_readiness": {
     "exact_build_ready": true,
     "pending_layout_static_ready": true,
@@ -349,7 +493,9 @@
     "bridge_query_ready": true,
     "ordinary_pending_query_ready": true,
     "notification_ack_static_ready": true,
-    "notification_ack_query_ready": false,
+    "notification_ack_query_ready": true,
+    "notification_ack_action_ready": true,
+    "notification_ack_live_ready": false,
     "production_live_ready": false,
     "interaction_semantic_decision_ready": false,
     "capability_advertised": true

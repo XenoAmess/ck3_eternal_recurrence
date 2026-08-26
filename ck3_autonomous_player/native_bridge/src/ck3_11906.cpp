@@ -1105,34 +1105,32 @@ bool ReadPendingCharacterInteraction(const Bindings &bindings,
       continue;
     }
 
-    // Auto-accept notifications need reply enum 4 (acknowledge).  The public
-    // agent action is deliberately accept/reject, so exposing one would leave
-    // the planner parked on a request that neither public action can advance.
-    if (LoadAt<std::uint8_t>(pending,
-                             kPendingInteractionAutoAcceptOffset) != 0) {
-      continue;
-    }
     if (!bindings.is_pending_character_interaction_for_character(
             pending, played_character)) {
       continue;
     }
 
-    ReplyCharacterInteractionCommand accept_command{};
-    accept_command.primary_vtable =
-        bindings.reply_character_interaction_primary_vtable;
-    accept_command.secondary_vtable =
-        bindings.reply_character_interaction_secondary_vtable;
-    accept_command.pending_interaction_id = candidate_id;
-    accept_command.reply =
-        static_cast<std::int32_t>(PendingInteractionReply::accept);
-    if (!bindings.validate_reply_character_interaction_command(
-            &accept_command)) {
-      continue;
+    const bool notification =
+        LoadAt<std::uint8_t>(pending,
+                             kPendingInteractionAutoAcceptOffset) != 0;
+    if (!notification) {
+      ReplyCharacterInteractionCommand accept_command{};
+      accept_command.primary_vtable =
+          bindings.reply_character_interaction_primary_vtable;
+      accept_command.secondary_vtable =
+          bindings.reply_character_interaction_secondary_vtable;
+      accept_command.pending_interaction_id = candidate_id;
+      accept_command.reply =
+          static_cast<std::int32_t>(PendingInteractionReply::accept);
+      if (!bindings.validate_reply_character_interaction_command(
+              &accept_command)) {
+        continue;
+      }
     }
     instance_id = candidate_id;
     sender_character_id = LoadAt<std::int32_t>(
         pending, kPendingInteractionSenderIdOffset);
-    auto_accept_notification = false;
+    auto_accept_notification = notification;
     return true;
   }
   return false;
@@ -7002,6 +7000,76 @@ ReplyPendingInteractionResult SubmitReplyToPendingInteraction(
   command.reply = static_cast<std::int32_t>(reply);
   bindings.submit_command(bindings.command_manager, &command, 0x0E);
   return ReplyPendingInteractionResult::submitted;
+}
+
+AcknowledgePendingInteractionResult SubmitAcknowledgePendingInteraction(
+    const Bindings &bindings,
+    std::int32_t pending_interaction_id) noexcept {
+  if (!bindings.enabled || pending_interaction_id <= 0 ||
+      bindings.command_manager == nullptr ||
+      bindings.submit_command == nullptr ||
+      bindings.pending_character_interaction_storage_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.is_pending_character_interaction_for_character == nullptr ||
+      bindings.reply_character_interaction_primary_vtable == 0 ||
+      bindings.reply_character_interaction_secondary_vtable == 0) {
+    return AcknowledgePendingInteractionResult::unavailable;
+  }
+
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return AcknowledgePendingInteractionResult::unavailable;
+  }
+  if (!current.paused) {
+    return AcknowledgePendingInteractionResult::requires_paused;
+  }
+  if (!current.has_pending_character_interaction) {
+    return AcknowledgePendingInteractionResult::no_pending_interaction;
+  }
+  if (current.pending_character_interaction_id != pending_interaction_id) {
+    return AcknowledgePendingInteractionResult::pending_interaction_mismatch;
+  }
+  if (!current.pending_auto_accept_notification) {
+    return AcknowledgePendingInteractionResult::acknowledgement_not_required;
+  }
+
+  void *const played_character =
+      ResolveCharacter(bindings, current.played_character_id);
+  if (played_character == nullptr) {
+    return AcknowledgePendingInteractionResult::not_for_played_character;
+  }
+  void *const pending = ResolveStoredComponent(
+      bindings.pending_character_interaction_storage_slot,
+      pending_interaction_id, kPendingInteractionIdOffset);
+  if (pending == nullptr) {
+    return AcknowledgePendingInteractionResult::state_changed;
+  }
+  if (LoadAt<std::uint8_t>(pending,
+                           kPendingInteractionAutoAcceptOffset) == 0) {
+    return AcknowledgePendingInteractionResult::acknowledgement_not_required;
+  }
+  if (!bindings.is_pending_character_interaction_for_character(
+          pending, played_character)) {
+    return AcknowledgePendingInteractionResult::not_for_played_character;
+  }
+  if (LoadAt<std::int32_t>(pending, kPendingInteractionIdOffset) !=
+          pending_interaction_id ||
+      LoadAt<std::uint8_t>(pending,
+                           kPendingInteractionAutoAcceptOffset) == 0) {
+    return AcknowledgePendingInteractionResult::state_changed;
+  }
+
+  ReplyCharacterInteractionCommand command{};
+  command.primary_vtable =
+      bindings.reply_character_interaction_primary_vtable;
+  command.secondary_vtable =
+      bindings.reply_character_interaction_secondary_vtable;
+  command.pending_interaction_id = pending_interaction_id;
+  command.reply = 4;
+  if (!bindings.submit_command(bindings.command_manager, &command, 0x0E)) {
+    return AcknowledgePendingInteractionResult::queue_rejected;
+  }
+  return AcknowledgePendingInteractionResult::submitted;
 }
 
 RaiseTroopsResult SubmitRaiseTroopsDefault(
