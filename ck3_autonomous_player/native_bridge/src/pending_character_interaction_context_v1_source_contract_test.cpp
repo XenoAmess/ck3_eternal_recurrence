@@ -63,6 +63,7 @@ int main(int argc, char **argv) {
       kPendingInteractionLocalRoutingV1Rva != 0x1266BA0 ||
       kPendingInteractionReplyValidatorV1Rva != 0x26B3540 ||
       kPendingInteractionTriggerEvaluatorV1Rva != 0x334C510 ||
+      kPendingInteractionCostEvaluatorV1Rva != 0x2CDB7B0 ||
       kPendingInteractionTargetTypeRegistryGetterV1Rva != 0x33C52B0 ||
       kPendingInteractionTargetTypeRegistryV1Rva != 0x4FFE290 ||
       kPendingInteractionTargetTypeFallbackEntryV1Rva != 0x5000AB0 ||
@@ -74,38 +75,47 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  if (!ContainsAll(
-          header,
-          {"PendingCharacterInteractionContextRequestV1",
-           "expected_snapshot_revision", "pending_interaction_id",
-           "played_character_id", "invoke_local_routing",
-           "invoke_reply_validator", "invoke_trigger_evaluator",
-           "invoke_target_type_registry", "invoke_script_identifier_name",
-           "interaction_semantic_decision_ready"}) ||
-      !ContainsAll(
-          reader,
-          {"kPendingDefinitionOffset = 0x18",
-           "kPendingActorOffset = 0x2F0",
-           "kPendingTargetEnvelopeOffset = 0x308",
-           "kPendingSelectedOptionsDataOffset = 0x318",
-           "kPendingAgeDaysOffset = 0x5B8",
-           "kPendingRoutingKindOffset = 0x5C0",
-           "kPendingAutoAcceptNotificationOffset = 0x5C6",
-           "kDefinitionSendOptionRowsOffset = 0x2548",
-           "kDefinitionAutoAcceptTriggerOffset = 0x2580",
-           "kDefinitionAutoAcceptScalarOffset = 0x2A48",
-           "kSendOptionValidTriggerOffset = 0xE0",
-           "kSendOptionShownTriggerOffset = 0x00",
-           "observed_id != full_id", "pending_generation_mismatch",
-           "played_character_generation_mismatch",
-           "pending_not_routed_to_played_character",
-           "environment.module_base + kPendingInteractionTargetTypeRegistryV1Rva",
-           "target_type_registry_drift", "type_index >=",
-           "generic_scope_payload_identity_not_closed",
-           "numeric_flag_identifier_string_mapping_not_closed",
-           "selected_capacity < send_options.context_count",
-           "second != first", "auto_accept_notification",
-           "normal_reply_channel", "reply_validator_semantic_mismatch"}) ||
+  if (!ContainsAll(header,
+                   {"PendingCharacterInteractionContextRequestV1",
+                    "expected_snapshot_revision", "pending_interaction_id",
+                    "played_character_id", "invoke_local_routing",
+                    "invoke_reply_validator", "invoke_trigger_evaluator",
+                    "invoke_cost_evaluator", "generic_costs_ready",
+                    "invoke_target_type_registry",
+                    "invoke_script_identifier_name",
+                    "interaction_semantic_decision_ready"}) ||
+      !ContainsAll(reader, {"kPendingDefinitionOffset = 0x18",
+                            "kDefinitionCostBlockOffset = 0x38",
+                            "kPendingActorOffset = 0x2F0",
+                            "kPendingTargetEnvelopeOffset = 0x308",
+                            "kPendingSelectedOptionsDataOffset = 0x318",
+                            "kPendingAgeDaysOffset = 0x5B8",
+                            "kPendingRoutingKindOffset = 0x5C0",
+                            "kPendingAutoAcceptNotificationOffset = 0x5C6",
+                            "kDefinitionSendOptionRowsOffset = 0x2548",
+                            "kDefinitionAutoAcceptTriggerOffset = 0x2580",
+                            "kDefinitionAutoAcceptScalarOffset = 0x2A48",
+                            "kSendOptionValidTriggerOffset = 0xE0",
+                            "kSendOptionShownTriggerOffset = 0x00",
+                            "observed_id != full_id",
+                            "pending_generation_mismatch",
+                            "played_character_generation_mismatch",
+                            "pending_not_routed_to_played_character",
+                            "environment.module_base +",
+                            "kPendingInteractionTargetTypeRegistryV1Rva",
+                            "target_type_registry_drift",
+                            "type_index >=",
+                            "generic_scope_payload_identity_not_closed",
+                            "numeric_flag_identifier_string_mapping_not_closed",
+                            "treasury_or_gold",
+                            "barter_goods",
+                            "environment.cost_evaluator",
+                            "raw[index]",
+                            "selected_capacity < send_options.context_count",
+                            "second != first",
+                            "auto_accept_notification",
+                            "normal_reply_channel",
+                            "reply_validator_semantic_mismatch"}) ||
       !ContainsAll(
           serializer,
           {"\\\"schema\\\":\\\"pending-character-interaction-context-v1\\\"",
@@ -113,6 +123,9 @@ int main(int argc, char **argv) {
            "\\\"type_key_status\\\"", "\\\"typed_identity_status\\\"",
            "\\\"canonical_flag_status\\\"", "\\\"legality\\\"",
            "\\\"structured_costs\\\"", "\\\"value\\\":null",
+           "\\\"raw_scale\\\"", "\\\"resource_key\\\"", "\\\"payer_role\\\"",
+           "\\\"application_timing\\\"", "\\\"pending_payment_state\\\"",
+           "\\\"cost_evaluator_rva\\\":\\\"0x2CDB7B0\\\"",
            "\\\"recipient_ai_acceptance_score\\\"",
            "\\\"interaction_semantic_decision_ready\\\"",
            "\\\"target_type_registry_rva\\\":\\\"0x4FFE290\\\""}) ||
@@ -128,6 +141,16 @@ int main(int argc, char **argv) {
            "8B7E4C67B9E772BBB75F303D7EE2444DBBF261D412FD0DCC97C99FC0C7297507",
            "B267CA32133ED15FE47468572C4B561E2A121B280BBEF8D653F56E4158CD1E6D",
            "55AC17937B11658E17C4884A9FD027FFA32BCD3B04EBC16B9D98F24BD9ECB02B",
+           "ACA4B8FF934DBC602B3EC3EB9F95E1A3A903AD619B8A70B6E5C1B36A4C6F28A8",
+           "50B06EB5A730BF0962B9B2A782F1566A86CCE39B131282E7714B10A465AC01F6",
+           "37D30768693AF083B8D67908A88849FB9C33B16EC809262A1345F2E96A53B5A1",
+           "8D89DE114321AD18474443F7310F0850AE5C4C5187B009D7CB1FB5F26145AF28",
+           "988DB7F261BE88BE4DBA77DAFB1D73460907C902DCE6DE3CEF9B420C3307AEF4",
+           "119C6D85299B865659AC0255C074D5EC45A7F93ACF0BFDA2CBF6318F301FB3A0",
+           "advances the compiled-row index and the formatter enum together",
+           "treasury_or_gold",
+           "disabled clamp may preserve a negative authored value",
+           "\"pending_payment_state\": \"already_applied\"",
            "\"pending_notification_enumerator\"",
            "3E228EBAAB9ED7D46F39DFC914F1EDC0501FC1FB48A6E22E54220905C7105E1C",
            "\"pending_notification_materializer\"",
@@ -139,8 +162,11 @@ int main(int argc, char **argv) {
            "818022CC31DF365C9D6A72C4029851A464EA443A26763D15F4DDEB89FA381848",
            "E4B3EC7A721B3CE61565C027228D30B23623B7C216918905B2B65DACB3CF7F83",
            "\"generic_script_scope_type_registry\": \"0x4FFE290\"",
-           "\"generic_script_scope_out_of_range_fallback_entry\": \"0x5000AB0\"",
+           "\"generic_script_scope_out_of_range_fallback_entry\": "
+           "\"0x5000AB0\"",
            "\"generic_target_type_key_static_ready\": true",
+           "\"generic_costs_static_ready\": true",
+           "\"generic_costs_live_ready\": false",
            "\"ordinary_pending_query_live_ready\": true",
            "D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89",
            "enum 4 returns true before pending storage resolution",
@@ -149,36 +175,40 @@ int main(int argc, char **argv) {
            "\"notification_ack_action_ready\": true",
            "\"notification_ack_live_ready\": false",
            "CReplyCharacterInteractionCommand(reply=4, flags=0x0E)",
-           "a later snapshot must no longer expose the same full generation-bearing pending ID"}) ||
-      !ContainsAll(
-          fixture,
-          {"ordinary_recipient_request",
-           "intermediary_request_uses_intermediary_route",
-           "auto_accept_notification_is_ack_only",
-           "stale_generation_is_not_actionable",
-           "malformed_selected_option_count_fails_closed",
-           "opaque_generic_target_preserves_legality_but_blocks_semantic_readiness",
-           "notification_full_id_queues_fixed_ack",
-           "stale_generation_rejected_before_queue",
-           "snapshot_revision_mismatch_rejected_before_adapter",
-           "unpaused_notification_rejected_before_queue",
-           "ordinary_pending_cannot_use_ack_channel",
-           "route_drift_rejected_before_queue",
-           "notification_channel_drift_rejected_before_queue",
-           "queue_rejection_is_not_ack_success",
-           "\"enum4_validator_invoked\": false",
-           "\"type_key\": \"fixture_generic_target_type\"",
-           "\"generic_target_type_key_static_ready\": true",
-           "\"notification_ack_query_ready\": true",
-           "\"notification_ack_action_ready\": true",
-           "\"notification_ack_live_ready\": false"})) {
+           "a later snapshot must no longer expose the same full "
+           "generation-bearing pending ID"}) ||
+      !ContainsAll(fixture,
+                   {"ordinary_recipient_request",
+                    "intermediary_request_uses_intermediary_route",
+                    "auto_accept_notification_is_ack_only",
+                    "stale_generation_is_not_actionable",
+                    "malformed_selected_option_count_fails_closed",
+                    "opaque_generic_target_preserves_legality_but_blocks_"
+                    "semantic_readiness",
+                    "notification_full_id_queues_fixed_ack",
+                    "stale_generation_rejected_before_queue",
+                    "snapshot_revision_mismatch_rejected_before_adapter",
+                    "unpaused_notification_rejected_before_queue",
+                    "ordinary_pending_cannot_use_ack_channel",
+                    "route_drift_rejected_before_queue",
+                    "notification_channel_drift_rejected_before_queue",
+                    "queue_rejection_is_not_ack_success",
+                    "\"enum4_validator_invoked\": false",
+                    "\"type_key\": \"fixture_generic_target_type\"",
+                    "\"resource_key\": \"treasury_or_gold\"",
+                    "\"raw\": -50000",
+                    "\"payer_role\": \"actor\"",
+                    "\"generic_costs_query_ready\": true",
+                    "\"generic_target_type_key_static_ready\": true",
+                    "\"notification_ack_query_ready\": true",
+                    "\"notification_ack_action_ready\": true",
+                    "\"notification_ack_live_ready\": false"})) {
     return 1;
   }
 
   if (Contains(reader, "0x26B3480") ||
       Contains(reader, "pending_manager_response_transition") ||
-      Contains(reader, "submit_command") ||
-      Contains(reader, "SubmitCommand") ||
+      Contains(reader, "submit_command") || Contains(reader, "SubmitCommand") ||
       Contains(reader, "WriteProcessMemory") ||
       Contains(reader, "notification-description") ||
       Contains(reader, "special_interaction virtual")) {
@@ -189,15 +219,15 @@ int main(int argc, char **argv) {
   // The engine's send-option gate evaluates +0xE0 before +0x00. Keep the
   // standalone reader call sites in that same lexical order.
   const auto valid_position = reader.find("kSendOptionValidTriggerOffset");
-  const auto shown_position = reader.find("kSendOptionShownTriggerOffset",
-                                          valid_position + 1U);
-  if (valid_position == std::string::npos || shown_position == std::string::npos ||
-      valid_position >= shown_position) {
+  const auto shown_position =
+      reader.find("kSendOptionShownTriggerOffset", valid_position + 1U);
+  if (valid_position == std::string::npos ||
+      shown_position == std::string::npos || valid_position >= shown_position) {
     std::cerr << "send-option trigger order drifted\n";
     return 1;
   }
 
-  std::cout <<
-      "pending-character-interaction-context-v1 source contract passed\n";
+  std::cout
+      << "pending-character-interaction-context-v1 source contract passed\n";
   return 0;
 }

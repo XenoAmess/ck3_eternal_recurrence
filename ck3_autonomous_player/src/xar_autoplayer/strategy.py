@@ -38,6 +38,11 @@ from .bridge.pending_character_interaction_context_contract import (
     ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
 )
+from .bridge.event_window_context_contract import (
+    QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
+    QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+    normalize_current_event_window_context_v1,
+)
 from .bridge.settlement_contract import ONE_LIFE_SETTLEMENT_CAPABILITY
 from .bridge.war_contract import (
     MAX_ROUTE_CONTACT_HOSTILE_IDS,
@@ -393,6 +398,84 @@ def _same_frame_pending_interaction_context(
         ):
             continue
         return context
+    return None
+
+
+def _same_frame_event_window_context(
+    rows: list[dict[str, object]],
+    snapshot: dict[str, object] | None,
+) -> dict[str, object] | None:
+    """Recover a typed window only when every public/native frame key matches."""
+
+    if not isinstance(snapshot, dict):
+        return None
+    active_event = snapshot.get("active_event", snapshot.get("current_event"))
+    event_id = (
+        active_event.get("instance_id")
+        if isinstance(active_event, dict)
+        else None
+    )
+    revision = snapshot.get("revision")
+    native_revision = snapshot.get("native_revision")
+    snapshot_id = snapshot.get("snapshot_id")
+    date_raw = snapshot.get("date_raw")
+    if (
+        isinstance(event_id, bool)
+        or not isinstance(event_id, int)
+        or not 1 <= event_id <= 2**31 - 1
+        or isinstance(revision, bool)
+        or not isinstance(revision, int)
+        or isinstance(native_revision, bool)
+        or not isinstance(native_revision, int)
+        or not 1 <= native_revision <= 2**64 - 1
+        or not isinstance(snapshot_id, str)
+        or not snapshot_id
+        or isinstance(date_raw, bool)
+        or not isinstance(date_raw, int)
+        or not -(2**31) <= date_raw <= 2**31 - 1
+    ):
+        return None
+
+    for row in reversed(rows):
+        if (
+            _effective_command(row)
+            != QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+            or row.get("ok") is not True
+        ):
+            continue
+        result = _effective_command_result(row)
+        context = (
+            result.get("current_event_window_context")
+            if isinstance(result, dict)
+            else None
+        )
+        if not (
+            isinstance(result, dict)
+            and isinstance(context, dict)
+            and result.get("step")
+            == QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+            and result.get("accepted") is True
+            and result.get("status") == context.get("status")
+            and result.get("queried_snapshot_id") == snapshot_id
+            and result.get("queried_revision") == revision
+            and result.get("queried_native_revision") == native_revision
+            and result.get("snapshot_revision") == native_revision
+            and result.get("current_event_instance_id") == event_id
+            and result.get("date_raw") == date_raw
+            and context.get("snapshot_revision") == native_revision
+            and context.get("current_event_instance_id") == event_id
+            and context.get("date_raw") == date_raw
+        ):
+            continue
+        try:
+            return normalize_current_event_window_context_v1(
+                context,
+                expected_event_instance_id=event_id,
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError:
+            continue
     return None
 
 
@@ -1221,6 +1304,7 @@ def choose_one_life_turn(
     *,
     snapshot: dict[str, object] | None = None,
     action_steps: Iterable[str] | None = None,
+    bridge_capabilities: Iterable[str] | None = None,
     next_run_plan: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Choose one useful, inspectable action for the current life.
@@ -1232,6 +1316,11 @@ def choose_one_life_turn(
     rows = _expanded_command_rows(commands)
     available_steps = {
         step for step in (action_steps or ()) if isinstance(step, str) and step
+    }
+    available_capabilities = {
+        capability
+        for capability in (bridge_capabilities or ())
+        if isinstance(capability, str) and capability
     }
     cross_run_focus = _cross_run_focus(next_run_plan)
     played_character = (
@@ -1351,6 +1440,188 @@ def choose_one_life_turn(
         ),
     )
     if active_event is not None:
+        typed_event_window_supported = (
+            QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY
+            in available_capabilities
+            or QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP in available_steps
+        )
+        if typed_event_window_supported:
+            event_summary: dict[str, object] = {
+                "instance_id": active_event.get("instance_id"),
+                "option_count": active_event.get("option_count"),
+                "selected_option_number": None,
+                "selected_option_index": None,
+            }
+            if (
+                not isinstance(snapshot, dict)
+                or snapshot.get("paused") is not True
+            ):
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "active_event_window_pause_required",
+                    "selected_step": (
+                        "pause-map" if "pause-map" in available_steps else None
+                    ),
+                    "required_step": "pause-map",
+                    "reason": (
+                        "pause the map before querying the exact current "
+                        "event window"
+                    ),
+                    "active_event": event_summary,
+                }
+            if (
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+                not in available_steps
+            ):
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "active_event_window_query_unavailable",
+                    "selected_step": None,
+                    "required_step": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                    "reason": (
+                        "the backend advertises typed event-window observation "
+                        "but cannot query this paused active event"
+                    ),
+                    "active_event": event_summary,
+                }
+            event_context = _same_frame_event_window_context(rows, snapshot)
+            if event_context is None:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "active_event_window_query",
+                    "selected_step": (
+                        QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+                    ),
+                    "reason": (
+                        "query the exact current event window before choosing "
+                        "from its materialized options"
+                    ),
+                    "active_event": event_summary,
+                }
+
+            event_summary.update(
+                {
+                    "window_context_status": event_context.get("status"),
+                    "window_match_count": event_context.get(
+                        "window_match_count"
+                    ),
+                    "readiness": event_context.get("readiness"),
+                }
+            )
+            if event_context.get("status") == "unavailable":
+                event_summary["materialized_options"] = None
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "active_event_window_unavailable",
+                    "selected_step": None,
+                    "required_capability": (
+                        "game.state.current-event-window-materialization"
+                    ),
+                    "reason": (
+                        "the same-frame exact event-window query is "
+                        "unavailable: "
+                        f"{event_context.get('unavailable_reason')}"
+                    ),
+                    "active_event": event_summary,
+                }
+
+            materialized_options = event_context.get("options")
+            assert isinstance(materialized_options, list)
+            eligible_options = [
+                option
+                for option in materialized_options
+                if isinstance(option, dict)
+                and option.get("shown") is True
+                and option.get("enabled") is True
+            ]
+            readiness = event_context.get("readiness")
+            semantic_ready = bool(
+                isinstance(readiness, dict)
+                and readiness.get("semantic_decision_ready") is True
+            )
+            event_summary.update(
+                {
+                    "materialized_options": materialized_options,
+                    "materialized_option_count": len(materialized_options),
+                    "enabled_materialized_option_count": len(
+                        eligible_options
+                    ),
+                    "semantic_decision_ready": semantic_ready,
+                }
+            )
+
+            if not semantic_ready and len(eligible_options) == 1:
+                option = eligible_options[0]
+                native_index = option["native_option_index"]
+                assert isinstance(native_index, int)
+                option_number = native_index + 1
+                exact_step = event_option_step(option_number)
+                event_summary.update(
+                    {
+                        "selected_option_number": option_number,
+                        "selected_option_index": native_index,
+                        "selected_native_option_index": native_index,
+                        "selected_rendered_index": option.get(
+                            "rendered_index"
+                        ),
+                        "semantic_optimal": False,
+                    }
+                )
+                if exact_step in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "active_event_forced_presentation_choice",
+                        "selected_step": exact_step,
+                        "reason": (
+                            "forced presentation choice: exactly one "
+                            "materialized option is shown and enabled; this "
+                            "is not a semantic optimum"
+                        ),
+                        "active_event": event_summary,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "active_event_forced_choice_unsupported",
+                    "selected_step": None,
+                    "required_step": exact_step,
+                    "reason": (
+                        "the only shown and enabled native event option is "
+                        f"authored index {native_index}, but the backend did "
+                        f"not advertise {exact_step}"
+                    ),
+                    "active_event": event_summary,
+                }
+
+            if semantic_ready:
+                reason = (
+                    "the event window reports semantic inputs ready, but no "
+                    "event semantic policy is implemented"
+                )
+            elif not eligible_options:
+                reason = (
+                    "no materialized event option is both shown and enabled; "
+                    "effect preview or a semantic policy is required"
+                )
+            else:
+                reason = (
+                    "multiple materialized event options are shown and "
+                    "enabled; effect preview and a semantic policy are "
+                    "required instead of choosing the first option"
+                )
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "active_event_semantic_evidence_required",
+                "selected_step": None,
+                "required_capabilities": [
+                    "game.state.current-event-window-effect-preview",
+                    "game.policy.current-event-semantic-decision",
+                ],
+                "reason": reason,
+                "active_event": event_summary,
+            }
+
+        # Compatibility path for backends predating the typed event-window
+        # query.  Their snapshot-native or visual event behavior is unchanged.
         option_number = choose_event_option_number(active_event)
         exact_step = (
             event_option_step(option_number)
@@ -1573,6 +1844,7 @@ def choose_one_life_turn(
             [row for row in remaining_rows if isinstance(row, dict)],
             snapshot=snapshot,
             action_steps=available_steps,
+            bridge_capabilities=available_capabilities,
             next_run_plan=next_run_plan,
         )
         nested_transitions = continued.get("battle_transitions")

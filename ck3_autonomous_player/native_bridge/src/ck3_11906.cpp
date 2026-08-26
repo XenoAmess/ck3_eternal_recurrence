@@ -56,6 +56,8 @@ constexpr std::uintptr_t kSetSpeedPrimaryVtableRva = 0x432F3F0;
 constexpr std::uintptr_t kSetSpeedSecondaryVtableRva = 0x432F260;
 constexpr std::uintptr_t kSelectEventOptionPrimaryVtableRva = 0x4335240;
 constexpr std::uintptr_t kSelectEventOptionSecondaryVtableRva = 0x4335210;
+constexpr std::uintptr_t kIngameInterfaceIdlerVtableRva = 0x40B1D30;
+constexpr std::uintptr_t kEventWindowPrimaryVtableRva = 0x417F758;
 constexpr std::uintptr_t kAutoSavePrimaryVtableRva = 0x40AABE8;
 constexpr std::uintptr_t kAutoSaveSecondaryVtableRva = 0x40AAC80;
 constexpr std::uintptr_t kReplyCharacterInteractionPrimaryVtableRva =
@@ -5967,6 +5969,10 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       module + kSelectEventOptionPrimaryVtableRva;
   result.select_event_option_secondary_vtable =
       module + kSelectEventOptionSecondaryVtableRva;
+  result.ingame_interface_idler_vtable =
+      module + kIngameInterfaceIdlerVtableRva;
+  result.event_window_primary_vtable =
+      module + kEventWindowPrimaryVtableRva;
   result.auto_save_primary_vtable = module + kAutoSavePrimaryVtableRva;
   result.auto_save_secondary_vtable = module + kAutoSaveSecondaryVtableRva;
   result.reply_character_interaction_primary_vtable =

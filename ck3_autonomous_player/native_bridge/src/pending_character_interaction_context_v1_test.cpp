@@ -37,8 +37,8 @@ void Store(std::vector<std::byte> &storage, std::size_t offset,
 }
 
 struct Fixture {
-  xar::game::PendingCharacterInteractionFrameV1 frame{
-      47, 53'175'816, true, true};
+  xar::game::PendingCharacterInteractionFrameV1 frame{47, 53'175'816, true,
+                                                      true};
   std::array<std::byte, 0x40> pending_storage{};
   void *pending_storage_pointer = nullptr;
   std::vector<std::byte> pending_slots =
@@ -63,12 +63,16 @@ struct Fixture {
   std::array<bool, 3> validator_results{true, true, true};
   std::array<bool, 2> shown_results{true, true};
   std::array<bool, 2> valid_results{true, true};
+  std::array<std::int64_t, 10> cost_raw{0, 100'000, -50'000, 250'000, 0,
+                                        0, 300'000, 50'000,  0,       400'000};
   bool change_frame_on_final_capture = false;
   bool change_selection_between_observations = false;
+  bool change_cost_between_observations = false;
   std::int32_t capture_calls = 0;
   std::int32_t route_calls = 0;
   std::int32_t validator_calls = 0;
   std::int32_t selected_read_calls = 0;
+  std::int32_t cost_calls = 0;
   std::vector<std::int32_t> trigger_order;
 
   Fixture() { Reset(); }
@@ -85,8 +89,8 @@ struct Fixture {
     std::fill(rows.begin(), rows.end(), std::byte{});
     selected = {1, 0};
     target_registry.fill(std::byte{});
-    std::fill(target_registry_entries.begin(),
-              target_registry_entries.end(), std::byte{});
+    std::fill(target_registry_entries.begin(), target_registry_entries.end(),
+              std::byte{});
     expiration_days = 60;
     pending_storage_pointer = pending_storage.data();
     character_storage_pointer = character_storage.data();
@@ -95,18 +99,20 @@ struct Fixture {
     validator_results = {true, true, true};
     shown_results = {true, true};
     valid_results = {true, true};
+    cost_raw = {0, 100'000, -50'000, 250'000, 0,
+                0, 300'000, 50'000,  0,       400'000};
     change_frame_on_final_capture = false;
     change_selection_between_observations = false;
+    change_cost_between_observations = false;
     capture_calls = 0;
     route_calls = 0;
     validator_calls = 0;
     selected_read_calls = 0;
+    cost_calls = 0;
     trigger_order.clear();
 
-    Store(pending_storage, 0x20,
-          static_cast<void *>(pending_slots.data()));
-    Store(pending_storage, 0x2C,
-          static_cast<std::int32_t>(kPendingSlotCount));
+    Store(pending_storage, 0x20, static_cast<void *>(pending_slots.data()));
+    Store(pending_storage, 0x2C, static_cast<std::int32_t>(kPendingSlotCount));
     Store(pending_slots, kPendingSlotIndex * 0x10 + 0x08,
           static_cast<void *>(pending.data()));
     Store(pending, 0x10, kPendingId);
@@ -148,8 +154,7 @@ struct Fixture {
     if (index >= kCharacterSlotCount) {
       std::abort();
     }
-    Store(character_storage, 0x20,
-          static_cast<void *>(character_slots.data()));
+    Store(character_storage, 0x20, static_cast<void *>(character_slots.data()));
     Store(character_storage, 0x2C,
           static_cast<std::int32_t>(kCharacterSlotCount));
     Store(character_slots, static_cast<std::size_t>(index) * 0x10 + 0x08,
@@ -161,6 +166,7 @@ struct Fixture {
 bool DummyRoute(void *, void *) { return false; }
 bool DummyValidator(void *) { return false; }
 bool DummyTrigger(void *, const void *) { return false; }
+void DummyCost(const void *, const void *, std::int64_t *) {}
 void *DummyRegistry() { return nullptr; }
 const std::string *DummyIdentifier(std::int32_t) { return nullptr; }
 
@@ -187,8 +193,7 @@ bool ReadMemory(void *context, const void *address, void *output,
       size == 1) {
     ++fixture.selected_read_calls;
     if (fixture.change_selection_between_observations &&
-        fixture.selected_read_calls > 2 &&
-        address == fixture.selected.data()) {
+        fixture.selected_read_calls > 2 && address == fixture.selected.data()) {
       const std::uint8_t changed = 0;
       std::memcpy(output, &changed, 1);
       return true;
@@ -212,9 +217,9 @@ bool ReadString(void *context, const void *native_string,
   return false;
 }
 
-bool InvokeRoute(
-    void *context, xar::ck3_11906::NativePendingInteractionLocalRoutingV1,
-    void *pending, void *character, bool &output) noexcept {
+bool InvokeRoute(void *context,
+                 xar::ck3_11906::NativePendingInteractionLocalRoutingV1,
+                 void *pending, void *character, bool &output) noexcept {
   auto &fixture = *static_cast<Fixture *>(context);
   ++fixture.route_calls;
   output = fixture.local_route && pending == fixture.pending.data() &&
@@ -222,9 +227,9 @@ bool InvokeRoute(
   return true;
 }
 
-bool InvokeValidator(
-    void *context, xar::ck3_11906::NativePendingInteractionReplyValidatorV1,
-    void *command, bool &output) noexcept {
+bool InvokeValidator(void *context,
+                     xar::ck3_11906::NativePendingInteractionReplyValidatorV1,
+                     void *command, bool &output) noexcept {
   auto &fixture = *static_cast<Fixture *>(context);
   ++fixture.validator_calls;
   std::uintptr_t primary = 0;
@@ -244,16 +249,16 @@ bool InvokeValidator(
   return true;
 }
 
-bool InvokeTrigger(
-    void *context, xar::ck3_11906::NativePendingInteractionTriggerEvaluatorV1,
-    void *trigger, const void *scope, bool &output) noexcept {
+bool InvokeTrigger(void *context,
+                   xar::ck3_11906::NativePendingInteractionTriggerEvaluatorV1,
+                   void *trigger, const void *scope, bool &output) noexcept {
   auto &fixture = *static_cast<Fixture *>(context);
   if (scope != fixture.pending.data() + 0x20) {
     return false;
   }
   for (std::int32_t index = 0; index < 2; ++index) {
-    auto *row = fixture.rows.data() +
-                static_cast<std::size_t>(index) * kRowStride;
+    auto *row =
+        fixture.rows.data() + static_cast<std::size_t>(index) * kRowStride;
     if (trigger == row + 0xE0) {
       fixture.trigger_order.push_back(index * 2);
       output = fixture.valid_results[static_cast<std::size_t>(index)];
@@ -271,6 +276,25 @@ bool InvokeTrigger(
     return true;
   }
   return false;
+}
+
+bool InvokeCost(
+    void *context, xar::ck3_11906::NativePendingInteractionCostEvaluatorV1,
+    const void *compiled_cost_block, const void *scope,
+    std::array<std::int64_t,
+               xar::game::kPendingCharacterInteractionCostResourceCountV1>
+        &output) noexcept {
+  auto &fixture = *static_cast<Fixture *>(context);
+  if (compiled_cost_block != fixture.definition.data() + 0x38 ||
+      scope != fixture.pending.data() + 0x20) {
+    return false;
+  }
+  ++fixture.cost_calls;
+  output = fixture.cost_raw;
+  if (fixture.change_cost_between_observations && fixture.cost_calls >= 2) {
+    ++output[0];
+  }
+  return true;
 }
 
 bool InvokeRegistry(
@@ -301,6 +325,7 @@ Environment(Fixture &fixture) {
   output.local_routing = DummyRoute;
   output.reply_validator = DummyValidator;
   output.trigger_evaluator = DummyTrigger;
+  output.cost_evaluator = DummyCost;
   output.target_type_registry = DummyRegistry;
   output.script_identifier_name = DummyIdentifier;
   output.reply_primary_vtable = 0x11111111U;
@@ -318,13 +343,14 @@ xar::ck3_11906::PendingCharacterInteractionAccessV1 Access(Fixture &fixture) {
   output.invoke_local_routing = InvokeRoute;
   output.invoke_reply_validator = InvokeValidator;
   output.invoke_trigger_evaluator = InvokeTrigger;
+  output.invoke_cost_evaluator = InvokeCost;
   output.invoke_target_type_registry = InvokeRegistry;
   output.invoke_script_identifier_name = InvokeIdentifier;
   return output;
 }
 
-xar::ck3_11906::PendingCharacterInteractionContextRequestV1 Request(
-    std::int32_t played_character_id = kPlayedCharacterId) {
+xar::ck3_11906::PendingCharacterInteractionContextRequestV1
+Request(std::int32_t played_character_id = kPlayedCharacterId) {
   return {47, kPendingId, played_character_id};
 }
 
@@ -360,21 +386,36 @@ int main() {
       !output.definition.has_value() ||
       output.definition->canonical_key != fixture.definition_key ||
       output.definition->deterministic_key_hash != 0x12345678U ||
-      !output.roles.has_value() ||
-      output.roles->actor_character_id != 1'001 ||
+      !output.roles.has_value() || output.roles->actor_character_id != 1'001 ||
       !output.routing.has_value() ||
       output.routing->current_responder_role != "recipient" ||
       output.routing->reply_execution_channel != "recipient" ||
-      !output.routing->local_route ||
-      !output.deadline.has_value() || output.deadline->remaining_days != 43 ||
+      !output.routing->local_route || !output.deadline.has_value() ||
+      output.deadline->remaining_days != 43 ||
       !output.send_options.has_value() ||
       output.send_options->rows.size() != 2 ||
       !output.send_options->rows[0].selected ||
       output.send_options->rows[1].selected ||
       !output.legality.accept.allowed || !output.legality.reject.allowed ||
       !output.legality.block.allowed || output.legality.acknowledge.allowed ||
+      !output.terms.has_value() ||
+      output.terms->structured_costs.status !=
+          xar::game::PendingCharacterInteractionSemanticStatusV1::available ||
+      output.terms->structured_costs.entries[1].resource_key != "prestige" ||
+      output.terms->structured_costs.entries[1].raw != 100'000 ||
+      output.terms->structured_costs.entries[2].resource_key != "piety" ||
+      output.terms->structured_costs.entries[2].raw != -50'000 ||
+      output.terms->structured_costs.payer_role != "actor" ||
+      output.terms->structured_costs.application_timing != "on_send" ||
+      output.terms->structured_costs.pending_payment_state !=
+          "already_applied" ||
+      output.terms->structured_costs.entries[7].resource_key !=
+          "treasury_or_gold" ||
+      output.terms->structured_costs.entries[7].raw != 50'000 ||
+      !output.readiness.generic_costs_ready ||
       output.readiness.interaction_semantic_decision_ready ||
       fixture.route_calls != 2 || fixture.validator_calls != 6 ||
+      fixture.cost_calls != 2 ||
       fixture.trigger_order !=
           std::vector<std::int32_t>({0, 1, 2, 3, 0, 1, 2, 3})) {
     return Fail("ordinary recipient projection or trigger order failed");
@@ -384,9 +425,14 @@ int main() {
   if (!Contains(serialized,
                 "\"schema\":\"pending-character-interaction-context-v1\"") ||
       !Contains(serialized, "\"remaining_days\":43") ||
-      !Contains(serialized,
-                "\"interaction_semantic_decision_ready\":false") ||
+      !Contains(serialized, "\"interaction_semantic_decision_ready\":false") ||
       !Contains(serialized, "\"terms\":{") ||
+      !Contains(serialized, "\"raw_scale\":100000") ||
+      !Contains(serialized,
+                "\"payer_role\":\"actor\",\"application_timing\":\"on_send\","
+                "\"pending_payment_state\":\"already_applied\"") ||
+      !Contains(serialized,
+                "\"resource_key\":\"treasury_or_gold\",\"raw\":50000") ||
       !Contains(serialized, "\"value\":null")) {
     return Fail("available serializer contract failed");
   }
@@ -446,7 +492,8 @@ int main() {
       output.legality.reject.allowed || output.legality.block.allowed ||
       !output.legality.acknowledge.allowed || fixture.validator_calls != 0 ||
       !output.auto_accept->value) {
-    return Fail("ack channel consulted the enum-4 false seam or normal channel");
+    return Fail(
+        "ack channel consulted the enum-4 false seam or normal channel");
   }
 
   fixture.Reset();
@@ -520,8 +567,7 @@ int main() {
 
   fixture.Reset();
   const std::array<std::uint8_t, 16> opaque_target{
-      7, 0, 1, 0, 0x78, 0x56, 0x34, 0x12,
-      0, 0, 0, 0, 0, 0, 0, 0};
+      7, 0, 1, 0, 0x78, 0x56, 0x34, 0x12, 0, 0, 0, 0, 0, 0, 0, 0};
   std::memcpy(fixture.pending.data() + 0x308, opaque_target.data(),
               opaque_target.size());
   if (!Read(fixture, output) || !output.target->present ||
@@ -535,7 +581,8 @@ int main() {
       !Contains(
           xar::ck3_11906::SerializePendingCharacterInteractionContextV1(output),
           "\"raw_16_bytes_hex\":\"07000100785634120000000000000000\"")) {
-    return Fail("opaque target/type-key projection crossed typed identity seam");
+    return Fail(
+        "opaque target/type-key projection crossed typed identity seam");
   }
 
   fixture.Reset();
@@ -557,6 +604,15 @@ int main() {
   }
 
   fixture.Reset();
+  fixture.change_cost_between_observations = true;
+  if (xar::ck3_11906::ReadPendingCharacterInteractionContextV1(
+          Environment(fixture), Access(fixture), Request(), output) !=
+          ReadPendingCharacterInteractionContextResultV1::unavailable ||
+      output.reason != "state_changed") {
+    return Fail("same-frame structured-cost drift was not rejected");
+  }
+
+  fixture.Reset();
   fixture.on_main_thread = false;
   if (xar::ck3_11906::ReadPendingCharacterInteractionContextV1(
           Environment(fixture), Access(fixture), Request(), output) !=
@@ -567,16 +623,17 @@ int main() {
 
   constexpr std::uintptr_t module = 0x140000000ULL;
   const auto bound =
-      xar::ck3_11906::BindPendingCharacterInteractionNativeEnvironmentV1(
-          module, true);
+      xar::ck3_11906::BindPendingCharacterInteractionNativeEnvironmentV1(module,
+                                                                         true);
   if (reinterpret_cast<std::uintptr_t>(bound.pending_storage_slot) !=
           module + xar::ck3_11906::kPendingInteractionStorageSlotV1Rva ||
       reinterpret_cast<std::uintptr_t>(bound.target_type_registry) !=
-          module +
-              xar::ck3_11906::kPendingInteractionTargetTypeRegistryGetterV1Rva ||
+          module + xar::ck3_11906::
+                       kPendingInteractionTargetTypeRegistryGetterV1Rva ||
+      reinterpret_cast<std::uintptr_t>(bound.cost_evaluator) !=
+          module + xar::ck3_11906::kPendingInteractionCostEvaluatorV1Rva ||
       bound.reply_primary_vtable !=
-          module +
-              xar::ck3_11906::kPendingInteractionReplyPrimaryVtableV1Rva) {
+          module + xar::ck3_11906::kPendingInteractionReplyPrimaryVtableV1Rva) {
     return Fail("exact-build environment binding drifted");
   }
 

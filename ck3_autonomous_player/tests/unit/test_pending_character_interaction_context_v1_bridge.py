@@ -59,6 +59,7 @@ def _provenance() -> dict[str, str]:
         "local_routing_predicate_rva": "0x1266BA0",
         "reply_validator_rva": "0x26B3540",
         "auto_accept_trigger_evaluator_rva": "0x334C510",
+        "cost_evaluator_rva": "0x2CDB7B0",
         "target_type_registry_getter_rva": "0x33C52B0",
         "target_type_registry_rva": "0x4FFE290",
         "script_identifier_name_rva": "0x3B58970",
@@ -96,7 +97,6 @@ def _readiness(*, target_present: bool = False) -> dict[str, object]:
         reasons.append("target_generic_scope_payload_identity_not_closed")
     reasons.extend(
         [
-            "structured_costs_unavailable",
             "structured_exchanges_unavailable",
             "structured_effect_preview_unavailable",
         ]
@@ -111,6 +111,7 @@ def _readiness(*, target_present: bool = False) -> dict[str, object]:
         "deadline_ready": True,
         "auto_accept_ready": True,
         "reply_legality_ready": True,
+        "generic_costs_ready": True,
         "structured_terms_ready": False,
         "same_frame_ready": True,
         "interaction_semantic_decision_ready": False,
@@ -270,9 +271,44 @@ def _frame(
         "terms": {
             "special_data_present": False,
             "structured_costs": {
-                "status": "unavailable",
-                "value": None,
-                "reason": "structured_costs_unavailable",
+                "status": "available",
+                "value": {
+                    "raw_scale": 100_000,
+                    "payer_role": "actor",
+                    "application_timing": "on_send",
+                    "pending_payment_state": "already_applied",
+                    "entries": [
+                        {"resource_key": key, "raw": raw}
+                        for key, raw in zip(
+                            (
+                                "gold",
+                                "prestige",
+                                "piety",
+                                "renown",
+                                "influence",
+                                "herd",
+                                "treasury",
+                                "treasury_or_gold",
+                                "merit",
+                                "barter_goods",
+                            ),
+                            (
+                                0,
+                                100_000,
+                                -50_000,
+                                250_000,
+                                0,
+                                0,
+                                300_000,
+                                50_000,
+                                0,
+                                400_000,
+                            ),
+                            strict=True,
+                        )
+                    ],
+                },
+                "reason": None,
             },
             "structured_exchanges": {
                 "status": "unavailable",
@@ -407,6 +443,11 @@ class PendingCharacterInteractionContextV1ContractTests(unittest.TestCase):
             "0000deadbeef00000000000000000000",
         )
         self.assertTrue(normalized["legality"]["accept"]["allowed"])
+        self.assertTrue(normalized["readiness"]["generic_costs_ready"])
+        self.assertEqual(
+            normalized["terms"]["structured_costs"]["value"]["entries"][2],
+            {"resource_key": "piety", "raw": -50_000},
+        )
         self.assertFalse(
             normalized["readiness"][
                 "interaction_semantic_decision_ready"
@@ -523,6 +564,15 @@ class PendingCharacterInteractionContextV1ContractTests(unittest.TestCase):
             "terms": lambda row: row["terms"]["structured_costs"].__setitem__(
                 "value", 0
             ),
+            "cost_key": lambda row: row["terms"]["structured_costs"][
+                "value"
+            ]["entries"][7].__setitem__("resource_key", "gold"),
+            "cost_scale": lambda row: row["terms"]["structured_costs"][
+                "value"
+            ].__setitem__("raw_scale", 1),
+            "cost_payment_state": lambda row: row["terms"][
+                "structured_costs"
+            ]["value"].__setitem__("pending_payment_state", "not_applied"),
             "semantic_ready": lambda row: row["readiness"].__setitem__(
                 "interaction_semantic_decision_ready", True
             ),

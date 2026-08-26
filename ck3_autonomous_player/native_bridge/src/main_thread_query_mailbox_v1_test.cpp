@@ -243,6 +243,12 @@ bool ExecuteUndenary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteDuodenary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 struct BlockingExecutorContext {
   HANDLE entered = nullptr;
   HANDLE release = nullptr;
@@ -1038,8 +1044,8 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
-  // Production exposes eleven exact typed reader identities, never a generic
-  // callback slot. Every admitted identity executes normally; a twelfth
+  // Production exposes twelve exact typed reader identities, never a generic
+  // callback slot. Every admitted identity executes normally; a thirteenth
   // callback is rejected before it can enter the queue.
   auto typed_environment =
       runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
@@ -1054,6 +1060,7 @@ bool TestMailboxStateMachine() {
   typed_environment.permitted_executor_nonary = &ExecuteNonary;
   typed_environment.permitted_executor_denary = &ExecuteDenary;
   typed_environment.permitted_executor_undenary = &ExecuteUndenary;
+  typed_environment.permitted_executor_duodenary = &ExecuteDuodenary;
   g_failure_stage = "typed_executor_registry";
   if (!InstallMainThreadQueryMailboxV1(mailbox, typed_environment) ||
       ObserveMainThreadPumpAndDrainV1(
@@ -1071,10 +1078,11 @@ bool TestMailboxStateMachine() {
           MainThreadQuerySubmitResultV1::invalid_request) {
     return false;
   }
-  constexpr std::array<MainThreadQueryExecutorV1, 11> typed_executors{
+  constexpr std::array<MainThreadQueryExecutorV1, 12> typed_executors{
       &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary,
       &ExecuteQuinary, &ExecuteSenary, &ExecuteSeptenary, &ExecuteOctonary,
-      &ExecuteNonary, &ExecuteDenary, &ExecuteUndenary};
+      &ExecuteNonary, &ExecuteDenary, &ExecuteUndenary,
+      &ExecuteDuodenary};
   for (const auto executor : typed_executors) {
     MainThreadQueryTicketV1 typed_ticket{};
     if (TrySubmitMainThreadQueryV1(mailbox, executor, &typed_context,
@@ -1133,7 +1141,7 @@ bool TestSourceContract(int argc, char **argv) {
       kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs != 2) {
     return false;
   }
-  constexpr std::array<std::string_view, 51> source_tokens{
+  constexpr std::array<std::string_view, 52> source_tokens{
       "InterlockedCompareExchangePointer",
       "kPeekMessageWIatSlotRva",
       "kSdlWindowsPumpFirstPeekReturnRva",
@@ -1183,6 +1191,7 @@ bool TestSourceContract(int argc, char **argv) {
       "mailbox.permitted_executor_nonary",
       "mailbox.permitted_executor_denary",
       "mailbox.permitted_executor_undenary",
+      "mailbox.permitted_executor_duodenary",
       "Process-lifetime pin",
       "mailbox.failure_flags.load(std::memory_order_acquire) != 0",
   };

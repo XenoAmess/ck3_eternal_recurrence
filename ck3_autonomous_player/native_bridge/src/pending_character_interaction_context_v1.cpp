@@ -40,6 +40,7 @@ constexpr std::size_t kPendingAutoAcceptNotificationOffset = 0x5C6;
 constexpr std::size_t kDefinitionRuntimeOrdinalOffset = 0x10;
 constexpr std::size_t kDefinitionKeyHashOffset = 0x14;
 constexpr std::size_t kDefinitionCanonicalKeyOffset = 0x18;
+constexpr std::size_t kDefinitionCostBlockOffset = 0x38;
 constexpr std::size_t kDefinitionSendOptionRowsOffset = 0x2548;
 constexpr std::size_t kDefinitionSendOptionCountOffset = 0x2554;
 constexpr std::size_t kDefinitionAutoAcceptTriggerOffset = 0x2580;
@@ -60,6 +61,12 @@ constexpr std::size_t kMaximumStableKeyBytes = 1'024;
 constexpr std::int32_t kMaximumComponentSlots = 4'194'304;
 constexpr std::int32_t kMaximumTargetTypeEntries = 65'536;
 constexpr std::int32_t kMaximumExpirationDays = 100'000;
+constexpr std::array<std::string_view,
+                     game::kPendingCharacterInteractionCostResourceCountV1>
+    kCostResourceKeys{"gold",        "prestige",         "piety",
+                      "renown",      "influence",        "herd",
+                      "treasury",    "treasury_or_gold", "merit",
+                      "barter_goods"};
 
 struct ReplyCharacterInteractionCommandV1 {
   std::uintptr_t primary_vtable = 0;
@@ -124,8 +131,7 @@ bool GuardedDirectRead(const void *address, void *output,
 }
 
 bool ReadBytes(const PendingCharacterInteractionAccessV1 &access,
-               const void *address, void *output,
-               std::size_t size) noexcept {
+               const void *address, void *output, std::size_t size) noexcept {
   if (access.read_memory != nullptr) {
     return access.read_memory(access.context, address, output, size);
   }
@@ -146,8 +152,7 @@ bool CheckedAddress(const void *base, std::size_t offset,
 
 template <typename Value>
 bool ReadValue(const PendingCharacterInteractionAccessV1 &access,
-               const void *base, std::size_t offset,
-               Value &output) noexcept {
+               const void *base, std::size_t offset, Value &output) noexcept {
   const void *address = nullptr;
   return CheckedAddress(base, offset, address) &&
          ReadBytes(access, address, &output, sizeof(output));
@@ -193,8 +198,7 @@ bool ValidUtf8(std::string_view value) noexcept {
       codepoint = (codepoint << 6U) | (continuation & 0x3FU);
     }
     if ((trailing == 2 && codepoint < 0x800U) ||
-        (trailing == 3 && codepoint < 0x10000U) ||
-        codepoint > 0x10FFFFU ||
+        (trailing == 3 && codepoint < 0x10000U) || codepoint > 0x10FFFFU ||
         (codepoint >= 0xD800U && codepoint <= 0xDFFFU)) {
       return false;
     }
@@ -204,8 +208,7 @@ bool ValidUtf8(std::string_view value) noexcept {
 }
 
 bool ReadNativeString(const PendingCharacterInteractionAccessV1 &access,
-                      const void *native_string,
-                      std::string &output) noexcept {
+                      const void *native_string, std::string &output) noexcept {
   output.clear();
   if (native_string == nullptr) {
     return false;
@@ -251,9 +254,8 @@ bool ReadNativeString(const PendingCharacterInteractionAccessV1 &access,
   return true;
 }
 
-bool EnvironmentIsExact(
-    const PendingCharacterInteractionNativeEnvironmentV1 &environment)
-    noexcept {
+bool EnvironmentIsExact(const PendingCharacterInteractionNativeEnvironmentV1
+                            &environment) noexcept {
   if (!environment.exact_build_admitted ||
       environment.pending_storage_slot == nullptr ||
       environment.character_storage_slot == nullptr ||
@@ -261,6 +263,7 @@ bool EnvironmentIsExact(
       environment.local_routing == nullptr ||
       environment.reply_validator == nullptr ||
       environment.trigger_evaluator == nullptr ||
+      environment.cost_evaluator == nullptr ||
       environment.target_type_registry == nullptr ||
       environment.script_identifier_name == nullptr ||
       environment.reply_primary_vtable == 0 ||
@@ -276,8 +279,7 @@ bool EnvironmentIsExact(
   const auto base = environment.module_base;
   return reinterpret_cast<std::uintptr_t>(environment.pending_storage_slot) ==
              base + kPendingInteractionStorageSlotV1Rva &&
-         reinterpret_cast<std::uintptr_t>(
-             environment.character_storage_slot) ==
+         reinterpret_cast<std::uintptr_t>(environment.character_storage_slot) ==
              base + kPendingInteractionCharacterStorageSlotV1Rva &&
          reinterpret_cast<std::uintptr_t>(environment.expiration_days) ==
              base + kPendingInteractionExpirationDaysV1Rva &&
@@ -287,10 +289,11 @@ bool EnvironmentIsExact(
              base + kPendingInteractionReplyValidatorV1Rva &&
          reinterpret_cast<std::uintptr_t>(environment.trigger_evaluator) ==
              base + kPendingInteractionTriggerEvaluatorV1Rva &&
+         reinterpret_cast<std::uintptr_t>(environment.cost_evaluator) ==
+             base + kPendingInteractionCostEvaluatorV1Rva &&
          reinterpret_cast<std::uintptr_t>(environment.target_type_registry) ==
              base + kPendingInteractionTargetTypeRegistryGetterV1Rva &&
-         reinterpret_cast<std::uintptr_t>(
-             environment.script_identifier_name) ==
+         reinterpret_cast<std::uintptr_t>(environment.script_identifier_name) ==
              base + kPendingInteractionScriptIdentifierNameV1Rva &&
          environment.reply_primary_vtable ==
              base + kPendingInteractionReplyPrimaryVtableV1Rva &&
@@ -310,13 +313,13 @@ void SetFailure(game::PendingCharacterInteractionContextV1 &output,
   output.pending_interaction_id = pending_id;
   output.status = status;
   output.reason.assign(reason);
-  auto set_legality = [reason](
-                          game::PendingCharacterInteractionLegalityV1 &item) {
-    item.status =
-        game::PendingCharacterInteractionSemanticStatusV1::unavailable;
-    item.allowed = false;
-    item.reason.assign(reason);
-  };
+  auto set_legality =
+      [reason](game::PendingCharacterInteractionLegalityV1 &item) {
+        item.status =
+            game::PendingCharacterInteractionSemanticStatusV1::unavailable;
+        item.allowed = false;
+        item.reason.assign(reason);
+      };
   set_legality(output.legality.accept);
   set_legality(output.legality.reject);
   set_legality(output.legality.block);
@@ -332,28 +335,26 @@ bool Fail(FailureV1 &failure,
   return false;
 }
 
-void *ResolveComponent(
-    const PendingCharacterInteractionAccessV1 &access,
-    void *const *storage_slot, std::int32_t full_id,
-    std::size_t identity_offset, std::string_view storage_failure,
-    std::string_view generation_failure, FailureV1 &failure) noexcept {
+void *ResolveComponent(const PendingCharacterInteractionAccessV1 &access,
+                       void *const *storage_slot, std::int32_t full_id,
+                       std::size_t identity_offset,
+                       std::string_view storage_failure,
+                       std::string_view generation_failure,
+                       FailureV1 &failure) noexcept {
   void *storage = nullptr;
   void *slots = nullptr;
   std::int32_t capacity = 0;
   if (!ReadSlot(access, storage_slot, storage) || storage == nullptr ||
       !ReadValue(access, storage, kStorageSlotsOffset, slots) ||
       !ReadValue(access, storage, kStorageCapacityOffset, capacity) ||
-      slots == nullptr || capacity <= 0 ||
-      capacity > kMaximumComponentSlots) {
-    Fail(failure,
-         game::PendingCharacterInteractionContextStatusV1::unavailable,
+      slots == nullptr || capacity <= 0 || capacity > kMaximumComponentSlots) {
+    Fail(failure, game::PendingCharacterInteractionContextStatusV1::unavailable,
          storage_failure);
     return nullptr;
   }
   const auto index = static_cast<std::uint32_t>(full_id) & 0x00FFFFFFU;
   if (index >= static_cast<std::uint32_t>(capacity)) {
-    Fail(failure,
-         game::PendingCharacterInteractionContextStatusV1::unavailable,
+    Fail(failure, game::PendingCharacterInteractionContextStatusV1::unavailable,
          generation_failure);
     return nullptr;
   }
@@ -364,8 +365,7 @@ void *ResolveComponent(
   if (!ReadValue(access, slots, offset, object) || object == nullptr ||
       !ReadValue(access, object, identity_offset, observed_id) ||
       observed_id != full_id) {
-    Fail(failure,
-         game::PendingCharacterInteractionContextStatusV1::unavailable,
+    Fail(failure, game::PendingCharacterInteractionContextStatusV1::unavailable,
          generation_failure);
     return nullptr;
   }
@@ -376,8 +376,7 @@ bool ValidOptionalCharacterId(std::int32_t value) noexcept {
   return value == -1 || value > 0;
 }
 
-bool ReadRoles(const PendingCharacterInteractionAccessV1 &access,
-               void *pending,
+bool ReadRoles(const PendingCharacterInteractionAccessV1 &access, void *pending,
                game::PendingCharacterInteractionRolesV1 &roles,
                FailureV1 &failure) noexcept {
   if (!ReadValue(access, pending, kPendingActorOffset,
@@ -394,11 +393,9 @@ bool ReadRoles(const PendingCharacterInteractionAccessV1 &access,
                 game::PendingCharacterInteractionContextStatusV1::unavailable,
                 "pending_roles_unavailable");
   }
-  if (roles.actor_character_id <= 0 ||
-      roles.recipient_character_id <= 0 ||
+  if (roles.actor_character_id <= 0 || roles.recipient_character_id <= 0 ||
       !ValidOptionalCharacterId(roles.secondary_actor_character_id) ||
-      !ValidOptionalCharacterId(
-          roles.secondary_recipient_character_id) ||
+      !ValidOptionalCharacterId(roles.secondary_recipient_character_id) ||
       !ValidOptionalCharacterId(roles.intermediary_character_id)) {
     return Fail(failure,
                 game::PendingCharacterInteractionContextStatusV1::invalid,
@@ -410,8 +407,8 @@ bool ReadRoles(const PendingCharacterInteractionAccessV1 &access,
 bool ReadRouting(
     const PendingCharacterInteractionNativeEnvironmentV1 &environment,
     const PendingCharacterInteractionAccessV1 &access,
-    const PendingCharacterInteractionContextRequestV1 &request,
-    void *pending, void *played_character,
+    const PendingCharacterInteractionContextRequestV1 &request, void *pending,
+    void *played_character,
     const game::PendingCharacterInteractionRolesV1 &roles,
     game::PendingCharacterInteractionRoutingV1 &routing,
     FailureV1 &failure) noexcept {
@@ -459,9 +456,8 @@ bool ReadRouting(
                 "pending_not_routed_to_played_character");
   }
   bool local_route = false;
-  if (!access.invoke_local_routing(
-          access.context, environment.local_routing, pending,
-          played_character, local_route)) {
+  if (!access.invoke_local_routing(access.context, environment.local_routing,
+                                   pending, played_character, local_route)) {
     return Fail(failure,
                 game::PendingCharacterInteractionContextStatusV1::unavailable,
                 "pending_routing_unavailable");
@@ -475,17 +471,15 @@ bool ReadRouting(
   return true;
 }
 
-bool ReadDefinition(
-    const PendingCharacterInteractionAccessV1 &access, void *pending,
-    void *&definition_pointer,
-    game::PendingCharacterInteractionDefinitionV1 &definition,
-    FailureV1 &failure) noexcept {
+bool ReadDefinition(const PendingCharacterInteractionAccessV1 &access,
+                    void *pending, void *&definition_pointer,
+                    game::PendingCharacterInteractionDefinitionV1 &definition,
+                    FailureV1 &failure) noexcept {
   const void *key_address = nullptr;
   if (!ReadValue(access, pending, kPendingDefinitionOffset,
                  definition_pointer) ||
       definition_pointer == nullptr ||
-      !ReadValue(access, definition_pointer,
-                 kDefinitionRuntimeOrdinalOffset,
+      !ReadValue(access, definition_pointer, kDefinitionRuntimeOrdinalOffset,
                  definition.runtime_ordinal) ||
       !ReadValue(access, definition_pointer, kDefinitionKeyHashOffset,
                  definition.deterministic_key_hash) ||
@@ -506,12 +500,11 @@ bool ReadDefinition(
 
 bool ReadTargetTypeKey(
     const PendingCharacterInteractionNativeEnvironmentV1 &environment,
-    const PendingCharacterInteractionAccessV1 &access,
-    std::uint16_t type_index, void *&registry_pointer,
-    std::string &type_key, FailureV1 &failure) noexcept {
+    const PendingCharacterInteractionAccessV1 &access, std::uint16_t type_index,
+    void *&registry_pointer, std::string &type_key,
+    FailureV1 &failure) noexcept {
   if (!access.invoke_target_type_registry(
-          access.context, environment.target_type_registry,
-          registry_pointer) ||
+          access.context, environment.target_type_registry, registry_pointer) ||
       registry_pointer == nullptr) {
     return Fail(failure,
                 game::PendingCharacterInteractionContextStatusV1::unavailable,
@@ -519,19 +512,19 @@ bool ReadTargetTypeKey(
   }
   if (!environment.offline_fixture_function_overrides &&
       reinterpret_cast<std::uintptr_t>(registry_pointer) !=
-          environment.module_base + kPendingInteractionTargetTypeRegistryV1Rva) {
+          environment.module_base +
+              kPendingInteractionTargetTypeRegistryV1Rva) {
     return Fail(failure,
                 game::PendingCharacterInteractionContextStatusV1::invalid,
                 "target_type_registry_drift");
   }
   void *entries = nullptr;
   std::int32_t count = 0;
-  if (!ReadValue(access, registry_pointer,
-                 kTargetTypeRegistryDataOffset, entries) ||
-      !ReadValue(access, registry_pointer,
-                 kTargetTypeRegistryCountOffset, count) ||
-      entries == nullptr || count <= 0 ||
-      count > kMaximumTargetTypeEntries) {
+  if (!ReadValue(access, registry_pointer, kTargetTypeRegistryDataOffset,
+                 entries) ||
+      !ReadValue(access, registry_pointer, kTargetTypeRegistryCountOffset,
+                 count) ||
+      entries == nullptr || count <= 0 || count > kMaximumTargetTypeEntries) {
     return Fail(failure,
                 game::PendingCharacterInteractionContextStatusV1::unavailable,
                 "target_type_registry_unavailable");
@@ -553,9 +546,9 @@ bool ReadTargetTypeKey(
                 "target_type_registry_drift");
   }
   const std::string *native_name = nullptr;
-  if (!access.invoke_script_identifier_name(
-          access.context, environment.script_identifier_name, identifier,
-          native_name) ||
+  if (!access.invoke_script_identifier_name(access.context,
+                                            environment.script_identifier_name,
+                                            identifier, native_name) ||
       native_name == nullptr ||
       !ReadNativeString(access, native_name, type_key)) {
     return Fail(failure,
@@ -596,8 +589,7 @@ bool ReadTarget(
   target.type_key = std::move(type_key);
   target.typed_identity_status =
       game::PendingCharacterInteractionSemanticStatusV1::unavailable;
-  target.typed_identity_reason =
-      "generic_scope_payload_identity_not_closed";
+  target.typed_identity_reason = "generic_scope_payload_identity_not_closed";
   return true;
 }
 
@@ -606,9 +598,9 @@ bool InvokeTrigger(
     const PendingCharacterInteractionAccessV1 &access, void *trigger,
     const void *scope, bool &output, FailureV1 &failure,
     std::string_view reason) noexcept {
-  if (!access.invoke_trigger_evaluator(
-          access.context, environment.trigger_evaluator, trigger, scope,
-          output)) {
+  if (!access.invoke_trigger_evaluator(access.context,
+                                       environment.trigger_evaluator, trigger,
+                                       scope, output)) {
     return Fail(failure,
                 game::PendingCharacterInteractionContextStatusV1::unavailable,
                 reason);
@@ -677,8 +669,7 @@ bool ReadSendOptions(
                 game::PendingCharacterInteractionContextStatusV1::unavailable,
                 "send_options_unavailable");
   }
-  for (std::int32_t index = 0; index < send_options.definition_count;
-       ++index) {
+  for (std::int32_t index = 0; index < send_options.definition_count; ++index) {
     const auto row_offset =
         static_cast<std::size_t>(index) * kSendOptionRowStride;
     const void *row = nullptr;
@@ -686,8 +677,8 @@ bool ReadSendOptions(
     game::PendingCharacterInteractionSendOptionRowV1 item{};
     item.native_index = index;
     if (!CheckedAddress(rows_pointer, row_offset, row) ||
-        !ReadValue(access, selected_data,
-                   static_cast<std::size_t>(index), selected) ||
+        !ReadValue(access, selected_data, static_cast<std::size_t>(index),
+                   selected) ||
         !ReadValue(access, row, kSendOptionNumericFlagIdentifierOffset,
                    item.numeric_flag_identifier)) {
       return Fail(failure,
@@ -703,13 +694,10 @@ bool ReadSendOptions(
     selected_count += item.selected ? 1 : 0;
     const void *valid_trigger = nullptr;
     const void *shown_trigger = nullptr;
-    if (!CheckedAddress(row, kSendOptionValidTriggerOffset,
-                        valid_trigger) ||
-        !CheckedAddress(row, kSendOptionShownTriggerOffset,
-                        shown_trigger) ||
-        !InvokeTrigger(environment, access,
-                       const_cast<void *>(valid_trigger), scope,
-                       item.is_valid, failure,
+    if (!CheckedAddress(row, kSendOptionValidTriggerOffset, valid_trigger) ||
+        !CheckedAddress(row, kSendOptionShownTriggerOffset, shown_trigger) ||
+        !InvokeTrigger(environment, access, const_cast<void *>(valid_trigger),
+                       scope, item.is_valid, failure,
                        "send_option_evaluation_unavailable")) {
       return false;
     }
@@ -717,9 +705,8 @@ bool ReadSendOptions(
     // Publish the effective shown result, rather than evaluating a trigger
     // the engine deliberately did not reach.
     if (item.is_valid &&
-        !InvokeTrigger(environment, access,
-                       const_cast<void *>(shown_trigger), scope,
-                       item.is_shown, failure,
+        !InvokeTrigger(environment, access, const_cast<void *>(shown_trigger),
+                       scope, item.is_shown, failure,
                        "send_option_evaluation_unavailable")) {
       return false;
     }
@@ -742,8 +729,7 @@ bool ReadDeadline(
     const PendingCharacterInteractionAccessV1 &access, void *pending,
     game::PendingCharacterInteractionDeadlineV1 &deadline,
     FailureV1 &failure) noexcept {
-  if (!ReadValue(access, pending, kPendingAgeDaysOffset,
-                 deadline.age_days) ||
+  if (!ReadValue(access, pending, kPendingAgeDaysOffset, deadline.age_days) ||
       !ReadSlot(access, environment.expiration_days,
                 deadline.expiration_days)) {
     return Fail(failure,
@@ -756,8 +742,8 @@ bool ReadDeadline(
                 game::PendingCharacterInteractionContextStatusV1::invalid,
                 "pending_deadline_invalid");
   }
-  deadline.remaining_days = std::max(
-      0, deadline.expiration_days - deadline.age_days);
+  deadline.remaining_days =
+      std::max(0, deadline.expiration_days - deadline.age_days);
   deadline.expiry_boundary_status =
       deadline.age_days >= deadline.expiration_days
           ? "at_or_past_daily_expiry_queue_threshold"
@@ -768,8 +754,7 @@ bool ReadDeadline(
 bool ReadAutoAccept(
     const PendingCharacterInteractionNativeEnvironmentV1 &environment,
     const PendingCharacterInteractionAccessV1 &access, void *pending,
-    void *definition,
-    game::PendingCharacterInteractionBooleanV1 &auto_accept,
+    void *definition, game::PendingCharacterInteractionBooleanV1 &auto_accept,
     FailureV1 &failure) noexcept {
   void *trigger = nullptr;
   if (!ReadValue(access, definition, kDefinitionAutoAcceptTriggerOffset,
@@ -788,12 +773,11 @@ bool ReadAutoAccept(
     }
   } else {
     std::uint8_t scalar = 0;
-    if (!ReadValue(access, definition,
-                   kDefinitionAutoAcceptScalarOffset, scalar)) {
-      return Fail(
-          failure,
-          game::PendingCharacterInteractionContextStatusV1::unavailable,
-          "auto_accept_unavailable");
+    if (!ReadValue(access, definition, kDefinitionAutoAcceptScalarOffset,
+                   scalar)) {
+      return Fail(failure,
+                  game::PendingCharacterInteractionContextStatusV1::unavailable,
+                  "auto_accept_unavailable");
     }
     if (scalar > 1) {
       return Fail(failure,
@@ -809,9 +793,8 @@ bool ReadAutoAccept(
   return true;
 }
 
-void SetAvailableLegality(
-    game::PendingCharacterInteractionLegalityV1 &legality, bool allowed,
-    std::string_view false_reason) {
+void SetAvailableLegality(game::PendingCharacterInteractionLegalityV1 &legality,
+                          bool allowed, std::string_view false_reason) {
   legality.status =
       game::PendingCharacterInteractionSemanticStatusV1::available;
   legality.allowed = allowed;
@@ -820,9 +803,8 @@ void SetAvailableLegality(
 
 bool ValidateReply(
     const PendingCharacterInteractionNativeEnvironmentV1 &environment,
-    const PendingCharacterInteractionAccessV1 &access,
-    std::int32_t pending_id, std::int32_t reply, bool &output,
-    FailureV1 &failure) noexcept {
+    const PendingCharacterInteractionAccessV1 &access, std::int32_t pending_id,
+    std::int32_t reply, bool &output, FailureV1 &failure) noexcept {
   ReplyCharacterInteractionCommandV1 command{};
   command.primary_vtable = environment.reply_primary_vtable;
   command.secondary_vtable = environment.reply_secondary_vtable;
@@ -859,12 +841,12 @@ bool ReadLegalities(
   bool accept = false;
   bool reject = false;
   bool block = false;
-  if (!ValidateReply(environment, access, request.pending_interaction_id,
-                     0, accept, failure) ||
-      !ValidateReply(environment, access, request.pending_interaction_id,
-                     1, reject, failure) ||
-      !ValidateReply(environment, access, request.pending_interaction_id,
-                     2, block, failure)) {
+  if (!ValidateReply(environment, access, request.pending_interaction_id, 0,
+                     accept, failure) ||
+      !ValidateReply(environment, access, request.pending_interaction_id, 1,
+                     reject, failure) ||
+      !ValidateReply(environment, access, request.pending_interaction_id, 2,
+                     block, failure)) {
     return false;
   }
   if ((auto_accept.value ||
@@ -880,14 +862,47 @@ bool ReadLegalities(
                        "native_reply_validator_rejected");
   SetAvailableLegality(legalities.block, block,
                        "native_reply_validator_rejected");
-  SetAvailableLegality(legalities.acknowledge, false,
-                       "normal_reply_channel");
+  SetAvailableLegality(legalities.acknowledge, false, "normal_reply_channel");
+  return true;
+}
+
+bool ReadStructuredCosts(
+    const PendingCharacterInteractionNativeEnvironmentV1 &environment,
+    const PendingCharacterInteractionAccessV1 &access, const void *definition,
+    const void *pending,
+    game::PendingCharacterInteractionStructuredCostsV1 &costs,
+    FailureV1 &failure) noexcept {
+  const void *compiled_cost_block = nullptr;
+  const void *event_target_scope = nullptr;
+  std::array<std::int64_t,
+             game::kPendingCharacterInteractionCostResourceCountV1>
+      raw{};
+  if (!CheckedAddress(definition, kDefinitionCostBlockOffset,
+                      compiled_cost_block) ||
+      !CheckedAddress(pending, kPendingPrimaryScopeOffset,
+                      event_target_scope) ||
+      !access.invoke_cost_evaluator(access.context, environment.cost_evaluator,
+                                    compiled_cost_block, event_target_scope,
+                                    raw)) {
+    return Fail(failure,
+                game::PendingCharacterInteractionContextStatusV1::unavailable,
+                "structured_costs_unavailable");
+  }
+  costs.status = game::PendingCharacterInteractionSemanticStatusV1::available;
+  costs.raw_scale = game::kPendingCharacterInteractionCostRawScaleV1;
+  costs.payer_role = "actor";
+  costs.application_timing = "on_send";
+  costs.pending_payment_state = "already_applied";
+  costs.reason.clear();
+  for (std::size_t index = 0; index < raw.size(); ++index) {
+    costs.entries[index].resource_key.assign(kCostResourceKeys[index]);
+    costs.entries[index].raw = raw[index];
+  }
   return true;
 }
 
 void InitializeUnavailableTerms(
     game::PendingCharacterInteractionTermsV1 &terms) {
-  terms.structured_costs.reason = "structured_costs_unavailable";
   terms.structured_exchanges.reason = "structured_exchanges_unavailable";
   terms.structured_effect_preview.reason =
       "structured_effect_preview_unavailable";
@@ -904,17 +919,15 @@ bool ReadObservation(
     ObservationV1 &output, FailureV1 &failure) noexcept {
   output = {};
   output.pending = ResolveComponent(
-      access, environment.pending_storage_slot,
-      request.pending_interaction_id, kComponentIdentityOffset,
-      "pending_storage_unavailable", "pending_generation_mismatch",
-      failure);
+      access, environment.pending_storage_slot, request.pending_interaction_id,
+      kComponentIdentityOffset, "pending_storage_unavailable",
+      "pending_generation_mismatch", failure);
   if (output.pending == nullptr) {
     return false;
   }
   output.played_character = ResolveComponent(
-      access, environment.character_storage_slot,
-      request.played_character_id, kCharacterIdentityOffset,
-      "character_storage_unavailable",
+      access, environment.character_storage_slot, request.played_character_id,
+      kCharacterIdentityOffset, "character_storage_unavailable",
       "played_character_generation_mismatch", failure);
   if (output.played_character == nullptr ||
       !ReadRoles(access, output.pending, output.roles, failure) ||
@@ -927,16 +940,17 @@ bool ReadObservation(
                   output.target_type_registry, failure) ||
       !ReadSendOptions(environment, access, output.pending,
                        output.definition_pointer, output.selected_option_data,
-                       output.send_option_rows, output.send_options,
-                       failure) ||
+                       output.send_option_rows, output.send_options, failure) ||
       !ReadDeadline(environment, access, output.pending, output.deadline,
                     failure) ||
       !ReadAutoAccept(environment, access, output.pending,
-                      output.definition_pointer, output.auto_accept,
-                      failure) ||
+                      output.definition_pointer, output.auto_accept, failure) ||
       !ReadLegalities(environment, access, request, output.roles,
                       output.routing, output.auto_accept, output.legality,
-                      failure)) {
+                      failure) ||
+      !ReadStructuredCosts(environment, access, output.definition_pointer,
+                           output.pending, output.terms.structured_costs,
+                           failure)) {
     return false;
   }
   void *special_data = nullptr;
@@ -968,8 +982,7 @@ game::ReadPendingCharacterInteractionContextResultV1 ResultForStatus(
 
 bool InvokePendingCharacterInteractionLocalRoutingDirectV1(
     void *, NativePendingInteractionLocalRoutingV1 function,
-    void *pending_interaction, void *played_character,
-    bool &output) noexcept {
+    void *pending_interaction, void *played_character, bool &output) noexcept {
   output = false;
   if (function == nullptr || pending_interaction == nullptr ||
       played_character == nullptr) {
@@ -1011,9 +1024,8 @@ bool InvokePendingCharacterInteractionReplyValidatorDirectV1(
 }
 
 bool InvokePendingCharacterInteractionTriggerEvaluatorDirectV1(
-    void *, NativePendingInteractionTriggerEvaluatorV1 function,
-    void *trigger, const void *event_target_scope,
-    bool &output) noexcept {
+    void *, NativePendingInteractionTriggerEvaluatorV1 function, void *trigger,
+    const void *event_target_scope, bool &output) noexcept {
   output = false;
   if (function == nullptr || trigger == nullptr ||
       event_target_scope == nullptr) {
@@ -1029,6 +1041,31 @@ bool InvokePendingCharacterInteractionTriggerEvaluatorDirectV1(
   }
 #else
   output = function(trigger, event_target_scope);
+  return true;
+#endif
+}
+
+bool InvokePendingCharacterInteractionCostEvaluatorDirectV1(
+    void *, NativePendingInteractionCostEvaluatorV1 function,
+    const void *compiled_cost_block, const void *event_target_scope,
+    std::array<std::int64_t,
+               game::kPendingCharacterInteractionCostResourceCountV1>
+        &output) noexcept {
+  output.fill(0);
+  if (function == nullptr || compiled_cost_block == nullptr ||
+      event_target_scope == nullptr) {
+    return false;
+  }
+#if defined(_MSC_VER)
+  __try {
+    function(compiled_cost_block, event_target_scope, output.data());
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    output.fill(0);
+    return false;
+  }
+#else
+  function(compiled_cost_block, event_target_scope, output.data());
   return true;
 #endif
 }
@@ -1090,21 +1127,24 @@ BindPendingCharacterInteractionNativeEnvironmentV1(
       module_base + kPendingInteractionCharacterStorageSlotV1Rva);
   output.expiration_days = reinterpret_cast<const std::int32_t *>(
       module_base + kPendingInteractionExpirationDaysV1Rva);
-  output.local_routing = reinterpret_cast<
-      NativePendingInteractionLocalRoutingV1>(
-      module_base + kPendingInteractionLocalRoutingV1Rva);
-  output.reply_validator = reinterpret_cast<
-      NativePendingInteractionReplyValidatorV1>(
-      module_base + kPendingInteractionReplyValidatorV1Rva);
-  output.trigger_evaluator = reinterpret_cast<
-      NativePendingInteractionTriggerEvaluatorV1>(
-      module_base + kPendingInteractionTriggerEvaluatorV1Rva);
-  output.target_type_registry = reinterpret_cast<
-      NativePendingInteractionTargetTypeRegistryGetterV1>(
-      module_base + kPendingInteractionTargetTypeRegistryGetterV1Rva);
-  output.script_identifier_name = reinterpret_cast<
-      NativePendingInteractionScriptIdentifierNameV1>(
-      module_base + kPendingInteractionScriptIdentifierNameV1Rva);
+  output.local_routing =
+      reinterpret_cast<NativePendingInteractionLocalRoutingV1>(
+          module_base + kPendingInteractionLocalRoutingV1Rva);
+  output.reply_validator =
+      reinterpret_cast<NativePendingInteractionReplyValidatorV1>(
+          module_base + kPendingInteractionReplyValidatorV1Rva);
+  output.trigger_evaluator =
+      reinterpret_cast<NativePendingInteractionTriggerEvaluatorV1>(
+          module_base + kPendingInteractionTriggerEvaluatorV1Rva);
+  output.cost_evaluator =
+      reinterpret_cast<NativePendingInteractionCostEvaluatorV1>(
+          module_base + kPendingInteractionCostEvaluatorV1Rva);
+  output.target_type_registry =
+      reinterpret_cast<NativePendingInteractionTargetTypeRegistryGetterV1>(
+          module_base + kPendingInteractionTargetTypeRegistryGetterV1Rva);
+  output.script_identifier_name =
+      reinterpret_cast<NativePendingInteractionScriptIdentifierNameV1>(
+          module_base + kPendingInteractionScriptIdentifierNameV1Rva);
   output.reply_primary_vtable =
       module_base + kPendingInteractionReplyPrimaryVtableV1Rva;
   output.reply_secondary_vtable =
@@ -1123,56 +1163,50 @@ ReadPendingCharacterInteractionContextV1(
   output.pending_interaction_id = request.pending_interaction_id;
   try {
     if (request.expected_snapshot_revision == 0 ||
-        access.capture_frame == nullptr ||
-        access.is_main_thread == nullptr ||
+        access.capture_frame == nullptr || access.is_main_thread == nullptr ||
         !access.is_main_thread(access.context) ||
         access.invoke_local_routing == nullptr ||
         access.invoke_reply_validator == nullptr ||
         access.invoke_trigger_evaluator == nullptr ||
+        access.invoke_cost_evaluator == nullptr ||
         access.invoke_target_type_registry == nullptr ||
         access.invoke_script_identifier_name == nullptr) {
-      SetFailure(
-          output,
-          game::PendingCharacterInteractionContextStatusV1::unavailable,
-          "requires_application_main");
+      SetFailure(output,
+                 game::PendingCharacterInteractionContextStatusV1::unavailable,
+                 "requires_application_main");
       return game::ReadPendingCharacterInteractionContextResultV1::unavailable;
     }
     game::PendingCharacterInteractionFrameV1 before{};
     if (!access.capture_frame(access.context, before)) {
-      SetFailure(
-          output,
-          game::PendingCharacterInteractionContextStatusV1::unavailable,
-          "state_changed");
+      SetFailure(output,
+                 game::PendingCharacterInteractionContextStatusV1::unavailable,
+                 "state_changed");
       return game::ReadPendingCharacterInteractionContextResultV1::unavailable;
     }
     output.snapshot_revision = before.snapshot_revision;
     output.date_raw = before.date_raw;
     if (before.snapshot_revision != request.expected_snapshot_revision) {
-      SetFailure(
-          output,
-          game::PendingCharacterInteractionContextStatusV1::unavailable,
-          "state_changed");
+      SetFailure(output,
+                 game::PendingCharacterInteractionContextStatusV1::unavailable,
+                 "state_changed");
       return game::ReadPendingCharacterInteractionContextResultV1::unavailable;
     }
     if (!before.paused) {
-      SetFailure(
-          output,
-          game::PendingCharacterInteractionContextStatusV1::unavailable,
-          "requires_paused");
+      SetFailure(output,
+                 game::PendingCharacterInteractionContextStatusV1::unavailable,
+                 "requires_paused");
       return game::ReadPendingCharacterInteractionContextResultV1::unavailable;
     }
     if (!before.map_ready) {
-      SetFailure(
-          output,
-          game::PendingCharacterInteractionContextStatusV1::unavailable,
-          "map_not_ready");
+      SetFailure(output,
+                 game::PendingCharacterInteractionContextStatusV1::unavailable,
+                 "map_not_ready");
       return game::ReadPendingCharacterInteractionContextResultV1::unavailable;
     }
     if (!EnvironmentIsExact(environment)) {
-      SetFailure(
-          output,
-          game::PendingCharacterInteractionContextStatusV1::unavailable,
-          "unsupported_build");
+      SetFailure(output,
+                 game::PendingCharacterInteractionContextStatusV1::unavailable,
+                 "unsupported_build");
       return game::ReadPendingCharacterInteractionContextResultV1::unavailable;
     }
     if (request.pending_interaction_id <= 0) {
@@ -1203,15 +1237,13 @@ ReadPendingCharacterInteractionContextV1(
     game::PendingCharacterInteractionFrameV1 after{};
     if (!access.capture_frame(access.context, after) || after != before ||
         second != first) {
-      SetFailure(
-          output,
-          game::PendingCharacterInteractionContextStatusV1::unavailable,
-          "state_changed");
+      SetFailure(output,
+                 game::PendingCharacterInteractionContextStatusV1::unavailable,
+                 "state_changed");
       return game::ReadPendingCharacterInteractionContextResultV1::unavailable;
     }
 
-    output.status =
-        game::PendingCharacterInteractionContextStatusV1::available;
+    output.status = game::PendingCharacterInteractionContextStatusV1::available;
     output.reason.clear();
     output.definition = std::move(first.definition);
     output.roles = std::move(first.roles);
@@ -1225,13 +1257,13 @@ ReadPendingCharacterInteractionContextV1(
     output.readiness.stable_definition_ready = true;
     output.readiness.roles_ready = true;
     output.readiness.target_type_key_ready = true;
-    output.readiness.target_typed_identity_ready =
-        !output.target->present;
+    output.readiness.target_typed_identity_ready = !output.target->present;
     output.readiness.send_options_ready = true;
     output.readiness.routing_ready = true;
     output.readiness.deadline_ready = true;
     output.readiness.auto_accept_ready = true;
     output.readiness.reply_legality_ready = true;
+    output.readiness.generic_costs_ready = true;
     output.readiness.structured_terms_ready = false;
     output.readiness.same_frame_ready = true;
     output.readiness.interaction_semantic_decision_ready = false;
@@ -1240,17 +1272,14 @@ ReadPendingCharacterInteractionContextV1(
           "target_generic_scope_payload_identity_not_closed");
     }
     output.readiness.not_ready_reasons.push_back(
-        "structured_costs_unavailable");
-    output.readiness.not_ready_reasons.push_back(
         "structured_exchanges_unavailable");
     output.readiness.not_ready_reasons.push_back(
         "structured_effect_preview_unavailable");
     return game::ReadPendingCharacterInteractionContextResultV1::available;
   } catch (...) {
-    SetFailure(
-        output,
-        game::PendingCharacterInteractionContextStatusV1::unavailable,
-        "internal_error");
+    SetFailure(output,
+               game::PendingCharacterInteractionContextStatusV1::unavailable,
+               "internal_error");
     return game::ReadPendingCharacterInteractionContextResultV1::unavailable;
   }
 }

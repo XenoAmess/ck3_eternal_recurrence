@@ -114,7 +114,7 @@ flowchart LR
 |---|---|---|
 | 会话与时间 | `date_raw`、速度、暂停、local player、`map_ready` | exact-build live-confirmed；可在最小化窗口推进和重新暂停。 |
 | 玩家角色 | CharacterID、存活、配偶/婚约 CharacterID 列表 | native 实现；只覆盖身份与关系结果，不含属性、资源、头衔、继承、健康、压力、教育、生活方式或意见。 |
-| 事件 | 当前 instance、选项数量与 1-based index | instance/数量/提交 live-confirmed；没有事件 key、标题、选项文本、enabled trigger、AI weight 或效果。native planner 因而通常选第一项。 |
+| 事件 | 当前 instance/ authored 数量；exact current-window query 发布 materialized shown/enabled、rendered/native index、name/reason、fallback/cancel | instance/数量/提交 live-confirmed；window query 与 typed-first planner 已静态实现、实机待验。planner 有 query 时不再由 authored 数量合成 enabled 选项；effect preview/key/scopes 未闭合，多个合法选项时明确停住而非默认第一项。 |
 | 角色互动 | instance、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality | 普通 white-peace recipient pending 已跨 checkpoint production live 双查询；planner 已先查同帧 typed context 并停止默认接受。notification discovery/固定 ACK 已接线但未 live；structured terms/effect、typed target payload 与 intermediary live 仍缺，故 semantic decision 仍为 false。 |
 | 婚姻 | 当前配偶/婚约；合法 arrange-marriage CharacterID 候选 | 只知道“可提交”，不知道年龄、属性、继承、联盟、声望、遗传、接受度或近亲风险；策略选择最小/首个候选。 |
 | 宣战候选 | target、CB key/index、configuration、claimant、target titles | C++ core 与 typed contract 已有；完整 bridge/live 宣战闭环仍未收口。 |
@@ -165,7 +165,7 @@ DLL template 本身当成随时可执行动作。
 当前 `one-life-turn-v1` 的真实策略能力是：
 
 - 先建立 checkpoint；死亡时结算并写少量跨局 achievement memory；
-- 活跃事件优先处理，但 native 无 score 时按显示序选择第一项；
+- 活跃事件优先处理；支持 current-window query 的 backend 先恢复严格同帧 materialized options，仅在恰好一个 shown+enabled row 时按 authored native index 做 forced presentation choice。零个或多个候选因 effect preview/semantic policy 未就绪而停住，不再默认第一项；不支持新 query 的旧 backend 保留兼容路径；
 - 当前角色无配偶时查询婚姻并提交第一个合法候选，等待 spouse/betrothed 后置关系；
 - 宣战前会读取原生 strategic power 并比较目标，但因 participant ETA、combat forecast、campaign cost、exit outcome 与
   校准效用缺失，正确地停在 `native_war_entry_evidence_required`；
@@ -208,8 +208,8 @@ DLL template 本身当成随时可执行动作。
 
 - 从和平状态由 planner 自主选择并宣告一场有效用依据的战争，再一直打到胜/和/降并处理战后；
 - 一次不可避免接敌的“预测 → 接战/绕行/增援/撤退 → 实际战斗结果”闭环；
-- 盟友召集/加入、多个战争、补给/损耗、海运、佣兵/骑士团、raid、great holy war；
-- 通用事件、经济、内阁、生活方式、继承、婚姻、外交、封臣、派系、谋略、文化宗教、活动/旅行等长期自治；
+- 盟友召集/加入、多个战争、补给/损耗、海运、佣兵与 raid；骑士团、great holy war 按宗教 owner-deferred 边界暂缓；
+- 通用事件、经济、内阁、生活方式、继承、婚姻、外交、封臣、派系、谋略、文化、活动/旅行等长期自治；宗教域暂缓；
 - 自然死亡完整终验，以及普通 campaign 跨继承继续。
 
 ## 原生 AI 文档覆盖账本
@@ -223,6 +223,10 @@ DLL template 本身当成随时可执行动作。
 - [combat-phase-events.md](combat-phase-events.md) 与
   [combat-phase-event-trace.md](combat-phase-event-trace.md)：phase event 与 trace；
 - [war-termination.md](war-termination.md)：胜利、白和、投降提出/接受树；
+- [events-and-interactions.md](events-and-interactions.md)、[event-window-context.md](event-window-context.md)、
+  [interaction-notification-ack.md](interaction-notification-ack.md) 与
+  [interaction-structured-terms.md](interaction-structured-terms.md)：通用事件 selector、窗口 option 物化、人物互动
+  candidate/acceptance、notification ACK 与 structured-terms exact seam；stable event root、完整 preview/terms 与 live matrix 仍待闭合；
 - [prewar-encounter-inputs.md](prewar-encounter-inputs.md)：宣战前 participant/route/encounter 输入；
 - [army-contact-resolution.md](army-contact-resolution.md)：normal daily arrival/contact queue、Province full-CUnitID
   数值序、已有战斗优先与 participant/攻守构造的静态决策树；live actual-contact scope 与 non-daily placement 仍待施工。
@@ -238,13 +242,12 @@ DLL template 本身当成随时可执行动作。
 
 仍缺独立原生 AI 决策树的主要域：
 
-- 事件与角色互动；
 - 婚姻、联盟、教育、继承和王朝；
 - 资源预算、domain/building、council、control/development 与生活方式；
 - MAA、骑士、commanders、集结/补给/损耗/海运/raid 的长期军备树；
 - 外交关系、封臣管理、契约、派系、头衔授予/撤销；
 - schemes、hooks、secrets、prisoners/crime；
-- health/stress、decisions、faith、culture、innovations、laws/government；
+- health/stress、decisions、culture、innovations、laws/government；faith 专题保持 owner-deferred；
 - activities/travel、royal court、artifacts、accolades 与 enabled-DLC 专题。
 
 任何针对这些域的 planner 施工，都必须先创建相应专题并按本目录 README 工作流维护证据与 Mermaid 图。
@@ -337,8 +340,9 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 
 - 原生 AI 树：新建 `events-and-interactions.md`，研究 stock `ai_chance`/`ai_will_do`、interaction acceptance、event option
   trigger/effect 与优先级；区分 AI 权重与玩家效用。
-- 观测：发布 event key/chain、scope actors、每项 enabled、文本 key、主要效果 preview 与资源/关系/健康风险；互动发布 type、条款、
-  sender/recipient、acceptance 和 deadline。不能只返回 option count。
+- 观测：current-window v1 已静态发布每项 materialized shown/enabled、rendered/native index、resolved name/reason 与 fallback/cancel，
+  production live acceptance 仍待完成；继续补 event key/chain、scope actors、主要效果 preview 与资源/关系/健康风险。互动发布 type、条款、
+  sender/recipient、acceptance 和 deadline。不能只返回 option count，也不能把当前 unavailable effect preview 当作完成。
 - 动作：保留 index submit，但绑定同一 event/interaction identity；覆盖多页事件、letter、toast、自动接受与需答复请求。
 - 策略：依据当前长期计划为每个选项评分，处理不确定效果、角色关系与后续链；禁止默认第一项或一律接受互动。
 - 验证：production 长跑中连续处理至少 50 个不同 key、包含链式事件与外交 deadline，零漏答、零固定首项，并核对关键资源/关系后置状态。
@@ -348,8 +352,9 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 - 原生 AI 树：分别建立 `economy-and-buildings.md`、`council-and-development.md`、`military-preparation.md`，覆盖预算桶、
   建筑 ROI、control/development、council task、MAA/knight/commander、raise/maintenance 与 reserve。
 - 观测：gold/prestige/piety/legitimacy/renown、income/expense breakdown、domain holdings/buildings/slots/construction、control/development、
-  councilors/tasks、levy/MAA/reinforcement、knights/commanders、mercenary/holy-order 市场。
-- 动作：建造/升级/取消、council assign/task/target、lifestyle/focus/perk、招募/升级/解散 MAA、knight/commander 管理、雇佣兵与骑士团。
+  councilors/tasks、levy/MAA/reinforcement、knights/commanders 与 mercenary 市场。piety 只作为通用资源余额；holy-order 市场按
+  宗教 owner-deferred 边界暂缓。
+- 动作：建造/升级/取消、council assign/task/target、lifestyle/focus/perk、招募/升级/解散 MAA、knight/commander 管理与雇佣兵；骑士团动作按宗教 owner-deferred 边界暂缓。
 - 策略：维护应急与战争 runway，按边际收益、时间和暴露风险选择建设/军备/发展；和平期不再只是 `life-advance` 等事件。
 - 验证：至少 10 年 production 自治，完成多轮建设、council 重派与军备调整，财政不因 planner 自己的选择破产；随后用已建军备完成一战。
 
@@ -445,7 +450,7 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 3 | events / notifications / interactions | numeric `live-primitive` | 50-key 长跑中语义选择且无漏答。 |
 | 4 | economy / domain / buildings | `visual-narrow` | 十年通用财政与建设循环。 |
 | 5 | council / lifestyle / development / control | `visual-narrow` | 多 council task 与 perk 路线按 realm 目标动态调整。 |
-| 6 | army composition / supply / mercenary / holy order | `research`/partial input | 和平备战、动员、补给、战争、复员闭环。 |
+| 6 | army composition / supply / mercenary；holy order 暂缓 | 常规军备 `research`/partial input；holy order `owner-deferred` | 先完成非宗教和平备战、动员、补给、战争、复员闭环。 |
 | 7 | war entry / CB / ally / multi-war | tree `research`，策略 blocked | 能比较并自主选择宣战或不战。 |
 | 8 | marriage / alliance | ID-only `implemented` | 多候选联合评分并验证关系/联盟结果。 |
 | 9 | children / education / dynasty | `visual-narrow` | 多子女教育与王朝资源规划。 |
@@ -459,7 +464,7 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 17 | decisions / laws / government | decision OCR read-only `visual-narrow` | 动态选择并执行 major decision/法律。 |
 | 18 | activities / travel | `absent` | 规划、旅行、事件与返程完整闭环。 |
 | 19 | royal court / positions / artifacts / accolades | combat accolade input only `research` | enabled feature 各一条 OODA。 |
-| 20 | raids / embark / great holy wars / special wars | `absent` | feature-gated 战争类型各有完整闭环。 |
+| 20 | raids / embark / special wars；great holy wars 暂缓 | 非宗教类型 `absent`；great holy wars `owner-deferred` | 先完成 feature-gated 非宗教战争类型；收到明确许可后再补宗教战争。 |
 | 21 | save / restore / process ownership | `live-loop` | 长跑和域场景持续复用；只修实际故障。 |
 | 22 | death settlement / next episode | primitive `live` | 自然死亡完整结算、下一 episode；另有跨继承 campaign。 |
 | 23 | long-horizon goals / learning / memory | minimal booleans `implemented` | 多域层次规划与 outcome 校准通过整局矩阵。 |

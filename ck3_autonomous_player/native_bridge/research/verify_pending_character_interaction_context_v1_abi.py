@@ -1,0 +1,348 @@
+#!/usr/bin/env python3
+"""Verify pending-character-interaction-context-v1 exact-build evidence."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import struct
+
+from scan_anchors import PeImage
+
+
+HERE = Path(__file__).resolve().parent
+REPOSITORY_ROOT = HERE.parents[2]
+DEFAULT_CONTRACT = HERE / "pending_character_interaction_context_v1_abi.json"
+DEFAULT_FIXTURE = (
+    HERE
+    / "fixtures"
+    / "pending_character_interaction_context_v1_source_contract.json"
+)
+DEFAULT_EXE = REPOSITORY_ROOT / "Crusader Kings III" / "binaries" / "ck3.exe"
+DEFAULT_HEADER = (
+    HERE.parent
+    / "include"
+    / "xar_bridge"
+    / "pending_character_interaction_context_v1.hpp"
+)
+DEFAULT_READER = HERE.parent / "src" / "pending_character_interaction_context_v1.cpp"
+DEFAULT_SERIALIZER = (
+    HERE.parent / "src" / "pending_character_interaction_context_v1_serializer.cpp"
+)
+DEFAULT_MAILBOX = (
+    HERE.parent / "src" / "pending_character_interaction_context_v1_mailbox.cpp"
+)
+DEFAULT_BRIDGE = HERE.parent / "src" / "bridge.cpp"
+
+
+def integer(value: object) -> int:
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str):
+        return int(value, 0)
+    raise TypeError(f"expected integer or integer string, found {value!r}")
+
+
+def runtime_function_ranges(data: bytes, image: PeImage) -> set[tuple[int, int]]:
+    pe_offset = struct.unpack_from("<I", data, 0x3C)[0]
+    optional = pe_offset + 24
+    if struct.unpack_from("<H", data, optional)[0] != 0x20B:
+        raise ValueError("expected PE32+ optional header")
+    exception_rva, exception_size = struct.unpack_from(
+        "<II", data, optional + 112 + 3 * 8
+    )
+    if exception_size % 12:
+        raise ValueError("malformed AMD64 exception directory")
+    offset = image.rva_to_offset(exception_rva)
+    return {
+        struct.unpack_from("<II", data, offset + delta)
+        for delta in range(0, exception_size, 12)
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--exe", type=Path, default=DEFAULT_EXE)
+    parser.add_argument("--contract", type=Path, default=DEFAULT_CONTRACT)
+    parser.add_argument("--fixture", type=Path, default=DEFAULT_FIXTURE)
+    parser.add_argument("--header", type=Path, default=DEFAULT_HEADER)
+    parser.add_argument("--reader", type=Path, default=DEFAULT_READER)
+    parser.add_argument("--serializer", type=Path, default=DEFAULT_SERIALIZER)
+    parser.add_argument("--mailbox", type=Path, default=DEFAULT_MAILBOX)
+    parser.add_argument("--bridge", type=Path, default=DEFAULT_BRIDGE)
+    arguments = parser.parse_args()
+
+    failures: list[str] = []
+    executable_data = arguments.exe.resolve().read_bytes()
+    image = PeImage(executable_data)
+    contract = json.loads(arguments.contract.resolve().read_text(encoding="utf-8"))
+    fixture = json.loads(arguments.fixture.resolve().read_text(encoding="utf-8"))
+
+    executable_sha = hashlib.sha256(executable_data).hexdigest().upper()
+    expected_executable_sha = contract["ck3_exe_sha256"].upper()
+    if executable_sha != expected_executable_sha:
+        failures.append(
+            "executable SHA mismatch: "
+            f"expected {expected_executable_sha}, found {executable_sha}"
+        )
+
+    pdata_ranges = runtime_function_ranges(executable_data, image)
+    spans = contract["source_contract"]["exact_byte_spans"]
+    for span in spans:
+        start = integer(span["start_rva"])
+        end = integer(span["end_rva"])
+        span_kind = span.get("span_kind", "single_pdata_runtime_function")
+        if span_kind == "leaf_thunk_without_pdata_runtime_function_row":
+            if (start, end) in pdata_ranges:
+                failures.append(
+                    f"{span['name']}: declared leaf thunk unexpectedly has that .pdata row"
+                )
+        else:
+            declared_regions = span.get("runtime_function_regions")
+            if declared_regions:
+                regions = []
+                for region in declared_regions:
+                    begin_text, finish_text = region.split("..", maxsplit=1)
+                    regions.append((integer(begin_text), integer(finish_text)))
+            else:
+                regions = [(start, end)]
+            for begin, finish in regions:
+                if (begin, finish) not in pdata_ranges:
+                    failures.append(
+                        f"{span['name']}: 0x{begin:X}..0x{finish:X} "
+                        "is not an exact .pdata runtime-function extent"
+                    )
+
+        expected_length = integer(span["byte_length"])
+        actual_length = end - start
+        if actual_length != expected_length:
+            failures.append(
+                f"{span['name']}: declared length 0x{expected_length:X}, "
+                f"RVA range length 0x{actual_length:X}"
+            )
+            continue
+        offset = image.rva_to_offset(start)
+        blob = executable_data[offset : offset + actual_length]
+        actual_sha = hashlib.sha256(blob).hexdigest().upper()
+        expected_sha = span["sha256"].upper()
+        if len(blob) != actual_length:
+            failures.append(f"{span['name']}: range is not fully file-backed")
+        elif actual_sha != expected_sha:
+            failures.append(
+                f"{span['name']}: expected {expected_sha}, found {actual_sha}"
+            )
+        else:
+            print(
+                f"OK {span['name']} RVA=0x{start:X}..0x{end:X} "
+                f"bytes=0x{actual_length:X} SHA256={actual_sha}"
+            )
+
+    for relative_path, expected_sha in contract["source_contract"][
+        "source_files"
+    ].items():
+        source_path = REPOSITORY_ROOT / Path(relative_path)
+        try:
+            actual_sha = hashlib.sha256(source_path.read_bytes()).hexdigest().upper()
+        except OSError as error:
+            failures.append(f"source file {relative_path}: cannot read: {error}")
+            continue
+        if actual_sha != expected_sha.upper():
+            failures.append(
+                f"source file {relative_path}: expected {expected_sha}, found {actual_sha}"
+            )
+
+    source_contracts = {
+        "header": (
+            arguments.header,
+            (
+                "kPendingInteractionCostEvaluatorV1Rva",
+                "NativePendingInteractionCostEvaluatorV1",
+                "invoke_cost_evaluator",
+                "generic_costs_ready",
+            ),
+        ),
+        "reader": (
+            arguments.reader,
+            (
+                "kDefinitionCostBlockOffset = 0x38",
+                "treasury_or_gold",
+                "pending_payment_state = \"already_applied\"",
+                "second != first",
+            ),
+        ),
+        "serializer": (
+            arguments.serializer,
+            (
+                '\\"payer_role\\"',
+                '\\"application_timing\\"',
+                '\\"pending_payment_state\\"',
+                '\\"cost_evaluator_rva\\"',
+            ),
+        ),
+        "mailbox": (
+            arguments.mailbox,
+            ("ProxyInvokeCostEvaluator", "IsExecutingExactMailboxSlot"),
+        ),
+        "bridge": (
+            arguments.bridge,
+            ("InvokePendingCharacterInteractionCostEvaluatorDirectV1",),
+        ),
+    }
+    for name, (path, required_tokens) in source_contracts.items():
+        try:
+            source = path.resolve().read_text(encoding="utf-8")
+        except OSError as error:
+            failures.append(f"{name}: cannot read source contract: {error}")
+            continue
+        for token in required_tokens:
+            if token not in source:
+                failures.append(f"{name}: missing source-contract token {token!r}")
+
+    reader_source = arguments.reader.resolve().read_text(encoding="utf-8")
+    for forbidden in (
+        "0x26B3480",
+        "0x3380410",
+        "SubmitCommand",
+        "WriteProcessMemory",
+        "notification-description",
+    ):
+        if forbidden in reader_source:
+            failures.append(f"reader: forbidden executor token {forbidden!r}")
+
+    expected_cost_mapping = [
+        (0, "gold", "GOLD_COST", "0x2875"),
+        (1, "prestige", "PRESTIGE_COST", "0x0001"),
+        (2, "piety", "PIETY_COST", "0x2B26"),
+        (3, "renown", "DYNASTY_PRESTIGE_COST", "0x2B27"),
+        (4, "influence", "INFLUENCE_COST", "0x318D"),
+        (5, "herd", "HERD_COST", "0x29F5"),
+        (6, "treasury", "TREASURY_COST", "0x3B32"),
+        (
+            7,
+            "treasury_or_gold",
+            "TREASURY_COST or GOLD_COST by actor treasury predicate",
+            "0x3D24",
+        ),
+        (8, "merit", "MERIT_COST", "0x3E42"),
+        (9, "barter_goods", "BARTER_GOODS_COST", "0x3D30"),
+    ]
+    actual_cost_mapping = [
+        (
+            row.get("slot"),
+            row.get("resource_key"),
+            row.get("formatter_key"),
+            row.get("serializer_token_id"),
+        )
+        for row in contract.get("generic_authored_costs", {}).get("mapping", [])
+        if isinstance(row, dict)
+    ]
+    if actual_cost_mapping != expected_cost_mapping:
+        failures.append("contract: exact ten-slot generic cost mapping drifted")
+
+    payment = contract.get("generic_authored_costs", {}).get(
+        "pending_wire_semantics"
+    )
+    expected_payment = {
+        "payer_role": "actor",
+        "application_timing": "on_send",
+        "pending_payment_state": "already_applied",
+    }
+    if payment != expected_payment:
+        failures.append("contract: pending generic-cost payment semantics drifted")
+
+    fixture_costs = fixture.get("defaults", {}).get("generic_authored_costs", {})
+    fixture_entries = fixture_costs.get("entries", [])
+    if (
+        fixture.get("synthetic") is not True
+        or fixture.get("not_live_evidence") is not True
+        or fixture_costs.get("raw_scale") != 100_000
+        or {
+            key: fixture_costs.get(key)
+            for key in (
+                "payer_role",
+                "application_timing",
+                "pending_payment_state",
+            )
+        }
+        != expected_payment
+        or [
+            row.get("resource_key") if isinstance(row, dict) else None
+            for row in fixture_entries
+        ]
+        != [row[1] for row in expected_cost_mapping]
+        or not any(
+            isinstance(row.get("raw"), int) and row["raw"] < 0
+            for row in fixture_entries
+            if isinstance(row, dict)
+        )
+    ):
+        failures.append("fixture: signed ten-key generic-cost contract drifted")
+    external_live = fixture.get("external_live_evidence", {})
+    if not (
+        isinstance(external_live, dict)
+        and external_live.get("contract")
+        == "../pending_character_interaction_context_v1_abi.json#live_validation"
+        and external_live.get("artifact_sha256")
+        == contract.get("live_validation", {}).get("artifact_sha256")
+    ):
+        failures.append("fixture: historical external live evidence drifted")
+    if fixture.get("source_hashes") != contract.get("source_contract", {}).get(
+        "source_files"
+    ):
+        failures.append("fixture: exact source-hash contract drifted")
+
+    readiness = contract.get("readiness", {})
+    fixture_readiness = fixture.get("expected_readiness", {})
+    if readiness.get("generic_costs_live_ready") is not False:
+        failures.append("contract: static-only cost slice cannot claim live readiness")
+    if fixture_readiness.get("generic_costs_live_ready") is not False:
+        failures.append("fixture: synthetic cost slice cannot claim live readiness")
+    if not (
+        readiness.get("ordinary_pending_query_live_ready") is True
+        and readiness.get("production_live_ready") is True
+        and fixture_readiness.get("ordinary_pending_query_live_ready") is True
+        and fixture_readiness.get("production_live_ready") is True
+    ):
+        failures.append("contract: historical ordinary live readiness drifted")
+    for source, label in (
+        (readiness.get("production_live_scope"), "contract"),
+        (fixture_readiness.get("production_live_scope"), "fixture"),
+    ):
+        if not (
+            isinstance(source, str)
+            and "historical ordinary" in source
+            and "generic cost" in source
+            and "notification ACK" in source
+            and "intermediary" in source
+            and "semantic decision" in source
+        ):
+            failures.append(f"{label}: production live scope is not explicit")
+    if not (
+        contract.get("live_validated") is True
+        and contract.get("live_validated_scope")
+        == "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only"
+        and isinstance(contract.get("not_live_validated_scope"), str)
+        and "generic authored cost" in contract["not_live_validated_scope"]
+        and "notification ACK" in contract["not_live_validated_scope"]
+        and "intermediary" in contract["not_live_validated_scope"]
+        and "semantic decision" in contract["not_live_validated_scope"]
+    ):
+        failures.append("contract: top-level historical live scope drifted")
+    if "religion" not in contract["owner_deferred_domains"]:
+        failures.append("contract: owner-deferred religion boundary was lost")
+
+    if failures:
+        for failure in failures:
+            print(f"FAIL {failure}")
+        return 1
+    print(
+        f"PASS spans={len(spans)} exact_build=1 source_hashes=1 "
+        "cost_mapping=10 read_only=1 live_pending=1"
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

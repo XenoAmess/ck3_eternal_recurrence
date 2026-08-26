@@ -79,6 +79,11 @@ from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
     normalize_loaded_feature_manifest_v1,
 )
+from .event_window_context_contract import (
+    QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
+    QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+    normalize_current_event_window_context_v1,
+)
 from .pending_character_interaction_context_contract import (
     ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
@@ -161,6 +166,11 @@ class GameplayBridgeService:
             history,
             snapshot=snapshot,
             action_steps=available_steps,
+            bridge_capabilities=(
+                capabilities.get("bridge_capabilities")
+                if isinstance(capabilities.get("bridge_capabilities"), list)
+                else ()
+            ),
             next_run_plan=cross_run_plan,
         )
         if cross_run_plan is not None:
@@ -1522,13 +1532,196 @@ class GameplayBridgeService:
             "loaded_feature_manifest": normalized,
         }
 
+    def query_current_event_window_context_v1(
+        self,
+        event_instance_id: int,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the exact materialized option presentation for one active event."""
+        if (
+            isinstance(event_instance_id, bool)
+            or not isinstance(event_instance_id, int)
+            or not 1 <= event_instance_id <= 2**31 - 1
+        ):
+            raise ValueError("event_instance_id must be a positive full int32")
+        snapshot = self.snapshot()
+        revision = snapshot.get("revision")
+        native_revision = snapshot.get("native_revision")
+        date_raw = snapshot.get("date_raw")
+        snapshot_id = snapshot.get("snapshot_id")
+        active_event = snapshot.get("active_event")
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "event-window queries require a paused CK3 snapshot"
+            )
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 0
+            or isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+        ):
+            raise ValueError("expected_revision must be a non-negative integer")
+        if expected_revision != revision:
+            raise BridgeUnavailableError(
+                "event-window revision mismatch: expected "
+                f"{expected_revision}, current {revision}"
+            )
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**31) <= date_raw <= 2**31 - 1
+            or not isinstance(snapshot_id, str)
+            or not snapshot_id
+        ):
+            raise BridgeUnavailableError(
+                "event-window query lacks a stable native snapshot binding"
+            )
+        if (
+            not isinstance(active_event, dict)
+            or active_event.get("instance_id") != event_instance_id
+        ):
+            raise BridgeUnavailableError(
+                "event instance ID does not match the active event"
+            )
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY
+            in bridge_capabilities
+            and QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+            in action_step_set(capabilities)
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query the current event window"
+            )
+        result = self.execute_step(
+            QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+            expected_revision=expected_revision,
+        )
+        mirror_keys = {
+            "schema",
+            "schema_version",
+            "date_raw",
+            "current_event_instance_id",
+            "window_match_count",
+            "unavailable_reason",
+            "event_definition_key",
+            "root_scope",
+            "saved_scopes",
+            "options",
+            "readiness",
+            "provenance",
+        }
+        required_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "current_event_window_context",
+            "backend_id",
+            "current_event_window_context_ready",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+            *mirror_keys,
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != required_keys
+            or result.get("step")
+            != QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "event-window backend returned a malformed result"
+            )
+        try:
+            normalized = normalize_current_event_window_context_v1(
+                result.get("current_event_window_context"),
+                expected_event_instance_id=event_instance_id,
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"event-window result is malformed: {error}"
+            ) from error
+        expected_mirrors = {
+            key: copy.deepcopy(normalized[key]) for key in mirror_keys
+        }
+        if (
+            result.get("status") != normalized["status"]
+            or any(
+                result.get(key) != expected
+                for key, expected in expected_mirrors.items()
+            )
+            or result.get("current_event_window_context_ready")
+            is not normalized["readiness"]["option_presentation_ready"]
+            or result.get("queried_snapshot_id") != snapshot_id
+            or result.get("queried_revision") != revision
+            or result.get("queried_native_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "event-window result mirrors disagree with its snapshot"
+            )
+        current = self.snapshot()
+        current_event = current.get("active_event")
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and isinstance(current_event, dict)
+            and current_event.get("instance_id") == event_instance_id
+        ):
+            raise BridgeUnavailableError(
+                "event-window query crossed a snapshot revision"
+            )
+        return {
+            **result,
+            "schema_version": 1,
+            "status": normalized["status"],
+            "scope": "exact-current-event-window",
+            "source": {
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "backend_id": snapshot.get("backend_id"),
+            },
+            "binding": {
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "expected_revision": expected_revision,
+                "event_instance_id": event_instance_id,
+            },
+            **expected_mirrors,
+            "current_event_window_context_ready": normalized["readiness"][
+                "option_presentation_ready"
+            ],
+            "current_event_window_context": normalized,
+        }
+
     def query_pending_character_interaction_context_v1(
         self,
         pending_interaction_id: int,
         *,
         expected_revision: int,
     ) -> dict[str, object]:
-        """Read one exact pending interaction without guessing its terms."""
+        """Read one exact pending interaction, including paid generic costs."""
         if (
             isinstance(pending_interaction_id, bool)
             or not isinstance(pending_interaction_id, int)

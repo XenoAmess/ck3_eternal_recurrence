@@ -1,6 +1,6 @@
 # CK3 1.19.0.6：current event window context
 
-本文冻结通用、非宗教事件窗口的 engine-owned presentation context，目标是让自动玩家读取**当前实际展示给玩家的选项**，而不是只读取事件定义中的 authored option 数量。它同时记录原生 `SetupOptions` 与 AI selector 的决策树，以及 production locator 尚未闭合的边界。
+本文冻结通用、非宗教事件窗口的 engine-owned presentation context，目标是让自动玩家读取**当前实际展示给玩家的选项**，而不是只读取事件定义中的 authored option 数量。它同时记录原生 `SetupOptions` 与 AI selector 的决策树、已经闭合的 production locator，以及仍待实机验证的边界。
 
 宗教、faith、doctrine、tenet、fervor、改宗、宗教改革、圣战等专用语义依项目所有者要求暂缓。本文只保留对所有事件通用的 opaque 兼容边界。
 
@@ -39,8 +39,7 @@ Mermaid 实线表示静态确认，虚线表示 candidate/unknown。
 
 ```mermaid
 flowchart LR
-    Root["stable application root"] -. unknown .-> Idler["CIngameInterfaceIdlerGfx*"]
-    Hook["candidate capture<br/>0xAA72B0 / callsite 0xAA8233"] -. candidate .-> Idler
+    Root["module+0x570F7B8<br/>owner"] -->|"+0x10; native accessor 0xAA43C0<br/>CIdlerGfxBase dynamic-cast + vtable gate"| Idler["CIngameInterfaceIdlerGfx*"]
     Idler -->|"+0x28"| Manager["event-window manager"]
     Manager -->|"+0x10 data / +0x1C count<br/>stride 0x08"| Window["CEventWindow*"]
     Window -->|"inline +0xE8"| Data["CEventWindowData"]
@@ -53,6 +52,7 @@ flowchart LR
 - `CIngameInterfaceIdlerGfx` 构造函数 `0xAA3ED0..0xAA4065` 分配大小 `0xA8` 的 event-window manager，并把指针保存到 `this+0x28`。
 - idler 的 per-frame 路径 `0xAA72B0..0xAA7B0D` 经 helper `0xAA80B0..0xAA855A`，在 callsite `0xAA8233` 取 `[idler+0x28]` 作为 `rcx` 调用 manager tick `0xBAB780`。
 - manager `+0x10` 是 `CEventWindow*` vector data，`+0x1C` 是 `int32` count，元素步长 `0x08`。
+- production v1 不读取未在本契约闭合的 manager `+0x18` capacity；只把 signed count 限制为 `0..32`，count 非零时要求 data 非空。manager 的 keep-alive/remove/compact 链证明存储项是 live `CEventWindow` ownership rows，因此 null 或非 exact primary-vtable 条目是 layout drift，不得静默跳过。
 - manager tick 在 `0xBAB9D4` 分配 `0x838` 字节的 `CEventWindow`，在 `0xBAB9F5` 调用构造函数 `0x16A1700`。
 - `CEventWindow` 构造函数把 `this+0xE8` 传给 `CEventWindowData` 构造函数 `0x16CA380`；析构函数 `0x16A1AA0` 同样把 `this+0xE8` 传给 data 析构函数 `0x16CA980`。因此 data 是 window 的内联成员，生命周期严格由 window 包围。
 - data 构造时把 `ActiveEvent+0x1BC` 的 instance ID 写入 `data+0x00`；setup `0x16CADC0..0x16CB8C3` 再用该 ID 解析 live `ActiveEvent`，并在 `0x16CB782` 调用 `SetupOptions`。
@@ -67,15 +67,28 @@ manager tick 在 `0xBAB920..0xBABA36` 扫描 UI active-event vector（data `+0x3
 
 | 类型 | exact-build 证据 | 结论 |
 |---|---|---|
-| `CIngameInterfaceIdlerGfx` | TypeDescriptor `0x501EF50`、COL `0x45F5BC0`、vtable `0x40B1D30` | 可用于候选 capture 的动态类型校验 |
+| `CIngameInterfaceIdlerGfx` | TypeDescriptor `0x501EF50`、COL `0x45F5BC0`、vtable `0x40B1D30`；原生 accessor `0xAA43C0` 做 `CIdlerGfxBase*` → 本类型 dynamic-cast | production passive root 必须镜像为精确 primary-vtable gate |
 | `CEventWindow` | TypeDescriptor `0x50242C8`、primary COL `0x474D4F8`、primary vtable `0x417F758`；MI vtable `0x417F738`、`0x417F710` | 可校验 manager vector 条目 |
 | `CEventWindowData` | 仅找到 reflection/template 名称 | 非多态内联对象；没有确认的 native RTTI，不能声称可独立 RTTI 校验 |
 
-### 尚未闭合的 root
+### 已闭合的 stable root 与 frontend 排除
 
-`CIngameInterfaceIdlerGfx` 在 `0x82813C` 被创建，随后保存到 application idler wrapper `+0x10` 并通过 `0x3555120` 注册；当前没有闭合从稳定全局根到该 wrapper/idler 的读取链。另有 frontend 路径在 `0xE30E78` 调用同类 manager tick，因此“搜到一个 manager”并不足以证明它属于 in-game UI。
+此前本专题漏用了已经在 [`prewar-encounter-inputs.md`](prewar-encounter-inputs.md) 与 `prewar_scope_v1_abi.json` 冻结的原生 accessor。exact `.pdata` slice `0xAA43C0..0xAA440A`（`0x4A` bytes，SHA-256 `1741A42D9B2425B66C2738B28128D9DA0CC95E46C37B118E74C646C74D209822`）直接执行：
 
-可施工的候选 seam 是：在 idler per-frame entry `0xAA72B0` 捕获 `this`，或在精确 callsite `0xAA8233` 捕获 manager `rcx`；在 idler destructor `0xAA4070` 清除；查询时再校验 idler/window RTTI、vector bounds，以及 `data+0x00 == current ActiveEvent+0x1BC`。这仍是 **candidate**，不是 production locator。root→idler 未闭合且 capture 尚未验证前，不写 production reader。
+```text
+owner = *(module+0x570F7B8)
+require owner != null
+idler_base = *(owner+0x10)
+idler = dynamic_cast<CIngameInterfaceIdlerGfx*>(idler_base)
+require idler != null
+handler = *(idler+0x88)
+```
+
+其中 cast 的目标 TypeDescriptor 是 `module+0x501EF50`，PMD `mdisp=0`。构造器 `0xAA3EEA..0xAA3EF1` 又把 `module+0x40B1D30` 写入新建 idler 的 primary vtable。因此只读 reader 不调用 dynamic-cast，而是镜像相同所有权链，并严格要求 `*(idler+0x00) == module+0x40B1D30` 后才读取 `idler+0x28`。
+
+这条链不是把另一个 application wrapper 的 `+0x10` 类推到这里，而是原生函数自身对 `module+0x570F7B8`、`owner+0x10` 与目标 RTTI 的连续指令证据。frontend `0xE30E78` 的 generic manager tick 不从该 accessor/vtable-gated root 取得对象，因此不进入查询。查询还必须要求 manager 中恰好一个 primary-vtable 为 `module+0x417F758` 的 `CEventWindow`，且其 `data+0x00` 完整 instance ID 等于同帧 current `ActiveEvent+0x1BC`；不能只按低位 slot 或只凭 manager 指针匹配。
+
+原计划的 `0xAA72B0` / `0xAA8233` capture 与 `0xAA4070` 清理不再是 production reader 的依赖，仅保留为后续实机诊断 seam。production v1 在 application/UI owning-thread mailbox 回调内从 stable root 开始读取、复制所有值并立即丢弃全部 engine pointer，不安装 capture，也不需要独立 teardown。
 
 ## `SetupOptions`：最终展示选项的物化树
 
@@ -131,6 +144,7 @@ flowchart TD
 | vector membership | shown | 静态确认 |
 
 `cancel` 应由 `item.native_option_index == data.cancel_option_index` 派生；不要把 rendered index 当成 native index。
+物化 vector 中 `native_option_index` 仍是 authored identity，production v1 要求其非负且唯一；因此上述派生也保证最多一个 `cancel=true`。重复 native index 视为 layout invalid，不发布模棱两可的操作映射。
 
 ## effect indicator seam，而非完整 effect preview
 
@@ -195,7 +209,7 @@ flowchart TD
 
 ## `event-window-context-v1` 最小只读形状
 
-下列是 production query 的建议形状，**尚未实现**：
+最小 production query 已实现为 capability `game.command.query-current-event-window-context-v1` / step `query-current-event-window-context-v1`：
 
 ```text
 status / revision / availability
@@ -213,24 +227,27 @@ options[]:
   cancel
   resolved_name
   unavailable_reason
-  effect_indicators[]:
-    kind                      # trait/stress/death/scheme/unknown
-    gain
-    affected_by_trait
-    critical
+  effect_preview:
+    status: unavailable       # full effect preview 尚未闭合
 ```
 
 读取必须满足：完整 instance ID 相等、恰好一个匹配窗口、vector/string bounds 合法、所有值在同一 owning-thread revision 内复制完成。零匹配、多匹配、销毁中或布局不合法均返回 unavailable；不得退回 authored options 假装展示状态。
 
-## 最小 production capture slice
+## 最小 production read-only slice
 
-root→idler 尚未闭合，因此本轮停在 candidate，不实现 reader。下一 slice 按以下顺序施工：
+1. bridge 只在客户端提交的 `expected_revision` 等于当前发布 revision，且该 revision 的 snapshot 为 paused、map-ready、有存活 played character 与相同完整 `event_instance_id` 时接受查询。
+2. 查询经 fixed typed main-thread mailbox 投递到 application/UI owning thread；callback 内再次读取 snapshot，沿上述 stable root 定位 manager，并一次性复制 option vector 与 MSVC strings。
+3. 每个窗口要求 exact `CEventWindow` primary vtable，每个 option 要求 owner backpointer 等于匹配的 inline data；vector/count/string 均有硬上限。零匹配、多匹配、布局漂移或前后 snapshot 不同都返回 typed unavailable。
+4. v1 只发布 rendered/native index、shown、enabled、fallback、cancel、resolved name 与 unavailable reason。event definition key、root/saved scopes 与完整 effect preview 显式 unavailable；不得用 GUI indicator 冒充完整 effect preview。
+5. reader 不调用 trigger、name resolver、preview collector、loaded-effect executor 或事件选项 executor；它只复制已经物化的 UI 数据。
 
-1. 在 exact-build 绑定的 `0xAA72B0` entry 或 `0xAA8233` callsite 安装最小 capture，只保存 in-game idler/manager；在 `0xAA4070` teardown 清除。
-2. capture 时验证 `CIngameInterfaceIdlerGfx` RTTI/vtable；query 时验证 manager bounds、`CEventWindow` RTTI/vtable，以及 `data+0x00` 与现有 current `ActiveEvent+0x1BC` 完整相等。显式拒绝 frontend `0xE30E78` 的同类 manager。
-3. 把 snapshot 工作投递到 owning application/UI thread；在一个回调内复制 item vector、MSVC strings 与 effect indicator kind/flags，回调结束后不保留任何 engine pointer。
-4. 首个 value slice 只发布已经闭合的 option presentation 字段。stable definition key、stable scopes、deadline 与完整 effect preview 分别作为后续 reverse slice，不猜布局。
-5. 保持纯只读；不调用 trigger、name resolver、preview collector 或 effect executor，不执行事件选项。
+## planner typed-first 消费规则
+
+`one-life-turn-v1` 仅在 snapshot 的 `snapshot_id`、public revision、native revision、`date_raw` 与完整 event instance ID 全部等于查询结果及其 context 时消费 `current-event-window-context-v1`。`history` 与 `native_command_history` 使用同一严格恢复逻辑；任一字段过期、错 ID 或 wire contract 漂移都会丢弃旧结果并重新查询。
+
+当 backend 广告该 capability 时，active event 在没有同帧结果前只选择 query，不再从 snapshot `option_count` 合成 `enabled=true` 的选项；若当前尚未暂停则先选择 `pause-map`，若 capability 已广告但同帧 query step 异常缺席则 fail closed，二者都不会回落到盲选。same-frame `status=unavailable` 是一次完整查询结果：planner 明确报告 materialization dependency，不会无限重复 query。只有真正没有该 capability 的旧 backend 才保留既有 native/visual compatibility path。
+
+available context 只把实际物化且 `shown=true && enabled=true` 的 rows 当作合法候选。提交命令使用 authored `native_option_index`，因此命令为 `select-event-option-(native_option_index+1)`；`rendered_index` 只描述 GUI 顺序，不能拿来提交。当前 `semantic_decision_ready=false`，故仅在恰好一个合法 row 时允许“forced presentation choice”，并显式标记这不是 semantic optimum；零个或多个合法 row 都停在 effect preview / semantic policy dependency，不能默认 first enabled、cancel 或 fallback。完整 effect/长期效用闭合后才允许多候选评分。
 
 ## 测试门槛
 
@@ -242,11 +259,10 @@ root→idler 尚未闭合，因此本轮停在 candidate，不实现 reader。�
   & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\native_bridge\research\verify_event_window_context_abi.py"
   ```
 
-- C++ fixture 必须用合成 idler/manager/window/data/item/string/effect vectors 覆盖：零/一/多匹配、完整 ID 不同、非法 count/capacity、窗口销毁/teardown 后 unavailable、rendered/native index 不同、cancel 派生、disabled reason、fallback、四种已知 effect kind 与 unknown kind。
-- capture install/uninstall 单测必须证明 exact-build mismatch 不安装、teardown 清空、frontend manager 被拒绝，并用确定性 ownership assertion 证明 worker 不直接解引用 engine pointer。
-- 获准启动 CK3 后，paused generic nonreligious event 做两次相邻 same-revision typed query：完整 instance ID、option 顺序、enabled/name/reason/effect indicators 一致；关闭窗口后同一 ID 必须变为 unavailable。报告固定 EXE/DLL hash，且不执行默认 accept/reject/action。
+- C++ fixture / source contract 必须覆盖 stable accessor root、idler/window vtable、完整 event ID、零/一/多匹配、manager 与 option vector 的非法 count/capacity、owner backpointer、MSVC string size/capacity、非法 bool byte、rendered/native index 不同、cancel/non-cancel 派生、disabled reason 与 fallback；并断言 owning-thread fixed mailbox 之外不解引用 engine pointer。
+- 获准启动 CK3 后，paused generic nonreligious event 做两次相邻 same-revision typed query：完整 instance ID、option 顺序、enabled/name/reason 一致；关闭窗口后同一 ID 必须变为 unavailable。报告固定 EXE/DLL hash，且不执行默认 accept/reject/action。
 
-本轮只完成离线静态研究与契约校验，没有启动 CK3，也没有进行宗教专用事件探索。
+本轮闭合并实现了最小只读 production query，但尚未启动 CK3 做 live acceptance，也没有进行宗教专用事件探索。因此 `bridge_query_static_ready=true`，`bridge_query_ready/live_validated=false`；实机门槛不得被静态构建冒充。
 
 ## Evidence / unknown 账本
 
@@ -260,9 +276,10 @@ root→idler 尚未闭合，因此本轮停在 candidate，不实现 reader。�
 | shown/enabled/name/reason/native index/fallback | 静态确认 | `SetupOptions` 与 `CEventOptionItem` ABI |
 | effect indicator kind/flags | 静态确认 | append `0x16D3A40` 与八个 GUI accessors |
 | native `SetupOptions` / AI selector 树 | 静态确认 | existing event-option exact-build contract |
-| stable global root → idler | unknown | 优先继续追 `0x3555120` 注册表，或验证 capture seam |
-| per-frame/callsite capture | candidate | install/teardown、frontend collision、实机未验证 |
+| stable global root → idler | 静态确认 | native accessor `0xAA43C0..0xAA440A`；`module+0x570F7B8 → owner+0x10` dynamic-cast；ctor vtable write |
+| frontend collision exclusion | 静态确认、实机待验 | in-game accessor + exact idler/window vtable + complete current event ID；不读取 `0xE30E78` root |
+| per-frame/callsite capture | 非 production 依赖 | `0xAA72B0` / `0xAA8233` / `0xAA4070` 只保留诊断用途 |
 | stable event definition key | unknown | 继续追 EventData definition/serialization identity consumer |
 | stable root/saved scopes | unknown | 从 ActiveEvent scope serialization/GUI binding 继续追，而非暴露指针 |
 | full structured effect preview | unknown | opaque payload 与非 icon/danger-indicator 输出 consumer 未闭合 |
-| production bridge query | 未实现 | 等 locator capture 闭合后进入最小只读 slice |
+| production bridge query | 静态实现、实机待验 | `current-event-window-context-v1` fixed mailbox；完整 effect preview 仍 unavailable |

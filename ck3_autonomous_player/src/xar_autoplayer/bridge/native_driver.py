@@ -134,6 +134,11 @@ from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
     normalize_loaded_feature_manifest_v1,
 )
+from .event_window_context_contract import (
+    QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
+    QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+    normalize_current_event_window_context_v1,
+)
 from .pending_character_interaction_context_contract import (
     ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
@@ -992,6 +997,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "current_event_window_context_v1_query_supported": (
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "active_combat_retreat_v1_composition_supported": (
                 active_retreat_composition_supported
             ),
@@ -1241,6 +1250,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "pending_character_interaction_context_v1_query_supported": (
                 QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "current_event_window_context_v1_query_supported": (
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "combat_simulation_inputs_query_supported": (
@@ -2410,6 +2423,35 @@ class NativeHeadlessGameplayDriver:
                 )
             return self.query_pending_character_interaction_context_v1(
                 pending_id,
+                expected_revision=expected_revision,
+            )
+        if step == QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query the current event window"
+                )
+            active_event = self.take_snapshot().get("active_event")
+            event_id = (
+                active_event.get("instance_id")
+                if isinstance(active_event, dict)
+                else None
+            )
+            if (
+                isinstance(event_id, bool)
+                or not isinstance(event_id, int)
+                or not 1 <= event_id <= 2**31 - 1
+            ):
+                raise BridgeUnavailableError(
+                    "CK3 has no positive full active event ID"
+                )
+            return self.query_current_event_window_context_v1(
+                event_id,
                 expected_revision=expected_revision,
             )
         if war_entry_targets is not None:
@@ -6565,6 +6607,142 @@ class NativeHeadlessGameplayDriver:
             "queried_native_revision": native_revision,
         }
 
+    def query_current_event_window_context_v1(
+        self,
+        event_instance_id: int,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Copy the currently materialized event-window options while paused."""
+        if (
+            isinstance(event_instance_id, bool)
+            or not isinstance(event_instance_id, int)
+            or not 1 <= event_instance_id <= 2**31 - 1
+        ):
+            raise ValueError("event_instance_id must be a positive full int32")
+        step = QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native event-window query requires a paused snapshot"
+            )
+        active_event = starting.get("active_event")
+        if (
+            not isinstance(active_event, dict)
+            or active_event.get("instance_id") != event_instance_id
+        ):
+            raise BridgeUnavailableError(
+                "active event ID does not match the current snapshot"
+            )
+        date_raw = _date_raw(starting, "event-window starting snapshot")
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native event-window query lacks a native revision"
+            )
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(starting["revision"])
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY
+            ),
+            request_fields={"event_instance_id": event_instance_id},
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "snapshot_revision",
+                "current_event_window_context",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native event-window query returned a malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native event-window query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_current_event_window_context_v1(
+                result.get("current_event_window_context"),
+                expected_event_instance_id=event_instance_id,
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native event-window query returned a malformed frame: "
+                f"{error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native event-window envelope status disagrees with frame"
+            )
+        current = self.take_snapshot()
+        current_event = current.get("active_event")
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+            and isinstance(current_event, dict)
+            and current_event.get("instance_id") == event_instance_id
+        ):
+            raise BridgeUnavailableError(
+                "native event-window query crossed a snapshot revision"
+            )
+        mirror_keys = (
+            "schema",
+            "schema_version",
+            "date_raw",
+            "current_event_instance_id",
+            "window_match_count",
+            "unavailable_reason",
+            "event_definition_key",
+            "root_scope",
+            "saved_scopes",
+            "options",
+            "readiness",
+            "provenance",
+        )
+        return {
+            **result,
+            "status": normalized["status"],
+            "current_event_window_context": normalized,
+            "query_sequence": query_sequence,
+            **{
+                key: copy.deepcopy(normalized[key])
+                for key in mirror_keys
+            },
+            "current_event_window_context_ready": normalized["readiness"][
+                "option_presentation_ready"
+            ],
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+        }
+
     def query_pending_character_interaction_context_v1(
         self,
         pending_interaction_id: int,
@@ -10178,6 +10356,7 @@ def _action_steps(
     advertise_campaign_root_context = False
     advertise_loaded_feature_manifest = False
     advertise_pending_interaction_context = False
+    advertise_current_event_window_context = False
     expand_disband_armies = False
     expand_split_armies = False
     expand_merge_armies = False
@@ -10235,6 +10414,8 @@ def _action_steps(
             == QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY
         ):
             advertise_pending_interaction_context = True
+        elif capability == QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY:
+            advertise_current_event_window_context = True
         elif capability == DISBAND_ARMY_CAPABILITY:
             expand_disband_armies = True
         elif capability == SPLIT_ARMY_HALF_CAPABILITY:
@@ -10418,6 +10599,14 @@ def _action_steps(
         and int(pending_character_interaction["instance_id"]) <= 2**31 - 1
     ):
         steps.add(QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP)
+    if (
+        advertise_current_event_window_context
+        and paused is True
+        and isinstance(active_event, dict)
+        and _positive_native_id(active_event.get("instance_id"))
+        and int(active_event["instance_id"]) <= 2**31 - 1
+    ):
+        steps.add(QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP)
     if expand_actual_contact_scopes and paused is True:
         steps.update(
             query_actual_contact_scope_step(

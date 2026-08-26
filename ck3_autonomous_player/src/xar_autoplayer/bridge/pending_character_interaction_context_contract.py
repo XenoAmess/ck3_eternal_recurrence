@@ -101,6 +101,26 @@ _DEADLINE_FIELDS: Final = {
     "expiry_boundary_status",
 }
 _STATUS_VALUE_REASON_FIELDS: Final = {"status", "value", "reason"}
+_COST_VALUE_FIELDS: Final = {
+    "raw_scale",
+    "payer_role",
+    "application_timing",
+    "pending_payment_state",
+    "entries",
+}
+_COST_ENTRY_FIELDS: Final = {"resource_key", "raw"}
+_COST_RESOURCE_KEYS: Final = (
+    "gold",
+    "prestige",
+    "piety",
+    "renown",
+    "influence",
+    "herd",
+    "treasury",
+    "treasury_or_gold",
+    "merit",
+    "barter_goods",
+)
 _LEGALITY_ITEM_FIELDS: Final = {"status", "allowed", "reason"}
 _LEGALITY_KEYS: Final = ("accept", "reject", "block", "acknowledge")
 _LEGALITY_FIELDS: Final = set(_LEGALITY_KEYS)
@@ -111,6 +131,7 @@ _TERMS_KEYS: Final = (
     "recipient_ai_acceptance_score",
     "recipient_ai_final_decision",
 )
+_UNAVAILABLE_TERMS_KEYS: Final = _TERMS_KEYS[1:]
 _TERMS_FIELDS: Final = {"special_data_present", *_TERMS_KEYS}
 _READINESS_BOOL_KEYS: Final = (
     "stable_definition_ready",
@@ -122,6 +143,7 @@ _READINESS_BOOL_KEYS: Final = (
     "deadline_ready",
     "auto_accept_ready",
     "reply_legality_ready",
+    "generic_costs_ready",
     "structured_terms_ready",
     "same_frame_ready",
     "interaction_semantic_decision_ready",
@@ -135,6 +157,7 @@ _PROVENANCE_VALUES: Final = {
     "local_routing_predicate_rva": "0x1266BA0",
     "reply_validator_rva": "0x26B3540",
     "auto_accept_trigger_evaluator_rva": "0x334C510",
+    "cost_evaluator_rva": "0x2CDB7B0",
     "target_type_registry_getter_rva": "0x33C52B0",
     "target_type_registry_rva": "0x4FFE290",
     "script_identifier_name_rva": "0x3B58970",
@@ -165,6 +188,7 @@ _UNAVAILABLE_REASONS: Final = {
     "pending_deadline_unavailable",
     "auto_accept_unavailable",
     "reply_legality_unavailable",
+    "structured_costs_unavailable",
     "pending_terms_unavailable",
     "internal_error",
 }
@@ -361,24 +385,24 @@ def _normalize_readiness(
             "deadline_ready": True,
             "auto_accept_ready": True,
             "reply_legality_ready": True,
+            "generic_costs_ready": True,
             "structured_terms_ready": False,
             "same_frame_ready": True,
             "interaction_semantic_decision_ready": False,
         }
         if result != expected:
             raise ValueError("readiness fields disagree with observed domains")
-        required_reasons = {
-            "structured_costs_unavailable",
+        expected_reasons = [
+            *(
+                ["target_generic_scope_payload_identity_not_closed"]
+                if target_present
+                else []
+            ),
             "structured_exchanges_unavailable",
             "structured_effect_preview_unavailable",
-        }
-        if not required_reasons <= set(reasons):
-            raise ValueError("readiness omits unavailable structured terms")
-        if target_present and not any(
-            "generic_scope_payload_identity_not_closed" in item
-            for item in reasons
-        ):
-            raise ValueError("readiness omits the opaque target identity")
+        ]
+        if reasons != expected_reasons:
+            raise ValueError("readiness reasons disagree with observed domains")
     result["not_ready_reasons"] = reasons
     return result
 
@@ -673,7 +697,67 @@ def _normalize_available_frame(
             terms.get("special_data_present"), "terms.special_data_present"
         )
     }
-    for key in _TERMS_KEYS:
+    structured_costs = _exact_object(
+        terms.get("structured_costs"),
+        _STATUS_VALUE_REASON_FIELDS,
+        "terms.structured_costs",
+    )
+    if (
+        structured_costs.get("status") != "available"
+        or structured_costs.get("reason") is not None
+    ):
+        raise ValueError("terms.structured_costs must be available")
+    cost_value = _exact_object(
+        structured_costs.get("value"),
+        _COST_VALUE_FIELDS,
+        "terms.structured_costs.value",
+    )
+    if cost_value.get("raw_scale") != 100_000:
+        raise ValueError("terms.structured_costs raw scale drifted")
+    if (
+        cost_value.get("payer_role") != "actor"
+        or cost_value.get("application_timing") != "on_send"
+        or cost_value.get("pending_payment_state") != "already_applied"
+    ):
+        raise ValueError("terms.structured_costs payment semantics drifted")
+    cost_entries_value = cost_value.get("entries")
+    if (
+        not isinstance(cost_entries_value, list)
+        or len(cost_entries_value) != len(_COST_RESOURCE_KEYS)
+    ):
+        raise ValueError("terms.structured_costs must contain all ten entries")
+    cost_entries: list[dict[str, object]] = []
+    for index, expected_key in enumerate(_COST_RESOURCE_KEYS):
+        entry = _exact_object(
+            cost_entries_value[index],
+            _COST_ENTRY_FIELDS,
+            f"terms.structured_costs.value.entries[{index}]",
+        )
+        if entry.get("resource_key") != expected_key:
+            raise ValueError("structured-cost resource order drifted")
+        cost_entries.append(
+            {
+                "resource_key": expected_key,
+                "raw": _int(
+                    entry.get("raw"),
+                    f"terms.structured_costs.value.entries[{index}].raw",
+                    minimum=-(2**63),
+                    maximum=2**63 - 1,
+                ),
+            }
+        )
+    normalized_terms["structured_costs"] = {
+        "status": "available",
+        "value": {
+            "raw_scale": 100_000,
+            "payer_role": "actor",
+            "application_timing": "on_send",
+            "pending_payment_state": "already_applied",
+            "entries": cost_entries,
+        },
+        "reason": None,
+    }
+    for key in _UNAVAILABLE_TERMS_KEYS:
         item = _exact_object(
             terms.get(key), _STATUS_VALUE_REASON_FIELDS, f"terms.{key}"
         )

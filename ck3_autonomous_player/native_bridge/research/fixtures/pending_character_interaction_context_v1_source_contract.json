@@ -8,9 +8,19 @@
   "not_live_evidence": true,
   "game_process_started": false,
   "purpose": "deterministic source vectors for the implemented production read-only projection; interaction keys and IDs are deliberately synthetic and assert no gameplay-specific semantics or live evidence",
+  "external_live_evidence": {
+    "contract": "../pending_character_interaction_context_v1_abi.json#live_validation",
+    "artifact_sha256": "D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89",
+    "claim_boundary": "historical ordinary nonreligious pending identity, roles, route, deadline and reply legality only; this synthetic fixture does not itself supply live evidence"
+  },
   "override_application": "recursively merge each vector's overrides into defaults; arrays and scalar leaves replace the default value, and the key/hash pair is read evidence rather than a request to recompute the engine hash",
   "source_hashes": {
     "Crusader Kings III/game/common/character_interactions/_character_interactions.info": "F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10",
+    "Crusader Kings III/game/common/character_interactions/00_adoption.txt": "E70DA0677D32672E83F5DB588A8BB3BC3D5AFEB89E8818BB7C9903BDDA65AAEC",
+    "Crusader Kings III/game/common/character_interactions/00_prison_interactions.txt": "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B",
+    "Crusader Kings III/game/common/character_interactions/00_tribal_interactions.txt": "2EB46B8A66080C189AD955E4B7511195B3A51C3FEA540DDE6085D276FB80C282",
+    "Crusader Kings III/game/common/character_interactions/00_war.txt": "5C99B8F14893929A9BC2DBB5B258CDD2D4233D5805091952209413DE876EE09F",
+    "Crusader Kings III/game/common/scripted_costs/00_costs.txt": "E83855B1B09752BCF1D8CD8D6965D466548DC8A97ADCC1772D46EB05CA0D3710",
     "Crusader Kings III/game/common/defines/00_defines.txt": "C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807"
   },
   "projection_invariants": {
@@ -22,6 +32,9 @@
     "acknowledge_postcondition": "queue acceptance alone is not success; the native driver must observe a later snapshot in which the old full generation-bearing pending ID is absent or replaced",
     "malformed_observation": "publish status invalid and all action booleans false",
     "target_boundary": "a nonzero raw scope type has a stable registry type key but is not a typed payload identity until an exact-build decoder for that type exists",
+    "generic_cost_mapping": "all ten evaluator ordinals are mapped by the same-index render/formatter loop and independently cross-checked by the fixed-token serializer and affordability dispatch; no slot name is inferred from documentation order",
+    "generic_cost_payment": "the actor paid the generic authored cost on_send, so an observed pending interaction reports already_applied history rather than a future responder liability",
+    "generic_cost_signed_raw": "preserve signed int64 Q100000 because the native negative clamp is conditional",
     "semantic_readiness": "legal reply availability alone never makes interaction_semantic_decision_ready true"
   },
   "defaults": {
@@ -88,12 +101,30 @@
       "can_be_blocked_trigger": true,
       "auto_accept": false
     },
+    "generic_authored_costs": {
+      "raw_scale": 100000,
+      "payer_role": "actor",
+      "application_timing": "on_send",
+      "pending_payment_state": "already_applied",
+      "entries": [
+        {"resource_key": "gold", "raw": 0},
+        {"resource_key": "prestige", "raw": 100000},
+        {"resource_key": "piety", "raw": -50000},
+        {"resource_key": "renown", "raw": 250000},
+        {"resource_key": "influence", "raw": 0},
+        {"resource_key": "herd", "raw": 0},
+        {"resource_key": "treasury", "raw": 300000},
+        {"resource_key": "treasury_or_gold", "raw": 50000},
+        {"resource_key": "merit", "raw": 0},
+        {"resource_key": "barter_goods", "raw": 400000}
+      ]
+    },
     "semantic_domains": {
       "stable_definition": "available",
       "roles": "available",
       "target": "available",
       "selected_send_options": "available",
-      "structured_costs": "unavailable",
+      "structured_costs": "available",
       "structured_exchanges": "unavailable",
       "structured_effect_preview": "unavailable"
     }
@@ -114,9 +145,9 @@
         "can_reject": true,
         "can_block": true,
         "can_acknowledge": false,
+        "generic_costs_ready": true,
         "interaction_semantic_decision_ready": false,
         "not_ready_reasons": [
-          "structured_costs_unavailable",
           "structured_exchanges_unavailable",
           "structured_effect_preview_unavailable"
         ]
@@ -303,7 +334,6 @@
         "interaction_semantic_decision_ready": false,
         "not_ready_reasons": [
           "target_generic_scope_payload_identity_not_closed",
-          "structured_costs_unavailable",
           "structured_exchanges_unavailable",
           "structured_effect_preview_unavailable"
         ]
@@ -489,14 +519,19 @@
     "reply_legality_static_ready": true,
     "generic_target_type_key_static_ready": true,
     "generic_target_typed_identity_ready": false,
+    "generic_costs_static_ready": true,
+    "generic_costs_query_ready": true,
+    "generic_costs_live_ready": false,
     "structured_terms_ready": false,
     "bridge_query_ready": true,
     "ordinary_pending_query_ready": true,
+    "ordinary_pending_query_live_ready": true,
     "notification_ack_static_ready": true,
     "notification_ack_query_ready": true,
     "notification_ack_action_ready": true,
     "notification_ack_live_ready": false,
-    "production_live_ready": false,
+    "production_live_ready": true,
+    "production_live_scope": "historical ordinary nonreligious pending identity, roles, route, deadline and reply legality only; excludes the newly wired generic costs, notification ACK, intermediary routing and semantic decision",
     "interaction_semantic_decision_ready": false,
     "capability_advertised": true
   }

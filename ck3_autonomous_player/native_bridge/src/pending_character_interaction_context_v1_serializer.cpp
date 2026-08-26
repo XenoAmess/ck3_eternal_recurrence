@@ -9,22 +9,27 @@
 namespace xar::ck3_11906 {
 namespace {
 
+constexpr std::array<std::string_view,
+                     game::kPendingCharacterInteractionCostResourceCountV1>
+    kCostResourceKeys{"gold",        "prestige",         "piety",
+                      "renown",      "influence",        "herd",
+                      "treasury",    "treasury_or_gold", "merit",
+                      "barter_goods"};
+
 std::string Number(std::uint64_t value) {
   std::array<char, 32> buffer{};
   const auto result =
       std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-  return result.ec == std::errc{}
-             ? std::string(buffer.data(), result.ptr)
-             : std::string{};
+  return result.ec == std::errc{} ? std::string(buffer.data(), result.ptr)
+                                  : std::string{};
 }
 
 std::string SignedNumber(std::int64_t value) {
   std::array<char, 32> buffer{};
   const auto result =
       std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-  return result.ec == std::errc{}
-             ? std::string(buffer.data(), result.ptr)
-             : std::string{};
+  return result.ec == std::errc{} ? std::string(buffer.data(), result.ptr)
+                                  : std::string{};
 }
 
 void AppendJsonString(std::string &output, std::string_view value) {
@@ -45,8 +50,8 @@ void AppendJsonString(std::string &output, std::string_view value) {
   output.push_back('"');
 }
 
-std::string_view StatusName(
-    game::PendingCharacterInteractionContextStatusV1 status) noexcept {
+std::string_view
+StatusName(game::PendingCharacterInteractionContextStatusV1 status) noexcept {
   switch (status) {
   case game::PendingCharacterInteractionContextStatusV1::available:
     return "available";
@@ -92,10 +97,10 @@ bool ValidFailure(
          ValidFailureLegality(context.legality.block, context.reason) &&
          ValidFailureLegality(context.legality.acknowledge, context.reason) &&
          !ready.stable_definition_ready && !ready.roles_ready &&
-         !ready.target_type_key_ready &&
-         !ready.target_typed_identity_ready && !ready.send_options_ready &&
-         !ready.routing_ready && !ready.deadline_ready &&
-         !ready.auto_accept_ready && !ready.reply_legality_ready &&
+         !ready.target_type_key_ready && !ready.target_typed_identity_ready &&
+         !ready.send_options_ready && !ready.routing_ready &&
+         !ready.deadline_ready && !ready.auto_accept_ready &&
+         !ready.reply_legality_ready && !ready.generic_costs_ready &&
          !ready.structured_terms_ready && !ready.same_frame_ready &&
          !ready.interaction_semantic_decision_ready &&
          ready.not_ready_reasons.size() == 1 &&
@@ -116,6 +121,24 @@ bool ValidUnavailableTerm(
   return term.status ==
              game::PendingCharacterInteractionSemanticStatusV1::unavailable &&
          term.reason == reason;
+}
+
+bool ValidStructuredCosts(
+    const game::PendingCharacterInteractionStructuredCostsV1 &costs) noexcept {
+  if (costs.status !=
+          game::PendingCharacterInteractionSemanticStatusV1::available ||
+      costs.raw_scale != game::kPendingCharacterInteractionCostRawScaleV1 ||
+      costs.payer_role != "actor" || costs.application_timing != "on_send" ||
+      costs.pending_payment_state != "already_applied" ||
+      !costs.reason.empty()) {
+    return false;
+  }
+  for (std::size_t index = 0; index < costs.entries.size(); ++index) {
+    if (costs.entries[index].resource_key != kCostResourceKeys[index]) {
+      return false;
+    }
+  }
+  return true;
 }
 
 bool ValidAvailable(
@@ -158,8 +181,7 @@ bool ValidAvailable(
       !ValidAvailableLegality(context.legality.reject) ||
       !ValidAvailableLegality(context.legality.block) ||
       !ValidAvailableLegality(context.legality.acknowledge) ||
-      !ValidUnavailableTerm(terms.structured_costs,
-                            "structured_costs_unavailable") ||
+      !ValidStructuredCosts(terms.structured_costs) ||
       !ValidUnavailableTerm(terms.structured_exchanges,
                             "structured_exchanges_unavailable") ||
       !ValidUnavailableTerm(terms.structured_effect_preview,
@@ -219,16 +241,27 @@ bool ValidAvailable(
   } else if (context.legality.acknowledge.allowed) {
     return false;
   }
-  const auto expected_reason_count = target.present ? 4U : 3U;
-  return ready.stable_definition_ready && ready.roles_ready &&
+  std::size_t reason_index = 0;
+  if (target.present &&
+      (ready.not_ready_reasons.empty() ||
+       ready.not_ready_reasons[reason_index++] !=
+           "target_generic_scope_payload_identity_not_closed")) {
+    return false;
+  }
+  const bool exact_reasons =
+      ready.not_ready_reasons.size() == reason_index + 2U &&
+      ready.not_ready_reasons[reason_index] ==
+          "structured_exchanges_unavailable" &&
+      ready.not_ready_reasons[reason_index + 1U] ==
+          "structured_effect_preview_unavailable";
+  return exact_reasons && ready.stable_definition_ready && ready.roles_ready &&
          ready.target_type_key_ready &&
          ready.target_typed_identity_ready == !target.present &&
          ready.send_options_ready && ready.routing_ready &&
          ready.deadline_ready && ready.auto_accept_ready &&
-         ready.reply_legality_ready && !ready.structured_terms_ready &&
-         ready.same_frame_ready &&
-         !ready.interaction_semantic_decision_ready &&
-         ready.not_ready_reasons.size() == expected_reason_count;
+         ready.reply_legality_ready && ready.generic_costs_ready &&
+         !ready.structured_terms_ready && ready.same_frame_ready &&
+         !ready.interaction_semantic_decision_ready;
 }
 
 void AppendOptionalString(std::string &output,
@@ -270,8 +303,34 @@ void AppendUnavailableTerm(
   output.push_back('}');
 }
 
-std::string TargetEnvelopeHex(
-    const std::array<std::uint8_t, 16> &bytes) {
+void AppendStructuredCosts(
+    std::string &output,
+    const game::PendingCharacterInteractionStructuredCostsV1 &costs) {
+  output += "{\"status\":";
+  AppendJsonString(output, SemanticStatusName(costs.status));
+  output += ",\"value\":{\"raw_scale\":";
+  output += SignedNumber(costs.raw_scale);
+  output += ",\"payer_role\":";
+  AppendJsonString(output, costs.payer_role);
+  output += ",\"application_timing\":";
+  AppendJsonString(output, costs.application_timing);
+  output += ",\"pending_payment_state\":";
+  AppendJsonString(output, costs.pending_payment_state);
+  output += ",\"entries\":[";
+  for (std::size_t index = 0; index < costs.entries.size(); ++index) {
+    if (index != 0) {
+      output.push_back(',');
+    }
+    output += "{\"resource_key\":";
+    AppendJsonString(output, costs.entries[index].resource_key);
+    output += ",\"raw\":";
+    output += SignedNumber(costs.entries[index].raw);
+    output.push_back('}');
+  }
+  output += "]},\"reason\":null}";
+}
+
+std::string TargetEnvelopeHex(const std::array<std::uint8_t, 16> &bytes) {
   constexpr char hex[] = "0123456789abcdef";
   std::string output;
   output.resize(bytes.size() * 2U);
@@ -299,9 +358,8 @@ std::string SerializePendingCharacterInteractionContextV1(
 
   std::string output;
   output.reserve(8'192);
-  output +=
-      "{\"schema\":\"pending-character-interaction-context-v1\","
-      "\"schema_version\":1,\"status\":";
+  output += "{\"schema\":\"pending-character-interaction-context-v1\","
+            "\"schema_version\":1,\"status\":";
   AppendJsonString(output, StatusName(context.status));
   output += ",\"snapshot_revision\":";
   output += Number(context.snapshot_revision);
@@ -355,8 +413,7 @@ std::string SerializePendingCharacterInteractionContextV1(
     output += ",\"type_key_reason\":";
     AppendOptionalReason(output, target.type_key_reason);
     output += ",\"typed_identity_status\":";
-    AppendJsonString(output,
-                     SemanticStatusName(target.typed_identity_status));
+    AppendJsonString(output, SemanticStatusName(target.typed_identity_status));
     output += ",\"typed_identity\":";
     AppendOptionalString(output, target.typed_identity);
     output += ",\"typed_identity_reason\":";
@@ -386,8 +443,7 @@ std::string SerializePendingCharacterInteractionContextV1(
       output += ",\"is_valid\":";
       output += row.is_valid ? "true" : "false";
       output += ",\"canonical_flag_status\":";
-      AppendJsonString(output,
-                       SemanticStatusName(row.canonical_flag_status));
+      AppendJsonString(output, SemanticStatusName(row.canonical_flag_status));
       output += ",\"canonical_flag_key\":";
       AppendOptionalString(output, row.canonical_flag_key);
       output += ",\"canonical_flag_reason\":";
@@ -445,7 +501,7 @@ std::string SerializePendingCharacterInteractionContextV1(
     output += "{\"special_data_present\":";
     output += terms.special_data_present ? "true" : "false";
     output += ",\"structured_costs\":";
-    AppendUnavailableTerm(output, terms.structured_costs);
+    AppendStructuredCosts(output, terms.structured_costs);
     output += ",\"structured_exchanges\":";
     AppendUnavailableTerm(output, terms.structured_exchanges);
     output += ",\"structured_effect_preview\":";
@@ -475,6 +531,8 @@ std::string SerializePendingCharacterInteractionContextV1(
   output += ready.auto_accept_ready ? "true" : "false";
   output += ",\"reply_legality_ready\":";
   output += ready.reply_legality_ready ? "true" : "false";
+  output += ",\"generic_costs_ready\":";
+  output += ready.generic_costs_ready ? "true" : "false";
   output += ",\"structured_terms_ready\":";
   output += ready.structured_terms_ready ? "true" : "false";
   output += ",\"same_frame_ready\":";
@@ -482,27 +540,27 @@ std::string SerializePendingCharacterInteractionContextV1(
   output += ",\"interaction_semantic_decision_ready\":";
   output += ready.interaction_semantic_decision_ready ? "true" : "false";
   output += ",\"not_ready_reasons\":[";
-  for (std::size_t index = 0; index < ready.not_ready_reasons.size();
-       ++index) {
+  for (std::size_t index = 0; index < ready.not_ready_reasons.size(); ++index) {
     if (index != 0) {
       output.push_back(',');
     }
     AppendJsonString(output, ready.not_ready_reasons[index]);
   }
-  output +=
-      "]},\"provenance\":{"
-      "\"backend_id\":\"ck3-1.19.0.6-native-pending-character-interaction-context-v1\","
-      "\"pending_storage_slot_rva\":\"0x57BF1C8\","
-      "\"character_storage_slot_rva\":\"0x570C130\","
-      "\"expiration_days_rva\":\"0x570F528\","
-      "\"local_routing_predicate_rva\":\"0x1266BA0\","
-      "\"reply_validator_rva\":\"0x26B3540\","
-      "\"auto_accept_trigger_evaluator_rva\":\"0x334C510\","
-      "\"target_type_registry_getter_rva\":\"0x33C52B0\","
-      "\"target_type_registry_rva\":\"0x4FFE290\","
-      "\"script_identifier_name_rva\":\"0x3B58970\","
-      "\"reply_primary_vtable_rva\":\"0x4082930\","
-      "\"reply_secondary_vtable_rva\":\"0x4082900\"}}";
+  output += "]},\"provenance\":{"
+            "\"backend_id\":\"ck3-1.19.0.6-native-pending-character-"
+            "interaction-context-v1\","
+            "\"pending_storage_slot_rva\":\"0x57BF1C8\","
+            "\"character_storage_slot_rva\":\"0x570C130\","
+            "\"expiration_days_rva\":\"0x570F528\","
+            "\"local_routing_predicate_rva\":\"0x1266BA0\","
+            "\"reply_validator_rva\":\"0x26B3540\","
+            "\"auto_accept_trigger_evaluator_rva\":\"0x334C510\","
+            "\"cost_evaluator_rva\":\"0x2CDB7B0\","
+            "\"target_type_registry_getter_rva\":\"0x33C52B0\","
+            "\"target_type_registry_rva\":\"0x4FFE290\","
+            "\"script_identifier_name_rva\":\"0x3B58970\","
+            "\"reply_primary_vtable_rva\":\"0x4082930\","
+            "\"reply_secondary_vtable_rva\":\"0x4082900\"}}";
   return output;
 }
 

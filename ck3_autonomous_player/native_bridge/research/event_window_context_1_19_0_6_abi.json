@@ -20,8 +20,17 @@
   ],
   "source_contract": {
     "range_convention": "start inclusive, end exclusive",
-    "span_provenance": "MSVC x64 .pdata runtime-function extents; the effect-item append routine is one logical function split across three adjacent .pdata regions",
+    "span_provenance": "MSVC x64 exact .pdata runtime-function regions. A region need not equal a whole logical function: the idler accessor root/dynamic-cast prefix is its own exact region, while the effect-item append routine is one logical function split across three adjacent regions.",
     "exact_function_spans": [
+      {
+        "name": "in_game_idler_native_accessor_root_runtime_region",
+        "start_rva": "0xAA43C0",
+        "end_rva": "0xAA440A",
+        "byte_length": "0x4A",
+        "sha256": "1741A42D9B2425B66C2738B28128D9DA0CC95E46C37B118E74C646C74D209822",
+        "bytes": "40534883EC308BD9488B0DE9B3C6044885C90F8495000000488B49104C8D0D6DAB57044C8D053EAB5704C74424200000000033D2E8FBED3B034885C0746F488B88880000004885C97463",
+        "logical_function_boundary": "This exact unwind region contains the stable root load, RTTI dynamic-cast and null gates; the logical accessor continues in the next runtime region after 0xAA440A."
+      },
       {
         "name": "CIngameInterfaceIdlerGfx_constructor",
         "start_rva": "0xAA3ED0",
@@ -183,6 +192,7 @@
       }
     ],
     "entry_only_anchors": {
+      "in_game_idler_native_accessor": "0xAA43C0",
       "idler_creation_callsite": "0x82813C",
       "idler_manager_tick_callsite": "0xAA8233",
       "window_allocation_callsite": "0xBAB9D4",
@@ -217,9 +227,13 @@
     "CIngameInterfaceIdlerGfx_object_size": "0x98",
     "event_window_manager_allocation_size": "0xA8",
     "chain": "CIngameInterfaceIdlerGfx* +0x28 -> event-window manager; manager +0x10 data/+0x1C int32 count -> CEventWindow* entries of stride 8; CEventWindow +0xE8 -> inline CEventWindowData",
-    "root_to_idler_static_ready": false,
-    "candidate_capture": "Capture the in-game idler this pointer at RVA 0xAA72B0 or the manager rcx at callsite 0xAA8233, and clear it at the idler destructor RVA 0xAA4070. This is a proposed production seam, not a validated locator.",
-    "frontend_collision": "RVA 0xE30E78 also invokes the generic manager tick. Any capture must validate the in-game dynamic type/vtable and current event instance rather than accepting an arbitrary manager."
+    "root_to_idler_static_ready": true,
+    "stable_root": "owner = *(module+0x570F7B8); idler_base = *(owner+0x10)",
+    "native_accessor_proof": "Exact .pdata slice 0xAA43C0..0xAA440A loads module+0x570F7B8, rejects null owner, loads owner+0x10, invokes MSVC dynamic_cast from CIdlerGfxBase to CIngameInterfaceIdlerGfx (destination TypeDescriptor module+0x501EF50, PMD mdisp 0), rejects null, then reads idler+0x88. The passive reader mirrors the already-proven cast with the exact primary-vtable gate module+0x40B1D30.",
+    "constructor_corroboration": "0xAA3EEA..0xAA3EF1 writes module+0x40B1D30 to the constructed in-game idler; 0xAA3F0D initializes idler+0x28 before the manager allocation/store later in the same exact constructor.",
+    "cross_contract": "prewar_scope_v1_abi.json ownership_and_root and docs/ck3-native-ai/prewar-encounter-inputs.md stable passive root",
+    "capture_not_required": "The previously proposed 0xAA72B0/0xAA8233 capture and 0xAA4070 cleanup remain useful live diagnostics only; production v1 uses the native accessor root and retains no engine pointer.",
+    "frontend_collision": "Excluded structurally: the root is the native in-game accessor's CIdlerGfxBase dynamic-cast path and the passive mirror requires the CIngameInterfaceIdlerGfx primary vtable before reading +0x28. The frontend generic manager call at 0xE30E78 is never used as a root. Query admission additionally requires one CEventWindow primary-vtable match whose complete data+0x00 event instance ID equals the current ActiveEvent+0x1BC ID."
   },
   "lifetime": {
     "CEventWindow_allocation_size": "0x838",
@@ -231,6 +245,8 @@
   },
   "event_window_manager": {
     "window_vector": "+0x10 data, +0x1C int32 count, stride 0x08",
+    "capacity_boundary": "No manager +0x18 capacity field is consumed by production v1 because this contract freezes only +0x10 data and +0x1C count. The signed count is bounded to 0..32; count>0 requires nonnull data.",
+    "entry_admission": "Every stored entry in the bounded manager vector must be nonnull and have the exact CEventWindow primary vtable module+0x417F758. A null or other dynamic type is treated as layout-invalid rather than skipped; manager keep-alive/remove/compact is the static evidence that live stored rows are CEventWindow ownership entries.",
     "active_event_source": "game/UI data +0x313D8 data, +0x313E4 int32 count",
     "known_instance_ids": "+0x58 data, +0x64 int32 count",
     "scan_and_create_rvas": "0xBAB920..0xBABA36",
@@ -262,7 +278,8 @@
     "native_option_index": "+0x1B0 int32 authored zero-based index",
     "enabled": "+0x1B4 uint8",
     "fallback_materialized": "+0x1B5 uint8",
-    "shown": "membership in the materialized option-item vector"
+    "shown": "membership in the materialized option-item vector",
+    "native_index_identity": "native_option_index is authored identity; production v1 requires it nonnegative and unique across the materialized vector. cancel is derived only by equality with data+0x2C, so uniqueness also bounds cancel=true to at most one row."
   },
   "OptionEffectItem": {
     "size_and_stride": "0x18",
@@ -286,7 +303,7 @@
     "raw_context_mode_business_semantics": "unknown"
   },
   "typed_context_proposal": {
-    "status": "not_implemented",
+    "status": "minimal_read_only_implemented_live_pending",
     "top_level": [
       "revision",
       "availability",
@@ -306,7 +323,7 @@
       "cancel",
       "resolved_name",
       "unavailable_reason",
-      "effect_indicators"
+      "effect_preview_unavailable"
     ],
     "nullable_until_reverse_closed": [
       "event_definition_key",
@@ -320,18 +337,54 @@
     "materialized_option_context_static_ready": true,
     "effect_indicator_abi_static_ready": true,
     "native_ai_selector_static_ready": true,
-    "stable_root_to_idler_ready": false,
+    "stable_root_to_idler_ready": true,
     "stable_event_definition_key_ready": false,
     "stable_scopes_ready": false,
     "full_effect_preview_ready": false,
+    "bridge_query_static_ready": true,
     "bridge_query_ready": false,
     "live_validated": false
   },
   "do_not_call_yet": [
-    "Do not write a production reader until an in-game idler/manager capture has deterministic install, teardown and collision validation.",
     "Do not call trigger, name, preview or effect functions from a worker thread.",
     "Do not call loaded-effect executor RVA 0x3380410 for preview.",
     "Do not retain engine-owned pointers after the owning-thread snapshot.",
-    "Do not infer a stable event key or stable scope IDs from an ActiveEvent pointer."
-  ]
+    "Do not infer a stable event key or stable scope IDs from an ActiveEvent pointer.",
+    "Do not call an event option executor from current-event-window-context-v1; it is a read-only application-main copy only."
+  ],
+  "production_query": {
+    "capability": "game.command.query-current-event-window-context-v1",
+    "step": "query-current-event-window-context-v1",
+    "request": {
+      "expected_revision": "positive uint64; must equal the bridge's current published revision",
+      "event_instance_id": "positive complete generation-bearing ActiveEvent instance ID; must equal the same-revision snapshot"
+    },
+    "thread_boundary": "fixed typed main_thread_query_mailbox_v1 application/UI owner callback while paused",
+    "single_copy": "root, manager, window vector, inline data, option vector and MSVC strings are dereferenced and copied only inside one mailbox callback; no engine pointer crosses back to the worker",
+    "admission": [
+      "exact executable binding",
+      "paused map-ready played-character snapshot",
+      "before and after Snapshot values identical",
+      "native in-game idler accessor root and exact CIngameInterfaceIdlerGfx vtable",
+      "exactly one exact CEventWindow primary-vtable entry with complete event instance ID match",
+      "bounded vectors and strings; every option owner backpointer equals the matched inline data"
+    ],
+    "published_option_fields": [
+      "rendered_index",
+      "native_option_index",
+      "shown",
+      "enabled",
+      "fallback",
+      "cancel",
+      "resolved_name",
+      "unavailable_reason"
+    ],
+    "explicitly_unavailable": [
+      "event_definition_key",
+      "root_scope",
+      "saved_scopes",
+      "full_effect_preview"
+    ],
+    "live_acceptance": "pending: two adjacent paused generic nonreligious event-window queries must match the visible UI and closing the window must remove the match without invoking select-event-option"
+  }
 }

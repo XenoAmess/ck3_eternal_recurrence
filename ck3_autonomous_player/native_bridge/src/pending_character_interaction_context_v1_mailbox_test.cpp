@@ -20,19 +20,16 @@ xar::game::ReadPendingCharacterInteractionContextResultV1 g_reader_result =
 std::uint32_t g_reader_calls = 0;
 std::uint32_t g_native_invocations = 0;
 
-bool XAR_TEST_PENDING_FASTCALL FakeLocalRouting(
-    void *, void *) {
-  return true;
-}
+bool XAR_TEST_PENDING_FASTCALL FakeLocalRouting(void *, void *) { return true; }
 
-bool XAR_TEST_PENDING_FASTCALL FakeReplyValidator(void *) {
-  return true;
-}
+bool XAR_TEST_PENDING_FASTCALL FakeReplyValidator(void *) { return true; }
 
-bool XAR_TEST_PENDING_FASTCALL FakeTriggerEvaluator(
-    void *, const void *) {
+bool XAR_TEST_PENDING_FASTCALL FakeTriggerEvaluator(void *, const void *) {
   return false;
 }
+
+void XAR_TEST_PENDING_FASTCALL FakeCostEvaluator(const void *, const void *,
+                                                 std::int64_t *) {}
 
 void *XAR_TEST_PENDING_FASTCALL FakeTargetTypeRegistry() {
   return reinterpret_cast<void *>(0x1234);
@@ -71,6 +68,17 @@ bool InvokeTriggerEvaluator(
   return true;
 }
 
+bool InvokeCostEvaluator(
+    void *, xar::ck3_11906::NativePendingInteractionCostEvaluatorV1 function,
+    const void *, const void *,
+    std::array<std::int64_t,
+               xar::game::kPendingCharacterInteractionCostResourceCountV1>
+        &output) noexcept {
+  ++g_native_invocations;
+  output.fill(0);
+  return function == &FakeCostEvaluator;
+}
+
 bool InvokeTargetTypeRegistry(
     void *,
     xar::ck3_11906::NativePendingInteractionTargetTypeRegistryGetterV1 function,
@@ -97,16 +105,15 @@ void PrimeMailbox(
     xar::ck3_11906::MainThreadQueryMailboxV1 &mailbox,
     xar::ck3_11906::PendingCharacterInteractionContextMailboxContextV1 &query,
     std::uint64_t sequence) {
-  mailbox.state.store(
-      xar::ck3_11906::MainThreadQueryMailboxStateV1::executing);
+  mailbox.state.store(xar::ck3_11906::MainThreadQueryMailboxStateV1::executing);
   mailbox.failure_flags.store(0);
   mailbox.stop_requested.store(false);
   mailbox.published_sequence.store(sequence);
   mailbox.owner_thread_id.store(GetCurrentThreadId());
   mailbox.paused_owner_verified_pump_epochs.store(
       xar::ck3_11906::kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs);
-  mailbox.executor = &xar::ck3_11906::
-      ExecutePendingCharacterInteractionContextMailboxQueryV1;
+  mailbox.executor =
+      &xar::ck3_11906::ExecutePendingCharacterInteractionContextMailboxQueryV1;
   mailbox.executor_context = &query;
   query.mailbox = &mailbox;
   query.ticket.sequence = sequence;
@@ -117,6 +124,7 @@ void PrimeMailbox(
   query.access.invoke_local_routing = &InvokeLocalRouting;
   query.access.invoke_reply_validator = &InvokeReplyValidator;
   query.access.invoke_trigger_evaluator = &InvokeTriggerEvaluator;
+  query.access.invoke_cost_evaluator = &InvokeCostEvaluator;
   query.access.invoke_target_type_registry = &InvokeTargetTypeRegistry;
   query.access.invoke_script_identifier_name = &InvokeScriptIdentifierName;
 }
@@ -182,11 +190,12 @@ bool TestDirectInvocationRejected() {
   const auto stamp = Stamp();
   const auto calls_before = g_reader_calls;
   return !xar::ck3_11906::
-              ExecutePendingCharacterInteractionContextMailboxQueryV1(
-                  &query, stamp) &&
-         query.completion == xar::ck3_11906::
-                                 PendingCharacterInteractionContextMailboxCompletionV1::
-                                     infrastructure_rejected &&
+             ExecutePendingCharacterInteractionContextMailboxQueryV1(&query,
+                                                                     stamp) &&
+         query.completion ==
+             xar::ck3_11906::
+                 PendingCharacterInteractionContextMailboxCompletionV1::
+                     infrastructure_rejected &&
          g_reader_calls == calls_before;
 }
 
@@ -200,15 +209,15 @@ bool TestTypedCompletion(
   const auto stamp = Stamp();
   const auto calls_before = g_reader_calls;
   const auto invokes_before = g_native_invocations;
-  if (!xar::ck3_11906::
-          ExecutePendingCharacterInteractionContextMailboxQueryV1(
-              &query, stamp) ||
+  if (!xar::ck3_11906::ExecutePendingCharacterInteractionContextMailboxQueryV1(
+          &query, stamp) ||
       g_reader_calls != calls_before + 1 ||
-      g_native_invocations != invokes_before + 5 ||
+      g_native_invocations != invokes_before + 6 ||
       query.executor_invocations != 1 ||
-      query.completion != xar::ck3_11906::
-                              PendingCharacterInteractionContextMailboxCompletionV1::
-                                  completed ||
+      query.completion !=
+          xar::ck3_11906::
+              PendingCharacterInteractionContextMailboxCompletionV1::
+                  completed ||
       query.result.snapshot_revision != 77 ||
       query.result.date_raw != g_snapshot.date_raw ||
       query.result.pending_interaction_id != 16'777'249 ||
@@ -217,23 +226,22 @@ bool TestTypedCompletion(
   }
   if (read_result ==
       xar::game::ReadPendingCharacterInteractionContextResultV1::available) {
-    return query.result.status == xar::game::
-                                      PendingCharacterInteractionContextStatusV1::
-                                          available &&
+    return query.result.status ==
+               xar::game::PendingCharacterInteractionContextStatusV1::
+                   available &&
            query.result.readiness.same_frame_ready &&
            query.result.legality.accept.allowed;
   }
   if (read_result ==
       xar::game::ReadPendingCharacterInteractionContextResultV1::invalid) {
-    return query.result.status == xar::game::
-                                      PendingCharacterInteractionContextStatusV1::
-                                          invalid &&
+    return query.result.status ==
+               xar::game::PendingCharacterInteractionContextStatusV1::invalid &&
            query.result.reason == "send_option_count_mismatch" &&
            !query.result.legality.accept.allowed;
   }
-  return query.result.status == xar::game::
-                                    PendingCharacterInteractionContextStatusV1::
-                                        unavailable &&
+  return query.result.status ==
+             xar::game::PendingCharacterInteractionContextStatusV1::
+                 unavailable &&
          query.result.reason == "pending_generation_mismatch" &&
          !query.result.legality.accept.allowed;
 }
@@ -260,12 +268,16 @@ ReadPendingCharacterInteractionContextV1(
   bool routed = false;
   bool valid = false;
   bool evaluated = true;
+  std::array<std::int64_t,
+             game::kPendingCharacterInteractionCostResourceCountV1>
+      costs{};
   void *registry = nullptr;
   const std::string *identifier_name = nullptr;
   if (access.capture_frame == nullptr || access.is_main_thread == nullptr ||
       access.invoke_local_routing == nullptr ||
       access.invoke_reply_validator == nullptr ||
       access.invoke_trigger_evaluator == nullptr ||
+      access.invoke_cost_evaluator == nullptr ||
       access.invoke_target_type_registry == nullptr ||
       access.invoke_script_identifier_name == nullptr ||
       !access.is_main_thread(access.context) ||
@@ -276,15 +288,16 @@ ReadPendingCharacterInteractionContextV1(
       !access.invoke_reply_validator(access.context, &FakeReplyValidator,
                                      reinterpret_cast<void *>(0x30), valid) ||
       !access.invoke_trigger_evaluator(
-          access.context, &FakeTriggerEvaluator,
-          reinterpret_cast<void *>(0x40), reinterpret_cast<void *>(0x50),
-          evaluated) ||
-      !access.invoke_target_type_registry(
-          access.context, &FakeTargetTypeRegistry, registry) ||
+          access.context, &FakeTriggerEvaluator, reinterpret_cast<void *>(0x40),
+          reinterpret_cast<void *>(0x50), evaluated) ||
+      !access.invoke_cost_evaluator(access.context, &FakeCostEvaluator,
+                                    reinterpret_cast<void *>(0x60),
+                                    reinterpret_cast<void *>(0x70), costs) ||
+      !access.invoke_target_type_registry(access.context,
+                                          &FakeTargetTypeRegistry, registry) ||
       !access.invoke_script_identifier_name(
-          access.context, &FakeScriptIdentifierName, 41,
-          identifier_name) ||
-      !routed || !valid || evaluated || registry == nullptr ||
+          access.context, &FakeScriptIdentifierName, 41, identifier_name) ||
+      !routed || !valid || evaluated || costs[0] != 0 || registry == nullptr ||
       identifier_name == nullptr || *identifier_name != "fixture_identifier") {
     return game::ReadPendingCharacterInteractionContextResultV1::unavailable;
   }
@@ -293,8 +306,7 @@ ReadPendingCharacterInteractionContextV1(
   output.snapshot_revision = request.expected_snapshot_revision;
   output.date_raw = frame.date_raw;
   output.pending_interaction_id = request.pending_interaction_id;
-  const auto mark_unavailable = [](auto &legality,
-                                   std::string_view reason) {
+  const auto mark_unavailable = [](auto &legality, std::string_view reason) {
     legality.status =
         game::PendingCharacterInteractionSemanticStatusV1::unavailable;
     legality.allowed = false;
@@ -350,7 +362,8 @@ int main() {
           xar::game::ReadPendingCharacterInteractionContextResultV1::available,
           10) ||
       !TestTypedCompletion(
-          xar::game::ReadPendingCharacterInteractionContextResultV1::unavailable,
+          xar::game::ReadPendingCharacterInteractionContextResultV1::
+              unavailable,
           11) ||
       !TestTypedCompletion(
           xar::game::ReadPendingCharacterInteractionContextResultV1::invalid,
@@ -358,6 +371,7 @@ int main() {
     std::cerr << "pending-interaction typed completion fixture failed\n";
     return 1;
   }
-  std::cout << "pending-character-interaction-context-v1 mailbox fixture passed\n";
+  std::cout
+      << "pending-character-interaction-context-v1 mailbox fixture passed\n";
   return 0;
 }

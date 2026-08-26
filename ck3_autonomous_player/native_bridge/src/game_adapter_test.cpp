@@ -262,6 +262,8 @@ int main() {
       !Contains(known.capabilities,
                 "game.command.query-pending-character-interaction-context-v1") ||
       !Contains(known.capabilities,
+                "game.command.query-current-event-window-context-v1") ||
+      !Contains(known.capabilities,
                 "game.command.query-combat-simulation-inputs-v2-N") ||
       !Contains(known.capabilities,
                 "game.command.query-combat-simulation-inputs-v3-N") ||
@@ -437,6 +439,8 @@ int main() {
       !exact_adapter->supports_step("query-loaded-feature-manifest-v1") ||
       !exact_adapter->supports_step(
           "query-pending-character-interaction-context-v1") ||
+      !exact_adapter->supports_step(
+          "query-current-event-window-context-v1") ||
       !exact_adapter->supports_step(
           "acknowledge-pending-character-interaction") ||
       !exact_adapter->supports_step(

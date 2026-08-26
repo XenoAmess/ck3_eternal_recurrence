@@ -84,9 +84,9 @@ def _pending_context_result(
                 "acknowledge": {"status": "available", "allowed": False},
             },
             "readiness": {
+                "generic_costs_ready": True,
                 "interaction_semantic_decision_ready": False,
                 "not_ready_reasons": [
-                    "structured_costs_unavailable",
                     "structured_exchanges_unavailable",
                     "structured_effect_preview_unavailable",
                 ],
@@ -7697,6 +7697,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_query_campaign_root_context_v1",
                     "ck3_query_loaded_feature_manifest_v1",
                     "ck3_query_pending_character_interaction_context_v1",
+                    "ck3_query_current_event_window_context_v1",
                     "ck3_preview_active_combat_retreat_v1",
                     "ck3_order_active_combat_retreat_v1",
                     "ck3_query_combat_simulation_inputs",

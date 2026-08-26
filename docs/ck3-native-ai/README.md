@@ -40,13 +40,16 @@
   单独冻结人物互动 notification 的 full-generation 枚举、`+0x5C6` channel、enum-4 false validator seam、原生 UI
   construct/submit 与 manager transition；production bridge 已扩展为 notification 可见、paused typed query 可达和严格
   full-ID ACK step，queue 后仍以旧 pending ID 推进作为成功条件。非宗教 production live fixture 尚未完成。
-- [static-confirmed] [interaction-structured-terms.md](interaction-structured-terms.md) 分开冻结普通人物互动的
-  十槽 compiled-cost evaluator、engine-owned `InteractionEffectsDescription` 物化链，以及 intermediary/recipient/outer
-  原生 AI 接受链；资源槽 stable key、effect typed row/root、white-peace `special_data`/WarID 仍是明确的 production
-  观测依赖，当前不得把 legality 冒充 semantic decision readiness。
-- [static-confirmed locator lower chain] [event-window-context.md](event-window-context.md) 冻结
-  `CIngameInterfaceIdlerGfx → manager → CEventWindow → CEventWindowData` 下半定位链、窗口生命周期、最终 shown/enabled
-  option context 与四类有限 effect indicator；稳定 global root/capture seam 尚未 live 闭合，因此当前没有发布 production reader。
+- [static-confirmed + implementation-confirmed, cost live pending]
+  [interaction-structured-terms.md](interaction-structured-terms.md) 分开冻结普通人物互动的十槽 compiled-cost evaluator、
+  engine-owned `InteractionEffectsDescription` 物化链，以及 intermediary/recipient/outer 原生 AI 接受链；十个资源槽
+  stable key 已由 formatter/serializer/affordability 三链闭合并接入 pending query，明确标记 actor 在 on-send 已支付。
+  effect typed row/root、white-peace `special_data`/WarID 仍是 production 观测依赖，当前不得把 legality 或已付成本
+  冒充 semantic decision readiness。
+- [static-confirmed + implementation-confirmed, live pending] [event-window-context.md](event-window-context.md) 复用原生
+  `0xAA43C0` accessor 闭合 `module+0x570F7B8 → owner+0x10 → CIngameInterfaceIdlerGfx` stable root，继续冻结
+  manager/window/data 生命周期与最终 shown/enabled option context；production 已发布 owning-thread 最小只读 query，
+  frontend 由 in-game idler/window vtable 与完整 current event instance ID 排除。完整 effect preview 与实机 fixture 仍未完成。
 - [static-confirmed] [army-controller.md](army-controller.md) 记录战争 stance、目标候选和评分、重算节拍、
   `CAISubunitStack` 分派状态机、围城/追击/战斗/撤退切换边界，以及战争 `16777290` 的双敌军实例。
 - [static-confirmed] [army-contact-resolution.md](army-contact-resolution.md) 把原生 AI 的目标/避战门连接到

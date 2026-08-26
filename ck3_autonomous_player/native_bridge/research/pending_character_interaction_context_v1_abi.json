@@ -10,8 +10,10 @@
   "advertised": true,
   "production_wired": true,
   "live_validated": true,
+  "live_validated_scope": "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only",
+  "not_live_validated_scope": "the newly wired generic authored cost vector, notification ACK, intermediary routing and semantic decision",
   "game_process_started": true,
-  "scope": "engine-generic pending character-interaction identity, roles, target envelope, selected send options, routing, deadline and reply legality",
+  "scope": "engine-generic pending character-interaction identity, roles, target envelope, selected send options, routing, deadline, reply legality and authored generic cost vector",
   "owner_deferred_domains": [
     "religion",
     "faith",
@@ -23,7 +25,7 @@
     "holy_war"
   ],
   "execution_boundary": {
-    "research_mode": "production_read_only_query_live_validated_for_one_ordinary_nonreligious_recipient_fixture",
+    "research_mode": "production read-only query live-validated for one ordinary nonreligious recipient fixture; generic authored costs are static-closed and production-wired but not yet live-validated",
     "ck3_started_or_controlled": true,
     "cpp_implementation_changed": true,
     "query_thread": "paused application-main mailbox",
@@ -34,6 +36,7 @@
       "0x2C42610 context identity validator",
       "0x2C42A30 reply-state predicate",
       "0x334C510 generic trigger evaluator for proven trigger fields",
+      "0x2CDB7B0 engine-generic compiled-cost evaluator into a caller-zeroed ten-int64 vector",
       "0x33C52B0 generic script-scope type registry getter",
       "0x3B58970 script identifier name resolver"
     ],
@@ -50,6 +53,11 @@
     "span_semantics": "exact_byte_spans are immutable hashed provenance ranges, not an assertion that every range is one .pdata function; entries that cross runtime-function regions or have no .pdata row declare span_kind explicitly",
     "source_files": {
       "Crusader Kings III/game/common/character_interactions/_character_interactions.info": "F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10",
+      "Crusader Kings III/game/common/character_interactions/00_adoption.txt": "E70DA0677D32672E83F5DB588A8BB3BC3D5AFEB89E8818BB7C9903BDDA65AAEC",
+      "Crusader Kings III/game/common/character_interactions/00_prison_interactions.txt": "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B",
+      "Crusader Kings III/game/common/character_interactions/00_tribal_interactions.txt": "2EB46B8A66080C189AD955E4B7511195B3A51C3FEA540DDE6085D276FB80C282",
+      "Crusader Kings III/game/common/character_interactions/00_war.txt": "5C99B8F14893929A9BC2DBB5B258CDD2D4233D5805091952209413DE876EE09F",
+      "Crusader Kings III/game/common/scripted_costs/00_costs.txt": "E83855B1B09752BCF1D8CD8D6965D466548DC8A97ADCC1772D46EB05CA0D3710",
       "Crusader Kings III/game/common/defines/00_defines.txt": "C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807"
     },
     "exact_byte_spans": [
@@ -213,6 +221,48 @@
         "end_rva": "0x2011623",
         "byte_length": "0x223",
         "sha256": "55AC17937B11658E17C4884A9FD027FFA32BCD3B04EBC16B9D98F24BD9ECB02B"
+      },
+      {
+        "name": "generic_interaction_has_cost_caller",
+        "start_rva": "0x2C40E90",
+        "end_rva": "0x2C40F4A",
+        "byte_length": "0xBA",
+        "sha256": "ACA4B8FF934DBC602B3EC3EB9F95E1A3A903AD619B8A70B6E5C1B36A4C6F28A8"
+      },
+      {
+        "name": "generic_interaction_cost_evaluator",
+        "start_rva": "0x2CDB7B0",
+        "end_rva": "0x2CDB9C1",
+        "byte_length": "0x211",
+        "sha256": "50B06EB5A730BF0962B9B2A782F1566A86CCE39B131282E7714B10A465AC01F6"
+      },
+      {
+        "name": "generic_interaction_cost_formatter_dispatch",
+        "start_rva": "0x2CD9D20",
+        "end_rva": "0x2CDA9D4",
+        "byte_length": "0xCB4",
+        "sha256": "37D30768693AF083B8D67908A88849FB9C33B16EC809262A1345F2E96A53B5A1"
+      },
+      {
+        "name": "generic_interaction_cost_render_loop",
+        "start_rva": "0x2CDAA80",
+        "end_rva": "0x2CDB552",
+        "byte_length": "0xAD2",
+        "sha256": "8D89DE114321AD18474443F7310F0850AE5C4C5187B009D7CB1FB5F26145AF28"
+      },
+      {
+        "name": "generic_interaction_cost_vector_serializer",
+        "start_rva": "0x2CDBB70",
+        "end_rva": "0x2CDBE24",
+        "byte_length": "0x2B4",
+        "sha256": "988DB7F261BE88BE4DBA77DAFB1D73460907C902DCE6DE3CEF9B420C3307AEF4"
+      },
+      {
+        "name": "generic_interaction_cost_affordability_gate",
+        "start_rva": "0x2CDCFF0",
+        "end_rva": "0x2CDD6BC",
+        "byte_length": "0x6CC",
+        "sha256": "119C6D85299B865659AC0255C074D5EC45A7F93ACF0BFDA2CBF6318F301FB3A0"
       }
     ],
     "entry_only_anchors": {
@@ -224,6 +274,12 @@
       "generic_script_scope_serializer_dispatch": "0x81D880",
       "human_player_character_id_membership": "0x28BCEB0",
       "generic_trigger_evaluator": "0x334C510",
+      "generic_interaction_has_cost_caller": "0x2C40E90",
+      "generic_interaction_cost_evaluator": "0x2CDB7B0",
+      "generic_interaction_cost_formatter_dispatch": "0x2CD9D20",
+      "generic_interaction_cost_render_loop": "0x2CDAA80",
+      "generic_interaction_cost_vector_serializer": "0x2CDBB70",
+      "generic_interaction_cost_affordability_gate": "0x2CDCFF0",
       "pending_manager_response_transition": "0x2751410",
       "pending_notification_enumerator": "0xD9DAE0",
       "pending_notification_materializer": "0xF06030",
@@ -294,6 +350,7 @@
       "runtime_ordinal": "+0x10 int32 inherited from CGameDatabaseObject",
       "deterministic_key_hash": "+0x14 uint32 inherited from CGameDatabaseObject",
       "canonical_key": "+0x18 MSVC string, size +0x28 and capacity +0x30",
+      "generic_compiled_cost_block": "+0x38; ten compiled rows begin at block+0x38 with stride 0x108",
       "can_be_blocked_trigger": "+0x11F8 embedded trigger",
       "send_option_rows": "+0x2548 pointer",
       "send_option_count": "+0x2554 signed int32",
@@ -363,6 +420,35 @@
     "scope_projection": "RVA 0x2C40950 writes every selected boolean to the primary scope using row+0x3A8",
     "string_identity_status": "unavailable: numeric script identifier to canonical flag string mapping is not closed"
   },
+  "generic_authored_costs": {
+    "definition_block": "CCharacterInteraction+0x38",
+    "pending_scope": "CPendingCharacterInteraction+0x20, the embedded context primary generic scope",
+    "native_evaluator": "void __fastcall 0x2CDB7B0(const void *compiled_cost_block, const void *scope, int64_t *caller_zeroed_out10)",
+    "evaluation_rule": "the evaluator visits ten compiled rows at cost_block+0x38+i*0x108, evaluates each through 0x9698B0, and accumulates signed Q100000 raw values into the same ordinal of out10",
+    "signed_boundary": "raw remains signed int64: cost_block+0xAB1 conditionally clamps negatives, so a disabled clamp may preserve a negative authored value; the bridge must not reinterpret it as malformed",
+    "ordinal_cross_proof": "0x2CDAA80 advances the compiled-row index and the formatter enum together, then calls 0x2CD9D20 with that same ordinal; 0x2CDBB70 serializes the ten qwords in the same order, and 0x2CDCFF0 independently dispatches the same ordinals for affordability",
+    "mapping": [
+      {"slot": 0, "resource_key": "gold", "formatter_key": "GOLD_COST", "serializer_token_id": "0x2875"},
+      {"slot": 1, "resource_key": "prestige", "formatter_key": "PRESTIGE_COST", "serializer_token_id": "0x0001"},
+      {"slot": 2, "resource_key": "piety", "formatter_key": "PIETY_COST", "serializer_token_id": "0x2B26"},
+      {"slot": 3, "resource_key": "renown", "formatter_key": "DYNASTY_PRESTIGE_COST", "serializer_token_id": "0x2B27"},
+      {"slot": 4, "resource_key": "influence", "formatter_key": "INFLUENCE_COST", "serializer_token_id": "0x318D"},
+      {"slot": 5, "resource_key": "herd", "formatter_key": "HERD_COST", "serializer_token_id": "0x29F5"},
+      {"slot": 6, "resource_key": "treasury", "formatter_key": "TREASURY_COST", "serializer_token_id": "0x3B32"},
+      {"slot": 7, "resource_key": "treasury_or_gold", "formatter_key": "TREASURY_COST or GOLD_COST by actor treasury predicate", "serializer_token_id": "0x3D24"},
+      {"slot": 8, "resource_key": "merit", "formatter_key": "MERIT_COST", "serializer_token_id": "0x3E42"},
+      {"slot": 9, "resource_key": "barter_goods", "formatter_key": "BARTER_GOODS_COST", "serializer_token_id": "0x3D30"}
+    ],
+    "treasury_or_gold_affordability": "0x2CDCFF0 adds slot 7 to slot 6 when the actor has a treasury and otherwise to slot 0; slot 7 is an authored routing category, not a standalone balance",
+    "payment_source_contract": "_character_interactions.info lines 467-470 states that the actor pays and the cost is subtracted when the interaction is sent",
+    "pending_wire_semantics": {
+      "payer_role": "actor",
+      "application_timing": "on_send",
+      "pending_payment_state": "already_applied"
+    },
+    "coverage_boundary": "the vector covers engine-generic authored interaction cost only; it is not a future liability of the current responder and does not claim special subtype transfers or effect outcomes",
+    "read_gate": "paused application-main only; resolve the full pending generation twice, evaluate the complete ten-entry vector twice, and publish only when both observations and outer frame are identical"
+  },
   "deadline": {
     "age_days": "pending+0x5B8",
     "daily_update_rva": "0x27516F0",
@@ -430,12 +516,13 @@
       "selected send-option native indexes and numeric flag identifiers",
       "target presence, stable generic-scope type key and raw type envelope",
       "age, expiration and remaining days",
-      "independent accept, reject, block and acknowledge legality"
+      "independent accept, reject, block and acknowledge legality",
+      "complete ten-key signed Q100000 generic authored cost vector, with actor/on-send/already-applied payment semantics"
     ],
     "unavailable_without_subtype_decoder": [
       "typed identity for every generic target kind",
       "numeric option flag identifier to canonical string",
-      "structured costs and resource transfers",
+      "special-subtype resource transfers beyond the generic authored cost vector",
       "structured relationship or title exchanges",
       "special_interaction payload fields",
       "structured hard-coded and scripted effect preview",
@@ -454,7 +541,7 @@
     "routing": "raw kind and auto_accept_notification",
     "deadline": "age_days, expiration_days, remaining_days and expiry_boundary_status",
     "legality": "four independent status/bool/reason objects",
-    "terms": "per-domain status objects; no null-filled claims",
+    "terms": "structured_costs is an available ten-key signed Q100000 vector tagged actor/on_send/already_applied; exchanges, effect preview and native AI terms remain typed unavailable",
     "interaction_semantic_decision_ready": "true only when definition, responder, required target, all decision-relevant terms and at least one legal reply are semantically available"
   },
   "readiness": {
@@ -468,6 +555,9 @@
     "generic_target_envelope_static_ready": true,
     "generic_target_type_key_static_ready": true,
     "generic_target_typed_identity_ready": false,
+    "generic_costs_static_ready": true,
+    "generic_costs_query_ready": true,
+    "generic_costs_live_ready": false,
     "structured_terms_ready": false,
     "bridge_query_ready": true,
     "ordinary_pending_query_ready": true,
@@ -477,7 +567,7 @@
     "notification_ack_action_ready": true,
     "notification_ack_live_ready": false,
     "production_live_ready": true,
-    "production_live_scope": "ordinary recipient pending query only; notification discovery/query/action are production-wired but ACK and intermediary routing remain outside live coverage",
+    "production_live_scope": "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only; the newly wired generic cost vector, notification ACK, intermediary routing and semantic decision remain outside live coverage",
     "interaction_semantic_decision_ready": false,
     "capability_advertised": true
   },
@@ -529,11 +619,12 @@
     "reply_action_invoked": false,
     "managed_process_cleanup": true,
     "disposable_root_cleanup": true,
-    "scope_boundary": "This validates one ordinary nonreligious recipient request. It does not validate intermediary routing, notification discovery/ACK, structured white-peace terms, target payload decoders, or a semantic reply policy."
+    "scope_boundary": "This validates one ordinary nonreligious recipient request with the pre-cost-vector DLL. It does not validate the newly wired generic cost vector, intermediary routing, notification discovery/ACK, structured white-peace terms, target payload decoders, or a semantic reply policy."
   },
   "next_reverse_engineering": [
     "map the generic target scope registry indexes used by supported non-deferred interaction target types to stable typed payload decoders",
-    "close an engine-generic read-only structured terms/effect-description seam without calling subtype mutators or effect executors",
+    "live-validate all-zero generic authored costs on the existing nonreligious white-peace pending fixture, then validate at least one nonzero nonreligious authored cost without sending or replying",
+    "close an engine-generic read-only effect-description seam without calling subtype mutators or effect executors",
     "validate the production paused application-main query against an intermediary fixture; the ordinary recipient fixture is live-confirmed",
     "run a nonreligious auto-accept notification paused fixture through typed query and one strict ACK, then prove the old full generation-bearing pending ID no longer resolves; queue submission alone is insufficient"
   ]

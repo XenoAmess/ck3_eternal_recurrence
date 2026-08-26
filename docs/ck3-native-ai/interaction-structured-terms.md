@@ -1,6 +1,7 @@
 # CK3 1.19.0.6 普通角色互动：结构化条款、效果预览与原生 AI 接受输入
 
-> 状态：2026-08-26，docs-first / exact-build 静态逆向阶段。
+> 状态：2026-08-26，docs-first / exact-build Slice A 静态闭合并接入 production query；
+> generic costs 尚未新增实机验证。
 >
 > 本文只研究普通、非宗教角色互动的 engine-generic 能力，并以普通白和平互动作为优先
 > fixture。宗教专用域由项目所有者暂缓；原生总分里可能存在的该域修正只保留为 opaque
@@ -14,8 +15,9 @@
 1. [static-confirmed] 普通互动成本不是 tooltip 文本。confirmation window 内嵌的
    `CCharacterInteractionContext` 位于 `+0xF8`；`0x2C40E90(context)` 从 definition
    `+0x38` 的 compiled-cost block，经 `0x2CDB7B0` 求出一个十槽 `int64`/Q100000
-   向量，再将其折叠为 `HasCost`。十槽的 **slot → resource key** 映射尚未闭合，因而
-   不能把槽号猜成 gold/prestige 等生产语义。
+   向量，再将其折叠为 `HasCost`。同 ordinal renderer/formatter、固定 token serializer 与
+   affordability dispatch 已把十槽 **slot → stable resource key** 全部交叉闭合；production
+   只发布十个稳定 key，不发布 `slot_N`。
 2. [static-confirmed] `0x24B1B20(out, context)` 使用四个真实 native collector、完整
    `context+0x08` scope 与只读 loaded-effect helper `0x3380170`，物化四组互动效果视图。
    [static-inference] 它的输出就是 GUI 注册名 `InteractionEffectsDescription` 对应的
@@ -26,8 +28,9 @@
    `0x2C43B40` 顺序求值并合并最终 status。`0x2C43F00` 的 Can Send validator 使用
    mode 0，不能代替 outbound proposal 的 mode-1 最终答复。
 
-因此，当前最小可施工只读切片是 **先闭合资源槽映射，再发布 generic cost vector**。
-它不调用任何 effect helper，也不依赖 `special_data`。effect preview 的下一步应优先
+因此，Slice A 已成为可独立使用的只读 production query 子域：它不调用任何 effect helper，
+也不依赖 `special_data`；剩余验收是 paused white-peace 全零与普通非宗教非零成本实机 fixture。
+effect preview 的下一步应优先
 解码 pending 中引擎已经物化的 `0x268` 字节借用对象，而不是重放 effect evaluator。
 白和平的实际停战/战果条款仍需独立闭合其 `special_data` subtype 与 WarID 绑定；不能用
 generic description 假装已经覆盖。
@@ -50,7 +53,7 @@ generic description 假装已经覆盖。
 - notification/tooltip/localization 文本到条款的反推；
 - `0x3380410` effect executor，或任何回复、发送、战争结算 mutator；
 - 使用旧 war-exit 自造 `WarEffectContext` 重放 generic effect preview；
-- 尚未映射的成本槽、effect root 或 description row 的猜名；
+- special subtype transfer、effect root 或 description row 的猜名；
 - 本轮启动 CK3 或进行 live 取证。
 
 ### 2.3 证据等级
@@ -67,8 +70,12 @@ generic description 假装已经覆盖。
 |---|---|---|
 | `Crusader Kings III/binaries/ck3.exe` | `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` | exact build 1.19.0.6 静态调用链与布局 |
 | `game/common/character_interactions/_character_interactions.info` | `F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10` | 作者 schema、Can Send 顺序、AI 三类输入 |
+| `game/common/character_interactions/00_adoption.txt` | `E70DA0677D32672E83F5DB588A8BB3BC3D5AFEB89E8818BB7C9903BDDA65AAEC` | 非宗教 `renown` / `influence` cost 作者实例 |
+| `game/common/character_interactions/00_prison_interactions.txt` | `3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B` | 非宗教 `treasury` cost 作者实例 |
+| `game/common/character_interactions/00_tribal_interactions.txt` | `2EB46B8A66080C189AD955E4B7511195B3A51C3FEA540DDE6085D276FB80C282` | 非宗教 `treasury_or_gold` cost 作者实例 |
+| `game/common/scripted_costs/00_costs.txt` | `E83855B1B09752BCF1D8CD8D6965D466548DC8A97ADCC1772D46EB05CA0D3710` | 通用 scripted-cost 作者实例 |
 | `game/common/character_interactions/00_war.txt` | `5C99B8F14893929A9BC2DBB5B258CDD2D4233D5805091952209413DE876EE09F` | white-peace fixture 与非宗教接受树 |
-| `native_bridge/research/pending_character_interaction_context_v1_abi.json` | `316C453B9C1D50C77A98706FADA4BC5611378279C299D4F806C58E63F622776F` | 文档自检时的 pending/context ABI 基线 |
+| `native_bridge/research/pending_character_interaction_context_v1_abi.json` | `5E515D4142BA0A45EE51DACA4F8534464C873909154E3261D6499F9174395BD5` | 文档自检时的 pending/context ABI 基线 |
 
 相关既有边界：
 
@@ -85,6 +92,10 @@ generic description 假装已经覆盖。
 |---|---:|---|---|
 | `0x2C40E90` | `[0x2C40E90,0x2C40F4A)` | `ACA4B8FF934DBC602B3EC3EB9F95E1A3A903AD619B8A70B6E5C1B36A4C6F28A8` | generic `HasCost` 与十槽临时向量 |
 | `0x2CDB7B0` | `[0x2CDB7B0,0x2CDB9C1)` | `50B06EB5A730BF0962B9B2A782F1566A86CCE39B131282E7714B10A465AC01F6` | compiled cost 求值/累加 |
+| `0x2CD9D20` | `[0x2CD9D20,0x2CDA9D4)` | `37D30768693AF083B8D67908A88849FB9C33B16EC809262A1345F2E96A53B5A1` | 十槽 formatter enum dispatch |
+| `0x2CDAA80` | `[0x2CDAA80,0x2CDB552)` | `8D89DE114321AD18474443F7310F0850AE5C4C5187B009D7CB1FB5F26145AF28` | 同 ordinal compiled row → formatter 调用 |
+| `0x2CDBB70` | `[0x2CDBB70,0x2CDBE24)` | `988DB7F261BE88BE4DBA77DAFB1D73460907C902DCE6DE3CEF9B420C3307AEF4` | 十槽 fixed-token serializer |
+| `0x2CDCFF0` | `[0x2CDCFF0,0x2CDD6BC)` | `119C6D85299B865659AC0255C074D5EC45A7F93ACF0BFDA2CBF6318F301FB3A0` | 十槽 affordability 与 slot 7 路由 |
 | `0x24B1B20` | `[0x24B1B20,0x24B20D6)` | `BB06B4DF46AE835C1B6FE97874078BB8E00759A92866A2A1C03362ACD03DF52F` | materialize interaction effects description |
 | `0x2C44220` | `[0x2C44220,0x2C44315)` | `81E6487D6D76AEE82A3D5B0462C4B138E16DEFF1DB4AD19F4402E07FDFE4192F` | intermediary AI raw |
 | `0x2C44320` | `[0x2C44320,0x2C4440B)` | `745E0C0F6FC5283A340F5C55881C972E51D5DE5E24644D3D0F16AD917F5EE91F` | recipient AI raw |
@@ -160,7 +171,7 @@ flowchart TD
 description 紧随在 `+0x430`。这是对 pending embedded context 形状的独立 engine-generic
 交叉验证，不授权 bridge 解引用 GUI window 或读取 presentation text。
 
-## 6. 结构化成本：已闭合形状，未闭合语义 key
+## 6. 结构化成本：十槽语义已闭合
 
 ### 6.1 确定调用链
 
@@ -174,7 +185,13 @@ flowchart LR
     Q --> X
     X --> V["10 x signed int64 raw\ncaller-zeroed, accumulated"]
     V --> Z["any nonzero -> HasCost"]
-    V -. "slot mapping unknown" .-> U["production semantic wire unavailable"]
+    V --> R["0x2CDAA80 same ordinal"]
+    R --> F["0x2CD9D20 formatter enum"]
+    V --> S["0x2CDBB70 fixed-token serializer"]
+    V --> A["0x2CDCFF0 affordability dispatch"]
+    F --> K["10 stable resource keys"]
+    S --> K
+    A --> K
 ```
 
 [static-confirmed] `0x2C40E90`：
@@ -189,41 +206,79 @@ flowchart LR
 - 固定循环十次；
 - compiled row 从 cost block `+0x38` 开始，stride `0x108`；
 - 每行经 `0x9698B0` 对传入 scope context 求值，并 **累加** 到对应 `int64`；
-- raw 使用 Q100000 尺度；cost block `+0xAB0` 分支执行 `100000` 粒度量化，
-  `+0xAB1` 分支把负值钳到零。
+- raw 使用 Q100000 尺度；cost block `+0xAB0` 分支执行 `100000` 粒度量化；
+- `+0xAB1` 是 **条件性** 负值 clamp。该 flag 未启用时负 raw 可以保留，所以 wire 必须是
+  signed `int64`，不得把负数擅自判 malformed。
 
-source-confirmed 的角色互动作者入口只列出 `piety`、`prestige`、`gold`、`renown` 四个 key。
-但 generic engine vector 有十槽。当前没有静态证据证明四个作者 key 对应哪四个 index，也没有证据
-证明其余六槽在角色互动中恒为零。因此：
+### 6.2 slot → stable key 的无猜测闭环
 
-- 不得发布 `slot_0` 等内部编号让策略层自行猜；
-- 不得按文档列出顺序假定 index；
-- 不得用 `GetCostDescription`/tooltip 的 loc 文本反推资源；
-- 必须先从 scripted-cost parser/registry 或 `CostBreakdown` typed registration 闭合稳定 key；
-- selected options、roles、target 或 special scope 变化后必须重新 refresh/finalize，再同帧求值。
+决定性证据不是 `_info` 中四个旧 key 的排列顺序，而是三条 exact-build 交叉链：
 
-### 6.2 最小 wire 形状（仅设计草案）
+1. `0x2CDAA80` 在同一循环中以同一个 ordinal 访问 compiled row，并把该 ordinal 作为 enum
+   传给 `0x2CD9D20`；两者一起递增到 10。
+2. `0x2CDBB70` 按相同 qword 顺序使用十个固定 script token ID 序列化。
+3. `0x2CDCFF0` 的十路 jump table 以 `RESOURCE_MISSING_*` 分支独立确认余额类型。
 
-槽映射闭合后，查询应发布稳定 key，而不是原始槽号：
+| slot | stable `resource_key` | formatter key | serializer token |
+|---:|---|---|---:|
+| 0 | `gold` | `GOLD_COST` | `0x2875` |
+| 1 | `prestige` | `PRESTIGE_COST` | `0x0001` |
+| 2 | `piety` | `PIETY_COST` | `0x2B26` |
+| 3 | `renown` | `DYNASTY_PRESTIGE_COST` | `0x2B27` |
+| 4 | `influence` | `INFLUENCE_COST` | `0x318D` |
+| 5 | `herd` | `HERD_COST` | `0x29F5` |
+| 6 | `treasury` | `TREASURY_COST` | `0x3B32` |
+| 7 | `treasury_or_gold` | actor 条件决定 `TREASURY_COST` / `GOLD_COST` | `0x3D24` |
+| 8 | `merit` | `MERIT_COST` | `0x3E42` |
+| 9 | `barter_goods` | `BARTER_GOODS_COST` | `0x3D30` |
+
+表中的 `piety` 只是一项 engine-generic 已付资源 key/raw；本文不展开其 faith、doctrine、tenet、
+fervor、conversion、reformation 或 holy-war 含义，也不据此进入 owner-deferred 宗教树。
+
+slot 7 不是独立余额。`0x2CDCFF0` 在 actor 具有 treasury 时把它加到 slot 6，否则加到
+slot 0；随后跳过 slot 7 自身的余额检查。它的稳定作者 key 因而必须保留为
+`treasury_or_gold`，不能提前折叠成一个固定 effective resource。
+
+非宗教 source 实例进一步确认 engine schema 的实际覆盖面：`00_adoption.txt` 使用
+`renown`/`influence`，`00_prison_interactions.txt` 使用 `treasury`，`00_tribal_interactions.txt`
+使用 `treasury_or_gold`。这些 source 只作作者 key 存在性互证，不承担 slot ordinal 证明。
+
+### 6.3 pending payment 语义与 production wire
+
+`_character_interactions.info` lines 467-470 明确规定：成本由 **actor** 支付，并在互动
+**发送时**扣除。查询的是已经发送并进入 pending manager 的对象，因此该向量描述历史上已经
+应用的 generic authored cost，不是“当前 responder 接受后还要支付”的未来负债。wire 必须把
+这层语义显式携带：
 
 ```json
 {
   "status": "available",
-  "source": "engine_generic_compiled_cost",
-  "raw_scale": 100000,
-  "entries": [
-    {"resource_key": "<registry-confirmed-key>", "raw": 0}
-  ],
-  "context_identity": {
-    "instance_id": 0,
-    "definition_hash": 0,
-    "actor_id": 0,
-    "recipient_id": 0
-  }
+  "value": {
+    "raw_scale": 100000,
+    "payer_role": "actor",
+    "application_timing": "on_send",
+    "pending_payment_state": "already_applied",
+    "entries": [
+      {"resource_key": "gold", "raw": 0},
+      {"resource_key": "prestige", "raw": 0},
+      {"resource_key": "piety", "raw": 0},
+      {"resource_key": "renown", "raw": 0},
+      {"resource_key": "influence", "raw": 0},
+      {"resource_key": "herd", "raw": 0},
+      {"resource_key": "treasury", "raw": 0},
+      {"resource_key": "treasury_or_gold", "raw": 0},
+      {"resource_key": "merit", "raw": 0},
+      {"resource_key": "barter_goods", "raw": 0}
+    ]
+  },
+  "reason": null
 }
 ```
 
-在 registry mapping 完成以前，整个 `costs` 节点必须是 typed `unavailable`，不能发布半语义数组。
+production reader 在 paused application-main mailbox 中，用 full generation-bearing pending ID
+解析 context，连续求值并复制两次完整十槽；任一槽、definition、roles、target、options、
+`special_data` 或 outer frame 漂移都返回 typed `state_changed`。该向量只覆盖 engine-generic
+authored cost，不声称覆盖 special subtype transfer 或 effect outcome。
 
 ## 7. Engine-owned effect description：优先读已物化对象
 
@@ -437,7 +492,7 @@ white peace 对 generic terms 的价值与局限：
 
 | gate | white-peace 当前状态 | 变为 true 的条件 |
 |---|---|---|
-| `generic_costs_ready` | false | 十槽 stable key mapping + same-frame query fixture |
+| `generic_costs_ready` | static/query true；新增 live 尚未验 | 十槽映射、signed wire 与 same-frame reader 已闭合；paused fixture 后升级 live |
 | `generic_effects_ready` | false | pending inline typed row/root/polarity mapping + paused fixture |
 | `special_terms_ready` | false | white-peace `special_data` subtype、WarID 与 outcome binding |
 | `native_ai_acceptance_ready` | outbound only / pending human N/A | finalized AI-responder context + raw/final live fixture |
@@ -445,20 +500,22 @@ white peace 对 generic terms 的价值与局限：
 
 ## 11. 最小下一实现切片
 
-### Slice A：`interaction-cost-vector-v1`（最先做）
+### Slice A：`interaction-cost-vector-v1`（static/query 已完成）
 
 目标：发布第一个独立有用、完全 engine-generic 的结构化条款读口，不触碰 effect preview。
 
-1. 从 exact-build scripted-cost parser/registry 或 typed `CostBreakdown` registration 闭合十槽
-   stable resource key；保存 exact byte spans 与 mapping fixture，禁止按 `_info` 文本顺序猜 index。
-2. 新增 native POD evaluator wrapper：caller 清零十个 `int64`，在 owned/finalized 或同帧 borrowed
-   context 上调用 `0x2CDB7B0`，立即复制稳定 key/raw，丢弃临时区。
-3. 接入 application-main mailbox；实施 build、full-generation、same-frame before/after gates。
-4. source/unit fixture 至少覆盖：十槽全零、两个已映射资源同时非零、负值 clamp、Q100000 quantize、
-   option flag 改变 scope 后的重新求值。
-5. paused live：先用 white peace 证明 zero-cost 基线，再用一个普通非宗教、至少一项非零成本的互动
+1. [done] 由同 ordinal formatter、fixed-token serializer 与 affordability dispatch 闭合十槽
+   stable key，并保存 exact byte spans/source hashes/mapping fixture；未按 `_info` 顺序猜 index。
+2. [done] native POD evaluator wrapper 先清零十个 `int64`，在同帧 borrowed pending context 上调用
+   `0x2CDB7B0`，立即复制稳定 key/signed raw，不保存 native pointer。
+3. [done] 接入 application-main mailbox；实施 exact build、full-generation、双 observation 与 outer
+   same-frame gate。
+4. [done] native/Python fixture 覆盖多槽非零、合法负 raw、Q100000、十 key/order、payment state 与
+   cost 向量同帧漂移。量化/clamp 的 native 指令由 exact span hash 冻结；条件 clamp 不被伪写为恒成立。
+5. [remaining live] 先用 white peace 证明 zero-cost 基线，再用一个普通非宗教、至少一项非零成本的互动
    证明 stable key/raw；全程不提交互动。
-6. native driver/service/MCP 只发布 stable entries；mapping 不全则整个节点 unavailable。
+6. [done] 现有 native driver/service/MCP 只发布 stable entries，并显式标记
+   actor / on-send / already-applied；effects 与 special terms 仍保持 unavailable。
 
 ### Slice B：pending inline effects decoder（随后做）
 
@@ -480,7 +537,6 @@ white peace 对 generic terms 的价值与局限：
 
 | 优先级 | unknown | 下一确定入口 | 未闭合时行为 |
 |---:|---|---|---|
-| P0 | 十槽 cost slot → stable resource key | scripted-cost parser/registry、typed CostBreakdown registration | `generic_costs` unavailable |
 | P0 | pending `special_data` → white-peace WarID | special subtype constructor/accessor 与 manager materialization xref | `special_terms` unavailable |
 | P0 | 四个 compiled effect root → authored branch | definition parser registration + known one-effect fixtures | `generic_effects` unavailable |
 | P0 | `0x78` effect view typed row ABI/polarity | `0x24B11D0` consumers、typed GUI registration、offline fixture | 不发布 row/text |

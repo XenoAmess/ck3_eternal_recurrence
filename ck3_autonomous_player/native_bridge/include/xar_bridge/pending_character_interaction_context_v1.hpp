@@ -29,9 +29,9 @@ struct PendingCharacterInteractionDefinitionV1 {
   std::uint32_t deterministic_key_hash = 0;
   std::int32_t runtime_ordinal = -1;
 
-  friend bool operator==(const PendingCharacterInteractionDefinitionV1 &,
-                         const PendingCharacterInteractionDefinitionV1 &) =
-      default;
+  friend bool
+  operator==(const PendingCharacterInteractionDefinitionV1 &,
+             const PendingCharacterInteractionDefinitionV1 &) = default;
 };
 
 struct PendingCharacterInteractionRolesV1 {
@@ -42,8 +42,7 @@ struct PendingCharacterInteractionRolesV1 {
   std::int32_t intermediary_character_id = -1;
 
   friend bool operator==(const PendingCharacterInteractionRolesV1 &,
-                         const PendingCharacterInteractionRolesV1 &) =
-      default;
+                         const PendingCharacterInteractionRolesV1 &) = default;
 };
 
 struct PendingCharacterInteractionTargetV1 {
@@ -60,8 +59,7 @@ struct PendingCharacterInteractionTargetV1 {
   std::string typed_identity_reason;
 
   friend bool operator==(const PendingCharacterInteractionTargetV1 &,
-                         const PendingCharacterInteractionTargetV1 &) =
-      default;
+                         const PendingCharacterInteractionTargetV1 &) = default;
 };
 
 struct PendingCharacterInteractionSendOptionRowV1 {
@@ -75,9 +73,9 @@ struct PendingCharacterInteractionSendOptionRowV1 {
   std::optional<std::string> canonical_flag_key;
   std::string canonical_flag_reason;
 
-  friend bool operator==(
-      const PendingCharacterInteractionSendOptionRowV1 &,
-      const PendingCharacterInteractionSendOptionRowV1 &) = default;
+  friend bool
+  operator==(const PendingCharacterInteractionSendOptionRowV1 &,
+             const PendingCharacterInteractionSendOptionRowV1 &) = default;
 };
 
 struct PendingCharacterInteractionSendOptionsV1 {
@@ -86,9 +84,9 @@ struct PendingCharacterInteractionSendOptionsV1 {
   std::int32_t context_count = 0;
   std::vector<PendingCharacterInteractionSendOptionRowV1> rows;
 
-  friend bool operator==(const PendingCharacterInteractionSendOptionsV1 &,
-                         const PendingCharacterInteractionSendOptionsV1 &) =
-      default;
+  friend bool
+  operator==(const PendingCharacterInteractionSendOptionsV1 &,
+             const PendingCharacterInteractionSendOptionsV1 &) = default;
 };
 
 struct PendingCharacterInteractionRoutingV1 {
@@ -99,9 +97,9 @@ struct PendingCharacterInteractionRoutingV1 {
   bool local_route = false;
   bool auto_accept_notification = false;
 
-  friend bool operator==(const PendingCharacterInteractionRoutingV1 &,
-                         const PendingCharacterInteractionRoutingV1 &) =
-      default;
+  friend bool
+  operator==(const PendingCharacterInteractionRoutingV1 &,
+             const PendingCharacterInteractionRoutingV1 &) = default;
 };
 
 struct PendingCharacterInteractionDeadlineV1 {
@@ -110,9 +108,9 @@ struct PendingCharacterInteractionDeadlineV1 {
   std::int32_t remaining_days = 0;
   std::string expiry_boundary_status;
 
-  friend bool operator==(const PendingCharacterInteractionDeadlineV1 &,
-                         const PendingCharacterInteractionDeadlineV1 &) =
-      default;
+  friend bool
+  operator==(const PendingCharacterInteractionDeadlineV1 &,
+             const PendingCharacterInteractionDeadlineV1 &) = default;
 };
 
 struct PendingCharacterInteractionBooleanV1 {
@@ -121,9 +119,9 @@ struct PendingCharacterInteractionBooleanV1 {
   bool value = false;
   std::string reason;
 
-  friend bool operator==(const PendingCharacterInteractionBooleanV1 &,
-                         const PendingCharacterInteractionBooleanV1 &) =
-      default;
+  friend bool
+  operator==(const PendingCharacterInteractionBooleanV1 &,
+             const PendingCharacterInteractionBooleanV1 &) = default;
 };
 
 struct PendingCharacterInteractionLegalityV1 {
@@ -132,9 +130,9 @@ struct PendingCharacterInteractionLegalityV1 {
   bool allowed = false;
   std::string reason;
 
-  friend bool operator==(const PendingCharacterInteractionLegalityV1 &,
-                         const PendingCharacterInteractionLegalityV1 &) =
-      default;
+  friend bool
+  operator==(const PendingCharacterInteractionLegalityV1 &,
+             const PendingCharacterInteractionLegalityV1 &) = default;
 };
 
 struct PendingCharacterInteractionLegalitiesV1 {
@@ -143,9 +141,9 @@ struct PendingCharacterInteractionLegalitiesV1 {
   PendingCharacterInteractionLegalityV1 block;
   PendingCharacterInteractionLegalityV1 acknowledge;
 
-  friend bool operator==(const PendingCharacterInteractionLegalitiesV1 &,
-                         const PendingCharacterInteractionLegalitiesV1 &) =
-      default;
+  friend bool
+  operator==(const PendingCharacterInteractionLegalitiesV1 &,
+             const PendingCharacterInteractionLegalitiesV1 &) = default;
 };
 
 struct PendingCharacterInteractionUnavailableTermV1 {
@@ -153,24 +151,52 @@ struct PendingCharacterInteractionUnavailableTermV1 {
       PendingCharacterInteractionSemanticStatusV1::unavailable;
   std::string reason;
 
-  friend bool operator==(
-      const PendingCharacterInteractionUnavailableTermV1 &,
-      const PendingCharacterInteractionUnavailableTermV1 &) = default;
+  friend bool
+  operator==(const PendingCharacterInteractionUnavailableTermV1 &,
+             const PendingCharacterInteractionUnavailableTermV1 &) = default;
+};
+
+inline constexpr std::size_t kPendingCharacterInteractionCostResourceCountV1 =
+    10;
+inline constexpr std::int64_t kPendingCharacterInteractionCostRawScaleV1 =
+    100'000;
+
+struct PendingCharacterInteractionCostEntryV1 {
+  std::string resource_key;
+  std::int64_t raw = 0;
+
+  friend bool
+  operator==(const PendingCharacterInteractionCostEntryV1 &,
+             const PendingCharacterInteractionCostEntryV1 &) = default;
+};
+
+struct PendingCharacterInteractionStructuredCostsV1 {
+  PendingCharacterInteractionSemanticStatusV1 status =
+      PendingCharacterInteractionSemanticStatusV1::unavailable;
+  std::int64_t raw_scale = kPendingCharacterInteractionCostRawScaleV1;
+  std::string payer_role;
+  std::string application_timing;
+  std::string pending_payment_state;
+  std::array<PendingCharacterInteractionCostEntryV1,
+             kPendingCharacterInteractionCostResourceCountV1>
+      entries{};
+  std::string reason;
+
+  friend bool
+  operator==(const PendingCharacterInteractionStructuredCostsV1 &,
+             const PendingCharacterInteractionStructuredCostsV1 &) = default;
 };
 
 struct PendingCharacterInteractionTermsV1 {
   bool special_data_present = false;
-  PendingCharacterInteractionUnavailableTermV1 structured_costs;
+  PendingCharacterInteractionStructuredCostsV1 structured_costs;
   PendingCharacterInteractionUnavailableTermV1 structured_exchanges;
   PendingCharacterInteractionUnavailableTermV1 structured_effect_preview;
-  PendingCharacterInteractionUnavailableTermV1
-      recipient_ai_acceptance_score;
-  PendingCharacterInteractionUnavailableTermV1
-      recipient_ai_final_decision;
+  PendingCharacterInteractionUnavailableTermV1 recipient_ai_acceptance_score;
+  PendingCharacterInteractionUnavailableTermV1 recipient_ai_final_decision;
 
   friend bool operator==(const PendingCharacterInteractionTermsV1 &,
-                         const PendingCharacterInteractionTermsV1 &) =
-      default;
+                         const PendingCharacterInteractionTermsV1 &) = default;
 };
 
 struct PendingCharacterInteractionReadinessV1 {
@@ -183,14 +209,15 @@ struct PendingCharacterInteractionReadinessV1 {
   bool deadline_ready = false;
   bool auto_accept_ready = false;
   bool reply_legality_ready = false;
+  bool generic_costs_ready = false;
   bool structured_terms_ready = false;
   bool same_frame_ready = false;
   bool interaction_semantic_decision_ready = false;
   std::vector<std::string> not_ready_reasons;
 
-  friend bool operator==(const PendingCharacterInteractionReadinessV1 &,
-                         const PendingCharacterInteractionReadinessV1 &) =
-      default;
+  friend bool
+  operator==(const PendingCharacterInteractionReadinessV1 &,
+             const PendingCharacterInteractionReadinessV1 &) = default;
 };
 
 struct PendingCharacterInteractionContextV1 {
@@ -211,9 +238,9 @@ struct PendingCharacterInteractionContextV1 {
   std::optional<PendingCharacterInteractionTermsV1> terms;
   PendingCharacterInteractionReadinessV1 readiness;
 
-  friend bool operator==(const PendingCharacterInteractionContextV1 &,
-                         const PendingCharacterInteractionContextV1 &) =
-      default;
+  friend bool
+  operator==(const PendingCharacterInteractionContextV1 &,
+             const PendingCharacterInteractionContextV1 &) = default;
 };
 
 struct PendingCharacterInteractionFrameV1 {
@@ -223,8 +250,7 @@ struct PendingCharacterInteractionFrameV1 {
   bool map_ready = false;
 
   friend bool operator==(const PendingCharacterInteractionFrameV1 &,
-                         const PendingCharacterInteractionFrameV1 &) =
-      default;
+                         const PendingCharacterInteractionFrameV1 &) = default;
 };
 
 enum class ReadPendingCharacterInteractionContextResultV1 : std::uint32_t {
@@ -251,8 +277,7 @@ inline constexpr std::string_view
     kPendingCharacterInteractionContextV1BackendId =
         "ck3-1.19.0.6-native-pending-character-interaction-context-v1";
 
-inline constexpr std::uintptr_t kPendingInteractionStorageSlotV1Rva =
-    0x57BF1C8;
+inline constexpr std::uintptr_t kPendingInteractionStorageSlotV1Rva = 0x57BF1C8;
 inline constexpr std::uintptr_t kPendingInteractionCharacterStorageSlotV1Rva =
     0x570C130;
 inline constexpr std::uintptr_t kPendingInteractionExpirationDaysV1Rva =
@@ -263,12 +288,14 @@ inline constexpr std::uintptr_t kPendingInteractionReplyValidatorV1Rva =
     0x26B3540;
 inline constexpr std::uintptr_t kPendingInteractionTriggerEvaluatorV1Rva =
     0x334C510;
-inline constexpr std::uintptr_t kPendingInteractionTargetTypeRegistryGetterV1Rva =
-    0x33C52B0;
+inline constexpr std::uintptr_t kPendingInteractionCostEvaluatorV1Rva =
+    0x2CDB7B0;
+inline constexpr std::uintptr_t
+    kPendingInteractionTargetTypeRegistryGetterV1Rva = 0x33C52B0;
 inline constexpr std::uintptr_t kPendingInteractionTargetTypeRegistryV1Rva =
     0x4FFE290;
-inline constexpr std::uintptr_t kPendingInteractionTargetTypeFallbackEntryV1Rva =
-    0x5000AB0;
+inline constexpr std::uintptr_t
+    kPendingInteractionTargetTypeFallbackEntryV1Rva = 0x5000AB0;
 inline constexpr std::uintptr_t kPendingInteractionScriptIdentifierNameV1Rva =
     0x3B58970;
 inline constexpr std::uintptr_t kPendingInteractionReplyPrimaryVtableV1Rva =
@@ -283,16 +310,20 @@ inline constexpr std::int32_t kPendingInteractionMaximumSendOptionsV1 = 256;
 #define XAR_PENDING_INTERACTION_FASTCALL
 #endif
 
-using NativePendingInteractionLocalRoutingV1 = bool (
-    XAR_PENDING_INTERACTION_FASTCALL *)(void *pending_interaction,
-                                        void *played_character);
-using NativePendingInteractionReplyValidatorV1 = bool (
-    XAR_PENDING_INTERACTION_FASTCALL *)(void *reply_command);
-using NativePendingInteractionTriggerEvaluatorV1 = bool (
-    XAR_PENDING_INTERACTION_FASTCALL *)(void *trigger,
-                                        const void *event_target_scope);
-using NativePendingInteractionTargetTypeRegistryGetterV1 = void *(
-    XAR_PENDING_INTERACTION_FASTCALL *)();
+using NativePendingInteractionLocalRoutingV1 =
+    bool(XAR_PENDING_INTERACTION_FASTCALL *)(void *pending_interaction,
+                                             void *played_character);
+using NativePendingInteractionReplyValidatorV1 =
+    bool(XAR_PENDING_INTERACTION_FASTCALL *)(void *reply_command);
+using NativePendingInteractionTriggerEvaluatorV1 =
+    bool(XAR_PENDING_INTERACTION_FASTCALL *)(void *trigger,
+                                             const void *event_target_scope);
+using NativePendingInteractionCostEvaluatorV1 =
+    void(XAR_PENDING_INTERACTION_FASTCALL *)(const void *compiled_cost_block,
+                                             const void *event_target_scope,
+                                             std::int64_t *out10);
+using NativePendingInteractionTargetTypeRegistryGetterV1 =
+    void *(XAR_PENDING_INTERACTION_FASTCALL *)();
 using NativePendingInteractionScriptIdentifierNameV1 = const std::string *(
     XAR_PENDING_INTERACTION_FASTCALL *)(std::int32_t identifier);
 
@@ -308,8 +339,9 @@ struct PendingCharacterInteractionNativeEnvironmentV1 {
   NativePendingInteractionLocalRoutingV1 local_routing = nullptr;
   NativePendingInteractionReplyValidatorV1 reply_validator = nullptr;
   NativePendingInteractionTriggerEvaluatorV1 trigger_evaluator = nullptr;
-  NativePendingInteractionTargetTypeRegistryGetterV1
-      target_type_registry = nullptr;
+  NativePendingInteractionCostEvaluatorV1 cost_evaluator = nullptr;
+  NativePendingInteractionTargetTypeRegistryGetterV1 target_type_registry =
+      nullptr;
   NativePendingInteractionScriptIdentifierNameV1 script_identifier_name =
       nullptr;
   std::uintptr_t reply_primary_vtable = 0;
@@ -318,25 +350,28 @@ struct PendingCharacterInteractionNativeEnvironmentV1 {
 
 using CapturePendingCharacterInteractionFrameV1 = bool (*)(
     void *context, game::PendingCharacterInteractionFrameV1 &output) noexcept;
-using IsPendingCharacterInteractionMainThreadV1 = bool (*)(
-    void *context) noexcept;
-using ReadPendingCharacterInteractionMemoryV1 = bool (*)(
-    void *context, const void *address, void *output,
-    std::size_t size) noexcept;
+using IsPendingCharacterInteractionMainThreadV1 =
+    bool (*)(void *context) noexcept;
+using ReadPendingCharacterInteractionMemoryV1 =
+    bool (*)(void *context, const void *address, void *output,
+             std::size_t size) noexcept;
 using ReadPendingCharacterInteractionStringV1 = bool (*)(
-    void *context, const void *native_string,
-    std::string &output) noexcept;
+    void *context, const void *native_string, std::string &output) noexcept;
 using InvokePendingCharacterInteractionLocalRoutingV1 = bool (*)(
     void *context, NativePendingInteractionLocalRoutingV1 function,
-    void *pending_interaction, void *played_character,
-    bool &output) noexcept;
-using InvokePendingCharacterInteractionReplyValidatorV1 = bool (*)(
-    void *context, NativePendingInteractionReplyValidatorV1 function,
-    void *reply_command, bool &output) noexcept;
+    void *pending_interaction, void *played_character, bool &output) noexcept;
+using InvokePendingCharacterInteractionReplyValidatorV1 =
+    bool (*)(void *context, NativePendingInteractionReplyValidatorV1 function,
+             void *reply_command, bool &output) noexcept;
 using InvokePendingCharacterInteractionTriggerEvaluatorV1 = bool (*)(
     void *context, NativePendingInteractionTriggerEvaluatorV1 function,
-    void *trigger, const void *event_target_scope,
-    bool &output) noexcept;
+    void *trigger, const void *event_target_scope, bool &output) noexcept;
+using InvokePendingCharacterInteractionCostEvaluatorV1 =
+    bool (*)(void *context, NativePendingInteractionCostEvaluatorV1 function,
+             const void *compiled_cost_block, const void *event_target_scope,
+             std::array<std::int64_t,
+                        game::kPendingCharacterInteractionCostResourceCountV1>
+                 &output) noexcept;
 using InvokePendingCharacterInteractionTargetTypeRegistryV1 = bool (*)(
     void *context, NativePendingInteractionTargetTypeRegistryGetterV1 function,
     void *&output) noexcept;
@@ -354,8 +389,10 @@ struct PendingCharacterInteractionAccessV1 {
       nullptr;
   InvokePendingCharacterInteractionReplyValidatorV1 invoke_reply_validator =
       nullptr;
-  InvokePendingCharacterInteractionTriggerEvaluatorV1
-      invoke_trigger_evaluator = nullptr;
+  InvokePendingCharacterInteractionTriggerEvaluatorV1 invoke_trigger_evaluator =
+      nullptr;
+  InvokePendingCharacterInteractionCostEvaluatorV1 invoke_cost_evaluator =
+      nullptr;
   InvokePendingCharacterInteractionTargetTypeRegistryV1
       invoke_target_type_registry = nullptr;
   InvokePendingCharacterInteractionScriptIdentifierNameV1
@@ -372,18 +409,21 @@ struct PendingCharacterInteractionContextRequestV1 {
 // invokers after checking the executing slot and application-main identity.
 bool InvokePendingCharacterInteractionLocalRoutingDirectV1(
     void *context, NativePendingInteractionLocalRoutingV1 function,
-    void *pending_interaction, void *played_character,
-    bool &output) noexcept;
+    void *pending_interaction, void *played_character, bool &output) noexcept;
 bool InvokePendingCharacterInteractionReplyValidatorDirectV1(
     void *context, NativePendingInteractionReplyValidatorV1 function,
     void *reply_command, bool &output) noexcept;
 bool InvokePendingCharacterInteractionTriggerEvaluatorDirectV1(
     void *context, NativePendingInteractionTriggerEvaluatorV1 function,
-    void *trigger, const void *event_target_scope,
-    bool &output) noexcept;
+    void *trigger, const void *event_target_scope, bool &output) noexcept;
+bool InvokePendingCharacterInteractionCostEvaluatorDirectV1(
+    void *context, NativePendingInteractionCostEvaluatorV1 function,
+    const void *compiled_cost_block, const void *event_target_scope,
+    std::array<std::int64_t,
+               game::kPendingCharacterInteractionCostResourceCountV1>
+        &output) noexcept;
 bool InvokePendingCharacterInteractionTargetTypeRegistryDirectV1(
-    void *context,
-    NativePendingInteractionTargetTypeRegistryGetterV1 function,
+    void *context, NativePendingInteractionTargetTypeRegistryGetterV1 function,
     void *&output) noexcept;
 bool InvokePendingCharacterInteractionScriptIdentifierNameDirectV1(
     void *context, NativePendingInteractionScriptIdentifierNameV1 function,

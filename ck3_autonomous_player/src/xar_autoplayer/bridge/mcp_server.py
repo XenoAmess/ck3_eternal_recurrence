@@ -213,9 +213,21 @@ def _ck3_query_pending_character_interaction_context_v1(
     pending_interaction_id: int,
     expected_revision: int,
 ) -> dict[str, object]:
-    """Observe one full-generation pending request without terms inference."""
+    """Observe one pending request, including exact generic authored costs."""
     return service.query_pending_character_interaction_context_v1(
         pending_interaction_id,
+        expected_revision=expected_revision,
+    )
+
+
+def _ck3_query_current_event_window_context_v1(
+    service: GameplayBridgeService,
+    event_instance_id: int,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Observe one full-generation active event's materialized UI options."""
+    return service.query_current_event_window_context_v1(
+        event_instance_id,
         expected_revision=expected_revision,
     )
 
@@ -585,10 +597,22 @@ def create_server(driver: GameplayBridgeDriver):
         pending_interaction_id: int,
         expected_revision: int,
     ) -> dict[str, object]:
-        """Read identity, routing, options, deadline and reply legality."""
+        """Read routing, options, paid generic costs, deadline, and legality."""
         return _ck3_query_pending_character_interaction_context_v1(
             service,
             pending_interaction_id,
+            expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_current_event_window_context_v1(
+        event_instance_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read shown/enabled event options; full effect preview stays unavailable."""
+        return _ck3_query_current_event_window_context_v1(
+            service,
+            event_instance_id,
             expected_revision,
         )
 

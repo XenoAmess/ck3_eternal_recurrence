@@ -22,10 +22,10 @@ bool IsExecutingExactMailboxSlot(
       query.request.pending_interaction_id <= 0 ||
       query.request.played_character_id <= 0 || stamp.pump_epoch == 0 ||
       stamp.thread_id == 0 || !stamp.paused ||
-      stamp.tls_initialized_flag_address == 0 ||
-      stamp.tls_initialized != 1 || stamp.tls_context == 0 ||
-      stamp.tls_main_thread_marker != 1 || stamp.jomini_state == 0 ||
-      stamp.game_state == 0 || GetCurrentThreadId() != stamp.thread_id) {
+      stamp.tls_initialized_flag_address == 0 || stamp.tls_initialized != 1 ||
+      stamp.tls_context == 0 || stamp.tls_main_thread_marker != 1 ||
+      stamp.jomini_state == 0 || stamp.game_state == 0 ||
+      GetCurrentThreadId() != stamp.thread_id) {
     return false;
   }
   const auto &mailbox = *query.mailbox;
@@ -55,8 +55,7 @@ bool ProxyIsMainThread(void *opaque) noexcept {
 }
 
 bool ProxyCaptureFrame(
-    void *opaque,
-    game::PendingCharacterInteractionFrameV1 &output) noexcept {
+    void *opaque, game::PendingCharacterInteractionFrameV1 &output) noexcept {
   const auto *proxy = static_cast<const MailboxAccessProxyV1 *>(opaque);
   if (proxy == nullptr || proxy->query == nullptr || proxy->stamp == nullptr ||
       !IsExecutingExactMailboxSlot(*proxy->query, *proxy->stamp)) {
@@ -75,8 +74,7 @@ bool ProxyCaptureFrame(
       snapshot.date_raw != proxy->stamp->date_raw) {
     return false;
   }
-  output.snapshot_revision =
-      proxy->query->request.expected_snapshot_revision;
+  output.snapshot_revision = proxy->query->request.expected_snapshot_revision;
   output.date_raw = snapshot.date_raw;
   output.paused = snapshot.paused;
   output.map_ready = snapshot.map_ready;
@@ -90,8 +88,8 @@ bool ProxyReadMemory(void *opaque, const void *address, void *output,
          proxy->stamp != nullptr &&
          proxy->query->access.read_memory != nullptr &&
          IsExecutingExactMailboxSlot(*proxy->query, *proxy->stamp) &&
-         proxy->query->access.read_memory(proxy->query->access.context,
-                                          address, output, size);
+         proxy->query->access.read_memory(proxy->query->access.context, address,
+                                          output, size);
 }
 
 bool ProxyReadString(void *opaque, const void *native_string,
@@ -105,10 +103,10 @@ bool ProxyReadString(void *opaque, const void *native_string,
                                           native_string, output);
 }
 
-bool ProxyInvokeLocalRouting(
-    void *opaque, NativePendingInteractionLocalRoutingV1 function,
-    void *pending_interaction, void *played_character,
-    bool &output) noexcept {
+bool ProxyInvokeLocalRouting(void *opaque,
+                             NativePendingInteractionLocalRoutingV1 function,
+                             void *pending_interaction, void *played_character,
+                             bool &output) noexcept {
   const auto *proxy = static_cast<const MailboxAccessProxyV1 *>(opaque);
   return proxy != nullptr && proxy->query != nullptr &&
          proxy->stamp != nullptr &&
@@ -133,8 +131,7 @@ bool ProxyInvokeReplyValidator(
 
 bool ProxyInvokeTriggerEvaluator(
     void *opaque, NativePendingInteractionTriggerEvaluatorV1 function,
-    void *trigger, const void *event_target_scope,
-    bool &output) noexcept {
+    void *trigger, const void *event_target_scope, bool &output) noexcept {
   const auto *proxy = static_cast<const MailboxAccessProxyV1 *>(opaque);
   return proxy != nullptr && proxy->query != nullptr &&
          proxy->stamp != nullptr &&
@@ -145,9 +142,24 @@ bool ProxyInvokeTriggerEvaluator(
              event_target_scope, output);
 }
 
+bool ProxyInvokeCostEvaluator(
+    void *opaque, NativePendingInteractionCostEvaluatorV1 function,
+    const void *compiled_cost_block, const void *event_target_scope,
+    std::array<std::int64_t,
+               game::kPendingCharacterInteractionCostResourceCountV1>
+        &output) noexcept {
+  const auto *proxy = static_cast<const MailboxAccessProxyV1 *>(opaque);
+  return proxy != nullptr && proxy->query != nullptr &&
+         proxy->stamp != nullptr &&
+         proxy->query->access.invoke_cost_evaluator != nullptr &&
+         IsExecutingExactMailboxSlot(*proxy->query, *proxy->stamp) &&
+         proxy->query->access.invoke_cost_evaluator(
+             proxy->query->access.context, function, compiled_cost_block,
+             event_target_scope, output);
+}
+
 bool ProxyInvokeTargetTypeRegistry(
-    void *opaque,
-    NativePendingInteractionTargetTypeRegistryGetterV1 function,
+    void *opaque, NativePendingInteractionTargetTypeRegistryGetterV1 function,
     void *&output) noexcept {
   const auto *proxy = static_cast<const MailboxAccessProxyV1 *>(opaque);
   return proxy != nullptr && proxy->query != nullptr &&
@@ -181,9 +193,8 @@ bool ParseCanonicalPositiveIntegerField(std::string_view json,
     return false;
   }
   auto begin = at + key.size();
-  while (begin < json.size() &&
-         (json[begin] == ' ' || json[begin] == '\t' ||
-          json[begin] == '\r' || json[begin] == '\n')) {
+  while (begin < json.size() && (json[begin] == ' ' || json[begin] == '\t' ||
+                                 json[begin] == '\r' || json[begin] == '\n')) {
     ++begin;
   }
   auto end = begin;
@@ -213,11 +224,9 @@ void MakeInternalUnavailable(
   query.result = {};
   query.result.status =
       game::PendingCharacterInteractionContextStatusV1::unavailable;
-  query.result.snapshot_revision =
-      query.request.expected_snapshot_revision;
+  query.result.snapshot_revision = query.request.expected_snapshot_revision;
   query.result.date_raw = stamp.date_raw;
-  query.result.pending_interaction_id =
-      query.request.pending_interaction_id;
+  query.result.pending_interaction_id = query.request.pending_interaction_id;
   query.result.reason = "internal_error";
   const auto mark_unavailable = [](auto &legality) {
     legality.status =
@@ -238,10 +247,8 @@ void MakeInternalUnavailable(
 
 bool AllRepliesFailClosed(
     const game::PendingCharacterInteractionContextV1 &result) noexcept {
-  return !result.legality.accept.allowed &&
-         !result.legality.reject.allowed &&
-         !result.legality.block.allowed &&
-         !result.legality.acknowledge.allowed;
+  return !result.legality.accept.allowed && !result.legality.reject.allowed &&
+         !result.legality.block.allowed && !result.legality.acknowledge.allowed;
 }
 
 } // namespace
@@ -270,15 +277,13 @@ bool ParsePendingCharacterInteractionContextRequestV1(
 }
 
 bool ExecutePendingCharacterInteractionContextMailboxQueryV1(
-    void *opaque_context,
-    const MainThreadExecutionStampV1 &stamp) noexcept {
+    void *opaque_context, const MainThreadExecutionStampV1 &stamp) noexcept {
   auto *query =
       static_cast<PendingCharacterInteractionContextMailboxContextV1 *>(
           opaque_context);
   if (query == nullptr || !IsExecutingExactMailboxSlot(*query, stamp) ||
       query->completion !=
-          PendingCharacterInteractionContextMailboxCompletionV1::
-              not_executed ||
+          PendingCharacterInteractionContextMailboxCompletionV1::not_executed ||
       query->executor_invocations != 0) {
     if (query != nullptr) {
       query->completion =
@@ -295,18 +300,16 @@ bool ExecutePendingCharacterInteractionContextMailboxQueryV1(
     access.context = &proxy;
     access.capture_frame = &ProxyCaptureFrame;
     access.is_main_thread = &ProxyIsMainThread;
-    access.read_memory = query->access.read_memory == nullptr
-                             ? nullptr
-                             : &ProxyReadMemory;
-    access.read_string = query->access.read_string == nullptr
-                             ? nullptr
-                             : &ProxyReadString;
+    access.read_memory =
+        query->access.read_memory == nullptr ? nullptr : &ProxyReadMemory;
+    access.read_string =
+        query->access.read_string == nullptr ? nullptr : &ProxyReadString;
     access.invoke_local_routing = &ProxyInvokeLocalRouting;
     access.invoke_reply_validator = &ProxyInvokeReplyValidator;
     access.invoke_trigger_evaluator = &ProxyInvokeTriggerEvaluator;
+    access.invoke_cost_evaluator = &ProxyInvokeCostEvaluator;
     access.invoke_target_type_registry = &ProxyInvokeTargetTypeRegistry;
-    access.invoke_script_identifier_name =
-        &ProxyInvokeScriptIdentifierName;
+    access.invoke_script_identifier_name = &ProxyInvokeScriptIdentifierName;
     query->read_result = ReadPendingCharacterInteractionContextV1(
         query->environment, access, query->request, query->result);
 
@@ -324,9 +327,8 @@ bool ExecutePendingCharacterInteractionContextMailboxQueryV1(
         query->result.reason.empty() &&
         query->result.readiness.same_frame_ready;
     const bool typed_unavailable =
-        query->read_result == game::
-                                  ReadPendingCharacterInteractionContextResultV1::
-                                      unavailable &&
+        query->read_result ==
+            game::ReadPendingCharacterInteractionContextResultV1::unavailable &&
         query->result.status ==
             game::PendingCharacterInteractionContextStatusV1::unavailable &&
         !query->result.reason.empty() && AllRepliesFailClosed(query->result) &&

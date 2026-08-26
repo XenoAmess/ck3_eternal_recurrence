@@ -217,6 +217,8 @@ struct Bindings {
   std::uintptr_t set_speed_secondary_vtable = 0;
   std::uintptr_t select_event_option_primary_vtable = 0;
   std::uintptr_t select_event_option_secondary_vtable = 0;
+  std::uintptr_t ingame_interface_idler_vtable = 0;
+  std::uintptr_t event_window_primary_vtable = 0;
   std::uintptr_t auto_save_primary_vtable = 0;
   std::uintptr_t auto_save_secondary_vtable = 0;
   std::uintptr_t reply_character_interaction_primary_vtable = 0;

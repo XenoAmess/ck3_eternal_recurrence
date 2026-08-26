@@ -15,6 +15,9 @@ from scan_anchors import PeImage
 HERE = Path(__file__).resolve().parent
 DEFAULT_CONTRACT = HERE / "event_window_context_1_19_0_6_abi.json"
 DEFAULT_EXE = HERE.parents[2] / "Crusader Kings III" / "binaries" / "ck3.exe"
+DEFAULT_READER = HERE.parent / "src" / "event_window_context_v1.cpp"
+DEFAULT_MAILBOX = HERE.parent / "src" / "event_window_context_v1_mailbox.cpp"
+DEFAULT_BRIDGE = HERE.parent / "src" / "bridge.cpp"
 
 
 def integer(value: object) -> int:
@@ -46,6 +49,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--exe", type=Path, default=DEFAULT_EXE)
     parser.add_argument("--contract", type=Path, default=DEFAULT_CONTRACT)
+    parser.add_argument("--reader", type=Path, default=DEFAULT_READER)
+    parser.add_argument("--mailbox", type=Path, default=DEFAULT_MAILBOX)
+    parser.add_argument("--bridge", type=Path, default=DEFAULT_BRIDGE)
     arguments = parser.parse_args()
 
     executable = arguments.exe.resolve()
@@ -108,11 +114,83 @@ def main() -> int:
             f"bytes=0x{actual_length:X} SHA256={actual_sha}"
         )
 
+    source_contracts = {
+        "reader": (
+            arguments.reader,
+            (
+                "bindings.jomini_state_slot",
+                "kIdlerFromOwnerOffset",
+                "bindings.ingame_interface_idler_vtable",
+                "kManagerFromIdlerOffset",
+                "bindings.event_window_primary_vtable",
+                "expected_event_instance_id",
+                "before.active_event_instance_id",
+                "after != before",
+                "kOptionOwnerOffset",
+                "option.native_option_index == cancel_index",
+                "ReadNativeString",
+            ),
+        ),
+        "mailbox": (
+            arguments.mailbox,
+            (
+                "GetCurrentThreadId() != stamp.thread_id",
+                "ExecuteEventWindowContextMailboxQueryV1",
+                "snapshot != query->expected_snapshot",
+                "snapshot.active_event_instance_id",
+                "ReadEventWindowContextV1(",
+            ),
+        ),
+        "bridge": (
+            arguments.bridge,
+            (
+                "permitted_executor_duodenary",
+                "kEventWindowContextV1Step",
+                "ParseEventWindowContextRequestV1",
+                "current_snapshot.active_event_instance_id",
+                "ExecuteEventWindowContextMailboxQueryV1",
+                "EventWindowContextResultFrame",
+            ),
+        ),
+    }
+    for name, (path, required_tokens) in source_contracts.items():
+        try:
+            source = path.resolve().read_text(encoding="utf-8")
+        except OSError as error:
+            failures.append(f"{name}: cannot read source contract: {error}")
+            continue
+        for token in required_tokens:
+            if token not in source:
+                failures.append(f"{name}: missing source-contract token {token!r}")
+    reader_source = arguments.reader.resolve().read_text(encoding="utf-8")
+    for forbidden in (
+        "SubmitSelectEventOption",
+        "select_event_option",
+        "loaded_effect_executor",
+        "0x3380410",
+    ):
+        if forbidden in reader_source:
+            failures.append(f"reader: forbidden executor token {forbidden!r}")
+
+    locator = contract["locator_chain"]
+    query_contract = contract["production_query"]
+    if not locator["root_to_idler_static_ready"]:
+        failures.append("contract: stable root-to-idler is not closed")
+    if query_contract["capability"] != (
+        "game.command.query-current-event-window-context-v1"
+    ):
+        failures.append("contract: production capability drifted")
+    if contract["readiness"]["live_validated"]:
+        failures.append("contract: offline verifier cannot admit live validation")
+
     if failures:
         for failure in failures:
             print(f"FAIL {failure}")
         return 1
-    print(f"PASS spans={len(spans)} pdata=1 exact_build=1 read_only=1")
+    print(
+        f"PASS spans={len(spans)} pdata=1 exact_build=1 read_only=1 "
+        "source_contract=1 live_pending=1"
+    )
     return 0
 
 
