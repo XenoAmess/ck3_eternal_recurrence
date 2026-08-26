@@ -1,0 +1,154 @@
+﻿oxa_count_untracked_courtiers_effect = {
+	set_variable = { name = oxa_untracked_count value = 0 }
+	every_courtier = {
+		limit = { NOT = { has_character_flag = oxa_baseline_courtier } }
+		root = { change_variable = { name = oxa_untracked_count add = 1 } }
+	}
+}
+
+oxa_initialize_effect = {
+	if = {
+		limit = { has_character_flag = oxa_initialize_pending }
+		remove_character_flag = oxa_initialize_pending
+		debug_log = "OXA: TEST BEGIN standalone"
+		character:1316 = { save_scope_as = oxa_target_ruler }
+		if = {
+			limit = {
+				scope:oxa_target_ruler = {
+					is_alive = yes
+					is_ai = yes
+					is_ruler = yes
+					is_married = yes
+					has_title = title:e_hre
+					highest_held_title_tier = tier_empire
+					has_dlc_feature = royal_court
+					has_royal_court = yes
+					can_employ_court_position_type = champion_court_position
+					NOT = { employs_court_position = champion_court_position }
+					exists = primary_spouse
+					primary_spouse = {
+						is_alive = yes
+						is_adult = yes
+					}
+				}
+			}
+			scope:oxa_target_ruler = {
+				save_scope_as = oxa_ruler
+				set_sexuality = heterosexual
+				every_courtier = { add_character_flag = oxa_baseline_courtier }
+				primary_spouse = {
+					save_scope_as = oxa_spouse
+				}
+				set_relation_soulmate = scope:oxa_spouse
+				add_character_flag = oxa_initialized
+				add_character_flag = oxa_phase_decline
+			}
+			set_player_character = scope:oxa_target_ruler
+			debug_log = "OXA: TEST PASS exact_build_ruler_ready"
+		}
+		else = { debug_log = "OXA: TEST FAIL exact_build_ruler_ready" }
+	}
+}
+
+oxa_verify_decline_effect = {
+	if = {
+		limit = { has_character_flag = oxa_verify_decline_pending }
+		remove_character_flag = oxa_verify_decline_pending
+		oxa_count_untracked_courtiers_effect = yes
+		if = {
+			limit = {
+				var:oxa_untracked_count = 0
+				has_relation_soulmate = primary_spouse
+				NOT = { employs_court_position = champion_court_position }
+				NOT = { has_character_flag = ox_here_ai_cooldown }
+			}
+			debug_log = "OXA: TEST PASS decline_zero_side_effect"
+		}
+		else = { debug_log = "OXA: TEST FAIL decline_zero_side_effect" }
+		remove_variable = oxa_untracked_count
+		remove_character_flag = oxa_phase_decline
+		add_character_flag = oxa_phase_recruit
+	}
+}
+
+oxa_verify_recruit_effect = {
+	if = {
+		limit = { has_character_flag = oxa_verify_recruit_pending }
+		remove_character_flag = oxa_verify_recruit_pending
+		oxa_verify_recruit_body_effect = yes
+	}
+}
+
+oxa_verify_recruit_body_effect = {
+	oxa_count_untracked_courtiers_effect = yes
+	if = {
+		limit = { var:oxa_untracked_count = 1 }
+		debug_log = "OXA: TEST PASS exactly_one_delivery"
+	}
+	else = { debug_log = "OXA: TEST FAIL exactly_one_delivery" }
+	random_courtier = {
+		limit = { NOT = { has_character_flag = oxa_baseline_courtier } }
+		save_scope_as = oxa_warrior
+	}
+	if = {
+		limit = {
+			exists = scope:oxa_warrior
+			scope:oxa_warrior = { oxa_warrior_identity_trigger = yes }
+		}
+		debug_log = "OXA: TEST PASS warrior_identity_and_prowess"
+	}
+	else = { debug_log = "OXA: TEST FAIL warrior_identity_and_prowess" }
+	if = {
+		limit = {
+			employs_court_position = champion_court_position
+			scope:oxa_warrior = {
+				has_character_flag = ox_here_free_champion
+				has_court_position = champion_court_position
+				is_knight_of = root
+			}
+		}
+		debug_log = "OXA: TEST PASS knight_and_champion_appointment"
+	}
+	else = { debug_log = "OXA: TEST FAIL knight_and_champion_appointment" }
+	if = {
+		limit = {
+			NOT = { has_relation_soulmate = primary_spouse }
+			NOT = { has_relation_lover = primary_spouse }
+			scope:oxa_warrior = {
+				has_relation_lover = root.primary_spouse
+				any_secret = {
+					type = secret_lover
+					secret_target = root.primary_spouse
+				}
+			}
+		}
+		debug_log = "OXA: TEST PASS affair_and_secret"
+	}
+	else = { debug_log = "OXA: TEST FAIL affair_and_secret" }
+	if = {
+		limit = {
+			NOT = { is_attracted_to_gender_of = scope:oxa_warrior }
+			scope:oxa_warrior = {
+				any_scheme = {
+					type = seduce
+					scheme_target_character = root
+				}
+			}
+		}
+		debug_log = "OXA: TEST PASS incompatible_orientation_seduce_scheme"
+	}
+	else = { debug_log = "OXA: TEST FAIL incompatible_orientation_seduce_scheme" }
+	save_scope_as = liege
+	scope:oxa_warrior = {
+		set_variable = { name = oxa_champion_salary value = champion_total_salary_value }
+	}
+	if = {
+		limit = { scope:oxa_warrior = { var:oxa_champion_salary = 0 } }
+		debug_log = "OXA: TEST PASS champion_salary_zero"
+	}
+	else = { debug_log = "OXA: TEST FAIL champion_salary_zero" }
+	scope:oxa_warrior = { remove_variable = oxa_champion_salary }
+	remove_variable = oxa_untracked_count
+	remove_character_flag = oxa_phase_recruit
+	trigger_event = { id = oxa_acceptance.1 }
+}

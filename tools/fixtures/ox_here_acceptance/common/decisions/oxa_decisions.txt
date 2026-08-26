@@ -1,0 +1,53 @@
+﻿oxa_initialize_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_invite_knights.dds" }
+	decision_group_type = oxa_acceptance
+	sort_order = 1
+	desc = oxa_initialize_decision_desc
+	selection_tooltip = oxa_initialize_decision_tooltip
+	is_shown = {
+		is_ai = no
+		NOT = { has_character_flag = oxa_initialized }
+	}
+	is_valid = { is_ai = no }
+	effect = {
+		add_character_flag = oxa_initialize_pending
+	}
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+oxa_verify_decline_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_invite_knights.dds" }
+	decision_group_type = oxa_acceptance
+	sort_order = 2
+	desc = oxa_verify_decline_decision_desc
+	selection_tooltip = oxa_verify_decline_decision_tooltip
+	is_shown = {
+		is_ai = no
+		has_character_flag = oxa_phase_decline
+	}
+	is_valid = { has_character_flag = oxa_phase_decline }
+	effect = {
+		add_character_flag = oxa_verify_decline_pending
+	}
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+oxa_verify_recruit_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_invite_knights.dds" }
+	decision_group_type = oxa_acceptance
+	sort_order = 3
+	desc = oxa_verify_recruit_decision_desc
+	selection_tooltip = oxa_verify_recruit_decision_tooltip
+	is_shown = {
+		is_ai = no
+		has_character_flag = oxa_phase_recruit
+	}
+	is_valid = { has_character_flag = oxa_phase_recruit }
+	effect = {
+		add_character_flag = oxa_verify_recruit_pending
+	}
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}

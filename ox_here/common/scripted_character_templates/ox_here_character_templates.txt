@@ -1,0 +1,18 @@
+﻿ox_here_african_warrior = {
+	age = { 25 35 }
+	gender = male
+	dynasty = none
+	# Generate portrait DNA from a Kanuri-compatible creation culture whose only
+	# difference is the deterministic African-blond ethnicity. Switch back to the
+	# canonical Kanuri culture immediately after DNA has been generated.
+	culture = culture:ox_here_blond_kanuri
+	faith = faith:west_african_bori_pagan
+	ethnicity = ox_here_african_blond
+	prowess = { 40 60 }
+	trait = giant
+	trait = fecund
+	random_traits = no
+	after_creation = {
+		set_culture = culture:kanuri
+	}
+}

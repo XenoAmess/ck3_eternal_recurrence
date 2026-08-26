@@ -55,7 +55,7 @@ class OxHereReleaseTests(unittest.TestCase):
         return result + (separator if final_newline else b"")
 
     def test_exact_inventory_and_deterministic_build(self):
-        self.assertEqual(17, len(release.RUNTIME_FILES))
+        self.assertEqual(22, len(release.RUNTIME_FILES))
         self.assertEqual(9, sum(path.startswith("localization/") for path in release.RUNTIME_FILES))
         with self.fixture() as (root, source):
             first = self.build(root, source, parent="first")
@@ -63,7 +63,7 @@ class OxHereReleaseTests(unittest.TestCase):
             self.assertEqual(first[3], second[3])
             self.assertEqual(first[1].read_bytes(), second[1].read_bytes())
             self.assertEqual(first[2].read_bytes(), second[2].read_bytes())
-            self.assertEqual(17, release.verify_manifest(first[0], first[1]))
+            self.assertEqual(22, release.verify_manifest(first[0], first[1]))
             self.assertEqual(release.PRODUCT_ID, first[3]["product_id"])
             self.assertIsNone(first[3]["workshop_item_id"])
             with zipfile.ZipFile(first[2]) as archive:
@@ -73,7 +73,7 @@ class OxHereReleaseTests(unittest.TestCase):
     def test_check_reproducible_and_versioned_sidecars(self):
         with self.fixture() as (root, source):
             result = release.check_reproducible(source, revision=REVISION)
-            self.assertEqual(17, result["file_count"])
+            self.assertEqual(22, result["file_count"])
             self.assertRegex(result["manifest_sha256"], r"^[0-9a-f]{64}$")
             _, manifest, archive, details = self.build(root, source, parent="formal", versioned_sidecars=True, git_tag="ox-here-v1.0.1")
             self.assertEqual("ox_here-v1.0.1.manifest.json", manifest.name)
@@ -119,7 +119,7 @@ class OxHereReleaseTests(unittest.TestCase):
             staging, manifest, _, details = self.build(root, source, workshop_item_id=WORKSHOP_ID)
             self.assertEqual(WORKSHOP_ID, details["workshop_item_id"])
             staging.joinpath("descriptor.mod").write_bytes(self.launcher_descriptor(separator=b"\r\n", final_newline=True))
-            self.assertEqual(17, release.verify_manifest(staging, manifest, workshop_cache=True))
+            self.assertEqual(22, release.verify_manifest(staging, manifest, workshop_cache=True))
             self.assertRaisesRegex(ValueError, "mismatch: descriptor.mod", release.verify_manifest, staging, manifest)
             for malformed in (
                 self.launcher_descriptor("123"),

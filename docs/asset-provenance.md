@@ -6,6 +6,7 @@ On 2026-08-20, repository owner XenoAmess confirmed the provenance stated per ro
 |---|---|---|---|---|
 | `images/glassfire_avatar.png` | Original `thumbnail.png`, event art | XenoAmess; original artwork | Author-owned; distribution with this mod authorized | Glassfire Lord portrait |
 | `images/vivhite_courtier_key_art.png` | Vivhite `thumbnail.png` | XenoAmess; owner-supplied generated artwork | Distribution with the Vivhite project mod authorized by repository owner; no separate public license asserted | Vivhite Courtier key art; prompt/model not supplied |
+| `images/ox_here_key_art.png` | Ox Here `thumbnail.png` | XenoAmess; owner-supplied artwork | Distribution with the Ox Here project mod authorized by repository owner; no separate public license asserted | Ox Here key art; projected and compressed by `tools/compose_ox_here_key_art.py` |
 | `images/glassfire_avatar_wide.png` | `gfx/interface/illustrations/event_scenes/xar_glassfire_avatar.dds` | XenoAmess; original artwork | Author-owned; distribution with this mod authorized | Wide event illustration |
 | `images/glassfire_trait.png` | Original `gfx/interface/icons/traits/glassfire_trait.dds`; Vivhite `gfx/interface/icons/traits/ervc_glassfire_icon.dds` | XenoAmess; original artwork | Author-owned; distribution with both project mods authorized | Glassfire icon |
 | `images/glassfire_trait.png` | `gfx/interface/icons/trait_level_tracks/xar_glassfire_gaze.dds` | XenoAmess; original artwork | Author-owned; distribution with this mod authorized | Trait-track icon |

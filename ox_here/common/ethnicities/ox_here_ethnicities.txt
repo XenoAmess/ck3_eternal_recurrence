@@ -1,0 +1,10 @@
+﻿ox_here_african_blond = {
+	visible = no
+	template = "african"
+	hair_color = {
+		# Pin both hereditary color samples to the same light-gold point in CK3's
+		# exact-build hair palette. The vanilla commented African "Blonde" range
+		# leaves its second sample in a dark auburn region and renders brown.
+		100 = { 0.25 0.2 0.25 0.2 }
+	}
+}

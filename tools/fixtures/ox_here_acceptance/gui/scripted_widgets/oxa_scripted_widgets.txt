@@ -1,0 +1,1 @@
+﻿gui/oxa_bridge.gui = oxa_bridge_window

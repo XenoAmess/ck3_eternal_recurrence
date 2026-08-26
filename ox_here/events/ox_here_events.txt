@@ -1,0 +1,30 @@
+﻿namespace = ox_here
+
+ox_here.1 = {
+	type = character_event
+	title = ox_here_arrival_event_title
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:ox_here_warrior = {
+						has_court_position = champion_court_position
+					}
+				}
+				desc = ox_here_arrival_event_desc_champion
+			}
+			desc = ox_here_arrival_event_desc
+		}
+	}
+	theme = martial
+
+	left_portrait = {
+		character = scope:ox_here_warrior
+		animation = personality_bold
+		outfit_tags = { military_outfit no_cloak no_headgear }
+	}
+
+	option = {
+		name = ox_here_arrival_event_option
+	}
+}

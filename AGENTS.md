@@ -31,6 +31,8 @@ py tools/gen_courtier_creator.py                            # 原版廷臣特质
 py tools/gen_vivhite_courtier.py                            # 白绮独立版廷臣目录（独立快照/ervc 命名空间）
 py tools/compose_decision_art.py                            # 三张决议源图 → 1100×440 DXT1 DDS
 py tools/compose_vivhite_key_art.py                         # 白绮主视觉 → 独立版 640×640 thumbnail
+py tools/compose_ox_here_key_art.py                         # 牛来主视觉 → 640×640、低于 1 MB thumbnail
+py tools/compose_ox_here_workshop_media.py --artifacts <run> # 牛来 GREEN 实机截图 → 四张低于 2 MB JPEG
 py tools/compose_trait_stars.py                             # 10 级特质星标 → 120×120 RGBA DDS
 py tools/build_release.py --check                           # 临时双构建，验证 manifest/ZIP 可复现
 py tools/build_release.py                                   # 生成 dist staging、manifest 与 deterministic ZIP
@@ -201,6 +203,9 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
   `has_character_flag = xa_enabled`（该 flag 只能由玩家点契约获得）**且** `is_ai = no` 双闸门；GUI 桥走
   `GetPlayer`。今后新增任何事件/决议/互动/钩子，都必须挂在上述玩家限定链上（或自带等价闸门），
   禁止给 AI 留入口；新增 on_action 钩子时注意其本身对全场角色触发，effect 必须包 limit
+- 唯一已授权例外是独立 `ox_here/` mod：AI 可以低意愿使用“牛来”，所有层级每 12 个月检查一次，执行后冷却
+  **恰好 1 年且永远不得提高到 1 年以上**。该例外不得外推到主 mod 或白绮独立版；权威权重与实机边界见
+  `docs/court-position-mechanics.md`。
 - 所有脚本文件 **UTF-8 BOM**；yml 缺 BOM 直接不加载
 - script values 目录是 `common/script_values`（**不是** scripted_values）
 - `is_tutorial_lesson_completed` 是 interface trigger，只能用于 customizable_localization / GUI，游戏状态脚本禁用

@@ -1,0 +1,13 @@
+﻿oxa_warrior_identity_trigger = {
+	is_female = no
+	age >= 25
+	age < 36
+	is_courtier_of = root
+	culture = culture:kanuri
+	faith = faith:west_african_bori_pagan
+	NOT = { exists = dynasty }
+	has_trait = giant
+	has_trait = fecund
+	prowess >= 46
+	prowess <= 66
+}

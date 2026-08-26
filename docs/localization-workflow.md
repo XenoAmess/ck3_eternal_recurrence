@@ -57,6 +57,13 @@ MiniMax-M3 只能承担低风险、机械性的翻译工作。
 
 ## 三、调用方式
 
+### 仓库复用状态
+
+截至 2026-08-27，仓库此前已经沉淀了 MiniMax 的职责边界、请求格式和发布审核记录，但历史提交中没有受版本
+控制的通用调用器；过去的翻译调用属于一次性执行，不能作为可复现工具链继续调用。现已统一为
+`tools/translate_localization_minimax.py` 与 `tools/test_translate_localization_minimax.py`：以后任何 mod 都复用这一个
+只读候选生成入口，不再为单个产品复制临时请求脚本。
+
 使用环境变量中的 `MINIMAX_API_KEY` 调用：
 
 - 模型：`MiniMax-M3`
@@ -64,6 +71,25 @@ MiniMax-M3 只能承担低风险、机械性的翻译工作。
 - OpenAI 兼容地址：`https://api.minimaxi.com/v1`
 
 可以自行选择 Python、Node.js 或 `curl`。优先复用项目已有依赖；没有必要时，不为翻译任务增加永久依赖。
+
+仓库内 CK3 本地化优先复用 `tools/translate_localization_minimax.py`。它读取调用者明确指定的基准/参考 yml，
+只向 MiniMax-M3 发送 key-value、目标语言、短语境与自动提取的保护 token；每种语言最多重试两次，拒绝
+非单一严格 JSON、重复 key、key 集合异常和 token 漂移。调用使用 MiniMax-M3 当前接口的
+`max_completion_tokens` 并关闭 adaptive thinking，不依赖该接口不支持的 JSON schema 模式。工具只向标准输出
+返回候选 JSON，**不会写入 yml**；
+候选仍必须由当前执行者亲自审阅并用正常文件编辑流程落盘。示例：
+
+```powershell
+py tools/translate_localization_minimax.py `
+  --source path/to/source_l_english.yml --source-language English `
+  --reference path/to/source_l_simp_chinese.yml --reference-language "Simplified Chinese" `
+  --target french="French (France)" --context "Short, task-specific UI context" `
+  --key first_key --key second_key --protect "Product Name"
+```
+
+`--key` 用于由调用者选择最小必要的小批次；不传时才翻译源文件全部 key。`--protect` 可重复传入必须逐字保留的
+品牌名或项目术语。工具自动保护 CK3 scope、scripted loc、图标、格式标记、换行与常见占位符；极少出现的嵌套
+ICU plural/select 块会整块逐字保护，若块内自然语言也必须翻译，应退出自动调用并人工处理，不能冒险改坏结构。
 
 临时调用脚本必须满足：
 

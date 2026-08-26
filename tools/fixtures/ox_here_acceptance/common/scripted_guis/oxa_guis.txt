@@ -1,0 +1,29 @@
+﻿oxa_initialize_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = oxa_initialize_pending
+		NOT = { has_character_flag = oxa_initialized }
+	}
+	effect = { oxa_initialize_effect = yes }
+}
+
+oxa_verify_decline_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = oxa_phase_decline
+		has_character_flag = oxa_verify_decline_pending
+	}
+	effect = { oxa_verify_decline_effect = yes }
+}
+
+oxa_verify_recruit_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = oxa_phase_recruit
+		has_character_flag = oxa_verify_recruit_pending
+	}
+	effect = { oxa_verify_recruit_effect = yes }
+}

@@ -1,0 +1,1 @@
+﻿gui/ox_here_bridge.gui = ox_here_bridge_window

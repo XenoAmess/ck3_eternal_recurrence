@@ -1,0 +1,19 @@
+﻿namespace = oxa_acceptance
+
+oxa_acceptance.1 = {
+	type = character_event
+	title = oxa_warrior_event_title
+	desc = oxa_warrior_event_desc
+	theme = martial
+
+	left_portrait = {
+		character = scope:oxa_warrior
+		animation = personality_rational
+		outfit_tags = { military_outfit no_cloak no_headgear }
+	}
+
+	option = {
+		name = oxa_warrior_event_option
+		debug_log = "OXA: TEST DONE standalone"
+	}
+}
