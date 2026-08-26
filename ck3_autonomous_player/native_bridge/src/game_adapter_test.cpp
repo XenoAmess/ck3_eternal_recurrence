@@ -244,6 +244,8 @@ int main() {
       !Contains(known.capabilities,
                 "game.command.query-battle-transition-v1-N") ||
       !Contains(known.capabilities,
+                "game.command.query-battle-terminal-transition-v1") ||
+      !Contains(known.capabilities,
                 "game.command.query-battle-reinforcement-assignment-v1-N") ||
       !Contains(known.capabilities, "game.command.split-army-half-N") ||
       !Contains(known.capabilities,
@@ -451,6 +453,16 @@ int main() {
           "query-battle-transition-v1-0") ||
       exact_adapter->supports_step(
           "query-battle-transition-v1-2147483648") ||
+      !exact_adapter->supports_step(
+          "query-battle-terminal-transition-v1-335544325-83886341-0") ||
+      !exact_adapter->supports_step(
+          "query-battle-terminal-transition-v1-335544325-83886341-42") ||
+      exact_adapter->supports_step(
+          "query-battle-terminal-transition-v1-0335544325-83886341-0") ||
+      exact_adapter->supports_step(
+          "query-battle-terminal-transition-v1-335544325-083886341-0") ||
+      exact_adapter->supports_step(
+          "query-battle-terminal-transition-v1-335544325-83886341-00") ||
       !exact_adapter->supports_step(
           "query-battle-reinforcement-assignment-v1-83886341") ||
       exact_adapter->supports_step(

@@ -1150,6 +1150,175 @@ struct BattleTransitionSnapshot {
                          const BattleTransitionSnapshot &) = default;
 };
 
+// Historical terminal identity and the paused post-terminal world are kept
+// separate.  A terminal kind is authoritative only when the passive exact-
+// build journal observed FinalizeCombat's second argument; current ResultID
+// retention is deliberately not used to infer that historical branch.
+struct BattleTerminalTransitionRequestV1 {
+  std::int32_t prior_combat_id = -1;
+  std::int32_t subject_public_cunit_id = -1;
+  std::optional<std::uint64_t> after_terminal_sequence;
+
+  friend bool operator==(const BattleTerminalTransitionRequestV1 &,
+                         const BattleTerminalTransitionRequestV1 &) =
+      default;
+};
+
+enum class BattleTerminalTransitionStatusV1 {
+  available,
+  unavailable,
+};
+
+enum class BattleTerminalJournalEventStatusV1 {
+  not_observed,
+  observed,
+};
+
+enum class BattleTerminalKindV1 {
+  active_not_terminal,
+  normal_result,
+  no_normal_result,
+  unavailable_after_removal,
+};
+
+enum class BattleTerminalWarscoreStatusV1 {
+  recorded,
+  not_recorded_by_native,
+  unavailable,
+};
+
+enum class BattleTerminalSuccessorStateV1 {
+  no_successor,
+  residual_new_combat,
+  subject_missing,
+  subject_retreating,
+  subject_assignment_reopened,
+  unavailable,
+};
+
+enum class BattleTerminalAiMembershipStatusV1 {
+  none,
+  observed,
+  unavailable,
+};
+
+struct BattleTerminalJournalSnapshotV1 {
+  std::optional<std::uint64_t> requested_after_sequence;
+  std::uint64_t oldest_available_sequence = 0;
+  std::uint64_t latest_sequence = 0;
+  std::optional<std::uint64_t> event_sequence;
+  BattleTerminalJournalEventStatusV1 event_status =
+      BattleTerminalJournalEventStatusV1::not_observed;
+
+  friend bool operator==(const BattleTerminalJournalSnapshotV1 &,
+                         const BattleTerminalJournalSnapshotV1 &) = default;
+};
+
+struct BattleTerminalWarscoreSnapshotV1 {
+  BattleTerminalWarscoreStatusV1 status =
+      BattleTerminalWarscoreStatusV1::unavailable;
+  std::optional<std::int32_t> war_id;
+  std::optional<std::int32_t> war_battle_row_index;
+  std::optional<std::int64_t> value_raw_q100000;
+  std::optional<bool> winner_is_war_attacker;
+  std::optional<bool> combat_side0_is_war_attacker;
+  std::optional<std::int64_t> attacker_relative_delta_raw_q100000;
+
+  friend bool operator==(const BattleTerminalWarscoreSnapshotV1 &,
+                         const BattleTerminalWarscoreSnapshotV1 &) = default;
+};
+
+struct BattleTerminalPriorSnapshotV1 {
+  std::int32_t combat_id = -1;
+  BattleTerminalKindV1 terminal_kind =
+      BattleTerminalKindV1::unavailable_after_removal;
+  std::optional<bool> suppress_normal_result_envelopes;
+  std::optional<std::int32_t> phase_raw;
+  std::optional<std::int32_t> winner_raw;
+  std::optional<bool> finalized_before;
+  std::optional<std::uint8_t> daily_guard_raw;
+  std::optional<std::int32_t> province_id;
+  std::optional<std::int32_t> battle_result_id;
+  std::optional<bool> wipe_raw;
+  std::optional<std::int32_t>
+      attacker_primary_participant_character_id;
+  std::optional<std::int32_t>
+      defender_primary_participant_character_id;
+  std::optional<std::vector<std::int32_t>>
+      attacker_public_cunit_ids_in_stored_order;
+  std::optional<std::vector<std::int32_t>>
+      defender_public_cunit_ids_in_stored_order;
+  BattleTerminalWarscoreSnapshotV1 battle_warscore;
+
+  friend bool operator==(const BattleTerminalPriorSnapshotV1 &,
+                         const BattleTerminalPriorSnapshotV1 &) = default;
+};
+
+struct BattleTerminalRemovalSnapshotV1 {
+  bool prior_combat_strictly_resolves = false;
+  std::optional<bool> prior_province_strictly_resolves;
+  std::optional<bool> prior_province_contains_prior_combat_id;
+  std::optional<bool> result_strictly_resolves;
+  std::optional<std::int32_t> result_relevant_player_count;
+
+  friend bool operator==(const BattleTerminalRemovalSnapshotV1 &,
+                         const BattleTerminalRemovalSnapshotV1 &) = default;
+};
+
+struct BattleTerminalSubjectSnapshotV1 {
+  bool exists = false;
+  std::optional<std::int32_t> current_province_id;
+  std::optional<std::int32_t> native_carmy_id;
+  std::optional<std::int32_t> combat_backlink_id;
+  std::optional<std::int32_t> active_combat_id;
+  std::optional<std::int32_t> movement_or_retreat_state_raw;
+  std::optional<std::int32_t> move_target_province_id;
+  std::optional<std::vector<std::int32_t>>
+      route_province_ids_in_stored_order;
+  BattleTerminalAiMembershipStatusV1 ai_membership_status =
+      BattleTerminalAiMembershipStatusV1::unavailable;
+  std::optional<std::int32_t> coordinator_id;
+  std::optional<std::int32_t> unit_stack_stored_index;
+  std::optional<std::int32_t> subunit_stored_index;
+  std::optional<bool> blocked_by_active_combat;
+
+  friend bool operator==(const BattleTerminalSubjectSnapshotV1 &,
+                         const BattleTerminalSubjectSnapshotV1 &) = default;
+};
+
+struct BattleTerminalSuccessorSnapshotV1 {
+  BattleTerminalSuccessorStateV1 state =
+      BattleTerminalSuccessorStateV1::unavailable;
+  std::vector<std::int32_t> matching_combat_ids_in_native_order;
+  std::optional<std::int32_t> selected_successor_combat_id;
+  std::vector<std::int32_t>
+      participant_overlap_public_cunit_ids_in_prior_order;
+
+  friend bool operator==(const BattleTerminalSuccessorSnapshotV1 &,
+                         const BattleTerminalSuccessorSnapshotV1 &) =
+      default;
+};
+
+struct BattleTerminalTransitionSnapshotV1 {
+  BattleTerminalTransitionStatusV1 status =
+      BattleTerminalTransitionStatusV1::unavailable;
+  std::string unavailable_reason;
+  bool battle_terminal_transition_ready = false;
+  std::uint64_t snapshot_revision = 0;
+  std::int64_t observed_date_raw = 0;
+  std::int32_t prior_combat_id = -1;
+  std::int32_t subject_public_cunit_id = -1;
+  BattleTerminalJournalSnapshotV1 terminal_journal;
+  BattleTerminalPriorSnapshotV1 prior;
+  BattleTerminalRemovalSnapshotV1 removal;
+  BattleTerminalSubjectSnapshotV1 subject;
+  BattleTerminalSuccessorSnapshotV1 successor;
+
+  friend bool operator==(const BattleTerminalTransitionSnapshotV1 &,
+                         const BattleTerminalTransitionSnapshotV1 &) =
+      default;
+};
+
 // Exact, read-only projection of one native AI-managed CUnit's saved
 // reinforcement request/assignment and its already committed route. Native
 // arrays retain stored order; no future CombatID is inferred before contact.

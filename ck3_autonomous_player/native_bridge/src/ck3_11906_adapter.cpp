@@ -8,7 +8,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 55> kCapabilities{
+constexpr std::array<std::string_view, 56> kCapabilities{
     "game.state.snapshot",
     "game.state.xar-one-life-settlement",
     "game.state.map-ready",
@@ -42,6 +42,7 @@ constexpr std::array<std::string_view, 55> kCapabilities{
     "game.command.query-actual-contact-scope-v1-N",
     "game.command.query-battle-control-snapshot-v1-N",
     "game.command.query-battle-transition-v1-N",
+    "game.command.query-battle-terminal-transition-v1",
     "game.command.query-battle-reinforcement-assignment-v1-N",
     "game.command.move-army-N-to-N",
     "game.command.disband-army-N",

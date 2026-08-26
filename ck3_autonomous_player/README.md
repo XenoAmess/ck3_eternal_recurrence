@@ -356,6 +356,16 @@ MCP 不输出胜率，策略也不会因 v3 observation ready 自动攻击。que
 `decision_status=blocked`、`selected_action=null`；即使合成输入显示 90% unconditional win 且所有外部 gate 为 true，独立 activation
 仍为 false，不会产生 move/attack。
 
+战斗终局另有 dedicated read-only MCP
+`ck3_query_battle_terminal_transition_v1(prior_combat_id, subject_public_cunit_id, expected_revision, after_terminal_sequence)`。
+它保留旧 `ck3_query_battle_transition_v1` 的当前-CombatID 语义，以 passive terminal journal 区分 normal/no-normal 历史分支，
+并在同一 paused revision 返回 old CombatID/Province/Result removal、单场 battle-warscore row、当前 subject 的 combat/retreat/route、
+三态 AI membership 与 exact successor CombatID。partial 玩家 AI membership 只令该子域为 `unavailable`，不会让 terminal core 整帧失败，
+也不会伪造 `no_successor`。2026-08-26 的 production managed run 已从真实 active battle 逐日推进 33 日，观察到
+`CombatID=335544325` normal terminal、row `2135850` Q100000、old-ID 双重删除与玩家 `subject_retreating`；artifact SHA
+`61D0D912206A90D9B34DDE3555AEC941EC3538C253DBC4DCEB9D177D7456FDB1`。no-normal、residual 与 assignment-reopened
+仍是未完成的独立 live 分支，不能据此宣称完整 battle controller ready。
+
 纯原生模式有两种互斥的 ownership。外部 MCP 模式需要两个并行进程：先启动
 `mcp_server.py --driver native-headless` 建立 pipe server，再用上面的 `agent.py ... native-session` 创建 suspended CK3、
 注入 DLL 并恢复游戏。`native-auto-run` 则在同一 Python 进程持有 pipe driver、`GameplayBridgeService` 与受管

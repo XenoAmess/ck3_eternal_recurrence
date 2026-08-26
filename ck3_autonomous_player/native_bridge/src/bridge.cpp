@@ -1,6 +1,8 @@
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
+#include "xar_bridge/battle_terminal_journal_v1.hpp"
+#include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
@@ -54,6 +56,8 @@ std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running, 2 stopping
 // original IAT entry but never permits unloading this DLL before process exit.
 static xar::ck3_11906::MainThreadQueryMailboxV1
     g_main_thread_query_mailbox_v1{};
+static xar::ck3_11906::BattleTerminalJournalDetourStateV1
+    g_battle_terminal_journal_v1{};
 static xar::bridge::StartupParticle2NullGuardV1State
     g_startup_particle2_null_guard_v1{};
 static xar::bridge::StartupParticle2ConsumerGuardV1State
@@ -1884,6 +1888,38 @@ std::string BattleTransitionResultFrame(
   return result;
 }
 
+std::string BattleTerminalTransitionResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const xar::game::BattleTerminalTransitionSnapshotV1 &snapshot) {
+  const auto payload =
+      xar::ck3_11906::SerializeBattleTerminalTransitionV1(snapshot);
+  if (payload.empty()) {
+    return {};
+  }
+  const std::string_view status =
+      snapshot.status ==
+              xar::game::BattleTerminalTransitionStatusV1::available
+          ? "available"
+          : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot.snapshot_revision);
+  result += ",\"battle_terminal_transition\":";
+  result += payload;
+  result += "}}";
+  return result;
+}
+
 std::string BattleReinforcementAssignmentResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
@@ -2397,6 +2433,8 @@ public:
     environment.permitted_executor_septenary =
         &xar::ck3_11906::
             ExecuteBattleReinforcementAssignmentMailboxQueryV1;
+    environment.permitted_executor_octonary =
+        &xar::ck3_11906::ExecuteBattleTerminalTransitionMailboxQueryV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -2532,6 +2570,7 @@ struct WorkerState {
   std::uint64_t battle_control_snapshot_query_sequence = 0;
   std::uint64_t battle_transition_query_sequence = 0;
   std::uint64_t battle_reinforcement_assignment_query_sequence = 0;
+  std::uint64_t battle_terminal_transition_query_sequence = 0;
   std::uint64_t army_strength_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t war_termination_query_sequence = 0;
@@ -2568,6 +2607,8 @@ void RunConnectedSession(
       state.battle_transition_query_sequence;
   auto &battle_reinforcement_assignment_query_sequence =
       state.battle_reinforcement_assignment_query_sequence;
+  auto &battle_terminal_transition_query_sequence =
+      state.battle_terminal_transition_query_sequence;
   auto &army_strength_query_sequence =
       state.army_strength_query_sequence;
   auto &combat_inputs_query_sequence =
@@ -3617,6 +3658,127 @@ void RunConnectedSession(
             }
           }
         } else if (step.starts_with(
+                       xar::ck3_11906::
+                           kBattleTerminalTransitionV1StepPrefix)) {
+          xar::game::BattleTerminalTransitionRequestV1 terminal_request{};
+          std::uint64_t expected_revision = 0;
+          if (!xar::ck3_11906::ParseBattleTerminalTransitionV1Step(
+                  step, terminal_request) ||
+              !xar::ck3_11906::
+                   ParseBattleTerminalTransitionExpectedRevisionV1(
+                       incoming.payload, expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "battle-terminal-transition request is malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "battle-terminal-transition expected revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "battle-terminal-transition snapshot changed; retry after heartbeat"));
+            } else {
+              xar::ck3_11906::BattleTerminalTransitionMailboxContextV1
+                  query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.request = terminal_request;
+              query.expected_snapshot_revision = expected_revision;
+              query.expected_snapshot = current_snapshot;
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecuteBattleTerminalTransitionMailboxQueryV1,
+                      &query, query.ticket);
+              if (submit !=
+                  xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main battle-terminal-transition executor is unavailable";
+                if (submit ==
+                    xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                        paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (
+                    submit ==
+                    xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                        mailbox_busy) {
+                  error =
+                      "application-main battle-terminal-transition executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe,
+                    CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kBattleTerminalTransitionV1QueuedWaitBudgetMilliseconds);
+                while (wait ==
+                       xar::ck3_11906::MainThreadQueryWaitResultV1::
+                           timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kBattleTerminalTransitionV1ExecutingWaitSliceMilliseconds);
+                }
+                std::string response;
+                bool completion_snapshot_stable = false;
+                if (wait ==
+                        xar::ck3_11906::MainThreadQueryWaitResultV1::
+                            completed &&
+                    query.completion ==
+                        xar::ck3_11906::
+                            BattleTerminalTransitionMailboxCompletionV1::
+                                completed) {
+                  xar::game::Snapshot completion_snapshot{};
+                  if (state_revision == expected_revision &&
+                      previous_snapshot.has_value() &&
+                      xar::game::ReadSnapshot(game, completion_snapshot) &&
+                      completion_snapshot == current_snapshot &&
+                      completion_snapshot == previous_snapshot.value()) {
+                    completion_snapshot_stable = true;
+                    response = BattleTerminalTransitionResultFrame(
+                        request_id, step,
+                        battle_terminal_transition_query_sequence + 1,
+                        query.result);
+                    if (!response.empty()) {
+                      ++battle_terminal_transition_query_sequence;
+                    }
+                  }
+                }
+                if (response.empty()) {
+                  const auto error = xar::ck3_11906::
+                      BattleTerminalTransitionFailureMessageV1(
+                          wait, query.completion,
+                          completion_snapshot_stable);
+                  response =
+                      CommandResultFrame(request_id, step, false, error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed !=
+                    xar::ck3_11906::MainThreadQueryReclaimResultV1::
+                        reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main battle-terminal-transition result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (step.starts_with(
                        xar::ck3_11906::kBattleTransitionV1StepPrefix)) {
           xar::game::BattleTransitionRequest transition_request{};
           std::uint64_t expected_revision = 0;
@@ -4558,6 +4720,19 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   }
   if (!game->enabled()) {
     return TRUE;
+  }
+  xar::ck3_11906::BattleTerminalJournalInstallEnvironmentV1
+      battle_terminal_environment{};
+  battle_terminal_environment.exact_build_admitted = true;
+  battle_terminal_environment.primary_thread_suspended_proven = true;
+  battle_terminal_environment.module_base =
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  battle_terminal_environment.bindings =
+      xar::ck3_11906::BindCurrentProcess(true);
+  if (!xar::ck3_11906::InstallBattleTerminalJournalV1(
+          g_battle_terminal_journal_v1,
+          battle_terminal_environment)) {
+    return FALSE;
   }
   if (kStartupParticle2StageRecorderEnabledV1) {
     xar::bridge::StartupParticle2StageRecorderV1Environment environment{};

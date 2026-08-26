@@ -550,6 +550,10 @@ using game::BattleControlSnapshotStatus;
 using game::BattleTransitionRequest;
 using game::BattleTransitionSnapshot;
 using game::BattleTransitionSnapshotStatus;
+using game::BattleTerminalTransitionRequestV1;
+using game::BattleTerminalTransitionSnapshotV1;
+using game::BattleTerminalTransitionStatusV1;
+using game::BattleTerminalAiMembershipStatusV1;
 using game::BattleReinforcementAssignmentRequest;
 using game::BattleReinforcementAssignmentSnapshot;
 using game::BattleReinforcementAssignmentStatus;
@@ -589,6 +593,15 @@ BattleControlSnapshotStatus ReadBattleControlSnapshot(
 BattleTransitionSnapshotStatus ReadBattleTransitionSnapshot(
     const Bindings &bindings, const BattleTransitionRequest &request,
     BattleTransitionSnapshot &output) noexcept;
+
+// Main-thread-only, paused composition of the passive terminal journal with
+// the current full-generation Combat/Province/CUnit graph. It samples the
+// complete semantic frame twice and never calls a finalizer, row writer,
+// contact resolver, AI lifecycle function or combat constructor.
+BattleTerminalTransitionStatusV1 ReadBattleTerminalTransitionV1(
+    const Bindings &bindings, const Snapshot &same_frame_world,
+    const BattleTerminalTransitionRequestV1 &request,
+    BattleTerminalTransitionSnapshotV1 &output) noexcept;
 
 // Main-thread-only, paused exact-build projection of one AI-managed CUnit's
 // stored help signal, assignment target, committed route/ETA and present-time

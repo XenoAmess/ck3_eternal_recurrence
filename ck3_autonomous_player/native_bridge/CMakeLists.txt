@@ -60,6 +60,8 @@ add_library(xar_ck3_bridge SHARED
   src/actual_contact_scope_v1_mailbox.cpp
   src/battle_control_snapshot_v1_mailbox.cpp
   src/battle_reinforcement_assignment_v1_mailbox.cpp
+  src/battle_terminal_journal_v1.cpp
+  src/battle_terminal_transition_v1_mailbox.cpp
   src/battle_transition_v1_mailbox.cpp
   src/bridge.cpp
   src/ck3_11906.cpp
@@ -135,6 +137,8 @@ if(BUILD_TESTING)
     src/actual_contact_scope_v1_mailbox.cpp
     src/battle_control_snapshot_v1_mailbox.cpp
     src/battle_reinforcement_assignment_v1_mailbox.cpp
+    src/battle_terminal_journal_v1.cpp
+    src/battle_terminal_transition_v1_mailbox.cpp
     src/battle_transition_v1_mailbox.cpp
     src/ck3_11906.cpp
     src/ck3_11906_test.cpp
@@ -162,6 +166,8 @@ if(BUILD_TESTING)
     src/actual_contact_scope_v1_mailbox.cpp
     src/battle_control_snapshot_v1_mailbox.cpp
     src/battle_reinforcement_assignment_v1_mailbox.cpp
+    src/battle_terminal_journal_v1.cpp
+    src/battle_terminal_transition_v1_mailbox.cpp
     src/battle_transition_v1_mailbox.cpp
     src/combat_simulation_inputs_v3_mailbox.cpp
     src/game_adapter.cpp
@@ -256,6 +262,30 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_battle_reinforcement_assignment_v1_mailbox
     COMMAND xar_ck3_battle_reinforcement_assignment_v1_mailbox_test
+  )
+
+  add_executable(xar_ck3_battle_terminal_transition_v1_mailbox_test
+    src/battle_terminal_journal_v1.cpp
+    src/battle_terminal_transition_v1_mailbox.cpp
+    src/battle_terminal_transition_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_battle_terminal_transition_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_battle_terminal_transition_v1_mailbox_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_battle_terminal_transition_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_battle_terminal_transition_v1_mailbox
+    COMMAND xar_ck3_battle_terminal_transition_v1_mailbox_test
   )
 
   add_executable(xar_ck3_combat_v3_test_only_serializer_test

@@ -5,6 +5,7 @@
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
+#include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 
 #include "xar_bridge/ck3_11906_adapter.hpp"
@@ -315,6 +316,13 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     if (ck3_11906::ParseBattleReinforcementAssignmentV1Step(
             step, reinforcement_request)) {
       capability = ck3_11906::kBattleReinforcementAssignmentV1Capability;
+    }
+  }
+  if (capability.empty()) {
+    BattleTerminalTransitionRequestV1 terminal_request{};
+    if (ck3_11906::ParseBattleTerminalTransitionV1Step(
+            step, terminal_request)) {
+      capability = ck3_11906::kBattleTerminalTransitionV1Capability;
     }
   }
   if (capability.empty()) {

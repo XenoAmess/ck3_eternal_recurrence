@@ -7449,6 +7449,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_query_actual_contact_scope",
                     "ck3_query_battle_control_snapshot_v1",
                     "ck3_query_battle_transition_v1",
+                    "ck3_query_battle_terminal_transition_v1",
                     "ck3_query_battle_reinforcement_assignment_v1",
                     "ck3_preview_active_combat_retreat_v1",
                     "ck3_order_active_combat_retreat_v1",

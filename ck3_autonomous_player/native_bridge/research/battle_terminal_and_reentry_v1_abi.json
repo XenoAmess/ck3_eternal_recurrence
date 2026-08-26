@@ -1,7 +1,7 @@
 {
   "schema_version": "xar.ck3.battle-terminal-and-reentry.research.v1",
-  "contract_stage": "research_static_only",
-  "production_live": false,
+  "contract_stage": "production_exact_battle_terminal_transition",
+  "production_live": true,
   "exact_build": {
     "game_version": "1.19.0.6",
     "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
@@ -22,12 +22,13 @@
     "static_disassembly_ready": true,
     "rtti_ready": true,
     "original_data_ready": true,
-    "game_started_for_this_research": false,
-    "mutation_executed_for_this_research": false,
+    "game_started_for_this_research": true,
+    "mutation_executed_for_this_research": true,
     "forbidden_constructor_called": false,
-    "implementation_ready": false,
-    "query_capability_advertised": false,
-    "production_live_ready": false
+    "implementation_ready": true,
+    "query_capability_advertised": true,
+    "production_live_ready": true,
+    "live_acceptance_boundary": "managed non-debug production session; only life-advance, exactly one game day per command"
   },
   "anchors": {
     "combat_daily_manager_rva": "0x27FB5D0",
@@ -529,8 +530,15 @@
     "formal_manager_update_cadence": "unknown; do not label daily",
     "event_driven_target_invalidators": "unknown"
   },
-  "query_battle_transition_v1": {
+  "query_battle_terminal_transition_v1": {
     "design_rule": "terminal historical identity and current post-state are separate layers",
+    "surface": {
+      "compatibility_rule": "keep the existing query-battle-transition-v1 current-CombatID lifecycle query unchanged",
+      "capability": "game.command.query-battle-terminal-transition-v1",
+      "step_wire": "query-battle-terminal-transition-v1-<prior_combat_id>-<subject_public_cunit_id>-<after_terminal_sequence_wire>",
+      "none_cursor_wire_value": 0,
+      "command_result_field": "battle_terminal_transition"
+    },
     "minimum_components": [
       "passive process-local terminal journal observing 0x230A590 entry",
       "passive process-local battle-warscore journal observing completed 0x222A5A0 row/result copy",
@@ -558,10 +566,14 @@
         "defender_public_cunit_ids_in_stored_order": "positive full int32 CUnitID[]"
       },
       "terminal_kind_mapping": {
+        "active_without_event": "active_not_terminal",
         "false": "normal_result",
         "true": "no_normal_result",
-        "missing_or_overflowed_event": "unavailable_after_removal"
-      }
+        "removed_missing_event_in_gap_free_interval": "unavailable_after_removal",
+        "cursor_before_ring_oldest": "overall unavailable with journal_gap"
+      },
+      "active_not_terminal_fields": "when the old CombatID still strictly resolves and no matching event exists, phase/winner/finalized/daily/province/result/wipe/primary participants/side CUnits are sampled from that current active CCombat; suppress_normal_result_envelopes remains null and battle_warscore remains unavailable",
+      "unavailable_after_removal_fields": "when the old CombatID no longer resolves and no matching event exists in a gap-free interval, journal-only prior fields remain null and battle_warscore remains unavailable"
     },
     "battle_warscore_journal": {
       "canonical_writer_rva": "0x222A5A0",
@@ -594,19 +606,30 @@
       "unavailable_reason": "optional unsupported_build | requires_paused | invalid_request | journal_gap | identity_unavailable | state_changed | bounds_exceeded",
       "snapshot_revision": "uint64",
       "observed_date_raw": "signed int32",
+      "terminal_journal": {
+        "requested_after_sequence": "optional uint64; wire zero means none",
+        "oldest_available_sequence": "uint64; zero only while the ring has never published an event",
+        "latest_sequence": "uint64; zero only while the ring has never published an event",
+        "event_sequence": "optional uint64 exact matching terminal event",
+        "event_status": "not_observed | observed; journal gap is an overall unavailable response",
+        "unavailable_rule": "terminal_journal remains a typed object on unavailable responses so the requested cursor and retained oldest/latest bounds remain diagnosable; event_sequence is null and event_status is not_observed"
+      },
+      "unavailable_nested_rule": "prior, removal, subject, and successor are null when status is unavailable; terminal_journal is retained",
       "prior": {
         "combat_id": "positive full int32 CombatID",
-        "terminal_kind": "normal_result | no_normal_result | unavailable_after_removal",
+        "terminal_kind": "active_not_terminal | normal_result | no_normal_result | unavailable_after_removal",
         "suppress_normal_result_envelopes": "optional bool; only from a gap-free journal event",
-        "phase_raw": "optional int32",
+        "phase_raw": "optional int32; journal entry for terminal kinds, current CCombat for active_not_terminal",
         "winner_raw": "optional int32",
         "finalized_before": "optional bool",
         "daily_guard_raw": "optional uint8",
         "province_id": "optional positive full int32 ProvinceID",
         "battle_result_id": "optional full int32 ResultID",
         "wipe_raw": "optional bool",
-        "primary_participant_character_ids": "optional ordered pair of full int32 CharacterIDs",
-        "side_public_cunit_ids_in_stored_order": "optional ordered pair of positive full int32 CUnitID arrays",
+        "attacker_primary_participant_character_id": "optional full int32 CharacterID",
+        "defender_primary_participant_character_id": "optional full int32 CharacterID",
+        "attacker_public_cunit_ids_in_stored_order": "optional positive full int32 CUnitID[]",
+        "defender_public_cunit_ids_in_stored_order": "optional positive full int32 CUnitID[]",
         "battle_warscore": {
           "status": "recorded | not_recorded_by_native | unavailable",
           "war_id": "optional positive full int32 WarID",
@@ -633,6 +656,7 @@
         "movement_or_retreat_state_raw": "optional int32",
         "move_target_province_id": "optional positive full int32 ProvinceID",
         "route_province_ids_in_stored_order": "optional positive full int32 ProvinceID[]",
+        "ai_membership_status": "none | observed | unavailable; missing subject and exact (-1,null) are none, a fully validated coordinator/parent/subunit chain is observed, and every partial or unresolvable chain is unavailable",
         "coordinator_id": "optional positive full int32 component ID",
         "unit_stack_stored_index": "optional nonnegative int32",
         "subunit_stored_index": "optional nonnegative int32",
@@ -665,6 +689,8 @@
       "never infer a per-battle value by differencing total war score; zero, native-not-recorded and journal-unavailable are separate states",
       "report global old-combat resolution separately from prior-Province membership",
       "bind successors by exact new CombatID and prior ordered participant overlap, never by an assumed single combat per Province",
+      "selected residual successor additionally requires the subject current active CombatID to equal that matching CombatID; a sole Province match is not enough",
+      "AI membership is a typed subdomain: partial membership cannot poison the terminal core query, cannot become no_successor, and keeps all three membership identity fields null",
       "sample revision/date/journal cursor/IDs/counts/memberships/routes/backlinks twice inside one paused application-main callback",
       "any drift returns state_changed"
     ],
@@ -790,9 +816,17 @@
     "ai_battle_score_consumption_static_ready": true,
     "defeat_loot_on_action_identity_static_ready": true,
     "ai_manager_formal_cadence_static_ready": false,
-    "terminal_journal_implemented": false,
-    "transition_query_implemented": false,
-    "production_live_ready": false,
+    "terminal_journal_implemented": true,
+    "battle_warscore_journal_implemented": true,
+    "transition_query_implemented": true,
+    "python_service_and_mcp_implemented": true,
+    "normal_terminal_live_ready": true,
+    "normal_terminal_live_artifact_sha256": "61D0D912206A90D9B34DDE3555AEC941EC3538C253DBC4DCEB9D177D7456FDB1",
+    "normal_terminal_live_frame_sha256": "D4815EFB4F71C99524DEDBDAB6CBEEDB0A5ADD19647CB668B77A7693D1D480BF",
+    "no_normal_result_live_ready": false,
+    "residual_successor_live_ready": false,
+    "assignment_reentry_live_ready": false,
+    "production_live_ready": true,
     "ready": false
   }
 }

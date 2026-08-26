@@ -405,6 +405,17 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   source autosave SHA `9104CCB8...CC63` 前后不变，cleanup 与 clone removal 均成立。artifact size `432082`、SHA
   `96CE25384517F0060A58623958DE071F43C3C2F7B68AEB6E668473E986C1DD57`；这关闭
   `planner_battle_hold_live_ready`，不关闭 forecast/retreat strategy。
+- 2026-08-26 `run_battle_terminal_journal_live_acceptance.py` 用 fresh MSVC DLL SHA
+  `BF2FB694358604D53DBE5AC553EC88C720F0540539333126EC68680F5002A5E0` 从同一 immutable active-battle save 托管冷恢复；
+  仅执行 33 个“一条命令正好一天”的 `life-advance`，在 date `53179056` 观察到 `CombatID=335544325` 的 passive journal
+  sequence `14`。terminal kind 为 `normal_result`，old CombatID 已从全局 storage 与 Province `2586` 双重删除；retained
+  ResultID `553648135` 的 relevant-player count 为 `1`，WarID `16777290` 新 row index `2` 记录 `2135850` Q100000，
+  war-attacker relative delta `-2135850`。玩家 CUnit `83886341` backlink/active combat 均清空，movement raw `3`，即使其
+  AI membership 子域为 typed `unavailable`，仍由独立强证据得到 `subject_retreating`。两次 immediate paused frame 相等，frame SHA
+  `D4815EFB4F71C99524DEDBDAB6CBEEDB0A5ADD19647CB668B77A7693D1D480BF`；完整 artifact size `772939`、SHA
+  `61D0D912206A90D9B34DDE3555AEC941EC3538C253DBC4DCEB9D177D7456FDB1`。source save SHA 前后仍为
+  `9104CCB8...CC63`，same bridge PID/generation、shutdown、tree gone、driver close 与 disposable clone removal 全部成立。
+  该 GREEN 关闭 production normal-terminal query，不替代 no-normal、residual 与 assignment-reopened fixtures。
 - 同轮旧增量 MSVC build directory 曾产出注入后 `C0000005` 的 RED。原因不是 CK3 ABI 漂移，而是中文编译器
   `/showIncludes` 输出未被依赖跟踪解析，`game_contract.hpp` 已变更却仍链接旧对象。`native_bridge/CMakeLists.txt`
   现只针对已实测的乱码探测值，把 Ninja 的依赖前缀修正为编译器实际输出的 `注意: 包含文件:`；fresh `v1h`

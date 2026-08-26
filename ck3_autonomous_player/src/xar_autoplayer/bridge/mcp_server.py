@@ -160,6 +160,22 @@ def _ck3_query_battle_transition_v1(
     )
 
 
+def _ck3_query_battle_terminal_transition_v1(
+    service: GameplayBridgeService,
+    prior_combat_id: int,
+    subject_public_cunit_id: int,
+    expected_revision: int,
+    after_terminal_sequence: int | None = None,
+) -> dict[str, object]:
+    """Observe a journal-backed terminal event and exact successor state."""
+    return service.query_battle_terminal_transition_v1(
+        prior_combat_id,
+        subject_public_cunit_id,
+        expected_revision=expected_revision,
+        after_terminal_sequence=after_terminal_sequence,
+    )
+
+
 def _ck3_query_battle_reinforcement_assignment_v1(
     service: GameplayBridgeService,
     selected_public_cunit_id: int,
@@ -471,6 +487,22 @@ def create_server(driver: GameplayBridgeDriver):
             service,
             combat_id,
             expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_battle_terminal_transition_v1(
+        prior_combat_id: int,
+        subject_public_cunit_id: int,
+        expected_revision: int,
+        after_terminal_sequence: int | None = None,
+    ) -> dict[str, object]:
+        """Read terminal history, removal, subject and successor while paused."""
+        return _ck3_query_battle_terminal_transition_v1(
+            service,
+            prior_combat_id,
+            subject_public_cunit_id,
+            expected_revision,
+            after_terminal_sequence,
         )
 
     @server.tool()

@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/battle_terminal_journal_v1.hpp"
 
 #include <windows.h>
 
@@ -10383,6 +10384,644 @@ game::BattleTransitionSnapshotStatus ReadBattleTransitionSnapshotSample(
   return output.status;
 }
 
+void PopulateTerminalJournalWireV1(
+    const BattleTerminalJournalLookupV1 &lookup,
+    const game::BattleTerminalTransitionRequestV1 &request,
+    game::BattleTerminalJournalSnapshotV1 &output) noexcept {
+  output = {};
+  output.requested_after_sequence = request.after_terminal_sequence;
+  output.oldest_available_sequence = lookup.oldest_available_sequence;
+  output.latest_sequence = lookup.latest_sequence;
+  if (lookup.status ==
+      BattleTerminalJournalLookupStatusV1::observed) {
+    output.event_status =
+        game::BattleTerminalJournalEventStatusV1::observed;
+    output.event_sequence = lookup.event.sequence;
+  }
+}
+
+void PopulateTerminalPriorFromEventV1(
+    const BattleTerminalJournalEventV1 &event,
+    game::BattleTerminalPriorSnapshotV1 &output) {
+  output = {};
+  output.combat_id = event.combat_id;
+  output.terminal_kind =
+      event.suppress_normal_result_envelopes
+          ? game::BattleTerminalKindV1::no_normal_result
+          : game::BattleTerminalKindV1::normal_result;
+  output.suppress_normal_result_envelopes =
+      event.suppress_normal_result_envelopes;
+  output.phase_raw = event.phase_raw;
+  output.winner_raw = event.winner_raw;
+  output.finalized_before = event.finalized_before;
+  output.daily_guard_raw = event.daily_guard_raw;
+  output.province_id = event.province_id;
+  if (event.battle_result_id > 0) {
+    output.battle_result_id = event.battle_result_id;
+  }
+  if (event.wipe_raw_observable) {
+    output.wipe_raw = event.wipe_raw;
+  }
+  output.attacker_primary_participant_character_id =
+      event.attacker_primary_participant_character_id;
+  output.defender_primary_participant_character_id =
+      event.defender_primary_participant_character_id;
+  output.attacker_public_cunit_ids_in_stored_order.emplace(
+      event.attacker_public_cunit_ids_in_stored_order.begin(),
+      event.attacker_public_cunit_ids_in_stored_order.begin() +
+          event.attacker_public_cunit_count);
+  output.defender_public_cunit_ids_in_stored_order.emplace(
+      event.defender_public_cunit_ids_in_stored_order.begin(),
+      event.defender_public_cunit_ids_in_stored_order.begin() +
+          event.defender_public_cunit_count);
+}
+
+bool PopulateTerminalPriorFromActiveCombatV1(
+    const Bindings &bindings, void *combat, std::int32_t combat_id,
+    game::BattleTerminalPriorSnapshotV1 &output) noexcept {
+  output = {};
+  output.combat_id = combat_id;
+  if (combat == nullptr ||
+      LoadAt<std::int32_t>(combat, kCombatIdOffset) != combat_id ||
+      LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset) != 0 ||
+      LoadAt<std::uint8_t>(combat,
+                           kCombatDailyDispatchInProgressOffset) != 0) {
+    return false;
+  }
+  void *const province = LoadAt<void *>(combat, kCombatProvinceOffset);
+  const auto province_id = province == nullptr
+                               ? -1
+                               : LoadAt<std::int32_t>(province,
+                                                      kProvinceIdOffset);
+  if (province_id <= 0) {
+    return false;
+  }
+  output.terminal_kind = game::BattleTerminalKindV1::active_not_terminal;
+  output.phase_raw = LoadAt<std::int32_t>(combat, kCombatPhaseOffset);
+  output.winner_raw = LoadAt<std::int32_t>(combat, kCombatWinnerOffset);
+  output.finalized_before = false;
+  output.daily_guard_raw = LoadAt<std::uint8_t>(
+      combat, kCombatDailyDispatchInProgressOffset);
+  output.province_id = province_id;
+  const auto result_id =
+      LoadAt<std::int32_t>(combat, kCombatBattleResultIdOffset);
+  if (result_id > 0) {
+    void *const result = ResolveStoredComponent(
+        bindings.battle_result_storage_slot, result_id,
+        kBattleResultIdOffset);
+    if (result == nullptr) {
+      return false;
+    }
+    output.battle_result_id = result_id;
+    output.wipe_raw =
+        LoadAt<std::uint8_t>(result, kBattleResultReadyOffset) != 0;
+  } else if (result_id != -1) {
+    return false;
+  }
+  output.attacker_primary_participant_character_id =
+      LoadAt<std::int32_t>(
+          combat, kCombatAttackerSideOffset +
+                      kCombatSidePrimaryCharacterIdOffset);
+  output.defender_primary_participant_character_id =
+      LoadAt<std::int32_t>(
+          combat, kCombatDefenderSideOffset +
+                      kCombatSidePrimaryCharacterIdOffset);
+  output.attacker_public_cunit_ids_in_stored_order.emplace();
+  output.defender_public_cunit_ids_in_stored_order.emplace();
+  return output.attacker_primary_participant_character_id.value_or(-1) > 0 &&
+         output.defender_primary_participant_character_id.value_or(-1) > 0 &&
+         ReadBattleTransitionSidePublicIds(
+             bindings, combat, kCombatAttackerSideOffset, combat_id,
+             *output.attacker_public_cunit_ids_in_stored_order) &&
+         ReadBattleTransitionSidePublicIds(
+             bindings, combat, kCombatDefenderSideOffset, combat_id,
+             *output.defender_public_cunit_ids_in_stored_order);
+}
+
+void PopulateTerminalWarscoreV1(
+    const BattleWarscoreJournalLookupV1 &lookup,
+    bool suppress_normal_result_envelopes,
+    game::BattleTerminalWarscoreSnapshotV1 &output) noexcept {
+  output = {};
+  if (suppress_normal_result_envelopes) {
+    output.status =
+        game::BattleTerminalWarscoreStatusV1::not_recorded_by_native;
+    return;
+  }
+  if (lookup.status ==
+      BattleWarscoreJournalLookupStatusV1::observed) {
+    const auto &event = lookup.event;
+    if (event.capture_failure_flags !=
+            battle_terminal_capture_failure_none ||
+        event.war_id <= 0 || event.war_battle_row_index < 0 ||
+        event.battle_warscore_value_raw < 0) {
+      return;
+    }
+    output.status = game::BattleTerminalWarscoreStatusV1::recorded;
+    output.war_id = event.war_id;
+    output.war_battle_row_index = event.war_battle_row_index;
+    output.value_raw_q100000 = event.battle_warscore_value_raw;
+    output.winner_is_war_attacker = event.winner_is_war_attacker;
+    output.combat_side0_is_war_attacker =
+        event.combat_side0_is_war_attacker;
+    output.attacker_relative_delta_raw_q100000 =
+        event.winner_is_war_attacker
+            ? event.battle_warscore_value_raw
+            : -event.battle_warscore_value_raw;
+  } else if (lookup.status ==
+             BattleWarscoreJournalLookupStatusV1::not_observed) {
+    output.status =
+        game::BattleTerminalWarscoreStatusV1::not_recorded_by_native;
+  }
+}
+
+bool ReadTerminalRouteV1(
+    void *game_state, void *unit,
+    std::vector<std::int32_t> &output) noexcept {
+  output.clear();
+  void *const data = LoadAt<void *>(unit, kUnitPathProvinceInfosOffset);
+  const auto capacity = LoadAt<std::int32_t>(
+      unit, kUnitPathProvinceInfoCapacityOffset);
+  const auto count = LoadAt<std::int32_t>(
+      unit, kUnitPathProvinceInfoCountOffset);
+  if (capacity < 0 || count < 0 || count > capacity ||
+      count > kMaximumUnitRouteProvinceInfos ||
+      (count > 0 && data == nullptr)) {
+    return false;
+  }
+  output.reserve(static_cast<std::size_t>(count));
+  for (std::int32_t index = 0; index < count; ++index) {
+    void *const info = LoadAt<void *>(
+        data, static_cast<std::size_t>(index) * sizeof(void *));
+    const auto province_id = info == nullptr
+                                 ? -1
+                                 : LoadAt<std::int32_t>(
+                                       info, kUnitPathProvinceIdOffset);
+    if (ResolveProvince(game_state, province_id) == nullptr) {
+      output.clear();
+      return false;
+    }
+    output.push_back(province_id);
+  }
+  return LoadAt<void *>(unit, kUnitPathProvinceInfosOffset) == data &&
+         LoadAt<std::int32_t>(unit,
+                              kUnitPathProvinceInfoCapacityOffset) ==
+             capacity &&
+         LoadAt<std::int32_t>(unit, kUnitPathProvinceInfoCountOffset) ==
+             count;
+}
+
+void ReadTerminalAiMembershipV1(
+    const Bindings &bindings, void *unit,
+    game::BattleTerminalSubjectSnapshotV1 &output) noexcept {
+  output.ai_membership_status =
+      game::BattleTerminalAiMembershipStatusV1::unavailable;
+  output.coordinator_id.reset();
+  output.unit_stack_stored_index.reset();
+  output.subunit_stored_index.reset();
+  const auto coordinator_id =
+      LoadAt<std::int32_t>(unit, kUnitAiWarCoordinatorIdOffset);
+  void *const subunit =
+      LoadAt<void *>(unit, kUnitAiSubunitStackOffset);
+  if (coordinator_id == -1 && subunit == nullptr) {
+    output.ai_membership_status =
+        game::BattleTerminalAiMembershipStatusV1::none;
+    return;
+  }
+  if (coordinator_id <= 0 || subunit == nullptr ||
+      bindings.ai_war_coordinator_storage_slot == nullptr ||
+      bindings.ai_war_coordinator_fallback_slot == nullptr ||
+      bindings.ai_war_coordinator_vtable == 0 ||
+      bindings.ai_unit_stack_vtable == 0 ||
+      bindings.ai_subunit_stack_vtable == 0) {
+    return;
+  }
+  void *const coordinator = ResolveStoredComponent(
+      bindings.ai_war_coordinator_storage_slot, coordinator_id,
+      kAiWarCoordinatorIdOffset);
+  if (coordinator == nullptr ||
+      coordinator == *bindings.ai_war_coordinator_fallback_slot ||
+      LoadAt<std::uintptr_t>(coordinator, 0) !=
+          bindings.ai_war_coordinator_vtable ||
+      LoadAt<std::uintptr_t>(subunit, 0) !=
+          bindings.ai_subunit_stack_vtable) {
+    return;
+  }
+  void *const parent = LoadAt<void *>(subunit, kAiSubunitParentOffset);
+  if (parent == nullptr ||
+      LoadAt<std::uintptr_t>(parent, 0) !=
+          bindings.ai_unit_stack_vtable ||
+      LoadAt<void *>(parent, kAiUnitStackCoordinatorOffset) !=
+          coordinator) {
+    return;
+  }
+  BattleControlArrayHeaderV1 unit_stacks{};
+  BattleControlArrayHeaderV1 subunits{};
+  if (!ReadBattleControlArrayHeader(
+          coordinator, kAiWarCoordinatorUnitStacksOffset,
+          kAiWarCoordinatorUnitStacksCapacityOffset,
+          kAiWarCoordinatorUnitStacksCountOffset,
+          kMaximumAiCoordinatorUnitStacks, unit_stacks) ||
+      !ReadBattleControlArrayHeader(
+          parent, kAiUnitStackSubunitsOffset,
+          kAiUnitStackSubunitsCapacityOffset,
+          kAiUnitStackSubunitsCountOffset,
+          kMaximumAiUnitStackSubunits, subunits)) {
+    return;
+  }
+  std::int32_t parent_index = -1;
+  std::int32_t subunit_index = -1;
+  for (std::int32_t index = 0; index < unit_stacks.count; ++index) {
+    if (LoadAt<void *>(unit_stacks.data,
+                       static_cast<std::size_t>(index) *
+                           sizeof(void *)) == parent) {
+      if (parent_index != -1) {
+        return;
+      }
+      parent_index = index;
+    }
+  }
+  for (std::int32_t index = 0; index < subunits.count; ++index) {
+    if (LoadAt<void *>(subunits.data,
+                       static_cast<std::size_t>(index) *
+                           sizeof(void *)) == subunit) {
+      if (subunit_index != -1) {
+        return;
+      }
+      subunit_index = index;
+    }
+  }
+  if (parent_index < 0 || subunit_index < 0 ||
+      !BattleControlArrayHeaderUnchanged(
+          coordinator, kAiWarCoordinatorUnitStacksOffset,
+          kAiWarCoordinatorUnitStacksCapacityOffset,
+          kAiWarCoordinatorUnitStacksCountOffset, unit_stacks) ||
+      !BattleControlArrayHeaderUnchanged(
+          parent, kAiUnitStackSubunitsOffset,
+          kAiUnitStackSubunitsCapacityOffset,
+          kAiUnitStackSubunitsCountOffset, subunits)) {
+    return;
+  }
+  output.coordinator_id = coordinator_id;
+  output.unit_stack_stored_index = parent_index;
+  output.subunit_stored_index = subunit_index;
+  output.ai_membership_status =
+      game::BattleTerminalAiMembershipStatusV1::observed;
+}
+
+bool ReadTerminalSubjectV1(
+    const Bindings &bindings, void *game_state,
+    std::int32_t subject_public_cunit_id,
+    game::BattleTerminalSubjectSnapshotV1 &output) noexcept {
+  output = {};
+  output.ai_membership_status =
+      game::BattleTerminalAiMembershipStatusV1::none;
+  void *const unit = ResolveStoredComponent(
+      bindings.army_storage_slot, subject_public_cunit_id,
+      kArmyIdOffset);
+  if (unit == nullptr) {
+    return true;
+  }
+  output.exists = true;
+  output.ai_membership_status =
+      game::BattleTerminalAiMembershipStatusV1::unavailable;
+  void *const province = LoadAt<void *>(unit, kArmyCurrentProvinceOffset);
+  if (province != nullptr) {
+    const auto province_id =
+        LoadAt<std::int32_t>(province, kProvinceIdOffset);
+    if (province_id <= 0 ||
+        ResolveProvince(game_state, province_id) != province) {
+      return false;
+    }
+    output.current_province_id = province_id;
+  }
+  const auto native_carmy_id =
+      LoadAt<std::int32_t>(unit, kUnitArmyIdOffset);
+  bool blocked = false;
+  if (native_carmy_id > 0) {
+    void *const native_army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot, native_carmy_id,
+        kInternalArmyIdOffset);
+    if (native_army == nullptr ||
+        LoadAt<std::int32_t>(native_army,
+                             kInternalArmyUnitIdOffset) !=
+            subject_public_cunit_id) {
+      return false;
+    }
+    output.native_carmy_id = native_carmy_id;
+    const auto combat_id = LoadAt<std::int32_t>(
+        native_army, kInternalArmyCombatIdOffset);
+    if (combat_id != -1 && combat_id <= 0) {
+      return false;
+    }
+    if (combat_id > 0) {
+      output.combat_backlink_id = combat_id;
+    }
+    if (combat_id > 0) {
+      void *const combat = ResolveStoredComponent(
+          bindings.combat_storage_slot, combat_id, kCombatIdOffset);
+      if (combat != nullptr &&
+          LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset) == 0) {
+        output.active_combat_id = combat_id;
+        blocked = true;
+      }
+    }
+  } else if (native_carmy_id != -1) {
+    return false;
+  }
+  output.blocked_by_active_combat = blocked;
+  output.movement_or_retreat_state_raw =
+      LoadAt<std::int32_t>(unit, kUnitRetreatStateOffset);
+  void *const target = LoadAt<void *>(unit, kArmyTargetProvinceOffset);
+  if (target != nullptr) {
+    const auto target_id =
+        LoadAt<std::int32_t>(target, kProvinceIdOffset);
+    if (target_id <= 0 || ResolveProvince(game_state, target_id) != target) {
+      return false;
+    }
+    output.move_target_province_id = target_id;
+  }
+  output.route_province_ids_in_stored_order.emplace();
+  if (!ReadTerminalRouteV1(
+          game_state, unit,
+          *output.route_province_ids_in_stored_order)) {
+    return false;
+  }
+  ReadTerminalAiMembershipV1(bindings, unit, output);
+  return ResolveStoredComponent(bindings.army_storage_slot,
+                                subject_public_cunit_id,
+                                kArmyIdOffset) == unit;
+}
+
+bool ReadTerminalProvinceMembershipV1(
+    const Bindings &bindings, void *game_state,
+    const game::BattleTerminalPriorSnapshotV1 &prior,
+    game::BattleTerminalRemovalSnapshotV1 &output,
+    void *&prior_province) noexcept {
+  prior_province = nullptr;
+  if (!prior.province_id.has_value()) {
+    return true;
+  }
+  prior_province = ResolveProvince(game_state, *prior.province_id);
+  output.prior_province_strictly_resolves = prior_province != nullptr;
+  if (prior_province != nullptr) {
+    std::vector<std::int32_t> combat_ids;
+    if (!ReadContactIdArray(
+            prior_province, kProvinceCombatIdsOffset,
+            kProvinceCombatIdCountOffset,
+            kMaximumActualContactProvinceCombats, combat_ids, false)) {
+      return false;
+    }
+    output.prior_province_contains_prior_combat_id =
+        std::find(combat_ids.begin(), combat_ids.end(), prior.combat_id) !=
+        combat_ids.end();
+  }
+  if (prior.battle_result_id.has_value()) {
+    void *const result = ResolveStoredComponent(
+        bindings.battle_result_storage_slot, *prior.battle_result_id,
+        kBattleResultIdOffset);
+    output.result_strictly_resolves = result != nullptr;
+    if (result != nullptr) {
+      constexpr std::size_t kRelevantPlayerCountOffset = 0xC4;
+      const auto count = LoadAt<std::int32_t>(
+          result, kRelevantPlayerCountOffset);
+      if (count < 0 || count > kMaximumComponentCapacity) {
+        return false;
+      }
+      output.result_relevant_player_count = count;
+    }
+  }
+  return true;
+}
+
+bool ReadTerminalSuccessorV1(
+    const Bindings &bindings, void *prior_province,
+    const game::BattleTerminalPriorSnapshotV1 &prior,
+    const game::BattleTerminalSubjectSnapshotV1 &subject,
+    game::BattleTerminalSuccessorSnapshotV1 &output) noexcept {
+  output = {};
+  if (!subject.exists) {
+    output.state =
+        game::BattleTerminalSuccessorStateV1::subject_missing;
+    return true;
+  }
+  if (prior.terminal_kind ==
+      game::BattleTerminalKindV1::active_not_terminal) {
+    output.state = game::BattleTerminalSuccessorStateV1::unavailable;
+    return true;
+  }
+  const bool successor_scan_observable =
+      prior.attacker_public_cunit_ids_in_stored_order.has_value() &&
+      prior.defender_public_cunit_ids_in_stored_order.has_value() &&
+      prior_province != nullptr;
+  if (successor_scan_observable) {
+    std::vector<std::int32_t> province_combat_ids;
+    if (!ReadContactIdArray(
+            prior_province, kProvinceCombatIdsOffset,
+            kProvinceCombatIdCountOffset,
+            kMaximumActualContactProvinceCombats, province_combat_ids,
+            false)) {
+      return false;
+    }
+    for (const auto combat_id : province_combat_ids) {
+      if (combat_id == prior.combat_id) {
+        continue;
+      }
+      void *const combat = ResolveStoredComponent(
+          bindings.combat_storage_slot, combat_id, kCombatIdOffset);
+      if (combat == nullptr ||
+          LoadAt<void *>(combat, kCombatProvinceOffset) != prior_province) {
+        return false;
+      }
+      if (LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset) != 0) {
+        continue;
+      }
+      std::vector<std::int32_t> attacker;
+      std::vector<std::int32_t> defender;
+      if (!ReadBattleTransitionSidePublicIds(
+              bindings, combat, kCombatAttackerSideOffset, combat_id,
+              attacker) ||
+          !ReadBattleTransitionSidePublicIds(
+              bindings, combat, kCombatDefenderSideOffset, combat_id,
+              defender)) {
+        return false;
+      }
+      const auto candidate_contains_prior = [&](std::int32_t id) noexcept {
+        return std::find(attacker.begin(), attacker.end(), id) !=
+                   attacker.end() ||
+               std::find(defender.begin(), defender.end(), id) !=
+                   defender.end();
+      };
+      const bool overlaps = std::any_of(
+          prior.attacker_public_cunit_ids_in_stored_order->begin(),
+          prior.attacker_public_cunit_ids_in_stored_order->end(),
+          candidate_contains_prior) ||
+          std::any_of(
+              prior.defender_public_cunit_ids_in_stored_order->begin(),
+              prior.defender_public_cunit_ids_in_stored_order->end(),
+              candidate_contains_prior);
+      if (overlaps) {
+        output.matching_combat_ids_in_native_order.push_back(combat_id);
+      }
+    }
+  }
+  if (subject.active_combat_id.has_value() &&
+      std::find(output.matching_combat_ids_in_native_order.begin(),
+                output.matching_combat_ids_in_native_order.end(),
+                *subject.active_combat_id) !=
+          output.matching_combat_ids_in_native_order.end()) {
+    output.selected_successor_combat_id = *subject.active_combat_id;
+  }
+  if (output.selected_successor_combat_id.has_value()) {
+    void *const selected = ResolveStoredComponent(
+        bindings.combat_storage_slot,
+        *output.selected_successor_combat_id, kCombatIdOffset);
+    std::vector<std::int32_t> attacker;
+    std::vector<std::int32_t> defender;
+    if (selected == nullptr ||
+        !ReadBattleTransitionSidePublicIds(
+            bindings, selected, kCombatAttackerSideOffset,
+            *output.selected_successor_combat_id, attacker) ||
+        !ReadBattleTransitionSidePublicIds(
+            bindings, selected, kCombatDefenderSideOffset,
+            *output.selected_successor_combat_id, defender)) {
+      return false;
+    }
+    const auto append_prior_overlap = [&](const auto &prior_ids) {
+      for (const auto id : prior_ids) {
+        if (std::find(attacker.begin(), attacker.end(), id) !=
+                attacker.end() ||
+            std::find(defender.begin(), defender.end(), id) !=
+                defender.end()) {
+          output.participant_overlap_public_cunit_ids_in_prior_order
+              .push_back(id);
+        }
+      }
+    };
+    append_prior_overlap(
+        *prior.attacker_public_cunit_ids_in_stored_order);
+    append_prior_overlap(
+        *prior.defender_public_cunit_ids_in_stored_order);
+    output.state =
+        game::BattleTerminalSuccessorStateV1::residual_new_combat;
+  } else if (subject.active_combat_id.has_value()) {
+    output.state = game::BattleTerminalSuccessorStateV1::unavailable;
+  } else if (subject.movement_or_retreat_state_raw.value_or(0) > 0) {
+    output.state =
+        game::BattleTerminalSuccessorStateV1::subject_retreating;
+  } else if (!output.matching_combat_ids_in_native_order.empty() ||
+             !successor_scan_observable) {
+    output.state = game::BattleTerminalSuccessorStateV1::unavailable;
+  } else if (subject.ai_membership_status ==
+                 game::BattleTerminalAiMembershipStatusV1::observed &&
+             subject.blocked_by_active_combat.value_or(true) == false) {
+    output.state = game::BattleTerminalSuccessorStateV1::
+        subject_assignment_reopened;
+  } else if (subject.ai_membership_status ==
+             game::BattleTerminalAiMembershipStatusV1::none) {
+    output.state = game::BattleTerminalSuccessorStateV1::no_successor;
+  } else {
+    output.state = game::BattleTerminalSuccessorStateV1::unavailable;
+  }
+  return true;
+}
+
+bool ReadBattleTerminalTransitionSampleV1(
+    const Bindings &bindings, const game::Snapshot &same_frame_world,
+    const game::BattleTerminalTransitionRequestV1 &request,
+    game::BattleTerminalTransitionSnapshotV1 &output) noexcept {
+  output = {};
+  output.observed_date_raw = same_frame_world.date_raw;
+  output.prior_combat_id = request.prior_combat_id;
+  output.subject_public_cunit_id = request.subject_public_cunit_id;
+  output.prior.combat_id = request.prior_combat_id;
+  const auto cursor = request.after_terminal_sequence.value_or(0);
+  const auto journal = LookupBattleTerminalJournalV1(
+      request.prior_combat_id, cursor);
+  PopulateTerminalJournalWireV1(journal, request,
+                               output.terminal_journal);
+  const auto unavailable = [&](std::string_view reason) noexcept {
+    output.status = game::BattleTerminalTransitionStatusV1::unavailable;
+    output.unavailable_reason = reason;
+    output.battle_terminal_transition_ready = false;
+    output.terminal_journal.event_sequence.reset();
+    output.terminal_journal.event_status =
+        game::BattleTerminalJournalEventStatusV1::not_observed;
+    return true;
+  };
+  if (journal.status ==
+      BattleTerminalJournalLookupStatusV1::invalid_cursor) {
+    return unavailable("invalid_request");
+  }
+  if (journal.status ==
+      BattleTerminalJournalLookupStatusV1::journal_gap) {
+    return unavailable("journal_gap");
+  }
+  if (journal.status ==
+      BattleTerminalJournalLookupStatusV1::unavailable) {
+    return unavailable("identity_unavailable");
+  }
+  if (journal.status ==
+      BattleTerminalJournalLookupStatusV1::observed) {
+    if ((journal.event.capture_failure_flags &
+         battle_terminal_capture_failure_bounds) != 0) {
+      return unavailable("bounds_exceeded");
+    }
+    if (journal.event.capture_failure_flags !=
+        battle_terminal_capture_failure_none) {
+      return unavailable("identity_unavailable");
+    }
+    PopulateTerminalPriorFromEventV1(journal.event, output.prior);
+    const auto warscore = LookupBattleWarscoreJournalV1(
+        request.prior_combat_id);
+    PopulateTerminalWarscoreV1(
+        warscore, journal.event.suppress_normal_result_envelopes,
+        output.prior.battle_warscore);
+  }
+  void *const game_state = *bindings.game_state_slot;
+  void *const prior_combat = ResolveStoredComponent(
+      bindings.combat_storage_slot, request.prior_combat_id,
+      kCombatIdOffset);
+  output.removal.prior_combat_strictly_resolves = prior_combat != nullptr;
+  if (journal.status ==
+      BattleTerminalJournalLookupStatusV1::not_observed) {
+    if (prior_combat != nullptr) {
+      if (!PopulateTerminalPriorFromActiveCombatV1(
+              bindings, prior_combat, request.prior_combat_id,
+              output.prior)) {
+        return unavailable("identity_unavailable");
+      }
+    } else {
+      output.prior = {};
+      output.prior.combat_id = request.prior_combat_id;
+      output.prior.terminal_kind =
+          game::BattleTerminalKindV1::unavailable_after_removal;
+    }
+  }
+  void *prior_province = nullptr;
+  if (!ReadTerminalProvinceMembershipV1(
+          bindings, game_state, output.prior, output.removal,
+          prior_province) ||
+      !ReadTerminalSubjectV1(
+          bindings, game_state, request.subject_public_cunit_id,
+          output.subject) ||
+      !ReadTerminalSuccessorV1(
+          bindings, prior_province, output.prior, output.subject,
+          output.successor)) {
+    return unavailable("state_changed");
+  }
+  if (prior_combat != nullptr &&
+      ResolveStoredComponent(bindings.combat_storage_slot,
+                             request.prior_combat_id,
+                             kCombatIdOffset) != prior_combat) {
+    return unavailable("state_changed");
+  }
+  output.status = game::BattleTerminalTransitionStatusV1::available;
+  output.unavailable_reason.clear();
+  output.battle_terminal_transition_ready = true;
+  return true;
+}
+
 } // namespace
 
 ActualContactScopeStatus ReadActualContactScope(
@@ -10567,6 +11206,69 @@ BattleTransitionSnapshotStatus ReadBattleTransitionSnapshot(
   output.battle_transition_ready =
       second_status == BattleTransitionSnapshotStatus::available ||
       second_status == BattleTransitionSnapshotStatus::combat_not_found;
+  return output.status;
+}
+
+BattleTerminalTransitionStatusV1 ReadBattleTerminalTransitionV1(
+    const Bindings &bindings, const Snapshot &same_frame_world,
+    const BattleTerminalTransitionRequestV1 &request,
+    BattleTerminalTransitionSnapshotV1 &output) noexcept {
+  const auto unavailable = [&](std::string_view reason) noexcept {
+    const auto journal = LookupBattleTerminalJournalV1(
+        request.prior_combat_id,
+        request.after_terminal_sequence.value_or(0));
+    output = {};
+    output.status = BattleTerminalTransitionStatusV1::unavailable;
+    output.unavailable_reason = reason;
+    output.observed_date_raw = same_frame_world.date_raw;
+    output.prior_combat_id = request.prior_combat_id;
+    output.subject_public_cunit_id = request.subject_public_cunit_id;
+    PopulateTerminalJournalWireV1(journal, request,
+                                 output.terminal_journal);
+    output.terminal_journal.event_sequence.reset();
+    output.terminal_journal.event_status =
+        game::BattleTerminalJournalEventStatusV1::not_observed;
+    return output.status;
+  };
+
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.jomini_state_slot == nullptr ||
+      bindings.combat_storage_slot == nullptr ||
+      bindings.army_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      bindings.battle_result_storage_slot == nullptr ||
+      request.prior_combat_id <= 0 ||
+      request.subject_public_cunit_id <= 0) {
+    return unavailable(request.prior_combat_id <= 0 ||
+                               request.subject_public_cunit_id <= 0
+                           ? "invalid_request"
+                           : "unsupported_build");
+  }
+  if (!same_frame_world.paused) {
+    return unavailable("requires_paused");
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before) || before != same_frame_world) {
+    return unavailable("state_changed");
+  }
+
+  BattleTerminalTransitionSnapshotV1 first{};
+  BattleTerminalTransitionSnapshotV1 second{};
+  if (!ReadBattleTerminalTransitionSampleV1(bindings, same_frame_world,
+                                            request, first) ||
+      !ReadBattleTerminalTransitionSampleV1(bindings, same_frame_world,
+                                            request, second)) {
+    return unavailable("state_changed");
+  }
+  Snapshot after{};
+  if (first != second || !ReadSnapshot(bindings, after) ||
+      after != same_frame_world) {
+    return unavailable("state_changed");
+  }
+  output = std::move(second);
+  output.observed_date_raw = same_frame_world.date_raw;
+  output.prior_combat_id = request.prior_combat_id;
+  output.subject_public_cunit_id = request.subject_public_cunit_id;
   return output.status;
 }
 

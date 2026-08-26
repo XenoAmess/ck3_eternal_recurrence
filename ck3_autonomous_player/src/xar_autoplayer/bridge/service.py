@@ -59,6 +59,11 @@ from .battle_transition_contract import (
     normalize_battle_transition_v1,
     query_battle_transition_v1_step,
 )
+from .battle_terminal_transition_contract import (
+    QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+    normalize_battle_terminal_transition_v1,
+    query_battle_terminal_transition_v1_step,
+)
 from .battle_reinforcement_assignment_contract import (
     QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY,
     normalize_battle_reinforcement_assignment_v1,
@@ -1412,6 +1417,217 @@ class GameplayBridgeService:
             },
             **lifecycle_mirrors,
             "battle_transition_snapshot": normalized,
+        }
+
+    def query_battle_terminal_transition_v1(
+        self,
+        prior_combat_id: int,
+        subject_public_cunit_id: int,
+        *,
+        expected_revision: int,
+        after_terminal_sequence: int | None = None,
+    ) -> dict[str, object]:
+        """Read terminal history and the subject's same-frame successor state."""
+        step = query_battle_terminal_transition_v1_step(
+            prior_combat_id,
+            subject_public_cunit_id,
+            after_terminal_sequence,
+        )
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "battle-terminal transition queries require a paused CK3 "
+                "snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 0
+        ):
+            raise BridgeUnavailableError(
+                "battle-terminal transition query lacks a valid snapshot "
+                "revision"
+            )
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+        ):
+            raise ValueError("expected_revision must be a non-negative integer")
+        if expected_revision != revision:
+            raise BridgeUnavailableError(
+                "battle-terminal transition revision mismatch: expected "
+                f"{expected_revision}, current {revision}"
+            )
+        native_revision = snapshot.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-terminal transition query lacks a positive native "
+                "revision"
+            )
+        date_raw = snapshot.get("date_raw")
+        if (
+            isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**31) <= date_raw <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-terminal transition query lacks a signed int32 date"
+            )
+        bridge_capabilities = self.capabilities().get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query journal-backed battle "
+                "transitions"
+            )
+        result = self.execute_step(step, expected_revision=expected_revision)
+        if not isinstance(result, dict):
+            raise BridgeUnavailableError(
+                "battle-terminal transition backend returned a non-object "
+                "result"
+            )
+        mirror_keys = {
+            "prior_combat_id",
+            "subject_public_cunit_id",
+            "terminal_journal",
+            "prior",
+            "removal",
+            "subject",
+            "successor",
+            "battle_terminal_transition_ready",
+            "unavailable_reason",
+        }
+        required_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "battle_terminal_transition",
+            "backend_id",
+            *mirror_keys,
+        }
+        optional_result_keys = {
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+        }
+        if (
+            not required_result_keys <= set(result)
+            or set(result) - required_result_keys - optional_result_keys
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "battle-terminal transition backend returned a malformed "
+                "result"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "battle-terminal transition result lacks query_sequence"
+            )
+        try:
+            normalized = normalize_battle_terminal_transition_v1(
+                result.get("battle_terminal_transition"),
+                expected_prior_combat_id=prior_combat_id,
+                expected_subject_public_cunit_id=subject_public_cunit_id,
+                expected_after_terminal_sequence=after_terminal_sequence,
+                expected_observed_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"battle-terminal transition result is malformed: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "battle-terminal transition envelope status disagrees with "
+                "its frame"
+            )
+        mirrors = {
+            key: copy.deepcopy(normalized[key]) for key in mirror_keys
+        }
+        if any(
+            result.get(key) != expected
+            for key, expected in mirrors.items()
+        ):
+            raise BridgeUnavailableError(
+                "battle-terminal transition mirror disagrees with its frame"
+            )
+        if (
+            "queried_snapshot_id" in result
+            and result.get("queried_snapshot_id")
+            != snapshot.get("snapshot_id")
+        ) or (
+            "queried_revision" in result
+            and result.get("queried_revision") != revision
+        ) or (
+            "queried_native_revision" in result
+            and result.get("queried_native_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "battle-terminal transition result is bound to another "
+                "snapshot"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot.get("snapshot_id")
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("episode_run_id")
+            == snapshot.get("episode_run_id")
+        ):
+            raise BridgeUnavailableError(
+                "battle-terminal transition query crossed a snapshot revision"
+            )
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        return {
+            **result,
+            "schema_version": 1,
+            "status": normalized["status"],
+            "scope": "journal-backed-battle-terminal-transition",
+            "source": {
+                "game_version": (
+                    hello.get("game_version")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "executable_sha256": (
+                    hello.get("executable_sha256")
+                    if isinstance(hello, dict)
+                    else None
+                ),
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "backend_id": snapshot.get("backend_id"),
+            },
+            **mirrors,
+            "battle_terminal_transition": normalized,
         }
 
     def query_battle_reinforcement_assignment_v1(

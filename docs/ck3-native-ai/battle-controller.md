@@ -72,9 +72,12 @@
   `battle_identity_live_ready=true`、`battle_hold_ready=true`。
 - [live-confirmed] main damage 后 side `+0x98/+0xA0` 的 tick-start cache 可以合法落后于 retained entry current sum；
   query 保留缓存值并发布 match booleans。`false` 表示这一原生时序事实，不是 `unavailable`。
-- [counter-policy] `battle_retreat_ready`、`battle_reinforcement_ready`、`battle_forecast_ready`、
-  `battle_terminal_ready` 与总 `battle_controller_ready` 仍为 false；P1 仍在进行中，不能因 identity/hold 已绿就声称
-  拥有可行动 battle controller。
+- [live-confirmed] passive terminal/warscore journals 与 paused successor query 已随真实 normal terminal 工作：旧 CombatID/Province
+  删除、Result retention、单场 war-score row 与玩家 `subject_retreating` 在同一 revision 闭合，artifact SHA
+  `61D0D912206A90D9B34DDE3555AEC941EC3538C253DBC4DCEB9D177D7456FDB1`。
+- [counter-policy] `battle_identity_live_ready`、`battle_hold_ready`、`battle_retreat_ready` 与新增
+  `battle_normal_terminal_query_ready` 为 true；`battle_reinforcement_ready`、`battle_forecast_ready`、aggregate
+  `battle_terminal_ready` 与总 `battle_controller_ready` 仍为 false。P1 仍在进行中，不能因单一 normal terminal 已绿就声称拥有完整 battle controller。
 
 ## 原生总控制树
 
@@ -423,16 +426,15 @@ assignment 的完整 live trace 也未闭合。
 | AI tactical ratio | static predictor ABI 与 direct xrefs 已闭合 | normal/desperate enter、help、pre-contact retreat 阈值 | 合法 paused direct predictor query 的完整 lane/context 生命周期；仍不能当概率 |
 | active retreat | [static-confirmed + full-side/owner-subset live-confirmed] validator/apply 静态闭合；production progression 证明 day 14 `too_early`、day 15/16 native true；full-side 完成 route/token/order、retreating/target/route 与旧 CombatID `main/12→pursuit/0`，SHA `21D58737...784FA`；owner-subset 只移除 CUnit `357`、保留 `33554657` 与原战斗，SHA `7780B619...01F9` | 当前帧可真实判断四 gate 与两类 scope；production composition 已绑定 target/token 并复用玩家 move command；两类真实 postcondition 均闭合，`battle_retreat_ready=true` | generic native destination scorer/AI policy 仍是 opponent-model `unknown`，但不阻塞我方动作 |
 | reinforcement | [static-confirmed + query live-confirmed] [battle-reinforcement-and-join.md](battle-reinforcement-and-join.md) 已闭合 `CAISubunitStack+0x50` 求援/assigned bits、`0.66/0.75` 滞回、stored-order helper 选择、普通 route、抵达时 compatible CombatID 选择、tail append 与 pursuit reopen；production query 在 CUnit `357` 上实见 asking、parent order、route 与 active CombatID，SHA `F0A6F3C7...B1DB9C6` | `ReadBattleReinforcementAssignmentV1`/service/MCP production-live；已知 assignment 只保存 requester 当前 Province、未来 CombatID 到达时才绑定；已知到达后会加入哪边及 same-tick phase/winner 反馈 | 当前 live 样本 `assigned=false`；assigned+aligned ETA、全部友/敌 ETA、跨 manager 同日 damage order、真实 join/reopen 与玩家改派动作仍缺 |
-| terminal / teardown / re-entry | [static-confirmed] [battle-terminal-and-reentry.md](battle-terminal-and-reentry.md) 已闭合 phase-done normal result、relation invalidation no-normal-result、`+0x705` 延迟、共同 backlink/Province cleanup、residual rescan、旧 CombatID 删除及 AI lifecycle 重入 | terminal kind 的可靠源是 `0x230A590` 入口第二参数；ResultID retained 只能单向加强 normal 证据，ResultID absent 不可判分支；同省 successor 必须按 participant overlap 绑定 | passive entry journal、paused successor query、normal/no-normal/residual/re-entry production fixtures 尚缺；battle warscore writer/formula 仍在追踪 |
+| terminal / teardown / re-entry | [static-confirmed + normal live-confirmed] [battle-terminal-and-reentry.md](battle-terminal-and-reentry.md) 已闭合 phase-done normal result、relation invalidation no-normal-result、`+0x705` 延迟、共同 backlink/Province cleanup、residual rescan、旧 CombatID 删除及 AI lifecycle 重入；真实 normal terminal artifact SHA `61D0D912...56FDB1` | `0x230A590` entry journal、`0x222A69B` post-writer journal、paused successor query、service/MCP 已 production-live；old CombatID/Province removal、retained Result、row `2135850` 与玩家 retreat 已同帧验证；AI membership 三态不会污染 terminal core | no-normal、同省 residual 与 assignment-reopened production fixtures 尚缺；finished combat on_action identity 仍 unknown，故 aggregate gate 仍 false |
 | battle simulator | main/pursuit/battle-end 多段公式已静态闭合 | research-only transition components | loaded playset proof、15 个 battle-horizon effect feedback、original trace、ongoing-frame simulator binding、dynamic participant 与主动撤退 policy；当前 `monte_carlo_ready=false` |
 | planner action | [implementation + unit + live-confirmed] in-combat branch 已接成 query→bounded one-day advance→requery，并严格接受同 CombatID phase/day/ledger transition、join-reopen 或显式 terminal/removal；managed production run 的两轮均为 `same_combat_advanced`，artifact SHA `96CE25384517F0060A58623958DE071F43C3C2F7B68AEB6E668473E986C1DD57` | `planner_battle_hold_live_ready=true`；CombatID `335544325`，日期 `53178264→53178288→53178312`，maneuver day `1→2→3`；planner 不再把 advance/date 或 move ACK 当战果；retreat target/token/order 已作为 service/MCP primitive 存在 | planner 尚未比较/调用 retreat，也没有 reinforcement 或 terminal controller；`planner_usable=false`、`active_attack_allowed=false` |
 
 combined-defensive、P0 actual-side 与 P1 ongoing artifacts 已关闭 identity、participants、current/soft/hard ledger 和 bounded hold
 observation milestone；它们没有关闭 `loaded_playset_verified`、`ast_evaluator_ready`、`original_trace_ready`、
 `monte_carlo_ready` 或 `planner_usable`；retreat 已完成 full-side 与 owner-subset command/postcondition；reinforcement
-assignment 查询也已 production-live，但 assigned+ETA/join 与 terminal lifecycle production 实现仍未完成；terminal 的 normal/no-normal、cleanup、
-residual rescan 与 AI re-entry 静态树已由
-[battle-terminal-and-reentry.md](battle-terminal-and-reentry.md) 闭合。
+assignment 查询也已 production-live，但 assigned+ETA/join 尚未完成；terminal normal lifecycle 已 production-live，no-normal、residual 与
+assignment-reopened 仍只有静态树。完整边界见 [battle-terminal-and-reentry.md](battle-terminal-and-reentry.md)。
 
 ## 我方最小 typed observation：按可玩价值排序
 
@@ -600,7 +602,8 @@ CombatID/participant scope 的动作发到下一场战斗；它直接影响真�
 | `battle_retreat_ready` | identity；`0x2308250` typed reasons；planner-selected target 的 exact route preview 与 battle-bound token；full/partial command；两类 live postcondition | **true**：full-side 与 owner-subset 均已 production-live，且分别验证整侧离战与同 owner 子集离战/盟军留战 |
 | `battle_reinforcement_ready` | identity；友/敌 ETA 与 normal-daily order；join-side prediction；route command；main join 与 pursuit-reopen live matrix | false：assignment query 已 production-live；assigned+aligned ETA、route action 和 join/reopen matrix 尚缺 |
 | `battle_forecast_ready` | combat-v3 四格 live matrix；ongoing entries；loaded playset；effect feedback；original trace；dynamic arrivals；retreat policy | false |
-| `battle_terminal_ready` | `0x230A590` entry journal 区分 normal/no-normal；result effects；CombatID/Province removal；residual rescan；successor participant overlap；assignment re-entry | false：exact-build 静态树已闭合；journal/query 与四类 production fixture 尚未实现/live |
+| `battle_normal_terminal_query_ready` | passive terminal/warscore journals；paused old-ID query；CombatID/Province removal；result retention；typed successor；same-process/cleanup | **true**：第 33 日 normal result 实见 row/cleanup 与玩家 `subject_retreating`，artifact SHA `61D0D912...56FDB1` |
+| `battle_terminal_ready` | `0x230A590` entry journal 区分 normal/no-normal；result effects；CombatID/Province removal；residual rescan；successor participant overlap；assignment re-entry | false：journal/query 与 normal fixture 已 live；no-normal、residual 与 assignment-reopened fixtures 尚缺 |
 | `battle_controller_ready` | 上述 gates；策略 comparison；中途 save/cold-resume；production 场景矩阵 | false |
 
 依赖关系：
@@ -673,10 +676,11 @@ roadmap 要求的优势接战、劣势绕行/撤退、战中增援、主动撤�
 4. **dynamic combat roster**：[live-confirmed] 稳定帧的完整 side entry/current-soft-hard/owner ledger production projection 已闭合；
    [unknown] join/leave 与 phase-event 同日先后仍待闭合。
 5. **battle-horizon effects**：[unknown] 15 项 effect feedback、loaded playset 与 original trace parity。
-6. **result/teardown**：[static-confirmed core] normal/no-normal 入口、延迟 gate、共同 army/Province cleanup、residual rescan、
-   全局删除与 AI lifecycle re-entry 已闭合；当前缺 passive journal/live、war-score native writer/formula、finished on_action 精确 identity。
+6. **result/teardown**：[static-confirmed core + normal live-confirmed] normal/no-normal 入口、延迟 gate、共同 army/Province cleanup、
+   residual rescan、全局删除与 AI lifecycle re-entry 已闭合；passive terminal/warscore journals、query/MCP 与 normal+retreat 已 live。
+   当前缺 no-normal、residual、assignment-reopened fixtures 与 finished on_action 精确 identity。
 
-下一优先级固定为：完成第 3 项 assigned+ETA/join fixture，并施工第 6 项 terminal passive journal/query；第 2 项作为
+下一优先级固定为：完成第 3 项 assigned+ETA/join fixture，再补第 6 项 no-normal/residual/assignment-reopened；第 2 项作为
 原生 opponent model 并行补证，不能让未知 scorer 阻断玩家智能体实际可执行的 retreat。随后进入 forecast；
 第 4、5 项解锁可比较 forecast，第 6 项解锁战后继续 OODA。
 不应在这些观测/动作缺口仍存在时，把工作转向理论安全审计或再增加不改变可玩能力的 schema 证明层。

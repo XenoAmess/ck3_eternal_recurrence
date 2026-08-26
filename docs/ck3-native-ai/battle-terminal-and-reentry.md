@@ -19,8 +19,9 @@
   `C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807`
   与 `game/common/casus_belli_types/_casus_belli.info` SHA-256
   `E3BACD9F3360837F6ED7D5F22B937AB7E79CB675AD804819A627CB73970CE699` 互证。
-- [static-confirmed] 本轮只做反汇编、RTTI/xref 与原版数据读取；没有启动 CK3、没有调用任何会改变游戏世界的函数，也没有调用战斗构造入口 `0x27FB7C0`。
-- [unknown] 本文没有实机终局 trace。`normal_result` / `no_normal_result` 的机器分叉已经闭合，但未来 bridge 的被动观察器仍须在同一 exact build 做 paused/managed acceptance 后，才可把 production readiness 标为 true。
+- [static-confirmed] 原始逆向阶段只做反汇编、RTTI/xref 与原版数据读取；没有调用任何会改变游戏世界的 native helper，也从未调用战斗构造入口 `0x27FB7C0`。
+- [implementation-confirmed] production bridge 现已在主线程恢复前安装 `0x230A590` 终局入口与 `0x222A69B` 战分写入后继点的两个被动 detour；两者只把 typed observation 写入 bridge-owned bounded journal。正式 query、service 与 MCP 均已发布，旧 `query-battle-transition-v1` 保持兼容。
+- [live-confirmed 2026-08-26] immutable active-battle save `9104CCB8...CC63` 的 managed non-debug v6 只用逐日 `life-advance`，在第 33 日观察到 normal terminal；artifact SHA-256 为 `61D0D912206A90D9B34DDE3555AEC941EC3538C253DBC4DCEB9D177D7456FDB1`。源存档不变，受管进程树与 disposable clone 均完整清理。该证据关闭 normal-result/玩家 retreat 后继分支，不替代 no-normal、同省 residual 与 assignment-reopened 三个独立 live fixture。
 - 本文中的 `CCombatResultData` 是 RTTI 的正式 native 类型名；仓库旧接口中的 `BattleResult` 是同一外层对象的兼容简称。其内嵌的 `CBattleResult`、`CBattleResultSide` 是另外两种 RTTI 类型，不可混为一谈。
 
 ## 结论先行
@@ -37,6 +38,7 @@
 8. [static-confirmed] normal finalizer 在 `0x230A7C6` 先调 `0x222A5A0(CWar*,CCombat*)`：它把一个 `0x58`-byte battle-score row 追加到 `CWar+0x298/+0x2A4`，并把 row `+0x40` 原样复制到 `CCombatResultData+0x40`。之后才在 `0x230A7DA` 调 `0x23097B0` 构造 UI/reward result，所以后者不是战分 writer。
 9. [static-confirmed] 单场 row `+0x40` 是非负 Q100000 magnitude，row `+0x50` 才记录 winner 是否为 war attacker。`0x2903150` 分别汇总进攻/防守胜场，取 attacker-wins 减 defender-wins，再按 CB 累计 cap 截断。因此 script `warscore_value` 本身不带战争相对正负号。
 10. [static-confirmed] `0x23A2360` / `0x2934FE0` 并非 `on_commander_combat_finished` / `on_army_combat_finished`；它们是败北 raid/barter army 的 loot 转移 dispatcher，分别对应 `on_defeat_raid_army` 与 `on_defeat_barter_army`。
+11. [live-confirmed] `CombatID=335544325` 在 date raw `53179056` 以 `normal_result` 终结：journal sequence `14`，phase `3`、winner side `1`，旧 CombatID 已从全局 storage 与 Province `2586` 双重删除；battle-score row `2` 记录 `2135850` Q100000，折算 war-attacker relative delta 为 `-2135850`。玩家 CUnit `83886341` 的 combat backlink 已清空、movement raw 为 `3`，因此即使其 AI membership 为 typed `unavailable`，仍由独立强证据得到 `subject_retreating`。
 
 ## 终局分叉：phase done 与 invalidation sweep
 
@@ -431,7 +433,7 @@ CAIManager secondary vtable 0x4193898 slot +0x30
 
 [unknown] `0x18876D0` 对外的正式 interface 名、真实日历 cadence，以及所有 event-driven target invalidators 未闭合，不能把它写成“每日必调”。loser post-battle raw route/state 在 dispatcher 中会先走专门分支；其恢复到普通 target movement 的完整状态机也仍是 unknown。
 
-## `query-battle-transition-v1` 最小只读契约
+## `query-battle-terminal-transition-v1` 最小只读契约
 
 ### 两层能力，而不是一个事后猜测器
 
@@ -477,25 +479,40 @@ BattleWarscoreObservationV1 {
 ```
 
 `terminal_kind` 的 canonical mapping 只来自观察到的第二参数：false -> `normal_result`，true ->
-`no_normal_result`。ring overflow 或 cursor 缺口必须显式返回 `unavailable_after_removal`。
+`no_normal_result`。旧 CombatID 仍 active 且无事件时返回 `active_not_terminal`；旧 CombatID 已删除、无事件但调用者 cursor
+仍覆盖完整可用 interval 时才返回 `unavailable_after_removal`。cursor 早于 ring oldest 的 overflow/gap 必须令整个查询返回
+`status=unavailable, unavailable_reason=journal_gap`，不能伪装成“本进程未观察到”。
+
+`active_not_terminal` 不是一个空壳：此时 `phase/winner/finalized/daily/province/result/wipe/primary participants/side CUnits`
+来自仍严格解析的当前 CCombat；唯独 finalizer 第二参数仍不可知，所以
+`suppress_normal_result_envelopes=null`，`battle_warscore.status=unavailable`。只有旧 CombatID 已删除且 ring 在无缺口区间内仍无匹配事件的
+`unavailable_after_removal`，才把这些 journal-only prior 字段保持为 `null`。
 
 ### paused 后置 frame 的最小字段
 
 ```text
-query_battle_transition_v1(
+query_battle_terminal_transition_v1(
   prior_combat_id,
   subject_public_cunit_id,
   expected_snapshot_revision,
   after_terminal_sequence?
 )
 
-BattleTransitionV1 {
+BattleTerminalTransitionV1 {
   status: available | unavailable,
   snapshot_revision,
   observed_date_raw,
+  terminal_journal: {
+    requested_after_sequence?,
+    oldest_available_sequence,
+    latest_sequence,
+    event_sequence?,
+    event_status: not_observed | observed
+  },
   prior: {
     combat_id,
     terminal_kind:
+      active_not_terminal |
       normal_result |
       no_normal_result |
       unavailable_after_removal,
@@ -535,6 +552,7 @@ BattleTransitionV1 {
     movement_or_retreat_state_raw?,
     move_target_province_id?,
     route_province_ids_in_stored_order?,
+    ai_membership_status: none | observed | unavailable,
     coordinator_id?,
     unit_stack_stored_index?,
     subunit_stored_index?,
@@ -555,6 +573,10 @@ BattleTransitionV1 {
 }
 ```
 
+`status=unavailable` 时仍必须保留 typed `terminal_journal`：它携带调用者 cursor 与当前 ring 的
+`oldest/latest` 边界，`event_sequence=null`、`event_status=not_observed`；`prior/removal/subject/successor`
+才整体为 `null`。这样 `journal_gap` 可被上层诊断并从新 cursor 重试，而不是丢掉造成 gap 的边界。
+
 `removal` 与 `successor.state` 必须分开：旧 combat 被删、subject 进入 retreat、同省产生 residual combat、AI assignment gate 重开，是四个不同事实。建议 UI/策略层的 convenience discriminant 使用：
 
 - `present_same_combat`：prior CombatID 仍严格解析且 active；
@@ -571,6 +593,8 @@ BattleTransitionV1 {
 - 所有 CombatID、ResultID、CArmyID、CUnitID、CharacterID 都必须按低 24-bit 索引并回读完整 generation；positive stale ID 不得回退到 null object。
 - old CombatID removal 必须同时报告 global strict resolution 与 prior Province membership；两者不在同一个 native 时刻发生。
 - successor 匹配以 exact new CombatID 为 identity，再以 prior ordered participant overlap 说明关系；不能只按 Province 选唯一场。
+- `ai_membership_status=none` 只表示 missing subject 或严格 `CUnit+0x1C4 == -1 && +0x1D0 == null`；`observed` 要求 coordinator/parent/subunit 全链及 stored indices 完整验证；任何 partial/unresolvable 链均为 `unavailable`，三个 membership identity 字段保持 null。这个子域 unavailable 不得让 terminal core 整帧失败，也不得伪装成 `no_successor`。
+- `residual_new_combat` 不接受“Province 里恰有一个匹配 combat”的捷径；subject 当前 `active_combat_id` 必须等于被选中的 exact matching CombatID。否则 matching rows 仍可公开，但 selected 保持 null、successor 为 unavailable 或由 retreat 等更强证据分类。
 - subject 的 `blocked_by_active_combat` 应镜像 `0x2248A80` 的严格只读 predicate，不调用 `0x2248A80` 也可以按相同链复制判断。
 - paused application-main callback 内做两次全图采样；revision/date、journal cursor、ID、count、membership、route、combat backlinks 任一漂移都返回 `state_changed`。
 
@@ -592,8 +616,35 @@ BattleTransitionV1 {
 | residual candidate order | Province `+0x748/+0x754` | 保留 unsigned full-CUnitID native order |
 | AI membership/re-entry | `CUnit+0x1C4` coordinator ID、`+0x1D0` subunit backlink；`0x2248A80` predicate shape | 只读复制现态；禁止调 `0x18721B0` |
 
-首个 production slice 最小可交付顺序是：入口 journal -> typed ring/source-contract fixture -> paused
-`query-battle-transition-v1` -> normal phase-done fixture -> war-teardown/no-normal fixture -> 同省 residual combat fixture -> survivor assignment-reopened fixture。前两种 terminal path 都必须覆盖 result retained 与 result absent 的组合，才能证明实现没有拿 ResultID 反推分支。
+现有 `query-battle-transition-v1` 只读仍存在的 CombatID lifecycle，必须保留兼容，不得重载。新 surface 固定为 capability
+`game.command.query-battle-terminal-transition-v1`、step
+`query-battle-terminal-transition-v1-<prior_combat_id>-<subject_public_cunit_id>-<after_terminal_sequence_wire>`；wire `0`
+表示 optional cursor `None`（journal sequence 从 `1` 起），command-result 字段为 `battle_terminal_transition`。
+
+入口 journal、typed ring/source-contract fixture、paused `query-battle-terminal-transition-v1` 与 normal phase-done fixture 已完成；后续顺序固定为
+war-teardown/no-normal fixture -> 同省 residual combat fixture -> survivor assignment-reopened fixture。前两种 terminal path 仍必须覆盖 result retained 与 result absent 的组合，才能证明实现没有拿 ResultID 反推分支。
+
+## Production live：normal terminal 与玩家退却后继
+
+[live-confirmed 2026-08-26] `run_battle_terminal_journal_live_acceptance.py` 从 immutable source save
+`9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63` 创建 disposable production profile，使用
+DLL `BF2FB694358604D53DBE5AC553EC88C720F0540539333126EC68680F5002A5E0`，在同一 bridge PID/connection generation 内从
+date raw `53178264` 逐日推进到 `53179056`。33 个 advance 每个都严格增加 `24` raw；唯一 gameplay mutation 是已有 production
+`life-advance`，未调用 finalizer、writer、rescan、contact resolver 或 constructor。
+
+终局 paused frame 的关键事实是：
+
+- terminal journal retained bounds `1..14`，exact event sequence `14`，`suppress_normal_result_envelopes=false`；
+- prior phase `3`、winner side `1`、Province `2586`、ResultID `553648135`，attacker `[83886341]`、defender `[357,33554657]`；
+- old CombatID `335544325` global strict resolve 为 false，Province row membership 为 false，ResultID 仍严格解析且 relevant-player count 为 `1`；
+- battle-score status `recorded`：WarID `16777290`、row index `2`、magnitude `2135850` Q100000、war attacker relative delta `-2135850`；
+- 玩家 subject 仍存在，CArmy `50331733` 的 combat backlink/active combat 均为 null，movement raw `3`、blocked=false；AI membership 是合法的 typed `unavailable`，没有污染其它字段；
+- successor 由独立 retreat raw 得到 `subject_retreating`，matching/selected residual CombatID 为空。两次 immediate query canonical frame 完全相等，frame SHA-256 为 `D4815EFB4F71C99524DEDBDAB6CBEEDB0A5ADD19647CB668B77A7693D1D480BF`。
+
+完整 artifact 大小 `772939` bytes、SHA-256
+`61D0D912206A90D9B34DDE3555AEC941EC3538C253DBC4DCEB9D177D7456FDB1`；source save 前后 SHA 相同，session shutdown、tree gone、driver close 与 clone removal 全部为 true。由此
+`terminal_journal_implemented=true`、`transition_query_implemented=true`、`normal_terminal_live_ready=true`。aggregate
+`battle_terminal_ready` 仍须等待 no-normal、residual 与 assignment-reopened 三个分支，不能把本次单场 normal GREEN 外推到它们。
 
 ## 明确禁止的调用与剩余 unknown
 

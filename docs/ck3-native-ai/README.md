@@ -37,10 +37,10 @@
   commander roll、advantage、MAA counter、主阶段 damage、casualty/pursuit 与 PRNG 边界；同时冻结
   exact-native-parity Monte Carlo 的完整输入门，并明确当前局胜率为 unavailable，而不是近似人数比。
 - [static-confirmed + live-confirmed] [battle-controller.md](battle-controller.md) 把接触/参战、求援/增援、主动撤退、
-  溃退、追击与战斗终结串成原生控制树；P1 ongoing identity/ledger 与 bounded hold 已 production-live，
+  溃退、追击与战斗终结串成原生控制树；P1 ongoing identity/ledger、bounded hold 与 normal terminal query 已 production-live，
   `battle_identity_live_ready=true`、`battle_hold_ready=true`、`battle_retreat_ready=true`；full-side 与 owner-subset
-  retreat postcondition 均已 live，增援 assignment 只读查询也已 production-live，但 assigned+ETA/join、forecast、terminal
-  与总 controller 仍未完成。
+  retreat postcondition 均已 live，增援 assignment 只读查询也已 production-live，但 assigned+ETA/join、forecast、no-normal/residual/
+  assignment-reopened terminal 分支与总 controller 仍未完成。
 - [live-confirmed expanded frame] [ongoing-battle-frame.md](ongoing-battle-frame.md)
   冻结 `query-battle-control-snapshot-v1` 的 exact ABI、
   retained entry/current-soft-hard ledger 与 bounded hold 后置验证；cold checkpoint `9104CCB8...CC63` 的 maneuver 1 到
@@ -62,10 +62,12 @@
   paused `ReadBattleReinforcementAssignmentV1` 已在 CUnit `357` 上实见 asking、parent stored order、route、active CombatID
   与稳定双查询，artifact SHA 为 `F0A6F3C73D49AE93CC20680E23E787F28B54CA086DAD80392E27651DAB1DB9C6`。
   当前样本未 assigned；assigned+aligned ETA、真实 join/reopen 与改派动作仍待闭合。
-- [static-confirmed] [battle-terminal-and-reentry.md](battle-terminal-and-reentry.md) 区分 daily phase-done 的 normal result 与
-  invalidation sweep 的 no-normal-result，冻结共同 army backlink 清理、Province residual rescan、旧 CombatID 删除和幸存
-  AI assignment 重入顺序。下一施工口是在 `0x230A590` 入口被动记录第二参数，再按旧 CombatID 做 paused transition query；
-  ResultID 缺失不得反推 terminal kind，当前尚未声称 production live。
+- [static-confirmed + normal-terminal live-confirmed] [battle-terminal-and-reentry.md](battle-terminal-and-reentry.md) 区分 daily phase-done
+  normal result 与 invalidation sweep no-normal-result，冻结共同 army backlink 清理、Province residual rescan、旧 CombatID 删除和幸存
+  AI assignment 重入顺序。`0x230A590` terminal journal、`0x222A69B` battle-warscore journal、paused transition query、service 与 MCP
+  均已实现；真实 `CombatID=335544325` 在第 33 日以 normal result 删除并把玩家分类为 `subject_retreating`，artifact SHA
+  `61D0D912206A90D9B34DDE3555AEC941EC3538C253DBC4DCEB9D177D7456FDB1`。ResultID 缺失仍不得反推 terminal kind；
+  no-normal、同省 residual 与 assignment-reopened live fixtures 尚缺。
 - [implementation-confirmed] [combat-phase-events.md](combat-phase-events.md) 冻结 stock commander/knight
   phase-event 的 13 个顶层 row、canonical machine manifest、独立 golden、伤残死亡与 prowess 状态转移、同日刷新
   顺序；同时给出 v3 character/side/army/accolade/advantage required-field matrix、precontact 不伪造 CombatID 的边界，

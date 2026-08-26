@@ -111,6 +111,12 @@ from .battle_transition_contract import (
     normalize_battle_transition_v1,
     parse_query_battle_transition_v1_step,
 )
+from .battle_terminal_transition_contract import (
+    QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+    QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX,
+    normalize_battle_terminal_transition_v1,
+    parse_query_battle_terminal_transition_v1_step,
+)
 from .battle_reinforcement_assignment_contract import (
     QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY,
     QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX,
@@ -950,6 +956,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_BATTLE_TRANSITION_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "battle_terminal_transition_v1_query_supported": (
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "battle_reinforcement_assignment_v1_query_supported": (
                 QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
                 in bridge_capabilities
@@ -1183,6 +1193,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "battle_transition_v1_query_supported": (
                 QUERY_BATTLE_TRANSITION_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "battle_terminal_transition_v1_query_supported": (
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "battle_reinforcement_assignment_v1_query_supported": (
@@ -2119,6 +2133,19 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed battle-transition v1 query step"
             )
+        battle_terminal_transition_request = (
+            parse_query_battle_terminal_transition_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX
+            )
+            and battle_terminal_transition_request is None
+        ):
+            raise UnsupportedStepError(
+                "malformed battle-terminal transition v1 query step"
+            )
         reinforcement_subject = (
             parse_query_battle_reinforcement_assignment_v1_step(step)
         )
@@ -2252,6 +2279,22 @@ class NativeHeadlessGameplayDriver:
                     "native DLL cannot query a full-CombatID battle transition"
                 )
             return self._execute_battle_transition_v1_query(
+                step,
+                expected_revision=expected_revision,
+            )
+        if battle_terminal_transition_request is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query journal-backed battle terminal "
+                    "transitions"
+                )
+            return self._execute_battle_terminal_transition_v1_query(
                 step,
                 expected_revision=expected_revision,
             )
@@ -5893,6 +5936,133 @@ class NativeHeadlessGameplayDriver:
             "queried_native_revision": native_revision,
         }
 
+    def _execute_battle_terminal_transition_v1_query(
+        self,
+        step: str,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one journal-backed terminal event and its current successor."""
+        request = parse_query_battle_terminal_transition_v1_step(step)
+        if request is None:
+            raise UnsupportedStepError(
+                f"malformed battle-terminal transition v1 step {step}"
+            )
+        prior_combat_id, subject_public_cunit_id, after_sequence = request
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native battle-terminal transition query requires a paused "
+                "snapshot"
+            )
+        date_raw = _date_raw(
+            starting, "battle-terminal transition starting snapshot"
+        )
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native battle-terminal transition query lacks a native "
+                "revision"
+            )
+        starting_revision = int(starting["revision"])
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else starting_revision
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+            ),
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "snapshot_revision",
+                "battle_terminal_transition",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native battle-terminal transition query returned a malformed "
+                "envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native battle-terminal transition query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_battle_terminal_transition_v1(
+                result.get("battle_terminal_transition"),
+                expected_prior_combat_id=prior_combat_id,
+                expected_subject_public_cunit_id=subject_public_cunit_id,
+                expected_after_terminal_sequence=after_sequence,
+                expected_observed_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native battle-terminal transition query returned a "
+                f"malformed frame: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native battle-terminal transition envelope status "
+                "disagrees with frame"
+            )
+        current = self.take_snapshot()
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+        ):
+            raise BridgeUnavailableError(
+                "native battle-terminal transition query crossed a snapshot "
+                "revision"
+            )
+        mirror_keys = (
+            "prior_combat_id",
+            "subject_public_cunit_id",
+            "terminal_journal",
+            "prior",
+            "removal",
+            "subject",
+            "successor",
+            "battle_terminal_transition_ready",
+            "unavailable_reason",
+        )
+        return {
+            **result,
+            "status": normalized["status"],
+            "battle_terminal_transition": normalized,
+            "query_sequence": query_sequence,
+            **{
+                key: copy.deepcopy(normalized[key])
+                for key in mirror_keys
+            },
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+        }
+
     def _execute_battle_reinforcement_assignment_v1_query(
         self,
         step: str,
@@ -7579,6 +7749,62 @@ class ConfiguredHybridFallbackDriver:
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
         if isinstance(step, str) and step.startswith(
+            QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX
+        ):
+            if parse_query_battle_terminal_transition_v1_step(step) is None:
+                raise UnsupportedStepError(
+                    "malformed battle-terminal transition v1 step"
+                )
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "battle-terminal transition queries are pure native and "
+                    "will not use fallback"
+                )
+            starting = self.take_snapshot()
+            native_revision = None
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            ending = self.take_snapshot()
+            if (
+                ending.get("snapshot_id") != starting.get("snapshot_id")
+                or ending.get("revision") != starting.get("revision")
+                or ending.get("native_revision")
+                != starting.get("native_revision")
+                or ending.get("date_raw") != starting.get("date_raw")
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid battle-terminal transition query crossed a "
+                    "snapshot revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+            }
+        if isinstance(step, str) and step.startswith(
             QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX
         ):
             if (
@@ -9259,6 +9485,10 @@ def _action_steps(
             # CombatIDs are supplied explicitly (normally from a prior battle
             # frame/token); never advertise the adapter's N placeholder.
             continue
+        elif capability == QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY:
+            # This journal query requires two exact identities and an explicit
+            # cursor.  It is callable through the typed service, not an action.
+            continue
         elif (
             capability
             == QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY
@@ -9329,6 +9559,7 @@ def _action_steps(
                 QUERY_COMBAT_SIMULATION_INPUTS_V3_STEP_PREFIX,
                 QUERY_BATTLE_CONTROL_SNAPSHOT_V1_STEP_PREFIX,
                 QUERY_BATTLE_TRANSITION_V1_STEP_PREFIX,
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX,
                 QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX,
                 "query-war-termination-options-",
                 "query-war-termination-terms-v1-",

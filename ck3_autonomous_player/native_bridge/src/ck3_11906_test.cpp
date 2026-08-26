@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/battle_terminal_journal_v1.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 
@@ -140,7 +141,7 @@ std::array<std::byte, 0x18> g_battle_attacker_hard_row{};
 std::array<std::byte, 0x18> g_battle_defender_hard_row{};
 std::array<std::byte, 0x40> g_contact_battle_result_storage{};
 std::array<std::byte, 0x20> g_contact_battle_result_slots{};
-std::array<std::byte, 0x30> g_contact_battle_result{};
+std::array<std::byte, 0xC8> g_contact_battle_result{};
 std::array<std::uintptr_t, 2> g_contact_battle_result_vtable{};
 std::array<std::uintptr_t, 7> g_contact_province_vtable{};
 bool g_contact_prior_province_valid = true;
@@ -3504,6 +3505,7 @@ int main() {
   Store(g_contact_battle_result, 0x00,
         static_cast<void *>(g_contact_battle_result_vtable.data()));
   Store(g_contact_battle_result, 0x08, contact_battle_result_id);
+  Store(g_contact_battle_result, 0xC4, std::int32_t{0});
   Store(g_contact_battle_result, 0x28, std::uint8_t{1});
   Store(g_contact_battle_result, 0x2C, std::int32_t{43'822'744});
   Store(g_contact_battle_result_slots, 0x18,
@@ -4987,8 +4989,178 @@ int main() {
   }
   Store(jomini_state, 0x20, std::uint8_t{1});
 
+  if (!xar::ck3_11906::InitializeBattleTerminalJournalStorageV1(bindings)) {
+    return Fail("battle-terminal fixture could not publish normal terminal event");
+  }
+  if (!xar::ck3_11906::CaptureBattleTerminalJournalEntryV1(
+          g_contact_combat_1.data(), false)) {
+    const auto failed_terminal =
+        xar::ck3_11906::LookupBattleTerminalJournalV1(
+            contact_combat_1_id, 0);
+    std::cerr << "battle-terminal fixture capture flags="
+              << failed_terminal.event.capture_failure_flags
+              << " combat=" << failed_terminal.event.combat_id
+              << " result=" << failed_terminal.event.battle_result_id
+              << " province=" << failed_terminal.event.province_id
+              << " winner=" << failed_terminal.event.winner_raw
+              << " attacker_primary="
+              << failed_terminal.event.attacker_primary_participant_character_id
+              << " defender_primary="
+              << failed_terminal.event.defender_primary_participant_character_id
+              << " attacker_count="
+              << failed_terminal.event.attacker_public_cunit_count
+              << " defender_count="
+              << failed_terminal.event.defender_public_cunit_count << '\n';
+    return Fail("battle-terminal fixture could not publish normal terminal event");
+  }
   Store(g_player_internal_army, 0x128, std::int32_t{-1});
   g_player_army_state_code = 1;
+  g_contact_province_combat_ids[0] = contact_combat_1_id;
+  xar::game::Snapshot terminal_world{};
+  xar::game::BattleTerminalTransitionSnapshotV1 terminal_transition{};
+  const xar::game::BattleTerminalTransitionRequestV1 terminal_request{
+      contact_combat_1_id, player_army_id, std::nullopt};
+  if (!xar::ck3_11906::ReadSnapshot(bindings, terminal_world) ||
+      xar::ck3_11906::ReadBattleTerminalTransitionV1(
+          bindings, terminal_world, terminal_request,
+          terminal_transition) !=
+          xar::game::BattleTerminalTransitionStatusV1::available ||
+      !terminal_transition.battle_terminal_transition_ready ||
+      terminal_transition.subject.combat_backlink_id.has_value() ||
+      terminal_transition.subject.active_combat_id.has_value() ||
+      terminal_transition.subject.ai_membership_status !=
+          xar::game::BattleTerminalAiMembershipStatusV1::observed ||
+      terminal_transition.subject.coordinator_id != ai_coordinator_id ||
+      terminal_transition.successor.state !=
+          xar::game::BattleTerminalSuccessorStateV1::
+              subject_assignment_reopened) {
+    std::cerr << "battle-terminal post status="
+              << static_cast<unsigned>(terminal_transition.status)
+              << " reason=" << terminal_transition.unavailable_reason
+              << " ready="
+              << terminal_transition.battle_terminal_transition_ready
+              << " backlink="
+              << terminal_transition.subject.combat_backlink_id.value_or(-99)
+              << " active="
+              << terminal_transition.subject.active_combat_id.value_or(-99)
+              << '\n';
+    return Fail("battle-terminal did not canonicalize native -1 backlink to null");
+  }
+  g_contact_combat_0_attacker_armies = {third_internal_army_id};
+  g_contact_combat_0_defender_armies = {enemy_internal_army_id};
+  Store(g_contact_combat_0, 0x704, std::uint8_t{0});
+  Store(g_enemy_internal_army, 0x128, contact_combat_0_id);
+  Store(g_third_internal_army, 0x128, contact_combat_0_id);
+  g_contact_province_combat_ids[0] = contact_combat_0_id;
+  if (xar::ck3_11906::ReadBattleTerminalTransitionV1(
+          bindings, terminal_world, terminal_request,
+          terminal_transition) !=
+          xar::game::BattleTerminalTransitionStatusV1::available ||
+      terminal_transition.successor.matching_combat_ids_in_native_order !=
+          std::vector<std::int32_t>{contact_combat_0_id} ||
+      terminal_transition.successor.selected_successor_combat_id.has_value() ||
+      terminal_transition.successor.state !=
+          xar::game::BattleTerminalSuccessorStateV1::unavailable) {
+    return Fail("battle-terminal sole residual match was misattributed to subject");
+  }
+  Store(g_contact_combat_0, 0x368 + 0x1C, std::int32_t{0});
+  Store(g_player_internal_army, 0x128, contact_combat_0_id);
+  Store(g_player_army, 0x170, std::int32_t{1});
+  xar::game::Snapshot active_terminal_world{};
+  if (!xar::ck3_11906::ReadSnapshot(bindings, active_terminal_world) ||
+      xar::ck3_11906::ReadBattleTerminalTransitionV1(
+          bindings, active_terminal_world, terminal_request,
+          terminal_transition) !=
+          xar::game::BattleTerminalTransitionStatusV1::available ||
+      terminal_transition.subject.active_combat_id != contact_combat_0_id ||
+      terminal_transition.subject.movement_or_retreat_state_raw != 1 ||
+      terminal_transition.successor.state !=
+          xar::game::BattleTerminalSuccessorStateV1::unavailable) {
+    std::cerr << "battle-terminal unmatched-active status="
+              << static_cast<unsigned>(terminal_transition.status)
+              << " reason=" << terminal_transition.unavailable_reason
+              << " active="
+              << terminal_transition.subject.active_combat_id.value_or(-99)
+              << " movement="
+              << terminal_transition.subject.movement_or_retreat_state_raw
+                     .value_or(-99)
+              << " successor="
+              << static_cast<unsigned>(terminal_transition.successor.state)
+              << " matches="
+              << terminal_transition.successor
+                     .matching_combat_ids_in_native_order.size()
+              << '\n';
+    return Fail("battle-terminal unmatched active combat became retreat state");
+  }
+  Store(g_contact_combat_0, 0x368 + 0x1C, std::int32_t{1});
+  Store(g_player_internal_army, 0x128, std::int32_t{-1});
+  Store(g_player_army, 0x170, std::int32_t{0});
+  Store(g_contact_combat_0, 0x704, std::uint8_t{1});
+  Store(g_enemy_internal_army, 0x128, contact_combat_1_id);
+  Store(g_third_internal_army, 0x128, std::int32_t{-1});
+  g_contact_combat_0_attacker_armies = {enemy_internal_army_id};
+  g_contact_province_combat_ids[0] = contact_combat_1_id;
+  Store(g_player_army, 0x1C4, std::int32_t{0});
+  Store(g_player_army, 0x1D0, static_cast<void *>(nullptr));
+  if (xar::ck3_11906::ReadBattleTerminalTransitionV1(
+          bindings, terminal_world, terminal_request,
+          terminal_transition) !=
+          xar::game::BattleTerminalTransitionStatusV1::available ||
+      !terminal_transition.battle_terminal_transition_ready ||
+      terminal_transition.subject.ai_membership_status !=
+          xar::game::BattleTerminalAiMembershipStatusV1::unavailable ||
+      terminal_transition.subject.coordinator_id.has_value() ||
+      terminal_transition.subject.unit_stack_stored_index.has_value() ||
+      terminal_transition.subject.subunit_stored_index.has_value() ||
+      terminal_transition.subject.blocked_by_active_combat != false ||
+      terminal_transition.successor.state !=
+          xar::game::BattleTerminalSuccessorStateV1::unavailable) {
+    return Fail("battle-terminal partial player AI membership poisoned core state");
+  }
+  Store(g_player_army, 0x1C4, std::int32_t{-1});
+  if (xar::ck3_11906::ReadBattleTerminalTransitionV1(
+          bindings, terminal_world, terminal_request,
+          terminal_transition) !=
+          xar::game::BattleTerminalTransitionStatusV1::available ||
+      terminal_transition.subject.ai_membership_status !=
+          xar::game::BattleTerminalAiMembershipStatusV1::none ||
+      terminal_transition.successor.state !=
+          xar::game::BattleTerminalSuccessorStateV1::no_successor) {
+    return Fail("battle-terminal exact no-membership lost no-successor proof");
+  }
+  const xar::game::BattleTerminalTransitionRequestV1 missing_subject_request{
+      contact_combat_1_id, 0x02000001, std::nullopt};
+  if (xar::ck3_11906::ReadBattleTerminalTransitionV1(
+          bindings, terminal_world, missing_subject_request,
+          terminal_transition) !=
+          xar::game::BattleTerminalTransitionStatusV1::available ||
+      terminal_transition.subject.exists ||
+      terminal_transition.subject.ai_membership_status !=
+          xar::game::BattleTerminalAiMembershipStatusV1::none ||
+      terminal_transition.successor.state !=
+          xar::game::BattleTerminalSuccessorStateV1::subject_missing) {
+    return Fail("battle-terminal missing subject lost canonical membership none");
+  }
+  Store(g_player_army, 0x1C4, ai_coordinator_id);
+  Store(g_player_army, 0x1D0,
+        static_cast<void *>(g_ai_selected_subunit.data()));
+  Store(g_contact_combat_1, 0x6E0, std::int32_t{2});
+  if (xar::ck3_11906::CaptureBattleTerminalJournalEntryV1(
+          g_contact_combat_1.data(), false) ||
+      xar::ck3_11906::ReadBattleTerminalTransitionV1(
+          bindings, terminal_world, terminal_request,
+          terminal_transition) !=
+          xar::game::BattleTerminalTransitionStatusV1::unavailable ||
+      terminal_transition.unavailable_reason != "identity_unavailable" ||
+      terminal_transition.terminal_journal.event_sequence.has_value() ||
+      terminal_transition.terminal_journal.event_status !=
+          xar::game::BattleTerminalJournalEventStatusV1::not_observed ||
+      terminal_transition.terminal_journal.oldest_available_sequence != 1 ||
+      terminal_transition.terminal_journal.latest_sequence != 2) {
+    return Fail("battle-terminal unavailable leaked an observed journal event");
+  }
+  Store(g_contact_combat_1, 0x6E0, std::int32_t{0});
+  g_contact_province_combat_ids[0] = contact_combat_0_id;
   if (xar::ck3_11906::ReadBattleControlSnapshot(
           bindings, battle_request, battle) !=
           xar::game::BattleControlSnapshotStatus::subject_not_in_combat ||
